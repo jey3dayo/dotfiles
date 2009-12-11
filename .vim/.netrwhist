@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='ftp://192.168.67.181/contents_management_system/main_login/main_menu/'
+let g:netrw_dirhist_2='ftp://192.168.67.181/contents_management_system/main_login/main_menu/contents_registration_management/'
+let g:netrw_dirhist_3='ftp://192.168.67.181/contents_management_system/main_login/main_menu/contents_registration_management/treasure_hunt_config/'
+let g:netrw_dirhist_4='/Users/R1H048o/Desktop'

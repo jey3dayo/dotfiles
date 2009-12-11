@@ -1,0 +1,84 @@
+"2.0a3 (created: 2009/01/13 16:24:42)
+map \\f Bookmarks Toolbar-HINTS (current-tab)
+map \\F Bookmarks Toolbar-HINTS (new-tab)set runtimepath=/Users/J138/.vimperator
+
+" source! ~/.vimperatorrc.local
+
+" vim: set ft=vimperator:
+
+" Options
+set history=1000
+set activate=homepage,quickmark,tabopen,paste
+set complete=sl
+set guioptions=mB
+set wildoptions=auto
+set hlsearch
+colorscheme bigchu
+" Mappings
+noremap j 5<C-e>
+map k 5<C-y>
+noremap J <PageDown>
+noremap K <PageUp>
+noremap h gT
+noremap l gt
+noremap <C-H> h
+noremap <C-L> l
+noremap <C-t> t g1 
+noremap ,so :cd ~<cr>:source .vimperatorrc<cr>
+
+map <C-h> :tabmove! -1<cr>
+map <C-l> :tabmove! +1<cr>
+
+noremap v <C-v>
+inoremap <C-a> <C-v><C-a>
+inoremap <C-z> <C-v><C-z>
+inoremap <C-x> <C-v><C-x>
+inoremap <C-c> <C-v><C-c>
+inoremap <C-v> <C-v><C-v>
+cnoremap <C-a> <C-v><C-a>
+cnoremap <C-z> <C-v><C-z>
+cnoremap <C-x> <C-v><C-x>
+cnoremap <C-c> <C-v><C-c>
+cnoremap <C-v> <C-v><C-v>
+
+" plugin custom
+noremap ,tw : twitter<space>
+noremap ,tr : twitter!@<cr>
+noremap ,ts : twitter!<space>
+noremap ,tu : twitter %TITLE% - %URL%<cr>
+
+noremap ,to    :tombloo<space>
+noremap Q      <esc>:toggleldrc<cr>
+noremap <C-r>  :restart<cr>
+noremap ,d     <esc>:eijiro<space>
+
+noremap ,b     <esc>:btags<cr>
+noremap ,p     <esc>:pageinfo<cr>
+noremap <C-a>  <esc>:sbm<space>[
+noremap B      <esc>:viewSBMComments<cr>
+
+noremap ,m <esc>:emenu 
+noremap ,M <esc>:emenu tool
+
+" copy.js
+map ,c :copy<Space> titleAndURL<cr>
+js <<EOM
+liberator.globalVariables.copy_templates = [
+  { label: 'titleAndURL',    value: '%TITLE% %URL%' },
+  { label: 'title',          value: '%TITLE%' },
+  { label: 'url',            value: '%URL%' },
+  { label: 'markdown',       value: '[%TITLE%](%URL% "%TITLE%")' },
+  { label: 'markdownsel',    value: '[%SEL%](%URL% "%TITLE%")' },
+  { label: 'htmlblockquote', value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' }
+];
+EOM
+
+" feedsomekey_2.js
+autocmd LocationChange .* :fmapc
+autocmd LocationChange 'reader\.livedoor\.com/reader' :fmap j k s a p o v c <Space> <S-Space> z b < >
+autocmd LocationChange 'mail\.google\.com/mail' :fmap -depth 4 c / j k n p o u e x s r a y # [ ] z ? gi gs gd ga gc
+autocmd LocationChange 'www\.google\.co\.jp/reader' :fmap! -vkey j k n p m s v r S N P X O gh ga gs gu u / ?
+autocmd LocationChange 'www\.google\.com/reader' :fmap! -vkey j k n p m s v A r S N P X O gh ga gs gu u / ?
+autocmd LocationChange 'www\.rememberthemilk\.com/home' :fmap! -vkey c s u y z 1 2 3 4 a n k j i m 
+
+echo "done."
