@@ -130,8 +130,6 @@ alias ls='ls --color=auto'
 alias su="su -l"
 alias o="open"
 
-alias xampp="sudo /Applications/XAMPP/xamppfiles/xampp"
-
 case "${OSTYPE}" in
 darwin*)
     alias updateports="sudo port selfupdate; sudo port outdated"

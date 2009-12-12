@@ -50,9 +50,10 @@ set smartcase
 
 
 " tab width
-set ts=4 sw=3
+set ts=4
+set sw=4
 set softtabstop=4
-set noexpandtab
+set expandtab
 set tw=0
 
 
