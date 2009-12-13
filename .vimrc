@@ -72,15 +72,15 @@ nnoremap ,M  :<C-u>w<cr>:!gcc % -o %< -framework cocoa<cr>:!./%<<cr>
 nnoremap ,r  :<C-u>!ruby %<cr>
 nnoremap ,so :<C-u>source ~/.vimrc<cr>
 
-nnoremap <space>b  :<C-u>buffers<cr>
-nnoremap <space>m  :<C-u>marks<cr>
-nnoremap <space>r  :<C-u>registers<cr>
-nnoremap <space>s   <Nop>
-nnoremap <space>sH :<C-u>set nohlsearch<cr>
-nnoremap <space>sh :<C-u>set hlsearch<cr>
-nnoremap <space>so :<C-u>source ~/.vimrc<cr>
-nnoremap <space>g :<C-u>vimgrep /./ %\|cwindow
-nnoremap <space>y :<C-u>YRSearch<cr>
+nnoremap <Leader>b  :<C-u>buffers<cr>
+nnoremap <Leader>m  :<C-u>marks<cr>
+nnoremap <Leader>r  :<C-u>registers<cr>
+nnoremap <Leader>s   <Nop>
+nnoremap <Leader>sH :<C-u>set nohlsearch<cr>
+nnoremap <Leader>sh :<C-u>set hlsearch<cr>
+nnoremap <Leader>so :<C-u>source ~/.vimrc<cr>
+nnoremap <Leader>g :<C-u>vimgrep /./ %\|cwindow
+nnoremap <Leader>y :<C-u>YRSearch<cr>
 
 
 " link jump
