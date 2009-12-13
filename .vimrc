@@ -91,6 +91,17 @@ nnoremap tk  :<C-u>pop<cr>
 nnoremap tl  :<C-u>tags<cr>
 
 
+" ruler
+augroup cch
+  autocmd! cch
+  autocmd WinLeave * set nocursorcolumn nocursorline
+  autocmd WinEnter,BufRead * set cursorcolumn cursorline
+augroup END
+
+highlight CursorLine guibg=white
+highlight CursorColumn  guibg=white
+
+
 "<TAB> complement
 " {{{ Autocompletion using the TAB key
 " This function determines, wether we are on the start of the line text (then tab indents) or
@@ -120,16 +131,6 @@ set backupdir=~/tmp
 set swapfile
 set directory=~/tmp
 
-
-" ruler
-augroup cch
-  autocmd! cch
-  autocmd WinLeave * set nocursorcolumn nocursorline
-  autocmd WinEnter,BufRead * set cursorcolumn cursorline
-augroup END
-
-highlight CursorLine ctermbg=black guibg=black
-highlight CursorColumn ctermbg=black guibg=black
 
 " tab
 nnoremap <C-t>  <Nop>
