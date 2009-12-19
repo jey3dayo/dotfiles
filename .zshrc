@@ -129,6 +129,7 @@ alias ll='ls -lAFh --color=auto | less'
 alias ls='ls --color=auto'
 alias su="su -l"
 alias o="open"
+alias top="top -RFXu"
 
 case "${OSTYPE}" in
 darwin*)
