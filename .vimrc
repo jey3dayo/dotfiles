@@ -40,6 +40,7 @@ set nrformats-=octal
 set number
 set ruler
 set showmatch
+set complete+=k
 
 
 " search setting
@@ -142,7 +143,7 @@ nnoremap <C-t>k  :<C-u>tabprevious<cr>
 nnoremap gt  :<C-u>tabnext<cr>
 nnoremap gT  :<C-u>tabprevious<cr>
 
-" ESC連打でhighlight回避
+" ESC ESC -> nohlsearch
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return> 
 
 set shellslash
@@ -210,9 +211,25 @@ au BufNewFile,BufRead *.rb set tabstop=2 shiftwidth=2
 au BufNewFile,BufRead *.yml set tabstop=2 shiftwidth=2
 
 
-""Objective-C
+" HTML
+autocmd BufNewFile *.html 0r ~/.vim/templates/skel.html
+
+" PHP
+autocmd FileType php :set dictionary+=~/.vim/dict/PHP.dict
+
+" PHPLint
+function PHPLint()
+    let result = system( &ft . ' -l ' . bufname(""))
+    echo result
+endfunction
+
+nmap ,l :call PHPLint()<CR>
+
+
+" Objective-C
 "let objc_syntax_for_h = 1
-autocmd Filetype objc setlocal showmatch dict=~/.vim/dic/objc.dict
+autocmd Filetype objc setlocal showmatch dict=~/.vim/dict/objc.dict
+
 
 
 "" compile C lang
@@ -237,9 +254,4 @@ let g:LookupFile_AllowNewFiles=0
 set tags=tags
 
 
-" PHPLint
-function PHPLint()
-    let result = system( &ft . ' -l ' . bufname(""))
-    echo result
-endfunction
 

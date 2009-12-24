@@ -13,6 +13,7 @@ set complete=sl
 set guioptions=mB
 set wildoptions=auto
 set hlsearch
+set visualbell
 colorscheme bigchu
 " Mappings
 noremap j 5<C-e>
