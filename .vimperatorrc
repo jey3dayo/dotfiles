@@ -14,6 +14,7 @@ set guioptions=mB
 set wildoptions=auto
 set hlsearch
 set visualbell
+let mapleader = ","
 colorscheme bigchu
 " Mappings
 noremap j 5<C-e>

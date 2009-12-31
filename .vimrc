@@ -3,9 +3,9 @@ if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
 nmap gx <Plug>NetrwBrowseX
-nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
-let &cpo=s:cpo_save
+nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)let &cpo=s:cpo_save
 unlet s:cpo_save
+let mapleader = ","
 
 
 " vim: set ft=vim :
@@ -13,6 +13,7 @@ syntax enable
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932
 set fileformats=unix,mac,dos
+
 
 
 " color
@@ -41,6 +42,11 @@ set number
 set ruler
 set showmatch
 set complete+=k
+set cursorline
+set wildmenu
+
+set laststatus=2
+set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 
 
 " search setting
@@ -68,20 +74,24 @@ filetype indent on
 
 
 " map
-nnoremap ,m  :<C-u>!gcc % -o %< -framework cocoa<cr>
-nnoremap ,M  :<C-u>w<cr>:!gcc % -o %< -framework cocoa<cr>:!./%<<cr>
-nnoremap ,r  :<C-u>!ruby %<cr>
-nnoremap ,so :<C-u>source ~/.vimrc<cr>
+nnoremap <Leader>bl :<C-u>buffers<cr>
+nnoremap <Leader>ml :<C-u>marks<cr>
+nnoremap <Leader>rl :<C-u>registers<cr>
 
-nnoremap <Leader>b  :<C-u>buffers<cr>
-nnoremap <Leader>m  :<C-u>marks<cr>
-nnoremap <Leader>r  :<C-u>registers<cr>
+nnoremap <Leader>gw :<C-u>vimgrep /./ %\|cwindow
+nnoremap <Leader>ys :<C-u>YRSearch<cr>
+
 nnoremap <Leader>s   <Nop>
-nnoremap <Leader>sH :<C-u>set nohlsearch<cr>
 nnoremap <Leader>sh :<C-u>set hlsearch<cr>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<cr>
-nnoremap <Leader>g :<C-u>vimgrep /./ %\|cwindow
-nnoremap <Leader>y :<C-u>YRSearch<cr>
+
+nnoremap <C-c>   :badd<Space>
+nnoremap <C-d>   :bd<CR>
+nnoremap <Tab>   :wincmd w<CR>
+
+nnoremap <Leader>cm  :<C-u>!gcc % -o %< -framework cocoa<cr>
+nnoremap <Leader>cM  :<C-u>w<cr>:!gcc % -o %< -framework cocoa<cr>:!./%<<cr>
+nnoremap <Leader>cr  :<C-u>!ruby %<cr>
 
 
 " link jump
@@ -92,15 +102,16 @@ nnoremap tk  :<C-u>pop<cr>
 nnoremap tl  :<C-u>tags<cr>
 
 
-" ruler
-augroup cch
-  autocmd! cch
-  autocmd WinLeave * set nocursorcolumn nocursorline
-  autocmd WinEnter,BufRead * set cursorcolumn cursorline
-augroup END
 
-highlight CursorLine guibg=white
-highlight CursorColumn  guibg=white
+" ruler
+" augroup cch
+"   autocmd! cch
+"   autocmd WinLeave * set nocursorcolumn nocursorline
+"   autocmd WinEnter,BufRead * set cursorcolumn cursorline
+" augroup END
+" 
+" highlight CursorLine guibg=white
+" highlight CursorColumn  guibg=white
 
 
 "<TAB> complement
@@ -253,5 +264,6 @@ let g:LookupFile_AllowNewFiles=0
 " taglist.vim
 set tags=tags
 
-
-
+"NERD_commenter.vim <leader>+x => comment out
+nmap <Leader>x ,c<space>
+let NERDShutUp=1
