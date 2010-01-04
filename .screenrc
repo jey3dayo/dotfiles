@@ -1,0 +1,8 @@
+defencoding utf-8
+encoding utf-8 utf-8
+escape ^z^z
+vbell off
+startup_message off
+autodetach on
+hardstatus alwayslastline "[%02c] %`%-w%{=b bw}%n %t%{-}%+w"
+shell /bin/zsh
