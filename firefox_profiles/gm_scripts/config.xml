@@ -1,0 +1,247 @@
+<UserScriptConfig>
+	<Script filename="minibuffer.user.js" name="Minibuffer" namespace="http://white.s151.xrea.com/" description="Minibuffer" enabled="true" basedir="minibuffer">
+		<Include>*</Include>
+		<Exclude>http://*.travian.*/*</Exclude>
+	</Script>
+	<Script filename="ldrize.user.js" name="LDRize" namespace="http://white.s151.xrea.com/" description="j,k,v,p,o,:,f,? + l,s,i" enabled="true" basedir="ldrize">
+		<Include>http://*</Include>
+		<Include>https://*</Include>
+	</Script>
+	<Script filename="ldrize_mibuffer_tumblr_r.user.js" name="LDRize Mibuffer tumblr reblog command" namespace="http://ido.nu/kuma/" description="add tumblr.reblog and tumblr.delete command  to Minibuffer." enabled="true" basedir="ldrize_mibuffer_tumblr_r">
+		<Include>http://*.tumblr.com/*</Include>
+	</Script>
+	<Script filename="ldr__tombloo.user.js" name="LDR + Tombloo" namespace="http://userscripts.org/users/7010" description="" enabled="true" basedir="ldr__tombloo">
+		<Include>http://reader.livedoor.com/reader/*</Include>
+		<Include>http://fastladder.com/reader/* </Include>
+	</Script>
+	<Script filename="ldr_full_feed.user.js" name="LDR Full Feed" namespace="http://d.hatena.ne.jp/Constellation/" description="loading full entry on LDR and Fastladder" enabled="true" basedir="ldr_full_feed">
+		<Include>http://reader.livedoor.com/reader/*</Include>
+		<Include>http://fastladder.com/reader/*</Include>
+		<Require filename="3242.txt"/>
+		<Require filename="43358.txt"/>
+		<Resource name="orange" filename="orange.gif" mimetype="image/gif"/>
+		<Resource name="blue" filename="blue.gif" mimetype="image/gif"/>
+		<Resource name="css" filename="ldrfullfeed.css" mimetype="text/css" charset="utf-8"/>
+	</Script>
+	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="false" basedir="autopagerize">
+		<Include>http://*</Include>
+		<Include>https://*</Include>
+		<Exclude>https://mail.google.com/*</Exclude>
+		<Exclude>http://b.hatena.ne.jp/*</Exclude>
+	</Script>
+	<Script filename="grb.user.js" name="GR+?B" namespace="http://d.hatena.ne.jp/nozom/" description="show ?B button and count in Google Reader" enabled="true" basedir="grb">
+		<Include>http://www.google.com/reader/view/*</Include>
+		<Include>https://www.google.com/reader/view/*</Include>
+	</Script>
+	<Script filename="google_reader_-_social_b.user.js" name="Google Reader - Social Bookmark" namespace="http://at-aka.blogspot.com/" description="Add shortcut keys 'b' for bookmarking Hatena Bookmark and 'B' for livedoor clip." enabled="true" basedir="google_reader_-_social_b">
+		<Include>http://www.google.com/reader/*</Include>
+		<Include>https://www.google.com/reader/*</Include>
+		<Include>http://reader.google.com/*</Include>
+		<Include>https://reader.google.com/*</Include>
+	</Script>
+	<Script filename="gmailagenda.user.js" name="GmailAgenda" namespace="tag:gmailAgenda" description="" enabled="true" basedir="gmailagenda">
+		<Include>https://mail.google.com/mail/*</Include>
+		<Include>http://mail.google.com/mail/*</Include>
+		<Include>https://gmail.google.com/mail/*</Include>
+		<Include>http://gmail.google.com/mail/*</Include>
+		<Include>http://www.google.com/calendar/embed*</Include>
+		<Include>https://www.google.com/calendar/embed*</Include>
+		<Include>https://mail.google.com/a/*</Include>
+		<Include>http://mail.google.com/a/*</Include>
+		<Exclude>https://mail.google.com/mail/?ui=*</Exclude>
+		<Exclude>http://mail.google.com/mail/?ui=*</Exclude>
+	</Script>
+	<Script filename="google_search_filter.user.js" name="Google Search Filter" namespace="http://www.code-404.net/" description="Selected web-sites aren't displayed from Google search result." enabled="true" basedir="google_search_filter">
+		<Include>http://www.google.*/search*</Include>
+	</Script>
+	<Script filename="wikipediagoogleimage.user.js" name="wikipedia.googleimage" namespace="http://www.kagami.org/" description="" enabled="true" basedir="wikipediagoogleimage">
+		<Include>http://ja.wikipedia.org/wiki/*</Include>
+	</Script>
+	<Script filename="google_button_search_now.user.js" name="Google Button Search Now" namespace="http://a-h.parfe.jp/einfach/" description="" enabled="true" basedir="google_button_search_now">
+		<Include>http://*.google.*/*</Include>
+	</Script>
+	<Script filename="livedoor_reader_meets_ha.user.js" name="livedoor Reader meets Hatena Bookmark" namespace="http://tokyoenvious.xrea.jp/" description="" enabled="true" basedir="livedoor_reader_meets_ha">
+		<Include>http://reader.livedoor.com/reader/*</Include>
+	</Script>
+	<Script filename="composite_-yet_another_t.user.js" name="COMPOSITE -Yet another Tumblr photo viewer-" namespace="http://d.hatena.ne.jp/koyachi" description="" enabled="true" basedir="composite_-yet_another_t">
+		<Include>http://*.tumblr.com/</Include>
+	</Script>
+	<Script filename="reblogcommand.user.js" name="ReblogCommand" namespace="http://white.s151.xrea.com/" description="" enabled="true" basedir="reblogcommand">
+		<Include>*</Include>
+	</Script>
+	<Script filename="tumblr_-_dashbord_brushu.user.js" name="Tumblr - Dashbord brushup" namespace="http://userstyles.org" description="This code is not made by me" enabled="true" basedir="tumblr_-_dashbord_brushu">
+		<Include>http://www.tumblr.com/dashboard*</Include>
+	</Script>
+	<Script filename="tumblr_-_strobo.user.js" name="Tumblr - Strobo" namespace="http://userscripts.org/users/7010" description="" enabled="true" basedir="tumblr_-_strobo">
+		<Include>http://*.tumblr.com/</Include>
+	</Script>
+	<Script filename="tumblrimgviewer.user.js" name="TumblrImgViewer" namespace="http://d.hatena.ne.jp/kasei_san/" description="" enabled="true" basedir="tumblrimgviewer">
+		<Include>http://*.tumblr.com/*</Include>
+		<Exclude>http://www.tumblr.com/*</Exclude>
+		<Exclude>http://*.tumblr.com/post/*</Exclude>
+	</Script>
+	<Script filename="videoembed.user.js" name="Videoembed" namespace="http://hergonan.blogspot.com/" description="Automatically adds embedded videos after links to video pages.." enabled="true" basedir="videoembed">
+		<Include>*</Include>
+		<Exclude>http://youtube.*</Exclude>
+		<Exclude>http://*.youtube.*</Exclude>
+		<Exclude>http://glumbert.*</Exclude>
+		<Exclude>http://*.glumbert.*</Exclude>
+		<Exclude>http://metacafe.*</Exclude>
+		<Exclude>http://*.metacafe.*</Exclude>
+		<Exclude>http://video.google.*</Exclude>
+		<Exclude>http://animeepisodes.*</Exclude>
+		<Exclude>http://*.animeepisodes.*</Exclude>
+		<Exclude>http://myvideo.*</Exclude>
+		<Exclude>http://*.myvideo.*</Exclude>
+		<Exclude>http://video.tinypic.*</Exclude>
+		<Exclude>http://video.yahoo.*</Exclude>
+		<Exclude>http://spike.*</Exclude>
+		<Exclude>http://*.spike.*</Exclude>
+		<Exclude>http://vids.myspace.*</Exclude>
+		<Exclude>http://liveleak.*</Exclude>
+		<Exclude>http://*.liveleak.*</Exclude>
+		<Exclude>http://revver.*</Exclude>
+		<Exclude>http://*.revver.*</Exclude>
+		<Exclude>http://vimeo.*</Exclude>
+		<Exclude>http://*.vimeo.*</Exclude>
+		<Exclude>http://veoh.*</Exclude>
+		<Exclude>http://*.veoh.*</Exclude>
+		<Exclude>http://guba.*</Exclude>
+		<Exclude>http://*.guba.*</Exclude>
+		<Exclude>http://gamevideos.1up.*</Exclude>
+		<Exclude>http://gametrailers.*</Exclude>
+		<Exclude>http://*.gametrailers.*</Exclude>
+		<Exclude>http://pikniktube.*</Exclude>
+		<Exclude>http://*.pikniktube.*</Exclude>
+		<Exclude>http://tudou.*</Exclude>
+		<Exclude>http://*.tudou.*</Exclude>
+		<Exclude>http://collegehumor.*</Exclude>
+		<Exclude>http://*.collegehumor.*</Exclude>
+		<Exclude>http://5min.*</Exclude>
+		<Exclude>http://*.5min.*</Exclude>
+		<Exclude>http://ustream.*</Exclude>
+		<Exclude>http://*.ustream.*</Exclude>
+		<Exclude>http://fliggo.*</Exclude>
+		<Exclude>http://*.fliggo.*</Exclude>
+		<Exclude>http://overlay.*</Exclude>
+		<Exclude>http://*.overlay.*</Exclude>
+		<Exclude>http://webshots.*</Exclude>
+		<Exclude>http://*.webshots.*</Exclude>
+		<Exclude>http://clipshack.*</Exclude>
+		<Exclude>http://*.clipshack.*</Exclude>
+		<Exclude>http://cnettv,cnet.*</Exclude>
+		<Exclude>http://crackle.*</Exclude>
+		<Exclude>http://*.crackle.*</Exclude>
+		<Exclude>http://current.*</Exclude>
+		<Exclude>http://*.current.*</Exclude>
+		<Exclude>http://expertvillage.*</Exclude>
+		<Exclude>http://*.expertvillage.*</Exclude>
+		<Exclude>http://funnyordie.*</Exclude>
+		<Exclude>http://*.funnyordie.*</Exclude>
+		<Exclude>http://godtube.*</Exclude>
+		<Exclude>http://*.godtube.*</Exclude>
+		<Exclude>http://justin.*</Exclude>
+		<Exclude>http://*.justin.*</Exclude>
+		<Exclude>http://livevideo.*</Exclude>
+		<Exclude>http://*.livevideo.*</Exclude>
+		<Exclude>http://putfile.*</Exclude>
+		<Exclude>http://*.putfile.*</Exclude>
+		<Exclude>http://12seconds.*</Exclude>
+		<Exclude>http://*.12seconds.*</Exclude>
+		<Exclude>http://selfcasttv.*</Exclude>
+		<Exclude>http://*.selfcasttv.*</Exclude>
+		<Exclude>http://sevenload.*</Exclude>
+		<Exclude>http://*.sevenload.*</Exclude>
+		<Exclude>http://spikedhumor.*</Exclude>
+		<Exclude>http://*.spikedhumor.*</Exclude>
+		<Exclude>http://jumpcut.*</Exclude>
+		<Exclude>http://*.jumpcut.*</Exclude>
+		<Exclude>http://*.gamecorner.*</Exclude>
+		<Exclude>http://gamecorner.*</Exclude>
+	</Script>
+	<Script filename="nicovideo_downloader.user.js" name="nicovideo downloader" namespace="http://muumoo.jp/" description="" enabled="true" basedir="nicovideo_downloader">
+		<Include>http://www.nicovideo.jp/watch/*</Include>
+	</Script>
+	<Script filename="nicovideo_show_all_ranks.user.js" name="nicovideo Show All Ranks" namespace="http://d.hatena.ne.jp/gifnksm/" description="Show all rankings at once." enabled="true" basedir="nicovideo_show_all_ranks">
+		<Include>http://www.nicovideo.jp/ranking/*</Include>
+	</Script>
+	<Script filename="nicovideo_synchronized_f.user.js" name="nicovideo Synchronized Fullscreen" namespace="http://d.hatena.ne.jp/gifnksm/" description="When window becomes fullscreen, set movie player fullsize." enabled="true" basedir="nicovideo_synchronized_f">
+		<Include>http://www.nicovideo.jp/watch/*</Include>
+	</Script>
+	<Script filename="download_any_video_from_.user.js" name="Download ANY Video from YouTube" namespace="http://userscripts.org./users/43801" description="adds a link to download flv from You Tube" enabled="true" basedir="download_any_video_from_">
+		<Include>*youtube.com/*v=*</Include>
+	</Script>
+	<Script filename="nicoclip.user.js" name="NicoClip" namespace="http://userscripts.org/scripts/show/15818" description="ニコニコ動画にはてなブックマークと連携したマイリスト機能を追加します。" enabled="true" basedir="nicoclip">
+		<Include>http://www.nicovideo.jp/watch/*</Include>
+	</Script>
+	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese" namespace="userscripts.org" description="" enabled="true" basedir="mouseover_translate_engl">
+		<Include>*</Include>
+	</Script>
+	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
+		<Include>*</Include>
+	</Script>
+	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
+		<Include>http://www.nicovideo.jp/watch/*</Include>
+	</Script>
+	<Script filename="amazon_cross_book_check.user.js" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" description="" enabled="true" basedir="amazon_cross_book_check">
+		<Include>http://www.amazon.co.jp/*</Include>
+		<Include>http://amazon.co.jp/*</Include>
+	</Script>
+	<Script filename="simplepedia.user.js" name="Simplepedia" namespace="http://userscripts.org/scripts/show/42312" description="MediaWiki beautification" enabled="true" basedir="simplepedia">
+		<Include>*</Include>
+		<Exclude>http://userscripts.org/*</Exclude>
+	</Script>
+	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
+		<Include>*</Include>
+	</Script>
+	<Script filename="show_keybind_in_rmt.user.js" name="Show Keybind In RMT" namespace="http://espion.just-size.jp/archives/05/136155838.html" description="" enabled="true" basedir="show_keybind_in_rmt">
+		<Include>http://www.rememberthemilk.com/*</Include>
+	</Script>
+	<Script filename="pbtweet.user.js" name="pbtweet" namespace="http://t-trace.blogspot.com/" description="Expand conversation chains and twitPic.com thumbnails." enabled="true" basedir="pbtweet">
+		<Include>https://twitter.com/*</Include>
+		<Include>http://twitter.com/*</Include>
+	</Script>
+	<Script filename="travian3_beyond_-_mlcn.user.js" name="Travian3 Beyond - ML&amp;CN" namespace="T3" description="Travian3 Beyond - ML&amp;CN (multilanguage &amp; center numbers)" enabled="true" basedir="travian3_beyond_-_mlcn">
+		<Include>http://*.travian*.*/*.php*</Include>
+		<Exclude>http://*.travian*.*/hilfe.php*</Exclude>
+		<Exclude>http://*.travian*.*/log*.php*</Exclude>
+		<Exclude>http://*.travian*.*/index.php*</Exclude>
+		<Exclude>http://*.travian*.*/anleitung.php*</Exclude>
+		<Exclude>http://*.travian*.*/impressum.php*</Exclude>
+		<Exclude>http://*.travian*.*/anmelden.php*</Exclude>
+		<Exclude>http://*.travian*.*/gutscheine.php*</Exclude>
+		<Exclude>http://*.travian*.*/spielregeln.php*</Exclude>
+		<Exclude>http://*.travian*.*/links.php*</Exclude>
+		<Exclude>http://*.travian*.*/geschichte.php*</Exclude>
+		<Exclude>http://*.travian*.*/tutorial.php*</Exclude>
+		<Exclude>http://*.travian*.*/manual.php*</Exclude>
+		<Exclude>http://*.travian*.*/manual.php*</Exclude>
+		<Exclude>http://*.travian*.*/ajax.php*</Exclude>
+		<Exclude>http://*.travian*.*/ad/*</Exclude>
+		<Exclude>http://*.travian*.*/chat/*</Exclude>
+		<Exclude>http://forum.travian*.*</Exclude>
+		<Exclude>http://board.travian*.*</Exclude>
+		<Exclude>http://shop.travian*.*</Exclude>
+		<Exclude>http://*.travian*.*/activate.php*</Exclude>
+		<Exclude>http://*.travian*.*/support.php*</Exclude>
+		<Exclude>http://help.travian*.*</Exclude>
+		<Exclude>*.css</Exclude>
+		<Exclude>*.js</Exclude>
+	</Script>
+	<Script filename="travian_task_queue.user.js" name="Travian Task Queue" namespace="http://userscripts.org/" description="Schedule delayed constructions, upgrades and attacks." enabled="true" basedir="travian_task_queue">
+		<Include>http://*.travian.*/*</Include>
+		<Exclude>http://forum.travian.*</Exclude>
+		<Exclude>http://www.travian.*</Exclude>
+	</Script>
+	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
+		<Include>http://*.google.*/*q=*</Include>
+	</Script>
+	<Script filename="japanese_popular_sbm_cou.user.js" name="Japanese Popular SBM Count With Google" namespace="http://web-marketing.zako.org/greasemonkey/" description="Displays japanese popular SBM count in web search results of Google." enabled="false" basedir="japanese_popular_sbm_cou">
+		<Include>http://*.google.*/search*</Include>
+		<Include>http://*.google.*/custom*</Include>
+	</Script>
+	<Script filename="nicovideo_add_hatena_boo.user.js" name="nicovideo Add Hatena Bookmark Links" namespace="http://d.hatena.ne.jp/gifnksm/" description="Add Bookmarked numbers to everywhere in nicovideo" enabled="true" basedir="nicovideo_add_hatena_boo">
+		<Include>http://www.nicovideo.jp/*</Include>
+		<Require filename="nvii_20090510.js"/>
+	</Script>
+</UserScriptConfig>
