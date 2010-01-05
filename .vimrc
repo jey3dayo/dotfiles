@@ -265,5 +265,5 @@ let g:LookupFile_AllowNewFiles=0
 set tags=tags
 
 "NERD_commenter.vim <leader>+x => comment out
-nmap <Leader>x ,c<space>
+map <Leader>x ,c<space>
 let NERDShutUp=1
