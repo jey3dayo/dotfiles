@@ -49,6 +49,9 @@ noremap ,tr : twitter!@<cr>
 noremap ,ts : twitter!<space>
 noremap ,tu : twitter %TITLE% - %URL%<cr>
 
+noremap ,te : twitter d myEN<space>
+noremap ,tm : twitter d rtm<space>
+
 noremap ,to    :tombloo<space>
 noremap Q      <esc>:toggleldrc<cr>
 noremap <C-r>  :restart<cr>
