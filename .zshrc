@@ -13,7 +13,6 @@ case ${UID} in
 export PATH=/opt/local/bin:/opt/local/sbin:/bin:/usr/bin:/Developer/SDKs/flex_sdk_3/bin:$PATH
 export MANPATH=/opt/local/man:$MANPATH
 
-source /sw/bin/init.sh
 
 ## Default shell configuration
 #

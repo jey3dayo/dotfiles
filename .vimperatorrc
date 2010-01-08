@@ -86,4 +86,8 @@ autocmd LocationChange 'www\.google\.co\.jp/reader' :fmap! -vkey j k n p m s v r
 autocmd LocationChange 'www\.google\.com/reader' :fmap! -vkey j k n p m s v A r S N P X O gh ga gs gu u / ?
 autocmd LocationChange 'www\.rememberthemilk\.com/home' :fmap! -vkey c s u y z 1 2 3 4 a n k j i m 
 
+" asdfghjkl.js
+let g:asdfghjkl_default = "true"
+
 echo "done."
+

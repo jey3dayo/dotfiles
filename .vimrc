@@ -112,6 +112,7 @@ nnoremap tl  :<C-u>tags<cr>
 " 
 " highlight CursorLine guibg=white
 " highlight CursorColumn  guibg=white
+highlight FoldColumn  guibg=white guifg=blue
 
 
 "<TAB> complement
@@ -180,7 +181,8 @@ let g:Tex_BibtexFlavor = 'jbibtex -kanji=sjis'
 let g:Tex_ViewRule_pdf = 'open -a /Applications/Preview.app'
 let g:Tex_FormatDependency_pdf = 'dvi,pdf'
 let g:Tex_CompileRule_pdf = '/usr/local/bin/dvipdfmx $*.dvi'
-let g:Tex_CompileRule_dvi = '/usr/local/bin/platex-sjis --interaction-nonstopmode $*'
+"let g:Tex_CompileRule_dvi = '/usr/local/bin/platex-sjis --interaction-nonstopmode $*'
+let g:Tex_CompileRule_dvi = '/usr/local/bin/platex --interaction-nonstopmode $*'
 let g:Tex_IgnoredWarnings =
       \"Underfull\n".
       \"Overfull\n".
