@@ -1,6 +1,7 @@
 "2.0a3 (created: 2009/01/13 16:24:42)
-map \\f Bookmarks Toolbar-HINTS (current-tab)
-map \\F Bookmarks Toolbar-HINTS (new-tab)set runtimepath=/Users/J138/.vimperator
+map <leader>f Bookmarks Toolbar-HINTS (current-tab)
+map <leader>F Bookmarks Toolbar-HINTS (new-tab)set runtimepath=/Users/J138/.vimperator
+
 
 " source! ~/.vimperatorrc.local
 
@@ -16,22 +17,25 @@ set hlsearch
 set visualbell
 let mapleader = ","
 colorscheme bigchu
+
 " Mappings
 noremap j 5<C-e>
-map k 5<C-y>
+noremap k 5<C-y>
 noremap J <PageDown>
 noremap K <PageUp>
 noremap h gT
 noremap l gt
 noremap <C-H> h
 noremap <C-L> l
-noremap <C-t> t g1 
-noremap ,so :cd ~<cr>:source .vimperatorrc<cr>
+noremap <C-t> t g1<space>
+noremap <C-r>   :restart<cr>
+
+noremap <leader>i  <esc>:pageinfo<cr>
+noremap <leader>so :cd ~<cr>:source .vimperatorrc<cr>
 
 map <C-h> :tabmove! -1<cr>
 map <C-l> :tabmove! +1<cr>
 
-noremap v <C-v>
 inoremap <C-a> <C-v><C-a>
 inoremap <C-z> <C-v><C-z>
 inoremap <C-x> <C-v><C-x>
@@ -43,38 +47,38 @@ cnoremap <C-x> <C-v><C-x>
 cnoremap <C-c> <C-v><C-c>
 cnoremap <C-v> <C-v><C-v>
 
+
 " plugin custom
-noremap ,tw : twitter<space>
-noremap ,tr : twitter!@<cr>
-noremap ,ts : twitter!<space>
-noremap ,tu : twitter %TITLE% - %URL%<cr>
+noremap <leader>tw :twitter<space>
+noremap <leader>tr :twitter!@<cr>
+noremap <leader>ts :twitter!<space>
+noremap <leader>tu :twitter %TITLE% - %URL%<cr>
 
-noremap ,te : twitter d myEN<space>
-noremap ,tm : twitter d rtm<space>
+noremap <leader>te :twitter d myEN<space>
+noremap <leader>tm :twitter d rtm<space>
 
-noremap ,to    :tombloo<space>
-noremap Q      <esc>:toggleldrc<cr>
-noremap <C-r>  :restart<cr>
-noremap ,d     <esc>:eijiro<space>
+noremap <leader>to :tombloo<space>
+noremap <leader>b  <esc>:btags<cr>
+noremap <leader>d  <esc>:eijiro<space>
+noremap <C-a>      <esc>:sbm<space>[
+noremap B          <esc>:viewSBMComments<cr>
+noremap Q          <esc>:toggleldrc<cr>
 
-noremap ,b     <esc>:btags<cr>
-noremap ,p     <esc>:pageinfo<cr>
-noremap <C-a>  <esc>:sbm<space>[
-noremap B      <esc>:viewSBMComments<cr>
-
-noremap ,m <esc>:emenu 
-noremap ,M <esc>:emenu tool
+noremap <leader>m   <esc>:emenu 
+noremap <leader>M   <esc>:emenu tool
 
 " copy.js
-map ,c :copy<Space> titleAndURL<cr>
+map <leader>c :copy<Space> TitleAndbittly<cr>
 js <<EOM
 liberator.globalVariables.copy_templates = [
-  { label: 'titleAndURL',    value: '%TITLE% %URL%' },
-  { label: 'title',          value: '%TITLE%' },
-  { label: 'url',            value: '%URL%' },
-  { label: 'markdown',       value: '[%TITLE%](%URL% "%TITLE%")' },
-  { label: 'markdownsel',    value: '[%SEL%](%URL% "%TITLE%")' },
-  { label: 'htmlblockquote', value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' }
+  { label: 'titleAndURL',      value: '%TITLE% %URL%' },
+  { label: 'title \\n URL',    value: '%TITLE%\n%URL%' },
+  { label: 'title',            value: '%TITLE%' },
+  { label: 'url',              value: '%URL%' },
+  { label: 'markdown',         value: '[%TITLE%](%URL% "%TITLE%")' },
+  { label: 'htmlblockquote',   value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
+  { label: 'bittly',           value: 'Get bittly URL', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+  { label: 'TitleAndbittly',   value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
 ];
 EOM
 

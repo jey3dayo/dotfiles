@@ -15,7 +15,6 @@ set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,
 set fileformats=unix,mac,dos
 
 
-
 " color
 highlight LineNr ctermfg=darkyellow
 highlight NonText ctermfg=darkgrey
@@ -74,32 +73,35 @@ filetype indent on
 
 
 " map
-nnoremap <Leader>bl :<C-u>buffers<cr>
-nnoremap <Leader>ml :<C-u>marks<cr>
-nnoremap <Leader>rl :<C-u>registers<cr>
+nnoremap <Leader>bl :<C-u>buffers<CR>
+nnoremap <Leader>ml :<C-u>marks<CR>
+nnoremap <Leader>rl :<C-u>registers<CR>
 
 nnoremap <Leader>gw :<C-u>vimgrep /./ %\|cwindow
-nnoremap <Leader>ys :<C-u>YRSearch<cr>
+nnoremap <Leader>ys :<C-u>YRSearch<CR>
 
 nnoremap <Leader>s   <Nop>
-nnoremap <Leader>sh :<C-u>set hlsearch<cr>
-nnoremap <Leader>so :<C-u>source ~/.vimrc<cr>
+nnoremap <Leader>sh :<C-u>set hlsearch<CR>
+nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
 
-nnoremap <C-c>   :badd<Space>
-nnoremap <C-d>   :bd<CR>
-nnoremap <Tab>   :wincmd w<CR>
+nnoremap <C-c> :<C-u>badd<Space>
+nnoremap <C-d> :<C-u>bd<CR>
+nnoremap <Tab> :<C-u>wincmd w<CR>
 
-nnoremap <Leader>cm  :<C-u>!gcc % -o %< -framework cocoa<cr>
-nnoremap <Leader>cM  :<C-u>w<cr>:!gcc % -o %< -framework cocoa<cr>:!./%<<cr>
-nnoremap <Leader>cr  :<C-u>!ruby %<cr>
+nnoremap <Leader>cr  :<C-u>!ruby %<CR>
+nnoremap <Leader>cm  :<C-u>!gcc % -o %< -framework cocoa<CR>
+nnoremap <Leader>cM  :<C-u>w<CR>:!gcc % -o %< -framework cocoa<CR>:!./%<<CR>
+nnoremap <Leader>cc  :<C-u>w<CR>:!gcc % -o %< -framework cocoa<CR>
+nnoremap <Leader>cC  :<C-u>w<CR>:!gcc % -o %< -framework cocoa<CR>:!./%<<CR>
+
 
 
 " link jump
 nnoremap t  <Nop>
 nnoremap tt  <C-]>
-nnoremap tj  :<C-u>tag<cr>
-nnoremap tk  :<C-u>pop<cr>
-nnoremap tl  :<C-u>tags<cr>
+nnoremap tj  :<C-u>tag<CR>
+nnoremap tk  :<C-u>pop<CR>
+nnoremap tl  :<C-u>tags<CR>
 
 
 
@@ -134,7 +136,7 @@ endfunction
 
 
 "" Remap the tab key to select action with InsertTabWrapper
-"inoremap <tab> <c-r>=InsertTabWrapper()<cr>
+"inoremap <tab> <c-r>=InsertTabWrapper()<CR>
 "" }}} Autocompletion using the TAB key
 
 
@@ -147,13 +149,13 @@ set directory=~/tmp
 
 " tab
 nnoremap <C-t>  <Nop>
-nnoremap <C-t>n  :<C-u>tabnew<cr>
-nnoremap <C-t>d  :<C-u>tabclose<cr>
-nnoremap <C-t>o  :<C-u>tabonly<cr>
-nnoremap <C-t>j  :<C-u>tabnext<cr>
-nnoremap <C-t>k  :<C-u>tabprevious<cr>
-nnoremap gt  :<C-u>tabnext<cr>
-nnoremap gT  :<C-u>tabprevious<cr>
+nnoremap <C-t>n  :<C-u>tabnew<CR>
+nnoremap <C-t>d  :<C-u>tabclose<CR>
+nnoremap <C-t>o  :<C-u>tabonly<CR>
+nnoremap <C-t>j  :<C-u>tabnext<CR>
+nnoremap <C-t>k  :<C-u>tabprevious<CR>
+nnoremap gt  :<C-u>tabnext<CR>
+nnoremap gT  :<C-u>tabprevious<CR>
 
 " ESC ESC -> nohlsearch
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return> 
@@ -206,43 +208,10 @@ let java_space_errors=1
 let java_highlight_functions=1
 
 
-" rails.vim
-let g:rails_level=4
-let g:rails_default_file="app/controllers/application.rb"
-let g:rails_default_database="sqlite3"
-
-
-" rubycomplete.vim
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-au BufNewFile,BufRead * set tabstop=4 shiftwidth=4
-au BufNewFile,BufRead *.rhtml set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.erb set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.rb set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.yml set tabstop=2 shiftwidth=2
-
-
-" HTML
-autocmd BufNewFile *.html 0r ~/.vim/templates/skel.html
-
-" PHP
-autocmd FileType php :set dictionary+=~/.vim/dict/PHP.dict
-
-" PHPLint
-function PHPLint()
-    let result = system( &ft . ' -l ' . bufname(""))
-    echo result
-endfunction
-
-nmap ,l :call PHPLint()<CR>
-
 
 " Objective-C
 "let objc_syntax_for_h = 1
 autocmd Filetype objc setlocal showmatch dict=~/.vim/dict/objc.dict
-
 
 
 "" compile C lang
@@ -269,3 +238,4 @@ set tags=tags
 "NERD_commenter.vim <leader>+x => comment out
 map <Leader>x ,c<space>
 let NERDShutUp=1
+

@@ -5,4 +5,8 @@ vbell off
 startup_message off
 autodetach on
 hardstatus alwayslastline "[%02c] %`%-w%{=b bw}%n %t%{-}%+w"
+hardcopydir ~/tmp
 shell /bin/zsh
+
+termcapinfo xterm* ti@:te@
+zombie 
