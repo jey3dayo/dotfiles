@@ -5,29 +5,15 @@
 // @include        *
 // ==/UserScript==
 
-var VERSION = "2008.04.19";
+var VERSION = "2009.12.06";
 
 var Class = function(){return function(){this.initialize.apply(this,arguments)}};
 
 // string key
 var Key = new Class();
-Key.prototype = {
-  initialize: function(){
-	  this.orig_string = arguments[0];
-	  this.key = this.orig_string.replace(/[ACMS]-/g,'');
-  },
-  has: function(modifier){return this.orig_string.indexOf(modifier) > -1},
-  equal: function (e, ch){
-	  return (this.key == ch &&
-	          this.has('C-') == e.ctrlKey &&
-	          (e.metaKey || e.altKey) == (this.has('A-') || this.has('M-')))
-  }
-};
 
-var ShortcutKey = new Class();
-ShortcutKey.prototype = {
 //  32-40 space pageup pagedown end home left up right down
-  keyCodeStr: {
+Key.keyCodeStr = {
 	8:  'BAC',
 	9:  'TAB',
 	10: 'RET',
@@ -55,11 +41,36 @@ ShortcutKey.prototype = {
 	121: 'F10',
 	122: 'F11',
 	123: 'F12'
-  },
-  whichStr: {
+};
+Key.whichStr = {
 	32: 'SPC'
-  },
+};
+Key.specialKeys = values(Key.keyCodeStr).concat(values(Key.whichStr));
 
+Key.getKeyIdentifier = function(aEvent){
+  // http://www.w3.org/TR/DOM-Level-3-Events/keyset.html
+  return ((aEvent.keyCode in this.keyCodeStr) && this.keyCodeStr[aEvent.keyCode]) ||
+	        ((aEvent.which in this.whichStr) && this.whichStr[aEvent.which]) ||
+	        String.fromCharCode(aEvent.which);
+};
+
+Key.prototype = {
+  initialize: function(){
+	  this.orig_string = arguments[0];
+	  this.key = this.orig_string.replace(/[ACMS]-/g,'');
+    this.special = !!~Key.specialKeys.indexOf(this.key);
+  },
+  has: function(modifier){return this.orig_string.indexOf(modifier) > -1},
+  equal: function (e, ch){
+	  return (this.key == ch &&
+	          this.has('C-') == e.ctrlKey &&
+	          ((this.special)? this.has('S-') == e.shiftKey : true) &&
+	          (e.metaKey || e.altKey) == (this.has('A-') || this.has('M-')))
+  }
+};
+
+var ShortcutKey = new Class();
+ShortcutKey.prototype = {
   initialize: function(){
 	  this.hash = {};
 	  this.state_available = false;
@@ -147,9 +158,7 @@ ShortcutKey.prototype = {
 	  if(!this.capture &&
 	     this.through_input_elements &&
 	     /^(?:input|textarea)$/.test(aEvent.target.nodeName.toLowerCase())) return;
-	  var ch = (!aEvent.shiftKey && this.keyCodeStr[aEvent.keyCode]) ||
-	           (!aEvent.shiftKey && this.whichStr[aEvent.which]) ||
-	           String.fromCharCode(aEvent.which);
+	  var ch = Key.getKeyIdentifier(aEvent);
 	  var kf = this.findByEvent(aEvent, ch);
 	  var preventDefault = this.prevent_event;
 //	  log(aEvent.keyCode, aEvent.which, ch,kf, aEvent.shiftKey);
@@ -177,7 +186,7 @@ ShortcutKey.prototype = {
 	  this.id = box.id;
 	  var id = 'div#' + box.id;
 	  var inherit = 'background:inherit; background-image:inherit; background-color:inherit; color:inherit; text-align:inherit; font-size:inherit; font-style:inherit; font-weight:inherit; margin:inherit; opacity:inherit; text-decoration:inherit; border:0px; height:100%; padding:0; margin:inherit; font-family:inherit; vertical-align:inherit; line-height:inherit; font-stretch:inherit; font-variant:inherit; font-size-adjust:inherit; letter-spacing:inherit;';
-	  GM_addStyle([id,'{', 'right: 10px;', 'left: 10px;', 'top: 10px;', 'line-height: 100%;', 'vertical-align: baseline;', 'border: 1px dotted #444;', 'font-family: sans-serif;', 'text-decoration: none;', 'font-weight: normal;', 'font-style: normal;', 'font-size: medium;', 'font-stretch: normal;', 'font-variant: normal;', 'font-size-adjust: none;', 'letter-spacing: normal;', 'background: none;', 'text-align: left;', 'position: fixed;', 'margin: 0;', 'padding: 20px;', 'background-color: #000;', 'background-image: none;', 'color: #aaa;', '-moz-border-radius: 10px;', 'opacity:0.8;', 'z-index:1000;', '}\n',
+	  GM_addStyle([id,'{', 'right: 10px;', 'left: 10px;', 'top: 10px;', 'line-height: 100%;', 'vertical-align: baseline;', 'border: 1px dotted #444;', 'font-family: sans-serif;', 'text-decoration: none;', 'font-weight: normal;', 'font-style: normal;', 'font-size: medium;', 'font-stretch: normal;', 'font-variant: normal;', 'font-size-adjust: none;', 'letter-spacing: normal;', 'background: none;', 'text-align: left;', 'position: fixed;', 'margin: 0;', 'padding: 20px;', 'background-color: #000;', 'background-image: none;', 'color: #aaa;', '-moz-border-radius: 10px;border-radius: 10px;', 'opacity:0.8;', 'z-index:1000;', '}\n',
 	               id,' div{', inherit, 'opacity:1.0;','text-align:center;','}',
 	               id,' > div{', inherit, 'margin: 0px 20px 20px 0px;', 'opacity:1.0;','text-align:center;','}',
 	               id,' kbd{', inherit, 'font-size: 120%;','font-weight: bold;', 'color: #B83E3B;', 'text-align: right;', 'width:50%;','float:left;','}\n',
@@ -335,7 +344,7 @@ Minibuffer.prototype = {
 	                            this.html.input]);
 
 	  var inherit = 'background:inherit; background-image:inherit; background-color:inherit; color:inherit; text-align:inherit; font-size:inherit; font-style:inherit; font-weight:inherit; margin:inherit; opacity:inherit; text-decoration:inherit; border:0px; height:100%; padding:0; margin:inherit; font-family:inherit; vertical-align:inherit; line-height:inherit; font-stretch:inherit; font-variant:inherit; font-size-adjust:inherit; letter-spacing:inherit;';
-	  GM_addStyle(['#', CONTAINER_ID,'{', 'right: 0px;', 'left: 0px;', 'bottom: 0px;', 'line-height: 100%;', 'vertical-align: baseline;', 'border: 1px dotted #444;', 'font-family: sans-serif;', 'text-decoration: none;', 'font-weight: normal;', 'font-style: normal;', 'font-size: medium;', 'font-stretch: normal;', 'font-variant: normal;', 'font-size-adjust: none;', 'letter-spacing: normal;', 'background: none;', 'text-align: left;', 'position: fixed;', 'margin: 0;', 'padding: 20px;', 'background-image: none;', 'color: #aaa;', '-moz-border-radius: 10px 10px 0px 0px;', 'opacity:0.8;', 'z-index:999;', '}\n',
+	  GM_addStyle(['#', CONTAINER_ID,'{', 'right: 0px;', 'left: 0px;', 'bottom: 0px;', 'line-height: 100%;', 'vertical-align: baseline;', 'border: 1px dotted #444;', 'font-family: sans-serif;', 'text-decoration: none;', 'font-weight: normal;', 'font-style: normal;', 'font-size: medium;', 'font-stretch: normal;', 'font-variant: normal;', 'font-size-adjust: none;', 'letter-spacing: normal;', 'background: none;', 'text-align: left;', 'position: fixed;', 'margin: 0;', 'padding: 20px;', 'background-image: none;', 'color: #aaa;', '-moz-border-radius: 10px 10px 0px 0px;border-radius: 10px 10px 0px 0px;', 'opacity:0.8;', 'z-index:999;', '}\n',
 	               '#', CONTAINER_ID, ' > span',INPUT_ID, '{', 'color: #CB6161;','display:inline;','}',
 	               '#', CONTAINER_ID, ' > span {', inherit, 'color: #ccc;', 'display:inline;','margin-right: 5px;','}\n',
 	               '#', INPUT_ID, '{', inherit, 'width:90%;','}',
@@ -820,6 +829,7 @@ var FlashMessage = new function(){
 			background-color : #444;
 			color : #FFF;
 			-moz-border-radius: 0.3em;
+			border-radius: 0.3em;
 			min-width : 1em;
 			text-align : center;
 		}
@@ -833,13 +843,13 @@ var FlashMessage = new function(){
 		duration = duration || 400;
 		canceler && canceler();
 		flash.innerHTML = string;
-		flash.style.MozOpacity = opacity;
+		flash.style.opacity = opacity;
 		show(flash);
 		flash.style.marginLeft = (-(flash.offsetWidth/2))+'px';
 
 		canceler = callLater(function(){
 			canceler = tween(function(value){
-				flash.style.MozOpacity = opacity * (1-value);
+				flash.style.opacity = opacity * (1-value);
 			}, 100, 5);
 		}, duration);
 	};
@@ -925,6 +935,7 @@ Status.prototype = {
 				padding: 10px;
 				color : #FFF;
 				-moz-border-radius: 0.3em;
+				border-radius: 0.3em;
 			  }
 			  #gm_minibuffer_flash_status img {
 				  margin-right: 10px;
@@ -1105,83 +1116,86 @@ function $N(name, attr, childs) {
 	return ret;
 }
 
-// $X
-// based on: http://lowreal.net/blog/2007/11/17/1
-//
-// $X(exp);
-// $X(exp, context);
-// $X(exp, type);
-// $X(exp, {context: context,
-//          type: type,
-//          namespace: {h:"http://www.w3.org/1999/xhtml"}});
+// via http://github.com/hatena/hatena-bookmark-xul/blob/master/chrome/content/common/05-HTMLDocumentCreator.js
+function createDocumentFromString(source){
+    var doc = document.implementation.createHTMLDocument ?
+        document.implementation.createHTMLDocument('hogehoge') :
+        document.implementation.createDocument(null, 'html', null);
+    var range = document.createRange();
+    range.selectNodeContents(document.documentElement);
+    var fragment = range.createContextualFragment(source);
+    var headChildNames = {title: true, meta: true, link: true, script: true, style: true, /*object: true,*/ base: true/*, isindex: true,*/};
+    var child, head = doc.getElementsByTagName('head')[0] || doc.createElement('head'),
+        body = doc.getElementsByTagName('body')[0] || doc.createElement('body');
+    while ((child = fragment.firstChild)) {
+        if (
+            (child.nodeType === doc.ELEMENT_NODE && !(child.nodeName.toLowerCase() in headChildNames)) ||
+            (child.nodeType === doc.TEXT_NODE &&/\S/.test(child.nodeValue))
+        )
+            break;
+        head.appendChild(child);
+    }
+    body.appendChild(fragment);
+    doc.documentElement.appendChild(head);
+    doc.documentElement.appendChild(body);
+    return doc;
+}
+
+
+
+// $X on XHTML
+// @target Freifox3, Chrome3, Safari4, Opera10
+// @source http://gist.github.com/184276.txt
 function $X (exp, context) {
-	var type, namespace={};
-	// console.log(String(exp));
-	if(typeof context == "function"){
-		type = context;
-		context = null;
-	}else if(typeof context != "undefined" && !context['nodeType']){
-		type = context['type'];
-		namespace = context['namespace'] || context['ns'];
-		context = context['context'];
-	}
+    context || (context = document);
+    var _document = context.ownerDocument || context,
+        documentElement = _document.documentElement,
+        isXHTML = documentElement.tagName !== 'HTML' && _document.createElement('p').tagName === 'p',
+        defaultPrefix = null;
+    if (isXHTML) {
+        defaultPrefix = '__default__';
+        exp = addDefaultPrefix(exp, defaultPrefix);
+    }
+    function resolver (prefix) {
+        return context.lookupNamespaceURI(prefix === defaultPrefix ? null : prefix) ||
+            documentElement.namespaceURI || "";
+    }
 
-	if (!context) context = document;
-	var exp = (context.ownerDocument || context).createExpression(exp, function (prefix) {
-		return namespace[prefix] ||
-		       document.createNSResolver((context.ownerDocument == null ? context : context.ownerDocument)
-		               .documentElement).lookupNamespaceURI(prefix) ||
-		       document.documentElement.namespaceURI;
-	});
-
-	switch (type) {
-		case String:
-			return exp.evaluate(
-				context,
-				XPathResult.STRING_TYPE,
-				null
-			).stringValue;
-		case Number:
-			return exp.evaluate(
-				context,
-				XPathResult.NUMBER_TYPE,
-				null
-			).numberValue;
-		case Boolean:
-			return exp.evaluate(
-				context,
-				XPathResult.BOOLEAN_TYPE,
-				null
-			).booleanValue;
-		case Array:
-			var result = exp.evaluate(
-				context,
-				XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
-				null
-			);
-			var ret = [];
-			for (var i = 0, len = result.snapshotLength; i < len; ret.push(result.snapshotItem(i++)));
-			return ret;
-		case undefined:
-			var result = exp.evaluate(context, XPathResult.ANY_TYPE, null);
-			switch (result.resultType) {
-				case XPathResult.STRING_TYPE : return result.stringValue;
-				case XPathResult.NUMBER_TYPE : return result.numberValue;
-				case XPathResult.BOOLEAN_TYPE: return result.booleanValue;
-				case XPathResult.UNORDERED_NODE_ITERATOR_TYPE: {
-					// not ensure the order.
-					var ret = [];
-					var i = null;
-					while (i = result.iterateNext()) {
-						ret.push(i);
-					}
-					return ret;
-				}
-			}
-			return null;
-		default:
-			throw(TypeError("$X: specified type is not valid type."));
-	}
+    var result = _document.evaluate(exp, context, resolver, XPathResult.ANY_TYPE, null);
+    switch (result.resultType) {
+        case XPathResult.STRING_TYPE : return result.stringValue;
+        case XPathResult.NUMBER_TYPE : return result.numberValue;
+        case XPathResult.BOOLEAN_TYPE: return result.booleanValue;
+        case XPathResult.UNORDERED_NODE_ITERATOR_TYPE:
+            // not ensure the order.
+            var ret = [], i = null;
+            while (i = result.iterateNext()) ret.push(i);
+            return ret;
+    }
+}
+// XPath 式中の接頭辞のない名前テストに接頭辞 prefix を追加する
+// e.g. '//body[@class = "foo"]/p' -> '//prefix:body[@class = "foo"]/prefix:p'
+// http://nanto.asablo.jp/blog/2008/12/11/4003371
+function addDefaultPrefix(xpath, prefix) {
+    var tokenPattern = /([A-Za-z_\u00c0-\ufffd][\w\-.\u00b7-\ufffd]*|\*)\s*(::?|\()?|(".*?"|'.*?'|\d+(?:\.\d*)?|\.(?:\.|\d+)?|[\)\]])|(\/\/?|!=|[<>]=?|[\(\[|,=+-])|([@$])/g;
+    var TERM = 1, OPERATOR = 2, MODIFIER = 3;
+    var tokenType = OPERATOR;
+    prefix += ':';
+    function replacer(token, identifier, suffix, term, operator, modifier) {
+        if (suffix) {
+            tokenType =
+                (suffix == ':' || (suffix == '::' && (identifier == 'attribute' || identifier == 'namespace')))
+                ? MODIFIER : OPERATOR;
+        } else if (identifier) {
+            if (tokenType == OPERATOR && identifier != '*')
+                token = prefix + token;
+            tokenType = (tokenType == TERM) ? OPERATOR : TERM;
+        } else {
+            tokenType = term ? TERM : operator ? OPERATOR : MODIFIER;
+        }
+        return token;
+    }
+    return xpath.replace(tokenPattern, replacer);
 }
 
 // Usage:: with (D()) { your code }
@@ -1488,19 +1502,20 @@ function log(){console.log.apply(console, Array.slice(arguments));}
 if(document.body){
 	var command = new Command();
 	window.Minibuffer = {
-	  getMinibuffer  : function(){return new Minibuffer()},
-	  getShortcutKey : function(){return new ShortcutKey()},
+	  getMinibuffer  : function(){return new Minibuffer()}
+	, getShortcutKey : function(){return new ShortcutKey()}
 
-	  addShortcutkey : function(a){command.addShortcutkey(a)},
-	  addCommand     : function(a){command.addCommand(a)},
+	,  addShortcutkey : function(a){command.addShortcutkey(a)}
+	,  addCommand     : function(a){command.addCommand(a)}
 
-	  execute        : function(a, stdin){return command.execute(a, stdin)},
-	  message        : FlashMessage.showFlashMessageWindow,
-	  status         : function(name, status, timelimit){new Status(name, status,timelimit)},
+	,  execute        : function(a, stdin){return command.execute(a, stdin)}
+	,  message        : FlashMessage.showFlashMessageWindow
+	,  status         : function(name, status, timelimit){new Status(name, status,timelimit)}
 
-	  $X             : $X,
-	  $N             : $N,
-	  D              : D,
+	,  $X             : $X
+	,  $N             : $N
+	,  D              : D
+        ,  createDocumentFromString : createDocumentFromString
 	};
 
 	window.Minibuffer.addCommand({
@@ -1717,5 +1732,8 @@ if(document.body){
 //	  description: 'scroll to bottom',
 //	  command: function(){window.Minibuffer.execute('scrollto-bottom')}
 //	});
+	var ev = document.createEvent('Events');
+	ev.initEvent('GM_MinibufferLoaded', false, true);
+	window.dispatchEvent(ev);
 }
 

@@ -4,9 +4,10 @@
 // @description    j,k,v,p,o,:,f,? + l,s,i
 // @include        http://*
 // @include        https://*
+// @include        file:///*
 // ==/UserScript==
 
-const SCRIPT_VERSION = "2008.06.02"
+const SCRIPT_VERSION = "2009.12.05"
 const SCRIPT_URL     = "http://userscripts.org/scripts/show/11562"
 
 // ------------------------------------------------------------------
@@ -23,10 +24,10 @@ const SCRIPT_URL     = "http://userscripts.org/scripts/show/11562"
      disable   : true
 
     {
-          domain:    '',
-          paragraph: '',
-          link:      '',
-          stripe:    true
+        domain:    '',
+        paragraph: '',
+        link:      '',
+        stripe:    true
     },
 */
 const SITEINFO = [
@@ -59,7 +60,7 @@ const KEYBIND_DESCRIPTION = {
 // ------------------------------------------------------------------
 // URLS
 // ------------------------------------------------------------------
-const SITEINFO_URLS = ["http://white.s151.xrea.com/wiki/index.php?cmd=ldrize"]
+const SITEINFO_URLS = ["http://wedata.net/databases/LDRize/items.json"];
 
 // ------------------------------------------------------------------
 // height
@@ -89,15 +90,15 @@ const IMAGE_DOWN      = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAJC
 const CSS_STRIPE_ODD       = false
 const CSS_STRIPE_EVEN      = 'background-color:#eeeeff !important;'
 const CSS_HIGHLIGHT_LINK   = false
-const CSS_HIGHLIGHT_PINNED = '-moz-outline: 2px solid #CC6060 !important;-moz-outline-offset: 1px !important;-moz-outline-radius: 3px !important;'
+const CSS_HIGHLIGHT_PINNED = 'outline: 2px solid #CC6060 !important;outline-offset: 1px !important;outline-radius: 3px !important;'
 
 // ------------------------------------------------------------------
 // !!! END OF SETTINGS !!!
 // ------------------------------------------------------------------
 
-if(!window.Minibuffer) return;
-var Class = function(){return function(){this.initialize.apply(this,arguments)}}
-Object.extend = function(self,other){
+var boot = function (){
+var Class = function(){return function(){this.initialize.apply(this, arguments)}}
+Object.extend = function(self, other){
 	for(var i in other) self[i] = other[i]
 	return self;
 }
@@ -129,8 +130,8 @@ LDRize.prototype = {
 	  }
 
 	  var res = this.initSiteinfo();
-	  if(this.isIframe() && GM_getValue('iframe','') == window.location.href){
-		  GM_setValue('iframe','');
+	  if(this.isIframe() && GM_getValue('iframe', '') == window.location.href){
+		  GM_setValue('iframe', '');
 		  if(!res){
 			  this.initSubShortcutkey();
 		  }else{
@@ -149,14 +150,19 @@ LDRize.prototype = {
 	  this.setup = true;
 	  this.initMinibuffer();
 	  this.initShortcutkey();
+
+	  var addFilterHandler = function(){
+		  window.AutoPagerize.addFilter(function(pages){
+			  self.removeSpace();
+			  setTimeout(function(){
+				  self.initParagraph(pages);
+			  }, 0);
+		  });
+	  }
 	  if(window.AutoPagerize){
-		  window.AutoPagerize.addFilter(
-			  function(pages){
-				  self.removeSpace()
-				  setTimeout(function(){
-					  self.initParagraph(pages);
-				  }, 0);
-			  });
+		addFilterHandler();
+	  }else{
+		window.addEventListener('GM_AutoPagerizeLoaded', addFilterHandler, false);
 	  }
 
 	  var css = '';
@@ -181,11 +187,11 @@ LDRize.prototype = {
 	  if(this.disable) return;
 	  for(var key in KEYBIND){
 		  if(KEYBIND[key] == 'Iframe'){
-			  window.Minibuffer.addShortcutkey({key:key,command: function(){self.blurIframe()}});
+			  window.Minibuffer.addShortcutkey({key:key, command: function(){self.blurIframe()}});
 		  }else if(KEYBIND[key] == 'Next'){
-			  window.Minibuffer.addShortcutkey({key:key,command: function(){self.bindScrollForward()}});
+			  window.Minibuffer.addShortcutkey({key:key, command: function(){self.bindScrollForward()}});
 		  }else if(KEYBIND[key] == 'Prev'){
-			  window.Minibuffer.addShortcutkey({key:key,command: function(){self.bindScrollBackward()}});
+			  window.Minibuffer.addShortcutkey({key:key, command: function(){self.bindScrollBackward()}});
 		  }
 	  }
   },
@@ -195,7 +201,7 @@ LDRize.prototype = {
 	  keys(KEYBIND).forEach(function(key){
 		  var fn = KEYBIND[key];
 		  var de = KEYBIND_DESCRIPTION[fn];
-		  window.Minibuffer.addShortcutkey({key:key, command:function(e){self['bind'+fn].call(self,e)}, description: de});
+		  window.Minibuffer.addShortcutkey({key:key, command:function(e){self['bind'+fn].call(self, e)}, description: de});
 	  });
 	  if(this.isIframe()){
 		  window.Minibuffer.addShortcutkey({key:'ESC', command: function(){self.blurIframe()}});
@@ -253,7 +259,7 @@ LDRize.prototype = {
   },
   initSiteinfo: function(){
 	  var filter2 = function(arr, fn){
-		  var res=[],tmp;
+		  var res=[], tmp;
 		  arr.forEach(function(arg){if(tmp=fn(arg)) res.push(tmp)});
 		  return res;
 	  }
@@ -290,58 +296,58 @@ LDRize.prototype = {
 	  this.img = {};
 	  var self = this;
 	  var cssc = ['margin: 0px',
-				  'border: 0px',
-				  'padding: 0px',
-				  'z-index: 1000'].join(';');
+	              'border: 0px',
+	              'padding: 0px',
+	              'z-index: 1000'].join(';');
 	  var cssp = ['right:2px', 'position:fixed'].join(';');
 	  var para = this.getParagraphes().getNth(0).paragraph;
-	  this.img.indicator = $N('img', {
+	  this.img.indicator = $N('img',{
 		id: "gm_ldrize_indicator",
 		src: IMAGE_INDICATOR,
 		style: [cssc, ";position:absolute;top:",
-				(para.y+this.getScrollHeight()-DEFAULT_HEIGHT),
-				"px; left:",
-				Math.max((para.x-this.indicatorMargin), 0),
-				"px;"].join('')})
-	  this.img.up = $N('img', {src: IMAGE_UP, id: "gm_ldrize_up_arrow"});
-	  this.img.down = $N('img', {src: IMAGE_DOWN, id: "gm_ldrize_down_arrow"});
+		        (para.y+this.getScrollHeight()-DEFAULT_HEIGHT),
+		        "px; left:",
+		        Math.max((para.x-this.indicatorMargin), 0),
+			"px;"].join('')});
+	  this.img.up = $N('img',{src: IMAGE_UP, id: "gm_ldrize_up_arrow"});
+	  this.img.down = $N('img',{src: IMAGE_DOWN, id: "gm_ldrize_down_arrow"});
 
 	  this.html.container.appendChild(this.img.indicator);
 	  this.html.container.appendChild(this.img.up);
 	  this.html.container.appendChild(this.img.down);
-	  return ['img#', this.img.up.id,   '{top:15px;', cssp, ';', cssc ,';}\n',
-			  'img#', this.img.down.id, '{bottom:5px;', cssp, ';', cssc ,';}\n',
-			  'img#', this.img.down.id, '{', cssc ,';}\n',
-			  ].join('') || '';
+	  return ['img#', this.img.up.id,   '{top:15px;', cssp, ';', cssc, ';}\n',
+	          'img#', this.img.down.id, '{bottom:5px;', cssp, ';', cssc, ';}\n',
+	          'img#', this.img.down.id, '{', cssc, ';}\n',
+	  ].join('') || '';
   },
   initHelp: function(){
 	  var getKeyHTML = function(key, description){
 		  return $N('div',{},
-					[$N('kbd',{},key.replace('S-','<shift> + ').replace('C-','<ctrl> + ').replace('A-','<alt> + ')),
-					 $N('div',{},description)]);
+		            [$N('kbd',{},key.replace('S-','<shift> + ').replace('C-','<ctrl> + ').replace('A-','<alt> + ')),
+		            $N('div',{},description)]);
 	  }
-	  var sig = $N('div', {id:'gm_ldrize_signature'}, [$N('a',{href:SCRIPT_URL},'LDRize'), SCRIPT_VERSION]);
+	  var sig = $N('div',{id:'gm_ldrize_signature'}, [$N('a',{href:SCRIPT_URL},'LDRize'), SCRIPT_VERSION]);
 	  var bind = [$N('h1',{},'Shortcut Keys')];
 	  this.keybinds.forEach(function(key){
 		  if(key.description) bind[bind.length] = getKeyHTML(key.key, key.description);
-	  })
+	  });
 	  bind.push(sig);
 	  var box = $N('div',{id:'gm_ldrize_help'}, bind);
 	  this.html.help = box;
 	  var id = 'div#' + box.id;
 	  var inherit = 'background:inherit; background-image:inherit; background-color:inherit; color:inherit; text-align:inherit; font-size:inherit; font-style:inherit; font-weight:inherit; margin:inherit; opacity:inherit; text-decoration:inherit; border:0px; height:100%; padding:0; margin:inherit; font-family:inherit; vertical-align:inherit; line-height:inherit; font-stretch:inherit; font-variant:inherit; font-size-adjust:inherit; letter-spacing:inherit;';
-	  return [id,'{', 'right: 10px;', 'left: 10px;', 'top: 10px;', 'line-height: 100%;', 'vertical-align: baseline;', 'border: 1px dotted #444;', 'font-family: sans-serif;', 'text-decoration: none;', 'font-weight: normal;', 'font-style: normal;', 'font-size: medium;', 'font-stretch: normal;', 'font-variant: normal;', 'font-size-adjust: none;', 'letter-spacing: normal;', 'background: none;', 'text-align: left;', 'position: fixed;', 'margin: 0;', 'padding: 20px;', 'background-color: #000;', 'background-image: none;', 'color: #aaa;', '-moz-border-radius: 10px;', 'opacity:0.8;', 'z-index:1000;', '}\n',
-			  id,' div{', inherit, 'opacity:1.0;','text-align:center;','}',
-			  id,' > div{', inherit, 'margin: 0px 20px 20px 0px;', 'opacity:1.0;','text-align:center;','}',
-			  id,' a,', id,' a:visited,', id,' a:active,', id,' a:hover{', inherit, 'padding-right: 5px;','text-decoration: underline;',  'color: #CB6161;', '}\n',
-			  id,' div#gm_ldrize_signature{', inherit,  'margin:auto;','text-align: right;', 'font-style: italic;', '}\n',
-			  id,' div#gm_ldrize_signature a,',id,' div#gm_ldrize_signature a:active,',id,' div#gm_ldrize_signature a:hover','{' , 'font-style: italic;', '}',
-			  id,' kbd{', inherit, 'font-size: 120%;','font-weight: bold;', 'color: #B83E3B;', 'text-align: right;', 'width:50%;','float:left;','}\n',
-			  id,' kbd + div{', 'margin-left:50%;', 'text-align:left;','}\n',
-			  id,' kbd + div:before{', 'content:": ";' ,'}\n',
-			  id,' h1{', inherit, 'margin: 20px auto;','background-image: none;', "opacity:1.0;", 'font-weight: bold;', 'font-size: 150%;', 'color:#fff;','padding-left: 20px;', 'text-align: center;', '}\n',
-			  id,' #gm_ldrize_toggle_detail {', 'cursor:pointer;','text-decoration: underline;', 'color: #CB6161;','}',
-			  ].join('');
+	  return [id,'{', 'right: 10px;', 'left: 10px;', 'top: 10px;', 'line-height: 100%;', 'vertical-align: baseline;', 'border: 1px dotted #444;', 'font-family: sans-serif;', 'text-decoration: none;', 'font-weight: normal;', 'font-style: normal;', 'font-size: medium;', 'font-stretch: normal;', 'font-variant: normal;', 'font-size-adjust: none;', 'letter-spacing: normal;', 'background: none;', 'text-align: left;', 'position: fixed;', 'margin: 0;', 'padding: 20px;', 'background-color: #000;', 'background-image: none;', 'color: #aaa;', 'border-radius: 10px;-moz-border-radius: 10px;', 'opacity: 0.8;', 'z-index: 1000;', '}\n',
+	          id,' div{', inherit, 'opacity: 1.0;', 'text-align: center;', '}',
+	          id,' > div{', inherit, 'margin: 0px 20px 20px 0px;', 'opacity: 1.0;', 'text-align: center;', '}',
+	          id,' a,', id,' a:visited,', id,' a:active,', id,' a:hover{', inherit, 'padding-right: 5px;', 'text-decoration: underline;', 'color: #CB6161;', '}\n',
+	          id,' div#gm_ldrize_signature{', inherit, 'margin: auto;', 'text-align: right;', 'font-style: italic;', '}\n',
+	          id,' div#gm_ldrize_signature a,', id,' div#gm_ldrize_signature a:active,', id,' div#gm_ldrize_signature a:hover', '{', 'font-style: italic;', '}',
+	          id,' kbd{', inherit, 'font-size: 120%;', 'font-weight: bold;', 'color: #B83E3B;', 'text-align: right;', 'width: 50%;', 'float: left;', '}\n',
+	          id,' kbd + div{', 'margin-left: 50%;', 'text-align: left;', '}\n',
+	          id,' kbd + div:before{', 'content: ": ";', '}\n',
+	          id,' h1{', inherit, 'margin: 20px auto;', 'background-image: none;', "opacity: 1.0;", 'font-weight: bold;', 'font-size: 150%;', 'color: #fff;', 'padding-left: 20px;', 'text-align: center;', '}\n',
+	          id,' #gm_ldrize_toggle_detail {', 'cursor: pointer;', 'text-decoration: underline;', 'color: #CB6161;', '}',
+	  ].join('');
   },
   initCSS: function(){
 	  var css = '';
@@ -356,10 +362,10 @@ LDRize.prototype = {
   },
   initPinList: function(){
 	  var number_container = $N('div',{id:'gm_ldrize_pinlist_number_container'},
-								[$N('div',{id:'gm_ldrize_pinlist_number'}),' item'])
+				    [$N('div',{id:'gm_ldrize_pinlist_number'}),' item']);
 	  var pin_container = $N('div',{style: 'display:'+GM_getValue('pinlist', 'block')});
 	  var box = $N('div',{id:'gm_ldrize_pinlist', style:'display:none;'},
-				   [number_container, pin_container]);
+	               [number_container, pin_container]);
 
 	  this.html.pinlist_number = number_container;
 	  this.html.pinlist_container = pin_container;
@@ -367,18 +373,18 @@ LDRize.prototype = {
 	  this.html.container.appendChild(box);
 	  var id = 'div#' + box.id;
 	  var inherit = 'background:inherit; background-image:inherit; background-color:inherit; color:inherit; text-align:inherit; font-size:inherit; font-style:inherit; font-weight:inherit; margin:inherit; opacity:inherit; text-decoration:inherit; border:0px; height:100%; padding:0; margin:inherit; font-family:inherit; vertical-align:inherit; line-height:inherit; font-stretch:inherit; font-variant:inherit; font-size-adjust:inherit; letter-spacing:inherit;';
-	  return [id,'{', 'line-height: 100%;', 'vertical-align: baseline;', 'border: 1px dotted #444;', 'font-family: sans-serif;', 'text-decoration: none;', 'font-weight: normal;', 'font-style: normal;', 'font-size: medium;', 'font-stretch: normal;', 'font-variant: normal;', 'font-size-adjust: none;', 'letter-spacing: normal;', 'background: none;', 'text-align: left;', 'position: fixed;', 'right: 20px;', 'bottom: 15px;', 'margin: 0px;', 'padding: 10px;', 'background-color: #000;', 'background-image: none;', 'color: #fff;', '-moz-border-radius: 10px;', 'opacity:0.7;', 'z-index:1000;', '}\n',
-			  id,' div{', inherit, 'margin: 10px;', 'opacity:1.0;','}',
-			  id,' #gm_ldrize_pinlist_number_container > span {', 'color: #B83E3B;', 'font-size: 150%;', 'font-weight: bold;','display:inline;','}',
-			  ].join('');
+	  return [id,'{', 'line-height: 100%;', 'vertical-align: baseline;', 'border: 1px dotted #444;', 'font-family: sans-serif;', 'text-decoration: none;', 'font-weight: normal;', 'font-style: normal;', 'font-size: medium;', 'font-stretch: normal;', 'font-variant: normal;', 'font-size-adjust: none;', 'letter-spacing: normal;', 'background: none;', 'text-align: left;', 'position: fixed;', 'right: 20px;', 'bottom: 15px;', 'margin: 0px;', 'padding: 10px;', 'background-color: #000;', 'background-image: none;', 'color: #fff;', '-moz-border-radius: 10px;border-radius: 10px;', 'opacity: 0.7;', 'z-index: 1000;', '}\n',
+	          id,' div{', inherit, 'margin: 10px;', 'opacity: 1.0;', '}',
+	          id,' #gm_ldrize_pinlist_number_container > span {', 'color: #B83E3B;', 'font-size: 150%;', 'font-weight: bold;', 'display: inline;', '}',
+	  ].join('');
   },
   initSpace: function(){
 	  this.html.space = $N('div',{id:'gm_ldrize_space'},'dummy');
 	  return [
 		  'div#gm_ldrize_space {',
-		  'visibility:hidden;',
+		  'visibility: hidden;',
 		  'position: absolute;',
-		  'height:', window.innerHeight ,'px;',
+		  'height: ', window.innerHeight, 'px;',
 		  '}'].join('');
   },
 // end of initialize functions
@@ -400,18 +406,18 @@ LDRize.prototype = {
 	  }
   },
 
-  attachClassToNode: function(node, class){
+  attachClassToNode: function(node, _class){
 	  if(node){
 		  var oldclass = node.getAttribute('class');
-		  node.setAttribute('class',(oldclass ? oldclass + " " : "") + class);
+		  node.setAttribute('class', (oldclass ? oldclass + " " : "") + _class);
 		  return true;
 	  }
   },
-  removeClassToNode: function(node, class){
+  removeClassToNode: function(node, _class){
 	  if(node && node.getAttribute('class')){
-		  var re = new RegExp(' ?' + class);
-		  node.setAttribute('class',node.getAttribute('class').replace(re,""));
-		  if(node.getAttribute('class') == '') node.removeAttribute('class',0);
+		  var re = new RegExp(' ?' + _class);
+		  node.setAttribute('class', node.getAttribute('class').replace(re, ""));
+		  if(node.getAttribute('class') == '') node.removeAttribute('class', 0);
 	  }
   },
 
@@ -452,12 +458,12 @@ LDRize.prototype = {
   getParagraphes: function(){return this.paragraphes[this.getSiteinfo().paragraph]},
   getScrollHeight: function(){
 	  var h = this.getSiteinfo()['height'];
-	  return DEFAULT_HEIGHT + ((typeof(h) != 'undefined') ? Number(h) : this.scrollHeight);
+	  return DEFAULT_HEIGHT + ((typeof h != 'undefined') ? Number(h) : this.scrollHeight);
   },
   useStripe: function(){return this.siteinfo_current['stripe'] || this.GLOBAL_STRIPE},
   useSmoothScroll: function(){return eval(GM_getValue('smooth', 'true'))},
-  scrollTo: function(x,y){
-	  (this.useSmoothScroll() ? SmoothScroll: window).scrollTo(x,y);
+  scrollTo: function(x, y){
+	  (this.useSmoothScroll() ? SmoothScroll: window).scrollTo(x, y);
   },
 
 // iframe
@@ -469,11 +475,11 @@ LDRize.prototype = {
 // pin
   setPin: function(nodes){
 	  var self = this;
-	  this.togglePin(nodes, function(node){self.addPinToPinList(node)})
+	  this.togglePin(nodes, function(node){self.addPinToPinList(node)});
   },
   unsetPin: function(nodes){
 	  var self = this;
-	  this.togglePin(nodes, function(node){self.removePinFromPinList(node)})
+	  this.togglePin(nodes, function(node){self.removePinFromPinList(node)});
   },
   togglePin: function(nodes, fn){
 	  var self = this;
@@ -501,8 +507,8 @@ LDRize.prototype = {
 	  }
   },
   toggleClassForPin: function(node){
-	  var class = node.getAttribute('class');
-	  if(class && (' ' + class + ' ').indexOf(" gm_ldrize_pinned ") != -1){
+	  var _class = node.getAttribute('class');
+	  if(_class && (' ' + _class + ' ').indexOf(" gm_ldrize_pinned ") != -1){
 		  this.removeClassToNode(node, 'gm_ldrize_pinned');
 	  }else{
 		  this.attachClassToNode(node, 'gm_ldrize_pinned');
@@ -511,18 +517,18 @@ LDRize.prototype = {
   addPinToPinList: function(node){
 	  var res = [], text='';
 	  var paragraph = this.getParagraphes().find(function(para){return node == para.node});
-	  if(!paragraph.html) {
+	  if(!paragraph.html){
 		  var getCloneImage = function(node){
 			  var clone = node.cloneNode(false);
 			  if(node.width > 40)  clone.width  = 40;
 			  if(node.height > 40) clone.height = 40;
-			  clone.setAttribute('style','');
+			  clone.setAttribute('style', '');
 			  return clone;
-		  };
+		  }
 		  var appendText = function(node){
 			  if(text.length > 30) return;
-			  text = (text + node.nodeValue.replace(/\s+/g,'')).slice(0,30);
-		  };
+			  text = (text + node.nodeValue.replace(/\s+/g, '')).slice(0, 30);
+		  }
 		  var xpath = this.getSiteinfo()['view'];
 		  var matches = xpath && $X(xpath, node);
 		  if(matches){
@@ -540,18 +546,17 @@ LDRize.prototype = {
 			  res = [];
 			  var allstringlength = 0;
 			  matches.some(function(m){
-				  if(m.nodeName.toLowerCase() == 'img' || m.nodeType == 3) {
+				  if(m.nodeName.toLowerCase() == 'img' || m.nodeType == 3){
 					  var h = new Paragraph(m).y;
 					  if(Math.abs(height - h) >= 20) return true;
 					  if(m.nodeType == 3){
-						  var str = m.nodeValue.replace(/\s+/g,'');
+						  var str = m.nodeValue.replace(/\s+/g, '');
 						  allstringlength += str.length;
 						  if(allstringlength > 30){
 							  res.push(str.slice(0, 30) + '...');
 							  return true;
-						  }else{
-							  res.push(m.nodeValue);
 						  }
+						  res.push(m.nodeValue);
 					  }else{
 						  res.push(getCloneImage(m));
 					  }
@@ -568,14 +573,14 @@ LDRize.prototype = {
 	  var view = para.html;
 	  if(!view) return;
 	  var children = toArray(this.html.pinlist_container.childNodes);
-	  var html = children.find(function(arg){return arg == view})
+	  var html = children.find(function(arg){return arg == view});
 	  if(!html) return;
 	  this.html.pinlist_container.removeChild(html);
 	  return true;
   },
   clearClassForPin: function(){
 	  var self = this;
-	  var children = this.getPinnedItems()
+	  var children = this.getPinnedItems();
 	  children.forEach(function(child){
 		  self.removeClassToNode(child.node, 'gm_ldrize_pinned');
 	  });
@@ -596,12 +601,11 @@ LDRize.prototype = {
   },
   getPinnedItemsOrCurrentItem: function(){
 	if(this.pinIsEmpty()){
-	    var para = this.getParagraphes().current.paragraph;
-	    return para ? [para] : [];
-	}else{
-	    return this.getPinnedItems();
+		var para = this.getParagraphes().current.paragraph;
+		return para ? [para] : [];
 	}
-    },
+	return this.getPinnedItems();
+  },
 
 // command
 
@@ -657,8 +661,8 @@ LDRize.prototype = {
 
 // k -- previous paragraph
   bindPrev: function(){
-	  var x,y;
-	  if(this.useSmoothScroll()) [x,y] = SmoothScroll.stop();
+	  var x, y;
+	  if(this.useSmoothScroll()) [x, y] = SmoothScroll.stop();
 	  if(this.isIframe() && window.self.scrollX==0 && window.self.scrollY==0) this.blurIframe();
 	  var paragraphes = this.getParagraphes();
 	  var prev = paragraphes.setScrollY(typeof y != 'undefined' ? y : window.scrollY + this.getScrollHeight())
@@ -681,7 +685,7 @@ LDRize.prototype = {
 		  }
 		  this.scrollTo(x, prev.paragraph.y - this.getScrollHeight());
 	  }else{
-		  this.scrollTo(0,0);
+		  this.scrollTo(0, 0);
 	  }
   },
 
@@ -699,7 +703,7 @@ LDRize.prototype = {
 // l -- toggle pin list
   bindList: function(){
 	  var val = GM_getValue('pinlist', 'block') == 'none' ? 'block' : 'none';
-	  GM_setValue('pinlist',this.html.pinlist_container.style.display = val);
+	  GM_setValue('pinlist', this.html.pinlist_container.style.display = val);
   },
 
 // f -- focus on search field
@@ -715,7 +719,7 @@ LDRize.prototype = {
 	  shortcutkey.addEventListener(elm, 'keypress', true);
 
 	  elm.focus();
-	  var para = new Paragraph(elm)
+	  var para = new Paragraph(elm);
 	  window.scrollTo(window.pageXOffset, para.y - this.getScrollHeight());
 	  return true;
   },
@@ -747,11 +751,11 @@ LDRize.prototype = {
 	  if(IFRAME_IGNORE.some(function(re){return re.test(url)})) return;
 	  window.scrollTo(window.pageXOffset, current.y);
 	  current.iframe = $N('iframe',{
-		class: 'gm_ldrize_iframe',
+		_class: 'gm_ldrize_iframe',
 		src: url,
 		style: 'top:'+current.node.offsetHeight+'px;'
 	  });
-	  GM_setValue('iframe',url);
+	  GM_setValue('iframe', url);
 	  this.html.iframe_container.appendChild(current.iframe);
 	  current.iframe.contentWindow.focus();
 	  current.iframe.addEventListener('load', function(){
@@ -807,21 +811,16 @@ Paragraphes.prototype = {
 	  };
   },
   collect: function(){
-	  var descendantOrSelf = function(element, ancestor){
-		  while (element){
-			  if (element == ancestor) return true;
-			  element = element.parentNode;
-		  }
-		  return false;
-	  }
-
 	  var matches = $X(this.xpath);
 	  if(!matches || !matches.length) return;
 	  var list = this.list;
 	  var self = this;
 	  matches.forEach(function(node){
 		  // when call by AutoPagerize, ignore old paragraphes
-		  if(self.context.length && !self.context.some(function(e){return descendantOrSelf(node, e)})) return;
+		  if(self.context.length &&
+                     !self.context.some(function(e){
+                                            return e == node || (document.DOCUMENT_POSITION_CONTAINS & node.compareDocumentPosition(e) )}))
+                      return;
 
 		  // add paragraph to cache
 		  var para = new Paragraph(node);
@@ -830,7 +829,7 @@ Paragraphes.prototype = {
 		  }else{
 			  // if node is not next to previous node, insert into pertinent position
 			  var idx = list.bsearch_upper_boundary(function(e){return e.compare(para)});
-			  list = list.slice(0,idx).concat(para, list.slice(idx));
+			  list = list.slice(0, idx).concat(para, list.slice(idx));
 		  }
 		  // for striped design
 		  if(self.stripe) self.attachClassForStripe(node);
@@ -843,11 +842,11 @@ Paragraphes.prototype = {
 
   attachClassForStripe: function(node){
 	  var odd = this.list.length % 2 == 1;
-	  var class = node.getAttribute('class');
-	  if(!class || class.indexOf("gm_ldrize_") == -1){
+	  var _class = node.getAttribute('class');
+	  if(!_class || _class.indexOf("gm_ldrize_") == -1){
 		  node.setAttribute(
 			  'class',
-			  (class || "") + " " +
+			  (_class || "") + " " +
 			  (odd ? "gm_ldrize_odd": "gm_ldrize_even"));
 	  }
   },
@@ -856,7 +855,7 @@ Paragraphes.prototype = {
 	  if(n == -1){
 		  this.current = {position:-1, paragraph:null}
 	  }else if(n == null || n === false){
-		  this.current = {}
+		  this.current = {};
 	  }else{
 		  this.current = this.getNth(n);
 	  }
@@ -901,9 +900,8 @@ Paragraphes.prototype = {
 	  return this.bsearch_upper_boundary(function(para){
 		  if(para.y == self.scrolly){
 			  return 0;
-		  }else{
-			  return para.y - self.scrolly;
 		  }
+		  return para.y - self.scrolly;
 	  });
   },
   reCollectAll: function(){
@@ -929,8 +927,8 @@ Paragraph.prototype = {
 	  this.iframe = null;
   },
   setOffset: function(){
-	  var offsetx,offsety;
-	  [offsetx,offsety] = this.getOffset();
+	  var offsetx, offsety;
+	  [offsetx, offsety] = this.getOffset();
 	  this.x = offsetx;
 	  this.y = offsety;
 	  this.str = this.x+':'+this.y;
@@ -938,9 +936,9 @@ Paragraph.prototype = {
   getOffset: function(){
 	  var node=this.node, textnode;
 
-	  if(node.nodeType==3) {
+	  if(node.nodeType==3){
 		  textnode = node;
-		  var span = $N('span')
+		  var span = $N('span');
 		  node.parentNode.insertBefore(span, node);
 		  node = span;
 	  }
@@ -958,24 +956,24 @@ Paragraph.prototype = {
   },
 
   check: function(){
-	  var offsetx,offsety;
-	  [offsetx,offsety] = this.getOffset();
+	  var offsetx, offsety;
+	  [offsetx, offsety] = this.getOffset();
 	  if(offsetx != this.x || offsety != this.y) return false;
 	  return true;
   },
 
   greaterThan: function(arg){
-	  return (this.y < arg.y || (this.y == arg.y && this.x < arg.x));
+	  return this.y < arg.y || (this.y == arg.y && this.x < arg.x);
   },
 
-  compare: function (e) {
-	  if (e.y < this.y || (e.y == this.y && e.x < this.x)) return 1;
-	  if (e.y > this.y || (e.y == this.y && e.x > this.x)) return -1;
+  compare: function(e){
+	  if(e.y < this.y || (e.y == this.y && e.x < this.x)) return 1;
+	  if(e.y > this.y || (e.y == this.y && e.x > this.x)) return -1;
 	  return 0;
   },
 
   XPath: function(xpath){
-	  var links = $X(xpath, this.node)
+	  var links = $X(xpath, this.node);
 	  if(!links || links.length == 0) return;
 	  return links[0];
   },
@@ -1016,10 +1014,12 @@ Siteinfo.prototype = {
 		  if((this.domain == true || this.domain == 'microformats') &&
 			 $X(this.paragraph).length){
 			  return true;
-		  }else if(location.href.match(this.domain) && (this.disable || $X(this.paragraph).length)){
+		  }
+		  if(location.href.match(this.domain) && (this.disable || $X(this.paragraph).length)){
 			  if(this.disable) throw 0;
 			  return true;
-		  }else if($X(this.domain).length && (this.disable || $X(this.paragraph).length)){
+		  }
+		  if($X(this.domain).length && (this.disable || $X(this.paragraph).length)){
 			  if(this.disable) throw 0;
 			  return true;
 		  }
@@ -1028,7 +1028,7 @@ Siteinfo.prototype = {
 		  if(e==0) throw 0;
 	  }
 	  return false;
-  },
+  }
 }
 var SiteinfoOperator = new Class();
 SiteinfoOperator.prototype = {
@@ -1046,15 +1046,15 @@ SiteinfoOperator.prototype = {
   setCache: function(e){return GM_setValue('cacheInfo', uneval(e))},
   getCacheErrorCallback: function(url){
 	  if(this.cached_siteinfo[url]){
-		  this.cached_siteinfo[url]['expire'] =  new Date(new Date().getTime() + this.expire),
+		  this.cached_siteinfo[url]['expire'] = new Date(new Date().getTime() + this.expire),
 		  this.setCache(this.cached_siteinfo);
 	  }
 	  this.initializerCaller();
   },
   getCacheCallback: function(res, url){
-	  if (res.status != 200) return this.getCacheErrorCallback(url);
+	  if(res.status != 200) return this.getCacheErrorCallback(url);
 	  var info_list = this.parser(res);
-	  if(info_list.length) {
+	  if(info_list.length){
 		  this.cached_siteinfo[url] = {
 			url: url,
 			expire: new Date(new Date().getTime() + this.expire),
@@ -1067,7 +1067,7 @@ SiteinfoOperator.prototype = {
   },
   initializerCaller: function(){
 	  // only last call will be allowed
-	  if(++this.counter == this.urls.length && this.siteinfo.length) {
+	  if(++this.counter == this.urls.length && this.siteinfo.length){
 		  this.initializer(this.siteinfo);
 	  }
   },
@@ -1081,17 +1081,17 @@ SiteinfoOperator.prototype = {
 	  GM_registerMenuCommand(this.name + ' - update siteinfo', this.updateSiteinfo);
 	  this.cached_siteinfo = this.getCache();
 	  var self = this;
-	  this.urls.forEach(function(url) {
+	  this.urls.forEach(function(url){
 		  if(!self.cached_siteinfo || !self.cached_siteinfo[url] || self.cached_siteinfo[url].expire < new Date()){
 			  var opt = {
 				method: 'get',
 				url: url,
 				headers: {
-					'User-agent': 'Mozilla/4.0 (compatible) '+self.name+'/'+self.version,
-				  },
+					'User-agent': 'Mozilla/5.0 Greasemonkey ('+self.name+'/'+self.version+')',
+				},
 				onload:  function(res){self.getCacheCallback(res, url)},
 				onerror: function(res){self.getCacheErrorCallback(url)},
-			  };
+			  }
 			  GM_xmlhttpRequest(opt);
 		  }else{
 			  self.siteinfo = self.siteinfo.concat(self.cached_siteinfo[url].info);
@@ -1108,7 +1108,7 @@ var SmoothScroll = {
   destinationy: null,
   id_list : [],
   stop : function(){
-	  var x,y;
+	  var x, y;
 	  if(SmoothScroll.id_list.length){
 		  SmoothScroll.clearTimer();
 		  if(SmoothScroll.destinationx !== null||
@@ -1119,7 +1119,7 @@ var SmoothScroll = {
 			}
 	  }
 	  SmoothScroll.resetDestination();
-	  return [x,y]
+	  return [x, y]
   },
   resetDestination : function(){
 	  SmoothScroll.destinationx = null;
@@ -1135,7 +1135,7 @@ var SmoothScroll = {
 		  x = destX-((destX-x)/2);
 		  y = destY-((destY-y)/2);
 		  time = (SmoothScroll.duration/SmoothScroll.steps) * i;
-		  if((Math.abs(destY-y)<1 && Math.abs(destX-x)<1) || i+1 == SmoothScroll.steps) {
+		  if((Math.abs(destY-y)<1 && Math.abs(destX-x)<1) || i+1 == SmoothScroll.steps){
 			  var id = setTimeout(SmoothScroll.makeScrollTo(destX, destY), time);
 			  var id2 = setTimeout(SmoothScroll.resetDestination, time);
 			  SmoothScroll.id_list.push(id);
@@ -1153,7 +1153,7 @@ var SmoothScroll = {
 	  });
 	  SmoothScroll.id_list = [];
   },
-  makeScrollTo: function (x,y){
+  makeScrollTo: function(x, y){
 	  return function(){
 		  window.scrollTo(x, y);
 	  }
@@ -1173,28 +1173,28 @@ Function.prototype.later = function(ms){
 			notify: function(){clearTimeout(PID);later_func()}
 		};
 		var later_func = function(){
-			self.apply(thisObject,args);
+			self.apply(thisObject, args);
 			res.complete = true;
 		};
-		var PID = setTimeout(later_func,ms);
+		var PID = setTimeout(later_func, ms);
 		return res;
 	};
 }
 Array.prototype.position = function(obj){
 	var f = (typeof obj == 'function') ? obj : function(a){return a == obj}; //===
 	var idx;
-	return this.some(function(v,i){idx = i; return f(v)}) ? idx : false;
+	return this.some(function(v, i){idx = i; return f(v)}) ? idx : false;
 }
 Array.prototype.find = function(obj){
 	var i = this.position(obj);
-	return typeof(i) == 'number' ? this[i] : false;
+	return typeof i == 'number' ? this[i] : false;
 }
 Array.prototype.remove = function(obj){
-	var test = (typeof(obj) == 'function') ? obj : function(a){return a == obj}; //===
-	return this.filter(function(e){return !test(e)})
+	var test = (typeof obj == 'function') ? obj : function(a){return a == obj}; //===
+	return this.filter(function(e){return !test(e)});
 }
 
-function addStyle(css,id){ // GM_addStyle is slow
+function addStyle(css, id){ // GM_addStyle is slow
 	var link = document.createElement('link');
 	link.rel = 'stylesheet';
 	link.href = 'data:text/css,' + escape(css);
@@ -1202,9 +1202,9 @@ function addStyle(css,id){ // GM_addStyle is slow
 }
 
 // %o %s %i
-function log() {if(console) console.log(arguments);}
-function group() {if(console) console.group(arguments)}
-function groupEnd() {if(console) console.groupEnd();}
+function log(){if(console) console.log(arguments);}
+function group(){if(console) console.group(arguments)}
+function groupEnd(){if(console) console.groupEnd();}
 
 function hasKeys(hash){
 	for(var key in hash) return true;
@@ -1270,12 +1270,11 @@ if(/^http:\/\/(?:reader\.livedoor|fastladder)\.com\/(?:reader|public)\//.test(wi
 		[
 			{ name: 'pinned-or-current-link',
 			  command: function(){
-				  if(w.pin.pins.length) {
+				  if(w.pin.pins.length){
 					  return w.pin.pins.map(function(e){return e.url});
-				  }else{
-					  var item = w.get_active_item(true);
-					  if(item) return [item.link];
 				  }
+				  var item = w.get_active_item(true);
+				  if(item) return [item.link];
 			  }
 			},
 			{ name: 'pinned-link',
@@ -1292,30 +1291,20 @@ if(/^http:\/\/(?:reader\.livedoor|fastladder)\.com\/(?:reader|public)\//.test(wi
 			{ name: 'toggle-show-all',
 			  command: function(stdin){w.Control.toggle_show_all(); return stdin}}
 		].forEach(window.Minibuffer.addCommand);
-	};
+	}
 }
 
 
-if(document.body) {
+if(document.body){
 	var ldrize = function(siteinfo){new LDRize(siteinfo)}
-	var parser = function(res){
-		var content=new RegExp("^ ([^:]+): *'?((?:\\'|[^'])*?)'? *,? *$");
-		var lines=res.responseText.split(/(?:\r?\n|\r)+/), res=[], current_info={};
-		lines.forEach(function(line){
-			if(line.indexOf("//") == 0){ // comment
-				return;
-			}else if(line.indexOf(" ") != 0){ // delimiter
-				res.push(current_info);
-				current_info = {};
-			}else if(content.test(line)){
-				var property = RegExp.$1;
-				var val = RegExp.$2;
-				current_info[property] = val.toLowerCase() == 'true' ? true
-				                       : val.toLowerCase() == 'false' ? false
-				                       : val.replace(/\\\\/g,'\\');
-			}
+
+	var parser = function(response){
+		var result = JSON.parse(response.responseText).map(function(o){
+			var res = o.data;
+			res.name = o.name;
+			return res;
 		});
-		return res;
+		return result;
 	}
 	new SiteinfoOperator({
 	  name:        'LDRize',
@@ -1326,4 +1315,10 @@ if(document.body) {
 	  parser:      parser
 	});
 }
+};
 
+if(window.Minibuffer){
+	boot();
+}else{
+	window.addEventListener('GM_MinibufferLoaded', boot, false);
+}

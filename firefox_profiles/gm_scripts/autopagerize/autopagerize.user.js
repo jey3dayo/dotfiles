@@ -9,7 +9,7 @@
 // ==/UserScript==
 //
 // auther:  swdyh http://d.hatena.ne.jp/swdyh/
-// version: 0.0.37 2009-05-07T13:52:56+09:00
+// version: 0.0.41 2009-09-05T16:02:17+09:00
 //
 // this script based on
 // GoogleAutoPager(http://la.ma.la/blog/diary_200506231749.htm) and
@@ -20,13 +20,13 @@
 // http://www.gnu.org/copyleft/gpl.html
 //
 
-var URL = 'http://userscripts.org/scripts/show/8551'
-var VERSION = '0.0.37'
+var URL = 'http://autopagerize.net/'
+var VERSION = '0.0.41'
 var DEBUG = false
 var AUTO_START = true
 var CACHE_EXPIRE = 24 * 60 * 60 * 1000
 var BASE_REMAIN_HEIGHT = 400
-var FORCE_TARGET_WINDOW = true
+var FORCE_TARGET_WINDOW = getPref('force_target_window', true)
 var USE_COUNTER = true
 var XHR_TIMEOUT = 30 * 1000
 var SITEINFO_IMPORT_URLS = [
@@ -100,16 +100,36 @@ var AutoPager = function(info) {
     GM_registerMenuCommand('AutoPagerize - on/off', toggle)
     this.scroll= function() { self.onScroll() }
     window.addEventListener("scroll", this.scroll, false)
-    this.initIcon()
-    this.initHelp()
-    this.icon.addEventListener("mouseover",
-        function(){self.viewHelp()}, true)
+
+    if (isFirefoxExtension()) {
+        var div = document.createElement("div")
+        div.setAttribute('id', 'autopagerize_icon')
+        div.style.display = 'none'
+        document.body.appendChild(div)
+        this.icon = div
+    }
+    else {
+        this.initIcon()
+        this.initHelp()
+        this.icon.addEventListener("mouseover", function() {
+            self.viewHelp() }, true)
+    }
+
     var scrollHeight = getScrollHeight()
     var bottom = getElementPosition(this.insertPoint).top ||
         this.getPageElementsBottom() ||
         (Math.round(scrollHeight * 0.8))
     this.remainHeight = scrollHeight - bottom + BASE_REMAIN_HEIGHT
     this.onScroll()
+
+    var that = this
+    document.addEventListener('AutoPagerizeToggleRequest', function() {
+        that.toggle()
+    }, false)
+    document.addEventListener('AutoPagerizeUpdateIconRequest', function() {
+        that.updateIcon()
+    }, false)
+    that.updateIcon()
 }
 
 AutoPager.prototype.getPageElementsBottom = function() {
@@ -200,14 +220,27 @@ AutoPager.prototype.stateToggle = function() {
 
 AutoPager.prototype.enable = function() {
     this.state = 'enable'
-    this.icon.style.background = COLOR['on']
-    this.icon.style.opacity = 1
+    this.updateIcon()
 }
 
 AutoPager.prototype.disable = function() {
     this.state = 'disable'
-    this.icon.style.background = COLOR['off']
-    this.icon.style.opacity = 0.5
+    this.updateIcon()
+}
+
+AutoPager.prototype.updateIcon = function(state) {
+    var st = state || this.state
+    var rename = {'enable': 'on', 'disable': 'off' }
+    if (rename[st]) {
+        st = rename[st]
+    }
+    var color = COLOR[st]
+    if (color) {
+        this.icon.style.background = color
+        if (isFirefoxExtension()) {
+            chlorine.statusBar.update(color, location.href)
+        }
+    }
 }
 
 AutoPager.prototype.request = function() {
@@ -243,10 +276,10 @@ AutoPager.prototype.request = function() {
 
 AutoPager.prototype.showLoading = function(sw) {
     if (sw) {
-        this.icon.style.background = COLOR['loading']
+        this.updateIcon('loading')
     }
     else {
-        this.icon.style.background = COLOR['on']
+        this.updateIcon('enable')
     }
 }
 
@@ -302,6 +335,9 @@ AutoPager.prototype.requestLoad = function(res) {
         debug('nextLink not found.', this.info.nextLink, htmlDoc)
         this.terminate()
     }
+    var ev = document.createEvent('Event')
+    ev.initEvent('GM_AutoPagerizeNextPageLoaded', true, false)
+    document.dispatchEvent(ev)
 }
 
 AutoPager.prototype.addPage = function(htmlDoc, page) {
@@ -339,6 +375,11 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
     return page.map(function(i) {
         var pe = document.importNode(i, true)
         self.insertPoint.parentNode.insertBefore(pe, self.insertPoint)
+        var ev = document.createEvent('MutationEvent')
+        ev.initMutationEvent('AutoPagerize_DOMNodeInserted', true, false,
+                             self.insertPoint.parentNode, null,
+                             self.requestURL, null, null)
+        pe.dispatchEvent(ev)
         return pe
     })
 }
@@ -367,7 +408,8 @@ AutoPager.prototype.initIcon = function() {
 AutoPager.prototype.getNextURL = function(xpath, doc, url) {
     var nextLink = getFirstElementByXPath(xpath, doc)
     if (nextLink) {
-        var nextValue = nextLink.href || nextLink.action || nextLink.value
+        var nextValue = nextLink.getAttribute('href') ||
+            nextLink.getAttribute('action') || nextLink.value
         if (nextValue.match(/^http(s)?:/)) {
             return nextValue
         }
@@ -389,16 +431,17 @@ AutoPager.prototype.canHandleCrossDomainRequest = function() {
 }
 
 AutoPager.prototype.terminate = function() {
-    this.icon.style.background = COLOR['terminated']
+    this.updateIcon('terminated')
     window.removeEventListener('scroll', this.scroll, false)
     var self = this
     setTimeout(function() {
+        self.updateIcon('disable')
         self.icon.parentNode.removeChild(self.icon)
     }, 1500)
 }
 
 AutoPager.prototype.error = function() {
-    this.icon.style.background = COLOR['error']
+    this.updateIcon('error')
     window.removeEventListener('scroll', this.scroll, false)
 }
 
@@ -689,19 +732,28 @@ var linkFilter = function(doc, url) {
         return
     }
 
-    var anchers = getElementsByXPath('descendant-or-self::a[@href]', doc)
-    anchers.forEach(function(i) {
+    var anchors = getElementsByXPath('descendant-or-self::a[@href]', doc)
+    anchors.forEach(function(i) {
         var attrHref = i.getAttribute('href')
         if (FORCE_TARGET_WINDOW && !attrHref.match(/^#|^javascript:/) &&
             i.className.indexOf('autopagerize_link') < 0) {
             i.target = '_blank'
         }
         if (!isSameBase && !attrHref.match(/^#|^\w+:/)) {
-            i.href = resolvePath(i.href, baseUrl)
+            i.href = resolvePath(i.getAttribute('href'), baseUrl)
         }
     })
+
+    if (!isSameBase) {
+        var images = getElementsByXPath('descendant-or-self::img', doc)
+        images.forEach(function(i) {
+            i.src = resolvePath(i.getAttribute('src'), baseUrl)
+        })
+    }
 }
 AutoPager.documentFilters.push(linkFilter)
+
+fixResolvePath()
 
 if (typeof(window.AutoPagerize) == 'undefined') {
     window.AutoPagerize = {}
@@ -717,10 +769,11 @@ if (typeof(window.AutoPagerize) == 'undefined') {
     window.AutoPagerize.addRequestFilter = function(f) {
         AutoPager.requestFilters.push(f)
     }
+    window.AutoPagerize.launchAutoPager = launchAutoPager
 
-    var ev = document.createEvent('Events')
-    ev.initEvent('GM_AutoPagerizeLoaded', false, true)
-    window.dispatchEvent(ev)
+    var ev = document.createEvent('Event')
+    ev.initEvent('GM_AutoPagerizeLoaded', true, false)
+    document.dispatchEvent(ev)
 }
 
 GM_registerMenuCommand('AutoPagerize - clear cache', clearCache)
@@ -755,6 +808,13 @@ SITEINFO_IMPORT_URLS.forEach(function(i) {
     }
 })
 launchAutoPager([MICROFORMAT])
+
+// new google search sucks!
+if (location.href.match('^http://[^.]+\.google\.(?:[^.]{2,3}\.)?[^./]{2,3}/.*(&fp=)')) {
+    var to = location.href.replace(/&fp=.*/, '')
+    // console.log([location.href, to])
+    location.href = to
+}
 return
 
 // utility functions.
@@ -763,11 +823,22 @@ function createHTMLDocumentByString(str) {
         return new DOMParser().parseFromString(str, 'application/xhtml+xml')
     }
     var html = strip_html_tag(str)
-    var htmlDoc = document.implementation.createDocument(null, 'html', null)
+    var htmlDoc
+    try {
+        // We have to handle exceptions since Opera 9.6 throws
+        // a NOT_SUPPORTED_ERR exception for |document.cloneNode(false)|
+        // against the DOM 3 Core spec.
+        htmlDoc = document.cloneNode(false)
+        htmlDoc.appendChild(htmlDoc.importNode(document.documentElement, false))
+    }
+    catch(e) {
+        htmlDoc = document.implementation.createDocument(null, 'html', null)
+    }
     var fragment = createDocumentFragmentByString(html)
     try {
         fragment = htmlDoc.adoptNode(fragment)
-    } catch(e) {
+    }
+    catch(e) {
         fragment = htmlDoc.importNode(fragment, true)
     }
     htmlDoc.documentElement.appendChild(fragment)
@@ -911,7 +982,43 @@ function resolvePath(path, base) {
     return a.href
 }
 
+function fixResolvePath() {
+    if (resolvePath('', 'http://resolve.test/') == 'http://resolve.test/') {
+        return
+    }
+    // A workaround for WebKit and Mozilla 1.9.2a1pre,
+    // which don't support XML Base in HTML.
+    // https://bugs.webkit.org/show_bug.cgi?id=17423
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=505783
+    var XML_NS = 'http://www.w3.org/XML/1998/namespace'
+    var baseElement = document.createElementNS(null, 'base')
+    var pathElement = document.createElementNS(null, 'path')
+    baseElement.appendChild(pathElement)
+    resolvePath = function resolvePath_workaround(path, base) {
+        baseElement.setAttributeNS(XML_NS, 'xml:base', base)
+        pathElement.setAttributeNS(XML_NS, 'xml:base', path)
+        return pathElement.baseURI
+    }
+}
+
 function strip_html_tag(str) {
-    var re = /^[\s\S]*?<html(?:[ \t\r\n][^>]*)?>|<\/html[ \t\r\n]*>[\w\W]*$/ig
-    return str.replace(re, '')
+    var chunks = str.split(/(<html(?:[ \t\r\n][^>]*)?>)/)
+    if (chunks.length >= 3) {
+        chunks.splice(0, 2)
+    }
+    str = chunks.join('')
+    chunks = str.split(/(<\/html[ \t\r\n]*>)/)
+    if (chunks.length >= 3) {
+        chunks.splice(chunks.length - 2)
+    }
+    return chunks.join('')
+}
+
+function getPref(key, defaultValue) {
+    var value = GM_getValue(key)
+    return (typeof value == 'undefined') ? defaultValue : value
+}
+
+function isFirefoxExtension() {
+    return (typeof chlorine == 'object')
 }
