@@ -2,6 +2,9 @@
 	<Script filename="minibuffer.user.js" name="Minibuffer" namespace="http://white.s151.xrea.com/" description="Minibuffer" enabled="true" basedir="minibuffer">
 		<Include>*</Include>
 	</Script>
+	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese" namespace="userscripts.org" description="" enabled="true" basedir="mouseover_translate_engl">
+		<Include>*</Include>
+	</Script>
 	<Script filename="ldrize_mibuffer_tumblr_r.user.js" name="LDRize Mibuffer tumblr reblog command" namespace="http://ido.nu/kuma/" description="add tumblr.reblog and tumblr.delete command  to Minibuffer." enabled="true" basedir="ldrize_mibuffer_tumblr_r">
 		<Include>http://*.tumblr.com/*</Include>
 	</Script>
@@ -119,17 +122,9 @@
 		<Include>https://twitter.com/*</Include>
 		<Include>http://twitter.com/*</Include>
 	</Script>
-	<Script filename="travian_task_queue.user.js" name="Travian Task Queue" namespace="http://userscripts.org/" description="Schedule delayed constructions, upgrades and attacks." enabled="true" basedir="travian_task_queue">
-		<Include>http://*.travian.*/*</Include>
-		<Exclude>http://forum.travian.*</Exclude>
-		<Exclude>http://www.travian.*</Exclude>
-	</Script>
 	<Script filename="nicovideo_add_hatena_boo.user.js" name="nicovideo Add Hatena Bookmark Links" namespace="http://d.hatena.ne.jp/gifnksm/" description="Add Bookmarked numbers to everywhere in nicovideo" enabled="true" basedir="nicovideo_add_hatena_boo">
 		<Include>http://www.nicovideo.jp/*</Include>
 		<Require filename="nvii_20090510.js"/>
-	</Script>
-	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
-		<Include>*</Include>
 	</Script>
 	<Script filename="travian3_beyond_-_mlcn.user.js" name="Travian3 Beyond - ML&amp;CN" namespace="T3" description="Travian3 Beyond - ML&amp;CN (multilanguage &amp; center numbers)" enabled="true" basedir="travian3_beyond_-_mlcn">
 		<Include>http://*.travian*.*/*.php*</Include>
@@ -157,5 +152,13 @@
 		<Exclude>http://help.travian*.*</Exclude>
 		<Exclude>*.css</Exclude>
 		<Exclude>*.js</Exclude>
+	</Script>
+	<Script filename="travian_task_queue.user.js" name="Travian Task Queue" namespace="http://userscripts.org/" description="Schedule delayed constructions, upgrades and attacks." enabled="true" basedir="travian_task_queue">
+		<Include>http://*.travian.*/*</Include>
+		<Exclude>http://forum.travian.*</Exclude>
+		<Exclude>http://www.travian.*</Exclude>
+	</Script>
+	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl-1">
+		<Include>*</Include>
 	</Script>
 </UserScriptConfig>
