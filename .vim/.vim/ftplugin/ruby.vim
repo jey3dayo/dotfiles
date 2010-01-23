@@ -232,7 +232,11 @@ endfunction
 
 
 
-nmap ,l :call RubyLint()<CR>
+nmap     <Leader>l  :<C-u>call RubyLint()<CR>
+nnoremap <Leader>c  :<C-u>!ruby %<CR>
+
+
+
 setlocal ts=2
 
 ""
@@ -260,4 +264,6 @@ au BufNewFile,BufRead *.rhtml set tabstop=2 shiftwidth=2
 au BufNewFile,BufRead *.erb set tabstop=2 shiftwidth=2
 au BufNewFile,BufRead *.rb set tabstop=2 shiftwidth=2
 au BufNewFile,BufRead *.yml set tabstop=2 shiftwidth=2
+
+
 

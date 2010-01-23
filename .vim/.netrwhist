@@ -1,7 +1,5 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/Users/R1H048o/Documents/NintendoZone/アトラス/atlus_nz_contents'
-let g:netrw_dirhist_2='/Users/R1H048o/Documents/NintendoZone/アトラス/atlus_nz_contents/trunk'
-let g:netrw_dirhist_3='/Users/R1H048o/Documents/NintendoZone/アトラス/atlus_nz_contents/trunk/atlus_nzcontents'
-let g:netrw_dirhist_4='/Users/R1H048o'
-let g:netrw_dirhist_5='/Users/R1H048o/Documents/Development/C'
+let g:netrw_dirhist_cnt =3
+let g:netrw_dirhist_1='/Users/R1H048o'
+let g:netrw_dirhist_2='/Users/R1H048o/.vim/ftdetect'
+let g:netrw_dirhist_3='/Users/R1H048o/Documents/NintendoZone/ドラぷら/nz_dorapura/trunk/dorapuranz/Coupon'

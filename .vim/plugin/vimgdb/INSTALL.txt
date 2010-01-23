@@ -1,0 +1,47 @@
+INSTALL.txt - VimGdb patch installation notes
+This document describes how to install the patch for vimGdb.
+
+
+a) You need:
+
+    vim-7.2.tar.bz2         Vim 7.2 source tar ball (from www.vim.org)
+    vimgdb72-1.14.tar.gz    this patch
+
+
+b) Untar all files, apply the patch and make Vim:
+
+    tar xjf vim-7.2.tar.bz2
+    tar xzf vimgdb72-1.14.tar.gz
+
+    patch -d vim72 --backup -p0 < vimgdb/vim72.diff
+
+    cd vim72/src
+        make	            make vim
+        make install        install vim (may require root privileges)
+
+IMPORTANT NOTE: you must run make (not ./configure), and if you run
+./configure then you must add the --enable-gdb command line argument
+in order to include the gdb feature (vimgdb) in vim.
+
+
+c) Install vimGdb runtime:
+Copy the file vimgdb_runtime.tgz found in the vimgdb tarball, to your
+runtime path. To find your runtime path location execute the vim
+command (this is usually $HOME/.vim):
+
+    :set runtimepath?
+
+Untar vimgdb_runtime.tgz in your runtime path. After this step, you
+should have the following files:
+
+    doc/gdb.txt
+    macros/gdb_mappings.vim
+    syntax/gdb.vim
+    syntax/gdbvim.vim
+    syntax/gdbvar.vim
+
+Change to the doc directory, start Vim and run the ":helptags ."
+command to process the taglist help file. Without this step, you
+cannot jump to the taglist help topics. You can now use the ":help
+vimgdb" command to get the vimGdb documentation.
+

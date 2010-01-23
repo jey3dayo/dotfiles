@@ -13,7 +13,11 @@ case ${UID} in
 export PATH=/opt/local/bin:/opt/local/sbin:/bin:/usr/bin:/Developer/SDKs/flex_sdk_3/bin:$PATH
 export MANPATH=/opt/local/man:$MANPATH
 
-source /sw/bin/init.sh
+export GOROOT=$HOME/go
+export GOOS=darwin
+export GOARCH=386
+export GOBIN=$GOROOT/bin
+export PATH=$GOBIN:$PATH
 
 ## Default shell configuration
 #
@@ -130,6 +134,7 @@ alias ls='ls --color=auto'
 alias su="su -l"
 alias o="open"
 alias top="top -RFXu"
+alias hg="hg --encoding=utf-8"
 
 case "${OSTYPE}" in
 darwin*)

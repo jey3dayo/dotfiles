@@ -21,12 +21,12 @@ highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
-colorscheme desert
+colorscheme Dark
 
 
-" show fullsize<SPACE>
+" show fullsize<SPACE>"{{{
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-match ZenkakuSpace /　/
+match ZenkakuSpace /　/"}}}
 
 
 " set options
@@ -43,6 +43,7 @@ set showmatch
 set complete+=k
 set cursorline
 set wildmenu
+set fdm=marker
 
 set laststatus=2
 set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
@@ -71,29 +72,23 @@ filetype on
 filetype plugin on
 filetype indent on
 
+colorscheme Dark
 
 " map
-nnoremap <Leader>bl :<C-u>buffers<CR>
-nnoremap <Leader>ml :<C-u>marks<CR>
-nnoremap <Leader>rl :<C-u>registers<CR>
-
-nnoremap <Leader>gw :<C-u>vimgrep /./ %\|cwindow
-nnoremap <Leader>ys :<C-u>YRSearch<CR>
+nnoremap <Leader>b  :<C-u>buffers<CR>
+nnoremap <Leader>m  :<C-u>marks<CR>
+nnoremap <Leader>r  :<C-u>registers<CR>
+nnoremap <Leader>y  :<C-u>YRShow<CR>
+nnoremap <Leader>Y  :<C-u>YRSearch<CR>
 
 nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
+nnoremap <Leader>gw :<C-u>vimgrep /./ %\|cwindow
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
-
-nnoremap <Leader>cr  :<C-u>!ruby %<CR>
-nnoremap <Leader>cm  :<C-u>!gcc % -o %< -framework cocoa<CR>
-nnoremap <Leader>cM  :<C-u>w<CR>:!gcc % -o %< -framework cocoa<CR>:!./%<<CR>
-nnoremap <Leader>cc  :<C-u>w<CR>:!gcc % -o %< -framework cocoa<CR>
-nnoremap <Leader>cC  :<C-u>w<CR>:!gcc % -o %< -framework cocoa<CR>:!./%<<CR>
-
 
 
 " link jump
@@ -142,8 +137,11 @@ endfunction
 
 " backup
 set backup
-set backupdir=~/tmp
 set swapfile
+let TMP = '~/tmp'
+" set backupdir=$TMP.'/vim'
+" set directory=$TMP.'/vim'
+set backupdir=~/tmp
 set directory=~/tmp
 
 
@@ -163,6 +161,16 @@ nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 set shellslash
 
 " set grepprg=grep\ -nH\ $*
+
+
+" PHPLint
+function PHPLint()
+    let result = system( &ft . ' -l ' . bufname(""))
+    echo result
+endfunction
+
+nmap <leader>l :call PHPLint()<CR>
+
 
 " create dvi command
 let g:Tex_CompileRule_dvi = 'platex --interaction=nonstopmode $*'

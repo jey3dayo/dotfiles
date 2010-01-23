@@ -28,10 +28,10 @@ noremap l gt
 noremap <C-H> h
 noremap <C-L> l
 noremap <C-t> t g1<space>
-noremap <C-r>   :restart<cr>
+noremap <C-r> :restart<cr>
 
-noremap <leader>i  <esc>:pageinfo<cr>
-noremap <leader>so :cd ~<cr>:source .vimperatorrc<cr>
+noremap <leader>i  :pageinfo<cr>
+noremap <leader>so :source ~/.vimperatorrc<cr>
 
 map <C-h> :tabmove! -1<cr>
 map <C-l> :tabmove! +1<cr>
@@ -58,21 +58,24 @@ noremap <leader>te :twitter d myEN<space>
 noremap <leader>tm :twitter d rtm<space>
 
 noremap <leader>to :tombloo<space>
-noremap <leader>b  <esc>:btags<cr>
-noremap <leader>d  <esc>:eijiro<space>
-noremap <C-a>      <esc>:sbm<space>[
-noremap B          <esc>:viewSBMComments<cr>
-noremap Q          <esc>:toggleldrc<cr>
+noremap <leader>b  :btags<cr>
+noremap <leader>d  :eijiro<space>
+noremap <C-a>      :sbm<space>[
+noremap B          :viewSBMComments<cr>
+noremap Q          :toggleldrc<cr>
 
-noremap <leader>m   <esc>:emenu 
-noremap <leader>M   <esc>:emenu tool
+noremap <leader>m  :emenu 
+noremap <leader>M  :emenu tool
 
 " copy.js
-map <leader>c :copy<Space> TitleAndbittly<cr>
+map <leader>c :copy<Space>TitleAndbittly<cr>
+map <leader>C :copy<Space>titleAndURL<cr>
+
 js <<EOM
 liberator.globalVariables.copy_templates = [
   { label: 'titleAndURL',      value: '%TITLE% %URL%' },
   { label: 'title \\n URL',    value: '%TITLE%\n%URL%' },
+  { label: '[[title:URL]]',      value: '[[%TITLE%:%URL%]]' },
   { label: 'title',            value: '%TITLE%' },
   { label: 'url',              value: '%URL%' },
   { label: 'markdown',         value: '[%TITLE%](%URL% "%TITLE%")' },
@@ -89,9 +92,6 @@ autocmd LocationChange 'mail\.google\.com/mail' :fmap -depth 4 c / j k n p o u e
 autocmd LocationChange 'www\.google\.co\.jp/reader' :fmap! -vkey j k n p m s v r S N P X O gh ga gs gu u / ?
 autocmd LocationChange 'www\.google\.com/reader' :fmap! -vkey j k n p m s v A r S N P X O gh ga gs gu u / ?
 autocmd LocationChange 'www\.rememberthemilk\.com/home' :fmap! -vkey c s u y z 1 2 3 4 a n k j i m 
-
-" asdfghjkl.js
-let g:asdfghjkl_default = "true"
 
 echo "done."
 

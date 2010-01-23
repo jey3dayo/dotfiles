@@ -14,6 +14,38 @@
 		<Exclude>https://mail.google.com/*</Exclude>
 		<Exclude>http://b.hatena.ne.jp/*</Exclude>
 	</Script>
+	<Script filename="travian3_beyond_-_mlcn.user.js" name="Travian3 Beyond - ML&amp;CN" namespace="T3" description="Travian3 Beyond - ML&amp;CN (multilanguage &amp; center numbers)" enabled="true" basedir="travian3_beyond_-_mlcn">
+		<Include>http://*.travian*.*/*.php*</Include>
+		<Exclude>http://*.travian*.*/hilfe.php*</Exclude>
+		<Exclude>http://*.travian*.*/log*.php*</Exclude>
+		<Exclude>http://*.travian*.*/index.php*</Exclude>
+		<Exclude>http://*.travian*.*/anleitung.php*</Exclude>
+		<Exclude>http://*.travian*.*/impressum.php*</Exclude>
+		<Exclude>http://*.travian*.*/anmelden.php*</Exclude>
+		<Exclude>http://*.travian*.*/gutscheine.php*</Exclude>
+		<Exclude>http://*.travian*.*/spielregeln.php*</Exclude>
+		<Exclude>http://*.travian*.*/links.php*</Exclude>
+		<Exclude>http://*.travian*.*/geschichte.php*</Exclude>
+		<Exclude>http://*.travian*.*/tutorial.php*</Exclude>
+		<Exclude>http://*.travian*.*/manual.php*</Exclude>
+		<Exclude>http://*.travian*.*/manual.php*</Exclude>
+		<Exclude>http://*.travian*.*/ajax.php*</Exclude>
+		<Exclude>http://*.travian*.*/ad/*</Exclude>
+		<Exclude>http://*.travian*.*/chat/*</Exclude>
+		<Exclude>http://forum.travian*.*</Exclude>
+		<Exclude>http://board.travian*.*</Exclude>
+		<Exclude>http://shop.travian*.*</Exclude>
+		<Exclude>http://*.travian*.*/activate.php*</Exclude>
+		<Exclude>http://*.travian*.*/support.php*</Exclude>
+		<Exclude>http://help.travian*.*</Exclude>
+		<Exclude>*.css</Exclude>
+		<Exclude>*.js</Exclude>
+	</Script>
+	<Script filename="travian_task_queue.user.js" name="Travian Task Queue" namespace="http://userscripts.org/" description="Schedule delayed constructions, upgrades and attacks." enabled="true" basedir="travian_task_queue">
+		<Include>http://*.travian.*/*</Include>
+		<Exclude>http://forum.travian.*</Exclude>
+		<Exclude>http://www.travian.*</Exclude>
+	</Script>
 	<Script filename="ldrize.user.js" name="LDRize" namespace="http://white.s151.xrea.com/" description="j,k,v,p,o,:,f,? + l,s,i" enabled="true" basedir="ldrize">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
@@ -108,12 +140,13 @@
 		<Include>http://www.amazon.co.jp/*</Include>
 		<Include>http://amazon.co.jp/*</Include>
 	</Script>
-	<Script filename="simplepedia.user.js" name="Simplepedia" namespace="http://userscripts.org/scripts/show/42312" description="MediaWiki beautification" enabled="true" basedir="simplepedia">
+	<Script filename="simplepedia.user.js" name="Simplepedia" namespace="http://userscripts.org/scripts/show/42312" description="MediaWiki beautification" enabled="false" basedir="simplepedia">
 		<Include>*</Include>
 		<Exclude>http://userscripts.org/*</Exclude>
 	</Script>
 	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
 		<Include>*</Include>
+		<Exclude>http://veadardiary.blog29.fc2.com/*</Exclude>
 	</Script>
 	<Script filename="show_keybind_in_rmt.user.js" name="Show Keybind In RMT" namespace="http://espion.just-size.jp/archives/05/136155838.html" description="" enabled="true" basedir="show_keybind_in_rmt">
 		<Include>http://www.rememberthemilk.com/*</Include>
@@ -125,38 +158,6 @@
 	<Script filename="nicovideo_add_hatena_boo.user.js" name="nicovideo Add Hatena Bookmark Links" namespace="http://d.hatena.ne.jp/gifnksm/" description="Add Bookmarked numbers to everywhere in nicovideo" enabled="true" basedir="nicovideo_add_hatena_boo">
 		<Include>http://www.nicovideo.jp/*</Include>
 		<Require filename="nvii_20090510.js"/>
-	</Script>
-	<Script filename="travian3_beyond_-_mlcn.user.js" name="Travian3 Beyond - ML&amp;CN" namespace="T3" description="Travian3 Beyond - ML&amp;CN (multilanguage &amp; center numbers)" enabled="true" basedir="travian3_beyond_-_mlcn">
-		<Include>http://*.travian*.*/*.php*</Include>
-		<Exclude>http://*.travian*.*/hilfe.php*</Exclude>
-		<Exclude>http://*.travian*.*/log*.php*</Exclude>
-		<Exclude>http://*.travian*.*/index.php*</Exclude>
-		<Exclude>http://*.travian*.*/anleitung.php*</Exclude>
-		<Exclude>http://*.travian*.*/impressum.php*</Exclude>
-		<Exclude>http://*.travian*.*/anmelden.php*</Exclude>
-		<Exclude>http://*.travian*.*/gutscheine.php*</Exclude>
-		<Exclude>http://*.travian*.*/spielregeln.php*</Exclude>
-		<Exclude>http://*.travian*.*/links.php*</Exclude>
-		<Exclude>http://*.travian*.*/geschichte.php*</Exclude>
-		<Exclude>http://*.travian*.*/tutorial.php*</Exclude>
-		<Exclude>http://*.travian*.*/manual.php*</Exclude>
-		<Exclude>http://*.travian*.*/manual.php*</Exclude>
-		<Exclude>http://*.travian*.*/ajax.php*</Exclude>
-		<Exclude>http://*.travian*.*/ad/*</Exclude>
-		<Exclude>http://*.travian*.*/chat/*</Exclude>
-		<Exclude>http://forum.travian*.*</Exclude>
-		<Exclude>http://board.travian*.*</Exclude>
-		<Exclude>http://shop.travian*.*</Exclude>
-		<Exclude>http://*.travian*.*/activate.php*</Exclude>
-		<Exclude>http://*.travian*.*/support.php*</Exclude>
-		<Exclude>http://help.travian*.*</Exclude>
-		<Exclude>*.css</Exclude>
-		<Exclude>*.js</Exclude>
-	</Script>
-	<Script filename="travian_task_queue.user.js" name="Travian Task Queue" namespace="http://userscripts.org/" description="Schedule delayed constructions, upgrades and attacks." enabled="true" basedir="travian_task_queue">
-		<Include>http://*.travian.*/*</Include>
-		<Exclude>http://forum.travian.*</Exclude>
-		<Exclude>http://www.travian.*</Exclude>
 	</Script>
 	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl-1">
 		<Include>*</Include>
