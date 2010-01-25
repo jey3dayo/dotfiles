@@ -1,7 +1,3 @@
-Thumbs.db
-.DS_Store
-history-command
-history-search
-plugins-hatena-bookmark-search-data
-plugins-libly-wedata-AutoPagerize-items
-plugins-pluginManager
+[user]
+	name = j138
+	email = j138cm@gmail.com

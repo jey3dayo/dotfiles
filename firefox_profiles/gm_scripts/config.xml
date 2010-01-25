@@ -14,38 +14,6 @@
 		<Exclude>https://mail.google.com/*</Exclude>
 		<Exclude>http://b.hatena.ne.jp/*</Exclude>
 	</Script>
-	<Script filename="travian3_beyond_-_mlcn.user.js" name="Travian3 Beyond - ML&amp;CN" namespace="T3" description="Travian3 Beyond - ML&amp;CN (multilanguage &amp; center numbers)" enabled="true" basedir="travian3_beyond_-_mlcn">
-		<Include>http://*.travian*.*/*.php*</Include>
-		<Exclude>http://*.travian*.*/hilfe.php*</Exclude>
-		<Exclude>http://*.travian*.*/log*.php*</Exclude>
-		<Exclude>http://*.travian*.*/index.php*</Exclude>
-		<Exclude>http://*.travian*.*/anleitung.php*</Exclude>
-		<Exclude>http://*.travian*.*/impressum.php*</Exclude>
-		<Exclude>http://*.travian*.*/anmelden.php*</Exclude>
-		<Exclude>http://*.travian*.*/gutscheine.php*</Exclude>
-		<Exclude>http://*.travian*.*/spielregeln.php*</Exclude>
-		<Exclude>http://*.travian*.*/links.php*</Exclude>
-		<Exclude>http://*.travian*.*/geschichte.php*</Exclude>
-		<Exclude>http://*.travian*.*/tutorial.php*</Exclude>
-		<Exclude>http://*.travian*.*/manual.php*</Exclude>
-		<Exclude>http://*.travian*.*/manual.php*</Exclude>
-		<Exclude>http://*.travian*.*/ajax.php*</Exclude>
-		<Exclude>http://*.travian*.*/ad/*</Exclude>
-		<Exclude>http://*.travian*.*/chat/*</Exclude>
-		<Exclude>http://forum.travian*.*</Exclude>
-		<Exclude>http://board.travian*.*</Exclude>
-		<Exclude>http://shop.travian*.*</Exclude>
-		<Exclude>http://*.travian*.*/activate.php*</Exclude>
-		<Exclude>http://*.travian*.*/support.php*</Exclude>
-		<Exclude>http://help.travian*.*</Exclude>
-		<Exclude>*.css</Exclude>
-		<Exclude>*.js</Exclude>
-	</Script>
-	<Script filename="travian_task_queue.user.js" name="Travian Task Queue" namespace="http://userscripts.org/" description="Schedule delayed constructions, upgrades and attacks." enabled="true" basedir="travian_task_queue">
-		<Include>http://*.travian.*/*</Include>
-		<Exclude>http://forum.travian.*</Exclude>
-		<Exclude>http://www.travian.*</Exclude>
-	</Script>
 	<Script filename="ldrize.user.js" name="LDRize" namespace="http://white.s151.xrea.com/" description="j,k,v,p,o,:,f,? + l,s,i" enabled="true" basedir="ldrize">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
