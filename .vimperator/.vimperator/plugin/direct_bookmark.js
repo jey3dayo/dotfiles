@@ -1,16 +1,16 @@
-// Last Change: 09-Jan-2009. Jan 2008
+// Last Change: 21-Jan-2010. Jan 2008
 var PLUGIN_INFO =
 <VimperatorPlugin>
     <name>{NAME}</name>
     <description>Direct Post to Social Bookmarks</description>
     <author mail="trapezoid.g@gmail.com" homepage="http://unsigned.g.hatena.ne.jp/Trapezoid">Trapezoid</author>
-    <version>0.14</version>
-    <license>Creative Commons</license>
+    <version>0.15</version>
+    <license>GPL</license>
     <minVersion>2.0pre</minVersion>
-    <maxVersion>2.0pre</maxVersion>
+    <maxVersion>2.2</maxVersion>
     <updateURL>http://svn.coderepos.org/share/lang/javascript/vimperator-plugins/trunk/direct_bookmark.js</updateURL>
     <detail><![CDATA[
-Social Bookmark direct add script for Vimperator 0.6.*.
+Social Bookmark direct add script for Vimperator 2.2
 for Migemo search: require XUL/Migemo Extension
 
 == Parts ==
@@ -29,7 +29,7 @@ for Migemo search: require XUL/Migemo Extension
           'd': del.icio.us
           'l': livedoor clip
           'p': Places (Firefox bookmarks)
-      Usage: let g:direct_sbm_use_services_by_tag = "hd"
+      Usage: let g:direct_sbm_use_services_by_tag = "hdl"
 ||<
 === g:direct_sbm_use_services_by_post ===
 >||
@@ -39,7 +39,14 @@ for Migemo search: require XUL/Migemo Extension
           'l': livedoor clip
           'g': Google Bookmarks
           'p': Places (Firefox bookmarks)
-      Usage: let g:direct_sbm_use_services_by_post = "hd"
+      Usage: let g:direct_sbm_use_services_by_post = "hdl"
+||<
+=== g:direct_sbm_echo_type ===
+>||
+      Post message type
+          'simple'    : single line, no posted services description
+          'multiline' : multi line, display services description
+          'none'      : hide post message
 ||<
 === g:direct_sbm_is_normalize ===
 >||
@@ -59,7 +66,7 @@ for Migemo search: require XUL/Migemo Extension
 >||
       Post a current page to social bookmarks
       Arguments
-          -s,-service: default:"hd"
+          -s,-service: default:"hdl"
               Specify target SBM services to post
 ||<
 === :bentry ===
@@ -84,8 +91,9 @@ for Migemo search: require XUL/Migemo Extension
         }
     } catch(e) { liberator.log('warning: direct_bookmark.js is working with unsafe sandbox.'); }
 
-    var useServicesByPost = liberator.globalVariables.direct_sbm_use_services_by_post || 'hd';
-    var useServicesByTag = liberator.globalVariables.direct_sbm_use_services_by_tag || 'hd';
+    var useServicesByPost = liberator.globalVariables.direct_sbm_use_services_by_post || 'hdl';
+    var useServicesByTag = liberator.globalVariables.direct_sbm_use_services_by_tag || 'hdl';
+    var echoType = liberator.globalVariables.direct_sbm_echo_type || 'multiline';
     var isNormalize = typeof liberator.globalVariables.direct_sbm_is_normalize == 'undefined' ? 
                       true : evalFunc(liberator.globalVariables.direct_sbm_is_normalize); 
     var isUseMigemo = typeof liberator.globalVariables.direct_sbm_is_use_migemo == 'undefined' ? 
@@ -258,31 +266,29 @@ for Migemo search: require XUL/Migemo Extension
         return result.singleNodeValue ? result.singleNodeValue : null;
     }
 
-    // copied from Pagerization (c) id:ofk
-    function parseHTML(str, ignoreTags) {
-        var exp = "^[\\s\\S]*?<html(?:\\s[^>]*)?>|</html\\s*>[\\S\\s]*$";
-        if (ignoreTags) {
-            if (typeof ignoreTags == "string") ignoreTags = [ignoreTags];
-            var stripTags = [];
-            ignoreTags = ignoreTags.filter(function(tag) tag[tag.length - 1] == "/" || !stripTags.push(tag))
-                                   .map(function(tag) tag.replace(/\/$/, ""));
-            if (stripTags.length > 0) {
-                stripTags = stripTags.length > 1
-                          ? "(?:" + stripTags.join("|") + ")"
-                          : String(stripTags);
-                exp += "|<" + stripTags + "(?:\\s[^>]*|/)?>|</" + stripTags + "\\s*>";
-            }
-        }
-        str = str.replace(new RegExp(exp, "ig"), "");
-        var res = document.implementation.createDocument(null, "html", null);
-        var range = document.createRange();
-        range.setStartAfter(window.content.document.body);
-        res.documentElement.appendChild(res.importNode(range.createContextualFragment(str), true));
-        if (ignoreTags) ignoreTags.forEach(function(tag) {
-            var elements = res.getElementsByTagName(tag);
-            for (var i = elements.length, el; el = elements.item(--i); el.parentNode.removeChild(el));
-        });
-        return res;
+    // copied from http://d.hatena.ne.jp/odz/20060901/1157165797 id:odz
+    function parseHTML(text) {
+        var createHTMLDocument = function() {
+            var xsl = (new DOMParser()).parseFromString(
+                ['<?xml version="1.0"?>',
+                 '<stylesheet version="1.0" xmlns="http://www.w3.org/1999/XSL/Transform">',
+                 '<output method="html"/>',
+                 '</stylesheet>'].join("\n"), "text/xml");
+
+            var xsltp = new XSLTProcessor();
+            xsltp.importStylesheet(xsl);
+            var doc = xsltp.transformToDocument(
+                document.implementation.createDocument("", "", null));
+            return doc;
+        };
+
+        var doc = createHTMLDocument();
+        var range = doc.createRange();
+        doc.appendChild(doc.createElement("html"));
+        range.selectNodeContents(doc.documentElement);
+        doc.documentElement.appendChild(
+            range.createContextualFragment(text));
+        return doc;
     }
 
     //
@@ -369,7 +375,7 @@ for Migemo search: require XUL/Migemo Extension
                         "Content-Type": "application/atom+xml",
                     },
                 }).next(function(xhr){
-                    if(xhr.status != 201) throw "Hatena Bookmark: faild";
+                    if(xhr.status != 201) throw "Hatena Bookmark: failed";
                 });
             },
             tags:function(user,password){
@@ -380,7 +386,7 @@ for Migemo search: require XUL/Migemo Extension
                 xhr.open("GET","http://b.hatena.ne.jp/"+user,false);
                 xhr.send(null);
 
-                var mypage_html = parseHTML(xhr.responseText, ['img', 'script']);
+                var mypage_html = parseHTML(xhr.responseText);
                 //var tags = getElementsByXPath("//ul[@id=\"taglist\"]/li/a",mypage_html);
                 var tags = getElementsByXPath('id("tags")/li/a', mypage_html);
 
@@ -408,7 +414,7 @@ for Migemo search: require XUL/Migemo Extension
                     user: user,
                     password: password,
                 }).next(function(xhr){
-                    if(xhr.status != 200) throw "del.icio.us: faild";
+                    if(xhr.status != 200) throw "del.icio.us: failed";
                 });
             },
             tags:function(user,password){
@@ -453,7 +459,7 @@ for Migemo search: require XUL/Migemo Extension
                     rate = (RegExp.lastMatch.length > starFullRate)? starFullRate : RegExp.lastMatch.length;
                 }
                 var request_url = 'http://api.clip.livedoor.com/v1/posts/add?' + [
-                    ['url', url], ['description', title], ['extended', comment], ['rate', rate], ['tags', tags.join(' ')]
+                    ['url', url], ['description', title], ['extended', comment], ['rate', rate], ['tags', tags.join(' ')], ['cache', (new Date()).getTime()]
                 ].map(function(p) p[0] + '=' + encodeURIComponent(p[1])).join('&');
                 return Deferred.http({
                     method: "get",
@@ -461,7 +467,7 @@ for Migemo search: require XUL/Migemo Extension
                     user: user,
                     password: password,
                 }).next(function(xhr){
-                    if(xhr.status != 200) throw "livedoor clip: faild";
+                    if(xhr.status != 200) throw "livedoor clip: failed";
                 });
             },
             tags:function(user,password){
@@ -471,7 +477,7 @@ for Migemo search: require XUL/Migemo Extension
                 xhr.open("GET","http://clip.livedoor.com/clip/add?link=http://example.example/",false);
                 xhr.send(null);
 
-                var mypage_html = parseHTML(xhr.responseText, ['img', 'script']);
+                var mypage_html = parseHTML(xhr.responseText);
                 var tags = getElementsByXPath("id(\"tag_list\")/span",mypage_html);
 
                 tags.forEach(function(tag){
@@ -501,7 +507,7 @@ for Migemo search: require XUL/Migemo Extension
                         "User-Agent": navigator.userAgent + " GoogleToolbarFF 3.0.20070525",
                     },
                 }).next(function(xhr){
-                    if(xhr.status != 200) throw "Google Bookmarks: faild";
+                    if(xhr.status != 200) throw "Google Bookmarks: failed";
                 });
             },
             tags:function(user,password) [],
@@ -521,7 +527,7 @@ for Migemo search: require XUL/Migemo Extension
                     user: user,
                     password: password,
                 }).next(function(xhr){
-                    if(xhr.status != 200) throw "foves: faild";
+                    if(xhr.status != 200) throw "foves: failed";
                 });
             },
             tags:function(user,password){
@@ -550,7 +556,7 @@ for Migemo search: require XUL/Migemo Extension
                 try{
                     Application.bookmarks.tags.addBookmark(title, nsUrl);
                 }catch(e){
-                    throw "Places: faild";
+                    throw "Places: failed";
                 }
             },
             tags:function(user,password)
@@ -589,8 +595,8 @@ for Migemo search: require XUL/Migemo Extension
     liberator.modules.commands.addUserCommand(['btags'],"Update Social Bookmark Tags",
         function(arg){setTimeout(function(){getTagsAsync().call([])},0)}, {});
     liberator.modules.commands.addUserCommand(['bentry'],"Goto Bookmark Entry Page",
-        function(service, special){
-            service = service.string || useServicesByPost.split(/\s*/)[0];
+        function(args){
+            var service = args.string || useServicesByPost.split(/\s*/)[0];
             var currentService = services[service] || null;
             if(!currentService || !currentService.entryPage) {
                 return;
@@ -616,7 +622,7 @@ for Migemo search: require XUL/Migemo Extension
                         }
                         return ascii.join('').toLowerCase();
                     }
-                }), special ? liberator.NEW_TAB : liberator.CURRENT_TAB);
+                }), args.bang ? liberator.NEW_TAB : liberator.CURRENT_TAB);
         },{
             completer: function(filter)
                 [0, useServicesByPost.split(/\s*/).map(function(p) [p, services[p].description])]
@@ -666,14 +672,22 @@ for Migemo search: require XUL/Migemo Extension
                     isNormalize ? getNormalizedPermalink(url) : url,title,
                     comment,tags
                 //));
-                )).next(function(){
-                    liberator.echo("[" + services[service].description + "] post completed.");
-                });
+                ));
+                if(echoType == "multiline") {
+                    d = d.next(function(){
+                        liberator.echo("[" + services[service].description + "] post completed.");
+                    });
+                }
             });
+            if(echoType == "simple") {
+                d = d.next(function(){
+                    liberator.echo("post completed.");
+                });
+            }
             d.error(function(e){liberator.echoerr("direct_bookmark.js: Exception throwed! " + e);liberator.log(e);});
             setTimeout(function(){first.call();},0);
         },{
-            completer: function(context, arg, special){
+            completer: function(context, arg){
                 let filter = context.filter;
                 var match_result = filter.match(/((?:\[[^\]]*\])*)\[?(.*)/); //[all, commited, now inputting]
                 var m = new RegExp(XMigemoCore && isUseMigemo ? "^(" + XMigemoCore.getRegExp(match_result[2]) + ")" : "^" + match_result[2],'i');

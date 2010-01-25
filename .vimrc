@@ -24,9 +24,9 @@ highlight SpecialKey ctermfg=grey
 colorscheme Dark
 
 
-" show fullsize<SPACE>"{{{
+" show fullsize<SPACE>
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-match ZenkakuSpace /　/"}}}
+match ZenkakuSpace /　/
 
 
 " set options
@@ -147,11 +147,11 @@ set directory=~/tmp
 
 " tab
 nnoremap <C-t>  <Nop>
-nnoremap <C-t>n  :<C-u>tabnew<CR>
+nnoremap <C-t>c  :<C-u>tabnew<CR>
 nnoremap <C-t>d  :<C-u>tabclose<CR>
 nnoremap <C-t>o  :<C-u>tabonly<CR>
-nnoremap <C-t>j  :<C-u>tabnext<CR>
-nnoremap <C-t>k  :<C-u>tabprevious<CR>
+nnoremap <C-t>n  :<C-u>tabnext<CR>
+nnoremap <C-t>p  :<C-u>tabprevious<CR>
 nnoremap gt  :<C-u>tabnext<CR>
 nnoremap gT  :<C-u>tabprevious<CR>
 
