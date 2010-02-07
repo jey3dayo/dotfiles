@@ -21,7 +21,7 @@ highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
-colorscheme Dark
+colorscheme wombat
 
 
 " show fullsize<SPACE>
@@ -161,6 +161,9 @@ nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 set shellslash
 
 " set grepprg=grep\ -nH\ $*
+
+" Rename Command
+command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 
 
 " PHPLint

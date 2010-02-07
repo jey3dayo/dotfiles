@@ -9,4 +9,3 @@ rsync --progress -avp ~/.zshrc                 ~/Documents/dotfiles/.zshrc
 rsync --progress -avp ~/.gvimrc                ~/Documents/dotfiles/.gvimrc
 rsync --progress -avp ~/.screenrc              ~/Documents/dotfiles/.screenrc
 rsync --progress -avp ~/.tmux.conf             ~/Documents/dotfiles/.tmux.conf
-rsync --progress -avp ~/rsync_myconfigdata.sh  ~/Documents/dotfiles/rsync_greasemonkey.sh
