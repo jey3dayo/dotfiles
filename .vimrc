@@ -3,7 +3,8 @@ if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
 nmap gx <Plug>NetrwBrowseX
-nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)let &cpo=s:cpo_save
+nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
+let &cpo=s:cpo_save
 unlet s:cpo_save
 let mapleader = ","
 
@@ -24,7 +25,7 @@ highlight SpecialKey ctermfg=grey
 colorscheme wombat
 
 
-" show fullsize<SPACE>
+" show fullsize SPACE 
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 match ZenkakuSpace /　/
 
@@ -72,7 +73,6 @@ filetype on
 filetype plugin on
 filetype indent on
 
-colorscheme Dark
 
 " map
 nnoremap <Leader>b  :<C-u>buffers<CR>
@@ -160,20 +160,15 @@ nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 
 set shellslash
 
+" macro
+inoremap <Leader>date <C-R>=strftime('%Y/%m/%d (%a)')<CR>
+inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
+inoremap <Leader>w3cd <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
+
 " set grepprg=grep\ -nH\ $*
 
 " Rename Command
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
-
-
-" PHPLint
-function PHPLint()
-    let result = system( &ft . ' -l ' . bufname(""))
-    echo result
-endfunction
-
-nmap <leader>l :call PHPLint()<CR>
-
 
 " create dvi command
 let g:Tex_CompileRule_dvi = 'platex --interaction=nonstopmode $*'
@@ -219,7 +214,6 @@ let java_space_errors=1
 let java_highlight_functions=1
 
 
-
 " Objective-C
 "let objc_syntax_for_h = 1
 autocmd Filetype objc setlocal showmatch dict=~/.vim/dict/objc.dict
@@ -237,7 +231,6 @@ autocmd Filetype objc setlocal showmatch dict=~/.vim/dict/objc.dict
 
 
 " LookupFile.vim
-nmap <unique> <silent> <C-S> :LUBufs ^.*<CR>
 let g:LookupFile_AlwaysAcceptFirst=1
 let g:LookupFile_PreserveLastPattern=0
 let g:LookupFile_AllowNewFiles=0
@@ -246,7 +239,12 @@ let g:LookupFile_AllowNewFiles=0
 " taglist.vim
 set tags=tags
 
+
 "NERD_commenter.vim <leader>+x => comment out
 map <Leader>x ,c<space>
 let NERDShutUp=1
+
+
+"NERD_tree.vim
+nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
 

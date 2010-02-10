@@ -136,6 +136,8 @@ alias o="open"
 alias top="top -RFXu"
 alias hg="hg --encoding=utf-8"
 
+alias growlcall="growlnotify -t "Terminal" -m 'Finishing the Task.' -H localhost"
+
 case "${OSTYPE}" in
 darwin*)
     alias updateports="sudo port selfupdate; sudo port outdated"

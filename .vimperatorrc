@@ -6,6 +6,7 @@ map <leader>F Bookmarks Toolbar-HINTS (new-tab)set runtimepath=/Users/J138/.vimp
 " source! ~/.vimperatorrc.local
 
 " vim: set ft=vimperator:
+" vim: set ft=vim:
 
 " Options
 set history=1000
