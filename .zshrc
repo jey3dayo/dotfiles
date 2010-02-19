@@ -126,6 +126,8 @@ alias j="jobs -l"
 alias datef="date +%F"
 alias df="df -h"
 alias du="du -h"
+alias diff="colordiff"
+alias less="less -R"
 
 alias l='ls -lAFh --color=auto'
 alias la='ls -a --color=auto'
