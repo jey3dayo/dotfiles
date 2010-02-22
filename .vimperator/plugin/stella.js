@@ -37,14 +37,14 @@ let PLUGIN_INFO =
 <VimperatorPlugin>
   <name>Stella</name>
   <name lang="ja">すてら</name>
-  <description>For Niconico/YouTube, Add control commands and information display(on status line).</description>
-  <description lang="ja">ニコニコ動画/YouTube 用。操作コマンドと情報表示(ステータスライン上に)追加します。</description>
-  <version>0.21.0</version>
+  <description>For Niconico/YouTube/Vimeo, Add control commands and information display(on status line).</description>
+  <description lang="ja">ニコニコ動画/YouTube/Vimeo 用。操作コマンドと情報表示(ステータスライン上に)追加します。</description>
+  <version>0.24.5</version>
   <author mail="anekos@snca.net" homepage="http://d.hatena.ne.jp/nokturnalmortum/">anekos</author>
   <license>new BSD License (Please read the source code comments of this plugin)</license>
   <license lang="ja">修正BSDライセンス (ソースコードのコメントを参照してください)</license>
   <minVersion>2.0</minVersion>
-  <maxVersion>2.2pre</maxVersion>
+  <maxVersion>2.3</maxVersion>
   <updateURL>http://svn.coderepos.org/share/lang/javascript/vimperator-plugins/trunk/stella.js</updateURL>
   <detail><![CDATA[
     == Commands ==
@@ -74,6 +74,62 @@ let PLUGIN_INFO =
         enlarge video screen.
       :stfu[llscreen]:
         turn on/off fullscreen.
+      :stqu[ality]:
+        Set video quality.
+
+    == Local Mappings Sample == 
+    >||
+function addLocalMappings(buffer, maps) {
+  maps.forEach(
+    function (map) {
+      let [cmd, action, extra] = map;
+      let actionFunc = action;
+      extra || (extra = {});
+
+      if (typeof action == "string") {
+        if (action.charAt(0) == ':')
+          actionFunc = extra.open ? function () commandline.open("", action, modes.EX)
+                                  : function () liberator.execute(action);
+        else
+          actionFunc = function () events.feedkeys(action, extra.noremap, true);
+      }
+      extra.matchingUrls = buffer;
+      mappings.addUserMap(
+        [modes.NORMAL],
+        [cmd],
+        "Local mapping for " + buffer,
+        actionFunc,
+        extra
+      );
+    }
+  );
+}
+
+addLocalMappings(
+  /^(http:\/\/(es|www).nicovideo.jp\/watch|http:\/\/(jp|www)\.youtube\.com\/watch|http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+)/,
+  [
+    ['<C-g>', ':pageinfo S',      ],
+    ['p',     ':stplay',          ],
+    ['m',     ':stmute',          ],
+    ['c',     ':stcomment',       ],
+    ['zz',    ':stlarge',         ],
+    ['r',     ':strepeat',        ],
+    ['+',     ':stvolume! 10',    ],
+    ['-',     ':stvolume! -10',   ],
+    ['h',     ':stseek! -10',     ],
+    ['l',     ':stseek! 10',      ],
+    ['k',     ':stvolume! 10',    ],
+    ['j',     ':stvolume! -10',   ],
+    ['s',     ':stseek ',         {open: true}],
+    ['S',     ':stseek! ',        {open: true}],
+    ['v',     ':stvolume ',       {open: true}],
+    ['V',     ':stvolume! ',      {open: true}],
+    ['o',     ':strelations ',    {open: true}],
+    ['O',     ':strelations! ',   {open: true}],
+  ]
+);
+||<
+
   ]]></detail>
   <detail lang="ja"><![CDATA[
     == Commands ==
@@ -104,6 +160,8 @@ let PLUGIN_INFO =
         画面を大きくする/戻す。
       :stfu[llscreen]:
         フルスクリーン表示のOn/Offを切り替える。
+      :stqu[ality]:
+        動画の品質を設定
     == Controls ==
       マウスのホイール:
         パネル上でホイールの上下することにより音量を上下できます
@@ -127,6 +185,58 @@ let PLUGIN_INFO =
             ミュート(消音)
           R:
             リピート
+    == Local Mappings Sample ==
+    >||
+function addLocalMappings(buffer, maps) {
+  maps.forEach(
+    function (map) {
+      let [cmd, action, extra] = map;
+      let actionFunc = action;
+      extra || (extra = {});
+
+      if (typeof action == "string") {
+        if (action.charAt(0) == ':')
+          actionFunc = extra.open ? function () commandline.open("", action, modes.EX)
+                                  : function () liberator.execute(action);
+        else
+          actionFunc = function () events.feedkeys(action, extra.noremap, true);
+      }
+      extra.matchingUrls = buffer;
+      mappings.addUserMap(
+        [modes.NORMAL],
+        [cmd],
+        "Local mapping for " + buffer,
+        actionFunc,
+        extra
+      );
+    }
+  );
+}
+
+addLocalMappings(
+  /^(http:\/\/(es|www).nicovideo.jp\/watch|http:\/\/(jp|www)\.youtube\.com\/watch|http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+)/,
+  [
+    ['<C-g>', ':pageinfo S',      ],
+    ['p',     ':stplay',          ],
+    ['m',     ':stmute',          ],
+    ['c',     ':stcomment',       ],
+    ['zz',    ':stlarge',         ],
+    ['r',     ':strepeat',        ],
+    ['+',     ':stvolume! 10',    ],
+    ['-',     ':stvolume! -10',   ],
+    ['h',     ':stseek! -10',     ],
+    ['l',     ':stseek! 10',      ],
+    ['k',     ':stvolume! 10',    ],
+    ['j',     ':stvolume! -10',   ],
+    ['s',     ':stseek ',         {open: true}],
+    ['S',     ':stseek! ',        {open: true}],
+    ['v',     ':stvolume ',       {open: true}],
+    ['V',     ':stvolume! ',      {open: true}],
+    ['o',     ':strelations ',    {open: true}],
+    ['O',     ':strelations! ',   {open: true}],
+  ]
+);
+||<
     == Link ==
       http://d.hatena.ne.jp/nokturnalmortum/20081213/1229168832
   ]]></detail>
@@ -331,8 +441,14 @@ Thanks:
       return result;
     },
 
-    raise: (InVimperator ? function (error) {throw new Error(error)}
-                         : function (error) liberator.echoerr(error)),
+    raise: (InVimperator ? function (error) liberator.echoerr(error)
+                         : function (error) {throw new Error(error)}),
+
+    raiseNotSupportedPage:
+      function () this.raise('Stella: Current page is not supported'),
+
+    raiseNotSupportedFunction:
+      function () this.raise('Stella: The function is not supported in this page.'),
 
     restoreStyle: function (target, doDelete) {
       let style = target.style;
@@ -439,6 +555,7 @@ Thanks:
       large: '',
       makeURL: '',
       muted: '',
+      pageinfo: '',
       pause: '',
       play: '',
       playEx: '',
@@ -450,10 +567,14 @@ Thanks:
       title: '',
       totalTime: '',
       volume: '',
+      quality: '',
+      qualities: ''
       // auto setting => fetch maxVolume playOrPause relations seek seekRelative turnUpDownVolume
     },
 
     icon: null,
+
+    xpath: {},
 
     initialize: function () void null,
 
@@ -580,9 +701,14 @@ Thanks:
   }
 
   Relation.prototype = {
-    get command () undefined,
-    get description () undefined,
-    get completionItem () ([this.command, this.description]),
+    get command () this._command,
+    get description () this._description,
+    get thumbnail () this._thumbnail,
+    get completionItem () ({
+      text: this.command,
+      description: this.description,
+      thumbnail: this.thumbnail
+    })
   };
 
 
@@ -605,9 +731,10 @@ Thanks:
 
 
 
-  function RelatedID (id, title) {
+  function RelatedID (id, title, img) {
     this.id = id;
     this.title = title;
+    this._thumbnail = img;
     Relation.apply(this, arguments);
   }
 
@@ -665,6 +792,7 @@ Thanks:
       fullscreen: 'rwt',
       makeURL: 'x',
       muted: 'rwt',
+      pageinfo: 'r',
       pause: 'x',
       play: 'x',
       playEx: 'x',
@@ -673,10 +801,17 @@ Thanks:
       repeating: '',
       title: 'r',
       totalTime: 'r',
-      volume: 'rw'
+      volume: 'rw',
+      quality: 'rw',
+      qualities: 'r'
     },
 
     icon: 'http://www.youtube.com/favicon.ico',
+
+    xpath: {
+      comment: '//span[@class="description"]',
+      tags: '//div[@id="watch-video-tags"]'
+    },
 
     get currentTime () parseInt(this.player.getCurrentTime()),
     set currentTime (value) (this.player.seekTo(U.fromTimeCode(value)), this.currentTime),
@@ -730,8 +865,21 @@ Thanks:
     get muted () this.player.isMuted(),
     set muted (value) ((value ? this.player.mute() : this.player.unMute()), value),
 
+    get pageinfo () [
+      [
+        name,
+        U.xpathGet(this.xpath[name]).innerHTML.replace(/&nbsp;/g, ', ')
+      ]
+      for (name in this.xpath)
+    ],
+
     get player ()
       U.getElementByIdEx('movie_player'),
+
+    get quality () this.player.getPlaybackQuality(),
+    set quality (value) this.player.setPlaybackQuality(value),
+
+    get qualities () this.player.getAvailableQualityLevels(),
 
     get ready () !!this.player,
 
@@ -833,6 +981,7 @@ Thanks:
       large: 'rwt',
       makeURL: 'x',
       muted: 'rwt',
+      pageinfo: 'r',
       pause: 'x',
       play: 'x',
       playEx: 'x',
@@ -844,10 +993,16 @@ Thanks:
       tags: 'r',
       title: 'r',
       totalTime: 'r',
-      volume: 'rw'
+      volume: 'rw',
+      quality: '',
+      qualities: ''
     },
 
     icon: 'http://www.nicovideo.jp/favicon.ico',
+
+    xpath: {
+      comment: 'id("des_2")/table[2]/tbody/tr/td[2]'
+    },
 
     initialize: function () {
       this.__info_cache = {};
@@ -881,11 +1036,26 @@ Thanks:
     set fullscreen (value) (this.large = value),
 
     get id ()
-      let (m = U.currentURL().match(/\/watch\/([a-z]{2}\d+)/))
+      let (m = U.currentURL().match(/\/watch\/([a-z\d]+)/))
         (m && m[1]),
 
     get muted () this.player.ext_isMute(),
     set muted (value) (this.player.ext_setMute(value), value),
+
+    get pageinfo () {
+      let v = content.wrappedJSObject.Video;
+      return [
+        ['thumbnail', <img src={v.thumbnail} />],
+        ['comment', v.description],
+        [
+          'tag',
+          [
+            <span><a href={this.makeURL(t, Player.URL_TAG)}>{t}</a></span>
+            for each (t in Array.slice(v.tags))
+          ].join()
+        ]
+      ];
+    },
 
     get player () U.getElementByIdEx('flvplayer'),
 
@@ -913,7 +1083,13 @@ Thanks:
           for each (let c in cs)
             if (c.nodeName != '#text')
               video[c.nodeName] = c.textContent;
-          videos.push(new RelatedID(video.url.replace(/^.+?\/watch\//, ''), video.title));
+          videos.push(
+            new RelatedID(
+              video.url.replace(/^.+?\/watch\//, ''),
+              video.title,
+              video.thumbnail
+            )
+          );
         }
       } catch (e) {
         liberator.log('stella: ' + e)
@@ -924,9 +1100,9 @@ Thanks:
       // コメント欄のリンクの前のテキストをタイトルと見なす
       // textContent を使うと改行が理解できなくなるので、innerHTML で頑張ったけれど頑張りたくない
       try {
-        let xpath = 'id("des_2")/table[2]/tbody/tr/td[2]';
+        let xpath = this.xpath.comment;
         let comment = U.xpathGet(xpath).innerHTML;
-        let links = U.xpathGets(xpath + '/p/a')
+        let links = U.xpathGets(xpath + '//a')
                      .filter(function (it) /watch\//.test(it.href))
                      .map(function(v) v.textContent);
         links.forEach(function (link) {
@@ -962,9 +1138,13 @@ Thanks:
           let win = Buffer.findScrollableWindow();
           this.storage.scrollPositionBeforeLarge = {x: win.scrollX, y: win.scrollY};
         }
+
         this.player.ext_setVideoSize(value ? NicoPlayer.SIZE_LARGE : NicoPlayer.SIZE_NORMAL);
-        let (pos = this.storage.scrollPositionBeforeLarge)
-          (value || typeof pos == "undefined" || buffer.scrollTo(pos.x, pos.y));
+
+        let pos = this.storage.scrollPositionBeforeLarge;
+        if (!value && typeof pos != "undefined")
+            setTimeout(function () buffer.scrollTo(pos.x, pos.y), 0);
+
         return this.large;
     },
 
@@ -1124,6 +1304,93 @@ Thanks:
   // }}}
 
   /*********************************************************************************
+  * VimeoPlayer                                                                  {{{
+  *********************************************************************************/
+
+  function VimeoPlayer () {
+    Player.apply(this, arguments);
+  }
+
+  VimeoPlayer.getIDfromURL = function (url) let ([_, r] = url.match(/[?;&]v=([-\w]+)/)) r;
+
+  VimeoPlayer.prototype = {
+    __proto__: Player.prototype,
+
+    functions: {
+      currentTime: 'w',
+      fileURL: '',
+      fullscreen: '',
+      makeURL: 'x',
+      muted: 'w',
+      pause: 'x',
+      play: 'x',
+      playEx: 'x',
+      playOrPause: 'x',
+      relatedIDs: '',
+      repeating: '',
+      title: 'r',
+      totalTime: '',
+      volume: ''
+    },
+
+    __initializePlayer: function (player) {
+      if (!player || player.__stella_initialized)
+        return player;
+
+      player.__stella_mute = false;
+      player.__stella_volume = 100;
+      player.__stella_initialized = true;
+
+      return player;
+    },
+
+    icon: 'http://www.vimeo.com/favicon.ico',
+
+    set currentTime (value) (this.player.api_seekTo(U.fromTimeCode(value)), value),
+
+    get muted () this.__mute,
+    set muted (value) (this.volume = value ? 0 : 100),
+
+    get player ()
+      this.__initializePlayer(U.xpathGet('//embed[contains(@id,"vimeo_clip_")]').wrappedJSObject),
+
+    get ready () !!this.player,
+
+    get state () {
+      if (this.player.api_isPlaying())
+        return Player.ST_PLAYING
+      if (this.player.api_isPaused())
+        return Player.ST_PAUSED;
+      return Player.ST_OTHER;
+    },
+
+    get title ()
+      U.xpathGet('//div[@class="title"]').textContent,
+
+    get isValid () buffer.URL.match(/^http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+$/),
+
+    // XXX setVolume は実際には存在しない？
+    get volume () parseInt(this.player.__stella_volume),
+    set volume (value) (this.api_setVolume(value), this.player.__stella_volume = value),
+
+    makeURL: function (value, type) {
+      switch (type) {
+        case Player.URL_ID:
+          return 'http://www.vimeo.com/' + value;
+        case Player.URL_SEARCH:
+          return 'http://www.vimeo.com/videos/search:' + encodeURIComponent(value);
+      }
+      return value;
+    },
+
+    play: function () this.player.api_play(),
+
+    pause: function () this.player.api_pause()
+  };
+
+  // }}}
+
+  /*********************************************************************************
   * ContextMenu                                                                  {{{
   *********************************************************************************/
 
@@ -1239,7 +1506,8 @@ Thanks:
 
       this.players = {
         niconico: new NicoPlayer(this.stella),
-        youtube: new YouTubePlayer(this.stella)
+        youtube: new YouTubePlayer(this.stella),
+        vimeo: new VimeoPlayer(this.stella)
       };
 
       this.createStatusPanel();
@@ -1292,7 +1560,7 @@ Thanks:
             ? funcS
             : function (arg) {
                 if (!self.isValid)
-                  U.raise('Stella: Current page is not supported');
+                  U.raiseNotSupportedPage();
                 let p = self.player;
                 let func = arg.bang ? funcB : funcS;
                 if (p.has(func, 'rwt'))
@@ -1302,7 +1570,7 @@ Thanks:
                 else if (p.has(func, 'x'))
                   p[func].apply(p, arg);
                 else
-                  U.raise('Stella: The function is not supported in this page.');
+                  U.raiseNotSupportedFunction();
                 self.update();
               },
           {argCount: '*', bang: !!funcB},
@@ -1324,9 +1592,35 @@ Thanks:
         add('sa[y]', 'say');
 
       commands.addUserCommand(
+        ['stqu[ality]'],
+        'Quality - Stella',
+        function (args) {
+          if (!self.isValid)
+            return U.raiseNotSupportedPage();
+          if (!self.player.has('quality', 'w'))
+            return U.raiseNotSupportedFunction();
+
+          self.player.quality = args.literalArg;
+        },
+        {
+          literal: 0,
+          completer: function (context) {
+            if (!self.player.has('qualities', 'r'))
+              return;
+            context.title = ['Quality', 'Description'];
+            context.completions = [[q, q] for each ([, q] in self.player.qualities)];
+          }
+        },
+        true
+      );
+
+      commands.addUserCommand(
         ['strel[ations]'],
         'relations - Stella',
         function (args) {
+          if (!self.isValid)
+            return U.raiseNotSupportedPage();
+
           let arg = args.string;
           let url = self.player.has('makeURL', 'x') ? makeRelationURL(self.player, arg) : arg;
           liberator.open(url, args.bang ? liberator.NEW_TAB : liberator.CURRENT_TAB);
@@ -1336,14 +1630,35 @@ Thanks:
           bang: true,
           completer: function (context, args) {
             if (!self.isValid)
-              U.raise('Stella: Current page is not supported');
+              U.raiseNotSupportedPage();
             if (!self.player.has('relations', 'r'))
-              return;
+              U.raiseNotSupportedFunction();
+
             context.title = ['Tag/ID', 'Description'];
+            context.keys = {text: 'text', description: 'description', thumbnail: 'thumbnail'};
+            let process = Array.slice(context.process);
+            context.process = [
+              process[0],
+              function (item, text)
+                (item.thumbnail ? <><img src={item.thumbnail} style="margin-right: 0.5em;"/>{text}</>
+                                : process[1].apply(this, arguments))
+            ];
             context.completions = self.player.relations.map(function (rel) rel.completionItem);
           },
         },
         true
+      );
+    },
+
+    addPageInfo: function () {
+      let self = this;
+      buffer.addPageInfoSection(
+        'S',
+        'Stella Info',
+        function (verbose)
+          (self.isValid && self.player.has('pageinfo', 'r')
+            ? self.player.pageinfo
+            : [])
       );
     },
 
@@ -1644,6 +1959,7 @@ Thanks:
     let install = function () {
       let stella = liberator.globalVariables.stella = new Stella(new Setting());
       stella.addUserCommands();
+      stella.addPageInfo();
       liberator.log('Stella: installed.');
     };
 

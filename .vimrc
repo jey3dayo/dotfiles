@@ -147,11 +147,11 @@ set directory=~/tmp
 
 " tab
 nnoremap <C-t>  <Nop>
-nnoremap <C-t>c  :<C-u>tabnew<CR>
+nnoremap <C-t>n  :<C-u>tabnew<CR>
 nnoremap <C-t>d  :<C-u>tabclose<CR>
 nnoremap <C-t>o  :<C-u>tabonly<CR>
-nnoremap <C-t>n  :<C-u>tabnext<CR>
-nnoremap <C-t>p  :<C-u>tabprevious<CR>
+nnoremap <C-t>j  :<C-u>tabnext<CR>
+nnoremap <C-t>k  :<C-u>tabprevious<CR>
 nnoremap gt  :<C-u>tabnext<CR>
 nnoremap gT  :<C-u>tabprevious<CR>
 
@@ -164,6 +164,7 @@ set shellslash
 inoremap <Leader>date <C-R>=strftime('%Y/%m/%d (%a)')<CR>
 inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
 inoremap <Leader>w3cd <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
+inoremap <Leader>sign Junya Nakazato <C-R>=strftime('%Y/%m/%d %H:%M')<CR>
 
 " set grepprg=grep\ -nH\ $*
 
