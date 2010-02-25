@@ -139,6 +139,7 @@ alias top="top -RFXu"
 alias hg="hg --encoding=utf-8"
 
 alias growlcall="growlnotify -t "Terminal" -m 'Finishing the Task.' -H localhost"
+alias cdwork="~/Documents/NintendoZone/nz_dorapura/trunk/"
 
 case "${OSTYPE}" in
 darwin*)

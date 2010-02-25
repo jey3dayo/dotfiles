@@ -91,15 +91,6 @@ nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
 
 
-" link jump
-nnoremap t  <Nop>
-nnoremap tt  <C-]>
-nnoremap tj  :<C-u>tag<CR>
-nnoremap tk  :<C-u>pop<CR>
-nnoremap tl  :<C-u>tags<CR>
-
-
-
 " ruler
 " augroup cch
 "   autocmd! cch
@@ -145,6 +136,15 @@ set backupdir=~/tmp
 set directory=~/tmp
 
 
+" link jump
+nnoremap t  <Nop>
+nnoremap tt  <C-]>
+nnoremap tj  :<C-u>tag<CR>
+nnoremap tk  :<C-u>pop<CR>
+nnoremap <Leader>t :<C-u>tags<CR>
+nnoremap <C-t>t  :<C-u>pop<CR>
+
+
 " tab
 nnoremap <C-t>  <Nop>
 nnoremap <C-t>n  :<C-u>tabnew<CR>
@@ -164,7 +164,8 @@ set shellslash
 inoremap <Leader>date <C-R>=strftime('%Y/%m/%d (%a)')<CR>
 inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
 inoremap <Leader>w3cd <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
-inoremap <Leader>sign Junya Nakazato <C-R>=strftime('%Y/%m/%d %H:%M')<CR>
+inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
+inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 
 " set grepprg=grep\ -nH\ $*
 
