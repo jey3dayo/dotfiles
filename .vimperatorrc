@@ -85,13 +85,15 @@ liberator.globalVariables.copy_templates = [
 ];
 EOM
 
-" feedsomekey_2.js
-autocmd LocationChange .* :fmapc
-autocmd LocationChange 'reader\.livedoor\.com/reader' :fmap j k s a p o v c <Space> <S-Space> z b < >
-autocmd LocationChange 'mail\.google\.com/mail' :fmap -depth 4 c / j k n p o u e x s r a y # [ ] z ? gi gs gd ga gc
-autocmd LocationChange 'www\.google\.co\.jp/reader' :fmap! -vkey j k n p m s v r S N P X O gh ga gs gu u / ?
-autocmd LocationChange 'www\.google\.com/reader' :fmap! -vkey j k n p m s v A r S N P X O gh ga gs gu u / ?
-autocmd LocationChange 'www\.rememberthemilk\.com/home' :fmap! -vkey c s u y z 1 2 3 4 a n k j i m 
+" feedsomekey_3.js
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='www\.google\.co\.jp/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
+lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
+lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? t F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
 
 
 " direct_bookmark.js

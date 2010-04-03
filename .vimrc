@@ -84,7 +84,11 @@ nnoremap <Leader>Y  :<C-u>YRSearch<CR>
 nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
-nnoremap <Leader>gw :<C-u>vimgrep /./ %\|cwindow
+
+nnoremap <Leader>gr :<C-u>vimgrep // *\|cwindow<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+nnoremap <Leader>gx  :vimgrep /XXX/j *\|cw<CR>
+nnoremap <Leader>gt :vimgrep /TODO/j *\|cw<CR>
+nnoremap <Leader>gf :vimgrep /FIXME/j *\|cw<CR>
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
