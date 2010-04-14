@@ -1,3 +1,17 @@
 [user]
-	name = j138
-	email = j138cm@gmail.com
+    name  = j138
+    email = j138cm@gmail.com
+[color]
+    status  = auto
+    diff    = auto
+    branche = auto
+[core]
+    excludesfile = ~/.gitignore
+[alias]
+    co = checkout
+    ci = commit -a
+    st = status
+    up = pull --rebase
+[github]
+    user  = j138
+    token = qwertyuiopasdfghjkl

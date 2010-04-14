@@ -6,7 +6,7 @@ rsync --progress --delete -avp ~/Library/Application\ Support/Firefox/Profiles/*
 rsync --progress --delete -avp ~/log           ~/Documents/dotfiles/
 
 rsync --progress -avp ~/.colordiffrc           ~/Documents/dotfiles/
-rsync --progress -avp ~/.gitignore             ~/Documents/dotfiles/
+rsync --progress -avp ~/.gitconfig             ~/Documents/dotfiles/
 rsync --progress -avp ~/.gvimrc                ~/Documents/dotfiles/
 rsync --progress -avp ~/.screenrc              ~/Documents/dotfiles/
 rsync --progress -avp ~/.tmux.conf             ~/Documents/dotfiles/
