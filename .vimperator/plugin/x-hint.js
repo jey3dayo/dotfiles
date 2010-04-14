@@ -39,7 +39,7 @@ let PLUGIN_INFO =
   <name lang="ja">X-Hint</name>
   <description>Show the hints with given XPath.</description>
   <description lang="ja">指定のXPathでヒントを表示する。</description>
-  <version>1.0.0</version>
+  <version>1.1.2</version>
   <author mail="anekos@snca.net" homepage="http://d.hatena.ne.jp/nokturnalmortum/">anekos</author>
   <license>new BSD License (Please read the source code comments of this plugin)</license>
   <license lang="ja">修正BSDライセンス (ソースコードのコメントを参照してください)</license>
@@ -59,7 +59,7 @@ let PLUGIN_INFO =
 // INFO {{{
 let INFO =
 <>
-  <plugin name="X-Hint" version="1.0.0"
+  <plugin name="X-Hint" version="1.1.2"
           href="http://svn.coderepos.org/share/lang/javascript/vimperator-plugins/trunk/x-hint.js"
           summary="Show the hints with given XPath."
           lang="en-US"
@@ -78,8 +78,20 @@ let INFO =
         </p>
       </description>
     </item>
+    <item>
+      <tags>:xhintdo</tags>
+      <tags>:xhdo</tags>
+      <spec>:xhintdo <a>XPath</a> <a>javascript</a></spec>
+      <description>
+        <p>
+          Show the hints with <a>XPath</a>.
+          And do <a>javascript</a> code.
+          This command gives the variable "elem" to the context of <a>javascript</a>.
+        </p>
+      </description>
+    </item>
   </plugin>
-  <plugin name="X-Hint" version="1.0.0"
+  <plugin name="X-Hint" version="1.1.2"
           href="http://svn.coderepos.org/share/lang/javascript/vimperator-plugins/trunk/x-hint.js"
           summary="Show the hints with given XPath."
           lang="ja"
@@ -98,6 +110,17 @@ let INFO =
         </p>
       </description>
     </item>
+    <item>
+      <tags>:xhintdo</tags>
+      <tags>:xhdo</tags>
+      <spec>:xhintdo <a>XPath</a> <a>javascript</a></spec>
+      <description>
+        <p>
+          <a>XPath</a> でヒントを出し、<a>javascript</a> コードを実行します。
+          <a>javascript</a> の context には 変数 "elem" が与えられます。
+        </p>
+      </description>
+    </item>
   </plugin>
 </>;
 // }}}
@@ -105,18 +128,18 @@ let INFO =
 
 (function () {
 
-  const description = 'Show the hint with given xpath';
+  const description = 'Show the hint with given xpath.';
 
   let last = {};
 
   function xpath ()
-    ((last.args && last.args.literalArg) || '//a')
+    (last.xpath || '//a')
 
   plugins.libly.$U.around(
     hints,
     'show',
     function (next, [minor, filter, win]) {
-      if (last.args) {
+      if (last.xpath) {
         // save
         last.hintMode = this._hintModes[minor];
         last.hintTags = last.hintMode.tags;
@@ -140,18 +163,57 @@ let INFO =
     true
   );
 
+  function showHintsWith (mode, xpath) {
+    last.xpath = xpath;
+    hints.show(mode);
+  }
+
+  __context__.show = showHintsWith;
+
   commands.addUserCommand(
     ['xh[int]'],
-    description,
+    description + '(:xhint <mode> <xpath>)',
     function (args) {
-      last.args = args;
-      hints.show(args[0]);
+      showHintsWith(args[0], args.literalArg);
     },
     {
       literal: 1
     },
     true
   );
+
+  let (hintModeText = 'x-hint-do', js = null) {
+    hints.addMode(
+      hintModeText,
+      'X-Hint DO',
+      function (elem) {
+        let context = {__proto__: modules.userContext, elem: elem};
+        try {
+          liberator.eval(js, context);
+        } catch (e) {
+          liberator.echoerr(e);
+        }
+      }
+    );
+
+    commands.addUserCommand(
+      ['xhintdo', 'xhdo'],
+      'Run js-code with X-Hint. (:xhdo <xpath> <javascript>)',
+      function (args) {
+        js  = args.literalArg;
+        showHintsWith(hintModeText, args[0]);
+      },
+      {
+        literal: 1,
+        completer: function (context, args) {
+          if (args.completeArg == 1)
+            completion.javascript(context);
+        }
+      },
+      true
+    );
+  }
+
 })();
 
 // vim:sw=2 ts=2 et si fdm=marker:

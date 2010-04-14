@@ -1,0 +1,7 @@
+banner=no
+color_patches=no
+plain=off
+newtext=cyan
+oldtext=red
+diffstuff=yellow
+cvsstuff=blue

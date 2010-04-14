@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system'
+let g:netrw_dirhist_2='/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system/main_login'
+let g:netrw_dirhist_3='/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system/main_login/main_menu'
+let g:netrw_dirhist_4='/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system/main_login/main_menu/rilakkuma_contents'

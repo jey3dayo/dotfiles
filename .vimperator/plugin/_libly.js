@@ -12,9 +12,9 @@ var PLUGIN_INFO =
     <description lang="ja">適当なライブラリっぽいものたち。</description>
     <author mail="suvene@zeromemory.info" homepage="http://zeromemory.sblo.jp/">suVene</author>
     <license>MIT</license>
-    <version>0.1.30</version>
+    <version>0.1.33</version>
     <minVersion>2.3pre</minVersion>
-    <maxVersion>2.3pre</maxVersion>
+    <maxVersion>2.3</maxVersion>
     <updateURL>http://svn.coderepos.org/share/lang/javascript/vimperator-plugins/trunk/_libly.js</updateURL>
     <detail><![CDATA[
 == Objects ==
@@ -252,27 +252,30 @@ libly.$U = {//{{{
             let restore = function () obj[name] = original;
             if (autoRestore) {
                 let pluginPath = getPluginPath();
-                if (!pluginPath)
-                    throw 'getPluginPath failed';
-                restores[pluginPath] =
-                    (restores[pluginPath] || []).filter(
-                        function (res) (
-                            res.object != obj ||
-                            res.name != name ||
-                            (res.restore() && false)
-                        )
-                    );
-                restores[pluginPath].push({
-                    object: obj,
-                    name: name,
-                    restore: restore
-                });
+                if (pluginPath) {
+                    restores[pluginPath] =
+                        (restores[pluginPath] || []).filter(
+                            function (res) (
+                                res.object != obj ||
+                                res.name != name ||
+                                (res.restore() && false)
+                            )
+                        );
+                    restores[pluginPath].push({
+                        object: obj,
+                        name: name,
+                        restore: restore
+                    });
+                } else {
+                    liberator.echoerr('getPluginPath failed');
+                }
             }
             original = obj[name];
             let current = obj[name] = function () {
                 let self = this, args = arguments;
                 return func.call(self, function (_args) original.apply(self, _args || args), args);
             };
+            libly.$U.extend(current, {original: original.original || original, restore: restore});
             return libly.$U.extend({
                 original: original,
                 current: current,
@@ -415,7 +418,8 @@ libly.$U = {//{{{
         let uhService = Cc["@mozilla.org/feed-unescapehtml;1"].getService(Ci.nsIScriptableUnescapeHTML);
         let text = str.replace(/^[\s\S]*?<body([ \t\n\r][^>]*)?>[\s]*|<\/body[ \t\r\n]*>[\S\s]*$/ig, '');
         let fragment = uhService.parseFragment(text, false, null, root);
-        let htmlFragment = document.implementation.createDocument(null, 'html', null);
+        let doctype = document.implementation.createDocumentType('html', '-//W3C//DTD HTML 4.01//EN', 'http://www.w3.org/TR/html4/strict.dtd');
+        let htmlFragment = document.implementation.createDocument(null, 'html', doctype);
         htmlFragment.documentElement.appendChild(htmlFragment.importNode(fragment,true));
         return htmlFragment;
         /* うまく動いていない場合はこちらに戻してください
