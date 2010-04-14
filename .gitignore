@@ -1,7 +1,9 @@
-.DS_Store
 Thumbs.db
+.DS_Store
 history-command
 history-search
 plugins-hatena-bookmark-search-data
 plugins-libly-wedata-AutoPagerize-items
 plugins-pluginManager
+.ssh
+auth
