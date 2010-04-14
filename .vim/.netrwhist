@@ -1,6 +1,13 @@
 let g:netrw_dirhistmax  =10
 let g:netrw_dirhist_cnt =4
+<<<<<<< HEAD
 let g:netrw_dirhist_1='/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system'
 let g:netrw_dirhist_2='/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system/main_login'
 let g:netrw_dirhist_3='/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system/main_login/main_menu'
 let g:netrw_dirhist_4='/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system/main_login/main_menu/rilakkuma_contents'
+=======
+let g:netrw_dirhist_1='/Users/leopard/Sites/tose_htdocs/trunk/jp/company'
+let g:netrw_dirhist_2='/Users/leopard/Documents/NintendoZone/nz_kurazushi/trunk/documents/csvファイル/おすすめメニュー'
+let g:netrw_dirhist_3='/Users/leopard/Sites/tose_htdocs/trunk/en/company'
+let g:netrw_dirhist_4='/Users/leopard/Documents/NintendoZone/nz_kurazushi/trunk/documents/csvファイル/アレルゲン情報'
+>>>>>>> 04fbd280d3b92c0f33f62cfa849b7863c12108c7
