@@ -1,9 +1,10 @@
-Thumbs.db
 .DS_Store
+.ssh
+Thumbs.db
+auth
 history-command
 history-search
+log
 plugins-hatena-bookmark-search-data
 plugins-libly-wedata-AutoPagerize-items
 plugins-pluginManager
-.ssh
-auth
