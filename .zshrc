@@ -133,6 +133,7 @@ alias l='ls -lAFh --color=auto'
 alias la='ls -a --color=auto'
 alias ll='ls -lAFh --color=auto | less'
 alias ls='ls --color=auto'
+# alias lf='ls --color=auto -al|awk \'{print $8}\''
 alias su="su -l"
 alias o="open"
 alias top="top -R -F -u"

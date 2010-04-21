@@ -9,6 +9,9 @@ unlet s:cpo_save
 let mapleader = ","
 
 
+nnoremap <Leader>ff :%s/left=/left:/g<CR>:%s/top=/top:/g<CR>
+nnoremap <Leader>gg :%s/left:/left=/g<CR>:%s/top:/top=/g<CR>
+
 " vim: set ft=vim :
 syntax enable
 set encoding=utf-8
