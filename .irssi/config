@@ -31,7 +31,7 @@ servers = (
     address = "nadekosnake.com";
     chatnet = "twitter";
     port = "16667";
-    password = "qbsm59ivg";
+    #password = "fixme";
   }
 );
 
