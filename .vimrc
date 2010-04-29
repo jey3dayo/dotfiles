@@ -8,9 +8,9 @@ let &cpo=s:cpo_save
 unlet s:cpo_save
 let mapleader = ","
 
-
 nnoremap <Leader>ff :%s/left=/left:/g<CR>:%s/top=/top:/g<CR>
 nnoremap <Leader>gg :%s/left:/left=/g<CR>:%s/top:/top=/g<CR>
+
 
 " vim: set ft=vim :
 syntax enable
@@ -37,7 +37,6 @@ match ZenkakuSpace /　/
 set autoindent
 set backspace=2
 set helplang=ja
-set incsearch
 set modelines=0
 set nocompatible
 set nrformats-=octal
@@ -50,7 +49,8 @@ set wildmenu
 set fdm=marker
 
 set laststatus=2
-set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+"set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+set statusline=%F%m%r%h%w\%=\[%{&ff}]\[%{&fileencoding}]\[%l/%L][%3P]
 
 
 " search setting
@@ -68,9 +68,9 @@ set expandtab
 set tw=0
 
 
- if v:version < 700
+if v:version < 700
     set migemo
- endif
+endif
 
 filetype on
 filetype plugin on
@@ -105,8 +105,8 @@ nnoremap <Tab> :<C-u>wincmd w<CR>
 "   autocmd WinEnter,BufRead * set cursorcolumn cursorline
 " augroup END
 " 
-" highlight CursorLine guibg=white
-" highlight CursorColumn  guibg=white
+"highlight CursorLine guibg=white
+"highlight CursorColumn  guibg=white
 highlight FoldColumn  guibg=white guifg=blue
 
 
@@ -115,16 +115,16 @@ highlight FoldColumn  guibg=white guifg=blue
 " This function determines, wether we are on the start of the line text (then tab indents) or
 " if we want to try autocompletion
 function! InsertTabWrapper()
-        let col = col('.') - 1
-        if !col || getline('.')[col - 1] !~ '\k'
-                return "\<TAB>"
+    let col = col('.') - 1
+    if !col || getline('.')[col - 1] !~ '\k'
+        return "\<TAB>"
+    else
+        if pumvisible()
+            return "\<C-N>"
         else
-                if pumvisible()
-                        return "\<C-N>"
-                else
-                        return "\<C-N>\<C-P>"
-                end
-        endif
+            return "\<C-N>\<C-P>"
+        end
+    endif
 endfunction
 
 
@@ -141,6 +141,7 @@ let TMP = '~/tmp'
 " set directory=$TMP.'/vim'
 set backupdir=~/tmp
 set directory=~/tmp
+set viminfo+=n~/tmp
 
 
 " link jump
@@ -167,6 +168,7 @@ nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 
 set shellslash
 
+
 " macro
 inoremap <Leader>date <C-R>=strftime('%Y/%m/%d (%a)')<CR>
 inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
@@ -176,8 +178,10 @@ inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 
 " set grepprg=grep\ -nH\ $*
 
+
 " Rename Command
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
+
 
 " create dvi command
 let g:Tex_CompileRule_dvi = 'platex --interaction=nonstopmode $*'
@@ -201,14 +205,14 @@ let g:Tex_CompileRule_pdf = '/usr/local/bin/dvipdfmx $*.dvi'
 "let g:Tex_CompileRule_dvi = '/usr/local/bin/platex-sjis --interaction-nonstopmode $*'
 let g:Tex_CompileRule_dvi = '/usr/local/bin/platex --interaction-nonstopmode $*'
 let g:Tex_IgnoredWarnings =
-      \"Underfull\n".
-      \"Overfull\n".
-      \"specifier changed to\n".
-      \"You have requested\n".
-      \"Missing number, treated as zero.\n".
-      \"There were undefined references\n".
-      \"Citation %.%# undefined\n".
-      \'LaTeX Font Warning:'"
+            \"Underfull\n".
+            \"Overfull\n".
+            \"specifier changed to\n".
+            \"You have requested\n".
+            \"Missing number, treated as zero.\n".
+            \"There were undefined references\n".
+            \"Citation %.%# undefined\n".
+            \'LaTeX Font Warning:'"
 let g:Tex_IgnoreLevel = 8
 
 
