@@ -136,7 +136,7 @@ alias ls='ls --color=auto'
 # alias lf='ls --color=auto -al|awk \'{print $8}\''
 alias su="su -l"
 alias o="open"
-alias top="top -R -F -u"
+alias top="top -ocpu -s5"
 alias hg="hg --encoding=utf-8"
 
 alias growlcall="growlnotify -t "Terminal" -m 'Finishing the Task.' -H localhost"
