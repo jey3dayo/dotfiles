@@ -4,34 +4,30 @@
 // @include     http://reader.livedoor.com/reader/*
 // @include     http://fastladder.com/reader/*
 // @description loading full entry on LDR and Fastladder
-// @version     0.0.20
+// @version     0.0.26
+// @require     http://gist.github.com/184276.txt
 // @resource    orange  http://github.com/Constellation/ldrfullfeed/raw/master/orange.gif
 // @resource    blue    http://github.com/Constellation/ldrfullfeed/raw/master/blue.gif
 // @resource    css     http://github.com/Constellation/ldrfullfeed/raw/master/ldrfullfeed.css
-// @require     http://gist.github.com/3242.txt
-// @require     http://gist.github.com/43358.txt
 // @author      Constellation
-// using [ simple version of $X   ] (c) id:os0x
-//       [ Array.reduce extension ] (c) id:os0x
-//       [ relativeToAbsolutePath ] (c) id:Yuichirou
-//       [ filter                 ] copied from LDR-Prefav   (c) id:brazil
-//       [ parseHTML              ] copied from Pagerization (c) id:ofk
-//       [ addStyle               ] copied from LDRize       (c) id:snj14
+// using [ $X + prefix / createHTML ] (c) id:nanto_vi id:os0x
+//       [ relativeToAbsolutePath   ] (c) id:Yuichirou
+//       [ filter                   ] copied from LDR-Prefav   (c) id:brazil
+//       [ addStyle                 ] copied from LDRize       (c) id:snj14
 // thanks
 // ==/UserScript==
 
 (function(w){
-
 // == [CSS] =========================================================
 const CSS = GM_getResourceText('css');
 
 // == [Config] ======================================================
 
-const VERSION = '0.0.20'
+const VERSION = '0.0.26'
 
 const ICON = 'orange' // or blue
 
-const KEY = 'g';
+const KEY = GM_getValue('key', 'g');
 const GET_SITEINFO_KEY = 'G';
 const GET_ALL = true;
 const GET_ALL_KEY = 'u';
@@ -56,6 +52,7 @@ const XHR_TIMEOUT = 30 * 1000;
 //const XHR_TIMEOUT = 15 * 1000;
 
 const DEBUG = false;
+const FLASH = false;
 
 // SITEINFO_IMPORT_URLS
 // [require ] name        => as you like
@@ -69,7 +66,6 @@ const SITEINFO_IMPORT_URLS = [
   format:'JSON',
   type:'LDRFullFeed',
   url: 'http://wedata.net/databases/LDRFullFeed/items.json',
-  alternative: 'http://utatane.appjet.net/databases/LDRFullFeed/items.json'
 },
 {
   name:'Microformats URL List',
@@ -82,8 +78,7 @@ const SITEINFO_IMPORT_URLS = [
   format:'JSON',
   type:'AutoPagerize',
   url: 'http://wedata.net/databases/AutoPagerize/items.json',
-  alternative: 'http://utatane.appjet.net/databases/AutoPagerize/items.json'
-},
+}
 //{format:'HTML', url: 'http://constellation.jottit.com/siteinfo'},
 //{format:'HTML', url: 'http://constellation.jottit.com/test'},
 ];
@@ -141,7 +136,7 @@ var FullFeed = function(info, c){
   this.info = info;
   this.type = 'FullFeed';
 
-  this.requestURL = this.data.itemURL;
+  this.requestURL = this.data.itemURL.replace(/&amp;/g, '&');
   var bodyXPath = 'id("item_body_' + this.data.id + '")/div[@class="body"]';
   this.data.item_body = $X(bodyXPath, document)[0];
   this.state = 'wait';
@@ -182,9 +177,9 @@ FullFeed.prototype.load = function(res){
   var self = this;
 
   try {
-    text = text.replace(FullFeed.regs.text, "$1");
-    if (REMOVE_IFRAME)  text = text.replace(FullFeed.regs.iframe, "");
-    var htmldoc = parseHTML(text);
+    text = text.replace(/(<[^>]+?[\s"'])on(?:(?:un)?load|(?:dbl)?click|mouse(?:down|up|over|move|out)|key(?:press|down|up)|focus|blur|submit|reset|select|change)\s*=\s*(?:"(?:\\"|[^"])*"?|'(\\'|[^'])*'?|[^\s>]+(?=[\s>]|<\w))(?=[^>]*?>|<\w|\s*$)/gi, "$1");
+    if (REMOVE_IFRAME)  text = text.replace(/<iframe(?:\s[^>]+?)?>[\S\s]*?<\/iframe\s*>/gi, "");
+    var htmldoc = createDocumentFromString(text);
     removeXSSRisk(htmldoc);
     if(res.finalUrl){
       this.requestURL = res.finalUrl;
@@ -211,7 +206,7 @@ FullFeed.prototype.getFullFeed = function(htmldoc){
     this.entry = getElementsByMicroformats(htmldoc)
   }
 
-  if(this.entry.length == 0){
+  if(this.entry.length === 0){
     try{
       this.entry = $X(this.info.xpath, htmldoc);
     } catch(e) {
@@ -227,10 +222,10 @@ FullFeed.prototype.getFullFeed = function(htmldoc){
       }, this)
       .sort(function(a, b){ return (b.url.length - a.url.length) });
 
-  if(USE_AUTOPAGERIZE_SITEINFO && this.entry.length == 0){
+  if(USE_AUTOPAGERIZE_SITEINFO && this.entry.length === 0){
     log(this.apList)
     this.apList.some(function(i){
-      if(i.name=='hAtom' || i.name=='autopagerize_microformat') return false;
+      if(i.name==='hAtom' || i.name==='autopagerize_microformat') return false;
       try {
         var entry = $X(i.pageElement, htmldoc);
       } catch(e) { return false }
@@ -243,12 +238,12 @@ FullFeed.prototype.getFullFeed = function(htmldoc){
     },this);
   }
 
-  if(AUTO_SEARCH && this.entry.length == 0){
+  if(AUTO_SEARCH && this.entry.length === 0){
     log('FULLFEED: Auto Search');
     this.entry = searchEntry(htmldoc);
   }
 
-  if(EXTRACT_TEXT && this.entry.length == 0){
+  if(EXTRACT_TEXT && this.entry.length === 0){
     log('FULLFEED: Extract Text');
     this.entry = extractText(htmldoc);
   }
@@ -259,7 +254,7 @@ FullFeed.prototype.getFullFeed = function(htmldoc){
 FullFeed.prototype.getAutoPager = function(htmldoc){
   try {
     this.entry = $X(this.info.xpath, htmldoc);
-    (this.entry.length == 0) && (this.entry = $X(this.ap.pageElement, htmldoc));
+    (this.entry.length === 0) && (this.entry = $X(this.ap.pageElement, htmldoc));
     this.nextLink = $X(this.ap.nextLink, htmldoc);
   } catch(e) {
     this.enable = false;
@@ -308,11 +303,26 @@ FullFeed.prototype.createSpaceAutoPager = function(){
 
 FullFeed.prototype.addEntry = function(){
   var df = this['createSpace'+this.type]();
+  var xml = new XMLSerializer();
+  var div = document.createElement('div');
   this.entry.forEach(function(i){
     try {
       i = document.adoptNode(i, true);
     }catch(e){
       i = document.importNode(i, true);
+    }
+    if(FLASH){
+      // for YouTube etc.
+      $X('descendant-or-self::object', i).forEach(function(elm){
+        var parent = elm.parentNode;
+        div.innerHTML = xml.serializeToString(elm);
+        var flash = div.firstChild;
+        if(parent) {
+          parent.replaceChild(flash, elm);
+        } else {
+          i = flash;
+        }
+      });
     }
     df.appendChild(i);
   });
@@ -360,11 +370,6 @@ FullFeed.prototype.searchAutoPagerData = function (htmldoc){
   }
 }
 
-FullFeed.regs = {
-  text: /(<[^>]+?[\s"'])on(?:(?:un)?load|(?:dbl)?click|mouse(?:down|up|over|move|out)|key(?:press|down|up)|focus|blur|submit|reset|select|change)\s*=\s*(?:"(?:\\"|[^"])*"?|'(\\'|[^'])*'?|[^\s>]+(?=[\s>]|<\w))(?=[^>]*?>|<\w|\s*$)/gi,
-  iframe: /<iframe(?:\s[^>]+?)?>[\S\s]*?<\/iframe\s*>/gi
-};
-
 FullFeed.register = function(){
   var hasClass = w.hasClass;
   var addClass = w.addClass;
@@ -380,8 +385,7 @@ FullFeed.register = function(){
   var icon_data = GM_getResourceURL(ICON);
   var description = "\u5168\u6587\u53d6\u5f97\u3067\u304d\u308b\u3088\uff01";
   w.entry_widgets.add('gm_fullfeed_widget', function(feed, item){
-    var pattern = Manager.pattern;
-    if(pattern && (pattern.test(item.link) || pattern.test(feed.channel.link)) && !ADCHECKER.test(item.title)) {
+    if((Manager.matchPattern(item.link) || Manager.matchPattern(feed.channel.link)) && !ADCHECKER.test(item.title)) {
       if(CLICKABLE) return [
         '<img class="gm_fullfeed_icon_disable" id="gm_fullfeed_widget_'+item.id+'" src="'+icon_data+'">'
       ].join('');
@@ -474,18 +478,17 @@ window.FullFeed.addFilter(function(nodes, url){
     h2_span.className = 'gm_fullfeed_h2';
     window.FullFeed.addFilter(function(nodes, url){
       filter(nodes, function(e){
-        var n = e.nodeName;
-        if(n.indexOf('SCRIPT') == 0) return false;
-        if(n.indexOf('H2') == 0) return false;
+        var n = e.nodeName.toLowerCase();
+        if(n === 'script' || n === 'h2') return false;
         return true;
       });
       nodes.forEach(function(e){
         $X('descendant-or-self::*[self::script or self::h2]', e)
         .forEach(function(i){
-          var n = i.nodeName;
+          var n = i.nodeName.toLowerCase();
           var r = h2_span.cloneNode(false);
-          if(n == 'SCRIPT') i.parentNode.removeChild(i);
-          if(n == 'H2'){
+          if(n === 'script') i.parentNode.removeChild(i);
+          if(n === 'h2'){
             $A(i.childNodes).forEach(function(child){ r.appendChild(child.cloneNode(true)) });
             i.parentNode.replaceChild(r, i);
           }
@@ -563,7 +566,7 @@ Cache.prototype.finalize = function(){
     ldrfullfeed  : this.ldrfullfeed,
     autopagerize : this.autopagerize
   };
-  GM_setValue('cache', manager.info.toSource());
+  GM_setValue('cache', JSON.stringify(manager.info));
   log(manager.info);
   this.error_flag || message('Resetting cache. Please wait... Done');
   manager.state = 'normal';
@@ -619,7 +622,7 @@ Agent.prototype = {
       ap_list.push(i);
     });
     log('REQUEST END');
-    if(++this.Cache.success == this.Cache.length) this.Cache.finalize();
+    if(++this.Cache.success === this.Cache.length) this.Cache.finalize();
   },
   onload_LDRFULLFEED: function(res){
     var info = Agent[this.format].LDRFULLFEED(res.responseText, this.index);
@@ -628,7 +631,7 @@ Agent.prototype = {
       var fullfeed_list = this.Cache.ldrfullfeed[i.type];
       info.filter(function(d){
         var type = d.type.toUpperCase();
-        return (type == i.type || (i.sub && type == i.sub));
+        return (type === i.type || (i.sub && type === i.sub));
       })
       .forEach(function(d){
         fullfeed_list.push(d);
@@ -636,7 +639,7 @@ Agent.prototype = {
       log('CACHE: ' + i.type + ':ok');
     }, this);
     log('REQUEST END');
-    if(++this.Cache.success == this.Cache.length) this.Cache.finalize();
+    if(++this.Cache.success === this.Cache.length) this.Cache.finalize();
   },
   ontimeout: function(){
     log('TIMEOUT');
@@ -647,11 +650,11 @@ Agent.prototype = {
 Agent.JSON = {
   LDRFULLFEED: function(data, index){
     try {
-      return eval('('+data+')')
+      return JSON.parse(data)
       .reduce(function(memo, i){
         var d = i.data;
         d.name = i.name;
-        d.microformats = (d.microformats == 'true');
+        d.microformats = (d.microformats === 'true');
         d.urlIndex = index;
         if(['url', 'xpath', 'type'].some(function(prop){
           if(!d[prop] && (prop != 'xpath' || !d.microformats)) return true;
@@ -676,8 +679,7 @@ Agent.JSON = {
     var info = [];
     var ap_list = this.autopagerize;
     try {
-      //Fx2 support
-      return eval('('+data+')')
+      return JSON.parse(data)
       .reduce(function(memo, i){
         var d = i.data;
         d.name = i.name;
@@ -699,7 +701,7 @@ Agent.HTML = {
   LDRFULLFEED: function(data, index){
     var info = [];
     try {
-      var doc = parseHTML(data);
+      var doc = createDocumentFromString(data);
     } catch(e) {
       return null;
     }
@@ -739,8 +741,8 @@ Agent.parseMicroformats = function(c, li, index){
 };
 
 Agent.parseSiteinfo = function(text, index){
-  var lines = text.split(Agent.regs.line);
-  var reg = Agent.regs.reg;
+  var lines = text.split(/[\r\n]+/);
+  var reg = /(^[^:]*?):(.*)$/;
   var trim = Agent.trim;
   var info = {};
   var result = null;
@@ -749,7 +751,7 @@ Agent.parseSiteinfo = function(text, index){
       info[result[1]] = trim(result[2]);
     }
   });
-  info.microformats = (info.microformats && info.microformats == 'true');
+  info.microformats = (info.microformats && info.microformats === 'true');
   if(['url', 'xpath', 'type'].some(function(prop){
     if(!info[prop] && (prop != 'xpath' || !info.microformats)) return true;
     try{
@@ -766,14 +768,7 @@ Agent.parseSiteinfo = function(text, index){
 };
 
 Agent.trim = function(str){
-  return str.replace(Agent.regs.former, '').replace(Agent.regs.latter, '');
-};
-
-Agent.regs = {
-  line: /[\r\n]+/,
-  reg: /(^[^:]*?):(.*)$/,
-  former: /^\s*/,
-  latter: /\s*$/
+  return str.replace(/^\s*/, '').replace(/\s*$/, '');
 };
 
 Agent.request = function(opt){
@@ -807,7 +802,7 @@ Agent.request = function(opt){
 // [Manager]
 var Manager = {
   info: null,
-  pattern: null,
+  patterns: [],
   state: 'normal',
   init: function(){
     var self = this;
@@ -841,7 +836,13 @@ var Manager = {
   },
   getSiteinfo: function(){
     var str = GM_getValue('cache', null);
-    if(str) this.info = eval(str);
+    if(str){
+      try{
+        this.info = JSON.parse(str);
+      } catch(e){
+        this.info = null;
+      }
+    }
     if(!this.info || !this.info.VERSION || (this.info.VERSION < VERSION)){
       var t = {};
       PHASE.forEach(function(i){t[i.type] = []});
@@ -861,7 +862,7 @@ var Manager = {
     }
   },
   resetSiteinfo: function(){
-    if(this.state == 'loading') return message('Now loading. Please wait!');
+    if(this.state === 'loading') return message('Now loading. Please wait!');
     var cacheAgent = new Cache(this);
   },
   rebuildLocalSiteinfo: function(){
@@ -884,8 +885,20 @@ var Manager = {
         });
       }
     }
-    var expression = exps.join('|');
-    expression && (this.pattern = new RegExp(expression));
+    var len = exps.length;
+    if (len > 100) {
+      var item = len / 3 | 0;
+      this.patterns[0] = new RegExp(exps.slice(0, item).join('|'));
+      this.patterns[1] = new RegExp(exps.slice(item, item+item).join('|'));
+      this.patterns[2] = new RegExp(exps.slice(item+item).join('|'));
+    } else if (len) {
+      this.patterns[0] = new RegExp(exps.join('|'));
+    }
+  },
+  matchPattern: function(text){
+    return this.patterns.some(function(pattern){
+      return pattern && pattern.test(text);
+    });
   },
   loadCurrentEntry: function(){
     this.check();
@@ -926,7 +939,7 @@ var Manager = {
         return c.found;
       }, this)){
         message('This entry is not listed on SITE_INFO');
-        if (OPEN) GM_openInTab(c.itemURL) || message('Cannot popup');
+        if (OPEN) setTimeout(GM_openInTab, 0, c.itemURL) || message('Cannot popup');
       }
     }
   },
@@ -1006,26 +1019,25 @@ function getElementsByMicroformats (htmldoc) {
 
 function removeXSSRisk (htmldoc){
   var attr = "allowscriptaccess";
-    $X("descendant-or-self::embed", htmldoc)
-      .forEach(function(elm){
-      if(!elm.hasAttribute(attr)) return;
-      elm.setAttribute(attr, "never");
-    });
-    $X("descendant-or-self::param", htmldoc)
-      .forEach(function(elm){
-      if(!elm.getAttribute("name") || elm.getAttribute("name").toLowerCase().indexOf(attr) < 0) return;
-      elm.setAttribute("value", "never");
-    });
+  $X("descendant-or-self::embed", htmldoc)
+    .forEach(function(elm){
+    if(!elm.hasAttribute(attr)) return;
+    elm.setAttribute(attr, "never");
+  });
+  $X("descendant-or-self::param", htmldoc)
+    .forEach(function(elm){
+    if(!elm.getAttribute("name") || elm.getAttribute("name").toLowerCase().indexOf(attr) < 0) return;
+    elm.setAttribute("value", "never");
+  });
 }
 
 function extractText (htmldoc) {
   var div = document.createElement('div');
   $X('(descendant-or-self::text()[../self::*[self::div or self::table or self::td or self::th or self::tr or self::dt or self::dd or self::font or self::strong or self::ul or self::li]]|descendant-or-self::img|descendant-or-self::a)', htmldoc)
     .map(function(i){
-      log(i.parentNode.nodeName);
-      if(i.nodeName == 'IMG')
+      if(i.nodeName === 'IMG')
         return i;
-      else if(i.nodeName == 'A')
+      else if(i.nodeName === 'A')
         return i;
       else{
         i.nodeValue = i.nodeValue+'\n'
@@ -1058,7 +1070,7 @@ function searchEntry(htmldoc) {
 ].join('');
   try {
     var elms = $X(xpath, htmldoc);
-    if(elms.length == 0) return entry;
+    if(elms.length === 0) return entry;
     elms.forEach(function(e){
       // var n = e.getElementsByTagName('br').length;
       var n = e.textContent.length;
@@ -1107,30 +1119,39 @@ function path_resolver(base){
 }
 
 function filter(a, f) {
-	for (var i = a.length; i --> 0; f(a[i]) || a.splice(i, 1));
+  for (var i = a.length; i --> 0; f(a[i]) || a.splice(i, 1));
 }
-
-function parseHTML(str) {
-  str = str.replace(parseHTML.reg, '');
-  var res = document.implementation.createDocument(null, 'html', null);
-  var range = document.createRange();
-  range.setStartAfter(document.body);
-  var fragment = range.createContextualFragment(str);
-  try {
-    fragment = res.adoptNode(fragment); //for Firefox3 beta4
-  } catch (e) {
-    fragment = res.importNode(fragment, true);
-  }
-  res.documentElement.appendChild(fragment);
-  return res;
-}
-parseHTML.reg = /^[\s\S]*?<html(?:\s[^>]+?)?>|<\/html\s*>[\S\s]*$/ig;
 
 function addStyle(css,id){ // GM_addStyle is slow
-	var link = document.createElement('link');
-	link.rel = 'stylesheet';
-	link.href = 'data:text/css,' + escape(css);
-	document.documentElement.childNodes[0].appendChild(link);
+  var link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'data:text/css,' + escape(css);
+  document.documentElement.childNodes[0].appendChild(link);
+}
+
+// via http://github.com/hatena/hatena-bookmark-xul/blob/master/chrome/content/common/05-HTMLDocumentCreator.js
+// a little modified
+function createDocumentFromString(source){
+  var doc = document.cloneNode(false);
+  doc.appendChild(doc.importNode(document.documentElement, false));
+  var range = document.createRange();
+  range.selectNodeContents(document.documentElement);
+  var fragment = range.createContextualFragment(source);
+  var headChildNames = {title: true, meta: true, link: true, script: true, style: true, /*object: true,*/ base: true/*, isindex: true,*/};
+  var child, head = doc.getElementsByTagName('head')[0] || doc.createElement('head'),
+             body = doc.getElementsByTagName('body')[0] || doc.createElement('body');
+  while ((child = fragment.firstChild)) {
+    if (
+      (child.nodeType === doc.ELEMENT_NODE && !(child.nodeName.toLowerCase() in headChildNames)) ||
+      (child.nodeType === doc.TEXT_NODE &&/\S/.test(child.nodeValue))
+       )
+      break;
+    head.appendChild(child);
+  }
+  body.appendChild(fragment);
+  doc.documentElement.appendChild(head);
+  doc.documentElement.appendChild(body);
+  return doc;
 }
 
 // %o %s %i
@@ -1142,3 +1163,4 @@ function time(name) {if(unsafeWindow.console.time && DEBUG) unsafeWindow.console
 function timeEnd(name) {if(unsafeWindow.console.timeEnd && DEBUG) unsafeWindow.console.timeEnd.apply(console, arguments)}
 
 })(this.unsafeWindow || this);
+

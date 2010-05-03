@@ -8,7 +8,7 @@
 	<Script filename="ldrize_mibuffer_tumblr_r.user.js" name="LDRize Mibuffer tumblr reblog command" namespace="http://ido.nu/kuma/" description="add tumblr.reblog and tumblr.delete command  to Minibuffer." enabled="true" basedir="ldrize_mibuffer_tumblr_r">
 		<Include>http://*.tumblr.com/*</Include>
 	</Script>
-	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="false" basedir="autopagerize">
+	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="true" basedir="autopagerize">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
 		<Exclude>https://mail.google.com/*</Exclude>
@@ -19,18 +19,17 @@
 		<Include>https://*</Include>
 		<Include>file:///*</Include>
 	</Script>
-	<Script filename="ldr__tombloo.user.js" name="LDR + Tombloo" namespace="http://userscripts.org/users/7010" description="" enabled="true" basedir="ldr__tombloo">
-		<Include>http://reader.livedoor.com/reader/*</Include>
-		<Include>http://fastladder.com/reader/* </Include>
-	</Script>
 	<Script filename="ldr_full_feed.user.js" name="LDR Full Feed" namespace="http://d.hatena.ne.jp/Constellation/" description="loading full entry on LDR and Fastladder" enabled="true" basedir="ldr_full_feed">
 		<Include>http://reader.livedoor.com/reader/*</Include>
 		<Include>http://fastladder.com/reader/*</Include>
-		<Require filename="3242.txt"/>
-		<Require filename="43358.txt"/>
+		<Require filename="184276.txt"/>
 		<Resource name="orange" filename="orange.gif" mimetype="image/gif"/>
 		<Resource name="blue" filename="blue.gif" mimetype="image/gif"/>
 		<Resource name="css" filename="ldrfullfeed.css" mimetype="text/css" charset="utf-8"/>
+	</Script>
+	<Script filename="ldr__tombloo.user.js" name="LDR + Tombloo" namespace="http://userscripts.org/users/7010" description="" enabled="true" basedir="ldr__tombloo">
+		<Include>http://reader.livedoor.com/reader/*</Include>
+		<Include>http://fastladder.com/reader/* </Include>
 	</Script>
 	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
 		<Include>http://*.google.*/*q=*</Include>
@@ -89,15 +88,6 @@
 	<Script filename="nicovideo_downloader.user.js" name="nicovideo downloader" namespace="http://muumoo.jp/" description="" enabled="true" basedir="nicovideo_downloader">
 		<Include>http://www.nicovideo.jp/watch/*</Include>
 	</Script>
-	<Script filename="nicovideo_show_all_ranks.user.js" name="nicovideo Show All Ranks" namespace="http://d.hatena.ne.jp/gifnksm/" description="Show all rankings at once." enabled="true" basedir="nicovideo_show_all_ranks">
-		<Include>http://www.nicovideo.jp/ranking/*</Include>
-	</Script>
-	<Script filename="nicovideo_synchronized_f.user.js" name="nicovideo Synchronized Fullscreen" namespace="http://d.hatena.ne.jp/gifnksm/" description="When window becomes fullscreen, set movie player fullsize." enabled="true" basedir="nicovideo_synchronized_f">
-		<Include>http://www.nicovideo.jp/watch/*</Include>
-	</Script>
-	<Script filename="nicoclip.user.js" name="NicoClip" namespace="http://userscripts.org/scripts/show/15818" description="ニコニコ動画にはてなブックマークと連携したマイリスト機能を追加します。" enabled="true" basedir="nicoclip">
-		<Include>http://www.nicovideo.jp/watch/*</Include>
-	</Script>
 	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
 		<Include>*</Include>
 	</Script>
@@ -107,10 +97,6 @@
 	<Script filename="amazon_cross_book_check.user.js" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" description="" enabled="true" basedir="amazon_cross_book_check">
 		<Include>http://www.amazon.co.jp/*</Include>
 		<Include>http://amazon.co.jp/*</Include>
-	</Script>
-	<Script filename="simplepedia.user.js" name="Simplepedia" namespace="http://userscripts.org/scripts/show/42312" description="MediaWiki beautification" enabled="false" basedir="simplepedia">
-		<Include>*</Include>
-		<Exclude>http://userscripts.org/*</Exclude>
 	</Script>
 	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
 		<Include>*</Include>
@@ -123,17 +109,18 @@
 		<Include>https://twitter.com/*</Include>
 		<Include>http://twitter.com/*</Include>
 	</Script>
-	<Script filename="nicovideo_add_hatena_boo.user.js" name="nicovideo Add Hatena Bookmark Links" namespace="http://d.hatena.ne.jp/gifnksm/" description="Add Bookmarked numbers to everywhere in nicovideo" enabled="true" basedir="nicovideo_add_hatena_boo">
-		<Include>http://www.nicovideo.jp/*</Include>
-		<Require filename="nvii_20090510.js"/>
-	</Script>
-	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl-1">
-		<Include>*</Include>
-	</Script>
 	<Script filename="youtube_auto_buffer__aut.user.js" name="YouTube Auto Buffer &amp; Auto HD &amp; Remove Ads" namespace="userscripts.org" description="Buffers the video without autoplaying, removes in-video ads, and puts it in hd if the option is on. For Firefox and Opera" enabled="true" basedir="youtube_auto_buffer__aut">
 		<Include>http://*.youtube.com/*</Include>
 		<Include>http://youtube.com/*</Include>
 		<Require filename="49700user.js"/>
 		<Require filename="updater.php"/>
+	</Script>
+	<Script filename="download_from_youtube.user.js" name="Download from YouTube" namespace="userscripts.org" description="Adds FLV, MP4, 3GP, and 720p download links to YouTube." enabled="true" basedir="download_from_youtube">
+		<Include>http://*.youtube.com/watch*v=*</Include>
+		<Include>http://youtube.com/watch*v=*</Include>
+		<Require filename="updater.php"/>
+	</Script>
+	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl-1">
+		<Include>*</Include>
 	</Script>
 </UserScriptConfig>

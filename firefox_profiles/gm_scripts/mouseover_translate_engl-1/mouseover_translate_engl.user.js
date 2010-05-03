@@ -3,7 +3,7 @@
 // @description    Mouseover Translate English-Japanese を機能拡張してみました。
 // @namespace      http://userscripts.org/users/81100
 // @editor         chemera
-// @version        1.03.7a
+// @version        1.03.8
 // @include        *
 // ==/UserScript==
 
@@ -50,7 +50,7 @@ var SITEINFO = {
 		temporary_target: true,	// 一時変更対象。拡張機能時のみ。
 		formatResult: function(originalhtml){
 			var formathtml = "";
-			if(/<div class="wordDefArea".*?>((?:.|\s)*?)<\/div>/.test(originalhtml)){
+			if(/<div class="wordDefArea".*?>((?:.|\s)*?)<\/div><!--\/wordDefArea-->/.test(originalhtml)){
 				formathtml = RegExp.$1;
 				formathtml = formathtml.replace(/\n/g, "");
 				formathtml = formathtml.replace(/<script .*?>.*?<\/script>/g, "");
@@ -2073,7 +2073,7 @@ function makePopup2(popuphtml, basispositionx, basispositiony, style){
 		popup.style.left = margin + "px";
 	}
 	window.addEventListener("keydown", Query.Check_Event, false);
-	popup.focus();
+//	popup.focus();
 	return popup;
 }
 

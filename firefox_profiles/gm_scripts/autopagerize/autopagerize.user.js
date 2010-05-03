@@ -9,7 +9,7 @@
 // ==/UserScript==
 //
 // auther:  swdyh http://d.hatena.ne.jp/swdyh/
-// version: 0.0.41 2009-09-05T16:02:17+09:00
+// version: 0.0.43 2010-03-11T03:54:39+09:00
 //
 // this script based on
 // GoogleAutoPager(http://la.ma.la/blog/diary_200506231749.htm) and
@@ -20,8 +20,18 @@
 // http://www.gnu.org/copyleft/gpl.html
 //
 
+if (isChromeExtension()) {
+    chromeCompatible()
+}
+else {
+    var ep = getPref('exclude_patterns')
+    if (ep && isExclude(ep)) {
+        return
+    }
+}
+
 var URL = 'http://autopagerize.net/'
-var VERSION = '0.0.41'
+var VERSION = '0.0.42'
 var DEBUG = false
 var AUTO_START = true
 var CACHE_EXPIRE = 24 * 60 * 60 * 1000
@@ -108,11 +118,15 @@ var AutoPager = function(info) {
         document.body.appendChild(div)
         this.icon = div
     }
+    else if (isChromeExtension()) {
+    }
     else {
         this.initIcon()
         this.initHelp()
+        GM_addStyle('@media print{#autopagerize_icon, #autopagerize_help {display: none !important;}}')
         this.icon.addEventListener("mouseover", function() {
-            self.viewHelp() }, true)
+            self.viewHelp()
+        }, true)
     }
 
     var scrollHeight = getScrollHeight()
@@ -236,9 +250,14 @@ AutoPager.prototype.updateIcon = function(state) {
     }
     var color = COLOR[st]
     if (color) {
-        this.icon.style.background = color
         if (isFirefoxExtension()) {
-            chlorine.statusBar.update(color, location.href)
+            chlorine.pageAction.update(color, location.href)
+        }
+        else if (isChromeExtension()) {
+            chrome.extension.connect({name: "pageActionChannel"}).postMessage(color)
+        }
+        else {
+            this.icon.style.background = color
         }
     }
 }
@@ -264,7 +283,9 @@ AutoPager.prototype.request = function() {
         url: this.requestURL,
         headers: headers,
         overrideMimeType: mime,
-        onerror: this.error,
+        onerror: function(res) {
+            self.error()
+        },
         onload: function(res) {
             self.requestLoad.apply(self, [res])
         }
@@ -431,12 +452,13 @@ AutoPager.prototype.canHandleCrossDomainRequest = function() {
 }
 
 AutoPager.prototype.terminate = function() {
-    this.updateIcon('terminated')
     window.removeEventListener('scroll', this.scroll, false)
+    this.updateIcon('terminated')
     var self = this
     setTimeout(function() {
-        self.updateIcon('disable')
-        self.icon.parentNode.removeChild(self.icon)
+        if (self.icon) {
+            self.icon.parentNode.removeChild(self.icon)
+        }
     }, 1500)
 }
 
@@ -776,37 +798,64 @@ if (typeof(window.AutoPagerize) == 'undefined') {
     document.dispatchEvent(ev)
 }
 
-GM_registerMenuCommand('AutoPagerize - clear cache', clearCache)
+
 var ap = null
-launchAutoPager(SITEINFO)
-var cacheInfo = getCache()
-var xhrStates = {}
-SITEINFO_IMPORT_URLS.forEach(function(i) {
-    if (!cacheInfo[i] || cacheInfo[i].expire < new Date()) {
-        var opt = {
-            method: 'get',
-            url: i,
-            onload: function(res) {
-                xhrStates[i] = 'loaded'
-                getCacheCallback(res, i)
-            },
-            onerror: function(res){
-                xhrStates[i] = 'error'
-                getCacheErrorCallback(i)
-            },
+if (isChromeExtension()) {
+    var port = chrome.extension.connect({name: "settingsChannel"})
+    port.postMessage()
+    port.onMessage.addListener(function(res) {
+        if (res['exclude_patterns'] && isExclude(res['exclude_patterns'])) {
+            return
         }
-        xhrStates[i] = 'start'
-        GM_xmlhttpRequest(opt)
-        setTimeout(function() {
-            if (xhrStates[i] == 'start') {
-                getCacheErrorCallback(i)
+        launchAutoPager(SITEINFO)
+        var port_ = chrome.extension.connect({name: "siteinfoChannel"})
+        port_.postMessage({ url: location.href })
+        port_.onMessage.addListener(function(res) {
+            launchAutoPager(res)
+            chrome.extension.onConnect.addListener(function(port) {
+                if (port.name == "toggleRequestChannel") {
+                    port.onMessage.addListener(function(msg) {
+                        if (ap) {
+                            ap.toggle();
+                        }
+                    })
+                }
+            })
+        })
+    })
+}
+else {
+    launchAutoPager(SITEINFO)
+    GM_registerMenuCommand('AutoPagerize - clear cache', clearCache)
+    var cacheInfo = getCache()
+    var xhrStates = {}
+    SITEINFO_IMPORT_URLS.forEach(function(i) {
+        if (!cacheInfo[i] || cacheInfo[i].expire < new Date()) {
+            var opt = {
+                method: 'get',
+                url: i,
+                onload: function(res) {
+                    xhrStates[i] = 'loaded'
+                    getCacheCallback(res, i)
+                },
+                onerror: function(res){
+                    xhrStates[i] = 'error'
+                    getCacheErrorCallback(i)
+                },
             }
-        }, XHR_TIMEOUT)
-    }
-    else {
-        launchAutoPager(cacheInfo[i].info)
-    }
-})
+            xhrStates[i] = 'start'
+            GM_xmlhttpRequest(opt)
+            setTimeout(function() {
+                if (xhrStates[i] == 'start') {
+                    getCacheErrorCallback(i)
+                }
+            }, XHR_TIMEOUT)
+        }
+        else {
+            launchAutoPager(cacheInfo[i].info)
+        }
+    })
+}
 launchAutoPager([MICROFORMAT])
 
 // new google search sucks!
@@ -815,7 +864,9 @@ if (location.href.match('^http://[^.]+\.google\.(?:[^.]{2,3}\.)?[^./]{2,3}/.*(&f
     // console.log([location.href, to])
     location.href = to
 }
-return
+
+
+
 
 // utility functions.
 function createHTMLDocumentByString(str) {
@@ -922,7 +973,7 @@ function log(message) {
 
 function debug() {
     if ( typeof DEBUG != 'undefined' && DEBUG ) {
-        console.log.apply(this, arguments)
+        console.log.apply(console, arguments)
     }
 }
 
@@ -970,16 +1021,19 @@ function isSameBaseUrl(urlA, urlB) {
 }
 
 function supportsFinalUrl() {
-    return (GM_getResourceURL)
+    return (typeof GM_getResourceURL != 'undefined')
 }
 
 function resolvePath(path, base) {
-    var XHTML_NS = "http://www.w3.org/1999/xhtml"
-    var XML_NS   = "http://www.w3.org/XML/1998/namespace"
-    var a = document.createElementNS(XHTML_NS, 'a')
-    a.setAttributeNS(XML_NS, 'xml:base', base)
-    a.href = path
-    return a.href
+    if (path.match(/^https?:\/\//)) {
+        return path
+    }
+    if (path.match(/^[^\/]/)) {
+        return base.replace(/[^/]+$/, '') + path
+    }
+    else {
+        return base.replace(/([^/]+:\/\/[^/]+)\/.*/, '\$1') + path
+    }
 }
 
 function fixResolvePath() {
@@ -1019,6 +1073,73 @@ function getPref(key, defaultValue) {
     return (typeof value == 'undefined') ? defaultValue : value
 }
 
+function wildcard2regep(str) {
+    return '^' + str.replace(/([-()\[\]{}+?.$\^|,:#<!\\])/g, '\\$1').replace(/\x08/g, '\\x08').replace(/\*/g, '.*')
+}
+
+function isExclude(patterns) {
+    var rr = /^\/(.+)\/$/
+    var eps = (patterns || '').split(/[\r\n]/)
+    for (var i = 0; i < eps.length; i++) {
+        var reg = null
+        if (rr.test(eps[i])) {
+            reg = eps[i].match(rr)[1]
+        }
+        else {
+            reg = wildcard2regep(eps[i])
+        }
+        if (location.href.match(reg)) {
+            return true
+        }
+    }
+    return false
+}
+
 function isFirefoxExtension() {
     return (typeof chlorine == 'object')
+}
+
+function isChromeExtension() {
+    return (typeof chrome == 'object') &&
+        (typeof chrome.extension == 'object')
+}
+
+function chromeCompatible() {
+    GM_registerMenuCommand = function() {}
+    GM_setValue = function() {}
+    GM_getValue = function() {}
+    GM_addStyle = function() {}
+    uneval = function() {}
+    fixResolvePath = function() {}
+
+    GM_xmlhttpRequest = function(opt) {
+        var req = new XMLHttpRequest()
+        req.open('GET', opt.url, true)
+        req.overrideMimeType(opt.overrideMimeType)
+        req.onreadystatechange = function (aEvt) {
+            if (req.readyState == 4) {
+                if (req.status == 200) {
+                    opt.onload(req)
+                }
+                else {
+                    opt.onerror()
+                }
+            }
+        }
+        req.send(null)
+    }
+    createHTMLDocumentByString = function(str) {
+        if (document.documentElement.nodeName != 'HTML') {
+            return new DOMParser().parseFromString(str, 'application/xhtml+xml')
+        }
+        // FIXME
+        var html = str.replace(/<script(?:[ \t\r\n][^>]*)?>[\S\s]*?<\/script[ \t\r\n]*>|<\/?(?:i?frame|html|script|object)(?:[ \t\r\n][^<>]*)?>/gi, ' ')
+        var htmlDoc = document.implementation.createHTMLDocument ?
+        document.implementation.createHTMLDocument('apfc') :
+        document.implementation.createDocument(null, 'html', null)
+        var range = document.createRange()
+        range.selectNodeContents(document.documentElement)
+        htmlDoc.documentElement.appendChild(range.createContextualFragment(html))
+        return htmlDoc
+    }
 }
