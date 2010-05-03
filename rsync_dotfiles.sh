@@ -1,4 +1,4 @@
-rsync --progress --delete -avp ~/.irssi        ~/Documents/dotfiles/
+#rsync --progress --delete -avp ~/.irssi        ~/Documents/dotfiles/
 rsync --progress --delete -avp ~/.subversion   ~/Documents/dotfiles/
 rsync --progress --delete -avp ~/.vim          ~/Documents/dotfiles/
 rsync --progress --delete -avp ~/.vimperator   ~/Documents/dotfiles/
