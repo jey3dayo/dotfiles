@@ -1,6 +1,6 @@
 servers = (
   {
-    address = "address";
+    address = "nadekosnake.com";
     chatnet = "twitter";
     port = "16668";
     password = "password";
