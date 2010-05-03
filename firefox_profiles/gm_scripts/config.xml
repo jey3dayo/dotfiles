@@ -56,9 +56,6 @@
 		<Exclude>https://mail.google.com/mail/?ui=*</Exclude>
 		<Exclude>http://mail.google.com/mail/?ui=*</Exclude>
 	</Script>
-	<Script filename="google_search_filter.user.js" name="Google Search Filter" namespace="http://www.code-404.net/" description="Selected web-sites aren't displayed from Google search result." enabled="false" basedir="google_search_filter">
-		<Include>http://www.google.*/search*</Include>
-	</Script>
 	<Script filename="wikipediagoogleimage.user.js" name="wikipedia.googleimage" namespace="http://www.kagami.org/" description="" enabled="true" basedir="wikipediagoogleimage">
 		<Include>http://ja.wikipedia.org/wiki/*</Include>
 	</Script>
