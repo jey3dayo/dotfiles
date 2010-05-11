@@ -88,9 +88,6 @@
 	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
 		<Include>*</Include>
 	</Script>
-	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
-		<Include>http://www.nicovideo.jp/watch/*</Include>
-	</Script>
 	<Script filename="amazon_cross_book_check.user.js" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" description="" enabled="true" basedir="amazon_cross_book_check">
 		<Include>http://www.amazon.co.jp/*</Include>
 		<Include>http://amazon.co.jp/*</Include>
@@ -106,12 +103,6 @@
 		<Include>https://twitter.com/*</Include>
 		<Include>http://twitter.com/*</Include>
 	</Script>
-	<Script filename="youtube_auto_buffer__aut.user.js" name="YouTube Auto Buffer &amp; Auto HD &amp; Remove Ads" namespace="userscripts.org" description="Buffers the video without autoplaying, removes in-video ads, and puts it in hd if the option is on. For Firefox and Opera" enabled="true" basedir="youtube_auto_buffer__aut">
-		<Include>http://*.youtube.com/*</Include>
-		<Include>http://youtube.com/*</Include>
-		<Require filename="49700user.js"/>
-		<Require filename="updater.php"/>
-	</Script>
 	<Script filename="download_from_youtube.user.js" name="Download from YouTube" namespace="userscripts.org" description="Adds FLV, MP4, 3GP, and 720p download links to YouTube." enabled="true" basedir="download_from_youtube">
 		<Include>http://*.youtube.com/watch*v=*</Include>
 		<Include>http://youtube.com/watch*v=*</Include>
@@ -119,5 +110,17 @@
 	</Script>
 	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl-1">
 		<Include>*</Include>
+	</Script>
+	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
+		<Include>http://www.nicovideo.jp/watch/*</Include>
+		<Require filename="jquery-132min.js"/>
+	</Script>
+	<Script filename="youtube_auto_buffer__aut.user.js" name="YouTube Auto Buffer &amp; Auto HD &amp; Remove Ads" namespace="userscripts.org" description="Buffers the video without autoplaying, removes in-video ads, and puts it in hd if the option is on. For Firefox and Opera" enabled="true" basedir="youtube_auto_buffer__aut">
+		<Include>http://*.youtube.com/*</Include>
+		<Include>http://youtube.com/*</Include>
+		<Require filename="updater.php"/>
+	</Script>
+	<Script filename="pixiv_ajax_favorite.user.js" name="Pixiv Ajax Favorite" namespace="http://userscripts.org/users/35494" description="Add ajax favorite menus above illustration" enabled="true" basedir="pixiv_ajax_favorite">
+		<Include>http://www.pixiv.net/member_illust.php?mode=medium&amp;illust_id=*</Include>
 	</Script>
 </UserScriptConfig>

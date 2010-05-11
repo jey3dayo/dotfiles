@@ -4,7 +4,7 @@ var AutoUpdater_49366 = {
     id: 49366,
     days: 2,
     name: 'YouTube Auto Buffer & Auto HD & Remove Ads',
-    version: '1.2.4',
+    version: '1.2.6',
     time: new Date().getTime(),
     call: function(response) {
         GM_xmlhttpRequest({
@@ -69,5 +69,10 @@ var AutoUpdater_49366 = {
         }
     }
 };
-if ((top ? self.location == top.location : true) && typeof GM_xmlhttpRequest !== 'undefined') 
-    AutoUpdater_49366.check();
+if (typeof GM_xmlhttpRequest !== 'undefined')
+    try {
+        if (unsafeWindow.frameElement === null) 
+            AutoUpdater_49366.check();
+    } catch(e) {
+        AutoUpdater_49366.check();
+    }
