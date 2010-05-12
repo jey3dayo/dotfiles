@@ -39,12 +39,12 @@ let PLUGIN_INFO =
   <name lang="ja">すてら</name>
   <description>For Niconico/YouTube/Vimeo, Add control commands and information display(on status line).</description>
   <description lang="ja">ニコニコ動画/YouTube/Vimeo 用。操作コマンドと情報表示(ステータスライン上に)追加します。</description>
-  <version>0.26.3</version>
+  <version>0.30.2</version>
   <author mail="anekos@snca.net" homepage="http://d.hatena.ne.jp/nokturnalmortum/">anekos</author>
   <license>new BSD License (Please read the source code comments of this plugin)</license>
   <license lang="ja">修正BSDライセンス (ソースコードのコメントを参照してください)</license>
   <minVersion>2.0</minVersion>
-  <maxVersion>2.3</maxVersion>
+  <maxVersion>2.4</maxVersion>
   <updateURL>http://svn.coderepos.org/share/lang/javascript/vimperator-plugins/trunk/stella.js</updateURL>
   <detail><![CDATA[
     == Commands ==
@@ -257,6 +257,7 @@ TODO
    ・パネルなどの要素にクラス名をつける
    ・上書き保存
    ・Fx の pref と liberator.globalVariables の両方で設定をできるようにする (Setting)
+   ・ext_setInputMessage(String, String)
 
 MEMO
    ・prototype での定義順: 単純な値 initialize finalize (get|set)ter メソッド
@@ -298,10 +299,20 @@ Thanks:
     capitalize: function (s)
       s.replace(/^[a-z]/, String.toUpperCase).replace(/-[a-z]/, function (s) s.slice(1).toUpperCase()),
 
-    currentURL: function ()
-      content.document.location.href,
+    get currentURL() content.document.location.href,
 
-    download: function (url, filepath, ext, title) {
+    download: function (url, filepath, ext, title, postData) {
+      function makePostStream (postData) {
+        let sis = Cc["@mozilla.org/io/string-input-stream;1"].createInstance(Ci.nsIStringInputStream);
+        sis.setData(postData, postData.length);
+        let mis = Cc["@mozilla.org/network/mime-input-stream;1"].createInstance(Ci.nsIMIMEInputStream);
+        mis.addHeader("Accept-Charset", "utf-8");
+        mis.addHeader("Content-Type", "application/x-www-form-urlencoded");
+        mis.addContentLength = true;
+        mis.setData(sis);
+        return mis;
+      }
+
       let dm = Cc["@mozilla.org/download-manager;1"].getService(Ci.nsIDownloadManager);
       let wbp = Cc["@mozilla.org/embedding/browser/nsWebBrowserPersist;1"].createInstance(Ci.nsIWebBrowserPersist);
       let file;
@@ -311,40 +322,30 @@ Thanks:
       } else {
         file = dm.userDownloadsDirectory;
       }
-      if (file.isDirectory() && title)
-        file.appendRelativePath(U.fixFilename(title) + ext);
+
+      if (file.exists() && file.isDirectory() && title)
+          file.appendRelativePath(U.fixFilename(title) + ext);
+
       if (file.exists())
-        return liberator.echoerr('The file already exists! -> ' + file.path);
+        return U.echoerr('The file already exists! -> ' + file.path);
+
       file = makeFileURI(file);
 
       let dl = dm.addDownload(0, U.makeURL(url, null, null), file, title, null, null, null, null, wbp);
       wbp.progressListener = dl;
       wbp.persistFlags |= wbp.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-      wbp.saveURI(U.makeURL(url), null, null, null, null, file);
+      wbp.saveURI(U.makeURL(url), null, null, postData && makePostStream(postData), null, file);
 
-      return true;
+      return file;
     },
 
-    xpathGet: function (xpath, doc, root) {
-      if (!doc)
-        doc = content.document;
-      if (!root)
-        root = doc;
-      return doc.evaluate(xpath, doc, null, 9, null, 7, null).singleNodeValue;
-    },
+    // FIXME
+    echo: function (msg)
+      (void liberator.echo(msg)),
 
-    xpathGets: function (xpath, doc, root) {
-      if (!doc)
-        doc = content.document;
-      if (!root)
-        root = doc;
-      let result = [];
-      let r = doc.evaluate(xpath, root, null, 7, null);
-      for (let i = 0, l = r.snapshotLength; i < l; i++) {
-        result.push(r.snapshotItem(i));
-      }
-      return result;
-    },
+    // FIXME
+    echoError: function (msg)
+      (void liberator.echoerr(msg)),
 
     fixDoubleClick: function (obj, click, dblClick) {
       let clicked = 0;
@@ -419,6 +420,9 @@ Thanks:
 
     lz: function (s, n)
       String(Math.pow(10, n) + s).substring(1),
+
+    log: function (msg)
+      Application.console.log(msg),
 
     makeFile: function (s) {
       var file = Cc["@mozilla.org/file/local;1"].createInstance(Ci.nsILocalFile);
@@ -497,9 +501,30 @@ Thanks:
       }
 
       function replaceHTML (s)
-        s.replace(/<br>/g, '<br />').replace(/&nbsp;/g, ' ');
+        s.replace(/<br>/g, '<br />').replace(/&nbsp;/g, '<span style="margin-left: 0.5em"></span>');
 
       return replaceHTML(createHTMLDocument(html).documentElement.innerHTML);
+    },
+
+    xpathGet: function (xpath, doc, root) {
+      if (!doc)
+        doc = content.document;
+      if (!root)
+        root = doc;
+      return doc.evaluate(xpath, doc, null, 9, null, 7, null).singleNodeValue;
+    },
+
+    xpathGets: function (xpath, doc, root) {
+      if (!doc)
+        doc = content.document;
+      if (!root)
+        root = doc;
+      let result = [];
+      let r = doc.evaluate(xpath, root, null, 7, null);
+      for (let i = 0, l = r.snapshotLength; i < l; i++) {
+        result.push(r.snapshotItem(i));
+      }
+      return result;
     }
   };
 
@@ -681,7 +706,7 @@ Thanks:
 
     get title () undefined,
 
-    get isValid () /^http:\/\/(tw|es|de|www)\.nicovideo\.jp\/watch\//.test(buffer.URL),
+    get isValid () /^http:\/\/(tw|es|de|www)\.nicovideo\.jp\/watch\//.test(U.currentURL),
 
     get volume () undefined,
     set volume (value) value,
@@ -744,8 +769,9 @@ Thanks:
     get command () this._command,
     get description () this._description,
     get thumbnail () this._thumbnail,
-    get completionItem () ({
-      text: this.command,
+    get completionText () this.command,
+    completionItem: function (index) ({
+      text: [this.completionText, index + ': ' + this.description],
       description: this.description,
       thumbnail: this.thumbnail
     })
@@ -809,6 +835,7 @@ Thanks:
   }
 
   YouTubePlayer.getIDfromURL = function (url) let ([_, r] = url.match(/[?;&]v=([-\w]+)/)) r;
+  YouTubePlayer.isVideoURL = function (url) /^https?:\/\/(www\.)?youtube\.com\/watch\?.+/(url);
 
   YouTubePlayer.OUTER_NODES = [
     'old-masthead',
@@ -828,8 +855,8 @@ Thanks:
 
     functions: {
       currentTime: 'rw',
+      fetch: 'x',
       fileURL: 'r',
-      fullscreen: 'rwt',
       makeURL: 'x',
       muted: 'rwt',
       pageinfo: 'r',
@@ -838,7 +865,6 @@ Thanks:
       playEx: 'x',
       playOrPause: 'x',
       relations: 'r',
-      repeating: '',
       title: 'r',
       totalTime: 'r',
       volume: 'rw',
@@ -905,10 +931,23 @@ Thanks:
     get muted () this.player.isMuted(),
     set muted (value) ((value ? this.player.mute() : this.player.unMute()), value),
 
-    get pageinfo () [
-      ['comment', U.toXML(U.xpathGet(this.xpath.comment).innerHTML)],
-      ['tags', U.toXML(U.xpathGet(this.xpath.tags).innerHTML)]
-    ],
+    get pageinfo () {
+      let doc = content.document;
+      let wd = doc.querySelector('#watch-description > div > span > span.watch-video-date');
+      let desc = wd.nextSibling;
+      while (desc && desc.tagName != 'SPAN')
+        desc = desc.nextSibling;
+      return [
+        [
+          'comment',
+          desc ? desc.textContent.trim() : ''
+        ],
+        [
+          'tags',
+          U.toXML(doc.querySelector('#watch-tags > div').innerHTML)
+        ]
+      ];
+    },
 
     get player ()
       U.getElementByIdEx('movie_player'),
@@ -920,13 +959,23 @@ Thanks:
 
     get ready () !!this.player,
 
-    get relatedtions () {
+    get relations () {
       let result = [];
       let doc = content.document;
-      let r = doc.evaluate("//div[@class='video-mini-title']/a", doc, null, 7, null);
-      for (let i = 0, l = r.snapshotLength; i < l; i++) {
-        let e = r.snapshotItem(i);
-        result.push(new RelatedID(YouTubePlayer.getIDfromURL(e.href), e.textContent));
+      for each (let item in Array.slice(doc.querySelectorAll('#watch-tags > div > a'))) {
+        result.push(new RelatedTag(item.textContent));
+      }
+      for each (let item in Array.slice(doc.querySelectorAll('.video-list-item'))) {
+        let url = item.querySelector('a').href;
+        if (!YouTubePlayer.isVideoURL(url))
+          continue;
+        result.push(
+          new RelatedID(
+            YouTubePlayer.getIDfromURL(url),
+            item.querySelector('span.title').textContent,
+            item.querySelector('img').src
+          )
+        );
       }
       return result;
     },
@@ -955,15 +1004,49 @@ Thanks:
 
     get totalTime () parseInt(this.player.getDuration()),
 
-    get isValid () buffer.URL.match(/^http:\/\/(?:[^.]+\.)?youtube\.com\/watch/),
+    get isValid () U.currentURL.match(/^http:\/\/(?:[^.]+\.)?youtube\.com\/watch/),
 
     get volume () parseInt(this.player.getVolume()),
     set volume (value) (this.player.setVolume(value), this.volume),
 
+    fetch: function (filepath) {
+      function _fetch (id, t) {
+        let url =
+          "http://youtube.com/get_video?video_id=" + id +
+          "&t=" + decodeURIComponent(t) +
+          (quality ? "&fmt=" + quality : '');
+        U.download(url, filepath, '.flv', self.title);
+      }
+
+      let self = this;
+      let id = YouTubePlayer.getIDfromURL(U.currentURL);
+
+      // all(1080p,720p,480p,360p) -> 37, 22, 35, 34, 5
+      // FIXME 一番初めが最高画質だと期待
+      let cargs = content.wrappedJSObject.yt.config_.SWF_CONFIG.args
+      let quality = cargs.fmt_map.match(/^\d+/);
+      let t = cargs.t;
+
+      // 時間が経っていると無効化されてしまっている
+      //_fetch(t, id);
+
+      U.httpRequest(
+        U.currentURL,
+        null,
+        function (xhr) {
+          // XXX t が変わるために、キャッシュを利用できない問題アリアリアリアリ
+          let [, t] = xhr.responseText.match(/swfHTML.*&t=([^&]+)/);
+          _fetch(id, t);
+        }
+      );
+    },
+
     makeURL: function (value, type) {
       switch (type) {
         case Player.URL_ID:
-          return 'http://www.youtube.com/watch?v=' + value + '&fmt=22'; //XXX さりげなく高画質に！
+          return 'http://www.youtube.com/watch?v=' + value;
+        case Player.URL_TAG:
+          return 'http://www.youtube.com/results?search=tag&search_query=' + encodeURIComponent(value);
         case Player.URL_SEARCH:
           return 'http://www.youtube.com/results?search_query=' + encodeURIComponent(value);
       }
@@ -984,23 +1067,6 @@ Thanks:
   function NicoPlayer () {
     Player.apply(this, arguments);
   }
-
-  // name, Normal, Fullscreen
-  // 任意の順で設定できるように配列で持つ
-  NicoPlayer.Variables = [
-    ['videowindow._xscale',                     100,   null],
-    ['videowindow._yscale',                     100,   null],
-    ['videowindow._x',                            6,      0],
-    ['videowindow._y',                           65,      0],
-    ['controller._x',                             6,  -1000],
-    ['inputArea._x',                              4,  -1000],
-    ['controller._visible',                       1,      1],
-    ['inputArea._visible',                        1,      1],
-    ['waku._visible',                             1,      0],
-    ['tabmenu._visible',                          1,      0],
-    ['videowindow.video_mc.video.smoothing',   null,      1],
-    ['videowindow.video_mc.video.deblocking',  null,      5]
-  ];
 
   NicoPlayer.SIZE_LARGE  = 'fit';
   NicoPlayer.SIZE_NORMAL = 'normal';
@@ -1047,7 +1113,7 @@ Thanks:
     get baseURL () 'http://www.nicovideo.jp/',
 
     get cachedInfo () {
-      let url = U.currentURL();
+      let url = U.currentURL;
       if (this.__info_cache.url != url)
         this.__info_cache = {url: url};
       return this.__info_cache;
@@ -1060,8 +1126,8 @@ Thanks:
       try {
       return parseInt(this.player.ext_getPlayheadTime())
       } catch (e) {
-        liberator.log(e)
-        liberator.log(e.stack)
+        U.log(e)
+        U.log(e.stack)
       }
     },
     set currentTime (value) (this.player.ext_setPlayheadTime(U.fromTimeCode(value)), this.currentTime),
@@ -1072,7 +1138,7 @@ Thanks:
     set fullscreen (value) (this.large = value),
 
     get id ()
-      let (m = U.currentURL().match(/\/watch\/([a-z\d]+)/))
+      let (m = U.currentURL.match(/\/watch\/([a-z\d]+)/))
         (m && m[1]),
 
     get muted () this.player.ext_isMute(),
@@ -1111,7 +1177,7 @@ Thanks:
       let self = this;
 
       function IDsFromAPI () {
-        if (self.__rid_last_url == U.currentURL())
+        if (self.__rid_last_url == U.currentURL)
           return self.__rid_cache || [];
 
         let failed = false, videos = [];
@@ -1137,10 +1203,10 @@ Thanks:
             );
           }
 
-          self.__rid_last_url = U.currentURL();
+          self.__rid_last_url = U.currentURL;
           self.__rid_cache = videos;
         } catch (e) {
-          liberator.log('stella: ' + e)
+          U.log('stella: ' + e)
         }
 
         return videos;
@@ -1163,7 +1229,7 @@ Thanks:
               videos.push(new RelatedID(link, r[1].slice(-20)));
           });
         } catch (e) {
-          liberator.log('stella: ' + e)
+          U.log('stella: ' + e)
         }
         return videos;
       }
@@ -1219,13 +1285,32 @@ Thanks:
     set volume (value) (this.player.ext_setVolume(value), this.volume),
 
     fetch: function (filepath) {
-      let onComplete = U.bindr(this, function (xhr) {
-          let res = xhr.responseText;
-          let info = {};
-          res.split(/&/).forEach(function (it) let ([n, v] = it.split(/=/)) (info[n] = v));
-          U.download(decodeURIComponent(info.url), filepath, this.fileExtension, this.title);
-      });
-      U.httpRequest('http://www.nicovideo.jp/api/getflv?v=' + this.id, null, onComplete);
+      let self = this;
+
+      let watchURL = U.currentURL;
+      let [,id] = watchURL.match(/watch\/(.+)$/);
+      let apiURL = 'http://www.nicovideo.jp/api/getflv?v=' + id;
+
+      U.httpRequest(
+        watchURL,
+        null,
+        function () {
+          U.httpRequest(
+            'http://www.nicovideo.jp/api/getflv?v=' + self.id,
+            null,
+            function (xhr) {
+              let res = xhr.responseText;
+              let info = {};
+              res.split(/&/).forEach(function (it) let ([n, v] = it.split(/=/)) (info[n] = v));
+              U.download(decodeURIComponent(info.url), filepath, self.fileExtension, self.title);
+              let postData = '<thread thread="' + info.thread_id + '"' + ' version="20061206" res_from="-1000" />';
+              // FIXME
+              let msgFilepath = filepath.replace(/\.[^\.]+$/, '.xml');
+              U.download(decodeURIComponent(info.ms), msgFilepath, '.xml', self.title, postData);
+            }
+          );
+        }
+      );
     },
 
     makeURL: function (value, type) {
@@ -1254,7 +1339,7 @@ Thanks:
     },
 
     say: function (message) {
-      liberator.log('stsay');
+      U.log('stsay');
       this.sendComment(message);
     },
 
@@ -1274,7 +1359,7 @@ Thanks:
       }
 
       function getThumbInfo () {
-        liberator.log('getThumbInfo');
+        U.log('getThumbInfo');
         if (self.cachedInfo.block_no !== undefined)
           return;
         let xhr = U.httpRequest(self.baseURL + 'api/getthumbinfo/' + self.id);
@@ -1284,7 +1369,7 @@ Thanks:
       }
 
       function getFLV () {
-        liberator.log('getFLV');
+        U.log('getFLV');
         if (self.cachedInfo.flvInfo !== undefined)
           return;
         let xhr = U.httpRequest(self.baseURL + 'api/getflv?v=' + self.id);
@@ -1293,7 +1378,7 @@ Thanks:
       }
 
       function getPostkey () {
-        liberator.log('getPostkey');
+        U.log('getPostkey');
         let info = self.cachedInfo;
         if (info.postkey !== undefined)
           return;
@@ -1305,14 +1390,14 @@ Thanks:
                       block_no: info.block_no
                     }
                   );
-        liberator.log(url);
+        U.log(url);
         let xhr = U.httpRequest(url);
         let res = xhr.responseText;
         info.postkey = res.replace(/^.*=/, '');
       }
 
       function getComments () {
-        liberator.log('getComments');
+        U.log('getComments');
         let info = self.cachedInfo;
         if (info.ticket !== undefined)
           return;
@@ -1324,7 +1409,7 @@ Thanks:
       }
 
       function sendChat () {
-        liberator.log('sendChat');
+        U.log('sendChat');
         let info = self.cachedInfo;
         let tmpl = '<chat premium="--is_premium--" postkey="--postkey--" user_id="--user_id--" ticket="--ticket--" mail="--mail--" vpos="--vpos--" thread="--thread_id--">--body--</chat>';
         let args = {
@@ -1335,13 +1420,13 @@ Thanks:
           vpos: Math.max(100, parseInt(vpos || (self.player.ext_getPlayheadTime() * 100), 10)),
           body: message
         };
-        liberator.log(args);
+        U.log(args);
         let data = U.fromTemplate(tmpl, args);
         let xhr = U.httpRequest(info.flvInfo.ms, data);
-        liberator.log(xhr.responseText);
+        U.log(xhr.responseText);
       }
 
-      liberator.log('sendcommnet');
+      U.log('sendcommnet');
       getThumbInfo();
       getFLV();
       getPostkey();
@@ -1410,7 +1495,7 @@ Thanks:
     get title ()
       U.xpathGet('//div[@class="title"]').textContent,
 
-    get isValid () buffer.URL.match(/^http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+$/),
+    get isValid () U.currentURL.match(/^http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+$/),
 
     // XXX setVolume は実際には存在しない？
     get volume () parseInt(this.player.__stella_volume),
@@ -1635,6 +1720,24 @@ Thanks:
         add('sa[y]', 'say');
 
       commands.addUserCommand(
+        ['stfe[tch]'],
+        'Download movie file - Stella',
+        function (args) {
+          if (!self.isValid)
+            return U.raiseNotSupportedPage();
+          if (!self.player.has('fetch', 'x'))
+            return U.raiseNotSupportedFunction();
+
+          self.player.fetch(args.literalArg);
+        },
+        {
+          literal: 0,
+          completer: function (context) completion.file(context)
+        },
+        true
+      );
+
+      commands.addUserCommand(
         ['stqu[ality]'],
         'Quality - Stella',
         function (args) {
@@ -1657,40 +1760,48 @@ Thanks:
         true
       );
 
-      commands.addUserCommand(
-        ['strel[ations]'],
-        'relations - Stella',
-        function (args) {
-          if (!self.isValid)
-            return U.raiseNotSupportedPage();
-
-          let arg = args.string;
-          let url = self.player.has('makeURL', 'x') ? makeRelationURL(self.player, arg) : arg;
-          liberator.open(url, args.bang ? liberator.NEW_TAB : liberator.CURRENT_TAB);
-        },
-        {
-          argCount: '*',
-          bang: true,
-          completer: function (context, args) {
+      let (lastCompletions = []) {
+        commands.addUserCommand(
+          ['strel[ations]'],
+          'relations - Stella',
+          function (args) {
             if (!self.isValid)
-              U.raiseNotSupportedPage();
-            if (!self.player.has('relations', 'r'))
-              U.raiseNotSupportedFunction();
+              return U.raiseNotSupportedPage();
 
-            context.title = ['Tag/ID', 'Description'];
-            context.keys = {text: 'text', description: 'description', thumbnail: 'thumbnail'};
-            let process = Array.slice(context.process);
-            context.process = [
-              process[0],
-              function (item, text)
-                (item.thumbnail ? <><img src={item.thumbnail} style="margin-right: 0.5em; height: 3em;"/>{text}</>
-                                : process[1].apply(this, arguments))
-            ];
-            context.completions = self.player.relations.map(function (rel) rel.completionItem);
+            let arg = args.literalArg;
+            let index = (/^\d+:/)(arg) && parseInt(arg, 10);
+            if (index > 0)
+              arg = lastCompletions[index - 1].command;
+            let url = self.player.has('makeURL', 'x') ? makeRelationURL(self.player, arg) : arg;
+            liberator.open(url, args.bang ? liberator.NEW_TAB : liberator.CURRENT_TAB);
           },
-        },
-        true
-      );
+          {
+            literal: 0,
+            argCount: '*',
+            bang: true,
+            completer: function (context, args) {
+              if (!self.isValid)
+                U.raiseNotSupportedPage();
+              if (!self.player.has('relations', 'r'))
+                U.raiseNotSupportedFunction();
+
+              context.title = ['Tag/ID', 'Description'];
+              context.keys = {text: 'text', description: 'description', thumbnail: 'thumbnail'};
+              let process = Array.slice(context.process);
+              context.process = [
+                process[0],
+                function (item, text)
+                  (item.thumbnail ? <><img src={item.thumbnail} style="margin-right: 0.5em; height: 3em;"/>{text}</>
+                                  : process[1].apply(this, arguments))
+              ];
+              lastCompletions = self.player.relations;
+              context.completions =
+                lastCompletions.map(function (rel, index) rel.completionItem(index + 1));
+            },
+          },
+          true
+        );
+      }
     },
 
     addPageInfo: function () {
@@ -2002,7 +2113,7 @@ Thanks:
       let stella = liberator.globalVariables.stella = new Stella(new Setting());
       stella.addUserCommands();
       stella.addPageInfo();
-      liberator.log('Stella: installed.');
+      U.log('Stella: installed.');
     };
 
     // すでにインストール済みの場合は、一度ファイナライズする
