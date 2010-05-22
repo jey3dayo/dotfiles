@@ -2,12 +2,6 @@
 	<Script filename="minibuffer.user.js" name="Minibuffer" namespace="http://white.s151.xrea.com/" description="Minibuffer" enabled="true" basedir="minibuffer">
 		<Include>*</Include>
 	</Script>
-	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese" namespace="userscripts.org" description="" enabled="true" basedir="mouseover_translate_engl">
-		<Include>*</Include>
-	</Script>
-	<Script filename="ldrize_mibuffer_tumblr_r.user.js" name="LDRize Mibuffer tumblr reblog command" namespace="http://ido.nu/kuma/" description="add tumblr.reblog and tumblr.delete command  to Minibuffer." enabled="true" basedir="ldrize_mibuffer_tumblr_r">
-		<Include>http://*.tumblr.com/*</Include>
-	</Script>
 	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="true" basedir="autopagerize">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
@@ -31,18 +25,15 @@
 		<Include>http://reader.livedoor.com/reader/*</Include>
 		<Include>http://fastladder.com/reader/* </Include>
 	</Script>
+	<Script filename="ldrize_mibuffer_tumblr_r.user.js" name="LDRize Mibuffer tumblr reblog command" namespace="http://ido.nu/kuma/" description="add tumblr.reblog and tumblr.delete command  to Minibuffer." enabled="true" basedir="ldrize_mibuffer_tumblr_r">
+		<Include>http://*.tumblr.com/*</Include>
+	</Script>
 	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
 		<Include>http://*.google.*/*q=*</Include>
 	</Script>
 	<Script filename="grb.user.js" name="GR+?B" namespace="http://d.hatena.ne.jp/nozom/" description="show ?B button and count in Google Reader" enabled="true" basedir="grb">
 		<Include>http://www.google.com/reader/view/*</Include>
 		<Include>https://www.google.com/reader/view/*</Include>
-	</Script>
-	<Script filename="google_reader_-_social_b.user.js" name="Google Reader - Social Bookmark" namespace="http://at-aka.blogspot.com/" description="Add shortcut keys 'b' for bookmarking Hatena Bookmark and 'B' for livedoor clip." enabled="true" basedir="google_reader_-_social_b">
-		<Include>http://www.google.com/reader/*</Include>
-		<Include>https://www.google.com/reader/*</Include>
-		<Include>http://reader.google.com/*</Include>
-		<Include>https://reader.google.com/*</Include>
 	</Script>
 	<Script filename="gmailagenda.user.js" name="GmailAgenda" namespace="tag:gmailAgenda" description="" enabled="true" basedir="gmailagenda">
 		<Include>https://mail.google.com/mail/*</Include>
@@ -51,76 +42,75 @@
 		<Include>http://gmail.google.com/mail/*</Include>
 		<Include>http://www.google.com/calendar/embed*</Include>
 		<Include>https://www.google.com/calendar/embed*</Include>
-		<Include>https://mail.google.com/a/*</Include>
-		<Include>http://mail.google.com/a/*</Include>
-		<Exclude>https://mail.google.com/mail/?ui=*</Exclude>
-		<Exclude>http://mail.google.com/mail/?ui=*</Exclude>
+		<Include>https://mail.google.com/a/*.*/*</Include>
+		<Include>http://mail.google.com/a/*.*/*</Include>
+		<Include>https://mail.google.com/mail/?ui=*</Include>
+		<Include>http://mail.google.com/mail/?ui=*</Include>
 	</Script>
 	<Script filename="wikipediagoogleimage.user.js" name="wikipedia.googleimage" namespace="http://www.kagami.org/" description="" enabled="true" basedir="wikipediagoogleimage">
 		<Include>http://ja.wikipedia.org/wiki/*</Include>
 	</Script>
-	<Script filename="google_button_search_now.user.js" name="Google Button Search Now" namespace="http://a-h.parfe.jp/einfach/" description="" enabled="true" basedir="google_button_search_now">
-		<Include>http://*.google.*/*</Include>
-	</Script>
-	<Script filename="livedoor_reader_meets_ha.user.js" name="livedoor Reader meets Hatena Bookmark" namespace="http://tokyoenvious.xrea.jp/" description="" enabled="true" basedir="livedoor_reader_meets_ha">
-		<Include>http://reader.livedoor.com/reader/*</Include>
+	<Script filename="amazon_cross_book_check.user.js" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" description="" enabled="true" basedir="amazon_cross_book_check">
+		<Include>http://www.amazon.co.jp/*</Include>
+		<Include>http://amazon.co.jp/*</Include>
 	</Script>
 	<Script filename="composite_-yet_another_t.user.js" name="COMPOSITE -Yet another Tumblr photo viewer-" namespace="http://d.hatena.ne.jp/koyachi" description="" enabled="true" basedir="composite_-yet_another_t">
 		<Include>http://*.tumblr.com/</Include>
 	</Script>
+	<Script filename="download_from_youtube.user.js" name="Download from YouTube" namespace="" description="Adds FLV, MP4, 3GP, and 720p download links to YouTube." enabled="true" basedir="download_from_youtube">
+		<Include>http://*.youtube.com/watch*v=*</Include>
+		<Include>http://youtube.com/watch*v=*</Include>
+		<Require filename="updater.php"/>
+	</Script>
+	<Script filename="google_reader_-_social_b.user.js" name="Google Reader - Social Bookmark" namespace="http://at-aka.blogspot.com/" description="Add shortcut keys 'b' for bookmarking Hatena Bookmark and 'B' for livedoor clip." enabled="true" basedir="google_reader_-_social_b">
+		<Include>http://www.google.com/reader/*</Include>
+		<Include>https://www.google.com/reader/*</Include>
+		<Include>http://reader.google.com/*</Include>
+		<Include>https://reader.google.com/*</Include>
+	</Script>
+	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
+		<Include>*</Include>
+	</Script>
+	<Script filename="livedoor_reader_meets_ha.user.js" name="livedoor Reader meets Hatena Bookmark" namespace="http://tokyoenvious.xrea.jp/" description="" enabled="true" basedir="livedoor_reader_meets_ha">
+		<Include>http://reader.livedoor.com/reader/*</Include>
+	</Script>
+	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
+		<Include>*</Include>
+	</Script>
+	<Script filename="nicovideo_downloader.user.js" name="nicovideo downloader" namespace="http://muumoo.jp/" description="" enabled="true" basedir="nicovideo_downloader">
+		<Include>http://www.nicovideo.jp/watch/*</Include>
+	</Script>
+	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
+		<Include>http://www.nicovideo.jp/watch/*</Include>
+		<Require filename="jquery-132min.js"/>
+	</Script>
+	<Script filename="pbtweet.user.js" name="pbtweet" namespace="http://t-trace.blogspot.com/" description="Expand conversation chains and twitPic.com thumbnails." enabled="true" basedir="pbtweet">
+		<Include>https://twitter.com/*</Include>
+		<Include>http://twitter.com/*</Include>
+	</Script>
 	<Script filename="reblogcommand.user.js" name="ReblogCommand" namespace="http://white.s151.xrea.com/" description="" enabled="true" basedir="reblogcommand">
 		<Include>*</Include>
 	</Script>
+	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
+		<Include>*</Include>
+	</Script>
+	<Script filename="show_keybind_in_rmt.user.js" name="Show Keybind In RMT" namespace="http://espion.just-size.jp/archives/05/136155838.html" description="" enabled="true" basedir="show_keybind_in_rmt">
+		<Include>http://www.rememberthemilk.com/*</Include>
+	</Script>
 	<Script filename="tumblr_-_dashbord_brushu.user.js" name="Tumblr - Dashbord brushup" namespace="http://userstyles.org" description="This code is not made by me" enabled="true" basedir="tumblr_-_dashbord_brushu">
 		<Include>http://www.tumblr.com/dashboard*</Include>
-	</Script>
-	<Script filename="tumblr_-_strobo.user.js" name="Tumblr - Strobo" namespace="http://userscripts.org/users/7010" description="" enabled="true" basedir="tumblr_-_strobo">
-		<Include>http://*.tumblr.com/</Include>
 	</Script>
 	<Script filename="tumblrimgviewer.user.js" name="TumblrImgViewer" namespace="http://d.hatena.ne.jp/kasei_san/" description="" enabled="true" basedir="tumblrimgviewer">
 		<Include>http://*.tumblr.com/*</Include>
 		<Exclude>http://www.tumblr.com/*</Exclude>
 		<Exclude>http://*.tumblr.com/post/*</Exclude>
 	</Script>
-	<Script filename="nicovideo_downloader.user.js" name="nicovideo downloader" namespace="http://muumoo.jp/" description="" enabled="true" basedir="nicovideo_downloader">
-		<Include>http://www.nicovideo.jp/watch/*</Include>
-	</Script>
-	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
-		<Include>*</Include>
-	</Script>
-	<Script filename="amazon_cross_book_check.user.js" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" description="" enabled="true" basedir="amazon_cross_book_check">
-		<Include>http://www.amazon.co.jp/*</Include>
-		<Include>http://amazon.co.jp/*</Include>
-	</Script>
-	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
-		<Include>*</Include>
-		<Exclude>http://veadardiary.blog29.fc2.com/*</Exclude>
-	</Script>
-	<Script filename="show_keybind_in_rmt.user.js" name="Show Keybind In RMT" namespace="http://espion.just-size.jp/archives/05/136155838.html" description="" enabled="true" basedir="show_keybind_in_rmt">
-		<Include>http://www.rememberthemilk.com/*</Include>
-	</Script>
-	<Script filename="pbtweet.user.js" name="pbtweet" namespace="http://t-trace.blogspot.com/" description="Expand conversation chains and twitPic.com thumbnails." enabled="true" basedir="pbtweet">
-		<Include>https://twitter.com/*</Include>
-		<Include>http://twitter.com/*</Include>
-	</Script>
-	<Script filename="download_from_youtube.user.js" name="Download from YouTube" namespace="userscripts.org" description="Adds FLV, MP4, 3GP, and 720p download links to YouTube." enabled="true" basedir="download_from_youtube">
-		<Include>http://*.youtube.com/watch*v=*</Include>
-		<Include>http://youtube.com/watch*v=*</Include>
-		<Require filename="updater.php"/>
-	</Script>
-	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl-1">
-		<Include>*</Include>
-	</Script>
-	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
-		<Include>http://www.nicovideo.jp/watch/*</Include>
-		<Require filename="jquery-132min.js"/>
+	<Script filename="tumblr_-_strobo.user.js" name="Tumblr - Strobo" namespace="http://userscripts.org/users/7010" description="" enabled="true" basedir="tumblr_-_strobo">
+		<Include>http://*.tumblr.com/</Include>
 	</Script>
 	<Script filename="youtube_auto_buffer__aut.user.js" name="YouTube Auto Buffer &amp; Auto HD &amp; Remove Ads" namespace="userscripts.org" description="Buffers the video without autoplaying, removes in-video ads, and puts it in hd if the option is on. For Firefox and Opera" enabled="true" basedir="youtube_auto_buffer__aut">
 		<Include>http://*.youtube.com/*</Include>
 		<Include>http://youtube.com/*</Include>
 		<Require filename="updater.php"/>
-	</Script>
-	<Script filename="pixiv_ajax_favorite.user.js" name="Pixiv Ajax Favorite" namespace="http://userscripts.org/users/35494" description="Add ajax favorite menus above illustration" enabled="true" basedir="pixiv_ajax_favorite">
-		<Include>http://www.pixiv.net/member_illust.php?mode=medium&amp;illust_id=*</Include>
 	</Script>
 </UserScriptConfig>
