@@ -113,4 +113,7 @@
 		<Include>http://youtube.com/*</Include>
 		<Require filename="updater.php"/>
 	</Script>
+	<Script filename="bro3_timer.user.js" name="bro3_timer" namespace="http://blog.livedoor.jp/froo/" description="ブラウザ三国志タイマー by 浮浪プログラマ" enabled="true" basedir="bro3_timer">
+		<Include>http://*.3gokushi.jp/*</Include>
+	</Script>
 </UserScriptConfig>
