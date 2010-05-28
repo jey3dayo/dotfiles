@@ -39,7 +39,7 @@ let PLUGIN_INFO =
   <name lang="ja">すてら</name>
   <description>For Niconico/YouTube/Vimeo, Add control commands and information display(on status line).</description>
   <description lang="ja">ニコニコ動画/YouTube/Vimeo 用。操作コマンドと情報表示(ステータスライン上に)追加します。</description>
-  <version>0.30.2</version>
+  <version>0.31.1</version>
   <author mail="anekos@snca.net" homepage="http://d.hatena.ne.jp/nokturnalmortum/">anekos</author>
   <license>new BSD License (Please read the source code comments of this plugin)</license>
   <license lang="ja">修正BSDライセンス (ソースコードのコメントを参照してください)</license>
@@ -770,8 +770,8 @@ Thanks:
     get description () this._description,
     get thumbnail () this._thumbnail,
     get completionText () this.command,
-    completionItem: function (index) ({
-      text: [this.completionText, index + ': ' + this.description],
+    get completionItem () ({
+      text: this.completionText,
       description: this.description,
       thumbnail: this.thumbnail
     })
@@ -837,19 +837,6 @@ Thanks:
   YouTubePlayer.getIDfromURL = function (url) let ([_, r] = url.match(/[?;&]v=([-\w]+)/)) r;
   YouTubePlayer.isVideoURL = function (url) /^https?:\/\/(www\.)?youtube\.com\/watch\?.+/(url);
 
-  YouTubePlayer.OUTER_NODES = [
-    'old-masthead',
-    'watch-vid-title',
-    'watch-other-vids',
-    'old-footer',
-    'copyright',
-    'watch-main-area',
-    'watch-comments-stats',
-    'watch-video-response',
-    'chrome-promo',
-    'watch-video-quality-setting',
-  ];
-
   YouTubePlayer.prototype = {
     __proto__: Player.prototype,
 
@@ -888,45 +875,8 @@ Thanks:
       let (as = content.document.defaultView.wrappedJSObject.swfArgs)
         ('http://www.youtube.com/get_video?fmt=22&video_id=' + as.video_id + '&t=' + as.t),
 
-    get fullscreen () this.storage.fullscreen,
-    // FIXME - うまく元に戻らないことがある？
-    set fullscreen (value) {
-      function changeOuterNodes (hide) {
-        return;
-        const st = {display: 'none'};
-        let f = hide ? function (node) U.storeStyle(node, st)
-                     : function (node) U.restoreStyle(node);
-        YouTubePlayer.OUTER_NODES.forEach(
-          function (id) {
-            let (node = U.getElementById(id)) {
-              node && f(node);
-            }
-          }
-        );
-      }
-
-      this.last.screenMode = value ? 'fullscreen' : null;
-      this.storage.fullscreen = value;
-
-      // changeOuterNodes(value);
-
-      let p = this.player;
-      let r = p.getBoundingClientRect();
-      if (this.fullscreen) {
-        if (this.storage.r === undefined)
-          this.storage.r = options['guioptions'].indexOf('r') >= 0;
-        U.storeStyle(p, {
-          marginLeft: -r.left + 'px',
-          marginTop: -r.top + 'px',
-          width: content.innerWidth + 'px',
-          height: content.innerHeight + 'px',
-        });
-        p.setSize(content.innerWidth, content.innerHeight);
-      } else {
-        p.setSize(640, 385);
-        U.restoreStyle(p);
-      }
-    },
+    get id ()
+      YouTubePlayer.getIDfromURL(U.currentURL),
 
     get muted () this.player.isMuted(),
     set muted (value) ((value ? this.player.mute() : this.player.unMute()), value),
@@ -945,6 +895,10 @@ Thanks:
         [
           'tags',
           U.toXML(doc.querySelector('#watch-tags > div').innerHTML)
+        ],
+        [
+          'quality',
+          this.quality
         ]
       ];
     },
@@ -1019,13 +973,13 @@ Thanks:
       }
 
       let self = this;
-      let id = YouTubePlayer.getIDfromURL(U.currentURL);
 
       // all(1080p,720p,480p,360p) -> 37, 22, 35, 34, 5
       // FIXME 一番初めが最高画質だと期待
-      let cargs = content.wrappedJSObject.yt.config_.SWF_CONFIG.args
+      let cargs = content.wrappedJSObject.yt.config_.SWF_CONFIG.args;
       let quality = cargs.fmt_map.match(/^\d+/);
       let t = cargs.t;
+      let id = this.id;
 
       // 時間が経っていると無効化されてしまっている
       //_fetch(t, id);
@@ -1059,6 +1013,63 @@ Thanks:
   };
 
   // }}}
+
+  /*********************************************************************************
+  * YouTubeUserChannelPlayer                                                                {{{
+  *********************************************************************************/
+
+  function YouTubeUserChannelPlayer () {
+    Player.apply(this, arguments);
+  }
+
+  YouTubeUserChannelPlayer.getIDfromURL = function (url) let ([_, r] = url.match(/\/([^\/]+)($|[\?]+)/)) r;
+  YouTubeUserChannelPlayer.isVideoURL = function (url) /^https?:\/\/(www\.)?youtube\.com\/watch\?.+/(url);
+
+  YouTubeUserChannelPlayer.prototype = {
+    __proto__: YouTubePlayer.prototype,
+
+    get id ()
+      YouTubeUserChannelPlayer.getIDfromURL(U.currentURL),
+
+    get isValid () U.currentURL.match(/^http:\/\/(?:[^.]+\.)?youtube\.com\/user\//),
+
+    fetch: function (filepath) {
+      // TODO 動画変数が手に入らない？
+      throw "not implmented!!";
+    },
+
+    get pageinfo () {
+      let doc = content.document;
+      let wd = doc.querySelector('#playnav-curvideo-description');
+      return [
+        [
+          'comment',
+          wd.textContent
+        ]
+      ];
+    },
+
+    get relations () {
+      let result = [];
+      let doc = content.document;
+      for each (let item in Array.slice(doc.querySelectorAll('div.playnav-item.playnav-video'))) {
+        let link = item.querySelector('a.playnav-item-title.ellipsis');
+        let url = link.href;
+        if (!YouTubePlayer.isVideoURL(url))
+          continue;
+        result.push(
+          new RelatedID(
+            YouTubePlayer.getIDfromURL(url),
+            link.querySelector('span').textContent,
+            item.querySelector('img').src
+          )
+        );
+      }
+      return result;
+    },
+
+  };
+
 
   /*********************************************************************************
   * NicoPlayer                                                                   {{{
@@ -1635,6 +1646,7 @@ Thanks:
       this.players = {
         niconico: new NicoPlayer(this.stella),
         youtube: new YouTubePlayer(this.stella),
+        youtubeuc: new YouTubeUserChannelPlayer(this.stella),
         vimeo: new VimeoPlayer(this.stella)
       };
 
@@ -1785,6 +1797,8 @@ Thanks:
               if (!self.player.has('relations', 'r'))
                 U.raiseNotSupportedFunction();
 
+              context.filters = [CompletionContext.Filter.textDescription];
+              context.anchored = false;
               context.title = ['Tag/ID', 'Description'];
               context.keys = {text: 'text', description: 'description', thumbnail: 'thumbnail'};
               let process = Array.slice(context.process);
@@ -1795,8 +1809,7 @@ Thanks:
                                   : process[1].apply(this, arguments))
               ];
               lastCompletions = self.player.relations;
-              context.completions =
-                lastCompletions.map(function (rel, index) rel.completionItem(index + 1));
+              context.completions = lastCompletions.map(function (rel) rel.completionItem);
             },
           },
           true
@@ -1806,6 +1819,7 @@ Thanks:
 
     addPageInfo: function () {
       let self = this;
+      delete buffer.pageInfo.S;
       buffer.addPageInfoSection(
         'S',
         'Stella Info',
