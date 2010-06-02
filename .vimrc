@@ -97,6 +97,7 @@ nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
 
+nnoremap <Leader>d  :<C-u>!doxygen Doxyfile<CR>
 
 " ruler
 " augroup cch
