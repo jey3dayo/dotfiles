@@ -92,7 +92,7 @@ nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
 
 
-nnoremap <CR> o<ESC>
+" nnoremap <CR> o<ESC>
 nnoremap <Leader>d  :<C-u>!doxygen Doxyfile<CR>
 
 nnoremap <Leader>ff :%s/left=/left:/g<CR>:%s/top=/top:/g<CR>
