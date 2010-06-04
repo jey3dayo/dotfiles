@@ -30,12 +30,7 @@ chatnets = {
 
 channels = (
   { name = "#twitter"; chatnet = "tig"; autojoin = "yes"; },
-  { name = "#corp"; chatnet = "tig"; autojoin = "yes"; },
-  { name = "#local"; chatnet = "tig"; autojoin = "yes"; },
-  { name = "#watching"; chatnet = "tig"; autojoin = "yes"; },
-  { name = "#looking"; chatnet = "tig"; autojoin = "yes"; },
-  { name = "#mention"; chatnet = "tig"; autojoin = "yes"; },
-  { name = "#famous"; chatnet = "tig"; autojoin = "yes"; }
+  { name = "#mention"; chatnet = "tig"; autojoin = "yes"; }
 );
 
 aliases = {

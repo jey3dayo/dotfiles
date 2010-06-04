@@ -243,22 +243,40 @@ autocmd Filetype objc setlocal showmatch dict=~/.vim/dict/objc.dict
 "   :!%.out
 "endfunction
 
+" autocomplpop.vim
+let g:acp_enableAtStartup=0
 
 " LookupFile.vim
 let g:LookupFile_AlwaysAcceptFirst=1
 let g:LookupFile_PreserveLastPattern=0
 let g:LookupFile_AllowNewFiles=0
 
-
 " taglist.vim
 set tags=tags
 
-
-"NERD_commenter.vim <leader>+x => comment out
+" NERD_commenter.vim <leader>+x => comment out
 map <Leader>x ,c<space>
 let NERDShutUp=1
 
-
-"NERD_tree.vim
+" NERD_tree.vim
 nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
+
+" taglist.vim
+nnoremap <Leader>t  :<C-u>Tlist<CR>
+
+" srcexpl.vim
+let g:SrcExpl_RefreshTime = 0
+let g:SrcExpl_UpdateTags = 1
+let g:SrcExpl_RefreshMapKey = "<Space>"
+
+" neocomplcache.vim
+let g:NeoComplCache_EnableAtStartup=1
+let g:NeoComplCache_SmartCase=1
+let g:NeoComplCache_TagsAutoUpdate=1
+let g:NeoComplCache_EnableInfo=1
+let g:NeoComplCache_MinSyntaxLength=3
+let g:NeoComplCache_SkipInputTime='0.1'
+let g:NeoComplCache_SameFileTypeLists={}
+let g:NeoComplCache_SameFileTypeLists['c']='cpp'
+let g:NeoComplCache_SameFileTypeLists['cpp']='c'
 
