@@ -12,13 +12,17 @@ map <leader>F Bookmarks Toolbar-HINTS (new-tab)set runtimepath=~/.vimperator
 " Options
 set history=1000
 set activate=homepage,quickmark,tabopen,paste
-set complete=sl
+"set complete=sl
+set complete=l
 set guioptions=mBr
+set ignorecase
 set wildoptions=auto
 set hlsearch
 set visualbell
 let mapleader = ","
 colorscheme bigchu
+
+hi StatusLine color:black; background:#AAA; font-weight:normal;
 
 
 " Mappings
@@ -62,9 +66,11 @@ noremap <leader>tm :twitter d rtm<space>
 noremap <leader>to :tombloo<space>
 noremap <leader>b  :btags<cr>
 noremap <leader>d  :eijiro<space>
-noremap <C-a>      :sbm<space>[
 noremap B          :viewSBMComments<cr>
 noremap Q          :toggleldrc<cr>
+
+noremap a          <S-a>
+noremap <S-a>      :sbm<space>[
 
 noremap <leader>m  :emenu 
 noremap <leader>M  :emenu tool
@@ -87,6 +93,18 @@ liberator.globalVariables.copy_templates = [
   { label: 'TitleAndbittly',   value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
 ];
 EOM
+
+
+javascript <<EOF
+(function(){
+  var feedPanel = document.createElement("statusbarpanel");
+  feedPanel.setAttribute("id", "feed-panel-clone");
+  feedPanel.appendChild(document.getElementById("feed-button"));
+  feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
+  document.getElementById("status-bar") .insertBefore(feedPanel, document.getElementById("security-button"));
+}
+)();
+EOF
 
 
 " feedsomekey_3.js

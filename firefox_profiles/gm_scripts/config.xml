@@ -80,10 +80,6 @@
 	<Script filename="nicovideo_downloader.user.js" name="nicovideo downloader" namespace="http://muumoo.jp/" description="" enabled="true" basedir="nicovideo_downloader">
 		<Include>http://www.nicovideo.jp/watch/*</Include>
 	</Script>
-	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
-		<Include>http://www.nicovideo.jp/watch/*</Include>
-		<Require filename="jquery-132min.js"/>
-	</Script>
 	<Script filename="pbtweet.user.js" name="pbtweet" namespace="http://t-trace.blogspot.com/" description="Expand conversation chains and twitPic.com thumbnails." enabled="true" basedir="pbtweet">
 		<Include>https://twitter.com/*</Include>
 		<Include>http://twitter.com/*</Include>
@@ -115,5 +111,9 @@
 	</Script>
 	<Script filename="bro3_timer.user.js" name="bro3_timer" namespace="http://blog.livedoor.jp/froo/" description="ブラウザ三国志タイマー by 浮浪プログラマ" enabled="true" basedir="bro3_timer">
 		<Include>http://*.3gokushi.jp/*</Include>
+	</Script>
+	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
+		<Include>http://www.nicovideo.jp/watch/*</Include>
+		<Require filename="jquery-132min.js"/>
 	</Script>
 </UserScriptConfig>

@@ -10,7 +10,7 @@ case ${UID} in
     LANG=C
     ;;
 esac
-export PATH=/opt/local/bin:/opt/local/sbin:/bin:/usr/bin:/Developer/SDKs/flex_sdk/bin:$PATH
+export PATH=/opt/local/bin:/opt/local/sbin:/bin:/usr/bin:/usr/local/bin:/Developer/SDKs/flex_sdk/bin:$PATH
 export MANPATH=/opt/local/man:$MANPATH
 
 export GOROOT=$HOME/go
