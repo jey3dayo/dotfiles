@@ -106,6 +106,29 @@ javascript <<EOF
 )();
 EOF
 
+let g:localkeymode_enable = "true"
+javascript <<EOM
+  liberator.globalVariables.localKeyMappings= [
+    [/www\.nicovideo\.jp\/watch/, [
+        ['p', ':nicopause'],
+        ['m', ':nicomute'],
+        ['v', ':nicommentvisible'],
+        ['s', ':nicoseek! +10'],
+        ['S', ':nicoseek! -10'],
+        ['z', ':nicosize'],
+        ['c', ':nicomment ', true],
+        ['C', ':nicommand ', true],
+    ]],
+    [/youtube\.com\/watch/, [
+        ['p', ':ytpause'],
+        ['m', ':ytmute'],
+        ['z', ':ytsize'],
+        ['s', ':ytseek! +10'],
+        ['S', ':ytseek! -10'],
+        ]],
+    ];
+EOM
+
 
 " feedsomekey_3.js
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
