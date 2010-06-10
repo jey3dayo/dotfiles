@@ -95,9 +95,6 @@ nnoremap <Tab> :<C-u>wincmd w<CR>
 " nnoremap <CR> o<ESC>
 nnoremap <Leader>d  :<C-u>!doxygen Doxyfile<CR>
 
-nnoremap <Leader>ff :%s/left=/left:/g<CR>:%s/top=/top:/g<CR>
-nnoremap <Leader>gg :%s/left:/left=/g<CR>:%s/top:/top=/g<CR>
-
 
 " ruler
 " augroup cch
@@ -159,23 +156,29 @@ command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 " autocomplpop.vim
 let g:acp_enableAtStartup=0
 
+
 " LookupFile.vim
 let g:LookupFile_AlwaysAcceptFirst=1
 let g:LookupFile_PreserveLastPattern=0
 let g:LookupFile_AllowNewFiles=0
 
+
 " taglist.vim
 set tags=tags
+
 
 " NERD_commenter.vim <leader>+x => comment out
 map <Leader>x ,c<space>
 let NERDShutUp=1
 
+
 " NERD_tree.vim
 nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
 
+
 " taglist.vim
 nnoremap <Leader>t  :<C-u>Tlist<CR>
+
 
 " srcexpl.vim
 nnoremap <Leader>s :<C-u>SrcExplToggle<CR>
@@ -193,4 +196,10 @@ let g:NeoComplCache_SkipInputTime='0.1'
 let g:NeoComplCache_SameFileTypeLists={}
 let g:NeoComplCache_SameFileTypeLists['c']='cpp'
 let g:NeoComplCache_SameFileTypeLists['cpp']='c'
+
+
+" fuf.vim
+nmap <silent> <Leader>ff :FuzzyFinderFile<CR>
+nmap <silent> <Leader>fb :FuzzyFinderBuffer<CR>
+nmap <silent> <Leader>fc :FuzzyFinderMruCmd<CR>
 

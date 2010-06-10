@@ -1,28 +1,37 @@
-"2.0a3 (created: 2009/01/13 16:24:42)
-map <leader>f Bookmarks Toolbar-HINTS (current-tab)
-map <leader>F Bookmarks Toolbar-HINTS (new-tab)set runtimepath=~/.vimperator
-
-
-" source! ~/.vimperatorrc.local
-
-" vim: set ft=vimperator:
-" vim: set ft=vim:
-
+" j138 .vimperatorrc
 
 " Options
 set history=1000
 set activate=homepage,quickmark,tabopen,paste
-"set complete=sl
-set complete=l
+
+" tabopen時の補完対象
+set complete=tsl
+
+" gui options
 set guioptions=mBr
+
+" 検索時に大文字小文字を区別しない
 set ignorecase
 set wildoptions=auto
+
+" 検索時にハイライト
 set hlsearch
+
+" ビジュアルベルに変更
 set visualbell
+
+" ロード時にテキストボックスにフォーカスしない
+set focuscontent
+
+" タブ非表示
+set showtabline=2
+
+" leaderを変更
 let mapleader = ","
 colorscheme bigchu
 
-hi StatusLine color:black; background:#AAA; font-weight:normal;
+" ステータスバーの背景色を変更
+hi StatusLine color:black; background:#ABD31B; font-weight:normal;
 
 
 " Mappings
@@ -30,71 +39,143 @@ noremap j 5<C-e>
 noremap k 5<C-y>
 noremap J <PageDown>
 noremap K <PageUp>
+
+" タブの移動
 noremap h gT
 noremap l gt
 noremap <C-H> h
 noremap <C-L> l
-noremap <C-t> t g1<space>
 
-noremap <leader>i  :pageinfo<cr>
-noremap <leader>so :source ~/.vimperatorrc<cr>
+" i'm feeling so happy
+noremap <C-t> t g1<Space>
 
-map <C-h> :tabmove! -1<cr>
-map <C-l> :tabmove! +1<cr>
+noremap U :undo<Space>
 
-inoremap <C-a> <C-v><C-a>
-inoremap <C-z> <C-v><C-z>
-inoremap <C-x> <C-v><C-x>
-inoremap <C-c> <C-v><C-c>
-inoremap <C-v> <C-v><C-v>
-cnoremap <C-a> <C-v><C-a>
-cnoremap <C-z> <C-v><C-z>
-cnoremap <C-x> <C-v><C-x>
-cnoremap <C-c> <C-v><C-c>
-cnoremap <C-v> <C-v><C-v>
+" 再起動
+noremap <C-r> :restart<CR>
 
+" ! でページのCSSをon/off
+noremap ! :set invum<CR>
 
-" plugin custom
-noremap <leader>tw :twitter<space>
-noremap <leader>tr :twitter!@<cr>
-noremap <leader>ts :twitter!<space>
-noremap <leader>tu :twitter %TITLE% - %URL%<cr>
+" ページのエンコーディングを変更
+noremap ,es :set encoding=Shift_JIS<CR>
+noremap ,ec :set encoding=EUC-JP<CR>
+noremap ,eu :set encoding=UTF-8<CR>
+noremap ,ei :set encodeing=ISO-2022-JP<CR>
 
-noremap <leader>te :twitter d myEN<space>
-noremap <leader>tm :twitter d rtm<space>
+" .vimperatorrcを再読み込み
+noremap <leader>so :source ~/.vimperatorrc<CR>
 
-noremap <leader>to :tombloo<space>
-noremap <leader>b  :btags<cr>
-noremap <leader>d  :eijiro<space>
-noremap B          :viewSBMComments<cr>
-noremap Q          :toggleldrc<cr>
+" タブ位置の移動
+map <C-h> :tabmove! -1<CR>
+map <C-l> :tabmove! +1<CR>
 
+" ブックマークの追加をトグル
 noremap a          <S-a>
-noremap <S-a>      :sbm<space>[
 
 noremap <leader>m  :emenu 
 noremap <leader>M  :emenu tool
 
 
+" twitter.js
+noremap <leader>tw :twitter<Space>
+noremap <leader>tr :twitter!@<CR>
+noremap <leader>ts :twitter!<Space>
+noremap <leader>tu :twitter %TITLE% - %URL%<CR>
+noremap <leader>te :twitter d myEN<Space>
+noremap <leader>tm :twitter d rtm<Space>
+
+
+"tombloo.js
+noremap <leader>to :tombloo<Space>
+noremap <leader>d  :eijiro<Space>
+
+
 " copy.js
-map <leader>c :copy<Space>TitleAndbittly<cr>
-map <leader>C :copy<Space>titleAndURL<cr>
+map <leader>c :copy<Space>TitleAndbittly<CR>
+map <leader>C :copy<Space>titleAndURL<CR>
 
 js <<EOM
 liberator.globalVariables.copy_templates = [
-  { label: 'titleAndURL',      value: '%TITLE% %URL%' },
-  { label: 'title \\n URL',    value: '%TITLE%\n%URL%' },
-  { label: '[[title:URL]]',      value: '[[%TITLE%:%URL%]]' },
-  { label: 'title',            value: '%TITLE%' },
-  { label: 'url',              value: '%URL%' },
-  { label: 'markdown',         value: '[%TITLE%](%URL% "%TITLE%")' },
-  { label: 'htmlblockquote',   value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
-  { label: 'bittly',           value: 'Get bittly URL', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
-  { label: 'TitleAndbittly',   value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+  { label: 'titleAndURL',     value: '%TITLE% %URL%' },
+  { label: 'title \\n URL',   value: '%TITLE%\n%URL%' },
+  { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
+  { label: 'title',           value: '%TITLE%' },
+  { label: 'url',             value: '%URL%' },
+  { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
+  { label: 'htmlblockquote',  value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
+  { label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+  { label: 'TitleAndbittly',  value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+  { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
+  { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
+  { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
 ];
 EOM
 
 
+" feedsomekey_3.js
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
+lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
+lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? t F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
+
+
+" direct_bookmark.js
+let g:direct_sbm_use_services_by_tag = "hd"
+let g:direct_sbm_use_services_by_post = "hd"
+noremap <S-a>      :sbm<Space>[
+noremap <Leader>be :bentry<CR>
+noremap <Leader>bt :btags<CR>
+noremap <Leader>bi :bicon<CR>
+
+
+" sbmcommentsviewer.js
+noremap <leader>bv :viewSBMComments<CR>
+
+
+" ldrize_cooperation.js
+noremap <silent> <Leader>q :toggleldrc<CR>
+
+
+" copy/paste {{{
+javascript <<EOM
+execute_silent = function(str, modifiers) {
+    liberator.execute(str, modifiers, true);
+}
+if (liberator.has("Win32")) {
+    execute_silent("cnoremap <C-a> <C-v><C-a>");
+    execute_silent("cnoremap <C-z> <C-v><C-z>");
+    execute_silent("cnoremap <C-x> <C-v><C-x>");
+    execute_silent("cnoremap <C-c> <C-v><C-c>");
+    execute_silent("cnoremap <C-v> <C-v><C-v>");
+    execute_silent("inoremap <C-a> <C-v><C-a>");
+    execute_silent("inoremap <C-z> <C-v><C-z>");
+    execute_silent("inoremap <C-x> <C-v><C-x>");
+    execute_silent("inoremap <C-c> <C-v><C-c>");
+    execute_silent("inoremap <C-v> <C-v><C-v>");
+}
+else if (liberator.has("MacUnix")) {
+    execute_silent("cnoremap <M-a> <C-v><M-a>");
+    execute_silent("cnoremap <M-z> <C-v><M-z>");
+    execute_silent("cnoremap <M-x> <C-v><M-x>");
+    execute_silent("cnoremap <M-c> <C-v><M-c>");
+    execute_silent("cnoremap <M-v> <C-v><M-v>");
+    execute_silent("inoremap <M-a> <C-v><M-a>");
+    execute_silent("inoremap <M-z> <C-v><M-z>");
+    execute_silent("inoremap <M-x> <C-v><M-x>");
+    execute_silent("inoremap <M-c> <C-v><M-c>");
+    execute_silent("inoremap <M-v> <C-v><M-v>");
+}
+else {
+}
+EOM
+" }}}
+
+" RSSフィードの表示 {{{
 javascript <<EOF
 (function(){
   var feedPanel = document.createElement("statusbarpanel");
@@ -105,8 +186,32 @@ javascript <<EOF
 }
 )();
 EOF
+" }}}
+
+" Toggle Autopagerize {{{
+javascript <<EOM
+let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
+    commands.addUserCommand(
+            ['autopagerize'],
+            'Toggle AutoPagerize',
+            function (args) {
+            buffer.followLink(
+                evaluateXPath('id("autopagerize_help")/div/a[@class="autopagerize_link"]').snapshotItem(0)
+                );
+            },
+            {},
+            true
+            );
+}
+EOM
+" }}}
+
+" toggle autopagerize
+noremap <silent> <Leader>a :autopagerize<CR>
+
 
 let g:localkeymode_enable = "true"
+
 javascript <<EOM
   liberator.globalVariables.localKeyMappings= [
     [/www\.nicovideo\.jp\/watch/, [
@@ -128,22 +233,6 @@ javascript <<EOM
         ]],
     ];
 EOM
-
-
-" feedsomekey_3.js
-command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
-lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
-lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
-lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? t F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
-lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
-lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
-
-
-" direct_bookmark.js
-let g:direct_sbm_use_services_by_tag = "hd"
-let g:direct_sbm_use_services_by_post = "hd"
 
 
 echo "done."

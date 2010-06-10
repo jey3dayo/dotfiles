@@ -139,8 +139,8 @@ alias o="open"
 alias top="top -ocpu -s5"
 alias hg="hg --encoding=utf-8"
 
-alias growlcall="growlnotify -t "Terminal" -m 'Finishing the Task.'"
-alias cdwork="/Users/leopard/Documents/NintendoZone/nz_atlas/atlus_nz_manegement_tool/contents_management_system/main_login/main_menu/rilakkuma_contents"
+alias growlcall="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
+alias cdwork="/Users/leopard/Documents/Line/mbga_blazblue/trunk/htdocs/api/"
 
 case "${OSTYPE}" in
     darwin*)

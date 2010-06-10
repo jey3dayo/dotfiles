@@ -1,4 +1,24 @@
 ================================================================================
+  RELEASE NOTES FOR VERSION 5.10
+================================================================================
+- The plugin now handles different template styles without editing and
+  reloading the main template file.
+- The number of template styles is not limited. 
+- New hotkey and ex-command to switch template styles.
+- Template styles can automatically be related to file extensions.
+- indent(1) errors will be presented in a quickfix error window.
+- Comment alignment improved.
+- Minor improvements.
+
+================================================================================
+  RELEASE NOTES FOR VERSION 5.9
+================================================================================
++ Two additional hotkeys (+ ex commands) for preprocessor statements.
++ Compile-link-run: improved error detection.
++ Menu Run: hardcopy can print any buffer.
++ Several minor improvements and bugfixes.
+
+================================================================================
   RELEASE NOTES FOR VERSION 5.8
 ================================================================================
 + Hotkeys are shown in the menus.

@@ -1,0 +1,10 @@
+ScriptID  SourceID  Filename
+-----
+294 10110 :AutoInstall: Align.vim
+1879 11894 :AutoInstall: AutoComplPop
+1066 7618 :AutoInstall: cecutil.vim
+1861 13041 :AutoInstall: errormarker.vim
+1984 11852 :AutoInstall: FuzzyFinder
+1567 12622 :AutoInstall: rails.vim
+1697 12566 :AutoInstall: surround.vim
+1234 12258 :AutoInstall: yankring.vim
