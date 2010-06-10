@@ -199,7 +199,7 @@ let g:NeoComplCache_SameFileTypeLists['cpp']='c'
 
 
 " fuf.vim
-nmap <silent> <Leader>ff :FuzzyFinderFile<CR>
-nmap <silent> <Leader>fb :FuzzyFinderBuffer<CR>
-nmap <silent> <Leader>fc :FuzzyFinderMruCmd<CR>
+nmap <silent> <Leader>ff :FufFile<CR>
+nmap <silent> <Leader>fb :FufBuffer<CR>
+nmap <silent> <Leader>ft :FufTag<CR>
 
