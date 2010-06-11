@@ -7,17 +7,15 @@ set activate=homepage,quickmark,tabopen,paste
 " tabopen時の補完対象
 set complete=tsl
 
-" gui options
 set guioptions=mBr
 
 " 検索時に大文字小文字を区別しない
 set ignorecase
+
 set wildoptions=auto
 
 " 検索時にハイライト
 set hlsearch
-
-" ビジュアルベルに変更
 set visualbell
 
 " ロード時にテキストボックスにフォーカスしない
@@ -28,11 +26,11 @@ set showtabline=2
 
 " leaderを変更
 let mapleader = ","
+
 colorscheme bigchu
 
 " ステータスバーの背景色を変更
 hi StatusLine color:black; background:#ABD31B; font-weight:normal;
-
 
 " Mappings
 noremap j 5<C-e>
@@ -46,9 +44,7 @@ noremap l gt
 noremap <C-H> h
 noremap <C-L> l
 
-" i'm feeling so happy
-noremap <C-t> t g1<Space>
-
+" undo
 noremap U :undo<Space>
 
 " 再起動
@@ -77,21 +73,12 @@ noremap <leader>m  :emenu
 noremap <leader>M  :emenu tool
 
 
-" twitter.js
-noremap <leader>tw :twitter<Space>
-noremap <leader>tr :twitter!@<CR>
-noremap <leader>ts :twitter!<Space>
-noremap <leader>tu :twitter %TITLE% - %URL%<CR>
-noremap <leader>te :twitter d myEN<Space>
-noremap <leader>tm :twitter d rtm<Space>
+" appendAnchor.js
+let g:auto_append_anchor = "true"
+let g:auto_append_anchor_once = "true"
 
 
-"tombloo.js
-noremap <leader>to :tombloo<Space>
-noremap <leader>d  :eijiro<Space>
-
-
-" copy.js
+" copy.js "{{{
 map <leader>c :copy<Space>TitleAndbittly<CR>
 map <leader>C :copy<Space>titleAndURL<CR>
 
@@ -111,18 +98,7 @@ liberator.globalVariables.copy_templates = [
   { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
 ];
 EOM
-
-
-" feedsomekey_3.js
-command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
-lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
-lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
-lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? t F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
-lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
-lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
-
+" }}}
 
 " direct_bookmark.js
 let g:direct_sbm_use_services_by_tag = "hd"
@@ -133,12 +109,67 @@ noremap <Leader>bt :btags<CR>
 noremap <Leader>bi :bicon<CR>
 
 
-" sbmcommentsviewer.js
-noremap <leader>bv :viewSBMComments<CR>
+" feedsomekey_3.js {{{
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
+lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
+lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? t F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
+" }}}
+
+
+" localkeymode.js {{{
+let g:localkeymode_enable = "true"
+
+javascript <<EOM
+  liberator.globalVariables.localKeyMappings= [
+    [/www\.nicovideo\.jp\/watch/, [
+        ['p', ':nicopause'],
+        ['m', ':nicomute'],
+        ['v', ':nicommentvisible'],
+        ['s', ':nicoseek! +10'],
+        ['S', ':nicoseek! -10'],
+        ['z', ':nicosize'],
+    ]],
+    [/youtube\.com\/watch/, [
+        ['p', ':ytpause'],
+        ['m', ':ytmute'],
+        ['z', ':ytsize'],
+        ['s', ':ytseek! +10'],
+        ['S', ':ytseek! -10'],
+        ]],
+    ];
+EOM
+" }}}
 
 
 " ldrize_cooperation.js
 noremap <silent> <Leader>q :toggleldrc<CR>
+
+
+" sbmcommentsviewer.js
+noremap <leader>bv :viewSBMComments<CR>
+
+
+" toggle autopagerize
+noremap <silent> <Leader>a :autopagerize<CR>
+
+
+"tombloo.js
+noremap <leader>to :tombloo<Space>
+noremap <leader>d  :eijiro<Space>
+
+
+" twitter.js
+noremap <leader>tw :twitter<Space>
+noremap <leader>tr :twitter!@<CR>
+noremap <leader>ts :twitter!<Space>
+noremap <leader>tu :twitter %TITLE% - %URL%<CR>
+noremap <leader>te :twitter d myEN<Space>
+noremap <leader>tm :twitter d rtm<Space>
 
 
 " copy/paste {{{
@@ -175,6 +206,7 @@ else {
 EOM
 " }}}
 
+
 " RSSフィードの表示 {{{
 javascript <<EOF
 (function(){
@@ -205,35 +237,6 @@ let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
 }
 EOM
 " }}}
-
-" toggle autopagerize
-noremap <silent> <Leader>a :autopagerize<CR>
-
-
-let g:localkeymode_enable = "true"
-
-javascript <<EOM
-  liberator.globalVariables.localKeyMappings= [
-    [/www\.nicovideo\.jp\/watch/, [
-        ['p', ':nicopause'],
-        ['m', ':nicomute'],
-        ['v', ':nicommentvisible'],
-        ['s', ':nicoseek! +10'],
-        ['S', ':nicoseek! -10'],
-        ['z', ':nicosize'],
-        ['c', ':nicomment ', true],
-        ['C', ':nicommand ', true],
-    ]],
-    [/youtube\.com\/watch/, [
-        ['p', ':ytpause'],
-        ['m', ':ytmute'],
-        ['z', ':ytsize'],
-        ['s', ':ytseek! +10'],
-        ['S', ':ytseek! -10'],
-        ]],
-    ];
-EOM
-
 
 echo "done."
 

@@ -62,17 +62,8 @@
 		<Include>http://youtube.com/watch*v=*</Include>
 		<Require filename="updater.php"/>
 	</Script>
-	<Script filename="google_reader_-_social_b.user.js" name="Google Reader - Social Bookmark" namespace="http://at-aka.blogspot.com/" description="Add shortcut keys 'b' for bookmarking Hatena Bookmark and 'B' for livedoor clip." enabled="true" basedir="google_reader_-_social_b">
-		<Include>http://www.google.com/reader/*</Include>
-		<Include>https://www.google.com/reader/*</Include>
-		<Include>http://reader.google.com/*</Include>
-		<Include>https://reader.google.com/*</Include>
-	</Script>
 	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
 		<Include>*</Include>
-	</Script>
-	<Script filename="livedoor_reader_meets_ha.user.js" name="livedoor Reader meets Hatena Bookmark" namespace="http://tokyoenvious.xrea.jp/" description="" enabled="true" basedir="livedoor_reader_meets_ha">
-		<Include>http://reader.livedoor.com/reader/*</Include>
 	</Script>
 	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
 		<Include>*</Include>
@@ -108,9 +99,6 @@
 		<Include>http://*.youtube.com/*</Include>
 		<Include>http://youtube.com/*</Include>
 		<Require filename="updater.php"/>
-	</Script>
-	<Script filename="bro3_timer.user.js" name="bro3_timer" namespace="http://blog.livedoor.jp/froo/" description="ブラウザ三国志タイマー by 浮浪プログラマ" enabled="true" basedir="bro3_timer">
-		<Include>http://*.3gokushi.jp/*</Include>
 	</Script>
 	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
 		<Include>http://www.nicovideo.jp/watch/*</Include>
