@@ -1,12 +1,12 @@
 .DS_Store
-Thumbs.db
-ctags
-local-marks
 .subversion/auth/
 .vimperator/info/default/history-command
 .vimperator/info/default/history-search
 .vimperator/info/default/plugins-hatena-bookmark-search-data
 .vimperator/info/default/plugins-libly-wedata-AutoPagerize-items
 .vimperator/info/default/plugins-pluginManager
-log/
 Session.vim
+Thumbs.db
+ctags
+local-marks
+log/
