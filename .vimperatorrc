@@ -16,6 +16,7 @@ set wildoptions=auto
 
 " 検索時にハイライト
 set hlsearch
+
 set visualbell
 
 " ロード時にテキストボックスにフォーカスしない
@@ -44,10 +45,7 @@ noremap l gt
 noremap <C-H> h
 noremap <C-L> l
 
-" undo
 noremap U :undo<Space>
-
-" 再起動
 noremap <C-r> :restart<CR>
 
 " ! でページのCSSをon/off
@@ -68,9 +66,6 @@ map <C-l> :tabmove! +1<CR>
 
 " ブックマークの追加をトグル
 noremap a          <S-a>
-
-noremap <leader>m  :emenu 
-noremap <leader>M  :emenu tool
 
 
 " appendAnchor.js
@@ -99,6 +94,7 @@ liberator.globalVariables.copy_templates = [
 ];
 EOM
 " }}}
+
 
 " direct_bookmark.js
 let g:direct_sbm_use_services_by_tag = "hd"
@@ -219,6 +215,7 @@ javascript <<EOF
 )();
 EOF
 " }}}
+
 
 " Toggle Autopagerize {{{
 javascript <<EOM
