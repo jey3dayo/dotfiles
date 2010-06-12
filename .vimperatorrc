@@ -7,11 +7,13 @@ set activate=homepage,quickmark,tabopen,paste
 " tabopen時の補完対象
 set complete=tsl
 
+" gui options
 set guioptions=mBr
 
 " 検索時に大文字小文字を区別しない
 set ignorecase
 
+" ex mode でインクリメント補完
 set wildoptions=auto
 
 " 検索時にハイライト
@@ -21,6 +23,9 @@ set visualbell
 
 " ロード時にテキストボックスにフォーカスしない
 set focuscontent
+
+" ウィンドウサイズを変更するページは新しいウィンドウで開く
+set popups=window
 
 " タブ非表示
 set showtabline=2
@@ -51,6 +56,10 @@ noremap <C-r> :restart<CR>
 " ! でページのCSSをon/off
 noremap ! :set invum<CR>
 
+" qmarks
+noremap <Leader>m :marks<CR>
+noremap <Leader>M :mark <spance>
+
 " ページのエンコーディングを変更
 noremap ,es :set encoding=Shift_JIS<CR>
 noremap ,ec :set encoding=EUC-JP<CR>
@@ -58,7 +67,7 @@ noremap ,eu :set encoding=UTF-8<CR>
 noremap ,ei :set encodeing=ISO-2022-JP<CR>
 
 " .vimperatorrcを再読み込み
-noremap <leader>so :source ~/.vimperatorrc<CR>
+noremap <Leader>so :source ~/.vimperatorrc<CR>
 
 " タブ位置の移動
 map <C-h> :tabmove! -1<CR>
@@ -66,6 +75,11 @@ map <C-l> :tabmove! +1<CR>
 
 " ブックマークの追加をトグル
 noremap a          <S-a>
+
+
+" ]]/[[ にヒットする文字列追加
+set nextpattern+=次(の)?ページ,→\b,下一頁,Следующая,다음
+set previouspattern+=prev,前(の)?ページ,\b前.*,\b←
 
 
 " appendAnchor.js
@@ -146,6 +160,10 @@ EOM
 noremap <silent> <Leader>q :toggleldrc<CR>
 
 
+" migemo_hint.js
+set hintmatching=custom
+
+
 " sbmcommentsviewer.js
 noremap <leader>bv :viewSBMComments<CR>
 
@@ -161,7 +179,7 @@ noremap <leader>d  :eijiro<Space>
 
 " twitter.js
 noremap <leader>tw :twitter<Space>
-noremap <leader>tr :twitter!@<CR>
+noremap <leader>t@ :twitter!@<CR>
 noremap <leader>ts :twitter!<Space>
 noremap <leader>tu :twitter %TITLE% - %URL%<CR>
 noremap <leader>te :twitter d myEN<Space>

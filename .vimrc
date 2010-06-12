@@ -1,3 +1,5 @@
+" j138 .vimrc
+
 version 6.0
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
@@ -135,6 +137,7 @@ nnoremap <C-t>k  :<C-u>tabprevious<CR>
 nnoremap gt  :<C-u>tabnext<CR>
 nnoremap gT  :<C-u>tabprevious<CR>
 
+
 " ESC ESC -> nohlsearch
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return> 
 
@@ -149,12 +152,14 @@ inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
 inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 
 
-" Rename Command
-command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
-
-
 " autocomplpop.vim
 let g:acp_enableAtStartup=0
+
+
+" fuf.vim
+nmap <silent> <Leader>ff :FufFile<CR>
+nmap <silent> <Leader>fb :FufBuffer<CR>
+nmap <silent> <Leader>ft :FufTag<CR>
 
 
 " LookupFile.vim
@@ -162,29 +167,6 @@ let g:LookupFile_AlwaysAcceptFirst=1
 let g:LookupFile_PreserveLastPattern=0
 let g:LookupFile_AllowNewFiles=0
 
-
-" taglist.vim
-set tags=tags
-
-
-" NERD_commenter.vim <leader>+x => comment out
-map <Leader>x ,c<space>
-let NERDShutUp=1
-
-
-" NERD_tree.vim
-nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
-
-
-" taglist.vim
-nnoremap <Leader>t  :<C-u>Tlist<CR>
-
-
-" srcexpl.vim
-nnoremap <Leader>s :<C-u>SrcExplToggle<CR>
-let g:SrcExpl_RefreshTime = 0
-let g:SrcExpl_UpdateTags = 1
-let g:SrcExpl_RefreshMapKey = "<Space>"
 
 " neocomplcache.vim
 let g:NeoComplCache_EnableAtStartup=1
@@ -198,8 +180,27 @@ let g:NeoComplCache_SameFileTypeLists['c']='cpp'
 let g:NeoComplCache_SameFileTypeLists['cpp']='c'
 
 
-" fuf.vim
-nmap <silent> <Leader>ff :FufFile<CR>
-nmap <silent> <Leader>fb :FufBuffer<CR>
-nmap <silent> <Leader>ft :FufTag<CR>
+" NERD_commenter.vim <leader>+x => comment out
+map <Leader>x ,c<space>
+let NERDShutUp=1
+
+
+" NERD_tree.vim
+nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
+
+
+" srcexpl.vim
+nnoremap <Leader>s :<C-u>SrcExplToggle<CR>
+let g:SrcExpl_RefreshTime = 0
+let g:SrcExpl_UpdateTags = 1
+let g:SrcExpl_RefreshMapKey = "<Space>"
+
+
+" taglist.vim
+set tags=tags
+nnoremap <Leader>t  :<C-u>Tlist<CR>
+
+
+" Rename Command
+command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 
