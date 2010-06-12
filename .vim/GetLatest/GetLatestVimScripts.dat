@@ -1,29 +1,23 @@
 ScriptID SourceID Filename
 --------------------------
-1984 11852 :AutoInstall: FuzzyFinder
-294 10110 Align.vba.gz
-1879 11894 vim-autocomplpop.zip
 1066 7618 :AutoInstall: cecutil.vim
 213 13077 cvim.zip
 987 11878 DoxygenToolkit.vim
 1861 13041 errormarker.vim
-1984 11852 vim-fuzzyfinder.zip
 1581 7671 lookupfile-1.8.zip
 521 11919 mru.vim
 479 9276 MultipleSearch.zip
 2620 13084 neocomplcache-4.30a.zip
-1567 12622 rails.zip
 1721 13165 renamer.vim
 2540 11006 snipMate.zip
 2179 10221 srcexpl.vim
-1697 12566 surround.zip
 273 7701 taglist_45.zip
 1218 10318 NERD_commenter.zip
 1658 11834 NERD_tree.zip
 90 12743 vcscommand-1.99.40.zip
-1234 12258 yankring_100.zip
 294 10110 :AutoInstall: Align.vim
 1879 11894 :AutoInstall: AutoComplPop
+1984 11852 :AutoInstall: FuzzyFinder
 1567 12622 :AutoInstall: rails.vim
 1697 12566 :AutoInstall: surround.vim
 1234 12258 :AutoInstall: yankring.vim
