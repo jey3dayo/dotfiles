@@ -133,12 +133,13 @@ alias l='ls -lAFh --color=auto'
 alias la='ls -a --color=auto'
 alias ll='ls -lAFh --color=auto | less'
 alias ls='ls --color=auto'
-# alias lf='ls --color=auto -al|awk \'{print $8}\''
 alias su="su -l"
 alias o="open"
 alias top="top -ocpu -s5"
 alias hg="hg --encoding=utf-8"
 
+
+alias less='/usr/share/vim/vim72/macros/less.sh'
 alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
 alias cdwork="/Users/leopard/Documents/Line/mbga_blazblue/trunk/htdocs/api/"
 
