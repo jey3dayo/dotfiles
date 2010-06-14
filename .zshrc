@@ -138,8 +138,6 @@ alias o="open"
 alias top="top -ocpu -s5"
 alias hg="hg --encoding=utf-8"
 
-
-alias less='/usr/share/vim/vim72/macros/less.sh'
 alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
 alias cdwork="/Users/leopard/Documents/Line/mbga_blazblue/trunk/htdocs/api/"
 

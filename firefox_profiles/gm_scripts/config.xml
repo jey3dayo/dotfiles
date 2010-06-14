@@ -104,8 +104,4 @@
 		<Include>http://youtube.com/*</Include>
 		<Require filename="updater.php"/>
 	</Script>
-	<Script filename="nicowatch_tools.user.js" name="NicoWatch Tools" namespace="http://wktklabs.blog98.fc2.com/" description="ニコニコ動画Greasemonkeyスクリプトの統合スクリプト" enabled="true" basedir="nicowatch_tools">
-		<Include>http://www.nicovideo.jp/watch/*</Include>
-		<Require filename="jquery-132min.js"/>
-	</Script>
 </UserScriptConfig>

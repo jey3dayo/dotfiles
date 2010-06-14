@@ -25,7 +25,7 @@ set visualbell
 set focuscontent
 
 " ウィンドウサイズを変更するページは新しいウィンドウで開く
-set popups=window
+" set popups=window
 
 " タブ非表示
 set showtabline=2
