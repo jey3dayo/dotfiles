@@ -14,23 +14,8 @@
 		<Include>file:///*</Include>
 		<Exclude>https://mail.google.com/*</Exclude>
 	</Script>
-	<Script filename="ldr_full_feed.user.js" name="LDR Full Feed" namespace="http://d.hatena.ne.jp/Constellation/" description="loading full entry on LDR and Fastladder" enabled="true" basedir="ldr_full_feed">
-		<Include>http://reader.livedoor.com/reader/*</Include>
-		<Include>http://fastladder.com/reader/*</Include>
-		<Exclude>https://mail.google.com/*</Exclude>
-		<Require filename="184276.txt"/>
-		<Resource name="orange" filename="orange.gif" mimetype="image/gif"/>
-		<Resource name="blue" filename="blue.gif" mimetype="image/gif"/>
-		<Resource name="css" filename="ldrfullfeed.css" mimetype="text/css" charset="utf-8"/>
-	</Script>
-	<Script filename="ldr__tombloo.user.js" name="LDR + Tombloo" namespace="http://userscripts.org/users/7010" description="" enabled="true" basedir="ldr__tombloo">
-		<Include>http://reader.livedoor.com/reader/*</Include>
-		<Include>http://fastladder.com/reader/* </Include>
-		<Exclude>https://mail.google.com/*</Exclude>
-	</Script>
 	<Script filename="ldrize_mibuffer_tumblr_r.user.js" name="LDRize Mibuffer tumblr reblog command" namespace="http://ido.nu/kuma/" description="add tumblr.reblog and tumblr.delete command  to Minibuffer." enabled="true" basedir="ldrize_mibuffer_tumblr_r">
 		<Include>http://*.tumblr.com/*</Include>
-		<Exclude>https://mail.google.com/*</Exclude>
 	</Script>
 	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
 		<Include>http://*.google.*/*q=*</Include>
