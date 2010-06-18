@@ -141,19 +141,19 @@ let g:localkeymode_enable = "true"
 javascript <<EOM
   liberator.globalVariables.localKeyMappings= [
     [/www\.nicovideo\.jp\/watch/, [
-        ['p', ':nicopause'],
-        ['m', ':nicomute'],
-        ['v', ':nicommentvisible'],
-        ['s', ':nicoseek! +10'],
-        ['S', ':nicoseek! -10'],
-        ['z', ':nicosize'],
+        ['p', ':stplay'],
+        ['m', ':stmute'],
+        ['r', ':strepeat'],
+        ['c', ':stcomment'],
+        ['s', ':stseek! +10'],
+        ['S', ':stseek! -10'],
     ]],
     [/youtube\.com\/watch/, [
-        ['p', ':ytpause'],
-        ['m', ':ytmute'],
-        ['z', ':ytsize'],
-        ['s', ':ytseek! +10'],
-        ['S', ':ytseek! -10'],
+        ['p', ':stplay'],
+        ['m', ':stmute'],
+        ['r', ':strepeat'],
+        ['s', ':stseek! +10'],
+        ['S', ':stseek! -10'],
         ]],
     ];
 EOM
