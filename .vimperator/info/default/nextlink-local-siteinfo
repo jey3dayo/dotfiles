@@ -1,0 +1,8 @@
+[
+  {
+    "url":          "http://images\\.google\\..+/images\\?.+",
+    "nextLink":     "id('nn')/parent::a",
+    "pageElement":  "//table[tbody/tr/td/a[starts-with(@href,'/imgres')]]",
+    "exampleUrl":   "http://images.google.com/images?gbv=2&hl=ja&safe=off&q=%E3%83%9A%E3%83%BC%E3%82%B8",
+  },
+]
