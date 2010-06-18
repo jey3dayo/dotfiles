@@ -56,10 +56,6 @@ noremap <C-r> :restart<CR>
 " ! でページのCSSをon/off
 noremap ! :set invum<CR>
 
-" qmarks
-noremap <Leader>m :marks<CR>
-noremap <Leader>M :mark <spance>
-
 " ページのエンコーディングを変更
 noremap ,es :set encoding=Shift_JIS<CR>
 noremap ,ec :set encoding=EUC-JP<CR>
@@ -76,6 +72,14 @@ map <C-l> :tabmove! +1<CR>
 " ブックマークの追加をトグル
 noremap a          <S-a>
 
+" タブをCtrl-Nに
+cmap <C-n> <Tab>
+cmap <C-p> <S-Tab>
+
+
+
+" nextlink.js
+let g:nextlink_followlink = "true"
 
 " ]]/[[ にヒットする文字列追加
 set nextpattern+=次(の)?ページ,→\b,下一頁,Следующая,다음
@@ -164,6 +168,11 @@ noremap <silent> <Leader>q :toggleldrc<CR>
 set hintmatching=custom
 
 
+" ldrize_cooperation.js
+let g:ldrc_intelligence_bind = "true"
+let:g:ldrc_skip = "0.25"
+
+
 " sbmcommentsviewer.js
 noremap <leader>bv :viewSBMComments<CR>
 
@@ -172,8 +181,6 @@ noremap <leader>bv :viewSBMComments<CR>
 noremap <silent> <Leader>a :autopagerize<CR>
 
 
-"tombloo.js
-noremap <leader>to :tombloo<Space>
 noremap <leader>d  :eijiro<Space>
 
 
@@ -184,6 +191,11 @@ noremap <leader>ts :twitter!<Space>
 noremap <leader>tu :twitter %TITLE% - %URL%<CR>
 noremap <leader>te :twitter d myEN<Space>
 noremap <leader>tm :twitter d rtm<Space>
+
+" tomblr
+nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
+vnoremap <Leader>q :tombloo Quote<CR>
+
 
 
 " copy/paste {{{

@@ -1,7 +1,4 @@
 <UserScriptConfig>
-	<Script filename="minibuffer.user.js" name="Minibuffer" namespace="http://white.s151.xrea.com/" description="Minibuffer" enabled="true" basedir="minibuffer">
-		<Include>*</Include>
-	</Script>
 	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="true" basedir="autopagerize">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
@@ -14,8 +11,19 @@
 		<Include>file:///*</Include>
 		<Exclude>https://mail.google.com/*</Exclude>
 	</Script>
-	<Script filename="ldrize_mibuffer_tumblr_r.user.js" name="LDRize Mibuffer tumblr reblog command" namespace="http://ido.nu/kuma/" description="add tumblr.reblog and tumblr.delete command  to Minibuffer." enabled="true" basedir="ldrize_mibuffer_tumblr_r">
-		<Include>http://*.tumblr.com/*</Include>
+	<Script filename="minibuffer.user.js" name="Minibuffer" namespace="http://white.s151.xrea.com/" description="Minibuffer" enabled="true" basedir="minibuffer">
+		<Include>*</Include>
+	</Script>
+	<Script filename="reblogcommand.user.js" name="ReblogCommand" namespace="http://white.s151.xrea.com/" description="" enabled="true" basedir="reblogcommand">
+		<Include>http://*</Include>
+		<Include>https://*</Include>
+		<Exclude>http://www.tumblr.com/share</Exclude>
+	</Script>
+	<Script filename="play_on_tumblr.user.js" name="play on tumblr" namespace="tag:mattn.jp@gmail.com,2008-04-03:/coderepos.org" description="play current image or video on tumblr dashboard with 'ENTER' key. open notes with 'h' key. like it with 'l' key. if won't work, pray on tumblr!" enabled="true" basedir="play_on_tumblr">
+		<Include>http://www.tumblr.com/dashboard*</Include>
+		<Include>http://www.tumblr.com/show/*</Include>
+		<Include>http://www.tumblr.com/tumblelog/*</Include>
+		<Include>http://www.tumblr.com/tagged/*</Include>
 	</Script>
 	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
 		<Include>http://*.google.*/*q=*</Include>
@@ -64,24 +72,21 @@
 		<Include>https://twitter.com/*</Include>
 		<Include>http://twitter.com/*</Include>
 	</Script>
-	<Script filename="reblogcommand.user.js" name="ReblogCommand" namespace="http://white.s151.xrea.com/" description="" enabled="true" basedir="reblogcommand">
-		<Include>*</Include>
-	</Script>
 	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
 		<Include>*</Include>
 	</Script>
 	<Script filename="show_keybind_in_rmt.user.js" name="Show Keybind In RMT" namespace="http://espion.just-size.jp/archives/05/136155838.html" description="" enabled="true" basedir="show_keybind_in_rmt">
 		<Include>http://www.rememberthemilk.com/*</Include>
 	</Script>
-	<Script filename="tumblr_-_dashbord_brushu.user.js" name="Tumblr - Dashbord brushup" namespace="http://userstyles.org" description="This code is not made by me" enabled="true" basedir="tumblr_-_dashbord_brushu">
+	<Script filename="tumblr_-_dashbord_brushu.user.js" name="Tumblr - Dashbord brushup" namespace="http://userstyles.org" description="This code is not made by me" enabled="false" basedir="tumblr_-_dashbord_brushu">
 		<Include>http://www.tumblr.com/dashboard*</Include>
 	</Script>
-	<Script filename="tumblrimgviewer.user.js" name="TumblrImgViewer" namespace="http://d.hatena.ne.jp/kasei_san/" description="" enabled="true" basedir="tumblrimgviewer">
+	<Script filename="tumblrimgviewer.user.js" name="TumblrImgViewer" namespace="http://d.hatena.ne.jp/kasei_san/" description="" enabled="false" basedir="tumblrimgviewer">
 		<Include>http://*.tumblr.com/*</Include>
 		<Exclude>http://www.tumblr.com/*</Exclude>
 		<Exclude>http://*.tumblr.com/post/*</Exclude>
 	</Script>
-	<Script filename="tumblr_-_strobo.user.js" name="Tumblr - Strobo" namespace="http://userscripts.org/users/7010" description="" enabled="true" basedir="tumblr_-_strobo">
+	<Script filename="tumblr_-_strobo.user.js" name="Tumblr - Strobo" namespace="http://userscripts.org/users/7010" description="" enabled="false" basedir="tumblr_-_strobo">
 		<Include>http://*.tumblr.com/</Include>
 	</Script>
 	<Script filename="youtube_auto_buffer__aut.user.js" name="YouTube Auto Buffer &amp; Auto HD &amp; Remove Ads" namespace="userscripts.org" description="Buffers the video without autoplaying, removes in-video ads, and puts it in hd if the option is on. For Firefox and Opera" enabled="true" basedir="youtube_auto_buffer__aut">
