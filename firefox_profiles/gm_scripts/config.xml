@@ -1,15 +1,15 @@
 <UserScriptConfig>
-	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="true" basedir="autopagerize">
-		<Include>http://*</Include>
-		<Include>https://*</Include>
-		<Exclude>https://mail.google.com/*</Exclude>
-		<Exclude>http://b.hatena.ne.jp/*</Exclude>
-	</Script>
 	<Script filename="ldrize.user.js" name="LDRize" namespace="http://white.s151.xrea.com/" description="j,k,v,p,o,:,f,? + l,s,i" enabled="true" basedir="ldrize">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
 		<Include>file:///*</Include>
 		<Exclude>https://mail.google.com/*</Exclude>
+	</Script>
+	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="true" basedir="autopagerize">
+		<Include>http://*</Include>
+		<Include>https://*</Include>
+		<Exclude>https://mail.google.com/*</Exclude>
+		<Exclude>http://b.hatena.ne.jp/*</Exclude>
 	</Script>
 	<Script filename="minibuffer.user.js" name="Minibuffer" namespace="http://white.s151.xrea.com/" description="Minibuffer" enabled="true" basedir="minibuffer">
 		<Include>*</Include>
@@ -18,12 +18,6 @@
 		<Include>http://*</Include>
 		<Include>https://*</Include>
 		<Exclude>http://www.tumblr.com/share</Exclude>
-	</Script>
-	<Script filename="play_on_tumblr.user.js" name="play on tumblr" namespace="tag:mattn.jp@gmail.com,2008-04-03:/coderepos.org" description="play current image or video on tumblr dashboard with 'ENTER' key. open notes with 'h' key. like it with 'l' key. if won't work, pray on tumblr!" enabled="true" basedir="play_on_tumblr">
-		<Include>http://www.tumblr.com/dashboard*</Include>
-		<Include>http://www.tumblr.com/show/*</Include>
-		<Include>http://www.tumblr.com/tumblelog/*</Include>
-		<Include>http://www.tumblr.com/tagged/*</Include>
 	</Script>
 	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
 		<Include>http://*.google.*/*q=*</Include>
@@ -47,6 +41,12 @@
 	<Script filename="wikipediagoogleimage.user.js" name="wikipedia.googleimage" namespace="http://www.kagami.org/" description="" enabled="true" basedir="wikipediagoogleimage">
 		<Include>http://ja.wikipedia.org/wiki/*</Include>
 	</Script>
+	<Script filename="play_on_tumblr.user.js" name="play on tumblr" namespace="tag:mattn.jp@gmail.com,2008-04-03:/coderepos.org" description="play current image or video on tumblr dashboard with 'ENTER' key. open notes with 'h' key. like it with 'l' key. if won't work, pray on tumblr!" enabled="true" basedir="play_on_tumblr">
+		<Include>http://www.tumblr.com/dashboard*</Include>
+		<Include>http://www.tumblr.com/show/*</Include>
+		<Include>http://www.tumblr.com/tumblelog/*</Include>
+		<Include>http://www.tumblr.com/tagged/*</Include>
+	</Script>
 	<Script filename="amazon_cross_book_check.user.js" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" description="" enabled="true" basedir="amazon_cross_book_check">
 		<Include>http://www.amazon.co.jp/*</Include>
 		<Include>http://amazon.co.jp/*</Include>
@@ -54,19 +54,11 @@
 	<Script filename="composite_-yet_another_t.user.js" name="COMPOSITE -Yet another Tumblr photo viewer-" namespace="http://d.hatena.ne.jp/koyachi" description="" enabled="true" basedir="composite_-yet_another_t">
 		<Include>http://*.tumblr.com/</Include>
 	</Script>
-	<Script filename="download_from_youtube.user.js" name="Download from YouTube" namespace="" description="Adds FLV, MP4, 3GP, and 720p download links to YouTube." enabled="true" basedir="download_from_youtube">
-		<Include>http://*.youtube.com/watch*v=*</Include>
-		<Include>http://youtube.com/watch*v=*</Include>
-		<Require filename="updater.php"/>
-	</Script>
 	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
 		<Include>*</Include>
 	</Script>
 	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
 		<Include>*</Include>
-	</Script>
-	<Script filename="nicovideo_downloader.user.js" name="nicovideo downloader" namespace="http://muumoo.jp/" description="" enabled="true" basedir="nicovideo_downloader">
-		<Include>http://www.nicovideo.jp/watch/*</Include>
 	</Script>
 	<Script filename="pbtweet.user.js" name="pbtweet" namespace="http://t-trace.blogspot.com/" description="Expand conversation chains and twitPic.com thumbnails." enabled="true" basedir="pbtweet">
 		<Include>https://twitter.com/*</Include>
@@ -74,24 +66,5 @@
 	</Script>
 	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
 		<Include>*</Include>
-	</Script>
-	<Script filename="show_keybind_in_rmt.user.js" name="Show Keybind In RMT" namespace="http://espion.just-size.jp/archives/05/136155838.html" description="" enabled="true" basedir="show_keybind_in_rmt">
-		<Include>http://www.rememberthemilk.com/*</Include>
-	</Script>
-	<Script filename="tumblr_-_dashbord_brushu.user.js" name="Tumblr - Dashbord brushup" namespace="http://userstyles.org" description="This code is not made by me" enabled="false" basedir="tumblr_-_dashbord_brushu">
-		<Include>http://www.tumblr.com/dashboard*</Include>
-	</Script>
-	<Script filename="tumblrimgviewer.user.js" name="TumblrImgViewer" namespace="http://d.hatena.ne.jp/kasei_san/" description="" enabled="false" basedir="tumblrimgviewer">
-		<Include>http://*.tumblr.com/*</Include>
-		<Exclude>http://www.tumblr.com/*</Exclude>
-		<Exclude>http://*.tumblr.com/post/*</Exclude>
-	</Script>
-	<Script filename="tumblr_-_strobo.user.js" name="Tumblr - Strobo" namespace="http://userscripts.org/users/7010" description="" enabled="false" basedir="tumblr_-_strobo">
-		<Include>http://*.tumblr.com/</Include>
-	</Script>
-	<Script filename="youtube_auto_buffer__aut.user.js" name="YouTube Auto Buffer &amp; Auto HD &amp; Remove Ads" namespace="userscripts.org" description="Buffers the video without autoplaying, removes in-video ads, and puts it in hd if the option is on. For Firefox and Opera" enabled="true" basedir="youtube_auto_buffer__aut">
-		<Include>http://*.youtube.com/*</Include>
-		<Include>http://youtube.com/*</Include>
-		<Require filename="updater.php"/>
 	</Script>
 </UserScriptConfig>
