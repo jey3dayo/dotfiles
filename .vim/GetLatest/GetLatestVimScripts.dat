@@ -21,3 +21,4 @@ ScriptID SourceID Filename
 1567 12622 :AutoInstall: rails.vim
 1697 12566 :AutoInstall: surround.vim
 1234 12258 :AutoInstall: yankring.vim
+2981 1 :AutoInstall: zencoding.vim

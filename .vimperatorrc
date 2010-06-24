@@ -57,10 +57,10 @@ noremap <C-r> :restart<CR>
 noremap ! :set invum<CR>
 
 " ページのエンコーディングを変更
-noremap ,es :set encoding=Shift_JIS<CR>
-noremap ,ec :set encoding=EUC-JP<CR>
-noremap ,eu :set encoding=UTF-8<CR>
-noremap ,ei :set encodeing=ISO-2022-JP<CR>
+noremap <Leader>es :set encoding=Shift_JIS<CR>
+noremap <Leader>ec :set encoding=EUC-JP<CR>
+noremap <Leader>eu :set encoding=UTF-8<CR>
+noremap <Leader>ei :set encodeing=ISO-2022-JP<CR>
 
 " .vimperatorrcを再読み込み
 noremap <Leader>so :source ~/.vimperatorrc<CR>
@@ -192,7 +192,7 @@ noremap <leader>tu :twitter %TITLE% - %URL%<CR>
 noremap <leader>te :twitter d myEN<Space>
 noremap <leader>tm :twitter d rtm<Space>
 
-" tomblr
+" tumblr
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
 vnoremap <Leader>q :tombloo Quote<CR>
 
