@@ -13,7 +13,7 @@ our %IRSSI   = (
 );
 
 my $local_charset = 'UTF-8';
-my $remote_charset = 'ISO-2022-JP';
+my $remote_charset = 'UTF-8';
 
 sub send_text {
     my ( $text, $server, $witem ) = @_;
