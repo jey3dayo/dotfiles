@@ -91,24 +91,24 @@ let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
 
 
-" copy.js "{{{
+" copy.js {{{
 map <leader>c :copy<Space>TitleAndbittly<CR>
 map <leader>C :copy<Space>titleAndURL<CR>
 
 js <<EOM
 liberator.globalVariables.copy_templates = [
-  { label: 'titleAndURL',     value: '%TITLE% %URL%' },
-  { label: 'title \\n URL',   value: '%TITLE%\n%URL%' },
-  { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
-  { label: 'title',           value: '%TITLE%' },
-  { label: 'url',             value: '%URL%' },
-  { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
-  { label: 'htmlblockquote',  value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
-  { label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
-  { label: 'TitleAndbittly',  value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
-  { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
-  { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
-  { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
+{ label: 'titleAndURL',     value: '%TITLE% %URL%' },
+{ label: 'title \\n URL',   value: '%TITLE%\n%URL%' },
+{ label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
+{ label: 'title',           value: '%TITLE%' },
+{ label: 'url',             value: '%URL%' },
+{ label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
+{ label: 'htmlblockquote',  value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
+{ label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+{ label: 'TitleAndbittly',  value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+{ label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
+{ label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
+{ label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
 ];
 EOM
 " }}}
@@ -139,22 +139,22 @@ lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
 let g:localkeymode_enable = "true"
 
 javascript <<EOM
-  liberator.globalVariables.localKeyMappings= [
-    [/www\.nicovideo\.jp\/watch/, [
-        ['p', ':stplay'],
-        ['m', ':stmute'],
-        ['r', ':strepeat'],
-        ['c', ':stcomment'],
-        ['s', ':stseek! +10'],
-        ['S', ':stseek! -10'],
+liberator.globalVariables.localKeyMappings= [
+[/www\.nicovideo\.jp\/watch/, [
+['p', ':stplay'],
+    ['m', ':stmute'],
+    ['r', ':strepeat'],
+    ['c', ':stcomment'],
+    ['s', ':stseek! +10'],
+    ['S', ':stseek! -10'],
     ]],
     [/youtube\.com\/watch/, [
-        ['p', ':stplay'],
-        ['m', ':stmute'],
-        ['r', ':strepeat'],
-        ['s', ':stseek! +10'],
-        ['S', ':stseek! -10'],
-        ]],
+    ['p', ':stplay'],
+    ['m', ':stmute'],
+    ['r', ':strepeat'],
+    ['s', ':stseek! +10'],
+    ['S', ':stseek! -10'],
+    ]],
     ];
 EOM
 " }}}
@@ -189,8 +189,6 @@ noremap <leader>tw :twitter<Space>
 noremap <leader>t@ :twitter!@<CR>
 noremap <leader>ts :twitter!<Space>
 noremap <leader>tu :twitter %TITLE% - %URL%<CR>
-noremap <leader>te :twitter d myEN<Space>
-noremap <leader>tm :twitter d rtm<Space>
 
 " tumblr
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
@@ -236,13 +234,13 @@ EOM
 " RSSフィードの表示 {{{
 javascript <<EOF
 (function(){
-  var feedPanel = document.createElement("statusbarpanel");
-  feedPanel.setAttribute("id", "feed-panel-clone");
-  feedPanel.appendChild(document.getElementById("feed-button"));
-  feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
-  document.getElementById("status-bar") .insertBefore(feedPanel, document.getElementById("security-button"));
-}
-)();
+ var feedPanel = document.createElement("statusbarpanel");
+ feedPanel.setAttribute("id", "feed-panel-clone");
+ feedPanel.appendChild(document.getElementById("feed-button"));
+ feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
+ document.getElementById("status-bar") .insertBefore(feedPanel, document.getElementById("security-button"));
+ }
+ )();
 EOF
 " }}}
 
