@@ -67,4 +67,7 @@
 	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
 		<Include>*</Include>
 	</Script>
+	<Script filename="0ldrize_siteinfo.user.js" name="0LDRize SITEINFO" namespace="http://ss-o.net/" description="oLDRize SITEINFO" enabled="true" basedir="0ldrize_siteinfo">
+		<Include>http*</Include>
+	</Script>
 </UserScriptConfig>
