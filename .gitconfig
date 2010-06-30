@@ -1,6 +1,6 @@
 [user]
-    name  = j138
-    email = j138cm@gmail.com
+    name  = j_nakazato
+    email = j_nakazato@tose-okinawa.co.jp
 [color]
     status  = auto
     diff    = auto
@@ -14,4 +14,8 @@
     up = pull --rebase
 [github]
     user  = j138
+    email = j138cm@gmail.com
     token = qwertyuiopasdfghjkl
+[branch "master"]
+    remote = origin
+    merge = refs/heads/master
