@@ -29,8 +29,8 @@ chatnets = {
 };
 
 channels = (
-  { name = "#twitter"; chatnet = "tig"; autojoin = "yes"; },
-  { name = "#mention"; chatnet = "tig"; autojoin = "yes"; }
+  #  { name = "#twitter"; chatnet = "tig"; autojoin = "yes"; },
+  #  { name = "#mention"; chatnet = "tig"; autojoin = "yes"; }
 );
 
 aliases = {
@@ -209,7 +209,9 @@ settings = {
 hilights = (
   { text = "s5r"; nick = "yes"; word = "yes"; },
   { text = "shimpei098"; nick = "yes"; word = "yes"; },
-  { text = "J138"; nick = "yes"; word = "yes"; },
   { text = "ayk_irh "; nick = "yes"; word = "yes"; },
-  { text = "miyahira_go"; nick = "yes"; word = "yes"; }
+  { text = "miyahira_go"; nick = "yes"; word = "yes"; },
+  { text = "_rio_666"; nick = "yes"; word = "yes"; },
+  { text = "rophy"; nick = "yes"; word = "yes"; },
+  { text = "J138"; nick = "yes"; word = "yes"; }
 );
