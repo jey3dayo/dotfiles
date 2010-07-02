@@ -139,7 +139,6 @@ alias top="top -ocpu -s5"
 alias hg="hg --encoding=utf-8"
 
 alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
-alias cdwork="/Users/leopard/Documents/Line/mbga_blazblue/trunk/htdocs/api/"
 
 case "${OSTYPE}" in
     darwin*)
