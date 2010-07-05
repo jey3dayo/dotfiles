@@ -78,7 +78,7 @@ filetype indent on
 
 
 " map
-nnoremap <Leader>b  :<C-u>buffers<CR>
+"nnoremap <Leader>b  :<C-u>buffers<CR>
 nnoremap <Leader>m  :<C-u>marks<CR>
 nnoremap <Leader>r  :<C-u>registers<CR>
 nnoremap <Leader>y  :<C-u>YRShow<CR>
@@ -187,6 +187,10 @@ let NERDShutUp=1
 
 " NERD_tree.vim
 nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
+
+
+" qbuf.vim
+:let g:qb_hotkey = "<Leader>b"
 
 
 " srcexpl.vim
