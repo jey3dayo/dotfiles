@@ -1,4 +1,7 @@
 <UserScriptConfig>
+	<Script filename="googlewithhatenabookmark.user.js" name="GoogleWithHatenaBookmark" namespace="http://d.hatena.ne.jp/eclipse-a/" description="search entry posted Hatena Bookmark with Google" enabled="true" basedir="googlewithhatenabookmark">
+		<Include>http://www.google.*/search?*</Include>
+	</Script>
 	<Script filename="ldrize.user.js" name="LDRize" namespace="http://white.s151.xrea.com/" description="j,k,v,p,o,:,f,? + l,s,i" enabled="true" basedir="ldrize">
 		<Include>http://*</Include>
 		<Include>https://*</Include>

@@ -29,8 +29,6 @@ chatnets = {
 };
 
 channels = (
-  #  { name = "#twitter"; chatnet = "tig"; autojoin = "yes"; },
-  #  { name = "#mention"; chatnet = "tig"; autojoin = "yes"; }
 );
 
 aliases = {
