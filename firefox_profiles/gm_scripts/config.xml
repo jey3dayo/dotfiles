@@ -1,7 +1,4 @@
 <UserScriptConfig>
-	<Script filename="googlewithhatenabookmark.user.js" name="GoogleWithHatenaBookmark" namespace="http://d.hatena.ne.jp/eclipse-a/" description="search entry posted Hatena Bookmark with Google" enabled="true" basedir="googlewithhatenabookmark">
-		<Include>http://www.google.*/search?*</Include>
-	</Script>
 	<Script filename="ldrize.user.js" name="LDRize" namespace="http://white.s151.xrea.com/" description="j,k,v,p,o,:,f,? + l,s,i" enabled="true" basedir="ldrize">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
@@ -60,17 +57,20 @@
 	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
 		<Include>*</Include>
 	</Script>
-	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
-		<Include>*</Include>
+	<Script filename="googlewithhatenabookmark.user.js" name="GoogleWithHatenaBookmark" namespace="http://d.hatena.ne.jp/eclipse-a/" description="search entry posted Hatena Bookmark with Google" enabled="true" basedir="googlewithhatenabookmark">
+		<Include>http://www.google.*/search?*</Include>
 	</Script>
 	<Script filename="pbtweet.user.js" name="pbtweet" namespace="http://t-trace.blogspot.com/" description="Expand conversation chains and twitPic.com thumbnails." enabled="true" basedir="pbtweet">
 		<Include>https://twitter.com/*</Include>
 		<Include>http://twitter.com/*</Include>
 	</Script>
-	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater">
-		<Include>*</Include>
-	</Script>
 	<Script filename="0ldrize_siteinfo.user.js" name="0LDRize SITEINFO" namespace="http://ss-o.net/" description="oLDRize SITEINFO" enabled="true" basedir="0ldrize_siteinfo">
 		<Include>http*</Include>
+	</Script>
+	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
+		<Include>*</Include>
+	</Script>
+	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater-3">
+		<Include>*</Include>
 	</Script>
 </UserScriptConfig>

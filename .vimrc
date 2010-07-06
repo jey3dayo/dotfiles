@@ -25,7 +25,7 @@ highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
-colorscheme wombat
+colorscheme wombat256
 
 
 " show fullsize SPACE 
