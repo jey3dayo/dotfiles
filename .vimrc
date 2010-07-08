@@ -27,7 +27,7 @@ highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
 colorscheme wombat256
-highlight Search ctermbg=3
+highlight Search ctermbg=7
 
 
 
@@ -97,7 +97,6 @@ nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
 
 
-" nnoremap <CR> o<ESC>
 nnoremap <Leader>d  :<C-u>!doxygen Doxyfile<CR>
 
 
@@ -110,6 +109,7 @@ nnoremap <Leader>d  :<C-u>!doxygen Doxyfile<CR>
 " 
 "highlight CursorLine guibg=white
 "highlight CursorColumn  guibg=white
+
 highlight FoldColumn  guibg=white guifg=blue
 
 
