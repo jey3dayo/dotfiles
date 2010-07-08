@@ -20,12 +20,15 @@ set isfname+=32
 
 
 " color
+set t_Co=256
 highlight LineNr ctermfg=darkyellow
 highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
 colorscheme wombat256
+highlight Search ctermbg=3
+
 
 
 " show fullsize SPACE 
@@ -142,6 +145,8 @@ nnoremap gT  :<C-u>tabprevious<CR>
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return> 
 
 set shellslash
+set hidden
+set shortmess+=I
 
 
 " macro
@@ -162,14 +167,7 @@ nmap <silent> <Leader>fb :FufBuffer<CR>
 nmap <silent> <Leader>ft :FufTag<CR>
 
 
-" LookupFile.vim
-let g:LookupFile_AlwaysAcceptFirst=1
-let g:LookupFile_PreserveLastPattern=0
-let g:LookupFile_AllowNewFiles=0
-
-
 " neocomplcache.vim
-let g:NeoComplCache_EnableAtStartup=1
 let g:NeoComplCache_SmartCase=1
 let g:NeoComplCache_TagsAutoUpdate=1
 let g:NeoComplCache_EnableInfo=1
@@ -187,15 +185,11 @@ let NERDShutUp=1
 
 " NERD_tree.vim
 nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
-
-
-" qbuf.vim
-:let g:qb_hotkey = "<Leader>b"
+let g:NERDTreeHijackNetrw = 0
 
 
 " srcexpl.vim
 nnoremap <Leader>s :<C-u>SrcExplToggle<CR>
-let g:SrcExpl_RefreshTime = 0
 let g:SrcExpl_UpdateTags = 1
 let g:SrcExpl_RefreshMapKey = "<Space>"
 
