@@ -266,4 +266,9 @@ au BufNewFile,BufRead *.rb set tabstop=2 shiftwidth=2
 au BufNewFile,BufRead *.yml set tabstop=2 shiftwidth=2
 
 
+""" for error marker
+setlocal makeprg=ruby\ -cdw\ %
+setlocal errorformat=%f:%l:%m
+
+au BufWritePost <buffer> silent make
 
