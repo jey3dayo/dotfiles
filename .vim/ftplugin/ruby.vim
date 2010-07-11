@@ -174,7 +174,7 @@ function! RubyBalloonexpr()
   endif
 endfunction
 
-unction! s:searchsyn(pattern,syn,flags)
+function! s:searchsyn(pattern,syn,flags)
     norm! m'
     let i = 0
     let cnt = v:count ? v:count : 1
@@ -228,47 +228,3 @@ endfunction
 "
 
 " vim: nowrap sw=2 sts=2 ts=8 ff=unix:
-
-
-
-
-nmap     <Leader>l  :<C-u>call RubyLint()<CR>
-nnoremap <Leader>c  :<C-u>!ruby %<CR>
-
-
-
-setlocal ts=2
-
-""
-" RubyLint
-" "
-function RubyLint()
-    let result = system( &ft . ' -c ' . bufname(""))
-    echo result
-endfunction
-
-
-" rails.vim
-let g:rails_level=4
-let g:rails_default_file="app/controllers/application.rb"
-let g:rails_default_database="sqlite3"
-
-
-" rubycomplete.vim
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-au BufNewFile,BufRead * set tabstop=4 shiftwidth=4
-au BufNewFile,BufRead *.rhtml set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.erb set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.rb set tabstop=2 shiftwidth=2
-au BufNewFile,BufRead *.yml set tabstop=2 shiftwidth=2
-
-
-""" for error marker
-setlocal makeprg=ruby\ -cdw\ %
-setlocal errorformat=%f:%l:%m
-
-au BufWritePost <buffer> silent make
-
