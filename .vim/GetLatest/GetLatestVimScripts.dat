@@ -3,7 +3,6 @@ ScriptID SourceID Filename
 1066 7618 :AutoInstall: cecutil.vim
 213 13077 cvim.zip
 987 11878 DoxygenToolkit.vim
-1861 13041 errormarker.vim
 521 11919 mru.vim
 479 9276 MultipleSearch.zip
 2620 13243 neocomplcache-4.30a.zip
@@ -15,7 +14,6 @@ ScriptID SourceID Filename
 1658 11834 NERD_tree.zip
 90 12743 vcscommand-1.99.40.zip
 294 10110 :AutoInstall: Align.vim
-1879 11894 :AutoInstall: AutoComplPop
 1984 11852 :AutoInstall: FuzzyFinder
 1567 12622 :AutoInstall: rails.vim
 1697 12566 :AutoInstall: surround.vim
