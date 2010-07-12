@@ -1,10 +1,10 @@
-autocmd FileType php :set dictionary+=~/.vim/dict/PHP.dict
+set dictionary=~/.vim/dict/php.dict
 
-" nmap <leader>l :call PHPLint()<CR>
+nmap <leader>l :call PHPLint()<CR>
 
 " PHPLint
 function! PHPLint()
-    let result = system( &ft . ' -l ' . bufname(""))
+    let result = system( &ft . ' -l ' . expand("%:p"))
     echo result
 endfunction
 

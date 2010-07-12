@@ -228,3 +228,16 @@ endfunction
 "
 
 " vim: nowrap sw=2 sts=2 ts=8 ff=unix:
+
+
+
+nmap ,l :call RubyLint()<CR>
+
+""
+" RubyLint
+"
+function RubyLint()
+    let result = system( &ft . ' -c ' . bufname(""))
+    echo result
+endfunction
+

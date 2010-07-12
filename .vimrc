@@ -17,6 +17,7 @@ set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932
 set fileformats=unix,mac,dos
 set isfname+=32
+set cindent
 
 
 " color
@@ -28,7 +29,6 @@ highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
 colorscheme wombat256
 highlight Search ctermbg=7
-
 
 
 " show fullsize SPACE 
@@ -50,6 +50,7 @@ set complete+=k
 set cursorline
 set wildmenu
 set fdm=marker
+
 
 set laststatus=2
 "set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
@@ -126,8 +127,6 @@ nnoremap t  <Nop>
 nnoremap tt  <C-]>
 nnoremap tj  :<C-u>tag<CR>
 nnoremap tk  :<C-u>pop<CR>
-nnoremap <Leader>t :<C-u>tags<CR>
-nnoremap <C-t>t  :<C-u>pop<CR>
 
 
 " tab
@@ -155,10 +154,6 @@ inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
 inoremap <Leader>w3cd <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
 inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
 inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
-
-
-" autocomplpop.vim
-let g:acp_enableAtStartup=0
 
 
 " fuf.vim
@@ -196,7 +191,11 @@ let g:SrcExpl_RefreshMapKey = "<Space>"
 
 " taglist.vim
 set tags=tags
-nnoremap <Leader>t  :<C-u>Tlist<CR>
+nnoremap <Leader>tl  :<C-u>Tlist<CR>
+
+
+" smartchr.vim
+inoremap <expr> = smartchr#one_of(' = ', ' == ', ' === ', '=')
 
 
 " Rename Command
