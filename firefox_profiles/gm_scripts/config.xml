@@ -54,9 +54,6 @@
 	<Script filename="composite_-yet_another_t.user.js" name="COMPOSITE -Yet another Tumblr photo viewer-" namespace="http://d.hatena.ne.jp/koyachi" description="" enabled="true" basedir="composite_-yet_another_t">
 		<Include>http://*.tumblr.com/</Include>
 	</Script>
-	<Script filename="greased_lightbox.user.js" name="Greased Lightbox" namespace="http://shiftingpixel.com" description="Enhances browsing on websites that link to images such as Google Image Search, Flickr, Wikipedia, MySpace, deviantART, FFFFOUND!, and Blogger blogs. Use left and right arrow keys to cycle through images on page." enabled="true" basedir="greased_lightbox">
-		<Include>*</Include>
-	</Script>
 	<Script filename="googlewithhatenabookmark.user.js" name="GoogleWithHatenaBookmark" namespace="http://d.hatena.ne.jp/eclipse-a/" description="search entry posted Hatena Bookmark with Google" enabled="true" basedir="googlewithhatenabookmark">
 		<Include>http://www.google.*/search?*</Include>
 	</Script>
