@@ -67,4 +67,8 @@
 	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
 		<Include>*</Include>
 	</Script>
+	<Script filename="google_reader_star_opene.user.js" name="Google Reader Star Opener" namespace="http://www.sukechan.net/" description="Starred item open in a lump for Google Reader." enabled="true" basedir="google_reader_star_opene-1">
+		<Include>http://www.google.co.jp/reader/view/*</Include>
+		<Include>http://www.google.com/reader/view/*</Include>
+	</Script>
 </UserScriptConfig>
