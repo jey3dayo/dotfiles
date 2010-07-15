@@ -67,7 +67,4 @@
 	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
 		<Include>*</Include>
 	</Script>
-	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" enabled="true" basedir="script_autoupdater-3">
-		<Include>*</Include>
-	</Script>
 </UserScriptConfig>
