@@ -160,6 +160,7 @@ inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 nmap <silent> <Leader>ff :FufFile<CR>
 nmap <silent> <Leader>fb :FufBuffer<CR>
 nmap <silent> <Leader>ft :FufTag<CR>
+nmap <silent> <Leader>fq :FufQuickfix<CR>
 
 
 " neocomplcache.vim
