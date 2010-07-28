@@ -230,8 +230,9 @@ endfunction
 " vim: nowrap sw=2 sts=2 ts=8 ff=unix:
 
 
+map <C-e> <ESC>:!ruby %<CR>
 
-nmap ,l :call RubyLint()<CR>
+nmap <Leader>l :call RubyLint()<CR>
 
 ""
 " RubyLint
