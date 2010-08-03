@@ -13,6 +13,7 @@ user_pref("content.notify.ontimer", true);
 user_pref("content.switch.threshold", 750000);
 user_pref("dom.disable_window_move_resize", true);
 user_pref("dom.event.contextmenu.enabled", false);
+user_pref("dom.popup_maximum", 1000); 
 user_pref("network.http.max-connections", 32);
 user_pref("network.http.max-connections-per-server", 8);
 user_pref("network.http.max-persistent-connections-per-proxy", 8);
