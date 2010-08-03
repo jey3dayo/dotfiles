@@ -163,6 +163,16 @@ nmap <silent> <Leader>ft :FufTag<CR>
 nmap <silent> <Leader>fq :FufQuickfix<CR>
 
 
+" git.vim
+nnoremap <Leader>gp :GitPullRebase<CR>
+nnoremap <Leader>gc :GitCommit<CR>
+nnoremap <Leader>ga :GitAdd<CR>
+nnoremap <Leader>gl :GitLog<CR>
+nnoremap <Leader>gs :GitStatus<CR>
+nnoremap <Leader>gD :GitDiff --cached<CR>
+nnoremap <Leader>gd :GitDiff<CR>
+
+
 " neocomplcache.vim
 let g:NeoComplCache_SmartCase=1
 let g:NeoComplCache_TagsAutoUpdate=1
