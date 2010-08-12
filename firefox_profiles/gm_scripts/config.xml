@@ -71,4 +71,7 @@
 		<Include>http://www.google.co.jp/reader/view/*</Include>
 		<Include>http://www.google.com/reader/view/*</Include>
 	</Script>
+	<Script filename="3gokushi-beyond.user.js" name="3gokushi-Beyond" namespace="3gokushi-hatt" description="ブラウザ三国志用便利機能色々ごった煮 by hatt" enabled="true" basedir="3gokushi-beyond">
+		<Include>http://*.3gokushi.jp/*</Include>
+	</Script>
 </UserScriptConfig>

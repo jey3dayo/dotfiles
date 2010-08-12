@@ -188,10 +188,10 @@ noremap <leader>d  :eijiro<Space>
 noremap <leader>tw :twitter<Space>
 noremap <leader>t@ :twitter!@<CR>
 noremap <leader>ts :twitter!<Space>
-noremap <leader>tu :twitter %TITLE% - %URL%<CR>
+noremap <leader>tu :twitter %TITLE% - %URL%
 
 " tumblr
-nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
+nnoremap <Leader>tm :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
 vnoremap <Leader>q :tombloo Quote<CR>
 
 
