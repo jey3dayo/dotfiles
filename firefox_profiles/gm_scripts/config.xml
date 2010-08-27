@@ -1,0 +1,77 @@
+<UserScriptConfig>
+	<Script filename="ldrize.user.js" name="LDRize" namespace="http://white.s151.xrea.com/" description="j,k,v,p,o,:,f,? + l,s,i" enabled="true" basedir="ldrize">
+		<Include>http://*</Include>
+		<Include>https://*</Include>
+		<Include>file:///*</Include>
+		<Exclude>https://mail.google.com/*</Exclude>
+	</Script>
+	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="true" basedir="autopagerize">
+		<Include>http://*</Include>
+		<Include>https://*</Include>
+		<Exclude>https://mail.google.com/*</Exclude>
+		<Exclude>http://b.hatena.ne.jp/*</Exclude>
+	</Script>
+	<Script filename="minibuffer.user.js" name="Minibuffer" namespace="http://white.s151.xrea.com/" description="Minibuffer" enabled="true" basedir="minibuffer">
+		<Include>*</Include>
+	</Script>
+	<Script filename="reblogcommand.user.js" name="ReblogCommand" namespace="http://white.s151.xrea.com/" description="" enabled="true" basedir="reblogcommand">
+		<Include>http://*</Include>
+		<Include>https://*</Include>
+		<Exclude>http://www.tumblr.com/share</Exclude>
+	</Script>
+	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
+		<Include>http://*.google.*/*q=*</Include>
+	</Script>
+	<Script filename="grb.user.js" name="GR+?B" namespace="http://d.hatena.ne.jp/nozom/" description="show ?B button and count in Google Reader" enabled="true" basedir="grb">
+		<Include>http://www.google.com/reader/view/*</Include>
+		<Include>https://www.google.com/reader/view/*</Include>
+	</Script>
+	<Script filename="gmailagenda.user.js" name="GmailAgenda" namespace="tag:gmailAgenda" description="" enabled="true" basedir="gmailagenda">
+		<Include>https://mail.google.com/mail/*</Include>
+		<Include>http://mail.google.com/mail/*</Include>
+		<Include>https://gmail.google.com/mail/*</Include>
+		<Include>http://gmail.google.com/mail/*</Include>
+		<Include>http://www.google.com/calendar/embed*</Include>
+		<Include>https://www.google.com/calendar/embed*</Include>
+		<Include>https://mail.google.com/a/*.*/*</Include>
+		<Include>http://mail.google.com/a/*.*/*</Include>
+		<Include>https://mail.google.com/mail/?ui=*</Include>
+		<Include>http://mail.google.com/mail/?ui=*</Include>
+	</Script>
+	<Script filename="wikipediagoogleimage.user.js" name="wikipedia.googleimage" namespace="http://www.kagami.org/" description="" enabled="true" basedir="wikipediagoogleimage">
+		<Include>http://ja.wikipedia.org/wiki/*</Include>
+	</Script>
+	<Script filename="play_on_tumblr.user.js" name="play on tumblr" namespace="tag:mattn.jp@gmail.com,2008-04-03:/coderepos.org" description="play current image or video on tumblr dashboard with 'ENTER' key. open notes with 'h' key. like it with 'l' key. if won't work, pray on tumblr!" enabled="true" basedir="play_on_tumblr">
+		<Include>http://www.tumblr.com/dashboard*</Include>
+		<Include>http://www.tumblr.com/show/*</Include>
+		<Include>http://www.tumblr.com/tumblelog/*</Include>
+		<Include>http://www.tumblr.com/tagged/*</Include>
+	</Script>
+	<Script filename="amazon_cross_book_check.user.js" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" description="" enabled="true" basedir="amazon_cross_book_check">
+		<Include>http://www.amazon.co.jp/*</Include>
+		<Include>http://amazon.co.jp/*</Include>
+	</Script>
+	<Script filename="composite_-yet_another_t.user.js" name="COMPOSITE -Yet another Tumblr photo viewer-" namespace="http://d.hatena.ne.jp/koyachi" description="" enabled="true" basedir="composite_-yet_another_t">
+		<Include>http://*.tumblr.com/</Include>
+	</Script>
+	<Script filename="googlewithhatenabookmark.user.js" name="GoogleWithHatenaBookmark" namespace="http://d.hatena.ne.jp/eclipse-a/" description="search entry posted Hatena Bookmark with Google" enabled="true" basedir="googlewithhatenabookmark">
+		<Include>http://www.google.*/search?*</Include>
+	</Script>
+	<Script filename="pbtweet.user.js" name="pbtweet" namespace="http://t-trace.blogspot.com/" description="Expand conversation chains and twitPic.com thumbnails." enabled="true" basedir="pbtweet">
+		<Include>https://twitter.com/*</Include>
+		<Include>http://twitter.com/*</Include>
+	</Script>
+	<Script filename="0ldrize_siteinfo.user.js" name="0LDRize SITEINFO" namespace="http://ss-o.net/" description="oLDRize SITEINFO" enabled="true" basedir="0ldrize_siteinfo">
+		<Include>http*</Include>
+	</Script>
+	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="false" basedir="mouseover_translate_engl">
+		<Include>*</Include>
+	</Script>
+	<Script filename="google_reader_star_opene.user.js" name="Google Reader Star Opener" namespace="http://www.sukechan.net/" description="Starred item open in a lump for Google Reader." enabled="true" basedir="google_reader_star_opene">
+		<Include>http://www.google.co.jp/reader/view/*</Include>
+		<Include>http://www.google.com/reader/view/*</Include>
+	</Script>
+	<Script filename="3gokushi-beyond.user.js" name="3gokushi-Beyond" namespace="3gokushi-hatt" description="ブラウザ三国志用便利機能色々ごった煮 by hatt" enabled="true" basedir="3gokushi-beyond">
+		<Include>http://*.3gokushi.jp/*</Include>
+	</Script>
+</UserScriptConfig>
