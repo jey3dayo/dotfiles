@@ -71,4 +71,16 @@
 		<Include>http://www.google.co.jp/reader/view/*</Include>
 		<Include>http://www.google.com/reader/view/*</Include>
 	</Script>
+	<Script filename="customtwitter.user.js" name="CustomTwitter" namespace="h13i32maru" description="" enabled="true" basedir="customtwitter">
+		<Include>http://twitter.com/*</Include>
+		<Include>https://twitter.com/*</Include>
+		<Exclude>http://twitter.com/invitations/*</Exclude>
+		<Exclude>http://twitter.com/settings/*</Exclude>
+		<Exclude>http://twitter.com/goodies/*</Exclude>
+		<Exclude>https://twitter.com/invitations/*</Exclude>
+		<Exclude>https://twitter.com/settings/*</Exclude>
+		<Exclude>https://twitter.com/goodies/*</Exclude>
+		<Resource name="style" filename="style.css" mimetype="text/css"/>
+		<Resource name="gstyle" filename="gstyle.css" mimetype="text/css"/>
+	</Script>
 </UserScriptConfig>
