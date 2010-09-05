@@ -3,7 +3,6 @@
 		<Include>http://*</Include>
 		<Include>https://*</Include>
 		<Include>file:///*</Include>
-		<Exclude>https://mail.google.com/*</Exclude>
 	</Script>
 	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." enabled="true" basedir="autopagerize">
 		<Include>http://*</Include>
@@ -64,10 +63,10 @@
 	<Script filename="0ldrize_siteinfo.user.js" name="0LDRize SITEINFO" namespace="http://ss-o.net/" description="oLDRize SITEINFO" enabled="true" basedir="0ldrize_siteinfo">
 		<Include>http*</Include>
 	</Script>
-	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="true" basedir="mouseover_translate_engl">
+	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" enabled="false" basedir="mouseover_translate_engl">
 		<Include>*</Include>
 	</Script>
-	<Script filename="google_reader_star_opene.user.js" name="Google Reader Star Opener" namespace="http://www.sukechan.net/" description="Starred item open in a lump for Google Reader." enabled="true" basedir="google_reader_star_opene-1">
+	<Script filename="google_reader_star_opene.user.js" name="Google Reader Star Opener" namespace="http://www.sukechan.net/" description="Starred item open in a lump for Google Reader." enabled="true" basedir="google_reader_star_opene">
 		<Include>http://www.google.co.jp/reader/view/*</Include>
 		<Include>http://www.google.com/reader/view/*</Include>
 	</Script>

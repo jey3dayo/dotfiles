@@ -1,0 +1,268 @@
+body#home .entry-date
+{
+  display:inline-block;
+  margin-left:20px;
+}
+
+.custom-user
+{
+  position:absolute;
+  display:inline-block;
+  cursor:pointer;
+  min-width:16px;
+  height:14px;
+  line-height:14px;
+  margin-top:1px;
+  text-align:center;
+  color:#555555;
+  background-color:#ccccff;
+  opacity:0.6;
+
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
+  border-radius:2px;
+
+  /*font-family:'Hiragino Kaku Gothic Pro',Verdana,sans-serif;*/
+}
+
+.custom-user:hover
+{
+  z-index:1000;
+  padding-left:5px;
+  background-color:#bbbbff;
+  opacity:1;
+}
+
+.custom-user ul
+{
+  display:none;
+}
+
+.custom-user:hover ul
+{
+  display:inline-block;
+}
+
+.custom-user ul li
+{
+  display:inline-block;
+  padding:0 5px !important;
+
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
+  border-radius:2px;
+}
+
+.custom-user ul li:hover
+{
+  background-color:#8888ff;
+}
+
+.google-button
+{
+  position:absolute;
+  z-index:100;
+  top:2px;
+  left:2px;
+  width:14px;
+  height:14px;
+  line-height:14px;
+  background:#ffffff;
+  text-align:center;
+
+  -moz-border-radius:2px;
+  -webkit-border-radius:2px;
+  border-radius:2px;
+
+  color:#444444;
+  font-weight:bold;
+  border:solid 1px #222222;
+  font-size:10px;
+  opacity:0.7;
+  cursor:pointer;
+}
+.google-button:hover
+{
+  opacity:1;
+  text-decoration:none;
+}
+
+.google-button2
+{
+  display:none;
+}
+
+li#replies_tab
+{
+  position:relative;
+}
+span#unread-icon
+{
+  position:absolute;
+  top:8px;
+  right:15px;
+}
+
+/*for google style*/
+#top-navigation-dummy
+{
+  display:none;
+}
+
+#google-logo
+{
+  display:none;
+}
+
+#chars_left_notice_dummy
+{
+  display:none;
+}
+
+#search-option-dummy
+{
+  display:none;
+}
+
+.side-icon
+{
+  display:none;
+}
+
+#side-icon-last-li
+{
+  display:none;
+}
+
+#icon-config
+{
+  display:none;
+}
+
+#google-footer
+{
+  display:none;
+}
+
+#dummy-textarea
+{
+  display:none;
+}
+
+#google-nav-dummy
+{
+  display:none;
+}
+
+#twitter-title
+{
+  display:none;
+}
+
+#google-logo-absolute
+{
+  display:none;
+}
+
+
+/*
+.u-@
+{
+  padding:0 !important;
+  font-family:arial !important;
+  opacity:0.5;
+  line-height:normal !important;
+}
+
+.u-@ .status-body
+{
+  margin-left:0 !important;
+  min-height:0 !important;
+  font-size:10px !important;
+  font-weight:normal !important;
+}
+
+.u-@ .thumb , .u-@ .actions , .u-@ .entry-content , .u-@ .entry-meta , .u-@ .actions-hover
+{
+  display:none !important;
+  visibility:hidden !important;
+}
+
+.u-@:hover
+{
+  opacity:1;
+}
+
+.u-@:hover .entry-meta , u-@:hover .entry-meta .custom-user
+{
+  display:inline-block !important;
+}
+
+.u-@:hover .entry-meta .custom-user
+{
+  visibility:visible !important;
+}
+
+.u-@:hover
+{
+  padding:10px 0!important;
+  font-family:'Lucida Grande',sans-serif !important;
+  opacity:1 !important;
+  line-height:16px !important;
+}
+
+.u-@:hover .status-body
+{
+  margin-left:56px !important;
+  min-height:48px !important;
+  font-size:14px !important;
+}
+
+.u-@:hover .thumb , .u-@:hover .actions , .u-@:hover .entry-content , .u-@:hover .entry-meta , .u-@:hover .actions-hover
+{
+  display:block !important;
+  visibility:visible !important;
+}
+*/
+
+
+/*
+.u-@
+{
+  display:table-row !important;
+  padding:0 !important;
+}
+
+.u-@ > span
+{
+  display:none !important;
+}
+
+.u-@:before
+{
+  font-family:arial !important;
+  font-size:10px;
+  content:"@";
+  color:#44aaff;
+}
+body[gstyle="true"] .u-@:before
+{
+  margin-left:10px;
+}
+
+ .u-@:hover
+{
+  display:block !important;
+  padding:10px 0 !important;
+}
+
+.u-@:hover > span
+{
+  display:block !important;
+}
+
+.u-@:hover:before
+{
+  display:none;
+}
+*/
