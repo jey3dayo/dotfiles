@@ -90,71 +90,71 @@ let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
 
 
-" copy.js "{{{
-    map <leader>c :copy<Space>TitleAndbittly<CR>
-        map <leader>C :copy<Space>titleAndURL<CR>
+"copy.js {{{
+map <leader>c :copy<Space>TitleAndbittly<CR>
+map <leader>C :copy<Space>titleAndURL<CR>
 
-        js <<EOM
-        liberator.globalVariables.copy_templates = [
-        { label: 'titleAndURL',     value: '%TITLE% %URL%' },
-        { label: 'title \\n URL',   value: '%TITLE%\n%URL%' },
-        { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
-        { label: 'title',           value: '%TITLE%' },
-        { label: 'url',             value: '%URL%' },
-        { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
-        { label: 'htmlblockquote',  value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
-        { label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
-        { label: 'TitleAndbittly',  value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
-        { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
-        { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
-        { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
-        ];
-    EOM
-        " }}}
-
-
-        " direct_bookmark.js
-        let g:direct_sbm_use_services_by_tag = "hd"
-        let g:direct_sbm_use_services_by_post = "hd"
-        noremap <S-a>      :sbm<Space>[
-        noremap <Leader>be :bentry<CR>
-        noremap <Leader>bt :btags<CR>
-        noremap <Leader>bi :bicon<CR>
+js <<EOM
+    liberator.globalVariables.copy_templates = [
+    { label: 'titleAndURL',     value: '%TITLE% %URL%' },
+    { label: 'title \\n URL',   value: '%TITLE%\n%URL%' },
+    { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
+    { label: 'title',           value: '%TITLE%' },
+    { label: 'url',             value: '%URL%' },
+    { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
+    { label: 'htmlblockquote',  value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
+    { label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+    { label: 'TitleAndbittly',  value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+    { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
+    { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
+    { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
+    ];
+EOM
+" }}}
 
 
-        " feedsomekey_3.js {{{
-        command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
-        lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
-        lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
-        lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
-        lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
-        lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
-        lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
-        lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
-        " }}}
+" direct_bookmark.js
+let g:direct_sbm_use_services_by_tag = "hd"
+let g:direct_sbm_use_services_by_post = "hd"
+noremap <S-a>      :sbm<Space>[
+noremap <Leader>be :bentry<CR>
+noremap <Leader>bt :btags<CR>
+noremap <Leader>bi :bicon<CR>
 
 
-        " localkeymode.js {{{
-        let g:localkeymode_enable = "true"
+" feedsomekey_3.js {{{
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
+lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
+lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
+lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
+" }}}
 
-        javascript <<EOM
-        liberator.globalVariables.localKeyMappings= [
-        [/www\.nicovideo\.jp\/watch/, [
+
+" localkeymode.js {{{
+let g:localkeymode_enable = "true"
+
+javascript <<EOM
+liberator.globalVariables.localKeyMappings= [
+    [/www\.nicovideo\.jp\/watch/, [
         ['p', ':stplay'],
         ['m', ':stmute'],
         ['R', ':strepeat'],
         ['c', ':stcomment'],
         ['s', ':stseek! +10'],
         ['S', ':stseek! -10'],
-        ]],
-        [/youtube\.com\/watch/, [
+    ]],
+    [/youtube\.com\/watch/, [
         ['p', ':stplay'],
         ['m', ':stmute'],
         ['R', ':strepeat'],
         ['s', ':stseek! +10'],
         ['S', ':stseek! -10'],
-        ]],
-        ];
+    ]],
+];
 EOM
 " }}}
 
