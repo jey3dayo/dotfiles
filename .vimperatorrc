@@ -160,16 +160,13 @@ EOM
 
 
 " ldrize_cooperation.js
-noremap <Leader>q :toggleldrizecooperation<CR>
+noremap <Leader>l :toggleldrizecooperation<CR>
+let g:ldrc_intelligence_bind = "true"
+let:g:ldrc_skip = "0.25"
 
 
 " migemo_hint.js
 set hintmatching=custom
-
-
-" ldrize_cooperation.js
-let g:ldrc_intelligence_bind = "true"
-let:g:ldrc_skip = "0.25"
 
 
 " sbmcommentsviewer.js
