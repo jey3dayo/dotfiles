@@ -1,0 +1,15 @@
+# j138 .zshrc.mine
+
+export PATH=$PATH:/usr/local/clang
+export PATH=$PATH:/Developer/SDKs/flex_sdk/bin:/usr/local/clang
+
+# GO lang
+export GOROOT=$HOME/go
+export GOOS=darwin
+export GOARCH=386
+export GOBIN=$GOROOT/bin
+export PATH=$GOBIN:$PATH
+
+# glowl
+alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
+
