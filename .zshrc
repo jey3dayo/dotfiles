@@ -1,23 +1,23 @@
-# users generic .zshrc file for zsh(1)
+# j138 .zshrc
 
 ## Environment variable configuration
 #
 # LANG
 #
+#
 export LANG=ja_JP.UTF-8
+#export LANG=ja_JP.eucJP
+#export LANG=ja_JP.shift-jis
+
 case ${UID} in
     0)
     LANG=C
     ;;
 esac
-export PATH=/opt/local/bin:/opt/local/sbin:/bin:/usr/bin:/usr/local/bin:$HOME/bin:/Developer/SDKs/flex_sdk/bin:/usr/local/clang:$PATH
+
+export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:$HOME/bin:$PATH
 export MANPATH=/opt/local/man:$MANPATH
 
-export GOROOT=$HOME/go
-export GOOS=darwin
-export GOARCH=386
-export GOBIN=$GOROOT/bin
-export PATH=$GOBIN:$PATH
 
 ## Default shell configuration
 #
@@ -98,7 +98,7 @@ setopt share_history        # share command history data
 #
 fpath=(~/.zsh/functions/Completion ${fpath})
 autoload -U compinit
-compinit
+compinit -u
 
 
 ## zsh editor
@@ -137,8 +137,6 @@ alias su="su -l"
 alias o="open"
 alias top="top -ocpu -s5"
 alias hg="hg --encoding=utf-8"
-
-alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
 
 case "${OSTYPE}" in
     darwin*)
@@ -236,6 +234,8 @@ bindkey '^o^_' reverse-menu-complete
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
 
-LISTMAX=500
+export LISTMAX=0
 
+
+source ~/.zshrc.mine
 
