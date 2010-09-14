@@ -70,7 +70,7 @@
 		<Include>http://www.google.co.jp/reader/view/*</Include>
 		<Include>http://www.google.com/reader/view/*</Include>
 	</Script>
-	<Script filename="customtwitter.user.js" name="CustomTwitter" namespace="h13i32maru" description="" enabled="true" basedir="customtwitter">
+	<Script filename="customtwitter.user.js" name="CustomTwitter" namespace="h13i32maru" description="" enabled="false" basedir="customtwitter">
 		<Include>http://twitter.com/*</Include>
 		<Include>https://twitter.com/*</Include>
 		<Exclude>http://twitter.com/invitations/*</Exclude>
@@ -81,5 +81,12 @@
 		<Exclude>https://twitter.com/goodies/*</Exclude>
 		<Resource name="style" filename="style.css" mimetype="text/css"/>
 		<Resource name="gstyle" filename="gstyle.css" mimetype="text/css"/>
+	</Script>
+	<Script filename="amazon_lowest_price_chec.user.js" name="Amazon Lowest Price Checker" namespace="http://gigi-net.net" description="" enabled="true" basedir="amazon_lowest_price_chec">
+		<Include>http://www.amazon.co.jp/*</Include>
+	</Script>
+	<Script filename="youtube_hd_ultimate.user.js" name="YouTube HD Ultimate" namespace="#aVg" description="The best of the hundreds of YouTube scripts, because we make it. Updated all the time, by me and you! Your favorite YouTube script is better than ever!" enabled="true" basedir="youtube_hd_ultimate">
+		<Include>http://www.youtube.com/watch*</Include>
+		<Include>http://youtube.com/watch*</Include>
 	</Script>
 </UserScriptConfig>
