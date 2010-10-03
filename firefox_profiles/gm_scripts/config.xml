@@ -56,10 +56,6 @@
 	<Script filename="googlewithhatenabookmark.user.js" name="GoogleWithHatenaBookmark" namespace="http://d.hatena.ne.jp/eclipse-a/" description="search entry posted Hatena Bookmark with Google" enabled="true" basedir="googlewithhatenabookmark">
 		<Include>http://www.google.*/search?*</Include>
 	</Script>
-	<Script filename="pbtweet.user.js" name="pbtweet" namespace="http://t-trace.blogspot.com/" description="Expand conversation chains and twitPic.com thumbnails." enabled="true" basedir="pbtweet">
-		<Include>https://twitter.com/*</Include>
-		<Include>http://twitter.com/*</Include>
-	</Script>
 	<Script filename="0ldrize_siteinfo.user.js" name="0LDRize SITEINFO" namespace="http://ss-o.net/" description="oLDRize SITEINFO" enabled="true" basedir="0ldrize_siteinfo">
 		<Include>http*</Include>
 	</Script>
