@@ -1,6 +1,7 @@
 .DS_Store
 .subversion/auth/
 .vim/.netrwhist
+.vim/GetLatest
 .vimperator/info/default/history-command
 .vimperator/info/default/history-search
 .vimperator/info/default/local-marks
