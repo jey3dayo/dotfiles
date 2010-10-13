@@ -121,13 +121,13 @@ setopt complete_aliases     # aliased ls needs if file/dir completions work
 alias where="command -v"
 alias j="jobs -l"
 
-# aliaslist
-
 alias datef="date +%F"
 alias df="df -h"
 alias du="du -h"
 alias diff="colordiff"
 alias less="less -R"
+
+alias ^='cd ..'
 
 alias l='ls -lAFh --color=auto'
 alias la='ls -a --color=auto'

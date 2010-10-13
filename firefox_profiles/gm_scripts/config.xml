@@ -21,7 +21,7 @@
 	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
 		<Include>http://*.google.*/*q=*</Include>
 	</Script>
-	<Script filename="grb.user.js" name="GR+?B" namespace="http://d.hatena.ne.jp/nozom/" description="show ?B button and count in Google Reader" enabled="true" basedir="grb">
+	<Script filename="grb.user.js" name="GR+?B" namespace="http://d.hatena.ne.jp/nozom/" description="show ?B button and count in Google Reader" enabled="false" basedir="grb">
 		<Include>http://www.google.com/reader/view/*</Include>
 		<Include>https://www.google.com/reader/view/*</Include>
 	</Script>
