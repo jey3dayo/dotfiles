@@ -21,7 +21,7 @@ set cindent
 
 
 " color
-set t_Co=256
+" set t_Co=256
 highlight LineNr ctermfg=darkyellow
 highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
