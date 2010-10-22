@@ -97,21 +97,7 @@ nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
 
-
 nnoremap <Leader>d  :<C-u>!doxygen Doxyfile<CR>
-
-
-" ruler
-" augroup cch
-"   autocmd! cch
-"   autocmd WinLeave * set nocursorcolumn nocursorline
-"   autocmd WinEnter,BufRead * set cursorcolumn cursorline
-" augroup END
-" 
-"highlight CursorLine guibg=white
-"highlight CursorColumn  guibg=white
-
-highlight FoldColumn  guibg=white guifg=blue
 
 
 " backup
@@ -203,10 +189,6 @@ let g:SrcExpl_RefreshMapKey = "<Space>"
 " taglist.vim
 set tags=tags
 nnoremap <Leader>tl  :<C-u>Tlist<CR>
-
-
-" smartchr.vim
-inoremap <expr> = smartchr#one_of('=', ' == ', ' === ', '=')
 
 
 " Rename Command
