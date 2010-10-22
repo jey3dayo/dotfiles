@@ -21,13 +21,13 @@ set cindent
 
 
 " color
-" set t_Co=256
+set t_Co=256
 highlight LineNr ctermfg=darkyellow
 highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
-colorscheme wombat
+colorscheme wombat256
 highlight Search ctermbg=7
 
 
@@ -206,7 +206,7 @@ nnoremap <Leader>tl  :<C-u>Tlist<CR>
 
 
 " smartchr.vim
-inoremap <expr> = smartchr#one_of(' = ', ' == ', ' === ', '=')
+inoremap <expr> = smartchr#one_of('=', ' == ', ' === ', '=')
 
 
 " Rename Command
