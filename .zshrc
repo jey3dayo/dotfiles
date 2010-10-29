@@ -66,6 +66,7 @@ setopt noautoremoveslash
 #
 setopt nolistbeep
 
+setopt nonomatch
 
 ## Keybind configuration
 #

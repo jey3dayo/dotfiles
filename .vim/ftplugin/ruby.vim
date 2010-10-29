@@ -228,6 +228,11 @@ endfunction
 "
 
 " vim: nowrap sw=2 sts=2 ts=8 ff=unix:
+set nowrap
+set sw=2
+set sts=2
+set ts=8
+set ff=unix
 
 
 map <C-e> <ESC>:!ruby %<CR>

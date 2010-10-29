@@ -177,17 +177,9 @@ noremap <leader>bv :viewSBMComments<CR>
 noremap <silent> <Leader>a :autopagerize<CR>
 
 
+" dictionary
 noremap <leader>d  :eijiro<Space>
 
-
-" twitter.js
-noremap <leader>tw :twitter<Space>
-noremap <leader>t@ :twitter!@<CR>
-noremap <leader>ts :twitter!<Space>
-noremap <leader>tu :twitter %TITLE% - %URL%<CR>
-noremap <leader>tU :twitter  [%TITLE%] %URL% <C-a><Right><Right><Right><Right><Right><Right><Right><Right>
-noremap <leader>te :twitter d myEN<Space>
-noremap <leader>tm :twitter d rtm<Space>
 
 " tomblr
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
