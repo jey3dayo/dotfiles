@@ -114,8 +114,8 @@ EOM
 
 
 " direct_bookmark.js
-let g:direct_sbm_use_services_by_tag = "hd"
-let g:direct_sbm_use_services_by_post = "hd"
+let g:direct_sbm_use_services_by_tag = "h"
+let g:direct_sbm_use_services_by_post = "h"
 noremap <S-a>      :sbm<Space>[
 noremap <Leader>be :bentry<CR>
 noremap <Leader>bt :btags<CR>
