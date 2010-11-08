@@ -185,7 +185,6 @@ noremap <leader>d  :eijiro<Space>
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
 
 
-
 " copy/paste {{{
 javascript <<EOM
 execute_silent = function(str, modifiers) {
