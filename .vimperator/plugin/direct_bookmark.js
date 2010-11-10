@@ -4,7 +4,7 @@ var PLUGIN_INFO =
     <name>{NAME}</name>
     <description>Direct Post to Social Bookmarks</description>
     <author mail="trapezoid.g@gmail.com" homepage="http://unsigned.g.hatena.ne.jp/Trapezoid">Trapezoid</author>
-    <version>0.16</version>
+    <version>0.15</version>
     <license>GPL</license>
     <minVersion>2.0pre</minVersion>
     <maxVersion>2.2</maxVersion>
