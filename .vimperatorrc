@@ -134,6 +134,10 @@ lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
 " }}}
 
 
+" hints-for-embedded.js
+let g:hints_for_embedded_mode="e"
+
+
 " localkeymode.js {{{
 let g:localkeymode_enable = "true"
 
