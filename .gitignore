@@ -2,20 +2,12 @@
 .subversion/auth/
 .vim/.netrwhist
 .vim/GetLatest
-.vimperator/info/default/local-marks
-.vimperator/info/default/plugins-hatena-bookmark-search-data
-.vimperator/info/default/plugins-libly-wedata-AutoPagerize-items
-.vimperator/info/default/plugins-pluginManager
-.vimperator/info/default/url-marks
-history-command
-history-search
-
+.vimperator/info
 
 Session.vim
 Thumbs.db
 ctags
 log/
-
 
 *.bak
 *.BAK
