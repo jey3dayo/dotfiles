@@ -23,7 +23,7 @@ hi Tag          color: #15C4C8;
 hi CompTitle    color: #ABD31B; background: #000; font-weight: bold;
 hi CompItem[selected] color: #ABD31B; background: #000;
 hi CompDesc color: #15C4C8;
-hi GradientRight background-color: #000;
+" hi GradientRight background-color: #000;
 
 hi Title        color: #fff;
 hi Indicator    color: #15C4C8;
