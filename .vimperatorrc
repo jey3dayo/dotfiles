@@ -97,7 +97,7 @@ map <leader>C :copy<Space>titleAndURL<CR>
 js <<EOM
     liberator.globalVariables.copy_templates = [
     { label: 'titleAndURL',     value: '%TITLE% %URL%' },
-    { label: 'title \\n URL',   value: '%TITLE%\n%URL%' },
+    { label: 'title<cr>URL',   value: '%TITLE%\n%URL%' },
     { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
     { label: 'title',           value: '%TITLE%' },
     { label: 'url',             value: '%URL%' },
@@ -177,8 +177,8 @@ noremap <leader>bv :viewSBMComments<CR>
 noremap <silent> <Leader>a :autopagerize<CR>
 
 
-" dictionary
-noremap <leader>d  :eijiro<Space>
+" multi_requester.js
+noremap <leader>d  :mr goo<Space>
 
 
 " tomblr
