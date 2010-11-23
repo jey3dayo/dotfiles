@@ -130,10 +130,11 @@ alias less="less -R"
 
 alias ^='cd ..'
 
-alias l='ls -lAFh --color=auto'
-alias la='ls -a --color=auto'
-alias ll='ls -lAFh --color=auto | less'
-alias ls='ls --color=auto'
+alias l='ls -lAFhG'
+alias la='ls -aG'
+alias ll='ls -lAFhG'
+alias ls='lsG'
+
 alias su="su -l"
 alias o="open"
 alias top="top -ocpu -s5"
