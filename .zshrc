@@ -133,7 +133,7 @@ alias ^='cd ..'
 alias l='ls -lAFhG'
 alias la='ls -aG'
 alias ll='ls -lAFhG'
-alias ls='lsG'
+alias ls='ls -G'
 
 alias su="su -l"
 alias o="open"
