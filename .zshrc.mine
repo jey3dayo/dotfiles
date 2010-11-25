@@ -1,7 +1,7 @@
 # j138 .zshrc.mine
 
 export PATH=$PATH:/usr/local/clang
-export PATH=$PATH:/Developer/SDKs/flex_sdk/bin:/usr/local/clang
+export PATH=$PATH:/Developer/SDKs/flex_sdk/bin
 
 # GO lang
 export GOROOT=$HOME/go
