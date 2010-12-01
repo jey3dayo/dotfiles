@@ -15,7 +15,7 @@ case ${UID} in
     ;;
 esac
 
-export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:$HOME/bin:$PATH
+export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin
 export MANPATH=/opt/local/man:$MANPATH
 
 
@@ -238,6 +238,4 @@ zstyle ':completion:*' menu select=1
 
 export LISTMAX=0
 
-
-source ~/.zshrc.mine
 
