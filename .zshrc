@@ -9,11 +9,11 @@ export LANG=ja_JP.UTF-8
 #export LANG=ja_JP.eucJP
 #export LANG=ja_JP.shift-jis
 
-#case ${UID} in
-#    0)
-#    LANG=C
-#    ;;
-#esac
+case ${UID} in
+    0)
+    LANG=C
+    ;;
+esac
 
 export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin
 export MANPATH=/opt/local/man:$MANPATH
@@ -130,10 +130,9 @@ alias less="less -R"
 
 alias ^='cd ..'
 
-alias l='ls -lAFhG'
-alias la='ls -aG'
-alias ll='ls -lAFhG'
-alias ls='ls -G'
+alias l='ls -lAFhp'
+alias ll='ls -lAFhp'
+alias ls='ls -pF'
 
 alias su="su -l"
 alias o="open"
