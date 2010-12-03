@@ -11,9 +11,11 @@ Thumbs.db
 *.bak
 *.la
 *.lo
+*.mode1v3
 *.o
 *.old
 *.org
+*.pbxuser
 *.pyo
 *.so
 
