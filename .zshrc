@@ -15,7 +15,7 @@ case ${UID} in
     ;;
 esac
 
-export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:$HOME/bin:$PATH
+export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin
 export MANPATH=/opt/local/man:$MANPATH
 
 
@@ -130,10 +130,9 @@ alias less="less -R"
 
 alias ^='cd ..'
 
-alias l='ls -lAFhG'
-alias la='ls -aG'
-alias ll='ls -lAFhG'
-alias ls='ls -G'
+alias l='ls -lAFhp'
+alias ll='ls -lAFhp'
+alias ls='ls -pF'
 
 alias su="su -l"
 alias o="open"
@@ -238,6 +237,4 @@ zstyle ':completion:*' menu select=1
 
 export LISTMAX=0
 
-
-source ~/.zshrc.mine
 
