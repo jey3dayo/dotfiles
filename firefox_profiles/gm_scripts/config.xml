@@ -23,10 +23,6 @@
 	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" enabled="true" basedir="gb">
 		<Include>http://*.google.*/*q=*</Include>
 	</Script>
-	<Script filename="grb.user.js" name="GR+?B" namespace="http://d.hatena.ne.jp/nozom/" description="show ?B button and count in Google Reader" enabled="false" basedir="grb">
-		<Include>http://www.google.com/reader/view/*</Include>
-		<Include>https://www.google.com/reader/view/*</Include>
-	</Script>
 	<Script filename="gmailagenda.user.js" name="GmailAgenda" namespace="tag:gmailAgenda" description="" enabled="true" basedir="gmailagenda">
 		<Include>https://mail.google.com/mail/*</Include>
 		<Include>http://mail.google.com/mail/*</Include>
@@ -74,5 +70,10 @@
 	<Script filename="youtube_hd_ultimate.user.js" name="YouTube HD Ultimate" namespace="#aVg" description="The best of the hundreds of YouTube scripts, because we make it. Updated all the time, by me and you! Your favorite YouTube script is better than ever!" enabled="true" basedir="youtube_hd_ultimate">
 		<Include>http://www.youtube.com/watch*</Include>
 		<Include>http://youtube.com/watch*</Include>
+	</Script>
+	<Script filename="dashboard__tombloo.user.js" name="Dashboard + Tombloo" namespace="http://d.hatena.ne.jp/Constellation/" description="register reblog command by Tombloo" enabled="true" basedir="dashboard__tombloo">
+		<Include>http://www.tumblr.com/dashboard*</Include>
+		<Include>http://www.tumblr.com/show*</Include>
+		<Include>http://www.tumblr.com/iphone*</Include>
 	</Script>
 </UserScriptConfig>
