@@ -39,13 +39,13 @@ let PLUGIN_INFO =
   <name lang="ja">すてら</name>
   <description>For Niconico/YouTube/Vimeo, Add control commands and information display(on status line).</description>
   <description lang="ja">ニコニコ動画/YouTube/Vimeo 用。操作コマンドと情報表示(ステータスライン上に)追加します。</description>
-  <version>0.32.3</version>
+  <version>0.32.4</version>
   <author mail="anekos@snca.net" homepage="http://d.hatena.ne.jp/nokturnalmortum/">anekos</author>
   <license>new BSD License (Please read the source code comments of this plugin)</license>
   <license lang="ja">修正BSDライセンス (ソースコードのコメントを参照してください)</license>
   <minVersion>2.0</minVersion>
   <maxVersion>3.0</maxVersion>
-  <updateURL>http://svn.coderepos.org/share/lang/javascript/vimperator-plugins/trunk/stella.js</updateURL>
+  <updateURL>https://github.com/vimpr/vimperator-plugins/raw/master/stella.js</updateURL>
   <detail><![CDATA[
     == Commands ==
       :stpl[ay]:
@@ -1115,7 +1115,7 @@ Thanks:
     icon: 'http://www.nicovideo.jp/favicon.ico',
 
     xpath: {
-      comment: 'id("des_2")/div/table/tbody/tr[1]/td[2]'
+      comment: 'id("itab_description")'
     },
 
     initialize: function () {
@@ -1665,7 +1665,7 @@ Thanks:
         vimeo: new VimeoPlayer(this.stella)
       };
 
-      this.noGUI = true;
+      // this.noGUI = true;
       this.createGUI();
       this.__onResize = window.addEventListener('resize', U.bindr(this, this.onResize), false);
       this.progressListener = new WebProgressListener({onLocationChange: U.bindr(this, this.onLocationChange)});
@@ -1916,7 +1916,7 @@ Thanks:
       });
 
       let stbar = document.getElementById('status-bar');
-      stbar.insertBefore(panel, document.getElementById('liberator-statusline').nextSibling);
+      stbar.appendChild(panel);
 
       let relmenu = document.getElementById('anekos-stella-relations-menupopup');
 

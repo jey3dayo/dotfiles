@@ -65,37 +65,9 @@
                     }
                 ]
             },
-//            {
-//                conf_name: 'cproxy',
-//                conf_usage: 'onct proxy settings',
-//                settings: [
-//                    {
-//                        label: 'type',
-//                        param: 2
-//                    },
-//                    {
-//                        label: 'autoconfig_url',
-//                        param: 'http://home.okinawa-ct.ac.jp/sys/proxy.pac'
-//                    }
-//                ]
-//            },
             {
                 conf_name: 'polipo',
                 conf_usage: 'use polipo cache proxy',
-                settings: [
-                    {
-                        label: 'type',
-                        param: 2
-                    },
-                    {
-                        label: 'autoconfig_url',
-                        param: 'file:///Users/J138/myproxy.pac'
-                    }
-                ]
-            },
-            {
-                conf_name: 'squid@nadekosnake.com',
-                conf_usage: 'nadeko',
                 settings: [
                     {
                         label: 'type',
@@ -103,11 +75,11 @@
                     },
                     {
                         label: 'http',
-                        param: 'nadekosnake.com'
+                        param: 'localhost'
                     },
                     {
                         label: 'http_port',
-                        param:3128
+                        param: 8123
                     }
                 ]
             }
