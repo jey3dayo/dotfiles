@@ -170,7 +170,7 @@ let g:ldrc_skip = "0.25"
 
 
 " sbmcommentsviewer.js
-noremap <leader>bv :viewSBMComments<CR>
+noremap V :viewSBMComments<CR>
 
 
 " toggle autopagerize
