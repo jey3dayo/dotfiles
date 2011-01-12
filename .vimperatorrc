@@ -57,10 +57,10 @@ noremap <C-r> :restart<CR>
 noremap ! :set invum<CR>
 
 " ページのエンコーディングを変更
-noremap ,es :set encoding=Shift_JIS<CR>
-noremap ,ec :set encoding=EUC-JP<CR>
-noremap ,eu :set encoding=UTF-8<CR>
-noremap ,ei :set encodeing=ISO-2022-JP<CR>
+noremap <Leader>es :set encoding=Shift_JIS<CR>
+noremap <Leader>ec :set encoding=EUC-JP<CR>
+noremap <Leader>eu :set encoding=UTF-8<CR>
+noremap <Leader>ei :set encodeing=ISO-2022-JP<CR>
 
 " .vimperatorrcを再読み込み
 noremap <Leader>so :source ~/.vimperatorrc<CR>
@@ -70,7 +70,7 @@ map <C-h> :tabmove! -1<CR>
 map <C-l> :tabmove! +1<CR>
 
 " ブックマークの追加をトグル
-noremap a          <S-a>
+noremap a <S-a>
 
 " タブをCtrl-Nに
 cmap <C-n> <Tab>
@@ -97,7 +97,7 @@ map <leader>C :copy<Space>titleAndURL<CR>
 js <<EOM
     liberator.globalVariables.copy_templates = [
     { label: 'titleAndURL',     value: '%TITLE% %URL%' },
-    { label: 'title<cr>URL',   value: '%TITLE%\n%URL%' },
+    { label: 'title<cr>URL',    value: '%TITLE%\n%URL%' },
     { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
     { label: 'title',           value: '%TITLE%' },
     { label: 'url',             value: '%URL%' },
@@ -117,9 +117,6 @@ EOM
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
 noremap <S-a>      :sbm<Space>[
-noremap <Leader>be :bentry<CR>
-noremap <Leader>bt :btags<CR>
-noremap <Leader>bi :bicon<CR>
 
 
 " feedsomekey_3.js {{{
@@ -174,11 +171,11 @@ noremap V :viewSBMComments<CR>
 
 
 " toggle autopagerize
-noremap <silent> <Leader>a :autopagerize<CR>
+noremap <Leader>a :autopagerize<CR>
 
 
 " multi_requester.js
-noremap <leader>d  :mr goo<Space>
+noremap <leader>d :mr goo<Space>
 
 
 " tomblr
