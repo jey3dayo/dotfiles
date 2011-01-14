@@ -27,7 +27,7 @@ set focuscontent
 " ウィンドウサイズを変更するページは新しいウィンドウで開く
 " set popups=window
 
-" タブ非表示
+" タブ表示
 set showtabline=2
 
 " leaderを変更
@@ -47,8 +47,8 @@ noremap K <PageUp>
 " タブの移動
 nnoremap h gT
 nnoremap l gt
-nnoremap <C-H> h
-nnoremap <C-L> l
+nnoremap <Left> h
+nnoremap <Right> l
 
 noremap U :undo<Space>
 noremap <C-r> :restart<CR>
