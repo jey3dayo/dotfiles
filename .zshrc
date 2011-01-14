@@ -9,11 +9,11 @@ export LANG=ja_JP.UTF-8
 #export LANG=ja_JP.eucJP
 #export LANG=ja_JP.shift-jis
 
-case ${UID} in
-    0)
-    LANG=C
-    ;;
-esac
+#case ${UID} in
+#    0)
+#    LANG=C
+#    ;;
+#esac
 
 export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin
 export MANPATH=/opt/local/man:$MANPATH
@@ -136,7 +136,6 @@ alias ls='ls -pF'
 
 alias su="su -l"
 alias o="open"
-alias top="top -ocpu -s5"
 alias hg="hg --encoding=utf-8"
 
 case "${OSTYPE}" in
