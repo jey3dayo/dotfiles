@@ -13,7 +13,7 @@ set guioptions=mBr
 " 検索時に大文字小文字を区別しない
 set ignorecase
 
-" ex mode でインクリメント補完
+" ex modeでインクリメント補完
 set wildoptions=auto
 
 " 検索時にハイライト
@@ -71,11 +71,6 @@ map <C-l> :tabmove! +1<CR>
 
 " ブックマークの追加をトグル
 noremap a <S-a>
-
-" タブをCtrl-Nに
-cmap <C-n> <Tab>
-cmap <C-p> <S-Tab>
-
 
 " nextlink.js
 let g:nextlink_followlink = "false"
