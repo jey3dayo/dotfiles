@@ -28,6 +28,7 @@ highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
 colorscheme wombat256
+" colorscheme wombat
 highlight Search ctermbg=7
 
 
@@ -91,7 +92,7 @@ nnoremap <Leader>Y  :<C-u>YRSearch<CR>
 nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
-nnoremap <Leader>gr :<C-u>vimgrep // **\|cwindow<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+nnoremap <Leader>gr :<C-u>vimgrep // **/*.php\|cwindow<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
@@ -117,11 +118,11 @@ nnoremap tk  :<C-u>pop<CR>
 
 " tab
 nnoremap <C-t>  <Nop>
-nnoremap <C-t>n  :<C-u>tabnew<CR>
+nnoremap <C-t>c  :<C-u>tabnew<CR>
 nnoremap <C-t>d  :<C-u>tabclose<CR>
 nnoremap <C-t>o  :<C-u>tabonly<CR>
-nnoremap <C-t>j  :<C-u>tabnext<CR>
-nnoremap <C-t>k  :<C-u>tabprevious<CR>
+nnoremap <C-t>n  :<C-u>tabnext<CR>
+nnoremap <C-t>p  :<C-u>tabprevious<CR>
 nnoremap gt  :<C-u>tabnext<CR>
 nnoremap gT  :<C-u>tabprevious<CR>
 
@@ -194,3 +195,6 @@ nnoremap <Leader>tl  :<C-u>Tlist<CR>
 " Rename Command
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 
+
+"dev
+nnoremap <Leader>r :!/etc/init.d/httpd restart<CR>
