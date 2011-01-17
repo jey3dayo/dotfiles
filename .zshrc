@@ -9,19 +9,11 @@ export LANG=ja_JP.UTF-8
 #export LANG=ja_JP.eucJP
 #export LANG=ja_JP.shift-jis
 
-<<<<<<< HEAD
 #case ${UID} in
 #    0)
 #    LANG=C
 #    ;;
 #esac
-=======
-case ${UID} in
-    0)
-    #LANG=C
-    ;;
-esac
->>>>>>> 8fe6a7538de8ecff7e09b3c9c6eabb3982914074
 
 export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin
 export MANPATH=/opt/local/man:$MANPATH
@@ -244,5 +236,4 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
 
 export LISTMAX=0
-
 
