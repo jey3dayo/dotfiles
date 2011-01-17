@@ -137,6 +137,7 @@ alias ls='ls -pF'
 alias su="su -l"
 alias o="open"
 alias hg="hg --encoding=utf-8"
+alias tmux="tmux -2"
 
 case "${OSTYPE}" in
     darwin*)
