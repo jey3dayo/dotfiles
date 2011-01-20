@@ -15,7 +15,7 @@ export LANG=ja_JP.UTF-8
 #    ;;
 #esac
 
-export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin
+export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin
 export MANPATH=/opt/local/man:$MANPATH
 
 
@@ -236,4 +236,5 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
 
 export LISTMAX=0
+
 
