@@ -69,7 +69,7 @@ set smartcase
 set ts=4
 set sw=4
 set softtabstop=4
-set expandtab
+set noexpandtab
 set tw=0
 
 
@@ -144,10 +144,10 @@ inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 
 
 " fuf.vim
-nmap <silent> <Leader>ff :FufFile<CR>
-nmap <silent> <Leader>fb :FufBuffer<CR>
-nmap <silent> <Leader>ft :FufTag<CR>
-nmap <silent> <Leader>fq :FufQuickfix<CR>
+nmap <silent> <Leader>f :FufFile<CR>
+nmap <silent> <Leader>b :FufBuffer<CR>
+nmap <silent> <Leader>t :FufTag<CR>
+nmap <silent> <Leader>q :FufQuickfix<CR>
 
 
 " git.vim
@@ -189,7 +189,7 @@ let g:SrcExpl_RefreshMapKey = "<Space>"
 
 " taglist.vim
 set tags=tags
-nnoremap <Leader>tl  :<C-u>Tlist<CR>
+nnoremap <Leader>T  :<C-u>Tlist<CR>
 
 
 " Rename Command
@@ -198,3 +198,4 @@ command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 
 "dev
 nnoremap <Leader>r :!/etc/init.d/httpd restart<CR>
+
