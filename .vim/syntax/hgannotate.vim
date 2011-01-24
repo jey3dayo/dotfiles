@@ -1,9 +1,9 @@
 " Vim syntax file
-" Language:	SVK annotate output
+" Language:	HG annotate output
 " Maintainer:	Bob Hiestand <bob.hiestand@gmail.com>
 " Remark:	Used by the vcscommand plugin.
 " License:
-" Copyright (c) 2007 Bob Hiestand
+" Copyright (c) Bob Hiestand
 "
 " Permission is hereby granted, free of charge, to any person obtaining a copy
 " of this software and associated documentation files (the "Software"), to
@@ -27,16 +27,14 @@ if exists("b:current_syntax")
 	finish
 endif
 
-syn match svkDate /\d\{4}-\d\{1,2}-\d\{1,2}/ skipwhite contained
-syn match svkName /(\s*\zs\S\+/ contained nextgroup=svkDate skipwhite
-syn match svkVer /^\s*\d\+/ contained nextgroup=svkName skipwhite
-syn region svkHead start=/^/ end="):" contains=svkVer,svkName,svkDate oneline
+syn match hgVer /\d\+/ contained
+syn match hgName /^\s*\S\+/ contained
+syn match hgHead /^\s*\S\+\s\+\d\+:/ contains=hgVer,hgName
 
-if !exists("did_svkannotate_syntax_inits")
-	let did_svkannotate_syntax_inits = 1
-	hi link svkName Type
-	hi link svkDate Comment
-	hi link svkVer Statement
+if !exists("did_hgannotate_syntax_inits")
+	let did_hgannotate_syntax_inits = 1
+	hi link hgName Type
+	hi link hgVer Statement
 endif
 
-let b:current_syntax="svkAnnotate"
+let b:current_syntax="hgAnnotate"

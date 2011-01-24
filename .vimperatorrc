@@ -13,7 +13,7 @@ set guioptions=mBr
 " 検索時に大文字小文字を区別しない
 set ignorecase
 
-" ex modeでインクリメント補完
+" ex mode でインクリメント補完
 set wildoptions=auto
 
 " 検索時にハイライト
@@ -27,7 +27,7 @@ set focuscontent
 " ウィンドウサイズを変更するページは新しいウィンドウで開く
 " set popups=window
 
-" タブ表示
+" タブ非表示
 set showtabline=2
 
 " leaderを変更
@@ -47,8 +47,8 @@ noremap K <PageUp>
 " タブの移動
 nnoremap h gT
 nnoremap l gt
-nnoremap <Left> h
-nnoremap <Right> l
+nnoremap <C-H> h
+nnoremap <C-L> l
 
 noremap U :undo<Space>
 noremap <C-r> :restart<CR>
@@ -57,10 +57,10 @@ noremap <C-r> :restart<CR>
 noremap ! :set invum<CR>
 
 " ページのエンコーディングを変更
-noremap <Leader>es :set encoding=Shift_JIS<CR>
-noremap <Leader>ec :set encoding=EUC-JP<CR>
-noremap <Leader>eu :set encoding=UTF-8<CR>
-noremap <Leader>ei :set encodeing=ISO-2022-JP<CR>
+noremap ,es :set encoding=Shift_JIS<CR>
+noremap ,ec :set encoding=EUC-JP<CR>
+noremap ,eu :set encoding=UTF-8<CR>
+noremap ,ei :set encodeing=ISO-2022-JP<CR>
 
 " .vimperatorrcを再読み込み
 noremap <Leader>so :source ~/.vimperatorrc<CR>
@@ -70,7 +70,12 @@ map <C-h> :tabmove! -1<CR>
 map <C-l> :tabmove! +1<CR>
 
 " ブックマークの追加をトグル
-noremap a <S-a>
+noremap a          <S-a>
+
+" タブをCtrl-Nに
+cmap <C-n> <Tab>
+cmap <C-p> <S-Tab>
+
 
 " nextlink.js
 let g:nextlink_followlink = "false"
@@ -92,7 +97,7 @@ map <leader>C :copy<Space>titleAndURL<CR>
 js <<EOM
     liberator.globalVariables.copy_templates = [
     { label: 'titleAndURL',     value: '%TITLE% %URL%' },
-    { label: 'title<cr>URL',    value: '%TITLE%\n%URL%' },
+    { label: 'title<cr>URL',   value: '%TITLE%\n%URL%' },
     { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
     { label: 'title',           value: '%TITLE%' },
     { label: 'url',             value: '%URL%' },
@@ -112,6 +117,9 @@ EOM
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
 noremap <S-a>      :sbm<Space>[
+noremap <Leader>be :bentry<CR>
+noremap <Leader>bt :btags<CR>
+noremap <Leader>bi :bicon<CR>
 
 
 " feedsomekey_3.js {{{
@@ -162,15 +170,15 @@ let g:ldrc_skip = "0.25"
 
 
 " sbmcommentsviewer.js
-noremap V :viewSBMComments<CR>
+noremap <leader>bv :viewSBMComments<CR>
 
 
 " toggle autopagerize
-noremap <Leader>a :autopagerize<CR>
+noremap <silent> <Leader>a :autopagerize<CR>
 
 
 " multi_requester.js
-noremap <leader>d :mr goo<Space>
+noremap <leader>d  :mr goo<Space>
 
 
 " tomblr
