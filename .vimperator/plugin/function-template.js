@@ -43,7 +43,7 @@ let PLUGIN_INFO =
   <author mail="anekos@snca.net" homepage="http://d.hatena.ne.jp/nokturnalmortum/">anekos</author>
   <license>new BSD License (Please read the source code comments of this plugin)</license>
   <license lang="ja">修正BSDライセンス (ソースコードのコメントを参照してください)</license>
-  <updateURL>http://svn.coderepos.org/share/lang/javascript/vimperator-plugins/trunk/function-template.js</updateURL>
+  <updateURL>https://github.com/vimpr/vimperator-plugins/raw/master/function-template.js</updateURL>
   <minVersion>2.3</minVersion>
   <maxVersion>2.3</maxVersion>
   <detail><![CDATA[
@@ -104,8 +104,8 @@ let PLUGIN_INFO =
     'string', // type: string, stringlist, charlist, boolean
     'defaultValue',
     {
-      scope: options.OPTION_SCOPE_GLOBAL, // <- default
-                                          // or OPTION_SCOPE_LOCAL, OPTION_SCOPE_BOTH
+      scope: Option.SCOPE_GLOBAL, // <- default
+                                  // or Option.SCOPE_LOCAL, Option.SCOPE_BOTH
       setter: function (value) {
         /* mozo mozo */
         return value;
