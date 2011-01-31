@@ -196,6 +196,4 @@ nnoremap <Leader>T  :<C-u>Tlist<CR>
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 
 
-"dev
-nnoremap <Leader>r :!/etc/init.d/httpd restart<CR>
-
+source ~/.vimrc.mine
