@@ -3,7 +3,7 @@
 " Maintainer:	Bob Hiestand <bob.hiestand@gmail.com>
 " Remark:	Used by the vcscommand plugin.
 " License:
-" Copyright (c) Bob Hiestand
+" Copyright (c) 2007 Bob Hiestand
 "
 " Permission is hereby granted, free of charge, to any person obtaining a copy
 " of this software and associated documentation files (the "Software"), to

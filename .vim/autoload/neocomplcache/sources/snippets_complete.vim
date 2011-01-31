@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: snippets_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 04 Nov 2010
+" Last Modified: 25 Jul 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -95,13 +95,6 @@ function! s:source.initialize()"{{{
 
   " Caching _ snippets.
   call s:caching_snippets('_')
-
-  " Initialize check.
-  call s:caching()
-
-  if neocomplcache#exists_echodoc()
-    call echodoc#register('snippets_complete', s:doc_dict)
-  endif
 endfunction"}}}
 
 function! s:source.finalize()"{{{
@@ -110,10 +103,6 @@ function! s:source.finalize()"{{{
   delcommand NeoComplCachePrintSnippets
 
   hi clear NeoComplCacheExpandSnippets
-  
-  if neocomplcache#exists_echodoc()
-    call echodoc#unregister('snippets_complete')
-  endif
 endfunction"}}}
 
 function! s:source.get_keyword_list(cur_keyword_str)"{{{
@@ -140,38 +129,8 @@ function! neocomplcache#sources#snippets_complete#define()"{{{
 endfunction"}}}
 
 function! s:compare_words(i1, i2)
-  return a:i1.menu - a:i2.menu
+  return a:i1.menu > a:i2.menu ? 1 : a:i1.menu == a:i2.menu ? 0 : -1
 endfunction
-
-" For echodoc."{{{
-let s:doc_dict = {
-      \ 'name' : 'snippets_complete',
-      \ 'rank' : 100,
-      \ 'filetypes' : {},
-      \ }
-function! s:doc_dict.search(cur_text)"{{{
-  if mode() !=# 'i'
-    return []
-  endif
-  
-  let l:snippets = s:get_snippets()
-
-  let l:cur_word = s:get_cursor_snippet(l:snippets, a:cur_text)
-  if l:cur_word == ''
-    return []
-  endif
-
-  let l:snip = l:snippets[l:cur_word]
-  let l:ret = []
-  call add(l:ret, { 'text' : l:snip.word, 'highlight' : 'String' })
-  call add(l:ret, { 'text' : ' ' })
-  call add(l:ret, { 'text' : l:snip.menu, 'highlight' : 'Special' })
-  call add(l:ret, { 'text' : ' ' })
-  call add(l:ret, { 'text' : l:snip.snip})
-
-  return l:ret
-endfunction"}}}
-"}}}
 
 function! s:keyword_filter(list, cur_keyword_str)"{{{
   let l:keyword_escape = neocomplcache#keyword_escape(a:cur_keyword_str)
@@ -186,7 +145,7 @@ function! s:keyword_filter(list, cur_keyword_str)"{{{
   " Substitute abbr.
   let l:abbr_pattern = printf('%%.%ds..%%s', g:neocomplcache_max_keyword_width-10)
   for snippet in l:list
-    if snippet.snip =~ '\\\@<!`.*\\\@<!`'
+    if snippet.snip =~ '`[^`]*`'
       let snippet.menu = s:eval_snippet(snippet.snip)
 
       if len(snippet.menu) > g:neocomplcache_max_keyword_width 
@@ -200,10 +159,27 @@ function! s:keyword_filter(list, cur_keyword_str)"{{{
 endfunction"}}}
 
 function! neocomplcache#sources#snippets_complete#expandable()"{{{
-  let l:snippets = s:get_snippets()
-  let l:cur_text = neocomplcache#get_cur_text(1)
+  " Set buffer filetype.
+  let l:ft = neocomplcache#get_context_filetype(1)
 
-  if s:get_cursor_snippet(l:snippets, l:cur_text) != ''
+  let l:snippets = copy(s:snippets['_'])
+  for l:t in split(l:ft, '\.')
+    if has_key(s:snippets, l:t)
+      call extend(l:snippets, s:snippets[l:t])
+    endif
+  endfor
+
+  " Set same filetype.
+  if has_key(g:neocomplcache_same_filetype_lists, l:ft)
+    for l:same_ft in split(g:neocomplcache_same_filetype_lists[l:ft], ',')
+      if has_key(s:snippets, l:same_ft)
+        call extend(l:snippets, s:snippets[l:same_ft], 'keep')
+      endif
+    endfor
+  endif
+
+  if has_key(l:snippets, matchstr(s:get_cur_text(), neocomplcache#get_keyword_pattern_end()))
+        \ || has_key(l:snippets, matchstr(s:get_cur_text(), '\S\+$'))
     " Found snippet trigger.
     return 1
   elseif search('\${\d\+\%(:.\{-}\)\?\\\@<!}\|\$<\d\+\%(:.\{-}\)\?\\\@<!>', 'nw') > 0
@@ -311,33 +287,27 @@ function! s:caching_snippets(filetype)"{{{
   let l:snippet = {}
   let l:snippets_files = split(globpath(join(s:snippets_dir, ','), a:filetype .  '.snip*'), '\n')
   for snippets_file in l:snippets_files
-    call extend(l:snippet, s:load_snippets(snippets_file))
+    call extend(l:snippet, s:load_snippets(snippets_file, a:filetype))
   endfor
 
   let s:snippets[a:filetype] = l:snippet
 endfunction"}}}
 
-function! s:load_snippets(snippets_file)"{{{
+function! s:load_snippets(snippets_file, filetype)"{{{
   let l:snippet = {}
   let l:snippet_pattern = { 'word' : '' }
   let l:abbr_pattern = printf('%%.%ds..%%s', g:neocomplcache_max_keyword_width-10)
 
-  let l:linenr = 1
-
   for line in readfile(a:snippets_file)
-    if line =~ '^\h\w*.*\s$'
-      " Delete spaces.
-      let line = substitute(line, '\s\+$', '', '')
-    endif
-
     if line =~ '^include'
       " Include snippets.
-      let l:snippet_file = matchstr(line, '^include\s\+\zs.*$')
-      for snippets_file in split(globpath(join(s:snippets_dir, ','), l:snippet_file), '\n')
-        call extend(l:snippet, s:load_snippets(snippets_file))
+      let l:filetype = matchstr(line, '^include\s\+\zs.*\ze\s*$')
+      let l:snippets_files = split(globpath(join(s:snippets_dir, ','), l:filetype .  '.snip'), '\n')
+      for snippets_file in l:snippets_files
+        call extend(l:snippet, s:load_snippets(snippets_file, l:filetype))
       endfor
     elseif line =~ '^delete\s'
-      let l:name = matchstr(line, '^delete\s\+\zs.*$')
+      let l:name = matchstr(line, '^delete\s\+\zs.*\ze\s*$')
       if l:name != '' && has_key(l:snippet, l:name)
         call remove(l:snippet, l:name)
       endif
@@ -360,19 +330,13 @@ function! s:load_snippets(snippets_file)"{{{
         let l:snippet_pattern = { 'word' : '' }
       endif
 
-      let l:snippet_pattern.name = matchstr(line, '^snippet\s\+\zs.*$')
-
-      " Check for duplicated names.
-      if has_key(l:snippet, l:snippet_pattern.name)
-        call neocomplcache#print_error('Warning: ' . a:snippets_file . ':' . l:linenr . ': duplicated snippet name `' . l:snippet_pattern.name . '`')
-        call neocomplcache#print_error('Please delete this snippet name before.')
-      endif
+      let l:snippet_pattern.name = matchstr(line, '^snippet\s\+\zs.*\ze\s*$')
     elseif has_key(l:snippet_pattern, 'name')
       " Only in snippets.
       if line =~ '^abbr\s'
-        let l:snippet_pattern.abbr = matchstr(line, '^abbr\s\+\zs.*$')
+        let l:snippet_pattern.abbr = matchstr(line, '^abbr\s\+\zs.*\ze\s*$')
       elseif line =~ '^alias\s'
-        let l:snippet_pattern.alias = split(matchstr(line, '^alias\s\+\zs.*$'), '[,[:space:]]\+')
+        let l:snippet_pattern.alias = split(matchstr(line, '^alias\s\+\zs.*\ze\s*$'), '[,[:space:]]\+')
       elseif line =~ '^prev_word\s'
         let l:snippet_pattern.prev_word = matchstr(line, '^prev_word\s\+[''"]\zs.*\ze[''"]$')
       elseif line =~ '^\s'
@@ -390,8 +354,6 @@ function! s:load_snippets(snippets_file)"{{{
         let l:snippet_pattern.word .= '<\n>'
       endif
     endif
-
-    let l:linenr += 1
   endfor
 
   if has_key(l:snippet_pattern, 'name')
@@ -399,12 +361,6 @@ function! s:load_snippets(snippets_file)"{{{
     let l:snippet[l:snippet_pattern.name] = l:pattern
     if has_key(l:snippet_pattern, 'alias')
       for l:alias in l:snippet_pattern.alias
-        " Check for duplicated names.
-        if has_key(l:snippet, l:alias)
-          call neocomplcache#print_error('Warning: ' . a:snippets_file . ':' . l:linenr . ': duplicated snippet name `' . l:alias . '`')
-          call neocomplcache#print_error('Please delete this snippet name before.')
-        endif
-
         let l:alias_pattern = copy(l:pattern)
         let l:alias_pattern.word = l:alias
 
@@ -420,37 +376,45 @@ function! s:load_snippets(snippets_file)"{{{
   return l:snippet
 endfunction"}}}
 
-function! s:get_cursor_snippet(snippets, cur_text)"{{{
-  let l:cur_word = matchstr(a:cur_text, '\S\+$')
-  while l:cur_word != '' && !has_key(a:snippets, l:cur_word)
-    let l:cur_word = l:cur_word[1:]
-  endwhile
-
-  return l:cur_word
-endfunction"}}}
 function! s:snippets_expand(cur_text, col)"{{{
-  let l:snippets = s:get_snippets()
+  " Set buffer filetype.
+  let l:ft = neocomplcache#get_context_filetype(1)
 
-  let l:cur_word = s:get_cursor_snippet(l:snippets, a:cur_text)
-  if l:cur_word == ''
-    " Not found.
+  let l:snippets = copy(s:snippets['_'])
+  for l:t in split(l:ft, '\.')
+    if has_key(s:snippets, l:t)
+      call extend(l:snippets, s:snippets[l:t])
+    endif
+  endfor
+
+  " Set same filetype.
+  if has_key(g:neocomplcache_same_filetype_lists, l:ft)
+    for l:same_ft in split(g:neocomplcache_same_filetype_lists[l:ft], ',')
+      if has_key(s:snippets, l:same_ft)
+        call extend(l:snippets, s:snippets[l:same_ft], 'keep')
+      endif
+    endfor
+  endif
+
+  let l:cur_word = matchstr(a:cur_text, neocomplcache#get_keyword_pattern_end())
+  if !has_key(l:snippets, l:cur_word)
+    let l:cur_word = matchstr(a:cur_text, '\S\+$')
+  endif
+  if !has_key(l:snippets, l:cur_word)
     call s:snippets_jump(a:cur_text, a:col)
     return
   endif
-
+  
   let l:snippet = l:snippets[l:cur_word]
   let l:cur_text = a:cur_text[: -1-len(l:cur_word)]
 
   let l:snip_word = l:snippet.snip
-  if l:snip_word =~ '\\\@<!`.*\\\@<!`'
+  if l:snip_word =~ '`.\{-}`'
     let l:snip_word = s:eval_snippet(l:snip_word)
   endif
   if l:snip_word =~ '\n'
     let snip_word = substitute(l:snip_word, '\n', '<\\n>', 'g')
   endif
-
-  " Substitute escaped `.
-  let snip_word = substitute(l:snip_word, '\\`', '`', 'g')
 
   " Insert snippets.
   let l:next_line = getline('.')[a:col-1 :]
@@ -688,23 +652,24 @@ function! s:substitute_marker(start, end)"{{{
   endif
 endfunction"}}}
 function! s:trigger(function)"{{{
-  let l:cur_text = neocomplcache#get_cur_text(1)
+  let l:cur_text = s:get_cur_text()
+  let s:cur_text = l:cur_text
   return printf("\<ESC>:call %s(%s,%d)\<CR>", a:function, string(l:cur_text), col('.'))
 endfunction"}}}
 function! s:eval_snippet(snippet_text)"{{{
   let l:snip_word = ''
   let l:prev_match = 0
-  let l:match = match(a:snippet_text, '\\\@<!`.\{-}\\\@<!`')
+  let l:match = match(a:snippet_text, '`.\{-}`')
 
   try
     while l:match >= 0
       if l:match - l:prev_match > 0
         let l:snip_word .= a:snippet_text[l:prev_match : l:match - 1]
       endif
-      let l:prev_match = matchend(a:snippet_text, '\\\@<!`.\{-}\\\@<!`', l:match)
+      let l:prev_match = matchend(a:snippet_text, '`.\{-}`', l:match)
       let l:snip_word .= eval(a:snippet_text[l:match+1 : l:prev_match - 2])
 
-      let l:match = match(a:snippet_text, '\\\@<!`.\{-}\\\@<!`', l:prev_match)
+      let l:match = match(a:snippet_text, '`.\{-}`', l:prev_match)
     endwhile
     if l:prev_match >= 0
       let l:snip_word .= a:snippet_text[l:prev_match :]
@@ -715,27 +680,11 @@ function! s:eval_snippet(snippet_text)"{{{
 
   return l:snip_word
 endfunction"}}}
-function! s:get_snippets()"{{{
-  " Get buffer filetype.
-  let l:ft = neocomplcache#get_context_filetype(1)
+function! s:get_cur_text()"{{{
+  let l:pos = mode() ==# 'i' ? 2 : 1
 
-  let l:snippets = copy(s:snippets['_'])
-  for l:t in split(l:ft, '\.')
-    if has_key(s:snippets, l:t)
-      call extend(l:snippets, s:snippets[l:t])
-    endif
-  endfor
-
-  " Get same filetype.
-  if has_key(g:neocomplcache_same_filetype_lists, l:ft)
-    for l:same_ft in split(g:neocomplcache_same_filetype_lists[l:ft], ',')
-      if has_key(s:snippets, l:same_ft)
-        call extend(l:snippets, s:snippets[l:same_ft], 'keep')
-      endif
-    endfor
-  endif
-
-  return l:snippets
+  let s:cur_text = col('.') < l:pos ? '' : matchstr(getline('.'), '.*')[: col('.') - l:pos]
+  return s:cur_text
 endfunction"}}}
 
 function! s:SID_PREFIX()

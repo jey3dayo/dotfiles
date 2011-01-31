@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: omni_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 06 Oct 2010
+" Last Modified: 29 Jul 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -46,7 +46,7 @@ function! s:source.initialize()"{{{
     try 
       python 1
       call neocomplcache#set_dictionary_helper(g:neocomplcache_omni_patterns, 'python',
-            \'[^. \t]\.\w*')
+            \'[^. \t]\.\h\w*')
     catch
     endtry
   endif
@@ -59,7 +59,7 @@ function! s:source.initialize()"{{{
   call neocomplcache#set_dictionary_helper(g:neocomplcache_omni_patterns, 'actionscript',
         \'[^. \t][.:]\h\w*')
   "call neocomplcache#set_dictionary_helper(g:neocomplcache_omni_patterns, 'php',
-        "\'[^. \t]->\h\w*\|\h\w*::')
+        "\'[^. \t]->\h\w*\|\$\h\w*\|\%(=\s*new\|extends\)\s\+\|\h\w*::')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_omni_patterns, 'java',
         \'\%(\h\w*\|)\)\.')
   "call neocomplcache#set_dictionary_helper(g:neocomplcache_omni_patterns, 'perl',
@@ -72,8 +72,6 @@ function! s:source.initialize()"{{{
         \'\%(\\[^[:alnum:].-]\|[[:alnum:]@/.-_+,#$%~=*]\)\{2,}')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_omni_patterns, 'objc',
         \'\h\w\+\|\h\w*\%(\.\|->\)\h\w*')
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_omni_patterns, 'objj',
-        \'[\[ \.]\w\+$\|:\w*$')
   "}}}
   
   " Initialize omni function list."{{{
@@ -95,7 +93,7 @@ function! s:source.get_keyword_pos(cur_text)"{{{
   if neocomplcache#within_comment()
     return -1
   endif
-
+  
   let l:filetype = neocomplcache#get_context_filetype()
   if neocomplcache#is_eskk_enabled()
     let l:omnifunc = &l:omnifunc
