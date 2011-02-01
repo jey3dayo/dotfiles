@@ -171,7 +171,44 @@ let g:ldrc_skip = "0.25"
 
 " plugin_loader.js
 let g:plugin_loader_roots = "~/Sites/vimperator-plugins/"
-let g:plugin_loader_plugins = "adddialog,appendAnchor,auto-focus-frame,bitly,caret-hint,commandBookmarklet,copy,direct_bookmark,feedSomeKeys_3,feeder,hint-tombloo,hints-for-embedded,ldrize_cooperation,ldrize_cooperation_fetch_flv,localkeymode,migemo-find,migemo_completion,migemo_hint,multi_requester,nextlink,open-frame,panorama,proxy,sbmcommentsviewer,stella,stylish,tinyurl,tombloo,twittperator,walk-input,yetmappings"
+"let g:plugin_loader_plugins = "adddialog,appendAnchor,auto-focus-frame,bitly,caret-hint,commandBookmarklet,copy,direct_bookmark,feedSomeKeys_3,feeder,hint-tombloo,hints-for-embedded,ldrize_cooperation,ldrize_cooperation_fetch_flv,localkeymode,migemo-find,migemo_completion,migemo_hint,multi_requester,nextlink,open-frame,panorama,proxy,sbmcommentsviewer,stella,stylish,tinyurl,tombloo,twittperator,walk-input,yetmappings"
+
+" let g:plugin_loader_plugins /*{{{*/
+js <<EOF
+liberator.globalVariables.plugin_loader_plugins = <>
+adddialog
+appendAnchor
+auto-focus-frame
+bitly
+caret-hint
+commandBookmarklet
+copy
+direct_bookmark
+feedSomeKeys_3
+feeder
+hint-tombloo
+hints-for-embedded
+ldrize_cooperation
+ldrize_cooperation_fetch_flv
+localkeymode
+migemo-find
+migemo_completion
+migemo_hint
+multi_requester
+nextlink
+open-frame
+panorama
+proxy
+sbmcommentsviewer
+stella
+stylish
+tinyurl
+tombloo
+twittperator
+walk-input
+yetmappings
+</>.toString().split(/\s+/).filter(function(n) n);
+EOF/*}}}*/
 
 
 " sbmcommentsviewer.js
