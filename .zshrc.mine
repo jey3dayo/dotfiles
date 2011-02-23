@@ -12,5 +12,5 @@ export PATH=$GOBIN:$PATH
 
 # glowl
 alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
-alias work="/var/www/html/sem_project/trunk/src/irepo"
+alias dev="/var/www/html/sem/src"
 

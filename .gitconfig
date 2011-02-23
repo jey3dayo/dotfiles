@@ -1,22 +1,27 @@
 [user]
-    name  = j_nakazato
-    email = j_nakazato@tose-okinawa.co.jp
+	name = J.Nakazato
+	email = nakazato_junya@ca-admanagement.co.jp
 [color]
-    status  = auto
-    diff    = auto
-    branche = auto
+	branche = auto
+	diff    = auto
+	interactive = auto
+	status  = auto
+	ui = auto
 [core]
-    excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
 	quotepath = false
 [alias]
-    co = checkout
-    ci = commit -a
-    st = status
-    up = pull --rebase
+	co = checkout
+	ci = commit 
+	st = status
+	up = pull --rebase
+	l  = log
+	dn = diff --name-only
 [github]
-    user  = j138
-    email = j138cm@gmail.com
-    token = qwertyuiopasdfghjkl
+	name = j138
+	user = j138
+	email = j138cm@gmail.com
+	token = 123qweasdzxc123qweasdzxc
 [branch "master"]
-    remote = origin
-    merge = refs/heads/master
+	remote = origin
+	merge = refs/heads/master
