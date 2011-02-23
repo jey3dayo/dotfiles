@@ -8,7 +8,7 @@ set activate=homepage,quickmark,tabopen,paste
 set complete=tsl
 
 " gui options
-set guioptions=mBr
+set guioptions=mBrb
 
 " 検索時に大文字小文字を区別しない
 set ignorecase
@@ -76,7 +76,6 @@ noremap a          <S-a>
 cmap <C-n> <Tab>
 cmap <C-p> <S-Tab>
 
-
 " nextlink.js
 let g:nextlink_followlink = "false"
 
@@ -84,11 +83,9 @@ let g:nextlink_followlink = "false"
 set nextpattern+=次(の)?ページ,→\b,下一頁,Следующая,다음
 set previouspattern+=prev,前(の)?ページ,\b前.*,\b←
 
-
 " appendAnchor.js
 let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
-
 
 "copy.js {{{
 map <leader>c :copy<Space>TitleAndbittly<CR>
@@ -112,7 +109,6 @@ js <<EOM
 EOM
 " }}}
 
-
 " direct_bookmark.js
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
@@ -120,7 +116,6 @@ noremap <S-a>      :sbm<Space>[
 noremap <Leader>be :bentry<CR>
 noremap <Leader>bt :btags<CR>
 noremap <Leader>bi :bicon<CR>
-
 
 " feedsomekey_3.js {{{
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
@@ -133,10 +128,8 @@ lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
 lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
 " }}}
 
-
 " hints-for-embedded.js
 let g:hints_for_embedded_mode="e"
-
 
 " localkeymode.js {{{
 let g:localkeymode_enable = "true"
@@ -162,12 +155,10 @@ liberator.globalVariables.localKeyMappings= [
 EOM
 " }}}
 
-
 " ldrize_cooperation.js
 noremap <Leader>l :toggleldrizecooperation<CR>
 let g:ldrc_intelligence_bind = "true"
 let g:ldrc_skip = "0.25"
-
 
 " plugin_loader.js {{{
 let g:plugin_loader_roots = "~/Sites/vimperator-plugins/"
@@ -212,18 +203,14 @@ EOF
 " sbmcommentsviewer.js
 noremap <leader>v :viewSBMComments<CR>
 
-
 " toggle autopagerize
 noremap <silent> <Leader>a :autopagerize<CR>
-
 
 " multi_requester.js
 noremap <leader>d  :mr goo<Space>
 
-
-" tomblr
+" tumblr
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
-
 
 " copy/paste {{{
 javascript <<EOM
@@ -259,7 +246,6 @@ else {
 EOM
 " }}}
 
-
 " RSSフィードの表示 {{{
 javascript <<EOF
 (function(){
@@ -272,7 +258,6 @@ javascript <<EOF
  )();
 EOF
 " }}}
-
 
 " Toggle Autopagerize {{{
 javascript <<EOM
