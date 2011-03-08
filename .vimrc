@@ -93,8 +93,9 @@ nnoremap <Leader>Y  :<C-u>YRSearch<CR>
 nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
-nnoremap gr :<C-u>vimgrep /<cWORD>/ **/%<Bar>cwindow<CR>
-nnoremap gR :<C-u>vimgrep /<cWORD>/ **/*.php<Bar>cwindow<CR>
+nnoremap gr :<C-u>vimgrep // **/%<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+nnoremap gR :<C-u>vimgrep // **/*.php<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+map <F3> :execute "vimgrep /" . expand("<cWORD>") . "/j %" <Bar> cw<CR>
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
