@@ -18,6 +18,7 @@ set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,
 set fileformats=unix,mac,dos
 set isfname+=32
 set cindent
+set virtualedit+=block
 
 
 " color
@@ -92,7 +93,8 @@ nnoremap <Leader>Y  :<C-u>YRSearch<CR>
 nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
-nnoremap gr :<C-u>vimgrep // **/*.php\|cwindow<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+nnoremap gr :<C-u>vimgrep /<cWORD>/ **/%<Bar>cwindow<CR>
+nnoremap gR :<C-u>vimgrep /<cWORD>/ **/*.php<Bar>cwindow<CR>
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
