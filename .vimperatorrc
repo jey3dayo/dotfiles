@@ -165,7 +165,6 @@ let g:plugin_loader_roots = "~/Sites/vimperator-plugins/"
 
 js <<EOF
 liberator.globalVariables.plugin_loader_plugins = <>
-adddialog
 appendAnchor
 auto-focus-frame
 bitly
@@ -186,12 +185,10 @@ migemo_hint
 multi_requester
 nextlink
 open-frame
-panorama
 proxy
 sbmcommentsviewer
 stella
 stylish
-tinyurl
 tombloo
 twittperator
 walk-input
