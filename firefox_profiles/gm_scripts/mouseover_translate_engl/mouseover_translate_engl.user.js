@@ -3,13 +3,13 @@
 // @description    Mouseover Translate English-Japanese を機能拡張してみました。
 // @namespace      http://userscripts.org/users/81100
 // @editor         chemera
-// @version        1.03.8
+// @version        1.03.10
 // @include        *
 // ==/UserScript==
 
 (function(){
 /**************************************ユーザー設定**********************************************/
-const SEARCH_SITE = "Exceed"            // 翻訳サイト (Exceed(goo)："Exceed")
+const SEARCH_SITE = "Global"            // 翻訳サイト (Exceed(goo)："Exceed")
 const LEVEL = 2;                        // ここで指定するレベル以上の単語を翻訳 (英辞郎でのみ有効)
 const DELAY = 500;                      // ポップアップするまでの時間[ms] (デフォルト：500)
 const BACKGROUND_COLOR = "cornsilk";    // 背景色 (デフォルト：cornsilk)
@@ -50,7 +50,7 @@ var SITEINFO = {
 		temporary_target: true,	// 一時変更対象。拡張機能時のみ。
 		formatResult: function(originalhtml){
 			var formathtml = "";
-			if(/<div class="wordDefArea".*?>((?:.|\s)*?)<\/div><!--\/wordDefArea-->/.test(originalhtml)){
+			if(/<div class="prog_block".*?>([\s\S]*?)<\/div><!--\/progressive_ej-->/.test(originalhtml)){
 				formathtml = RegExp.$1;
 				formathtml = formathtml.replace(/\n/g, "");
 				formathtml = formathtml.replace(/<script .*?>.*?<\/script>/g, "");
@@ -72,7 +72,7 @@ var SITEINFO = {
 	Global: {
 		name: "Yahoo!辞書 新グローバル英和辞典",
 		site_url: "http://dic.yahoo.co.jp/",
-		url: function(word){ return "http://dic.yahoo.co.jp/dsearch?enc=UTF-8&p="+word+"&dtype=1&stype=1&dname=1ss"; },
+		url: function(word){ return "http://dic.yahoo.co.jp/dsearch?enc=UTF-8&p="+word+"&dtype=1&dname=1ss"; },
 		method: "GET",
 		encode: "UTF-8",
 		cleaning: function(formathtml) {
@@ -97,7 +97,7 @@ var SITEINFO = {
 		temporary_target: true,	// 一時変更対象。拡張機能時のみ。
 		formatResult: function(originalhtml){
 			var formathtml = "";
-			if(/<!--詳細-->((?:.|\s)*?)<!--\/詳細-->/.test(originalhtml)){
+			if(/<!-- source-dic -->([\s\S]*?)<!-- \/source-dic -->/.test(originalhtml)){
 				formathtml = RegExp.$1;
 				formathtml = this.cleaning(formathtml);
 			}
@@ -106,19 +106,14 @@ var SITEINFO = {
 	},
 
 	Progressive: {
-		name: "Yahoo!辞書 プログレッシブ英和中辞典",
+		name: "Yahoo!辞書 eプログレッシブ英和中辞典",
 		site_url: "http://dic.yahoo.co.jp/",
-		url: function(word){ return "http://dic.yahoo.co.jp/dsearch?enc=UTF-8&p="+word+"&dtype=1&stype=1&dname=1na"; },
+		url: function(word){ return "http://dic.yahoo.co.jp/dsearch?enc=UTF-8&p="+word+"&dtype=1&dname=1na"; },
 		method: "GET",
 		encode: "UTF-8",
 		temporary_target: true,	// 一時変更対象。拡張機能時のみ。
 		formatResult: function(originalhtml){
-			var formathtml = "";
-			if(/<!--詳細-->((?:.|\s)*?)<!--\/詳細-->/.test(originalhtml)){
-				formathtml = RegExp.$1;
-				formathtml = SITEINFO.Global.cleaning(formathtml);
-			}
-			return formathtml;
+			return SITEINFO.Global.formatResult(originalhtml);
 		}
 	},
 
@@ -308,7 +303,7 @@ var SITEINFO = {
 		temporary_target: true,	// 一時変更対象。拡張機能時のみ。
 		formatResult: function(originalhtml){
 			var formathtml = "";
-			if(/<!--開始 研究社 新英和中辞典-->((?:.|\s)*?)<!--終了 研究社 新英和中辞典-->/.test(originalhtml)){
+			if(/<!--開始 研究社 新英和中辞典-->([\s\S]*?)<!--終了 研究社 新英和中辞典-->/.test(originalhtml)){
 				formathtml = RegExp.$1;
 				formathtml = this.cleaning(formathtml);
 			}
@@ -325,7 +320,7 @@ var SITEINFO = {
 		temporary_target: true,	// 一時変更対象。拡張機能時のみ。
 		formatResult: function(originalhtml){
 			var formathtml = "";
-			if(/<!--開始 研究社 英和コンピューター用語辞典-->((?:.|\s)*?)<!--終了 研究社 英和コンピューター用語辞典-->/.test(originalhtml)){
+			if(/<!--開始 研究社 英和コンピューター用語辞典-->([\s\S]*?)<!--終了 研究社 英和コンピューター用語辞典-->/.test(originalhtml)){
 				formathtml = RegExp.$1;
 				formathtml = SITEINFO.Weblio.cleaning(formathtml);
 			}
@@ -366,7 +361,7 @@ var SITEINFO = {
 		temporary_target: true,	// 一時変更対象。拡張機能時のみ。
 		formatResult: function(originalhtml){
 			var formathtml = "";
-			if(/<div class="meaning">((?:.|\s)*?)<div class="note">/.test(originalhtml)){
+			if(/<div class="meaning">([\s\S]*?)<div class="note">/.test(originalhtml)){
 				formathtml = RegExp.$1;
 				formathtml = formathtml.replace(/\n/g, "");
 				formathtml = formathtml.replace(/<span .*?>/g, "");

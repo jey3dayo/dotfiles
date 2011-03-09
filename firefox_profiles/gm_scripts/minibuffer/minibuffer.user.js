@@ -815,7 +815,7 @@ var Shell = {
 // http://userscripts.org/scripts/show/11996
 // slightly modified.
 var FlashMessage = new function(){
-	GM_addStyle(<><![CDATA[
+	GM_addStyle((<><![CDATA[
 		#FLASH_MESSAGE{
 			position : fixed;
 			font-size : 500%;
@@ -833,7 +833,7 @@ var FlashMessage = new function(){
 			min-width : 1em;
 			text-align : center;
 		}
-	]]></>)
+	]]></>).toString());
 	var opacity = 0.9;
 	var flash = $N('div',{id:'FLASH_MESSAGE'});
 	hide(flash);
