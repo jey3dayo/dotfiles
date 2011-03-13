@@ -91,7 +91,7 @@ let g:auto_append_anchor_once = "true"
 map <leader>c :copy<Space>TitleAndbittly<CR>
 map <leader>C :copy<Space>titleAndURL<CR>
 
-js <<EOM
+javascript <<EOM
     liberator.globalVariables.copy_templates = [
     { label: 'titleAndURL',     value: '%TITLE% %URL%' },
     { label: 'title<cr>URL',   value: '%TITLE%\n%URL%' },
@@ -163,7 +163,7 @@ let g:ldrc_skip = "0.25"
 " plugin_loader.js {{{
 let g:plugin_loader_roots = "~/Sites/vimperator-plugins/"
 
-js <<EOF
+javascript <<EOF
 liberator.globalVariables.plugin_loader_plugins = <>
 appendAnchor
 auto-focus-frame
@@ -196,6 +196,54 @@ yetmappings
 </>.toString().split(/\s+/).filter(function(n) n);
 EOF
 " }}}
+
+" proxy.js/*{{{*/
+javascript <<EOM
+liberator.globalVariables.proxy_settings = [
+{
+    conf_name: 'disable',
+    conf_usage: 'direct connection',
+    settings: [
+        {
+            label: 'type',
+            param: 0
+        }
+    ]
+},
+{
+    conf_name: 'proxomitron',
+    setting: [
+        {
+            label: 'network.proxy.type',
+            param: 1
+        },
+        {
+            label: 'network.proxy.http',
+            param: 'localhost'
+        },
+        {
+            label: 'network.proxy.http_port',
+            param: 8080
+        }
+    ]
+},
+{
+    conf_name: 'proxy.pac of 19 server',
+    conf_usage: 'proxy.pac of 19 server',
+    settings: [
+        {
+            label: 'type',
+            param: 2
+       },
+       {
+            label: 'autoconfig_url',
+            param: 'http://192.168.9.19/proxy.pac',
+       },
+    ]
+}
+];
+EOM
+/*}}}*/
 
 " sbmcommentsviewer.js
 noremap <leader>v :viewSBMComments<CR>
