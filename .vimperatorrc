@@ -33,7 +33,7 @@ set showtabline=2
 " leaderを変更
 let mapleader = ","
 
-colorscheme bigchu
+colorscheme bigchu2
 
 " ステータスバーの背景色を変更
 hi StatusLine color:black; background:#ABD31B; font-weight:normal;
@@ -199,6 +199,7 @@ EOF
 
 " proxy.js {{{
 javascript <<EOM
+
 liberator.globalVariables.proxy_settings = [
 {
     conf_name: 'disable',
@@ -212,24 +213,25 @@ liberator.globalVariables.proxy_settings = [
 },
 {
     conf_name: 'proxomitron',
-    setting: [
+    conf_usage: 'use internal proxy',
+    settings: [
         {
-            label: 'network.proxy.type',
+            label: 'type',
             param: 1
         },
         {
-            label: 'network.proxy.http',
+            label: 'http',
             param: 'localhost'
         },
         {
-            label: 'network.proxy.http_port',
+            label: 'http_port',
             param: 8080
         }
     ]
 },
 {
-    conf_name: 'proxy.pac of 19 server',
-    conf_usage: 'proxy.pac of 19 server',
+    conf_name: 'proxy.pac',
+    conf_usage: 'proxy.pac',
     settings: [
         {
             label: 'type',
@@ -237,7 +239,7 @@ liberator.globalVariables.proxy_settings = [
        },
        {
             label: 'autoconfig_url',
-            param: 'http://192.168.9.19/proxy.pac',
+            param: 'http://192.168.9.19/proxy.pac'
        },
     ]
 }
