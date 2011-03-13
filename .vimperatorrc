@@ -51,7 +51,6 @@ nnoremap <C-H> h
 nnoremap <C-L> l
 
 noremap U :undo<Space>
-noremap <C-r> :restart<CR>
 
 " ! でページのCSSをon/off
 noremap ! :set invum<CR>
