@@ -1,9 +1,6 @@
 [submodule ".vim/bundle/neocomplcache.git"]
 	path = .vim/bundle/neocomplcache.git
 	url = git://github.com/Shougo/neocomplcache.git
-[submodule ".vim/bundle/EnhancedCommentify.git"]
-	path = .vim/bundle/EnhancedCommentify.git
-	url = git://github.com/hrp/EnhancedCommentify.git
 [submodule ".vim/bundle/snipmate.vim.git"]
 	path = .vim/bundle/snipmate.vim.git
 	url = git://github.com/msanders/snipmate.vim.git
@@ -31,3 +28,9 @@
 [submodule ".vim/module/vim-surround.git"]
 	path = .vim/module/vim-surround.git
 	url = git://github.com/tpope/vim-surround.git
+[submodule ".vim/bundle/vim-guicolorscheme.git"]
+	path = .vim/bundle/vim-guicolorscheme.git
+	url = git://github.com/thinca/vim-guicolorscheme.git
+[submodule ".vim/bundle/nerdcommenter.git"]
+	path = .vim/bundle/nerdcommenter.git
+	url = git://github.com/scrooloose/nerdcommenter.git
