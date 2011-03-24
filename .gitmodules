@@ -34,3 +34,21 @@
 [submodule ".vim/bundle/nerdcommenter.git"]
 	path = .vim/bundle/nerdcommenter.git
 	url = git://github.com/scrooloose/nerdcommenter.git
+[submodule ".vim/bundle/zencoding.git"]
+	path = .vim/bundle/zencoding.git
+	url = git://github.com/chrisdone/zencoding.git
+[submodule ".vim/bundle/git-vim.git"]
+	path = .vim/bundle/git-vim.git
+	url = git://github.com/motemen/git-vim.git
+[submodule ".vim/bundle/nerdtree.git"]
+	path = .vim/bundle/nerdtree.git
+	url = git://github.com/scrooloose/nerdtree.git
+[submodule ".vim/bundle/vimshell.git"]
+	path = .vim/bundle/vimshell.git
+	url = git://github.com/Shougo/vimshell.git
+[submodule ".vim/bundle/vim-quickrun.git"]
+	path = .vim/bundle/vim-quickrun.git
+	url = git://github.com/thinca/vim-quickrun.git
+[submodule ".vim/bundle/vim-ref.git"]
+	path = .vim/bundle/vim-ref.git
+	url = git://github.com/thinca/vim-ref.git
