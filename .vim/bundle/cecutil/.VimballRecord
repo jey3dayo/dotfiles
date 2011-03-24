@@ -1,0 +1,1 @@
+cecutils.vba: call delete('/var/www/git/dotfiles/.vim/bundle/cecutil/plugin/cecutil.vim')|call delete('/var/www/git/dotfiles/.vim/bundle/cecutil/doc/cecutil.txt')

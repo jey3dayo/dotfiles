@@ -14,3 +14,6 @@ export PATH=$GOBIN:$PATH
 alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
 alias dev="/var/www/html/sem/src"
 
+
+export DOTFILES=/var/www/git/dotfiles
+export VIMDIR=/var/www/git/dotfiles/.vim

@@ -28,8 +28,8 @@ highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
-colorscheme wombat256
 " colorscheme wombat
+colorscheme wombat256
 highlight Search ctermbg=7
 
 
@@ -84,11 +84,9 @@ filetype indent on
 
 
 " map
-"nnoremap <Leader>b  :<C-u>buffers<CR>
 nnoremap <Leader>m  :<C-u>marks<CR>
 nnoremap <Leader>r  :<C-u>registers<CR>
 nnoremap <Leader>y  :<C-u>YRShow<CR>
-nnoremap <Leader>Y  :<C-u>YRSearch<CR>
 
 nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
@@ -174,14 +172,17 @@ let g:NeoComplCache_SameFileTypeLists['c']='cpp'
 let g:NeoComplCache_SameFileTypeLists['cpp']='c'
 
 
-" NERD_commenter.vim <leader>+x => comment out
-map <Leader>x ,c<space>
-let NERDShutUp=1
-
-
 " NERD_tree.vim
 nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
 let g:NERDTreeHijackNetrw = 0
+
+
+" pathogen.vim
+filetype off
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
+set helpfile=$VIMRUNTIME/doc/help.txt
+filetype on
 
 
 " srcexpl.vim
@@ -195,8 +196,44 @@ set tags=tags
 nnoremap <Leader>T  :<C-u>Tlist<CR>
 
 
+" yanktmp.vim
+map <silent> sy :call YanktmpYank()<CR>
+map <silent> sp :call YanktmpPaste_p()<CR>
+map <silent> sP :call YanktmpPaste_P()<CR>
+
+
 " Rename Command
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 
+" change color of statusline whis toggle insert mode {{{
+let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
 
-source ~/.vimrc.mine
+if has('syntax')
+	augroup InsertHook
+		autocmd!
+		autocmd InsertEnter * call s:StatusLine('Enter')
+		autocmd InsertLeave * call s:StatusLine('Leave')
+	augroup END
+endif
+let s:slhlcmd = ''
+
+function! s:StatusLine(mode)
+	if a:mode == 'Enter'
+		silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
+		silent exec g:hi_insert
+	else
+		highlight clear StatusLine
+		silent exec s:slhlcmd
+		redraw
+	endif
+endfunction
+
+function! s:GetHighlight(hi)
+	redir => hl
+	exec 'highlight '.a:hi
+	redir END
+	let hl = substitute(hl, '[\r\n]', '', 'g')
+	let hl = substitute(hl, 'xxx', '', '')
+	return hl
+endfunction
+"}}}
