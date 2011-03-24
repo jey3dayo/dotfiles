@@ -292,19 +292,6 @@ else {
 EOM
 " }}}
 
-" RSSフィードの表示 {{{
-javascript <<EOF
-(function(){
- var feedPanel = document.createElement("statusbarpanel");
- feedPanel.setAttribute("id", "feed-panel-clone");
- feedPanel.appendChild(document.getElementById("feed-button"));
- feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
- document.getElementById("status-bar") .insertBefore(feedPanel, document.getElementById("security-button"));
- }
- )();
-EOF
-" }}}
-
 " Toggle Autopagerize {{{
 javascript <<EOM
 let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
