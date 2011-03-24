@@ -25,8 +25,8 @@
 [submodule ".vim/bundle/yanktmp.vim.git"]
 	path = .vim/bundle/yanktmp.vim.git
 	url = git://github.com/vim-scripts/yanktmp.vim.git
-[submodule ".vim/module/vim-surround.git"]
-	path = .vim/module/vim-surround.git
+[submodule ".vim/bundle/vim-surround.git"]
+	path = .vim/buldle/vim-surround.git
 	url = git://github.com/tpope/vim-surround.git
 [submodule ".vim/bundle/vim-guicolorscheme.git"]
 	path = .vim/bundle/vim-guicolorscheme.git
