@@ -73,9 +73,9 @@
 [submodule ".vim/bundle/vcscommand.vim.git"]
 	path = .vim/bundle/vcscommand.vim.git
 	url = git://github.com/vim-scripts/vcscommand.vim.git
-[submodule ".vim/module/c.vim.git"]
-	path = .vim/module/c.vim.git
+[submodule ".vim/bundle/c.vim.git"]
+	path = .vim/bundle/c.vim.git
 	url = git://github.com/vim-scripts/c.vim.git
-[submodule ".vim/module/Engspchk.git"]
-	path = .vim/module/Engspchk.git
+[submodule ".vim/bundle/Engspchk.git"]
+	path = .vim/bundle/Engspchk.git
 	url = git://github.com/vim-scripts/Engspchk.git
