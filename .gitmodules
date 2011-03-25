@@ -52,3 +52,24 @@
 [submodule ".vim/bundle/vim-ref.git"]
 	path = .vim/bundle/vim-ref.git
 	url = git://github.com/thinca/vim-ref.git
+[submodule ".vim/bundle/FuzzyFinder.git"]
+	path = .vim/bundle/FuzzyFinder.git
+	url = git://github.com/vim-scripts/FuzzyFinder.git
+[submodule ".vim/bundle/cecutil.git"]
+	path = .vim/bundle/cecutil.git
+	url = git://github.com/vim-scripts/cecutil.git
+[submodule ".vim/bundle/genutils.git"]
+	path = .vim/bundle/genutils.git
+	url = git://github.com/vim-scripts/genutils.git
+[submodule ".vim/bundle/vim-project.git"]
+	path = .vim/bundle/vim-project.git
+	url = git://github.com/shemerey/vim-project.git
+[submodule ".vim/bundle/vim-yankring.git"]
+	path = .vim/bundle/vim-yankring.git
+	url = git://github.com/chrismetcalf/vim-yankring.git
+[submodule ".vim/bundle/taglist.vim.git"]
+	path = .vim/bundle/taglist.vim.git
+	url = git://github.com/vim-scripts/taglist.vim.git
+[submodule ".vim/bundle/vcscommand.vim.git"]
+	path = .vim/bundle/vcscommand.vim.git
+	url = git://github.com/vim-scripts/vcscommand.vim.git
