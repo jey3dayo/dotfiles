@@ -172,6 +172,11 @@ let g:NeoComplCache_SameFileTypeLists['c']='cpp'
 let g:NeoComplCache_SameFileTypeLists['cpp']='c'
 
 
+" NERD_commenter.vim <leader>+x => comment out
+map <Leader>x ,c<space>
+let NERDShutUp=1
+
+
 " NERD_tree.vim
 nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
 let g:NERDTreeHijackNetrw = 0
