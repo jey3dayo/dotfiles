@@ -33,7 +33,12 @@ colorscheme wombat256
 highlight Search ctermbg=7
 
 
-" show fullsize SPACE 
+" visible SpecialKey
+set list
+set listchars=tab:^\ ,trail:-
+
+
+" visible fullsize space
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 match ZenkakuSpace /　/
 
