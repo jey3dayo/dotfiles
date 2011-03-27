@@ -1,3 +1,9 @@
+" php config
+" set expandtab
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+
 set dictionary=~/.vim/dict/php.dict
 
 map <C-e> <ESC>:!php %<CR>

@@ -72,11 +72,11 @@ set smartcase
 
 
 " tab width
-set ts=4
-set sw=4
+set tabstop=4
+set shiftwidth=4
 set softtabstop=4
 set noexpandtab
-set tw=0
+set textwidth=0
 
 
 if v:version < 700
