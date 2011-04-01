@@ -43,9 +43,6 @@
 [submodule ".vim/bundle/nerdtree.git"]
 	path = .vim/bundle/nerdtree.git
 	url = git://github.com/scrooloose/nerdtree.git
-[submodule ".vim/bundle/vimshell.git"]
-	path = .vim/bundle/vimshell.git
-	url = git://github.com/Shougo/vimshell.git
 [submodule ".vim/bundle/vim-quickrun.git"]
 	path = .vim/bundle/vim-quickrun.git
 	url = git://github.com/thinca/vim-quickrun.git
@@ -79,3 +76,6 @@
 [submodule ".vim/bundle/Engspchk.git"]
 	path = .vim/bundle/Engspchk.git
 	url = git://github.com/vim-scripts/Engspchk.git
+[submodule ".vimperator/bundle/vimperator-plugins.git"]
+	path = .vimperator/bundle/vimperator-plugins.git
+	url = git://github.com/vimpr/vimperator-plugins.git
