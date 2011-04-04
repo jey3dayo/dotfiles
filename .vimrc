@@ -22,6 +22,7 @@ set virtualedit+=block
 
 
 " color
+" set t_Co=88
 set t_Co=256
 highlight LineNr ctermfg=darkyellow
 highlight NonText ctermfg=darkgrey
@@ -98,13 +99,13 @@ nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
 nnoremap gr :<C-u>vimgrep // **/%<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap gR :<C-u>vimgrep // **/*.php<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
-map <F3> :execute "vimgrep /" . expand("<cWORD>") . "/j %" <Bar> cw<CR>
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
 
-nnoremap <Leader>d  :<C-u>!doxygen Doxyfile<CR>
+nmap <silent> <F5> :execute 'vimgrep! /TODO\\|FIXME\\|XXX/j **/*.cpp **/*.c **/*.h **/*.hpp **/*.php **/*.js **/*.htm **/*.html'<CR>:copen10<CR>
+nmap <silent> <F6> :execute 'vimgrep! /<C-R>=expand('<cword>')<CR>/j **/*.cpp **/*.h **/*.hpp **/*.c **/*.hpp **/*.php **/*.js **/*.htm **/*.html'<CR>:copen10<CR>
 
 
 " backup
@@ -247,3 +248,4 @@ function! s:GetHighlight(hi)
 	return hl
 endfunction
 "}}}
+
