@@ -90,8 +90,8 @@ let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
 
 "copy.js {{{
-map <leader>c :copy<Space>TitleAndbittly<CR>
-map <leader>C :copy<Space>titleAndURL<CR>
+map <leader>y :copy<Space>TitleAndbittly<CR>
+map <leader>Y :copy<Space>titleAndURL<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
@@ -176,6 +176,7 @@ copy
 direct_bookmark
 feedSomeKeys_3
 feeder
+hatebuCounter
 hint-tombloo
 hints-for-embedded
 ldrize_cooperation
