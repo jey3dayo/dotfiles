@@ -19,6 +19,9 @@ set wildoptions=auto
 " 検索時にハイライト
 set hlsearch
 
+" set chars for hint mode
+set hintchars=asdfghjklqwertuiovbn
+
 set visualbell
 
 " ロード時にテキストボックスにフォーカスしない
@@ -76,7 +79,7 @@ cmap <C-n> <Tab>
 cmap <C-p> <S-Tab>
 
 " nextlink.js
-let g:nextlink_followlink = "false"
+let g:nextlink_followlink = "true"
 
 " ]]/[[ にヒットする文字列追加
 set nextpattern+=次(の)?ページ,→\b,下一頁,Следующая,다음
