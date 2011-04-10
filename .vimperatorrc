@@ -13,11 +13,11 @@ set guioptions=mBrb
 " 検索時に大文字小文字を区別しない
 set ignorecase
 
-" ex mode でインクリメント補完
-set wildoptions=auto
-
 " 検索時にハイライト
 set hlsearch
+
+" set chars for hint mode
+set hintchars=asdfghjklqwertuiovbn
 
 set visualbell
 
@@ -27,13 +27,10 @@ set focuscontent
 " ウィンドウサイズを変更するページは新しいウィンドウで開く
 " set popups=window
 
-" タブ非表示
-set showtabline=2
-
 " leaderを変更
 let mapleader = ","
 
-colorscheme bigchu2
+colorscheme indigo
 
 " ステータスバーの背景色を変更
 hi StatusLine color:black; background:#ABD31B; font-weight:normal;
@@ -76,10 +73,10 @@ cmap <C-n> <Tab>
 cmap <C-p> <S-Tab>
 
 " nextlink.js
-let g:nextlink_followlink = "false"
+let g:nextlink_followlink = "true"
 
 " ]]/[[ にヒットする文字列追加
-set nextpattern+=次(の)?ページ,→\b,下一頁,Следующая,다음
+set nextpattern+=次(の)?ページ,→\b,下一頁,Следующая,??
 set previouspattern+=prev,前(の)?ページ,\b前.*,\b←
 
 " appendAnchor.js
@@ -87,8 +84,8 @@ let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
 
 "copy.js {{{
-map <leader>c :copy<Space>TitleAndbittly<CR>
-map <leader>C :copy<Space>titleAndURL<CR>
+map <leader>y :copy<Space>TitleAndbittly<CR>
+map <leader>Y :copy<Space>titleAndURL<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
@@ -99,8 +96,8 @@ javascript <<EOM
     { label: 'url',             value: '%URL%' },
     { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
     { label: 'htmlblockquote',  value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
-    { label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
-    { label: 'TitleAndbittly',  value: 'Get Title and bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://bit.ly/api?url=' + encodeURIComponent(buffer.URL)).responseText; }},
+    { label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://api.bitly.com/v3/shorten?login=j138&apiKey=R_3956b371cd906f5cb0bb5a326bf5165e&format=txt&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
+    { label: 'TitleAndbittly',  value: 'Get bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://api.bitly.com/v3/shorten?login=j138&apiKey=R_3956b371cd906f5cb0bb5a326bf5165e&format=txt&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
     { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
     { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
     { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
@@ -173,6 +170,7 @@ copy
 direct_bookmark
 feedSomeKeys_3
 feeder
+hatebuCounter
 hint-tombloo
 hints-for-embedded
 ldrize_cooperation
@@ -265,28 +263,18 @@ execute_silent = function(str, modifiers) {
     liberator.execute(str, modifiers, true);
 }
 if (liberator.has("Win32")) {
-    execute_silent("cnoremap <C-a> <C-v><C-a>");
-    execute_silent("cnoremap <C-z> <C-v><C-z>");
-    execute_silent("cnoremap <C-x> <C-v><C-x>");
-    execute_silent("cnoremap <C-c> <C-v><C-c>");
-    execute_silent("cnoremap <C-v> <C-v><C-v>");
-    execute_silent("inoremap <C-a> <C-v><C-a>");
-    execute_silent("inoremap <C-z> <C-v><C-z>");
-    execute_silent("inoremap <C-x> <C-v><C-x>");
-    execute_silent("inoremap <C-c> <C-v><C-c>");
-    execute_silent("inoremap <C-v> <C-v><C-v>");
+    execute_silent("nnoremap <C-a> <C-v><C-a>");
+    execute_silent("nnoremap <C-z> <C-v><C-z>");
+    execute_silent("nnoremap <C-x> <C-v><C-x>");
+    execute_silent("nnoremap <C-c> <C-v><C-c>");
+    execute_silent("nnoremap <C-v> <C-v><C-v>");
 }
 else if (liberator.has("MacUnix")) {
-    execute_silent("cnoremap <M-a> <C-v><M-a>");
-    execute_silent("cnoremap <M-z> <C-v><M-z>");
-    execute_silent("cnoremap <M-x> <C-v><M-x>");
-    execute_silent("cnoremap <M-c> <C-v><M-c>");
-    execute_silent("cnoremap <M-v> <C-v><M-v>");
-    execute_silent("inoremap <M-a> <C-v><M-a>");
-    execute_silent("inoremap <M-z> <C-v><M-z>");
-    execute_silent("inoremap <M-x> <C-v><M-x>");
-    execute_silent("inoremap <M-c> <C-v><M-c>");
-    execute_silent("inoremap <M-v> <C-v><M-v>");
+    execute_silent("nnoremap <M-a> <C-v><M-a>");
+    execute_silent("nnoremap <M-z> <C-v><M-z>");
+    execute_silent("nnoremap <M-x> <C-v><M-x>");
+    execute_silent("nnoremap <M-c> <C-v><M-c>");
+    execute_silent("nnoremap <M-v> <C-v><M-v>");
 }
 else {
 }
@@ -311,7 +299,27 @@ let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
 EOM
 " }}}
 
+" Greasemonkey 0.9.1でwindowを共通にする。（必要性は一時的？"
+js <<EOM
+autocommands.add('VimperatorEnter', '.*',
+  function() {
+    let gm = Components.classes['@greasemonkey.mozdev.org/greasemonkey-service;1'];
+    if (gm) {
+      gm = gm.getService().wrappedJSObject;
+      if (gm.injectScripts.toSource().search('sharedWindow') == -1) {
+          gm.injectScripts = liberator.eval(
+              gm.injectScripts.toSource()
+                  .replace(/(?=var firebugConsole)/,
+                          'var sharedWindow = {};' +
+                          'sharedWindow.window = sharedWindow;' +
+                          'sharedWindow.__proto__ = new XPCNativeWrapper(unsafeContentWin);')
+                  .replace(/(?=sandbox\.__proto__)/, ' sandbox.window = sharedWindow;'),
+              gm.injectScripts);
+      }
+    }
+  });
+EOM
+
 echo "done."
 
 " vim: ts=2 sw=2 sts=2 fdm=marker ft=vimperator
-
