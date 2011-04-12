@@ -79,3 +79,6 @@
 [submodule ".vimperator/bundle/vimperator-plugins.git"]
 	path = .vimperator/bundle/vimperator-plugins.git
 	url = git://github.com/vimpr/vimperator-plugins.git
+[submodule ".vim/bundle/vim-ref.jquery.git"]
+	path = .vim/bundle/vim-ref.jquery.git
+	url = git://github.com/soh335/vim-ref-jquery.git
