@@ -196,6 +196,10 @@ set helpfile=$VIMRUNTIME/doc/help.txt
 filetype on
 
 
+" ref.vim
+let g:ref_phpmanual_path = $HOME . '/.vim/dict/phpmanual'
+
+
 " srcexpl.vim
 nnoremap <Leader>s :<C-u>SrcExplToggle<CR>
 let g:SrcExpl_UpdateTags = 1
