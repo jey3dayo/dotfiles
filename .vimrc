@@ -90,7 +90,6 @@ filetype indent on
 
 
 " map
-nnoremap <Leader>m  :<C-u>marks<CR>
 nnoremap <Leader>r  :<C-u>registers<CR>
 nnoremap <Leader>y  :<C-u>YRShow<CR>
 
@@ -134,6 +133,12 @@ nnoremap gt  :<C-u>tabnext<CR>
 nnoremap gT  :<C-u>tabprevious<CR>
 
 
+" Unite.vim
+nmap <silent> <Leader>f :Unite file<CR>
+nmap <silent> <Leader>b :Unite buffer<CR>
+nmap <silent> <Leader>m :Unite file_mru<CR>
+
+
 " ESC ESC -> nohlsearch
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return> 
 
@@ -148,13 +153,6 @@ inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
 inoremap <Leader>w3cd <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
 inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
 inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
-
-
-" fuf.vim
-nmap <silent> <Leader>f :FufFile<CR>
-nmap <silent> <Leader>b :FufBuffer<CR>
-nmap <silent> <Leader>t :FufTag<CR>
-nmap <silent> <Leader>q :FufQuickfix<CR>
 
 
 " git.vim

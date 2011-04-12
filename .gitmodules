@@ -82,3 +82,6 @@
 [submodule ".vim/bundle/vim-ref.jquery.git"]
 	path = .vim/bundle/vim-ref.jquery.git
 	url = git://github.com/soh335/vim-ref-jquery.git
+[submodule ".vim/bundle/unite.vim.git"]
+	path = .vim/bundle/unite.vim.git
+	url = git://github.com/Shougo/unite.vim.git
