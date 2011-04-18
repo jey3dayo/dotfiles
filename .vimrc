@@ -58,10 +58,10 @@ set complete+=k
 set cursorline
 set wildmenu
 set fdm=marker
+set autochdir
 
 
 set laststatus=2
-"set statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
 set statusline=%F%m%r%h%w\%=\[%{&ff}]\[%{&fileencoding}]\[%l/%L][%3P]
 
 
@@ -102,9 +102,7 @@ nnoremap gR :<C-u>vimgrep // **/*.php<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
-
-nmap <silent> <F5> :execute 'vimgrep! /TODO\\|FIXME\\|XXX/j **/*.cpp **/*.c **/*.h **/*.hpp **/*.php **/*.js **/*.htm **/*.html'<CR>:copen10<CR>
-nmap <silent> <F6> :execute 'vimgrep! /<C-R>=expand('<cword>')<CR>/j **/*.cpp **/*.h **/*.hpp **/*.c **/*.hpp **/*.php **/*.js **/*.htm **/*.html'<CR>:copen10<CR>
+nmap <silent> <F3> :execute 'vimgrep! /<C-R>=expand('<cword>')<CR>/j %'<CR>:copen10<CR>
 
 
 " backup
