@@ -106,3 +106,6 @@
 [submodule ".vim/bundle/multvals.vim.git"]
 	path = .vim/bundle/multvals.vim.git
 	url = git://github.com/vim-scripts/multvals.vim.git
+[submodule ".vim/bundle/doxygen-support.vim.git"]
+	path = .vim/bundle/doxygen-support.vim.git
+	url = git://github.com/vim-scripts/doxygen-support.vim.git
