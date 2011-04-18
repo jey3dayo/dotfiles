@@ -85,3 +85,9 @@
 [submodule ".vim/bundle/unite.vim.git"]
 	path = .vim/bundle/unite.vim.git
 	url = git://github.com/Shougo/unite.vim.git
+[submodule ".vim/bundle/mru.vim.git"]
+	path = .vim/bundle/mru.vim.git
+	url = git://github.com/vim-scripts/mru.vim.git
+[submodule ".vim/bundle/grep.vim.git"]
+	path = .vim/bundle/grep.vim.git
+	url = git://github.com/vim-scripts/grep.vim.git
