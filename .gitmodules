@@ -91,3 +91,18 @@
 [submodule ".vim/bundle/grep.vim.git"]
 	path = .vim/bundle/grep.vim.git
 	url = git://github.com/vim-scripts/grep.vim.git
+[submodule ".vim/bundle/renamer.vim.git"]
+	path = .vim/bundle/renamer.vim.git
+	url = git://github.com/vim-scripts/renamer.vim.git
+[submodule ".vim/bundle/sudo.vim.git"]
+	path = .vim/bundle/sudo.vim.git
+	url = git://github.com/vim-scripts/sudo.vim.git
+[submodule ".vim/bundle/Source-Explorer-srcexpl.vim.git"]
+	path = .vim/bundle/Source-Explorer-srcexpl.vim.git
+	url = git://github.com/vim-scripts/Source-Explorer-srcexpl.vim.git
+[submodule ".vim/bundle/eregex.vim.git"]
+	path = .vim/bundle/eregex.vim.git
+	url = git://github.com/vim-scripts/eregex.vim.git
+[submodule ".vim/bundle/multvals.vim.git"]
+	path = .vim/bundle/multvals.vim.git
+	url = git://github.com/vim-scripts/multvals.vim.git
