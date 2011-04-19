@@ -58,7 +58,6 @@ set complete+=k
 set cursorline
 set wildmenu
 set fdm=marker
-set autochdir
 
 
 set laststatus=2
@@ -146,7 +145,8 @@ set shortmess+=I
 
 
 " macro
-inoremap <Leader>date <C-R>=strftime('%Y/%m/%d (%a)')<CR>
+inoremap <Leader>date <C-R>=strftime('%Y/%m/%d')<CR>
+inoremap <Leader>Date <C-R>=strftime('%Y/%m/%d (%a)')<CR>
 inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
 inoremap <Leader>w3cd <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
 inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
