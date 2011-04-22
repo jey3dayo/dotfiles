@@ -89,7 +89,6 @@ filetype indent on
 
 
 " map
-nnoremap <Leader>r  :<C-u>registers<CR>
 nnoremap <Leader>y  :<C-u>YRShow<CR>
 
 nnoremap <Leader>s   <Nop>
