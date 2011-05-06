@@ -129,12 +129,6 @@ nnoremap gt  :<C-u>tabnext<CR>
 nnoremap gT  :<C-u>tabprevious<CR>
 
 
-" Unite.vim
-nmap <silent> <Leader>f :Unite file<CR>
-nmap <silent> <Leader>b :Unite buffer<CR>
-nmap <silent> <Leader>m :Unite file_mru<CR>
-
-
 " ESC ESC -> nohlsearch
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return> 
 
@@ -152,11 +146,19 @@ inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
 inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 
 
+" FuzzyFinder.vim
+nnoremap <silent> <Leader>b :<C-u>FufBuffer<CR>
+nnoremap <silent> <Leader>f :<C-u>FufFile <C-r>=expand('%:~:.')[:-1-len(expand('%:~:.:t'))]<CR><CR>
+nnoremap <silent> <Leader>tb :<C-u>tabnew<CR>:tabmove<CR>:FufBuffer<CR>
+nnoremap <silent> <Leader>tf :<C-u>tabnew<CR>:tabmove<CR>:FufFile <C-r>=expand('#:~:.')[:-1-len(expand('#:~:.:t'))]<CR><CR>
+nnoremap <silent> <Leader>tm :<C-u>tabnew<CR>:tabmove<CR>:FufMruFile<CR>
+
+
 " fugitive.vim
 nnoremap <Leader>gb :Gblame<CR>
 nnoremap <Leader>gc :Gcommit<CR>
 nnoremap <Leader>gd :Gdiff<CR>
-nnoremap <Leader>gg :Ggrep<CR>
+nnoremap <Leader>gg :Ggrep<Space>
 nnoremap <Leader>gl :Glog<CR>
 nnoremap <Leader>gr :Gremove<CR>
 nnoremap <Leader>gs :Gstatus<CR>
@@ -207,6 +209,12 @@ let g:SrcExpl_RefreshMapKey = "<Space>"
 " taglist.vim
 set tags=tags
 nnoremap <Leader>T  :<C-u>Tlist<CR>
+
+
+" Unite.vim
+" nmap <silent> <Leader>f :Unite file<CR>
+" nmap <silent> <Leader>b :Unite buffer<CR>
+" nmap <silent> <Leader>m :Unite file_mru<CR>
 
 
 " yanktmp.vim
