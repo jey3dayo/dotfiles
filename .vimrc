@@ -152,14 +152,16 @@ inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
 inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 
 
-" git.vim
-nnoremap <Leader>gp :GitPullRebase<CR>
-nnoremap <Leader>gc :GitCommit<CR>
-nnoremap <Leader>ga :GitAdd<CR>
-nnoremap <Leader>gl :GitLog<CR>
-nnoremap <Leader>gs :GitStatus<CR>
-nnoremap <Leader>gD :GitDiff --cached<CR>
-nnoremap <Leader>gd :GitDiff<CR>
+" fugitive.vim
+nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gc :Gcommit<CR>
+nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>gg :Ggrep<CR>
+nnoremap <Leader>gl :Glog<CR>
+nnoremap <Leader>gr :Gremove<CR>
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gr :Gread<CR>
+nnoremap <Leader>gw :Gwrite<CR>
 
 
 " neocomplcache.vim
