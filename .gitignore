@@ -22,7 +22,10 @@ Thumbs.db
 .subversion/auth/
 .vim/.VimballRecord
 .vim/.netrwhist
-.vim/GetLatest
+.vim/doc/
+.vim/GetLatest/
+.vim/bundle/
+.vim/chalice/cache
 .vimperator/info
 
 doc/tags
