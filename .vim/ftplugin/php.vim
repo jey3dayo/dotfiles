@@ -3,8 +3,8 @@
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
-
 set dictionary=~/.vim/dict/php.dict
+let g:PHP_vintage_case_default_indent = 1
 
 map <C-e> <ESC>:!php %<CR>
 
