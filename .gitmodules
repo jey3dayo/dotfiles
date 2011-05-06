@@ -106,3 +106,6 @@
 [submodule ".vim/bundle/DoxygenToolkit.vim.git"]
 	path = .vim/bundle/DoxygenToolkit.vim.git
 	url = git://github.com/vim-scripts/DoxygenToolkit.vim.git
+[submodule ".vim/bundle/chalice.git"]
+	path = .vim/bundle/chalice.git
+	url = git://github.com/koron/chalice.git
