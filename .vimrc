@@ -1,4 +1,5 @@
 " j138 .vimrc
+" echo "ke-su"
 
 version 6.0
 if &cp | set nocp | endif
@@ -185,14 +186,6 @@ nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
 let g:NERDTreeHijackNetrw = 0
 
 
-" pathogen.vim
-filetype off
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
-set helpfile=$VIMRUNTIME/doc/help.txt
-filetype on
-
-
 " ref.vim
 let g:ref_phpmanual_path = $HOME . '/.vim/dict/phpmanual'
 let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
@@ -207,6 +200,54 @@ let g:SrcExpl_RefreshMapKey = "<Space>"
 " taglist.vim
 set tags=tags
 nnoremap <Leader>T  :<C-u>Tlist<CR>
+
+
+" vundle.vim {{{
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/vundle.git/
+call vundle#rc()
+
+Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/unite.vim'
+Bundle 'chrisdone/zencoding'
+Bundle 'chrismetcalf/vim-yankring'
+Bundle 'koron/chalice'
+Bundle 'msanders/snipmate.vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdtree'
+Bundle 'shemerey/vim-project'
+Bundle 'soh335/vim-ref-jquery'
+Bundle 'thinca/vim-guicolorscheme'
+Bundle 'thinca/vim-quickrun'
+Bundle 'thinca/vim-ref'
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-haml'
+Bundle 'tpope/vim-rails'
+Bundle 'tpope/vim-surround'
+Bundle 'tsaleh/vim-align'
+Bundle 'tsaleh/vim-matchit'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'vim-scripts/DoxygenToolkit.vim'
+Bundle 'vim-scripts/Engspchk'
+Bundle 'vim-scripts/FuzzyFinder'
+Bundle 'vim-scripts/L9.git'
+Bundle 'vim-scripts/Source-Explorer-srcexpl.vim'
+Bundle 'vim-scripts/cecutil'
+Bundle 'vim-scripts/eregex.vim'
+Bundle 'vim-scripts/genutils'
+Bundle 'vim-scripts/grep.vim'
+Bundle 'vim-scripts/mru.vim'
+Bundle 'vim-scripts/multvals.vim'
+Bundle 'vim-scripts/renamer.vim'
+Bundle 'vim-scripts/sudo.vim'
+Bundle 'vim-scripts/taglist.vim'
+Bundle 'vim-scripts/vcscommand.vim'
+Bundle 'vim-scripts/yanktmp.vim'
+
+filetype plugin indent on
+"}}}
 
 
 " yanktmp.vim
