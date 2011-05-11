@@ -1,5 +1,4 @@
 " j138 .vimrc
-" echo "ke-su"
 
 version 6.0
 if &cp | set nocp | endif
@@ -131,7 +130,7 @@ nnoremap gT  :<C-u>tabprevious<CR>
 
 
 " ESC ESC -> nohlsearch
-nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return> 
+nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 
 set shellslash
 set hidden
