@@ -72,6 +72,16 @@ noremap a          <S-a>
 cmap <C-n> <Tab>
 cmap <C-p> <S-Tab>
 
+" qmarks
+qmark c http://www.google.com/calendar/render?pli=1
+qmark e http://www.evernote.com/Home.action
+qmark f http://www.facebook.com/
+qmark l http://readitlaterlist.com/unread
+qmark m https://mail.google.com/mail/
+qmark n http://news.google.co.jp/nwshp?hl=ja&tab=wn
+qmark r http://www.google.com/reader/view/
+qmark t http://www.rememberthemilk.com/
+
 " nextlink.js
 let g:nextlink_followlink = "true"
 
@@ -109,9 +119,7 @@ EOM
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
 noremap <S-a>      :sbm<Space>[
-noremap <Leader>be :bentry<CR>
-noremap <Leader>bt :btags<CR>
-noremap <Leader>bi :bicon<CR>
+noremap <Leader>V :bentry<CR>
 
 " feedsomekey_3.js {{{
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
@@ -157,10 +165,11 @@ let g:ldrc_intelligence_bind = "true"
 let g:ldrc_skip = "0.25"
 
 " plugin_loader.js {{{
-let g:plugin_loader_roots = "./vimperator/bundle/vimperator-plugins/"
+let g:plugin_loader_roots = "./vimperator/bundle/vimperator-plugins.git/"
 
 javascript <<EOF
 liberator.globalVariables.plugin_loader_plugins = <>
+_smooziee
 appendAnchor
 auto-focus-frame
 bitly
@@ -175,11 +184,7 @@ hints-for-embedded
 ldrize_cooperation
 ldrize_cooperation_fetch_flv
 localkeymode
-migemo-find
-migemo_completion
-migemo_hint
 multi_requester
-noscript
 nextlink
 open-frame
 prevent-pseudo-domain
@@ -190,7 +195,6 @@ stylish
 tombloo
 twittperator
 walk-input
-yetmappings
 </>.toString().split(/\s+/).filter(function(n) n);
 EOF
 " }}}
@@ -285,16 +289,16 @@ EOM
 javascript <<EOM
 let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
     commands.addUserCommand(
-            ['autopagerize'],
-            'Toggle AutoPagerize',
-            function (args) {
+        ['autopagerize'],
+        'Toggle AutoPagerize',
+        function (args) {
             buffer.followLink(
                 evaluateXPath('id("autopagerize_help")/div/a[@class="autopagerize_link"]').snapshotItem(0)
-                );
-            },
-            {},
-            true
             );
+        },
+        {},
+        true
+    );
 }
 EOM
 " }}}
@@ -323,3 +327,4 @@ EOM
 echo "done."
 
 " vim: ts=2 sw=2 sts=2 fdm=marker ft=vimperator
+
