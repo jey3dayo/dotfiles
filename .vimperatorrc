@@ -268,19 +268,9 @@ execute_silent = function(str, modifiers) {
 }
 if (liberator.has("Win32")) {
     execute_silent("nnoremap <C-c> <C-v><C-c>");
-    execute_silent("inoremap <C-a> <C-v><C-a>");
-    execute_silent("inoremap <C-z> <C-v><C-z>");
-    execute_silent("inoremap <C-x> <C-v><C-x>");
-    execute_silent("inoremap <C-c> <C-v><C-c>");
-    execute_silent("inoremap <C-v> <C-v><C-v>");
 }
 else if (liberator.has("MacUnix")) {
     execute_silent("nnoremap <M-c> <C-v><M-c>");
-    execute_silent("inoremap <M-a> <C-v><M-a>");
-    execute_silent("inoremap <M-z> <C-v><M-z>");
-    execute_silent("inoremap <M-x> <C-v><M-x>");
-    execute_silent("inoremap <M-c> <C-v><M-c>");
-    execute_silent("inoremap <M-v> <C-v><M-v>");
 }
 else {
 }
