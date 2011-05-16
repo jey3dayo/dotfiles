@@ -8,7 +8,9 @@ set activate=homepage,quickmark,tabopen,paste
 set complete=tsl
 
 " gui options
-set gui=addons,bookmarks,menu,tabs,nonavigation
+set gui=addons,bookmarks,nomenu,tabs,nonavigation
+
+set animations=true
 
 " 検索時に大文字小文字を区別しない
 set ignorecase
@@ -169,7 +171,6 @@ let g:plugin_loader_roots = "./vimperator/bundle/vimperator-plugins.git/"
 
 javascript <<EOF
 liberator.globalVariables.plugin_loader_plugins = <>
-_smooziee
 appendAnchor
 auto-focus-frame
 bitly
@@ -261,22 +262,6 @@ noremap <leader>d  :mr goo<Space>
 " tumblr
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
 
-" copy/paste {{{
-javascript <<EOM
-execute_silent = function(str, modifiers) {
-    liberator.execute(str, modifiers, true);
-}
-if (liberator.has("Win32")) {
-    execute_silent("nnoremap <C-c> <C-v><C-c>");
-}
-else if (liberator.has("MacUnix")) {
-    execute_silent("nnoremap <M-c> <C-v><M-c>");
-}
-else {
-}
-EOM
-" }}}
-
 " Toggle Autopagerize {{{
 javascript <<EOM
 let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
@@ -295,7 +280,7 @@ let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
 EOM
 " }}}
 
-" Greasemonkey 0.9.1でwindowを共通にする。（必要性は一時的？"
+" Greasemonkey 0.9.1でwindowを共通にする。（必要性は一時的？""{{{
 js <<EOM
 autocommands.add('VimperatorEnter', '.*',
   function() {
@@ -315,6 +300,7 @@ autocommands.add('VimperatorEnter', '.*',
     }
   });
 EOM
+"}}}
 
 echo "done."
 
