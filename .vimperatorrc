@@ -171,6 +171,7 @@ let g:plugin_loader_roots = "./vimperator/bundle/vimperator-plugins.git/"
 
 javascript <<EOF
 liberator.globalVariables.plugin_loader_plugins = <>
+_libly
 appendAnchor
 auto-focus-frame
 bitly
@@ -190,6 +191,7 @@ nextlink
 open-frame
 prevent-pseudo-domain
 proxy
+readitlater
 sbmcommentsviewer
 stella
 stylish
