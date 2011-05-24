@@ -3,38 +3,23 @@
 " Options
 set history=1000
 set activate=homepage,quickmark,tabopen,paste
-
-" tabopen時の補完対象
 set complete=tsl
-
-" gui options
-set gui=addons,bookmarks,nomenu,tabs,nonavigation
-
-set animations=true
-
-" 検索時に大文字小文字を区別しない
 set ignorecase
-
-" 検索時にハイライト
 set hlsearch
 
 " set chars for hint mode
 set hintchars=asdfghjklqwertuiovbn
-
-set visualbell
-
-" ロード時にテキストボックスにフォーカスしない
 set focuscontent
+set popups=window
 
-" ウィンドウサイズを変更するページは新しいウィンドウで開く
-" set popups=window
-
-" leaderを変更
 let mapleader = ","
 
+" gui options
+set gui=addons,bookmarks,nomenu,tabs,navigation
+set animations=true
+set visualbell
 colorscheme indigo
 
-" ステータスバーの背景色を変更
 hi StatusLine color:black; background:#ABD31B; font-weight:normal;
 
 " Mappings
@@ -42,37 +27,23 @@ noremap j 5<C-e>
 noremap k 5<C-y>
 noremap J <PageDown>
 noremap K <PageUp>
-
-" タブの移動
 nnoremap h gT
 nnoremap l gt
-nnoremap <C-H> h
-nnoremap <C-L> l
+map <C-h> :tabmove! -1<CR>
+map <C-l> :tabmove! +1<CR>
 
 noremap U :undo<Space>
+noremap <Leader>so :source ~/.vimperatorrc<CR>
+noremap a <S-a>
 
-" ! でページのCSSをon/off
-noremap ! :set invum<CR>
-
-" ページのエンコーディングを変更
 noremap ,es :set encoding=Shift_JIS<CR>
 noremap ,ec :set encoding=EUC-JP<CR>
 noremap ,eu :set encoding=UTF-8<CR>
 noremap ,ei :set encodeing=ISO-2022-JP<CR>
 
-" .vimperatorrcを再読み込み
-noremap <Leader>so :source ~/.vimperatorrc<CR>
+" toggle load css
+noremap ! :set invum<CR>
 
-" タブ位置の移動
-map <C-h> :tabmove! -1<CR>
-map <C-l> :tabmove! +1<CR>
-
-" ブックマークの追加をトグル
-noremap a          <S-a>
-
-" タブをCtrl-Nに
-cmap <C-n> <Tab>
-cmap <C-p> <S-Tab>
 
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
@@ -86,10 +57,6 @@ qmark t http://www.rememberthemilk.com/
 
 " nextlink.js
 let g:nextlink_followlink = "true"
-
-" ]]/[[ にヒットする文字列追加
-set nextpattern+=次(の)?ページ,→\b,下一頁,Следующая,??
-set previouspattern+=prev,前(の)?ページ,\b前.*,\b←
 
 " appendAnchor.js
 let g:auto_append_anchor = "true"
@@ -120,7 +87,7 @@ EOM
 " direct_bookmark.js
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
-noremap <S-a>      :sbm<Space>[
+noremap <S-a> :sbm<Space>[
 noremap <Leader>V :bentry<CR>
 
 " feedsomekey_3.js {{{
@@ -259,7 +226,7 @@ noremap <leader>v :viewSBMComments<CR>
 noremap <silent> <Leader>a :autopagerize<CR>
 
 " multi_requester.js
-noremap <leader>d  :mr goo<Space>
+noremap <leader>d :mr goo<Space>
 
 " tumblr
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
@@ -282,7 +249,7 @@ let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
 EOM
 " }}}
 
-" Greasemonkey 0.9.1でwindowを共通にする。（必要性は一時的？""{{{
+" patch Greasemonkey 0.9.1 "{{{
 js <<EOM
 autocommands.add('VimperatorEnter', '.*',
   function() {
