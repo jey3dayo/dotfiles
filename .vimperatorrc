@@ -55,9 +55,6 @@ qmark n http://news.google.co.jp/nwshp?hl=ja&tab=wn
 qmark r http://www.google.com/reader/view/
 qmark t http://www.rememberthemilk.com/
 
-" nextlink.js
-let g:nextlink_followlink = "true"
-
 " appendAnchor.js
 let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
@@ -141,9 +138,11 @@ liberator.globalVariables.plugin_loader_plugins = <>
 _libly
 appendAnchor
 auto-focus-frame
+auto_detect_link
 bitly
 caret-hint
 commandBookmarklet
+cookieManager
 copy
 direct_bookmark
 feedSomeKeys_3
@@ -154,7 +153,6 @@ ldrize_cooperation
 ldrize_cooperation_fetch_flv
 localkeymode
 multi_requester
-nextlink
 open-frame
 prevent-pseudo-domain
 proxy
@@ -164,6 +162,7 @@ stella
 stylish
 tombloo
 twittperator
+usi
 walk-input
 </>.toString().split(/\s+/).filter(function(n) n);
 EOF
