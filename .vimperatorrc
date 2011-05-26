@@ -36,10 +36,10 @@ noremap U :undo<Space>
 noremap <Leader>so :source ~/.vimperatorrc<CR>
 noremap a <S-a>
 
-noremap ,es :set encoding=Shift_JIS<CR>
-noremap ,ec :set encoding=EUC-JP<CR>
-noremap ,eu :set encoding=UTF-8<CR>
-noremap ,ei :set encodeing=ISO-2022-JP<CR>
+noremap <Leader>es :set encoding=Shift_JIS<CR>
+noremap <Leader>ec :set encoding=EUC-JP<CR>
+noremap <Leader>eu :set encoding=UTF-8<CR>
+noremap <Leader>ei :set encodeing=ISO-2022-JP<CR>
 
 " toggle load css
 noremap ! :set invum<CR>
@@ -218,14 +218,17 @@ liberator.globalVariables.proxy_settings = [
 EOM
 " }}}
 
+" readitlater.js
+noremap s :readitlater<CR>
+
 " sbmcommentsviewer.js
-noremap <leader>v :viewSBMComments<CR>
+noremap <Leader>v :viewSBMComments<CR>
 
 " toggle autopagerize
 noremap <silent> <Leader>a :autopagerize<CR>
 
 " multi_requester.js
-noremap <leader>d :mr goo<Space>
+noremap <Leader>d :mr goo<Space>
 
 " tumblr
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
