@@ -141,9 +141,11 @@ liberator.globalVariables.plugin_loader_plugins = <>
 _libly
 appendAnchor
 auto-focus-frame
+auto_detect_link
 bitly
 caret-hint
 commandBookmarklet
+cookieManager
 copy
 direct_bookmark
 feedSomeKeys_3
@@ -164,6 +166,7 @@ stella
 stylish
 tombloo
 twittperator
+usi
 walk-input
 </>.toString().split(/\s+/).filter(function(n) n);
 EOF
