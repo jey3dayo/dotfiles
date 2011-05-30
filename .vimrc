@@ -146,14 +146,6 @@ inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
 inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 
 
-" FuzzyFinder.vim
-nnoremap <silent> <Leader>b :<C-u>FufBuffer<CR>
-nnoremap <silent> <Leader>f :<C-u>FufFile <C-r>=expand('%:~:.')[:-1-len(expand('%:~:.:t'))]<CR><CR>
-nnoremap <silent> <Leader>tb :<C-u>tabnew<CR>:tabmove<CR>:FufBuffer<CR>
-nnoremap <silent> <Leader>tf :<C-u>tabnew<CR>:tabmove<CR>:FufFile <C-r>=expand('#:~:.')[:-1-len(expand('#:~:.:t'))]<CR><CR>
-nnoremap <silent> <Leader>tm :<C-u>tabnew<CR>:tabmove<CR>:FufMruFile<CR>
-
-
 " fugitive.vim
 nnoremap <Leader>gb :Gblame<CR>
 nnoremap <Leader>gc :Gcommit<CR>
@@ -202,6 +194,22 @@ let g:SrcExpl_RefreshMapKey = "<Space>"
 set tags=tags
 nnoremap <Leader>T  :<C-u>Tlist<CR>
 
+" unite.vim
+let g:unite_enable_start_insert=1
+noremap <Leader>b :Unite buffer<CR>
+noremap <Leader>f :Unite file<CR>
+noremap <Leader>m :Unite file_mru<CR>
+noremap <silent> <Leader>tb :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
+noremap <silent> <Leader>tf :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
+noremap <silent> <Leader>tm :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
+
+au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
+au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
+
+au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
+au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
 " vundle.vim {{{
 set nocompatible
@@ -232,7 +240,6 @@ Bundle 'tsaleh/vim-matchit'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/DoxygenToolkit.vim'
 Bundle 'vim-scripts/Engspchk'
-Bundle 'vim-scripts/FuzzyFinder'
 Bundle 'vim-scripts/L9.git'
 Bundle 'vim-scripts/Source-Explorer-srcexpl.vim'
 Bundle 'vim-scripts/cecutil'
