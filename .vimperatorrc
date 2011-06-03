@@ -213,6 +213,20 @@ liberator.globalVariables.proxy_settings = [
             param: 'http://192.168.9.19/proxy.pac'
        },
     ]
+},
+{
+	conf_name: 'tokyo-proxy.pac',
+	conf_usage: 'tokyo-proxy.pac',
+	settings: [
+		{
+			label: 'type',
+			param: 2
+		},
+		{
+			label: 'autoconfig_url',
+			param: 'http://192.168.5.20/tokyo-proxy.pac'
+		},
+	]
 }
 ];
 EOM
