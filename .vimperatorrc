@@ -10,7 +10,7 @@ set hlsearch
 " set chars for hint mode
 set hintchars=asdfghjklqwertuiovbn
 set focuscontent
-set popups=window
+set popups=tab
 
 let mapleader = ","
 
