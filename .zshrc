@@ -49,6 +49,7 @@ setopt share_history
 
 autoload zed
 bindkey -v
+bindkey "^[[3~" delete-char
 
 # historical backward/forward search with linehead string binded to ^P/^N
 autoload history-search-end
