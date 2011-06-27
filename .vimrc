@@ -199,9 +199,9 @@ let g:unite_enable_start_insert=1
 noremap <Leader>b :Unite buffer<CR>
 noremap <Leader>f :Unite file<CR>
 noremap <Leader>m :Unite file_mru<CR>
-noremap <silent> <Leader>tb :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
-noremap <silent> <Leader>tf :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
-noremap <silent> <Leader>tm :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
+noremap <C-t>b :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
+noremap <C-t>f :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
+noremap <C-t>m :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
 
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
