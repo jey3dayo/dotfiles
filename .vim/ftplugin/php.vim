@@ -9,6 +9,7 @@ let g:PHP_vintage_case_default_indent = 1
 map <C-e> <ESC>:!php %<CR>
 
 nmap <leader>l :call PHPLint()<CR>
+nmap <leader><F1> :Ref phpmanual<Space>
 
 " PHPLint
 function! PHPLint()
