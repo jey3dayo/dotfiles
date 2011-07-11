@@ -30,7 +30,7 @@ highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
 " colorscheme wombat
-colorscheme wombat256
+colorscheme wombat256mod
 highlight Search ctermbg=7
 
 
@@ -42,7 +42,6 @@ set listchars=tab:^\ ,trail:-
 " visible fullsize space
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 match ZenkakuSpace /　/
-
 
 " set options
 set autoindent
@@ -194,6 +193,7 @@ let g:SrcExpl_RefreshMapKey = "<Space>"
 set tags=tags
 nnoremap <Leader>T  :<C-u>Tlist<CR>
 
+
 " unite.vim
 let g:unite_enable_start_insert=1
 noremap <Leader>b :Unite buffer<CR>
@@ -211,6 +211,7 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split
 au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
+
 " vundle.vim {{{
 set nocompatible
 filetype off
@@ -220,9 +221,9 @@ call vundle#rc()
 
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
-Bundle 'chrisdone/zencoding'
 Bundle 'chrismetcalf/vim-yankring'
 Bundle 'koron/chalice'
+Bundle 'mattn/zencoding-vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
@@ -262,6 +263,10 @@ filetype plugin indent on
 map <silent> sy :call YanktmpYank()<CR>
 map <silent> sp :call YanktmpPaste_p()<CR>
 map <silent> sP :call YanktmpPaste_P()<CR>
+
+
+" zencoding.vim
+let g:user_zen_expandabbr_key = '<c-e>'
 
 
 " Rename Command
