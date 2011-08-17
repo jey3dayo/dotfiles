@@ -94,7 +94,7 @@ nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
 nnoremap gr :<C-u>vimgrep // **/%<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
-nnoremap gR :<C-u>vimgrep // **/*.php<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+nnoremap gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
@@ -181,12 +181,7 @@ let g:NERDTreeHijackNetrw = 0
 " ref.vim
 let g:ref_phpmanual_path = $HOME . '/.vim/dict/phpmanual'
 let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
-
-
-" srcexpl.vim
-nnoremap <Leader>s :<C-u>SrcExplToggle<CR>
-let g:SrcExpl_UpdateTags = 1
-let g:SrcExpl_RefreshMapKey = "<Space>"
+noremap <Leader>d :<C-u>Ref alc<Space>
 
 
 " taglist.vim
@@ -242,7 +237,7 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/DoxygenToolkit.vim'
 Bundle 'vim-scripts/Engspchk'
 Bundle 'vim-scripts/L9.git'
-Bundle 'vim-scripts/Source-Explorer-srcexpl.vim'
+Bundle 'vim-scripts/TwitVim'
 Bundle 'vim-scripts/cecutil'
 Bundle 'vim-scripts/eregex.vim'
 Bundle 'vim-scripts/genutils'
@@ -271,37 +266,4 @@ let g:user_zen_expandabbr_key = '<c-e>'
 
 " Rename Command
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
-
-" change color of statusline whis toggle insert mode {{{
-let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
-
-if has('syntax')
-	augroup InsertHook
-		autocmd!
-		autocmd InsertEnter * call s:StatusLine('Enter')
-		autocmd InsertLeave * call s:StatusLine('Leave')
-	augroup END
-endif
-let s:slhlcmd = ''
-
-function! s:StatusLine(mode)
-	if a:mode == 'Enter'
-		silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
-		silent exec g:hi_insert
-	else
-		highlight clear StatusLine
-		silent exec s:slhlcmd
-		redraw
-	endif
-endfunction
-
-function! s:GetHighlight(hi)
-	redir => hl
-	exec 'highlight '.a:hi
-	redir END
-	let hl = substitute(hl, '[\r\n]', '', 'g')
-	let hl = substitute(hl, 'xxx', '', '')
-	return hl
-endfunction
-"}}}
 
