@@ -131,7 +131,7 @@ let g:ldrc_intelligence_bind = "true"
 let g:ldrc_skip = "0.25"
 
 " plugin_loader.js {{{
-let g:plugin_loader_roots = ".vimperator/bundle/vimperator-plugins.git/"
+let g:plugin_loader_roots = "~/.vimperator/bundle/vimperator-plugins.git/"
 
 javascript <<EOF
 liberator.globalVariables.plugin_loader_plugins = <>
