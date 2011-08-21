@@ -244,7 +244,8 @@ noremap <Leader>v :viewSBMComments<CR>
 noremap <silent> <Leader>a :autopagerize<CR>
 
 " multi_requester.js
-noremap <Leader>d :mr goo<Space>
+noremap <Leader>d :mr alc<Space>
+noremap <Leader>D :mr goo<Space>
 
 " tumblr
 nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
