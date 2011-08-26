@@ -140,6 +140,7 @@ appendAnchor
 auto-focus-frame
 auto_detect_link
 bitly
+buffer-multiple-hints
 caret-hint
 commandBookmarklet
 cookieManager
