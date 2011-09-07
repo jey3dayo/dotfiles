@@ -57,6 +57,7 @@ set complete+=k
 set cursorline
 set wildmenu
 set fdm=marker
+set noscrollbind
 
 
 set laststatus=2
@@ -185,6 +186,16 @@ let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
 noremap <Leader>d :<C-u>Ref alc<Space>
 
 
+" smartchr.vim
+inoremap <buffer><expr> + smartchr#one_of(' + ', '++', '+')
+inoremap <buffer><expr> + smartchr#one_of(' + ', '++', '+')
+inoremap <buffer><expr> & smartchr#one_of(' & ', ' && ', '&')
+inoremap <buffer><expr> % smartchr#one_of(' % ', '%')
+inoremap <buffer><expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
+inoremap <buffer><expr> , smartchr#one_of(', ', ',')
+inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
+inoremap <buffer><expr> : smartchr#one_of(': ', '::', ':')
+
 " taglist.vim
 set tags=tags
 nnoremap <Leader>T  :<C-u>Tlist<CR>
@@ -194,7 +205,7 @@ nnoremap <Leader>T  :<C-u>Tlist<CR>
 let g:unite_enable_start_insert=1
 noremap <Leader>b :Unite buffer<CR>
 noremap <Leader>f :Unite file<CR>
-noremap <Leader>m :Unite file_mru<CR>
+"noremap <Leader>m :Unite file_mru<CR>
 noremap <C-t>b :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
 noremap <C-t>f :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
 noremap <C-t>m :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
@@ -218,6 +229,8 @@ call vundle#rc()
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
 Bundle 'chrismetcalf/vim-yankring'
+Bundle 'fuenor/qfixhowm'
+Bundle 'kana/vim-smartchr'
 Bundle 'koron/chalice'
 Bundle 'mattn/zencoding-vim'
 Bundle 'msanders/snipmate.vim'
@@ -229,7 +242,6 @@ Bundle 'thinca/vim-guicolorscheme'
 Bundle 'thinca/vim-quickrun'
 Bundle 'thinca/vim-ref'
 Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-haml'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-surround'
 Bundle 'tsaleh/vim-align'
@@ -250,6 +262,9 @@ Bundle 'vim-scripts/sudo.vim'
 Bundle 'vim-scripts/taglist.vim'
 Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'vim-scripts/yanktmp.vim'
+Bundle 'molokai'
+Bundle 'Solarized'
+Bundle 'Zenburn'
 
 filetype plugin indent on
 "}}}
@@ -267,4 +282,10 @@ let g:user_zen_expandabbr_key = '<c-e>'
 
 " Rename Command
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
+
+
+let VIMRC_MINE = expand('~/.vimrc.mine')
+if( filereadable(VIMRC_MINE) )
+	exe "source " . VIMRC_MINE
+endif
 
