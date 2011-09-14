@@ -94,7 +94,7 @@ nnoremap <Leader>y  :<C-u>YRShow<CR>
 nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
-nnoremap gr :<C-u>vimgrep // **/%<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+nnoremap gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap gx :<C-u>vimgrep /\(TODO\|XXX\|FIXME\)/ **/*.*|cw
 
@@ -158,6 +158,9 @@ nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gr :Gread<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 
+" Kwbd.vim
+nnoremap <C-D> :<C-u>Kwbd<CR>
+
 
 " neocomplcache.vim
 let g:NeoComplCache_SmartCase=1
@@ -196,6 +199,7 @@ inoremap <buffer><expr> , smartchr#one_of(', ', ',')
 inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
 inoremap <buffer><expr> : smartchr#one_of(': ', '::', ':')
 
+
 " taglist.vim
 set tags=tags
 nnoremap <Leader>T  :<C-u>Tlist<CR>
@@ -223,8 +227,13 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vspli
 set nocompatible
 filetype off
 
-set rtp+=~/.vim/vundle.git/
-call vundle#rc()
+if has("win32") || has("win64")
+  set rtp+=C:/repos/dotfiles/.vim/vundle.git/
+  call vundle#rc('C:/repos/dotfiles/.vim/bundle/')
+else
+    set rtp+=~/.vim/vundle.git/
+    call vundle#rc()
+endif
 
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
@@ -234,6 +243,7 @@ Bundle 'kana/vim-smartchr'
 Bundle 'koron/chalice'
 Bundle 'mattn/zencoding-vim'
 Bundle 'msanders/snipmate.vim'
+Bundle 'rgarver/Kwbd.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 Bundle 'shemerey/vim-project'
@@ -262,6 +272,7 @@ Bundle 'vim-scripts/sudo.vim'
 Bundle 'vim-scripts/taglist.vim'
 Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'vim-scripts/yanktmp.vim'
+Bundle 'darkspectrum'
 Bundle 'molokai'
 Bundle 'Solarized'
 Bundle 'Zenburn'
@@ -286,6 +297,6 @@ command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 
 let VIMRC_MINE = expand('~/.vimrc.mine')
 if( filereadable(VIMRC_MINE) )
-	exe "source " . VIMRC_MINE
+    exe "source " . VIMRC_MINE
 endif
 
