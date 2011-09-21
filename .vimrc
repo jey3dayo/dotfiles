@@ -96,7 +96,8 @@ nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
 nnoremap gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
-nnoremap gx :<C-u>vimgrep /\(TODO\|XXX\|FIXME\)/ **/*.*|cw
+nnoremap gx :<C-u>vimgrep /\(TODO\|XXX\|FIXME\)/ %|cw
+nnoremap gX :<C-u>vimgrep /\(TODO\|XXX\|FIXME\)/ **/*.*|cw
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
@@ -199,6 +200,9 @@ inoremap <buffer><expr> , smartchr#one_of(', ', ',')
 inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
 inoremap <buffer><expr> : smartchr#one_of(': ', '::', ':')
 
+" snipmate.vim
+let g:snippets_dir = $HOME.'/.vim/snippets'
+
 
 " taglist.vim
 set tags=tags
@@ -241,32 +245,28 @@ Bundle 'chrismetcalf/vim-yankring'
 Bundle 'fuenor/qfixhowm'
 Bundle 'gmarik/vundle'
 Bundle 'kana/vim-smartchr'
-Bundle 'koron/chalice'
+"Bundle 'koron/chalice'
 Bundle 'mattn/zencoding-vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'rgarver/Kwbd.vim'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
-Bundle 'shemerey/vim-project'
-Bundle 'soh335/vim-ref-jquery'
+"Bundle 'shemerey/vim-project'
 Bundle 'thinca/vim-guicolorscheme'
 Bundle 'thinca/vim-quickrun'
 Bundle 'thinca/vim-ref'
 Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-surround'
 Bundle 'tsaleh/vim-align'
 Bundle 'tsaleh/vim-matchit'
-Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/DoxygenToolkit.vim'
-Bundle 'vim-scripts/Engspchk'
 Bundle 'vim-scripts/L9.git'
 Bundle 'vim-scripts/TwitVim'
 Bundle 'vim-scripts/cecutil'
 Bundle 'vim-scripts/eregex.vim'
 Bundle 'vim-scripts/genutils'
 Bundle 'vim-scripts/grep.vim'
-Bundle 'vim-scripts/mru.vim'
+"Bundle 'vim-scripts/mru.vim'
 Bundle 'vim-scripts/multvals.vim'
 Bundle 'vim-scripts/renamer.vim'
 Bundle 'vim-scripts/sudo.vim'
