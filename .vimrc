@@ -96,8 +96,8 @@ nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
 nnoremap gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
-nnoremap gx :<C-u>vimgrep /\(TODO\|XXX\|FIXME\)/ %|cw
-nnoremap gX :<C-u>vimgrep /\(TODO\|XXX\|FIXME\)/ **/*.*|cw
+nnoremap gx :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ %<Bar>cw<CR>
+nnoremap gX :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ **/*.*<Bar>cw<CR>
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
@@ -137,15 +137,6 @@ nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 set shellslash
 set hidden
 set shortmess+=I
-
-
-" macro
-inoremap <Leader>date <C-R>=strftime('%Y/%m/%d')<CR>
-inoremap <Leader>Date <C-R>=strftime('%Y/%m/%d (%a)')<CR>
-inoremap <Leader>time <C-R>=strftime('%H:%M')<CR>
-inoremap <Leader>w3cd <C-R>=strftime('%Y-%m-%dT%H:%M:%S+09:00')<CR>
-inoremap <Leader>sig <C-R>=strftime('%y%m%d %H:%M')<CR> Junya Nakazato
-inoremap <Leader>siG <C-R>=strftime('%y%m%d')<CR> Junya Nakazato
 
 
 " fugitive.vim
@@ -266,12 +257,11 @@ Bundle 'vim-scripts/cecutil'
 Bundle 'vim-scripts/eregex.vim'
 Bundle 'vim-scripts/genutils'
 Bundle 'vim-scripts/grep.vim'
-"Bundle 'vim-scripts/mru.vim'
 Bundle 'vim-scripts/multvals.vim'
 Bundle 'vim-scripts/renamer.vim'
 Bundle 'vim-scripts/sudo.vim'
 Bundle 'vim-scripts/taglist.vim'
-Bundle 'vim-scripts/vcscommand.vim'
+"Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'vim-scripts/yanktmp.vim'
 Bundle 'vim-scripts/wombat256.vim'
 Bundle 'darkspectrum'
@@ -284,9 +274,9 @@ filetype plugin indent on
 
 
 " yanktmp.vim
-map <silent> sy :call YanktmpYank()<CR>
-map <silent> sp :call YanktmpPaste_p()<CR>
-map <silent> sP :call YanktmpPaste_P()<CR>
+map <silent>sy :call YanktmpYank()<CR>
+map <silent>sp :call YanktmpPaste_p()<CR>
+map <silent>sP :call YanktmpPaste_P()<CR>
 
 
 " zencoding.vim
