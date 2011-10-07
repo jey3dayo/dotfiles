@@ -29,8 +29,8 @@ highlight NonText ctermfg=darkgrey
 highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
-" colorscheme wombat
-colorscheme wombat256mod
+colorscheme wombat
+" colorscheme wombat256mod
 highlight Search ctermbg=7
 
 
@@ -94,10 +94,10 @@ nnoremap <Leader>y  :<C-u>YRShow<CR>
 nnoremap <Leader>s   <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
-nnoremap gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
-nnoremap gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
-nnoremap gx :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ %<Bar>cw<CR>
-nnoremap gX :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ **/*.*<Bar>cw<CR>
+nnoremap <Leader>gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+nnoremap <Leader>gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
+nnoremap <Leader>gx :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ %<Bar>cw<CR>
+nnoremap <Leader>gX :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ **/*.*<Bar>cw<CR>
 
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
@@ -183,7 +183,6 @@ noremap <Leader>d :<C-u>Ref alc<Space>
 
 " smartchr.vim
 inoremap <buffer><expr> + smartchr#one_of(' + ', '++', '+')
-inoremap <buffer><expr> + smartchr#one_of(' + ', '++', '+')
 inoremap <buffer><expr> & smartchr#one_of(' & ', ' && ', '&')
 inoremap <buffer><expr> % smartchr#one_of(' % ', '%')
 inoremap <buffer><expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
@@ -226,7 +225,7 @@ if has("win32") || has("win64")
   set rtp+=C:/repos/dotfiles/.vim/vundle.git/
   call vundle#rc('C:/repos/dotfiles/.vim/bundle/')
 else
-    set rtp+=~/.vim/vundle.git/
+    set rtp+=~/.vim/bundle/vundle/
     call vundle#rc()
 endif
 
@@ -234,6 +233,7 @@ Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
 Bundle 'chrismetcalf/vim-yankring'
 Bundle 'fuenor/qfixhowm'
+Bundle 'gregsexton/VimCalc'
 Bundle 'gmarik/vundle'
 Bundle 'kana/vim-smartchr'
 "Bundle 'koron/chalice'
@@ -257,17 +257,14 @@ Bundle 'vim-scripts/cecutil'
 Bundle 'vim-scripts/eregex.vim'
 Bundle 'vim-scripts/genutils'
 Bundle 'vim-scripts/grep.vim'
+Bundle 'vim-scripts/SQLUtilities'
 Bundle 'vim-scripts/multvals.vim'
 Bundle 'vim-scripts/renamer.vim'
 Bundle 'vim-scripts/sudo.vim'
 Bundle 'vim-scripts/taglist.vim'
-"Bundle 'vim-scripts/vcscommand.vim'
-Bundle 'vim-scripts/yanktmp.vim'
+Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'vim-scripts/wombat256.vim'
-Bundle 'darkspectrum'
 Bundle 'molokai'
-Bundle 'Solarized'
-Bundle 'Zenburn'
 
 filetype plugin indent on
 "}}}

@@ -48,7 +48,7 @@ setopt rm_star_wait
 setopt share_history
 
 autoload zed
-bindkey -v
+bindkey -e
 bindkey "^[[3~" delete-char
 
 # historical backward/forward search with linehead string binded to ^P/^N
@@ -92,7 +92,6 @@ alias ^='cd ..'
 alias l='ls -lAFhp'
 alias ls='ls -pF'
 alias su="su -l"
-alias o="open"
 alias hg="hg --encoding=utf-8"
 alias tmux="tmux -2"
 
@@ -152,34 +151,6 @@ case "${TERM}" in
 esac
 # }}}
 
-# macports support {{{
-case "${OSTYPE}" in
-    darwin*)
-    alias updateports="sudo port selfupdate; sudo port outdated"
-    alias portupgrade="sudo port upgrade installed"
-    ;;
-    freebsd*)
-    case ${UID} in
-        0)
-        updateports() 
-        {
-            if [ -f /usr/ports/.portsnap.INDEX ]
-            then
-                portsnap fetch update
-            else
-                portsnap fetch extract update
-            fi
-            (cd /usr/ports/; make index)
-
-            portversion -v -l \<
-        }
-        alias appsupgrade='pkgdb -F && BATCH=YES NO_CHECKSUM=YES portupgrade -a'
-        ;;
-    esac
-    ;;
-esac
-# }}}
-
 ## show branch name {{{
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '(%s)-[%b]'
@@ -195,3 +166,5 @@ RPROMPT="%1(v|%F{green}%1v%f|)"
 # git complete
 __git_files() { _files }
 
+# rvm path
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
