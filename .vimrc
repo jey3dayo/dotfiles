@@ -240,6 +240,7 @@ Bundle 'kana/vim-smartchr'
 Bundle 'mattn/zencoding-vim'
 Bundle 'msanders/snipmate.vim'
 Bundle 'rgarver/Kwbd.vim'
+"Bundle 'rstacruz/sparkup'
 Bundle 'scrooloose/nerdcommenter'
 Bundle 'scrooloose/nerdtree'
 "Bundle 'shemerey/vim-project'
@@ -277,7 +278,7 @@ map <silent>sP :call YanktmpPaste_P()<CR>
 
 
 " zencoding.vim
-let g:user_zen_expandabbr_key = '<c-e>'
+let g:user_zen_expandabbr_key = '<C-e>'
 
 
 " Rename Command

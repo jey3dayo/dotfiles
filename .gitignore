@@ -2,7 +2,7 @@ build/
 log/
 
 .DS_Store
-ctags
+tags
 Session.vim
 Thumbs.db
 
