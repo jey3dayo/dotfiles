@@ -188,7 +188,7 @@ inoremap <buffer><expr> % smartchr#one_of(' % ', '%')
 inoremap <buffer><expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
 inoremap <buffer><expr> , smartchr#one_of(', ', ',')
 inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
-inoremap <buffer><expr> : smartchr#one_of(': ', '::', ':')
+
 
 " snipmate.vim
 let g:snippets_dir = $HOME.'/.vim/snippets'
@@ -222,7 +222,7 @@ set nocompatible
 filetype off
 
 if has("win32") || has("win64")
-  set rtp+=C:/repos/dotfiles/.vim/vundle.git/
+  set rtp + =C:/repos/dotfiles/.vim/bundle/vundle/
   call vundle#rc('C:/repos/dotfiles/.vim/bundle/')
 else
     set rtp+=~/.vim/bundle/vundle/

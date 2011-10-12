@@ -2,6 +2,7 @@
 
 export PATH=$PATH:/usr/local/clang
 export PATH=$PATH:/Developer/SDKs/flex_sdk/bin
+export PATH=$PATH:$HOME/byobu/bin
 
 # GO lang
 export GOROOT=$HOME/go
