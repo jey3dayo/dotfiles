@@ -150,9 +150,6 @@ nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gr :Gread<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 
-" Kwbd.vim
-nnoremap <C-D> :<C-u>Kwbd<CR>
-
 
 " neocomplcache.vim
 let g:NeoComplCache_SmartCase=1
@@ -163,11 +160,6 @@ let g:NeoComplCache_SkipInputTime='0.1'
 let g:NeoComplCache_SameFileTypeLists={}
 let g:NeoComplCache_SameFileTypeLists['c']='cpp'
 let g:NeoComplCache_SameFileTypeLists['cpp']='c'
-
-
-" NERD_commenter.vim <leader>+x => comment out
-map <Leader>x ,c<space>
-let NERDShutUp=1
 
 
 " NERD_tree.vim
@@ -189,6 +181,10 @@ inoremap <buffer><expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>'
 inoremap <buffer><expr> , smartchr#one_of(', ', ',')
 inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
 
+
+"sparkup.vim
+let g:sparkupExecuteMapping='<c-e>'
+let g:sparkupNextMapping = '<c-j>'
 
 " snipmate.vim
 let g:snippets_dir = $HOME.'/.vim/snippets'
@@ -237,11 +233,8 @@ Bundle 'gregsexton/VimCalc'
 Bundle 'gmarik/vundle'
 Bundle 'kana/vim-smartchr'
 "Bundle 'koron/chalice'
-Bundle 'mattn/zencoding-vim'
 Bundle 'msanders/snipmate.vim'
-Bundle 'rgarver/Kwbd.vim'
-"Bundle 'rstacruz/sparkup'
-Bundle 'scrooloose/nerdcommenter'
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'scrooloose/nerdtree'
 "Bundle 'shemerey/vim-project'
 Bundle 'thinca/vim-guicolorscheme'
@@ -254,14 +247,14 @@ Bundle 'tsaleh/vim-matchit'
 Bundle 'vim-scripts/DoxygenToolkit.vim'
 Bundle 'vim-scripts/L9.git'
 Bundle 'vim-scripts/TwitVim'
+Bundle 'vim-scripts/SQLUtilities'
 Bundle 'vim-scripts/cecutil'
 Bundle 'vim-scripts/eregex.vim'
 Bundle 'vim-scripts/genutils'
 Bundle 'vim-scripts/grep.vim'
-Bundle 'vim-scripts/SQLUtilities'
 Bundle 'vim-scripts/multvals.vim'
 Bundle 'vim-scripts/renamer.vim'
-Bundle 'vim-scripts/sudo.vim'
+Bundle 'vim-scripts/tComment'
 Bundle 'vim-scripts/taglist.vim'
 Bundle 'vim-scripts/vcscommand.vim'
 Bundle 'vim-scripts/wombat256.vim'
@@ -275,10 +268,6 @@ filetype plugin indent on
 map <silent>sy :call YanktmpYank()<CR>
 map <silent>sp :call YanktmpPaste_p()<CR>
 map <silent>sP :call YanktmpPaste_P()<CR>
-
-
-" zencoding.vim
-let g:user_zen_expandabbr_key = '<C-e>'
 
 
 " Rename Command
