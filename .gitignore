@@ -18,6 +18,7 @@ Thumbs.db
 *.pbxuser
 *.pyo
 *.so
+*.dump
 
 .subversion/auth/
 .vim/.VimballRecord

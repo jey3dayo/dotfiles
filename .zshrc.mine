@@ -16,7 +16,7 @@ alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
 alias dev="/var/www/html/sem/src"
 
 
-export DOTFILES=$HOME/var/www/git/dotfiles
+export DOTFILES=$HOME/www/dotfiles
 export VIMDIR=$HOME/var/www/git/dotfiles/.vim
 alias vim="/usr/bin/vim73"
 

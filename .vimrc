@@ -89,9 +89,7 @@ filetype indent on
 
 
 " map
-nnoremap <Leader>y  :<C-u>YRShow<CR>
-
-nnoremap <Leader>s   <Nop>
+nnoremap <Leader>s <Nop>
 nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
 nnoremap <Leader>gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
@@ -186,13 +184,14 @@ inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
 let g:sparkupExecuteMapping='<c-e>'
 let g:sparkupNextMapping = '<c-j>'
 
+
 " snipmate.vim
 let g:snippets_dir = $HOME.'/.vim/snippets'
 
 
 " taglist.vim
 set tags=tags
-nnoremap <Leader>T  :<C-u>Tlist<CR>
+nnoremap <Leader>T :<C-u>Tlist<CR>
 
 
 " unite.vim
@@ -225,34 +224,39 @@ else
     call vundle#rc()
 endif
 
-Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/unite.vim'
 Bundle 'chrismetcalf/vim-yankring'
 Bundle 'fuenor/qfixhowm'
 Bundle 'gregsexton/VimCalc'
 Bundle 'gmarik/vundle'
 Bundle 'kana/vim-smartchr'
 "Bundle 'koron/chalice'
+"Bundle 'Lokaltog/vim-easymotion'
 Bundle 'msanders/snipmate.vim'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 Bundle 'scrooloose/nerdtree'
+Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/unite.vim'
 "Bundle 'shemerey/vim-project'
 Bundle 'thinca/vim-guicolorscheme'
 Bundle 'thinca/vim-quickrun'
 Bundle 'thinca/vim-ref'
+Bundle 'tomtom/checksyntax_vim'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-surround'
 Bundle 'tsaleh/vim-align'
 Bundle 'tsaleh/vim-matchit'
 Bundle 'vim-scripts/DoxygenToolkit.vim'
 Bundle 'vim-scripts/L9.git'
-Bundle 'vim-scripts/TwitVim'
 Bundle 'vim-scripts/SQLUtilities'
+Bundle 'vim-scripts/PHP-dictionary.git'
+Bundle 'vim-scripts/TwitVim'
 Bundle 'vim-scripts/cecutil'
 Bundle 'vim-scripts/eregex.vim'
 Bundle 'vim-scripts/genutils'
 Bundle 'vim-scripts/grep.vim'
 Bundle 'vim-scripts/multvals.vim'
+Bundle 'vim-scripts/php.vim'
+Bundle 'vim-scripts/phpfolding.vim'
 Bundle 'vim-scripts/renamer.vim'
 Bundle 'vim-scripts/tComment'
 Bundle 'vim-scripts/taglist.vim'
@@ -263,6 +267,9 @@ Bundle 'molokai'
 filetype plugin indent on
 "}}}
 
+
+" yankring.vim
+nnoremap <Leader>y :<C-u>YRShow<CR>
 
 " yanktmp.vim
 map <silent>sy :call YanktmpYank()<CR>
