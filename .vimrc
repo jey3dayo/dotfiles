@@ -142,14 +142,10 @@ set shortmess+=I
 
 " fugitive.vim
 nnoremap <Leader>gb :Gblame<CR>
-nnoremap <Leader>gc :Gcommit<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gg :Ggrep<Space>
 nnoremap <Leader>gl :Glog<CR>
-nnoremap <Leader>gr :Gremove<CR>
 nnoremap <Leader>gs :Gstatus<CR>
-nnoremap <Leader>gr :Gread<CR>
-nnoremap <Leader>gw :Gwrite<CR>
 
 
 " neocomplcache.vim
