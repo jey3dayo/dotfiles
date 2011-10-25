@@ -33,6 +33,9 @@ colorscheme wombat
 " colorscheme wombat256mod
 highlight Search ctermbg=7
 
+" set list
+nmap <Leader>sl :set list<CR>:set number<CR>
+nmap <Leader>nl :set nolist<CR>:set nonumber<CR>
 
 " visible SpecialKey
 set list
@@ -217,7 +220,7 @@ set nocompatible
 filetype off
 
 if has("win32") || has("win64")
-  set rtp + =C:/repos/dotfiles/.vim/bundle/vundle/
+  set rtp +=C:/repos/dotfiles/.vim/bundle/vundle/
   call vundle#rc('C:/repos/dotfiles/.vim/bundle/')
 else
     set rtp+=~/.vim/bundle/vundle/
@@ -233,9 +236,10 @@ Bundle 'kana/vim-smartchr'
 "Bundle 'Lokaltog/vim-easymotion'
 Bundle 'msanders/snipmate.vim'
 Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'scrooloose/nerdtree'
 Bundle 'Shougo/neocomplcache'
 Bundle 'Shougo/unite.vim'
+Bundle 'scrooloose/nerdtree'
+Bundle 'sjl/gundo.vim'
 "Bundle 'shemerey/vim-project'
 Bundle 'thinca/vim-guicolorscheme'
 Bundle 'thinca/vim-quickrun'
@@ -258,6 +262,7 @@ Bundle 'vim-scripts/multvals.vim'
 Bundle 'vim-scripts/php.vim'
 Bundle 'vim-scripts/phpfolding.vim'
 Bundle 'vim-scripts/renamer.vim'
+Bundle 'vim-scripts/sudo.vim'
 Bundle 'vim-scripts/tComment'
 Bundle 'vim-scripts/taglist.vim'
 Bundle 'vim-scripts/vcscommand.vim'

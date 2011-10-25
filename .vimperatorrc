@@ -44,6 +44,9 @@ noremap <Leader>ei :set encodeing=ISO-2022-JP<CR>
 " toggle load css
 noremap ! :set invum<CR>
 
+" insert mode
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
 
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
@@ -148,6 +151,7 @@ copy
 direct_bookmark
 feedSomeKeys_3
 feeder
+gmail-commando
 google-plus-commando
 hint-tombloo
 hints-for-embedded
@@ -166,6 +170,7 @@ tombloo
 twittperator
 usi
 walk-input
+win-mouse
 x-hint
 </>.toString().split(/\s+/).filter(function(n) n);
 EOF
