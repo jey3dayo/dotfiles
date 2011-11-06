@@ -5,6 +5,7 @@ log/
 tags
 Session.vim
 Thumbs.db
+.gitignore
 
 *.a
 *.al
@@ -19,6 +20,7 @@ Thumbs.db
 *.pyo
 *.so
 *.dump
+*.diff
 
 .subversion/auth/
 .vim/.VimballRecord
@@ -31,4 +33,6 @@ Thumbs.db
 
 doc/tags
 doc/tags-*
+
+sample.*
 

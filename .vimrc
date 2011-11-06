@@ -210,60 +210,63 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split
 au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
-
-" vundle.vim {{{
+" neobundle.vim {{{
 set nocompatible
 filetype off
 
 if has("win32") || has("win64")
-  set rtp +=C:/repos/dotfiles/.vim/bundle/vundle/
-  call vundle#rc('C:/repos/dotfiles/.vim/bundle/')
+  set rtp +=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
+  call neobundle#rc('C:/repos/dotfiles/.vim/bundle/')
 else
-    set rtp+=~/.vim/bundle/vundle/
-    call vundle#rc()
+    set rtp+=~/.vim/bundle/neobundle.vim/
+    call neobundle#rc()
 endif
 
-Bundle 'chrismetcalf/vim-yankring'
-Bundle 'fuenor/qfixhowm'
-Bundle 'gregsexton/VimCalc'
-Bundle 'gmarik/vundle'
-Bundle 'kana/vim-smartchr'
-"Bundle 'koron/chalice'
-"Bundle 'Lokaltog/vim-easymotion'
-Bundle 'msanders/snipmate.vim'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'Shougo/neocomplcache'
-Bundle 'Shougo/unite.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'sjl/gundo.vim'
-"Bundle 'shemerey/vim-project'
-Bundle 'thinca/vim-guicolorscheme'
-Bundle 'thinca/vim-quickrun'
-Bundle 'thinca/vim-ref'
-Bundle 'tomtom/checksyntax_vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-surround'
-Bundle 'tsaleh/vim-align'
-Bundle 'tsaleh/vim-matchit'
-Bundle 'vim-scripts/DoxygenToolkit.vim'
-Bundle 'vim-scripts/L9.git'
-Bundle 'vim-scripts/SQLUtilities'
-Bundle 'vim-scripts/PHP-dictionary.git'
-Bundle 'vim-scripts/TwitVim'
-Bundle 'vim-scripts/cecutil'
-Bundle 'vim-scripts/eregex.vim'
-Bundle 'vim-scripts/genutils'
-Bundle 'vim-scripts/grep.vim'
-Bundle 'vim-scripts/multvals.vim'
-Bundle 'vim-scripts/php.vim'
-Bundle 'vim-scripts/phpfolding.vim'
-Bundle 'vim-scripts/renamer.vim'
-Bundle 'vim-scripts/sudo.vim'
-Bundle 'vim-scripts/tComment'
-Bundle 'vim-scripts/taglist.vim'
-Bundle 'vim-scripts/vcscommand.vim'
-Bundle 'vim-scripts/wombat256.vim'
-Bundle 'molokai'
+NeoBundle 'chrismetcalf/vim-yankring'
+NeoBundle 'fuenor/qfixhowm'
+NeoBundle 'gregsexton/VimCalc'
+NeoBundle 'gmarik/vundle'
+NeoBundle 'kana/vim-smartchr'
+"NeoBundle 'koron/chalice'
+"NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'msanders/snipmate.vim'
+NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+NeoBundle 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimproc'
+"NeoBundle 'Shougo/vimshell'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'sjl/gundo.vim'
+"NeoBundle 'shemerey/vim-project'
+"NeoBundle 'thinca/vim-guicolorscheme'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'thinca/vim-ref'
+NeoBundle 'tomtom/checksyntax_vim'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tsaleh/vim-align'
+NeoBundle 'tsaleh/vim-matchit'
+NeoBundle 'vim-scripts/DoxygenToolkit.vim'
+NeoBundle 'vim-scripts/L9.git'
+NeoBundle 'vim-scripts/SQLUtilities'
+NeoBundle 'vim-scripts/PHP-dictionary.git'
+NeoBundle 'vim-scripts/TwitVim'
+NeoBundle 'vim-scripts/cecutil'
+NeoBundle 'vim-scripts/eregex.vim'
+NeoBundle 'vim-scripts/genutils'
+NeoBundle 'vim-scripts/grep.vim'
+NeoBundle 'vim-scripts/multvals.vim'
+NeoBundle 'vim-scripts/php.vim'
+NeoBundle 'vim-scripts/phpfolding.vim'
+NeoBundle 'vim-scripts/php.vim--Hodge'
+NeoBundle 'vim-scripts/renamer.vim'
+NeoBundle 'vim-scripts/sudo.vim'
+NeoBundle 'vim-scripts/tComment'
+NeoBundle 'vim-scripts/taglist.vim'
+NeoBundle 'vim-scripts/vcscommand.vim'
+"NeoBundle 'vim-scripts/wombat256.vim'
+NeoBundle 'molokai'
 
 filetype plugin indent on
 "}}}
@@ -271,6 +274,7 @@ filetype plugin indent on
 
 " yankring.vim
 nnoremap <Leader>y :<C-u>YRShow<CR>
+
 
 " yanktmp.vim
 map <silent>sy :call YanktmpYank()<CR>
