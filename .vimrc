@@ -146,6 +146,7 @@ nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>gg :Ggrep<Space>
 nnoremap <Leader>gl :Glog<CR>
 nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gw :Gwrite<CR>
 
 
 " neocomplcache.vim

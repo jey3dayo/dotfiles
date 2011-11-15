@@ -35,4 +35,4 @@ doc/tags
 doc/tags-*
 
 sample.*
-
+*.stash.*

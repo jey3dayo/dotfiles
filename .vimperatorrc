@@ -219,7 +219,7 @@ liberator.globalVariables.proxy_settings = [
        },
        {
             label: 'autoconfig_url',
-            param: 'http://192.168.9.19/proxy.pac'
+            param: 'http://192.168.9.20/proxy.pac'
        },
     ]
 },
