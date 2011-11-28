@@ -22,3 +22,5 @@ alias vim="/usr/bin/vim73"
 
 export DEV=$HOME/www/sem-dev/sem_y_migrate
 export BATCH=$HOME/www/sem-dev/sem_y_migrate_batch
+
+export SMB=/var/samba/public

@@ -6,6 +6,7 @@ tags
 Session.vim
 Thumbs.db
 .gitignore
+nohup.out
 
 *.a
 *.al
