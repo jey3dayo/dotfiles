@@ -1,9 +1,0 @@
-[submodule ".vimperator/bundle/vimperator-plugins.git"]
-	path = .vimperator/bundle/vimperator-plugins.git
-	url = http://github.com/vimpr/vimperator-plugins.git
-[submodule ".zsh/modules/auto-fu.zsh.git"]
-	path = .zsh/modules/auto-fu.zsh.git
-	url = https://github.com/hchbaw/auto-fu.zsh.git
-[submodule "neobundle.vim"]
-	path = neobundle.vim
-	url = git://github.com/Shougo/neobundle.vim.git
