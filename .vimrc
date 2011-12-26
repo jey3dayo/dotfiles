@@ -106,6 +106,13 @@ nnoremap <Tab> :<C-u>wincmd w<CR>
 nmap <silent> <F3> :execute 'vimgrep! /<C-R>=expand('<cword>')<CR>/j %'<CR>:copen10<CR>
 
 
+"set encoding
+nnoremap <Leader>si :e! ++enc=iso-2022-jp<CR>
+nnoremap <Leader>su :e! ++enc=utf-8<CR>
+nnoremap <Leader>ss :e! ++enc=sjis<CR>
+nnoremap <Leader>se :e! ++enc=euc-jp<CR>
+
+
 " backup
 set backup
 set swapfile
@@ -226,9 +233,8 @@ endif
 NeoBundle 'chrismetcalf/vim-yankring'
 NeoBundle 'fuenor/qfixhowm'
 NeoBundle 'gregsexton/VimCalc'
-NeoBundle 'gmarik/vundle'
 NeoBundle 'kana/vim-smartchr'
-"NeoBundle 'koron/chalice'
+NeoBundle 'koron/chalice'
 "NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'msanders/snipmate.vim'
 NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -238,19 +244,20 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimproc'
 "NeoBundle 'Shougo/vimshell'
 NeoBundle 'scrooloose/nerdtree'
-"NeoBundle 'sjl/gundo.vim'
+NeoBundle 'sjl/gundo.vim'
 "NeoBundle 'shemerey/vim-project'
-"NeoBundle 'thinca/vim-guicolorscheme'
+NeoBundle 'thinca/vim-guicolorscheme.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
-NeoBundle 'tomtom/checksyntax_vim'
+"NeoBundle 'tomtom/checksyntax_vim'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tsaleh/vim-align'
 NeoBundle 'tsaleh/vim-matchit'
+"NeoBundle 'vim-scripts/DBGp-client.vim'
 NeoBundle 'vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'vim-scripts/L9.git'
-NeoBundle 'vim-scripts/SQLUtilities'
+"NeoBundle 'vim-scripts/SQLUtilities'
 NeoBundle 'vim-scripts/PHP-dictionary.git'
 NeoBundle 'vim-scripts/TwitVim'
 NeoBundle 'vim-scripts/cecutil'
@@ -266,8 +273,11 @@ NeoBundle 'vim-scripts/sudo.vim'
 NeoBundle 'vim-scripts/tComment'
 NeoBundle 'vim-scripts/taglist.vim'
 NeoBundle 'vim-scripts/vcscommand.vim'
-"NeoBundle 'vim-scripts/wombat256.vim'
+NeoBundle 'vim-scripts/wombat256.vim'
+NeoBundle 'dw_colors'
 NeoBundle 'molokai'
+NeoBundle 'xoria.vim'
+NeoBundle 'pyte'
 
 filetype plugin indent on
 "}}}
@@ -275,12 +285,6 @@ filetype plugin indent on
 
 " yankring.vim
 nnoremap <Leader>y :<C-u>YRShow<CR>
-
-
-" yanktmp.vim
-map <silent>sy :call YanktmpYank()<CR>
-map <silent>sp :call YanktmpPaste_p()<CR>
-map <silent>sP :call YanktmpPaste_P()<CR>
 
 
 " Rename Command
