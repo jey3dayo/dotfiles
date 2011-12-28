@@ -51,7 +51,6 @@ set autoindent
 set backspace=2
 set helplang=ja
 set modelines=0
-set nocompatible
 set nrformats-=octal
 set number
 set ruler
@@ -220,14 +219,15 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vspli
 
 " neobundle.vim {{{
 set nocompatible
-filetype off
+filetype indent off
 
 if has("win32") || has("win64")
-  set rtp +=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
+  set rtp+=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
   call neobundle#rc('C:/repos/dotfiles/.vim/bundle/')
 else
     set rtp+=~/.vim/bundle/neobundle.vim/
-    call neobundle#rc()
+    "call neobundle#rc()
+	call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
 NeoBundle 'http://github.com/chrismetcalf/vim-yankring'
@@ -247,37 +247,37 @@ NeoBundle 'http://github.com/scrooloose/nerdtree'
 NeoBundle 'http://github.com/sjl/gundo.vim'
 "NeoBundle 'http://github.com/shemerey/vim-project'
 NeoBundle 'http://github.com/thinca/vim-guicolorscheme'
-NeoBundle 'http://github.com/thinca/vim-quickrun'
+"NeoBundle 'http://github.com/thinca/vim-quickrun'
 NeoBundle 'http://github.com/thinca/vim-ref'
-"NeoBundle 'http://github.com/tomtom/checksyntax_vim'
+NeoBundle 'http://github.com/tomtom/checksyntax_vim'
 NeoBundle 'http://github.com/tpope/vim-fugitive'
 NeoBundle 'http://github.com/tpope/vim-surround'
 NeoBundle 'http://github.com/tsaleh/vim-align'
 NeoBundle 'http://github.com/tsaleh/vim-matchit'
 
-NeoBundle 'http://github.com/vim-script/DBGp-client.vim'
-NeoBundle 'http://github.com/vim-script/DoxygenToolkit.vim'
-NeoBundle 'http://github.com/vim-script/L9.git'
-NeoBundle 'http://github.com/vim-script/SQLUtilities'
-NeoBundle 'http://github.com/vim-script/PHP-dictionary.git'
-NeoBundle 'http://github.com/vim-script/TwitVim'
-NeoBundle 'http://github.com/vim-script/cecutil'
-NeoBundle 'http://github.com/vim-script/eregex.vim'
-NeoBundle 'http://github.com/vim-script/genutils'
-NeoBundle 'http://github.com/vim-script/grep.vim'
-NeoBundle 'http://github.com/vim-script/multvals.vim'
-NeoBundle 'http://github.com/vim-script/php.vim'
-NeoBundle 'http://github.com/vim-script/phpfolding.vim'
-NeoBundle 'http://github.com/vim-script/php.vim--Hodge'
-NeoBundle 'http://github.com/vim-script/renamer.vim'
-NeoBundle 'http://github.com/vim-script/sudo.vim'
-NeoBundle 'http://github.com/vim-script/tComment'
-NeoBundle 'http://github.com/vim-script/taglist.vim'
-NeoBundle 'http://github.com/vim-script/vcscommand.vim'
-NeoBundle 'http://github.com/vim-script/wombat256.vim'
-NeoBundle 'http://github.com/vim-script/molokai'
-NeoBundle 'http://github.com/vim-script/xoria256.vim'
-NeoBundle 'http://github.com/vim-script/pyte'
+NeoBundle 'http://github.com/vim-scripts/DBGp-client'
+NeoBundle 'http://github.com/vim-scripts/DoxygenToolkit.vim'
+NeoBundle 'http://github.com/vim-scripts/L9.git'
+NeoBundle 'http://github.com/vim-scripts/SQLUtilities'
+NeoBundle 'http://github.com/vim-scripts/PHP-dictionary.git'
+NeoBundle 'http://github.com/vim-scripts/TwitVim'
+NeoBundle 'http://github.com/vim-scripts/cecutil'
+NeoBundle 'http://github.com/vim-scripts/eregex.vim'
+NeoBundle 'http://github.com/vim-scripts/genutils'
+NeoBundle 'http://github.com/vim-scripts/grep.vim'
+NeoBundle 'http://github.com/vim-scripts/multvals.vim'
+NeoBundle 'http://github.com/vim-scripts/php.vim'
+NeoBundle 'http://github.com/vim-scripts/phpfolding.vim'
+NeoBundle 'http://github.com/vim-scripts/php.vim--Hodge'
+NeoBundle 'http://github.com/vim-scripts/renamer.vim'
+NeoBundle 'http://github.com/vim-scripts/sudo.vim'
+NeoBundle 'http://github.com/vim-scripts/tComment'
+NeoBundle 'http://github.com/vim-scripts/taglist.vim'
+NeoBundle 'http://github.com/vim-scripts/vcscommand.vim'
+NeoBundle 'http://github.com/vim-scripts/wombat256.vim'
+NeoBundle 'http://github.com/vim-scripts/molokai'
+NeoBundle 'http://github.com/vim-scripts/xoria256.vim'
+NeoBundle 'http://github.com/vim-scripts/pyte'
 
 filetype plugin indent on
 "}}}
