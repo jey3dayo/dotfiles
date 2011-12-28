@@ -255,7 +255,7 @@ NeoBundle 'http://github.com/tpope/vim-surround'
 NeoBundle 'http://github.com/tsaleh/vim-align'
 NeoBundle 'http://github.com/tsaleh/vim-matchit'
 
-NeoBundle 'http://github.com/vim-scripts/DBGp-client'
+NeoBundle 'http://github.com/vim-scripts/DBGp-client', {'rtp': 'vim/'}
 NeoBundle 'http://github.com/vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'http://github.com/vim-scripts/L9.git'
 NeoBundle 'http://github.com/vim-scripts/SQLUtilities'
@@ -278,6 +278,7 @@ NeoBundle 'http://github.com/vim-scripts/wombat256.vim'
 NeoBundle 'http://github.com/vim-scripts/molokai'
 NeoBundle 'http://github.com/vim-scripts/xoria256.vim'
 NeoBundle 'http://github.com/vim-scripts/pyte'
+NeoBundle 'http://github.com/vim-scripts/jellybeans.vim'
 
 filetype plugin indent on
 "}}}
