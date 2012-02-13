@@ -48,6 +48,7 @@ match ZenkakuSpace /　/
 
 " set options
 set autoindent
+set smartindent
 set backspace=2
 set helplang=ja
 set modelines=0
@@ -180,7 +181,6 @@ noremap <Leader>d :<C-u>Ref alc<Space>
 " smartchr.vim
 inoremap <buffer><expr> + smartchr#one_of(' + ', '++', '+')
 inoremap <buffer><expr> & smartchr#one_of(' & ', ' && ', '&')
-inoremap <buffer><expr> % smartchr#one_of(' % ', '%')
 inoremap <buffer><expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
 inoremap <buffer><expr> , smartchr#one_of(', ', ',')
 inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
@@ -193,6 +193,11 @@ let g:sparkupNextMapping = '<c-j>'
 
 " snipmate.vim
 let g:snippets_dir = $HOME.'/.vim/snippets'
+
+
+" syntastic
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=2
 
 
 " taglist.vim
@@ -242,14 +247,14 @@ NeoBundle 'http://github.com/Shougo/neobundle.vim'
 NeoBundle 'http://github.com/Shougo/neocomplcache'
 NeoBundle 'http://github.com/Shougo/unite.vim'
 NeoBundle 'http://github.com/Shougo/vimproc'
-"NeoBundle 'http://github.com/Shougo/vimshell'
+NeoBundle 'http://github.com/Shougo/vimshell'
 NeoBundle 'http://github.com/scrooloose/nerdtree'
 NeoBundle 'http://github.com/sjl/gundo.vim'
 "NeoBundle 'http://github.com/shemerey/vim-project'
+"NeoBundle 'http://github.com/scrooloose/syntastic'
 NeoBundle 'http://github.com/thinca/vim-guicolorscheme'
 "NeoBundle 'http://github.com/thinca/vim-quickrun'
 NeoBundle 'http://github.com/thinca/vim-ref'
-NeoBundle 'http://github.com/tomtom/checksyntax_vim'
 NeoBundle 'http://github.com/tpope/vim-fugitive'
 NeoBundle 'http://github.com/tpope/vim-surround'
 NeoBundle 'http://github.com/tsaleh/vim-align'
