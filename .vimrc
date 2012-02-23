@@ -242,7 +242,7 @@ NeoBundle 'http://github.com/kana/vim-smartchr'
 NeoBundle 'http://github.com/koron/chalice'
 "NeoBundle 'http://github.com/Lokaltog/vim-easymotion'
 NeoBundle 'http://github.com/msanders/snipmate.vim'
-NeoBundle 'http://github.com/rstacruz/sparkup', {'rtp': 'vim/'}
+" NeoBundle 'http://github.com/rstacruz/sparkup', {'rtp': 'vim/'}
 NeoBundle 'http://github.com/Shougo/neobundle.vim'
 NeoBundle 'http://github.com/Shougo/neocomplcache'
 NeoBundle 'http://github.com/Shougo/unite.vim'
@@ -281,7 +281,6 @@ NeoBundle 'http://github.com/vim-scripts/taglist.vim'
 NeoBundle 'http://github.com/vim-scripts/vcscommand.vim'
 NeoBundle 'http://github.com/vim-scripts/wombat256.vim'
 NeoBundle 'http://github.com/vim-scripts/molokai'
-NeoBundle 'http://github.com/vim-scripts/xoria256.vim'
 NeoBundle 'http://github.com/vim-scripts/pyte'
 NeoBundle 'http://github.com/vim-scripts/jellybeans.vim'
 
