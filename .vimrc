@@ -173,7 +173,7 @@ let g:NERDTreeHijackNetrw = 0
 
 
 " ref.vim
-let g:ref_phpmanual_path = $HOME . '/.vim/dict/phpmanual'
+let g:ref_phpmanual_path = $HOME . '/.vim/dict/php-chunked-xhtml'
 let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
 noremap <Leader>d :<C-u>Ref alc<Space>
 
