@@ -178,14 +178,6 @@ let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
 noremap <Leader>d :<C-u>Ref alc<Space>
 
 
-" smartchr.vim
-inoremap <buffer><expr> + smartchr#one_of(' + ', '++', '+')
-inoremap <buffer><expr> & smartchr#one_of(' & ', ' && ', '&')
-inoremap <buffer><expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
-inoremap <buffer><expr> , smartchr#one_of(', ', ',')
-inoremap <buffer><expr> ? smartchr#one_of('? ', '?')
-
-
 "sparkup.vim
 let g:sparkupExecuteMapping='<c-e>'
 let g:sparkupNextMapping = '<c-j>'
@@ -237,10 +229,7 @@ endif
 
 NeoBundle 'http://github.com/chrismetcalf/vim-yankring'
 NeoBundle 'http://github.com/fuenor/qfixhowm'
-NeoBundle 'http://github.com/gregsexton/VimCalc'
-NeoBundle 'http://github.com/kana/vim-smartchr'
 NeoBundle 'http://github.com/koron/chalice'
-"NeoBundle 'http://github.com/Lokaltog/vim-easymotion'
 NeoBundle 'http://github.com/msanders/snipmate.vim'
 " NeoBundle 'http://github.com/rstacruz/sparkup', {'rtp': 'vim/'}
 NeoBundle 'http://github.com/Shougo/neobundle.vim'
@@ -250,10 +239,10 @@ NeoBundle 'http://github.com/Shougo/vimproc'
 NeoBundle 'http://github.com/Shougo/vimshell'
 NeoBundle 'http://github.com/scrooloose/nerdtree'
 NeoBundle 'http://github.com/sjl/gundo.vim'
-"NeoBundle 'http://github.com/shemerey/vim-project'
-"NeoBundle 'http://github.com/scrooloose/syntastic'
+" NeoBundle 'http://github.com/shemerey/vim-project'
+" NeoBundle 'http://github.com/scrooloose/syntastic'
 NeoBundle 'http://github.com/thinca/vim-guicolorscheme'
-"NeoBundle 'http://github.com/thinca/vim-quickrun'
+" NeoBundle 'http://github.com/thinca/vim-quickrun'
 NeoBundle 'http://github.com/thinca/vim-ref'
 NeoBundle 'http://github.com/tpope/vim-fugitive'
 NeoBundle 'http://github.com/tpope/vim-surround'
@@ -279,10 +268,9 @@ NeoBundle 'http://github.com/vim-scripts/sudo.vim'
 NeoBundle 'http://github.com/vim-scripts/tComment'
 NeoBundle 'http://github.com/vim-scripts/taglist.vim'
 NeoBundle 'http://github.com/vim-scripts/vcscommand.vim'
-NeoBundle 'http://github.com/vim-scripts/wombat256.vim'
 NeoBundle 'http://github.com/vim-scripts/molokai'
-NeoBundle 'http://github.com/vim-scripts/pyte'
 NeoBundle 'http://github.com/vim-scripts/jellybeans.vim'
+NeoBundle 'http://github.com/kakkyz81/evervim'
 
 filetype plugin indent on
 "}}}
