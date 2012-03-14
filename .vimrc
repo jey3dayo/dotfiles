@@ -201,6 +201,7 @@ nnoremap <Leader>T :<C-u>Tlist<CR>
 let g:unite_enable_start_insert=1
 noremap <Leader>b :Unite buffer<CR>
 noremap <Leader>f :Unite file<CR>
+noremap <Leader>m :Unite file_mru<CR>
 "noremap <Leader>m :Unite file_mru<CR>
 noremap <C-t>b :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
 noremap <C-t>f :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
@@ -247,9 +248,9 @@ NeoBundle 'http://github.com/thinca/vim-ref'
 NeoBundle 'http://github.com/tpope/vim-fugitive'
 NeoBundle 'http://github.com/tpope/vim-surround'
 NeoBundle 'http://github.com/tsaleh/vim-align'
-NeoBundle 'http://github.com/tsaleh/vim-matchit'
+NeoBundle 'http://github.com/nishigori/vim-sunday'
 
-NeoBundle 'http://github.com/vim-scripts/DBGp-client', {'rtp': 'vim/'}
+" NeoBundle 'http://github.com/vim-scripts/DBGp-client', {'rtp': 'vim/'}
 NeoBundle 'http://github.com/vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'http://github.com/vim-scripts/L9.git'
 NeoBundle 'http://github.com/vim-scripts/SQLUtilities'
@@ -270,7 +271,8 @@ NeoBundle 'http://github.com/vim-scripts/taglist.vim'
 NeoBundle 'http://github.com/vim-scripts/vcscommand.vim'
 NeoBundle 'http://github.com/vim-scripts/molokai'
 NeoBundle 'http://github.com/vim-scripts/jellybeans.vim'
-NeoBundle 'http://github.com/kakkyz81/evervim'
+" NeoBundle 'http://github.com/kakkyz81/evervim'
+NeoBundle 'https://github.com/altercation/solarized.git', {'rtp':'vim-colors-solarized/'}
 
 filetype plugin indent on
 "}}}
