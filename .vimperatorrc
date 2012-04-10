@@ -58,6 +58,14 @@ qmark n http://news.google.co.jp/nwshp?hl=ja&tab=wn
 qmark r http://www.google.com/reader/view/
 qmark t http://www.rememberthemilk.com/
 
+" Firefox Config
+set! browser.download.manager.retention=1
+set! browser.download.manager.scanWhenDone=false
+set! security.dialog_enable_delay=0
+set! config.trim_on_minimize=true
+set! dom.disable_window_move_resize=true
+set! dom.event.contextmenu.enabled=false
+
 " appendAnchor.js
 let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
