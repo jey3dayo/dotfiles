@@ -39,7 +39,7 @@ nmap <Leader>nl :set nolist<CR>:set nonumber<CR>
 
 " visible SpecialKey
 set list
-set listchars=tab:^\ ,trail:-
+set listchars=tab:>.,trail:-,extends:\
 
 
 " visible fullsize space
@@ -103,14 +103,14 @@ nnoremap <Leader>gX :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ **/*.*<Bar>cw<C
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
-nmap <silent> <F3> :execute 'vimgrep! /<C-R>=expand('<cword>')<CR>/j %'<CR>:copen10<CR>
+nmap <silent> <F3> :<C-u>execute 'vimgrep! /<C-R>=expand('<cword>')<CR>/j %'<CR>:copen10<CR>
 
 
 "set encoding
-nnoremap <Leader>si :e! ++enc=iso-2022-jp<CR>
-nnoremap <Leader>su :e! ++enc=utf-8<CR>
-nnoremap <Leader>ss :e! ++enc=sjis<CR>
-nnoremap <Leader>se :e! ++enc=euc-jp<CR>
+nnoremap <Leader>si :<C-u>e! ++enc=iso-2022-jp<CR>
+nnoremap <Leader>su :<C-u>e! ++enc=utf-8<CR>
+nnoremap <Leader>ss :<C-u>e! ++enc=sjis<CR>
+nnoremap <Leader>se :<C-u>e! ++enc=euc-jp<CR>
 
 
 " backup
@@ -148,23 +148,43 @@ set shortmess+=I
 
 
 " fugitive.vim
-nnoremap <Leader>gb :Gblame<CR>
-nnoremap <Leader>gd :Gdiff<CR>
-nnoremap <Leader>gg :Ggrep<Space>
-nnoremap <Leader>gl :Glog<CR>
-nnoremap <Leader>gs :Gstatus<CR>
-nnoremap <Leader>gw :Gwrite<CR>
+nnoremap <Leader>gb :<C-u>Gblame<CR>
+nnoremap <Leader>gd :<C-u>Gdiff<CR>
+nnoremap <Leader>gg :<C-u>Ggrep<Space>
+nnoremap <Leader>gl :<C-u>Glog<CR>
+nnoremap <Leader>gs :<C-u>Gstatus<CR>
+nnoremap <Leader>gw :<C-u>Gwrite<CR>
 
 
 " neocomplcache.vim
-let g:NeoComplCache_SmartCase=1
-let g:NeoComplCache_TagsAutoUpdate=1
-let g:NeoComplCache_EnableInfo=1
-let g:NeoComplCache_MinSyntaxLength=3
-let g:NeoComplCache_SkipInputTime='0.1'
-let g:NeoComplCache_SameFileTypeLists={}
-let g:NeoComplCache_SameFileTypeLists['c']='cpp'
-let g:NeoComplCache_SameFileTypeLists['cpp']='c'
+"
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplcache.
+let g:neocomplcache_enable_at_startup = 1
+" Use smartcase.
+let g:neocomplcache_enable_smart_case = 1
+" Use camel case completion.
+let g:neocomplcache_enable_camel_case_completion = 1
+" Use underbar completion.
+let g:neocomplcache_enable_underbar_completion = 1
+" Set minimum syntax keyword length.
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+    \ 'php' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
+    \ 'thtml' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
+    \ }
+
+
+" Define keyword.
+if !exists('g:neocomplcache_keyword_patterns')
+  let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 
 " NERD_tree.vim
@@ -199,10 +219,12 @@ nnoremap <Leader>T :<C-u>Tlist<CR>
 
 " unite.vim
 let g:unite_enable_start_insert=1
+let g:unite_source_history_yank_enable =1
 noremap <Leader>b :Unite buffer<CR>
 noremap <Leader>f :Unite file<CR>
 noremap <Leader>m :Unite file_mru<CR>
-"noremap <Leader>m :Unite file_mru<CR>
+noremap <Leader>y :Unite history/yank<CR>
+
 noremap <C-t>b :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
 noremap <C-t>f :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
 noremap <C-t>m :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
@@ -228,7 +250,7 @@ else
 	call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
-NeoBundle 'http://github.com/chrismetcalf/vim-yankring'
+
 NeoBundle 'http://github.com/fuenor/qfixhowm'
 NeoBundle 'http://github.com/koron/chalice'
 NeoBundle 'http://github.com/msanders/snipmate.vim'
@@ -241,9 +263,8 @@ NeoBundle 'http://github.com/Shougo/vimshell'
 NeoBundle 'http://github.com/scrooloose/nerdtree'
 NeoBundle 'http://github.com/sjl/gundo.vim'
 " NeoBundle 'http://github.com/shemerey/vim-project'
-" NeoBundle 'http://github.com/scrooloose/syntastic'
-NeoBundle 'http://github.com/thinca/vim-guicolorscheme'
-" NeoBundle 'http://github.com/thinca/vim-quickrun'
+NeoBundle 'http://github.com/scrooloose/syntastic'
+NeoBundle 'http://github.com/thinca/vim-quickrun'
 NeoBundle 'http://github.com/thinca/vim-ref'
 NeoBundle 'http://github.com/tpope/vim-fugitive'
 NeoBundle 'http://github.com/tpope/vim-surround'
@@ -255,7 +276,7 @@ NeoBundle 'http://github.com/vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'http://github.com/vim-scripts/L9.git'
 NeoBundle 'http://github.com/vim-scripts/SQLUtilities'
 NeoBundle 'http://github.com/vim-scripts/PHP-dictionary.git'
-NeoBundle 'http://github.com/vim-scripts/TwitVim'
+" NeoBundle 'http://github.com/vim-scripts/TwitVim'
 NeoBundle 'http://github.com/vim-scripts/cecutil'
 NeoBundle 'http://github.com/vim-scripts/eregex.vim'
 NeoBundle 'http://github.com/vim-scripts/genutils'
@@ -268,18 +289,17 @@ NeoBundle 'http://github.com/vim-scripts/renamer.vim'
 NeoBundle 'http://github.com/vim-scripts/sudo.vim'
 NeoBundle 'http://github.com/vim-scripts/tComment'
 NeoBundle 'http://github.com/vim-scripts/taglist.vim'
-NeoBundle 'http://github.com/vim-scripts/vcscommand.vim'
+" NeoBundle 'http://github.com/vim-scripts/vcscommand.vim'
 NeoBundle 'http://github.com/vim-scripts/molokai'
 NeoBundle 'http://github.com/vim-scripts/jellybeans.vim'
 " NeoBundle 'http://github.com/kakkyz81/evervim'
-NeoBundle 'https://github.com/altercation/solarized.git', {'rtp':'vim-colors-solarized/'}
-
+"NeoBundle 'http://github.com/vim-scripts/ShowMarks.git'
 filetype plugin indent on
 "}}}
 
 
 " yankring.vim
-nnoremap <Leader>y :<C-u>YRShow<CR>
+" nnoremap <Leader>y :<C-u>YRShow<CR>
 
 
 " Rename Command
