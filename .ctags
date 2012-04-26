@@ -1,7 +1,6 @@
---langmap=PHP:.php.inc.thtml
---php-kinds=c+f+d
+--langmap=PHP:+.inc.thtml
+--php-kinds=cfd
 --langdef=js
---langmap=js:.js
 --regex-js=/([A-Za-z0-9._$]+)[ \t]*[:=][ \t]*\{/\1/,object/
 --regex-js=/([A-Za-z0-9._$()]+)[ \t]*[:=][ \t]*function[ \t]*\(/\1/,function/
 --regex-js=/function[ \t]+([A-Za-z0-9._$]+)[ \t]*([^)])/\1/,function/
