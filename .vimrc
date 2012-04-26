@@ -33,9 +33,10 @@ colorscheme wombat
 " colorscheme wombat256mod
 highlight Search ctermbg=7
 
+
 " set list
-nmap <Leader>sl :set list<CR>:set number<CR>
-nmap <Leader>nl :set nolist<CR>:set nonumber<CR>
+nmap <Leader>sn :<C-u>set number!<CR>
+nmap <Leader>sl :<C-u>set list!<CR>
 
 " visible SpecialKey
 set list
@@ -93,7 +94,6 @@ filetype indent on
 
 " map
 nnoremap <Leader>s <Nop>
-nnoremap <Leader>sh :<C-u>set hlsearch<CR>
 nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
 nnoremap <Leader>gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap <Leader>gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
@@ -139,8 +139,8 @@ nnoremap gt  :<C-u>tabnext<CR>
 nnoremap gT  :<C-u>tabprevious<CR>
 
 
-" ESC ESC -> nohlsearch
-nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
+" ESC ESC -> toggle hlsearch
+nnoremap <Esc><Esc> :<C-u>set hlsearch!<Return>
 
 set shellslash
 set hidden
@@ -207,11 +207,6 @@ let g:sparkupNextMapping = '<c-j>'
 let g:snippets_dir = $HOME.'/.vim/snippets'
 
 
-" syntastic
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=2
-
-
 " taglist.vim
 set tags=tags
 nnoremap <Leader>T :<C-u>Tlist<CR>
@@ -263,7 +258,6 @@ NeoBundle 'http://github.com/Shougo/vimshell'
 NeoBundle 'http://github.com/scrooloose/nerdtree'
 NeoBundle 'http://github.com/sjl/gundo.vim'
 " NeoBundle 'http://github.com/shemerey/vim-project'
-NeoBundle 'http://github.com/scrooloose/syntastic'
 NeoBundle 'http://github.com/thinca/vim-quickrun'
 NeoBundle 'http://github.com/thinca/vim-ref'
 NeoBundle 'http://github.com/tpope/vim-fugitive'
@@ -279,6 +273,7 @@ NeoBundle 'http://github.com/vim-scripts/PHP-dictionary.git'
 " NeoBundle 'http://github.com/vim-scripts/TwitVim'
 NeoBundle 'http://github.com/vim-scripts/cecutil'
 NeoBundle 'http://github.com/vim-scripts/eregex.vim'
+NeoBundle 'http://github.com/vim-scripts/errormarker.vim.git'
 NeoBundle 'http://github.com/vim-scripts/genutils'
 NeoBundle 'http://github.com/vim-scripts/grep.vim'
 NeoBundle 'http://github.com/vim-scripts/multvals.vim'
