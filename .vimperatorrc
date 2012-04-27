@@ -48,11 +48,15 @@ noremap ! :set invum<CR>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 
+" Open URL
+noremap <Leader>a :o readitlater<CR>
+
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
 qmark e http://www.evernote.com/Home.action
 qmark f http://www.facebook.com/
-qmark l http://readitlaterlist.com/unread
+qmark g http://grooveshark.com/
+qmark l http://www.readability.com/
 qmark m https://mail.google.com/mail/
 qmark n http://news.google.co.jp/nwshp?hl=ja&tab=wn
 qmark r http://www.google.com/reader/view/
@@ -70,14 +74,16 @@ set! dom.event.contextmenu.enabled=false
 let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
 
+
 "copy.js {{{
 map <leader>y :copy<Space>TitleAndbittly<CR>
 map <leader>Y :copy<Space>titleAndURL<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
-    { label: 'titleAndURL',     value: '%TITLE% %URL%' },
-    { label: 'title<cr>URL',   value: '%TITLE%\n%URL%' },
+    { label: 'Title And goo.gl',value: 'copy title&url with goo.gl', custom: function() { var title = content.document.title; return title + "\n" + getShortUrl(); }},
+    { label: 'title And URL',   value: '%TITLE% %URL%' },
+    { label: 'title<cr>URL',    value: '%TITLE%\n%URL%' },
     { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
     { label: 'title',           value: '%TITLE%' },
     { label: 'url',             value: '%URL%' },
@@ -89,6 +95,25 @@ javascript <<EOM
     { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
     { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
     ];
+    
+var getShortUrl = function() {
+  var longUrl = content.document.location.href;
+
+  var googl = {
+    'url' : 'https://www.googleapis.com/urlshortener/v1/url?key=',
+    'key' : 'AIzaSyB08v77AcrWI31DfD9Iii54HwkeyTOrs7c',
+    'method' : 'POST',
+    'contentType' : 'application/json',
+    'longJson' : '{ "longUrl" : "' + longUrl + '" }'
+  };
+
+  var request = new XMLHttpRequest();
+  request.open(googl.method, googl.url + googl.key, false);
+  request.setRequestHeader('Content-Type', googl.contentType);
+  request.send(googl.longJson);
+
+  return JSON.parse(request.responseText).id;
+};
 EOM
 " }}}
 
@@ -160,7 +185,6 @@ direct_bookmark
 feedSomeKeys_3
 feeder
 gmail-commando
-google-plus-commando
 hint-tombloo
 hints-for-embedded
 ldrize_cooperation
@@ -168,10 +192,8 @@ ldrize_cooperation_fetch_flv
 localkeymode
 multi_requester
 nicolist
-open-frame
 prevent-pseudo-domain
 proxy
-readitlater
 sbmcommentsviewer
 stella
 stylish
@@ -179,7 +201,6 @@ tombloo
 twittperator
 usi
 walk-input
-win-mouse
 x-hint
 </>.toString().split(/\s+/).filter(function(n) n);
 EOF
@@ -248,9 +269,6 @@ liberator.globalVariables.proxy_settings = [
 ];
 EOM
 " }}}
-
-" readitlater.js
-noremap s :readitlater<CR>
 
 " sbmcommentsviewer.js
 noremap <Leader>v :viewSBMComments<CR>
