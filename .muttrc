@@ -24,7 +24,7 @@ set certificate_file = ~/.mutt/certificates
 
 # SMTP
 #set smtp_url = "smtp://j138m@smtp.gmail.com:587/"
-#set smtp_pass = "qbsm59ivggg"
+#set smtp_pass = "password"
 
 # secure session
 set move = no

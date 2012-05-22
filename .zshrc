@@ -93,7 +93,6 @@ alias l='ls -lAFhp'
 alias ls='ls -pF'
 alias su="su -l"
 alias hg="hg --encoding=utf-8"
-alias tmux="tmux -2"
 
 # set prompt {{{
 autoload colors

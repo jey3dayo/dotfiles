@@ -157,7 +157,6 @@ nnoremap <Leader>gw :<C-u>Gwrite<CR>
 
 
 " neocomplcache.vim
-"
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
@@ -232,6 +231,7 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split
 au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
+
 " neobundle.vim {{{
 set nocompatible
 filetype indent off
@@ -246,55 +246,50 @@ else
 endif
 
 
-NeoBundle 'http://github.com/fuenor/qfixhowm'
-NeoBundle 'http://github.com/koron/chalice'
-NeoBundle 'http://github.com/msanders/snipmate.vim'
-" NeoBundle 'http://github.com/rstacruz/sparkup', {'rtp': 'vim/'}
-NeoBundle 'http://github.com/Shougo/neobundle.vim'
-NeoBundle 'http://github.com/Shougo/neocomplcache'
-NeoBundle 'http://github.com/Shougo/unite.vim'
-NeoBundle 'http://github.com/Shougo/vimproc'
-NeoBundle 'http://github.com/Shougo/vimshell'
-NeoBundle 'http://github.com/scrooloose/nerdtree'
-NeoBundle 'http://github.com/sjl/gundo.vim'
-" NeoBundle 'http://github.com/shemerey/vim-project'
-NeoBundle 'http://github.com/thinca/vim-quickrun'
-NeoBundle 'http://github.com/thinca/vim-ref'
-NeoBundle 'http://github.com/tpope/vim-fugitive'
-NeoBundle 'http://github.com/tpope/vim-surround'
-NeoBundle 'http://github.com/tsaleh/vim-align'
-NeoBundle 'http://github.com/nishigori/vim-sunday'
+NeoBundle 'fuenor/qfixhowm'
+NeoBundle 'koron/chalice'
+NeoBundle 'msanders/snipmate.vim'
+NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+NeoBundle 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimproc'
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'sjl/gundo.vim'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'thinca/vim-ref'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tsaleh/vim-align'
+NeoBundle 'nishigori/vim-sunday'
 
-" NeoBundle 'http://github.com/vim-scripts/DBGp-client', {'rtp': 'vim/'}
-NeoBundle 'http://github.com/vim-scripts/DoxygenToolkit.vim'
-NeoBundle 'http://github.com/vim-scripts/L9.git'
-NeoBundle 'http://github.com/vim-scripts/SQLUtilities'
-NeoBundle 'http://github.com/vim-scripts/PHP-dictionary.git'
-" NeoBundle 'http://github.com/vim-scripts/TwitVim'
-NeoBundle 'http://github.com/vim-scripts/cecutil'
-NeoBundle 'http://github.com/vim-scripts/eregex.vim'
-NeoBundle 'http://github.com/vim-scripts/errormarker.vim.git'
-NeoBundle 'http://github.com/vim-scripts/genutils'
-NeoBundle 'http://github.com/vim-scripts/grep.vim'
-NeoBundle 'http://github.com/vim-scripts/multvals.vim'
-NeoBundle 'http://github.com/vim-scripts/php.vim'
-NeoBundle 'http://github.com/vim-scripts/phpfolding.vim'
-NeoBundle 'http://github.com/vim-scripts/php.vim--Hodge'
-NeoBundle 'http://github.com/vim-scripts/renamer.vim'
-NeoBundle 'http://github.com/vim-scripts/sudo.vim'
-NeoBundle 'http://github.com/vim-scripts/tComment'
-NeoBundle 'http://github.com/vim-scripts/taglist.vim'
-" NeoBundle 'http://github.com/vim-scripts/vcscommand.vim'
-NeoBundle 'http://github.com/vim-scripts/molokai'
-NeoBundle 'http://github.com/vim-scripts/jellybeans.vim'
-" NeoBundle 'http://github.com/kakkyz81/evervim'
-"NeoBundle 'http://github.com/vim-scripts/ShowMarks.git'
+" NeoBundle 'vim-scripts/DBGp-client', {'rtp': 'vim/'}
+NeoBundle 'vim-scripts/DoxygenToolkit.vim'
+NeoBundle 'vim-scripts/L9.git'
+NeoBundle 'vim-scripts/SQLUtilities'
+NeoBundle 'vim-scripts/PHP-dictionary.git'
+" NeoBundle 'vim-scripts/TwitVim'
+NeoBundle 'vim-scripts/cecutil'
+NeoBundle 'vim-scripts/eregex.vim'
+NeoBundle 'vim-scripts/errormarker.vim.git'
+NeoBundle 'vim-scripts/genutils'
+NeoBundle 'vim-scripts/grep.vim'
+NeoBundle 'vim-scripts/multvals.vim'
+NeoBundle 'vim-scripts/php.vim'
+NeoBundle 'vim-scripts/phpfolding.vim'
+NeoBundle 'vim-scripts/php.vim--Hodge'
+NeoBundle 'vim-scripts/renamer.vim'
+NeoBundle 'vim-scripts/sudo.vim'
+NeoBundle 'vim-scripts/tComment'
+NeoBundle 'vim-scripts/taglist.vim'
+" NeoBundle 'vim-scripts/vcscommand.vim'
+NeoBundle 'vim-scripts/molokai'
+NeoBundle 'vim-scripts/jellybeans.vim'
+NeoBundle 'kakkyz81/evervim'
+"NeoBundle 'vim-scripts/ShowMarks.git'
 filetype plugin indent on
 "}}}
-
-
-" yankring.vim
-" nnoremap <Leader>y :<C-u>YRShow<CR>
 
 
 " Rename Command
