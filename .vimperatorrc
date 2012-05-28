@@ -49,7 +49,7 @@ inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 
 " Open URL
-noremap <Leader>a :o readitlater<CR>
+noremap <Leader>a :o readlater<CR>
 
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
@@ -74,15 +74,14 @@ set! dom.event.contextmenu.enabled=false
 let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
 
-
 "copy.js {{{
 map <leader>y :copy<Space>TitleAndbittly<CR>
 map <leader>Y :copy<Space>titleAndURL<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
-    { label: 'Title And goo.gl',value: 'copy title&url with goo.gl', custom: function() { var title = content.document.title; return title + "\n" + getShortUrl(); }},
-    { label: 'title And URL',   value: '%TITLE% %URL%' },
+    { label: 'Title goo.gl',value: 'copy title&url with goo.gl', custom: function() { var title = content.document.title; return title + "\n" + getShortUrl(); }},
+    { label: 'title URL',   value: '%TITLE% %URL%' },
     { label: 'title<cr>URL',    value: '%TITLE%\n%URL%' },
     { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
     { label: 'title',           value: '%TITLE%' },
@@ -90,12 +89,12 @@ javascript <<EOM
     { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
     { label: 'htmlblockquote',  value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
     { label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://api.bitly.com/v3/shorten?login=j138&apiKey=R_3956b371cd906f5cb0bb5a326bf5165e&format=txt&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
-    { label: 'TitleAndbittly',  value: 'Get bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://api.bitly.com/v3/shorten?login=j138&apiKey=R_3956b371cd906f5cb0bb5a326bf5165e&format=txt&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
+    { label: 'Title bittly',  value: 'Get bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://api.bitly.com/v3/shorten?login=j138&apiKey=R_3956b371cd906f5cb0bb5a326bf5165e&format=txt&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
     { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
     { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
     { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
     ];
-    
+
 var getShortUrl = function() {
   var longUrl = content.document.location.href;
 
@@ -184,90 +183,24 @@ copy
 direct_bookmark
 feedSomeKeys_3
 feeder
-gmail-commando
 hint-tombloo
 hints-for-embedded
 ldrize_cooperation
 ldrize_cooperation_fetch_flv
 localkeymode
 multi_requester
-nicolist
+open-frame
 prevent-pseudo-domain
 proxy
 sbmcommentsviewer
 stella
 stylish
 tombloo
-twittperator
 usi
 walk-input
 x-hint
 </>.toString().split(/\s+/).filter(function(n) n);
 EOF
-" }}}
-
-" proxy.js {{{
-javascript <<EOM
-
-liberator.globalVariables.proxy_settings = [
-{
-    conf_name: 'disable',
-    conf_usage: 'direct connection',
-    settings: [
-        {
-            label: 'type',
-            param: 0
-        }
-    ]
-},
-{
-    conf_name: 'proxomitron',
-    conf_usage: 'use internal proxy',
-    settings: [
-        {
-            label: 'type',
-            param: 1
-        },
-        {
-            label: 'http',
-            param: 'localhost'
-        },
-        {
-            label: 'http_port',
-            param: 8080
-        }
-    ]
-},
-{
-    conf_name: 'proxy.pac',
-    conf_usage: 'proxy.pac',
-    settings: [
-        {
-            label: 'type',
-            param: 2
-       },
-       {
-            label: 'autoconfig_url',
-            param: 'http://192.168.9.20/proxy.pac'
-       },
-    ]
-},
-{
-	conf_name: 'tokyo-proxy.pac',
-	conf_usage: 'tokyo-proxy.pac',
-	settings: [
-		{
-			label: 'type',
-			param: 2
-		},
-		{
-			label: 'autoconfig_url',
-			param: 'http://192.168.5.20/tokyo-proxy.pac'
-		},
-	]
-}
-];
-EOM
 " }}}
 
 " sbmcommentsviewer.js
@@ -300,28 +233,6 @@ let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
 }
 EOM
 " }}}
-
-" patch Greasemonkey 0.9.1 "{{{
-js <<EOM
-autocommands.add('VimperatorEnter', '.*',
-  function() {
-    let gm = Components.classes['@greasemonkey.mozdev.org/greasemonkey-service;1'];
-    if (gm) {
-      gm = gm.getService().wrappedJSObject;
-      if (gm.injectScripts.toSource().search('sharedWindow') == -1) {
-          gm.injectScripts = liberator.eval(
-              gm.injectScripts.toSource()
-                  .replace(/(?=var firebugConsole)/,
-                          'var sharedWindow = {};' +
-                          'sharedWindow.window = sharedWindow;' +
-                          'sharedWindow.__proto__ = new XPCNativeWrapper(unsafeContentWin);')
-                  .replace(/(?=sandbox\.__proto__)/, ' sandbox.window = sharedWindow;'),
-              gm.injectScripts);
-      }
-    }
-  });
-EOM
-"}}}
 
 echo "done."
 
