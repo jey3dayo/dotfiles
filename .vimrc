@@ -187,8 +187,8 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 
 " NERD_tree.vim
-nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
-let g:NERDTreeHijackNetrw = 0
+" nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
+" let g:NERDTreeHijackNetrw = 0
 
 
 " ref.vim
@@ -232,6 +232,15 @@ au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vspli
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
 
+" vim-powerline.vim
+" let g:Powerline_symbols = 'fancy'
+
+
+" vimfiler.vim
+let g:vimfiler_as_default_explorer = 1
+nnoremap <Leader>e  :<C-u>VimFilerSplit<CR>
+
+
 " neobundle.vim {{{
 set nocompatible
 filetype indent off
@@ -255,6 +264,7 @@ NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'Shougo/vimshell'
+NeoBundle 'Shougo/vimfiler'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'thinca/vim-quickrun'
@@ -287,7 +297,7 @@ NeoBundle 'vim-scripts/taglist.vim'
 NeoBundle 'vim-scripts/molokai'
 NeoBundle 'vim-scripts/jellybeans.vim'
 NeoBundle 'kakkyz81/evervim'
-"NeoBundle 'vim-scripts/ShowMarks.git'
+NeoBundle 'Lokaltog/vim-powerline'
 filetype plugin indent on
 "}}}
 
