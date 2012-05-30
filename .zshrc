@@ -165,5 +165,7 @@ RPROMPT="%1(v|%F{green}%1v%f|)"
 # git complete
 __git_files() { _files }
 
+# mosh complete
+compdef mosh=ssh
 # rvm path
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
