@@ -18,9 +18,8 @@ alias dev="/var/www/html/sem/src"
 
 export DOTFILES=$HOME/www/dotfiles
 export VIMDIR=$HOME/var/www/git/dotfiles/.vim
-alias vim="/usr/bin/vim73"
 
-export DEV=$HOME/www/sem-dev/sem_y_migrate
-export BATCH=$HOME/www/sem-dev/sem_y_migrate_batch
+export DEV=$HOME/www/sem-dev/sem_web
+export BATCH=$HOME/www/sem-dev/sem_batch
 
 export SMB=/var/samba/public

@@ -75,8 +75,8 @@ let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
 
 "copy.js {{{
-map <leader>y :copy<Space>TitleAndbittly<CR>
-map <leader>Y :copy<Space>titleAndURL<CR>
+map <leader>y :copy<Space>Title bittly<CR>
+map <leader>Y :copy<Space>title URL<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
