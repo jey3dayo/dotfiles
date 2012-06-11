@@ -273,6 +273,7 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tsaleh/vim-align'
 NeoBundle 'nishigori/vim-sunday'
+NeoBundle 'mileszs/ack.vim'
 
 " NeoBundle 'vim-scripts/DBGp-client', {'rtp': 'vim/'}
 NeoBundle 'vim-scripts/DoxygenToolkit.vim'
