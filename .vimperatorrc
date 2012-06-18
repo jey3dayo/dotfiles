@@ -49,7 +49,7 @@ inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 
 " Open URL
-noremap <Leader>a :o readlater<CR>
+noremap <Leader>r :o readlater<CR>
 
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
