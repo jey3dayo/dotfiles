@@ -247,24 +247,26 @@ filetype indent off
 
 if has("win32") || has("win64")
   set rtp+=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
-  call neobundle#rc('C:/repos/dotfiles/.vim/bundle/')
+  call neobundle#rc('~/Documents/GitHub/dotfiles/.vim/bundle/')
 else
     set rtp+=~/.vim/bundle/neobundle.vim/
     "call neobundle#rc()
 	call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
-
-NeoBundle 'fuenor/qfixhowm'
-NeoBundle 'koron/chalice'
-NeoBundle 'msanders/snipmate.vim'
-NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'Shougo/vimshell'
-NeoBundle 'Shougo/vimfiler'
+NeoBundle 'fuenor/qfixhowm'
+NeoBundle 'koron/chalice'
+NeoBundle 'mileszs/ack.vim'
+NeoBundle 'msanders/snipmate.vim'
+NeoBundle 'nishigori/vim-sunday'
+NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'thinca/vim-quickrun'
@@ -272,20 +274,17 @@ NeoBundle 'thinca/vim-ref'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tsaleh/vim-align'
-NeoBundle 'nishigori/vim-sunday'
-NeoBundle 'mileszs/ack.vim'
 
 " NeoBundle 'vim-scripts/DBGp-client', {'rtp': 'vim/'}
 NeoBundle 'vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'vim-scripts/L9.git'
-NeoBundle 'vim-scripts/SQLUtilities'
+" NeoBundle 'vim-scripts/SQLUtilities'
 NeoBundle 'vim-scripts/PHP-dictionary.git'
-" NeoBundle 'vim-scripts/TwitVim'
+NeoBundle 'vim-scripts/TwitVim'
 NeoBundle 'vim-scripts/cecutil'
 NeoBundle 'vim-scripts/eregex.vim'
 NeoBundle 'vim-scripts/errormarker.vim.git'
 NeoBundle 'vim-scripts/genutils'
-NeoBundle 'vim-scripts/grep.vim'
 NeoBundle 'vim-scripts/multvals.vim'
 NeoBundle 'vim-scripts/php.vim'
 NeoBundle 'vim-scripts/phpfolding.vim'
@@ -293,12 +292,9 @@ NeoBundle 'vim-scripts/php.vim--Hodge'
 NeoBundle 'vim-scripts/renamer.vim'
 NeoBundle 'vim-scripts/sudo.vim'
 NeoBundle 'vim-scripts/tComment'
-NeoBundle 'vim-scripts/taglist.vim'
 " NeoBundle 'vim-scripts/vcscommand.vim'
-NeoBundle 'vim-scripts/molokai'
+" NeoBundle 'vim-scripts/molokai'
 NeoBundle 'vim-scripts/jellybeans.vim'
-NeoBundle 'kakkyz81/evervim'
-NeoBundle 'Lokaltog/vim-powerline'
 filetype plugin indent on
 "}}}
 
