@@ -13,3 +13,7 @@ map <leader><c-e> <ESC>:!php %<CR>
 " ref.vim
 nmap <leader><F1> :Ref phpmanual<Space>
 
+
+set makeprg=php\ -l\ %
+set errorformat=%m\ in\ %f\ on\ line\ %l
+
