@@ -70,6 +70,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
 
 export LISTMAX=0
+export GREP_OPTIONS='--color=auto'
 
 # Completion configuration
 fpath=(~/.zsh/functions/Completion ${fpath})
