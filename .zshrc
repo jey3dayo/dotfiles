@@ -89,11 +89,12 @@ alias df="df -h"
 alias du="du -h"
 alias diff="colordiff"
 alias less="less -R"
-alias ^='cd ..'
 alias l='ls -lAFhp'
 alias ls='ls -pF'
 alias su="su -l"
 alias hg="hg --encoding=utf-8"
+alias gst="git status -s"
+alias gad="git add"
 
 # set prompt {{{
 autoload colors
