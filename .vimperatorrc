@@ -18,7 +18,7 @@ let mapleader = ","
 set gui=addons,bookmarks,nomenu,tabs,navigation
 set animations=true
 set visualbell
-colorscheme indigo
+colorscheme vimpwhite
 
 hi StatusLine color:black; background:#ABD31B; font-weight:normal;
 
@@ -200,6 +200,7 @@ sbmcommentsviewer
 stella
 stylish
 tombloo
+twittperator
 usi
 walk-input
 x-hint
@@ -208,17 +209,20 @@ EOM
 " }}}
 
 " sbmcommentsviewer.js
-noremap <Leader>v :viewSBMComments<CR>
+noremap <Leader>v :viewSBMComments -t h<CR>
 
 " toggle autopagerize
 noremap <silent> <Leader>a :autopagerize<CR>
+
+" twittperator.js
+noremap <Leader>t :reading %TITLE% - %URL&<CR>
 
 " multi_requester.js
 noremap <Leader>d :mr alc<Space>
 noremap <Leader>D :mr goo<Space>
 
 " tumblr
-nnoremap <Leader>t :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
+nnoremap <Leader>T :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
 
 " Toggle Autopagerize {{{
 javascript <<EOM
