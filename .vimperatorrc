@@ -136,30 +136,6 @@ lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
 " hints-for-embedded.js
 let g:hints_for_embedded_mode="e"
 
-" localkeymode.js {{{
-let g:localkeymode_enable = "true"
-
-javascript <<EOM
-liberator.globalVariables.localKeyMappings= [
-    [/www\.nicovideo\.jp\/watch/, [
-        ['p', ':stplay'],
-        ['m', ':stmute'],
-        ['R', ':strepeat'],
-        ['c', ':stcomment'],
-        ['s', ':stseek! +10'],
-        ['S', ':stseek! -10'],
-    ]],
-    [/youtube\.com\/watch/, [
-        ['p', ':stplay'],
-        ['m', ':stmute'],
-        ['R', ':strepeat'],
-        ['s', ':stseek! +10'],
-        ['S', ':stseek! -10'],
-    ]],
-];
-EOM
-" }}}
-
 " ldrize_cooperation.js
 noremap <Leader>l :toggleldrizecooperation<CR>
 let g:ldrc_intelligence_bind = "true"
@@ -191,7 +167,6 @@ hint-tombloo
 hints-for-embedded
 ldrize_cooperation
 ldrize_cooperation_fetch_flv
-localkeymode
 multi_requester
 open-frame
 prevent-pseudo-domain
