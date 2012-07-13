@@ -46,7 +46,6 @@ setopt pushd_ignore_dups
 setopt rm_star_silent
 setopt rm_star_wait
 setopt share_history
-setopt no_nomatch
 
 autoload zed
 bindkey -e
