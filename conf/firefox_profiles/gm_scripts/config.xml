@@ -1,77 +1,44 @@
 <UserScriptConfig>
-	<Script filename="minibuffer.user.js" name="Minibuffer" namespace="http://white.s151.xrea.com/" description="Minibuffer" version="" enabled="true" basedir="minibuffer" modified="1299632998972" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" installurl="http://userscripts.org/scripts/source/11759.user.js">
+	<Script basedir="minibuffer" checkRemoteUpdates="true" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="Minibuffer" enabled="true" filename="minibuffer.user.js" installTime="1329479150792" lastUpdateCheck="1299632998972" modified="1299632998000" name="Minibuffer" namespace="http://white.s151.xrea.com/" runAt="document-end" updateAvailable="false" version="" installurl="http://userscripts.org/scripts/source/11759.user.js" updateurl="http://userscripts.org/scripts/source/11759.meta.js">
 		<Include>*</Include>
 	</Script>
-	<Script filename="ldrize.user.js" name="LDRize" namespace="http://white.s151.xrea.com/" description="j,k,v,p,o,:,f,? + l,s,i" version="" enabled="true" basedir="ldrize" modified="1299632104360" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" installurl="http://userscripts.org/scripts/source/11562.user.js">
+	<Script basedir="ldrize" checkRemoteUpdates="true" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="j,k,v,p,o,:,f,? + l,s,i" enabled="true" filename="ldrize.user.js" installTime="1329479150807" lastUpdateCheck="1299632104360" modified="1336961165743" name="LDRize" namespace="http://white.s151.xrea.com/" runAt="document-end" updateAvailable="false" version="" installurl="http://userscripts.org/scripts/source/11562.user.js" updateurl="http://userscripts.org.nyud.net/scripts/source/11562.meta.js">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
 		<Include>file:///*</Include>
 	</Script>
-	<Script filename="autopagerize.user.js" name="AutoPagerize" namespace="http://swdyh.yu.to/" description="loading next page and inserting into current page." version="" enabled="true" basedir="autopagerize" modified="1296005211367" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
+	<Script basedir="autopagerize" checkRemoteUpdates="true" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="loading next page and inserting into current page." enabled="false" filename="autopagerize.user.js" installTime="1329479150808" lastUpdateCheck="1296005211367" modified="1296005210000" name="AutoPagerize" namespace="http://swdyh.yu.to/" runAt="document-end" updateAvailable="false" version="">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
 		<Exclude>https://mail.google.com/*</Exclude>
 		<Exclude>http://b.hatena.ne.jp/*</Exclude>
 		<Exclude>http://www.facebook.com/plugins/like.php*</Exclude>
 		<Exclude>http://api.tweetmeme.com/button.js*</Exclude>
-		<Exclude>http://192.168.9.*/*</Exclude>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
 	</Script>
-	<Script filename="reblogcommand.user.js" name="ReblogCommand" namespace="http://white.s151.xrea.com/" description="" version="" enabled="true" basedir="reblogcommand" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
+	<Script basedir="reblogcommand" checkRemoteUpdates="true" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="true" filename="reblogcommand.user.js" installTime="1329479150809" lastUpdateCheck="1293296248000" modified="1293296248000" name="ReblogCommand" namespace="http://white.s151.xrea.com/" runAt="document-end" updateAvailable="false" version="">
 		<Include>http://*</Include>
 		<Include>https://*</Include>
 		<Exclude>http://www.tumblr.com/share</Exclude>
 		<Exclude>http://192.168.9.*/*</Exclude>
 		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
 	</Script>
-	<Script filename="gb.user.js" name="G+?B" namespace="http://ukgk.g.hatena.ne.jp/faerie/" description="show ?B count in Google search result" version="" enabled="true" basedir="gb" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
-		<Include>http://*.google.*/*q=*</Include>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
-	</Script>
-	<Script filename="wikipediagoogleimage.user.js" name="wikipedia.googleimage" namespace="http://www.kagami.org/" description="" version="" enabled="true" basedir="wikipediagoogleimage" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
+	<Script basedir="wikipediagoogleimage" checkRemoteUpdates="true" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="true" filename="wikipediagoogleimage.user.js" installTime="1329479150811" lastUpdateCheck="1293296248000" modified="1293296248000" name="wikipedia.googleimage" namespace="http://www.kagami.org/" runAt="document-end" updateAvailable="false" version="">
 		<Include>http://ja.wikipedia.org/wiki/*</Include>
 		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
 	</Script>
-	<Script filename="amazon_cross_book_check.user.js" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" description="" version="" enabled="true" basedir="amazon_cross_book_check" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
+	<Script basedir="amazon_cross_book_check" checkRemoteUpdates="true" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="" enabled="true" filename="amazon_cross_book_check.user.js" installTime="1329479150812" lastUpdateCheck="1293296248000" modified="1293296248000" name="Amazon Cross Book Check" namespace="http://d.hatena.ne.jp/adda/" runAt="document-end" updateAvailable="false" version="">
 		<Include>http://www.amazon.co.jp/*</Include>
 		<Include>http://amazon.co.jp/*</Include>
 		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
 	</Script>
-	<Script filename="composite_-yet_another_t.user.js" name="COMPOSITE -Yet another Tumblr photo viewer-" namespace="http://d.hatena.ne.jp/koyachi" description="" version="" enabled="true" basedir="composite_-yet_another_t" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
-		<Include>http://*.tumblr.com/</Include>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
-	</Script>
-	<Script filename="googlewithhatenabookmark.user.js" name="GoogleWithHatenaBookmark" namespace="http://d.hatena.ne.jp/eclipse-a/" description="search entry posted Hatena Bookmark with Google" version="" enabled="true" basedir="googlewithhatenabookmark" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
-		<Include>http://www.google.*/search?*</Include>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
-	</Script>
-	<Script filename="0ldrize_siteinfo.user.js" name="0LDRize SITEINFO" namespace="http://ss-o.net/" description="oLDRize SITEINFO" version="" enabled="false" basedir="0ldrize_siteinfo" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
-		<Include>http*</Include>
-		<Exclude>http://192.168.9.*/*</Exclude>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
-	</Script>
-	<Script filename="google_reader_star_opene.user.js" name="Google Reader Star Opener" namespace="http://www.sukechan.net/" description="Starred item open in a lump for Google Reader." version="1.0.1" enabled="true" basedir="google_reader_star_opene" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
+	<Script basedir="google_reader_star_opene" checkRemoteUpdates="true" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="Starred item open in a lump for Google Reader." enabled="true" filename="google_reader_star_opene.user.js" installTime="1329479150813" lastUpdateCheck="1293296248000" modified="1293296248000" name="Google Reader Star Opener" namespace="http://www.sukechan.net/" runAt="document-end" updateAvailable="false" version="1.0.1">
 		<Include>http://www.google.co.jp/reader/view/*</Include>
 		<Include>http://www.google.com/reader/view/*</Include>
 		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
 	</Script>
-	<Script filename="amazon_lowest_price_chec.user.js" name="Amazon Lowest Price Checker" namespace="http://gigi-net.net" description="" version="" enabled="true" basedir="amazon_lowest_price_chec" modified="1293296248000" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
-		<Include>http://www.amazon.co.jp/*</Include>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
-	</Script>
-	<Script filename="script_autoupdater.user.js" name="Script AutoUpdater" namespace="userscripts.org/eyalsoha" description="checks all your scripts for updates on user script.org" version="" enabled="false" basedir="script_autoupdater" modified="1294966990758" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
-		<Include>*</Include>
-		<Exclude>http://192.168.9.*/*</Exclude>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
-	</Script>
-	<Script filename="mouseover_translate_engl.user.js" name="Mouseover Translate English-Japanese EX" namespace="http://userscripts.org/users/81100" description="Mouseover Translate English-Japanese を機能拡張してみました。" version="1.03.10" enabled="false" basedir="mouseover_translate_engl" modified="1294972092585" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
-		<Include>*</Include>
-		<Exclude>http://192.168.9.*/*</Exclude>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
-	</Script>
-	<Script filename="youtube_hd_ultimate.user.js" name="YouTube HD Ultimate" namespace="#aVg" description="The best of the hundreds of YouTube scripts, because we make it. Updated all the time, by me and you! Your favorite YouTube script is better than ever!" version="1.2.9" enabled="true" basedir="youtube_hd_ultimate" modified="1294972095726" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709">
-		<Include>http*://www.youtube.com/watch*</Include>
-		<Include>http*://youtube.com/watch*</Include>
-		<Exclude>http://sem-portal.cyberagent.co.jp/*</Exclude>
+	<Script basedir="Amazon_Kakaku.com_Checker" checkRemoteUpdates="true" dependhash="da39a3ee5e6b4b0d3255bfef95601890afd80709" description="Amazonに価格.comの最安値と差額を表示します" enabled="true" filename="109139.user.js" installTime="1342513808265" lastUpdateCheck="1342513831217" modified="1342513805435" name="Amazon Kakaku.com Checker" namespace="http://userscripts.org/scripts/show/109139" runAt="document-start" updateAvailable="" version="2.2" installurl="http://userscripts.org/scripts/source/109139.user.js" updateurl="https://userscripts.org/scripts/source/109139.meta.js">
+		<Include>http://www.amazon.co.jp/dp/*</Include>
+		<Include>http://www.amazon.co.jp/*/dp/*</Include>
+		<Include>http://www.amazon.co.jp/gp/*</Include>
 	</Script>
 </UserScriptConfig>
