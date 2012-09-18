@@ -227,8 +227,6 @@ au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 
 au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
-au FileType unite nnoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
 
@@ -285,6 +283,7 @@ NeoBundle 'vim-scripts/cecutil'
 NeoBundle 'vim-scripts/eregex.vim'
 NeoBundle 'vim-scripts/errormarker.vim.git'
 NeoBundle 'vim-scripts/genutils'
+NeoBundle 'vim-scripts/Markdown'
 NeoBundle 'vim-scripts/multvals.vim'
 NeoBundle 'vim-scripts/php.vim'
 NeoBundle 'vim-scripts/phpfolding.vim'

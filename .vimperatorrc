@@ -78,7 +78,7 @@ map <leader>Y :copy<Space>title URL<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
-    { label: 'Title goo.gl',value: 'copy title&url with goo.gl', custom: function() { var title = content.document.title; return title + "\n" + getShortUrl(); }},
+    { label: 'Title goo.gl',value: 'copy title&url with goo.gl', custom: function() { var title = content.document.title; return title + " " + getShortUrl(); }},
     { label: 'title URL',   value: '%TITLE% %URL%' },
     { label: 'title<cr>URL',    value: '%TITLE%\n%URL%' },
     { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
