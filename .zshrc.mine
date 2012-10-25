@@ -1,16 +1,6 @@
 # j138 .zshrc.mine
 
-export PATH=$PATH:/usr/local/clang
-export PATH=$PATH:/Developer/SDKs/flex_sdk/bin
-export PATH=$PATH:$HOME/byobu/bin
-
-# GO lang
-export GOROOT=$HOME/go
-export GOOS=darwin
-export GOARCH=386
-export GOBIN=$GOROOT/bin
-export PATH=$GOBIN:$PATH
-
+# export PATH=$PATH:/usr/local/clang
 # glowl
 alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
 alias dev="/var/www/html/sem/src"
