@@ -1,15 +1,10 @@
 # j138 .zshrc.mine
 
-# export PATH=$PATH:/usr/local/clang
 # glowl
 alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
-alias dev="/var/www/html/sem/src"
 
-
-export DOTFILES=$HOME/www/dotfiles
 export VIMDIR=$HOME/var/www/git/dotfiles/.vim
 
 export DEV=$HOME/www/sem-dev/sem_web
 export BATCH=$HOME/www/sem-dev/sem_batch
-
 export SMB=/var/samba/public

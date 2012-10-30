@@ -4,7 +4,7 @@ export LANG=ja_JP.UTF-8
 #export LANG=ja_JP.eucJP
 #export LANG=ja_JP.shift-jis
 
-export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin:$HOME/sbin
+export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin:$HOME/sbin
 export MANPATH=/opt/local/man:$MANPATH
 
 if [ -f "$HOME/.zshrc.mine" ]; then
