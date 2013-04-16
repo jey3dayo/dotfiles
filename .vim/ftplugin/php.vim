@@ -11,7 +11,7 @@ let g:PHP_vintage_case_default_indent = 1
 map <leader><c-e> <ESC>:!php %<CR>
 
 " ref.vim
-nmap <leader><F1> :Ref phpmanual<Space>
+nmap <leader>D :Ref phpmanual<Space>
 
 
 set makeprg=php\ -l\ %

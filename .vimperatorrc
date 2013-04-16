@@ -116,7 +116,7 @@ EOM
 
 " direct_bookmark.js
 let g:direct_sbm_use_services_by_tag = "h"
-let g:direct_sbm_use_services_by_post = "h"
+let g:direct_sbm_use_services_by_post = "hP"
 noremap <S-a> :sbm<Space>[
 noremap <Leader>V :bentry<CR>
 
@@ -149,22 +149,17 @@ if (liberator.has("Win32")) {
 
 liberator.globalVariables.plugin_loader_plugins = `
 _libly
-appendAnchor
 auto-focus-frame
 auto_detect_link
 bitly
-buffer-multiple-hints
 caret-hint
 commandBookmarklet
-cookieManager
 copy
 direct_bookmark
 feedSomeKeys_3
 feeder
 hint-tombloo
 hints-for-embedded
-ldrize_cooperation
-ldrize_cooperation_fetch_flv
 multi_requester
 open-frame
 prevent-pseudo-domain
@@ -172,11 +167,8 @@ proxy
 sbmcommentsviewer
 stella
 stylish
-tombloo
 twittperator
-usi
 walk-input
-x-hint
 `.split(/\s+/).filter(function(n) !/^!/.test(n));
 EOM
 " }}}
