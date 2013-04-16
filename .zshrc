@@ -83,7 +83,6 @@ compinit -u
 
 # alias
 alias where="command -v"
-alias j="jobs -l"
 alias datef="date +%F"
 alias df="df -h"
 alias du="du -h"
@@ -171,3 +170,7 @@ __git_files() { _files }
 compdef mosh=ssh
 # rvm path
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# autojump
+[[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && . ~/.autojump/etc/profile.d/autojump.sh
+
