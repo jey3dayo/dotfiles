@@ -147,7 +147,7 @@ if (liberator.has("Win32")) {
   liberator.globalVariables.plugin_loader_roots = "~/.vimperator/bundle/vimperator-plugins.git/"
 }
 
-liberator.globalVariables.plugin_loader_plugins = <>
+liberator.globalVariables.plugin_loader_plugins = `
 _libly
 appendAnchor
 auto-focus-frame
@@ -177,7 +177,7 @@ twittperator
 usi
 walk-input
 x-hint
-</>.toString().split(/\s+/).filter(function(n) n);
+`.split(/\s+/).filter(function(n) !/^!/.test(n));
 EOM
 " }}}
 
