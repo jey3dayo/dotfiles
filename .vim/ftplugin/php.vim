@@ -1,5 +1,5 @@
 " php config
-" set expandtab
+set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
@@ -8,7 +8,7 @@ au Syntax php set fdm=syntax
 let php_folding=1
 let g:PHP_vintage_case_default_indent = 1
 
-map <leader><c-e> <ESC>:!php %<CR>
+map <leader><c-E> <ESC>:!php %<CR>
 
 " ref.vim
 nmap <leader>D :Ref phpmanual<Space>
