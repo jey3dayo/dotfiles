@@ -154,6 +154,7 @@ nnoremap <Leader>gg :<C-u>Ggrep<Space>
 nnoremap <Leader>gl :<C-u>Glog<CR>
 nnoremap <Leader>gs :<C-u>Gstatus<CR>
 nnoremap <Leader>gw :<C-u>Gwrite<CR>
+nnoremap <Leader>gc :<C-u>Gcommit<CR>
 
 
 " neocomplcache.vim
