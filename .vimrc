@@ -186,19 +186,26 @@ endif
 let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 
-" NERD_tree.vim
-" nnoremap <Leader>e  :<C-u>NERDTreeToggle<CR>
-" let g:NERDTreeHijackNetrw = 0
+" neosnippet.vim
+" snnipets dir
+if !exists("g:neosnippet#snippets_directory")
+  let g:neosnippet#snippets_directory=""
+endif
+let g:neosnippet#snippets_directory=$HOME . '/.vim/snippets'
 
-"" neosnippet.vim
-""スニペットのディレクトリ
-"if !exists("g:neosnippet#snippets_directory")
-"  let g:neosnippet#snippets_directory=""
-"endif
-"let g:neosnippet#snippets_directory=$HOME . '/.vim/snippets'
-"
-"
-"imap <expr><C-k> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<C-n>"
+
+" plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
 
 
 " ref.vim
@@ -210,15 +217,6 @@ noremap <Leader>d :<C-u>Ref alc<Space>
 "sparkup.vim
 let g:sparkupExecuteMapping='<c-e>'
 let g:sparkupNextMapping = '<c-j>'
-
-
-" snipmate.vim
-let g:snippets_dir = $HOME.'/.vim/snippets'
-
-
-" taglist.vim
-set tags=tags
-nnoremap <Leader>T :<C-u>Tlist<CR>
 
 
 " unite.vim
@@ -240,8 +238,9 @@ au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
 
-" vim-powerline.vim
-" let g:Powerline_symbols = 'fancy'
+" powerline.vim
+let g:Powerline_symbols = 'fancy'
+let g:syntastic_python_flake8_args = '--ignore=W191,E501,E121,E122,E123,E128,E225,W291'
 
 
 " vimfiler.vim
@@ -262,10 +261,9 @@ else
 	call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
-NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/neocomplcache'
-"NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimproc'
@@ -275,7 +273,6 @@ NeoBundle 'groenewege/vim-less'
 NeoBundle 'joonty/vdebug'
 NeoBundle 'koron/chalice'
 NeoBundle 'mileszs/ack.vim'
-NeoBundle 'msanders/snipmate.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'nishigori/vim-sunday'
 NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
@@ -283,6 +280,7 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'sjl/gundo.vim'
 "NeoBundle 'skammer/vim-css-color'
 NeoBundle 'ap/vim-css-color'
+NeoBundle 'scrooloose/syntastic'
 NeoBundle 'taichouchou2/html5.vim'
 NeoBundle 'taichouchou2/vim-javascript'
 NeoBundle 'thinca/vim-quickrun'
@@ -291,7 +289,6 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'tsaleh/vim-align'
 NeoBundle 'vim-scripts/DoxygenToolkit.vim'
-NeoBundle 'vim-scripts/L9.git'
 NeoBundle 'vim-scripts/PHP-dictionary.git'
 NeoBundle 'vim-scripts/TwitVim'
 NeoBundle 'vim-scripts/cecutil'
@@ -311,6 +308,10 @@ NeoBundle 'vim-scripts/tComment'
 " NeoBundle 'vim-scripts/vcscommand.vim'
 NeoBundle 'vim-scripts/molokai'
 NeoBundle 'vim-scripts/jellybeans.vim'
+NeoBundle 'violetyk/cake.vim'
+NeoBundle 'https://bitbucket.org/ns9tks/vim-l9/'
+NeoBundle 'taichouchou2/alpaca_powertabline'
+NeoBundle 'Lokaltog/powerline', { 'rtp' : 'powerline/bindings/vim'}
 filetype plugin indent on
 "}}}
 
