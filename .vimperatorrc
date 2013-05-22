@@ -120,8 +120,9 @@ let g:direct_sbm_use_services_by_post = "hP"
 noremap <S-a> :sbm<Space>[
 noremap <Leader>V :bentry<CR>
 
-" feedsomekey_3.js {{{
+" feedsomekeys_3.js {{{
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+lazy fmaps -e=vkeydown -u='^https://www\.google\.(co\.jp|com)/search\?q=' j k /
 lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
@@ -144,7 +145,7 @@ javascript <<EOM
 if (liberator.has("Win32")) {
   liberator.globalVariables.plugin_loader_roots = "~/Documents/GitHub/vimperator-plugins/"
 } else {
-  liberator.globalVariables.plugin_loader_roots = "~/.vimperator/bundle/vimperator-plugins.git/"
+  liberator.globalVariables.plugin_loader_roots = "~/www/vimperator-plugins/"
 }
 
 liberator.globalVariables.plugin_loader_plugins = `
@@ -165,7 +166,6 @@ open-frame
 prevent-pseudo-domain
 proxy
 sbmcommentsviewer
-stella
 stylish
 twittperator
 walk-input
