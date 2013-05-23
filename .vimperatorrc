@@ -18,7 +18,7 @@ let mapleader = ","
 set gui=addons,bookmarks,nomenu,tabs,navigation
 set animations=true
 set visualbell
-colorscheme vimpwhite
+colorscheme indigo
 
 " Mappings
 noremap j 5<C-e>
