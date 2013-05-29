@@ -72,6 +72,10 @@ set! dom.event.contextmenu.enabled=false
 let g:auto_append_anchor = "true"
 let g:auto_append_anchor_once = "true"
 
+" commandBookmarklet.js
+nnoremap <leader>p :bmlpocket<CR>
+nnoremap <leader>a :bmlamazonaffliate<CR>
+
 "copy.js {{{
 map <leader>y :copy<Space>Title bittly<CR>
 map <leader>Y :copy<Space>title URL<CR>
