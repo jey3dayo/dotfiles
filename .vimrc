@@ -238,6 +238,21 @@ au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
+"" unite-grep {{{
+" unite-grepのバックエンドをagに切り替える
+" http://qiita.com/items/c8962f9325a5433dc50d
+let g:unite_source_grep_command = 'ag'
+let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+let g:unite_source_grep_recursive_opt = ''
+let g:unite_source_grep_max_candidates = 200
+ 
+" unite-grepのキーマップ
+" 選択した文字列をunite-grep
+" https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
+" vnoremap /g y:Unite grep::-iHRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
+vnoremap /g y:Unite grep::-iRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
+" }}}
+
 
 " powerline.vim
 let g:Powerline_symbols = 'fancy'
