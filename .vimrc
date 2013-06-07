@@ -148,16 +148,21 @@ set shortmess+=I
 
 
 " fugitive.vim
-nnoremap <Leader>gb :<C-u>Gblame<CR>
-nnoremap <Leader>gd :<C-u>Gdiff<CR>
-nnoremap <Leader>gg :<C-u>Ggrep<Space>
-nnoremap <Leader>gl :<C-u>Glog<CR>
-nnoremap <Leader>gs :<C-u>Gstatus<CR>
-nnoremap <Leader>gw :<C-u>Gwrite<CR>
-nnoremap <Leader>gc :<C-u>Gcommit<CR>
+" The prefix key.
+nnoremap [fugitive]   <Nop>
+nmap <Leader>g [fugitive]
+
+" keymap
+nnoremap [fugitive]b :<C-u>Gblame<CR>
+nnoremap [fugitive]d :<C-u>Gdiff<CR>
+nnoremap [fugitive]g :<C-u>Ggrep<Space>
+nnoremap [fugitive]l :<C-u>Glog<CR>
+nnoremap [fugitive]s :<C-u>Gstatus<CR>
+nnoremap [fugitive]w :<C-u>Gwrite<CR>
+nnoremap [fugitive]c :<C-u>Gcommit<CR>
 
 
-" neocomplcache.vim
+" neocomplcache.vim {{{
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplcache.
@@ -185,9 +190,10 @@ if !exists('g:neocomplcache_keyword_patterns')
   let g:neocomplcache_keyword_patterns = {}
 endif
 let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+" }}}
 
 
-" neosnippet.vim
+" neosnippet.vim {{{
 " snnipets dir
 if !exists("g:neosnippet#snippets_directory")
   let g:neosnippet#snippets_directory=""
@@ -207,6 +213,7 @@ smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<P
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+" }}}
 
 
 " ref.vim
@@ -220,17 +227,25 @@ let g:sparkupExecuteMapping='<c-e>'
 let g:sparkupNextMapping = '<c-j>'
 
 
-" unite.vim
+" unite.vim {{{
+" The prefix key.
+nnoremap [unite] <Nop>
+nmap <Leader>u [unite]
+
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable =1
-noremap <Leader>b :Unite buffer<CR>
-noremap <Leader>f :Unite file<CR>
-noremap <Leader>m :Unite file_mru<CR>
-noremap <Leader>y :Unite history/yank<CR>
+noremap [unite]b :Unite buffer<CR>
+noremap [unite]B :Unite bookmark<CR>
+noremap [unite]f :Unite file<CR>
+noremap [unite]m :Unite file_mru<CR>
+noremap [unite]y :Unite history/yank<CR>
+noremap [unite]r :UniteResume<CR>
+noremap [unite]d :UniteWithBufferDir file<CR>
+noremap [unite]g :Unite grep:%<CR>
 
-noremap <C-t>b :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
-noremap <C-t>f :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
-noremap <C-t>m :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
+noremap [unite]tb :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
+noremap [unite]tf :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
+noremap [unite]tm :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
 
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
@@ -238,21 +253,21 @@ au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
 
-"" unite-grep {{{
-" unite-grepのバックエンドをagに切り替える
-" http://qiita.com/items/c8962f9325a5433dc50d
+" " unite-grep
+" " unite-grepのバックエンドをagに切り替える
+" " http://qiita.com/items/c8962f9325a5433dc50d
 let g:unite_source_grep_command = 'ag'
 let g:unite_source_grep_default_opts = '--nocolor --nogroup'
 let g:unite_source_grep_recursive_opt = ''
 let g:unite_source_grep_max_candidates = 200
- 
+
 " unite-grepのキーマップ
 " 選択した文字列をunite-grep
 " https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
 " vnoremap /g y:Unite grep::-iHRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 vnoremap /g y:Unite grep::-iRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
-" }}}
 
+" }}}
 
 " powerline.vim
 let g:Powerline_symbols = 'fancy'
@@ -329,7 +344,7 @@ NeoBundle 'https://bitbucket.org/ns9tks/vim-l9/'
 NeoBundle 'taichouchou2/alpaca_powertabline'
 NeoBundle 'Lokaltog/powerline', { 'rtp' : 'powerline/bindings/vim'}
 filetype plugin indent on
-"}}}
+" }}}
 
 
 " Rename Command
