@@ -235,7 +235,6 @@ nmap <Leader>u [unite]
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable =1
 noremap [unite]b :Unite buffer<CR>
-noremap [unite]B :Unite bookmark<CR>
 noremap [unite]f :Unite file<CR>
 noremap [unite]m :Unite file_mru<CR>
 noremap [unite]y :Unite history/yank<CR>
@@ -243,9 +242,9 @@ noremap [unite]r :UniteResume<CR>
 noremap [unite]d :UniteWithBufferDir file<CR>
 noremap [unite]g :Unite grep:%<CR>
 
-noremap [unite]tb :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
-noremap [unite]tf :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
-noremap [unite]tm :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
+noremap [unite]B :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
+noremap [unite]F :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
+noremap [unite]M :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
 
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
@@ -301,19 +300,19 @@ NeoBundle 'Shougo/vimproc'
 NeoBundle 'Shougo/vimshell'
 NeoBundle 'fuenor/qfixhowm'
 NeoBundle 'groenewege/vim-less'
-NeoBundle 'joonty/vdebug'
-NeoBundle 'koron/chalice'
+" NeoBundle 'joonty/vdebug'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'nishigori/vim-sunday'
 NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'sjl/gundo.vim'
 "NeoBundle 'skammer/vim-css-color'
 NeoBundle 'ap/vim-css-color'
+NeoBundle 'airblade/vim-rooter'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'taichouchou2/html5.vim'
 NeoBundle 'taichouchou2/vim-javascript'
+NeoBundle 'tomtom/tcomment_vim.git'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'tpope/vim-fugitive'
@@ -321,10 +320,8 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'tsaleh/vim-align'
 NeoBundle 'vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'vim-scripts/PHP-dictionary.git'
-NeoBundle 'vim-scripts/TwitVim'
 NeoBundle 'vim-scripts/cecutil'
 NeoBundle 'vim-scripts/eregex.vim'
-NeoBundle 'vim-scripts/errormarker.vim.git'
 NeoBundle 'vim-scripts/genutils'
 NeoBundle 'vim-scripts/Markdown'
 NeoBundle 'vim-scripts/multvals.vim'
@@ -333,7 +330,6 @@ NeoBundle 'vim-scripts/phpfolding.vim'
 NeoBundle 'vim-scripts/php.vim--Hodge'
 NeoBundle 'vim-scripts/renamer.vim'
 NeoBundle 'vim-scripts/sudo.vim'
-NeoBundle 'vim-scripts/tComment'
 " NeoBundle 'vim-scripts/DBGp-client', {'rtp': 'vim/'}
 " NeoBundle 'vim-scripts/SQLUtilities'
 " NeoBundle 'vim-scripts/vcscommand.vim'
