@@ -146,6 +146,10 @@ set shellslash
 set hidden
 set shortmess+=I
 
+" for alingta
+vnoremap <silent> => :Align @1 =><CR>
+vnoremap <silent> = :Align @1 =<CR>
+vnoremap <silent> == =
 
 " fugitive.vim
 " The prefix key.
@@ -317,7 +321,7 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'tsaleh/vim-align'
+NeoBundle 'h1mesuke/vim-alignta.git'
 NeoBundle 'vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'vim-scripts/PHP-dictionary.git'
 NeoBundle 'vim-scripts/cecutil'
