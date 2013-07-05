@@ -148,8 +148,7 @@ set shortmess+=I
 
 " for alingta
 vnoremap <silent> => :Align @1 =><CR>
-vnoremap <silent> = :Align @1 =<CR>
-vnoremap <silent> == =
+vnoremap <silent> == :Align @1 =<CR>
 
 " fugitive.vim
 " The prefix key.
