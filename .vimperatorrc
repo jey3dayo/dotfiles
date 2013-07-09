@@ -120,7 +120,7 @@ EOM
 
 " direct_bookmark.js
 let g:direct_sbm_use_services_by_tag = "h"
-let g:direct_sbm_use_services_by_post = "hP"
+let g:direct_sbm_use_services_by_post = "h"
 noremap <S-a> :sbm<Space>[
 noremap <Leader>V :bentry<CR>
 
