@@ -46,19 +46,16 @@ noremap ! :set invum<CR>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 
-" Open URL
-noremap <Leader>r :o readlater<CR>
-
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
 qmark e http://www.evernote.com/Home.action
 qmark f http://www.facebook.com/
+qmark F http://cloud.feedly.com/
 qmark g http://grooveshark.com/
-qmark l http://www.readability.com/
+qmark p http://getpocket.com/
 qmark m https://mail.google.com/mail/
 qmark n http://news.google.co.jp/nwshp?hl=ja&tab=wn
-qmark r http://www.google.com/reader/view/
-qmark t http://www.rememberthemilk.com/
+qmark r http://www.rememberthemilk.com/
 
 " Firefox Config
 set! browser.download.manager.retention=1
@@ -74,11 +71,12 @@ let g:auto_append_anchor_once = "true"
 
 " commandBookmarklet.js
 nnoremap <leader>p :bmlpocket<CR>
-nnoremap <leader>a :bmlamazonaffliate<CR>
 
 "copy.js {{{
 map <leader>y :copy<Space>Title bittly<CR>
 map <leader>Y :copy<Space>title URL<CR>
+map <leader>a :copy<Space>Amazon<CR>
+map <leader>A :copy<Space>AmazonAffiliate<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
@@ -121,7 +119,7 @@ EOM
 " direct_bookmark.js
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
-noremap <S-a> :sbm<Space>[
+noremap <S-a> :sbm<Space>
 noremap <Leader>V :bentry<CR>
 
 " feedsomekeys_3.js {{{
@@ -129,7 +127,6 @@ command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 lazy fmaps -e=vkeydown -u='^https://www\.google\.(co\.jp|com)/search\?q=' j k /
 lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='www\.google\.(com|co\.jp)/reader' -events=vkeypress j k n p m s v A r S N P X O gh ga gs gt gu u / ? J K
 lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
 lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
 lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
@@ -138,11 +135,6 @@ lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
 
 " hints-for-embedded.js
 let g:hints_for_embedded_mode="e"
-
-" ldrize_cooperation.js
-noremap <Leader>l :toggleldrizecooperation<CR>
-let g:ldrc_intelligence_bind = "true"
-let g:ldrc_skip = "0.25"
 
 " plugin_loader.js {{{
 javascript <<EOM
@@ -157,6 +149,7 @@ _libly
 auto-focus-frame
 auto_detect_link
 bitly
+bookmarktoolbar-hint
 caret-hint
 commandBookmarklet
 copy
@@ -170,8 +163,9 @@ open-frame
 prevent-pseudo-domain
 proxy
 sbmcommentsviewer
+stella
 stylish
-twittperator
+tombloo
 walk-input
 `.split(/\s+/).filter(function(n) !/^!/.test(n));
 EOM
@@ -180,36 +174,9 @@ EOM
 " sbmcommentsviewer.js
 noremap <Leader>v :viewSBMComments -t h<CR>
 
-" toggle autopagerize
-noremap <silent> <Leader>a :autopagerize<CR>
-
-" twittperator.js
-noremap <Leader>t :reading %TITLE% - %URL&<CR>
-
 " multi_requester.js
 noremap <Leader>d :mr alc<Space>
 noremap <Leader>D :mr goo<Space>
-
-" tumblr
-nnoremap <Leader>T :mb pinned-or-current-node\ |\ Tombloo::Reblog\ |\ clear-pin<CR>
-
-" Toggle Autopagerize {{{
-javascript <<EOM
-let (evaluateXPath = util.evaluateXPath || buffer.evaluateXPath) {
-    commands.addUserCommand(
-        ['autopagerize'],
-        'Toggle AutoPagerize',
-        function (args) {
-            buffer.followLink(
-                evaluateXPath('id("autopagerize_help")/div/a[@class="autopagerize_link"]').snapshotItem(0)
-            );
-        },
-        {},
-        true
-    );
-}
-EOM
-" }}}
 
 echo "done."
 
