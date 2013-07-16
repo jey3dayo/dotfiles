@@ -141,7 +141,7 @@ javascript <<EOM
 if (liberator.has("Win32")) {
   liberator.globalVariables.plugin_loader_roots = "~/Documents/GitHub/vimperator-plugins/"
 } else {
-  liberator.globalVariables.plugin_loader_roots = "~/www/vimperator-plugins/"
+  liberator.globalVariables.plugin_loader_roots = "~/www/dotfiles/.vimperator/bundle/vimperator-plugins.git/"
 }
 
 liberator.globalVariables.plugin_loader_plugins = `
