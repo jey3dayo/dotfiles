@@ -232,22 +232,21 @@ let g:sparkupNextMapping = '<c-j>'
 
 " unite.vim {{{
 " The prefix key.
-nnoremap [unite] <Nop>
-nmap <Leader>u [unite]
 
 let g:unite_enable_start_insert=1
 let g:unite_source_history_yank_enable =1
-noremap [unite]b :Unite buffer<CR>
-noremap [unite]f :Unite file<CR>
-noremap [unite]m :Unite file_mru<CR>
-noremap [unite]y :Unite history/yank<CR>
-noremap [unite]r :UniteResume<CR>
-noremap [unite]d :UniteWithBufferDir file<CR>
-noremap [unite]g :Unite grep:%<CR>
+noremap <Leader>b :Unite buffer<CR>
+noremap <Leader>f :Unite file<CR>
+noremap <Leader>m :Unite file_mru<CR>
+noremap <Leader>y :Unite history/yank<CR>
+noremap <Leader>r :UniteResume<CR>
+noremap <Leader>g :Unite grep:%<CR>
+noremap <Leader>d :UniteWithBufferDir file<CR>
+noremap <Leader>u :Unite neobundle/update<CR>
 
-noremap [unite]B :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
-noremap [unite]F :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
-noremap [unite]M :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
+noremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
+noremap <Leader>F :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
+noremap <Leader>M :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
 
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
