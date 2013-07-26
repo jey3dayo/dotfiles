@@ -240,9 +240,9 @@ noremap <Leader>f :Unite file<CR>
 noremap <Leader>m :Unite file_mru<CR>
 noremap <Leader>y :Unite history/yank<CR>
 noremap <Leader>r :UniteResume<CR>
-noremap <Leader>g :Unite grep:%<CR>
+noremap <Leader>G :Unite grep:%<CR>
 noremap <Leader>d :UniteWithBufferDir file<CR>
-noremap <Leader>u :Unite neobundle/update<CR>
+noremap <Leader>U :Unite neobundle/update<CR>
 
 noremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
 noremap <Leader>F :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
