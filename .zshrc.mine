@@ -5,6 +5,4 @@ alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
 
 export VIMDIR=$HOME/var/www/git/dotfiles/.vim
 
-export DEV=$HOME/www/sem-dev/sem_web
-export BATCH=$HOME/www/sem-dev/sem_batch
 export SMB=/var/samba/public
