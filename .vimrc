@@ -270,9 +270,26 @@ vnoremap /g y:Unite grep::-iRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 
 " }}}
 
-" powerline.vim
-let g:Powerline_symbols = 'fancy'
-let g:syntastic_python_flake8_args = '--ignore=W191,E501,E121,E122,E123,E128,E225,W291'
+" lightline.vim
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+      \ },
+      \ 'component_visible_condition': {
+      \   'readonly': '(&filetype!="help"&& &readonly)',
+      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+      \ },
+      \ 'separator': { 'left': '⮀', 'right': '⮂' },
+      \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+      \ }
 
 
 " vimfiler.vim
@@ -288,9 +305,9 @@ if has("win32") || has("win64")
   set rtp+=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
   call neobundle#rc('~/Documents/GitHub/dotfiles/.vim/bundle/')
 else
-    set rtp+=~/.vim/bundle/neobundle.vim/
-    "call neobundle#rc()
-	call neobundle#rc(expand('~/.vim/bundle/'))
+  set rtp+=~/.vim/bundle/neobundle.vim/
+  "call neobundle#rc()
+  call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
 NeoBundle 'Shougo/neobundle.vim'
@@ -332,8 +349,7 @@ NeoBundle 'vim-scripts/molokai'
 NeoBundle 'vim-scripts/jellybeans.vim'
 NeoBundle 'violetyk/cake.vim'
 NeoBundle 'https://bitbucket.org/ns9tks/vim-l9/'
-NeoBundle 'taichouchou2/alpaca_powertabline'
-NeoBundle 'Lokaltog/powerline', { 'rtp' : 'powerline/bindings/vim'}
+NeoBundle 'itchyny/lightline.vim'
 filetype plugin indent on
 " }}}
 
