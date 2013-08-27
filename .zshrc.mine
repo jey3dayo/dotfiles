@@ -1,8 +1,5 @@
 # j138 .zshrc.mine
 
-# glowl
-alias glc="growlnotify -t "Terminal" -m 'Wuf!! Wuf!!'"
+alias notice='terminal-notifier -message "wuff! wuff"'
+alias vm-rework='vagrant halt ; vagrant destroy -f ; vagrant up ; knife solo prepare melody;notice'
 
-export VIMDIR=$HOME/var/www/git/dotfiles/.vim
-
-export SMB=/var/samba/public
