@@ -129,6 +129,7 @@ lazy fmaps -e=vkeydown -u='^https://www\.google\.(co\.jp|com)/search\?q=' j k /
 lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
+lazy fmaps -u='cloud\.feedly\.com/#' j k x s v r gm ga J K gg
 lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
 lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
 lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
