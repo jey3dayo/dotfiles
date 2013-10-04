@@ -34,6 +34,8 @@ noremap U :undo<Space>
 noremap <Leader>so :source ~/.vimperatorrc<CR>
 noremap a <S-a>
 
+noremap I <C-u>:ignorekeys add -except :,<\C-p>,<\C-n>,t,gt,gT,h,l,H,L<Space><Tab>
+
 noremap <Leader>es :set encoding=Shift_JIS<CR>
 noremap <Leader>ec :set encoding=EUC-JP<CR>
 noremap <Leader>eu :set encoding=UTF-8<CR>
@@ -123,18 +125,6 @@ let g:direct_sbm_use_services_by_post = "h"
 noremap <S-a> :sbm<Space>
 noremap <Leader>V :bentry<CR>
 
-" feedsomekeys_3.js {{{
-command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
-lazy fmaps -e=vkeydown -u='^https://www\.google\.(co\.jp|com)/search\?q=' j k /
-lazy fmaps -u='mail\.google\.com/mail' c / j k n p o u e x s r a y # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k o u e x s r a y # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='(fastladder|livedoor)\.com/reader' j k s a p o v c i,p <Space> <S-Space> z b < > q w e,g
-lazy fmaps -u='cloud\.feedly\.com/#' j k x s v r gm ga J K gg
-lazy fmaps -u='https?://www\.rememberthemilk\.com/home/' j k m i c ? F,f G,g S,s L,l Y,y H,h M,m 1 2 3 4 5 <Del> <C-S-Left> <C-S-Right>
-lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/list' o j k
-lazy fmaps -u='http://code.google.com/p/vimperator-labs/issues/detail' u
-" }}}
-
 " hints-for-embedded.js
 let g:hints_for_embedded_mode="e"
 
@@ -156,7 +146,6 @@ caret-hint
 commandBookmarklet
 copy
 direct_bookmark
-feedSomeKeys_3
 feeder
 hint-tombloo
 hints-for-embedded
