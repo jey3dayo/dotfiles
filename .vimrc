@@ -218,6 +218,9 @@ if has('conceal')
 endif
 " }}}
 
+" vim-over.vim
+nnoremap <silent> <Leader>h :OverCommandLine<CR>
+nnoremap <silent> <Leader>H :OverCommandLine<CR>%s/<C-r><C-w>//g<Left><Left>
 
 " ref.vim
 let g:ref_phpmanual_path = $HOME . '/.vim/dict/php-chunked-xhtml'
@@ -324,6 +327,7 @@ NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 NeoBundle 'ap/vim-css-color'
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'jiangmiao/simple-javascript-indenter'
+NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'taichouchou2/html5.vim'
 NeoBundle 'taichouchou2/vim-javascript'
@@ -337,7 +341,7 @@ NeoBundle 'vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'vim-scripts/PHP-dictionary.git'
 NeoBundle 'vim-scripts/Markdown'
 NeoBundle 'vim-scripts/php.vim'
-NeoBundle 'vim-scripts/phpfolding.vim'
+" NeoBundle 'vim-scripts/phpfolding.vim'
 NeoBundle 'vim-scripts/renamer.vim'
 NeoBundle 'vim-scripts/sudo.vim'
 NeoBundle 'vim-scripts/molokai'
