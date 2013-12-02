@@ -149,11 +149,13 @@ direct_bookmark
 feeder
 hint-tombloo
 hints-for-embedded
+nextlink
 multi_requester
 open-frame
 prevent-pseudo-domain
 proxy
 sbmcommentsviewer
+slideshare
 stella
 stylish
 tombloo
@@ -164,6 +166,10 @@ EOM
 
 " sbmcommentsviewer.js
 noremap <Leader>v :viewSBMComments -t h<CR>
+
+" slideshare.js
+nnoremap -urls=www\\.slideshare\\.net j :slideshare next<CR>
+nnoremap -urls=www\\.slideshare\\.net k :slideshare prev<CR>
 
 " multi_requester.js
 noremap <Leader>d :mr alc<Space>
