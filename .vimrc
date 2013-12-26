@@ -30,13 +30,13 @@ highlight Folded ctermfg=blue
 highlight SpecialKey cterm=underline ctermfg=darkgrey
 highlight SpecialKey ctermfg=grey
 colorscheme wombat
-" colorscheme wombat256mod
 highlight Search ctermbg=7
 
 
 " set list
 nmap <Leader>sn :<C-u>set number!<CR>
 nmap <Leader>sl :<C-u>set list!<CR>
+
 
 " visible SpecialKey
 set list
@@ -46,6 +46,7 @@ set listchars=tab:>.,trail:-,extends:\
 " visible fullsize space
 highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
 match ZenkakuSpace /　/
+
 
 " set options
 set autoindent
@@ -62,8 +63,6 @@ set cursorline
 set wildmenu
 set fdm=marker
 set noscrollbind
-
-
 set laststatus=2
 set statusline=%F%m%r%h%w\%=\[%{&ff}]\[%{&fileencoding}]\[%l/%L][%3P]
 
@@ -103,7 +102,6 @@ nnoremap <Leader>gX :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ **/*.*<Bar>cw<C
 nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
-nmap <silent> <F3> :<C-u>execute 'vimgrep! /<C-R>=expand('<cword>')<CR>/j %'<CR>:copen10<CR>
 
 
 "set encoding
@@ -122,21 +120,21 @@ set viminfo+=n~/tmp
 
 
 " link jump
-nnoremap t  <Nop>
-nnoremap tt  <C-]>
-nnoremap tj  :<C-u>tag<CR>
-nnoremap tk  :<C-u>pop<CR>
+nnoremap t <Nop>
+nnoremap tt <C-]>
+nnoremap tj :<C-u>tag<CR>
+nnoremap tk :<C-u>pop<CR>
 
 
 " tab
-nnoremap <C-t>  <Nop>
-nnoremap <C-t>c  :<C-u>tabnew<CR>
-nnoremap <C-t>d  :<C-u>tabclose<CR>
-nnoremap <C-t>o  :<C-u>tabonly<CR>
-nnoremap <C-t>n  :<C-u>tabnext<CR>
-nnoremap <C-t>p  :<C-u>tabprevious<CR>
-nnoremap gt  :<C-u>tabnext<CR>
-nnoremap gT  :<C-u>tabprevious<CR>
+nnoremap <C-t> <Nop>
+nnoremap <C-t>c :<C-u>tabnew<CR>
+nnoremap <C-t>d :<C-u>tabclose<CR>
+nnoremap <C-t>o :<C-u>tabonly<CR>
+nnoremap <C-t>n :<C-u>tabnext<CR>
+nnoremap <C-t>p :<C-u>tabprevious<CR>
+nnoremap gt :<Cu>tabnext<CR>
+nnoremap gT :<C-u>tabprevious<CR>
 
 
 " ESC ESC -> toggle hlsearch
@@ -218,20 +216,18 @@ if has('conceal')
 endif
 " }}}
 
-" vim-over.vim
-nnoremap <silent> <Leader>h :OverCommandLine<CR>
-nnoremap <silent> <Leader>H :OverCommandLine<CR>%s/<C-r><C-w>//g<Left><Left>
-
 " ref.vim
 let g:ref_phpmanual_path = $HOME . '/.vim/dict/php-chunked-xhtml'
 let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
 noremap <Leader>d :<C-u>Ref alc<Space>
 
 
-"sparkup.vim
+" sparkup.vim
 let g:sparkupExecuteMapping='<c-e>'
 let g:sparkupNextMapping = '<c-j>'
 
+" simple-javascript-indenter
+let g:SimpleJsIndenter_BriefMode = 1
 
 " unite.vim {{{
 " The prefix key.
@@ -319,15 +315,12 @@ NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimproc'
-" NeoBundle 'joonty/vdebug'
 NeoBundle 'mileszs/ack.vim'
-NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'nishigori/vim-sunday'
 NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 NeoBundle 'ap/vim-css-color'
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'jiangmiao/simple-javascript-indenter'
-NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'taichouchou2/html5.vim'
 NeoBundle 'taichouchou2/vim-javascript'
