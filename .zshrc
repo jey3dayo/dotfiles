@@ -61,7 +61,7 @@ bindkey "\\ep" history-beginning-search-backward-end
 bindkey "\\en" history-beginning-search-forward-end
 
 # Command history configuration
-HISTFILE=~/log/.zsh_history
+HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
@@ -171,3 +171,5 @@ compdef mosh=ssh
 # rvm path
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
+# z command
+export _Z_DATA=~/tmp/.z
