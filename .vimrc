@@ -316,7 +316,7 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'mileszs/ack.vim'
-NeoBundle 'nishigori/vim-sunday'
+NeoBundle 'nishigori/increment-activator'
 NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 NeoBundle 'ap/vim-css-color'
 NeoBundle 'airblade/vim-rooter'
