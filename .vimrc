@@ -133,7 +133,7 @@ nnoremap <C-t>d :<C-u>tabclose<CR>
 nnoremap <C-t>o :<C-u>tabonly<CR>
 nnoremap <C-t>n :<C-u>tabnext<CR>
 nnoremap <C-t>p :<C-u>tabprevious<CR>
-nnoremap gt :<Cu>tabnext<CR>
+nnoremap gt :<C-u>tabnext<CR>
 nnoremap gT :<C-u>tabprevious<CR>
 
 
