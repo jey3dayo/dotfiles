@@ -195,12 +195,10 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 
 " neosnippet.vim {{{
-" snnipets dir
+" " snippets dir
 if !exists("g:neosnippet#snippets_directory")
   let g:neosnippet#snippets_directory=""
 endif
-let g:neosnippet#snippets_directory=$HOME . '/.vim/snippets'
-
 
 " plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -312,6 +310,7 @@ endif
 NeoBundle 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimproc'
