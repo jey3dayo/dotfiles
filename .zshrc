@@ -8,7 +8,7 @@ export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/b
 export MANPATH=/opt/local/man:$MANPATH
 
 if [ -f "$HOME/.zshrc.mine" ]; then
-	source "$HOME/.zshrc.mine"
+    source "$HOME/.zshrc.mine"
 fi
 
 # setopt
@@ -57,15 +57,13 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
-bindkey "\\ep" history-beginning-search-backward-end
-bindkey "\\en" history-beginning-search-forward-end
 
 # Command history configuration
 HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
-# ignorecase 
+# ignorecase
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' menu select=1
 
@@ -83,12 +81,10 @@ compinit -u
 
 # alias
 alias where="command -v"
-alias datef="date +%F"
 alias df="df -h"
 alias du="du -h"
-alias diff="colordiff"
 alias less="less -R"
-alias l='ls -lAFhp'
+alias ll='ls -lAFhp'
 alias ls='ls -pF'
 alias su="su -l"
 alias hg="hg --encoding=utf-8"
@@ -156,9 +152,9 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '(%s)-[%b]'
 zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
 precmd () {
-	psvar=()
-	LANG=en_US.UTF-8 vcs_info
-	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+    psvar=()
+    LANG=en_US.UTF-8 vcs_info
+    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
 }
 RPROMPT="%1(v|%F{green}%1v%f|)"
 # }}}
@@ -168,8 +164,3 @@ __git_files() { _files }
 
 # mosh complete
 compdef mosh=ssh
-# rvm path
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
-
-# z command
-export _Z_DATA=~/tmp/.z

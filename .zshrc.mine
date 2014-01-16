@@ -1,5 +1,27 @@
 # j138 .zshrc.mine
 
+# alias
+alias diff="colordiff"
 alias notice='terminal-notifier -message "wuff! wuff"'
 alias vm-rework='vagrant halt ; vagrant destroy -f ; vagrant up ; knife solo prepare melody;notice'
 
+# z command
+export _Z_DATA=~/tmp/.z
+
+# z
+. `brew --prefix`/etc/profile.d/z.sh
+function precmd () {
+   z --add "$(pwd -P)"
+}
+alias j='z'
+
+# rvm path
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# rbenv path
+export PATH=/Users/nakazato_junya/.rbenv/versions/1.9.3-p429/bin:$PATH
+
+# tmux-powerline
+PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+
+# vim: set syntax=zsh:
