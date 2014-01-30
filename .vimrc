@@ -197,7 +197,7 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 " neosnippet.vim {{{
 " " snippets dir
 if !exists("g:neosnippet#snippets_directory")
-  let g:neosnippet#snippets_directory=""
+  let g:neosnippet#snippets_directory="snippets/"
 endif
 
 " plugin key-mappings.
