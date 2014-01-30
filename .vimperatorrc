@@ -150,7 +150,6 @@ direct_bookmark
 feeder
 hint-tombloo
 hints-for-embedded
-nextlink
 multi_requester
 open-frame
 prevent-pseudo-domain
@@ -171,6 +170,10 @@ noremap <Leader>v :viewSBMComments -t h<CR>
 " slideshare.js
 nnoremap -urls=www\\.slideshare\\.net j :slideshare next<CR>
 nnoremap -urls=www\\.slideshare\\.net k :slideshare prev<CR>
+
+" speakerdeck.js
+nnoremap -urls=speakerdeck\\.com j :speakerdeck next<CR>
+nnoremap -urls=speakerdeck\\.com k :speakerdeck prev<CR>
 
 " multi_requester.js
 noremap <Leader>d :mr alc<Space>
