@@ -69,10 +69,6 @@ set! config.trim_on_minimize=true
 set! dom.disable_window_move_resize=true
 set! dom.event.contextmenu.enabled=false
 
-" appendAnchor.js
-let g:auto_append_anchor = "true"
-let g:auto_append_anchor_once = "true"
-
 " commandBookmarklet.js
 nnoremap <leader>p :bmlpocket<CR>
 
