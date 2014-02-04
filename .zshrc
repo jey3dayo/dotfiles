@@ -1,15 +1,9 @@
 # j138 .zshrc
 
 export LANG=ja_JP.UTF-8
-#export LANG=ja_JP.eucJP
-#export LANG=ja_JP.shift-jis
 
-export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:$HOME/bin:$HOME/sbin
-export MANPATH=/opt/local/man:$MANPATH
-
-if [ -f "$HOME/.zshrc.mine" ]; then
-    source "$HOME/.zshrc.mine"
-fi
+[[ -s "$HOME/.zshrc.mine" ]] && source "$HOME/.zshrc.mine"
+[[ -s "$HOME/www/dotfiles/.zshrc.mine" ]] && source "$HOME/www/dotfiles/.zshrc.mine"
 
 # setopt
 setopt always_last_prompt

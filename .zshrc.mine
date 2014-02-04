@@ -18,9 +18,6 @@ alias j='z'
 # rvm path
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 
-# rbenv path
-export PATH=/Users/nakazato_junya/.rbenv/versions/1.9.3-p429/bin:$PATH
-
 # tmux-powerline
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 
