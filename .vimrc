@@ -196,6 +196,8 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 " neosnippet.vim {{{
 " " snippets dir
+let g:neosnippet#enable_snipmate_compatibility = 1
+
 if !exists("g:neosnippet#snippets_directory")
   let g:neosnippet#snippets_directory="."
 endif
