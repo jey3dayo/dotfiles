@@ -2,9 +2,6 @@
 
 export LANG=ja_JP.UTF-8
 
-[[ -s "$HOME/.zshrc.mine" ]] && source "$HOME/.zshrc.mine"
-[[ -s "$HOME/www/dotfiles/.zshrc.mine" ]] && source "$HOME/www/dotfiles/.zshrc.mine"
-
 # setopt
 setopt always_last_prompt
 setopt append_history
@@ -72,6 +69,9 @@ compinit -u
 ## Prediction configuration
 #autoload predict-on
 #predict-on
+
+# hook
+autoload -Uz add-zsh-hook
 
 # alias
 alias where="command -v"
@@ -158,3 +158,8 @@ __git_files() { _files }
 
 # mosh complete
 compdef mosh=ssh
+
+# load local setting
+[[ -s "$HOME/.zshrc.mine" ]] && source "$HOME/.zshrc.mine"
+[[ -s "$HOME/www/dotfiles/.zshrc.mine" ]] && source "$HOME/www/dotfiles/.zshrc.mine"
+
