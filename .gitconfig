@@ -14,9 +14,11 @@
 [alias]
 	co = checkout
 	ci = commit 
-	st = status
+	st = status --short
 	up = pull --rebase
 	l  = log
+	lp = log -p
+	lg =log --graph --decorate --oneline
 	dn = diff --name-only
 [github]
 	name = j138
