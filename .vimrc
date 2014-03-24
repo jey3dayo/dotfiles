@@ -300,6 +300,11 @@ nnoremap <Leader>e  :<C-u>VimFilerSplit<CR>
 set nocompatible
 filetype indent off
 
+" syntastic.vim
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby'] }
+let g:syntastic_ruby_checkers = ['rubocop']
+
+
 if has("win32") || has("win64")
   set rtp+=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
   call neobundle#rc('~/Documents/GitHub/dotfiles/.vim/bundle/')
