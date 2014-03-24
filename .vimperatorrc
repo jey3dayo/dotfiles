@@ -69,6 +69,9 @@ set! config.trim_on_minimize=true
 set! dom.disable_window_move_resize=true
 set! dom.event.contextmenu.enabled=false
 
+" hatenabookmark for vimp
+javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://hatenabookmark/content/vimperator/plugin/hatenabookmark.js', {__proto__: this});
+
 " commandBookmarklet.js
 nnoremap <leader>p :bmlpocket<CR>
 
@@ -119,7 +122,6 @@ EOM
 " direct_bookmark.js
 let g:direct_sbm_use_services_by_tag = "h"
 let g:direct_sbm_use_services_by_post = "h"
-noremap <S-a> :sbm<Space>
 noremap <Leader>V :bentry<CR>
 
 " hints-for-embedded.js
@@ -153,9 +155,9 @@ proxy
 sbmcommentsviewer
 slideshare
 stella
-stylish
 tombloo
 walk-input
+twittperator
 `.split(/\s+/).filter(function(n) !/^!/.test(n));
 EOM
 " }}}
