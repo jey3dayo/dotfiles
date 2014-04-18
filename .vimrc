@@ -1,11 +1,8 @@
 " j138 .vimrc
 
-version 6.0
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
-nmap gx <Plug>NetrwBrowseX
-nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
 let &cpo=s:cpo_save
 unlet s:cpo_save
 let mapleader = ","
@@ -22,16 +19,9 @@ set virtualedit+=block
 
 
 " color
-" set t_Co=88
 set t_Co=256
-highlight LineNr ctermfg=darkyellow
-highlight NonText ctermfg=darkgrey
-highlight Folded ctermfg=blue
-highlight SpecialKey cterm=underline ctermfg=darkgrey
-highlight SpecialKey ctermfg=grey
 colorscheme wombat
 highlight Search ctermbg=7
-
 
 " set list
 nmap <Leader>sn :<C-u>set number!<CR>
@@ -44,9 +34,12 @@ set listchars=tab:>.,trail:-,extends:\
 
 
 " visible fullsize space
-highlight ZenkakuSpace cterm=underline ctermfg=lightblue guibg=white
-match ZenkakuSpace /　/
-
+scriptencoding utf-8
+augroup highlightIdegraphicSpace
+  autocmd!
+  autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+  autocmd VimEnter,WinEnter * match IdeographicSpace /　/
+augroup END
 
 " set options
 set autoindent
@@ -82,10 +75,6 @@ set noexpandtab
 set textwidth=0
 
 
-if v:version < 700
-    set migemo
-endif
-
 filetype on
 filetype plugin on
 filetype indent on
@@ -99,7 +88,6 @@ nnoremap <Leader>gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap <Leader>gx :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ %<Bar>cw<CR>
 nnoremap <Leader>gX :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ **/*.*<Bar>cw<CR>
 
-nnoremap <C-c> :<C-u>badd<Space>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
 
@@ -157,7 +145,6 @@ nmap <Leader>g [fugitive]
 nnoremap [fugitive]b :<C-u>Gblame<CR>
 nnoremap [fugitive]d :<C-u>Gdiff<CR>
 nnoremap [fugitive]g :<C-u>Ggrep<Space>
-nnoremap [fugitive]l :<C-u>Glog<CR>
 nnoremap [fugitive]s :<C-u>Gstatus<CR>
 nnoremap [fugitive]w :<C-u>Gwrite<CR>
 nnoremap [fugitive]c :<C-u>Gcommit<CR>
@@ -180,10 +167,10 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
 let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
-    \ 'php' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
-    \ 'thtml' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
-    \ }
+  \ 'default' : '',
+  \ 'php' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
+  \ 'thtml' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
+  \ }
 
 
 " Define keyword.
@@ -203,8 +190,8 @@ if !exists("g:neosnippet#snippets_directory")
 endif
 
 " plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
 
 " SuperTab like snippets behavior.
 imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -216,18 +203,16 @@ if has('conceal')
 endif
 " }}}
 
+
 " ref.vim
 let g:ref_phpmanual_path = $HOME . '/.vim/dict/php-chunked-xhtml'
 let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
 noremap <Leader>d :<C-u>Ref alc<Space>
 
 
-" sparkup.vim
-let g:sparkupExecuteMapping='<c-e>'
-let g:sparkupNextMapping = '<c-j>'
-
 " simple-javascript-indenter
 let g:SimpleJsIndenter_BriefMode = 1
+
 
 " unite.vim {{{
 " The prefix key.
@@ -269,26 +254,27 @@ vnoremap /g y:Unite grep::-iRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 
 " }}}
 
+
 " lightline.vim
 let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component': {
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-      \ },
-      \ 'separator': { 'left': '⮀', 'right': '⮂' },
-      \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
-      \ }
+  \ 'colorscheme': 'jellybeans',
+  \ 'active': {
+  \   'left': [ [ 'mode', 'paste' ],
+  \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+  \ },
+  \ 'component': {
+  \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+  \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+  \ },
+  \ 'component_visible_condition': {
+  \   'readonly': '(&filetype!="help"&& &readonly)',
+  \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+  \ },
+  \ 'separator': { 'left': '⮀', 'right': '⮂' },
+  \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
+  \ }
 
 
 " vimfiler.vim
@@ -310,7 +296,6 @@ if has("win32") || has("win64")
   call neobundle#rc('~/Documents/GitHub/dotfiles/.vim/bundle/')
 else
   set rtp+=~/.vim/bundle/neobundle.vim/
-  "call neobundle#rc()
   call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
@@ -324,7 +309,6 @@ NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'nishigori/increment-activator'
-NeoBundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 NeoBundle 'ap/vim-css-color'
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'jiangmiao/simple-javascript-indenter'
@@ -340,7 +324,6 @@ NeoBundle 'vim-scripts/DoxygenToolkit.vim'
 NeoBundle 'vim-scripts/PHP-dictionary.git'
 NeoBundle 'vim-scripts/Markdown'
 NeoBundle 'vim-scripts/php.vim'
-" NeoBundle 'vim-scripts/phpfolding.vim'
 NeoBundle 'vim-scripts/renamer.vim'
 NeoBundle 'vim-scripts/sudo.vim'
 NeoBundle 'vim-scripts/molokai'
@@ -357,6 +340,6 @@ command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))
 
 let VIMRC_MINE = expand('~/.vimrc.mine')
 if( filereadable(VIMRC_MINE) )
-    exe "source " . VIMRC_MINE
+  exe "source " . VIMRC_MINE
 endif
 
