@@ -163,7 +163,7 @@ EOM
 " }}}
 
 " sbmcommentsviewer.js
-noremap <Leader>v :viewSBMComments -t h<CR>
+noremap v :viewSBMComments -t h<CR>
 
 " slideshare.js
 nnoremap -urls=www\\.slideshare\\.net j :slideshare next<CR>
