@@ -12,11 +12,13 @@
 	quotepath = false
 	editor = /usr/bin/vim
 [alias]
+	c  = commit
+	ca = commit --amend
 	co = checkout
 	ci = commit 
 	st = status --short
 	up = pull --rebase
-	l  = log
+	l  = log --stat
 	lp = log -p
 	lg =log --graph --decorate --oneline
 	dn = diff --name-only
