@@ -40,13 +40,13 @@ cask install bathyscaphe
 cask install bettertouchtool
 cask install chicken
 cask install clipmenu
-cask install colloquy
 cask install coteditor
 cask install dropbox
 cask install firefox
 cask install github
 cask install google-chrome
 cask install hipchat
+cask install hyperswitch
 cask install istumbler
 cask install iterm2
 cask install kobito
