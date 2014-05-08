@@ -105,6 +105,7 @@ set swapfile
 set backupdir=~/tmp
 set directory=~/tmp
 set viminfo+=n~/tmp
+set undodir=~/tmp
 
 
 " link jump
