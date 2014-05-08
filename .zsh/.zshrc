@@ -161,5 +161,5 @@ compdef mosh=ssh
 
 # load local setting
 [[ -s "$HOME/.zshrc.mine" ]] && source "$HOME/.zshrc.mine"
-[[ -s "$HOME/www/dotfiles/.zshrc.mine" ]] && source "$HOME/www/dotfiles/.zshrc.mine"
+[[ -s "$HOME/.zsh/.zshrc.mine" ]] && source "$HOME/.zsh/.zshrc.mine"
 
