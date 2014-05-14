@@ -119,11 +119,6 @@ var getShortUrl = function() {
 EOM
 " }}}
 
-" direct_bookmark.js
-let g:direct_sbm_use_services_by_tag = "h"
-let g:direct_sbm_use_services_by_post = "h"
-noremap <Leader>V :bentry<CR>
-
 " hints-for-embedded.js
 let g:hints_for_embedded_mode="e"
 
@@ -144,7 +139,6 @@ bookmarktoolbar-hint
 caret-hint
 commandBookmarklet
 copy
-direct_bookmark
 feeder
 hint-tombloo
 hints-for-embedded
