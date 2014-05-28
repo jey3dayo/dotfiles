@@ -7,7 +7,7 @@ function percol-select-history() {
     fi
     BUFFER=$(history -n 1 | \
         eval $tac | \
-        percol --match-method migemo --query "$LBUFFER")
+        percol --query "$LBUFFER")
     CURSOR=$#BUFFER
     zle clear-screen
 }
