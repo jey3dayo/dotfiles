@@ -10,6 +10,7 @@ path=(
     $HOME/.rbenv/versions/1.9.3-p429/bin(N-/)
     /usr/local/wine/bin(N-/)
     /usr/local/lib/ruby/gems/2.1.0/gems/tmuxinator-0.6.7/bin(N-/)
+    $HOME/.go(N-/)
     $path
 )
 
