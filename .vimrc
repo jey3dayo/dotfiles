@@ -208,7 +208,21 @@ endif
 " ref.vim
 let g:ref_phpmanual_path = $HOME . '/.vim/dict/php-chunked-xhtml'
 let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
-noremap <Leader>d :<C-u>Ref alc<Space>
+
+"vim-ref
+"Ref webdictでalcを使う設定
+let g:ref_source_webdict_cmd = 'lynx -dump -nonumbers %s'
+"let g:ref_source_webdict_use_cache = 1
+let g:ref_source_webdict_sites = {
+            \ 'alc' : {
+            \   'url' : 'http://eow.alc.co.jp/%s/UTF-8/'
+            \   }
+            \ }
+function! g:ref_source_webdict_sites.alc.filter(output)
+      return join(split(a:output, "\n")[42 :], "\n")
+endfunction
+
+noremap <Leader>d :<C-u>Ref webdict alc<Space>
 
 
 " simple-javascript-indenter
@@ -226,7 +240,7 @@ noremap <Leader>m :Unite file_mru<CR>
 noremap <Leader>y :Unite history/yank<CR>
 noremap <Leader>r :UniteResume<CR>
 noremap <Leader>G :Unite grep:%<CR>
-noremap <Leader>d :UniteWithBufferDir file<CR>
+noremap <Leader>D :UniteWithBufferDir file<CR>
 noremap <Leader>U :Unite neobundle/update<CR>
 
 noremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
@@ -315,6 +329,7 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'mileszs/ack.vim'
+NeoBundle 'majutsushi/tagbar'
 NeoBundle 'nishigori/increment-activator'
 NeoBundle 'ap/vim-css-color'
 NeoBundle 'airblade/vim-rooter'
@@ -325,6 +340,7 @@ NeoBundle 'tomtom/tcomment_vim.git'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'h1mesuke/vim-alignta.git'
 NeoBundle 'vim-scripts/DoxygenToolkit.vim'
@@ -337,6 +353,7 @@ NeoBundle 'vim-scripts/molokai'
 NeoBundle 'vim-scripts/jellybeans.vim'
 NeoBundle 'violetyk/cake.vim'
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'derekwyatt/vim-scala'
 filetype plugin indent on
 " }}}
 
