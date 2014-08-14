@@ -354,6 +354,7 @@ NeoBundle 'vim-scripts/jellybeans.vim'
 NeoBundle 'violetyk/cake.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'derekwyatt/vim-scala'
+NeoBundle 'mattn/emmet-vim.git'
 filetype plugin indent on
 " }}}
 
