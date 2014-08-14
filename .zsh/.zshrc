@@ -159,6 +159,13 @@ __git_files() { _files }
 # mosh complete
 compdef mosh=ssh
 
+# zsh-completions
+if [ -e /usr/local/share/zsh-completions ]; then
+    fpath=(/usr/local/share/zsh-completions $fpath)
+    compinit
+fi
+
+
 # load local setting
 [[ -s "$HOME/.zshrc.mine" ]] && source "$HOME/.zshrc.mine"
 [[ -s "$HOME/.zsh/.zshrc.mine" ]] && source "$HOME/.zsh/.zshrc.mine"

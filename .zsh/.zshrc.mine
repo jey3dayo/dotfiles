@@ -29,6 +29,8 @@ case ${OSTYPE} in
   source $HOME/www/zsh-notify/notify.plugin.zsh
   export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
   export NOTIFY_COMMAND_COMPLETE_TIMEOUT=20
+
+  if [[ -s /Users/nakazato_junya/nvm/nvm.sh ]] ; then source /Users/nakazato_junya/nvm/nvm.sh ; fi
   ;;
   linux*)
   ;;
