@@ -43,6 +43,10 @@ source ~/.zsh/.zshrc
 source ~/.zsh/percol.zsh
 ```
 
+``` ~/.zshenv
+source ~/.zsh/.zshenv
+```
+
 ```
 ln -s ~/www/dotfiles/.zsh ~/.zsh
 
@@ -50,3 +54,25 @@ ln -s ~/www/dotfiles/.zsh ~/.zsh
 # zsh起動して<C-r>で幸せになれる
 pip install percol
 ```
+
+# tmux
+``` ~/.tmux.conf
+source-file ~/www/dotfiles/.tmux.conf
+```
+
+```
+cd ~/www/
+git clone https://github.com/erikw/tmux-powerline
+```
+
+# misc
+
+``` ~/.gitconfig
+[include]
+    path = ~/www/dotfiles/.gitconfig
+
+[user]
+    name = j138
+    email = j138cm at gmail.com
+```
+
