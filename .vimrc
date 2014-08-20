@@ -34,10 +34,10 @@ set listchars=tab:>.,trail:-,extends:\
 
 
 " visible fullsize space
-scriptencoding utf-8
 augroup highlightIdegraphicSpace
   autocmd!
   autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+  autocmd VimEnter,ColorScheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
   autocmd VimEnter,WinEnter * match IdeographicSpace /　/
 augroup END
 
@@ -336,9 +336,10 @@ NeoBundle 'airblade/vim-rooter'
 NeoBundle 'jiangmiao/simple-javascript-indenter'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle "pangloss/vim-javascript"
-NeoBundle 'tomtom/tcomment_vim.git'
+NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
+NeoBundle 'tomtom/tcomment_vim.git'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-surround'
