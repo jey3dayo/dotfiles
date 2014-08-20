@@ -10,8 +10,8 @@ git submodule foreach git pull
 
 # vim
 
-
-``` ~/.vimrc
+~/.vimrc
+```
 source ~/www/dotfiles/.vimrc
 ```
 
@@ -33,17 +33,20 @@ make ./make_mac.mak
 ln -s ~/www/dotfiles/.vim ~/.vimperator
 ```
 
-``` ~/.vimperatorrc
+~/.vimperatorrc
+```
 source ~/www/dotfiles/.vimperatorrc
 ```
 # zsh
 
-``` ~/.zshrc
+~/.zshrc
+```
 source ~/.zsh/.zshrc
 source ~/.zsh/percol.zsh
 ```
 
-``` ~/.zshenv
+~/.zshenv
+```
 source ~/.zsh/.zshenv
 ```
 
@@ -56,7 +59,9 @@ pip install percol
 ```
 
 # tmux
-``` ~/.tmux.conf
+
+~/.tmux.conf
+```
 source-file ~/www/dotfiles/.tmux.conf
 ```
 
@@ -67,7 +72,8 @@ git clone https://github.com/erikw/tmux-powerline
 
 # misc
 
-``` ~/.gitconfig
+~/.gitconfig
+```
 [include]
     path = ~/www/dotfiles/.gitconfig
 
