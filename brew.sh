@@ -17,6 +17,7 @@ brew install cmigemo
 brew install colordiff
 brew install coreutils
 brew install docker
+brew install go
 brew install gcc
 brew install git
 brew install gnu-sed
@@ -49,6 +50,7 @@ brew install ruby-build
 brew install sbt
 brew install scala
 brew install sqlite
+brew install sequel-pro
 brew install terminal-notifier
 brew install tmux
 brew install unar
@@ -78,6 +80,7 @@ brew cask install fluid
 brew cask install github
 brew cask install google-chrome
 brew cask install google-drive
+brew cask install google-japanese-ime
 brew cask install hipchat
 brew cask install hyperswitch
 brew cask install ifunbox
@@ -108,7 +111,7 @@ brew cask install vagrant
 brew cask install virtualbox
 brew cask install vlc
 brew cask install vmware-fusion
-
-brew clean up
+brew cask install witch
+brew cleanup
 
 brew cask alfred link
