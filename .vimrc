@@ -182,6 +182,21 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 " }}}
 
 
+" increment-activator.vim
+let g:increment_activator_filetype_candidates = {
+  \   '_' : [
+  \     ['info', 'warning', 'notice', 'error'],
+  \     ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
+  \   ],
+  \   'ruby': [
+  \     ['if', 'unless'],
+  \   ],
+  \   'git-rebase-todo': [
+  \     ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
+  \   ],
+  \ }
+
+
 " neosnippet.vim {{{
 " " snippets dir
 let g:neosnippet#enable_snipmate_compatibility = 1
