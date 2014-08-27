@@ -9,10 +9,6 @@ let g:PHP_vintage_case_default_indent = 1
 
 map <leader><c-E> <ESC>:!php %<CR>
 
-" ref.vim
-nmap <leader>D :Ref phpmanual<Space>
-
-
 set makeprg=php\ -l\ %
 set errorformat=%m\ in\ %f\ on\ line\ %l
 
