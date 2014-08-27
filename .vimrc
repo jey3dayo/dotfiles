@@ -311,6 +311,8 @@ filetype indent off
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 
+" tagbar.vim
+nnoremap <Leader>T :<C-u>TagbarToggle
 
 if has("win32") || has("win64")
   set rtp+=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
