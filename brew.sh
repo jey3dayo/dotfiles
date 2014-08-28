@@ -48,6 +48,7 @@ brew install rainbarf
 brew install rbenv
 brew install ruby-build
 brew install sbt
+brew install the_silver_searcher
 brew install scala
 brew install sqlite
 brew install sequel-pro
