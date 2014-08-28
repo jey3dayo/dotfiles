@@ -190,6 +190,7 @@ let g:increment_activator_filetype_candidates = {
   \   ],
   \   'ruby': [
   \     ['if', 'unless'],
+  \     ['nil', 'empty', 'blank'],
   \   ],
   \   'git-rebase-todo': [
   \     ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
@@ -327,7 +328,7 @@ let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 
 " tagbar.vim
-nnoremap <Leader>T :<C-u>TagbarToggle
+nnoremap <Leader>T :<C-u>TagbarToggle<CR>
 
 if has("win32") || has("win64")
   set rtp+=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
