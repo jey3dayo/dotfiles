@@ -49,6 +49,9 @@ noremap ! :set invum<CR>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 
+" toggle pin
+noremap <Leader>p :setlocal apptab!<CR>
+
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
 qmark e http://www.evernote.com/Home.action
@@ -73,7 +76,7 @@ set! dom.event.contextmenu.enabled=false
 javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://hatenabookmark/content/vimperator/plugin/hatenabookmark.js', {__proto__: this});
 
 " commandBookmarklet.js
-nnoremap <leader>p :bmlpocket<CR>
+nnoremap <leader>P :bmlpocket<CR>
 
 "copy.js {{{
 nnoremap <leader>y :copy<Space>Title bittly<CR>
