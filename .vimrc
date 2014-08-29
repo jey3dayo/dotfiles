@@ -185,7 +185,7 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 " increment-activator.vim
 let g:increment_activator_filetype_candidates = {
   \   '_' : [
-  \     ['info', 'warning', 'notice', 'error'],
+  \     ['info', 'warning', 'notice', 'error', 'success'],
   \     ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
   \   ],
   \   'ruby': [
