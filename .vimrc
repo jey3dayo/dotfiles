@@ -314,11 +314,6 @@ let g:lightline = {
   \ }
 
 
-" vimfiler.vim
-let g:vimfiler_as_default_explorer = 1
-nnoremap <Leader>e  :<C-u>VimFilerSplit<CR>
-
-
 " neobundle.vim {{{
 set nocompatible
 filetype indent off
@@ -344,7 +339,6 @@ NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/vimfiler'
 NeoBundle 'Shougo/vimproc'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'majutsushi/tagbar'
@@ -374,6 +368,7 @@ NeoBundle 'violetyk/cake.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'mattn/emmet-vim.git'
+NeoBundle 'groenewege/vim-less'
 filetype plugin indent on
 " }}}
 
