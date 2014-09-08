@@ -57,6 +57,7 @@ set wildmenu
 set fdm=marker
 set noscrollbind
 set laststatus=2
+set cursorcolumn
 set statusline=%F%m%r%h%w\%=\[%{&ff}]\[%{&fileencoding}]\[%l/%L][%3P]
 
 
@@ -238,7 +239,7 @@ function! g:ref_source_webdict_sites.alc.filter(output)
       return join(split(a:output, "\n")[42 :], "\n")
 endfunction
 
-noremap <Leader>d :<C-u>Ref webdict alc<Space>
+noremap <Leader>D :<C-u>Ref webdict alc<Space>
 
 
 " simple-javascript-indenter
@@ -256,7 +257,7 @@ noremap <Leader>m :Unite file_mru<CR>
 noremap <Leader>y :Unite history/yank<CR>
 noremap <Leader>r :UniteResume<CR>
 noremap <Leader>G :Unite grep:%<CR>
-noremap <Leader>D :UniteWithBufferDir file<CR>
+noremap <Leader>d :UniteWithBufferDir file<CR>
 noremap <Leader>U :Unite neobundle/update<CR>
 
 noremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
