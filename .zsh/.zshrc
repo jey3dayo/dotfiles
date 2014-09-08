@@ -81,6 +81,7 @@ alias less="less -R"
 alias ll='ls -lAFhp'
 alias ls='ls -pF'
 alias su="su -l"
+alias relogin="exec -l $SHELL"
 alias hg="hg --encoding=utf-8"
 alias gst="git status -s"
 alias gad="git add"
