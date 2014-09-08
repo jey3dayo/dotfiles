@@ -1,0 +1,23 @@
+Encoding:
+  Enabled: false
+
+LineLength:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+AsciiComments:
+  Enabled: false
+
+CyclomaticComplexity:
+  Max: 20
+
+Documentation:
+  Enabled: false
+
+NumericLiterals:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
