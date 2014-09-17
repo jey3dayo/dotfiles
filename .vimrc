@@ -188,10 +188,14 @@ let g:increment_activator_filetype_candidates = {
   \   '_' : [
   \     ['info', 'warning', 'notice', 'error', 'success'],
   \     ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
+  \     ['static', 'absolute', 'relative', 'fixed', 'sticky'],
+  \     ['height', 'width'],
+  \     ['right', 'left'],
   \   ],
   \   'ruby': [
   \     ['if', 'unless'],
   \     ['nil', 'empty', 'blank'],
+  \     ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
   \   ],
   \   'git-rebase-todo': [
   \     ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
@@ -320,8 +324,10 @@ set nocompatible
 filetype indent off
 
 " syntastic.vim
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby'] }
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php', 'sass'] }
 let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
+let g:syntastic_sass_checkers = ['sass']
 
 " tagbar.vim
 nnoremap <Leader>T :<C-u>TagbarToggle<CR>
@@ -370,6 +376,7 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'mattn/emmet-vim.git'
 NeoBundle 'groenewege/vim-less'
+NeoBundle 'tpope/vim-haml'
 filetype plugin indent on
 " }}}
 
