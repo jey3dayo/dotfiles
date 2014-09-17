@@ -1,23 +1,5 @@
 # j138 .zshrc.mine
 
-# alias
-alias diff="colordiff"
-alias notice='terminal-notifier -message "wuff! wuff"'
-alias vm-rework='vagrant halt ; vagrant destroy -f ; vagrant up ; knife solo prepare melody;notice'
-
-# rbenv
-if [ -d ${HOME}/.rbenv  ] ; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  # eval "$(rbenv init -)"
-  eval "$(rbenv init - zsh)"
-fi
-
-# tmux-powerline
-PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
-
-# percol
-source ~/.zsh/percol.zsh
-
 case ${OSTYPE} in
   darwin*)
   # z command
@@ -36,7 +18,17 @@ case ${OSTYPE} in
   ;;
 esac
 
+# alias
+alias diff="colordiff"
+alias notice='terminal-notifier -message "wuff! wuff"'
+
+# tmux-powerline
+PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+
 # dev
 export RAILS_ENV="development"
+
+# percol
+source ~/.zsh/percol.zsh
 
 # vim: set syntax=zsh:
