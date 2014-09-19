@@ -28,7 +28,10 @@ PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -
 # dev
 export RAILS_ENV="development"
 
-# percol
+# boot2docker
+export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2375
+
+ #percol
 source ~/.zsh/percol.zsh
 
 # vim: set syntax=zsh:
