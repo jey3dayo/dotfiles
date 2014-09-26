@@ -122,6 +122,16 @@ var getShortUrl = function() {
 EOM
 " }}}
 
+
+" feedSomeKeys_3.js
+command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
+lazy fmaps -u='mail\.google\.com/mail' c / j k y n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k y o u e x s r a # [ ] ? gi gs gt gd ga gc
+lazy fmaps -u='feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
+lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
+lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
+
+
 " hints-for-embedded.js
 let g:hints_for_embedded_mode="e"
 
@@ -143,6 +153,7 @@ caret-hint
 commandBookmarklet
 copy
 feeder
+feedSomeKeys_3
 hint-tombloo
 hints-for-embedded
 multi_requester
