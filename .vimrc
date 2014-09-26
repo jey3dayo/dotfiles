@@ -340,6 +340,7 @@ else
   call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
+NeoBundle 'ekalinin/Dockerfile.vim'
 NeoBundle 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
