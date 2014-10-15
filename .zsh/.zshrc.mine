@@ -12,7 +12,18 @@ case ${OSTYPE} in
   export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
   export NOTIFY_COMMAND_COMPLETE_TIMEOUT=20
 
-  if [[ -s /Users/nakazato_junya/nvm/nvm.sh ]] ; then source /Users/nakazato_junya/nvm/nvm.sh ; fi
+  # boot2docker
+  export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2375
+
+  # docker
+  if [[ -s /usr/local/bin/boot2docker ]] then
+    docker-enter() {
+      boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
+      boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
+    }
+  fi
+
+  if [[ -s ~/nvm/nvm.sh ]] ; then source ~/nvm/nvm.sh ; fi
   ;;
   linux*)
   ;;
@@ -28,10 +39,11 @@ PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -
 # dev
 export RAILS_ENV="development"
 
-# boot2docker
-export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2375
-
- #percol
+#percol
 source ~/.zsh/percol.zsh
 
+# go lang
+export GOPATH=~/gocode
+export GOROOT=~/goroot
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
 # vim: set syntax=zsh:
