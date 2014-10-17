@@ -32,7 +32,6 @@ nnoremap <C-h> :tabmove! -1<CR>
 nnoremap <C-l> :tabmove! +1<CR>
 
 noremap U :undo<Space>
-noremap <Leader>so :source ~/.vimperatorrc<CR>
 noremap a <S-a>
 
 noremap I <C-u>:ignorekeys add -except :,<\C-p>,<\C-n>,t,gt,gT,h,l,H,L<Space><Tab>
@@ -51,6 +50,13 @@ inoremap <C-f> <Right>
 
 " toggle pin
 noremap <Leader>p :setlocal apptab!<CR>
+
+if (liberator.has("Win32")) {
+  noremap <Leader>so :source ~/_vimperatorrc<CR>
+} else {
+  noremap <Leader>so :source ~/.vimperatorrc<CR>
+}
+
 
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
