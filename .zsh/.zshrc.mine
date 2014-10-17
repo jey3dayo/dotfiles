@@ -44,6 +44,5 @@ source ~/.zsh/percol.zsh
 
 # go lang
 export GOPATH=~/gocode
-export GOROOT=~/goroot
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export PATH=$PATH:$GOPATH/bin
 # vim: set syntax=zsh:
