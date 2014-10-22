@@ -39,3 +39,7 @@ if [ -d ${HOME}/.plenv ] ; then
   export PATH="$HOME/.plenv/bin:$PATH"
   eval "$(plenv init - zsh)"
 fi
+
+if [ -d `brew --prefix nvm` ] ; then
+  source $(brew --prefix nvm)/nvm.sh
+fi
