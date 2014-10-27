@@ -319,27 +319,30 @@ let g:lightline = {
   \ }
 
 
-" neobundle.vim {{{
-set nocompatible
-filetype indent off
-
 " syntastic.vim
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php', 'sass'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 let g:syntastic_sass_checkers = ['sass']
 
+
 " tagbar.vim
 nnoremap <Leader>T :<C-u>TagbarToggle<CR>
+
+
+" neobundle.vim {{{
+set nocompatible
+filetype indent off
 
 if has("win32") || has("win64")
   set rtp+=C:/repos/dotfiles/.vim/bundle/neobundle.vim/
   call neobundle#rc('~/Documents/GitHub/dotfiles/.vim/bundle/')
 else
   set rtp+=~/.vim/bundle/neobundle.vim/
-  call neobundle#rc(expand('~/.vim/bundle/'))
+  call neobundle#begin(expand('~/.vim/bundle/'))
 endif
 
+NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'ekalinin/Dockerfile.vim'
 NeoBundle 'Shougo/neobundle.vim'
 NeoBundle 'Shougo/neocomplcache'
@@ -378,6 +381,9 @@ NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'mattn/emmet-vim.git'
 NeoBundle 'groenewege/vim-less'
 NeoBundle 'tpope/vim-haml'
+
+call neobundle#end()
+
 filetype plugin indent on
 " }}}
 
