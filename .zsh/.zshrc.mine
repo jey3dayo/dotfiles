@@ -7,10 +7,10 @@ case ${OSTYPE} in
   . `brew --prefix`/etc/profile.d/z.sh
   alias j='z'
 
-  # notify.plugin.zsh
-  source $HOME/Documents/Github/zsh-notify/notify.plugin.zsh
-  export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
-  export NOTIFY_COMMAND_COMPLETE_TIMEOUT=20
+  # # notify.plugin.zsh
+  # source $HOME/Documents/Github/zsh-notify/notify.plugin.zsh
+  # export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
+  # export NOTIFY_COMMAND_COMPLETE_TIMEOUT=20
 
   # boot2docker
   export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2376
