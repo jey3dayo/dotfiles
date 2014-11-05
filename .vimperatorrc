@@ -60,15 +60,11 @@ if (liberator.has("Win32")) {
 
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
-qmark e http://www.evernote.com/Home.action
 qmark F http://www.facebook.com/
 qmark f http://cloud.feedly.com/
-qmark g http://grooveshark.com/
 qmark P http://getpocket.com/
 qmark p https://pinboard.in/u:j138/
 qmark m https://mail.google.com/mail/
-qmark n http://news.google.co.jp/nwshp?hl=ja&tab=wn
-qmark r http://www.rememberthemilk.com/
 
 " Firefox Config
 set! browser.download.manager.retention=1
@@ -92,39 +88,14 @@ nnoremap <leader>A :copy<Space>AmazonAffiliate<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
-    { label: 'Title goo.gl',value: 'copy title&url with goo.gl', custom: function() { var title = content.document.title; return title + " " + getShortUrl(); }},
     { label: 'title URL',   value: '%TITLE% %URL%' },
     { label: 'title<cr>URL',    value: '%TITLE%\n%URL%' },
-    { label: '[[title:URL]]',   value: '[[%TITLE%:%URL%]]' },
-    { label: 'title',           value: '%TITLE%' },
-    { label: 'url',             value: '%URL%' },
     { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
-    { label: 'htmlblockquote',  value: '<blockquote cite="%URL%" title="%TITLE%">%HTMLSEL%</blockquote>' },
-    { label: 'bittly',          value: 'Get bittly URL', custom: function() { return util.httpGet('http://api.bitly.com/v3/shorten?login=j138&apiKey=R_3956b371cd906f5cb0bb5a326bf5165e&format=txt&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
     { label: 'Title bittly',  value: 'Get bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://api.bitly.com/v3/shorten?login=j138&apiKey=R_3956b371cd906f5cb0bb5a326bf5165e&format=txt&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
     { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
     { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
     { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
     ];
-
-var getShortUrl = function() {
-  var longUrl = content.document.location.href;
-
-  var googl = {
-    'url' : 'https://www.googleapis.com/urlshortener/v1/url?key=',
-    'key' : 'AIzaSyB08v77AcrWI31DfD9Iii54HwkeyTOrs7c',
-    'method' : 'POST',
-    'contentType' : 'application/json',
-    'longJson' : '{ "longUrl" : "' + longUrl + '" }'
-  };
-
-  var request = new XMLHttpRequest();
-  request.open(googl.method, googl.url + googl.key, false);
-  request.setRequestHeader('Content-Type', googl.contentType);
-  request.send(googl.longJson);
-
-  return JSON.parse(request.responseText).id;
-};
 EOM
 " }}}
 
@@ -143,18 +114,12 @@ let g:hints_for_embedded_mode="e"
 
 " plugin_loader.js {{{
 javascript <<EOM
-if (liberator.has("Win32")) {
-  liberator.globalVariables.plugin_loader_roots = "~/Documents/GitHub/vimperator-plugins/"
-} else {
-  liberator.globalVariables.plugin_loader_roots = "~/www/dotfiles/.vimperator/bundle/vimperator-plugins.git/"
-}
-
+liberator.globalVariables.plugin_loader_roots = "~/Documents/GitHub/vimperator-plugins/"
 liberator.globalVariables.plugin_loader_plugins = `
 _libly
 auto-focus-frame
 auto_detect_link
 bitly
-bookmarktoolbar-hint
 caret-hint
 commandBookmarklet
 copy
