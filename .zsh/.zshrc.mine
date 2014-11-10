@@ -24,6 +24,7 @@ case ${OSTYPE} in
       boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
     }
   fi
+  alias de="docker-enter $(docker ps -q)"
 
   if [[ -s ~/nvm/nvm.sh ]] ; then source ~/nvm/nvm.sh ; fi
 

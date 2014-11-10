@@ -9,7 +9,7 @@ echo 'source ~/www/dotfiles/.vimrc' >> ~/.vimrc
 echo 'source ~/www/dotfiles/.vimperatorrc' >> ~/.vimperatorrc
 echo 'source ~/www/dotfiles/.zshrc' >> ~/.zshrc
 echo 'source ~/www/dotfiles/.zshenv' >> ~/.zshenv
-echo 'source-file ~/www/dotfiles/.tmux.conf' >> ~/.tmux.conf
+echo 'source-file ~/www/dotfiles/.tmux/main.conf' >> ~/.tmux.conf
 
 git config include.path=~/www/dotfiles/.gitconfig
 git user.name Junya Nakazato
