@@ -1,5 +1,5 @@
 #!/bin/sh
-DOTFILES=~/www/dotfiles/
+DOTFILES=~/www/dotfiles
 ln -s $DOTFILES/.vim ~/.vim
 
 
@@ -10,8 +10,9 @@ echo 'source ~/www/dotfiles/.zshenv' >> ~/.zshenv
 echo 'source-file ~/www/dotfiles/.tmux.conf' >> ~/.tmux.conf
 
 curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
-$DOTFILES/.vim/bundle/neobundle.vim/bin/neoinstall
+git clone https://github.com/Shougo/vimproc.vim $DOTFILES/.vim/bundle/vimproc.vim
 
-cd $DOTFILES/.vim/bundle/vimproc/
+cd $DOTFILES/.vim/bundle/vimproc.vim/
 make -f ./make_unix.mak
 
+$DOTFILES/.vim/bundle/neobundle.vim/bin/neoinstall
