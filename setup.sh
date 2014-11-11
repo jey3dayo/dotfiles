@@ -4,8 +4,8 @@ DOTFILES=$HOME/src/dotfiles
 ln -s $DOTFILES/.vim ~/.vim
 ln -s $DOTFILES/.zsh ~/.zsh
 
-mkdir ~/tmp
-mkdir ~/log
+mkdir $HOME/{tmp,log}
+chown `id -u` $HOME/{tmp,log}
 
 echo "source $DOTFILES/.vimrc" >> ~/.vimrc
 echo "source $DOTFILES/.vimperatorrc" >> ~/.vimperatorrc
