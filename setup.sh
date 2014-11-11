@@ -6,7 +6,7 @@ ln -s $DOTFILES/.zsh ~/.zsh
 
 DIRS=tmp,log,.cache
 mkdir $HOME/{$DIRS}
-chown `id -u` $HOME/{$DIRS}
+chown -R `id -u` $HOME/{$DIRS}
 
 echo "source $DOTFILES/.vimrc" >> ~/.vimrc
 echo "source $DOTFILES/.vimperatorrc" >> ~/.vimperatorrc
