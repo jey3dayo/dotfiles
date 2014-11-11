@@ -40,6 +40,6 @@ if [ -d ${HOME}/.plenv ] ; then
   eval "$(plenv init - zsh)"
 fi
 
-if [ -d `brew --prefix nvm` ] ; then
+if command -v brew; then
   source $(brew --prefix nvm)/nvm.sh
 fi
