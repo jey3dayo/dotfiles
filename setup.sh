@@ -1,11 +1,13 @@
 #!/bin/sh
 HOME=~
+USER=`id -u`
+
 DOTFILES=$HOME/src/dotfiles
 ln -s $DOTFILES/.vim ~/.vim
 ln -s $DOTFILES/.zsh ~/.zsh
 
 mkdir $HOME/{tmp,log,.cache}
-chown -R `id -u` $HOME/{tmp,log,.cache}
+chown -R $USER $HOME/{tmp,log,.cache}
 
 echo "source $DOTFILES/.vimrc" >> ~/.vimrc
 echo "source $DOTFILES/.vimperatorrc" >> ~/.vimperatorrc
