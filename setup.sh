@@ -1,5 +1,6 @@
 #!/bin/sh
-DOTFILES=\~/src/dotfiles
+HOME=~
+DOTFILES=$HOME/src/dotfiles
 ln -s $DOTFILES/.vim ~/.vim
 ln -s $DOTFILES/.zsh ~/.zsh
 
