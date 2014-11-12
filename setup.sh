@@ -15,7 +15,7 @@ echo "source $DOTFILES/.zsh/.zshenv" >> ~/.zshenv
 echo "source-file $DOTFILES/.tmux/main.conf" >> ~/.tmux.conf
 
 
-git config --global include.path=$DOTFILES/.gitconfig
+git config --global include.path $DOTFILES/.gitconfig
 git config --global user.name "Junya Nakazato"
 git config --global user.email nakazato_junya@ca-adv.co.jp
 
