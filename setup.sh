@@ -15,9 +15,9 @@ echo "source $DOTFILES/.zsh/.zshenv" >> ~/.zshenv
 echo "source-file $DOTFILES/.tmux/main.conf" >> ~/.tmux.conf
 
 
-git config include.path=$DOTFILES/.gitconfig
-git config user.name Junya Nakazato
-git config user.email nakazato_junya@ca-adv.co.jp
+git config --global include.path=$DOTFILES/.gitconfig
+git config --global user.name Junya Nakazato
+git config --global user.email nakazato_junya@ca-adv.co.jp
 
 
 curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
