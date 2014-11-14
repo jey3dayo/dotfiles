@@ -5,6 +5,7 @@ DOTFILES=$HOME/src/dotfiles
 
 ln -s $DOTFILES/.vim ~/.vim
 ln -s $DOTFILES/.zsh ~/.zsh
+ln -s $DOTFILES/.tmux ~/.tmux
 mkdir $HOME/{tmp,log,.cache}
 
 
