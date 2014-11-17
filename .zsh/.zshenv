@@ -1,6 +1,3 @@
-# rbenv path
-export MANPATH=/opt/local/man:$MANPATH
-
 path=(
     /usr/local/bin(N-/)
     /usr/local/sbin(N-/)
@@ -14,14 +11,18 @@ path=(
     $path
 )
 
+
 case ${OSTYPE} in
   darwin*)
   USERDIR="/Users/`whoami`"
+  if command -v brew>/dev/null; then source $(brew --prefix nvm)/nvm.sh ; fi
   ;;
   linux*)
   USERDIR="/home/`whoami`"
+  if [[ -s ~/nvm/nvm.sh ]] ; then source ~/nvm/nvm.sh ; fi
   ;;
 esac
+
 
 # perl
 export PERL_LOCAL_LIB_ROOT="$USERDIR/perl5:$PERL_LOCAL_LIB_ROOT";
@@ -30,16 +31,35 @@ export PERL_MM_OPT="INSTALL_BASE=$USERDIR/perl5";
 export PERL5LIB="$USERDIR/perl5/lib/perl5:$PERL5LIB";
 export PATH="$USERDIR/perl5/bin:$PATH";
 
+
+# android
+export ANDROID_HOME=/usr/local/opt/android-sdk
+export NDK_ROOT=/usr/local/Cellar/android-ndk/r9d
+export ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
+export ANT_ROOT=/usr/local/bin
+
+
+# rbenv path
 if [ -d ${HOME}/.rbenv ] ; then
   export PATH="$HOME/.rbenv/bin:$PATH"
+  export MANPATH=/opt/local/man:$MANPATH
+  export RAILS_ENV="development"
   eval "$(rbenv init - zsh)"
 fi
+
 
 if [ -d ${HOME}/.plenv ] ; then
   export PATH="$HOME/.plenv/bin:$PATH"
   eval "$(plenv init - zsh)"
 fi
 
-if command -v brew>/dev/null; then
-  source $(brew --prefix nvm)/nvm.sh
-fi
+
+
+# go lang
+export GOPATH=~/gocode
+export PATH=$PATH:$GOPATH/bin
+
+
+#percol
+if [[ -s ~/.zsh/percol.zsh ]] ; then source ~/.zsh/percol.zsh ; fi
+
