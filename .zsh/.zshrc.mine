@@ -3,9 +3,11 @@
 case ${OSTYPE} in
   darwin*)
   # z command
-  export _Z_DATA=~/tmp/.z
-  . `brew --prefix`/etc/profile.d/z.sh
-  alias j='z'
+  if [[ -s ~/tmp/.z ]] then
+    export _Z_DATA=~/tmp/.z
+    . `brew --prefix`/etc/profile.d/z.sh
+    alias j='z'
+  fi
 
   # # notify.plugin.zsh
   # source $HOME/Documents/Github/zsh-notify/notify.plugin.zsh
