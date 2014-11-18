@@ -1,7 +1,7 @@
 # Setup
 
 ```
-cd /www/
+cd /src/
 git clone https://github.com/j138/dotfiles
 mkdir ~/tmp # backup files vim
 mkdir ~/log # zshlogs
@@ -12,11 +12,11 @@ git submodule foreach git pull
 
 ~/.vimrc
 ```
-source ~/www/dotfiles/.vimrc
+source ~/src/dotfiles/.vimrc
 ```
 
 ```
-ln -s ~/www/dotfiles/.vim ~/.vim
+ln -s ~/src/dotfiles/.vim ~/.vim
 curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
 cd ~/.vim/bundle/vimproc/
 
@@ -30,12 +30,12 @@ make ./make_mac.mak
 # vimperator
 
 ```
-ln -s ~/www/dotfiles/.vim ~/.vimperator
+ln -s ~/src/dotfiles/.vim ~/.vimperator
 ```
 
 ~/.vimperatorrc
 ```
-source ~/www/dotfiles/.vimperatorrc
+source ~/src/dotfiles/.vimperatorrc
 ```
 # zsh
 
@@ -51,7 +51,7 @@ source ~/.zsh/.zshenv
 ```
 
 ```
-ln -s ~/www/dotfiles/.zsh ~/.zsh
+ln -s ~/src/dotfiles/.zsh ~/.zsh
 
 # ついでにpercolも入れよう
 # zsh起動して<C-r>で幸せになれる
@@ -62,11 +62,11 @@ pip install percol
 
 ~/.tmux.conf
 ```
-source-file ~/www/dotfiles/.tmux.conf
+source-file ~/src/dotfiles/.tmux.conf
 ```
 
 ```
-cd ~/www/
+cd ~/src/
 git clone https://github.com/erikw/tmux-powerline
 ```
 
@@ -75,7 +75,7 @@ git clone https://github.com/erikw/tmux-powerline
 ~/.gitconfig
 ```
 [include]
-    path = ~/www/dotfiles/.gitconfig
+    path = ~/src/dotfiles/.gitconfig
 
 [user]
     name = j138
