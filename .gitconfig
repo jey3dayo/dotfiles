@@ -1,49 +1,48 @@
 [user]
-	name = j138
-	email = j138cm@gmail.com
+  name = j138
+  email = j138cm@gmail.com
 [color]
-	branche = auto
-	diff    = auto
-	interactive = auto
-	status  = auto
-	ui = auto
+  branche = auto
+  diff    = auto
+  interactive = auto
+  status  = auto
+  ui = auto
 [core]
-	excludesfile = /Users/nakazato_junya/.gitignore_global
-	quotepath = false
-	editor = /usr/bin/vim
+  excludesfile = ~/.gitignore_global
+  quotepath = false
+  editor = /usr/bin/vim
 [alias]
-	c  = commit
-	ca = commit --amend
-	co = checkout
-	ci = commit 
-	st = status --short
-	up = pull --rebase
-	l  = log --stat
-	lp = log -p
-	lg =log --graph --decorate --oneline
-	dn = diff --name-only
+  c  = commit
+  ca = commit --amend
+  co = checkout
+  ci = commit 
+  st = status --short
+  up = pull --rebase
+  l  = log --stat
+  lp = log -p
+  lg =log --graph --decorate --oneline
+  dn = diff --name-only
 [github]
-	name = j138
-	user = j138
-	email = j138cm@gmail.com
-	token = 123qweasdzxc123qweasdzxc
+  name = j138
+  user = j138
+  email = j138cm@gmail.com
+  token = 123qweasdzxc123qweasdzxc
 [branch "master"]
-	remote = origin
-	merge = refs/heads/master
+  remote = origin
+  merge = refs/heads/master
 [difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+  path = 
 [mergetool "sourcetree"]
-	cmd = /opt/homebrew-cask/Caskroom/sourcetree/1.8.1/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+  cmd = /opt/homebrew-cask/Caskroom/sourcetree/1.8.1/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+  trustExitCode = true
 [url "https://"]
-	insteadOf = git://
+  insteadOf = git://
 [push]
-	default = simple
-
+  default = simple
 [pager]
-	log = diff-highlight | less
-	show = diff-highlight | less
-	diff = diff-highlight | less
+  log = diff-highlight | less
+  show = diff-highlight | less
+  diff = diff-highlight | less
 [credential]
-	helper = cache --timeout=3600
+  helper = cache --timeout=3600
