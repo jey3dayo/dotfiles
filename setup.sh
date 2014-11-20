@@ -1,5 +1,4 @@
 #!/bin/sh
-HOME=~
 USER=`id -u`
 DOTFILES=$HOME/src/dotfiles
 
