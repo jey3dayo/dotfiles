@@ -36,10 +36,10 @@ set listchars=tab:>.,trail:-,extends:\
 
 " visible fullsize space
 augroup highlightIdegraphicSpace
-  autocmd!
-  autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  autocmd VimEnter,ColorScheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  autocmd VimEnter,WinEnter * match IdeographicSpace /　/
+  au!
+  au Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+  au VimEnter,ColorScheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+  au VimEnter,WinEnter * match IdeographicSpace /　/
 augroup END
 
 
@@ -143,14 +143,14 @@ vnoremap <silent> == :Align @1 =<CR>
 
 " vim-coffee-script
 au BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
-autocmd FileType coffee     setlocal sw=2 sts=2 ts=2 et
-autocmd BufWritePost *.coffee silent make!
-autocmd QuickFixCmdPost * nested cwindow | redraw!
+au FileType coffee     setlocal sw=2 sts=2 ts=2 et
+au BufWritePost *.coffee silent make!
+au QuickFixCmdPost * nested cwindow | redraw!
 
 
 " indent_guides
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
+au VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
 au FileType coffee,ruby,javascript,python IndentGuidesEnable
 nmap <silent><Leader>ig <Plug>IndentGuidesToggle
 
