@@ -1,6 +1,2 @@
 " js config
-set expandtab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set textwidth=0
+setlocal nowrap tabstop=2 tw=0 sw=2 expandtab

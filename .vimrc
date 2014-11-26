@@ -23,6 +23,7 @@ set t_Co=256
 colorscheme wombat
 highlight Search ctermbg=7
 
+
 " set list
 nmap <Leader>sn :<C-u>set number!<CR>
 nmap <Leader>sl :<C-u>set list!<CR>
@@ -40,6 +41,7 @@ augroup highlightIdegraphicSpace
   autocmd VimEnter,ColorScheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
   autocmd VimEnter,WinEnter * match IdeographicSpace /　/
 augroup END
+
 
 " set options
 set autoindent
@@ -88,7 +90,6 @@ nnoremap <Leader>gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT
 nnoremap <Leader>gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap <Leader>gx :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ %<Bar>cw<CR>
 nnoremap <Leader>gX :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ **/*.*<Bar>cw<CR>
-
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
 
@@ -134,9 +135,31 @@ set shellslash
 set hidden
 set shortmess+=I
 
+
 " for alingta
 vnoremap <silent> => :Align @1 =><CR>
 vnoremap <silent> == :Align @1 =<CR>
+
+
+" vim-coffee-script
+au BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
+autocmd FileType coffee     setlocal sw=2 sts=2 ts=2 et
+autocmd BufWritePost *.coffee silent make!
+autocmd QuickFixCmdPost * nested cwindow | redraw!
+
+
+" indent_guides
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+au FileType coffee,ruby,javascript,python IndentGuidesEnable
+nmap <silent><Leader>ig <Plug>IndentGuidesToggle
+
+let g:indent_guides_auto_colors=0
+let g:indent_guides_start_level=2
+let g:indent_guides_guide_size=1
+let g:indent_guides_enable_on_vim_startup=0
+let g:indent_guides_color_change_percent=20
+
 
 " fugitive.vim
 " The prefix key.
@@ -173,7 +196,6 @@ let g:neocomplcache_dictionary_filetype_lists = {
   \ 'php' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
   \ 'thtml' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
   \ }
-
 
 " Define keyword.
 if !exists('g:neocomplcache_keyword_patterns')
@@ -230,6 +252,7 @@ endif
 let g:ref_phpmanual_path = $HOME . '/.vim/dict/php-chunked-xhtml'
 let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
 
+
 "vim-ref
 "Ref webdictでalcを使う設定
 let g:ref_source_webdict_cmd = 'lynx -dump -nonumbers %s'
@@ -273,6 +296,7 @@ au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>:q<CR>
 
 au FileType unite nnoremap <silent> <buffer> <expr> <C-J> unite#do_action('split')
 au FileType unite inoremap <silent> <buffer> <expr> <C-K> unite#do_action('vsplit')
+
 
 " unite-grep
 let g:unite_enable_start_insert = 1
@@ -365,6 +389,7 @@ NeoBundle 'nishigori/increment-activator'
 NeoBundle 'ap/vim-css-color'
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'jiangmiao/simple-javascript-indenter'
+NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle "pangloss/vim-javascript"
 NeoBundle 'terryma/vim-multiple-cursors'
@@ -389,6 +414,7 @@ NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'mattn/emmet-vim.git'
 NeoBundle 'groenewege/vim-less'
 NeoBundle 'tpope/vim-haml'
+NeoBundle 'nathanaelkane/vim-indent-guides'
 
 call neobundle#end()
 
