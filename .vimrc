@@ -144,7 +144,6 @@ vnoremap <silent> == :Align @1 =<CR>
 " vim-coffee-script
 au BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
 au FileType coffee     setlocal sw=2 sts=2 ts=2 et
-au BufWritePost *.coffee silent make!
 au QuickFixCmdPost * nested cwindow | redraw!
 
 
