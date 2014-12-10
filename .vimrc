@@ -342,12 +342,20 @@ let g:lightline = {
   \ }
 
 
+" vim-livedown
+let g:livedown_autorun = 0
+let g:livedown_open = 1
+let g:livedown_port = 1337
+map gm <C-u>:call LivedownPreview()<CR>
+
+
 " syntastic.vim
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php', 'sass', 'haml'] }
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 let g:syntastic_haml_checkers = ['haml_lint']
 let g:syntastic_sass_checkers = ['sass']
+let g:syntastic_sh = ['shellcheck']
 
 
 " tagbar.vim
@@ -392,6 +400,7 @@ NeoBundle 'jiangmiao/simple-javascript-indenter'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle "pangloss/vim-javascript"
+NeoBundle 'shime/vim-livedown'
 NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
