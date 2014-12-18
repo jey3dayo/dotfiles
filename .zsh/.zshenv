@@ -79,6 +79,6 @@ export GOPATH=~/gocode
 export PATH=$PATH:$GOPATH/bin
 
 
-#percol
+# percol
 if [[ -s ~/.zsh/percol.zsh ]] ; then source ~/.zsh/percol.zsh ; fi
 
