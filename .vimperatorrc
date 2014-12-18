@@ -28,6 +28,7 @@ noremap J <PageDown>
 noremap K <PageUp>
 nnoremap h gT
 nnoremap l gt
+nnoremap D :bd!<CR>
 nnoremap <C-h> :tabmove! -1<CR>
 nnoremap <C-l> :tabmove! +1<CR>
 nnoremap <C-a> ]]
@@ -56,13 +57,16 @@ noremap <Leader>p :setlocal apptab!<CR>
 
 javascript <<EOM
 if (liberator.has("Win32")) {
-  liberator.execute(noremap <Leader>so :source ~/_vimperatorrc<CR>);
+  liberator.execute('noremap <Leader>so :source ~/_vimperatorrc<CR>');
 } else {
-  liberator.execute(noremap <Leader>so :source ~/.vimperatorrc<CR>);
+  liberator.execute('noremap <Leader>so :source ~/.vimperatorrc<CR>');
 }
 EOM
 
 " qmarks
+qmark a http://animetick.net/
+qmark t https://ja.todoist.com/
+qmark T www.tumblr.com/dashboard
 qmark c http://www.google.com/calendar/render?pli=1
 qmark F http://www.facebook.com/
 qmark f http://cloud.feedly.com/
@@ -107,7 +111,7 @@ EOM
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 lazy fmaps -u='mail\.google\.com/mail' c / j k y n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
 lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k y o u e x s r a # [ ] ? gi gs gt gd ga gc
-lazy fmaps -u='feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
+lazy fmaps -u='feedly\.com' j k n p o v gm ga gg gl / ? r m x s t l f b
 lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
 lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
 
@@ -160,8 +164,8 @@ noremap <Leader>d :mr alc<Space>
 noremap <Leader>D :mr goo<Space>
 
 " nextlink.js
-set nextpattern=^次(へ|の|ペ)?,^続き,ＮＥＸＴ,(next|more),^(>>*|»)
-set previouspattern=^前(へ|の|ペ)?,^戻る,ＢＡＣＫ,(prev|previous),^(<<*|«)
+set nextpattern=^次(へ|の|ペ)?,^続き,ＮＥＸＴ,古い,(next|more),^(>>*|»)
+set previouspattern=^前(へ|の|ペ)?,^戻る,ＢＡＣＫ,新しい,(prev|previous),^(<<*|«)
 let g:nextlink_nositeinfo_act = "f"
 
 " stella.js
