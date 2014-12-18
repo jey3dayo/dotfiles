@@ -30,10 +30,13 @@ nnoremap h gT
 nnoremap l gt
 nnoremap <C-h> :tabmove! -1<CR>
 nnoremap <C-l> :tabmove! +1<CR>
+nnoremap <C-a> ]]
+nnoremap <C-x> [[
 
 noremap U :undo<Space>
 noremap a <S-a>
 
+nnoremap <C-g> g<C-g>
 noremap I <C-u>:ignorekeys add -except :,<\C-p>,<\C-n>,t,gt,gT,h,l,H,L<Space><Tab>
 
 noremap <Leader>es :set encoding=Shift_JIS<CR>
@@ -51,12 +54,13 @@ inoremap <C-f> <Right>
 " toggle pin
 noremap <Leader>p :setlocal apptab!<CR>
 
+javascript <<EOM
 if (liberator.has("Win32")) {
-  noremap <Leader>so :source ~/_vimperatorrc<CR>
+  liberator.execute(noremap <Leader>so :source ~/_vimperatorrc<CR>);
 } else {
-  noremap <Leader>so :source ~/.vimperatorrc<CR>
+  liberator.execute(noremap <Leader>so :source ~/.vimperatorrc<CR>);
 }
-
+EOM
 
 " qmarks
 qmark c http://www.google.com/calendar/render?pli=1
@@ -99,7 +103,6 @@ javascript <<EOM
 EOM
 " }}}
 
-
 " feedSomeKeys_3.js
 command! -nargs=+ lazy autocmd VimperatorEnter .* <args>
 lazy fmaps -u='mail\.google\.com/mail' c / j k y n p o u e x s r <S-i>  a # [ ] ? gi gs gt gd ga gc
@@ -107,7 +110,6 @@ lazy fmaps -u='mail\.google\.com/mail/.*/[0-9a-f]+$' c / j,n k,p n,j p,k y o u e
 lazy fmaps -u='feedly\.com' j k n p o v gm ga gg gl / r m x s t l f b
 lazy fmaps -e=vkeydown -u='www\.tumblr\.com/' j k r t q p n L l<CR>
 lazy fmaps -u='www\.pixiv\.net/member_illust\.php\?mode=manga&illust_id=[0-9]+' j k
-
 
 " hints-for-embedded.js
 let g:hints_for_embedded_mode="e"
@@ -122,6 +124,7 @@ auto_detect_link
 bitly
 caret-hint
 commandBookmarklet
+command_menu
 copy
 feeder
 feedSomeKeys_3
@@ -155,6 +158,58 @@ nnoremap -urls=speakerdeck\\.com k :speakerdeck prev<CR>
 " multi_requester.js
 noremap <Leader>d :mr alc<Space>
 noremap <Leader>D :mr goo<Space>
+
+" nextlink.js
+set nextpattern=^次(へ|の|ペ)?,^続き,ＮＥＸＴ,(next|more),^(>>*|»)
+set previouspattern=^前(へ|の|ペ)?,^戻る,ＢＡＣＫ,(prev|previous),^(<<*|«)
+let g:nextlink_nositeinfo_act = "f"
+
+" stella.js
+javascript <<EOM
+liberator.globalVariables.stella_nico_use_comment=true
+function addLocalMappings(buffer, maps) {
+  maps.forEach(
+    function (map) {
+      let [cmd, action, extra] = map;
+      let actionFunc = action;
+      extra || (extra = {});
+
+      if (typeof action == "string") {
+        if (action.charAt(0) == ':')
+          actionFunc = extra.open ? function () commandline.open("", action, modes.EX)
+                                  : function () liberator.execute(action);
+        else
+          actionFunc = function () events.feedkeys(action, extra.noremap, true);
+      }
+      extra.matchingUrls = buffer;
+      mappings.addUserMap(
+        [modes.NORMAL],
+        [cmd],
+        "Local mapping for " + buffer,
+        actionFunc,
+        extra
+      );
+    }
+  );
+}
+
+addLocalMappings(
+  /^(http:\/\/(es|www).nicovideo.jp\/(watch|playlist\/mylist)|(http|https):\/\/(jp|www)\.youtube\.com\/watch|http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+)/,
+  [
+    ['<C-g>', ':pageinfo S',      ],
+    ['p',     ':stplay',          ],
+    ['m',     ':stmute',          ],
+    ['c',     ':stcomment',       ],
+    ['zz',    ':stlarge',         ],
+    ['s',     ':stseek! 15',      ],
+    ['S',     ':stseek! -15',     ],
+    ['v',     ':stvolume! 10',    ],
+    ['V',     ':stvolume! -10',   ],
+    ['e',     ':strelations ',    {open: true}],
+    ['E',     ':strelations! ',   {open: true}],
+  ]
+);
+EOM
 
 echo "done."
 
