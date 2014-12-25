@@ -151,7 +151,7 @@ vnoremap <silent> == :Align @1 =<CR>
 
 " vim-coffee-script
 au BufRead,BufNewFile,BufReadPre *.coffee set filetype=coffee
-au FileType coffee     setlocal sw=2 sts=2 ts=2 et
+au FileType coffee setlocal sw=2 sts=2 ts=2 et
 au QuickFixCmdPost * nested cwindow | redraw!
 
 
@@ -170,7 +170,7 @@ let g:indent_guides_color_change_percent=20
 
 " fugitive.vim
 " The prefix key.
-nnoremap [fugitive]   <Nop>
+nnoremap [fugitive] <Nop>
 nmap <Leader>g [fugitive]
 
 " keymap
@@ -202,7 +202,7 @@ let g:neocomplcache_dictionary_filetype_lists = {
   \ 'default' : '',
   \ 'php' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
   \ 'thtml' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
-  \ }
+\ }
 
 " Define keyword.
 if !exists('g:neocomplcache_keyword_patterns')
@@ -214,22 +214,22 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 
 " increment-activator.vim
 let g:increment_activator_filetype_candidates = {
-  \   '_' : [
-  \     ['info', 'warning', 'notice', 'error', 'success'],
-  \     ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
-  \     ['static', 'absolute', 'relative', 'fixed', 'sticky'],
-  \     ['height', 'width'],
-  \     ['right', 'left'],
-  \   ],
-  \   'ruby': [
-  \     ['if', 'unless'],
-  \     ['nil', 'empty', 'blank'],
-  \     ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
-  \   ],
-  \   'git-rebase-todo': [
-  \     ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
-  \   ],
-  \ }
+  \ '_' : [
+    \ ['info', 'warning', 'notice', 'error', 'success'],
+    \ ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
+    \ ['static', 'absolute', 'relative', 'fixed', 'sticky'],
+    \ ['height', 'width'],
+    \ ['right', 'left'],
+  \ ],
+  \ 'ruby': [
+    \ ['if', 'unless'],
+    \ ['nil', 'empty', 'blank'],
+    \ ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
+  \ ],
+  \ 'git-rebase-todo': [
+    \ ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
+  \ ],
+\ }
 
 
 " neosnippet.vim {{{
@@ -265,12 +265,12 @@ let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
 let g:ref_source_webdict_cmd = 'lynx -dump -nonumbers %s'
 "let g:ref_source_webdict_use_cache = 1
 let g:ref_source_webdict_sites = {
-            \ 'alc' : {
-            \   'url' : 'http://eow.alc.co.jp/%s/UTF-8/'
-            \   }
-            \ }
+  \ 'alc' : {
+    \ 'url' : 'http://eow.alc.co.jp/%s/UTF-8/'
+  \ }
+\ }
 function! g:ref_source_webdict_sites.alc.filter(output)
-      return join(split(a:output, "\n")[42 :], "\n")
+  return join(split(a:output, "\n")[42 :], "\n")
 endfunction
 
 noremap <Leader>D :<C-u>Ref webdict alc<Space>
@@ -332,22 +332,24 @@ vnoremap /g y:Unite grep::-iRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 let g:lightline = {
   \ 'colorscheme': 'jellybeans',
   \ 'active': {
-  \   'left': [ [ 'mode', 'paste' ],
-  \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+    \ 'left': [
+      \ [ 'mode', 'paste' ],
+      \ [ 'fugitive', 'readonly', 'filename', 'modified' ] 
+    \ ]
   \ },
   \ 'component': {
-  \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
-  \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+    \ 'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+    \ 'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+    \ 'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
   \ },
   \ 'component_visible_condition': {
-  \   'readonly': '(&filetype!="help"&& &readonly)',
-  \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+    \ 'readonly': '(&filetype!="help"&& &readonly)',
+    \ 'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+    \ 'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
   \ },
   \ 'separator': { 'left': '⮀', 'right': '⮂' },
   \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
-  \ }
+\ }
 
 
 " vim-livedown
@@ -391,13 +393,13 @@ NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimproc.vim', {
-\ 'build' : {
-\     'windows' : 'tools\\update-dll-mingw',
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac' : 'make -f make_mac.mak',
-\     'linux' : 'make',
-\     'unix' : 'gmake',
-\    },
+  \ 'build' : {
+    \ 'windows' : 'tools\\update-dll-mingw',
+    \ 'cygwin' : 'make -f make_cygwin.mak',
+    \ 'mac' : 'make -f make_mac.mak',
+    \ 'linux' : 'make',
+    \ 'unix' : 'gmake',
+  \ },
 \ }
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'majutsushi/tagbar'
