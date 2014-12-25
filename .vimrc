@@ -16,6 +16,8 @@ set fileformats=unix,mac,dos
 set isfname+=32
 set cindent
 set virtualedit+=block
+set display=lastline
+set pumheight=15
 
 
 " color
@@ -53,6 +55,7 @@ set nrformats-=octal
 set number
 set ruler
 set showmatch
+set matchtime=1
 set complete+=k
 set cursorline
 set wildmenu
@@ -108,6 +111,11 @@ set backupdir=~/tmp
 set directory=~/tmp
 set viminfo+=n~/tmp
 set undodir=~/tmp
+
+augroup swapchoice-readonly
+  autocmd!
+  autocmd SwapExists * let v:swapchoice = 'o'
+augroup END
 
 
 " link jump
