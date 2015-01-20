@@ -59,6 +59,8 @@ case ${OSTYPE} in
   [[ "$PROMPT_COMMAND" == "_powerline_prompt" ]] ||
     POWERLINE_OLD_PROMPT_COMMAND="$PROMPT_COMMAND"
   export PROMPT_COMMAND="_powerline¥_prompt"
+
+  unset GREP_OPTIONS
   ;;
   linux*)
     [[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && source ~/.autojump/etc/profile.d/autojump.sh
