@@ -75,7 +75,7 @@ fi
 
 
 # go lang
-export GOPATH=~/gocode
+export GOPATH=$HOME
 export PATH=$PATH:$GOPATH/bin
 
 
