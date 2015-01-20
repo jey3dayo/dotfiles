@@ -1,2 +1,2 @@
-# load percol sources
-for f (~/.zsh/percol-sources/*) source "${f}"
+# load sources
+for f (~/.zsh/plugin-sources/*) source "${f}"

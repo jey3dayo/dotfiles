@@ -1,4 +1,4 @@
-function percol-select-history() {
+function peco-select-history() {
     local tac
     if which tac > /dev/null; then
         tac="tac"
@@ -7,9 +7,9 @@ function percol-select-history() {
     fi
     BUFFER=$(history -n 1 | \
         eval $tac | \
-        percol --query "$LBUFFER")
+        peco --query "$LBUFFER")
     CURSOR=$#BUFFER
     zle clear-screen
 }
-zle -N percol-select-history
-bindkey '^r' percol-select-history
+zle -N peco-select-history
+bindkey '^r' peco-select-history
