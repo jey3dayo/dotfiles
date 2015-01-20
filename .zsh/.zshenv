@@ -34,7 +34,6 @@ case ${OSTYPE} in
   # Add environment variable COCOS_CONSOLE_ROOT for cocos2d-x
   export COCOS_CONSOLE_ROOT=/Users/t00114/Documents/Github/cocos2d-x/tools/cocos2d-console/bin
   export PATH=$COCOS_CONSOLE_ROOT:$PATH
-
   ;;
   linux*)
   USERDIR="/home/`whoami`"
@@ -80,5 +79,5 @@ export PATH=$PATH:$GOPATH/bin
 
 
 # percol
-if [[ -s ~/.zsh/percol.zsh ]] ; then source ~/.zsh/percol.zsh ; fi
+if [[ -s ~/.zsh/load_plugins.zsh ]] ; then source ~/.zsh/load_plugins.zsh ; fi
 
