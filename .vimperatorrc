@@ -120,7 +120,7 @@ let g:hints_for_embedded_mode="e"
 
 " plugin_loader.js {{{
 javascript <<EOM
-liberator.globalVariables.plugin_loader_roots = "~/Documents/GitHub/vimperator-plugins/"
+liberator.globalVariables.plugin_loader_roots = "~/src/github.com/vimpr/vimperator-plugins/"
 liberator.globalVariables.plugin_loader_plugins = `
 _libly
 auto-focus-frame
