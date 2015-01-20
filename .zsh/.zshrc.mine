@@ -27,8 +27,9 @@ case ${OSTYPE} in
       boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
       boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
     }
+
+    alias de="docker-enter \$(docker ps -q)"
   fi
-  alias de="docker-enter \$(docker ps -q)"
 
 
   # powerline-client
@@ -60,6 +61,7 @@ case ${OSTYPE} in
     POWERLINE_OLD_PROMPT_COMMAND="$PROMPT_COMMAND"
   export PROMPT_COMMAND="_powerline¥_prompt"
 
+  # fix ggrep
   unset GREP_OPTIONS
   ;;
   linux*)
@@ -75,8 +77,10 @@ if command -v colordiff>/dev/null; then
 fi
 
 
-# tmux-powerline
-PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+# peco
+if command -v peco>/dev/null; then
+  alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
+fi
 
 
 # vim: set syntax=zsh:
