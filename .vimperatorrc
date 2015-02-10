@@ -40,10 +40,10 @@ noremap a <S-a>
 nnoremap <C-g> g<C-g>
 noremap I <C-u>:ignorekeys add -except :,<\C-p>,<\C-n>,t,gt,gT,h,l,H,L<Space><Tab>
 
-noremap <Leader>es :set encoding=Shift_JIS<CR>
-noremap <Leader>ec :set encoding=EUC-JP<CR>
-noremap <Leader>eu :set encoding=UTF-8<CR>
-noremap <Leader>ei :set encodeing=ISO-2022-JP<CR>
+noremap <Leader>es :setlocal encoding=Shift_JIS<CR>
+noremap <Leader>ec :setlocal encoding=EUC-JP<CR>
+noremap <Leader>eu :setlocal encoding=UTF-8<CR>
+noremap <Leader>ei :setlocal encodeing=ISO-2022-JP<CR>
 
 " toggle load css
 noremap ! :set invum<CR>
