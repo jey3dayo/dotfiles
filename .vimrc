@@ -359,6 +359,15 @@ let g:livedown_port = 1337
 map gm <C-u>:call LivedownPreview()<CR>
 
 
+" rainbow_parentheses
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+
 " syntastic.vim
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh'] }
 let g:syntastic_ruby_checkers = ['rubocop']
@@ -434,6 +443,8 @@ NeoBundle 'mattn/emmet-vim.git'
 NeoBundle 'groenewege/vim-less'
 NeoBundle 'tpope/vim-haml'
 NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'kien/rainbow_parentheses.vim'
 
 call neobundle#end()
 
