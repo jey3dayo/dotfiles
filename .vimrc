@@ -295,7 +295,6 @@ noremap <Leader>d :UniteWithBufferDir file<CR>
 noremap <Leader>U :Unite neobundle/update<CR>
 
 noremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Unite buffer<CR>
-noremap <Leader>F :<C-u>tabnew<CR>:tabmove<CR>:Unite file<CR>
 noremap <Leader>M :<C-u>tabnew<CR>:tabmove<CR>:Unite file_mru<CR>
 
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> :q<CR>
@@ -312,10 +311,10 @@ let g:unite_enable_smart_case = 1
 nnoremap <silent> <Leader>h :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
 
 if executable('ag')
-	let g:unite_source_grep_command = 'ag'
-	let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-	let g:unite_source_grep_recursive_opt = ''
-	let g:unite_source_grep_max_candidates = 400
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+  let g:unite_source_grep_recursive_opt = ''
+  let g:unite_source_grep_max_candidates = 400
 endif
 
 
@@ -445,6 +444,7 @@ NeoBundle 'tpope/vim-haml'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'kien/rainbow_parentheses.vim'
+NeoBundle 'pasela/unite-fuel'
 
 call neobundle#end()
 

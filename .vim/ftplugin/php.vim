@@ -9,3 +9,7 @@ map <leader><c-e> <ESC>:!php %<CR>
 setlocal makeprg=php\ -l\ %
 setlocal errorformat=%m\ in\ %f\ on\ line\ %l
 
+" unite-fuel
+noremap <leader>Fc :Unite fuel/controller<CR>
+noremap <leader>Fv :Unite fuel/views<CR>
+noremap <leader>Fm :Unite fuel/modules<CR>
