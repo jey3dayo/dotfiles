@@ -81,3 +81,5 @@ export PATH=$PATH:$GOPATH/bin
 # percol
 if [[ -s ~/.zsh/load_plugins.zsh ]] ; then source ~/.zsh/load_plugins.zsh ; fi
 
+# java
+export JAVA_OPTS="-Djava.net.useSystemProxies=true"

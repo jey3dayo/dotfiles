@@ -82,5 +82,8 @@ if command -v peco>/dev/null; then
   alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
 fi
 
+# spark
+export SPARK_HOME=/usr/local/Cellar/spark
+export SPARK_CONF_DIR=/usr/local/Cellar/spark/conf
 
 # vim: set syntax=zsh:
