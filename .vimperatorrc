@@ -149,6 +149,59 @@ twittperator
 EOM
 " }}}
 
+" proxy.js {{{
+javascript <<EOM
+liberator.globalVariables.proxy_settings = [
+{
+conf_name: 'disable',
+               conf_usage: 'direct connection',
+               settings: [
+               {
+                    label: 'type',
+                           param: 0
+               }
+           ]
+        },
+        {
+            conf_name: 'localhost:8080',
+            conf_usage: 'localhost:8080',
+            settings: [
+                {
+                    label: 'type',
+                    param: 1
+                },
+                {
+                    label: 'http',
+                    param: 'localhost'
+                },
+                {
+                    label: 'http_port',
+                    param: 8080
+                }
+            ]
+        },
+        {
+            conf_name: 'dolipo',
+            conf_usage: 'dolipo',
+            settings: [
+                {
+                    label: 'type',
+                    param: 1
+                },
+                {
+                    label: 'http',
+                    param: 'localhost'
+                },
+                {
+                    label: 'http_port',
+                    param: 8123
+                }
+            ]
+        }
+];
+EOM
+" }}}
+
 " sbmcommentsviewer.js
 noremap v :viewSBMComments -t h<CR>
 
@@ -201,7 +254,7 @@ function addLocalMappings(buffer, maps) {
 addLocalMappings(
   /^(http:\/\/(es|www).nicovideo.jp\/(watch|playlist\/mylist)|(http|https):\/\/(jp|www)\.youtube\.com\/watch|http:\/\/(www\.)?vimeo\.com\/(channels\/(hd)?#)?\d+)/,
   [
-    ['<C-g>', ':pageinfo S',      ],
+    ['<C-g>', ':pageinfo m',      ],
     ['p',     ':stplay',          ],
     ['m',     ':stmute',          ],
     ['c',     ':stcomment',       ],
