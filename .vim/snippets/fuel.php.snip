@@ -1,0 +1,77 @@
+snippet php
+	<?
+	${1:TARGET}
+	?>
+
+snippet function
+abbr public function () {}
+	${1:public }function ${2:#:FunctionName}(${3})
+	{
+		${4:TARGET}
+	}
+
+snippet function_literal
+options word
+abbr function () {}
+	function (${1})${2: use }
+	{
+		${3:TARGET}
+	}
+
+snippet class
+options head
+	class ${2:#:ClassName}
+	{
+		${0:TARGET}
+	}
+
+snippet ifelse
+options head
+	if (${1:#:condition})
+	{
+		${2:TARGET}
+	}
+	else
+	{
+		${3:#:code...}
+	}
+	${0}
+
+snippet if
+options head
+	if (${1:#:condition})
+	{
+		${0:TARGET}
+	}
+
+snippet else
+	else
+	{
+		${0:TARGET}
+	}
+
+snippet elseif
+	elseif (${1:#:condition})
+	{
+		${0:TARGET}
+	}
+
+snippet for
+options head
+	for ($${1:i}=${2:0}; $$1 < ${3}; $$1++)
+	{
+		${0:TARGET}
+	}
+
+snippet foreach-hashmap
+	foreach ($${1:#:variable} as $${2:#:key}${3: =>} $${4:#:value})
+	{
+		${0:TARGET}
+	}
+
+snippet foreach-list
+options head
+	foreach ($${1:#:variable} as $${2:#:x})
+	{
+		${0:TARGET}
+	}
