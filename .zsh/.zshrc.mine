@@ -85,4 +85,9 @@ fi
 export SPARK_HOME=/usr/local/Cellar/spark
 export SPARK_CONF_DIR=/usr/local/Cellar/spark/conf
 
+# inefer
+INFER_PATH=/usr/local/infer-osx-v0.1.0/infer/infer/bin
+if [[ -s $INFER_PATH ]] then
+export PATH="$PATH:$INFER_PATH"
+fi
 # vim: set syntax=zsh:
