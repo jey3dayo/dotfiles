@@ -10,9 +10,8 @@ case ${OSTYPE} in
   fi
 
   # # notify.plugin.zsh
-  # source $HOME/Documents/Github/zsh-notify/notify.plugin.zsh
-  # export SYS_NOTIFIER="/usr/local/bin/terminal-notifier"
-  # export NOTIFY_COMMAND_COMPLETE_TIMEOUT=20
+  source ~/src/github.com/marzocchi/zsh-notify/notify.plugin.zsh
+  export NOTIFY_COMMAND_COMPLETE_TIMEOUT=20
 
 
   # boot2docker
