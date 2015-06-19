@@ -68,8 +68,9 @@ qmark a http://animetick.net/
 qmark t https://ja.todoist.com/
 qmark T www.tumblr.com/dashboard
 qmark c http://www.google.com/calendar/render?pli=1
-qmark F http://www.facebook.com/
-qmark f http://cloud.feedly.com/
+qmark f http://www.facebook.com/
+qmark F http://cloud.feedly.com/
+qmark h http://b.hatena.ne.jp/J138/bookmarks
 qmark P http://getpocket.com/
 qmark p https://pinboard.in/u:j138/
 qmark m https://mail.google.com/mail/
