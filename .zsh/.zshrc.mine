@@ -16,7 +16,7 @@ case ${OSTYPE} in
 
   # boot2docker
   export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2376
-  export DOCKER_CERT_PATH=/Users/t00114/.boot2docker/certs/boot2docker-vm
+  export DOCKER_CERT_PATH=~/.boot2docker/certs/boot2docker-vm
   export DOCKER_TLS_VERIFY=1
 
 
@@ -30,6 +30,7 @@ case ${OSTYPE} in
     alias de="docker-enter \$(docker ps -q)"
   fi
 
+  alias ip="ipconfig getifaddr en0"
 
   # powerline-client
   _powerline_tmux_setenv() {
