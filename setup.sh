@@ -8,9 +8,10 @@ ln -s $DOTFILES/.tmux ~/.tmux
 mkdir $HOME/{tmp,log,.cache}
 
 
-echo "source $DOTFILES/.vimrc" >> ~/.vimrc
+echo "source $DOTFILES/.vimrc" > ~/.vimrc
 echo "source $DOTFILES/.vimperatorrc" >> ~/.vimperatorrc
-echo "source $DOTFILES/.zsh/.zshrc" >> ~/.zshrc
+echo "source $DOTFILES/.zsh/.zshrc" > ~/.zshrc
+echo "source $DOTFILES/.zsh/.zshrc.mine" >> ~/.zshrc.mine
 echo "source $DOTFILES/.zsh/.zshenv" >> ~/.zshenv
 echo "source-file $DOTFILES/.tmux/main.conf" >> ~/.tmux.conf
 
