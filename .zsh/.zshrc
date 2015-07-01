@@ -62,7 +62,6 @@ export LISTMAX=0
 export GREP_OPTIONS='--color=auto'
 
 # Completion configuration
-fpath=(~/.zsh/functions/Completion ${fpath})
 autoload -U compinit
 compinit -u
 
@@ -165,3 +164,6 @@ if [ -e /usr/local/share/zsh-completions ]; then
     fpath=(/usr/local/share/zsh-completions $fpath)
     compinit
 fi
+
+# ENV
+export EDITOR=vim

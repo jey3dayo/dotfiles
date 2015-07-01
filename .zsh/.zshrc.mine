@@ -71,6 +71,10 @@ if command -v colordiff>/dev/null; then
   alias diff="colordiff"
 fi
 
+# direnv
+if command -v direnv>/dev/null; then
+  eval "$(direnv hook zsh)"
+fi
 
 # peco
 if command -v peco>/dev/null; then
@@ -85,5 +89,10 @@ export SPARK_CONF_DIR=/usr/local/Cellar/spark/conf
 INFER_PATH=/usr/local/infer-osx-v0.1.0/infer/infer/bin
 if [[ -s $INFER_PATH ]] then
 export PATH="$PATH:$INFER_PATH"
+fi
+
+if [ -e ~/src/github.com/zsh-users/zsh-completions/src ]; then
+    fpath=(~/src/github.com/zsh-users/zsh-completions/src $fpath)
+    compinit
 fi
 # vim: set syntax=zsh:
