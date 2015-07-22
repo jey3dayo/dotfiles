@@ -95,4 +95,7 @@ if [ -e ~/src/github.com/zsh-users/zsh-completions/src ]; then
     fpath=(~/src/github.com/zsh-users/zsh-completions/src $fpath)
     compinit
 fi
+
+# load sources
+for f (~/.zsh/plugin-sources/*) source "${f}"
 # vim: set syntax=zsh:

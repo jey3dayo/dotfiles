@@ -432,6 +432,7 @@ NeoBundle 'vim-scripts/PHP-dictionary.git'
 NeoBundle 'vim-scripts/Markdown'
 NeoBundle 'vim-scripts/php.vim'
 NeoBundle 'vim-scripts/renamer.vim'
+NeoBundle 'vim-scripts/ruby-matchit'
 NeoBundle 'vim-scripts/sudo.vim'
 NeoBundle 'vim-scripts/molokai'
 NeoBundle 'vim-scripts/jellybeans.vim'
@@ -445,6 +446,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'kien/rainbow_parentheses.vim'
 NeoBundle 'pasela/unite-fuel'
+NeoBundle 'alpaca-tc/alpaca_tags'
 
 call neobundle#end()
 
