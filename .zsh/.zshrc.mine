@@ -9,22 +9,6 @@ case ${OSTYPE} in
     alias j='z'
   fi
 
-  # boot2docker
-  export DOCKER_HOST=tcp://$(boot2docker ip 2>/dev/null):2376
-  export DOCKER_CERT_PATH=~/.boot2docker/certs/boot2docker-vm
-  export DOCKER_TLS_VERIFY=1
-
-
-  # docker
-  if [[ -s /usr/local/bin/boot2docker ]] then
-    docker-enter() {
-      boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
-      boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
-    }
-
-    alias de="docker-enter \$(docker ps -q)"
-  fi
-
   alias ip="ipconfig getifaddr en0"
 
   # powerline-client
@@ -81,6 +65,22 @@ if command -v peco>/dev/null; then
   alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
 fi
 
+# docker
+if command -v docker-machine>/dev/null; then
+  eval "$(docker-machine env default)"
+fi
+
+
+if command -v docker>/dev/null; then
+  docker-enter() {
+    boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
+    boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
+  }
+
+  alias de="docker-enter \$(docker ps -q)"
+fi
+
+
 # spark
 export SPARK_HOME=/usr/local/Cellar/spark
 export SPARK_CONF_DIR=/usr/local/Cellar/spark/conf
@@ -98,4 +98,5 @@ fi
 
 # load sources
 for f (~/.zsh/plugin-sources/*) source "${f}"
+
 # vim: set syntax=zsh:
