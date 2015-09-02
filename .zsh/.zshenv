@@ -54,6 +54,9 @@ if [ -d ${HOME}/.plenv ] ; then
 fi
 
 
+# python
+export PATH=$PATH:~/Library/Python/2.7/bin
+
 
 # go lang
 export GOPATH=$HOME
