@@ -12,7 +12,6 @@
   quotepath = false
   editor = /usr/bin/vim
 [alias]
-  c  = commit
   ca = commit --amend
   co = checkout
   ci = commit
