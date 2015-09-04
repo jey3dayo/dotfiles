@@ -255,6 +255,16 @@ endif
 " }}}
 
 
+" Powerline.vim {{{
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
+set laststatus=2
+set showtabline=2
+set noshowmode
+" }}}
+
+
 " ref.vim
 let g:ref_phpmanual_path = $HOME . '/.vim/dict/php-chunked-xhtml'
 let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
@@ -414,6 +424,7 @@ NeoBundle 'majutsushi/tagbar'
 NeoBundle 'nishigori/increment-activator'
 NeoBundle 'ap/vim-css-color'
 NeoBundle 'airblade/vim-rooter'
+" NeoBundle 'bling/vim-airline'
 NeoBundle 'jiangmiao/simple-javascript-indenter'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'scrooloose/syntastic'
