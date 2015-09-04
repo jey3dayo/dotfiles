@@ -1,6 +1,6 @@
-[user]
-  name = j138
-  email = j138cm@gmail.com
+# [user]
+#   name = j138
+#   email = j138cm@gmail.com
 [color]
   branche = auto
   diff    = auto
@@ -15,13 +15,14 @@
   c  = commit
   ca = commit --amend
   co = checkout
-  ci = commit 
+  ci = commit
   st = status --short
   up = pull --rebase
   l  = log --stat
   lp = log -p
-  lg =log --graph --decorate --oneline
+  lg = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
   dn = diff --name-only
+
 [github]
   name = j138
   user = j138

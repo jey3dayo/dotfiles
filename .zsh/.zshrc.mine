@@ -3,6 +3,14 @@
 case ${OSTYPE} in
   darwin*)
   alias ip="ipconfig getifaddr en0"
+  alias brew="env PATH=${PATH/~\/\.phpenv\/shims:/} brew"
+
+  # z command
+  if [[ -s ~/tmp/.z ]] then
+  export _Z_DATA=~/tmp/.z
+  . `brew --prefix`/etc/profile.d/z.sh
+  alias j='z'
+  fi
 
   # fix ggrep
   unset GREP_OPTIONS
@@ -32,13 +40,6 @@ fi
 # peco
 if command -v peco>/dev/null; then
   alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
-fi
-
-# z command
-if [[ -s ~/tmp/.z ]] then
-export _Z_DATA=~/tmp/.z
-. `brew --prefix`/etc/profile.d/z.sh
-alias j='z'
 fi
 
 # docker
