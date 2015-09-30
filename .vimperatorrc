@@ -145,7 +145,6 @@ slideshare
 stella
 tombloo
 walk-input
-twittperator
 `.split(/\s+/).filter(function(n) !/^!/.test(n));
 EOM
 " }}}
