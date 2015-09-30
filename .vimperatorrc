@@ -141,7 +141,6 @@ open-frame
 prevent-pseudo-domain
 proxy
 sbmcommentsviewer
-slideshare
 stella
 tombloo
 walk-input
@@ -204,10 +203,6 @@ EOM
 
 " sbmcommentsviewer.js
 noremap v :viewSBMComments -t h<CR>
-
-" slideshare.js
-nnoremap -urls=www\\.slideshare\\.net j :slideshare next<CR>
-nnoremap -urls=www\\.slideshare\\.net k :slideshare prev<CR>
 
 " speakerdeck.js
 nnoremap -urls=speakerdeck\\.com j :speakerdeck next<CR>
