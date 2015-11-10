@@ -410,6 +410,7 @@ NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neoyank.vim'
 NeoBundle 'Shougo/vimproc.vim', {
   \ 'build' : {
     \ 'windows' : 'tools\\update-dll-mingw',
