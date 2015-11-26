@@ -7,18 +7,10 @@ path=(
     $path
 )
 
-
-case ${OSTYPE} in
-  darwin*)
-  USERDIR="/Users/`whoami`"
-  if command -v brew>/dev/null; then source $(brew --prefix nvm)/nvm.sh ; fi
-  ;;
-  linux*)
-  USERDIR="/home/`whoami`"
-  if [[ -s ~/nvm/nvm.sh ]] ; then source ~/nvm/nvm.sh ; fi
-  ;;
-esac
-
+if [ -d $USERDIR/.nodebrew ] ; then
+  export NODEBREW_ROOT=/usr/local/var/nodebrew
+  export PATH=$HOME/.nodebrew/current/bin:$PATH
+fi
 
 # perl
 if [ -d $USERDIR/perl5 ] ; then
