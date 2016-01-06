@@ -21,11 +21,17 @@ case ${OSTYPE} in
   fi
   ;;
   linux*)
+
+    fpath=(
+        /usr/local/share/zsh-completions(N-/)
+        $fpath
+    )
+    compinit
+
     [[ -s ~/.autojump/etc/profile.d/autojump.sh ]] && source ~/.autojump/etc/profile.d/autojump.sh
     autoload -U compinit && compinit -u
   ;;
 esac
-
 
 # alias
 if command -v colordiff>/dev/null; then
@@ -47,17 +53,6 @@ if command -v docker-machine>/dev/null; then
   eval "$(docker-machine env default)"
 fi
 
-
-if command -v docker>/dev/null; then
-  docker-enter() {
-    boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
-    boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
-  }
-
-  alias de="docker-enter \$(docker ps -q)"
-fi
-
-
 # spark
 export SPARK_HOME=/usr/local/Cellar/spark
 export SPARK_CONF_DIR=/usr/local/Cellar/spark/conf
@@ -66,11 +61,6 @@ export SPARK_CONF_DIR=/usr/local/Cellar/spark/conf
 INFER_PATH=/usr/local/infer-osx-v0.1.0/infer/infer/bin
 if [[ -s $INFER_PATH ]] then
 export PATH="$PATH:$INFER_PATH"
-fi
-
-if [ -e ~/src/github.com/zsh-users/zsh-completions/src ]; then
-    fpath=(~/src/github.com/zsh-users/zsh-completions/src $fpath)
-    compinit
 fi
 
 # load sources

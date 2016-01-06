@@ -58,7 +58,13 @@ export PATH=$PATH:$GOPATH/bin
 # percol
 if [[ -s ~/.zsh/load_plugins.zsh ]] ; then source ~/.zsh/load_plugins.zsh ; fi
 
+
 # java
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"
+export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
+export ANT_OPTS=-Dbuild.sysclasspath=ignore
+
+# jenv
+if which jenv > /dev/null; then eval "$(jenv init -)"; fi
 
 typeset -U path cdpath fpath manpath
