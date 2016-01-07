@@ -165,5 +165,8 @@ if [ -e /usr/local/share/zsh-completions ]; then
   compinit
 fi
 
+# load sources
+for f (~/.zsh/plugin-sources/*) source "${f}"
+
 # ENV
 export EDITOR=vim

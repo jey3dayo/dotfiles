@@ -56,7 +56,10 @@ fi
 export SPARK_HOME=/usr/local/Cellar/spark
 export SPARK_CONF_DIR=/usr/local/Cellar/spark/conf
 
-# load sources
-for f (~/.zsh/plugin-sources/*) source "${f}"
+if [ -d ${HOME}/.rbenv ] ; then
+  path=($HOME/.rbenv/bin(N-/) $path)
+  export RAILS_ENV="development"
+  eval "$(rbenv init - zsh)"
+fi
 
 # vim: set syntax=zsh:

@@ -28,12 +28,6 @@ if [ -d /usr/local/opt/android-sdk ] ; then
   export ANT_ROOT=/usr/local/bin
 fi
 
-if [ -d ${HOME}/.rbenv ] ; then
-  path=($HOME/.rbenv/bin(N-/) $path)
-  export RAILS_ENV="development"
-  eval "$(rbenv init - zsh)"
-fi
-
 if [ -d ${HOME}/.plenv ] ; then
   path=($HOME/.plenv/bin(N-/) $path)
   eval "$(plenv init - zsh)"
