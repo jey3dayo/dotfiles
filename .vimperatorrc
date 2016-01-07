@@ -55,14 +55,6 @@ inoremap <C-f> <Right>
 " toggle pin
 noremap <Leader>p :setlocal apptab!<CR>
 
-javascript <<EOM
-if (liberator.has("Win32")) {
-  liberator.execute('noremap <Leader>so :source ~/_vimperatorrc<CR>');
-} else {
-  liberator.execute('noremap <Leader>so :source ~/.vimperatorrc<CR>');
-}
-EOM
-
 " qmarks
 qmark a http://animetick.net/
 qmark t https://ja.todoist.com/
@@ -261,6 +253,19 @@ addLocalMappings(
     ['E',     ':strelations! ',   {open: true}],
   ]
 );
+EOM
+
+javascript <<EOM
+if (liberator.has("Win32")) {
+  confpath = '~/_vimperatorrc';
+  confpath_mine = '~/_vemperatorrc.mine';
+} else {
+  confpath = '~/.vimperatorrc';
+  confpath_mine = '~/.vimperatorrc.mine';
+}
+
+liberator.execute('noremap <Leader>so :source ' + confpath + '<CR>');
+io.source(confpath_mine);
 EOM
 
 echo "done."
