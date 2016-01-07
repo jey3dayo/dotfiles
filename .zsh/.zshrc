@@ -161,8 +161,8 @@ compdef mosh=ssh
 
 # zsh-completions
 if [ -e /usr/local/share/zsh-completions ]; then
-    fpath=(/usr/local/share/zsh-completions $fpath)
-    compinit
+  fpath=(/usr/local/share/zsh-completions(N-/) $fpath)
+  compinit
 fi
 
 # ENV

@@ -9,18 +9,16 @@ path=(
 
 if [ -d $USERDIR/.nodebrew ] ; then
   export NODEBREW_ROOT=/usr/local/var/nodebrew
-  export PATH=$HOME/.nodebrew/current/bin:$PATH
+  path=($HOME/.nodebrew/current/bin(N-/) $path)
 fi
 
-# perl
 if [ -d $USERDIR/perl5 ] ; then
   export PERL_LOCAL_LIB_ROOT="$USERDIR/perl5:$PERL_LOCAL_LIB_ROOT";
   export PERL_MB_OPT="--install_base "$USERDIR/perl5"";
   export PERL_MM_OPT="INSTALL_BASE=$USERDIR/perl5";
   export PERL5LIB="$USERDIR/perl5/lib/perl5:$PERL5LIB";
-  export PATH="$USERDIR/perl5/bin:$PATH";
+  path=($USERDIR/perl5/bin(N-/) $path)
 fi
-
 
 # android
 if [ -d /usr/local/opt/android-sdk ] ; then
@@ -30,41 +28,30 @@ if [ -d /usr/local/opt/android-sdk ] ; then
   export ANT_ROOT=/usr/local/bin
 fi
 
-
-# rbenv path
 if [ -d ${HOME}/.rbenv ] ; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  export MANPATH=/opt/local/man:$MANPATH
+  path=($HOME/.rbenv/bin(N-/) $path)
   export RAILS_ENV="development"
   eval "$(rbenv init - zsh)"
 fi
 
-
 if [ -d ${HOME}/.plenv ] ; then
-  export PATH="$HOME/.plenv/bin:$PATH"
+  path=($HOME/.plenv/bin(N-/) $path)
   eval "$(plenv init - zsh)"
 fi
 
+path=(~/Library/Python/2.7/bin(N-/) $path)
 
-# python
-export PATH=$PATH:~/Library/Python/2.7/bin
+if which jenv > /dev/null; then eval "$(jenv init -)"; fi
 
-
-# go lang
 export GOPATH=$HOME
-export PATH=$PATH:$GOPATH/bin
-
+path=($GOPATH/bin(N-/) $path)
 
 # percol
 if [[ -s ~/.zsh/load_plugins.zsh ]] ; then source ~/.zsh/load_plugins.zsh ; fi
-
 
 # java
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
-
-# jenv
-if which jenv > /dev/null; then eval "$(jenv init -)"; fi
 
 typeset -U path cdpath fpath manpath
