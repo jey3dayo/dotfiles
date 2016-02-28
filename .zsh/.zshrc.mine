@@ -3,6 +3,8 @@ case ${OSTYPE} in
   darwin*)
   alias ip="ipconfig getifaddr en0"
   alias brew="env PATH=${PATH/~\/\.phpenv\/shims:/} brew"
+  alias flushdns='dscacheutil -flushcache;sudo killall -HUP mDNSResponder;say flushed'
+  alias tar="/usr/local/bin/gtar"
 
   # z command
   if [[ -s ~/tmp/.z ]] then
@@ -48,8 +50,10 @@ if command -v peco>/dev/null; then
 fi
 
 # docker
-if command -v docker-machine>/dev/null; then
-  eval "$(docker-machine env default)"
+if command -v docker-machine>/dev/null && docker-machine status default | grep -q Running; then
+    $(docker-machine env default)
+elif command -v dinghy>/dev/null && docker-machine status dinghy | grep -q Running; then
+    $(dinghy shellinit)
 fi
 
 # spark
