@@ -21,7 +21,7 @@ TMUX_POWERLINE_DEFAULT_RIGHTSIDE_SEPARATOR=${TMUX_POWERLINE_DEFAULT_RIGHTSIDE_SE
 
 # Format: segment_name background_color foreground_color [non_default_separator]
 
-if [ -z $TMUX_POWERLINE_LEFT_STATUS_SEGMENTS ]; then
+if [ -z "$TMUX_POWERLINE_LEFT_STATUS_SEGMENTS" ]; then
 	TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
 		"tmux_session_info 148 234" \
 		"hostname 33 0" \
@@ -35,7 +35,7 @@ if [ -z $TMUX_POWERLINE_LEFT_STATUS_SEGMENTS ]; then
 	)
 fi
 
-if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
+if [ -z "$TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS" ]; then
 	TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
 		# "pwd 89 211" \
 		# "mailcount 9 255" \
