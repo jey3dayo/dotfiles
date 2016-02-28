@@ -378,12 +378,13 @@ au Syntax * RainbowParenthesesLoadBraces
 
 
 " syntastic.vim
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh'] }
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh', 'coffee'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 let g:syntastic_haml_checkers = ['haml_lint']
 let g:syntastic_sass_checkers = ['sass']
 let g:syntastic_sh = ['shellcheck']
+let g:syntastic_coffee_checkers = ['coffeelint']
 
 
 " tagbar.vim
