@@ -17,6 +17,9 @@ repo = 'itchyny/lightline.vim'
 repo = 'vim-scripts/jellybeans.vim'
 
 [[plugins]]
+repo = 'tomasr/molokai'
+
+[[plugins]]
 repo = 'tpope/vim-fugitive'
 
 [[plugins]]

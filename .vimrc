@@ -20,7 +20,7 @@ set pumheight=15
 
 " color
 set t_Co=256
-colorscheme wombat
+colorscheme desert
 highlight Search ctermbg=7
 
 " set list
