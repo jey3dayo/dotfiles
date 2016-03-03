@@ -1,0 +1,137 @@
+[[plugins]]
+repo = 'Shougo/neoinclude.vim'
+
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+on_i = 1
+
+[[plugins]]
+repo   = 'Shougo/unite.vim'
+
+[[plugins]]
+repo      = 'Shougo/neomru.vim'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo      = 'Shougo/tabpagebuffer.vim'
+on_source = ['unite.vim', 'vimfiler']
+
+[[plugins]]
+repo      = 'Shougo/unite-outline'
+on_source = ['unite.vim']
+
+
+[[plugins]]
+repo      = 'Shougo/vimfiler'
+on_source = 'unite.vim'
+on_path   = '.*'
+on_cmd    = [
+    'VimFiler',
+    'VimFilerExplorer',
+    'Edit',
+    'Read',
+    'Source',
+    'Write',
+]
+
+[[plugins]]
+repo =  'pasela/unite-fuel'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'Shougo/neosnippet'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+on_source = ['neosnippet']
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_source = ['neosnippet']
+
+[[plugins]]
+repo = 'ujihisa/neco-look'
+depends = ['neocomplete.vim']
+on_i = 1
+
+[[plugins]]
+repo = 'majutsushi/tagbar'
+
+[[plugins]]
+repo =  'mileszs/ack.vim'
+
+[[plugins]]
+repo = 'vim-scripts/sudo.vim'
+
+[[plugins]]
+repo = 'alpaca-tc/alpaca_tags'
+
+[[plugins]]
+repo = 'nishigori/increment-activator'
+
+[[plugins]]
+repo = 'airblade/vim-rooter'
+
+[[plugins]]
+repo = 'scrooloose/syntastic'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+
+[[plugins]]
+repo = 'thinca/vim-ref'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'h1mesuke/vim-alignta.git'
+
+[[plugins]]
+repo = 'vim-scripts/DoxygenToolkit.vim'
+
+[[plugins]]
+repo = 'vim-scripts/renamer.vim'
+on_cmd    = ['Rename']
+
+[[plugins]]
+repo = 'bronson/vim-trailing-whitespace'
+
+[[plugins]]
+repo = 'haya14busa/incsearch.vim'
+depends = [
+    'vim-easymotion'
+    'incsearch-easymotion.vim'
+    'incsearch-fuzzy.vim'
+  ]
+on_func = ['incsearch#']
+
+[[plugins]]
+repo = 'haya14busa/incsearch-easymotion.vim'
+
+[[plugins]]
+repo = 'haya14busa/incsearch-fuzzy.vim'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+[[plugins]]
+repo    = 'rhysd/vim-textobj-ruby'
+depends = ['vim-textobj-user']
+on_ft   = ['ruby']
+
+[[plugins]]
+repo  = 'Quramy/tsuquyomi'
+on_ft = ['typescript']
+
+[[plugins]]
+repo = 'jiangmiao/simple-javascript-indenter'
+on_ft = ['javascript']
+
+[[plugins]]
+repo = 'vim-scripts/ruby-matchit'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'vim-scripts/PHP-dictionary.git'
+on_ft = ['php']
