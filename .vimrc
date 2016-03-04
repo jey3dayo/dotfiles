@@ -165,6 +165,7 @@ call dein#begin(s:dein_dir)
 
 let s:toml      = '~/.vim/rc/dein.toml'
 let s:lazy_toml = '~/.vim/rc/dein_lazy.toml'
+let g:dein#install_max_processes = 16
 
 if dein#load_cache([expand('<sfile>'), s:toml, s:lazy_toml])
   call dein#load_toml(s:toml,      {'lazy': 0})

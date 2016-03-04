@@ -98,21 +98,6 @@ on_cmd    = ['Rename']
 repo = 'bronson/vim-trailing-whitespace'
 
 [[plugins]]
-repo = 'haya14busa/incsearch.vim'
-depends = [
-    'vim-easymotion'
-    'incsearch-easymotion.vim'
-    'incsearch-fuzzy.vim'
-  ]
-on_func = ['incsearch#']
-
-[[plugins]]
-repo = 'haya14busa/incsearch-easymotion.vim'
-
-[[plugins]]
-repo = 'haya14busa/incsearch-fuzzy.vim'
-
-[[plugins]]
 repo = 'kana/vim-textobj-user'
 
 [[plugins]]
