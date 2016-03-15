@@ -34,7 +34,6 @@ case ${OSTYPE} in
   ;;
 esac
 
-# alias
 if command -v colordiff>/dev/null; then
   alias diff="colordiff"
 fi
@@ -65,5 +64,7 @@ if [ -d ${HOME}/.rbenv ] ; then
   export RAILS_ENV="development"
   eval "$(rbenv init - zsh)"
 fi
+
+eval "$(thefuck --alias)"
 
 # vim: set syntax=zsh:
