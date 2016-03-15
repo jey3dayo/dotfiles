@@ -26,18 +26,12 @@ nnoremap [fugitive]w :<C-u>Gwrite<CR>
 nnoremap [fugitive]c :<C-u>Gcommit<CR>
 "}}}
 
-" neocomplcache.vim {{{
-" Disable AutoComplPop.
+" neocomplete.vim {{{
 let g:acp_enableAtStartup = 1
-" Use neocomplcache.
 let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
 let g:neocomplete#enable_smart_case = 1
-" Use camel case completion.
 let g:neocomplete#enable_camel_case_completion = 1
-" Use underbar completion.
 let g:neocomplete#enable_underbar_completion = 1
-" Set minimum syntax keyword length.
 let g:neocomplete#min_syntax_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
@@ -148,7 +142,7 @@ let g:unite_enable_start_insert=1
 noremap <Leader>b :Unite buffer<CR>
 noremap <Leader>f :Unite file<CR>
 noremap <Leader>m :Unite file_mru<CR>
-noremap <Leader>y :Unite history/unite<CR>
+noremap <Leader>y :Unite history/yank<CR>
 noremap <Leader>r :UniteResume<CR>
 noremap <Leader>G :Unite grep:%<CR>
 noremap <Leader>d :UniteWithBufferDir file<CR>

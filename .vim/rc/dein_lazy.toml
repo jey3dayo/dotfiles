@@ -47,7 +47,7 @@ on_source = ['neosnippet']
 
 [[plugins]]
 repo = 'Shougo/neoyank.vim'
-on_source = ['neosnippet']
+on_source = ['unite.vim']
 
 [[plugins]]
 repo = 'ujihisa/neco-look'
