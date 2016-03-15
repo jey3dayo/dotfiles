@@ -117,6 +117,3 @@ on_ft = ['javascript']
 repo = 'vim-scripts/ruby-matchit'
 on_ft = ['ruby']
 
-[[plugins]]
-repo = 'vim-scripts/PHP-dictionary.git'
-on_ft = ['php']

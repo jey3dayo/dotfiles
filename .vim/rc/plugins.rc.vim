@@ -38,8 +38,6 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 " Define dictionary.
 let g:neocomplete#dictionary_filetype_lists = {
   \ 'default' : '',
-  \ 'php' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
-  \ 'thtml' : $HOME . '/.vim/bundle/PHP-dictionary/PHP.dict',
 \ }
 
 " Define keyword.
@@ -115,9 +113,6 @@ set noshowmode
 " }}}
 
 "ref.vim {{{
-let g:ref_phpmanual_path = $HOME . '/.vim/dict/php-chunked-xhtml'
-let g:ref_jquery_path = $HOME . '/.vim/dict/jqapi-latest/docs'
-
 "Ref webdictでalcを使う設定
 let g:ref_source_webdict_cmd = 'lynx -dump -nonumbers %s'
 "let g:ref_source_webdict_use_cache = 1
