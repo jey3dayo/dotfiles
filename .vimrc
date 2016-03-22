@@ -151,6 +151,11 @@ function! s:source_rc(path, ...) abort "{{{
   endtry
 endfunction"}}}
 
+augroup PluginInstall
+  autocmd!
+  autocmd VimEnter * if dein#check_install() | call dein#install() | endif
+augroup END
+
 let s:dein_dir = expand('~/.cache/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
@@ -161,20 +166,18 @@ if &runtimepath !~# '/dein.vim'
   execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
 
-call dein#begin(s:dein_dir)
-
 let s:toml      = '~/.vim/rc/dein.toml'
 let s:lazy_toml = '~/.vim/rc/dein_lazy.toml'
 let g:dein#install_max_processes = 16
 
-if dein#load_cache([expand('<sfile>'), s:toml, s:lazy_toml])
+if dein#load_state(s:toml, s:lazy_toml)
+  call dein#begin(s:dein_dir)
+  call s:source_rc('plugins.rc.vim')
   call dein#load_toml(s:toml,      {'lazy': 0})
   call dein#load_toml(s:lazy_toml, {'lazy': 1})
-  call dein#save_cache()
+  call dein#end()
+  call dein#save_state()
 endif
-
-call s:source_rc('plugins.rc.vim')
-call dein#end()
 
 if dein#check_install()
   call dein#install()
