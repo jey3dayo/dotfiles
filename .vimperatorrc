@@ -63,8 +63,7 @@ qmark c http://www.google.com/calendar/render?pli=1
 qmark f http://www.facebook.com/
 qmark F http://cloud.feedly.com/
 qmark h http://b.hatena.ne.jp/J138/bookmarks
-qmark P http://getpocket.com/
-qmark p https://pinboard.in/u:j138/
+qmark p http://getpocket.com/
 qmark m https://mail.google.com/mail/
 
 " Firefox Config
@@ -191,6 +190,7 @@ EOM
 " }}}
 
 " sbmcommentsviewer.js
+let g:sbm_comments_viewer_filter_nocomments="true"
 noremap v :viewSBMComments -t h<CR>
 
 " speakerdeck.js
