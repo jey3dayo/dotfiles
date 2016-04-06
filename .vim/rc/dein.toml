@@ -64,6 +64,10 @@ repo = 'tpope/vim-rails'
 on_ft = ['ruby']
 
 [[plugins]]
+repo = 'tpope/vim-rake'
+on_ft = ['ruby']
+
+[[plugins]]
 repo = 'vim-scripts/php.vim'
 on_ft = ['php']
 

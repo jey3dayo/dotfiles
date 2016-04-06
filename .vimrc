@@ -7,7 +7,6 @@ let &cpo=s:cpo_save
 unlet s:cpo_save
 let mapleader = ","
 
-" vim: set ft=vim :
 syntax enable
 set encoding=utf-8
 set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932
@@ -71,10 +70,6 @@ set shiftwidth=4
 set softtabstop=4
 set noexpandtab
 set textwidth=0
-
-filetype on
-filetype plugin on
-filetype indent on
 
 " map
 nnoremap <Leader>s <Nop>
@@ -188,3 +183,10 @@ let VIMRC_MINE = expand('~/.vimrc.mine')
 if( filereadable(VIMRC_MINE) )
   exe "source " . VIMRC_MINE
 endif
+
+filetype on
+filetype plugin on
+filetype indent on
+
+runtime! rc/*.vim
+" vim: set ft=vim :
