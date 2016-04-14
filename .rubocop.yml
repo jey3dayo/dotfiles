@@ -21,3 +21,12 @@ NumericLiterals:
 
 Style/ClassAndModuleChildren:
   Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/LeadingCommentSpace:
+  Enabled: false
+
+Style/UnneededInterpolation:
+  Enabled: false
