@@ -70,6 +70,8 @@ let g:increment_activator_filetype_candidates = {
     \ ['static', 'absolute', 'relative', 'fixed', 'sticky'],
     \ ['height', 'width'],
     \ ['right', 'left'],
+    \ ['should', 'should_not'],
+    \ ['be_file', 'be_directory'],
   \ ],
   \ 'ruby': [
     \ ['if', 'unless'],
@@ -199,13 +201,14 @@ let g:lightline = {
 \ }
 
 " syntastic.vim
-let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh', 'coffee'] }
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh', 'coffee', 'go'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 let g:syntastic_haml_checkers = ['haml_lint']
 let g:syntastic_sass_checkers = ['sass']
 let g:syntastic_sh = ['shellcheck']
 let g:syntastic_coffee_checkers = ['coffeelint']
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 
 " tagbar.vim
 nnoremap <Leader>T :<C-u>TagbarToggle<CR>
