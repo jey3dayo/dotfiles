@@ -73,6 +73,7 @@ set! security.dialog_enable_delay=0
 set! config.trim_on_minimize=true
 set! dom.disable_window_move_resize=true
 set! dom.event.contextmenu.enabled=false
+set! xpinstall.signatures.required=false
 
 " hatenabookmark for vimp
 javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://hatenabookmark/content/vimperator/plugin/hatenabookmark.js', {__proto__: this});
