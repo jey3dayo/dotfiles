@@ -117,21 +117,17 @@ javascript <<EOM
 liberator.globalVariables.plugin_loader_roots = "~/src/github.com/vimpr/vimperator-plugins/"
 liberator.globalVariables.plugin_loader_plugins = `
 _libly
-auto-focus-frame
 auto_detect_link
 bitly
 commandBookmarklet
 copy
 feedSomeKeys_3
-hint-tombloo
 hints-for-embedded
 multi_requester
-open-frame
 prevent-pseudo-domain
 proxy
 sbmcommentsviewer
 stella
-tombloo
 walk-input
 `.split(/\s+/).filter(function(n) !/^!/.test(n));
 EOM
