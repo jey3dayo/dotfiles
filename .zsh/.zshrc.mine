@@ -24,8 +24,8 @@ case ${OSTYPE} in
   linux*)
 
     fpath=(
-        /usr/local/share/zsh-completions(N-/)
-        $fpath
+      /usr/local/share/zsh-completions(N-/)
+      $fpath
     )
     compinit
 
@@ -49,10 +49,10 @@ if command -v peco>/dev/null; then
 fi
 
 # docker
-if command -v docker-machine>/dev/null && docker-machine status default | grep -q Running; then
-    $(docker-machine env default)
-elif command -v dinghy>/dev/null && docker-machine status dinghy | grep -q Running; then
-    $(dinghy shellinit)
+if command -v dinghy>/dev/null && docker-machine status dinghy | grep -q Running; then
+  $(dinghy shellinit)
+elif command -v docker-machine>/dev/null && docker-machine status default | grep -q Running; then
+  $(docker-machine env default)
 fi
 
 # spark
