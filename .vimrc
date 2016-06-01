@@ -177,6 +177,8 @@ endif
 if dein#check_install()
   call dein#install()
 endif
+
+nnoremap <Leader>sO :<C-u>call dein#update()<CR>
 " }}}
 
 let VIMRC_MINE = expand('~/.vimrc.mine')
