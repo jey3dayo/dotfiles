@@ -7,25 +7,17 @@ path=(
     $path
 )
 
-if [ -d $USERDIR/.nodebrew ] ; then
+if [ -d $HOME/.nodebrew ] ; then
   export NODEBREW_ROOT=/usr/local/var/nodebrew
   path=($HOME/.nodebrew/current/bin(N-/) $path)
 fi
 
-if [ -d $USERDIR/perl5 ] ; then
-  export PERL_LOCAL_LIB_ROOT="$USERDIR/perl5:$PERL_LOCAL_LIB_ROOT";
-  export PERL_MB_OPT="--install_base "$USERDIR/perl5"";
-  export PERL_MM_OPT="INSTALL_BASE=$USERDIR/perl5";
-  export PERL5LIB="$USERDIR/perl5/lib/perl5:$PERL5LIB";
-  path=($USERDIR/perl5/bin(N-/) $path)
-fi
-
-# android
-if [ -d /usr/local/opt/android-sdk ] ; then
-  export ANDROID_HOME=/usr/local/opt/android-sdk
-  export NDK_ROOT=/usr/local/Cellar/android-ndk/r9d
-  export ANDROID_SDK_ROOT=/usr/local/opt/android-sdk
-  export ANT_ROOT=/usr/local/bin
+if [ -d $HOME/perl5 ] ; then
+  export PERL_LOCAL_LIB_ROOT="$HOME/perl5:$PERL_LOCAL_LIB_ROOT";
+  export PERL_MB_OPT="--install_base "$HOME/perl5"";
+  export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5";
+  export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB";
+  path=($HOME/perl5/bin(N-/) $path)
 fi
 
 if [ -d ${HOME}/.plenv ] ; then
