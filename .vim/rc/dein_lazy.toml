@@ -20,7 +20,6 @@ on_source = ['unite.vim', 'vimfiler']
 repo      = 'Shougo/unite-outline'
 on_source = ['unite.vim']
 
-
 [[plugins]]
 repo      = 'Shougo/vimfiler'
 on_source = 'unite.vim'
@@ -61,19 +60,10 @@ repo = 'majutsushi/tagbar'
 repo =  'mileszs/ack.vim'
 
 [[plugins]]
-repo = 'vim-scripts/sudo.vim'
-
-[[plugins]]
 repo = 'alpaca-tc/alpaca_tags'
 
 [[plugins]]
-repo = 'nishigori/increment-activator'
-
-[[plugins]]
 repo = 'airblade/vim-rooter'
-
-[[plugins]]
-repo = 'scrooloose/syntastic'
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
@@ -85,64 +75,7 @@ repo = 'thinca/vim-ref'
 repo = 'tpope/vim-surround'
 
 [[plugins]]
-repo = 'h1mesuke/vim-alignta.git'
-
-[[plugins]]
 repo = 'vim-scripts/DoxygenToolkit.vim'
 
 [[plugins]]
-repo = 'vim-scripts/renamer.vim'
-on_cmd    = ['Rename']
-
-[[plugins]]
-repo = 'bronson/vim-trailing-whitespace'
-
-[[plugins]]
 repo = 'kana/vim-textobj-user'
-
-[[plugins]]
-repo    = 'rhysd/vim-textobj-ruby'
-depends = ['vim-textobj-user']
-on_ft   = ['ruby']
-
-[[plugins]]
-repo  = 'Quramy/tsuquyomi'
-on_ft = ['typescript']
-
-[[plugins]]
-repo = 'digitaltoad/vim-pug.git'
-on_ft = ['jade', 'pug']
-
-[[plugins]]
-repo = 'moll/vim-node'
-on_ft = ['javascript']
-
-[[plugins]]
-repo = 'mattn/jscomplete-vim'
-on_ft = ['javascript']
-hook_add = 'setl omnifunc=jscomplete#CompleteJS'
-
-[[plugins]]
-repo = 'myhere/vim-nodejs-complete'
-on_ft = ['javascript']
-hook_add = "
-setl omnifunc=jscomplete#CompleteJS \n
-if !exists('g:neocomplcache_omni_functions') \n
-  let g:neocomplcache_omni_functions = {} \n
-  endif \n
-  let g:neocomplcache_omni_functions.javascript = 'nodejscomplete#CompleteJS' \n
-  let g:node_usejscomplete = 1
-"
-
-[[plugins]]
-repo = 'pangloss/vim-javascript'
-on_ft = ['javascript']
-
-[[plugins]]
-repo = 'jiangmiao/simple-javascript-indenter'
-on_ft = ['javascript']
-
-[[plugins]]
-repo = 'vim-scripts/ruby-matchit'
-on_ft = ['ruby']
-
