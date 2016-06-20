@@ -167,9 +167,9 @@ let g:dein#install_max_processes = 16
 
 if dein#load_state(s:toml, s:lazy_toml)
   call dein#begin(s:dein_dir)
-  call s:source_rc('plugins.rc.vim')
   call dein#load_toml(s:toml,      {'lazy': 0})
   call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  call s:source_rc('plugins.rc.vim')
   call dein#end()
   call dein#save_state()
 endif

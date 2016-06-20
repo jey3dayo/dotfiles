@@ -201,7 +201,9 @@ let g:lightline = {
 \ }
 
 " syntastic.vim
-let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh', 'coffee', 'go'] }
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh', 'coffee', 'go', 'javascript'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
 let g:syntastic_haml_checkers = ['haml_lint']
@@ -209,6 +211,7 @@ let g:syntastic_sass_checkers = ['sass']
 let g:syntastic_sh = ['shellcheck']
 let g:syntastic_coffee_checkers = ['coffeelint']
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_javascript_checkers = ['eslint']
 
 " tagbar.vim
 nnoremap <Leader>T :<C-u>TagbarToggle<CR>
