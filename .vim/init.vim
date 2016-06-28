@@ -1,0 +1,1 @@
+/Users/t00114/.vimrc

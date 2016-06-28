@@ -132,7 +132,10 @@ noremap <Leader>D :<C-u>Ref webdict alc<Space>
 
 " simple-javascript-indenter
 let g:SimpleJsIndenter_BriefMode = 1
+let g:SimpleJsIndenter_CaseIndentLevel = -1
 
+" jscomplete-vim
+let g:jscomplete_use = ['dom', 'moz', 'es6th']
 
 " unite.vim {{{
 let g:unite_enable_start_insert=1
@@ -201,8 +204,6 @@ let g:lightline = {
 \ }
 
 " syntastic.vim
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
 let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh', 'coffee', 'go', 'javascript'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
@@ -215,6 +216,9 @@ let g:syntastic_javascript_checkers = ['eslint']
 
 " tagbar.vim
 nnoremap <Leader>T :<C-u>TagbarToggle<CR>
+let g:tagbar_type_javascript = {
+  \ 'ctagsbin' : '/usr/local/bin/jsctags'
+\ }
 
 " rainbow_parentheses
 let g:rbpt_max = 16
