@@ -18,7 +18,7 @@ case ${OSTYPE} in
 
   if command -v powerline-daemon>/dev/null; then
     powerline-daemon -q
-    . ~/Library/Python/2.7/lib/python/site-packages/powerline/bindings/zsh/powerline.zsh
+    . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
   fi
   ;;
   linux*)
@@ -46,13 +46,6 @@ fi
 # peco
 if command -v peco>/dev/null; then
   alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|peco|awk "{print \$2}")'
-fi
-
-# docker
-if command -v dinghy>/dev/null && docker-machine status dinghy | grep -q Running; then
-  $(dinghy shellinit)
-elif command -v docker-machine>/dev/null && docker-machine status default | grep -q Running; then
-  $(docker-machine env default)
 fi
 
 # spark
