@@ -51,8 +51,11 @@ repo = 'nishigori/increment-activator'
 
 [[plugins]]
 repo = 'vim-scripts/sudo.vim'
-on_cmd    = ['SudoWrite', 'SudoRead']
+on_cmd = ['SudoWrite', 'SudoRead']
 
 [[plugins]]
 repo = 'vim-scripts/renamer.vim'
-on_cmd    = ['Rename']
+on_cmd = ['Rename']
+
+[[plugins]]
+repo = 'alpaca-tc/alpaca_tags'

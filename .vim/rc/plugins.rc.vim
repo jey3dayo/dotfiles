@@ -15,6 +15,25 @@ let g:indent_guides_enable_on_vim_startup=0
 let g:indent_guides_color_change_percent=20
 "}}}
 
+" alpaca_tags"{{{
+
+
+let g:alpaca_tags#config = {
+\    '_' : '-R --sort=yes',
+\    'ruby': '--languages=+Ruby',
+\    'javascript': '--languages=+Javascript',
+\ }
+
+augroup AlpacaTags
+  autocmd!
+  if exists(':AlpacaTags')
+    autocmd BufWritePost Gemfile AlpacaTagsBundle
+    autocmd BufEnter * AlpacaTagsSet
+    autocmd BufWritePost * AlpacaTagsUpdate
+  endif
+augroup END
+"}}}
+
 " fugitive.vim {{{
 nnoremap [fugitive] <Nop>
 nmap <Leader>g [fugitive]
