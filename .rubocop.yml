@@ -30,3 +30,57 @@ Style/LeadingCommentSpace:
 
 Style/UnneededInterpolation:
   Enabled: false
+
+Style/DefWithParentheses:
+  AutoCorrect: true
+
+Style/MethodCallParentheses:
+  AutoCorrect: true
+
+Style/MethodDefParentheses:
+  AutoCorrect: true
+
+Style/IndentationWidth:
+  AutoCorrect: true
+
+Style/MultilineOperationIndentation:
+  AutoCorrect: true
+
+Style/EmptyLines:
+  AutoCorrect: true
+
+Style/EmptyLinesAroundAccessModifier:
+  AutoCorrect: true
+
+Style/EmptyLinesAroundBlockBody:
+  AutoCorrect: true
+
+Style/EmptyLinesAroundClassBody:
+  AutoCorrect: true
+
+Style/EmptyLinesAroundMethodBody:
+  AutoCorrect: true
+
+Style/EmptyLinesAroundModuleBody:
+  AutoCorrect: true
+
+Style/TrailingBlankLines:
+  AutoCorrect: true
+
+Style/SpaceAfterComma:
+  AutoCorrect: true
+
+Style/SpaceAfterNot:
+  AutoCorrect: true
+
+Style/SpaceAfterSemicolon:
+  AutoCorrect: true
+
+Style/SpaceAroundEqualsInParameterDefault:
+  AutoCorrect: true
+
+Style/SpaceBeforeSemicolon:
+  AutoCorrect: true
+
+Style/TrailingWhitespace:
+  AutoCorrect: true

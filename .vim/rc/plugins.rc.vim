@@ -15,14 +15,12 @@ let g:indent_guides_enable_on_vim_startup=0
 let g:indent_guides_color_change_percent=20
 "}}}
 
-" alpaca_tags"{{{
-
-
+" alpaca_tags {{{
 let g:alpaca_tags#config = {
-\    '_' : '-R --sort=yes',
-\    'ruby': '--languages=+Ruby',
-\    'javascript': '--languages=+Javascript',
-\ }
+  \ '_': '-R --sort=yes',
+  \ 'ruby': '--languages=+Ruby',
+  \ 'javascript': '--languages=+Javascript',
+  \}
 
 augroup AlpacaTags
   autocmd!
@@ -56,8 +54,8 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
 let g:neocomplete#dictionary_filetype_lists = {
-  \ 'default' : '',
-\ }
+  \ 'default': '',
+  \ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
@@ -80,27 +78,29 @@ endif
               \ 'help': 1,
               \ 'tex': 1,
               \ }
+" }}}
 
-" increment-activator.vim
+" increment-activator.vim {{{
 let g:increment_activator_filetype_candidates = {
-  \ '_' : [
-    \ ['info', 'warning', 'notice', 'error', 'success'],
-    \ ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
-    \ ['static', 'absolute', 'relative', 'fixed', 'sticky'],
-    \ ['height', 'width'],
-    \ ['right', 'left'],
-    \ ['should', 'should_not'],
-    \ ['be_file', 'be_directory'],
+  \ '_': [
+  \   ['info', 'warning', 'notice', 'error', 'success'],
+  \   ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
+  \   ['static', 'absolute', 'relative', 'fixed', 'sticky'],
+  \   ['height', 'width'],
+  \   ['right', 'left'],
+  \   ['should', 'should_not'],
+  \   ['be_file', 'be_directory'],
   \ ],
   \ 'ruby': [
-    \ ['if', 'unless'],
-    \ ['nil', 'empty', 'blank'],
-    \ ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
+  \   ['if', 'unless'],
+  \   ['nil', 'empty', 'blank'],
+  \   ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
   \ ],
   \ 'git-rebase-todo': [
-    \ ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
+  \   ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
   \ ],
-\ }
+  \ }
+"}}}
 
 " neosnippet.vim {{{
 " " snippets dir
@@ -138,10 +138,10 @@ set noshowmode
 let g:ref_source_webdict_cmd = 'lynx -dump -nonumbers %s'
 "let g:ref_source_webdict_use_cache = 1
 let g:ref_source_webdict_sites = {
-  \ 'alc' : {
-    \ 'url' : 'http://eow.alc.co.jp/%s/UTF-8/'
+  \ 'alc': {
+  \   'url': 'http://eow.alc.co.jp/%s/UTF-8/'
   \ }
-\ }
+  \}
 function! g:ref_source_webdict_sites.alc.filter(output)
   return join(split(a:output, "\n")[42 :], "\n")
 endfunction
@@ -199,53 +199,96 @@ vnoremap /g y:Unite grep::-iRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 
 " }}}
 
-" lightline.vim
+" lightline.vim {{{
 let g:lightline = {
   \ 'colorscheme': 'jellybeans',
   \ 'active': {
-    \ 'left': [
-      \ [ 'mode', 'paste' ],
-      \ [ 'fugitive', 'readonly', 'filename', 'modified' ]
-    \ ]
+  \   'left': [[ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified', 'qfstatusline']],
   \ },
   \ 'component': {
-    \ 'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
-    \ 'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-    \ 'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+  \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+  \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
   \ },
   \ 'component_visible_condition': {
-    \ 'readonly': '(&filetype!="help"&& &readonly)',
-    \ 'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-    \ 'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+  \   'readonly': '(&filetype!="help"&& &readonly)',
+  \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
   \ },
+  \ 'component_expand': {'qfstatusline': 'qfstatusline#Update'},
+  \ 'component_type':   {'qfstatusline': 'error'},
   \ 'separator': { 'left': '⮀', 'right': '⮂' },
-  \ 'subseparator': { 'left': '⮁', 'right': '⮃' }
-\ }
+  \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
+  \ }
+let g:Qfstatusline#UpdateCmd = function('lightline#update')
+" }}}
 
-" syntastic.vim
-let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['ruby', 'php', 'sass', 'haml', 'sh', 'coffee', 'go', 'javascript'] }
-let g:syntastic_ruby_checkers = ['rubocop']
-let g:syntastic_php_checkers = ['php', 'phpcs', 'phpmd']
-let g:syntastic_haml_checkers = ['haml_lint']
-let g:syntastic_sass_checkers = ['sass']
-let g:syntastic_sh = ['shellcheck']
-let g:syntastic_coffee_checkers = ['coffeelint']
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
-let g:syntastic_javascript_checkers = ['eslint']
+" quickrun {{{
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
 
-" tagbar.vim
+let g:quickrun_config = {
+  \ '_': {
+  \   'runner': 'vimproc',
+  \   'runner/vimproc/sleep': 10,
+  \   'runner/vimproc/updatetime': 500,
+  \   'outputter/buffer/split': ':botright 8sp',
+  \   'outputter/buffer/close_on_empty': 1,
+  \   'hook/echo/enable' : 0,
+  \   'hook/echo/output_success': '> No Errors Found.',
+  \   'hook/back_window/enable' : 1,
+  \   'hook/back_window/enable_exit': 1,
+  \   'hock/close_buffer/enable_hock_loaded': 1,
+  \   'hock/close_buffer/enable_success': 1,
+  \   'hook/qfstatusline_update/enable_exit': 1,
+  \   'hook/qfstatusline_update/priority_exit': 4,
+  \ },
+  \ 'watchdogs_checker/_': {
+  \   'hook/qfstatusline_update/enable_exit': 1,
+  \   'hook/qfstatusline_update/priority_exit': 1,
+  \ },
+  \ 'javascript/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/eslint',
+  \ },
+  \ 'ruby/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/rubocop',
+  \   'cmdopt': '-D'
+  \ },
+  \ 'php/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/php',
+  \ },
+  \ 'haml/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/haml-lint',
+  \ },
+  \ 'sass/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/sass',
+  \ },
+  \ 'sh/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/shellcheck',
+  \ },
+  \}
+" }}}
+
+" watchdogs_check.vim {{{
+let g:watchdogs_check_BufWritePost_enable = 1
+let g:watchdogs_check_CursorHold_enable = 1
+call watchdogs#setup(g:quickrun_config)
+"}}}
+
+" tagbar.vim {{{
 nnoremap <Leader>T :<C-u>TagbarToggle<CR>
 let g:tagbar_type_javascript = {
-  \ 'ctagsbin' : '/usr/local/bin/jsctags'
-\ }
+  \ 'ctagsbin': '/usr/local/bin/jsctags'
+  \}
+" }}}
 
-" rainbow_parentheses
+" rainbow_parentheses {{{
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+" }}}
 
 " Rename Command
 command! -nargs=1 -complete=file Rename f <args>|call delete(expand('#'))

@@ -66,9 +66,6 @@ repo = 'alpaca-tc/alpaca_tags'
 repo = 'airblade/vim-rooter'
 
 [[plugins]]
-repo = 'thinca/vim-quickrun'
-
-[[plugins]]
 repo = 'thinca/vim-ref'
 
 [[plugins]]

@@ -44,9 +44,6 @@ repo = 'h1mesuke/vim-alignta.git'
 repo = 'tpope/vim-fugitive'
 
 [[plugins]]
-repo = 'scrooloose/syntastic'
-
-[[plugins]]
 repo = 'nishigori/increment-activator'
 
 [[plugins]]
@@ -59,3 +56,21 @@ on_cmd = ['Rename']
 
 [[plugins]]
 repo = 'alpaca-tc/alpaca_tags'
+
+[[plugins]]
+repo = 'osyo-manga/vim-watchdogs'
+
+[[plugins]]
+repo = 'osyo-manga/shabadou.vim'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+
+[[plugins]]
+repo = 'cohama/vim-hier'
+
+[[plugins]]
+repo = 'dannyob/quickfixstatus'
+
+[[plugins]]
+repo = 'KazuakiM/vim-qfstatusline'
