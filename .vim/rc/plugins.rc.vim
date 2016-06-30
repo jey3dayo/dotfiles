@@ -263,6 +263,7 @@ let g:quickrun_config = {
   \ },
   \ 'sh/watchdogs_checker': {
   \   'type': 'watchdogs_checker/shellcheck',
+  \   'cmdopt': '-f gcc -s bash'
   \ },
   \}
 " }}}
