@@ -123,7 +123,7 @@ set hidden
 set shortmess+=I
 
 " dein.vim {{{
-function! s:source_rc(path, ...) abort "{{{
+function! s:source_rc(path, ...) abort
   let use_global = get(a:000, 0, !has('vim_starting'))
   let abspath = resolve(expand('~/.vim/rc/' . a:path))
   if !use_global

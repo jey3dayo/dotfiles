@@ -1,86 +1,10 @@
 [[plugins]]
-repo = 'delphinus35/typescript-vim'
-on_ft = ['typescript']
-
-[[plugins]]
-repo  = 'kchmck/vim-coffee-script'
-on_ft = ['coffee']
-
-[[plugins]]
 repo = 'pangloss/vim-javascript'
-on_ft = ['javascript']
-
-[[plugins]]
-repo = 'ekalinin/Dockerfile.vim'
-on_ft = ['Dockerfile']
-
-[[plugins]]
-repo = 'ap/vim-css-color'
-on_ft = ['css']
-
-[[plugins]]
-repo = 'groenewege/vim-less'
-on_ft = ['less']
-
-[[plugins]]
-repo = 'tpope/vim-haml'
-on_ft = ['haml']
-
-[[plugins]]
-repo = 'tpope/vim-rails'
-on_ft = ['ruby']
-
-[[plugins]]
-repo = 'tpope/vim-rake'
-on_ft = ['ruby']
-
-[[plugins]]
-repo = 'vim-scripts/php.vim'
-on_ft = ['php']
-
-[[plugins]]
-repo = 'violetyk/cake.vim'
-on_ft = ['php']
-
-[[plugins]]
-repo = 'derekwyatt/vim-scala'
-on_ft = ['scala']
-
-[[plugins]]
-repo = 'vim-scripts/Markdown'
-on_ft = ['markdown']
-
-[[plugins]]
-repo = 'cespare/vim-toml'
-
-[[plugins]]
-repo = 'superbrothers/vim-vimperator'
-on_ft = ['vimperator']
-
-[[plugins]]
-repo = 'othree/html5.vim'
-on_ft = ['html']
+on_ft = ['javascript', 'html', 'php']
 
 [[plugins]]
 repo = 'jiangmiao/simple-javascript-indenter'
 on_ft = ['javascript']
-
-[[plugins]]
-repo = 'vim-scripts/ruby-matchit'
-on_ft = ['ruby']
-
-[[plugins]]
-repo    = 'rhysd/vim-textobj-ruby'
-depends = ['vim-textobj-user']
-on_ft   = ['ruby']
-
-[[plugins]]
-repo  = 'Quramy/tsuquyomi'
-on_ft = ['typescript']
-
-[[plugins]]
-repo = 'digitaltoad/vim-pug.git'
-on_ft = ['jade', 'pug']
 
 [[plugins]]
 repo = 'moll/vim-node'
@@ -102,3 +26,60 @@ if !exists('g:neocomplcache_omni_functions') \n
   let g:neocomplcache_omni_functions.javascript = 'nodejscomplete#CompleteJS' \n
   let g:node_usejscomplete = 1
 "
+
+[[plugins]]
+repo = 'digitaltoad/vim-pug.git'
+on_ft = ['jade', 'pug']
+
+[[plugins]]
+repo  = 'kchmck/vim-coffee-script'
+on_ft = ['coffee']
+
+[[plugins]]
+repo = 'ap/vim-css-color'
+on_ft = ['css']
+
+[[plugins]]
+repo = 'groenewege/vim-less'
+on_ft = ['less']
+
+[[plugins]]
+repo = 'tpope/vim-haml'
+on_ft = ['haml']
+
+[[plugins]]
+repo = 'vim-scripts/ruby-matchit'
+on_ft = ['ruby']
+
+[[plugins]]
+repo    = 'rhysd/vim-textobj-ruby'
+depends = ['vim-textobj-user']
+on_ft   = ['ruby']
+
+[[plugins]]
+repo = 'tpope/vim-rake'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'tpope/vim-rails'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'vim-scripts/php.vim'
+on_ft = ['php']
+
+[[plugins]]
+repo = 'derekwyatt/vim-scala'
+on_ft = ['scala']
+
+[[plugins]]
+repo = 'othree/html5.vim'
+on_ft = ['html']
+
+[[plugins]]
+repo = 'superbrothers/vim-vimperator'
+on_ft = ['vimperator']
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = ['toml']

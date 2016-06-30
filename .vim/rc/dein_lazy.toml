@@ -57,12 +57,6 @@ on_i = 1
 repo = 'majutsushi/tagbar'
 
 [[plugins]]
-repo =  'mileszs/ack.vim'
-
-[[plugins]]
-repo = 'alpaca-tc/alpaca_tags'
-
-[[plugins]]
 repo = 'airblade/vim-rooter'
 
 [[plugins]]
@@ -76,3 +70,7 @@ repo = 'vim-scripts/DoxygenToolkit.vim'
 
 [[plugins]]
 repo = 'kana/vim-textobj-user'
+
+[[plugins]]
+repo = 'vim-scripts/renamer.vim'
+on_cmd = ['Rename']

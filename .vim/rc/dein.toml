@@ -20,6 +20,9 @@ hook_post_update = '''
 repo = 'itchyny/lightline.vim'
 
 [[plugins]]
+repo = 'thinca/vim-quickrun'
+
+[[plugins]]
 repo = 'vim-scripts/jellybeans.vim'
 
 [[plugins]]
@@ -29,19 +32,16 @@ repo = 'tomasr/molokai'
 repo = 'nathanaelkane/vim-indent-guides'
 
 [[plugins]]
-repo = 'tomtom/tcomment_vim.git'
-
-[[plugins]]
 repo = 'kien/rainbow_parentheses.vim'
 
 [[plugins]]
 repo = 'bronson/vim-trailing-whitespace'
 
 [[plugins]]
-repo = 'h1mesuke/vim-alignta.git'
+repo = 'tomtom/tcomment_vim.git'
 
 [[plugins]]
-repo = 'tpope/vim-fugitive'
+repo = 'h1mesuke/vim-alignta.git'
 
 [[plugins]]
 repo = 'nishigori/increment-activator'
@@ -51,20 +51,17 @@ repo = 'vim-scripts/sudo.vim'
 on_cmd = ['SudoWrite', 'SudoRead']
 
 [[plugins]]
-repo = 'vim-scripts/renamer.vim'
-on_cmd = ['Rename']
+repo = 'tpope/vim-fugitive'
 
 [[plugins]]
 repo = 'alpaca-tc/alpaca_tags'
 
 [[plugins]]
 repo = 'osyo-manga/vim-watchdogs'
+depends = ['vim-quickrun']
 
 [[plugins]]
 repo = 'osyo-manga/shabadou.vim'
-
-[[plugins]]
-repo = 'thinca/vim-quickrun'
 
 [[plugins]]
 repo = 'cohama/vim-hier'
