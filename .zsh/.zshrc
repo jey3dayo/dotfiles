@@ -81,7 +81,7 @@ alias ll='ls -lAFhp'
 alias ls='ls -pF'
 alias hg="hg --encoding=utf-8"
 alias gst="git status -s"
-alias gad="git add"
+alias tailf="tail -f"
 
 # set prompt {{{
 autoload colors

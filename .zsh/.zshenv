@@ -41,3 +41,6 @@ export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
 
 typeset -U path cdpath fpath manpath
+
+# GHQ
+export GHQ_ROOT=~/src
