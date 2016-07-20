@@ -1,7 +1,6 @@
 # j138 .zshrc.mine
 case ${OSTYPE} in
   darwin*)
-  alias ip="ipconfig getifaddr en0"
   alias brew="env PATH=${PATH/~\/\.phpenv\/shims:/} brew"
   alias flushdns='dscacheutil -flushcache;sudo killall -HUP mDNSResponder;say flushed'
   alias tar="/usr/local/bin/gtar"
