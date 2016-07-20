@@ -1,0 +1,29 @@
+{
+	"segments": {
+		"left": [
+			{
+				"function": "powerline.segments.common.vcs.branch"
+			}
+        ],
+		"right": [
+			{
+				"function": "powerline.segments.common.wthr.weather"
+			},
+			{
+				"function": "powerline.segments.common.sys.uptime",
+				"priority": 50
+			},
+			{
+				"function": "powerline.segments.common.sys.system_load",
+				"priority": 50
+			},
+			{
+				"function": "powerline.segments.common.time.date",
+				"args": {
+					"format": "%Y-%m-%d %H:%M %a",
+					"istime": true
+				}
+			}
+		]
+	}
+}
