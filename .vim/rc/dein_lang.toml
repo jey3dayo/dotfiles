@@ -11,6 +11,10 @@ repo = 'moll/vim-node'
 on_ft = ['javascript']
 
 [[plugins]]
+repo = 'mxw/vim-jsx'
+on_ft = ['javascript']
+
+[[plugins]]
 repo = 'mattn/jscomplete-vim'
 on_ft = ['javascript']
 hook_add = 'setl omnifunc=jscomplete#CompleteJS'
