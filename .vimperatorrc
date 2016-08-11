@@ -128,6 +128,7 @@ prevent-pseudo-domain
 proxy
 sbmcommentsviewer
 stella
+slideshare
 walk-input
 `.split(/\s+/).filter(function(n) !/^!/.test(n));
 EOM
@@ -189,6 +190,10 @@ EOM
 " sbmcommentsviewer.js
 let g:sbm_comments_viewer_filter_nocomments="true"
 noremap v :viewSBMComments -t h<CR>
+
+" slideshare.js
+nnoremap -urls=slideshare\\.net j :slideshare next<CR>
+nnoremap -urls=slideshare\\.net k :slideshare prev<CR>
 
 " speakerdeck.js
 nnoremap -urls=speakerdeck\\.com j :speakerdeck next<CR>
