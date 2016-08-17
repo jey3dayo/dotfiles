@@ -57,14 +57,14 @@ noremap <Leader>p :setlocal apptab!<CR>
 
 " qmarks
 qmark a http://animetick.net/
-qmark t https://ja.todoist.com/
-qmark T www.tumblr.com/dashboard
+qmark t http://www.twitter.com/
 qmark c http://www.google.com/calendar/render?pli=1
 qmark f http://www.facebook.com/
-qmark F http://cloud.feedly.com/
 qmark h http://b.hatena.ne.jp/J138/bookmarks
+qmark i http://www.inoreader.com/folder/Must%20Read
 qmark p http://getpocket.com/
-qmark m https://mail.google.com/mail/
+qmark m https://inbox.google.com/
+qmark n https://www.netflix.com/browse
 
 " Firefox Config
 set! browser.download.manager.retention=1
