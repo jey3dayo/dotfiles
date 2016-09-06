@@ -149,9 +149,10 @@ endfunction
 noremap <Leader>D :<C-u>Ref webdict alc<Space>
 "}}}
 
-" simple-javascript-indenter
+" simple-javascript-indenter {{{
 let g:SimpleJsIndenter_BriefMode = 1
 let g:SimpleJsIndenter_CaseIndentLevel = -1
+" }}}
 
 " jscomplete-vim
 let g:jscomplete_use = ['dom', 'moz', 'es6th']
@@ -195,7 +196,6 @@ noremap <Leader>o <ESC>:Unite outline<Return>
 " https://github.com/shingokatsushima/dotfiles/blob/master/.vimrc
 " vnoremap /g y:Unite grep::-iHRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
 vnoremap /g y:Unite grep::-iRn:<C-R>=escape(@", '\\.*$^[]')<CR><CR>
-
 " }}}
 
 " lightline.vim {{{
@@ -272,6 +272,9 @@ let g:quickrun_config = {
 let g:watchdogs_check_BufWritePost_enable = 1
 let g:watchdogs_check_CursorHold_enable = 1
 call watchdogs#setup(g:quickrun_config)
+
+nnoremap <Leader>w :let g:watchdogs_check_BufWritePost_enable = 0<CR>
+nnoremap <Leader>W :let g:watchdogs_check_BufWritePost_enable = 1<CR>
 "}}}
 
 " tagbar.vim {{{
