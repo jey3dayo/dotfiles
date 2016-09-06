@@ -34,7 +34,6 @@ nnoremap <C-l> :tabmove! +1<CR>
 nnoremap <C-a> ]]
 nnoremap <C-x> [[
 
-noremap <C-o> :open lu<Space>
 noremap U :undo<Space>
 noremap a <S-a>
 
@@ -46,6 +45,9 @@ noremap <Leader>ec :setlocal encoding=EUC-JP<CR>
 noremap <Leader>eu :setlocal encoding=UTF-8<CR>
 noremap <Leader>ei :setlocal encodeing=ISO-2022-JP<CR>
 
+" I'm Feeling Lucky
+noremap <C-o> :open lu<Space>
+
 " toggle load css
 noremap ! :set invum<CR>
 
@@ -54,7 +56,8 @@ inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 
 " toggle pin
-noremap <Leader>p :setlocal apptab!<CR>
+" noremap <Leader>p :setlocal apptab!<CR>
+noremap @ :set apptab!<CR>
 
 " qmarks
 qmark a http://animetick.net/

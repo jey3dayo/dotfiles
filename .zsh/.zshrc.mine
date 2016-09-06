@@ -4,6 +4,7 @@ case ${OSTYPE} in
   alias brew="env PATH=${PATH/~\/\.phpenv\/shims:/} brew"
   alias flushdns='dscacheutil -flushcache;sudo killall -HUP mDNSResponder;say flushed'
   alias tar="/usr/local/bin/gtar"
+  alias vi="vim"
 
   # z command
   if [[ -s ~/tmp/.z ]] then
