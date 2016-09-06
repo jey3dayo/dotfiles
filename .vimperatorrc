@@ -34,6 +34,7 @@ nnoremap <C-l> :tabmove! +1<CR>
 nnoremap <C-a> ]]
 nnoremap <C-x> [[
 
+noremap <C-o> :open lu<Space>
 noremap U :undo<Space>
 noremap a <S-a>
 
@@ -117,6 +118,7 @@ javascript <<EOM
 liberator.globalVariables.plugin_loader_roots = "~/src/github.com/vimpr/vimperator-plugins/"
 liberator.globalVariables.plugin_loader_plugins = `
 _libly
+_smooziee
 auto_detect_link
 bitly
 commandBookmarklet

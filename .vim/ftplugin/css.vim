@@ -1,1 +1,1 @@
-setlocal nowrap tabstop=4 tw=0 sw=4 expandtab
+setlocal nowrap tabstop=2 tw=0 sw=2 expandtab

@@ -48,6 +48,9 @@ repo = 'groenewege/vim-less'
 on_ft = ['less']
 
 [[plugins]]
+repo = 'wavded/vim-stylus.git'
+
+[[plugins]]
 repo = 'tpope/vim-haml'
 on_ft = ['haml']
 
