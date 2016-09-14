@@ -261,6 +261,9 @@ let g:quickrun_config = {
   \ 'sass/watchdogs_checker': {
   \   'type': 'watchdogs_checker/sass',
   \ },
+  \ 'stylelint/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/stylelint',
+  \ },
   \ 'sh/watchdogs_checker': {
   \   'type': 'watchdogs_checker/shellcheck',
   \   'cmdopt': '-f gcc -s bash'
