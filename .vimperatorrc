@@ -56,7 +56,6 @@ inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 
 " toggle pin
-" noremap <Leader>p :setlocal apptab!<CR>
 noremap @ :set apptab!<CR>
 
 " qmarks
