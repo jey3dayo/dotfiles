@@ -7,9 +7,9 @@ path=(
     $path
 )
 
-if [ -d $HOME/.nodebrew ] ; then
+if [ -d /usr/local/var/nodebrew ] ; then
   export NODEBREW_ROOT=/usr/local/var/nodebrew
-  path=($HOME/.nodebrew/current/bin(N-/) $path)
+  path=($NODEBREW_ROOT/current/bin(N-/) $path)
 fi
 
 if [ -d $HOME/perl5 ] ; then
