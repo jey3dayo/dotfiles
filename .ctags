@@ -1,15 +1,19 @@
 --exclude=.git
+--exclude=.svn
 --exclude=log
 --exclude=node_modules
 --exclude=vendor/bundle
 --exclude=public/assets/rails_admin
+--exclude=*min.js
 --exclude=bundle.js
 --exclude=Session.vim
 
+--recurse=yes
+--sort=yes
+
 --languages=-javascript
 --langdef=js
---langmap=js:.js
---langmap=js:+.jsx
+--langmap=js:.js.json.jsx.html
 --regex-js=/[ \t.]([A-Z][A-Z0-9._$]+)[ \t]*[=:][ \t]*([0-9"'\[\{]|null)/\1/n,constant/
 --regex-js=/\.([A-Za-z0-9._$]+)[ \t]*=[ \t]*\{/\1/o,object/
 --regex-js=/['"]*([A-Za-z0-9_$]+)['"]*[ \t]*:[ \t]*\{/\1/o,object/
@@ -24,6 +28,10 @@
 --regex-js=/(function)*[ \t]*([A-Za-z$_][A-Za-z0-9_$]+)[ \t]*\([^)]*\)[ \t]*\{/\2/f,function/
 --regex-js=/['"]*([A-Za-z$][A-Za-z0-9_$]+)['"]*:[ \t]*function[ \t]*\(/\1/m,method/
 --regex-js=/([A-Za-z0-9_$]+)\[["']([A-Za-z0-9_$]+)["']\][ \t]*=[ \t]*function[ \t]*\(/\2/m,method/
+
+--langdef=JSX
+--langmap=JSX:.jsx
+--regex-JSX=/^[ \t]*([a-z]+[ \t]+)*class[ \t]+([A-Za-z0-9_]+)[ \t]*([^)])/\2/c,class,classes/
 
 --langdef=scala
 --langmap=scala:.scala
