@@ -2,3 +2,11 @@ snippet co
 options head
   console.log(${0:TARGET});
 
+snippet sw
+options head
+  switch (${1:#:var}) {
+    case ${2:#:val}: {
+      ${0:TARGET}
+      break;
+    }
+  }

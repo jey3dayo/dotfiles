@@ -1,23 +1,14 @@
 [[plugins]]
-repo = 'pangloss/vim-javascript'
+repo = 'othree/yajs.vim'
 on_ft = ['javascript', 'html', 'php']
-
-[[plugins]]
-repo = 'jiangmiao/simple-javascript-indenter'
-on_ft = ['javascript']
-
-[[plugins]]
-repo = 'moll/vim-node'
-on_ft = ['javascript']
 
 [[plugins]]
 repo = 'mxw/vim-jsx'
 on_ft = ['javascript']
 
 [[plugins]]
-repo = 'mattn/jscomplete-vim'
+repo = 'moll/vim-node'
 on_ft = ['javascript']
-hook_add = 'setl omnifunc=jscomplete#CompleteJS'
 
 [[plugins]]
 repo = 'myhere/vim-nodejs-complete'

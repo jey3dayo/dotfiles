@@ -88,6 +88,8 @@ let g:increment_activator_filetype_candidates = {
   \   ['static', 'absolute', 'relative', 'fixed', 'sticky'],
   \   ['height', 'width'],
   \   ['right', 'left'],
+  \   ['enable', 'disable'],
+  \   ['enabled', 'disabled'],
   \   ['should', 'should_not'],
   \   ['be_file', 'be_directory'],
   \ ],
@@ -95,6 +97,12 @@ let g:increment_activator_filetype_candidates = {
   \   ['if', 'unless'],
   \   ['nil', 'empty', 'blank'],
   \   ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
+  \ ],
+  \ 'javascript': [
+  \   ['const', 'let'],
+  \ ],
+  \ 'javascript.jsx': [
+  \   ['const', 'let'],
   \ ],
   \ 'git-rebase-todo': [
   \   ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
