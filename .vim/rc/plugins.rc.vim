@@ -80,6 +80,28 @@ endif
               \ }
 " }}}
 
+" neosnippet.vim {{{
+" " snippets dir
+let g:neosnippet#enable_snipmate_compatibility = 1
+
+if !exists("g:neosnippet#snippets_directory")
+  let g:neosnippet#snippets_directory="."
+endif
+
+" plugin key-mappings.
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+" }}}
+
 " increment-activator.vim {{{
 let g:increment_activator_filetype_candidates = {
   \ '_': [
@@ -110,27 +132,6 @@ let g:increment_activator_filetype_candidates = {
   \ }
 "}}}
 
-" neosnippet.vim {{{
-" " snippets dir
-let g:neosnippet#enable_snipmate_compatibility = 1
-
-if !exists("g:neosnippet#snippets_directory")
-  let g:neosnippet#snippets_directory="."
-endif
-
-" plugin key-mappings.
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
-" }}}
 
 " Powerline.vim {{{
 python from powerline.vim import setup as powerline_setup
