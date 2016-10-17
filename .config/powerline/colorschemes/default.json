@@ -49,6 +49,12 @@
 		"cwd:current_folder":        "information:regular",
 		"cwd:divider":               { "fg": "gray7", "bg": "gray4", "attrs": [] },
 		"virtualenv":                { "fg": "white", "bg": "darkcyan", "attrs": [] },
-		"attached_clients":          { "fg": "gray8", "bg": "gray0", "attrs": [] }
+		"attached_clients":          { "fg": "gray8", "bg": "gray0", "attrs": [] },
+		"docker":                    { "fg": "gray8",           "bg": "darkestblue", "attrs": [] },
+		"docker_running":            { "fg": "green",           "bg": "darkestblue", "attrs": [] },
+		"docker_paused":             { "fg": "brightestorange", "bg": "darkestblue", "attrs": [] },
+		"docker_exited":             { "fg": "brightred",       "bg": "darkestblue", "attrs": [] },
+		"docker_restarting":         { "fg": "gray10",          "bg": "darkestblue", "attrs": [] },
+		"docker:divider":            { "fg": "gray4",           "bg": "darkestblue", "attrs": [] }
 	}
 }

@@ -4,7 +4,7 @@
 			{
 				"function": "powerline.segments.common.vcs.branch"
 			}
-        ],
+		],
 		"right": [
 			{
 				"function": "powerline.segments.common.wthr.weather"
@@ -23,6 +23,10 @@
 					"format": "%Y-%m-%d %H:%M %a",
 					"istime": true
 				}
+			},
+			{
+				"function": "powerline_docker.docker",
+				"priority": 30
 			}
 		]
 	}
