@@ -1,10 +1,11 @@
 # j138 .zshrc.mine
 case ${OSTYPE} in
   darwin*)
-  alias brew="env PATH=${PATH/~\/\.phpenv\/shims:/} brew"
   alias flushdns='dscacheutil -flushcache;sudo killall -HUP mDNSResponder;say flushed'
-  alias tar="/usr/local/bin/gtar"
   alias vi="vim"
+
+  # fix ggrep
+  unset GREP_OPTIONS
 
   # z command
   if [[ -s ~/tmp/.z ]] then
@@ -12,9 +13,6 @@ case ${OSTYPE} in
   . `brew --prefix`/etc/profile.d/z.sh
   alias j='z'
   fi
-
-  # fix ggrep
-  unset GREP_OPTIONS
 
   if command -v powerline-daemon>/dev/null; then
     powerline-daemon -q
@@ -48,16 +46,18 @@ if command -v peco>/dev/null; then
   alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep -v \*|peco|awk "{print \$2}")'
 fi
 
-# spark
-export SPARK_HOME=/usr/local/Cellar/spark
-export SPARK_CONF_DIR=/usr/local/Cellar/spark/conf
-
 if [ -d ${HOME}/.rbenv ] ; then
   path=($HOME/.rbenv/bin(N-/) $path)
   export RAILS_ENV="development"
   eval "$(rbenv init - zsh)"
 fi
 
-eval "$(thefuck --alias)"
+if [ -d $HOME/perl5 ] ; then
+  export PERL_LOCAL_LIB_ROOT="$HOME/perl5:$PERL_LOCAL_LIB_ROOT";
+  export PERL_MB_OPT="--install_base "$HOME/perl5"";
+  export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5";
+  export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB";
+  path=($HOME/perl5/bin(N-/) $path)
+fi
 
 # vim: set syntax=zsh:
