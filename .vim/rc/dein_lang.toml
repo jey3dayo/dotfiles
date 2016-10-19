@@ -32,7 +32,7 @@ on_ft = ['coffee']
 
 [[plugins]]
 repo = 'ap/vim-css-color'
-on_ft = ['css']
+on_ft = ['css', 'javascript']
 
 [[plugins]]
 repo = 'groenewege/vim-less'
