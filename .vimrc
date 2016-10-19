@@ -122,6 +122,21 @@ set shellslash
 set hidden
 set shortmess+=I
 
+" paste from clipboard {{{
+if &term =~ "xterm"
+  let &t_SI .= "\e[?2004h"
+  let &t_EI .= "\e[?2004l"
+  let &pastetoggle = "\e[201~"
+
+  function XTermPasteBegin(ret)
+    set paste
+    return a:ret
+  endfunction
+
+  inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
+endif
+" }}}
+
 " dein.vim {{{
 function! s:source_rc(path, ...) abort
   let use_global = get(a:000, 0, !has('vim_starting'))
@@ -144,7 +159,7 @@ function! s:source_rc(path, ...) abort
       call delete(tempfile)
     endif
   endtry
-endfunction"}}}
+endfunction
 
 augroup PluginInstall
   autocmd!
@@ -180,11 +195,6 @@ endif
 
 nnoremap <Leader>sO :<C-u>call dein#update()<CR>
 " }}}
-
-let VIMRC_MINE = expand('~/.vimrc.mine')
-if( filereadable(VIMRC_MINE) )
-  exe "source " . VIMRC_MINE
-endif
 
 filetype on
 filetype plugin on
