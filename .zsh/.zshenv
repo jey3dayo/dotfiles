@@ -21,11 +21,16 @@ export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
 typeset -U path cdpath fpath manpath
 
-# GHQ
-export GHQ_ROOT=~/src
-
-# yarn
-if [ -d $HOME/.yarn/bin/ ] ; then
-  path=($HOME/.yarn/bin(N-/) $path)
+if [ -d $HOME/perl5 ] ; then
+  export PERL_LOCAL_LIB_ROOT="$HOME/perl5:$PERL_LOCAL_LIB_ROOT";
+  export PERL_MB_OPT="--install_base "$HOME/perl5"";
+  export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5";
+  export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB";
+  path=($HOME/perl5/bin(N-/) $path)
 fi
 
+export GHQ_ROOT=~/src
+
+path=($HOME/.yarn/bin(N-/) $path)
+
+# vim: set syntax=zsh:
