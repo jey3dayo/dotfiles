@@ -77,7 +77,7 @@ autoload -Uz add-zsh-hook
 alias where="command -v"
 alias df="df -h"
 alias du="du -h"
-alias less="less -R"
+alias less="less -giMRSW -z-4 -x4"
 alias ll='ls -lAFhp'
 alias ls='ls -pF'
 alias hg="hg --encoding=utf-8"
