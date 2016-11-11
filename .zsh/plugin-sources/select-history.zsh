@@ -1,3 +1,5 @@
+OPTIONS='--select-1'
+
 function peco-select-history() {
     local tac
     if which tac > /dev/null; then
@@ -8,7 +10,7 @@ function peco-select-history() {
     BUFFER=$(history -n 1 | \
         eval $tac | \
         awk '!a[$0]++'  | \
-        peco --query "$LBUFFER")
+        peco "$OPTIONS" --query "$LBUFFER")
     CURSOR=$#BUFFER
     zle clear-screen
 }
