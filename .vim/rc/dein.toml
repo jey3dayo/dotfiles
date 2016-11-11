@@ -24,6 +24,9 @@ repo = 'thinca/vim-quickrun'
 
 [[plugins]]
 repo = 'vim-scripts/jellybeans.vim'
+hook_add = '''
+  au MyAutoCmd VimEnter * nested colorscheme jellybeans
+'''
 
 [[plugins]]
 repo = 'tomasr/molokai'
@@ -71,3 +74,10 @@ repo = 'dannyob/quickfixstatus'
 
 [[plugins]]
 repo = 'KazuakiM/vim-qfstatusline'
+
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'

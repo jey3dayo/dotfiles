@@ -138,6 +138,10 @@ endif
 " }}}
 
 " dein.vim {{{
+augroup MyAutoCmd
+  autocmd!
+augroup END
+
 function! s:source_rc(path, ...) abort
   let use_global = get(a:000, 0, !has('vim_starting'))
   let abspath = resolve(expand('~/.vim/rc/' . a:path))

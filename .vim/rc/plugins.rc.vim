@@ -1,5 +1,3 @@
-colorscheme jellybeans
-
 " alingta
 vnoremap <silent> => :Align @1 =><CR>
 vnoremap <silent> == :Align @1 =<CR>
@@ -116,6 +114,7 @@ let g:increment_activator_filetype_candidates = {
   \   ['enabled', 'disabled'],
   \   ['should', 'should_not'],
   \   ['be_file', 'be_directory'],
+  \   ['div', 'span'],
   \ ],
   \ 'ruby': [
   \   ['if', 'unless'],
