@@ -19,7 +19,6 @@ set pumheight=15
 
 " color
 set t_Co=256
-colorscheme desert
 highlight Search ctermbg=7
 
 " set list
@@ -128,7 +127,7 @@ if &term =~ "xterm"
   let &t_EI .= "\e[?2004l"
   let &pastetoggle = "\e[201~"
 
-  function XTermPasteBegin(ret)
+  function! XTermPasteBegin(ret) abort
     set paste
     return a:ret
   endfunction
