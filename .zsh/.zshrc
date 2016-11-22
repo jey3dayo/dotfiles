@@ -60,7 +60,6 @@ if command -v powerline-daemon>/dev/null; then
 fi
 
 # load sources
-fpath=(/usr/local/share/zsh-completions(N-/) $fpath)
-for f (~/.zsh/plugin-sources/*) source "${f}"
+for f ("${ZDOTDIR:-$HOME}"/plugin-sources/*) source "${f}"
 
 # vim: set syntax=zsh:
