@@ -1,11 +1,6 @@
-path=(
-    /usr/local/bin(N-/)
-    /usr/local/sbin(N-/)
-    $HOME/bin(N-/)
-    $HOME/sbin(N-/)
-    $HOME/local/bin(N-/)
-    $path
-)
+if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprofile"
+fi
 
 if [ -d /usr/local/var/nodebrew ] ; then
   export NODEBREW_ROOT=/usr/local/var/nodebrew
@@ -13,7 +8,6 @@ if [ -d /usr/local/var/nodebrew ] ; then
 fi
 
 export GOPATH=$HOME
-path=($GOPATH/bin(N-/) $path)
 
 # java
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"

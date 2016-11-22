@@ -38,3 +38,9 @@ doc/tags-*
 
 sample.*
 *.stash.*
+
+.zsh/.zprezto
+.zsh/.zhistory
+.zsh/.zcompdump*
+.zsh/.zcompcache
+
