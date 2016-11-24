@@ -44,7 +44,7 @@ if command -v peco>/dev/null; then
   alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep -v \*|peco|awk "{print \$2}")'
 fi
 
-alias npm-clean='npm run ncu && rm -rf node_modules && yarn && npm install'
+alias npm-clean='npm run ncu && rm -rf node_modules && npm install'
 alias pip-upgrade='pip list --format json | jq .[].name | xargs pip install -U'
 
 case ${OSTYPE} in

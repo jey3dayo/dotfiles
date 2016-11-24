@@ -21,7 +21,6 @@ setopt list_types
 setopt magic_equal_subst
 setopt mark_dirs
 setopt no_beep
-setopt noautoremoveslash
 setopt nolistbeep
 setopt noautoremoveslash
 setopt nonomatch
@@ -42,14 +41,6 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
-# Completion configuration
-autoload -U compinit
-compinit -u
-
-# hook
-autoload -Uz add-zsh-hook
-
-# theme
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
