@@ -81,3 +81,10 @@ depends = ['context_filetype.vim']
 
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'tpope/vim-abolish'
+depends = ['vim-repeat']
+
+[[plugins]]
+repo = 'tpope/vim-repeat'
