@@ -88,3 +88,6 @@ depends = ['vim-repeat']
 
 [[plugins]]
 repo = 'tpope/vim-repeat'
+
+[[plugins]]
+ repo = 'editorconfig/editorconfig-vim'
