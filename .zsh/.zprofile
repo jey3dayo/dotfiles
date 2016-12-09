@@ -50,7 +50,7 @@ alias brew-upgrade='brew update && brew upgrade && brew prune && brew file cask_
 
 case ${OSTYPE} in
   darwin*)
-  alias flushdns='dscacheutil -flushcache;sudo killall -HUP mDNSResponder;say flushed'
+  alias flushdns='dscacheutil -flushcache;sudo killall -HUP mDNSResponder'
 
   # fix ggrep
   unset GREP_OPTIONS
