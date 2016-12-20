@@ -4,7 +4,8 @@ fi
 
 if [ -d /usr/local/var/nodebrew ] ; then
   export NODEBREW_ROOT=/usr/local/var/nodebrew
-  path=($NODEBREW_ROOT/current/bin(N-/) $path)
+  export NODE_HOME="$NODEBREW_ROOT/current/bin"
+  path=($NODE_HOME(N-/) $path)
 fi
 
 export GOPATH=$HOME
