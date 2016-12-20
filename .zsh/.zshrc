@@ -48,17 +48,14 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
 
   zplug "modules/history", from:prezto
   zplug "modules/environment", from:prezto
-  zplug "modules/terminal", from:prezto
   zplug "modules/editor", from:prezto
   zplug "modules/directory", from:prezto
   zplug "modules/spectrum", from:prezto
   zplug "modules/utility", from:prezto
   zplug "modules/completion", from:prezto
   zplug "modules/tmux", from:prezto
-  zplug "modules/osx", from:prezto
   zplug "modules/history-substring-search", from:prezto
   zplug "modules/prompt", from:prezto
-  zplug "modules/tmux:iterm", from:prezto
   zplug load
 fi
 
