@@ -45,10 +45,21 @@ bindkey "^n" history-beginning-search-forward-end
 if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   export ZPLUG_HOME="${ZDOTDIR}/.zplug"
   source "${ZPLUG_HOME}/init.zsh"
-fi
 
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+  zplug "modules/history", from:prezto
+  zplug "modules/environment", from:prezto
+  zplug "modules/terminal", from:prezto
+  zplug "modules/editor", from:prezto
+  zplug "modules/directory", from:prezto
+  zplug "modules/spectrum", from:prezto
+  zplug "modules/utility", from:prezto
+  zplug "modules/completion", from:prezto
+  zplug "modules/tmux", from:prezto
+  zplug "modules/osx", from:prezto
+  zplug "modules/history-substring-search", from:prezto
+  zplug "modules/prompt", from:prezto
+  zplug "modules/tmux:iterm", from:prezto
+  zplug load
 fi
 
 if command -v powerline-daemon>/dev/null; then
