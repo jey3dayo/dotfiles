@@ -41,6 +41,12 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
+
+if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
+  export ZPLUG_HOME="${ZDOTDIR}/.zplug"
+  source "${ZPLUG_HOME}/init.zsh"
+fi
+
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
