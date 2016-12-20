@@ -43,8 +43,8 @@ bindkey "^n" history-beginning-search-forward-end
 
 
 if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
-  export ZPLUG_HOME="${ZDOTDIR}/.zplug"
-  source "${ZPLUG_HOME}/init.zsh"
+  export ZPLUG_HOME="${HOME}/.cache/zplug"
+  source "${ZDOTDIR}/.zplug/init.zsh"
 
   zplug "modules/history", from:prezto
   zplug "modules/environment", from:prezto
