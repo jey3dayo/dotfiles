@@ -69,7 +69,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug load
 
   bindkey '^R' anyframe-widget-execute-history
-  bindkey '^Y' anyframe-widget-cd-ghq-repository
+  bindkey '^T' anyframe-widget-cd-ghq-repository
 fi
 
 if command -v powerline-daemon>/dev/null; then
