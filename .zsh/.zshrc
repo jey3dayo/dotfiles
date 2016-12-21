@@ -53,6 +53,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug "zsh-users/zsh-completions"
   zplug "zsh-users/zsh-syntax-highlighting", defer:2
   zplug "modules/environment", from:prezto
+  zplug "modules/editor", from:prezto
   zplug "modules/spectrum", from:prezto
   zplug "modules/tmux", from:prezto
   zplug "modules/prompt", from:prezto
