@@ -34,29 +34,34 @@ setopt share_history
 
 autoload zed
 
-# historical backward/forward search with linehead string binded to ^P/^N
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^p" history-beginning-search-backward-end
-bindkey "^n" history-beginning-search-forward-end
-
-
 if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   export ZPLUG_HOME="${HOME}/.cache/zplug"
   source "${ZDOTDIR}/.zplug/init.zsh"
 
+  zplug "zsh-users/zsh-completions"
+  zplug "zsh-users/zsh-history-substring-search"
+  zplug "zsh-users/zsh-syntax-highlighting", defer:2
   zplug "modules/history", from:prezto
   zplug "modules/environment", from:prezto
   zplug "modules/editor", from:prezto
   zplug "modules/directory", from:prezto
   zplug "modules/spectrum", from:prezto
   zplug "modules/utility", from:prezto
-  zplug "modules/completion", from:prezto
   zplug "modules/tmux", from:prezto
-  zplug "modules/history-substring-search", from:prezto
   zplug "modules/prompt", from:prezto
+  zplug "b4b4r07/enhancd"
+  zplug "mollifier/anyframe"
+
+  if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+  fi
+
   zplug load
+
+  bindkey '^R' anyframe-widget-execute-history
 fi
 
 if command -v powerline-daemon>/dev/null; then
