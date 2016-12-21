@@ -10,8 +10,7 @@ do_enter() {
             git status -sb
         fi
     else
-        # do nothing
-        :
+      :
     fi
 
     zle reset-prompt
