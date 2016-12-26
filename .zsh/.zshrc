@@ -39,13 +39,6 @@ setopt share_history
 
 autoload zed
 
-# historical backward/forward search with linehead string binded to ^P/^N
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^p" history-beginning-search-backward-end
-bindkey "^n" history-beginning-search-forward-end
-
 if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   export ZPLUG_HOME="${HOME}/.cache/zplug"
   source "${ZDOTDIR}/.zplug/init.zsh"
@@ -80,5 +73,12 @@ fi
 
 # load sources
 for f ("${ZDOTDIR:-$HOME}"/plugin-sources/*) source "${f}"
+
+# historical backward/forward search with linehead string binded to ^P/^N
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^p" history-beginning-search-backward-end
+bindkey "^n" history-beginning-search-forward-end
 
 # vim: set syntax=zsh:
