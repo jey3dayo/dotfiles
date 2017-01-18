@@ -1,42 +1,42 @@
 [user]
-    name = j138
-    email = j138cm@gmail.com
+  name = j138
+  email = j138cm@gmail.com
 [color]
-    branche = auto
-    diff    = auto
-    interactive = auto
-    status  = auto
-    ui = auto
+  branche = auto
+  diff    = auto
+  interactive = auto
+  status  = auto
+  ui = auto
 [core]
-    excludesfile = ~/.gitignore_global
-    quotepath = false
-    editor = /usr/bin/vim
+  excludesfile = ~/.gitignore_global
+  quotepath = false
+  editor = /usr/bin/vim
 [alias]
-    ca = commit --amend
-    co = checkout
-    ci = commit
-    st = status --short
-    up = pull --rebase
-    l  = log --stat
-    lp = log -p
-    lg = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-    dn = diff --name-only
-    modified = diff --diff-filter=M
+  ca = commit --amend
+  co = checkout
+  ci = commit
+  st = status --short
+  up = pull --rebase
+  l  = log --stat
+  lp = log -p
+  lg = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  dn = diff --name-only
+  modified = diff --diff-filter=M
 [github]
-    name = j138
-    user = j138
-    email = j138cm@gmail.com
-    token = 123qweasdzxc123qweasdzxc
+  name = j138
+  user = j138
+  email = j138cm@gmail.com
+  token = 123qweasdzxc123qweasdzxc
 [branch "master"]
-    remote = origin
-    merge = refs/heads/master
+  remote = origin
+  merge = refs/heads/master
 [push]
-    default = simple
+  default = simple
 [pager]
-    log = diff-highlight | less
-    show = diff-highlight | less
-    diff = diff-highlight | less
+  log = diff-highlight | less
+  show = diff-highlight | less
+  diff = diff-highlight | less
 [credential]
-    helper = cache --timeout=3600
+  helper = cache --timeout=3600
 [ghq]
-    root = ~/src
+  root = ~/src
