@@ -20,8 +20,10 @@ setopt extended_history
 setopt globdots
 setopt hist_ignore_dups
 setopt hist_ignore_space
-setopt list_packed
+setopt hist_reduce_blanks
 setopt hist_verify
+setopt hist_no_store
+setopt list_packed
 setopt list_types
 setopt magic_equal_subst
 setopt mark_dirs
