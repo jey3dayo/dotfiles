@@ -5,6 +5,7 @@ vnoremap <silent> == :Align @1 =<CR>
 " indent_guides {{{
 au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
 au VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+" au FileType coffee,javascript,python IndentGuidesEnable
 au FileType coffee,ruby,javascript,python IndentGuidesEnable
 nmap <silent><Leader>sg <Plug>IndentGuidesToggle
 
