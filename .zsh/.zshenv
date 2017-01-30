@@ -8,6 +8,8 @@ if [ -d /usr/local/var/nodebrew ] ; then
   path=($NODE_HOME(N-/) $path)
 fi
 
+export XDG_CONFIG_HOME="$HOME/.config"
+
 export GOPATH=$HOME
 
 # java

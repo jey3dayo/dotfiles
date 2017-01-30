@@ -1,0 +1,87 @@
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+on_i = 1
+hook_add = '''
+  let g:acp_enableAtStartup = 1
+  let g:neocomplete#enable_at_startup = 1
+  let g:neocomplete#enable_smart_case = 1
+  let g:neocomplete#enable_camel_case_completion = 1
+  let g:neocomplete#enable_underbar_completion = 1
+  let g:neocomplete#min_syntax_length = 3
+  let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+  " Define dictionary.
+  let g:neocomplete#dictionary_filetype_lists = {
+  \   'default': '',
+  \ }
+
+  " Define keyword.
+  if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+  endif
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+  " neco-look setting
+  if !exists('g:neocomplete#text_mode_filetypes')
+    let g:neocomplete#text_mode_filetypes = {}
+  endif
+    let g:neocomplete#text_mode_filetypes = {
+    \   'rst': 1,
+    \   'markdown': 1,
+    \   'gitrebase': 1,
+    \   'gitcommit': 1,
+    \   'vcs-commit': 1,
+    \   'hybrid': 1,
+    \   'text': 1,
+    \   'help': 1,
+    \   'tex': 1,
+    \ }
+'''
+
+[[plugins]]
+repo = 'ujihisa/neco-look'
+depends = ['neocomplete.vim']
+on_i = 1
+
+[[plugins]]
+repo = 'majutsushi/tagbar'
+hook_add = '''
+  nnoremap <Leader>T :<C-u>TagbarToggle<CR>
+  let g:tagbar_type_javascript = {
+  \   'ctagsbin': '/usr/local/bin/jsctags'
+  \}
+'''
+
+[[plugins]]
+repo = 'airblade/vim-rooter'
+
+[[plugins]]
+repo = 'thinca/vim-ref'
+hook_add = '''
+  "Ref webdictでalcを使う設定
+  let g:ref_source_webdict_cmd = 'lynx -dump -nonumbers %s'
+  "let g:ref_source_webdict_use_cache = 1
+  let g:ref_source_webdict_sites = {
+  \  'alc': {
+  \   'url': 'http://eow.alc.co.jp/%s/UTF-8/'
+  \ }
+  \}
+  function! g:ref_source_webdict_sites.alc.filter(output)
+    return join(split(a:output, "\n")[42 :], "\n")
+  endfunction
+
+  noremap <Leader>D :<C-u>Ref webdict alc<Space>
+'''
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
+repo = 'vim-scripts/DoxygenToolkit.vim'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
+[[plugins]]
+repo = 'vim-scripts/renamer.vim'
+on_cmd = ['Rename']

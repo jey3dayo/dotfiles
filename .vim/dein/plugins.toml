@@ -1,0 +1,443 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+depends = ['neomru.vim']
+on_event = 'BufRead'
+hook_add = '''
+  noremap <Leader>f :Denite file_rec<CR>
+  noremap <Leader>b :Denite buffer<CR>
+  noremap <Leader>m :Denite file_old<CR>
+  noremap <Leader>y :Denite neoyank<CR>
+  noremap <Leader>r :Denite -resume<CR>
+
+  noremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Denite buffer<CR>
+  noremap <Leader>M :<C-u>tabnew<CR>:tabmove<CR>:Denite file_old<CR>
+  noremap <Leader><C-]> :<C-u>DeniteCursorWord grep<CR>
+'''
+
+hook_post_source = '''
+  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+  call denite#custom#var('grep', 'command', ['ag'])
+  call denite#custom#var('grep', 'recursive_opts', [])
+  call denite#custom#var('grep', 'default_opts', ['--follow', '--no-group', '--no-color'])
+'''
+
+[[plugins]]
+repo = 'Shougo/neoinclude.vim'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'Shougo/unite-outline'
+on_source = ['denite.nvim']
+hook_add = '''
+  noremap <Leader>o <ESC>:Denite outline<Return>
+'''
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_source = ['denite.nvim']
+
+[[plugins]]
+repo = 'Shougo/vimfiler'
+on_source = 'denite.nvim'
+on_path = '.*'
+on_cmd = [
+    'VimFiler',
+    'VimFilerExplorer',
+    'Edit',
+    'Read',
+    'Source',
+    'Write',
+]
+
+[[plugins]]
+repo = 'Shougo/tabpagebuffer.vim'
+on_source = ['denite.nvim', 'vimfiler']
+
+[[plugins]]
+repo = 'Shougo/neosnippet'
+hook_add = '''
+  " snippets dir
+  let g:neosnippet#enable_snipmate_compatibility = 1
+
+  if !exists("g:neosnippet#snippets_directory")
+    let g:neosnippet#snippets_directory="."
+  endif
+
+  " plugin key-mappings.
+  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+
+  " SuperTab like snippets behavior.
+  imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+  " For snippet_complete marker.
+  if has('conceal')
+    set conceallevel=2 concealcursor=i
+  endif
+'''
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+on_source = ['neosnippet']
+
+
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+hook_add = '''
+  let g:deoplete#enable_at_startup = 1
+'''
+
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+hook_post_update = '''
+  if dein#util#_is_windows()
+    let cmd = 'tools\\update-dll-mingw'
+  elseif dein#util#_is_cygwin()
+    let cmd = 'make -f make_cygwin.mak'
+  elseif executable('gmake')
+    let cmd = 'gmake'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+  let g:lightline = {
+  \ 'colorscheme': 'jellybeans',
+  \ 'active': {
+  \   'left': [[ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified', 'qfstatusline']],
+  \ },
+  \ 'component': {
+  \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+  \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+  \ },
+  \ 'component_visible_condition': {
+  \   'readonly': '(&filetype!="help"&& &readonly)',
+  \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+  \ },
+  \ 'component_expand': {'qfstatusline': 'qfstatusline#Update'},
+  \ 'component_type':   {'qfstatusline': 'error'},
+  \ 'separator': { 'left': '⮀', 'right': '⮂' },
+  \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
+  \ }
+  let g:Qfstatusline#UpdateCmd = function('lightline#update')
+'''
+
+[[plugins]]
+repo = 'vim-scripts/jellybeans.vim'
+hook_add = '''
+  au MyAutoCmd VimEnter * nested colorscheme jellybeans
+'''
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+hook_add = '''
+  nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
+
+  let g:quickrun_config = {
+    \ '_': {
+    \   'runner': 'vimproc',
+    \   'runner/vimproc/sleep': 10,
+    \   'runner/vimproc/updatetime': 500,
+    \   'outputter/buffer/split': ':botright 8sp',
+    \   'outputter/buffer/close_on_empty': 1,
+    \   'hook/echo/enable' : 0,
+    \   'hook/echo/output_success': '> No Errors Found.',
+    \   'hook/back_window/enable' : 1,
+    \   'hook/back_window/enable_exit': 1,
+    \   'hock/close_buffer/enable_hock_loaded': 1,
+    \   'hock/close_buffer/enable_success': 1,
+    \   'hook/qfstatusline_update/enable_exit': 1,
+    \   'hook/qfstatusline_update/priority_exit': 4,
+    \ },
+    \ 'watchdogs_checker/_': {
+    \   'hook/qfstatusline_update/enable_exit': 1,
+    \   'hook/qfstatusline_update/priority_exit': 1,
+    \ },
+    \ 'javascript/watchdogs_checker': {
+    \   'type': 'watchdogs_checker/eslint',
+    \ },
+    \ 'ruby/watchdogs_checker': {
+    \   'type': 'watchdogs_checker/rubocop',
+    \   'cmdopt': '-D'
+    \ },
+    \ 'php/watchdogs_checker': {
+    \   'type': 'watchdogs_checker/php',
+    \ },
+    \ 'haml/watchdogs_checker': {
+    \   'type': 'watchdogs_checker/haml-lint',
+    \ },
+    \ 'sass/watchdogs_checker': {
+    \   'type': 'watchdogs_checker/sass',
+    \ },
+    \ 'stylelint/watchdogs_checker': {
+    \   'type': 'watchdogs_checker/stylelint',
+    \ },
+    \ 'sh/watchdogs_checker': {
+    \   'type': 'watchdogs_checker/shellcheck',
+    \   'cmdopt': '-f gcc -s bash'
+    \ },
+    \}
+'''
+
+[[plugins]]
+repo = 'osyo-manga/vim-watchdogs'
+depends = ['vim-quickrun']
+hook_add = '''
+  let g:watchdogs_check_BufWritePost_enable = 1
+  let g:watchdogs_check_CursorHold_enable = 1
+  call watchdogs#setup(g:quickrun_config)
+
+  nnoremap <Leader>w :let g:watchdogs_check_BufWritePost_enable = 0<CR>
+  nnoremap <Leader>W :let g:watchdogs_check_BufWritePost_enable = 1<CR>
+'''
+
+[[plugins]]
+repo = 'tomasr/molokai'
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+hook_add = '''
+  colorscheme jellybeans
+  au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
+  au VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+  " au FileType coffee,javascript,python IndentGuidesEnable
+  au FileType coffee,ruby,javascript,python IndentGuidesEnable
+  nmap <silent><Leader>sg <Plug>IndentGuidesToggle
+
+  let g:indent_guides_auto_colors=0
+  let g:indent_guides_start_level=2
+  let g:indent_guides_guide_size=1
+  let g:indent_guides_enable_on_vim_startup=0
+  let g:indent_guides_color_change_percent=20
+'''
+
+[[plugins]]
+repo = 'kien/rainbow_parentheses.vim'
+hook_add = '''
+  let g:rbpt_max = 16
+  let g:rbpt_loadcmd_toggle = 0
+  au VimEnter * RainbowParenthesesToggle
+  au Syntax * RainbowParenthesesLoadRound
+  au Syntax * RainbowParenthesesLoadSquare
+  au Syntax * RainbowParenthesesLoadBraces
+'''
+
+[[plugins]]
+repo = 'bronson/vim-trailing-whitespace'
+
+[[plugins]]
+repo = 'tomtom/tcomment_vim.git'
+
+[[plugins]]
+repo = 'h1mesuke/vim-alignta.git'
+hook_add = '''
+  vnoremap <silent> => :Align @1 =><CR>
+  vnoremap <silent> == :Align @1 =<CR>
+'''
+
+[[plugins]]
+repo = 'nishigori/increment-activator'
+hook_add = '''
+  let g:increment_activator_filetype_candidates = {
+  \   '_': [
+  \     ['info', 'warning', 'notice', 'error', 'success'],
+  \     ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
+  \     ['static', 'absolute', 'relative', 'fixed', 'sticky'],
+  \     ['height', 'width'],
+  \     ['right', 'left'],
+  \     ['enable', 'disable'],
+  \     ['enabled', 'disabled'],
+  \     ['should', 'should_not'],
+  \     ['be_file', 'be_directory'],
+  \     ['div', 'span'],
+  \   ],
+  \   'ruby': [
+  \     ['if', 'unless'],
+  \     ['nil', 'empty', 'blank'],
+  \     ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
+  \   ],
+  \   'javascript': [
+  \     ['const', 'let'],
+  \   ],
+  \   'javascript.jsx': [
+  \     ['const', 'let'],
+  \   ],
+  \   'git-rebase-todo': [
+  \     ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
+  \   ],
+  \ }
+'''
+
+[[plugins]]
+repo = 'vim-scripts/sudo.vim'
+on_cmd = ['SudoWrite', 'SudoRead']
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+hook_add = '''
+  nnoremap [fugitive] <Nop>
+  nmap <Leader>g [fugitive]
+  nnoremap [fugitive]b :<C-u>Gblame<CR>
+  nnoremap [fugitive]d :<C-u>Gdiff<CR>
+  nnoremap [fugitive]g :<C-u>Ggrep<Space>
+  nnoremap [fugitive]s :<C-u>Gstatus<CR>
+  nnoremap [fugitive]w :<C-u>Gwrite<CR>
+  nnoremap [fugitive]c :<C-u>Gcommit<CR>
+'''
+
+[[plugins]]
+repo = 'alpaca-tc/alpaca_tags'
+hook_add = '''
+  let g:alpaca_tags#config = {
+  \  '_': '-R --sort=yes',
+  \  'ruby': '--languages=+Ruby',
+  \  'javascript': '--languages=+Javascript',
+  \}
+
+  augroup AlpacaTags
+    autocmd!
+    if exists(':AlpacaTags')
+      autocmd BufWritePost Gemfile AlpacaTagsBundle
+      autocmd BufEnter * AlpacaTagsSet
+      autocmd BufWritePost * AlpacaTagsUpdate
+    endif
+  augroup END
+'''
+
+[[plugins]]
+repo = 'osyo-manga/shabadou.vim'
+
+[[plugins]]
+repo = 'cohama/vim-hier'
+
+[[plugins]]
+repo = 'dannyob/quickfixstatus'
+
+[[plugins]]
+repo = 'KazuakiM/vim-qfstatusline'
+
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'tpope/vim-abolish'
+depends = ['vim-repeat']
+
+[[plugins]]
+repo = 'tpope/vim-repeat'
+
+[[plugins]]
+ repo = 'editorconfig/editorconfig-vim'
+
+[[plugins]]
+repo = 'othree/yajs.vim'
+on_ft = ['javascript', 'html', 'php']
+
+[[plugins]]
+repo = 'mxw/vim-jsx'
+on_ft = ['javascript']
+
+[[plugins]]
+repo = 'moll/vim-node'
+on_ft = ['javascript']
+
+[[plugins]]
+repo = 'myhere/vim-nodejs-complete'
+on_ft = ['javascript']
+
+hook_add = '''
+setl omnifunc=jscomplete#CompleteJS
+if !exists('g:neocomplcache_omni_functions')
+  let g:neocomplcache_omni_functions = {}
+  endif
+  let g:neocomplcache_omni_functions.javascript = 'nodejscomplete#CompleteJS'
+  let g:node_usejscomplete = 1
+'''
+
+[[plugins]]
+repo = 'digitaltoad/vim-pug.git'
+on_ft = ['jade', 'pug']
+
+[[plugins]]
+repo = 'kchmck/vim-coffee-script'
+on_ft = ['coffee']
+
+[[plugins]]
+repo = 'ap/vim-css-color'
+on_ft = ['css', 'javascript']
+
+[[plugins]]
+repo = 'groenewege/vim-less'
+on_ft = ['less']
+
+[[plugins]]
+repo = 'wavded/vim-stylus.git'
+
+[[plugins]]
+repo = 'tpope/vim-haml'
+on_ft = ['haml']
+
+[[plugins]]
+repo = 'vim-scripts/ruby-matchit'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'rhysd/vim-textobj-ruby'
+depends = ['vim-textobj-user']
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'tpope/vim-rake'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'tpope/vim-rails'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'vim-scripts/php.vim'
+on_ft = ['php']
+
+[[plugins]]
+repo = 'derekwyatt/vim-scala'
+on_ft = ['scala']
+
+[[plugins]]
+repo = 'othree/html5.vim'
+on_ft = ['html']
+
+[[plugins]]
+repo = 'superbrothers/vim-vimperator'
+on_ft = ['vimperator']
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = ['toml']
+
+[[plugins]]
+repo = 'rcmdnk/vim-markdown'
+on_ft = ['markdown','mkd']
+hook_add = '''
+    let g:vim_markdown_frontmatter = 1
+    let g:vim_markdown_math = 1
+'''
+
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = 'go'

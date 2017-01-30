@@ -5,6 +5,7 @@ DOTFILES=$HOME/src/github.com/j138/dotfiles
 mkdir -p "${HOME}"/{tmp,.cache,.config}
 chown -R "${USER}" "${HOME}"/{tmp,.cache}
 
+ln -s "${DOTFILES}"/.vim ~/.config/nvim
 ln -s "${DOTFILES}"/.vim ~/.vim
 ln -s "${DOTFILES}"/.zsh ~/.zsh
 ln -s "${DOTFILES}"/.tmux ~/.tmux

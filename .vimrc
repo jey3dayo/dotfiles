@@ -1,5 +1,3 @@
-" j138 .vimrc
-
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
@@ -115,7 +113,7 @@ nnoremap gt :<C-u>tabnext<CR>
 nnoremap gT :<C-u>tabprevious<CR>
 
 " ESC ESC -> toggle hlsearch
-nnoremap <Esc><Esc> :<C-u>set hlsearch!<Return>
+" nnoremap <Esc><Esc> :<C-u>set hlsearch!<Return>
 
 set shellslash
 set hidden
@@ -136,63 +134,47 @@ if &term =~ "xterm"
 endif
 " }}}
 
+
+let g:python3_host_prog = expand('/usr/local/bin/python3')
+
+let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
+let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
+let s:dein_cache_dir = g:cache_home . '/dein'
+let s:dein_repo_dir = s:dein_cache_dir . '/repos/github.com/Shougo/dein.vim'
+
 " dein.vim {{{
 augroup MyAutoCmd
   autocmd!
 augroup END
 
-function! s:source_rc(path, ...) abort
-  let use_global = get(a:000, 0, !has('vim_starting'))
-  let abspath = resolve(expand('~/.vim/rc/' . a:path))
-  if !use_global
-    execute 'source' fnameescape(abspath)
-    return
-  endif
-
-  " substitute all 'set' to 'setglobal'
-  let content = map(readfile(abspath),
-        \ 'substitute(v:val, "^\\W*\\zsset\\ze\\W", "setglobal", "")')
-  " create tempfile and source the tempfile
-  let tempfile = tempname()
-  try
-    call writefile(content, tempfile)
-    execute printf('source %s', fnameescape(tempfile))
-  finally
-    if filereadable(tempfile)
-      call delete(tempfile)
-    endif
-  endtry
-endfunction
-
-augroup PluginInstall
-  autocmd!
-  autocmd VimEnter * if dein#check_install() | call dein#install() | endif
-augroup END
-
-let s:dein_dir = expand('~/.cache/dein')
-let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-
 if &runtimepath !~# '/dein.vim'
   if !isdirectory(s:dein_repo_dir)
-    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+    call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
   endif
-  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+  execute 'set runtimepath^=' . s:dein_repo_dir
 endif
 
+" dein.vim settings
 let g:dein#install_max_processes = 16
+let g:dein#install_progress_type = 'title'
+let g:dein#install_message_type = 'none'
+let g:dein#enable_notification = 1
 
-if dein#load_state(s:dein_dir)
-  call dein#begin(s:dein_dir)
-  let g:rc_dir    = expand('~/.vim/rc')
-  call dein#load_toml(g:rc_dir.'/dein.toml',      {'lazy': 0})
-  call dein#load_toml(g:rc_dir.'/dein_lang.toml', {'lazy': 0})
-  call dein#load_toml(g:rc_dir.'/dein_lazy.toml', {'lazy': 1})
-  call s:source_rc('plugins.rc.vim')
+if dein#load_state(s:dein_cache_dir)
+  call dein#begin(s:dein_cache_dir)
+
+  let s:toml_dir = g:config_home . '/nvim/dein'
+  call dein#load_toml(s:toml_dir . '/plugins.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/lazy.toml', {'lazy': 1})
+  if has('nvim')
+    call dein#load_toml(s:toml_dir . '/neovim.toml', {'lazy': 1})
+  endif
+
   call dein#end()
   call dein#save_state()
 endif
 
-if dein#check_install()
+if has('vim_starting') && dein#check_install()
   call dein#install()
 endif
 
@@ -205,3 +187,4 @@ filetype indent on
 
 runtime! rc/*.vim
 " vim: set ft=vim :
+
