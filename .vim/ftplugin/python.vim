@@ -1,1 +1,1 @@
-map <leader><c-e> <ESC>:!python %<CR>
+map <Leader><c-e> <ESC>:!python %<CR>

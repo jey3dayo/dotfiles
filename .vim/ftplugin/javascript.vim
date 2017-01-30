@@ -4,4 +4,4 @@ setlocal foldmethod=marker
 setlocal foldmarker=/*,*/
 
 command! EsFix :call vimproc#system_bg("eslint --fix " . expand("%"))
-map <leader><c-f> <C-u>:!eslint --fix %<CR>
+map <Leader><c-f> <C-u>:!eslint --fix %<CR>

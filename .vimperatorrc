@@ -82,13 +82,13 @@ set! xpinstall.signatures.required=false
 javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://hatenabookmark/content/vimperator/plugin/hatenabookmark.js', {__proto__: this});
 
 " commandBookmarklet.js
-nnoremap <leader>P :bmlpocket<CR>
+nnoremap <Leader>P :bmlpocket<CR>
 
 "copy.js {{{
-nnoremap <leader>y :copy<Space>Title bittly<CR>
-nnoremap <leader>Y :copy<Space>title URL<CR>
-nnoremap <leader>a :copy<Space>Amazon<CR>
-nnoremap <leader>A :copy<Space>AmazonAffiliate<CR>
+nnoremap <Leader>y :copy<Space>Title bittly<CR>
+nnoremap <Leader>Y :copy<Space>title URL<CR>
+nnoremap <Leader>a :copy<Space>Amazon<CR>
+nnoremap <Leader>A :copy<Space>AmazonAffiliate<CR>
 
 javascript <<EOM
     liberator.globalVariables.copy_templates = [
