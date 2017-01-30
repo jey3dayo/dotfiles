@@ -165,6 +165,7 @@ if dein#load_state(s:dein_cache_dir)
 
   let s:toml_dir = g:config_home . '/nvim/dein'
   call dein#load_toml(s:toml_dir . '/plugins.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/lang.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/lazy.toml', {'lazy': 1})
   if has('nvim')
     call dein#load_toml(s:toml_dir . '/neovim.toml', {'lazy': 1})
