@@ -2,8 +2,8 @@ export LANG='ja_JP.UTF-8'
 export LC_ALL='ja_JP.UTF-8'
 
 export BROWSER='open'
-export EDITOR='vim'
-export VISUAL='vim'
+export EDITOR='nvim'
+export VISUAL='nvim'
 export PAGER='less'
 
 export LISTMAX=0
@@ -19,7 +19,8 @@ path=(
 )
 
 # alias
-alias vi="vim"
+alias vim="nvim"
+alias vi="nvim"
 alias less="less -giMRSW -z-4 -x4"
 alias where="command -v"
 alias df="df -h"
