@@ -2,98 +2,6 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
-repo = 'Shougo/denite.nvim'
-depends = ['neomru.vim']
-on_event = 'BufRead'
-hook_add = '''
-  noremap <Leader>f :Denite file_rec<CR>
-  noremap <Leader>b :Denite buffer<CR>
-  noremap <Leader>m :Denite file_old<CR>
-  noremap <Leader>y :Denite neoyank<CR>
-  noremap <Leader>r :Denite -resume<CR>
-
-  noremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Denite buffer<CR>
-  noremap <Leader>M :<C-u>tabnew<CR>:tabmove<CR>:Denite file_old<CR>
-  noremap <Leader><C-]> :<C-u>DeniteCursorWord grep<CR>
-'''
-
-hook_post_source = '''
-  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
-  call denite#custom#var('grep', 'command', ['ag'])
-  call denite#custom#var('grep', 'recursive_opts', [])
-  call denite#custom#var('grep', 'default_opts', ['--follow', '--no-group', '--no-color'])
-'''
-
-[[plugins]]
-repo = 'Shougo/neoinclude.vim'
-
-[[plugins]]
-repo = 'Shougo/neomru.vim'
-
-[[plugins]]
-repo = 'Shougo/unite-outline'
-on_source = ['denite.nvim']
-hook_add = '''
-  noremap <Leader>o <ESC>:Denite outline<Return>
-'''
-
-[[plugins]]
-repo = 'Shougo/neoyank.vim'
-on_source = ['denite.nvim']
-
-[[plugins]]
-repo = 'Shougo/vimfiler'
-on_source = 'denite.nvim'
-on_path = '.*'
-on_cmd = [
-    'VimFiler',
-    'VimFilerExplorer',
-    'Edit',
-    'Read',
-    'Source',
-    'Write',
-]
-
-[[plugins]]
-repo = 'Shougo/tabpagebuffer.vim'
-on_source = ['denite.nvim', 'vimfiler']
-
-[[plugins]]
-repo = 'Shougo/neosnippet'
-hook_add = '''
-  " snippets dir
-  let g:neosnippet#enable_snipmate_compatibility = 1
-
-  if !exists("g:neosnippet#snippets_directory")
-    let g:neosnippet#snippets_directory="."
-  endif
-
-  " plugin key-mappings.
-  imap <C-k> <Plug>(neosnippet_expand_or_jump)
-  smap <C-k> <Plug>(neosnippet_expand_or_jump)
-
-  " SuperTab like snippets behavior.
-  imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-  smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
-  " For snippet_complete marker.
-  if has('conceal')
-    set conceallevel=2 concealcursor=i
-  endif
-'''
-
-[[plugins]]
-repo = 'Shougo/neosnippet-snippets'
-on_source = ['neosnippet']
-
-
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-hook_add = '''
-  let g:deoplete#enable_at_startup = 1
-'''
-
-[[plugins]]
 repo = 'Shougo/vimproc.vim'
 hook_post_update = '''
   if dein#util#_is_windows()
@@ -109,36 +17,47 @@ hook_post_update = '''
 '''
 
 [[plugins]]
-repo = 'itchyny/lightline.vim'
+repo = 'Shougo/denite.nvim'
+depends = ['neomru.vim']
+on_event = 'BufRead'
 hook_add = '''
-  let g:lightline = {
-  \ 'colorscheme': 'jellybeans',
-  \ 'active': {
-  \   'left': [[ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified', 'qfstatusline']],
-  \ },
-  \ 'component': {
-  \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
-  \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-  \ },
-  \ 'component_visible_condition': {
-  \   'readonly': '(&filetype!="help"&& &readonly)',
-  \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-  \ },
-  \ 'component_expand': {'qfstatusline': 'qfstatusline#Update'},
-  \ 'component_type':   {'qfstatusline': 'error'},
-  \ 'separator': { 'left': '⮀', 'right': '⮂' },
-  \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
-  \ }
-  let g:Qfstatusline#UpdateCmd = function('lightline#update')
+  noremap <Leader>f :Denite file_rec<CR>
+  noremap <Leader>b :Denite buffer<CR>
+  noremap <Leader>m :Denite file_old<CR>
+  noremap <Leader>y :Denite neoyank<CR>
+  noremap <Leader>r :Denite -resume<CR>
+  noremap <Leader>G :Denite -auto_preview grep<CR>
+
+  noremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Denite buffer<CR>
+  noremap <Leader>M :<C-u>tabnew<CR>:tabmove<CR>:Denite file_old<CR>
+'''
+hook_post_source = '''
+  call denite#custom#var('file_rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+  call denite#custom#var('grep', 'command', ['ag'])
+  call denite#custom#var('grep', 'recursive_opts', [])
+  call denite#custom#var('grep', 'default_opts', ['--follow', '--no-group', '--no-color'])
 '''
 
 [[plugins]]
-repo = 'vim-scripts/jellybeans.vim'
+repo = 'Shougo/unite-outline'
+on_source = ['denite.nvim']
 hook_add = '''
-  au MyAutoCmd VimEnter * nested colorscheme jellybeans
+  noremap <Leader>o <ESC>:Denite outline<Return>
 '''
+
+[[plugins]]
+repo = 'Shougo/neoinclude.vim'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_source = ['denite.nvim']
+
+[[plugins]]
+repo = 'Shougo/tabpagebuffer.vim'
+on_source = ['denite.nvim']
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
@@ -201,6 +120,38 @@ hook_add = '''
 
   nnoremap <Leader>w :let g:watchdogs_check_BufWritePost_enable = 0<CR>
   nnoremap <Leader>W :let g:watchdogs_check_BufWritePost_enable = 1<CR>
+'''
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+  let g:lightline = {
+  \ 'colorscheme': 'jellybeans',
+  \ 'active': {
+  \   'left': [[ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified', 'qfstatusline']],
+  \ },
+  \ 'component': {
+  \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+  \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+  \ },
+  \ 'component_visible_condition': {
+  \   'readonly': '(&filetype!="help"&& &readonly)',
+  \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+  \ },
+  \ 'component_expand': {'qfstatusline': 'qfstatusline#Update'},
+  \ 'component_type':   {'qfstatusline': 'error'},
+  \ 'separator': { 'left': '⮀', 'right': '⮂' },
+  \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
+  \ }
+  let g:Qfstatusline#UpdateCmd = function('lightline#update')
+'''
+
+[[plugins]]
+repo = 'vim-scripts/jellybeans.vim'
+hook_add = '''
+  au MyAutoCmd VimEnter * nested colorscheme jellybeans
 '''
 
 [[plugins]]
