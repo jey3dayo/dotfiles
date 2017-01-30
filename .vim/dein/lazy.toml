@@ -1,15 +1,18 @@
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
+on_i = 1
 hook_add = '''
   let g:deoplete#enable_at_startup = 1
   inoremap <expr><tab> pumvisible() ? '\<C-n>' :
-   \ neosnippet#expandable_or_jumpable() ?
-   \ '\<Plug>(neosnippet_expand_or_jump)' : '\<tab>'
+  \ neosnippet#expandable_or_jumpable() ?
+  \ '\<Plug>(neosnippet_expand_or_jump)' : '\<tab>'
 '''
-on_i = 1
 
 [[plugins]]
 repo = 'Shougo/neosnippet'
+depends = ['neosnippet-snippets']
+on_ft = ['snippet']
+on_i = 1
 hook_add = '''
   " snippets dir
   let g:neosnippet#enable_snipmate_compatibility = 1
@@ -31,9 +34,6 @@ hook_add = '''
     set conceallevel=2 concealcursor=i
   endif
 '''
-on_i = 1
-on_ft = ['snippet']
-depends = ['neosnippet-snippets']
 
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
@@ -48,7 +48,7 @@ repo = 'majutsushi/tagbar'
 hook_add = '''
   nnoremap <Leader>T :<C-u>TagbarToggle<CR>
   let g:tagbar_type_javascript = {
-  \   'ctagsbin': '/usr/local/bin/jsctags'
+  \ 'ctagsbin': '/usr/local/bin/jsctags'
   \}
 '''
 
@@ -62,7 +62,7 @@ hook_add = '''
   let g:ref_source_webdict_cmd = 'lynx -dump -nonumbers %s'
   "let g:ref_source_webdict_use_cache = 1
   let g:ref_source_webdict_sites = {
-  \  'alc': {
+  \ 'alc': {
   \   'url': 'http://eow.alc.co.jp/%s/UTF-8/'
   \ }
   \}

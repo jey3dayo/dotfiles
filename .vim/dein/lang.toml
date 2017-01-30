@@ -13,11 +13,10 @@ on_ft = ['javascript']
 [[plugins]]
 repo = 'myhere/vim-nodejs-complete'
 on_ft = ['javascript']
-
 hook_add = '''
-setl omnifunc=jscomplete#CompleteJS
-if !exists('g:neocomplcache_omni_functions')
-  let g:neocomplcache_omni_functions = {}
+  setl omnifunc=jscomplete#CompleteJS
+  if !exists('g:neocomplcache_omni_functions')
+    let g:neocomplcache_omni_functions = {}
   endif
   let g:neocomplcache_omni_functions.javascript = 'nodejscomplete#CompleteJS'
   let g:node_usejscomplete = 1
@@ -87,8 +86,8 @@ on_ft = ['toml']
 repo = 'rcmdnk/vim-markdown'
 on_ft = ['markdown','mkd']
 hook_add = '''
-    let g:vim_markdown_frontmatter = 1
-    let g:vim_markdown_math = 1
+  let g:vim_markdown_frontmatter = 1
+  let g:vim_markdown_math = 1
 '''
 
 [[plugins]]

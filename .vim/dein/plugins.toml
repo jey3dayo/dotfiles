@@ -53,9 +53,6 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'Shougo/neoinclude.vim'
-
-[[plugins]]
 repo = 'Shougo/neomru.vim'
 
 [[plugins]]
@@ -67,54 +64,57 @@ repo = 'Shougo/tabpagebuffer.vim'
 on_source = ['denite.nvim']
 
 [[plugins]]
+repo = 'Shougo/neoinclude.vim'
+
+[[plugins]]
 repo = 'thinca/vim-quickrun'
 hook_add = '''
   nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
 
   let g:quickrun_config = {
-    \ '_': {
-    \   'runner': 'vimproc',
-    \   'runner/vimproc/sleep': 10,
-    \   'runner/vimproc/updatetime': 500,
-    \   'outputter/buffer/split': ':botright 8sp',
-    \   'outputter/buffer/close_on_empty': 1,
-    \   'hook/echo/enable' : 0,
-    \   'hook/echo/output_success': '> No Errors Found.',
-    \   'hook/back_window/enable' : 1,
-    \   'hook/back_window/enable_exit': 1,
-    \   'hock/close_buffer/enable_hock_loaded': 1,
-    \   'hock/close_buffer/enable_success': 1,
-    \   'hook/qfstatusline_update/enable_exit': 1,
-    \   'hook/qfstatusline_update/priority_exit': 4,
-    \ },
-    \ 'watchdogs_checker/_': {
-    \   'hook/qfstatusline_update/enable_exit': 1,
-    \   'hook/qfstatusline_update/priority_exit': 1,
-    \ },
-    \ 'javascript/watchdogs_checker': {
-    \   'type': 'watchdogs_checker/eslint',
-    \ },
-    \ 'ruby/watchdogs_checker': {
-    \   'type': 'watchdogs_checker/rubocop',
-    \   'cmdopt': '-D'
-    \ },
-    \ 'php/watchdogs_checker': {
-    \   'type': 'watchdogs_checker/php',
-    \ },
-    \ 'haml/watchdogs_checker': {
-    \   'type': 'watchdogs_checker/haml-lint',
-    \ },
-    \ 'sass/watchdogs_checker': {
-    \   'type': 'watchdogs_checker/sass',
-    \ },
-    \ 'stylelint/watchdogs_checker': {
-    \   'type': 'watchdogs_checker/stylelint',
-    \ },
-    \ 'sh/watchdogs_checker': {
-    \   'type': 'watchdogs_checker/shellcheck',
-    \   'cmdopt': '-f gcc -s bash'
-    \ },
-    \}
+  \ '_': {
+  \   'runner': 'vimproc',
+  \   'runner/vimproc/sleep': 10,
+  \   'runner/vimproc/updatetime': 500,
+  \   'outputter/buffer/split': ':botright 8sp',
+  \   'outputter/buffer/close_on_empty': 1,
+  \   'hook/echo/enable' : 0,
+  \   'hook/echo/output_success': '> No Errors Found.',
+  \   'hook/back_window/enable' : 1,
+  \   'hook/back_window/enable_exit': 1,
+  \   'hock/close_buffer/enable_hock_loaded': 1,
+  \   'hock/close_buffer/enable_success': 1,
+  \   'hook/qfstatusline_update/enable_exit': 1,
+  \   'hook/qfstatusline_update/priority_exit': 4,
+  \ },
+  \ 'watchdogs_checker/_': {
+  \   'hook/qfstatusline_update/enable_exit': 1,
+  \   'hook/qfstatusline_update/priority_exit': 1,
+  \ },
+  \ 'javascript/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/eslint',
+  \ },
+  \ 'ruby/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/rubocop',
+  \   'cmdopt': '-D'
+  \ },
+  \ 'php/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/php',
+  \ },
+  \ 'haml/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/haml-lint',
+  \ },
+  \ 'sass/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/sass',
+  \ },
+  \ 'stylelint/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/stylelint',
+  \ },
+  \ 'sh/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/shellcheck',
+  \   'cmdopt': '-f gcc -s bash'
+  \ },
+  \}
 '''
 
 [[plugins]]
@@ -151,7 +151,7 @@ hook_add = '''
   \ 'component_type':   {'qfstatusline': 'error'},
   \ 'separator': { 'left': '⮀', 'right': '⮂' },
   \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
-  \ }
+  \}
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
 '''
 
@@ -209,33 +209,33 @@ hook_add = '''
 repo = 'nishigori/increment-activator'
 hook_add = '''
   let g:increment_activator_filetype_candidates = {
-  \   '_': [
-  \     ['info', 'warning', 'notice', 'error', 'success'],
-  \     ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
-  \     ['static', 'absolute', 'relative', 'fixed', 'sticky'],
-  \     ['height', 'width'],
-  \     ['right', 'left'],
-  \     ['enable', 'disable'],
-  \     ['enabled', 'disabled'],
-  \     ['should', 'should_not'],
-  \     ['be_file', 'be_directory'],
-  \     ['div', 'span'],
-  \   ],
-  \   'ruby': [
-  \     ['if', 'unless'],
-  \     ['nil', 'empty', 'blank'],
-  \     ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
-  \   ],
-  \   'javascript': [
-  \     ['const', 'let'],
-  \   ],
-  \   'javascript.jsx': [
-  \     ['const', 'let'],
-  \   ],
-  \   'git-rebase-todo': [
-  \     ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
-  \   ],
-  \ }
+  \ '_': [
+  \   ['info', 'warning', 'notice', 'error', 'success'],
+  \   ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
+  \   ['static', 'absolute', 'relative', 'fixed', 'sticky'],
+  \   ['height', 'width'],
+  \   ['right', 'left'],
+  \   ['enable', 'disable'],
+  \   ['enabled', 'disabled'],
+  \   ['should', 'should_not'],
+  \   ['be_file', 'be_directory'],
+  \   ['div', 'span'],
+  \ ],
+  \ 'ruby': [
+  \   ['if', 'unless'],
+  \   ['nil', 'empty', 'blank'],
+  \   ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
+  \ ],
+  \ 'javascript': [
+  \   ['const', 'let'],
+  \ ],
+  \ 'javascript.jsx': [
+  \   ['const', 'let'],
+  \ ],
+  \ 'git-rebase-todo': [
+  \   ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
+  \ ],
+  \}
 '''
 
 [[plugins]]
@@ -259,9 +259,9 @@ hook_add = '''
 repo = 'alpaca-tc/alpaca_tags'
 hook_add = '''
   let g:alpaca_tags#config = {
-  \  '_': '-R --sort=yes',
-  \  'ruby': '--languages=+Ruby',
-  \  'javascript': '--languages=+Javascript',
+  \ '_': '-R --sort=yes',
+  \ 'ruby': '--languages=+Ruby',
+  \ 'javascript': '--languages=+Javascript',
   \}
 
   augroup AlpacaTags
