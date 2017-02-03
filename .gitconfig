@@ -20,7 +20,6 @@
   l  = log --stat
   lp = log -p
   lg = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  dn = diff --name-only
   modified = diff --diff-filter=M
 [github]
   name = j138
@@ -32,10 +31,6 @@
   merge = refs/heads/master
 [push]
   default = simple
-[pager]
-  log = diff-highlight | less
-  show = diff-highlight | less
-  diff = diff-highlight | less
 [credential]
   helper = cache --timeout=3600
 [ghq]
