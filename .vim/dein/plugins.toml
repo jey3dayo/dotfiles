@@ -114,6 +114,12 @@ hook_add = '''
   \   'type': 'watchdogs_checker/shellcheck',
   \   'cmdopt': '-f gcc -s bash'
   \ },
+  \ 'json/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/jsonlint',
+  \ },
+  \ 'yaml/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/yaml-lint',
+  \ },
   \}
 '''
 
