@@ -46,7 +46,7 @@ if command -v peco>/dev/null; then
 fi
 
 alias npm-clean='npm run ncu && rm -rf node_modules && yarn && npm prune'
-alias pip-upgrade='pip list --format json | jq .[].name | xargs pip install -U'
+alias pip-upgrade='pip list --format json --outdated | jq .[].name | xargs pip install -U'
 alias brew-upgrade='brew update && brew upgrade && brew prune && brew file cask_upgrade -C'
 
 case ${OSTYPE} in
