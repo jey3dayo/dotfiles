@@ -96,7 +96,7 @@ javascript <<EOM
     { label: 'anchor',          value: '<a href="%URL%">%TITLE%</a>' },
     { label: 'title<cr>URL',    value: '%TITLE%\n%URL%' },
     { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
-    { label: 'Title bittly',    value: 'Get bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('http://api.bitly.com/v3/shorten?login=j138&apiKey=R_3956b371cd906f5cb0bb5a326bf5165e&format=txt&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
+    { label: 'Title bittly',    value: 'Get bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('https://api-ssl.bitly.com/v3/shorten?access_token=309e5fa8ffbcbed2aaf926e069d4d28ee46ee34d&format=json&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
     { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
     { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
     { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
