@@ -1,0 +1,72 @@
+# Automatically created by GitHub for Mac
+# To make edits, delete these initial comments, or else your changes may be lost!
+
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+build/
+log/
+
+tags
+Session.vim
+Thumbs.db
+.gitignore
+nohup.out
+
+*.a
+*.al
+*.bak
+*.la
+*.lo
+*.mode1v3
+*.o
+*.old
+*.org
+*.pbxuser
+*.pyo
+*.so
+*.dump
+*.diff
+
+.subversion/auth/
+.vim/.VimballRecord
+.vim/.netrwhist
+.vim/dict/
+.vim/doc/
+.vim/GetLatest/
+.vim/bundle/
+.vim/chalice/cache
+.vimperator/info
+
+doc/tags
+doc/tags-*
+
+sample.*
+*.stash.*
+
+.zsh/.zcompdump*
+.zsh/.zcompcache
