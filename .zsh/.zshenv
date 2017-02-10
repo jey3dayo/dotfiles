@@ -1,6 +1,9 @@
+# export ZDOTDIR=~/src/github.com/j138/dotfiles/.zsh
 if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
+
+export XDG_CONFIG_HOME="$HOME/.config"
 
 if [ -d /usr/local/var/nodebrew ] ; then
   export NODEBREW_ROOT=/usr/local/var/nodebrew
@@ -8,11 +11,6 @@ if [ -d /usr/local/var/nodebrew ] ; then
   path=($NODE_HOME(N-/) $path)
 fi
 
-export XDG_CONFIG_HOME="$HOME/.config"
-
-export GOPATH=$HOME
-
-# java
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
@@ -26,8 +24,13 @@ if [ -d $HOME/perl5 ] ; then
   path=($HOME/perl5/bin(N-/) $path)
 fi
 
+export GOPATH=$HOME
 export GHQ_ROOT=~/src
 
-path=($HOME/.yarn/bin(N-/) $path)
+path=(
+  $HOME/.yarn/bin(N-/)
+  /usr/local/opt/mysql@5.6/bin/(N-/)
+  $path
+)
 
 # vim: set syntax=zsh:
