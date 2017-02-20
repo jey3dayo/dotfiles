@@ -94,6 +94,9 @@ hook_add = '''
   \ 'javascript/watchdogs_checker': {
   \   'type': 'watchdogs_checker/eslint',
   \ },
+  \ 'javascript.jsx/watchdogs_checker': {
+  \   'type': 'watchdogs_checker/eslint',
+  \ },
   \ 'ruby/watchdogs_checker': {
   \   'type': 'watchdogs_checker/rubocop',
   \   'cmdopt': '-D'
