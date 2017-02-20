@@ -37,6 +37,7 @@ Thumbs.db
 .gitignore
 nohup.out
 
+*~
 *.a
 *.al
 *.bak
@@ -52,6 +53,12 @@ nohup.out
 *.dump
 *.diff
 
+doc/tags
+doc/tags-*
+
+sample.*
+*.stash.*
+
 .subversion/auth/
 .vim/.VimballRecord
 .vim/.netrwhist
@@ -61,12 +68,9 @@ nohup.out
 .vim/bundle/
 .vim/chalice/cache
 .vimperator/info
-
-doc/tags
-doc/tags-*
-
-sample.*
-*.stash.*
-
 .zsh/.zcompdump*
 .zsh/.zcompcache
+.idea/
+
+.envrc
+.direnv
