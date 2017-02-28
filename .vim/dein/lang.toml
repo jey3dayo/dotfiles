@@ -3,7 +3,14 @@ repo = 'othree/yajs.vim'
 on_ft = ['javascript', 'html', 'php']
 
 [[plugins]]
-repo = 'mxw/vim-jsx'
+repo = 'pangloss/vim-javascript'
+on_ft = ['javascript']
+hook_add = '''
+let g:jsx_ext_required = 0
+'''
+
+[[plugins]]
+repo = 'MaxMEllon/vim-jsx-pretty'
 on_ft = ['javascript']
 
 [[plugins]]
