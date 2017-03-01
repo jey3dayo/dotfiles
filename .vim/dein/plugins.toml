@@ -67,10 +67,15 @@ on_source = ['denite.nvim']
 repo = 'Shougo/neoinclude.vim'
 
 [[plugins]]
+repo = 'w0rp/ale.git'
+on_source = ['lightline.vim']
+hook_add = '''
+  let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '']
+'''
+
+[[plugins]]
 repo = 'thinca/vim-quickrun'
 hook_add = '''
-  nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
-
   let g:quickrun_config = {
   \ '_': {
   \   'runner': 'vimproc',
@@ -87,55 +92,7 @@ hook_add = '''
   \   'hook/qfstatusline_update/enable_exit': 1,
   \   'hook/qfstatusline_update/priority_exit': 4,
   \ },
-  \ 'watchdogs_checker/_': {
-  \   'hook/qfstatusline_update/enable_exit': 1,
-  \   'hook/qfstatusline_update/priority_exit': 1,
-  \ },
-  \ 'javascript/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/eslint',
-  \ },
-  \ 'javascript.jsx/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/eslint',
-  \ },
-  \ 'ruby/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/rubocop',
-  \   'cmdopt': '-D'
-  \ },
-  \ 'php/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/php',
-  \ },
-  \ 'haml/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/haml-lint',
-  \ },
-  \ 'sass/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/sass',
-  \ },
-  \ 'stylelint/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/stylelint',
-  \ },
-  \ 'sh/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/shellcheck',
-  \   'cmdopt': '-f gcc -s bash'
-  \ },
-  \ 'json/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/jsonlint',
-  \ },
-  \ 'yaml/watchdogs_checker': {
-  \   'type': 'watchdogs_checker/yaml-lint',
-  \ },
   \}
-'''
-
-[[plugins]]
-repo = 'osyo-manga/vim-watchdogs'
-depends = ['vim-quickrun']
-hook_add = '''
-  let g:watchdogs_check_BufWritePost_enable = 1
-  let g:watchdogs_check_CursorHold_enable = 1
-  call watchdogs#setup(g:quickrun_config)
-
-  nnoremap <Leader>w :let g:watchdogs_check_BufWritePost_enable = 0<CR>
-  nnoremap <Leader>W :let g:watchdogs_check_BufWritePost_enable = 1<CR>
 '''
 
 [[plugins]]
@@ -144,17 +101,24 @@ hook_add = '''
   let g:lightline = {
   \ 'colorscheme': 'jellybeans',
   \ 'active': {
-  \   'left': [[ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified', 'qfstatusline']],
+  \   'left': [
+  \     [ 'mode', 'paste' ],
+  \     [ 'fugitive', 'readonly', 'filename', 'modified', 'qfstatusline'],
+  \     [ 'ale' ],
+  \   ],
   \ },
   \ 'component': {
   \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
   \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
+  \ },
+  \ 'component_function': {
+  \   'ale': 'ALEStatus',
   \ },
   \ 'component_visible_condition': {
   \   'readonly': '(&filetype!="help"&& &readonly)',
   \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
   \ },
   \ 'component_expand': {'qfstatusline': 'qfstatusline#Update'},
   \ 'component_type':   {'qfstatusline': 'error'},
@@ -162,6 +126,10 @@ hook_add = '''
   \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
   \}
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
+
+  function! ALEStatus()
+    return ALEGetStatusLine()
+  endfunction
 '''
 
 [[plugins]]
