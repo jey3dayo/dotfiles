@@ -46,6 +46,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   source "${ZDOTDIR}/.zplug/init.zsh"
 
   zplug "zsh-users/zsh-completions"
+  zplug "felixr/docker-zsh-completion"
   zplug "zsh-users/zsh-syntax-highlighting", defer:2
   zplug "modules/environment", from:prezto
   zplug "modules/editor", from:prezto
@@ -54,7 +55,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug "modules/prompt", from:prezto
   zplug "b4b4r07/enhancd"
   zplug "mollifier/anyframe"
-  zplug "felixr/docker-zsh-completion"
 
   if ! zplug check --verbose; then
     printf "Install? [y/N]: "

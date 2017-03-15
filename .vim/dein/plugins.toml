@@ -205,9 +205,11 @@ hook_add = '''
   \ ],
   \ 'javascript': [
   \   ['const', 'let'],
+  \   ['props', 'state'],
   \ ],
   \ 'javascript.jsx': [
   \   ['const', 'let'],
+  \   ['props', 'state'],
   \ ],
   \ 'git-rebase-todo': [
   \   ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
