@@ -99,7 +99,7 @@ hook_add = '''
 repo = 'itchyny/lightline.vim'
 hook_add = '''
   let g:lightline = {
-  \ 'colorscheme': 'jellybeans',
+  \ 'colorscheme': 'iceberg',
   \ 'active': {
   \   'left': [
   \     [ 'mode', 'paste' ],
@@ -134,8 +134,12 @@ hook_add = '''
 
 [[plugins]]
 repo = 'vim-scripts/jellybeans.vim'
+
+[[plugins]]
+repo = 'cocopon/iceberg.vim'
 hook_add = '''
-  au MyAutoCmd VimEnter * nested colorscheme jellybeans
+  au MyAutoCmd VimEnter * nested colorscheme iceberg
+  au MyAutoCmd VimEnter * highlight Visual ctermbg=216
 '''
 
 [[plugins]]
@@ -144,7 +148,7 @@ repo = 'tomasr/molokai'
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 hook_add = '''
-  colorscheme jellybeans
+  colorscheme iceberg
   au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
   au VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
   " au FileType coffee,javascript,python IndentGuidesEnable
