@@ -5,11 +5,11 @@ fi
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
-if [ -d /usr/local/var/nodebrew ] ; then
-  export NODEBREW_ROOT=/usr/local/var/nodebrew
-  export NODE_HOME="$NODEBREW_ROOT/current/bin"
-  path=($NODE_HOME(N-/) $path)
-fi
+# if [ -d /usr/local/var/nodebrew ] ; then
+#   export NODEBREW_ROOT=/usr/local/var/nodebrew
+#   export NODE_HOME="$NODEBREW_ROOT/current/bin"
+#   path=($NODE_HOME(N-/) $path)
+# fi
 
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
@@ -28,8 +28,8 @@ export GOPATH=$HOME
 export GHQ_ROOT=~/src
 
 path=(
-  $HOME/.yarn/bin(N-/)
   /usr/local/opt/mysql@5.6/bin/(N-/)
+  $(yarn global bin)
   $path
 )
 
