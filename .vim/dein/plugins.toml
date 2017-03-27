@@ -71,6 +71,7 @@ repo = 'w0rp/ale.git'
 on_source = ['lightline.vim']
 hook_add = '''
   let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '']
+  let g:ale_echo_msg_format = '[%linter%] %s'
 '''
 
 [[plugins]]
