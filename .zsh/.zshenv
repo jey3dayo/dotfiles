@@ -1,5 +1,5 @@
 # export ZDOTDIR=~/src/github.com/j138/dotfiles/.zsh
-if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+if [[ "$SHLVL" -eq 1 && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
