@@ -72,6 +72,8 @@ on_source = ['lightline.vim']
 hook_add = '''
   let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '']
   let g:ale_echo_msg_format = '[%linter%] %s'
+  nmap <silent> <C-]>e <Plug>(ale_next_wrap)
+  nmap <silent> <C-[>e <Plug>(ale_previous_wrap)
 '''
 
 [[plugins]]
@@ -112,9 +114,7 @@ hook_add = '''
   \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
   \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
   \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
-  \ },
-  \ 'component_function': {
-  \   'ale': 'ALEStatus',
+  \   'ale': '%{ALEGetStatusLine()}',
   \ },
   \ 'component_visible_condition': {
   \   'readonly': '(&filetype!="help"&& &readonly)',
@@ -127,10 +127,6 @@ hook_add = '''
   \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
   \}
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
-
-  function! ALEStatus()
-    return ALEGetStatusLine()
-  endfunction
 '''
 
 [[plugins]]

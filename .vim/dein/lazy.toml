@@ -56,24 +56,6 @@ hook_add = '''
 repo = 'airblade/vim-rooter'
 
 [[plugins]]
-repo = 'thinca/vim-ref'
-hook_add = '''
-  "Ref webdictでalcを使う設定
-  let g:ref_source_webdict_cmd = 'lynx -dump -nonumbers %s'
-  "let g:ref_source_webdict_use_cache = 1
-  let g:ref_source_webdict_sites = {
-  \ 'alc': {
-  \   'url': 'http://eow.alc.co.jp/%s/UTF-8/'
-  \ }
-  \}
-  function! g:ref_source_webdict_sites.alc.filter(output)
-    return join(split(a:output, "\n")[42 :], "\n")
-  endfunction
-
-  noremap <Leader>D :<C-u>Ref webdict alc<Space>
-'''
-
-[[plugins]]
 repo = 'tpope/vim-surround'
 
 [[plugins]]
