@@ -84,4 +84,10 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
+if [ -d $HOME/.pyenv ] ; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  PATH=$PYENV_ROOT/bin:$PATH
+  eval "$(pyenv init -)"
+fi
+
 # vim: set syntax=zsh:

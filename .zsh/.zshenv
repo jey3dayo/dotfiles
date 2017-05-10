@@ -28,7 +28,7 @@ export GOPATH=$HOME
 export GHQ_ROOT=~/src
 
 path=(
-  /usr/local/opt/mysql@5.6/bin/(N-/)
+# /usr/local/opt/mysql@5.6/bin/(N-/)
   $(yarn global bin)(N-/)
   "$HOME/.config/yarn/global/node_modules/.bin"(N-/)
   $path
