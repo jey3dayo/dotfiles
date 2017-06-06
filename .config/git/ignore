@@ -34,7 +34,6 @@ log/
 tags
 Session.vim
 Thumbs.db
-.gitignore
 nohup.out
 
 *~
