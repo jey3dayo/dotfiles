@@ -179,8 +179,7 @@ nnoremap <Leader>sO :<C-u>call dein#update()<CR>
 " }}}
 
 filetype on
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 runtime! rc/*.vim
 " vim: set ft=vim :
