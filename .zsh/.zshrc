@@ -86,7 +86,7 @@ bindkey "^n" history-beginning-search-forward-end
 
 if [ -d $HOME/.pyenv ] ; then
   export PYENV_ROOT="$HOME/.pyenv"
-  PATH=$PYENV_ROOT/bin:$PATH
+  path=($PYENV_ROOT/bin(N-/) $path)
   eval "$(pyenv init -)"
 fi
 
