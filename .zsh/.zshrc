@@ -90,4 +90,10 @@ if [ -d $HOME/.pyenv ] ; then
   eval "$(pyenv init -)"
 fi
 
+if [ -d "$HOME/.nodebrew" ] ; then
+  export NODEBREW_ROOT=$HOME/.nodebrew
+  export NODE_HOME="$NODEBREW_ROOT/current/bin"
+  export PATH=$NODE_HOME:$PATH
+fi
+
 # vim: set syntax=zsh:
