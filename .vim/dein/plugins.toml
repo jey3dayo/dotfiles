@@ -24,6 +24,14 @@ hook_add = '''
   nnoremap [denite] <Nop>
   nmap <C-u> [denite]
 
+  nnoremap <Leader>b :Denite buffer<CR>
+  nnoremap <Leader>f :Denite file_rec<CR>
+  nnoremap <Leader>m :Denite file_old<CR>
+  nnoremap <Leader>y :Denite neoyank<CR>
+
+  nnoremap <Leader>B :<C-u>tabnew<CR>:tabmove<CR>:Denite buffer<CR>
+  nnoremap <Leader>M :<C-u>tabnew<CR>:tabmove<CR>:Denite file_old<CR>
+
   nnoremap [denite]b :Denite buffer<CR>
   nnoremap [denite]f :Denite file_rec<CR>
   nnoremap [denite]m :Denite file_old<CR>
@@ -292,5 +300,5 @@ let g:neoformat_javascript_prettiereslint = {
  \ 'stdin': 1,
  \ }
 let g:neoformat_enabled_javascript = ['prettiereslint']
-map <Leader><c-f> <C-u>:Neoformat<CR>
+map <silent><Leader><c-f> <C-u>:Neoformat<CR>
 '''
