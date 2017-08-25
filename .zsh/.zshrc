@@ -86,7 +86,6 @@ bindkey "^n" history-beginning-search-forward-end
 
 if [ -d $HOME/.pyenv ] ; then
   export PYENV_ROOT="$HOME/.pyenv"
-  path=($PYENV_ROOT/bin(N-/) $path)
   eval "$(pyenv init -)"
 fi
 
@@ -95,5 +94,12 @@ if [ -d "$HOME/.nodebrew" ] ; then
   export NODE_HOME="$NODEBREW_ROOT/current/bin"
   export PATH=$NODE_HOME:$PATH
 fi
+
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+export STUDIO_JDK=${JAVA_HOME%/*/*}
+export ANDROID_HOME=$HOME/Library/Android/sdk
+# export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+
 
 # vim: set syntax=zsh:
