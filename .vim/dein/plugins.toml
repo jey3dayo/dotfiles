@@ -206,6 +206,7 @@ hook_add = '''
   \   ['should', 'should_not'],
   \   ['be_file', 'be_directory'],
   \   ['div', 'span'],
+  \   ['column', 'row'],
   \ ],
   \ 'ruby': [
   \   ['if', 'unless'],
