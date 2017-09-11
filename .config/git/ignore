@@ -6,7 +6,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+# Icon\
 
 
 # Thumbnails
@@ -73,3 +73,10 @@ sample.*
 
 .envrc
 .direnv
+
+.vscode
+.project
+.classpath
+.settings
+
+.yarnclean
