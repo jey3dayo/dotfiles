@@ -15,6 +15,10 @@ set virtualedit+=block
 set display=lastline
 set pumheight=15
 
+" fixed neovim
+set ttimeout
+set ttimeoutlen=50
+
 " color
 set t_Co=256
 highlight Search ctermbg=7
