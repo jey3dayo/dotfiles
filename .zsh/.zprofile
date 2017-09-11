@@ -74,6 +74,6 @@ fi
 TMPPREFIX="${TMPDIR%/}/zsh"
 
 # ruby
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"
 
 # vim: set syntax=zsh:
