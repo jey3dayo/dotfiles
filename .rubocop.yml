@@ -25,7 +25,7 @@ Style/ClassAndModuleChildren:
 Style/BlockDelimiters:
   Enabled: false
 
-Style/LeadingCommentSpace:
+Layout/LeadingCommentSpace:
   Enabled: false
 
 Style/UnneededInterpolation:
@@ -34,53 +34,53 @@ Style/UnneededInterpolation:
 Style/DefWithParentheses:
   AutoCorrect: true
 
-Style/MethodCallParentheses:
+Style/MethodCallWithoutArgsParentheses:
   AutoCorrect: true
 
 Style/MethodDefParentheses:
   AutoCorrect: true
 
-Style/IndentationWidth:
+Layout/IndentationWidth:
   AutoCorrect: true
 
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   AutoCorrect: true
 
-Style/EmptyLines:
+Layout/EmptyLines:
   AutoCorrect: true
 
-Style/EmptyLinesAroundAccessModifier:
+Layout/EmptyLinesAroundAccessModifier:
   AutoCorrect: true
 
-Style/EmptyLinesAroundBlockBody:
+Layout/EmptyLinesAroundBlockBody:
   AutoCorrect: true
 
-Style/EmptyLinesAroundClassBody:
+Layout/EmptyLinesAroundClassBody:
   AutoCorrect: true
 
-Style/EmptyLinesAroundMethodBody:
+Layout/EmptyLinesAroundMethodBody:
   AutoCorrect: true
 
-Style/EmptyLinesAroundModuleBody:
+Layout/EmptyLinesAroundModuleBody:
   AutoCorrect: true
 
-Style/TrailingBlankLines:
+Layout/TrailingBlankLines:
   AutoCorrect: true
 
-Style/SpaceAfterComma:
+Style/Layout:
   AutoCorrect: true
 
-Style/SpaceAfterNot:
+Style/Layout:
   AutoCorrect: true
 
-Style/SpaceAfterSemicolon:
+Style/Layout:
   AutoCorrect: true
 
-Style/SpaceAroundEqualsInParameterDefault:
+Layout/SpaceAroundEqualsInParameterDefault:
   AutoCorrect: true
 
-Style/SpaceBeforeSemicolon:
+Layout/SpaceBeforeSemicolon:
   AutoCorrect: true
 
-Style/TrailingWhitespace:
+Layout/TrailingWhitespace:
   AutoCorrect: true
