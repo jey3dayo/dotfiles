@@ -50,16 +50,18 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug "zsh-users/zsh-syntax-highlighting", defer:2
   zplug "modules/environment", from:prezto
   zplug "modules/editor", from:prezto
-  zplug "modules/spectrum", from:prezto
   zplug "modules/tmux", from:prezto
   zplug "modules/prompt", from:prezto
   zplug "b4b4r07/enhancd"
   zplug "mollifier/anyframe"
 
-  if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
+  if [ ! ~/.zplug/last_zplug_check_time -nt $ZDOTDIR/.zshrc ]; then
+    touch ~/tmp/last_zplug_check_time
+    if ! zplug check --verbose; then
+        printf "Install? [y/N]: "
+        if read -q; then
+            echo; zplug install
+        fi
     fi
   fi
 
