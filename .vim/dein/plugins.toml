@@ -303,3 +303,6 @@ let g:neoformat_javascript_prettiereslint = {
 let g:neoformat_enabled_javascript = ['prettiereslint']
 map <silent><Leader><c-f> <C-u>:Neoformat<CR>
 '''
+
+[[plugins]]
+repo = 'cohama/lexima.vim'
