@@ -44,22 +44,10 @@ depends = ['deoplete.nvim']
 on_i = 1
 
 [[plugins]]
-repo = 'majutsushi/tagbar'
-hook_add = '''
-  nnoremap <Leader>T :<C-u>TagbarToggle<CR>
-  let g:tagbar_type_javascript = {
-  \ 'ctagsbin': '/usr/local/bin/jsctags'
-  \}
-'''
-
-[[plugins]]
 repo = 'airblade/vim-rooter'
 
 [[plugins]]
 repo = 'tpope/vim-surround'
-
-[[plugins]]
-repo = 'vim-scripts/DoxygenToolkit.vim'
 
 [[plugins]]
 repo = 'kana/vim-textobj-user'

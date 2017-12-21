@@ -7,6 +7,13 @@ repo = 'MaxMEllon/vim-jsx-pretty'
 on_ft = ['javascript']
 
 [[plugins]]
+repo = 'othree/es.next.syntax.vim'
+on_ft = ['javascript']
+
+[[plugins]]
+repo = 'othree/javascript-libraries-syntax.vim'
+
+[[plugins]]
 repo = 'moll/vim-node'
 on_ft = ['javascript']
 
@@ -65,10 +72,6 @@ on_ft = ['ruby']
 [[plugins]]
 repo = 'vim-scripts/php.vim'
 on_ft = ['php']
-
-[[plugins]]
-repo = 'derekwyatt/vim-scala'
-on_ft = ['scala']
 
 [[plugins]]
 repo = 'othree/html5.vim'

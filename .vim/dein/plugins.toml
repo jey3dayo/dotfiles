@@ -138,9 +138,6 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'vim-scripts/jellybeans.vim'
-
-[[plugins]]
 repo = 'cocopon/iceberg.vim'
 hook_add = '''
   au MyAutoCmd VimEnter * nested colorscheme iceberg
