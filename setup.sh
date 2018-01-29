@@ -10,6 +10,7 @@ ln -s "${DOTFILES}"/.vim ~/.vim
 ln -s "${DOTFILES}"/.zsh ~/.zsh
 ln -s "${DOTFILES}"/.tmux ~/.tmux
 ln -s "${DOTFILES}"/.config/powerline ~/.config/powerline
+ln -s "${DOTFILES}"/.config/.ignore ~/.ignore
 
 echo "source $DOTFILES/.vimrc" > ~/.vimrc
 echo "source $DOTFILES/.vimperatorrc" >> ~/.vimperatorrc
