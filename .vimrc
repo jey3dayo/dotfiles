@@ -64,6 +64,7 @@ set hlsearch
 set ignorecase
 set incsearch
 set smartcase
+set inccommand=split
 
 " tab width
 set tabstop=2
