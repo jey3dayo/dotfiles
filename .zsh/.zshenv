@@ -21,10 +21,10 @@ fi
 export GOPATH=$HOME
 export GHQ_ROOT=~/src
 
-path=(
-  $(yarn global bin)(N-/)
-# "$HOME/.config/yarn/global/node_modules/.bin"(N-/)
-  $path
-)
+# path=(
+#   $(yarn global bin)(N-/)
+#   "$HOME/.config/yarn/global/node_modules/.bin"(N-/)
+#   $path
+# )
 
 # vim: set syntax=zsh:
