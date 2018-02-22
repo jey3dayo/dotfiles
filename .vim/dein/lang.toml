@@ -1,33 +1,29 @@
 [[plugins]]
-repo = 'othree/yajs.vim'
-on_ft = ['javascript', 'html', 'php']
+repo = 'neovim/node-host'
+on_ft = ['javascript', 'javascript.jsx']
+hook_post_update = '''
+  let g:dein#plugin.build = 'npm install'
+'''
+
+[[plugins]]
+repo = 'billyvg/tigris.nvim'
+on_ft = ['javascript', 'javascript.jsx']
+hook_post_update = '''
+  let g:dein#plugin.build = './install.sh'
+'''
+hook_add = '''
+  let g:tigris#enabled = 1
+  let g:tigris#on_the_fly_enabled = 1
+ let g:tigris#delay = 300
+'''
 
 [[plugins]]
 repo = 'MaxMEllon/vim-jsx-pretty'
-on_ft = ['javascript']
-
-[[plugins]]
-repo = 'othree/es.next.syntax.vim'
-on_ft = ['javascript']
-
-[[plugins]]
-repo = 'othree/javascript-libraries-syntax.vim'
+on_ft = ['javascript', 'javascript.jsx']
 
 [[plugins]]
 repo = 'moll/vim-node'
 on_ft = ['javascript']
-
-[[plugins]]
-repo = 'myhere/vim-nodejs-complete'
-on_ft = ['javascript']
-hook_add = '''
-  setl omnifunc=jscomplete#CompleteJS
-  if !exists('g:neocomplcache_omni_functions')
-    let g:neocomplcache_omni_functions = {}
-  endif
-  let g:neocomplcache_omni_functions.javascript = 'nodejscomplete#CompleteJS'
-  let g:node_usejscomplete = 1
-'''
 
 [[plugins]]
 repo = 'digitaltoad/vim-pug.git'
