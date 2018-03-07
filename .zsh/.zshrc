@@ -71,11 +71,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   bindkey '^T' anyframe-widget-cd-ghq-repository
 fi
 
-if command -v powerline-daemon>/dev/null; then
-  powerline-daemon -q
-  . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
-fi
-
 # load sources
 for f ("${ZDOTDIR:-$HOME}"/plugin-sources/*) source "${f}"
 
@@ -103,5 +98,10 @@ export ANDROID_HOME=$HOME/Library/Android/sdk
 # export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
+if command -v powerline-daemon>/dev/null; then
+  PYENV_LB=~/.pyenv/versions/3.6.2/lib/python3.6
+  powerline-daemon -q
+  . $PYENV_LB/site-packages/powerline/bindings/zsh/powerline.zsh
+fi
 
 # vim: set syntax=zsh:
