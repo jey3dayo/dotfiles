@@ -134,7 +134,9 @@ hook_add = '''
   \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
   \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
   \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
-  \   'ale': '%{ALEGetStatusLine()}',
+  \ },
+  \'component_function': {
+  \   'ale': 'LLAle',
   \ },
   \ 'component_visible_condition': {
   \   'readonly': '(&filetype!="help"&& &readonly)',
@@ -146,6 +148,12 @@ hook_add = '''
   \ 'separator': { 'left': '⮀', 'right': '⮂' },
   \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
   \}
+  function! LLAle()
+    let l:count = ale#statusline#Count(bufnr(''))
+    let l:errors = l:count.error + l:count.style_error
+    let l:warnings = l:count.warning + l:count.style_warning
+    return l:count.total == 0 ? '' : 'E:' . l:errors . ' W:' . l:warnings
+  endfunction
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
 '''
 
