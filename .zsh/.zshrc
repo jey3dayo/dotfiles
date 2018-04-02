@@ -80,24 +80,6 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
-
-if [ -d $HOME/.pyenv ] ; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  eval "$(pyenv init -)"
-fi
-
-if [ -d "$HOME/.nodebrew" ] ; then
-  export NODEBREW_ROOT=$HOME/.nodebrew
-  export NODE_HOME="$NODEBREW_ROOT/current/bin"
-  export PATH=$NODE_HOME:$PATH
-fi
-
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-export STUDIO_JDK=${JAVA_HOME%/*/*}
-export ANDROID_HOME=$HOME/Library/Android/sdk
-# export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-
 if command -v powerline-daemon>/dev/null; then
   PYENV_LB=~/.pyenv/versions/3.6.2/lib/python3.6
   powerline-daemon -q

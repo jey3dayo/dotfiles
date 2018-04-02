@@ -47,7 +47,7 @@ fi
 
 alias npm-clean='npm run ncu && rm -rf node_modules && yarn && npm prune'
 alias pip-upgrade='pip list --format json --outdated | jq .[].name | xargs pip install -U'
-alias brew-upgrade='brew update && brew upgrade && brew cleanup && brew prune && brew file cask_upgrade -C && brew cask cleanup'
+alias brew-upgrade='brew update && brew upgrade && brew cleanup && brew prune && brew-file update && brew-file clean -C'
 
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
@@ -75,7 +75,27 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
+# load sources
+for f ("${ZDOTDIR:-$HOME}"/plugin-sources/*) source "${f}"
+
 # ruby
 # eval "$(rbenv init -)"
+
+if [ -d $HOME/.pyenv ] ; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  eval "$(pyenv init -)"
+fi
+
+if [ -d "$HOME/.nodebrew" ] ; then
+  export NODEBREW_ROOT=$HOME/.nodebrew
+  export NODE_HOME="$NODEBREW_ROOT/current/bin"
+  export PATH=$NODE_HOME:$PATH
+fi
+
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+export STUDIO_JDK=${JAVA_HOME%/*/*}
+export ANDROID_HOME=$HOME/Library/Android/sdk
+# export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 # vim: set syntax=zsh:
