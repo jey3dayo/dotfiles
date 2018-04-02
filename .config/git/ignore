@@ -6,8 +6,7 @@
 .LSOverride
 
 # Icon must end with two \r
-# Icon\
-
+Icon
 
 # Thumbnails
 ._*
@@ -80,3 +79,5 @@ sample.*
 .settings
 
 .yarnclean
+
+custom.*.sh
