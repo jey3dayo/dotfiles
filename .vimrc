@@ -1,9 +1,9 @@
-if &cp | set nocp | endif
-let s:cpo_save=&cpo
-set cpo&vim
-let &cpo=s:cpo_save
-unlet s:cpo_save
-let mapleader = ","
+if &compatible | set nocmpatible | endif
+let s:cpoptions_save=&cpoptions
+set cpoptions&vim
+let &cpoptions=s:cpoptions_save
+unlet s:cpoptions_save
+let g:mapleader = ','
 
 syntax enable
 set encoding=utf-8
@@ -14,6 +14,8 @@ set cindent
 set virtualedit+=block
 set display=lastline
 set pumheight=15
+
+set backupskip=/tmp/*,/private/tmp/*
 
 " fixed neovim
 set ttimeout
@@ -53,7 +55,7 @@ set matchtime=1
 set complete+=k
 set cursorline
 set wildmenu
-set fdm=marker
+set foldmethod=marker
 set noscrollbind
 set laststatus=2
 set cursorcolumn
@@ -64,7 +66,10 @@ set hlsearch
 set ignorecase
 set incsearch
 set smartcase
-set inccommand=split
+
+if has('nvim')
+  set inccommand=split
+endif
 
 " tab width
 set tabstop=2
@@ -125,7 +130,7 @@ set hidden
 set shortmess+=I
 
 " paste from clipboard {{{
-if &term =~ "xterm"
+if &term =~? 'xterm'
   let &t_SI .= "\e[?2004h"
   let &t_EI .= "\e[?2004l"
   let &pastetoggle = "\e[201~"
