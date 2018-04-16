@@ -75,9 +75,6 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
-# load sources
-for f ("${ZDOTDIR:-$HOME}"/plugin-sources/*) source "${f}"
-
 # ruby
 # eval "$(rbenv init -)"
 
