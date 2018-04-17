@@ -12,9 +12,9 @@ export GREP_OPTIONS='--color=auto'
 typeset -gU cdpath fpath mailpath path
 
 path=(
-  /usr/local/{bin,sbin}(N-/)
   $HOME/{bin,sbin}(N-/)
-  $HOME/local/bin(N-/)
+  $HOME/local/{bin,sbin}(N-/)
+  /usr/local/{bin,sbin}(N-/)
   $path
 )
 
