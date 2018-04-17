@@ -262,6 +262,9 @@ hook_add = '''
 '''
 
 [[plugins]]
+repo = 'tpope/vim-rhubarb'
+
+[[plugins]]
 repo = 'alpaca-tc/alpaca_tags'
 hook_add = '''
   let g:alpaca_tags#config = {
