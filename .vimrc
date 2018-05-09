@@ -1,13 +1,9 @@
-if &compatible | set nocmpatible | endif
-let s:cpoptions_save=&cpoptions
-set cpoptions&vim
-let &cpoptions=s:cpoptions_save
-unlet s:cpoptions_save
-let g:mapleader = ','
+set encoding=utf-8
+scriptencoding utf-8
 
 syntax enable
-set encoding=utf-8
-set fileencodings=utf-8,ucs-bom,iso-2022-jp-3,iso-2022-jp,eucjp-ms,euc-jisx0213,euc-jp,sjis,cp932
+let g:mapleader = ','
+set fileencodings=utf-8
 set fileformats=unix,mac,dos
 set isfname+=32
 set cindent
@@ -15,31 +11,9 @@ set virtualedit+=block
 set display=lastline
 set pumheight=15
 
-set backupskip=/tmp/*,/private/tmp/*
-
-" fixed neovim
-set ttimeout
-set ttimeoutlen=50
-
 " color
 set t_Co=256
 highlight Search ctermbg=7
-
-" set list
-nmap <Leader>sn :<C-u>set number!<CR>
-nmap <Leader>sl :<C-u>set list!<CR>
-
-" visible SpecialKey
-set list
-set listchars=tab:>.,trail:-,extends:\
-
-" visible fullsize space
-augroup highlightIdegraphicSpace
-  au!
-  au Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  au VimEnter,ColorScheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  au VimEnter,WinEnter * match IdeographicSpace /　/
-augroup END
 
 " set options
 set autoindent
@@ -54,12 +28,16 @@ set showmatch
 set matchtime=1
 set complete+=k
 set cursorline
+set cursorcolumn
 set wildmenu
 set foldmethod=marker
 set noscrollbind
 set laststatus=2
-set cursorcolumn
 set statusline=%F%m%r%h%w\%=\[%{&ff}]\[%{&fileencoding}]\[%l/%L][%3P]
+
+" fixed neovim
+set ttimeout
+set ttimeoutlen=50
 
 " search setting
 set hlsearch
@@ -100,6 +78,7 @@ set swapfile
 set backupdir=~/tmp
 set directory=~/tmp
 set undodir=~/tmp
+set backupskip=/tmp/*,/private/tmp/*
 
 augroup swapchoice-readonly
   autocmd!
@@ -121,6 +100,22 @@ nnoremap <C-t>n :<C-u>tabnext<CR>
 nnoremap <C-t>p :<C-u>tabprevious<CR>
 nnoremap gt :<C-u>tabnext<CR>
 nnoremap gT :<C-u>tabprevious<CR>
+
+" set list
+nmap <Leader>sn :<C-u>set number!<CR>
+nmap <Leader>sl :<C-u>set list!<CR>
+
+" visible SpecialKey
+set list
+set listchars=tab:>.,trail:-,extends:\
+
+" visible fullsize space
+augroup highlightIdegraphicSpace
+  au!
+  au Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+  au VimEnter,ColorScheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+  au VimEnter,WinEnter * match IdeographicSpace /　/
+augroup END
 
 " ESC ESC -> toggle hlsearch
 " nnoremap <Esc><Esc> :<C-u>set hlsearch!<Return>
