@@ -1,11 +1,4 @@
 [[plugins]]
-repo = 'neovim/node-host'
-on_ft = ['javascript', 'javascript.jsx']
-hook_post_update = '''
-  let g:dein#plugin.build = 'npm install'
-'''
-
-[[plugins]]
 repo = 'billyvg/tigris.nvim'
 on_ft = ['javascript', 'javascript.jsx']
 hook_post_update = '''
