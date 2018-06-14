@@ -158,6 +158,12 @@ hook_add = '''
 '''
 
 [[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+  map <Leader>e :NERDTreeToggle<CR>
+'''
+
+[[plugins]]
 repo = 'cocopon/iceberg.vim'
 hook_add = '''
   au MyAutoCmd VimEnter * nested colorscheme iceberg
@@ -326,3 +332,7 @@ map <silent><Leader><c-f> <C-u>:Neoformat<CR>
 
 [[plugins]]
 repo = 'cohama/lexima.vim'
+
+[[plugins]]
+repo = 'kana/vim-textobj-user'
+
