@@ -12,7 +12,9 @@ set display=lastline
 set pumheight=15
 
 " color
-set t_Co=256
+if &term =~ '^\(xterm\|screen\)$' && $COLORTERM == 'gnome-terminal'
+  set t_Co=256
+endif
 set termguicolors
 highlight Search ctermbg=7
 
@@ -23,6 +25,7 @@ set backspace=2
 set helplang=ja
 set modelines=0
 set nrformats-=octal
+set nolazyredraw
 set number
 set ruler
 set showmatch
