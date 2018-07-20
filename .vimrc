@@ -13,6 +13,7 @@ set pumheight=15
 
 " color
 set t_Co=256
+set termguicolors
 highlight Search ctermbg=7
 
 " set options
@@ -140,7 +141,8 @@ endif
 " }}}
 
 
-let g:python3_host_prog = expand('/usr/local/bin/python3')
+let g:python_host_prog=$PYENV_ROOT.'/versions/neovim-2/bin/python'
+let g:python3_host_prog=$PYENV_ROOT.'/versions/neovim-3/bin/python'
 
 let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
 let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
