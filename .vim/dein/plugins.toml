@@ -271,6 +271,9 @@ hook_add = '''
 repo = 'tpope/vim-rhubarb'
 
 [[plugins]]
+repo = 'tpope/vim-surround'
+
+[[plugins]]
 repo = 'alpaca-tc/alpaca_tags'
 hook_add = '''
   let g:alpaca_tags#config = {
@@ -326,7 +329,8 @@ let g:neoformat_javascript_prettiereslint = {
  \ 'args': ['--stdin', '--stdin-filepath', '%:p'],
  \ 'stdin': 1,
  \ }
-let g:neoformat_enabled_javascript = ['prettiereslint']
+" let g:neoformat_enabled_javascript = ['prettiereslint']
+let g:neoformat_enabled_javascript = ['eslint_d']
 map <silent><Leader><c-f> <C-u>:Neoformat<CR>
 '''
 
@@ -335,4 +339,3 @@ repo = 'cohama/lexima.vim'
 
 [[plugins]]
 repo = 'kana/vim-textobj-user'
-

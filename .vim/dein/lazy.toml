@@ -47,8 +47,5 @@ on_i = 1
 repo = 'airblade/vim-rooter'
 
 [[plugins]]
-repo = 'tpope/vim-surround'
-
-[[plugins]]
 repo = 'vim-scripts/renamer.vim'
 on_cmd = ['Rename']
