@@ -12,7 +12,7 @@ set display=lastline
 set pumheight=15
 
 " color
-if &term =~ '^\(xterm\|screen\)$' && $COLORTERM == 'gnome-terminal'
+if &term =~? '^\(xterm\|screen\)$' && $COLORTERM ==? 'gnome-terminal'
   set t_Co=256
 endif
 set termguicolors
@@ -192,5 +192,5 @@ filetype on
 filetype plugin indent on
 
 runtime! rc/*.vim
-" vim: set ft=vim :
 
+" vim: set ft=vim :
