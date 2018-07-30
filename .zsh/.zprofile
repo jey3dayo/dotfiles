@@ -25,6 +25,7 @@ alias less="less -giMRSW -z-4 -x4"
 alias where="command -v"
 alias df="df -h"
 alias du="du -h"
+alias l='ls -lAFhp'
 alias ll='ls -lAFhp'
 alias ls='ls -pF'
 alias hg="hg --encoding=utf-8"
