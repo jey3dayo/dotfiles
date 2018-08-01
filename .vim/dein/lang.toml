@@ -36,6 +36,7 @@ on_ft = ['less']
 
 [[plugins]]
 repo = 'wavded/vim-stylus.git'
+on_ft = ['stylus']
 
 [[plugins]]
 repo = 'tpope/vim-haml'
