@@ -1,17 +1,9 @@
 [[plugins]]
-repo = 'billyvg/tigris.nvim'
+repo = 'pangloss/vim-javascript'
 on_ft = ['javascript', 'javascript.jsx']
-hook_post_update = '''
-  let g:dein#plugin.build = './install.sh'
-'''
-hook_add = '''
-  let g:tigris#enabled = 1
-  let g:tigris#on_the_fly_enabled = 1
-  let g:tigris#delay = 300
-'''
 
 [[plugins]]
-repo = 'MaxMEllon/vim-jsx-pretty'
+repo = 'mxw/vim-jsx'
 on_ft = ['javascript', 'javascript.jsx']
 
 [[plugins]]
