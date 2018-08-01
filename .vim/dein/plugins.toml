@@ -122,7 +122,7 @@ hook_add = '''
 repo = 'itchyny/lightline.vim'
 hook_add = '''
   let g:lightline = {
-  \ 'colorscheme': 'iceberg',
+  \ 'colorscheme': 'onedark',
   \ 'active': {
   \   'left': [
   \     [ 'mode', 'paste' ],
@@ -166,8 +166,15 @@ hook_add = '''
 [[plugins]]
 repo = 'cocopon/iceberg.vim'
 hook_add = '''
-  au MyAutoCmd VimEnter * nested colorscheme iceberg
-  au MyAutoCmd VimEnter * highlight Visual ctermbg=216
+  " au MyAutoCmd VimEnter * nested colorscheme iceberg
+  " au MyAutoCmd VimEnter * highlight Visual ctermbg=216
+'''
+
+[[plugins]]
+repo = 'joshdick/onedark.vim'
+hook_add = '''
+  au MyAutoCmd VimEnter * nested colorscheme onedark
+  colorscheme onedark
 '''
 
 [[plugins]]
@@ -175,8 +182,9 @@ repo = 'tomasr/molokai'
 
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
+depends = ['onedark.vim']
 hook_add = '''
-  colorscheme iceberg
+  colorscheme onedark
   au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
   au VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
   " au FileType coffee,javascript,python IndentGuidesEnable
