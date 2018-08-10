@@ -31,7 +31,6 @@ set ruler
 set showmatch
 set matchtime=1
 set complete+=k
-set cursorline
 set cursorcolumn
 set wildmenu
 set foldmethod=marker
