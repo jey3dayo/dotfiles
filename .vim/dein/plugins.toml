@@ -238,6 +238,8 @@ hook_add = '''
   \   ['be_file', 'be_directory'],
   \   ['div', 'span'],
   \   ['column', 'row'],
+  \   ['begin', 'end'],
+  \   ['start', 'stop'],
   \ ],
   \ 'ruby': [
   \   ['if', 'unless'],
