@@ -34,10 +34,12 @@ tags
 Session.vim
 Thumbs.db
 nohup.out
+tsconfig.json
 
 *~
 *.a
 *.al
+*.bk
 *.bak
 *.la
 *.lo
@@ -50,6 +52,7 @@ nohup.out
 *.so
 *.dump
 *.diff
+*.output
 
 doc/tags
 doc/tags-*
