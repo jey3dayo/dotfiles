@@ -13,7 +13,7 @@ typeset -gU cdpath fpath mailpath path
 
 path=(
   $HOME/{bin,sbin}(N-/)
-  $HOME/local/{bin,sbin}(N-/)
+  $HOME/.local/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
   $path
 )
