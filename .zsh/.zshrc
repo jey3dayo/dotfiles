@@ -52,17 +52,15 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug "modules/editor", from:prezto
   zplug "modules/tmux", from:prezto
   zplug "modules/prompt", from:prezto
+  zplug "modules/fasd", from:prezto
   zplug "b4b4r07/enhancd"
   zplug "mollifier/anyframe"
 
-  if [ ! ~/.zplug/last_zplug_check_time -nt $ZDOTDIR/.zshrc ]; then
-    touch ~/tmp/last_zplug_check_time
-    if ! zplug check --verbose; then
-        printf "Install? [y/N]: "
-        if read -q; then
-            echo; zplug install
-        fi
-    fi
+  if ! zplug check --verbose; then
+      printf "Install? [y/N]: "
+      if read -q; then
+          echo; zplug install
+      fi
   fi
 
   zplug load
