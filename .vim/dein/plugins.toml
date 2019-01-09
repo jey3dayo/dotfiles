@@ -131,8 +131,6 @@ hook_add = '''
   \   ],
   \ },
   \ 'component': {
-  \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
-  \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
   \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
   \ },
   \'component_function': {
@@ -145,8 +143,6 @@ hook_add = '''
   \ },
   \ 'component_expand': {'qfstatusline': 'qfstatusline#Update'},
   \ 'component_type':   {'qfstatusline': 'error'},
-  \ 'separator': { 'left': '⮀', 'right': '⮂' },
-  \ 'subseparator': { 'left': '⮁', 'right': '⮃' },
   \}
   function! LLAle()
     let l:count = ale#statusline#Count(bufnr(''))
