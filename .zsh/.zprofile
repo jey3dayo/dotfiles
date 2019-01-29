@@ -92,13 +92,12 @@ fi
 if [ -d "$HOME/.nodebrew" ] ; then
   export NODEBREW_ROOT=$HOME/.nodebrew
   export NODE_HOME="$NODEBREW_ROOT/current/bin"
-  export PATH=$NODE_HOME:$PATH
+  path=($NODE_HOME(N-/) $path)
 fi
 
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 export STUDIO_JDK=${JAVA_HOME%/*/*}
 export ANDROID_HOME=$HOME/Library/Android/sdk
-# export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/platform-tools
+path=($path $ANDROID_HOME/platform-tools(N-/))
 
 # vim: set syntax=zsh:
