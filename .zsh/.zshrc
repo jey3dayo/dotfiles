@@ -79,7 +79,7 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 if command -v powerline-daemon>/dev/null; then
-  PYTHON_LB=~/.local/lib/python3.7
+  PYTHON_LB=~/Library/Python/2.7/lib/python
   powerline-daemon -q
   . $PYTHON_LB/site-packages/powerline/bindings/zsh/powerline.zsh
 fi
