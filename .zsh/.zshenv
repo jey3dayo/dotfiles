@@ -21,5 +21,8 @@ fi
 export GOPATH=$HOME
 export GHQ_ROOT=~/src
 
-path=("$HOME/.pyenv/shims"(N-/) $path)
-# vim: set syntax=zsh:
+path=(
+  "$HOME/.pyenv/shims"(N-/)
+  "$HOME/Library/Python/2.7/bin/"(N-/)
+  $path
+)
