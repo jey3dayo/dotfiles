@@ -12,6 +12,7 @@ export GREP_OPTIONS='--color=auto'
 typeset -gU cdpath fpath mailpath path
 
 path=(
+  /usr/local/opt/coreutils/libexec/gnubin(N-/)
   $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
@@ -31,6 +32,10 @@ alias ls='ls -pF'
 alias hg="hg --encoding=utf-8"
 alias gst="git status -sb"
 alias tailf="tail -f"
+
+# gnu
+alias sed="gsed"
+alias grep="ggrep"
 
 if command -v colordiff>/dev/null; then
   alias diff="colordiff"
