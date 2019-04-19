@@ -24,5 +24,6 @@ export GHQ_ROOT=~/src
 path=(
   "$HOME/.pyenv/shims"(N-/)
   "$HOME/Library/Python/2.7/bin/"(N-/)
+  "$HOME/.cargo/bin/"(N-/)
   $path
 )
