@@ -55,6 +55,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug "modules/fasd", from:prezto
   zplug "b4b4r07/enhancd"
   zplug "mollifier/anyframe"
+  zplug "peco/peco", from:gh-r
 
   if ! zplug check --verbose; then
       printf "Install? [y/N]: "
