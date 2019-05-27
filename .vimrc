@@ -37,6 +37,8 @@ set foldmethod=marker
 set noscrollbind
 set laststatus=2
 set statusline=%F%m%r%h%w\%=\[%{&ff}]\[%{&fileencoding}]\[%l/%L][%3P]
+set lazyredraw
+set ttyfast
 
 " fixed neovim
 set ttimeout
