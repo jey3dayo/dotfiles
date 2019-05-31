@@ -45,6 +45,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   export ZPLUG_HOME="${HOME}/.cache/zplug"
   source "${ZDOTDIR}/.zplug/init.zsh"
 
+  zplug "zsh-users/zsh-autosuggestions"
   zplug "zsh-users/zsh-completions"
   zplug "felixr/docker-zsh-completion"
   zplug "zsh-users/zsh-syntax-highlighting", defer:2
