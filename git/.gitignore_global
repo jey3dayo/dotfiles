@@ -1,0 +1,10 @@
+.python-version
+.DS_Store
+.envrc
+tsconfig.json
+
+*.bk
+*.bak
+*.diff
+
+.direnv

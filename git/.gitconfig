@@ -5,9 +5,10 @@
   status  = auto
   ui = auto
 [core]
-  excludesfile = ~/.gitignore_global
+  excludesfile = ~/.config/git/.gitignore_global
+  attributesfile = ~/.config/git/.gitattributes
   quotepath = false
-  editor = /usr/bin/vim
+  editor = /usr/local/bin/vim
 [alias]
   ca = commit --amend
   co = checkout
