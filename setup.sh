@@ -21,8 +21,4 @@ git clone --recursive https://github.com/sorin-ionescu/prezto.git "${ZDOTDIR:-$H
 echo "export ZDOTDIR=$DOTFILES/.zsh" >> ~/.zshenv
 echo "source $ZDOTDIR/.zshenv" >> ~/.zshenv
 
-git config --global include.path "${DOTFILES}"/.gitconfig
-git config --global user.name "j138"
-git config --global user.email j138cm@gmail.com
-
 git submodule foreach git pull
