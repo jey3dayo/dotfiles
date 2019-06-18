@@ -269,25 +269,6 @@ repo = 'tpope/vim-rhubarb'
 repo = 'tpope/vim-surround'
 
 [[plugins]]
-repo = 'alpaca-tc/alpaca_tags'
-hook_add = '''
-  let g:alpaca_tags#config = {
-  \ '_': '-R --sort=yes',
-  \ 'ruby': '--languages=+Ruby',
-  \ 'javascript': '--languages=+Javascript',
-  \}
-
-  augroup AlpacaTags
-    autocmd!
-    if exists(':AlpacaTags')
-      autocmd BufWritePost Gemfile AlpacaTagsBundle
-      autocmd BufEnter * AlpacaTagsSet
-      autocmd BufWritePost * AlpacaTagsUpdate
-    endif
-  augroup END
-'''
-
-[[plugins]]
 repo = 'osyo-manga/shabadou.vim'
 
 [[plugins]]
