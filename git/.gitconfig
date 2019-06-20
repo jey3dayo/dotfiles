@@ -5,8 +5,8 @@
   status  = auto
   ui = auto
 [core]
-  excludesfile = ~/.config/git/.gitignore_global
-  attributesfile = ~/.config/git/.gitattributes
+  excludesfile = ~/.config/git/ignore
+  attributesfile = ~/.config/git/attributes
   quotepath = false
   editor = /usr/local/bin/vim
 [alias]

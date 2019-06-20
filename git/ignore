@@ -34,7 +34,6 @@ tags
 Session.vim
 Thumbs.db
 nohup.out
-tsconfig.json
 
 *~
 *.a
@@ -62,7 +61,6 @@ sample.*
 
 .subversion/auth/
 .vim/.VimballRecord
-.vim/.netrwhist
 .vim/dict/
 .vim/doc/
 .vim/GetLatest/
@@ -72,15 +70,24 @@ sample.*
 .zsh/.zcompdump*
 .zsh/.zcompcache
 .idea/
+.netrwhist
+.python-version
 
-.envrc
-.direnv
-
+tsconfig.json
 .vscode
 .project
 .classpath
 .settings
-
 .yarnclean
+yarn
+dirnev
+brewfile
+composer
+configstore
+fish
+fisher
+karabiner/automatic_backups
 
-custom.*.sh
+.envrc
+direnv
+

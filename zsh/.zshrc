@@ -4,6 +4,7 @@ HISTFILE=$HOME/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
+bindkey -e
 setopt append_history
 setopt auto_cd
 setopt auto_menu
