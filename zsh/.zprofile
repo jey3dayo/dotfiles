@@ -67,7 +67,7 @@ case ${OSTYPE} in
   # z command
   if [[ -s ~/tmp/.z ]] then
   export _Z_DATA=~/tmp/.z
-  . `brew --prefix`/etc/profile.d/z.sh
+  . /usr/local/etc/profile.d/z.sh
   alias j='z'
   fi
   ;;
