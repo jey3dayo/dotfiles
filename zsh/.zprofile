@@ -82,7 +82,7 @@ fi
 TMPPREFIX="${TMPDIR%/}/zsh"
 
 # ruby
-eval "$(rbenv init -)"
+eval "$(rbenv init - --no-rehash)"
 
 if [ -d $HOME/.pyenv ] ; then
   export PYENV_ROOT="$HOME/.pyenv"
