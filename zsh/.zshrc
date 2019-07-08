@@ -50,14 +50,16 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug "zsh-users/zsh-completions"
   zplug "felixr/docker-zsh-completion"
   zplug "zsh-users/zsh-syntax-highlighting", defer:2
+  zplug "modules/completion", from:prezto
   zplug "modules/environment", from:prezto
   zplug "modules/editor", from:prezto
   zplug "modules/tmux", from:prezto
   zplug "modules/prompt", from:prezto
   zplug "modules/fasd", from:prezto
-  zplug "b4b4r07/enhancd"
+  zplug "b4b4r07/enhancd", use:init.sh
   zplug "mollifier/anyframe"
   zplug "peco/peco", from:gh-r
+  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
   if ! zplug check --verbose; then
       printf "Install? [y/N]: "
