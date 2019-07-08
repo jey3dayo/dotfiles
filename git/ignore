@@ -52,6 +52,7 @@ nohup.out
 *.dump
 *.diff
 *.output
+*.zwc
 
 doc/tags
 doc/tags-*
