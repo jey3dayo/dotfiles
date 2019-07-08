@@ -68,8 +68,8 @@ sample.*
 .vim/bundle/
 .vim/chalice/cache
 .vimperator/info
-.zsh/.zcompdump*
-.zsh/.zcompcache
+.zcompdump*
+.zcompcache
 .idea/
 .netrwhist
 .python-version
