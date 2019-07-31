@@ -53,7 +53,9 @@ fi
 
 alias npm-clean='npm run ncu && rm -rf node_modules && yarn && npm prune'
 alias pip-upgrade='pip list --format json --outdated | jq .[].name | xargs pip install -U'
+alias yarn-upgrade='yarn global upgrade'
 alias brew-upgrade='brew update && brew upgrade && brew cleanup'
+alias pkg-upgrade='yarn-upgrade ; pip-upgrade ; brew-upgrade'
 
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
