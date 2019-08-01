@@ -15,8 +15,10 @@ set pumheight=15
 if &term =~? '^\(xterm\|screen\)$' && $COLORTERM ==? 'gnome-terminal'
   set t_Co=256
 endif
-set termguicolors
 highlight Search ctermbg=7
+if has('nvim')
+  set termguicolors
+endif
 
 " set options
 set autoindent
