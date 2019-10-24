@@ -84,9 +84,14 @@ bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
 
 if command -v powerline-daemon>/dev/null; then
-  PYTHON_REPOS_ROOT=~/.pyenv/versions/3.7.1/lib/python3.7/site-packages
-  powerline-daemon -q
-  . $PYTHON_REPOS_ROOT/powerline/bindings/zsh/powerline.zsh
+  PYTHON_VERSION=$(cat ~/.pyenv/version)
+  PYTHON_REPOS_ROOT=~/.pyenv/versions/${PYTHON_VERSION}/lib/python3.7/site-packages
+  if [[ -s "${PYTHON_REPOS_ROOT}" ]]; then
+    powerline-daemon -q
+    . $PYTHON_REPOS_ROOT/powerline/bindings/zsh/powerline.zsh
+  else
+    echo 'powerline.zsh not found'
+  fi
 fi
 
 # vim: set syntax=zsh:
