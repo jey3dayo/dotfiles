@@ -82,10 +82,11 @@ zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^p" history-beginning-search-backward-end
 bindkey "^n" history-beginning-search-forward-end
+
 if command -v powerline-daemon>/dev/null; then
-  PYTHON_LB=~/Library/Python/2.7/lib/python
+  PYTHON_REPOS_ROOT=~/.pyenv/versions/3.7.1/lib/python3.7/site-packages
   powerline-daemon -q
-  . $PYTHON_LB/site-packages/powerline/bindings/zsh/powerline.zsh
+  . $PYTHON_REPOS_ROOT/powerline/bindings/zsh/powerline.zsh
 fi
 
 # vim: set syntax=zsh:
