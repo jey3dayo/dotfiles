@@ -46,19 +46,18 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   export ZPLUG_HOME="${HOME}/.cache/zplug"
   source "${ZDOTDIR}/.zplug/init.zsh"
 
-  zplug "zsh-users/zsh-autosuggestions"
-  zplug "zsh-users/zsh-completions"
-  zplug "felixr/docker-zsh-completion"
-  zplug "zsh-users/zsh-syntax-highlighting", defer:2
+  zplug "modules/prompt", from:prezto
   zplug "modules/completion", from:prezto
+  zplug "felixr/docker-zsh-completion"
   zplug "modules/environment", from:prezto
+  zplug "zsh-users/zsh-syntax-highlighting", defer:2
+  zplug "zsh-users/zsh-autosuggestions"
   zplug "modules/editor", from:prezto
   zplug "modules/tmux", from:prezto
-  zplug "modules/prompt", from:prezto
   zplug "modules/fasd", from:prezto
-  zplug "b4b4r07/enhancd", use:init.sh
   zplug "mollifier/anyframe"
   zplug "peco/peco", from:gh-r
+  zplug "modules/command-not-found", from:prezto
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
   if ! zplug check --verbose; then
