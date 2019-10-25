@@ -43,7 +43,7 @@ setopt share_history
 autoload zed
 
 if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
-  export ZPLUG_HOME="${HOME}/.cache/zplug"
+  export ZPLUG_HOME="${XDG_CACHE_HOME}/zplug"
   source "${ZDOTDIR}/.zplug/init.zsh"
 
   zplug "modules/prompt", from:prezto

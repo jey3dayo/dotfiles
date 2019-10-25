@@ -9,8 +9,6 @@ export PAGER='less'
 export LISTMAX=0
 export GREP_OPTIONS='--color=auto'
 
-typeset -gU cdpath fpath mailpath path
-
 path=(
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
   $HOME/{bin,sbin}(N-/)
@@ -83,7 +81,6 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
-# ruby
 eval "$(rbenv init - --no-rehash)"
 
 if [ -d $HOME/.pyenv ] ; then
@@ -97,9 +94,25 @@ if [ -d "$HOME/.nodebrew" ] ; then
   path=($NODE_HOME(N-/) $path)
 fi
 
+if [ -d $HOME/perl5 ] ; then
+  export PERL_LOCAL_LIB_ROOT="$HOME/perl5:$PERL_LOCAL_LIB_ROOT"
+  export PERL_MB_OPT="--install_base "$HOME/perl5""
+  export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
+  export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB"
+  path=($HOME/perl5/bin(N-/) $path)
+fi
+
+path=("$HOME/.cargo/bin/"(N-/) $path)
+
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 export STUDIO_JDK=${JAVA_HOME%/*/*}
 export ANDROID_HOME=$HOME/Library/Android/sdk
-path=($path $ANDROID_HOME/platform-tools(N-/))
+path=($ANDROID_HOME/platform-tools(N-/) $path)
+
+export JAVA_OPTS="-Djava.net.useSystemProxies=true"
+export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
+export ANT_OPTS=-Dbuild.sysclasspath=ignore
+
+typeset -U path cdpath fpath manpath
 
 # vim: set syntax=zsh:
