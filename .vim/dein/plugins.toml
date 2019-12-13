@@ -185,7 +185,6 @@ hook_add = '''
   colorscheme onedark
   au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
   au VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
-  " au FileType coffee,javascript,python IndentGuidesEnable
   au FileType coffee,ruby,javascript,python IndentGuidesEnable
   nmap <silent><Leader>sg <Plug>IndentGuidesToggle
 
@@ -312,14 +311,15 @@ repo = 'tpope/vim-repeat'
 [[plugins]]
  repo = 'sbdchd/neoformat'
 hook_add = '''
-let g:neoformat_javascript_prettiereslint = {
- \ 'exe': './node_modules/.bin/prettier-eslint',
- \ 'args': ['--stdin', '--stdin-filepath', '%:p'],
- \ 'stdin': 1,
- \ }
+" let g:neoformat_javascript_prettiereslint = {
+"  \ 'exe': './node_modules/.bin/prettier-eslint',
+"  \ 'args': ['--stdin', '--stdin-filepath', '%:p'],
+"  \ 'stdin': 1,
+"  \ }
 " let g:neoformat_enabled_javascript = ['prettiereslint']
 let g:neoformat_enabled_javascript = ['eslint_d']
-let g:neoformat_enabled_javascriptreact = ['eslint_d']
+
+" let g:ale_completion_tsserver_autoimport = 0
 map <silent><Leader><c-f> <C-u>:Neoformat<CR>
 '''
 

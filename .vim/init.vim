@@ -83,10 +83,10 @@ nnoremap <Leader>se :<C-u>e! ++enc=euc-jp<CR>
 " backup
 set backup
 set swapfile
-set backupdir=~/tmp
-set directory=~/tmp
-set undodir=~/tmp
-set backupskip=/tmp/*,/private/tmp/*
+set backupdir=~/.cache/vim
+set directory=~/.cache/vim
+set undodir=~/.cache/vim
+set backupskip=/tmp/*,/private/tmp/*,~/.cache/vim
 
 augroup swapchoice-readonly
   autocmd!
