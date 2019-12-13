@@ -1,14 +1,14 @@
 [[plugins]]
 repo = 'pangloss/vim-javascript'
-on_ft = ['javascript', 'javascript.jsx']
+on_ft = ['javascript']
 
 [[plugins]]
 repo = 'maxmellon/vim-jsx-pretty'
-on_ft = ['javascript', 'javascript.jsx']
+on_ft = ['javascript']
 
 [[plugins]]
 repo = 'alampros/vim-styled-jsx'
-on_ft = ['javascript', 'javascript.jsx']
+on_ft = ['javascript']
 
 [[plugins]]
 repo = 'moll/vim-node'
@@ -61,7 +61,7 @@ on_ft = ['php']
 
 [[plugins]]
 repo = 'mattn/emmet-vim'
-on_ft = ['html', 'javascript', 'javascript.jsx']
+on_ft = ['javascript']
 hook_add = '''
   let g:user_emmet_mode = 'iv'
   let g:user_emmet_leader_key = '<C-Y>'
@@ -79,10 +79,6 @@ hook_add = '''
         \   'filters' : 'html',
         \ },
         \ 'javascript' : {
-        \   'extends' : 'html',
-        \   'filters' : 'html',
-        \ },
-        \ 'javascript.jsx' : {
         \   'extends' : 'html',
         \   'filters' : 'html',
         \ },
