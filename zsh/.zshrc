@@ -85,7 +85,7 @@ bindkey "^n" history-beginning-search-forward-end
 
 if command -v powerline-daemon>/dev/null; then
   PYTHON_VERSION=$(cat ~/.pyenv/version)
-  PYTHON_REPOS_ROOT=~/.pyenv/versions/${PYTHON_VERSION}/lib/python3.7/site-packages
+  PYTHON_REPOS_ROOT=~/.pyenv/versions/${PYTHON_VERSION}/lib/python3.8/site-packages
   if [[ -s "${PYTHON_REPOS_ROOT}" ]]; then
     powerline-daemon -q
     . $PYTHON_REPOS_ROOT/powerline/bindings/zsh/powerline.zsh
