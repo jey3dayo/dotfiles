@@ -60,12 +60,12 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug "modules/command-not-found", from:prezto
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
-  if ! zplug check --verbose; then
-      printf "Install? [y/N]: "
-      if read -q; then
-          echo; zplug install
-      fi
-  fi
+  # if ! zplug check --verbose; then
+  #     printf "Install? [y/N]: "
+  #     if read -q; then
+  #         echo; zplug install
+  #     fi
+  # fi
 
   zplug load
 
