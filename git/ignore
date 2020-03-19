@@ -90,6 +90,6 @@ fish
 fisher
 karabiner/automatic_backups
 
-.envrc
+.env*
 direnv
 
