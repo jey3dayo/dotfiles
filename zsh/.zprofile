@@ -24,9 +24,8 @@ alias less="less -giMRSW -z-4 -x4"
 alias where="command -v"
 alias df="df -h"
 alias du="du -h"
-alias l='ls -lAFhp'
-alias ll='ls -lAFhp'
-alias ls='ls -pF'
+alias l='exa -l'
+alias ll='exa -l'
 alias hg="hg --encoding=utf-8"
 alias gst="git status -sb"
 alias tailf="tail -f"
