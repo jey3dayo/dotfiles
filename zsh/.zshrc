@@ -56,7 +56,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   zplug "modules/tmux", from:prezto
   zplug "modules/fasd", from:prezto
   zplug "mollifier/anyframe"
-  zplug "peco/peco", from:gh-r
+  zplug "peco/peco"
   zplug "modules/command-not-found", from:prezto
   ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
 
