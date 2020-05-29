@@ -1,18 +1,22 @@
 [[plugins]]
 repo = 'pangloss/vim-javascript'
-on_ft = ['javascript']
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
+
+[[plugins]]
+repo = 'yuezk/vim-js'
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
 
 [[plugins]]
 repo = 'maxmellon/vim-jsx-pretty'
-on_ft = ['javascript']
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
 
 [[plugins]]
 repo = 'alampros/vim-styled-jsx'
-on_ft = ['javascript']
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
 
 [[plugins]]
-repo = 'moll/vim-node'
-on_ft = ['javascript']
+repo = 'HerringtonDarkholme/yats.vim'
+on_ft = ['typescript', 'typescript.tsx', 'tsx']
 
 [[plugins]]
 repo = 'digitaltoad/vim-pug.git'
@@ -24,7 +28,7 @@ on_ft = ['coffee']
 
 [[plugins]]
 repo = 'ap/vim-css-color'
-on_ft = ['css', 'javascript']
+on_ft = ['css', 'javascript', 'javascript.jsx', 'jsx']
 
 [[plugins]]
 repo = 'groenewege/vim-less'
@@ -58,40 +62,6 @@ on_ft = ['ruby']
 [[plugins]]
 repo = 'vim-scripts/php.vim'
 on_ft = ['php']
-
-[[plugins]]
-repo = 'mattn/emmet-vim'
-on_ft = ['javascript']
-hook_add = '''
-  let g:user_emmet_mode = 'iv'
-  let g:user_emmet_leader_key = '<C-Y>'
-  let g:use_emmet_complete_tag = 1
-  let g:user_emmet_settings = {
-        \ 'lang' : 'ja',
-        \ 'html' : {
-        \   'filters' : 'html',
-        \ },
-        \ 'css' : {
-        \   'filters' : 'fc',
-        \ },
-        \ 'php' : {
-        \   'extends' : 'html',
-        \   'filters' : 'html',
-        \ },
-        \ 'javascript' : {
-        \   'extends' : 'html',
-        \   'filters' : 'html',
-        \ },
-        \}
-  augroup EmmitVim
-    autocmd!
-    autocmd FileType * let g:user_emmet_settings.indentation = '               '[:&tabstop]
-  augroup END
-'''
-
-[[plugins]]
-repo = 'othree/html5.vim'
-on_ft = ['html']
 
 [[plugins]]
 repo = 'superbrothers/vim-vimperator'
