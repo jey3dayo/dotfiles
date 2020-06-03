@@ -1,0 +1,84 @@
+[[plugins]]
+repo = 'prabirshrestha/async.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+depends = ['async.vim']
+hook_add = '''
+" if executable('typescript-language-server')
+"   au User lsp_setup call lsp#register_server({
+"     \ 'name': 'javascript support using typescript-language-server',
+"     \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+"     \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+"     \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
+"     \ })
+"   let g:lsp_settings_filetype_typescript = ['typescript-language-server', 'eslint-language-server']
+"   let g:lsp_settings_filetype_javascript = ['typescript-language-server', 'eslint-language-server']
+" endif
+let g:lsp_settings_filetype_typescript = ['typescript-language-server', 'eslint-language-server']
+let g:lsp_settings_filetype_javascript = ['typescript-language-server', 'eslint-language-server']
+let g:lsp_settings_filetype_javascript_jsx = ['typescript-language-server', 'eslint-language-server']
+
+map <silent><Leader><c-f> <C-u>:LspDocumentFormatSync<CR>
+nmap <silent> <C-k> :LspPreviousDiagnostic<CR>
+nmap <silent> <C-j> :LspNextDiagnostic<CR>
+'''
+
+[[plugins]]
+repo = 'mattn/vim-lsp-settings'
+depends = 'vim-lsp'
+
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+depends = 'vim-lsp'
+hook_add = '''
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+'''
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
+depends = 'vim-lsp'
+
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+depends = 'vim-lsp'
+hook_add = '''
+  " snippets dir
+  let g:neosnippet#enable_snipmate_compatibility = 1
+
+  if !exists("g:neosnippet#snippets_directory")
+    let g:neosnippet#snippets_directory="."
+  endif
+
+  " plugin key-mappings.
+  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k> <Plug>(neosnippet_expand_target)
+
+  " SuperTab like snippets behavior.
+  imap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+  smap <expr><TAB> neosnippet#expandable() <Bar><bar> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+  if has('conceal')
+  "   set conceallevel=2 concealcursor=i
+    set conceallevel=2 concealcursor=niv
+  endif
+
+  set completeopt+=menuone
+
+'''
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+depends = 'neosnippet'
+
+[[plugins]]
+repo = 'thomasfaingnaert/vim-lsp-snippets'
+depends = 'vim-lsp'
+
+[[plugins]]
+repo = 'thomasfaingnaert/vim-lsp-neosnippet'
+depends = 'vim-lsp'

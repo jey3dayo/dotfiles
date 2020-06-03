@@ -7,7 +7,7 @@ build = 'make'
 
 [[plugins]]
 repo = 'Shougo/denite.nvim'
-depends = ['neomru.vim']
+depends = 'neomru.vim'
 on_event = 'BufRead'
 hook_add = '''
   " Define mappings
@@ -88,15 +88,6 @@ on_source = ['denite.nvim']
 [[plugins]]
 repo = 'Shougo/neoinclude.vim'
 
-[[plugins]]
-repo = 'w0rp/ale.git'
-on_source = ['lightline.vim']
-hook_add = '''
-  let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '']
-  let g:ale_echo_msg_format = '[%linter%] %s'
-  nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-  nmap <silent> <C-j> <Plug>(ale_next_wrap)
-'''
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
@@ -123,34 +114,46 @@ hook_add = '''
 [[plugins]]
 repo = 'itchyny/lightline.vim'
 hook_add = '''
+  set noshowmode
+  set laststatus=2
   let g:lightline = {
   \ 'colorscheme': 'onedark',
   \ 'active': {
   \   'left': [
   \     [ 'mode', 'paste' ],
   \     [ 'fugitive', 'readonly', 'filename', 'modified', 'qfstatusline'],
-  \     [ 'ale' ],
+  \     [ 'lsp_warnings', 'lsp_errors' ]
   \   ],
   \ },
   \ 'component': {
   \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
   \ },
   \'component_function': {
-  \   'ale': 'LLAle',
+  \   'lsp_warnings': 'LightLineLSPWarning',
+  \   'lsp_errors': 'LightLineLSPError',
   \ },
   \ 'component_visible_condition': {
   \   'readonly': '(&filetype!="help"&& &readonly)',
   \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
   \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
   \ },
-  \ 'component_expand': {'qfstatusline': 'qfstatusline#Update'},
-  \ 'component_type':   {'qfstatusline': 'error'},
+  \ 'component_expand': {
+  \   'qfstatusline': 'qfstatusline#Update',
+  \  },
+  \ 'component_type':   {
+  \   'qfstatusline': 'error',
+  \   'lsp_warnings': 'warning',
+  \   'lsp_errors': 'error',
+  \  },
   \}
-  function! LLAle()
-    let l:count = ale#statusline#Count(bufnr(''))
-    let l:errors = l:count.error + l:count.style_error
-    let l:warnings = l:count.warning + l:count.style_warning
-    return l:count.total == 0 ? '' : 'E:' . l:errors . ' W:' . l:warnings
+  function! LightLineLSPWarning() abort
+    let l:count = lsp#get_buffer_diagnostics_counts().warning
+    return l:count == 0 ? '' : 'W:' . l:count
+  endfunction
+
+  function! LightLineLSPError() abort
+    let l:count = lsp#get_buffer_diagnostics_counts().error
+    return l:count == 0 ? '' : 'E:' . l:count
   endfunction
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
 '''
@@ -176,11 +179,8 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'tomasr/molokai'
-
-[[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
-depends = ['onedark.vim']
+depends = 'onedark.vim'
 hook_add = '''
   colorscheme onedark
   au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
@@ -293,35 +293,20 @@ repo = 'KazuakiM/vim-qfstatusline'
 
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
-depends = ['context_filetype.vim']
+depends = 'context_filetype.vim'
 
 [[plugins]]
 repo = 'Shougo/context_filetype.vim'
 
 [[plugins]]
 repo = 'tpope/vim-abolish'
-depends = ['vim-repeat']
+depends = 'vim-repeat'
 
 [[plugins]]
 repo = 'tpope/vim-repeat'
 
 [[plugins]]
  repo = 'editorconfig/editorconfig-vim'
-
-[[plugins]]
- repo = 'sbdchd/neoformat'
-hook_add = '''
-" let g:neoformat_javascript_prettiereslint = {
-"  \ 'exe': './node_modules/.bin/prettier-eslint',
-"  \ 'args': ['--stdin', '--stdin-filepath', '%:p'],
-"  \ 'stdin': 1,
-"  \ }
-" let g:neoformat_enabled_javascript = ['prettiereslint']
-let g:neoformat_enabled_javascript = ['eslint_d']
-
-" let g:ale_completion_tsserver_autoimport = 0
-map <silent><Leader><c-f> <C-u>:Neoformat<CR>
-'''
 
 [[plugins]]
 repo = 'cohama/lexima.vim'
