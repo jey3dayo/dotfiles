@@ -194,6 +194,8 @@ if has('vim_starting') && dein#check_install()
 endif
 
 nnoremap <Leader>sO :<C-u>call dein#update()<CR>
+nnoremap <Leader>sR :<C-u>call dein#recache_runtimepath()<CR>
+
 " }}}
 
 filetype on
