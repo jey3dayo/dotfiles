@@ -19,7 +19,7 @@ hook_add = '''
   let g:lsp_signs_hint = {'text': '?'}
 
   nnoremap [lsp] <Nop>
-  nmap <C-r> [lsp]
+  nmap <C-s> [lsp]
   nnoremap [lsp]r :<C-u>LspRename<CR>
   nnoremap [lsp]f :<C-u>LspDocumentFormatSync<CR>
   nnoremap [lsp]F :<C-u>LspDocumentDiagnostics<CR>
