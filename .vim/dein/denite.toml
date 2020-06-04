@@ -44,12 +44,12 @@ hook_add = '''
    call denite#custom#var('grep', 'final_opts', [])
 
   " grepした結果を再表示し、次/前へ
-  nnoremap <silent> <Leader>g  :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
+  nnoremap <silent> <Leader>g :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
   nnoremap <silent> <Leader>G :<C-u>Denite -resume -buffer-name=search-buffer-denite<CR>
   nnoremap <silent> <Leader>n :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
   nnoremap <silent> <Leader>p :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
 
-  let s:ignore_globs = ['.git', '.svn', 'node_modules']
+  let s:ignore_globs = ['.git', '.svn', 'node_modules', '.cache']
   call denite#custom#var('file/rec', 'command', [
       \ 'ag',
       \ '--follow',
@@ -77,14 +77,3 @@ depends = 'denite.nvim'
 [[plugins]]
 repo = 'Shougo/tabpagebuffer.vim'
 depends = 'denite.nvim'
-
-[[plugins]]
-repo = 'Shougo/neoinclude.vim'
-
-[[plugins]]
-repo = 'ujihisa/neco-look'
-depends = 'deoplete.nvim'
-on_i = 1
-hook_add = '''
-  call dein#add('ujihisa/neco-look')
-'''
