@@ -1,10 +1,11 @@
 [[plugins]]
 repo = 'tpope/vim-fugitive'
+on_cmd = ['Gblame', 'Gdiffsplit', 'Ggrep', 'Gstatus', 'Gwrite', 'Gcommit']
 hook_add = '''
   nnoremap [fugitive] <Nop>
   nmap <C-g> [fugitive]
   nnoremap [fugitive]b :<C-u>Gblame<CR>
-  nnoremap [fugitive]d :<C-u>Gdiff<CR>
+  nnoremap [fugitive]d :<C-u>Gdiffsplit<CR>
   nnoremap [fugitive]g :<C-u>Ggrep<Space>
   nnoremap [fugitive]s :<C-u>Gstatus<CR>
   nnoremap [fugitive]w :<C-u>Gwrite<CR>
