@@ -180,6 +180,8 @@ if dein#load_state(s:dein_cache_dir)
   call dein#begin(s:dein_cache_dir)
   let s:toml_dir = g:config_home . '/nvim/dein'
   call dein#load_toml(s:toml_dir . '/plugins.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/style.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/denite.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/lsp.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/lang.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/lazy.toml', {'lazy': 1})

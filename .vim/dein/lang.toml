@@ -86,4 +86,3 @@ on_ft = ['markdown','mkd']
 [[plugins]]
 repo = 'fatih/vim-go'
 on_ft = 'go'
-

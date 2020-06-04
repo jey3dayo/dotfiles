@@ -1,14 +1,109 @@
 [[plugins]]
-repo = 'airblade/vim-rooter'
+repo = 'tpope/vim-fugitive'
+hook_add = '''
+  nnoremap [fugitive] <Nop>
+  nmap <C-g> [fugitive]
+  nnoremap [fugitive]b :<C-u>Gblame<CR>
+  nnoremap [fugitive]d :<C-u>Gdiff<CR>
+  nnoremap [fugitive]g :<C-u>Ggrep<Space>
+  nnoremap [fugitive]s :<C-u>Gstatus<CR>
+  nnoremap [fugitive]w :<C-u>Gwrite<CR>
+  nnoremap [fugitive]c :<C-u>Gcommit<CR>
+'''
+
+[[plugins]]
+repo = 'tpope/vim-rhubarb'
+depends = 'vim-fugitive'
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+  map <Leader>e :NERDTreeToggle<CR>
+'''
 
 [[plugins]]
 repo = 'vim-scripts/renamer.vim'
 on_cmd = ['Rename']
 
 [[plugins]]
-repo = 'ujihisa/neco-look'
-depends = 'deoplete.nvim'
-on_i = 1
+repo = 'h1mesuke/vim-alignta.git'
+on_cmd    = ['Align', 'Alignta']
 hook_add = '''
-  call dein#add('ujihisa/neco-look')
+  vnoremap <silent> => :Align @1 =><CR>
+  vnoremap <silent> == :Align @1 =<CR>
 '''
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+depends = 'vimproc.vim'
+hook_add = '''
+  let g:quickrun_config = {
+  \ '_': {
+  \   'runner': 'vimproc',
+  \   'runner/vimproc/sleep': 10,
+  \   'runner/vimproc/updatetime': 500,
+  \   'outputter/buffer/split': ':botright 8sp',
+  \   'outputter/buffer/close_on_empty': 1,
+  \   'hook/echo/enable' : 0,
+  \   'hook/echo/output_success': '> No Errors Found.',
+  \   'hook/back_window/enable' : 1,
+  \   'hook/back_window/enable_exit': 1,
+  \   'hock/close_buffer/enable_hock_loaded': 1,
+  \   'hock/close_buffer/enable_success': 1,
+  \   'hook/qfstatusline_update/enable_exit': 1,
+  \   'hook/qfstatusline_update/priority_exit': 4,
+  \ },
+  \}
+'''
+
+[[plugins]]
+repo = 'osyo-manga/shabadou.vim'
+depends = 'vim-quickrun'
+
+[[plugins]]
+repo = 'nishigori/increment-activator'
+hook_add = '''
+  let g:increment_activator_filetype_candidates = {
+  \ '_': [
+  \   ['info', 'warning', 'notice', 'error', 'success'],
+  \   ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
+  \   ['static', 'absolute', 'relative', 'fixed', 'sticky'],
+  \   ['height', 'width'],
+  \   ['left', 'right', 'top', 'bottom'],
+  \   ['enable', 'disable'],
+  \   ['enabled', 'disabled'],
+  \   ['should', 'should_not'],
+  \   ['be_file', 'be_directory'],
+  \   ['div', 'span'],
+  \   ['column', 'row'],
+  \   ['start', 'end'],
+  \   ['head', 'tail'],
+  \   ['get', 'post'],
+  \   ['margin', 'padding'],
+  \   ['primary', 'secondary', 'tertiary'],
+  \ ],
+  \ 'ruby': [
+  \   ['if', 'unless'],
+  \   ['nil', 'empty', 'blank'],
+  \   ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
+  \ ],
+  \ 'javascript': [
+  \   ['const', 'let'],
+  \   ['props', 'state'],
+  \ ],
+  \ 'git-rebase-todo': [
+  \   ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
+  \ ],
+  \}
+'''
+
+[[plugins]]
+repo = 'airblade/vim-rooter'
+hook_add = '''
+  let g:rooter_patterns = ['Rakefile', 'package.json', '.git/']
+'''
+
+[[plugins]]
+repo = 'vim-scripts/sudo.vim'
+on_cmd = ['SudoWrite', 'SudoRead']
+

@@ -1,0 +1,90 @@
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+depends = 'neomru.vim'
+on_event = 'BufRead'
+hook_add = '''
+  " Define mappings
+  autocmd FileType denite call s:denite_my_settings()
+  function! s:denite_my_settings() abort
+    nnoremap <silent><buffer><expr> <CR>
+          \ denite#do_map('do_action')
+    nnoremap <silent><buffer><expr> e
+          \ denite#do_map('do_action')
+    nnoremap <silent><buffer><expr> d
+          \ denite#do_map('do_action', 'delete')
+    nnoremap <silent><buffer><expr> p
+          \ denite#do_map('do_action', 'preview')
+    nnoremap <silent><buffer><expr> <ESC>
+          \ denite#do_map('quit')
+    nnoremap <silent><buffer><expr> q
+          \ denite#do_map('quit')
+    nnoremap <silent><buffer><expr> i
+          \ denite#do_map('open_filter_buffer')
+    nnoremap <silent><buffer><expr> <Space>
+          \ denite#do_map('toggle_select').'j'
+  endfunction
+
+  nnoremap [denite] <Nop>
+  nmap <C-u> [denite]
+
+  nnoremap <Leader>b :Denite buffer<CR>
+  nnoremap <Leader>f :Denite file/rec<CR>
+  nnoremap <Leader>m :Denite file/old<CR>
+  nnoremap <Leader>y :Denite neoyank<CR>
+
+   " grep
+   call denite#custom#var('grep', 'command', ['ag'])
+   call denite#custom#var('grep', 'default_opts', ['-i', '--vimgrep', '--hidden'])
+   call denite#custom#var('grep', 'recursive_opts', [])
+   call denite#custom#var('grep', 'pattern_opt', [])
+   call denite#custom#var('grep', 'separator', ['--'])
+   call denite#custom#var('grep', 'final_opts', [])
+
+  " grepした結果を再表示し、次/前へ
+  nnoremap <silent> <Leader>g  :<C-u>Denite grep -buffer-name=search-buffer-denite<CR>
+  nnoremap <silent> <Leader>G :<C-u>Denite -resume -buffer-name=search-buffer-denite<CR>
+  nnoremap <silent> <Leader>n :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=+1 -immediately<CR>
+  nnoremap <silent> <Leader>p :<C-u>Denite -resume -buffer-name=search-buffer-denite -select=-1 -immediately<CR>
+
+  let s:ignore_globs = ['.git', '.svn', 'node_modules']
+  call denite#custom#var('file/rec', 'command', [
+      \ 'ag',
+      \ '--follow',
+      \ ] + map(deepcopy(s:ignore_globs), { k, v -> '--ignore=' . v }) + [
+      \ '--nocolor',
+      \ '--nogroup',
+      \ '-g',
+      \ ''
+      \ ])
+  call denite#custom#source('file/rec', 'matchers', ['matcher/substring'])
+  call denite#custom#filter('matcher/ignore_globs', 'ignore_globs', s:ignore_globs)
+'''
+
+[[plugins]]
+repo = 'Shougo/unite-outline'
+depends = 'denite.nvim'
+hook_add = '''
+  noremap <Leader>o <ESC>:Denite outline<Return>
+'''
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+depends = 'denite.nvim'
+
+[[plugins]]
+repo = 'Shougo/tabpagebuffer.vim'
+depends = 'denite.nvim'
+
+[[plugins]]
+repo = 'Shougo/neoinclude.vim'
+
+[[plugins]]
+repo = 'ujihisa/neco-look'
+depends = 'deoplete.nvim'
+on_i = 1
+hook_add = '''
+  call dein#add('ujihisa/neco-look')
+'''

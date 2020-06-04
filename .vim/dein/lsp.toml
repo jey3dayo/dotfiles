@@ -3,7 +3,7 @@ repo = 'prabirshrestha/async.vim'
 
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
-depends = ['async.vim']
+depends = 'async.vim'
 hook_add = '''
 " if executable('typescript-language-server')
 "   au User lsp_setup call lsp#register_server({
@@ -31,7 +31,7 @@ depends = 'vim-lsp'
 
 [[plugins]]
 repo = 'prabirshrestha/asyncomplete.vim'
-depends = 'vim-lsp'
+depends = 'async.vim'
 hook_add = '''
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -39,12 +39,16 @@ inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
 '''
 
 [[plugins]]
+repo = 'prabirshrestha/asyncomplete-neosnippet.vim'
+depends = 'asyncomplete.vim'
+
+[[plugins]]
 repo = 'prabirshrestha/asyncomplete-lsp.vim'
-depends = 'vim-lsp'
+depends = 'asyncomplete.vim'
 
 [[plugins]]
 repo = 'Shougo/neosnippet.vim'
-depends = 'vim-lsp'
+depends = ['neosnippet-snippets', 'context_filetype.vim']
 hook_add = '''
   " snippets dir
   let g:neosnippet#enable_snipmate_compatibility = 1
@@ -73,7 +77,6 @@ hook_add = '''
 
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
-depends = 'neosnippet'
 
 [[plugins]]
 repo = 'thomasfaingnaert/vim-lsp-snippets'
