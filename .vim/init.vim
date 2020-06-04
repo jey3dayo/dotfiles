@@ -66,21 +66,12 @@ set expandtab
 set textwidth=0
 
 " map
-nnoremap <Leader>s <Nop>
-nnoremap <Leader>so :<C-u>source ~/.vimrc<CR>
-nnoremap <Leader>sm :!cd ~/.cache/dein/repos/github.com/Shougo/vimproc.vim/;make<CR>
 nnoremap <Leader>gr :<C-u>vimgrep // %<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap <Leader>gR :<C-u>vimgrep // **/*.*<Bar>cw<LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT><LEFT>
 nnoremap <Leader>gx :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ %<Bar>cw<CR>
 nnoremap <Leader>gX :<C-u>vimgrep /\(TODO\<Bar>XXX\<Bar>FIXME\)/ **/*.*<Bar>cw<CR>
 nnoremap <C-d> :<C-u>bd<CR>
 nnoremap <Tab> :<C-u>wincmd w<CR>
-
-"set encoding
-nnoremap <Leader>si :<C-u>e! ++enc=iso-2022-jp<CR>
-nnoremap <Leader>su :<C-u>e! ++enc=utf-8<CR>
-nnoremap <Leader>ss :<C-u>e! ++enc=sjis<CR>
-nnoremap <Leader>se :<C-u>e! ++enc=euc-jp<CR>
 
 " backup
 set backup
@@ -181,20 +172,24 @@ if dein#load_state(s:dein_cache_dir)
   let s:toml_dir = g:config_home . '/nvim/dein'
   call dein#load_toml(s:toml_dir . '/plugins.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/style.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/deoplete.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/denite.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/lsp.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/lang.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/lazy.toml', {'lazy': 1})
   call dein#end()
   call dein#save_state()
-endif
+en
 
 if has('vim_starting') && dein#check_install()
   call dein#install()
 endif
 
-nnoremap <Leader>sO :<C-u>call dein#update()<CR>
-nnoremap <Leader>sR :<C-u>call dein#recache_runtimepath()<CR>
+nnoremap [core] <Nop>
+nmap <Leader>s [core]
+nnoremap [core]o :<C-u>source ~/.vimrc<CR>
+nnoremap [core]r :<C-u>call dein#recache_runtimepath()<CR>
+nnoremap [core]u :<C-u>call dein#update()<CR>
 
 " }}}
 
