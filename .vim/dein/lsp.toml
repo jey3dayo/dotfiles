@@ -38,6 +38,8 @@ depends = 'vim-lsp'
 
 [[plugins]]
 repo = 'thomasfaingnaert/vim-lsp-snippets'
+depends = 'vim-lsp'
 
 [[plugins]]
 repo = 'thomasfaingnaert/vim-lsp-neosnippet'
+depends = 'vim-lsp'

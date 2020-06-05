@@ -18,6 +18,7 @@ depends = 'vim-fugitive'
 
 [[plugins]]
 repo = 'scrooloose/nerdtree'
+on_cmd = ['NERDTreeToggle']
 hook_add = '''
   map <Leader>e :NERDTreeToggle<CR>
 '''
@@ -60,49 +61,6 @@ hook_add = '''
 [[plugins]]
 repo = 'osyo-manga/shabadou.vim'
 depends = 'vim-quickrun'
-
-[[plugins]]
-repo = 'nishigori/increment-activator'
-hook_add = '''
-  let g:increment_activator_filetype_candidates = {
-  \ '_': [
-  \   ['info', 'warning', 'notice', 'error', 'success'],
-  \   ['mini', 'small', 'medium', 'large', 'xlarge', 'xxlarge'],
-  \   ['static', 'absolute', 'relative', 'fixed', 'sticky'],
-  \   ['height', 'width'],
-  \   ['left', 'right', 'top', 'bottom'],
-  \   ['enable', 'disable'],
-  \   ['enabled', 'disabled'],
-  \   ['should', 'should_not'],
-  \   ['be_file', 'be_directory'],
-  \   ['div', 'span'],
-  \   ['column', 'row'],
-  \   ['start', 'end'],
-  \   ['head', 'tail'],
-  \   ['get', 'post'],
-  \   ['margin', 'padding'],
-  \   ['primary', 'secondary', 'tertiary'],
-  \ ],
-  \ 'ruby': [
-  \   ['if', 'unless'],
-  \   ['nil', 'empty', 'blank'],
-  \   ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
-  \ ],
-  \ 'javascript': [
-  \   ['const', 'let'],
-  \   ['props', 'state'],
-  \ ],
-  \ 'git-rebase-todo': [
-  \   ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
-  \ ],
-  \}
-'''
-
-[[plugins]]
-repo = 'airblade/vim-rooter'
-hook_add = '''
-  let g:rooter_patterns = ['Rakefile', 'package.json', '.git/']
-'''
 
 [[plugins]]
 repo = 'vim-scripts/sudo.vim'
