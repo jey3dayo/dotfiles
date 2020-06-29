@@ -19,11 +19,13 @@ hook_add = '''
   let g:lsp_signs_hint = {'text': '?'}
 
   nnoremap [lsp] <Nop>
-  nmap <C-s> [lsp]
+  nmap <C-e> [lsp]
   nnoremap [lsp]r :<C-u>LspRename<CR>
   nnoremap [lsp]f :<C-u>LspDocumentFormatSync<CR>
   nnoremap [lsp]F :<C-u>LspDocumentDiagnostics<CR>
   nnoremap [lsp]g :<C-u>LspWorkspaceSymbol<CR>
+
+  nmap [lsp]e <C-u>:!eslint --fix "%"<CR>
 
   nnoremap <C-[> :<C-u>LspReferences<CR>
   nnoremap <C-]> :<C-u>LspDefinition<CR>
@@ -35,6 +37,13 @@ hook_add = '''
 [[plugins]]
 repo = 'mattn/vim-lsp-settings'
 depends = 'vim-lsp'
+hook_add = '''
+let g:lsp_settings_servers_dir = g:cache_home.'/dein/repos/github.com/mattn/vim-lsp-settings'
+'''
+
+[[plugins]]
+repo = 'mattn/vim-lsp-icons'
+depends = 'vim-lsp'
 
 [[plugins]]
 repo = 'thomasfaingnaert/vim-lsp-snippets'
@@ -42,4 +51,8 @@ depends = 'vim-lsp'
 
 [[plugins]]
 repo = 'thomasfaingnaert/vim-lsp-neosnippet'
+depends = 'vim-lsp'
+
+[[plugins]]
+repo = 'lighttiger2505/deoplete-vim-lsp'
 depends = 'vim-lsp'

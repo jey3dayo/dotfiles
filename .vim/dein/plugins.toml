@@ -28,12 +28,6 @@ repo = 'cohama/lexima.vim'
 repo = 'tomtom/tcomment_vim.git'
 
 [[plugins]]
-repo = 'airblade/vim-rooter'
-hook_add = '''
-  let g:rooter_patterns = ['Rakefile', 'package.json', '.git/']
-'''
-
-[[plugins]]
 repo = 'nishigori/increment-activator'
 hook_add = '''
   let g:increment_activator_filetype_candidates = {
