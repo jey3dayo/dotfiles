@@ -118,8 +118,15 @@ augroup highlightIdegraphicSpace
   au VimEnter,WinEnter * match IdeographicSpace /　/
 augroup END
 
+augroup QfAutoCommands
+  autocmd!
+
+" Auto-close quickfix window
+  autocmd WinEnter * if (winnr('$') == 1) && (getbufvar(winbufnr(0), '&buftype')) == 'quickfix' | quit | endif
+augroup END
+
 " ESC ESC -> toggle hlsearch
-" nnoremap <Esc><Esc> :<C-u>set hlsearch!<Return>
+nnoremap <Esc><Esc> :<C-u>set hlsearch!<Return>
 
 set shellslash
 set hidden
