@@ -30,7 +30,7 @@ Temporary Items
 build/
 log/
 
-tags
+*.tags
 Session.vim
 Thumbs.db
 nohup.out
@@ -54,6 +54,7 @@ hub
 *.diff
 *.output
 *.zwc
+*.jse
 
 doc/tags
 doc/tags-*
@@ -93,3 +94,5 @@ karabiner/automatic_backups
 .env*
 direnv
 
+
+<Plug>*
