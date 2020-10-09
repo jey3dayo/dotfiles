@@ -48,6 +48,7 @@ hook_add = '''
   \   ['get', 'post'],
   \   ['margin', 'padding'],
   \   ['primary', 'secondary', 'tertiary'],
+  \   ['development', 'staging', 'production'],
   \ ],
   \ 'ruby': [
   \   ['if', 'unless'],
