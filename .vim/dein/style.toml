@@ -1,8 +1,13 @@
 [[plugins]]
 repo = 'joshdick/onedark.vim'
 hook_add = '''
-  au MyAutoCmd VimEnter * nested colorscheme onedark
   colorscheme onedark
+
+  " 背景透過
+  highlight Normal ctermbg=NONE guibg=NONE
+  highlight NonText ctermbg=NONE guibg=NONE
+  highlight SpecialKey ctermbg=NONE guibg=NONE
+  highlight EndOfBuffer ctermbg=NONE guibg=NONE
 '''
 
 [[plugins]]
@@ -63,7 +68,6 @@ hook_add = '''
 repo = 'nathanaelkane/vim-indent-guides'
 depends = 'onedark.vim'
 hook_add = '''
-  colorscheme onedark
   au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
   au VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
   au FileType coffee,ruby,javascript,python IndentGuidesEnable
