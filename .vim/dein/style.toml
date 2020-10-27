@@ -1,98 +1,30 @@
 [[plugins]]
 repo = 'joshdick/onedark.vim'
 hook_add = '''
-  colorscheme onedark
-
-  " 背景透過
-  highlight Normal ctermbg=NONE guibg=NONE
-  highlight NonText ctermbg=NONE guibg=NONE
-  highlight SpecialKey ctermbg=NONE guibg=NONE
-  highlight EndOfBuffer ctermbg=NONE guibg=NONE
-
-  " au MyAutoCmd VimEnter * nested colorscheme onedark
-  " au MyAutoCmd VimEnter * nested highlight Normal ctermbg=NONE guibg=NONE
-  " au MyAutoCmd VimEnter * nested highlight NonText ctermbg=NONE guibg=NONE
-  " au MyAutoCmd VimEnter * nested highlight SpecialKey ctermbg=NONE guibg=NONE
-  " au MyAutoCmd VimEnter * nested highlight EndOfBuffer ctermbg=NONE guibg=NONE
+source ~/.config/nvim/plugins/onedark.rc.vim
 '''
 
 [[plugins]]
 repo = 'cocopon/iceberg.vim'
 hook_add = '''
-  " au MyAutoCmd VimEnter * nested colorscheme iceberg
-  " au MyAutoCmd VimEnter * highlight Visual ctermbg=216
+source ~/.config/nvim/plugins/iceberg.rc.vim
 '''
 
 [[plugins]]
 repo = 'itchyny/lightline.vim'
 hook_add = '''
-  set noshowmode
-  set laststatus=2
-  let g:lightline = {
-  \ 'colorscheme': 'onedark',
-  \ 'active': {
-  \   'left': [
-  \     [ 'mode', 'paste' ],
-  \     [ 'fugitive', 'readonly', 'filename', 'modified', 'qfstatusline'],
-  \     [ 'lsp_warnings', 'lsp_errors' ]
-  \   ],
-  \ },
-  \ 'component': {
-  \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
-  \ },
-  \'component_function': {
-  \   'lsp_warnings': 'LightLineLSPWarning',
-  \   'lsp_errors': 'LightLineLSPError',
-  \ },
-  \ 'component_visible_condition': {
-  \   'readonly': '(&filetype!="help"&& &readonly)',
-  \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-  \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
-  \ },
-  \ 'component_expand': {
-  \   'qfstatusline': 'qfstatusline#Update',
-  \  },
-  \ 'component_type':   {
-  \   'qfstatusline': 'error',
-  \   'lsp_warnings': 'warning',
-  \   'lsp_errors': 'error',
-  \  },
-  \}
-  function! LightLineLSPWarning() abort
-    let l:count = lsp#get_buffer_diagnostics_counts().warning
-    return l:count == 0 ? '' : 'W:' . l:count
-  endfunction
-
-  function! LightLineLSPError() abort
-    let l:count = lsp#get_buffer_diagnostics_counts().error
-    return l:count == 0 ? '' : 'E:' . l:count
-  endfunction
-  let g:Qfstatusline#UpdateCmd = function('lightline#update')
+source ~/.config/nvim/plugins/lightline.rc.vim
 '''
 
 [[plugins]]
 repo = 'nathanaelkane/vim-indent-guides'
 depends = 'onedark.vim'
 hook_add = '''
-  au VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=red ctermbg=3
-  au VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
-  au FileType coffee,ruby,javascript,python IndentGuidesEnable
-  nmap <silent><Leader>sg <Plug>IndentGuidesToggle
-
-  let g:indent_guides_auto_colors=0
-  let g:indent_guides_start_level=2
-  let g:indent_guides_guide_size=1
-  let g:indent_guides_enable_on_vim_startup=0
-  let g:indent_guides_color_change_percent=20
+source ~/.config/nvim/plugins/vim-indent-guides.rc.vim
 '''
 
 [[plugins]]
 repo = 'kien/rainbow_parentheses.vim'
 hook_add = '''
-  let g:rbpt_max = 16
-  let g:rbpt_loadcmd_toggle = 0
-  au VimEnter * RainbowParenthesesToggle
-  au Syntax * RainbowParenthesesLoadRound
-  au Syntax * RainbowParenthesesLoadSquare
-  au Syntax * RainbowParenthesesLoadBraces
+source ~/.config/nvim/plugins/rainbow_parentheses.rc.vim
 '''

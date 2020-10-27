@@ -2,14 +2,7 @@
 repo = 'tpope/vim-fugitive'
 on_cmd = ['Gblame', 'Gdiffsplit', 'Ggrep', 'Gstatus', 'Gwrite', 'Gcommit']
 hook_add = '''
-  nnoremap [fugitive] <Nop>
-  nmap <C-g> [fugitive]
-  nnoremap [fugitive]b :<C-u>Gblame<CR>
-  nnoremap [fugitive]d :<C-u>Gdiffsplit<CR>
-  nnoremap [fugitive]g :<C-u>Ggrep<Space>
-  nnoremap [fugitive]s :<C-u>Gstatus<CR>
-  nnoremap [fugitive]w :<C-u>Gwrite<CR>
-  nnoremap [fugitive]c :<C-u>Gcommit<CR>
+source ~/.config/nvim/plugins/unite-outline.rc.vim
 '''
 
 [[plugins]]
@@ -17,10 +10,14 @@ repo = 'tpope/vim-rhubarb'
 depends = 'vim-fugitive'
 
 [[plugins]]
+repo = 'Shougo/defx.nvim'
+depends = ['defx-git', 'defx-icons']
+
+[[plugins]]
 repo = 'scrooloose/nerdtree'
 on_cmd = ['NERDTreeToggle']
 hook_add = '''
-  map <Leader>e :NERDTreeToggle<CR>
+source ~/.config/nvim/plugins/unite-outline.rc.vim
 '''
 
 [[plugins]]
@@ -31,31 +28,14 @@ on_cmd = ['Rename']
 repo = 'h1mesuke/vim-alignta.git'
 on_cmd    = ['Align', 'Alignta']
 hook_add = '''
-  vnoremap <silent> => :Align @1 =><CR>
-  vnoremap <silent> == :Align @1 =<CR>
+source ~/.config/nvim/plugins/vim-alignta.rc.vim
 '''
 
 [[plugins]]
 repo = 'thinca/vim-quickrun'
 depends = 'vimproc.vim'
 hook_add = '''
-  let g:quickrun_config = {
-  \ '_': {
-  \   'runner': 'vimproc',
-  \   'runner/vimproc/sleep': 10,
-  \   'runner/vimproc/updatetime': 500,
-  \   'outputter/buffer/split': ':botright 8sp',
-  \   'outputter/buffer/close_on_empty': 1,
-  \   'hook/echo/enable' : 0,
-  \   'hook/echo/output_success': '> No Errors Found.',
-  \   'hook/back_window/enable' : 1,
-  \   'hook/back_window/enable_exit': 1,
-  \   'hock/close_buffer/enable_hock_loaded': 1,
-  \   'hock/close_buffer/enable_success': 1,
-  \   'hook/qfstatusline_update/enable_exit': 1,
-  \   'hook/qfstatusline_update/priority_exit': 4,
-  \ },
-  \}
+source ~/.config/nvim/plugins/vim-quickrun.rc.vim
 '''
 
 [[plugins]]
