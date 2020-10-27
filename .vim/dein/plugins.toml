@@ -28,6 +28,19 @@ repo = 'jiangmiao/auto-pairs'
 repo = 'tomtom/tcomment_vim.git'
 
 [[plugins]]
+repo = 'Shougo/defx.nvim'
+depends = ['defx-git', 'defx-icons']
+hook_add ='''
+source ~/.config/nvim/plugins/defx.rc.vim
+'''
+
+[[plugins]]
+repo = 'kristijanhusak/defx-git'
+
+[[plugins]]
+repo = 'kristijanhusak/defx-icons'
+
+[[plugins]]
 repo = 'nishigori/increment-activator'
 hook_add = '''
 source ~/.config/nvim/plugins/increment-activator.rc.vim
