@@ -22,10 +22,14 @@ repo = 'tpope/vim-surround'
 repo = 'kana/vim-textobj-user'
 
 [[plugins]]
-repo = 'cohama/lexima.vim'
+repo = 'jiangmiao/auto-pairs'
 
 [[plugins]]
 repo = 'tomtom/tcomment_vim.git'
+
+[[plugins]]
+repo = 'Shougo/defx.nvim'
+depends = ['defx-git', 'defx-icons']
 
 [[plugins]]
 repo = 'nishigori/increment-activator'
