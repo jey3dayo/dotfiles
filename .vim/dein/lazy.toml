@@ -12,13 +12,16 @@ depends = 'vim-fugitive'
 [[plugins]]
 repo = 'Shougo/defx.nvim'
 depends = ['defx-git', 'defx-icons']
+on_cmd = ['Defx']
+hook_add ='''
+source ~/.config/nvim/plugins/defx.rc.vim
+'''
 
 [[plugins]]
-repo = 'scrooloose/nerdtree'
-on_cmd = ['NERDTreeToggle']
-hook_add = '''
-source ~/.config/nvim/plugins/unite-outline.rc.vim
-'''
+repo = 'kristijanhusak/defx-icons'
+
+[[plugins]]
+repo = 'kristijanhusak/defx-git'
 
 [[plugins]]
 repo = 'vim-scripts/renamer.vim'

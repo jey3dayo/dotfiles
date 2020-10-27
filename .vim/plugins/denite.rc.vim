@@ -23,7 +23,7 @@ nnoremap [denite] <Nop>
 nmap <C-u> [denite]
 
 nnoremap <Leader>b :Denite buffer<CR>
-nnoremap <Leader>f :Denite file/rec<CR>
+" nnoremap <Leader>f :Denite file/rec<CR>
 nnoremap <Leader>m :Denite file/old<CR>
 nnoremap <Leader>y :Denite neoyank<CR>
 
