@@ -8,6 +8,12 @@ hook_add = '''
   highlight NonText ctermbg=NONE guibg=NONE
   highlight SpecialKey ctermbg=NONE guibg=NONE
   highlight EndOfBuffer ctermbg=NONE guibg=NONE
+
+  " au MyAutoCmd VimEnter * nested colorscheme onedark
+  " au MyAutoCmd VimEnter * nested highlight Normal ctermbg=NONE guibg=NONE
+  " au MyAutoCmd VimEnter * nested highlight NonText ctermbg=NONE guibg=NONE
+  " au MyAutoCmd VimEnter * nested highlight SpecialKey ctermbg=NONE guibg=NONE
+  " au MyAutoCmd VimEnter * nested highlight EndOfBuffer ctermbg=NONE guibg=NONE
 '''
 
 [[plugins]]
