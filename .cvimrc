@@ -12,13 +12,7 @@ let hintcharacters = "qwertyuiasdfghjklzxcvbnm"
 command g tabnew google
 let completionengines = ["google", "amazon"]
 let searchalias g = "google"
-let qmark t = ["http://twitter.com"]
-let qmark m = ["https://inbox.google.com/u/0/?cid=imp"]
-let qmark c = ["https://www.google.com/calendar"]
-let qmark i = ["http://www.inoreader.com/folder/Must%20Read"]
-let qmark g = ["https://github.com/"]
-let qmark l = ["http://localhost:3000"]
-let qmark L = ["http://localhost:8080"]
+
 " Ignore Site
 let blacklists = ["https://inbox.google.com/*","https://ameba.dashboard.openstack.tky02a.platform.cycloud.io/*","https://console.openstack.tky02a.platform.cycloud.io/*","http://localhost/*"]
 
