@@ -1,5 +1,4 @@
 " Settings
-" set noautofocus
 set typelinkhints
 let searchlimit = 30
 let scrollstep = 70
@@ -18,9 +17,10 @@ let qmark m = ["https://inbox.google.com/u/0/?cid=imp"]
 let qmark c = ["https://www.google.com/calendar"]
 let qmark i = ["http://www.inoreader.com/folder/Must%20Read"]
 let qmark g = ["https://github.com/"]
-
+let qmark l = ["http://localhost:3000"]
+let qmark L = ["http://localhost:8080"]
 " Ignore Site
-let blacklists = ["https://feedly.com/*"," https://inbox.google.com/*", "https://mail.google.com/*"]
+let blacklists = ["https://inbox.google.com/*","https://ameba.dashboard.openstack.tky02a.platform.cycloud.io/*","https://console.openstack.tky02a.platform.cycloud.io/*","http://localhost/*"]
 
 " Mapping
 map h previousTab
@@ -46,18 +46,19 @@ copyTitleUrl() -> {{
     Status.setMessage(ret, 2);
   });
 }}
-map yt :call copyTitleUrl<CR>
+map yY :call copyTitleUrl<CR>
 
 " yank '%title% - %bitly%'
 copyTitleBitly() -> {{
   RUNTIME('getRootUrl', function(url) {
+    const bitlyToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
     httpRequest(
-      {url: 'https://api-ssl.bitly.com/v3/shorten?access_token=309e5fa8ffbcbed2aaf926e069d4d28ee46ee34d&format=json&longUrl='+url, json: true},
+      {url: `https://api-ssl.bitly.com/v3/shorten?access_token=${bitlyToken}&format=json&longUrl=${url}`, json: true},
       function(res) {
-        let ret = document.title + " - " + res.data.url;
+        let ret = `${document.title} - ${res.data.url}`;
         Clipboard.copy(ret);
         Status.setMessage(ret, 2);
       });
   });
 }}
-map yb :call copyTitleBitly<CR>
+map yy :call copyTitleBitly<CR>
