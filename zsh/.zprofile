@@ -53,7 +53,7 @@ alias pip-upgrade='pip list --format json --outdated | jq .[].name | xargs pip i
 alias yarn-upgrade='yarn global upgrade'
 alias brew-upgrade='brew update && brew upgrade && brew cleanup'
 alias software-upgrade='softwareupdate --all --install --force'
-alias pkg-upgrade='yarn-upgrade ; pip-upgrade ; brew-upgrade ; software-upgrade'
+alias pkg-upgrade='yarn-upgrade ; pip-upgrade ; brew-upgrade ; software-upgrade ; npm -g i npm-check-updates'
 
 alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 
