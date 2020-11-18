@@ -18,6 +18,7 @@ nnoremap [lsp]g :<C-u>LspWorkspaceSymbol<CR>
 
 nmap [lsp]e <C-u>:!eslint --fix "%"<CR>
 nmap [lsp]j <C-u>:!jest "%"<CR>
+nmap [lsp]E <C-u>:!node "%"<CR>
 
 nnoremap <C-[> :<C-u>LspReferences<CR>
 nnoremap <C-]> :<C-u>LspDefinition<CR>
