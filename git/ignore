@@ -92,9 +92,13 @@ fisher
 karabiner/automatic_backups
 
 .env*
-direnv
+.direnv
 
 
 <Plug>*
 
 ghkw
+
+jsconfig.json
+
+*.my.sh
