@@ -108,6 +108,7 @@ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 export STUDIO_JDK=${JAVA_HOME%/*/*}
 export ANDROID_HOME=$HOME/Library/Android/sdk
 path=($ANDROID_HOME/platform-tools(N-/) $path)
+export PATH=$PATH:$ANDROID_HOME/platform-tools
 
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
