@@ -1,4 +1,4 @@
-nnoremap <silent><Leader>f :<C-u>Defx -listed -resume<CR>
+nnoremap <silent><Leader>F :<C-u>Defx -listed -resume<CR>
 
 autocmd FileType defx call s:defx_my_settings()
 
