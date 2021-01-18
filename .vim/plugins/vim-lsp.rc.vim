@@ -16,7 +16,6 @@ nnoremap [lsp]f :<C-u>LspDocumentFormatSync<CR>
 nnoremap [lsp]F :<C-u>LspDocumentDiagnostics<CR>
 nnoremap [lsp]g :<C-u>LspWorkspaceSymbol<CR>
 
-nmap [lsp]e <C-u>:!eslint --fix "%"<CR>
 nmap [lsp]j <C-u>:!jest "%"<CR>
 nmap [lsp]E <C-u>:!node "%"<CR>
 
