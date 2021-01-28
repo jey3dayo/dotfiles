@@ -7,15 +7,15 @@ hook_add = '''
 source ~/.config/nvim/plugins/gruvbox.rc.vim
 '''
 
-# [[plugins]]
-# repo = 'tjdevries/colorbuddy.vim'
+[[plugins]]
+repo = 'tjdevries/colorbuddy.vim'
 
-# [[plugins]]
-# repo = 'Th3Whit3Wolf/onebuddy'
-# depends = 'colorbuddy.vim'
-# hook_add = '''
-# " source ~/.config/nvim/plugins/onebuddy.rc.vim
-# '''
+[[plugins]]
+repo = 'Th3Whit3Wolf/onebuddy'
+depends = 'colorbuddy.vim'
+hook_add = '''
+" source ~/.config/nvim/plugins/onebuddy.rc.vim
+'''
 
 # [[plugins]]
 # repo = 'joshdick/onedark.vim'
