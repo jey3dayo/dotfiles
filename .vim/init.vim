@@ -181,6 +181,7 @@ if dein#load_state(s:dein_cache_dir)
   let s:toml_dir = g:config_home . '/nvim/dein'
   call dein#load_toml(s:toml_dir . '/plugins.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/style.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/colorscheme.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/deoplete.toml', {'lazy': 0})
   " call dein#load_toml(s:toml_dir . '/coc.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/denite.toml', {'lazy': 0})
@@ -202,6 +203,22 @@ nnoremap [core]U :<C-u>call dein#recache_runtimepath()<CR>
 nnoremap [core]u :<C-u>call dein#update()<CR>
 
 " }}}
+
+" treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    disable = {
+      'lua',
+      'ruby',
+      'toml',
+      'c_sharp',
+      'vue',
+    }
+  }
+}
+EOF
 
 filetype on
 filetype plugin indent on

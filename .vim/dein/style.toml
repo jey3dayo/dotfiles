@@ -1,16 +1,4 @@
 [[plugins]]
-repo = 'joshdick/onedark.vim'
-hook_add = '''
-source ~/.config/nvim/plugins/onedark.rc.vim
-'''
-
-[[plugins]]
-repo = 'cocopon/iceberg.vim'
-hook_add = '''
-source ~/.config/nvim/plugins/iceberg.rc.vim
-'''
-
-[[plugins]]
 repo = 'itchyny/lightline.vim'
 hook_add = '''
 source ~/.config/nvim/plugins/lightline.rc.vim
