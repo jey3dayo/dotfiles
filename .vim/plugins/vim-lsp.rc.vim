@@ -28,3 +28,4 @@ nmap <C-j> <C-u>:LspNextDiagnostic<CR>
 let g:lsp_settings_filetype_javascript = ['typescript-language-server', 'eslint-language-server']
 let g:lsp_settings_filetype_typescript = ['typescript-language-server', 'eslint-language-server']
 let g:lsp_settings_filetype_jsx        = ['typescript-language-server', 'eslint-language-server']
+let g:lsp_settings_filetype_ruby        = ['solargraph']
