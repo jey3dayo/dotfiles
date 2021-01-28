@@ -199,7 +199,7 @@ endif
 nnoremap [core] <Nop>
 nmap <Leader>s [core]
 nnoremap [core]o :<C-u>source ~/.vimrc<CR>
-nnoremap [core]U :<C-u>call dein#recache_runtimepath()<CR>
+nnoremap [core]r :<C-u>call dein#recache_runtimepath()<CR>
 nnoremap [core]u :<C-u>call dein#update()<CR>
 
 " }}}
