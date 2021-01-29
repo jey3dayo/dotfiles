@@ -48,7 +48,7 @@ colors:
   # Normal colors
   normal:
     black:   '#282828'
-    red:     '#cc241d'
+    red:     '#fb4934'
     green:   '#98971a'
     yellow:  '#d79921'
     blue:    '#458588'
@@ -67,7 +67,7 @@ colors:
     cyan:    '#8ec07c'
     white:   '#ebdbb2'
 
-background_opacity: 0.9
+background_opacity: 0.93
 
 key_bindings:
   # (Windows/Linux only)
