@@ -73,9 +73,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
   bindkey '^T' anyframe-widget-cd-ghq-repository
 fi
 
-# load sources
-for f ("${ZDOTDIR:-$HOME}"/plugin-sources/*) source "${f}"
-
 # historical backward/forward search with linehead string binded to ^P/^N
 autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -93,5 +90,11 @@ if command -v powerline-daemon>/dev/null; then
     echo 'powerline.zsh not found'
   fi
 fi
+
+# load sources
+for f ("${ZDOTDIR:-$HOME}"/plugin-sources/*) source "${f}"
+
+ZSH_THEME="gruvbox"
+SOLARIZED_THEME="dark"
 
 # vim: set syntax=zsh:
