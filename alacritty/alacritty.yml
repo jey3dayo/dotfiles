@@ -67,7 +67,7 @@ colors:
     cyan:    '#8ec07c'
     white:   '#ebdbb2'
 
-background_opacity: 0.93
+background_opacity: 0.90
 
 key_bindings:
   # (Windows/Linux only)
