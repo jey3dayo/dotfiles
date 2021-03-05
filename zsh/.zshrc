@@ -1,4 +1,4 @@
-# j138 .zshrc
+# jey3dayo .zshrc
 
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=100000
