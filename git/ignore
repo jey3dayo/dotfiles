@@ -75,6 +75,8 @@ sample.*
 .idea/
 .netrwhist
 .python-version
+.zinit
+iterm2
 
 tsconfig.json
 .vscode
