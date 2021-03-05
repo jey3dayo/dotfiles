@@ -6,8 +6,9 @@ window:
 
 font:
   normal:
-    family: Inconsolata-dz for Powerline
-  size: 14.0
+    family: Inconsolata Nerd Font Mono
+
+  size: 18.0
 
   offset:
    x: 0
@@ -15,7 +16,7 @@ font:
 
   glyph_offset:
    x: 0
-   y: 2
+   y: 0
 
   # Thin stroke font rendering (macOS only)
   #
