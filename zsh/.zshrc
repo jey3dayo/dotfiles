@@ -1,10 +1,11 @@
 # jey3dayo .zshrc
+bindkey -e
+source "${ZDOTDIR:-$HOME}/.zinit.zsh"
 
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 
-bindkey -e
 setopt append_history
 setopt auto_cd
 setopt auto_menu
@@ -41,44 +42,6 @@ setopt rm_star_wait
 setopt share_history
 
 autoload zed
-
-if [[ -s "${ZDOTDIR:-$HOME}/.zplug/init.zsh" ]]; then
-  export ZPLUG_HOME="${XDG_CACHE_HOME}/zplug"
-  source "${ZDOTDIR}/.zplug/init.zsh"
-
-  zplug "modules/prompt", from:prezto
-  zplug "modules/completion", from:prezto
-  zplug "felixr/docker-zsh-completion"
-  zplug "modules/environment", from:prezto
-  zplug "zsh-users/zsh-syntax-highlighting", defer:2
-  zplug "zsh-users/zsh-autosuggestions"
-  zplug "modules/editor", from:prezto
-  zplug "modules/tmux", from:prezto
-  zplug "modules/fasd", from:prezto
-  zplug "mollifier/anyframe"
-  zplug "peco/peco"
-  zplug "modules/command-not-found", from:prezto
-  ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
-
-  # if ! zplug check --verbose; then
-  #     printf "Install? [y/N]: "
-  #     if read -q; then
-  #         echo; zplug install
-  #     fi
-  # fi
-
-  zplug load
-
-  bindkey '^R' anyframe-widget-execute-history
-  bindkey '^T' anyframe-widget-cd-ghq-repository
-fi
-
-# historical backward/forward search with linehead string binded to ^P/^N
-autoload history-search-end
-zle -N history-beginning-search-backward-end history-search-end
-zle -N history-beginning-search-forward-end history-search-end
-bindkey "^p" history-beginning-search-backward-end
-bindkey "^n" history-beginning-search-forward-end
 
 if command -v powerline-daemon>/dev/null; then
   PYTHON_VERSION=$(cat ~/.pyenv/version)
