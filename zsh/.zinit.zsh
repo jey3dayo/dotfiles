@@ -17,13 +17,13 @@ zinit light-mode for \
     zinit-zsh/z-a-as-monitor \
     zinit-zsh/z-a-patch-dl \
     zinit-zsh/z-a-bin-gem-node \
+    PZTM::fasd \
     atinit"zicompinit; zicdreplay" \
       zdharma/fast-syntax-highlighting
 
 zinit wait lucid light-mode for \
     zsh-users/zsh-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
-    PZTM::fasd \
     blockf atpull'zinit creinstall -q .' \
       zsh-users/zsh-completions
 
