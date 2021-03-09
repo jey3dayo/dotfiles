@@ -12,6 +12,7 @@ if [[ ! -f $HOME/.config/zsh/.zinit/bin/zinit.zsh ]]; then
 fi
 
 zinit light-mode for \
+    romkatv/powerlevel10k \
     zinit-zsh/z-a-rust \
     zinit-zsh/z-a-as-monitor \
     zinit-zsh/z-a-patch-dl \
