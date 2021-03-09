@@ -31,6 +31,8 @@ zinit is-snippet for \
   OMZL::git.zsh \
   OMZP::git
 
+zinit snippet https://github.com/sainnhe/dotfiles/raw/master/.zsh-theme-gruvbox-material-dark
+
 zinit wait lucid is-snippet as"completion" for \
   OMZP::docker/_docker \
   OMZP::docker-compose/_docker-compose
