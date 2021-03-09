@@ -22,6 +22,7 @@ zinit light-mode for \
 zinit wait lucid light-mode for \
     zsh-users/zsh-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
+    PZTM::fasd \
     blockf atpull'zinit creinstall -q .' \
       zsh-users/zsh-completions
 
