@@ -26,6 +26,7 @@ alias df="df -h"
 alias du="du -h"
 alias l='exa -l'
 alias ll='exa -l'
+alias la='exa -la'
 alias hg="hg --encoding=utf-8"
 alias gst="git status -sb"
 alias tailf="tail -f"
