@@ -1,6 +1,6 @@
 #!/bin/sh
 USER=$(id -u)
-DOTFILES=$HOME/src/github.com/j138/dotfiles
+DOTFILES=$HOME/src/github.com/jey3dayo/dotfiles
 
 mkdir -p "${HOME}"/{tmp,.cache,.config}
 chown -R "${USER}" "${HOME}"/{tmp,.cache}
