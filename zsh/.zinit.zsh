@@ -38,4 +38,4 @@ zinit wait lucid is-snippet as"completion" for \
 zinit light mollifier/anyframe
 bindkey '^R' anyframe-widget-execute-history
 bindkey '^T' anyframe-widget-cd-ghq-repository
-
+bindkey '^T' anyframe-widget-checkout-git-branch
