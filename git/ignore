@@ -109,3 +109,5 @@ jsconfig.json
 *.my.sh
 
 irb/irb_history
+
+zsh/.zsh_sessions/
