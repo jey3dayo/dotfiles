@@ -17,6 +17,7 @@ let g:increment_activator_filetype_candidates = {
 \   ['margin', 'padding'],
 \   ['primary', 'secondary', 'tertiary'],
 \   ['development', 'staging', 'production'],
+\   ['const', 'let'],
 \ ],
 \ 'ruby': [
 \   ['if', 'unless'],
@@ -24,7 +25,6 @@ let g:increment_activator_filetype_candidates = {
 \   ['string', 'text', 'integer', 'float', 'datetime', 'timestamp', 'timestamp'],
 \ ],
 \ 'javascript': [
-\   ['const', 'let'],
 \   ['props', 'state'],
 \ ],
 \ 'git-rebase-todo': [
