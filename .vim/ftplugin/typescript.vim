@@ -5,3 +5,5 @@ setlocal foldmarker=/*,*/
 
 nmap [lsp]e <C-u>:!eslint --fix "%"<CR>
 nmap [lsp]p <C-u>:!prettier --write "%"<CR>
+nmap [lsp]j <C-u>:!babel-node "%"<CR>
+nmap [lsp]J <C-u>:!jest "%"<CR>

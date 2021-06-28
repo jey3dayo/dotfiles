@@ -16,9 +16,6 @@ nnoremap [lsp]f :<C-u>LspDocumentFormatSync<CR>
 nnoremap [lsp]F :<C-u>LspDocumentDiagnostics<CR>
 nnoremap [lsp]g :<C-u>LspWorkspaceSymbol<CR>
 
-nmap [lsp]j <C-u>:!jest "%"<CR>
-nmap [lsp]E <C-u>:!node "%"<CR>
-
 nnoremap <C-[> :<C-u>LspReferences<CR>
 nnoremap <C-]> :<C-u>LspDefinition<CR>
 nnoremap K :<C-u>LspHover<CR>
