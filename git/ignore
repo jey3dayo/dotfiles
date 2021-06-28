@@ -111,3 +111,4 @@ jsconfig.json
 irb/irb_history
 
 zsh/.zsh_sessions/
+gh/hosts.yml
