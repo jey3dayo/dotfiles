@@ -50,7 +50,7 @@ if command -v peco>/dev/null; then
 fi
 
 alias npm-clean='npm run ncu && rm -rf node_modules && yarn && npm prune'
-alias pip-upgrade='pip list --format json --outdated | jq .[].name | xargs pip install -U'
+alias pip-upgrade='pip3 list --format json --outdated | jq .[].name | xargs pip install -U'
 alias yarn-upgrade='yarn global upgrade'
 alias brew-upgrade='brew update && brew upgrade && brew cleanup'
 alias software-upgrade='softwareupdate --all --install --force'
