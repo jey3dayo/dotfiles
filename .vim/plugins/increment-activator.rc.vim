@@ -9,7 +9,7 @@ let g:increment_activator_filetype_candidates = {
 \   ['enabled', 'disabled'],
 \   ['should', 'should_not'],
 \   ['be_file', 'be_directory'],
-\   ['div', 'span'],
+\   ['div', 'span', 'Box'],
 \   ['column', 'row'],
 \   ['start', 'end'],
 \   ['head', 'tail'],
