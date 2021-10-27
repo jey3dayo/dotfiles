@@ -81,7 +81,6 @@ sample.*
 .zinit
 iterm2
 
-tsconfig.json
 .vscode
 .project
 .classpath
@@ -115,3 +114,6 @@ zsh/.zsh_sessions/
 gh/hosts.yml
 *.jse
 *.jsxe
+
+*.orig
+*.rej
