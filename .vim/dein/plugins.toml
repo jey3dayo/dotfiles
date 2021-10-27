@@ -45,3 +45,9 @@ repo = 'nishigori/increment-activator'
 hook_add = '''
 source ~/.config/nvim/plugins/increment-activator.rc.vim
 '''
+
+[[plugins]]
+repo = 'tomarrell/vim-npr'
+hook_add = '''
+let g:vim_npr_file_names = ["", ".js", ".jsx", ".ts", ".tsx", ".css", "/index.js", "/index.tsx"]
+'''
