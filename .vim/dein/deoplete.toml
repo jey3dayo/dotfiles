@@ -31,7 +31,7 @@ repo = 'ujihisa/neco-look'
 depends = 'deoplete.nvim'
 on_i = 1
 hook_add = '''
-source ~/.config/nvim/plugins/neco-lock.rc.vim
+source ~/.config/nvim/plugins/neco-look.rc.vim
 '''
 
 [[plugins]]
