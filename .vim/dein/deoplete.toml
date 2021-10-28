@@ -4,7 +4,7 @@ repo = 'Shougo/neoinclude.vim'
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
 hook_add = '''
-source ~/.config/nvim/plugins/deoplate.rc.vim
+source ~/.config/nvim/plugins/deoplete.rc.vim
 '''
 
 [[plugins]]
