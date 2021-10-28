@@ -30,6 +30,7 @@ alias la='exa -la'
 alias hg="hg --encoding=utf-8"
 alias gst="git status -sb"
 alias tailf="tail -f"
+alias agh="ag --hidden"
 
 # gnu
 alias sed="gsed"
