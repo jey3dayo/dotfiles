@@ -94,6 +94,7 @@ configstore
 fish
 fisher
 karabiner/automatic_backups
+github-copilot/
 
 .env*
 .direnv
