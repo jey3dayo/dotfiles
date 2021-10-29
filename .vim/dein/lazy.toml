@@ -2,7 +2,7 @@
 repo = 'tpope/vim-fugitive'
 on_cmd = ['Gblame', 'Gdiffsplit', 'Ggrep', 'Gstatus', 'Gwrite', 'Gcommit']
 hook_add = '''
-source ~/.config/nvim/plugins/unite-outline.rc.vim
+source ~/.config/nvim/plugins/fugitive.rc.vim
 '''
 
 [[plugins]]
