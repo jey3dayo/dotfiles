@@ -32,12 +32,6 @@ on_source = 'ddc.vim'
 repo = 'Shougo/ddc-cmdline-history'
 on_source = 'ddc.vim'
 
-# [[plugins]]
-# repo = 'Shougo/pum.vim'
-# hook_add = '''
-# source ~/.config/nvim/plugins/pum.rc.vim
-# '''
-
 [[plugins]]
 repo = 'Shougo/deoppet.nvim'
 on_source = 'ddc.vim'
@@ -45,3 +39,17 @@ on_source = 'ddc.vim'
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
 on_source = 'ddc.vim'
+
+# [[plugins]]
+# repo = 'Shougo/pum.vim'
+# hook_add = '''
+# source ~/.config/nvim/plugins/pum.rc.vim
+# '''
+
+# [[plugins]]
+# repo = 'Shougo/ddu.vim'
+# depends = 'ddc.vim'
+# hook_add = '''
+# source ~/.config/nvim/plugins/ddu.rc.vim
+# '''
+
