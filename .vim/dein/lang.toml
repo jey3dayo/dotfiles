@@ -95,6 +95,5 @@ on_ft = 'go'
 repo = 'elzr/vim-json'
 on_ft = ['json']
 
-[[plugins]]
-repo = 'github/copilot.vim'
-on_ft = ['yaml']
+# [[plugins]]
+# repo = 'github/copilot.vim'

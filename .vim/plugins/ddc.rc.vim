@@ -1,29 +1,36 @@
 " Customize global settings
-call ddc#custom#patch_global('sources', ['deoppet', 'nvim-lsp', 'file', 'around'])
+call ddc#custom#patch_global('sources', ['nvim-lsp', 'deoppet', 'around', 'file', 'cmdline', 'cmdline-history'])
 
 call ddc#custom#patch_global('sourceOptions', {
       \ '_': {
       \   'matchers': ['matcher_head'],
       \   'sorters': ['sorter_rank']},
-      \   'around': {'mark': 'A'},
+      \ 'around': {'mark': 'A'},
+      \ 'file': {
+      \   'mark': 'F',
+      \   'isVolatile': v:true,
+      \   'forceCompletionPattern': '\S/\S*',
+      \ },
       \ 'deoppet': {'dup': v:true, 'mark': 'dp'},
+      \ 'cmdline': {'mark': 'cmdLine'},
+      \ 'cmdline-history': {'mark': 'history'},
       \ 'nvim-lsp': {
-      \   'mark': 'lsp',
+      \   'mark': 'LSP',
       \   'forceCompletionPattern': '\.\w*|:\w*|->\w*' },
       \ })
 
 call ddc#custom#patch_global('sourceParams', {
       \ 'around': {'maxSize': 500},
-      \ 'nvim-lsp': { 'kindLabels': { 'Class': 'c' } },
+      \ 'file': {'smartCase': v:true},
       \ })
 
 
 " Customize settings on a filetype
-call ddc#custom#patch_filetype(['c', 'cpp'], 'sources', ['around', 'clangd'])
-call ddc#custom#patch_filetype(['c', 'cpp'], 'sourceOptions', {
-      \ 'clangd': {'mark': 'C'},
-      \ })
-call ddc#custom#patch_filetype(['c', 'cpp'], 'sources', ['around', 'clangd'])
+" call ddc#custom#patch_filetype(['c', 'cpp'], 'sources', ['around', 'clangd'])
+" call ddc#custom#patch_filetype(['c', 'cpp'], 'sourceOptions', {
+"       \ 'clangd': {'mark': 'C'},
+"       \ })
+" call ddc#custom#patch_filetype(['c', 'cpp'], 'sources', ['around', 'clangd'])
 call ddc#custom#patch_filetype('markdown', 'sourceParams', {
       \ 'around': {'maxSize': 100},
       \ })
@@ -55,13 +62,3 @@ call deoppet#initialize()
 call deoppet#custom#option('snippets',
 \ map(globpath(&runtimepath, 'neosnippets', 1, 1),
 \     { _, val -> { 'path': val } }))
-
-" pum.vim
-inoremap <Tab>   <Cmd>call pum#map#insert_relative(+1)<CR>
-inoremap <S-Tab> <Cmd>call pum#map#insert_relative(-1)<CR>
-inoremap <C-n>   <Cmd>call pum#map#insert_relative(+1)<CR>
-inoremap <C-p>   <Cmd>call pum#map#insert_relative(-1)<CR>
-inoremap <C-y>   <Cmd>call pum#map#confirm()<CR>
-inoremap <C-e>   <Cmd>call pum#map#cancel()<CR>
-inoremap <PageDown> <Cmd>call pum#map#insert_relative_page(+1)<CR>
-inoremap <PageUp>   <Cmd>call pum#map#insert_relative_page(-1)<CR>

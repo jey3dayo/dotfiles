@@ -25,11 +25,18 @@ repo = 'Shougo/ddc-nvim-lsp'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/ddc-cmdline-history'
+repo = 'Shougo/ddc-cmdline'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/pum.vim'
+repo = 'Shougo/ddc-cmdline-history'
+on_source = 'ddc.vim'
+
+# [[plugins]]
+# repo = 'Shougo/pum.vim'
+# hook_add = '''
+# source ~/.config/nvim/plugins/pum.rc.vim
+# '''
 
 [[plugins]]
 repo = 'Shougo/deoppet.nvim'
