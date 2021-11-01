@@ -33,15 +33,28 @@ repo = 'Shougo/ddc-cmdline-history'
 on_source = 'ddc.vim'
 
 [[plugins]]
+repo = 'Shougo/neco-vim'
+
+[[plugins]]
 repo = 'Shougo/deoppet.nvim'
 on_source = 'ddc.vim'
+hook_add = '''
+source ~/.config/nvim/plugins/deoppet.rc.vim
+'''
 
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
 on_source = 'ddc.vim'
 
-[[plugins]]
-repo = 'Shougo/neco-vim'
+# Snip Tool
+# [[plugins]]
+# repo = 'hrsh7th/vim-vsnip-integ'
+#
+# [[plugins]]
+# repo = 'hrsh7th/vim-vsnip'
+# hook_add = '''
+# source ~/.config/nvim/plugins/vsnip.rc.vim
+# '''
 
 # [[plugins]]
 # repo = 'Shougo/pum.vim'
