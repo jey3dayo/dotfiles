@@ -5,4 +5,5 @@ setlocal foldmarker=/*,*/
 
 nmap [lsp]p <C-u>:!prettier --write "%"<CR>
 nmap [lsp]j <C-u>:!ts-node "%"<CR>
+nmap [lsp]j <C-u>:!ts-node -r tsconfig-paths/register "%"<CR>
 nmap [lsp]J <C-u>:!jest "%"<CR>
