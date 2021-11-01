@@ -40,6 +40,9 @@ on_source = 'ddc.vim'
 repo = 'Shougo/neosnippet-snippets'
 on_source = 'ddc.vim'
 
+[[plugins]]
+repo = 'Shougo/neco-vim'
+
 # [[plugins]]
 # repo = 'Shougo/pum.vim'
 # hook_add = '''
@@ -52,10 +55,4 @@ on_source = 'ddc.vim'
 # hook_add = '''
 # source ~/.config/nvim/plugins/ddu.rc.vim
 # '''
-
-[[plugins]]
-repo = 'Shougo/neco-vim'
-hook_add = '''
-source ~/.config/nvim/plugins/ddc.rc.vim
-'''
 

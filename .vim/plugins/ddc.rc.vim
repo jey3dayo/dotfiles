@@ -22,20 +22,17 @@ call ddc#custom#patch_global('sourceOptions', {
 call ddc#custom#patch_global('sourceParams', {
       \ 'around': {'maxSize': 500},
       \ 'file': {'smartCase': v:true},
+      \ 'necovim': {'smartCase': 'vim'},
       \ })
 
 
 " Customize settings on a filetype
-" call ddc#custom#patch_filetype(['c', 'cpp'], 'sources', ['around', 'clangd'])
-" call ddc#custom#patch_filetype(['c', 'cpp'], 'sourceOptions', {
-"       \ 'clangd': {'mark': 'C'},
-"       \ })
-" call ddc#custom#patch_filetype(['c', 'cpp'], 'sources', ['around', 'clangd'])
-call ddc#custom#patch_filetype('markdown', 'sourceParams', {
+call ddc#custom#patch_filetype(
+      \ ['vim', 'toml'], 'sources', ['necovim'])
+
+call ddc#custom#patch_filetype(['markdown'], 'sourceParams', {
       \ 'around': {'maxSize': 100},
       \ })
-
-call ddc#enable()
 
 " Mappings
 
@@ -48,6 +45,7 @@ inoremap <silent><expr> <TAB>
 " <S-TAB>: completion back.
 inoremap <expr><S-TAB>  pumvisible() ? '<C-p>' : '<C-h>'
 
+call ddc#enable()
 
 " deoppet
 imap <C-k>  <Plug>(deoppet_expand)
