@@ -53,3 +53,9 @@ on_source = 'ddc.vim'
 # source ~/.config/nvim/plugins/ddu.rc.vim
 # '''
 
+[[plugins]]
+repo = 'Shougo/neco-vim'
+hook_add = '''
+source ~/.config/nvim/plugins/ddc.rc.vim
+'''
+
