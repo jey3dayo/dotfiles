@@ -24,6 +24,7 @@ lua << EOF
 -- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
 local on_attach = function(client, bufnr)
+    require "lsp_signature".on_attach()
 end
 local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end

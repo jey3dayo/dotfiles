@@ -9,19 +9,12 @@ source ~/.config/nvim/plugins/nvim-lsp.rc.vim
 repo = 'williamboman/nvim-lsp-installer'
 
 [[plugins]]
-repo = 'matsui54/ddc-nvim-lsp-doc'
-depends = ['ddc.vim']
+repo = 'matsui54/denops-popup-preview.vim'
+# depends = ['ddc.vim']
 hook_source = '''
-let g:ddc_nvim_lsp_doc_config = {
-     \ 'documentation': {
-     \   'enable': v:true,
-     \   'border': 'single',
-     \   'maxWidth': 60,
-     \   'maxHeight': 30,
-     \ },
-     \ 'signature': {
-     \   'maxHeight': 5,
-     \ },
-     \ }
- call ddc_nvim_lsp_doc#enable()
+call popup_preview#enable()
 '''
+
+[[plugins]]
+repo = 'ray-x/lsp_signature.nvim'
+# depends = ['ddc.vim']
