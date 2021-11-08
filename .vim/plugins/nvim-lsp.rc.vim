@@ -33,7 +33,7 @@ local servers = {
   cssls = {},
   bashls = {},
   vimls = {},
-  pyright = {},
+  pylsp = {},
   dockerls = {},
   eslint = {},
   -- tailwindcss = {
@@ -108,6 +108,10 @@ local servers = {
             url = 'https://json.schemastore.org/now.json',
           },
           {
+            fileMatch = { 'now.json', 'vercel.json' },
+            url = 'https://json.schemastore.org/now.json',
+          },
+          {
             fileMatch = {
               '.stylelintrc',
               '.stylelintrc.json',
@@ -146,6 +150,13 @@ local servers = {
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  },
+}
 
 for server, config in pairs(servers) do
   local server_disabled = (config.disabled ~= nil and config.disabled) or false
