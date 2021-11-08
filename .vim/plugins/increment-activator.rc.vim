@@ -27,6 +27,9 @@ let g:increment_activator_filetype_candidates = {
 \ 'javascript': [
 \   ['props', 'state'],
 \ ],
+\ 'typescript': [
+\   ['string', 'number', 'boolean', 'symbol', 'null', 'undefined'],
+\ ],
 \ 'git-rebase-todo': [
 \   ['pick', 'reword', 'edit', 'squash', 'fixup', 'exec'],
 \ ],
