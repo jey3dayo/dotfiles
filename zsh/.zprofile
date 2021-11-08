@@ -85,11 +85,6 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 
 eval "$(rbenv init - --no-rehash)"
 
-if [ -d $HOME/.pyenv ] ; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  eval "$(pyenv init -)"
-fi
-
 if [ -d "$HOME/.nodebrew" ] ; then
   export NODEBREW_ROOT=$HOME/.nodebrew
   export NODE_HOME="$NODEBREW_ROOT/current/bin"
