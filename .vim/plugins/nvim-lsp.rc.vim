@@ -14,7 +14,6 @@ nnoremap <silent>K :lua vim.lsp.buf.hover()<CR>
 nnoremap <silent>L :lua vim.lsp.buf.signature_help()<CR>
 nnoremap <C-k> :lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <C-j> :lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap [lsp]e :EslintFixAll<CR>
 
 lua << EOF
 -- for debugging
