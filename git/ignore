@@ -43,6 +43,7 @@ hub
 *.a
 *.al
 *.bk
+*.bk.*
 *.bak
 *.la
 *.lo
