@@ -1,5 +1,5 @@
 " Customize global settings
-call ddc#custom#patch_global('sources', ['nvim-lsp', 'deoppet', 'around', 'file', 'cmdline', 'cmdline-history'])
+call ddc#custom#patch_global('sources', ['around', 'deoppet', 'file', 'nvim-lsp', 'around', 'cmdline', 'cmdline-history'])
 
 call ddc#custom#patch_global('sourceOptions', {
       \ '_': {
