@@ -1,7 +1,5 @@
 " Set default sources
-call ddu#custom#patch_global({
-    \ 'sources': [{'name': 'file', 'around', 'params': {}}],
-    \ })
+call ddc#custom#patch_global('sources', ['nvim-lsp', 'file'])
 
 " Call default sources
 call ddu#start({})
@@ -18,7 +16,6 @@ call ddu#custom#patch_buffer('files', {
 call ddu#start({'buffer_name': 'files'})
 
 " lsp
-call ddc#custom#patch_global('sources', ['nvim-lsp'])
 call ddc#custom#patch_global('sourceOptions', {
       \ '_': { 'matchers': ['matcher_head'] },
       \ 'nvim-lsp': {
