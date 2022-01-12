@@ -12,8 +12,8 @@ nnoremap [lsp]f :lua vim.lsp.buf.formatting()<CR>
 nnoremap [lsp]a :lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent>K :lua vim.lsp.buf.hover()<CR>
 nnoremap <silent>L :lua vim.lsp.buf.signature_help()<CR>
-nnoremap <C-k> :lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <C-j> :lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <C-k> :lua vim.diagnostic.goto_prev()<CR>
+nnoremap <C-j> :lua vim.diagnostic.goto_next()<CR>
 
 lua << EOF
 -- for debugging
