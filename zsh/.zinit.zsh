@@ -22,6 +22,7 @@ zinit light-mode for \
       zdharma/fast-syntax-highlighting
 
 zinit wait lucid light-mode for \
+    olets/zsh-abbr \
     zsh-users/zsh-syntax-highlighting \
     zsh-users/zsh-autosuggestions \
     blockf atpull'zinit creinstall -q .' \
