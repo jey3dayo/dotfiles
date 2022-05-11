@@ -116,6 +116,16 @@ export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
 
+export GOENV_ROOT="$HOME/.goenv"
+path=(
+  $GOENV_ROOT/bin(N-/)
+  $path
+)
+
+if command -v goenv>/dev/null; then
+  eval "$(goenv init -)"
+fi
+
 typeset -U path cdpath fpath manpath
 
 # vim: set syntax=zsh:
