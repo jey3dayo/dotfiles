@@ -70,6 +70,13 @@ local servers = {
   -- rnix = {},
   jsonls = {
     filetypes = { 'json', 'jsonc' },
+    commands = {
+      Format = {
+        function()
+          vim.lsp.buf.range_formatting({},{0,0},{vim.fn.line("$"),0})
+        end
+      }
+    },
     settings = {
       json = {
         -- Schemas https://www.schemastore.org
@@ -142,6 +149,16 @@ local servers = {
           ['http://json.schemastore.org/stylelintrc.json'] = '.stylelintrc.{yml,yaml}',
           ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
         },
+      },
+    },
+  },
+  prismals = {
+    cmd = { "prisma-language-server", "--stdio" },
+    filetypes = { "prisma" },
+    root_dir = nvim_lsp.util.root_pattern(".git", "package.json"),
+    settings = {
+      prisma = {
+        prismaFmtBinPath = ""
       },
     },
   },

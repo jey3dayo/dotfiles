@@ -95,5 +95,13 @@ on_ft = 'go'
 repo = 'elzr/vim-json'
 on_ft = ['json']
 
+[[plugins]]
+repo = 'pantharshit00/vim-prisma'
+on_ft = ['prisma']
+
+[[plugins]]
+repo = 'vito-c/jq.vim'
+on_ft = ['jq']
+
 # [[plugins]]
 # repo = 'github/copilot.vim'
