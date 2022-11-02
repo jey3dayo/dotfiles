@@ -9,12 +9,12 @@ let g:lightline = {
 \   ],
 \ },
 \ 'component': {
-\   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}',
+\   'fugitive': '%{exists("*FugitiveHead")?FugitiveHead():""}',
 \ },
 \ 'component_visible_condition': {
 \   'readonly': '(&filetype!="help"&& &readonly)',
 \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-\   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())',
+\   'fugitive': '(exists("*FugitiveHead") && ""!=FugitiveHead())',
 \ },
 \ 'component_expand': {
 \   'qfstatusline': 'qfstatusline#Update',
