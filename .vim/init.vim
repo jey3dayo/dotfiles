@@ -148,10 +148,12 @@ endif
 " }}}
 
 
-" let g:python_host_prog='/usr/bin/python'
-let g:python3_host_prog='/usr/local/bin/python3'
+
+let g:denops#deno='/Users/t00114/.deno/bin/deno'
+let g:python_host_prog='/Users/t00114/.pyenv/versions/py2/bin/python'
+let g:python3_host_prog='/Users/t00114/.pyenv/versions/py3/bin/python'
 let g:node_host_prog='~/.local/share/yarn/global/node_modules/.bin/neovim-node-host'
-let g:ruby_host_prog='/usr/local/bin/neovim-ruby-host'
+let g:ruby_host_prog='/Users/t00114/.rbenv/shims/neovim-ruby-host'
 
 let g:cache_home = empty($XDG_CACHE_HOME) ? expand('$HOME/.cache') : $XDG_CACHE_HOME
 let g:config_home = empty($XDG_CONFIG_HOME) ? expand('$HOME/.config') : $XDG_CONFIG_HOME
