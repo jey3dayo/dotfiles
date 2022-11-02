@@ -12,3 +12,4 @@ sample/
 prisma/generated/
 *jquery*
 output/
+raycast/

@@ -119,3 +119,5 @@ gh/hosts.yml
 
 *.orig
 *.rej
+
+op/*
