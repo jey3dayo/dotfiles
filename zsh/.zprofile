@@ -10,10 +10,11 @@ export LISTMAX=0
 export GREP_OPTIONS='--color=auto'
 
 path=(
+  /usr/local/opt/openjdk/bin:(N-/)
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
-  $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
+  $HOME/.deno/bin(N-/)
   /opt/homebrew/{bin,sbin}(N-/)
   $path
 )
@@ -83,12 +84,20 @@ fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
 
-eval "$(rbenv init - --no-rehash)"
+if [ -d "$HOME/.rbenv" ] ; then
+  eval "$(rbenv init - --no-rehash)"
+fi
 
 if [ -d "$HOME/.nodebrew" ] ; then
   export NODEBREW_ROOT=$HOME/.nodebrew
   export NODE_HOME="$NODEBREW_ROOT/current/bin"
   path=($NODE_HOME(N-/) $path)
+fi
+
+if [ -d "$HOME/.pyenv" ] ; then
+  export PYENV_ROOT=$HOME/.pyenv
+  path=("$PYENV_ROOT/bin"(N-/) $path)
+  eval "$(pyenv init -)"
 fi
 
 if [ -d $HOME/perl5 ] ; then
@@ -101,7 +110,8 @@ fi
 
 path=("$HOME/.cargo/bin/"(N-/) $path)
 
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0`
+# export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0`
+export JAVA_HOME=`/usr/libexec/java_home -v 18`
 export STUDIO_JDK=${JAVA_HOME%/*/*}
 
 export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
