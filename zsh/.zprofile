@@ -86,10 +86,8 @@ if command -v peco>/dev/null; then
   alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep -v \*|peco|awk "{print \$2}")'
 fi
 
-if [ -d "$HOME/.pyenv" ] ; then
-  export PYENV_ROOT=$HOME/.pyenv
-  path=("$PYENV_ROOT/bin"(N-/) $path)
-  eval "$(pyenv init -)"
+if command -v anyenv>/dev/null; then
+  eval "$(anyenv init -)"
 fi
 
 if [ -d $HOME/perl5 ] ; then
@@ -117,16 +115,6 @@ path=(
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 export CATALINA_HOME=/usr/local/Cellar/tomcat/latest/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
-
-export GOENV_ROOT="$HOME/.goenv"
-path=(
-  $GOENV_ROOT/bin(N-/)
-  $path
-)
-
-if command -v goenv>/dev/null; then
-  eval "$(goenv init -)"
-fi
 
 typeset -U path cdpath fpath manpath
 
