@@ -19,6 +19,14 @@ path=(
   $path
 )
 
+# Temporary Files
+if [[ ! -d "$TMPDIR" ]]; then
+  export TMPDIR="/tmp/$LOGNAME"
+  mkdir -p -m 700 "$TMPDIR"
+fi
+
+TMPPREFIX="${TMPDIR%/}/zsh"
+
 # alias
 alias vim="nvim"
 alias vi="nvim"
@@ -26,7 +34,7 @@ alias less="less -giMRSW -z-4 -x4"
 alias where="command -v"
 alias df="df -h"
 alias du="du -h"
-alias l='exa -l'
+alias l='exa -la'
 alias ll='exa -la'
 alias hg="hg --encoding=utf-8"
 alias gst="git status -sb"
@@ -37,20 +45,7 @@ alias agh="ag --hidden"
 alias sed="gsed"
 alias grep="ggrep"
 
-if command -v colordiff>/dev/null; then
-  alias diff="colordiff"
-fi
-
-# direnv
-if command -v direnv>/dev/null; then
-  eval "$(direnv hook zsh)"
-fi
-
-# peco
-if command -v peco>/dev/null; then
-  alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep -v \*|peco|awk "{print \$2}")'
-fi
-
+# custom
 alias npm-clean='npm run ncu && rm -rf node_modules && yarn && npm prune'
 alias pip-upgrade='pip3 list --format json --outdated | jq .[].name | xargs pip install -U'
 alias yarn-upgrade='yarn global upgrade'
@@ -76,22 +71,19 @@ case ${OSTYPE} in
   ;;
 esac
 
-# Temporary Files
-if [[ ! -d "$TMPDIR" ]]; then
-  export TMPDIR="/tmp/$LOGNAME"
-  mkdir -p -m 700 "$TMPDIR"
+# diff
+if command -v colordiff>/dev/null; then
+  alias diff="colordiff"
 fi
 
-TMPPREFIX="${TMPDIR%/}/zsh"
-
-if [ -d "$HOME/.rbenv" ] ; then
-  eval "$(rbenv init - --no-rehash)"
+# direnv
+if command -v direnv>/dev/null; then
+  eval "$(direnv hook zsh)"
 fi
 
-if [ -d "$HOME/.nodebrew" ] ; then
-  export NODEBREW_ROOT=$HOME/.nodebrew
-  export NODE_HOME="$NODEBREW_ROOT/current/bin"
-  path=($NODE_HOME(N-/) $path)
+# peco
+if command -v peco>/dev/null; then
+  alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep -v \*|peco|awk "{print \$2}")'
 fi
 
 if [ -d "$HOME/.pyenv" ] ; then
