@@ -7,7 +7,6 @@ if [[ "$SHLVL" -eq 1 && -s "${ZDOTDIR}/.zprofile" ]]; then
   source "${ZDOTDIR}/.zprofile"
 fi
 
-export GOPATH=$HOME
 export GHQ_ROOT=~/src
 
 # vim: set syntax=zsh:

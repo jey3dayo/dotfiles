@@ -24,3 +24,5 @@ export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 # export CATALINA_HOME=/opt/homebrew/Cellar/tomcat/latest/libexec/
 export CATALINA_HOME=/opt/homebrew/Cellar/tomcat/10.1.1/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
+
+export GOPATH=$HOME
