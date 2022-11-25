@@ -123,3 +123,4 @@ gh/hosts.yml
 op/*
 jgit/*
 raycast/*
+cvim/*
