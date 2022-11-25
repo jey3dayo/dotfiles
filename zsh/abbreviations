@@ -10,6 +10,7 @@ abbr -S hg="hg --encoding=utf-8"
 abbr -S tailf="tail -f"
 abbr -S ag="ag --hidden"
 
+abbr -S ga="git add"
 abbr -S gst="git status -sb"
 abbr -S gd="git diff"
 abbr -S gdc="git diff --cached"
