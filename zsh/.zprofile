@@ -9,11 +9,6 @@ export PAGER='less'
 export LISTMAX=0
 export GREP_OPTIONS='--color=auto'
 
-# direnv
-if command -v direnv>/dev/null; then
-  eval "$(direnv hook zsh)"
-fi
-
 # load sources
 for f ("${ZDOTDIR:-$HOME}"/sources/*) source "${f}"
 
