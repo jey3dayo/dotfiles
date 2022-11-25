@@ -14,7 +14,6 @@ if command -v direnv>/dev/null; then
   eval "$(direnv hook zsh)"
 fi
 
-
 # load sources
 for f ("${ZDOTDIR:-$HOME}"/sources/*) source "${f}"
 

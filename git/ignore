@@ -121,3 +121,5 @@ gh/hosts.yml
 *.rej
 
 op/*
+jgit/*
+raycast/*

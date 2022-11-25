@@ -1,0 +1,28 @@
+abbr -S l='exa -la'
+abbr -S ll='exa -la'
+abbr -S vim="nvim"
+abbr -S vi="nvim"
+abbr -S less="less -giMRSW -z-4 -x4"
+abbr -S where="command -v"
+abbr -S df="df -h"
+abbr -S du="du -h"
+abbr -S hg="hg --encoding=utf-8"
+abbr -S tailf="tail -f"
+abbr -S ag="ag --hidden"
+
+abbr -S gst="git status -sb"
+abbr -S gd="git diff"
+abbr -S gdc="git diff --cached"
+
+abbr -S gd1="git diff HEAD~1"
+abbr -S gd2="git diff HEAD~2"
+abbr -S gd3="git diff HEAD~3"
+
+abbr -S npm-clean='npm run ncu && rm -rf node_modules && yarn && npm prune'
+abbr -S pip-upgrade='pip3 list --format json --outdated | jq .[].name | xargs pip install -U'
+abbr -S yarn-upgrade='yarn global upgrade'
+abbr -S brew-upgrade='brew update && brew upgrade && brew cleanup'
+abbr -S software-upgrade='softwareupdate --all --install --force'
+abbr -S pkg-upgrade='yarn-upgrade ; pip-upgrade ; brew-upgrade ; software-upgrade ; npm -g i npm-check-updates'
+
+abbr -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
