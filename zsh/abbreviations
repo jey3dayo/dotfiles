@@ -1,5 +1,7 @@
 abbr -S l='exa -la'
 abbr -S ll='exa -la'
+abbr -S ls='exa'
+abbr -S la='exa -la'
 abbr -S vim="nvim"
 abbr -S vi="nvim"
 abbr -S less="less -giMRSW -z-4 -x4"

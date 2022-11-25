@@ -7,7 +7,7 @@ chown -R "${USER}" "${HOME}"/{tmp,.cache}
 
 ln -s "${DOTFILES}" ~/.config
 
-echo "$HOME/.config/nvim/init.vim" >> ~/.vimrc
+echo "source $HOME/.config/nvim/init.vim" >> ~/.vimrc
 echo "source-file $HOME/.tmux/main.conf" >> ~/.tmux.conf
 
 export ZDOTDIR=~/src/github.com/.config/.zsh
