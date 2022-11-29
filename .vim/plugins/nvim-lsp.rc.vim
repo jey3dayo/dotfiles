@@ -29,12 +29,20 @@ local on_attach = function(client, bufnr)
 end
 
 local servers = {
-  cssls = {},
   bashls = {},
   vimls = {},
   pylsp = {},
   dockerls = {},
   eslint = {},
+  cssls = {
+    settings = {
+      css = {
+        lint = {
+          unknownAtRules = 'ignore',
+        },
+      }
+    },
+  },
   -- tailwindcss = {
   --   init_options = {
   --     userLanguages = {
