@@ -35,3 +35,9 @@ repo = 'nishigori/increment-activator'
 hook_add = '''
 source ~/.config/nvim/plugins/increment-activator.rc.vim
 '''
+
+[[plugins]]
+repo = 'norcalli/nvim-colorizer.lua'
+hook_add = '''
+source ~/.config/nvim/plugins/nvim-colorizer.rc.vim
+'''
