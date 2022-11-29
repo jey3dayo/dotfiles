@@ -5,6 +5,10 @@ source ~/.config/nvim/plugins/ddc.rc.vim
 '''
 
 [[plugins]]
+repo = 'Shougo/ddc-ui-native'
+on_source = 'ddc.vim'
+
+[[plugins]]
 repo = 'Shougo/ddc-around'
 on_source = 'ddc.vim'
 

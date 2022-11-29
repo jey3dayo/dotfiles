@@ -1,6 +1,8 @@
 " Customize global settings
 call ddc#custom#patch_global('sources', ['around', 'deoppet', 'file', 'nvim-lsp', 'around', 'cmdline', 'cmdline-history'])
 
+call ddc#custom#patch_global('ui', 'native')
+
 call ddc#custom#patch_global('sourceOptions', {
       \ '_': {
       \   'matchers': ['matcher_head'],
