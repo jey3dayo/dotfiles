@@ -43,26 +43,26 @@ local servers = {
       }
     },
   },
-  -- tailwindcss = {
-  --   init_options = {
-  --     userLanguages = {
-  --       eruby = 'erb',
-  --       eelixir = 'html-eex',
-  --       ['javascript.jsx'] = 'javascriptreact',
-  --       ['typescript.tsx'] = 'typescriptreact',
-  --     },
-  --   },
-  --   handlers = {
-  --     ['tailwindcss/getConfiguration'] = function(_, _, context)
-  --       -- tailwindcss lang server waits for this repsonse before providing hover
-  --       vim.lsp.buf_notify(
-  --         context.bufnr,
-  --         'tailwindcss/getConfigurationResponse',
-  --         { _id = context.params._id }
-  --       )
-  --     end,
-  --   },
-  -- },
+  tailwindcss = {
+    init_options = {
+      userLanguages = {
+        eruby = 'erb',
+        eelixir = 'html-eex',
+        ['javascript.jsx'] = 'javascriptreact',
+        ['typescript.tsx'] = 'typescriptreact',
+      },
+    },
+    handlers = {
+      ['tailwindcss/getConfiguration'] = function(_, _, context)
+        -- tailwindcss lang server waits for this repsonse before providing hover
+        vim.lsp.buf_notify(
+          context.bufnr,
+          'tailwindcss/getConfigurationResponse',
+          { _id = context.params._id }
+        )
+      end,
+    },
+  },
   rust_analyzer = {},
   tsserver = {
     root_dir = function(fname)
