@@ -206,7 +206,7 @@ nnoremap [core]u :<C-u>call dein#update()<CR>
 " }}}
 
 " treesitter
-lua <<EOF
+lua << EOF
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,

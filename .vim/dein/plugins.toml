@@ -37,6 +37,15 @@ source ~/.config/nvim/plugins/increment-activator.rc.vim
 '''
 
 [[plugins]]
+repo = 'nvim-tree/nvim-web-devicons'
+
+[[plugins]]
+repo = 'akinsho/bufferline.nvim'
+depends = 'nvim-web-devicons'
+hook_add = '''
+source ~/.config/nvim/plugins/bufferline.rc.vim
+'''
+[[plugins]]
 repo = 'norcalli/nvim-colorizer.lua'
 hook_add = '''
 source ~/.config/nvim/plugins/nvim-colorizer.rc.vim
