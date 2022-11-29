@@ -1,5 +1,5 @@
 " Customize global settings
-call ddc#custom#patch_global('sources', ['around', 'deoppet', 'file', 'nvim-lsp', 'around', 'cmdline', 'cmdline-history'])
+call ddc#custom#patch_global('sources', ['around', 'file', 'nvim-lsp', 'around', 'cmdline', 'cmdline-history'])
 
 call ddc#custom#patch_global('ui', 'native')
 
@@ -13,7 +13,6 @@ call ddc#custom#patch_global('sourceOptions', {
       \   'isVolatile': v:true,
       \   'forceCompletionPattern': '\S/\S*',
       \ },
-      \ 'deoppet': {'dup': v:true, 'mark': 'dp'},
       \ 'cmdline': {'mark': 'cmdLine'},
       \ 'cmdline-history': {'mark': 'history'},
       \ 'nvim-lsp': {
