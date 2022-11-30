@@ -1,4 +1,7 @@
 [[plugins]]
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
 repo = 'neovim/nvim-lspconfig'
 depends = ['nvim-lsp-installer', 'ddc.vim']
 hook_add = '''
@@ -9,10 +12,10 @@ source ~/.config/nvim/plugins/nvim-lsp.rc.vim
 repo = 'williamboman/nvim-lsp-installer'
 
 [[plugins]]
-repo = 'matsui54/denops-popup-preview.vim'
-# depends = ['ddc.vim']
-hook_source = '''
-call popup_preview#enable()
+repo = 'jose-elias-alvarez/null-ls.nvim'
+depends = ['nvim-lspconfig']
+hook_add = '''
+source ~/.config/nvim/plugins/null-ls.rc.vim
 '''
 
 [[plugins]]

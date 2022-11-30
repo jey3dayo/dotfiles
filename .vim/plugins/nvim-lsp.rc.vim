@@ -8,7 +8,7 @@ nnoremap [lsp]D :lua vim.lsp.buf.declaration()<CR>
 nnoremap [lsp]t :lua vim.lsp.buf.type_definition()<CR>
 nnoremap [lsp]i :lua vim.lsp.buf.implementation()<CR>
 nnoremap [lsp]r :lua vim.lsp.buf.rename()<CR>
-nnoremap [lsp]f :lua vim.lsp.buf.formatting()<CR>
+nnoremap [lsp]f :lua vim.lsp.buf.format()<CR>
 nnoremap [lsp]a :lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent>K :lua vim.lsp.buf.hover()<CR>
 nnoremap <silent>L :lua vim.lsp.buf.signature_help()<CR>

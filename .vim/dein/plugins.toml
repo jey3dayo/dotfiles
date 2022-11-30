@@ -45,6 +45,13 @@ depends = 'nvim-web-devicons'
 hook_add = '''
 source ~/.config/nvim/plugins/bufferline.rc.vim
 '''
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+hook_source = '''
+source ~/.config/nvim/plugins/denops-popup-preview.rc.vim
+'''
+
 [[plugins]]
 repo = 'norcalli/nvim-colorizer.lua'
 hook_add = '''

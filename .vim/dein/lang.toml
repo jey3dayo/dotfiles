@@ -103,5 +103,11 @@ on_ft = ['prisma']
 repo = 'vito-c/jq.vim'
 on_ft = ['jq']
 
+[[plugins]]
+repo = 'MunifTanjim/prettier.nvim'
+hook_add = '''
+source ~/.config/nvim/plugins/prettier.rc.vim
+'''
+
 # [[plugins]]
 # repo = 'github/copilot.vim'

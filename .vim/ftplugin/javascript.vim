@@ -6,6 +6,4 @@ setlocal foldmarker=/*,*/
 nmap [lsp]p <C-u>:!prettier --write "%"<CR>
 nmap [lsp]j <C-u>:!babel-node "%"<CR>
 nmap [lsp]J <C-u>:!jest "%"<CR>
-
-nnoremap [lsp]f :EslintFixAll<CR>
-nnoremap [lsp]F :lua vim.lsp.buf.formatting()<CR>
+nnoremap [lsp]F :EslintFixAll<CR>
