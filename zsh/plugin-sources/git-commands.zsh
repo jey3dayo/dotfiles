@@ -7,3 +7,4 @@ function git_diff() {
 }
 zle -N git_diff git_diff
 bindkey '^gg' git_diff
+bindkey '^g^g' git_diff
