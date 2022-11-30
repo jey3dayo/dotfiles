@@ -56,13 +56,14 @@ var overlayedGlobalMarks = {
 // });
 
 // paste URL
+const searchWordQuery = q => `https://www.google.co.jp/search?q=${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
 const openClipboard = ({ newTab }) => {
   api.Clipboard.read(({ data }) => {
     var markInfo = {
       scrollLeft: 0,
       scrollTop: 0,
       tab: { tabbed: newTab, active: newTab },
-      url: /^http/.test(data) ? data : `https://www.google.co.jp/search?q=${data}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`,
+      url: /^http/.test(data) ? data : searchWordQuery(data),
     };
     api.RUNTIME('openLink', markInfo)
   });
@@ -181,7 +182,7 @@ api.removeSearchAlias('y', 's');
 api.removeSearchAlias('s', 's');
 
 // --- search ---
-api.addSearchAlias('1', 'Google 1年以内', 'https://www.google.co.jp/search?q={0}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja');
+api.addSearchAlias('1', 'Google 1年以内', searchWordQuery('{0}'));
 api.mapkey('o1', 'Search with alias Google 1年以内', () => api.Front.openOmnibar({ type: 'SearchEngine', extra: '1' }));
 api.addSearchAlias('a', 'Amazon.co.jp', 'https://www.amazon.co.jp/s?k={0}&emi=AN1VRQENFRJN5');
 api.addSearchAlias('gh', 'github', 'https://github.com/search?utf8=✓&q=', 's');
