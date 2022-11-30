@@ -125,3 +125,5 @@ op/*
 jgit/*
 raycast/*
 cvim/*
+
+.surfingkeys.js
