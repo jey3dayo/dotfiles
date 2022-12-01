@@ -1,3 +1,6 @@
+const bitlyToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+const searchWordQuery = q => `https://www.google.co.jp/search?q=${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
+
 // --- setting ---
 api.Hints.characters = 'asdfghjklnmvbrtyu';
 settings.scrollStepSize = 150;
@@ -14,8 +17,14 @@ api.map('h', 'E'); // previous tab
 api.map('l', 'R'); // next tab
 api.map('zz', 'zr'); // zoom reset
 api.map('d', 'x'); // close current tab
+api.map('D', 'gx$'); // close all tab on right
 api.map('u', 'X'); // restore tab
 api.map('o', 'go'); // open a url in current tab
+api.map('<Ctrl-i>', 'gi');
+api.map('<Alt-i>', 'gi');
+api.map('@', '<Alt-p>');
+api.map('<Ctrl-h>', '<<'); // Move current tab to left
+api.map('<Ctrl-l>', '>>'); // Move current tab to right
 
 // --- insert mode ---
 api.imap('<Ctrl-[>', '<Esc>');
@@ -39,24 +48,19 @@ api.unmapAllExcept(
 // cf. https://gist.github.com/chroju/2118c2193fb9892d95b9686eb95189d2
 var overlayedGlobalMarks = {
   // webservice
-  'l': 'https://irodr.netlify.com/',
-  'm': 'https://mail.google.com/mail/u/0/',
-  'n': 'https://www.notion.so/',
   'M': 'https://moneyforward.com/',
-  't': 'https://twitter.com/',
-  'g': 'https://www.github.com',
-  'w': 'https://healthmate.withings.com/',
+  'N': 'https://www.notion.so/',
+  'a': 'https://www.amazon.co.jp/',
   'b': 'https://b.hatena.ne.jp/J138/bookmark',
+  'g': 'https://www.github.com',
+  'm': 'https://mail.google.com/mail/u/0/',
+  'n': 'https://www.netflix.com/',
+  't': 'https://twitter.com/',
+  'w': 'https://healthmate.withings.com/',
   'y': 'https://wwww.youtube.com/',
 };
 
-// PassThrough mode 3秒間だけsurfingkeys無効
-// api.mapkey('p', '#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys', () => {
-//   api.Normal.passThrough(3000);
-// });
-
 // paste URL
-const searchWordQuery = q => `https://www.google.co.jp/search?q=${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
 const openClipboard = ({ newTab }) => {
   api.Clipboard.read(({ data }) => {
     var markInfo = {
@@ -71,7 +75,6 @@ const openClipboard = ({ newTab }) => {
 api.mapkey('p', 'Open URL in clipboard', () => openClipboard({ newTab: false }));
 api.mapkey('P', 'Open clipboard URL in new tab', () => openClipboard({ newTab: true }));
 
-// qmarksで設定したURLを新しいタブで開く
 api.mapkey('gn', 'Open Quickmark in new tab', (mark) => {
   var priorityURLs = overlayedGlobalMarks[mark];
   if (priorityURLs === undefined) {
@@ -96,7 +99,6 @@ api.mapkey('gn', 'Open Quickmark in new tab', (mark) => {
   }
 });
 
-// qmarksで設定したURLを現在のタブで開く
 api.mapkey('go', 'Open Quickmark in current tab', (mark) => {
   var priorityURLs = overlayedGlobalMarks[mark];
   if (priorityURLs === undefined) {
@@ -130,7 +132,6 @@ const copyTitleAndUrl = (format) => {
   api.Clipboard.write(text);
 };
 
-const bitlyToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 const copyTinyUrl = async (format) => {
   const res = await fetch(`https://api-ssl.bitly.com/v3/shorten?access_token=${bitlyToken}&format=json&longUrl=${location.href}`).then(v => v.json());
   const url = res?.data?.url ?? '';
@@ -140,33 +141,12 @@ const copyTinyUrl = async (format) => {
   api.Clipboard.write(text);
 }
 
-api.mapkey('Y', 'Copy link', () => {
-  copyTinyUrl('%URL%');
-});
+api.mapkey('yy', 'Copy link', () => copyTinyUrl('%URL%'));
+api.mapkey(',y', 'Copy tinyurl', () => copyTinyUrl('%TITLE% - %URL%'));
+api.mapkey(',Y', 'Copy link', () => copyTitleAndUrl('%TITLE% - %URL%'));
 
-api.mapkey('yy', 'Copy tinyurl', () => {
-  copyTinyUrl('%TITLE% - %URL%');
-});
-api.mapkey('yY', 'Copy link', () => {
-  copyTitleAndUrl('%TITLE% - %URL%');
-});
-api.mapkey('ym', 'Copy title and link to markdown', () => {
-  copyTitleAndUrl('[%TITLE%](%URL%)');
-});
-
-// copy readable url
-api.mapkey('yr', '#7Copy readable url', () => {
-  api.Clipboard.write(decodeURI(location.href));
-});
-
-// short Amazon URL
-api.mapkey('yA', 'Update Amazon.co.jp URL to short', () => {
-  var asin = document.body.querySelector("input[name^='ASIN']").value;
-  location.href = 'https://amazon.co.jp/dp/' + asin;
-});
-
-// AA
-api.mapkey('ya', 'Update Amazon.co.jp URL to short', () => {
+// short Amazon URL include AA.
+api.mapkey(',a', 'short Amazon URL include AA.', () => {
   var affliateId = 'uncB9uZ7Md9P0d-22';
   var asin = document.body.querySelector("input[name^='ASIN']").value;
   var url = `https://www.amazon.co.jp/exec/obidos/ASIN/${asin}/${affliateId}`;
@@ -187,7 +167,7 @@ api.mapkey('o1', 'Search with alias Google 1年以内', () => api.Front.openOmni
 api.addSearchAlias('a', 'Amazon.co.jp', 'https://www.amazon.co.jp/s?k={0}&emi=AN1VRQENFRJN5');
 api.addSearchAlias('gh', 'github', 'https://github.com/search?utf8=✓&q=', 's');
 api.addSearchAlias('r', 'reddit', 'https://old.reddit.com/r/', 's');
-//
+
 // --- theme ---
 api.Hints.style('border: solid 2px #4C566A; color:#A6E22E; background: initial; background-color: #3B4252;');
 api.Hints.style('border: solid 2px #4C566A !important; padding: 1px !important; color: #E5E9F0 !important; background: #3B4252 !important;', 'text');
@@ -398,4 +378,3 @@ input {
   font-weight: var(--font-weight);
 }
 `;
-
