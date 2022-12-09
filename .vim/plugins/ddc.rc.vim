@@ -1,5 +1,5 @@
 " Customize global settings
-call ddc#custom#patch_global('sources', ['around', 'file', 'nvim-lsp', 'around', 'cmdline', 'cmdline-history'])
+call ddc#custom#patch_global('sources', ['vsnip', 'around', 'file', 'nvim-lsp', 'around', 'cmdline', 'cmdline-history'])
 
 call ddc#custom#patch_global('ui', 'native')
 
@@ -8,6 +8,7 @@ call ddc#custom#patch_global('sourceOptions', {
       \   'matchers': ['matcher_head'],
       \   'sorters': ['sorter_rank']},
       \ 'around': {'mark': 'A'},
+      \ 'vsnip': {'mark': 'vsnip'},
       \ 'file': {
       \   'mark': 'F',
       \   'isVolatile': v:true,

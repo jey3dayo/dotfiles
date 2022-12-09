@@ -1,46 +1,6 @@
 [[plugins]]
-repo = 'leafgarland/typescript-vim'
-on_ft = ['typescript', 'typescript.tsx', 'tsx']
-
-[[plugins]]
-repo = 'pangloss/vim-javascript'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'othree/yajs.vim'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'othree/es.next.syntax.vim'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'yuezk/vim-js'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'maxmellon/vim-jsx-pretty'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'alampros/vim-styled-jsx'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'HerringtonDarkholme/yats.vim'
-on_ft = ['typescript', 'typescript.tsx', 'tsx']
-
-[[plugins]]
 repo = 'digitaltoad/vim-pug.git'
 on_ft = ['jade', 'pug']
-
-[[plugins]]
-repo = 'kchmck/vim-coffee-script'
-on_ft = ['coffee']
-
-[[plugins]]
-repo = 'ap/vim-css-color'
-on_ft = ['css', 'javascript', 'javascript.jsx', 'jsx']
 
 [[plugins]]
 repo = 'groenewege/vim-less'
@@ -104,10 +64,69 @@ repo = 'vito-c/jq.vim'
 on_ft = ['jq']
 
 [[plugins]]
+repo = 'kchmck/vim-coffee-script'
+on_ft = ['coffee']
+
+[[plugins]]
 repo = 'MunifTanjim/prettier.nvim'
 hook_add = '''
 source ~/.config/nvim/plugins/prettier.rc.vim
 '''
 
+[[plugins]]
+repo = 'windwp/nvim-autopairs'
+hook_add = '''
+source ~/.config/nvim/plugins/nvim-autopairs.rc.vim
+'''
+
 # [[plugins]]
 # repo = 'github/copilot.vim'
+
+# javascript
+[[plugins]]
+repo = 'leafgarland/typescript-vim'
+on_ft = ['typescript', 'typescript.tsx', 'tsx']
+
+[[plugins]]
+repo = 'pangloss/vim-javascript'
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
+
+[[plugins]]
+repo = 'othree/yajs.vim'
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
+
+[[plugins]]
+repo = 'HerringtonDarkholme/yats.vim'
+on_ft = ['typescript', 'typescript.tsx', 'tsx']
+
+[[plugins]]
+repo = 'othree/es.next.syntax.vim'
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
+
+[[plugins]]
+repo = 'yuezk/vim-js'
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
+
+[[plugins]]
+repo = 'maxmellon/vim-jsx-pretty'
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
+
+[[plugins]]
+repo = 'alampros/vim-styled-jsx'
+on_ft = ['javascript', 'javascript.jsx', 'jsx']
+
+[[plugins]]
+repo = 'ap/vim-css-color'
+on_ft = ['css', 'javascript', 'javascript.jsx', 'jsx']
+
+[[plugins]]
+repo = 'hotoo/jsgf.vim'
+on_ft = ['typescript', 'typescript.tsx', 'tsx']
+
+[[plugins]]
+repo = 'windwp/nvim-ts-autotag'
+on_ft = ['javascript', 'javascript.jsx', 'jsx', 'typescript', 'typescript.tsx', 'tsx']
+hook_add = '''
+source ~/.config/nvim/plugins/nvim-ts-autotag.rc.vim
+'''
+

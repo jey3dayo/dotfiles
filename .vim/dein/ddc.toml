@@ -21,6 +21,10 @@ repo = 'Shougo/ddc-sorter_rank'
 on_source = 'ddc.vim'
 
 [[plugins]]
+repo = 'Shougo/ddc-converter_remove_overlap'
+on_source = 'ddc.vim'
+
+[[plugins]]
 repo = 'LumaKernel/ddc-file'
 on_source = 'ddc.vim'
 
@@ -43,15 +47,28 @@ repo = 'Shougo/neco-vim'
 repo = 'Shougo/neosnippet-snippets'
 on_source = 'ddc.vim'
 
-# Snip Tool
-# [[plugins]]
-# repo = 'hrsh7th/vim-vsnip-integ'
-#
-# [[plugins]]
-# repo = 'hrsh7th/vim-vsnip'
-# hook_add = '''
-# source ~/.config/nvim/plugins/vsnip.rc.vim
-# '''
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+on_event = 'InsertEnter'
+depends = ['vim-vsnip-integ', 'friendly-snippets']
+hook_source = '''
+source ~/.config/nvim/plugins/vsnip.rc.vim
+'''
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+
+[[plugins]]
+repo = 'rafamadriz/friendly-snippets'
+
+[[plugins]]
+repo = 'vim-denops/denops.vim'
+
+[[plugins]]
+repo = 'matsui54/denops-popup-preview.vim'
+hook_source = '''
+source ~/.config/nvim/plugins/denops-popup-preview.rc.vim
+'''
 
 # [[plugins]]
 # repo = 'Shougo/pum.vim'
@@ -65,4 +82,3 @@ on_source = 'ddc.vim'
 # hook_add = '''
 # source ~/.config/nvim/plugins/ddu.rc.vim
 # '''
-
