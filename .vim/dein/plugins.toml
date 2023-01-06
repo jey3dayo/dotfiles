@@ -2,10 +2,6 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
-repo = 'Shougo/vimproc.vim'
-build = 'make'
-
-[[plugins]]
  repo = 'editorconfig/editorconfig-vim'
 
 [[plugins]]
@@ -28,32 +24,4 @@ repo = 'tomtom/tcomment_vim.git'
 repo = 'nishigori/increment-activator'
 hook_add = '''
 source ~/.config/nvim/plugins/increment-activator.rc.vim
-'''
-
-[[plugins]]
-repo = 'nvim-tree/nvim-web-devicons'
-
-[[plugins]]
-repo = 'akinsho/bufferline.nvim'
-depends = 'nvim-web-devicons'
-hook_add = '''
-source ~/.config/nvim/plugins/bufferline.lua
-'''
-
-[[plugins]]
-repo = 'norcalli/nvim-colorizer.lua'
-hook_add = '''
-source ~/.config/nvim/plugins/nvim-colorizer.lua
-'''
-
-[[plugins]]
-repo = 'nvim-tree/nvim-tree.lua'
-hook_add = '''
-source ~/.config/nvim/plugins/nvim-tree.lua
-'''
-
-[[plugins]]
-repo = 'lewis6991/gitsigns.nvim'
-hook_add = '''
-source ~/.config/nvim/plugins/gitsigns.lua
 '''

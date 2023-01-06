@@ -1,0 +1,52 @@
+[[plugins]]
+repo = 'nvim-tree/nvim-web-devicons'
+
+[[plugins]]
+repo = 'nvim-tree/nvim-tree.lua'
+hook_add = '''
+source ~/.config/nvim/plugins/nvim-tree.lua
+'''
+
+[[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+hook_add = '''
+source ~/.config/nvim/plugins/nvim-treesitter.lua
+'''
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+source ~/.config/nvim/plugins/lightline.rc.vim
+'''
+[[plugins]]
+repo = 'akinsho/bufferline.nvim'
+depends = 'nvim-web-devicons'
+hook_add = '''
+source ~/.config/nvim/plugins/bufferline.lua
+'''
+
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+depends = 'onedark.vim'
+hook_add = '''
+source ~/.config/nvim/plugins/vim-indent-guides.rc.vim
+'''
+
+[[plugins]]
+repo = 'kien/rainbow_parentheses.vim'
+hook_add = '''
+source ~/.config/nvim/plugins/rainbow_parentheses.rc.vim
+'''
+
+[[plugins]]
+repo = 'lewis6991/gitsigns.nvim'
+hook_add = '''
+source ~/.config/nvim/plugins/gitsigns.lua
+'''
+
+[[plugins]]
+repo = 'norcalli/nvim-colorizer.lua'
+hook_add = '''
+source ~/.config/nvim/plugins/nvim-colorizer.lua
+'''
+

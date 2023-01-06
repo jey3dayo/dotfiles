@@ -24,13 +24,7 @@ call ddc#custom#patch_global('sourceOptions', {
 call ddc#custom#patch_global('sourceParams', {
       \ 'around': {'maxSize': 500},
       \ 'file': {'smartCase': v:true},
-      \ 'necovim': {'smartCase': 'vim'},
       \ })
-
-
-" Customize settings on a filetype
-call ddc#custom#patch_filetype(
-      \ ['vim', 'toml'], 'sources', ['necovim'])
 
 call ddc#custom#patch_filetype(['markdown'], 'sourceParams', {
       \ 'around': {'maxSize': 100},

@@ -21,16 +21,5 @@ source ~/.config/nvim/plugins/vim-alignta.rc.vim
 '''
 
 [[plugins]]
-repo = 'thinca/vim-quickrun'
-depends = 'vimproc.vim'
-hook_add = '''
-source ~/.config/nvim/plugins/vim-quickrun.rc.vim
-'''
-
-[[plugins]]
-repo = 'osyo-manga/shabadou.vim'
-depends = 'vim-quickrun'
-
-[[plugins]]
 repo = 'vim-scripts/sudo.vim'
 on_cmd = ['SudoWrite', 'SudoRead']

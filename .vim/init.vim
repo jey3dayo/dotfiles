@@ -182,7 +182,7 @@ if dein#load_state(s:dein_cache_dir)
   call dein#begin(s:dein_cache_dir)
   let s:toml_dir = g:config_home . '/nvim/dein'
   call dein#load_toml(s:toml_dir . '/plugins.toml', {'lazy': 0})
-  call dein#load_toml(s:toml_dir . '/style.toml', {'lazy': 0})
+  call dein#load_toml(s:toml_dir . '/ui.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/colorscheme.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/ddc.toml', {'lazy': 0})
   call dein#load_toml(s:toml_dir . '/nvim-lsp.toml', {'lazy': 0})

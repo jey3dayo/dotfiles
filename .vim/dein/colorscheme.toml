@@ -1,10 +1,4 @@
 [[plugins]]
-repo = 'nvim-treesitter/nvim-treesitter'
-hook_add = '''
-source ~/.config/nvim/plugins/nvim-treesitter.lua
-'''
-
-[[plugins]]
 repo = 'gruvbox-community/gruvbox'
 hook_add = '''
 source ~/.config/nvim/plugins/gruvbox.rc.vim
@@ -23,7 +17,7 @@ hook_add = '''
 # [[plugins]]
 # repo = 'joshdick/onedark.vim'
 # hook_add = '''
-# " source ~/.config/nvim/plugins/onedark.rc.vim
+# source ~/.config/nvim/plugins/onedark.rc.vim
 # '''
 
 # [[plugins]]
