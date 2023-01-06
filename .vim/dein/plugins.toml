@@ -45,3 +45,15 @@ repo = 'norcalli/nvim-colorizer.lua'
 hook_add = '''
 source ~/.config/nvim/plugins/nvim-colorizer.rc.vim
 '''
+
+[[plugins]]
+repo = 'nvim-tree/nvim-tree.lua'
+hook_add = '''
+source ~/.config/nvim/plugins/nvim-tree.lua
+'''
+
+[[plugins]]
+repo = 'lewis6991/gitsigns.nvim'
+hook_add = '''
+source ~/.config/nvim/plugins/gitsigns.lua
+'''

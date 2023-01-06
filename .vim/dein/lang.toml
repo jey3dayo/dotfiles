@@ -1,18 +1,6 @@
 [[plugins]]
-repo = 'digitaltoad/vim-pug.git'
-on_ft = ['jade', 'pug']
-
-[[plugins]]
-repo = 'groenewege/vim-less'
-on_ft = ['less']
-
-[[plugins]]
 repo = 'wavded/vim-stylus.git'
 on_ft = ['stylus']
-
-[[plugins]]
-repo = 'tpope/vim-haml'
-on_ft = ['haml']
 
 [[plugins]]
 repo = 'vim-scripts/ruby-matchit'
@@ -32,40 +20,16 @@ repo = 'tpope/vim-rails'
 on_ft = ['ruby']
 
 [[plugins]]
-repo = 'vim-scripts/php.vim'
-on_ft = ['php']
-
-[[plugins]]
 repo = 'superbrothers/vim-vimperator'
 on_ft = ['vimperator']
-
-[[plugins]]
-repo = 'cespare/vim-toml'
-on_ft = ['toml']
 
 [[plugins]]
 repo = 'tpope/vim-markdown'
 on_ft = ['markdown','mkd']
 
 [[plugins]]
-repo = 'fatih/vim-go'
-on_ft = 'go'
-
-[[plugins]]
-repo = 'elzr/vim-json'
-on_ft = ['json']
-
-[[plugins]]
-repo = 'pantharshit00/vim-prisma'
-on_ft = ['prisma']
-
-[[plugins]]
 repo = 'vito-c/jq.vim'
 on_ft = ['jq']
-
-[[plugins]]
-repo = 'kchmck/vim-coffee-script'
-on_ft = ['coffee']
 
 [[plugins]]
 repo = 'MunifTanjim/prettier.nvim'
@@ -79,42 +43,7 @@ hook_add = '''
 source ~/.config/nvim/plugins/nvim-autopairs.rc.vim
 '''
 
-# [[plugins]]
-# repo = 'github/copilot.vim'
-
 # javascript
-[[plugins]]
-repo = 'leafgarland/typescript-vim'
-on_ft = ['typescript', 'typescript.tsx', 'tsx']
-
-[[plugins]]
-repo = 'pangloss/vim-javascript'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'othree/yajs.vim'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'HerringtonDarkholme/yats.vim'
-on_ft = ['typescript', 'typescript.tsx', 'tsx']
-
-[[plugins]]
-repo = 'othree/es.next.syntax.vim'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'yuezk/vim-js'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'maxmellon/vim-jsx-pretty'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
-[[plugins]]
-repo = 'alampros/vim-styled-jsx'
-on_ft = ['javascript', 'javascript.jsx', 'jsx']
-
 [[plugins]]
 repo = 'ap/vim-css-color'
 on_ft = ['css', 'javascript', 'javascript.jsx', 'jsx']

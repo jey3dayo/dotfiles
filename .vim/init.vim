@@ -204,22 +204,6 @@ nnoremap [core]u :<C-u>call dein#update()<CR>
 
 " }}}
 
-" treesitter
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-    disable = {
-      'lua',
-      'ruby',
-      'toml',
-      'c_sharp',
-      'vue',
-    }
-  }
-}
-EOF
-
 filetype on
 filetype plugin indent on
 
