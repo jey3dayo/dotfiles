@@ -3,6 +3,13 @@ window:
   opacity: 0.90
   # opacity: 1.00
 
+shell:
+  program: /bin/zsh
+  args:
+   - -l
+   - -c
+   - 'tmux a -t default || tmux new -s default\; source ~/.config/.tmux/default.session.conf'
+
 font:
   normal:
     family: Inconsolata Nerd Font Mono
