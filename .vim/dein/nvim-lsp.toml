@@ -15,7 +15,7 @@ repo = 'williamboman/nvim-lsp-installer'
 repo = 'jose-elias-alvarez/null-ls.nvim'
 depends = ['nvim-lspconfig']
 hook_add = '''
-source ~/.config/nvim/plugins/null-ls.rc.vim
+source ~/.config/nvim/plugins/null-ls.lua
 '''
 
 [[plugins]]

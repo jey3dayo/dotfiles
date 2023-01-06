@@ -37,13 +37,13 @@ repo = 'nvim-tree/nvim-web-devicons'
 repo = 'akinsho/bufferline.nvim'
 depends = 'nvim-web-devicons'
 hook_add = '''
-source ~/.config/nvim/plugins/bufferline.rc.vim
+source ~/.config/nvim/plugins/bufferline.lua
 '''
 
 [[plugins]]
 repo = 'norcalli/nvim-colorizer.lua'
 hook_add = '''
-source ~/.config/nvim/plugins/nvim-colorizer.rc.vim
+source ~/.config/nvim/plugins/nvim-colorizer.lua
 '''
 
 [[plugins]]

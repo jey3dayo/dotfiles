@@ -34,13 +34,13 @@ on_ft = ['jq']
 [[plugins]]
 repo = 'MunifTanjim/prettier.nvim'
 hook_add = '''
-source ~/.config/nvim/plugins/prettier.rc.vim
+source ~/.config/nvim/plugins/prettier.lua
 '''
 
 [[plugins]]
 repo = 'windwp/nvim-autopairs'
 hook_add = '''
-source ~/.config/nvim/plugins/nvim-autopairs.rc.vim
+source ~/.config/nvim/plugins/nvim-autopairs.lua
 '''
 
 # javascript
@@ -56,6 +56,8 @@ on_ft = ['typescript', 'typescript.tsx', 'tsx']
 repo = 'windwp/nvim-ts-autotag'
 on_ft = ['javascript', 'javascript.jsx', 'jsx', 'typescript', 'typescript.tsx', 'tsx']
 hook_add = '''
-source ~/.config/nvim/plugins/nvim-ts-autotag.rc.vim
+source ~/.config/nvim/plugins/nvim-ts-autotag.lua
 '''
 
+# [[plugins]]
+# repo = 'github/copilot.vim'

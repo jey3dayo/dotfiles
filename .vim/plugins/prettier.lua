@@ -1,4 +1,3 @@
-lua << EOF
 local status, prettier = pcall(require, "prettier")
 if (not status) then return end
 
@@ -15,4 +14,3 @@ prettier.setup {
     "less"
   }
 }
-EOF
