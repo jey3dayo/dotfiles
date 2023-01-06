@@ -28,7 +28,7 @@ Temporary Items
 .apdisk
 
 # submodules
-.tmux/plugins/tpm
+.tmux/plugins/
 
 build/
 log/
