@@ -28,3 +28,12 @@ depends = ['nvim-lsp-config']
 hook_add = '''
 source ~/.config/nvim/plugins/lspsaga.lua
 '''
+
+[[plugins]]
+repo = 'williamboman/mason.nvim'
+
+[[plugins]]
+repo = 'williamboman/mason-lspconfig.nvim'
+hook_add = '''
+source ~/.config/nvim/plugins/mason.lua
+'''
