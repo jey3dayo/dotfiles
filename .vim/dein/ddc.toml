@@ -41,10 +41,6 @@ repo = 'Shougo/ddc-cmdline-history'
 on_source = 'ddc.vim'
 
 [[plugins]]
-repo = 'Shougo/neosnippet-snippets'
-on_source = 'ddc.vim'
-
-[[plugins]]
 repo = 'hrsh7th/vim-vsnip'
 on_event = 'InsertEnter'
 depends = ['vim-vsnip-integ', 'friendly-snippets']
@@ -60,22 +56,3 @@ repo = 'rafamadriz/friendly-snippets'
 
 [[plugins]]
 repo = 'vim-denops/denops.vim'
-
-[[plugins]]
-repo = 'matsui54/denops-popup-preview.vim'
-hook_source = '''
-source ~/.config/nvim/plugins/denops-popup-preview.rc.vim
-'''
-
-# [[plugins]]
-# repo = 'Shougo/pum.vim'
-# hook_add = '''
-# source ~/.config/nvim/plugins/pum.rc.vim
-# '''
-
-# [[plugins]]
-# repo = 'Shougo/ddu.vim'
-# depends = 'ddc.vim'
-# hook_add = '''
-# source ~/.config/nvim/plugins/ddu.rc.vim
-# '''

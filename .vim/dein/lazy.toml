@@ -1,4 +1,10 @@
 [[plugins]]
+repo = 'nishigori/increment-activator'
+hook_add = '''
+source ~/.config/nvim/plugins/increment-activator.rc.vim
+'''
+
+[[plugins]]
 repo = 'tpope/vim-fugitive'
 on_cmd = ['Gblame', 'Gdiffsplit', 'Ggrep', 'Gstatus', 'Gwrite', 'Gcommit']
 hook_add = '''

@@ -3,15 +3,6 @@ repo = 'wavded/vim-stylus.git'
 on_ft = ['stylus']
 
 [[plugins]]
-repo = 'vim-scripts/ruby-matchit'
-on_ft = ['ruby']
-
-[[plugins]]
-repo = 'rhysd/vim-textobj-ruby'
-depends = ['vim-textobj-user']
-on_ft = ['ruby']
-
-[[plugins]]
 repo = 'tpope/vim-rake'
 on_ft = ['ruby']
 
@@ -20,22 +11,12 @@ repo = 'tpope/vim-rails'
 on_ft = ['ruby']
 
 [[plugins]]
-repo = 'superbrothers/vim-vimperator'
-on_ft = ['vimperator']
-
-[[plugins]]
 repo = 'tpope/vim-markdown'
 on_ft = ['markdown','mkd']
 
 [[plugins]]
 repo = 'vito-c/jq.vim'
 on_ft = ['jq']
-
-[[plugins]]
-repo = 'MunifTanjim/prettier.nvim'
-hook_add = '''
-source ~/.config/nvim/plugins/prettier.lua
-'''
 
 [[plugins]]
 repo = 'windwp/nvim-autopairs'
@@ -57,6 +38,12 @@ repo = 'windwp/nvim-ts-autotag'
 on_ft = ['javascript', 'javascript.jsx', 'jsx', 'typescript', 'typescript.tsx', 'tsx']
 hook_add = '''
 source ~/.config/nvim/plugins/nvim-ts-autotag.lua
+'''
+
+[[plugins]]
+repo = 'MunifTanjim/prettier.nvim'
+hook_add = '''
+source ~/.config/nvim/plugins/prettier.lua
 '''
 
 # [[plugins]]
