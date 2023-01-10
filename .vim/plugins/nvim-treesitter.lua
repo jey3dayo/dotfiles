@@ -11,15 +11,15 @@ ts.setup {
     disable = {},
   },
   ensure_installed = {
+    "bash",
+    "markdown",
     "tsx",
     "toml",
-    "fish",
-    "php",
     "json",
     "yaml",
-    "swift",
     "css",
     "html",
+    "ruby",
     "lua"
   },
   autotag = {
