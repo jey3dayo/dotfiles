@@ -1,0 +1,9 @@
+Host pi
+  HostName raspberrypi.local
+  User pi
+  Port 10022
+
+Host synology
+  HostName synology.local
+  User admin
+  Port 10022
