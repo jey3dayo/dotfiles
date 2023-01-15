@@ -133,10 +133,16 @@ const copyTitleAndUrl = (format) => {
 };
 
 const copyTinyUrl = async (format) => {
-  const res = await fetch(`https://api-ssl.bitly.com/v3/shorten?access_token=${bitlyToken}&format=json&longUrl=${location.href}`).then(v => v.json());
-  const url = res?.data?.url ?? '';
+  const res = await fetch('https://api-ssl.bitly.com/v4/shorten', {
+    method: 'POST',
+    headers: {
+        'Authorization': `Bearer ${bitlyToken}`,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ "long_url": location.href, "domain": "bit.ly" })
+  }).then(v => v.json());
   const text = format
-    .replace('%URL%', url)
+    .replace('%URL%', res?.link ?? '')
     .replace('%TITLE%', document.title);
   api.Clipboard.write(text);
 }
