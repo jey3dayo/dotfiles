@@ -1,8 +1,5 @@
 [[plugins]]
 repo = 'gruvbox-community/gruvbox'
-hook_add = '''
-source ~/.config/nvim/plugins/gruvbox.rc.vim
-'''
 
 [[plugins]]
 repo = 'tjdevries/colorbuddy.vim'
@@ -10,18 +7,12 @@ repo = 'tjdevries/colorbuddy.vim'
 [[plugins]]
 repo = 'Th3Whit3Wolf/onebuddy'
 depends = 'colorbuddy.vim'
-hook_add = '''
-" source ~/.config/nvim/plugins/onebuddy.rc.vim
-'''
 
-# [[plugins]]
-# repo = 'joshdick/onedark.vim'
-# hook_add = '''
-# source ~/.config/nvim/plugins/onedark.rc.vim
-# '''
+[[plugins]]
+repo = 'rebelot/kanagawa.nvim'
 
-# [[plugins]]
-# repo = 'cocopon/iceberg.vim'
-# hook_add = '''
-# source ~/.config/nvim/plugins/iceberg.rc.vim
-# '''
+[[plugins]]
+repo = 'joshdick/onedark.vim'
+
+[[plugins]]
+repo = 'cocopon/iceberg.vim'

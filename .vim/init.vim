@@ -205,6 +205,13 @@ nnoremap [core]u :<C-u>call dein#update()<CR>
 
 " }}}
 
+" 背景透過
+colorscheme kanagawa
+highlight Normal ctermbg=NONE guibg=NONE
+highlight NonText ctermbg=NONE guibg=NONE
+highlight SpecialKey ctermbg=NONE guibg=NONE
+highlight EndOfBuffer ctermbg=NONE guibg=NONE
+
 filetype on
 filetype plugin indent on
 
