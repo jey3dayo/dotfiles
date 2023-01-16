@@ -2,12 +2,6 @@
 repo = 'nvim-tree/nvim-web-devicons'
 
 [[plugins]]
-repo = 'nvim-tree/nvim-tree.lua'
-hook_add = '''
-source ~/.config/nvim/plugins/nvim-tree.lua
-'''
-
-[[plugins]]
 repo = 'nvim-treesitter/nvim-treesitter'
 hook_add = '''
 source ~/.config/nvim/plugins/nvim-treesitter.lua
@@ -51,3 +45,11 @@ hook_add = '''
 source ~/.config/nvim/plugins/nvim-colorizer.lua
 '''
 
+[[plugins]]
+repo = 'nvim-telescope/telescope.nvim'
+hook_add = '''
+source ~/.config/nvim/plugins/telescope.lua
+'''
+
+[[plugins]]
+repo = 'nvim-telescope/telescope-file-browser.nvim'
