@@ -24,7 +24,7 @@ repo = 'ray-x/lsp_signature.nvim'
 
 [[plugins]]
 repo = 'glepnir/lspsaga.nvim'
-depends = ['nvim-lsp-config']
+depends = ['nvim-lspconfig']
 hook_add = '''
 source ~/.config/nvim/plugins/lspsaga.lua
 '''
