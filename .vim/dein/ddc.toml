@@ -42,3 +42,6 @@ on_source = 'ddc.vim'
 
 [[plugins]]
 repo = 'vim-denops/denops.vim'
+hook_add = '''
+let g:denops#deno = '/usr/local/bin/deno'
+'''
