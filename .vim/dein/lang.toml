@@ -1,18 +1,4 @@
 [[plugins]]
-repo = 'windwp/nvim-autopairs'
-depends = 'nvim-treesitter'
-hook_add = '''
-source ~/.config/nvim/plugins/nvim-autopairs.lua
-'''
-
-[[plugins]]
-repo = 'windwp/nvim-ts-autotag'
-depends = 'nvim-treesitter'
-hook_add = '''
-source ~/.config/nvim/plugins/nvim-ts-autotag.lua
-'''
-
-[[plugins]]
 repo = 'wavded/vim-stylus.git'
 on_ft = ['stylus']
 

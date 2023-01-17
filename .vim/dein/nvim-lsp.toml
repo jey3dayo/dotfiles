@@ -20,7 +20,6 @@ source ~/.config/nvim/plugins/null-ls.lua
 
 [[plugins]]
 repo = 'ray-x/lsp_signature.nvim'
-# depends = ['ddc.vim']
 
 [[plugins]]
 repo = 'glepnir/lspsaga.nvim'

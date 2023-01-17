@@ -8,16 +8,23 @@ source ~/.config/nvim/plugins/nvim-treesitter.lua
 '''
 
 [[plugins]]
-repo = 'nvim-lualine/lualine.nvim'
+repo = 'windwp/nvim-autopairs'
+depends = 'nvim-treesitter'
 hook_add = '''
-source ~/.config/nvim/plugins/lualine.lua
+source ~/.config/nvim/plugins/nvim-autopairs.lua
 '''
 
 [[plugins]]
-repo = 'akinsho/bufferline.nvim'
-depends = 'nvim-web-devicons'
+repo = 'windwp/nvim-ts-autotag'
+depends = 'nvim-treesitter'
 hook_add = '''
-source ~/.config/nvim/plugins/bufferline.lua
+source ~/.config/nvim/plugins/nvim-ts-autotag.lua
+'''
+
+[[plugins]]
+repo = 'nvim-lualine/lualine.nvim'
+hook_add = '''
+source ~/.config/nvim/plugins/lualine.lua
 '''
 
 [[plugins]]
@@ -53,3 +60,18 @@ source ~/.config/nvim/plugins/telescope.lua
 
 [[plugins]]
 repo = 'nvim-telescope/telescope-file-browser.nvim'
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip'
+on_event = 'InsertEnter'
+depends = ['vim-vsnip-integ', 'friendly-snippets']
+hook_source = '''
+source ~/.config/nvim/plugins/vsnip.rc.vim
+'''
+
+[[plugins]]
+repo = 'hrsh7th/vim-vsnip-integ'
+
+[[plugins]]
+repo = 'rafamadriz/friendly-snippets'
+
