@@ -3,7 +3,7 @@ repo = 'nvim-lua/plenary.nvim'
 
 [[plugins]]
 repo = 'neovim/nvim-lspconfig'
-depends = ['nvim-lsp-installer', 'ddc.vim']
+depends = ['nvim-lsp-installer']
 hook_add = '''
 source ~/.config/nvim/plugins/nvim-lsp.rc.vim
 '''
