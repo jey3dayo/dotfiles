@@ -13,6 +13,7 @@ abbr -S tailf="tail -f"
 abbr -S ag="ag --hidden"
 
 abbr -S ga="git add"
+abbr -S gap="git add -p"
 abbr -S gst="git status -sb"
 abbr -S gd="git diff"
 abbr -S gdc="git diff --cached"
