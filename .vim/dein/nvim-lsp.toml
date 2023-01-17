@@ -9,9 +9,6 @@ source ~/.config/nvim/plugins/nvim-lsp.rc.vim
 '''
 
 [[plugins]]
-repo = 'williamboman/nvim-lsp-installer'
-
-[[plugins]]
 repo = 'jose-elias-alvarez/null-ls.nvim'
 depends = ['nvim-lspconfig']
 hook_add = '''
