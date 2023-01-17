@@ -14,7 +14,7 @@ let completionengines = ["google", "amazon"]
 let searchalias g = "google"
 
 " Ignore Site
-let blacklists = ["https://inbox.google.com/*","https://ameba.dashboard.openstack.tky02a.platform.cycloud.io/*","https://console.openstack.tky02a.platform.cycloud.io/*","http://localhost/*"]
+let blacklists = ["https://inbox.google.com/*","*cloud.io/*","http://localhost/*"]
 
 " Mapping
 map h previousTab
