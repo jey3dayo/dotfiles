@@ -1,6 +1,7 @@
 .git
 yarn.lock
 yarn-error.log
+package-lock.json
 node_modules
 .next
 out
@@ -13,3 +14,5 @@ prisma/generated/
 *jquery*
 output/
 raycast/
+dist/*
+./lib/
