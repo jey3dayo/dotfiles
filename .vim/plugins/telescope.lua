@@ -18,6 +18,7 @@ telescope.setup {
         ["<C-p>"] = actions.move_selection_better,
       },
       i = {
+        ["<ESC>"] = actions.close,
         ["<C-n>"] = actions.move_selection_next,
         ["<C-p>"] = actions.move_selection_previous,
       },
@@ -48,34 +49,23 @@ telescope.setup {
 telescope.load_extension("file_browser")
 
 -- keymaps
-vim.keymap.set('n', ';F',
-  function()
-    builtin.find_files({
-      no_ignore = false,
-      hidden = true
-    })
-  end)
-vim.keymap.set('n', ';f',
-  function()
-    builtin.find_files({
-      no_ignore = false,
-      hidden = false
-    })
-  end)
-vim.keymap.set('n', ';g', function()
+vim.keymap.set('n', '<Leader>e', function()
+  builtin.find_files({
+    no_ignore = false,
+    hidden = true
+  })
+end)
+vim.keymap.set('n', '<Leader>g', function()
   builtin.live_grep()
 end)
-vim.keymap.set('n', ';b', function()
+vim.keymap.set('n', '<Leader>b', function()
   builtin.buffers()
 end)
-vim.keymap.set('n', ';t', function()
-  builtin.help_tags()
-end)
-vim.keymap.set('n', ';e', function()
+vim.keymap.set('n', '<Leader>d', function()
   builtin.diagnostics()
 end)
 
-vim.keymap.set("n", "<Leader>e", function()
+vim.keymap.set("n", "<Leader>E", function()
   telescope.extensions.file_browser.file_browser({
     path = "%:p:h",
     cwd = telescope_buffer_dir(),
