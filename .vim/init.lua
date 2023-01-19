@@ -1,3 +1,6 @@
-vim.cmd [[
-source _init.vim
-]]
+require("base")
+require("autocmds")
+require("options")
+require("keymaps")
+require("init_lazy")
+require("colorscheme")
