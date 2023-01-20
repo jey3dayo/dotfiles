@@ -15,6 +15,7 @@ local options = {
   shell = "zsh",
 
   -- input
+  autoindent = true,
   smartindent = true,
 
   -- search
