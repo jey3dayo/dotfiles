@@ -16,4 +16,4 @@ prettier.setup {
 }
 
 local set_opts = { noremap = true, silent = false }
-vim.api.nvim_set_keymap("n", "[lsp]p", ":<C-u>Prettier<CR>", set_opts)
+Keymap("[lsp]p", ":<C-u>Prettier<CR>")
