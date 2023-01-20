@@ -1,18 +1,20 @@
-nnoremap [lsp] <Nop>
-nmap <C-e> [lsp]
-
-nnoremap <C-]> :lua vim.lsp.buf.definition()<CR>
-nnoremap [lsp]d :lua vim.lsp.buf.declaration()<CR>
-nnoremap [lsp]t :lua vim.lsp.buf.type_definition()<CR>
-nnoremap [lsp]i :lua vim.lsp.buf.implementation()<CR>
-nnoremap [lsp]f :lua vim.lsp.buf.format()<CR>
-
-lua << EOF
 -- for debugging
 -- :lua require('vim.lsp.log').set_level("debug")
 -- :lua print(vim.inspect(vim.lsp.buf_get_clients()))
 -- :lua print(vim.lsp.get_log_path())
 -- :lua print(vim.inspect(vim.tbl_keys(vim.lsp.callbacks)))
+
+vim.cmd [[
+  nnoremap [lsp] <Nop>
+  nmap <C-e> [lsp]
+
+  nnoremap <C-]> :lua vim.lsp.buf.definition()<CR>
+  nnoremap [lsp]d :lua vim.lsp.buf.declaration()<CR>
+  nnoremap [lsp]t :lua vim.lsp.buf.type_definition()<CR>
+  nnoremap [lsp]i :lua vim.lsp.buf.implementation()<CR>
+  nnoremap [lsp]f :lua vim.lsp.buf.format()<CR>
+]]
+
 local has_lsp, nvim_lsp = pcall(require, 'lspconfig')
 local on_attach = function(client, bufnr)
   require "lsp_signature".on_attach()
@@ -187,4 +189,3 @@ for server, config in pairs(servers) do
     )
   end
 end
-EOF

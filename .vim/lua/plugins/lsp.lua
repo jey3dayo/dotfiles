@@ -3,7 +3,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      vim.cmd([[ source ~/.config/nvim/plugins/nvim-lsp.rc.vim ]])
+      require("config/nvim-lspconfig")
     end,
   },
   {
