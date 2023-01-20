@@ -19,7 +19,6 @@ return {
   "ray-x/lsp_signature.nvim",
   {
     "glepnir/lspsaga.nvim",
-    commit = "db0c1414efb928a9387e0a3271d75dcc3370822f",
     dependencies = {
       "neovim/nvim-lspconfig",
     },
