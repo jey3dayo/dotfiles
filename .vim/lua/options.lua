@@ -27,9 +27,9 @@ local options = {
   backup = true,
   swapfile = true,
   undofile = true,
-  backupdir = cacheDir,
-  directory = cacheDir,
-  undodir = cacheDir,
+  backupdir = vim.fn.stdpath("cache"),
+  directory = vim.fn.stdpath("cache"),
+  undodir = vim.fn.stdpath("cache"),
   backupskip = { "/tmp/*", "/private/tmp/*", cacheDir },
 
   -- ui

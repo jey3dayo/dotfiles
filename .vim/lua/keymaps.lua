@@ -37,7 +37,7 @@ Keymap("gt", ":<C-u>tabnext<CR>")
 Keymap("gT", ":<C-u>tabprevious<CR>")
 
 -- source cmd
-Keymap("<Leader>so", ":<C-u>source " .. configDir .. "/init.lua<CR>")
+Keymap("<Leader>so", ":<C-u>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>")
 Keymap("<Leader>su", ":<C-u>Lazy update<CR>")
 
 -- set list
