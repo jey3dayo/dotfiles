@@ -1,16 +1,7 @@
 return {
   "nvim-lua/plenary.nvim",
   {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require("config/nvim-lspconfig")
-    end,
-  },
-  {
     "jose-elias-alvarez/null-ls.nvim",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-    },
     config = function()
       require("config/null-ls")
     end,
@@ -19,9 +10,6 @@ return {
   "ray-x/lsp_signature.nvim",
   {
     "glepnir/lspsaga.nvim",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-    },
     config = function()
       require("config/lspsaga")
     end,
