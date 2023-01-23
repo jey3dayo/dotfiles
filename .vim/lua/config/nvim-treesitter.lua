@@ -13,6 +13,7 @@ ts.setup {
   ensure_installed = {
     "bash",
     "markdown",
+    "prisma",
     "tsx",
     "toml",
     "json",
