@@ -1,5 +1,3 @@
-local cacheDir = os.getenv("XDG_CACHE_HOME") .. "/.vim"
-
 local options = {
   encoding = "utf-8",
   fileencoding = "utf-8",
