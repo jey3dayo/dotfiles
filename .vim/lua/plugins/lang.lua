@@ -1,4 +1,5 @@
 return {
+  { "sam4llis/nvim-lua-gf", ft = { "lua" } },
   { "wavded/vim-stylus", ft = { "stylus" } },
   { "tpope/vim-rake", ft = { "ruby" } },
   { "tpope/vim-rails", ft = { "ruby" } },
