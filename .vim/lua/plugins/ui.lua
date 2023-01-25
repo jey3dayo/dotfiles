@@ -2,6 +2,7 @@ return {
   "nvim-tree/nvim-web-devicons",
   {
     "nvim-treesitter/nvim-treesitter",
+    run = ":TSUpdate",
     config = function()
       require("config/nvim-treesitter")
     end,
@@ -53,13 +54,18 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
-      "nvim-telescope/telescope-file-browser.nvim",
+      "nvim-lua/plenary.nvim",
     },
     config = function()
       require("config/telescope")
     end,
   },
-  "nvim-telescope/telescope-file-browser.nvim",
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+  },
   {
     "hrsh7th/vim-vsnip",
     event = { "InsertEnter" },

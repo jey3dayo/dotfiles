@@ -24,10 +24,10 @@ cmp.setup({
     }),
   }),
   sources = cmp.config.sources({
-    { name = "vsnip" },
-    { name = "nvim_lsp" },
-    { name = "buffer" },
     { name = "path" },
+    { name = "nvim_lsp", keyword_length = 3 },
+    { name = "buffer", keyword_length = 3 },
+    { name = "vsnip" },
     { name = "cmdline" },
   }),
   formatting = {
