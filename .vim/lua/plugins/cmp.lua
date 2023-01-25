@@ -6,15 +6,23 @@ return {
   },
   {
     "hrsh7th/cmp-nvim-lsp",
-    dependencies = { "tpope/vim-fugitive" }
+    dependencies = { "hrsh7th/nvim-cmp"}
   },
   {
     "hrsh7th/cmp-buffer",
-    dependencies = { "tpope/vim-fugitive" }
+    dependencies = { "hrsh7th/nvim-cmp"}
+  },
+  {
+    "hrsh7th/cmp-path",
+    dependencies = { "hrsh7th/nvim-cmp"}
+  },
+  {
+    "hrsh7th/cmp-cmdline",
+    dependencies = { "hrsh7th/nvim-cmp"}
   },
   {
     "hrsh7th/cmp-vsnip",
-    dependencies = { "tpope/vim-fugitive" }
+    dependencies = { "hrsh7th/nvim-cmp"}
   },
   "onsails/lspkind-nvim",
 }

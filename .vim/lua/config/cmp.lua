@@ -27,6 +27,8 @@ cmp.setup({
     { name = "vsnip" },
     { name = "nvim_lsp" },
     { name = "buffer" },
+    { name = "path" },
+    { name = "cmdline" },
   }),
   formatting = {
     format = lspkind.cmp_format({ with_text = false, maxwidth = 50 })
