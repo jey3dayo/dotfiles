@@ -1,4 +1,4 @@
-let g:vsnip_snippet_dir "~/.local/share/nvim/lazy/friendly-snippets/snippets"
+let g:vsnip_snippet_dir = "~/.local/share/nvim/lazy/friendly-snippets/snippets"
 
 imap <expr> <C-k> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>'
 smap <expr> <C-k> vsnip#expandable() ? '<Plug>(vsnip-expand)' : '<C-k>'
