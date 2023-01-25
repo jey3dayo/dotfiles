@@ -1,6 +1,9 @@
-local cmd = vim.cmd
 local autocmd = vim.api.nvim_create_autocmd
--- local augroup = vim.api.nvim_create_augroup
+local _augroup = vim.api.nvim_create_augroup
+
+local function augroup(group_name)
+  _augroup(group_name, { clear = true })
+end
 
 autocmd("BufWritePre", {
   pattern = "*",
@@ -27,11 +30,18 @@ autocmd({ "BufReadPost" }, {
   end,
 })
 
-cmd [[
-augroup highlightIdegraphicSpace
-  au!
-  au Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  au VimEnter,ColorScheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  au VimEnter,WinEnter * match IdeographicSpace /　/
-augroup END
-]]
+augroup("highlightIdegraphicSpace")
+
+autocmd({ "VimEnter", "Colorscheme" }, {
+  pattern = "*",
+  group = "highlightIdegraphicSpace",
+  command = "highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen",
+  desc = "highlight Zenakaku Space",
+})
+
+autocmd({ "VimEnter", "WinEnter" }, {
+  pattern = "*",
+  group = "highlightIdegraphicSpace",
+  command = "match IdeographicSpace /　/",
+  desc = "highlight Zenakaku Space",
+})
