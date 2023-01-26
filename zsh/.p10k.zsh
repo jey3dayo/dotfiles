@@ -349,9 +349,9 @@
 
   #####################################[ vcs: git status ]######################################
   # Version control background colors.
-  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=178
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=148
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=148
+  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=148
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=178
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=178
   typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=9
   typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=8
 
