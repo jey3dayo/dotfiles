@@ -7,9 +7,4 @@ return {
   { "vito-c/jq.vim", ft = { "jq" } },
   { "ap/vim-css-color", ft = { "css", "javascript", "javascript.jsx", "jsx" } },
   { "hotoo/jsgf.vim", ft = { "typescript", "typescript.tsx", "tsx" } },
-  { "MunifTanjim/prettier.nvim",
-    config = function()
-      require("config/prettier")
-    end,
-  },
 }
