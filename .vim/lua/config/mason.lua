@@ -90,9 +90,9 @@ local configs = {
     commands = {
       Format = {
         function()
-          vim.lsp.buf.range_formatting({}, { 0, 0 }, { vim.fn.line("$"), 0 })
-        end
-      }
+          vim.lsp.buf.formatexpr({}, { 0, 0 }, { vim.fn.line "$", 0 })
+        end,
+      },
     },
     settings = {
       json = {
@@ -171,38 +171,36 @@ local configs = {
   },
 }
 
-lspconfig.setup_handlers({ function(server_name)
-  local config = {}
+lspconfig.setup_handlers {
+  function(server_name)
+    local config = {}
 
-  if configs[server_name] ~= nil then
-    config = configs[server_name];
-  end
+    if configs[server_name] ~= nil then
+      config = configs[server_name]
+    end
 
-  local on_attach = function(_, bufnr)
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    Keymap("<C-]>", vim.lsp.buf.definition, bufopts)
-    Keymap("[lsp]f", vim.lsp.buf.format, bufopts)
-    Keymap("[lsp]d", vim.lsp.buf.declaration, bufopts)
-    Keymap("[lsp]t", vim.lsp.buf.type_definition, bufopts)
-    Keymap("[lsp]i", vim.lsp.buf.implementation, bufopts)
+    local on_attach = function(_, bufnr)
+      local bufopts = { noremap = true, silent = true, buffer = bufnr }
+      Keymap("<C-]>", vim.lsp.buf.definition, bufopts)
+      Keymap("[lsp]f", vim.lsp.buf.format, bufopts)
+      Keymap("[lsp]d", vim.lsp.buf.declaration, bufopts)
+      Keymap("[lsp]t", vim.lsp.buf.type_definition, bufopts)
+      Keymap("[lsp]i", vim.lsp.buf.implementation, bufopts)
 
-    -- lspsaga
-    Keymap("<C-j>", "<cmd>Lspsaga diagnostic_jump_next<CR>", bufopts)
-    Keymap("<C-k>", "<cmd>Lspsaga diagnostic_jump_prev<CR>", bufopts)
-    Keymap("K", "<cmd>Lspsaga hover_doc<CR>", bufopts)
-    Keymap("<C-[>", "<Cmd>Lspsaga lsp_finder<CR>", bufopts)
-    Keymap("[lsp]r", "<cmd>Lspsaga rename<CR>", bufopts)
-    Keymap("[lsp]a", "<cmd>Lspsaga code_action<CR>", bufopts)
-  end
+      -- lspsaga
+      Keymap("<C-j>", "<cmd>Lspsaga diagnostic_jump_next<CR>", bufopts)
+      Keymap("<C-k>", "<cmd>Lspsaga diagnostic_jump_prev<CR>", bufopts)
+      Keymap("K", "<cmd>Lspsaga hover_doc<CR>", bufopts)
+      Keymap("<C-[>", "<Cmd>Lspsaga lsp_finder<CR>", bufopts)
+      Keymap("[lsp]r", "<cmd>Lspsaga rename<CR>", bufopts)
+      Keymap("[lsp]a", "<cmd>Lspsaga code_action<CR>", bufopts)
+    end
 
-  local server_disabled = (config.disabled ~= nil and config.disabled) or false
-  if not server_disabled then
-    nvim_lsp[server_name].setup(
-      vim.tbl_deep_extend(
-        "force",
-        { on_attach = on_attach, capabilities = capabilities },
-        config
+    local server_disabled = (config.disabled ~= nil and config.disabled) or false
+    if not server_disabled then
+      nvim_lsp[server_name].setup(
+        vim.tbl_deep_extend("force", { on_attach = on_attach, capabilities = capabilities }, config)
       )
-    )
-  end
-end })
+    end
+  end,
+}
