@@ -3,12 +3,16 @@ vim.g.mapleader = ","
 local opts = { noremap = true, silent = true }
 
 function Keymap(key, value, _opts)
-  if _opts then opts = _opts end
+  if _opts then
+    opts = _opts
+  end
   vim.keymap.set("n", key, value, opts)
 end
 
 function Set_keymap(key, value, _opts)
-  if _opts then opts = _opts end
+  if _opts then
+    opts = _opts
+  end
   vim.api.nvim_set_keymap("n", key, value, opts)
 end
 
@@ -37,7 +41,7 @@ Keymap("gt", ":<C-u>tabnext<CR>")
 Keymap("gT", ":<C-u>tabprevious<CR>")
 
 -- source cmd
-Keymap("<Leader>so", ":<C-u>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>")
+Keymap("<Leader>so", ":<C-u>source " .. vim.fn.stdpath "config" .. "/init.lua<CR>")
 Keymap("<Leader>su", ":<C-u>Lazy update<CR>")
 
 -- set list

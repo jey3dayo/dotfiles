@@ -1,13 +1,15 @@
 local status, telescope = pcall(require, "telescope")
-if (not status) then return end
-local actions = require("telescope.actions")
-local builtin = require("telescope.builtin")
+if not status then
+  return
+end
+local actions = require "telescope.actions"
+local builtin = require "telescope.builtin"
 
 local function telescope_buffer_dir()
-  return vim.fn.expand("%:p:h")
+  return vim.fn.expand "%:p:h"
 end
 
-local fb_actions = require "telescope".extensions.file_browser.actions
+local fb_actions = require("telescope").extensions.file_browser.actions
 
 telescope.setup {
   defaults = {
@@ -32,34 +34,36 @@ telescope.setup {
       mappings = {
         -- your custom insert mode mappings
         ["i"] = {
-          ["<C-w>"] = function() vim.cmd("normal vbd") end,
+          ["<C-w>"] = function()
+            vim.cmd "normal vbd"
+          end,
         },
         ["n"] = {
           -- your custom normal mode mappings
           ["N"] = fb_actions.create,
           ["u"] = fb_actions.goto_parent_dir,
           ["/"] = function()
-            vim.cmd("startinsert")
-          end
+            vim.cmd "startinsert"
+          end,
         },
       },
     },
   },
 }
-telescope.load_extension("file_browser")
+telescope.load_extension "file_browser"
 
 -- keymaps
 Keymap("<Leader>f", function()
-  builtin.find_files({
+  builtin.find_files {
     no_ignore = false,
-    hidden = true
-  })
+    hidden = true,
+  }
 end)
 Keymap("<Leader>g", builtin.live_grep)
 Keymap("<Leader>b", builtin.buffers)
 Keymap("<Leader>d", builtin.diagnostics)
 Keymap("<Leader>e", function()
-  telescope.extensions.file_browser.file_browser({
+  telescope.extensions.file_browser.file_browser {
     path = "%:p:h",
     cwd = telescope_buffer_dir(),
     respect_gitignore = false,
@@ -67,6 +71,6 @@ Keymap("<Leader>e", function()
     grouped = true,
     previewer = false,
     initial_mode = "normal",
-    layout_config = { height = 40 }
-  })
+    layout_config = { height = 40 },
+  }
 end)

@@ -27,9 +27,9 @@ local options = {
   backup = true,
   swapfile = true,
   undofile = true,
-  backupdir = vim.fn.stdpath("cache"),
-  directory = vim.fn.stdpath("cache"),
-  undodir = vim.fn.stdpath("cache"),
+  backupdir = vim.fn.stdpath "cache",
+  directory = vim.fn.stdpath "cache",
+  undodir = vim.fn.stdpath "cache",
   backupskip = { "/tmp/*", "/private/tmp/*", cacheDir },
 
   -- ui
@@ -86,11 +86,11 @@ local options = {
   -- wrap = false,
 }
 
-vim.opt.shortmess:append("c")
+vim.opt.shortmess:append "c"
 
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
-vim.cmd("set whichwrap+=<,>,[,],h,l")
-vim.cmd([[set iskeyword+=-]])
+vim.cmd "set whichwrap+=<,>,[,],h,l"
+vim.cmd [[set iskeyword+=-]]

@@ -1,5 +1,7 @@
 local status, prettier = pcall(require, "prettier")
-if (not status) then return end
+if not status then
+  return
+end
 
 prettier.setup {
   bin = "prettierd",
@@ -15,7 +17,7 @@ prettier.setup {
     "typescript",
     "typescriptreact",
     "yaml",
-  }
+  },
 }
 
 local set_opts = { noremap = true, silent = false }

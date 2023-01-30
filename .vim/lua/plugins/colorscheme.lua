@@ -4,4 +4,3 @@ return {
   "joshdick/onedark.vim",
   "cocopon/iceberg.vim",
 }
-

@@ -7,7 +7,7 @@ return {
       "nvim-lua/plenary.nvim",
     },
     config = function()
-      require("config/null-ls")
+      require "config/null-ls"
     end,
   },
 
@@ -15,26 +15,29 @@ return {
   {
     "glepnir/lspsaga.nvim",
     config = function()
-      require("config/lspsaga")
+      require "config/lspsaga"
     end,
   },
   "williamboman/mason.nvim",
+  "jayp0521/mason-null-ls.nvim",
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
       "williamboman/mason.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
     },
     config = function()
-      require("config/mason")
+      require "config/mason"
     end,
   },
-  { "MunifTanjim/prettier.nvim",
+  {
+    "MunifTanjim/prettier.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
       "jose-elias-alvarez/null-ls.nvim",
     },
     config = function()
-      require("config/prettier")
+      require "config/prettier"
     end,
   },
 }

@@ -4,51 +4,51 @@ return {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
     config = function()
-      require("config/nvim-treesitter")
+      require "config/nvim-treesitter"
     end,
   },
   {
     "windwp/nvim-autopairs",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("config/nvim-autopairs")
+      require "config/nvim-autopairs"
     end,
   },
   {
     "windwp/nvim-ts-autotag",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
-      require("config/nvim-ts-autotag")
+      require "config/nvim-ts-autotag"
     end,
   },
   {
     "nvim-lualine/lualine.nvim",
     config = function()
-      require("config/lualine")
+      require "config/lualine"
     end,
   },
   {
     "nathanaelkane/vim-indent-guides",
     config = function()
-      vim.cmd([[ source ~/.config/nvim/plugins/vim-indent-guides.rc.vim ]])
+      vim.cmd [[ source ~/.config/nvim/plugins/vim-indent-guides.rc.vim ]]
     end,
   },
   {
     "kien/rainbow_parentheses.vim",
     config = function()
-      vim.cmd([[ source ~/.config/nvim/plugins/rainbow_parentheses.rc.vim ]])
+      vim.cmd [[ source ~/.config/nvim/plugins/rainbow_parentheses.rc.vim ]]
     end,
   },
   {
     "lewis6991/gitsigns.nvim",
     config = function()
-      require("config/gitsigns")
+      require "config/gitsigns"
     end,
   },
   {
     "norcalli/nvim-colorizer.lua",
     config = function()
-      require("config/nvim-colorizer")
+      require "config/nvim-colorizer"
     end,
   },
   {
@@ -57,7 +57,7 @@ return {
       "nvim-lua/plenary.nvim",
     },
     config = function()
-      require("config/telescope")
+      require "config/telescope"
     end,
   },
   {
@@ -71,10 +71,10 @@ return {
     event = { "InsertEnter" },
     dependencies = {
       "hrsh7th/vim-vsnip-integ",
-      "rafamadriz/friendly-snippets"
+      "rafamadriz/friendly-snippets",
     },
     config = function()
-      vim.cmd([[ source ~/.config/nvim/plugins/vsnip.rc.vim ]])
+      vim.cmd [[ source ~/.config/nvim/plugins/vsnip.rc.vim ]]
     end,
   },
   "hrsh7th/vim-vsnip-integ",

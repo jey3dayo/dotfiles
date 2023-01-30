@@ -1,8 +1,9 @@
 return {
-  { "tpope/vim-fugitive",
+  {
+    "tpope/vim-fugitive",
     cmd = { "Gdiffsplit", "Ggrep", "Gstatus", "Gwrite", "Gcommit" },
     config = function()
-      vim.cmd([[ source ~/.config/nvim/plugins/vim-fugitive.rc.vim ]])
+      vim.cmd [[ source ~/.config/nvim/plugins/vim-fugitive.rc.vim ]]
     end,
   },
   { "tpope/vim-rhubarb", dependencies = { "tpope/vim-fugitive" } },
