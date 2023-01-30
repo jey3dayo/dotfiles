@@ -23,11 +23,6 @@ if not status5 then
   return
 end
 
-local status6, mason_null_ls = pcall(require, "mason-null-ls")
-if not status6 then
-  return
-end
-
 mason.setup {
   ui = {
     icons = {
@@ -39,12 +34,6 @@ mason.setup {
       package_uninstalled = "✗",
     },
   },
-}
-
-mason_null_ls.setup {
-  ensure_installed = nil,
-  automatic_installation = true,
-  automatic_setup = false,
 }
 
 local set_opts = { silent = true }

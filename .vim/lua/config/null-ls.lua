@@ -3,6 +3,11 @@ if not status then
   return
 end
 
+local status2, mason_null_ls = pcall(require, "mason-null-ls")
+if not status2 then
+  return
+end
+
 local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
 local event = "BufWritePre" -- or "BufWritePost"
 local async = event == "BufWritePost"
@@ -25,4 +30,10 @@ null_ls.setup {
       })
     end
   end,
+}
+
+mason_null_ls.setup {
+  ensure_installed = nil,
+  automatic_installation = true,
+  automatic_setup = false,
 }
