@@ -4,6 +4,7 @@ path=(
   $HOME/.local/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
   $HOME/.deno/bin(N-/)
+  $HOME/.cargo/bin(N-/)
   /opt/homebrew/{bin,sbin}(N-/)
   $path
 )
