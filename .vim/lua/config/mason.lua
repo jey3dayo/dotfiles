@@ -1,15 +1,34 @@
 local status, mason = pcall(require, "mason")
-if (not status) then return end
+if not status then
+  return
+end
+
 local status2, lspconfig = pcall(require, "mason-lspconfig")
-if (not status2) then return end
+if not status2 then
+  return
+end
 
 local status3, nvim_lsp = pcall(require, "lspconfig")
-if (not status3) then return end
+if not status3 then
+  return
+end
 
 local status4 = pcall(require, "lspsaga")
-if (not status4) then return end
+if not status4 then
+  return
+end
 
-mason.setup({
+local status5, null_ls = pcall(require, "null-ls")
+if not status5 then
+  return
+end
+
+local status6, mason_null_ls = pcall(require, "mason-null-ls")
+if not status6 then
+  return
+end
+
+mason.setup {
   ui = {
     icons = {
       server_installed = "✓",
@@ -17,10 +36,16 @@ mason.setup({
       server_uninstalled = "✗",
       package_installed = "✓",
       package_pending = "➜",
-      package_uninstalled = "✗"
-    }
-  }
-})
+      package_uninstalled = "✗",
+    },
+  },
+}
+
+mason_null_ls.setup {
+  ensure_installed = nil,
+  automatic_installation = true,
+  automatic_setup = false,
+}
 
 local set_opts = { silent = true }
 Set_keymap("[lsp]", "<Nop>", set_opts)
@@ -47,7 +72,7 @@ local configs = {
         lint = {
           unknownAtRules = "ignore",
         },
-      }
+      },
     },
   },
   tailwindcss = {
