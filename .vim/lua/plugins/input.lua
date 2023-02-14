@@ -6,7 +6,10 @@ return {
       vim.cmd [[ source ~/.config/nvim/plugins/vim-alignta.rc.vim ]]
     end,
   },
-  "tomtom/tcomment_vim",
+  {
+    "tomtom/tcomment_vim",
+    lazy = true,
+  },
   {
     "nishigori/increment-activator",
     config = function()

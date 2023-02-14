@@ -1,5 +1,8 @@
 return {
-  "nvim-tree/nvim-web-devicons",
+  {
+    "nvim-tree/nvim-web-devicons",
+    lazy = true,
+  },
   {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
@@ -9,6 +12,7 @@ return {
   },
   {
     "windwp/nvim-autopairs",
+    lazy = true,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require "config/nvim-autopairs"
@@ -16,6 +20,7 @@ return {
   },
   {
     "windwp/nvim-ts-autotag",
+    lazy = true,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require "config/nvim-ts-autotag"
