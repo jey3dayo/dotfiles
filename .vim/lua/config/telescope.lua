@@ -23,6 +23,7 @@ telescope.setup {
         ["<ESC>"] = actions.close,
         ["<C-n>"] = actions.move_selection_next,
         ["<C-p>"] = actions.move_selection_previous,
+        ["<c-d>"] = actions.delete_buffer,
       },
     },
   },
