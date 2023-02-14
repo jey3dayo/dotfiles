@@ -1,10 +1,8 @@
 return {
-  {
-    "nvim-tree/nvim-web-devicons",
-    lazy = true,
-  },
+  "nvim-tree/nvim-web-devicons",
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     run = ":TSUpdate",
     config = function()
       require "config/nvim-treesitter"
