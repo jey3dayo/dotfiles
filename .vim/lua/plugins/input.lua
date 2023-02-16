@@ -8,7 +8,6 @@ return {
   },
   {
     "tomtom/tcomment_vim",
-    lazy = true,
   },
   {
     "nishigori/increment-activator",

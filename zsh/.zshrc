@@ -60,7 +60,6 @@ setopt pushd_ignore_dups
 setopt rm_star_silent
 setopt rm_star_wait
 setopt share_history
-setopt magic_equal_subst
 
 autoload zed
 
