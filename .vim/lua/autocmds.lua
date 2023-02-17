@@ -34,18 +34,18 @@ autocmd({ "BufReadPost" }, {
   end,
 })
 
-augroup "highlightIdegraphicSpace"
-
-autocmd({ "VimEnter", "Colorscheme" }, {
-  pattern = "*",
-  group = "highlightIdegraphicSpace",
-  command = "highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen",
-  desc = "highlight Zenakaku Space",
-})
-
-autocmd({ "VimEnter", "WinEnter" }, {
-  pattern = "*",
-  group = "highlightIdegraphicSpace",
-  command = "match IdeographicSpace /　/",
-  desc = "highlight Zenakaku Space",
-})
+-- augroup "highlightIdegraphicSpace"
+--
+-- autocmd({ "VimEnter", "Colorscheme" }, {
+--   pattern = "*",
+--   group = "highlightIdegraphicSpace",
+--   command = "highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen",
+--   desc = "highlight Zenakaku Space",
+-- })
+--
+-- autocmd({ "VimEnter", "WinEnter" }, {
+--   pattern = "*",
+--   group = "highlightIdegraphicSpace",
+--   command = "match IdeographicSpace /　/",
+--   desc = "highlight Zenakaku Space",
+-- })
