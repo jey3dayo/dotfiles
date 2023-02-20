@@ -41,7 +41,7 @@ Set_keymap("[lsp]", "<Nop>", set_opts)
 Set_keymap("<C-e>", "[lsp]", set_opts)
 
 lspconfig.setup {
-  ensure_installed = { "sumneko_lua", "tailwindcss", "tsserver" },
+  ensure_installed = { "tailwindcss", "tsserver" },
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
