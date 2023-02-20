@@ -25,7 +25,7 @@ M.tmux_keybinds = {
 
   -- Pane
   { key = "-", mods = "ALT", action = act { SplitVertical = { domain = "CurrentPaneDomain" } } },
-  { key = "¥", mods = "ALT", action = act { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
+  { key = "=", mods = "ALT|SHIFT", action = act { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
   { key = "x", mods = "ALT", action = act { CloseCurrentPane = { confirm = true } } },
 
   { key = "o", mods = "ALT", action = act { ActivatePaneDirection = "Next" } },
@@ -92,7 +92,7 @@ M.tmux_keybinds = {
 
 M.default_keybinds = {
   { key = "Insert", mods = "SHIFT", action = act { PasteFrom = "PrimarySelection" } },
-  { key = "=", mods = "CTRL", action = "ResetFontSize" },
+  { key = "=", mods = "CTRL|SHIFT", action = "ResetFontSize" },
   { key = "+", mods = "CTRL", action = "IncreaseFontSize" },
   { key = "-", mods = "CTRL", action = "DecreaseFontSize" },
 }
