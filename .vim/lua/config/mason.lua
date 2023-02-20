@@ -3,7 +3,7 @@ if not status then
   return
 end
 
-local status2, lspconfig = pcall(require, "mason-lspconfig")
+local status2, mason_lspconfig = pcall(require, "mason-lspconfig")
 if not status2 then
   return
 end
@@ -40,7 +40,7 @@ local set_opts = { silent = true }
 Set_keymap("[lsp]", "<Nop>", set_opts)
 Set_keymap("<C-e>", "[lsp]", set_opts)
 
-lspconfig.setup {
+mason_lspconfig.setup {
   ensure_installed = { "tailwindcss", "tsserver" },
 }
 
@@ -160,7 +160,7 @@ local configs = {
   },
 }
 
-lspconfig.setup_handlers {
+mason_lspconfig.setup_handlers {
   function(server_name)
     local config = {}
 
