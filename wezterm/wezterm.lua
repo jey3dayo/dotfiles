@@ -1,9 +1,9 @@
 local wezterm = require "wezterm"
-local keybinds = require "keybinds"
-local ui = require "ui"
-local utils = require "utils"
+local keybinds = require "./keybinds"
+local ui = require "./ui"
+local utils = require "./utils"
 local gpus = wezterm.gui.enumerate_gpus()
-require "on"
+require "./on"
 
 local config = {
   use_ime = true,

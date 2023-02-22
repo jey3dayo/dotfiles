@@ -1,18 +1,31 @@
 local wezterm = require "wezterm"
 local act = wezterm.action
-local utils = require "utils"
+local utils = require "./utils"
 
 local M = {}
 
 M.leader = { key = "x", mods = "CTRL", timeout_milliseconds = 1000 }
 
 M.tmux_keybinds = {
+  { key = "c",        mods = "LEADER",       action = act { SpawnTab = "CurrentPaneDomain" } },
+  { key = "x",        mods = "LEADER",       action = act { CloseCurrentTab = { confirm = true } } },
+  { key = "n",        mods = "LEADER",       action = act { ActivateTabRelative = 1 } },
+  { key = "p",        mods = "LEADER",       action = act { ActivateTabRelative = -1 } },
+  { key = "o",        mods = "LEADER",       action = act { ActivatePaneDirection = "Next" } },
+  { key = "O",        mods = "LEADER",       action = act.RotatePanes "Clockwise" },
+  { key = '"',        mods = "LEADER|SHIFT", action = act { SplitVertical = { domain = "CurrentPaneDomain" } } },
+  { key = "mapped:-", mods = "LEADER",       action = act { SplitVertical = { domain = "CurrentPaneDomain" } } },
+  { key = "|",        mods = "LEADER|SHIFT", action = act { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
+  { key = "z",        mods = "LEADER",       action = wezterm.action.TogglePaneZoomState },
+  { key = "Space",    mods = "LEADER",       action = wezterm.action.TogglePaneZoomState },
+}
+
+M.wezterm_keybinds = {
   -- Tab
-  { key = "x",     mods = "ALT",            action = act { CloseCurrentTab = { confirm = true } } },
   { key = "Tab",   mods = "ALT",            action = act { ActivateTabRelative = 1 } },
   { key = "Tab",   mods = "ALT|SHIFT",      action = act { ActivateTabRelative = -1 } },
-  { key = "p",     mods = "ALT",            action = act { ActivateTabRelative = -1 } },
   { key = "n",     mods = "ALT",            action = act { ActivateTabRelative = 1 } },
+  { key = "p",     mods = "ALT",            action = act { ActivateTabRelative = -1 } },
   { key = "h",     mods = "ALT|CTRL",       action = act { MoveTabRelative = -1 } },
   { key = "l",     mods = "ALT|CTRL",       action = act { MoveTabRelative = 1 } },
   { key = "1",     mods = "ALT",            action = act { ActivateTab = 0 } },
@@ -29,9 +42,6 @@ M.tmux_keybinds = {
   { key = "-",     mods = "ALT",            action = act { SplitVertical = { domain = "CurrentPaneDomain" } } },
   { key = "|",     mods = "ALT|SHIFT",      action = act { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
   { key = "x",     mods = "ALT",            action = act { CloseCurrentPane = { confirm = true } } },
-  { key = "o",     mods = "ALT",            action = act { ActivatePaneDirection = "Next" } },
-  { key = "o",     mods = "ALT|SHIFT",      action = act.RotatePanes "Clockwise" },
-  { key = "z",     mods = "ALT",            action = wezterm.action.TogglePaneZoomState },
   { key = "j",     mods = "ALT",            action = act { ActivatePaneDirection = "Down" } },
   { key = "k",     mods = "ALT",            action = act { ActivatePaneDirection = "Up" } },
   { key = "h",     mods = "ALT",            action = act { ActivatePaneDirection = "Left" } },
@@ -46,35 +56,14 @@ M.tmux_keybinds = {
   { key = "/",     mods = "ALT",            action = act.Search "CurrentSelectionOrEmptyString" },
 
   -- CopyMode
-  -- {
-  --   key = "k",
-  --   mods = "ALT|CTRL",
-  --   action = act.Multiple { act.CopyMode "ClearSelectionMode", act.ActivateCopyMode, act.ClearSelection },
-  -- },
-  -- { key = "j", mods = "ALT|CTRL", action = act { PasteFrom = "PrimarySelection" } },
-  -- {
-  --   key = "y",
-  --   mods = "NONE",
-  --   action = act {
-  --     Multiple = {
-  --       act { CopyTo = "ClipboardAndPrimarySelection" },
-  --       act.CopyMode "Close",
-  --     },
-  --   },
-  -- },
-  -- {
-  --   key = "y",
-  --   mods = "SHIFT",
-  --   action = act {
-  --     Multiple = {
-  --       act.CopyMode { SetSelectionMode = "Cell" },
-  --       act.CopyMode "MoveToEndOfLineContent",
-  --       act { CopyTo = "ClipboardAndPrimarySelection" },
-  --       act.CopyMode "Close",
-  --     },
-  --   },
-  -- },
+  {
+    key = "k",
+    mods = "ALT|CTRL",
+    action = act.Multiple { act.CopyMode "ClearSelectionMode", act.ActivateCopyMode, act.ClearSelection },
+  },
+  { key = "j", mods = "ALT|CTRL", action = act { PasteFrom = "PrimarySelection" } },
 
+  -- Resize Pane
   {
     key = "r",
     mods = "ALT",
@@ -99,7 +88,8 @@ M.default_keybinds = {
 }
 
 function M.create_keybinds()
-  return utils.merge_lists(M.default_keybinds, M.tmux_keybinds)
+  local keybinds = utils.merge_lists(M.default_keybinds, M.tmux_keybinds)
+  return utils.merge_lists(keybinds, M.wezterm_keybinds)
 end
 
 M.key_tables = {
@@ -116,6 +106,15 @@ M.key_tables = {
     {
       key = "Escape",
       mods = "NONE",
+      action = act.Multiple {
+        act.ClearSelection,
+        act.CopyMode "ClearPattern",
+        act.CopyMode "Close",
+      },
+    },
+    {
+      key = "c",
+      mods = "CTRL",
       action = act.Multiple {
         act.ClearSelection,
         act.CopyMode "ClearPattern",
