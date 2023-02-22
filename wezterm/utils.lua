@@ -82,4 +82,42 @@ function M.split_from_url(dir)
   return hostname, cwd
 end
 
+function M.object_assign(target, ...)
+  local sources = { ... }
+  for i = 1, #sources do
+    local source = sources[i]
+    for key in pairs(source) do
+      target[key] = source[key]
+    end
+  end
+  return target
+end
+
+local function is_array(value)
+  return type(value) == "table" and (value[1] ~= nil or next(value) == nil)
+end
+
+function M.array_concat(self, ...)
+  local items = { ... }
+  local result = {}
+  local len = 0
+  for i = 1, #self do
+    len = len + 1
+    result[len] = self[i]
+  end
+  for i = 1, #items do
+    local item = items[i]
+    if is_array(item) then
+      for j = 1, #item do
+        len = len + 1
+        result[len] = item[j]
+      end
+    else
+      len = len + 1
+      result[len] = item
+    end
+  end
+  return result
+end
+
 return M

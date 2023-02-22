@@ -2,66 +2,41 @@ local wezterm = require "wezterm"
 local act = wezterm.action
 local utils = require "./utils"
 
-local M = {}
-
-M.leader = { key = "x", mods = "CTRL", timeout_milliseconds = 1000 }
-
-M.tmux_keybinds = {
-  { key = "c",        mods = "LEADER",       action = act { SpawnTab = "CurrentPaneDomain" } },
-  { key = "x",        mods = "LEADER",       action = act { CloseCurrentTab = { confirm = true } } },
-  { key = "n",        mods = "LEADER",       action = act { ActivateTabRelative = 1 } },
-  { key = "p",        mods = "LEADER",       action = act { ActivateTabRelative = -1 } },
-  { key = "o",        mods = "LEADER",       action = act { ActivatePaneDirection = "Next" } },
-  { key = "O",        mods = "LEADER",       action = act.RotatePanes "Clockwise" },
-  { key = '"',        mods = "LEADER|SHIFT", action = act { SplitVertical = { domain = "CurrentPaneDomain" } } },
-  { key = "mapped:-", mods = "LEADER",       action = act { SplitVertical = { domain = "CurrentPaneDomain" } } },
-  { key = "|",        mods = "LEADER|SHIFT", action = act { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
-  { key = "z",        mods = "LEADER",       action = wezterm.action.TogglePaneZoomState },
-  { key = "Space",    mods = "LEADER",       action = wezterm.action.TogglePaneZoomState },
+local default_keybinds = {
+  { key = "w",      mods = "SUPER",      action = act { CloseCurrentPane = { confirm = true } } },
+  { key = "n",      mods = "SUPER",      action = act { SpawnTab = "CurrentPaneDomain" } },
+  { key = "q",      mods = "SUPER",      action = act.QuitApplication },
+  { key = "F4",     mods = "ALT",        action = act.QuitApplication },
+  { key = "Insert", mods = "SHIFT",      action = act { PasteFrom = "PrimarySelection" } },
+  { key = "=",      mods = "CTRL|SHIFT", action = "ResetFontSize" },
+  { key = "+",      mods = "CTRL",       action = "IncreaseFontSize" },
+  { key = "-",      mods = "CTRL",       action = "DecreaseFontSize" },
 }
 
-M.wezterm_keybinds = {
-  -- Tab
-  { key = "Tab",   mods = "ALT",            action = act { ActivateTabRelative = 1 } },
-  { key = "Tab",   mods = "ALT|SHIFT",      action = act { ActivateTabRelative = -1 } },
-  { key = "n",     mods = "ALT",            action = act { ActivateTabRelative = 1 } },
-  { key = "p",     mods = "ALT",            action = act { ActivateTabRelative = -1 } },
-  { key = "h",     mods = "ALT|CTRL",       action = act { MoveTabRelative = -1 } },
-  { key = "l",     mods = "ALT|CTRL",       action = act { MoveTabRelative = 1 } },
-  { key = "1",     mods = "ALT",            action = act { ActivateTab = 0 } },
-  { key = "2",     mods = "ALT",            action = act { ActivateTab = 1 } },
-  { key = "3",     mods = "ALT",            action = act { ActivateTab = 2 } },
-  { key = "4",     mods = "ALT",            action = act { ActivateTab = 3 } },
-  { key = "5",     mods = "ALT",            action = act { ActivateTab = 4 } },
-  { key = "6",     mods = "ALT",            action = act { ActivateTab = 5 } },
-  { key = "7",     mods = "ALT",            action = act { ActivateTab = 6 } },
-  { key = "8",     mods = "ALT",            action = act { ActivateTab = 7 } },
-  { key = "9",     mods = "ALT",            action = act { ActivateTab = 8 } },
-
-  -- Pane
-  { key = "-",     mods = "ALT",            action = act { SplitVertical = { domain = "CurrentPaneDomain" } } },
-  { key = "|",     mods = "ALT|SHIFT",      action = act { SplitHorizontal = { domain = "CurrentPaneDomain" } } },
-  { key = "x",     mods = "ALT",            action = act { CloseCurrentPane = { confirm = true } } },
-  { key = "j",     mods = "ALT",            action = act { ActivatePaneDirection = "Down" } },
-  { key = "k",     mods = "ALT",            action = act { ActivatePaneDirection = "Up" } },
-  { key = "h",     mods = "ALT",            action = act { ActivatePaneDirection = "Left" } },
-  { key = "l",     mods = "ALT",            action = act { ActivatePaneDirection = "Right" } },
-  { key = "h",     mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Left", 1 } } },
-  { key = "l",     mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Right", 1 } } },
-  { key = "k",     mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Up", 1 } } },
-  { key = "j",     mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Down", 1 } } },
+local tmux_keybinds = {
+  { key = "c",     mods = "LEADER",       action = act { SpawnTab = "CurrentPaneDomain" } },
+  { key = "x",     mods = "LEADER",       action = act { CloseCurrentTab = { confirm = true } } },
+  { key = "n",     mods = "LEADER",       action = act { ActivateTabRelative = 1 } },
+  { key = "p",     mods = "LEADER",       action = act { ActivateTabRelative = -1 } },
+  { key = "o",     mods = "LEADER",       action = act { ActivatePaneDirection = "Next" } },
+  { key = "O",     mods = "LEADER",       action = act.RotatePanes "Clockwise" },
+  { key = '"',     mods = "LEADER|SHIFT", action = act.SplitVertical { domain = "CurrentPaneDomain" } },
+  { key = "-",     mods = "LEADER",       action = act.SplitVertical { domain = "CurrentPaneDomain" } },
+  { key = "|",     mods = "LEADER|SHIFT", action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
+  { key = "z",     mods = "LEADER",       action = act.TogglePaneZoomState },
+  { key = "Space", mods = "LEADER",       action = act.TogglePaneZoomState },
 
   -- Search
-  { key = "Enter", mods = "ALT",            action = "QuickSelect" },
-  { key = "/",     mods = "ALT",            action = act.Search "CurrentSelectionOrEmptyString" },
+  { key = "Enter", mods = "LEADER",       action = "QuickSelect" },
+  { key = "/",     mods = "LEADER",       action = act.Search "CurrentSelectionOrEmptyString" },
 
   -- CopyMode
   {
-    key = "k",
-    mods = "ALT|CTRL",
+    key = "[",
+    mods = "LEADER",
     action = act.Multiple { act.CopyMode "ClearSelectionMode", act.ActivateCopyMode, act.ClearSelection },
   },
-  { key = "j", mods = "ALT|CTRL", action = act { PasteFrom = "PrimarySelection" } },
+  { key = "]", mods = "LEADER", action = act { PasteFrom = "PrimarySelection" } },
 
   -- Resize Pane
   {
@@ -78,21 +53,36 @@ M.wezterm_keybinds = {
   },
 }
 
-M.default_keybinds = {
-  { key = "w",      mods = "SUPER",      action = act { CloseCurrentPane = { confirm = true } } },
-  { key = "n",      mods = "SUPER",      action = act { SpawnTab = "CurrentPaneDomain" } },
-  { key = "Insert", mods = "SHIFT",      action = act { PasteFrom = "PrimarySelection" } },
-  { key = "=",      mods = "CTRL|SHIFT", action = "ResetFontSize" },
-  { key = "+",      mods = "CTRL",       action = "IncreaseFontSize" },
-  { key = "-",      mods = "CTRL",       action = "DecreaseFontSize" },
+local wezterm_keybinds = {
+  -- Tab
+  { key = "Tab", mods = "ALT",            action = act { ActivateTabRelative = 1 } },
+  { key = "Tab", mods = "ALT|SHIFT",      action = act { ActivateTabRelative = -1 } },
+  { key = "n",   mods = "ALT",            action = act { ActivateTabRelative = 1 } },
+  { key = "p",   mods = "ALT",            action = act { ActivateTabRelative = -1 } },
+  { key = "h",   mods = "ALT|CTRL",       action = act { MoveTabRelative = -1 } },
+  { key = "l",   mods = "ALT|CTRL",       action = act { MoveTabRelative = 1 } },
+  { key = "1",   mods = "ALT",            action = act { ActivateTab = 0 } },
+  { key = "2",   mods = "ALT",            action = act { ActivateTab = 1 } },
+  { key = "3",   mods = "ALT",            action = act { ActivateTab = 2 } },
+  { key = "4",   mods = "ALT",            action = act { ActivateTab = 3 } },
+  { key = "5",   mods = "ALT",            action = act { ActivateTab = 4 } },
+  { key = "6",   mods = "ALT",            action = act { ActivateTab = 5 } },
+  { key = "7",   mods = "ALT",            action = act { ActivateTab = 6 } },
+  { key = "8",   mods = "ALT",            action = act { ActivateTab = 7 } },
+  { key = "9",   mods = "ALT",            action = act { ActivateTab = 8 } },
+
+  -- Pane
+  { key = "j",   mods = "ALT",            action = act { ActivatePaneDirection = "Down" } },
+  { key = "k",   mods = "ALT",            action = act { ActivatePaneDirection = "Up" } },
+  { key = "h",   mods = "ALT",            action = act { ActivatePaneDirection = "Left" } },
+  { key = "l",   mods = "ALT",            action = act { ActivatePaneDirection = "Right" } },
+  { key = "h",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Left", 1 } } },
+  { key = "l",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Right", 1 } } },
+  { key = "k",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Up", 1 } } },
+  { key = "j",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Down", 1 } } },
 }
 
-function M.create_keybinds()
-  local keybinds = utils.merge_lists(M.default_keybinds, M.tmux_keybinds)
-  return utils.merge_lists(keybinds, M.wezterm_keybinds)
-end
-
-M.key_tables = {
+local key_tables = {
   resize_pane = {
     { key = "h",      action = act { AdjustPaneSize = { "Left", 1 } } },
     { key = "l",      action = act { AdjustPaneSize = { "Right", 1 } } },
@@ -257,7 +247,7 @@ M.key_tables = {
   },
 }
 
-M.mouse_bindings = {
+local mouse_bindings = {
   {
     event = { Up = { streak = 1, button = "Left" } },
     mods = "NONE",
@@ -275,4 +265,11 @@ M.mouse_bindings = {
   },
 }
 
-return M
+return {
+  -- TODO: いつかtrueにする
+  disable_default_key_bindings = false,
+  leader = { key = "x", mods = "CTRL", timeout_milliseconds = 1000 },
+  keys = utils.array_concat(default_keybinds, tmux_keybinds, wezterm_keybinds),
+  key_tables = key_tables,
+  mouse_bindings = mouse_bindings,
+}
