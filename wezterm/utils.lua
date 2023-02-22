@@ -1,4 +1,11 @@
+local wezterm = require "wezterm"
+
 local M = {}
+
+function M.font_with_fallback(name, params)
+  local names = { name, "Inconsolata Nerd Font Mono", "Noto Color Emoji" }
+  return wezterm.font_with_fallback(names, params)
+end
 
 function M.basename(s)
   return string.gsub(s, "(.*[/\\])(.*)", "%2")

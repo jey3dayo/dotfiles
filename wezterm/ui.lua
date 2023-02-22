@@ -1,9 +1,9 @@
 local wezterm = require "wezterm"
 local scheme = wezterm.get_builtin_color_schemes()["nord"]
+local utils = require "./utils"
 
 return {
-  -- font = wezterm.font "Inconsolata Nerd Font Mono",
-  font = wezterm.font "UDEV Gothic 35NFLG",
+  font = utils.font_with_fallback "UDEV Gothic 35NFLG",
   font_size = 16,
   -- color_scheme = "Wombat",
   color_scheme = "Gruvbox dark, hard (base16)",
