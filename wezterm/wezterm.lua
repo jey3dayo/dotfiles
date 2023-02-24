@@ -3,7 +3,6 @@ local utils = require "./utils"
 local ui = require "./ui"
 local keybinds = require "./keybinds"
 local gpus = wezterm.gui.enumerate_gpus()
-require "./on"
 
 local config = {
   use_ime = true,

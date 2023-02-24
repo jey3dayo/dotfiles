@@ -7,6 +7,10 @@ function M.font_with_fallback(name, params)
   return wezterm.font_with_fallback(names, params)
 end
 
+function M.trancate_right(title, max_width)
+  return wezterm.truncate_right(M.basename(title), max_width)
+end
+
 function M.basename(s)
   return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
