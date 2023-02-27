@@ -2,6 +2,7 @@ local wezterm = require "wezterm"
 local utils = require "./utils"
 local ui = require "./ui"
 local keybinds = require "./keybinds"
+local os = require "./os"
 local gpus = wezterm.gui.enumerate_gpus()
 
 local config = {
@@ -12,4 +13,4 @@ local config = {
   front_end = "WebGpu",
 }
 
-return utils.object_assign(config, ui, keybinds)
+return utils.object_assign(config, ui, keybinds, os)
