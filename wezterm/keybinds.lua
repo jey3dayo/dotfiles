@@ -18,13 +18,12 @@ local tmux_keybinds = {
   { key = "x",     mods = "LEADER",       action = act { CloseCurrentTab = { confirm = true } } },
   { key = "n",     mods = "LEADER",       action = act { ActivateTabRelative = 1 } },
   { key = "p",     mods = "LEADER",       action = act { ActivateTabRelative = -1 } },
-  { key = "o",     mods = "LEADER",       action = act { ActivatePaneDirection = "Next" } },
-  { key = "O",     mods = "LEADER",       action = act.RotatePanes "Clockwise" },
+  { key = "o",     mods = "LEADER",       action = act.ActivatePaneDirection "Next" },
   { key = '"',     mods = "LEADER|SHIFT", action = act.SplitVertical { domain = "CurrentPaneDomain" } },
   { key = "-",     mods = "LEADER",       action = act.SplitVertical { domain = "CurrentPaneDomain" } },
   { key = "|",     mods = "LEADER|SHIFT", action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
   { key = "z",     mods = "LEADER",       action = act.TogglePaneZoomState },
-  { key = "Space", mods = "LEADER",       action = act.TogglePaneZoomState },
+  { key = "Space", mods = "LEADER",       action = act.RotatePanes "Clockwise" },
 
   -- Search
   { key = "Enter", mods = "LEADER",       action = "QuickSelect" },
