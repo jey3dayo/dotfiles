@@ -24,6 +24,15 @@ local tmux_keybinds = {
   { key = "|",     mods = "LEADER|SHIFT", action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
   { key = "z",     mods = "LEADER",       action = act.TogglePaneZoomState },
   { key = "Space", mods = "LEADER",       action = act.RotatePanes "Clockwise" },
+  { key = "1",     mods = "LEADER",       action = act { ActivateTab = 0 } }, -- {{{
+  { key = "2",     mods = "LEADER",       action = act { ActivateTab = 1 } },
+  { key = "3",     mods = "LEADER",       action = act { ActivateTab = 2 } },
+  { key = "4",     mods = "LEADER",       action = act { ActivateTab = 3 } },
+  { key = "5",     mods = "LEADER",       action = act { ActivateTab = 4 } },
+  { key = "6",     mods = "LEADER",       action = act { ActivateTab = 5 } },
+  { key = "7",     mods = "LEADER",       action = act { ActivateTab = 6 } },
+  { key = "8",     mods = "LEADER",       action = act { ActivateTab = 7 } },
+  { key = "9",     mods = "LEADER",       action = act { ActivateTab = 8 } }, -- }}}
 
   -- Search
   { key = "Enter", mods = "LEADER",       action = "QuickSelect" },
@@ -60,7 +69,7 @@ local wezterm_keybinds = {
   { key = "p",   mods = "ALT",            action = act { ActivateTabRelative = -1 } },
   { key = "h",   mods = "ALT|CTRL",       action = act { MoveTabRelative = -1 } },
   { key = "l",   mods = "ALT|CTRL",       action = act { MoveTabRelative = 1 } },
-  { key = "1",   mods = "ALT",            action = act { ActivateTab = 0 } },
+  { key = "1",   mods = "ALT",            action = act { ActivateTab = 0 } }, -- {{{
   { key = "2",   mods = "ALT",            action = act { ActivateTab = 1 } },
   { key = "3",   mods = "ALT",            action = act { ActivateTab = 2 } },
   { key = "4",   mods = "ALT",            action = act { ActivateTab = 3 } },
@@ -68,7 +77,7 @@ local wezterm_keybinds = {
   { key = "6",   mods = "ALT",            action = act { ActivateTab = 5 } },
   { key = "7",   mods = "ALT",            action = act { ActivateTab = 6 } },
   { key = "8",   mods = "ALT",            action = act { ActivateTab = 7 } },
-  { key = "9",   mods = "ALT",            action = act { ActivateTab = 8 } },
+  { key = "9",   mods = "ALT",            action = act { ActivateTab = 8 } }, -- }}}
 
   -- Pane
   { key = "j",   mods = "ALT",            action = act { ActivatePaneDirection = "Down" } },
