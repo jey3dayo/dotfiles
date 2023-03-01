@@ -70,6 +70,11 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   }
 end)
 
+-- Workspace
+wezterm.on("update-right-status", function(window, _)
+  window:set_right_status("[" .. window:active_workspace() .. "]")
+end)
+
 return {
   -- Window
   color_scheme = "Gruvbox dark, hard (base16)",

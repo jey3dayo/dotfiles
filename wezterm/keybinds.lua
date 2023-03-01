@@ -14,7 +14,7 @@ local default_keybinds = {
 }
 
 local tmux_keybinds = {
-  { key = "c",     mods = "LEADER",       action = act { SpawnTab = "CurrentPaneDomain" } },
+  { key = "c",     mods = "LEADER",       action = act.SpawnTab "CurrentPaneDomain" },
   { key = "x",     mods = "LEADER",       action = act { CloseCurrentTab = { confirm = true } } },
   { key = "n",     mods = "LEADER",       action = act { ActivateTabRelative = 1 } },
   { key = "p",     mods = "LEADER",       action = act { ActivateTabRelative = -1 } },
@@ -24,15 +24,6 @@ local tmux_keybinds = {
   { key = "|",     mods = "LEADER|SHIFT", action = act.SplitHorizontal { domain = "CurrentPaneDomain" } },
   { key = "z",     mods = "LEADER",       action = act.TogglePaneZoomState },
   { key = "Space", mods = "LEADER",       action = act.RotatePanes "Clockwise" },
-  { key = "1",     mods = "LEADER",       action = act { ActivateTab = 0 } }, -- {{{
-  { key = "2",     mods = "LEADER",       action = act { ActivateTab = 1 } },
-  { key = "3",     mods = "LEADER",       action = act { ActivateTab = 2 } },
-  { key = "4",     mods = "LEADER",       action = act { ActivateTab = 3 } },
-  { key = "5",     mods = "LEADER",       action = act { ActivateTab = 4 } },
-  { key = "6",     mods = "LEADER",       action = act { ActivateTab = 5 } },
-  { key = "7",     mods = "LEADER",       action = act { ActivateTab = 6 } },
-  { key = "8",     mods = "LEADER",       action = act { ActivateTab = 7 } },
-  { key = "9",     mods = "LEADER",       action = act { ActivateTab = 8 } }, -- }}}
 
   -- Search
   { key = "Enter", mods = "LEADER",       action = "QuickSelect" },
@@ -61,33 +52,39 @@ local tmux_keybinds = {
   },
 }
 
+-- LEADER/ALT + number to activate that tab
+-- { key = 'n', mods = 'CTRL', action = act.SwitchWorkspaceRelative(1) },
+for i = 1, 8 do
+  table.insert(default_keybinds, { key = tostring(i), mods = "LEADER", action = act.ActivateTab(i - 1) })
+end
+
 local wezterm_keybinds = {
   -- Tab
   { key = "Tab", mods = "ALT",            action = act { ActivateTabRelative = 1 } },
   { key = "Tab", mods = "ALT|SHIFT",      action = act { ActivateTabRelative = -1 } },
-  { key = "n",   mods = "ALT",            action = act { ActivateTabRelative = 1 } },
-  { key = "p",   mods = "ALT",            action = act { ActivateTabRelative = -1 } },
   { key = "h",   mods = "ALT|CTRL",       action = act { MoveTabRelative = -1 } },
   { key = "l",   mods = "ALT|CTRL",       action = act { MoveTabRelative = 1 } },
-  { key = "1",   mods = "ALT",            action = act { ActivateTab = 0 } }, -- {{{
-  { key = "2",   mods = "ALT",            action = act { ActivateTab = 1 } },
-  { key = "3",   mods = "ALT",            action = act { ActivateTab = 2 } },
-  { key = "4",   mods = "ALT",            action = act { ActivateTab = 3 } },
-  { key = "5",   mods = "ALT",            action = act { ActivateTab = 4 } },
-  { key = "6",   mods = "ALT",            action = act { ActivateTab = 5 } },
-  { key = "7",   mods = "ALT",            action = act { ActivateTab = 6 } },
-  { key = "8",   mods = "ALT",            action = act { ActivateTab = 7 } },
-  { key = "9",   mods = "ALT",            action = act { ActivateTab = 8 } }, -- }}}
 
   -- Pane
   { key = "j",   mods = "ALT",            action = act { ActivatePaneDirection = "Down" } },
   { key = "k",   mods = "ALT",            action = act { ActivatePaneDirection = "Up" } },
   { key = "h",   mods = "ALT",            action = act { ActivatePaneDirection = "Left" } },
   { key = "l",   mods = "ALT",            action = act { ActivatePaneDirection = "Right" } },
-  { key = "h",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Left", 1 } } },
-  { key = "l",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Right", 1 } } },
-  { key = "k",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Up", 1 } } },
-  { key = "j",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Down", 1 } } },
+  { key = "h",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Left", 2 } } },
+  { key = "l",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Right", 2 } } },
+  { key = "k",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Up", 2 } } },
+  { key = "j",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Down", 2 } } },
+
+  -- Workspace
+  { key = "n",   mods = "ALT",            action = act { SwitchWorkspaceRelative = 1 } },
+  { key = "p",   mods = "ALT",            action = act { SwitchWorkspaceRelative = -1 } },
+
+  -- Create a new workspace with a random name and switch to it
+  { key = "c",   mods = "ALT",            action = act.SwitchToWorkspace },
+
+  -- Show the launcher in fuzzy selection mode and have it list all workspaces
+  -- and allow activating one.
+  { key = "0",   mods = "ALT",            action = act.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" } },
 }
 
 local key_tables = {
@@ -265,6 +262,11 @@ local mouse_bindings = {
     event = { Up = { streak = 1, button = "Right" } },
     mods = "NONE",
     action = act { CompleteSelection = "Clipboard" },
+  },
+  {
+    event = { Up = { streak = 1, button = "Left" } },
+    mods = "SUPER",
+    action = "OpenLinkAtMouseCursor",
   },
   {
     event = { Up = { streak = 1, button = "Left" } },
