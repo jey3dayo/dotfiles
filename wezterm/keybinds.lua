@@ -3,8 +3,8 @@ local act = wezterm.action
 local utils = require "./utils"
 
 local default_keybinds = {
+  { key = "n",      mods = "SUPER",      action = act.SpawnWindow },
   { key = "w",      mods = "SUPER",      action = act { CloseCurrentPane = { confirm = true } } },
-  { key = "n",      mods = "SUPER",      action = act { SpawnTab = "CurrentPaneDomain" } },
   { key = "q",      mods = "SUPER",      action = act.QuitApplication },
   { key = "F4",     mods = "ALT",        action = act.QuitApplication },
   { key = "Insert", mods = "SHIFT",      action = act { PasteFrom = "PrimarySelection" } },
@@ -69,15 +69,15 @@ local wezterm_keybinds = {
   { key = "k",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Up", 2 } } },
   { key = "j",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Down", 2 } } },
 
-  -- Workspace
-  { key = "c",   mods = "ALT",            action = act.SwitchToWorkspace },
-  { key = "n",   mods = "ALT",            action = act { SwitchWorkspaceRelative = 1 } },
-  { key = "p",   mods = "ALT",            action = act { SwitchWorkspaceRelative = -1 } },
+  -- Window
+  { key = "n",   mods = "ALT",            action = act { ActivateWindowRelative = 1 } },
+  { key = "p",   mods = "ALT",            action = act { ActivateWindowRelative = -1 } },
 
   -- Show the launcher
-  { key = "0",   mods = "ALT",            action = act.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" } },
+  -- { key = "0",   mods = "ALT",            action = act.ShowLauncherArgs { flags = "FUZZY|COMMANDS" } },
+  { key = "0",   mods = "ALT",            action = act.ShowLauncher },
 }
--- LEADER/ALT + number to activate that tab
+-- LEADER/ALT + number to activate that window
 for i = 1, 8 do
   table.insert(wezterm_keybinds, { key = tostring(i), mods = "LEADER", action = act.ActivateTab(i - 1) })
 end
