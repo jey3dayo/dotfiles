@@ -52,12 +52,6 @@ local tmux_keybinds = {
   },
 }
 
--- LEADER/ALT + number to activate that tab
--- { key = 'n', mods = 'CTRL', action = act.SwitchWorkspaceRelative(1) },
-for i = 1, 8 do
-  table.insert(default_keybinds, { key = tostring(i), mods = "LEADER", action = act.ActivateTab(i - 1) })
-end
-
 local wezterm_keybinds = {
   -- Tab
   { key = "Tab", mods = "ALT",            action = act { ActivateTabRelative = 1 } },
@@ -76,18 +70,20 @@ local wezterm_keybinds = {
   { key = "j",   mods = "ALT|SHIFT|CTRL", action = act { AdjustPaneSize = { "Down", 2 } } },
 
   -- Workspace
+  { key = "c",   mods = "ALT",            action = act.SwitchToWorkspace },
   { key = "n",   mods = "ALT",            action = act { SwitchWorkspaceRelative = 1 } },
   { key = "p",   mods = "ALT",            action = act { SwitchWorkspaceRelative = -1 } },
 
-  -- Create a new workspace with a random name and switch to it
-  { key = "c",   mods = "ALT",            action = act.SwitchToWorkspace },
-
-  -- Show the launcher in fuzzy selection mode and have it list all workspaces
-  -- and allow activating one.
+  -- Show the launcher
   { key = "0",   mods = "ALT",            action = act.ShowLauncherArgs { flags = "FUZZY|WORKSPACES" } },
 }
+-- LEADER/ALT + number to activate that tab
+for i = 1, 8 do
+  table.insert(wezterm_keybinds, { key = tostring(i), mods = "LEADER", action = act.ActivateTab(i - 1) })
+end
 
 local key_tables = {
+  -- ALT+r -> [j, k, h, l]
   resize_pane = {
     { key = "h",      action = act { AdjustPaneSize = { "Left", 1 } } },
     { key = "l",      action = act { AdjustPaneSize = { "Right", 1 } } },
@@ -123,6 +119,7 @@ local key_tables = {
     { key = "j",  mods = "NONE",  action = act.CopyMode "MoveDown" },
     { key = "k",  mods = "NONE",  action = act.CopyMode "MoveUp" },
     { key = "l",  mods = "NONE",  action = act.CopyMode "MoveRight" },
+
     -- move word
     { key = "f",  mods = "ALT",   action = act.CopyMode "MoveForwardWord" },
     { key = "\t", mods = "NONE",  action = act.CopyMode "MoveForwardWord" },
