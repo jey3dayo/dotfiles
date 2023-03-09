@@ -10,7 +10,7 @@ export LISTMAX=0
 export GREP_OPTIONS='--color=auto'
 
 # load sources
-for f ("${ZDOTDIR:-$HOME}"/sources/*) source "${f}"
+for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 
 typeset -U path cdpath fpath manpath
 
