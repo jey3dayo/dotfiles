@@ -71,15 +71,15 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 end)
 
 -- Workspace
-wezterm.on("update-right-status", function(window, _)
-  window:set_right_status("[" .. window:active_workspace() .. "]")
-end)
+-- wezterm.on("update-right-status", function(window, _)
+--   window:set_right_status("[" .. window:active_workspace() .. "]")
+-- end)
 
 return {
   -- Window
   color_scheme = "Gruvbox dark, hard (base16)",
   font = utils.font_with_fallback "UDEV Gothic 35NFLG",
-  font_size = 15,
+  font_size = 16,
   -- dpi = 96.0,
   window_background_opacity = 0.92,
   text_background_opacity = 0.9,
