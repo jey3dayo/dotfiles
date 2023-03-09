@@ -25,11 +25,4 @@ abbr -S gd3="git diff HEAD~3"
 abbr -S d='docker'
 abbr -S dc='docker compose'
 
-abbr -S npm-clean='npm run ncu && rm -rf node_modules && yarn && npm prune'
-abbr -S pip-upgrade='pip3 list --format json --outdated | jq .[].name | xargs pip install -U'
-abbr -S yarn-upgrade='yarn global upgrade'
-abbr -S brew-upgrade='brew update && brew upgrade && brew cleanup'
-abbr -S software-upgrade='softwareupdate --all --install --force'
-abbr -S pkg-upgrade='yarn-upgrade ; pip-upgrade ; brew-upgrade ; software-upgrade ; npm -g i npm-check-updates'
-
 abbr -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
