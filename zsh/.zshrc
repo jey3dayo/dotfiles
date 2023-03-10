@@ -2,7 +2,6 @@
 bindkey -e
 
 if (( $+commands[sw_vers] )) && (( $+commands[arch] )); then
-  [[ -x /usr/local/bin/brew ]] && alias brew="arch -arch x86_64 /usr/local/bin/brew"
   alias x64='exec arch -x86_64 /bin/zsh'
   alias a64='exec arch -arm64e /bin/zsh'
   switch-arch() {
@@ -16,11 +15,14 @@ if (( $+commands[sw_vers] )) && (( $+commands[arch] )); then
   }
 fi
 
-if [ "$(uname -m)" = "arm64" ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-  path=(/opt/homebrew/bin(N-/) $path)
+if  [[ "$(arch)" == arm64 ]]; then
+ eval "$(/opt/homebrew/bin/brew shellenv)"
+ path=(/opt/homebrew/bin(N-/) $path)
+  [[ -x /usr/local/bin/brew ]] && alias brew="arch -arch arm64e /opt/homebrew/bin/brew"
 else
-  eval "$(/usr/local/bin/brew shellenv)"
+ eval "$(/usr/local/bin/brew shellenv)"
+ path=(/usr/local/bin/(N-/) $path)
+  [[ -x /usr/local/bin/brew ]] && alias brew="arch -arch x86_64 /usr/local/bin/brew"
 fi
 
 HISTFILE=$HOME/.zsh_history
