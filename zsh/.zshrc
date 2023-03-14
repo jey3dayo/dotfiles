@@ -1,30 +1,6 @@
 # jey3dayo .zshrc
 bindkey -e
 
-if (( $+commands[sw_vers] )) && (( $+commands[arch] )); then
-  alias x64='exec arch -x86_64 /bin/zsh'
-  alias a64='exec arch -arm64e /bin/zsh'
-  switch-arch() {
-    if  [[ "$(arch)" == arm64 ]]; then
-      arch=x86_64
-    elif [[ "$(arch)" == i386 ]]; then
-      arch=arm64e
-    fi
-    print "switched $arch"
-    exec arch -$arch /bin/zsh
-  }
-fi
-
-if  [[ "$(arch)" == arm64 ]]; then
- eval "$(/opt/homebrew/bin/brew shellenv)"
- path=(/opt/homebrew/bin(N-/) $path)
-  [[ -x /usr/local/bin/brew ]] && alias brew="arch -arch arm64e /opt/homebrew/bin/brew"
-else
- eval "$(/usr/local/bin/brew shellenv)"
- path=(/usr/local/bin/(N-/) $path)
-  [[ -x /usr/local/bin/brew ]] && alias brew="arch -arch x86_64 /usr/local/bin/brew"
-fi
-
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
@@ -67,6 +43,8 @@ setopt share_history
 autoload zed
 
 # load sources
-for f ("${ZDOTDIR:-$HOME}"/plugin-sources/*) source "${f}"
+for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
+for f ("${ZDOTDIR:-$HOME}"/lazy-sources/*.zsh) source "${f}"
 
 # vim: set syntax=zsh:
+# source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
