@@ -1,6 +1,7 @@
 local wezterm = require "wezterm"
-local act = wezterm.action
 local utils = require "./utils"
+
+local act = wezterm.action
 
 local default_keybinds = {
   { key = "n",      mods = "SUPER",      action = act.SpawnWindow },
@@ -95,6 +96,15 @@ local key_tables = {
   },
   copy_mode = {
     {
+      key = "q",
+      mods = "NONE",
+      action = act.Multiple {
+        act.ClearSelection,
+        act.CopyMode "ClearPattern",
+        act.CopyMode "Close",
+      },
+    },
+    {
       key = "Escape",
       mods = "NONE",
       action = act.Multiple {
@@ -112,7 +122,6 @@ local key_tables = {
         act.CopyMode "Close",
       },
     },
-    { key = "q",  mods = "NONE",  action = act.CopyMode "Close" },
 
     -- move cursor
     { key = "h",  mods = "NONE",  action = act.CopyMode "MoveLeft" },
@@ -121,12 +130,10 @@ local key_tables = {
     { key = "l",  mods = "NONE",  action = act.CopyMode "MoveRight" },
 
     -- move word
-    { key = "f",  mods = "ALT",   action = act.CopyMode "MoveForwardWord" },
-    { key = "\t", mods = "NONE",  action = act.CopyMode "MoveForwardWord" },
     { key = "w",  mods = "NONE",  action = act.CopyMode "MoveForwardWord" },
-    { key = "b",  mods = "ALT",   action = act.CopyMode "MoveBackwardWord" },
-    { key = "\t", mods = "SHIFT", action = act.CopyMode "MoveBackwardWord" },
+    { key = "\t", mods = "NONE",  action = act.CopyMode "MoveForwardWord" },
     { key = "b",  mods = "NONE",  action = act.CopyMode "MoveBackwardWord" },
+    { key = "\t", mods = "SHIFT", action = act.CopyMode "MoveBackwardWord" },
     {
       key = "e",
       mods = "NONE",
@@ -140,19 +147,17 @@ local key_tables = {
     },
 
     -- move start/end
-    { key = "0",  mods = "NONE",  action = act.CopyMode "MoveToStartOfLine" },
-    { key = "\n", mods = "NONE",  action = act.CopyMode "MoveToStartOfNextLine" },
-    { key = "$",  mods = "SHIFT", action = act.CopyMode "MoveToEndOfLineContent" },
-    { key = "$",  mods = "NONE",  action = act.CopyMode "MoveToEndOfLineContent" },
-    { key = "e",  mods = "CTRL",  action = act.CopyMode "MoveToEndOfLineContent" },
-    { key = "m",  mods = "ALT",   action = act.CopyMode "MoveToStartOfLineContent" },
-    { key = "^",  mods = "SHIFT", action = act.CopyMode "MoveToStartOfLineContent" },
-    { key = "^",  mods = "NONE",  action = act.CopyMode "MoveToStartOfLineContent" },
-    { key = "a",  mods = "CTRL",  action = act.CopyMode "MoveToStartOfLineContent" },
+    { key = "0", mods = "NONE",  action = act.CopyMode "MoveToStartOfLine" },
+    { key = "a", mods = "CTRL",  action = act.CopyMode "MoveToStartOfLineContent" },
+    { key = "^", mods = "SHIFT", action = act.CopyMode "MoveToStartOfLineContent" },
+    { key = "^", mods = "NONE",  action = act.CopyMode "MoveToStartOfLineContent" },
+    { key = "e", mods = "CTRL",  action = act.CopyMode "MoveToEndOfLineContent" },
+    { key = "$", mods = "SHIFT", action = act.CopyMode "MoveToEndOfLineContent" },
+    { key = "$", mods = "NONE",  action = act.CopyMode "MoveToEndOfLineContent" },
 
     -- select
-    { key = " ",  mods = "NONE",  action = act.CopyMode { SetSelectionMode = "Cell" } },
-    { key = "v",  mods = "NONE",  action = act.CopyMode { SetSelectionMode = "Cell" } },
+    { key = " ", mods = "NONE",  action = act.CopyMode { SetSelectionMode = "Cell" } },
+    { key = "v", mods = "NONE",  action = act.CopyMode { SetSelectionMode = "Cell" } },
     {
       key = "v",
       mods = "SHIFT",
@@ -172,6 +177,7 @@ local key_tables = {
       action = act {
         Multiple = {
           act { CopyTo = "ClipboardAndPrimarySelection" },
+          act.CopyMode "ClearPattern",
           act.CopyMode "Close",
         },
       },
@@ -184,6 +190,7 @@ local key_tables = {
           act.CopyMode { SetSelectionMode = "Cell" },
           act.CopyMode "MoveToEndOfLineContent",
           act { CopyTo = "ClipboardAndPrimarySelection" },
+          act.CopyMode "ClearPattern",
           act.CopyMode "Close",
         },
       },
