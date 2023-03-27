@@ -15,6 +15,5 @@ prisma/generated/
 output/
 raycast/
 dist/*
-./lib/
 *.bundle
 *.cache
