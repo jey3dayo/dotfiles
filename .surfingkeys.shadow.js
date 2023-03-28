@@ -1,7 +1,7 @@
 const bitlyToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 const searchWordQuery = q => `https://www.google.co.jp/search?q=${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
 
-// --- setting ---
+// Setting
 api.Hints.characters = 'asdfghjklnmvbrtyu';
 settings.scrollStepSize = 150;
 settings.nextLinkRegex = /((forward|>>|next|次[のへ]|→)+)/i;
@@ -9,8 +9,9 @@ settings.prevLinkRegex = /((back|<<|prev(ious)?|前[のへ]|←)+)/i;
 settings.aceKeybindings = 'vim';
 settings.omnibarPosition = 'bottom';
 settings.hintAlign = 'left';
+settings.cursorAtEndOfInput = false;
 
-// --- mapping ---
+// Mapping
 api.map('H', 'S'); // back in history
 api.map('L', 'D'); // forward in history
 api.map('h', 'E'); // previous tab
@@ -25,26 +26,42 @@ api.map('<Alt-i>', 'gi');
 api.map('@', '<Alt-p>');
 api.map('<Ctrl-h>', '<<'); // Move current tab to left
 api.map('<Ctrl-l>', '>>'); // Move current tab to right
+api.map('<Alt-i>', '<Ctrl-i>');
 
-// --- insert mode ---
+// Chrome URLs
+api.unmap('gc');
+api.unmap('gk');
+
+// Proxy
+api.unmap('cp');
+api.unmap(';pa');
+api.unmap(';pb');
+api.unmap(';pd');
+api.unmap(';ps');
+api.unmap(';pc');
+api.unmap(';cp');
+api.unmap(';ap');
+
+// Insert Mode
 api.imap('<Ctrl-[>', '<Esc>');
 api.iunmap(':'); // disable emoji completion
 api.iunmap('<Ctrl-f>');
 api.iunmap('<Ctrl-u>');
 api.iunmap('<Ctrl-i>');
 
-// --- site ---
+// Site
+settings.blocklistPattern = /mail.google.com/;
+
+const defaultUnmapAllExcept = ['<Ctrl-i>', 'q', 'f', 'F', '<Ctrl-k>', '<Ctrl-j>', 'T', 'X', 'h', 'l', 'w', 'L', 'H', 't', 'b', "'"];
+
+api.unmapAllExcept(defaultUnmapAllExcept, /jp.inoreader.com|read.readwise.io/);
+
 api.unmapAllExcept(
   ['h', 'l', 'd', 'u', 'r'],
   /irodr.netlify.app/
 );
 
-api.unmapAllExcept(
-  ['p', 'i', 'I', 'q', 'F', '<Ctrl-k>', '<Ctrl-j>', 'T', 'X', 'h', 'l', '<', '>', 'w', 'L', 'H', 't', 'b', "'"],
-  /jp.inoreader.com/
-);
-
-// --- qmark ---
+// qMark
 // cf. https://gist.github.com/chroju/2118c2193fb9892d95b9686eb95189d2
 var overlayedGlobalMarks = {
   // webservice
@@ -58,6 +75,7 @@ var overlayedGlobalMarks = {
   't': 'https://twitter.com/',
   'w': 'https://healthmate.withings.com/',
   'y': 'https://wwww.youtube.com/',
+  'r': 'https://read.readwise.io/home',
 };
 
 // paste URL
@@ -123,7 +141,7 @@ api.mapkey('go', 'Open Quickmark in current tab', (mark) => {
   }
 });
 
-// --- copy --- 
+// Copy
 // cf. https://github.com/hushin/dotfiles/blob/master/docs/SurfingkeysSetting.js
 const copyTitleAndUrl = (format) => {
   const text = format
@@ -151,13 +169,29 @@ api.mapkey('yy', 'Copy link', () => copyTinyUrl('%URL%'));
 api.mapkey(',y', 'Copy tinyurl', () => copyTinyUrl('%TITLE% - %URL%'));
 api.mapkey(',Y', 'Copy link', () => copyTitleAndUrl('%TITLE% - %URL%'));
 
-// short Amazon URL include AA.
-api.mapkey(',a', 'short Amazon URL include AA.', () => {
-  var affliateId = 'uncB9uZ7Md9P0d-22';
-  var asin = document.body.querySelector("input[name^='ASIN']").value;
-  var url = `https://www.amazon.co.jp/exec/obidos/ASIN/${asin}/${affliateId}`;
-  location.href = url;
+api.mapkey('gD', 'Open Chrome dns cache', function() {
+  api.tabOpenLink("chrome://net-internals/#dns");
 });
+api.mapkey('gE', 'Open Chrome Extensions', function() {
+  api.tabOpenLink("chrome://extensions/");
+});
+api.mapkey('gH', 'Open Chrome Help', function() {
+  api.tabOpenLink("chrome://settings/help");
+});
+api.mapkey('gK', 'Open Chrome Extensons shortcuts', function() {
+  api.tabOpenLink("chrome://extensions/shortcuts");
+});
+api.mapkey('gS', 'Open Chrome Settings', function() {
+  api.tabOpenLink("chrome://settings/");
+});
+
+// short Amazon URL include AA.
+// api.mapkey(',a', 'short Amazon URL include AA.', () => {
+//   var affliateId = 'uncB9uZ7Md9P0d-22';
+//   var asin = document.body.querySelector("input[name^='ASIN']").value;
+//   var url = `https://www.amazon.co.jp/exec/obidos/ASIN/${asin}/${affliateId}`;
+//   location.href = url;
+// });
 
 // Search Engines
 api.removeSearchAlias('b', 's');
@@ -167,14 +201,21 @@ api.removeSearchAlias('w', 's');
 api.removeSearchAlias('y', 's');
 api.removeSearchAlias('s', 's');
 
-// --- search ---
+// Search
 api.addSearchAlias('1', 'Google 1年以内', searchWordQuery('{0}'));
-api.mapkey('o1', 'Search with alias Google 1年以内', () => api.Front.openOmnibar({ type: 'SearchEngine', extra: '1' }));
+api.mapkey('O', 'Search with alias Google 1年以内', () => api.Front.openOmnibar({ type: 'SearchEngine', extra: '1' }));
 api.addSearchAlias('a', 'Amazon.co.jp', 'https://www.amazon.co.jp/s?k={0}&emi=AN1VRQENFRJN5');
 api.addSearchAlias('gh', 'github', 'https://github.com/search?utf8=✓&q=', 's');
 api.addSearchAlias('r', 'reddit', 'https://old.reddit.com/r/', 's');
+api.addSearchAlias('t', 'twitter', 'https://twitter.com/search?q=${0}&src=typed_query', 's');
 
-// --- theme ---
+// Help
+// PassThrough mode 1.5秒間だけsurfingkeys無効
+api.mapkey('<Ctrl-v>', '#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys', function() {
+  api.Normal.passThrough(1500);
+});
+
+// Theme
 api.Hints.style('border: solid 2px #4C566A; color:#A6E22E; background: initial; background-color: #3B4252;');
 api.Hints.style('border: solid 2px #4C566A !important; padding: 1px !important; color: #E5E9F0 !important; background: #3B4252 !important;', 'text');
 api.Visual.style('marks', 'background-color: #A3BE8C99;');
@@ -186,11 +227,9 @@ settings.theme = `
   --font: 'Source Code Pro', Ubuntu, sans;
   --font-size: 12;
   --font-weight: bold;
-
    /* -------------- */
   /* --- THEMES --- */
   /* -------------- */
-
   /* -------------------- */
   /* --      NORD      -- */
   /* -------------------- */
@@ -202,13 +241,11 @@ settings.theme = `
   --accent-fg: #A3BE8C;
   --info-fg: #5E81AC;
   --select: #4C566A;
-
   /* Unused Alternate Colors */
   /* --orange: #D08770; */
   /* --red: #BF616A; */
   /* --yellow: #EBCB8B; */
 }
-
 /* ---------- Generic ---------- */
 .sk_theme {
 background: var(--bg);
@@ -219,12 +256,10 @@ color: var(--fg);
   font-size: var(--font-size);
   font-weight: var(--font-weight);
 }
-
 input {
   font-family: var(--font);
   font-weight: var(--font-weight);
 }
-
 .sk_theme tbody {
   color: var(--fg);
 }
