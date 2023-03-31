@@ -18,12 +18,13 @@ telescope.setup {
         ["q"] = actions.close,
         ["<C-n>"] = actions.move_selection_worse,
         ["<C-p>"] = actions.move_selection_better,
+        ["<C-d>"] = actions.delete_buffer,
       },
       i = {
         ["<ESC>"] = actions.close,
         ["<C-n>"] = actions.move_selection_next,
         ["<C-p>"] = actions.move_selection_previous,
-        ["<c-d>"] = actions.delete_buffer,
+        ["<C-d>"] = actions.delete_buffer,
       },
     },
   },
@@ -35,12 +36,14 @@ telescope.setup {
       mappings = {
         -- your custom insert mode mappings
         ["i"] = {
+          ["<C-d>"] = actions.close,
           ["<C-w>"] = function()
             vim.cmd "normal vbd"
           end,
         },
         ["n"] = {
           -- your custom normal mode mappings
+          ["<C-d>"] = actions.close,
           ["N"] = fb_actions.create,
           ["u"] = fb_actions.goto_parent_dir,
           ["/"] = function()
