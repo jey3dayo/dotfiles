@@ -24,5 +24,6 @@ abbr -S gd3="git diff HEAD~3"
 
 abbr -S d='docker'
 abbr -S dc='docker compose'
+abbr -S zinit-upgrade="zinit update --all"
 
 abbr -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"

@@ -13,7 +13,7 @@ alias pip-upgrade='pip3 list --format json --outdated | jq .[].name | xargs pip 
 alias yarn-upgrade='yarn global upgrade'
 alias brew-upgrade='brew update && brew upgrade && brew cleanup'
 alias software-upgrade='softwareupdate --all --install --force'
-alias pkg-upgrade="npm-upgrade && pip-upgrade && yarn-upgrade && brew-upgrade && spoftware-upgrade"
+alias pkg-upgrade="npm-upgrade && pip-upgrade && yarn-upgrade && brew-upgrade && software-upgrade"
 export GHQ_ROOT=~/src
 
 # vim: set syntax=zsh:

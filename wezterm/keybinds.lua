@@ -5,7 +5,7 @@ local act = wezterm.action
 
 local default_keybinds = {
   { key = "n",      mods = "SUPER",      action = act.SpawnWindow },
-  { key = "w",      mods = "SUPER",      action = act { CloseCurrentPane = { confirm = true } } },
+  { key = "w",      mods = "SUPER",      action = act { CloseCurrentTab = { confirm = true } } },
   { key = "q",      mods = "SUPER",      action = act.QuitApplication },
   { key = "F4",     mods = "ALT",        action = act.QuitApplication },
   { key = "Insert", mods = "SHIFT",      action = act { PasteFrom = "PrimarySelection" } },
@@ -16,7 +16,7 @@ local default_keybinds = {
 
 local tmux_keybinds = {
   { key = "c",     mods = "LEADER",       action = act.SpawnTab "CurrentPaneDomain" },
-  { key = "x",     mods = "LEADER",       action = act { CloseCurrentTab = { confirm = true } } },
+  { key = "x",     mods = "LEADER",       action = act { CloseCurrentPane = { confirm = true } } },
   { key = "n",     mods = "LEADER",       action = act { ActivateTabRelative = 1 } },
   { key = "p",     mods = "LEADER",       action = act { ActivateTabRelative = -1 } },
   { key = "o",     mods = "LEADER",       action = act.ActivatePaneDirection "Next" },
