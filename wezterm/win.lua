@@ -15,10 +15,12 @@ return  {
     WSLENV = "TERMINFO_DIRS",
     prompt = "$E]7;file://localhost/$P$E\\$E[32m$T$E[0m $E[35m$P$E[36m$_$G$E[0m ",
   },
+  -- term = "wezterm",
   wsl_domains = wsl_domains,
 
   -- window
-  window_decorations = "TITLE",
+  font_size = 12,
   initial_cols = 130,
   initial_rows = 30,
+  window_decorations = "TITLE",
 }
