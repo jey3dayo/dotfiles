@@ -11,6 +11,10 @@ settings.omnibarPosition = 'bottom';
 settings.hintAlign = 'left';
 settings.cursorAtEndOfInput = false;
 
+// Order
+settings.tabsMRUOrder = false;
+settings.historyMUOrder = false;
+
 // Mapping
 api.map('H', 'S'); // back in history
 api.map('L', 'D'); // forward in history
@@ -53,8 +57,9 @@ api.iunmap('<Ctrl-i>');
 settings.blocklistPattern = /mail.google.com/;
 
 const defaultUnmapAllExcept = ['<Ctrl-i>', 'q', 'f', 'F', '<Ctrl-k>', '<Ctrl-j>', 'T', 'X', 'h', 'l', 'w', 'L', 'H', 't', 'b', "'"];
-
 api.unmapAllExcept(defaultUnmapAllExcept, /jp.inoreader.com|read.readwise.io/);
+api.unmap('v', /read.readwise.io/);
+api.unmap('b', /read.readwise.io/);
 
 api.unmapAllExcept(
   ['h', 'l', 'd', 'u', 'r'],
@@ -207,7 +212,7 @@ api.mapkey('O', 'Search with alias Google 1年以内', () => api.Front.openOmnib
 api.addSearchAlias('a', 'Amazon.co.jp', 'https://www.amazon.co.jp/s?k={0}&emi=AN1VRQENFRJN5');
 api.addSearchAlias('gh', 'github', 'https://github.com/search?utf8=✓&q=', 's');
 api.addSearchAlias('r', 'reddit', 'https://old.reddit.com/r/', 's');
-api.addSearchAlias('t', 'twitter', 'https://twitter.com/search?q=${0}&src=typed_query', 's');
+api.addSearchAlias('t', 'twitter', 'https://twitter.com/search?q={0}&src=typed_query', 's');
 
 // Help
 // PassThrough mode 1.5秒間だけsurfingkeys無効
