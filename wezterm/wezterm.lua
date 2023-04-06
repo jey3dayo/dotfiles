@@ -13,4 +13,4 @@ local config = {
   front_end = "WebGpu",
 }
 
-return utils.object_assign(config, ui, keybinds, os)
+return utils.object_assign(ui, keybinds, os, config)
