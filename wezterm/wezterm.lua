@@ -7,6 +7,8 @@ local gpus = wezterm.gui.enumerate_gpus()
 
 local config = {
   use_ime = true,
+  send_composed_key_when_left_alt_is_pressed = true,
+  send_composed_key_when_right_alt_is_pressed = true,
   enable_csi_u_key_encoding = false,
   -- https://github.com/wez/wezterm/issues/2756
   webgpu_preferred_adapter = gpus[1],
