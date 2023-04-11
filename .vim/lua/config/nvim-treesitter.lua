@@ -15,6 +15,7 @@ ts.setup {
   ensure_installed = {
     "bash",
     "markdown",
+    "markdown_inline",
     "prisma",
     "tsx",
     "toml",
