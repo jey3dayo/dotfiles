@@ -26,4 +26,8 @@ return {
     dependencies = { "hrsh7th/nvim-cmp" },
   },
   "onsails/lspkind-nvim",
+  {
+    "zbirenbaum/copilot-cmp",
+    dependencies = { "zbirenbaum/copilot.lua" },
+  },
 }

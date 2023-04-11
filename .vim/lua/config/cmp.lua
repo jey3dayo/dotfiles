@@ -1,9 +1,21 @@
-local status, cmp = pcall(require, "cmp")
-if not status then
+local status1, cmp = pcall(require, "cmp")
+if not status1 then
   return
 end
-local lspkind = require "lspkind"
+
+local status2, lspkind = pcall(require, "lspkind")
+if not status2 then
+  return
+end
+
 -- local luasnip = require "luasnip"
+
+local status3, copilot_cmp = pcall(require, "copilot_cmp")
+if not status3 then
+  return
+end
+
+copilot_cmp.setup()
 
 cmp.setup {
   snippet = {
@@ -26,14 +38,23 @@ cmp.setup {
     },
   },
   sources = cmp.config.sources {
-    { name = "nvim_lsp", keyword_length = 3 },
+    -- { name = "copilot",  group_index = 2 },
+    { name = "copilot" },
+    { name = "nvim_lsp", group_index = 2,   keyword_length = 2 },
+    { name = "path",     group_index = 2,   keyword_length = 3 },
+    { name = "vsnip",    group_index = 2,   keyword_length = 2 },
     { name = "buffer",   keyword_length = 3 },
-    { name = "path" },
-    { name = "vsnip" },
     { name = "cmdline" },
   },
+  formatters = {
+    insert_text = require("copilot_cmp.format").remove_existing,
+  },
   formatting = {
-    format = lspkind.cmp_format { with_text = false, maxwidth = 50 },
+    format = lspkind.cmp_format {
+      mode = "symbol",
+      max_width = 50,
+      symbol_map = { Copilot = "" },
+    },
   },
 }
 
