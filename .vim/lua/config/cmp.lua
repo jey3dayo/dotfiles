@@ -8,6 +8,14 @@ if not status2 then
   return
 end
 
+local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+    return false
+  end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match "^%s*$" == nil
+end
+
 cmp.setup {
   snippet = {
     expand = function(args)
@@ -15,7 +23,14 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ["<Tab>"] = cmp.mapping.complete(),
+    -- ["<Tab>"] = cmp.mapping.complete(),
+    ["<Tab>"] = vim.schedule_wrap(function(fallback)
+      if cmp.visible() and has_words_before() then
+        cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
+      else
+        fallback()
+      end
+    end),
     ["<C-e>"] = cmp.mapping.close(),
     ["<C-k>"] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
@@ -35,9 +50,6 @@ cmp.setup {
     { name = "path",                    group_index = 2,   keyword_length = 3 },
     { name = "buffer",                  keyword_length = 3 },
     { name = "cmdline" },
-  },
-  formatters = {
-    insert_text = require("copilot_cmp.format").remove_existing,
   },
   formatting = {
     format = lspkind.cmp_format {
