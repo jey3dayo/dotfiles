@@ -68,16 +68,11 @@ return {
     },
   },
   {
-    "hrsh7th/vim-vsnip",
-    event = { "InsertEnter" },
-    dependencies = {
-      "hrsh7th/vim-vsnip-integ",
-      "rafamadriz/friendly-snippets",
-    },
+    "dcampos/nvim-snippy",
+    cmd = { "SnippyEdit", "SnippyReload" },
     config = function()
-      vim.cmd [[ source ~/.config/nvim/plugins/vsnip.rc.vim ]]
+      require "config/nvim-snippy"
     end,
   },
-  "hrsh7th/vim-vsnip-integ",
-  "rafamadriz/friendly-snippets",
+  "honza/vim-snippets",
 }

@@ -22,7 +22,11 @@ return {
     dependencies = { "hrsh7th/nvim-cmp" },
   },
   {
-    "hrsh7th/cmp-vsnip",
+    "petertriho/cmp-git",
+    dependencies = { "hrsh7th/nvim-cmp" },
+  },
+  {
+    "dcampos/cmp-snippy",
     dependencies = { "hrsh7th/nvim-cmp" },
   },
   "onsails/lspkind-nvim",
