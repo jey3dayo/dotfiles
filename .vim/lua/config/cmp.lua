@@ -8,24 +8,16 @@ if not status2 then
   return
 end
 
--- local luasnip = require "luasnip"
-
-local status3, copilot_cmp = pcall(require, "copilot_cmp")
-if not status3 then
-  return
-end
-
-copilot_cmp.setup()
-
 cmp.setup {
   snippet = {
+    -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      -- luasnip.lsp_expand(args.body)
-      vim.fn["vsnip#anonymous"](args.body)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<C-d>"] = cmp.mapping.scroll_docs( -4),
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-e>"] = cmp.mapping.close(),
     ["<C-k>"] = cmp.mapping.confirm {
@@ -34,15 +26,14 @@ cmp.setup {
     },
     ["<CR>"] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
+      select = false,
     },
   },
   sources = cmp.config.sources {
-    -- { name = "copilot",  group_index = 2 },
     { name = "copilot" },
+    { name = "vsnip",    group_index = 2,   keyword_length = 2 },
     { name = "nvim_lsp", group_index = 2,   keyword_length = 2 },
     { name = "path",     group_index = 2,   keyword_length = 3 },
-    { name = "vsnip",    group_index = 2,   keyword_length = 2 },
     { name = "buffer",   keyword_length = 3 },
     { name = "cmdline" },
   },
@@ -57,6 +48,14 @@ cmp.setup {
     },
   },
 }
+
+cmp.setup.cmdline(":", {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = "path" },
+    { name = "cmdline" },
+  },
+})
 
 vim.cmd [[
   set completeopt=menuone,noinsert,noselect

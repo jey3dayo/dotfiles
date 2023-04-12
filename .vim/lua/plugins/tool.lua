@@ -3,7 +3,7 @@ return {
     "tpope/vim-fugitive",
     cmd = { "Gdiffsplit", "Ggrep", "Gstatus", "Gwrite", "Gcommit" },
     config = function()
-      vim.cmd [[ source ~/.config/nvim/plugins/vim-fugitive.rc.vim ]]
+      require "config/vim-fugitive"
     end,
   },
   { "tpope/vim-rhubarb",       dependencies = { "tpope/vim-fugitive" } },
@@ -12,13 +12,5 @@ return {
   {
     "dstein64/vim-startuptime",
     cmd = "StartupTime",
-  },
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require "config/copilot"
-    end,
   },
 }

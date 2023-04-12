@@ -1,19 +1,19 @@
 vim.g.mapleader = ","
 
-local opts = { noremap = true, silent = true }
+local set_opts = { noremap = true, silent = true }
 
 function Keymap(key, value, _opts)
   if _opts then
-    opts = _opts
+    set_opts = _opts
   end
-  vim.keymap.set("n", key, value, opts)
+  vim.keymap.set("n", key, value, set_opts)
 end
 
 function Set_keymap(key, value, _opts)
   if _opts then
-    opts = _opts
+    set_opts = _opts
   end
-  vim.api.nvim_set_keymap("n", key, value, opts)
+  vim.api.nvim_set_keymap("n", key, value, set_opts)
 end
 
 Keymap("<C-d>", ":<C-u>bd<CR>")

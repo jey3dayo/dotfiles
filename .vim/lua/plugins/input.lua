@@ -1,18 +1,16 @@
 return {
+  "tomtom/tcomment_vim",
   {
-    "h1mesuke/vim-alignta",
-    cmd = { "Align", "Alignta" },
+    "junegunn/vim-easy-align",
+    cmd = { "EasyAlign" },
     config = function()
-      vim.cmd [[ source ~/.config/nvim/plugins/vim-alignta.rc.vim ]]
+      require "config/vim-easy-align"
     end,
-  },
-  {
-    "tomtom/tcomment_vim",
   },
   {
     "nishigori/increment-activator",
     config = function()
-      vim.cmd [[ source ~/.config/nvim/plugins/increment-activator.rc.vim ]]
+      require "config/increment-activator-config"
     end,
   },
 }
