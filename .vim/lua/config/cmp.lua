@@ -29,9 +29,11 @@ cmp.setup {
   sources = cmp.config.sources {
     { name = "snippy" },
     { name = "copilot" },
-    { name = "nvim_lsp", group_index = 2,   keyword_length = 2 },
-    { name = "path",     group_index = 2,   keyword_length = 3 },
-    { name = "buffer",   keyword_length = 3 },
+    { name = "treesitter" },
+    { name = "nvim_lsp",                group_index = 2,   keyword_length = 2 },
+    { name = "nvim_lsp_signature_help", group_index = 2,   keyword_length = 2 },
+    { name = "path",                    group_index = 2,   keyword_length = 3 },
+    { name = "buffer",                  keyword_length = 3 },
     { name = "cmdline" },
   },
   formatters = {

@@ -16,11 +16,22 @@ return {
     end,
   },
   {
+    "andymass/vim-matchup",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = function()
+      require "config/vim-matchup"
+    end,
+  },
+  {
     "windwp/nvim-ts-autotag",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     config = function()
       require "config/nvim-ts-autotag"
     end,
+  },
+  {
+    "p00f/nvim-ts-rainbow",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -29,15 +40,9 @@ return {
     end,
   },
   {
-    "nathanaelkane/vim-indent-guides",
+    "lukas-reineke/indent-blankline.nvim",
     config = function()
-      vim.cmd [[ source ~/.config/nvim/plugins/vim-indent-guides.rc.vim ]]
-    end,
-  },
-  {
-    "kien/rainbow_parentheses.vim",
-    config = function()
-      vim.cmd [[ source ~/.config/nvim/plugins/rainbow_parentheses.rc.vim ]]
+      require "config/indent-blankline"
     end,
   },
   {
