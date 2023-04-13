@@ -1,6 +1,15 @@
 return {
   "nvim-tree/nvim-web-devicons",
   {
+    "rcarriga/nvim-notify",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require "config/nvim-notify"
+    end,
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     run = ":TSUpdate",

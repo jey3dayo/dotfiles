@@ -55,6 +55,7 @@ telescope.setup {
   },
 }
 telescope.load_extension "file_browser"
+telescope.load_extension "notify"
 
 -- keymaps
 Keymap("<Leader>f", function()
