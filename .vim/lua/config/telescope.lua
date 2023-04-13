@@ -16,6 +16,7 @@ telescope.setup {
     mappings = {
       n = {
         ["q"] = actions.close,
+        ["<C-c>"] = actions.close,
         ["<C-n>"] = actions.move_selection_worse,
         ["<C-p>"] = actions.move_selection_better,
         ["<C-d>"] = actions.delete_buffer,

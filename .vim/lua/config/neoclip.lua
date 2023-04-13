@@ -1,6 +1,6 @@
 require("neoclip").setup {
-  history = 500,
-  enable_persistent_history = false,
+  history = 1000,
+  enable_persistent_history = true,
   keys = {
     telescope = {
       i = {
