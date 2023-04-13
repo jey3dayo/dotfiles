@@ -73,6 +73,16 @@ return {
     },
   },
   {
+    "AckslD/nvim-neoclip.lua",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "kkharji/sqlite.lua",
+    },
+    config = function()
+      require "config/neoclip"
+    end,
+  },
+  {
     "dcampos/nvim-snippy",
     cmd = { "SnippyEdit", "SnippyReload" },
     config = function()
@@ -80,4 +90,10 @@ return {
     end,
   },
   "honza/vim-snippets",
+  {
+    "ggandor/lightspeed.nvim",
+    config = function()
+      require "config/lightspeed"
+    end,
+  },
 }
