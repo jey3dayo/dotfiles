@@ -12,6 +12,8 @@ export PAGER='less'
 export LISTMAX=0
 export GREP_OPTIONS='--color=auto'
 
+export RIPGREP_CONFIG_PATH="$HOME/.config/.ripgreprc
+
 typeset -U path cdpath fpath manpath
 
 # Fig post block. Keep at the bottom of this file.

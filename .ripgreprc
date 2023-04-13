@@ -1,0 +1,2 @@
+--type-add
+web:*.{html,css,js}*
