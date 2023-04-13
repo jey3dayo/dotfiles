@@ -9,6 +9,7 @@ return {
       require "config/nvim-notify"
     end,
   },
+  "j-hui/fidget.nvim",
   {
     "nvim-treesitter/nvim-treesitter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
