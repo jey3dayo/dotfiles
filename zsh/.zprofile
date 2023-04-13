@@ -12,7 +12,7 @@ export PAGER='less'
 export LISTMAX=0
 export GREP_OPTIONS='--color=auto'
 
-export RIPGREP_CONFIG_PATH="$HOME/.config/.ripgreprc
+export RIPGREP_CONFIG_PATH="$HOME/.config/.ripgreprc"
 
 typeset -U path cdpath fpath manpath
 
