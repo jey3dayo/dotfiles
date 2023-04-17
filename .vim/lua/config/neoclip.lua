@@ -7,6 +7,8 @@ require("neoclip").setup {
         paste = "<CR>",
       },
       n = {
+        delete = "d",
+        edit = "e",
         paste = "<CR>",
       },
     },
