@@ -1,13 +1,13 @@
+local ecma_scripts_ft = { "javascript", "javascriptreact", "jsx", "typescript", "typescriptreact", "tsx" }
+local ruby_ft = { "ruby" }
+
 return {
   { "sam4llis/nvim-lua-gf", ft = { "lua" } },
   { "wavded/vim-stylus",    ft = { "stylus" } },
-  { "tpope/vim-rake",       ft = { "ruby" } },
-  { "tpope/vim-rails",      ft = { "ruby" } },
+  { "tpope/vim-rake",       ft = ruby_ft },
+  { "tpope/vim-rails",      ft = ruby_ft },
   { "tpope/vim-markdown",   ft = { "markdown", "mkd" } },
   { "vito-c/jq.vim",        ft = { "jq" } },
-  {
-    "ap/vim-css-color",
-    ft = { "css", "javascript", "javascriptreact", "jsx", "typescript", "typescriptreact", "tsx" },
-  },
-  { "hotoo/jsgf.vim", ft = { "javascript", "javascriptreact", "jsx", "typescript", "typescriptreact", "tsx" } },
+  { "ap/vim-css-color",     ft = table.insert({ "css" }, ecma_scripts_ft) },
+  { "hotoo/jsgf.vim",       ft = ecma_scripts_ft },
 }
