@@ -33,13 +33,6 @@ return {
     end,
   },
   {
-    "windwp/nvim-ts-autotag",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require "config/nvim-ts-autotag"
-    end,
-  },
-  {
     "p00f/nvim-ts-rainbow",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },

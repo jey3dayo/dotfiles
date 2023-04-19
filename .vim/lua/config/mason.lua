@@ -65,7 +65,6 @@ local configs = {
         eruby = "erb",
         eelixir = "html-eex",
         ["javascript.jsx"] = "javascriptreact",
-        ["typescript.tsx"] = "typescriptreact",
       },
     },
   },

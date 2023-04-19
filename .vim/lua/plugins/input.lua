@@ -13,4 +13,5 @@ return {
       require "config/increment-activator-config"
     end,
   },
+  "windwp/nvim-ts-autotag",
 }
