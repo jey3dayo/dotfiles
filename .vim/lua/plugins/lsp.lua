@@ -1,5 +1,6 @@
 return {
   "neovim/nvim-lspconfig",
+  "ray-x/lsp_signature.nvim",
   {
     "jose-elias-alvarez/null-ls.nvim",
     dependencies = {
@@ -9,8 +10,6 @@ return {
       require "config/null-ls"
     end,
   },
-
-  "ray-x/lsp_signature.nvim",
   {
     "glepnir/lspsaga.nvim",
     config = function()
@@ -18,7 +17,15 @@ return {
     end,
   },
   "williamboman/mason.nvim",
-  "jayp0521/mason-null-ls.nvim",
+
+  {
+    "jayp0521/mason-null-ls.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
+    },
+  },
+
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
