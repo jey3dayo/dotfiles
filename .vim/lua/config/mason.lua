@@ -18,11 +18,6 @@ if not status4 then
   return
 end
 
-local status5, null_ls = pcall(require, "null-ls")
-if not status5 then
-  return
-end
-
 mason.setup {
   ui = {
     icons = {
