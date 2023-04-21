@@ -1,6 +1,6 @@
 return {
-  "neovim/nvim-lspconfig",
   "ray-x/lsp_signature.nvim",
+
   {
     "jose-elias-alvarez/null-ls.nvim",
     dependencies = {
@@ -10,14 +10,8 @@ return {
       require "config/null-ls"
     end,
   },
-  {
-    "glepnir/lspsaga.nvim",
-    config = function()
-      require "config/lspsaga"
-    end,
-  },
-  "williamboman/mason.nvim",
 
+  "williamboman/mason.nvim",
   {
     "jayp0521/mason-null-ls.nvim",
     dependencies = {
@@ -26,6 +20,7 @@ return {
     },
   },
 
+  "neovim/nvim-lspconfig",
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
@@ -42,8 +37,16 @@ return {
       "neovim/nvim-lspconfig",
       "jose-elias-alvarez/null-ls.nvim",
     },
+    cmd = { "Prettier" },
     config = function()
       require "config/prettier"
+    end,
+  },
+
+  {
+    "glepnir/lspsaga.nvim",
+    config = function()
+      require "config/lspsaga"
     end,
   },
 }

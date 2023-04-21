@@ -36,7 +36,14 @@ Set_keymap("[lsp]", "<Nop>", set_opts)
 Set_keymap("<C-e>", "[lsp]", set_opts)
 
 mason_lspconfig.setup {
-  ensure_installed = { "tailwindcss", "tsserver" },
+  ensure_installed = {
+    "tailwindcss",
+    "tsserver",
+    "yamlls",
+    "jsonls",
+    "cssls",
+  },
+  automatic_installation = true,
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -125,6 +132,10 @@ local configs = {
             },
             url = "http://json.schemastore.org/stylelintrc.json",
           },
+          {
+            fileMatch = { "postcss.config.json" },
+            url = "https://json.schemastore.org/postcssrc.json",
+          },
         },
       },
     },
@@ -164,10 +175,8 @@ mason_lspconfig.setup_handlers {
 
     local on_attach = function(_, bufnr)
       local bufopts = { noremap = true, silent = true, buffer = bufnr }
-      Keymap("<C-]>", vim.lsp.buf.definition, bufopts)
       Keymap("[lsp]f", vim.lsp.buf.format, bufopts)
       Keymap("[lsp]d", vim.lsp.buf.declaration, bufopts)
-      Keymap("[lsp]t", vim.lsp.buf.type_definition, bufopts)
       Keymap("[lsp]i", vim.lsp.buf.implementation, bufopts)
 
       -- lspsaga
@@ -175,8 +184,11 @@ mason_lspconfig.setup_handlers {
       Keymap("<C-k>", "<cmd>Lspsaga diagnostic_jump_prev<CR>", bufopts)
       Keymap("K", "<cmd>Lspsaga hover_doc<CR>", bufopts)
       Keymap("<C-[>", "<Cmd>Lspsaga lsp_finder<CR>", bufopts)
-      Keymap("[lsp]r", "<cmd>Lspsaga rename<CR>", bufopts)
+      Keymap("<C-]>", "<Cmd>Lspsaga goto_definition<CR>", bufopts)
       Keymap("[lsp]a", "<cmd>Lspsaga code_action<CR>", bufopts)
+      Keymap("[lsp]t", "<cmd>Lspsaga goto_type_definition<CR>", bufopts)
+      Keymap("[lsp]r", "<cmd>Lspsaga rename<CR>", bufopts)
+      Keymap("[lsp]o", "<cmd>Lspsaga outline<CR>", bufopts)
     end
 
     local server_disabled = (config.disabled ~= nil and config.disabled) or false
