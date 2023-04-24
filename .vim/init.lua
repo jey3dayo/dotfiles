@@ -1,3 +1,7 @@
+if vim.loader then
+  vim.loader.enable()
+end
+
 require "base"
 require "autocmds"
 require "options"
