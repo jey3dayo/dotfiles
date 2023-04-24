@@ -15,6 +15,9 @@ settings.cursorAtEndOfInput = false;
 settings.tabsMRUOrder = false;
 settings.historyMUOrder = false;
 
+settings.historyOrder = false;
+settings.aceKeybindings = true;
+
 // Mapping
 api.map('H', 'S'); // back in history
 api.map('L', 'D'); // forward in history
@@ -25,6 +28,7 @@ api.map('d', 'x'); // close current tab
 api.map('D', 'gx$'); // close all tab on right
 api.map('u', 'X'); // restore tab
 api.map('o', 'go'); // open a url in current tab
+api.map('F', 'af');
 api.map('@', '<Alt-p>');
 api.map('<Ctrl-h>', '<<'); // Move current tab to left
 api.map('<Ctrl-l>', '>>'); // Move current tab to right
