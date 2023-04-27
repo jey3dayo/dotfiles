@@ -4,7 +4,6 @@ if not status then
 end
 
 prettier.setup {
-  bin = "prettierd",
   filetypes = {
     "css",
     "graphql",
@@ -17,6 +16,8 @@ prettier.setup {
     "typescript",
     "typescriptreact",
     "yaml",
+    "markdown",
+    "svelte",
   },
 }
 
