@@ -1,5 +1,10 @@
 return {
-  "tomtom/tcomment_vim",
+  {
+    "numToStr/Comment.nvim",
+    config = function()
+      require "config/comment"
+    end,
+  },
   {
     "junegunn/vim-easy-align",
     cmd = { "EasyAlign" },

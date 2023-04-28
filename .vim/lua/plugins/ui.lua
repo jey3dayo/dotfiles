@@ -1,5 +1,6 @@
 return {
   "nvim-tree/nvim-web-devicons",
+  "JoosepAlviste/nvim-ts-context-commentstring",
   {
     "rcarriga/nvim-notify",
     dependencies = {
@@ -12,7 +13,10 @@ return {
   "j-hui/fidget.nvim",
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      "JoosepAlviste/nvim-ts-context-commentstring",
+    },
     run = ":TSUpdate",
     config = function()
       require "config/nvim-treesitter"
