@@ -28,7 +28,7 @@ api.map('d', 'x'); // close current tab
 api.map('D', 'gx$'); // close all tab on right
 api.map('u', 'X'); // restore tab
 api.map('o', 'go'); // open a url in current tab
-api.map('F', 'af');
+api.map('F', 'gf');
 api.map('@', '<Alt-p>');
 api.map('<Ctrl-h>', '<<'); // Move current tab to left
 api.map('<Ctrl-l>', '>>'); // Move current tab to right
@@ -74,16 +74,17 @@ api.unmapAllExcept(
 var overlayedGlobalMarks = {
   // webservice
   'M': 'https://moneyforward.com/',
-  'N': 'https://www.notion.so/',
+  'n': 'https://www.notion.so/',
   'a': 'https://www.amazon.co.jp/',
   'b': 'https://b.hatena.ne.jp/J138/bookmark',
   'g': 'https://www.github.com',
   'm': 'https://mail.google.com/mail/u/0/',
-  'n': 'https://www.netflix.com/',
+  'N': 'https://www.netflix.com/',
   't': 'https://twitter.com/',
   'w': 'https://healthmate.withings.com/',
   'y': 'https://wwww.youtube.com/',
-  'r': 'https://read.readwise.io/home',
+  'l': 'https://localhost.ca-adv.dev:3000',
+  'L': 'http://localhost:8080',
 };
 
 // paste URL
@@ -162,8 +163,8 @@ const copyTinyUrl = async (format) => {
   const res = await fetch('https://api-ssl.bitly.com/v4/shorten', {
     method: 'POST',
     headers: {
-        'Authorization': `Bearer ${bitlyToken}`,
-        'Content-Type': 'application/json'
+      'Authorization': `Bearer ${bitlyToken}`,
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({ "long_url": location.href, "domain": "bit.ly" })
   }).then(v => v.json());
