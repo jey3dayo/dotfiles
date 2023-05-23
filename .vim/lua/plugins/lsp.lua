@@ -37,7 +37,7 @@ return {
       "neovim/nvim-lspconfig",
       "jose-elias-alvarez/null-ls.nvim",
     },
-    cmd = { "Prettier" },
+    -- cmd = { "Prettier" },
     config = function()
       require "config/prettier"
     end,

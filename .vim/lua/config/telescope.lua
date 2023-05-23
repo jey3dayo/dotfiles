@@ -19,7 +19,7 @@ telescope.setup {
         ["<C-c>"] = actions.close,
         ["<C-n>"] = actions.move_selection_worse,
         ["<C-p>"] = actions.move_selection_better,
-        ["<C-d>"] = actions.delete_buffer,
+        ["d"] = actions.delete_buffer,
       },
       i = {
         ["<C-n>"] = actions.move_selection_next,
@@ -68,6 +68,7 @@ Keymap("<Leader>g", builtin.live_grep)
 Keymap("<Leader>b", builtin.buffers)
 Keymap("<Leader>d", builtin.diagnostics)
 Keymap("<Leader>y", telescope.extensions.neoclip.default)
+Keymap("<Leader>,", builtin.resume)
 
 Keymap("<Leader>e", function()
   telescope.extensions.file_browser.file_browser {
