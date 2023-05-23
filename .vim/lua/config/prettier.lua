@@ -22,4 +22,4 @@ prettier.setup {
 }
 
 local set_opts = { noremap = true, silent = false }
-Keymap("[lsp]p", ":<C-u>Prettier<CR>")
+Keymap("[lsp]p", "<cmd>Prettier<CR>", set_opts)
