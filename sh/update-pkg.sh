@@ -1,5 +1,9 @@
 # cli
-zinit update --all
+
+# FIXME: shellから実行できない
+# zinit self-update
+# zinit update --all
+
 asdf plugin update --all
 
 # python
