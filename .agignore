@@ -1,6 +1,7 @@
 .git
 yarn.lock
 yarn-error.log
+yarn-*.cjs
 package-lock.json
 node_modules
 .next
@@ -17,3 +18,4 @@ raycast/
 dist/*
 *.bundle
 *.cache
+prisma/client
