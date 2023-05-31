@@ -125,5 +125,6 @@ op/*
 jgit/*
 raycast/*
 cvim/*
-
+cycloud/
+lazygit/
 .surfingkeys.js
