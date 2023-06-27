@@ -55,3 +55,4 @@ Keymap("<Leader>su", ":<C-u>Lazy update<CR>")
 -- set list
 Keymap("<Leader>sn", ":<C-u>set number!<CR>")
 Keymap("<Leader>sl", ":<C-u>set list!<CR>")
+Keymap("<leader><C-d>", ":<C-u>bd!<CR>")
