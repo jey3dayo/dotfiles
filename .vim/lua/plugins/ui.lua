@@ -37,6 +37,10 @@ return {
     end,
   },
   {
+    "nvim-treesitter/nvim-tree-docs",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+  },
+  {
     "p00f/nvim-ts-rainbow",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },

@@ -30,6 +30,7 @@ ts.setup {
   autotag = {
     enable = true,
   },
+  tree_docs = { enable = true },
   rainbow = {
     enable = true,
     -- disablg = { "jsx", "cpp" },
