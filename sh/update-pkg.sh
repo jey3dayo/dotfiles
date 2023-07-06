@@ -11,6 +11,7 @@ pip3 list --format json --outdated | jq .[].name | xargs pip install -U
 pipx upgrade-all
 
 # node
+npm -g update
 npm -g i npm-check-updates
 
 # mac
