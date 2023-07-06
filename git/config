@@ -1,38 +1,39 @@
+[include]
+  path = ~/.config/git/config_delta
+  path = ~/.config/git/config_ghq
+  path = ~/.config/git/config_alias
+
 [color]
   branche = auto
   diff    = auto
   interactive = auto
   status  = auto
   ui = auto
+
 [core]
   excludesfile = ~/.config/git/ignore
   attributesfile = ~/.config/git/attributes
   quotepath = false
   editor = /usr/local/bin/vim
-  pager = git-split-diffs --color | less -RFX
-[alias]
-  ca = commit --amend
-  co = checkout
-  ci = commit
-  st = status --short
-  up = pull --rebase
-  l  = log --stat
-  lp = log -p
-  lg = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  modified = diff --diff-filter=M
+
 [branch "master"]
   remote = origin
   merge = refs/heads/master
+
+[http]
+  sslVerify = false
+
 [push]
   default = simple
+
 [credential]
   helper = cache --timeout=3600
-[ghq]
-  root = ~/src
+
 [filter "media"]
   required = true
   clean = git media clean %f
   smudge = git media smudge %f
+
 [filter "lfs"]
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f

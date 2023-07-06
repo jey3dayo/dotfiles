@@ -1,0 +1,10 @@
+[alias]
+  ca = commit --amend
+  co = checkout
+  ci = commit
+  st = status --short
+  up = pull --rebase
+  l  = log --stat
+  lp = log -p
+  lg = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  modified = diff --diff-filter=M
