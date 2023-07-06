@@ -1,7 +1,7 @@
 [include]
-  path = ~/.config/git/config_delta
-  path = ~/.config/git/config_ghq
-  path = ~/.config/git/config_alias
+  path = ~/.config/git/delta.gitconfig
+  path = ~/.config/git/ghq.gitconfig
+  path = ~/.config/git/alias.gitconfig
 
 [color]
   branche = auto
@@ -15,6 +15,10 @@
   attributesfile = ~/.config/git/attributes
   quotepath = false
   editor = /usr/local/bin/vim
+
+[branch "main"]
+  remote = origin
+  merge = refs/heads/main
 
 [branch "master"]
   remote = origin

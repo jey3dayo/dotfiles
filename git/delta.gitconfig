@@ -5,8 +5,10 @@
   diffFilter = delta --color-only
 
 [delta]
+  side-by-side = true
   navigate = true
   light = false
+  syntax-theme = gruvbox-dark
 
 [merge]
     conflictstyle = diff3
