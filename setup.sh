@@ -11,6 +11,6 @@ echo "source $HOME/.config/nvim/init.vim" >> ~/.vimrc
 echo "source-file $HOME/.tmux/main.conf" >> ~/.tmux.conf
 
 export ZDOTDIR=~/src/github.com/.config/.zsh
-echo "source $ZDOTDIR/.config/zsh/.zshenv" >> ~/.zshenv
+echo "source $ZDOTDIR/.zshenv" >> ~/.zshenv
 
 git submodule foreach git pull

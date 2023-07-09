@@ -20,6 +20,9 @@ if [[ "$SHLVL" -eq 1 && -s "${ZDOTDIR}/.zshenv.local" ]]; then
 fi
 
 export GHQ_ROOT=~/src
+export GOPATH=$HOME
+export PATH=$PATH:$GOPATH/bin
+
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/.ripgreprc"
 
 #AWSume alias to source the AWSume script

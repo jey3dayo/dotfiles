@@ -1,3 +1,5 @@
+command -v brew &> /dev/null || return
+
 if  [[ "$(arch)" == arm64 ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
   path=(/opt/homebrew/bin(N-/) $path)
