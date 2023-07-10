@@ -10,7 +10,6 @@ ios/Pods/
 public/
 vendor/
 lake.prd.cabi
-sample/
 prisma/generated/
 *jquery*
 output/
