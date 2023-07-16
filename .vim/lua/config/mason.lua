@@ -183,7 +183,7 @@ mason_lspconfig.setup_handlers {
       Keymap("<C-j>", "<cmd>Lspsaga diagnostic_jump_next<CR>", bufopts)
       Keymap("<C-k>", "<cmd>Lspsaga diagnostic_jump_prev<CR>", bufopts)
       Keymap("K", "<cmd>Lspsaga hover_doc<CR>", bufopts)
-      Keymap("<C-[>", "<Cmd>Lspsaga lsp_finder<CR>", bufopts)
+      Keymap("<C-[>", "<Cmd>Lspsaga finder<CR>", bufopts)
       Keymap("<C-]>", "<Cmd>Lspsaga goto_definition<CR>", bufopts)
       Keymap("[lsp]a", "<cmd>Lspsaga code_action<CR>", bufopts)
       Keymap("[lsp]t", "<cmd>Lspsaga goto_type_definition<CR>", bufopts)
