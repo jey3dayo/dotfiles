@@ -49,7 +49,7 @@ autoload zed
 # load sources
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 for f ("${ZDOTDIR:-$HOME}"/lazy-sources/*.zsh) source "${f}"
-source $HOME/.config/op/plugins.sh
+[[ -f "$HOME/.config/op/plugins.sh" ]] && source "$HOME/.config/op/plugins.sh"
 
 # vim: set syntax=zsh:
 # source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
