@@ -42,6 +42,7 @@ mason_lspconfig.setup {
     "yamlls",
     "jsonls",
     "cssls",
+    "taplo",
   },
   automatic_installation = true,
 }

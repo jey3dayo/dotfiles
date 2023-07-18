@@ -17,7 +17,6 @@ ts.setup {
     "markdown",
     "markdown_inline",
     "prisma",
-    "tsx",
     "toml",
     "json",
     "yaml",
