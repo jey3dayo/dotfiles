@@ -69,21 +69,14 @@ local options = {
   -- pum
   wildoptions = "pum",
   pumheight = 12,
-  -- winblend = 20,
-  -- pumblend = 20,
+  winblend = 20,
+  pumblend = 20,
+  signcolumn = "yes",
+  wrap = false,
 
   -- fixed NVim
   ttimeout = true,
   ttimeoutlen = 50,
-
-  -- TODO: uncheck
-  -- showmode = false,
-  -- showtabline = 2,
-  -- timeoutlen = 300,
-  -- updatetime = 300,
-  -- relativenumber = false,
-  -- signcolumn = "yes",
-  -- wrap = false,
 }
 
 vim.opt.shortmess:append "c"
