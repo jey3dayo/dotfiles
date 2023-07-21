@@ -15,9 +15,10 @@ abbr -S ag="ag --hidden"
 abbr -S ga="git add"
 abbr -S gap="git add -p"
 abbr -S gst="git status -sb"
+abbr -S gc="git commit -m \""
+
 abbr -S gd="git diff"
 abbr -S gdc="git diff --cached"
-
 abbr -S gd1="git diff HEAD~1"
 abbr -S gd2="git diff HEAD~2"
 abbr -S gd3="git diff HEAD~3"

@@ -31,4 +31,6 @@ fpath=(~/.awsume/zsh-autocomplete/ $fpath)
 
 export DIRENV_WARN_TIMEOUT=60s
 
+export _FASD_DATA="$XDG_CACHE_HOME/fasd/.fasd"
+
 # vim: set syntax=zsh:
