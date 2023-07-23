@@ -33,12 +33,15 @@ null_ls.setup {
       prefer_local = "node_modules/.bin",
     },
     -- formatting.eslint.with {
-    --   condition = function(utils)
-    --     return utils.has_file { ".eslintrc.json", ".eslintrc", ".eslintrc.js" }
-    --   end,
-    --   prefer_local = "node_modules/.bin",
-    -- },
-    -- diagnostics.yamllint,
+    diagnostics.eslint.with {
+      condition = function(utils)
+        return utils.has_file { ".eslintrc.json", ".eslintrc", ".eslintrc.js" }
+      end,
+      prefer_local = "node_modules/.bin",
+    },
+    diagnostics.shellcheck,
+    diagnostics.eslint,
+    diagnostics.yamllint,
     diagnostics.rubocop.with {
       prefer_local = "bundle_bin",
       condition = function(utils)
