@@ -8,14 +8,19 @@ if not status2 then
   return
 end
 
+local clear_autocmds = require("autocmds").clear_autocmds
+local autocmd = require("autocmds").autocmd
+local augroup = require("autocmds").augroup
+
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 
-local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+local group = augroup("lsp_format_on_save", { clear = false })
 local event = "BufWritePre" -- or "BufWritePost"
 local async = event == "BufWritePost"
 
 null_ls.setup {
+  debug = false,
   sources = {
     formatting.stylua,
     diagnostics.luacheck.with {
@@ -50,8 +55,8 @@ null_ls.setup {
   on_attach = function(client, bufnr)
     if client.supports_method "textDocument/formatting" then
       -- format on save
-      vim.api.nvim_clear_autocmds { buffer = bufnr, group = group }
-      vim.api.nvim_create_autocmd(event, {
+      clear_autocmds { buffer = bufnr, group = group }
+      autocmd(event, {
         buffer = bufnr,
         group = group,
         callback = function()

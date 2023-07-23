@@ -1,5 +1,13 @@
+local M = {}
+
 local autocmd = vim.api.nvim_create_autocmd
+M.autocmd = autocmd
+
 local _augroup = vim.api.nvim_create_augroup
+M.augroup = _augroup
+
+local clear_autocmds = vim.api.nvim_clear_autocmds
+M.clear_autocmds = clear_autocmds
 
 local function augroup(group_name)
   _augroup(group_name, { clear = true })
@@ -33,3 +41,5 @@ autocmd({ "BufReadPost" }, {
     vim.api.nvim_exec('silent! normal! g`"zv', false)
   end,
 })
+
+return M
