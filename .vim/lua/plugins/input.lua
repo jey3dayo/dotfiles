@@ -19,4 +19,10 @@ return {
     end,
   },
   "windwp/nvim-ts-autotag",
+  {
+    "keaising/im-select.nvim",
+    config = function()
+      require "config/im-select"
+    end,
+  },
 }
