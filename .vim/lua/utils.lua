@@ -11,4 +11,11 @@ M.find_command = function(paths)
   return nil
 end
 
+M.extend = function(tab1, tab2)
+  for _, value in ipairs(tab2 or {}) do
+    table.insert(tab1, value)
+  end
+  return tab1
+end
+
 return M
