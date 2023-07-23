@@ -18,6 +18,7 @@ return {
       "williamboman/mason.nvim",
       "jose-elias-alvarez/null-ls.nvim",
     },
+    run = ":MasonUpdate",
   },
 
   "neovim/nvim-lspconfig",
