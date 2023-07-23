@@ -50,6 +50,7 @@ return {
       require "config/lualine"
     end,
   },
+  "RRethy/vim-illuminate",
   {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
