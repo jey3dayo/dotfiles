@@ -9,10 +9,6 @@ M.augroup = _augroup
 local clear_autocmds = vim.api.nvim_clear_autocmds
 M.clear_autocmds = clear_autocmds
 
-local function augroup(group_name)
-  _augroup(group_name, { clear = true })
-end
-
 autocmd({ "BufNewFile", "BufRead" }, { pattern = { ".envrc" }, command = "set filetype=bash" })
 autocmd({ "BufNewFile", "BufRead" }, { pattern = { ".env*" }, command = "set filetype=sh" })
 autocmd({ "BufNewFile", "BufRead" }, { pattern = { ".ts.bk" }, command = "set filetype=typescriptreact" })
