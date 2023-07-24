@@ -35,4 +35,20 @@ M.servers = {
   "tailwindcss",
 }
 
+M.null_ls_ensure_installed = {
+  -- formatters
+  "prettier",
+  "stylua",
+  "shfmt",
+  "shellcheck",
+  "beautysh",
+  "sql_formatter",
+  "black",
+
+  -- linters
+  -- "luacheck",
+  "yamllint",
+  "markdownlint",
+}
+
 return M

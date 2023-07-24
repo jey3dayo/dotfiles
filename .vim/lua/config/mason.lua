@@ -42,7 +42,6 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server)
-    local config = {}
     local opts = {
       on_attach = require("lsp.handlers").on_attach,
       capabilities = require("lsp.handlers").capabilities,

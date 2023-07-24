@@ -4,8 +4,6 @@ local autocmd = require("autocmds").autocmd
 local augroup = require("autocmds").augroup
 
 local lspFormatting = augroup("LspFormatting", {})
-local eslintGroup = augroup("eslintGroup", {})
-local tsGroup = augroup("tsGroup", {})
 
 local function lsp_highlight_document(client)
   local status, illuminate = pcall(require, "illuminate")
