@@ -8,71 +8,46 @@ if not status2 then
   return
 end
 
-local clear_autocmds = require("autocmds").clear_autocmds
-local autocmd = require("autocmds").autocmd
-local augroup = require("autocmds").augroup
-
 local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 
-local group = augroup("lsp_format_on_save", { clear = false })
-local event = "BufWritePre" -- or "BufWritePost"
-local async = event == "BufWritePost"
-
-null_ls.setup {
-  debug = false,
-  sources = {
-    formatting.stylua,
-    diagnostics.luacheck.with {
-      extra_args = { "--globals", "vim", "--globals", "awesome" },
-    },
-    formatting.prettier.with {
-      condition = function(utils)
-        return utils.has_file { "prettier.config.*", ".prettierrc", ".prettierrc.js" }
-      end,
-      prefer_local = "node_modules/.bin",
-    },
-    -- formatting.eslint.with {
-    diagnostics.eslint.with {
-      condition = function(utils)
-        return utils.has_file { ".eslintrc.json", ".eslintrc", ".eslintrc.js" }
-      end,
-      prefer_local = "node_modules/.bin",
-    },
-    diagnostics.shellcheck,
-    diagnostics.eslint,
-    diagnostics.yamllint,
-    diagnostics.rubocop.with {
-      prefer_local = "bundle_bin",
-      condition = function(utils)
-        return utils.root_has_file { ".rubocop.yml" }
-      end,
-    },
-    formatting.rubocop.with {
-      prefer_local = "bundle_bin",
-      condition = function(utils)
-        return utils.root_has_file { ".rubocop.yml" }
-      end,
-    },
-  },
-  on_attach = function(client, bufnr)
-    if client.supports_method "textDocument/formatting" then
-      -- format on save
-      clear_autocmds { buffer = bufnr, group = group }
-      autocmd(event, {
-        buffer = bufnr,
-        group = group,
-        callback = function()
-          vim.lsp.buf.format { bufnr = bufnr, async = async, timeout_ms = 5000 }
-        end,
-        desc = "[lsp] format on save",
-      })
-    end
-  end,
-}
-
 mason_null_ls.setup {
-  ensure_installed = nil,
+  ensure_installed = require("lsp.config").null_ls_ensure_installed,
   automatic_installation = true,
   automatic_setup = false,
+  handlers = {
+    prettier = function()
+      null_ls.register(formatting.prettier.with {
+        condition = function(utils)
+          return utils.has_file { "prettier.config.*", ".prettierrc", ".prettierrc.js" }
+        end,
+        prefer_local = "node_modules/.bin",
+      })
+    end,
+
+    eslint = function()
+      null_ls.register(diagnostics.eslint.with {
+        condition = function(utils)
+          return utils.has_file { ".eslintrc.json", ".eslintrc", ".eslintrc.js" }
+        end,
+        prefer_local = "node_modules/.bin",
+        extra_filetypes = { "svelte" },
+      })
+    end,
+
+    sql_formatter = function()
+      null_ls.register(formatting.sql_formatter.with {
+        extra_filetypes = { "pgsql" },
+        args = function(params)
+          local config_path = params.cwd .. "/.sql-formatter.json"
+          if vim.loop.fs_stat(config_path) then
+            return { "--config", config_path }
+          end
+          return { "--language", "postgresql" }
+        end,
+      })
+    end,
+  },
 }
+
+null_ls.setup {}
