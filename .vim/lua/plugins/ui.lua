@@ -51,6 +51,12 @@ return {
     end,
   },
   {
+    "RRethy/vim-illuminate",
+    config = function()
+      require "config/vim-illuminate"
+    end,
+  },
+  {
     "lukas-reineke/indent-blankline.nvim",
     config = function()
       require "config/indent-blankline"

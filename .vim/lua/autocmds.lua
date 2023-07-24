@@ -1,9 +1,13 @@
-local autocmd = vim.api.nvim_create_autocmd
-local _augroup = vim.api.nvim_create_augroup
+local M = {}
 
-local function augroup(group_name)
-  _augroup(group_name, { clear = true })
-end
+local autocmd = vim.api.nvim_create_autocmd
+M.autocmd = autocmd
+
+local _augroup = vim.api.nvim_create_augroup
+M.augroup = _augroup
+
+local clear_autocmds = vim.api.nvim_clear_autocmds
+M.clear_autocmds = clear_autocmds
 
 autocmd({ "BufNewFile", "BufRead" }, { pattern = { ".envrc" }, command = "set filetype=bash" })
 autocmd({ "BufNewFile", "BufRead" }, { pattern = { ".env*" }, command = "set filetype=sh" })
@@ -33,3 +37,25 @@ autocmd({ "BufReadPost" }, {
     vim.api.nvim_exec('silent! normal! g`"zv', false)
   end,
 })
+
+-- make bg transparent
+autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    local hl_groups = {
+      "Normal",
+      "SignColumn",
+      "NormalNC",
+      "TelescopeBorder",
+      "NvimTreeNormal",
+      "EndOfBuffer",
+      "MsgArea",
+      --"NonText",
+    }
+    for _, name in ipairs(hl_groups) do
+      vim.cmd(string.format("highlight %s ctermbg=none guibg=none", name))
+    end
+  end,
+})
+
+return M

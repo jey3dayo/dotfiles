@@ -8,7 +8,7 @@ if not status2 then
   return
 end
 
-local status3, nvim_lsp = pcall(require, "lspconfig")
+local status3, lspconfig = pcall(require, "lspconfig")
 if not status3 then
   return
 end
@@ -17,6 +17,10 @@ local status4 = pcall(require, "lspsaga")
 if not status4 then
   return
 end
+
+local term_opts = { silent = true }
+Set_keymap("[lsp]", "<Nop>", term_opts)
+Set_keymap("<C-e>", "[lsp]", term_opts)
 
 mason.setup {
   ui = {
@@ -31,172 +35,22 @@ mason.setup {
   },
 }
 
-local set_opts = { silent = true }
-Set_keymap("[lsp]", "<Nop>", set_opts)
-Set_keymap("<C-e>", "[lsp]", set_opts)
-
 mason_lspconfig.setup {
-  ensure_installed = {
-    "tailwindcss",
-    "tsserver",
-    "yamlls",
-    "jsonls",
-    "cssls",
-    "taplo",
-  },
+  ensure_installed = require("lsp.config").installed_servers,
   automatic_installation = true,
 }
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    "documentation",
-    "detail",
-    "additionalTextEdits",
-  },
-}
-
-local configs = {
-  cssls = {
-    settings = {
-      css = {
-        lint = {
-          unknownAtRules = "ignore",
-        },
-      },
-    },
-  },
-  tailwindcss = {
-    init_options = {
-      userLanguages = {
-        eruby = "erb",
-        eelixir = "html-eex",
-        ["javascript.jsx"] = "javascriptreact",
-      },
-    },
-  },
-  jsonls = {
-    filetypes = { "json", "jsonc" },
-    commands = {
-      Format = {
-        function()
-          vim.lsp.buf.formatexpr({}, { 0, 0 }, { vim.fn.line "$", 0 })
-        end,
-      },
-    },
-    settings = {
-      json = {
-        -- Schemas https://www.schemastore.org
-        schemas = {
-          {
-            fileMatch = { "package.json" },
-            url = "https://json.schemastore.org/package.json",
-          },
-          {
-            fileMatch = { "tsconfig*.json" },
-            url = "https://json.schemastore.org/tsconfig.json",
-          },
-          {
-            fileMatch = {
-              ".prettierrc",
-              ".prettierrc.json",
-              "prettier.config.json",
-            },
-            url = "https://json.schemastore.org/prettierrc.json",
-          },
-          {
-            fileMatch = { ".eslintrc", ".eslintrc.json" },
-            url = "https://json.schemastore.org/eslintrc.json",
-          },
-          {
-            fileMatch = { ".babelrc", ".babelrc.json", "babel.config.json" },
-            url = "https://json.schemastore.org/babelrc.json",
-          },
-          {
-            fileMatch = { "lerna.json" },
-            url = "https://json.schemastore.org/lerna.json",
-          },
-          {
-            fileMatch = { "now.json", "vercel.json" },
-            url = "https://json.schemastore.org/now.json",
-          },
-          {
-            fileMatch = { "now.json", "vercel.json" },
-            url = "https://json.schemastore.org/now.json",
-          },
-          {
-            fileMatch = {
-              ".stylelintrc",
-              ".stylelintrc.json",
-              "stylelint.config.json",
-            },
-            url = "http://json.schemastore.org/stylelintrc.json",
-          },
-          {
-            fileMatch = { "postcss.config.json" },
-            url = "https://json.schemastore.org/postcssrc.json",
-          },
-        },
-      },
-    },
-  },
-  yamlls = {
-    settings = {
-      yaml = {
-        -- Schemas https://www.schemastore.org
-        schemas = {
-          ["http://json.schemastore.org/gitlab-ci.json"] = {
-            ".gitlab-ci.yml",
-          },
-          ["https://json.schemastore.org/bamboo-spec.json"] = {
-            "bamboo-specs/*.{yml,yaml}",
-          },
-          ["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = {
-            "docker-compose*.{yml,yaml}",
-          },
-          ["http://json.schemastore.org/github-workflow.json"] = ".github/workflows/*.{yml,yaml}",
-          ["http://json.schemastore.org/github-action.json"] = ".github/action.{yml,yaml}",
-          ["http://json.schemastore.org/prettierrc.json"] = ".prettierrc.{yml,yaml}",
-          ["http://json.schemastore.org/stylelintrc.json"] = ".stylelintrc.{yml,yaml}",
-          ["http://json.schemastore.org/circleciconfig"] = ".circleci/**/*.{yml,yaml}",
-        },
-      },
-    },
-  },
-}
-
 mason_lspconfig.setup_handlers {
-  function(server_name)
+  function(server)
     local config = {}
-
-    if configs[server_name] ~= nil then
-      config = configs[server_name]
+    local opts = {
+      on_attach = require("lsp.handlers").on_attach,
+      capabilities = require("lsp.handlers").capabilities,
+    }
+    local has_custom_opts, server_custom_opts = pcall(require, "lsp.settings." .. server)
+    if has_custom_opts then
+      opts = vim.tbl_deep_extend("force", opts, server_custom_opts)
     end
-
-    local on_attach = function(_, bufnr)
-      local bufopts = { noremap = true, silent = true, buffer = bufnr }
-      Keymap("[lsp]f", vim.lsp.buf.format, bufopts)
-      Keymap("[lsp]d", vim.lsp.buf.declaration, bufopts)
-      Keymap("[lsp]i", vim.lsp.buf.implementation, bufopts)
-
-      -- lspsaga
-      Keymap("<C-j>", "<cmd>Lspsaga diagnostic_jump_next<CR>", bufopts)
-      Keymap("<C-k>", "<cmd>Lspsaga diagnostic_jump_prev<CR>", bufopts)
-      Keymap("K", "<cmd>Lspsaga hover_doc<CR>", bufopts)
-      Keymap("<C-[>", "<Cmd>Lspsaga finder<CR>", bufopts)
-      Keymap("<C-]>", "<Cmd>Lspsaga goto_definition<CR>", bufopts)
-      Keymap("[lsp]a", "<cmd>Lspsaga code_action<CR>", bufopts)
-      Keymap("[lsp]t", "<cmd>Lspsaga goto_type_definition<CR>", bufopts)
-      Keymap("[lsp]r", "<cmd>Lspsaga rename<CR>", bufopts)
-      Keymap("[lsp]o", "<cmd>Lspsaga outline<CR>", bufopts)
-    end
-
-    local server_disabled = (config.disabled ~= nil and config.disabled) or false
-    if not server_disabled then
-      nvim_lsp[server_name].setup(
-        vim.tbl_deep_extend("force", { on_attach = on_attach, capabilities = capabilities }, config)
-      )
-    end
+    lspconfig[server].setup(opts)
   end,
 }
