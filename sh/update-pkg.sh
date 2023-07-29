@@ -1,4 +1,4 @@
-# cli
+#!/bin/bash
 
 # FIXME: shellから実行できない
 # zinit self-update
@@ -12,7 +12,7 @@ pipx upgrade-all
 
 # node
 npm -g update
-npm -g i npm-check-updates
+npm -g i npm-check-updates neovim
 
 # mac
 brew update

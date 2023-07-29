@@ -1,3 +1,5 @@
+#!/bin/bash
+
 brew uninstall neovim
 brew uninstall --force libvterm
-brew install neovim --head
+brew install neovim --HEAD
