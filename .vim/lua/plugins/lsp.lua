@@ -46,6 +46,11 @@ return {
 
   {
     "glepnir/lspsaga.nvim",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    },
     config = function()
       require "config/lspsaga"
     end,
