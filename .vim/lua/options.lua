@@ -62,7 +62,6 @@ local options = {
   laststatus = 2,
   lazyredraw = true,
   ttyfast = true,
-  shellslash = true,
   hidden = true,
   foldmethod = "marker",
 

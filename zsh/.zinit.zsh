@@ -33,10 +33,6 @@ zinit is-snippet for \
   OMZL::git.zsh \
   OMZP::git
 
-zinit wait lucid is-snippet as"completion" for \
-  OMZP::docker/_docker \
-  OMZP::docker-compose/_docker-compose
-
 zinit light mollifier/anyframe
 bindkey '^gh' anyframe-widget-execute-history
 bindkey '^gi' anyframe-widget-put-history
