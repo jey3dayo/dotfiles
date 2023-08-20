@@ -2,31 +2,18 @@ return {
   "ray-x/lsp_signature.nvim",
 
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
+    "nvimdev/guard.nvim",
     config = function()
-      require "config/null-ls"
+      require "config/guard"
     end,
   },
 
   "williamboman/mason.nvim",
-  {
-    "jayp0521/mason-null-ls.nvim",
-    dependencies = {
-      "williamboman/mason.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
-    },
-    run = ":MasonUpdate",
-  },
-
   "neovim/nvim-lspconfig",
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
       "williamboman/mason.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
     },
     config = function()
       require "config/mason"
@@ -36,7 +23,6 @@ return {
     "MunifTanjim/prettier.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
-      "jose-elias-alvarez/null-ls.nvim",
     },
     -- cmd = { "Prettier" },
     config = function()
