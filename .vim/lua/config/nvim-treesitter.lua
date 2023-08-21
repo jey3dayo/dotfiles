@@ -25,6 +25,7 @@ ts.setup {
     "ruby",
     "lua",
     "vim",
+    "astro",
   },
   autotag = {
     enable = true,

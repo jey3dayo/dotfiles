@@ -19,6 +19,7 @@ M.installed_servers = {
   "bashls",
   "prismals",
   "tailwindcss",
+  "astro",
 }
 
 return M
