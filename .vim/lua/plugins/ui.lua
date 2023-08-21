@@ -113,4 +113,5 @@ return {
       require "config/lightspeed"
     end,
   },
+  "uga-rosa/ccc.nvim",
 }
