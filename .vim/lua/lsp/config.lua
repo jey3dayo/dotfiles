@@ -3,8 +3,15 @@ local M = {}
 M.allow_format = {
   "eslint",
   "tsserver",
-  "prettier",
+
+  "yamlls",
+  "jsonls",
+  "cssls",
+  "prismals",
+
   "lua_ls",
+  "prettier",
+  "astro",
 }
 
 M.installed_servers = {

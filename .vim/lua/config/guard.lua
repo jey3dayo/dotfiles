@@ -1,9 +1,9 @@
 local ft = require("guard.filetype")
 
--- ft("typescript,javascript,typescriptreact"):fmt("prettier")
 -- ft("go"):fmt("gofmt")
 -- ft("ruby"):fmt("rubocop"):lint "rubocop"
 ft("sql,pgsql"):fmt("sql-formatter")
+ft('typescript,javascript,typescriptreact,css,json,guard'):fmt('prettier')
 
 -- Call setup() LAST!
 require("guard").setup({

@@ -3,6 +3,10 @@ return {
 
   {
     "nvimdev/guard.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "neovim/nvim-lspconfig",
+    },
     config = function()
       require "config/guard"
     end,
