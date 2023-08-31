@@ -3,12 +3,10 @@ local M = {}
 M.allow_format = {
   "eslint",
   "tsserver",
-
   "yamlls",
   "jsonls",
   "cssls",
   "prismals",
-
   "lua_ls",
   "prettier",
   "astro",

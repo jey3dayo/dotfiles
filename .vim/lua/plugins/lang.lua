@@ -1,4 +1,4 @@
-local ecma_scripts_ft = { "javascript", "javascriptreact", "jsx", "typescript", "typescriptreact", "tsx" }
+local ecma_scripts_ft = { "javascript", "javascriptreact", "jsx", "typescript", "typescriptreact", "tsx", "astro" }
 local ruby_ft = { "ruby" }
 
 return {

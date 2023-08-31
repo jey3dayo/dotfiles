@@ -1,5 +1,9 @@
 {
-  "eslint.filetypes": ["javascript", "javascript.jsx", "jsx"],
+  "eslint.filetypes": [
+    "javascript",
+    "javascript.jsx",
+    "jsx"
+  ],
   "eslint.autoFix": true,
   "tsserver.enableJavascript": false,
   "tsserver.enable": false
