@@ -27,4 +27,21 @@ M.installed_servers = {
   "astro",
 }
 
+M.installed_tree_sitter = {
+  "bash",
+  "markdown",
+  "markdown_inline",
+  "prisma",
+  "toml",
+  "json",
+  "yaml",
+  "css",
+  "html",
+  "ruby",
+  "lua",
+  "vim",
+  "typescript",
+  "astro",
+}
+
 return M
