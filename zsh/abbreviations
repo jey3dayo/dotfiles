@@ -26,4 +26,6 @@ abbr -S gd3="git diff HEAD~3"
 abbr -S d='docker'
 abbr -S dc='docker compose'
 
+abbr -S pk='pkill -9 -f '
+
 abbr -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
