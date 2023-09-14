@@ -56,3 +56,6 @@ for f ("${ZDOTDIR:-$HOME}"/lazy-sources/*.zsh) source "${f}"
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+
+# bun completions
+[ -s "/Users/t00114/.bun/_bun" ] && source "/Users/t00114/.bun/_bun"

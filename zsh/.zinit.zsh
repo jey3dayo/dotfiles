@@ -33,6 +33,8 @@ zinit is-snippet for \
   OMZL::git.zsh \
   OMZP::git
 
+zinit load azu/ni.zsh
+
 zinit light mollifier/anyframe
 bindkey '^gh' anyframe-widget-execute-history
 bindkey '^gi' anyframe-widget-put-history
