@@ -4,7 +4,8 @@ local ft = require("guard.filetype")
 -- ft("ruby"):fmt("rubocop"):lint "rubocop"
 ft("sql,pgsql"):fmt("sql-formatter")
 
-ft('typescript,javascript,typescriptreact,css,json,astro'):fmt('prettierd')
+ft('typescript,javascript,typescriptreact,css,json,astro'):fmt('prettier')
+ft('c,proto'):fmt('clang-format')
 
 -- Call setup() LAST!
 require("guard").setup({

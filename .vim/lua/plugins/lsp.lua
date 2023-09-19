@@ -1,17 +1,17 @@
 return {
   "ray-x/lsp_signature.nvim",
-
+  "nvimdev/guard-collection",
   {
     "nvimdev/guard.nvim",
     dependencies = {
       "williamboman/mason.nvim",
       "neovim/nvim-lspconfig",
+      "nvimdev/guard-collection",
     },
     config = function()
       require "config/guard"
     end,
   },
-
   "williamboman/mason.nvim",
   "neovim/nvim-lspconfig",
   {
@@ -33,7 +33,6 @@ return {
       require "config/prettier"
     end,
   },
-
   {
     "glepnir/lspsaga.nvim",
     dependencies = {
