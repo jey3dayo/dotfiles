@@ -1,6 +1,5 @@
 return {
   "ray-x/lsp_signature.nvim",
-  "nvimdev/guard-collection",
   {
     "nvimdev/guard.nvim",
     dependencies = {
