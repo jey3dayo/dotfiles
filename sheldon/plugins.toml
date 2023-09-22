@@ -1,0 +1,84 @@
+shell = "zsh"
+
+[templates]
+defer = "{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}"
+PATH = 'export PATH="{{ dir }}:$PATH"'
+path = 'path=( "{{ dir }}" $path )'
+fpath = 'fpath=( "{{ dir }}" $fpath )'
+fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
+ln-fpath = "{% for file in files %}zsh-defer -s -z ln -sf \"{{ file }}\" \"${HOME}/.zfunc/_{{ name }}\"\n{% endfor %}"
+zoxide_post = '''
+alias j=z
+export _ZO_RESOLVE_SYMLINKS=1
+eval "$(zoxide init zsh)"
+'''
+anyframe_post = '''
+bindkey '^gh' anyframe-widget-execute-history
+bindkey '^gi' anyframe-widget-put-history
+bindkey '^gr' anyframe-widget-cd-ghq-repository
+bindkey '^gb' anyframe-widget-checkout-git-branch
+bindkey '^gk' anyframe-widget-kill
+
+bindkey '^R' anyframe-widget-execute-history
+bindkey '^T' anyframe-widget-cd-ghq-repository
+bindkey '^Y' anyframe-widget-checkout-git-branch
+'''
+
+[plugins]
+
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+
+[plugins.zsh-abbr]
+github = 'olets/zsh-abbr'
+apply = ["defer"]
+
+[plugins.zoxide]
+github = "ajeetdsouza/zoxide"
+apply = ["source", "zoxide_post"]
+
+[plugins.oh-my-zsh]
+github = "ohmyzsh/ohmyzsh"
+use = [
+    # "lib/clipboard.zsh",
+    "lib/directories.zsh",
+    "lib/git.zsh",
+    "lib/functions.zsh",
+    "plugins/git/git.plugin.zsh",
+]
+apply = ["defer"]
+
+[plugins.exa]
+apply = ["ln-fpath"]
+remote = "https://raw.githubusercontent.com/ogham/exa/master/completions/zsh/_exa"
+
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+apply = ["defer", "fpath-src"]
+
+[plugins.nix-zsh-completions]
+github = "nix-community/nix-zsh-completions"
+apply = ["defer", "fpath"]
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+use = ["{{ name }}.zsh"]
+apply = ["defer"]
+
+[plugins.fast-syntax-highlighting]
+github = "zdharma-continuum/fast-syntax-highlighting"
+apply = ["defer"]
+
+[plugins.ni]
+github = 'azu/ni.zsh'
+apply = ["defer"]
+
+[plugins.anyframe]
+github = 'mollifier/anyframe'
+apply = ["defer", "source", "anyframe_post"]
+
+# [plugins.powerlevel10k]
+# github = 'romkatv/powerlevel10k'
+
+[plugins.starship]
+inline = 'eval "$(starship init zsh)"'

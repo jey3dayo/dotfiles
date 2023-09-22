@@ -1,0 +1,62 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+# ship configuration
+# ---
+# see https://starship.rs/config/
+
+format = "$directory$git_branch$git_metrics$nix_shell$package$character"
+add_newline = false
+command_timeout = 10000
+
+[line_break]
+disabled = true
+
+[character]
+success_symbol = "[λ](green)" # ➜
+error_symbol = "[λ](red)" # ✖
+
+[directory]
+read_only = " "
+truncation_length = 1
+
+[status]
+symbol = "🔴"
+format = '[\[$symbol$status_common_meaning$status_signal_name$status_maybe_int\]]($style)'
+map_symbol = true
+disabled = false
+
+[git_branch]
+style = "purple"
+symbol = " "
+
+[git_metrics]
+disabled = false
+added_style = "bold yellow"
+deleted_style = "bold red"
+
+[package]
+format = "version [$version](bold green) "
+symbol = " "
+
+[nix_shell]
+symbol = " "
+
+[nodejs]
+symbol = " "
+format = 'via [$symbol]($style)'
+
+[rust]
+format = 'via [$symbol]($style)'
+
+[swift]
+symbol = "ﯣ "
+format = 'via [$symbol]($style)'
+
+[elixir]
+symbol = " "
+
+[php]
+symbol = " "
+
+[memory_usage]
+symbol = " "
