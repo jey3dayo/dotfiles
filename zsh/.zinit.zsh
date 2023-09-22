@@ -20,7 +20,7 @@ zinit light-mode for \
     zdharma-continuum/z-a-bin-gem-node \
     PZTM::fasd \
     atinit"zicompinit; zicdreplay" \
-      zdharma/fast-syntax-highlighting
+    zdharma/fast-syntax-highlighting
 
 zinit wait lucid light-mode for \
     olets/zsh-abbr \
