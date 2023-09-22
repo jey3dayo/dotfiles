@@ -13,10 +13,6 @@ export GOPATH=$HOME
 
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/.ripgreprc"
 
-# AWSume alias to source the AWSume script
-alias awsume="source \$(pyenv which awsume)"
-fpath=(~/.awsume/zsh-autocomplete/ $fpath)
-
 export DIRENV_WARN_TIMEOUT=60s
 
 export _FASD_DATA="$XDG_CACHE_HOME/fasd/.fasd"
@@ -36,5 +32,7 @@ path=(
   $path
 )
 
+alias awsume="source \$(pyenv which awsume)"
+fpath=(~/.awsume/zsh-autocomplete/ $fpath)
 
 # vim: set syntax=zsh:
