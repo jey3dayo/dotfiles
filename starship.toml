@@ -1,32 +1,45 @@
-# Get editor completions based on the config schema
-"$schema" = 'https://starship.rs/config-schema.json'
-# ship configuration
-# ---
-# see https://starship.rs/config/
+format = """\
+  $username\
+  $hostname\
+  $directory\
+  $custom\
+  $git_state\
+  $line_break\
+  $character\
+  """
 
-format = "$directory$git_branch$git_metrics$nix_shell$package$character"
+right_format = """$git_branch$git_status$git_metrics$cmd_duration"""
+
+# Disable the blank line at the start of the prompt
 add_newline = false
-command_timeout = 10000
 
 [line_break]
 disabled = true
 
 [character]
-success_symbol = "[λ](green)" # ➜
-error_symbol = "[λ](red)" # ✖
+success_symbol = " [](#6791c9)"
+error_symbol = " [](#df5b61)"
+vicmd_symbol = "[  ](#78b892)"
 
-[directory]
-read_only = " "
-truncation_length = 1
-
-[status]
-symbol = "🔴"
-format = '[\[$symbol$status_common_meaning$status_signal_name$status_maybe_int\]]($style)'
-map_symbol = true
+[hostname]
+ssh_only = true
+format = "[$hostname](bold blue) "
 disabled = false
 
+[cmd_duration]
+min_time = 1
+format = "[ $duration ]($style)"
+disabled = false
+style = "fg:#bc83e3 bg:none"
+
+[directory]
+format = "[ $path]($style)"
+style = "fg:#6791c9 bg:none"
+truncation_length = 3
+truncate_to_repo=false
+
 [git_branch]
-style = "purple"
+style = "fg:#78b892 bg:none"
 symbol = " "
 
 [git_metrics]
@@ -34,29 +47,35 @@ disabled = false
 added_style = "bold yellow"
 deleted_style = "bold red"
 
-[package]
-format = "version [$version](bold green) "
-symbol = " "
+[git_status]
+format = "[ $all_status $ahead_behind ]($style)"
+style = "fg:#78b892 bg:none"
+conflicted = "="
+ahead =	"⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+up_to_date = ""
+untracked = "?${count}"
+stashed = " "
+modified = "!${count}"
+staged = "+${count}"
+renamed = "»${count}"
+deleted = "${count}"
 
-[nix_shell]
-symbol = " "
+[git_commit]
+format = "[\\($hash\\)]($style) [\\($tag\\)]($style)"
+style = "green"
 
-[nodejs]
-symbol = " "
-format = 'via [$symbol]($style)'
-
-[rust]
-format = 'via [$symbol]($style)'
-
-[swift]
-symbol = "ﯣ "
-format = 'via [$symbol]($style)'
-
-[elixir]
-symbol = " "
-
-[php]
-symbol = " "
+[git_state]
+rebase = "REBASING"
+merge =	"MERGING"
+revert = "REVERTING"
+cherry_pick = "CHERRY-PICKING"
+bisect = "BISECTING"
+am = "AM"
+am_or_rebase = "AM/REBASE"
+style =	"yellow"
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
 
 [memory_usage]
 symbol = " "
