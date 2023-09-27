@@ -26,8 +26,6 @@ hooks.post = 'zsh-defer source $HOME/.config/zsh/hook/zoxide_post.zsh'
 github = "ohmyzsh/ohmyzsh"
 use = [
     "lib/clipboard.zsh",
-    # "lib/directories.zsh",
-    # "lib/git.zsh",
     "lib/functions.zsh",
     "plugins/git/git.plugin.zsh",
     # "plugins/1password/1password.plugin.zsh",
