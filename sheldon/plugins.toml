@@ -7,22 +7,6 @@ path = 'path=( "{{ dir }}" $path )'
 fpath = 'fpath=( "{{ dir }}" $fpath )'
 fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
 ln-fpath = "{% for file in files %}zsh-defer -s -z ln -sf \"{{ file }}\" \"${HOME}/.zfunc/_{{ name }}\"\n{% endfor %}"
-zoxide_post = '''
-alias j=z
-export _ZO_RESOLVE_SYMLINKS=1
-eval "$(zoxide init zsh)"
-'''
-anyframe_post = '''
-bindkey '^gh' anyframe-widget-execute-history
-bindkey '^gi' anyframe-widget-put-history
-bindkey '^gr' anyframe-widget-cd-ghq-repository
-bindkey '^gb' anyframe-widget-checkout-git-branch
-bindkey '^gk' anyframe-widget-kill
-
-bindkey '^R' anyframe-widget-execute-history
-bindkey '^T' anyframe-widget-cd-ghq-repository
-bindkey '^Y' anyframe-widget-checkout-git-branch
-'''
 
 [plugins]
 
@@ -35,21 +19,23 @@ apply = ["defer"]
 
 [plugins.zoxide]
 github = "ajeetdsouza/zoxide"
-apply = ["source", "zoxide_post"]
+apply = ["defer"]
+hooks.post = 'zsh-defer source $HOME/.config/zsh/hook/zoxide_post.zsh'
 
 [plugins.oh-my-zsh]
 github = "ohmyzsh/ohmyzsh"
 use = [
-    # "lib/clipboard.zsh",
-    "lib/directories.zsh",
-    "lib/git.zsh",
+    "lib/clipboard.zsh",
+    # "lib/directories.zsh",
+    # "lib/git.zsh",
     "lib/functions.zsh",
     "plugins/git/git.plugin.zsh",
+    # "plugins/1password/1password.plugin.zsh",
 ]
 apply = ["defer"]
 
 [plugins.exa]
-apply = ["ln-fpath"]
+apply = ["defer", "ln-fpath"]
 remote = "https://raw.githubusercontent.com/ogham/exa/master/completions/zsh/_exa"
 
 [plugins.zsh-completions]
@@ -75,7 +61,8 @@ apply = ["defer"]
 
 [plugins.anyframe]
 github = 'mollifier/anyframe'
-apply = ["defer", "source", "anyframe_post"]
+apply = ["defer"]
+hooks.post = 'zsh-defer source $HOME/.config/zsh/hook/anyframe_post.zsh'
 
 # [plugins.powerlevel10k]
 # github = 'romkatv/powerlevel10k'
