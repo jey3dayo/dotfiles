@@ -6,6 +6,8 @@
 
 asdf plugin update --all
 
+sheldon lock --update
+
 # python
 pip3 list --format json --outdated | jq .[].name | xargs pip install -U
 pipx upgrade-all

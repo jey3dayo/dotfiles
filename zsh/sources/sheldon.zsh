@@ -1,5 +1,3 @@
-autoload -Uz compinit && compinit
-
 cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}
 config_dir=${XDG_CONFIG_HOME:-$HOME/.config}
 

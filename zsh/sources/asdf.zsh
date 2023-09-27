@@ -2,6 +2,7 @@
 
 # Find where asdf should be installed
 [[ "$(arch)" == "arm64" ]] && ASDF_DIR="${ASDF_DIR:-$HOME/.asdf}" || ASDF_DIR="${ASDF_DIR:-$HOME/.asdf_x86}"
+
 ASDF_COMPLETIONS="$ASDF_DIR/completions"
 
 # If not found, check for archlinux/AUR package (/opt/asdf-vm/)
@@ -27,10 +28,5 @@ if [[ -f "$ASDF_DIR/asdf.sh" ]]; then
   #   . "$ASDF_COMPLETIONS/asdf.bash"
   # fi
 
-
-  export ASDF_DIRENV_BIN="$ASDF_DIR/installs/direnv/2.32.3/bin/direnv"
-  if [[ -f "$ASDF_DIRENV_BIN" ]]; then
-    eval "$($ASDF_DIRENV_BIN hook zsh)"
-    # . $ASDF_DIR/plugins/java/set-java-home.zsh
-  fi
+  # . $ASDF_DIR/plugins/java/set-java-home.zsh
 fi

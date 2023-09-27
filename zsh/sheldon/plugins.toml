@@ -1,26 +1,28 @@
 shell = "zsh"
 
+apply = ["defer"]
+
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+apply = ['source']
+
 [templates]
-defer = "{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}"
+defer = "{{ hooks | get: \"pre\" | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks | get: \"post\" | nl }}"
+source = "{{ hooks | get: \"pre\" | nl }}{% for file in files %}source \"{{ file }}\"\n{% endfor %}{{ hooks | get: \"post\" | nl }}"
 PATH = 'export PATH="{{ dir }}:$PATH"'
 path = 'path=( "{{ dir }}" $path )'
 fpath = 'fpath=( "{{ dir }}" $fpath )'
 fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
 ln-fpath = "{% for file in files %}zsh-defer -s -z ln -sf \"{{ file }}\" \"${HOME}/.zfunc/_{{ name }}\"\n{% endfor %}"
+fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n"
+fzf-source = "{% for file in files %}source \"{{ file }}\"\n{% endfor %}"
 
-[plugins]
-
-[plugins.zsh-defer]
-github = "romkatv/zsh-defer"
+[plugins.compinit]
+inline = 'autoload -Uz compinit && zsh-defer compinit'
 
 [plugins.zsh-abbr]
 github = 'olets/zsh-abbr'
 apply = ["defer"]
-
-[plugins.zoxide]
-github = "ajeetdsouza/zoxide"
-apply = ["defer"]
-hooks.post = 'zsh-defer source $HOME/.config/zsh/hook/zoxide_post.zsh'
 
 [plugins.oh-my-zsh]
 github = "ohmyzsh/ohmyzsh"
@@ -53,17 +55,27 @@ apply = ["defer"]
 github = "zdharma-continuum/fast-syntax-highlighting"
 apply = ["defer"]
 
+[plugins.zoxide]
+github = "ajeetdsouza/zoxide"
+apply = ["defer"]
+hooks.post = 'zsh-defer source $ZDOTDIR/hook/zoxide_post.zsh'
+
 [plugins.ni]
 github = 'azu/ni.zsh'
 apply = ["defer"]
-
-[plugins.anyframe]
-github = 'mollifier/anyframe'
-apply = ["defer"]
-hooks.post = 'zsh-defer source $HOME/.config/zsh/hook/anyframe_post.zsh'
 
 # [plugins.powerlevel10k]
 # github = 'romkatv/powerlevel10k'
 
 [plugins.starship]
 inline = 'eval "$(starship init zsh)"'
+
+[plugins.fzf]
+github = "junegunn/fzf"
+apply = ['fzf-install', 'fzf-source']
+hooks.post = 'zsh-defer source $ZDOTDIR/hook/fzf_post.zsh'
+
+[plugins.anyframe]
+github = 'mollifier/anyframe'
+apply = ["defer"]
+hooks.post = 'zsh-defer source $ZDOTDIR/hook/anyframe_post.zsh'

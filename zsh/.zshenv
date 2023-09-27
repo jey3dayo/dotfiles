@@ -15,8 +15,6 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/.ripgreprc"
 
 export DIRENV_WARN_TIMEOUT=60s
 
-export _FASD_DATA="$XDG_CACHE_HOME/fasd/.fasd"
-
 export BUN_INSTALL="$HOME/.bun"
 
 path=(

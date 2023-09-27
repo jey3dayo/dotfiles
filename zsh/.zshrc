@@ -1,10 +1,3 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 # jey3dayo .zshrc
 
 # Fig pre block. Keep at the top of this file.
@@ -53,13 +46,30 @@ setopt share_history
 
 autoload zed
 
-# compiled zsh scripts
-source zsh/hook/ensure_zcompiled.zsh
-ensure_zcompiled ~/.zshrc
+# source command override technique
+function source {
+  ensure_zcompiled $1
+  builtin source $1
+}
+
+function ensure_zcompiled {
+  if [[ "$1" == *.zsh ]] || [[ "$1" == *.zshrc ]]; then
+    local compiled="$1.zwc"
+    if [[ ! -r "$compiled" || "$1" -nt "$compiled" ]]; then
+      echo "\033[1;36mCompiling\033[m $1"
+      zcompile $1
+    fi
+  fi
+}
+ensure_zcompiled $ZDOTDIR/.zshrc
 
 # load sources
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 for f ("${ZDOTDIR:-$HOME}"/lazy-sources/*.zsh) zsh-defer source "${f}"
+[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ]] && zsh-defer source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
+
+# removed custom source
+zsh-defer unfunction source
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
