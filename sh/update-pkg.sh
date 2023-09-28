@@ -1,15 +1,12 @@
 #!/bin/bash
 
-# FIXME: shellから実行できない
-# zinit self-update
-# zinit update --all
-
 asdf plugin update --all
 
 sheldon lock --update
 
 # python
-pip3 list --format json --outdated | jq .[].name | xargs pip install -U
+pip3 install --upgrade pip
+pip3 list --format json --outdated | jq .[].name | xargs pip3 install -U
 pipx upgrade-all
 
 # node
