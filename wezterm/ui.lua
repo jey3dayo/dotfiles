@@ -80,7 +80,7 @@ return {
   color_scheme = "Gruvbox dark, hard (base16)",
   font = utils.font_with_fallback "UDEV Gothic 35NFLG",
   font_size = 16,
-  window_background_opacity = 0.86,
+  window_background_opacity = 0.95,
   text_background_opacity = 0.9,
   window_decorations = "RESIZE",
   native_macos_fullscreen_mode = true,
