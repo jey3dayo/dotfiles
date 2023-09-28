@@ -45,7 +45,7 @@ local options = {
 
   -- visible SpecialKey
   list = true,
-  listchars = "tab:>.,trail:-,extends:\\",
+  listchars = "tab:>.,trail:-,extends:\\,eol:↴,space: ",
 
   -- tab width
   tabstop = 2,
