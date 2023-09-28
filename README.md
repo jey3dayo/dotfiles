@@ -1,16 +1,23 @@
 # Setup
 
-セットアップはこれだけ。依存関係考えてない
+ディレクトリ周りのセットアップ
 
 ```
 sh ./setup.sh
 ```
 
 
-とりあえず、zsh起動して<C-r>でpecoが起動すると幸せになれる
-
 ```
 # go get github.com/peco/peco/cmd/peco
 brew tap peco/peco
 brew install peco
+```
+
+# brew
+
+```
+brew install coreutils curl git
+brew install asdf
+
+asdf plugin-add direnv
 ```

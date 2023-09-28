@@ -5,7 +5,7 @@ DOTFILES=$HOME/src/github.com/jey3dayo/dotfiles
 mkdir -p "${HOME}"/{tmp,.cache,.config}
 chown -R "${USER}" "${HOME}"/{tmp,.cache}
 
-ln -s "${DOTFILES}" ~/.config
+ln -sf "${DOTFILES}" ~/.config
 
 echo "source $HOME/.config/nvim/init.vim" >> ~/.vimrc
 echo "source-file $HOME/.tmux/main.conf" >> ~/.tmux.conf
