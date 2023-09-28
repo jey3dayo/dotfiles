@@ -66,7 +66,6 @@ ensure_zcompiled $ZDOTDIR/.zshrc
 # load sources
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 for f ("${ZDOTDIR:-$HOME}"/lazy-sources/*.zsh) zsh-defer source "${f}"
-[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc" ]] && zsh-defer source "${XDG_CONFIG_HOME:-$HOME/.config}/asdf-direnv/zshrc"
 
 # removed custom source
 zsh-defer unfunction source

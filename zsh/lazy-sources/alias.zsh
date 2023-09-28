@@ -1,7 +1,5 @@
 case ${OSTYPE} in
   darwin*)
-  alias flushdns='dscacheutil -flushcache;sudo killall -HUP mDNSResponder'
-
   # gnu
   alias sed="gsed"
   alias grep="ggrep"
