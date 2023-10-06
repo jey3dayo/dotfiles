@@ -13,6 +13,8 @@ pipx upgrade-all
 npm -g update
 npm -g i npm-check-updates neovim
 
+cd /Users/t00114/src/github.com/dimdenGD/OldTweetDeck && git pull origin main && cd -
+
 # mac
 brew update
 brew upgrade
