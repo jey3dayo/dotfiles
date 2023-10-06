@@ -18,7 +18,12 @@ return {
       require "config/increment-activator-config"
     end,
   },
+  {
   "windwp/nvim-ts-autotag",
+    config = function()
+      require "config/nvim-ts-autotag"
+    end,
+  },
   {
     "keaising/im-select.nvim",
     config = function()
