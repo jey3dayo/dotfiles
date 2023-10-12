@@ -31,6 +31,9 @@ path=(
 )
 
 alias awsume="source \$(pyenv which awsume)"
-fpath=(~/.awsume/zsh-autocomplete/ $fpath)
+fpath=(
+  ~/.awsume/zsh-autocomplete/
+  ~/.local/share/zsh-autocomplete/
+  $fpath)
 
 # vim: set syntax=zsh:
