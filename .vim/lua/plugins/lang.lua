@@ -7,7 +7,6 @@ return {
   { "tpope/vim-rake",       ft = ruby_ft },
   { "tpope/vim-rails",      ft = ruby_ft },
   { "tpope/vim-markdown",   ft = { "markdown", "mkd" } },
-  { "vito-c/jq.vim",        ft = { "jq" } },
   { "ap/vim-css-color",     ft = table.insert({ "css" }, ecma_scripts_ft) },
   { "hotoo/jsgf.vim",       ft = ecma_scripts_ft },
 }
