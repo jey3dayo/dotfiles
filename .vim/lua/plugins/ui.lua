@@ -114,4 +114,11 @@ return {
     end,
   },
   "uga-rosa/ccc.nvim",
+  {
+    "j-hui/fidget.nvim",
+    tag = "legacy",
+    config = function()
+      require "config/fidget"
+    end,
+  },
 }
