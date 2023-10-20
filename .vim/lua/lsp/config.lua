@@ -1,7 +1,6 @@
 local M = {}
 
 M.allow_format = {
-  "eslint",
   "tsserver",
   "yamlls",
   "jsonls",
@@ -13,7 +12,6 @@ M.allow_format = {
 }
 
 M.installed_servers = {
-  "eslint",
   "tsserver",
   "yamlls",
   "jsonls",
