@@ -26,6 +26,10 @@ ts.setup {
   context_commentstring = {
     enable = true,
   },
+  matchup = {
+    enable = true,
+    -- disable = { "c", "ruby" },
+  },
 }
 
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()

@@ -78,11 +78,20 @@ local options = {
   ttimeoutlen = 50,
 }
 
-vim.opt.shortmess:append "c"
-
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
+local global_options = {
+  loaded_ruby_provider = 0,
+  loaded_node_provider = 0,
+  loaded_perl_provider = 0,
+}
+
+for k, v in pairs(global_options) do
+  vim.g[k] = v
+end
+
+vim.opt.shortmess:append "c"
 vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]

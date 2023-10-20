@@ -3,7 +3,7 @@ local M = {}
 local autocmd = require("autocmds").autocmd
 local augroup = require("autocmds").augroup
 
-local lspFormatting = augroup("LspFormatting", {})
+local lspFormatting = augroup("LspFormatting", { clear = true })
 
 local function lsp_highlight_document(client)
   local status, illuminate = pcall(require, "illuminate")
@@ -23,7 +23,10 @@ local lsp_keymaps = function(bufnr)
   Keymap("[lsp]d", vim.lsp.buf.declaration, bufopts)
   Keymap("[lsp]i", vim.lsp.buf.implementation, bufopts)
 
-  -- -- lspsaga
+  -- guard
+  Keymap("[lsp]F", "<cmd>GuardFmt<CR>", bufopts)
+
+  -- lspsaga
   Keymap("<C-j>", "<cmd>Lspsaga diagnostic_jump_next<CR>", bufopts)
   Keymap("<C-k>", "<cmd>Lspsaga diagnostic_jump_prev<CR>", bufopts)
   Keymap("K", "<cmd>Lspsaga hover_doc<CR>", bufopts)
@@ -60,13 +63,13 @@ M.on_attach = function(client, bufnr)
     vim.api.nvim_clear_autocmds { group = lspFormatting, buffer = bufnr }
 
     -- guard.nvim will handle formatting
-    -- autocmd("BufWritePre", {
-    --   group = lspFormatting,
-    --   buffer = bufnr,
-    --   callback = function()
-    --     lsp_formatting(bufnr)
-    --   end,
-    -- })
+    autocmd("BufWritePre", {
+      group = lspFormatting,
+      buffer = bufnr,
+      callback = function()
+        lsp_formatting(bufnr)
+      end,
+    })
   end
 end
 
