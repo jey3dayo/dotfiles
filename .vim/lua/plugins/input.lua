@@ -19,10 +19,8 @@ return {
     end,
   },
   {
-  "windwp/nvim-ts-autotag",
-    config = function()
-      require "config/nvim-ts-autotag"
-    end,
+    "windwp/nvim-ts-autotag",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
     "keaising/im-select.nvim",
