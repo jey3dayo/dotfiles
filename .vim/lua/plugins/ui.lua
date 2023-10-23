@@ -32,9 +32,6 @@ return {
   {
     "andymass/vim-matchup",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
-    config = function()
-      require "config/vim-matchup"
-    end,
   },
   {
     "nvim-treesitter/nvim-tree-docs",
