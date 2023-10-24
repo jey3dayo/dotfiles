@@ -22,7 +22,7 @@ async function updateBrew() {
   try {
     await $`brew update`;
     await $`brew upgrade`;
-    await $`bew cleanup`;
+    await $`brew cleanup`;
 
   } catch (e) {
   }
