@@ -12,10 +12,9 @@ async function updatePythonPkgs() {
 
 // node
 async function updateNodePkgs() {
-  await $`npm -g update`;
-
-  let nodePkgs = ["npm-check-updates", "neovim"];
-  await $`npm -g i ${nodePkgs}`;
+  let nodePkgs = ["npm-check-updates", "neovim", "husky", "@bufbuild/protoc-gen-es", "@connectrpc/protoc-gen-connect-es", "aicommits"];
+  await $`bun i --g ${nodePkgs}`;
+  await $`bun -g update`;
 }
 
 async function updateBrew() {
