@@ -38,7 +38,7 @@ async function updateRepos() {
 }
 
 await Promise.all([
-  $`asdf plugin update --all`,
+  $`rtx upgrade`,
   $`sheldon lock --update`,
   updateNodePkgs(),
   updatePythonPkgs(),

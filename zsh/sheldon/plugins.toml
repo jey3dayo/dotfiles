@@ -77,11 +77,6 @@ apply = ["defer", "ln-fpath"]
 [plugins.gh]
 inline = 'autoload -U "$(gh completion -s zsh)"'
 
-[plugins.direnv]
-local = "~/.config/asdf-direnv"
-use = ["zshrc"]
-apply = ["defer"]
-
 [plugins.op]
 local = "~/.config/op"
 use = ["plugins.sh"]

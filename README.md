@@ -17,7 +17,17 @@ brew install peco
 
 ```
 brew install coreutils curl git
-brew install asdf
+```
 
-asdf plugin-add direnv
+# rtx
+
+```
+brew install jdxcode/tap/rtx
+rtx install direnv
+rtx install node@18
+rtx install node@20
+rtx install python
+rtx install yarn
+rtx install deno
+rtx install bun
 ```

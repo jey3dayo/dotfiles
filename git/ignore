@@ -131,3 +131,4 @@ lazygit/
 stash/
 
 zsh/sheldon/sheldon.zsh
+rtx/trusted-configs

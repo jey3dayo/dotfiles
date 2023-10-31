@@ -12,7 +12,7 @@ copilot.setup {
   suggestion = { enabled = false },
   panel = { enabled = false },
   copilot_node_command = require("utils").find_command {
-    os.getenv "HOME" .. "/.asdf/shims/node",
+    os.getenv "HOME" .. "/.rtx/shims/node",
     "/usr/local/bin/node",
   },
 }

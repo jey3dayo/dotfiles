@@ -2,9 +2,10 @@
 USER=$(id -u)
 DOTFILES=$HOME/src/github.com/jey3dayo/dotfiles
 
-mkdir -p "${HOME}"/{tmp,.cache,.config}
+mkdir -p "${HOME}/{tmp,.cache,.config}"
 mkdir -p "${HOME}/.local/share/zsh-autocomplete/"
-chown -R "${USER}" "${HOME}"/{tmp,.cache}
+chown -R "${USER}" "${HOME}/{tmp,.cache}"
+mkdir -p "${HOME}/.rtx"
 
 ln -sf "${DOTFILES}" ~/.config
 
