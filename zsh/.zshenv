@@ -18,6 +18,7 @@ export DIRENV_WARN_TIMEOUT=60s
 export BUN_INSTALL="$HOME/.bun"
 
 path=(
+  $BUN_INSTALL/bin(N-/)
   /usr/local/opt/openjdk/bin:(N-/)
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
   $HOME/.local/{bin,sbin}(N-/)
@@ -26,7 +27,6 @@ path=(
   $HOME/.cargo/bin(N-/)
   /opt/homebrew/{bin,sbin}(N-/)
   $GOPATH/bin(N-/)
-  $BUN_INSTALL/bin(N-/)
   $path
 )
 
