@@ -1,6 +1,6 @@
 local ft = require("guard.filetype")
 
--- ft("go"):fmt("gofmt")
+ft("go"):fmt("gofmt")
 -- ft("ruby"):fmt("rubocop"):lint "rubocop"
 -- ft('lua'):fmt('lsp'):append('stylua')
 ft("sql,pgsql"):fmt("sql-formatter")
