@@ -38,8 +38,10 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
   {
-    "p00f/nvim-ts-rainbow",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    "HiPhish/rainbow-delimiters.nvim",
+    config = function()
+      require "config/rainbow-delimeters"
+    end,
   },
   {
     "nvim-lualine/lualine.nvim",

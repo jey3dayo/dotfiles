@@ -17,12 +17,6 @@ ts.setup {
     enable = true,
   },
   tree_docs = { enable = true },
-  rainbow = {
-    enable = true,
-    -- disablg = { "jsx", "cpp" },
-    extended_mode = true,
-    max_file_lines = nil,
-  },
   context_commentstring = {
     enable = true,
   },
