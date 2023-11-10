@@ -1,14 +1,9 @@
 return {
   "ray-x/lsp_signature.nvim",
   {
-    "nvimdev/guard.nvim",
-    dependencies = {
-      "williamboman/mason.nvim",
-      "neovim/nvim-lspconfig",
-      "nvimdev/guard-collection",
-    },
+    "stevearc/conform.nvim",
     config = function()
-      require "config/guard"
+      require "config/conform"
     end,
   },
   "williamboman/mason.nvim",
