@@ -40,6 +40,7 @@ M.installed_tree_sitter = {
   "vim",
   "typescript",
   "astro",
+  "tsx",
 }
 
 return M
