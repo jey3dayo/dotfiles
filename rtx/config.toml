@@ -1,8 +1,9 @@
 [settings]
 experimental = true
+# legacy_version_file = true
 
 [env]
-RTX_PYTHON_DEFAULT_PACKAGES_FILE="~/config/rtx/default-python-packages"
+RTX_PYTHON_DEFAULT_PACKAGES_FILE = "~/config/rtx/default-python-packages"
 
 [tools]
 node = "20"

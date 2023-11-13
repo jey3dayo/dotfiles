@@ -24,10 +24,10 @@ apply = ["defer"]
 [plugins.oh-my-zsh]
 github = "ohmyzsh/ohmyzsh"
 use = [
-    "lib/clipboard.zsh",
-    "lib/functions.zsh",
-    "plugins/git/git.plugin.zsh",
-    "plugins/1password/1password.plugin.zsh",
+  "lib/clipboard.zsh",
+  "lib/functions.zsh",
+  "plugins/git/git.plugin.zsh",
+  "plugins/1password/1password.plugin.zsh",
 ]
 apply = ["defer"]
 
