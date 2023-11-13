@@ -64,9 +64,9 @@ inline = 'eval "$(starship init zsh)"'
 github = "junegunn/fzf"
 apply = ['fzf-install', 'fzf-source']
 
-[plugins.exa]
-github = "ogham/exa"
-use = ["completions/zsh/_exa"]
+[plugins.eza]
+github = "eza-community/eza"
+use = ["completions/zsh/_eza"]
 apply = ["defer", "ln-fpath"]
 
 [plugins.bun-completions]
