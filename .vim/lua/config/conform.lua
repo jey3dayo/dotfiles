@@ -23,5 +23,6 @@ conform.setup {
     typescriptreact = prettier,
     javascript = prettier,
     typescript = prettier,
+    astro = prettier,
   },
 }

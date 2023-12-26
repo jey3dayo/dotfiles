@@ -17,9 +17,6 @@ ts.setup {
     enable = true,
   },
   tree_docs = { enable = true },
-  context_commentstring = {
-    enable = true,
-  },
   matchup = {
     enable = true,
     -- disable = { "c", "ruby" },
