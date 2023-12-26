@@ -3,12 +3,13 @@ if not status then
   return
 end
 
-local prettier = { { "prettierd", "prettier" } }
+local prettier = { { "prettier" } }
 
 conform.setup {
   format_on_save = {
     -- These options will be passed to conform.format()
-    timeout_ms = 2000,
+    async = true,
+    timeout_ms = 4000,
     lsp_fallback = true,
   },
   formatters_by_ft = {
