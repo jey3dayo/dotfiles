@@ -3,7 +3,7 @@ experimental = true
 # legacy_version_file = true
 
 [env]
-RTX_PYTHON_DEFAULT_PACKAGES_FILE = "~/config/rtx/default-python-packages"
+MISE_PYTHON_DEFAULT_PACKAGES_FILE = "~/.config/mise/default-python-packages"
 
 [tools]
 node = "20"

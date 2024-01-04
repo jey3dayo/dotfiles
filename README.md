@@ -19,15 +19,15 @@ brew install peco
 brew install coreutils curl git
 ```
 
-# rtx
+# mise
 
 ```
-brew install jdxcode/tap/rtx
-rtx install direnv
-rtx install node@18
-rtx install node@20
-rtx install python
-rtx install yarn
-rtx install deno
-rtx install bun
+brew install jdxcode/tap/mise
+mise install direnv
+mise install node@18
+mise install node@20
+mise install python
+mise install yarn
+mise install deno
+mise install bun
 ```

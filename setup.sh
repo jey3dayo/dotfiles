@@ -5,7 +5,7 @@ DOTFILES=$HOME/src/github.com/jey3dayo/dotfiles
 mkdir -p "${HOME}/{tmp,.cache,.config}"
 mkdir -p "${HOME}/.local/share/zsh-autocomplete/"
 chown -R "${USER}" "${HOME}/{tmp,.cache}"
-mkdir -p "${HOME}/.rtx"
+mkdir -p "${HOME}/.mise"
 
 ln -sf "${DOTFILES}" ~/.config
 

@@ -42,19 +42,19 @@ async function updateRepos() {
   await $`(cd ${homeDir}/src/github.com/dimdenGD/OldTweetDeck && git pull origin main)`;
 }
 
-async function updateRtx() {
-  await $`rtx install node@16`;
-  await $`rtx install node@18`;
-  await $`rtx install node@20`;
+async function updateMise() {
+  await $`mise install node@16`;
+  await $`mise install node@18`;
+  await $`mise install node@20`;
 }
 
 await Promise.all([
-  $`rtx upgrade`,
+  $`mise upgrade`,
   $`sheldon lock --update`,
   updateNodePkgs(),
   updatePythonPkgs(),
   updateBrew(),
   updateNvim(),
   updateRepos(),
-  updateRtx(),
+  updateMise(),
 ]);
