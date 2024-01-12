@@ -1,0 +1,4 @@
+[tools]
+node = "20"
+ruby = "system"
+python = "latest"
