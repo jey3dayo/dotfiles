@@ -2,12 +2,12 @@ Host pi
   HostName raspberrypi.local
   User pi
   Port 10022
-  IdentityFile ~/.ssh/id_rsa.pub
+  IdentityFile ~/.ssh/id_rsa
   IdentitiesOnly yes
 
 Host synology
   HostName synology.local
   User admin
   Port 10022
-  IdentityFile ~/.ssh/id_rsa.pub
+  IdentityFile ~/.ssh/id_rsa
   IdentitiesOnly yes
