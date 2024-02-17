@@ -37,6 +37,7 @@ dir = 'lib'
 [plugins.zoxide]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
+hooks.post = 'zsh-defer source $ZDOTDIR/hook/zoxide_post.zsh'
 
 [plugins.bun-completions]
 local = "~/.bun/"
