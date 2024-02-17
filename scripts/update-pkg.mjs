@@ -1,6 +1,8 @@
 #!/usr/bin/env zx
+import os from "os";
 
-let homeDir = os.homedir();
+const homeDir = os.homedir();
+const platform = os.platform();
 
 // python
 async function updatePythonPkgs() {
@@ -20,11 +22,13 @@ async function updateNodePkgs() {
     "@connectrpc/protoc-gen-connect-es",
     "aicommits",
   ];
-  await $`bun i --g ${nodePkgs}`;
+  await $`bun i --global ${nodePkgs}`;
   await $`bun -g update`;
 }
 
 async function updateBrew() {
+  if (platform !== "darwin") return;
+
   try {
     await $`brew update`;
     await $`brew upgrade`;
