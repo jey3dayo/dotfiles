@@ -21,15 +21,35 @@ inline = 'autoload -Uz compinit && zsh-defer compinit'
 github = 'olets/zsh-abbr'
 apply = ["defer"]
 
-[plugins.oh-my-zsh]
+[plugins.functions]
 github = "ohmyzsh/ohmyzsh"
-use = [
-  "lib/clipboard.zsh",
-  "lib/functions.zsh",
-  "plugins/git/git.plugin.zsh",
-  "plugins/1password/1password.plugin.zsh",
-]
+dir = 'lib'
 apply = ["defer"]
+
+[plugins.sudo]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'plugins'
+
+[plugins.clipboard]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'lib'
+
+[plugins.zoxide]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'plugins'
+
+[plugins.bun-completions]
+local = "~/.bun/"
+use = ["_bun"]
+apply = ["defer", "ln-fpath"]
+
+[plugins.1password]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'plugins'
+
+[plugins.command-not-found]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'plugins'
 
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
@@ -41,17 +61,11 @@ apply = ["defer", "fpath"]
 
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
-use = ["{{ name }}.zsh"]
 apply = ["defer"]
 
 [plugins.fast-syntax-highlighting]
 github = "zdharma-continuum/fast-syntax-highlighting"
 apply = ["defer"]
-
-[plugins.zoxide]
-github = "ajeetdsouza/zoxide"
-apply = ["defer"]
-hooks.post = 'zsh-defer source $ZDOTDIR/hook/zoxide_post.zsh'
 
 [plugins.ni]
 github = 'azu/ni.zsh'
@@ -69,17 +83,16 @@ github = "eza-community/eza"
 use = ["completions/zsh/_eza"]
 apply = ["defer", "ln-fpath"]
 
-[plugins.bun-completions]
-local = "~/.bun/"
-use = ["_bun"]
-apply = ["defer", "ln-fpath"]
-
 [plugins.gh]
 inline = 'autoload -U "$(gh completion -s zsh)"'
 
-[plugins.op]
-local = "~/.config/op"
-use = ["plugins.sh"]
+[plugins.pnpm-shell-completion]
+github = "g-plane/pnpm-shell-completion"
+apply = ["defer"]
+
+[plugins.1password-op]
+github = "unixorn/1password-op.plugin.zsh"
+use = ["{{ name }}.plugin.zsh"]
 apply = ["defer"]
 
 # [plugins.powerlevel10k]
@@ -89,3 +102,18 @@ apply = ["defer"]
 # github = 'mollifier/anyframe'
 # apply = ["defer"]
 # hooks.post = 'zsh-defer source $ZDOTDIR/hook/anyframe_post.zsh'
+
+# [plugins.mise]
+#
+# inline = '''
+# export MISE_DATA_DIR=$HOME/.mise
+# export MISE_CACHE_DIR=$MISE_DATA_DIR/cache
+#
+# # eval "$(mise activate zsh)"
+# # eval "$(mise hook-env -s zsh)"
+# #
+# # use_mise() {
+# #   direnv_load mise direnv exec
+# # }
+# '''
+
