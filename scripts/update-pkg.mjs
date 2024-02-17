@@ -5,7 +5,7 @@ let homeDir = os.homedir();
 // python
 async function updatePythonPkgs() {
   await $`pip3 install --upgrade pip`;
-  await $`pip3 list --format json --outdated | jq .[].name | xargs pip3 install -U`;
+  await $`pip3 list --format json --outdated | jq .[].name | xargs -r pip3 install -U`;
   // await $`pipx reinstall-all`
   await $`pipx upgrade-all`;
 }
