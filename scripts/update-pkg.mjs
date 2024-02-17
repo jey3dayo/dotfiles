@@ -4,6 +4,10 @@ import os from "os";
 const homeDir = os.homedir();
 const platform = os.platform();
 
+if (platform === "linux") {
+  $`sudo whoami`;
+}
+
 // python
 async function updatePythonPkgs() {
   await $`pip3 install --upgrade pip`;
@@ -21,9 +25,20 @@ async function updateNodePkgs() {
     "@bufbuild/protoc-gen-es",
     "@connectrpc/protoc-gen-connect-es",
     "aicommits",
+    "textlint",
+    "textlint-rule-preset-ja-technical-writing",
   ];
   await $`bun i --global ${nodePkgs}`;
   await $`bun -g update`;
+}
+
+async function updateApt() {
+  if (platform !== "linux") return;
+
+  try {
+    await $`sudo apt update`;
+    await $`sudo apt upgrade -y`;
+  } catch (e) {}
 }
 
 async function updateBrew() {
@@ -58,6 +73,7 @@ await Promise.all([
   updateNodePkgs(),
   updatePythonPkgs(),
   updateBrew(),
+  updateApt(),
   updateNvim(),
   updateRepos(),
   updateMise(),
