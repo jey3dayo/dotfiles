@@ -8,7 +8,12 @@ format = """\
   $character\
   """
 
-right_format = """$git_branch$git_status$git_metrics$cmd_duration"""
+right_format = """\
+  $git_branch\
+  $git_status\
+  $git_metrics\
+  $cmd_duration
+"""
 
 # Disable the blank line at the start of the prompt
 add_newline = false

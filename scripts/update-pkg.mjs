@@ -1,11 +1,17 @@
 #!/usr/bin/env zx
+import os from "os";
 
-let homeDir = os.homedir();
+const homeDir = os.homedir();
+const platform = os.platform();
+
+if (platform === "linux") {
+  $`sudo whoami`;
+}
 
 // python
 async function updatePythonPkgs() {
   await $`pip3 install --upgrade pip`;
-  await $`pip3 list --format json --outdated | jq .[].name | xargs pip3 install -U`;
+  await $`pip3 list --format json --outdated | jq .[].name | xargs -r pip3 install -U`;
   // await $`pipx reinstall-all`
   await $`pipx upgrade-all`;
 }
@@ -19,12 +25,25 @@ async function updateNodePkgs() {
     "@bufbuild/protoc-gen-es",
     "@connectrpc/protoc-gen-connect-es",
     "aicommits",
+    "textlint",
+    "textlint-rule-preset-ja-technical-writing",
   ];
-  await $`bun i --g ${nodePkgs}`;
+  await $`bun i --global ${nodePkgs}`;
   await $`bun -g update`;
 }
 
+async function updateApt() {
+  if (platform !== "linux") return;
+
+  try {
+    await $`sudo apt update`;
+    await $`sudo apt upgrade -y`;
+  } catch (e) {}
+}
+
 async function updateBrew() {
+  if (platform !== "darwin") return;
+
   try {
     await $`brew update`;
     await $`brew upgrade`;
@@ -54,6 +73,7 @@ await Promise.all([
   updateNodePkgs(),
   updatePythonPkgs(),
   updateBrew(),
+  updateApt(),
   updateNvim(),
   updateRepos(),
   updateMise(),
