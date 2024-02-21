@@ -1,14 +1,15 @@
-const bitlyToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-const searchWordQuery = q => `https://www.google.co.jp/search?q=${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
+const bitlyToken = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+const searchWordQuery = (q) =>
+  `https://www.google.co.jp/search?q=${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
 
 // Setting
-api.Hints.characters = 'asdfghjklnmvbrtyu';
+api.Hints.characters = "asdfghjklnmvbrtyu";
 settings.scrollStepSize = 150;
 settings.nextLinkRegex = /((forward|>>|next|次[のへ]|→)+)/i;
 settings.prevLinkRegex = /((back|<<|prev(ious)?|前[のへ]|←)+)/i;
-settings.aceKeybindings = 'vim';
-settings.omnibarPosition = 'bottom';
-settings.hintAlign = 'left';
+settings.aceKeybindings = "vim";
+settings.omnibarPosition = "bottom";
+settings.hintAlign = "left";
 settings.cursorAtEndOfInput = false;
 
 // Order
@@ -19,72 +20,93 @@ settings.historyOrder = false;
 settings.aceKeybindings = true;
 
 // Mapping
-api.map('H', 'S'); // back in history
-api.map('L', 'D'); // forward in history
-api.map('h', 'E'); // previous tab
-api.map('l', 'R'); // next tab
-api.map('zz', 'zr'); // zoom reset
-api.map('d', 'x'); // close current tab
-api.map('D', 'gx$'); // close all tab on right
-api.map('u', 'X'); // restore tab
-api.map('o', 'go'); // open a url in current tab
-api.map('F', 'gf');
-api.map('@', '<Alt-p>');
-api.map('<Ctrl-h>', '<<'); // Move current tab to left
-api.map('<Ctrl-l>', '>>'); // Move current tab to right
-api.map('<Ctrl-i>', 'gi');
-api.map('<Meta-i>', 'gi');
+api.map("H", "S"); // back in history
+api.map("L", "D"); // forward in history
+api.map("h", "E"); // previous tab
+api.map("l", "R"); // next tab
+api.map("zz", "zr"); // zoom reset
+api.map("d", "x"); // close current tab
+api.map("D", "gx$"); // close all tab on right
+api.map("u", "X"); // restore tab
+api.map("o", "go"); // open a url in current tab
+api.map("F", "gf");
+api.map("@", "<Alt-p>");
+api.map("<Ctrl-h>", "<<"); // Move current tab to left
+api.map("<Ctrl-l>", ">>"); // Move current tab to right
+api.map("<Ctrl-i>", "gi");
+api.map("<Meta-i>", "gi");
 
 // Chrome URLs
-api.unmap('gc');
-api.unmap('gk');
+api.unmap("gc");
+api.unmap("gk");
 
 // Proxy
-api.unmap('cp');
-api.unmap(';pa');
-api.unmap(';pb');
-api.unmap(';pd');
-api.unmap(';ps');
-api.unmap(';pc');
-api.unmap(';cp');
-api.unmap(';ap');
+api.unmap("cp");
+api.unmap(";pa");
+api.unmap(";pb");
+api.unmap(";pd");
+api.unmap(";ps");
+api.unmap(";pc");
+api.unmap(";cp");
+api.unmap(";ap");
 
 // Insert Mode
-api.imap('<Ctrl-[>', '<Esc>');
-api.iunmap(':'); // disable emoji completion
-api.iunmap('<Ctrl-f>');
-api.iunmap('<Ctrl-u>');
-api.iunmap('<Ctrl-i>');
+api.imap("<Ctrl-[>", "<Esc>");
+api.iunmap(":"); // disable emoji completion
+api.iunmap("<Ctrl-f>");
+api.iunmap("<Ctrl-u>");
+api.iunmap("<Ctrl-i>");
 
 // Site
 settings.blocklistPattern = /mail.google.com/;
 
-const defaultUnmapAllExcept = ['<Ctrl-i>', 'q', 'f', 'F', '<Ctrl-k>', '<Ctrl-j>', 'T', 'X', 'h', 'l', 'w', 'L', 'H', 't', 'b', "'"];
-api.unmapAllExcept(defaultUnmapAllExcept, /jp.inoreader.com|read.readwise.io/);
-api.unmap('v', /read.readwise.io/);
-api.unmap('b', /read.readwise.io/);
+const defaultUnmapAllExcept = [
+  "<Ctrl-i>",
+  "q",
+  "f",
+  "F",
+  "<Ctrl-k>",
+  "<Ctrl-j>",
+  "T",
+  "X",
+  "h",
+  "l",
+  "w",
+  "L",
+  "H",
+  "t",
+  "b",
+  "'",
+];
 
-api.unmapAllExcept(
-  ['h', 'l', 'd', 'u', 'r'],
-  /irodr.netlify.app/
-);
+const urls = [
+  "jp.inoreader.com",
+  "read.readwise.io",
+  "colab.research.google.com",
+];
+const regex = new RegExp(urls.join("|"), "i");
+api.unmapAllExcept(defaultUnmapAllExcept, regex);
+api.unmap("v", /read.readwise.io/);
+api.unmap("b", /read.readwise.io/);
+
+api.unmapAllExcept(["h", "l", "d", "u", "r"], /irodr.netlify.app/);
 
 // qMark
 // cf. https://gist.github.com/chroju/2118c2193fb9892d95b9686eb95189d2
 var overlayedGlobalMarks = {
   // webservice
-  'M': 'https://moneyforward.com/',
-  'n': 'https://www.notion.so/',
-  'a': 'https://www.amazon.co.jp/',
-  'b': 'https://b.hatena.ne.jp/J138/bookmark',
-  'g': 'https://www.github.com',
-  'm': 'https://mail.google.com/mail/u/0/',
-  'N': 'https://www.netflix.com/',
-  't': 'https://twitter.com/',
-  'w': 'https://healthmate.withings.com/',
-  'y': 'https://wwww.youtube.com/',
-  'l': 'https://localhost.ca-adv.dev:3000',
-  'L': 'http://localhost:8080',
+  M: "https://moneyforward.com/",
+  n: "https://www.notion.so/",
+  a: "https://www.amazon.co.jp/",
+  b: "https://b.hatena.ne.jp/J138/bookmark",
+  g: "https://www.github.com",
+  m: "https://mail.google.com/mail/u/0/",
+  N: "https://www.netflix.com/",
+  t: "https://twitter.com/",
+  w: "https://healthmate.withings.com/",
+  y: "https://wwww.youtube.com/",
+  l: "https://localhost.ca-adv.dev:3000",
+  L: "http://localhost:8080",
 };
 
 // paste URL
@@ -96,57 +118,61 @@ const openClipboard = ({ newTab }) => {
       tab: { tabbed: newTab, active: newTab },
       url: /^http/.test(data) ? data : searchWordQuery(data),
     };
-    api.RUNTIME('openLink', markInfo)
+    api.RUNTIME("openLink", markInfo);
   });
 };
-api.mapkey('p', 'Open URL in clipboard', () => openClipboard({ newTab: false }));
-api.mapkey('P', 'Open clipboard URL in new tab', () => openClipboard({ newTab: true }));
+api.mapkey("p", "Open URL in clipboard", () =>
+  openClipboard({ newTab: false }),
+);
+api.mapkey("P", "Open clipboard URL in new tab", () =>
+  openClipboard({ newTab: true }),
+);
 
-api.mapkey('gn', 'Open Quickmark in new tab', (mark) => {
+api.mapkey("gn", "Open Quickmark in new tab", (mark) => {
   var priorityURLs = overlayedGlobalMarks[mark];
   if (priorityURLs === undefined) {
     // fallback to Surfingkeys default jump
     Normal.jumpVIMark(mark, true);
     return;
   }
-  if (typeof priorityURLs == typeof '') {
+  if (typeof priorityURLs == typeof "") {
     priorityURLs = [priorityURLs];
   }
   for (var url of priorityURLs) {
     var markInfo = {
       url: url,
       scrollLeft: 0,
-      scrollTop: 0
+      scrollTop: 0,
     };
     markInfo.tab = {
       tabbed: true,
-      active: true
+      active: true,
     };
-    api.RUNTIME('openLink', markInfo);
+    api.RUNTIME("openLink", markInfo);
   }
 });
 
-api.mapkey('go', 'Open Quickmark in current tab', (mark) => {
+api.mapkey("go", "Open Quickmark in current tab", (mark) => {
   var priorityURLs = overlayedGlobalMarks[mark];
   if (priorityURLs === undefined) {
     // fallback to Surfingkeys default jump
     Normal.jumpVIMark(mark, true);
     return;
   }
-  if (typeof priorityURLs == typeof '') {
+  if (typeof priorityURLs == typeof "") {
     priorityURLs = [priorityURLs];
   }
   for (var url of priorityURLs) {
     var markInfo = {
       url: url,
       scrollLeft: 0,
-      scrollTop: 0
+      scrollTop: 0,
     };
     markInfo.tab = {
       tabbed: false,
-      active: false
+      active: false,
     };
-    api.RUNTIME('openLink', markInfo);
+    api.RUNTIME("openLink", markInfo);
   }
 });
 
@@ -154,43 +180,43 @@ api.mapkey('go', 'Open Quickmark in current tab', (mark) => {
 // cf. https://github.com/hushin/dotfiles/blob/master/docs/SurfingkeysSetting.js
 const copyTitleAndUrl = (format) => {
   const text = format
-    .replace('%URL%', location.href)
-    .replace('%TITLE%', document.title);
+    .replace("%URL%", location.href)
+    .replace("%TITLE%", document.title);
   api.Clipboard.write(text);
 };
 
 const copyTinyUrl = async (format) => {
-  const res = await fetch('https://api-ssl.bitly.com/v4/shorten', {
-    method: 'POST',
+  const res = await fetch("https://api-ssl.bitly.com/v4/shorten", {
+    method: "POST",
     headers: {
-      'Authorization': `Bearer ${bitlyToken}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${bitlyToken}`,
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify({ "long_url": location.href, "domain": "bit.ly" })
-  }).then(v => v.json());
+    body: JSON.stringify({ long_url: location.href, domain: "bit.ly" }),
+  }).then((v) => v.json());
   const text = format
-    .replace('%URL%', res?.link ?? '')
-    .replace('%TITLE%', document.title);
+    .replace("%URL%", res?.link ?? "")
+    .replace("%TITLE%", document.title);
   api.Clipboard.write(text);
-}
+};
 
-api.mapkey('yy', 'Copy link', () => copyTinyUrl('%URL%'));
-api.mapkey(',y', 'Copy tinyurl', () => copyTinyUrl('%TITLE% - %URL%'));
-api.mapkey(',Y', 'Copy link', () => copyTitleAndUrl('%TITLE% - %URL%'));
+api.mapkey("yy", "Copy link", () => copyTinyUrl("%URL%"));
+api.mapkey(",y", "Copy tinyurl", () => copyTinyUrl("%TITLE% - %URL%"));
+api.mapkey(",Y", "Copy link", () => copyTitleAndUrl("%TITLE% - %URL%"));
 
-api.mapkey('gD', 'Open Chrome dns cache', function() {
+api.mapkey("gD", "Open Chrome dns cache", function () {
   api.tabOpenLink("chrome://net-internals/#dns");
 });
-api.mapkey('gE', 'Open Chrome Extensions', function() {
+api.mapkey("gE", "Open Chrome Extensions", function () {
   api.tabOpenLink("chrome://extensions/");
 });
-api.mapkey('gH', 'Open Chrome Help', function() {
+api.mapkey("gH", "Open Chrome Help", function () {
   api.tabOpenLink("chrome://settings/help");
 });
-api.mapkey('gK', 'Open Chrome Extensons shortcuts', function() {
+api.mapkey("gK", "Open Chrome Extensons shortcuts", function () {
   api.tabOpenLink("chrome://extensions/shortcuts");
 });
-api.mapkey('gS', 'Open Chrome Settings', function() {
+api.mapkey("gS", "Open Chrome Settings", function () {
   api.tabOpenLink("chrome://settings/");
 });
 
@@ -203,32 +229,52 @@ api.mapkey('gS', 'Open Chrome Settings', function() {
 // });
 
 // Search Engines
-api.removeSearchAlias('b', 's');
-api.removeSearchAlias('d', 's');
-api.removeSearchAlias('h', 's');
-api.removeSearchAlias('w', 's');
-api.removeSearchAlias('y', 's');
-api.removeSearchAlias('s', 's');
+api.removeSearchAlias("b", "s");
+api.removeSearchAlias("d", "s");
+api.removeSearchAlias("h", "s");
+api.removeSearchAlias("w", "s");
+api.removeSearchAlias("y", "s");
+api.removeSearchAlias("s", "s");
 
 // Search
-api.addSearchAlias('1', 'Google 1年以内', searchWordQuery('{0}'));
-api.mapkey('O', 'Search with alias Google 1年以内', () => api.Front.openOmnibar({ type: 'SearchEngine', extra: '1' }));
-api.addSearchAlias('a', 'Amazon.co.jp', 'https://www.amazon.co.jp/s?k={0}&emi=AN1VRQENFRJN5');
-api.addSearchAlias('gh', 'github', 'https://github.com/search?utf8=✓&q=', 's');
-api.addSearchAlias('r', 'reddit', 'https://old.reddit.com/r/', 's');
-api.addSearchAlias('t', 'twitter', 'https://twitter.com/search?q={0}&src=typed_query', 's');
+api.addSearchAlias("1", "Google 1年以内", searchWordQuery("{0}"));
+api.mapkey("O", "Search with alias Google 1年以内", () =>
+  api.Front.openOmnibar({ type: "SearchEngine", extra: "1" }),
+);
+api.addSearchAlias(
+  "a",
+  "Amazon.co.jp",
+  "https://www.amazon.co.jp/s?k={0}&emi=AN1VRQENFRJN5",
+);
+api.addSearchAlias("gh", "github", "https://github.com/search?utf8=✓&q=", "s");
+api.addSearchAlias("r", "reddit", "https://old.reddit.com/r/", "s");
+api.addSearchAlias(
+  "t",
+  "twitter",
+  "https://twitter.com/search?q={0}&src=typed_query",
+  "s",
+);
 
 // Help
 // PassThrough mode 1.5秒間だけsurfingkeys無効
-api.mapkey('<Ctrl-v>', '#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys', function() {
-  api.Normal.passThrough(1500);
-});
+api.mapkey(
+  "<Ctrl-v>",
+  "#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys",
+  function () {
+    api.Normal.passThrough(1500);
+  },
+);
 
 // Theme
-api.Hints.style('border: solid 2px #4C566A; color:#A6E22E; background: initial; background-color: #3B4252;');
-api.Hints.style('border: solid 2px #4C566A !important; padding: 1px !important; color: #E5E9F0 !important; background: #3B4252 !important;', 'text');
-api.Visual.style('marks', 'background-color: #A3BE8C99;');
-api.Visual.style('cursor', 'background-color: #88C0D0;');
+api.Hints.style(
+  "border: solid 2px #4C566A; color:#A6E22E; background: initial; background-color: #3B4252;",
+);
+api.Hints.style(
+  "border: solid 2px #4C566A !important; padding: 1px !important; color: #E5E9F0 !important; background: #3B4252 !important;",
+  "text",
+);
+api.Visual.style("marks", "background-color: #A3BE8C99;");
+api.Visual.style("cursor", "background-color: #88C0D0;");
 
 settings.theme = `
 :root {
