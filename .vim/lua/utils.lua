@@ -18,4 +18,6 @@ M.extend = function(tab1, tab2)
   return tab1
 end
 
+M.user_command = vim.api.nvim_create_user_command
+
 return M
