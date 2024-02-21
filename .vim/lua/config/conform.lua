@@ -20,6 +20,7 @@ conform.setup {
     go = { "gofmt" },
     python = { "isort", "black" },
     sql = { "sql_formatter" },
+    toml = { "taplo" },
     json = prettier,
     jsonc = prettier,
     javascriptreact = prettier,
