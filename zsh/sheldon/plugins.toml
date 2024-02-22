@@ -6,13 +6,22 @@ shell = "zsh"
 github = "romkatv/zsh-defer"
 
 [templates]
-defer = "{{ hooks | get: \"pre\" | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks | get: \"post\" | nl }}"
 path = 'path=( "{{ dir }}" $path )'
 fpath = 'fpath=( "{{ dir }}" $fpath )'
 fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
-ln-fpath = "{% for file in files %}zsh-defer -s -z ln -sf \"{{ file }}\" \"${HOME}/.zfunc/_{{ name }}\"\n{% endfor %}"
+defer = """
+{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"
+{% endfor %}{{ hooks?.post | nl }}"""
+source = """
+{{ hooks?.pre | nl }}{% for file in files %}source \"{{ file }}\"
+{% endfor %}{{ hooks?.post | nl }}"""
+ln-fpath = """
+{% for file in files %}zsh-defer -s -z ln -sf \"{{ file }}\" \"${HOME}/.zfunc/_{{ name }}\"
+{% endfor %}"""
 fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n"
 fzf-source = "{% for file in files %}source \"{{ file }}\"\n{% endfor %}"
+execute = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
+execute-y = "{% for file in files %}cd `dirname {{ file }}` && echo y | \"{{ file }}\" &> /dev/null \n{% endfor %}"
 
 [plugins.compinit]
 inline = 'autoload -Uz compinit && zsh-defer compinit'
@@ -26,27 +35,28 @@ github = "ohmyzsh/ohmyzsh"
 dir = 'lib'
 apply = ["defer"]
 
-[plugins.sudo]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'plugins'
-
 [plugins.clipboard]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'lib'
+
+[plugins.sudo]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'plugins'
 
 [plugins.zoxide]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
 hooks.post = 'zsh-defer source $ZDOTDIR/hook/zoxide_post.zsh'
 
-[plugins.bun-completions]
-local = "~/.bun/"
-use = ["_bun"]
-apply = ["defer", "ln-fpath"]
+[plugins.bun]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'plugins'
+apply = ["defer"]
 
 [plugins.1password]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
+apply = ["defer"]
 
 [plugins.command-not-found]
 github = 'ohmyzsh/ohmyzsh'
@@ -60,16 +70,25 @@ apply = ["defer", "fpath-src"]
 github = "nix-community/nix-zsh-completions"
 apply = ["defer", "fpath"]
 
+[plugins.pnpm-shell-completion]
+github = "g-plane/pnpm-shell-completion"
+apply = ["defer"]
+
+[plugins.pnpm-shell-completion-install]
+github = "g-plane/pnpm-shell-completion"
+use = ["zplug.zsh"]
+apply = ["execute-y"]
+
+[plugins.1password-op]
+github = "unixorn/1password-op.plugin.zsh"
+apply = ["defer"]
+
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
 apply = ["defer"]
 
 [plugins.fast-syntax-highlighting]
 github = "zdharma-continuum/fast-syntax-highlighting"
-apply = ["defer"]
-
-[plugins.ni]
-github = 'azu/ni.zsh'
 apply = ["defer"]
 
 [plugins.starship]
@@ -87,22 +106,8 @@ apply = ["defer", "ln-fpath"]
 [plugins.gh]
 inline = 'autoload -U "$(gh completion -s zsh)"'
 
-[plugins.pnpm-shell-completion]
-github = "g-plane/pnpm-shell-completion"
-apply = ["defer"]
-
-[plugins.1password-op]
-github = "unixorn/1password-op.plugin.zsh"
-use = ["{{ name }}.plugin.zsh"]
-apply = ["defer"]
-
 # [plugins.powerlevel10k]
 # github = 'romkatv/powerlevel10k'
-
-# [plugins.anyframe]
-# github = 'mollifier/anyframe'
-# apply = ["defer"]
-# hooks.post = 'zsh-defer source $ZDOTDIR/hook/anyframe_post.zsh'
 
 # [plugins.mise]
 #
@@ -117,4 +122,3 @@ apply = ["defer"]
 # #   direnv_load mise direnv exec
 # # }
 # '''
-
