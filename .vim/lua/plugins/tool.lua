@@ -14,8 +14,19 @@ return {
       require "config/diffview"
     end,
   },
-  { "tpope/vim-rhubarb",        dependencies = { "tpope/vim-fugitive" } },
-  { "vim-scripts/renamer.vim",  cmd = "Renamer" },
-  { "vim-scripts/sudo.vim",     cmd = { "SudoWrite", "SudoRead" } },
+  { "tpope/vim-rhubarb", dependencies = { "tpope/vim-fugitive" } },
+  { "vim-scripts/renamer.vim", cmd = "Renamer" },
+  { "vim-scripts/sudo.vim", cmd = { "SudoWrite", "SudoRead" } },
   { "dstein64/vim-startuptime", cmd = "StartupTime" },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      require "config/neo-tree"
+    end,
+  },
 }
