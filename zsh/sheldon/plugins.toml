@@ -92,9 +92,6 @@ apply = ["defer"]
 github = "zdharma-continuum/fast-syntax-highlighting"
 apply = ["defer"]
 
-[plugins.starship]
-inline = 'eval "$(starship init zsh)"'
-
 [plugins.fzf]
 github = "junegunn/fzf"
 apply = ['fzf-install', 'fzf-source']
@@ -107,9 +104,6 @@ apply = ["defer"]
 github = "eza-community/eza"
 use = ["completions/zsh/_eza"]
 apply = ["defer", "ln-fpath"]
-
-[plugins.gh]
-inline = 'autoload -U "$(gh completion -s zsh)"'
 
 [plugins.dotfiles-lazy-sources]
 local = "~/.config/zsh/lazy-sources"

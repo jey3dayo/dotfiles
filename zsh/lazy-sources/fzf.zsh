@@ -41,3 +41,5 @@ fzf-kill-widget() {
 }
 zle     -N     fzf-kill-widget
 bindkey '^g^K' fzf-kill-widget
+
+alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep -v \*|fzf|awk "{print \$2}")'
