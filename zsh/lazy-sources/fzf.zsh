@@ -16,12 +16,12 @@ alias ghq-repo='cd $(ghq-repos)'
 
 
 function cd-fzf-ghqlist-widget() {
-	local REPO
+  local REPO
   REPO=$(ghq list -p | xargs ls -dt1 | sed -e 's;'${GHQ_ROOT}/';;g' | $(__fzfcmd) --prompt 'GHQ> ' --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")
-	if [ -n "${REPO}" ]; then
-		BUFFER="cd ${GHQ_ROOT}/${REPO}"
-	fi
-	zle accept-line
+  if [ -n "${REPO}" ]; then
+    BUFFER="cd ${GHQ_ROOT}/${REPO}"
+  fi
+  zle accept-line
 }
 zle -N cd-fzf-ghqlist-widget
 bindkey '^]' cd-fzf-ghqlist-widget

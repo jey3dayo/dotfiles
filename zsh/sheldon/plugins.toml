@@ -1,20 +1,10 @@
 shell = "zsh"
 
-[plugins]
-
-[plugins.zsh-defer]
-github = "romkatv/zsh-defer"
-
 [templates]
 path = 'path=( "{{ dir }}" $path )'
 fpath = 'fpath=( "{{ dir }}" $fpath )'
 fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
-defer = """
-{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"
-{% endfor %}{{ hooks?.post | nl }}"""
-source = """
-{{ hooks?.pre | nl }}{% for file in files %}source \"{{ file }}\"
-{% endfor %}{{ hooks?.post | nl }}"""
+defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
 ln-fpath = """
 {% for file in files %}zsh-defer -s -z ln -sf \"{{ file }}\" \"${HOME}/.zfunc/_{{ name }}\"
 {% endfor %}"""
@@ -22,6 +12,10 @@ fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] 
 fzf-source = "{% for file in files %}source \"{{ file }}\"\n{% endfor %}"
 execute = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
 execute-y = "{% for file in files %}cd `dirname {{ file }}` && echo y | \"{{ file }}\" &> /dev/null \n{% endfor %}"
+
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+apply = ["source"]
 
 [plugins.compinit]
 inline = 'autoload -Uz compinit && zsh-defer compinit'
@@ -46,11 +40,18 @@ dir = 'plugins'
 [plugins.zoxide]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
-hooks.post = 'zsh-defer source $ZDOTDIR/hook/zoxide_post.zsh'
+apply = ["defer"]
+
+[plugins.zoxide.hooks]
+post = '''
+alias j=z
+export _ZO_RESOLVE_SYMLINKS=1
+eval "$(zoxide init zsh)"
+'''
 
 [plugins.bun]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'plugins'
+local = "~/.bun/"
+use = ["_bun"]
 apply = ["defer"]
 
 [plugins.1password]
@@ -98,6 +99,10 @@ inline = 'eval "$(starship init zsh)"'
 github = "junegunn/fzf"
 apply = ['fzf-install', 'fzf-source']
 
+[plugins.fzf-tab]
+github = "Aloxaf/fzf-tab"
+apply = ["defer"]
+
 [plugins.eza]
 github = "eza-community/eza"
 use = ["completions/zsh/_eza"]
@@ -106,19 +111,7 @@ apply = ["defer", "ln-fpath"]
 [plugins.gh]
 inline = 'autoload -U "$(gh completion -s zsh)"'
 
-# [plugins.powerlevel10k]
-# github = 'romkatv/powerlevel10k'
-
-# [plugins.mise]
-#
-# inline = '''
-# export MISE_DATA_DIR=$HOME/.mise
-# export MISE_CACHE_DIR=$MISE_DATA_DIR/cache
-#
-# # eval "$(mise activate zsh)"
-# # eval "$(mise hook-env -s zsh)"
-# #
-# # use_mise() {
-# #   direnv_load mise direnv exec
-# # }
-# '''
+[plugins.dotfiles-lazy-sources]
+local = "~/.config/zsh/lazy-sources"
+use = ["*.zsh"]
+apply = ["defer"]

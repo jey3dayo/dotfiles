@@ -1,8 +1,4 @@
 # jey3dayo .zshrc
-
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-
 bindkey -e
 
 HISTFILE=$HOME/.zsh_history
@@ -63,14 +59,9 @@ function ensure_zcompiled {
 }
 ensure_zcompiled $ZDOTDIR/.zshrc
 
-# load sources
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
-for f ("${ZDOTDIR:-$HOME}"/lazy-sources/*.zsh) zsh-defer source "${f}"
 
 # removed custom source
 zsh-defer unfunction source
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 
 # vim: set syntax=zsh:

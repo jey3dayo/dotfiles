@@ -9,8 +9,6 @@ else
   ARCH=x86_64
 fi
 
-path=($BREW_PATH(N-/) $path)
-
 [[ -x $BREW_PATH/brew ]] && alias brew="arch -arch $ARCH $BREW_PATH/brew"
 
 eval "$($BREW_PATH/brew shellenv)"
