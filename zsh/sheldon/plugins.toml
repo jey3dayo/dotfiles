@@ -10,8 +10,8 @@ ln-fpath = """
 {% endfor %}"""
 fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n"
 fzf-source = "{% for file in files %}source \"{{ file }}\"\n{% endfor %}"
-execute = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
-execute-y = "{% for file in files %}cd `dirname {{ file }}` && echo y | \"{{ file }}\" &> /dev/null \n{% endfor %}"
+exec = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
+exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" &> /dev/null) \n{% endfor %}"
 
 [plugins.zsh-defer]
 github = "romkatv/zsh-defer"
@@ -78,7 +78,7 @@ apply = ["defer"]
 [plugins.pnpm-shell-completion-install]
 github = "g-plane/pnpm-shell-completion"
 use = ["zplug.zsh"]
-apply = ["execute-y"]
+apply = ["exec_with_confirm"]
 
 [plugins.1password-op]
 github = "unixorn/1password-op.plugin.zsh"

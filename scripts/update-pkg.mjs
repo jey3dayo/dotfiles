@@ -59,6 +59,7 @@ async function updateNvim() {
 
 async function updateRepos() {
   await $`(cd ${homeDir}/src/github.com/dimdenGD/OldTweetDeck && git pull origin main)`;
+  await $`(cd ${homeDir}/src/github.com/junegunn/fzf && git pull origin main)`;
 }
 
 async function updateMise() {
