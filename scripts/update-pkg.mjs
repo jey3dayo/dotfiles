@@ -10,7 +10,9 @@ if (platform === "linux") {
 
 // python
 async function updatePythonPkgs() {
-  await $`pip3 install --upgrade pip`;
+  let pkgs = ["pip", "ruff"];
+  await $`pip3 install -U ${pkgs}`;
+
   await $`pip3 list --format json --outdated | jq .[].name | xargs -r pip3 install -U`;
   // await $`pipx reinstall-all`
   await $`pipx upgrade-all`;
@@ -18,7 +20,7 @@ async function updatePythonPkgs() {
 
 // node
 async function updateNodePkgs() {
-  let nodePkgs = [
+  let pkgs = [
     "npm-check-updates",
     "neovim",
     "husky",
@@ -28,7 +30,7 @@ async function updateNodePkgs() {
     "textlint",
     "textlint-rule-preset-ja-technical-writing",
   ];
-  await $`bun i --global ${nodePkgs}`;
+  await $`bun i --global ${pkgs}`;
   await $`bun -g update`;
 }
 
