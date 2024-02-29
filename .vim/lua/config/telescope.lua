@@ -5,10 +5,6 @@ end
 local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
 
-local function telescope_buffer_dir()
-  return vim.fn.expand "%:p:h"
-end
-
 local fb_actions = telescope.extensions.file_browser.actions
 
 telescope.setup {
@@ -74,8 +70,13 @@ Keymap("<Leader>g", builtin.live_grep)
 Keymap("<Leader>b", builtin.buffers)
 Keymap("<Leader>d", builtin.diagnostics)
 Keymap("<Leader>y", telescope.extensions.neoclip.default)
+Keymap("<leader>n", telescope.extensions.notify.notify)
 Keymap("<Leader>,", builtin.resume)
 
+-- local function telescope_buffer_dir()
+--   return vim.fn.expand "%:p:h"
+-- end
+--
 -- Keymap("<Leader>e", function()
 --   telescope.extensions.file_browser.file_browser {
 --     path = "%:p:h",
