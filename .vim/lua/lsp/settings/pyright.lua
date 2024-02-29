@@ -1,4 +1,5 @@
 return {
+  autostart = false,
   settings = {
     python = {
       venvPath = ".",

@@ -12,6 +12,9 @@ M.installed_servers = {
   "prismals",
   "tailwindcss",
   "astro",
+  "pylsp",
+  "ruff_lsp",
+  "taplo",
 }
 
 M.installed_tree_sitter = {

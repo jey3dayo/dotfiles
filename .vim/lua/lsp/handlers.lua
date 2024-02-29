@@ -1,7 +1,5 @@
 local M = {}
 
-local conform = require "conform"
-local autocmd = require("autocmds").autocmd
 local augroup = require("autocmds").augroup
 
 local lspFormatting = augroup("LspFormatting", { clear = true })
