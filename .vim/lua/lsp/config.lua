@@ -33,6 +33,8 @@ M.installed_tree_sitter = {
   "typescript",
   "astro",
   "tsx",
+  "python",
+  "diff",
 }
 
 return M
