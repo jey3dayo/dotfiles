@@ -15,6 +15,7 @@ M.installed_servers = {
   "pylsp",
   "ruff_lsp",
   "taplo",
+  "vimls",
 }
 
 M.installed_tree_sitter = {
