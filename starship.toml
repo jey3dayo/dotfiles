@@ -8,7 +8,6 @@ $character\
 
 right_format = """
 $git_branch\
-$git_status\
 $git_metrics\
 $git_commit\
 $cmd_duration
@@ -50,6 +49,11 @@ error_symbol = " [](#df5b61)"
 style = "fg:#78b892 bg:none"
 symbol = " "
 
+[git_metrics]
+disabled = false
+added_style = "bold yellow"
+deleted_style = "bold red"
+
 [git_status]
 format = "[ $all_status $ahead_behind ]($style)"
 style = "fg:#78b892 bg:none"
@@ -64,11 +68,6 @@ modified = "!${count}"
 staged = "+${count}"
 renamed = "»${count}"
 deleted = "${count}"
-
-[git_metrics]
-disabled = false
-added_style = "bold yellow"
-deleted_style = "bold red"
 
 [git_commit]
 format = "[\\($hash\\)]($style) [\\($tag\\)]($style)"
