@@ -1,15 +1,9 @@
 shell = "zsh"
 
 [templates]
-path = 'path=( "{{ dir }}" $path )'
-fpath = 'fpath=( "{{ dir }}" $fpath )'
 fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
 defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
-ln-fpath = """
-{% for file in files %}zsh-defer -s -z ln -sf \"{{ file }}\" \"${HOME}/.zfunc/_{{ name }}\"
-{% endfor %}"""
 fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n"
-fzf-source = "{% for file in files %}source \"{{ file }}\"\n{% endfor %}"
 exec = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
 exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" &> /dev/null) \n{% endfor %}"
 
@@ -65,11 +59,8 @@ dir = 'plugins'
 
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
+use = ["src"]
 apply = ["defer", "fpath-src"]
-
-[plugins.nix-zsh-completions]
-github = "nix-community/nix-zsh-completions"
-apply = ["defer", "fpath"]
 
 [plugins.pnpm-shell-completion]
 github = "g-plane/pnpm-shell-completion"
@@ -94,7 +85,7 @@ apply = ["defer"]
 
 [plugins.fzf]
 github = "junegunn/fzf"
-apply = ['fzf-install', 'fzf-source']
+apply = ['fzf-install', 'source']
 
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
@@ -103,9 +94,9 @@ apply = ["defer"]
 [plugins.eza]
 github = "eza-community/eza"
 use = ["completions/zsh/_eza"]
-apply = ["defer", "ln-fpath"]
+apply = ["defer", "fpath"]
 
 [plugins.dotfiles-lazy-sources]
 local = "~/.config/zsh/lazy-sources"
 use = ["*.zsh"]
-apply = ["defer"]
+apply = ["defer", "source"]
