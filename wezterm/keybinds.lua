@@ -280,11 +280,20 @@ local mouse_bindings = {
   },
 }
 
+local windows_keybinds = {
+  { key = "c", mods = "CTRL|SHIFT", action = wezterm.action { CopyTo = "Clipboard" } },
+}
+
+local keys = utils.array_concat(default_keybinds, tmux_keybinds, wezterm_keybinds)
+if wezterm.target_triple:find "windows" then
+  keys = utils.array_concat(keys, windows_keybinds)
+end
+
 return {
   -- TODO: いつかtrueにする
   disable_default_key_bindings = false,
   leader = { key = "x", mods = "CTRL", timeout_milliseconds = 1000 },
-  keys = utils.array_concat(default_keybinds, tmux_keybinds, wezterm_keybinds),
+  keys = keys,
   key_tables = key_tables,
   mouse_bindings = mouse_bindings,
 }
