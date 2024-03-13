@@ -8,12 +8,22 @@ if not status2 then
   return
 end
 
-local has_words_before = function()
+local function has_words_before()
   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
     return false
   end
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match "^%s*$" == nil
+
+  local cursor_position = vim.api.nvim_win_get_cursor(0)
+  local line = cursor_position[1]
+  local col = cursor_position[2]
+
+  if col == 0 then
+    return false
+  end
+
+  local line_text = vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]
+
+  return line_text:match "^%s*$" == nil
 end
 
 cmp.setup {
@@ -31,6 +41,7 @@ cmp.setup {
         fallback()
       end
     end),
+    ["<C-l>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
     ["<C-k>"] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
@@ -45,10 +56,10 @@ cmp.setup {
     { name = "snippy" },
     { name = "copilot" },
     { name = "treesitter" },
-    { name = "nvim_lsp",                group_index = 2,   keyword_length = 2 },
-    { name = "nvim_lsp_signature_help", group_index = 2,   keyword_length = 2 },
-    { name = "path",                    group_index = 2,   keyword_length = 3 },
-    { name = "buffer",                  keyword_length = 3 },
+    { name = "nvim_lsp", group_index = 2, keyword_length = 2 },
+    { name = "nvim_lsp_signature_help", group_index = 2, keyword_length = 2 },
+    { name = "path", group_index = 2, keyword_length = 3 },
+    { name = "buffer", keyword_length = 3 },
     { name = "cmdline" },
   },
   formatting = {
