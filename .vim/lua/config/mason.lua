@@ -7,6 +7,11 @@ if not (mason and mason_lspconfig and lspconfig and lspsaga) then
   return
 end
 
+local function safe_setup(server, _opts, autostart)
+  local opts = vim.tbl_deep_extend("force", _opts, { autostart = autostart or _opts.autostart })
+  lspconfig[server].setup(opts)
+end
+
 local term_opts = { silent = true }
 Set_keymap("[lsp]", "<Nop>", term_opts)
 Set_keymap("<C-e>", "[lsp]", term_opts)
@@ -45,12 +50,12 @@ mason_lspconfig.setup_handlers {
     if server_config_files then
       for _, file in ipairs(server_config_files) do
         if vim.fn.filereadable(file) == 1 then
-          lspconfig[server].setup(opts)
-          break
+          return safe_setup(server, opts, true)
         end
       end
+      return safe_setup(server, opts, false)
     else
-      lspconfig[server].setup(opts)
+      return safe_setup(server, opts, true)
     end
   end,
 }
