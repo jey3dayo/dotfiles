@@ -28,6 +28,8 @@ export GOPATH=$HOME
 export BUN_INSTALL="$HOME/.bun"
 
 path=(
+  # railsビルド用
+  # /opt/homebrew/opt/mysql@5.7/bin(N-/)
   $HOME/.local/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
   $HOME/.deno/bin(N-/)
