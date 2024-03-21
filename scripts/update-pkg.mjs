@@ -40,7 +40,7 @@ async function updateApt() {
   try {
     await $`sudo apt update`;
     await $`sudo apt upgrade -y`;
-  } catch (e) {}
+  } catch (e) { }
 }
 
 async function updateBrew() {
@@ -49,8 +49,9 @@ async function updateBrew() {
   try {
     await $`brew update`;
     await $`brew upgrade`;
+    await $`brew reinstall neovim`;
     await $`brew cleanup`;
-  } catch (e) {}
+  } catch (e) { }
 }
 
 async function updateNvim() {
