@@ -50,6 +50,18 @@ mason_lspconfig.setup_handlers {
     if has_custom_opts then
       opts = vim.tbl_deep_extend("force", opts, server_custom_opts)
     end
-    lspconfig[server].setup(opts)
+
+    -- config_filesと一致するサーバーの場合、対応する設定ファイルがあれば起動する
+    local server_config_files = require("lsp.config").config_files[server]
+    if server_config_files then
+      for _, file in ipairs(server_config_files) do
+        if vim.fn.filereadable(file) == 1 then
+          lspconfig[server].setup(opts)
+          break
+        end
+      end
+    else
+      lspconfig[server].setup(opts)
+    end
   end,
 }

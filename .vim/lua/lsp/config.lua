@@ -38,4 +38,17 @@ M.installed_tree_sitter = {
   "diff",
 }
 
+M.config_files = {
+  tsserver = { "tsconfig.json" },
+  eslint = {
+    ".eslintrc.js",
+    ".eslintrc.cjs",
+    ".eslintrc.yaml",
+    ".eslintrc.yml",
+    ".eslintrc.json",
+    ".eslintrc",
+    ".eslint.js",
+  },
+}
+
 return M
