@@ -4,18 +4,20 @@ import os from "os";
 const homeDir = os.homedir();
 const platform = os.platform();
 
-if (platform === "linux") {
-  $`sudo whoami`;
-}
+if (platform === "linux") $`sudo whoami`;
 
 // python
 async function updatePythonPkgs() {
   let pkgs = ["pip", "ruff"];
-  await $`pip3 install -U ${pkgs}`;
 
-  await $`pip3 list --format json --outdated | jq .[].name | xargs -r pip3 install -U`;
-  // await $`pipx reinstall-all`
-  await $`pipx upgrade-all`;
+  try {
+    await $`pip3 install -U ${pkgs}`;
+    await $`pip3 list --format json --outdated | jq .[].name | xargs -r pip3 install -U`;
+    // await $`pipx reinstall-all`
+    await $`pipx upgrade-all`;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 // node
@@ -30,8 +32,13 @@ async function updateNodePkgs() {
     "textlint",
     "textlint-rule-preset-ja-technical-writing",
   ];
-  await $`bun i --global ${pkgs}`;
-  await $`bun -g update`;
+
+  try {
+    await $`bun i --global ${pkgs}`;
+    await $`bun -g update`;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 async function updateApt() {
@@ -40,7 +47,9 @@ async function updateApt() {
   try {
     await $`sudo apt update`;
     await $`sudo apt upgrade -y`;
-  } catch (e) { }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 async function updateBrew() {
@@ -49,31 +58,45 @@ async function updateBrew() {
   try {
     await $`brew update`;
     await $`brew upgrade`;
-    await $`brew reinstall neovim`;
     await $`brew cleanup`;
-  } catch (e) { }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 async function updateNvim() {
-  await $`nvim --headless "+Lazy! sync" +qa`;
-  await $`nvim --headless "+MasonUpdate" +qa`;
-  await $`nvim --headless "+TSUpdateSync" +qa`;
+  try {
+    await $`nvim --headless "+Lazy! sync" +qa`;
+    await $`nvim --headless "+MasonUpdate" +qa`;
+    await $`nvim --headless "+TSUpdateSync" +qa`;
+    // await $`brew reinstall neovim`;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 async function updateRepos() {
-  await $`(cd ${homeDir}/src/github.com/dimdenGD/OldTweetDeck && git pull origin main)`;
-  await $`(cd ${homeDir}/src/github.com/junegunn/fzf && git pull origin master)`;
-  await $`(cd ${homeDir}/Library/Caches/Homebrew/neovim--git && git pull origin master)`;
+  try {
+    await $`(cd ${homeDir}/src/github.com/dimdenGD/OldTweetDeck && git pull origin main)`;
+    await $`(cd ${homeDir}/src/github.com/junegunn/fzf && git pull origin master)`;
+    await $`(cd ${homeDir}/Library/Caches/Homebrew/neovim--git && git pull origin master)`;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 async function updateMise() {
-  await $`mise install node@16`;
-  await $`mise install node@18`;
-  await $`mise install node@20`;
+  try {
+    await $`mise upgrade`;
+    await $`mise install node@16`;
+    await $`mise install node@18`;
+    await $`mise install node@20`;
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 await Promise.all([
-  $`mise upgrade`,
   $`sheldon lock --update`,
   updateNodePkgs(),
   updatePythonPkgs(),
