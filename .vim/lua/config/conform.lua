@@ -38,9 +38,8 @@ conform.setup {
   },
 }
 
-user_command("FormatDisable", function(args)
+user_command("ConformDisable", function(args)
   if args.bang then
-    -- FormatDisable! will disable formatting just for this buffer
     vim.b.disable_autoformat = true
   else
     vim.g.disable_autoformat = true
@@ -50,7 +49,7 @@ end, {
   bang = true,
 })
 
-user_command("FormatEnable", function()
+user_command("ConformEnable", function()
   vim.b.disable_autoformat = false
   vim.g.disable_autoformat = false
 end, {
