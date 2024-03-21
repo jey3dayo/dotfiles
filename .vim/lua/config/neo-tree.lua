@@ -19,4 +19,4 @@ neo_tree.setup {
   },
 }
 
-Keymap("<Leader>e", ":<C-u>Neotree<CR>")
+Keymap("<Leader>e", ":<C-u>Neotree toggle<CR>")
