@@ -5,8 +5,8 @@ local augroup = require("autocmds").augroup
 local lspFormatting = augroup("LspFormatting", { clear = true })
 
 local function lsp_highlight_document(client)
-  local status, illuminate = pcall(require, "illuminate")
-  if not status then
+  local illuminate = safe_require "illuminate"
+  if not illuminate then
     return
   end
   illuminate.on_attach(client)

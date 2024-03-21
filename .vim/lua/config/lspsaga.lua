@@ -1,9 +1,9 @@
-local status, saga = pcall(require, "lspsaga")
-if not status then
+local lspsaga = safe_require "lspsaga"
+if not lspsaga then
   return
 end
 
-saga.setup {
+lspsaga.setup {
   code_action_lightbulb = {
     enable = true,
   },

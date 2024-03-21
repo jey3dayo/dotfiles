@@ -1,7 +1,7 @@
 local user_command = require("utils").user_command
 
-local status, conform = pcall(require, "conform")
-if not status then
+local conform = safe_require "conform"
+if not conform then
   return
 end
 

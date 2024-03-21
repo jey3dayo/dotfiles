@@ -1,5 +1,5 @@
-local status, lightspeed = pcall(require, "lightspeed")
-if not status then
+local lightspeed = safe_require "lightspeed"
+if not lightspeed then
   return
 end
 

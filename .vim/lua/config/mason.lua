@@ -1,20 +1,9 @@
-local status, mason = pcall(require, "mason")
-if not status then
-  return
-end
+local mason = safe_require "mason"
+local mason_lspconfig = safe_require "mason-lspconfig"
+local lspconfig = safe_require "lspconfig"
+local lspsaga = safe_require "lspsaga"
 
-local status2, mason_lspconfig = pcall(require, "mason-lspconfig")
-if not status2 then
-  return
-end
-
-local status3, lspconfig = pcall(require, "lspconfig")
-if not status3 then
-  return
-end
-
-local status4 = pcall(require, "lspsaga")
-if not status4 then
+if not (mason and mason_lspconfig and lspconfig and lspsaga) then
   return
 end
 
@@ -46,8 +35,8 @@ mason_lspconfig.setup_handlers {
       on_attach = require("lsp.handlers").on_attach,
       capabilities = require("lsp.handlers").capabilities,
     }
-    local has_custom_opts, server_custom_opts = pcall(require, "lsp.settings." .. server)
-    if has_custom_opts then
+    local server_custom_opts = safe_require("lsp.settings." .. server)
+    if server_custom_opts then
       opts = vim.tbl_deep_extend("force", opts, server_custom_opts)
     end
 

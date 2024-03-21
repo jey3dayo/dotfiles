@@ -1,5 +1,6 @@
-local status, prettier = pcall(require, "prettier")
-if not status then
+local prettier = safe_require "prettier"
+
+if not prettier then
   return
 end
 

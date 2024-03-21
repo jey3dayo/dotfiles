@@ -1,10 +1,7 @@
-local status1, copilot = pcall(require, "copilot")
-if not status1 then
-  return
-end
+local copilot = safe_require "copilot"
+local copilot_cmp = safe_require "copilot_cmp"
 
-local status2, copilot_cmp = pcall(require, "copilot_cmp")
-if not status2 then
+if not (copilot and copilot_cmp) then
   return
 end
 

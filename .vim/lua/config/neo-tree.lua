@@ -1,5 +1,5 @@
-local status, neo_tree = pcall(require, "neo-tree")
-if not status then
+local neo_tree = safe_require "neo-tree"
+if not neo_tree then
   return
 end
 

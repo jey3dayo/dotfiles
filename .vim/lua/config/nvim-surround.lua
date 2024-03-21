@@ -1,5 +1,5 @@
-local status, surround = pcall(require, "nvim-surround")
-if not status then
+local surround = safe_require "nvim-surround"
+if not surround then
   return
 end
 

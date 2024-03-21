@@ -1,10 +1,7 @@
-local status1, cmp = pcall(require, "cmp")
-if not status1 then
-  return
-end
+local cmp = safe_require "cmp"
+local lspkind = safe_require "lspkind"
 
-local status2, lspkind = pcall(require, "lspkind")
-if not status2 then
+if not (cmp and lspkind) then
   return
 end
 

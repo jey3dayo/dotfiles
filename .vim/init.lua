@@ -2,6 +2,7 @@ if vim.loader then
   vim.loader.enable()
 end
 
+require "global_utils"
 require "base"
 require "autocmds"
 require "options"

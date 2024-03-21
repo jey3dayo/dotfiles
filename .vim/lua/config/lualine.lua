@@ -1,5 +1,6 @@
-local status, lualine = pcall(require, "lualine")
-if not status then
+local lualine = safe_require "lualine"
+
+if not lualine then
   return
 end
 
