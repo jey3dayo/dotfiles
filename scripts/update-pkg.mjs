@@ -61,7 +61,8 @@ async function updateNvim() {
 
 async function updateRepos() {
   await $`(cd ${homeDir}/src/github.com/dimdenGD/OldTweetDeck && git pull origin main)`;
-  await $`(cd ${homeDir}/src/github.com/junegunn/fzf && git pull origin main)`;
+  await $`(cd ${homeDir}/src/github.com/junegunn/fzf && git pull origin master)`;
+  await $`(cd ${homeDir}/Library/Caches/Homebrew/neovim--git && git pull origin master)`;
 }
 
 async function updateMise() {
