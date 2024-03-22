@@ -35,6 +35,7 @@ conform.setup {
     javascript = prettier,
     typescript = prettier,
     astro = prettier,
+    markdown = { "markdownlint" },
   },
 }
 
