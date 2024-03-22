@@ -10,7 +10,7 @@ abbr -S df="df -h"
 abbr -S du="du -h"
 abbr -S hg="hg --encoding=utf-8"
 abbr -S tailf="tail -f"
-abbr -S ag="ag --hidden"
+abbr -S ag="ag --hidden --pager='less -R'"
 
 abbr -S ga="git add"
 abbr -S gap="git add -p"
