@@ -7,8 +7,12 @@ if not (mason and mason_lspconfig and lspconfig and lspsaga) then
   return
 end
 
-local function safe_setup(server, _opts, autostart)
-  local opts = vim.tbl_deep_extend("force", _opts, { autostart = autostart or _opts.autostart })
+local function safe_setup(server, opts, autostart)
+  -- opts.autostartが定義されてないならautostartを代入
+  if not opts.autostart then
+    opts.autostart = autostart
+  end
+
   lspconfig[server].setup(opts)
 end
 
