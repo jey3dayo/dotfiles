@@ -32,6 +32,7 @@ M.installed_tree_sitter = {
   "ruby",
   "lua",
   "vim",
+  "javascript",
   "typescript",
   "astro",
   "tsx",
