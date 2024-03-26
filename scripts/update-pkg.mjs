@@ -98,6 +98,7 @@ async function updateMise() {
 
 async function pruneDocker() {
   try {
+    await $`echo "y" | docker container prune`;
     await $`echo "y" | docker image prune --filter "dangling=true" -a`;
   } catch (e) {
     console.log(e);

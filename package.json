@@ -1,0 +1,17 @@
+{
+  "name": "my-scripts",
+  "version": "1.0.0",
+  "author": "Your Name",
+  "bin": {
+    "pr-agent": "./scripts/pr-agent.mjs",
+    "update-pkg": "./scripts/update-pkg.mjs"
+  },
+  "description": "my package description",
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "zx": "^7.2.3"
+  }
+}
