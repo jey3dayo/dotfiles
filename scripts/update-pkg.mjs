@@ -96,6 +96,14 @@ async function updateMise() {
   }
 }
 
+async function pruneDocker() {
+  try {
+    await $`echo "y" | docker image prune --filter "dangling=true" -a`;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 await Promise.all([
   $`sheldon lock --update`,
   updateNodePkgs(),
@@ -105,4 +113,5 @@ await Promise.all([
   updateNvim(),
   updateRepos(),
   updateMise(),
+  pruneDocker(),
 ]);
