@@ -21,6 +21,9 @@ telescope.setup {
         ["<C-n>"] = actions.move_selection_next,
         ["<C-p>"] = actions.move_selection_previous,
         ["<C-d>"] = actions.delete_buffer,
+        ["<C-j>"] = actions.cycle_history_next,
+        ["<C-k>"] = actions.cycle_history_prev,
+        ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
       },
     },
   },
@@ -72,6 +75,7 @@ Keymap("<Leader>d", builtin.diagnostics)
 Keymap("<Leader>y", telescope.extensions.neoclip.default)
 Keymap("<leader>n", telescope.extensions.notify.notify)
 Keymap("<Leader>,", builtin.resume)
+Keymap("<Leader>gs", builtin.git_status)
 
 -- local function telescope_buffer_dir()
 --   return vim.fn.expand "%:p:h"
