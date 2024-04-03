@@ -51,6 +51,9 @@ M.config_files = {
     ".eslintrc",
     ".eslint.js",
   },
+  biome = {
+    "biome.json",
+  },
 }
 
 return M
