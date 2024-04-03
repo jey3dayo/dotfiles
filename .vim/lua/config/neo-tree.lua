@@ -4,7 +4,11 @@ if not neo_tree then
 end
 
 neo_tree.setup {
+  hijack_netrw_behavior = "open_default",
   filesystem = {
+    follow_current_file = {
+      enabled = false,
+    },
     window = {
       mappings = {
         -- disable fuzzy finder
