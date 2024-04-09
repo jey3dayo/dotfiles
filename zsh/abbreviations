@@ -15,7 +15,7 @@ abbr -S agl="ag --hidden --pager='less -R'"
 
 abbr -S ga="git add"
 abbr -S gap="git add -p"
-abbr -S gst="git status -sb"
+abbr -S gst="git status -sb ."
 abbr -S gc="git commit -m \""
 
 abbr -S gd="git diff"
