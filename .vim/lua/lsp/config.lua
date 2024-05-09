@@ -41,7 +41,7 @@ M.installed_tree_sitter = {
 }
 
 M.config_files = {
-  tsserver = { "tsconfig.json", "tsconfig.build.json", "tsup.config.js" },
+  tsserver = { "tsconfig.json", "tsconfig.build.json", "tsup.config.js", "tsup.config.ts" },
   eslint = {
     ".eslintrc.js",
     ".eslintrc.cjs",
