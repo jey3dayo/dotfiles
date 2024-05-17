@@ -1,4 +1,4 @@
-Host pi
+Host pi-local
   HostName raspberrypi.local
   User pi
   Port 10022
