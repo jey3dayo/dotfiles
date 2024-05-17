@@ -25,6 +25,7 @@ local lsp_keymaps = function(bufnr)
   -- lspsaga
   Keymap("<C-j>", "<cmd>Lspsaga diagnostic_jump_next<CR>", bufopts)
   Keymap("<C-k>", "<cmd>Lspsaga diagnostic_jump_prev<CR>", bufopts)
+  Keymap("<C-l>", "<cmd>Lspsaga show_line_diagnostics<CR>", bufopts)
   Keymap("K", "<cmd>Lspsaga hover_doc<CR>", bufopts)
   Keymap("<C-[>", "<cmd>Lspsaga finder<CR>", bufopts)
   Keymap("<C-]>", "<cmd>Lspsaga goto_definition<CR>", bufopts)
