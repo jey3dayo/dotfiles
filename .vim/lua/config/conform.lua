@@ -18,16 +18,14 @@ local function check_ecma_script(bufnr)
 end
 
 conform.setup {
-  format_on_save = function(bufnr)
+  format_after_save = function(bufnr)
     -- Disable with a global or buffer-local variable
     if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
       return
     end
-    return { lsp_fallback = true, timeout_ms = 3000 }
+
+    return { lsp_fallback = true }
   end,
-  format_after_save = {
-    lsp_fallback = true,
-  },
   formatters_by_ft = {
     lua = { "stylua" },
     go = { "gofmt" },
