@@ -5,7 +5,17 @@ if not conform then
   return
 end
 
-local prettier = { { "prettier" } }
+local function get_formatter(bufnr, formatter_name, fallback_formatters)
+  if conform.get_formatter_info(formatter_name, bufnr).available then
+    return { formatter_name }
+  else
+    return fallback_formatters
+  end
+end
+
+local function check_ecma_script(bufnr)
+  return get_formatter(bufnr, "biome", { "prettier" })
+end
 
 conform.setup {
   format_on_save = function(bufnr)
@@ -13,13 +23,23 @@ conform.setup {
     if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
       return
     end
-    return { async = true, timeout_ms = 4000, lsp_fallback = true }
+    return { lsp_fallback = true, timeout_ms = 3000 }
   end,
+  format_after_save = {
+    lsp_fallback = true,
+  },
   formatters_by_ft = {
     lua = { "stylua" },
     go = { "gofmt" },
+    _python = function(bufnr)
+      if conform.get_formatter_info("ruff_format", bufnr).available then
+        return { "ruff_format" }
+      else
+        return { "isort", "black" }
+      end
+    end,
     python = function(bufnr)
-      if require("conform").get_formatter_info("ruff_format", bufnr).available then
+      if conform.get_formatter_info("ruff_format", bufnr).available then
         return { "ruff_format" }
       else
         return { "isort", "black" }
@@ -28,13 +48,13 @@ conform.setup {
     sql = { "sql_formatter" },
     toml = { "taplo" },
     yaml = { "yamlfmt" },
-    json = prettier,
-    jsonc = prettier,
-    javascriptreact = prettier,
-    typescriptreact = prettier,
-    javascript = prettier,
-    typescript = prettier,
-    astro = prettier,
+    json = check_ecma_script,
+    jsonc = check_ecma_script,
+    javascriptreact = check_ecma_script,
+    typescriptreact = check_ecma_script,
+    javascript = check_ecma_script,
+    typescript = check_ecma_script,
+    astro = check_ecma_script,
     markdown = { "markdownlint" },
   },
 }
