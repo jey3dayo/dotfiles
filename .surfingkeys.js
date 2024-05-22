@@ -1,25 +1,27 @@
-const bitlyToken = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-const searchWordQuery = (q) =>
-  `https://www.google.co.jp/search?q=${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
+// Constants
+const SEARCH_URL = "https://www.google.co.jp/search?q=";
+const HINTS_CHARACTERS = "asdfghjklnmvbrtyu";
+const SCROLL_STEP_SIZE = 150;
 
-// Setting
-api.Hints.characters = "asdfghjklnmvbrtyu";
-settings.scrollStepSize = 150;
+// Search Query Function
+const searchWordQuery = (q) =>
+	`${SEARCH_URL}${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
+
+// Settings
+api.Hints.characters = HINTS_CHARACTERS;
+settings.scrollStepSize = SCROLL_STEP_SIZE;
 settings.nextLinkRegex = /((forward|>>|next|次[のへ]|→)+)/i;
 settings.prevLinkRegex = /((back|<<|prev(ious)?|前[のへ]|←)+)/i;
 settings.aceKeybindings = "vim";
 settings.omnibarPosition = "bottom";
 settings.hintAlign = "left";
 settings.cursorAtEndOfInput = false;
-
-// Order
 settings.tabsMRUOrder = false;
 settings.historyMUOrder = false;
-
 settings.historyOrder = false;
 settings.aceKeybindings = true;
 
-// Mapping
+// Key Mappings
 api.map("H", "S"); // back in history
 api.map("L", "D"); // forward in history
 api.map("h", "E"); // previous tab
@@ -61,163 +63,146 @@ api.iunmap("<Ctrl-i>");
 settings.blocklistPattern = /mail.google.com/;
 
 const defaultUnmapAllExcept = [
-  "<Ctrl-i>",
-  "q",
-  "f",
-  "F",
-  "<Ctrl-k>",
-  "<Ctrl-j>",
-  "T",
-  "X",
-  "h",
-  "l",
-  "w",
-  "L",
-  "H",
-  "t",
-  "b",
-  "'",
+	"<Ctrl-i>",
+	"q",
+	"f",
+	"F",
+	"<Ctrl-k>",
+	"<Ctrl-j>",
+	"T",
+	"X",
+	"h",
+	"l",
+	"w",
+	"L",
+	"H",
+	"t",
+	"v",
+	"b",
+	"'",
 ];
 
 const urls = [
-  "jp.inoreader.com",
-  "read.readwise.io",
-  "colab.research.google.com",
+	"jp.inoreader.com",
+	"colab.research.google.com",
+	"docs.google.com",
 ];
 const regex = new RegExp(urls.join("|"), "i");
 api.unmapAllExcept(defaultUnmapAllExcept, regex);
-api.unmap("v", /read.readwise.io/);
-api.unmap("b", /read.readwise.io/);
 
 api.unmapAllExcept(["h", "l", "d", "u", "r"], /irodr.netlify.app/);
 
 // qMark
 // cf. https://gist.github.com/chroju/2118c2193fb9892d95b9686eb95189d2
 var overlayedGlobalMarks = {
-  // webservice
-  M: "https://moneyforward.com/",
-  n: "https://www.notion.so/",
-  a: "https://www.amazon.co.jp/",
-  b: "https://b.hatena.ne.jp/J138/bookmark",
-  g: "https://www.github.com",
-  m: "https://mail.google.com/mail/u/0/",
-  N: "https://www.netflix.com/",
-  t: "https://twitter.com/",
-  w: "https://healthmate.withings.com/",
-  y: "https://wwww.youtube.com/",
-  l: "https://localhost.ca-adv.dev:3000",
-  L: "http://localhost:8080",
+	// webservice
+	M: "https://moneyforward.com/",
+	n: "https://www.notion.so/",
+	a: "https://www.amazon.co.jp/",
+	b: "https://b.hatena.ne.jp/J138/bookmark",
+	g: "https://www.github.com",
+	m: "https://mail.google.com/mail/u/0/",
+	N: "https://www.netflix.com/",
+	t: "https://twitter.com/",
+	w: "https://healthmate.withings.com/",
+	y: "https://wwww.youtube.com/",
+	l: "https://localhost.ca-adv.dev:3000",
+	L: "http://localhost:8080",
 };
 
 // paste URL
 const openClipboard = ({ newTab }) => {
-  api.Clipboard.read(({ data }) => {
-    var markInfo = {
-      scrollLeft: 0,
-      scrollTop: 0,
-      tab: { tabbed: newTab, active: newTab },
-      url: /^http/.test(data) ? data : searchWordQuery(data),
-    };
-    api.RUNTIME("openLink", markInfo);
-  });
+	api.Clipboard.read(({ data }) => {
+		var markInfo = {
+			scrollLeft: 0,
+			scrollTop: 0,
+			tab: { tabbed: newTab, active: newTab },
+			url: /^http/.test(data) ? data : searchWordQuery(data),
+		};
+		api.RUNTIME("openLink", markInfo);
+	});
 };
 api.mapkey("p", "Open URL in clipboard", () =>
-  openClipboard({ newTab: false }),
+	openClipboard({ newTab: false }),
 );
 api.mapkey("P", "Open clipboard URL in new tab", () =>
-  openClipboard({ newTab: true }),
+	openClipboard({ newTab: true }),
 );
 
 api.mapkey("gn", "Open Quickmark in new tab", (mark) => {
-  var priorityURLs = overlayedGlobalMarks[mark];
-  if (priorityURLs === undefined) {
-    // fallback to Surfingkeys default jump
-    Normal.jumpVIMark(mark, true);
-    return;
-  }
-  if (typeof priorityURLs == typeof "") {
-    priorityURLs = [priorityURLs];
-  }
-  for (var url of priorityURLs) {
-    var markInfo = {
-      url: url,
-      scrollLeft: 0,
-      scrollTop: 0,
-    };
-    markInfo.tab = {
-      tabbed: true,
-      active: true,
-    };
-    api.RUNTIME("openLink", markInfo);
-  }
+	var priorityURLs = overlayedGlobalMarks[mark];
+	if (priorityURLs === undefined) {
+		// fallback to Surfingkeys default jump
+		Normal.jumpVIMark(mark, true);
+		return;
+	}
+	if (typeof priorityURLs == typeof "") {
+		priorityURLs = [priorityURLs];
+	}
+	for (var url of priorityURLs) {
+		var markInfo = {
+			url: url,
+			scrollLeft: 0,
+			scrollTop: 0,
+		};
+		markInfo.tab = {
+			tabbed: true,
+			active: true,
+		};
+		api.RUNTIME("openLink", markInfo);
+	}
 });
 
 api.mapkey("go", "Open Quickmark in current tab", (mark) => {
-  var priorityURLs = overlayedGlobalMarks[mark];
-  if (priorityURLs === undefined) {
-    // fallback to Surfingkeys default jump
-    Normal.jumpVIMark(mark, true);
-    return;
-  }
-  if (typeof priorityURLs == typeof "") {
-    priorityURLs = [priorityURLs];
-  }
-  for (var url of priorityURLs) {
-    var markInfo = {
-      url: url,
-      scrollLeft: 0,
-      scrollTop: 0,
-    };
-    markInfo.tab = {
-      tabbed: false,
-      active: false,
-    };
-    api.RUNTIME("openLink", markInfo);
-  }
+	var priorityURLs = overlayedGlobalMarks[mark];
+	if (priorityURLs === undefined) {
+		// fallback to Surfingkeys default jump
+		Normal.jumpVIMark(mark, true);
+		return;
+	}
+	if (typeof priorityURLs == typeof "") {
+		priorityURLs = [priorityURLs];
+	}
+	for (var url of priorityURLs) {
+		var markInfo = {
+			url: url,
+			scrollLeft: 0,
+			scrollTop: 0,
+		};
+		markInfo.tab = {
+			tabbed: false,
+			active: false,
+		};
+		api.RUNTIME("openLink", markInfo);
+	}
 });
 
 // Copy
 // cf. https://github.com/hushin/dotfiles/blob/master/docs/SurfingkeysSetting.js
 const copyTitleAndUrl = (format) => {
-  const text = format
-    .replace("%URL%", location.href)
-    .replace("%TITLE%", document.title);
-  api.Clipboard.write(text);
+	const text = format
+		.replace("%URL%", location.href)
+		.replace("%TITLE%", document.title);
+	api.Clipboard.write(text);
 };
 
-const copyTinyUrl = async (format) => {
-  const res = await fetch("https://api-ssl.bitly.com/v4/shorten", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${bitlyToken}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ long_url: location.href, domain: "bit.ly" }),
-  }).then((v) => v.json());
-  const text = format
-    .replace("%URL%", res?.link ?? "")
-    .replace("%TITLE%", document.title);
-  api.Clipboard.write(text);
-};
-
-api.mapkey("yy", "Copy link", () => copyTinyUrl("%URL%"));
-api.mapkey(",y", "Copy tinyurl", () => copyTinyUrl("%TITLE% - %URL%"));
-api.mapkey(",Y", "Copy link", () => copyTitleAndUrl("%TITLE% - %URL%"));
+api.mapkey("y", "Copy link", () => copyTitleAndUrl("%URL%"));
+api.mapkey("Y", "Copy title and url", () => copyTitleAndUrl("%TITLE% - %URL%"));
 
 api.mapkey("gD", "Open Chrome dns cache", function () {
-  api.tabOpenLink("chrome://net-internals/#dns");
+	api.tabOpenLink("chrome://net-internals/#dns");
 });
 api.mapkey("gE", "Open Chrome Extensions", function () {
-  api.tabOpenLink("chrome://extensions/");
+	api.tabOpenLink("chrome://extensions/");
 });
 api.mapkey("gH", "Open Chrome Help", function () {
-  api.tabOpenLink("chrome://settings/help");
+	api.tabOpenLink("chrome://settings/help");
 });
 api.mapkey("gK", "Open Chrome Extensons shortcuts", function () {
-  api.tabOpenLink("chrome://extensions/shortcuts");
+	api.tabOpenLink("chrome://extensions/shortcuts");
 });
 api.mapkey("gS", "Open Chrome Settings", function () {
-  api.tabOpenLink("chrome://settings/");
+	api.tabOpenLink("chrome://settings/");
 });
 
 // short Amazon URL include AA.
@@ -239,41 +224,41 @@ api.removeSearchAlias("s", "s");
 // Search
 api.addSearchAlias("1", "Google 1年以内", searchWordQuery("{0}"));
 api.mapkey("O", "Search with alias Google 1年以内", () =>
-  api.Front.openOmnibar({ type: "SearchEngine", extra: "1" }),
+	api.Front.openOmnibar({ type: "SearchEngine", extra: "1" }),
 );
 api.addSearchAlias(
-  "a",
-  "Amazon.co.jp",
-  "https://www.amazon.co.jp/s?k={0}&emi=AN1VRQENFRJN5",
+	"a",
+	"Amazon.co.jp",
+	"https://www.amazon.co.jp/s?k={0}&emi=AN1VRQENFRJN5",
 );
 api.addSearchAlias("gh", "github", "https://github.com/search?utf8=✓&q=", "s");
 api.addSearchAlias("r", "reddit", "https://old.reddit.com/r/", "s");
 api.addSearchAlias(
-  "t",
-  "twitter",
-  "https://twitter.com/search?q={0}&src=typed_query",
-  "s",
+	"t",
+	"twitter",
+	"https://twitter.com/search?q={0}&src=typed_query",
+	"s",
 );
 
 // Help
-// PassThrough mode 1.5秒間だけsurfingkeys無効
+// PassThrough mode 2秒間だけsurfingkeys無効
 api.mapkey(
-  "<Ctrl-v>",
-  "#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys",
-  function () {
-    api.Normal.passThrough(1500);
-  },
+	"<Ctrl-v>",
+	"#0enter ephemeral PassThrough mode to temporarily suppress SurfingKeys",
+	function () {
+		api.Normal.passThrough(2000);
+	},
 );
 
 // Theme
 api.Hints.style(
-  "border: solid 2px #4C566A; color:#A6E22E; background: initial; background-color: #3B4252;",
+	"border: solid 2px #4C566A; color:#A6E22E; background: initial; background-color: #3B4252;",
 );
 api.Hints.style(
-  "border: solid 2px #4C566A !important; padding: 1px !important; color: #E5E9F0 !important; background: #3B4252 !important;",
-  "text",
+	"border: solid 2px #4C566A !important; padding: 1px !important; color: #E5E9F0 !important; background: #3B4252 !important;",
+	"text",
 );
-api.Visual.style("marks", "background-color: #A3BE8C99;");
+api.Visual.style("marks", "background-color: #A3BE8C;");
 api.Visual.style("cursor", "background-color: #88C0D0;");
 
 settings.theme = `
