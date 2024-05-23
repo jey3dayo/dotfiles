@@ -5,10 +5,12 @@ if not conform then
   return
 end
 
--- 指定されたフォーマッタが存在するか確認し、存在しない場合はフォールバックフォーマッタを返す関数
-local function get_formatter(bufnr, formatter_name, fallback_formatters)
+-- フォーマッタの存在を確認し、存在しない場合はフォールバックフォーマッタを返す関数
+-- ignore_configがtrueの場合、設定ファイルの存在を無視してフォーマッタの有無を確認する
+local function get_formatter(bufnr, formatter_name, fallback_formatters, ignore_config)
   local is_exist_config_file = require("lsp.handlers").is_exist_config_files(formatter_name)
-  if is_exist_config_file and conform.get_formatter_info(formatter_name, bufnr).available then
+
+  if (ignore_config or is_exist_config_file) and conform.get_formatter_info(formatter_name, bufnr).available then
     vim.notify("found: " .. formatter_name, vim.log.levels.INFO)
     return { formatter_name }
   else
@@ -22,14 +24,18 @@ end
 
 -- ECMAScript関連のフォーマッタを取得する関数
 local function get_ecma_formatter(bufnr)
-  return get_formatter(bufnr, "biome", { "prettier" })
+  return get_formatter(bufnr, "biome", { "prettier" }, false)
+end
+
+local function get_python_formatter(bufnr)
+  return get_formatter(bufnr, "ruff_format", { "isort", "black" }, true)
 end
 
 conform.setup {
   format_after_save = function(bufnr)
     -- Disable with a global or buffer-local variable
     if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-      return
+      return nil
     end
 
     return { lsp_fallback = true }
@@ -37,13 +43,7 @@ conform.setup {
   formatters_by_ft = {
     lua = { "stylua" },
     go = { "gofmt" },
-    python = function(bufnr)
-      if conform.get_formatter_info("ruff_format", bufnr).available then
-        return { "ruff_format" }
-      else
-        return { "isort", "black" }
-      end
-    end,
+    python = get_python_formatter,
     sql = { "sql_formatter" },
     toml = { "taplo" },
     yaml = { "yamlfmt" },

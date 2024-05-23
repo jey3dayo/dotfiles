@@ -63,6 +63,10 @@ M.capabilities = capabilities
 local lsp_config_files = require("lsp.config").config_files
 M.is_exist_config_files = function(formatter_name)
   local config_files = lsp_config_files[formatter_name]
+  if not config_files then
+    return false
+  end
+
   local is_exist_file = false
   for _, file in ipairs(config_files) do
     if vim.fn.filereadable(file) == 1 then
