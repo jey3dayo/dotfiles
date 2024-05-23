@@ -5,15 +5,18 @@ if not conform then
   return
 end
 
+-- 指定されたフォーマッタが存在するか確認し、存在しない場合はフォールバックフォーマッタを返す関数
 local function get_formatter(bufnr, formatter_name, fallback_formatters)
-  if conform.get_formatter_info(formatter_name, bufnr).available then
+  local is_exist_config_file = require("lsp.handlers").is_exist_config_files(formatter_name)
+  if is_exist_config_file and conform.get_formatter_info(formatter_name, bufnr).available then
     return { formatter_name }
   else
     return fallback_formatters
   end
 end
 
-local function check_ecma_script(bufnr)
+-- ECMAScript関連のフォーマッタを取得する関数
+local function get_ecma_formatter(bufnr)
   return get_formatter(bufnr, "biome", { "prettier" })
 end
 
@@ -29,13 +32,6 @@ conform.setup {
   formatters_by_ft = {
     lua = { "stylua" },
     go = { "gofmt" },
-    _python = function(bufnr)
-      if conform.get_formatter_info("ruff_format", bufnr).available then
-        return { "ruff_format" }
-      else
-        return { "isort", "black" }
-      end
-    end,
     python = function(bufnr)
       if conform.get_formatter_info("ruff_format", bufnr).available then
         return { "ruff_format" }
@@ -46,13 +42,13 @@ conform.setup {
     sql = { "sql_formatter" },
     toml = { "taplo" },
     yaml = { "yamlfmt" },
-    json = check_ecma_script,
-    jsonc = check_ecma_script,
-    javascriptreact = check_ecma_script,
-    typescriptreact = check_ecma_script,
-    javascript = check_ecma_script,
-    typescript = check_ecma_script,
-    astro = check_ecma_script,
+    json = get_ecma_formatter,
+    jsonc = get_ecma_formatter,
+    javascriptreact = get_ecma_formatter,
+    typescriptreact = get_ecma_formatter,
+    javascript = get_ecma_formatter,
+    typescript = get_ecma_formatter,
+    astro = get_ecma_formatter,
     markdown = { "markdownlint" },
   },
 }
