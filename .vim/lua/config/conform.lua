@@ -9,8 +9,13 @@ end
 local function get_formatter(bufnr, formatter_name, fallback_formatters)
   local is_exist_config_file = require("lsp.handlers").is_exist_config_files(formatter_name)
   if is_exist_config_file and conform.get_formatter_info(formatter_name, bufnr).available then
+    vim.notify("found: " .. formatter_name, vim.log.levels.INFO)
     return { formatter_name }
   else
+    vim.notify(
+      "not found: " .. formatter_name .. " fallback: " .. table.concat(fallback_formatters, ","),
+      vim.log.levels.INFO
+    )
     return fallback_formatters
   end
 end
