@@ -18,16 +18,6 @@ return {
     end,
   },
   {
-    "MunifTanjim/prettier.nvim",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-    },
-    -- cmd = { "Prettier" },
-    config = function()
-      require "config/prettier"
-    end,
-  },
-  {
     "glepnir/lspsaga.nvim",
     dependencies = {
       "neovim/nvim-lspconfig",
