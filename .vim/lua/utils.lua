@@ -20,4 +20,12 @@ end
 
 M.user_command = vim.api.nvim_create_user_command
 
+M.get_git_dir = function()
+  local git_dir = vim.fn.finddir(".git", vim.fn.expand "%:p:h" .. ";")
+  if git_dir ~= "" then
+    git_dir = vim.fn.fnamemodify(git_dir, ":h")
+  end
+  return git_dir
+end
+
 return M
