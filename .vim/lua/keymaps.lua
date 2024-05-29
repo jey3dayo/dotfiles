@@ -62,5 +62,4 @@ Keymap("<Leader>sl", ":<C-u>set list!<CR>")
 Keymap("<leader><C-d>", ":<C-u>bd!<CR>")
 
 -- yank
--- Keymap("<Leader>Y", ":let @* = expand('%:p')<CR>")
-Keymap("<Leader>Y", ":let @* = expand('%:.')<CR>")
+Keymap("<Leader>y", ":let @* = expand('%:.')<CR>")
