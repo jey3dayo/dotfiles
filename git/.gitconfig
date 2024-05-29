@@ -11,7 +11,7 @@
   ui = auto
 
 [core]
-  excludesfile = ~/.config/git/ignore
+  excludesfile = ~/.config/git/gitignore
   attributesfile = ~/.config/git/attributes
   quotepath = false
   editor = /usr/local/bin/vim

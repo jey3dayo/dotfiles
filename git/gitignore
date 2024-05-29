@@ -131,3 +131,4 @@ stash/
 
 zsh/sheldon/sheldon.zsh
 mise/trusted-configs
+ssh/ssh_config.d/private-host
