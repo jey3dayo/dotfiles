@@ -6,13 +6,12 @@ local lspFormatting = augroup("LspFormatting", { clear = true })
 
 local function lsp_highlight_document(client)
   local illuminate = safe_require "illuminate"
-  if not illuminate then
-    return
+  if illuminate then
+    illuminate.on_attach(client)
   end
-  illuminate.on_attach(client)
 end
 
-local lsp_keymaps = function(bufnr)
+local function setup_lsp_keymaps(bufnr)
   local set_opts = { silent = true }
   Set_keymap("[lsp]", "<Nop>", set_opts)
   Set_keymap("<C-e>", "[lsp]", set_opts)
@@ -36,7 +35,7 @@ local lsp_keymaps = function(bufnr)
 end
 
 M.on_attach = function(client, bufnr)
-  lsp_keymaps(bufnr)
+  setup_lsp_keymaps(bufnr)
   lsp_highlight_document(client)
 
   if client.supports_method "textDocument/formatting" then
@@ -44,36 +43,38 @@ M.on_attach = function(client, bufnr)
   end
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    "documentation",
-    "detail",
-    "additionalTextEdits",
-  },
-}
-capabilities.textDocument.foldingRange = {
-  dynamicRegistration = false,
-  lineFoldingOnly = true,
-}
-M.capabilities = capabilities
+local function setup_capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {
+      "documentation",
+      "detail",
+      "additionalTextEdits",
+    },
+  }
+  capabilities.textDocument.foldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true,
+  }
+  return capabilities
+end
 
--- fomatter用のconfigファイルが存在するか確認する
-local lsp_config_files = require("lsp.config").config_files
-M.is_exist_config_files = function(formatter_name)
-  local config_files = lsp_config_files[formatter_name]
+M.capabilities = setup_capabilities()
+
+-- formatter用のconfigファイルが存在するか確認する
+function M.is_exist_config_files(formatter_name)
+  local config_files = require("lsp.config").config_files[formatter_name]
   if not config_files then
     return false
   end
 
-  local is_exist_file = false
   for _, file in ipairs(config_files) do
     if vim.fn.filereadable(file) == 1 then
-      is_exist_file = true
+      return true
     end
   end
-  return is_exist_file
+  return false
 end
 
 return M
