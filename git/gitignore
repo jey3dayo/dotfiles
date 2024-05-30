@@ -6,7 +6,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -125,9 +126,10 @@ op/*
 jgit/*
 raycast/*
 cvim/*
-cycloud/
-lazygit/
-stash/
+cycloud/*
+lazygit/*
+stash/*
+.wrangler/*
 
 zsh/sheldon/sheldon.zsh
 mise/trusted-configs
