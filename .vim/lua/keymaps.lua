@@ -69,9 +69,9 @@ end
 Keymap("<Leader>so", source_config)
 
 -- yank
-local function copy_path()
+local function copy_current_file_path()
   local path = vim.fn.expand "%:."
   vim.fn.setreg("*", path)
   vim.api.nvim_echo({ { "Copied: " .. path, "None" } }, true, {})
 end
-Keymap("<Leader>y", copy_path)
+Keymap("<Leader>y", copy_current_file_path)
