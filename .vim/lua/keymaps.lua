@@ -17,6 +17,14 @@ function I_Keymap(key, value, _opts)
   vim.keymap.set("i", key, value, _opts)
 end
 
+function V_Keymap(key, value, _opts)
+  if not _opts then
+    _opts = silent_opts
+  end
+  vim.keymap.set("v", key, value, _opts)
+end
+
+-- deprecated
 function Set_keymap(key, value, _opts)
   if not _opts then
     _opts = silent_opts
