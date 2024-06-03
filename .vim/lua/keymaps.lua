@@ -45,10 +45,10 @@ Keymap("gF", "0f v$gf")
 Keymap("<Esc><Esc>", ":<C-u>set hlsearch!<CR>")
 
 -- link jump
--- Keymap("t", "<Nop>")
+Keymap("t", "<Nop>")
 -- Keymap("tt", "<C-]>")
--- Keymap("tj", ":<C-u>tag<CR>")
--- Keymap("tk", ":<C-u>pop<CR>")
+Keymap("tj", ":<C-u>tag<CR>")
+Keymap("tk", ":<C-u>pop<CR>")
 
 -- tab
 Keymap("<C-t>", "<Nop>")
