@@ -11,13 +11,10 @@ local function get_formatter(bufnr, formatter_name, fallback_formatters, ignore_
   local is_exist_config_file = require("lsp.handlers").is_exist_config_files(formatter_name)
 
   if (ignore_config or is_exist_config_file) and conform.get_formatter_info(formatter_name, bufnr).available then
-    vim.notify("found: " .. formatter_name, vim.log.levels.INFO)
+    -- vim.notify("found: " .. formatter_name, vim.log.levels.INFO)
     return { formatter_name }
   else
-    vim.notify(
-      "not found: " .. formatter_name .. " fallback: " .. table.concat(fallback_formatters, ","),
-      vim.log.levels.INFO
-    )
+    -- vim.notify("fallback: " .. table.concat(fallback_formatters, ","), vim.log.levels.INFO)
     return fallback_formatters
   end
 end
@@ -28,7 +25,9 @@ local function get_ecma_formatter(bufnr)
 end
 
 local function get_python_formatter(bufnr)
-  return get_formatter(bufnr, "ruff_format", { "isort", "black" }, true)
+  -- pythonのruffが帰ってこない
+  -- return get_formatter(bufnr, "ruff_format", { "isort", "black" }, true)
+  return get_formatter(bufnr, "ruff_lsp", { "isort", "black" }, true)
 end
 
 conform.setup {
