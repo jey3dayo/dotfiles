@@ -8,7 +8,9 @@ return {
     end,
   },
   {
-    "zbirenbaum/copilot-cmp",
+    -- FIXME: "zbirenbaum/copilot-cmp",
+    "tris203/copilot-cmp",
+    branch = "0.11_compat",
     dependencies = { "zbirenbaum/copilot.lua" },
   },
   {
