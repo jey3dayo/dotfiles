@@ -19,3 +19,4 @@ dist/*
 *.cache
 prisma/client
 storybook-static
+tsconfig.tsbuildinfo
