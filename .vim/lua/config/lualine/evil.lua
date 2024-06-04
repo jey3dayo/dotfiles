@@ -161,24 +161,51 @@ ins_left {
   end,
 }
 
-ins_left {
-  -- Lsp server name .
-  function()
-    local msg = "N/A"
-    local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-    local clients = vim.lsp.get_clients()
-    if next(clients) == nil then
-      return msg
-    end
-    for _, client in ipairs(clients) do
-      local filetypes = client.config.filetypes
-      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-        return client.name
-      end
-    end
+local function get_lsp_client_name()
+  local msg = "N/A"
+  local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
+  local clients = vim.lsp.get_clients()
+
+  if next(clients) == nil then
     return msg
-  end,
+  end
+
+  for _, client in ipairs(clients) do
+    local filetypes = client.config.filetypes
+    if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+      return client.name
+    end
+  end
+
+  return msg
+end
+
+ins_left {
+  get_lsp_client_name,
   icon = " LSP:",
+  color = { fg = colors.fg, gui = "bold" },
+}
+
+local function get_formatter_info()
+  local formatters = require("conform").list_formatters(0)
+  local selected_formatters = {}
+
+  for _, formatter in ipairs(formatters) do
+    if formatter.available then
+      table.insert(selected_formatters, formatter.name)
+    end
+  end
+
+  if #selected_formatters == 0 then
+    return "N/A"
+  else
+    return table.concat(selected_formatters, ", ")
+  end
+end
+
+ins_left {
+  get_formatter_info,
+  icon = " Fmt:",
   color = { fg = colors.fg, gui = "bold" },
 }
 
