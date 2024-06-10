@@ -5,6 +5,8 @@ if not conform then
   return
 end
 
+vim.g.disable_autoformat = false
+
 -- フォーマッタの存在を確認し、存在しない場合はフォールバックフォーマッタを返す関数
 -- ignore_configがtrueの場合、設定ファイルの存在を無視してフォーマッタの有無を確認する
 local function get_formatter(bufnr, formatter_name, fallback_formatters, ignore_config)
