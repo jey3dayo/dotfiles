@@ -1,7 +1,9 @@
 local cmp = safe_require "cmp"
 local lspkind = safe_require "lspkind"
+local cmp_autopairs = safe_require "nvim-autopairs.completion.cmp"
+local cmp_handlers = safe_require "nvim-autopairs.completion.handlers"
 
-if not (cmp and lspkind) then
+if not (cmp and lspkind and cmp_autopairs and cmp_handlers) then
   return
 end
 
@@ -90,6 +92,42 @@ cmp.setup.filetype("gitcommit", {
     { name = "buffer" },
   }),
 })
+
+cmp.event:on(
+  "confirm_done",
+  cmp_autopairs.on_confirm_done {
+    filetypes = {
+      -- "*" is a alias to all filetypes
+      ["*"] = {
+        ["("] = {
+          kind = {
+            cmp.lsp.CompletionItemKind.Function,
+            cmp.lsp.CompletionItemKind.Method,
+          },
+          handler = cmp_handlers["*"],
+        },
+      },
+      lua = {
+        ["("] = {
+          kind = {
+            cmp.lsp.CompletionItemKind.Function,
+            cmp.lsp.CompletionItemKind.Method,
+          },
+          ---@param char string
+          ---@param item table item completion
+          ---@param bufnr number buffer number
+          ---@param rules table
+          ---@param commit_character table<string>
+          handler = function(char, item, bufnr, rules, commit_character)
+            -- Your handler function. Inspect with print(vim.inspect{char, item, bufnr, rules, commit_character})
+          end,
+        },
+      },
+      -- Disable for tex
+      tex = false,
+    },
+  }
+)
 
 vim.cmd [[
   set completeopt=menuone,noinsert,noselect
