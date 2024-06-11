@@ -89,6 +89,12 @@ return {
     },
   },
   {
+    "nvim-telescope/telescope-frecency.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+  },
+  {
     "AckslD/nvim-neoclip.lua",
     dependencies = {
       "nvim-telescope/telescope.nvim",

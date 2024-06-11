@@ -14,12 +14,12 @@ end
 local function setup_file_browser(opts)
   opts = opts or {}
   telescope.extensions.file_browser.file_browser(vim.tbl_extend("force", {
-    respect_gitignore = true,
     hidden = true,
     grouped = true,
     previewer = false,
     initial_mode = "normal",
     layout_config = { height = 40 },
+    respect_gitignore = true,
   }, opts))
 end
 
@@ -61,6 +61,11 @@ local file_browser_mappings = {
 telescope.setup {
   defaults = {
     mappings = telescope_mappings,
+    file_ignore_patterns = {
+      "^.git/",
+      "^node_modules/",
+      "*.patch",
+    },
   },
   pickers = {
     find_files = {
@@ -79,9 +84,10 @@ telescope.setup {
 }
 telescope.load_extension "file_browser"
 telescope.load_extension "notify"
+telescope.load_extension "frecency"
 
 -- keymaps
-Keymap("<Leader>f", function()
+Keymap("<Leader>F", function()
   builtin.find_files {
     no_ignore = false,
     hidden = true,
@@ -90,10 +96,12 @@ end)
 Keymap("<Leader>g", builtin.live_grep)
 Keymap("<Leader>b", builtin.buffers)
 Keymap("<Leader>d", builtin.diagnostics)
+Keymap("<Leader><Leader>", builtin.resume)
+Keymap("<Leader>gs", builtin.git_status)
+
+Keymap("<leader>f", telescope.extensions.frecency.frecency)
 Keymap("<Leader>Y", telescope.extensions.neoclip.default)
 Keymap("<leader>n", telescope.extensions.notify.notify)
-Keymap("<Leader>,", builtin.resume)
-Keymap("<Leader>gs", builtin.git_status)
 
 Keymap("<Leader>e", function()
   local git_dir = require("utils").get_git_dir()
