@@ -3,6 +3,7 @@ if vim.loader then
 end
 
 require "global_utils"
+require "lua_rocks"
 require "base"
 require "autocmds"
 require "options"
