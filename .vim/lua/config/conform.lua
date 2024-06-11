@@ -57,10 +57,6 @@ conform.setup {
 
     return { lsp_fallback = true }
   end,
-  format_on_save = {
-    timeout_ms = 500,
-    lsp_fallback = true,
-  },
 }
 
 user_command("ConformDisable", function(args)
