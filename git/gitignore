@@ -44,6 +44,8 @@ Session.vim
 .vim/bundle/
 .vim/chalice/cache
 <Plug>*
+projects-config/*
+!projects-config/.gitkeep
 
 # Zsh
 zsh/.zsh_sessions/
