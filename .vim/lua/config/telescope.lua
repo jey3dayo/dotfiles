@@ -99,9 +99,13 @@ Keymap("<Leader>d", builtin.diagnostics)
 Keymap("<Leader><Leader>", builtin.resume)
 Keymap("<Leader>gs", builtin.git_status)
 
-Keymap("<leader>f", telescope.extensions.frecency.frecency)
+-- extensions
 Keymap("<Leader>Y", telescope.extensions.neoclip.default)
 Keymap("<leader>n", telescope.extensions.notify.notify)
+
+Keymap("<Leader>f", function()
+  telescope.extensions.frecency.frecency { workspace = "CWD" }
+end, { desc = "Find by frecency" })
 
 Keymap("<Leader>e", function()
   local git_dir = require("utils").get_git_dir()
