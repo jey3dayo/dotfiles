@@ -33,14 +33,6 @@ local function get_python_formatter(bufnr)
 end
 
 conform.setup {
-  format_after_save = function(bufnr)
-    -- Disable with a global or buffer-local variable
-    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-      return nil
-    end
-
-    return { lsp_fallback = true }
-  end,
   formatters_by_ft = {
     lua = { "stylua" },
     go = { "gofmt" },
@@ -56,6 +48,18 @@ conform.setup {
     typescript = get_ecma_formatter,
     astro = get_ecma_formatter,
     markdown = { "markdownlint" },
+  },
+  format_after_save = function(bufnr)
+    -- Disable with a global or buffer-local variable
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      return nil
+    end
+
+    return { lsp_fallback = true }
+  end,
+  format_on_save = {
+    timeout_ms = 500,
+    lsp_fallback = true,
   },
 }
 
