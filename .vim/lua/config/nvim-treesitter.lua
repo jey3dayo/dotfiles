@@ -1,5 +1,6 @@
 local ts = safe_require "nvim-treesitter.configs"
-if not ts then
+local parsers = safe_require "nvim-treesitter.parsers"
+if not (ts and parsers) then
   return
 end
 
@@ -23,4 +24,4 @@ ts.setup {
   },
 }
 
-local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+local parser_config = parsers.get_parser_configs()
