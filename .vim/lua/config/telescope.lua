@@ -83,6 +83,7 @@ telescope.setup {
   },
 }
 telescope.load_extension "file_browser"
+telescope.load_extension "undo"
 telescope.load_extension "notify"
 telescope.load_extension "frecency"
 
@@ -92,16 +93,17 @@ Keymap("<Leader>F", function()
     no_ignore = false,
     hidden = true,
   }
-end)
-Keymap("<Leader>g", builtin.live_grep)
-Keymap("<Leader>b", builtin.buffers)
-Keymap("<Leader>d", builtin.diagnostics)
-Keymap("<Leader><Leader>", builtin.resume)
-Keymap("<Leader>gs", builtin.git_status)
+end, { desc = "Find By Fiiles" })
+Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
+Keymap("<Leader>b", builtin.buffers, { desc = "buffers" })
+Keymap("<Leader>d", builtin.diagnostics, { desc = "Find by Diagnostics" })
+Keymap("<Leader>u", builtin.undo, { desc = "Find by Undo" })
+Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
+Keymap("<Leader>gs", builtin.git_status, { desc = "Find by Git Status" })
 
 -- extensions
-Keymap("<Leader>Y", telescope.extensions.neoclip.default)
-Keymap("<leader>n", telescope.extensions.notify.notify)
+Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
+Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify" })
 
 Keymap("<Leader>f", function()
   telescope.extensions.frecency.frecency { workspace = "CWD" }
@@ -113,7 +115,7 @@ Keymap("<Leader>e", function()
     path = git_dir ~= "" and git_dir or "%:p:h",
     cwd = git_dir ~= "" and git_dir or telescope_buffer_dir(),
   }
-end)
+end, { desc = "Find by File Browser" })
 
 Keymap("<Leader>E", function()
   setup_file_browser {
@@ -121,4 +123,4 @@ Keymap("<Leader>E", function()
     cwd = telescope_buffer_dir(),
     respect_gitignore = false,
   }
-end)
+end, { desc = "Find by File Browser" })
