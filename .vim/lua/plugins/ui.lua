@@ -105,6 +105,12 @@ return {
     end,
   },
   {
+    "debugloop/telescope-undo.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+  },
+  {
     "dcampos/nvim-snippy",
     cmd = { "SnippyEdit", "SnippyReload" },
     config = function()

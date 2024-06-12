@@ -58,20 +58,46 @@ local file_browser_mappings = {
   },
 }
 
+local file_ignore_patterns = {
+  "^.git/",
+  "^node_modules/",
+  "*.patch",
+  "lazy-lock.json",
+}
+
+local function get_live_grep_additional_args()
+  local additional_args = { "--hidden" }
+
+  for _, pattern in ipairs(file_ignore_patterns) do
+    table.insert(additional_args, "--glob")
+    table.insert(additional_args, "!" .. pattern)
+  end
+
+  return additional_args
+end
+
+local function get_find_files_command()
+  local find_command = { "rg", "--files", "--hidden" }
+
+  for _, pattern in ipairs(file_ignore_patterns) do
+    table.insert(find_command, "--glob")
+    table.insert(find_command, "!" .. pattern)
+  end
+
+  return find_command
+end
+
 telescope.setup {
   defaults = {
     mappings = telescope_mappings,
-    file_ignore_patterns = {
-      "^.git/",
-      "^node_modules/",
-      "*.patch",
-    },
+    file_ignore_patterns = file_ignore_patterns,
   },
   pickers = {
     find_files = {
       -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
-      find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+      find_command = get_find_files_command,
     },
+    live_grep = { additional_args = get_live_grep_additional_args },
   },
   extensions = {
     file_browser = {
@@ -97,7 +123,7 @@ end, { desc = "Find By Fiiles" })
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
 Keymap("<Leader>b", builtin.buffers, { desc = "buffers" })
 Keymap("<Leader>d", builtin.diagnostics, { desc = "Find by Diagnostics" })
-Keymap("<Leader>u", builtin.undo, { desc = "Find by Undo" })
+Keymap("<Leader>u", telescope.extensions.undo.undo, { desc = "Find by Undo" })
 Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 Keymap("<Leader>gs", builtin.git_status, { desc = "Find by Git Status" })
 
