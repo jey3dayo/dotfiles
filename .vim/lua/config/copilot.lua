@@ -25,7 +25,7 @@ copilot_cmp.setup {
 }
 
 copilot_chat.setup {
-  debug = true, -- Enable debugging  -- プロンプトの設定
+  debug = false, -- Enable debugging  -- プロンプトの設定
 
   -- 日本語でオーバーライド
   prompts = {
