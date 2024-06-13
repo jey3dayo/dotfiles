@@ -114,12 +114,6 @@ telescope.load_extension "notify"
 telescope.load_extension "frecency"
 
 -- keymaps
-Keymap("<Leader>F", function()
-  builtin.find_files {
-    no_ignore = false,
-    hidden = true,
-  }
-end, { desc = "Find By Fiiles" })
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
 Keymap("<Leader>b", builtin.buffers, { desc = "buffers" })
 Keymap("<Leader>d", builtin.diagnostics, { desc = "Find by Diagnostics" })
@@ -133,6 +127,9 @@ Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify
 
 Keymap("<Leader>f", function()
   telescope.extensions.frecency.frecency { workspace = "CWD" }
+end, { desc = "Find CWD by frecency" })
+Keymap("<Leader>F", function()
+  telescope.extensions.frecency.frecency {}
 end, { desc = "Find by frecency" })
 
 Keymap("<Leader>e", function()
@@ -141,7 +138,7 @@ Keymap("<Leader>e", function()
     path = git_dir ~= "" and git_dir or "%:p:h",
     cwd = git_dir ~= "" and git_dir or telescope_buffer_dir(),
   }
-end, { desc = "Find by File Browser" })
+end, { desc = "Find git_dir by File Browser" })
 
 Keymap("<Leader>E", function()
   setup_file_browser {
