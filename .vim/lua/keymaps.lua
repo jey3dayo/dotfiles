@@ -3,25 +3,29 @@ vim.g.mapleader = ","
 local noremap_opts = { noremap = true, silent = true }
 local silent_opts = { silent = true }
 
-function Keymap(key, value, _opts)
-  if not _opts then
-    _opts = noremap_opts
-  end
-  vim.keymap.set("n", key, value, _opts)
+local function set_keymap(mode, key, value, opts)
+  opts = opts or (mode == "n" and noremap_opts or silent_opts)
+  vim.keymap.set(mode, key, value, opts)
 end
 
-function I_Keymap(key, value, _opts)
-  if not _opts then
-    _opts = silent_opts
-  end
-  vim.keymap.set("i", key, value, _opts)
+function Keymap(key, value, opts)
+  set_keymap("n", key, value, opts)
 end
 
-function V_Keymap(key, value, _opts)
-  if not _opts then
-    _opts = silent_opts
-  end
-  vim.keymap.set("v", key, value, _opts)
+function I_Keymap(key, value, opts)
+  set_keymap("i", key, value, opts)
+end
+
+function V_Keymap(key, value, opts)
+  set_keymap("v", key, value, opts)
+end
+
+function X_Keymap(key, value, opts)
+  set_keymap("x", key, value, opts)
+end
+
+function O_Keymap(key, value, opts)
+  set_keymap("o", key, value, opts)
 end
 
 -- deprecated
