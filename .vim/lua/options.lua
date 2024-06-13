@@ -1,3 +1,6 @@
+-- ~/.cache/nvim
+local cacheDir = vim.fn.stdpath "cache"
+
 local options = {
   encoding = "utf-8",
   fileencoding = "utf-8",
@@ -27,9 +30,9 @@ local options = {
   backup = true,
   swapfile = true,
   undofile = true,
-  backupdir = vim.fn.stdpath "cache",
-  directory = vim.fn.stdpath "cache",
-  undodir = vim.fn.stdpath "cache",
+  backupdir = cacheDir,
+  directory = cacheDir,
+  undodir = cacheDir,
   backupskip = { "/tmp/*", "/private/tmp/*", cacheDir },
 
   -- ui
