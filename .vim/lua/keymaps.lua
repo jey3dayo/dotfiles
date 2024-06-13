@@ -40,37 +40,40 @@ function Buf_set_keymap(key, value, buf)
   vim.api.nvim_buf_set_keymap(buf, "n", key, value, noremap_opts)
 end
 
-Keymap("<C-d>", ":<C-u>bd<CR>")
-Keymap("<Tab>", ":<C-u>wincmd w<CR>")
+Keymap("<C-d>", "<cmd><C-u>bd<CR>")
+Keymap("<Tab>", "<cmd><C-u>wincmd w<CR>")
 Keymap("gF", "0f v$gf")
 Keymap("gF", "0f v$gf")
 
 -- ESC ESC -> toggle hlsearch
-Keymap("<Esc><Esc>", ":<C-u>set hlsearch!<CR>")
+Keymap("<Esc><Esc>", "<cmd><C-u>set hlsearch!<CR>")
 
 -- link jump
-Keymap("t", "<Nop>")
-Keymap("tt", "<C-]>")
-Keymap("tj", ":<C-u>tag<CR>")
-Keymap("tk", ":<C-u>pop<CR>")
+Set_keymap("[tag]", "<Nop>", {})
+Set_keymap("t", "[tag]", {})
+Keymap("[tag]t", "<C-]>")
+Keymap("[tag]j", "<cmd><C-u>tag<CR>")
+Keymap("[tag]k", "<cmd><C-u>pop<CR>")
 
 -- tab
-Keymap("<C-t>", "<Nop>")
-Keymap("<C-t>c", ":<C-u>tabnew<CR>")
-Keymap("<C-t>d", ":<C-u>tabclose<CR>")
-Keymap("<C-t>o", ":<C-u>tabonly<CR>")
-Keymap("<C-t>n", ":<C-u>tabnext<CR>")
-Keymap("<C-t>p", ":<C-u>tabprevious<CR>")
-Keymap("gt", ":<C-u>tabnext<CR>")
-Keymap("gT", ":<C-u>tabprevious<CR>")
+Set_keymap("[tab]", "<Nop>", {})
+Set_keymap("<C-t>", "[tab]", {})
+Keymap("[tab]c", "<cmd><C-u>tabnew<CR>")
+Keymap("[tab]d", "<cmd><C-u>tabclose<CR>")
+Keymap("[tab]o", "<cmd><C-u>tabonly<CR>")
+Keymap("[tab]n", "<cmd><C-u>tabnext<CR>")
+Keymap("[tab]p", "<cmd><C-u>tabprevious<CR>")
+
+Keymap("gt", "<cmd><C-u>tabnext<CR>")
+Keymap("gT", "<cmd><C-u>tabprevious<CR>")
 
 -- set list
-Keymap("<Leader>sn", ":<C-u>set number!<CR>")
-Keymap("<Leader>sl", ":<C-u>set list!<CR>")
-Keymap("<leader><C-d>", ":<C-u>bd!<CR>")
+Keymap("<Leader>sn", "<cmd><C-u>set number!<CR>")
+Keymap("<Leader>sl", "<cmd><C-u>set list!<CR>")
+Keymap("<leader><C-d>", "<cmd><C-u>bd!<CR>")
 
 -- update source
-Keymap("<Leader>su", ":<C-u>Lazy update<CR>")
+Keymap("<Leader>su", "<cmd><C-u>Lazy update<CR>")
 
 -- Load a config file
 local function load_config(config_path)

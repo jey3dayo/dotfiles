@@ -15,7 +15,7 @@ return {
       "nvim-tree/nvim-web-devicons",
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
-    run = ":TSUpdate",
+    cmd = { "Trouble" },
     config = function()
       require "config/nvim-treesitter"
     end,

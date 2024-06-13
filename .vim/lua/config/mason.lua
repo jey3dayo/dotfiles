@@ -16,10 +16,6 @@ local function safe_setup(server, opts, autostart)
   lspconfig[server].setup(opts)
 end
 
-local term_opts = { silent = true }
-Set_keymap("[lsp]", "<Nop>", term_opts)
-Set_keymap("<C-e>", "[lsp]", term_opts)
-
 mason.setup {
   ui = {
     icons = {
