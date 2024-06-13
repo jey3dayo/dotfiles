@@ -2,8 +2,9 @@ local cmp = safe_require "cmp"
 local lspkind = safe_require "lspkind"
 local cmp_autopairs = safe_require "nvim-autopairs.completion.cmp"
 local cmp_handlers = safe_require "nvim-autopairs.completion.handlers"
+local colorizer_cmp = safe_require "tailwindcss-colorizer-cmp"
 
-if not (cmp and lspkind and cmp_autopairs and cmp_handlers) then
+if not (cmp and lspkind and cmp_autopairs and cmp_handlers and colorizer_cmp) then
   return
 end
 
@@ -128,6 +129,10 @@ cmp.event:on(
     },
   }
 )
+
+colorizer_cmp.setup {
+  color_square_width = 2,
+}
 
 vim.cmd [[
   set completeopt=menuone,noinsert,noselect

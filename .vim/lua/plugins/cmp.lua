@@ -16,4 +16,5 @@ return {
   { "dcampos/cmp-snippy", dependencies },
   { "ray-x/cmp-treesitter", dependencies },
   "onsails/lspkind-nvim",
+  "roobert/tailwindcss-colorizer-cmp.nvim",
 }
