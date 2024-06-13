@@ -72,13 +72,25 @@ Keymap("<leader><C-d>", ":<C-u>bd!<CR>")
 -- update source
 Keymap("<Leader>su", ":<C-u>Lazy update<CR>")
 
--- source config
-local function source_config()
-  local config_path = vim.fn.stdpath "config" .. "/init.lua"
+-- Load a config file
+local function load_config(config_path)
   vim.cmd("source " .. config_path)
   vim.api.nvim_echo({ { "Loaded config: " .. config_path, "None" } }, true, {})
 end
-Keymap("<Leader>so", source_config)
+
+-- Source the main config
+local function source_config()
+  local config_path = vim.fn.stdpath "config" .. "/init.lua"
+  load_config(config_path)
+end
+Keymap("<Leader>so", source_config, { desc = "Source init.lua" })
+
+-- Source the current config
+local function source_current_config()
+  local config_path = vim.fn.expand "%:p"
+  load_config(config_path)
+end
+Keymap("<Leader>sO", source_current_config, { desc = "Source current buffer" })
 
 -- yank
 local function copy_current_file_path()
