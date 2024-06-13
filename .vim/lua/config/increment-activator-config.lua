@@ -5,6 +5,7 @@ vim.g.increment_activator_filetype_candidates = {
     { "static", "absolute", "relative", "fixed", "sticky" },
     { "height", "width" },
     { "left", "right", "top", "bottom" },
+    { "true", "false" },
     { "enable", "disable" },
     { "enabled", "disabled" },
     { "should", "should_not" },
@@ -19,6 +20,7 @@ vim.g.increment_activator_filetype_candidates = {
     { "development", "staging", "production" },
     { "const", "let" },
     { "dark", "medium", "light" },
+    { "sm", "md", "lg", "xl", "xxl" },
   },
   ruby = {
     { "if", "unless" },
