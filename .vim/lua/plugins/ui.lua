@@ -1,11 +1,9 @@
 return {
+  "nvim-lua/popup.nvim",
   "nvim-tree/nvim-web-devicons",
   "JoosepAlviste/nvim-ts-context-commentstring",
   {
     "rcarriga/nvim-notify",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
     config = function()
       require "config/nvim-notify"
     end,
@@ -74,62 +72,41 @@ return {
     end,
   },
   {
-    "nvim-telescope/telescope.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    config = function()
-      require "config/telescope"
-    end,
-  },
-  {
-    "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
-  },
-  {
-    "nvim-telescope/telescope-frecency.nvim",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
-  },
-  {
-    "AckslD/nvim-neoclip.lua",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-      "kkharji/sqlite.lua",
-    },
-    config = function()
-      require "config/neoclip"
-    end,
-  },
-  {
-    "debugloop/telescope-undo.nvim",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
-  },
-  {
     "dcampos/nvim-snippy",
     cmd = { "SnippyEdit", "SnippyReload" },
     config = function()
       require "config/nvim-snippy"
     end,
   },
-  "honza/vim-snippets",
-  {
-    "ggandor/lightspeed.nvim",
-    config = function()
-      require "config/lightspeed"
-    end,
-  },
   "uga-rosa/ccc.nvim",
+  "hrsh7th/nvim-insx",
   {
     "j-hui/fidget.nvim",
     tag = "legacy",
     config = function()
       require "config/fidget"
+    end,
+  },
+  {
+    "ggandor/lightspeed.nvim",
+    enabled = false,
+    config = function()
+      require "config/lightspeed"
+    end,
+  },
+  {
+    "ggandor/leap.nvim",
+    enabled = false,
+    config = function()
+      require "config/leap"
+    end,
+  },
+  {
+    "phaazon/hop.nvim",
+    enabled = true,
+    branch = "v2",
+    config = function()
+      require "config/hop"
     end,
   },
 }

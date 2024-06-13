@@ -3,6 +3,7 @@ local ruby_ft = { "ruby" }
 local markdown_ft = { "markdown", "mkd" }
 
 return {
+  "editorconfig/editorconfig-vim",
   { "sam4llis/nvim-lua-gf", ft = { "lua" } },
   { "wavded/vim-stylus", ft = { "stylus" } },
   { "tpope/vim-rake", ft = ruby_ft },
