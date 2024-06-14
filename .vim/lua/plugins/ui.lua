@@ -109,4 +109,10 @@ return {
       require "config/hop"
     end,
   },
+  {
+    "gcmt/wildfire.vim",
+    config = function()
+      require "config/wildfire"
+    end,
+  },
 }
