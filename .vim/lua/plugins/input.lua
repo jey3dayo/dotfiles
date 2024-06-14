@@ -21,16 +21,15 @@ return {
   {
     "windwp/nvim-ts-autotag",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
+    config = true,
   },
   {
     "keaising/im-select.nvim",
     opts = require "config/im-select",
   },
   {
-    "gcmt/wildfire.vim",
-    config = function()
-      require "config/wildfire"
-    end,
+    "SUSTech-data/wildfire.nvim",
+    opts = require "config/wildfire",
   },
   {
     "ggandor/lightspeed.nvim",

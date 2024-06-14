@@ -22,4 +22,10 @@ return {
     cmd = { "SnippyEdit", "SnippyReload" },
     config = true,
   },
+  {
+    -- FIXME: "zbirenbaum/copilot-cmp",
+    "tris203/copilot-cmp",
+    dependencies = { "zbirenbaum/copilot.lua" },
+    config = true,
+  },
 }

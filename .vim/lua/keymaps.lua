@@ -28,6 +28,10 @@ function O_Keymap(key, value, opts)
   set_keymap("o", key, value, opts)
 end
 
+function T_Keymap(key, value, opts)
+  set_keymap("t", key, value, opts)
+end
+
 -- deprecated
 function Set_keymap(key, value, _opts)
   if not _opts then

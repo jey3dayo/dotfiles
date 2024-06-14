@@ -1,9 +1,14 @@
--- " This selects the next closest text object.
-Keymap("<Space>", "<Plug>(wildfire-fuel)")
-
--- " This selects the previous closest text object.
-V_Keymap("<C-Space>", "<Plug>(wildfire-water)")
-
-vim.g.wildfire_objects = {
-  { "iw", "i`", "a`", "i'", "a'", 'i"', 'a"', "i|", "i)", "i]", "i}", "ip", "it", "at", "i>" },
+return {
+  surrounds = {
+    { "(", ")" },
+    { "{", "}" },
+    { "<", ">" },
+    { "[", "]" },
+  },
+  keymaps = {
+    init_selection = "<CR>",
+    node_incremental = "<CR>",
+    node_decremental = "<BS>",
+  },
+  filetype_exclude = { "qf" }, --keymaps will be unset in excluding filetypes
 }

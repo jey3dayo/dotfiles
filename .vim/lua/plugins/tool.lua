@@ -35,6 +35,12 @@ return {
   {
     "akinsho/toggleterm.nvim",
     version = "*",
-    config = true,
+    opts = function()
+      require "config/toggleterm"
+    end,
+  },
+  {
+    "https://github.com/sidebar-nvim/sidebar.nvim",
+    opts = {},
   },
 }
