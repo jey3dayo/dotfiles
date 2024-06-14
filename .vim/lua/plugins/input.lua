@@ -1,14 +1,14 @@
 return {
   {
     "numToStr/Comment.nvim",
-    config = function()
+    opts = function()
       require "config/comment"
     end,
   },
   {
     "junegunn/vim-easy-align",
     cmd = { "EasyAlign" },
-    config = function()
+    opts = function()
       require "config/vim-easy-align"
     end,
   },
@@ -24,8 +24,28 @@ return {
   },
   {
     "keaising/im-select.nvim",
+    opts = require "config/im-select",
+  },
+  {
+    "gcmt/wildfire.vim",
     config = function()
-      require "config/im-select"
+      require "config/wildfire"
     end,
+  },
+  {
+    "ggandor/lightspeed.nvim",
+    enabled = false,
+    config = true,
+  },
+  {
+    "ggandor/leap.nvim",
+    enabled = true,
+    config = require "config/leap",
+  },
+  {
+    "phaazon/hop.nvim",
+    enabled = false,
+    branch = "v2",
+    config = require "config/hop",
   },
 }

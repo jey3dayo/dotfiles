@@ -5,12 +5,6 @@ return {
   "cocopon/iceberg.vim",
   {
     "folke/tokyonight.nvim",
-    opts = {
-      transparent = true,
-      styles = {
-        sidebars = "transparent",
-        floats = "transparent",
-      },
-    },
+    opts = require "config/tokyonight",
   },
 }

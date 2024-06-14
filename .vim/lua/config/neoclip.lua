@@ -1,4 +1,4 @@
-require("neoclip").setup {
+return {
   history = 1000,
   enable_persistent_history = true,
   keys = {
@@ -14,5 +14,3 @@ require("neoclip").setup {
     },
   },
 }
-
-require("telescope").load_extension "neoclip"

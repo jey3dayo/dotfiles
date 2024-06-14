@@ -26,9 +26,7 @@ return {
       "nvim-telescope/telescope.nvim",
       "kkharji/sqlite.lua",
     },
-    config = function()
-      require "config/neoclip"
-    end,
+    opts = require "config/neoclip",
   },
   {
     "debugloop/telescope-undo.nvim",

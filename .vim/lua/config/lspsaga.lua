@@ -1,9 +1,4 @@
-local lspsaga = safe_require "lspsaga"
-if not lspsaga then
-  return
-end
-
-lspsaga.setup {
+return {
   code_action_lightbulb = {
     enable = true,
   },

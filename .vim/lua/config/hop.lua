@@ -5,10 +5,9 @@ if not (hop and hop_hint) then
   return
 end
 
-local directions = hop_hint.HintDirection
-
 hop.setup { keys = "etovxqpdygfblzhckisuran" }
 
+local directions = hop_hint.HintDirection
 vim.keymap.set("", "s", function()
   hop.hint_char1 { direction = directions.AFTER_CURSOR }
 end, { remap = true })

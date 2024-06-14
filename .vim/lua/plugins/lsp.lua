@@ -6,7 +6,10 @@ return {
       require "config/conform"
     end,
   },
-  "williamboman/mason.nvim",
+  {
+    "williamboman/mason.nvim",
+    opts = require "config/mason",
+  },
   "neovim/nvim-lspconfig",
   {
     "williamboman/mason-lspconfig.nvim",
@@ -14,7 +17,7 @@ return {
       "williamboman/mason.nvim",
     },
     config = function()
-      require "config/mason"
+      require "config/mason-lspconfig"
     end,
   },
   {
@@ -24,8 +27,6 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
     },
-    config = function()
-      require "config/lspsaga"
-    end,
+    opts = require "config/lspsaga",
   },
 }

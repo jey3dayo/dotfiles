@@ -1,10 +1,4 @@
-local ts = safe_require "nvim-treesitter.configs"
-local parsers = safe_require "nvim-treesitter.parsers"
-if not (ts and parsers) then
-  return
-end
-
-ts.setup {
+return {
   highlight = {
     enable = true,
     disable = {},
@@ -23,5 +17,3 @@ ts.setup {
     -- disable = { "c", "ruby" },
   },
 }
-
-local parser_config = parsers.get_parser_configs()

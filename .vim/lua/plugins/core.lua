@@ -11,9 +11,7 @@ return {
   "Shougo/context_filetype.vim",
   {
     "kylechui/nvim-surround",
-    config = function()
-      require "config/nvim-surround"
-    end,
+    config = true,
   },
   {
     "osyo-manga/vim-precious",

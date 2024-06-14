@@ -10,9 +10,7 @@ return {
     "sindrets/diffview.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
-    config = function()
-      require "config/diffview"
-    end,
+    opts = require "config/diffview",
   },
   { "tpope/vim-rhubarb", dependencies = { "tpope/vim-fugitive" } },
   { "vim-scripts/renamer.vim", cmd = "Renamer" },
@@ -20,9 +18,7 @@ return {
   { "dstein64/vim-startuptime", cmd = "StartupTime" },
   {
     "windwp/nvim-projectconfig",
-    config = function()
-      require "config/nvim-projectconfig"
-    end,
+    opts = require "config/nvim-projectconfig",
   },
   {
     "folke/trouble.nvim",

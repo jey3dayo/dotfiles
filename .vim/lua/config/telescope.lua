@@ -5,7 +5,13 @@ end
 local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
 
-local fb_actions = telescope.extensions.file_browser.actions
+local file_ignore_patterns = {
+  "^.git/",
+  "^node_modules/",
+  "*.diff",
+  "*.patch",
+  "lazy-lock.json",
+}
 
 local function telescope_buffer_dir()
   return vim.fn.expand "%:p:h"
@@ -41,6 +47,7 @@ local telescope_mappings = {
   },
 }
 
+local fb_actions = telescope.extensions.file_browser.actions
 local file_browser_mappings = {
   i = {
     ["<C-d>"] = actions.close,
@@ -56,13 +63,6 @@ local file_browser_mappings = {
       vim.cmd "startinsert"
     end,
   },
-}
-
-local file_ignore_patterns = {
-  "^.git/",
-  "^node_modules/",
-  "*.patch",
-  "lazy-lock.json",
 }
 
 local function get_live_grep_additional_args()
@@ -112,6 +112,8 @@ telescope.load_extension "file_browser"
 telescope.load_extension "undo"
 telescope.load_extension "notify"
 telescope.load_extension "frecency"
+telescope.load_extension "neoclip"
+telescope.load_extension "notify"
 
 -- keymaps
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
