@@ -17,7 +17,20 @@ return {
     end,
   },
   {
+    "shellRaining/hlchunk.nvim",
+    enabled = true,
+    event = { "BufReadPre", "BufNewFile" },
+    config = true,
+    opts = require "config/hlchunk",
+  },
+  {
+    "hedyhli/outline.nvim",
+    enabled = false,
+    config = true,
+  },
+  {
     "lukas-reineke/indent-blankline.nvim",
+    enabled = false,
     config = function()
       require "config/indent-blankline"
     end,
