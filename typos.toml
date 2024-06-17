@@ -1,3 +1,6 @@
+[files]
+extend-exclude = ["raycast/**", "op/config", "*.pub", "Brewfile"]
+
 # [default]
 # extend-ignore-identifiers-re = [
 #     # *sigh* this just isn't worth the cost of fixing
@@ -9,6 +12,7 @@
 # AttributeIDSupressMenu = "AttributeIDSupressMenu"
 
 [default.extend-words]
+loca = "loca"
 overriden = "overriden"
 fo = "fo"
 daa = "daa"
