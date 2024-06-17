@@ -28,6 +28,7 @@ abbr -S d='docker'
 abbr -S dc='docker compose'
 
 abbr -S pk='pkill -9 -f '
+abbr -S typos="typos --config ~/.config/typos.toml ."
 
 abbr -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 abbr -S flusdns="dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
