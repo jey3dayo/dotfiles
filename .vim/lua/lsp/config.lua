@@ -17,6 +17,7 @@ M.installed_servers = {
   "taplo",
   "vimls",
   "marksman",
+  "typos_lsp",
 }
 
 M.installed_tree_sitter = {
