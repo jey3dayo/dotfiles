@@ -13,6 +13,7 @@ vim.g.increment_activator_filetype_candidates = {
     { "div", "span", "Box" },
     { "column", "row" },
     { "start", "end" },
+    { "before", "after" },
     { "head", "tail" },
     { "get", "post" },
     { "margin", "padding" },
