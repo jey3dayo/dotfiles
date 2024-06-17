@@ -9,4 +9,8 @@
 # AttributeIDSupressMenu = "AttributeIDSupressMenu"
 
 [default.extend-words]
-# overriden = "overriden"
+overriden = "overriden"
+fo = "fo"
+daa = "daa"
+ba = "ba"
+caf = "caf"
