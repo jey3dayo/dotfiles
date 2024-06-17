@@ -28,7 +28,7 @@ return {
     "HiPhish/rainbow-delimiters.nvim",
     dependencies = dependencies,
     config = function()
-      require "config/rainbow-delimeters"
+      require "config/rainbow-delimiters"
     end,
   },
 }
