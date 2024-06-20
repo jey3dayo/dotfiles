@@ -30,7 +30,7 @@ local options = {
 
   -- backup
   backup = true,
-  swapfile = true,
+  swapfile = false,
   undofile = true,
   backupdir = cacheDir,
   directory = cacheDir,
