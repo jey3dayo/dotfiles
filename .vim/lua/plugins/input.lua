@@ -30,11 +30,12 @@ return {
   },
   {
     "SUSTech-data/wildfire.nvim",
+    enabled = false,
     opts = require "config/wildfire",
   },
   {
     "ggandor/lightspeed.nvim",
-    enabled = false,
+    enabled = true,
     config = true,
   },
   {
