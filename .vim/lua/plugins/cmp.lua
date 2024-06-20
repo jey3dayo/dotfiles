@@ -23,8 +23,7 @@ return {
     config = true,
   },
   {
-    -- FIXME: "zbirenbaum/copilot-cmp",
-    "tris203/copilot-cmp",
+    "zbirenbaum/copilot-cmp",
     dependencies = { "zbirenbaum/copilot.lua" },
     config = true,
   },
