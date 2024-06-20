@@ -8,9 +8,10 @@ return {
   {
     "junegunn/vim-easy-align",
     cmd = { "EasyAlign" },
-    opts = function()
-      require "config/vim-easy-align"
-    end,
+    keys = {
+      { "ga", "<Plug>(EasyAlign)", mode = "n", desc = "Easy Align" },
+      { "ga", "<Plug>(EasyAlign)", mode = "x", desc = "Easy Align" },
+    },
   },
   {
     "nishigori/increment-activator",
