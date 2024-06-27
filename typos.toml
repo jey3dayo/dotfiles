@@ -1,5 +1,5 @@
 [files]
-extend-exclude = ["raycast/**", "op/config", "*.pub", "Brewfile"]
+extend-exclude = ["raycast/**", "op/config", "*.pub", "Brewfile", "*env*"]
 
 # [default]
 # extend-ignore-identifiers-re = [
@@ -18,3 +18,7 @@ fo = "fo"
 daa = "daa"
 ba = "ba"
 caf = "caf"
+aso = "aso"
+
+# will remove
+aas = "aas"
