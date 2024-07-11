@@ -32,10 +32,10 @@ end
 local telescope_mappings = {
   n = {
     ["q"] = actions.close,
-    ["<C-c>"] = actions.close,
     ["<C-n>"] = actions.move_selection_worse,
     ["<C-p>"] = actions.move_selection_better,
     ["d"] = actions.delete_buffer,
+    ["<C-t>"] = actions.select_tab,
   },
   i = {
     ["<C-n>"] = actions.move_selection_next,
@@ -44,6 +44,7 @@ local telescope_mappings = {
     ["<C-j>"] = actions.cycle_history_next,
     ["<C-k>"] = actions.cycle_history_prev,
     ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+    ["<C-t>"] = actions.select_tab,
   },
 }
 
