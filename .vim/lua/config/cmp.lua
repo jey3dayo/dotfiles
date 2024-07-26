@@ -60,6 +60,16 @@ cmp.setup {
     { name = "nvim_lsp_signature_help", group_index = 2, keyword_length = 2 },
     { name = "path", group_index = 2, keyword_length = 3 },
     { name = "buffer", keyword_length = 3 },
+    {
+      name = "spell",
+      option = {
+        keep_all_entries = false,
+        enable_in_context = function()
+          return true
+        end,
+        preselect_correct_word = true,
+      },
+    },
     { name = "cmdline" },
   },
   formatting = {

@@ -12,6 +12,7 @@ return {
   { "hrsh7th/cmp-buffer", dependencies },
   { "hrsh7th/cmp-path", dependencies },
   { "hrsh7th/cmp-cmdline", dependencies },
+  { "f3fora/cmp-spell", dependencies },
   { "petertriho/cmp-git", dependencies },
   { "dcampos/cmp-snippy", dependencies },
   { "ray-x/cmp-treesitter", dependencies },
