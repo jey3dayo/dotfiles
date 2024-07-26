@@ -1,2 +1,3 @@
 # Added by OrbStack: command-line tools and integration
-source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+ORBSTACK_INIT_FILE=~/.orbstack/shell/init.zsh
+source "$ORBSTACK_INIT_FILE" 2>/dev/null || :
