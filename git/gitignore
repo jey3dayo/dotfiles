@@ -92,6 +92,8 @@ irb/irb_history
 gh/hosts.yml
 ghkw
 hub
+AWS VPN Client
+AWSVPNClient
 
 # File types
 *~
