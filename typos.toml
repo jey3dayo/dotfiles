@@ -1,5 +1,12 @@
 [files]
-extend-exclude = ["raycast/**", "op/config", "*.pub", "Brewfile", "*env*"]
+extend-exclude = [
+    "raycast/**",
+    "op/config",
+    "*.pub",
+    "Brewfile",
+    "*env*",
+    "AWSVPNClient/**",
+]
 
 # [default]
 # extend-ignore-identifiers-re = [
