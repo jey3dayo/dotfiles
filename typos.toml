@@ -1,11 +1,12 @@
 [files]
 extend-exclude = [
-    "raycast/**",
-    "op/config",
-    "*.pub",
-    "Brewfile",
-    "*env*",
-    "AWSVPNClient/**",
+  "node_modules/**",
+  "raycast/**",
+  "op/config",
+  "*.pub",
+  "Brewfile",
+  "*env*",
+  "AWSVPNClient/**",
 ]
 
 # [default]
@@ -21,11 +22,10 @@ extend-exclude = [
 [default.extend-words]
 loca = "loca"
 overriden = "overriden"
+regist = "regist"
+reserv = "reserv"
 fo = "fo"
 daa = "daa"
 ba = "ba"
 caf = "caf"
 aso = "aso"
-
-# will remove
-aas = "aas"
