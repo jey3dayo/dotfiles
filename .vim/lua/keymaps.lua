@@ -105,7 +105,7 @@ local function copy_current_file_path()
   vim.fn.setreg("*", path)
   vim.api.nvim_echo({ { "Copied: " .. path, "None" } }, true, {})
 end
-Keymap("<Leader>yp", copy_current_file_path)
+Keymap("<Leader>y", copy_current_file_path)
 
 -- ファイル名とバッファ内容をクリップボードにコピー
 local function copy_buffer_with_path_and_code_block()
@@ -116,5 +116,4 @@ local function copy_buffer_with_path_and_code_block()
   vim.fn.setreg("*", text)
   vim.notify("Copied buffer: " .. path, vim.log.levels.INFO)
 end
-Keymap("<Leader>yb", copy_buffer_with_path_and_code_block)
-Keymap("<Leader>y", copy_buffer_with_path_and_code_block)
+Keymap("YY", copy_buffer_with_path_and_code_block)
