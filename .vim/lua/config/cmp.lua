@@ -33,7 +33,6 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    -- ["<Tab>"] = cmp.mapping.complete(),
     ["<Tab>"] = vim.schedule_wrap(function(fallback)
       if cmp.visible() and has_words_before() then
         cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
@@ -51,6 +50,8 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
     },
+    ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
+    ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
   },
   sources = cmp.config.sources {
     { name = "snippy" },
@@ -83,6 +84,9 @@ cmp.setup {
 
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(),
+  completion = {
+    completeopt = "menu,menuone,noinsert,noselect",
+  },
   sources = {
     { name = "path" },
     { name = "cmdline" },
