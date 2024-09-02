@@ -17,7 +17,24 @@ local function setup_lsp_keymaps(bufnr)
   Set_keymap("<C-e>", "[lsp]", set_opts)
 
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
-  Keymap("[lsp]f", vim.lsp.buf.format, bufopts)
+
+  Keymap("[lsp]f", function()
+    vim.lsp.buf.format()
+    vim.notify("Formatting completed", vim.log.levels.INFO)
+  end, bufopts)
+
+  Keymap("[lsp]F", function()
+    local clients = vim.lsp.get_active_clients { bufnr = bufnr }
+    for _, client in ipairs(clients) do
+      if client.supports_method "textDocument/formatting" then
+        vim.lsp.buf.format { bufnr = bufnr }
+        vim.notify("Formatted with " .. client.name, vim.log.levels.INFO)
+        return
+      end
+    end
+    vim.notify("No LSP client supports formatting", vim.log.levels.WARN)
+  end, bufopts)
+
   Keymap("[lsp]d", vim.lsp.buf.declaration, bufopts)
   Keymap("[lsp]i", vim.lsp.buf.implementation, bufopts)
 
