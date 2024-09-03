@@ -1,12 +1,6 @@
 return {
   "ray-x/lsp_signature.nvim",
   {
-    "stevearc/conform.nvim",
-    config = function()
-      require "config/conform"
-    end,
-  },
-  {
     "williamboman/mason.nvim",
     opts = require "config/mason",
   },
@@ -28,5 +22,12 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     opts = require "config/lspsaga",
+  },
+  {
+    "creativenull/efmls-configs-nvim",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require "config/efmls-configs-nvim"
+    end,
   },
 }

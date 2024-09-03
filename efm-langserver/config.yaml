@@ -1,0 +1,13 @@
+version: 2
+root-markers:
+  - .git/
+lint-debounce: 1s
+
+tools:
+  any-excitetranslate: &any-excitetranslate
+    hover-command: 'excitetranslate'
+    hover-stdin: true
+
+languages:
+  =:
+    - <<: *any-excitetranslate

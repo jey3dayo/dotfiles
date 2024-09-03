@@ -1,8 +1,22 @@
 local M = {}
 
 local augroup = require("autocmds").augroup
+local user_command = require("utils").user_command
 
 local lspFormatting = augroup("LspFormatting", { clear = true })
+
+-- フォーマットを実行する共通関数
+local function format_buffer(bufnr)
+  local clients = vim.lsp.get_clients { bufnr = bufnr }
+  for _, client in ipairs(clients) do
+    if client.supports_method "textDocument/formatting" then
+      vim.lsp.buf.format { bufnr = bufnr }
+      vim.notify("Formatted with " .. client.name, vim.log.levels.INFO)
+      return
+    end
+  end
+  vim.notify("No LSP client supports formatting", vim.log.levels.WARN)
+end
 
 local function lsp_highlight_document(client)
   local illuminate = safe_require "illuminate"
@@ -19,20 +33,7 @@ local function setup_lsp_keymaps(bufnr)
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
 
   Keymap("[lsp]f", function()
-    vim.lsp.buf.format()
-    vim.notify("Formatting completed", vim.log.levels.INFO)
-  end, bufopts)
-
-  Keymap("[lsp]F", function()
-    local clients = vim.lsp.get_active_clients { bufnr = bufnr }
-    for _, client in ipairs(clients) do
-      if client.supports_method "textDocument/formatting" then
-        vim.lsp.buf.format { bufnr = bufnr }
-        vim.notify("Formatted with " .. client.name, vim.log.levels.INFO)
-        return
-      end
-    end
-    vim.notify("No LSP client supports formatting", vim.log.levels.WARN)
+    format_buffer(bufnr)
   end, bufopts)
 
   Keymap("[lsp]d", vim.lsp.buf.declaration, bufopts)
@@ -80,19 +81,39 @@ end
 
 M.capabilities = setup_capabilities()
 
--- formatter用のconfigファイルが存在するか確認する
-function M.is_exist_config_files(formatter_name)
-  local config_files = require("lsp.config").config_files[formatter_name]
-  if not config_files then
-    return false
-  end
+--autoformatがオンの時はスキップ
+vim.g.disable_autoformat = false
 
-  for _, file in ipairs(config_files) do
-    if vim.fn.filereadable(file) == 1 then
-      return true
+vim.api.nvim_create_autocmd("BufWritePost", {
+  group = lspFormatting,
+  callback = function(ev)
+    local bufnr = ev.buf
+
+    -- Disable with a global or buffer-local variable
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      return nil
     end
+
+    format_buffer(bufnr)
+  end,
+})
+
+user_command("AutoFormatDisable", function(args)
+  if args.bang then
+    vim.b.disable_autoformat = true
+  else
+    vim.g.disable_autoformat = true
   end
-  return false
-end
+end, {
+  desc = "Disable autoformat-on-save",
+  bang = true,
+})
+
+user_command("AutoFormatEnable", function()
+  vim.b.disable_autoformat = false
+  vim.g.disable_autoformat = false
+end, {
+  desc = "Re-enable autoformat-on-save",
+})
 
 return M

@@ -1,6 +1,7 @@
 local M = {}
 
 M.installed_servers = {
+  "efm",
   "tsserver",
   "yamlls",
   "jsonls",
@@ -39,23 +40,6 @@ M.installed_tree_sitter = {
   "tsx",
   "python",
   "diff",
-}
-
-M.config_files = {
-  prettier = { "prettier.config.js" },
-  tsserver = { "tsconfig.json", "tsconfig.build.json", "tsup.config.js", "tsup.config.ts" },
-  eslint = {
-    ".eslintrc.js",
-    ".eslintrc.cjs",
-    ".eslintrc.yaml",
-    ".eslintrc.yml",
-    ".eslintrc.json",
-    ".eslintrc",
-    ".eslint.js",
-  },
-  biome = {
-    "biome.json",
-  },
 }
 
 return M
