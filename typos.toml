@@ -1,12 +1,14 @@
 [files]
 extend-exclude = [
   "node_modules/**",
+  "gen/**",
   "raycast/**",
   "op/config",
   "*.pub",
   "Brewfile",
   "*env*",
   "AWSVPNClient/**",
+  "db/sql/**"
 ]
 
 # [default]
