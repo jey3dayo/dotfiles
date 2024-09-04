@@ -19,6 +19,11 @@ local stylua = require "efmls-configs.formatters.stylua"
 local taplo = require "efmls-configs.formatters.taplo"
 local vint = require "efmls-configs.linters.vint"
 local yamllint = require "efmls-configs.linters.yamllint"
+local codespell = require "efmls-configs.linters.codespell"
+local gitlint = require "efmls-configs.linters.gitlint"
+local jsonlint = require "efmls-configs.linters.jsonlint"
+local luacheck = require "efmls-configs.linters.luacheck"
+local gofmt = require "efmls-configs.formatters.gofmt"
 
 local languages = {
   javascript = { biome, eslint, prettier },
@@ -26,14 +31,17 @@ local languages = {
   html = { prettier },
   css = { prettier },
   python = { ruff_linter, ruff_formatter, ruff_sort },
-  lua = { stylua },
+  lua = { stylua, luacheck },
   markdown = { markdownlint },
   dockerfile = { hadolint },
-  json = { fixjson },
+  json = { fixjson, jsonlint },
   yaml = { yamllint },
   sh = { shellcheck, shfmt },
   vim = { vint },
   toml = { taplo },
+  go = { gofmt },
+  gitcommit = { gitlint },
+  text = { codespell },
 }
 
 -- Or use the defaults provided by this plugin
