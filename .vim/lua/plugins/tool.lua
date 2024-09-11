@@ -12,9 +12,9 @@ return {
     cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewToggleFiles", "DiffviewFocusFiles" },
     opts = require "config/diffview",
   },
-  { "tpope/vim-rhubarb", dependencies = { "tpope/vim-fugitive" } },
-  { "vim-scripts/renamer.vim", cmd = "Renamer" },
-  { "vim-scripts/sudo.vim", cmd = { "SudoWrite", "SudoRead" } },
+  { "tpope/vim-rhubarb",        dependencies = { "tpope/vim-fugitive" } },
+  { "vim-scripts/renamer.vim",  cmd = "Renamer" },
+  { "vim-scripts/sudo.vim",     cmd = { "SudoWrite", "SudoRead" } },
   { "dstein64/vim-startuptime", cmd = "StartupTime" },
   {
     "windwp/nvim-projectconfig",
@@ -40,7 +40,7 @@ return {
     end,
   },
   {
-    "https://github.com/sidebar-nvim/sidebar.nvim",
+    "sidebar-nvim/sidebar.nvim",
     opts = {},
   },
 }
