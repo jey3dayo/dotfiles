@@ -16,10 +16,11 @@ M.installed_servers = {
   "ruff_lsp",
   "tailwindcss",
   "taplo",
-  "tsserver",
+  "ts_ls",
   "typos_lsp",
   "vimls",
   "yamlls",
+  "terraformls"
 }
 
 -- managed mason
