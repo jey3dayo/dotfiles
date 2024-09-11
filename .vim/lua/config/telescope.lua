@@ -122,7 +122,6 @@ Keymap("<Leader>b", builtin.buffers, { desc = "buffers" })
 Keymap("<Leader>d", builtin.diagnostics, { desc = "Find by Diagnostics" })
 Keymap("<Leader>u", telescope.extensions.undo.undo, { desc = "Find by Undo" })
 Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
-Keymap("<Leader>gs", builtin.git_status, { desc = "Find by Git Status" })
 
 -- extensions
 Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
@@ -135,6 +134,7 @@ Keymap("<Leader>F", function()
   telescope.extensions.frecency.frecency {}
 end, { desc = "Find by frecency" })
 
+Keymap("<Leader>G", builtin.git_status, { desc = "Find by Git Status" })
 Keymap("<Leader>e", function()
   local git_dir = require("utils").get_git_dir()
   setup_file_browser {
