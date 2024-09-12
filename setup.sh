@@ -9,10 +9,10 @@ mkdir -p "${HOME}/.mise"
 
 ln -sf "${DOTFILES}" ~/.config
 
-echo "source $HOME/.config/nvim/init.vim" >> ~/.vimrc
-echo "source-file $HOME/.tmux/main.conf" >> ~/.tmux.conf
+echo "source $HOME/.config/nvim/init.vim" >>~/.vimrc
+echo "source-file $HOME/.tmux/main.conf" >>~/.tmux.conf
 
 export ZDOTDIR=~/src/github.com/.config/.zsh
-echo "source $ZDOTDIR/.zshenv" >> ~/.zshenv
+echo "source $ZDOTDIR/.zshenv" >>~/.zshenv
 
 git submodule foreach git pull
