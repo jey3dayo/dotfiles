@@ -56,17 +56,19 @@ copilot_chat.setup {
 
 -- Copilot Chat
 -- バッファの内容全体を使ってCopilotとチャット
-function CopilotChatBuffer()
-  local input = vim.fn.input "Quick Chat: "
+local function CopilotChatBuffer()
+    local input = vim.fn.input "Quick Chat: "
   if input ~= "" then
     require("CopilotChat").ask(input, { selection = select and select.buffer or nil })
   end
 end
 
-Keymap("<Leader>c", "<cmd>lua CopilotChatBuffer()<CR>")
+Keymap("<Leader>c", function()
+  CopilotChatBuffer()
+end)
 
 -- telescopeを使ってアクションプロンプトを表示
-function ShowChatPrompt()
+local function ShowChatPrompt()
   local actions = require "CopilotChat.actions"
   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
 end

@@ -5,7 +5,7 @@ for _, dom in ipairs(wsl_domains) do
   dom.default_cwd = "~"
 end
 
-return  {
+return {
   default_domain = "WSL:Ubuntu",
   default_prog = { "wsl.exe" },
   launch_menu = { { args = { "cmd.exe" }, domain = { DomainName = "local" } } },
