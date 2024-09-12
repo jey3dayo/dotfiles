@@ -17,6 +17,8 @@ local options = {
   helplang = "ja",
   shell = "zsh",
 
+    sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
+
   -- input
   autoindent = true,
   smartindent = true,
