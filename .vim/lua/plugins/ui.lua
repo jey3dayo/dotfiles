@@ -22,9 +22,8 @@ return {
     "shellRaining/hlchunk.nvim",
     enabled = true,
     event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require "config/hlchunk"
-    end,
+    config = true,
+    opts = require "config/hlchunk",
   },
   {
     "lewis6991/gitsigns.nvim",
