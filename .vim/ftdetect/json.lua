@@ -3,5 +3,5 @@ vim.filetype.add {
     eslintrc = "json",
     stylintrc = "json",
     babelrc = "json",
-  }
+  },
 }
