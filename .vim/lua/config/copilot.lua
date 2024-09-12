@@ -57,7 +57,7 @@ copilot_chat.setup {
 -- Copilot Chat
 -- バッファの内容全体を使ってCopilotとチャット
 local function CopilotChatBuffer()
-    local input = vim.fn.input "Quick Chat: "
+  local input = vim.fn.input "Quick Chat: "
   if input ~= "" then
     require("CopilotChat").ask(input, { selection = select and select.buffer or nil })
   end

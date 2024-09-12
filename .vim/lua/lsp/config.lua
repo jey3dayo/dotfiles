@@ -20,7 +20,7 @@ M.installed_servers = {
   "typos_lsp",
   "vimls",
   "yamlls",
-  "terraformls"
+  "terraformls",
 }
 
 -- managed mason
