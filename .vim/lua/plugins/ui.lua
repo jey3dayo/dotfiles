@@ -2,7 +2,9 @@ return {
   "nvim-lua/popup.nvim",
   {
     "rcarriga/nvim-notify",
-    config = require "config/nvim-notify",
+    config = function()
+      require "config/nvim-notify"
+    end,
   },
   {
     "nvim-lualine/lualine.nvim",
@@ -20,8 +22,9 @@ return {
     "shellRaining/hlchunk.nvim",
     enabled = true,
     event = { "BufReadPre", "BufNewFile" },
-    config = true,
-    opts = require "config/hlchunk",
+    config = function()
+      require "config/hlchunk"
+    end,
   },
   {
     "lewis6991/gitsigns.nvim",
