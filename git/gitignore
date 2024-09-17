@@ -87,7 +87,7 @@ lazygit/
 mise/trusted-configs
 jsconfig.json
 nohup.out
-ssh/ssh_config.d/private-host
+ssh/ssh_config.d/private-host.sshconfig
 irb/irb_history
 gh/hosts.yml
 ghkw
