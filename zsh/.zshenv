@@ -26,6 +26,8 @@ export CATALINA_HOME=/opt/homebrew/Cellar/tomcat/10.1.19/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
 export GOPATH=$HOME
 export BUN_INSTALL="$HOME/.bun"
+# export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+# export SSH_AUTH_SOCK=~/.1password/agent.sock
 
 path=(
   # railsビルド用
