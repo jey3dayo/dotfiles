@@ -23,28 +23,6 @@ M.installed_servers = {
   "terraformls",
 }
 
--- managed mason
--- "beautysh",
--- "black",
--- "eslint",
--- "fixjson",
--- "isort",
--- "jq",
--- "jsonlint",
--- "luacheck",
--- "markdownlint",
--- "markdownlint-cli2",
--- "prettier",
--- "shellcheck",
--- "shfmt",
--- "sonarlint-language-server",
--- "sql-formatter",
--- "stylua",
--- "typos",
--- "vint",
--- "yamlfmt",
--- "yamllint",
-
 M.installed_tree_sitter = {
   "astro",
   "bash",
