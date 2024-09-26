@@ -40,4 +40,8 @@ return {
     tag = "legacy",
     config = true,
   },
+  {
+    "stevearc/dressing.nvim",
+    opts = {},
+  },
 }
