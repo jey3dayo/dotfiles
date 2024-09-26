@@ -6,14 +6,6 @@ return {
     end,
   },
   {
-    "junegunn/vim-easy-align",
-    cmd = { "EasyAlign" },
-    keys = {
-      { "ga", "<Plug>(EasyAlign)", mode = "n", desc = "Easy Align" },
-      { "ga", "<Plug>(EasyAlign)", mode = "x", desc = "Easy Align" },
-    },
-  },
-  {
     "nishigori/increment-activator",
     config = function()
       require "config/increment-activator-config"
