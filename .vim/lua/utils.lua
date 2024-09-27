@@ -28,4 +28,9 @@ M.get_git_dir = function()
   return git_dir
 end
 
+
+M.with = function (tbl, extend)
+	return vim.tbl_extend("force", tbl, extend)
+end
+
 return M

@@ -2,6 +2,8 @@ local telescope = safe_require "telescope"
 if not telescope then
   return
 end
+
+local with = require "utils".with
 local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
 
@@ -19,7 +21,7 @@ end
 
 local function setup_file_browser(opts)
   opts = opts or {}
-  telescope.extensions.file_browser.file_browser(vim.tbl_extend("force", {
+  telescope.extensions.file_browser.file_browser(with({
     hidden = true,
     grouped = true,
     previewer = false,

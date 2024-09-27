@@ -4,6 +4,7 @@ if not lspconfig then
   return
 end
 
+local with = require "utils".with
 local biome = require "efmls-configs.formatters.biome"
 local eslint = require "efmls-configs.linters.eslint"
 local fixjson = require "efmls-configs.formatters.fixjson"
@@ -59,7 +60,7 @@ local efmls_config = {
   },
 }
 
-lspconfig.efm.setup(vim.tbl_extend("force", efmls_config, {
+lspconfig.efm.setup(with(efmls_config, {
   -- Pass your custom lsp config below like on_attach and capabilities
   -- on_attach = on_attach,
   -- capabilities = capabilities,
