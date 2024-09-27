@@ -1,5 +1,6 @@
 local mason_lspconfig = safe_require "mason-lspconfig"
 local lspconfig = safe_require "lspconfig"
+local with = require("utils").with
 
 if not (mason_lspconfig and lspconfig) then
   return
@@ -17,10 +18,7 @@ mason_lspconfig.setup_handlers {
       capabilities = require("lsp.handlers").capabilities,
     }
     local server_custom_opts = safe_require("lsp.settings." .. server)
-    if server_custom_opts then
-      opts = vim.tbl_deep_extend("force", opts, server_custom_opts)
-    end
 
-    lspconfig[server].setup(opts)
+    lspconfig[server].setup(with(opts, server_custom_opts))
   end,
 }

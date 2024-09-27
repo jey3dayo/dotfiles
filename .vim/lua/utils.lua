@@ -30,7 +30,11 @@ end
 
 
 M.with = function (tbl, extend)
-	return vim.tbl_extend("force", tbl, extend)
+  if not extend or vim.tbl_isempty(extend) then
+    return tbl
+  end
+
+  return vim.tbl_extend("force", tbl, extend)
 end
 
 return M
