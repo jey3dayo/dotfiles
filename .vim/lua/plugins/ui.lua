@@ -34,7 +34,6 @@ return {
     config = true,
   },
   "uga-rosa/ccc.nvim",
-  "hrsh7th/nvim-insx",
   {
     "j-hui/fidget.nvim",
     tag = "legacy",

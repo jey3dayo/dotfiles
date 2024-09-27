@@ -33,13 +33,17 @@ return {
   {
     "ggandor/leap.nvim",
     enabled = true,
-    config = require "config/leap",
+    config = function()
+      require "config/leap"
+    end,
   },
   {
     "phaazon/hop.nvim",
     enabled = false,
     branch = "v2",
-    config = require "config/hop",
+    config = function()
+      require "config/hop"
+    end,
   },
   {
     "Wansmer/treesj",
