@@ -1,6 +1,11 @@
 local mason_lspconfig = safe_require "mason-lspconfig"
 local lspconfig = safe_require "lspconfig"
+
 local with = require("utils").with
+local on_attach = require("lsp.handlers").on_attach
+local capabilities = require("lsp.handlers").capabilities
+local languages = require("lsp.config").efm_languages
+
 
 if not (mason_lspconfig and lspconfig) then
   return
@@ -10,9 +15,6 @@ mason_lspconfig.setup {
   ensure_installed = require("lsp.config").installed_servers,
   automatic_installation = true,
 }
-
-local on_attach = require("lsp.handlers").on_attach
-local capabilities = require("lsp.handlers").capabilities
 
 mason_lspconfig.setup_handlers {
   function(server)
@@ -26,7 +28,6 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
-local languages = require("lsp.config").efm_languages
 lspconfig.efm.setup {
   filetypes = vim.tbl_keys(languages),
   settings = {
