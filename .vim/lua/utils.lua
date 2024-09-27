@@ -1,5 +1,7 @@
 local M = {}
 
+M.user_command = vim.api.nvim_create_user_command
+
 M.find_command = function(paths)
   for _, path in ipairs(paths) do
     local file = io.open(path, "r")
@@ -17,8 +19,6 @@ M.extend = function(tab1, tab2)
   end
   return tab1
 end
-
-M.user_command = vim.api.nvim_create_user_command
 
 M.get_git_dir = function()
   local git_dir = vim.fn.finddir(".git", vim.fn.expand "%:p:h" .. ";")

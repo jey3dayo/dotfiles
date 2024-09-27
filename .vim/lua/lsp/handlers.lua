@@ -2,6 +2,8 @@ local M = {}
 
 local augroup = require("autocmds").augroup
 local user_command = require("utils").user_command
+local autocmd = require("autocmds").autocmd
+local clear_autocmds = require("autocmds").clear_autocmds
 
 local lspFormatting = augroup("LspFormatting", { clear = true })
 
@@ -18,6 +20,7 @@ local function format_buffer(bufnr)
   vim.notify("No LSP client supports formatting", vim.log.levels.WARN)
 end
 
+-- ドキュメントハイライト設定
 local function lsp_highlight_document(client)
   local illuminate = safe_require "illuminate"
   if illuminate then
@@ -25,6 +28,7 @@ local function lsp_highlight_document(client)
   end
 end
 
+-- キーマップ設定
 local function setup_lsp_keymaps(bufnr)
   local set_opts = { silent = true }
   Set_keymap("[lsp]", "<Nop>", set_opts)
@@ -58,7 +62,7 @@ M.on_attach = function(client, bufnr)
   lsp_highlight_document(client)
 
   if client.supports_method "textDocument/formatting" then
-    vim.api.nvim_clear_autocmds { group = lspFormatting, buffer = bufnr }
+    clear_autocmds { group = lspFormatting, buffer = bufnr }
   end
 end
 
@@ -81,10 +85,10 @@ end
 
 M.capabilities = setup_capabilities()
 
---autoformatがオンの時はスキップ
+-- 自動フォーマット設定
 vim.g.disable_autoformat = false
 
-vim.api.nvim_create_autocmd("BufWritePost", {
+autocmd("BufWritePost", {
   group = lspFormatting,
   callback = function(ev)
     local bufnr = ev.buf
