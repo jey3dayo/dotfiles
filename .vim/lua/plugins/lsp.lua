@@ -26,8 +26,5 @@ return {
   {
     "creativenull/efmls-configs-nvim",
     dependencies = { "neovim/nvim-lspconfig" },
-    config = function()
-      require "config/efmls-configs-nvim"
-    end,
   },
 }
