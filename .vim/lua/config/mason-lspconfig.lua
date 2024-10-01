@@ -6,7 +6,6 @@ local on_attach = require("lsp.handlers").on_attach
 local capabilities = require("lsp.handlers").capabilities
 local languages = require("lsp.config").efm_languages
 
-
 if not (mason_lspconfig and lspconfig) then
   return
 end
@@ -23,7 +22,6 @@ mason_lspconfig.setup_handlers {
       capabilities = capabilities,
     }
     local extends = safe_require("lsp.settings." .. server)
-
     lspconfig[server].setup(with(opts, extends))
   end,
 }
