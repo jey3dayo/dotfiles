@@ -8,7 +8,7 @@ extend-exclude = [
   "Brewfile",
   "*env*",
   "AWSVPNClient/**",
-  "db/sql/**"
+  "db/sql/**",
 ]
 
 # [default]
