@@ -1,9 +1,11 @@
+# Starship Prompt Configuration
+
 format = """
 $hostname\
 $directory\
 $git_state\
 $line_break\
-$character\
+$character
 """
 
 right_format = """
@@ -20,17 +22,20 @@ add_newline = false
 disabled = true
 
 [hostname]
+# Display hostname only when connected via SSH
 ssh_only = true
 format = "[$hostname](bold blue) "
 disabled = false
 
 [directory]
+# Display current directory with a specific style
 format = "[ $path]($style)"
 style = "fg:#6791c9 bg:none"
 truncation_length = 3
 truncate_to_repo = false
 
 [git_state]
+# Display Git state with custom messages and style
 rebase = "REBASING"
 merge = "MERGING"
 revert = "REVERTING"
@@ -42,19 +47,22 @@ style = "yellow"
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
 
 [character]
+# Symbols for command success and error states
 success_symbol = " [](#6791c9)"
 error_symbol = " [](#df5b61)"
 
 [git_branch]
+# Display Git branch with a specific symbol and style
 style = "fg:#78b892 bg:none"
 symbol = " "
 
 [git_metrics]
-disabled = false
+# Metrics for Git changes (enabled by default)
 added_style = "bold yellow"
 deleted_style = "bold red"
 
 [git_status]
+# Display Git status with various symbols and styles
 format = "[ $all_status $ahead_behind ]($style)"
 style = "fg:#78b892 bg:none"
 conflicted = "="
@@ -70,10 +78,12 @@ renamed = "»${count}"
 deleted = "${count}"
 
 [git_commit]
+# Display Git commit hash and tag with a specific style
 format = "[\\($hash\\)]($style) [\\($tag\\)]($style)"
 style = "green"
 
 [cmd_duration]
+# Display command duration if it exceeds the minimum time threshold
 min_time = 1
 format = "[ $duration ]($style)"
 disabled = false
