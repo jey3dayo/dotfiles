@@ -11,6 +11,7 @@ const BLOCK_URLS = [
   "colab.research.google.com",
   "www.notion.so",
   "docs.google.com/.*/d",
+  "app.napkin.ai/page/*",
 ];
 
 settings.blocklistPattern = new RegExp(BLOCK_URLS.join("|"), "i");
