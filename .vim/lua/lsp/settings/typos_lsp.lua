@@ -1,7 +1,5 @@
 return {
-  settings = {
-    typos = {
-      config_path = "~/.config/typos.toml",
-    },
+  init_options = {
+    config = "~/.config/typos.toml",
   },
 }
