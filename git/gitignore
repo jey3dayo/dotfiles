@@ -70,7 +70,6 @@ iterm2/
 .yarnclean
 yarn/
 .direnv/
-brewfile
 composer
 configstore
 fish
