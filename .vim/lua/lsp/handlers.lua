@@ -13,7 +13,7 @@ local function format_buffer(bufnr)
   for _, client in ipairs(clients) do
     if client.supports_method "textDocument/formatting" then
       vim.lsp.buf.format { bufnr = bufnr }
-      vim.notify("Formatted with " .. client.name, vim.log.levels.INFO)
+      -- vim.notify("Formatted with " .. client.name, vim.log.levels.INFO)
       return
     end
   end
