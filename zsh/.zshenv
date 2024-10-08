@@ -27,6 +27,7 @@ export ANT_OPTS=-Dbuild.sysclasspath=ignore
 export GOPATH=$HOME
 export BUN_INSTALL="$HOME/.bun"
 export HOMEBREW_BUNDLE_FILE_GLOBAL="$XDG_CONFIG_HOME/Brewfile"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 # export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 # export SSH_AUTH_SOCK=~/.1password/agent.sock
 
@@ -41,6 +42,7 @@ path=(
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
   $GOPATH/bin(N-/)
   $BUN_INSTALL/bin(N-/)
+  $PNPM_HOME(N-/)
   $ANDROID_SDK_ROOT/emulator(N-/)
   $ANDROID_SDK_ROOT/tools(N-/)
   $ANDROID_SDK_ROOT/tools/bin(N-/)
