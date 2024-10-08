@@ -1,34 +1,38 @@
-abbr -S l='eza -la'
-abbr -S ll='eza -la'
-abbr -S ls='eza'
-abbr -S la='eza -la'
-abbr -S vim="nvim"
-abbr -S vi="nvim"
 abbr -S less="less -giMRSW -z-4 -x4"
 abbr -S where="command -v"
 abbr -S df="df -h"
 abbr -S du="du -h"
-abbr -S hg="hg --encoding=utf-8"
 abbr -S tailf="tail -f"
-abbr -S ag="ag --hidden"
-abbr -S agl="ag --hidden --pager='less -R'"
+abbr -S pk='pkill -9 -f '
 
+# eza
+abbr -S l='eza -la'
+abbr -S ll='eza -la'
+abbr -S ls='eza'
+abbr -S la='eza -la'
+
+# git
 abbr -S ga="git add"
 abbr -S gap="git add -p"
 abbr -S gst="git status -sb ."
 abbr -S gc="git commit -m \""
-
 abbr -S gd="git diff"
 abbr -S gdc="git diff --cached"
 abbr -S gd1="git diff HEAD~1"
 abbr -S gd2="git diff HEAD~2"
 abbr -S gd3="git diff HEAD~3"
 
+# tools
+abbr -S vim="nvim"
+abbr -S vi="nvim"
+abbr -S ag="ag --hidden"
+abbr -S agl="ag --hidden --pager='less -R'"
 abbr -S d='docker'
 abbr -S dc='docker compose'
-
-abbr -S pk='pkill -9 -f '
+abbr -S nx="nlx"
+abbr -S hg="hg --encoding=utf-8"
 abbr -S typos="typos --config ~/.config/typos.toml ."
 
+# Mac
 abbr -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 abbr -S flusdns="dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
