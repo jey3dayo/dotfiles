@@ -14,7 +14,6 @@ local taplo = require "efmls-configs.formatters.taplo"
 local vint = require "efmls-configs.linters.vint"
 local yamllint = require "efmls-configs.linters.yamllint"
 local codespell = require "efmls-configs.linters.codespell"
-local gitlint = require "efmls-configs.linters.gitlint"
 local jsonlint = require "efmls-configs.linters.jsonlint"
 local luacheck = require "efmls-configs.linters.luacheck"
 local gofmt = require "efmls-configs.formatters.gofmt"
@@ -80,7 +79,6 @@ M.efm_languages = {
   vim = { vint },
   toml = { taplo },
   go = { gofmt },
-  gitcommit = { gitlint },
   text = { codespell },
 }
 

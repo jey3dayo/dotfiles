@@ -93,6 +93,7 @@ local global_options = {
   loaded_ruby_provider = 0,
   loaded_node_provider = 0,
   loaded_perl_provider = 0,
+  python3_host_prog = '/Users/t00114/.pyenv/versions/neovim3/bin/python3',
 }
 
 for k, v in pairs(global_options) do
