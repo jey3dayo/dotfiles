@@ -3,7 +3,7 @@ if not telescope then
   return
 end
 
-local with = require "utils".with
+local with = require("utils").with
 local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
 

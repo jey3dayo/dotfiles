@@ -43,4 +43,11 @@ return {
     "sidebar-nvim/sidebar.nvim",
     opts = {},
   },
+  {
+    "ruifm/gitlinker.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      mappings = "<C-g>l",
+    },
+  },
 }
