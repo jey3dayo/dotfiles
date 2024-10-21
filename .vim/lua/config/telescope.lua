@@ -13,6 +13,7 @@ local file_ignore_patterns = {
   "*.diff",
   "*.patch",
   "lazy-lock.json",
+  "^dist/",
 }
 
 local function telescope_buffer_dir()
