@@ -1,5 +1,4 @@
 return {
-  "ray-x/lsp_signature.nvim",
   {
     "williamboman/mason.nvim",
     opts = require "config/mason",
