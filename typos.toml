@@ -2,6 +2,7 @@
 extend-exclude = [
   "node_modules/**",
   "gen/**",
+  "dist/**",
   "raycast/**",
   "op/config",
   "*.pub",
