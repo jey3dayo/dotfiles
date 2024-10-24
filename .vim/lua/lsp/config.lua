@@ -86,8 +86,8 @@ local config_files = {
 }
 
 M.efm_languages = {
-  javascript = { formatters.biome, linters.eslint, formatters.prettier },
-  typescript = { formatters.biome, linters.eslint, formatters.prettier },
+  javascript = { linters.biome, formatters.prettier },
+  typescript = { linters.biome, formatters.prettier },
   html = { formatters.prettier },
   css = { formatters.prettier },
   python = { linters.ruff_linter, formatters.ruff_formatter, formatters.ruff_sort },
@@ -120,9 +120,6 @@ local function setup_languages()
         M.efm_languages.javascript = { linters.eslint, formatters.prettier }
         M.efm_languages.typescript = { linters.eslint, formatters.prettier }
       end
-    else
-        M.efm_languages.javascript = { linters.biome, formatters.prettier }
-        M.efm_languages.typescript = { linters.biome, formatters.prettier }
     end
   end
 end
