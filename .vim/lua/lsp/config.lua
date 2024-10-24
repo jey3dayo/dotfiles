@@ -1,24 +1,29 @@
-local biome = require "efmls-configs.formatters.biome"
-local eslint = require "efmls-configs.linters.eslint"
-local fixjson = require "efmls-configs.formatters.fixjson"
-local hadolint = require "efmls-configs.linters.hadolint"
-local markdownlint = require "efmls-configs.linters.markdownlint"
-local prettier = require "efmls-configs.formatters.prettier"
-local ruff_formatter = require "efmls-configs.formatters.ruff"
-local ruff_linter = require "efmls-configs.linters.ruff"
-local ruff_sort = require "efmls-configs.formatters.ruff_sort"
-local shellcheck = require "efmls-configs.linters.shellcheck"
-local shfmt = require "efmls-configs.formatters.shfmt"
-local stylua = require "efmls-configs.formatters.stylua"
-local taplo = require "efmls-configs.formatters.taplo"
-local vint = require "efmls-configs.linters.vint"
-local yamllint = require "efmls-configs.linters.yamllint"
-local codespell = require "efmls-configs.linters.codespell"
-local jsonlint = require "efmls-configs.linters.jsonlint"
-local luacheck = require "efmls-configs.linters.luacheck"
-local gofmt = require "efmls-configs.formatters.gofmt"
-
 local M = {}
+
+-- フォーマッターとリンターを分けて定義
+local formatters = {
+  biome = require "efmls-configs.formatters.biome",
+  fixjson = require "efmls-configs.formatters.fixjson",
+  prettier = require "efmls-configs.formatters.prettier",
+  ruff_formatter = require "efmls-configs.formatters.ruff",
+  ruff_sort = require "efmls-configs.formatters.ruff_sort",
+  shfmt = require "efmls-configs.formatters.shfmt",
+  stylua = require "efmls-configs.formatters.stylua",
+  taplo = require "efmls-configs.formatters.taplo",
+  gofmt = require "efmls-configs.formatters.gofmt",
+}
+
+local linters = {
+  eslint = require "efmls-configs.linters.eslint",
+  hadolint = require "efmls-configs.linters.hadolint",
+  markdownlint = require "efmls-configs.linters.markdownlint",
+  ruff_linter = require "efmls-configs.linters.ruff",
+  vint = require "efmls-configs.linters.vint",
+  yamllint = require "efmls-configs.linters.yamllint",
+  codespell = require "efmls-configs.linters.codespell",
+  jsonlint = require "efmls-configs.linters.jsonlint",
+  luacheck = require "efmls-configs.linters.luacheck",
+}
 
 M.installed_servers = {
   "astro",
@@ -64,22 +69,64 @@ M.installed_tree_sitter = {
   "yaml",
 }
 
-M.efm_languages = {
-  javascript = { biome, eslint, prettier },
-  typescript = { biome, eslint, prettier },
-  html = { prettier },
-  css = { prettier },
-  python = { ruff_linter, ruff_formatter, ruff_sort },
-  lua = { stylua, luacheck },
-  markdown = { markdownlint },
-  dockerfile = { hadolint },
-  json = { fixjson, jsonlint },
-  yaml = { yamllint },
-  sh = { shellcheck, shfmt },
-  vim = { vint },
-  toml = { taplo },
-  go = { gofmt },
-  text = { codespell },
+local config_files = {
+  eslint = {
+    ".eslintrc",
+    ".eslintrc.json",
+    ".eslintrc.js",
+    ".eslintrc.yaml",
+    ".eslintrc.yml",
+    "eslint.config.js",
+    "eslint.config.cjs",
+    "eslint.config.mjs",
+    "eslint.config.ts",
+    "eslint.config.cts",
+    "eslint.config.mts",
+  },
 }
+
+M.efm_languages = {
+  javascript = { formatters.biome, linters.eslint, formatters.prettier },
+  typescript = { formatters.biome, linters.eslint, formatters.prettier },
+  html = { formatters.prettier },
+  css = { formatters.prettier },
+  python = { linters.ruff_linter, formatters.ruff_formatter, formatters.ruff_sort },
+  lua = { formatters.stylua, linters.luacheck },
+  markdown = { linters.markdownlint },
+  dockerfile = { linters.hadolint },
+  json = { formatters.fixjson, linters.jsonlint },
+  yaml = { linters.yamllint },
+  sh = { linters.shellcheck, formatters.shfmt },
+  vim = { linters.vint },
+  toml = { formatters.taplo },
+  go = { formatters.gofmt },
+  text = { linters.codespell },
+}
+
+-- 設定ファイルの存在をチェックして言語設定を更新
+local function setup_languages()
+  local function config_exists(tool)
+    for _, file in ipairs(config_files[tool]) do
+      if vim.fn.glob(file) ~= "" then
+        return true
+      end
+    end
+    return false
+  end
+
+  for tool, _ in pairs(config_files) do
+    if config_exists(tool) then
+      if tool == "eslint" then
+        M.efm_languages.javascript = { linters.eslint, formatters.prettier }
+        M.efm_languages.typescript = { linters.eslint, formatters.prettier }
+      end
+    else
+        M.efm_languages.javascript = { linters.biome, formatters.prettier }
+        M.efm_languages.typescript = { linters.biome, formatters.prettier }
+    end
+  end
+end
+
+setup_languages()
 
 return M
