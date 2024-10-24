@@ -38,6 +38,7 @@ function Set_keymap(key, value, _opts)
     _opts = silent_opts
   end
   vim.api.nvim_set_keymap("n", key, value, _opts)
+  vim.api.nvim_set_keymap("v", key, value, _opts)
 end
 
 function Buf_set_keymap(key, value, buf)
