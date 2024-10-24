@@ -18,3 +18,12 @@ Keymap("[git]g", "<cmd>Ggrep<Space>")
 Keymap("[git]s", "<cmd>Git status<CR>")
 Keymap("[git]w", "<cmd>Gwrite<CR>")
 Keymap("[git]x", "<cmd>DiffviewClose<CR>")
+Keymap(
+  "[git]y",
+  '<cmd>lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".copy_to_clipboard})<cr>'
+)
+Keymap(
+  "[git]Y",
+  '<cmd>lua require"gitlinker".get_buf_range_url("n", {action_callback = require"gitlinker.actions".open_in_browser})<cr>'
+)
+
