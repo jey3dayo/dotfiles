@@ -41,7 +41,9 @@ return {
   },
   {
     "sidebar-nvim/sidebar.nvim",
-    opts = {},
+    config = function()
+      require "config/sidebar"
+    end,
   },
   {
     "ruifm/gitlinker.nvim",
