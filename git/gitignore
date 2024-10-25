@@ -95,6 +95,8 @@ AWS VPN Client
 AWSVPNClient
 1Password/ssh
 Autodesk
+browser-launcher
+rest-client
 
 # File types
 *~
