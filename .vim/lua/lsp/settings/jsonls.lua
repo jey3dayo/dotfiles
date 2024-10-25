@@ -98,8 +98,8 @@ local schemas = {
   },
 }
 
-local jsonls_settings = safe_require "lualine"
-local default_schemas = jsonls_settings and jsonls_settings.get_default_schemas() or {}
+local lualine = safe_require "lualine"
+local default_schemas = lualine and lualine.get_default_schemas() or {}
 local extended_schemas = require("utils").extend(schemas, default_schemas)
 
 return {
