@@ -3,7 +3,6 @@ local M = {}
 -- フォーマッターとリンターを分けて定義
 local formatters = {
   biome = require "efmls-configs.formatters.biome",
-  fixjson = require "efmls-configs.formatters.fixjson",
   prettier = require "efmls-configs.formatters.prettier",
   ruff_formatter = require "efmls-configs.formatters.ruff",
   ruff_sort = require "efmls-configs.formatters.ruff_sort",
@@ -109,7 +108,7 @@ M.efm_languages = {
   lua = { formatters.stylua, linters.luacheck },
   markdown = { linters.markdownlint },
   dockerfile = { linters.hadolint },
-  json = { formatters.fixjson, linters.jsonlint },
+  json = { linters.jsonlint },
   yaml = { linters.yamllint },
   sh = { linters.shellcheck, formatters.shfmt },
   vim = { linters.vint },
