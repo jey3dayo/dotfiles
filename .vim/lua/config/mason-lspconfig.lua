@@ -4,14 +4,14 @@ local lspconfig = safe_require "lspconfig"
 local with = require("utils").with
 local on_attach = require("lsp.handlers").on_attach
 local capabilities = require("lsp.handlers").capabilities
-local languages = require("lsp.config").efm_languages
+local config = require("lsp.config")
 
 if not (mason_lspconfig and lspconfig) then
   return
 end
 
 mason_lspconfig.setup {
-  ensure_installed = require("lsp.config").installed_servers,
+  ensure_installed = config.installed_servers,
   automatic_installation = true,
 }
 
@@ -27,10 +27,10 @@ mason_lspconfig.setup_handlers {
 }
 
 lspconfig.efm.setup {
-  filetypes = vim.tbl_keys(languages),
+  filetypes = vim.tbl_keys(config.efm_languages),
   settings = {
     rootMarkers = { ".git/" },
-    languages = languages,
+    languages = config.efm_languages,
   },
   init_options = {
     documentFormatting = true,
