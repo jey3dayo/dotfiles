@@ -83,11 +83,26 @@ local config_files = {
     "eslint.config.cts",
     "eslint.config.mts",
   },
+  prettier = {
+    ".prettierrc",
+    ".prettierrc.json",
+    ".prettierrc.yml",
+    ".prettierrc.yaml",
+    ".prettierrc.js",
+    ".prettierrc.cjs",
+    "prettier.config.js",
+    "prettier.config.cjs",
+    ".prettierrc.toml",
+  },
+  biome = {
+    "biome.json",
+    "biome.jsonc",
+  },
 }
 
 M.efm_languages = {
-  javascript = { linters.biome, formatters.prettier },
-  typescript = { linters.biome, formatters.prettier },
+  javascript = {},
+  typescript = {},
   html = { formatters.prettier },
   css = { formatters.prettier },
   python = { linters.ruff_linter, formatters.ruff_formatter, formatters.ruff_sort },
@@ -114,13 +129,22 @@ local function setup_languages()
     return false
   end
 
-  for tool, _ in pairs(config_files) do
-    if config_exists(tool) then
-      if tool == "eslint" then
-        M.efm_languages.javascript = { linters.eslint, formatters.prettier }
-        M.efm_languages.typescript = { linters.eslint, formatters.prettier }
-      end
-    end
+  -- ECMA Script Linting
+  -- eslint と prettier の設定ファイルがない場合は biome を使う
+  local eslint_exists = config_exists "eslint"
+  local prettier_exists = config_exists "prettier"
+
+  if eslint_exists then
+    M.efm_languages.javascript = { linters.eslint }
+    M.efm_languages.typescript = { linters.eslint }
+  elseif prettier_exists then
+    M.efm_languages.javascript = { formatters.prettier }
+    M.efm_languages.typescript = { formatters.prettier }
+    M.efm_languages.html = { formatters.prettier }
+    M.efm_languages.css = { formatters.prettier }
+  else
+    M.efm_languages.javascript = { linters.biome }
+    M.efm_languages.typescript = { linters.biome }
   end
 end
 
