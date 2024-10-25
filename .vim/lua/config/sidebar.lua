@@ -3,6 +3,6 @@ if not sidebar then
   return
 end
 sidebar.setup {
-  open = true,
+  open = false,
   bindings = {},
 }
