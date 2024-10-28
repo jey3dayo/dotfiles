@@ -20,7 +20,6 @@ local linters = {
   vint = require "efmls-configs.linters.vint",
   yamllint = require "efmls-configs.linters.yamllint",
   codespell = require "efmls-configs.linters.codespell",
-  jsonlint = require "efmls-configs.linters.jsonlint",
   luacheck = require "efmls-configs.linters.luacheck",
 }
 
@@ -108,7 +107,7 @@ M.efm_languages = {
   lua = { formatters.stylua, linters.luacheck },
   markdown = { linters.markdownlint },
   dockerfile = { linters.hadolint },
-  json = { linters.jsonlint },
+  json = {},
   yaml = { linters.yamllint },
   sh = { linters.shellcheck, formatters.shfmt },
   vim = { linters.vint },
