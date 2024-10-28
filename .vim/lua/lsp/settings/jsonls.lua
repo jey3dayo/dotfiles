@@ -98,25 +98,15 @@ local schemas = {
   },
 }
 
-local lualine = safe_require "lualine"
-local default_schemas = lualine and lualine.get_default_schemas() or {}
-local extended_schemas = require("utils").extend(schemas, default_schemas)
-
 return {
   filetypes = { "json", "jsonc" },
-  setup = {
-    commands = {
-      Format = {
-        function()
-          vim.lsp.buf.formatexpr({}, { 0, 0 }, { vim.fn.line "$", 0 })
-          -- vim.lsp.buf.range_formatting({}, { 0, 0 }, { vim.fn.line "$", 0 })
-        end,
-      },
-    },
+  init_options = {
+    -- biomeに任せる
+    provideFormatter = false,
   },
   settings = {
     json = {
-      schemas = extended_schemas,
+      schemas = schemas,
     },
   },
 }

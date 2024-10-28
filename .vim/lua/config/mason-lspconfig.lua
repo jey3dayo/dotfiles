@@ -4,7 +4,7 @@ local lspconfig = safe_require "lspconfig"
 local with = require("utils").with
 local on_attach = require("lsp.handlers").on_attach
 local capabilities = require("lsp.handlers").capabilities
-local config = require("lsp.config")
+local config = require "lsp.config"
 
 if not (mason_lspconfig and lspconfig) then
   return
