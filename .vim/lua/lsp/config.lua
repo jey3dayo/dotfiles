@@ -67,6 +67,15 @@ M.installed_tree_sitter = {
   "yaml",
 }
 
+-- FIXME: config_filesから計算
+M.root_markers = {
+  ".git/",
+  "biome.json",
+  "biome.jsonc",
+  ".eslintrc",
+  ".prettierrc",
+}
+
 local config_files = {
   eslint = {
     ".eslintrc",

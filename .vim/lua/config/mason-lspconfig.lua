@@ -29,7 +29,7 @@ mason_lspconfig.setup_handlers {
 lspconfig.efm.setup {
   filetypes = vim.tbl_keys(config.efm_languages),
   settings = {
-    rootMarkers = { ".git/" },
+    rootMarkers = config.root_markers,
     languages = config.efm_languages,
   },
   init_options = {
