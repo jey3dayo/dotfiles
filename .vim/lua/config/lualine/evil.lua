@@ -161,10 +161,11 @@ ins_left {
   end,
 }
 
-local function get_lsp_client_name()
+local function get_lsp_client_names()
   local msg = "N/A"
   local buf_ft = vim.bo.filetype
   local clients = vim.lsp.get_clients()
+  local client_names = {}
 
   if next(clients) == nil then
     return msg
@@ -174,16 +175,16 @@ local function get_lsp_client_name()
     if client.config ~= nil then
       local filetypes = client.config.filetypes
       if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-        return client.name
+        table.insert(client_names, client.name)
       end
     end
   end
 
-  return msg
+  return #client_names > 0 and table.concat(client_names, ",") or msg
 end
 
 ins_left {
-  get_lsp_client_name,
+  get_lsp_client_names,
   icon = " LSP:",
   color = { fg = colors.fg, gui = "bold" },
 }
