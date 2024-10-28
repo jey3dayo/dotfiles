@@ -26,7 +26,6 @@ local linters = {
 M.installed_servers = {
   "astro",
   "bashls",
-  "biome",
   "cssls",
   "dockerls",
   "efm",

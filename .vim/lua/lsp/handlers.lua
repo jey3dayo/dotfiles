@@ -10,14 +10,30 @@ local lspFormatting = augroup("LspFormatting", { clear = true })
 -- フォーマットを実行する共通関数
 local function format_buffer(bufnr)
   local clients = vim.lsp.get_clients { bufnr = bufnr }
-  for _, client in ipairs(clients) do
-    if client.supports_method "textDocument/formatting" then
-      vim.lsp.buf.format { bufnr = bufnr }
-      -- vim.notify("Formatted with " .. client.name, vim.log.levels.INFO)
-      return
-    end
+
+  -- フォーマット可能なクライアントをフィルタリング
+  local active_clients = vim.tbl_filter(function(client)
+    return client.supports_method "textDocument/formatting"
+  end, clients)
+
+  if #active_clients == 0 then
+    vim.notify("No LSP client supports formatting", vim.log.levels.WARN)
+    return false
   end
-  vim.notify("No LSP client supports formatting", vim.log.levels.WARN)
+
+  vim.lsp.buf.format {
+    bufnr = bufnr,
+    timeout_ms = 3000,
+    async = false,
+  }
+
+  -- フォーマットに使用したクライアント名を通知
+  local client_names = vim.tbl_map(function(client)
+    return client.name
+  end, active_clients)
+  vim.notify("Formatted with: " .. table.concat(client_names, ", "), vim.log.levels.INFO)
+
+  return true
 end
 
 -- ドキュメントハイライト設定
