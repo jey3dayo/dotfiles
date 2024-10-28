@@ -143,14 +143,24 @@ local function setup_languages()
   if eslint_exists then
     M.efm_languages.javascript = { linters.eslint }
     M.efm_languages.typescript = { linters.eslint }
+    M.efm_languages.javascriptreact = { formatters.eslint }
+    M.efm_languages.typescriptreact = { formatters.eslint }
   elseif prettier_exists then
     M.efm_languages.javascript = { formatters.prettier }
     M.efm_languages.typescript = { formatters.prettier }
+    M.efm_languages.javascriptreact = { formatters.prettier }
+    M.efm_languages.typescriptreact = { formatters.prettier }
     M.efm_languages.html = { formatters.prettier }
     M.efm_languages.css = { formatters.prettier }
+    M.efm_languages.json = { formatters.prettier }
+    M.efm_languages.jsonc = { formatters.prettier }
   else
-    M.efm_languages.javascript = { linters.biome }
-    M.efm_languages.typescript = { linters.biome }
+    M.efm_languages.javascript = { formatters.biome }
+    M.efm_languages.typescript = { formatters.biome }
+    M.efm_languages.javascriptreact = { formatters.biome }
+    M.efm_languages.typescriptreact = { formatters.biome }
+    M.efm_languages.json = { formatters.biome }
+    M.efm_languages.jsonc = { formatters.biome }
   end
 end
 
