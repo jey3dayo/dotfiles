@@ -73,6 +73,8 @@ local function setup_lsp_keymaps(bufnr)
   Keymap("[lsp]o", "<cmd>Lspsaga outline<CR>", bufopts)
 end
 
+M.setup_lsp_keymaps = setup_lsp_keymaps
+
 M.on_attach = function(client, bufnr)
   setup_lsp_keymaps(bufnr)
   lsp_highlight_document(client)
