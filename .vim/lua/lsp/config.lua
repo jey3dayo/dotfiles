@@ -66,15 +66,6 @@ M.installed_tree_sitter = {
   "yaml",
 }
 
--- FIXME: config_filesから計算
-M.root_markers = {
-  ".git/",
-  "biome.json",
-  "biome.jsonc",
-  ".eslintrc",
-  ".prettierrc",
-}
-
 local config_files = {
   eslint = {
     ".eslintrc",
@@ -105,6 +96,18 @@ local config_files = {
     "biome.jsonc",
   },
 }
+
+-- config_filesからroot_markersを生成
+local root_markers = { ".git/" }
+
+-- 各設定ファイルをroot_markersに追加
+for _, files in pairs(config_files) do
+  for _, file in ipairs(files) do
+    table.insert(root_markers, file)
+  end
+end
+
+M.root_markers = root_markers
 
 M.efm_languages = {
   javascript = {},
