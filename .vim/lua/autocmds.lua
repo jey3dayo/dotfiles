@@ -3,8 +3,8 @@ local M = {}
 local autocmd = vim.api.nvim_create_autocmd
 M.autocmd = autocmd
 
-local _augroup = vim.api.nvim_create_augroup
-M.augroup = _augroup
+local augroup = vim.api.nvim_create_augroup
+M.augroup = augroup
 
 local clear_autocmds = vim.api.nvim_clear_autocmds
 M.clear_autocmds = clear_autocmds
