@@ -11,6 +11,7 @@ return {
   { "ap/vim-css-color", ft = table.insert({ "css" }, ecma_scripts_ft) },
   { "hotoo/jsgf.vim", ft = ecma_scripts_ft },
   { "tpope/vim-markdown", ft = markdown_ft },
+  { "prisma/vim-prisma", ft = { "prisma" } },
   {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
