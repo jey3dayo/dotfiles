@@ -35,7 +35,6 @@ M.installed_servers = {
   "prismals",
   "pylsp",
   "ruff",
-  "ruff_lsp",
   "tailwindcss",
   "taplo",
   "ts_ls",
