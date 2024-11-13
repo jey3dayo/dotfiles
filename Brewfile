@@ -50,6 +50,7 @@ brew "bat"
 brew "bdw-gc"
 brew "berkeley-db"
 brew "biome"
+brew "icu4c@76"
 brew "boost"
 brew "bsdmake"
 brew "c-ares"
@@ -371,8 +372,9 @@ mas "LINE", id: 539883307
 mas "MeetingBar", id: 1532419400
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
-mas "Reeder", id: 1529448980
+mas "Perplexity", id: 6714467650
 mas "Reeder", id: 6475002485
+mas "Reeder", id: 1529448980
 mas "Slack", id: 803453959
 mas "Tailscale", id: 1475387142
 mas "TestFlight", id: 899247664
@@ -398,6 +400,7 @@ vscode "github.copilot-chat"
 vscode "github.copilot-labs"
 vscode "github.remotehub"
 vscode "github.vscode-pull-request-github"
+vscode "golang.go"
 vscode "hediet.vscode-drawio"
 vscode "ics.japanese-proofreading"
 vscode "ilkka.google-java-format"
