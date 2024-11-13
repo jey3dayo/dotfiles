@@ -31,3 +31,13 @@ mise install yarn
 mise install deno
 mise install bun
 ```
+
+# npm
+
+```
+# バックアップ
+npm list -g --json > global-package.json
+
+# リストア
+jq -r '.dependencies | to_entries | .[] | "\(.key)@\(.value.version)"' global-package.json | xargs npm install -g
+```
