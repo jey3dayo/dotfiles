@@ -79,9 +79,16 @@ M.on_attach = function(client, bufnr)
   setup_lsp_keymaps(bufnr)
   lsp_highlight_document(client)
 
-  if client.supports_method "textDocument/formatting" then
-    clear_autocmds { group = lspFormatting, buffer = bufnr }
-  end
+  -- workspace
+  Keymap("<space>wl", function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, bufopts)
+  Keymap("<space>wa", function()
+    print(vim.inspect(vim.lsp.buf.add_workspace_folder()))
+  end, bufopts)
+  Keymap("<space>wr", function()
+    print(vim.inspect(vim.lsp.buf.remove_workspace_folder()))
+  end, bufopts)
 end
 
 local function setup_capabilities()
