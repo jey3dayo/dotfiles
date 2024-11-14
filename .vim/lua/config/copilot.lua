@@ -63,9 +63,8 @@ local function CopilotChatBuffer()
   end
 end
 
-Keymap("<Leader>c", function()
-  CopilotChatBuffer()
-end)
+Keymap("<Leader>c", CopilotChatBuffer)
+V_Keymap("<Leader>c", CopilotChatBuffer)
 
 -- telescopeを使ってアクションプロンプトを表示
 local function ShowChatPrompt()
@@ -73,5 +72,5 @@ local function ShowChatPrompt()
   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
 end
 
-Keymap("<Leader>C", "<cmd>lua ShowChatPrompt()<cr>", { noremap = true, silent = true })
-V_Keymap("<Leader>C", "<cmd>lua ShowChatPrompt()<cr>", { noremap = true, silent = true })
+Keymap("<Leader>C", ShowChatPrompt)
+V_Keymap("<Leader>C", ShowChatPrompt)
