@@ -111,6 +111,8 @@ M.root_markers = root_markers
 M.efm_languages = {
   javascript = {},
   typescript = {},
+  javascriptreact = {},
+  typescriptreact = {},
   html = { formatters.prettier },
   css = { formatters.prettier },
   python = { linters.ruff_linter, formatters.ruff_formatter, formatters.ruff_sort },
@@ -156,11 +158,18 @@ local function setup_languages()
     M.efm_languages.css = { formatters.prettier }
     M.efm_languages.json = { formatters.prettier }
     M.efm_languages.jsonc = { formatters.prettier }
-  else
+    return
+  end
+
+  -- -- eslintがいないときに、biomeを実行
+  if not eslint_exists then
     M.efm_languages.javascript = { formatters.biome }
     M.efm_languages.typescript = { formatters.biome }
     M.efm_languages.javascriptreact = { formatters.biome }
     M.efm_languages.typescriptreact = { formatters.biome }
+  end
+
+  if not prettier_exists then
     M.efm_languages.json = { formatters.biome }
     M.efm_languages.jsonc = { formatters.biome }
   end
