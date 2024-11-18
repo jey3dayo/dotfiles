@@ -108,6 +108,7 @@ end
 
 M.root_markers = root_markers
 
+-- TODO* root_markers見て起動するようなら処理系見直す
 M.efm_languages = {
   javascript = {},
   typescript = {},
@@ -141,35 +142,35 @@ local function setup_languages()
 
   -- ECMA Script Linting
   -- eslint と prettier の設定ファイルがない場合は biome を使う
-  local eslint_exists = config_exists "eslint"
+  -- local eslint_exists = config_exists "eslint"
   local prettier_exists = config_exists "prettier"
 
-  if eslint_exists then
-    M.efm_languages.javascript = { linters.eslint }
-    M.efm_languages.typescript = { linters.eslint }
-    M.efm_languages.javascriptreact = { formatters.eslint }
-    M.efm_languages.typescriptreact = { formatters.eslint }
-  elseif prettier_exists then
-    M.efm_languages.javascript = { formatters.prettier }
-    M.efm_languages.typescript = { formatters.prettier }
-    M.efm_languages.javascriptreact = { formatters.prettier }
-    M.efm_languages.typescriptreact = { formatters.prettier }
-    M.efm_languages.html = { formatters.prettier }
-    M.efm_languages.css = { formatters.prettier }
-    M.efm_languages.json = { formatters.prettier }
-    M.efm_languages.jsonc = { formatters.prettier }
-    return
-  end
+  -- tsconfigがいるときに事故るのでコメントアウト
+  -- if eslint_exists then
+  --   M.efm_languages.javascript = { linters.eslint }
+  --   M.efm_languages.typescript = { linters.eslint }
+  --   M.efm_languages.javascriptreact = { linters.eslint }
+  --   M.efm_languages.typescriptreact = { linters.eslint }
+  -- end
 
   -- -- eslintがいないときに、biomeを実行
-  if not eslint_exists then
-    M.efm_languages.javascript = { formatters.biome }
-    M.efm_languages.typescript = { formatters.biome }
-    M.efm_languages.javascriptreact = { formatters.biome }
-    M.efm_languages.typescriptreact = { formatters.biome }
-  end
+  -- if not eslint_exists then
+  --   M.efm_languages.javascript = { formatters.biome }
+  --   M.efm_languages.typescript = { formatters.biome }
+  --   M.efm_languages.javascriptreact = { formatters.biome }
+  --   M.efm_languages.typescriptreact = { formatters.biome }
+  -- end
 
-  if not prettier_exists then
+  if prettier_exists then
+    --   M.efm_languages.javascript = { formatters.prettier }
+    --   M.efm_languages.typescript = { formatters.prettier }
+    --   M.efm_languages.javascriptreact = { formatters.prettier }
+    --   M.efm_languages.typescriptreact = { formatters.prettier }
+    --   M.efm_languages.html = { formatters.prettier }
+    --   M.efm_languages.css = { formatters.prettier }
+    M.efm_languages.json = { formatters.prettier }
+    M.efm_languages.jsonc = { formatters.prettier }
+  else
     M.efm_languages.json = { formatters.biome }
     M.efm_languages.jsonc = { formatters.biome }
   end
