@@ -7,7 +7,7 @@ function M.font_with_fallback(name, params)
   return wezterm.font_with_fallback(names, params)
 end
 
-function M.trancate_right(title, max_width)
+function M.truncate_right(title, max_width)
   return wezterm.truncate_right(M.basename(title), max_width)
 end
 

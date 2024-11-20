@@ -49,9 +49,9 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     trailing_bg = NORMAL_TAB_BG
   end
 
-  local title = utils.trancate_right(tab.active_pane.foreground_process_name, max_width)
+  local title = utils.truncate_right(tab.active_pane.foreground_process_name, max_width)
   if title == "" then
-    title = utils.trancate_right(utils.convert_home_dir(tab.active_pane.current_working_dir), max_width)
+    title = utils.truncate_right(utils.convert_home_dir(tab.active_pane.current_working_dir), max_width)
   end
 
   return {
