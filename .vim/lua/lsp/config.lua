@@ -1,3 +1,5 @@
+local with = require("utils").with
+
 local M = {}
 
 -- フォーマッターとリンターを分けて定義
@@ -22,6 +24,14 @@ local linters = {
   codespell = require "efmls-configs.linters.codespell",
   luacheck = require "efmls-configs.linters.luacheck",
 }
+
+local opts = {
+  stylua = {
+    formatCommand = "stylua --config-path ~/.config/stylua.toml -",
+    formatStdin = true,
+  },
+}
+formatters.stylua = with(formatters.stylua, opts.stylua)
 
 M.installed_servers = {
   "astro",
@@ -106,7 +116,7 @@ end
 M.root_markers = root_markers
 
 -- TODO* root_markers見て起動するようなら処理系見直す
-M.efm_languages = {
+M.languages = {
   javascript = {},
   typescript = {},
   javascriptreact = {},
