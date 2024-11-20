@@ -148,32 +148,32 @@ local function setup_languages()
 
   -- tsconfigがいるときに事故るのでコメントアウト
   -- if eslint_exists then
-  --   M.efm_languages.javascript = { linters.eslint }
-  --   M.efm_languages.typescript = { linters.eslint }
-  --   M.efm_languages.javascriptreact = { linters.eslint }
-  --   M.efm_languages.typescriptreact = { linters.eslint }
+  --   M.languages.javascript = { linters.eslint }
+  --   M.languages.typescript = { linters.eslint }
+  --   M.languages.javascriptreact = { linters.eslint }
+  --   M.languages.typescriptreact = { linters.eslint }
   -- end
 
   -- -- eslintがいないときに、biomeを実行
   -- if not eslint_exists then
-  --   M.efm_languages.javascript = { formatters.biome }
-  --   M.efm_languages.typescript = { formatters.biome }
-  --   M.efm_languages.javascriptreact = { formatters.biome }
-  --   M.efm_languages.typescriptreact = { formatters.biome }
+  --   M.languages.javascript = { formatters.biome }
+  --   M.languages.typescript = { formatters.biome }
+  --   M.languages.javascriptreact = { formatters.biome }
+  --   M.languages.typescriptreact = { formatters.biome }
   -- end
 
   if prettier_exists then
-    --   M.efm_languages.javascript = { formatters.prettier }
-    --   M.efm_languages.typescript = { formatters.prettier }
-    --   M.efm_languages.javascriptreact = { formatters.prettier }
-    --   M.efm_languages.typescriptreact = { formatters.prettier }
-    --   M.efm_languages.html = { formatters.prettier }
-    --   M.efm_languages.css = { formatters.prettier }
-    M.efm_languages.json = { formatters.prettier }
-    M.efm_languages.jsonc = { formatters.prettier }
+    --   M.languages.javascript = { formatters.prettier }
+    --   M.languages.typescript = { formatters.prettier }
+    --   M.languages.javascriptreact = { formatters.prettier }
+    --   M.languages.typescriptreact = { formatters.prettier }
+    --   M.languages.html = { formatters.prettier }
+    --   M.languages.css = { formatters.prettier }
+    M.languages.json = { formatters.prettier }
+    M.languages.jsonc = { formatters.prettier }
   else
-    M.efm_languages.json = { formatters.biome }
-    M.efm_languages.jsonc = { formatters.biome }
+    M.languages.json = { formatters.biome }
+    M.languages.jsonc = { formatters.biome }
   end
 end
 

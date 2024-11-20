@@ -24,10 +24,10 @@ mason_lspconfig.setup_handlers {
 }
 
 lspconfig.efm.setup {
-  filetypes = vim.tbl_keys(config.efm_languages),
+  filetypes = vim.tbl_keys(config.languages),
   settings = {
     rootMarkers = config.root_markers,
-    languages = config.efm_languages,
+    languages = config.languages,
   },
   init_options = { documentFormatting = true, documentRangeFormatting = true },
   on_attach = on_attach,
