@@ -3,8 +3,5 @@ return {
   "rebelot/kanagawa.nvim",
   "joshdick/onedark.vim",
   "cocopon/iceberg.vim",
-  {
-    "folke/tokyonight.nvim",
-    opts = require "config/tokyonight",
-  },
+  { "folke/tokyonight.nvim", opts = require "config/tokyonight" },
 }

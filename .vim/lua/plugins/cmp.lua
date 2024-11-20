@@ -18,11 +18,7 @@ return {
   { "ray-x/cmp-treesitter", dependencies },
   "onsails/lspkind-nvim",
   "roobert/tailwindcss-colorizer-cmp.nvim",
-  {
-    "dcampos/nvim-snippy",
-    cmd = { "SnippyEdit", "SnippyReload" },
-    config = true,
-  },
+  { "dcampos/nvim-snippy", cmd = { "SnippyEdit", "SnippyReload" }, config = true },
   {
     "zbirenbaum/copilot-cmp",
     dependencies = { "zbirenbaum/copilot.lua" },

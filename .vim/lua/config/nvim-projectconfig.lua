@@ -1,4 +1,1 @@
-return {
-  project_dir = "~/.config/projects-config/",
-  silent = false,
-}
+return { project_dir = "~/.config/projects-config/", silent = false }

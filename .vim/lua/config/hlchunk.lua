@@ -22,22 +22,13 @@ return {
   indent = {
     enable = true,
     use_treesitter = true,
-    chars = {
-      "│",
-    },
-    style = {
-      { fg = "#2A2A37" },
-    },
+    chars = { "│" },
+    style = { { fg = "#2A2A37" } },
   },
-  line_num = {
-    enable = false,
-  },
+  line_num = { enable = false },
   blank = {
     enable = false,
     chars = { " " },
-    style = {
-      { bg = "#2A2A37" },
-      { bg = "", fg = "" },
-    },
+    style = { { bg = "#2A2A37" }, { bg = "", fg = "" } },
   },
 }

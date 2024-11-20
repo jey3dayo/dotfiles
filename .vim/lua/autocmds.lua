@@ -9,22 +9,13 @@ M.augroup = augroup
 local clear_autocmds = vim.api.nvim_clear_autocmds
 M.clear_autocmds = clear_autocmds
 
-autocmd("BufWritePre", {
-  pattern = "*",
-  command = 'let v:swapchoice = "o"',
-})
+autocmd("BufWritePre", { pattern = "*", command = 'let v:swapchoice = "o"' })
 
 -- Remove whitespace on save
-autocmd("BufWritePre", {
-  pattern = "*",
-  command = ":%s/\\s\\+$//e",
-})
+autocmd("BufWritePre", { pattern = "*", command = ":%s/\\s\\+$//e" })
 
 -- Don't auto commenting new lines
-autocmd("BufEnter", {
-  pattern = "*",
-  command = "set fo-=c fo-=r fo-=o",
-})
+autocmd("BufEnter", { pattern = "*", command = "set fo-=c fo-=r fo-=o" })
 
 -- Restore cursor location when file is opened
 autocmd({ "BufReadPost" }, {
@@ -46,7 +37,7 @@ autocmd("ColorScheme", {
       "NvimTreeNormal",
       "EndOfBuffer",
       "MsgArea",
-      --"NonText",
+      -- "NonText",
     }
     for _, name in ipairs(hl_groups) do
       vim.cmd(string.format("highlight %s ctermbg=none guibg=none", name))

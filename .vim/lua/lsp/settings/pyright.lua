@@ -4,9 +4,7 @@ return {
     python = {
       venvPath = ".",
       pythonPath = "./.venv/bin/python",
-      analysis = {
-        extraPaths = { "." },
-      },
+      analysis = { extraPaths = { "." } },
     },
   },
 }

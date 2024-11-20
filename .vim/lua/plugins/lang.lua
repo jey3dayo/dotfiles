@@ -1,4 +1,12 @@
-local ecma_scripts_ft = { "javascript", "javascriptreact", "jsx", "typescript", "typescriptreact", "tsx", "astro" }
+local ecma_scripts_ft = {
+  "javascript",
+  "javascriptreact",
+  "jsx",
+  "typescript",
+  "typescriptreact",
+  "tsx",
+  "astro",
+}
 local ruby_ft = { "ruby" }
 local markdown_ft = { "markdown", "mkd" }
 
@@ -14,7 +22,11 @@ return {
   { "prisma/vim-prisma", ft = { "prisma" } },
   {
     "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    cmd = {
+      "MarkdownPreviewToggle",
+      "MarkdownPreview",
+      "MarkdownPreviewStop",
+    },
     ft = markdown_ft,
     build = function()
       vim.fn["mkdp#util#install"]()

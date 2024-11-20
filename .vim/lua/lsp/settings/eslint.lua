@@ -1,5 +1,1 @@
-return {
-  init_options = {
-    provideFormatter = false,
-  },
-}
+return { init_options = { provideFormatter = false } }

@@ -1,5 +1,1 @@
-return {
-  view = {
-    default = {},
-  },
-}
+return { view = { default = {} } }

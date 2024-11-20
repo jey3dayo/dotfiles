@@ -1,5 +1,1 @@
-return {
-  init_options = {
-    config = "~/.config/typos.toml",
-  },
-}
+return { init_options = { config = "~/.config/typos.toml" } }

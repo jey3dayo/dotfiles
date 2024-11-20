@@ -1,3 +1,1 @@
-return {
-  use_default_keymaps = false,
-}
+return { use_default_keymaps = false }

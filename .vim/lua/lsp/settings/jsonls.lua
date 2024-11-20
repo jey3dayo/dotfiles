@@ -12,18 +12,12 @@ local schemas = {
   },
   {
     description = "Prettier config",
-    fileMatch = {
-      ".prettierrc",
-      ".prettierrc.json",
-      "prettier.config.json",
-    },
+    fileMatch = { ".prettierrc", ".prettierrc.json", "prettier.config.json" },
     url = "https://json.schemastore.org/prettierrc.json",
   },
   {
     description = "Biome config",
-    fileMatch = {
-      "biome.json",
-    },
+    fileMatch = { "biome.json" },
     url = "https://biomejs.dev/schemas/1.8.0/schema.json",
   },
   {
@@ -66,11 +60,7 @@ local schemas = {
   },
   {
     description = "The AWS Serverless Application Model (AWS SAM, previously known as Project Flourish) extends AWS CloudFormation to provide a simplified way of defining the Amazon API Gateway APIs, AWS Lambda functions, and Amazon DynamoDB tables needed by your serverless application.",
-    fileMatch = {
-      "serverless.template",
-      "*.sam.json",
-      "sam.json",
-    },
+    fileMatch = { "serverless.template", "*.sam.json", "sam.json" },
     url = "https://raw.githubusercontent.com/awslabs/goformation/v5.2.9/schema/sam.schema.json",
   },
   {
@@ -80,9 +70,7 @@ local schemas = {
   },
   {
     description = "JSON schema for the JSON Feed format",
-    fileMatch = {
-      "feed.json",
-    },
+    fileMatch = { "feed.json" },
     url = "https://json.schemastore.org/feed.json",
     versions = {
       ["1"] = "https://json.schemastore.org/feed-1.json",
@@ -91,9 +79,7 @@ local schemas = {
   },
   {
     description = "JSON schema for Visual Studio component configuration files",
-    fileMatch = {
-      "*.vsconfig",
-    },
+    fileMatch = { "*.vsconfig" },
     url = "https://json.schemastore.org/vsconfig.json",
   },
 }
@@ -104,9 +90,5 @@ return {
     -- biomeに任せる
     provideFormatter = false,
   },
-  settings = {
-    json = {
-      schemas = schemas,
-    },
-  },
+  settings = { json = { schemas = schemas } },
 }

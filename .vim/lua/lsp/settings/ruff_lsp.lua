@@ -1,3 +1,1 @@
-return {
-  autostart = true,
-}
+return { autostart = true }

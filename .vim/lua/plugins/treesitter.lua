@@ -16,14 +16,8 @@ return {
     dependencies = dependencies,
     opts = require "config/nvim-autopairs",
   },
-  {
-    "andymass/vim-matchup",
-    dependencies = dependencies,
-  },
-  {
-    "nvim-treesitter/nvim-tree-docs",
-    dependencies = dependencies,
-  },
+  { "andymass/vim-matchup", dependencies = dependencies },
+  { "nvim-treesitter/nvim-tree-docs", dependencies = dependencies },
   {
     "HiPhish/rainbow-delimiters.nvim",
     dependencies = dependencies,

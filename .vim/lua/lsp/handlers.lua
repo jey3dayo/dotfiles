@@ -95,11 +95,7 @@ local function setup_capabilities()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-      "documentation",
-      "detail",
-      "additionalTextEdits",
-    },
+    properties = { "documentation", "detail", "additionalTextEdits" },
   }
   capabilities.textDocument.foldingRange = {
     dynamicRegistration = false,
@@ -133,16 +129,11 @@ user_command("AutoFormatDisable", function(args)
   else
     vim.g.disable_autoformat = true
   end
-end, {
-  desc = "Disable autoformat-on-save",
-  bang = true,
-})
+end, { desc = "Disable autoformat-on-save", bang = true })
 
 user_command("AutoFormatEnable", function()
   vim.b.disable_autoformat = false
   vim.g.disable_autoformat = false
-end, {
-  desc = "Re-enable autoformat-on-save",
-})
+end, { desc = "Re-enable autoformat-on-save" })
 
 return M

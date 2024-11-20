@@ -1,3 +1,1 @@
-return {
-  disable_filetype = { "TelescopePrompt", "vim" },
-}
+return { disable_filetype = { "TelescopePrompt", "vim" } }

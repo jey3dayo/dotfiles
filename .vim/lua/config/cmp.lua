@@ -50,8 +50,12 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
     },
-    ["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
-    ["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
+    ["<C-n>"] = cmp.mapping.select_next_item {
+      behavior = cmp.SelectBehavior.Select,
+    },
+    ["<C-p>"] = cmp.mapping.select_prev_item {
+      behavior = cmp.SelectBehavior.Select,
+    },
   },
   sources = cmp.config.sources {
     { name = "snippy" },
@@ -84,28 +88,17 @@ cmp.setup {
 
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(),
-  completion = {
-    completeopt = "menu,menuone,noinsert,noselect",
-  },
-  sources = {
-    { name = "path" },
-    { name = "cmdline" },
-  },
+  completion = { completeopt = "menu,menuone,noinsert,noselect" },
+  sources = { { name = "path" }, { name = "cmdline" } },
 })
 
 cmp.setup.cmdline({ "/", "?" }, {
   mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = "buffer" },
-  },
+  sources = { { name = "buffer" } },
 })
 
 cmp.setup.filetype("gitcommit", {
-  sources = cmp.config.sources({
-    { name = "cmp_git" },
-  }, {
-    { name = "buffer" },
-  }),
+  sources = cmp.config.sources({ { name = "cmp_git" } }, { { name = "buffer" } }),
 })
 
 cmp.event:on(
@@ -145,9 +138,7 @@ cmp.event:on(
   }
 )
 
-colorizer_cmp.setup {
-  color_square_width = 2,
-}
+colorizer_cmp.setup { color_square_width = 2 }
 
 vim.cmd [[
   set completeopt=menuone,noinsert,noselect

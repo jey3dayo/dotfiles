@@ -90,10 +90,7 @@ local config_files = {
     "prettier.config.cjs",
     ".prettierrc.toml",
   },
-  biome = {
-    "biome.json",
-    "biome.jsonc",
-  },
+  biome = { "biome.json", "biome.jsonc" },
 }
 
 -- config_filesからroot_markersを生成
@@ -116,7 +113,11 @@ M.efm_languages = {
   typescriptreact = {},
   html = { formatters.prettier },
   css = { formatters.prettier },
-  python = { linters.ruff_linter, formatters.ruff_formatter, formatters.ruff_sort },
+  python = {
+    linters.ruff_linter,
+    formatters.ruff_formatter,
+    formatters.ruff_sort,
+  },
   lua = { formatters.stylua, linters.luacheck },
   markdown = { linters.markdownlint },
   dockerfile = { linters.hadolint },

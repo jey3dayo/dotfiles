@@ -9,16 +9,17 @@ return {
   sections = {
     lualine_a = { "mode" },
     lualine_b = { "branch" },
-    lualine_c = { {
-      "filename",
-      file_status = true,
-      path = 0,
-    } },
+    lualine_c = { { "filename", file_status = true, path = 0 } },
     lualine_x = {
       {
         "diagnostics",
         sources = { "nvim_diagnostic" },
-        symbols = { error = " ", warn = " ", info = " ", hint = " " },
+        symbols = {
+          error = " ",
+          warn = " ",
+          info = " ",
+          hint = " ",
+        },
       },
       "encoding",
       "filetype",
@@ -29,11 +30,7 @@ return {
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = { {
-      "filename",
-      file_status = true,
-      path = 1,
-    } },
+    lualine_c = { { "filename", file_status = true, path = 1 } },
     lualine_x = { "location" },
     lualine_y = {},
     lualine_z = {},

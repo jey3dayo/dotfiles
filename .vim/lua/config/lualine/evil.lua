@@ -1,21 +1,20 @@
 -- Eviline config for lualine
 -- Author: shadmansaleh
 -- Credit: glepnir
-
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
-  bg       = '#202328',
-  fg       = '#bbc2cf',
-  yellow   = '#ECBE7B',
-  cyan     = '#008080',
-  darkblue = '#081633',
-  green    = '#98be65',
-  orange   = '#FF8800',
-  violet   = '#a9a1e1',
-  magenta  = '#c678dd',
-  blue     = '#51afef',
-  red      = '#ec5f67',
+    bg = '#202328',
+    fg = '#bbc2cf',
+    yellow = '#ECBE7B',
+    cyan = '#008080',
+    darkblue = '#081633',
+    green = '#98be65',
+    orange = '#FF8800',
+    violet = '#a9a1e1',
+    magenta = '#c678dd',
+    blue = '#51afef',
+    red = '#ec5f67'
 }
 
 colors.primary = colors.violet
@@ -79,9 +78,7 @@ local config = {
     lualine_y = {},
     lualine_z = {},
     -- These will be filled later
-    lualine_c = {
-      "mode",
-    },
+    lualine_c = { "mode" },
     lualine_x = {},
   },
   inactive_sections = {
@@ -189,10 +186,7 @@ ins_left {
   color = { fg = colors.fg, gui = "bold" },
 }
 
-ins_left {
-  icon = " Fmt:",
-  color = { fg = colors.fg, gui = "bold" },
-}
+ins_left { icon = " Fmt:", color = { fg = colors.fg, gui = "bold" } }
 
 -- Add components to right sections
 ins_right {
@@ -209,11 +203,7 @@ ins_right {
   color = { fg = colors.green, gui = "bold" },
 }
 
-ins_right {
-  "branch",
-  icon = "",
-  color = { fg = colors.violet, gui = "bold" },
-}
+ins_right { "branch", icon = "", color = { fg = colors.violet, gui = "bold" } }
 
 ins_right {
   "diff",

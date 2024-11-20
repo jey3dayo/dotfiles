@@ -7,7 +7,5 @@ return {
       split = "s",
     },
   },
-  code_action_lightbulb = {
-    enable = true,
-  },
+  code_action_lightbulb = { enable = true },
 }

@@ -1,9 +1,1 @@
-return {
-  settings = {
-    css = {
-      lint = {
-        unknownAtRules = "ignore",
-      },
-    },
-  },
-}
+return { settings = { css = { lint = { unknownAtRules = "ignore" } } } }

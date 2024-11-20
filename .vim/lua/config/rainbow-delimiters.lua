@@ -6,10 +6,7 @@ vim.g.rainbow_delimiters = {
     [""] = rainbow_delimiters.strategy["global"],
     vim = rainbow_delimiters.strategy["local"],
   },
-  query = {
-    [""] = "rainbow-delimiters",
-    lua = "rainbow-blocks",
-  },
+  query = { [""] = "rainbow-delimiters", lua = "rainbow-blocks" },
   highlight = {
     "RainbowDelimiterRed",
     "RainbowDelimiterYellow",

@@ -22,7 +22,19 @@ vim.g.increment_activator_filetype_candidates = {
     { "const", "let" },
     { "dark", "medium", "light" },
     { "sm", "md", "lg", "xl", "xxl" },
-    { "50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "950" },
+    {
+      "50",
+      "100",
+      "200",
+      "300",
+      "400",
+      "500",
+      "600",
+      "700",
+      "800",
+      "900",
+      "950",
+    },
     { "slate", "gray", "zinc", "neutral", "stone" },
     {
       "red",
@@ -47,11 +59,17 @@ vim.g.increment_activator_filetype_candidates = {
   ruby = {
     { "if", "unless" },
     { "nil", "empty", "blank" },
-    { "string", "text", "integer", "float", "datetime", "timestamp", "timestamp" },
+    {
+      "string",
+      "text",
+      "integer",
+      "float",
+      "datetime",
+      "timestamp",
+      "timestamp",
+    },
   },
-  javascript = {
-    { "props", "state" },
-  },
+  javascript = { { "props", "state" } },
   typescript = {
     { "string", "number", "boolean", "null", "undefined", "unknown" },
     { "void", "never" },

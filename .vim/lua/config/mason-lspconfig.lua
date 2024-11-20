@@ -17,10 +17,7 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server)
-    local opts = {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    }
+    local opts = { on_attach = on_attach, capabilities = capabilities }
     local extends = safe_require("lsp.settings." .. server)
     lspconfig[server].setup(with(opts, extends))
   end,
@@ -32,10 +29,7 @@ lspconfig.efm.setup {
     rootMarkers = config.root_markers,
     languages = config.efm_languages,
   },
-  init_options = {
-    documentFormatting = true,
-    documentRangeFormatting = true,
-  },
+  init_options = { documentFormatting = true, documentRangeFormatting = true },
   on_attach = on_attach,
   capabilities = capabilities,
 }
