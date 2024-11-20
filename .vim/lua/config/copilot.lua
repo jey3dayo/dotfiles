@@ -65,14 +65,14 @@ local function CopilotChatBuffer()
   end
 end
 
-Keymap("<Leader>c", CopilotChatBuffer)
-V_Keymap("<Leader>c", CopilotChatBuffer)
-
 -- telescopeを使ってアクションプロンプトを表示
 local function ShowChatPrompt()
   local actions = require "CopilotChat.actions"
   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
 end
 
-Keymap("<Leader>C", ShowChatPrompt)
-V_Keymap("<Leader>C", ShowChatPrompt)
+-- Hack: MetaをAltにマッピング
+Keymap("<A-k>", CopilotChatBuffer)
+V_Keymap("<A-k>", CopilotChatBuffer)
+Keymap("<A-l>", ShowChatPrompt)
+V_Keymap("<A-l>", ShowChatPrompt)
