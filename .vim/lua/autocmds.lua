@@ -45,4 +45,35 @@ autocmd("ColorScheme", {
   end,
 })
 
+local userLspConfig = augroup("UserLspConfig", { clear = true })
+
+-- 競合するLSPがある場合、client.stop()をかける
+-- ts_lsとbiomeが競合するので、ts_lsを止める等
+autocmd("LspAttach", {
+  group = userLspConfig,
+  callback = function(args)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    require("lsp/handlers").setup_lsp_keymaps(args.bufnr, client)
+    require("lsp/handlers").lsp_highlight_document(client)
+
+    -- FIXME: 複数のclientがあるときに対応できてない
+    if client.supports_method "textDocument/formatting" then
+      -- Format the current buffer on save
+      autocmd("BufWritePre", {
+        buffer = args.bufnr,
+        callback = function()
+          require("lsp/handlers").format_buffer(args.bufnr, client)
+        end,
+      })
+
+      vim.api.nvim_create_user_command("Format", function()
+        local c = vim.lsp.get_client_by_id(args.data.client_id)
+        require("lsp/handlers").format_buffer(args.bufnr, c)
+      end, {})
+    end
+  end,
+})
+
 return M
