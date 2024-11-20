@@ -12,6 +12,18 @@ local default_keybinds = {
   { key = "=", mods = "CTRL|SHIFT", action = "ResetFontSize" },
   { key = "+", mods = "CTRL", action = "IncreaseFontSize" },
   { key = "-", mods = "CTRL", action = "DecreaseFontSize" },
+
+  -- CMDをALTに置換
+  {
+    key = "k",
+    mods = "CMD",
+    action = wezterm.action.SendKey { key = "k", mods = "ALT" },
+  },
+  {
+    key = "l",
+    mods = "CMD",
+    action = wezterm.action.SendKey { key = "l", mods = "ALT" },
+  },
 }
 
 local tmux_keybinds = {
