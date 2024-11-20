@@ -1,6 +1,1 @@
-vim.filetype.add {
-  pattern = {
-    [".env*"] = "config",
-    [".env.*"] = "config",
-  },
-}
+vim.filetype.add({ pattern = { [".env*"] = "config", [".env.*"] = "config" } })

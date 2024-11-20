@@ -1,5 +1,1 @@
-vim.filetype.add {
-  pattern = {
-    ["*.ts.bk"] = "typescriptreact",
-  },
-}
+vim.filetype.add { pattern = { ["*.ts.bk"] = "typescriptreact" } }

@@ -1,7 +1,3 @@
 vim.filetype.add {
-  extension = {
-    eslintrc = "json",
-    stylintrc = "json",
-    babelrc = "json",
-  },
+  extension = { eslintrc = "json", stylintrc = "json", babelrc = "json" },
 }

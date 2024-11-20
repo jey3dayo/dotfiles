@@ -1,5 +1,1 @@
-vim.filetype.add {
-  extension = {
-    Podfile = "ruby",
-  },
-}
+vim.filetype.add { extension = { Podfile = "ruby" } }

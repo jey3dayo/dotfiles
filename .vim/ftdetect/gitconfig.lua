@@ -1,5 +1,1 @@
-vim.filetype.add {
-  extension = {
-    gitconfig = "gitconfig",
-  },
-}
+vim.filetype.add { extension = { gitconfig = "gitconfig" } }

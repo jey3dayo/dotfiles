@@ -1,6 +1,1 @@
-vim.filetype.add {
-  extension = {
-    md = "markdown",
-    mdx = "markdown",
-  },
-}
+vim.filetype.add { extension = { md = "markdown", mdx = "markdown" } }

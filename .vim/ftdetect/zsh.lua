@@ -1,6 +1,1 @@
-vim.filetype.add {
-  pattern = {
-    [".envrc"] = "zsh",
-    ["abbreviations"] = "zsh",
-  },
-}
+vim.filetype.add { pattern = { [".envrc"] = "zsh", ["abbreviations"] = "zsh" } }

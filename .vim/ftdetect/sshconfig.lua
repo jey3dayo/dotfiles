@@ -1,5 +1,1 @@
-vim.filetype.add {
-  extension = {
-    sshconfig = "sshconfig",
-  }
-}
+vim.filetype.add { extension = { sshconfig = "sshconfig" } }
