@@ -1,25 +1,27 @@
-# macOS
+# Operating System Files
+## macOS
 .DS_Store
 .AppleDouble
 .LSOverride
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
+._*
+.DocumentRevisions-V100/
+.fseventsd/
+.Spotlight-V100/
+.TemporaryItems/
+.Trashes/
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
+.AppleDB/
+.AppleDesktop/
+Network Trash Folder/
+Temporary Items/
 .apdisk
-._*
 
-# Windows
+## Windows
 Thumbs.db
 
-# Project
+# Development Environment
+## Project
 build/
 log/
 doc/tags
@@ -27,54 +29,49 @@ doc/tags-*
 .env*
 stash/
 
-# Editor/IDE
+## Editor/IDE
 .idea/
 .vscode/
-.project
-.classpath
+.project/
+.classpath/
 .settings/
 jsconfig.json
 
-# Vim
+## Vim
 Session.vim
 .vim/.VimballRecord
 .vim/dict/
 .vim/doc/
 .vim/GetLatest/
 .vim/bundle/
-.vim/chalice/cache
+.vim/chalice/cache/
 <Plug>*
 projects-config/*
 !projects-config/.gitkeep
 
-# Zsh
+## Zsh
 zsh/.zsh_sessions/
 zsh/.zsh_history
 zsh/sheldon/sheldon.zsh
-.zinit
-.zcompdump*
-.zcompcache
+zsh/.zinit/
+zsh/.zcompdump*
+zsh/.zcompcache/
 
-# Editor/Tool specific
-.vimperator/info
+# Tools and Applications
+.vimperator/info/
 .tmux/plugins/
 .subversion/auth/
-.idea
 .netrwhist
 .python-version
 iterm2/
-.vscode/
-.project
-.classpath
-.settings
 .yarnclean
 yarn/
 .direnv/
-composer
-configstore
-fish
-fisher
-karabiner/automatic_backups
+composer/
+configstore/
+fish/
+fisher/
+karabiner/automatic_backups/
 github-copilot/
 op/
 jgit/
@@ -83,22 +80,21 @@ cvim/
 cycloud/
 lazygit/
 .wrangler/
-mise/trusted-configs
-jsconfig.json
-nohup.out
+mise/trusted-configs/
 ssh/ssh_config.d/private-host.sshconfig
 irb/irb_history
+AWS VPN Client/
+AWSVPNClient/
+1Password/ssh/
+Autodesk/
+browser-launcher/
+rest-client/
+dlv/
 gh/hosts.yml
 ghkw
 hub
-AWS VPN Client
-AWSVPNClient
-1Password/ssh
-Autodesk
-browser-launcher
-rest-client
 
-# File types
+# Temporary and Generated Files
 *~
 *.a
 *.al
@@ -124,7 +120,7 @@ rest-client
 sample.*
 *.stash.*
 *.my.sh
-*.jse
 *.jsxe
 *.orig
 *.rej
+nohup.out
