@@ -173,15 +173,21 @@ local function setup_languages()
   -- end
 
   if prettier_exists then
-    --   M.languages.javascript = { formatters.prettier }
-    --   M.languages.typescript = { formatters.prettier }
-    --   M.languages.javascriptreact = { formatters.prettier }
-    --   M.languages.typescriptreact = { formatters.prettier }
-    --   M.languages.html = { formatters.prettier }
-    --   M.languages.css = { formatters.prettier }
+    M.languages.javascript = { formatters.prettier }
+    M.languages.typescript = { formatters.prettier }
+    M.languages.javascriptreact = { formatters.prettier }
+    M.languages.typescriptreact = { formatters.prettier }
+    M.languages.html = { formatters.prettier }
+    M.languages.css = { formatters.prettier }
     M.languages.json = { formatters.prettier }
     M.languages.jsonc = { formatters.prettier }
   else
+    M.languages.javascript = { formatters.biome }
+    M.languages.typescript = { formatters.biome }
+    M.languages.javascriptreact = { formatters.biome }
+    M.languages.typescriptreact = { formatters.biome }
+    M.languages.html = { formatters.biome }
+    M.languages.css = { formatters.biome }
     M.languages.json = { formatters.biome }
     M.languages.jsonc = { formatters.biome }
   end
