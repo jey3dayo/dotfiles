@@ -1,7 +1,17 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
   "files": {
-    "include": ["**/*.ts", "**/*.js", "**/*.json", "raycast/**"],
+    "include": [
+      "**/*.ts",
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.cjs",
+      "**/*.mts",
+      "**/*.jsx",
+      "**/*.tsx",
+      "**/*.json",
+      "raycast/**"
+    ],
     "ignore": [".cache", "dist", "node_modules", "src/gen", "jest.config.js"]
   },
   "linter": {
