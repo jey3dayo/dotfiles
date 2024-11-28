@@ -117,12 +117,15 @@ M.root_markers = root_markers
 
 -- TODO* root_markers見て起動するようなら処理系見直す
 M.languages = {
-  javascript = {},
-  typescript = {},
-  javascriptreact = {},
-  typescriptreact = {},
+  javascript = { formatters.biome },
+  typescript = { formatters.biome },
+  javascriptreact = { formatters.biome },
+  typescriptreact = { formatters.biome },
+  json = { formatters.biome },
+  jsonc = { formatters.biome },
+  gql = { formatters.biome },
   html = { formatters.prettier },
-  css = { formatters.prettier },
+  css = { formatters.biome },
   python = {
     linters.ruff_linter,
     formatters.ruff_formatter,
@@ -131,7 +134,6 @@ M.languages = {
   lua = { formatters.stylua, linters.luacheck },
   markdown = { linters.markdownlint },
   dockerfile = { linters.hadolint },
-  json = {},
   yaml = { linters.yamllint },
   sh = { linters.shellcheck, formatters.shfmt },
   vim = { linters.vint },
@@ -152,7 +154,8 @@ local function setup_languages()
   end
 
   -- ECMA Script Linting
-  -- eslint と prettier の設定ファイルがない場合は biome を使う
+  -- eslintかprettierがあれば上書き
+
   -- local eslint_exists = config_exists "eslint"
   local prettier_exists = config_exists "prettier"
 
@@ -181,15 +184,6 @@ local function setup_languages()
     M.languages.css = { formatters.prettier }
     M.languages.json = { formatters.prettier }
     M.languages.jsonc = { formatters.prettier }
-  else
-    M.languages.javascript = { formatters.biome }
-    M.languages.typescript = { formatters.biome }
-    M.languages.javascriptreact = { formatters.biome }
-    M.languages.typescriptreact = { formatters.biome }
-    M.languages.html = { formatters.biome }
-    M.languages.css = { formatters.biome }
-    M.languages.json = { formatters.biome }
-    M.languages.jsonc = { formatters.biome }
   end
 end
 
