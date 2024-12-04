@@ -1,6 +1,5 @@
 path=(
-  $HOME/.local/bin
+  $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
-  /usr/local/{bin,sbin}(N-/)
   $path
 )

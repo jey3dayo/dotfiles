@@ -36,6 +36,7 @@ export BIOME_CONFIG_PATH="$HOME/.config/biome.json"
 path=(
   # railsビルド用
   # /opt/homebrew/opt/mysql@5.7/bin(N-/)
+  $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
   $HOME/.deno/bin(N-/)
