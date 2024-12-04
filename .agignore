@@ -21,3 +21,4 @@ prisma/client
 storybook-static
 tsconfig.tsbuildinfo
 gen/v1/
+.zcompcache
