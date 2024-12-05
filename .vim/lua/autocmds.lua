@@ -54,11 +54,16 @@ autocmd("LspAttach", {
   callback = function(args)
     -- Enable completion triggered by <c-x><c-o>
     vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
-    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    local client_id = args.data.client_id
+    local client = vim.lsp.get_client_by_id(client_id)
+    if not client then
+      vim.notify(client_id .. " not found", vim.log.levels.WARN)
+      return
+    end
+
     require("lsp/handlers").setup_lsp_keymaps(args.bufnr, client)
     require("lsp/handlers").lsp_highlight_document(client)
 
-    -- FIXME: 複数のclientがあるときに対応できてない
     if client.supports_method "textDocument/formatting" then
       -- Format the current buffer on save
       autocmd("BufWritePre", {
@@ -69,7 +74,13 @@ autocmd("LspAttach", {
       })
 
       vim.api.nvim_create_user_command("Format", function()
-        local c = vim.lsp.get_client_by_id(args.data.client_id)
+        local id = args.data.client_id
+        local c = vim.lsp.get_client_by_id(id)
+        if not c then
+          vim.notify(id .. " not found", vim.log.levels.WARN)
+          return
+        end
+
         require("lsp/handlers").format_buffer(args.bufnr, c)
       end, {})
     end
