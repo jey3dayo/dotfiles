@@ -117,7 +117,6 @@ telescope.load_extension "undo"
 telescope.load_extension "notify"
 telescope.load_extension "frecency"
 telescope.load_extension "neoclip"
-telescope.load_extension "notify"
 
 -- keymaps
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
