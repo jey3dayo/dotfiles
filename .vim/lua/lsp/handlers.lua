@@ -2,6 +2,10 @@ local M = {}
 
 local user_command = require("utils").user_command
 
+local function notify_formatter(name)
+  vim.notify("Formatted with: " .. name, vim.log.levels.INFO)
+end
+
 -- フォーマットを実行する共通関数
 local function format_buffer(bufnr, client)
   -- Disable with a global or buffer-local variable
@@ -16,8 +20,7 @@ local function format_buffer(bufnr, client)
     -- async = true,
   }
 
-  -- フォーマットに使用したクライアント名を通知
-  -- vim.notify("Formatted with: " .. client.name, vim.log.levels.INFO)
+  notify_formatter(client.name)
 end
 
 M.format_buffer = format_buffer
@@ -37,7 +40,7 @@ function M.notify_formatter_clients(bufnr)
     return c.name
   end, active_clients)
 
-  vim.notify("Formatted with: " .. table.concat(client_names, ", "), vim.log.levels.INFO)
+  notify_formatter(table.concat(client_names, ", "))
 end
 
 -- キーマップ設定
@@ -60,10 +63,10 @@ M.setup_lsp_keymaps = function(bufnr, client)
       local client_names = vim.tbl_map(function(c)
         return c.name
       end, active_clients)
-      vim.notify("Formatted with: " .. table.concat(client_names, ", "), vim.log.levels.INFO)
-      ------------
 
       vim.lsp.buf.format { async = true }
+
+      notify_formatter(table.concat(client_names, ", "))
     end, bufopts)
   end
 

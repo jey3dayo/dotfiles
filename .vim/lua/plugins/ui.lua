@@ -1,12 +1,6 @@
 return {
   "nvim-lua/popup.nvim",
   {
-    "rcarriga/nvim-notify",
-    config = function()
-      require "config/nvim-notify"
-    end,
-  },
-  {
     "nvim-lualine/lualine.nvim",
     config = function()
       require "config/lualine"
