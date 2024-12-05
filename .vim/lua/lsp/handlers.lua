@@ -2,8 +2,12 @@ local M = {}
 
 local user_command = require("utils").user_command
 
+local isDebug = true
+
 local function notify_formatter(name)
-  vim.notify("Formatted with: " .. name, vim.log.levels.INFO)
+  if isDebug then
+    vim.notify("Formatted with: " .. name, vim.log.levels.INFO)
+  end
 end
 
 -- フォーマットを実行する共通関数
