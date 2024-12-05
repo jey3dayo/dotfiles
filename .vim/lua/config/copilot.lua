@@ -54,25 +54,26 @@ copilot_chat.setup {
   },
 }
 
--- Copilot Chat
--- バッファの内容全体を使ってCopilotとチャット
-local function CopilotChatBuffer()
-  local input = vim.fn.input "Quick Chat: "
-  if input ~= "" then
-    require("CopilotChat").ask(input, {
-      selection = select and select.buffer or nil,
-    })
-  end
-end
-
--- telescopeを使ってアクションプロンプトを表示
-local function ShowChatPrompt()
-  local actions = require "CopilotChat.actions"
-  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-end
-
--- Hack: MetaをAltにマッピング
-Keymap("<A-k>", CopilotChatBuffer)
-V_Keymap("<A-k>", CopilotChatBuffer)
-Keymap("<A-l>", ShowChatPrompt)
-V_Keymap("<A-l>", ShowChatPrompt)
+-- Avanteで代替
+-- -- Copilot Chat
+-- -- バッファの内容全体を使ってCopilotとチャット
+-- local function CopilotChatBuffer()
+--   local input = vim.fn.input "Quick Chat: "
+--   if input ~= "" then
+--     require("CopilotChat").ask(input, {
+--       selection = select and select.buffer or nil,
+--     })
+--   end
+-- end
+--
+-- -- telescopeを使ってアクションプロンプトを表示
+-- local function ShowChatPrompt()
+--   local actions = require "CopilotChat.actions"
+--   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+-- end
+--
+-- -- Hack: MetaをAltにマッピング
+-- Keymap("<A-k>", CopilotChatBuffer)
+-- V_Keymap("<A-k>", CopilotChatBuffer)
+-- Keymap("<A-l>", ShowChatPrompt)
+-- V_Keymap("<A-l>", ShowChatPrompt)
