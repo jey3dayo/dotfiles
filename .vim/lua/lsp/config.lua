@@ -41,7 +41,6 @@ M.installed_servers = {
   "efm",
   "jsonls",
   "lua_ls",
-  "marksman",
   "prismals",
   "pylsp",
   "ruff",
