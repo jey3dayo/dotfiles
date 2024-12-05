@@ -86,7 +86,7 @@ M.setup_lsp_keymaps = function(bufnr, client)
   Keymap("<C-]>", "<cmd>Lspsaga goto_definition<CR>", bufopts)
   Keymap("[lsp]a", "<cmd>Lspsaga code_action<CR>", bufopts)
   Keymap("[lsp]t", "<cmd>Lspsaga goto_type_definition<CR>", bufopts)
-  Keymap("[lsp]K", "<cmd>Lspsaga peek_definition<CR>", bufopts)
+  Keymap("[lsp]k", "<cmd>Lspsaga peek_definition<CR>", bufopts)
   Keymap("[lsp]r", "<cmd>Lspsaga rename<CR>", bufopts)
   Keymap("[lsp]o", "<cmd>Lspsaga outline<CR>", bufopts)
 
