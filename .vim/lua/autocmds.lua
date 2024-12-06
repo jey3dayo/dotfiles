@@ -39,43 +39,39 @@ autocmd("ColorScheme", {
   end,
 })
 
-local userLspConfig = augroup("UserLspConfig", { clear = true })
-
 -- 競合するLSPがある場合、client.stop()をかける
 -- ts_lsとbiomeが競合するので、ts_lsを止める等
+local lsp_augroup = augroup("LspFormatting", { clear = true })
+local client_manager = require "lsp/client_manager"
+
 autocmd("LspAttach", {
-  group = userLspConfig,
+  group = lsp_augroup,
   callback = function(args)
     vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+    local bufnr = args.buf
     local client_id = args.data.client_id
     local client = vim.lsp.get_client_by_id(client_id)
+
     if not client then
       return
     end
 
-    require("lsp/handlers").setup_lsp_keymaps(args.bufnr, client)
-    require("lsp/handlers").lsp_highlight_document(client)
-
-    if client.supports_method "textDocument/formatting" then
-      -- Format the current buffer on save
-      autocmd("BufWritePre", {
-        buffer = args.bufnr,
-        callback = function()
-          require("lsp/handlers").format_buffer(args.bufnr, client)
-        end,
-      })
-
-      vim.api.nvim_create_user_command("Format", function()
-        local id = args.data.client_id
-        local c = vim.lsp.get_client_by_id(id)
-        if not c then
-          vim.notify(id .. " not found", vim.log.levels.WARN)
-          return
-        end
-
-        require("lsp/handlers").format_buffer(args.bufnr, c)
-      end, {})
+    -- 既に処理済みのチェック
+    if client_manager.is_client_processed(args.data.client_id, bufnr) then
+      return
     end
+    client_manager.mark_client_processed(args.data.client_id, bufnr)
+
+    -- クライアント停止判定
+    if client_manager.should_stop_client(client) then
+      client.stop()
+      return
+    end
+
+    require("lsp/keymaps").setup(bufnr, client)
+    require("lsp/formatter").setup(bufnr, client, args)
+    require("lsp/highlight").setup(client)
   end,
 })
 

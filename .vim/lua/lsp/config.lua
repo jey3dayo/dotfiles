@@ -2,6 +2,26 @@ local with = require("utils").with
 
 local M = {}
 
+M.isDebug = false
+
+M.format = {
+  default = {
+    timeout_ms = 3000,
+    async = false,
+  },
+  state = {
+    global = "format_disabled",
+    buffer = "b:format_disabled",
+  },
+}
+
+M.LSP = {
+  PREFIX = "[lsp]",
+  DEFAULT_OPTS = { silent = true },
+  DEFAULT_BUF_OPTS = { noremap = true, silent = true },
+  FORMAT_TIMEOUT = 5000,
+}
+
 -- フォーマッターとリンターを分けて定義
 local formatters = {
   biome = require "efmls-configs.formatters.biome",

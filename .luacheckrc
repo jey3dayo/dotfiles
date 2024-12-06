@@ -12,7 +12,6 @@ globals = {
   "autocmd",
   "augroup",
   "user_command",
-  "IsDebug",
 }
 
 max_line_length = false
