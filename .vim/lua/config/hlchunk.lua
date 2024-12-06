@@ -1,7 +1,7 @@
 return {
   chunk = {
     enable = true,
-    notify = true,
+    notify = false,
     use_treesitter = true,
     chars = {
       horizontal_line = "─",
