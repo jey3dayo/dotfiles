@@ -1,4 +1,4 @@
-local lualine = safe_require "lualine"
+local lualine = Safe_require "lualine"
 
 if not lualine then
   return

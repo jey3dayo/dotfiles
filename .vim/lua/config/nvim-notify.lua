@@ -1,4 +1,4 @@
-local notify = safe_require "notify"
+local notify = Safe_require "notify"
 
 if not notify then
   return

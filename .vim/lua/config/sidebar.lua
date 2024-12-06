@@ -1,4 +1,4 @@
-local sidebar = safe_require "sidebar-nvim"
+local sidebar = Safe_require "sidebar-nvim"
 if not sidebar then
   return
 end

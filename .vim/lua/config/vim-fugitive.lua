@@ -1,4 +1,4 @@
-local gitlinker = safe_require "gitlinker"
+local gitlinker = Safe_require "gitlinker"
 if not gitlinker then
   return
 end

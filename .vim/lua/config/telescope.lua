@@ -1,4 +1,4 @@
-local telescope = safe_require "telescope"
+local telescope = Safe_require "telescope"
 if not telescope then
   return
 end

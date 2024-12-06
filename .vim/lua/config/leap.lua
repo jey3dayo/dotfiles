@@ -1,5 +1,5 @@
-local leap = safe_require "leap"
-local leap_user = safe_require "leap.user"
+local leap = Safe_require "leap"
+local leap_user = Safe_require "leap.user"
 if not (leap and leap_user) then
   return
 end

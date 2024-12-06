@@ -1,5 +1,5 @@
-local hop = safe_require "hop"
-local hop_hint = safe_require "hop.hint"
+local hop = Safe_require "hop"
+local hop_hint = Safe_require "hop.hint"
 
 if not (hop and hop_hint) then
   return
