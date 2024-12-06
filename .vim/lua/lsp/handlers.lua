@@ -2,7 +2,7 @@ local M = {}
 
 local user_command = require("utils").user_command
 
-local isDebug = true
+local isDebug = false
 
 local function notify_formatter(name)
   if isDebug then
@@ -35,16 +35,6 @@ M.lsp_highlight_document = function(client)
   if illuminate then
     illuminate.on_attach(client)
   end
-end
-
--- フォーマッターのクライアント名を通知する関数
-function M.notify_formatter_clients(bufnr)
-  local active_clients = M.get_formatter_clients(bufnr)
-  local client_names = vim.tbl_map(function(c)
-    return c.name
-  end, active_clients)
-
-  notify_formatter(table.concat(client_names, ", "))
 end
 
 -- キーマップ設定
