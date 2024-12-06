@@ -26,12 +26,19 @@ M.get_git_dir = function()
   return git_dir
 end
 
-M.with = function(tbl, extend)
-  if not extend or vim.tbl_isempty(extend) then
-    return tbl
+---@param base table 基本となるテーブル
+---@param ... table 拡張するテーブル
+M.with = function(base, ...)
+  local result = vim.deepcopy(base)
+  local tables = { ... }
+
+  for _, extend in ipairs(tables) do
+    if extend and type(extend) == "table" and not vim.tbl_isempty(extend) then
+      result = vim.tbl_extend("force", result, extend)
+    end
   end
 
-  return vim.tbl_extend("force", tbl, extend)
+  return result
 end
 
 local function table_to_string(tbl, indent)
