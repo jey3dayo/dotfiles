@@ -10,7 +10,9 @@ globals = {
   "Set_keymap",
   "Buf_set_keymap",
   "autocmd",
+  "augroup",
   "user_command",
+  "IsDebug",
 }
 
 max_line_length = false
