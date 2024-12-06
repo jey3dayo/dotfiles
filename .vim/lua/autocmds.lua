@@ -1,11 +1,5 @@
 local M = {}
 
-local autocmd = vim.api.nvim_create_autocmd
-M.autocmd = autocmd
-
-local augroup = vim.api.nvim_create_augroup
-M.augroup = augroup
-
 local clear_autocmds = vim.api.nvim_clear_autocmds
 M.clear_autocmds = clear_autocmds
 
@@ -52,12 +46,10 @@ local userLspConfig = augroup("UserLspConfig", { clear = true })
 autocmd("LspAttach", {
   group = userLspConfig,
   callback = function(args)
-    -- Enable completion triggered by <c-x><c-o>
     vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
     local client_id = args.data.client_id
     local client = vim.lsp.get_client_by_id(client_id)
     if not client then
-      vim.notify(client_id .. " not found", vim.log.levels.WARN)
       return
     end
 

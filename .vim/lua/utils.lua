@@ -1,7 +1,5 @@
 local M = {}
 
-M.user_command = vim.api.nvim_create_user_command
-
 M.find_command = function(paths)
   for _, path in ipairs(paths) do
     local file = io.open(path, "r")

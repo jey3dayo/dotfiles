@@ -1,7 +1,5 @@
 local M = {}
 
-local user_command = require("utils").user_command
-
 local isDebug = false
 
 local function notify_formatter(name)
@@ -31,7 +29,7 @@ M.format_buffer = format_buffer
 
 -- ドキュメントハイライト設定
 M.lsp_highlight_document = function(client)
-  local illuminate = safe_require "illuminate"
+  local illuminate = Safe_require "illuminate"
   if illuminate then
     illuminate.on_attach(client)
   end
