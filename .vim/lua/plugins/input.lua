@@ -18,6 +18,16 @@ return {
   },
   { "keaising/im-select.nvim", opts = require "config/im-select" },
   {
+    "keaising/im-select.nvim",
+    config = function()
+      require("im_select").setup {
+        default_im_select = "com.apple.keylayout.ABC",
+        default_command = "/opt/homebrew/bin/im-select", -- フルパスを指定
+        set_default_events = { "VimEnter", "InsertLeave", "CmdlineLeave" },
+      }
+    end,
+  },
+  {
     "SUSTech-data/wildfire.nvim",
     enabled = false,
     opts = require "config/wildfire",
