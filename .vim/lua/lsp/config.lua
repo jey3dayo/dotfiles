@@ -170,7 +170,6 @@ M.languages = {
   markdown = { linters.markdownlint },
   dockerfile = { linters.hadolint },
   yaml = { linters.yamllint },
-  sh = { linters.shellcheck },
   vim = { linters.vint },
   toml = { formatters.taplo },
   go = { formatters.gofmt },
