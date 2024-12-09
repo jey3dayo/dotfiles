@@ -1,5 +1,24 @@
-if os.getenv "WSLENV" then
-  return {}
-end
+local get_os = require("utils").get_os
+local with = require("utils").with
 
-return { default_im_select = "ms.inputmethod.atok33.Roman" }
+local base_config = {
+  set_default_events = { "VimEnter", "InsertLeave", "CmdlineLeave" },
+}
+
+local config = {
+  mac = with(base_config, {
+    default_im_select = "com.apple.keylayout.ABC",
+  }),
+  windows = with(base_config, {
+    -- default_im_select = "1033",
+    default_im_select = "ms.inputmethod.atok33.Roman",
+    default_command = "im-select.exe",
+  }),
+  wsl = {},
+  linux = with(base_config, {
+    default_im_select = "1",
+    default_command = "fcitx5-remote",
+  }),
+}
+
+return config[get_os()] or {}
