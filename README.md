@@ -2,26 +2,25 @@
 
 ディレクトリ周りのセットアップ
 
-```
+```bash
 sh ./setup.sh
 ```
 
-
-```
+```bash
 # go get github.com/peco/peco/cmd/peco
 brew tap peco/peco
 brew install peco
 ```
 
-# brew
+## brew
 
-```
+```bash
 brew install coreutils curl git
 ```
 
-# mise
+## mise
 
-```
+```bash
 brew install jdxcode/tap/mise
 mise install direnv
 mise install node@18
@@ -32,9 +31,9 @@ mise install deno
 mise install bun
 ```
 
-# npm
+## npm
 
-```
+```bash
 # バックアップ
 npm list -g --json > global-package.json
 
