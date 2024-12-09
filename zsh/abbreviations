@@ -5,11 +5,18 @@ abbr -S du="du -h"
 abbr -S tailf="tail -f"
 abbr -S pk='pkill -9 -f '
 
-# eza
+abbr -S cat='bat'
+abbr -S top='btop'
 abbr -S l='eza -la'
 abbr -S ll='eza -la'
 abbr -S ls='eza'
 abbr -S la='eza -la'
+
+# tricks
+abbr -S path='echo -e ${PATH//:/\\n}'
+abbr -S myip="ip -br -c a"
+abbr -S ports="lsof -i -P -n | grep LISTEN"
+abbr -S wifi="networksetup -setairportpower en0"  # wifi on/off
 
 # git
 abbr -S ga="git add"
@@ -22,7 +29,7 @@ abbr -S gd1="git diff HEAD~1"
 abbr -S gd2="git diff HEAD~2"
 abbr -S gd3="git diff HEAD~3"
 
-# tools
+# dev
 abbr -S vim="nvim"
 abbr -S vi="nvim"
 abbr -S ag="ag --hidden"
