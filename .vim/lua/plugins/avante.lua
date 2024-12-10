@@ -13,6 +13,7 @@ return {
         -- refresh = "<leader>ar",
         -- focus = "<leader>af",
         ask = "<A-k>",
+        edit = "<M-i>",
         focus = "<A-l>",
       },
     },

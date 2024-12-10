@@ -20,6 +20,11 @@ local default_keybinds = {
     action = wezterm.action.SendKey { key = "k", mods = "ALT" },
   },
   {
+    key = "i",
+    mods = "CMD",
+    action = wezterm.action.SendKey { key = "i", mods = "ALT" },
+  },
+  {
     key = "l",
     mods = "CMD",
     action = wezterm.action.SendKey { key = "l", mods = "ALT" },
