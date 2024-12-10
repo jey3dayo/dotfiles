@@ -13,6 +13,9 @@ return {
   {
     "nvim-telescope/telescope-frecency.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
+    opts = {
+      db_safe_mode = false,
+    },
   },
   {
     "AckslD/nvim-neoclip.lua",
