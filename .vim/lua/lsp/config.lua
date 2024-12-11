@@ -1,3 +1,4 @@
+local utils = require "utils"
 local with = require("utils").with
 
 local M = {}
@@ -39,7 +40,7 @@ local linters = {
   markdownlint = require "efmls-configs.linters.markdownlint",
   ruff_linter = require "efmls-configs.linters.ruff",
   vint = require "efmls-configs.linters.vint",
-  yamllint = require "efmls-configs.linters.yamllint",
+  -- yamllint = require "efmls-configs.linters.yamllint",
   codespell = require "efmls-configs.linters.codespell",
   luacheck = require "efmls-configs.linters.luacheck",
 }
@@ -68,7 +69,7 @@ M.installed_servers = {
   "ts_ls",
   "typos_lsp",
   "vimls",
-  "yamlls",
+  -- "yamlls",
   "terraformls",
 }
 
@@ -147,17 +148,14 @@ local config_files = {
 }
 M.config_files = config_files
 
--- config_filesからroot_markersを生成
-local root_markers = { ".git/" }
-
--- 各設定ファイルをroot_markersに追加
-for _, files in pairs(config_files) do
-  for _, file in ipairs(files) do
-    table.insert(root_markers, file)
+-- ルートマーカー生成
+M.root_markers = (function()
+  local markers = { ".git/" }
+  for _, files in pairs(M.config_files) do
+    vim.list_extend(markers, files)
   end
-end
-
-M.root_markers = root_markers
+  return markers
+end)()
 
 -- TODO: fileTypesみて設定を変える
 M.languages = {
@@ -167,9 +165,9 @@ M.languages = {
   typescriptreact = {},
   json = {},
   jsonc = {},
-  gql = { formatters.biome },
-  html = { formatters.prettier },
-  css = { formatters.biome },
+  gql = {},
+  html = {},
+  css = {},
   python = {
     linters.ruff_linter,
     formatters.ruff_formatter,
@@ -187,46 +185,29 @@ M.languages = {
 
 -- 設定ファイルの存在をチェックして言語設定を更新
 local function setup_languages()
-  local function config_exists(tool)
-    for _, file in ipairs(config_files[tool]) do
-      if vim.fn.glob(file) ~= "" then
-        return true
-      end
-    end
-    return false
+  -- ECMA Script Linting
+  local has_prettier = utils.has_config_file(config_files.prettier)
+  local has_biome = utils.has_config_file(config_files.biome)
+
+  if has_biome then
+    M.languages.gql = with(M.languages.gql, { formatters.biome })
+    M.languages.javascript = with(M.languages.javascript, { formatters.biome })
+    M.languages.typescript = with(M.languages.typescript, { formatters.biome })
+    M.languages.javascriptreact = with(M.languages.javascriptreact, { formatters.biome })
+    M.languages.typescriptreact = with(M.languages.typescriptreact, { formatters.biome })
+    M.languages.json = with(M.languages.json, { formatters.biome })
+    M.languages.jsonc = with(M.languages.jsonc, { formatters.biome })
   end
 
-  -- ECMA Script Linting
-  -- eslintかprettierがあれば上書き
-
-  -- local eslint_exists = config_exists "eslint"
-  local prettier_exists = config_exists "prettier"
-
-  -- tsconfigがいるときに事故るのでコメントアウト
-  -- if eslint_exists then
-  --   M.languages.javascript = { linters.eslint }
-  --   M.languages.typescript = { linters.eslint }
-  --   M.languages.javascriptreact = { linters.eslint }
-  --   M.languages.typescriptreact = { linters.eslint }
-  -- end
-
-  -- -- eslintがいないときに、biomeを実行
-  -- if not eslint_exists then
-  --   M.languages.javascript = { formatters.biome }
-  --   M.languages.typescript = { formatters.biome }
-  --   M.languages.javascriptreact = { formatters.biome }
-  --   M.languages.typescriptreact = { formatters.biome }
-  -- end
-
-  if prettier_exists then
-    M.languages.javascript = { formatters.prettier }
-    M.languages.typescript = { formatters.prettier }
-    M.languages.javascriptreact = { formatters.prettier }
-    M.languages.typescriptreact = { formatters.prettier }
-    M.languages.html = { formatters.prettier }
-    M.languages.css = { formatters.prettier }
-    M.languages.json = { formatters.prettier }
-    M.languages.jsonc = { formatters.prettier }
+  if has_prettier then
+    M.languages.html = with(M.languages.html, { formatters.prettier })
+    M.languages.css = with(M.languages.css, { formatters.prettier })
+    M.languages.javascript = with(M.languages.javascript, { formatters.prettier })
+    M.languages.typescript = with(M.languages.typescript, { formatters.prettier })
+    M.languages.javascriptreact = with(M.languages.javascriptreact, { formatters.prettier })
+    M.languages.typescriptreact = with(M.languages.typescriptreact, { formatters.prettier })
+    M.languages.json = with(M.languages.json, { formatters.prettier })
+    M.languages.jsonc = with(M.languages.jsonc, { formatters.prettier })
   end
 end
 
