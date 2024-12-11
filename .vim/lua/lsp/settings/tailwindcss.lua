@@ -1,3 +1,7 @@
+local lsp_utils = require "lsp.utils"
+local lsp_config = require "lsp.config"
+local config_files = lsp_config.config_files.tailwind
+
 return {
   init_options = {
     includeLanguages = {
@@ -6,14 +10,7 @@ return {
       ["javascript.jsx"] = "javascriptreact",
     },
   },
-  root_dir = function(fname)
-    return require("lspconfig").util.root_pattern(
-      "tailwind.config.js",
-      "tailwind.config.cjs",
-      "tailwind.config.ts",
-      "postcss.config.js"
-    )(fname)
-  end,
+  root_dir = lsp_utils.create_root_pattern(config_files),
   filetypes = {
     "html",
     "css",

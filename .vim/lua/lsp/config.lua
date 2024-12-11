@@ -111,6 +111,7 @@ M.installed_tree_sitter = {
 }
 
 local config_files = {
+  ts_ls = { "tsconfig.json", "jsconfig.json" },
   eslint = {
     ".eslintrc",
     ".eslintrc.json",
@@ -123,6 +124,7 @@ local config_files = {
     "eslint.config.ts",
     "eslint.config.cts",
     "eslint.config.mts",
+    ".eslintrc.config.js",
   },
   prettier = {
     ".prettierrc",
@@ -136,7 +138,14 @@ local config_files = {
     ".prettierrc.toml",
   },
   biome = { "biome.json", "biome.jsonc" },
+  tailwindcss = {
+    "tailwind.config.js",
+    "tailwind.config.cjs",
+    "tailwind.config.ts",
+    "postcss.config.js",
+  },
 }
+M.config_files = config_files
 
 -- config_filesからroot_markersを生成
 local root_markers = { ".git/" }
@@ -150,14 +159,14 @@ end
 
 M.root_markers = root_markers
 
--- TODO* root_markers見て起動するようなら処理系見直す
+-- TODO: fileTypesみて設定を変える
 M.languages = {
-  javascript = { formatters.biome },
-  typescript = { formatters.biome },
-  javascriptreact = { formatters.biome },
-  typescriptreact = { formatters.biome },
-  json = { formatters.biome },
-  jsonc = { formatters.biome },
+  javascript = {},
+  typescript = {},
+  javascriptreact = {},
+  typescriptreact = {},
+  json = {},
+  jsonc = {},
   gql = { formatters.biome },
   html = { formatters.prettier },
   css = { formatters.biome },

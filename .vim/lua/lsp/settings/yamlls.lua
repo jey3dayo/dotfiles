@@ -1,5 +1,3 @@
-local util = require "lspconfig.util"
-
 local schemas = {
   schemas = {
     ["https://json.schemastore.org/gitlab-ci.json"] = {

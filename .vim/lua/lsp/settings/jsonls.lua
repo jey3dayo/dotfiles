@@ -87,8 +87,7 @@ local schemas = {
 return {
   filetypes = { "json", "jsonc" },
   init_options = {
-    -- biomeに任せる
-    provideFormatter = false,
+    provideFormatter = true,
   },
   settings = { json = { schemas = schemas } },
 }

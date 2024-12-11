@@ -88,4 +88,20 @@ M.get_os = function()
   return "unknown"
 end
 
+M.check_file_exists = function(filename)
+  return vim.fn.findfile(filename, ".;") ~= ""
+end
+
+M.has_config_file = function(config_files)
+  local found = false
+  for _, file in ipairs(config_files) do
+    if M.check_file_exists(file) then
+      found = true
+      break
+    end
+  end
+
+  return found
+end
+
 return M
