@@ -14,7 +14,7 @@
   excludesfile = ~/.config/git/gitignore
   attributesfile = ~/.config/git/attributes
   quotepath = false
-  editor = /usr/local/bin/vim
+  editor = nvim
 
 [branch "main"]
   remote = origin
