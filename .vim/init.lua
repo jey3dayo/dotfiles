@@ -1,6 +1,4 @@
-if vim.loader then
-  vim.loader.enable()
-end
+if vim.loader then vim.loader.enable() end
 
 require "global_utils"
 require "lua_rocks"

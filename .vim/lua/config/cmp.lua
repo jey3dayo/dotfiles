@@ -4,22 +4,16 @@ local cmp_autopairs = Safe_require "nvim-autopairs.completion.cmp"
 local cmp_handlers = Safe_require "nvim-autopairs.completion.handlers"
 local colorizer_cmp = Safe_require "tailwindcss-colorizer-cmp"
 
-if not (cmp and lspkind and cmp_autopairs and cmp_handlers and colorizer_cmp) then
-  return
-end
+if not (cmp and lspkind and cmp_autopairs and cmp_handlers and colorizer_cmp) then return end
 
 local function has_words_before()
-  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
-    return false
-  end
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
 
   local cursor_position = vim.api.nvim_win_get_cursor(0)
   local line = cursor_position[1]
   local col = cursor_position[2]
 
-  if col == 0 then
-    return false
-  end
+  if col == 0 then return false end
 
   local line_text = vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]
 

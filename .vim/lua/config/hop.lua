@@ -1,9 +1,7 @@
 local hop = Safe_require "hop"
 local hop_hint = Safe_require "hop.hint"
 
-if not (hop and hop_hint) then
-  return
-end
+if not (hop and hop_hint) then return end
 
 hop.setup { keys = "etovxqpdygfblzhckisuran" }
 

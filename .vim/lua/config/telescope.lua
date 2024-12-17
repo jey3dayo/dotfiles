@@ -1,7 +1,5 @@
 local telescope = Safe_require "telescope"
-if not telescope then
-  return
-end
+if not telescope then return end
 
 local with = require("utils").with
 local actions = require "telescope.actions"

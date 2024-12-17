@@ -1,8 +1,6 @@
 local leap = Safe_require "leap"
 local leap_user = Safe_require "leap.user"
-if not (leap and leap_user) then
-  return
-end
+if not (leap and leap_user) then return end
 
 -- leap.add_default_mappings()
 

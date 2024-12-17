@@ -3,9 +3,7 @@ local copilot_cmp = Safe_require "copilot_cmp"
 local copilot_chat = Safe_require "CopilotChat"
 local select = Safe_require "CopilotChat.select"
 
-if not (copilot and copilot_cmp and copilot_chat) then
-  return
-end
+if not (copilot and copilot_cmp and copilot_chat) then return end
 
 copilot.setup {
   suggestion = { enabled = false },

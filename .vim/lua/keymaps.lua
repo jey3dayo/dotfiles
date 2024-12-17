@@ -34,9 +34,7 @@ end
 
 -- deprecated
 function Set_keymap(key, value, _opts)
-  if not _opts then
-    _opts = silent_opts
-  end
+  if not _opts then _opts = silent_opts end
   vim.api.nvim_set_keymap("n", key, value, _opts)
   vim.api.nvim_set_keymap("v", key, value, _opts)
 end
