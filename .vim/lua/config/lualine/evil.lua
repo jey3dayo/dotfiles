@@ -158,22 +158,40 @@ ins_left {
   end,
 }
 
-local function get_lsp_client_names()
-  local msg = "N/A"
-  local clients = vim.lsp.get_active_clients { bufnr = 0 }
-  local client_names = {}
+-- フルパスからファイル名のみを抽出
+local function extract_formatter_name(command)
+  if not command then return nil end
+  local name = command:match "^([^ ]+)"
+  return name and (name:match "[^/\\]+$" or name)
+end
 
-  if next(clients) == nil then
-    return msg
+local function get_efm_formatters(client, buf_ft)
+  local formatters = client.config.settings.languages[buf_ft] or {}
+  local names = {}
+
+  for _, formatter in ipairs(formatters) do
+    if formatter.formatCommand then table.insert(names, extract_formatter_name(formatter.formatCommand)) end
   end
+
+  return names
+end
+
+local function get_lsp_client_names()
+  local clients = vim.lsp.get_active_clients { bufnr = 0 } or {}
+  local client_names = {}
+  local buf_ft = vim.bo.filetype
 
   for _, client in pairs(clients) do
     if client.supports_method "textDocument/formatting" then
-      table.insert(client_names, client.name)
+      if client.name == "efm" then
+        vim.list_extend(client_names, get_efm_formatters(client, buf_ft))
+      else
+        table.insert(client_names, client.name)
+      end
     end
   end
 
-  return #client_names > 0 and table.concat(client_names, ",") or msg
+  return #client_names > 0 and table.concat(client_names, ",") or "N/A"
 end
 
 ins_left {
