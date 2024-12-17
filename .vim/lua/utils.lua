@@ -20,9 +20,7 @@ end
 
 M.get_git_dir = function()
   local git_dir = vim.fn.finddir(".git", vim.fn.expand "%:p:h" .. ";")
-  if git_dir ~= "" then
-    git_dir = vim.fn.fnamemodify(git_dir, ":h")
-  end
+  if git_dir ~= "" then git_dir = vim.fn.fnamemodify(git_dir, ":h") end
   return git_dir
 end
 
@@ -42,9 +40,7 @@ M.with = function(base, ...)
 end
 
 local function table_to_string(tbl, indent)
-  if not indent then
-    indent = 0
-  end
+  if not indent then indent = 0 end
   local toprint = string.rep(" ", indent) .. "{\n"
   indent = indent + 2
   for k, v in pairs(tbl) do
@@ -92,16 +88,12 @@ M.check_file_exists = function(filename)
   return vim.fn.findfile(filename, ".;") ~= ""
 end
 
-M.has_config_file = function(config_files)
-  local found = false
+M.has_config_files = function(config_files)
   for _, file in ipairs(config_files) do
-    if M.check_file_exists(file) then
-      found = true
-      break
-    end
+    if M.check_file_exists(file) then return true end
   end
 
-  return found
+  return false
 end
 
 return M

@@ -1,6 +1,3 @@
-local utils = require "utils"
-local with = require("utils").with
-
 local M = {}
 
 M.isDebug = false
@@ -22,36 +19,6 @@ M.LSP = {
   DEFAULT_BUF_OPTS = { noremap = true, silent = true },
   FORMAT_TIMEOUT = 5000,
 }
-
--- フォーマッターとリンターを分けて定義
-local formatters = {
-  biome = require "efmls-configs.formatters.biome",
-  prettier = require "efmls-configs.formatters.prettier",
-  ruff_formatter = require "efmls-configs.formatters.ruff",
-  ruff_sort = require "efmls-configs.formatters.ruff_sort",
-  stylua = require "efmls-configs.formatters.stylua",
-  taplo = require "efmls-configs.formatters.taplo",
-  gofmt = require "efmls-configs.formatters.gofmt",
-}
-
-local linters = {
-  eslint = require "efmls-configs.linters.eslint",
-  hadolint = require "efmls-configs.linters.hadolint",
-  markdownlint = require "efmls-configs.linters.markdownlint",
-  ruff_linter = require "efmls-configs.linters.ruff",
-  vint = require "efmls-configs.linters.vint",
-  -- yamllint = require "efmls-configs.linters.yamllint",
-  codespell = require "efmls-configs.linters.codespell",
-  luacheck = require "efmls-configs.linters.luacheck",
-}
-
-local opts = {
-  stylua = {
-    formatCommand = "stylua --config-path ~/.config/stylua.toml -",
-    formatStdin = true,
-  },
-}
-formatters.stylua = with(formatters.stylua, opts.stylua)
 
 M.installed_servers = {
   "astro",
@@ -111,101 +78,77 @@ M.installed_tree_sitter = {
   "yaml",
 }
 
-local config_files = {
-  ts_ls = { "tsconfig.json", "jsconfig.json" },
+M.formatters = {
+  ts_ls = {
+    config_files = { "tsconfig.json", "jsconfig.json" },
+    formatter_priority = {
+      priority = 3,
+      overrides = {},
+    },
+  },
   eslint = {
-    ".eslintrc",
-    ".eslintrc.json",
-    ".eslintrc.js",
-    ".eslintrc.yaml",
-    ".eslintrc.yml",
-    "eslint.config.js",
-    "eslint.config.cjs",
-    "eslint.config.mjs",
-    "eslint.config.ts",
-    "eslint.config.cts",
-    "eslint.config.mts",
-    ".eslintrc.config.js",
+    config_files = {
+      ".eslintrc",
+      ".eslintrc.json",
+      ".eslintrc.js",
+      ".eslintrc.yaml",
+      ".eslintrc.yml",
+      "eslint.config.js",
+      "eslint.config.cjs",
+      "eslint.config.mjs",
+      "eslint.config.ts",
+      "eslint.config.cts",
+      "eslint.config.mts",
+      ".eslintrc.config.js",
+    },
+  },
+  biome = {
+    config_files = { "biome.json", "biome.jsonc" },
+    formatter_priority = {
+      priority = 1,
+      overrides = {
+        jsonls = true,
+        tsserver = true,
+      },
+    },
   },
   prettier = {
-    ".prettierrc",
-    ".prettierrc.json",
-    ".prettierrc.yml",
-    ".prettierrc.yaml",
-    ".prettierrc.js",
-    ".prettierrc.cjs",
-    "prettier.config.js",
-    "prettier.config.cjs",
-    ".prettierrc.toml",
+    config_files = {
+      ".prettierrc",
+      ".prettierrc.json",
+      ".prettierrc.yml",
+      ".prettierrc.yaml",
+      ".prettierrc.js",
+      ".prettierrc.cjs",
+      "prettier.config.js",
+      "prettier.config.cjs",
+      ".prettierrc.toml",
+    },
+    formatter_priority = {
+      priority = 2,
+      overrides = {
+        tsserver = true,
+      },
+    },
   },
-  biome = { "biome.json", "biome.jsonc" },
   tailwindcss = {
-    "tailwind.config.js",
-    "tailwind.config.cjs",
-    "tailwind.config.ts",
-    "postcss.config.js",
+    config_files = {
+      "tailwind.config.js",
+      "tailwind.config.cjs",
+      "tailwind.config.ts",
+      "postcss.config.js",
+    },
   },
 }
-M.config_files = config_files
 
--- ルートマーカー生成
-M.root_markers = (function()
-  local markers = { ".git/" }
-  for _, files in pairs(M.config_files) do
-    vim.list_extend(markers, files)
+local function generate_config_files()
+  local files = { ".git/" }
+  for _, formatter in pairs(M.formatters) do
+    if formatter.config_files then vim.list_extend(files, formatter.config_files) end
   end
-  return markers
-end)()
-
--- TODO: fileTypesみて設定を変える
-M.languages = {
-  javascript = {},
-  typescript = {},
-  javascriptreact = {},
-  typescriptreact = {},
-  json = {},
-  jsonc = {},
-  gql = {},
-  html = {},
-  css = {},
-  python = {
-    linters.ruff_linter,
-    formatters.ruff_formatter,
-    formatters.ruff_sort,
-  },
-  lua = { formatters.stylua, linters.luacheck },
-  markdown = { linters.markdownlint },
-  dockerfile = { linters.hadolint },
-  yaml = { linters.yamllint },
-  vim = { linters.vint },
-  toml = { formatters.taplo },
-  go = { formatters.gofmt },
-  text = { linters.codespell },
-}
-
--- ECMA Script Linting
-local has_prettier = utils.has_config_file(config_files.prettier)
-local has_biome = utils.has_config_file(config_files.biome)
-
-if has_biome then
-  M.languages.gql = with(M.languages.gql, { formatters.biome })
-  M.languages.javascript = with(M.languages.javascript, { formatters.biome })
-  M.languages.typescript = with(M.languages.typescript, { formatters.biome })
-  M.languages.javascriptreact = with(M.languages.javascriptreact, { formatters.biome })
-  M.languages.typescriptreact = with(M.languages.typescriptreact, { formatters.biome })
-  M.languages.json = with(M.languages.json, { formatters.biome })
-  M.languages.jsonc = with(M.languages.jsonc, { formatters.biome })
+  return files
 end
 
-if has_prettier then
-  M.languages.html = with(M.languages.html, { formatters.prettier })
-  M.languages.css = with(M.languages.css, { formatters.prettier })
-  M.languages.javascript = with(M.languages.javascript, { formatters.prettier })
-  M.languages.typescript = with(M.languages.typescript, { formatters.prettier })
-  M.languages.javascriptreact = with(M.languages.javascriptreact, { formatters.prettier })
-  M.languages.typescriptreact = with(M.languages.typescriptreact, { formatters.prettier })
-  M.languages.json = with(M.languages.json, { formatters.prettier })
-  M.languages.jsonc = with(M.languages.jsonc, { formatters.prettier })
-end
+M.config_files = generate_config_files()
 
 return M

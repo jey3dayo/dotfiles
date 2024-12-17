@@ -1,6 +1,6 @@
 local lsp_utils = require "lsp.utils"
 local lsp_config = require "lsp.config"
-local config_files = lsp_config.config_files.tailwind
+local config_files = lsp_config.formatters.tailwindcss.config_files
 
 return {
   init_options = {

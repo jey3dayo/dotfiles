@@ -1,7 +1,7 @@
 local utils = require "utils"
 local lsp_utils = require "lsp.utils"
 local lsp_config = require "lsp.config"
-local config_files = lsp_config.config_files.eslint
+local config_files = lsp_config.formatters.eslint.config_files
 
 return {
   init_options = {
@@ -14,5 +14,5 @@ return {
     "typescript",
     "typescriptreact",
   },
-  autostart = utils.has_config_file(config_files),
+  autostart = utils.has_config_files(config_files),
 }

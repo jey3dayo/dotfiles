@@ -1,7 +1,4 @@
----@class LSPClient
----@field id number
----@field name string
----@field supports_method fun(method: string): boolean
+local formatters = require("lsp.config").formatters
 
 local M = {}
 
@@ -54,7 +51,6 @@ function M.get_lsp_client_names(bufnr)
   local client_names = {}
   if next(clients) == nil then return client_names end
 
-  ---@param client LSPClient
   for _, client in pairs(clients) do
     if client.supports_method "textDocument/formatting" then
       if client.name == "efm" then
@@ -73,12 +69,17 @@ function M.format_lsp_clients(bufnr)
   return #client_names > 0 and table.concat(client_names, ",") or "N/A"
 end
 
+-- LSPクライアントの優先順位を定義
 function M.should_stop_client(client, bufnr)
   local client_names = M.get_lsp_client_names(bufnr)
   if #client_names == 0 then return false end
 
-  for _, c in ipairs(client_names) do
-    if c == "biome" and (client.name == "jsonls" or client.name == "tsserver") then return true end
+  for _, client_name in ipairs(client_names) do
+    local formatter_config = formatters[client_name]
+    if formatter_config and formatter_config.formatter_priority then
+      local formatter = formatter_config.formatter_priority
+      if formatter.overrides and formatter.overrides[client.name] then return true end
+    end
   end
 
   return false
