@@ -93,6 +93,7 @@ dlv/
 gh/hosts.yml
 ghkw
 hub
+swiftpm
 
 # Temporary and Generated Files
 *~
