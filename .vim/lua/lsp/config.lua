@@ -183,34 +183,29 @@ M.languages = {
   text = { linters.codespell },
 }
 
--- 設定ファイルの存在をチェックして言語設定を更新
-local function setup_languages()
-  -- ECMA Script Linting
-  local has_prettier = utils.has_config_file(config_files.prettier)
-  local has_biome = utils.has_config_file(config_files.biome)
+-- ECMA Script Linting
+local has_prettier = utils.has_config_file(config_files.prettier)
+local has_biome = utils.has_config_file(config_files.biome)
 
-  if has_biome then
-    M.languages.gql = with(M.languages.gql, { formatters.biome })
-    M.languages.javascript = with(M.languages.javascript, { formatters.biome })
-    M.languages.typescript = with(M.languages.typescript, { formatters.biome })
-    M.languages.javascriptreact = with(M.languages.javascriptreact, { formatters.biome })
-    M.languages.typescriptreact = with(M.languages.typescriptreact, { formatters.biome })
-    M.languages.json = with(M.languages.json, { formatters.biome })
-    M.languages.jsonc = with(M.languages.jsonc, { formatters.biome })
-  end
-
-  if has_prettier then
-    M.languages.html = with(M.languages.html, { formatters.prettier })
-    M.languages.css = with(M.languages.css, { formatters.prettier })
-    M.languages.javascript = with(M.languages.javascript, { formatters.prettier })
-    M.languages.typescript = with(M.languages.typescript, { formatters.prettier })
-    M.languages.javascriptreact = with(M.languages.javascriptreact, { formatters.prettier })
-    M.languages.typescriptreact = with(M.languages.typescriptreact, { formatters.prettier })
-    M.languages.json = with(M.languages.json, { formatters.prettier })
-    M.languages.jsonc = with(M.languages.jsonc, { formatters.prettier })
-  end
+if has_biome then
+  M.languages.gql = with(M.languages.gql, { formatters.biome })
+  M.languages.javascript = with(M.languages.javascript, { formatters.biome })
+  M.languages.typescript = with(M.languages.typescript, { formatters.biome })
+  M.languages.javascriptreact = with(M.languages.javascriptreact, { formatters.biome })
+  M.languages.typescriptreact = with(M.languages.typescriptreact, { formatters.biome })
+  M.languages.json = with(M.languages.json, { formatters.biome })
+  M.languages.jsonc = with(M.languages.jsonc, { formatters.biome })
 end
 
-setup_languages()
+if has_prettier then
+  M.languages.html = with(M.languages.html, { formatters.prettier })
+  M.languages.css = with(M.languages.css, { formatters.prettier })
+  M.languages.javascript = with(M.languages.javascript, { formatters.prettier })
+  M.languages.typescript = with(M.languages.typescript, { formatters.prettier })
+  M.languages.javascriptreact = with(M.languages.javascriptreact, { formatters.prettier })
+  M.languages.typescriptreact = with(M.languages.typescriptreact, { formatters.prettier })
+  M.languages.json = with(M.languages.json, { formatters.prettier })
+  M.languages.jsonc = with(M.languages.jsonc, { formatters.prettier })
+end
 
 return M
