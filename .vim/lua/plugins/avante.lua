@@ -7,14 +7,27 @@ return {
     opts = {
       -- add any opts here
       provider = "openai",
+      behaviour = {
+        auto_suggestions = true,
+        auto_set_highlight_group = true,
+        auto_set_keymaps = true,
+      },
+      windows = {
+        position = "right",
+        width = 30,
+        ask = {
+          floating = true,
+          start_insert = true,
+          border = "rounded",
+        },
+      },
       mappings = {
-        -- ask = "<leader>aa",
-        -- edit = "<leader>ae",
-        -- refresh = "<leader>ar",
-        -- focus = "<leader>af",
         ask = "<A-k>",
         edit = "<M-i>",
         focus = "<A-l>",
+        submit = {
+          insert = "<S-Enter>",
+        },
       },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
