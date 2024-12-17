@@ -1,19 +1,8 @@
 local with = require("utils").with
 local config = require "lsp.config"
+local client_manager = require "lsp.client_manager"
 
 local M = {}
-
-local function get_format_clients(bufnr)
-  local clients = vim.lsp.get_clients { bufnr = bufnr }
-  if clients == 0 then
-    vim.notify("No active LSP clients found", vim.log.levels.WARN)
-    return {}
-  end
-
-  return vim.tbl_filter(function(c)
-    return c.supports_method "textDocument/formatting"
-  end, clients)
-end
 
 local function setup_lspsaga_keymaps(buf_opts)
   local lspsaga_mappings = {
@@ -67,12 +56,10 @@ local function setup_keymaps(bufnr, _)
 end
 
 local function setup_format_keymap(bufnr, client)
-  if not client.supports_method "textDocument/formatting" then
-    return
-  end
+  if not client.supports_method "textDocument/formatting" then return end
 
   Keymap(config.LSP.PREFIX .. "f", function()
-    local active_clients = get_format_clients(bufnr)
+    local active_clients = client_manager.get_format_clients(bufnr)
     local client_names = vim.tbl_map(function(c)
       return c.name
     end, active_clients)
