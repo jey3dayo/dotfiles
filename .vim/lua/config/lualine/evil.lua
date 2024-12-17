@@ -160,20 +160,16 @@ ins_left {
 
 local function get_lsp_client_names()
   local msg = "N/A"
-  local buf_ft = vim.bo.filetype
-  local clients = vim.lsp.get_clients()
+  local clients = vim.lsp.get_active_clients { bufnr = 0 }
   local client_names = {}
 
   if next(clients) == nil then
     return msg
   end
 
-  for _, client in ipairs(clients) do
-    if client.config ~= nil then
-      local filetypes = client.config.filetypes
-      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-        table.insert(client_names, client.name)
-      end
+  for _, client in pairs(clients) do
+    if client.supports_method "textDocument/formatting" then
+      table.insert(client_names, client.name)
     end
   end
 
