@@ -63,7 +63,7 @@ Set_keymap("[tab]", "<Nop>", {})
 Set_keymap("<C-t>", "[tab]", {})
 Keymap("[tab]c", "<cmd>tabnew<CR>")
 Keymap("[tab]d", "<cmd>tabclose<CR>")
-Keymap("[tab]o", "<cmd>tabonly<CR>")
+Keymap("[tab]o", "<cmd>tab split<CR>")
 Keymap("[tab]n", "<cmd>tabnext<CR>")
 Keymap("[tab]p", "<cmd>tabprevious<CR>")
 
