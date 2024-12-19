@@ -71,7 +71,7 @@ vim.g.increment_activator_filetype_candidates = {
   },
   javascript = { { "props", "state" } },
   typescript = {
-    { "string", "number", "boolean", "null", "undefined", "unknown" },
+    { "string", "number", "boolean", "null", "undefined", "unknown", "Error" },
     { "void", "never" },
   },
   ["git-rebase-todo"] = {
