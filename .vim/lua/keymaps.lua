@@ -48,8 +48,11 @@ Keymap("<Tab>", "<cmd>wincmd w<CR>")
 Keymap("gF", "0f v$gf")
 Keymap("gF", "0f v$gf")
 
--- ESC ESC -> toggle hlsearch
-Keymap("<Esc><Esc>", "<cmd>set hlsearch!<CR>")
+-- ESC ESC -> toggle hlsearch, clear notify
+Keymap("<Esc><Esc>", function()
+  vim.cmd "set hlsearch!"
+  vim.cmd "Noice dismiss"
+end)
 
 -- link jump
 Set_keymap("[tag]", "<Nop>", {})

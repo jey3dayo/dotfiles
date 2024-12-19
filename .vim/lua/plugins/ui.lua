@@ -27,7 +27,6 @@ return {
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = require "config/noice",
-    config = true,
     dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
   },
   { "stevearc/dressing.nvim", opts = {} },
