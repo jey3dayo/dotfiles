@@ -23,7 +23,7 @@ return {
       },
       mappings = {
         ask = "<A-k>",
-        edit = "<M-i>",
+        edit = "<A-i>",
         focus = "<A-l>",
         submit = {
           insert = "<S-Enter>",
