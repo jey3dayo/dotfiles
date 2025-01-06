@@ -73,6 +73,9 @@ vim.g.increment_activator_filetype_candidates = {
   typescript = {
     { "string", "number", "boolean", "null", "undefined", "unknown", "Error" },
     { "void", "never" },
+    { "andThen", "asyncAndThen" },
+    { "err", "errAsync" },
+    { "ok", "okAsync" },
   },
   ["git-rebase-todo"] = {
     { "pick", "reword", "edit", "squash", "fixup", "exec" },
