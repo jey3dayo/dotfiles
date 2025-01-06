@@ -14,7 +14,7 @@ return {
       },
       windows = {
         position = "right",
-        width = 30,
+        width = 40,
         ask = {
           floating = true,
           start_insert = true,
