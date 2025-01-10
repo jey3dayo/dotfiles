@@ -59,6 +59,10 @@ function ensure_zcompiled {
 }
 ensure_zcompiled $ZDOTDIR/.zshrc
 
+if [ -f "$XDG_CONFIG_HOME/.env" ]; then
+  source "$XDG_CONFIG_HOME/.env"
+fi
+
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 
 # removed custom source

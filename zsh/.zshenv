@@ -5,10 +5,6 @@ export XDG_DATA_HOME="$HOME/.local/share"
 
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
-if [[ "$SHLVL" -eq 1 && -s "${ZDOTDIR}/.zshenv.local" ]]; then
-  source "${ZDOTDIR}/.zshenv.local"
-fi
-
 # Temporary Files
 if [[ ! -d "$TMPDIR" ]]; then
   export TMPDIR="/tmp/$LOGNAME"
