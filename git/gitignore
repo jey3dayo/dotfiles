@@ -94,6 +94,10 @@ gh/hosts.yml
 ghkw
 hub
 swiftpm
+repomix-output.txt
+.cursorrules
+.windsurfrules
+global_rules.md
 
 # Temporary and Generated Files
 *~
@@ -127,6 +131,3 @@ sample.*
 nohup.out
 
 TODO.md
-.cursorrules
-.windsurfrules
-global_rules.md
