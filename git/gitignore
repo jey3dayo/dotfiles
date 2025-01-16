@@ -131,3 +131,6 @@ sample.*
 nohup.out
 
 TODO.md
+repomix.config.json
+repomix-output.txt
+.repomixignore
