@@ -134,3 +134,5 @@ TODO.md
 repomix.config.json
 repomix-output.txt
 .repomixignore
+
+.ignore
