@@ -79,6 +79,9 @@ return {
   color_scheme = "Gruvbox dark, hard (base16)",
   font = utils.font_with_fallback "UDEV Gothic 35NFLG",
   font_size = 16,
+
+  -- font = utils.font_with_fallback "JetBrainsMono Nerd Font Mono",
+  -- font_size = 17,
   window_background_opacity = 0.92,
   text_background_opacity = 0.9,
   window_decorations = "RESIZE",
