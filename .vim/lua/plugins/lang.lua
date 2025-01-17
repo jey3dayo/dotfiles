@@ -32,4 +32,10 @@ return {
       vim.fn["mkdp#util#install"]()
     end,
   },
+  {
+    "pmizio/typescript-tools.nvim",
+    ft = ecma_scripts_ft,
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
 }
