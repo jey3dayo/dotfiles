@@ -130,6 +130,11 @@ Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify
 Keymap("<Leader>f", function()
   telescope.extensions.frecency.frecency { workspace = "CWD" }
 end, { desc = "Find CWD by frecency" })
+
+Keymap("<A-p>", function()
+  telescope.extensions.frecency.frecency { workspace = "CWD" }
+end, { desc = "Find CWD by frecency" })
+
 Keymap("<Leader>F", function()
   telescope.extensions.frecency.frecency {}
 end, { desc = "Find by frecency" })

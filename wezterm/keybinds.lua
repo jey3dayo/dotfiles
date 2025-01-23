@@ -12,23 +12,6 @@ local default_keybinds = {
   { key = "=", mods = "CTRL|SHIFT", action = "ResetFontSize" },
   { key = "+", mods = "CTRL", action = "IncreaseFontSize" },
   { key = "-", mods = "CTRL", action = "DecreaseFontSize" },
-
-  -- CMDをALTに置換
-  {
-    key = "k",
-    mods = "CMD",
-    action = wezterm.action.SendKey { key = "k", mods = "ALT" },
-  },
-  {
-    key = "i",
-    mods = "CMD",
-    action = wezterm.action.SendKey { key = "i", mods = "ALT" },
-  },
-  {
-    key = "l",
-    mods = "CMD",
-    action = wezterm.action.SendKey { key = "l", mods = "ALT" },
-  },
 }
 
 local tmux_keybinds = {
@@ -301,10 +284,24 @@ local windows_keybinds = {
   { key = "c", mods = "CTRL|SHIFT", action = wezterm.action { CopyTo = "Clipboard" } },
 }
 
-local keys = utils.array_concat(default_keybinds, tmux_keybinds, wezterm_keybinds)
-if wezterm.target_triple:find "windows" then
-  keys = utils.array_concat(keys, windows_keybinds)
+local function replaceCmdWithAlt(key)
+  return {
+    key = key,
+    mods = "CMD",
+    action = wezterm.action.SendKey { key = key, mods = "ALT" },
+  }
 end
+
+-- CMDをALTに置換
+local hack_keybinds = {
+  replaceCmdWithAlt "k",
+  replaceCmdWithAlt "i",
+  replaceCmdWithAlt "l",
+  replaceCmdWithAlt "p",
+}
+
+local keys = utils.array_concat(default_keybinds, tmux_keybinds, wezterm_keybinds, hack_keybinds)
+if wezterm.target_triple:find "windows" then keys = utils.array_concat(keys, windows_keybinds) end
 
 return {
   -- TODO: いつかtrueにする
