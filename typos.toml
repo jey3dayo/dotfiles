@@ -10,6 +10,7 @@ extend-exclude = [
   "*env*",
   "AWSVPNClient/**",
   "db/sql/**",
+  "internals/**",
 ]
 
 # [default]
@@ -27,11 +28,22 @@ loca = "loca"
 overriden = "overriden"
 regist = "regist"
 reserv = "reserv"
+iterm = "iterm"
+sur = "sur"
+noice = "noice"
+
+ue = "ue"
 fo = "fo"
 daa = "daa"
 ba = "ba"
 caf = "caf"
 aso = "aso"
-iterm = "iterm"
-sur = "sur"
-noice = "noice"
+Ot = "Ot"
+AAS = "AAS"
+LSO = "LSO"
+NAM = "NAM"
+SOM = "SOM"
+THA = "THA"
+TTO = "TTO"
+myu = "myu"
+ono = "ono"
