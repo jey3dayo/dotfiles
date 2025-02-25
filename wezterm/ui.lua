@@ -74,16 +74,18 @@ end)
 --   window:set_right_status("[" .. window:active_workspace() .. "]")
 -- end)
 
+-- local opacity = 1
+local opacity = 0.92
+
 return {
   -- Window
   color_scheme = "Gruvbox dark, hard (base16)",
   font = utils.font_with_fallback "UDEV Gothic 35NFLG",
   font_size = 16,
-
   -- font = utils.font_with_fallback "JetBrainsMono Nerd Font Mono",
   -- font_size = 17,
-  window_background_opacity = 0.92,
-  text_background_opacity = 0.9,
+  window_background_opacity = opacity,
+  text_background_opacity = opacity,
   window_decorations = "RESIZE",
   native_macos_fullscreen_mode = true,
   window_padding = { left = 0, right = 0, top = 0, bottom = 0 },
