@@ -33,6 +33,7 @@ abbr -S gd3="git diff HEAD~3"
 abbr -S vim="nvim"
 abbr -S vi="nvim"
 abbr -S ag="rg --hidden"
+abbr -S rg="rg --hidden"
 abbr -S d='docker'
 abbr -S dc='docker compose'
 abbr -S nx="nlx"
