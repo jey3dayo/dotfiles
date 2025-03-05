@@ -31,7 +31,7 @@ stash/
 
 ## Editor/IDE
 .idea/
-.vscode/
+# .vscode/
 .project/
 .classpath/
 .settings/
@@ -129,6 +129,7 @@ sample.*
 *.orig
 *.rej
 nohup.out
+out.typos
 
 TODO.md
 repomix.config.json
@@ -136,3 +137,7 @@ repomix-output.txt
 .repomixignore
 
 .ignore
+.mise.toml
+services/cagra-web
+services/cygate-web/net
+vendor
