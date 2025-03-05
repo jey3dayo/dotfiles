@@ -1,5 +1,5 @@
 [include]
-  path = ~/.config/git/delta.gitconfig
+  path = ~/.config/git/diff.gitconfig
   path = ~/.config/git/ghq.gitconfig
   path = ~/.config/git/alias.gitconfig
 
@@ -35,15 +35,6 @@
 
 [tag]
   sort = version:refname
-
-[diff]
-  algorithm = histogram
-  colorMoved = plain
-  mnemonicPrefix = true
-  renames = true
-
-[merge]
-  conflictstyle = zdiff3
 
 [http]
   sslVerify = false
@@ -88,3 +79,7 @@
   autoSquash = true
   autoStash = true
   updateRefs = true
+
+[log]
+  ; date = iso
+  date = relative

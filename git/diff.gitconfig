@@ -14,4 +14,8 @@
     conflictstyle = diff3
 
 [diff]
-    colorMoved = default
+  algorithm = histogram
+  colorMoved = plain
+  ; colorMoved = default
+  mnemonicPrefix = true
+  renames = true
