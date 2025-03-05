@@ -3,18 +3,17 @@
   path = ~/.config/git/ghq.gitconfig
   path = ~/.config/git/alias.gitconfig
 
-[color]
-  branch = auto
-  diff    = auto
-  interactive = auto
-  status  = auto
-  ui = auto
-
 [core]
   excludesfile = ~/.config/git/gitignore
   attributesfile = ~/.config/git/attributes
   quotepath = false
   editor = nvim
+
+[init]
+  defaultBranch = main
+
+[branch]
+  sort = -committerdate
 
 [branch "main"]
   remote = origin
@@ -24,11 +23,43 @@
   remote = origin
   merge = refs/heads/master
 
+[color]
+  branch = auto
+  diff    = auto
+  interactive = auto
+  status  = auto
+  ui = auto
+
+[column]
+  ui = auto
+
+[tag]
+  sort = version:refname
+
+[diff]
+  algorithm = histogram
+  colorMoved = plain
+  mnemonicPrefix = true
+  renames = true
+
+[merge]
+  conflictstyle = zdiff3
+
 [http]
   sslVerify = false
 
 [push]
   default = simple
+  autoSetupRemote = true
+  followTags = true
+
+[pull]
+  rebase = true
+
+[fetch]
+  prune = true
+  pruneTags = true
+  all = true
 
 [credential]
   helper = cache --timeout=2592000
@@ -42,3 +73,18 @@
   clean = git-lfs clean %f
   smudge = git-lfs smudge %f
   required = true
+
+[help]
+  autocorrect = prompt
+
+[commit]
+  verbose = true
+
+[rerere]
+  enabled = true
+  autoupdate = true
+
+[rebase]
+  autoSquash = true
+  autoStash = true
+  updateRefs = true
