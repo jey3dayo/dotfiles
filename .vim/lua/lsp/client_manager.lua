@@ -52,7 +52,7 @@ function M.get_lsp_client_names(bufnr)
   if next(clients) == nil then return client_names end
 
   for _, client in pairs(clients) do
-    if client.supports_method "textDocument/formatting" then
+    if client:supports_method "textDocument/formatting" then
       if client.name == "efm" then
         vim.list_extend(client_names, get_efm_clients(client, buf_ft))
       else
