@@ -58,6 +58,7 @@ M.installed_tree_sitter = {
   "json",
   "jsonc",
   "lua",
+  "latex",
   "markdown",
   "markdown_inline",
   "mermaid",
