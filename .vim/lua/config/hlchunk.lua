@@ -12,18 +12,31 @@ return {
     },
     style = {
       { fg = "#a292a3" },
-      { fg = "#c4746e" }, -- this fg is used to highlight wrong chunk
+      { fg = "#c4746e" },
     },
     textobject = "",
     max_file_size = 1024 * 1024,
     error_sign = true,
-    exclude_filetypes = { neotest_summary = true, ["neo-tree"] = true },
+    exclude_filetypes = {
+      neotest_summary = true,
+      ["neo-tree"] = true,
+      dashboard = true,
+      help = true,
+      TelescopePrompt = true,
+      NvimTree = true,
+    },
   },
   indent = {
     enable = true,
-    use_treesitter = true,
+    use_treesitter = false,
     chars = { "│" },
     style = { { fg = "#2A2A37" } },
+    exclude_filetypes = {
+      dashboard = true,
+      help = true,
+      TelescopePrompt = true,
+      NvimTree = true,
+    },
   },
   line_num = { enable = false },
   blank = {
