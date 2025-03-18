@@ -1,6 +1,7 @@
 return {
   highlight = {
     enable = true,
+    disable = {},
     additional_vim_regex_highlighting = { "markdown" },
   },
   indent = { enable = true, disable = {} },
