@@ -1,7 +1,7 @@
 {
   "Comment.nvim": { "branch": "master", "commit": "e30b7f2008e52442154b66f7c519bfd2f1e32acb" },
   "CopilotChat.nvim": { "branch": "main", "commit": "679441e4809019b7bf2bbcd0e352b75dc9508b92" },
-  "avante.nvim": { "branch": "main", "commit": "540cc53f0c30214e3e4b5688f030bb2d8277b8ce" },
+  "avante.nvim": { "branch": "main", "commit": "6fc4f16a4eea452f9e0224d08943ec7a98f2779e" },
   "ccc.nvim": { "branch": "main", "commit": "b57cbaf8db3ac43c56c9e2c7f3812944638260ed" },
   "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
   "cmp-cmdline": { "branch": "main", "commit": "d250c63aa13ead745e3a40f61fdd3470efde3923" },
