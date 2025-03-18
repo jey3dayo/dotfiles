@@ -10,6 +10,5 @@ return {
   tree_docs = { enable = true },
   matchup = {
     enable = true,
-    -- disable = { "c", "ruby" },
   },
 }
