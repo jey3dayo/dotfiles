@@ -141,3 +141,8 @@ repomix-output.txt
 services/cagra-web
 services/cygate-web/net
 vendor
+
+
+.cursor
+.clinerules
+.aider*
