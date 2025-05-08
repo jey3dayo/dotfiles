@@ -41,7 +41,7 @@ M.installed_servers = {
   "terraformls",
 }
 
-M.autostart_servers = {
+M.enabled_servers = {
   "astro",
   "bashls",
   "cssls",
@@ -54,7 +54,7 @@ M.autostart_servers = {
   "ruff",
   "tailwindcss",
   "taplo",
-  -- "ts_ls",
+  "ts_ls",
   "typescript-tools",
   "eslint",
   "typos_lsp",
