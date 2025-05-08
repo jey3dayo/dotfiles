@@ -4,7 +4,7 @@ local M = {}
 
 M.create_root_pattern = function(patterns)
   return function(fname)
-    return util.root_pattern(unpack(patterns))(fname)
+    return util.root_pattern(table.unpack(patterns))(fname)
   end
 end
 
