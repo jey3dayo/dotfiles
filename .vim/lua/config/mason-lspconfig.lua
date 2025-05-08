@@ -9,17 +9,28 @@ local config = require "lsp.config"
 
 if not (mason_lspconfig and lspconfig) then return end
 
+-- TODO: 他のパラメータが機能してないので、読み取るか消すか考える
+-- excludeリストを動的生成
+local exclude = { "rust_analyzer" }
+for _, server in ipairs(config.autostart_servers) do
+  local extends = Safe_require("lsp.settings." .. server)
+  if extends and type(extends) == "table" and extends.autostart == false then
+    table.insert(exclude, server)
+  end
+end
+
+-- excludeリストをデバッグ用に表示
+print("Exclude servers:")
+for _, server in ipairs(exclude) do
+  print(server)
+end
+
 mason_lspconfig.setup {
   ensure_installed = config.installed_servers,
   automatic_installation = true,
-}
-
-mason_lspconfig.setup_handlers {
-  function(server)
-    local opts = { on_attach = on_attach, capabilities = capabilities }
-    local extends = Safe_require("lsp.settings." .. server)
-    lspconfig[server].setup(with(opts, extends))
-  end,
+  automatic_enable = {
+    exclude = exclude,
+  },
 }
 
 lspconfig.efm.setup {

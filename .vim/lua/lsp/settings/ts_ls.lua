@@ -26,6 +26,5 @@ return {
     "typescript",
     "typescriptreact",
   },
-  -- autostart = utils.has_config_files(config_files) or has_typescript_dependency(),
-  autostart = false,
+  autostart = utils.has_config_files(config_files) or has_typescript_dependency(),
 }

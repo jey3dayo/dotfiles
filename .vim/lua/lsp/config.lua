@@ -34,9 +34,32 @@ M.installed_servers = {
   "tailwindcss",
   "taplo",
   "ts_ls",
+  "eslint",
   "typos_lsp",
   "vimls",
   -- "yamlls",
+  "terraformls",
+}
+
+M.autostart_servers = {
+  "astro",
+  "bashls",
+  "cssls",
+  "dockerls",
+  "efm",
+  "jsonls",
+  "lua_ls",
+  "prismals",
+  "pylsp",
+  "ruff",
+  "tailwindcss",
+  "taplo",
+  -- "ts_ls",
+  "typescript-tools",
+  "eslint",
+  "typos_lsp",
+  "vimls",
+  "yamlls",
   "terraformls",
 }
 
