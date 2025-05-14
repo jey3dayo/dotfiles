@@ -1,2 +1,4 @@
+--glob=!.git/
+--glob=!tmp/
 --type-add
-web:*.{html,css,js}*
+web:*.{html,css,js}
