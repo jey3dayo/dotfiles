@@ -1,4 +1,7 @@
 --glob=!.git/
 --glob=!tmp/
+--glob=!yarn.lock
+--glob=!pnpm-lock.yaml
+--glob=!package-lock.json
 --type-add
 web:*.{html,css,js}
