@@ -3,19 +3,17 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     lazy = false,
+    enabled = true,
     version = false,
     opts = {
       provider = "openai",
       openai = {
         endpoint = "https://api.openai.com/v1",
-        model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
-        timeout = 30000, -- timeout in milliseconds
-        temperature = 0, -- adjust if needed
-        max_tokens = 4096,
-        -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
-      },
-      web_search_engine = {
-        provider = "tavily",
+        model = "gpt-4o",
+        timeout = 30000,
+        temperature = 0,
+        max_completion_tokens = 8192,
+        disable_tools = true,
       },
       behaviour = {
         auto_suggestions = true,
@@ -44,10 +42,12 @@ return {
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
     dependencies = {
+      "nvim-treesitter/nvim-treesitter",
       "stevearc/dressing.nvim",
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
+      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
       "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
       "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
       {
