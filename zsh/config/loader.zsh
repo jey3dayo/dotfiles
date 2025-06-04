@@ -1,31 +1,30 @@
-# Configuration loader for new structure
+# Configuration loader
+# Any zsh plugin manager can source this file
 
 # Get the directory where this script is located
 local config_dir="${0:A:h}"
 
-# Core settings (immediate load)
-for file in "$config_dir"/core/*.zsh; do
-  [[ -r "$file" ]] && source "$file"
-done
+# Load helper functions
+source "$config_dir/loaders/helper.zsh"
 
-# Tool settings (deferred load)
-for file in "$config_dir"/tools/*.zsh; do
-  [[ -r "$file" ]] && zsh-defer source "$file"
-done
+# Load specific loaders
+source "$config_dir/loaders/core.zsh"
+source "$config_dir/loaders/tools.zsh"
+source "$config_dir/loaders/functions.zsh"
+source "$config_dir/loaders/os.zsh"
 
-# Functions (deferred load)
-local functions_dir="${config_dir:h}/functions"
-for file in "$functions_dir"/*.zsh; do
-  [[ -r "$file" ]] && zsh-defer source "$file"
-done
+# Execute loading sequence
+load_core_settings "$config_dir"
+load_tool_settings "$config_dir"
+load_functions "$config_dir"
+load_os_settings "$config_dir"
 
-# OS-specific settings (deferred load)
-case "$OSTYPE" in
-  darwin*) zsh-defer source "$config_dir/os/macos.zsh" 2>/dev/null ;;
-  linux*)  zsh-defer source "$config_dir/os/linux.zsh" 2>/dev/null ;;
-  cygwin*|msys*) zsh-defer source "$config_dir/os/windows.zsh" 2>/dev/null ;;
-esac
+# Clean up helper functions
+unfunction _defer_or_source 2>/dev/null
+unfunction _load_zsh_files 2>/dev/null
+unfunction load_core_settings 2>/dev/null
+unfunction load_tool_settings 2>/dev/null
+unfunction load_functions 2>/dev/null
+unfunction load_os_settings 2>/dev/null
 
-# Load abbreviations
-local abbr_file="${config_dir:h}/abbreviations"
-[[ -r "$abbr_file" ]] && zsh-defer source "$abbr_file"
+# vim: set syntax=zsh:

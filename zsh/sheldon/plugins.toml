@@ -92,8 +92,3 @@ apply = ["defer"]
 github = "eza-community/eza"
 use = ["completions/zsh/_eza"]
 apply = ["defer", "fpath"]
-
-[plugins.dotfiles-config]
-local = "~/.config/zsh/config"
-use = ["loader.zsh"]
-apply = ["source"]

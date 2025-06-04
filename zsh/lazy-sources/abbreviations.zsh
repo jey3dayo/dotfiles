@@ -1,3 +1,11 @@
+# Abbreviations setup
+# zsh-abbrプラグインが読み込まれた後に実行される
+
+# abbrコマンドが利用可能かチェック
+if ! (( $+commands[abbr] )) && ! (( $+functions[abbr] )); then
+  return
+fi
+
 abbr -S less="less -giMRSW -z-4 -x4"
 abbr -S where="command -v"
 abbr -S df="df -h"
@@ -43,3 +51,5 @@ abbr -S typos="typos --config ~/.config/typos.toml ."
 # Mac
 abbr -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 abbr -S flusdns="dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
+
+# vim: set syntax=zsh: 
