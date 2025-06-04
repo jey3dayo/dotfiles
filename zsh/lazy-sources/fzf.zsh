@@ -20,8 +20,20 @@ if command -v fzf >/dev/null 2>&1; then
   fi
 
   # SSH host selection
-  if [[ -f ~/.ssh/config ]]; then
-    alias s='ssh $(grep -iE "^host[[:space:]]+[^*]" ~/.ssh/config|grep -v \*|fzf|awk "{print \$2}")'
+  _ssh_hosts() {
+    local config_files=(
+      ~/.ssh/config
+      ~/.ssh/ssh_config.d/*
+      ~/.config/ssh/ssh_config
+    )
+    
+    for config in $config_files; do
+      [[ -f $config ]] && grep -iE "^host[[:space:]]+[^*]" "$config" 2>/dev/null
+    done | grep -v \* | awk '{print $2}' | sort -u
+  }
+  
+  if [[ -f ~/.ssh/config ]] || [[ -d ~/.ssh/ssh_config.d ]] || [[ -f ~/.config/ssh/ssh_config ]]; then
+    alias s='ssh $(_ssh_hosts | fzf --prompt "SSH> " --height 40% --reverse)'
   fi
   
   # Process kill widget
