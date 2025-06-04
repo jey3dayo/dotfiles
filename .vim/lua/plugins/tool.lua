@@ -37,7 +37,7 @@ return {
   {
     "akinsho/toggleterm.nvim",
     version = "*",
-    opts = function()
+    config = function()
       require "config/toggleterm"
     end,
   },
