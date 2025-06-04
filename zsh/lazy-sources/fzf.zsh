@@ -5,7 +5,7 @@ if command -v fzf >/dev/null 2>&1; then
   if command -v ghq >/dev/null 2>&1; then
     alias ghq-repos="ghq list -p | fzf --prompt 'GHQ> ' --height 40% --reverse"
     alias ghq-repo='cd $(ghq-repos)'
-    
+
     # GHQ repository selection widget
     cd-fzf-ghqlist-widget() {
       local REPO
@@ -25,17 +25,18 @@ if command -v fzf >/dev/null 2>&1; then
       ~/.ssh/config
       ~/.ssh/ssh_config.d/*
       ~/.config/ssh/ssh_config
+      ~/.config/ssh/ssh_config.d/*
     )
-    
+
     for config in $config_files; do
       [[ -f $config ]] && grep -iE "^host[[:space:]]+[^*]" "$config" 2>/dev/null
     done | grep -v \* | awk '{print $2}' | sort -u
   }
-  
+
   if [[ -f ~/.ssh/config ]] || [[ -d ~/.ssh/ssh_config.d ]] || [[ -f ~/.config/ssh/ssh_config ]]; then
     alias s='ssh $(_ssh_hosts | fzf --prompt "SSH> " --height 40% --reverse)'
   fi
-  
+
   # Process kill widget
   fzf-kill-widget() {
     local pid
