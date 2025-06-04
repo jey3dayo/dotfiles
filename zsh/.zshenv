@@ -42,6 +42,7 @@ path=(
   $GOPATH/bin(N-/)
   $BUN_INSTALL/bin(N-/)
   $PNPM_HOME(N-/)
+  $HOME/.local/npm-global/bin
   $ANDROID_SDK_ROOT/emulator(N-/)
   $ANDROID_SDK_ROOT/tools(N-/)
   $ANDROID_SDK_ROOT/tools/bin(N-/)
