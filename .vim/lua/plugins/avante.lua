@@ -7,13 +7,17 @@ return {
     version = false,
     opts = {
       provider = "openai",
-      openai = {
-        endpoint = "https://api.openai.com/v1",
-        model = "gpt-4o",
-        timeout = 30000,
-        temperature = 0,
-        max_completion_tokens = 8192,
-        disable_tools = true,
+      providers = {
+        openai = {
+          endpoint = "https://api.openai.com/v1",
+          model = "gpt-4o",
+          timeout = 30000,
+          disable_tools = true,
+          extra_request_body = {
+            temperature = 0,
+            max_completion_tokens = 8192,
+          },
+        },
       },
       behaviour = {
         auto_suggestions = true,
