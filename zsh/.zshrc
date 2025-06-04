@@ -64,6 +64,7 @@ if [ -f "$XDG_CONFIG_HOME/.env" ]; then
 fi
 
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
+for f ("${ZDOTDIR:-$HOME}"/lazy-sources/*.zsh) zsh-defer source "${f}"
 
 # removed custom source
 zsh-defer unfunction source

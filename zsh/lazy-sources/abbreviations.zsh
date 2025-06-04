@@ -52,4 +52,4 @@ abbr -S typos="typos --config ~/.config/typos.toml ."
 abbr -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
 abbr -S flusdns="dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
 
-# vim: set syntax=zsh: 
+# vim: set syntax=zsh:
