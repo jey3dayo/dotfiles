@@ -1,7 +1,7 @@
 # Abbreviations setup
 # zsh-abbrプラグインが読み込まれた後に実行される
 
-# abbrコマンドが利用可能かチェック
+abbrコマンドが利用可能かチェック
 if ! (( $+commands[abbr] )) && ! (( $+functions[abbr] )); then
   return
 fi
