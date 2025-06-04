@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+# 古い.zcompdumpファイルのクリーンアップ関数
+
+cleanup_zcompdump() {
+  local zdotdir="${ZDOTDIR:-$HOME}"
+  local old_files
+
+  echo "🧹 古い.zcompdumpファイルをクリーンアップしています..."
+  
+  # 現在のディレクトリ内の.zcompdumpファイルを取得
+  old_files=($zdotdir/.zcompdump*(N))
+  
+  if [[ ${#old_files} -gt 0 ]]; then
+    echo "削除対象: ${#old_files}個のファイル"
+    for file in $old_files; do
+      echo "  - ${file:t}"
+    done
+    
+    echo -n "削除を実行しますか？ [y/N]: "
+    read -r response
+    
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+      rm -f $old_files
+      echo "✅ クリーンアップ完了"
+    else
+      echo "❌ キャンセルされました"
+    fi
+  else
+    echo "✅ クリーンアップ対象のファイルはありません"
+  fi
+} 

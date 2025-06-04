@@ -11,9 +11,6 @@ exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y |
 github = "romkatv/zsh-defer"
 apply = ["source"]
 
-[plugins.compinit]
-inline = 'autoload -Uz compinit && zsh-defer compinit'
-
 [plugins.zsh-abbr]
 github = 'olets/zsh-abbr'
 apply = ["defer"]
