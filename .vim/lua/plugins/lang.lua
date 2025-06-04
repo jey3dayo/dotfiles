@@ -1,24 +1,14 @@
-local ecma_scripts_ft = {
-  "javascript",
-  "javascriptreact",
-  "jsx",
-  "typescript",
-  "typescriptreact",
-  "tsx",
-  "astro",
-}
-local ruby_ft = { "ruby" }
-local markdown_ft = { "markdown", "mkd" }
+local ft = require "utils/filetypes"
 
 return {
   "editorconfig/editorconfig-vim",
   { "sam4llis/nvim-lua-gf", ft = { "lua" } },
   { "wavded/vim-stylus", ft = { "stylus" } },
-  { "tpope/vim-rake", ft = ruby_ft },
-  { "tpope/vim-rails", ft = ruby_ft },
-  { "ap/vim-css-color", ft = table.insert({ "css" }, ecma_scripts_ft) },
-  { "hotoo/jsgf.vim", ft = ecma_scripts_ft },
-  { "tpope/vim-markdown", ft = markdown_ft },
+  { "tpope/vim-rake", ft = ft.ruby },
+  { "tpope/vim-rails", ft = ft.ruby },
+  { "ap/vim-css-color", ft = vim.list_extend({ "css" }, ft.ecma_scripts) },
+  { "hotoo/jsgf.vim", ft = ft.ecma_scripts },
+  { "tpope/vim-markdown", ft = ft.markdown },
   { "prisma/vim-prisma", ft = { "prisma" } },
   {
     "iamcco/markdown-preview.nvim",
@@ -27,14 +17,14 @@ return {
       "MarkdownPreview",
       "MarkdownPreviewStop",
     },
-    ft = markdown_ft,
+    ft = ft.markdown,
     build = function()
       vim.fn["mkdp#util#install"]()
     end,
   },
   {
     "pmizio/typescript-tools.nvim",
-    ft = ecma_scripts_ft,
+    ft = ft.ecma_scripts,
     dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
     opts = {},
   },
