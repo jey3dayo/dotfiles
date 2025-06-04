@@ -11,3 +11,7 @@ git_diff() {
 zle -N git_diff git_diff
 bindkey '^gg' git_diff
 bindkey '^g^g' git_diff
+
+# Additional Git utility functions can be added here
+# git_status_widget() { ... }
+# git_add_widget() { ... }
