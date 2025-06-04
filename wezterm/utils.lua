@@ -52,9 +52,7 @@ function M.convert_home_dir(path)
   local cwd = path
   local home = os.getenv "HOME"
   cwd = cwd:gsub("^" .. home .. "/", "~/")
-  if cwd == "" then
-    return path
-  end
+  if cwd == "" then return path end
   return cwd
 end
 
@@ -77,9 +75,7 @@ function M.split_from_url(dir)
     hostname = cwd_uri:sub(1, slash - 1)
     -- Remove the domain name portion of the hostname
     local dot = hostname:find "[.]"
-    if dot then
-      hostname = hostname:sub(1, dot - 1)
-    end
+    if dot then hostname = hostname:sub(1, dot - 1) end
     cwd = cwd_uri:sub(slash)
     cwd = M.convert_useful_path(cwd)
   end

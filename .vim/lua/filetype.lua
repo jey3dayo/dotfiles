@@ -1,4 +1,4 @@
-vim.filetype.add({
+vim.filetype.add {
   extension = {
     astro = "astro",
     gitconfig = "gitconfig",
@@ -15,5 +15,5 @@ vim.filetype.add({
     ["*.ts.bk"] = "typescriptreact",
     [".env*"] = "config",
     [".env.*"] = "config",
-  }
-})
+  },
+}
