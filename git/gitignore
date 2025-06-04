@@ -144,3 +144,5 @@ vendor
 
 .clinerules
 .aider*
+
+**/.claude/settings.local.json
