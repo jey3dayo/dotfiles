@@ -199,10 +199,10 @@ fi
 4. ~~関数の分離・整理~~ → **完了**: fzf.zsh重複排除・責任分離完了
 
 ### 今後の優先度
-1. **中**: git-commands.zsh統合・整理
-2. **中**: ヘルプ機能の追加
-3. **低**: プラグイン設定の最適化
-4. **低**: デバッグ・プロファイル機能
+1. ~~**中**: git-commands.zsh統合・整理~~ → **完了**: git.zsh機能拡張・abbreviations追加
+2. ~~**中**: ヘルプ機能の追加~~ → **完了**: zsh-help関数を大幅拡張
+3. ~~**低**: デバッグ・プロファイル機能~~ → **完了**: config/tools/debug.zsh追加
+4. **低**: プラグイン設定の最適化
 5. **低**: ディレクトリ構造の更なる最適化
 
 ## 🎯 達成された効果
@@ -214,11 +214,14 @@ fi
 4. ✅ **デバッグ性向上**: 問題の特定が容易（今回のabbr問題も迅速に解決）
 5. ✅ **互換性向上**: 任意のプラグイン管理ツールで利用可能
 6. ✅ **重複排除**: fzf関連ファイルの統合完了（DRY原則適用）
+7. ✅ **Git機能統合**: Widget関数とabbreviationsの最適化・拡張
+8. ✅ **ユーザビリティ向上**: 包括的なヘルプシステム（zsh-help）
+9. ✅ **開発効率向上**: デバッグ・プロファイル機能の追加
 
 ### 今後期待される効果
-1. **ドキュメント性向上**: 自己文書化機能の追加
-2. **パフォーマンス向上**: 更なる最適化
-3. **ユーザビリティ向上**: ヘルプ機能の充実
+1. ✅ **ドキュメント性向上**: 自己文書化機能の追加 → **達成**: zsh-help実装
+2. **パフォーマンス向上**: 更なる最適化 → **部分達成**: デバッグツール追加
+3. ✅ **ユーザビリティ向上**: ヘルプ機能の充実 → **達成**: 包括的ヘルプシステム
 
 ## ✅ 完了した移行・修正
 
@@ -232,10 +235,57 @@ fi
    - `lazy-sources/fzf.zsh`: エイリアス・関数・ウィジェット統合
    - `functions/fzf.zsh`: 削除（重複排除）
 
+### 2024年6月5日実施済み
+6. ✅ **Git機能統合・最適化**: config/tools/git.zsh拡張
+   - `_is_git_repo()` ヘルパー関数追加（DRY原則）
+   - `git_branch_select` ウィジェット追加（`^gb`, `^g^b`）
+   - `git_status` を `-sb` フラグに統一
+7. ✅ **Git abbreviations拡張**: lazy-sources/abbreviations.zsh
+   - 追加abbreviations: `gb`, `gco`, `gcob`, `gl`, `gp`, `gpl`
+   - 既存abbreviationsの微調整
+8. ✅ **ヘルプ機能大幅拡張**: functions/help.zsh
+   - 6つのトピック対応: keybinds, aliases, functions, config, tools, benchmark
+   - 絵文字とカテゴリ分けで可読性向上
+   - ツール存在チェック機能
+9. ✅ **デバッグ・プロファイル機能追加**: config/tools/debug.zsh
+   - `ZSH_DEBUG=1` 環境変数でデバッグモード有効化
+   - ベンチマーク、プロファイリング、情報表示機能
+
 ### 今後の移行計画
-1. **段階的関数統合**: 重複する関数の整理
+1. **段階的関数統合**: 重複する関数の整理 → **現在不要**: 主要な重複は解消済み
 2. **ドキュメント更新**: README.mdとの整合性確保
 3. **テスト強化**: 各機能の動作確認自動化
+
+## 📊 機能概要
+
+### 🎯 完成した主要機能
+1. **モジュラー構成**: 機能別ファイル分離、遅延読み込み対応
+2. **Git統合**: Widget関数 + abbreviations + fzf連携
+3. **FZF統合**: リポジトリ選択、プロセス管理、ファイル検索
+4. **ヘルプシステム**: `zsh-help` による包括的ヘルプ
+5. **デバッグツール**: パフォーマンス計測、プロファイリング
+6. **Abbreviations**: 50+ のコマンド短縮形
+
+### 🔧 利用可能なコマンド
+```bash
+# ヘルプ
+zsh-help                    # 全体ヘルプ
+zsh-help keybinds          # キーバインド一覧
+zsh-help aliases           # abbreviations一覧
+zsh-help functions         # カスタム関数一覧
+zsh-help tools             # インストール済みツール確認
+
+# デバッグ（ZSH_DEBUG=1 環境下）
+zsh-benchmark              # 起動時間計測
+zsh-profile                # プロファイル情報表示
+zsh-debug-info             # デバッグ情報表示
+
+# 主要キーバインド
+^]                         # fzf ghq repository selector
+^g^g, ^g^s, ^g^a, ^g^b    # Git widgets
+^g^K                       # fzf kill process
+^R, ^T                     # fzf history/file search
+```
 
 ## 🔧 現在の動作状況
 - ✅ zsh-defer: 正常動作
@@ -247,3 +297,12 @@ fi
   - 基本設定: `config/tools/fzf.zsh`
   - 統合機能: `lazy-sources/fzf.zsh`
   - キーバインド: `^]` (GHQ), `^g^K` (プロセス終了)
+- ✅ Git機能: 正常動作（Widget + abbreviations）
+  - Widget: `^g^g` (diff), `^g^s` (status), `^g^a` (add), `^g^b` (branch)
+  - Abbreviations: `ga`, `gst`, `gd`, `gb`, `gco`, `gl`, `gp` など
+- ✅ ヘルプシステム: 正常動作
+  - コマンド: `zsh-help [keybinds|aliases|functions|config|tools|benchmark]`
+  - 6つのトピック対応、動的ツールチェック機能
+- ✅ デバッグシステム: 正常動作
+  - 環境変数: `ZSH_DEBUG=1` でデバッグモード有効
+  - コマンド: `zsh-benchmark`, `zsh-profile`, `zsh-debug-info` など
