@@ -29,8 +29,8 @@ brew bundle
 
 | ディレクトリ | 説明 |
 |-------------|------|
-| `zsh/` | Zsh設定（独自管理、[詳細](zsh/README.md)） |
-| `nvim/` | NeoVim設定（独自管理、[詳細](nvim/README.md)） |
+| `zsh/` | Zsh設定（独自管理、[詳細](zsh/README.md)、[技術詳細](zsh/CLAUDE.md)） |
+| `nvim/` | NeoVim設定（独自管理、[詳細](nvim/README.md)、[改善計画](nvim/CLAUDE.md)） |
 | `git/` | Git設定（エイリアス、グローバル設定など） |
 | `ssh/` | SSH設定 |
 
