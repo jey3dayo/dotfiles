@@ -30,7 +30,7 @@ brew bundle
 | ディレクトリ | 説明 |
 |-------------|------|
 | `zsh/` | Zsh設定（独自管理、[詳細](zsh/README.md)） |
-| `nvim/` | Neovim設定（独自管理） |
+| `nvim/` | NeoVim設定（独自管理、[詳細](nvim/README.md)） |
 | `git/` | Git設定（エイリアス、グローバル設定など） |
 | `ssh/` | SSH設定 |
 
