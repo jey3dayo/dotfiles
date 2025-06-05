@@ -16,6 +16,17 @@ cleanup_old_zcompdump() {
 
 # 補完システム初期化関数
 _init_completion() {
+  # fpath設定 - 補完関数の検索パスを追加
+  if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+    fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+  fi
+  
+  # プロジェクト固有の補完ディレクトリ
+  local completion_dir="${${(%):-%x}:A:h:h}/completions"
+  if [[ -d "$completion_dir" ]]; then
+    fpath=("$completion_dir" $fpath)
+  fi
+
   autoload -Uz compinit
   if [[ -n "${ZSH_COMPDUMP}"(#qNmh+24) ]]; then
     # 24時間以上古い場合は再構築
@@ -41,4 +52,4 @@ else
   _init_completion
 fi
 
-# vim: set syntax=zsh: 
+# vim: set syntax=zsh:

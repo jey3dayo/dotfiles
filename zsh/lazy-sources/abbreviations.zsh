@@ -1,61 +1,76 @@
 # Abbreviations setup
-# zsh-abbrプラグインが読み込まれた後に実行される
+# zsh-abbr プラグインが読み込まれた後に実行される
 
-abbrコマンドが利用可能かチェック
+# abbr コマンドが利用可能かチェック
 if ! (( $+commands[abbr] )) && ! (( $+functions[abbr] )); then
   return
 fi
 
-abbr -f -S less="less -giMRSW -z-4 -x4"
-abbr -f -S where="command -v"
-abbr -f -S df="df -h"
-abbr -f -S du="du -h"
-abbr -f -S tailf="tail -f"
-abbr -f -S pk='pkill -9 -f '
+# 共通関数
+function define_abbrs() {
+  for abbr_def in "$@"; do
+    abbr -f -S $abbr_def
+  done
+}
 
-abbr -f -S cat='bat'
-abbr -f -S top='btop'
-abbr -f -S l='eza -la'
-abbr -f -S ll='eza -la'
-abbr -f -S ls='eza'
-abbr -f -S la='eza -la'
+# Basic tools
+define_abbrs \
+  "less=less -giMRSW -z-4 -x4" \
+  "where=command -v" \
+  "df=df -h" \
+  "du=du -h" \
+  "tailf=tail -f" \
+  "pk=pkill -9 -f "
 
-# tricks
-abbr -f -S path='echo -e ${PATH//:/\\n}'
-abbr -f -S myip="ip -br -c a"
-abbr -f -S ports="lsof -i -P -n | grep LISTEN"
-abbr -f -S wifi="networksetup -setairportpower en0"  # wifi on/off
+# Replacement commands
+define_abbrs \
+  "cat=bat" \
+  "top=btop" \
+  "ls=eza" \
+  "l=eza -la" \
+  "ll=eza -la" \
+  "la=eza -la"
 
-# git
-abbr -f -S ga="git add"
-abbr -f -S gap="git add -p"
-abbr -f -S gst="git status -sb ."
-abbr -f -S gc="git commit -m\ ""
-abbr -f -S gd="git diff"
-abbr -f -S gdc="git diff --cached"
-abbr -f -S gd1="git diff HEAD~1"
-abbr -f -S gd2="git diff HEAD~2"
-abbr -f -S gd3="git diff HEAD~3"
-abbr -f -S gb="git branch"
-abbr -f -S gco="git checkout"
-abbr -f -S gcob="git checkout -b"
-abbr -f -S gl="git log --oneline -10"
-abbr -f -S gp="git push"
-abbr -f -S gpl="git pull"
+# Misc tricks
+define_abbrs \
+  "path=echo -e \${PATH//:/\\\\n}" \
+  "myip=ip -br -c a" \
+  "ports=lsof -i -P -n | grep LISTEN" \
+  "wifi=networksetup -setairportpower en0"
 
-# dev
-abbr -f -S vim="nvim"
-abbr -f -S vi="nvim"
-abbr -f -S ag="rg --hidden"
-abbr -f -S rg="rg --hidden"
-abbr -f -S d='docker'
-abbr -f -S dc='docker compose'
-abbr -f -S nx="nlx"
-abbr -f -S hg="hg --encoding=utf-8"
-abbr -f -S typos="typos --config ~/.config/typos.toml ."
+# Git shortcuts
+define_abbrs \
+  "ga=git add" \
+  "gap=git add -p" \
+  "gst=git status -sb ." \
+  "gc=git commit -m" \
+  "gd=git diff" \
+  "gdc=git diff --cached" \
+  "gd1=git diff HEAD~1" \
+  "gd2=git diff HEAD~2" \
+  "gd3=git diff HEAD~3" \
+  "gb=git branch" \
+  "gco=git checkout" \
+  "gcob=git checkout -b" \
+  "gl=git log --oneline -10" \
+  "gp=git push" \
+  "gpl=git pull"
 
-# Mac
-abbr -f -S chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
-abbr -f -S flusdns="dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
+# Development tools
+define_abbrs \
+  "vim=nvim" \
+  "vi=nvim" \
+  "ag=rg --hidden" \
+  "rg=rg --hidden" \
+  "d=docker" \
+  "dc=docker compose" \
+  "nx=nlx" \
+  "hg=hg --encoding=utf-8" \
+  "typos=typos --config ~/.config/typos.toml ."
+
+# macOS
+define_abbrs \
+  "chrome=/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome" \
+  "flushdns=dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
 
 # vim: set syntax=zsh:
