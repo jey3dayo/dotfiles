@@ -2,12 +2,15 @@
 
 このプロジェクトのzsh設定は、XDG Base Directory仕様に準拠した効率的なモジュラー設計で管理されています。
 
-## ✅ 現在の状況 (2024-06-04)
+## ✅ 現在の状況 (2024-06-05)
 - ✅ **完全動作**: 全ての主要機能が正常に動作
 - ✅ **abbr修復済み**: 遅延読み込みで省略形機能が正常動作
 - ✅ **モジュラーローダー**: プラグイン管理ツール非依存の設定システム
 - ✅ **パフォーマンス最適化**: zsh-defer統合による高速起動
 - ✅ **fzf統合完了**: 重複排除と責任分離による整理完了
+- ✅ **Git機能統合**: Widget関数とabbreviationsの最適化・拡張
+- ✅ **ヘルプシステム**: 包括的な`zsh-help`機能
+- ✅ **デバッグツール**: パフォーマンス計測・プロファイリング機能
 
 ## ディレクトリ構成
 
@@ -23,8 +26,13 @@ zsh/
 │   └── loaders/            # 機能別ローダー（SOLID原則）
 │       ├── helper.zsh      # 共通ヘルパー関数
 │       ├── core.zsh        # Core settings読み込み
-│       ├── tools/          # ツール固有設定
-│       │   └── fzf.zsh     # fzf基本設定（環境変数のみ）
+│   ├── tools/              # ツール固有設定
+│   │   ├── fzf.zsh         # fzf基本設定（環境変数のみ）
+│   │   ├── git.zsh         # Git設定・Widget関数
+│   │   ├── debug.zsh       # デバッグ・プロファイリング機能
+│   │   ├── gh.zsh          # GitHub CLI設定
+│   │   ├── mise.zsh        # mise設定
+│   │   └── starship.zsh    # Starshipプロンプト設定
 │       ├── functions.zsh   # Functions読み込み
 │       └── os.zsh          # OS固有設定読み込み
 │
@@ -53,7 +61,7 @@ zsh/
 │
 ├── functions/              # ユーティリティ関数
 │   ├── cleanup-zcompdump   # 古い補完キャッシュクリーンアップ
-│   └── help.zsh            # ヘルプ機能
+│   └── help.zsh            # 包括的ヘルプシステム（zsh-help）
 │
 └── completions/            # カスタム補完ファイル
 ```
@@ -110,6 +118,26 @@ zsh/
 - **機能**: GHQリポジトリ選択、プロセス終了、SSH接続選択
 - **キーバインド**: `^]` (GHQ), `^g^K` (プロセス終了)
 
+### 7. Git統合（✅ **2024-06-05実装完了**）
+
+- **config/tools/git.zsh**: Git設定・Widget関数・ヘルパー関数
+- **lazy-sources/abbreviations.zsh**: Git abbreviations（ga, gst, gd, gb等）
+- **機能**: Git diff、status、add、branchのWidget関数
+- **キーバインド**: `^g^g` (diff), `^g^s` (status), `^g^a` (add), `^g^b` (branch)
+
+### 8. ヘルプシステム（✅ **2024-06-05実装完了**）
+
+- **functions/help.zsh**: 包括的ヘルプシステム
+- **コマンド**: `zsh-help [keybinds|aliases|functions|config|tools|benchmark]`
+- **機能**: キーバインド、abbreviations、カスタム関数、設定、ツール、ベンチマーク情報
+- **動的チェック**: インストール済みツールの自動検出
+
+### 9. デバッグ・プロファイリング（✅ **2024-06-05実装完了**）
+
+- **config/tools/debug.zsh**: デバッグ・プロファイリング機能
+- **環境変数**: `ZSH_DEBUG=1` でデバッグモード有効
+- **コマンド**: `zsh-benchmark` (起動時間), `zsh-profile` (プロファイル), `zsh-debug-info` (情報表示)
+
 ## 特徴・利点
 
 ### パフォーマンス最適化
@@ -160,6 +188,24 @@ sheldon list
 ghq-repos  # GHQリポジトリ選択
 # Ctrl+] でGHQウィジェット
 # Ctrl+g, Ctrl+K でプロセス終了ウィジェット
+
+# Git統合機能テスト
+# Ctrl+g, Ctrl+g で git diff ウィジェット
+# Ctrl+g, Ctrl+s で git status ウィジェット
+# Ctrl+g, Ctrl+a で git add ウィジェット
+# Ctrl+g, Ctrl+b で git branch select ウィジェット
+
+# ヘルプシステムテスト
+zsh-help              # 全体ヘルプ
+zsh-help keybinds     # キーバインド一覧
+zsh-help aliases      # abbreviations一覧
+zsh-help functions    # カスタム関数一覧
+zsh-help tools        # インストール済みツール確認
+
+# デバッグ機能テスト（ZSH_DEBUG=1 環境下）
+zsh-benchmark         # 起動時間計測
+zsh-profile           # プロファイル情報表示
+zsh-debug-info        # デバッグ情報表示
 ```
 
 ### 他のプラグイン管理ツールでの使用
@@ -214,11 +260,19 @@ sheldon lock --update
 
 ## 状況・改善
 
-### ✅ 最近の修正 (2024-06-04)
+### ✅ 最近の修正・追加機能
+
+#### 2024-06-04
 - **abbr機能**: 遅延読み込みのタイミング問題を修正
 - **lazy-sources読み込み**: 適切な遅延読み込み機構を追加
 - **設定統合**: モジュラーローダーシステムの動作確認
 - **fzf統合**: 3つのファイル重複を1つに統合、責任分離を明確化
+
+#### 2024-06-05
+- **Git機能統合・最適化**: Widget関数とabbreviationsの大幅拡張
+- **ヘルプシステム**: 包括的な`zsh-help`コマンド実装（6つのトピック対応）
+- **デバッグ・プロファイリング**: `config/tools/debug.zsh`追加（パフォーマンス計測機能）
+- **DRY原則適用**: Git関連ヘルパー関数による重複排除
 
 ### 📋 今後の改善予定
 詳細な改善提案については [CLAUDE.md](CLAUDE.md) を参照してください。
