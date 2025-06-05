@@ -1,15 +1,6 @@
-# Abbreviations setup
-# zsh-abbr プラグインが読み込まれた後に実行される
-
-# abbr コマンドが利用可能かチェック
-if ! (( $+commands[abbr] )) && ! (( $+functions[abbr] )); then
-  return
-fi
-
-# 共通関数
 function define_abbrs() {
   for abbr_def in "$@"; do
-    abbr -f -S $abbr_def
+    abbr -a $abbr_def
   done
 }
 
@@ -72,5 +63,3 @@ define_abbrs \
 define_abbrs \
   "chrome=/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome" \
   "flushdns=dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
-
-# vim: set syntax=zsh:
