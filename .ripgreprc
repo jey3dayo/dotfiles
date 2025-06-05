@@ -1,7 +1,58 @@
---glob=!.git/
---glob=!tmp/
---glob=!yarn.lock
---glob=!pnpm-lock.yaml
---glob=!package-lock.json
+# Custom file types
 --type-add
 web:*.{html,css,js}
+
+# Search behavior
+--smart-case
+--follow
+--hidden
+
+# Version Control
+--glob=!.git/*
+--glob=!.hg/*
+--glob=!.svn/*
+--glob=!CVS/*
+--glob=!.bzr/*
+--glob=!_darcs/*
+
+# System Files
+--glob=!.DS_Store
+--glob=!Thumbs.db
+
+# Dependencies
+--glob=!node_modules/*
+--glob=!bower_components/*
+--glob=!vendor/*
+--glob=!ios/Pods/*
+
+# Lock Files
+--glob=!yarn.lock
+--glob=!yarn-error.log
+--glob=!yarn-*.cjs
+--glob=!package-lock.json
+--glob=!pnpm-lock.yaml
+
+# Build Output
+--glob=!.next/*
+--glob=!out/*
+--glob=!dist/*
+--glob=!output/*
+--glob=!storybook-static/*
+--glob=!*.bundle
+--glob=!*.cache
+
+# Generated Files
+--glob=!prisma/generated/*
+--glob=!prisma/client/*
+--glob=!gen/v1/*
+--glob=!tsconfig.tsbuildinfo
+
+# Cache
+--glob=!tmp/*
+--glob=!.zcompcache/*
+
+# Project Specific
+--glob=!lake.prd.cabi
+--glob=!*jquery*
+--glob=!public/*
+--glob=!raycast/*

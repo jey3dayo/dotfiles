@@ -1,24 +1,48 @@
+# Version Control
 .git
+.hg
+.svn
+CVS
+.bzr
+_darcs
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules
+bower_components
+vendor/
+ios/Pods/
+
+# Lock Files
 yarn.lock
 yarn-error.log
 yarn-*.cjs
 package-lock.json
-node_modules
+pnpm-lock.yaml
+
+# Build Output
 .next
 out
-ios/Pods/
-public/
-vendor/
-lake.prd.cabi
-prisma/generated/
-*jquery*
-output/
-raycast/
 dist/*
+output/
+storybook-static
 *.bundle
 *.cache
+
+# Generated Files
+prisma/generated/
 prisma/client
-storybook-static
-tsconfig.tsbuildinfo
 gen/v1/
+tsconfig.tsbuildinfo
+
+# Cache
 .zcompcache
+
+# Project Specific
+lake.prd.cabi
+*jquery*
+public/
+raycast/
