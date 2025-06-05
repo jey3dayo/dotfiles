@@ -11,10 +11,6 @@ exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y |
 github = "romkatv/zsh-defer"
 apply = ["source"]
 
-[plugins.zsh-abbr]
-github = 'olets/zsh-abbr'
-apply = ["defer"]
-
 [plugins.functions]
 github = "ohmyzsh/ohmyzsh"
 dir = 'lib'
@@ -33,21 +29,8 @@ github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
 apply = ["defer"]
 
-[plugins.zoxide.hooks]
-post = '''
-alias j=z
-export _ZO_RESOLVE_SYMLINKS=1
-eval "$(zoxide init zsh)"
-'''
-
-[plugins.bun]
-local = "~/.bun/"
-use = ["_bun"]
-apply = ["defer"]
-
-[plugins.1password]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'plugins'
+[plugins.zsh-abbr]
+github = 'olets/zsh-abbr'
 apply = ["defer"]
 
 [plugins.command-not-found]
@@ -58,19 +41,6 @@ dir = 'plugins'
 github = "zsh-users/zsh-completions"
 use = ["src"]
 apply = ["defer", "fpath-src"]
-
-[plugins.pnpm-shell-completion]
-github = "g-plane/pnpm-shell-completion"
-apply = ["defer"]
-
-[plugins.pnpm-shell-completion-install]
-github = "g-plane/pnpm-shell-completion"
-use = ["zplug.zsh"]
-apply = ["exec_with_confirm"]
-
-[plugins.1password-op]
-github = "unixorn/1password-op.plugin.zsh"
-apply = ["defer"]
 
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
@@ -88,10 +58,40 @@ apply = ['fzf-install', 'source']
 github = "Aloxaf/fzf-tab"
 apply = ["defer"]
 
+[plugins.zoxide.hooks]
+post = '''
+alias j=z
+export _ZO_RESOLVE_SYMLINKS=1
+eval "$(zoxide init zsh)"
+'''
+
+[plugins.pnpm-shell-completion]
+github = "g-plane/pnpm-shell-completion"
+apply = ["defer"]
+
+[plugins.pnpm-shell-completion-install]
+github = "g-plane/pnpm-shell-completion"
+use = ["zplug.zsh"]
+apply = ["exec_with_confirm"]
+
+[plugins.1password-op]
+github = "unixorn/1password-op.plugin.zsh"
+apply = ["defer"]
+
 [plugins.eza]
 github = "eza-community/eza"
 use = ["completions/zsh/_eza"]
 apply = ["defer", "fpath"]
+
+[plugins.bun]
+local = "~/.bun/"
+use = ["_bun"]
+apply = ["defer"]
+
+[plugins.1password]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'plugins'
+apply = ["defer"]
 
 [plugins.dotfiles-lazy-sources]
 local = "~/.config/zsh/lazy-sources"
