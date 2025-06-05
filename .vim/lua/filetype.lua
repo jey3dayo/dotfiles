@@ -8,12 +8,13 @@ vim.filetype.add {
     stylintrc = "json",
     babelrc = "json",
     Podfile = "ruby",
+    sshconfig = "sshconfig",
   },
   pattern = {
-    ["cloudformation*.json"] = "cloudformation.json",
-    ["cloudformation*.yaml"] = "cloudformation.yaml",
-    ["*.ts.bk"] = "typescriptreact",
-    [".env*"] = "config",
-    [".env.*"] = "config",
+    ["cloudformation.*%.json"] = "cloudformation.json",
+    ["cloudformation.*%.ya?ml"] = "cloudformation.yaml",
+    ["%.ts%.bk"] = "typescriptreact",
+    ["%.env.*"] = "config",
+    ["user%-abbreviations"] = "zsh",
   },
 }
