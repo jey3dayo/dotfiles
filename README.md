@@ -1,6 +1,7 @@
 # Personal Dotfiles
 
 macOSの開発環境を構築するためのdotfilesコレクション。
+対応ツール一覧は[TOOLS.md](TOOLS.md)にまとめています。
 
 ## 🚀 クイックセットアップ
 
