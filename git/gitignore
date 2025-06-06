@@ -59,7 +59,7 @@ zsh/.zcompcache/
 
 # Tools and Applications
 .vimperator/info/
-.tmux/plugins/
+tmux/plugins/
 .subversion/auth/
 .netrwhist
 .python-version
