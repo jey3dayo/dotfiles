@@ -1,9 +1,8 @@
 return {
   {
     "numToStr/Comment.nvim",
-    config = function()
-      require "config/comment"
-    end,
+    dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
+    opts = require "config/comment",
   },
   {
     "nishigori/increment-activator",

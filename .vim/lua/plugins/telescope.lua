@@ -1,18 +1,20 @@
+local deps = require "utils/dependencies"
+
 return {
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = deps.plenary,
     config = function()
       require "config/telescope"
     end,
   },
   {
     "nvim-telescope/telescope-file-browser.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
+    dependencies = deps.telescope,
   },
   {
     "nvim-telescope/telescope-frecency.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
+    dependencies = deps.telescope,
     opts = {
       db_safe_mode = false,
     },
@@ -24,6 +26,6 @@ return {
   },
   {
     "debugloop/telescope-undo.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" },
+    dependencies = deps.telescope,
   },
 }

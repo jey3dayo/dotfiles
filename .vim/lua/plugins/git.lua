@@ -1,3 +1,5 @@
+local deps = require "utils/dependencies"
+
 return {
   {
     "tpope/vim-fugitive",
@@ -8,7 +10,7 @@ return {
   },
   {
     "sindrets/diffview.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = deps.plenary,
     cmd = {
       "DiffviewOpen",
       "DiffviewClose",
@@ -18,5 +20,5 @@ return {
     opts = require "config/diffview",
   },
   { "tpope/vim-rhubarb", dependencies = { "tpope/vim-fugitive" } },
-  { "ruifm/gitlinker.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  { "ruifm/gitlinker.nvim", dependencies = deps.plenary },
 }
