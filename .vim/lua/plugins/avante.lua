@@ -1,8 +1,12 @@
 return {
   {
     "yetone/avante.nvim",
-    event = "VeryLazy",
-    lazy = false,
+    cmd = { "AvanteAsk", "AvanteEdit", "AvanteRefresh" },
+    keys = {
+      { "<A-l>", desc = "Avante Ask" },
+      { "<A-i>", desc = "Avante Edit" },
+      { "<A-k>", desc = "Avante Focus" },
+    },
     enabled = true,
     version = false,
     opts = {
