@@ -18,4 +18,11 @@ M.web_styles = { "css", "scss", "sass", "less", "stylus" }
 
 M.config_formats = { "json", "yaml", "toml" }
 
+M.js_project = {
+  "javascript",
+  "javascriptreact",
+  "typescript",
+  "typescriptreact",
+}
+
 return M
