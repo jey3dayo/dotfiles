@@ -3,6 +3,7 @@ local deps = require "utils/dependencies"
 return {
   {
     "hrsh7th/nvim-cmp",
+    event = "InsertEnter",
     config = function()
       require "config/cmp"
     end,
@@ -16,8 +17,8 @@ return {
   { "petertriho/cmp-git", dependencies = deps.cmp },
   { "dcampos/cmp-snippy", dependencies = deps.cmp },
   { "ray-x/cmp-treesitter", dependencies = deps.cmp },
-  "onsails/lspkind-nvim",
-  "roobert/tailwindcss-colorizer-cmp.nvim",
+  { "onsails/lspkind-nvim", lazy = true },
+  { "roobert/tailwindcss-colorizer-cmp.nvim", lazy = true },
   { "dcampos/nvim-snippy", cmd = { "SnippyEdit", "SnippyReload" }, config = true },
   {
     "zbirenbaum/copilot-cmp",

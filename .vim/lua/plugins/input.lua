@@ -1,45 +1,28 @@
 return {
   {
     "numToStr/Comment.nvim",
+    keys = { "gc", "gb", { "gc", mode = "v" }, { "gb", mode = "v" } },
     dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
     opts = require "config/comment",
   },
   {
     "nishigori/increment-activator",
+    keys = { "<C-a>", "<C-x>" },
     config = function()
       require "config/increment-activator-config"
     end,
   },
   {
     "windwp/nvim-ts-autotag",
+    ft = { "html", "xml", "tsx", "vue", "svelte", "astro" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {},
   },
   {
     "keaising/im-select.nvim",
+    event = "InsertEnter",
     config = function()
       require "config/im-select"
-    end,
-  },
-  {
-    "SUSTech-data/wildfire.nvim",
-    enabled = false,
-    opts = require "config/wildfire",
-  },
-  { "ggandor/lightspeed.nvim", enabled = false, config = true },
-  {
-    "ggandor/leap.nvim",
-    enabled = false,
-    config = function()
-      require "config/leap"
-    end,
-  },
-  {
-    "phaazon/hop.nvim",
-    enabled = false,
-    branch = "v2",
-    config = function()
-      require "config/hop"
     end,
   },
   {

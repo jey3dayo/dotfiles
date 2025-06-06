@@ -3,13 +3,14 @@ return {
   "kkharji/sqlite.lua",
   {
     "tpope/vim-repeat",
+    event = "VeryLazy",
     config = function()
       require "config/vim-repeat"
     end,
   },
-  "kana/vim-textobj-user",
-  "Shougo/context_filetype.vim",
-  { "kylechui/nvim-surround", config = true },
-  { "osyo-manga/vim-precious", dependencies = { "Shougo/context_filetype.vim" } },
-  "honza/vim-snippets",
+  { "kana/vim-textobj-user", event = "VeryLazy" },
+  { "Shougo/context_filetype.vim", event = "VeryLazy" },
+  { "kylechui/nvim-surround", event = "VeryLazy", config = true },
+  { "osyo-manga/vim-precious", event = "VeryLazy", dependencies = { "Shougo/context_filetype.vim" } },
+  { "honza/vim-snippets", event = "InsertEnter" },
 }

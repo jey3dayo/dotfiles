@@ -1,15 +1,18 @@
 local deps = require "utils/dependencies"
 
 return {
-  "nvim-tree/nvim-web-devicons",
-  "JoosepAlviste/nvim-ts-context-commentstring",
+  { "nvim-tree/nvim-web-devicons", lazy = true },
+  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
   {
     "nvim-treesitter/nvim-treesitter",
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = { "TSUpdate", "TSInstall" },
     dependencies = deps.treesitter_with_icons,
     opts = require "config/nvim-treesitter",
   },
   {
     "windwp/nvim-autopairs",
+    event = "InsertEnter",
     dependencies = deps.treesitter,
     opts = require "config/nvim-autopairs",
   },

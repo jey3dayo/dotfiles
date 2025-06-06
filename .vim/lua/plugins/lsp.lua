@@ -1,6 +1,6 @@
 return {
-  { "williamboman/mason.nvim", opts = require "config/mason" },
-  "neovim/nvim-lspconfig",
+  { "williamboman/mason.nvim", cmd = "Mason", opts = require "config/mason" },
+  { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile" } },
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim" },
@@ -10,6 +10,7 @@ return {
   },
   {
     "nvimdev/lspsaga.nvim",
+    event = "LspAttach",
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
@@ -19,6 +20,7 @@ return {
   },
   {
     "creativenull/efmls-configs-nvim",
+    lazy = true,
     dependencies = { "neovim/nvim-lspconfig" },
   },
 }

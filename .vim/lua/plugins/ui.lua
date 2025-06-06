@@ -1,5 +1,5 @@
 return {
-  "nvim-lua/popup.nvim",
+  { "nvim-lua/popup.nvim", lazy = true },
   {
     "nvim-lualine/lualine.nvim",
     config = function()
@@ -8,6 +8,7 @@ return {
   },
   {
     "RRethy/vim-illuminate",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require "config/vim-illuminate"
     end,
@@ -18,9 +19,9 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     opts = require "config/hlchunk",
   },
-  { "lewis6991/gitsigns.nvim", opts = require "config/gitsigns" },
-  { "norcalli/nvim-colorizer.lua", opts = {} },
-  "uga-rosa/ccc.nvim",
+  { "lewis6991/gitsigns.nvim", event = { "BufReadPre", "BufNewFile" }, opts = require "config/gitsigns" },
+  { "norcalli/nvim-colorizer.lua", event = { "BufReadPost", "BufNewFile" }, opts = {} },
+  { "uga-rosa/ccc.nvim", cmd = { "CccPick", "CccConvert", "CccHighlighterToggle" } },
   { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
   {
     "folke/noice.nvim",
