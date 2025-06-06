@@ -1,65 +1,43 @@
-function define_abbrs() {
-  for abbr_def in "$@"; do
-    abbr -a $abbr_def
-  done
-}
-
-# Basic tools
-define_abbrs \
-  "less=less -giMRSW -z-4 -x4" \
-  "where=command -v" \
-  "df=df -h" \
-  "du=du -h" \
-  "tailf=tail -f" \
-  "pk=pkill -9 -f "
-
-# Replacement commands
-define_abbrs \
-  "cat=bat" \
-  "top=btop" \
-  "ls=eza" \
-  "l=eza -la" \
-  "ll=eza -la" \
-  "la=eza -la"
-
-# Misc tricks
-define_abbrs \
-  "path=echo -e \${PATH//:/\\\\n}" \
-  "myip=ip -br -c a" \
-  "ports=lsof -i -P -n | grep LISTEN" \
-  "wifi=networksetup -setairportpower en0"
-
-# Git shortcuts
-define_abbrs \
-  "ga=git add" \
-  "gap=git add -p" \
-  "gst=git status -sb ." \
-  "gc=git commit -m" \
-  "gd=git diff" \
-  "gdc=git diff --cached" \
-  "gd1=git diff HEAD~1" \
-  "gd2=git diff HEAD~2" \
-  "gd3=git diff HEAD~3" \
-  "gb=git branch" \
-  "gco=git checkout" \
-  "gcob=git checkout -b" \
-  "gl=git log --oneline -10" \
-  "gp=git push" \
-  "gpl=git pull"
-
-# Development tools
-define_abbrs \
-  "vim=nvim" \
-  "vi=nvim" \
-  "ag=rg --hidden" \
-  "rg=rg --hidden" \
-  "d=docker" \
-  "dc=docker compose" \
-  "nx=nlx" \
-  "hg=hg --encoding=utf-8" \
-  "typos=typos --config ~/.config/typos.toml ."
-
-# macOS
-define_abbrs \
-  "chrome=/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome" \
-  "flushdns=dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
+abbr "ag"="rg --hidden"
+abbr "cat"="bat"
+abbr "chrome"="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+abbr "d"="docker"
+abbr "dc"="docker compose"
+abbr "df"="df -h"
+abbr "du"="du -h"
+abbr "fdh"="fd --hidden"
+abbr "flushdns"="dscacheutil -flushcache;sudo killall -HUP mDNSResponder"
+abbr "ga"="git add"
+abbr "gap"="git add -p"
+abbr "gb"="git branch"
+abbr "gc"="git commit -m"
+abbr "gco"="git checkout"
+abbr "gcob"="git checkout -b"
+abbr "gd"="git diff"
+abbr "gd1"="git diff HEAD~1"
+abbr "gd2"="git diff HEAD~2"
+abbr "gd3"="git diff HEAD~3"
+abbr "gdc"="git diff --cached"
+abbr "gl"="git log --oneline -10"
+abbr "gp"="git push"
+abbr "gpl"="git pull"
+abbr "gst"="git status -sb ."
+abbr "hg"="hg --encoding=utf-8"
+abbr "l"="eza -la"
+abbr "la"="eza -la"
+abbr "less"="less -giMRSW -z-4 -x4"
+abbr "ll"="eza -la"
+abbr "ls"="eza"
+abbr "myip"="ip -br -c a"
+abbr "nx"="nlx"
+abbr "path"="echo -e \${PATH//:/\\n}"
+abbr "pk"="pkill -9 -f "
+abbr "ports"="lsof -i -P -n | grep LISTEN"
+abbr "rg"="rg --hidden"
+abbr "tailf"="tail -f"
+abbr "top"="btop"
+abbr "typos"="typos --config ~/.config/typos.toml ."
+abbr "vi"="nvim"
+abbr "vim"="nvim"
+abbr "where"="command -v"
+abbr "wifi"="networksetup -setairportpower en0"
