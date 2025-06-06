@@ -1,0 +1,33 @@
+name: Lua Lint and Format
+
+on:
+  push:
+    paths:
+      - '**/*.lua'
+      - '.luacheckrc'
+      - 'stylua.toml'
+      - '.github/workflows/lua.yml'
+  pull_request:
+    paths:
+      - '**/*.lua'
+      - '.luacheckrc'
+      - 'stylua.toml'
+      - '.github/workflows/lua.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y luarocks
+          sudo luarocks install luacheck
+      - name: Run luacheck
+        run: luacheck .
+      - name: Check formatting with Stylua
+        uses: JohnnyMorganz/stylua-action@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --check .
