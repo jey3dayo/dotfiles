@@ -71,8 +71,9 @@ M.get_languages = function()
   }
 
   -- fix stylua
+  local stylua_config = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config"
   local stylua_opts = {
-    formatCommand = "stylua --config-path ~/.config/stylua.toml -",
+    formatCommand = string.format("stylua --config-path %s/stylua.toml -", stylua_config),
     formatStdin = true,
   }
   formatters.stylua = with(formatters.stylua, stylua_opts.stylua_opts)

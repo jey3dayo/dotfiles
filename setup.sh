@@ -2,17 +2,20 @@
 USER=$(id -u)
 DOTFILES=$HOME/src/github.com/jey3dayo/dotfiles
 
-mkdir -p "${HOME}/{tmp,.cache,.config}"
-mkdir -p "${HOME}/.local/share/zsh-autocomplete/"
+# XDG base directories
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+
+mkdir -p "${HOME}/{tmp,.cache}" "${XDG_CONFIG_HOME}"
+mkdir -p "${HOME}/.local/share/zsh-autocomplete/" "${HOME}/.mise"
 chown -R "${USER}" "${HOME}/{tmp,.cache}"
-mkdir -p "${HOME}/.mise"
 
-ln -sf "${DOTFILES}" ~/.config
+# Link dotfiles to the XDG configuration directory
+ln -sfn "${DOTFILES}" "${XDG_CONFIG_HOME}"
 
-echo "source $HOME/.config/nvim/init.vim" >>~/.vimrc
-echo "source-file $HOME/.tmux/main.conf" >>~/.tmux.conf
+echo "source ${XDG_CONFIG_HOME}/nvim/init.vim" >>~/.vimrc
+echo "source-file ${XDG_CONFIG_HOME}/.tmux/main.conf" >>~/.tmux.conf
 
-export ZDOTDIR=~/src/github.com/.config/.zsh
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 echo "source $ZDOTDIR/.zshenv" >>~/.zshenv
 
 git submodule foreach git pull
