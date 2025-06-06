@@ -1,5 +1,16 @@
 local M = {}
 
+-- Global utility functions
+function Safe_require(module)
+  local ok, result = pcall(require, module)
+  if not ok then return nil end
+  return result
+end
+
+autocmd = vim.api.nvim_create_autocmd
+augroup = vim.api.nvim_create_augroup
+user_command = vim.api.nvim_create_user_command
+
 M.find_command = function(paths)
   for _, path in ipairs(paths) do
     local file = io.open(path, "r")

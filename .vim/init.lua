@@ -1,6 +1,6 @@
 if vim.loader then vim.loader.enable() end
 
-require "global_utils"
+require "utils"
 require "lua_rocks"
 require "base"
 require "autocmds"
