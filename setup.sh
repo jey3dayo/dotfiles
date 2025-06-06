@@ -12,6 +12,10 @@ chown -R "${USER}" "${HOME}/{tmp,.cache}"
 # Link dotfiles to the XDG configuration directory
 ln -sfn "${DOTFILES}" "${XDG_CONFIG_HOME}"
 
+# Git configuration
+mkdir -p "${XDG_CONFIG_HOME}/git"
+ln -sfn "${DOTFILES}/git/config" "${XDG_CONFIG_HOME}/git/config"
+
 echo "source ${XDG_CONFIG_HOME}/nvim/init.vim" >>~/.vimrc
 echo "source-file ${XDG_CONFIG_HOME}/.tmux/main.conf" >>~/.tmux.conf
 

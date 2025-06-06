@@ -128,6 +128,7 @@ mise use python@latest
 
 独立した設定ファイルでプライベート設定を管理：
 
+- `git/config` - XDG準拠のGitグローバル設定
 - `git/local.gitconfig` - プライベートなGit設定
 - `zsh/` - Zsh設定（独自管理、CLAUDE.md参照）
 
