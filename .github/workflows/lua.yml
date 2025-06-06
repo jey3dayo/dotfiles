@@ -1,0 +1,44 @@
+name: Lua Lint
+
+on:
+  push:
+    paths:
+      - '**/*.lua'
+      - 'stylua.toml'
+      - '.luacheckrc'
+      - '.github/workflows/lua.yml'
+  pull_request:
+    paths:
+      - '**/*.lua'
+      - 'stylua.toml'
+      - '.luacheckrc'
+      - '.github/workflows/lua.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Lua
+        uses: leafo/gh-actions-lua@v10
+        with:
+          lua-version: 'luajit'
+
+      - name: Install luacheck
+        run: luarocks install --local luacheck
+
+      - name: Install stylua
+        run: |
+          curl -L https://github.com/JohnnyMorganz/StyLua/releases/latest/download/stylua-linux-x86_64.zip -o stylua.zip
+          unzip stylua.zip -d stylua
+          sudo mv stylua/stylua /usr/local/bin/stylua
+
+      - name: Add luarocks bin to PATH
+        run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH
+
+      - name: Run stylua
+        run: stylua --check wezterm .vim
+
+      - name: Run luacheck
+        run: luacheck wezterm .vim
