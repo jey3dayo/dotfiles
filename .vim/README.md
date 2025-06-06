@@ -97,6 +97,56 @@ nvim
 | `lua/lsp/settings/` | 言語サーバー固有の設定 |
 | `lua/config/` | プラグイン個別設定 |
 
+### 🐍 Python Environment Setup
+
+#### Virtual Environment Location
+- **Path**: `/Users/t00114/src/github.com/jey3dayo/dotfiles/.venv`
+- **Python Version**: 3.13.0 (managed by mise)
+
+#### Package Management
+
+##### Activate Virtual Environment
+```bash
+# Navigate to dotfiles root
+cd /Users/t00114/src/github.com/jey3dayo/dotfiles
+
+# Activate virtual environment
+source .venv/bin/activate
+```
+
+##### Update Packages
+```bash
+# Update pip itself
+pip install --upgrade pip
+
+# Update all installed packages
+pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
+
+# Or install specific packages for LSP/tools
+pip install pynvim neovim
+pip install ruff black isort
+pip install pyright
+```
+
+##### Deactivate Environment
+```bash
+deactivate
+```
+
+#### LSP Configuration Notes
+- Pyright configuration: `lua/lsp/settings/pyright.lua`
+- Configuration now matches actual environment path
+- EFM tools configuration: `lua/lsp/efm.lua`
+
+#### Package List Management
+```bash
+# Export current packages
+pip freeze > requirements.txt
+
+# Install from requirements
+pip install -r requirements.txt
+```
+
 ### 🔧 開発者向け情報
 
 詳細な改善計画とリファクタリングタスクについては [CLAUDE.md](./CLAUDE.md) を参照してください。
