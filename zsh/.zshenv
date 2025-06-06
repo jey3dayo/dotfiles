@@ -26,6 +26,7 @@ export HOMEBREW_BUNDLE_FILE_GLOBAL="$XDG_CONFIG_HOME/Brewfile"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
 export BIOME_CONFIG_PATH="$HOME/.config/biome.json"
+export CODEX_CONFIG="$HOME/.config/.codex/config.yaml"
 # export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
 # export SSH_AUTH_SOCK=~/.1password/agent.sock
 
