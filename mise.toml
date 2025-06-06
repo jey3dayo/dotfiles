@@ -1,0 +1,6 @@
+[tools]
+node = "24"
+
+[env]
+_.file = [".env"]
+_.source = [".venv/bin/activate"]
