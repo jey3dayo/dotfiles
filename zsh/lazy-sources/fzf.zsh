@@ -24,8 +24,8 @@ if command -v fzf >/dev/null 2>&1; then
     local config_files=(
       ~/.ssh/config
       ~/.ssh/ssh_config.d/*
-      ~/.config/ssh/ssh_config
-      ~/.config/ssh/ssh_config.d/*
+      ${XDG_CONFIG_HOME:-$HOME/.config}/ssh/ssh_config
+      ${XDG_CONFIG_HOME:-$HOME/.config}/ssh/ssh_config.d/*
     )
 
     for config in $config_files; do
@@ -33,7 +33,7 @@ if command -v fzf >/dev/null 2>&1; then
     done | grep -v \* | awk '{print $2}' | sort -u
   }
 
-  if [[ -f ~/.ssh/config ]] || [[ -d ~/.ssh/ssh_config.d ]] || [[ -f ~/.config/ssh/ssh_config ]]; then
+  if [[ -f ~/.ssh/config ]] || [[ -d ~/.ssh/ssh_config.d ]] || [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/ssh/ssh_config ]]; then
     alias s='ssh $(_ssh_hosts | fzf --prompt "SSH> " --height 40% --reverse)'
   fi
 
