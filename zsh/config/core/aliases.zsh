@@ -1,4 +1,6 @@
 # Core aliases and environment setup
+# Loaded immediately via config loader. Formerly duplicated in
+# lazy-sources/alias.zsh but consolidated here.
 
 case ${OSTYPE} in
   darwin*)

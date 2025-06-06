@@ -43,13 +43,9 @@ zsh/
 │   └── starship.zsh        # Starshipプロンプト初期化
 │
 ├── lazy-sources/           # 遅延読み込み設定ファイル
-│   ├── abbreviations.zsh   # コマンド省略形定義
-│   ├── alias.zsh           # OS固有のエイリアス
+│   ├── arch.zsh            # CPUアーキテクチャ切替エイリアス
 │   ├── fzf.zsh             # fzf統合機能（エイリアス・関数・ウィジェット）
-│   ├── git-commands.zsh    # Git関連のカスタム関数
-│   ├── gh.zsh              # GitHub CLI設定
 │   ├── history-search.zsh  # 履歴検索設定
-│   ├── mise.zsh            # mise (バージョンマネージャー) 設定
 │   ├── orbstack.zsh        # OrbStack設定
 │   ├── pyenv.zsh           # Python環境設定
 │   └── wsl.zsh             # WSL関連設定
@@ -101,10 +97,8 @@ zsh/
 
 ### 5. コマンド省略形 (zsh-abbr)
 
-- **lazy-sources/abbreviations.zsh**: 依存チェック付きコマンド省略形
-- **遅延読み込み**: zsh-abbrプラグイン読み込み後に実行（✅ **タイミング問題修正済み**）
-- 例: `l` → `eza -la`, `vim` → `nvim`, `gc` → `git commit -m`
-- **状況**: ✅ `abbr list`コマンドで正常動作確認済み
+zsh-abbrプラグインで 50+ の省略形を提供しています。プラグイン読み込み後に
+`abbr list` で確認できます。
 
 ### 6. FZF統合（✅ **2024-06-04整理完了**）
 
@@ -116,7 +110,6 @@ zsh/
 ### 7. Git統合（✅ **2024-06-05実装完了**）
 
 - **config/tools/git.zsh**: Git設定・Widget関数・ヘルパー関数
-- **lazy-sources/abbreviations.zsh**: Git abbreviations（ga, gst, gd, gb等）
 - **機能**: Git diff、status、add、branchのWidget関数
 - **キーバインド**: `^g^g` (diff), `^g^s` (status), `^g^a` (add), `^g^b` (branch)
 
