@@ -11,7 +11,12 @@ fi
 
 [[ -x $BREW_PATH/brew ]] && alias brew="arch -arch $ARCH $BREW_PATH/brew"
 
-eval "$($BREW_PATH/brew shellenv)"
+# Defer brew shellenv for faster startup
+if (( $+functions[zsh-defer] )); then
+  zsh-defer eval "$($BREW_PATH/brew shellenv)"
+else
+  eval "$($BREW_PATH/brew shellenv)"
+fi
 
 if [ -f $BREW_PATH/etc/brew-wrap ];then
   source $BREW_PATH/etc/brew-wrap
