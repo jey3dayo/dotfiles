@@ -7,22 +7,27 @@ fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] 
 exec = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
 exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" &> /dev/null) \n{% endfor %}"
 
+# Priority 1: Essential startup components (immediate load)
 [plugins.zsh-defer]
 github = "romkatv/zsh-defer"
 apply = ["source"]
 
-[plugins.functions]
-github = "ohmyzsh/ohmyzsh"
-dir = 'lib'
-apply = ["defer"]
-
+# Priority 2: Core functionality (minimal defer)
 [plugins.clipboard]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'lib'
+apply = ["defer"]
 
 [plugins.sudo]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
+apply = ["defer"]
+
+# Priority 3: Enhanced functionality (standard defer)
+[plugins.functions]
+github = "ohmyzsh/ohmyzsh"
+dir = 'lib'
+apply = ["defer"]
 
 [plugins.zoxide]
 github = 'ohmyzsh/ohmyzsh'
@@ -33,29 +38,33 @@ apply = ["defer"]
 github = 'olets/zsh-abbr'
 apply = ["defer"]
 
-[plugins.command-not-found]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'plugins'
-
-[plugins.zsh-completions]
-github = "zsh-users/zsh-completions"
-use = ["src"]
-apply = ["defer", "fpath-src"]
-
-[plugins.zsh-autosuggestions]
-github = "zsh-users/zsh-autosuggestions"
-apply = ["defer"]
-
-[plugins.fast-syntax-highlighting]
-github = "zdharma-continuum/fast-syntax-highlighting"
-apply = ["defer"]
-
+# Priority 4: FZF ecosystem (critical path optimization)
 [plugins.fzf]
 github = "junegunn/fzf"
 apply = ['fzf-install', 'source']
 
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
+apply = ["defer"]
+
+# Priority 5: Completion system (grouped for efficiency)
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+use = ["src"]
+apply = ["defer", "fpath-src"]
+
+[plugins.command-not-found]
+github = 'ohmyzsh/ohmyzsh'
+dir = 'plugins'
+apply = ["defer"]
+
+# Priority 6: UI enhancements (lower priority defer)
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+apply = ["defer"]
+
+[plugins.fast-syntax-highlighting]
+github = "zdharma-continuum/fast-syntax-highlighting"
 apply = ["defer"]
 
 [plugins.zoxide.hooks]
