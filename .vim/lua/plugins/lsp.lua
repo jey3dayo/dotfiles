@@ -3,6 +3,7 @@ return {
   { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile" } },
   {
     "williamboman/mason-lspconfig.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = { "williamboman/mason.nvim" },
     config = function()
       require "config/mason-lspconfig"
@@ -20,7 +21,7 @@ return {
   },
   {
     "creativenull/efmls-configs-nvim",
-    lazy = true,
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = { "neovim/nvim-lspconfig" },
   },
 }
