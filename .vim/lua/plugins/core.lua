@@ -1,6 +1,6 @@
 return {
-  "nvim-lua/plenary.nvim",
-  "kkharji/sqlite.lua",
+  { "nvim-lua/plenary.nvim", lazy = true },
+  { "kkharji/sqlite.lua", lazy = true },
   {
     "tpope/vim-repeat",
     event = "VeryLazy",

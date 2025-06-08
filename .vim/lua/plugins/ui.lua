@@ -2,6 +2,7 @@ return {
   { "nvim-lua/popup.nvim", lazy = true },
   {
     "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
     config = function()
       require "config/lualine"
     end,
@@ -22,12 +23,12 @@ return {
   { "lewis6991/gitsigns.nvim", event = { "BufReadPre", "BufNewFile" }, opts = require "config/gitsigns" },
   { "norcalli/nvim-colorizer.lua", event = { "BufReadPost", "BufNewFile" }, opts = {} },
   { "uga-rosa/ccc.nvim", cmd = { "CccPick", "CccConvert", "CccHighlighterToggle" } },
-  { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
+  { "j-hui/fidget.nvim", event = "LspAttach", tag = "legacy", opts = {} },
   {
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = require "config/noice",
     dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
   },
-  { "stevearc/dressing.nvim", opts = {} },
+  { "stevearc/dressing.nvim", event = "VeryLazy", opts = {} },
 }
