@@ -71,6 +71,7 @@ iterm2/
 .yarnclean
 yarn/
 .direnv/
+.venv
 composer/
 configstore/
 fish/
