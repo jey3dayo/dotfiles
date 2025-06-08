@@ -42,7 +42,6 @@ autocmd("ColorScheme", {
 -- 競合するLSPがある場合、client.stop()をかける
 -- ts_lsとbiomeが競合するので、ts_lsを止める等
 local lsp_augroup = augroup("LspFormatting", { clear = true })
-local client_manager = require "lsp/client_manager"
 
 autocmd("LspAttach", {
   group = lsp_augroup,
@@ -55,6 +54,9 @@ autocmd("LspAttach", {
 
     if not client then return end
 
+    -- Lazy load client manager when actually needed
+    local client_manager = require "lsp/client_manager"
+
     -- 既に処理済みのチェック
     if client_manager.is_client_processed(args.data.client_id, bufnr) then return end
     client_manager.mark_client_processed(args.data.client_id, bufnr)
@@ -65,6 +67,7 @@ autocmd("LspAttach", {
       return
     end
 
+    -- Lazy load LSP modules when LSP actually attaches
     require("lsp/keymaps").setup(bufnr, client)
     require("lsp/formatter").setup(bufnr, client, args)
     require("lsp/highlight").setup(client)
