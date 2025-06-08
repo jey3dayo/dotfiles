@@ -20,6 +20,7 @@ end
 
 local function setup_file_browser(opts)
   opts = opts or {}
+  ensure_extension_loaded("file_browser")
   telescope.extensions.file_browser.file_browser(with({
     hidden = true,
     grouped = true,
@@ -110,32 +111,46 @@ telescope.setup {
     },
   },
 }
-telescope.load_extension "file_browser"
-telescope.load_extension "undo"
+-- Extensions will be loaded automatically when plugins are lazy-loaded
+-- Only load notify extension immediately as it doesn't have specific triggers
 telescope.load_extension "notify"
-telescope.load_extension "frecency"
-telescope.load_extension "neoclip"
+
+-- Helper function to ensure extension is loaded
+local function ensure_extension_loaded(extension_name)
+  if not telescope.extensions[extension_name] then
+    telescope.load_extension(extension_name)
+  end
+end
 
 -- keymaps
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
 Keymap("<Leader>b", builtin.buffers, { desc = "buffers" })
 Keymap("<Leader>d", builtin.diagnostics, { desc = "Find by Diagnostics" })
-Keymap("<Leader>u", telescope.extensions.undo.undo, { desc = "Find by Undo" })
+Keymap("<Leader>u", function()
+  ensure_extension_loaded("undo")
+  telescope.extensions.undo.undo()
+end, { desc = "Find by Undo" })
 Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 
 -- extensions
-Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
+Keymap("<Leader>Y", function()
+  ensure_extension_loaded("neoclip")
+  telescope.extensions.neoclip.default()
+end, { desc = "Find by Yank" })
 Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify" })
 
 Keymap("<Leader>f", function()
+  ensure_extension_loaded("frecency")
   telescope.extensions.frecency.frecency { workspace = "CWD" }
 end, { desc = "Find CWD by frecency" })
 
 Keymap("<A-p>", function()
+  ensure_extension_loaded("frecency")
   telescope.extensions.frecency.frecency { workspace = "CWD" }
 end, { desc = "Find CWD by frecency" })
 
 Keymap("<Leader>F", function()
+  ensure_extension_loaded("frecency")
   telescope.extensions.frecency.frecency {}
 end, { desc = "Find by frecency" })
 
