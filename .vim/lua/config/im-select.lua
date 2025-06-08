@@ -1,4 +1,4 @@
-local utils = Safe_require("utils")
+local utils = require("core.utils")
 if not utils then
   return {}
 end

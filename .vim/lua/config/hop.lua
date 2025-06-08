@@ -1,5 +1,6 @@
-local hop = Safe_require("hop")
-local hop_hint = Safe_require("hop.hint")
+local utils = require("core.utils")
+local hop = utils.safe_require("hop")
+local hop_hint = utils.safe_require("hop.hint")
 
 if not (hop and hop_hint) then
   return

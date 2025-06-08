@@ -1,4 +1,5 @@
-local rainbow_delimiters = Safe_require("rainbow-delimiters.setup")
+local utils = require("core.utils")
+local rainbow_delimiters = utils.safe_require("rainbow-delimiters.setup")
 if not rainbow_delimiters then
   return
 end

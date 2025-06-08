@@ -1,4 +1,5 @@
-local lualine = Safe_require("lualine")
+local utils = require("core.utils")
+local lualine = utils.safe_require("lualine")
 
 if not lualine then
   return

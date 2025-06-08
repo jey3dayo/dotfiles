@@ -1,9 +1,10 @@
-local telescope = Safe_require("telescope")
+local utils = require("core.utils")
+local telescope = utils.safe_require("telescope")
 if not telescope then
   return
 end
 
-local with = require("utils").with
+local with = utils.with
 local actions = require("telescope.actions")
 local builtin = require("telescope.builtin")
 
@@ -158,7 +159,7 @@ end, { desc = "Find by frecency" })
 
 Keymap("<Leader>G", builtin.git_status, { desc = "Find by Git Status" })
 Keymap("<Leader>e", function()
-  local git_dir = require("utils").get_git_dir()
+  local git_dir = utils.get_git_dir()
   setup_file_browser({
     path = git_dir ~= "" and git_dir or "%:p:h",
     cwd = git_dir ~= "" and git_dir or telescope_buffer_dir(),

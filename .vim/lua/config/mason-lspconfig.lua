@@ -1,7 +1,8 @@
-local mason_lspconfig = Safe_require("mason-lspconfig")
-local lspconfig = Safe_require("lspconfig")
+local utils = require("core.utils")
+local mason_lspconfig = utils.safe_require("mason-lspconfig")
+local lspconfig = utils.safe_require("lspconfig")
 
-local with = require("utils").with
+local with = utils.with
 local on_attach = function() end
 local languages = require("lsp.efm").get_languages()
 local capabilities = require("lsp.capabilities").setup()
@@ -14,7 +15,7 @@ end
 local disabled_servers = {}
 
 for _, server in ipairs(config.enabled_servers) do
-  local extends = Safe_require("lsp.settings." .. server)
+  local extends = utils.safe_require("lsp.settings." .. server)
   if extends and type(extends) == "table" and extends.autostart == false then
     table.insert(disabled_servers, server)
   else

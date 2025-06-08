@@ -1,7 +1,7 @@
 local M = {}
 
--- Global utility functions
-function Safe_require(module)
+-- Safe require function
+function M.safe_require(module)
   local ok, result = pcall(require, module)
   if not ok then
     return nil
@@ -9,11 +9,13 @@ function Safe_require(module)
   return result
 end
 
-autocmd = vim.api.nvim_create_autocmd
-augroup = vim.api.nvim_create_augroup
-user_command = vim.api.nvim_create_user_command
+-- Vim API shortcuts (local to avoid globals)
+M.autocmd = vim.api.nvim_create_autocmd
+M.augroup = vim.api.nvim_create_augroup
+M.user_command = vim.api.nvim_create_user_command
 
-M.find_command = function(paths)
+-- File system utilities
+function M.find_command(paths)
   for _, path in ipairs(paths) do
     local file = io.open(path, "r")
     if file then
@@ -24,24 +26,30 @@ M.find_command = function(paths)
   return nil
 end
 
-M.extend = function(tab1, tab2)
+function M.check_file_exists(filename)
+  return vim.fn.findfile(filename, ".;") ~= ""
+end
+
+function M.has_config_files(config_files)
+  for _, file in ipairs(config_files) do
+    if M.check_file_exists(file) then
+      return true
+    end
+  end
+  return false
+end
+
+-- Table utilities
+function M.extend(tab1, tab2)
   for _, value in ipairs(tab2 or {}) do
     table.insert(tab1, value)
   end
   return tab1
 end
 
-M.get_git_dir = function()
-  local git_dir = vim.fn.finddir(".git", vim.fn.expand("%:p:h") .. ";")
-  if git_dir ~= "" then
-    git_dir = vim.fn.fnamemodify(git_dir, ":h")
-  end
-  return git_dir
-end
-
 ---@param base table 基本となるテーブル
 ---@param ... table 拡張するテーブル
-M.with = function(base, ...)
+function M.with(base, ...)
   local result = vim.deepcopy(base)
   local tables = { ... }
 
@@ -54,6 +62,16 @@ M.with = function(base, ...)
   return result
 end
 
+-- Git utilities
+function M.get_git_dir()
+  local git_dir = vim.fn.finddir(".git", vim.fn.expand("%:p:h") .. ";")
+  if git_dir ~= "" then
+    git_dir = vim.fn.fnamemodify(git_dir, ":h")
+  end
+  return git_dir
+end
+
+-- Debug utilities
 local function table_to_string(tbl, indent)
   if not indent then
     indent = 0
@@ -83,12 +101,13 @@ end
 
 M.table_to_string = table_to_string
 
-M.print_map = function(tab)
+function M.print_map(tab)
   print(table_to_string(tab))
 end
 
+-- OS detection
 ---@return "windows"|"wsl"|"mac"|"linux"|"unknown"
-M.get_os = function()
+function M.get_os()
   if os.getenv("WSLENV") then
     return "wsl"
   elseif vim.fn.has("mac") == 1 then
@@ -99,20 +118,6 @@ M.get_os = function()
     return "linux"
   end
   return "unknown"
-end
-
-M.check_file_exists = function(filename)
-  return vim.fn.findfile(filename, ".;") ~= ""
-end
-
-M.has_config_files = function(config_files)
-  for _, file in ipairs(config_files) do
-    if M.check_file_exists(file) then
-      return true
-    end
-  end
-
-  return false
 end
 
 return M

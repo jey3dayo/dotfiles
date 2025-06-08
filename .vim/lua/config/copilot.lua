@@ -1,7 +1,8 @@
-local copilot = Safe_require("copilot")
-local copilot_cmp = Safe_require("copilot_cmp")
-local copilot_chat = Safe_require("CopilotChat")
-local select = Safe_require("CopilotChat.select")
+local utils = require("core.utils")
+local copilot = utils.safe_require("copilot")
+local copilot_cmp = utils.safe_require("copilot_cmp")
+local copilot_chat = utils.safe_require("CopilotChat")
+local select = utils.safe_require("CopilotChat.select")
 
 if not (copilot and copilot_cmp and copilot_chat) then
   return
@@ -10,7 +11,7 @@ end
 copilot.setup({
   suggestion = { enabled = false },
   panel = { enabled = false },
-  copilot_node_command = require("utils").find_command({
+  copilot_node_command = utils.find_command({
     os.getenv("HOME") .. "/.mise/shims/node",
     "/usr/local/bin/node",
   }),

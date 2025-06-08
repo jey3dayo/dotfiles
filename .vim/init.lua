@@ -3,7 +3,7 @@ if vim.loader then
 end
 
 -- Core modules that need to load early
-require("utils")
+require("core.utils")
 require("base")
 require("options")
 require("keymaps")

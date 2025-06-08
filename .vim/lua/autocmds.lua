@@ -1,18 +1,19 @@
+local utils = require("core.utils")
 local M = {}
 
 local clear_autocmds = vim.api.nvim_clear_autocmds
 M.clear_autocmds = clear_autocmds
 
-autocmd("BufWritePre", { pattern = "*", command = 'let v:swapchoice = "o"' })
+utils.autocmd("BufWritePre", { pattern = "*", command = 'let v:swapchoice = "o"' })
 
 -- Remove whitespace on save
-autocmd("BufWritePre", { pattern = "*", command = ":%s/\\s\\+$//e" })
+utils.autocmd("BufWritePre", { pattern = "*", command = ":%s/\\s\\+$//e" })
 
 -- Don't auto commenting new lines
-autocmd("BufEnter", { pattern = "*", command = "set fo-=c fo-=r fo-=o" })
+utils.autocmd("BufEnter", { pattern = "*", command = "set fo-=c fo-=r fo-=o" })
 
 -- Restore cursor location when file is opened
-autocmd({ "BufReadPost" }, {
+utils.autocmd({ "BufReadPost" }, {
   pattern = { "*" },
   callback = function()
     vim.cmd('silent! normal! g`"zv')
@@ -20,7 +21,7 @@ autocmd({ "BufReadPost" }, {
 })
 
 -- make bg transparent
-autocmd("ColorScheme", {
+utils.autocmd("ColorScheme", {
   pattern = "*",
   callback = function()
     local hl_groups = {
@@ -41,9 +42,9 @@ autocmd("ColorScheme", {
 
 -- 競合するLSPがある場合、client.stop()をかける
 -- ts_lsとbiomeが競合するので、ts_lsを止める等
-local lsp_augroup = augroup("LspFormatting", { clear = true })
+local lsp_augroup = utils.augroup("LspFormatting", { clear = true })
 
-autocmd("LspAttach", {
+utils.autocmd("LspAttach", {
   group = lsp_augroup,
   callback = function(args)
     vim.bo[args.buf].omnifunc = "v:lua.vim.lsp.omnifunc"

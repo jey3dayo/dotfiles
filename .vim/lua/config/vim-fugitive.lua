@@ -1,4 +1,5 @@
-local gitlinker = Safe_require("gitlinker")
+local utils = require("core.utils")
+local gitlinker = utils.safe_require("gitlinker")
 if not gitlinker then
   return
 end

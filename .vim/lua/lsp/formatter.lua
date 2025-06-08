@@ -1,4 +1,5 @@
-local with = require("utils").with
+local utils = require("core.utils")
+local with = utils.with
 local config = require("lsp.config")
 
 local M = {}
@@ -32,14 +33,14 @@ M.setup = function(bufnr, client, args)
     return
   end
 
-  autocmd("BufWritePre", {
+  utils.autocmd("BufWritePre", {
     buffer = bufnr,
     callback = function()
       create_format_command(bufnr, client)
     end,
   })
 
-  vim.api.nvim_create_user_command("Format", function()
+  utils.user_command("Format", function()
     local current_client = vim.lsp.get_client_by_id(args.data.client_id)
     if not current_client then
       vim.notify(args.data.client_id .. " not found", vim.log.levels.WARN)

@@ -1,4 +1,4 @@
-local ft = require("utils/filetypes")
+local ft = require("core.filetypes")
 local lsp_utils = require("lsp.utils")
 local lsp_config = require("lsp.config")
 local config_files = lsp_config.formatters.tailwindcss.config_files

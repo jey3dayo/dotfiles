@@ -1,6 +1,6 @@
-local utils = require("utils")
-local with = require("utils").with
-local extend = require("utils").extend
+local utils = require("core.utils")
+local with = utils.with
+local extend = utils.extend
 local formatter_settings = require("lsp.config").formatters
 
 local M = {}

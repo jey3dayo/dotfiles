@@ -20,48 +20,52 @@ M.LSP = {
   FORMAT_TIMEOUT = 5000,
 }
 
-M.installed_servers = {
-  "astro",
-  "bashls",
-  "cssls",
-  "dockerls",
-  "efm",
-  "jsonls",
-  "lua_ls",
-  "prismals",
-  "pylsp",
-  "ruff",
-  "tailwindcss",
-  "taplo",
-  "ts_ls",
-  "eslint",
-  "typos_lsp",
-  "vimls",
-  -- "yamlls",
-  "terraformls",
+M.servers = {
+  astro = { installed = true, enabled = true },
+  bashls = { installed = true, enabled = true },
+  cssls = { installed = true, enabled = true },
+  dockerls = { installed = true, enabled = true },
+  efm = { installed = true, enabled = true },
+  jsonls = { installed = true, enabled = true },
+  lua_ls = { installed = true, enabled = true },
+  prismals = { installed = true, enabled = true },
+  pylsp = { installed = true, enabled = true },
+  ruff = { installed = true, enabled = true },
+  tailwindcss = { installed = true, enabled = true },
+  taplo = { installed = true, enabled = true },
+  ts_ls = { installed = true, enabled = true },
+  ["typescript-tools"] = { installed = false, enabled = true },
+  eslint = { installed = true, enabled = true },
+  typos_lsp = { installed = true, enabled = true },
+  vimls = { installed = true, enabled = true },
+  yamlls = { installed = false, enabled = true },
+  terraformls = { installed = true, enabled = true },
 }
 
-M.enabled_servers = {
-  "astro",
-  "bashls",
-  "cssls",
-  "dockerls",
-  "efm",
-  "jsonls",
-  "lua_ls",
-  "prismals",
-  "pylsp",
-  "ruff",
-  "tailwindcss",
-  "taplo",
-  "ts_ls",
-  "typescript-tools",
-  "eslint",
-  "typos_lsp",
-  "vimls",
-  "yamlls",
-  "terraformls",
-}
+-- Helper functions for backward compatibility
+function M.get_installed_servers()
+  local servers = {}
+  for name, config in pairs(M.servers) do
+    if config.installed then
+      table.insert(servers, name)
+    end
+  end
+  return servers
+end
+
+function M.get_enabled_servers()
+  local servers = {}
+  for name, config in pairs(M.servers) do
+    if config.enabled then
+      table.insert(servers, name)
+    end
+  end
+  return servers
+end
+
+-- Backward compatibility aliases
+M.installed_servers = M.get_installed_servers()
+M.enabled_servers = M.get_enabled_servers()
 
 M.installed_tree_sitter = {
   "astro",
@@ -165,16 +169,22 @@ M.formatters = {
   },
 }
 
-local function generate_config_files()
-  local files = { ".git/" }
-  for _, formatter in pairs(M.formatters) do
-    if formatter.config_files then
-      vim.list_extend(files, formatter.config_files)
+-- Memoized config file generation
+local _config_files_cache = nil
+function M.get_config_files()
+  if not _config_files_cache then
+    local files = { ".git/" }
+    for _, formatter in pairs(M.formatters) do
+      if formatter.config_files then
+        vim.list_extend(files, formatter.config_files)
+      end
     end
+    _config_files_cache = files
   end
-  return files
+  return _config_files_cache
 end
 
-M.config_files = generate_config_files()
+-- Backward compatibility
+M.config_files = M.get_config_files()
 
 return M

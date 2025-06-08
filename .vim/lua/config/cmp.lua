@@ -1,8 +1,9 @@
-local cmp = Safe_require("cmp")
-local lspkind = Safe_require("lspkind")
-local cmp_autopairs = Safe_require("nvim-autopairs.completion.cmp")
-local cmp_handlers = Safe_require("nvim-autopairs.completion.handlers")
-local colorizer_cmp = Safe_require("tailwindcss-colorizer-cmp")
+local utils = require("core.utils")
+local cmp = utils.safe_require("cmp")
+local lspkind = utils.safe_require("lspkind")
+local cmp_autopairs = utils.safe_require("nvim-autopairs.completion.cmp")
+local cmp_handlers = utils.safe_require("nvim-autopairs.completion.handlers")
+local colorizer_cmp = utils.safe_require("tailwindcss-colorizer-cmp")
 
 if not (cmp and lspkind and cmp_autopairs and cmp_handlers and colorizer_cmp) then
   return

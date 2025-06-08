@@ -1,4 +1,4 @@
-local deps = require("utils/dependencies")
+local deps = require("core.dependencies")
 
 return {
   { "nvim-tree/nvim-web-devicons", lazy = true },

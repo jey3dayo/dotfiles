@@ -1,4 +1,5 @@
-local illuminate = Safe_require("illuminate")
+local utils = require("core.utils")
+local illuminate = utils.safe_require("illuminate")
 if not illuminate then
   return
 end

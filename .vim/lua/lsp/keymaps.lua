@@ -1,4 +1,5 @@
-local with = require("utils").with
+local utils = require("core.utils")
+local with = utils.with
 local config = require("lsp.config")
 local client_manager = require("lsp.client_manager")
 

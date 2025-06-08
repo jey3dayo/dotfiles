@@ -1,4 +1,5 @@
 -- 自動フォーマットの状態を管理するグローバル変数
+local utils = require("core.utils")
 local config = require("lsp.config")
 
 vim.g[config.format.state.global] = false
@@ -17,7 +18,7 @@ local function set_autoformat_state(scope, state)
 end
 
 -- 自動フォーマットを無効化するコマンドを登録
-user_command("AutoFormatDisable", function(args)
+utils.user_command("AutoFormatDisable", function(args)
   local scope = args.bang and "buffer" or "global"
   set_autoformat_state(scope, true)
 end, {
@@ -26,7 +27,7 @@ end, {
 })
 
 -- 自動フォーマットを有効化するコマンドを登録
-user_command("AutoFormatEnable", function()
+utils.user_command("AutoFormatEnable", function()
   set_autoformat_state("buffer", false)
   set_autoformat_state("global", false)
 end, {

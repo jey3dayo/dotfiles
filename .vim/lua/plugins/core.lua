@@ -1,4 +1,4 @@
-local deps = require("utils/dependencies")
+local deps = require("core.dependencies")
 
 return {
   { "nvim-lua/plenary.nvim", lazy = true },
