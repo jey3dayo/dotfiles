@@ -16,10 +16,11 @@ return {
     dependencies = deps.treesitter,
     opts = require "config/nvim-autopairs",
   },
-  { "andymass/vim-matchup", dependencies = dependencies },
-  { "nvim-treesitter/nvim-tree-docs", dependencies = dependencies },
+  { "andymass/vim-matchup", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
+  { "nvim-treesitter/nvim-tree-docs", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
   {
     "HiPhish/rainbow-delimiters.nvim",
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = deps.treesitter,
     config = function()
       require "config/rainbow-delimiters"
