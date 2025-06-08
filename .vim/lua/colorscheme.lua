@@ -1,21 +1,32 @@
-vim.cmd [[
-try
-  colorscheme kanagawa
+-- Load colorscheme with lazy loading
+local function load_colorscheme()
+  pcall(function()
+    -- Ensure kanagawa plugin is loaded
+    require("lazy").load({ plugins = { "kanagawa.nvim" } })
+    vim.cmd("colorscheme kanagawa")
+    
+    -- Apply custom highlights
+    local highlights = {
+      "Normal ctermbg=NONE guibg=NONE",
+      "NonText ctermbg=NONE guibg=NONE", 
+      "SpecialKey ctermbg=NONE guibg=NONE",
+      "EndOfBuffer ctermbg=NONE guibg=NONE",
+      "SignColumn ctermbg=NONE guibg=NONE",
+      "NormalNC ctermbg=NONE guibg=NONE",
+      "TelescopeBorder ctermbg=NONE guibg=NONE",
+      "NvimTreeNormal ctermbg=NONE guibg=NONE",
+      "MsgArea ctermbg=NONE guibg=NONE",
+    }
+    
+    for _, hl in ipairs(highlights) do
+      vim.cmd("highlight " .. hl)
+    end
+  end)
+end
 
-  highlight Normal ctermbg=NONE guibg=NONE
-  highlight NonText ctermbg=NONE guibg=NONE
-  highlight SpecialKey ctermbg=NONE guibg=NONE
-  highlight EndOfBuffer ctermbg=NONE guibg=NONE
-
-  " custom
-  highlight SignColumn ctermbg=NONE guibg=NONE
-  highlight NormalNC ctermbg=NONE guibg=NONE
-  highlight TelescopeBorder ctermbg=NONE guibg=NONE
-  highlight NvimTreeNormal ctermbg=NONE guibg=NONE
-  highlight MsgArea ctermbg=NONE guibg=NONE
-
-catch /^Vim\%((\a\+)\)\=:E185/
-  colorscheme default
-  set background=dark
-endtry
-]]
+-- Try to load kanagawa, fallback to default if not available
+local ok = pcall(load_colorscheme)
+if not ok then
+  vim.cmd("colorscheme default")
+  vim.cmd("set background=dark")
+end
