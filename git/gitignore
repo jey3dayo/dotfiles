@@ -48,6 +48,7 @@ Session.vim
 <Plug>*
 projects-config/*
 !projects-config/.gitkeep
+nvim_startup.log
 
 ## Zsh
 zsh/.zsh_sessions/
