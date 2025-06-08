@@ -2,6 +2,7 @@
   path = ~/.config/git/diff.gitconfig
   path = ~/.config/git/ghq.gitconfig
   path = ~/.config/git/alias.gitconfig
+  path = ~/.config/git/local.gitconfig
 
 [core]
   excludesfile = ~/.config/git/gitignore

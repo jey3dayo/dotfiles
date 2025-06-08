@@ -58,6 +58,9 @@ zsh/.zinit/
 zsh/.zcompdump*
 zsh/.zcompcache/
 
+## Git
+git/local.gitconfig
+
 # Tools and Applications
 .vimperator/info/
 tmux/plugins/
