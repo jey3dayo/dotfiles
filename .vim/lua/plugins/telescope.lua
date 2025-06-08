@@ -1,4 +1,4 @@
-local deps = require "utils/dependencies"
+local deps = require("utils/dependencies")
 
 return {
   {
@@ -12,7 +12,7 @@ return {
     },
     dependencies = deps.plenary,
     config = function()
-      require "config/telescope"
+      require("config/telescope")
     end,
   },
   {
@@ -32,7 +32,7 @@ return {
     "AckslD/nvim-neoclip.lua",
     keys = { "<Leader>Y" },
     dependencies = { "nvim-telescope/telescope.nvim", "kkharji/sqlite.lua" },
-    opts = require "config/neoclip",
+    opts = require("config/neoclip"),
   },
   {
     "debugloop/telescope-undo.nvim",

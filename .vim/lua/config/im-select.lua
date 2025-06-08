@@ -1,5 +1,10 @@
-local get_os = require("utils").get_os
-local with = require("utils").with
+local utils = Safe_require("utils")
+if not utils then
+  return {}
+end
+
+local get_os = utils.get_os
+local with = utils.with
 
 local base_config = {
   set_default_events = { "VimEnter", "InsertLeave", "CmdlineLeave" },

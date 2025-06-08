@@ -3,5 +3,5 @@ return {
   { "rebelot/kanagawa.nvim", lazy = true },
   { "joshdick/onedark.vim", lazy = true },
   { "cocopon/iceberg.vim", lazy = true },
-  { "folke/tokyonight.nvim", lazy = true, opts = require "config/tokyonight" },
+  { "folke/tokyonight.nvim", lazy = true, opts = require("config/tokyonight") },
 }

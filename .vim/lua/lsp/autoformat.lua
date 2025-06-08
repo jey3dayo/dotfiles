@@ -1,11 +1,13 @@
 -- 自動フォーマットの状態を管理するグローバル変数
-local config = require "lsp.config"
+local config = require("lsp.config")
 
 vim.g[config.format.state.global] = false
 
 -- 自動フォーマットの状態を設定する関数
 local function set_autoformat_state(scope, state)
-  if type(state) ~= "boolean" then return end
+  if type(state) ~= "boolean" then
+    return
+  end
 
   if scope == "buffer" then
     vim.b[config.format.state.global] = state

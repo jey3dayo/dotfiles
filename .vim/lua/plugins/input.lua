@@ -3,13 +3,13 @@ return {
     "numToStr/Comment.nvim",
     keys = { "gc", "gb", { "gc", mode = "v" }, { "gb", mode = "v" } },
     dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
-    opts = require "config/comment",
+    opts = require("config/comment"),
   },
   {
     "nishigori/increment-activator",
     keys = { "<C-a>", "<C-x>" },
     config = function()
-      require "config/increment-activator-config"
+      require("config/increment-activator-config")
     end,
   },
   {
@@ -22,7 +22,7 @@ return {
     "keaising/im-select.nvim",
     event = "InsertEnter",
     config = function()
-      require "config/im-select"
+      require("config/im-select")
     end,
   },
   {
@@ -77,6 +77,6 @@ return {
     "Wansmer/treesj",
     keys = { "<space>m", "<space>j", "<space>s" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = require "config/treesj",
+    opts = require("config/treesj"),
   },
 }

@@ -1,4 +1,5 @@
-local ft = require "utils/filetypes"
+local ft = require("utils/filetypes")
+local deps = require("utils/dependencies")
 
 return {
   { "editorconfig/editorconfig-vim", event = { "BufReadPre", "BufNewFile" } },
@@ -25,7 +26,7 @@ return {
   {
     "pmizio/typescript-tools.nvim",
     ft = ft.ecma_scripts,
-    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    dependencies = vim.list_extend(deps.plenary, deps.lspconfig),
     opts = {},
   },
 }

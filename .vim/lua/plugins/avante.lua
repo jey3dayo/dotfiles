@@ -1,3 +1,5 @@
+local deps = require("utils/dependencies")
+
 return {
   {
     "yetone/avante.nvim",
@@ -49,47 +51,45 @@ return {
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = "make",
     -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "stevearc/dressing.nvim",
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-      --- The below dependencies are optional,
-      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
-      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      {
-        -- support for image pasting
-        "HakonHarnes/img-clip.nvim",
-        event = "VeryLazy",
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
+    dependencies = vim.list_extend(
+      vim.list_extend(vim.list_extend(deps.treesitter, deps.dressing), vim.list_extend(deps.plenary, deps.nui)),
+      vim.list_extend(
+        vim.list_extend(deps.telescope, deps.cmp),
+        vim.list_extend(deps.web_devicons, {
+          {
+            -- support for image pasting
+            "HakonHarnes/img-clip.nvim",
+            event = "VeryLazy",
+            opts = {
+              -- recommended settings
+              default = {
+                embed_image_as_base64 = false,
+                prompt_for_file_name = false,
+                drag_and_drop = {
+                  insert_mode = true,
+                },
+                -- required for Windows users
+                use_absolute_path = true,
+              },
             },
-            -- required for Windows users
-            use_absolute_path = true,
           },
-        },
-      },
-      {
-        "MeanderingProgrammer/render-markdown.nvim",
-        opts = {
-          file_types = { "markdown", "Avante" },
-          latex = {
-            enabled = true,
+          {
+            "MeanderingProgrammer/render-markdown.nvim",
+            opts = {
+              file_types = { "markdown", "Avante" },
+              latex = {
+                enabled = true,
+              },
+              html = {
+                enabled = true,
+              },
+              render_modes = { "n", "c", "t" },
+              preset = "obsidian",
+            },
+            ft = { "markdown", "Avante" },
           },
-          html = {
-            enabled = true,
-          },
-          render_modes = { "n", "c", "t" },
-          preset = "obsidian",
-        },
-        ft = { "markdown", "Avante" },
-      },
-    },
+        })
+      )
+    ),
   },
 }

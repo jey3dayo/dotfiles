@@ -1,6 +1,6 @@
 local function get_pre_hook()
-  local ok, ts_context = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
-  if ok then
+  local ts_context = Safe_require("ts_context_commentstring.integrations.comment_nvim")
+  if ts_context then
     return ts_context.create_pre_hook()
   end
   return nil

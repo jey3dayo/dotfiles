@@ -168,7 +168,9 @@ M.formatters = {
 local function generate_config_files()
   local files = { ".git/" }
   for _, formatter in pairs(M.formatters) do
-    if formatter.config_files then vim.list_extend(files, formatter.config_files) end
+    if formatter.config_files then
+      vim.list_extend(files, formatter.config_files)
+    end
   end
   return files
 end

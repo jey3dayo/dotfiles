@@ -1,13 +1,15 @@
-local mason_lspconfig = Safe_require "mason-lspconfig"
-local lspconfig = Safe_require "lspconfig"
+local mason_lspconfig = Safe_require("mason-lspconfig")
+local lspconfig = Safe_require("lspconfig")
 
 local with = require("utils").with
 local on_attach = function() end
 local languages = require("lsp.efm").get_languages()
 local capabilities = require("lsp.capabilities").setup()
-local config = require "lsp.config"
+local config = require("lsp.config")
 
-if not (mason_lspconfig and lspconfig) then return end
+if not (mason_lspconfig and lspconfig) then
+  return
+end
 
 local disabled_servers = {}
 
@@ -21,15 +23,15 @@ for _, server in ipairs(config.enabled_servers) do
   end
 end
 
-mason_lspconfig.setup {
+mason_lspconfig.setup({
   ensure_installed = config.installed_servers,
   automatic_installation = true,
   automatic_enable = {
     exclude = disabled_servers,
   },
-}
+})
 
-lspconfig.efm.setup {
+lspconfig.efm.setup({
   filetypes = vim.tbl_keys(languages),
   settings = {
     rootMarkers = config.config_files,
@@ -38,4 +40,4 @@ lspconfig.efm.setup {
   init_options = { documentFormatting = true, documentRangeFormatting = true },
   on_attach = on_attach,
   capabilities = capabilities,
-}
+})

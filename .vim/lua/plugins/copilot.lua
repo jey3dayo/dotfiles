@@ -1,10 +1,12 @@
+local deps = require("utils/dependencies")
+
 return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
-      require "config/copilot"
+      require("config/copilot")
     end,
   },
   {
@@ -15,7 +17,7 @@ return {
       { "<leader>cb", "<cmd>CopilotChatBuffer<cr>", desc = "CopilotChat Buffer" },
       { "<leader>ct", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat Toggle" },
     },
-    dependencies = { "zbirenbaum/copilot.lua", "nvim-lua/plenary.nvim" },
+    dependencies = vim.list_extend(deps.copilot, deps.plenary),
     branch = "main",
     build = "make tiktoken",
   },

@@ -1,15 +1,19 @@
 local with = require("utils").with
-local config = require "lsp.config"
+local config = require("lsp.config")
 
 local M = {}
 
 local function notify_formatter(name)
-  if config.isDebug then vim.notify("Formatted with: " .. name, vim.log.levels.INFO) end
+  if config.isDebug then
+    vim.notify("Formatted with: " .. name, vim.log.levels.INFO)
+  end
 end
 M.notify_formatter = notify_formatter
 
 local function format_buffer(bufnr, client, c)
-  if vim.g[config.format.state.global] then return nil end
+  if vim.g[config.format.state.global] then
+    return nil
+  end
 
   local format_config = with(config.format.default, { bufnr = bufnr, id = client.id }, c)
   vim.lsp.buf.format(format_config)
@@ -18,11 +22,15 @@ end
 
 local function create_format_command(bufnr, client)
   local ok, err = pcall(format_buffer, bufnr, client)
-  if not ok then vim.notify("Format failed: " .. err, vim.log.levels.ERROR) end
+  if not ok then
+    vim.notify("Format failed: " .. err, vim.log.levels.ERROR)
+  end
 end
 
 M.setup = function(bufnr, client, args)
-  if not client.supports_method "textDocument/formatting" then return end
+  if not client.supports_method("textDocument/formatting") then
+    return
+  end
 
   autocmd("BufWritePre", {
     buffer = bufnr,

@@ -1,28 +1,30 @@
-local copilot = Safe_require "copilot"
-local copilot_cmp = Safe_require "copilot_cmp"
-local copilot_chat = Safe_require "CopilotChat"
-local select = Safe_require "CopilotChat.select"
+local copilot = Safe_require("copilot")
+local copilot_cmp = Safe_require("copilot_cmp")
+local copilot_chat = Safe_require("CopilotChat")
+local select = Safe_require("CopilotChat.select")
 
-if not (copilot and copilot_cmp and copilot_chat) then return end
+if not (copilot and copilot_cmp and copilot_chat) then
+  return
+end
 
-copilot.setup {
+copilot.setup({
   suggestion = { enabled = false },
   panel = { enabled = false },
-  copilot_node_command = require("utils").find_command {
-    os.getenv "HOME" .. "/.mise/shims/node",
+  copilot_node_command = require("utils").find_command({
+    os.getenv("HOME") .. "/.mise/shims/node",
     "/usr/local/bin/node",
-  },
-}
+  }),
+})
 
-copilot_cmp.setup {
+copilot_cmp.setup({
   formatters = {
     label = require("copilot_cmp.format").format_label_text,
     insert_text = require("copilot_cmp.format").remove_existing,
     preview = require("copilot_cmp.format").deindent,
   },
-}
+})
 
-copilot_chat.setup {
+copilot_chat.setup({
   debug = false, -- Enable debugging  -- プロンプトの設定
 
   -- 日本語でオーバーライド
@@ -50,7 +52,7 @@ copilot_chat.setup {
       selection = select and select.diagnostics or nil,
     },
   },
-}
+})
 
 -- Avanteで代替
 -- -- Copilot Chat

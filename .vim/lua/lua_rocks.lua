@@ -1,6 +1,8 @@
-local home = os.getenv "HOME"
+local home = os.getenv("HOME")
 
-if home == nil then return end
+if home == nil then
+  return
+end
 
 local path = table.concat({
   "/usr/share/lua/5.1/?.lua",

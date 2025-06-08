@@ -1,23 +1,25 @@
-if vim.loader then vim.loader.enable() end
+if vim.loader then
+  vim.loader.enable()
+end
 
 -- Core modules that need to load early
-require "utils"
-require "base"
-require "options"
-require "keymaps"
-require "init_lazy"
+require("utils")
+require("base")
+require("options")
+require("keymaps")
+require("init_lazy")
 
 -- Defer heavy modules until after UI is ready
 vim.defer_fn(function()
-  require "lua_rocks"
-  require "autocmds"
-  require "colorscheme"
-  require "load_config"
-  require "lsp.autoformat"
-  require "filetype"
-  
+  require("lua_rocks")
+  require("autocmds")
+  require("colorscheme")
+  require("load_config")
+  require("lsp.autoformat")
+  require("filetype")
+
   -- Load neovide config only if running in neovide
   if vim.g.neovide then
-    require "neovide"
+    require("neovide")
   end
 end, 0)

@@ -2,7 +2,7 @@ return {
   { "vim-scripts/renamer.vim", cmd = "Renamer" },
   { "vim-scripts/sudo.vim", cmd = { "SudoWrite", "SudoRead" } },
   { "dstein64/vim-startuptime", cmd = "StartupTime" },
-  { "windwp/nvim-projectconfig", event = "VeryLazy", opts = require "config/nvim-projectconfig" },
+  { "windwp/nvim-projectconfig", event = "VeryLazy", opts = require("config/nvim-projectconfig") },
   {
     "folke/trouble.nvim",
     opts = {},
@@ -21,14 +21,14 @@ return {
     keys = { "<Leader>T", "<c-\\>" },
     cmd = "ToggleTerm",
     config = function()
-      require "config/toggleterm"
+      require("config/toggleterm")
     end,
   },
   {
     "sidebar-nvim/sidebar.nvim",
     cmd = { "SidebarNvimToggle", "SidebarNvimOpen", "SidebarNvimClose" },
     config = function()
-      require "config/sidebar"
+      require("config/sidebar")
     end,
   },
 }

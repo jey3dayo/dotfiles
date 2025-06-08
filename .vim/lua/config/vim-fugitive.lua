@@ -1,5 +1,7 @@
-local gitlinker = Safe_require "gitlinker"
-if not gitlinker then return end
+local gitlinker = Safe_require("gitlinker")
+if not gitlinker then
+  return
+end
 
 local set_opts = { silent = true }
 Set_keymap("[git]", "<Nop>", set_opts)

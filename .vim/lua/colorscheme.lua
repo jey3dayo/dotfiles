@@ -4,11 +4,11 @@ local function load_colorscheme()
     -- Ensure kanagawa plugin is loaded
     require("lazy").load({ plugins = { "kanagawa.nvim" } })
     vim.cmd("colorscheme kanagawa")
-    
+
     -- Apply custom highlights
     local highlights = {
       "Normal ctermbg=NONE guibg=NONE",
-      "NonText ctermbg=NONE guibg=NONE", 
+      "NonText ctermbg=NONE guibg=NONE",
       "SpecialKey ctermbg=NONE guibg=NONE",
       "EndOfBuffer ctermbg=NONE guibg=NONE",
       "SignColumn ctermbg=NONE guibg=NONE",
@@ -17,7 +17,7 @@ local function load_colorscheme()
       "NvimTreeNormal ctermbg=NONE guibg=NONE",
       "MsgArea ctermbg=NONE guibg=NONE",
     }
-    
+
     for _, hl in ipairs(highlights) do
       vim.cmd("highlight " .. hl)
     end

@@ -1,4 +1,4 @@
-local deps = require "utils/dependencies"
+local deps = require("utils/dependencies")
 
 return {
   { "nvim-tree/nvim-web-devicons", lazy = true },
@@ -8,13 +8,13 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "TSUpdate", "TSInstall" },
     dependencies = deps.treesitter_with_icons,
-    opts = require "config/nvim-treesitter",
+    opts = require("config/nvim-treesitter"),
   },
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     dependencies = deps.treesitter,
-    opts = require "config/nvim-autopairs",
+    opts = require("config/nvim-autopairs"),
   },
   { "andymass/vim-matchup", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
   { "nvim-treesitter/nvim-tree-docs", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
@@ -23,7 +23,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = deps.treesitter,
     config = function()
-      require "config/rainbow-delimiters"
+      require("config/rainbow-delimiters")
     end,
   },
 }

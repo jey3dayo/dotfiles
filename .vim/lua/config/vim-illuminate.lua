@@ -1,5 +1,10 @@
+local illuminate = Safe_require("illuminate")
+if not illuminate then
+  return
+end
+
 -- default configuration
-require("illuminate").configure {
+illuminate.configure({
   -- providers: provider used to get references in the buffer, ordered by priority
   providers = { "lsp", "treesitter", "regex" },
   -- delay: delay in milliseconds
@@ -36,4 +41,4 @@ require("illuminate").configure {
   providers_regex_syntax_allowlist = {},
   -- under_cursor: whether or not to illuminate under the cursor
   under_cursor = true,
-}
+})

@@ -1,11 +1,11 @@
-local deps = require "utils/dependencies"
+local deps = require("utils/dependencies")
 
 return {
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     config = function()
-      require "config/cmp"
+      require("config/cmp")
     end,
   },
   { "hrsh7th/cmp-nvim-lsp", event = "InsertEnter", dependencies = deps.cmp },

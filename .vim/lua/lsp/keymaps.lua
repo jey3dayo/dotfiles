@@ -1,6 +1,6 @@
 local with = require("utils").with
-local config = require "lsp.config"
-local client_manager = require "lsp.client_manager"
+local config = require("lsp.config")
+local client_manager = require("lsp.client_manager")
 
 local M = {}
 
@@ -56,7 +56,9 @@ local function setup_keymaps(bufnr, _)
 end
 
 local function setup_format_keymap(bufnr, client)
-  if not client.supports_method "textDocument/formatting" then return end
+  if not client.supports_method("textDocument/formatting") then
+    return
+  end
 
   Keymap(config.LSP.PREFIX .. "f", function()
     local active_clients = client_manager.get_format_clients(bufnr)
@@ -64,7 +66,7 @@ local function setup_format_keymap(bufnr, client)
       return c.name
     end, active_clients)
 
-    vim.lsp.buf.format { async = true, timeout_ms = 5000 }
+    vim.lsp.buf.format({ async = true, timeout_ms = 5000 })
 
     require("lsp/formatter").notify_formatter(table.concat(client_names, ", "))
   end, with(config.LSP.DEFAULT_BUF_OPTS, { buffer = bufnr }))

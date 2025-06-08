@@ -1,4 +1,4 @@
-local util = require "lspconfig.util"
+local util = require("lspconfig.util")
 local unpack = table.unpack or unpack
 
 local M = {}
