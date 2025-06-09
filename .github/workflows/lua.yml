@@ -13,6 +13,7 @@ on:
       - '.luacheckrc'
       - 'stylua.toml'
       - '.github/workflows/lua.yml'
+  workflow_dispatch:
 
 jobs:
   lint:
