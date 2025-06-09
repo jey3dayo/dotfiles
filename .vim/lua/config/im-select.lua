@@ -1,7 +1,5 @@
-local utils = require("core.utils")
-if not utils then
-  return {}
-end
+local utils = require "core.utils"
+if not utils then return {} end
 
 local get_os = utils.get_os
 local with = utils.with

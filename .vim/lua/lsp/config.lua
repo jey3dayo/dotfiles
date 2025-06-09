@@ -46,9 +46,7 @@ M.servers = {
 function M.get_installed_servers()
   local servers = {}
   for name, config in pairs(M.servers) do
-    if config.installed then
-      table.insert(servers, name)
-    end
+    if config.installed then table.insert(servers, name) end
   end
   return servers
 end
@@ -56,9 +54,7 @@ end
 function M.get_enabled_servers()
   local servers = {}
   for name, config in pairs(M.servers) do
-    if config.enabled then
-      table.insert(servers, name)
-    end
+    if config.enabled then table.insert(servers, name) end
   end
   return servers
 end
@@ -175,9 +171,7 @@ function M.get_config_files()
   if not _config_files_cache then
     local files = { ".git/" }
     for _, formatter in pairs(M.formatters) do
-      if formatter.config_files then
-        vim.list_extend(files, formatter.config_files)
-      end
+      if formatter.config_files then vim.list_extend(files, formatter.config_files) end
     end
     _config_files_cache = files
   end

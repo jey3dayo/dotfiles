@@ -1,4 +1,4 @@
-local deps = require("core.dependencies")
+local deps = require "core.dependencies"
 
 return {
   {
@@ -6,7 +6,7 @@ return {
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
-      require("config/copilot")
+      require "config/copilot"
     end,
   },
   {

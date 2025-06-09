@@ -1,4 +1,4 @@
-local deps = require("core.dependencies")
+local deps = require "core.dependencies"
 
 return {
   {

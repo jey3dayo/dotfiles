@@ -1,4 +1,4 @@
-local deps = require("core.dependencies")
+local deps = require "core.dependencies"
 
 return {
   { "nvim-lua/plenary.nvim", lazy = true },
@@ -7,7 +7,7 @@ return {
     "tpope/vim-repeat",
     event = "VeryLazy",
     config = function()
-      require("config/vim-repeat")
+      require "config/vim-repeat"
     end,
   },
   { "kana/vim-textobj-user", event = "VeryLazy" },

@@ -1,9 +1,7 @@
-local utils = require("core.utils")
-local leap = utils.safe_require("leap")
-local leap_user = utils.safe_require("leap.user")
-if not (leap and leap_user) then
-  return
-end
+local utils = require "core.utils"
+local leap = utils.safe_require "leap"
+local leap_user = utils.safe_require "leap.user"
+if not (leap and leap_user) then return end
 
 -- leap.add_default_mappings()
 

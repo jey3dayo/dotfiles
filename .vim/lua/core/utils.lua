@@ -3,9 +3,7 @@ local M = {}
 -- Safe require function
 function M.safe_require(module)
   local ok, result = pcall(require, module)
-  if not ok then
-    return nil
-  end
+  if not ok then return nil end
   return result
 end
 
@@ -32,9 +30,7 @@ end
 
 function M.has_config_files(config_files)
   for _, file in ipairs(config_files) do
-    if M.check_file_exists(file) then
-      return true
-    end
+    if M.check_file_exists(file) then return true end
   end
   return false
 end
@@ -64,18 +60,14 @@ end
 
 -- Git utilities
 function M.get_git_dir()
-  local git_dir = vim.fn.finddir(".git", vim.fn.expand("%:p:h") .. ";")
-  if git_dir ~= "" then
-    git_dir = vim.fn.fnamemodify(git_dir, ":h")
-  end
+  local git_dir = vim.fn.finddir(".git", vim.fn.expand "%:p:h" .. ";")
+  if git_dir ~= "" then git_dir = vim.fn.fnamemodify(git_dir, ":h") end
   return git_dir
 end
 
 -- Debug utilities
 local function table_to_string(tbl, indent)
-  if not indent then
-    indent = 0
-  end
+  if not indent then indent = 0 end
   local toprint = string.rep(" ", indent) .. "{\n"
   indent = indent + 2
   for k, v in pairs(tbl) do
@@ -108,13 +100,13 @@ end
 -- OS detection
 ---@return "windows"|"wsl"|"mac"|"linux"|"unknown"
 function M.get_os()
-  if os.getenv("WSLENV") then
+  if os.getenv "WSLENV" then
     return "wsl"
-  elseif vim.fn.has("mac") == 1 then
+  elseif vim.fn.has "mac" == 1 then
     return "mac"
-  elseif vim.fn.has("win32") == 1 then
+  elseif vim.fn.has "win32" == 1 then
     return "windows"
-  elseif vim.fn.has("unix") == 1 then
+  elseif vim.fn.has "unix" == 1 then
     return "linux"
   end
   return "unknown"

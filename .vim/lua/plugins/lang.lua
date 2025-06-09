@@ -1,5 +1,5 @@
-local ft = require("core.filetypes")
-local deps = require("core.dependencies")
+local ft = require "core.filetypes"
+local deps = require "core.dependencies"
 
 return {
   { "editorconfig/editorconfig-vim", event = { "BufReadPre", "BufNewFile" } },

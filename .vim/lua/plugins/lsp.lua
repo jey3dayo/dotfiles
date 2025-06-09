@@ -1,12 +1,12 @@
 return {
-  { "williamboman/mason.nvim", cmd = "Mason", opts = require("config/mason") },
+  { "williamboman/mason.nvim", cmd = "Mason", opts = require "config/mason" },
   { "neovim/nvim-lspconfig", event = { "BufReadPre", "BufNewFile" } },
   {
     "williamboman/mason-lspconfig.nvim",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "williamboman/mason.nvim" },
     config = function()
-      require("config/mason-lspconfig")
+      require "config/mason-lspconfig"
     end,
   },
   {
@@ -17,7 +17,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "nvim-tree/nvim-web-devicons",
     },
-    opts = require("config/lspsaga"),
+    opts = require "config/lspsaga",
   },
   {
     "creativenull/efmls-configs-nvim",

@@ -1,4 +1,4 @@
-local utils = require("core.utils")
+local utils = require "core.utils"
 local M = {}
 
 local clear_autocmds = vim.api.nvim_clear_autocmds
@@ -16,7 +16,7 @@ utils.autocmd("BufEnter", { pattern = "*", command = "set fo-=c fo-=r fo-=o" })
 utils.autocmd({ "BufReadPost" }, {
   pattern = { "*" },
   callback = function()
-    vim.cmd('silent! normal! g`"zv')
+    vim.cmd 'silent! normal! g`"zv'
   end,
 })
 
@@ -53,17 +53,13 @@ utils.autocmd("LspAttach", {
     local client_id = args.data.client_id
     local client = vim.lsp.get_client_by_id(client_id)
 
-    if not client then
-      return
-    end
+    if not client then return end
 
     -- Lazy load client manager when actually needed
-    local client_manager = require("lsp/client_manager")
+    local client_manager = require "lsp/client_manager"
 
     -- 既に処理済みのチェック
-    if client_manager.is_client_processed(args.data.client_id, bufnr) then
-      return
-    end
+    if client_manager.is_client_processed(args.data.client_id, bufnr) then return end
     client_manager.mark_client_processed(args.data.client_id, bufnr)
 
     -- クライアント停止判定

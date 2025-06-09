@@ -13,14 +13,10 @@ function M.setup_web_lang(opts)
 end
 
 function M.setup_js_like(run_cmd, test_cmd)
-  M.setup_web_lang({ tabstop = 2 })
+  M.setup_web_lang { tabstop = 2 }
 
-  if run_cmd then
-    Keymap("[lsp]j", string.format('<cmd>:!%s "%%"<CR>', run_cmd))
-  end
-  if test_cmd then
-    Keymap("[lsp]J", string.format('<cmd>:!%s "%%"<CR>', test_cmd))
-  end
+  if run_cmd then Keymap("[lsp]j", string.format('<cmd>:!%s "%%"<CR>', run_cmd)) end
+  if test_cmd then Keymap("[lsp]J", string.format('<cmd>:!%s "%%"<CR>', test_cmd)) end
 end
 
 return M

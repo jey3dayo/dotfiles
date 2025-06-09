@@ -1,7 +1,7 @@
-local utils = require("core.utils")
-local ft = require("core.filetypes")
-local lsp_utils = require("lsp.utils")
-local lsp_config = require("lsp.config")
+local utils = require "core.utils"
+local ft = require "core.filetypes"
+local lsp_utils = require "lsp.utils"
+local lsp_config = require "lsp.config"
 local config_files = lsp_config.formatters.eslint.config_files
 
 return {

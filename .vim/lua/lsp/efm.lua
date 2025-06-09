@@ -1,4 +1,4 @@
-local utils = require("core.utils")
+local utils = require "core.utils"
 local with = utils.with
 local extend = utils.extend
 local formatter_settings = require("lsp.config").formatters
@@ -7,24 +7,24 @@ local M = {}
 
 -- フォーマッターとリンターを分けて定義
 local formatters = {
-  biome = require("efmls-configs.formatters.biome"),
-  prettier = require("efmls-configs.formatters.prettier"),
-  ruff_formatter = require("efmls-configs.formatters.ruff"),
-  ruff_sort = require("efmls-configs.formatters.ruff_sort"),
-  stylua = require("efmls-configs.formatters.stylua"),
-  taplo = require("efmls-configs.formatters.taplo"),
-  gofmt = require("efmls-configs.formatters.gofmt"),
+  biome = require "efmls-configs.formatters.biome",
+  prettier = require "efmls-configs.formatters.prettier",
+  ruff_formatter = require "efmls-configs.formatters.ruff",
+  ruff_sort = require "efmls-configs.formatters.ruff_sort",
+  stylua = require "efmls-configs.formatters.stylua",
+  taplo = require "efmls-configs.formatters.taplo",
+  gofmt = require "efmls-configs.formatters.gofmt",
 }
 
 local linters = {
-  eslint = require("efmls-configs.linters.eslint"),
-  hadolint = require("efmls-configs.linters.hadolint"),
-  markdownlint = require("efmls-configs.linters.markdownlint"),
-  ruff_linter = require("efmls-configs.linters.ruff"),
-  vint = require("efmls-configs.linters.vint"),
+  eslint = require "efmls-configs.linters.eslint",
+  hadolint = require "efmls-configs.linters.hadolint",
+  markdownlint = require "efmls-configs.linters.markdownlint",
+  ruff_linter = require "efmls-configs.linters.ruff",
+  vint = require "efmls-configs.linters.vint",
   -- yamllint = require "efmls-configs.linters.yamllint",
-  codespell = require("efmls-configs.linters.codespell"),
-  luacheck = require("efmls-configs.linters.luacheck"),
+  codespell = require "efmls-configs.linters.codespell",
+  luacheck = require "efmls-configs.linters.luacheck",
 }
 
 -- 言語グループの定義
@@ -71,7 +71,7 @@ M.get_languages = function()
   }
 
   -- fix stylua
-  local stylua_config = os.getenv("XDG_CONFIG_HOME") or os.getenv("HOME") .. "/.config"
+  local stylua_config = os.getenv "XDG_CONFIG_HOME" or os.getenv "HOME" .. "/.config"
   local stylua_opts = {
     formatCommand = string.format("stylua --config-path %s/stylua.toml -", stylua_config),
     formatStdin = true,

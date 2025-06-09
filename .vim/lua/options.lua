@@ -1,5 +1,5 @@
 -- ~/.cache/nvim
-local cacheDir = vim.fn.stdpath("cache")
+local cacheDir = vim.fn.stdpath "cache"
 
 local options = {
   -- spell = true,
@@ -100,6 +100,6 @@ for k, v in pairs(global_options) do
   vim.g[k] = v
 end
 
-vim.opt.shortmess:append("c")
-vim.cmd("set whichwrap+=<,>,[,],h,l")
-vim.cmd([[set iskeyword+=-]])
+vim.opt.shortmess:append "c"
+vim.cmd "set whichwrap+=<,>,[,],h,l"
+vim.cmd [[set iskeyword+=-]]

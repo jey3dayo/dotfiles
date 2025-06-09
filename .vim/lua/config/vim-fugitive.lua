@@ -1,8 +1,6 @@
-local utils = require("core.utils")
-local gitlinker = utils.safe_require("gitlinker")
-if not gitlinker then
-  return
-end
+local utils = require "core.utils"
+local gitlinker = utils.safe_require "gitlinker"
+if not gitlinker then return end
 
 local set_opts = { silent = true }
 Set_keymap("[git]", "<Nop>", set_opts)

@@ -1,4 +1,4 @@
-vim.filetype.add({
+vim.filetype.add {
   extension = {
     astro = "astro",
     gitconfig = "gitconfig",
@@ -17,4 +17,4 @@ vim.filetype.add({
     ["%.env.*"] = "config",
     ["user%-abbreviations"] = "zsh",
   },
-})
+}

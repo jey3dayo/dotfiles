@@ -2,8 +2,8 @@
 local function load_colorscheme()
   pcall(function()
     -- Ensure kanagawa plugin is loaded
-    require("lazy").load({ plugins = { "kanagawa.nvim" } })
-    vim.cmd("colorscheme kanagawa")
+    require("lazy").load { plugins = { "kanagawa.nvim" } }
+    vim.cmd "colorscheme kanagawa"
 
     -- Apply custom highlights
     local highlights = {
@@ -27,6 +27,6 @@ end
 -- Try to load kanagawa, fallback to default if not available
 local ok = pcall(load_colorscheme)
 if not ok then
-  vim.cmd("colorscheme default")
-  vim.cmd("set background=dark")
+  vim.cmd "colorscheme default"
+  vim.cmd "set background=dark"
 end

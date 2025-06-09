@@ -1,12 +1,10 @@
-local utils = require("core.utils")
-local telescope = utils.safe_require("telescope")
-if not telescope then
-  return
-end
+local utils = require "core.utils"
+local telescope = utils.safe_require "telescope"
+if not telescope then return end
 
 local with = utils.with
-local actions = require("telescope.actions")
-local builtin = require("telescope.builtin")
+local actions = require "telescope.actions"
+local builtin = require "telescope.builtin"
 
 local file_ignore_patterns = {
   "^.git/",
@@ -18,19 +16,17 @@ local file_ignore_patterns = {
 }
 
 local function telescope_buffer_dir()
-  return vim.fn.expand("%:p:h")
+  return vim.fn.expand "%:p:h"
 end
 
 -- Helper function to ensure extension is loaded
 local function ensure_extension_loaded(extension_name)
-  if not telescope.extensions[extension_name] then
-    telescope.load_extension(extension_name)
-  end
+  if not telescope.extensions[extension_name] then telescope.load_extension(extension_name) end
 end
 
 local function setup_file_browser(opts)
   opts = opts or {}
-  ensure_extension_loaded("file_browser")
+  ensure_extension_loaded "file_browser"
   telescope.extensions.file_browser.file_browser(with({
     hidden = true,
     grouped = true,
@@ -65,7 +61,7 @@ local file_browser_mappings = {
   i = {
     ["<C-d>"] = actions.close,
     ["<C-w>"] = function()
-      vim.cmd("normal vbd")
+      vim.cmd "normal vbd"
     end,
   },
   n = {
@@ -73,7 +69,7 @@ local file_browser_mappings = {
     ["N"] = fb_actions.create,
     ["u"] = fb_actions.goto_parent_dir,
     ["/"] = function()
-      vim.cmd("startinsert")
+      vim.cmd "startinsert"
     end,
   },
 }
@@ -100,7 +96,7 @@ local function get_find_files_command()
   return find_command
 end
 
-telescope.setup({
+telescope.setup {
   defaults = {
     mappings = telescope_mappings,
     file_ignore_patterns = file_ignore_patterns,
@@ -120,56 +116,56 @@ telescope.setup({
       mappings = file_browser_mappings,
     },
   },
-})
+}
 -- Extensions will be loaded automatically when plugins are lazy-loaded
 -- Only load notify extension immediately as it doesn't have specific triggers
-telescope.load_extension("notify")
+telescope.load_extension "notify"
 
 -- keymaps
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
 Keymap("<Leader>b", builtin.buffers, { desc = "buffers" })
 Keymap("<Leader>d", builtin.diagnostics, { desc = "Find by Diagnostics" })
 Keymap("<Leader>u", function()
-  ensure_extension_loaded("undo")
+  ensure_extension_loaded "undo"
   telescope.extensions.undo.undo()
 end, { desc = "Find by Undo" })
 Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 
 -- extensions
 Keymap("<Leader>Y", function()
-  ensure_extension_loaded("neoclip")
+  ensure_extension_loaded "neoclip"
   telescope.extensions.neoclip.default()
 end, { desc = "Find by Yank" })
 Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify" })
 
 Keymap("<Leader>f", function()
-  ensure_extension_loaded("frecency")
-  telescope.extensions.frecency.frecency({ workspace = "CWD" })
+  ensure_extension_loaded "frecency"
+  telescope.extensions.frecency.frecency { workspace = "CWD" }
 end, { desc = "Find CWD by frecency" })
 
 Keymap("<A-p>", function()
-  ensure_extension_loaded("frecency")
-  telescope.extensions.frecency.frecency({ workspace = "CWD" })
+  ensure_extension_loaded "frecency"
+  telescope.extensions.frecency.frecency { workspace = "CWD" }
 end, { desc = "Find CWD by frecency" })
 
 Keymap("<Leader>F", function()
-  ensure_extension_loaded("frecency")
-  telescope.extensions.frecency.frecency({})
+  ensure_extension_loaded "frecency"
+  telescope.extensions.frecency.frecency {}
 end, { desc = "Find by frecency" })
 
 Keymap("<Leader>G", builtin.git_status, { desc = "Find by Git Status" })
 Keymap("<Leader>e", function()
   local git_dir = utils.get_git_dir()
-  setup_file_browser({
+  setup_file_browser {
     path = git_dir ~= "" and git_dir or "%:p:h",
     cwd = git_dir ~= "" and git_dir or telescope_buffer_dir(),
-  })
+  }
 end, { desc = "Find git_dir by File Browser" })
 
 Keymap("<Leader>E", function()
-  setup_file_browser({
+  setup_file_browser {
     path = "%:p:h",
     cwd = telescope_buffer_dir(),
     respect_gitignore = false,
-  })
+  }
 end, { desc = "Find by File Browser" })
