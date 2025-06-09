@@ -47,7 +47,13 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 
   local title = utils.truncate_right(tab.active_pane.foreground_process_name, max_width)
   if title == "" then
-    title = utils.truncate_right(utils.convert_home_dir(tab.active_pane.current_working_dir), max_width)
+    local cwd = tab.active_pane.current_working_dir
+    if type(cwd) == "table" and cwd.file_path then
+      cwd = cwd.file_path
+    elseif type(cwd) ~= "string" then
+      cwd = tostring(cwd)
+    end
+    title = utils.truncate_right(utils.convert_home_dir(cwd), max_width)
   end
 
   return {
