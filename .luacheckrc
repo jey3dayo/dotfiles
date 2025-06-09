@@ -14,4 +14,8 @@ globals = {
   "user_command",
 }
 
+exclude_files = {
+  ".luarocks/**",
+}
+
 max_line_length = false
