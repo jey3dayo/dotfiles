@@ -17,7 +17,7 @@ zle -N git_diff git_diff
 bindkey '^gg' git_diff
 bindkey '^g^g' git_diff
 
-# Git status widget function  
+# Git status widget function
 git_status() {
   if _is_git_repo; then
     echo git status

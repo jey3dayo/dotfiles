@@ -1,7 +1,9 @@
 # Personal Dotfiles
 
-macOSの開発環境を構築するためのdotfilesコレクション。
-対応ツール一覧は[TOOLS.md](TOOLS.md)にまとめています。
+macOSの開発環境を構築するためのdotfilesコレクション。パフォーマンス最適化とモジュラー設計に重点を置いた実用的な設定です。
+
+📋 **対応ツール一覧**: [TOOLS.md](TOOLS.md)
+🧠 **設定詳細・技術情報**: [CLAUDE.md](CLAUDE.md)
 
 ## 🚀 クイックセットアップ
 
@@ -28,24 +30,25 @@ brew bundle
 
 ### コア設定
 
-| ディレクトリ | 説明 |
-|-------------|------|
-| `zsh/` | Zsh設定（独自管理、[詳細](zsh/README.md)、[技術詳細](zsh/CLAUDE.md)） |
-| `nvim/` | NeoVim設定（独自管理、[詳細](nvim/README.md)、[改善計画](nvim/CLAUDE.md)） |
-| `git/` | Git設定（エイリアス、グローバル設定など） |
-| `ssh/` | SSH設定 |
+| ディレクトリ | 説明 | ステータス |
+|-------------|------|------------|
+| `zsh/` | Zsh設定（1.2s起動、モジュラー設計）[→詳細](zsh/CLAUDE.md) | ✅ 最適化完了 |
+| `nvim/` | Neovim設定（Lua、LSP統合、AI支援）[→詳細](nvim/CLAUDE.md) | ✅ 機能完成 |
+| `git/` | Git設定（エイリアス、ウィジェット統合） | ✅ 運用中 |
+| `ssh/` | SSH設定（1Password統合） | ✅ 設定済み |
 
 ### ツール設定
 
-| ファイル/ディレクトリ | 説明 |
-|---------------------|------|
-| `Brewfile` | Homebrew パッケージ定義 |
-| `mise/config.toml` | mise（ランタイム管理） |
-| `starship.toml` | プロンプト設定 |
-| `alacritty/` | ターミナル設定 |
-| `wezterm/` | ターミナル設定 |
-| `karabiner/` | キーボード設定 |
-| `lazygit/` | Git TUI設定 |
+| ファイル/ディレクトリ | 説明 | 統合レベル |
+|---------------------|------|------------|
+| `Brewfile` | Homebrew パッケージ定義 | 🔄 自動管理 |
+| `mise.toml` | ランタイム管理（Node.js, Python等） | 🚀 遅延最適化 |
+| `starship.toml` | プロンプト設定 | 🎨 テーマ統合 |
+| `alacritty/` | メインターミナル設定 | ⚡ GPU加速 |
+| `wezterm/` | 代替ターミナル設定（Lua） | 🔧 高カスタマイズ |
+| `tmux/` | セッション管理・マルチプレクサ | 🔌 プラグイン生態系 |
+| `karabiner/` | キーボード最適化 | ⌨️ 生産性向上 |
+| `lazygit/` | Git TUI | 📊 ビジュアル操作 |
 
 ### リンター・フォーマッター
 
@@ -70,21 +73,22 @@ brew bundle
 
 ## 🛠 主要ツール
 
-### パッケージ管理
-- **Homebrew**: macOSパッケージマネージャー
-- **mise**: Node.js、Python、Rubyなどのランタイム管理
+### 🚀 パフォーマンス重視
+- **Zsh + Sheldon**: 1.2s起動（30%改善達成）
+- **Neovim + lazy.nvim**: <100ms起動、15+言語LSP対応
+- **mise**: 遅延ロード最適化（-39.88ms削減）
 
-### 開発ツール
-- **Neovim**: メインエディター
-- **Git**: バージョン管理（カスタムエイリアス付き）
-- **GitHub CLI**: GitHubとの連携
-- **Zsh**: メインシェル（Sheldon使用）
+### 🎯 開発体験
+- **AI統合**: GitHub Copilot + Avante.nvim
+- **Git統合**: カスタムウィジェット、abbreviations、fzf連携
+- **検索**: fzf（リポジトリ・ファイル・プロセス・履歴）
+- **ターミナル**: Alacritty（GPU加速）+ tmux（セッション管理）
 
-### ターミナル・UI
-- **Starship**: プロンプト
-- **Alacritty/WezTerm**: ターミナル
-- **Lazygit**: Git TUI
-- **fzf**: ファジーファインダー
+### 🔧 生産性ツール
+- **1Password**: SSH鍵管理、CLI統合
+- **Raycast**: システム全体のショートカット
+- **Karabiner**: キーボード最適化
+- **GitHub CLI**: リポジトリ管理の自動化
 
 ## 📦 パッケージ管理
 
@@ -129,16 +133,39 @@ mise use python@latest
 独立した設定ファイルでプライベート設定を管理：
 
 - `git/config` - XDG準拠のGitグローバル設定
-- `git/local.gitconfig` - プライベートなGit設定
-- `zsh/` - Zsh設定（独自管理、CLAUDE.md参照）
+- `git/local.gitconfig` - プライベートなGit設定（除外済み）
+- `zsh/` - Zsh設定（詳細: [CLAUDE.md](zsh/CLAUDE.md)）
+
+### 🎮 よく使うコマンド
+
+```bash
+# ヘルプシステム
+zsh-help                    # 全体ヘルプ表示
+zsh-help keybinds          # キーバインド一覧
+zsh-benchmark              # 起動時間測定
+
+# fzf統合ワークフロー
+Ctrl+]                     # ghqリポジトリ選択
+Ctrl+G Ctrl+G             # Gitステータス表示
+Ctrl+G Ctrl+A             # Gitファイル追加
+```
 
 ## 🎯 特徴
 
-- **Homebrew Bundle**: 全パッケージを`Brewfile`で一元管理
-- **mise**: Node.js、Python、Ruby等のバージョン管理
-- **設定の分離**: プライベート設定とパブリック設定を分離
-- **リンター統合**: 複数言語対応の品質チェック
-- **効率的なワークフロー**: fzf、Raycast等による生産性向上
+### 🏗️ アーキテクチャ
+- **モジュラー設計**: 独立しつつシームレスに統合された各ツール
+- **パフォーマンス最適化**: 遅延読み込み、起動時間最適化
+- **ポータビリティ**: macOS重視、クロスプラットフォーム対応
+
+### 🔧 実用性
+- **設定の分離**: プライベート設定とパブリック設定の完全分離
+- **自動化**: セットアップからメンテナンスまでの自動化
+- **品質管理**: 複数言語対応リンター・フォーマッター統合
+
+### 📊 実績
+- **Zsh**: 1.7s → 1.2s（30%高速化）
+- **プラグイン管理**: 6段階優先度システム
+- **クロスツール連携**: Git + fzf + abbreviationsの統合ワークフロー
 
 ## 📝 ライセンス
 
