@@ -16,9 +16,8 @@ local HOVER_TAB_FG = Light
 local NORMAL_TAB_BG = LightGrey
 local NORMAL_TAB_FG = Light
 
+-- luacheck: ignore panes config
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-  panes = panes
-  config = config
   max_width = max_width
 
   local background = NORMAL_TAB_BG
@@ -35,7 +34,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     foreground = HOVER_TAB_FG
   end
 
-  local leading_fg = NORMAL_TAB_FG
+  local leading_fg = NORMAL_TAB_BG
   local leading_bg = background
 
   local trailing_fg = background
@@ -44,9 +43,6 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   if is_first or is_last then
     leading_fg = TAB_BAR_BG
     trailing_bg = TAB_BAR_BG
-  else
-    leading_fg = NORMAL_TAB_BG
-    trailing_bg = NORMAL_TAB_BG
   end
 
   local title = utils.truncate_right(tab.active_pane.foreground_process_name, max_width)

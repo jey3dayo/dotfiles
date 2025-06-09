@@ -1,0 +1,44 @@
+name: Lua Lint and Format
+
+on:
+  push:
+    paths:
+      - '**/*.lua'
+      - '.luacheckrc'
+      - 'stylua.toml'
+      - '.github/workflows/lua.yml'
+  pull_request:
+    paths:
+      - '**/*.lua'
+      - '.luacheckrc'
+      - 'stylua.toml'
+      - '.github/workflows/lua.yml'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Lua (LuaJIT)
+        uses: leafo/gh-actions-lua@v11
+
+      - name: Set up LuaRocks
+        uses: leafo/gh-actions-luarocks@v5
+
+      - name: Install luacheck
+        run: luarocks install --local luacheck
+
+      - name: Add LuaRocks bin to PATH
+        run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH
+
+      - name: Lint with luacheck
+        run: luacheck .
+
+      - name: Format check with stylua
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check .

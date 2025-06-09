@@ -19,14 +19,8 @@ local function telescope_buffer_dir()
   return vim.fn.expand "%:p:h"
 end
 
--- Helper function to ensure extension is loaded
-local function ensure_extension_loaded(extension_name)
-  if not telescope.extensions[extension_name] then telescope.load_extension(extension_name) end
-end
-
 local function setup_file_browser(opts)
   opts = opts or {}
-  ensure_extension_loaded "file_browser"
   telescope.extensions.file_browser.file_browser(with({
     hidden = true,
     grouped = true,
@@ -117,41 +111,31 @@ telescope.setup {
     },
   },
 }
--- Extensions will be loaded automatically when plugins are lazy-loaded
--- Only load notify extension immediately as it doesn't have specific triggers
-telescope.load_extension "notify"
+
+-- Load extensions
+local extensions = { "file_browser", "undo", "notify", "frecency", "neoclip" }
+for _, ext in ipairs(extensions) do
+  telescope.load_extension(ext)
+end
 
 -- keymaps
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
 Keymap("<Leader>b", builtin.buffers, { desc = "buffers" })
 Keymap("<Leader>d", builtin.diagnostics, { desc = "Find by Diagnostics" })
-Keymap("<Leader>u", function()
-  ensure_extension_loaded "undo"
-  telescope.extensions.undo.undo()
-end, { desc = "Find by Undo" })
+Keymap("<Leader>u", telescope.extensions.undo.undo, { desc = "Find by Undo" })
 Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 
 -- extensions
-Keymap("<Leader>Y", function()
-  ensure_extension_loaded "neoclip"
-  telescope.extensions.neoclip.default()
-end, { desc = "Find by Yank" })
+Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
 Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify" })
 
-Keymap("<Leader>f", function()
-  ensure_extension_loaded "frecency"
+local function frecency_cwd()
   telescope.extensions.frecency.frecency { workspace = "CWD" }
-end, { desc = "Find CWD by frecency" })
+end
 
-Keymap("<A-p>", function()
-  ensure_extension_loaded "frecency"
-  telescope.extensions.frecency.frecency { workspace = "CWD" }
-end, { desc = "Find CWD by frecency" })
-
-Keymap("<Leader>F", function()
-  ensure_extension_loaded "frecency"
-  telescope.extensions.frecency.frecency {}
-end, { desc = "Find by frecency" })
+Keymap("<Leader>f", frecency_cwd, { desc = "Find CWD by frecency" })
+Keymap("<A-p>", frecency_cwd, { desc = "Find CWD by frecency" })
+Keymap("<Leader>F", telescope.extensions.frecency.frecency, { desc = "Find by frecency" })
 
 Keymap("<Leader>G", builtin.git_status, { desc = "Find by Git Status" })
 Keymap("<Leader>e", function()
