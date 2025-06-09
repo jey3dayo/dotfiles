@@ -21,7 +21,7 @@ end
 
 -- Helper function to ensure extension is loaded
 local function ensure_extension_loaded(extension_name)
-  if not telescope.extensions[extension_name] then telescope.load_extension(extension_name) end
+  pcall(telescope.load_extension, extension_name)
 end
 
 local function setup_file_browser(opts)
@@ -117,9 +117,14 @@ telescope.setup {
     },
   },
 }
--- Extensions will be loaded automatically when plugins are lazy-loaded
--- Only load notify extension immediately as it doesn't have specific triggers
+
+-- 追記
+telescope.load_extension "file_browser"
+telescope.load_extension "undo"
 telescope.load_extension "notify"
+telescope.load_extension "frecency"
+telescope.load_extension "neoclip"
+
 
 -- keymaps
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
