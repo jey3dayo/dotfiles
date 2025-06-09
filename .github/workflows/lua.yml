@@ -21,12 +21,10 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up Lua (LuaJIT)
-        uses: leafo/gh-actions-lua@v10
-        with:
-          lua-version: 'luajit'
+        uses: leafo/gh-actions-lua@v11
 
       - name: Set up LuaRocks
-        uses: leafo/gh-actions-luarocks@v4
+        uses: leafo/gh-actions-luarocks@v5
 
       - name: Install luacheck
         run: luarocks install --local luacheck
@@ -38,7 +36,7 @@ jobs:
         run: luacheck .
 
       - name: Format check with stylua
-        uses: JohnnyMorganz/stylua-action@v2
+        uses: JohnnyMorganz/stylua-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --check .
