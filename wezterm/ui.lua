@@ -1,6 +1,9 @@
 local wezterm = require "wezterm"
 local utils = require "./utils"
 
+-- local opacity = 1
+local opacity = 0.92
+
 local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
 
 local Grey = "#0f1419"
@@ -75,9 +78,6 @@ end)
 -- wezterm.on("update-right-status", function(window, _)
 --   window:set_right_status("[" .. window:active_workspace() .. "]")
 -- end)
-
--- local opacity = 1
-local opacity = 0.92
 
 return {
   -- Window
