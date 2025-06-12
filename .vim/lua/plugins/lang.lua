@@ -24,9 +24,10 @@ return {
     end,
   },
   {
-    "pmizio/typescript-tools.nvim",
-    ft = ft.ecma_scripts,
-    dependencies = vim.list_extend(deps.plenary, deps.lspconfig),
-    opts = {},
+    "neovim/nvim-lspconfig",
+    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+    config = function()
+      require("lspconfig").ts_ls.setup(require("lsp.settings.ts_ls"))
+    end,
   },
 }

@@ -14,5 +14,4 @@ return {
   },
   root_dir = lsp_utils.create_root_pattern(config_files),
   filetypes = ft.js_project,
-  autostart = false,
 }
