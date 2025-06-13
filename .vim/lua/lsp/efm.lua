@@ -37,6 +37,12 @@ local ecma_languages = {
   "jsonc",
 }
 
+local prettier_languages = {
+  "html",
+  "css",
+  "markdown",
+}
+
 local function apply_formatter_to_languages(langs, formatter, languages)
   for _, lang in ipairs(languages) do
     langs[lang] = with(langs[lang], { formatter })
@@ -88,7 +94,7 @@ M.get_languages = function()
   end
 
   if has_prettier then
-    local target = extend({ "html", "css" }, ecma_languages)
+    local target = extend(prettier_languages, ecma_languages)
     result = apply_formatter_to_languages(result, formatters.prettier, target)
   end
 
