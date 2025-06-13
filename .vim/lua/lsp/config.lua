@@ -34,7 +34,6 @@ M.servers = {
   tailwindcss = { installed = true, enabled = true },
   taplo = { installed = true, enabled = true },
   ts_ls = { installed = true, enabled = true },
-  ["typescript-tools"] = { installed = true, enabled = false },  -- ts_lsを使うため無効化
   eslint = { installed = true, enabled = true },
   typos_lsp = { installed = true, enabled = true },
   vimls = { installed = true, enabled = true },
