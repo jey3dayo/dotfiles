@@ -1,0 +1,25 @@
+# Development Services Configuration
+# Git hosting and development platforms
+
+# GitHub (with corporate firewall bypass)
+Host github.com
+  Hostname ssh.github.com
+  User git
+  Port 443
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_rsa
+
+# GitLab
+Host gitlab.com
+  User git
+  Hostname gitlab.com
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_rsa
+
+# Alternative GitHub host for standard port
+Host github-standard
+  Hostname github.com
+  User git
+  Port 22
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_rsa

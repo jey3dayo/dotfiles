@@ -22,92 +22,139 @@
 
 ### ディレクトリ構成
 ```
-~/.ssh/
-├── config                    # メイン設定（Include指定のみ）
-├── ssh_config.d/            # ローカル設定ディレクトリ（個別管理）
-└── ~/.config/ssh/          # 管理対象設定（dotfiles）
-    ├── ssh_config          # 基本設定
-    └── ssh_config.d/       # モジュール別設定
-        ├── 1Password.sshconfig    # 1Password SSH Agent
-        ├── host.sshconfig         # 公開可能ホスト定義
-        └── private-host.sshconfig # プライベートホスト設定
+~/.config/ssh/              # dotfiles管理（Git追跡）
+├── config                  # メイン設定ファイル
+├── config.d/              # 優先度付きモジュール設定
+│   ├── 00-global.sshconfig      # グローバル設定（最優先）
+│   ├── 01-1password.sshconfig   # 1Password SSH Agent
+│   ├── 10-dev-services.sshconfig    # 開発サービス（GitHub等）
+│   ├── 20-home-network.sshconfig    # ホームネットワーク
+│   └── 99-defaults.sshconfig    # デフォルト設定（最低優先）
+├── templates/             # 設定テンプレート
+│   ├── host-template.sshconfig
+│   └── service-template.sshconfig
+└── README.md              # 設定ガイド
+
+~/.ssh/                    # ローカル設定（Git管理外）
+├── ssh_config.d/         # 機密・個人設定
+└── sockets/              # 接続共有ソケット
 ```
 
-### Include階層構造
+### Include階層構造（優先度順）
 ```bash
 ~/.ssh/config
-├── ~/.config/ssh/ssh_config      # dotfiles管理の基本設定
-├── ~/.config/ssh/ssh_config.d    # dotfiles管理のモジュール設定
-├── ~/.ssh/ssh_config.d/*         # ローカル個別設定（Git管理外・機密情報）
-├── ~/.orbstack/ssh/config        # OrbStack自動生成設定
-└── ~/.colima/ssh_config          # Colima設定（コメントアウト）
+├── ~/.config/ssh/config.d/00-global.sshconfig      # 全体設定
+├── ~/.config/ssh/config.d/01-1password.sshconfig   # 認証設定
+├── ~/.config/ssh/config.d/10-dev-services.sshconfig    # 開発環境
+├── ~/.config/ssh/config.d/20-home-network.sshconfig    # ホームラボ
+├── ~/.config/ssh/config.d/99-defaults.sshconfig    # デフォルト
+├── ~/.ssh/ssh_config.d/*         # ローカル個別設定（機密情報）
+├── ~/.orbstack/ssh/config        # OrbStack自動生成
+└── ~/.colima/ssh_config          # Colima設定（無効化）
 ```
 
 ## 📋 設定内容詳細
 
-### メイン設定（~/.ssh/config）
+### メイン設定（~/.config/ssh/config）
 ```bash
-# dotfiles管理設定の読み込み
-Include ~/.config/ssh/ssh_config
-Include ~/.config/ssh/ssh_config.d
+# SSH Configuration - Hierarchical Include Structure
+# Managed by dotfiles - DO NOT EDIT MANUALLY
 
-# ローカル設定の読み込み
+# Include configuration modules in priority order
+Include ~/.config/ssh/config.d/00-global.sshconfig
+Include ~/.config/ssh/config.d/01-1password.sshconfig
+Include ~/.config/ssh/config.d/10-dev-services.sshconfig
+Include ~/.config/ssh/config.d/20-home-network.sshconfig
+Include ~/.config/ssh/config.d/99-defaults.sshconfig
+
+# Include local user-specific configurations (not managed by dotfiles)
 Include ~/.ssh/ssh_config.d/*
 
-# 仮想環境設定
+# Include platform-specific configurations
 Include ~/.orbstack/ssh/config
 #Include ~/.colima/ssh_config
+```
 
-# 全ホスト共通設定
+### グローバル設定（00-global.sshconfig）
+```bash
 Host *
-  IdentityFile ~/.ssh/id_rsa
-  UseKeychain yes                # macOS Keychain統合
-  ServerAliveInterval 30         # 30秒ごとにKeep-Alive
-  ServerAliveCountMax 10         # 最大10回再試行
-  TCPKeepAlive yes              # TCP Keep-Alive有効
-  IPQoS lowdelay none           # 低遅延QoS設定
-  HostKeyAlgorithms +ssh-rsa    # 古いサーバー対応
-  PubkeyAcceptedKeyTypes +ssh-rsa
-  IdentityAgent none            # 1Password使用時は無効化
+  # 接続最適化
+  ServerAliveInterval 30
+  ServerAliveCountMax 10
+  TCPKeepAlive yes
+  
+  # 接続共有でパフォーマンス向上
+  ControlMaster auto
+  ControlPath ~/.ssh/sockets/%r@%h:%p
+  ControlPersist 600
+  
+  # 認証最適化
+  GSSAPIAuthentication no
+  PreferredAuthentications publickey,password
+  
+  # macOS統合
+  UseKeychain yes
+```
 
-# GitHub設定（ポート443経由）
+### 開発サービス設定（10-dev-services.sshconfig）
+```bash
+# GitHub（企業ファイアウォール対応）
 Host github.com
-  Hostname ssh.github.com       # 企業ファイアウォール対応
+  Hostname ssh.github.com
   User git
-  Port 443                      # HTTPS port経由
-  IdentitiesOnly yes           # 指定鍵のみ使用
+  Port 443
+  IdentitiesOnly yes
 
-# GitLab設定
+# GitLab
 Host gitlab.com
-  User T00114
-  Hostname gitlab.com
+  User git
+  IdentitiesOnly yes
 ```
 
-### 1Password SSH Agent設定
+### ホームネットワーク設定（20-home-network.sshconfig）
 ```bash
-# ~/.config/ssh/ssh_config.d/1Password.sshconfig
-Host *
-  AddKeysToAgent yes
-  IdentityAgent ~/.1password/agent.sock
-```
-
-### ホスト別設定例
-```bash
-# ~/.config/ssh/ssh_config.d/host.sshconfig
-Host pi-local
+# Raspberry Pi（統一設定）
+Host pi
   HostName raspberrypi.local
   User pi
   Port 10022
-  IdentityFile ~/.ssh/id_rsa
   IdentitiesOnly yes
 
-Host synology
+# Synology NAS
+Host nas
   HostName synology.local
   User admin
   Port 10022
-  IdentityFile ~/.ssh/id_rsa
   IdentitiesOnly yes
 ```
+
+### 1Password SSH Agent設定（01-1password.sshconfig）
+```bash
+# UNCOMMENT TO ENABLE 1Password SSH Agent
+# Host *
+#   AddKeysToAgent yes
+#   IdentityAgent ~/.1password/agent.sock
+
+# DISABLE when using 1Password (prevents conflicts)
+Host *
+  IdentityAgent none
+```
+
+## 🎮 モジュール管理
+
+### 設定ファイルの優先度
+**数字による読み込み順序制御**
+- `00-` : 最優先（グローバル設定）
+- `01-` : 認証設定（1Password等）
+- `10-` : 開発サービス
+- `20-` : ホームネットワーク
+- `99-` : デフォルト設定
+
+### 新しいホスト追加手順
+1. **テンプレート使用**: `templates/host-template.sshconfig`をコピー
+2. **適切なファイル選択**: 用途に応じて10-,20-,30-等に追加
+3. **設定カスタマイズ**: HostName, User, Portを設定
+4. **テスト**: `ssh -T hostname`で接続確認
 
 ## 🎮 基本使用方法
 
@@ -116,10 +163,12 @@ Host synology
 # 基本接続
 ssh hostname
 
-# 設定済みホストへの接続
-ssh pi-local
-ssh synology
-ssh github.com
+# リファクタリング後のホスト接続
+ssh pi                    # Raspberry Pi (ローカル)
+ssh pi-remote            # Raspberry Pi (Tailscale経由)
+ssh nas                  # Synology NAS
+ssh github.com           # GitHub（ポート443経由）
+ssh gitlab.com           # GitLab
 
 # ポート転送
 ssh -L 8080:localhost:80 hostname
@@ -130,14 +179,17 @@ ssh -N -f -L 8080:localhost:80 hostname
 
 ### 接続確認・診断
 ```bash
-# 設定内容確認
-ssh -F ~/.ssh/config -T git@github.com
+# 設定内容確認（新構造）
+ssh -F ~/.config/ssh/config -T git@github.com
 
 # 詳細ログ出力
 ssh -v hostname
 
 # 設定テスト
 ssh -o "BatchMode yes" hostname echo "success"
+
+# モジュール別設定確認
+cat ~/.config/ssh/config.d/10-dev-services.sshconfig
 ```
 
 ## 🔒 セキュリティ設定
@@ -147,7 +199,8 @@ ssh -o "BatchMode yes" hostname echo "success"
 #### 有効化手順
 1. **1Password設定**: SSH Agent機能を有効化
 2. **鍵登録**: 1Password内でSSH鍵を管理
-3. **設定ファイル**: 1Password.sshconfig のコメントアウト解除
+3. **設定ファイル**: `01-1password.sshconfig`のコメントアウト解除
+4. **確認**: `ssh-add -l`で鍵一覧表示
 
 #### 利点
 - **パスワードレス**: 鍵のパスフレーズ入力不要
@@ -173,16 +226,22 @@ ssh-add ~/.ssh/id_ed25519
 ```bash
 # SSH ディレクトリ権限
 chmod 700 ~/.ssh
+chmod 700 ~/.config/ssh
 
-# 設定ファイル権限
-chmod 644 ~/.ssh/config
-chmod 644 ~/.ssh/*.sshconfig
+# 設定ファイル権限（新構造）
+chmod 644 ~/.config/ssh/config
+chmod 644 ~/.config/ssh/config.d/*.sshconfig
+chmod 644 ~/.config/ssh/templates/*.sshconfig
 
 # 秘密鍵権限
 chmod 600 ~/.ssh/id_*
 
 # 公開鍵権限
 chmod 644 ~/.ssh/id_*.pub
+
+# ソケットディレクトリ
+mkdir -p ~/.ssh/sockets
+chmod 700 ~/.ssh/sockets
 ```
 
 ## 🔧 高度な設定・カスタマイズ

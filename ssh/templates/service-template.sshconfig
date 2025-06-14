@@ -1,0 +1,39 @@
+# SSH Service Configuration Template
+# For Git hosting services, CI/CD platforms, etc.
+
+# Git Service Template
+Host SERVICE_NAME
+  HostName HOSTNAME
+  User git
+  Port PORT_NUMBER
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_SERVICE
+  
+# Alternative Host (different port/settings)
+Host SERVICE_NAME-alt
+  HostName ALT_HOSTNAME
+  User git
+  Port ALT_PORT_NUMBER
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_SERVICE
+
+# Examples:
+# GitHub Enterprise
+# Host github-enterprise
+#   HostName git.company.com
+#   User git
+#   Port 443
+#   IdentitiesOnly yes
+#   IdentityFile ~/.ssh/id_work
+
+# Bitbucket
+# Host bitbucket.org
+#   User git
+#   IdentitiesOnly yes
+#   IdentityFile ~/.ssh/id_bitbucket
+
+# CodeCommit
+# Host git-codecommit.REGION.amazonaws.com
+#   User APKA...
+#   IdentitiesOnly yes
+#   IdentityFile ~/.ssh/codecommit_rsa

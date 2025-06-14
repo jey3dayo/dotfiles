@@ -1,0 +1,31 @@
+# SSH Host Configuration Template
+# Copy and customize for new hosts
+
+# Standard Host Configuration
+Host HOSTNAME_ALIAS
+  HostName HOSTNAME_OR_IP
+  User USERNAME
+  Port PORT_NUMBER
+  IdentityFile ~/.ssh/IDENTITY_FILE
+  IdentitiesOnly yes
+
+# Common Options (uncomment as needed)
+#  ServerAliveInterval 30
+#  ServerAliveCountMax 10
+#  ForwardAgent yes
+#  LocalForward LOCAL_PORT REMOTE_HOST:REMOTE_PORT
+#  RemoteForward REMOTE_PORT LOCAL_HOST:LOCAL_PORT
+#  ProxyJump BASTION_HOST
+#  ProxyCommand ssh -W %h:%p BASTION_HOST
+
+# Security Options
+#  StrictHostKeyChecking yes
+#  UserKnownHostsFile ~/.ssh/known_hosts_ENVIRONMENT
+#  PasswordAuthentication no
+#  ChallengeResponseAuthentication no
+
+# Performance Options
+#  Compression yes
+#  ControlMaster auto
+#  ControlPath ~/.ssh/sockets/%r@%h:%p
+#  ControlPersist 600

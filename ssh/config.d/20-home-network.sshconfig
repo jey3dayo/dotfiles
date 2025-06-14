@@ -1,0 +1,34 @@
+# Home Network Configuration
+# Local devices and home lab infrastructure
+
+# Raspberry Pi (unified configuration)
+Host pi
+  HostName raspberrypi.local
+  User pi
+  Port 10022
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+
+# Raspberry Pi via Tailscale (remote access)
+Host pi-remote
+  HostName raspberrypi.tailfd232.ts.net
+  User pi
+  Port 10022
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+
+# Synology NAS
+Host nas
+  HostName synology.local
+  User admin
+  Port 10022
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+
+# New Mac (temporary - should be configured with proper hostname)
+Host newmac
+  HostName 192.168.50.141
+  User t00114
+  Port 22
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
