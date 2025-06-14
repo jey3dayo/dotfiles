@@ -107,7 +107,7 @@ local function copy_current_file_path()
   vim.fn.setreg("*", path)
   vim.api.nvim_echo({ { "Copied: " .. path, "None" } }, true, {})
 end
-Keymap("<Leader>y", copy_current_file_path)
+Keymap("<Leader>yf", copy_current_file_path)
 
 -- ファイル名とバッファ内容をクリップボードにコピー
 local function copy_buffer_with_path_and_code_block()
@@ -119,3 +119,82 @@ local function copy_buffer_with_path_and_code_block()
   vim.notify("Copied buffer: " .. path, vim.log.levels.INFO)
 end
 Keymap("YY", copy_buffer_with_path_and_code_block)
+
+-- Copy notifications to clipboard
+local function copy_notifications()
+  local notifications = require("noice").api.get_status()
+  if notifications then
+    vim.fn.setreg("*", notifications)
+    vim.notify("Copied notifications to clipboard", vim.log.levels.INFO)
+  else
+    vim.notify("No notifications found", vim.log.levels.WARN)
+  end
+end
+Keymap("<Leader>yn", copy_notifications)
+
+-- Copy GitHub URL for current file and line/range
+local function copy_github_url()
+  -- Get git remote URL
+  local handle = io.popen("git remote get-url origin 2>/dev/null")
+  local remote_url = handle:read("*a"):gsub("\n", "")
+  handle:close()
+  
+  if remote_url == "" then
+    vim.notify("Not in git repository", vim.log.levels.WARN)
+    return
+  end
+  
+  -- Convert SSH URL to HTTPS if needed
+  remote_url = remote_url:gsub("git@github%.com:", "https://github.com/")
+  remote_url = remote_url:gsub("%.git$", "")
+  
+  -- Get current branch
+  local branch_handle = io.popen("git branch --show-current 2>/dev/null")
+  local branch = branch_handle:read("*a"):gsub("\n", "")
+  branch_handle:close()
+  
+  if branch == "" then
+    vim.notify("Could not get git branch", vim.log.levels.WARN)
+    return
+  end
+  
+  -- Get relative file path from git root
+  local file_handle = io.popen("git ls-files --full-name " .. vim.fn.shellescape(vim.fn.expand("%")) .. " 2>/dev/null")
+  local file_path = file_handle:read("*a"):gsub("\n", "")
+  file_handle:close()
+  
+  if file_path == "" then
+    vim.notify("File not tracked by git", vim.log.levels.WARN)
+    return
+  end
+  
+  -- Get line numbers (handle visual mode range)
+  local start_line, end_line
+  local mode = vim.fn.mode()
+  
+  if mode == "v" or mode == "V" or mode == "\22" then -- Visual modes
+    -- Get visual selection range
+    start_line = vim.fn.line("'<")
+    end_line = vim.fn.line("'>")
+  else
+    -- Normal mode - current line
+    start_line = vim.api.nvim_win_get_cursor(0)[1]
+    end_line = start_line
+  end
+  
+  -- Construct GitHub URL with line range
+  local github_url, line_info
+  if start_line == end_line then
+    github_url = string.format("%s/blob/%s/%s#L%d", remote_url, branch, file_path, start_line)
+    line_info = "L" .. start_line
+  else
+    github_url = string.format("%s/blob/%s/%s#L%d-L%d", remote_url, branch, file_path, start_line, end_line)
+    line_info = "L" .. start_line .. "-L" .. end_line
+  end
+  
+  vim.fn.setreg("*", github_url)
+  vim.notify("Copied GitHub URL: " .. line_info, vim.log.levels.INFO)
+end
+
+Keymap("<Leader>yg", copy_github_url)
+V_Keymap("<Leader>yg", copy_github_url)
