@@ -1,172 +1,159 @@
 # Personal Dotfiles
 
-macOSの開発環境を構築するためのdotfilesコレクション。パフォーマンス最適化とモジュラー設計に重点を置いた実用的な設定です。
+Modern macOS development environment optimized for performance, modularity, and seamless tool integration.
 
-📋 **対応ツール一覧**: [TOOLS.md](TOOLS.md)
-🧠 **設定詳細・技術情報**: [CLAUDE.md](CLAUDE.md)
+## ✨ Features & Performance
 
-## 🚀 クイックセットアップ
+- **🐚 Zsh**: 1.2s startup (30% improvement) with modular plugin system
+- **🚀 Neovim**: <100ms startup with 15+ language LSP support
+- **🔧 Terminal**: GPU-accelerated (Alacritty/WezTerm) with unified theming
+- **⚡ Git**: Enhanced workflow with custom widgets and 50+ abbreviations
+- **🎨 Theming**: Consistent Gruvbox/Tokyo Night + JetBrains Mono across tools
 
-### 1. リポジトリのクローン
+## 🚀 Quick Start
 
 ```bash
+# Clone repository
 git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
 cd ~/src/github.com/jey3dayo/dotfiles
-```
 
-### 2. セットアップスクリプトの実行
-
-```bash
+# Run setup
 sh ./setup.sh
-```
 
-### 3. Homebrewパッケージのインストール
-
-```bash
+# Install packages
 brew bundle
 ```
 
-## 📁 構成
+## 📁 Structure
 
-### コア設定
-
-| ディレクトリ | 説明 | ステータス |
-|-------------|------|------------|
-| `zsh/` | Zsh設定（1.2s起動、モジュラー設計）[→詳細](zsh/CLAUDE.md) | ✅ 最適化完了 |
-| `nvim/` | Neovim設定（Lua、LSP統合、AI支援）[→詳細](nvim/CLAUDE.md) | ✅ 機能完成 |
-| `git/` | Git設定（エイリアス、ウィジェット統合） | ✅ 運用中 |
-| `ssh/` | SSH設定（1Password統合） | ✅ 設定済み |
-
-### ツール設定
-
-| ファイル/ディレクトリ | 説明 | 統合レベル |
-|---------------------|------|------------|
-| `Brewfile` | Homebrew パッケージ定義 | 🔄 自動管理 |
-| `mise.toml` | ランタイム管理（Node.js, Python等） | 🚀 遅延最適化 |
-| `starship.toml` | プロンプト設定 | 🎨 テーマ統合 |
-| `alacritty/` | メインターミナル設定 | ⚡ GPU加速 |
-| `wezterm/` | 代替ターミナル設定（Lua） | 🔧 高カスタマイズ |
-| `tmux/` | セッション管理・マルチプレクサ | 🔌 プラグイン生態系 |
-| `karabiner/` | キーボード最適化 | ⌨️ 生産性向上 |
-| `lazygit/` | Git TUI | 📊 ビジュアル操作 |
-
-### リンター・フォーマッター
-
-| ファイル | 説明 |
-|---------|------|
-| `biome.json` | JavaScript/TypeScript |
-| `hadolint.yaml` | Dockerfile |
-| `shellcheckrc` | シェルスクリプト |
-| `stylua.toml` | Lua |
-| `taplo.toml` | TOML |
-| `typos.toml` | スペルチェック |
-| `yamllint/config` | YAML |
-
-### アプリケーション設定
-
-| ディレクトリ | 説明 |
-|-------------|------|
-| `1Password/` | 1Password設定 |
-| `raycast/` | Raycast拡張機能 |
-| `btop/` | システムモニター |
-| `gh/` | GitHub CLI |
-
-## 🛠 主要ツール
-
-### 🚀 パフォーマンス重視
-- **Zsh + Sheldon**: 1.2s起動（30%改善達成）
-- **Neovim + lazy.nvim**: <100ms起動、15+言語LSP対応
-- **mise**: 遅延ロード最適化（-39.88ms削減）
-
-### 🎯 開発体験
-- **AI統合**: GitHub Copilot + Avante.nvim
-- **Git統合**: カスタムウィジェット、abbreviations、fzf連携
-- **検索**: fzf（リポジトリ・ファイル・プロセス・履歴）
-- **ターミナル**: Alacritty（GPU加速）+ tmux（セッション管理）
-
-### 🔧 生産性ツール
-- **1Password**: SSH鍵管理、CLI統合
-- **Raycast**: システム全体のショートカット
-- **Karabiner**: キーボード最適化
-- **GitHub CLI**: リポジトリ管理の自動化
-
-## 📦 パッケージ管理
-
-### Homebrewパッケージの管理
-
-```bash
-# 現在のパッケージをBrewfileに出力
-brew bundle dump --force
-
-# Brewfileからパッケージをインストール
-brew bundle
-
-# 不要なパッケージの削除
-brew bundle cleanup
+```
+dotfiles/
+├── zsh/           # Zsh configuration (1.2s startup, modular)
+├── nvim/          # Neovim configuration (Lua-based, LSP)
+├── git/           # Git configuration with widgets
+├── alacritty/     # GPU-accelerated terminal
+├── wezterm/       # Lua-based terminal alternative
+├── tmux/          # Session management
+├── karabiner/     # Keyboard optimization
+├── raycast/       # Productivity launcher
+├── Brewfile       # Package management
+└── mise.toml      # Runtime management
 ```
 
-### Node.jsパッケージの管理
+## 🛠️ Key Tools & Configurations
+
+### Shell & Editor
+- **Zsh + Sheldon**: 6-tier priority loading, 39.88ms mise optimization
+- **Neovim + Lazy.nvim**: AI assistance (Copilot/Avante), 15+ LSP
+- **Git integration**: Custom widgets, FZF search, abbreviations
+
+### Terminal Experience  
+- **Alacritty**: High-performance GPU acceleration
+- **WezTerm**: Lua configuration, tmux-style leader key (`Ctrl+x`)
+- **Tmux**: Session persistence with plugin ecosystem
+
+### Development Tools
+- **Mise**: Multi-language version management with lazy loading
+- **1Password**: SSH key management and CLI integration
+- **GitHub CLI**: Repository automation
+- **FZF**: Unified search (files, repos, processes, history)
+
+## 🎮 Essential Commands
 
 ```bash
-# グローバルパッケージのバックアップ
-npm list -g --json > global-package.json
+# Zsh help system
+zsh-help                    # Comprehensive help
+zsh-help keybinds          # Key bindings
+zsh-help aliases           # Abbreviations (50+)
+zsh-benchmark              # Performance measurement
 
-# バックアップからリストア
-jq -r '.dependencies | to_entries | .[] | "\(.key)@\(.value.version)"' global-package.json | xargs npm install -g
+# Git workflow (via Zsh widgets)
+^]                         # FZF repository selector
+^g^g, ^g^s, ^g^a, ^g^b    # Git status/add/branch widgets
+
+# WezTerm (Ctrl+x leader)
+Ctrl+x c                   # New tab
+Ctrl+x [                   # Vim-style copy mode
+Alt+hjkl                   # Pane navigation
 ```
 
-### ランタイム管理（mise）
+## 📈 Performance Metrics
+
+| Component | Before | After | Improvement |
+|-----------|--------|-------|-------------|
+| Zsh startup | 1.7s | 1.2s | 30% faster |
+| Neovim startup | ~200ms | <100ms | 50% faster |
+| mise loading | baseline | -39.88ms | Critical optimization |
+
+### Optimization Techniques
+- **Lazy loading**: Plugins load only when needed
+- **6-tier priority**: Essential tools load first
+- **GPU acceleration**: Hardware-optimized rendering
+- **Modular design**: Independent but integrated components
+
+## 🎨 Unified Design
+
+- **Colors**: Gruvbox/Tokyo Night theme across all tools
+- **Typography**: JetBrains Mono with Nerd Font ligatures
+- **Transparency**: 92% opacity for modern glass effects
+- **Icons**: Consistent icon system for visual feedback
+
+## 🔧 Advanced Features
+
+### Git Integration
+- **Custom widgets**: Instant status, staging, branch switching
+- **50+ abbreviations**: `g` (git), `ga` (git add), `gc` (git commit)
+- **FZF integration**: Visual branch selection and file search
+
+### WezTerm Configuration
+- **Modular Lua**: ui.lua, keybinds.lua, utils.lua structure
+- **Cross-platform**: macOS/Windows with WSL support
+- **Vim-style copy mode**: hjkl navigation, visual selection
+- **Custom tab styling**: Arrow separators, process name display
+
+### AI Development Environment
+- **GitHub Copilot**: Code completion and suggestions
+- **Avante.nvim**: AI chat integration in Neovim
+- **Claude Code**: Repository context and documentation
+
+## 📦 Package Management
 
 ```bash
-# 設定されたランタイムをインストール
-mise install
+# Homebrew packages
+brew bundle                # Install from Brewfile
+brew bundle dump --force   # Update Brewfile
+brew bundle cleanup        # Remove unused packages
 
-# 新しいランタイムの追加
-mise use node@20
-mise use python@latest
+# Runtime versions
+mise install              # Install configured versions
+mise use node@20          # Set project-specific version
+
+# Global npm packages
+npm list -g --json > global-packages.json
 ```
 
-## 🔧 カスタマイズ
+## 🔗 Documentation
 
-### ローカル設定
+- **[CLAUDE.md](CLAUDE.md)**: Comprehensive configuration guide and technical details
+- **[TOOLS.md](TOOLS.md)**: Complete tool inventory and usage patterns
+- **Component READMEs**: Detailed configuration for each tool
 
-独立した設定ファイルでプライベート設定を管理：
+## 📋 Maintenance
 
-- `git/config` - XDG準拠のGitグローバル設定
-- `git/local.gitconfig` - プライベートなGit設定（除外済み）
-- `zsh/` - Zsh設定（詳細: [CLAUDE.md](zsh/CLAUDE.md)）
+### Regular Tasks
+- **Weekly**: `brew update && brew upgrade`
+- **Monthly**: Plugin updates and performance reviews
+- **Quarterly**: Configuration audit and optimization
 
-### 🎮 よく使うコマンド
+### Monitoring
+- **Startup tracking**: `zsh-benchmark` for performance regression
+- **Plugin analysis**: Usage patterns and optimization opportunities
+- **Performance profiling**: `zsh-profile` for detailed analysis
 
-```bash
-# ヘルプシステム
-zsh-help                    # 全体ヘルプ表示
-zsh-help keybinds          # キーバインド一覧
-zsh-benchmark              # 起動時間測定
+## 📝 License
 
-# fzf統合ワークフロー
-Ctrl+]                     # ghqリポジトリ選択
-Ctrl+G Ctrl+G             # Gitステータス表示
-Ctrl+G Ctrl+A             # Gitファイル追加
-```
+MIT License - Feel free to use and adapt for your own setup.
 
-## 🎯 特徴
+---
 
-### 🏗️ アーキテクチャ
-- **モジュラー設計**: 独立しつつシームレスに統合された各ツール
-- **パフォーマンス最適化**: 遅延読み込み、起動時間最適化
-- **ポータビリティ**: macOS重視、クロスプラットフォーム対応
-
-### 🔧 実用性
-- **設定の分離**: プライベート設定とパブリック設定の完全分離
-- **自動化**: セットアップからメンテナンスまでの自動化
-- **品質管理**: 複数言語対応リンター・フォーマッター統合
-
-### 📊 実績
-- **Zsh**: 1.7s → 1.2s（30%高速化）
-- **プラグイン管理**: 6段階優先度システム
-- **クロスツール連携**: Git + fzf + abbreviationsの統合ワークフロー
-
-## 📝 ライセンス
-
-MIT License
+*Optimized for modern development workflows with focus on speed, consistency, and developer experience.*
