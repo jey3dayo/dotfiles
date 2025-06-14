@@ -76,7 +76,7 @@ return {
           {
             "MeanderingProgrammer/render-markdown.nvim",
             opts = {
-              file_types = { "markdown", "Avante" },
+              file_types = { "Avante" },
               latex = {
                 enabled = true,
               },
@@ -86,7 +86,7 @@ return {
               render_modes = { "n", "c", "t" },
               preset = "obsidian",
             },
-            ft = { "markdown", "Avante" },
+            ft = { "Avante" },
           },
         })
       )
