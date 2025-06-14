@@ -9,6 +9,7 @@
       "src/gen",
       "jest.config.js",
       "Brewfile.lock.json",
+      "karabiner/**",
       "rest-client/**",
       "raycast/**",
       ".vimperator/**"
