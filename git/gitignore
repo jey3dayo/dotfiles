@@ -86,7 +86,45 @@ cycloud/
 lazygit/
 .wrangler/
 mise/trusted-configs/
+# SSH Configuration (sensitive files)
+## Private keys and certificates
+**/id_*
+**/id_*.pub
+**/*_rsa
+**/*_rsa.pub
+**/*_dsa
+**/*_dsa.pub
+**/*_ecdsa
+**/*_ecdsa.pub
+**/*_ed25519
+**/*_ed25519.pub
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+
+## SSH sensitive configurations
+ssh/config.d/*-private-*.sshconfig
+ssh/config.d/*-confidential-*.sshconfig
+ssh/config.d/*-secret-*.sshconfig
+ssh/config.d/*-prod-*.sshconfig
+ssh/config.d/*-production-*.sshconfig
+ssh/config.d/*-corp-*.sshconfig
+ssh/config.d/*-work-*.sshconfig
+ssh/config.d/*-company-*.sshconfig
 ssh/ssh_config.d/private-host.sshconfig
+
+## SSH runtime files
+ssh/known_hosts
+ssh/known_hosts.*
+ssh/known_hosts_*
+ssh/sockets/
+ssh/.ssh/sockets/
+ssh/agent.*
+ssh/ssh-agent.*
+ssh/*.sock
 irb/irb_history
 AWS VPN Client/
 AWSVPNClient/
