@@ -1,20 +1,27 @@
-vim.filetype.add {
+local filetype = {
   extension = {
     astro = "astro",
-    gitconfig = "gitconfig",
     md = "markdown",
     mdx = "markdown",
-    eslintrc = "json",
-    stylintrc = "json",
-    babelrc = "json",
-    Podfile = "ruby",
+    gitconfig = "gitconfig",
     sshconfig = "sshconfig",
   },
+
+  filename = {
+    [".eslintrc"] = "json",
+    [".stylintrc"] = "json",
+    [".taskmasterconfig"] = "json",
+    ["Podfile"] = "ruby",
+    ["babelrc"] = "json",
+  },
+
   pattern = {
-    ["cloudformation.*%.json"] = "cloudformation.json",
-    ["cloudformation.*%.ya?ml"] = "cloudformation.yaml",
-    ["%.ts%.bk"] = "typescriptreact",
-    ["%.env.*"] = "config",
-    ["user%-abbreviations"] = "zsh",
+    ["^cloudformation.*.ya?ml$"] = "cloudformation.yaml",
+    ["^cloudformation.*.json$"] = "cloudformation.json",
+    ["%.ts%.bk$"] = "typescriptreact",
+    ["%.env.*$"] = "config",
+    ["^user%-abbreviations$"] = "zsh",
   },
 }
+
+vim.filetype.add(filetype)
