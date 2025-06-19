@@ -115,6 +115,7 @@ ssh/config.d/*-corp-*.sshconfig
 ssh/config.d/*-work-*.sshconfig
 ssh/config.d/*-company-*.sshconfig
 ssh/ssh_config.d/private-host.sshconfig
+ssh.backup*
 
 ## SSH runtime files
 ssh/known_hosts
