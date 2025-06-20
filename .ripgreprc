@@ -1,58 +1,120 @@
-# Custom file types
+# Custom file types for Next.js development
 --type-add
-web:*.{html,css,js}
+web:*.{html,htm}
+--type-add
+js:*.{js,mjs,cjs,jsx}
+--type-add
+ts:*.{ts,tsx,d.ts}
+--type-add
+css:*.{css,scss,sass,less}
+--type-add
+module:*.module.{css,scss,sass,less}
+--type-add
+json:*.{json,jsonc,json5}
+--type-add
+markdown:*.{md,mdx}
+--type-add
+config:*.{config.js,config.ts,config.mjs,config.cjs}
+--type-add
+env:*.{env,env.local,env.development,env.production,env.test}
+--type-add
+yaml:*.{yml,yaml}
 
 # Search behavior
 --smart-case
 --follow
 --hidden
 
-# Version Control
+# Version Control & System Files
 --glob=!.git/*
 --glob=!.hg/*
 --glob=!.svn/*
 --glob=!CVS/*
 --glob=!.bzr/*
 --glob=!_darcs/*
-
-# System Files
 --glob=!.DS_Store
 --glob=!Thumbs.db
+--glob=!*.swp
+--glob=!*.swo
+--glob=!*~
 
 # Dependencies
 --glob=!node_modules/*
 --glob=!bower_components/*
 --glob=!vendor/*
 --glob=!ios/Pods/*
+--glob=!.pnp.*
+--glob=!.yarn/*
 
-# Lock Files
---glob=!yarn.lock
---glob=!yarn-error.log
---glob=!yarn-*.cjs
---glob=!package-lock.json
---glob=!pnpm-lock.yaml
-
-# Build Output
+# Next.js specific
 --glob=!.next/*
 --glob=!out/*
+--glob=!.vercel/*
+--glob=!.turbo/*
+
+# Build output
 --glob=!dist/*
+--glob=!build/*
 --glob=!output/*
+--glob=!coverage/*
+--glob=!.nyc_output/*
+
+# Storybook
 --glob=!storybook-static/*
---glob=!*.bundle
---glob=!*.cache
+--glob=!.storybook-out/*
+
+# Testing
+--glob=!__tests__/coverage/*
+--glob=!test-results/*
+--glob=!playwright-report/*
+--glob=!.playwright/*
+
+# Cache directories
+--glob=!.cache/*
+--glob=!*.cache/*
+--glob=!.parcel-cache/*
+--glob=!.nuxt/*
+--glob=!.docusaurus/*
+--glob=!.serverless/*
+--glob=!.fusebox/*
+--glob=!.dynamodb/*
 
 # Generated Files
 --glob=!prisma/generated/*
---glob=!prisma/client/*
---glob=!gen/v1/*
+--glob=!generated/*
+--glob=!gen/*
+--glob=!*.generated.*
 --glob=!tsconfig.tsbuildinfo
+--glob=!*.tsbuildinfo
 
-# Cache
+# Lock files
+--glob=!yarn.lock
+--glob=!package-lock.json
+--glob=!pnpm-lock.yaml
+--glob=!bun.lockb
+--glob=!composer.lock
+--glob=!Gemfile.lock
+
+# Logs
+--glob=!*.log
+--glob=!logs/*
+--glob=!yarn-error.log
+--glob=!yarn-debug.log*
+--glob=!lerna-debug.log*
+--glob=!npm-debug.log*
+--glob=!pnpm-debug.log*
+
+# IDE
+--glob=!.idea/*
+--glob=!.vscode/*
+--glob=!*.sublime-project
+--glob=!*.sublime-workspace
+
+# Misc
 --glob=!tmp/*
+--glob=!temp/*
+--glob=!.tmp/*
+--glob=!.temp/*
 --glob=!.zcompcache/*
-
-# Project Specific
---glob=!lake.prd.cabi
---glob=!*jquery*
 --glob=!public/*
 --glob=!raycast/*
