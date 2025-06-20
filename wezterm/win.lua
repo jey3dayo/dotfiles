@@ -1,4 +1,5 @@
 local wezterm = require "wezterm"
+local constants = require "./constants"
 local wsl_domains = wezterm.default_wsl_domains()
 
 for _, dom in ipairs(wsl_domains) do
@@ -19,8 +20,8 @@ return {
   wsl_domains = wsl_domains,
 
   -- window
-  font_size = 12,
-  initial_cols = 130,
-  initial_rows = 30,
-  window_decorations = "TITLE",
+  font_size = constants.windows.font_size,
+  initial_cols = constants.windows.initial_cols,
+  initial_rows = constants.windows.initial_rows,
+  window_decorations = constants.windows.decorations,
 }

@@ -1,10 +1,8 @@
 local wezterm = require "wezterm"
 local utils = require "./utils"
+local constants = require "./constants"
 
 local act = wezterm.action
-
--- Default opacity value
-local DEFAULT_OPACITY = 0.92
 
 local default_keybinds = {
   { key = "n", mods = "SUPER", action = act.SpawnWindow },
@@ -56,36 +54,7 @@ local tmux_keybinds = {
   },
 }
 
--- Opacity adjustment callbacks
-wezterm.on("increase-opacity", function(window, pane)
-  local overrides = window:get_config_overrides() or {}
-  if not overrides.window_background_opacity then
-    overrides.window_background_opacity = DEFAULT_OPACITY
-  end
-  overrides.window_background_opacity = math.min(overrides.window_background_opacity + 0.05, 1.0)
-  overrides.text_background_opacity = overrides.window_background_opacity
-  window:set_config_overrides(overrides)
-  window:toast_notification("wezterm", string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100), nil, 1000)
-end)
-
-wezterm.on("decrease-opacity", function(window, pane)
-  local overrides = window:get_config_overrides() or {}
-  if not overrides.window_background_opacity then
-    overrides.window_background_opacity = DEFAULT_OPACITY
-  end
-  overrides.window_background_opacity = math.max(overrides.window_background_opacity - 0.05, 0.1)
-  overrides.text_background_opacity = overrides.window_background_opacity
-  window:set_config_overrides(overrides)
-  window:toast_notification("wezterm", string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100), nil, 1000)
-end)
-
-wezterm.on("reset-opacity", function(window, pane)
-  local overrides = window:get_config_overrides() or {}
-  overrides.window_background_opacity = DEFAULT_OPACITY
-  overrides.text_background_opacity = DEFAULT_OPACITY
-  window:set_config_overrides(overrides)
-  window:toast_notification("wezterm", string.format("Opacity: %.0f%% (reset)", DEFAULT_OPACITY * 100), nil, 1000)
-end)
+-- Opacity adjustment is now handled in events.lua
 
 local wezterm_keybinds = {
   -- Tab
@@ -345,7 +314,7 @@ if wezterm.target_triple:find "windows" then keys = utils.array_concat(keys, win
 return {
   -- TODO: いつかtrueにする
   disable_default_key_bindings = false,
-  leader = { key = "x", mods = "CTRL", timeout_milliseconds = 1000 },
+  leader = constants.leader,
   keys = keys,
   key_tables = key_tables,
   mouse_bindings = mouse_bindings,

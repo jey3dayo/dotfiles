@@ -3,7 +3,11 @@ local wezterm = require "wezterm"
 local M = {}
 
 function M.font_with_fallback(name, params)
-  local names = { name, "Inconsolata Nerd Font Mono", "Noto Color Emoji" }
+  local constants = require "./constants"
+  local names = { name }
+  for _, fallback in ipairs(constants.font.fallbacks) do
+    table.insert(names, fallback)
+  end
   return wezterm.font_with_fallback(names, params)
 end
 

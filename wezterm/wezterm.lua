@@ -3,7 +3,11 @@ local utils = require "./utils"
 local ui = require "./ui"
 local keybinds = require "./keybinds"
 local os = require "./os"
+local events = require "./events"
 local gpus = wezterm.gui.enumerate_gpus()
+
+-- Register all event handlers
+events.register_events()
 
 local config = {
   use_ime = true,
