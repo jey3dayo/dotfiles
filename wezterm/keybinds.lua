@@ -53,6 +53,37 @@ local tmux_keybinds = {
   },
 }
 
+-- Opacity adjustment callbacks
+wezterm.on("increase-opacity", function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  if not overrides.window_background_opacity then
+    overrides.window_background_opacity = 0.92
+  end
+  overrides.window_background_opacity = math.min(overrides.window_background_opacity + 0.05, 1.0)
+  overrides.text_background_opacity = overrides.window_background_opacity
+  window:set_config_overrides(overrides)
+  window:toast_notification("wezterm", string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100), nil, 1000)
+end)
+
+wezterm.on("decrease-opacity", function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  if not overrides.window_background_opacity then
+    overrides.window_background_opacity = 0.92
+  end
+  overrides.window_background_opacity = math.max(overrides.window_background_opacity - 0.05, 0.1)
+  overrides.text_background_opacity = overrides.window_background_opacity
+  window:set_config_overrides(overrides)
+  window:toast_notification("wezterm", string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100), nil, 1000)
+end)
+
+wezterm.on("reset-opacity", function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  overrides.window_background_opacity = 0.92
+  overrides.text_background_opacity = 0.92
+  window:set_config_overrides(overrides)
+  window:toast_notification("wezterm", "Opacity: 92% (reset)", nil, 1000)
+end)
+
 local wezterm_keybinds = {
   -- Tab
   { key = "Tab", mods = "ALT", action = act { ActivateTabRelative = 1 } },
@@ -73,6 +104,11 @@ local wezterm_keybinds = {
   -- Window
   { key = "n", mods = "ALT", action = act { ActivateWindowRelative = 1 } },
   { key = "p", mods = "ALT", action = act { ActivateWindowRelative = -1 } },
+
+  -- Opacity
+  { key = "+", mods = "ALT|SHIFT", action = act { EmitEvent = "increase-opacity" } },
+  { key = "=", mods = "ALT|SHIFT", action = act { EmitEvent = "decrease-opacity" } },
+  { key = "0", mods = "ALT|SHIFT", action = act { EmitEvent = "reset-opacity" } },
 
   -- Show the launcher
   -- { key = "0",   mods = "ALT",            action = act.ShowLauncherArgs { flags = "FUZZY|COMMANDS" } },
