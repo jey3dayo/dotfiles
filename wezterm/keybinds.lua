@@ -3,6 +3,9 @@ local utils = require "./utils"
 
 local act = wezterm.action
 
+-- Default opacity value
+local DEFAULT_OPACITY = 0.92
+
 local default_keybinds = {
   { key = "n", mods = "SUPER", action = act.SpawnWindow },
   { key = "w", mods = "SUPER", action = act { CloseCurrentTab = { confirm = true } } },
@@ -57,7 +60,7 @@ local tmux_keybinds = {
 wezterm.on("increase-opacity", function(window, pane)
   local overrides = window:get_config_overrides() or {}
   if not overrides.window_background_opacity then
-    overrides.window_background_opacity = 0.92
+    overrides.window_background_opacity = DEFAULT_OPACITY
   end
   overrides.window_background_opacity = math.min(overrides.window_background_opacity + 0.05, 1.0)
   overrides.text_background_opacity = overrides.window_background_opacity
@@ -68,7 +71,7 @@ end)
 wezterm.on("decrease-opacity", function(window, pane)
   local overrides = window:get_config_overrides() or {}
   if not overrides.window_background_opacity then
-    overrides.window_background_opacity = 0.92
+    overrides.window_background_opacity = DEFAULT_OPACITY
   end
   overrides.window_background_opacity = math.max(overrides.window_background_opacity - 0.05, 0.1)
   overrides.text_background_opacity = overrides.window_background_opacity
@@ -78,10 +81,10 @@ end)
 
 wezterm.on("reset-opacity", function(window, pane)
   local overrides = window:get_config_overrides() or {}
-  overrides.window_background_opacity = 0.92
-  overrides.text_background_opacity = 0.92
+  overrides.window_background_opacity = DEFAULT_OPACITY
+  overrides.text_background_opacity = DEFAULT_OPACITY
   window:set_config_overrides(overrides)
-  window:toast_notification("wezterm", "Opacity: 92% (reset)", nil, 1000)
+  window:toast_notification("wezterm", string.format("Opacity: %.0f%% (reset)", DEFAULT_OPACITY * 100), nil, 1000)
 end)
 
 local wezterm_keybinds = {
