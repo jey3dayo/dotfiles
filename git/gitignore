@@ -189,4 +189,6 @@ vendor
 .clinerules
 .aider*
 
-**/.claude/settings.local.json
+# Claude AI Tools
+claude/
+!claude/settings.json
