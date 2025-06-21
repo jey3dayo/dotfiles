@@ -18,7 +18,7 @@ for _, server in ipairs(config.enabled_servers) do
     table.insert(disabled_servers, server)
   else
     local opts = { on_attach = on_attach, capabilities = capabilities }
-    vim.lsp.config(server, with(opts, extends))
+    lspconfig[server].setup(with(opts, extends))
   end
 end
 

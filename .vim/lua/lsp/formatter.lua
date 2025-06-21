@@ -30,53 +30,58 @@ end
 local _format_autocmd_registered = false
 
 local function get_preferred_format_client(bufnr)
-  local clients = vim.lsp.get_clients({ bufnr = bufnr })
+  local clients = vim.lsp.get_clients { bufnr = bufnr }
   local format_clients = vim.tbl_filter(function(c)
-    return c.supports_method("textDocument/formatting")
+    return c.supports_method "textDocument/formatting"
   end, clients)
-  
+
   if #format_clients == 0 then return nil end
-  
+
   -- 優先順位: biome > prettier > ts_ls > efm
   local priority_order = { "biome", "prettier", "ts_ls", "efm" }
-  
+
   for _, preferred_name in ipairs(priority_order) do
     for _, client in ipairs(format_clients) do
-      if client.name == preferred_name then
-        return client
-      end
+      if client.name == preferred_name then return client end
     end
   end
-  
+
   -- 優先順位にない場合は最初のクライアントを返す
   return format_clients[1]
 end
 
 M.setup = function(bufnr, client, args)
   if config.isDebug then
-    vim.notify(string.format("Setting up formatter for client: %s, supports formatting: %s", 
-      client.name, 
-      tostring(client.supports_method "textDocument/formatting")), vim.log.levels.INFO)
+    vim.notify(
+      string.format(
+        "Setting up formatter for client: %s, supports formatting: %s",
+        client.name,
+        tostring(client.supports_method "textDocument/formatting")
+      ),
+      vim.log.levels.INFO
+    )
   end
   if not client.supports_method "textDocument/formatting" then return end
 
   -- グローバルなフォーマットオートコマンドを一度だけ登録
   if not _format_autocmd_registered then
     _format_autocmd_registered = true
-    
+
     utils.autocmd("BufWritePre", {
       pattern = "*",
       callback = function(event)
         local buf = event.buf
         local preferred_client = get_preferred_format_client(buf)
-        
+
         if not preferred_client then return end
-        
+
         if config.isDebug then
-          vim.notify(string.format("Selected client for formatting: %s (id: %d)", 
-            preferred_client.name, preferred_client.id), vim.log.levels.INFO)
+          vim.notify(
+            string.format("Selected client for formatting: %s (id: %d)", preferred_client.name, preferred_client.id),
+            vim.log.levels.INFO
+          )
         end
-        
+
         create_format_command(buf, preferred_client)
       end,
     })

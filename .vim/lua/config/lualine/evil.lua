@@ -3,8 +3,8 @@
 -- Credit: glepnir
 -- Refactored into modular components
 
-local colors = require('config.lualine.colors')
-local components = require('config.lualine.components')
+local colors = require "config.lualine.colors"
+local components = require "config.lualine.components"
 
 -- Config
 local config = {

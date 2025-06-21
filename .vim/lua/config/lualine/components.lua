@@ -1,5 +1,5 @@
-local colors = require('config.lualine.colors')
-local conditions = require('config.lualine.conditions')
+local colors = require "config.lualine.colors"
+local conditions = require "config.lualine.conditions"
 
 local M = {}
 
@@ -41,9 +41,11 @@ end
 -- Component definitions
 M.left_components = {
   -- Mode indicator
-  M.create_separator("▊", function() return { fg = colors.mode_color[vim.fn.mode()] } end, { left = 0, right = 1 }),
-  M.create_mode_component(""),
-  
+  M.create_separator("▊", function()
+    return { fg = colors.mode_color[vim.fn.mode()] }
+  end, { left = 0, right = 1 }),
+  M.create_mode_component "",
+
   -- File info
   {
     "filesize",
@@ -54,11 +56,11 @@ M.left_components = {
     cond = conditions.buffer_not_empty,
     color = { fg = colors.colors.primary, gui = "bold" },
   },
-  
+
   -- Position
   { "location" },
   { "progress", color = { fg = colors.colors.fg, gui = "bold" } },
-  
+
   -- Diagnostics
   {
     "diagnostics",
@@ -70,25 +72,21 @@ M.left_components = {
       color_info = { fg = colors.colors.cyan },
     },
   },
-  
+
   -- Center separator
   {
     function()
       return "%="
     end,
   },
-  
+
   -- LSP info
-  M.create_lsp_component(
-    function(bufnr) return require("lsp.client_manager").get_all_lsp_client_names(bufnr) end,
-    " LSP:",
-    { fg = colors.colors.fg, gui = "bold" }
-  ),
-  M.create_lsp_component(
-    function(bufnr) return require("lsp.client_manager").get_lsp_client_names(bufnr) end,
-    " Fmt:",
-    { fg = colors.colors.orange, gui = "bold" }
-  ),
+  M.create_lsp_component(function(bufnr)
+    return require("lsp.client_manager").get_all_lsp_client_names(bufnr)
+  end, " LSP:", { fg = colors.colors.fg, gui = "bold" }),
+  M.create_lsp_component(function(bufnr)
+    return require("lsp.client_manager").get_lsp_client_names(bufnr)
+  end, " Fmt:", { fg = colors.colors.orange, gui = "bold" }),
 }
 
 M.right_components = {
@@ -99,7 +97,7 @@ M.right_components = {
     cond = conditions.hide_in_width,
     color = { fg = colors.colors.green, gui = "bold" },
   },
-  
+
   -- File format
   {
     "fileformat",
@@ -107,7 +105,7 @@ M.right_components = {
     icons_enabled = false,
     color = { fg = colors.colors.green, gui = "bold" },
   },
-  
+
   -- Git info
   { "branch", icon = "", color = { fg = colors.colors.violet, gui = "bold" } },
   {
@@ -120,7 +118,7 @@ M.right_components = {
     },
     cond = conditions.hide_in_width,
   },
-  
+
   -- End separator
   M.create_separator("▊", { fg = colors.colors.primary }, { left = 1 }),
 }
