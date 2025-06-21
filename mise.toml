@@ -4,3 +4,78 @@ node = "24"
 [env]
 _.file = [".env"]
 _.source = [".venv/bin/activate"]
+
+[tasks.format]
+description = "Format all files"
+run = [
+  "mise run format:biome",
+  "mise run format:markdown",
+  "mise run format:yaml", 
+  "mise run format:lua",
+  "mise run format:shell"
+]
+
+[tasks."format:check"]
+description = "Check all formatting (GitHub Actions compatible)"
+run = [
+  "mise run format:biome:check",
+  "mise run format:markdown:check",
+  "mise run format:yaml:check",
+  "mise run format:lua:check",
+  "mise run format:shell:check"
+]
+
+[tasks."format:biome"]
+description = "Format JS/TS/JSON files with Biome"
+run = "biome format --write ."
+
+[tasks."format:biome:check"]
+description = "Check JS/TS/JSON formatting"
+run = "biome format --write=false ."
+
+[tasks."format:markdown"]
+description = "Format Markdown files"
+run = 'files=$(find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit); [ -n "$files" ] && echo "$files" | xargs prettier --write'
+
+[tasks."format:markdown:check"]
+description = "Check Markdown formatting"
+run = 'files=$(find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit); [ -n "$files" ] && echo "$files" | xargs prettier --check'
+
+[tasks."format:yaml"]
+description = "Format YAML files"
+run = 'files=$(find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml); [ -n "$files" ] && echo "$files" | xargs prettier --write'
+
+[tasks."format:yaml:check"]
+description = "Check YAML formatting"
+run = 'files=$(find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml); [ -n "$files" ] && echo "$files" | xargs prettier --check'
+
+[tasks."format:lua"]
+description = "Format Lua files"
+run = "stylua ."
+
+[tasks."format:lua:check"]
+description = "Check Lua formatting (same as GitHub Actions)"
+run = "stylua --check ."
+
+[tasks."format:shell"]
+description = "Format shell files"  
+run = "find . \\( -name '*.sh' \\) ! -path './node_modules/*' ! -path './tmux/plugins/*' ! -path './fisher/*' ! -path './claude/local/node_modules/*' ! -path './zsh/.zinit/*' | xargs -r shfmt -w"
+
+[tasks."format:shell:check"]
+description = "Check shell script formatting"
+run = "find . \\( -name '*.sh' \\) ! -path './node_modules/*' ! -path './tmux/plugins/*' ! -path './fisher/*' ! -path './claude/local/node_modules/*' ! -path './zsh/.zinit/*' | xargs -r shfmt -d"
+
+[tasks.update]
+description = "Update all dependencies"
+run = [
+  "mise run update:submodules",
+  "mise run update:brew"
+]
+
+[tasks."update:submodules"]
+description = "Update git submodules to latest (discards local changes)"
+run = "git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote"
+
+[tasks."update:brew"]
+description = "Update Homebrew packages"
+run = "brew update && brew upgrade"
