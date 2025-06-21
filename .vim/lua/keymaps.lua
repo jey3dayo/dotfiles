@@ -198,3 +198,18 @@ end
 
 Keymap("<Leader>yg", copy_github_url)
 V_Keymap("<Leader>yg", copy_github_url)
+
+-- Format keybindings
+Keymap("<C-e>f", "<cmd>Format<CR>", { desc = "Format file (LSP)" })
+
+-- Prettier formatting
+Keymap("<C-e>p", function()
+  vim.cmd("!prettier --write " .. vim.fn.expand("%"))
+  vim.cmd("edit!")
+end, { desc = "Format with Prettier" })
+
+-- Biome formatting
+Keymap("<C-e>b", function()
+  vim.cmd("!biome format --write " .. vim.fn.expand("%"))
+  vim.cmd("edit!")
+end, { desc = "Format with Biome" })
