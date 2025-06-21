@@ -11,7 +11,7 @@ tail -1 /tmp/startup_clean.log
 
 echo ""
 echo "2. Loading a small file:"
-echo "print('test')" > /tmp/test.lua
+echo "print('test')" >/tmp/test.lua
 nvim --startuptime /tmp/startup_file.log /tmp/test.lua +qall
 tail -1 /tmp/startup_file.log
 
