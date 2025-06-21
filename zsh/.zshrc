@@ -65,7 +65,17 @@ fi
 
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 
-# removed custom source
-zsh-defer unfunction source
+# removed custom source - mark for cleanup and defer removal
+_cleanup_custom_source() {
+  if (( $+functions[source] )) && [[ "$(whence -v source)" == *"ensure_zcompiled"* ]]; then
+    unfunction source 2>/dev/null || true
+  fi
+}
+
+if (( $+functions[zsh-defer] )); then
+  zsh-defer _cleanup_custom_source
+else
+  _cleanup_custom_source
+fi
 
 # vim: set syntax=zsh:

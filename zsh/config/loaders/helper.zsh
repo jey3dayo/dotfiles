@@ -4,7 +4,7 @@
 _defer_or_source() {
   local file="$1"
   # zsh-deferが利用可能な場合は遅延読み込み、そうでなければ即座に読み込み
-  if (($ + functions[zsh - defer])); then
+  if (( $+functions[zsh-defer] )); then
     zsh-defer source "$file"
   else
     source "$file"

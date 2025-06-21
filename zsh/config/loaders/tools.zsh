@@ -16,7 +16,7 @@ load_tool_settings() {
     # Skip already loaded critical tools
     [[ "$tool_name" == "fzf" || "$tool_name" == "git" ]] && continue
 
-    if (($ + functions[zsh - defer])); then
+    if (( $+functions[zsh-defer] )); then
       # Stagger tool loading to reduce startup spike
       case "$tool_name" in
       mise | starship) zsh-defer -t 5 source "$tool_file" ;;
