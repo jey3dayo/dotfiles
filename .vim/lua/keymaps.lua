@@ -107,7 +107,7 @@ local function copy_current_file_path()
   vim.fn.setreg("*", path)
   vim.api.nvim_echo({ { "Copied: " .. path, "None" } }, true, {})
 end
-Keymap("<Leader>yf", copy_current_file_path)
+Keymap("Yf", copy_current_file_path)
 
 -- ファイル名とバッファ内容をクリップボードにコピー
 local function copy_buffer_with_path_and_code_block()
@@ -120,22 +120,14 @@ local function copy_buffer_with_path_and_code_block()
 end
 Keymap("YY", copy_buffer_with_path_and_code_block)
 
--- Copy notifications to clipboard
-local function copy_notifications()
-  local notifications = require("noice").api.get_status()
-  if notifications then
-    vim.fn.setreg("*", notifications)
-    vim.notify("Copied notifications to clipboard", vim.log.levels.INFO)
-  else
-    vim.notify("No notifications found", vim.log.levels.WARN)
-  end
-end
-Keymap("<Leader>yn", copy_notifications)
-
 -- Copy GitHub URL for current file and line/range
 local function copy_github_url()
   -- Get git remote URL
   local handle = io.popen "git remote get-url origin 2>/dev/null"
+  if not handle then
+    vim.notify("Failed to open remote handle", vim.log.levels.ERROR)
+    return
+  end
   local remote_url = handle:read("*a"):gsub("\n", "")
   handle:close()
 
@@ -150,6 +142,11 @@ local function copy_github_url()
 
   -- Get current branch
   local branch_handle = io.popen "git branch --show-current 2>/dev/null"
+  if not branch_handle then
+    vim.notify("Failed to open branch handle", vim.log.levels.ERROR)
+    return
+  end
+
   local branch = branch_handle:read("*a"):gsub("\n", "")
   branch_handle:close()
 
@@ -160,6 +157,10 @@ local function copy_github_url()
 
   -- Get relative file path from git root
   local file_handle = io.popen("git ls-files --full-name " .. vim.fn.shellescape(vim.fn.expand "%") .. " 2>/dev/null")
+  if not file_handle then
+    vim.notify("Failed to open file handle", vim.log.levels.ERROR)
+    return
+  end
   local file_path = file_handle:read("*a"):gsub("\n", "")
   file_handle:close()
 
@@ -196,8 +197,8 @@ local function copy_github_url()
   vim.notify("Copied GitHub URL: " .. line_info, vim.log.levels.INFO)
 end
 
-Keymap("<Leader>yg", copy_github_url)
-V_Keymap("<Leader>yg", copy_github_url)
+Keymap("Yg", copy_github_url)
+V_Keymap("Yg", copy_github_url)
 
 -- Format keybindings
 Keymap("<C-e>f", "<cmd>Format<CR>", { desc = "Format file (LSP)" })
