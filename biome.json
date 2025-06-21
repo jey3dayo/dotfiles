@@ -12,7 +12,11 @@
       "karabiner/**",
       "rest-client/**",
       "raycast/**",
-      ".vimperator/**"
+      ".vimperator/**",
+      "tmux/plugins/**",
+      "fisher/**",
+      "zsh/.zinit/**",
+      "claude/local/node_modules/**"
     ]
   },
   "linter": {

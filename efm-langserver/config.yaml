@@ -5,7 +5,7 @@ lint-debounce: 1s
 
 tools:
   any-excitetranslate: &any-excitetranslate
-    hover-command: 'excitetranslate'
+    hover-command: "excitetranslate"
     hover-stdin: true
 
 languages:
