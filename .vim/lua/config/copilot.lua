@@ -18,7 +18,7 @@ vim.g.copilot_filetypes = {
 }
 
 copilot.setup {
-  suggestion = { enabled = false },
+  suggestion = { enabled = false },  -- Disable to use Supermaven instead
   panel = { enabled = false },
   copilot_node_command = utils.find_command {
     os.getenv "HOME" .. "/.mise/shims/node",

@@ -10,15 +10,17 @@ local config = require "lsp.config"
 
 if not (mason_lspconfig and lspconfig) then return end
 
-local disabled_servers = {}
+local disabled_servers = { "efm" }  -- Manually setup efm below to prevent duplicate
 
 for _, server in ipairs(config.enabled_servers) do
-  local extends = utils.safe_require("lsp.settings." .. server)
-  if extends and type(extends) == "table" and extends.autostart == false then
-    table.insert(disabled_servers, server)
-  else
-    local opts = { on_attach = on_attach, capabilities = capabilities }
-    lspconfig[server].setup(with(opts, extends))
+  if server ~= "efm" then  -- Skip efm here
+    local extends = utils.safe_require("lsp.settings." .. server)
+    if extends and type(extends) == "table" and extends.autostart == false then
+      table.insert(disabled_servers, server)
+    else
+      local opts = { on_attach = on_attach, capabilities = capabilities }
+      lspconfig[server].setup(with(opts, extends))
+    end
   end
 end
 
@@ -30,7 +32,9 @@ mason_lspconfig.setup {
   },
 }
 
-lspconfig.efm.setup {
+-- Setup EFM only once using singleton pattern
+local efm_singleton = require "lsp.efm_singleton"
+efm_singleton.setup {
   filetypes = vim.tbl_keys(languages),
   settings = {
     rootMarkers = config.config_files,

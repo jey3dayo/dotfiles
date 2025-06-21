@@ -15,6 +15,7 @@ vim.defer_fn(function()
   require "colorscheme"
   require "load_config"
   require "lsp.autoformat"
+  require "lsp.safe_client"  -- Add safe client wrapper
 
   -- Load neovide config only if running in neovide
   if vim.g.neovide then require "neovide" end

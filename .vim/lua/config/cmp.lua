@@ -28,13 +28,10 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ["<Tab>"] = vim.schedule_wrap(function(fallback)
-      if cmp.visible() and has_words_before() then
-        cmp.select_next_item { behavior = cmp.SelectBehavior.Select }
-      else
-        fallback()
-      end
-    end),
+    -- Use C-n/C-p for cmp navigation instead of Tab
+    ["<Tab>"] = cmp.mapping(function(fallback)
+      fallback()
+    end, { "i", "s" }),
     ["<C-l>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
     ["<C-k>"] = cmp.mapping.confirm {
