@@ -12,24 +12,20 @@
       "**/*.json",
       "!raycast/**",
       "!.vimperator/**",
-      "!rest-client/**"
+      "!rest-client/**",
+      "!karabiner/**",
+      "!Brewfile.lock.json"
     ],
     "experimentalScannerIgnores": [
       ".cache",
       "dist",
       "node_modules",
-      "src/gen",
-      "jest.config.js",
-      "Brewfile.lock.json",
-      "karabiner/**",
-      "rest-client/**",
-      "raycast/**",
-      ".vimperator/**",
-      "tmux/plugins/**",
-      "fisher/**",
-      "zsh/.zinit/**",
-      "claude/local/node_modules/**",
-      "treefmt.toml"
+      "raycast",
+      ".vimperator",
+      "tmux",
+      "fisher",
+      "karabiner",
+      "rest-client"
     ],
     "maxSize": 2097152
   },
