@@ -17,6 +17,7 @@
       "Bash(sheldon:*)",
       "Bash(abbr:*)",
       "Bash(nvim:*)",
+      "Bash(vim:*)",
       "Bash(wezterm:*)",
       "Bash(lua:*)",
       "Bash(brew:*)",
