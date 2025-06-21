@@ -22,7 +22,7 @@ local linters = {
   markdownlint = require "efmls-configs.linters.markdownlint",
   ruff_linter = require "efmls-configs.linters.ruff",
   vint = require "efmls-configs.linters.vint",
-  -- yamllint = require "efmls-configs.linters.yamllint",
+  yamllint = require "efmls-configs.linters.yamllint",
   codespell = require "efmls-configs.linters.codespell",
   luacheck = require "efmls-configs.linters.luacheck",
 }
