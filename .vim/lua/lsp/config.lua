@@ -28,6 +28,7 @@ M.servers = {
   efm = { installed = true, enabled = true },
   jsonls = { installed = true, enabled = true },
   lua_ls = { installed = true, enabled = true },
+  marksman = { installed = true, enabled = true },
   prismals = { installed = true, enabled = true },
   pylsp = { installed = true, enabled = true },
   ruff = { installed = true, enabled = true },

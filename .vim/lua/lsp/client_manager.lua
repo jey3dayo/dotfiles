@@ -64,6 +64,24 @@ function M.get_lsp_client_names(bufnr)
   return client_names
 end
 
+-- Get all active LSP clients (for display purposes)
+function M.get_all_lsp_client_names(bufnr)
+  local clients = vim.lsp.get_clients { bufnr = bufnr }
+  local client_names = {}
+  local seen = {}
+
+  if next(clients) == nil then return client_names end
+
+  for _, client in pairs(clients) do
+    if not seen[client.name] then
+      table.insert(client_names, client.name)
+      seen[client.name] = true
+    end
+  end
+
+  return client_names
+end
+
 function M.format_lsp_clients(bufnr)
   local client_names = M.get_lsp_client_names(bufnr)
   return #client_names > 0 and table.concat(client_names, ",") or "N/A"
