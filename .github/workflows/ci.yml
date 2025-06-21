@@ -1,4 +1,4 @@
-name: Format All Files
+name: CI - Format and Lint
 
 on:
   push:
@@ -19,7 +19,7 @@ on:
       - "biome.json"
       - "stylua.toml"
       - ".styluaignore"
-      - ".github/workflows/format.yml"
+      - ".github/workflows/ci.yml"
   pull_request:
     paths:
       - "**/*.md"
@@ -38,11 +38,11 @@ on:
       - "biome.json"
       - "stylua.toml"
       - ".styluaignore"
-      - ".github/workflows/format.yml"
+      - ".github/workflows/ci.yml"
   workflow_dispatch:
 
 jobs:
-  format-check:
+  format-and-lint:
     runs-on: ubuntu-latest
 
     steps:
@@ -79,8 +79,23 @@ jobs:
             echo "$files" | xargs prettier --check
           fi
 
-      # Stylua for Lua
-      - name: Check Lua formatting
+      # Lua linting and formatting
+      - name: Set up Lua (LuaJIT)
+        uses: leafo/gh-actions-lua@v11
+
+      - name: Set up LuaRocks
+        uses: leafo/gh-actions-luarocks@v5
+
+      - name: Install luacheck
+        run: luarocks install --local luacheck
+
+      - name: Add LuaRocks bin to PATH
+        run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH
+
+      - name: Lint Lua with luacheck
+        run: luacheck .
+
+      - name: Check Lua formatting with stylua
         uses: JohnnyMorganz/stylua-action@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
