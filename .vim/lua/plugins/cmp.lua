@@ -12,7 +12,6 @@ return {
   { "hrsh7th/cmp-nvim-lsp-signature-help", event = "InsertEnter", dependencies = deps.cmp },
   { "hrsh7th/cmp-buffer", event = "InsertEnter", dependencies = deps.cmp },
   { "hrsh7th/cmp-path", event = "InsertEnter", dependencies = deps.cmp },
-  { "hrsh7th/cmp-cmdline", event = "CmdlineEnter", dependencies = deps.cmp },
   { "f3fora/cmp-spell", event = "InsertEnter", dependencies = deps.cmp },
   { "petertriho/cmp-git", ft = { "gitcommit", "markdown" }, dependencies = deps.cmp },
   { "dcampos/cmp-snippy", event = "InsertEnter", dependencies = deps.cmp },

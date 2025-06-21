@@ -70,7 +70,6 @@ cmp.setup {
         preselect_correct_word = true,
       },
     },
-    { name = "cmdline" },
   },
   formatting = {
     format = lspkind.cmp_format {
@@ -81,12 +80,8 @@ cmp.setup {
   },
 }
 
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
-  completion = { completeopt = "menu,menuone,noinsert,noselect" },
-  sources = { { name = "path" }, { name = "cmdline" } },
-})
-
+-- Using native completion for command line (:)
+-- Search completion (/, ?) is still useful with cmp for buffer content
 cmp.setup.cmdline({ "/", "?" }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = { { name = "buffer" } },

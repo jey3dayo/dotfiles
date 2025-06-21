@@ -66,6 +66,7 @@ local options = {
   matchtime = 1,
   cursorcolumn = true,
   wildmenu = true,
+  wildmode = "longest:full,full",
   laststatus = 3,
   lazyredraw = false,
   ttyfast = true,

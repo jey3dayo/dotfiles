@@ -7,6 +7,9 @@ return {
   {
     "neovim/nvim-lspconfig",
     lazy = false,
+    config = function()
+      require "config/native-lsp-ui"
+    end,
   },
   {
     "williamboman/mason-lspconfig.nvim",
@@ -18,16 +21,6 @@ return {
     config = function()
       require "config/mason-lspconfig"
     end,
-  },
-  {
-    "nvimdev/lspsaga.nvim",
-    event = "LspAttach",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
-    opts = require "config/lspsaga",
   },
   {
     "creativenull/efmls-configs-nvim",

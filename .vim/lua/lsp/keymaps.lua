@@ -5,25 +5,6 @@ local client_manager = require "lsp.client_manager"
 
 local M = {}
 
-local function setup_lspsaga_keymaps(buf_opts)
-  local lspsaga_mappings = {
-    ["<C-j>"] = "diagnostic_jump_next",
-    ["<C-k>"] = "diagnostic_jump_prev",
-    ["<C-l>"] = "show_line_diagnostics",
-    ["K"] = "hover_doc",
-    ["<C-[>"] = "finder",
-    ["<C-]>"] = "goto_definition",
-    [config.LSP.PREFIX .. "a"] = "code_action",
-    [config.LSP.PREFIX .. "t"] = "goto_type_definition",
-    [config.LSP.PREFIX .. "k"] = "peek_definition",
-    [config.LSP.PREFIX .. "r"] = "rename",
-    [config.LSP.PREFIX .. "o"] = "outline",
-  }
-
-  for key, cmd in pairs(lspsaga_mappings) do
-    Keymap(key, "<cmd>Lspsaga " .. cmd .. "<CR>", buf_opts)
-  end
-end
 
 local function setup_workspace_keymaps(buf_opts)
   local workspace_mappings = {
@@ -49,10 +30,22 @@ local function setup_keymaps(bufnr, _)
   -- basic keymaps
   Set_keymap(config.LSP.PREFIX, "<Nop>", config.LSP.DEFAULT_OPTS)
   Set_keymap("<C-e>", config.LSP.PREFIX, config.LSP.DEFAULT_OPTS)
+  
+  -- LSP keymaps (previously lspsaga)
+  Keymap("<C-j>", vim.diagnostic.goto_next, buf_opts)
+  Keymap("<C-k>", vim.diagnostic.goto_prev, buf_opts)
+  Keymap("<C-l>", vim.diagnostic.open_float, buf_opts)
+  Keymap("K", vim.lsp.buf.hover, buf_opts)
+  Keymap("<C-[>", function() require('telescope.builtin').lsp_references() end, buf_opts)
+  Keymap("<C-]>", vim.lsp.buf.definition, buf_opts)
+  Keymap(config.LSP.PREFIX .. "a", vim.lsp.buf.code_action, buf_opts)
   Keymap(config.LSP.PREFIX .. "d", vim.lsp.buf.declaration, buf_opts)
   Keymap(config.LSP.PREFIX .. "i", vim.lsp.buf.implementation, buf_opts)
+  Keymap(config.LSP.PREFIX .. "t", vim.lsp.buf.type_definition, buf_opts)
+  Keymap(config.LSP.PREFIX .. "k", vim.lsp.buf.definition, buf_opts)
+  Keymap(config.LSP.PREFIX .. "r", vim.lsp.buf.rename, buf_opts)
+  Keymap(config.LSP.PREFIX .. "o", function() require('telescope.builtin').lsp_document_symbols() end, buf_opts)
 
-  setup_lspsaga_keymaps(buf_opts)
   setup_workspace_keymaps(buf_opts)
 end
 
