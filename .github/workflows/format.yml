@@ -59,7 +59,7 @@ jobs:
         run: npm install --global @biomejs/biome
 
       - name: Run Biome format check
-        run: biome format --write=false .
+        run: biome format --write false .
 
       # Prettier for Markdown and YAML
       - name: Install Prettier
