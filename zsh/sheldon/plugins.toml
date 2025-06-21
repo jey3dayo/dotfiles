@@ -78,6 +78,11 @@ eval "$(zoxide init zsh)"
 github = "g-plane/pnpm-shell-completion"
 apply = ["defer"]
 
+[plugins.ni-completion]
+github = "snowsman/ni-completion"
+use = [".ni.zsh"]
+apply = ["source"]
+
 [plugins.pnpm-shell-completion-install]
 github = "g-plane/pnpm-shell-completion"
 use = ["zplug.zsh"]
