@@ -5,6 +5,7 @@ return {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter",
+    ft = { "javascript", "typescript", "lua", "python", "go", "rust", "c", "cpp" },
     config = function()
       require "config/copilot"
     end,
