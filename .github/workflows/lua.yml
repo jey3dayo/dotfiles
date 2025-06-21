@@ -3,16 +3,16 @@ name: Lua Lint and Format
 on:
   push:
     paths:
-      - '**/*.lua'
-      - '.luacheckrc'
-      - 'stylua.toml'
-      - '.github/workflows/lua.yml'
+      - "**/*.lua"
+      - ".luacheckrc"
+      - "stylua.toml"
+      - ".github/workflows/lua.yml"
   pull_request:
     paths:
-      - '**/*.lua'
-      - '.luacheckrc'
-      - 'stylua.toml'
-      - '.github/workflows/lua.yml'
+      - "**/*.lua"
+      - ".luacheckrc"
+      - "stylua.toml"
+      - ".github/workflows/lua.yml"
   workflow_dispatch:
 
 jobs:

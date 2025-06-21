@@ -3,28 +3,28 @@ name: Biome Lint and Format
 on:
   push:
     paths:
-      - '**/*.ts'
-      - '**/*.js'
-      - '**/*.mjs'
-      - '**/*.cjs'
-      - '**/*.mts'
-      - '**/*.jsx'
-      - '**/*.tsx'
-      - '**/*.json'
-      - 'biome.json'
-      - '.github/workflows/biome.yml'
+      - "**/*.ts"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.mts"
+      - "**/*.jsx"
+      - "**/*.tsx"
+      - "**/*.json"
+      - "biome.json"
+      - ".github/workflows/biome.yml"
   pull_request:
     paths:
-      - '**/*.ts'
-      - '**/*.js'
-      - '**/*.mjs'
-      - '**/*.cjs'
-      - '**/*.mts'
-      - '**/*.jsx'
-      - '**/*.tsx'
-      - '**/*.json'
-      - 'biome.json'
-      - '.github/workflows/biome.yml'
+      - "**/*.ts"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.mts"
+      - "**/*.jsx"
+      - "**/*.tsx"
+      - "**/*.json"
+      - "biome.json"
+      - ".github/workflows/biome.yml"
   workflow_dispatch:
 
 jobs:
