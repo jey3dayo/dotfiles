@@ -69,6 +69,26 @@ priority = 3
 source = "github"
 ```
 
+#### Sheldonテンプレート変数制限
+
+```toml
+# ✅ 利用可能な展開
+local = "~/.config/zsh/lazy-sources"     # チルダ展開のみ
+{{ dir }}                                # sheldon内部変数
+{{ file }}                               # ファイルパス変数
+
+# ❌ 利用不可能な展開  
+local = "$HOME/.config/..."              # 環境変数展開不可
+local = "${XDG_CONFIG_HOME}/..."         # 複合環境変数不可
+local = "${XDG_CONFIG_HOME:-$HOME/.config}/..." # fallback構文不可
+```
+
+**回避策**: XDG準拠を保ちたい場合は、シンボリンクと組み合わせ
+```bash
+# dotfiles/zsh/lazy-sources → ~/.config/zsh/lazy-sources
+ln -sf /path/to/dotfiles/zsh/lazy-sources ~/.config/zsh/lazy-sources
+```
+
 ## 🔧 ベストプラクティス
 
 ### 1. 遅延読み込み戦略
@@ -147,6 +167,14 @@ zprof | head -20
 
 # 個別ファイル測定
 time source config_file.zsh
+
+# sheldon詳細診断
+time zsh -i -c exit                    # 実際の起動時間測定
+zsh -x -c exit 2>&1 | head -20        # 起動プロセス確認
+sheldon lock --update                 # プラグイン更新・エラー確認
+
+# プラグイン競合診断
+sheldon source | head -50             # 生成されたコード確認
 ```
 
 ## 💡 知見・教訓
@@ -165,8 +193,12 @@ time source config_file.zsh
 ### 失敗パターン
 
 - **過度の最適化**: 可読性を犠牲にした micro-optimization
-- **依存関係の複雑化**: プラグイン間の依存関係管理の難しさ
+- **依存関係の複雑化**: プラグイン間の依存関係管理の難しさ  
 - **設定の断片化**: あまりに細分化すると全体像が見えにくい
+- **プラグイン競合**: `zsh-vi-mode`が他プラグインと競合し、1分の起動遅延発生
+  - 症状: エイリアス無効化、色表示停止、起動フリーズ
+  - 原因: キーバインド変更による他プラグインとの競合
+  - 解決: 競合プラグインの削除、または慎重な読み込み順序設定
 
 ### 実証済み最適化手法
 
