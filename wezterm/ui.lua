@@ -4,7 +4,6 @@ local constants = require "./constants"
 
 -- Tab formatting is now handled in events.lua
 
-
 return {
   -- Window
   color_scheme = "Gruvbox dark, hard (base16)",

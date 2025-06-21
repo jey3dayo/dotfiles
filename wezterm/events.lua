@@ -62,24 +62,30 @@ end
 -- Opacity adjustment handlers
 function M.increase_opacity(window, _)
   local overrides = window:get_config_overrides() or {}
-  if not overrides.window_background_opacity then
-    overrides.window_background_opacity = constants.DEFAULT_OPACITY
-  end
+  if not overrides.window_background_opacity then overrides.window_background_opacity = constants.DEFAULT_OPACITY end
   overrides.window_background_opacity = math.min(overrides.window_background_opacity + 0.05, 1.0)
   overrides.text_background_opacity = overrides.window_background_opacity
   window:set_config_overrides(overrides)
-  window:toast_notification("wezterm", string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100), nil, 1000)
+  window:toast_notification(
+    "wezterm",
+    string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100),
+    nil,
+    1000
+  )
 end
 
 function M.decrease_opacity(window, _)
   local overrides = window:get_config_overrides() or {}
-  if not overrides.window_background_opacity then
-    overrides.window_background_opacity = constants.DEFAULT_OPACITY
-  end
+  if not overrides.window_background_opacity then overrides.window_background_opacity = constants.DEFAULT_OPACITY end
   overrides.window_background_opacity = math.max(overrides.window_background_opacity - 0.05, 0.1)
   overrides.text_background_opacity = overrides.window_background_opacity
   window:set_config_overrides(overrides)
-  window:toast_notification("wezterm", string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100), nil, 1000)
+  window:toast_notification(
+    "wezterm",
+    string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100),
+    nil,
+    1000
+  )
 end
 
 function M.reset_opacity(window, _)
@@ -87,7 +93,12 @@ function M.reset_opacity(window, _)
   overrides.window_background_opacity = constants.DEFAULT_OPACITY
   overrides.text_background_opacity = constants.DEFAULT_OPACITY
   window:set_config_overrides(overrides)
-  window:toast_notification("wezterm", string.format("Opacity: %.0f%% (reset)", constants.DEFAULT_OPACITY * 100), nil, 1000)
+  window:toast_notification(
+    "wezterm",
+    string.format("Opacity: %.0f%% (reset)", constants.DEFAULT_OPACITY * 100),
+    nil,
+    1000
+  )
 end
 
 -- Register all event handlers
