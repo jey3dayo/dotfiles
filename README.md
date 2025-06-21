@@ -69,6 +69,7 @@ chmod 600 ~/.gitconfig_local
 ```
 
 **Git Configuration Structure**:
+
 - `~/.gitconfig` → Main entry point (created by setup)
 - `~/.gitconfig_local` → Personal info (Git-ignored, secure)
 - `~/.config/git/config` → Shared dotfiles settings
@@ -81,6 +82,7 @@ sh ./setup.sh
 ```
 
 **What setup.sh does**:
+
 - Creates XDG base directories (`~/.config`, `~/.cache`)
 - Links dotfiles to `~/.config` via symlink
 - Configures Git to use dotfiles settings
@@ -129,12 +131,14 @@ pbcopy < ~/.ssh/id_ed25519.pub
 #### Terminal Setup
 
 **For WezTerm** (Recommended):
+
 ```bash
 # WezTerm will auto-load configuration from ~/.config/wezterm/
 # No additional setup required
 ```
 
 **For Alacritty**:
+
 ```bash
 # Configuration auto-linked via ~/.config/alacritty/
 # Restart Alacritty to apply settings
@@ -155,6 +159,7 @@ nvim
 #### Personal vs Work Setup
 
 **Work environment**:
+
 ```bash
 # Override Git config for work projects
 cat > ~/.gitconfig_local << EOF
@@ -168,6 +173,7 @@ EOF
 ```
 
 **Personal projects**:
+
 ```bash
 # Default configuration in ~/.gitconfig_local works for personal use
 ```
@@ -207,16 +213,19 @@ dotfiles/
 ## 🛠️ Key Tools & Configurations
 
 ### Shell & Editor
+
 - **Zsh + Sheldon**: 6-tier priority loading, 39.88ms mise optimization
 - **Neovim + Lazy.nvim**: AI assistance (Copilot/Avante), 15+ LSP
 - **Git integration**: Custom widgets, FZF search, abbreviations
 
-### Terminal Experience  
+### Terminal Experience
+
 - **Alacritty**: High-performance GPU acceleration
 - **WezTerm**: Lua configuration, tmux-style leader key (`Ctrl+x`)
 - **Tmux**: Session persistence with plugin ecosystem
 
 ### Development Tools
+
 - **Mise**: Multi-language version management with lazy loading
 - **1Password**: SSH key management and CLI integration
 - **GitHub CLI**: Repository automation
@@ -243,13 +252,14 @@ Alt+hjkl                   # Pane navigation
 
 ## 📈 Performance Metrics
 
-| Component | Before | After | Improvement |
-|-----------|--------|-------|-------------|
-| Zsh startup | 1.7s | 1.2s | 30% faster |
-| Neovim startup | ~200ms | <100ms | 50% faster |
-| mise loading | baseline | -39.88ms | Critical optimization |
+| Component      | Before   | After    | Improvement           |
+| -------------- | -------- | -------- | --------------------- |
+| Zsh startup    | 1.7s     | 1.2s     | 30% faster            |
+| Neovim startup | ~200ms   | <100ms   | 50% faster            |
+| mise loading   | baseline | -39.88ms | Critical optimization |
 
 ### Optimization Techniques
+
 - **Lazy loading**: Plugins load only when needed
 - **6-tier priority**: Essential tools load first
 - **GPU acceleration**: Hardware-optimized rendering
@@ -265,17 +275,20 @@ Alt+hjkl                   # Pane navigation
 ## 🔧 Advanced Features
 
 ### Git Integration
+
 - **Custom widgets**: Instant status, staging, branch switching
 - **50+ abbreviations**: `g` (git), `ga` (git add), `gc` (git commit)
 - **FZF integration**: Visual branch selection and file search
 
 ### WezTerm Configuration
+
 - **Modular Lua**: ui.lua, keybinds.lua, utils.lua structure
 - **Cross-platform**: macOS/Windows with WSL support
 - **Vim-style copy mode**: hjkl navigation, visual selection
 - **Custom tab styling**: Arrow separators, process name display
 
 ### AI Development Environment
+
 - **GitHub Copilot**: Code completion and suggestions
 - **Avante.nvim**: AI chat integration in Neovim
 - **Claude Code**: Repository context and documentation
@@ -305,11 +318,13 @@ npm list -g --json > global-packages.json
 ## 📋 Maintenance
 
 ### Regular Tasks
+
 - **Weekly**: `brew update && brew upgrade`
 - **Monthly**: Plugin updates and performance reviews
 - **Quarterly**: Configuration audit and optimization
 
 ### Monitoring
+
 - **Startup tracking**: `zsh-benchmark` for performance regression
 - **Plugin analysis**: Usage patterns and optimization opportunities
 - **Performance profiling**: `zsh-profile` for detailed analysis
@@ -320,4 +335,4 @@ MIT License - Feel free to use and adapt for your own setup.
 
 ---
 
-*Optimized for modern development workflows with focus on speed, consistency, and developer experience.*
+_Optimized for modern development workflows with focus on speed, consistency, and developer experience._
