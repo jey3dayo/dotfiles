@@ -1,0 +1,102 @@
+name: Format All Files
+
+on:
+  push:
+    paths:
+      - "**/*.md"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.lua"
+      - "**/*.sh"
+      - "**/*.ts"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.mts"
+      - "**/*.jsx"
+      - "**/*.tsx"
+      - "**/*.json"
+      - "biome.json"
+      - "stylua.toml"
+      - ".styluaignore"
+      - ".github/workflows/format.yml"
+  pull_request:
+    paths:
+      - "**/*.md"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.lua"
+      - "**/*.sh"
+      - "**/*.ts"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.mts"
+      - "**/*.jsx"
+      - "**/*.tsx"
+      - "**/*.json"
+      - "biome.json"
+      - "stylua.toml"
+      - ".styluaignore"
+      - ".github/workflows/format.yml"
+  workflow_dispatch:
+
+jobs:
+  format-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Biome for JS/TS/JSON
+      - name: Install Biome CLI
+        run: npm install --global @biomejs/biome
+
+      - name: Run Biome format check
+        run: biome format --write=false .
+
+      # Prettier for Markdown and YAML
+      - name: Install Prettier
+        run: npm install --global prettier
+
+      - name: Check Markdown formatting
+        run: |
+          files=$(find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit)
+          if [ -n "$files" ]; then
+            echo "$files" | xargs prettier --check
+          fi
+
+      - name: Check YAML formatting
+        run: |
+          files=$(find . \( -name "*.yml" -o -name "*.yaml" \) | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml)
+          if [ -n "$files" ]; then
+            echo "$files" | xargs prettier --check
+          fi
+
+      # Stylua for Lua
+      - name: Check Lua formatting
+        uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check .
+
+      # Shfmt for Shell scripts
+      - name: Install shfmt
+        run: |
+          curl -L https://github.com/mvdan/sh/releases/latest/download/shfmt_v3.7.0_linux_amd64 -o shfmt
+          chmod +x shfmt
+          sudo mv shfmt /usr/local/bin/
+
+      - name: Check Shell script formatting
+        run: |
+          files=$(find . -name "*.sh" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit)
+          if [ -n "$files" ]; then
+            echo "$files" | xargs shfmt -d
+          fi
