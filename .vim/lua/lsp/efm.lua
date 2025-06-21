@@ -82,7 +82,7 @@ M.get_languages = function()
     formatCommand = string.format("stylua --config-path %s/stylua.toml -", stylua_config),
     formatStdin = true,
   }
-  formatters.stylua = with(formatters.stylua, stylua_opts.stylua_opts)
+  formatters.stylua = with(formatters.stylua, stylua_opts)
 
   -- ECMA Script Linting
   local has_prettier = utils.has_config_files(formatter_settings.prettier.config_files)
