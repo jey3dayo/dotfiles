@@ -2,7 +2,7 @@
 
 # Helper function to check if in git repository
 _is_git_repo() {
-  [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = 'true' ]
+  [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = 'true' ]
 }
 
 # Git diff widget function

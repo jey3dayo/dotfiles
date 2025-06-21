@@ -1,6 +1,6 @@
-command -v brew &> /dev/null || return
+command -v brew &>/dev/null || return
 
-if  [[ "$(arch)" == arm64 ]]; then
+if [[ "$(arch)" == arm64 ]]; then
   BREW_PATH=/opt/homebrew/bin
   ARCH=arm64e
   [[ -x $BREW_PATH/brew ]] && alias brew="arch -arch arm64e /opt/homebrew/bin/brew"
@@ -13,6 +13,6 @@ fi
 
 eval "$($BREW_PATH/brew shellenv)"
 
-if [ -f $BREW_PATH/etc/brew-wrap ];then
+if [ -f $BREW_PATH/etc/brew-wrap ]; then
   source $BREW_PATH/etc/brew-wrap
 fi

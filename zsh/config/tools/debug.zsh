@@ -9,7 +9,7 @@ if [[ -n "$ZSH_DEBUG" ]]; then
     echo ""
     for i in {1..5}; do
       echo "Run $i:"
-      time ( zsh -i -c exit )
+      time (zsh -i -c exit)
       echo ""
     done
   }
