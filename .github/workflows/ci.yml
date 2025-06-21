@@ -69,14 +69,14 @@ jobs:
         run: |
           files=$(find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit)
           if [ -n "$files" ]; then
-            echo "$files" | xargs prettier --check
+            echo "$files" | xargs npx prettier --check
           fi
 
       - name: Check YAML formatting
         run: |
           files=$(find . \( -name "*.yml" -o -name "*.yaml" \) | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml)
           if [ -n "$files" ]; then
-            echo "$files" | xargs prettier --check
+            echo "$files" | xargs npx prettier --check
           fi
 
       # Lua linting and formatting
