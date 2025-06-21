@@ -5,6 +5,7 @@
 ## 🎯 責任範囲
 
 **🔥 主要技術**: Neovimはdotfiles環境の中核技術の一つ
+
 - **設定量**: 全dotfilesの約30%を占める主要コンポーネント
 - **技術特性**: Lua設定、LSP統合、AI支援（Copilot/Avante）
 - **使用頻度**: コード編集・開発作業の中心ツール
@@ -92,12 +93,12 @@ return {
   config = function()
     local lspconfig = require('lspconfig')
     local capabilities = require('cmp_nvim_lsp').default_capabilities()
-    
+
     local servers = {
       'lua_ls', 'tsserver', 'rust_analyzer',
       'pyright', 'gopls', 'clangd'
     }
-    
+
     for _, server in ipairs(servers) do
       lspconfig[server].setup({
         capabilities = capabilities,
@@ -128,7 +129,7 @@ return {
   },
   config = function()
     local cmp = require('cmp')
-    
+
     cmp.setup({
       snippet = {
         expand = function(args)
@@ -324,11 +325,13 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 ## 🚧 最適化課題
 
 ### 高優先度
+
 - [x] 起動時間を100ms以下に短縮（95ms達成 ✅）
 - [ ] LSP応答時間の改善
 - [ ] プラグイン数の削減（現在~80個 → 目標50個）
 
 ### 中優先度
+
 - [ ] AI補完の精度向上
 - [ ] 言語サーバー設定の統一化
 - [ ] キーマップの体系化
@@ -336,12 +339,14 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 - [ ] DAP統合（デバッグ環境構築）
 
 ### 低優先度
+
 - [ ] AI補完代替案の検討
 - [ ] ワークスペース管理の強化
 
 ## 💡 知見・教訓
 
 ### 成功パターン
+
 - **lazy.nvim**: プラグイン管理の効率化と起動時間大幅短縮
   - 実績: 250ms → 95ms (62%削減)
   - 遅延読み込み: 25+プラグインで適用
@@ -351,11 +356,13 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 - **重複削除**: コード重複30%削減、保守性向上
 
 ### 失敗パターン
+
 - **プラグイン過多**: 機能重複と起動時間増加
 - **設定の複雑化**: Vimscript → Lua移行時の混乱
 - **LSP設定不統一**: 言語毎の設定差異によるUX悪化
 
 ### AI統合教訓
+
 - **Copilot**: インライン補完は高頻度使用、生産性向上明確
 - **Avante**: 複雑なロジック説明・リファクタリング支援で威力発揮
 - **バランス**: AI頼りすぎず、基礎スキル維持も重要
@@ -368,6 +375,6 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 
 ---
 
-*最終更新: 2025-06-20*
-*パフォーマンス状態: 起動100ms以下達成*
-*AI統合状態: Copilot + Avante フル活用*
+_最終更新: 2025-06-20_
+_パフォーマンス状態: 起動100ms以下達成_
+_AI統合状態: Copilot + Avante フル活用_

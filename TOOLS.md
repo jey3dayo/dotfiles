@@ -41,4 +41,3 @@
 - **Flipper** (`flipper/`)
 - **Karabiner** (`karabiner/`)
 - **Vimium** (`vimium-options.json`)
-

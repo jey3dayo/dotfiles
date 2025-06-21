@@ -25,6 +25,7 @@
 ## 参考ファイル
 
 ### 設計指針
+
 - **`.claude/project-knowledge.md`** - 設定パターン・ベストプラクティス・アンチパターン
 - **`.claude/project-improvements.md`** - 過去の改善履歴・学習事項
 - **`.claude/common-patterns.md`** - 定型実装・設定パターン
@@ -39,21 +40,25 @@
 ## リファクタリング原則
 
 ### 設定の統一性
+
 - テーマ・カラーパレットの統一
 - フォント設定の統一
 - キーバインドの一貫性
 
 ### パフォーマンス最適化
+
 - 遅延読み込みの実装
 - 不要な設定の削除
 - キャッシュ機能の活用
 
 ### モジュラー設計
+
 - 機能別の設定分離
 - 条件分岐による環境対応
 - 再利用可能なコンポーネント化
 
 ### 保守性の向上
+
 - 設定ファイルサイズの適正化
 - 明確な命名規則
 - ドキュメント・コメントの充実
@@ -61,25 +66,31 @@
 ## Tool別対象設定ファイル
 
 ### Zsh関連
+
 - .zshrc, sheldon.toml, config/loader.zsh
 - 各種プラグイン設定・起動時間最適化
 
-### Neovim関連  
+### Neovim関連
+
 - init.lua, plugin設定、LSP設定
 - lazy.nvim設定・UI最適化
 
 ### WezTerm関連
+
 - wezterm.lua, ui.lua, keybinds.lua
 - テーマ・キーバインド・パフォーマンス設定
 
 ### Git関連
+
 - .gitconfig, hooks, エイリアス設定
 - ワークフロー最適化
 
 ### SSH関連
-- ssh_config, ssh_config.d/*, 階層的Include設定
+
+- ssh_config, ssh_config.d/\*, 階層的Include設定
 - 1Password SSH Agent統合・セキュリティ最適化
 
 ### Tmux関連
+
 - .tmux.conf, プラグイン設定
 - セッション管理・統合設定

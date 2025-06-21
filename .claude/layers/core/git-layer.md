@@ -69,6 +69,7 @@ git-status-widget() {
 ### SSH設定パターン
 
 #### 階層的Include構造
+
 ```
 ~/.ssh/config
 ├── ~/.config/ssh/ssh_config         # dotfiles管理基本設定
@@ -79,6 +80,7 @@ git-status-widget() {
 ```
 
 #### 基本設定
+
 ```ssh
 # ~/.ssh/config（Include指定のみ）
 Include ~/.config/ssh/ssh_config
@@ -164,13 +166,13 @@ ghq-fzf-widget() {
 git-health() {
     echo "=== Repository Status ==="
     git status --porcelain
-    
+
     echo -e "\n=== Branch Information ==="
     git branch -vv
-    
+
     echo -e "\n=== Remote Information ==="
     git remote -v
-    
+
     echo -e "\n=== Recent Commits ==="
     git log --oneline -10
 }
@@ -181,7 +183,7 @@ git-config-check() {
     git config user.name
     git config user.email
     git config user.signingkey
-    
+
     echo -e "\n=== SSH Configuration ==="
     ssh -T git@github.com
 }
@@ -190,11 +192,13 @@ git-config-check() {
 ## 🚧 最適化課題
 
 ### 高優先度
+
 - [ ] Git操作のレスポンス時間向上
 - [ ] 大規模リポジトリでのパフォーマンス最適化
 - [ ] コミットメッセージテンプレートの改善
 
 ### 中優先度
+
 - [ ] Git hooks の自動化拡張
 - [ ] ブランチ保護設定の標準化
 - [ ] CI/CD統合の改善
@@ -202,21 +206,25 @@ git-config-check() {
 ## 💡 知見・教訓
 
 ### 成功パターン
+
 - **略語展開**: タイピング量50%削減、ワークフロー高速化
 - **FZF統合**: ブランチ・ファイル選択の直感的操作
 - **1Password統合**: セキュアな認証の自動化
 
 ### 失敗パターン
+
 - **過度のエイリアス**: Git標準コマンドの記憶曖昧化
 - **複雑なhooks**: 実行時間増加とエラー頻発
 - **認証設定の複雑化**: トラブルシューティングの困難化
 
 ### セキュリティ教訓
+
 - **SSH key管理**: 1Passwordによる一元管理で紛失リスク軽減
 - **GPG署名**: コミット検証の重要性と設定の複雑さ
 - **権限管理**: 最小権限の原則と利便性のバランス
 
 ### GitHub CLI統合知見
+
 - **ワークフロー自動化**: PR作成・マージ操作の50%高速化
 - **Issue-PR連携**: 一連のワークフローの自動化実現
 - **認証統合**: 1Password + gh authで seamless authentication
@@ -224,12 +232,14 @@ git-config-check() {
 ### 設定ファイル構造最適化 (2025-06-21)
 
 #### 問題・背景
+
 - Git設定ファイルが分散（ルート、~/.config、個人設定）
 - 個人情報がリポジトリに混入するリスク
 - ファイル命名の一貫性欠如
 - 重複・未使用ファイルの存在
 
 #### 解決パターン
+
 ```bash
 # 最適化後の構造
 ~/.gitconfig                    # エントリーポイント
@@ -249,12 +259,14 @@ git/
 ```
 
 #### 最適化手順
+
 1. **パス統一**: 絶対パス → `~/.config/` (XDG準拠)
 2. **個人情報分離**: `git/config` → `~/.gitconfig_local`
 3. **重複削除**: `git/ignore`削除（`.gitignore`に統合済み）
 4. **命名統一**: `.gitconfig`拡張子でVim syntax有効化
 
 #### セキュリティ改善
+
 ```gitconfig
 # Before: 個人情報がdotfilesに含まれる
 [user]
@@ -269,17 +281,20 @@ git/
 ```
 
 #### 効果・実測値
+
 - **構造の簡素化**: 3階層 → 2階層
 - **セキュリティ向上**: 個人情報の完全分離
 - **Vim統合**: `.gitconfig`拡張子で自動syntax highlighting
 - **保守性向上**: 設定変更時のコンフリクトリスク軽減
 
 #### 注意点・制約
+
 - 新環境では`~/.gitconfig_local`の手動作成が必要
 - `1password.gitconfig`は将来用として保持
 - `.gitignore`はルート配置が標準期待値
 
 ### 運用実績
+
 - **操作効率向上**: Zsh統合で50%時間短縮
 - **視認性改善**: Delta導入で差分確認効率化
 - **ワークフロー標準化**: GitHub Flow + 規約でチーム効率向上
@@ -293,6 +308,6 @@ git/
 
 ---
 
-*最終更新: 2025-06-20*
-*セキュリティ状態: 1Password統合完了*
-*パフォーマンス状態: FZF統合最適化済み*
+_最終更新: 2025-06-20_
+_セキュリティ状態: 1Password統合完了_
+_パフォーマンス状態: FZF統合最適化済み_

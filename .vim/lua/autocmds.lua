@@ -70,8 +70,10 @@ utils.autocmd("LspAttach", {
 
     -- Debug: Show all attached clients
     if require("lsp.config").isDebug then
-      vim.notify(string.format("LSP Attached: %s (id: %d) to buf: %d", 
-        client.name, client.id, bufnr), vim.log.levels.INFO)
+      vim.notify(
+        string.format("LSP Attached: %s (id: %d) to buf: %d", client.name, client.id, bufnr),
+        vim.log.levels.INFO
+      )
     end
 
     -- Lazy load LSP modules when LSP actually attaches

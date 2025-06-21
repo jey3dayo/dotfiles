@@ -7,6 +7,7 @@
 ## ⚠️ セキュリティ注意事項
 
 **機密情報管理**
+
 - センシティブなホスト情報・認証情報は記載しない
 - 個別設定ファイル名は具体的に記載しない
 - 実際のIPアドレス・ドメイン名は例示のみ
@@ -21,6 +22,7 @@
 ## 🏗️ 設定構造
 
 ### ディレクトリ構成
+
 ```
 ~/.config/ssh/              # dotfiles管理（Git追跡）
 ├── config                  # メイン設定ファイル
@@ -41,6 +43,7 @@
 ```
 
 ### Include階層構造（優先度順）
+
 ```bash
 ~/.ssh/config
 ├── ~/.config/ssh/config.d/00-global.sshconfig      # 全体設定
@@ -56,6 +59,7 @@
 ## 📋 設定内容詳細
 
 ### メイン設定（~/.config/ssh/config）
+
 ```bash
 # SSH Configuration - Hierarchical Include Structure
 # Managed by dotfiles - DO NOT EDIT MANUALLY
@@ -76,27 +80,29 @@ Include ~/.orbstack/ssh/config
 ```
 
 ### グローバル設定（00-global.sshconfig）
+
 ```bash
 Host *
   # 接続最適化
   ServerAliveInterval 30
   ServerAliveCountMax 10
   TCPKeepAlive yes
-  
+
   # 接続共有でパフォーマンス向上
   ControlMaster auto
   ControlPath ~/.ssh/sockets/%r@%h:%p
   ControlPersist 600
-  
+
   # 認証最適化
   GSSAPIAuthentication no
   PreferredAuthentications publickey,password
-  
+
   # macOS統合
   UseKeychain yes
 ```
 
 ### 開発サービス設定（10-dev-services.sshconfig）
+
 ```bash
 # GitHub（企業ファイアウォール対応）
 Host github.com
@@ -112,6 +118,7 @@ Host gitlab.com
 ```
 
 ### ホームネットワーク設定（20-home-network.sshconfig）
+
 ```bash
 # Raspberry Pi（統一設定）
 Host pi
@@ -129,6 +136,7 @@ Host nas
 ```
 
 ### 1Password SSH Agent設定（01-1password.sshconfig）
+
 ```bash
 # UNCOMMENT TO ENABLE 1Password SSH Agent
 # Host *
@@ -143,7 +151,9 @@ Host *
 ## 🎮 モジュール管理
 
 ### 設定ファイルの優先度
+
 **数字による読み込み順序制御**
+
 - `00-` : 最優先（グローバル設定）
 - `01-` : 認証設定（1Password等）
 - `10-` : 開発サービス
@@ -151,6 +161,7 @@ Host *
 - `99-` : デフォルト設定
 
 ### 新しいホスト追加手順
+
 1. **テンプレート使用**: `templates/host-template.sshconfig`をコピー
 2. **適切なファイル選択**: 用途に応じて10-,20-,30-等に追加
 3. **設定カスタマイズ**: HostName, User, Portを設定
@@ -159,6 +170,7 @@ Host *
 ## 🎮 基本使用方法
 
 ### SSH接続
+
 ```bash
 # 基本接続
 ssh hostname
@@ -178,6 +190,7 @@ ssh -N -f -L 8080:localhost:80 hostname
 ```
 
 ### 接続確認・診断
+
 ```bash
 # 設定内容確認（新構造）
 ssh -F ~/.config/ssh/config -T git@github.com
@@ -197,17 +210,20 @@ cat ~/.config/ssh/config.d/10-dev-services.sshconfig
 ### 1Password SSH Agent統合
 
 #### 有効化手順
+
 1. **1Password設定**: SSH Agent機能を有効化
 2. **鍵登録**: 1Password内でSSH鍵を管理
 3. **設定ファイル**: `01-1password.sshconfig`のコメントアウト解除
 4. **確認**: `ssh-add -l`で鍵一覧表示
 
 #### 利点
+
 - **パスワードレス**: 鍵のパスフレーズ入力不要
 - **セキュア**: 鍵の安全な保管・管理
 - **統合**: 生体認証との連携
 
 ### SSH鍵管理
+
 ```bash
 # 新しい鍵生成（Ed25519推奨）
 ssh-keygen -t ed25519 -C "your.email@example.com"
@@ -223,6 +239,7 @@ ssh-add ~/.ssh/id_ed25519
 ```
 
 ### ファイル権限設定
+
 ```bash
 # SSH ディレクトリ権限
 chmod 700 ~/.ssh
@@ -247,6 +264,7 @@ chmod 700 ~/.ssh/sockets
 ## 🔧 高度な設定・カスタマイズ
 
 ### 接続最適化
+
 ```bash
 # ~/.ssh/config での最適化設定
 Host *
@@ -269,6 +287,7 @@ Host *
 ```
 
 ### ProxyJump設定（踏み台サーバー）
+
 ```bash
 Host bastion
   HostName bastion.example.com
@@ -283,6 +302,7 @@ Host private-server
 ```
 
 ### 環境別設定分岐
+
 ```bash
 # ~/.ssh/config.d/work.sshconfig
 Match Host *.company.com
@@ -299,6 +319,7 @@ Match Host *.personal.dev
 ### よくある問題と解決
 
 #### 接続タイムアウト
+
 ```bash
 # Keep-Alive設定確認
 ssh -o "ServerAliveInterval=30" hostname
@@ -308,6 +329,7 @@ ssh -o "IPQoS=lowdelay" hostname
 ```
 
 #### 認証失敗
+
 ```bash
 # 認証方法確認
 ssh -o "PreferredAuthentications=publickey" -v hostname
@@ -318,6 +340,7 @@ ls -la ~/.1password/agent.sock
 ```
 
 #### ホスト鍵エラー
+
 ```bash
 # 古いホスト鍵削除
 ssh-keygen -R hostname
@@ -327,6 +350,7 @@ ssh-keyscan hostname >> ~/.ssh/known_hosts
 ```
 
 ### デバッグコマンド
+
 ```bash
 # 詳細ログ
 ssh -vvv hostname
@@ -341,6 +365,7 @@ ssh-add -l
 ## 🔄 管理・メンテナンス
 
 ### 定期メンテナンス
+
 ```bash
 # 接続テスト
 ssh -o "BatchMode yes" -o "ConnectTimeout=5" hostname echo "OK"
@@ -353,6 +378,7 @@ ssh -F ~/.ssh/config -T git@github.com
 ```
 
 ### バックアップ・復旧
+
 ```bash
 # SSH設定バックアップ
 tar -czf ssh_backup_$(date +%Y%m%d).tar.gz ~/.ssh ~/.config/ssh
@@ -364,11 +390,13 @@ ln -sf $DOTFILES_DIR/ssh ~/.config/ssh
 ## 📊 パフォーマンス指標
 
 ### 現在の状況
+
 - **接続速度**: Keep-Alive設定で高速化
 - **セキュリティ**: 1Password統合・Ed25519鍵
 - **管理性**: 階層的設定・用途別分離
 
 ### 改善実績
+
 - **設定管理**: 用途別ファイル分離で保守性向上
 - **セキュリティ**: 1Password統合でパスワードレス認証
 - **接続安定性**: Keep-Alive設定で切断対策
@@ -376,15 +404,17 @@ ln -sf $DOTFILES_DIR/ssh ~/.config/ssh
 ## 🔗 関連ツール連携
 
 ### Git統合
+
 - **GitHub/GitLab**: 企業ファイアウォール対応（ポート443）
 - **SSH Agent**: 1Password統合による認証簡素化
 
 ### 開発環境統合
+
 - **OrbStack**: Docker環境への自動SSH設定
 - **VSCode**: Remote-SSH拡張との連携
 - **Terminal**: WezTerm・Zshでの補完機能
 
 ---
 
-*Last Updated: 2025-06-14*  
-*Status: セキュア・高性能接続環境構築完了*
+_Last Updated: 2025-06-14_  
+_Status: セキュア・高性能接続環境構築完了_

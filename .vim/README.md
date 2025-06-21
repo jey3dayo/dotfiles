@@ -13,16 +13,17 @@ Modern Lua-based Neovim configuration with <100ms startup time and comprehensive
 
 ## 📈 Performance Metrics
 
-| Component | Startup Time | Optimization |
-|-----------|-------------|--------------|
-| Total startup | <100ms | lazy.nvim |
-| Plugin loading | Deferred | Conditional |
-| LSP initialization | On-demand | Language-specific |
-| File navigation | Instant | Cached indexing |
+| Component          | Startup Time | Optimization      |
+| ------------------ | ------------ | ----------------- |
+| Total startup      | <100ms       | lazy.nvim         |
+| Plugin loading     | Deferred     | Conditional       |
+| LSP initialization | On-demand    | Language-specific |
+| File navigation    | Instant      | Cached indexing   |
 
 ## 🏗️ Architecture
 
 ### Modular Structure
+
 ```
 nvim/
 ├── init.lua              # Entry point
@@ -43,6 +44,7 @@ nvim/
 ```
 
 ### Plugin Categories
+
 - **Core**: Essential functionality and performance
 - **LSP**: Language server configurations
 - **UI**: Interface enhancements and theming
@@ -53,6 +55,7 @@ nvim/
 ## 🛠️ Supported Languages & LSP
 
 ### Programming Languages (15+)
+
 ```
 ├── Lua          # lua_ls + stylua formatting
 ├── TypeScript   # tsserver + prettier + eslint
@@ -72,6 +75,7 @@ nvim/
 ```
 
 ### Markup & Config
+
 ```
 ├── HTML/CSS     # html, cssls + prettier
 ├── JSON         # jsonls + prettier
@@ -86,9 +90,10 @@ nvim/
 ### Leader Key: `<Space>`
 
 #### File & Navigation
+
 ```lua
 <leader>ff      -- Find files (Telescope)
-<leader>fg      -- Live grep (Telescope)  
+<leader>fg      -- Live grep (Telescope)
 <leader>fb      -- Find buffers (Telescope)
 <leader>fh      -- Help tags (Telescope)
 <leader>e       -- Toggle file explorer
@@ -96,6 +101,7 @@ nvim/
 ```
 
 #### LSP Features
+
 ```lua
 gd              -- Go to definition
 gr              -- Find references
@@ -108,6 +114,7 @@ K               -- Hover documentation
 ```
 
 #### AI & Development
+
 ```lua
 <leader>cc      -- Copilot chat
 <leader>av      -- Avante toggle
@@ -117,6 +124,7 @@ K               -- Hover documentation
 ```
 
 #### Text Editing
+
 ```lua
 s<char><char>   -- Leap motion (jump to characters)
 <C-h/j/k/l>     -- Window navigation
@@ -128,11 +136,13 @@ s<char><char>   -- Leap motion (jump to characters)
 ## 🔧 Plugin Ecosystem
 
 ### Core Performance
+
 - **lazy.nvim**: Lazy loading plugin manager
 - **plenary.nvim**: Lua utility functions
 - **which-key.nvim**: Key binding hints
 
 ### LSP & Completion
+
 - **nvim-lspconfig**: LSP configurations
 - **mason.nvim**: LSP server manager
 - **nvim-cmp**: Completion engine
@@ -140,6 +150,7 @@ s<char><char>   -- Leap motion (jump to characters)
 - **luasnip**: Snippet engine
 
 ### UI & Navigation
+
 - **telescope.nvim**: Fuzzy finder
 - **nvim-tree.lua**: File explorer
 - **harpoon**: Quick file navigation
@@ -147,6 +158,7 @@ s<char><char>   -- Leap motion (jump to characters)
 - **lualine.nvim**: Status line
 
 ### AI & Development
+
 - **copilot.lua**: GitHub Copilot
 - **avante.nvim**: AI chat integration
 - **gitsigns.nvim**: Git integration
@@ -154,6 +166,7 @@ s<char><char>   -- Leap motion (jump to characters)
 - **nvim-dap**: Debug adapter protocol
 
 ### Editor Enhancement
+
 - **nvim-treesitter**: Syntax highlighting
 - **indent-blankline.nvim**: Indentation guides
 - **comment.nvim**: Smart commenting
@@ -163,11 +176,13 @@ s<char><char>   -- Leap motion (jump to characters)
 ## 🎨 Theming & UI
 
 ### Color Schemes
+
 - **Primary**: Gruvbox (consistent with other tools)
 - **Alternative**: Tokyo Night
 - **Fallback**: Built-in colorschemes
 
 ### UI Enhancements
+
 ```lua
 -- Transparent background
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
@@ -178,6 +193,7 @@ vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#d8a657" })
 ```
 
 ### Status Line
+
 - **Mode indicator**: Visual mode display
 - **Git branch**: Current branch and changes
 - **LSP status**: Active language servers
@@ -187,6 +203,7 @@ vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#d8a657" })
 ## 🤖 AI Integration
 
 ### GitHub Copilot
+
 ```lua
 -- Setup in plugins/ai/copilot.lua
 require('copilot').setup({
@@ -199,6 +216,7 @@ require('copilot_cmp').setup()
 ```
 
 ### Avante.nvim (AI Chat)
+
 ```lua
 -- Chat with AI about code
 <leader>av      -- Toggle Avante window
@@ -209,6 +227,7 @@ require('copilot_cmp').setup()
 ## 🔍 LSP Configuration
 
 ### Mason Setup (Automatic)
+
 ```lua
 -- Auto-install LSP servers
 require('mason').setup()
@@ -222,6 +241,7 @@ require('mason-lspconfig').setup({
 ```
 
 ### Custom LSP Settings
+
 ```lua
 -- Lua LSP with workspace setup
 lspconfig.lua_ls.setup({
@@ -240,6 +260,7 @@ lspconfig.lua_ls.setup({
 ## 🚀 Performance Optimization
 
 ### Startup Optimization
+
 ```lua
 -- Disable unused providers
 vim.g.loaded_python3_provider = 0
@@ -253,11 +274,13 @@ end, 0)
 ```
 
 ### Memory Management
+
 - **Buffer limits**: Automatic cleanup of unused buffers
 - **Swap files**: Disabled for better performance
 - **Undo persistence**: Efficient undo history management
 
 ### Loading Strategy
+
 1. **Immediate**: Core options and keymaps
 2. **VimEnter**: UI components and theme
 3. **BufReadPre**: File-type specific plugins
@@ -266,6 +289,7 @@ end, 0)
 ## 📊 Debug & Profiling
 
 ### Startup Profiling
+
 ```bash
 # Measure startup time
 nvim --startuptime startup.log
@@ -277,6 +301,7 @@ nvim --startuptime startup.log
 ```
 
 ### Plugin Analysis
+
 ```lua
 -- Check plugin load times
 :Lazy profile
@@ -292,7 +317,9 @@ nvim --startuptime startup.log
 ## ⚙️ Customization
 
 ### Local Configuration
+
 Create `lua/config/local.lua` for machine-specific settings:
+
 ```lua
 -- Local overrides
 vim.opt.background = "light"  -- Override theme
@@ -306,6 +333,7 @@ local custom_servers = { 'custom_ls' }
 ```
 
 ### Plugin Customization
+
 ```lua
 -- Override plugin settings
 return {
@@ -322,6 +350,7 @@ return {
 ## 🔧 Advanced Features
 
 ### Custom Commands
+
 ```lua
 -- Format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
@@ -338,6 +367,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 ```
 
 ### Development Workflow
+
 ```lua
 -- Project-specific settings
 vim.api.nvim_create_autocmd("DirChanged", {
@@ -353,11 +383,12 @@ vim.api.nvim_create_autocmd("DirChanged", {
 ## 📋 Maintenance
 
 ### Regular Tasks
+
 ```bash
 # Weekly plugin updates
 :Lazy update
 
-# Monthly LSP server updates  
+# Monthly LSP server updates
 :MasonUpdate
 
 # Quarterly cleanup
@@ -365,6 +396,7 @@ vim.api.nvim_create_autocmd("DirChanged", {
 ```
 
 ### Health Checks
+
 ```bash
 # Comprehensive health check
 :checkhealth
@@ -376,6 +408,7 @@ vim.api.nvim_create_autocmd("DirChanged", {
 ```
 
 ### Troubleshooting
+
 ```bash
 # Reset plugin state
 rm -rf ~/.local/share/nvim
@@ -388,4 +421,4 @@ nvim -u NONE
 
 ---
 
-*Optimized for modern development with AI assistance and comprehensive language support.*
+_Optimized for modern development with AI assistance and comprehensive language support._

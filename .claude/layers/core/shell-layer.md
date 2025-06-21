@@ -5,6 +5,7 @@
 ## 🎯 責任範囲
 
 **🔥 主要技術**: Zshはdotfiles環境の中核技術の一つ
+
 - **設定量**: 全dotfilesの約30%を占める主要コンポーネント
 - **使用頻度**: 開発作業の基盤として最高頻度で使用
 - **影響範囲**: 他ツール（Git、FZF、mise等）の統合基盤
@@ -59,7 +60,7 @@ zsh-benchmark() {
 priority = 1
 source = "path"
 
-[plugins.performance] 
+[plugins.performance]
 priority = 2
 source = "github"
 
@@ -71,16 +72,19 @@ source = "github"
 ## 🔧 ベストプラクティス
 
 ### 1. 遅延読み込み戦略
+
 - **重いツール**: mise, docker, kubectl等は遅延読み込み
 - **測定**: 各プラグインの読み込み時間を定期測定
 - **条件分岐**: 必要時のみプラグインを読み込み
 
 ### 2. モジュール分割
+
 - **機能別分離**: aliases, functions, exports, keybinds
 - **環境別分岐**: OS、ホスト、プロジェクト別設定
 - **設定階層**: global → local → project の優先順位
 
 ### 3. パフォーマンス監視
+
 - **起動時間**: 目標1.0秒以下
 - **プロファイリング**: zsh/zprof モジュール活用
 - **継続監視**: 定期的なベンチマーク実行
@@ -95,11 +99,13 @@ source = "github"
 ## 🚧 最適化課題
 
 ### 高優先度
+
 - [ ] mise初期化をさらに遅延化（目標: 50ms削減）
 - [ ] プラグイン読み込み順序の最適化
 - [ ] 未使用関数・エイリアスの削除
 
 ### 中優先度
+
 - [ ] fzf統合の軽量化
 - [ ] Git統合の最適化
 - [ ] 条件分岐ロジックの簡素化
@@ -146,6 +152,7 @@ time source config_file.zsh
 ## 💡 知見・教訓
 
 ### 成功パターン
+
 - **Sheldon 6段階優先度**: プラグイン管理の一元化で設定が簡潔に
   - 実測効果: 起動時間 2.0s → 1.2s (30%改善)
   - 段階: Critical → Performance → Navigation → Git → Tools → Optional
@@ -156,16 +163,18 @@ time source config_file.zsh
   - 構成: loader.zsh → aliases.zsh, functions.zsh, widgets.zsh
 
 ### 失敗パターン
+
 - **過度の最適化**: 可読性を犠牲にした micro-optimization
 - **依存関係の複雑化**: プラグイン間の依存関係管理の難しさ
 - **設定の断片化**: あまりに細分化すると全体像が見えにくい
 
 ### 実証済み最適化手法
+
 - **XDG Base Directory準拠**: キャッシュ効率化
 - **条件付きPATH追加**: typeset -U pathで重複排除
 - **プロファイリング**: zmodload zsh/zprofで詳細測定
 
 ---
 
-*最終更新: 2025-06-20*
-*パフォーマンス状態: 最適化継続中 (目標起動時間: 1.0秒)*
+_最終更新: 2025-06-20_
+_パフォーマンス状態: 最適化継続中 (目標起動時間: 1.0秒)_

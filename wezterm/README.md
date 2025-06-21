@@ -13,16 +13,17 @@ Modern GPU-accelerated terminal emulator with comprehensive Lua-based configurat
 
 ## 📈 Performance & Features
 
-| Component | Technology | Benefit |
-|-----------|------------|---------|
-| Rendering | WebGpu GPU acceleration | Smooth scrolling, low latency |
-| Font | UDEV Gothic 35NFLG + Nerd Fonts | Crisp text, icon support |
-| Transparency | 92% opacity | Modern glass effect |
-| Tab Management | Custom Lua styling | Visual feedback, process names |
+| Component      | Technology                      | Benefit                        |
+| -------------- | ------------------------------- | ------------------------------ |
+| Rendering      | WebGpu GPU acceleration         | Smooth scrolling, low latency  |
+| Font           | UDEV Gothic 35NFLG + Nerd Fonts | Crisp text, icon support       |
+| Transparency   | 92% opacity                     | Modern glass effect            |
+| Tab Management | Custom Lua styling              | Visual feedback, process names |
 
 ## 🏗️ Architecture
 
 ### Modular Structure
+
 ```
 wezterm/
 ├── wezterm.lua          # Main configuration entry point
@@ -34,6 +35,7 @@ wezterm/
 ```
 
 ### Configuration Philosophy
+
 - **Separation of Concerns**: Each module handles specific functionality
 - **Platform Detection**: Automatic Windows/macOS configuration switching
 - **Utility Functions**: Shared helpers for common operations
@@ -42,9 +44,11 @@ wezterm/
 ## 🎮 Key Bindings
 
 ### Leader Key System: `Ctrl+x`
+
 Following tmux-style conventions for familiar workflow.
 
 #### Tab Management
+
 ```lua
 Ctrl+x c               -- Create new tab
 Ctrl+x n               -- Next tab
@@ -53,6 +57,7 @@ Ctrl+x &               -- Close tab (with confirmation)
 ```
 
 #### Pane Operations
+
 ```lua
 Ctrl+x |               -- Split horizontally
 Ctrl+x -               -- Split vertically
@@ -61,6 +66,7 @@ Ctrl+x x               -- Close pane
 ```
 
 #### Copy Mode: `Ctrl+x [`
+
 Vim-style text selection and navigation.
 
 ```lua
@@ -77,6 +83,7 @@ q/Escape               -- Exit copy mode
 ```
 
 ### Direct Bindings
+
 ```lua
 Alt+Tab / Alt+Shift+Tab  -- Tab switching
 Alt+h/j/k/l             -- Pane navigation
@@ -88,6 +95,7 @@ Cmd/Ctrl+Click          -- Open links
 ## 🎨 Visual Configuration
 
 ### Color Scheme
+
 ```lua
 color_scheme = "Gruvbox dark, hard (base16)"
 
@@ -98,6 +106,7 @@ local NORMAL_TAB_BG = "#191f26"
 ```
 
 ### Typography
+
 ```lua
 font = wezterm.font_with_fallback({
   "UDEV Gothic 35NFLG",
@@ -108,6 +117,7 @@ font_size = 16.0
 ```
 
 ### Window Settings
+
 ```lua
 window_background_opacity = 0.92
 window_decorations = "RESIZE"
@@ -119,12 +129,14 @@ initial_rows = 50
 ## 🔧 Advanced Features
 
 ### Custom Tab Styling
+
 - **Arrow Separators**: Unicode right arrows between tabs
 - **Process Names**: Show running command or working directory
 - **Hover Effects**: Visual feedback with bold text
 - **New Tab Button**: Styled consistently with theme
 
 ### GPU Acceleration
+
 ```lua
 webgpu_preferred_adapter = gpus[1]
 front_end = "WebGpu"
@@ -134,11 +146,13 @@ front_end = "WebGpu"
 ### Platform-Specific Features
 
 #### macOS Integration
+
 - **Native Decorations**: Proper window controls
 - **Fullscreen Mode**: True macOS fullscreen support
 - **Font Rendering**: Optimized for Retina displays
 
 #### Windows/WSL Support
+
 - **WSL Detection**: Automatic Ubuntu environment setup
 - **Path Conversion**: Windows path handling
 - **Font Fallbacks**: Consistent rendering across platforms
@@ -146,6 +160,7 @@ front_end = "WebGpu"
 ## 🛠️ Utility Functions
 
 ### Path Manipulation
+
 ```lua
 -- Replace home directory with ~
 convert_home_dir(path)
@@ -158,6 +173,7 @@ convert_useful_path(path)
 ```
 
 ### Table Operations
+
 ```lua
 -- Merge configuration objects
 object_assign(target, source)
@@ -170,6 +186,7 @@ merge_tables(table1, table2)
 ```
 
 ### Font Handling
+
 ```lua
 -- Create font with fallbacks
 font_with_fallback({
@@ -182,6 +199,7 @@ font_with_fallback({
 ## ⚙️ Configuration Options
 
 ### Mouse Behavior
+
 ```lua
 mouse_bindings = {
   {
@@ -191,13 +209,14 @@ mouse_bindings = {
   },
   {
     event = { Up = { streak = 1, button = "Right" } },
-    mods = "NONE", 
+    mods = "NONE",
     action = wezterm.action.CompleteSelection("Clipboard"),
   },
 }
 ```
 
 ### Key Tables
+
 ```lua
 -- Resize mode with timeout
 key_tables = {
@@ -210,6 +229,7 @@ key_tables = {
 ```
 
 ### Performance Tuning
+
 ```lua
 -- Scrollback and memory
 scrollback_lines = 10000
@@ -226,6 +246,7 @@ cursor_blink_rate = 800
 ## 🔍 Debug & Troubleshooting
 
 ### Configuration Debugging
+
 ```lua
 -- Enable debug logging
 wezterm.log_info("Debug message")
@@ -238,6 +259,7 @@ wezterm.log_info("Platform: " .. wezterm.target_triple)
 ```
 
 ### Common Issues
+
 ```bash
 # Font rendering issues
 fc-cache -fv  # Refresh font cache
@@ -251,6 +273,7 @@ wezterm --config-file /path/to/config.lua
 ```
 
 ### Performance Monitoring
+
 ```lua
 -- Monitor resource usage
 config.front_end = "WebGpu"  -- vs "OpenGL"
@@ -260,6 +283,7 @@ config.webgl_power_preference = "HighPerformance"
 ## 📊 Customization Examples
 
 ### Theme Variants
+
 ```lua
 -- Light theme variant
 if appearance:find("Light") then
@@ -269,6 +293,7 @@ end
 ```
 
 ### Workspace-Specific Settings
+
 ```lua
 -- Project-specific configurations
 wezterm.on("format-window-title", function(tab, pane, tabs, panes, config)
@@ -281,6 +306,7 @@ end)
 ```
 
 ### Custom Commands
+
 ```lua
 -- Add custom key bindings
 config.keys = {
@@ -297,11 +323,13 @@ config.keys = {
 ## 🔗 Integration Points
 
 ### Shell Integration
+
 - **Directory Detection**: Automatic working directory display
 - **Process Monitoring**: Show running command in tab title
 - **Exit Codes**: Visual feedback for command success/failure
 
 ### External Tools
+
 - **Tmux Compatibility**: Leader key system matches tmux workflow
 - **Vim Integration**: Copy mode mirrors vim navigation
 - **Git Workflow**: Optimized for development tasks
@@ -309,6 +337,7 @@ config.keys = {
 ## 📋 Maintenance
 
 ### Regular Updates
+
 ```bash
 # Update WezTerm
 brew upgrade wezterm
@@ -321,6 +350,7 @@ wezterm show-keys | grep "Ctrl+x"
 ```
 
 ### Configuration Management
+
 ```lua
 -- Version check
 if wezterm.version >= "20240101-000000" then
@@ -332,6 +362,7 @@ local has_feature = pcall(require, "wezterm.feature")
 ```
 
 ### Backup Strategy
+
 ```bash
 # Backup configuration
 cp -r ~/.config/wezterm ~/.config/wezterm.backup
@@ -344,12 +375,14 @@ git commit -m "Update WezTerm configuration"
 ## 🚀 Use Cases
 
 ### Development Workflow
+
 1. **Primary Terminal**: Alternative to Alacritty with more features
 2. **Multi-Session**: Tab-based workflow with visual feedback
 3. **Cross-Platform**: Consistent experience across systems
 4. **Integration**: Seamless with existing dotfiles ecosystem
 
 ### Advanced Usage
+
 - **Remote Development**: SSH session management
 - **Container Work**: Docker/WSL integration
 - **Presentation**: High-DPI display optimization
@@ -357,4 +390,4 @@ git commit -m "Update WezTerm configuration"
 
 ---
 
-*Feature-rich terminal alternative optimized for modern development workflows.*
+_Feature-rich terminal alternative optimized for modern development workflows._

@@ -5,7 +5,9 @@
 ## 🏗️ アーキテクチャ原則
 
 ### 主要技術スタック
+
 **Primary Stack**: Zsh + WezTerm + Neovim
+
 - **Zsh (Shell)**: 開発環境の基盤、コマンドライン効率化の中核
 - **WezTerm (Terminal)**: GPU加速ターミナル、Lua設定による高度なカスタマイズ
 - **Neovim (Editor)**: LSP統合エディタ、AI支援開発環境
@@ -13,24 +15,28 @@
 この3つが設定量・機能・使用頻度において中核を成しており、他のツールはこれらを補完する役割。
 
 ### 1. モジュラー設計
+
 - **責任分離**: 各ツール・機能は独立したモジュールとして管理
 - **依存関係最小化**: ツール間の不要な依存関係を避ける
 - **設定の階層化**: global → local → project の優先順位
 - **主要技術優先**: Zsh/WezTerm/Neovim設定に開発リソースを集中
 
 #### 設計原則詳細
+
 - **分離の原則**: 各ツール独立、疎結合設計
 - **統合の原則**: 一貫したテーマ・キーバインド・ワークフロー
 - **拡張性**: 新ツール追加の容易さ
 - **保守性確保**: 文書化、バージョン管理、テスト性
 
 ### 2. パフォーマンス最優先
+
 - **遅延読み込み**: 必要時のみリソースを読み込み
 - **起動時間最適化**: 主要3ツールで起動時間の継続測定・改善
 - **メモリ効率**: 不要なプロセス・機能の排除
 - **主要技術最適化**: Zsh 1.2s, Neovim 95ms, WezTerm 800msを継続改善
 
 ### 3. 一貫性の維持
+
 - **テーマ統一**: 全ツールで一貫したカラースキーム・フォント
 - **キーバインド統一**: 主要3ツール間での一貫したキーマッピング
 - **命名規則**: ファイル名、関数名、変数名の統一
@@ -72,19 +78,19 @@ dotfiles/
 # 設定ファイルの階層読み込み
 load_config() {
     local config_name="$1"
-    
+
     # 1. デフォルト設定
     local default_config="$DOTFILES_DIR/config/${config_name}.default"
     [[ -f "$default_config" ]] && source "$default_config"
-    
+
     # 2. OS固有設定
     local os_config="$DOTFILES_DIR/config/${config_name}.${DOTFILES_OS}"
     [[ -f "$os_config" ]] && source "$os_config"
-    
+
     # 3. 環境固有設定
     local env_config="$DOTFILES_DIR/config/${config_name}.${DOTFILES_ENV}"
     [[ -f "$env_config" ]] && source "$env_config"
-    
+
     # 4. ローカル設定（git管理外）
     local local_config="$HOME/.config/${config_name}.local"
     [[ -f "$local_config" ]] && source "$local_config"
@@ -99,7 +105,7 @@ create_lazy_loader() {
     local tool_name="$1"
     local init_command="$2"
     local check_command="${3:-command -v $tool_name}"
-    
+
     if eval "$check_command" >/dev/null 2>&1; then
         eval "${tool_name}() {
             unfunction ${tool_name} 2>/dev/null
@@ -128,32 +134,32 @@ export DOTFILES_THEME_VARIANT="dark"
 apply_unified_theme() {
     local theme="$DOTFILES_THEME_PRIMARY"
     local variant="$DOTFILES_THEME_VARIANT"
-    
+
     case "$theme" in
         gruvbox)
             # 共通カラー定義
             export THEME_BG="#282828"
             export THEME_FG="#ebdbb2"
             export THEME_ACCENT="#fe8019"
-            
+
             # FZF
             export FZF_DEFAULT_OPTS="--color=bg+:#3c3836,bg:#32302f,spinner:#fb4934,hl:#928374"
-            
+
             # LS_COLORS
             export LS_COLORS="di=1;34:ln=1;36:so=1;35:pi=1;33:ex=1;32"
             ;;
     esac
-    
+
     # 各ツールにテーマを通知
     notify_theme_change "$theme" "$variant"
 }
 
 notify_theme_change() {
     local theme="$1" variant="$2"
-    
+
     # Neovim
     echo "colorscheme $theme" > ~/.config/nvim/theme.vim
-    
+
     # その他のツールも同様に更新
 }
 ```
@@ -167,12 +173,12 @@ notify_theme_change() {
 timed_source() {
     local file="$1"
     local start_time=$(gdate +%s.%N)
-    
+
     source "$file"
-    
+
     local end_time=$(gdate +%s.%N)
     local elapsed=$(echo "$end_time - $start_time" | bc -l)
-    
+
     # 遅い設定ファイルを特定
     if (( $(echo "$elapsed > 0.1" | bc -l) )); then
         echo "⚠️  Slow config: $file (${elapsed}s)" >&2
@@ -190,7 +196,7 @@ timed_source "$HOME/.config/zsh/aliases.zsh"
 load_plugin_if_needed() {
     local plugin="$1"
     local condition="$2"
-    
+
     if eval "$condition"; then
         sheldon plugin load "$plugin"
     else
@@ -237,7 +243,7 @@ create_integrated_command() {
     local description="$2"
     shift 2
     local tools=("$@")
-    
+
     eval "${command_name}() {
         echo \"🔧 $description\"
         for tool in ${tools[@]}; do
@@ -264,9 +270,9 @@ create_integrated_command "update-all" "Update all package managers" \
 # 設定の整合性チェック
 validate_dotfiles() {
     echo "🔍 Validating dotfiles configuration..."
-    
+
     local errors=0
-    
+
     # 必須コマンドの確認
     local required_commands=("git" "nvim" "tmux" "fzf")
     for cmd in "${required_commands[@]}"; do
@@ -275,7 +281,7 @@ validate_dotfiles() {
             ((errors++))
         fi
     done
-    
+
     # 設定ファイルの存在確認
     local config_files=(
         "$HOME/.zshrc"
@@ -288,14 +294,14 @@ validate_dotfiles() {
             ((errors++))
         fi
     done
-    
+
     # パフォーマンスチェック
     echo "📊 Performance check..."
     zsh-benchmark 1 | grep -q "startup time: [0-1]\." || {
         echo "⚠️  Slow startup time detected"
         ((errors++))
     }
-    
+
     if [[ $errors -eq 0 ]]; then
         echo "✅ All validations passed"
         return 0
@@ -309,16 +315,19 @@ validate_dotfiles() {
 ## 💡 設計決定記録
 
 ### 成功した設計決定
+
 1. **Sheldon採用**: プラグイン管理の一元化と高速化実現
 2. **Lua設定**: Neovimの起動時間を60%短縮
 3. **遅延読み込み**: 30%の起動時間短縮効果
 
 ### 失敗から学んだ教訓
+
 1. **過度の抽象化**: 設定の複雑化を招き保守困難に
 2. **テスト不足**: 環境変更時の動作検証不十分
 3. **ドキュメント不備**: 設定変更の理由・効果の記録不足
 
 ### 今後の設計方針
+
 1. **段階的改善**: 大幅な変更は段階的に実施
 2. **測定の重要性**: 全ての最適化は測定に基づく
 3. **シンプル指向**: 複雑さよりもシンプルさを優先
@@ -326,6 +335,7 @@ validate_dotfiles() {
 ## 🔧 よく使用するパターン
 
 ### シンボリックリンク管理
+
 ```bash
 # 基本パターン
 ln -sf "$DOTFILES_DIR/config_file" "$HOME/.config_file"
@@ -343,6 +353,7 @@ create_symlinks() {
 ```
 
 ### 条件付き設定読み込み
+
 ```bash
 # コマンド存在確認
 if command -v tool_name >/dev/null 2>&1; then
@@ -365,5 +376,5 @@ esac
 
 ---
 
-*最終更新: 2025-06-20*
-*設計フェーズ: 安定版 - 継続的改善*
+_最終更新: 2025-06-20_
+_設計フェーズ: 安定版 - 継続的改善_

@@ -19,7 +19,7 @@ zsh-benchmark() {
     local times=${1:-5}
     local total=0
     echo "Measuring Zsh startup time ($times runs)..."
-    
+
     for i in {1..$times}; do
         local start=$(gdate +%s.%N)
         zsh -i -c exit
@@ -28,7 +28,7 @@ zsh-benchmark() {
         total=$(echo "$total + $time" | bc -l)
         echo "Run $i: ${time}s"
     done
-    
+
     local average=$(echo "scale=3; $total / $times" | bc -l)
     echo "Average startup time: ${average}s"
 }
@@ -48,7 +48,7 @@ local M = {}
 function M.benchmark_startup()
     local times = {}
     local iterations = 10
-    
+
     for i = 1, iterations do
         local start = vim.fn.reltime()
         -- プラグイン読み込みのシミュレーション
@@ -56,12 +56,12 @@ function M.benchmark_startup()
         local elapsed = vim.fn.reltimefloat(vim.fn.reltime(start))
         table.insert(times, elapsed)
     end
-    
+
     local total = 0
     for _, time in ipairs(times) do
         total = total + time
     end
-    
+
     local average = total / iterations
     print(string.format('Average startup time: %.2fms', average * 1000))
 end
@@ -71,7 +71,7 @@ function M.profile_plugins()
     vim.cmd('profile start ~/.config/nvim/profile.log')
     vim.cmd('profile func *')
     vim.cmd('profile file *')
-    
+
     -- 通常の使用をシミュレート
     vim.defer_fn(function()
         vim.cmd('profile pause')
@@ -113,7 +113,7 @@ monitor-cpu() {
 lazy_load_tool() {
     local tool_name="$1"
     local init_command="$2"
-    
+
     # プレースホルダー関数作成
     eval "${tool_name}() {
         unfunction ${tool_name}
@@ -181,6 +181,7 @@ github = "zsh-users/zsh-completions"
 
 ```markdown
 ## 2025-06-09: Zsh最適化
+
 - **改善前**: 2.0s
 - **改善後**: 1.2s
 - **削減率**: 40%
@@ -188,6 +189,7 @@ github = "zsh-users/zsh-completions"
 - **技術**: 条件分岐読み込み、モジュラー構成
 
 ## 2025-06-08: Neovim最適化
+
 - **改善前**: 250ms
 - **改善後**: 95ms
 - **削減率**: 62%
@@ -195,12 +197,14 @@ github = "zsh-users/zsh-completions"
 - **技術**: Lua-based設定、遅延読み込み最適化
 
 ## 2025-06-07: Git統合強化
+
 - **改善前**: 煩雑なGit操作
 - **改善後**: 50%時間短縮
 - **主な対策**: Zsh略語展開、FZF統合、ghq管理
 - **技術**: Widget作成、ブランチ・リポジトリ選択自動化
 
 ## 2025-06-05: Terminal環境統一
+
 - **改善前**: 不整合なターミナル設定
 - **改善後**: 一貫したターミナル体験
 - **主な対策**: 共通カラーパレット、フォント統一、キーバインド標準化
@@ -217,24 +221,24 @@ perf-check() {
     echo "=== Dotfiles Performance Check ==="
     echo "Date: $(date)"
     echo ""
-    
+
     # Zsh起動時間
     echo "📊 Zsh Startup Time:"
     zsh-benchmark 3
     echo ""
-    
+
     # Neovim起動時間
     echo "📊 Neovim Startup Time:"
     nvim --startuptime /tmp/nvim-startup.log +qa
     tail -1 /tmp/nvim-startup.log
     echo ""
-    
+
     # システムリソース
     echo "📊 System Resources:"
     echo "Memory: $(free -h | grep '^Mem:' | awk '{print $3 "/" $2}')"
     echo "CPU Load: $(uptime | awk -F'load average:' '{print $2}')"
     echo ""
-    
+
     # ディスク使用量
     echo "📊 Dotfiles Size:"
     du -sh ~/.config ~/.local/share/nvim ~/.tmux 2>/dev/null | sort -hr
@@ -243,15 +247,15 @@ perf-check() {
 # ボトルネック特定
 find-bottlenecks() {
     echo "=== Performance Bottleneck Analysis ==="
-    
+
     # 遅いコマンドの特定
     echo "🔍 Slow commands in history:"
     fc -l -100 | awk '{print $2}' | sort | uniq -c | sort -nr | head -10
-    
+
     # 大きなファイルの特定
     echo "🔍 Large files in dotfiles:"
     find ~ -name ".*rc" -o -name ".*profile" -o -name ".config" -type f -size +1k 2>/dev/null | head -10
-    
+
     # プロセス使用量
     echo "🔍 Resource-heavy processes:"
     ps aux --sort=-%cpu | head -10
@@ -261,16 +265,19 @@ find-bottlenecks() {
 ## 🎯 最適化ターゲット
 
 ### 短期目標 (1-2週間)
+
 - [ ] Zsh起動時間: 1.2s → 1.0s (17%削減)
 - [ ] WezTerm起動時間: 800ms → 600ms (25%削減)
 - [ ] Git操作レスポンス: 200ms → 150ms (25%削減)
 
 ### 中期目標 (1-2ヶ月)
+
 - [ ] 全体的なメモリ使用量10%削減
 - [ ] プラグイン数を現在の30%削減
 - [ ] 設定ファイルサイズの最適化
 
 ### 長期目標 (3-6ヶ月)
+
 - [ ] 自動最適化システムの構築
 - [ ] パフォーマンス回帰防止機能
 - [ ] ベンチマーク継続監視システム
@@ -278,16 +285,19 @@ find-bottlenecks() {
 ## 💡 最適化知見
 
 ### 成功パターン
+
 - **遅延読み込み**: 30-50%の起動時間短縮効果
 - **プラグイン整理**: 不要機能削除で20-30%改善
 - **設定分割**: モジュール化で保守性と性能両立
 
 ### 失敗パターン
+
 - **過度の最適化**: 可読性・保守性を犠牲にした微最適化
 - **測定不備**: 体感速度と実測値の乖離
 - **依存関係無視**: 最適化による機能破綻
 
 ### 測定の重要性
+
 - **定期測定**: 週1回のベンチマーク実行
 - **環境依存**: 異なるマシンでの一貫性確認
 - **回帰検出**: 設定変更後の性能確認
@@ -301,6 +311,6 @@ find-bottlenecks() {
 
 ---
 
-*最終更新: 2025-06-20*
-*現在の状態: Zsh 1.2s, Neovim 95ms, 継続最適化中*
-*次回見直し: 2025-07-01*
+_最終更新: 2025-06-20_
+_現在の状態: Zsh 1.2s, Neovim 95ms, 継続最適化中_
+_次回見直し: 2025-07-01_

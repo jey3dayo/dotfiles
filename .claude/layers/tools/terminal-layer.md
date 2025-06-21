@@ -5,6 +5,7 @@
 ## 🎯 責任範囲
 
 **🔥 主要技術**: WezTermはdotfiles環境の中核技術の一つ
+
 - **設定量**: 全dotfilesの約25%を占める主要コンポーネント
 - **技術特性**: Lua設定による高度なカスタマイズ、GPU加速描画
 - **使用頻度**: 開発作業の視覚的基盤として常時使用
@@ -19,6 +20,7 @@
 ### WezTerm モジュラー設定
 
 #### ファイル構成（推奨）
+
 ```
 wezterm/
 ├── wezterm.lua      # メイン設定ファイル
@@ -28,6 +30,7 @@ wezterm/
 ```
 
 #### メイン設定パターン
+
 ```lua
 -- wezterm.lua - メイン設定
 local wezterm = require('wezterm')
@@ -57,16 +60,16 @@ function M.apply_to_config(config)
         'Symbols Nerd Font Mono',
     })
     config.font_size = 16.0
-    
+
     -- テーマ設定
     config.color_scheme = 'Gruvbox dark, hard (base16)'
     config.window_background_opacity = 0.92
     config.macos_window_background_blur = 20
-    
+
     -- パフォーマンス
     config.front_end = 'WebGpu'
     config.max_fps = 120
-    
+
     return config
 end
 
@@ -83,26 +86,26 @@ local M = {}
 
 function M.apply_to_config(config)
     config.leader = { key = 'x', mods = 'CTRL', timeout_milliseconds = 1000 }
-    
+
     config.keys = {
         -- タブ管理
         { key = 'c', mods = 'LEADER', action = act.SpawnTab('CurrentPaneDomain') },
         { key = '&', mods = 'LEADER', action = act.CloseCurrentTab{ confirm = true } },
-        
+
         -- ペイン分割
         { key = '"', mods = 'LEADER', action = act.SplitVertical{ domain = 'CurrentPaneDomain' } },
         { key = '%', mods = 'LEADER', action = act.SplitHorizontal{ domain = 'CurrentPaneDomain' } },
-        
+
         -- ペイン移動
         { key = 'h', mods = 'ALT', action = act.ActivatePaneDirection('Left') },
         { key = 'j', mods = 'ALT', action = act.ActivatePaneDirection('Down') },
         { key = 'k', mods = 'ALT', action = act.ActivatePaneDirection('Up') },
         { key = 'l', mods = 'ALT', action = act.ActivatePaneDirection('Right') },
-        
+
         -- コピーモード
         { key = '[', mods = 'LEADER', action = act.ActivateCopyMode },
     }
-    
+
     return config
 end
 
@@ -189,7 +192,7 @@ config.cell_width = 1.0
 if [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
     # WezTerm固有の設定
     export TERM_PROGRAM_VERSION
-    
+
     # タブタイトル自動設定
     precmd() {
         print -Pn "\e]0;%~\a"
@@ -244,11 +247,13 @@ config.color_scheme = scheme_for_appearance(get_appearance())
 ## 🚧 最適化課題
 
 ### 高優先度
+
 - [ ] WezTerm起動時間の短縮（目標: 500ms以下）
 - [ ] GPU使用率の最適化
 - [ ] フォントレンダリングの改善
 
 ### 中優先度
+
 - [ ] Tmuxセッション管理の自動化
 - [ ] 複数ターミナル間での設定同期
 - [ ] キーバインドの統一化
@@ -256,16 +261,19 @@ config.color_scheme = scheme_for_appearance(get_appearance())
 ## 💡 知見・教訓
 
 ### 成功パターン
+
 - **モジュラー設定**: Lua設定の分割で保守性向上
 - **GPU加速**: WebGpu使用で描画パフォーマンス大幅改善
 - **Leader key**: tmux風キーバインドで操作性統一
 
 ### 失敗パターン
+
 - **過度のカスタマイズ**: 設定の複雑化とメンテナンス困難
 - **フォント設定**: fallback設定不備によるレンダリング問題
 - **プラグイン依存**: tmuxプラグイン多用による起動時間増加
 
 ### パフォーマンス教訓
+
 - **WebGpu vs OpenGL**: 環境によるパフォーマンス差異
 - **スクロールバック**: 大量履歴によるメモリ使用量増加
 - **アニメーション**: 無効化による体感速度向上
@@ -278,6 +286,6 @@ config.color_scheme = scheme_for_appearance(get_appearance())
 
 ---
 
-*最終更新: 2025-06-20*
-*パフォーマンス状態: WebGpu最適化済み*
-*統合状態: シェル・エディタ統合完了*
+_最終更新: 2025-06-20_
+_パフォーマンス状態: WebGpu最適化済み_
+_統合状態: シェル・エディタ統合完了_
