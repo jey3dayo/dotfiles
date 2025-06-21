@@ -1,0 +1,171 @@
+# Shell Layer - Core Configuration Management
+
+このレイヤーでは、シェル環境（主にZsh）の設定管理、パフォーマンス最適化、プラグイン管理に関する知見を体系化します。
+
+## 🎯 責任範囲
+
+**🔥 主要技術**: Zshはdotfiles環境の中核技術の一つ
+- **設定量**: 全dotfilesの約30%を占める主要コンポーネント
+- **使用頻度**: 開発作業の基盤として最高頻度で使用
+- **影響範囲**: 他ツール（Git、FZF、mise等）の統合基盤
+
+- **Zsh設定**: モジュラー設定、起動時間最適化、プラグイン管理
+- **Shell統合**: Git、FZF、mise等の統合パターン
+- **パフォーマンス**: 起動時間測定、プロファイリング、最適化手法
+- **設定管理**: モジュール化、条件分岐、環境対応
+
+## 📊 実装パターン
+
+### 基本設定構造
+
+```zsh
+# モジュラー設定パターン
+# config/loader.zsh - 中央ローダー
+source_if_exists() {
+    [[ -f "$1" ]] && source "$1"
+}
+
+# 遅延読み込みパターン
+mise() {
+    unfunction mise
+    eval "$(mise activate zsh)"
+    mise "$@"
+}
+```
+
+### パフォーマンス最適化
+
+```zsh
+# 起動時間測定
+zsh-benchmark() {
+    local times=5
+    local total=0
+    for i in {1..$times}; do
+        local start=$(date +%s.%N)
+        zsh -i -c exit
+        local end=$(date +%s.%N)
+        local time=$(echo "$end - $start" | bc)
+        total=$(echo "$total + $time" | bc)
+    done
+    echo "Average startup time: $(echo "scale=3; $total / $times" | bc)s"
+}
+```
+
+### プラグイン管理 (Sheldon)
+
+```toml
+# 6段階優先度システム
+[plugins.critical]
+priority = 1
+source = "path"
+
+[plugins.performance] 
+priority = 2
+source = "github"
+
+[plugins.navigation]
+priority = 3
+source = "github"
+```
+
+## 🔧 ベストプラクティス
+
+### 1. 遅延読み込み戦略
+- **重いツール**: mise, docker, kubectl等は遅延読み込み
+- **測定**: 各プラグインの読み込み時間を定期測定
+- **条件分岐**: 必要時のみプラグインを読み込み
+
+### 2. モジュール分割
+- **機能別分離**: aliases, functions, exports, keybinds
+- **環境別分岐**: OS、ホスト、プロジェクト別設定
+- **設定階層**: global → local → project の優先順位
+
+### 3. パフォーマンス監視
+- **起動時間**: 目標1.0秒以下
+- **プロファイリング**: zsh/zprof モジュール活用
+- **継続監視**: 定期的なベンチマーク実行
+
+## 📈 現在の指標
+
+- **起動時間**: 1.2秒 (目標: 1.0秒)
+- **プラグイン数**: 15+ (最適化済み)
+- **メモリ使用量**: 監視対象
+- **設定ファイル数**: 8ファイル (モジュール化)
+
+## 🚧 最適化課題
+
+### 高優先度
+- [ ] mise初期化をさらに遅延化（目標: 50ms削減）
+- [ ] プラグイン読み込み順序の最適化
+- [ ] 未使用関数・エイリアスの削除
+
+### 中優先度
+- [ ] fzf統合の軽量化
+- [ ] Git統合の最適化
+- [ ] 条件分岐ロジックの簡素化
+
+## 🔗 関連層との連携
+
+- **Tools Layer**: 各ツール固有の設定と統合
+- **Performance Layer**: パフォーマンス測定・最適化
+- **Integration Layer**: 他ツールとの連携パターン
+
+## 📝 設定テンプレート
+
+### 新機能追加時のパターン
+
+```zsh
+# 1. 遅延読み込み関数定義
+tool_name() {
+    unfunction tool_name
+    eval "$(tool_name init)"
+    tool_name "$@"
+}
+
+# 2. 条件付き読み込み
+if command -v tool_name >/dev/null 2>&1; then
+    # ツール固有の設定
+fi
+
+# 3. エイリアス・略語定義
+abbr tool_alias="tool_name command"
+```
+
+### デバッグ・診断パターン
+
+```zsh
+# 起動時間プロファイリング
+zmodload zsh/zprof
+# 設定読み込み
+zprof | head -20
+
+# 個別ファイル測定
+time source config_file.zsh
+```
+
+## 💡 知見・教訓
+
+### 成功パターン
+- **Sheldon 6段階優先度**: プラグイン管理の一元化で設定が簡潔に
+  - 実測効果: 起動時間 2.0s → 1.2s (30%改善)
+  - 段階: Critical → Performance → Navigation → Git → Tools → Optional
+- **mise遅延読み込み**: 使用頻度の低いツールで大幅な起動時間短縮
+  - 実測効果: -39.88ms短縮
+  - パターン: 必要時のみeval実行
+- **モジュール化**: 機能別分離で保守性向上
+  - 構成: loader.zsh → aliases.zsh, functions.zsh, widgets.zsh
+
+### 失敗パターン
+- **過度の最適化**: 可読性を犠牲にした micro-optimization
+- **依存関係の複雑化**: プラグイン間の依存関係管理の難しさ
+- **設定の断片化**: あまりに細分化すると全体像が見えにくい
+
+### 実証済み最適化手法
+- **XDG Base Directory準拠**: キャッシュ効率化
+- **条件付きPATH追加**: typeset -U pathで重複排除
+- **プロファイリング**: zmodload zsh/zprofで詳細測定
+
+---
+
+*最終更新: 2025-06-20*
+*パフォーマンス状態: 最適化継続中 (目標起動時間: 1.0秒)*

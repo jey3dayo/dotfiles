@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(fd:*)",
+      "Bash(rg:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(echo:*)",
+      "Bash(test:*)",
+      "Bash(source:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(zsh:*)",
+      "Bash(sheldon:*)",
+      "Bash(abbr:*)",
+      "Bash(nvim:*)",
+      "Bash(wezterm:*)",
+      "Bash(lua:*)",
+      "Bash(brew:*)",
+      "Bash(pip3:*)",
+      "Bash(timeout:*)"
+    ],
+    "deny": []
+  }
+}

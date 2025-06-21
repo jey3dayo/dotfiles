@@ -30,6 +30,19 @@
       "Bash(defaults:*)",
       "Bash(time:*)",
       "Bash(zsh-benchmark:*)",
+      "Bash(pnpm:*)",
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Bash(npx:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(make:*)",
+      "Bash(docker:*)",
+      "Bash(ps:*)",
+      "Bash(kill:*)",
+      "Bash(jobs:*)",
+      "Bash(jq:*)",
+      "Bash(wait:*)",
       "WebFetch(domain:docs.anthropic.com)",
       "Bash(ssh:*)",
       "Bash(ping:*)",
@@ -42,7 +55,12 @@
       "Bash(*| uniq*)",
       "Bash(*| wc*)",
       "Bash(*| awk*)",
-      "Bash(*| xargs*)"
+      "Bash(*| xargs*)",
+      "Bash(*| rg*)",
+      "Bash(*| sed*)",
+      "Bash(*| tr*)",
+      "Bash(*| tee*)",
+      "Bash(*| jq*)"
     ],
     "deny": []
   }

@@ -1,8 +1,33 @@
-# Dotfiles Configuration - Claude Context
+# Dotfiles Configuration - Claude AI支援ガイド
+
+このファイルはClaude AIを使用したdotfiles開発を効率的に行うための専用ガイドです。
 
 ## 🎯 Overview
 
+**目的**: 個人開発環境の設定ファイルを統合管理し、モダンな開発体験を提供
 Personal dotfiles configuration optimized for software development with a focus on performance, modularity, and seamless tool integration.
+
+### 技術スタック詳細
+- **Shell**: Zsh + Sheldon プラグイン管理
+- **Editor**: Neovim + Lua設定 + AI支援
+- **Terminal**: WezTerm (Lua設定) / Alacritty (GPU加速)
+- **Multiplexer**: Tmux
+- **Package Manager**: Homebrew + Brewfile
+- **Version Manager**: Mise
+- **Launcher**: Raycast + Karabiner Elements
+
+## 重要な指示
+
+### 🔥 主要技術スタック
+**Primary Stack**: Zsh + WezTerm + Neovim
+- この3技術がコード量・使用頻度・機能において中核
+- 他ツールはこれらを補完する支援的役割
+
+### 設計原則
+- **Performance First**: 主要3技術の起動時間最適化（Zsh: 1.2s, Neovim: 95ms, WezTerm: 800ms）
+- **Primary Integration**: Zsh ⇔ WezTerm ⇔ Neovim間のシームレス連携
+- **Unified Theme**: Gruvboxベース統一テーマ・フォント設定
+- **Modular Design**: 主要技術を中心とした設定の分離・統合
 
 ## 📊 Current Status (2025-06-09)
 
@@ -266,6 +291,59 @@ zsh -x -c 'exit'          # デバッグモード実行
 zmodload zsh/zprof; zprof  # プロファイリング
 ```
 
+## 層別知見管理システム
+
+プロジェクトの技術知識は **層別で整理** されており、実装時に適切な層の知識を参照できます：
+
+### 📋 層別実装ガイド
+
+実装する層に応じて適切なドキュメントを参照してください：
+
+#### Core Layers（核となる設定層）
+
+- **[Shell層](.claude/layers/core/shell-layer.md)** - Zsh設定・パフォーマンス最適化・プラグイン管理 (`zsh/`)
+- **[Git層](.claude/layers/core/git-layer.md)** - Git設定・ワークフロー・認証・統合 (`git/`)
+
+#### Tools Layers（ツール固有層）
+
+- **[Terminal層](.claude/layers/tools/terminal-layer.md)** - WezTerm・Tmux・Alacritty設定と統合 (`wezterm/`, `tmux/`, `alacritty/`)
+- **[Editor層](.claude/layers/tools/editor-layer.md)** - Neovim・LSP・AI統合・プラグイン管理 (`nvim/`)
+
+#### Support Layers（支援・横断層）
+
+- **[Performance層](.claude/layers/support/performance-layer.md)** - パフォーマンス測定・最適化・監視
+- **[Integration層](.claude/layers/support/integration-layer.md)** - ツール間統合・ワークフロー・設定同期
+
+### 🏗️ アーキテクチャ知識
+
+- **[設計パターン](.claude/architecture/patterns.md)** - 全体アーキテクチャ・統一パターン・ベストプラクティス
+
+### 🔧 コマンドシステム
+
+- `/learnings` - 層別知見記録・管理
+
+## 実装ワークフロー
+
+### 🚀 層別実装アプローチ
+
+#### Step 1: 実装準備
+
+1. **対象層ドキュメント確認**: 該当層の `.claude/layers/` ドキュメントを読み込み
+2. **アーキテクチャ理解**: `.claude/architecture/patterns.md` で統一方針を確認
+3. **依存関係把握**: 他層との連携パターンを理解
+
+#### Step 2: 実装実行
+
+1. **既存設定優先**: 新規作成より既存設定の編集・拡張を検討
+2. **パフォーマンス重視**: 起動時間・レスポンス時間への影響を常に考慮
+3. **統一パターン活用**: 各層ドキュメント内の実装テンプレートを利用
+
+#### Step 3: 品質確保
+
+1. **測定・検証**: 該当層の測定パターンに従い実装効果を検証
+2. **統合テスト**: 他ツールとの連携に問題がないことを確認
+3. **知見記録**: `/learnings` コマンドで新しい知見を層別に記録
+
 ## 🔗 References
 
 - [Tool List](TOOLS.md)
@@ -274,5 +352,5 @@ zmodload zsh/zprof; zprof  # プロファイリング
 
 ---
 
-*Last Updated: 2025-06-14*
-*Configuration Status: Production Ready - Continuous Optimization*
+*Last Updated: 2025-06-20*
+*Configuration Status: Production Ready - 層別知識管理システム統合完了*
