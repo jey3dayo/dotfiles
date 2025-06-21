@@ -1,8 +1,20 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.0.4/schema.json",
   "files": {
-    "include": ["**/*.ts", "**/*.js", "**/*.mjs", "**/*.cjs", "**/*.mts", "**/*.jsx", "**/*.tsx", "**/*.json"],
-    "ignore": [
+    "includes": [
+      "**/*.ts",
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.cjs",
+      "**/*.mts",
+      "**/*.jsx",
+      "**/*.tsx",
+      "**/*.json",
+      "!raycast/**",
+      "!.vimperator/**",
+      "!rest-client/**"
+    ],
+    "experimentalScannerIgnores": [
       ".cache",
       "dist",
       "node_modules",
@@ -16,8 +28,10 @@
       "tmux/plugins/**",
       "fisher/**",
       "zsh/.zinit/**",
-      "claude/local/node_modules/**"
-    ]
+      "claude/local/node_modules/**",
+      "treefmt.toml"
+    ],
+    "maxSize": 2097152
   },
   "linter": {
     "enabled": true,
@@ -30,7 +44,9 @@
     "lineWidth": 120,
     "indentStyle": "space"
   },
-  "organizeImports": {
-    "enabled": true
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
   }
 }
