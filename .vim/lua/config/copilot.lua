@@ -6,6 +6,17 @@ local select = utils.safe_require "CopilotChat.select"
 
 if not (copilot and copilot_cmp and copilot_chat) then return end
 
+-- Disable Copilot as an LSP to prevent "no configuration" warnings
+vim.g.copilot_filetypes = {
+  ["*"] = false,
+  javascript = true,
+  typescript = true,
+  lua = true,
+  python = true,
+  go = true,
+  rust = true,
+}
+
 copilot.setup {
   suggestion = { enabled = false },
   panel = { enabled = false },
@@ -53,26 +64,25 @@ copilot_chat.setup {
   },
 }
 
--- Avanteで代替
--- -- Copilot Chat
--- -- バッファの内容全体を使ってCopilotとチャット
--- local function CopilotChatBuffer()
---   local input = vim.fn.input "Quick Chat: "
---   if input ~= "" then
---     require("CopilotChat").ask(input, {
---       selection = select and select.buffer or nil,
---     })
---   end
--- end
---
--- -- telescopeを使ってアクションプロンプトを表示
--- local function ShowChatPrompt()
---   local actions = require "CopilotChat.actions"
---   require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
--- end
---
--- -- Hack: MetaをAltにマッピング
--- Keymap("<A-k>", CopilotChatBuffer)
--- V_Keymap("<A-k>", CopilotChatBuffer)
--- Keymap("<A-l>", ShowChatPrompt)
--- V_Keymap("<A-l>", ShowChatPrompt)
+-- Copilot Chat
+-- バッファの内容全体を使ってCopilotとチャット
+local function CopilotChatBuffer()
+  local input = vim.fn.input "Quick Chat: "
+  if input ~= "" then
+    require("CopilotChat").ask(input, {
+      selection = select and select.buffer or nil,
+    })
+  end
+end
+
+-- telescopeを使ってアクションプロンプトを表示
+local function ShowChatPrompt()
+  local actions = require "CopilotChat.actions"
+  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+end
+
+-- Hack: MetaをAltにマッピング
+Keymap("<A-k>", CopilotChatBuffer)
+V_Keymap("<A-k>", CopilotChatBuffer)
+Keymap("<A-l>", ShowChatPrompt)
+V_Keymap("<A-l>", ShowChatPrompt)
