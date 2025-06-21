@@ -63,7 +63,6 @@ git/local.gitconfig
 
 # Tools and Applications
 .vimperator/info/
-tmux/plugins/
 .subversion/auth/
 .netrwhist
 .python-version
