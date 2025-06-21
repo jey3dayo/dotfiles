@@ -13,16 +13,17 @@ High-performance Zsh configuration with 1.2s startup time (30% improvement) and 
 
 ## 📈 Performance Metrics
 
-| Optimization | Improvement | Impact |
-|-------------|-------------|---------|
-| Overall startup | 1.7s → 1.2s | 30% faster |
-| mise lazy loading | -39.88ms | Critical |
-| 6-tier plugin loading | Prioritized | Smooth startup |
-| File compilation | All .zsh files | Runtime speed |
+| Optimization          | Improvement    | Impact         |
+| --------------------- | -------------- | -------------- |
+| Overall startup       | 1.7s → 1.2s    | 30% faster     |
+| mise lazy loading     | -39.88ms       | Critical       |
+| 6-tier plugin loading | Prioritized    | Smooth startup |
+| File compilation      | All .zsh files | Runtime speed  |
 
 ## 🏗️ Architecture
 
 ### Modular Design
+
 ```
 zsh/
 ├── config/
@@ -38,6 +39,7 @@ zsh/
 ```
 
 ### 6-Tier Plugin Loading
+
 1. **Essential**: Core functionality (zsh-autosuggestions)
 2. **Completion**: Tab completion enhancements
 3. **Navigation**: Directory and file navigation
@@ -48,6 +50,7 @@ zsh/
 ## 🎮 Essential Commands
 
 ### Help System
+
 ```bash
 zsh-help                    # Comprehensive help
 zsh-help keybinds          # Key bindings reference
@@ -56,12 +59,14 @@ zsh-help tools             # Installed tools check
 ```
 
 ### Performance Tools
+
 ```bash
 zsh-benchmark              # Startup time measurement
 zsh-profile                # Detailed profiling
 ```
 
 ### Git Workflow (Widgets)
+
 ```bash
 ^]                         # FZF ghq repository selector
 ^g^g                       # Git status display
@@ -72,6 +77,7 @@ zsh-profile                # Detailed profiling
 ```
 
 ### FZF Integration
+
 ```bash
 ^R                         # History search
 ^T                         # File search
@@ -81,6 +87,7 @@ zsh-profile                # Detailed profiling
 ## 🔧 Configuration Features
 
 ### Abbreviations (50+)
+
 ```bash
 # Git shortcuts
 g      → git
@@ -103,12 +110,14 @@ l      → ls -CF
 ```
 
 ### Environment Optimizations
+
 - **Lazy mise loading**: Deferred until first use
 - **Conditional loading**: Tools load only if available
 - **Path optimization**: Efficient PATH management
 - **Cache utilization**: Command completion caching
 
 ### Custom Functions
+
 ```bash
 mkcd()          # Create directory and cd into it
 gco()           # FZF git checkout
@@ -119,23 +128,27 @@ kill-fzf()      # Process killer with preview
 ## 📊 Plugin Ecosystem
 
 ### Core Plugins (Tier 1-2)
+
 - **zsh-autosuggestions**: Command suggestions
 - **zsh-syntax-highlighting**: Syntax coloring
 - **zsh-completions**: Enhanced completions
 - **fzf-tab**: FZF-powered tab completion
 
 ### Development Plugins (Tier 3-4)
+
 - **zsh-abbr**: Abbreviation expansion
 - **forgit**: Interactive git operations
 - **zsh-you-should-use**: Alias reminders
 
 ### Theme & UI (Tier 5-6)
+
 - **starship**: Cross-shell prompt
 - **zsh-notify**: Command completion notifications
 
 ## 🔍 Debug & Profiling
 
 ### Performance Analysis
+
 ```bash
 # Enable profiling
 zmodload zsh/zprof
@@ -151,6 +164,7 @@ time zsh -i -c exit
 ```
 
 ### Debugging Commands
+
 ```bash
 # Check plugin loading
 sheldon lock
@@ -168,7 +182,9 @@ printenv | grep -E '^(EDITOR|SHELL|TERM)'
 ## ⚙️ Customization
 
 ### Local Configuration
+
 Create `~/.zshrc.local` for machine-specific settings:
+
 ```bash
 # Private aliases
 alias work="cd ~/work"
@@ -183,6 +199,7 @@ fi
 ```
 
 ### Plugin Management
+
 ```bash
 # Add new plugin
 echo 'github = "user/repo"' >> sheldon.toml
@@ -197,17 +214,20 @@ sheldon lock --update
 ## 🚀 Optimization Tips
 
 ### Startup Speed
+
 1. **Profile regularly**: Use `zsh-benchmark` weekly
 2. **Lazy load**: Defer heavy tools (mise, nvm, etc.)
 3. **Compile files**: Ensure all .zsh files are compiled
 4. **Plugin audit**: Remove unused plugins quarterly
 
 ### Memory Usage
+
 1. **History limits**: Set reasonable HISTSIZE
 2. **Completion cache**: Clear periodically
 3. **Plugin cleanup**: Remove redundant functionality
 
 ### Workflow Efficiency
+
 1. **Learn abbreviations**: Master the 50+ shortcuts
 2. **Use widgets**: Git widgets save keystrokes
 3. **FZF everything**: File, repo, process selection
@@ -216,6 +236,7 @@ sheldon lock --update
 ## 📋 Maintenance
 
 ### Regular Tasks
+
 ```bash
 # Weekly performance check
 zsh-benchmark
@@ -228,6 +249,7 @@ zsh-help tools  # Check for unused tools
 ```
 
 ### Troubleshooting
+
 ```bash
 # Reset completions
 rm -rf ~/.zcompdump*
@@ -242,4 +264,4 @@ sheldon source
 
 ---
 
-*Optimized for speed, functionality, and developer experience.*
+_Optimized for speed, functionality, and developer experience._
