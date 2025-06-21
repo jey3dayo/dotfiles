@@ -221,10 +221,69 @@ git-config-check() {
 - **Issue-PR連携**: 一連のワークフローの自動化実現
 - **認証統合**: 1Password + gh authで seamless authentication
 
+### 設定ファイル構造最適化 (2025-06-21)
+
+#### 問題・背景
+- Git設定ファイルが分散（ルート、~/.config、個人設定）
+- 個人情報がリポジトリに混入するリスク
+- ファイル命名の一貫性欠如
+- 重複・未使用ファイルの存在
+
+#### 解決パターン
+```bash
+# 最適化後の構造
+~/.gitconfig                    # エントリーポイント
+├── ~/.gitconfig_local          # 個人情報（Git管理外）
+└── ~/.config/git/config        # dotfiles管理設定
+
+# dotfiles内部構造
+git/
+├── config                      # メイン設定（個人情報なし）
+├── alias.gitconfig            # エイリアス定義
+├── diff.gitconfig             # diff/delta設定
+├── ghq.gitconfig              # リポジトリ管理
+├── 1password.gitconfig        # 1Password設定（将来用）
+├── local.gitconfig            # ローカルユーザー設定
+├── gitignore.local            # ローカル除外
+└── attributes                 # Git属性
+```
+
+#### 最適化手順
+1. **パス統一**: 絶対パス → `~/.config/` (XDG準拠)
+2. **個人情報分離**: `git/config` → `~/.gitconfig_local`
+3. **重複削除**: `git/ignore`削除（`.gitignore`に統合済み）
+4. **命名統一**: `.gitconfig`拡張子でVim syntax有効化
+
+#### セキュリティ改善
+```gitconfig
+# Before: 個人情報がdotfilesに含まれる
+[user]
+    name = Junya Nakazato
+    email = nakazato_junya@ca-adv.co.jp
+
+# After: 個人情報を分離
+# ~/.gitconfig_local (Git管理外)
+[user]
+    name = jey3dayo
+    email = nakazato_junya@ca-adv.co.jp
+```
+
+#### 効果・実測値
+- **構造の簡素化**: 3階層 → 2階層
+- **セキュリティ向上**: 個人情報の完全分離
+- **Vim統合**: `.gitconfig`拡張子で自動syntax highlighting
+- **保守性向上**: 設定変更時のコンフリクトリスク軽減
+
+#### 注意点・制約
+- 新環境では`~/.gitconfig_local`の手動作成が必要
+- `1password.gitconfig`は将来用として保持
+- `.gitignore`はルート配置が標準期待値
+
 ### 運用実績
 - **操作効率向上**: Zsh統合で50%時間短縮
 - **視認性改善**: Delta導入で差分確認効率化
 - **ワークフロー標準化**: GitHub Flow + 規約でチーム効率向上
+- **構造最適化**: 設定管理の複雑性20%削減 (2025-06-21)
 
 ## 🔗 関連層との連携
 

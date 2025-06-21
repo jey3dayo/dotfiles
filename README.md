@@ -24,6 +24,170 @@ sh ./setup.sh
 brew bundle
 ```
 
+## 📝 Detailed Setup Guide
+
+### Prerequisites
+
+```bash
+# Install Homebrew (if not installed)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install required tools
+brew install git stow
+```
+
+### Step-by-Step Installation
+
+#### 1. Repository Setup
+
+```bash
+# Create directory structure
+mkdir -p ~/src/github.com/jey3dayo
+
+# Clone dotfiles
+git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
+cd ~/src/github.com/jey3dayo/dotfiles
+
+# Initialize submodules
+git submodule update --init --recursive
+```
+
+#### 2. Git Configuration
+
+**⚠️ Important**: Configure your personal Git settings before running setup.
+
+```bash
+# Create personal Git configuration (NOT tracked in repository)
+cat > ~/.gitconfig_local << EOF
+[user]
+    name = Your Name
+    email = your.email@example.com
+EOF
+
+# Set appropriate permissions
+chmod 600 ~/.gitconfig_local
+```
+
+**Git Configuration Structure**:
+- `~/.gitconfig` → Main entry point (created by setup)
+- `~/.gitconfig_local` → Personal info (Git-ignored, secure)
+- `~/.config/git/config` → Shared dotfiles settings
+
+#### 3. Run Setup Script
+
+```bash
+# Execute automated setup
+sh ./setup.sh
+```
+
+**What setup.sh does**:
+- Creates XDG base directories (`~/.config`, `~/.cache`)
+- Links dotfiles to `~/.config` via symlink
+- Configures Git to use dotfiles settings
+- Sets up Zsh environment variables
+- Initializes submodules
+
+#### 4. Package Installation
+
+```bash
+# Install all packages from Brewfile
+brew bundle
+
+# Verify installation
+brew bundle check
+```
+
+#### 5. Shell Configuration
+
+```bash
+# Restart shell to load Zsh configuration
+exec zsh
+
+# Verify Zsh performance
+zsh-benchmark
+
+# Install shell plugins
+# (Plugins will auto-install on first shell start)
+```
+
+### Post-Installation Configuration
+
+#### SSH Setup (Optional)
+
+```bash
+# Generate SSH key for GitHub
+ssh-keygen -t ed25519 -C "your.email@example.com"
+
+# Add to SSH agent
+ssh-add ~/.ssh/id_ed25519
+
+# Copy public key and add to GitHub
+pbcopy < ~/.ssh/id_ed25519.pub
+# Then paste in GitHub Settings > SSH Keys
+```
+
+#### Terminal Setup
+
+**For WezTerm** (Recommended):
+```bash
+# WezTerm will auto-load configuration from ~/.config/wezterm/
+# No additional setup required
+```
+
+**For Alacritty**:
+```bash
+# Configuration auto-linked via ~/.config/alacritty/
+# Restart Alacritty to apply settings
+```
+
+#### Neovim Setup
+
+```bash
+# First run will install plugins automatically
+nvim
+
+# Verify LSP installation
+:checkhealth
+```
+
+### Environment-Specific Configuration
+
+#### Personal vs Work Setup
+
+**Work environment**:
+```bash
+# Override Git config for work projects
+cat > ~/.gitconfig_local << EOF
+[user]
+    name = Your Work Name
+    email = your.work@company.com
+
+[includeIf "gitdir:~/work/"]
+    path = ~/.config/git/work.gitconfig
+EOF
+```
+
+**Personal projects**:
+```bash
+# Default configuration in ~/.gitconfig_local works for personal use
+```
+
+### Verification & Testing
+
+```bash
+# Test Git configuration
+git config --list | grep user
+
+# Test SSH connection
+ssh -T git@github.com
+
+# Test shell performance
+zsh-benchmark
+
+# Test Neovim
+nvim --startuptime startup.log
+```
+
 ## 📁 Structure
 
 ```
