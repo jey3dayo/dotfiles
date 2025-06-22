@@ -11,11 +11,12 @@ require "init_lazy"
 -- Defer heavy modules until after UI is ready
 vim.defer_fn(function()
   require "lua_rocks"
+  require "lsp.client_tracker"  -- Track LSP client lifecycle
+  require "lsp.safe_client"  -- Load safe client wrapper BEFORE autocmds
   require "autocmds"
   require "colorscheme"
   require "load_config"
   require "lsp.autoformat"
-  require "lsp.safe_client"  -- Add safe client wrapper
 
   -- Load neovide config only if running in neovide
   if vim.g.neovide then require "neovide" end
