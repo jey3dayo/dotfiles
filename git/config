@@ -9,6 +9,7 @@
   attributesfile = ~/.config/git/attributes
   quotepath = false
   editor = nvim
+  whitespace = -trailing-space
 
 [init]
   defaultBranch = main
