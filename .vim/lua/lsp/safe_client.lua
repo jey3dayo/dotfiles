@@ -1,6 +1,10 @@
 -- Safe wrapper for LSP client operations to prevent "No client with id" errors
 local M = {}
 
+-- Try to get client tracker if available
+local tracker = nil
+pcall(function() tracker = require('lsp.client_tracker') end)
+
 -- Safely get client by ID with error handling
 function M.get_client_by_id(client_id)
   if not client_id then return nil end
@@ -21,7 +25,13 @@ vim.lsp.get_client_by_id = function(id)
   if ok then
     return result
   else
-    -- Silently return nil instead of throwing error
+    -- Log error with client info if available
+    local client_info = tracker and tracker.get_client_info(id)
+    if client_info then
+      vim.notify(string.format("[LSP] No client with id %d (%s)", id, client_info.name), vim.log.levels.DEBUG)
+    else
+      vim.notify(string.format("[LSP] No client with id %d (unknown client)", id), vim.log.levels.DEBUG)
+    end
     return nil
   end
 end

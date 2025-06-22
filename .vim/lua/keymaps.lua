@@ -109,6 +109,40 @@ local function copy_current_file_path()
 end
 Keymap("Yf", copy_current_file_path)
 
+-- Copy file path with current line number
+local function copy_file_path_with_line()
+  local path = vim.fn.expand "%:."
+  local line = vim.api.nvim_win_get_cursor(0)[1]
+  local text = path .. ":" .. line
+  vim.fn.setreg("*", text)
+  vim.api.nvim_echo({ { "Copied: " .. text, "None" } }, true, {})
+end
+Keymap("Yl", copy_file_path_with_line)
+
+-- Copy full path
+local function copy_full_path()
+  local path = vim.fn.expand "%:p"
+  vim.fn.setreg("*", path)
+  vim.api.nvim_echo({ { "Copied: " .. path, "None" } }, true, {})
+end
+Keymap("YF", copy_full_path)
+
+-- Copy directory path
+local function copy_directory()
+  local dir = vim.fn.expand "%:p:h"
+  vim.fn.setreg("*", dir)
+  vim.api.nvim_echo({ { "Copied: " .. dir, "None" } }, true, {})
+end
+Keymap("Yd", copy_directory)
+
+-- Copy relative directory path
+local function copy_relative_directory()
+  local dir = vim.fn.expand "%:.:h"
+  vim.fn.setreg("*", dir)
+  vim.api.nvim_echo({ { "Copied: " .. dir, "None" } }, true, {})
+end
+Keymap("YD", copy_relative_directory)
+
 -- ファイル名とバッファ内容をクリップボードにコピー
 local function copy_buffer_with_path_and_code_block()
   local path = vim.fn.expand "%:."
@@ -164,9 +198,23 @@ local function copy_github_url()
   local file_path = file_handle:read("*a"):gsub("\n", "")
   file_handle:close()
 
+  -- If file is not tracked by git, get relative path from git root
   if file_path == "" then
-    vim.notify("File not tracked by git", vim.log.levels.WARN)
-    return
+    local git_root_handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
+    if not git_root_handle then
+      vim.notify("Failed to get git root", vim.log.levels.ERROR)
+      return
+    end
+    local git_root = git_root_handle:read("*a"):gsub("\n", "")
+    git_root_handle:close()
+    
+    if git_root == "" then
+      vim.notify("Not in git repository", vim.log.levels.WARN)
+      return
+    end
+    
+    local current_file = vim.fn.expand "%:p"
+    file_path = current_file:gsub("^" .. git_root .. "/", "")
   end
 
   -- Get line numbers (handle visual mode range)
