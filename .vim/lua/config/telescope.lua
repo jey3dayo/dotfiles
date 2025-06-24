@@ -129,14 +129,6 @@ Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
 Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify" })
 
-local function frecency_cwd()
-  telescope.extensions.frecency.frecency { workspace = "CWD" }
-end
-
-Keymap("<Leader>f", frecency_cwd, { desc = "Find CWD by frecency" })
-Keymap("<A-p>", frecency_cwd, { desc = "Find CWD by frecency" })
-Keymap("<Leader>F", telescope.extensions.frecency.frecency, { desc = "Find by frecency" })
-
 Keymap("<Leader>G", builtin.git_status, { desc = "Find by Git Status" })
 Keymap("<Leader>e", function()
   local git_dir = utils.get_git_dir()
