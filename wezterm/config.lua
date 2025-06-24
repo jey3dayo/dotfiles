@@ -17,6 +17,7 @@ local config = {
   -- https://github.com/wez/wezterm/issues/2756
   webgpu_preferred_adapter = gpus[1],
   front_end = "WebGpu",
+  scrollback_lines = 5000,
 }
 
 return utils.object_assign(ui, keybinds, os, config)
