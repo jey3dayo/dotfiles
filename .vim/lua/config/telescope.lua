@@ -129,6 +129,24 @@ Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
 Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify" })
 
+-- frecency
+local function frecency_cwd()
+  telescope.extensions.frecency.frecency { workspace = "CWD" }
+end
+
+local function find_files_buffer_dir()
+  local buffer_dir = vim.fn.expand "%:p:h"
+  builtin.find_files {
+    cwd = buffer_dir,
+    prompt_title = "Files (Buffer Dir)",
+    hidden = true,
+  }
+end
+
+Keymap("<Leader>f", frecency_cwd, { desc = "Find CWD by frecency" })
+Keymap("<A-p>", frecency_cwd, { desc = "Find CWD by frecency" })
+Keymap("<Leader>F", find_files_buffer_dir, { desc = "Find files in buffer dir" })
+
 Keymap("<Leader>G", builtin.git_status, { desc = "Find by Git Status" })
 Keymap("<Leader>e", function()
   local git_dir = utils.get_git_dir()

@@ -262,3 +262,9 @@ Keymap("<C-e>b", function()
   vim.cmd("!biome format --write " .. vim.fn.expand "%")
   vim.cmd "edit!"
 end, { desc = "Format with Biome" })
+
+-- ESLint fix
+Keymap("<C-e>e", function()
+  vim.cmd("!eslint --fix " .. vim.fn.expand "%")
+  vim.cmd "edit!"
+end, { desc = "Fix with ESLint" })

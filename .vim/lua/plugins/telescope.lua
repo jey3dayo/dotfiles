@@ -16,34 +16,7 @@ return {
   },
   {
     "nvim-telescope/telescope-frecency.nvim",
-    keys = {
-      {
-        "<Leader>f",
-        function()
-          require("telescope").extensions.frecency.frecency { workspace = "CWD" }
-        end,
-        desc = "Find CWD by frecency",
-      },
-      {
-        "<Leader>F",
-        function()
-          local buffer_dir = vim.fn.expand "%:p:h"
-          require("telescope.builtin").find_files {
-            cwd = buffer_dir,
-            prompt_title = "Files (Buffer Dir)",
-            hidden = true,
-          }
-        end,
-        desc = "Find files in buffer dir",
-      },
-      {
-        "<A-p>",
-        function()
-          require("telescope").extensions.frecency.frecency { workspace = "CWD" }
-        end,
-        desc = "Find CWD by frecency",
-      },
-    },
+    keys = { "<Leader>f", "<Leader>F", "<A-p>" },
     dependencies = deps.telescope,
     opts = {
       db_safe_mode = false,
