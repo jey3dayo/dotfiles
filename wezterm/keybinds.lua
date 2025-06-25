@@ -77,10 +77,6 @@ local wezterm_keybinds = {
   { key = "n", mods = "ALT", action = act { ActivateWindowRelative = 1 } },
   { key = "p", mods = "ALT", action = act { ActivateWindowRelative = -1 } },
 
-  -- Opacity
-  { key = "+", mods = "ALT|SHIFT", action = act { EmitEvent = "increase-opacity" } },
-  { key = "=", mods = "ALT|SHIFT", action = act { EmitEvent = "decrease-opacity" } },
-  { key = "0", mods = "ALT|SHIFT", action = act { EmitEvent = "reset-opacity" } },
 
   -- Show the launcher
   -- { key = "0",   mods = "ALT",            action = act.ShowLauncherArgs { flags = "FUZZY|COMMANDS" } },
@@ -92,12 +88,17 @@ for i = 1, 8 do
 end
 
 local key_tables = {
-  -- ALT+r -> [j, k, h, l]
+  -- ALT+r -> [j, k, h, l] and [+, -] for opacity
   resize_pane = {
     { key = "h", action = act { AdjustPaneSize = { "Left", 1 } } },
     { key = "l", action = act { AdjustPaneSize = { "Right", 1 } } },
     { key = "k", action = act { AdjustPaneSize = { "Up", 1 } } },
     { key = "j", action = act { AdjustPaneSize = { "Down", 1 } } },
+
+    -- Opacity adjustment
+    { key = "+", action = act { EmitEvent = "increase-opacity" } },
+    { key = "-", action = act { EmitEvent = "decrease-opacity" } },
+    { key = "0", action = act { EmitEvent = "reset-opacity" } },
 
     -- Cancel the mode by pressing escape
     { key = "Escape", action = "PopKeyTable" },
