@@ -101,12 +101,19 @@ function M.reset_opacity(window, _)
   )
 end
 
+
+-- Status update handler for showing mode indicators
+function M.update_status(window, pane)
+  -- This will be overridden by keybinds.lua to show resize mode status
+end
+
 -- Register all event handlers
 function M.register_events()
   wezterm.on("format-tab-title", M.format_tab_title)
   wezterm.on("increase-opacity", M.increase_opacity)
   wezterm.on("decrease-opacity", M.decrease_opacity)
   wezterm.on("reset-opacity", M.reset_opacity)
+  wezterm.on("update-status", M.update_status)
 end
 
 return M
