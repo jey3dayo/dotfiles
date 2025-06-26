@@ -128,6 +128,7 @@ Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 -- extensions
 Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
 Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify" })
+Keymap("<leader>N", "<cmd>Noice all<CR>", { desc = "Show all Noice messages" })
 
 -- frecency
 local function frecency_cwd()
