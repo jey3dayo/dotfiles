@@ -192,3 +192,9 @@ vendor
 claude/
 !claude/settings.json
 **/.claude/settings.local.json
+
+# Claude Code Configuration
+.claude/local/
+.claude/projects/
+.claude/statsig/
+.claude/todos/
