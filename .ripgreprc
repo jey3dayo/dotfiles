@@ -6,6 +6,10 @@ js:*.{js,mjs,cjs,jsx}
 --type-add
 ts:*.{ts,tsx,d.ts}
 --type-add
+jsx:*.{js,jsx}
+--type-add
+tsx:*.{js,ts,jsx,tsx,d.ts}
+--type-add
 css:*.{css,scss,sass,less}
 --type-add
 module:*.module.{css,scss,sass,less}
