@@ -1,146 +1,341 @@
 # Component-Specific Claude Permissions
 
-このドキュメントでは、各コンポーネント固有のClaude権限設定について説明します。
+This document explains how to manage Claude permissions for different project components and development contexts.
 
-## 🎯 権限管理の方針
+## 🎯 Permission Management Strategy
 
-### 分散設定の理由
+### Why Distributed Permissions?
 
-- **最小権限の原則**: 各コンポーネントは必要最小限の権限のみ保持
-- **セキュリティ境界**: コンポーネント間で権限を分離
-- **保守性**: 権限変更時の影響範囲を限定
+- **Principle of Least Privilege**: Each component holds only the minimum required permissions
+- **Security Boundaries**: Isolate permissions between different components/projects
+- **Maintainability**: Limit impact scope when changing permissions
+- **Context-Specific**: Different projects need different tool access patterns
 
-## 📂 コンポーネント別権限設定
+## 📂 Component-Based Permission Patterns
 
-### Zsh権限 (`zsh/.claude/settings.local.json`)
+### Shell Environment Permissions
 
-- **対象**: シェル設定、プラグイン管理、パフォーマンス最適化
-- **主な権限**:
-  - Sheldon操作 (`sheldon source`, `sheldon lock`)
-  - Zsh設定診断 (`zsh -c`, `source ~/.zshrc`)
-  - パフォーマンス測定 (`zsh-benchmark`, `zsh-profile`)
-  - 設定ファイル操作 (`.config/zsh/` 内のファイル読み書き)
-- **詳細権限**:
-  ```json
-  "Bash(sheldon source)", "Bash(sheldon lock:*)",
-  "Bash(zsh -c:*)", "Bash(source:*)",
-  "Bash(ls:*)", "Bash(grep:*)", "Bash(find:*)",
-  "Bash(rm:*)", "Bash(cp:*)", "Bash(rg:*)"
-  ```
-
-### WezTerm権限 (`wezterm/.claude/settings.local.json`)
-
-- **対象**: ターミナル設定、Lua設定管理
-- **主な権限**:
-  - WezTerm設定操作 (`wezterm`, `lua`)
-  - 設定ファイル移動・変更 (`mv`)
-- **詳細権限**:
-  ```json
-  "Bash(lua:*)", "Bash(mv:*)", "Bash(wezterm:*)"
-  ```
-
-### Vim/Neovim権限 (`.vim/.claude/settings.local.json`)
-
-- **対象**: エディタ設定、プラグイン管理
-- **主な権限**:
-  - Neovim操作 (`nvim`)
-  - ファイル検索・操作 (`find`, `grep`, `timeout`)
-- **詳細権限**:
-  ```json
-  "Bash(find:*)", "Bash(nvim:*)", "Bash(timeout:*)",
-  "Bash(ls:*)", "Bash(grep:*)"
-  ```
-
-## 🔧 権限設定パターン
-
-### 基本テンプレート
+**Target**: Shell configuration, plugin management, performance optimization
+**Common Tools**: zsh, bash, sheldon, mise, brew
 
 ```json
 {
   "permissions": {
     "allow": [
-      "Bash(tool-specific-command:*)",
-      "Bash(ls -la specific-path)",
-      "Bash(find specific-path -name pattern)"
-    ],
-    "deny": []
-  }
-}
-```
-
-### 段階的権限設定
-
-1. **読み取り専用**: `ls`, `grep`, `find` のみ
-2. **設定変更**: 上記 + `mv`, `cp`, ツール固有コマンド
-3. **完全権限**: 上記 + `rm`, `install` コマンド
-
-## 🚫 セキュリティ考慮事項
-
-### 禁止されるパターン
-
-- **全権限付与**: `"Bash(*)"` は使用禁止
-- **システム操作**: `sudo`, `rm -rf /` 等の危険なコマンド
-- **ネットワーク操作**: 不要な外部通信権限
-
-### 推奨されるパターン
-
-- **具体的パス指定**: ワイルドカードより具体的なパス
-- **コマンド制限**: 必要なオプションのみ許可
-- **定期レビュー**: 権限の定期的な見直し
-
-## 📋 権限管理ワークフロー
-
-### 新しい権限追加
-
-1. **必要性確認**: 最小限の権限で目的達成可能か検証
-2. **具体的定義**: 曖昧な権限設定を避け、具体的に定義
-3. **テスト実行**: 権限変更後の動作確認
-4. **ドキュメント更新**: この文書への記録
-
-### 権限削除・変更
-
-1. **影響範囲確認**: 削除・変更による機能への影響
-2. **段階的変更**: 一度に大量の権限を変更しない
-3. **バックアップ**: 変更前の設定をバックアップ
-
-## 📝 具体的な権限設定例
-
-### Zsh詳細権限（抜粋）
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "Bash(abbr list)",
-      "Bash(brew install:*)",
-      "Bash(brew search:*)",
-      "Bash(pip3 install:*)",
-      "Bash(sheldon init zsh)",
-      "Bash(ZSH_DEBUG=1 zsh -i -c \"zsh-benchmark\")",
-      "Bash(ZSH_DEBUG=1 zsh -i -c \"zsh-profile\" 2 > /dev/null)",
-      "Bash(rg -l \"lazy-sources\" /Users/t00114/.config/zsh)",
-      "Bash(zsh -c \"source ~/.zshrc && abbr list\")"
+      "Bash(sheldon *)",
+      "Bash(zsh *)",
+      "Bash(source *)",
+      "Bash(mise *)",
+      "Bash(brew *)",
+      "Bash(abbr *)",
+      "Bash(alias *)",
+      "Bash(echo *)",
+      "Bash(which *)",
+      "Bash(type *)"
     ]
   }
 }
 ```
 
-## 💡 ベストプラクティス
+### Terminal/Editor Permissions
 
-### 成功パターン
+**Target**: Terminal emulators, text editors, multiplexers
+**Common Tools**: wezterm, alacritty, tmux, nvim, vim
 
-- **コンポーネント分離**: 各ツール固有の権限を適切に分離
-- **最小権限**: 必要最小限の権限のみ付与
-- **明示的許可**: 必要な操作を明確に定義
-- **パス制限**: 特定のディレクトリに限定した操作権限
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(wezterm *)",
+      "Bash(alacritty *)",
+      "Bash(tmux *)",
+      "Bash(nvim *)",
+      "Bash(vim *)",
+      "Bash(lua *)"
+    ]
+  }
+}
+```
 
-### 避けるべきパターン
+### Development Environment Permissions
 
-- **包括的権限**: `*` を使った広範囲な権限
-- **重複権限**: 複数コンポーネントで同じ権限を重複設定
-- **未使用権限**: 使用しない権限の放置
+**Target**: Programming languages, package managers, build tools
+**Common Tools**: node, python, rust, go, docker
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Bash(npm *)",
+      "Bash(yarn *)",
+      "Bash(pnpm *)",
+      "Bash(python *)",
+      "Bash(pip *)",
+      "Bash(cargo *)",
+      "Bash(go *)",
+      "Bash(docker *)",
+      "Bash(make *)"
+    ]
+  }
+}
+```
+
+### Git/Version Control Permissions
+
+**Target**: Version control operations, repository management
+**Common Tools**: git, gh, hub
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(hub *)"
+    ]
+  }
+}
+```
+
+## 🔧 Permission Configuration Patterns
+
+### Basic Template Structure
+
+```json
+{
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(command pattern)",
+      "WebFetch(domain:allowed-domain.com)"
+    ],
+    "deny": [
+      "Bash(dangerous-command *)"
+    ]
+  },
+  "model": "sonnet",
+  "cleanupPeriodDays": 7
+}
+```
+
+### Progressive Permission Levels
+
+#### Level 1: Read-Only
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(grep *)",
+      "Bash(find *)",
+      "Bash(head *)",
+      "Bash(tail *)"
+    ]
+  }
+}
+```
+
+#### Level 2: Configuration Management
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(grep *)",
+      "Bash(find *)",
+      "Bash(mv *)",
+      "Bash(cp *)",
+      "Bash(ln *)",
+      "Bash(mkdir *)",
+      "Bash(touch *)"
+    ]
+  }
+}
+```
+
+#### Level 3: Full Development
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(grep *)",
+      "Bash(find *)",
+      "Bash(mv *)",
+      "Bash(cp *)",
+      "Bash(ln *)",
+      "Bash(mkdir *)",
+      "Bash(rm *)",
+      "Bash(chmod *)",
+      "Bash(git *)",
+      "Bash(npm *)",
+      "Bash(docker *)"
+    ]
+  }
+}
+```
+
+## 🚫 Security Considerations
+
+### Prohibited Patterns
+
+```json
+{
+  "permissions": {
+    "deny": [
+      "Bash(sudo *)",
+      "Bash(su *)",
+      "Bash(rm -rf /*)",
+      "Bash(dd *)",
+      "Bash(mkfs *)",
+      "Bash(fdisk *)",
+      "Bash(shutdown *)",
+      "Bash(reboot *)",
+      "Bash(systemctl *)",
+      "Bash(service *)",
+      "Bash(iptables *)",
+      "Bash(ufw *)"
+    ]
+  }
+}
+```
+
+### Recommended Patterns
+
+- **Specific Commands**: Use specific command patterns rather than wildcards
+- **Path Restrictions**: Limit operations to specific directories when possible
+- **Tool-Specific**: Grant permissions only for tools actually used in the project
+- **Regular Review**: Periodically review and clean up unused permissions
+
+## 📋 Permission Management Workflow
+
+### Adding New Permissions
+
+1. **Assess Necessity**: Can the goal be achieved with existing permissions?
+2. **Define Specifically**: Avoid broad permissions; be as specific as possible
+3. **Test Thoroughly**: Verify the permission works as expected
+4. **Document Usage**: Record why the permission was added
+
+### Removing/Changing Permissions
+
+1. **Impact Assessment**: Understand what functionality might be affected
+2. **Gradual Changes**: Don't remove many permissions at once
+3. **Backup Configuration**: Keep a backup of the working configuration
+4. **Monitor Results**: Watch for any issues after changes
+
+## 📝 Project-Specific Examples
+
+### Web Development Project
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(node *)",
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(yarn *)",
+      "Bash(pnpm *)",
+      "Bash(git *)",
+      "Bash(curl *)",
+      "Bash(wget *)",
+      "WebFetch(domain:nodejs.org)",
+      "WebFetch(domain:npmjs.com)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}
+```
+
+### System Administration Project
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker *)",
+      "Bash(docker-compose *)",
+      "Bash(kubectl *)",
+      "Bash(terraform *)",
+      "Bash(ansible *)",
+      "Bash(ssh *)",
+      "Bash(ping *)",
+      "Bash(nc *)",
+      "Bash(curl *)"
+    ]
+  }
+}
+```
+
+### Data Science Project
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(pip *)",
+      "Bash(pip3 *)",
+      "Bash(jupyter *)",
+      "Bash(conda *)",
+      "Bash(pipenv *)",
+      "Bash(poetry *)"
+    ]
+  }
+}
+```
+
+## 💡 Best Practices
+
+### Successful Patterns
+
+- **Component Isolation**: Separate permissions for different project components
+- **Minimal Access**: Grant only the permissions actually needed
+- **Explicit Allow**: Clearly define what operations are permitted
+- **Path Limitations**: Restrict operations to specific directories when possible
+- **Regular Cleanup**: Remove unused permissions periodically
+
+### Patterns to Avoid
+
+- **Broad Wildcards**: Using `*` for wide-ranging permissions
+- **Duplicate Permissions**: Setting the same permissions across multiple components
+- **Unused Permissions**: Keeping permissions for tools no longer used
+- **Security Holes**: Allowing dangerous operations without proper justification
+
+## 🔍 Permission Testing
+
+### Validation Checklist
+
+- [ ] All necessary operations work with current permissions
+- [ ] No unnecessary permissions are granted
+- [ ] Security-sensitive operations are properly restricted
+- [ ] Permissions are documented and justified
+- [ ] Regular review schedule is established
+
+### Testing Commands
+
+```bash
+# Test basic file operations
+ls -la
+cat file.txt
+grep "pattern" file.txt
+
+# Test tool-specific operations
+git status
+npm --version
+docker --version
+
+# Test restricted operations (should fail)
+sudo ls
+rm -rf /
+```
 
 ---
 
-_最終更新: 2025-06-20_
-_権限管理状態: コンポーネント分離完了_
+_Last Updated: 2025-06-28_
+_Status: Global Template - Applicable across projects_
