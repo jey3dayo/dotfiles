@@ -59,6 +59,15 @@ M.leader = {
   timeout_milliseconds = 1000,
 }
 
+-- Pane appearance settings
+M.pane = {
+  inactive_hsb = {
+    hue = 1.0,
+    saturation = 1.0,
+    brightness = 0.7,
+  },
+}
+
 -- Platform-specific settings
 M.windows = {
   font_size = 12,

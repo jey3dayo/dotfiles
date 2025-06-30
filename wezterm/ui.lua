@@ -19,6 +19,8 @@ return {
   initial_cols = constants.window.initial_cols,
   initial_rows = constants.window.initial_rows,
   adjust_window_size_when_changing_font_size = false,
+  -- Pane appearance
+  inactive_pane_hsb = constants.pane.inactive_hsb,
   -- Tab
   enable_tab_bar = constants.tab.enable_bar,
   hide_tab_bar_if_only_one_tab = constants.tab.hide_if_only_one,
