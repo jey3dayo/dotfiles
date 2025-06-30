@@ -22,11 +22,4 @@ return {
       vim.fn["mkdp#util#install"]()
     end,
   },
-  {
-    "neovim/nvim-lspconfig",
-    ft = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-    config = function()
-      require("lspconfig").ts_ls.setup(require "lsp.settings.ts_ls")
-    end,
-  },
 }
