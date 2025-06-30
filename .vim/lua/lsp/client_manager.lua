@@ -49,14 +49,16 @@ function M.get_lsp_client_names(bufnr)
   local buf_ft = vim.bo.filetype
 
   local client_names = {}
+  local seen = {}
   if next(clients) == nil then return client_names end
 
   for _, client in pairs(clients) do
     if client:supports_method "textDocument/formatting" then
       if client.name == "efm" then
         vim.list_extend(client_names, get_efm_clients(client, buf_ft))
-      else
+      elseif not seen[client.name] then
         table.insert(client_names, client.name)
+        seen[client.name] = true
       end
     end
   end
