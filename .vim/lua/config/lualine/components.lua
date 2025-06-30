@@ -53,6 +53,7 @@ M.left_components = {
   },
   {
     "filename",
+    path = 1, -- 0: filename only, 1: relative path, 2: absolute path
     cond = conditions.buffer_not_empty,
     color = { fg = colors.colors.primary, gui = "bold" },
   },
