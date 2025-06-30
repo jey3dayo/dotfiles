@@ -131,8 +131,9 @@ M.formatters = {
     formatter_priority = {
       priority = 1,
       overrides = {
-        jsonls = true,
-        tsserver = true,
+        ts_ls = true,
+        eslint = true,
+        prettier = true,
       },
     },
   },
@@ -151,7 +152,8 @@ M.formatters = {
     formatter_priority = {
       priority = 2,
       overrides = {
-        tsserver = true,
+        ts_ls = true,
+        eslint = true,
       },
     },
   },
