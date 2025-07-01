@@ -3,4 +3,4 @@
 .vim
 raycast/extensions
 node_modules
-.tmux/plugins
+tmux/plugins
