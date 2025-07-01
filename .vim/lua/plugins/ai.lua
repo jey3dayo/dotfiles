@@ -10,23 +10,23 @@ return {
       require "config/copilot"
     end,
   },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    cmd = { "CopilotChat", "CopilotChatBuffer", "CopilotChatToggle" },
-    keys = {
-      { "<leader>cc", "<cmd>CopilotChat<cr>", desc = "CopilotChat" },
-      { "<leader>cb", "<cmd>CopilotChatBuffer<cr>", desc = "CopilotChat Buffer" },
-      { "<leader>ct", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat Toggle" },
-    },
-    dependencies = vim.list_extend(deps.copilot, deps.plenary),
-    branch = "main",
-    build = "make tiktoken",
-  },
+  -- {
+  --   "CopilotC-Nvim/CopilotChat.nvim",
+  --   cmd = { "CopilotChat", "CopilotChatBuffer", "CopilotChatToggle" },
+  --   keys = {
+  --     { "<leader>cc", "<cmd>CopilotChat<cr>", desc = "CopilotChat" },
+  --     { "<leader>cb", "<cmd>CopilotChatBuffer<cr>", desc = "CopilotChat Buffer" },
+  --     { "<leader>ct", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat Toggle" },
+  --   },
+  --   dependencies = vim.list_extend(deps.copilot, deps.plenary),
+  --   branch = "main",
+  --   build = "make tiktoken",
+  -- },
   {
     "supermaven-inc/supermaven-nvim",
     event = "InsertEnter",
     config = function()
-      require("supermaven-nvim").setup({
+      require("supermaven-nvim").setup {
         keymaps = {
           accept_suggestion = "<Tab>",
           clear_suggestion = "<C-]>",
@@ -39,7 +39,7 @@ return {
         },
         disable_inline_completion = false,
         disable_keymaps = false,
-      })
+      }
     end,
   },
 }
