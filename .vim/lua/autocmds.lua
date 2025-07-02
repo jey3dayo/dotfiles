@@ -67,17 +67,8 @@ utils.autocmd("LspAttach", {
 
     -- クライアント停止判定
     if client_manager.should_stop_client(client, bufnr) then
-      vim.notify(string.format("[LSP] Client %s (id=%d) will be stopped by client_manager", client.name, client.id), vim.log.levels.DEBUG)
       client:stop()
       return
-    end
-
-    -- Debug: Show all attached clients
-    if require("lsp.config").isDebug then
-      vim.notify(
-        string.format("LSP Attached: %s (id: %d) to buf: %d", client.name, client.id, bufnr),
-        vim.log.levels.INFO
-      )
     end
 
     -- Lazy load LSP modules when LSP actually attaches

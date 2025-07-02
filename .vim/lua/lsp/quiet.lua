@@ -1,0 +1,69 @@
+-- Clean LSP notification control at protocol level
+local M = {}
+
+local config = require("lsp.config")
+
+function M.setup()
+  -- Set LSP log level to minimal
+  vim.lsp.set_log_level("ERROR")
+  
+  -- Store original notify
+  local original_notify = vim.notify
+  
+  -- Override vim.notify to filter LSP noise at source
+  vim.notify = function(msg, level, opts)
+    if type(msg) == "string" and (
+      msg:find("No client with id", 1, true) or
+      msg:find("client with id", 1, true)
+    ) then
+      return -- Silently suppress client ID errors
+    end
+    return original_notify(msg, level, opts)
+  end
+  
+  -- Handle window/logMessage cleanly
+  vim.lsp.handlers["window/logMessage"] = function(err, result, ctx, cfg)
+    -- Only show ERROR level messages, suppress INFO/WARN
+    if result and result.type == vim.lsp.protocol.MessageType.Error then
+      original_notify(result.message, vim.log.levels.ERROR)
+    end
+    -- Silently ignore INFO/WARN messages (TypeScript version, server initialized, etc.)
+  end
+  
+  -- Handle window/showMessage cleanly  
+  vim.lsp.handlers["window/showMessage"] = function(err, result, ctx, cfg)
+    -- Only show ERROR level messages
+    if result and result.type == vim.lsp.protocol.MessageType.Error then
+      original_notify(result.message, vim.log.levels.ERROR)
+    end
+    -- Silently ignore INFO/WARN messages
+  end
+  
+  -- Store original for debug toggle
+  M._original_notify = original_notify
+end
+
+-- Debug toggle for troubleshooting
+function M.toggle_debug()
+  if vim.lsp.get_log_level() == vim.log.levels.ERROR then
+    vim.lsp.set_log_level("DEBUG")
+    -- Restore original notify and verbose handlers
+    vim.notify = M._original_notify
+    vim.lsp.handlers["window/logMessage"] = nil
+    vim.lsp.handlers["window/showMessage"] = nil
+    M._original_notify("LSP debug mode: ON", vim.log.levels.INFO)
+  else
+    M.setup() -- Re-apply quiet mode
+    M._original_notify("LSP debug mode: OFF", vim.log.levels.INFO)
+  end
+end
+
+-- Auto-setup
+M.setup()
+
+-- Create debug command
+vim.api.nvim_create_user_command("LspQuietToggle", M.toggle_debug, { 
+  desc = "Toggle LSP quiet/debug mode" 
+})
+
+return M

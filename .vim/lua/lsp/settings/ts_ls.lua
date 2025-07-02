@@ -13,14 +13,11 @@ return {
     },
   },
   on_attach = function(client, bufnr)
-    -- テスト: server_capabilities変更を一時的に無効化
-    -- if client.server_capabilities.documentFormattingProvider then
-    --   client.server_capabilities.documentFormattingProvider = false
-    -- end
-    -- if client.server_capabilities.documentRangeFormattingProvider then
-    --   client.server_capabilities.documentRangeFormattingProvider = false
-    -- end
-    vim.notify(string.format("[LSP] ts_ls attached successfully (id=%d, capabilities unchanged)", client.id), vim.log.levels.DEBUG)
+    -- Disable verbose logging at server level
+    client.config.settings = client.config.settings or {}
+    client.config.settings.typescript = client.config.settings.typescript or {}
+    client.config.settings.typescript.preferences = client.config.settings.typescript.preferences or {}
+    client.config.settings.typescript.preferences.disableTypeScriptVersions = true
   end,
   root_dir = lsp_utils.create_root_pattern(config_files),
   filetypes = ft.js_project,

@@ -36,7 +36,7 @@ vim.defer_fn(function()
             pid = client.rpc and client.rpc.pid or nil,
           }
         end
-        vim.notify(string.format("[LSP] Client attached: %s (id=%d, buf=%d)", client.name, client_id, args.buf), vim.log.levels.DEBUG)
+        -- Silent tracking only
       end
     end
   })
@@ -47,10 +47,7 @@ vim.defer_fn(function()
       local client_id = args.data.client_id
       local info = client_registry[client_id]
       
-      -- より詳細なdetach情報をログ
-      local client_name = info and info.name or "unknown"
-      vim.notify(string.format("[LSP] Detach event: %s (id=%d) from buf=%d", 
-        client_name, client_id, args.buf), vim.log.levels.DEBUG)
+      -- Silent detach tracking
       
       if info then
         -- Remove buffer from tracking
@@ -63,12 +60,7 @@ vim.defer_fn(function()
         end
         
         if #buffers == 0 then
-          local stop_reason = "all buffers detached"
-          vim.notify(string.format("[LSP] Client stopped: %s (id=%d) - %s", info.name, client_id, stop_reason), vim.log.levels.DEBUG)
           client_registry[client_id] = nil
-        else
-          vim.notify(string.format("[LSP] Client detached: %s (id=%d) from buf=%d, remaining buffers: %d", 
-            info.name, client_id, args.buf, #buffers), vim.log.levels.DEBUG)
         end
       end
     end

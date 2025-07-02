@@ -111,10 +111,6 @@ function M.should_stop_client(client, bufnr)
     end
     
     if older_client and client.id > older_client.id then
-      if require("lsp.config").isDebug then
-        vim.notify(string.format("[LSP] Stopping duplicate %s client (id=%d, keeping id=%d)", 
-          client.name, client.id, older_client.id), vim.log.levels.DEBUG)
-      end
       return true
     end
   end
@@ -135,8 +131,6 @@ function M.should_stop_client(client, bufnr)
     if formatter_config and formatter_config.formatter_priority then
       local formatter = formatter_config.formatter_priority
       if formatter.overrides and formatter.overrides[client.name] then 
-        vim.notify(string.format("[LSP] Stopping %s client due to active %s override", 
-          client.name, active_formatter_name), vim.log.levels.DEBUG)
         return true 
       end
     end
