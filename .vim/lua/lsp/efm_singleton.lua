@@ -34,6 +34,9 @@ function M.setup(opts)
   -- Add autostart control
   opts.autostart = true
   
+  -- Add quiet flag to suppress startup banner
+  opts.cmd = { "efm-langserver", "-q" }
+  
   lspconfig.efm.setup(opts)
   efm_setup_done = true
 end
