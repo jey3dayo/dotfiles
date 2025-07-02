@@ -1,20 +1,35 @@
+--- LSP Client Manager - Handle client lifecycle, formatting priorities, and duplicate prevention
+--- @module lsp.client_manager
 local formatters = require("lsp.config").formatters
 local safe_client = require("lsp.safe_client")
 
 local M = {}
 
+--- Track processed clients to prevent duplicate processing
+--- @type table<string, boolean>
 local seen_clients = {}
 
+--- Check if client has been processed for given buffer
+--- @param client_id number LSP client ID
+--- @param bufnr number Buffer number
+--- @return boolean True if already processed
 function M.is_client_processed(client_id, bufnr)
   local key = string.format("%d-%d", client_id, bufnr)
   return seen_clients[key] ~= nil
 end
 
+--- Mark client as processed for given buffer
+--- @param client_id number LSP client ID
+--- @param bufnr number Buffer number
+--- @return nil
 function M.mark_client_processed(client_id, bufnr)
   local key = string.format("%d-%d", client_id, bufnr)
   seen_clients[key] = true
 end
 
+--- Get all clients that support formatting for buffer
+--- @param bufnr number Buffer number
+--- @return table[] List of formatting-capable clients
 function M.get_format_clients(bufnr)
   local clients = safe_client.get_clients({ bufnr = bufnr })
   if #clients == 0 then
