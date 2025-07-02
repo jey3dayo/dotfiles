@@ -358,6 +358,30 @@ zmodload zsh/zprof; zprof  # プロファイリング
 
 - `/learnings` - 層別知見記録・管理
 
+### 🤖 AI支援システム
+
+#### o3 MCP技術相談
+
+実装中に技術的に詰まった場合や解決できないエラーに遭遇した場合は、o3 MCPに英語で相談できます：
+
+**対象場面**:
+- 複雑なエラーメッセージの解読
+- 技術的実装方針の判断
+- パフォーマンス問題の診断
+- ライブラリ・フレームワークの使用方法
+- 設定ファイルの構文・仕様確認
+
+**相談方法**:
+```
+技術的な質問やエラー内容を英語でo3 MCPに投げることで、専門的なアドバイスを受けられます
+相談後は必ず日本語で回答内容を要約・説明します
+```
+
+**例**:
+- "How to optimize Zsh startup time when using multiple plugins?"
+- "LSP client configuration issue in Neovim with TypeScript"
+- "WezTerm Lua configuration error: attempt to index nil value"
+
 ## 実装ワークフロー
 
 ### 🚀 層別実装アプローチ
