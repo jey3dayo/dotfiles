@@ -89,11 +89,7 @@ This document explains how to manage Claude permissions for different project co
 ```json
 {
   "permissions": {
-    "allow": [
-      "Bash(git *)",
-      "Bash(gh *)",
-      "Bash(hub *)"
-    ]
+    "allow": ["Bash(git *)", "Bash(gh *)", "Bash(hub *)"]
   }
 }
 ```
@@ -106,13 +102,8 @@ This document explains how to manage Claude permissions for different project co
 {
   "permissions": {
     "defaultMode": "acceptEdits",
-    "allow": [
-      "Bash(command pattern)",
-      "WebFetch(domain:allowed-domain.com)"
-    ],
-    "deny": [
-      "Bash(dangerous-command *)"
-    ]
+    "allow": ["Bash(command pattern)", "WebFetch(domain:allowed-domain.com)"],
+    "deny": ["Bash(dangerous-command *)"]
   },
   "model": "sonnet",
   "cleanupPeriodDays": 7
@@ -122,6 +113,7 @@ This document explains how to manage Claude permissions for different project co
 ### Progressive Permission Levels
 
 #### Level 1: Read-Only
+
 ```json
 {
   "permissions": {
@@ -138,6 +130,7 @@ This document explains how to manage Claude permissions for different project co
 ```
 
 #### Level 2: Configuration Management
+
 ```json
 {
   "permissions": {
@@ -157,6 +150,7 @@ This document explains how to manage Claude permissions for different project co
 ```
 
 #### Level 3: Full Development
+
 ```json
 {
   "permissions": {
