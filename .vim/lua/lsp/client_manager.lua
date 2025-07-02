@@ -1,4 +1,5 @@
 local formatters = require("lsp.config").formatters
+local safe_client = require("lsp.safe_client")
 
 local M = {}
 
@@ -15,8 +16,8 @@ function M.mark_client_processed(client_id, bufnr)
 end
 
 function M.get_format_clients(bufnr)
-  local clients = vim.lsp.get_clients { bufnr = bufnr }
-  if clients == 0 then
+  local clients = safe_client.get_clients({ bufnr = bufnr })
+  if #clients == 0 then
     vim.notify("No active LSP clients found", vim.log.levels.WARN)
     return {}
   end
@@ -45,12 +46,12 @@ local function get_efm_clients(client, buf_ft)
 end
 
 function M.get_lsp_client_names(bufnr)
-  local clients = vim.lsp.get_clients { bufnr = bufnr }
+  local clients = safe_client.get_clients({ bufnr = bufnr })
   local buf_ft = vim.bo.filetype
 
   local client_names = {}
   local seen = {}
-  if next(clients) == nil then return client_names end
+  if #clients == 0 then return client_names end
 
   for _, client in pairs(clients) do
     if client:supports_method("textDocument/formatting") then
@@ -68,11 +69,11 @@ end
 
 -- Get all active LSP clients (for display purposes)
 function M.get_all_lsp_client_names(bufnr)
-  local clients = vim.lsp.get_clients { bufnr = bufnr }
+  local clients = safe_client.get_clients({ bufnr = bufnr })
   local client_names = {}
   local seen = {}
 
-  if next(clients) == nil then return client_names end
+  if #clients == 0 then return client_names end
 
   for _, client in pairs(clients) do
     if not seen[client.name] then
@@ -92,7 +93,7 @@ end
 -- LSPクライアントの優先順位を定義
 function M.should_stop_client(client, bufnr)
   -- 同じ名前のクライアントが既に存在するかチェック
-  local existing_clients = vim.lsp.get_clients({ bufnr = bufnr, name = client.name })
+  local existing_clients = safe_client.get_clients({ bufnr = bufnr, name = client.name })
   local duplicate_count = 0
   for _, existing_client in ipairs(existing_clients) do
     if existing_client.id ~= client.id then
@@ -110,15 +111,17 @@ function M.should_stop_client(client, bufnr)
     end
     
     if older_client and client.id > older_client.id then
-      vim.notify(string.format("[LSP] Stopping duplicate %s client (id=%d, keeping id=%d)", 
-        client.name, client.id, older_client.id), vim.log.levels.DEBUG)
+      if require("lsp.config").isDebug then
+        vim.notify(string.format("[LSP] Stopping duplicate %s client (id=%d, keeping id=%d)", 
+          client.name, client.id, older_client.id), vim.log.levels.DEBUG)
+      end
       return true
     end
   end
 
   -- 既存のフォーマッター優先順位チェック
   -- 実際にアクティブなLSPクライアントのみをチェック
-  local active_clients = vim.lsp.get_clients({ bufnr = bufnr })
+  local active_clients = safe_client.get_clients({ bufnr = bufnr })
   local active_formatter_clients = {}
   
   for _, active_client in ipairs(active_clients) do
