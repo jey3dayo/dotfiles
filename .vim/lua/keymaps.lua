@@ -248,23 +248,40 @@ end
 Keymap("Yg", copy_github_url)
 V_Keymap("Yg", copy_github_url)
 
--- Format keybindings
-Keymap("<C-e>f", "<cmd>Format<CR>", { desc = "Format file (LSP)" })
+-- Format keybindings (LSP-based)
+Keymap("<C-e>f", "<cmd>Format<CR>", { desc = "Format (auto-select)" })
 
--- Prettier formatting
-Keymap("<C-e>p", function()
-  vim.cmd("!prettier --write " .. vim.fn.expand "%")
-  vim.cmd "edit!"
-end, { desc = "Format with Prettier" })
+-- Telescope formatter selector
+Keymap("<C-e>F", function()
+  local formatters = {
+    { name = "Auto-select", cmd = "Format" },
+    { name = "Biome", cmd = "FormatWithBiome" },
+    { name = "Prettier", cmd = "FormatWithPrettier" },
+    { name = "ESLint", cmd = "FormatWithEslint" },
+    { name = "TypeScript", cmd = "FormatWithTsLs" },
+    { name = "EFM", cmd = "FormatWithEfm" },
+  }
 
--- Biome formatting
-Keymap("<C-e>b", function()
-  vim.cmd("!biome format --write " .. vim.fn.expand "%")
-  vim.cmd "edit!"
-end, { desc = "Format with Biome" })
-
--- ESLint fix
-Keymap("<C-e>e", function()
-  vim.cmd("!eslint --fix " .. vim.fn.expand "%")
-  vim.cmd "edit!"
-end, { desc = "Fix with ESLint" })
+  require("telescope.pickers").new({}, {
+    prompt_title = "Select Formatter",
+    finder = require("telescope.finders").new_table({
+      results = formatters,
+      entry_maker = function(entry)
+        return {
+          value = entry,
+          display = entry.name,
+          ordinal = entry.name,
+        }
+      end,
+    }),
+    sorter = require("telescope.config").values.generic_sorter({}),
+    attach_mappings = function(prompt_bufnr, map)
+      require("telescope.actions").select_default:replace(function()
+        local selection = require("telescope.actions.state").get_selected_entry()
+        require("telescope.actions").close(prompt_bufnr)
+        vim.cmd(selection.value.cmd)
+      end)
+      return true
+    end,
+  }):find()
+end, { desc = "Format (Telescope selector)" })

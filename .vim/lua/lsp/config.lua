@@ -125,15 +125,19 @@ M.formatters = {
       "eslint.config.mts",
       ".eslintrc.config.js",
     },
+    formatter_priority = {
+      priority = 3,
+      overrides = {},
+    },
   },
   biome = {
     config_files = { "biome.json", "biome.jsonc" },
     formatter_priority = {
       priority = 1,
       overrides = {
-        ts_ls = true,
-        eslint = true,
-        prettier = true,
+        -- ts_lsは言語機能のため停止しない
+        -- eslint = true, -- ESLintも構文チェックのため停止しない  
+        prettier = true, -- prettierはフォーマット専用なので置き換え可能
       },
     },
   },
@@ -152,8 +156,8 @@ M.formatters = {
     formatter_priority = {
       priority = 2,
       overrides = {
-        ts_ls = true,
-        eslint = true,
+        -- ts_lsは言語機能のため停止しない
+        -- eslint = true, -- ESLintも構文チェックのため停止しない
       },
     },
   },

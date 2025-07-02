@@ -20,14 +20,23 @@ vim.defer_fn(function()
       local client_id = args.data.client_id
       local client = vim.lsp.get_client_by_id(client_id)
       if client then
-        client_registry[client_id] = {
-          id = client_id,
-          name = client.name,
-          buffers = { args.buf },
-          start_time = vim.loop.hrtime(),
-          pid = client.rpc and client.rpc.pid or nil,
-        }
-        vim.notify(string.format("[LSP] Client started: %s (id=%d)", client.name, client_id), vim.log.levels.DEBUG)
+        if client_registry[client_id] then
+          -- クライアントが既に存在する場合、バッファを追加
+          local existing = client_registry[client_id]
+          if not vim.tbl_contains(existing.buffers, args.buf) then
+            table.insert(existing.buffers, args.buf)
+          end
+        else
+          -- 新しいクライアントを登録
+          client_registry[client_id] = {
+            id = client_id,
+            name = client.name,
+            buffers = { args.buf },
+            start_time = vim.loop.hrtime(),
+            pid = client.rpc and client.rpc.pid or nil,
+          }
+        end
+        vim.notify(string.format("[LSP] Client attached: %s (id=%d, buf=%d)", client.name, client_id, args.buf), vim.log.levels.DEBUG)
       end
     end
   })
@@ -37,6 +46,12 @@ vim.defer_fn(function()
     callback = function(args)
       local client_id = args.data.client_id
       local info = client_registry[client_id]
+      
+      -- より詳細なdetach情報をログ
+      local client_name = info and info.name or "unknown"
+      vim.notify(string.format("[LSP] Detach event: %s (id=%d) from buf=%d", 
+        client_name, client_id, args.buf), vim.log.levels.DEBUG)
+      
       if info then
         -- Remove buffer from tracking
         local buffers = info.buffers or {}
@@ -48,8 +63,12 @@ vim.defer_fn(function()
         end
         
         if #buffers == 0 then
-          vim.notify(string.format("[LSP] Client stopped: %s (id=%d)", info.name, client_id), vim.log.levels.DEBUG)
+          local stop_reason = "all buffers detached"
+          vim.notify(string.format("[LSP] Client stopped: %s (id=%d) - %s", info.name, client_id, stop_reason), vim.log.levels.DEBUG)
           client_registry[client_id] = nil
+        else
+          vim.notify(string.format("[LSP] Client detached: %s (id=%d) from buf=%d, remaining buffers: %d", 
+            info.name, client_id, args.buf, #buffers), vim.log.levels.DEBUG)
         end
       end
     end
@@ -71,13 +90,15 @@ function M.show_status()
   local lines = { "LSP Client Status:", "" }
   
   -- Active clients
-  local active = vim.lsp.get_active_clients()
+  local active = vim.lsp.get_clients()
   table.insert(lines, "Active Clients:")
   for _, client in ipairs(active) do
     local info = client_registry[client.id]
     local status = string.format("  [%d] %s", client.id, client.name)
     if info and info.buffers then
-      status = status .. string.format(" (buffers: %d)", #info.buffers)
+      status = status .. string.format(" (tracked buffers: %d)", #info.buffers)
+    else
+      status = status .. " (not tracked)"
     end
     table.insert(lines, status)
   end

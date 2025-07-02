@@ -53,7 +53,10 @@ utils.autocmd("LspAttach", {
     local client_id = args.data.client_id
     local client = vim.lsp.get_client_by_id(client_id)
 
-    if not client then return end
+    if not client then 
+      vim.notify(string.format("[LSP] Failed to get client with id %d (client may have been stopped)", client_id), vim.log.levels.WARN)
+      return 
+    end
 
     -- Lazy load client manager when actually needed
     local client_manager = require "lsp/client_manager"
@@ -64,7 +67,8 @@ utils.autocmd("LspAttach", {
 
     -- クライアント停止判定
     if client_manager.should_stop_client(client, bufnr) then
-      client.stop()
+      vim.notify(string.format("[LSP] Client %s (id=%d) will be stopped by client_manager", client.name, client.id), vim.log.levels.DEBUG)
+      client:stop()
       return
     end
 

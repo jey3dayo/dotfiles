@@ -50,18 +50,10 @@ local function setup_keymaps(bufnr, _)
 end
 
 local function setup_format_keymap(bufnr, client)
-  if not client.supports_method "textDocument/formatting" then return end
+  if not client:supports_method("textDocument/formatting") then return end
 
-  Keymap(config.LSP.PREFIX .. "f", function()
-    local active_clients = client_manager.get_format_clients(bufnr)
-    local client_names = vim.tbl_map(function(c)
-      return c.name
-    end, active_clients)
-
-    vim.lsp.buf.format { async = true, timeout_ms = 5000 }
-
-    require("lsp/formatter").notify_formatter(table.concat(client_names, ", "))
-  end, with(config.LSP.DEFAULT_BUF_OPTS, { buffer = bufnr }))
+  -- LSPフォーマット機能はkeymaps.luaのグローバルキーマップに移動
+  -- ここでは互換性を保つが、重複するキーマップは設定しない
 end
 
 M.setup = function(bufnr, client)

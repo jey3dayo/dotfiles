@@ -5,7 +5,7 @@ local efm_setup_done = false
 
 -- Check if EFM client already exists
 local function efm_client_exists()
-  local clients = vim.lsp.get_active_clients({ name = "efm" })
+  local clients = vim.lsp.get_clients({ name = "efm" })
   return #clients > 0
 end
 
