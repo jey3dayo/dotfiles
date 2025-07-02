@@ -12,7 +12,7 @@ wezterm.on("activate-resize-mode", function(window, pane)
   resize_mode_active = true
   window:set_right_status " 🔧 RESIZE "
   window:toast_notification("wezterm", "Resize mode activated", nil, 1000)
-  
+
   -- Set a timer to clear the status after timeout
   wezterm.time.call_after(3, function()
     if resize_mode_active then

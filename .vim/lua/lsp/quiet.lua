@@ -1,8 +1,12 @@
--- Clean LSP notification control at protocol level
+--- Clean LSP notification control at protocol level
+--- @module lsp.quiet
+--- Provides noise suppression for LSP notifications while preserving errors
 local M = {}
 
 local config = require("lsp.config")
 
+--- Setup LSP quiet mode with intelligent message filtering
+--- @return nil
 function M.setup()
   -- Set LSP log level to OFF to minimize file logging
   vim.lsp.set_log_level("OFF")
@@ -61,7 +65,8 @@ function M.setup()
   M._original_notify = original_notify
 end
 
--- Debug toggle for troubleshooting
+--- Toggle between quiet and debug modes for troubleshooting
+--- @return nil
 function M.toggle_debug()
   if vim.lsp.get_log_level() == vim.log.levels.OFF then
     vim.lsp.set_log_level("WARN")

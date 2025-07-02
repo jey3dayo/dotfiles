@@ -1,7 +1,13 @@
+--- LSP Configuration - Central management for all LSP settings
+--- @module lsp.config
 local M = {}
 
+--- Debug mode flag for LSP operations
+--- @type boolean
 M.isDebug = false
 
+--- Default formatting configuration
+--- @type table
 M.format = {
   default = {
     timeout_ms = 3000,
@@ -13,6 +19,8 @@ M.format = {
   },
 }
 
+--- LSP-specific constants and default options
+--- @type table
 M.LSP = {
   PREFIX = "[lsp]",
   DEFAULT_OPTS = { silent = true },

@@ -101,7 +101,6 @@ function M.reset_opacity(window, _)
   )
 end
 
-
 -- Status update handler for showing mode indicators
 function M.update_status(window, pane)
   -- This will be overridden by keybinds.lua to show resize mode status

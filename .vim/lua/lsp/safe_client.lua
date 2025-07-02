@@ -1,7 +1,11 @@
--- Safe LSP client operations with defensive programming
+--- Safe LSP client operations with defensive programming
+--- @module lsp.safe_client
+--- Provides safe wrappers around vim.lsp client operations to prevent crashes
 local M = {}
 
--- Safely get client by ID with proper error handling
+--- Safely get LSP client by ID with proper error handling
+--- @param client_id number|nil Client ID to retrieve
+--- @return table|nil LSP client object or nil if not found/invalid
 function M.get_client_by_id(client_id)
   if not client_id or type(client_id) ~= "number" then 
     return nil 
@@ -11,13 +15,17 @@ function M.get_client_by_id(client_id)
   return ok and client or nil
 end
 
--- Safely get clients with proper error handling
+--- Safely get LSP clients with proper error handling
+--- @param opts table|nil Options for vim.lsp.get_clients
+--- @return table[] List of LSP clients (empty if error)
 function M.get_clients(opts)
   local ok, clients = pcall(vim.lsp.get_clients, opts)
   return ok and clients or {}
 end
 
--- Check if client exists and is valid
+--- Check if LSP client exists and is valid (not stopped)
+--- @param client_id number Client ID to validate
+--- @return boolean True if client is valid and running
 function M.is_client_valid(client_id)
   local client = M.get_client_by_id(client_id)
   if not client then return false end
@@ -27,7 +35,13 @@ function M.is_client_valid(client_id)
   return ok and not is_stopped
 end
 
--- Safe client method execution
+--- Safely execute LSP client request with error handling
+--- @param client_id number Client ID
+--- @param method string LSP method name
+--- @param params table|nil Request parameters
+--- @param handler function|nil Response handler
+--- @param bufnr number|nil Buffer number
+--- @return boolean Success status
 function M.safe_client_request(client_id, method, params, handler, bufnr)
   if not M.is_client_valid(client_id) then
     if handler then
