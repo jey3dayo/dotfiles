@@ -20,27 +20,33 @@ end
 -- Check if client exists and is valid
 function M.is_client_valid(client_id)
   local client = M.get_client_by_id(client_id)
-  return client ~= nil and client.is_stopped and not client.is_stopped()
+  if not client then return false end
+  
+  -- Check if client has necessary methods and is not stopped
+  local ok, is_stopped = pcall(function() return client.is_stopped() end)
+  return ok and not is_stopped
 end
 
 -- Safe client method execution
 function M.safe_client_request(client_id, method, params, handler, bufnr)
-  local client = M.get_client_by_id(client_id)
-  if not client then
+  if not M.is_client_valid(client_id) then
     if handler then
-      handler("Client not found", nil)
+      handler("Client not available", nil)
     end
     return false
   end
   
-  if not client:supports_method(method) then
+  local client = M.get_client_by_id(client_id)
+  local ok, supports = pcall(function() return client:supports_method(method) end)
+  if not ok or not supports then
     if handler then
       handler("Method not supported", nil)
     end
     return false
   end
   
-  return client.request(method, params, handler, bufnr)
+  local success, result = pcall(client.request, client, method, params, handler, bufnr)
+  return success and result or false
 end
 
 -- Safe buffer formatting

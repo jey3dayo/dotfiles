@@ -10,16 +10,19 @@ local config = require "lsp.config"
 
 if not (mason_lspconfig and lspconfig) then return end
 
-local disabled_servers = { "efm" }  -- Manually setup efm below to prevent duplicate
+local disabled_servers = { "efm" }  -- Manually setup efm to prevent duplicate
 
+-- Setup LSP servers with optimized loading
 for _, server in ipairs(config.enabled_servers) do
-  if server ~= "efm" then  -- Skip efm here
+  if server ~= "efm" then
     local extends = utils.safe_require("lsp.settings." .. server)
-    if extends and type(extends) == "table" and extends.autostart == false then
+    if extends and extends.autostart == false then
       table.insert(disabled_servers, server)
     else
-      local opts = { on_attach = on_attach, capabilities = capabilities }
-      lspconfig[server].setup(with(opts, extends))
+      lspconfig[server].setup(with(
+        { on_attach = on_attach, capabilities = capabilities },
+        extends
+      ))
     end
   end
 end

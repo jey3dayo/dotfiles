@@ -4,8 +4,8 @@ local M = {}
 local config = require("lsp.config")
 
 function M.setup()
-  -- Set LSP log level to minimal
-  vim.lsp.set_log_level("ERROR")
+  -- Set LSP log level to OFF to minimize file logging
+  vim.lsp.set_log_level("OFF")
   
   -- Store original notify
   local original_notify = vim.notify
@@ -14,9 +14,12 @@ function M.setup()
   vim.notify = function(msg, level, opts)
     if type(msg) == "string" and (
       msg:find("No client with id", 1, true) or
-      msg:find("client with id", 1, true)
+      msg:find("client with id", 1, true) or
+      msg:find("connections closed", 1, true) or
+      msg:find("stderr", 1, true) or
+      msg:find("rpc", 1, true)
     ) then
-      return -- Silently suppress client ID errors
+      return -- Silently suppress LSP noise
     end
     return original_notify(msg, level, opts)
   end
@@ -45,8 +48,8 @@ end
 
 -- Debug toggle for troubleshooting
 function M.toggle_debug()
-  if vim.lsp.get_log_level() == vim.log.levels.ERROR then
-    vim.lsp.set_log_level("DEBUG")
+  if vim.lsp.get_log_level() == vim.log.levels.OFF then
+    vim.lsp.set_log_level("WARN")
     -- Restore original notify and verbose handlers
     vim.notify = M._original_notify
     vim.lsp.handlers["window/logMessage"] = nil
