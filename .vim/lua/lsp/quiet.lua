@@ -42,6 +42,21 @@ function M.setup()
     -- Silently ignore INFO/WARN messages
   end
   
+  -- Fix MethodNotFound error by adding minimal workspace handlers
+  vim.lsp.handlers['workspace/workspaceFolders'] = function()
+    local cwd = vim.loop.cwd()
+    return { { uri = vim.uri_from_fname(cwd), name = cwd } }
+  end
+
+  vim.lsp.handlers['workspace/configuration'] = function(_, params)
+    local items = {}
+    for _ in ipairs(params.items) do
+      -- Return empty settings table as fallback
+      table.insert(items, {})
+    end
+    return items
+  end
+  
   -- Store original for debug toggle
   M._original_notify = original_notify
 end
