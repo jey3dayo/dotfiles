@@ -198,3 +198,13 @@ claude/
 .claude/projects/
 .claude/statsig/
 .claude/todos/
+
+# Zed Editor
+zed/conversations/
+zed/prompts/
+zed/cache/
+zed/logs/
+zed/state*
+zed/*.db
+zed/*.lock
+zed/*.log
