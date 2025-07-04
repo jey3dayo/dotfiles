@@ -5,7 +5,7 @@ load_tool_settings() {
   local config_dir="$1"
 
   # Critical tools - immediate load (minimal set)
-  for critical_tool in fzf git; do
+  for critical_tool in fzf git mise; do
     [[ -f "$config_dir/tools/$critical_tool.zsh" ]] &&
       source "$config_dir/tools/$critical_tool.zsh"
   done
@@ -14,12 +14,12 @@ load_tool_settings() {
   for tool_file in "$config_dir/tools"/*.zsh; do
     local tool_name=$(basename "$tool_file" .zsh)
     # Skip already loaded critical tools
-    [[ "$tool_name" == "fzf" || "$tool_name" == "git" ]] && continue
+    [[ "$tool_name" == "fzf" || "$tool_name" == "git" || "$tool_name" == "mise" ]] && continue
 
     if (( $+functions[zsh-defer] )); then
       # Stagger tool loading to reduce startup spike
       case "$tool_name" in
-      mise | starship) zsh-defer -t 5 source "$tool_file" ;;
+      starship) zsh-defer -t 5 source "$tool_file" ;;
       brew) zsh-defer -t 8 source "$tool_file" ;;
       *) zsh-defer -t 10 source "$tool_file" ;;
       esac
