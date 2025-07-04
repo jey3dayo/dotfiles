@@ -21,19 +21,14 @@ export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 export CATALINA_HOME=/opt/homebrew/Cellar/tomcat/10.1.19/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
-export GOPATH=$HOME
 export BUN_INSTALL="$HOME/.bun"
 export HOMEBREW_BUNDLE_FILE_GLOBAL="$XDG_CONFIG_HOME/Brewfile"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
 export BIOME_CONFIG_PATH="$HOME/.config/biome.json"
 export CODEX_CONFIG="$HOME/.config/.codex/config.yaml"
-# export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-# export SSH_AUTH_SOCK=~/.1password/agent.sock
 
 path=(
-  # railsビルド用
-  # /opt/homebrew/opt/mysql@5.7/bin(N-/)
   $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
@@ -41,7 +36,6 @@ path=(
   $HOME/.cargo/bin(N-/)
   /usr/local/opt/openjdk/bin:(N-/)
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
-  $GOPATH/bin(N-/)
   $BUN_INSTALL/bin(N-/)
   $PNPM_HOME(N-/)
   $HOME/.local/npm-global/bin

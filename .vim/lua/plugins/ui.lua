@@ -7,11 +7,19 @@ return {
       require "config/lualine"
     end,
   },
+  -- {
+  --   "RRethy/vim-illuminate",
+  --   event = { "BufReadPost", "BufNewFile" },
+  --   config = function()
+  --     require "config/vim-illuminate"
+  --   end,
+  -- },
   {
-    "RRethy/vim-illuminate",
-    event = { "BufReadPost", "BufNewFile" },
+    "echasnovski/mini.cursorword",
+    version = false,
+    event = "VeryLazy",
     config = function()
-      require "config/vim-illuminate"
+      require("mini.cursorword").setup({ delay = 100 })
     end,
   },
   {

@@ -1,9 +1,8 @@
 local M = {}
-local utils = require "core.utils"
 
 M.setup = function(client)
-  local illuminate = utils.safe_require "illuminate"
-  if illuminate then illuminate.on_attach(client) end
+  -- vim-illuminate removed in favor of mini.cursorword
+  -- mini.cursorword handles highlighting automatically without LSP integration
 end
 
 return M
