@@ -104,9 +104,7 @@ return {
     capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
     capabilities.textDocument.completion.completionItem.deprecatedSupport = true
     capabilities.textDocument.completion.completionItem.preselectSupport = true
-    -- Explicitly disable problematic workspace capabilities
-    capabilities.workspace.configuration = false
-    capabilities.workspace.workspaceFolders = false
+    -- Use default workspace capabilities to avoid MethodNotFound in vscode-langservers-extracted 4.9.0+
     return capabilities
   end)(),
   -- Best practice: disable formatting, keep validation & IntelliSense
