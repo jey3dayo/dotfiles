@@ -40,6 +40,17 @@ utils.autocmd("ColorScheme", {
   end,
 })
 
+-- Prevent LSP from attaching to non-file URI schemes (fugitive://, etc.)
+utils.autocmd('BufReadPre', {
+  pattern = '*',
+  callback = function(args)
+    local bufname = vim.api.nvim_buf_get_name(args.buf)
+    if bufname:match('^%a+://') then
+      vim.b[args.buf].lsp_disable = true -- tells lspconfig not to attach
+    end
+  end,
+})
+
 -- 競合するLSPがある場合、client.stop()をかける
 -- ts_lsとbiomeが競合するので、ts_lsを止める等
 local lsp_augroup = utils.augroup("LspFormatting", { clear = true })

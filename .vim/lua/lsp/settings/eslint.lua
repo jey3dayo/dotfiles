@@ -10,8 +10,21 @@ return {
   },
   on_attach = function(client, bufnr)
     -- フォーマット機能を無効化（lint機能に専念）
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
+    local compat = require("lsp.compat")
+    if compat.supports_method(client, "textDocument/formatting") then
+      client.server_capabilities.documentFormattingProvider = false
+    end
+    if compat.supports_method(client, "textDocument/rangeFormatting") then
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end
+  end,
+  on_new_config = function(cfg, new_root)
+    -- ESLint LSP 4.9.0以降のworkspaceFolder問題を修正
+    cfg.settings = cfg.settings or {}
+    cfg.settings.workspaceFolder = {
+      uri = vim.uri_from_fname(new_root),
+      name = vim.fn.fnamemodify(new_root, ':t'),
+    }
   end,
   root_dir = lsp_utils.create_root_pattern(config_files),
   filetypes = ft.js_project,

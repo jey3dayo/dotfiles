@@ -9,8 +9,13 @@ return {
   },
   on_attach = function(client, bufnr)
     -- Disable some features that may cause crashes
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
+    local compat = require("lsp.compat")
+    if compat.supports_method(client, "textDocument/formatting") then
+      client.server_capabilities.documentFormattingProvider = false
+    end
+    if compat.supports_method(client, "textDocument/rangeFormatting") then
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end
   end,
   -- Add timeout and restart configuration
   flags = {

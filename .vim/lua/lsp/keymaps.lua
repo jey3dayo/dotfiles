@@ -50,7 +50,11 @@ local function setup_keymaps(bufnr, _)
 end
 
 local function setup_format_keymap(bufnr, client)
-  if not client:supports_method("textDocument/formatting") then return end
+  -- 互換性レイヤーを使用した機能判定
+  local compat = require("lsp.compat")
+  if not compat.supports_method(client, "textDocument/formatting") then
+    return
+  end
 
   -- LSPフォーマット機能はkeymaps.luaのグローバルキーマップに移動
   -- ここでは互換性を保つが、重複するキーマップは設定しない
