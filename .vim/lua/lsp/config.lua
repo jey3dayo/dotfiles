@@ -34,6 +34,7 @@ M.servers = {
   cssls = { installed = true, enabled = true },
   dockerls = { installed = true, enabled = true },
   efm = { installed = true, enabled = true },
+  gopls = { installed = true, enabled = true },
   jsonls = { installed = true, enabled = true },
   lua_ls = { installed = true, enabled = true },
   marksman = { installed = true, enabled = true },
