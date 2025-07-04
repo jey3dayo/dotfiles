@@ -6,6 +6,7 @@ if vim.lsp.inlay_hint then
   vim.lsp.inlay_hint.enable(true) 
 end
 
+
 -- Define consistent UI theme colors (gruvbox-compatible)
 local ui_theme = {
   border = "rounded",
