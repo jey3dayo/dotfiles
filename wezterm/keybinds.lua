@@ -145,7 +145,7 @@ local key_tables = {
     { key = "k", action = act { AdjustPaneSize = { "Up", 1 } } },
     { key = "j", action = act { AdjustPaneSize = { "Down", 1 } } },
 
-    -- Opacity adjustment
+    -- Opacity adjustment (will exit resize mode, but that's WezTerm limitation)
     { key = "+", action = act { EmitEvent = "increase-opacity" } },
     { key = "-", action = act { EmitEvent = "decrease-opacity" } },
     { key = "0", action = act { EmitEvent = "reset-opacity" } },
