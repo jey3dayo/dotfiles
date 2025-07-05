@@ -11,8 +11,7 @@ local function messages_history(opts)
   -- Get messages history
   local messages = vim.api.nvim_exec2("messages", { output = true }).output
   if not messages or messages == "" then
-    local notify_helper = require("core.notify")
-    notify_helper.info(notify_helper.warnings.no_items("messages in history"))
+    vim.notify("No messages in history", vim.log.levels.INFO)
     return
   end
   

@@ -79,9 +79,10 @@ local schemas = {
 }
 
 return {
-  -- Use global vscode-langservers-extracted@4.8.0 to avoid MethodNotFound crash in 4.10.0
-  cmd = { "vscode-json-language-server", "--stdio" },
+  -- Use global vscode-json-languageserver@1.3.4 to avoid MethodNotFound crash in vscode-langservers-extracted 4.8.0+
+  cmd = { "/Users/t00114/.local/npm-global/bin/vscode-json-languageserver", "--stdio" },
   filetypes = { "json", "jsonc" },
+  -- autostart = false, -- Re-enable JSON LSP with proper configuration
   init_options = {
     provideFormatter = false, -- EFM handles formatting (Prettier/Biome)
   },
@@ -104,8 +105,7 @@ return {
     capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
     capabilities.textDocument.completion.completionItem.deprecatedSupport = true
     capabilities.textDocument.completion.completionItem.preselectSupport = true
-    -- Fix for vscode-langservers-extracted 4.9.0+ MethodNotFound error
-    -- Tell the server we support dynamic registration for workspace configuration
+    -- Workspace configuration support for older vscode-json-languageserver
     capabilities.workspace = capabilities.workspace or {}
     capabilities.workspace.configuration = true
     capabilities.workspace.didChangeConfiguration = { 

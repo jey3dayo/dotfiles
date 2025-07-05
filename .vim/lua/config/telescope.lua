@@ -135,7 +135,7 @@ Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank
 -- Load notify helper
 local notify_helper = require("core.notify")
 
-Keymap("<leader>n", function()
+Keymap("<leader>fn", function()
   -- Ensure the extension is loaded before calling it
   if telescope.extensions.mini_notify then
     telescope.extensions.mini_notify.mini_notify()
@@ -143,7 +143,7 @@ Keymap("<leader>n", function()
     notify_helper.error(notify_helper.errors.extension_not_loaded("mini_notify"))
   end
 end, { desc = "Find notifications (mini.notify)" })
-Keymap("<leader>N", function() 
+Keymap("<leader>fN", function() 
   local ok, mini_notify = pcall(require, "mini.notify")
   if ok then
     mini_notify.show_history()
@@ -153,10 +153,10 @@ Keymap("<leader>N", function()
 end, { desc = "Show notification history buffer" })
 
 -- messages integration
-Keymap("<leader>m", function()
+Keymap("<leader>fm", function()
   telescope.extensions.messages.messages()
 end, { desc = "Find messages (:messages)" })
-Keymap("<leader>M", "<cmd>messages<CR>", { desc = "Show messages" })
+Keymap("<leader>fM", "<cmd>messages<CR>", { desc = "Show messages" })
 
 -- frecency
 local function frecency_cwd()
