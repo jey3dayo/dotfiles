@@ -275,7 +275,7 @@ Keymap("<C-e>F", function()
         end,
       },
       sorter = require("telescope.config").values.generic_sorter {},
-      attach_mappings = function(prompt_bufnr, map)
+      attach_mappings = function(prompt_bufnr, _)
         require("telescope.actions").select_default:replace(function()
           local selection = require("telescope.actions.state").get_selected_entry()
           require("telescope.actions").close(prompt_bufnr)
@@ -286,3 +286,16 @@ Keymap("<C-e>F", function()
     })
     :find()
 end, { desc = "Format (Telescope selector)" })
+
+-- Experimental: Telescope with <Leader>f prefix
+-- These work alongside existing keymaps due to timeoutlen
+-- 慣れたら<leader>f[] に統一することを検討
+Keymap("<Leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files" })
+Keymap("<Leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live grep" })
+Keymap("<Leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find buffers" })
+Keymap("<Leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Find help" })
+Keymap("<Leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Find old files" })
+Keymap("<Leader>fc", "<cmd>Telescope commands<cr>", { desc = "Find commands" })
+Keymap("<Leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Find keymaps" })
+Keymap("<Leader>fs", "<cmd>Telescope lsp_document_symbols<cr>", { desc = "Find symbols" })
+Keymap("<Leader>fd", "<cmd>Telescope diagnostics<cr>", { desc = "Find diagnostics" })
