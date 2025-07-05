@@ -339,7 +339,7 @@ Technical knowledge is organized into **specialized layers** for efficient imple
 - **[Shell Layer](.claude/layers/core/shell-layer.md)** - Zsh optimization, plugin management, performance tuning
 - **[Git Layer](.claude/layers/core/git-layer.md)** - Git workflows, authentication, tool integration
 
-### 🔧 Tool Layers (Specialized Implementations)  
+### 🔧 Tool Layers (Specialized Implementations)
 
 - **[Editor Layer](.claude/layers/tools/editor-layer.md)** - Neovim, LSP, AI assistance, plugin optimization
 - **[Terminal Layer](.claude/layers/tools/terminal-layer.md)** - WezTerm, Tmux, Alacritty configurations

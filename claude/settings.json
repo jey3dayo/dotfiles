@@ -3,13 +3,13 @@
     "defaultMode": "acceptEdits",
     "allow": [
       "WebFetch(domain:docs.anthropic.com)",
-      
+
       "Bash(zsh *)",
       "Bash(nvim *)",
       "Bash(tmux *)",
       "Bash(wezterm *)",
       "Bash(git *)",
-      
+
       "Bash(brew *)",
       "Bash(mise *)",
       "Bash(sheldon *)",
@@ -17,7 +17,7 @@
       "Bash(defaults *)",
       "Bash(abbr *)",
       "Bash(zsh-benchmark *)",
-      
+
       "Bash(pnpm *)",
       "Bash(pnpx *)",
       "Bash(npm *)",
@@ -28,7 +28,7 @@
       "Bash(lua *)",
       "Bash(make *)",
       "Bash(docker *)",
-      
+
       "Bash(ln *)",
       "Bash(mkdir *)",
       "Bash(mv *)",
@@ -36,7 +36,7 @@
       "Bash(cp *)",
       "Bash(touch *)",
       "Bash(chmod *)",
-      
+
       "Bash(ls *)",
       "Bash(tree *)",
       "Bash(cat *)",
@@ -45,7 +45,7 @@
       "Bash(grep *)",
       "Bash(rg *)",
       "Bash(sed *)",
-      
+
       "Bash(echo *)",
       "Bash(which *)",
       "Bash(type *)",
@@ -57,16 +57,16 @@
       "Bash(for *)",
       "Bash(do *)",
       "Bash(done)",
-      
+
       "Bash(ps *)",
       "Bash(kill *)",
       "Bash(jobs *)",
-      
+
       "Bash(curl *)",
       "Bash(ssh *)",
       "Bash(ping *)",
       "Bash(nc *)",
-      
+
       "Bash(jq *)",
       "Bash(*| grep*)",
       "Bash(*| head*)",

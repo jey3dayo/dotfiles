@@ -339,12 +339,12 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 capabilities = (function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   -- 既存の設定...
-  
+
   -- Fix for vscode-langservers-extracted 4.9.0+ MethodNotFound error
   capabilities.workspace = capabilities.workspace or {}
   capabilities.workspace.configuration = true
-  capabilities.workspace.didChangeConfiguration = { 
-    dynamicRegistration = true 
+  capabilities.workspace.didChangeConfiguration = {
+    dynamicRegistration = true
   }
   return capabilities
 end)(),

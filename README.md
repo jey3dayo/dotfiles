@@ -4,11 +4,11 @@
 
 ## 🚀 Performance Achievements
 
-| Component | Before | After | Improvement |
-|-----------|--------|-------|-------------|
-| **Zsh startup** | 1.7s | **1.2s** | 30% faster |
-| **Neovim startup** | ~200ms | **<100ms** | 50% faster |
-| **mise loading** | baseline | **-39ms** | Critical optimization |
+| Component          | Before   | After      | Improvement           |
+| ------------------ | -------- | ---------- | --------------------- |
+| **Zsh startup**    | 1.7s     | **1.2s**   | 30% faster            |
+| **Neovim startup** | ~200ms   | **<100ms** | 50% faster            |
+| **mise loading**   | baseline | **-39ms**  | Critical optimization |
 
 ## ✨ Core Features
 
@@ -54,6 +54,7 @@ exec zsh
 ### Complete Installation Steps
 
 1. **Repository Setup**
+
    ```bash
    mkdir -p ~/src/github.com/jey3dayo
    git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
@@ -61,6 +62,7 @@ exec zsh
    ```
 
 2. **Git Configuration** (Critical)
+
    ```bash
    # Personal configuration (not tracked in git)
    cat > ~/.gitconfig_local << EOF
@@ -72,6 +74,7 @@ exec zsh
    ```
 
 3. **Automated Setup**
+
    ```bash
    sh ./setup.sh    # Links configs, sets up environment
    brew bundle      # Installs all packages
@@ -115,7 +118,7 @@ zsh-benchmark              # Measure startup time (~1.2s)
 zsh-help [keybinds|aliases] # Interactive help system
 
 # Git workflow (custom widgets)
-Ctrl+]                     # FZF repository selector  
+Ctrl+]                     # FZF repository selector
 Ctrl+g Ctrl+g             # Git status widget
 Ctrl+g Ctrl+s             # Git add widget
 
@@ -132,17 +135,20 @@ mise install              # Setup language versions
 ## 🛠️ Key Technologies
 
 ### Core Stack
+
 - **Zsh + Sheldon**: 6-tier priority loading, 39ms mise optimization
 - **Neovim + Lazy.nvim**: AI assistance (Copilot/Avante), sub-100ms startup
 - **WezTerm**: Lua configuration with tmux-style workflow
 
 ### Development Tools
+
 - **Mise**: Multi-language version management
 - **FZF**: Unified search (files, repos, processes)
 - **GitHub CLI**: Repository automation
 - **1Password**: SSH key management
 
 ### Design System
+
 - **Theme**: Gruvbox/Tokyo Night consistency
 - **Typography**: JetBrains Mono + Nerd Font ligatures
 - **Performance**: GPU acceleration, lazy loading
@@ -159,7 +165,7 @@ mise install              # Setup language versions
 # Weekly updates
 brew update && brew upgrade
 
-# Performance monitoring  
+# Performance monitoring
 zsh-benchmark              # Track startup regression
 zsh-profile               # Detailed performance analysis
 
