@@ -329,10 +329,31 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 #### 問題・背景
 
 - **エラー**: `Unhandled exception: MethodNotFound`
-- **原因**: vscode-langservers-extracted 4.9.0+がNeovim 0.11.2未対応の動的登録を要求
+- **原因**: vscode-langservers-extracted 4.8.0+がLSP 3.17仕様を実装、Neovimとの互換性問題
 - **影響**: JSON/HTML/CSS LSPがクラッシュ、補完・検証機能停止
 
 #### 解決策・パターン
+
+**方法1: 安定版への切り替え（推奨）**
+
+```bash
+# 旧バージョンのvscode-json-languageserverをグローバルインストール
+npm install -g vscode-json-languageserver@1.3.4
+```
+
+```lua
+-- lsp/settings/jsonls.lua - 安定版使用
+{
+  cmd = { 'vscode-json-languageserver', '--stdio' },
+  filetypes = { 'json', 'jsonc' },
+  init_options = {
+    provideFormatter = true,
+  },
+  capabilities = capabilities,
+}
+```
+
+**方法2: capabilities拡張（非推奨）**
 
 ```lua
 -- lsp/settings/jsonls.lua - capabilities拡張で動的登録サポートを宣言
@@ -340,7 +361,7 @@ capabilities = (function()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   -- 既存の設定...
 
-  -- Fix for vscode-langservers-extracted 4.9.0+ MethodNotFound error
+  -- Fix for vscode-langservers-extracted 4.8.0+ MethodNotFound error
   capabilities.workspace = capabilities.workspace or {}
   capabilities.workspace.configuration = true
   capabilities.workspace.didChangeConfiguration = {
@@ -352,15 +373,15 @@ end)(),
 
 #### 適用条件・注意点
 
-- **適用条件**: Neovim 0.11.x + vscode-langservers-extracted 4.9.0+
-- **副作用**: LSPログに警告は残るが、機能は正常動作
+- **推奨解決**: vscode-json-languageserver@1.3.4への切り替え
+- **副作用**: 旧バージョンのため最新機能は利用不可だが、安定性重視
 - **根本解決**: Neovim 0.12-dev以降へのアップグレード
 
 #### 実測値
 
 - **改善効果**: エラー100%解消、JSON LSP正常動作
-- **測定日**: 2025-01-04
-- **検証環境**: Neovim v0.11.2 + jsonls 4.10.0
+- **測定日**: 2025-07-05
+- **検証環境**: Neovim v0.11.2 + vscode-json-languageserver@1.3.4
 
 ## 🚧 最適化課題
 
