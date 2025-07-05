@@ -118,8 +118,9 @@ for _, ext in ipairs(extensions) do
   telescope.load_extension(ext)
 end
 
--- Register custom mini_notify extension
-require("config.telescope.mini_notify_extension")
+-- Load custom extensions
+telescope.load_extension("mini_notify")
+telescope.load_extension("messages")
 
 -- keymaps
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
@@ -131,8 +132,31 @@ Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 -- extensions
 Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
 -- mini.notify integration
-Keymap("<leader>n", telescope.extensions.mini_notify.mini_notify, { desc = "Find notifications (mini.notify)" })
-Keymap("<leader>N", function() require("mini.notify").show_history() end, { desc = "Show notification history buffer" })
+-- Load notify helper
+local notify_helper = require("core.notify")
+
+Keymap("<leader>n", function()
+  -- Ensure the extension is loaded before calling it
+  if telescope.extensions.mini_notify then
+    telescope.extensions.mini_notify.mini_notify()
+  else
+    notify_helper.error(notify_helper.errors.extension_not_loaded("mini_notify"))
+  end
+end, { desc = "Find notifications (mini.notify)" })
+Keymap("<leader>N", function() 
+  local ok, mini_notify = pcall(require, "mini.notify")
+  if ok then
+    mini_notify.show_history()
+  else
+    notify_helper.error(notify_helper.errors.module_not_available("mini.notify"))
+  end
+end, { desc = "Show notification history buffer" })
+
+-- messages integration
+Keymap("<leader>m", function()
+  telescope.extensions.messages.messages()
+end, { desc = "Find messages (:messages)" })
+Keymap("<leader>M", "<cmd>messages<CR>", { desc = "Show messages" })
 
 -- frecency
 local function frecency_cwd()

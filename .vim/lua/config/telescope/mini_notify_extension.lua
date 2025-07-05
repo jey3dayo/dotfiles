@@ -11,7 +11,8 @@ local function notify_history(opts)
   -- Check if mini.notify is available
   local has_mini_notify, mini_notify = pcall(require, "mini.notify")
   if not has_mini_notify then
-    vim.notify("mini.notify is not available", vim.log.levels.ERROR)
+    local notify_helper = require("core.notify")
+    notify_helper.error(notify_helper.errors.module_not_available("mini.notify"))
     return
   end
   
@@ -61,7 +62,8 @@ local function notify_history(opts)
           -- Copy to clipboard
           vim.fn.setreg('+', selection.value.msg)
           vim.fn.setreg('"', selection.value.msg)
-          vim.notify('Notification copied to clipboard', vim.log.levels.INFO)
+          local notify_helper = require("core.notify")
+          notify_helper.info(notify_helper.info.copied_to_clipboard("Notification"))
         end
       end)
       
@@ -92,8 +94,8 @@ local function notify_history(opts)
   }):find()
 end
 
--- Register as a Telescope extension
-require("telescope").register_extension {
+-- Return the extension definition
+return {
   exports = {
     mini_notify = notify_history,
   },

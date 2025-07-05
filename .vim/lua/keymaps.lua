@@ -199,19 +199,19 @@ local function copy_github_url()
 
   -- If file is not tracked by git, get relative path from git root
   if file_path == "" then
-    local git_root_handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
+    local git_root_handle = io.popen "git rev-parse --show-toplevel 2>/dev/null"
     if not git_root_handle then
       vim.notify("Failed to get git root", vim.log.levels.ERROR)
       return
     end
     local git_root = git_root_handle:read("*a"):gsub("\n", "")
     git_root_handle:close()
-    
+
     if git_root == "" then
       vim.notify("Not in git repository", vim.log.levels.WARN)
       return
     end
-    
+
     local current_file = vim.fn.expand "%:p"
     file_path = current_file:gsub("^" .. git_root .. "/", "")
   end
@@ -261,26 +261,28 @@ Keymap("<C-e>F", function()
     { name = "EFM", cmd = "FormatWithEfm" },
   }
 
-  require("telescope.pickers").new({}, {
-    prompt_title = "Select Formatter",
-    finder = require("telescope.finders").new_table({
-      results = formatters,
-      entry_maker = function(entry)
-        return {
-          value = entry,
-          display = entry.name,
-          ordinal = entry.name,
-        }
+  require("telescope.pickers")
+    .new({}, {
+      prompt_title = "Select Formatter",
+      finder = require("telescope.finders").new_table {
+        results = formatters,
+        entry_maker = function(entry)
+          return {
+            value = entry,
+            display = entry.name,
+            ordinal = entry.name,
+          }
+        end,
+      },
+      sorter = require("telescope.config").values.generic_sorter {},
+      attach_mappings = function(prompt_bufnr, map)
+        require("telescope.actions").select_default:replace(function()
+          local selection = require("telescope.actions.state").get_selected_entry()
+          require("telescope.actions").close(prompt_bufnr)
+          vim.cmd(selection.value.cmd)
+        end)
+        return true
       end,
-    }),
-    sorter = require("telescope.config").values.generic_sorter({}),
-    attach_mappings = function(prompt_bufnr, map)
-      require("telescope.actions").select_default:replace(function()
-        local selection = require("telescope.actions.state").get_selected_entry()
-        require("telescope.actions").close(prompt_bufnr)
-        vim.cmd(selection.value.cmd)
-      end)
-      return true
-    end,
-  }):find()
+    })
+    :find()
 end, { desc = "Format (Telescope selector)" })
