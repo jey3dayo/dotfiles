@@ -20,6 +20,29 @@ utils.autocmd({ "BufReadPost" }, {
   end,
 })
 
+-- Highlight on yank
+utils.autocmd("TextYankPost", {
+  pattern = "*",
+  callback = function()
+    vim.highlight.on_yank({ timeout = 300 })
+  end,
+})
+
+-- Use relative line numbers in Visual mode
+utils.autocmd("ModeChanged", {
+  pattern = "*:[vV\x16]*",
+  callback = function()
+    vim.opt.relativenumber = true
+  end,
+})
+
+utils.autocmd("ModeChanged", {
+  pattern = "[vV\x16]*:*",
+  callback = function()
+    vim.opt.relativenumber = vim.o.number
+  end,
+})
+
 -- make bg transparent
 utils.autocmd("ColorScheme", {
   pattern = "*",
