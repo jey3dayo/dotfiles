@@ -34,6 +34,7 @@ local options = {
   backup = true,
   swapfile = false,
   undofile = true,
+  undolevels = 10000, -- より多くのundo履歴
   backupdir = cacheDir,
   directory = cacheDir,
   undodir = cacheDir,
@@ -84,6 +85,10 @@ local options = {
   -- fixed NVim
   ttimeout = true,
   ttimeoutlen = 50,
+  
+  -- performance
+  updatetime = 250,  -- 高速な補完とCursorHoldイベント
+  timeoutlen = 300,  -- キーシーケンスの高速化
 }
 
 for k, v in pairs(options) do

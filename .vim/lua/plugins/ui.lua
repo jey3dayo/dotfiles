@@ -1,5 +1,4 @@
 return {
-  { "nvim-lua/popup.nvim", lazy = true },
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",

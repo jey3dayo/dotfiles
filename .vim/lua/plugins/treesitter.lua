@@ -10,12 +10,6 @@ return {
     dependencies = deps.treesitter_with_icons,
     opts = require "config/nvim-treesitter",
   },
-  {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    dependencies = deps.treesitter,
-    opts = require "config/nvim-autopairs",
-  },
   { "andymass/vim-matchup", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
   { "nvim-treesitter/nvim-tree-docs", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
   {

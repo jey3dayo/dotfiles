@@ -10,6 +10,7 @@ return {
       require "lsp.quiet"        -- Setup quiet mode before any LSP activity
       require "lsp.client_tracker" -- Initialize client tracking
       require "lsp.performance"  -- Initialize performance monitoring
+      require "lsp.handlers"     -- Setup LSP handlers (including client/registerCapability)
       require "config/native-lsp-ui" -- Configure UI handlers
     end,
   },

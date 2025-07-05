@@ -12,7 +12,6 @@ return {
   },
   { "kana/vim-textobj-user", event = "VeryLazy" },
   { "Shougo/context_filetype.vim", event = "VeryLazy" },
-  { "kylechui/nvim-surround", event = "VeryLazy", config = true },
   { "osyo-manga/vim-precious", event = "VeryLazy", dependencies = deps.context_filetype },
   { "honza/vim-snippets", event = "InsertEnter" },
 }

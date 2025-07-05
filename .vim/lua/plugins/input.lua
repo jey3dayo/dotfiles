@@ -1,11 +1,5 @@
 return {
   {
-    "numToStr/Comment.nvim",
-    keys = { "gc", "gb", { "gc", mode = "v" }, { "gb", mode = "v" } },
-    dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
-    opts = require "config/comment",
-  },
-  {
     "nishigori/increment-activator",
     keys = { "<C-a>", "<C-x>" },
     config = function()
