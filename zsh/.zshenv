@@ -25,7 +25,6 @@ export BUN_INSTALL="$HOME/.bun"
 export HOMEBREW_BUNDLE_FILE_GLOBAL="$XDG_CONFIG_HOME/Brewfile"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
-export BIOME_CONFIG_PATH="$HOME/.config/biome.json"
 export CODEX_CONFIG="$HOME/.config/.codex/config.yaml"
 
 path=(
