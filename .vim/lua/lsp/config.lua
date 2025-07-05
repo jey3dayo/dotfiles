@@ -47,7 +47,7 @@ M.servers = {
   eslint = { installed = true, enabled = true },
   typos_lsp = { installed = true, enabled = true },
   vimls = { installed = true, enabled = true },
-  yamlls = { installed = false, enabled = true },
+  yamlls = { installed = true, enabled = true },
   terraformls = { installed = true, enabled = true },
 }
 
