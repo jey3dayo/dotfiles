@@ -248,22 +248,25 @@ case "$(uname -s)" in
 esac
 ```
 
-## 🚧 現在のタスク
+## 🚧 Development Status
 
-### 🔴 高優先度
+### ✅ Completed (2025-01-04)
 
-1. **Zsh パフォーマンス最適化** - 起動時間1.0秒以下を目標
-2. **Neovim 設定整理** - 未使用プラグインの削除、設定簡素化
+- **Zsh Performance**: 1.2s startup achieved (30% improvement)
+- **Neovim Optimization**: <100ms startup with LSP integration
+- **Documentation Restructure**: README.md simplified, layer-based organization
+- **LSP Error Resolution**: vscode-langservers-extracted MethodNotFound fixed
 
-### 🟡 中優先度
+### 🔄 In Progress
 
-3. **設定自動同期** - Git hooks による設定変更の自動コミット
-4. **セットアップ改善** - 新環境での一発セットアップスクリプト
+- **Configuration Consolidation**: Reducing plugin count, streamlining configs
+- **Layer-based Documentation**: Systematic knowledge organization
 
-### 🟢 低優先度
+### 📋 Planned Improvements
 
-5. **ドキュメント充実** - 各設定の詳細説明、使い方追記
-6. **バックアップ機能** - 定期的な設定バックアップとバージョン管理
+- **Automation**: Enhanced setup scripts and bootstrapping
+- **Performance**: Continue micro-optimizations across tools
+- **Integration**: Deeper cross-tool workflow automation
 
 ## 📚 改善履歴
 
@@ -327,36 +330,32 @@ zsh -x -c 'exit'          # デバッグモード実行
 zmodload zsh/zprof; zprof  # プロファイリング
 ```
 
-## 層別知見管理システム
+## 📚 Layer-based Knowledge System
 
-プロジェクトの技術知識は **層別で整理** されており、実装時に適切な層の知識を参照できます：
+Technical knowledge is organized into **specialized layers** for efficient implementation and maintenance:
 
-### 📋 層別実装ガイド
+### 🏗️ Core Layers (Essential Configurations)
 
-実装する層に応じて適切なドキュメントを参照してください：
+- **[Shell Layer](.claude/layers/core/shell-layer.md)** - Zsh optimization, plugin management, performance tuning
+- **[Git Layer](.claude/layers/core/git-layer.md)** - Git workflows, authentication, tool integration
 
-#### Core Layers（核となる設定層）
+### 🔧 Tool Layers (Specialized Implementations)  
 
-- **[Shell層](.claude/layers/core/shell-layer.md)** - Zsh設定・パフォーマンス最適化・プラグイン管理 (`zsh/`)
-- **[Git層](.claude/layers/core/git-layer.md)** - Git設定・ワークフロー・認証・統合 (`git/`)
+- **[Editor Layer](.claude/layers/tools/editor-layer.md)** - Neovim, LSP, AI assistance, plugin optimization
+- **[Terminal Layer](.claude/layers/tools/terminal-layer.md)** - WezTerm, Tmux, Alacritty configurations
 
-#### Tools Layers（ツール固有層）
+### 🚀 Support Layers (Cross-cutting Concerns)
 
-- **[Terminal層](.claude/layers/tools/terminal-layer.md)** - WezTerm・Tmux・Alacritty設定と統合 (`wezterm/`, `tmux/`, `alacritty/`)
-- **[Editor層](.claude/layers/tools/editor-layer.md)** - Neovim・LSP・AI統合・プラグイン管理 (`nvim/`)
+- **[Performance Layer](.claude/layers/support/performance-layer.md)** - Measurement, optimization, monitoring
+- **[Integration Layer](.claude/layers/support/integration-layer.md)** - Cross-tool workflows, synchronization
 
-#### Support Layers（支援・横断層）
+### 📋 Architecture Documentation
 
-- **[Performance層](.claude/layers/support/performance-layer.md)** - パフォーマンス測定・最適化・監視
-- **[Integration層](.claude/layers/support/integration-layer.md)** - ツール間統合・ワークフロー・設定同期
+- **[Design Patterns](.claude/architecture/patterns.md)** - Universal patterns, best practices, reusable solutions
 
-### 🏗️ アーキテクチャ知識
+### 🤖 AI-Assisted Development
 
-- **[設計パターン](.claude/architecture/patterns.md)** - 全体アーキテクチャ・統一パターン・ベストプラクティス
-
-### 🔧 コマンドシステム
-
-- `/learnings` - 層別知見記録・管理
+Use `/learnings` command to record new insights into appropriate layers automatically.
 
 ### 🤖 AI支援システム
 

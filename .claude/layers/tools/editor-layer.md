@@ -322,6 +322,46 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 ]]
 ```
 
+## 🐛 LSPエラー対処パターン
+
+### vscode-langservers-extracted MethodNotFoundエラー対策
+
+#### 問題・背景
+
+- **エラー**: `Unhandled exception: MethodNotFound`
+- **原因**: vscode-langservers-extracted 4.9.0+がNeovim 0.11.2未対応の動的登録を要求
+- **影響**: JSON/HTML/CSS LSPがクラッシュ、補完・検証機能停止
+
+#### 解決策・パターン
+
+```lua
+-- lsp/settings/jsonls.lua - capabilities拡張で動的登録サポートを宣言
+capabilities = (function()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  -- 既存の設定...
+  
+  -- Fix for vscode-langservers-extracted 4.9.0+ MethodNotFound error
+  capabilities.workspace = capabilities.workspace or {}
+  capabilities.workspace.configuration = true
+  capabilities.workspace.didChangeConfiguration = { 
+    dynamicRegistration = true 
+  }
+  return capabilities
+end)(),
+```
+
+#### 適用条件・注意点
+
+- **適用条件**: Neovim 0.11.x + vscode-langservers-extracted 4.9.0+
+- **副作用**: LSPログに警告は残るが、機能は正常動作
+- **根本解決**: Neovim 0.12-dev以降へのアップグレード
+
+#### 実測値
+
+- **改善効果**: エラー100%解消、JSON LSP正常動作
+- **測定日**: 2025-01-04
+- **検証環境**: Neovim v0.11.2 + jsonls 4.10.0
+
 ## 🚧 最適化課題
 
 ### 高優先度
@@ -360,6 +400,10 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 - **プラグイン過多**: 機能重複と起動時間増加
 - **設定の複雑化**: Vimscript → Lua移行時の混乱
 - **LSP設定不統一**: 言語毎の設定差異によるUX悪化
+- **vim-illuminate → mini.cursorword移行**: より軽量な実装への移行成功
+  - vim-illuminate: LSP/Tree-sitter統合だが重い（~40KB）
+  - mini.cursorword: 単純なテキストマッチだが軽量（~5KB、150行）
+  - 移行効果: レスポンス向上、設定簡素化
 
 ### AI統合教訓
 
