@@ -113,10 +113,13 @@ telescope.setup {
 }
 
 -- Load extensions
-local extensions = { "file_browser", "undo", "notify", "frecency", "neoclip" }
+local extensions = { "file_browser", "undo", "frecency", "neoclip" }
 for _, ext in ipairs(extensions) do
   telescope.load_extension(ext)
 end
+
+-- Register custom mini_notify extension
+require("config.telescope.mini_notify_extension")
 
 -- keymaps
 Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
@@ -127,8 +130,9 @@ Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 
 -- extensions
 Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
-Keymap("<leader>n", telescope.extensions.notify.notify, { desc = "Find by Notify" })
-Keymap("<leader>N", "<cmd>Noice all<CR>", { desc = "Show all Noice messages" })
+-- mini.notify integration
+Keymap("<leader>n", telescope.extensions.mini_notify.mini_notify, { desc = "Find notifications (mini.notify)" })
+Keymap("<leader>N", function() require("mini.notify").show_history() end, { desc = "Show notification history buffer" })
 
 -- frecency
 local function frecency_cwd()
