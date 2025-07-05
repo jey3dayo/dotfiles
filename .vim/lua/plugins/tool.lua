@@ -23,11 +23,4 @@ return {
       require "config/toggleterm"
     end,
   },
-  {
-    "sidebar-nvim/sidebar.nvim",
-    cmd = { "SidebarNvimToggle", "SidebarNvimOpen", "SidebarNvimClose" },
-    config = function()
-      require "config/sidebar"
-    end,
-  },
 }
