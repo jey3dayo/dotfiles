@@ -1,8 +1,13 @@
 [tools]
-node = "22"
+node = "24"
 ruby = "system"
 python = "latest"
 
 [settings]
 experimental = true
 vfox = false
+idiomatic_version_file_enable_tools = ["go"]
+
+[env]
+_.file = [".env"]
+_.source = [".venv/bin/activate"]
