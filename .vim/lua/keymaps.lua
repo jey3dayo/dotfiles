@@ -53,12 +53,11 @@ Keymap("<Esc><Esc>", function()
   vim.cmd "set hlsearch!"
 end)
 
--- link jump
-Set_keymap("[tag]", "<Nop>", {})
-Set_keymap("t", "[tag]", {})
-Keymap("[tag]t", "<C-]>")
-Keymap("[tag]j", "<cmd>tag<CR>")
-Keymap("[tag]k", "<cmd>pop<CR>")
+-- LSP tag jump (modern replacement for ctags)
+Keymap("tt", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to definition" })
+Keymap("tj", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Find references" })
+Keymap("tk", "<cmd>lua vim.lsp.buf.implementation()<CR>", { desc = "Go to implementation" })
+Keymap("tl", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { desc = "Go to type definition" })
 
 -- tab (direct mappings for mini.clue compatibility)
 Keymap("<C-t>c", "<cmd>tabnew<CR>", { desc = "New tab" })
