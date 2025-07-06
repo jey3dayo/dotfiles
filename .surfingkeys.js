@@ -17,7 +17,7 @@ const BLOCK_URLS = [
 settings.blocklistPattern = new RegExp(BLOCK_URLS.join("|"), "i");
 
 // Search Query Function
-const searchWordQuery = (q) => `${SEARCH_URL}${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja')`;
+const searchWordQuery = (q) => `${SEARCH_URL}${q}&tbs=qdr:y,lr:lang_1ja&lr=lang_ja`;
 
 // Settings
 api.Hints.characters = HINTS_CHARACTERS;
@@ -31,7 +31,6 @@ settings.cursorAtEndOfInput = false;
 settings.tabsMRUOrder = false;
 settings.historyMUOrder = false;
 settings.historyOrder = false;
-settings.aceKeybindings = true;
 
 // Key Mappings
 const KEY_MAPPINGS = [
@@ -77,7 +76,7 @@ const QUICK_MARKS = {
   N: "https://www.netflix.com/",
   t: "https://twitter.com/",
   w: "https://healthmate.withings.com/",
-  y: "https://wwww.youtube.com/",
+  y: "https://www.youtube.com/",
   l: "https://localhost.ca-adv.dev:3000",
   L: "http://localhost:8080",
 };
