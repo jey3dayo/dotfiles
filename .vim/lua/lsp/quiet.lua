@@ -24,12 +24,7 @@ function M.setup()
       msg_str:find("client with id", 1, true) or
       msg_str:find("connections closed", 1, true) or
       msg_str:find("stderr", 1, true) or
-      msg_str:find("rpc", 1, true) or
-      -- ESLintのパスエラーを完全に抑制（大文字小文字を無視）
-      msg_str:lower():find("eslint") and msg_str:lower():find("path") and msg_str:lower():find("string") or
-      msg_str:find("32603", 1, true) and msg_str:find("textDocument/diagnostic", 1, true) or
-      msg_str:find("The \"path\" argument must be of type string", 1, true) or
-      msg_str:find("Request textDocument/diagnostic failed", 1, true)
+      msg_str:find("rpc", 1, true)
     ) then
       -- Log to file for debugging if needed
       if vim.g.lsp_debug then

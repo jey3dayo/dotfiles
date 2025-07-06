@@ -85,8 +85,10 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 - **Git**: Enhanced with custom aliases and integrations
 - **SSH**: Hierarchical configuration with 1Password integration
-- **Mise**: Version management for multiple languages
+- **Mise**: Version management for multiple languages with comprehensive formatting tasks
 - **Brewfile**: Declarative package management
+- **ESLint**: Intelligent auto-startup with conditional activation and workspace configuration
+- **Biome**: Modern linter/formatter with comprehensive project integration
 - **Various**: Language-specific tools and linters
 
 ## 🏗️ Architecture
@@ -269,6 +271,7 @@ esac
 
 - **Configuration Consolidation**: Reducing plugin count, streamlining configs
 - **Layer-based Documentation**: Systematic knowledge organization
+- **ESLint Integration**: Advanced auto-startup and workspace configuration optimization
 
 ### 📋 Planned Improvements
 

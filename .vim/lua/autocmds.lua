@@ -20,6 +20,29 @@ utils.autocmd({ "BufReadPost" }, {
   end,
 })
 
+-- Force start ESLint for JavaScript/TypeScript files
+utils.autocmd({ "FileType" }, {
+  pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  callback = function()
+    -- Check if ESLint config exists
+    local utils = require "core.utils"
+    local config_files = require("lsp.config").formatters.eslint.config_files
+    if utils.has_config_files(config_files) then
+      -- Wait a bit for LSP to initialize, then check if ESLint is running
+      vim.defer_fn(function()
+        local eslint_clients = vim.tbl_filter(function(client)
+          return client.name == "eslint"
+        end, vim.lsp.get_clients({ bufnr = 0 }))
+        
+        if #eslint_clients == 0 then
+          -- Start ESLint manually if not running
+          vim.cmd("LspStart eslint")
+        end
+      end, 100)
+    end
+  end,
+})
+
 -- Highlight on yank
 utils.autocmd("TextYankPost", {
   pattern = "*",
