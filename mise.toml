@@ -32,7 +32,7 @@ run = "biome format --write ."
 
 [tasks."format:biome:check"]
 description = "Check JS/TS/JSON formatting"
-run = "biome format --write=false ."
+run = "biome format ."
 
 [tasks."format:markdown"]
 description = "Format Markdown files"
