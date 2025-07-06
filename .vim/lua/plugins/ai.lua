@@ -1,15 +1,6 @@
 local deps = require "core.dependencies"
 
 return {
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    ft = { "javascript", "typescript", "lua", "python", "go", "rust", "c", "cpp" },
-    config = function()
-      require "config/copilot"
-    end,
-  },
   -- {
   --   "CopilotC-Nvim/CopilotChat.nvim",
   --   cmd = { "CopilotChat", "CopilotChatBuffer", "CopilotChatToggle" },

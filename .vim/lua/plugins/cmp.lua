@@ -20,9 +20,4 @@ return {
   { "onsails/lspkind-nvim", lazy = true },
   { "roobert/tailwindcss-colorizer-cmp.nvim", lazy = true },
   { "dcampos/nvim-snippy", cmd = { "SnippyEdit", "SnippyReload" }, config = true },
-  {
-    "zbirenbaum/copilot-cmp",
-    dependencies = { "zbirenbaum/copilot.lua" },
-    config = true,
-  },
 }
