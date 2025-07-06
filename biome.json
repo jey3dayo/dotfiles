@@ -1,61 +1,62 @@
 {
-  "root": false,
   "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
   "files": {
+    "ignoreUnknown": false,
     "includes": [
       "**/*.ts",
       "**/*.js",
       "**/*.mjs",
       "**/*.cjs",
-      "**/*.mts",
       "**/*.jsx",
       "**/*.tsx",
       "**/*.json",
+      "!.cache/**",
+      "!dist/**",
+      "!node_modules/**",
+      "!.venv/**",
+      "!karabiner/**",
       "!raycast/**",
       "!.vimperator/**",
       "!rest-client/**",
-      "!karabiner/**",
-      "!Brewfile.lock.json"
-    ],
-    "experimentalScannerIgnores": [
-      ".cache",
-      "dist",
-      "node_modules",
-      "raycast",
-      ".vimperator",
-      "tmux",
-      "fisher",
-      "karabiner",
-      "rest-client"
-    ],
-    "maxSize": 2097152
+      "!tmux/plugins/**",
+      "!claude/**",
+      "!fisher/**",
+      "!zsh/.zinit/**",
+      "!.vim/**",
+      "!Brewfile.lock.json",
+      "!.vim/lazy-lock.json",
+      "!.luarc.json",
+      "!.surfingkeys.js"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
-      "style": {
-        "noParameterAssign": "error",
-        "useAsConstAssertion": "error",
-        "useDefaultParameterLast": "error",
-        "useEnumInitializers": "error",
-        "useSelfClosingElements": "error",
-        "useSingleVarDeclarator": "error",
-        "noUnusedTemplateLiteral": "error",
-        "useNumberNamespace": "error",
-        "noInferrableTypes": "error",
-        "noUselessElse": "error"
-      }
+      "recommended": true
     }
   },
-  "formatter": {
-    "enabled": true,
-    "lineWidth": 120,
-    "indentStyle": "space"
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double"
+    }
   },
-  "vcs": {
+  "assist": {
     "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   }
 }
