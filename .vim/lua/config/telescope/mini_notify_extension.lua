@@ -63,7 +63,7 @@ local function notify_history(opts)
           vim.fn.setreg('+', selection.value.msg)
           vim.fn.setreg('"', selection.value.msg)
           local notify_helper = require("core.notify")
-          notify_helper.info(notify_helper.info.copied_to_clipboard("Notification"))
+          notify_helper.info("Notification copied to clipboard")
         end
       end)
       
