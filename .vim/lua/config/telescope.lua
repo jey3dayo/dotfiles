@@ -123,14 +123,11 @@ telescope.load_extension("mini_notify")
 telescope.load_extension("messages")
 
 -- keymaps
-Keymap("<Leader>g", builtin.live_grep, { desc = "Find by Live Grep" })
-Keymap("<Leader>b", builtin.buffers, { desc = "buffers" })
-Keymap("<Leader>d", builtin.diagnostics, { desc = "Find by Diagnostics" })
-Keymap("<Leader>u", telescope.extensions.undo.undo, { desc = "Find by Undo" })
+Keymap("<Leader>fu", telescope.extensions.undo.undo, { desc = "Find by Undo" })
 Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 
 -- extensions
-Keymap("<Leader>Y", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
+Keymap("<Leader>fy", telescope.extensions.neoclip.default, { desc = "Find by Yank" })
 -- mini.notify integration
 -- Load notify helper
 local notify_helper = require("core.notify")
@@ -172,11 +169,10 @@ local function find_files_buffer_dir()
   }
 end
 
-Keymap("<Leader>f", frecency_cwd, { desc = "Find CWD by frecency" })
+Keymap("<Leader>ff", frecency_cwd, { desc = "Find CWD by frecency" })
 Keymap("<A-p>", frecency_cwd, { desc = "Find CWD by frecency" })
-Keymap("<Leader>F", find_files_buffer_dir, { desc = "Find files in buffer dir" })
+Keymap("<Leader>fF", find_files_buffer_dir, { desc = "Find files in buffer dir" })
 
-Keymap("<Leader>G", builtin.git_status, { desc = "Find by Git Status" })
 Keymap("<Leader>e", function()
   local git_dir = utils.get_git_dir()
   setup_file_browser {

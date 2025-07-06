@@ -1,5 +1,13 @@
 return {
-  { "vim-scripts/sudo.vim", cmd = { "SudoWrite", "SudoRead" } },
+  {
+    "lambdalisue/suda.vim",
+    cmd = { "SudaRead", "SudaWrite" },
+    init = function()
+      -- Optional: Create aliases for backward compatibility
+      vim.cmd([[command! -nargs=0 SudoWrite SudaWrite]])
+      vim.cmd([[command! -nargs=0 SudoRead SudaRead]])
+    end,
+  },
   { "dstein64/vim-startuptime", cmd = "StartupTime" },
   { "windwp/nvim-projectconfig", event = "VeryLazy", opts = require "config/nvim-projectconfig" },
   {
@@ -13,14 +21,5 @@ return {
         desc = "Diagnostics (Trouble)",
       },
     },
-  },
-  {
-    "akinsho/toggleterm.nvim",
-    version = "*",
-    keys = { "<Leader>T", "<c-\\>" },
-    cmd = "ToggleTerm",
-    config = function()
-      require "config/toggleterm"
-    end,
   },
 }

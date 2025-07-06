@@ -100,6 +100,23 @@ return {
           { mode = "n", keys = "<Leader>" },
           { mode = "x", keys = "<Leader>" },
 
+          -- Settings prefix
+          { mode = "n", keys = "<Leader>s" },
+          { mode = "x", keys = "<Leader>s" },
+
+
+          -- Yank prefix
+          { mode = "n", keys = "Y" },
+          { mode = "x", keys = "Y" },
+
+          -- Format prefix
+          { mode = "n", keys = "<C-e>" },
+          { mode = "x", keys = "<C-e>" },
+
+          -- Git prefix
+          { mode = "n", keys = "<C-g>" },
+          { mode = "x", keys = "<C-g>" },
+
           -- Built-in completion
           { mode = "i", keys = "<C-x>" },
 
@@ -139,6 +156,25 @@ return {
           miniclue.gen_clues.registers(),
           miniclue.gen_clues.windows(),
           miniclue.gen_clues.z(),
+
+          -- Custom leader key descriptions
+          { mode = "n", keys = "<Leader>s", desc = "Settings" },
+          { mode = "n", keys = "<Leader>f", desc = "Find" },
+          { mode = "n", keys = "<Leader>b", desc = "Buffer" },
+          { mode = "n", keys = "Y", desc = "Yank" },
+          { mode = "n", keys = "<C-e>", desc = "Format" },
+          { mode = "n", keys = "<C-g>", desc = "Git" },
+
+          -- Individual settings descriptions
+          { mode = "n", keys = "<Leader>sn", desc = "Toggle line numbers" },
+          { mode = "n", keys = "<Leader>sl", desc = "Toggle list mode" },
+          { mode = "n", keys = "<Leader>sp", desc = "Plugin manager" },
+          { mode = "n", keys = "<Leader>sd", desc = "LspDebug" },
+          { mode = "n", keys = "<Leader>sm", desc = "Update Mason" },
+          { mode = "n", keys = "<Leader>st", desc = "Update TreeSitter" },
+          { mode = "n", keys = "<Leader>su", desc = "Update plugins" },
+          { mode = "n", keys = "<Leader>so", desc = "Source init.lua" },
+          { mode = "n", keys = "<Leader>sO", desc = "Source current buffer" },
         },
 
         window = {
@@ -149,6 +185,12 @@ return {
           },
         },
       }
+      
+      -- Force descriptions for keymaps that might be overridden
+      vim.schedule(function()
+        miniclue.set_mapping_desc('n', '<Leader>so', 'Source init.lua')
+        miniclue.set_mapping_desc('n', '<Leader>sO', 'Source current buffer')
+      end)
     end,
   },
 

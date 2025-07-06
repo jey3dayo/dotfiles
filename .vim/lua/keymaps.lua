@@ -73,12 +73,15 @@ Keymap("gt", "<cmd>tabnext<CR>")
 Keymap("gT", "<cmd>tabprevious<CR>")
 
 -- set list
-Keymap("<Leader>sn", "<cmd>set number!<CR>")
-Keymap("<Leader>sl", "<cmd>set list!<CR>")
-Keymap("<leader><C-d>", "<cmd>bd!<CR>")
+Keymap("<Leader>sn", "<cmd>set number!<CR>", { desc = "Toggle line numbers" })
+Keymap("<Leader>sl", "<cmd>set list!<CR>", { desc = "Toggle list mode" })
+Keymap("<Leader>sp", "<cmd>Lazy<CR>", { desc = "Plugin manager" })
+Keymap("<Leader>sd", "<cmd>LspDebug<CR>", { desc = "LspDebug" })
+Keymap("<Leader>sm", "<cmd>MasonUpdate<CR>", { desc = "Update Mason" })
+Keymap("<Leader>st", "<cmd>TSUpdate all<CR>", { desc = "Update TreeSitter" })
 
 -- update source
-Keymap("<Leader>su", "<cmd>Lazy update<CR>")
+Keymap("<Leader>su", "<cmd>Lazy update<CR>", { desc = "Update plugins" })
 
 -- Load a config file
 local function load_config(config_path)
@@ -153,139 +156,16 @@ local function copy_buffer_with_path_and_code_block()
 end
 Keymap("YY", copy_buffer_with_path_and_code_block)
 
--- Copy GitHub URL for current file and line/range
-local function copy_github_url()
-  -- Get git remote URL
-  local handle = io.popen "git remote get-url origin 2>/dev/null"
-  if not handle then
-    vim.notify("Failed to open remote handle", vim.log.levels.ERROR)
-    return
-  end
-  local remote_url = handle:read("*a"):gsub("\n", "")
-  handle:close()
-
-  if remote_url == "" then
-    vim.notify("Not in git repository", vim.log.levels.WARN)
-    return
-  end
-
-  -- Convert SSH URL to HTTPS if needed
-  remote_url = remote_url:gsub("git@github%.com:", "https://github.com/")
-  remote_url = remote_url:gsub("%.git$", "")
-
-  -- Get current branch
-  local branch_handle = io.popen "git branch --show-current 2>/dev/null"
-  if not branch_handle then
-    vim.notify("Failed to open branch handle", vim.log.levels.ERROR)
-    return
-  end
-
-  local branch = branch_handle:read("*a"):gsub("\n", "")
-  branch_handle:close()
-
-  if branch == "" then
-    vim.notify("Could not get git branch", vim.log.levels.WARN)
-    return
-  end
-
-  -- Get relative file path from git root
-  local file_handle = io.popen("git ls-files --full-name " .. vim.fn.shellescape(vim.fn.expand "%") .. " 2>/dev/null")
-  if not file_handle then
-    vim.notify("Failed to open file handle", vim.log.levels.ERROR)
-    return
-  end
-  local file_path = file_handle:read("*a"):gsub("\n", "")
-  file_handle:close()
-
-  -- If file is not tracked by git, get relative path from git root
-  if file_path == "" then
-    local git_root_handle = io.popen "git rev-parse --show-toplevel 2>/dev/null"
-    if not git_root_handle then
-      vim.notify("Failed to get git root", vim.log.levels.ERROR)
-      return
-    end
-    local git_root = git_root_handle:read("*a"):gsub("\n", "")
-    git_root_handle:close()
-
-    if git_root == "" then
-      vim.notify("Not in git repository", vim.log.levels.WARN)
-      return
-    end
-
-    local current_file = vim.fn.expand "%:p"
-    file_path = current_file:gsub("^" .. git_root .. "/", "")
-  end
-
-  -- Get line numbers (handle visual mode range)
-  local start_line, end_line
-  local mode = vim.fn.mode()
-
-  if mode == "v" or mode == "V" or mode == "\22" then -- Visual modes
-    -- Get visual selection range
-    start_line = vim.fn.line "'<"
-    end_line = vim.fn.line "'>"
-  else
-    -- Normal mode - current line
-    start_line = vim.api.nvim_win_get_cursor(0)[1]
-    end_line = start_line
-  end
-
-  -- Construct GitHub URL with line range
-  local github_url, line_info
-  if start_line == end_line then
-    github_url = string.format("%s/blob/%s/%s#L%d", remote_url, branch, file_path, start_line)
-    line_info = "L" .. start_line
-  else
-    github_url = string.format("%s/blob/%s/%s#L%d-L%d", remote_url, branch, file_path, start_line, end_line)
-    line_info = "L" .. start_line .. "-L" .. end_line
-  end
-
-  vim.fn.setreg("*", github_url)
-  vim.notify("Copied GitHub URL: " .. line_info, vim.log.levels.INFO)
-end
-
-Keymap("Yg", copy_github_url)
-V_Keymap("Yg", copy_github_url)
 
 -- Format keybindings (LSP-based)
 Keymap("<C-e>f", "<cmd>Format<CR>", { desc = "Format (auto-select)" })
 
--- Telescope formatter selector
-Keymap("<C-e>F", function()
-  local formatters = {
-    { name = "Auto-select", cmd = "Format" },
-    { name = "Biome", cmd = "FormatWithBiome" },
-    { name = "Prettier", cmd = "FormatWithPrettier" },
-    { name = "ESLint", cmd = "FormatWithEslint" },
-    { name = "TypeScript", cmd = "FormatWithTsLs" },
-    { name = "EFM", cmd = "FormatWithEfm" },
-  }
-
-  require("telescope.pickers")
-    .new({}, {
-      prompt_title = "Select Formatter",
-      finder = require("telescope.finders").new_table {
-        results = formatters,
-        entry_maker = function(entry)
-          return {
-            value = entry,
-            display = entry.name,
-            ordinal = entry.name,
-          }
-        end,
-      },
-      sorter = require("telescope.config").values.generic_sorter {},
-      attach_mappings = function(prompt_bufnr, _)
-        require("telescope.actions").select_default:replace(function()
-          local selection = require("telescope.actions.state").get_selected_entry()
-          require("telescope.actions").close(prompt_bufnr)
-          vim.cmd(selection.value.cmd)
-        end)
-        return true
-      end,
-    })
-    :find()
-end, { desc = "Format (Telescope selector)" })
+-- Individual formatter keymaps
+Keymap("<C-e>b", "<cmd>FormatWithBiome<CR>", { desc = "Format with Biome" })
+Keymap("<C-e>p", "<cmd>FormatWithPrettier<CR>", { desc = "Format with Prettier" })
+Keymap("<C-e>e", "<cmd>FormatWithEslint<CR>", { desc = "Format with ESLint" })
+Keymap("<C-e>t", "<cmd>FormatWithTsLs<CR>", { desc = "Format with TypeScript" })
+Keymap("<C-e>m", "<cmd>FormatWithEfm<CR>", { desc = "Format with EFM" })
 
 -- Experimental: Telescope with <Leader>f prefix
 -- These work alongside existing keymaps due to timeoutlen
