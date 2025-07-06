@@ -105,6 +105,7 @@ return {
           { mode = "x", keys = "<Leader>s" },
 
 
+
           -- Yank prefix
           { mode = "n", keys = "Y" },
           { mode = "x", keys = "Y" },
@@ -116,6 +117,14 @@ return {
           -- Git prefix
           { mode = "n", keys = "<C-g>" },
           { mode = "x", keys = "<C-g>" },
+
+          -- Terminal prefix
+          { mode = "n", keys = "<C-t>" },
+          { mode = "x", keys = "<C-t>" },
+
+          -- LSP navigation prefix
+          { mode = "n", keys = "t" },
+          { mode = "x", keys = "t" },
 
           -- Built-in completion
           { mode = "i", keys = "<C-x>" },
@@ -164,6 +173,8 @@ return {
           { mode = "n", keys = "Y", desc = "Yank" },
           { mode = "n", keys = "<C-e>", desc = "LSP/Format" },
           { mode = "n", keys = "<C-g>", desc = "Git" },
+          { mode = "n", keys = "<C-t>", desc = "Tab" },
+          { mode = "n", keys = "t", desc = "LSP Navigate" },
 
           -- Individual settings descriptions
           { mode = "n", keys = "<Leader>sn", desc = "Toggle line numbers" },

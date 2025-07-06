@@ -40,11 +40,23 @@ local function setup_keymaps(client, bufnr)
   Keymap("<C-l>", vim.diagnostic.open_float, buf_opts)
   Keymap("K", vim.lsp.buf.hover, buf_opts)
   Keymap("<C-[>", function() 
-    local compat = require("lsp.compat")
-    if compat.supports_method(client, "textDocument/references") then
+    -- Get active LSP clients for current buffer
+    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    local has_references = false
+    
+    for _, active_client in ipairs(clients) do
+      local compat = require("lsp.compat")
+      if compat.supports_method(active_client, "textDocument/references") then
+        has_references = true
+        break
+      end
+    end
+    
+    if has_references or #clients > 0 then
+      -- TypeScript/JavaScript LSP servers should always support references
       require('telescope.builtin').lsp_references()
     else
-      vim.notify("LSP server does not support references", vim.log.levels.WARN)
+      vim.notify("No LSP clients attached or references not supported", vim.log.levels.WARN)
     end
   end, buf_opts)
   Keymap("<C-]>", vim.lsp.buf.definition, buf_opts)
@@ -56,11 +68,23 @@ local function setup_keymaps(client, bufnr)
   Keymap("<C-e>k", vim.lsp.buf.definition, buf_opts)
   Keymap("<C-e>r", vim.lsp.buf.rename, buf_opts)
   Keymap("<C-e>o", function() 
-    local compat = require("lsp.compat")
-    if compat.supports_method(client, "textDocument/documentSymbol") then
+    -- Get active LSP clients for current buffer
+    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    local has_symbols = false
+    
+    for _, active_client in ipairs(clients) do
+      local compat = require("lsp.compat")
+      if compat.supports_method(active_client, "textDocument/documentSymbol") then
+        has_symbols = true
+        break
+      end
+    end
+    
+    if has_symbols or #clients > 0 then
+      -- TypeScript/JavaScript LSP servers should always support document symbols
       require('telescope.builtin').lsp_document_symbols()
     else
-      vim.notify("LSP server does not support document symbols", vim.log.levels.WARN)
+      vim.notify("No LSP clients attached or document symbols not supported", vim.log.levels.WARN)
     end
   end, buf_opts)
 

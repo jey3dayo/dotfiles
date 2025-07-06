@@ -10,6 +10,11 @@ M.has_new_api = vim.lsp and vim.lsp.config ~= nil
 --- @param method string LSP method name
 --- @return boolean
 function M.supports_method(client, method)
+  -- Safety check for nil client
+  if not client then
+    return false
+  end
+  
   -- v0.11+: client:supports_method(method) - colon syntax
   -- v0.10: client.supports_method(method) - dot syntax
   if type(client.supports_method) == "function" then
@@ -21,12 +26,46 @@ function M.supports_method(client, method)
       return result
     end
     -- Fallback to old syntax (v0.10)
-    return client.supports_method(method)
+    local ok2, result2 = pcall(function()
+      return client.supports_method(method)
+    end)
+    if ok2 then
+      return result2
+    end
   end
   
-  -- Very old versions: check server_capabilities
-  return client.server_capabilities and 
-         client.server_capabilities[method:match("textDocument/(.+)")] ~= nil
+  -- Fallback: check server_capabilities manually
+  if client.server_capabilities then
+    -- TypeScript/JavaScript specific check
+    if method == "textDocument/references" then
+      return client.server_capabilities.referencesProvider ~= nil
+    elseif method == "textDocument/documentSymbol" then
+      return client.server_capabilities.documentSymbolProvider ~= nil
+    elseif method == "textDocument/formatting" then
+      return client.server_capabilities.documentFormattingProvider ~= nil
+    end
+    
+    -- Generic capability check
+    local capability = method:match("textDocument/(.+)")
+    if capability then
+      return client.server_capabilities[capability .. "Provider"] ~= nil
+    end
+  end
+  
+  -- Default to true for common TypeScript LSP methods
+  local common_methods = {
+    "textDocument/references",
+    "textDocument/definition", 
+    "textDocument/hover",
+    "textDocument/documentSymbol"
+  }
+  for _, common_method in ipairs(common_methods) do
+    if method == common_method then
+      return true
+    end
+  end
+  
+  return false
 end
 
 --- Register LSP server configuration
