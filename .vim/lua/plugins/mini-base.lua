@@ -162,7 +162,7 @@ return {
           { mode = "n", keys = "<Leader>f", desc = "Find" },
           { mode = "n", keys = "<Leader>b", desc = "Buffer" },
           { mode = "n", keys = "Y", desc = "Yank" },
-          { mode = "n", keys = "<C-e>", desc = "Format" },
+          { mode = "n", keys = "<C-e>", desc = "LSP/Format" },
           { mode = "n", keys = "<C-g>", desc = "Git" },
 
           -- Individual settings descriptions
@@ -175,6 +175,23 @@ return {
           { mode = "n", keys = "<Leader>su", desc = "Update plugins" },
           { mode = "n", keys = "<Leader>so", desc = "Source init.lua" },
           { mode = "n", keys = "<Leader>sO", desc = "Source current buffer" },
+
+          -- LSP keymaps descriptions
+          { mode = "n", keys = "<C-e>a", desc = "Code action" },
+          { mode = "n", keys = "<C-e>d", desc = "Declaration" },
+          { mode = "n", keys = "<C-e>i", desc = "Implementation" },
+          { mode = "n", keys = "<C-e>t", desc = "Type definition" },
+          { mode = "n", keys = "<C-e>k", desc = "Definition" },
+          { mode = "n", keys = "<C-e>r", desc = "Rename" },
+          { mode = "n", keys = "<C-e>o", desc = "Document symbols" },
+          
+          -- Format keymaps descriptions
+          { mode = "n", keys = "<C-e>f", desc = "Format (auto-select)" },
+          { mode = "n", keys = "<C-e>b", desc = "Format with Biome" },
+          { mode = "n", keys = "<C-e>p", desc = "Format with Prettier" },
+          { mode = "n", keys = "<C-e>e", desc = "Format with ESLint" },
+          { mode = "n", keys = "<C-e>s", desc = "Format with TypeScript" },
+          { mode = "n", keys = "<C-e>m", desc = "Format with EFM" },
         },
 
         window = {
@@ -190,6 +207,23 @@ return {
       vim.schedule(function()
         miniclue.set_mapping_desc('n', '<Leader>so', 'Source init.lua')
         miniclue.set_mapping_desc('n', '<Leader>sO', 'Source current buffer')
+        
+        -- Force LSP keymap descriptions
+        miniclue.set_mapping_desc('n', '<C-e>a', 'Code action')
+        miniclue.set_mapping_desc('n', '<C-e>d', 'Declaration')
+        miniclue.set_mapping_desc('n', '<C-e>i', 'Implementation')
+        miniclue.set_mapping_desc('n', '<C-e>t', 'Type definition')
+        miniclue.set_mapping_desc('n', '<C-e>k', 'Definition')
+        miniclue.set_mapping_desc('n', '<C-e>r', 'Rename')
+        miniclue.set_mapping_desc('n', '<C-e>o', 'Document symbols')
+        
+        -- Force format keymap descriptions
+        miniclue.set_mapping_desc('n', '<C-e>f', 'Format (auto-select)')
+        miniclue.set_mapping_desc('n', '<C-e>b', 'Format with Biome')
+        miniclue.set_mapping_desc('n', '<C-e>p', 'Format with Prettier')
+        miniclue.set_mapping_desc('n', '<C-e>e', 'Format with ESLint')
+        miniclue.set_mapping_desc('n', '<C-e>s', 'Format with TypeScript')
+        miniclue.set_mapping_desc('n', '<C-e>m', 'Format with EFM')
       end)
     end,
   },

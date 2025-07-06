@@ -164,7 +164,7 @@ Keymap("<C-e>f", "<cmd>Format<CR>", { desc = "Format (auto-select)" })
 Keymap("<C-e>b", "<cmd>FormatWithBiome<CR>", { desc = "Format with Biome" })
 Keymap("<C-e>p", "<cmd>FormatWithPrettier<CR>", { desc = "Format with Prettier" })
 Keymap("<C-e>e", "<cmd>FormatWithEslint<CR>", { desc = "Format with ESLint" })
-Keymap("<C-e>t", "<cmd>FormatWithTsLs<CR>", { desc = "Format with TypeScript" })
+Keymap("<C-e>s", "<cmd>FormatWithTsLs<CR>", { desc = "Format with TypeScript" })
 Keymap("<C-e>m", "<cmd>FormatWithEfm<CR>", { desc = "Format with EFM" })
 
 -- Experimental: Telescope with <Leader>f prefix
