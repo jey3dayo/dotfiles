@@ -24,14 +24,9 @@
       "!.vimperator/**",
       "!rest-client/**",
       "!tmux/plugins/**",
-      "!claude/**",
       "!fisher/**",
-      "!zsh/.zinit/**",
-      "!.vim/**",
       "!Brewfile.lock.json",
-      "!.vim/lazy-lock.json",
-      "!.luarc.json",
-      "!.surfingkeys.js"
+      "!.vim/lazy-lock.json"
     ]
   },
   "formatter": {
