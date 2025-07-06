@@ -219,14 +219,8 @@ return {
         miniclue.set_mapping_desc('n', '<Leader>so', 'Source init.lua')
         miniclue.set_mapping_desc('n', '<Leader>sO', 'Source current buffer')
         
-        -- Force LSP keymap descriptions
-        miniclue.set_mapping_desc('n', '<C-e>a', 'Code action')
-        miniclue.set_mapping_desc('n', '<C-e>d', 'Declaration')
-        miniclue.set_mapping_desc('n', '<C-e>i', 'Implementation')
-        miniclue.set_mapping_desc('n', '<C-e>t', 'Type definition')
-        miniclue.set_mapping_desc('n', '<C-e>k', 'Definition')
-        miniclue.set_mapping_desc('n', '<C-e>r', 'Rename')
-        miniclue.set_mapping_desc('n', '<C-e>o', 'Document symbols')
+        -- LSP keymap descriptions will be set when LSP attaches
+        -- Removed forced descriptions to avoid conflicts
         
         -- Force format keymap descriptions
         miniclue.set_mapping_desc('n', '<C-e>f', 'Format (auto-select)')
