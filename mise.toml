@@ -11,9 +11,9 @@ description = "Format all files"
 run = [
   "mise run format:biome",
   "mise run format:markdown",
-  "mise run format:yaml", 
+  "mise run format:yaml",
   "mise run format:lua",
-  "mise run format:shell"
+  "mise run format:shell",
 ]
 
 [tasks."format:check"]
@@ -23,7 +23,7 @@ run = [
   "mise run format:markdown:check",
   "mise run format:yaml:check",
   "mise run format:lua:check",
-  "mise run format:shell:check"
+  "mise run format:shell:check",
 ]
 
 [tasks."format:biome"]
@@ -59,7 +59,7 @@ description = "Check Lua formatting (same as GitHub Actions)"
 run = "stylua --check ."
 
 [tasks."format:shell"]
-description = "Format shell files"  
+description = "Format shell files"
 run = "find . \\( -name '*.sh' \\) ! -path './node_modules/*' ! -path './tmux/plugins/*' ! -path './fisher/*' ! -path './claude/local/node_modules/*' ! -path './zsh/.zinit/*' | xargs -r shfmt -w"
 
 [tasks."format:shell:check"]
@@ -68,10 +68,7 @@ run = "find . \\( -name '*.sh' \\) ! -path './node_modules/*' ! -path './tmux/pl
 
 [tasks.update]
 description = "Update all dependencies"
-run = [
-  "mise run update:submodules",
-  "mise run update:brew"
-]
+run = ["mise run update:submodules", "mise run update:brew"]
 
 [tasks."update:submodules"]
 description = "Update git submodules to latest (discards local changes)"

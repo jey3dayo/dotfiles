@@ -48,8 +48,8 @@ This directory contains Claude-specific configurations, documentation, and proje
 
 This directory is automatically managed by Claude Code. Key files:
 
-- **layers/*.md**: Domain-specific knowledge and patterns
-- **architecture/*.md**: Universal design principles
+- **layers/**: Domain-specific knowledge and patterns
+- **architecture/**: Universal design principles
 - **projects/**: Session data and project context
 - **todos/**: Task management JSON files
 
