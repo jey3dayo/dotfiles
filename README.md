@@ -4,12 +4,12 @@
 
 ## 🚀 Performance Achievements
 
-| Component          | Before   | After      | Improvement           |
-| ------------------ | -------- | ---------- | --------------------- |
-| **Zsh startup**    | 1.7s     | **1.2s**   | 30% faster            |
-| **Neovim startup** | ~200ms   | **<95ms**  | 50% faster            |
-| **WezTerm startup** | ~1.2s    | **800ms**  | 35% faster            |
-| **mise loading**   | baseline | **-39ms**  | Critical optimization |
+| Component           | Before   | After     | Improvement           |
+| ------------------- | -------- | --------- | --------------------- |
+| **Zsh startup**     | 1.7s     | **1.2s**  | 30% faster            |
+| **Neovim startup**  | ~200ms   | **<95ms** | 50% faster            |
+| **WezTerm startup** | ~1.2s    | **800ms** | 35% faster            |
+| **mise loading**    | baseline | **-39ms** | Critical optimization |
 
 ## ✨ Core Features
 

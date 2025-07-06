@@ -61,5 +61,5 @@ This directory is automatically managed by Claude Code. Key files:
 
 ---
 
-*Last Updated: 2025-07-06*
-*Total Size: 177M (mostly local installation)*
+_Last Updated: 2025-07-06_
+_Total Size: 177M (mostly local installation)_

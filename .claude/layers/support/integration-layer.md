@@ -410,13 +410,15 @@ clues = {
 
 ```markdown
 1. **機能的グループ化**
-   - ,s* : Settings/System configuration
-   - ,f* : Find/Search operations  
-   - <C-g>* : Git operations
-   - <C-e>* : Format/Edit operations
-   - Y* : Yank/Copy operations
+
+   - ,s\* : Settings/System configuration
+   - ,f\* : Find/Search operations
+   - <C-g>\* : Git operations
+   - <C-e>\* : Format/Edit operations
+   - Y\* : Yank/Copy operations
 
 2. **記憶しやすいルール**
+
    - 機能の頭文字を使用 (s=settings, f=find, g=git)
    - よく使う機能ほど短いキー
    - 類似機能は同じプレフィックス内に配置
@@ -435,7 +437,7 @@ clues = {
 Set_keymap("<C-g>", "[git]", opts)  -- mini.clueが動作しない
 Keymap("[git]s", cmd, { desc = "Git status" })
 
--- 解決パターン  
+-- 解決パターン
 Keymap("<C-g>s", cmd, { desc = "Git status" })  -- 直接キーマップ
 Keymap("<C-g>a", cmd, { desc = "Git add" })
 ```
@@ -443,11 +445,13 @@ Keymap("<C-g>a", cmd, { desc = "Git add" })
 #### 統合効果
 
 **改善指標**:
+
 - **発見性**: キーマップ発見時間 70%短縮
-- **記憶負荷**: プレフィックス体系化により記憶負荷 50%削減  
+- **記憶負荷**: プレフィックス体系化により記憶負荷 50%削減
 - **操作効率**: メニュー表示により正確性向上
 
 **実測値** (2025-07-06):
+
 - mini.clue表示速度: 500ms (設定済み)
 - プレフィックス数: 5個 (Leader系3個 + Ctrl系2個)
 - 総キーマップ数: 40+個
@@ -479,11 +483,13 @@ Keymap("<C-e>p", "<cmd>FormatWithPrettier<CR>", { desc = "Format with Prettier" 
 #### 失敗パターン・注意点
 
 **うまくいかない事例**:
+
 - **プレフィックスの過度な階層化**: 3層以上は記憶困難
 - **機能の重複配置**: 同じ機能が複数プレフィックスに散在
 - **desc未設定**: mini.clueで説明が表示されない
 
 **注意点**:
+
 - `Set_keymap`と`Keymap`の使い分け必須
 - `desc`パラメータの設定忘れ防止
 - プレフィックス競合の事前確認
@@ -500,7 +506,7 @@ local descriptions = {
     -- ...
   },
   git = {
-    prefix = "Git", 
+    prefix = "Git",
     s = "Git status",
     a = "Git add current file",
     -- ...
