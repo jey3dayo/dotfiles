@@ -12,6 +12,7 @@ return {
       require "lsp.performance"  -- Initialize performance monitoring
       require "lsp.handlers"     -- Setup LSP handlers (including client/registerCapability)
       require "config/native-lsp-ui" -- Configure UI handlers
+      require "lsp.debug"        -- Debug commands
     end,
   },
   

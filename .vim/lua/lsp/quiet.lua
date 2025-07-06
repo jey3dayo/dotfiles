@@ -16,13 +16,30 @@ function M.setup()
   
   -- Override vim.notify to filter LSP noise at source
   vim.notify = function(msg, level, opts)
-    if type(msg) == "string" and (
-      msg:find("No client with id", 1, true) or
-      msg:find("client with id", 1, true) or
-      msg:find("connections closed", 1, true) or
-      msg:find("stderr", 1, true) or
-      msg:find("rpc", 1, true)
+    -- Convert to string if necessary
+    local msg_str = tostring(msg)
+    
+    if type(msg_str) == "string" and (
+      msg_str:find("No client with id", 1, true) or
+      msg_str:find("client with id", 1, true) or
+      msg_str:find("connections closed", 1, true) or
+      msg_str:find("stderr", 1, true) or
+      msg_str:find("rpc", 1, true) or
+      -- ESLintのパスエラーを完全に抑制（大文字小文字を無視）
+      msg_str:lower():find("eslint") and msg_str:lower():find("path") and msg_str:lower():find("string") or
+      msg_str:find("32603", 1, true) and msg_str:find("textDocument/diagnostic", 1, true) or
+      msg_str:find("The \"path\" argument must be of type string", 1, true) or
+      msg_str:find("Request textDocument/diagnostic failed", 1, true)
     ) then
+      -- Log to file for debugging if needed
+      if vim.g.lsp_debug then
+        local log_file = vim.fn.stdpath("cache") .. "/suppressed_lsp_errors.log"
+        local file = io.open(log_file, "a")
+        if file then
+          file:write(os.date("%Y-%m-%d %H:%M:%S") .. " - " .. msg_str .. "\n")
+          file:close()
+        end
+      end
       return -- Silently suppress LSP noise
     end
     return original_notify(msg, level, opts)

@@ -149,16 +149,16 @@ return {
     version = false,
     event = "VeryLazy",
     config = function()
-      require("mini.notify").setup({
+      require("mini.notify").setup {
         window = {
           config = {
             border = "rounded",
           },
         },
-      })
-      vim.notify = require("mini.notify").make_notify({
+      }
+      vim.notify = require("mini.notify").make_notify {
         ERROR = { duration = 10000 }, -- Keep errors visible for 10s
-      })
+      }
     end,
   },
 
@@ -324,7 +324,6 @@ return {
     "echasnovski/mini.starter",
     version = false,
     event = "VimEnter",
-    enabled = false, -- Disabled since dashboard-nvim is already configured
     config = function()
       require("mini.starter").setup()
     end,
@@ -394,4 +393,3 @@ return {
     end,
   },
 }
-

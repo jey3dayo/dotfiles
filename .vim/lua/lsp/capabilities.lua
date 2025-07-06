@@ -26,6 +26,10 @@ M.setup = function()
     lineFoldingOnly = true,
   }
   
+  -- Disable pull diagnostics for all LSP servers to prevent issues
+  -- (especially with ESLint v4.10.0 which has a bug with textDocument/diagnostic)
+  capabilities.textDocument.diagnostic = nil
+  
   return capabilities
 end
 

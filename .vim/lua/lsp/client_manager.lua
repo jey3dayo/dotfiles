@@ -37,9 +37,20 @@ function M.get_format_clients(bufnr)
     return {}
   end
 
-  return vim.tbl_filter(function(c)
+  -- Get all formatting-capable clients
+  local format_capable = vim.tbl_filter(function(c)
     return c:supports_method("textDocument/formatting")
   end, clients)
+  
+  -- Return the best formatter only
+  local formatter_selector = require "lsp.formatter_selector"
+  local best = formatter_selector.get_best_formatter(bufnr)
+  
+  if best then
+    return { best }
+  else
+    return {}
+  end
 end
 
 -- フルパスからファイル名のみを抽出
@@ -105,8 +116,8 @@ function M.format_lsp_clients(bufnr)
   return #client_names > 0 and table.concat(client_names, ",") or "N/A"
 end
 
--- LSPクライアントの優先順位を定義
-function M.should_stop_client(client, bufnr)
+-- フォーマッターとして使用するかどうかを判定
+function M.should_use_as_formatter(client, bufnr)
   -- 同じ名前のクライアントが既に存在するかチェック
   local existing_clients = safe_client.get_clients({ bufnr = bufnr, name = client.name })
   local duplicate_count = 0
@@ -145,12 +156,21 @@ function M.should_stop_client(client, bufnr)
     local formatter_config = formatters[active_formatter_name]
     if formatter_config and formatter_config.formatter_priority then
       local formatter = formatter_config.formatter_priority
-      if formatter.overrides and formatter.overrides[client.name] then 
+      if formatter.overrides and formatter.overrides[client.name] then
+        if vim.g.lsp_debug then
+          vim.notify(string.format("[LSP] %s overrides %s", active_formatter_name, client.name), vim.log.levels.INFO)
+        end
         return true 
       end
     end
   end
 
+  return false
+end
+
+-- Deprecated: 互換性のために残す
+function M.should_stop_client(client, bufnr)
+  -- 常にfalseを返し、LSPクライアントを停止しない
   return false
 end
 

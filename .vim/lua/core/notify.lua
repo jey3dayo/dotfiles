@@ -8,6 +8,9 @@ M.errors = {
   plugin_not_loaded = function(name)
     return string.format("Plugin '%s' is not loaded", name)
   end,
+  module_not_available = function(name)
+    return string.format("Module '%s' is not available", name)
+  end,
   file_not_found = function(path)
     return string.format("File not found: %s", path)
   end,

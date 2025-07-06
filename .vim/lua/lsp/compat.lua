@@ -36,6 +36,10 @@ function M.add_config(name, config)
   if M.has_new_api then
     -- v0.11+: Use new built-in API
     vim.lsp.config(name, config)
+    -- Enable the server (required in v0.11+)
+    if name ~= "*" then
+      vim.lsp.enable(name)
+    end
   else
     -- v0.10: Use lspconfig
     if name == "*" then
@@ -57,7 +61,15 @@ end
 function M.enable(servers)
   if M.has_new_api then
     -- v0.11+: Use new enable API
-    vim.lsp.enable(servers or "*")
+    if servers then
+      -- Enable each server individually
+      for _, server in ipairs(servers) do
+        vim.lsp.enable(server)
+      end
+    else
+      -- Enable all servers
+      vim.lsp.enable()
+    end
   else
     -- v0.10: Already enabled via lspconfig.setup()
     -- Nothing to do here

@@ -99,14 +99,11 @@ utils.autocmd("LspAttach", {
     if client_manager.is_client_processed(args.data.client_id, bufnr) then return end
     client_manager.mark_client_processed(args.data.client_id, bufnr)
 
-    -- クライアント停止判定
-    if client_manager.should_stop_client(client, bufnr) then
-      client:stop()
-      return
-    end
+    -- クライアント停止判定を削除（すべてのLSPを起動させる）
+    -- フォーマット時にどのクライアントを使うかは、formatter.luaで制御
 
     -- Lazy load LSP modules when LSP actually attaches
-    require("lsp/keymaps").setup(bufnr, client)
+    require("lsp/keymaps").setup(client, bufnr)
     require("lsp/formatter").setup(bufnr, client, args)
     require("lsp/highlight").setup(client)
   end,

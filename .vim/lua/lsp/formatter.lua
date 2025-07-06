@@ -1,14 +1,13 @@
 local utils = require "core.utils"
 local with = utils.with
 local config = require "lsp.config"
+local formatter_selector = require "lsp.formatter_selector"
 
 local M = {}
 
 local function notify_formatter(name, via_efm)
   local message = "Formatted with: " .. name
-  if via_efm then
-    message = message .. " (via EFM)"
-  end
+  if via_efm then message = message .. " (via EFM)" end
   if config.isDebug then vim.notify(message, vim.log.levels.INFO) end
 end
 M.notify_formatter = notify_formatter
