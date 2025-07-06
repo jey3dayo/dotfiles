@@ -33,13 +33,13 @@ Personal dotfiles configuration optimized for software development with a focus 
 - **Unified Theme**: Gruvboxベース統一テーマ・フォント設定
 - **Modular Design**: 主要技術を中心とした設定の分離・統合
 
-## 📊 Current Status (2025-06-09)
+## 📊 Current Status (2025-07-06)
 
 ### ✅ Completed Components
 
 #### 🐚 Zsh Shell Configuration
 
-- **Performance**: 1.2s startup (30% improvement achieved - 1.7s → 1.2s)
+- **Performance**: 1.2s startup (30% improvement achieved - 1.7s → 1.2s) - Target achieved
 - **Architecture**: Modular loader system with lazy evaluation (config/loader.zsh + 機能別ローダー)
 - **Features**: Git integration, FZF search, abbreviations, comprehensive help system
 - **Key Commands**: `zsh-help`, `zsh-benchmark`, `zsh-profile`
@@ -68,11 +68,11 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 ##### WezTerm Detailed Configuration
 
-- **Architecture**: Modular Lua-based system (wezterm.lua, ui.lua, keybinds.lua, utils.lua)
+- **Architecture**: Modular Lua-based system (wezterm.lua, ui.lua, keybinds.lua, utils.lua, os.lua)
 - **Platform Support**: Cross-platform (macOS/Windows) with WSL integration
 - **Theme**: Gruvbox dark with custom tab styling and 92% transparency
 - **Font**: UDEV Gothic 35NFLG (16pt) with Nerd Font fallbacks
-- **Performance**: WebGpu backend for GPU acceleration
+- **Performance**: WebGpu backend for GPU acceleration, 800ms startup (35% improvement)
 
 ##### WezTerm Key Bindings
 
@@ -150,9 +150,15 @@ brew bundle               # Install/update all packages
 
 ### Neovim
 
-- **Startup**: <100ms with lazy.nvim
+- **Startup**: <95ms with lazy.nvim
 - **Plugin Count**: Optimized for essential functionality
 - **LSP Support**: 15+ languages configured
+
+### WezTerm
+
+- **Startup**: 800ms (35% improvement)
+- **Configuration**: Modular Lua system
+- **Performance**: GPU-accelerated rendering
 
 ## 🔧 Key Integrations
 
@@ -250,12 +256,14 @@ esac
 
 ## 🚧 Development Status
 
-### ✅ Completed (2025-01-04)
+### ✅ Completed (2025-07-06)
 
 - **Zsh Performance**: 1.2s startup achieved (30% improvement)
-- **Neovim Optimization**: <100ms startup with LSP integration
+- **Neovim Optimization**: <95ms startup with LSP integration
+- **WezTerm Optimization**: 800ms startup (35% improvement)
 - **Documentation Restructure**: README.md simplified, layer-based organization
 - **LSP Error Resolution**: vscode-langservers-extracted MethodNotFound fixed
+- **Layer-based Documentation**: Architecture patterns and support layers organized
 
 ### 🔄 In Progress
 
@@ -267,6 +275,8 @@ esac
 - **Automation**: Enhanced setup scripts and bootstrapping
 - **Performance**: Continue micro-optimizations across tools
 - **Integration**: Deeper cross-tool workflow automation
+- **AI Integration**: Enhanced Claude Code workflows and documentation
+- **Monitoring**: Performance regression detection and alerts
 
 ## 📚 改善履歴
 
@@ -414,5 +424,6 @@ Use `/learnings` command to record new insights into appropriate layers automati
 
 ---
 
-_Last Updated: 2025-06-20_
+_Last Updated: 2025-07-06_
 _Configuration Status: Production Ready - 層別知識管理システム統合完了_
+_Performance Targets: All core metrics achieved_

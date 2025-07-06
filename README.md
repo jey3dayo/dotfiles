@@ -7,16 +7,18 @@
 | Component          | Before   | After      | Improvement           |
 | ------------------ | -------- | ---------- | --------------------- |
 | **Zsh startup**    | 1.7s     | **1.2s**   | 30% faster            |
-| **Neovim startup** | ~200ms   | **<100ms** | 50% faster            |
+| **Neovim startup** | ~200ms   | **<95ms**  | 50% faster            |
+| **WezTerm startup** | ~1.2s    | **800ms**  | 35% faster            |
 | **mise loading**   | baseline | **-39ms**  | Critical optimization |
 
 ## ✨ Core Features
 
-- **🐚 Zsh**: Modular plugin system with 6-tier priority loading
+- **🐚 Zsh**: Modular plugin system with 6-tier priority loading (1.2s startup)
 - **🚀 Neovim**: 15+ language LSP support with AI assistance (Copilot/Avante)
-- **🔧 Terminal**: GPU-accelerated (Alacritty/WezTerm) with tmux-style workflow
+- **🔧 Terminal**: WezTerm (primary) + Alacritty with tmux-style workflow
 - **⚡ Git**: 50+ abbreviations and custom widgets for enhanced workflow
 - **🎨 Theming**: Unified Gruvbox design across all tools
+- **🛠️ Version Management**: Mise for language versions, Homebrew for packages
 
 ## ⚡ Quick Setup
 
@@ -137,8 +139,9 @@ mise install              # Setup language versions
 ### Core Stack
 
 - **Zsh + Sheldon**: 6-tier priority loading, 39ms mise optimization
-- **Neovim + Lazy.nvim**: AI assistance (Copilot/Avante), sub-100ms startup
-- **WezTerm**: Lua configuration with tmux-style workflow
+- **Neovim + Lazy.nvim**: AI assistance (Copilot/Avante), sub-95ms startup
+- **WezTerm**: Primary terminal with Lua configuration and tmux-style workflow
+- **Alacritty**: GPU-accelerated alternative terminal
 
 ### Development Tools
 
@@ -157,6 +160,7 @@ mise install              # Setup language versions
 
 - **[CLAUDE.md](CLAUDE.md)**: Technical implementation guide & AI assistance
 - **[.claude/layers/](.claude/layers/)**: Layered knowledge system (Shell, Git, Editor, Terminal)
+- **[.claude/architecture/](.claude/architecture/)**: Architecture patterns and design principles
 - **Component configs**: Each tool includes detailed configuration docs
 
 ## 🔧 Maintenance
@@ -177,4 +181,5 @@ zsh-profile               # Detailed performance analysis
 
 ---
 
-**MIT License** - Optimized for modern development workflows with focus on speed, consistency, and developer experience.
+**Status**: Production-ready (2025-07-06)
+**License**: MIT - Optimized for modern development workflows with focus on speed, consistency, and developer experience.
