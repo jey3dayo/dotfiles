@@ -226,22 +226,6 @@ return {
   {
     "echasnovski/mini.files",
     version = false,
-    keys = {
-      {
-        "<leader>e",
-        function()
-          require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
-        end,
-        desc = "Open mini.files (current file)",
-      },
-      {
-        "<leader>E",
-        function()
-          require("mini.files").open(vim.loop.cwd(), true)
-        end,
-        desc = "Open mini.files (cwd)",
-      },
-    },
     config = function()
       require("mini.files").setup {
         windows = {
@@ -302,14 +286,14 @@ return {
         hooks = {
           pre = {
             write = function()
-              -- Close nvim-tree before saving
-              pcall(vim.cmd, "Neotree close")
+              -- Close file explorer before saving
+              pcall(vim.cmd, "MiniFilesClose")
             end,
           },
           post = {
             read = function()
-              -- Reopen nvim-tree after loading (if needed)
-              pcall(vim.cmd, "Neotree show")
+              -- File explorer will be reopened if needed
+              -- (mini.files doesn't need explicit reopening)
             end,
           },
         },

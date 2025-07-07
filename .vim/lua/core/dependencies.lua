@@ -4,17 +4,15 @@ local M = {}
 M.plenary = { "nvim-lua/plenary.nvim" }
 M.treesitter = { "nvim-treesitter/nvim-treesitter" }
 M.lspconfig = { "neovim/nvim-lspconfig" }
-M.web_devicons = { "nvim-tree/nvim-web-devicons" }
-M.nvim_web_devicons = { "nvim-tree/nvim-web-devicons" }
+M.mini_icons = { "echasnovski/mini.icons" }
 M.mason = { "williamboman/mason.nvim" }
 M.fugitive = { "tpope/vim-fugitive" }
 M.context_filetype = { "Shougo/context_filetype.vim" }
 M.nui = { "MunifTanjim/nui.nvim" }
-M.notify = { "rcarriga/nvim-notify" }
 
 -- Combined dependencies for common use cases
 M.treesitter_with_icons = {
-  "nvim-tree/nvim-web-devicons",
+  "echasnovski/mini.icons",
   "JoosepAlviste/nvim-ts-context-commentstring",
 }
 
