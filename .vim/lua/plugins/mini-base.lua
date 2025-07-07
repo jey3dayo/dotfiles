@@ -51,6 +51,36 @@ return {
       require "config/mini-pick"
     end,
   },
+
+  -- Completion
+  {
+    "echasnovski/mini.completion",
+    version = false,
+    event = "InsertEnter",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require "config/mini-completion"
+    end,
+  },
+
+  -- Snippets (replaces nvim-snippy)
+  {
+    "echasnovski/mini.snippets",
+    version = false,
+    event = "InsertEnter",
+    config = function()
+      require("mini.snippets").setup {
+        expand = {
+          -- Use <Tab> to expand snippets
+          trigger = "<Tab>",
+        },
+        interact = {
+          -- Use <Tab>/<S-Tab> to navigate
+          jump = { forward = "<Tab>", backward = "<S-Tab>" },
+        },
+      }
+    end,
+  },
   -- Align text
   {
     "echasnovski/mini.align",

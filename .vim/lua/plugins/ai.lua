@@ -9,7 +9,7 @@ return {
   --     { "<leader>cb", "<cmd>CopilotChatBuffer<cr>", desc = "CopilotChat Buffer" },
   --     { "<leader>ct", "<cmd>CopilotChatToggle<cr>", desc = "CopilotChat Toggle" },
   --   },
-  --   dependencies = vim.list_extend(deps.copilot, deps.plenary),
+  --   dependencies = deps.plenary,
   --   branch = "main",
   --   build = "make tiktoken",
   -- },

@@ -3,11 +3,9 @@ local M = {}
 -- Core dependencies used across multiple plugins
 M.plenary = { "nvim-lua/plenary.nvim" }
 M.treesitter = { "nvim-treesitter/nvim-treesitter" }
-M.cmp = { "hrsh7th/nvim-cmp" }
 M.lspconfig = { "neovim/nvim-lspconfig" }
 M.web_devicons = { "nvim-tree/nvim-web-devicons" }
 M.nvim_web_devicons = { "nvim-tree/nvim-web-devicons" }
-M.copilot = { "zbirenbaum/copilot.lua" }
 M.mason = { "williamboman/mason.nvim" }
 M.fugitive = { "tpope/vim-fugitive" }
 M.context_filetype = { "Shougo/context_filetype.vim" }

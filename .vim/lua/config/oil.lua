@@ -27,9 +27,10 @@ oil.setup {
   },
   use_default_keymaps = true,
   view_options = {
-    show_hidden = false,
+    show_hidden = true,  -- 隠しファイルをデフォルトで表示
     is_always_hidden = function(name, bufnr)
-      return name == ".." and false or false
+      -- ".."（親ディレクトリ）は常に非表示、他は表示
+      return name == ".."
     end,
   },
 }
