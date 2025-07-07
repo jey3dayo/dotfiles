@@ -250,32 +250,39 @@ return {
           width_preview = 30,
         },
         options = {
-          use_as_default_explorer = false, -- Keep neo-tree as default for now
+          use_as_default_explorer = true, -- Use mini.files as default explorer
         },
       }
 
-      -- Create splits from mini.files
-      local map_split = function(buf_id, lhs, direction)
-        local rhs = function()
-          local new_target_window
-          vim.api.nvim_win_call(require("mini.files").get_target_window(), function()
-            vim.cmd(direction .. " split")
-            new_target_window = vim.api.nvim_get_current_win()
-          end)
-
-          require("mini.files").set_target_window(new_target_window)
-        end
-
-        local desc = "Split " .. direction
-        vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
-      end
-
+      -- Create splits from mini.files (simplified approach)
       vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesBufferCreate",
         callback = function(args)
           local buf_id = args.data.buf_id
-          map_split(buf_id, "gs", "belowright horizontal")
-          map_split(buf_id, "gv", "belowright vertical")
+          
+          -- Split keymaps (simplified without get_target_window)
+          vim.keymap.set("n", "s", function()
+            local entry = require("mini.files").get_fs_entry()
+            if entry and entry.fs_type == "file" then
+              require("mini.files").close()
+              vim.cmd("split " .. entry.path)
+            end
+          end, { buffer = buf_id, desc = "Open in horizontal split" })
+          
+          vim.keymap.set("n", "v", function()
+            local entry = require("mini.files").get_fs_entry()
+            if entry and entry.fs_type == "file" then
+              require("mini.files").close()
+              vim.cmd("vsplit " .. entry.path)
+            end
+          end, { buffer = buf_id, desc = "Open in vertical split" })
+
+          -- Enter and 'o' to open file (default behavior)
+          local open_file = function()
+            require("mini.files").go_in { close_on_file = true }
+          end
+          vim.keymap.set("n", "<CR>", open_file, { buffer = buf_id, desc = "Open file/directory" })
+          vim.keymap.set("n", "o", open_file, { buffer = buf_id, desc = "Open file/directory" })
         end,
       })
     end,
@@ -312,7 +319,7 @@ return {
       vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
       -- Keymaps
-      local ms = require("mini.sessions")
+      local ms = require "mini.sessions"
       vim.keymap.set("n", "<leader>ss", function()
         -- Create session name from current directory
         local session_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. ".vim"

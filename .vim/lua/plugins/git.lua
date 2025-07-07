@@ -20,5 +20,5 @@ return {
     opts = require "config/diffview",
   },
   { "tpope/vim-rhubarb", cmd = { "GBrowse" }, dependencies = { "tpope/vim-fugitive" } },
-  { "ruifm/gitlinker.nvim", keys = {}, dependencies = deps.plenary, config = true },
+  { "linrongbin16/gitlinker.nvim", keys = {}, dependencies = deps.plenary, config = true },
 }
