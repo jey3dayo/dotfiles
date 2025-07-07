@@ -71,7 +71,7 @@ Keymap("gT", "<cmd>tabprevious<CR>")
 
 -- set list
 Keymap("<Leader>sn", "<cmd>set number!<CR>", { desc = "Toggle line numbers" })
-Keymap("<Leader>sl", "<cmd>set list!<CR>", { desc = "Toggle list mode" })
+Keymap("<Leader>sL", "<cmd>set list!<CR>", { desc = "Toggle list mode" })
 Keymap("<Leader>sp", "<cmd>Lazy<CR>", { desc = "Plugin manager" })
 Keymap("<Leader>sd", "<cmd>LspDebug<CR>", { desc = "LspDebug" })
 Keymap("<Leader>sm", "<cmd>MasonUpdate<CR>", { desc = "Update Mason" })
@@ -152,7 +152,6 @@ local function copy_buffer_with_path_and_code_block()
   vim.notify("Copied buffer: " .. path, vim.log.levels.INFO)
 end
 Keymap("YY", copy_buffer_with_path_and_code_block)
-
 
 -- Format keybindings (LSP-based)
 Keymap("<C-e>f", "<cmd>Format<CR>", { desc = "Format (auto-select)" })

@@ -288,11 +288,45 @@ return {
     lazy = false,
     config = function()
       require("mini.sessions").setup {
-        autoread = false,
+        autoread = true,
         autowrite = true,
-        directory = vim.fn.stdpath "data" .. "/sessions/",
+        directory = vim.fn.stdpath "state" .. "/sessions/",
         file = "session.vim",
+        hooks = {
+          pre = {
+            write = function()
+              -- Close nvim-tree before saving
+              pcall(vim.cmd, "Neotree close")
+            end,
+          },
+          post = {
+            read = function()
+              -- Reopen nvim-tree after loading (if needed)
+              pcall(vim.cmd, "Neotree show")
+            end,
+          },
+        },
       }
+
+      -- Better sessionoptions
+      vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+      -- Keymaps
+      local ms = require("mini.sessions")
+      vim.keymap.set("n", "<leader>ss", function()
+        -- Create session name from current directory
+        local session_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. ".vim"
+        ms.write(session_name)
+      end, { desc = "Session save" })
+      vim.keymap.set("n", "<leader>sr", function()
+        ms.select "read"
+      end, { desc = "Session restore" })
+      vim.keymap.set("n", "<leader>sd", function()
+        ms.select "delete"
+      end, { desc = "Session delete" })
+      vim.keymap.set("n", "<leader>sl", function()
+        ms.select "read"
+      end, { desc = "List sessions" })
     end,
   },
 
@@ -380,16 +414,6 @@ return {
     event = "VeryLazy",
     config = function()
       require("mini.visits").setup()
-    end,
-  },
-
-  -- Starter screen
-  {
-    "echasnovski/mini.starter",
-    version = false,
-    event = "VimEnter",
-    config = function()
-      require("mini.starter").setup()
     end,
   },
 }

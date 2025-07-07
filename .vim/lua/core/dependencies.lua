@@ -13,7 +13,6 @@ M.fugitive = { "tpope/vim-fugitive" }
 M.context_filetype = { "Shougo/context_filetype.vim" }
 M.nui = { "MunifTanjim/nui.nvim" }
 M.notify = { "rcarriga/nvim-notify" }
-M.dressing = { "stevearc/dressing.nvim" }
 
 -- Combined dependencies for common use cases
 M.treesitter_with_icons = {

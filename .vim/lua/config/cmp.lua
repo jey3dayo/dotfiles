@@ -3,9 +3,8 @@ local cmp = utils.safe_require "cmp"
 local lspkind = utils.safe_require "lspkind"
 local cmp_autopairs = utils.safe_require "nvim-autopairs.completion.cmp"
 local cmp_handlers = utils.safe_require "nvim-autopairs.completion.handlers"
-local colorizer_cmp = utils.safe_require "tailwindcss-colorizer-cmp"
 
-if not (cmp and lspkind and cmp_autopairs and cmp_handlers and colorizer_cmp) then return end
+if not (cmp and lspkind and cmp_autopairs and cmp_handlers) then return end
 
 local function has_words_before()
   if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
@@ -76,16 +75,6 @@ cmp.setup {
   },
 }
 
--- Command line completion for : commands
-cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = "path" }
-  }, {
-    { name = "cmdline" }
-  }),
-  matching = { disallow_symbol_nonprefix_matching = false }
-})
 
 -- Search completion (/, ?) is still useful with cmp for buffer content
 cmp.setup.cmdline({ "/", "?" }, {
@@ -129,7 +118,6 @@ cmp.event:on(
   }
 )
 
-colorizer_cmp.setup { color_square_width = 2 }
 
 vim.cmd [[
   set completeopt=menuone,noinsert,noselect

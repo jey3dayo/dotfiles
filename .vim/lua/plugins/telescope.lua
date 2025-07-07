@@ -28,9 +28,4 @@ return {
     dependencies = { "nvim-telescope/telescope.nvim", "kkharji/sqlite.lua" },
     opts = require "config/neoclip",
   },
-  {
-    "debugloop/telescope-undo.nvim",
-    keys = { "<Leader>u" },
-    dependencies = deps.telescope,
-  },
 }

@@ -113,7 +113,7 @@ telescope.setup {
 }
 
 -- Load extensions
-local extensions = { "file_browser", "undo", "frecency", "neoclip" }
+local extensions = { "file_browser", "frecency", "neoclip" }
 for _, ext in ipairs(extensions) do
   telescope.load_extension(ext)
 end
@@ -123,7 +123,6 @@ telescope.load_extension("mini_notify")
 telescope.load_extension("messages")
 
 -- keymaps
-Keymap("<Leader>fu", telescope.extensions.undo.undo, { desc = "Find by Undo" })
 Keymap("<Leader><Leader>", builtin.resume, { desc = "Find by Resume" })
 
 -- extensions
