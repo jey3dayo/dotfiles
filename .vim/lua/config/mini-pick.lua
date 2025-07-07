@@ -131,7 +131,21 @@ end
 -- File browser replacement (use mini.files)
 vim.keymap.set("n", "<Leader>e", function()
   local git_dir = get_git_dir()
-  local path = git_dir ~= "" and git_dir or vim.fn.expand "%:p:h"
+  local current_file = vim.fn.expand "%:p"
+  local path = vim.fn.getcwd()  -- Default to current working directory
+  
+  -- Always use cwd for special buffers like ministarter
+  if string.match(current_file, "^%w+:") then
+    -- Special buffer (ministarter, etc.) - use current working directory
+    path = vim.fn.getcwd()
+  elseif current_file ~= "" and vim.fn.filereadable(current_file) == 1 then
+    -- If we have a readable file, use its directory
+    path = vim.fn.expand "%:p:h"
+  elseif git_dir ~= "" then
+    -- If we have a git directory, use it
+    path = git_dir
+  end
+  
   require("mini.files").open(path, true)
 end, { desc = "Open mini.files (git root or buffer dir)" })
 
