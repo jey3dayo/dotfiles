@@ -7,7 +7,8 @@ python = "latest"
 experimental = true
 vfox = false
 idiomatic_version_file_enable_tools = ["go"]
+env_file = ".env"
+trusted_config_paths = ['~/src/github.com/jey3dayo']
 
 [env]
-_.file = [".env"]
 _.source = [".venv/bin/activate"]
