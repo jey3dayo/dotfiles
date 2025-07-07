@@ -53,8 +53,13 @@ local function setup_keymaps(client, bufnr)
     end
     
     if has_references or #clients > 0 then
-      -- TypeScript/JavaScript LSP servers should always support references
-      require('telescope.builtin').lsp_references()
+      -- Use mini.pick for LSP references
+      local ok, mini_extra = pcall(require, "mini.extra")
+      if ok then
+        mini_extra.pickers.lsp({ scope = "references" })
+      else
+        vim.lsp.buf.references()
+      end
     else
       vim.notify("No LSP clients attached or references not supported", vim.log.levels.WARN)
     end
@@ -81,8 +86,13 @@ local function setup_keymaps(client, bufnr)
     end
     
     if has_symbols or #clients > 0 then
-      -- TypeScript/JavaScript LSP servers should always support document symbols
-      require('telescope.builtin').lsp_document_symbols()
+      -- Use mini.pick for LSP document symbols
+      local ok, mini_extra = pcall(require, "mini.extra")
+      if ok then
+        mini_extra.pickers.lsp({ scope = "document_symbol" })
+      else
+        vim.lsp.buf.document_symbol()
+      end
     else
       vim.notify("No LSP clients attached or document symbols not supported", vim.log.levels.WARN)
     end
@@ -96,14 +106,24 @@ local function setup_keymaps(client, bufnr)
       local miniclue = require('mini.clue')
       miniclue.ensure_buf_triggers()
       
-      -- Force LSP keymap descriptions for current buffer
-      miniclue.set_mapping_desc('n', '<C-e>a', 'Code action')
-      miniclue.set_mapping_desc('n', '<C-e>d', 'Declaration')
-      miniclue.set_mapping_desc('n', '<C-e>i', 'Implementation')
-      miniclue.set_mapping_desc('n', '<C-e>t', 'Type definition')
-      miniclue.set_mapping_desc('n', '<C-e>k', 'Definition')
-      miniclue.set_mapping_desc('n', '<C-e>r', 'Rename')
-      miniclue.set_mapping_desc('n', '<C-e>o', 'Document symbols')
+      -- Safely set mapping descriptions only if mappings exist
+      local function safe_set_desc(mode, lhs, desc)
+        local mappings = vim.api.nvim_buf_get_keymap(bufnr, mode)
+        for _, mapping in ipairs(mappings) do
+          if mapping.lhs == lhs then
+            pcall(miniclue.set_mapping_desc, mode, lhs, desc)
+            return
+          end
+        end
+      end
+      
+      safe_set_desc('n', '<C-e>a', 'Code action')
+      safe_set_desc('n', '<C-e>d', 'Declaration')
+      safe_set_desc('n', '<C-e>i', 'Implementation')
+      safe_set_desc('n', '<C-e>t', 'Type definition')
+      safe_set_desc('n', '<C-e>k', 'Definition')
+      safe_set_desc('n', '<C-e>r', 'Rename')
+      safe_set_desc('n', '<C-e>o', 'Document symbols')
     end)
   end
 end

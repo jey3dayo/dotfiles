@@ -27,6 +27,30 @@ return {
     version = false,
     lazy = true, -- Will be loaded by other modules
   },
+
+  -- Picker (fuzzy finder replacement for telescope)
+  {
+    "echasnovski/mini.pick",
+    version = false,
+    config = function()
+      require("mini.pick").setup {
+        options = {
+          use_cache = true,
+        },
+        window = {
+          config = {
+            border = "rounded",
+          },
+        },
+      }
+      
+      -- Set as vim.ui.select for other plugins
+      vim.ui.select = require("mini.pick").ui_select
+      
+      -- Load mini.pick keymaps
+      require("config/mini-pick")
+    end,
+  },
   -- Align text
   {
     "echasnovski/mini.align",

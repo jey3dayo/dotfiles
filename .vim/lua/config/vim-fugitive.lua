@@ -7,7 +7,12 @@ Keymap("<C-g><C-g>", "<cmd>DiffviewOpen<CR>", { desc = "DiffviewOpen" })
 
 -- Git status (moved from ,G)  
 Keymap("<C-g>s", function()
-  require("telescope.builtin").git_status()
+  local ok, mini_extra = pcall(require, "mini.extra")
+  if ok then
+    mini_extra.pickers.git_files()
+  else
+    vim.cmd("Git")
+  end
 end, { desc = "Git status" })
 
 Keymap("<C-g>a", "<cmd>Git add %<CR>", { desc = "Git add current file" })
