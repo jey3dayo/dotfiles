@@ -428,7 +428,7 @@ end)(),
 1. **blink.cmp** - Rust製高速補完エンジン
 2. **fzf-lua** - telescopeより高速なファジーファインダー
 3. **noice.nvim** - モダンUI統合
-4. **oil.nvim** - 軽量ファイル管理
+4. **mini.files** - 軽量ファイル管理（oil.nvim置き換え）
 5. **mini.icons** - 統合アイコンシステム
 
 ### 実装優先度
@@ -448,7 +448,7 @@ end)(),
 #### 中優先度（1ヶ月）
 
 - **noice.nvim導入**: UI現代化
-- **oil.nvim検討**: ファイル管理軽量化
+- **✅ mini.files移行**: oil.nvim置き換え、mini.nvim統合
 - **プラグイン統合**: 機能重複解消
 
 ## 🚧 最適化課題

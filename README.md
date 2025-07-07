@@ -14,7 +14,7 @@
 ## ✨ Core Features
 
 - **🐚 Zsh**: Modular plugin system with 6-tier priority loading (1.2s startup)
-- **🚀 Neovim**: 15+ language LSP support with AI assistance (Copilot/Avante)
+- **🚀 Neovim**: 15+ language LSP support with AI assistance (Supermaven)
 - **🔧 Terminal**: WezTerm (primary) + Alacritty with tmux-style workflow
 - **⚡ Git**: 50+ abbreviations and custom widgets for enhanced workflow
 - **🎨 Theming**: Unified Gruvbox design across all tools
@@ -139,7 +139,7 @@ mise install              # Setup language versions
 ### Core Stack
 
 - **Zsh + Sheldon**: 6-tier priority loading, 39ms mise optimization
-- **Neovim + Lazy.nvim**: AI assistance (Copilot/Avante), sub-95ms startup
+- **Neovim + Lazy.nvim**: AI assistance (Supermaven), sub-95ms startup
 - **WezTerm**: Primary terminal with Lua configuration and tmux-style workflow
 - **Alacritty**: GPU-accelerated alternative terminal
 

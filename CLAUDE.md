@@ -57,7 +57,7 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 - **Performance**: Optimized startup with lazy.nvim plugin management
 - **Architecture**: Lua-based modular configuration
-- **Features**: Full LSP support, AI assistance (Copilot/Avante), modern UI
+- **Features**: Full LSP support, AI assistance (Supermaven), modern UI
 - **Status**: Feature-complete with iterative improvements
 
 #### 🔧 Terminal & Multiplexer
@@ -198,7 +198,7 @@ brew bundle               # Install/update all packages
 
 ### Experimental Features
 
-- **AI Integration**: Enhanced Copilot workflows
+- **AI Integration**: Enhanced Supermaven workflows
 - **Cloud Sync**: Configuration synchronization
 - **Mobile**: iOS Shortcuts integration
 
@@ -369,6 +369,80 @@ Technical knowledge is organized into **specialized layers** for efficient imple
 ### 🤖 AI-Assisted Development
 
 Use `/learnings` command to record new insights into appropriate layers automatically.
+
+## 🔌 Current Plugin Ecosystem (2025-07-06)
+
+### Core Plugins (Always Loaded)
+
+#### LSP & Development
+- **nvim-lspconfig**: Core LSP infrastructure (startup: 3.17ms)
+- **mason.nvim + mason-lspconfig.nvim**: Package management (startup: 50.69ms)
+- **conform.nvim**: Modern formatting (startup: 1.02ms)
+- **nvim-lint**: Linting system (startup: 1.68ms)
+- **nvim-treesitter**: Syntax highlighting (startup: 3.89ms)
+
+#### Editor Experience
+- **mini.nvim ecosystem**: Comprehensive editing tools (13+ modules, startup: ~15ms total)
+  - mini.completion: LSP completion with fallbacks
+  - mini.pick: Fuzzy finder (replaces Telescope)
+  - mini.snippets: Snippet support
+  - mini.clue: Key hint system
+  - mini.animate: Smooth animations
+- **flash.nvim**: Enhanced navigation (startup: 0.33ms)
+- **mini.files**: File manager (replaces oil.nvim, better integration)
+
+#### AI & Productivity
+- **supermaven-nvim**: AI completion (loaded on InsertEnter)
+
+#### UI & Theming
+- **lualine.nvim**: Status line (startup: 5.62ms)
+- **kanagawa.nvim**: Primary colorscheme
+- **nvim-web-devicons**: Icon support
+
+### Lazy-Loaded Plugins (On-Demand)
+
+#### Git Integration
+- **gitsigns.nvim**: Git signs and hunks
+- **diffview.nvim**: Git diff viewer
+- **vim-fugitive + vim-rhubarb**: Comprehensive Git operations
+- **gitlinker.nvim**: GitHub/GitLab link generation
+
+#### Language Support
+- **markdown-preview.nvim**: Markdown preview
+- **vim-prisma**: Prisma schema support
+- **vim-rails + vim-rake**: Ruby/Rails support
+- **jsgf.vim**: JavaScript/TypeScript enhancements
+
+#### Utility & Diagnostics
+- **trouble.nvim**: Diagnostics panel
+- **ccc.nvim**: Color picker/converter
+- **suda.vim**: Sudo file operations
+- **vim-startuptime**: Performance profiling
+
+### 🔄 2025 Plugin Optimization Status
+
+#### Recent Improvements
+1. **Replaced telescope.nvim** → **mini.pick** (reduced dependencies, faster startup)
+2. **Added mini.completion** → replaces nvim-cmp (simpler, faster)
+3. **Optimized LSP loading order** → prevents client/registerCapability errors
+4. **Lazy-loaded non-essential plugins** → improved startup performance
+
+#### Recommended Updates (Based on 2025 Ecosystem Analysis)
+1. **gitlinker.nvim**: Update to linrongbin16/gitlinker.nvim fork (active maintenance)
+2. **✅ mini.files migration**: Replaced oil.nvim with mini.files for better integration
+3. **Treesitter async install**: Enable for faster cold-start
+4. **LSP migration prep**: Start using vim.lsp.config() for new servers (Neovim 0.11+)
+
+### 🚀 Performance Metrics
+
+#### Plugin Loading Times (Startup Profile)
+- **Total plugin overhead**: ~95ms (target achieved)
+- **Heaviest plugins**: mason-lspconfig.nvim (48.63ms), lazy.nvim (10.57ms)
+- **Optimization opportunities**: Further lazy-loading of mason components
+
+#### Memory Usage
+- **Core plugins**: Minimal memory footprint with mini.nvim ecosystem
+- **Lazy-loaded plugins**: Zero impact until activated
 
 ### 🤖 AI支援システム
 
