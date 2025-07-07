@@ -19,17 +19,6 @@ local function telescope_buffer_dir()
   return vim.fn.expand "%:p:h"
 end
 
-local function setup_file_browser(opts)
-  opts = opts or {}
-  telescope.extensions.file_browser.file_browser(with({
-    hidden = true,
-    grouped = true,
-    previewer = false,
-    initial_mode = "normal",
-    layout_config = { height = 40 },
-    respect_gitignore = true,
-  }, opts))
-end
 
 local telescope_mappings = {
   n = {
@@ -50,23 +39,6 @@ local telescope_mappings = {
   },
 }
 
-local fb_actions = telescope.extensions.file_browser.actions
-local file_browser_mappings = {
-  i = {
-    ["<C-d>"] = actions.close,
-    ["<C-w>"] = function()
-      vim.cmd "normal vbd"
-    end,
-  },
-  n = {
-    ["<C-d>"] = actions.close,
-    ["N"] = fb_actions.create,
-    ["u"] = fb_actions.goto_parent_dir,
-    ["/"] = function()
-      vim.cmd "startinsert"
-    end,
-  },
-}
 
 local function get_live_grep_additional_args()
   local additional_args = { "--hidden" }
@@ -102,18 +74,12 @@ telescope.setup {
     },
     live_grep = { additional_args = get_live_grep_additional_args },
   },
-  extensions = {
-    file_browser = {
-      theme = "dropdown",
-      -- disables netrw and use telescope-file-browser in its place
-      hijack_netrw = true,
-      mappings = file_browser_mappings,
-    },
-  },
+  extensions = {},
+
 }
 
 -- Load extensions
-local extensions = { "file_browser", "frecency", "neoclip" }
+local extensions = { "frecency", "neoclip" }
 for _, ext in ipairs(extensions) do
   telescope.load_extension(ext)
 end
@@ -172,18 +138,3 @@ Keymap("<Leader>ff", frecency_cwd, { desc = "Find CWD by frecency" })
 Keymap("<A-p>", frecency_cwd, { desc = "Find CWD by frecency" })
 Keymap("<Leader>fF", find_files_buffer_dir, { desc = "Find files in buffer dir" })
 
-Keymap("<Leader>e", function()
-  local git_dir = utils.get_git_dir()
-  setup_file_browser {
-    path = git_dir ~= "" and git_dir or "%:p:h",
-    cwd = git_dir ~= "" and git_dir or telescope_buffer_dir(),
-  }
-end, { desc = "Find git_dir by File Browser" })
-
-Keymap("<Leader>E", function()
-  setup_file_browser {
-    path = "%:p:h",
-    cwd = telescope_buffer_dir(),
-    respect_gitignore = false,
-  }
-end, { desc = "Find by File Browser" })

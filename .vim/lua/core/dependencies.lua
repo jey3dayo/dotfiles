@@ -7,6 +7,7 @@ M.cmp = { "hrsh7th/nvim-cmp" }
 M.lspconfig = { "neovim/nvim-lspconfig" }
 M.telescope = { "nvim-telescope/telescope.nvim" }
 M.web_devicons = { "nvim-tree/nvim-web-devicons" }
+M.nvim_web_devicons = { "nvim-tree/nvim-web-devicons" }
 M.copilot = { "zbirenbaum/copilot.lua" }
 M.mason = { "williamboman/mason.nvim" }
 M.fugitive = { "tpope/vim-fugitive" }
