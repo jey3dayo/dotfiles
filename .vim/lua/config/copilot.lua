@@ -75,10 +75,27 @@ local function CopilotChatBuffer()
   end
 end
 
--- telescopeを使ってアクションプロンプトを表示
+-- vim.ui.selectを使ってアクションプロンプトを表示（mini.pick統合）
 local function ShowChatPrompt()
   local actions = require "CopilotChat.actions"
-  require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+  local prompt_actions = actions.prompt_actions()
+  
+  -- mini.pickのvim.ui.select統合を利用
+  local items = {}
+  for name, action in pairs(prompt_actions) do
+    table.insert(items, { name = name, action = action })
+  end
+  
+  vim.ui.select(items, {
+    prompt = "Select CopilotChat action:",
+    format_item = function(item)
+      return item.name
+    end,
+  }, function(choice)
+    if choice then
+      choice.action()
+    end
+  end)
 end
 
 -- Hack: MetaをAltにマッピング

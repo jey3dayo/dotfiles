@@ -22,7 +22,6 @@ return {
       ["neo-tree"] = true,
       dashboard = true,
       help = true,
-      TelescopePrompt = true,
       NvimTree = true,
     },
   },
@@ -34,7 +33,6 @@ return {
     exclude_filetypes = {
       dashboard = true,
       help = true,
-      TelescopePrompt = true,
       NvimTree = true,
     },
   },

@@ -1,1 +1,0 @@
-return require("config.telescope.messages_extension")

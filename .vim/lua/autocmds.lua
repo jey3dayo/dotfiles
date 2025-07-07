@@ -32,11 +32,11 @@ utils.autocmd({ "FileType" }, {
       vim.defer_fn(function()
         local eslint_clients = vim.tbl_filter(function(client)
           return client.name == "eslint"
-        end, vim.lsp.get_clients({ bufnr = 0 }))
-        
+        end, vim.lsp.get_clients { bufnr = 0 })
+
         if #eslint_clients == 0 then
           -- Start ESLint manually if not running
-          vim.cmd("LspStart eslint")
+          vim.cmd "LspStart eslint"
         end
       end, 100)
     end
@@ -47,7 +47,7 @@ utils.autocmd({ "FileType" }, {
 utils.autocmd("TextYankPost", {
   pattern = "*",
   callback = function()
-    vim.highlight.on_yank({ timeout = 300 })
+    vim.highlight.on_yank { timeout = 300 }
   end,
 })
 
@@ -74,7 +74,6 @@ utils.autocmd("ColorScheme", {
       "Normal",
       "SignColumn",
       "NormalNC",
-      "TelescopeBorder",
       "NvimTreeNormal",
       "EndOfBuffer",
       "MsgArea",
@@ -87,11 +86,11 @@ utils.autocmd("ColorScheme", {
 })
 
 -- Prevent LSP from attaching to non-file URI schemes (fugitive://, etc.)
-utils.autocmd('BufReadPre', {
-  pattern = '*',
+utils.autocmd("BufReadPre", {
+  pattern = "*",
   callback = function(args)
     local bufname = vim.api.nvim_buf_get_name(args.buf)
-    if bufname:match('^%a+://') then
+    if bufname:match "^%a+://" then
       vim.b[args.buf].lsp_disable = true -- tells lspconfig not to attach
     end
   end,
@@ -110,9 +109,12 @@ utils.autocmd("LspAttach", {
     local client_id = args.data.client_id
     local client = vim.lsp.get_client_by_id(client_id)
 
-    if not client then 
-      vim.notify(string.format("[LSP] Failed to get client with id %d (client may have been stopped)", client_id), vim.log.levels.WARN)
-      return 
+    if not client then
+      vim.notify(
+        string.format("[LSP] Failed to get client with id %d (client may have been stopped)", client_id),
+        vim.log.levels.WARN
+      )
+      return
     end
 
     -- Lazy load client manager when actually needed

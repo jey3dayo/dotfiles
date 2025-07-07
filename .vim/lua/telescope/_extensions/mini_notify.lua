@@ -1,1 +1,0 @@
-return require("config.telescope.mini_notify_extension")

@@ -13,7 +13,6 @@ local function load_colorscheme()
       "EndOfBuffer ctermbg=NONE guibg=NONE",
       "SignColumn ctermbg=NONE guibg=NONE",
       "NormalNC ctermbg=NONE guibg=NONE",
-      "TelescopeBorder ctermbg=NONE guibg=NONE",
       "NvimTreeNormal ctermbg=NONE guibg=NONE",
       "MsgArea ctermbg=NONE guibg=NONE",
     }

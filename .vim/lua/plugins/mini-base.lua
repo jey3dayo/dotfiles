@@ -28,7 +28,7 @@ return {
     lazy = true, -- Will be loaded by other modules
   },
 
-  -- Picker (fuzzy finder replacement for telescope)
+  -- Picker
   {
     "echasnovski/mini.pick",
     version = false,
@@ -43,12 +43,12 @@ return {
           },
         },
       }
-      
+
       -- Set as vim.ui.select for other plugins
       vim.ui.select = require("mini.pick").ui_select
-      
+
       -- Load mini.pick keymaps
-      require("config/mini-pick")
+      require "config/mini-pick"
     end,
   },
   -- Align text
@@ -127,8 +127,6 @@ return {
           -- Settings prefix
           { mode = "n", keys = "<Leader>s" },
           { mode = "x", keys = "<Leader>s" },
-
-
 
           -- Yank prefix
           { mode = "n", keys = "Y" },
@@ -219,7 +217,7 @@ return {
           { mode = "n", keys = "<C-e>k", desc = "Definition" },
           { mode = "n", keys = "<C-e>r", desc = "Rename" },
           { mode = "n", keys = "<C-e>o", desc = "Document symbols" },
-          
+
           -- Format keymaps descriptions
           { mode = "n", keys = "<C-e>f", desc = "Format (auto-select)" },
           { mode = "n", keys = "<C-e>b", desc = "Format with Biome" },
@@ -237,22 +235,22 @@ return {
           },
         },
       }
-      
+
       -- Force descriptions for keymaps that might be overridden
       vim.schedule(function()
-        miniclue.set_mapping_desc('n', '<Leader>so', 'Source init.lua')
-        miniclue.set_mapping_desc('n', '<Leader>sO', 'Source current buffer')
-        
+        miniclue.set_mapping_desc("n", "<Leader>so", "Source init.lua")
+        miniclue.set_mapping_desc("n", "<Leader>sO", "Source current buffer")
+
         -- LSP keymap descriptions will be set when LSP attaches
         -- Removed forced descriptions to avoid conflicts
-        
+
         -- Force format keymap descriptions
-        miniclue.set_mapping_desc('n', '<C-e>f', 'Format (auto-select)')
-        miniclue.set_mapping_desc('n', '<C-e>b', 'Format with Biome')
-        miniclue.set_mapping_desc('n', '<C-e>p', 'Format with Prettier')
-        miniclue.set_mapping_desc('n', '<C-e>e', 'Format with ESLint')
-        miniclue.set_mapping_desc('n', '<C-e>s', 'Format with TypeScript')
-        miniclue.set_mapping_desc('n', '<C-e>m', 'Format with EFM')
+        miniclue.set_mapping_desc("n", "<C-e>f", "Format (auto-select)")
+        miniclue.set_mapping_desc("n", "<C-e>b", "Format with Biome")
+        miniclue.set_mapping_desc("n", "<C-e>p", "Format with Prettier")
+        miniclue.set_mapping_desc("n", "<C-e>e", "Format with ESLint")
+        miniclue.set_mapping_desc("n", "<C-e>s", "Format with TypeScript")
+        miniclue.set_mapping_desc("n", "<C-e>m", "Format with EFM")
       end)
     end,
   },

@@ -1,5 +1,4 @@
 -- Mini.pick configuration and keymaps
--- Replacement for telescope.nvim with mini.nvim ecosystem integration
 
 local utils = require "core.utils"
 
@@ -31,7 +30,7 @@ Keymap("<Leader><Leader>", function()
   require("mini.pick").builtin.resume()
 end, { desc = "Resume last pick" })
 
--- Grep functionality  
+-- Grep functionality
 Keymap("<Leader>fg", function()
   require("mini.pick").builtin.grep_live()
 end, { desc = "Live grep" })
@@ -55,6 +54,44 @@ Keymap("<Leader>fh", function()
   require("mini.pick").builtin.help()
 end, { desc = "Find help" })
 
+-- Recent files (oldfiles replacement)
+Keymap("<Leader>fo", function()
+  local ok, mini_extra = pcall(require, "mini.extra")
+  if ok then
+    mini_extra.pickers.oldfiles()
+  else
+    -- Fallback to vim's oldfiles
+    vim.ui.select(vim.v.oldfiles, {
+      prompt = "Recent files:",
+    }, function(choice)
+      if choice then vim.cmd("edit " .. choice) end
+    end)
+  end
+end, { desc = "Find recent files" })
+
+-- Commands picker
+Keymap("<Leader>fc", function()
+  local ok, mini_extra = pcall(require, "mini.extra")
+  if ok then
+    mini_extra.pickers.commands()
+  else
+    -- Fallback to built-in command completion
+    vim.ui.input({ prompt = "Command: ", completion = "command" }, function(input)
+      if input then vim.cmd(input) end
+    end)
+  end
+end, { desc = "Find commands" })
+
+-- Keymaps picker
+Keymap("<Leader>fk", function()
+  local ok, mini_extra = pcall(require, "mini.extra")
+  if ok then
+    mini_extra.pickers.keymaps()
+  else
+    vim.notify("Keymaps picker requires mini.extra", vim.log.levels.WARN)
+  end
+end, { desc = "Find keymaps" })
+
 -- Mini.extra pickers (if available)
 local function setup_extra_pickers()
   local ok, mini_extra = pcall(require, "mini.extra")
@@ -76,11 +113,11 @@ local function setup_extra_pickers()
 
   -- LSP pickers
   Keymap("<Leader>fs", function()
-    mini_extra.pickers.lsp({ scope = "document_symbol" })
+    mini_extra.pickers.lsp { scope = "document_symbol" }
   end, { desc = "Document symbols" })
 
   Keymap("<Leader>fS", function()
-    mini_extra.pickers.lsp({ scope = "workspace_symbol" })
+    mini_extra.pickers.lsp { scope = "workspace_symbol" }
   end, { desc = "Workspace symbols" })
 
   -- Recently visited files
@@ -97,27 +134,24 @@ end
 -- File browser replacement (use mini.files)
 Keymap("<Leader>e", function()
   local git_dir = get_git_dir()
-  local path = git_dir ~= "" and git_dir or vim.fn.expand("%:p:h")
+  local path = git_dir ~= "" and git_dir or vim.fn.expand "%:p:h"
   require("mini.files").open(path, true)
 end, { desc = "Open mini.files (git root or buffer dir)" })
 
 Keymap("<Leader>E", function()
-  require("mini.files").open(vim.fn.expand("%:p:h"), true)
+  require("mini.files").open(vim.fn.expand "%:p:h", true)
 end, { desc = "Open mini.files (buffer dir)" })
 
--- Yank history (neoclip replacement)
+-- Yank history (neoclip)
 Keymap("<Leader>fy", function()
-  -- Use mini.pick for clipboard if available, otherwise fall back to existing neoclip
-  local ok, _ = pcall(require, "mini.misc")
+  local ok, _ = pcall(require, "neoclip")
   if ok then
-    -- Custom yank history picker (simplified)
-    vim.notify("Mini.pick yank history not implemented yet, using existing neoclip", vim.log.levels.WARN)
-    -- Keep existing neoclip for now
-    require("telescope").extensions.neoclip.default()
+    -- Open neoclip with default UI
+    vim.cmd "Neoclip"
   else
-    require("telescope").extensions.neoclip.default()
+    vim.notify("Neoclip not available", vim.log.levels.ERROR)
   end
-end, { desc = "Find by Yank (neoclip fallback)" })
+end, { desc = "Yank history (neoclip)" })
 
 -- Notification history (mini.notify integration)
 Keymap("<leader>fn", function()
@@ -140,11 +174,11 @@ end, { desc = "Show notification history buffer" })
 
 -- Messages integration
 Keymap("<leader>fm", function()
-  vim.cmd("messages")
+  vim.cmd "messages"
 end, { desc = "Show messages" })
 
 Keymap("<leader>fM", function()
-  vim.cmd("messages")
+  vim.cmd "messages"
 end, { desc = "Show messages" })
 
 -- Setup extra pickers if mini.extra is available
