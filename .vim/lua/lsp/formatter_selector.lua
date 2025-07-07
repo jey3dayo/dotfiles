@@ -44,7 +44,6 @@ function M.get_formatter_priority(formatter_name)
     prettier = 2,
     eslint = 3,     -- Lower priority for formatting (better for linting)
     ts_ls = 4,      -- Lowest priority for formatting (better for diagnostics)
-    efm = 5,        -- Use as fallback formatter
   }
   
   return defaults[formatter_name] or 99

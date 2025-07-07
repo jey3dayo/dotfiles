@@ -5,7 +5,7 @@ local client_manager = require "lsp.client_manager"
 
 local M = {}
 
--- Use global Keymap function from keymaps.lua
+-- LSP keymaps using vim.keymap.set directly
 
 local function setup_workspace_keymaps(buf_opts)
   local workspace_mappings = {

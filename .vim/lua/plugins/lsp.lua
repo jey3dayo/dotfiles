@@ -25,13 +25,27 @@ return {
     opts = require "config/mason",
   },
   
-  -- EFM language configs - needed before mason-lspconfig
+  -- Modern formatting and linting
   {
-    "creativenull/efmls-configs-nvim",
+    "stevearc/conform.nvim",
     lazy = false,
     priority = 800,
     dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require "config/conform"
+    end,
   },
+  
+  {
+    "mfussenegger/nvim-lint",
+    lazy = false,
+    priority = 799,
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require "config/nvim-lint"
+    end,
+  },
+  
   
   -- LSP server auto-configuration - must be last
   {
@@ -40,8 +54,7 @@ return {
     priority = 700, -- Lower priority to ensure dependencies are ready
     dependencies = {
       "williamboman/mason.nvim",
-      "neovim/nvim-lspconfig", 
-      "creativenull/efmls-configs-nvim", -- Explicit EFM dependency
+      "neovim/nvim-lspconfig",
     },
     config = function()
       require "config/mason-lspconfig"

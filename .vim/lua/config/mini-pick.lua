@@ -2,10 +2,7 @@
 
 local utils = require "core.utils"
 
--- Use global Keymap function if available, fallback to vim.keymap.set
-local Keymap = _G.Keymap or function(lhs, rhs, opts)
-  vim.keymap.set("n", lhs, rhs, opts)
-end
+-- Use vim.keymap.set directly for better compatibility
 
 -- Helper functions
 local function get_git_dir()

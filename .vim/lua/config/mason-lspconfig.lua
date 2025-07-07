@@ -6,17 +6,15 @@ local compat = require "lsp.compat"
 local with = utils.with
 local handlers = require "lsp.handlers"
 local on_attach = handlers.on_attach
-local languages = require("lsp.efm").get_languages()
 local capabilities = require("lsp.capabilities").setup()
 local config = require "lsp.config"
 
 if not (mason_lspconfig and lspconfig) then return end
 
-local disabled_servers = { "efm" } -- Manually setup efm to prevent duplicate
+local disabled_servers = {} -- No manually disabled servers
 
 -- Collect servers that should be disabled based on autostart conditions
 for _, server in ipairs(config.enabled_servers) do
-  if server ~= "efm" then
     local extends = utils.safe_require("lsp.settings." .. server)
     if extends then
       local should_disable = false
@@ -33,7 +31,6 @@ for _, server in ipairs(config.enabled_servers) do
         end
       end
     end
-  end
 end
 
 mason_lspconfig.setup {
@@ -76,15 +73,3 @@ mason_lspconfig.setup {
 -- Debug: Print disabled servers
 if vim.g.lsp_debug then vim.notify("Disabled servers: " .. vim.inspect(disabled_servers), vim.log.levels.INFO) end
 
--- Setup EFM only once using singleton pattern
-local efm_singleton = require "lsp.efm_singleton"
-efm_singleton.setup {
-  filetypes = vim.tbl_keys(languages),
-  settings = {
-    rootMarkers = config.config_files,
-    languages = languages,
-  },
-  init_options = { documentFormatting = true, documentRangeFormatting = true },
-  on_attach = on_attach,
-  capabilities = capabilities,
-}

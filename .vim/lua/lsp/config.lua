@@ -33,7 +33,6 @@ M.servers = {
   bashls = { installed = true, enabled = true },
   cssls = { installed = true, enabled = true },
   dockerls = { installed = true, enabled = true },
-  efm = { installed = true, enabled = true },
   gopls = { installed = true, enabled = true },
   jsonls = { installed = true, enabled = true },
   lua_ls = { installed = true, enabled = true },
@@ -109,6 +108,28 @@ M.installed_tree_sitter = {
   "vim",
   "vimdoc",
   "yaml",
+}
+
+-- Linter configurations for nvim-lint
+M.linters = {
+  javascript = { "eslint" },
+  javascriptreact = { "eslint" },
+  typescript = { "eslint" },
+  typescriptreact = { "eslint" },
+  vue = { "eslint" },
+  
+  python = { "ruff" },
+  lua = { "luacheck" },
+  sh = { "shellcheck" },
+  bash = { "shellcheck" },
+  zsh = { "shellcheck" },
+  dockerfile = { "hadolint" },
+  yaml = { "yamllint" },
+  markdown = { "markdownlint", "codespell" },
+  vim = { "vint" },
+  
+  -- Global linters for any filetype
+  ["*"] = { "codespell" },
 }
 
 M.formatters = {

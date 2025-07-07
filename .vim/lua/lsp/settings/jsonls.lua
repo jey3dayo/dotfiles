@@ -84,7 +84,7 @@ return {
   filetypes = { "json", "jsonc" },
   -- autostart = false, -- Re-enable JSON LSP with proper configuration
   init_options = {
-    provideFormatter = false, -- EFM handles formatting (Prettier/Biome)
+    provideFormatter = false, -- conform.nvim handles formatting
   },
   settings = {
     json = {

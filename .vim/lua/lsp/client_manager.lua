@@ -60,16 +60,6 @@ local function extract_formatter_name(command)
   return name and (name:match "[^/\\]+$" or name)
 end
 
-local function get_efm_clients(client, buf_ft)
-  local clients = client.config.settings.languages[buf_ft] or {}
-  local names = {}
-
-  for _, c in ipairs(clients) do
-    if c.formatCommand then table.insert(names, extract_formatter_name(c.formatCommand)) end
-  end
-
-  return names
-end
 
 function M.get_lsp_client_names(bufnr)
   local clients = safe_client.get_clients({ bufnr = bufnr })
@@ -81,9 +71,7 @@ function M.get_lsp_client_names(bufnr)
 
   for _, client in pairs(clients) do
     if client:supports_method("textDocument/formatting") then
-      if client.name == "efm" then
-        vim.list_extend(client_names, get_efm_clients(client, buf_ft))
-      elseif not seen[client.name] then
+      if not seen[client.name] then
         table.insert(client_names, client.name)
         seen[client.name] = true
       end
