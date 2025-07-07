@@ -21,6 +21,5 @@ return {
     opts = require "config/hlchunk",
   },
   { "lewis6991/gitsigns.nvim", event = { "BufReadPre", "BufNewFile" }, opts = require "config/gitsigns" },
-  { "uga-rosa/ccc.nvim", cmd = { "CccPick", "CccConvert", "CccHighlighterToggle" } },
   { "j-hui/fidget.nvim", event = "LspAttach", tag = "legacy", opts = {} },
 }
