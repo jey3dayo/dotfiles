@@ -13,49 +13,49 @@ local function get_git_dir()
 end
 
 -- Core pickers
-Keymap("<Leader>ff", function()
+vim.keymap.set("n", "<Leader>ff", function()
   require("mini.pick").builtin.files()
 end, { desc = "Find files" })
 
-Keymap("<A-p>", function()
+vim.keymap.set("n", "<A-p>", function()
   require("mini.pick").builtin.files()
 end, { desc = "Find files" })
 
-Keymap("<Leader>fF", function()
+vim.keymap.set("n", "<Leader>fF", function()
   local buffer_dir = vim.fn.expand "%:p:h"
   require("mini.pick").builtin.files(nil, { source = { cwd = buffer_dir } })
 end, { desc = "Find files in buffer dir" })
 
-Keymap("<Leader><Leader>", function()
+vim.keymap.set("n", "<Leader><Leader>", function()
   require("mini.pick").builtin.resume()
 end, { desc = "Resume last pick" })
 
 -- Grep functionality
-Keymap("<Leader>fg", function()
+vim.keymap.set("n", "<Leader>fg", function()
   require("mini.pick").builtin.grep_live()
 end, { desc = "Live grep" })
 
-Keymap("<Leader>fG", function()
+vim.keymap.set("n", "<Leader>fG", function()
   require("mini.pick").builtin.grep()
 end, { desc = "Grep (with pattern input)" })
 
 -- Additional grep keymap for muscle memory
-Keymap("<Leader>g", function()
+vim.keymap.set("n", "<Leader>g", function()
   require("mini.pick").builtin.grep_live()
 end, { desc = "Live grep (shortcut)" })
 
 -- Buffer management
-Keymap("<Leader>fb", function()
+vim.keymap.set("n", "<Leader>fb", function()
   require("mini.pick").builtin.buffers()
 end, { desc = "Find buffers" })
 
 -- Help system
-Keymap("<Leader>fh", function()
+vim.keymap.set("n", "<Leader>fh", function()
   require("mini.pick").builtin.help()
 end, { desc = "Find help" })
 
 -- Recent files (oldfiles replacement)
-Keymap("<Leader>fo", function()
+vim.keymap.set("n", "<Leader>fo", function()
   local ok, mini_extra = pcall(require, "mini.extra")
   if ok then
     mini_extra.pickers.oldfiles()
@@ -70,7 +70,7 @@ Keymap("<Leader>fo", function()
 end, { desc = "Find recent files" })
 
 -- Commands picker
-Keymap("<Leader>fc", function()
+vim.keymap.set("n", "<Leader>fc", function()
   local ok, mini_extra = pcall(require, "mini.extra")
   if ok then
     mini_extra.pickers.commands()
@@ -83,7 +83,7 @@ Keymap("<Leader>fc", function()
 end, { desc = "Find commands" })
 
 -- Keymaps picker
-Keymap("<Leader>fk", function()
+vim.keymap.set("n", "<Leader>fk", function()
   local ok, mini_extra = pcall(require, "mini.extra")
   if ok then
     mini_extra.pickers.keymaps()
@@ -98,52 +98,52 @@ local function setup_extra_pickers()
   if not ok then return end
 
   -- Git pickers (use different keys to avoid conflict)
-  Keymap("<Leader>fgc", function()
+  vim.keymap.set("n", "<Leader>fgc", function()
     mini_extra.pickers.git_commits()
   end, { desc = "Git commits" })
 
-  Keymap("<Leader>fgf", function()
+  vim.keymap.set("n", "<Leader>fgf", function()
     mini_extra.pickers.git_files()
   end, { desc = "Git files" })
 
   -- Diagnostic pickers
-  Keymap("<Leader>fd", function()
+  vim.keymap.set("n", "<Leader>fd", function()
     mini_extra.pickers.diagnostic()
   end, { desc = "Diagnostics" })
 
   -- LSP pickers
-  Keymap("<Leader>fs", function()
+  vim.keymap.set("n", "<Leader>fs", function()
     mini_extra.pickers.lsp { scope = "document_symbol" }
   end, { desc = "Document symbols" })
 
-  Keymap("<Leader>fS", function()
+  vim.keymap.set("n", "<Leader>fS", function()
     mini_extra.pickers.lsp { scope = "workspace_symbol" }
   end, { desc = "Workspace symbols" })
 
   -- Recently visited files
-  Keymap("<Leader>fr", function()
+  vim.keymap.set("n", "<Leader>fr", function()
     mini_extra.pickers.visit_paths()
   end, { desc = "Recent files (mini.visits)" })
 
   -- Colorscheme picker
-  Keymap("<Leader>fc", function()
+  vim.keymap.set("n", "<Leader>fc", function()
     mini_extra.pickers.hipatterns()
   end, { desc = "Highlight patterns" })
 end
 
 -- File browser replacement (use mini.files)
-Keymap("<Leader>e", function()
+vim.keymap.set("n", "<Leader>e", function()
   local git_dir = get_git_dir()
   local path = git_dir ~= "" and git_dir or vim.fn.expand "%:p:h"
   require("mini.files").open(path, true)
 end, { desc = "Open mini.files (git root or buffer dir)" })
 
-Keymap("<Leader>E", function()
+vim.keymap.set("n", "<Leader>E", function()
   require("mini.files").open(vim.fn.expand "%:p:h", true)
 end, { desc = "Open mini.files (buffer dir)" })
 
 -- Yank history (neoclip)
-Keymap("<Leader>fy", function()
+vim.keymap.set("n", "<Leader>fy", function()
   local ok, _ = pcall(require, "neoclip")
   if ok then
     -- Open neoclip with default UI
@@ -154,7 +154,7 @@ Keymap("<Leader>fy", function()
 end, { desc = "Yank history (neoclip)" })
 
 -- Notification history (mini.notify integration)
-Keymap("<leader>fn", function()
+vim.keymap.set("n", "<leader>fn", function()
   local ok, mini_notify = pcall(require, "mini.notify")
   if ok then
     mini_notify.show_history()
@@ -163,7 +163,7 @@ Keymap("<leader>fn", function()
   end
 end, { desc = "Show notification history" })
 
-Keymap("<leader>fN", function()
+vim.keymap.set("n", "<leader>fN", function()
   local ok, mini_notify = pcall(require, "mini.notify")
   if ok then
     mini_notify.show_history()
@@ -173,11 +173,11 @@ Keymap("<leader>fN", function()
 end, { desc = "Show notification history buffer" })
 
 -- Messages integration
-Keymap("<leader>fm", function()
+vim.keymap.set("n", "<leader>fm", function()
   vim.cmd "messages"
 end, { desc = "Show messages" })
 
-Keymap("<leader>fM", function()
+vim.keymap.set("n", "<leader>fM", function()
   vim.cmd "messages"
 end, { desc = "Show messages" })
 

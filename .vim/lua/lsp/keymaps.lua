@@ -21,7 +21,7 @@ local function setup_workspace_keymaps(buf_opts)
   }
 
   for key, func in pairs(workspace_mappings) do
-    Keymap(key, func, buf_opts)
+    vim.keymap.set("n", key, func, buf_opts)
   end
 end
 
@@ -35,11 +35,11 @@ local function setup_keymaps(client, bufnr)
   -- vim.keymap.set('n', "<C-e>", config.LSP.PREFIX, config.LSP.DEFAULT_OPTS)
   
   -- LSP keymaps (previously lspsaga)
-  Keymap("<C-j>", vim.diagnostic.goto_next, buf_opts)
-  Keymap("<C-k>", vim.diagnostic.goto_prev, buf_opts)
-  Keymap("<C-l>", vim.diagnostic.open_float, buf_opts)
-  Keymap("K", vim.lsp.buf.hover, buf_opts)
-  Keymap("<C-[>", function() 
+  vim.keymap.set("n", "<C-j>", vim.diagnostic.goto_next, buf_opts)
+  vim.keymap.set("n", "<C-k>", vim.diagnostic.goto_prev, buf_opts)
+  vim.keymap.set("n", "<C-l>", vim.diagnostic.open_float, buf_opts)
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, buf_opts)
+  vim.keymap.set("n", "<C-[>", function() 
     -- Get active LSP clients for current buffer
     local clients = vim.lsp.get_clients({ bufnr = bufnr })
     local has_references = false
@@ -64,15 +64,15 @@ local function setup_keymaps(client, bufnr)
       vim.notify("No LSP clients attached or references not supported", vim.log.levels.WARN)
     end
   end, buf_opts)
-  Keymap("<C-]>", vim.lsp.buf.definition, buf_opts)
-  -- Direct LSP keymaps with <C-e> prefix
-  Keymap("<C-e>a", vim.lsp.buf.code_action, buf_opts)
-  Keymap("<C-e>d", vim.lsp.buf.declaration, buf_opts)
-  Keymap("<C-e>i", vim.lsp.buf.implementation, buf_opts)
-  Keymap("<C-e>t", vim.lsp.buf.type_definition, buf_opts)
-  Keymap("<C-e>k", vim.lsp.buf.definition, buf_opts)
-  Keymap("<C-e>r", vim.lsp.buf.rename, buf_opts)
-  Keymap("<C-e>o", function() 
+  vim.keymap.set("n", "<C-]>", vim.lsp.buf.definition, buf_opts)
+  -- Direct LSP keymaps with <C-e> prefix (using vim.keymap.set for proper desc support)
+  vim.keymap.set("n", "<C-e>a", vim.lsp.buf.code_action, with(buf_opts, { desc = "Code action" }))
+  vim.keymap.set("n", "<C-e>d", vim.lsp.buf.declaration, with(buf_opts, { desc = "Declaration" }))
+  vim.keymap.set("n", "<C-e>i", vim.lsp.buf.implementation, with(buf_opts, { desc = "Implementation" }))
+  vim.keymap.set("n", "<C-e>t", vim.lsp.buf.type_definition, with(buf_opts, { desc = "Type definition" }))
+  vim.keymap.set("n", "<C-e>k", vim.lsp.buf.definition, with(buf_opts, { desc = "Definition" }))
+  vim.keymap.set("n", "<C-e>r", vim.lsp.buf.rename, with(buf_opts, { desc = "Rename" }))
+  vim.keymap.set("n", "<C-e>o", function() 
     -- Get active LSP clients for current buffer
     local clients = vim.lsp.get_clients({ bufnr = bufnr })
     local has_symbols = false
@@ -96,36 +96,11 @@ local function setup_keymaps(client, bufnr)
     else
       vim.notify("No LSP clients attached or document symbols not supported", vim.log.levels.WARN)
     end
-  end, buf_opts)
+  end, with(buf_opts, { desc = "Document symbols" }))
 
   setup_workspace_keymaps(buf_opts)
 
-  -- Ensure mini.clue sees LSP keymaps  
-  if package.loaded['mini.clue'] then
-    vim.schedule(function()
-      local miniclue = require('mini.clue')
-      miniclue.ensure_buf_triggers()
-      
-      -- Safely set mapping descriptions only if mappings exist
-      local function safe_set_desc(mode, lhs, desc)
-        local mappings = vim.api.nvim_buf_get_keymap(bufnr, mode)
-        for _, mapping in ipairs(mappings) do
-          if mapping.lhs == lhs then
-            pcall(miniclue.set_mapping_desc, mode, lhs, desc)
-            return
-          end
-        end
-      end
-      
-      safe_set_desc('n', '<C-e>a', 'Code action')
-      safe_set_desc('n', '<C-e>d', 'Declaration')
-      safe_set_desc('n', '<C-e>i', 'Implementation')
-      safe_set_desc('n', '<C-e>t', 'Type definition')
-      safe_set_desc('n', '<C-e>k', 'Definition')
-      safe_set_desc('n', '<C-e>r', 'Rename')
-      safe_set_desc('n', '<C-e>o', 'Document symbols')
-    end)
-  end
+  -- LSP keymap descriptions are now set directly in vim.keymap.set calls above
 end
 
 local function setup_format_keymap(client, bufnr)

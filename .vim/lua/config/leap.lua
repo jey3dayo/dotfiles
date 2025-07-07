@@ -5,13 +5,13 @@ if not (leap and leap_user) then return end
 
 -- leap.add_default_mappings()
 
-Keymap("s", "<Plug>(leap)")
-X_Keymap("s", "<Plug>(leap-forward)")
-O_Keymap("s", "<Plug>(leap-forward)")
+vim.keymap.set("n", "s", "<Plug>(leap)", { desc = "Leap" })
+vim.keymap.set("x", "s", "<Plug>(leap-forward)", { desc = "Leap forward" })
+vim.keymap.set("o", "s", "<Plug>(leap-forward)", { desc = "Leap forward" })
 
-Keymap("S", "<Plug>(leap-from-window)")
-X_Keymap("S", "<Plug>(leap-backward)")
-O_Keymap("S", "<Plug>(leap-backward)")
+vim.keymap.set("n", "S", "<Plug>(leap-from-window)", { desc = "Leap from window" })
+vim.keymap.set("x", "S", "<Plug>(leap-backward)", { desc = "Leap backward" })
+vim.keymap.set("o", "S", "<Plug>(leap-backward)", { desc = "Leap backward" })
 
 vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" }) -- or some grey
 vim.api.nvim_set_hl(0, "LeapMatch", { fg = "white", bold = true, nocombine = true })

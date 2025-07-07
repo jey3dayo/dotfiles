@@ -35,7 +35,7 @@ oil.setup {
 }
 
 -- Keymaps
-Keymap("<Leader>e", function()
+vim.keymap.set("n", "<Leader>e", function()
   local git_dir = utils.get_git_dir()
   if git_dir ~= "" then
     oil.open(git_dir)
@@ -44,7 +44,7 @@ Keymap("<Leader>e", function()
   end
 end, { desc = "Open git dir with Oil" })
 
-Keymap("<Leader>E", function()
+vim.keymap.set("n", "<Leader>E", function()
   oil.open(vim.fn.expand "%:p:h")
 end, { desc = "Open buffer dir with Oil" })
 

@@ -209,22 +209,12 @@ return {
           { mode = "n", keys = "<Leader>so", desc = "Source init.lua" },
           { mode = "n", keys = "<Leader>sO", desc = "Source current buffer" },
 
-          -- LSP keymaps descriptions
-          { mode = "n", keys = "<C-e>a", desc = "Code action" },
-          { mode = "n", keys = "<C-e>d", desc = "Declaration" },
-          { mode = "n", keys = "<C-e>i", desc = "Implementation" },
-          { mode = "n", keys = "<C-e>t", desc = "Type definition" },
-          { mode = "n", keys = "<C-e>k", desc = "Definition" },
-          { mode = "n", keys = "<C-e>r", desc = "Rename" },
-          { mode = "n", keys = "<C-e>o", desc = "Document symbols" },
-
-          -- Format keymaps descriptions
-          { mode = "n", keys = "<C-e>f", desc = "Format (auto-select)" },
+          -- Format keymaps (LSP keymaps get descriptions from vim.keymap.set directly)
           { mode = "n", keys = "<C-e>b", desc = "Format with Biome" },
-          { mode = "n", keys = "<C-e>p", desc = "Format with Prettier" },
           { mode = "n", keys = "<C-e>e", desc = "Format with ESLint" },
+          { mode = "n", keys = "<C-e>f", desc = "Format (auto-select)" },
+          { mode = "n", keys = "<C-e>p", desc = "Format with Prettier" },
           { mode = "n", keys = "<C-e>s", desc = "Format with TypeScript" },
-          { mode = "n", keys = "<C-e>m", desc = "Format with EFM" },
         },
 
         window = {
@@ -241,16 +231,20 @@ return {
         miniclue.set_mapping_desc("n", "<Leader>so", "Source init.lua")
         miniclue.set_mapping_desc("n", "<Leader>sO", "Source current buffer")
 
-        -- LSP keymap descriptions will be set when LSP attaches
-        -- Removed forced descriptions to avoid conflicts
+        -- Set all <C-e> descriptions centrally to avoid conflicts
 
-        -- Force format keymap descriptions
-        miniclue.set_mapping_desc("n", "<C-e>f", "Format (auto-select)")
-        miniclue.set_mapping_desc("n", "<C-e>b", "Format with Biome")
-        miniclue.set_mapping_desc("n", "<C-e>p", "Format with Prettier")
-        miniclue.set_mapping_desc("n", "<C-e>e", "Format with ESLint")
-        miniclue.set_mapping_desc("n", "<C-e>s", "Format with TypeScript")
-        miniclue.set_mapping_desc("n", "<C-e>m", "Format with EFM")
+        -- Force Format keymap descriptions only (LSP descriptions set in keymaps directly)
+        local format_descriptions = {
+          ["<C-e>b"] = "Format with Biome", 
+          ["<C-e>e"] = "Format with ESLint",
+          ["<C-e>f"] = "Format (auto-select)",
+          ["<C-e>p"] = "Format with Prettier",
+          ["<C-e>s"] = "Format with TypeScript",
+        }
+        
+        for lhs, desc in pairs(format_descriptions) do
+          miniclue.set_mapping_desc("n", lhs, desc)
+        end
       end)
     end,
   },

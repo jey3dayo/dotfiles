@@ -98,8 +98,8 @@ local function ShowChatPrompt()
   end)
 end
 
--- Hack: MetaをAltにマッピング
-Keymap("<A-k>", CopilotChatBuffer)
-V_Keymap("<A-k>", CopilotChatBuffer)
-Keymap("<A-l>", ShowChatPrompt)
-V_Keymap("<A-l>", ShowChatPrompt)
+-- Copilot Chat keymaps
+vim.keymap.set("n", "<A-k>", CopilotChatBuffer, { desc = "Copilot Chat Buffer" })
+vim.keymap.set("v", "<A-k>", CopilotChatBuffer, { desc = "Copilot Chat Buffer" })
+vim.keymap.set("n", "<A-l>", ShowChatPrompt, { desc = "Show Copilot Chat Prompt" })
+vim.keymap.set("v", "<A-l>", ShowChatPrompt, { desc = "Show Copilot Chat Prompt" })

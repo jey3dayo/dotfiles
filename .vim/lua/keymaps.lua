@@ -8,29 +8,7 @@ local function set_keymap(mode, key, value, opts)
   vim.keymap.set(mode, key, value, opts)
 end
 
-function Keymap(key, value, opts)
-  set_keymap("n", key, value, opts)
-end
-
-function I_Keymap(key, value, opts)
-  set_keymap("i", key, value, opts)
-end
-
-function V_Keymap(key, value, opts)
-  set_keymap("v", key, value, opts)
-end
-
-function X_Keymap(key, value, opts)
-  set_keymap("x", key, value, opts)
-end
-
-function O_Keymap(key, value, opts)
-  set_keymap("o", key, value, opts)
-end
-
-function T_Keymap(key, value, opts)
-  set_keymap("t", key, value, opts)
-end
+-- Legacy Keymap functions removed - use vim.keymap.set directly
 
 -- deprecated
 function Set_keymap(key, value, _opts)
@@ -43,42 +21,42 @@ function Buf_set_keymap(key, value, buf)
   vim.api.nvim_buf_set_keymap(buf, "n", key, value, noremap_opts)
 end
 
-Keymap("<C-d>", "<cmd>bd<CR>")
-Keymap("<Tab>", "<cmd>wincmd w<CR>")
-Keymap("gF", "0f v$gf")
-Keymap("gF", "0f v$gf")
+vim.keymap.set("n", "<C-d>", "<cmd>bd<CR>")
+vim.keymap.set("n", "<Tab>", "<cmd>wincmd w<CR>")
+vim.keymap.set("n", "gF", "0f v$gf")
+vim.keymap.set("v", "gF", "0f v$gf")
 
 -- ESC ESC -> toggle hlsearch
-Keymap("<Esc><Esc>", function()
+vim.keymap.set("n", "<Esc><Esc>", function()
   vim.cmd "set hlsearch!"
 end)
 
 -- LSP tag jump (modern replacement for ctags)
-Keymap("tt", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to definition" })
-Keymap("tj", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Find references" })
-Keymap("tk", "<cmd>lua vim.lsp.buf.implementation()<CR>", { desc = "Go to implementation" })
-Keymap("tl", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { desc = "Go to type definition" })
+vim.keymap.set("n", "tt", "<cmd>lua vim.lsp.buf.definition()<CR>", { desc = "Go to definition" })
+vim.keymap.set("n", "tj", "<cmd>lua vim.lsp.buf.references()<CR>", { desc = "Find references" })
+vim.keymap.set("n", "tk", "<cmd>lua vim.lsp.buf.implementation()<CR>", { desc = "Go to implementation" })
+vim.keymap.set("n", "tl", "<cmd>lua vim.lsp.buf.type_definition()<CR>", { desc = "Go to type definition" })
 
 -- tab (direct mappings for mini.clue compatibility)
-Keymap("<C-t>c", "<cmd>tabnew<CR>", { desc = "New tab" })
-Keymap("<C-t>d", "<cmd>tabclose<CR>", { desc = "Close tab" })
-Keymap("<C-t>o", "<cmd>tab split<CR>", { desc = "Split tab" })
-Keymap("<C-t>n", "<cmd>tabnext<CR>", { desc = "Next tab" })
-Keymap("<C-t>p", "<cmd>tabprevious<CR>", { desc = "Previous tab" })
+vim.keymap.set("n", "<C-t>c", "<cmd>tabnew<CR>", { desc = "New tab" })
+vim.keymap.set("n", "<C-t>d", "<cmd>tabclose<CR>", { desc = "Close tab" })
+vim.keymap.set("n", "<C-t>o", "<cmd>tab split<CR>", { desc = "Split tab" })
+vim.keymap.set("n", "<C-t>n", "<cmd>tabnext<CR>", { desc = "Next tab" })
+vim.keymap.set("n", "<C-t>p", "<cmd>tabprevious<CR>", { desc = "Previous tab" })
 
-Keymap("gt", "<cmd>tabnext<CR>")
-Keymap("gT", "<cmd>tabprevious<CR>")
+vim.keymap.set("n", "gt", "<cmd>tabnext<CR>")
+vim.keymap.set("n", "gT", "<cmd>tabprevious<CR>")
 
 -- set list
-Keymap("<Leader>sn", "<cmd>set number!<CR>", { desc = "Toggle line numbers" })
-Keymap("<Leader>sL", "<cmd>set list!<CR>", { desc = "Toggle list mode" })
-Keymap("<Leader>sp", "<cmd>Lazy<CR>", { desc = "Plugin manager" })
-Keymap("<Leader>sd", "<cmd>LspDebug<CR>", { desc = "LspDebug" })
-Keymap("<Leader>sm", "<cmd>MasonUpdate<CR>", { desc = "Update Mason" })
-Keymap("<Leader>st", "<cmd>TSUpdate all<CR>", { desc = "Update TreeSitter" })
+vim.keymap.set("n", "<Leader>sn", "<cmd>set number!<CR>", { desc = "Toggle line numbers" })
+vim.keymap.set("n", "<Leader>sL", "<cmd>set list!<CR>", { desc = "Toggle list mode" })
+vim.keymap.set("n", "<Leader>sp", "<cmd>Lazy<CR>", { desc = "Plugin manager" })
+vim.keymap.set("n", "<Leader>sd", "<cmd>LspDebug<CR>", { desc = "LspDebug" })
+vim.keymap.set("n", "<Leader>sm", "<cmd>MasonUpdate<CR>", { desc = "Update Mason" })
+vim.keymap.set("n", "<Leader>st", "<cmd>TSUpdate all<CR>", { desc = "Update TreeSitter" })
 
 -- update source
-Keymap("<Leader>su", "<cmd>Lazy update<CR>", { desc = "Update plugins" })
+vim.keymap.set("n", "<Leader>su", "<cmd>Lazy update<CR>", { desc = "Update plugins" })
 
 -- Load a config file
 local function load_config(config_path)
@@ -91,14 +69,14 @@ local function source_config()
   local config_path = vim.fn.stdpath "config" .. "/init.lua"
   load_config(config_path)
 end
-Keymap("<Leader>so", source_config, { desc = "Source init.lua" })
+vim.keymap.set("n", "<Leader>so", source_config, { desc = "Source init.lua" })
 
 -- Source the current config
 local function source_current_config()
   local config_path = vim.fn.expand "%:p"
   load_config(config_path)
 end
-Keymap("<Leader>sO", source_current_config, { desc = "Source current buffer" })
+vim.keymap.set("n", "<Leader>sO", source_current_config, { desc = "Source current buffer" })
 
 -- yank
 local function copy_current_file_path()
@@ -106,7 +84,7 @@ local function copy_current_file_path()
   vim.fn.setreg("*", path)
   vim.api.nvim_echo({ { "Copied: " .. path, "None" } }, true, {})
 end
-Keymap("Yf", copy_current_file_path)
+vim.keymap.set("n", "Yf", copy_current_file_path)
 
 -- Copy file path with current line number
 local function copy_file_path_with_line()
@@ -116,7 +94,7 @@ local function copy_file_path_with_line()
   vim.fn.setreg("*", text)
   vim.api.nvim_echo({ { "Copied: " .. text, "None" } }, true, {})
 end
-Keymap("Yl", copy_file_path_with_line)
+vim.keymap.set("n", "Yl", copy_file_path_with_line)
 
 -- Copy full path
 local function copy_full_path()
@@ -124,7 +102,7 @@ local function copy_full_path()
   vim.fn.setreg("*", path)
   vim.api.nvim_echo({ { "Copied: " .. path, "None" } }, true, {})
 end
-Keymap("YF", copy_full_path)
+vim.keymap.set("n", "YF", copy_full_path)
 
 -- Copy directory path
 local function copy_directory()
@@ -132,7 +110,7 @@ local function copy_directory()
   vim.fn.setreg("*", dir)
   vim.api.nvim_echo({ { "Copied: " .. dir, "None" } }, true, {})
 end
-Keymap("Yd", copy_directory)
+vim.keymap.set("n", "Yd", copy_directory)
 
 -- Copy relative directory path
 local function copy_relative_directory()
@@ -140,7 +118,7 @@ local function copy_relative_directory()
   vim.fn.setreg("*", dir)
   vim.api.nvim_echo({ { "Copied: " .. dir, "None" } }, true, {})
 end
-Keymap("YD", copy_relative_directory)
+vim.keymap.set("n", "YD", copy_relative_directory)
 
 -- ファイル名とバッファ内容をクリップボードにコピー
 local function copy_buffer_with_path_and_code_block()
@@ -151,14 +129,13 @@ local function copy_buffer_with_path_and_code_block()
   vim.fn.setreg("*", text)
   vim.notify("Copied buffer: " .. path, vim.log.levels.INFO)
 end
-Keymap("YY", copy_buffer_with_path_and_code_block)
+vim.keymap.set("n", "YY", copy_buffer_with_path_and_code_block)
 
 -- Format keybindings (LSP-based)
-Keymap("<C-e>f", "<cmd>Format<CR>", { desc = "Format (auto-select)" })
+vim.keymap.set("n", "<C-e>f", "<cmd>Format<CR>", { desc = "Format (auto-select)" })
 
 -- Individual formatter keymaps
-Keymap("<C-e>b", "<cmd>FormatWithBiome<CR>", { desc = "Format with Biome" })
-Keymap("<C-e>p", "<cmd>FormatWithPrettier<CR>", { desc = "Format with Prettier" })
-Keymap("<C-e>e", "<cmd>FormatWithEslint<CR>", { desc = "Format with ESLint" })
-Keymap("<C-e>s", "<cmd>FormatWithTsLs<CR>", { desc = "Format with TypeScript" })
-Keymap("<C-e>m", "<cmd>FormatWithEfm<CR>", { desc = "Format with EFM" })
+vim.keymap.set("n", "<C-e>b", "<cmd>FormatWithBiome<CR>", { desc = "Format with Biome" })
+vim.keymap.set("n", "<C-e>p", "<cmd>FormatWithPrettier<CR>", { desc = "Format with Prettier" })
+vim.keymap.set("n", "<C-e>e", "<cmd>FormatWithEslint<CR>", { desc = "Format with ESLint" })
+vim.keymap.set("n", "<C-e>s", "<cmd>FormatWithTsLs<CR>", { desc = "Format with TypeScript" })
