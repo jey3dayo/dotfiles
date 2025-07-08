@@ -112,10 +112,25 @@ ln -sf /path/to/dotfiles/zsh/lazy-sources ~/.config/zsh/lazy-sources
 
 ## 📈 現在の指標
 
-- **起動時間**: 1.2秒 (目標: 1.0秒)
+- **起動時間**: 1.2秒 (30%改善達成 - 1.7s → 1.2s)
 - **プラグイン数**: 15+ (最適化済み)
 - **メモリ使用量**: 監視対象
 - **設定ファイル数**: 8ファイル (モジュール化)
+
+## 🔑 Zsh Key Features (詳細機能)
+
+### コマンド効率化
+
+- **Abbreviations**: 50+ コマンド短縮形（`g` → `git`, `ga` → `git add`, etc）
+- **Git Widgets**: `^g^g` (status), `^g^s` (add), `^g^a` (add all), `^g^b` (branch) でGit操作
+- **FZF統合**: `^]` リポジトリ選択、`^g^K` プロセス管理
+- **Help System**: `zsh-help [keybinds|aliases|tools]` で詳細ヘルプ
+
+### パフォーマンス監視
+
+- **起動時間測定**: `zsh-benchmark` で5回平均測定
+- **プロファイリング**: `zsh-profile` で詳細分析
+- **継続監視**: 定期的なベンチマーク実行で回帰検出
 
 ## 🚧 最適化課題
 
