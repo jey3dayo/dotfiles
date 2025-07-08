@@ -8,7 +8,7 @@ experimental = true
 vfox = false
 idiomatic_version_file_enable_tools = ["go"]
 env_file = ".env"
-trusted_config_paths = ['~/src/github.com/jey3dayo']
+trusted_config_paths = ['~/src/github.com']
 
 [env]
 _.source = [".venv/bin/activate"]
