@@ -2,8 +2,6 @@
 local cacheDir = vim.fn.stdpath "cache"
 
 local options = {
-  -- spell = true,
-  -- spelllang = { "en_us" },
   encoding = "utf-8",
   fileencoding = "utf-8",
   fileformats = { "unix", "mac", "dos" },
@@ -46,9 +44,6 @@ local options = {
   number = true,
   ruler = false,
   cursorline = false,
-  -- scrolloff = 8,
-  -- sidescrolloff = 8,
-  -- TODO: East Asian Ambiguous Width
   ambiwidth = "single",
 
   -- visible SpecialKey

@@ -33,6 +33,13 @@ return {
     end,
   },
 
+  -- Extra utilities (required by many mini plugins)
+  {
+    "echasnovski/mini.extra",
+    version = false,
+    lazy = true,
+  },
+
   -- Trailing whitespace
   {
     "echasnovski/mini.trailspace",
@@ -59,8 +66,6 @@ return {
 
       -- Helper function to create color highlighter from color string
       local function color_from_match(_, match)
-        -- For now, just return a fixed highlight group for non-hex colors
-        -- TODO: Convert RGB/HSL to hex and compute proper color
         return nil
       end
 
@@ -144,23 +149,7 @@ return {
   },
 
   -- Notifications
-  {
-    "echasnovski/mini.notify",
-    version = false,
-    event = "VeryLazy",
-    config = function()
-      require("mini.notify").setup {
-        window = {
-          config = {
-            border = "rounded",
-          },
-        },
-      }
-      vim.notify = require("mini.notify").make_notify {
-        ERROR = { duration = 10000 }, -- Keep errors visible for 10s
-      }
-    end,
-  },
+  -- mini.notify removed in favor of noice.nvim + nvim-notify
 
   -- Enhanced editing capabilities
   {
@@ -344,6 +333,17 @@ return {
     end,
   },
 
+  -- Fuzzy finder
+  {
+    "echasnovski/mini.pick",
+    version = false,
+    lazy = false,
+    dependencies = { "echasnovski/mini.extra" },
+    config = function()
+      require "config/mini-pick"
+    end,
+  },
+
   -- Starter screen
   {
     "echasnovski/mini.starter",
@@ -405,6 +405,16 @@ return {
     event = "VeryLazy",
     config = function()
       require("mini.visits").setup()
+    end,
+  },
+
+  -- Key mapping hints and clues
+  {
+    "echasnovski/mini.clue",
+    version = false,
+    event = "VeryLazy",
+    config = function()
+      require("mini.clue").setup(require("config/mini-clue"))
     end,
   },
 }

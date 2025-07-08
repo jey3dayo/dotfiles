@@ -1,7 +1,7 @@
 local utils = require "core.utils"
 local with = utils.with
 local config = require "lsp.config"
-local client_manager = require "lsp.client_manager"
+local client_utils = require "lsp.client_utils"
 
 local M = {}
 

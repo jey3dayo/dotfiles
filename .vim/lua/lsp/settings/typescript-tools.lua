@@ -12,15 +12,6 @@ local config = {
       useSyntaxServer = "never",
     },
   },
-  settings = {
-    -- FIXME: 動いてる気がしない
-    tsserver_locale = "ja",
-    tsserver_file_preferences = {
-      separateRequireAndTypeImports = true,
-      organizeImportsCollation = "ordinal",
-      organizeImportsCollationLocale = "ja",
-    },
-  },
   root_dir = lsp_utils.create_root_pattern(config_files),
   filetypes = ft.js_project,
   -- TypeScript LSP should always be available

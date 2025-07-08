@@ -1,5 +1,5 @@
 --- Native LSP UI configuration with unified theming
---- Optimized for gruvbox-based dotfiles theme consistency
+--- Optimized for dotfiles theme consistency
 
 -- Enable inlay hints if available
 if vim.lsp.inlay_hint then 
@@ -7,17 +7,17 @@ if vim.lsp.inlay_hint then
 end
 
 
--- Define consistent UI theme colors (gruvbox-compatible)
+-- Define consistent UI theme colors (theme-compatible)
 local ui_theme = {
   border = "rounded",
   max_width = 80,
   max_height = 20,
-  -- Gruvbox-compatible colors
+  -- Theme-compatible colors
   colors = {
-    error = "#fb4934",   -- gruvbox red
-    warn = "#fabd2f",    -- gruvbox yellow
-    info = "#83a598",    -- gruvbox blue
-    hint = "#8ec07c",    -- gruvbox aqua
+    error = "#fb4934",   -- red
+    warn = "#fabd2f",    -- yellow
+    info = "#83a598",    -- blue
+    hint = "#8ec07c",    -- aqua
   }
 }
 
@@ -34,7 +34,7 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
   max_width = ui_theme.max_width,
 })
 
--- Diagnostic configuration with gruvbox-themed icons and colors
+-- Diagnostic configuration with themed icons and colors
 vim.diagnostic.config {
   virtual_text = {
     spacing = 4,

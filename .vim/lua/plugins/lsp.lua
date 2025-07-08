@@ -8,8 +8,8 @@ return {
     config = function()
       -- Initialize LSP core components first
       require "lsp.quiet"        -- Setup quiet mode before any LSP activity
-      require "lsp.client_tracker" -- Initialize client tracking
-      require "lsp.performance"  -- Initialize performance monitoring
+      -- Client tracking is now handled by simplified client_utils.lua
+      -- Performance monitoring removed - use :LspInfo and built-in tools
       require "lsp.handlers"     -- Setup LSP handlers (including client/registerCapability)
       require "config/native-lsp-ui" -- Configure UI handlers
       require "lsp.debug"        -- Debug commands

@@ -237,7 +237,7 @@ function M.check_lsp_status()
   echo_newline()
   
   -- Show which formatters would be used
-  local format_clients = require("lsp.client_manager").get_format_clients(bufnr)
+  local format_clients = require("lsp.client_utils").get_format_clients(bufnr)
   if #format_clients > 0 then
     echo("• Available formatters:", "Normal")
     echo_newline()
@@ -427,7 +427,7 @@ function M.test_formatter()
   echo_buffer = {}
   
   local bufnr = vim.api.nvim_get_current_buf()
-  local format_clients = require("lsp.client_manager").get_format_clients(bufnr)
+  local format_clients = require("lsp.client_utils").get_format_clients(bufnr)
   
   echo_header("Formatter Test")
   if #format_clients == 0 then

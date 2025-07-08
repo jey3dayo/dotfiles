@@ -10,6 +10,4 @@ return {
       require "config/vim-repeat"
     end,
   },
-  { "kana/vim-textobj-user", event = "VeryLazy" },
-  { "honza/vim-snippets", event = "InsertEnter" },
 }

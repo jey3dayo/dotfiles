@@ -117,12 +117,8 @@ utils.autocmd("LspAttach", {
       return
     end
 
-    -- Lazy load client manager when actually needed
-    local client_manager = require "lsp/client_manager"
-
-    -- 既に処理済みのチェック
-    if client_manager.is_client_processed(args.data.client_id, bufnr) then return end
-    client_manager.mark_client_processed(args.data.client_id, bufnr)
+    -- Skip duplicate processing (modern LSP handles this automatically)
+    -- Client attachment is now handled by the LSP system itself
 
     -- クライアント停止判定を削除（すべてのLSPを起動させる）
     -- フォーマット時にどのクライアントを使うかは、formatter.luaで制御

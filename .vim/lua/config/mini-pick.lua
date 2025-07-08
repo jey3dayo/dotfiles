@@ -36,7 +36,7 @@ vim.keymap.set("n", "<Leader>fG", function()
   require("mini.pick").builtin.grep()
 end, { desc = "Grep (with pattern input)" })
 
--- Additional grep keymap for muscle memory
+-- Additional grep keymap for muscle memory - both <Leader>fg and <Leader>g work
 vim.keymap.set("n", "<Leader>g", function()
   require("mini.pick").builtin.grep_live()
 end, { desc = "Live grep (shortcut)" })
@@ -51,20 +51,20 @@ vim.keymap.set("n", "<Leader>fh", function()
   require("mini.pick").builtin.help()
 end, { desc = "Find help" })
 
--- Recent files (oldfiles replacement)
-vim.keymap.set("n", "<Leader>fo", function()
+-- Recent files (using mini.visits for smarter tracking)
+vim.keymap.set("n", "<Leader>fr", function()
   local ok, mini_extra = pcall(require, "mini.extra")
   if ok then
-    mini_extra.pickers.oldfiles()
+    mini_extra.pickers.visit_paths()
   else
-    -- Fallback to vim's oldfiles
+    -- Fallback to basic oldfiles
     vim.ui.select(vim.v.oldfiles, {
       prompt = "Recent files:",
     }, function(choice)
       if choice then vim.cmd("edit " .. choice) end
     end)
   end
-end, { desc = "Find recent files" })
+end, { desc = "Recent files (smart)" })
 
 -- Commands picker
 vim.keymap.set("n", "<Leader>fc", function()
@@ -118,9 +118,6 @@ local function setup_extra_pickers()
   end, { desc = "Workspace symbols" })
 
   -- Recently visited files
-  vim.keymap.set("n", "<Leader>fr", function()
-    mini_extra.pickers.visit_paths()
-  end, { desc = "Recent files (mini.visits)" })
 
   -- Colorscheme picker
   vim.keymap.set("n", "<Leader>fc", function()
@@ -164,33 +161,53 @@ vim.keymap.set("n", "<Leader>fy", function()
   end
 end, { desc = "Yank history (neoclip)" })
 
--- Notification history (mini.notify integration)
+-- Notification history (using noice.nvim instead of mini.notify)
 vim.keymap.set("n", "<leader>fn", function()
-  local ok, mini_notify = pcall(require, "mini.notify")
-  if ok then
-    mini_notify.show_history()
-  else
-    vim.notify("mini.notify not available", vim.log.levels.ERROR)
+  local ok = pcall(vim.cmd, "Noice history")
+  if not ok then
+    vim.notify("Noice not available, showing vim messages", vim.log.levels.WARN)
+    vim.cmd("messages")
   end
 end, { desc = "Show notification history" })
 
-vim.keymap.set("n", "<leader>fN", function()
-  local ok, mini_notify = pcall(require, "mini.notify")
-  if ok then
-    mini_notify.show_history()
-  else
-    vim.notify("mini.notify not available", vim.log.levels.ERROR)
-  end
-end, { desc = "Show notification history buffer" })
 
--- Messages integration
+-- Messages integration with yank capability
 vim.keymap.set("n", "<leader>fm", function()
-  vim.cmd "messages"
-end, { desc = "Show messages" })
+  -- Get messages
+  local messages_str = vim.fn.execute("messages")
+  local messages = vim.split(messages_str, "\n")
+  
+  -- Filter out empty lines
+  local filtered_messages = {}
+  for _, msg in ipairs(messages) do
+    if msg:match("%S") then -- has non-whitespace content
+      table.insert(filtered_messages, msg)
+    end
+  end
+  
+  if #filtered_messages == 0 then
+    vim.notify("No messages to show", vim.log.levels.INFO)
+    return
+  end
+  
+  -- Use mini.pick to select and yank
+  require("mini.pick").start({
+    source = {
+      items = filtered_messages,
+      name = "Vim Messages",
+    },
+    mappings = {
+      choose = function(item)
+        if item then
+          vim.fn.setreg("+", item)
+          vim.fn.setreg('"', item)
+          vim.notify("Yanked: " .. item:sub(1, 50) .. (item:len() > 50 and "..." or ""), vim.log.levels.INFO)
+        end
+      end,
+    },
+  })
+end, { desc = "Pick and yank vim messages" })
 
-vim.keymap.set("n", "<leader>fM", function()
-  vim.cmd "messages"
-end, { desc = "Show messages" })
 
 -- Setup extra pickers if mini.extra is available
 vim.schedule(setup_extra_pickers)

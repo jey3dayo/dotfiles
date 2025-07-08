@@ -1,12 +1,5 @@
 return {
   {
-    "nishigori/increment-activator",
-    keys = { "<C-a>", "<C-x>" },
-    config = function()
-      require "config/increment-activator-config"
-    end,
-  },
-  {
     "windwp/nvim-ts-autotag",
     ft = { "html", "xml", "tsx", "vue", "svelte", "astro" },
     dependencies = { "nvim-treesitter/nvim-treesitter" },

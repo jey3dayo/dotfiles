@@ -28,7 +28,6 @@ return {
     -- Normal LSP keymaps and configurations for Go files
     local opts = { noremap = true, silent = true, buffer = bufnr }
 
-    -- TODO: add more keymaps
     -- Go-specific keymaps
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)

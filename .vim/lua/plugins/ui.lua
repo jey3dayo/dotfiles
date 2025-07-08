@@ -1,7 +1,10 @@
+local deps = require "core.dependencies"
+
 return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
+    dependencies = deps.icons,
     config = function()
       require "config/lualine"
     end,
@@ -14,12 +17,14 @@ return {
       require("mini.cursorword").setup({ delay = 100 })
     end,
   },
-  {
-    "shellRaining/hlchunk.nvim",
-    enabled = true,
-    event = { "BufReadPre", "BufNewFile" },
-    opts = require "config/hlchunk",
+  { 
+    "lewis6991/gitsigns.nvim", 
+    event = { "BufReadPre", "BufNewFile" }, 
+    opts = require "config/gitsigns" 
   },
-  { "lewis6991/gitsigns.nvim", event = { "BufReadPre", "BufNewFile" }, opts = require "config/gitsigns" },
-  { "j-hui/fidget.nvim", event = "LspAttach", opts = {} },
+  { 
+    "j-hui/fidget.nvim", 
+    event = "LspAttach", 
+    opts = {} 
+  },
 }

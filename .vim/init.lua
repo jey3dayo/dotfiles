@@ -1,7 +1,6 @@
 if vim.loader then vim.loader.enable() end
 
 -- Load LSP safety modules early
-require "lsp.safe_client"
 require "lsp.quiet"  -- Early LSP quiet mode setup
 
 -- Core modules that need to load early
@@ -15,7 +14,7 @@ require "init_lazy"
 -- Defer heavy modules until after UI is ready
 vim.defer_fn(function()
   require "lua_rocks"
-  require "lsp.client_tracker"   -- Track LSP client lifecycle
+  -- Client tracking simplified and moved to client_utils.lua
   require "autocmds"
   require "colorscheme"
   require "load_config"

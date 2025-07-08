@@ -83,10 +83,10 @@ M.left_components = {
 
   -- LSP info
   M.create_lsp_component(function(bufnr)
-    return require("lsp.client_manager").get_all_lsp_client_names(bufnr)
+    return require("lsp.client_utils").get_all_lsp_client_names(bufnr)
   end, " LSP:", { fg = colors.colors.fg, gui = "bold" }),
   M.create_lsp_component(function(bufnr)
-    return require("lsp.client_manager").get_lsp_client_names(bufnr)
+    return require("lsp.client_utils").get_lsp_client_names(bufnr)
   end, " Fmt:", { fg = colors.colors.orange, gui = "bold" }),
 }
 
