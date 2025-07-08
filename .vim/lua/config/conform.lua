@@ -19,7 +19,7 @@ require("conform").setup {
     markdown = { "prettier" },
     graphql = { "prettier" },
     handlebars = { "prettier" },
-    
+
     lua = { "stylua" },
     python = { "ruff_format", "ruff_fix" },
     go = { "gofmt", "goimports" },
@@ -28,7 +28,7 @@ require("conform").setup {
     sh = { "shfmt" },
     bash = { "shfmt" },
     zsh = { "shfmt" },
-    
+
     -- Add more as needed
     ["*"] = { "trim_whitespace" },
   },
@@ -36,10 +36,8 @@ require("conform").setup {
   -- Formatter selection strategy
   format_on_save = function(bufnr)
     -- Disable with a global or buffer-local variable
-    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-      return
-    end
-    
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then return end
+
     return {
       timeout_ms = 3000,
       lsp_fallback = true, -- Use LSP formatting as fallback
@@ -55,14 +53,14 @@ require("conform").setup {
         return utils.has_config_files(config_files, ctx.dirname)
       end,
     },
-    
+
     -- Prettier formatter with fallback when no config files
     prettier = {
       condition = function(self, ctx)
         local config_files = lsp_config.formatters.prettier.config_files
         -- Always allow prettier as fallback, even without config files
-        return utils.has_config_files(config_files, ctx.dirname) or 
-               not utils.has_config_files(lsp_config.formatters.biome.config_files, ctx.dirname)
+        return utils.has_config_files(config_files, ctx.dirname)
+          or not utils.has_config_files(lsp_config.formatters.biome.config_files, ctx.dirname)
       end,
     },
   },
@@ -95,20 +93,16 @@ end, {
 
 -- Status function for debugging
 local function get_format_status()
-  local conform = require("conform")
+  local conform = require "conform"
   local formatters = conform.list_formatters(0)
-  
-  if #formatters == 0 then
-    return "No formatters available"
-  end
-  
+
+  if #formatters == 0 then return "No formatters available" end
+
   local available = {}
   for _, formatter in ipairs(formatters) do
-    if formatter.available then
-      table.insert(available, formatter.name)
-    end
+    if formatter.available then table.insert(available, formatter.name) end
   end
-  
+
   return "Available: " .. table.concat(available, ", ")
 end
 
