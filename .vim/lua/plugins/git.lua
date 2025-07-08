@@ -56,9 +56,6 @@ return {
       -- Stash operations (simplified)
       { "<C-g>z", "<cmd>Neogit<cr>", desc = "Git Stash (use 'Z' in Neogit)" },
       
-      -- Quick actions (legacy leader mappings for compatibility)
-      { "<leader>gs", "<cmd>Neogit<cr>", desc = "Neogit Status" },
-      { "<leader>gc", "<cmd>Neogit commit<cr>", desc = "Neogit Commit" },
     },
   },
 }
