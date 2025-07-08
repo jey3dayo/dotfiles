@@ -1,7 +1,7 @@
 [include]
   path = ~/.gitconfig_local
   path = ~/.config/git/diff.gitconfig
-  path = ~/.config/git/ghq.gitconfig  
+  path = ~/.config/git/ghq.gitconfig
   path = ~/.config/git/alias.gitconfig
 
 [core]
@@ -47,7 +47,7 @@
   followTags = true
 
 [pull]
-  rebase = true
+  rebase = false
 
 [fetch]
   prune = true
