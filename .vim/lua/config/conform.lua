@@ -1,13 +1,14 @@
 -- Conform.nvim configuration for lightweight formatting
 local utils = require "core.utils"
 local lsp_config = require "lsp.config"
+local util = require "conform.util"
 
 require("conform").setup {
   formatters_by_ft = {
-    javascript = { "biome", "prettier" },
-    javascriptreact = { "biome", "prettier" },
-    typescript = { "biome", "prettier" },
-    typescriptreact = { "biome", "prettier" },
+    javascript = { "eslint_d", "biome", "prettier" },
+    javascriptreact = { "eslint_d", "biome", "prettier" },
+    typescript = { "eslint_d", "biome", "prettier" },
+    typescriptreact = { "eslint_d", "biome", "prettier" },
     vue = { "biome", "prettier" },
     css = { "prettier" },
     scss = { "prettier" },
@@ -46,6 +47,19 @@ require("conform").setup {
 
   -- Custom formatters using centralized config from lsp.config
   formatters = {
+    -- ESLint_d formatter with best practices from o3 research
+    eslint_d = {
+      -- Use project-local binary if it exists
+      command = util.from_node_modules("eslint_d"),
+      -- Allow exit code 1 (lint errors fixed) so Conform doesn't treat it as failure
+      exit_codes = { 0, 1 },
+      -- Recognize monorepo roots using centralized config
+      cwd = util.root_file(vim.list_extend(lsp_config.formatters.eslint.config_files, { "package.json", ".git" })),
+      -- Optional extra flags for performance
+      prepend_args = { "--cache" },
+      env = { ESLINT_USE_FLAT_CONFIG = "true" },
+    },
+
     -- Biome formatter with config detection from lsp.config
     biome = {
       condition = function(self, ctx)
