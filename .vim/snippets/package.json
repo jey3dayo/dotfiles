@@ -1,0 +1,45 @@
+{
+  "name": "personal-snippets",
+  "version": "1.0.0",
+  "description": "Personal code snippets for development",
+  "contributes": {
+    "snippets": [
+      {
+        "language": "typescript",
+        "path": "./typescript.json"
+      },
+      {
+        "language": "typescriptreact",
+        "path": "./typescript.json"
+      },
+      {
+        "language": "javascript",
+        "path": "./typescript.json"
+      },
+      {
+        "language": "javascriptreact",
+        "path": "./typescript.json"
+      },
+      {
+        "language": "go",
+        "path": "./go.json"
+      },
+      {
+        "language": "lua",
+        "path": "./lua.json"
+      },
+      {
+        "language": "sh",
+        "path": "./sh.json"
+      },
+      {
+        "language": "bash",
+        "path": "./sh.json"
+      },
+      {
+        "language": "zsh",
+        "path": "./sh.json"
+      }
+    ]
+  }
+}

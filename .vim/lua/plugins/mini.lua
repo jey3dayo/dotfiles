@@ -417,4 +417,75 @@ return {
       require("mini.clue").setup(require("config/mini-clue"))
     end,
   },
+
+  -- Text alignment
+  {
+    "echasnovski/mini.align",
+    version = false,
+    event = "VeryLazy",
+    config = function()
+      require("mini.align").setup()
+    end,
+  },
+
+  -- Animations
+  {
+    "echasnovski/mini.animate",
+    version = false,
+    event = "VeryLazy",
+    config = function()
+      require("mini.animate").setup()
+    end,
+  },
+
+
+  -- Text operators
+  {
+    "echasnovski/mini.operators",
+    version = false,
+    event = "VeryLazy",
+    config = function()
+      require("mini.operators").setup()
+    end,
+  },
+
+  -- Fuzzy matching
+  {
+    "echasnovski/mini.fuzzy",
+    version = false,
+    lazy = true,
+    config = function()
+      require("mini.fuzzy").setup()
+    end,
+  },
+
+  -- Enhanced increment/decrement (replacement for increment-activator)
+  {
+    "monaqa/dial.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("config/dial-config")
+    end,
+  },
+
+  -- Tabline
+  {
+    "echasnovski/mini.tabline",
+    version = false,
+    event = "VeryLazy",
+    config = function()
+      require("mini.tabline").setup()
+    end,
+  },
+
+  -- Modern completion engine (replaces mini.completion)
+  {
+    "saghen/blink.cmp",
+    lazy = false,
+    dependencies = "rafamadriz/friendly-snippets",
+    version = "v1.*",
+    config = function()
+      require("config.blink-cmp-simple")
+    end,
+  },
 }
