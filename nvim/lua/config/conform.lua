@@ -50,7 +50,7 @@ require("conform").setup {
     -- ESLint_d formatter with best practices from o3 research
     eslint_d = {
       -- Use project-local binary if it exists
-      command = util.from_node_modules("eslint_d"),
+      command = util.from_node_modules "eslint_d",
       -- Allow exit code 1 (lint errors fixed) so Conform doesn't treat it as failure
       exit_codes = { 0, 1 },
       -- Recognize monorepo roots using centralized config

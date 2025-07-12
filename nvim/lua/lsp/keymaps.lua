@@ -33,30 +33,30 @@ local function setup_keymaps(client, bufnr)
   -- basic keymaps - Remove conflicting prefix mapping
   -- vim.keymap.set('n', config.LSP.PREFIX, "<Nop>", config.LSP.DEFAULT_OPTS)
   -- vim.keymap.set('n', "<C-e>", config.LSP.PREFIX, config.LSP.DEFAULT_OPTS)
-  
+
   -- LSP keymaps (previously lspsaga)
   vim.keymap.set("n", "<C-j>", vim.diagnostic.goto_next, buf_opts)
   vim.keymap.set("n", "<C-k>", vim.diagnostic.goto_prev, buf_opts)
   vim.keymap.set("n", "<C-l>", vim.diagnostic.open_float, buf_opts)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, buf_opts)
-  vim.keymap.set("n", "<C-[>", function() 
+  vim.keymap.set("n", "<C-[>", function()
     -- Get active LSP clients for current buffer
-    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    local clients = vim.lsp.get_clients { bufnr = bufnr }
     local has_references = false
-    
+
     for _, active_client in ipairs(clients) do
-      local compat = require("lsp.compat")
+      local compat = require "lsp.compat"
       if compat.supports_method(active_client, "textDocument/references") then
         has_references = true
         break
       end
     end
-    
+
     if has_references or #clients > 0 then
       -- Use mini.pick for LSP references
       local ok, mini_extra = pcall(require, "mini.extra")
       if ok then
-        mini_extra.pickers.lsp({ scope = "references" })
+        mini_extra.pickers.lsp { scope = "references" }
       else
         vim.lsp.buf.references()
       end
@@ -72,24 +72,24 @@ local function setup_keymaps(client, bufnr)
   vim.keymap.set("n", "<C-e>t", vim.lsp.buf.type_definition, with(buf_opts, { desc = "Type definition" }))
   vim.keymap.set("n", "<C-e>k", vim.lsp.buf.definition, with(buf_opts, { desc = "Definition" }))
   vim.keymap.set("n", "<C-e>r", vim.lsp.buf.rename, with(buf_opts, { desc = "Rename" }))
-  vim.keymap.set("n", "<C-e>o", function() 
+  vim.keymap.set("n", "<C-e>o", function()
     -- Get active LSP clients for current buffer
-    local clients = vim.lsp.get_clients({ bufnr = bufnr })
+    local clients = vim.lsp.get_clients { bufnr = bufnr }
     local has_symbols = false
-    
+
     for _, active_client in ipairs(clients) do
-      local compat = require("lsp.compat")
+      local compat = require "lsp.compat"
       if compat.supports_method(active_client, "textDocument/documentSymbol") then
         has_symbols = true
         break
       end
     end
-    
+
     if has_symbols or #clients > 0 then
       -- Use mini.pick for LSP document symbols
       local ok, mini_extra = pcall(require, "mini.extra")
       if ok then
-        mini_extra.pickers.lsp({ scope = "document_symbol" })
+        mini_extra.pickers.lsp { scope = "document_symbol" }
       else
         vim.lsp.buf.document_symbol()
       end
@@ -105,10 +105,8 @@ end
 
 local function setup_format_keymap(client, bufnr)
   -- 互換性レイヤーを使用した機能判定
-  local compat = require("lsp.compat")
-  if not compat.supports_method(client, "textDocument/formatting") then
-    return
-  end
+  local compat = require "lsp.compat"
+  if not compat.supports_method(client, "textDocument/formatting") then return end
 
   -- LSPフォーマット機能はkeymaps.luaのグローバルキーマップに移動
   -- ここでは互換性を保つが、重複するキーマップは設定しない

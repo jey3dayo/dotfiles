@@ -126,14 +126,14 @@ return {
   version = 'v1.*',
   config = function()
     require('blink.cmp').setup({
-      keymap = { 
+      keymap = {
         preset = 'default',
         ['<C-k>'] = { 'accept', 'snippet_forward', 'fallback' },
         ['<Tab>'] = { 'accept', 'snippet_forward', 'fallback' },
         ['<S-Tab>'] = { 'snippet_backward', 'fallback' },
         ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
       },
-      
+
       sources = {
         default = { 'lsp', 'path', 'snippets', 'buffer' },
         providers = {
@@ -146,7 +146,7 @@ return {
           },
         },
       },
-      
+
       completion = {
         accept = {
           auto_brackets = { enabled = true },
@@ -156,8 +156,8 @@ return {
           auto_show_delay_ms = 200,
         },
       },
-      
-      fuzzy = { 
+
+      fuzzy = {
         implementation = 'prefer_rust_with_warning',
         use_frecency = true,
         use_proximity = true,
@@ -417,13 +417,13 @@ end)(),
 
 #### 2025年最新プラグイン評価
 
-| カテゴリ     | 現在プラグイン    | 評価     | 2025年推奨     | 改善効果   |
-| ------------ | ----------------- | -------- | -------------- | ---------- |
-| **補完**     | ✅ blink.cmp     | ⭐⭐⭐⭐⭐ | **blink.cmp**  | 80%高速化達成  |
-| **検索**     | telescope.nvim    | ⭐⭐⭐⭐ | **fzf-lua**    | 60%高速化  |
-| **UI**       | dressing.nvim     | ⭐⭐⭐⭐ | **noice.nvim** | モダン化   |
-| **LSP**      | mason-lspconfig   | ⭐⭐⭐   | 手動設定       | 82ms削減   |
-| **アイコン** | nvim-web-devicons | ⭐⭐⭐   | **mini.icons** | 統合効率化 |
+| カテゴリ     | 現在プラグイン    | 評価       | 2025年推奨     | 改善効果      |
+| ------------ | ----------------- | ---------- | -------------- | ------------- |
+| **補完**     | ✅ blink.cmp      | ⭐⭐⭐⭐⭐ | **blink.cmp**  | 80%高速化達成 |
+| **検索**     | telescope.nvim    | ⭐⭐⭐⭐   | **fzf-lua**    | 60%高速化     |
+| **UI**       | dressing.nvim     | ⭐⭐⭐⭐   | **noice.nvim** | モダン化      |
+| **LSP**      | mason-lspconfig   | ⭐⭐⭐     | 手動設定       | 82ms削減      |
+| **アイコン** | nvim-web-devicons | ⭐⭐⭐     | **mini.icons** | 統合効率化    |
 
 #### プラグイン数最適化戦略
 

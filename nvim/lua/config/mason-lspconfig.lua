@@ -15,22 +15,22 @@ local disabled_servers = {} -- No manually disabled servers
 
 -- Collect servers that should be disabled based on autostart conditions
 for _, server in ipairs(config.enabled_servers) do
-    local extends = utils.safe_require("lsp.settings." .. server)
-    if extends then
-      local should_disable = false
-      if type(extends.autostart) == "function" then
-        should_disable = not extends.autostart()
-      elseif extends.autostart == false then
-        should_disable = true
-      end
-      
-      if should_disable then
-        table.insert(disabled_servers, server)
-        if vim.g.lsp_debug then
-          vim.notify(string.format("Server %s disabled by autostart", server), vim.log.levels.INFO)
-        end
+  local extends = utils.safe_require("lsp.settings." .. server)
+  if extends then
+    local should_disable = false
+    if type(extends.autostart) == "function" then
+      should_disable = not extends.autostart()
+    elseif extends.autostart == false then
+      should_disable = true
+    end
+
+    if should_disable then
+      table.insert(disabled_servers, server)
+      if vim.g.lsp_debug then
+        vim.notify(string.format("Server %s disabled by autostart", server), vim.log.levels.INFO)
       end
     end
+  end
 end
 
 mason_lspconfig.setup {
@@ -72,4 +72,3 @@ mason_lspconfig.setup {
 
 -- Debug: Print disabled servers
 if vim.g.lsp_debug then vim.notify("Disabled servers: " .. vim.inspect(disabled_servers), vim.log.levels.INFO) end
-

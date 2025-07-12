@@ -117,7 +117,7 @@ M.linters = {
   typescript = { "eslint" },
   typescriptreact = { "eslint" },
   vue = { "eslint" },
-  
+
   python = { "ruff" },
   lua = { "luacheck" },
   sh = { "shellcheck" },
@@ -127,7 +127,7 @@ M.linters = {
   yaml = { "yamllint" },
   markdown = { "markdownlint", "codespell" },
   vim = { "vint" },
-  
+
   -- Global linters for any filetype
   ["*"] = { "codespell" },
 }
@@ -166,7 +166,7 @@ M.formatters = {
       priority = 1,
       overrides = {
         -- ts_lsは言語機能のため停止しない
-        -- eslint = true, -- ESLintも構文チェックのため停止しない  
+        -- eslint = true, -- ESLintも構文チェックのため停止しない
         prettier = true, -- prettierはフォーマット専用なので置き換え可能
       },
     },

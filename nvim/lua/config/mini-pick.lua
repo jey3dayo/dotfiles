@@ -53,7 +53,6 @@ vim.keymap.set("n", "<Leader>Fr", function()
   end
 end, { desc = "Recent files (smart)" })
 
-
 -- Keymaps picker
 vim.keymap.set("n", "<Leader>Fk", function()
   local ok, mini_extra = pcall(require, "mini.extra")
@@ -84,7 +83,6 @@ local function setup_extra_pickers()
   end, { desc = "Workspace symbols" })
 
   -- Recently visited files
-
 end
 
 -- File browser replacement (use mini.files)

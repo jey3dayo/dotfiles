@@ -1,7 +1,7 @@
 if vim.loader then vim.loader.enable() end
 
 -- Load LSP safety modules early
-require "lsp.quiet"  -- Early LSP quiet mode setup
+require "lsp.quiet" -- Early LSP quiet mode setup
 
 -- Core modules that need to load early
 require "core.utils"

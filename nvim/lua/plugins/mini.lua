@@ -232,7 +232,7 @@ return {
         pattern = "MiniFilesBufferCreate",
         callback = function(args)
           local buf_id = args.data.buf_id
-          
+
           -- Split keymaps (simplified without get_target_window)
           vim.keymap.set("n", "s", function()
             local entry = require("mini.files").get_fs_entry()
@@ -241,7 +241,7 @@ return {
               vim.cmd("split " .. entry.path)
             end
           end, { buffer = buf_id, desc = "Open in horizontal split" })
-          
+
           vim.keymap.set("n", "v", function()
             local entry = require("mini.files").get_fs_entry()
             if entry and entry.fs_type == "file" then
@@ -414,7 +414,7 @@ return {
     version = false,
     event = "VeryLazy",
     config = function()
-      require("mini.clue").setup(require("config/mini-clue"))
+      require("mini.clue").setup(require "config/mini-clue")
     end,
   },
 
@@ -437,7 +437,6 @@ return {
       require("mini.animate").setup()
     end,
   },
-
 
   -- Text operators
   {
@@ -464,7 +463,7 @@ return {
     "monaqa/dial.nvim",
     event = "VeryLazy",
     config = function()
-      require("config/dial-config")
+      require "config/dial-config"
     end,
   },
 
@@ -485,7 +484,7 @@ return {
     dependencies = "rafamadriz/friendly-snippets",
     version = "v1.*",
     config = function()
-      require("config.blink-cmp-simple")
+      require "config.blink-cmp-simple"
     end,
   },
 }

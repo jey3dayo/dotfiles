@@ -22,18 +22,18 @@ if vim.fn.isdirectory(config_dir) == 1 then
     "mason-lspconfig.lua",
     "mini-completion.lua",
   }
-  
+
   for _, file in ipairs(files) do
     local filename = vim.fn.fnamemodify(file, ":t")
     local should_skip = false
-    
+
     for _, skip_file in ipairs(skip_files) do
       if filename == skip_file then
         should_skip = true
         break
       end
     end
-    
+
     if not should_skip then
       local module_name = "config." .. vim.fn.fnamemodify(file, ":t:r")
       pcall(require, module_name)

@@ -14,17 +14,17 @@ return {
     version = false,
     event = "VeryLazy",
     config = function()
-      require("mini.cursorword").setup({ delay = 100 })
+      require("mini.cursorword").setup { delay = 100 }
     end,
   },
-  { 
-    "lewis6991/gitsigns.nvim", 
-    event = { "BufReadPre", "BufNewFile" }, 
-    opts = require "config/gitsigns" 
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = require "config/gitsigns",
   },
-  { 
-    "j-hui/fidget.nvim", 
-    event = "LspAttach", 
-    opts = {} 
+  {
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    opts = {},
   },
 }

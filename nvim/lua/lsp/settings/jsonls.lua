@@ -108,8 +108,8 @@ return {
     -- Workspace configuration support for older vscode-json-languageserver
     capabilities.workspace = capabilities.workspace or {}
     capabilities.workspace.configuration = true
-    capabilities.workspace.didChangeConfiguration = { 
-      dynamicRegistration = true 
+    capabilities.workspace.didChangeConfiguration = {
+      dynamicRegistration = true,
     }
     return capabilities
   end)(),

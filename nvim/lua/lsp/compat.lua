@@ -11,10 +11,8 @@ M.has_new_api = vim.lsp and vim.lsp.config ~= nil
 --- @return boolean
 function M.supports_method(client, method)
   -- Safety check for nil client
-  if not client then
-    return false
-  end
-  
+  if not client then return false end
+
   -- v0.11+: client:supports_method(method) - colon syntax
   -- v0.10: client.supports_method(method) - dot syntax
   if type(client.supports_method) == "function" then
@@ -22,18 +20,14 @@ function M.supports_method(client, method)
     local ok, result = pcall(function()
       return client:supports_method(method)
     end)
-    if ok then
-      return result
-    end
+    if ok then return result end
     -- Fallback to old syntax (v0.10)
     local ok2, result2 = pcall(function()
       return client.supports_method(method)
     end)
-    if ok2 then
-      return result2
-    end
+    if ok2 then return result2 end
   end
-  
+
   -- Fallback: check server_capabilities manually
   if client.server_capabilities then
     -- TypeScript/JavaScript specific check
@@ -44,27 +38,23 @@ function M.supports_method(client, method)
     elseif method == "textDocument/formatting" then
       return client.server_capabilities.documentFormattingProvider ~= nil
     end
-    
+
     -- Generic capability check
-    local capability = method:match("textDocument/(.+)")
-    if capability then
-      return client.server_capabilities[capability .. "Provider"] ~= nil
-    end
+    local capability = method:match "textDocument/(.+)"
+    if capability then return client.server_capabilities[capability .. "Provider"] ~= nil end
   end
-  
+
   -- Default to true for common TypeScript LSP methods
   local common_methods = {
     "textDocument/references",
-    "textDocument/definition", 
+    "textDocument/definition",
     "textDocument/hover",
-    "textDocument/documentSymbol"
+    "textDocument/documentSymbol",
   }
   for _, common_method in ipairs(common_methods) do
-    if method == common_method then
-      return true
-    end
+    if method == common_method then return true end
   end
-  
+
   return false
 end
 
@@ -76,20 +66,16 @@ function M.add_config(name, config)
     -- v0.11+: Use new built-in API
     vim.lsp.config(name, config)
     -- Enable the server (required in v0.11+)
-    if name ~= "*" then
-      vim.lsp.enable(name)
-    end
+    if name ~= "*" then vim.lsp.enable(name) end
   else
     -- v0.10: Use lspconfig
     if name == "*" then
       -- Global config not supported in v0.10, will be applied per-server
       M._global_config = config
     else
-      local lspconfig = require("lspconfig")
+      local lspconfig = require "lspconfig"
       -- Merge with global config if exists
-      if M._global_config then
-        config = vim.tbl_deep_extend("force", M._global_config, config)
-      end
+      if M._global_config then config = vim.tbl_deep_extend("force", M._global_config, config) end
       lspconfig[name].setup(config)
     end
   end

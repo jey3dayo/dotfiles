@@ -4,13 +4,13 @@ local M = {}
 -- Setup handlers and on_attach
 M.setup = function()
   -- Setup diagnostic configuration
-  vim.diagnostic.config({
+  vim.diagnostic.config {
     virtual_text = true,
     signs = true,
     underline = true,
     update_in_insert = false,
     severity_sort = true,
-  })
+  }
 
   -- Define diagnostic signs
   local signs = { Error = "✗ ", Warn = "⚠ ", Hint = "💡", Info = "ℹ " }
@@ -23,18 +23,18 @@ end
 -- Common on_attach function
 M.on_attach = function(client, bufnr)
   -- Enable completion
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-  
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+
   -- Setup keymaps
   require("lsp.keymaps").setup(client, bufnr)
-  
+
   -- Enable diagnostics for this buffer
   -- v0.11+: vim.diagnostic.enable(enable:boolean, filter:table)
   if vim.diagnostic.enable then
     -- Use the new signature: enable diagnostics for this buffer
     pcall(vim.diagnostic.enable, true, { bufnr = bufnr })
   end
-  
+
   -- Log attachment
   if vim.g.lsp_debug then
     vim.notify(string.format("LSP %s attached to buffer %d", client.name, bufnr), vim.log.levels.INFO)
@@ -49,25 +49,21 @@ M.handlers = {
   ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = "rounded",
   }),
-  ["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      virtual_text = true,
-      signs = true,
-      underline = true,
-      update_in_insert = false,
-    }
-  ),
+  ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = false,
+  }),
   ["textDocument/diagnostic"] = function(err, result, ctx, config)
     -- ESLintのパスエラーを抑制
-    if err and err.message and err.message:match("The \"path\" argument must be of type string") then
+    if err and err.message and err.message:match 'The "path" argument must be of type string' then
       -- エラーを無視
       return nil
     end
     -- その他のエラーは通常のハンドラーに渡す
     local handler = vim.lsp.handlers["textDocument/diagnostic"]
-    if handler then
-      return handler(err, result, ctx, config)
-    end
+    if handler then return handler(err, result, ctx, config) end
   end,
 }
 

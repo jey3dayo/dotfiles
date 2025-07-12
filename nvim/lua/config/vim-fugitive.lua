@@ -40,13 +40,13 @@ vim.keymap.set("n", "<C-g>r", function()
     vim.notify("GitSigns not loaded", vim.log.levels.WARN)
     return
   end
-  
+
   -- Check if GitSigns is attached to current buffer
   if not gitsigns.get_hunks() or #gitsigns.get_hunks() == 0 then
     vim.notify("No hunks found in current buffer", vim.log.levels.INFO)
     return
   end
-  
+
   gitsigns.reset_hunk()
 end, { desc = "Reset current hunk" })
 vim.keymap.set("n", "<C-g>x", "<cmd>DiffviewClose<CR>", { desc = "Close diff" })
@@ -69,4 +69,3 @@ vim.keymap.set("n", "<C-g>p", function()
   end
   gitsigns.prev_hunk()
 end, { desc = "Previous hunk" })
-

@@ -2,10 +2,7 @@
 --- Optimized for dotfiles theme consistency
 
 -- Enable inlay hints if available
-if vim.lsp.inlay_hint then 
-  vim.lsp.inlay_hint.enable(true) 
-end
-
+if vim.lsp.inlay_hint then vim.lsp.inlay_hint.enable(true) end
 
 -- Define consistent UI theme colors (theme-compatible)
 local ui_theme = {
@@ -14,11 +11,11 @@ local ui_theme = {
   max_height = 20,
   -- Theme-compatible colors
   colors = {
-    error = "#fb4934",   -- red
-    warn = "#fabd2f",    -- yellow
-    info = "#83a598",    -- blue
-    hint = "#8ec07c",    -- aqua
-  }
+    error = "#fb4934", -- red
+    warn = "#fabd2f", -- yellow
+    info = "#83a598", -- blue
+    hint = "#8ec07c", -- aqua
+  },
 }
 
 -- Hover handler with unified styling
@@ -42,16 +39,14 @@ vim.diagnostic.config {
     format = function(diagnostic)
       -- Truncate long messages for better readability
       local message = diagnostic.message
-      if #message > 60 then
-        message = message:sub(1, 57) .. "..."
-      end
+      if #message > 60 then message = message:sub(1, 57) .. "..." end
       return message
     end,
   },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "", -- Error icon
-      [vim.diagnostic.severity.WARN] = "", -- Warning icon  
+      [vim.diagnostic.severity.WARN] = "", -- Warning icon
       [vim.diagnostic.severity.HINT] = "", -- Hint icon
       [vim.diagnostic.severity.INFO] = "", -- Info icon
     },

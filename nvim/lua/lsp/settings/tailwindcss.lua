@@ -27,16 +27,16 @@ return {
         invalidScreen = "error",
         invalidTailwindDirective = "error",
         invalidVariant = "error",
-        recommendedVariantOrder = false -- Reduce noise
+        recommendedVariantOrder = false, -- Reduce noise
       },
       experimental = {
         classRegex = {
           "tw`([^`]*)",
-          "tw\"([^\"]*)",
+          'tw"([^"]*)',
           "tw\\.\\w+`([^`]*)",
-          "tw\\(.*?\\)`([^`]*)"
-        }
-      }
+          "tw\\(.*?\\)`([^`]*)",
+        },
+      },
     },
   },
 }

@@ -7,7 +7,7 @@ return {
       workspaceFolders = {
         supported = false,
         changeNotifications = false,
-      }
+      },
     }
   end,
   -- Avoid problematic workspace folder initialization

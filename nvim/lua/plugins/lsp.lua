@@ -7,15 +7,15 @@ return {
     priority = 1000, -- High priority for core LSP
     config = function()
       -- Initialize LSP core components first
-      require "lsp.quiet"        -- Setup quiet mode before any LSP activity
+      require "lsp.quiet" -- Setup quiet mode before any LSP activity
       -- Client tracking is now handled by simplified client_utils.lua
       -- Performance monitoring removed - use :LspInfo and built-in tools
-      require "lsp.handlers"     -- Setup LSP handlers (including client/registerCapability)
+      require "lsp.handlers" -- Setup LSP handlers (including client/registerCapability)
       require "config/native-lsp-ui" -- Configure UI handlers
-      require "lsp.debug"        -- Debug commands
+      require "lsp.debug" -- Debug commands
     end,
   },
-  
+
   -- Package manager - depends on lspconfig
   {
     "williamboman/mason.nvim",
@@ -24,7 +24,7 @@ return {
     dependencies = { "neovim/nvim-lspconfig" },
     opts = require "config/mason",
   },
-  
+
   -- Modern formatting and linting
   {
     "stevearc/conform.nvim",
@@ -35,7 +35,7 @@ return {
       require "config/conform"
     end,
   },
-  
+
   {
     "mfussenegger/nvim-lint",
     lazy = false,
@@ -45,8 +45,7 @@ return {
       require "config/nvim-lint"
     end,
   },
-  
-  
+
   -- LSP server auto-configuration - must be last
   {
     "williamboman/mason-lspconfig.nvim",

@@ -4,8 +4,8 @@ return {
     cmd = { "SudaRead", "SudaWrite" },
     init = function()
       -- Optional: Create aliases for backward compatibility
-      vim.cmd([[command! -nargs=0 SudoWrite SudaWrite]])
-      vim.cmd([[command! -nargs=0 SudoRead SudaRead]])
+      vim.cmd [[command! -nargs=0 SudoWrite SudaWrite]]
+      vim.cmd [[command! -nargs=0 SudoRead SudaRead]]
     end,
   },
   { "dstein64/vim-startuptime", cmd = "StartupTime" },

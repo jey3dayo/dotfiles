@@ -80,10 +80,10 @@ local options = {
   -- fixed NVim
   ttimeout = true,
   ttimeoutlen = 50,
-  
+
   -- performance
-  updatetime = 250,  -- 高速な補完とCursorHoldイベント
-  timeoutlen = 300,  -- キーシーケンスの高速化
+  updatetime = 250, -- 高速な補完とCursorHoldイベント
+  timeoutlen = 300, -- キーシーケンスの高速化
 }
 
 for k, v in pairs(options) do
@@ -94,7 +94,7 @@ local global_options = {
   loaded_ruby_provider = 0,
   loaded_node_provider = 0,
   loaded_perl_provider = 0,
-  python3_host_prog = vim.fn.trim(vim.fn.system("mise where python")) .. "/bin/python3",
+  python3_host_prog = vim.fn.trim(vim.fn.system "mise where python") .. "/bin/python3",
 }
 
 for k, v in pairs(global_options) do

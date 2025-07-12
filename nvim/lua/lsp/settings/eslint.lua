@@ -9,10 +9,10 @@ return {
   autostart = function()
     return utils.has_config_files(config_files)
   end,
-  
+
   root_dir = lsp_utils.create_root_pattern(config_files),
   filetypes = ft.js_project,
-  
+
   -- CRITICAL: Set workspaceFolder in on_new_config
   on_new_config = function(config, new_root_dir)
     -- Make sure workspaceFolder is set
@@ -20,16 +20,16 @@ return {
     local root = new_root_dir or vim.fn.getcwd()
     config.settings.workspaceFolder = {
       uri = vim.uri_from_fname(root),
-      name = vim.fn.fnamemodify(root, ':t'),
+      name = vim.fn.fnamemodify(root, ":t"),
     }
   end,
-  
+
   on_attach = function(client, bufnr)
     -- Disable formatting only (ESLint should be used for linting, not formatting)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   end,
-  
+
   settings = {
     -- Basic ESLint settings
     validate = "on",
@@ -42,16 +42,16 @@ return {
     run = "onType",
     -- Working directory settings
     workingDirectory = {
-      mode = "location"
+      mode = "location",
     },
     codeAction = {
       disableRuleComment = {
         enable = true,
-        location = "separateLine"
+        location = "separateLine",
       },
       showDocumentation = {
-        enable = true
-      }
+        enable = true,
+      },
     },
   },
 }

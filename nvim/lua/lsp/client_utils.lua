@@ -7,10 +7,8 @@ local M = {}
 --- @param client_id number|nil Client ID to retrieve
 --- @return table|nil LSP client object or nil if not found/invalid
 function M.get_client_by_id(client_id)
-  if not client_id or type(client_id) ~= "number" then 
-    return nil 
-  end
-  
+  if not client_id or type(client_id) ~= "number" then return nil end
+
   local ok, client = pcall(vim.lsp.get_client_by_id, client_id)
   return ok and client or nil
 end
@@ -40,15 +38,21 @@ end
 function M.get_best_formatter(bufnr)
   local clients = M.get_format_clients(bufnr)
   if #clients == 0 then return nil end
-  
+
   -- Use formatter priority from config
   local config = require("lsp.config").formatters
   table.sort(clients, function(a, b)
-    local a_priority = config[a.name] and config[a.name].formatter_priority and config[a.name].formatter_priority.priority or 99
-    local b_priority = config[b.name] and config[b.name].formatter_priority and config[b.name].formatter_priority.priority or 99
+    local a_priority = config[a.name]
+        and config[a.name].formatter_priority
+        and config[a.name].formatter_priority.priority
+      or 99
+    local b_priority = config[b.name]
+        and config[b.name].formatter_priority
+        and config[b.name].formatter_priority.priority
+      or 99
     return a_priority < b_priority
   end)
-  
+
   return clients[1]
 end
 
@@ -67,7 +71,7 @@ end
 function M.get_all_lsp_client_names(bufnr)
   local clients = M.get_clients(bufnr)
   if #clients == 0 then return "" end
-  
+
   local names = {}
   for _, client in ipairs(clients) do
     table.insert(names, client.name)
@@ -81,7 +85,7 @@ end
 function M.get_lsp_client_names(bufnr)
   local clients = M.get_format_clients(bufnr)
   if #clients == 0 then return "" end
-  
+
   local names = {}
   for _, client in ipairs(clients) do
     table.insert(names, client.name)

@@ -10,11 +10,9 @@ lint.linters_by_ft = lsp_config.linters
 lint.linters.eslint = require("lint.util").wrap(lint.linters.eslint, function(diagnostic)
   -- Only run eslint if config file exists (using centralized config)
   local config_files = lsp_config.formatters.eslint.config_files
-  
-  if not utils.has_config_files(config_files) then
-    return {}
-  end
-  
+
+  if not utils.has_config_files(config_files) then return {} end
+
   return diagnostic
 end)
 
@@ -32,9 +30,11 @@ lint.linters.luacheck.args = {
 -- Configure ruff for Python
 lint.linters.ruff.args = {
   "check",
-  "--output-format=json", 
+  "--output-format=json",
   "--stdin-filename",
-  function() return vim.api.nvim_buf_get_name(0) end,
+  function()
+    return vim.api.nvim_buf_get_name(0)
+  end,
   "-",
 }
 
@@ -45,16 +45,18 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
   group = lint_augroup,
   callback = function()
     -- Don't lint if disabled
-    if vim.g.disable_autolint or vim.b.disable_autolint then
-      return
-    end
-    
+    if vim.g.disable_autolint or vim.b.disable_autolint then return end
+
     -- Debounce linting to avoid excessive runs
     local timer = vim.loop.new_timer()
-    timer:start(100, 0, vim.schedule_wrap(function()
-      lint.try_lint()
-      timer:close()
-    end))
+    timer:start(
+      100,
+      0,
+      vim.schedule_wrap(function()
+        lint.try_lint()
+        timer:close()
+      end)
+    )
   end,
 })
 
@@ -90,15 +92,15 @@ end, { desc = "Run linters for current buffer" })
 vim.api.nvim_create_user_command("LintInfo", function()
   local ft = vim.bo.filetype
   local linters = lint.linters_by_ft[ft] or lint.linters_by_ft["*"] or {}
-  
+
   if #linters == 0 then
     vim.notify("No linters configured for filetype: " .. ft, vim.log.levels.WARN)
     return
   end
-  
+
   local available = {}
   local unavailable = {}
-  
+
   for _, linter_name in ipairs(linters) do
     local linter = lint.linters[linter_name]
     if linter then
@@ -111,14 +113,10 @@ vim.api.nvim_create_user_command("LintInfo", function()
       end
     end
   end
-  
+
   local msg = "Filetype: " .. ft .. "\n"
-  if #available > 0 then
-    msg = msg .. "Available linters: " .. table.concat(available, ", ") .. "\n"
-  end
-  if #unavailable > 0 then
-    msg = msg .. "Unavailable linters: " .. table.concat(unavailable, ", ")
-  end
-  
+  if #available > 0 then msg = msg .. "Available linters: " .. table.concat(available, ", ") .. "\n" end
+  if #unavailable > 0 then msg = msg .. "Unavailable linters: " .. table.concat(unavailable, ", ") end
+
   vim.notify(msg, vim.log.levels.INFO)
 end, { desc = "Show linter info for current buffer" })
