@@ -15,7 +15,12 @@ vim.keymap.set("n", "<Leader>f", function()
 end, { desc = "Find files" })
 
 vim.keymap.set("n", "<Leader><Leader>", function()
-  require("mini.pick").builtin.resume()
+  local ok, mini_pick = pcall(require, "mini.pick")
+  if ok and mini_pick.get_picker_state() ~= nil then
+    mini_pick.builtin.resume()
+  else
+    vim.notify("No picker to resume", vim.log.levels.INFO)
+  end
 end, { desc = "Resume last pick" })
 
 -- Additional grep keymap for muscle memory - both <Leader>fg and <Leader>g work
