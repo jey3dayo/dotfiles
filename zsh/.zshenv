@@ -36,6 +36,7 @@ path=(
   /usr/local/opt/openjdk/bin:(N-/)
   /usr/local/opt/coreutils/libexec/gnubin(N-/)
   $BUN_INSTALL/bin(N-/)
+  $HOME/go/bin(N-/)
   $PNPM_HOME(N-/)
   $HOME/.local/npm-global/bin
   $ANDROID_SDK_ROOT/emulator(N-/)
