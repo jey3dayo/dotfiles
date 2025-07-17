@@ -4,7 +4,7 @@ return {
   -- Keep fugitive for specific commands like :Gblame, :Gdiffsplit
   {
     "tpope/vim-fugitive",
-    cmd = { "Gdiffsplit", "Gblame", "Ggrep", "Gbrowse" },
+    cmd = { "Gdiffsplit", "Gblame", "Ggrep", "Gbrowse", "Gwrite", "Git" },
     config = function()
       require "config/vim-fugitive"
     end,
