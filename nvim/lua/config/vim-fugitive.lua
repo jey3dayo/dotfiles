@@ -13,7 +13,7 @@ vim.keymap.set("n", "<C-g>s", function()
   end
 end, { desc = "Git status" })
 
-vim.keymap.set("n", "<C-g>a", "<cmd>Gwrite<CR>", { desc = "Git add current file" })
+vim.keymap.set("n", "<C-g>w", "<cmd>Gwrite<CR>", { desc = "Git write (Gwrite)" })
 vim.keymap.set("n", "<C-g>b", "<cmd>Git blame<CR>", { desc = "Git blame" })
 vim.keymap.set("n", "<C-g>d", "<cmd>Gdiffsplit<CR>", { desc = "Git diff split (current file)" })
 vim.keymap.set("n", "<C-g>D", "<cmd>DiffviewOpen<CR>", { desc = "Diffview open (全体)" })
