@@ -163,7 +163,7 @@ M.setup = function(bufnr, client, args)
     create_specific_formatter_command "prettier",
     { desc = "Format with Prettier" }
   )
-  utils.user_command("FormatWithEslint", create_specific_formatter_command "eslint", { desc = "Format with ESLint" })
+  utils.user_command("FormatWithEslint", create_specific_formatter_command "eslint_d", { desc = "Format with ESLint" })
   utils.user_command("FormatWithTsLs", create_specific_formatter_command "ts_ls", { desc = "Format with TypeScript" })
 
   -- Debug command
