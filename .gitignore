@@ -215,3 +215,6 @@ zed/*.log
 # XDG User Directories
 user-dirs.dirs
 user-dirs.locale
+
+# PluseAudio
+pulse/cookie
