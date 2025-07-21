@@ -208,3 +208,10 @@ zed/state*
 zed/*.db
 zed/*.lock
 zed/*.log
+
+# nvim
+*.swp
+
+# XDG User Directories
+user-dirs.dirs
+user-dirs.locale
