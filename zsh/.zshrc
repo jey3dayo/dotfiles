@@ -63,6 +63,7 @@ if [ -f "$XDG_CONFIG_HOME/.env" ]; then
   source "$XDG_CONFIG_HOME/.env"
 fi
 
+# Source additional configurations
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 
 # removed custom source - mark for cleanup and defer removal
