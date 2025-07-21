@@ -69,9 +69,11 @@ apply = ["defer"]
 
 [plugins.zoxide.hooks]
 post = '''
-alias j=z
-export _ZO_RESOLVE_SYMLINKS=1
-eval "$(zoxide init zsh)"
+if command -v zoxide >/dev/null 2>&1; then
+  alias j=z
+  export _ZO_RESOLVE_SYMLINKS=1
+  eval "$(zoxide init zsh)"
+fi
 '''
 
 [plugins.pnpm-shell-completion]
