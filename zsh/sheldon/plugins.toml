@@ -43,9 +43,11 @@ apply = ["defer"]
 github = "junegunn/fzf"
 apply = ['fzf-install', 'source']
 
+# fzf-tab needs special handling for ls-colors
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
-apply = ["defer"]
+# Load immediately after fzf to ensure ls-colors functions are available
+apply = ["source"]
 
 # Priority 5: Completion system (grouped for efficiency)
 [plugins.zsh-completions]
