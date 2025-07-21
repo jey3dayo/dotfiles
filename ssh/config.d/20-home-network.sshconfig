@@ -10,7 +10,7 @@ Host pi
   IdentitiesOnly yes
 
 # Raspberry Pi via Tailscale (remote access)
-Host pi-remote
+Host pi-tailscale
   HostName raspberrypi.tailfd232.ts.net
   User pi
   Port 10022
