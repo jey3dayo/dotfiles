@@ -63,6 +63,9 @@ if [ -f "$XDG_CONFIG_HOME/.env" ]; then
   source "$XDG_CONFIG_HOME/.env"
 fi
 
+# Source initialization files first (order-dependent)
+for f ("${ZDOTDIR:-$HOME}"/init/*.zsh) source "${f}"
+
 # Source additional configurations
 for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 

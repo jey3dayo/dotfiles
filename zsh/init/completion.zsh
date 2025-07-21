@@ -1,5 +1,5 @@
-# zsh completion system configuration
-# XDG準拠のキャッシュディレクトリを使用
+# zsh completion system initialization
+# 補完システムの初期化処理
 
 # キャッシュディレクトリ設定
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
@@ -14,7 +14,17 @@ cleanup_old_zcompdump() {
   find "$cache_dir" -name "zcompdump*" -type f -mtime +7 -delete 2>/dev/null
 }
 
-# 補完システム初期化関数
+# post-compinit hooks実行
+_execute_post_compinit_hooks() {
+  if (( ${+_post_compinit_hooks} )); then
+    for hook in $_post_compinit_hooks; do
+      eval "$hook"
+    done
+    unset _post_compinit_hooks
+  fi
+}
+
+# 補完システム初期化（完全初期化）
 _init_completion() {
   # fpath設定 - 補完関数の検索パスを追加
   if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
@@ -37,19 +47,12 @@ _init_completion() {
     compinit -C -d "${ZSH_COMPDUMP}"
   fi
 
-  # 補完スタイル設定
-  zstyle ':completion:*' use-cache true
-  zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
-  zstyle ':completion:*' menu select
-  zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-  zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+  # 初期化完了後にフックを実行
+  _execute_post_compinit_hooks
 }
 
-# zsh-deferが利用可能な場合は遅延読み込み、そうでなければ即座に実行
-if (( $+functions[zsh-defer] )); then
-  zsh-defer _init_completion
-else
-  _init_completion
-fi
+# 補完システムを初期化
+_init_completion
 
 # vim: set syntax=zsh:
+
