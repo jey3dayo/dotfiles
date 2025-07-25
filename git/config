@@ -85,3 +85,6 @@
 [log]
   ; date = iso
   date = relative
+[user]
+	name = Junya Nakazato
+	email = j138cm@gmail.com
