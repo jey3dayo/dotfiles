@@ -29,6 +29,7 @@ _ssh_hosts() {
     ~/.ssh/ssh_config.d/*
     ${XDG_CONFIG_HOME:-$HOME/.config}/ssh/ssh_config
     ${XDG_CONFIG_HOME:-$HOME/.config}/ssh/ssh_config.d/*
+    ${XDG_CONFIG_HOME:-$HOME/.config}/ssh/config.d/*
   )
 
   for config in $config_files; do
