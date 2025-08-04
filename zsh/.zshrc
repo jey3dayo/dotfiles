@@ -83,3 +83,5 @@ else
 fi
 
 # vim: set syntax=zsh:
+
+alias claude="/Users/t00114/.claude/local/claude"
