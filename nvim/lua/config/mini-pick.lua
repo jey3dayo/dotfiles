@@ -16,17 +16,19 @@ end, { desc = "Find files" })
 
 vim.keymap.set("n", "<Leader><Leader>", function()
   local ok, mini_pick = pcall(require, "mini.pick")
-  if ok and mini_pick.get_picker_state() ~= nil then
-    mini_pick.builtin.resume()
+  if ok then
+    -- mini.pickのresume機能を直接呼び出す
+    local success = pcall(mini_pick.builtin.resume)
+    if not success then vim.notify("No picker to resume", vim.log.levels.INFO) end
   else
-    vim.notify("No picker to resume", vim.log.levels.INFO)
+    vim.notify("mini.pick not available", vim.log.levels.ERROR)
   end
 end, { desc = "Resume last pick" })
 
--- Additional grep keymap for muscle memory - both <Leader>fg and <Leader>g work
-vim.keymap.set("n", "<Leader>g", function()
+-- Grep with ,gr for muscle memory
+vim.keymap.set("n", ",gr", function()
   require("mini.pick").builtin.grep_live()
-end, { desc = "Live grep (shortcut)" })
+end, { desc = "Live grep" })
 
 -- Buffer management
 vim.keymap.set("n", "<Leader>b", function()
