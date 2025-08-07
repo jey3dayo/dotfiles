@@ -10,18 +10,20 @@ load_tool_settings() {
       source "$config_dir/tools/$critical_tool.zsh"
   done
 
-  # Non-critical tools - ultra-deferred load with timeout
+  # Non-critical tools - ultra-deferred load with optimized timing
   for tool_file in "$config_dir/tools"/*.zsh; do
     local tool_name=$(basename "$tool_file" .zsh)
     # Skip already loaded critical tools
     [[ "$tool_name" == "fzf" || "$tool_name" == "git" || "$tool_name" == "mise" ]] && continue
 
     if (( $+functions[zsh-defer] )); then
-      # Stagger tool loading to reduce startup spike
+      # Optimized staggered loading for minimal startup impact
       case "$tool_name" in
-      starship) zsh-defer -t 5 source "$tool_file" ;;
-      brew) zsh-defer -t 8 source "$tool_file" ;;
-      *) zsh-defer -t 10 source "$tool_file" ;;
+      starship) zsh-defer -t 3 source "$tool_file" ;;  # Prompt is visible, load sooner
+      brew) zsh-defer -t 2 source "$tool_file" ;;      # Critical for package management
+      debug) zsh-defer -t 15 source "$tool_file" ;;    # Debug tools rarely needed at startup
+      gh) zsh-defer -t 8 source "$tool_file" ;;        # GitHub tools - moderate priority
+      *) zsh-defer -t 12 source "$tool_file" ;;        # Everything else - low priority
       esac
     else
       source "$tool_file"

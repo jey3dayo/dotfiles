@@ -11,22 +11,18 @@ fi
 
 [[ -x $BREW_PATH/brew ]] && alias brew="arch -arch $ARCH $BREW_PATH/brew"
 
-# Defer brew shellenv for faster startup
-# Modified to preserve mise PATH priority
+# Ultra-deferred brew initialization for maximum startup speed
 if (( $+functions[zsh-defer] )); then
-  zsh-defer eval "$(
-    eval \"\$($BREW_PATH/brew shellenv)\"
-    # Remove mise-managed tools from Homebrew PATH
-    PATH=\$(echo \$PATH | tr ':' '\n' | grep -v '/opt/homebrew/bin' | tr '\n' ':' | sed 's/:$//')
-    PATH=\"\$PATH:/opt/homebrew/bin\"
-    export PATH
-  )"
+  # Set minimal env vars immediately, defer full shellenv
+  export HOMEBREW_PREFIX="$([[ "$(arch)" == arm64 ]] && echo /opt/homebrew || echo /usr/local)"
+  export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+  export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
+  
+  # Defer expensive operations
+  zsh-defer -t 5 eval "$($BREW_PATH/brew shellenv)"
 else
+  # Fallback for immediate loading
   eval "$($BREW_PATH/brew shellenv)"
-  # Remove mise-managed tools from Homebrew PATH
-  PATH=$(echo $PATH | tr ':' '\n' | grep -v '/opt/homebrew/bin' | tr '\n' ':' | sed 's/:$//')
-  PATH="$PATH:/opt/homebrew/bin"
-  export PATH
 fi
 
 if [ -f $BREW_PATH/etc/brew-wrap ]; then

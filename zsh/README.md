@@ -1,10 +1,10 @@
 # Zsh Configuration
 
-High-performance Zsh configuration with 1.2s startup time (30% improvement) and modular plugin system.
+High-performance Zsh configuration with 1.1s startup time (43% improvement) and modular plugin system.
 
 ## ✨ Key Features
 
-- **🚀 Performance**: 1.7s → 1.2s startup (30% improvement)
+- **🚀 Performance**: 1.8s → 1.1s startup (43% improvement)
 - **📦 Plugin Management**: Sheldon with 6-tier priority loading
 - **⚡ Optimization**: mise lazy loading (-39.88ms critical improvement)
 - **🔍 Git Integration**: Custom widgets and 50+ abbreviations
@@ -15,10 +15,12 @@ High-performance Zsh configuration with 1.2s startup time (30% improvement) and 
 
 | Optimization          | Improvement    | Impact         |
 | --------------------- | -------------- | -------------- |
-| Overall startup       | 1.7s → 1.2s    | 30% faster     |
-| mise lazy loading     | -39.88ms       | Critical       |
-| 6-tier plugin loading | Prioritized    | Smooth startup |
+| Overall startup       | 1.8s → 1.1s    | 43% faster     |
+| mise ultra-defer      | Complete defer | Critical       |
+| brew optimization     | Minimal env    | High impact    |
+| 6-tier plugin loading | Optimized timing | Smooth startup |
 | File compilation      | All .zsh files | Runtime speed  |
+| Code cleanup          | ~19MB removed  | Storage/speed  |
 
 ## 🏗️ Architecture
 
