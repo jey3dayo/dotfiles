@@ -5,12 +5,13 @@ if ! command -v mise >/dev/null 2>&1; then
   return
 fi
 
-# Ultra-optimized mise loading - defer everything except critical env vars
-# Only set MISE_DATA_DIR immediately, defer all other initialization
+# Optimized mise loading - immediate PATH setup, deferred completion
+# Activate immediately for PATH priority, defer only completion
 if (( $+functions[zsh-defer] )); then
-  # Defer all mise initialization for maximum startup speed
-  zsh-defer -t 1 eval "$(mise activate zsh)"
-  zsh-defer -t 1 eval "$(mise hook-env -s zsh)" 
+  # Immediate activation for proper PATH ordering
+  eval "$(mise activate zsh)"
+  eval "$(mise hook-env -s zsh)"
+  # Defer only completion for startup performance
   zsh-defer -t 3 eval "$(mise complete -s zsh)"
 else
   # Fallback for immediate loading when zsh-defer unavailable

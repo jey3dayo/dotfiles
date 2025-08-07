@@ -1,5 +1,6 @@
 [tools]
 biome = "2.0.6"
+go = "1.23.3"
 node = "24"
 
 [env]
