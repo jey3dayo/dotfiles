@@ -23,7 +23,7 @@ return {
       lint = {
         cssConflict = "warning",
         invalidApply = "error",
-        invalidConfigPath = "error",
+        invalidConfigPath = "off", -- Disable tsconfig resolution errors
         invalidScreen = "error",
         invalidTailwindDirective = "error",
         invalidVariant = "error",
