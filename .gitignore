@@ -222,3 +222,6 @@ user-dirs.locale
 
 # PluseAudio
 pulse/cookie
+
+# mcp
+.serena
