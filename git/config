@@ -1,5 +1,4 @@
 [include]
-  path = ~/.gitconfig_local
   path = ~/.config/git/diff.gitconfig
   path = ~/.config/git/ghq.gitconfig
   path = ~/.config/git/alias.gitconfig
@@ -88,3 +87,6 @@
 [user]
 	name = Junya Nakazato
 	email = j138cm@gmail.com
+
+[include]
+  path = ~/.gitconfig_local
