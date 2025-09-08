@@ -46,8 +46,9 @@ apply = ['fzf-install', 'source']
 # fzf-tab needs special handling for ls-colors
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
-# Load immediately after fzf to ensure ls-colors functions are available
-apply = ["source"]
+# Load with defer to ensure proper initialization order
+apply = ["defer"]
+use = ["fzf-tab.zsh"]
 
 # Priority 5: Completion system (grouped for efficiency)
 [plugins.zsh-completions]
