@@ -3,8 +3,10 @@ biome = "2.0.6"
 go = "1.23.3"
 node = "24"
 
+[settings]
+env_file = '.env'
+
 [env]
-_.file = [".env"]
 _.source = [".venv/bin/activate"]
 
 [tasks.format]
