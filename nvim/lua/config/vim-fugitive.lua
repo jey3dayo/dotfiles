@@ -1,5 +1,3 @@
-local utils = require "core.utils"
-
 -- Direct <C-g> keymaps without [git] prefix
 vim.keymap.set("n", "<C-g><C-g>", "<cmd>DiffviewOpen<CR>", { desc = "DiffviewOpen" })
 

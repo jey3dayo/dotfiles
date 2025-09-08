@@ -1,9 +1,6 @@
 local utils = require "core.utils"
 local mason_lspconfig = utils.safe_require "mason-lspconfig"
 local lspconfig = utils.safe_require "lspconfig"
-local compat = require "lsp.compat"
-
-local with = utils.with
 local handlers = require "lsp.handlers"
 local on_attach = handlers.on_attach
 local capabilities = require("lsp.capabilities").setup()

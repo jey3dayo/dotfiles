@@ -3,10 +3,6 @@ vim.g.mapleader = ","
 local noremap_opts = { noremap = true, silent = true }
 local silent_opts = { silent = true }
 
-local function set_keymap(mode, key, value, opts)
-  opts = opts or (mode == "n" and noremap_opts or silent_opts)
-  vim.keymap.set(mode, key, value, opts)
-end
 
 -- Legacy Keymap functions removed - use vim.keymap.set directly
 

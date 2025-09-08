@@ -62,7 +62,7 @@ require("conform").setup {
 
     -- Biome formatter with config detection from lsp.config
     biome = {
-      condition = function(self, ctx)
+      condition = function(_, ctx)
         local config_files = lsp_config.formatters.biome.config_files
         return utils.has_config_files(config_files, ctx.dirname)
       end,
@@ -70,7 +70,7 @@ require("conform").setup {
 
     -- Prettier formatter with fallback when no config files
     prettier = {
-      condition = function(self, ctx)
+      condition = function(_, ctx)
         local config_files = lsp_config.formatters.prettier.config_files
         -- Always allow prettier as fallback, even without config files
         return utils.has_config_files(config_files, ctx.dirname)

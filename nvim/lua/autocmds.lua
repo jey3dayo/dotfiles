@@ -25,9 +25,9 @@ utils.autocmd({ "FileType" }, {
   pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
   callback = function()
     -- Check if ESLint config exists
-    local utils = require "core.utils"
+    local config_utils = require "core.utils"
     local config_files = require("lsp.config").formatters.eslint.config_files
-    if utils.has_config_files(config_files) then
+    if config_utils.has_config_files(config_files) then
       -- Wait a bit for LSP to initialize, then check if ESLint is running
       vim.defer_fn(function()
         local eslint_clients = vim.tbl_filter(function(client)
