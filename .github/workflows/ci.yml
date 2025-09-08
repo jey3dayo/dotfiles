@@ -105,7 +105,7 @@ jobs:
       # Shfmt for Shell scripts
       - name: Install shfmt
         run: |
-          curl -L https://github.com/mvdan/sh/releases/latest/download/shfmt_v3.7.0_linux_amd64 -o shfmt
+          curl -L https://github.com/mvdan/sh/releases/latest/download/shfmt_v3.12.0_linux_amd64 -o shfmt
           chmod +x shfmt
           sudo mv shfmt /usr/local/bin/
 
