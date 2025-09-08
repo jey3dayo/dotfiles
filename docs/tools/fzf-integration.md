@@ -133,7 +133,9 @@ gco() {
 
 ```bash
 # tmux.conf integration
-bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | fzf --reverse | xargs tmux switch-client -t"
+bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
+  grep -v \"^$(tmux display-message -p '#S')\$\" | \\
+  fzf --reverse | xargs tmux switch-client -t"
 ```
 
 ### Editor Layer Integration
