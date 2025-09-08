@@ -104,11 +104,7 @@ tool_name() {
 }
 
 # mise遅延読み込み（実証済み）
-mise() {
-    unfunction mise
-    eval "$(mise activate zsh)"
-    mise "$@"
-}
+# 詳細な設定パターン: .claude/reference/tool-configurations.md を参照
 ```
 
 ## 🛠️ 実装ワークフロー

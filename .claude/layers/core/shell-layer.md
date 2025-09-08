@@ -26,12 +26,8 @@ source_if_exists() {
     [[ -f "$1" ]] && source "$1"
 }
 
-# 遅延読み込みパターン
-mise() {
-    unfunction mise
-    eval "$(mise activate zsh)"
-    mise "$@"
-}
+# 遅延読み込みパターン - 詳細は Tool Configurationsを参照
+# 参照: .claude/reference/tool-configurations.md
 ```
 
 ### パフォーマンス最適化
@@ -266,6 +262,7 @@ for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 ### 実装パターン
 
 **init/completion.zsh - 初期化専用**
+
 ```zsh
 # 補完システム初期化（完全初期化）
 _init_completion() {
@@ -279,6 +276,7 @@ _init_completion
 ```
 
 **sources/styles.zsh - 設定適用専用**
+
 ```zsh
 # 補完スタイル設定（compdef前提）
 if (( $+functions[compdef] )); then

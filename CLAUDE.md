@@ -17,7 +17,7 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 ### 設計原則
 
-- **Performance First**: 主要3技術の起動時間最適化（Zsh: 1.2s, Neovim: 95ms, WezTerm: 800ms）
+- **Performance First**: 主要3技術の起動時間最適化（[詳細指標](.claude/reference/performance-stats.md)参照）
 - **Primary Integration**: Zsh ⇔ WezTerm ⇔ Neovim間のシームレス連携
 - **Unified Theme**: Gruvboxベース統一テーマ・フォント設定
 - **Modular Design**: 主要技術を中心とした設定の分離・統合
@@ -26,9 +26,7 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 ### ✅ Performance Targets Achieved
 
-- **Zsh Shell**: 1.2s startup (30% improvement achieved)
-- **Neovim Editor**: <95ms startup with lazy.nvim plugin management
-- **WezTerm Terminal**: 800ms startup (35% improvement)
+📊 **最新パフォーマンス結果**: [Performance Statistics](.claude/reference/performance-stats.md)
 
 ### 🏗️ Architecture
 
