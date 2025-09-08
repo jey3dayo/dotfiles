@@ -17,7 +17,7 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 ### 設計原則
 
-- **Performance First**: 主要3技術の起動時間最適化（[詳細指標](.claude/reference/performance-stats.md)参照）
+- **Performance First**: 主要3技術の起動時間最適化（[詳細指標](docs/reference/performance-stats.md)参照）
 - **Primary Integration**: Zsh ⇔ WezTerm ⇔ Neovim間のシームレス連携
 - **Unified Theme**: Gruvboxベース統一テーマ・フォント設定
 - **Modular Design**: 主要技術を中心とした設定の分離・統合
@@ -26,7 +26,7 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 ### ✅ Performance Targets Achieved
 
-📊 **最新パフォーマンス結果**: [Performance Statistics](.claude/reference/performance-stats.md)
+📊 **最新パフォーマンス結果**: [Performance Statistics](docs/reference/performance-stats.md)
 
 ### 🏗️ Architecture
 
@@ -102,6 +102,31 @@ Use `/learnings` command to record new insights into appropriate layers automati
 
 技術的な問題に遭遇した場合は、o3 MCPで英語相談 → 日本語で要約説明
 
+## 🤖 AI Command System
+
+### 統合コマンドシステム
+
+本dotfilesプロジェクトは、グローバルAIコマンドシステムと統合されています：
+
+#### グローバルコマンド（全プロジェクト共通）
+
+- `/task` - インテリジェント・タスク・ルーター（自然言語タスク実行）
+- `/todos` - 統合タスク管理・実行システム
+- `/review` - 統合コードレビューシステム（ハイブリッド動作）
+- `/learnings` - 学習記録システム
+- `allow-command` - Claude設定許可管理ユーティリティ
+
+#### プロジェクト固有コマンド（dotfiles特化）
+
+- `/refactoring` - dotfiles特化リファクタリング
+- `/update-readme` - ツール別README自動更新
+
+#### 特化レビュー基準
+
+- `.claude/review-criteria.md` - dotfiles特化の5段階評価システム
+- 層別分析（Shell/Editor/Terminal/Git）
+- パフォーマンス影響評価（起動時間・メモリ使用量）
+
 ## 🔄 Maintenance
 
 ### Regular Tasks
@@ -125,6 +150,7 @@ Use `/learnings` command to record new insights into appropriate layers automati
 
 ---
 
-_Last Updated: 2025-07-07_
-_Configuration Status: Production Ready - 構造化文書管理システム完了_
+_Last Updated: 2025-09-08_
+_Configuration Status: Production Ready - AIコマンドシステム統合完了_
 _Performance Targets: All core metrics achieved_
+_AI Integration: Global command system with project-specific optimizations_

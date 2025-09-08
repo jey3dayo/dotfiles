@@ -348,7 +348,7 @@ command! LspLog lua vim.cmd('edit ' .. vim.lsp.get_log_path())
 
 #### 解決策・パターン
 
-**方法1: 安定版への切り替え（推奨）**
+#### 方法1: 安定版への切り替え（推奨）
 
 ```bash
 # 旧バージョンのvscode-json-languageserverをグローバルインストール
@@ -367,7 +367,7 @@ npm install -g vscode-json-languageserver@1.3.4
 }
 ```
 
-**方法2: capabilities拡張（非推奨）**
+#### 方法2: capabilities拡張（非推奨）
 
 ```lua
 -- lsp/settings/jsonls.lua - capabilities拡張で動的登録サポートを宣言
@@ -403,14 +403,14 @@ end)(),
 
 #### 削除・刷新候補（起動時間改善）
 
-**❌ 削除推奨**
+#### ❌ 削除推奨
 
 - **mason-lspconfig.nvim** (82.1ms) → 手動設定化で大幅軽量化
 - **telescope.nvim** (151.76ms) → **fzf-lua**移行で60%高速化
 - **cmp-cmdline** (3.06ms) → 使用頻度低、削除対象
 - **tailwindcss-colorizer-cmp** (0.15ms) → 特定用途、汎用性低
 
-**⚡ 高速化移行 (✅ 完了)**
+#### ⚡ 高速化移行 (✅ 完了)
 
 - **✅ nvim-cmp** → **blink.cmp** 移行完了 (80%高速化達成)
 - **nvim-web-devicons** (0.41ms) → **mini.icons** (一体化) で統合効率化

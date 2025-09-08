@@ -237,7 +237,7 @@ sheldon source | head -50             # 生成されたコード確認
 
 ### 解決策・アーキテクチャ改善
 
-**1. 初期化と設定の分離**
+#### 1. 初期化と設定の分離
 
 ```zsh
 # 新しい構造
@@ -249,7 +249,7 @@ zsh/
     └── config-loader.zsh   # ツール設定読み込み
 ```
 
-**2. .zshrcの明確な読み込み順序**
+#### 2. .zshrcの明確な読み込み順序
 
 ```zsh
 # 1. 初期化処理（順序重要）
@@ -261,7 +261,7 @@ for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
 
 ### 実装パターン
 
-**init/completion.zsh - 初期化専用**
+#### init/completion.zsh - 初期化専用
 
 ```zsh
 # 補完システム初期化（完全初期化）
@@ -275,7 +275,7 @@ _init_completion() {
 _init_completion
 ```
 
-**sources/styles.zsh - 設定適用専用**
+#### sources/styles.zsh - 設定適用専用
 
 ```zsh
 # 補完スタイル設定（compdef前提）

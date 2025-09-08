@@ -44,8 +44,7 @@ exec zsh
 
 ## 📝 Detailed Setup
 
-<details>
-<summary>Click to expand complete installation guide</summary>
+<!-- Details section for complete installation guide -->
 
 ### Prerequisites
 
@@ -85,6 +84,7 @@ exec zsh
    ```
 
 4. **Verification**
+
    ```bash
    zsh-benchmark    # Should show ~1.2s startup
    nvim             # First run installs plugins

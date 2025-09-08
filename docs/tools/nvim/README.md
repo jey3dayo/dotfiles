@@ -157,7 +157,7 @@ s<char><char>   -- Leap motion (jump to characters)
 - **leap.nvim**: Motion plugin
 - **lualine.nvim**: Status line
 
-### AI & Development
+### AI & Development Tools
 
 - **copilot.lua**: GitHub Copilot
 - **avante.nvim**: AI chat integration
