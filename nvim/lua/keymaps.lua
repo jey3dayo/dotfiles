@@ -3,7 +3,6 @@ vim.g.mapleader = ","
 local noremap_opts = { noremap = true, silent = true }
 local silent_opts = { silent = true }
 
-
 -- Legacy Keymap functions removed - use vim.keymap.set directly
 
 -- deprecated
