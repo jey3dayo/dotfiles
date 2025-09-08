@@ -135,6 +135,117 @@ sync_fonts() {
 }
 ```
 
+## 🎯 ツール優先度管理
+
+### mise優先度設定方針
+
+**目的**: miseで管理するツール（node, go, python等）をHomebrew管理のツールより確実に優先させる
+
+#### 設定方針
+
+1. **Homebrew競合ツールの除外**
+
+   ```bash
+   # 競合を避けるためHomebrewのnodeをPATHから除外
+   brew unlink node
+
+   # 必要時のみ一時的に有効化
+   # brew link node && 作業 && brew unlink node
+   ```
+
+2. **初期化順序の制御**
+
+   ```zsh
+   # zsh/config/tools/mise.zsh
+   # brew初期化後にmiseを有効化（t=8, brewのt=5の後）
+   zsh-defer -t 8 eval "$(mise activate zsh)"
+   ```
+
+3. **PATH構成の最適化**
+   ```zsh
+   # zsh/config/core/path.zsh
+   path=(
+     $HOME/{bin,sbin}(N-/)
+     $HOME/.local/{bin,sbin}(N-/)
+     # システムPATHを先に追加
+     $path
+     # HomebrewパスはPATH末尾に（miseツールの後に追加される）
+     /opt/homebrew/{bin,sbin}(N-/)
+   )
+   ```
+
+#### 実装パターン
+
+**問題のあるパターン**:
+
+```zsh
+# ❌ 即座にmise有効化 → brewが後から上書き
+eval "$(mise activate zsh)"
+# 中略...
+eval "$(brew shellenv)"  # PATHを前に挿入
+```
+
+**推奨パターン**:
+
+```zsh
+# ✅ brew初期化を待ってからmise有効化
+zsh-defer -t 5 eval "$(brew shellenv)"
+zsh-defer -t 8 eval "$(mise activate zsh)"  # brewの後に実行
+```
+
+#### 動作確認
+
+設定後の確認手順:
+
+```bash
+# ツール参照先の確認
+type -a node
+# -> node is /Users/user/.mise/installs/node/24.2.0/bin/node
+
+type -a go
+# -> go is /Users/user/.mise/installs/go/1.23.3/bin/go
+
+# バージョン確認
+node -v && mise which node
+go version && mise which go
+
+# PATH順序確認（mise管理ツールが先頭付近に来ること）
+echo $PATH | tr ":" "\n" | grep -n -E "(mise|homebrew)" | head -8
+```
+
+#### トラブルシューティング
+
+**よくある問題**:
+
+1. **nodeでbrewが優先される**
+
+   - 原因: `brew link node`で再リンクされている
+   - 解決: `brew unlink node`で再度解除
+
+2. **miseツールが見つからない**
+
+   - 原因: mise activateのタイミングが早すぎる
+   - 解決: zsh-deferの時間を調整（t=8以降）
+
+3. **パフォーマンス劣化**
+   - 原因: 過度な遅延設定
+   - 解決: 必要最小限の遅延時間に調整
+
+#### 他ツールでの応用
+
+このパターンは他のツール競合でも応用可能:
+
+```zsh
+# Python: pyenv vs Homebrew
+zsh-defer -t 8 eval "$(pyenv init -)"
+
+# Ruby: rbenv vs Homebrew
+zsh-defer -t 8 eval "$(rbenv init -)"
+
+# Java: SDKMAN vs Homebrew
+zsh-defer -t 8 source "$HOME/.sdkman/bin/sdkman-init.sh"
+```
+
 ## 🔧 ワークフロー自動化
 
 ### 開発セッション起動
@@ -543,6 +654,6 @@ local keymap_manager = {
 
 ---
 
-_最終更新: 2025-07-06_
-_統合状態: Keymap階層化完了、mini.clue統合済み_
+_最終更新: 2025-09-08_
+_統合状態: Keymap階層化完了、mini.clue統合済み、mise優先度設定完了_
 _次の目標: 環境別設定管理の完全自動化_
