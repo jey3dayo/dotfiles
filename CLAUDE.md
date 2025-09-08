@@ -141,6 +141,29 @@ Use `/learnings` command to record new insights into appropriate layers automati
 - プラグイン使用状況分析
 - パフォーマンス回帰検出
 
+### Local CI Checks
+
+GitHub Actions CI と同等のチェックをローカルで実行：
+
+```bash
+# 全てのCIチェックを実行
+./.claude/commands/ci-local.sh
+
+# または mise 経由で実行
+mise run ci
+
+# 環境セットアップ（初回のみ）
+./.claude/commands/ci-local.sh setup
+
+# 個別チェック
+mise run format:biome:check
+mise run format:markdown:check
+mise run format:yaml:check
+mise run lint:lua
+mise run format:lua:check
+mise run format:shell:check
+```
+
 ## 🔗 References
 
 - [Tool List](TOOLS.md)
