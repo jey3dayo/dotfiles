@@ -2,7 +2,6 @@ local ft = require "core.filetypes"
 
 return {
   { "sam4llis/nvim-lua-gf", ft = { "lua" } },
-  { "wavded/vim-stylus", ft = { "stylus" } },
   { "tpope/vim-rake", ft = ft.ruby },
   { "tpope/vim-rails", ft = ft.ruby },
   { "hotoo/jsgf.vim", ft = ft.ecma_scripts },

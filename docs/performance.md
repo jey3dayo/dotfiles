@@ -1,0 +1,21 @@
+# Performance Monitoring
+
+Tools for measuring and monitoring system performance.
+
+## Monitoring Commands
+
+```bash
+# Startup time measurement
+zsh-benchmark              # Zsh startup analysis
+zsh-profile               # Detailed performance profiling
+
+# System monitoring
+btop                      # Modern system monitor
+htop                      # Traditional process viewer
+```
+
+## Key Components
+
+- **Zsh**: 6-tier plugin loading, lazy loading
+- **Neovim**: Lazy.nvim plugin management
+- **Terminal**: GPU acceleration, font caching

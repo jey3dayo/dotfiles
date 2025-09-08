@@ -11,7 +11,6 @@ return {
     opts = require "config/nvim-treesitter",
   },
   { "andymass/vim-matchup", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
-  { "nvim-treesitter/nvim-tree-docs", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
   {
     "HiPhish/rainbow-delimiters.nvim",
     event = { "BufReadPost", "BufNewFile" },
