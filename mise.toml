@@ -1,10 +1,15 @@
 [tools]
 biome = "2.0.6"
 go = "1.23.3"
-node = "24"
+# node = "18"
+node = "24.2.0"
 
 [settings]
 env_file = '.env'
+experimental = true
+vfox = false
+idiomatic_version_file_enable_tools = ["go"]
+trusted_config_paths = ['/Users/t00114/src/github.com']
 
 [env]
 _.source = [".venv/bin/activate"]
