@@ -4,12 +4,13 @@
 
 ## 🚀 Performance Achievements
 
-| Component           | Before   | After     | Improvement           |
-| ------------------- | -------- | --------- | --------------------- |
-| **Zsh startup**     | 1.7s     | **1.2s**  | 30% faster            |
-| **Neovim startup**  | ~200ms   | **<95ms** | 50% faster            |
-| **WezTerm startup** | ~1.2s    | **800ms** | 35% faster            |
-| **mise loading**    | baseline | **-39ms** | Critical optimization |
+📊 **詳細なパフォーマンス指標**: [Performance Statistics](.claude/reference/performance-stats.md)
+
+| Component           | Current   | Improvement |
+| ------------------- | --------- | ----------- |
+| **Zsh startup**     | **1.2s**  | 30% faster  |
+| **Neovim startup**  | **<95ms** | 50% faster  |
+| **WezTerm startup** | **800ms** | 35% faster  |
 
 ## ✨ Core Features
 
