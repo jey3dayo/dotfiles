@@ -1,8 +1,12 @@
 [tools]
-biome = "2.0.6"
+biome = "latest"
 go = "1.23.3"
 # node = "18"
-node = "24.2.0"
+node = "lts"
+prettier = "latest"
+stylua = "latest"
+shfmt = "latest"
+luajit = "latest"
 
 [settings]
 env_file = '.env'
@@ -39,8 +43,8 @@ description = "Format JS/TS/JSON files with Biome"
 run = "biome format --write ."
 
 [tasks."format:biome:check"]
-description = "Check JS/TS/JSON formatting"
-run = "biome format ."
+description = "Check JS/TS/JSON formatting (GitHub Actions compatible)"
+run = "biome check --formatter-enabled=true --linter-enabled=true ."
 
 [tasks."format:markdown"]
 description = "Format Markdown files"
@@ -85,3 +89,25 @@ run = "git submodule foreach 'git reset --hard HEAD && git clean -fd' && git sub
 [tasks."update:brew"]
 description = "Update Homebrew packages"
 run = "brew update && brew upgrade"
+
+[tasks."lint:lua"]
+description = "Lint Lua files with luacheck"
+run = "luacheck ."
+
+[tasks.ci]
+description = "Run all CI checks locally (same as GitHub Actions)"
+run = [
+  "mise run format:biome:check",
+  "mise run format:markdown:check",
+  "mise run format:yaml:check",
+  "mise run lint:lua",
+  "mise run format:lua:check",
+  "mise run format:shell:check",
+]
+
+[tasks."ci:install"]
+description = "Install all tools required for CI"
+run = [
+  "npm install -g prettier",
+  "luarocks install --local luacheck",
+]
