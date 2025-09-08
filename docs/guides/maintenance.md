@@ -325,9 +325,9 @@ cp ~/.zshrc ~/.config/zsh/backup/zshrc.$(date +%Y%m%d)
 ## 🔗 関連ドキュメント
 
 - **[Main CLAUDE.md](../../CLAUDE.md)** - プロジェクト概要とナビゲーション
-- **[Configuration Guide](./configuration.md)** - 設定管理・実装パターン
+- **[Configuration Guide](./configuration-management.md)** - 設定管理・実装パターン
 - **[AI Assistance Guide](./ai-assistance.md)** - AI支援システム活用
-- **[Performance Stats](../reference/performance-stats.md)** - パフォーマンス測定詳細
+- **[Performance Layer](../configuration/support/performance.md)** - パフォーマンス測定詳細
 
 ---
 

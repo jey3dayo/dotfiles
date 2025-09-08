@@ -773,7 +773,7 @@ return {
 
 - **Shell Layer**: ターミナル統合、コマンド連携
 - **Git Layer**: Git統合、差分表示、コミット支援
-- **Performance Stats**: 起動時間測定、プロファイリング（[詳細](../../reference/performance-stats.md)）
+- **Performance Layer**: 起動時間測定、プロファイリング
 
 ---
 

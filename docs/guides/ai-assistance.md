@@ -18,18 +18,18 @@ Claude AIを活用したdotfiles開発・運用のための統合ガイドです
 
 #### 🏗️ Core Layers (Essential Configurations)
 
-- **[Shell Layer](.claude/layers/core/shell-layer.md)** - Zsh optimization, plugin management
-- **[Git Layer](.claude/layers/core/git-layer.md)** - Git workflows, authentication, tool integration
+- **[Shell Layer](../configuration/core/shell.md)** - Zsh optimization, plugin management
+- **[Git Layer](../configuration/core/git.md)** - Git workflows, authentication, tool integration
 
 #### 🔧 Tool Layers (Specialized Implementations)
 
-- **[Editor Layer](.claude/layers/tools/editor-layer.md)** - Neovim, LSP, AI assistance
-- **[Terminal Layer](.claude/layers/tools/terminal-layer.md)** - WezTerm, Tmux, Alacritty configurations
+- **[Editor Layer](../configuration/tools/editor.md)** - Neovim, LSP, AI assistance
+- **[Terminal Layer](../configuration/tools/terminal.md)** - WezTerm, Tmux, Alacritty configurations
 
 #### 🚀 Support Layers (Cross-cutting Concerns)
 
-- **[Performance Stats](../reference/performance-stats.md)** - Measurement, optimization
-- **[Integration Layer](.claude/layers/support/integration-layer.md)** - Cross-tool workflows
+- **[Performance Layer](../configuration/support/performance.md)** - Measurement, optimization
+- **[Integration Layer](../configuration/support/integration.md)** - Cross-tool workflows
 
 ## 🎯 AI支援の活用パターン
 
@@ -270,16 +270,16 @@ Claude AIを活用したdotfiles開発・運用のための統合ガイドです
 ## 🔗 関連ドキュメント
 
 - **[Main CLAUDE.md](../../CLAUDE.md)** - プロジェクト概要とナビゲーション
-- **[Configuration Guide](./configuration.md)** - 設定管理・実装パターン
+- **[Configuration Guide](./configuration-management.md)** - 設定管理・実装パターン
 - **[Maintenance Guide](./maintenance.md)** - メンテナンス・トラブルシューティング
-- **[Layer System](../layers/)** - 技術層別知識システム
+- **[Layer System](../configuration/)** - 技術層別知識システム
 
 ### 層別ドキュメント
 
-- **[Shell Layer](../layers/core/shell-layer.md)** - Zsh最適化・プラグイン管理
-- **[Editor Layer](../layers/tools/editor-layer.md)** - Neovim・LSP・AI統合
-- **[Terminal Layer](../layers/tools/terminal-layer.md)** - WezTerm・Tmux設定
-- **[Performance Stats](../reference/performance-stats.md)** - 測定・最適化手法
+- **[Shell Layer](../configuration/core/shell.md)** - Zsh最適化・プラグイン管理
+- **[Editor Layer](../configuration/tools/editor.md)** - Neovim・LSP・AI統合
+- **[Terminal Layer](../configuration/tools/terminal.md)** - WezTerm・Tmux設定
+- **[Performance Layer](../configuration/support/performance.md)** - 測定・最適化手法
 
 ---
 

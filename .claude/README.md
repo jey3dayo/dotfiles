@@ -9,7 +9,7 @@ This directory contains Claude-specific configurations, documentation, and proje
 ├── layers/              # Layered knowledge system
 │   ├── core/           # Core configurations (Shell, Git)
 │   ├── tools/          # Tool-specific layers (Editor, Terminal)
-│   └── support/        # Cross-cutting concerns (Performance, Integration)
+│   └── support/        # Cross-cutting concerns (Integration)
 ├── architecture/       # Architecture patterns and design principles
 ├── projects/          # Project-specific Claude data
 ├── todos/             # Task management files (72K)
@@ -29,7 +29,7 @@ This directory contains Claude-specific configurations, documentation, and proje
 
 - **Core Layers**: Essential configurations (Shell, Git)
 - **Tool Layers**: Specialized implementations (Editor, Terminal)
-- **Support Layers**: Cross-cutting concerns (Performance, Integration)
+- **Support Layers**: Cross-cutting concerns (Integration)
 - **Architecture**: Universal patterns and best practices
 
 ### Project Data

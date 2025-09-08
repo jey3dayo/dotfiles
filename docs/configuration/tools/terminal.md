@@ -205,13 +205,33 @@ bind C-p run "pbpaste | tmux load-buffer - ; tmux paste-buffer"
 
 ## ⚡ パフォーマンス最適化
 
-> 詳細な最適化・測定手法は **[Performance Stats](../../reference/performance-stats.md)** 参照
+### WezTerm最適化
 
-**主要最適化**:
+```lua
+-- パフォーマンス設定
+config.front_end = 'WebGpu'  -- GPU加速
+config.max_fps = 120         -- 高フレームレート
+config.animation_fps = 1     -- アニメーション無効化
 
-- **GPU加速**: WebGpu使用で描画性能大幅改善
-- **ESC応答**: escape-time 10ms設定
-- **現在の状態**: WezTerm起動800ms（目標500ms）
+-- メモリ最適化
+config.scrollback_lines = 10000
+config.enable_wayland = false  -- macOSでは不要
+```
+
+### フォント最適化
+
+```lua
+-- フォント設定
+config.font = wezterm.font_with_fallback({
+    { family = 'UDEV Gothic 35NFLG', weight = 'Regular' },
+    { family = 'JetBrains Mono', weight = 'Regular' },
+    { family = 'Symbols Nerd Font Mono', scale = 0.8 },
+})
+
+config.font_size = 16.0
+config.line_height = 1.1
+config.cell_width = 1.0
+```
 
 ## 🔧 統合パターン
 
@@ -296,22 +316,101 @@ end
 config.color_scheme = scheme_for_appearance(get_appearance())
 ```
 
+## 🚧 最適化課題
+
+### 高優先度
+
+- [ ] WezTerm起動時間の短縮（目標: 500ms以下）
+- [ ] GPU使用率の最適化
+- [ ] フォントレンダリングの改善
+
+### 中優先度
+
+- [ ] Tmuxセッション管理の自動化
+- [ ] 複数ターミナル間での設定同期
+- [ ] キーバインドの統一化
+
 ## 💡 知見・教訓
 
-### 実証済みパターン
+### 成功パターン
 
-- **モジュラー設定**: Lua設定分割で保守性向上
-- **GPU加速**: WebGpu使用で描画性能大幅改善
-- **キー統一**: WezTerm・tmux両方でCtrl+x使用
+- **モジュラー設定**: Lua設定の分割で保守性向上
+- **GPU加速**: WebGpu使用で描画パフォーマンス大幅改善
+- **Leader key**: tmux風キーバインドで操作性統一
+- **リーダーキー統一**: WezTerm・tmux両方で`Ctrl+x`使用による操作一貫性
 - **現代的コピペ**: macOS native pbcopy/pbpaste（reattach-to-user-namespace不要）
 - **セッション永続化**: resurrect+continuum による15分自動保存で作業環境復元
+
+### 失敗パターン
+
+- **過度のカスタマイズ**: 設定の複雑化とメンテナンス困難
+- **フォント設定**: fallback設定不備によるレンダリング問題
+- **プラグイン依存**: tmuxプラグイン多用による起動時間増加
+- **レガシー設定**: reattach-to-user-namespace等の古い設定継続使用
+- **セッション管理**: 手動セッション作成による非効率ワークフロー
+
+### パフォーマンス教訓
+
+- **WebGpu vs OpenGL**: 環境によるパフォーマンス差異
+- **スクロールバック**: 大量履歴によるメモリ使用量増加
+- **アニメーション**: 無効化による体感速度向上
+- **ESC応答性**: escape-time 10ms設定でキー操作高速化
+- **プラグイン最適化**: 必要最小限プラグインで起動速度確保
+
+### Tmux固有の知見
+
+#### セッション管理効率化
+
+- **FZF統合**: セッション選択でfzf使用により選択効率大幅向上
+- **プロジェクト自動化**: プロジェクトディレクトリ名からセッション名自動生成
+- **Neovim統合**: resurrect戦略でNeovimセッション状態も復元可能
+
+#### キーバインド最適化
+
+- **vim-like移動**: hjklによるペイン移動で直感的操作
+- **カレントパス維持**: 新ペイン作成時に現在ディレクトリ継承
+- **リピート操作**: -rフラグでペインリサイズの連続実行最適化
+
+#### プラグイン選定基準
+
+```text
+✅ 採用プラグイン
+- tmux-sensible: 基本設定最適化（必須）
+- tmux-resurrect: セッション復元（高価値）
+- tmux-continuum: 自動保存（運用効率）
+- tmux-gruvbox: テーマ統一（視覚一貫性）
+
+❌ 除外プラグイン
+- 過多な装飾系プラグイン（起動時間影響）
+- OS固有機能の重複（macOS標準機能と競合）
+- 複雑なセッション管理（シンプル運用重視）
+```
 
 ## 🔗 関連層との連携
 
 - **Shell Layer**: Zsh統合、プロンプト設定、tmux略語・セッション管理関数
 - **Editor Layer**: Neovim統合、編集ワークフロー、resurrect session戦略
+- **Performance Layer**: 起動時間、レスポンス最適化、プラグイン最小化
+- **Git Layer**: セッション内でのGit操作、プロジェクト連携
+
+## 📈 測定可能な成果
+
+### パフォーマンス指標
+
+- **Tmux起動時間**: < 200ms（プラグイン最適化済み）
+- **ESC応答時間**: 10ms（vim操作高速化）
+- **セッション復元**: 15分間隔自動保存
+- **メモリ使用量**: 履歴10,000行で約50MB
+
+### 操作効率向上
+
+- **セッション切り替え**: FZF統合で90%時間短縮
+- **ペイン操作**: vim-like移動で学習コスト削減
+- **リーダーキー統一**: WezTerm・tmux間で操作一貫性確保
 
 ---
 
-_最終更新: 2025-09-08_  
-_現在の状態: WezTerm 800ms (目標500ms), tmux最適化済み_
+_最終更新: 2025-06-21_
+_パフォーマンス状態: ESC 10ms・プラグイン最適化済み_
+_統合状態: WezTerm統一・Zsh連携・Neovim復元完了_
+_セッション管理: FZF統合・自動化関数実装済み_

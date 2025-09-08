@@ -52,11 +52,11 @@ run = 'files=$(find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins
 
 [tasks."format:yaml"]
 description = "Format YAML files"
-run = 'files=$(find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml); [ -n "$files" ] && echo "$files" | xargs prettier --write'
+run = 'files=$(find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml | grep -v helm/); [ -n "$files" ] && echo "$files" | xargs prettier --write'
 
 [tasks."format:yaml:check"]
 description = "Check YAML formatting"
-run = 'files=$(find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml); [ -n "$files" ] && echo "$files" | xargs prettier --check'
+run = 'files=$(find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml | grep -v helm/); [ -n "$files" ] && echo "$files" | xargs prettier --check'
 
 [tasks."format:lua"]
 description = "Format Lua files"

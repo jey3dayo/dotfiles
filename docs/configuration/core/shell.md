@@ -12,7 +12,7 @@
 
 - **Zsh設定**: モジュラー設定、起動時間最適化、プラグイン管理
 - **Shell統合**: Git、FZF、mise等の統合パターン
-- **パフォーマンス**: 起動時間最適化（詳細は[Performance Stats](../../reference/performance-stats.md)参照）
+- **パフォーマンス**: 起動時間測定、プロファイリング、最適化手法
 - **設定管理**: モジュール化、条件分岐、環境対応
 
 ## 📊 実装パターン
@@ -32,10 +32,21 @@ source_if_exists() {
 
 ### パフォーマンス最適化
 
-> 詳細な測定・最適化手法は **[Performance Stats](../../reference/performance-stats.md)** を参照
-
-- **現在の状態**: Zsh起動時間 1.2s（目標：1.0s）
-- **主要技法**: 遅延読み込み、プラグイン優先度設定
+```zsh
+# 起動時間測定
+zsh-benchmark() {
+    local times=5
+    local total=0
+    for i in {1..$times}; do
+        local start=$(date +%s.%N)
+        zsh -i -c exit
+        local end=$(date +%s.%N)
+        local time=$(echo "$end - $start" | bc)
+        total=$(echo "$total + $time" | bc)
+    done
+    echo "Average startup time: $(echo "scale=3; $total / $times" | bc)s"
+}
+```
 
 ### プラグイン管理 (Sheldon)
 
@@ -91,7 +102,16 @@ ln -sf /path/to/dotfiles/zsh/lazy-sources ~/.config/zsh/lazy-sources
 
 ### 3. パフォーマンス監視
 
-> 詳細な監視・測定は **[Performance Stats](../../reference/performance-stats.md)** 参照
+- **起動時間**: 目標1.0秒以下
+- **プロファイリング**: zsh/zprof モジュール活用
+- **継続監視**: 定期的なベンチマーク実行
+
+## 📈 現在の指標
+
+- **起動時間**: 1.2秒 (30%改善達成 - 1.7s → 1.2s)
+- **プラグイン数**: 15+ (最適化済み)
+- **メモリ使用量**: 監視対象
+- **設定ファイル数**: 8ファイル (モジュール化)
 
 ## 🔑 Zsh Key Features (詳細機能)
 
@@ -108,9 +128,24 @@ ln -sf /path/to/dotfiles/zsh/lazy-sources ~/.config/zsh/lazy-sources
 - **プロファイリング**: `zsh-profile` で詳細分析
 - **継続監視**: 定期的なベンチマーク実行で回帰検出
 
+## 🚧 最適化課題
+
+### 高優先度
+
+- [ ] mise初期化をさらに遅延化（目標: 50ms削減）
+- [ ] プラグイン読み込み順序の最適化
+- [ ] 未使用関数・エイリアスの削除
+
+### 中優先度
+
+- [ ] fzf統合の軽量化
+- [ ] Git統合の最適化
+- [ ] 条件分岐ロジックの簡素化
+
 ## 🔗 関連層との連携
 
 - **Tools Layer**: 各ツール固有の設定と統合
+- **Performance Layer**: パフォーマンス測定・最適化
 - **Integration Layer**: 他ツールとの連携パターン
 
 ## 📝 設定テンプレート
@@ -179,14 +214,103 @@ sheldon source | head -50             # 生成されたコード確認
 
 ### 実証済み最適化手法
 
-- **遅延読み込み**: 重いツールの遅延初期化（mise等）
-- **プラグイン優先度**: 6段階優先度システム
-- **条件分岐**: 必要時のみツール読み込み
+- **XDG Base Directory準拠**: キャッシュ効率化
+- **条件付きPATH追加**: typeset -U pathで重複排除
+- **プロファイリング**: zmodload zsh/zprofで詳細測定
+
+## 🔧 Zsh初期化順序の問題解決 - compdef エラー根本対策
+
+### 問題・背景
+
+- **現象**: `zsh: command not found: compdef` エラーが起動時に発生
+- **原因**: `compinit`実行前に`compdef`関数を使用する設定ファイル読み込み
+- **影響**: 補完システムが正常に動作しない、エラーメッセージで起動体験悪化
+
+### 根本原因の分析
+
+```text
+読み込み順序の問題:
+1. sources/completion.zsh  # 補完設定のみ、compinit未実行
+2. sources/config-loader.zsh  # config/tools/gh.zsh等を読み込み
+3. config/tools/gh.zsh    # compdef使用 ← ここでエラー発生
+```
+
+### 解決策・アーキテクチャ改善
+
+**1. 初期化と設定の分離**
+
+```zsh
+# 新しい構造
+zsh/
+├── init/                    # 初期化処理（順序依存）
+│   └── completion.zsh       # compinit実行 + 基本設定
+└── sources/                 # 設定適用（初期化完了前提）
+    ├── styles.zsh          # 補完スタイル設定
+    └── config-loader.zsh   # ツール設定読み込み
+```
+
+**2. .zshrcの明確な読み込み順序**
+
+```zsh
+# 1. 初期化処理（順序重要）
+for f ("${ZDOTDIR:-$HOME}"/init/*.zsh) source "${f}"
+
+# 2. 設定適用（初期化完了前提）
+for f ("${ZDOTDIR:-$HOME}"/sources/*.zsh) source "${f}"
+```
+
+### 実装パターン
+
+**init/completion.zsh - 初期化専用**
+
+```zsh
+# 補完システム初期化（完全初期化）
+_init_completion() {
+  # fpath設定
+  # compinit実行
+  # post-compinit hooks実行
+}
+
+# 必ず初期化を実行
+_init_completion
+```
+
+**sources/styles.zsh - 設定適用専用**
+
+```zsh
+# 補完スタイル設定（compdef前提）
+if (( $+functions[compdef] )); then
+  _set_completion_styles
+fi
+```
+
+### 適用効果・実測値
+
+- **エラー解消**: compdefエラーが完全に解決
+- **依存関係明確化**: 初期化 → 設定の順序保証
+- **保守性向上**: 機能分離により責任範囲が明確
+
+### 学習ポイント・パターン
+
+- **依存関係のある機能は初期化フェーズで実行**
+- **設定系ファイルは初期化完了を前提とする**
+- **ディレクトリ名で責任範囲を明示** (`init/` vs `sources/`)
+- **条件チェック** `(( $+functions[compdef] ))` で安全な実行確保
+
+### 適用条件・注意点
+
+- **適用条件**: Zshを主要シェルとして使用する環境
+- **副作用**: 既存の設定読み込み順序に依存したカスタマイズは要調整
+- **測定方法**: 起動時のエラーメッセージ確認、`zsh-benchmark`で起動時間測定
+
+### 実装日・検証結果
+
+- **実装日**: 2025-07-21
+- **検証結果**: compdefエラー完全解消、起動時間に影響なし
+- **応用可能性**: 他のシェル機能でも同様の初期化/設定分離パターンが適用可能
 
 ---
 
-_最終更新: 2025-09-08_  
-_現在の状態: Zsh 1.2s (目標1.0s), プラグイン管理最適化済み_
-
+_最終更新: 2025-07-21_
 _パフォーマンス状態: 最適化継続中 (目標起動時間: 1.0秒)_
 _アーキテクチャ状態: 初期化順序問題解決済み_

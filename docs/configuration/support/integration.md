@@ -538,7 +538,7 @@ local keymap_manager = {
 - **Shell Layer**: 統合コマンドの実装基盤
 - **Git Layer**: バージョン管理と同期の基盤
 - **Terminal Layer**: UI統合とワークフロー表示
-- **Performance Stats**: 統合による性能への影響測定（[詳細](../../reference/performance-stats.md)）
+- **Performance Layer**: 統合による性能への影響測定
 - **Editor Layer**: Neovim内でのキーマップ統合システム
 
 ---

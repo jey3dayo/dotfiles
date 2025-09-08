@@ -211,7 +211,7 @@ time source config_file.zsh
 ## 🔗 関連ドキュメント
 
 - **[Main CLAUDE.md](../../CLAUDE.md)** - プロジェクト概要とナビゲーション
-- **[Performance Stats](../reference/performance-stats.md)** - パフォーマンス測定・最適化
+- **[Performance Layer](../configuration/support/performance.md)** - パフォーマンス測定・最適化
 - **[Maintenance Guide](./maintenance.md)** - メンテナンス・トラブルシューティング
 - **[AI Assistance Guide](./ai-assistance.md)** - AI支援システム活用
 

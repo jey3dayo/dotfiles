@@ -46,32 +46,34 @@ dotfiles/
 
 ## 📚 Documentation Structure
 
+**📖 統合ドキュメント**: [./docs/](./docs/) - 体系化されたドキュメント管理システム
+
 ### 🏗️ Core Layers (Essential Configurations)
 
-- **[Shell Layer](.claude/layers/core/shell-layer.md)** - Zsh optimization, plugin management, performance tuning
-- **[Git Layer](.claude/layers/core/git-layer.md)** - Git workflows, authentication, tool integration
+- **[Shell Layer](./docs/configuration/core/shell.md)** - Zsh optimization, plugin management, performance tuning
+- **[Git Layer](./docs/configuration/core/git.md)** - Git workflows, authentication, tool integration
 
 ### 🔧 Tool Layers (Specialized Implementations)
 
-- **[Editor Layer](.claude/layers/tools/editor-layer.md)** - Neovim, LSP, AI assistance, plugin optimization
-- **[Terminal Layer](.claude/layers/tools/terminal-layer.md)** - WezTerm, Tmux, Alacritty configurations
+- **[Editor Layer](./docs/configuration/tools/editor.md)** - Neovim, LSP, AI assistance, plugin optimization
+- **[Terminal Layer](./docs/configuration/tools/terminal.md)** - WezTerm, Tmux, Alacritty configurations
 
 ### 🚀 Support Layers (Cross-cutting Concerns)
 
-- **[Performance Layer](.claude/layers/support/performance-layer.md)** - Measurement, optimization, monitoring
-- **[Integration Layer](.claude/layers/support/integration-layer.md)** - Cross-tool workflows, synchronization
+- **[Performance Layer](./docs/configuration/support/performance.md)** - Measurement, optimization, monitoring
+- **[Integration Layer](./docs/configuration/support/integration.md)** - Cross-tool workflows, synchronization
 
 ### 📋 Architecture Documentation
 
-- **[Design Patterns](.claude/architecture/patterns.md)** - Universal patterns, best practices, reusable solutions
+- **[Design Patterns](./docs/architecture/patterns.md)** - Universal patterns, best practices, reusable solutions
 
 ## 📖 Guides
 
 ### Implementation & Configuration
 
-- **[Configuration Management](.claude/guides/configuration.md)** - パターン、ベストプラクティス、実装手法
-- **[Maintenance Guide](.claude/guides/maintenance.md)** - 改善履歴、定期メンテナンス、トラブルシューティング
-- **[AI Assistance](.claude/guides/ai-assistance.md)** - AI支援システム、o3 MCP技術相談、層別実装アプローチ
+- **[Configuration Management](./docs/guides/configuration-management.md)** - パターン、ベストプラクティス、実装手法
+- **[Maintenance Guide](./docs/guides/maintenance.md)** - 改善履歴、定期メンテナンス、トラブルシューティング
+- **[AI Assistance](./docs/guides/ai-assistance.md)** - AI支援システム、o3 MCP技術相談、層別実装アプローチ
 
 ## 🚀 Quick Start
 
@@ -118,6 +120,7 @@ Use `/learnings` command to record new insights into appropriate layers automati
 
 - [Tool List](TOOLS.md)
 - [Main README](README.md)
+- [統合ドキュメント](./docs/) - 体系化されたドキュメント管理システム
 - [Claude Settings](.claude/) - AI支援のための設定とコンテキスト
 
 ---
