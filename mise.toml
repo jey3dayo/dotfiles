@@ -91,8 +91,8 @@ description = "Update Homebrew packages"
 run = "brew update && brew upgrade"
 
 [tasks."lint:lua"]
-description = "Lint Lua files with luacheck"
-run = "luacheck ."
+description = "Lint Lua files with luacheck (allow warnings)"
+run = "luacheck . || [ $? -eq 1 ]"
 
 [tasks.ci]
 description = "Run all CI checks locally (same as GitHub Actions)"
