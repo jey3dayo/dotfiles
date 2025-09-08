@@ -19,7 +19,7 @@
 
 ## 設定構造
 
-```
+```text
 nvim/
 ├── init.lua              # エントリポイント
 ├── lua/
@@ -31,7 +31,8 @@ nvim/
 
 ## サポート言語
 
-**プログラミング言語**: Lua, TypeScript/JavaScript, Python, Rust, Go, C/C++, Java, PHP, Ruby, Swift, Kotlin, C#, Dart, Shell
+**プログラミング言語**: Lua, TypeScript/JavaScript, Python, Rust, Go, C/C++,
+Java, PHP, Ruby, Swift, Kotlin, C#, Dart, Shell
 
 **マークアップ**: HTML/CSS, JSON, YAML, TOML, Markdown, Docker
 
@@ -159,4 +160,6 @@ nvim --clean
 
 ---
 
-_AI支援と包括的言語サポートを備えたモダン開発環境_
+## 概要
+
+AI支援と包括的言語サポートを備えたモダン開発環境

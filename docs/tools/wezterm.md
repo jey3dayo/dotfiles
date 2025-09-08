@@ -11,7 +11,7 @@ GPU加速対応のLuaベースモジュラーターミナル設定です。
 
 ## 設定構造
 
-```
+```text
 wezterm/
 ├── wezterm.lua          # メインエントリポイント
 ├── keybinds.lua         # キーバインド（13KB）
@@ -123,4 +123,6 @@ wezterm check
 
 ---
 
-_GPU加速とLua設定による高性能ターミナル環境_
+## 概要
+
+GPU加速とLua設定による高性能ターミナル環境

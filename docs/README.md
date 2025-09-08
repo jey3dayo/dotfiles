@@ -16,7 +16,7 @@
 
 ## Architecture
 
-```
+```text
 dotfiles/
 ├── zsh/               # Shell configuration (modular, optimized)
 ├── nvim/              # Neovim configuration (Lua-based)
