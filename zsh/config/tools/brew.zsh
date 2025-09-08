@@ -5,7 +5,7 @@ command -v brew &>/dev/null || return
 _setup_brew_env() {
   local brew_output="$($BREW_PATH/brew shellenv)"
   # Apply all brew environment variables except PATH modifications
-  echo "$brew_output" | grep -v '^export PATH=' | eval "$(cat)"
+  eval "$(echo "$brew_output" | grep -v '^export PATH=')"
   
   # Add brew paths to the END of PATH to let mise-managed tools take priority
   local brew_bin_path="$([[ "$(arch)" == arm64 ]] && echo /opt/homebrew/bin || echo /usr/local/bin)"

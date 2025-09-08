@@ -5,7 +5,7 @@ fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
 defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer -t 1 source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
 fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n"
 exec = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
-exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" &> /dev/null) \n{% endfor %}"
+exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" > /dev/null 2>&1 < /dev/null) \n{% endfor %}"
 
 # Priority 1: Essential startup components (immediate load)
 [plugins.zsh-defer]
