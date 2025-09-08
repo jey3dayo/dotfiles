@@ -13,14 +13,14 @@ High-performance Zsh configuration with 1.1s startup time (43% improvement) and 
 
 ## 📈 Performance Metrics
 
-| Optimization          | Improvement    | Impact         |
-| --------------------- | -------------- | -------------- |
-| Overall startup       | 1.8s → 1.1s    | 43% faster     |
-| mise ultra-defer      | Complete defer | Critical       |
-| brew optimization     | Minimal env    | High impact    |
+| Optimization          | Improvement      | Impact         |
+| --------------------- | ---------------- | -------------- |
+| Overall startup       | 1.8s → 1.1s      | 43% faster     |
+| mise ultra-defer      | Complete defer   | Critical       |
+| brew optimization     | Minimal env      | High impact    |
 | 6-tier plugin loading | Optimized timing | Smooth startup |
-| File compilation      | All .zsh files | Runtime speed  |
-| Code cleanup          | ~19MB removed  | Storage/speed  |
+| File compilation      | All .zsh files   | Runtime speed  |
+| Code cleanup          | ~19MB removed    | Storage/speed  |
 
 ## 🏗️ Architecture
 

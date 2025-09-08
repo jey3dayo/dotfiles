@@ -410,7 +410,6 @@ clues = {
 
 ```markdown
 1. **機能的グループ化**
-
    - ,s\* : Settings/System configuration
    - ,f\* : Find/Search operations
    - <C-g>\* : Git operations
@@ -418,7 +417,6 @@ clues = {
    - Y\* : Yank/Copy operations
 
 2. **記憶しやすいルール**
-
    - 機能の頭文字を使用 (s=settings, f=find, g=git)
    - よく使う機能ほど短いキー
    - 類似機能は同じプレフィックス内に配置
