@@ -1,76 +1,76 @@
-# WezTerm Configuration
+# WezTerm設定
 
-GPU-accelerated terminal with Lua-based modular configuration.
+GPU加速対応のLuaベースモジュラーターミナル設定です。
 
-## Key Features
+## 主要機能
 
-- **Performance**: WebGpu GPU acceleration
-- **UI**: Gruvbox theme, 92% transparency, custom tab styling
-- **Multiplexing**: Tmux-style leader key (`Ctrl+x`)
-- **Copy Mode**: Vim-style navigation and text selection
+- **パフォーマンス**: WebGpu GPU加速
+- **UI**: Gruvboxテーマ、92%透明度、カスタムタブスタイル
+- **多重化**: Tmuxスタイルリーダーキー（`Ctrl+x`）
+- **コピーモード**: Vim風ナビゲーション・テキスト選択
 
-## Configuration Structure
+## 設定構造
 
 ```
 wezterm/
-├── wezterm.lua          # Main entry point
-├── keybinds.lua         # Key bindings (13KB)
-├── ui.lua               # Visual theming
-├── events.lua           # Event handling
-├── utils.lua            # Utility functions
-├── os.lua               # Platform detection
-└── win.lua              # Windows/WSL settings
+├── wezterm.lua          # メインエントリポイント
+├── keybinds.lua         # キーバインド（13KB）
+├── ui.lua               # ビジュアルテーマ
+├── events.lua           # イベント処理
+├── utils.lua            # ユーティリティ関数
+├── os.lua               # プラットフォーム検出
+└── win.lua              # Windows/WSL設定
 ```
 
-## Essential Key Bindings
+## 主要キーバインド
 
-### Leader Key: `Ctrl+x`
+### リーダーキー: `Ctrl+x`
 
 ```lua
-Ctrl+x c               -- New tab
-Ctrl+x n/p             -- Next/previous tab
-Ctrl+x &               -- Close tab
-Ctrl+x |               -- Split horizontal
-Ctrl+x -               -- Split vertical
-Ctrl+x z               -- Zoom pane
-Ctrl+x x               -- Close pane
+Ctrl+x c               -- 新タブ
+Ctrl+x n/p             -- 次/前のタブ
+Ctrl+x &               -- タブ閉じる
+Ctrl+x |               -- 水平分割
+Ctrl+x -               -- 垂直分割
+Ctrl+x z               -- ペイン拡大
+Ctrl+x x               -- ペイン閉じる
 ```
 
-### Copy Mode: `Ctrl+x [`
+### コピーモード: `Ctrl+x [`
 
 ```lua
-h/j/k/l                -- Navigation
-w/b/e                  -- Word movement
-^/$                    -- Line start/end
-v/V                    -- Visual/line selection
-y/yy                   -- Copy selection/line
-q/Escape               -- Exit
+h/j/k/l                -- ナビゲーション
+w/b/e                  -- 単語移動
+^/$                    -- 行頭/末尾
+v/V                    -- 選択/行選択
+y/yy                   -- コピー（選択/行）
+q/Escape               -- 終了
 ```
 
-### Direct Bindings
+### 直接バインド
 
 ```lua
-Alt+Tab                -- Tab switching
-Alt+h/j/k/l            -- Pane navigation
-Alt+Shift+Ctrl+h/j/k/l -- Pane resizing
-Ctrl+plus/minus        -- Font size
+Alt+Tab                -- タブ切り替え
+Alt+h/j/k/l            -- ペインナビゲーション
+Alt+Shift+Ctrl+h/j/k/l -- ペインリサイズ
+Ctrl+plus/minus        -- フォントサイズ
 ```
 
-## Core Configuration
+## コア設定
 
-### Performance Settings
+### パフォーマンス
 
 ```lua
--- GPU acceleration
+-- GPU加速
 front_end = "WebGpu"
 webgpu_power_preference = "HighPerformance"
 
--- Font optimization
+-- フォント最適化
 font = "UDEV Gothic 35NFLG"
 font_size = 16.0
 ```
 
-### Visual Theme
+### ビジュアルテーマ
 
 ```lua
 color_scheme = "Gruvbox Dark"
@@ -79,10 +79,10 @@ tab_bar_at_bottom = true
 use_fancy_tab_bar = false
 ```
 
-### Platform Detection
+### プラットフォーム検出
 
 ```lua
--- Automatic Windows/macOS configuration switching
+-- Windows/macOS設定自動切り替え
 local is_windows = utils.is_windows()
 local config = {}
 
@@ -91,25 +91,36 @@ if is_windows then
 end
 ```
 
-## Troubleshooting
+## 統合機能
+
+- **統一テーマ**: 他dotfilesツールとのGruvbox統一
+- **透明背景**: Tmux・シェルとのシームレス統合
+- **GPU最適化**: 高速描画・低レイテンシー操作
+- **クロスプラットフォーム**: macOS/Windows/Linux対応
+
+## トラブルシューティング
 
 ```bash
-# Check GPU support
+# GPU サポート確認
 wezterm ls-fonts --list-system
 
-# Performance debugging
+# パフォーマンスデバッグ（ソフトウェア描画）
 wezterm start --config 'front_end="Software"'
 
-# Reset configuration
+# 設定リセット
 mv ~/.config/wezterm ~/.config/wezterm.backup
 ```
 
-## Maintenance
+## メンテナンス
 
 ```bash
-# Update WezTerm
+# WezTerm 更新
 brew upgrade wezterm
 
-# Verify configuration
+# 設定チェック
 wezterm check
 ```
+
+---
+
+_GPU加速とLua設定による高性能ターミナル環境_

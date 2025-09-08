@@ -1,97 +1,96 @@
-# Zsh Configuration
+# Zsh設定
 
-High-performance Zsh configuration with 1.1s startup time (43% improvement) and modular plugin system.
+1.1秒起動（43%向上）とモジュラープラグインシステムを持つ高性能Zsh設定です。
 
-## ✨ Key Features
+## 主要機能
 
-- **🚀 Performance**: 1.8s → 1.1s startup (43% improvement)
-- **📦 Plugin Management**: Sheldon with 6-tier priority loading
-- **⚡ Optimization**: mise lazy loading (-39.88ms critical improvement)
-- **🔍 Git Integration**: Custom widgets and 50+ abbreviations
-- **🔎 FZF Integration**: Repository, file, and process search
-- **📚 Help System**: Comprehensive `zsh-help` command
+- **高性能**: 1.8秒→1.1秒起動（43%向上）
+- **プラグイン管理**: Sheldon による6段階優先読み込み
+- **最適化**: mise遅延読み込み（-39.88ms重要改善）
+- **Git統合**: カスタムウィジェットと50以上の省略語
+- **FZF統合**: リポジトリ、ファイル、プロセス検索
+- **ヘルプシステム**: 包括的な `zsh-help` コマンド
 
-## 📈 Performance Metrics
+## パフォーマンス指標
 
-| Optimization          | Improvement      | Impact         |
-| --------------------- | ---------------- | -------------- |
-| Overall startup       | 1.8s → 1.1s      | 43% faster     |
-| mise ultra-defer      | Complete defer   | Critical       |
-| brew optimization     | Minimal env      | High impact    |
-| 6-tier plugin loading | Optimized timing | Smooth startup |
-| File compilation      | All .zsh files   | Runtime speed  |
-| Code cleanup          | ~19MB removed    | Storage/speed  |
+| 最適化項目              | 改善効果         | 影響度       |
+| ----------------------- | ---------------- | ------------ |
+| 全体起動                | 1.8秒→1.1秒      | 43%高速化    |
+| mise ultra-defer        | 完全遅延         | クリティカル |
+| brew最適化              | 最小環境         | 高影響       |
+| 6段階プラグイン読み込み | 最適化タイミング | スムーズ起動 |
+| ファイル コンパイル     | 全.zshファイル   | 実行時速度   |
 
-## 🏗️ Architecture
+## アーキテクチャ
 
-### Modular Design
+### モジュラー設計
 
 ```
 zsh/
 ├── config/
-│   ├── loader.zsh         # Main loader system
-│   ├── 01-environment.zsh # Environment variables
-│   ├── 02-plugins.zsh     # Plugin configuration
-│   ├── 03-aliases.zsh     # Aliases and abbreviations
-│   ├── 04-functions.zsh   # Custom functions
-│   ├── 05-bindings.zsh    # Key bindings
-│   └── 06-completions.zsh # Completion settings
-├── sheldon.toml           # Plugin management
-└── .zshrc                 # Main entry point
+│   ├── loader.zsh         # メインローダーシステム
+│   ├── 01-environment.zsh # 環境変数
+│   ├── 02-plugins.zsh     # プラグイン設定
+│   ├── 03-aliases.zsh     # エイリアス・省略語
+│   ├── 04-functions.zsh   # カスタム関数
+│   ├── 05-bindings.zsh    # キーバインド
+│   └── 06-completions.zsh # 補完設定
+├── sheldon.toml           # プラグイン管理
+└── .zshrc                 # メインエントリポイント
 ```
 
-### 6-Tier Plugin Loading
+### 6段階プラグイン読み込み
 
-1. **Essential**: Core functionality (zsh-autosuggestions)
-2. **Completion**: Tab completion enhancements
-3. **Navigation**: Directory and file navigation
-4. **Git**: Version control integration
-5. **Utility**: Development tools and helpers
-6. **Theme**: Prompt and visual elements
+1. **Essential**: コア機能（zsh-autosuggestions）
+2. **Completion**: タブ補完強化
+3. **Navigation**: ディレクトリ・ファイルナビゲーション
+4. **Git**: バージョン管理統合
+5. **Utility**: 開発ツール・ヘルパー
+6. **Theme**: プロンプトとビジュアル要素
 
-## 🎮 Essential Commands
+## 基本コマンド
 
-### Help System
+### ヘルプシステム
 
 ```bash
-zsh-help                    # Comprehensive help
-zsh-help keybinds          # Key bindings reference
-zsh-help aliases           # Abbreviations list (50+)
-zsh-help tools             # Installed tools check
+zsh-help                    # 包括的ヘルプ
+zsh-help keybinds          # キーバインド参照
+zsh-help aliases           # 省略語リスト（50以上）
+zsh-help tools             # インストール済みツール確認
 ```
 
-### Performance Tools
+### パフォーマンスツール
 
 ```bash
-zsh-benchmark              # Startup time measurement
-zsh-profile                # Detailed profiling
+zsh-benchmark              # 起動時間測定
+zsh-profile                # 詳細プロファイリング
 ```
 
-### Git Workflow (Widgets)
+### Gitワークフロー（ウィジェット）
 
 ```bash
-^]                         # FZF ghq repository selector
-^g^g                       # Git status display
-^g^s                       # Git staging widget
-^g^a                       # Git add widget
-^g^b                       # Git branch switcher
-^g^K                       # FZF kill process
+^]                         # FZF ghqリポジトリ選択
+^g^g                       # Git status表示
+^g^s                       # Gitステージングウィジェット
+^g^a                       # Git addウィジェット
+^g^b                       # Gitブランチスイッチャー
+^g^K                       # FZFプロセスkill
 ```
 
-### FZF Integration
+### FZF統合
 
 ```bash
-^R                         # History search
-^T                         # File search
-^]                         # Repository search (ghq)
+^R                         # 履歴検索
+^T                         # ファイル検索
+^]                         # リポジトリ検索（ghq）
 ```
 
-## 🔧 Configuration Features
+## 設定機能
 
-### Abbreviations (50+)
+### 省略語（50以上）
 
 ```bash
-# Git shortcuts
+# Git ショートカット
 g      → git
 ga     → git add
 gc     → git commit
@@ -100,170 +99,114 @@ gl     → git pull
 gst    → git status
 gco    → git checkout
 
-# Directory navigation
+# ディレクトリナビゲーション
 ..     → cd ..
 ...    → cd ../..
 ....   → cd ../../..
 
-# Common commands
+# 共通コマンド
 ll     → ls -la
 la     → ls -A
 l      → ls -CF
 ```
 
-### Environment Optimizations
+### 環境最適化
 
-- **Lazy mise loading**: Deferred until first use
-- **Conditional loading**: Tools load only if available
-- **Path optimization**: Efficient PATH management
-- **Cache utilization**: Command completion caching
+- **mise遅延読み込み**: 初回使用時まで遅延
+- **条件付き読み込み**: 利用可能ツールのみ読み込み
+- **PATH最適化**: 効率的PATH管理
+- **キャッシュ活用**: コマンド補完キャッシュ
 
-### Custom Functions
+### カスタム関数
 
 ```bash
-mkcd()          # Create directory and cd into it
+mkcd()          # ディレクトリ作成・移動
 gco()           # FZF git checkout
-ghq-fzf()       # Repository selector
-kill-fzf()      # Process killer with preview
+ghq-fzf()       # リポジトリ選択
+kill-fzf()      # プレビュー付きプロセスkill
 ```
 
-## 📊 Plugin Ecosystem
+## プラグインエコシステム
 
-### Core Plugins (Tier 1-2)
+### コアプラグイン（Tier 1-2）
 
-- **zsh-autosuggestions**: Command suggestions
-- **zsh-syntax-highlighting**: Syntax coloring
-- **zsh-completions**: Enhanced completions
-- **fzf-tab**: FZF-powered tab completion
+- **zsh-autosuggestions**: コマンド提案
+- **zsh-syntax-highlighting**: シンタックス色付け
+- **zsh-completions**: 強化補完
+- **fzf-tab**: FZF駆動タブ補完
 
-### Development Plugins (Tier 3-4)
+### 開発プラグイン（Tier 3-4）
 
-- **zsh-abbr**: Abbreviation expansion
-- **forgit**: Interactive git operations
-- **zsh-you-should-use**: Alias reminders
+- **zsh-abbr**: 省略語展開
+- **forgit**: インタラクティブgit操作
+- **zsh-you-should-use**: エイリアス提醒
 
-### Theme & UI (Tier 5-6)
+### テーマ・UI（Tier 5-6）
 
-- **starship**: Cross-shell prompt
-- **zsh-notify**: Command completion notifications
+- **starship**: クロスシェルプロンプト
+- **zsh-notify**: コマンド完了通知
 
-## 🔍 Debug & Profiling
+## カスタマイゼーション
 
-### Performance Analysis
-
-```bash
-# Enable profiling
-zmodload zsh/zprof
-
-# Source configuration
-source ~/.zshrc
-
-# View profile
-zprof
-
-# Benchmark specific operations
-time zsh -i -c exit
-```
-
-### Debugging Commands
+マシン固有設定は `~/.zshrc.local` に記述：
 
 ```bash
-# Check plugin loading
-sheldon lock
-
-# Verify tool availability
-zsh-help tools
-
-# Examine PATH
-echo $PATH | tr ':' '\n'
-
-# Check environment
-printenv | grep -E '^(EDITOR|SHELL|TERM)'
-```
-
-## ⚙️ Customization
-
-### Local Configuration
-
-Create `~/.zshrc.local` for machine-specific settings:
-
-```bash
-# Private aliases
+# プライベートエイリアス
 alias work="cd ~/work"
 
-# Local environment variables
+# ローカル環境変数
 export CUSTOM_VAR="value"
 
-# Machine-specific optimizations
+# マシン固有最適化
 if [[ $(hostname) == "work-machine" ]]; then
-    # Work-specific settings
+    # 作業環境固有設定
 fi
 ```
 
-### Plugin Management
+## 最適化のコツ
+
+### 起動速度
+
+1. **定期プロファイル**: 週次 `zsh-benchmark` 実行
+2. **遅延読み込み**: 重いツール（mise、nvm等）の遅延
+3. **ファイルコンパイル**: 全.zshファイルのコンパイル確認
+4. **プラグイン監査**: 四半期毎の未使用プラグイン削除
+
+### メモリ使用量
+
+1. **履歴制限**: 適切なHISTSIZE設定
+2. **補完キャッシュ**: 定期キャッシュクリア
+3. **プラグイン整理**: 冗長機能削除
+
+## メンテナンス
+
+### 定期タスク
 
 ```bash
-# Add new plugin
-echo 'github = "user/repo"' >> sheldon.toml
-
-# Update plugins
-sheldon lock --update
-
-# Remove plugin
-# Edit sheldon.toml and run sheldon lock
-```
-
-## 🚀 Optimization Tips
-
-### Startup Speed
-
-1. **Profile regularly**: Use `zsh-benchmark` weekly
-2. **Lazy load**: Defer heavy tools (mise, nvm, etc.)
-3. **Compile files**: Ensure all .zsh files are compiled
-4. **Plugin audit**: Remove unused plugins quarterly
-
-### Memory Usage
-
-1. **History limits**: Set reasonable HISTSIZE
-2. **Completion cache**: Clear periodically
-3. **Plugin cleanup**: Remove redundant functionality
-
-### Workflow Efficiency
-
-1. **Learn abbreviations**: Master the 50+ shortcuts
-2. **Use widgets**: Git widgets save keystrokes
-3. **FZF everything**: File, repo, process selection
-4. **Help system**: `zsh-help` for quick reference
-
-## 📋 Maintenance
-
-### Regular Tasks
-
-```bash
-# Weekly performance check
+# 週次パフォーマンスチェック
 zsh-benchmark
 
-# Monthly plugin updates
+# 月次プラグイン更新
 sheldon lock --update
 
-# Quarterly cleanup
-zsh-help tools  # Check for unused tools
+# 四半期クリーンアップ
+zsh-help tools  # 未使用ツールチェック
 ```
 
-### Troubleshooting
+### トラブルシューティング
 
 ```bash
-# Reset completions
+# 補完リセット
 rm -rf ~/.zcompdump*
 compinit
 
-# Check for conflicts
-zsh -df  # Start with minimal config
+# 競合チェック
+zsh -df  # 最小設定で起動
 
-# Verify plugin status
+# プラグイン状態確認
 sheldon source
 ```
 
 ---
 
-_Optimized for speed, functionality, and developer experience._
+_速度、機能性、開発者体験に最適化された高性能シェル環境_

@@ -1,424 +1,162 @@
-# Neovim Configuration
+# Neovim設定
 
-Modern Lua-based Neovim configuration with <100ms startup time and comprehensive LSP support for 15+ languages.
+100ms未満の高速起動と15言語対応のLSPを備えたモダンなLua設定です。
 
-## ✨ Key Features
+## 主要機能
 
-- **🚀 Performance**: <100ms startup with lazy.nvim optimization
-- **🔧 LSP Support**: 15+ programming languages with full IDE features
-- **🤖 AI Integration**: GitHub Copilot + Avante.nvim for AI assistance
-- **📦 Plugin Management**: lazy.nvim for efficient plugin loading
-- **🎨 Modern UI**: Telescope, nvim-tree, and enhanced visual experience
-- **⚡ Fast Navigation**: Harpoon, leap.nvim, and optimized workflows
+- **高性能**: lazy.nvim最適化による100ms未満起動
+- **LSP対応**: 15以上のプログラミング言語をフルサポート
+- **AI統合**: GitHub Copilot + Avante.nvim
+- **モダンUI**: Telescope、nvim-tree、高速ナビゲーション
 
-## 📈 Performance Metrics
+## パフォーマンス指標
 
-| Component          | Startup Time | Optimization      |
-| ------------------ | ------------ | ----------------- |
-| Total startup      | <100ms       | lazy.nvim         |
-| Plugin loading     | Deferred     | Conditional       |
-| LSP initialization | On-demand    | Language-specific |
-| File navigation    | Instant      | Cached indexing   |
+| 項目               | 起動時間     | 最適化手法       |
+| ------------------ | ------------ | ---------------- |
+| 全体起動           | <100ms       | lazy.nvim        |
+| プラグイン読み込み | 遅延実行     | 条件付き読み込み |
+| LSP初期化          | オンデマンド | 言語別設定       |
 
-## 🏗️ Architecture
-
-### Modular Structure
+## 設定構造
 
 ```
 nvim/
-├── init.lua              # Entry point
+├── init.lua              # エントリポイント
 ├── lua/
-│   ├── config/           # Core configuration
-│   │   ├── options.lua   # Vim options
-│   │   ├── keymaps.lua   # Key mappings
-│   │   ├── autocmds.lua  # Auto commands
-│   │   └── lazy.lua      # Plugin manager setup
-│   ├── plugins/          # Plugin configurations
-│   │   ├── lsp/          # LSP configurations
-│   │   ├── ui/           # UI enhancements
-│   │   ├── editor/       # Editor functionality
-│   │   └── tools/        # Development tools
-│   └── utils/            # Utility functions
-└── after/
-    └── ftplugin/         # Filetype-specific settings
+│   ├── config/           # コア設定
+│   ├── plugins/          # プラグイン設定
+│   └── utils/            # ユーティリティ
+└── after/ftplugin/       # ファイルタイプ設定
 ```
 
-### Plugin Categories
+## サポート言語
 
-- **Core**: Essential functionality and performance
-- **LSP**: Language server configurations
-- **UI**: Interface enhancements and theming
-- **Editor**: Text editing and navigation
-- **Tools**: Development and debugging tools
-- **AI**: Copilot and AI assistance
+**プログラミング言語**: Lua, TypeScript/JavaScript, Python, Rust, Go, C/C++, Java, PHP, Ruby, Swift, Kotlin, C#, Dart, Shell
 
-## 🛠️ Supported Languages & LSP
+**マークアップ**: HTML/CSS, JSON, YAML, TOML, Markdown, Docker
 
-### Programming Languages (15+)
+## 主要キーバインド
 
-```
-├── Lua          # lua_ls + stylua formatting
-├── TypeScript   # tsserver + prettier + eslint
-├── JavaScript   # tsserver + prettier + eslint
-├── Python       # pyright + black + ruff
-├── Rust         # rust_analyzer + rustfmt
-├── Go           # gopls + goimports + gofmt
-├── C/C++        # clangd + clang-format
-├── Java         # jdtls + google-java-format
-├── PHP          # phpactor + php-cs-fixer
-├── Ruby         # solargraph + rubocop
-├── Swift        # sourcekit-lsp
-├── Kotlin       # kotlin_language_server
-├── C#           # omnisharp
-├── Dart         # dartls
-└── Shell        # bashls + shfmt + shellcheck
-```
-
-### Markup & Config
-
-```
-├── HTML/CSS     # html, cssls + prettier
-├── JSON         # jsonls + prettier
-├── YAML         # yamlls + prettier
-├── TOML         # taplo
-├── Markdown     # marksman + markdownlint
-└── Docker       # dockerls + hadolint
-```
-
-## 🎮 Key Bindings
-
-### Leader Key: `<Space>`
-
-#### File & Navigation
+### ファイル・ナビゲーション（Leader: `<Space>`）
 
 ```lua
-<leader>ff      -- Find files (Telescope)
-<leader>fg      -- Live grep (Telescope)
-<leader>fb      -- Find buffers (Telescope)
-<leader>fh      -- Help tags (Telescope)
-<leader>e       -- Toggle file explorer
-<leader><leader> -- Harpoon quick menu
+<leader>ff      -- ファイル検索
+<leader>fg      -- 文字列検索
+<leader>fb      -- バッファ一覧
+<leader>e       -- ファイルエクスプローラー
 ```
 
-#### LSP Features
+### LSP機能
 
 ```lua
-gd              -- Go to definition
-gr              -- Find references
-gi              -- Go to implementation
-K               -- Hover documentation
-<leader>ca      -- Code actions
-<leader>rn      -- Rename symbol
-<leader>f       -- Format document
-[d / ]d         -- Navigate diagnostics
+gd              -- 定義へ移動
+gr              -- 参照を検索
+K               -- ホバー表示
+<leader>ca      -- コードアクション
+<leader>rn      -- シンボル名変更
+<leader>f       -- フォーマット
 ```
 
-#### AI & Development
+### AI・開発ツール
 
 ```lua
-<leader>cc      -- Copilot chat
-<leader>av      -- Avante toggle
+<leader>cc      -- Copilot チャット
+<leader>av      -- Avante トグル
 <leader>gg      -- Lazygit
-<leader>tt      -- Terminal toggle
-<leader>db      -- Debug toggle breakpoint
+<leader>tt      -- ターミナル
 ```
 
-#### Text Editing
+## プラグインエコシステム
 
-```lua
-s<char><char>   -- Leap motion (jump to characters)
-<C-h/j/k/l>     -- Window navigation
-<leader>w       -- Save file
-<leader>q       -- Quit
-<leader>/       -- Toggle comment
-```
+### コア
 
-## 🔧 Plugin Ecosystem
+- **lazy.nvim**: 遅延読み込みプラグインマネージャー
+- **nvim-lspconfig**: LSP設定
+- **mason.nvim**: LSPサーバー管理
 
-### Core Performance
+### UI・ナビゲーション
 
-- **lazy.nvim**: Lazy loading plugin manager
-- **plenary.nvim**: Lua utility functions
-- **which-key.nvim**: Key binding hints
+- **telescope.nvim**: ファジーファインダー
+- **nvim-tree.lua**: ファイルエクスプローラー
+- **harpoon**: 高速ファイルナビゲーション
 
-### LSP & Completion
-
-- **nvim-lspconfig**: LSP configurations
-- **mason.nvim**: LSP server manager
-- **nvim-cmp**: Completion engine
-- **cmp-nvim-lsp**: LSP completion source
-- **luasnip**: Snippet engine
-
-### UI & Navigation
-
-- **telescope.nvim**: Fuzzy finder
-- **nvim-tree.lua**: File explorer
-- **harpoon**: Quick file navigation
-- **leap.nvim**: Motion plugin
-- **lualine.nvim**: Status line
-
-### AI & Development Tools
+### AI・開発
 
 - **copilot.lua**: GitHub Copilot
-- **avante.nvim**: AI chat integration
-- **gitsigns.nvim**: Git integration
-- **lazygit.nvim**: Git UI
-- **nvim-dap**: Debug adapter protocol
+- **avante.nvim**: AI チャット統合
+- **gitsigns.nvim**: Git統合
 
-### Editor Enhancement
+## テーマ・UI
 
-- **nvim-treesitter**: Syntax highlighting
-- **indent-blankline.nvim**: Indentation guides
-- **comment.nvim**: Smart commenting
-- **autopairs**: Auto bracket pairing
-- **surround.nvim**: Text object manipulation
+- **メインテーマ**: Gruvbox（他ツールと統一）
+- **透明背景**: ターミナル統合
+- **ステータスライン**: モード、Gitブランチ、LSP状態、診断情報
 
-## 🎨 Theming & UI
-
-### Color Schemes
-
-- **Primary**: Gruvbox (consistent with other tools)
-- **Alternative**: Tokyo Night
-- **Fallback**: Built-in colorschemes
-
-### UI Enhancements
+## 最適化設定
 
 ```lua
--- Transparent background
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-
--- Custom highlights for LSP
-vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#ea6962" })
-vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#d8a657" })
-```
-
-### Status Line
-
-- **Mode indicator**: Visual mode display
-- **Git branch**: Current branch and changes
-- **LSP status**: Active language servers
-- **Diagnostics**: Error/warning counts
-- **File info**: Type, encoding, position
-
-## 🤖 AI Integration
-
-### GitHub Copilot
-
-```lua
--- Setup in plugins/ai/copilot.lua
-require('copilot').setup({
-  suggestion = { enabled = false },  -- Use cmp instead
-  panel = { enabled = false },
-})
-
--- Completion integration
-require('copilot_cmp').setup()
-```
-
-### Avante.nvim (AI Chat)
-
-```lua
--- Chat with AI about code
-<leader>av      -- Toggle Avante window
-<leader>ae      -- Edit with AI
-<leader>ar      -- Refresh AI response
-```
-
-## 🔍 LSP Configuration
-
-### Mason Setup (Automatic)
-
-```lua
--- Auto-install LSP servers
-require('mason').setup()
-require('mason-lspconfig').setup({
-  ensure_installed = {
-    'lua_ls', 'tsserver', 'pyright', 'rust_analyzer',
-    'gopls', 'clangd', 'jdtls', 'phpactor'
-  },
-  automatic_installation = true,
-})
-```
-
-### Custom LSP Settings
-
-```lua
--- Lua LSP with workspace setup
-lspconfig.lua_ls.setup({
-  settings = {
-    Lua = {
-      runtime = { version = 'LuaJIT' },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true),
-      },
-      telemetry = { enable = false },
-    },
-  },
-})
-```
-
-## 🚀 Performance Optimization
-
-### Startup Optimization
-
-```lua
--- Disable unused providers
+-- 未使用プロバイダー無効化
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
-vim.g.loaded_perl_provider = 0
 
--- Lazy load UI components
+-- 遅延UI読み込み
 vim.defer_fn(function()
   require('nvim-tree').setup()
 end, 0)
 ```
 
-### Memory Management
+## カスタマイゼーション
 
-- **Buffer limits**: Automatic cleanup of unused buffers
-- **Swap files**: Disabled for better performance
-- **Undo persistence**: Efficient undo history management
-
-### Loading Strategy
-
-1. **Immediate**: Core options and keymaps
-2. **VimEnter**: UI components and theme
-3. **BufReadPre**: File-type specific plugins
-4. **LspAttach**: Language server features
-
-## 📊 Debug & Profiling
-
-### Startup Profiling
-
-```bash
-# Measure startup time
-nvim --startuptime startup.log
-
-# Profile specific operations
-:profile start profile.log
-:profile func *
-:profile file *
-```
-
-### Plugin Analysis
+マシン固有設定は `lua/config/local.lua` に記述：
 
 ```lua
--- Check plugin load times
-:Lazy profile
+-- テーマ変更
+vim.opt.background = "light"
 
--- Debug LSP status
-:LspInfo
-:LspLog
+-- Copilot無効化
+vim.g.copilot_enabled = false
 
--- Check Treesitter status
-:TSInstallInfo
-```
-
-## ⚙️ Customization
-
-### Local Configuration
-
-Create `lua/config/local.lua` for machine-specific settings:
-
-```lua
--- Local overrides
-vim.opt.background = "light"  -- Override theme
-vim.g.copilot_enabled = false -- Disable Copilot
-
--- Custom keymaps
+-- カスタムキーマップ
 vim.keymap.set('n', '<leader>ll', ':Lazy<CR>')
-
--- LSP server customization
-local custom_servers = { 'custom_ls' }
 ```
 
-### Plugin Customization
-
-```lua
--- Override plugin settings
-return {
-  'nvim-telescope/telescope.nvim',
-  opts = {
-    defaults = {
-      file_ignore_patterns = { "node_modules", ".git" },
-      layout_strategy = "horizontal",
-    },
-  },
-}
-```
-
-## 🔧 Advanced Features
-
-### Custom Commands
-
-```lua
--- Format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-  callback = function()
-    vim.lsp.buf.format()
-  end,
-})
-
--- Auto-compile plugins
-vim.api.nvim_create_autocmd("BufWritePost", {
-  pattern = "*/nvim/lua/**/*.lua",
-  command = "source <afile> | PackerCompile",
-})
-```
-
-### Development Workflow
-
-```lua
--- Project-specific settings
-vim.api.nvim_create_autocmd("DirChanged", {
-  callback = function()
-    local project_config = vim.fn.getcwd() .. "/.nvim.lua"
-    if vim.fn.filereadable(project_config) == 1 then
-      dofile(project_config)
-    end
-  end,
-})
-```
-
-## 📋 Maintenance
-
-### Regular Tasks
+## メンテナンス
 
 ```bash
-# Weekly plugin updates
+# プラグイン更新（週次）
 :Lazy update
 
-# Monthly LSP server updates
+# LSPサーバー更新（月次）
 :MasonUpdate
 
-# Quarterly cleanup
-:Lazy clean
-```
-
-### Health Checks
-
-```bash
-# Comprehensive health check
+# ヘルスチェック
 :checkhealth
-
-# Specific component checks
-:checkhealth nvim
-:checkhealth lsp
-:checkhealth treesitter
 ```
 
-### Troubleshooting
+## デバッグ・プロファイリング
 
 ```bash
-# Reset plugin state
+# 起動時間測定
+nvim --startuptime startup.log
+
+# プラグイン負荷確認
+:Lazy profile
+
+# LSP状態確認
+:LspInfo
+```
+
+## トラブルシューティング
+
+```bash
+# プラグイン状態リセット
 rm -rf ~/.local/share/nvim
 rm -rf ~/.local/state/nvim
 
-# Debug mode startup
+# 最小構成で起動
 nvim --clean
-nvim -u NONE
 ```
 
 ---
 
-_Optimized for modern development with AI assistance and comprehensive language support._
+_AI支援と包括的言語サポートを備えたモダン開発環境_

@@ -1,27 +1,15 @@
-# SSH設定 管理・使用方法
+# SSH設定
 
-## 📊 設定概要
+階層的なSSH設定管理システムで、用途別ファイル分離によりセキュリティと保守性を両立しています。
 
-階層的なSSH設定管理システムで、複数の設定ファイルを用途別に分離し、保守性とセキュリティを向上させています。
+## 主要機能
 
-## ⚠️ セキュリティ注意事項
+- **1Password SSH Agent統合**: パスワードレス認証
+- **階層的設定管理**: 用途別ファイル分離
+- **接続最適化**: Keep-Alive・圧縮設定
+- **プラットフォーム統合**: OrbStack・Docker対応
 
-### 機密情報管理
-
-- センシティブなホスト情報・認証情報は記載しない
-- 個別設定ファイル名は具体的に記載しない
-- 実際のIPアドレス・ドメイン名は例示のみ
-
-### ✨ 主な特徴
-
-- **🔒 1Password SSH Agent統合**: パスワードレス認証
-- **📁 階層的設定管理**: 用途別ファイル分離
-- **⚡ 接続最適化**: Keep-Alive・圧縮設定
-- **🔧 プラットフォーム統合**: OrbStack・Docker対応
-
-## 🏗️ 設定構造
-
-### ディレクトリ構成
+## 設定構造
 
 ```
 ~/.config/ssh/              # dotfiles管理（Git追跡）
@@ -42,379 +30,163 @@
 └── sockets/              # 接続共有ソケット
 ```
 
-### Include階層構造（優先度順）
+### 読み込み優先度
+
+1. **00-global**: 全体設定
+2. **01-1password**: 認証設定
+3. **10-dev-services**: 開発環境
+4. **20-home-network**: ホームラボ
+5. **99-defaults**: デフォルト
+6. **ローカル設定**: 機密情報（Git管理外）
+
+## 主要設定ファイル
+
+### グローバル設定
 
 ```bash
-~/.ssh/config
-├── ~/.config/ssh/config.d/00-global.sshconfig      # 全体設定
-├── ~/.config/ssh/config.d/01-1password.sshconfig   # 認証設定
-├── ~/.config/ssh/config.d/10-dev-services.sshconfig    # 開発環境
-├── ~/.config/ssh/config.d/20-home-network.sshconfig    # ホームラボ
-├── ~/.config/ssh/config.d/99-defaults.sshconfig    # デフォルト
-├── ~/.ssh/ssh_config.d/*         # ローカル個別設定（機密情報）
-├── ~/.orbstack/ssh/config        # OrbStack自動生成
-└── ~/.colima/ssh_config          # Colima設定（無効化）
-```
-
-## 📋 設定内容詳細
-
-### メイン設定（~/.config/ssh/config）
-
-```bash
-# SSH Configuration - Hierarchical Include Structure
-# Managed by dotfiles - DO NOT EDIT MANUALLY
-
-# Include configuration modules in priority order
-Include ~/.config/ssh/config.d/00-global.sshconfig
-Include ~/.config/ssh/config.d/01-1password.sshconfig
-Include ~/.config/ssh/config.d/10-dev-services.sshconfig
-Include ~/.config/ssh/config.d/20-home-network.sshconfig
-Include ~/.config/ssh/config.d/99-defaults.sshconfig
-
-# Include local user-specific configurations (not managed by dotfiles)
-Include ~/.ssh/ssh_config.d/*
-
-# Include platform-specific configurations
-Include ~/.orbstack/ssh/config
-#Include ~/.colima/ssh_config
-```
-
-### グローバル設定（00-global.sshconfig）
-
-```bash
+# 接続最適化・共有・認証設定を統合
 Host *
-  # 接続最適化
   ServerAliveInterval 30
-  ServerAliveCountMax 10
-  TCPKeepAlive yes
-
-  # 接続共有でパフォーマンス向上
   ControlMaster auto
   ControlPath ~/.ssh/sockets/%r@%h:%p
-  ControlPersist 600
-
-  # 認証最適化
   GSSAPIAuthentication no
-  PreferredAuthentications publickey,password
-
-  # macOS統合
-  UseKeychain yes
 ```
 
-### 開発サービス設定（10-dev-services.sshconfig）
+### 開発・ホームネットワーク設定
 
 ```bash
-# GitHub（企業ファイアウォール対応）
+# 企業ファイアウォール対応
 Host github.com
   Hostname ssh.github.com
-  User git
   Port 443
-  IdentitiesOnly yes
 
-# GitLab
-Host gitlab.com
-  User git
-  IdentitiesOnly yes
-```
-
-### ホームネットワーク設定（20-home-network.sshconfig）
-
-```bash
-# Raspberry Pi（統一設定）
+# ローカルデバイス（例）
 Host pi
   HostName raspberrypi.local
-  User pi
   Port 10022
-  IdentitiesOnly yes
-
-# Synology NAS
-Host nas
-  HostName synology.local
-  User admin
-  Port 10022
-  IdentitiesOnly yes
 ```
 
-### 1Password SSH Agent設定（01-1password.sshconfig）
+### 1Password SSH Agent設定
 
 ```bash
-# UNCOMMENT TO ENABLE 1Password SSH Agent
+# 有効化時（コメントアウト解除）
 # Host *
-#   AddKeysToAgent yes
 #   IdentityAgent ~/.1password/agent.sock
-
-# DISABLE when using 1Password (prevents conflicts)
-Host *
-  IdentityAgent none
 ```
 
-## 🎮 モジュール管理
+## ホスト追加手順
 
-### 設定ファイルの優先度
+1. 用途に応じて適切な設定ファイルを選択
+2. HostName, User, Portを設定
+3. `ssh -T hostname` で接続テスト
 
-#### 数字による読み込み順序制御
-
-- `00-` : 最優先（グローバル設定）
-- `01-` : 認証設定（1Password等）
-- `10-` : 開発サービス
-- `20-` : ホームネットワーク
-- `99-` : デフォルト設定
-
-### 新しいホスト追加手順
-
-1. **テンプレート使用**: `templates/host-template.sshconfig`をコピー
-2. **適切なファイル選択**: 用途に応じて10-,20-,30-等に追加
-3. **設定カスタマイズ**: HostName, User, Portを設定
-4. **テスト**: `ssh -T hostname`で接続確認
-
-## 🎮 基本使用方法
+## 基本使用方法
 
 ### SSH接続
 
 ```bash
-# 基本接続
-ssh hostname
-
-# リファクタリング後のホスト接続
-ssh pi                    # Raspberry Pi (ローカル)
-ssh pi-remote            # Raspberry Pi (Tailscale経由)
-ssh nas                  # Synology NAS
-ssh github.com           # GitHub（ポート443経由）
-ssh gitlab.com           # GitLab
-
-# ポート転送
-ssh -L 8080:localhost:80 hostname
-
-# バックグラウンド接続
-ssh -N -f -L 8080:localhost:80 hostname
+ssh hostname             # 基本接続
+ssh -L 8080:localhost:80 hostname  # ポート転送
 ```
 
 ### 接続確認・診断
 
 ```bash
-# 設定内容確認（新構造）
-ssh -F ~/.config/ssh/config -T git@github.com
-
-# 詳細ログ出力
-ssh -v hostname
-
-# 設定テスト
-ssh -o "BatchMode yes" hostname echo "success"
-
-# モジュール別設定確認
-cat ~/.config/ssh/config.d/10-dev-services.sshconfig
+ssh -v hostname          # 詳細ログ
+ssh -T git@github.com    # GitHub接続テスト
 ```
 
-## 🔒 セキュリティ設定
+## セキュリティ設定
 
 ### 1Password SSH Agent統合
 
-#### 有効化手順
+1. 1Password でSSH Agent機能を有効化
+2. 設定ファイルのコメントアウト解除
+3. `ssh-add -l` で確認
 
-1. **1Password設定**: SSH Agent機能を有効化
-2. **鍵登録**: 1Password内でSSH鍵を管理
-3. **設定ファイル**: `01-1password.sshconfig`のコメントアウト解除
-4. **確認**: `ssh-add -l`で鍵一覧表示
-
-#### 利点
-
-- **パスワードレス**: 鍵のパスフレーズ入力不要
-- **セキュア**: 鍵の安全な保管・管理
-- **統合**: 生体認証との連携
+**利点**: パスワードレス認証・安全な鍵管理・生体認証連携
 
 ### SSH鍵管理
 
 ```bash
-# 新しい鍵生成（Ed25519推奨）
+# Ed25519鍵生成（推奨）
 ssh-keygen -t ed25519 -C "your.email@example.com"
 
-# RSA鍵生成（古いサーバー対応）
-ssh-keygen -t rsa -b 4096 -C "your.email@example.com"
-
-# 公開鍵の表示
+# 公開鍵表示
 cat ~/.ssh/id_ed25519.pub
-
-# 鍵の追加（1Password不使用時）
-ssh-add ~/.ssh/id_ed25519
 ```
 
-### ファイル権限設定
+### 権限設定
 
 ```bash
-# SSH ディレクトリ権限
-chmod 700 ~/.ssh
-chmod 700 ~/.config/ssh
-
-# 設定ファイル権限（新構造）
-chmod 644 ~/.config/ssh/config
-chmod 644 ~/.config/ssh/config.d/*.sshconfig
-chmod 644 ~/.config/ssh/templates/*.sshconfig
-
-# 秘密鍵権限
+chmod 700 ~/.ssh ~/.config/ssh
+chmod 644 ~/.config/ssh/config*
 chmod 600 ~/.ssh/id_*
-
-# 公開鍵権限
-chmod 644 ~/.ssh/id_*.pub
-
-# ソケットディレクトリ
-mkdir -p ~/.ssh/sockets
-chmod 700 ~/.ssh/sockets
 ```
 
-## 🔧 高度な設定・カスタマイズ
-
-### 接続最適化
-
-```bash
-# ~/.ssh/config での最適化設定
-Host *
-  # 接続維持
-  ServerAliveInterval 30
-  ServerAliveCountMax 10
-  TCPKeepAlive yes
-
-  # 圧縮有効化（低速回線用）
-  Compression yes
-
-  # 接続共有（同一ホストへの複数接続高速化）
-  ControlMaster auto
-  ControlPath ~/.ssh/sockets/%r@%h:%p
-  ControlPersist 600
-
-  # 認証高速化
-  GSSAPIAuthentication no
-  PreferredAuthentications publickey,password
-```
+## 高度な設定
 
 ### ProxyJump設定（踏み台サーバー）
 
 ```bash
 Host bastion
   HostName bastion.example.com
-  User admin
-  Port 22
 
 Host private-server
   HostName 10.0.0.100
-  User app
   ProxyJump bastion
-  # または ProxyCommand ssh -W %h:%p bastion
 ```
 
 ### 環境別設定分岐
 
 ```bash
-# ~/.ssh/config.d/work.sshconfig
 Match Host *.company.com
   User work-username
   IdentityFile ~/.ssh/work_id_rsa
-
-Match Host *.personal.dev
-  User personal-username
-  IdentityFile ~/.ssh/personal_id_rsa
 ```
 
-## 🚨 トラブルシューティング
+## トラブルシューティング
 
-### よくある問題と解決
-
-#### 接続タイムアウト
+### よくある問題
 
 ```bash
-# Keep-Alive設定確認
-ssh -o "ServerAliveInterval=30" hostname
+# 詳細ログ出力
+ssh -vvv hostname
 
-# MTU調整
-ssh -o "IPQoS=lowdelay" hostname
-```
-
-#### 認証失敗
-
-```bash
-# 認証方法確認
-ssh -o "PreferredAuthentications=publickey" -v hostname
-
-# 1Password Agent確認
-echo $SSH_AUTH_SOCK
-ls -la ~/.1password/agent.sock
-```
-
-#### ホスト鍵エラー
-
-```bash
 # 古いホスト鍵削除
 ssh-keygen -R hostname
 
-# ホスト鍵確認
-ssh-keyscan hostname >> ~/.ssh/known_hosts
-```
-
-### デバッグコマンド
-
-```bash
-# 詳細ログ
-ssh -vvv hostname
+# 1Password Agent確認
+ssh-add -l
 
 # 設定ファイルテスト
-ssh -T -o "BatchMode yes" git@github.com
-
-# 1Password Agent状態確認
-ssh-add -l
+ssh -T git@github.com
 ```
 
-## 🔄 管理・メンテナンス
+## メンテナンス
 
-### 定期メンテナンス
+### 定期作業
 
 ```bash
-# 接続テスト
-ssh -o "BatchMode yes" -o "ConnectTimeout=5" hostname echo "OK"
-
 # 古い接続削除
 find ~/.ssh/sockets -type s -mtime +1 -delete
 
-# 設定構文チェック
-ssh -F ~/.ssh/config -T git@github.com
+# 設定テスト
+ssh -T git@github.com
 ```
 
-### バックアップ・復旧
+## パフォーマンス
 
-```bash
-# SSH設定バックアップ
-tar -czf ssh_backup_$(date +%Y%m%d).tar.gz ~/.ssh ~/.config/ssh
-
-# dotfiles経由での復旧
-ln -sf $DOTFILES_DIR/ssh ~/.config/ssh
-```
-
-## 📊 パフォーマンス指標
-
-### 現在の状況
-
-- **接続速度**: Keep-Alive設定で高速化
+- **接続速度**: Keep-Alive設定・接続共有による高速化
 - **セキュリティ**: 1Password統合・Ed25519鍵
 - **管理性**: 階層的設定・用途別分離
 
-### 改善実績
+## ツール連携
 
-- **設定管理**: 用途別ファイル分離で保守性向上
-- **セキュリティ**: 1Password統合でパスワードレス認証
-- **接続安定性**: Keep-Alive設定で切断対策
-
-## 🔗 関連ツール連携
-
-### Git統合
-
-- **GitHub/GitLab**: 企業ファイアウォール対応（ポート443）
-- **SSH Agent**: 1Password統合による認証簡素化
-
-### 開発環境統合
-
-- **OrbStack**: Docker環境への自動SSH設定
-- **VSCode**: Remote-SSH拡張との連携
-- **Terminal**: WezTerm・Zshでの補完機能
+- **Git**: GitHub/GitLabでの企業ファイアウォール対応
+- **開発環境**: OrbStack・VSCode Remote-SSH連携
+- **Terminal**: WezTerm・Zsh補完機能
 
 ---
 
-_Last Updated: 2025-06-14_  
-_Status: セキュア・高性能接続環境構築完了_
+_階層的設定管理によるセキュアで高性能なSSH環境_
