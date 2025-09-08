@@ -6,31 +6,30 @@ This directory contains Claude-specific configurations, documentation, and proje
 
 ```
 .claude/
-├── layers/              # Layered knowledge system
-│   ├── core/           # Core configurations (Shell, Git)
-│   ├── tools/          # Tool-specific layers (Editor, Terminal)
-│   └── support/        # Cross-cutting concerns (Integration)
-├── architecture/       # Architecture patterns and design principles
+├── commands/           # Claude Code custom commands
 ├── projects/          # Project-specific Claude data
 ├── todos/             # Task management files (72K)
-└── local/             # Local Claude installation (177M)
+├── local/             # Local Claude installation (177M)
+├── settings.json      # Claude Code settings
+└── README.md          # This documentation
 ```
 
 ## 🎯 Purpose
 
-- **Knowledge Management**: Systematic organization of configuration knowledge
+- **Command Management**: Custom Claude Code commands and workflows
 - **AI Assistance**: Context for Claude AI to provide targeted help
-- **Documentation**: Layer-based documentation system for complex configurations
+- **Project Data**: Session-specific configurations and context
 - **Task Tracking**: Persistent todo management across sessions
+
+**Note**: General documentation has been moved to `docs/` directory for better organization and maintainability.
 
 ## 🔧 Key Components
 
-### Layer System
+### Commands System
 
-- **Core Layers**: Essential configurations (Shell, Git)
-- **Tool Layers**: Specialized implementations (Editor, Terminal)
-- **Support Layers**: Cross-cutting concerns (Integration)
-- **Architecture**: Universal patterns and best practices
+- **Custom Commands**: Project-specific Claude Code commands
+- **Workflows**: Automated development workflows
+- **Task Automation**: Streamlined development processes
 
 ### Project Data
 
@@ -48,10 +47,19 @@ This directory contains Claude-specific configurations, documentation, and proje
 
 This directory is automatically managed by Claude Code. Key files:
 
-- **layers/**: Domain-specific knowledge and patterns
-- **architecture/**: Universal design principles
+- **commands/**: Custom Claude Code commands and workflows
 - **projects/**: Session data and project context
 - **todos/**: Task management JSON files
+- **settings.json**: Claude Code configuration
+
+## 📚 Documentation
+
+All general documentation has been consolidated in the `docs/` directory:
+
+- **Architecture**: `docs/architecture/` - Design patterns and principles
+- **Configuration**: `docs/configuration/` - Tool-specific configurations
+- **Guides**: `docs/guides/` - Implementation guides and best practices
+- **Reference**: `docs/reference/` - Tool references and performance stats
 
 ## 🧹 Maintenance
 
