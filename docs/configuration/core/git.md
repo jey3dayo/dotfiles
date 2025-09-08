@@ -48,21 +48,13 @@ abbr gco="git checkout \$(git branch -a | fzf | sed 's/remotes\/origin\///')"
 
 ### FZF統合パターン
 
-```zsh
-# Git widget integration
-bindkey '^g^g' git-status-widget
-bindkey '^g^s' git-add-widget
-bindkey '^g^a' git-branch-widget
-bindkey '^g^b' git-checkout-widget
+Git操作のFZF統合については、[FZF Integration Guide](../../tools/fzf-integration.md#git-layer-integration)で詳細解説しています。
 
-git-status-widget() {
-    local result=$(git status --porcelain | fzf --preview 'git diff --color=always {2}')
-    if [[ -n $result ]]; then
-        LBUFFER+="git add ${result:3}"
-    fi
-    zle reset-prompt
-}
-```
+**概要**:
+
+- **Widget統合**: `^g^g`, `^g^s`, `^g^a`, `^g^b` キーバインド
+- **Branch操作**: `gco()` function による直感的チェックアウト
+- **File選択**: ステージング・差分確認の効率化
 
 ## 🔧 認証・セキュリティ
 

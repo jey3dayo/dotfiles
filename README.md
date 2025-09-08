@@ -121,6 +121,7 @@ zsh-benchmark              # Measure startup time (~1.2s)
 zsh-help [keybinds|aliases] # Interactive help system
 
 # Git workflow (custom widgets)
+# See: docs/tools/fzf-integration.md for complete FZF guide
 Ctrl+]                     # FZF repository selector
 Ctrl+g Ctrl+g             # Git status widget
 Ctrl+g Ctrl+s             # Git add widget
@@ -147,7 +148,7 @@ mise install              # Setup language versions
 ### Development Tools
 
 - **Mise**: Multi-language version management
-- **FZF**: Unified search (files, repos, processes)
+- **FZF**: Unified search ([Integration Guide](docs/tools/fzf-integration.md))
 - **GitHub CLI**: Repository automation
 - **1Password**: SSH key management
 

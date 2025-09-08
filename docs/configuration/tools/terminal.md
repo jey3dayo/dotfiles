@@ -361,7 +361,7 @@ config.color_scheme = scheme_for_appearance(get_appearance())
 
 #### セッション管理効率化
 
-- **FZF統合**: セッション選択でfzf使用により選択効率大幅向上
+- **FZF統合**: [FZF Integration Guide](../../tools/fzf-integration.md#terminal-layer-integration)参照
 - **プロジェクト自動化**: プロジェクトディレクトリ名からセッション名自動生成
 - **Neovim統合**: resurrect戦略でNeovimセッション状態も復元可能
 

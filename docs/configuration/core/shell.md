@@ -119,7 +119,7 @@ ln -sf /path/to/dotfiles/zsh/lazy-sources ~/.config/zsh/lazy-sources
 
 - **Abbreviations**: 50+ コマンド短縮形（`g` → `git`, `ga` → `git add`, etc）
 - **Git Widgets**: `^g^g` (status), `^g^s` (add), `^g^a` (add all), `^g^b` (branch) でGit操作
-- **FZF統合**: `^]` リポジトリ選択、`^g^K` プロセス管理
+- **FZF統合**: 詳細は[FZF Integration Guide](../../tools/fzf-integration.md)参照
 - **Help System**: `zsh-help [keybinds|aliases|tools]` で詳細ヘルプ
 
 ### パフォーマンス監視
