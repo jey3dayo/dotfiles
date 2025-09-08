@@ -88,12 +88,6 @@ local function format_buffer(bufnr, options)
   vim.notify("No formatters available", vim.log.levels.WARN)
 end
 
--- Safe command creation
-local function create_format_command(bufnr, options)
-  local ok, err = pcall(format_buffer, bufnr, options)
-  if not ok then vim.notify("Format failed: " .. err, vim.log.levels.ERROR) end
-end
-
 -- Get preferred LSP client (for fallback only when conform fails)
 local function get_preferred_format_client(bufnr)
   local clients = vim.lsp.get_clients { bufnr = bufnr }
@@ -106,6 +100,12 @@ local function get_preferred_format_client(bufnr)
   -- For LSP fallback, use first available client
   -- conform.nvim handles the smart selection based on config files
   return format_clients[1]
+end
+
+-- Safe command creation
+local function create_format_command(bufnr, options)
+  local ok, err = pcall(format_buffer, bufnr, options)
+  if not ok then vim.notify("Format failed: " .. err, vim.log.levels.ERROR) end
 end
 
 -- Auto-format setup
@@ -146,9 +146,9 @@ M.setup = function(bufnr, client, args)
 
       -- Fallback to LSP client with matching name
       local clients = vim.lsp.get_clients { bufnr = bufnr }
-      for _, client in ipairs(clients) do
-        if client.name == formatter_name and client:supports_method "textDocument/formatting" then
-          if format_with_lsp(bufnr, client) then return end
+      for _, lsp_client in ipairs(clients) do
+        if lsp_client.name == formatter_name and lsp_client:supports_method "textDocument/formatting" then
+          if format_with_lsp(bufnr, lsp_client) then return end
         end
       end
 
