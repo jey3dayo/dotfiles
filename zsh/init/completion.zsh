@@ -37,6 +37,8 @@ _init_completion() {
     fpath=("$completion_dir" $fpath)
   fi
 
+  # Load complist for menu selection widgets
+  zmodload -i zsh/complist
   autoload -Uz compinit
   if [[ -n "${ZSH_COMPDUMP}"(#qNmh+24) ]]; then
     # 24時間以上古い場合は再構築

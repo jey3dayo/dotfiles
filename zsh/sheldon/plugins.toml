@@ -7,12 +7,12 @@ fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] 
 exec = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
 exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" > /dev/null 2>&1 < /dev/null) \n{% endfor %}"
 
-# Priority 1: Essential startup components (immediate load)
+# Essential components
 [plugins.zsh-defer]
 github = "romkatv/zsh-defer"
 apply = ["source"]
 
-# Priority 2: Core functionality (minimal defer)
+# Core functionality
 [plugins.clipboard]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'lib'
@@ -23,7 +23,6 @@ github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
 apply = ["defer"]
 
-# Priority 3: Enhanced functionality (standard defer)
 [plugins.functions]
 github = "ohmyzsh/ohmyzsh"
 dir = 'lib'
@@ -38,34 +37,30 @@ apply = ["defer"]
 github = 'olets/zsh-abbr'
 apply = ["defer"]
 
-# Priority 4: FZF ecosystem (critical path optimization)
+# Completion system - must load before fzf-tab
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+use = ["src"]
+apply = ["fpath-src"]
+
 [plugins.fzf]
 github = "junegunn/fzf"
 apply = ['fzf-install', 'source']
 
-# fzf-tab needs special handling for ls-colors
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
-# Load with defer to ensure proper initialization order
-apply = ["defer"]
-use = ["fzf-tab.zsh"]
-
-# Priority 5: Completion system (grouped for efficiency)
-[plugins.zsh-completions]
-github = "zsh-users/zsh-completions"
-use = ["src"]
-apply = ["defer", "fpath-src"]
 
 [plugins.command-not-found]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
 apply = ["defer"]
 
-# Priority 6: UI enhancements (lower priority defer)
+# UI enhancements
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
 apply = ["defer"]
 
+# Syntax highlighting - must be last
 [plugins.fast-syntax-highlighting]
 github = "zdharma-continuum/fast-syntax-highlighting"
 apply = ["defer"]
