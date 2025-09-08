@@ -2,7 +2,7 @@
   "permissions": {
     "defaultMode": "acceptEdits",
     "allow": [
-      "Bash(zsh-benchmark *)",
+      "Bash(zsh-benchmark:*)",
       "Bash(hash -r)",
       "Bash(~/.local/share/nvim/mason/packages/typos-lsp/typos-lsp --help 2 >& 1)",
       "Bash(~/.local/share/nvim/mason/packages/typos/typos:*)"
