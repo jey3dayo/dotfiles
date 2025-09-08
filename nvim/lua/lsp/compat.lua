@@ -95,7 +95,7 @@ function M.enable(servers)
       -- Enable all servers
       vim.lsp.enable()
     end
-  -- else
+    -- else
     -- v0.10: Already enabled via lspconfig.setup()
     -- Nothing to do here for newer versions
   end
