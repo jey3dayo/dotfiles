@@ -114,7 +114,7 @@ tool_name() {
 #### Step 1: 実装準備
 
 1. **対象層ドキュメント確認**: 該当層の `.claude/layers/` ドキュメントを読み込み
-2. **アーキテクチャ理解**: `.claude/architecture/patterns.md` で統一方針を確認
+2. **アーキテクチャ理解**: `docs/architecture/patterns.md` で統一方針を確認
 3. **依存関係把握**: 他層との連携パターンを理解
 
 #### Step 2: 実装実行
