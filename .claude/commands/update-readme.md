@@ -134,4 +134,6 @@ Regular tasks and troubleshooting
 
 ---
 
-_dotfiles全体の理解とメンテナンスを向上させるための包括的なドキュメント管理_
+## 目的
+
+dotfiles全体の理解とメンテナンスを向上させるための包括的なドキュメント管理

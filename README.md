@@ -44,9 +44,6 @@ exec zsh
 
 ## 📝 Detailed Setup
 
-<details>
-<summary>Click to expand complete installation guide</summary>
-
 ### Prerequisites
 
 ```bash
@@ -85,6 +82,7 @@ exec zsh
    ```
 
 4. **Verification**
+
    ```bash
    zsh-benchmark    # Should show ~1.2s startup
    nvim             # First run installs plugins
@@ -96,8 +94,6 @@ exec zsh
 - **Work Environment**: Add work-specific config to `~/.gitconfig_local`
 - **SSH Keys**: Generate with `ssh-keygen -t ed25519 -C "email@example.com"`
 - **Terminal**: WezTerm auto-loads config, Alacritty requires restart
-
-</details>
 
 ## 📁 Architecture
 

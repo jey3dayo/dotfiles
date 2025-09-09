@@ -104,6 +104,18 @@ vim.g.loaded_ruby_provider = 0
 vim.defer_fn(function()
   require('nvim-tree').setup()
 end, 0)
+
+-- lazy.nvim パフォーマンス設定
+defaults = { lazy = true }  -- デフォルト遅延ロード
+disabled_plugins = {        -- 不要内蔵プラグイン無効化
+  "gzip", "matchit", "netrwPlugin", "tarPlugin", "zipPlugin"
+}
+
+-- 大ファイル対策（Treesitter）
+disable = function(_, buf)
+  local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
+  return ok and stats and stats.size > 1024 * 1024 * 2  -- >2MB
+end
 ```
 
 ## カスタマイゼーション
