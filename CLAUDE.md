@@ -17,7 +17,7 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 ### 設計原則
 
-- **Performance First**: 主要3技術の起動時間最適化（[詳細指標](docs/reference/performance-stats.md)参照）
+- **Performance First**: 主要3技術の起動時間最適化（[詳細指標](docs/performance.md)参照）
 - **Primary Integration**: Zsh ⇔ WezTerm ⇔ Neovim間のシームレス連携
 - **Unified Theme**: Gruvboxベース統一テーマ・フォント設定
 - **Modular Design**: 主要技術を中心とした設定の分離・統合
@@ -26,7 +26,7 @@ Personal dotfiles configuration optimized for software development with a focus 
 
 ### ✅ Performance Targets Achieved
 
-📊 **最新パフォーマンス結果**: [Performance Statistics](docs/reference/performance-stats.md)
+📊 **最新パフォーマンス結果**: [Performance Statistics](docs/performance.md)
 
 ### 🏗️ Architecture
 
@@ -50,30 +50,30 @@ dotfiles/
 
 ### 🏗️ Core Layers (Essential Configurations)
 
-- **[Shell Layer](./docs/configuration/core/shell.md)** - Zsh optimization, plugin management, performance tuning
-- **[Git Layer](./docs/configuration/core/git.md)** - Git workflows, authentication, tool integration
+- **[Shell Layer](./docs/tools/zsh.md)** - Zsh optimization, plugin management, performance tuning
+- **[Git Layer](./docs/tools.md)** - Git workflows, authentication, tool integration
 
 ### 🔧 Tool Layers (Specialized Implementations)
 
-- **[Editor Layer](./docs/configuration/tools/editor.md)** - Neovim, LSP, AI assistance, plugin optimization
-- **[Terminal Layer](./docs/configuration/tools/terminal.md)** - WezTerm, Tmux, Alacritty configurations
+- **[Editor Layer](./docs/tools/nvim.md)** - Neovim, LSP, AI assistance, plugin optimization
+- **[Terminal Layer](./docs/tools/wezterm.md)** - WezTerm, Tmux, Alacritty configurations
 
 ### 🚀 Support Layers (Cross-cutting Concerns)
 
-- **[Performance Layer](./docs/configuration/support/performance.md)** - Measurement, optimization, monitoring
-- **[Integration Layer](./docs/configuration/support/integration.md)** - Cross-tool workflows, synchronization
+- **[Performance Layer](./docs/performance.md)** - Measurement, optimization, monitoring
+- **[Integration Layer](./docs/tools/fzf-integration.md)** - Cross-tool workflows, synchronization
 
 ### 📋 Architecture Documentation
 
-- **[Design Patterns](./docs/architecture/patterns.md)** - Universal patterns, best practices, reusable solutions
+- **[Design Patterns](./docs/README.md)** - Universal patterns, best practices, reusable solutions
 
 ## 📖 Guides
 
 ### Implementation & Configuration
 
-- **[Configuration Management](./docs/guides/configuration-management.md)** - パターン、ベストプラクティス、実装手法
-- **[Maintenance Guide](./docs/guides/maintenance.md)** - 改善履歴、定期メンテナンス、トラブルシューティング
-- **[AI Assistance](./docs/guides/ai-assistance.md)** - AI支援システム、o3 MCP技術相談、層別実装アプローチ
+- **[Configuration Management](./docs/setup.md)** - パターン、ベストプラクティス、実装手法
+- **[Maintenance Guide](./docs/maintenance.md)** - 改善履歴、定期メンテナンス、トラブルシューティング
+- **[AI Assistance](./docs/README.md)** - AI支援システム、o3 MCP技術相談、層別実装アプローチ
 
 ## 🚀 Quick Start
 

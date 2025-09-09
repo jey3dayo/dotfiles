@@ -34,10 +34,10 @@ dotfiles/
 
 ## Tool-Specific Documentation
 
-- **[Zsh](tools/zsh/)** - Shell configuration, plugins, performance optimization
-- **[Neovim](tools/nvim/)** - LSP setup, plugin management, AI integration
-- **[WezTerm](tools/wezterm/)** - Terminal configuration, GPU acceleration, themes
-- **[SSH](tools/ssh/)** - SSH configuration, key management, security
+- **[Zsh](tools/zsh.md)** - Shell configuration, plugins, performance optimization
+- **[Neovim](tools/nvim.md)** - LSP setup, plugin management, AI integration
+- **[WezTerm](tools/wezterm.md)** - Terminal configuration, GPU acceleration, themes
+- **[SSH](tools/ssh.md)** - SSH configuration, key management, security
 - **[FZF Integration](tools/fzf-integration.md)** - Fuzzy search integration guide
 
 ---

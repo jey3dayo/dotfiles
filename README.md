@@ -4,7 +4,7 @@
 
 ## 🚀 Performance Achievements
 
-📊 **詳細なパフォーマンス指標**: [Performance Statistics](.claude/reference/performance-stats.md)
+📊 **詳細なパフォーマンス指標**: [Performance Statistics](docs/performance.md)
 
 | Component           | Current   | Improvement |
 | ------------------- | --------- | ----------- |
@@ -161,7 +161,7 @@ mise install              # Setup language versions
 - **[CLAUDE.md](CLAUDE.md)**: Technical implementation guide & AI assistance
 - **[Tools List](TOOLS.md)**: 管理対象ツール一覧
 - **[Configuration Layers](./docs/configuration/)**: Layered knowledge system (Shell, Git, Editor, Terminal)
-- **[Architecture](./docs/architecture/)**: Architecture patterns and design principles
+- **[Architecture](./docs/)**: Architecture patterns and design principles
 - **Component configs**: Each tool includes detailed configuration docs
 
 ## 🔧 Maintenance

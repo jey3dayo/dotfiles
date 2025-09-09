@@ -261,10 +261,10 @@ sheldon source --verbose
 
 ### Documentation Links
 
-- **Shell Integration**: [Shell Layer](../configuration/core/shell.md#fzf統合)
-- **Git Integration**: [Git Layer](../configuration/core/git.md#fzf統合パターン)
-- **Terminal Integration**: [Terminal Layer](../configuration/tools/terminal.md#fzf統合)
-- **Performance Metrics**: [Performance Layer](../configuration/support/performance.md)
+- **Shell Integration**: [Shell Layer](zsh.md)
+- **Git Integration**: [Git Layer](../tools.md)
+- **Terminal Integration**: [Terminal Layer](wezterm.md)
+- **Performance Metrics**: [Performance Layer](../performance.md)
 
 ### Implementation Files
 

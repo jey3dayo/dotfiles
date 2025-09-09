@@ -1,8 +1,30 @@
-MD013: false # 行の長さ制限を無効化
-MD040: false # ファイル名のコードブロックの言語を無効化
-MD051: false # リンクフラグメント（絵文字問題）
-MD022: false # 見出し前後の空行
-MD032: false # リスト前後の空行
-MD012: false # 複数空行
-MD023: false # 見出しインデント
+# Markdownlint configuration for dotfiles project
+# Optimized for technical documentation with Japanese content
 
+# Line length - disabled for code blocks and long links
+MD013: false
+
+# Code block language specification - disabled for simple blocks
+MD040: false
+
+# Link fragments - disabled for Unicode/Japanese anchor links
+MD051: false
+
+# Headers - more flexible spacing for better readability
+MD022: false # Blanks around headers
+MD023: false # Header indentation
+
+# Lists - more flexible spacing for complex lists
+MD032: false # Blanks around lists
+
+# Multiple consecutive blank lines - disabled for section separation
+MD012: false
+
+# Inline HTML - allow for complex formatting needs
+MD033: false
+
+# Bare URLs - allow for quick references in technical docs
+MD034: false
+
+# First line as header - allow for more flexible document structure
+MD041: false
