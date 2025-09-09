@@ -34,7 +34,7 @@
   "mini.jump2d": { "branch": "main", "commit": "3710fcdfbbff539e245e16ff14f2d95ffc2fb631" },
   "mini.misc": { "branch": "main", "commit": "b48a5527e26e3d1840be317e52b1f3db5c364f35" },
   "mini.operators": { "branch": "main", "commit": "57c9daf96e0278ebac07bc57fe2f60cf360e5eea" },
-  "mini.pairs": { "branch": "main", "commit": "6e1cc569130f25b2c6fa16d8b21b31ddb1420a4a" },
+  "mini.pairs": { "branch": "main", "commit": "3738ea30ff33e0cbf2983dc67319a5468d25b0a9" },
   "mini.pick": { "branch": "main", "commit": "be6490ae9d7038b9f5185d95a8060054f9b23666" },
   "mini.sessions": { "branch": "main", "commit": "f590f6973fd7ae675a84743ab90a53dcdc36136d" },
   "mini.starter": { "branch": "main", "commit": "98e3ca7fa53fa7c011df576c22c52c7501eca245" },

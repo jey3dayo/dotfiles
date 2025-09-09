@@ -13,9 +13,7 @@ return {
     "echasnovski/mini.cursorword",
     version = false,
     event = "VeryLazy",
-    config = function()
-      require("mini.cursorword").setup { delay = 100 }
-    end,
+    opts = { delay = 100 },
   },
   {
     "lewis6991/gitsigns.nvim",

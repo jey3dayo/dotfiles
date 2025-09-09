@@ -8,9 +8,7 @@ return {
   {
     "keaising/im-select.nvim",
     event = "InsertEnter",
-    config = function()
-      require "config/im-select"
-    end,
+    opts = require "config/im-select",
   },
   {
     "folke/flash.nvim",
