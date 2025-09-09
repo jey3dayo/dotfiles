@@ -51,7 +51,7 @@ dotfiles/
 ### 🏗️ Core Layers (Essential Configurations)
 
 - **[Shell Layer](./docs/tools/zsh.md)** - Zsh optimization, plugin management, performance tuning
-- **[Git Layer](./docs/tools.md)** - Git workflows, authentication, tool integration
+- **[Git Layer](./docs/tools.md)** - Git workflows, authentication, tool integration (see also FZF integration)
 
 ### 🔧 Tool Layers (Specialized Implementations)
 

@@ -160,7 +160,7 @@ mise install              # Setup language versions
 
 - **[CLAUDE.md](CLAUDE.md)**: Technical implementation guide & AI assistance
 - **[Tools List](TOOLS.md)**: 管理対象ツール一覧
-- **[Configuration Layers](./docs/configuration/)**: Layered knowledge system (Shell, Git, Editor, Terminal)
+- **[Tool Documentation](./docs/tools/)**: Comprehensive tool-specific guides (Shell, Git, Editor, Terminal)
 - **[Architecture](./docs/)**: Architecture patterns and design principles
 - **Component configs**: Each tool includes detailed configuration docs
 

@@ -34,11 +34,23 @@ dotfiles/
 
 ## Tool-Specific Documentation
 
-- **[Zsh](tools/zsh.md)** - Shell configuration, plugins, performance optimization
-- **[Neovim](tools/nvim.md)** - LSP setup, plugin management, AI integration
-- **[WezTerm](tools/wezterm.md)** - Terminal configuration, GPU acceleration, themes
-- **[SSH](tools/ssh.md)** - SSH configuration, key management, security
-- **[FZF Integration](tools/fzf-integration.md)** - Fuzzy search integration guide
+### Core Stack (Primary Tools)
+
+- **[Zsh](tools/zsh.md)** - Shell configuration, 1.1s startup, modular plugin system
+- **[Neovim](tools/nvim.md)** - Editor config, <100ms startup, 15+ languages, AI integration
+- **[WezTerm](tools/wezterm.md)** - Primary terminal, GPU acceleration, Lua configuration
+
+### Supporting Tools
+
+- **[SSH](tools/ssh.md)** - SSH configuration, hierarchical setup, security management
+- **[FZF Integration](tools/fzf-integration.md)** - Unified fuzzy search across all tools
+
+### Component Configurations
+
+- **Git**: Enhanced workflows with 50+ abbreviations and custom widgets
+- **Tmux**: Session management and terminal multiplexing
+- **Homebrew**: Package management via Brewfile
+- **Mise**: Multi-language version management
 
 ---
 

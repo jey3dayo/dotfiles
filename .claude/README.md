@@ -56,10 +56,13 @@ This directory is automatically managed by Claude Code. Key files:
 
 All general documentation has been consolidated in the `docs/` directory:
 
-- **Architecture**: `docs/architecture/` - Design patterns and principles
-- **Configuration**: `docs/configuration/` - Tool-specific configurations
-- **Guides**: `docs/guides/` - Implementation guides and best practices
-- **Reference**: `docs/reference/` - Tool references and performance stats
+- **Main Guides**: `docs/` - Setup, performance, maintenance, and tools
+- **Tool Documentation**: `docs/tools/` - Tool-specific configurations and guides
+  - `zsh.md` - Shell configuration and optimization
+  - `nvim.md` - Neovim setup and language support
+  - `wezterm.md` - Terminal configuration
+  - `ssh.md` - SSH configuration management
+  - `fzf-integration.md` - Fuzzy search integration
 
 ## 🧹 Maintenance
 
