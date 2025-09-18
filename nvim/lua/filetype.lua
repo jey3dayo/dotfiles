@@ -13,6 +13,7 @@ local filetype = {
     [".taskmasterconfig"] = "json",
     ["Podfile"] = "ruby",
     ["babelrc"] = "json",
+    ["config"] = "gitconfig",
   },
 
   pattern = {
