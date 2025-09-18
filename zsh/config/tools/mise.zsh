@@ -12,9 +12,9 @@ if (( $+functions[zsh-defer] )); then
   # This ensures mise tools take priority over homebrew tools
   zsh-defer -t 8 eval "$(mise activate zsh)"
   # Add mise shims to PATH after activation (for version-agnostic tool access)
-  zsh-defer -t 9 export PATH="$HOME/.mise/shims:$PATH"
-  # Defer completion for startup performance
-  zsh-defer -t 3 eval "$(mise complete -s zsh)"
+  zsh-defer -t 9 'export PATH="$HOME/.mise/shims:$PATH"'
+  # Defer completion for startup performance (after activation)
+  zsh-defer -t 10 eval "$(mise complete -s zsh)"
 else
   # Fallback for immediate loading when zsh-defer unavailable
   eval "$(mise activate zsh)"
