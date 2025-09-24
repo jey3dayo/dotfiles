@@ -70,6 +70,7 @@ require("conform").setup {
 
     -- Prettier formatter with fallback when no config files
     prettier = {
+      command = "prettier", -- Use system prettier (mise-managed)
       condition = function(_, ctx)
         local config_files = lsp_config.formatters.prettier.config_files
         -- Always allow prettier as fallback, even without config files
