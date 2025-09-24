@@ -247,37 +247,46 @@ require("dial.config").augends:register_group {
   ["git-rebase-todo"] = git_rebase_config,
 }
 
+-- Cache dial.map to avoid repeated require calls
+local dial_map = nil
+local function get_dial_map()
+  if not dial_map then
+    dial_map = require("dial.map")
+  end
+  return dial_map
+end
+
 -- Set up keymaps
 vim.keymap.set("n", "<C-a>", function()
-  require("dial.map").manipulate("increment", "normal")
+  get_dial_map().manipulate("increment", "normal")
 end, { desc = "Increment" })
 
 vim.keymap.set("n", "<C-x>", function()
-  require("dial.map").manipulate("decrement", "normal")
+  get_dial_map().manipulate("decrement", "normal")
 end, { desc = "Decrement" })
 
 vim.keymap.set("n", "g<C-a>", function()
-  require("dial.map").manipulate("increment", "gnormal")
+  get_dial_map().manipulate("increment", "gnormal")
 end, { desc = "Increment (global)" })
 
 vim.keymap.set("n", "g<C-x>", function()
-  require("dial.map").manipulate("decrement", "gnormal")
+  get_dial_map().manipulate("decrement", "gnormal")
 end, { desc = "Decrement (global)" })
 
 vim.keymap.set("v", "<C-a>", function()
-  require("dial.map").manipulate("increment", "visual")
+  get_dial_map().manipulate("increment", "visual")
 end, { desc = "Increment (visual)" })
 
 vim.keymap.set("v", "<C-x>", function()
-  require("dial.map").manipulate("decrement", "visual")
+  get_dial_map().manipulate("decrement", "visual")
 end, { desc = "Decrement (visual)" })
 
 vim.keymap.set("v", "g<C-a>", function()
-  require("dial.map").manipulate("increment", "gvisual")
+  get_dial_map().manipulate("increment", "gvisual")
 end, { desc = "Increment (global visual)" })
 
 vim.keymap.set("v", "g<C-x>", function()
-  require("dial.map").manipulate("decrement", "gvisual")
+  get_dial_map().manipulate("decrement", "gvisual")
 end, { desc = "Decrement (global visual)" })
 
 -- Filetype-specific configurations
@@ -288,11 +297,11 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "ruby" },
   callback = function()
     vim.keymap.set("n", "<C-a>", function()
-      require("dial.map").manipulate("increment", "normal", "ruby")
+      get_dial_map().manipulate("increment", "normal", "ruby")
     end, { buffer = true, desc = "Increment (Ruby)" })
 
     vim.keymap.set("n", "<C-x>", function()
-      require("dial.map").manipulate("decrement", "normal", "ruby")
+      get_dial_map().manipulate("decrement", "normal", "ruby")
     end, { buffer = true, desc = "Decrement (Ruby)" })
   end,
 })
@@ -302,11 +311,11 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "javascript", "javascriptreact" },
   callback = function()
     vim.keymap.set("n", "<C-a>", function()
-      require("dial.map").manipulate("increment", "normal", "javascript")
+      get_dial_map().manipulate("increment", "normal", "javascript")
     end, { buffer = true, desc = "Increment (JavaScript)" })
 
     vim.keymap.set("n", "<C-x>", function()
-      require("dial.map").manipulate("decrement", "normal", "javascript")
+      get_dial_map().manipulate("decrement", "normal", "javascript")
     end, { buffer = true, desc = "Decrement (JavaScript)" })
   end,
 })
@@ -316,11 +325,11 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "typescript", "typescriptreact" },
   callback = function()
     vim.keymap.set("n", "<C-a>", function()
-      require("dial.map").manipulate("increment", "normal", "typescript")
+      get_dial_map().manipulate("increment", "normal", "typescript")
     end, { buffer = true, desc = "Increment (TypeScript)" })
 
     vim.keymap.set("n", "<C-x>", function()
-      require("dial.map").manipulate("decrement", "normal", "typescript")
+      get_dial_map().manipulate("decrement", "normal", "typescript")
     end, { buffer = true, desc = "Decrement (TypeScript)" })
   end,
 })
@@ -330,11 +339,11 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = { "git-rebase-todo" },
   callback = function()
     vim.keymap.set("n", "<C-a>", function()
-      require("dial.map").manipulate("increment", "normal", "git-rebase-todo")
+      get_dial_map().manipulate("increment", "normal", "git-rebase-todo")
     end, { buffer = true, desc = "Increment (Git rebase)" })
 
     vim.keymap.set("n", "<C-x>", function()
-      require("dial.map").manipulate("decrement", "normal", "git-rebase-todo")
+      get_dial_map().manipulate("decrement", "normal", "git-rebase-todo")
     end, { buffer = true, desc = "Decrement (Git rebase)" })
   end,
 })
