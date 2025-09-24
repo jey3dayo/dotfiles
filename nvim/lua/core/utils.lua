@@ -28,9 +28,13 @@ function M.check_file_exists(filename)
   return vim.fn.findfile(filename, ".;") ~= ""
 end
 
-function M.has_config_files(config_files)
+function M.has_config_files(config_files, dirname)
+  dirname = dirname or vim.fn.getcwd()
   for _, file in ipairs(config_files) do
-    if M.check_file_exists(file) then return true end
+    local full_path = dirname .. "/" .. file
+    if vim.fn.filereadable(full_path) == 1 then return true end
+    -- Also check in current working directory if specific dirname provided
+    if dirname ~= vim.fn.getcwd() and M.check_file_exists(file) then return true end
   end
   return false
 end
