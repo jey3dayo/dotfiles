@@ -29,6 +29,7 @@ export CODEX_CONFIG="$HOME/.config/.codex/config.yaml"
 
 path=(
   $HOME/.claude/local(N-/)
+  $HOME/.mise/shims(N-/)  # Add mise shims first
   $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
   /usr/local/{bin,sbin}(N-/)
