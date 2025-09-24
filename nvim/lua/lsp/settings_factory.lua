@@ -4,6 +4,7 @@ local loader = require "core.module_loader"
 -- Common dependencies loaded once and cached
 local deps = loader.require_batch {
   ft = "core.filetypes",
+  core_utils = "core.utils",
   utils = "lsp.utils",
   config = "lsp.config",
   capabilities = "lsp.capabilities",
@@ -63,9 +64,9 @@ function M.create_formatter_server(server_name, overrides)
   -- Add autostart logic for formatters
   if deps.config and deps.config.formatters and deps.config.formatters[server_name] then
     local formatter_config = deps.config.formatters[server_name]
-    if formatter_config.config_files and deps.utils then
+    if formatter_config.config_files and deps.core_utils then
       config.autostart = function()
-        return deps.utils.has_config_files(formatter_config.config_files)
+        return deps.core_utils.has_config_files(formatter_config.config_files)
       end
     end
   end
