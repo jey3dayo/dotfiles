@@ -1,5 +1,5 @@
 -- Set log directory to /tmp for volatility
-vim.env.XDG_STATE_HOME = '/tmp'
+vim.env.XDG_STATE_HOME = "/tmp"
 
 if vim.loader then vim.loader.enable() end
 

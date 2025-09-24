@@ -5,9 +5,7 @@
   },
   "hasChangedDefaultModel": false,
   "permissions": {
-    "allow": [
-      "Shell(ls)"
-    ],
+    "allow": ["Shell(ls)"],
     "deny": []
   },
   "network": {

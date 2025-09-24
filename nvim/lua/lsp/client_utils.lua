@@ -83,14 +83,37 @@ end
 --- @param bufnr number|nil Buffer number (defaults to current buffer)
 --- @return string Comma-separated list of formatting client names
 function M.get_lsp_client_names(bufnr)
-  local clients = M.get_format_clients(bufnr)
-  if #clients == 0 then return "" end
+  local formatters = {}
 
-  local names = {}
-  for _, client in ipairs(clients) do
-    table.insert(names, client.name)
+  -- Formatters to exclude from display (utility formatters)
+  local excluded_formatters = {
+    "trim_whitespace",
+    "trim_newlines",
+    "squeeze_blanks",
+  }
+
+  -- Get LSP-based formatters
+  local lsp_clients = M.get_format_clients(bufnr)
+  for _, client in ipairs(lsp_clients) do
+    table.insert(formatters, client.name)
   end
-  return table.concat(names, ", ")
+
+  -- Get Conform-based formatters if no LSP formatters found
+  if #formatters == 0 then
+    local ok, conform = pcall(require, "conform")
+    if ok then
+      local conform_formatters = conform.list_formatters(bufnr)
+      for _, formatter in ipairs(conform_formatters) do
+        -- Skip excluded utility formatters
+        if formatter.available and not vim.tbl_contains(excluded_formatters, formatter.name) then
+          table.insert(formatters, formatter.name)
+        end
+      end
+    end
+  end
+
+  -- Return array for compatibility with create_lsp_component
+  return formatters
 end
 
 return M
