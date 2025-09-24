@@ -4,6 +4,9 @@ local M = {}
 local clear_autocmds = vim.api.nvim_clear_autocmds
 M.clear_autocmds = clear_autocmds
 
+-- Initialize ftplugin loader (replaces individual ftplugin files)
+require("core.ftplugin_loader").setup()
+
 utils.autocmd("BufWritePre", { pattern = "*", command = 'let v:swapchoice = "o"' })
 
 -- Remove whitespace on save

@@ -1,4 +1,4 @@
-local factory = require("lsp.settings_factory")
+local factory = require "lsp.settings_factory"
 
 return factory.create_formatter_server("eslint", {
   -- CRITICAL: Set workspaceFolder in on_new_config
@@ -14,10 +14,8 @@ return factory.create_formatter_server("eslint", {
 
   on_attach = function(client, bufnr)
     -- Call base on_attach first
-    local handlers = require("lsp.handlers")
-    if handlers and handlers.on_attach then
-      handlers.on_attach(client, bufnr)
-    end
+    local handlers = require "lsp.handlers"
+    if handlers and handlers.on_attach then handlers.on_attach(client, bufnr) end
 
     -- Disable formatting only (ESLint should be used for linting, not formatting)
     client.server_capabilities.documentFormattingProvider = false
@@ -48,4 +46,4 @@ return factory.create_formatter_server("eslint", {
       },
     },
   },
-}
+})
