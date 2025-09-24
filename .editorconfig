@@ -44,3 +44,10 @@ indent_size = 2
 # TOML files
 [*.toml]
 indent_size = 2
+
+# Z-shell files (shfmt does not support zsh-specific syntax)
+[*.zsh]
+ignore = true
+
+[zsh/**]
+ignore = true
