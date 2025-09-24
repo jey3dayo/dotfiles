@@ -1,3 +1,6 @@
+-- Set log directory to /tmp for volatility
+vim.env.XDG_STATE_HOME = '/tmp'
+
 if vim.loader then vim.loader.enable() end
 
 -- Load LSP safety modules early
