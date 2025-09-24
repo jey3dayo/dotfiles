@@ -20,7 +20,7 @@ load_tool_settings() {
       # Optimized staggered loading for minimal startup impact
       case "$tool_name" in
       starship) zsh-defer -t 3 source "$tool_file" ;;  # Prompt is visible, load sooner
-      brew) zsh-defer -t 2 source "$tool_file" ;;      # Critical for package management
+      brew) zsh-defer -t 5 source "$tool_file" ;;      # Load after mise (t=1-3) for proper priority
       debug) zsh-defer -t 15 source "$tool_file" ;;    # Debug tools rarely needed at startup
       gh) zsh-defer -t 8 source "$tool_file" ;;        # GitHub tools - moderate priority
       *) zsh-defer -t 12 source "$tool_file" ;;        # Everything else - low priority
