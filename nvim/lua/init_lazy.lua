@@ -31,3 +31,6 @@ require("lazy").setup {
   },
   change_detection = { notify = false }, -- 変更検出通知を無効化
 }
+
+-- Preload common modules for better performance
+require("core.module_loader").preload_common()

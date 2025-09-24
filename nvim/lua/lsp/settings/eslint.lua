@@ -1,18 +1,6 @@
-local utils = require "core.utils"
-local ft = require "core.filetypes"
-local lsp_utils = require "lsp.utils"
-local lsp_config = require "lsp.config"
-local config_files = lsp_config.formatters.eslint.config_files
+local factory = require("lsp.settings_factory")
 
-return {
-  -- ESLintは設定ファイルが存在する場合のみ起動
-  autostart = function()
-    return utils.has_config_files(config_files)
-  end,
-
-  root_dir = lsp_utils.create_root_pattern(config_files),
-  filetypes = ft.js_project,
-
+return factory.create_formatter_server("eslint", {
   -- CRITICAL: Set workspaceFolder in on_new_config
   on_new_config = function(config, new_root_dir)
     -- Make sure workspaceFolder is set
@@ -25,6 +13,12 @@ return {
   end,
 
   on_attach = function(client, bufnr)
+    -- Call base on_attach first
+    local handlers = require("lsp.handlers")
+    if handlers and handlers.on_attach then
+      handlers.on_attach(client, bufnr)
+    end
+
     -- Disable formatting only (ESLint should be used for linting, not formatting)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false

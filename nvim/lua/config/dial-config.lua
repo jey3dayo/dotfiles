@@ -250,9 +250,7 @@ require("dial.config").augends:register_group {
 -- Cache dial.map to avoid repeated require calls
 local dial_map = nil
 local function get_dial_map()
-  if not dial_map then
-    dial_map = require("dial.map")
-  end
+  if not dial_map then dial_map = require "dial.map" end
   return dial_map
 end
 
