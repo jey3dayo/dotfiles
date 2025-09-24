@@ -1,7 +1,6 @@
 [tools]
 biome = "latest"
 go = "1.23.3"
-# node = "18"
 node = "lts"
 prettier = "latest"
 stylua = "latest"
@@ -107,7 +106,4 @@ run = [
 
 [tasks."ci:install"]
 description = "Install all tools required for CI"
-run = [
-  "npm install -g prettier",
-  "luarocks install --local luacheck",
-]
+run = ["npm install -g prettier", "luarocks install --local luacheck"]
