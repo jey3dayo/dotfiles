@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "editor": {
+    "vimMode": false
+  },
+  "hasChangedDefaultModel": false,
+  "permissions": {
+    "allow": [
+      "Shell(ls)"
+    ],
+    "deny": []
+  },
+  "network": {
+    "useHttp1ForAgent": false
+  }
+}
