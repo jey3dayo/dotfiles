@@ -1,10 +1,10 @@
 [tools]
-biome = "latest"
+biome = "1.9.4"
 go = "1.23.3"
 node = "lts"
-prettier = "latest"
-stylua = "latest"
-shfmt = "latest"
+prettier = "3.4.2"
+stylua = "0.20.0"
+shfmt = "3.10.0"
 luajit = "latest"
 
 [settings]
