@@ -1,10 +1,8 @@
 path=(
   $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
-  # System and existing PATH first
-  $path
-  # Homebrew paths added to end - mise tools will take priority via deferred activation
   /opt/homebrew/{bin,sbin}(N-/)
+  $path
 )
 
 # PATH optimization utility function
@@ -13,7 +11,7 @@ path-check() {
   echo "━━━━━━━━━━━━━━━━━━━"
   echo "Total entries: $(echo $PATH | tr ':' '\n' | wc -l | tr -d ' ')"
   echo "Unique entries: $(echo $PATH | tr ':' '\n' | sort -u | wc -l | tr -d ' ')"
-  
+
   local duplicates=$(echo $PATH | tr ':' '\n' | sort | uniq -d)
   if [[ -n "$duplicates" ]]; then
     echo "⚠️  Duplicates found:"
@@ -21,7 +19,7 @@ path-check() {
   else
     echo "✅ No duplicates"
   fi
-  
+
   # Check for potentially missing directories (skip mise paths as they're dynamic)
   local missing=0
   for dir in $(echo $PATH | tr ':' '\n' | grep -v '\.mise'); do
@@ -38,28 +36,28 @@ path-check() {
 zsh-quick-check() {
   echo "🚀 Zsh Quick System Check"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  
+
   # Performance indicators
   echo "📊 Performance:"
   echo "  Functions loaded: $(typeset -f | grep '^[a-zA-Z]' | wc -l | tr -d ' ')"
   echo "  Aliases defined: $(alias | wc -l | tr -d ' ')"
-  
+
   # PATH status
   echo "\n🛤️  PATH Status:"
   echo "  Total entries: $(echo $PATH | tr ':' '\n' | wc -l | tr -d ' ')"
   echo "  Duplicates: $(echo $PATH | tr ':' '\n' | sort | uniq -d | wc -l | tr -d ' ')"
-  
+
   # Tool availability
   echo "\n🔧 Key Tools:"
   local tools=(git fzf mise sheldon starship)
   for tool in $tools; do
     if command -v $tool >/dev/null 2>&1; then
       echo "  ✅ $tool"
-    else  
+    else
       echo "  ❌ $tool (not found)"
     fi
   done
-  
+
   # Memory usage (approximate)
   local pid=$$
   local mem=$(ps -o rss= -p $pid 2>/dev/null | tr -d ' ')

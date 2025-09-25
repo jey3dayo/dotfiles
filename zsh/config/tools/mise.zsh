@@ -5,21 +5,20 @@ if ! command -v mise >/dev/null 2>&1; then
   return
 fi
 
-# Optimized mise loading following best practices:
-# Defer mise activation to after brew initialization to ensure proper PATH priority
+# Immediate mise activation for tool availability
+# mise activate must run immediately to ensure mise-managed tools are available
+eval "$(mise activate zsh)"
+
+# Force initial hook execution to set up PATH correctly
+# This ensures mise tools are available immediately on shell startup
+if (( $+functions[_mise_hook] )); then
+  _mise_hook
+fi
+
+# Defer only the completion for startup performance
 if (( $+functions[zsh-defer] )); then
-  # Defer mise activation to after brew setup (t=8, after brew's t=5)
-  # This ensures mise tools take priority over homebrew tools
-  zsh-defer -t 8 eval "$(mise activate zsh)"
-  # Add mise shims to PATH after activation (for version-agnostic tool access)
-  zsh-defer -t 9 'export PATH="$HOME/.mise/shims:$PATH"'
-  # Defer completion for startup performance (after activation)
   zsh-defer -t 10 eval "$(mise complete -s zsh)"
 else
-  # Fallback for immediate loading when zsh-defer unavailable
-  eval "$(mise activate zsh)"
-  # Add mise shims to PATH after activation (for version-agnostic tool access)
-  export PATH="$HOME/.mise/shims:$PATH"
   eval "$(mise complete -s zsh)"
 fi
 
