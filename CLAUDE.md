@@ -170,6 +170,7 @@ mise run format:shell:check
 - [Main README](README.md)
 - [統合ドキュメント](./docs/) - 体系化されたドキュメント管理システム
 - [Claude Settings](.claude/) - AI支援のための設定とコンテキスト
+- [TODO](docs/TODO.md) - タスク管理・課題追跡
 
 ---
 
