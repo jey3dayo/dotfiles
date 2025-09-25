@@ -5,14 +5,14 @@ if ! command -v mise >/dev/null 2>&1; then
   return
 fi
 
-# Immediate mise activation for tool availability
-# mise activate must run immediately to ensure mise-managed tools are available
-eval "$(mise activate zsh)"
-
-# Force initial hook execution to set up PATH correctly
-# This ensures mise tools are available immediately on shell startup
-if (( $+functions[_mise_hook] )); then
-  _mise_hook
+# Check if mise is already activated (by .zprofile)
+# If not activated, activate it now
+if ! (( $+functions[_mise_hook] )); then
+  eval "$(mise activate zsh)"
+  # Force initial hook execution to set up PATH correctly
+  if (( $+functions[_mise_hook] )); then
+    _mise_hook
+  fi
 fi
 
 # Defer only the completion for startup performance
