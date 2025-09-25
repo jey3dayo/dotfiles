@@ -23,14 +23,10 @@ path=(
   $path
 )
 
-# Activate mise if available
+# Activate mise using shims for optimal performance
+# Shims approach: zero per-prompt overhead vs activate's 60-200ms cost
 if [[ -x /opt/homebrew/bin/mise ]]; then
-  # Activate mise immediately for tool availability
-  eval "$(/opt/homebrew/bin/mise activate zsh)"
-  # Force initial hook execution
-  if (( $+functions[_mise_hook] )); then
-    _mise_hook
-  fi
+  path=($HOME/.local/share/mise/shims(N-/) $path)
 fi
 
 # vim: set syntax=zsh:
