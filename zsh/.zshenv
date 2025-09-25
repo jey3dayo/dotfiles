@@ -31,7 +31,6 @@ path=(
   $HOME/.claude/local(N-/)
   $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
-  /usr/local/{bin,sbin}(N-/)
   $HOME/.deno/bin(N-/)
   $HOME/.cargo/bin(N-/)
   /usr/local/opt/openjdk/bin:(N-/)
