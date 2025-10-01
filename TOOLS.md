@@ -22,6 +22,7 @@
 - **nirc** (`nirc`)
 - **Homebrew** (`Brewfile`)
 - **AWSume** (`awsume/`)
+- **Terraform** (via Homebrew, LSP support in Neovim)
 
 ## リンター・フォーマッター
 

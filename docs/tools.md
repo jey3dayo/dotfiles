@@ -49,7 +49,7 @@ brew bundle               # Install/update all packages
 
 ### Development
 
-- Git, GitHub CLI, Neovim, efm-langserver, mise, Homebrew, AWSume
+- Git, GitHub CLI, Neovim, efm-langserver, mise, Homebrew, AWSume, Terraform
 
 ### Linters・Formatters
 

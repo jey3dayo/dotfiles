@@ -51,6 +51,7 @@ dotfiles/
 - **Tmux**: Session management and terminal multiplexing
 - **Homebrew**: Package management via Brewfile
 - **Mise**: Multi-language version management
+- **Terraform**: Infrastructure as Code with LSP support
 
 ---
 
