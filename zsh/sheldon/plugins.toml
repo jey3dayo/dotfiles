@@ -37,6 +37,11 @@ apply = ["defer"]
 github = 'olets/zsh-abbr'
 apply = ["defer"]
 
+[plugins.user-abbreviations]
+local = "~/src/github.com/jey3dayo/dotfiles/zsh-abbr"
+use = ["user-abbreviations"]
+apply = ["defer"]
+
 # Completion system - must load before fzf-tab
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
