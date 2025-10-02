@@ -41,7 +41,7 @@ autoload zed
 # source command override technique
 function source {
   ensure_zcompiled $1
-  builtin source $1
+  builtin source "$@"
 }
 function ensure_zcompiled {
   if [[ "$1" == *.zsh ]] || [[ "$1" == *.zshrc ]]; then
