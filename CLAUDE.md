@@ -48,6 +48,24 @@ dotfiles/
 
 **📖 統合ドキュメント**: [./docs/](./docs/) - 体系化されたドキュメント管理システム
 
+### 📋 ドキュメント管理体系
+
+本プロジェクトは統一されたメタデータ形式とタグ体系でドキュメントを管理しています：
+
+- **[ドキュメント管理ガイドライン](./docs/documentation-guidelines.md)** - タグ体系、メタデータ形式、品質基準
+- **必須メタデータ**: 最終更新日、対象読者、タグ（category/tool/layer/environment）
+- **品質指標**: サイズ管理（推奨500行）、成熟度、難易度、更新頻度
+
+すべてのドキュメントは以下の形式でメタデータを記載：
+
+```markdown
+# [アイコン] [タイトル]
+
+**最終更新**: YYYY-MM-DD
+**対象**: [読者層]
+**タグ**: `category/値`, `tool/値`, `layer/値`, `environment/値`
+```
+
 ### 🏗️ Core Layers (Essential Configurations)
 
 - **[Shell Layer](./docs/tools/zsh.md)** - Zsh optimization, plugin management, performance tuning

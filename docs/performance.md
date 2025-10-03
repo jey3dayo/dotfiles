@@ -1,4 +1,8 @@
-# Performance Monitoring
+# ⚡ Performance Monitoring
+
+**最終更新**: 2025-10-03
+**対象**: 開発者・運用担当者
+**タグ**: `category/performance`, `layer/support`, `environment/cross-platform`
 
 Tools for measuring and monitoring system performance.
 

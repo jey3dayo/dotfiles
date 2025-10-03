@@ -1,4 +1,8 @@
-# Tools Configuration
+# 🔧 Tools Configuration
+
+**最終更新**: 2025-10-03
+**対象**: 開発者
+**タグ**: `category/reference`, `tool/git`, `layer/core`, `environment/macos`
 
 Essential tools and their key configurations.
 

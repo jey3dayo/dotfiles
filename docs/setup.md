@@ -1,4 +1,8 @@
-# Setup Guide
+# 🚀 Setup Guide
+
+**最終更新**: 2025-10-03
+**対象**: 開発者・初心者
+**タグ**: `category/guide`, `category/configuration`, `environment/macos`
 
 ⚡ High-performance macOS development environment setup.
 
