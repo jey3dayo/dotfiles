@@ -38,6 +38,10 @@ lint.linters.ruff.args = {
   "-",
 }
 
+-- Configure markdownlint-cli2
+lint.linters.markdownlint.cmd = "markdownlint-cli2"
+lint.linters.markdownlint.args = {}
+
 -- Auto-lint setup
 local lint_augroup = vim.api.nvim_create_augroup("nvim-lint", { clear = true })
 
