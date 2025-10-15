@@ -40,6 +40,7 @@ return {
       -- Commit workflow
       { "<C-g>c", "<cmd>Neogit commit<cr>", desc = "Neogit Commit" },
       { "<C-g>a", "<cmd>Neogit<cr>", desc = "Stage All (use 's' in Neogit)" },
+      { "<C-g>w", "<cmd>Gwrite<CR>", desc = "Git add (stage file)" },
 
       -- Push/Pull removed for safety - use manual commands
 

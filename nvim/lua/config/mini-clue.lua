@@ -55,6 +55,7 @@ return {
     { mode = "n", keys = "<C-g>s", desc = "Git Status" },
     { mode = "n", keys = "<C-g>c", desc = "Git Commit" },
     { mode = "n", keys = "<C-g>a", desc = "Stage All (use s in Neogit)" },
+    { mode = "n", keys = "<C-g>w", desc = "Git add (stage file)" },
     { mode = "n", keys = "<C-g>b", desc = "Git Branches (use b in Neogit)" },
     { mode = "n", keys = "<C-g>l", desc = "Git Log (use l in Neogit)" },
     { mode = "n", keys = "<C-g>d", desc = "Diff View" },
