@@ -23,10 +23,10 @@ path=(
   $path
 )
 
-# Activate mise using shims for optimal performance
-# Shims approach: zero per-prompt overhead vs activate's 60-200ms cost
-if [[ -x /opt/homebrew/bin/mise ]]; then
-  path=($HOME/.local/share/mise/shims(N-/) $path)
+# Re-prioritize mise shims after macOS path_helper reorders PATH
+# path_helper in /etc/zprofile moves system paths to the front
+if [[ -d $HOME/.mise/shims ]]; then
+  path=($HOME/.mise/shims(N-/) $path)
 fi
 
 # vim: set syntax=zsh:

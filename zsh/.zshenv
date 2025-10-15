@@ -28,6 +28,7 @@ export NI_CONFIG_FILE="$HOME/.config/nirc"
 export CODEX_CONFIG="$HOME/.config/.codex/config.yaml"
 
 path=(
+  $HOME/.mise/shims(N-/)
   $HOME/.claude/local(N-/)
   $HOME/{bin,sbin}(N-/)
   $HOME/.local/{bin,sbin}(N-/)
