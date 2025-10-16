@@ -339,11 +339,18 @@ macOSの`/etc/zprofile`は`path_helper`を実行し、システムパスを先�
 3. ユーザーbin        → $HOME/bin, $HOME/.local/bin等
 4. 言語ツール         → cargo, deno, go, npm, pnpm等
 5. Android SDK        → emulator, tools, platform-tools
-6. システムパス       → /usr/bin, /bin等(path_helper管理)
-7. Homebrew          → /opt/homebrew, /usr/local (最低優先度)
+6. Homebrew          → /opt/homebrew, /usr/local (最新ツール優先)
+7. システムパス       → /usr/bin, /bin等(fallback)
 ```
 
-この優先順位により、**mise管理のnode(v22.20.0)がHomebrew版より優先**されます。
+**優先順位の設計意図**:
+
+- **mise > Homebrew**: プロジェクト固有のバージョンが最優先
+  - 例: mise管理のnode v22.20.0 > Homebrew版node
+- **Homebrew > system**: 意図的にインストールした新しいツールを優先
+  - 例: Homebrew版git(最新) > macOS標準git
+  - 例: GNU make > BSD make(macOS標準)
+- **system (fallback)**: Homebrewにない標準ツール用
 
 ### 設定例
 
@@ -366,12 +373,12 @@ path=(
   $PNPM_HOME(N-)
   # ... その他
 
-  # System paths (from path_helper)
-  $path
-
-  # Homebrew (lowest priority)
+  # Homebrew (before system for latest tools)
   /opt/homebrew/bin(N-)
   /opt/homebrew/sbin(N-)
+
+  # System paths (fallback)
+  $path
 )
 ```
 

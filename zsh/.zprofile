@@ -39,14 +39,14 @@ path=(
   $ANDROID_SDK_ROOT/tools/bin(N-)
   $ANDROID_SDK_ROOT/platform-tools(N-)
 
-  # System paths (from path_helper)
-  $path
-
-  # Homebrew (lowest priority, both architectures)
+  # Homebrew (before system for latest tools)
   /opt/homebrew/bin(N-)
   /opt/homebrew/sbin(N-)
   /usr/local/bin(N-)
   /usr/local/sbin(N-)
+
+  # System paths (lowest priority, fallback)
+  $path
 )
 
 # vim: set syntax=zsh:
