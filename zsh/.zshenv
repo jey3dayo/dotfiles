@@ -27,23 +27,12 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
 export CODEX_CONFIG="$HOME/.config/.codex/config.yaml"
 
+# Minimal PATH setup for non-login shells
+# Full PATH configuration is in .zprofile (executed after macOS path_helper)
+# Only critical paths that must be available in all zsh contexts
 path=(
   $HOME/.mise/shims(N-)
   $HOME/.claude/local(N-)
-  $HOME/{bin,sbin}(N-)
-  $HOME/.local/{bin,sbin}(N-)
-  $HOME/.deno/bin(N-)
-  $HOME/.cargo/bin(N-)
-  /usr/local/opt/openjdk/bin:(N-)
-  /usr/local/opt/coreutils/libexec/gnubin(N-)
-  $BUN_INSTALL/bin(N-)
-  $HOME/go/bin(N-)
-  $PNPM_HOME(N-)
-  $HOME/.local/npm-global/bin
-  $ANDROID_SDK_ROOT/emulator(N-)
-  $ANDROID_SDK_ROOT/tools(N-)
-  $ANDROID_SDK_ROOT/tools/bin(N-)
-  $ANDROID_SDK_ROOT/platform-tools(N-)
   $path
 )
 

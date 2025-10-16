@@ -1,6 +1,6 @@
 # 🐚 Zsh Configuration & Optimization
 
-**最終更新**: 2025-10-03
+**最終更新**: 2025-10-16
 **対象**: 開発者・上級者
 **タグ**: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`
 
@@ -301,11 +301,117 @@ la     → ls -A
 l      → ls -CF
 ```
 
+## 🛤️ PATH管理戦略
+
+### 設計原則
+
+**一元管理**: `.zprofile`で完全なPATH設定を実施
+
+PATH設定は以下の3ファイルで管理されていますが、それぞれ明確な役割分担があります:
+
+| ファイル               | 役割                   | 理由                                            |
+| ---------------------- | ---------------------- | ----------------------------------------------- |
+| `.zshenv`              | 最小限のshims          | 全zsh(非ログインシェル含む)で必要な最低限のパス |
+| `.zprofile`            | **完全なPATH設定**     | macOS path_helper後に実行、優先度制御           |
+| `config/core/path.zsh` | ユーティリティ関数のみ | `path-check`, `zsh-quick-check`等の診断ツール   |
+
+### macOS path_helper問題への対応
+
+macOSの`/etc/zprofile`は`path_helper`を実行し、システムパスを先頭に移動してしまいます。
+この問題に対応するため、`.zprofile`で**完全なPATH設定**を実施しています。
+
+**読み込み順序**:
+
+```
+1. .zshenv         → mise/claude-local shimsのみ(最小限)
+2. /etc/zprofile   → path_helperがシステムパスを先頭に移動
+3. .zprofile       → 完全なPATH設定を実施(mise優先度確保) ✅
+4. .zshrc          → PATH設定なし(ユーティリティ関数のみ)
+```
+
+### PATH優先順位
+
+現在の設定による優先順位（上が高優先）:
+
+```
+1. mise shims         → バージョン管理ツール(node v22.20.0, go等)
+2. claude-local       → Claude Code専用ツール
+3. ユーザーbin        → $HOME/bin, $HOME/.local/bin等
+4. 言語ツール         → cargo, deno, go, npm, pnpm等
+5. Android SDK        → emulator, tools, platform-tools
+6. システムパス       → /usr/bin, /bin等(path_helper管理)
+7. Homebrew          → /opt/homebrew, /usr/local (最低優先度)
+```
+
+この優先順位により、**mise管理のnode(v22.20.0)がHomebrew版より優先**されます。
+
+### 設定例
+
+**.zprofile（完全なPATH設定）**:
+
+```zsh
+# Complete PATH setup (executed after macOS path_helper)
+path=(
+  # Version-managed tools (highest priority)
+  $HOME/.mise/shims(N-)
+  $HOME/.claude/local(N-)
+
+  # User binaries
+  $HOME/{bin,sbin}(N-)
+  $HOME/.local/{bin,sbin}(N-)
+
+  # Language-specific tools
+  $HOME/.cargo/bin(N-)
+  $HOME/go/bin(N-)
+  $PNPM_HOME(N-)
+  # ... その他
+
+  # System paths (from path_helper)
+  $path
+
+  # Homebrew (lowest priority)
+  /opt/homebrew/bin(N-)
+  /opt/homebrew/sbin(N-)
+)
+```
+
+**.zshenv（最小限）**:
+
+```zsh
+# Minimal PATH setup for non-login shells
+path=(
+  $HOME/.mise/shims(N-)
+  $HOME/.claude/local(N-)
+  $path
+)
+```
+
+### トラブルシューティング
+
+**PATH重複の確認**:
+
+```bash
+printf "%s\n" "${path[@]}" | sort | uniq -d
+```
+
+**mise優先度の確認**:
+
+```bash
+which node  # → ~/.mise/installs/node/22.20.0/bin/node
+node --version  # → v22.20.0
+```
+
+**PATH全体の確認**:
+
+```bash
+path-check  # ユーティリティ関数（重複・欠落を診断）
+```
+
 ### 環境最適化
 
 - **mise即座初期化**: macOS path_helper対応、ツール即座利用可能
 - **条件付き読み込み**: 利用可能ツールのみ読み込み
-- **PATH最適化**: 効率的PATH管理
+- **PATH一元管理**: .zprofileで完全制御、重複排除
 - **キャッシュ活用**: コマンド補完キャッシュ
 
 ### カスタム関数

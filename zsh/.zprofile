@@ -11,15 +11,42 @@ export GREP_OPTIONS='--color=auto'
 
 typeset -U path cdpath fpath manpath
 
-# Fix PATH after macOS path_helper reorders it
-# path_helper puts system paths first, but we want mise-managed tools to have priority
-# Re-prioritize mise shims after system path_helper
-# Note: User paths ($HOME/bin, etc.) are already set in .zshenv
-# Note: Homebrew paths are added by config/core/path.zsh
+# Complete PATH setup (executed after macOS path_helper)
+# macOS /etc/zprofile runs path_helper which reorders PATH
+# This ensures our desired priority: mise > user paths > system > Homebrew
 path=(
+  # Version-managed tools (highest priority)
   $HOME/.mise/shims(N-)
   $HOME/.claude/local(N-)
+
+  # User binaries
+  $HOME/{bin,sbin}(N-)
+  $HOME/.local/{bin,sbin}(N-)
+
+  # Language-specific tools
+  $HOME/.deno/bin(N-)
+  $HOME/.cargo/bin(N-)
+  /usr/local/opt/openjdk/bin(N-)
+  /usr/local/opt/coreutils/libexec/gnubin(N-)
+  $BUN_INSTALL/bin(N-)
+  $HOME/go/bin(N-)
+  $PNPM_HOME(N-)
+  $HOME/.local/npm-global/bin(N-)
+
+  # Android SDK
+  $ANDROID_SDK_ROOT/emulator(N-)
+  $ANDROID_SDK_ROOT/tools(N-)
+  $ANDROID_SDK_ROOT/tools/bin(N-)
+  $ANDROID_SDK_ROOT/platform-tools(N-)
+
+  # System paths (from path_helper)
   $path
+
+  # Homebrew (lowest priority, both architectures)
+  /opt/homebrew/bin(N-)
+  /opt/homebrew/sbin(N-)
+  /usr/local/bin(N-)
+  /usr/local/sbin(N-)
 )
 
 # vim: set syntax=zsh:
