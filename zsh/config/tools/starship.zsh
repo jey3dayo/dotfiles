@@ -1,10 +1,5 @@
-# Starship prompt initialization with deferred loading
-if ! command -v starship >/dev/null 2>&1; then
-  return
-fi
+# Starship prompt initialization
+# This file is loaded via zsh-defer by loaders/tools.zsh
+# so we initialize immediately within this already-deferred context
 
-if (( $+functions[zsh-defer] )); then
-  zsh-defer eval "$(starship init zsh)"
-else
-  eval "$(starship init zsh)"
-fi
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"

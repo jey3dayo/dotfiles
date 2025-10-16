@@ -13,14 +13,13 @@ typeset -U path cdpath fpath manpath
 
 # Fix PATH after macOS path_helper reorders it
 # path_helper puts system paths first, but we want mise-managed tools to have priority
-# Re-prioritize mise shims and critical user paths after system path_helper
+# Re-prioritize mise shims after system path_helper
+# Note: User paths ($HOME/bin, etc.) are already set in .zshenv
+# Note: Homebrew paths are added by config/core/path.zsh
 path=(
-  $HOME/.mise/shims(N-/)
-  $HOME/.claude/local(N-/)
-  $HOME/bin(N-/)
-  $HOME/.local/bin(N-/)
+  $HOME/.mise/shims(N-)
+  $HOME/.claude/local(N-)
   $path
 )
-# Note: Homebrew paths are added to the end by config/tools/brew.zsh
 
 # vim: set syntax=zsh:

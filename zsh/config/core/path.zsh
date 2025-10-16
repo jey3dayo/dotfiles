@@ -1,9 +1,19 @@
+# Re-prioritize mise shims (may have been reordered by plugins)
+# User paths ($HOME/bin, etc.) are already set in .zshenv
 path=(
-  $HOME/.mise/shims(N-/)
-  $HOME/{bin,sbin}(N-/)
-  $HOME/.local/{bin,sbin}(N-/)
+  $HOME/.mise/shims(N-)
   $path
 )
+
+# Add Homebrew to end of PATH (for brew command availability and starship)
+# Placed after mise shims to ensure mise-managed tools take priority
+if [[ "$(arch)" == arm64 ]]; then
+  path+=(/opt/homebrew/bin(N-))
+  path+=(/opt/homebrew/sbin(N-))
+else
+  path+=(/usr/local/bin(N-))
+  path+=(/usr/local/sbin(N-))
+fi
 
 # PATH optimization utility function
 path-check() {

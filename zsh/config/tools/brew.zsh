@@ -5,15 +5,8 @@ command -v brew &>/dev/null || return
 _setup_brew_env() {
   local brew_output="$($BREW_PATH/brew shellenv)"
   # Apply all brew environment variables except PATH modifications
+  # PATH is already configured in config/core/path.zsh
   eval "$(echo "$brew_output" | grep -v '^export PATH=')"
-  
-  # Add brew paths to the END of PATH to let mise-managed tools take priority
-  local brew_bin_path="$([[ "$(arch)" == arm64 ]] && echo /opt/homebrew/bin || echo /usr/local/bin)"
-  local brew_sbin_path="$([[ "$(arch)" == arm64 ]] && echo /opt/homebrew/sbin || echo /usr/local/sbin)"
-  
-  # Only add if not already present, and add to the end
-  [[ ":$PATH:" != *":$brew_bin_path:"* ]] && export PATH="$PATH:$brew_bin_path"
-  [[ ":$PATH:" != *":$brew_sbin_path:"* ]] && export PATH="$PATH:$brew_sbin_path"
 }
 
 if [[ "$(arch)" == arm64 ]]; then
@@ -33,9 +26,9 @@ if (( $+functions[zsh-defer] )); then
   export HOMEBREW_PREFIX="$([[ "$(arch)" == arm64 ]] && echo /opt/homebrew || echo /usr/local)"
   export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
   export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
-  
+
   # Defer expensive operations but preserve mise priority
-  zsh-defer -t 5 _setup_brew_env
+  zsh-defer -t 3 _setup_brew_env
 else
   # Fallback for immediate loading
   _setup_brew_env

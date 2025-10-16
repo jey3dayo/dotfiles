@@ -28,22 +28,22 @@ export NI_CONFIG_FILE="$HOME/.config/nirc"
 export CODEX_CONFIG="$HOME/.config/.codex/config.yaml"
 
 path=(
-  $HOME/.mise/shims(N-/)
-  $HOME/.claude/local(N-/)
-  $HOME/{bin,sbin}(N-/)
-  $HOME/.local/{bin,sbin}(N-/)
-  $HOME/.deno/bin(N-/)
-  $HOME/.cargo/bin(N-/)
-  /usr/local/opt/openjdk/bin:(N-/)
-  /usr/local/opt/coreutils/libexec/gnubin(N-/)
-  $BUN_INSTALL/bin(N-/)
-  $HOME/go/bin(N-/)
-  $PNPM_HOME(N-/)
+  $HOME/.mise/shims(N-)
+  $HOME/.claude/local(N-)
+  $HOME/{bin,sbin}(N-)
+  $HOME/.local/{bin,sbin}(N-)
+  $HOME/.deno/bin(N-)
+  $HOME/.cargo/bin(N-)
+  /usr/local/opt/openjdk/bin:(N-)
+  /usr/local/opt/coreutils/libexec/gnubin(N-)
+  $BUN_INSTALL/bin(N-)
+  $HOME/go/bin(N-)
+  $PNPM_HOME(N-)
   $HOME/.local/npm-global/bin
-  $ANDROID_SDK_ROOT/emulator(N-/)
-  $ANDROID_SDK_ROOT/tools(N-/)
-  $ANDROID_SDK_ROOT/tools/bin(N-/)
-  $ANDROID_SDK_ROOT/platform-tools(N-/)
+  $ANDROID_SDK_ROOT/emulator(N-)
+  $ANDROID_SDK_ROOT/tools(N-)
+  $ANDROID_SDK_ROOT/tools/bin(N-)
+  $ANDROID_SDK_ROOT/platform-tools(N-)
   $path
 )
 
