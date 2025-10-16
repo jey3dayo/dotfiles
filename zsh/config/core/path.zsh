@@ -7,13 +7,13 @@ path=(
 
 # Add Homebrew to end of PATH (for brew command availability and starship)
 # Placed after mise shims to ensure mise-managed tools take priority
-if [[ "$(arch)" == arm64 ]]; then
-  path+=(/opt/homebrew/bin(N-))
-  path+=(/opt/homebrew/sbin(N-))
-else
-  path+=(/usr/local/bin(N-))
-  path+=(/usr/local/sbin(N-))
-fi
+# (N-) modifier handles both arm64 and x86_64 architectures gracefully
+path+=(
+  /opt/homebrew/bin(N-)
+  /opt/homebrew/sbin(N-)
+  /usr/local/bin(N-)
+  /usr/local/sbin(N-)
+)
 
 # PATH optimization utility function
 path-check() {
