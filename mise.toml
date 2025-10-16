@@ -24,6 +24,7 @@ description = "Format all files"
 run = [
   "biome format --write .",
   "markdownlint-cli2 --fix '**/*.md' '!**/node_modules/**' '!tmux/plugins/**' '!fisher/**' '!zsh/.zinit/**'",
+  'find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | xargs -r prettier --write',
   'find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml | grep -v helm/ | xargs -r prettier --write',
   "stylua .",
   "find . -name '*.sh' ! -path './node_modules/*' ! -path './tmux/plugins/*' ! -path './fisher/*' ! -path './claude/local/node_modules/*' ! -path './zsh/.zinit/*' | xargs -r shfmt -w",
@@ -34,6 +35,7 @@ description = "Check all formatting and linting (GitHub Actions compatible)"
 run = [
   "biome check --formatter-enabled=true --linter-enabled=true .",
   "markdownlint-cli2 '**/*.md' '!**/node_modules/**' '!tmux/plugins/**' '!fisher/**' '!zsh/.zinit/**'",
+  'find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | xargs -r prettier --check',
   'find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml | grep -v helm/ | xargs -r prettier --check',
   "stylua --check .",
   "find . -name '*.sh' ! -path './node_modules/*' ! -path './tmux/plugins/*' ! -path './fisher/*' ! -path './claude/local/node_modules/*' ! -path './zsh/.zinit/*' | xargs -r shfmt -d",
