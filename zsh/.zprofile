@@ -12,21 +12,15 @@ export GREP_OPTIONS='--color=auto'
 typeset -U path cdpath fpath manpath
 
 # Fix PATH after macOS path_helper reorders it
-# path_helper puts system paths first, but we want our paths to have priority
-# Re-add critical paths that should come before system paths
+# path_helper puts system paths first, but we want mise-managed tools to have priority
+# Re-prioritize mise shims and critical user paths after system path_helper
 path=(
+  $HOME/.mise/shims(N-/)
   $HOME/.claude/local(N-/)
   $HOME/bin(N-/)
   $HOME/.local/bin(N-/)
-  /opt/homebrew/bin(N-/)
-  /opt/homebrew/sbin(N-/)
   $path
 )
-
-# Re-prioritize mise shims after macOS path_helper reorders PATH
-# path_helper in /etc/zprofile moves system paths to the front
-if [[ -d $HOME/.mise/shims ]]; then
-  path=($HOME/.mise/shims(N-/) $path)
-fi
+# Note: Homebrew paths are added to the end by config/tools/brew.zsh
 
 # vim: set syntax=zsh:

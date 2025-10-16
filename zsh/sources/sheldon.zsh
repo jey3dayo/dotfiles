@@ -12,6 +12,9 @@ if command -v sheldon >/dev/null 2>&1; then
     sheldon source >$sheldon_cache
   fi
   source "$sheldon_cache"
+
+  # Re-prioritize mise shims after sheldon plugins may have modified PATH
+  path=($HOME/.mise/shims(N-/) ${path:#$HOME/.mise/shims})
 fi
 
 unset cache_dir sheldon_cache sheldon_toml
