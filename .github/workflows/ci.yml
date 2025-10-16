@@ -52,7 +52,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v3
         with:
-          version: latest
+          version: "2025.10.9"
           cache: true
 
       - name: Set up Lua (LuaJIT) for luacheck
