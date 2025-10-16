@@ -12,8 +12,5 @@ if [[ "$OSTYPE" == darwin* ]]; then
     export HOMEBREW_PREFIX="/usr/local"
   fi
 
-  # Add macOS specific tools to PATH if they exist
-  if [[ -n "$HOMEBREW_PREFIX" ]]; then
-    path=("$HOMEBREW_PREFIX"/{bin,sbin} $path)
-  fi
+  path=("$HOMEBREW_PREFIX"/{bin,sbin}(N-/) $path)
 fi
