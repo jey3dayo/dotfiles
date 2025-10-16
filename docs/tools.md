@@ -26,7 +26,7 @@ Essential tools and their key configurations.
 ```bash
 # Performance & debugging
 zsh-help                    # Comprehensive help system
-zsh-benchmark              # Startup time measurement
+zsh-help tools              # Check installed tools
 
 # Git workflows (via abbreviations & widgets)
 ^]                         # fzf ghq repository selector
@@ -43,6 +43,48 @@ mise use                  # Set project versions
 
 # Package management
 brew bundle               # Install/update all packages
+```
+
+## Local CI Checks
+
+GitHub Actions CI と同等のチェックをローカルで実行可能です：
+
+```bash
+# 全てのCIチェックを実行
+mise run ci
+
+# 環境セットアップ（初回のみ）
+./.claude/commands/ci-local.sh setup
+
+# 個別チェック
+mise run format:biome:check      # JavaScript/TypeScript/JSON フォーマット
+mise run format:markdown:check   # Markdown フォーマット
+mise run format:yaml:check       # YAML フォーマット
+mise run lint:lua                # Lua linting
+mise run format:lua:check        # Lua フォーマット
+mise run format:shell:check      # Shell script フォーマット
+```
+
+### mise タスク一覧
+
+```bash
+# フォーマット系
+mise run format:biome         # Biome auto-fix
+mise run format:biome:check   # Biome check only
+mise run format:markdown      # Markdown auto-fix
+mise run format:markdown:check  # Markdown check only
+mise run format:yaml          # YAML auto-fix
+mise run format:yaml:check    # YAML check only
+mise run format:lua           # Lua auto-format
+mise run format:lua:check     # Lua format check
+mise run format:shell         # Shell auto-format
+mise run format:shell:check   # Shell format check
+
+# リント系
+mise run lint:lua             # Lua linting
+
+# 統合
+mise run ci                   # 全チェック実行
 ```
 
 ## Managed Tools

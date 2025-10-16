@@ -37,9 +37,10 @@ exec zsh
 ## Verification
 
 ```bash
-zsh-benchmark    # Should show ~1.2s startup
-nvim             # First run installs plugins
-git config user.name  # Verify your name appears
+zsh-help                # Verify zsh configuration is loaded
+zsh-help tools          # Check installed tools
+nvim                    # First run installs plugins
+git config user.name    # Verify your name appears
 ```
 
 ## Environment-Specific Setup
@@ -55,7 +56,11 @@ git config user.name  # Verify your name appears
 brew update && brew upgrade
 
 # Performance monitoring
-zsh-benchmark              # Track startup regression
+time zsh -lic exit         # Track startup time
+zsh-help tools             # Verify tool configuration
+
+# Local CI checks
+mise run ci                # Run all CI checks locally
 
 # Monthly: プラグイン更新とパフォーマンス測定
 # Quarterly: 設定監査、不要ファイル削除

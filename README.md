@@ -6,15 +6,15 @@
 
 📊 **詳細なパフォーマンス指標**: [Performance Statistics](docs/performance.md)
 
-| Component           | Current   | Improvement |
-| ------------------- | --------- | ----------- |
-| **Zsh startup**     | **1.2s**  | 30% faster  |
-| **Neovim startup**  | **<95ms** | 50% faster  |
-| **WezTerm startup** | **800ms** | 35% faster  |
+| Component           | Current    | Improvement |
+| ------------------- | ---------- | ----------- |
+| **Zsh startup**     | **1.1s**   | 43% faster  |
+| **Neovim startup**  | **<100ms** | 50% faster  |
+| **WezTerm startup** | **800ms**  | 35% faster  |
 
 ## ✨ Core Features
 
-- **🐚 Zsh**: Modular plugin system with 6-tier priority loading (1.2s startup)
+- **🐚 Zsh**: Modular plugin system with 6-tier priority loading (1.1s startup)
 - **🚀 Neovim**: 15+ language LSP support with AI assistance (Supermaven)
 - **🔧 Terminal**: WezTerm (primary) + Alacritty with tmux-style workflow
 - **⚡ Git**: 50+ abbreviations and custom widgets for enhanced workflow
@@ -84,7 +84,7 @@ exec zsh
 4. **Verification**
 
    ```bash
-   zsh-benchmark    # Should show ~1.2s startup
+   zsh-help         # Verify zsh configuration is loaded
    nvim             # First run installs plugins
    git config user.name  # Verify your name appears
    ```
@@ -113,8 +113,9 @@ dotfiles/
 
 ```bash
 # Shell optimization
-zsh-benchmark              # Measure startup time (~1.2s)
-zsh-help [keybinds|aliases] # Interactive help system
+zsh-help                   # Interactive help system
+zsh-help keybinds          # Key bindings reference
+zsh-help aliases           # Aliases reference
 
 # Git workflow (custom widgets)
 # See: docs/tools/fzf-integration.md for complete FZF guide
@@ -171,16 +172,19 @@ mise install              # Setup language versions
 brew update && brew upgrade
 
 # Performance monitoring
-zsh-benchmark              # Track startup regression
-zsh-profile               # Detailed performance analysis
+zsh-help tools             # Check installed tools
+zsh-help                   # Verify configuration
 
 # Configuration audit (quarterly)
 # - Plugin usage review
 # - Performance optimization
 # - Configuration cleanup
+
+# Local CI checks
+mise run ci                # Run all CI checks locally
 ```
 
 ---
 
-**Status**: Production-ready (2025-07-06)
+**Status**: Production-ready (2025-10-16)
 **License**: MIT - Optimized for modern development workflows with focus on speed, consistency, and developer experience.

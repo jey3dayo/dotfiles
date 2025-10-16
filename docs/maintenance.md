@@ -35,16 +35,19 @@ nvim --headless -c 'lua require("lazy").sync()' -c 'q'          # Neovim
 ## パフォーマンス監視
 
 ```bash
-# 起動時間測定
-zsh-benchmark              # Zsh startup analysis
-zsh-profile               # Detailed performance profiling
+# 設定確認
+zsh-help                   # 総合ヘルプシステム
+zsh-help tools             # インストール済みツール確認
 
-# パフォーマンス履歴記録
-echo "$(date): $(zsh-benchmark)" >> ~/.config/zsh/performance.log
+# Zsh 起動時間測定
+time zsh -lic exit
 
 # プラグイン統計・クリーンアップ
 nvim --headless -c 'lua require("lazy").profile()' -c 'q'
 nvim --headless -c 'lua require("lazy").clean()' -c 'q'
+
+# 詳細なパフォーマンス分析
+# 詳細は docs/performance.md を参照
 ```
 
 ## トラブルシューティング
@@ -53,8 +56,8 @@ nvim --headless -c 'lua require("lazy").clean()' -c 'q'
 
 **診断手順:**
 
-1. `zsh-benchmark` で現在の起動時間測定
-2. `zsh-profile` で詳細プロファイリング
+1. `time zsh -lic exit` で現在の起動時間測定
+2. `zsh-help tools` でツール状態確認
 3. 最近の設定変更内容確認
 4. プラグインの個別無効化テスト
 
@@ -117,11 +120,11 @@ cp ~/.config/zsh/backup/zshrc ~/.zshrc
 ## メンテナンス自動化
 
 ```bash
-#!/bin/bash
+#!/bin/zsh
 # ~/.config/scripts/maintenance.sh
 
 # パフォーマンス測定ログ
-echo "$(date): $(zsh-benchmark)" >> ~/.config/zsh/performance.log
+echo "$(date): $(time zsh -lic exit 2>&1)" >> ~/.config/zsh/performance.log
 
 # プラグイン更新
 sheldon update
@@ -132,5 +135,6 @@ find ~/.config -name "*.tmp" -delete
 find ~/.cache -name "*.old" -delete
 
 # 設定バックアップ
+mkdir -p ~/.config/zsh/backup
 cp ~/.zshrc ~/.config/zsh/backup/zshrc.$(date +%Y%m%d)
 ```
