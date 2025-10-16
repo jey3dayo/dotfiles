@@ -123,6 +123,7 @@ echo "Processes: $(ps aux | wc -l)"
    ```
 
 2. **mise即座初期化**
+
    - macOS path_helper対応
    - ツール即座利用可能
    - 1.1s起動を維持

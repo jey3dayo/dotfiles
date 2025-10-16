@@ -63,19 +63,38 @@ dotfiles/zsh/  # Git管理、明確な構造
 
 #### **優秀な設計パターン**
 
-- **清潔な階層化**: `helper functions` → `core` → `tools` → `functions` → `OS-specific`
-- **適切な抽象化**: `_defer_or_source()`, `_load_zsh_files()`による統一インターフェース
+- **清潔な階層化**: `loaders` → `core` → `tools` → `functions` → `OS-specific`
+- **適切な抽象化**: `config/loader.zsh`による統一読み込みインターフェース
 - **自己完結型クリーンアップ**: 使用後の関数unsetによる名前空間汚染防止
 
 ```
-zsh/config/                  # 設定ディレクトリ
-├── 01-environment.zsh       # 環境変数
-├── 02-plugins.zsh          # プラグイン設定
-├── 03-aliases.zsh          # エイリアス・省略語
-├── 04-functions.zsh        # カスタム関数
-├── 05-bindings.zsh         # キーバインド
-├── 06-completions.zsh      # 補完設定
-└── tools/                  # ツール固有設定
+zsh/                         # シェル設定ルート
+├── config/
+│   ├── loader.zsh          # メインローダー
+│   ├── core/               # コア設定
+│   │   ├── aliases.zsh     # エイリアス・省略語
+│   │   └── path.zsh        # PATH管理
+│   ├── loaders/            # 各種ローダー
+│   │   ├── core.zsh        # コアローダー
+│   │   ├── functions.zsh   # 関数ローダー
+│   │   ├── helper.zsh      # ヘルパー関数
+│   │   ├── os.zsh          # OSローダー
+│   │   └── tools.zsh       # ツールローダー
+│   ├── os/                 # OS固有設定
+│   │   └── macos.zsh       # macOS設定
+│   └── tools/              # ツール固有設定
+│       ├── brew.zsh
+│       ├── fzf.zsh
+│       ├── git.zsh
+│       ├── mise.zsh
+│       └── starship.zsh
+├── functions/              # カスタム関数
+│   └── help.zsh
+├── init/                   # 初期化スクリプト
+│   └── completion.zsh
+├── lazy-sources/           # 遅延読み込み
+├── sources/                # ソース管理
+└── sheldon/                # プラグインマネージャー
 ```
 
 #### **高度な最適化戦略**
@@ -184,39 +203,83 @@ Memory Usage: 24.8MB ± 2MB
 
 ```text
 zsh/ 【2025年ベストプラクティス準拠】
+├── .zshrc                  # メインエントリポイント
+├── .zshenv                 # 環境変数（最小限のPATH）
+├── .zprofile               # PATH完全設定（macOS path_helper対応）
+├── .zlogin                 # ログイン後処理
 ├── config/
-│   ├── 01-environment.zsh  # 環境変数設定
-│   ├── 02-plugins.zsh      # プラグイン設定
-│   ├── 03-aliases.zsh      # エイリアス・省略語
-│   ├── 04-functions.zsh    # カスタム関数
-│   ├── 05-bindings.zsh     # キーバインド
-│   ├── 06-completions.zsh  # 補完設定
+│   ├── loader.zsh          # メインローダー
+│   ├── core/               # コア設定
+│   │   ├── aliases.zsh     # エイリアス・省略語
+│   │   └── path.zsh        # PATH管理ユーティリティ
+│   ├── loaders/            # 各種ローダースクリプト
+│   │   ├── core.zsh        # コアローダー
+│   │   ├── functions.zsh   # 関数ローダー
+│   │   ├── helper.zsh      # ヘルパー関数
+│   │   ├── os.zsh          # OSローダー
+│   │   └── tools.zsh       # ツールローダー
+│   ├── os/                 # OS固有設定
+│   │   └── macos.zsh       # macOS設定
 │   └── tools/              # ツール固有設定
-│       ├── git.zsh
+│       ├── brew.zsh
+│       ├── debug.zsh
+│       ├── fzf-tab.zsh
 │       ├── fzf.zsh
+│       ├── gh.zsh
+│       ├── git.zsh
 │       ├── mise.zsh
-│       └── debug.zsh
-├── sheldon/
-│   └── plugins.toml        # プラグイン定義
-└── .zshrc                  # メインエントリポイント
+│       └── starship.zsh
+├── functions/              # カスタム関数
+│   └── help.zsh
+├── init/                   # 初期化スクリプト
+│   └── completion.zsh
+├── lazy-sources/           # 遅延読み込みスクリプト
+│   ├── arch.zsh
+│   ├── fzf.zsh
+│   ├── history-search.zsh
+│   ├── orbstack.zsh
+│   └── wsl.zsh
+├── sources/                # ソース管理
+│   ├── config-loader.zsh
+│   ├── sheldon.zsh
+│   └── styles.zsh
+└── sheldon/                # プラグインマネージャー
+    ├── plugins.toml        # プラグイン定義
+    └── sheldon.zsh         # Sheldon初期化
 ```
 
 ### 🔄 **読み込みフロー（最適化済み）**
 
 ```mermaid
 graph TD
-    A[.zshrc起動] --> B[helper functions読み込み]
-    B --> C[core設定（即座）]
-    C --> D[tools設定（条件付き）]
-    D --> E[functions読み込み]
-    E --> F[OS固有設定]
-    F --> G[遅延処理設定]
-    G --> H[クリーンアップ]
-    H --> I[プロンプト表示]
+    A[.zshrc起動] --> B[init/*.zsh]
+    B --> C[sources/*.zsh]
+    C --> D[config-loader.zsh]
+    C --> E[sheldon.zsh]
+    C --> F[styles.zsh]
+
+    D --> G[config/loader.zsh]
+    G --> H[loaders/helper.zsh]
+    H --> I[loaders/core.zsh]
+    I --> J[loaders/tools.zsh]
+    J --> K[loaders/functions.zsh]
+    K --> L[loaders/os.zsh]
+
+    I --> M[config/core/*]
+    J --> N[config/tools/*]
+    K --> O[functions/*]
+    L --> P[config/os/*]
+
+    L --> Q[ヘルパー関数cleanup]
+    E --> R[プラグイン読み込み]
+    Q --> S[カスタムsource cleanup]
+    R --> S
+    S --> T[プロンプト表示]
 
     style A fill:#ff6b6b
-    style I fill:#51cf66
-    style G fill:#ffd43b
+    style T fill:#51cf66
+    style E fill:#ffd43b
+    style Q fill:#ffd43b
 ```
 
 ### ⚙️ **設計原則（2025年準拠）**
@@ -224,10 +287,10 @@ graph TD
 | 原則                 | 実装方法                              | 効果         |
 | -------------------- | ------------------------------------- | ------------ |
 | **分離関心事**       | config/, tools/, functions/の明確分割 | 保守性向上   |
-| **遅延ローディング** | 6段階優先度 + ultra-defer             | 起動高速化   |
+| **遅延ローディング** | 6段階優先度 + zsh-defer統合           | 起動高速化   |
 | **条件付き読み込み** | ツール存在確認後の読み込み            | リソース効率 |
-| **抽象化**           | `_defer_or_source()`統一I/F           | 一貫性確保   |
-| **クリーンアップ**   | 使用後関数unset                       | 名前空間清潔 |
+| **抽象化**           | ローダーシステムによる統一読み込みI/F | 一貫性確保   |
+| **クリーンアップ**   | 使用後のヘルパー関数unset             | 名前空間清潔 |
 
 ### 6段階プラグイン読み込み
 
