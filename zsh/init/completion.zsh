@@ -53,12 +53,8 @@ _init_completion() {
   _execute_post_compinit_hooks
 }
 
-# zsh-deferが利用可能な場合は遅延読み込み、そうでなければ即座に実行
-if (( $+functions[zsh-defer] )); then
-  zsh-defer _init_completion
-else
-  _init_completion
-fi
+# Execute immediately (required before sheldon plugins load)
+_init_completion
 
 # vim: set syntax=zsh:
 
