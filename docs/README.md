@@ -1,8 +1,8 @@
 # 📖 Dotfiles Architecture & Documentation
 
-**最終更新**: 2025-10-16
+**最終更新**: 2025-10-17
 **対象**: 開発者
-**タグ**: `category/guide`, `layer/core`, `environment/macos`
+**タグ**: `category/guide`, `layer/core`, `environment/macos`, `audience/developer`
 
 高性能macOS開発環境の設計思想とドキュメント体系を説明します。
 

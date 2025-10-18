@@ -1,8 +1,8 @@
 # 🖥️ WezTerm Configuration
 
-**最終更新**: 2025-10-03
+**最終更新**: 2025-10-17
 **対象**: 開発者
-**タグ**: `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`
+**タグ**: `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`
 
 GPU加速対応のLuaベースモジュラーターミナル設定です。
 

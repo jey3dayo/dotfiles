@@ -128,6 +128,7 @@ ssh/*.sock
 irb/irb_history
 AWS VPN Client/
 AWSVPNClient/
+.perman-aws-vault
 1Password/ssh/
 Autodesk/
 browser-launcher/
@@ -174,6 +175,9 @@ sample.*
 *.rej
 nohup.out
 out.typos
+
+# Temporary tracking/review documents (underscore prefix)
+_*.md
 
 # Temporary dirs
 *backup*

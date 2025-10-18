@@ -1,8 +1,8 @@
 # 🔍 FZF Integration Guide
 
-**最終更新**: 2025-10-03
+**最終更新**: 2025-10-17
 **対象**: 開発者・上級者
-**タグ**: `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`
+**タグ**: `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced`
 
 FZF (Fuzzy Finder) は dotfiles 全体で統一的なファジー検索体験を提供する中核コンポーネントです。
 
@@ -279,6 +279,6 @@ sheldon source --verbose
 
 ---
 
-**Last Updated**: 2025-09-08  
+**Last Updated**: 2025-10-03  
 **Status**: Production Ready - 全層統合完了  
 **Performance**: All optimization targets achieved

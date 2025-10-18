@@ -1,8 +1,8 @@
 # 🐚 Zsh Configuration & Optimization
 
-**最終更新**: 2025-10-16
+**最終更新**: 2025-10-17
 **対象**: 開発者・上級者
-**タグ**: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`
+**タグ**: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 
 1.1秒起動（43%向上）とモジュラープラグインシステムを持つ高性能Zsh設定です。
 

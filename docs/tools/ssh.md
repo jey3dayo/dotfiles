@@ -1,8 +1,8 @@
 # 🔐 SSH Configuration
 
-**最終更新**: 2025-10-03
+**最終更新**: 2025-10-17
 **対象**: 開発者
-**タグ**: `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`
+**タグ**: `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 階層的なSSH設定管理システムで、用途別ファイル分離によりセキュリティと保守性を両立しています。
 

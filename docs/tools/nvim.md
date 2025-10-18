@@ -1,8 +1,8 @@
 # 💻 Neovim Configuration Guide
 
-**最終更新**: 2025-10-03
+**最終更新**: 2025-10-17
 **対象**: 開発者・上級者
-**タグ**: `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`
+**タグ**: `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`
 
 100ms未満の高速起動と15言語対応のLSPを備えたモダンなLua設定です。
 

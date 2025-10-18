@@ -1,8 +1,8 @@
 # ⚡ Performance Monitoring & Optimization
 
-**最終更新**: 2025-10-16
+**最終更新**: 2025-10-17
 **対象**: 開発者・運用担当者
-**タグ**: `category/performance`, `layer/support`, `environment/cross-platform`
+**タグ**: `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
 
 パフォーマンス測定、監視、最適化のための包括的ガイドです。
 

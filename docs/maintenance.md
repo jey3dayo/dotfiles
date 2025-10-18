@@ -1,8 +1,8 @@
 # 🔧 Maintenance Guide
 
-**最終更新**: 2025-10-03
+**最終更新**: 2025-10-17
 **対象**: 開発者
-**タグ**: `category/maintenance`, `category/guide`, `layer/support`
+**タグ**: `category/maintenance`, `category/guide`, `layer/support`, `audience/developer`
 
 定期メンテナンス、トラブルシューティング、パフォーマンス監視のガイドです。
 

@@ -1,6 +1,6 @@
 # 📚 ドキュメント管理体系
 
-**最終更新**: 2025-10-03
+**最終更新**: 2025-10-17
 **対象**: 開発者・運用担当者
 **タグ**: `category/documentation`, `audience/developer`, `layer/support`
 
@@ -77,19 +77,19 @@
 
 ## 📊 ドキュメントマッピング表
 
-| ファイル名                    | タグ                                                                              | 成熟度     | 難易度   | 更新頻度  | 概要                                   |
-| ----------------------------- | --------------------------------------------------------------------------------- | ---------- | -------- | --------- | -------------------------------------- |
-| docs/README.md                | `category/guide`, `layer/core`, `environment/macos`                               | Stable     | ⭐       | Quarterly | ドキュメントインデックス・設計パターン |
-| docs/setup.md                 | `category/guide`, `category/configuration`, `environment/macos`                   | Stable     | ⭐⭐     | Quarterly | セットアップガイド・ベストプラクティス |
-| docs/maintenance.md           | `category/maintenance`, `category/guide`, `layer/support`                         | Stable     | ⭐⭐     | Monthly   | 改善履歴・定期メンテナンス             |
-| docs/performance.md           | `category/performance`, `layer/support`, `environment/cross-platform`             | Production | ⭐⭐⭐   | Monthly   | パフォーマンス測定・最適化指標         |
-| docs/tools.md                 | `category/reference`, `tool/git`, `layer/core`, `environment/macos`               | Stable     | ⭐⭐     | Quarterly | Git ツール統合・FZF 連携               |
-| docs/TODO.md                  | `category/guide`, `category/maintenance`                                          | Draft      | ⭐       | Weekly    | タスク管理・課題追跡                   |
-| docs/tools/zsh.md             | `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`          | Production | ⭐⭐⭐⭐ | Monthly   | Zsh 最適化・プラグイン管理（1.1s起動） |
-| docs/tools/nvim.md            | `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`        | Production | ⭐⭐⭐⭐ | Monthly   | Neovim・LSP・AI支援（<100ms起動）      |
-| docs/tools/wezterm.md         | `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`            | Stable     | ⭐⭐⭐   | Quarterly | WezTerm 設定・GPU加速                  |
-| docs/tools/ssh.md             | `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`  | Stable     | ⭐⭐     | Quarterly | SSH 階層設定・セキュリティ             |
-| docs/tools/fzf-integration.md | `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform` | Production | ⭐⭐⭐⭐ | Quarterly | FZF 統合・Git 連携・Zsh ウィジェット   |
+| ファイル名                    | タグ                                                                                                   | 成熟度     | 難易度   | 更新頻度  | 概要                                   |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------ | ---------- | -------- | --------- | -------------------------------------- |
+| docs/README.md                | `category/guide`, `layer/core`, `environment/macos`, `audience/developer`                              | Stable     | ⭐       | Quarterly | ドキュメントインデックス・設計パターン |
+| docs/setup.md                 | `category/guide`, `category/configuration`, `environment/macos`, `audience/beginner`                   | Stable     | ⭐⭐     | Quarterly | セットアップガイド・ベストプラクティス |
+| docs/maintenance.md           | `category/maintenance`, `category/guide`, `layer/support`, `audience/developer`                        | Stable     | ⭐⭐     | Monthly   | 改善履歴・定期メンテナンス             |
+| docs/performance.md           | `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer/ops`        | Production | ⭐⭐⭐   | Monthly   | パフォーマンス測定・最適化指標         |
+| docs/tools.md                 | `category/reference`, `tool/git`, `layer/core`, `environment/macos`, `audience/developer`              | Stable     | ⭐⭐     | Quarterly | Git ツール統合・FZF 連携               |
+| docs/TODO.md                  | `category/maintenance`, `category/guide`, `audience/developer`                                         | Draft      | ⭐       | Weekly    | タスク管理・課題追跡                   |
+| docs/tools/zsh.md             | `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`          | Production | ⭐⭐⭐⭐ | Monthly   | Zsh 最適化・プラグイン管理（1.1s起動） |
+| docs/tools/nvim.md            | `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`        | Production | ⭐⭐⭐⭐ | Monthly   | Neovim・LSP・AI支援（<100ms起動）      |
+| docs/tools/wezterm.md         | `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`           | Stable     | ⭐⭐⭐   | Quarterly | WezTerm 設定・GPU加速                  |
+| docs/tools/ssh.md             | `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer` | Stable     | ⭐⭐     | Quarterly | SSH 階層設定・セキュリティ             |
+| docs/tools/fzf-integration.md | `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced` | Production | ⭐⭐⭐⭐ | Quarterly | FZF 統合・Git 連携・Zsh ウィジェット   |
 
 ## 🔄 更新ルール
 
@@ -273,6 +273,11 @@
 
 ## 📝 更新履歴
 
+- **2025-10-17**: 全ドキュメントへの audience タグ適用・日付統一
+  - 全11ドキュメントに `audience/` タグを追加
+  - `最終更新` 日付を 2025-10-17 に統一
+  - ドキュメントマッピング表の更新
+  - メタデータ形式の完全準拠確認
 - **2025-10-03**: dotfiles プロジェクト向けドキュメント管理体系の新規定義
   - タグ体系の定義（category/tool/layer/environment/audience）
   - 11ドキュメントのマッピング表作成
