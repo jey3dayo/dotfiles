@@ -60,7 +60,7 @@ run = "brew update && brew upgrade"
 
 [tasks.ci]
 description = "Run all CI checks locally (same as GitHub Actions)"
-run = ["mise run lint"]
+run = ["mise run lint", "mise run lint:links"]
 
 [tasks."ci:install"]
 description = "Install additional tools required for CI"

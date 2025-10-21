@@ -266,7 +266,6 @@ sheldon source --verbose
 ### Documentation Links
 
 - **Shell Integration**: [Shell Layer](zsh.md)
-- **Git Integration**: [Git Layer](../tools.md)
 - **Terminal Integration**: [Terminal Layer](wezterm.md)
 - **Performance Metrics**: [Performance Layer](../performance.md)
 

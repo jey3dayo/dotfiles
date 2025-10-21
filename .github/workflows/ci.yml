@@ -68,4 +68,4 @@ jobs:
         run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH
 
       - name: Run all CI checks
-        run: mise run lint
+        run: mise run ci
