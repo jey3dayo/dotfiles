@@ -42,58 +42,7 @@ sh ./setup.sh && brew bundle
 exec zsh
 ```
 
-## 📝 Detailed Setup
-
-### Prerequisites
-
-```bash
-# Install Homebrew (if not installed)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-### Complete Installation Steps
-
-1. **Repository Setup**
-
-   ```bash
-   mkdir -p ~/src/github.com/jey3dayo
-   git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
-   cd ~/src/github.com/jey3dayo/dotfiles
-   ```
-
-2. **Git Configuration** (Critical)
-
-   ```bash
-   # Personal configuration (not tracked in git)
-   cat > ~/.gitconfig_local << EOF
-   [user]
-       name = Your Name
-       email = your.email@example.com
-   EOF
-   chmod 600 ~/.gitconfig_local
-   ```
-
-3. **Automated Setup**
-
-   ```bash
-   sh ./setup.sh    # Links configs, sets up environment
-   brew bundle      # Installs all packages
-   exec zsh         # Loads new shell configuration
-   ```
-
-4. **Verification**
-
-   ```bash
-   zsh-help         # Verify zsh configuration is loaded
-   nvim             # First run installs plugins
-   git config user.name  # Verify your name appears
-   ```
-
-### Environment-Specific Setup
-
-- **Work Environment**: Add work-specific config to `~/.gitconfig_local`
-- **SSH Keys**: Generate with `ssh-keygen -t ed25519 -C "email@example.com"`
-- **Terminal**: WezTerm auto-loads config, Alacritty requires restart
+📖 **詳細なセットアップ手順**: [Setup Guide](docs/setup.md)
 
 ## 📁 Architecture
 
@@ -157,13 +106,10 @@ mise install              # Setup language versions
 
 ## 📚 Documentation
 
-**📖 統合ドキュメント**: [./docs/](./docs/) - 体系化されたドキュメント管理システム
-
-- **[CLAUDE.md](CLAUDE.md)**: Technical implementation guide & AI assistance
-- **[Tools List](TOOLS.md)**: 管理対象ツール一覧
-- **[Tool Documentation](./docs/tools/)**: Comprehensive tool-specific guides (Shell, Git, Editor, Terminal)
-- **[Architecture](./docs/)**: Architecture patterns and design principles
-- **Component configs**: Each tool includes detailed configuration docs
+- **[Setup Guide](docs/setup.md)** - 詳細なインストール手順
+- **[Tools List](TOOLS.md)** - 管理対象ツール一覧
+- **[Documentation Index](docs/README.md)** - 全ドキュメント体系へのナビゲーション
+- **[CLAUDE.md](CLAUDE.md)** - AI向け技術詳細・設計原則
 
 ## 🔧 Maintenance
 
