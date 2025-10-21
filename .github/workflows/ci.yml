@@ -19,6 +19,8 @@ on:
       - "biome.json"
       - "stylua.toml"
       - ".styluaignore"
+      - "mise.toml"
+      - ".markdown-link-check.json"
       - ".github/workflows/ci.yml"
   pull_request:
     paths:
@@ -38,6 +40,8 @@ on:
       - "biome.json"
       - "stylua.toml"
       - ".styluaignore"
+      - "mise.toml"
+      - ".markdown-link-check.json"
       - ".github/workflows/ci.yml"
   workflow_dispatch:
 
