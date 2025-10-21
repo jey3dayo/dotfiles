@@ -6,4 +6,4 @@ zsh/.zinit/
 claude/local/node_modules/
 
 # Temporary symlinks
-.codex/
+codex/AGENTS.md

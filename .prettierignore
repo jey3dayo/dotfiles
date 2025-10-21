@@ -7,5 +7,5 @@ node_modules/
 tmux/plugins/
 fisher/
 zsh/.zinit/
-.codex/
+codex/AGENTS.md
 claude/local/node_modules/
