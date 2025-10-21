@@ -2,31 +2,26 @@
 
 Personal dotfiles configuration optimized for software development with a focus on performance, modularity, and seamless tool integration.
 
-## 🎯 Overview
+## 🎯 Project Context
 
 **目的**: 個人開発環境の設定ファイルを統合管理し、モダンな開発体験を提供
 
-### 🔥 Primary Tech Stack
+### 📂 Steering Documents (Always Included - AI Context)
 
-**Core Technologies**: Zsh + WezTerm + Neovim
+**Location**: [`.kiro/steering/`](.kiro/steering/) - AI セッションで常時ロードされる高レベルコンテキスト
 
-- この3技術がコード量・使用頻度・機能において中核
-- 他ツールはこれらを補完する支援的役割
+- **[Product Overview](.kiro/steering/product.md)** - プロダクト概要、機能、ユースケース、価値提案
+- **[Technology Stack](.kiro/steering/tech.md)** - アーキテクチャ、技術スタック、開発環境、コマンド
+- **[Project Structure](.kiro/steering/structure.md)** - ディレクトリ構造、設計パターン、命名規則
 
-**Additional Tools**: Tmux, Homebrew, Mise, Raycast, Karabiner Elements
+詳細な実装ガイドやメトリクスは `docs/` ディレクトリを参照してください。
 
-### 設計原則
+### 🔥 Core Technologies
 
-- **Performance First**: 主要3技術の起動時間最適化（[詳細指標](docs/performance.md)参照）
-- **Primary Integration**: Zsh ⇔ WezTerm ⇔ Neovim間のシームレス連携
-- **Unified Theme**: Gruvboxベース統一テーマ・フォント設定
-- **Modular Design**: 主要技術を中心とした設定の分離・統合
+**Primary Stack**: Zsh + WezTerm + Neovim（コード量・使用頻度・機能において中核）
+**Supporting Tools**: Tmux, Homebrew, Mise, Raycast, Karabiner Elements
 
-## 📊 Current Status (2025-10-16)
-
-### ✅ Performance Targets Achieved
-
-📊 **最新パフォーマンス結果**: [Performance Statistics](docs/performance.md)
+### 📊 Performance Status
 
 | Component           | Current    | Target |
 | ------------------- | ---------- | ------ |
@@ -34,70 +29,39 @@ Personal dotfiles configuration optimized for software development with a focus 
 | **Neovim startup**  | **<100ms** | <200ms |
 | **WezTerm startup** | **800ms**  | <1s    |
 
-### 🏗️ Architecture
-
-```
-dotfiles/
-├── zsh/           # Shell configuration (modular, optimized)
-├── nvim/          # Neovim configuration (Lua-based)
-├── tmux/          # Terminal multiplexer
-├── git/           # Version control configuration
-├── ssh/           # SSH configuration (hierarchical, secure)
-├── alacritty/     # Terminal emulator
-├── wezterm/       # Alternative terminal
-├── karabiner/     # Keyboard customization
-├── raycast/       # Productivity launcher
-└── mise.toml      # Version management
-```
+詳細: [Performance Statistics](docs/performance.md)
 
 ## 📚 Documentation Structure
 
-**📖 統合ドキュメント**: [./docs/](./docs/) - 体系化されたドキュメント管理システム
+### 📂 Steering (AI Context - Always Included)
 
-### 📋 ドキュメント管理体系
+**Location**: [`.kiro/steering/`](.kiro/steering/)
 
-本プロジェクトは統一されたメタデータ形式とタグ体系でドキュメントを管理しています：
+プロジェクトの高レベルコンテキスト（プロダクト概要、技術スタック、構造）を提供。AI セッションで常時参照されます。
 
-- **[ドキュメント管理ガイドライン](./docs/documentation-guidelines.md)** - タグ体系、メタデータ形式、品質基準
-- **必須メタデータ**: 最終更新日、対象読者、タグ（category/tool/layer/environment）
-- **品質指標**: サイズ管理（推奨500行）、成熟度、難易度、更新頻度
+### 📖 Detailed Documentation (Human Reference)
 
-すべてのドキュメントは以下の形式でメタデータを記載：
+**Location**: [`./docs/`](./docs/) - 実装詳細、メトリクス、ガイド
 
-```markdown
-# [アイコン] [タイトル]
+- **[Documentation Navigation](./docs/README.md)** - ドキュメント体系の案内
+- **[Setup Guide](./docs/setup.md)** - インストール・初期設定
+- **[Performance](./docs/performance.md)** - 詳細メトリクス、ベンチマーク
+- **[Maintenance](./docs/maintenance.md)** - メンテナンス手順、トラブルシューティング
+- **[Documentation Guidelines](./docs/documentation-guidelines.md)** - タグ体系、メタデータ、品質基準
 
-**最終更新**: YYYY-MM-DD
-**対象**: [読者層]
-**タグ**: `category/値`, `tool/値`, `layer/値`, `environment/値`
-```
+### 🛠️ Tool-Specific Documentation
 
-### 🏗️ Core Layers (Essential Configurations)
+- **[Zsh](./docs/tools/zsh.md)** - Shell最適化、プラグイン管理、パフォーマンス
+- **[Neovim](./docs/tools/nvim.md)** - LSP、AI支援、プラグイン最適化
+- **[WezTerm](./docs/tools/wezterm.md)** - 設定、キーバインド、統合
+- **[SSH](./docs/tools/ssh.md)** - 階層的設定、セキュリティ
+- **[FZF Integration](./docs/tools/fzf-integration.md)** - クロスツール統合
 
-- **[Shell Layer](./docs/tools/zsh.md)** - Zsh optimization, plugin management, performance tuning
-- **[Git Layer](./docs/tools.md)** - Git workflows, authentication, tool integration (see also FZF integration)
+## 📖 Quick Links
 
-### 🔧 Tool Layers (Specialized Implementations)
-
-- **[Editor Layer](./docs/tools/nvim.md)** - Neovim, LSP, AI assistance, plugin optimization
-- **[Terminal Layer](./docs/tools/wezterm.md)** - WezTerm, Tmux, Alacritty configurations
-
-### 🚀 Support Layers (Cross-cutting Concerns)
-
-- **[Performance Layer](./docs/performance.md)** - Measurement, optimization, monitoring
-- **[Integration Layer](./docs/tools/fzf-integration.md)** - Cross-tool workflows, synchronization
-
-### 📋 Architecture Documentation
-
-- **[Design Patterns](./docs/README.md)** - Universal patterns, best practices, reusable solutions
-
-## 📖 Guides
-
-### Implementation & Configuration
-
-- **[Configuration Management](./docs/setup.md)** - パターン、ベストプラクティス、実装手法
-- **[Maintenance Guide](./docs/maintenance.md)** - 改善履歴、定期メンテナンス、トラブルシューティング
-- **[AI Assistance](./docs/README.md)** - AI支援システム、o3 MCP技術相談、層別実装アプローチ
+- **[Setup Guide](./docs/setup.md)** - 環境セットアップ手順
+- **[Maintenance Guide](./docs/maintenance.md)** - 定期メンテナンス、トラブルシューティング
+- **[Documentation Navigation](./docs/README.md)** - 全ドキュメント体系へのナビゲーション
 
 ## 🚀 Quick Start
 
@@ -134,7 +98,7 @@ Use `/learnings` command to record new insights into appropriate layers automati
 
 #### グローバルコマンド（全プロジェクト共通）
 
-- `/task` - インテリジェント・タスク・ルーター（自然言語タスク実行）
+- `/task` - インテリジェント・タスク・ルーター（自然言語タスク実行)
 - `/todos` - 統合タスク管理・実行システム
 - `/review` - 統合コードレビューシステム（ハイブリッド動作）
 - `/learnings` - 学習記録システム
