@@ -21,5 +21,6 @@
     "tmux/plugins/**",
     "fisher/**",
     "zsh/.zinit/**",
+    ".codex/**",
   ],
 }

@@ -23,28 +23,28 @@ _.source = [".venv/bin/activate"]
 description = "Format all files"
 run = [
   "biome format --write .",
-  "markdownlint-cli2 --fix '**/*.md' '!**/node_modules/**' '!tmux/plugins/**' '!fisher/**' '!zsh/.zinit/**'",
-  'find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | xargs -r prettier --write',
-  'find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml | grep -v helm/ | xargs -r prettier --write',
+  "markdownlint-cli2 --fix '**/*.md'",
+  'fd -e md -X prettier --write',
+  'fd -e yml -e yaml -X prettier --write',
   "stylua .",
-  "find . -name '*.sh' ! -path './node_modules/*' ! -path './tmux/plugins/*' ! -path './fisher/*' ! -path './claude/local/node_modules/*' ! -path './zsh/.zinit/*' | xargs -r shfmt -w",
+  "fd -e sh -X shfmt -w",
 ]
 
 [tasks.lint]
 description = "Check all formatting and linting (GitHub Actions compatible)"
 run = [
   "biome check --formatter-enabled=true --linter-enabled=true .",
-  "markdownlint-cli2 '**/*.md' '!**/node_modules/**' '!tmux/plugins/**' '!fisher/**' '!zsh/.zinit/**'",
-  'find . -name "*.md" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | xargs -r prettier --check',
-  'find . -name "*.yml" -o -name "*.yaml" | grep -v node_modules | grep -v tmux/plugins | grep -v fisher | grep -v zsh/.zinit | grep -v .rubocop.yml | grep -v helm/ | xargs -r prettier --check',
+  "markdownlint-cli2 '**/*.md'",
+  'fd -e md -X prettier --check',
+  'fd -e yml -e yaml -X prettier --check',
   "stylua --check .",
-  "find . -name '*.sh' ! -path './node_modules/*' ! -path './tmux/plugins/*' ! -path './fisher/*' ! -path './claude/local/node_modules/*' ! -path './zsh/.zinit/*' | xargs -r shfmt -d",
+  "fd -e sh -X shfmt -d",
   "luacheck . || [ $? -eq 1 ]",
 ]
 
 [tasks."lint:links"]
 description = "Check markdown links (slow, run separately when needed)"
-run = "find . -name '*.md' ! -path './.git/*' ! -path '**/node_modules/*' ! -path './tmux/plugins/*' ! -path './fisher/*' ! -path './zsh/.zinit/*' -exec markdown-link-check --config .markdown-link-check.json {} +"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json"
 
 [tasks.update]
 description = "Update all dependencies"

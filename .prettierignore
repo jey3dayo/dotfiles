@@ -1,0 +1,11 @@
+# Configuration files that should not be formatted by Prettier
+.rubocop.yml
+helm/
+
+# External dependencies (already in .gitignore but explicit for clarity)
+node_modules/
+tmux/plugins/
+fisher/
+zsh/.zinit/
+.codex/
+claude/local/node_modules/
