@@ -4,3 +4,7 @@ fullAutoErrorMode: ask-user
 notify: true
 
 language: ja
+
+permissions:
+  gh:
+    allow: true
