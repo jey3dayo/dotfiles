@@ -224,9 +224,12 @@ zed/*.log
 user-dirs.dirs
 user-dirs.locale
 
-# PluseAudio
+# PulseAudio
 pulse/cookie
 
 # mcp
 .serena
 .mcp.json
+
+# Codex 3rd Party
+.sdd
