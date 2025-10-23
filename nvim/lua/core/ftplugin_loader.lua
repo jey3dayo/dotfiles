@@ -73,8 +73,8 @@ if ftplugin then
   register("php", configure_web_lang { tabstop = 4 })
 end
 
-local function configure_markdown(_ctx)
-  local buffer = (_ctx and _ctx.buf) or 0
+local function configure_markdown(ctx)
+  local buffer = (ctx and ctx.buf) or 0
 
   if vim.treesitter and vim.treesitter.start then pcall(vim.treesitter.start, buffer, "markdown") end
 
