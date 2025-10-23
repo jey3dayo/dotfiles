@@ -5,9 +5,7 @@ local keybinds = require "./keybinds"
 local os = require "./os"
 local events = require "./events"
 local gpus = {}
-if wezterm.gui and wezterm.gui.enumerate_gpus then
-  gpus = wezterm.gui.enumerate_gpus()
-end
+if wezterm.gui and wezterm.gui.enumerate_gpus then gpus = wezterm.gui.enumerate_gpus() end
 
 -- Register all event handlers
 events.register_events()

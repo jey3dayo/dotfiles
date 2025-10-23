@@ -123,7 +123,7 @@ Shell/Editor/Terminal/Gitの該当層での影響評価
 
 ### 📝 Layer-Aware Analysis
 
-- CLAUDE.mdの層別アーキテクチャに基づいた適切性評価
+- .kiro/steering/structure.mdの層別アーキテクチャに基づいた適切性評価
 - 層境界違反・設定の不適切な配置の検出
 
 ### 🚀 高速実行重視
