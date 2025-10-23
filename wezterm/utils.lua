@@ -12,10 +12,12 @@ function M.font_with_fallback(name, params)
 end
 
 function M.truncate_right(title, max_width)
+  if type(title) ~= "string" then title = "" end
   return wezterm.truncate_right(M.basename(title), max_width)
 end
 
 function M.basename(s)
+  if type(s) ~= "string" then return "" end
   return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
@@ -53,11 +55,14 @@ function M.exists(tab, element)
 end
 
 function M.convert_home_dir(path)
-  local cwd = path
+  if type(path) ~= "string" then return path end
   local home = os.getenv "HOME"
-  cwd = cwd:gsub("^" .. home .. "/", "~/")
-  if cwd == "" then return path end
-  return cwd
+  if type(home) == "string" and home ~= "" then
+    local escaped_home = home:gsub("(%W)", "%%%1")
+    local converted = path:gsub("^" .. escaped_home .. "/", "~/")
+    if converted ~= "" then return converted end
+  end
+  return path
 end
 
 function M.file_exists(fname)
@@ -75,6 +80,7 @@ function M.convert_useful_path(dir)
 end
 
 function M.split_from_url(dir)
+  if type(dir) ~= "string" then return "", "" end
   local cwd = ""
   local hostname = ""
   local cwd_uri = dir:sub(8)
