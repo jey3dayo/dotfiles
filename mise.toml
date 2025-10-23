@@ -22,25 +22,17 @@ _.source = [".venv/bin/activate"]
 
 [tasks.format]
 description = "Format all files"
-run = [
-  "biome format --write .",
-  'fd -e md -X prettier --write',
-  'fd -e yml -e yaml -X prettier --write',
-  "stylua .",
-  "fd -e sh -X shfmt -w",
+depends = [
+  "format:biome",
+  "format:markdown",
+  "format:yaml",
+  "format:lua",
+  "format:shell",
 ]
 
 [tasks.lint]
 description = "Check all formatting and linting (GitHub Actions compatible)"
-run = [
-  "biome check .",
-  "markdownlint-cli2 '**/*.md'",
-  'fd -e md -X prettier --check',
-  'fd -e yml -e yaml -X prettier --check',
-  "stylua --check .",
-  "fd -e sh -X shfmt -d",
-  "luacheck . || true",
-]
+depends = ["lint:biome", "lint:markdown", "lint:yaml", "lint:lua", "lint:shell"]
 
 [tasks."lint:links"]
 description = "Check markdown links (slow, run separately when needed)"
@@ -48,7 +40,7 @@ run = "fd -e md -x markdown-link-check --config .markdown-link-check.json"
 
 [tasks.update]
 description = "Update all dependencies"
-run = ["mise run update:submodules", "mise run update:brew", "mise run update:external-repos"]
+depends = ["update:submodules", "update:brew", "update:external-repos"]
 
 [tasks."update:submodules"]
 description = "Update git submodules to latest (discards local changes)"
@@ -67,7 +59,7 @@ run = [
 
 [tasks.ci]
 description = "Run all CI checks locally (same as GitHub Actions)"
-run = ["mise run lint", "mise run lint:links"]
+depends = ["lint", "lint:links"]
 
 [tasks."ci:install"]
 description = "Install additional tools required for CI"
@@ -109,8 +101,16 @@ run = "fd -e yml -e yaml -X prettier --check"
 
 [tasks."lint:lua"]
 description = "Check Lua files"
-run = ["stylua --check .", "luacheck . || true"]
+depends = ["lint:lua:stylua", "lint:lua:luacheck"]
 
 [tasks."lint:shell"]
 description = "Check shell scripts"
 run = "fd -e sh -X shfmt -d"
+
+[tasks."lint:lua:stylua"]
+description = "Ensure Lua code style via Stylua"
+run = "stylua --check ."
+
+[tasks."lint:lua:luacheck"]
+description = "Run luacheck if available"
+run = "if command -v luacheck >/dev/null 2>&1; then luacheck .; fi"
