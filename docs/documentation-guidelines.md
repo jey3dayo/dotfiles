@@ -77,18 +77,18 @@
 
 ## 📊 ドキュメントマッピング表
 
-| ファイル名                    | タグ                                                                                                   | 成熟度     | 難易度   | 更新頻度  | 概要                                   |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------ | ---------- | -------- | --------- | -------------------------------------- |
-| docs/README.md                | `category/guide`, `layer/core`, `environment/macos`, `audience/developer`                              | Stable     | ⭐       | Quarterly | ドキュメントインデックス・設計パターン |
-| docs/documentation-guidelines.md | `category/documentation`, `layer/support`, `audience/developer`                                     | Stable     | ⭐⭐     | Quarterly | タグ体系・メタデータ・品質基準         |
-| docs/setup.md                 | `category/guide`, `category/configuration`, `environment/macos`, `audience/beginner`                   | Stable     | ⭐⭐     | Quarterly | セットアップガイド・ベストプラクティス |
-| docs/maintenance.md           | `category/maintenance`, `category/guide`, `layer/support`, `audience/developer`                        | Stable     | ⭐⭐     | Monthly   | 改善履歴・定期メンテナンス             |
-| docs/performance.md           | `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer/ops`        | Production | ⭐⭐⭐   | Monthly   | パフォーマンス測定・最適化指標         |
-| docs/tools/zsh.md             | `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`          | Production | ⭐⭐⭐⭐ | Monthly   | Zsh 最適化・プラグイン管理（1.1s起動） |
-| docs/tools/nvim.md            | `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`        | Production | ⭐⭐⭐⭐ | Monthly   | Neovim・LSP・AI支援（<100ms起動）      |
-| docs/tools/wezterm.md         | `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`           | Stable     | ⭐⭐⭐   | Quarterly | WezTerm 設定・GPU加速                  |
-| docs/tools/ssh.md             | `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer` | Stable     | ⭐⭐     | Quarterly | SSH 階層設定・セキュリティ             |
-| docs/tools/fzf-integration.md | `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced` | Production | ⭐⭐⭐⭐ | Quarterly | FZF 統合・Git 連携・Zsh ウィジェット   |
+| ファイル名                       | タグ                                                                                                   | 成熟度     | 難易度   | 更新頻度  | 概要                                   |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------ | ---------- | -------- | --------- | -------------------------------------- |
+| docs/README.md                   | `category/guide`, `layer/core`, `environment/macos`, `audience/developer`                              | Stable     | ⭐       | Quarterly | ドキュメントインデックス・設計パターン |
+| docs/documentation-guidelines.md | `category/documentation`, `layer/support`, `audience/developer`                                        | Stable     | ⭐⭐     | Quarterly | タグ体系・メタデータ・品質基準         |
+| docs/setup.md                    | `category/guide`, `category/configuration`, `environment/macos`, `audience/beginner`                   | Stable     | ⭐⭐     | Quarterly | セットアップガイド・ベストプラクティス |
+| docs/maintenance.md              | `category/maintenance`, `category/guide`, `layer/support`, `audience/developer`                        | Stable     | ⭐⭐     | Monthly   | 改善履歴・定期メンテナンス             |
+| docs/performance.md              | `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer/ops`        | Production | ⭐⭐⭐   | Monthly   | パフォーマンス測定・最適化指標         |
+| docs/tools/zsh.md                | `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`          | Production | ⭐⭐⭐⭐ | Monthly   | Zsh 最適化・プラグイン管理（1.1s起動） |
+| docs/tools/nvim.md               | `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`        | Production | ⭐⭐⭐⭐ | Monthly   | Neovim・LSP・AI支援（<100ms起動）      |
+| docs/tools/wezterm.md            | `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`           | Stable     | ⭐⭐⭐   | Quarterly | WezTerm 設定・GPU加速                  |
+| docs/tools/ssh.md                | `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer` | Stable     | ⭐⭐     | Quarterly | SSH 階層設定・セキュリティ             |
+| docs/tools/fzf-integration.md    | `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced` | Production | ⭐⭐⭐⭐ | Quarterly | FZF 統合・Git 連携・Zsh ウィジェット   |
 
 ## 🔄 更新ルール
 
@@ -123,18 +123,18 @@
 
 ### 現在のドキュメントサイズ
 
-| ファイル名                    | 行数  | 状態    |
-| ----------------------------- | ----- | ------- |
-| docs/tools/zsh.md             | 480行 | ✅ 適切 |
-| docs/tools/nvim.md            | 350行 | ✅ 適切 |
-| docs/tools/wezterm.md         | 280行 | ✅ 適切 |
-| docs/tools/fzf-integration.md | 420行 | ✅ 適切 |
-| docs/performance.md           | 250行 | ✅ 適切 |
-| docs/setup.md                 | 320行 | ✅ 適切 |
-| docs/maintenance.md           | 290行 | ✅ 適切 |
-| docs/tools/ssh.md             | 180行 | ✅ 適切 |
+| ファイル名                       | 行数  | 状態    |
+| -------------------------------- | ----- | ------- |
+| docs/tools/zsh.md                | 480行 | ✅ 適切 |
+| docs/tools/nvim.md               | 350行 | ✅ 適切 |
+| docs/tools/wezterm.md            | 280行 | ✅ 適切 |
+| docs/tools/fzf-integration.md    | 420行 | ✅ 適切 |
+| docs/performance.md              | 250行 | ✅ 適切 |
+| docs/setup.md                    | 320行 | ✅ 適切 |
+| docs/maintenance.md              | 290行 | ✅ 適切 |
+| docs/tools/ssh.md                | 180行 | ✅ 適切 |
 | docs/documentation-guidelines.md | 160行 | ✅ 適切 |
-| docs/README.md                | 150行 | ✅ 適切 |
+| docs/README.md                   | 150行 | ✅ 適切 |
 
 ## 📂 分割基準と方法
 
