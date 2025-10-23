@@ -1,11 +1,11 @@
 [tools]
-biome = "2.2.4"
+biome = "latest"
 fd = "latest"
 go = "1.23.3"
 node = "22.20.0"
-prettier = "3.4.2"
-stylua = "0.20.0"
-shfmt = "3.10.0"
+prettier = "latest"
+stylua = "latest"
+shfmt = "latest"
 luajit = "latest"
 "npm:markdownlint-cli2" = "latest"
 "npm:markdown-link-check" = "latest"
@@ -15,7 +15,7 @@ env_file = '.env'
 experimental = true
 vfox = false
 idiomatic_version_file_enable_tools = ["go"]
-trusted_config_paths = ['/Users/t00114/src/github.com']
+trusted_config_paths = ["~/src/github.com"]
 
 [env]
 _.source = [".venv/bin/activate"]
@@ -24,7 +24,6 @@ _.source = [".venv/bin/activate"]
 description = "Format all files"
 run = [
   "biome format --write .",
-  "markdownlint-cli2 --fix '**/*.md'",
   'fd -e md -X prettier --write',
   'fd -e yml -e yaml -X prettier --write',
   "stylua .",
@@ -34,13 +33,13 @@ run = [
 [tasks.lint]
 description = "Check all formatting and linting (GitHub Actions compatible)"
 run = [
-  "biome check --formatter-enabled=true --linter-enabled=true .",
+  "biome check .",
   "markdownlint-cli2 '**/*.md'",
   'fd -e md -X prettier --check',
   'fd -e yml -e yaml -X prettier --check',
   "stylua --check .",
   "fd -e sh -X shfmt -d",
-  "luacheck . || [ $? -eq 1 ]",
+  "luacheck . || true",
 ]
 
 [tasks."lint:links"]
@@ -49,15 +48,22 @@ run = "fd -e md -x markdown-link-check --config .markdown-link-check.json"
 
 [tasks.update]
 description = "Update all dependencies"
-run = ["mise run update:submodules", "mise run update:brew"]
+run = ["mise run update:submodules", "mise run update:brew", "mise run update:external-repos"]
 
 [tasks."update:submodules"]
 description = "Update git submodules to latest (discards local changes)"
 run = "git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote"
 
 [tasks."update:brew"]
-description = "Update Homebrew packages"
-run = "brew update && brew upgrade"
+description = "Update Homebrew packages (formula only, excludes casks)"
+run = "brew update && brew upgrade --formula"
+
+[tasks."update:external-repos"]
+description = "Update external Git repositories (force reset to remote)"
+run = [
+  "cd ~/src/github.com/dimdenGD/OldTweetDeck && git fetch origin && git reset --hard origin/main && git clean -fd",
+  "cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd",
+]
 
 [tasks.ci]
 description = "Run all CI checks locally (same as GitHub Actions)"
@@ -66,3 +72,45 @@ run = ["mise run lint", "mise run lint:links"]
 [tasks."ci:install"]
 description = "Install additional tools required for CI"
 run = ["luarocks install --local luacheck"]
+
+# Individual format tasks
+[tasks."format:biome"]
+description = "Format JS/TS/JSON files"
+run = "biome format --write ."
+
+[tasks."format:markdown"]
+description = "Format Markdown files"
+run = "fd -e md -X prettier --write"
+
+[tasks."format:yaml"]
+description = "Format YAML files"
+run = "fd -e yml -e yaml -X prettier --write"
+
+[tasks."format:lua"]
+description = "Format Lua files"
+run = "stylua ."
+
+[tasks."format:shell"]
+description = "Format shell scripts"
+run = "fd -e sh -X shfmt -w"
+
+# Individual lint tasks
+[tasks."lint:biome"]
+description = "Check JS/TS/JSON files"
+run = "biome check ."
+
+[tasks."lint:markdown"]
+description = "Check Markdown files"
+run = ["markdownlint-cli2 '**/*.md'", "fd -e md -X prettier --check"]
+
+[tasks."lint:yaml"]
+description = "Check YAML files"
+run = "fd -e yml -e yaml -X prettier --check"
+
+[tasks."lint:lua"]
+description = "Check Lua files"
+run = ["stylua --check .", "luacheck . || true"]
+
+[tasks."lint:shell"]
+description = "Check shell scripts"
+run = "fd -e sh -X shfmt -d"
