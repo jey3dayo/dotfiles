@@ -12,13 +12,17 @@ function M.setup_web_lang(opts)
   vim.opt_local.expandtab = true
 end
 
-function M.setup_js_like(run_cmd, test_cmd)
+function M.setup_js_like(run_cmd, test_cmd, bufnr)
   M.setup_web_lang { tabstop = 2 }
 
-  if run_cmd then vim.keymap.set("n", "[lsp]j", string.format('<cmd>:!%s "%%"<CR>', run_cmd), { desc = "Run file" }) end
-  if test_cmd then
-    vim.keymap.set("n", "[lsp]J", string.format('<cmd>:!%s "%%"<CR>', test_cmd), { desc = "Test file" })
+  local function set_keymap(lhs, command, desc)
+    local opts = { desc = desc, silent = true }
+    if bufnr then opts.buffer = bufnr end
+    vim.keymap.set("n", lhs, command, opts)
   end
+
+  if run_cmd then set_keymap("[lsp]j", string.format('<cmd>:!%s "%%"<CR>', run_cmd), "Run file") end
+  if test_cmd then set_keymap("[lsp]J", string.format('<cmd>:!%s "%%"<CR>', test_cmd), "Test file") end
 end
 
 return M

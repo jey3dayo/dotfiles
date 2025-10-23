@@ -33,16 +33,26 @@ function M.format_tab_title(tab, tabs, _, _, hover, max_width)
     trailing_bg = constants.tab_bar.bg
   end
 
-  local title = utils.truncate_right(tab.active_pane.foreground_process_name, max_width)
-  if title == "" then
-    local cwd = tab.active_pane.current_working_dir
-    if type(cwd) == "table" and cwd.file_path then
-      cwd = cwd.file_path
-    elseif type(cwd) ~= "string" then
-      cwd = tostring(cwd)
+  local pane = tab.active_pane
+  local process_name = pane and pane.foreground_process_name or nil
+  local title_source
+
+  if type(process_name) == "string" and process_name ~= "" then
+    title_source = process_name
+  else
+    local cwd = pane and pane.current_working_dir or nil
+    if type(cwd) == "table" then
+      cwd = cwd.file_path or cwd
     end
-    title = utils.truncate_right(utils.convert_home_dir(cwd), max_width)
+    if type(cwd) == "string" and cwd ~= "" then
+      title_source = utils.convert_home_dir(cwd)
+    end
   end
+
+  if type(title_source) ~= "string" or title_source == "" then
+    title_source = "wezterm"
+  end
+  local title = utils.truncate_right(title_source, max_width)
 
   return {
     { Attribute = { Italic = false } },
