@@ -109,7 +109,7 @@ mise install              # Setup language versions
 - **[Setup Guide](docs/setup.md)** - 詳細なインストール手順
 - **[Tools List](TOOLS.md)** - 管理対象ツール一覧
 - **[Documentation Index](docs/README.md)** - 全ドキュメント体系へのナビゲーション
-- **[CLAUDE.md](CLAUDE.md)** - AI向け技術詳細・設計原則
+- **[Steering Documents](.kiro/steering/)** - AIセッション向けハイレベルコンテキスト
 
 ## 🔧 Maintenance
 
