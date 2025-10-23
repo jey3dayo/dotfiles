@@ -101,8 +101,17 @@ run = "fd -e yml -e yaml -X prettier --check"
 
 [tasks."lint:lua"]
 description = "Check Lua files"
-run = ["stylua --check .", "luacheck . || true"]
+depends = ["lint:lua:stylua", "lint:lua:luacheck"]
 
 [tasks."lint:shell"]
 description = "Check shell scripts"
 run = "fd -e sh -X shfmt -d"
+
+[tasks."lint:lua:stylua"]
+description = "Ensure Lua code style via Stylua"
+run = "stylua --check ."
+
+[tasks."lint:lua:luacheck"]
+description = "Run luacheck if available"
+run = "luacheck ."
+only_if = ["command -v luacheck"]
