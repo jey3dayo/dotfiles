@@ -113,5 +113,4 @@ run = "stylua --check ."
 
 [tasks."lint:lua:luacheck"]
 description = "Run luacheck if available"
-run = "luacheck ."
-only_if = ["command -v luacheck"]
+run = "if command -v luacheck >/dev/null 2>&1; then luacheck .; fi"
