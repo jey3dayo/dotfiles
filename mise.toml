@@ -48,7 +48,11 @@ run = "fd -e md -x markdown-link-check --config .markdown-link-check.json"
 
 [tasks.update]
 description = "Update all dependencies"
-run = ["mise run update:submodules", "mise run update:brew", "mise run update:external-repos"]
+run = [
+  "mise run update:submodules",
+  "mise run update:brew",
+  "mise run update:external-repos",
+]
 
 [tasks."update:submodules"]
 description = "Update git submodules to latest (discards local changes)"
