@@ -33,9 +33,8 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 - **[Performance](performance.md)** - 詳細メトリクス、ベンチマーク、最適化履歴
 - **[Maintenance](maintenance.md)** - 定期メンテナンス、トラブルシューティング、更新履歴
 
-#### 📋 Project Management
+#### 📋 Documentation Governance
 
-- **[TODO](TODO.md)** - タスク管理、課題追跡
 - **[Documentation Guidelines](documentation-guidelines.md)** - タグ体系、メタデータ形式、品質基準
 
 #### 🛠️ Tool-Specific Documentation
@@ -64,7 +63,6 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 
 1. [Maintenance Guide](maintenance.md) でよくある問題を確認
 2. Tool-specific docs で詳細を調査
-3. [TODO](TODO.md) で既知の課題を確認
 
 ## 📊 Performance Highlights
 
@@ -79,7 +77,7 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 ## 🔗 External References
 
 - [Main README](../README.md) - ユーザー向け概要
-- [CLAUDE.md](../CLAUDE.md) - AI向け技術詳細
+- [Steering Documents](../.kiro/steering/) - AI向け高レベルガイド
 - [TOOLS.md](../TOOLS.md) - 管理対象ツール一覧
 
 ---

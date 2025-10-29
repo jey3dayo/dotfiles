@@ -24,7 +24,6 @@ dotfiles/
 ├── Brewfile              # Homebrew package manifest
 ├── mise.toml             # Mise version management
 ├── setup.sh              # Automated setup script
-├── CLAUDE.md             # Project-specific AI instructions
 ├── README.md             # Main documentation
 └── TOOLS.md              # Managed tools inventory
 ```
@@ -173,8 +172,6 @@ docs/
 ├── performance.md               # Performance metrics
 ├── setup.md                     # Setup guide
 ├── maintenance.md               # Maintenance procedures
-├── TODO.md                      # Task tracking
-├── tools.md                     # Tool overview
 └── tools/                       # Tool-specific guides
     ├── zsh.md                   # Shell layer
     ├── nvim.md                  # Editor layer
