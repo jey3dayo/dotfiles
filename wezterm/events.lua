@@ -41,17 +41,11 @@ function M.format_tab_title(tab, tabs, _, _, hover, max_width)
     title_source = process_name
   else
     local cwd = pane and pane.current_working_dir or nil
-    if type(cwd) == "table" then
-      cwd = cwd.file_path or cwd
-    end
-    if type(cwd) == "string" and cwd ~= "" then
-      title_source = utils.convert_home_dir(cwd)
-    end
+    if type(cwd) == "table" then cwd = cwd.file_path or cwd end
+    if type(cwd) == "string" and cwd ~= "" then title_source = utils.convert_home_dir(cwd) end
   end
 
-  if type(title_source) ~= "string" or title_source == "" then
-    title_source = "wezterm"
-  end
+  if type(title_source) ~= "string" or title_source == "" then title_source = "wezterm" end
   local title = utils.truncate_right(title_source, max_width)
 
   return {

@@ -1,3 +1,9 @@
+# ========================================
+# グローバル mise 設定
+# 個人用の共通ツールとタスク定義
+# ========================================
+
+# === ツールのバージョン管理 ===
 [tools]
 biome = "latest"
 fd = "latest"
@@ -7,21 +13,53 @@ prettier = "latest"
 stylua = "latest"
 shfmt = "latest"
 luajit = "latest"
+yamllint = "latest"       # YAML lint
 "npm:markdownlint-cli2" = "latest"
 "npm:markdown-link-check" = "latest"
 
+# === 設定 ===
 [settings]
 env_file = '.env'
 experimental = true
+jobs = 8  # デフォルトの並列実行数
 vfox = false
 idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/src/github.com"]
 
+# === 環境変数 ===
 [env]
 _.source = [".venv/bin/activate"]
 
+# ========================================
+# ドキュメント管理
+# ========================================
+
+[tasks."docs:lint"]
+description = "Markdown lint チェック（グローバル設定使用）"
+run = "markdownlint-cli2 '**/*.md' '#node_modules'"
+
+[tasks."docs:fix"]
+description = "Markdown 自動修正（グローバル設定使用）"
+run = "markdownlint-cli2 --fix '**/*.md' '#node_modules'"
+
+[tasks."docs:links"]
+description = "Markdown リンクチェック"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json --quiet"
+
+[tasks."docs:links:verbose"]
+description = "Markdown リンクチェック（詳細モード）"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json --verbose"
+
+[tasks."docs:yaml:lint"]
+description = "YAML ファイルの lint チェック"
+run = "yamllint .github/"
+
+# ========================================
+# フォーマット
+# ========================================
+
 [tasks.format]
-description = "Format all files"
+description = "コードとドキュメントの自動フォーマット"
 depends = [
   "format:biome",
   "format:markdown",
@@ -30,92 +68,145 @@ depends = [
   "format:shell",
 ]
 
+[tasks."format:biome"]
+description = "JS/TS/JSON ファイルをフォーマット"
+run = "biome format --write ."
+
+[tasks."format:biome:check"]
+description = "JS/TS/JSON ファイルのフォーマットチェック（書き込みなし）"
+run = "biome check --formatter-enabled=true --linter-enabled=false ."
+
+[tasks."format:markdown"]
+description = "Markdown ファイルをフォーマット"
+run = "fd -e md -X prettier --write"
+
+[tasks."format:markdown:check"]
+description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
+run = "fd -e md -X prettier --check"
+
+[tasks."format:yaml"]
+description = "YAML ファイルをフォーマット"
+run = "fd -e yml -e yaml -X prettier --write"
+
+[tasks."format:yaml:check"]
+description = "YAML ファイルのフォーマットチェック（書き込みなし）"
+run = "fd -e yml -e yaml -X prettier --check"
+
+[tasks."format:lua"]
+description = "Lua ファイルをフォーマット"
+run = "stylua ."
+
+[tasks."format:lua:check"]
+description = "Lua ファイルのフォーマットチェック（書き込みなし）"
+run = "stylua --check ."
+
+[tasks."format:shell"]
+description = "シェルスクリプトをフォーマット"
+run = "fd -e sh -X shfmt -w"
+
+[tasks."format:shell:check"]
+description = "シェルスクリプトのフォーマットチェック（書き込みなし）"
+run = "fd -e sh -X shfmt -d"
+
+# ========================================
+# Lint（品質チェック）
+# ========================================
+
 [tasks.lint]
-description = "Check all formatting and linting (GitHub Actions compatible)"
-depends = ["lint:biome", "lint:markdown", "lint:yaml", "lint:lua", "lint:shell"]
+description = "全体の品質チェック（GitHub Actions互換）- 並列実行"
+run = [
+  "mise run lint:biome",
+  "mise run lint:markdown",
+  "mise run lint:yaml",
+  "mise run lint:lua",
+  "mise run lint:shell",
+]
+
+[tasks."lint:biome"]
+description = "JS/TS/JSON ファイルをチェック"
+run = "biome check ."
+
+[tasks."lint:markdown"]
+description = "Markdown ファイルをチェック"
+run = ["markdownlint-cli2 '**/*.md'", "fd -e md -X prettier --check"]
+
+[tasks."lint:yaml"]
+description = "YAML ファイルをチェック（prettier + yamllint）"
+run = ["fd -e yml -e yaml -X prettier --check", "yamllint .github/"]
+
+[tasks."lint:lua"]
+description = "Lua ファイルをチェック"
+depends = ["lint:lua:stylua", "lint:lua:luacheck"]
+
+[tasks."lint:lua:stylua"]
+description = "Stylua でコードスタイルをチェック"
+run = "stylua --check ."
+
+[tasks."lint:lua:luacheck"]
+description = "luacheck を実行（利用可能な場合）"
+run = "if command -v luacheck >/dev/null 2>&1; then luacheck .; fi"
+
+[tasks."lint:shell"]
+description = "シェルスクリプトをチェック"
+run = "fd -e sh -X shfmt -d"
 
 [tasks."lint:links"]
-description = "Check markdown links (slow, run separately when needed)"
+description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
 run = "fd -e md -x markdown-link-check --config .markdown-link-check.json"
 
+# ========================================
+# プロジェクト更新
+# ========================================
+
 [tasks.update]
-description = "Update all dependencies"
-run = [
-  "mise run update:submodules",
-  "mise run update:brew",
-  "mise run update:external-repos",
-]
+description = "すべての依存関係を更新"
 depends = ["update:submodules", "update:brew", "update:external-repos"]
 
 [tasks."update:submodules"]
-description = "Update git submodules to latest (discards local changes)"
+description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
 run = "git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote"
 
 [tasks."update:brew"]
-description = "Update Homebrew packages (formula only, excludes casks)"
+description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
 run = "brew update && brew upgrade --formula"
 
 [tasks."update:external-repos"]
-description = "Update external Git repositories (force reset to remote)"
+description = "外部 Git リポジトリを更新（強制リセット）"
 run = [
   "cd ~/src/github.com/dimdenGD/OldTweetDeck && git fetch origin && git reset --hard origin/main && git clean -fd",
   "cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd",
 ]
 
+# ========================================
+# CI/CD
+# ========================================
+
 [tasks.ci]
-description = "Run all CI checks locally (same as GitHub Actions)"
+description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
 depends = ["lint", "lint:links"]
 
 [tasks."ci:install"]
-description = "Install additional tools required for CI"
+description = "CI に必要な追加ツールをインストール"
 run = ["luarocks install --local luacheck"]
 
-# Individual format tasks
-[tasks."format:biome"]
-description = "Format JS/TS/JSON files"
-run = "biome format --write ."
+# ========================================
+# エイリアス（よく使うタスクのショートカット）
+# ========================================
 
-[tasks."format:markdown"]
-description = "Format Markdown files"
-run = "fd -e md -X prettier --write"
+[tasks.check]
+description = "全フォーマットチェック（書き込みなし、CI向け）- 並列実行"
+run = [
+  "mise run format:biome:check",
+  "mise run format:markdown:check",
+  "mise run format:yaml:check",
+  "mise run format:lua:check",
+  "mise run format:shell:check",
+]
 
-[tasks."format:yaml"]
-description = "Format YAML files"
-run = "fd -e yml -e yaml -X prettier --write"
+[tasks."docs"]
+description = "ドキュメント全体の検証（lint + リンク + YAML）"
+depends = ["docs:lint", "docs:links", "docs:yaml:lint"]
 
-[tasks."format:lua"]
-description = "Format Lua files"
-run = "stylua ."
-
-[tasks."format:shell"]
-description = "Format shell scripts"
-run = "fd -e sh -X shfmt -w"
-
-# Individual lint tasks
-[tasks."lint:biome"]
-description = "Check JS/TS/JSON files"
-run = "biome check ."
-
-[tasks."lint:markdown"]
-description = "Check Markdown files"
-run = ["markdownlint-cli2 '**/*.md'", "fd -e md -X prettier --check"]
-
-[tasks."lint:yaml"]
-description = "Check YAML files"
-run = "fd -e yml -e yaml -X prettier --check"
-
-[tasks."lint:lua"]
-description = "Check Lua files"
-depends = ["lint:lua:stylua", "lint:lua:luacheck"]
-
-[tasks."lint:shell"]
-description = "Check shell scripts"
-run = "fd -e sh -X shfmt -d"
-
-[tasks."lint:lua:stylua"]
-description = "Ensure Lua code style via Stylua"
-run = "stylua --check ."
-
-[tasks."lint:lua:luacheck"]
-description = "Run luacheck if available"
-run = "if command -v luacheck >/dev/null 2>&1; then luacheck .; fi"
+[tasks."docs:all"]
+description = "ドキュメントの完全な検証とフォーマット"
+depends = ["docs:fix", "docs:links", "docs:yaml:lint"]

@@ -9,3 +9,7 @@ fisher/
 zsh/.zinit/
 codex/AGENTS.md
 claude/local/node_modules/
+
+# Auto-generated files (external tools)
+AWS VPN Client/
+configstore/
