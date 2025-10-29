@@ -114,12 +114,12 @@ run = "fd -e sh -X shfmt -d"
 
 [tasks.lint]
 description = "全体の品質チェック（GitHub Actions互換）- 並列実行"
-run = [
-  "mise run lint:biome",
-  "mise run lint:markdown",
-  "mise run lint:yaml",
-  "mise run lint:lua",
-  "mise run lint:shell",
+depends = [
+  "lint:biome",
+  "lint:markdown",
+  "lint:yaml",
+  "lint:lua",
+  "lint:shell",
 ]
 
 [tasks."lint:biome"]
@@ -187,7 +187,7 @@ depends = ["lint", "lint:links"]
 
 [tasks."ci:install"]
 description = "CI に必要な追加ツールをインストール"
-run = ["luarocks install --local luacheck"]
+run = "luarocks install --local luacheck"
 
 # ========================================
 # エイリアス（よく使うタスクのショートカット）
@@ -195,12 +195,12 @@ run = ["luarocks install --local luacheck"]
 
 [tasks.check]
 description = "全フォーマットチェック（書き込みなし、CI向け）- 並列実行"
-run = [
-  "mise run format:biome:check",
-  "mise run format:markdown:check",
-  "mise run format:yaml:check",
-  "mise run format:lua:check",
-  "mise run format:shell:check",
+depends = [
+  "format:biome:check",
+  "format:markdown:check",
+  "format:yaml:check",
+  "format:lua:check",
+  "format:shell:check",
 ]
 
 [tasks."docs"]
