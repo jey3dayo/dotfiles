@@ -5,11 +5,11 @@
 
 # === ツールのバージョン管理 ===
 [tools]
+actionlint = "latest"     # GitHub Actions workflow lint
 biome = "latest"
 fd = "latest"
 go = "1.23.3"
 node = "22.20.0"
-watchexec = "latest"      # ~/.config/mise/config.toml から統合
 prettier = "latest"
 stylua = "latest"
 shfmt = "latest"

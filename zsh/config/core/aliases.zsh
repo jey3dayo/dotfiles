@@ -15,6 +15,4 @@ if command -v colordiff >/dev/null; then
   alias diff="colordiff"
 fi
 
-if [ -x "${HOME}/.claude/local/claude" ]; then
-  alias claude="${HOME}/.claude/local/claude"
-fi
+# Claude CLI is installed via Homebrew at /opt/homebrew/bin/claude

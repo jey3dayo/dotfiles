@@ -424,7 +424,6 @@ macOSの`/etc/zprofile`は`path_helper`を実行し、システムパスを先�
 path=(
   # Version-managed tools (highest priority)
   $HOME/.mise/shims(N-)
-  $HOME/.claude/local(N-)
 
   # User binaries
   $HOME/{bin,sbin}(N-)
@@ -451,7 +450,6 @@ path=(
 # Minimal PATH setup for non-login shells
 path=(
   $HOME/.mise/shims(N-)
-  $HOME/.claude/local(N-)
   $path
 )
 ```
