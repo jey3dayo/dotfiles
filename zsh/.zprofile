@@ -17,7 +17,6 @@ typeset -U path cdpath fpath manpath
 path=(
   # Version-managed tools (highest priority)
   $HOME/.mise/shims(N-)
-  $HOME/.claude/local(N-)
 
   # User binaries
   $HOME/{bin,sbin}(N-)

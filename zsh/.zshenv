@@ -32,7 +32,6 @@ export CODEX_CONFIG="$HOME/.config/codex/config.yaml"
 # Only critical paths that must be available in all zsh contexts
 path=(
   $HOME/.mise/shims(N-)
-  $HOME/.claude/local(N-)
   $path
 )
 
