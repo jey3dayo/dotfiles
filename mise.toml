@@ -169,12 +169,11 @@ run = "git submodule foreach 'git reset --hard HEAD && git clean -fd' && git sub
 
 [tasks."update:brew"]
 description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
-run = "brew update && brew upgrade --formula"
+run = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
 
 [tasks."update:external-repos"]
 description = "外部 Git リポジトリを更新（強制リセット）"
 run = [
-  "cd ~/src/github.com/dimdenGD/OldTweetDeck && git fetch origin && git reset --hard origin/main && git clean -fd",
   "cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd",
 ]
 
