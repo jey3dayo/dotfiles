@@ -29,6 +29,9 @@ doc/tags-*
 .env*
 stash/
 
+## Go
+go/
+
 ## Editor/IDE
 .idea/
 # .vscode/
