@@ -79,7 +79,10 @@ run = "biome check --formatter-enabled=true --linter-enabled=false ."
 
 [tasks."format:markdown"]
 description = "Markdown ファイルをフォーマット"
-run = "fd -e md -X prettier --write"
+run = [
+  "markdownlint-cli2 --fix '**/*.md'",
+  "fd -e md -X prettier --write",
+]
 
 [tasks."format:markdown:check"]
 description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
