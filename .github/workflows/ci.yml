@@ -67,6 +67,14 @@ jobs:
       - name: Set up LuaRocks
         uses: leafo/gh-actions-luarocks@v5
 
+      - name: Cache LuaRocks packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.luarocks
+          key: luarocks-${{ runner.os }}-${{ hashFiles('**/mise.toml') }}
+          restore-keys: |
+            luarocks-${{ runner.os }}-
+
       - name: Install luacheck
         run: luarocks install --local luacheck
 
