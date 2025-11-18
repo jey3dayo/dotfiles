@@ -5,10 +5,19 @@ if ! command -v mise >/dev/null 2>&1; then
   return
 fi
 
-# Use deferred completion for optimal startup performance
-# mise is activated via shims in .zprofile for zero per-prompt overhead
+# Check if mise is already activated (by .zprofile)
+# If not activated, activate it now
+if ! (( $+functions[_mise_hook] )); then
+  eval "$(mise activate zsh)"
+  # Force initial hook execution to set up PATH correctly
+  if (( $+functions[_mise_hook] )); then
+    _mise_hook
+  fi
+fi
+
+# Defer only the completion for startup performance
 if (( $+functions[zsh-defer] )); then
-  zsh-defer -t 8 eval "$(mise complete -s zsh)"
+  zsh-defer -t 10 eval "$(mise complete -s zsh)"
 else
   eval "$(mise complete -s zsh)"
 fi
