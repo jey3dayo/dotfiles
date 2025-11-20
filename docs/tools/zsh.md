@@ -324,10 +324,19 @@ zsh-help tools             # インストール済みツール確認
 
 ```bash
 ^]                         # FZF ghqリポジトリ選択
-^g^g                       # Git status表示
-^g^s                       # Gitステージングウィジェット
-^g^a                       # Git addウィジェット
-^g^b                       # Gitブランチスイッチャー
+^g^g                       # Git diff表示
+^g^s                       # Git status表示
+^gs                        # Gitローカルブランチ切り替え (git switch + fzf)
+                           # - 現在のworktree内でブランチ切り替え
+                           # - プレビュー付き（git logグラフ表示）
+                           # - ローカルブランチのみ表示
+^g^a                       # Git addウィジェット (git add -p)
+^gw / ^g^w                 # Git Worktree管理メニュー
+                           # - 🔀 Open Worktree (既存worktreeへ移動)
+                           # - ➕ New Worktree (新規worktree作成)
+                           # - 📋 List Worktrees (worktree一覧表示)
+                           # - 🗑️  Remove Worktree (worktree削除)
+                           # ※ 異なるブランチで作業したい場合はこちらを使用
 ^g^K                       # FZFプロセスkill
 ```
 
