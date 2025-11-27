@@ -165,8 +165,8 @@ wtcd() {
     return 1
   fi
 
-  local path
-  path=$(git worktree list --porcelain | awk -v b="$branch" '
+  local wt_path
+  wt_path=$(git worktree list --porcelain | awk -v b="$branch" '
     $1=="worktree" { p=$2 }
     $1=="branch" {
       br=$2
@@ -175,18 +175,18 @@ wtcd() {
     }
   ')
 
-  if [[ -z "$path" ]]; then
+  if [[ -z "$wt_path" ]]; then
     echo "no worktree for $branch"
     return 1
   fi
 
-  if [[ ! -d "$path" ]]; then
-    echo "worktree path missing: $path"
+  if [[ ! -d "$wt_path" ]]; then
+    echo "worktree path missing: $wt_path"
     echo "consider: git worktree prune"
     return 1
   fi
 
-  cd "$path"
+  cd "$wt_path"
 }
 
 if (( $+functions[compdef] )) && (( $+functions[_git] )); then
