@@ -36,18 +36,33 @@ _init_completion() {
   if [[ -d "$completion_dir" ]]; then
     fpath=("$completion_dir" $fpath)
   fi
+  # ユーザーの補完ディレクトリ
+  local user_completion_dir="${ZDOTDIR:-$HOME/.config/zsh}/completions"
+  if [[ -d "$user_completion_dir" ]]; then
+    fpath=("$user_completion_dir" $fpath)
+  fi
 
   # Load complist for menu selection widgets
   zmodload -i zsh/complist
   autoload -Uz compinit
-  if [[ -n "${ZSH_COMPDUMP}"(#qNmh+24) ]]; then
-    # 24時間以上古い場合は再構築
+  local need_rebuild=0
+  # 24時間以上古い場合は再構築
+  [[ -n "${ZSH_COMPDUMP}"(#qNmh+24) ]] && need_rebuild=1
+  # 補完ファイルがzcompdumpより新しければ再構築
+  for comp_dir in "$completion_dir" "$user_completion_dir"; do
+    for comp_file in "$comp_dir"/*(N); do
+      [[ "$comp_file" -nt "${ZSH_COMPDUMP}" ]] && need_rebuild=1
+    done
+  done
+
+  if (( need_rebuild )); then
     compinit -d "${ZSH_COMPDUMP}"
     cleanup_old_zcompdump
   else
     # キャッシュが新しい場合はセキュリティチェックをスキップ
     compinit -C -d "${ZSH_COMPDUMP}"
   fi
+  unset need_rebuild user_completion_dir completion_dir
 
   # 初期化完了後にフックを実行
   _execute_post_compinit_hooks
@@ -57,5 +72,4 @@ _init_completion() {
 _init_completion
 
 # vim: set syntax=zsh:
-
 
