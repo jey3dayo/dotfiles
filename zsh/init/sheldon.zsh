@@ -20,10 +20,10 @@ if command -v sheldon >/dev/null 2>&1; then
   fpath=(~/.config/zsh/completions $fpath)
 
   # Rebuild completion cache to include custom completions
-  local zcompdump="${ZSH_COMPDUMP:-${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump}"
+  zcompdump="${ZSH_COMPDUMP:-${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump}"
 
   # Force rebuild if any custom completion is newer than cache
-  local needs_rebuild=0
+  needs_rebuild=0
   for comp_file in ~/.config/zsh/completions/*(N); do
     if [[ ! -f "$zcompdump" || "$comp_file" -nt "$zcompdump" ]]; then
       needs_rebuild=1
@@ -38,6 +38,7 @@ if command -v sheldon >/dev/null 2>&1; then
     compinit -C -d "$zcompdump"
   fi
   unset needs_rebuild
+  unset zcompdump
 
   # Re-prioritize mise shims after sheldon plugins may have modified PATH
   path=($HOME/.mise/shims(N-) ${path:#$HOME/.mise/shims})
