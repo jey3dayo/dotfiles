@@ -1,3 +1,6 @@
+# sheldon plugin manager bootstrap
+# plugins (including zsh-defer) must load before config loader
+
 cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}
 config_dir=${XDG_CONFIG_HOME:-$HOME/.config}
 

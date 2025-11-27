@@ -58,6 +58,7 @@ if [ -f "$XDG_CONFIG_HOME/.env" ]; then
 fi
 # Source initialization files first (order-dependent)
 for f in "${ZDOTDIR:-$HOME}"/init/*.zsh; do source "${f}"; done
+
 # Source additional configurations
 for f in "${ZDOTDIR:-$HOME}"/sources/*.zsh; do source "${f}"; done
 # removed custom source - mark for cleanup and defer removal
