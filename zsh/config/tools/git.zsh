@@ -151,3 +151,44 @@ git_worktree_widget() {
 zle -N git_worktree_widget git_worktree_widget
 bindkey '^gw' git_worktree_widget
 bindkey '^g^w' git_worktree_widget
+
+# Worktree quick cd by branch name
+wtcd() {
+  local branch="$1"
+  if [[ -z "$branch" ]]; then
+    echo "usage: wtcd <branch>"
+    return 1
+  fi
+
+  if ! _is_git_repo; then
+    echo "wtcd: not in a git worktree"
+    return 1
+  fi
+
+  local path
+  path=$(git worktree list --porcelain | awk -v b="$branch" '
+    $1=="worktree" { p=$2 }
+    $1=="branch" {
+      br=$2
+      sub("^refs/heads/", "", br)
+      if (br == b) { print p; exit }
+    }
+  ')
+
+  if [[ -z "$path" ]]; then
+    echo "no worktree for $branch"
+    return 1
+  fi
+
+  if [[ ! -d "$path" ]]; then
+    echo "worktree path missing: $path"
+    echo "consider: git worktree prune"
+    return 1
+  fi
+
+  cd "$path"
+}
+
+if (( $+functions[compdef] )) && (( $+functions[_git] )); then
+  compdef _git wtcd=git-switch
+fi
