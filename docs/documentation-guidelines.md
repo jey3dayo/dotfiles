@@ -1,42 +1,51 @@
 # 📚 ドキュメント管理体系
 
-**最終更新**: 2025-10-17
+**最終更新**: 2025-11-27
 **対象**: 開発者・運用担当者
 **タグ**: `category/documentation`, `audience/developer`, `layer/support`
 
 ## 📋 概要
 
-本文書では、dotfilesプロジェクトのドキュメント管理体系、タグ分類システム、メタデータ形式の統一ルールを定義します。
+本文書では、dotfilesプロジェクトのドキュメント管理体系、タグ分類システム、メタデータ形式の統一ルールを定義します。ドキュメント追加・改訂時のチェックリストとして利用してください。
+
+## 🛠️ この文書の使い方（クイックチェック）
+
+- [ ] メタデータを更新する（最終更新・対象・タグ）
+- [ ] タグを3–5個選び、`category/` `tool/` `layer/` `environment/` `audience/` のバランスを取る
+- [ ] マッピング表の行を追加・更新し、成熟度/難易度/更新頻度を見直す
+- [ ] サイズが500行以内か確認（1000行超は必ず分割計画）。**zsh.md (870行) は分割候補**
+- [ ] 相互リンクと外部リンクを確認（CIリンク切れチェックも活用）
+- [ ] パフォーマンスへ影響する変更は数値・測定方法を併記
 
 ## 🏷️ タグ体系
 
-タグは以下の接頭辞付き形式を使用します：`category/値`, `tool/値`, `layer/値`, `environment/値`, `audience/値`
+タグは接頭辞付き形式で統一します：`category/値`, `tool/値`, `layer/値`, `environment/値`, `audience/値`
 
 ### カテゴリタグ (`category/`)
 
-- `category/shell` - Shell (Zsh) 関連の設定・最適化
-- `category/editor` - エディタ (Neovim) 関連
-- `category/terminal` - ターミナル (WezTerm, Tmux, Alacritty) 関連
-- `category/git` - Git ワークフロー・ツール統合
-- `category/performance` - パフォーマンス最適化・測定
-- `category/integration` - ツール間統合・連携
-- `category/configuration` - 各種設定ファイル管理
-- `category/guide` - 実装ガイド・手順書
-- `category/reference` - リファレンス・仕様書
+- `category/shell` - Shell (Zsh) 関連
+- `category/editor` - エディタ (Neovim)
+- `category/terminal` - ターミナル (WezTerm, Tmux, Alacritty)
+- `category/git` - Git ワークフロー・統合
+- `category/performance` - パフォーマンス測定・最適化
+- `category/integration` - ツール間連携
+- `category/configuration` - 設定ファイル管理
+- `category/guide` - 手順書・実装ガイド
+- `category/reference` - リファレンス・仕様
 - `category/maintenance` - メンテナンス手順
-- `category/documentation` - ドキュメント管理関連
+- `category/documentation` - ドキュメント管理
 
 ### ツールタグ (`tool/`)
 
-- `tool/zsh` - Zsh シェル（起動時間1.1s目標）
-- `tool/nvim` - Neovim エディタ（<100ms起動）
-- `tool/wezterm` - WezTerm ターミナル
-- `tool/tmux` - Tmux マルチプレクサ
-- `tool/git` - Git バージョン管理
-- `tool/fzf` - Fuzzy Finder 統合
-- `tool/ssh` - SSH 設定管理
-- `tool/mise` - バージョン管理ツール
-- `tool/homebrew` - パッケージ管理
+- `tool/zsh`（起動目標1.1s）
+- `tool/nvim`（<100ms起動）
+- `tool/wezterm`
+- `tool/tmux`
+- `tool/git`
+- `tool/fzf`
+- `tool/ssh`
+- `tool/mise`
+- `tool/homebrew`
 
 ### 層タグ (`layer/`) - dotfiles特有
 
@@ -46,16 +55,16 @@
 
 ### 環境タグ (`environment/`)
 
-- `environment/macos` - macOS 固有
-- `environment/linux` - Linux 互換
-- `environment/cross-platform` - プラットフォーム非依存
+- `environment/macos`
+- `environment/linux`
+- `environment/cross-platform`
 
 ### 対象者タグ (`audience/`)
 
-- `audience/developer` - 開発者向け
-- `audience/ops` - 運用担当者向け
-- `audience/beginner` - 初心者向け
-- `audience/advanced` - 上級者向け
+- `audience/developer`
+- `audience/ops`
+- `audience/beginner`
+- `audience/advanced`
 
 ## 📝 メタデータ形式
 
@@ -71,9 +80,14 @@
 
 ### 必須項目
 
-- **最終更新**: YYYY-MM-DD形式
-- **対象**: 対象者タグから選択（複数可）
-- **タグ**: 接頭辞付きカテゴリ・ツール・層・環境タグの組み合わせ（3-5個推奨）
+- **最終更新**: YYYY-MM-DD形式。内容を改訂した日に更新する。
+- **対象**: 対象者タグから選択（複数可）。原則 `audience/` を含める。
+- **タグ**: 接頭辞付きタグを3–5個。`category/` と `layer/` を最低1つずつ含める。
+
+### 推奨追加
+
+- 依存する設定ファイル・スクリプトへのパス
+- 関連ドキュメントへの相互リンク
 
 ## 📊 ドキュメントマッピング表
 
@@ -109,32 +123,24 @@
 
 ### 推奨サイズガイドライン
 
-- **推奨サイズ**: 500行以内
-  - Claude Code が一度に全文を把握可能
-  - 読みやすく管理しやすい分量
+- **推奨サイズ**: 500行以内（Claude Code が全文把握しやすい）
+- **警告サイズ**: 1000行（分割計画を必ず検討）
+- **上限サイズ**: 2000行（強制分割）
 
-- **警告サイズ**: 1000行
-  - 分割を検討開始
-  - セクション単位での分離を計画
+### 現在のドキュメントサイズ（2025-11-27 時点）
 
-- **上限サイズ**: 2000行
-  - 必ず分割が必要
-  - Claude Code の読み込み制限に近い
-
-### 現在のドキュメントサイズ
-
-| ファイル名                       | 行数  | 状態    |
-| -------------------------------- | ----- | ------- |
-| docs/tools/zsh.md                | 480行 | ✅ 適切 |
-| docs/tools/nvim.md               | 350行 | ✅ 適切 |
-| docs/tools/wezterm.md            | 280行 | ✅ 適切 |
-| docs/tools/fzf-integration.md    | 420行 | ✅ 適切 |
-| docs/performance.md              | 250行 | ✅ 適切 |
-| docs/setup.md                    | 320行 | ✅ 適切 |
-| docs/maintenance.md              | 290行 | ✅ 適切 |
-| docs/tools/ssh.md                | 180行 | ✅ 適切 |
-| docs/documentation-guidelines.md | 160行 | ✅ 適切 |
-| docs/README.md                   | 150行 | ✅ 適切 |
+| ファイル名                       | 行数 | 状態                |
+| -------------------------------- | ---- | ------------------- |
+| docs/tools/zsh.md                | 870  | ⚠️ 分割検討（超過） |
+| docs/tools/nvim.md               | 301  | ✅ 適切              |
+| docs/tools/wezterm.md            | 132  | ✅ 適切              |
+| docs/tools/fzf-integration.md    | 283  | ✅ 適切              |
+| docs/tools/ssh.md                | 198  | ✅ 適切              |
+| docs/performance.md              | 286  | ✅ 適切              |
+| docs/setup.md                    | 67   | ✅ 適切              |
+| docs/maintenance.md              | 140  | ✅ 適切              |
+| docs/README.md                   | 85   | ✅ 適切              |
+| docs/documentation-guidelines.md | 277  | ✅ 適切              |
 
 ## 📂 分割基準と方法
 
@@ -157,6 +163,7 @@
 - **レベル別分割**: 基本設定と高度な最適化を分離
 - **層別分割**: Core/Tool/Support 層ごとに分離
 - **段階別分割**: セットアップ、運用、トラブルシューティングで分離
+- **zsh.md 分割候補例**: 基本設定 / プラグイン管理 / パフォーマンス計測・チューニング / トラブルシュート
 
 ## 🔍 ドキュメント健全性チェック
 
@@ -173,6 +180,7 @@
 - **参照整合性**: 相互参照の有効性確認
 - **メタデータ完全性**: 必須項目の記載確認
 - **フォーマット統一**: `mise format` による自動整形
+- **サイズ監視**: `wc -l docs/**/*.md` で閾値確認（zsh.md は優先的に分割計画）
 
 ## 📊 品質指標
 
@@ -265,6 +273,7 @@
 
 ## 📝 更新履歴
 
+- **2025-11-27**: クイックチェックリスト追加・サイズ実測更新・zsh.md 分割候補を明示
 - **2025-10-17**: 全ドキュメントへの audience タグ適用・日付統一
   - 全11ドキュメントに `audience/` タグを追加
   - `最終更新` 日付を 2025-10-17 に統一
