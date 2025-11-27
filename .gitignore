@@ -191,7 +191,6 @@ repomix-output.txt
 .repomixignore
 
 .ignore
-.mise.toml
 services/cagra-web
 services/cygate-web/net
 vendor

@@ -1,35 +1,10 @@
 # ========================================
-# グローバル mise 設定
-# 個人用の共通ツールとタスク定義
+# ~/.config 配下のみで有効にする mise タスク
+# グローバル設定は mise/config.toml へ分離
 # ========================================
 
-# === ツールのバージョン管理 ===
-[tools]
-actionlint = "latest"     # GitHub Actions workflow lint
-biome = "latest"
-fd = "latest"
-go = "1.23.3"
-node = "22.20.0"
-prettier = "latest"
-stylua = "latest"
-shfmt = "latest"
-luajit = "latest"
-yamllint = "latest"       # YAML lint
-"npm:markdownlint-cli2" = "latest"
-"npm:markdown-link-check" = "latest"
-
-# === 設定 ===
-[settings]
-env_file = '.env'
-experimental = true
-jobs = 8  # デフォルトの並列実行数
-vfox = false
-idiomatic_version_file_enable_tools = ["go"]
-trusted_config_paths = ["~/src/github.com"]
-
-# === 環境変数 ===
 [env]
-_.source = [".venv/bin/activate"]
+# yamllint 設定パスは dotfiles ルート基準
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 
 # ========================================

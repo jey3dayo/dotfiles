@@ -1,0 +1,31 @@
+# ========================================
+# グローバル mise 設定（ツール・共通設定のみ）
+# ~/.config/mise/config.toml
+# ========================================
+
+[settings]
+env_file = '.env'
+experimental = true
+jobs = 8  # デフォルトの並列実行数
+vfox = false
+idiomatic_version_file_enable_tools = ["go"]
+trusted_config_paths = ["~/src/github.com", ".", "/private/var/folders"]
+
+# グローバルで共有したい環境設定
+[env]
+_.source = [".venv/bin/activate"]
+
+# グローバルで有効にするツール定義
+[tools]
+actionlint = "latest"     # GitHub Actions workflow lint
+biome = "latest"
+fd = "latest"
+go = "1.23.3"
+node = "22.20.0"
+prettier = "latest"
+stylua = "latest"
+shfmt = "latest"
+luajit = "latest"
+yamllint = "latest"       # YAML lint
+"npm:markdownlint-cli2" = "latest"
+"npm:markdown-link-check" = "latest"
