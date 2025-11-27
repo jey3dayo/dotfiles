@@ -5,7 +5,7 @@ load_tool_settings() {
   local config_dir="$1"
 
   # Critical tools - immediate load (minimal set)
-  for critical_tool in fzf git mise; do
+  for critical_tool in fzf git mise starship; do
     [[ -f "$config_dir/tools/$critical_tool.zsh" ]] &&
       source "$config_dir/tools/$critical_tool.zsh"
   done
@@ -16,14 +16,13 @@ load_tool_settings() {
     # Skip already loaded critical tools
     [[ "$tool_name" == "fzf" || "$tool_name" == "git" || "$tool_name" == "mise" ]] && continue
 
-    if (( $+functions[zsh-defer] )); then
+    if (($ + functions[zsh - defer])); then
       # Optimized staggered loading for minimal startup impact
       case "$tool_name" in
-      brew) zsh-defer -t 3 source "$tool_file" ;;      # Load after mise for proper priority
-      starship) zsh-defer -t 5 source "$tool_file" ;;  # Load after brew to ensure PATH is set
-      debug) zsh-defer -t 15 source "$tool_file" ;;    # Debug tools rarely needed at startup
-      gh) zsh-defer -t 8 source "$tool_file" ;;        # GitHub tools - moderate priority
-      *) zsh-defer -t 12 source "$tool_file" ;;        # Everything else - low priority
+      brew) zsh-defer -t 3 source "$tool_file" ;;   # Load after mise for proper priority
+      debug) zsh-defer -t 15 source "$tool_file" ;; # Debug tools rarely needed at startup
+      gh) zsh-defer -t 8 source "$tool_file" ;;     # GitHub tools - moderate priority
+      *) zsh-defer -t 12 source "$tool_file" ;;     # Everything else - low priority
       esac
     else
       source "$tool_file"

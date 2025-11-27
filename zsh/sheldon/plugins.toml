@@ -63,7 +63,7 @@ apply = ["defer"]
 # Syntax highlighting - must be last
 [plugins.fast-syntax-highlighting]
 github = "zdharma-continuum/fast-syntax-highlighting"
-apply = ["defer"]
+apply = ["source"]
 
 [plugins.zoxide.hooks]
 post = '''
