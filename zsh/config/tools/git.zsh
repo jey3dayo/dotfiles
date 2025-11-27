@@ -191,12 +191,13 @@ wtcd() {
 
 # Dedicated completion (decoupled from git's _git to avoid __git_find_on_cmdline errors)
 _wtcd() {
+  emulate -L zsh
   _is_git_repo || return 1
   local -a wt_branches
   wt_branches=(${(f)"$(git worktree list --porcelain | awk '
-    $1==\"branch\" {
+    $1=="branch" {
       br=$2
-      sub(\"^refs/heads/\", \"\", br)
+      sub("^refs/heads/", "", br)
       print br
     }
   ')"})
@@ -205,12 +206,16 @@ _wtcd() {
 
 # Completion setup that overwrites any _git fallback
 _wtcd_register_completion() {
-  typeset -gA _comps _compskip
-  _comps[wtcd]=_wtcd
-  unset '_compskip[wtcd]'
+  (( $+functions[compdef] )) || return 1
+  compdef -d wtcd 2>/dev/null
+  compdef _wtcd wtcd
 }
 
-# Apply now (after compinit has run) and ensure it reapplies post-compinit if needed
-_wtcd_register_completion 2>/dev/null
-typeset -g -a _post_compinit_hooks
-_post_compinit_hooks+=("_wtcd_register_completion")
+# Apply now; if compinit isn't ready, queue a hook for later
+if ! _wtcd_register_completion 2>/dev/null; then
+  typeset -g -a _post_compinit_hooks
+  _post_compinit_hooks+=("_wtcd_register_completion")
+fi
+
+autoload -Uz add-zsh-hook 2>/dev/null
+(( $+functions[add-zsh-hook] )) && add-zsh-hook -Uz precmd _wtcd_register_completion
