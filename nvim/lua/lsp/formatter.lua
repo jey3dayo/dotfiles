@@ -5,12 +5,17 @@ local config = require "lsp.config"
 
 local M = {}
 
+local function resolve_bufnr(bufnr)
+  if not bufnr or bufnr == 0 then return vim.api.nvim_get_current_buf() end
+  return bufnr
+end
+
 -- Helper function to get conform status
-local function get_conform_formatters()
+local function get_conform_formatters(bufnr)
   local ok, conform = pcall(require, "conform")
   if not ok then return {} end
 
-  local formatters = conform.list_formatters(0)
+  local formatters = conform.list_formatters(bufnr or 0)
   local available = {}
   for _, formatter in ipairs(formatters) do
     if formatter.available then table.insert(available, formatter.name) end
@@ -104,43 +109,47 @@ end
 
 -- Safe command creation
 local function create_format_command(bufnr, options)
-  local ok, err = pcall(format_buffer, bufnr, options)
+  local target = resolve_bufnr(bufnr)
+  local ok, err = pcall(format_buffer, target, options)
   if not ok then vim.notify("Format failed: " .. err, vim.log.levels.ERROR) end
 end
 
 -- Auto-format setup
 local _format_autocmd_registered = false
+local _format_commands_registered = false
 
-M.setup = function(bufnr, client, args)
-  if config.isDebug then
-    vim.notify(string.format("Setting up modern formatter for buffer: %d", bufnr), vim.log.levels.INFO)
-  end
+local function register_autocmd()
+  if _format_autocmd_registered then return end
+  _format_autocmd_registered = true
 
-  -- Global auto-format setup (once only)
-  if not _format_autocmd_registered then
-    _format_autocmd_registered = true
+  utils.autocmd("BufWritePre", {
+    pattern = "*",
+    callback = function(event)
+      local buf = event.buf
+      local buf_vars = vim.b[buf] or {}
 
-    utils.autocmd("BufWritePre", {
-      pattern = "*",
-      callback = function(event)
-        local buf = event.buf
+      -- Check if auto-format is disabled
+      if vim.g.disable_autoformat or buf_vars.disable_autoformat then return end
 
-        -- Check if auto-format is disabled
-        if vim.g.disable_autoformat or vim.b[buf].disable_autoformat then return end
+      create_format_command(buf)
+    end,
+  })
+end
 
-        create_format_command(buf)
-      end,
-    })
-  end
+local function register_commands()
+  if _format_commands_registered then return end
+  _format_commands_registered = true
 
-  -- Universal format command
+  -- Universal format command (targets current buffer)
   utils.user_command("Format", function()
-    create_format_command(bufnr)
+    create_format_command()
   end, { desc = "Format buffer with auto-detection" })
 
   -- Specific formatter commands
   local function create_specific_formatter_command(formatter_name)
     return function()
+      local bufnr = resolve_bufnr()
+
       -- First try conform.nvim
       if format_with_conform(bufnr, formatter_name) then return end
 
@@ -166,9 +175,10 @@ M.setup = function(bufnr, client, args)
   utils.user_command("FormatWithEslint", create_specific_formatter_command "eslint_d", { desc = "Format with ESLint" })
   utils.user_command("FormatWithTsLs", create_specific_formatter_command "ts_ls", { desc = "Format with TypeScript" })
 
-  -- Debug command
+  -- Debug command (uses current buffer)
   utils.user_command("FormatInfo", function()
-    local conform_formatters = get_conform_formatters()
+    local bufnr = resolve_bufnr()
+    local conform_formatters = get_conform_formatters(bufnr)
     local lsp_clients = vim.tbl_map(function(c)
       return c.name
     end, vim.lsp.get_clients { bufnr = bufnr })
@@ -179,6 +189,15 @@ M.setup = function(bufnr, client, args)
 
     vim.notify(msg, vim.log.levels.INFO)
   end, { desc = "Show formatting info" })
+end
+
+M.setup = function(bufnr, client, args)
+  if config.isDebug then
+    vim.notify(string.format("Setting up modern formatter for buffer: %d", bufnr), vim.log.levels.INFO)
+  end
+
+  register_autocmd()
+  register_commands()
 end
 
 return M
