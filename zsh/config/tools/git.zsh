@@ -189,6 +189,28 @@ wtcd() {
   cd "$wt_path"
 }
 
-if (( $+functions[compdef] )) && (( $+functions[_git] )); then
-  compdef _git wtcd=git-switch
-fi
+# Dedicated completion (decoupled from git's _git to avoid __git_find_on_cmdline errors)
+_wtcd() {
+  _is_git_repo || return 1
+  local -a wt_branches
+  wt_branches=(${(f)"$(git worktree list --porcelain | awk '
+    $1==\"branch\" {
+      br=$2
+      sub(\"^refs/heads/\", \"\", br)
+      print br
+    }
+  ')"})
+  compadd -a wt_branches
+}
+
+# Completion setup that overwrites any _git fallback
+_wtcd_register_completion() {
+  typeset -gA _comps _compskip
+  _comps[wtcd]=_wtcd
+  unset '_compskip[wtcd]'
+}
+
+# Apply now (after compinit has run) and ensure it reapplies post-compinit if needed
+_wtcd_register_completion 2>/dev/null
+typeset -g -a _post_compinit_hooks
+_post_compinit_hooks+=("_wtcd_register_completion")
