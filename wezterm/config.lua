@@ -2,15 +2,16 @@ local wezterm = require "wezterm"
 local utils = require "./utils"
 local ui = require "./ui"
 local keybinds = require "./keybinds"
-local os = require "./os"
+local os_config = require "./os"
 local events = require "./events"
-local gpus = {}
-if wezterm.gui and wezterm.gui.enumerate_gpus then gpus = wezterm.gui.enumerate_gpus() end
 
--- Register all event handlers
+-- Register all event handlers before building the final config
 events.register_events()
 
-local config = {
+-- Start from the builder so wezterm can apply defaults and validation
+local config = wezterm.config_builder and wezterm.config_builder() or {}
+
+local base_config = {
   use_ime = true,
   send_composed_key_when_left_alt_is_pressed = true,
   send_composed_key_when_right_alt_is_pressed = true,
@@ -20,7 +21,15 @@ local config = {
   scrollback_lines = 5000,
 }
 
--- https://github.com/wez/wezterm/issues/2756
-if gpus and gpus[1] then config.webgpu_preferred_adapter = gpus[1] end
+if wezterm.gui and wezterm.gui.enumerate_gpus then
+  local gpus = wezterm.gui.enumerate_gpus()
+  -- https://github.com/wez/wezterm/issues/2756
+  if gpus and gpus[1] then base_config.webgpu_preferred_adapter = gpus[1] end
+end
 
-return utils.object_assign(ui, keybinds, os, config)
+utils.merge_tables(config, base_config)
+utils.merge_tables(config, ui)
+utils.merge_tables(config, keybinds)
+utils.merge_tables(config, os_config)
+
+return config

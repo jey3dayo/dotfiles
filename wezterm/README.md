@@ -175,9 +175,6 @@ convert_useful_path(path)
 ### Table Operations
 
 ```lua
--- Merge configuration objects
-object_assign(target, source)
-
 -- Concatenate arrays
 array_concat(array1, array2)
 

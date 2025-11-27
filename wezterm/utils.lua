@@ -96,17 +96,6 @@ function M.split_from_url(dir)
   return hostname, cwd
 end
 
-function M.object_assign(target, ...)
-  local sources = { ... }
-  for i = 1, #sources do
-    local source = sources[i]
-    for key in pairs(source) do
-      target[key] = source[key]
-    end
-  end
-  return target
-end
-
 local function is_array(value)
   return type(value) == "table" and (value[1] ~= nil or next(value) == nil)
 end

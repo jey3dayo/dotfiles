@@ -4,39 +4,6 @@ local constants = require "./constants"
 
 local act = wezterm.action
 
--- Resize mode state
-local resize_mode_active = false
-
--- Track resize mode activation
-wezterm.on("activate-resize-mode", function(window, pane)
-  resize_mode_active = true
-  window:set_right_status " 🔧 RESIZE "
-  window:toast_notification("wezterm", "Resize mode activated", nil, 1000)
-
-  -- Set a timer to clear the status after timeout
-  wezterm.time.call_after(3, function()
-    if resize_mode_active then
-      resize_mode_active = false
-      window:set_right_status ""
-    end
-  end)
-end)
-
--- Track resize mode deactivation
-wezterm.on("deactivate-resize-mode", function(window, pane)
-  resize_mode_active = false
-  window:set_right_status ""
-end)
-
--- Update status on various events
-wezterm.on("update-status", function(window, pane)
-  if resize_mode_active then
-    window:set_right_status " 🔧 RESIZE "
-  else
-    window:set_right_status ""
-  end
-end)
-
 local default_keybinds = {
   { key = "n", mods = "SUPER", action = act.SpawnWindow },
   { key = "w", mods = "SUPER", action = act { CloseCurrentTab = { confirm = true } } },

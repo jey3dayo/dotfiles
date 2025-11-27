@@ -3,6 +3,7 @@ local constants = require "./constants"
 local utils = require "./utils"
 
 local M = {}
+local resize_mode_active = false
 
 -- Format tab title
 function M.format_tab_title(tab, tabs, _, _, hover, max_width)
@@ -63,6 +64,27 @@ function M.format_tab_title(tab, tabs, _, _, hover, max_width)
   }
 end
 
+local function set_resize_status(window, active)
+  resize_mode_active = active
+  window:set_right_status(active and " 🔧 RESIZE " or "")
+end
+
+-- Resize mode handlers
+function M.activate_resize_mode(window, _)
+  set_resize_status(window, true)
+  window:toast_notification("wezterm", "Resize mode activated", nil, 1000)
+
+  wezterm.time.call_after(3, function()
+    if resize_mode_active then
+      set_resize_status(window, false)
+    end
+  end)
+end
+
+function M.deactivate_resize_mode(window, _)
+  set_resize_status(window, false)
+end
+
 -- Opacity adjustment handlers
 function M.increase_opacity(window, _)
   local overrides = window:get_config_overrides() or {}
@@ -107,12 +129,18 @@ end
 
 -- Status update handler for showing mode indicators
 function M.update_status(window, pane)
-  -- This will be overridden by keybinds.lua to show resize mode status
+  if resize_mode_active then
+    window:set_right_status " 🔧 RESIZE "
+  else
+    window:set_right_status ""
+  end
 end
 
 -- Register all event handlers
 function M.register_events()
   wezterm.on("format-tab-title", M.format_tab_title)
+  wezterm.on("activate-resize-mode", M.activate_resize_mode)
+  wezterm.on("deactivate-resize-mode", M.deactivate_resize_mode)
   wezterm.on("increase-opacity", M.increase_opacity)
   wezterm.on("decrease-opacity", M.decrease_opacity)
   wezterm.on("reset-opacity", M.reset_opacity)
