@@ -38,21 +38,6 @@ setopt rm_star_silent
 setopt rm_star_wait
 setopt share_history
 autoload zed
-# source command override technique
-function source {
-  ensure_zcompiled $1
-  builtin source "$@"
-}
-function ensure_zcompiled {
-  if [[ "$1" == *.zsh ]] || [[ "$1" == *.zshrc ]]; then
-    local compiled="$1.zwc"
-    if [[ ! -r "$compiled" || "$1" -nt "$compiled" ]]; then
-      echo "\033[1;36mCompiling\033[m $1"
-      zcompile $1
-    fi
-  fi
-}
-ensure_zcompiled $ZDOTDIR/.zshrc
 if [ -f "$XDG_CONFIG_HOME/.env" ]; then
   source "$XDG_CONFIG_HOME/.env"
 fi
@@ -61,15 +46,4 @@ for f in "${ZDOTDIR:-$HOME}"/init/*.zsh; do source "${f}"; done
 
 # Source additional configurations
 for f in "${ZDOTDIR:-$HOME}"/sources/*.zsh; do source "${f}"; done
-# removed custom source - mark for cleanup and defer removal
-_cleanup_custom_source() {
-  if (( $+functions[source] )) && [[ "$(whence -v source)" == *"ensure_zcompiled"* ]]; then
-    unfunction source 2>/dev/null || true
-  fi
-}
-if (( $+functions[zsh-defer] )); then
-  zsh-defer _cleanup_custom_source
-else
-  _cleanup_custom_source
-fi
 # vim: set syntax=zsh:
