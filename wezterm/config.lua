@@ -15,7 +15,8 @@ local config = {
   send_composed_key_when_left_alt_is_pressed = true,
   send_composed_key_when_right_alt_is_pressed = true,
   enable_csi_u_key_encoding = false,
-  front_end = "WebGpu",
+  front_end = "OpenGL",
+  max_fps = 60,
   scrollback_lines = 5000,
 }
 
