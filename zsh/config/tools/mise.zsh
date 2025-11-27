@@ -1,19 +1,10 @@
 export MISE_DATA_DIR=$HOME/.mise
 export MISE_CACHE_DIR=$MISE_DATA_DIR/cache
 
-if ! command -v mise >/dev/null 2>&1; then
-  return
-fi
-
-# Check if mise is already activated (by .zprofile)
-# If not activated, activate it now
-if ! (( $+functions[_mise_hook] )); then
-  eval "$(mise activate zsh)"
-  # Force initial hook execution to set up PATH correctly
-  if (( $+functions[_mise_hook] )); then
-    _mise_hook
-  fi
-fi
+command -v mise >/dev/null 2>&1 || return
+# Activation is handled in .zprofile (login shell)。ここでは補完・ユーティリティのみ。
+# 非ログインシェルで未活性の場合はスキップして早期リターン。
+(( $+functions[_mise_hook] )) || return
 
 # Defer only the completion for startup performance
 if (( $+functions[zsh-defer] )); then
