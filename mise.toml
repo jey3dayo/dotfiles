@@ -30,6 +30,7 @@ trusted_config_paths = ["~/src/github.com"]
 # === 環境変数 ===
 [env]
 _.source = [".venv/bin/activate"]
+YAMLLINT_CONFIG_FILE = "yamllint/config"
 
 # ========================================
 # ドキュメント管理
@@ -37,11 +38,11 @@ _.source = [".venv/bin/activate"]
 
 [tasks."docs:lint"]
 description = "Markdown lint チェック（グローバル設定使用）"
-run = "markdownlint-cli2 '**/*.md' '#node_modules'"
+run = "markdownlint-cli2 '**/*.md' '#node_modules' '#tmux/plugins' '#fisher' '#zsh/.zinit'"
 
 [tasks."docs:fix"]
 description = "Markdown 自動修正（グローバル設定使用）"
-run = "markdownlint-cli2 --fix '**/*.md' '#node_modules'"
+run = "markdownlint-cli2 --fix '**/*.md' '#node_modules' '#tmux/plugins' '#fisher' '#zsh/.zinit'"
 
 [tasks."docs:links"]
 description = "Markdown リンクチェック"
@@ -80,7 +81,7 @@ run = "biome check --formatter-enabled=true --linter-enabled=false ."
 [tasks."format:markdown"]
 description = "Markdown ファイルをフォーマット"
 run = [
-  "markdownlint-cli2 --fix '**/*.md'",
+  "markdownlint-cli2 --fix '**/*.md' '#node_modules' '#tmux/plugins' '#fisher' '#zsh/.zinit'",
   "fd -e md -X prettier --write",
 ]
 
@@ -132,7 +133,10 @@ run = "biome check ."
 
 [tasks."lint:markdown"]
 description = "Markdown ファイルをチェック"
-run = ["markdownlint-cli2 '**/*.md'", "fd -e md -X prettier --check"]
+run = [
+  "markdownlint-cli2 '**/*.md' '#node_modules' '#tmux/plugins' '#fisher' '#zsh/.zinit'",
+  "fd -e md -X prettier --check",
+]
 
 [tasks."lint:yaml"]
 description = "YAML ファイルをチェック（prettier + yamllint）"
@@ -168,7 +172,7 @@ depends = ["update:submodules", "update:brew", "update:external-repos"]
 
 [tasks."update:submodules"]
 description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
-run = "git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote"
+run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote; else echo 'No submodules configured, skipping'; fi"
 
 [tasks."update:brew"]
 description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
@@ -177,7 +181,7 @@ run = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade --fo
 [tasks."update:external-repos"]
 description = "外部 Git リポジトリを更新（強制リセット）"
 run = [
-  "cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd",
+  "if [ -d ~/src/github.com/brookhong/Surfingkeys ]; then cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd; else echo 'Skip: ~/src/github.com/brookhong/Surfingkeys not found'; fi",
 ]
 
 # ========================================
