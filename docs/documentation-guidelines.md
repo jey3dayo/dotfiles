@@ -132,15 +132,15 @@
 | ファイル名                       | 行数 | 状態                |
 | -------------------------------- | ---- | ------------------- |
 | docs/tools/zsh.md                | 870  | ⚠️ 分割検討（超過） |
-| docs/tools/nvim.md               | 301  | ✅ 適切              |
-| docs/tools/wezterm.md            | 132  | ✅ 適切              |
-| docs/tools/fzf-integration.md    | 283  | ✅ 適切              |
-| docs/tools/ssh.md                | 198  | ✅ 適切              |
-| docs/performance.md              | 286  | ✅ 適切              |
-| docs/setup.md                    | 67   | ✅ 適切              |
-| docs/maintenance.md              | 140  | ✅ 適切              |
-| docs/README.md                   | 85   | ✅ 適切              |
-| docs/documentation-guidelines.md | 277  | ✅ 適切              |
+| docs/tools/nvim.md               | 301  | ✅ 適切             |
+| docs/tools/wezterm.md            | 132  | ✅ 適切             |
+| docs/tools/fzf-integration.md    | 283  | ✅ 適切             |
+| docs/tools/ssh.md                | 198  | ✅ 適切             |
+| docs/performance.md              | 286  | ✅ 適切             |
+| docs/setup.md                    | 67   | ✅ 適切             |
+| docs/maintenance.md              | 140  | ✅ 適切             |
+| docs/README.md                   | 85   | ✅ 適切             |
+| docs/documentation-guidelines.md | 277  | ✅ 適切             |
 
 ## 📂 分割基準と方法
 

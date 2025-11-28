@@ -448,6 +448,14 @@ return {
     end,
   },
 
+  -- Split/Join (replacement for treesj)
+  {
+    "echasnovski/mini.splitjoin",
+    version = false,
+    event = "VeryLazy",
+    opts = {},
+  },
+
   -- Fuzzy matching
   {
     "echasnovski/mini.fuzzy",
