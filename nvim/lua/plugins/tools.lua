@@ -1,3 +1,5 @@
+local deps = require "core.dependencies"
+
 return {
   {
     "lambdalisue/suda.vim",
@@ -14,6 +16,7 @@ return {
     "folke/trouble.nvim",
     opts = {},
     cmd = "Trouble",
+    dependencies = { deps.devicons },
     keys = {
       {
         "<leader>x",

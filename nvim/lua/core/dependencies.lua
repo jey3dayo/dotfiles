@@ -1,19 +1,17 @@
 local M = {}
 
 -- Core dependencies used across multiple plugins
-M.plenary = { "nvim-lua/plenary.nvim" }
+M.plenary = { "nvim-lua/plenary.nvim", lazy = true }
+M.sqlite = { "kkharji/sqlite.lua", lazy = true }
+M.devicons = { "nvim-tree/nvim-web-devicons", lazy = true }
+M.icons = { "echasnovski/mini.icons", version = false, lazy = true }
+
 M.treesitter = { "nvim-treesitter/nvim-treesitter" }
+M.ts_context_commentstring = { "JoosepAlviste/nvim-ts-context-commentstring" }
+
 M.lspconfig = { "neovim/nvim-lspconfig" }
-M.mini_icons = { "echasnovski/mini.icons" }
 M.mason = { "williamboman/mason.nvim" }
 M.fugitive = { "tpope/vim-fugitive" }
-M.context_filetype = { "Shougo/context_filetype.vim" }
 M.nui = { "MunifTanjim/nui.nvim" }
-
--- Combined dependencies for common use cases
-M.treesitter_with_icons = {
-  "echasnovski/mini.icons",
-  "JoosepAlviste/nvim-ts-context-commentstring",
-}
 
 return M

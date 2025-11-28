@@ -11,7 +11,7 @@ return {
   },
   {
     "sindrets/diffview.nvim",
-    dependencies = deps.plenary,
+    dependencies = { deps.plenary, deps.devicons },
     cmd = {
       "DiffviewOpen",
       "DiffviewClose",

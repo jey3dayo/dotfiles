@@ -1,5 +1,7 @@
--- Mini.nvim ecosystem configuration
+-- Editing stack built around mini.nvim plus a few focused helpers
 -- Based on https://zenn.dev/kawarimidoll/books/6064bf6f193b51
+local deps = require "core.dependencies"
+
 return {
   -- Extra utilities
   {
@@ -31,6 +33,13 @@ return {
         options = { try_as_border = true },
       }
     end,
+  },
+
+  -- Input method switcher
+  {
+    "keaising/im-select.nvim",
+    event = "InsertEnter",
+    opts = require "config/im-select",
   },
 
   -- Extra utilities (required by many mini plugins)
@@ -156,6 +165,7 @@ return {
     "echasnovski/mini.ai",
     version = false,
     event = "VeryLazy",
+    dependencies = { "echasnovski/mini.extra" },
     config = function()
       local gen = require("mini.extra").gen_ai_spec
       require("mini.ai").setup {
@@ -209,6 +219,14 @@ return {
         },
       }
     end,
+  },
+
+  -- Auto tag handling for markup/JSX
+  {
+    "windwp/nvim-ts-autotag",
+    ft = { "html", "xml", "tsx", "vue", "svelte", "astro" },
+    dependencies = { deps.treesitter },
+    opts = {},
   },
 
   -- File explorer
@@ -322,6 +340,7 @@ return {
     "echasnovski/mini.comment",
     version = false,
     event = "VeryLazy",
+    dependencies = { deps.ts_context_commentstring },
     config = function()
       require("mini.comment").setup {
         options = {
@@ -369,6 +388,56 @@ return {
         treesitter = { suffix = "t" },
       }
     end,
+  },
+
+  -- Flash search/motion
+  {
+    "folke/flash.nvim",
+    enabled = true,
+    event = "VeryLazy",
+    keys = {
+      { "t", mode = { "n", "x", "o" }, false },
+      {
+        "s",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").jump()
+        end,
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
+      },
+    },
   },
 
   -- Better jumps
@@ -448,12 +517,12 @@ return {
     end,
   },
 
-  -- Split/Join (replacement for treesj)
+  -- Split/Join for treesitter-aware edits
   {
-    "echasnovski/mini.splitjoin",
-    version = false,
-    event = "VeryLazy",
-    opts = {},
+    "Wansmer/treesj",
+    keys = { "<space>m", "<space>j", "<space>s" },
+    dependencies = { deps.treesitter },
+    opts = require "config/treesj",
   },
 
   -- Fuzzy matching

@@ -1,20 +1,30 @@
 local deps = require "core.dependencies"
 
 return {
-  { "nvim-tree/nvim-web-devicons", lazy = true },
-  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
   {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "TSUpdate", "TSInstall" },
-    dependencies = deps.treesitter_with_icons,
+    dependencies = { deps.ts_context_commentstring },
     opts = require "config/nvim-treesitter",
   },
-  { "andymass/vim-matchup", event = { "BufReadPost", "BufNewFile" }, dependencies = deps.treesitter },
+  {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    dependencies = { deps.treesitter },
+    opts = { enable_autocmd = false },
+    config = function(_, opts)
+      require("ts_context_commentstring").setup(opts)
+    end,
+  },
+  {
+    "andymass/vim-matchup",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { deps.treesitter },
+  },
   {
     "HiPhish/rainbow-delimiters.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    dependencies = deps.treesitter,
+    dependencies = { deps.treesitter },
     config = function()
       require "config/rainbow-delimiters"
     end,

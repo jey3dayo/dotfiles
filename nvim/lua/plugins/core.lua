@@ -1,8 +1,13 @@
 local deps = require "core.dependencies"
+local function dep(spec)
+  return vim.deepcopy(spec)
+end
 
 return {
-  { "nvim-lua/plenary.nvim", lazy = true },
-  { "kkharji/sqlite.lua", lazy = true },
+  dep(deps.plenary),
+  dep(deps.sqlite),
+  dep(deps.devicons),
+  dep(deps.icons),
   {
     "tpope/vim-repeat",
     event = "VeryLazy",
