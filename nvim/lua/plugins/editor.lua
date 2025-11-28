@@ -517,12 +517,12 @@ return {
     end,
   },
 
-  -- Split/Join for treesitter-aware edits
+  -- Split/Join (mini.splitjoin default keymaps, VeryLazy)
   {
-    "Wansmer/treesj",
-    keys = { "<space>m", "<space>j", "<space>s" },
-    dependencies = { deps.treesitter },
-    opts = require "config/treesj",
+    "echasnovski/mini.splitjoin",
+    version = false,
+    event = "VeryLazy",
+    opts = {},
   },
 
   -- Fuzzy matching
