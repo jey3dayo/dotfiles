@@ -1,23 +1,32 @@
 # ========================================
-# プロジェクト固有の mise 設定はここに追加
-# グローバルなタスク/設定は mise/config.toml に集約
-# depends を含むタスクはプロジェクトごとに調整したいためこちらに配置
+# ~/.config 配下のみで有効にする mise タスク
+# プロジェクト固有の集約・mac依存タスクをここで定義
 # ========================================
 
-# ========================================
-# 集約タスク（プロジェクト固有）
-# ========================================
-
+# 集約タスク（フォーマット系まとめ）
 [tasks.format]
 description = "コードとドキュメントの自動フォーマット"
 depends = [
   "format:biome",
   "format:markdown",
+  "format:toml",
   "format:yaml",
   "format:lua",
   "format:shell",
 ]
 
+[tasks.check]
+description = "全フォーマットチェック（書き込みなし、CI向け）- 並列実行"
+depends = [
+  "format:biome:check",
+  "format:markdown:check",
+  "format:toml:check",
+  "format:yaml:check",
+  "format:lua:check",
+  "format:shell:check",
+]
+
+# 集約タスク（Lintまとめ）
 [tasks.lint]
 description = "全体の品質チェック（GitHub Actions互換）- 並列実行"
 depends = [
@@ -28,32 +37,30 @@ depends = [
   "lint:shell",
 ]
 
-[tasks."lint:lua"]
-description = "Lua ファイルをチェック"
-depends = ["lint:lua:stylua", "lint:lua:luacheck"]
-
+# 更新タスク（mac/local 依存）
 [tasks.update]
 description = "すべての依存関係を更新"
 depends = ["update:submodules", "update:brew", "update:external-repos"]
 
+[tasks."update:submodules"]
+description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
+run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote; else echo 'No submodules configured, skipping'; fi"
+
+[tasks."update:brew"]
+description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
+run = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
+
+[tasks."update:external-repos"]
+description = "外部 Git リポジトリを更新（強制リセット）"
+run = [
+  "if [ -d ~/src/github.com/brookhong/Surfingkeys ]; then cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd; else echo 'Skip: ~/src/github.com/brookhong/Surfingkeys not found'; fi",
+]
+
+# CI/CD
 [tasks.ci]
 description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
 depends = ["lint", "lint:links"]
 
-[tasks.check]
-description = "全フォーマットチェック（書き込みなし、CI向け）- 並列実行"
-depends = [
-  "format:biome:check",
-  "format:markdown:check",
-  "format:yaml:check",
-  "format:lua:check",
-  "format:shell:check",
-]
-
-[tasks."docs"]
-description = "ドキュメント全体の検証（lint + リンク + YAML）"
-depends = ["docs:lint", "docs:links", "docs:yaml:lint"]
-
-[tasks."docs:all"]
-description = "ドキュメントの完全な検証とフォーマット"
-depends = ["docs:fix", "docs:links", "docs:yaml:lint"]
+[tasks."ci:install"]
+description = "CI に必要な追加ツールをインストール"
+run = "luarocks install --local luacheck"

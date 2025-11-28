@@ -6,21 +6,19 @@
 [settings]
 env_file = '.env'
 experimental = true
-jobs = 8                                                            # デフォルトの並列実行数
+jobs = 8  # デフォルトの並列実行数
 vfox = false
 idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
 
-# グローバルで共有したい環境設定
 [env]
 _.source = [".venv/bin/activate"]
-YAMLLINT_CONFIG_FILE = "~/.config/yamllint/config"                        # yamllint config location
+YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "'**/*.md'"
 MD_EXCLUDES = "'#node_modules' '#tmux/plugins' '#fisher' '#zsh/.zinit'"
 
-# グローバルで有効にするツール定義
 [tools]
-actionlint = "latest"                # GitHub Actions workflow lint
+actionlint = "latest"     # GitHub Actions workflow lint
 biome = "latest"
 fd = "latest"
 go = "1.23.3"
@@ -29,37 +27,10 @@ prettier = "latest"
 stylua = "latest"
 shfmt = "latest"
 luajit = "latest"
-yamllint = "latest"                  # YAML lint
+yamllint = "latest"       # YAML lint
 "npm:markdownlint-cli2" = "latest"
 "npm:markdown-link-check" = "latest"
-
-# ========================================
-# ドキュメント管理
-# ========================================
-
-[tasks."docs:lint"]
-description = "Markdown lint チェック（グローバル設定使用）"
-run = "markdownlint-cli2 ${MD_GLOB} ${MD_EXCLUDES}"
-
-[tasks."docs:fix"]
-description = "Markdown 自動修正（グローバル設定使用）"
-run = "markdownlint-cli2 --fix ${MD_GLOB} ${MD_EXCLUDES}"
-
-[tasks."docs:links"]
-description = "Markdown リンクチェック"
-run = "fd -e md -x markdown-link-check --config .markdown-link-check.json --quiet"
-
-[tasks."docs:links:verbose"]
-description = "Markdown リンクチェック（詳細モード）"
-run = "fd -e md -x markdown-link-check --config .markdown-link-check.json --verbose"
-
-[tasks."docs:yaml:lint"]
-description = "YAML ファイルの lint チェック"
-run = "yamllint .github/"
-
-# ========================================
-# フォーマット
-# ========================================
+taplo = "latest"
 
 [tasks."format:biome"]
 description = "JS/TS/JSON ファイルをフォーマット"
@@ -104,9 +75,21 @@ run = "fd -e sh -X shfmt -w"
 description = "シェルスクリプトのフォーマットチェック（書き込みなし）"
 run = "fd -e sh -X shfmt -d"
 
-# ========================================
-# Lint（品質チェック）
-# ========================================
+[tasks."format:toml"]
+description = "TOML ファイルをフォーマット"
+run = "taplo format ."
+
+[tasks."format:toml:check"]
+description = "TOML ファイルのフォーマットチェック（書き込みなし）"
+run = "taplo format --check ."
+
+[tasks."format:docs"]
+description = "ドキュメントの完全な検証とフォーマット"
+depends = ["format:markdown", "lint:links", "lint:yaml"]
+
+[tasks."lint:docs"]
+description = "ドキュメント全体の検証（lint + リンク + YAML）"
+depends = ["lint:markdown", "lint:links", "lint:yaml"]
 
 [tasks."lint:biome"]
 description = "JS/TS/JSON ファイルをチェック"
@@ -123,14 +106,6 @@ run = [
 description = "YAML ファイルをチェック（prettier + yamllint）"
 run = ["fd -e yml -e yaml -X prettier --check", "yamllint .github/"]
 
-[tasks."lint:lua:stylua"]
-description = "Stylua でコードスタイルをチェック"
-run = "stylua --check ."
-
-[tasks."lint:lua:luacheck"]
-description = "luacheck を実行（利用可能な場合）"
-run = "if command -v luacheck >/dev/null 2>&1; then luacheck .; fi"
-
 [tasks."lint:shell"]
 description = "シェルスクリプトをチェック"
 run = "fd -e sh -X shfmt -d"
@@ -139,32 +114,18 @@ run = "fd -e sh -X shfmt -d"
 description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
 run = "fd -e md -x markdown-link-check --config .markdown-link-check.json"
 
-# ========================================
-# プロジェクト更新
-# ========================================
+[tasks."lint:links:verbose"]
+description = "Markdown リンクチェック（詳細モード）"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json --verbose"
 
-[tasks."update:submodules"]
-description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
-run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote; else echo 'No submodules configured, skipping'; fi"
+[tasks."lint:lua"]
+description = "Lua ファイルをチェック"
+depends = ["lint:lua:stylua", "lint:lua:luacheck"]
 
-[tasks."update:brew"]
-description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
-run = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
+[tasks."lint:lua:stylua"]
+description = "Stylua でコードスタイルをチェック"
+run = "stylua --check ."
 
-[tasks."update:external-repos"]
-description = "外部 Git リポジトリを更新（強制リセット）"
-run = [
-  "if [ -d ~/src/github.com/brookhong/Surfingkeys ]; then cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd; else echo 'Skip: ~/src/github.com/brookhong/Surfingkeys not found'; fi",
-]
-
-# ========================================
-# CI/CD
-# ========================================
-
-[tasks."ci:install"]
-description = "CI に必要な追加ツールをインストール"
-run = "luarocks install --local luacheck"
-
-# ========================================
-# エイリアス（よく使うタスクのショートカット）
-# ========================================
+[tasks."lint:lua:luacheck"]
+description = "luacheck を実行（利用可能な場合）"
+run = "if command -v luacheck >/dev/null 2>&1; then luacheck .; fi"
