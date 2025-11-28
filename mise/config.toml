@@ -14,6 +14,9 @@ trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
 # グローバルで共有したい環境設定
 [env]
 _.source = [".venv/bin/activate"]
+YAMLLINT_CONFIG_FILE = "~/.config/yamllint/config"                        # yamllint config location
+MD_GLOB = "'**/*.md'"
+MD_EXCLUDES = "'#node_modules' '#tmux/plugins' '#fisher' '#zsh/.zinit'"
 
 # グローバルで有効にするツール定義
 [tools]
@@ -29,3 +32,139 @@ luajit = "latest"
 yamllint = "latest"                  # YAML lint
 "npm:markdownlint-cli2" = "latest"
 "npm:markdown-link-check" = "latest"
+
+# ========================================
+# ドキュメント管理
+# ========================================
+
+[tasks."docs:lint"]
+description = "Markdown lint チェック（グローバル設定使用）"
+run = "markdownlint-cli2 ${MD_GLOB} ${MD_EXCLUDES}"
+
+[tasks."docs:fix"]
+description = "Markdown 自動修正（グローバル設定使用）"
+run = "markdownlint-cli2 --fix ${MD_GLOB} ${MD_EXCLUDES}"
+
+[tasks."docs:links"]
+description = "Markdown リンクチェック"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json --quiet"
+
+[tasks."docs:links:verbose"]
+description = "Markdown リンクチェック（詳細モード）"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json --verbose"
+
+[tasks."docs:yaml:lint"]
+description = "YAML ファイルの lint チェック"
+run = "yamllint .github/"
+
+# ========================================
+# フォーマット
+# ========================================
+
+[tasks."format:biome"]
+description = "JS/TS/JSON ファイルをフォーマット"
+run = "biome format --write ."
+
+[tasks."format:biome:check"]
+description = "JS/TS/JSON ファイルのフォーマットチェック（書き込みなし）"
+run = "biome check --formatter-enabled=true --linter-enabled=false ."
+
+[tasks."format:markdown"]
+description = "Markdown ファイルをフォーマット"
+run = [
+  "markdownlint-cli2 --fix ${MD_GLOB} ${MD_EXCLUDES}",
+  "fd -e md -X prettier --write",
+]
+
+[tasks."format:markdown:check"]
+description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
+run = "fd -e md -X prettier --check"
+
+[tasks."format:yaml"]
+description = "YAML ファイルをフォーマット"
+run = "fd -e yml -e yaml -X prettier --write"
+
+[tasks."format:yaml:check"]
+description = "YAML ファイルのフォーマットチェック（書き込みなし）"
+run = "fd -e yml -e yaml -X prettier --check"
+
+[tasks."format:lua"]
+description = "Lua ファイルをフォーマット"
+run = "stylua ."
+
+[tasks."format:lua:check"]
+description = "Lua ファイルのフォーマットチェック（書き込みなし）"
+run = "stylua --check ."
+
+[tasks."format:shell"]
+description = "シェルスクリプトをフォーマット"
+run = "fd -e sh -X shfmt -w"
+
+[tasks."format:shell:check"]
+description = "シェルスクリプトのフォーマットチェック（書き込みなし）"
+run = "fd -e sh -X shfmt -d"
+
+# ========================================
+# Lint（品質チェック）
+# ========================================
+
+[tasks."lint:biome"]
+description = "JS/TS/JSON ファイルをチェック"
+run = "biome check ."
+
+[tasks."lint:markdown"]
+description = "Markdown ファイルをチェック"
+run = [
+  "markdownlint-cli2 ${MD_GLOB} ${MD_EXCLUDES}",
+  "fd -e md -X prettier --check",
+]
+
+[tasks."lint:yaml"]
+description = "YAML ファイルをチェック（prettier + yamllint）"
+run = ["fd -e yml -e yaml -X prettier --check", "yamllint .github/"]
+
+[tasks."lint:lua:stylua"]
+description = "Stylua でコードスタイルをチェック"
+run = "stylua --check ."
+
+[tasks."lint:lua:luacheck"]
+description = "luacheck を実行（利用可能な場合）"
+run = "if command -v luacheck >/dev/null 2>&1; then luacheck .; fi"
+
+[tasks."lint:shell"]
+description = "シェルスクリプトをチェック"
+run = "fd -e sh -X shfmt -d"
+
+[tasks."lint:links"]
+description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json"
+
+# ========================================
+# プロジェクト更新
+# ========================================
+
+[tasks."update:submodules"]
+description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
+run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote; else echo 'No submodules configured, skipping'; fi"
+
+[tasks."update:brew"]
+description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
+run = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
+
+[tasks."update:external-repos"]
+description = "外部 Git リポジトリを更新（強制リセット）"
+run = [
+  "if [ -d ~/src/github.com/brookhong/Surfingkeys ]; then cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd; else echo 'Skip: ~/src/github.com/brookhong/Surfingkeys not found'; fi",
+]
+
+# ========================================
+# CI/CD
+# ========================================
+
+[tasks."ci:install"]
+description = "CI に必要な追加ツールをインストール"
+run = "luarocks install --local luacheck"
+
+# ========================================
+# エイリアス（よく使うタスクのショートカット）
+# ========================================
