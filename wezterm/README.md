@@ -162,13 +162,16 @@ front_end = "WebGpu"
 ### Path Manipulation
 
 ```lua
--- Replace home directory with ~
+-- Expand ~ to home directory
 convert_home_dir(path)
+
+-- Collapse home directory to ~ for display
+abbreviate_home_dir(path)
 
 -- Extract filename from path
 basename(path)
 
--- Combine home conversion with basename
+-- Combine path conversion with basename
 convert_useful_path(path)
 ```
 

@@ -75,9 +75,7 @@ function M.activate_resize_mode(window, _)
   window:toast_notification("wezterm", "Resize mode activated", nil, 1000)
 
   wezterm.time.call_after(3, function()
-    if resize_mode_active then
-      set_resize_status(window, false)
-    end
+    if resize_mode_active then set_resize_status(window, false) end
   end)
 end
 
