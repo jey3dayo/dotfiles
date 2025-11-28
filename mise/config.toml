@@ -28,6 +28,7 @@ MD_EXCLUDES = "'#node_modules' '#tmux/plugins' '#fisher' '#zsh/.zinit'"
 # LUA_FILES = ""     # Lua ファイル
 # TOML_FILES = ""    # TOML ファイル
 # BIOME_FILES = ""   # JS/TS/JSON ファイル (biome)
+# PRETTIER_FILES = "" # Prettier 対象ファイル
 # YAML_FILES = ""    # YAML ファイル
 
 [tools]
@@ -64,6 +65,26 @@ if [ -n "${BIOME_FILES:-}" ]; then
   biome check --formatter-enabled=true --linter-enabled=false ${BIOME_FILES}
 else
   biome check --formatter-enabled=true --linter-enabled=false .
+fi
+"""
+
+[tasks."format:prettier"]
+description = "Prettier でファイルをフォーマット（PRETTIER_FILES で対象を限定可能）"
+run = """
+if [ -n "${PRETTIER_FILES:-}" ]; then
+  prettier --write --ignore-unknown ${PRETTIER_FILES}
+else
+  prettier --write --ignore-unknown .
+fi
+"""
+
+[tasks."format:prettier:check"]
+description = "Prettier フォーマットチェック（書き込みなし、PRETTIER_FILES で対象を限定可能）"
+run = """
+if [ -n "${PRETTIER_FILES:-}" ]; then
+  prettier --check --ignore-unknown ${PRETTIER_FILES}
+else
+  prettier --check --ignore-unknown .
 fi
 """
 
