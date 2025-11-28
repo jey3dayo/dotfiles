@@ -17,12 +17,27 @@ YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "'**/*.md'"
 MD_EXCLUDES = "'#node_modules' '#tmux/plugins' '#fisher' '#zsh/.zinit'"
 
+# ========================================
+# オプション環境変数（ファイル限定処理）
+# ========================================
+# フォーマット/lint タスクで特定ファイルのみ処理する場合に設定
+# 例: SH_FILES="script1.sh script2.sh" mise run format:shell
+#
+# SH_FILES = ""      # シェルスクリプト
+# PY_FILES = ""      # Python ファイル
+# LUA_FILES = ""     # Lua ファイル
+# TOML_FILES = ""    # TOML ファイル
+# BIOME_FILES = ""   # JS/TS/JSON ファイル (biome)
+# YAML_FILES = ""    # YAML ファイル
+
 [tools]
 actionlint = "latest"     # GitHub Actions workflow lint
 biome = "latest"
 fd = "latest"
 go = "1.23.3"
 node = "22.20.0"
+python = "3.13.4"
+"pipx:uv" = "latest"
 prettier = "latest"
 stylua = "latest"
 shfmt = "latest"
@@ -33,12 +48,24 @@ yamllint = "latest"       # YAML lint
 taplo = "latest"
 
 [tasks."format:biome"]
-description = "JS/TS/JSON ファイルをフォーマット"
-run = "biome format --write ."
+description = "JS/TS/JSON ファイルをフォーマット（BIOME_FILES で対象を限定可能）"
+run = """
+if [ -n "${BIOME_FILES:-}" ]; then
+  biome format --write ${BIOME_FILES}
+else
+  biome format --write .
+fi
+"""
 
 [tasks."format:biome:check"]
-description = "JS/TS/JSON ファイルのフォーマットチェック（書き込みなし）"
-run = "biome check --formatter-enabled=true --linter-enabled=false ."
+description = "JS/TS/JSON ファイルのフォーマットチェック（書き込みなし、BIOME_FILES で対象を限定可能）"
+run = """
+if [ -n "${BIOME_FILES:-}" ]; then
+  biome check --formatter-enabled=true --linter-enabled=false ${BIOME_FILES}
+else
+  biome check --formatter-enabled=true --linter-enabled=false .
+fi
+"""
 
 [tasks."format:markdown"]
 description = "Markdown ファイルをフォーマット"
@@ -52,36 +79,104 @@ description = "Markdown ファイルのフォーマットチェック（書き�
 run = "fd -e md -X prettier --check"
 
 [tasks."format:yaml"]
-description = "YAML ファイルをフォーマット"
-run = "fd -e yml -e yaml -X prettier --write"
+description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"
+run = """
+if [ -n "${YAML_FILES:-}" ]; then
+  prettier --write ${YAML_FILES}
+else
+  fd -e yml -e yaml -X prettier --write
+fi
+"""
 
 [tasks."format:yaml:check"]
-description = "YAML ファイルのフォーマットチェック（書き込みなし）"
-run = "fd -e yml -e yaml -X prettier --check"
+description = "YAML ファイルのフォーマットチェック（書き込みなし、YAML_FILES で対象を限定可能）"
+run = """
+if [ -n "${YAML_FILES:-}" ]; then
+  prettier --check ${YAML_FILES}
+else
+  fd -e yml -e yaml -X prettier --check
+fi
+"""
 
 [tasks."format:lua"]
-description = "Lua ファイルをフォーマット"
-run = "stylua ."
+description = "Lua ファイルをフォーマット（LUA_FILES で対象を限定可能）"
+run = """
+if [ -n "${LUA_FILES:-}" ]; then
+  stylua ${LUA_FILES}
+else
+  stylua .
+fi
+"""
 
 [tasks."format:lua:check"]
-description = "Lua ファイルのフォーマットチェック（書き込みなし）"
-run = "stylua --check ."
+description = "Lua ファイルのフォーマットチェック（書き込みなし、LUA_FILES で対象を限定可能）"
+run = """
+if [ -n "${LUA_FILES:-}" ]; then
+  stylua --check ${LUA_FILES}
+else
+  stylua --check .
+fi
+"""
 
 [tasks."format:shell"]
-description = "シェルスクリプトをフォーマット"
-run = "fd -e sh -X shfmt -w"
+description = "シェルスクリプトをフォーマット（SH_FILES で対象を限定可能）"
+run = """
+if [ -n "${SH_FILES:-}" ]; then
+  shfmt -w -i 2 -ci -bn ${SH_FILES}
+else
+  fd -e sh -X shfmt -w -i 2 -ci -bn
+fi
+"""
 
 [tasks."format:shell:check"]
-description = "シェルスクリプトのフォーマットチェック（書き込みなし）"
-run = "fd -e sh -X shfmt -d"
+description = "シェルスクリプトのフォーマットチェック（書き込みなし、SH_FILES で対象を限定可能）"
+run = """
+if [ -n "${SH_FILES:-}" ]; then
+  shfmt -d -i 2 -ci -bn ${SH_FILES}
+else
+  fd -e sh -X shfmt -d -i 2 -ci -bn
+fi
+"""
 
 [tasks."format:toml"]
-description = "TOML ファイルをフォーマット"
-run = "taplo format ."
+description = "TOML ファイルをフォーマット（TOML_FILES で対象を限定可能）"
+run = """
+if [ -n "${TOML_FILES:-}" ]; then
+  taplo format ${TOML_FILES}
+else
+  taplo format .
+fi
+"""
 
 [tasks."format:toml:check"]
-description = "TOML ファイルのフォーマットチェック（書き込みなし）"
-run = "taplo format --check ."
+description = "TOML ファイルのフォーマットチェック（書き込みなし、TOML_FILES で対象を限定可能）"
+run = """
+if [ -n "${TOML_FILES:-}" ]; then
+  taplo format --check ${TOML_FILES}
+else
+  taplo format --check .
+fi
+"""
+
+[tasks."format:python"]
+description = "Python ファイルをフォーマット（PY_FILES で対象を限定可能）"
+run = """
+if [ -n "${PY_FILES:-}" ]; then
+  uvx ruff format ${PY_FILES}
+else
+  uvx ruff format .
+fi
+"""
+
+[tasks."format:python:check"]
+description = "Python フォーマットチェック（書き込みなし、PY_FILES で対象を限定可能）"
+run = """
+if [ -n "${PY_FILES:-}" ]; then
+  uvx ruff format --check ${PY_FILES}
+else
+  uvx ruff format --check .
+fi
+"""
 
 [tasks."format:docs"]
 description = "ドキュメントの完全な検証とフォーマット"
@@ -92,8 +187,14 @@ description = "ドキュメント全体の検証（lint + リンク + YAML）"
 depends = ["lint:markdown", "lint:links", "lint:yaml"]
 
 [tasks."lint:biome"]
-description = "JS/TS/JSON ファイルをチェック"
-run = "biome check ."
+description = "JS/TS/JSON ファイルをチェック（BIOME_FILES で対象を限定可能）"
+run = """
+if [ -n "${BIOME_FILES:-}" ]; then
+  biome check ${BIOME_FILES}
+else
+  biome check .
+fi
+"""
 
 [tasks."lint:markdown"]
 description = "Markdown ファイルをチェック"
@@ -103,8 +204,27 @@ run = [
 ]
 
 [tasks."lint:yaml"]
-description = "YAML ファイルをチェック（prettier + yamllint）"
-run = ["fd -e yml -e yaml -X prettier --check", "yamllint .github/"]
+description = "YAML ファイルをチェック（prettier + yamllint、YAML_FILES で対象を限定可能）"
+run = """
+if [ -n "${YAML_FILES:-}" ]; then
+  prettier --check ${YAML_FILES}
+  # yamllint は YAML_FILES 指定時も .github/ ディレクトリをチェック
+  yamllint .github/
+else
+  fd -e yml -e yaml -X prettier --check
+  yamllint .github/
+fi
+"""
+
+[tasks."lint:python"]
+description = "Python ファイルをチェック（PY_FILES で対象を限定可能）"
+run = """
+if [ -n "${PY_FILES:-}" ]; then
+  uvx ruff check ${PY_FILES}
+else
+  uvx ruff check .
+fi
+"""
 
 [tasks."lint:shell"]
 description = "シェルスクリプトをチェック"
@@ -123,8 +243,14 @@ description = "Lua ファイルをチェック"
 depends = ["lint:lua:stylua", "lint:lua:luacheck"]
 
 [tasks."lint:lua:stylua"]
-description = "Stylua でコードスタイルをチェック"
-run = "stylua --check ."
+description = "Stylua でコードスタイルをチェック（LUA_FILES で対象を限定可能）"
+run = """
+if [ -n "${LUA_FILES:-}" ]; then
+  stylua --check ${LUA_FILES}
+else
+  stylua --check .
+fi
+"""
 
 [tasks."lint:lua:luacheck"]
 description = "luacheck を実行（利用可能な場合）"
