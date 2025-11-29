@@ -88,6 +88,7 @@ cleanup_zcompdump    # zcompdump 手動クリーンアップ（確認付き）
 ^gw / ^g^w    # Git worktree 管理（開く/追加/一覧/削除）
 ^g^z          # スタッシュピッカー（fzf-git.sh 提供時）
 ^g^f          # Git ファイル/差分ピッカー（fzf-git.sh 提供時）
+^g?           # fzf-git キーバインドヘルプ（fzf-git.sh 提供時）
 ^g^K          # プロセス kill (fzf)
 wtcd <branch> # 指定ブランチの worktree に即座に cd（補完付き）
 ```
