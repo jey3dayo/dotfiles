@@ -39,6 +39,7 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 
 #### 🛠️ Tool-Specific Documentation
 
+- **[Git Configuration](tools/git.md)** - Git 設定の構成、include 順序、署名オプション
 - **[Zsh Configuration](tools/zsh.md)** - Shell layer: 最適化、プラグイン管理、パフォーマンス
 - **[Neovim Configuration](tools/nvim.md)** - Editor layer: LSP、AI支援、プラグイン最適化
 - **[WezTerm Configuration](tools/wezterm.md)** - Terminal layer: 設定、キーバインド、統合

@@ -155,7 +155,7 @@ All other tools serve to enhance or support these core components.
 
 #### Git Abbreviations
 
-- **Location**: `~/git/config`
+- **Location**: `~/.config/git/config`（`dotfiles/git/config` を setup.sh がリンク）
 - **Count**: 50+ custom abbreviations
 - **Widgets**: Custom Zsh widgets for Git operations
 
