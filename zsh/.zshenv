@@ -1,10 +1,13 @@
 # XDG base directories
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+: "${XDG_STATE_HOME:=$HOME/.local/state}"
+export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
 
-export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
+: "${ZDOTDIR:=${XDG_CONFIG_HOME}/zsh}"
+: "${GIT_CONFIG_GLOBAL:=$XDG_CONFIG_HOME/git/config}"
+export ZDOTDIR GIT_CONFIG_GLOBAL
 
 # Temporary Files
 if [[ ! -d "$TMPDIR" ]]; then
