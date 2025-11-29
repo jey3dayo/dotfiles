@@ -84,6 +84,9 @@ zsh-quick-check      # PATH + 主要ツールの健全性チェック
 ^g^a        # Git add -p
 ^g^b / ^gs  # ブランチ/ワークツリー切替 (fzf)
 ^g^w / ^gw  # Git worktree 管理
+^g^z        # fzf-git stash picker
+^g^f        # fzf-git file/diff picker
+^g?         # fzf-git キーバインドヘルプ
 ^g^K        # プロセス kill (fzf)
 ```
 
