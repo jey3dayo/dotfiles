@@ -22,7 +22,7 @@ configstore/
 Brewfile.lock.json
 nvim/lazy-lock.json
 nvim/snippets/*.json
-karabiner/karabiner.json
-karabiner/assets/complex_modifications/1546934833.json
+# managed by Karabiner, keep entire directory out of prettier
+karabiner/
 .kiro/steering/product.md
 .surfingkeys.js
