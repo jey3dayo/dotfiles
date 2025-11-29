@@ -1,25 +1,48 @@
 #!/bin/sh
-USER=$(id -u)
-DOTFILES=$HOME/src/github.com/jey3dayo/dotfiles
+set -eu
 
-# XDG base directories
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+DOTFILES=${DOTFILES:-"$(cd "$(dirname "$0")" && pwd)"}
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 
-mkdir -p "${HOME}/{tmp,.cache}" "${XDG_CONFIG_HOME}"
-mkdir -p "${HOME}/.local/share/zsh-autocomplete/" "${HOME}/.mise"
-chown -R "${USER}" "${HOME}/{tmp,.cache}"
+if [ ! -d "$DOTFILES" ]; then
+    echo "Dotfiles directory not found: $DOTFILES" >&2
+    exit 1
+fi
 
-# Link dotfiles to the XDG configuration directory
-ln -sfn "${DOTFILES}" "${XDG_CONFIG_HOME}"
+mkdir -p "$HOME/tmp" "$HOME/.cache" "$HOME/.local/share/zsh-autocomplete" "$HOME/.mise"
+
+# Keep existing config safe unless it's already a symlink we can replace
+if [ -d "$XDG_CONFIG_HOME" ] && [ ! -L "$XDG_CONFIG_HOME" ]; then
+    if find "$XDG_CONFIG_HOME" -mindepth 1 -maxdepth 1 | read -r _; then
+        echo "$XDG_CONFIG_HOME exists and is not empty. Back it up or remove it before re-running setup." >&2
+        exit 1
+    fi
+    rmdir "$XDG_CONFIG_HOME"
+fi
+
+ln -sfn "$DOTFILES" "$XDG_CONFIG_HOME"
 
 # Git configuration
 mkdir -p "${XDG_CONFIG_HOME}/git"
 ln -sfn "${DOTFILES}/git/config" "${XDG_CONFIG_HOME}/git/config"
 
-echo "source ${XDG_CONFIG_HOME}/nvim/init.vim" >>~/.vimrc
-echo "source-file ${XDG_CONFIG_HOME}/.tmux/main.conf" >>~/.tmux.conf
+link_home() {
+    src=$1
+    dest=$2
 
-export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-echo "source $ZDOTDIR/.zshenv" >>~/.zshenv
+    if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+        echo "Skipping $dest because it already exists and is not a symlink." >&2
+        return
+    fi
 
-git submodule foreach git pull
+    ln -sfn "$src" "$dest"
+}
+
+link_home "${XDG_CONFIG_HOME}/.tmux/main.conf" "$HOME/.tmux.conf"
+link_home "${XDG_CONFIG_HOME}/zsh/.zshenv" "$HOME/.zshenv"
+
+if [ -f "${DOTFILES}/nvim/init.vim" ]; then
+    link_home "${XDG_CONFIG_HOME}/nvim/init.vim" "$HOME/.vimrc"
+fi
+
+(cd "$DOTFILES" && git submodule update --init --recursive)
