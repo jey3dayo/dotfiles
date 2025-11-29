@@ -30,11 +30,12 @@ FZF は以下の層で横断的に統合されています：
 
 ### Git Integration
 
-| コマンド | 機能                            | 実装場所                 |
-| -------- | ------------------------------- | ------------------------ |
-| `gco()`  | FZF git checkout (ブランチ選択) | zsh/lazy-sources/fzf.zsh |
-| `^g^g`   | Git status widget with FZF      | zsh functions            |
-| `^g^b`   | Git branch widget with FZF      | zsh functions            |
+| コマンド       | 機能                            | 実装場所                 |
+| -------------- | ------------------------------- | ------------------------ |
+| `gco()`        | FZF git checkout (ブランチ選択) | zsh/lazy-sources/fzf.zsh |
+| `^g^g`         | Git diff widget                 | zsh functions            |
+| `^g^s`         | Git status widget               | zsh functions            |
+| `^g^b` / `^gs` | Git branch widget with FZF      | zsh functions            |
 
 ### Tmux Integration
 
@@ -183,8 +184,9 @@ bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
 
 # 2. Git operations
 gco                   # FZF branch checkout
-^g^g                  # Git status with FZF
-^g^b                  # Git branch operations
+^g^g                  # Git diff
+^g^s                  # Git status
+^g^b / ^gs            # Git branch operations (fzf)
 
 # 3. File operations
 ^T                    # File selection
