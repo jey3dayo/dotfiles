@@ -73,11 +73,6 @@ return {
       local hipatterns = require "mini.hipatterns"
       local hi_words = require("mini.extra").gen_highlighter.words
 
-      -- Helper function to create color highlighter from color string
-      local function color_from_match(_, match)
-        return nil
-      end
-
       hipatterns.setup {
         highlighters = {
           fixme = hi_words({ "FIXME", "Fixme", "fixme" }, "MiniHipatternsFixme"),
@@ -88,66 +83,57 @@ return {
           -- Enhanced color support (replaces nvim-colorizer.lua)
           hex_color = hipatterns.gen_highlighter.hex_color(),
 
-          -- RGB/RGBA color support: rgb(255, 0, 0), rgba(255, 0, 0, 0.5)
-          rgb_color = {
-            pattern = "()rgba?%(%d+,? %d+,? %d+,? ?[%d%.]*%)()",
-            group = color_from_match,
-          },
-
-          -- HSL/HSLA color support: hsl(0, 100%, 50%), hsla(0, 100%, 50%, 0.5)
-          hsl_color = {
-            pattern = "()hsla?%(%d+,? %d+%%,? %d+%%,? ?[%d%.]*%)()",
-            group = color_from_match,
-          },
-
-          -- CSS color names (common ones)
-          css_names = {
-            pattern = "()%f[%a]("
-              .. "red|green|blue|yellow|orange|purple|pink|brown|gray|grey|black|white|"
-              .. "cyan|magenta|lime|navy|teal|olive|silver|maroon|fuchsia|aqua|"
-              .. "darkred|darkgreen|darkblue|lightred|lightgreen|lightblue|"
-              .. "darkgray|darkgrey|lightgray|lightgrey"
-              .. ")%f[%A]()",
-            group = function(_, match)
-              local colors = {
-                red = "#ff0000",
-                green = "#008000",
-                blue = "#0000ff",
-                yellow = "#ffff00",
-                orange = "#ffa500",
-                purple = "#800080",
-                pink = "#ffc0cb",
-                brown = "#a52a2a",
-                gray = "#808080",
-                grey = "#808080",
-                black = "#000000",
-                white = "#ffffff",
-                cyan = "#00ffff",
-                magenta = "#ff00ff",
-                lime = "#00ff00",
-                navy = "#000080",
-                teal = "#008080",
-                olive = "#808000",
-                silver = "#c0c0c0",
-                maroon = "#800000",
-                fuchsia = "#ff00ff",
-                aqua = "#00ffff",
-                darkred = "#8b0000",
-                darkgreen = "#006400",
-                darkblue = "#00008b",
-                lightred = "#ffcccb",
-                lightgreen = "#90ee90",
-                lightblue = "#add8e6",
-                darkgray = "#a9a9a9",
-                darkgrey = "#a9a9a9",
-                lightgray = "#d3d3d3",
-                lightgrey = "#d3d3d3",
-              }
-              local color = colors[match.full_match:lower()]
-              if color then return hipatterns.gen_highlighter.hex_color()(_, { full_match = color }) end
-              return nil
-            end,
-          },
+          -- CSS color names mapped to hex (fast path, working)
+          css_names = (function()
+            local hex = hipatterns.gen_highlighter.hex_color()
+            local colors = {
+              red = "#ff0000",
+              green = "#008000",
+              blue = "#0000ff",
+              yellow = "#ffff00",
+              orange = "#ffa500",
+              purple = "#800080",
+              pink = "#ffc0cb",
+              brown = "#a52a2a",
+              gray = "#808080",
+              grey = "#808080",
+              black = "#000000",
+              white = "#ffffff",
+              cyan = "#00ffff",
+              magenta = "#ff00ff",
+              lime = "#00ff00",
+              navy = "#000080",
+              teal = "#008080",
+              olive = "#808000",
+              silver = "#c0c0c0",
+              maroon = "#800000",
+              fuchsia = "#ff00ff",
+              aqua = "#00ffff",
+              darkred = "#8b0000",
+              darkgreen = "#006400",
+              darkblue = "#00008b",
+              lightred = "#ffcccb",
+              lightgreen = "#90ee90",
+              lightblue = "#add8e6",
+              darkgray = "#a9a9a9",
+              darkgrey = "#a9a9a9",
+              lightgray = "#d3d3d3",
+              lightgrey = "#d3d3d3",
+            }
+            return {
+              pattern = "()%f[%a]("
+                .. "red|green|blue|yellow|orange|purple|pink|brown|gray|grey|black|white|"
+                .. "cyan|magenta|lime|navy|teal|olive|silver|maroon|fuchsia|aqua|"
+                .. "darkred|darkgreen|darkblue|lightred|lightgreen|lightblue|"
+                .. "darkgray|darkgrey|lightgray|lightgrey"
+                .. ")%f[%A]()",
+              group = function(_, match)
+                local color = colors[match.full_match:lower()]
+                if color then return hex(_, { full_match = color }) end
+                return nil
+              end,
+            }
+          end)(),
         },
         delay = {
           text_change = 200, -- Slightly delayed for better performance
@@ -356,7 +342,23 @@ return {
   {
     "echasnovski/mini.pick",
     version = false,
-    lazy = false,
+    keys = {
+      { "<Leader>f", desc = "Find files" },
+      { "<Leader><Leader>", desc = "Resume last pick" },
+      { ",gr", desc = "Live grep" },
+      { "<Leader>b", desc = "Find buffers" },
+      { "<Leader>Fh", desc = "Find help" },
+      { "<Leader>Fr", desc = "Recent files (smart)" },
+      { "<Leader>Fk", desc = "Find keymaps" },
+      { "<Leader>d", desc = "Diagnostics" },
+      { "<Leader>Fs", desc = "Document symbols" },
+      { "<Leader>FS", desc = "Workspace symbols" },
+      { "<Leader>e", desc = "Open mini.files (git root or buffer dir)" },
+      { "<Leader>E", desc = "Open mini.files (buffer dir)" },
+      { "<Leader>y", desc = "Pick from registers" },
+      { "<leader>Fn", desc = "Show notification history" },
+      { "<leader>Fm", desc = "Pick and yank vim messages" },
+    },
     dependencies = { "echasnovski/mini.extra" },
     config = function()
       require "config/mini-pick"

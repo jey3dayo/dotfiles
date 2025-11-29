@@ -22,4 +22,5 @@ return {
   matchup = {
     enable = true,
   },
+  auto_install = true,
 }
