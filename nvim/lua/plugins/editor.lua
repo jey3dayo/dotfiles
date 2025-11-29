@@ -342,26 +342,10 @@ return {
   {
     "echasnovski/mini.pick",
     version = false,
-    keys = {
-      { "<Leader>f", desc = "Find files" },
-      { "<Leader><Leader>", desc = "Resume last pick" },
-      { ",gr", desc = "Live grep" },
-      { "<Leader>b", desc = "Find buffers" },
-      { "<Leader>Fh", desc = "Find help" },
-      { "<Leader>Fr", desc = "Recent files (smart)" },
-      { "<Leader>Fk", desc = "Find keymaps" },
-      { "<Leader>d", desc = "Diagnostics" },
-      { "<Leader>Fs", desc = "Document symbols" },
-      { "<Leader>FS", desc = "Workspace symbols" },
-      { "<Leader>e", desc = "Open mini.files (git root or buffer dir)" },
-      { "<Leader>E", desc = "Open mini.files (buffer dir)" },
-      { "<Leader>y", desc = "Pick from registers" },
-      { "<leader>Fn", desc = "Show notification history" },
-      { "<leader>Fm", desc = "Pick and yank vim messages" },
-    },
+    keys = require("config/mini-pick").keys(),
     dependencies = { "echasnovski/mini.extra" },
     config = function()
-      require "config/mini-pick"
+      require("config/mini-pick").setup()
     end,
   },
 
