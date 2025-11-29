@@ -1,8 +1,8 @@
 # 📖 Documentation Navigation
 
-**最終更新**: 2025-10-21
+**最終更新**: 2025-11-29
 **対象**: 開発者
-**タグ**: `category/guide`, `layer/core`, `environment/macos`, `audience/developer`
+**タグ**: `category/guide`, `layer/support`, `environment/macos`, `audience/developer`
 
 dotfiles プロジェクトのドキュメント体系へのナビゲーションガイドです。
 
@@ -45,6 +45,14 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 - **[SSH Configuration](tools/ssh.md)** - 階層的設定、セキュリティ管理
 - **[FZF Integration](tools/fzf-integration.md)** - クロスツール統合、ワークフロー
 
+## 🧭 Single Source of Truth (SST)
+
+- **Setup**: `docs/setup.md` に全て集約（README ではリンクのみ）
+- **Performance**: `docs/performance.md` にメトリクス・履歴を一本化
+- **Maintenance**: `docs/maintenance.md` に定期/臨時タスクを集約
+- **Documentation rules**: `docs/documentation-guidelines.md` にタグ/メタデータ/チェックリストを集約
+- **Tool details**: `docs/tools/*.md` にツール固有の設定・最適化を集約
+
 ## 🗺️ Quick Navigation
 
 ### 新規ユーザー向け
@@ -64,15 +72,9 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 1. [Maintenance Guide](maintenance.md) でよくある問題を確認
 2. Tool-specific docs で詳細を調査
 
-## 📊 Performance Highlights
+## 📊 Performance
 
-| Component           | Current    | Target |
-| ------------------- | ---------- | ------ |
-| **Zsh startup**     | **1.1s**   | <100ms |
-| **Neovim startup**  | **<100ms** | <200ms |
-| **WezTerm startup** | **800ms**  | <1s    |
-
-詳細は [Performance Statistics](performance.md) を参照。
+メトリクスと改善履歴の単一情報源は [Performance Statistics](performance.md)。README には数値を重複掲載しない。
 
 ## 🔗 External References
 
