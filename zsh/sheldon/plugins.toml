@@ -112,6 +112,6 @@ dir = 'plugins'
 apply = ["defer"]
 
 [plugins.dotfiles-lazy-sources]
-local = "~/.config/zsh/lazy-sources"
+local = "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/lazy-sources"
 use = ["*.zsh"]
 apply = ["defer"]
