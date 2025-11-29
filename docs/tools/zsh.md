@@ -511,8 +511,9 @@ path-check  # ユーティリティ関数（重複・欠落を診断）
 ### 開発プラグイン（Tier 3-4）
 
 - **zsh-abbr**: 省略語展開
+- **fzf-git.sh**: Gitピッカー（branch/file/stash/worktree）
 
-> **注意**: forgit, zsh-you-should-useは現在実装されていません
+> **注意**: zsh-you-should-useは現在実装されていません（Git操作はfzf-git.shで提供）
 
 ### テーマ・UI（Tier 5-6）
 
