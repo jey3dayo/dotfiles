@@ -71,10 +71,11 @@ zsh-profile                # Detailed profiling
 
 ```bash
 ^]                         # FZF ghq repository selector
+^[                         # FZF branch/worktree navigator
 ^g^g                       # Git diff widget
 ^g^s                       # Git status widget
 ^g^a                       # Git add -p widget
-^g^b / ^gs                 # Git branch switcher (fzf)
+^g^b / ^gs                 # Git branch/worktree navigator (fzf)
 ^g^w / ^gw                 # Git worktree manager
 ^g^K                       # FZF kill process
 ```

@@ -1,6 +1,9 @@
 # jey3dayo .zshrc
+: "${XDG_STATE_HOME:=${HOME}/.local/state}"
 bindkey -e
-HISTFILE=$HOME/.zsh_history
+
+HISTFILE="${XDG_STATE_HOME}/zsh/history"
+mkdir -p "${HISTFILE:h}"
 HISTSIZE=100000
 SAVEHIST=100000
 setopt append_history

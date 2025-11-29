@@ -21,21 +21,23 @@ FZF は以下の層で横断的に統合されています：
 
 ### Global Shortcuts
 
-| キーバインド | 機能               | 場所        |
-| ------------ | ------------------ | ----------- |
-| `^]`         | ghq リポジトリ選択 | Shell (Zsh) |
-| `^g^K`       | プロセス選択・kill | Shell (Zsh) |
-| `^R`         | コマンド履歴検索   | Shell (Zsh) |
-| `^T`         | ファイル選択       | Shell (Zsh) |
+| キーバインド | 機能                   | 場所        |
+| ------------ | ---------------------- | ----------- |
+| `^]`         | ghq リポジトリ選択     | Shell (Zsh) |
+| `^g^K`       | プロセス選択・kill     | Shell (Zsh) |
+| `^R`         | コマンド履歴検索       | Shell (Zsh) |
+| `^T`         | ファイル選択           | Shell (Zsh) |
+| `^[`         | ブランチ/WT ナビゲート | Shell (Zsh) |
 
 ### Git Integration
 
-| コマンド       | 機能                            | 実装場所                 |
-| -------------- | ------------------------------- | ------------------------ |
-| `gco()`        | FZF git checkout (ブランチ選択) | zsh/lazy-sources/fzf.zsh |
-| `^g^g`         | Git diff widget                 | zsh functions            |
-| `^g^s`         | Git status widget               | zsh functions            |
-| `^g^b` / `^gs` | Git branch widget with FZF      | zsh functions            |
+| コマンド       | 機能                                | 実装場所                 |
+| -------------- | ----------------------------------- | ------------------------ |
+| `^[` / `^g^b`  | ブランチ/ワークツリー選択 (FZF)     | zsh/config/tools/git.zsh |
+| `gco()`        | FZF git checkout (ブランチ選択)     | zsh/lazy-sources/fzf.zsh |
+| `^g^g`         | Git diff ウィジェット (FZF)         | zsh/config/tools/git.zsh |
+| `^g^s`         | Git status ウィジェット (FZF)       | zsh/config/tools/git.zsh |
+| `^g^w` / `^gw` | Git worktree 管理ウィジェット (FZF) | zsh/config/tools/git.zsh |
 
 ### Tmux Integration
 
@@ -116,12 +118,16 @@ defer = "2"  # Critical path optimization
 **Implementation**:
 
 ```bash
-# Git aliases with FZF integration
-gco() {
-  local branches branch
-  branches=$(git branch --all | grep -v HEAD) &&
-  branch=$(echo "$branches" | fzf +m) &&
-  git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+# Branch/worktree navigator (excerpt)
+git_branch_nav_widget() {
+  local selected
+  selected=$(git worktree list --porcelain | awk '
+    $1=="worktree"{path=$2}
+    $1=="branch"{br=$2; sub("^refs/heads/","",br); print "worktree\t" br "\t" path; path=""}
+  ' | fzf --prompt="branch/worktree > " --delimiter=$'\t' --with-nth=2,3)
+
+  IFS=$'\t' read -r kind name path <<< "$selected"
+  [[ $kind == "worktree" ]] && cd "$path" || git switch "$name"
 }
 ```
 
@@ -183,10 +189,11 @@ bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
 ^]                    # Select repository via FZF + ghq
 
 # 2. Git operations
+^[                    # Branch/worktree navigator (cd or switch)
+^g^g                  # Git diff with FZF
+^g^s                  # Git status with FZF
 gco                   # FZF branch checkout
-^g^g                  # Git diff
-^g^s                  # Git status
-^g^b / ^gs            # Git branch operations (fzf)
+^g^b / ^gs            # Git branch/worktree operations (fzf)
 
 # 3. File operations
 ^T                    # File selection

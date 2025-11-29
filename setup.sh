@@ -20,7 +20,12 @@ resolve_repo_root() {
     cd "$(dirname "$target")" && pwd -P
 }
 
-DOTFILES=$(resolve_repo_root)
+DOTFILES=${DOTFILES:-"$(resolve_repo_root)"}
+
+if [ ! -d "$DOTFILES" ]; then
+    echo "Dotfiles directory not found: $DOTFILES" >&2
+    exit 1
+fi
 
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.cache"}
