@@ -99,10 +99,13 @@ wezterm/
 
 ```
 git/
-├── config                # Git configuration (symlinked to ~/.gitconfig)
-├── ignore                # Global gitignore
-├── attributes            # Git attributes
-└── templates/            # Commit/hook templates
+├── config                # メイン Git 設定（setup.sh で ~/.gitconfig にリンク）
+├── alias.gitconfig       # エイリアス/ショートカット（config から include）
+├── diff.gitconfig        # delta/diff 設定
+├── ghq.gitconfig         # ghq ルート設定
+├── 1password.gitconfig   # 署名用設定（必要に応じて include）
+├── attributes            # グローバル gitattributes
+└── local.gitconfig       # ローカル上書きサンプル（自動では読み込まない）
 ```
 
 **Key Feature**: 50+ custom abbreviations and Zsh widgets
