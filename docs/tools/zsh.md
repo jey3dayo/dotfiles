@@ -326,7 +326,7 @@ zsh-help tools             # インストール済みツール確認
 ^]                         # FZF ghqリポジトリ選択
 ^g^g                       # Git diff表示
 ^g^s                       # Git status表示
-^gs                        # Gitローカルブランチ切り替え (git switch + fzf)
+^g^b / ^gs                 # Gitローカルブランチ切り替え (git switch + fzf)
                            # - 現在のworktree内でブランチ切り替え
                            # - プレビュー付き（git logグラフ表示）
                            # - ローカルブランチのみ表示

@@ -10,8 +10,14 @@ local function get_git_dir()
 end
 
 local function with_extra(fn)
-  local ok, mini_extra = pcall(require, "mini.extra")
-  if not ok then
+  local pick_ok = pcall(require, "mini.pick")
+  if not pick_ok then
+    vim.notify("mini.pick not available", vim.log.levels.ERROR)
+    return
+  end
+
+  local ok_extra, mini_extra = pcall(require, "mini.extra")
+  if not ok_extra then
     vim.notify("mini.extra not available", vim.log.levels.WARN)
     return
   end

@@ -3,8 +3,9 @@ vim.keymap.set("n", "<C-g><C-g>", "<cmd>DiffviewOpen<CR>", { desc = "DiffviewOpe
 
 -- Git status (moved from ,G)
 vim.keymap.set("n", "<C-g>s", function()
-  local ok, mini_extra = pcall(require, "mini.extra")
-  if ok then
+  local pick_ok = pcall(require, "mini.pick")
+  local extra_ok, mini_extra = pcall(require, "mini.extra")
+  if pick_ok and extra_ok then
     mini_extra.pickers.git_files()
   else
     vim.cmd "Git"
