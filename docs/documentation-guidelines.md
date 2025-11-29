@@ -1,8 +1,8 @@
 # 📚 ドキュメント管理体系
 
-**最終更新**: 2025-11-27
+**最終更新**: 2025-11-29
 **対象**: 開発者・運用担当者
-**タグ**: `category/documentation`, `audience/developer`, `layer/support`
+**タグ**: `category/documentation`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
 
 ## 📋 概要
 
@@ -12,6 +12,7 @@
 
 - [ ] メタデータを更新する（最終更新・対象・タグ）
 - [ ] タグを3–5個選び、`category/` `tool/` `layer/` `environment/` `audience/` のバランスを取る
+- [ ] 重複した内容はSST（setup/performance/maintenance/tool docs）へ集約し、READMEには参照だけを残す
 - [ ] マッピング表の行を追加・更新し、成熟度/難易度/更新頻度を見直す
 - [ ] サイズが500行以内か確認（1000行超は必ず分割計画）。**zsh.md (870行) は分割候補**
 - [ ] 相互リンクと外部リンクを確認（CIリンク切れチェックも活用）
@@ -89,20 +90,29 @@
 - 依存する設定ファイル・スクリプトへのパス
 - 関連ドキュメントへの相互リンク
 
+## 🚫 重複排除と Single Source of Truth
+
+- **Setup**: `docs/setup.md` を唯一の手順書とし、README はリンクのみ。
+- **Performance**: 数値・履歴・目標は `docs/performance.md` に統一。README/docs/README では重複掲載しない。
+- **Maintenance**: 定期/臨時タスクは `docs/maintenance.md` に集約。
+- **Doc rules**: タグ・メタデータ・チェックリストは本ドキュメントを参照。
+- **Tool settings**: 各ツールの最適化は `docs/tools/*.md` を単一ソースとし、他では概要リンクに留める。
+- **Navigation**: `docs/README.md` はリンクナビのみを記載し、内容は各SSTに任せる。
+
 ## 📊 ドキュメントマッピング表
 
-| ファイル名                       | タグ                                                                                                   | 成熟度     | 難易度   | 更新頻度  | 概要                                   |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------ | ---------- | -------- | --------- | -------------------------------------- |
-| docs/README.md                   | `category/guide`, `layer/core`, `environment/macos`, `audience/developer`                              | Stable     | ⭐       | Quarterly | ドキュメントインデックス・設計パターン |
-| docs/documentation-guidelines.md | `category/documentation`, `layer/support`, `audience/developer`                                        | Stable     | ⭐⭐     | Quarterly | タグ体系・メタデータ・品質基準         |
-| docs/setup.md                    | `category/guide`, `category/configuration`, `environment/macos`, `audience/beginner`                   | Stable     | ⭐⭐     | Quarterly | セットアップガイド・ベストプラクティス |
-| docs/maintenance.md              | `category/maintenance`, `category/guide`, `layer/support`, `audience/developer`                        | Stable     | ⭐⭐     | Monthly   | 改善履歴・定期メンテナンス             |
-| docs/performance.md              | `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer/ops`        | Production | ⭐⭐⭐   | Monthly   | パフォーマンス測定・最適化指標         |
-| docs/tools/zsh.md                | `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`          | Production | ⭐⭐⭐⭐ | Monthly   | Zsh 最適化・プラグイン管理（1.1s起動） |
-| docs/tools/nvim.md               | `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`        | Production | ⭐⭐⭐⭐ | Monthly   | Neovim・LSP・AI支援（<100ms起動）      |
-| docs/tools/wezterm.md            | `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`           | Stable     | ⭐⭐⭐   | Quarterly | WezTerm 設定・GPU加速                  |
-| docs/tools/ssh.md                | `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer` | Stable     | ⭐⭐     | Quarterly | SSH 階層設定・セキュリティ             |
-| docs/tools/fzf-integration.md    | `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced` | Production | ⭐⭐⭐⭐ | Quarterly | FZF 統合・Git 連携・Zsh ウィジェット   |
+| ファイル名                       | タグ                                                                                                          | 成熟度     | 難易度   | 更新頻度  | 概要                                   |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------- | ---------- | -------- | --------- | -------------------------------------- |
+| docs/README.md                   | `category/guide`, `layer/support`, `environment/macos`, `audience/developer`                                  | Stable     | ⭐       | Quarterly | ドキュメントインデックス・設計パターン |
+| docs/documentation-guidelines.md | `category/documentation`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops` | Stable     | ⭐⭐     | Quarterly | タグ体系・メタデータ・品質基準         |
+| docs/setup.md                    | `category/guide`, `category/configuration`, `layer/core`, `environment/macos`, `audience/beginner`            | Stable     | ⭐⭐     | Quarterly | セットアップガイド・ベストプラクティス |
+| docs/maintenance.md              | `category/maintenance`, `category/guide`, `layer/support`, `audience/developer`                               | Stable     | ⭐⭐     | Monthly   | 改善履歴・定期メンテナンス             |
+| docs/performance.md              | `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`   | Production | ⭐⭐⭐   | Monthly   | パフォーマンス測定・最適化指標         |
+| docs/tools/zsh.md                | `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`                 | Production | ⭐⭐⭐⭐ | Monthly   | Zsh 最適化・プラグイン管理（1.1s起動） |
+| docs/tools/nvim.md               | `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`               | Production | ⭐⭐⭐⭐ | Monthly   | Neovim・LSP・AI支援（<100ms起動）      |
+| docs/tools/wezterm.md            | `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`                  | Stable     | ⭐⭐⭐   | Quarterly | WezTerm 設定・GPU加速                  |
+| docs/tools/ssh.md                | `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer`        | Stable     | ⭐⭐     | Quarterly | SSH 階層設定・セキュリティ             |
+| docs/tools/fzf-integration.md    | `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced`        | Production | ⭐⭐⭐⭐ | Quarterly | FZF 統合・Git 連携・Zsh ウィジェット   |
 
 ## 🔄 更新ルール
 
@@ -127,7 +137,7 @@
 - **警告サイズ**: 1000行（分割計画を必ず検討）
 - **上限サイズ**: 2000行（強制分割）
 
-### 現在のドキュメントサイズ（2025-11-27 時点）
+### 現在のドキュメントサイズ（2025-11-29 時点）
 
 | ファイル名                       | 行数 | 状態                |
 | -------------------------------- | ---- | ------------------- |
@@ -139,8 +149,8 @@
 | docs/performance.md              | 286  | ✅ 適切             |
 | docs/setup.md                    | 67   | ✅ 適切             |
 | docs/maintenance.md              | 140  | ✅ 適切             |
-| docs/README.md                   | 85   | ✅ 適切             |
-| docs/documentation-guidelines.md | 277  | ✅ 適切             |
+| docs/README.md                   | 87   | ✅ 適切             |
+| docs/documentation-guidelines.md | 296  | ✅ 適切             |
 
 ## 📂 分割基準と方法
 
@@ -211,7 +221,7 @@
 
 パフォーマンスに影響を与える設定変更は、必ず以下を記載：
 
-- **起動時間への影響**: Zsh (1.1s目標), Neovim (<100ms目標)
+- **起動時間への影響**: 影響がある場合は `docs/performance.md` の目標値と測定手順を参照し、本文では重複せずリンクで案内する。
 - **メモリ使用量**: プラグイン追加時の影響
 - **測定方法**: `zsh-benchmark` などの測定コマンド
 

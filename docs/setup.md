@@ -1,10 +1,10 @@
 # 🚀 Setup Guide
 
-**最終更新**: 2025-10-17
+**最終更新**: 2025-11-29
 **対象**: 開発者・初心者
-**タグ**: `category/guide`, `category/configuration`, `environment/macos`, `audience/beginner`
+**タグ**: `category/guide`, `category/configuration`, `layer/core`, `environment/macos`, `audience/beginner`
 
-⚡ High-performance macOS development environment setup.
+⚡ High-performance macOS development environment setup. 本ドキュメントがセットアップ情報のSSTであり、README はリンクのみを保持します。
 
 ## Quick Setup
 
