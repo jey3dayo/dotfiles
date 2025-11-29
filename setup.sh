@@ -1,8 +1,26 @@
 #!/bin/sh
 set -eu
 
-# Resolve repository root (works even when invoked via symlink)
-DOTFILES=$(cd "$(dirname "$0")" && pwd -P)
+resolve_repo_root() {
+    target=$0
+
+    case $target in
+    /*) ;;
+    *) target=$(command -v -- "$target") ;;
+    esac
+
+    while [ -L "$target" ]; do
+        link=$(readlink "$target")
+        case $link in
+        /*) target=$link ;;
+        *) target=$(dirname "$target")/$link ;;
+        esac
+    done
+
+    cd "$(dirname "$target")" && pwd -P
+}
+
+DOTFILES=$(resolve_repo_root)
 
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.cache"}
