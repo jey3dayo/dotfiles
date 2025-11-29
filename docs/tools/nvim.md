@@ -268,6 +268,9 @@ vim.keymap.set('n', '<leader>ll', ':Lazy<CR>')
 
 # ヘルスチェック
 :checkhealth
+
+# blink.cmp の checkhealth で「Some providers may show up as \"disabled\"」と表示されるのは仕様で、設定で info 扱いに変換しています
+# conform は biome の設定ファイルがあるときのみ有効化され、無ければ prettier/eslint_d のみで動きます
 ```
 
 ## デバッグ・プロファイリング
