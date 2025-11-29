@@ -41,10 +41,10 @@ SSH 署名先や会社プロキシ設定などもここにのみ記載します�
 
 ## 1Password での署名（任意）
 
-1Password の SSH 署名を有効化する場合は、ローカル設定で明示的に include します。
+1Password の SSH 署名を有効化する場合は、既存の include を壊さないよう **必ず --add で追記** するか、`~/.gitconfig_local` に記述します。
 
 ```bash
-git config --global include.path ~/.config/git/1password.gitconfig
+git config --global --add include.path ~/.config/git/1password.gitconfig
 # または ~/.gitconfig_local に下記を追記
 # [include]
 #   path = ~/.config/git/1password.gitconfig
