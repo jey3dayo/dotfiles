@@ -4,19 +4,37 @@ local autoformat = require "lsp.autoformat"
 local lsp_config = require "lsp.config"
 local util = require "conform.util"
 
+local function has_biome_config(bufnr)
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  local dirname = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
+  return utils.has_config_files(lsp_config.formatters.biome.config_files, dirname)
+end
+
+local function js_like_formatters(bufnr)
+  local formatters = { "eslint_d", "prettier" }
+  if has_biome_config(bufnr) then table.insert(formatters, 2, "biome") end
+  return formatters
+end
+
+local function json_like_formatters(bufnr)
+  local formatters = { "prettier" }
+  if has_biome_config(bufnr) then table.insert(formatters, 1, "biome") end
+  return formatters
+end
+
 require("conform").setup {
   formatters_by_ft = {
-    javascript = { "eslint_d", "biome", "prettier" },
-    javascriptreact = { "eslint_d", "biome", "prettier" },
-    typescript = { "eslint_d", "biome", "prettier" },
-    typescriptreact = { "eslint_d", "biome", "prettier" },
-    vue = { "biome", "prettier" },
+    javascript = js_like_formatters,
+    javascriptreact = js_like_formatters,
+    typescript = js_like_formatters,
+    typescriptreact = js_like_formatters,
+    vue = json_like_formatters,
     css = { "prettier" },
     scss = { "prettier" },
     less = { "prettier" },
     html = { "prettier" },
-    json = { "biome", "prettier" },
-    jsonc = { "biome", "prettier" },
+    json = json_like_formatters,
+    jsonc = json_like_formatters,
     yaml = { "prettier" },
     markdown = { "prettier" },
     graphql = { "prettier" },
@@ -59,15 +77,6 @@ require("conform").setup {
       -- Optional extra flags for performance
       prepend_args = { "--cache" },
       env = { ESLINT_USE_FLAT_CONFIG = "true" },
-    },
-
-    -- Biome formatter with config detection from lsp.config
-    biome = {
-      condition = function(_, ctx)
-        local config_files = lsp_config.formatters.biome.config_files
-        local base_dir = ctx.dirname or (ctx.filename and vim.fn.fnamemodify(ctx.filename, ":h"))
-        return utils.has_config_files(config_files, base_dir)
-      end,
     },
 
     -- Prettier formatter with fallback when no config files

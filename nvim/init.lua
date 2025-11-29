@@ -8,6 +8,7 @@ require "lsp.quiet" -- Early LSP quiet mode setup
 
 -- Core modules that need to load early
 require "core.utils"
+require "core.compat"
 require "options"
 require "keymaps"
 require "filetype"

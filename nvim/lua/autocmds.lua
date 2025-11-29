@@ -50,7 +50,8 @@ utils.autocmd({ "FileType" }, {
 utils.autocmd("TextYankPost", {
   pattern = "*",
   callback = function()
-    vim.highlight.on_yank { timeout = 300 }
+    local on_yank = (vim.hl or vim.highlight).on_yank
+    on_yank { timeout = 300 }
   end,
 })
 
