@@ -1,7 +1,7 @@
 [include]
-  path = ~/.config/git/diff.gitconfig
-  path = ~/.config/git/ghq.gitconfig
-  path = ~/.config/git/alias.gitconfig
+  path = diff.gitconfig
+  path = ghq.gitconfig
+  path = alias.gitconfig
 
 [core]
   excludesfile = ~/.config/.gitignore

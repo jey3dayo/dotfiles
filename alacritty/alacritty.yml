@@ -8,7 +8,7 @@ shell:
   args:
     - -l
     - -c
-    - 'tmux a -t default || tmux new -s default\; source ~/.config/.tmux/default.session.conf'
+    - 'tmux a -t default || tmux new -s default\; source ${XDG_CONFIG_HOME:-$HOME/.config}/tmux/default.session.conf'
 
 font:
   normal:
