@@ -1,5 +1,6 @@
 -- Conform.nvim configuration for lightweight formatting
 local utils = require "core.utils"
+local autoformat = require "lsp.autoformat"
 local lsp_config = require "lsp.config"
 local util = require "conform.util"
 
@@ -36,8 +37,8 @@ require("conform").setup {
 
   -- Formatter selection strategy
   format_on_save = function(bufnr)
-    -- Disable with a global or buffer-local variable
-    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then return end
+    -- Respect centralized autoformat flags
+    if not autoformat.is_enabled(bufnr) then return end
 
     return {
       timeout_ms = 3000,
@@ -84,27 +85,6 @@ require("conform").setup {
   log_level = vim.log.levels.WARN,
   notify_on_error = true,
 }
-
--- Auto-format disable/enable commands
-vim.api.nvim_create_user_command("AutoFormatDisable", function(args)
-  if args.bang then
-    -- AutoFormatDisable! will disable formatting globally
-    vim.g.disable_autoformat = true
-  else
-    -- AutoFormatDisable will disable formatting for current buffer
-    vim.b.disable_autoformat = true
-  end
-end, {
-  desc = "Disable autoformat on save",
-  bang = true,
-})
-
-vim.api.nvim_create_user_command("AutoFormatEnable", function()
-  vim.b.disable_autoformat = false
-  vim.g.disable_autoformat = false
-end, {
-  desc = "Re-enable autoformat on save",
-})
 
 -- Status function for debugging
 local function get_format_status()

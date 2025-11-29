@@ -14,8 +14,9 @@ M.format = {
     async = false,
   },
   state = {
-    global = "format_disabled",
-    buffer = "b:format_disabled",
+    -- Single source of truth for autoformat toggles
+    global = "disable_autoformat",
+    buffer = "disable_autoformat",
   },
 }
 
