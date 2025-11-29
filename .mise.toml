@@ -42,7 +42,7 @@ run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD 
 
 [tasks."update:brew"]
 description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
-run = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
+run = "if command -v brew >/dev/null 2>&1; then (brew update 2>&1 | grep -v \"definition is invalid\" || true) && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
 
 [tasks."update:external-repos"]
 description = "外部 Git リポジトリを更新（強制リセット）"
