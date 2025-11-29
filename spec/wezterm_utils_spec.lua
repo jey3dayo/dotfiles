@@ -81,4 +81,36 @@ describe("wezterm utils", function()
       assert.is_false(utils.file_exists "/non/existent/file.txt")
     end)
   end)
+
+  describe("split_from_url", function()
+    it("should extract hostname and path from ssh url", function()
+      local host, path = utils.split_from_url "ssh://user@example.com/home/user/project"
+      assert.are.equal("example", host)
+      assert.are.equal("project", path)
+    end)
+
+    it("should handle plain file paths", function()
+      local host, path = utils.split_from_url "/Users/example/workspace"
+      assert.are.equal("", host)
+      assert.are.equal("workspace", path)
+    end)
+  end)
+
+  describe("tab_title_from_pane", function()
+    it("should prioritize foreground process name", function()
+      local title = utils.tab_title_from_pane({ foreground_process_name = "/usr/bin/bash" }, 12)
+      assert.are.equal("bash", title)
+    end)
+
+    it("should include hostname when cwd is remote", function()
+      local pane = { current_working_dir = "ssh://user@my-host.example.com/home/user/project" }
+      local title = utils.tab_title_from_pane(pane, 24)
+      assert.are.equal("my-host:project", title)
+    end)
+
+    it("should fall back to default title", function()
+      local title = utils.tab_title_from_pane(nil, nil)
+      assert.are.equal("wezterm", title)
+    end)
+  end)
 end)
