@@ -8,12 +8,21 @@ local M = {}
 -- LSP keymaps using vim.keymap.set directly
 
 local function jump_diagnostic(count)
-  vim.diagnostic.jump {
-    count = count,
-    on_jump = function(_, bufnr)
-      vim.diagnostic.open_float(bufnr, { scope = "cursor", focus = false })
-    end,
-  }
+  local jump = vim.diagnostic.jump
+  if type(jump) == "function" then
+    jump {
+      count = count,
+      on_jump = function(_, bufnr)
+        vim.diagnostic.open_float(bufnr, { scope = "cursor", focus = false })
+      end,
+    }
+    return
+  end
+
+  -- Neovim 0.10 fallback
+  local move = count > 0 and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+  move()
+  vim.diagnostic.open_float(0, { scope = "cursor", focus = false })
 end
 
 local function setup_workspace_keymaps(buf_opts)

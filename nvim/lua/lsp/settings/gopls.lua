@@ -28,12 +28,21 @@ return {
     -- Normal LSP keymaps and configurations for Go files
     local opts = { noremap = true, silent = true, buffer = bufnr }
     local function jump_diagnostic(count)
-      vim.diagnostic.jump {
-        count = count,
-        on_jump = function(_, local_bufnr)
-          vim.diagnostic.open_float(local_bufnr, { scope = "cursor", focus = false })
-        end,
-      }
+      local jump = vim.diagnostic.jump
+      if type(jump) == "function" then
+        jump {
+          count = count,
+          on_jump = function(_, local_bufnr)
+            vim.diagnostic.open_float(local_bufnr, { scope = "cursor", focus = false })
+          end,
+        }
+        return
+      end
+
+      -- Neovim 0.10 fallback
+      local move = count > 0 and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+      move()
+      vim.diagnostic.open_float(0, { scope = "cursor", focus = false })
     end
 
     -- Go-specific keymaps
