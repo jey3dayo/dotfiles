@@ -29,13 +29,24 @@ function M.check_file_exists(filename)
 end
 
 function M.has_config_files(config_files, dirname)
-  dirname = dirname or vim.fn.getcwd()
-  for _, file in ipairs(config_files) do
-    local full_path = dirname .. "/" .. file
-    if vim.fn.filereadable(full_path) == 1 then return true end
-    -- Also check in current working directory if specific dirname provided
-    if dirname ~= vim.fn.getcwd() and M.check_file_exists(file) then return true end
+  local searched = {}
+  local function search_upwards(start_dir)
+    local dir = start_dir
+    while dir and dir ~= "" and not searched[dir] do
+      searched[dir] = true
+      for _, file in ipairs(config_files) do
+        if vim.fn.filereadable(dir .. "/" .. file) == 1 then return true end
+      end
+      local parent = vim.fn.fnamemodify(dir, ":h")
+      if parent == dir then break end
+      dir = parent
+    end
+    return false
   end
+
+  if dirname and search_upwards(dirname) then return true end
+  local cwd = vim.fn.getcwd()
+  if search_upwards(cwd) then return true end
   return false
 end
 
