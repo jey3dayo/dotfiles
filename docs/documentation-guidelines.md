@@ -1,6 +1,6 @@
 # 📚 ドキュメント管理体系
 
-**最終更新**: 2025-11-29
+**最終更新**: 2025-11-30
 **対象**: 開発者・運用担当者
 **タグ**: `category/documentation`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
 
@@ -14,7 +14,7 @@
 - [ ] タグを3–5個選び、`category/` `tool/` `layer/` `environment/` `audience/` のバランスを取る
 - [ ] 重複した内容はSST（setup/performance/maintenance/tool docs）へ集約し、READMEには参照だけを残す
 - [ ] マッピング表の行を追加・更新し、成熟度/難易度/更新頻度を見直す
-- [ ] サイズが500行以内か確認（1000行超は必ず分割計画）。**zsh.md (870行) は分割候補**
+- [ ] サイズが500行以内か確認（1000行超は必ず分割計画）。**zsh.md は105行に縮小済み（500行超は分割計画）**
 - [ ] 相互リンクと外部リンクを確認（CIリンク切れチェックも活用）
 - [ ] パフォーマンスへ影響する変更は数値・測定方法を併記
 
@@ -137,20 +137,20 @@
 - **警告サイズ**: 1000行（分割計画を必ず検討）
 - **上限サイズ**: 2000行（強制分割）
 
-### 現在のドキュメントサイズ（2025-11-29 時点）
+### 現在のドキュメントサイズ（2025-11-30 時点）
 
-| ファイル名                       | 行数 | 状態                |
-| -------------------------------- | ---- | ------------------- |
-| docs/tools/zsh.md                | 870  | ⚠️ 分割検討（超過） |
-| docs/tools/nvim.md               | 301  | ✅ 適切             |
-| docs/tools/wezterm.md            | 132  | ✅ 適切             |
-| docs/tools/fzf-integration.md    | 283  | ✅ 適切             |
-| docs/tools/ssh.md                | 198  | ✅ 適切             |
-| docs/performance.md              | 286  | ✅ 適切             |
-| docs/setup.md                    | 67   | ✅ 適切             |
-| docs/maintenance.md              | 140  | ✅ 適切             |
-| docs/README.md                   | 87   | ✅ 適切             |
-| docs/documentation-guidelines.md | 296  | ✅ 適切             |
+| ファイル名                       | 行数 | 状態    |
+| -------------------------------- | ---- | ------- |
+| docs/tools/zsh.md                | 105  | ✅ 適切 |
+| docs/tools/nvim.md               | 301  | ✅ 適切 |
+| docs/tools/wezterm.md            | 132  | ✅ 適切 |
+| docs/tools/fzf-integration.md    | 292  | ✅ 適切 |
+| docs/tools/ssh.md                | 198  | ✅ 適切 |
+| docs/performance.md              | 286  | ✅ 適切 |
+| docs/setup.md                    | 67   | ✅ 適切 |
+| docs/maintenance.md              | 140  | ✅ 適切 |
+| docs/README.md                   | 87   | ✅ 適切 |
+| docs/documentation-guidelines.md | 296  | ✅ 適切 |
 
 ## 📂 分割基準と方法
 
@@ -173,7 +173,7 @@
 - **レベル別分割**: 基本設定と高度な最適化を分離
 - **層別分割**: Core/Tool/Support 層ごとに分離
 - **段階別分割**: セットアップ、運用、トラブルシューティングで分離
-- **zsh.md 分割候補例**: 基本設定 / プラグイン管理 / パフォーマンス計測・チューニング / トラブルシュート
+- **zsh.md 分割パターン（サイズ超過時の例）**: 基本設定 / プラグイン管理 / パフォーマンス計測・チューニング / トラブルシュート
 
 ## 🔍 ドキュメント健全性チェック
 
@@ -283,6 +283,7 @@
 
 ## 📝 更新履歴
 
+- **2025-11-30**: zsh.md の再構成に伴いサイズ表と分割方針を更新（105行に縮小）
 - **2025-11-27**: クイックチェックリスト追加・サイズ実測更新・zsh.md 分割候補を明示
 - **2025-10-17**: 全ドキュメントへの audience タグ適用・日付統一
   - 全11ドキュメントに `audience/` タグを追加
