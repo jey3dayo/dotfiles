@@ -64,7 +64,8 @@ require("conform").setup {
     biome = {
       condition = function(_, ctx)
         local config_files = lsp_config.formatters.biome.config_files
-        return utils.has_config_files(config_files, ctx.dirname)
+        local base_dir = ctx.dirname or (ctx.filename and vim.fn.fnamemodify(ctx.filename, ":h"))
+        return utils.has_config_files(config_files, base_dir)
       end,
     },
 
