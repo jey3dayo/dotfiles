@@ -7,6 +7,24 @@ local M = {}
 
 -- LSP keymaps using vim.keymap.set directly
 
+local function jump_diagnostic(count)
+  local jump = vim.diagnostic.jump
+  if type(jump) == "function" then
+    jump {
+      count = count,
+      on_jump = function(_, bufnr)
+        vim.diagnostic.open_float(bufnr, { scope = "cursor", focus = false })
+      end,
+    }
+    return
+  end
+
+  -- Neovim 0.10 fallback
+  local move = count > 0 and vim.diagnostic.goto_next or vim.diagnostic.goto_prev
+  move()
+  vim.diagnostic.open_float(0, { scope = "cursor", focus = false })
+end
+
 local function setup_workspace_keymaps(buf_opts)
   local workspace_mappings = {
     ["<space>wl"] = function()
@@ -35,8 +53,12 @@ local function setup_keymaps(client, bufnr)
   -- vim.keymap.set('n', "<C-e>", config.LSP.PREFIX, config.LSP.DEFAULT_OPTS)
 
   -- LSP keymaps (previously lspsaga)
-  vim.keymap.set("n", "<C-j>", vim.diagnostic.goto_next, buf_opts)
-  vim.keymap.set("n", "<C-k>", vim.diagnostic.goto_prev, buf_opts)
+  vim.keymap.set("n", "<C-j>", function()
+    jump_diagnostic(1)
+  end, buf_opts)
+  vim.keymap.set("n", "<C-k>", function()
+    jump_diagnostic(-1)
+  end, buf_opts)
   vim.keymap.set("n", "<C-l>", vim.diagnostic.open_float, buf_opts)
   vim.keymap.set("n", "K", vim.lsp.buf.hover, buf_opts)
   vim.keymap.set("n", "<C-[>", function()
