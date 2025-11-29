@@ -5,10 +5,11 @@ zsh-help() {
   keybinds | keys)
     echo "🔗 Custom Keybindings:"
     echo "  ^]       - fzf ghq repository selector"
+    echo "  ^[       - git branch/worktree navigator"
     echo "  ^g^g     - git diff widget"
     echo "  ^g^s     - git status widget"
     echo "  ^g^a     - git add interactive widget"
-    echo "  ^g^b     - git branch selector widget"
+    echo "  ^g^b     - git branch/worktree widget"
     echo "  ^g^K     - fzf kill process widget"
     echo "  ^R       - fzf history search"
     echo "  ^T       - fzf file finder"

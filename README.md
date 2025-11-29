@@ -60,8 +60,10 @@ zsh-help aliases           # Aliases reference
 
 # Git workflow (FZF-backed widgets; see docs/tools/fzf-integration.md)
 Ctrl+]                     # FZF repository selector
-Ctrl+g Ctrl+g             # Git status widget
-Ctrl+g Ctrl+s             # Git add widget
+Ctrl+[                     # FZF branch/worktree navigator
+Ctrl+g Ctrl+g             # Git diff widget
+Ctrl+g Ctrl+s             # Git status widget
+Ctrl+g Ctrl+a             # Git add widget
 
 # WezTerm (Ctrl+x leader key)
 Ctrl+x c                   # New tab
