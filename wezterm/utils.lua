@@ -7,6 +7,10 @@ local function ensure_wezterm()
   return wezterm
 end
 
+local function is_non_empty_string(value)
+  return type(value) == "string" and value ~= ""
+end
+
 local function home_dir()
   local home = os.getenv "HOME" or os.getenv "USERPROFILE"
   if type(home) ~= "string" or home == "" then return nil end
@@ -115,6 +119,17 @@ function M.convert_useful_path(dir)
   return M.basename(cwd)
 end
 
+local function normalize_cwd(cwd)
+  if type(cwd) == "table" then
+    if is_non_empty_string(cwd.file_path) then return cwd.file_path end
+    if is_non_empty_string(cwd.path) then return cwd.path end
+  end
+
+  if is_non_empty_string(cwd) then return cwd end
+
+  return ""
+end
+
 function M.split_from_url(dir)
   if type(dir) ~= "string" then return "", "" end
   local hostname = ""
@@ -137,6 +152,35 @@ function M.split_from_url(dir)
 
   local cwd = path ~= "" and M.convert_useful_path(path) or ""
   return hostname, cwd
+end
+
+local function format_cwd_title(cwd)
+  local normalized_cwd = normalize_cwd(cwd)
+  if not is_non_empty_string(normalized_cwd) then return "" end
+
+  local hostname, cwd_basename = M.split_from_url(normalized_cwd)
+
+  if hostname ~= "" and cwd_basename ~= "" then return hostname .. ":" .. cwd_basename end
+  if hostname ~= "" then return hostname end
+  if cwd_basename ~= "" then return cwd_basename end
+
+  return ""
+end
+
+function M.tab_title_from_pane(pane, max_width)
+  local title = ""
+
+  if pane and is_non_empty_string(pane.foreground_process_name) then
+    title = pane.foreground_process_name
+  elseif pane then
+    title = format_cwd_title(pane.current_working_dir)
+  end
+
+  if not is_non_empty_string(title) then title = "wezterm" end
+
+  if type(max_width) == "number" and max_width > 0 then return M.truncate_right(title, max_width) end
+
+  return title
 end
 
 local function is_array(value)

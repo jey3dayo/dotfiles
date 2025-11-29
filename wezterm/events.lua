@@ -5,63 +5,58 @@ local utils = require "./utils"
 local M = {}
 local resize_mode_active = false
 
--- Format tab title
-function M.format_tab_title(tab, tabs, _, _, hover, max_width)
-  max_width = max_width
+local function tab_colors(tab, hover)
+  if tab.is_active then return constants.tab_bar.active_bg, constants.tab_bar.active_fg end
+  if hover then return constants.tab_bar.hover_bg, constants.tab_bar.hover_fg end
+  return constants.tab_bar.normal_bg, constants.tab_bar.normal_fg
+end
 
-  local background = constants.tab_bar.normal_bg
-  local foreground = constants.tab_bar.normal_fg
+local function edge_colors(tab, tabs, background)
+  if not tabs or #tabs == 0 then
+    return background, constants.tab_bar.normal_bg, constants.tab_bar.normal_bg, background
+  end
 
   local is_first = tab.tab_id == tabs[1].tab_id
   local is_last = tab.tab_id == tabs[#tabs].tab_id
 
-  if tab.is_active then
-    background = constants.tab_bar.active_bg
-    foreground = constants.tab_bar.active_fg
-  elseif hover then
-    background = constants.tab_bar.hover_bg
-    foreground = constants.tab_bar.hover_fg
-  end
+  local leading_fg = is_first and constants.tab_bar.bg or constants.tab_bar.normal_bg
+  local trailing_bg = is_last and constants.tab_bar.bg or constants.tab_bar.normal_bg
 
-  local leading_fg = constants.tab_bar.normal_bg
-  local leading_bg = background
+  return background, leading_fg, trailing_bg, background
+end
 
-  local trailing_fg = background
-  local trailing_bg = constants.tab_bar.normal_bg
-
-  if is_first or is_last then
-    leading_fg = constants.tab_bar.bg
-    trailing_bg = constants.tab_bar.bg
-  end
-
-  local pane = tab.active_pane
-  local process_name = pane and pane.foreground_process_name or nil
-  local title_source
-
-  if type(process_name) == "string" and process_name ~= "" then
-    title_source = process_name
-  else
-    local cwd = pane and pane.current_working_dir or nil
-    if type(cwd) == "table" then cwd = cwd.file_path or cwd end
-    if type(cwd) == "string" and cwd ~= "" then title_source = utils.convert_home_dir(cwd) end
-  end
-
-  if type(title_source) ~= "string" or title_source == "" then title_source = "wezterm" end
-  local title = utils.truncate_right(title_source, max_width)
-
+local function arrow_segment(bg, fg)
   return {
-    { Attribute = { Italic = false } },
-    { Attribute = { Intensity = hover and "Bold" or "Normal" } },
-    { Background = { Color = leading_bg } },
-    { Foreground = { Color = leading_fg } },
-    { Text = constants.icons.solid_right_arrow },
-    { Background = { Color = background } },
-    { Foreground = { Color = foreground } },
-    { Text = tab.tab_index + 1 .. ":" .. title },
-    { Background = { Color = trailing_bg } },
-    { Foreground = { Color = trailing_fg } },
+    { Background = { Color = bg } },
+    { Foreground = { Color = fg } },
     { Text = constants.icons.solid_right_arrow },
   }
+end
+
+local function title_segment(bg, fg, text)
+  return {
+    { Background = { Color = bg } },
+    { Foreground = { Color = fg } },
+    { Text = text },
+  }
+end
+
+-- Format tab title
+function M.format_tab_title(tab, tabs, _, _, hover, max_width)
+  local background, foreground = tab_colors(tab, hover)
+  local leading_bg, leading_fg, trailing_bg, trailing_fg = edge_colors(tab, tabs, background)
+  local tab_title = utils.tab_title_from_pane(tab.active_pane, max_width)
+  local label = string.format("%d:%s", tab.tab_index + 1, tab_title)
+
+  return utils.array_concat(
+    {
+      { Attribute = { Italic = false } },
+      { Attribute = { Intensity = hover and "Bold" or "Normal" } },
+    },
+    arrow_segment(leading_bg, leading_fg),
+    title_segment(background, foreground, label),
+    arrow_segment(trailing_bg, trailing_fg)
+  )
 end
 
 local function set_resize_status(window, active)
@@ -83,46 +78,37 @@ function M.deactivate_resize_mode(window, _)
   set_resize_status(window, false)
 end
 
--- Opacity adjustment handlers
-function M.increase_opacity(window, _)
+local function apply_opacity(window, delta)
   local overrides = window:get_config_overrides() or {}
   if not overrides.window_background_opacity then overrides.window_background_opacity = constants.DEFAULT_OPACITY end
-  overrides.window_background_opacity = math.min(overrides.window_background_opacity + 0.05, 1.0)
+
+  if delta then
+    overrides.window_background_opacity = math.min(math.max(overrides.window_background_opacity + delta, 0.1), 1.0)
+  else
+    overrides.window_background_opacity = constants.DEFAULT_OPACITY
+  end
+
   overrides.text_background_opacity = overrides.window_background_opacity
   window:set_config_overrides(overrides)
-  window:toast_notification(
-    "wezterm",
-    string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100),
-    nil,
-    1000
-  )
+
+  return overrides.window_background_opacity
+end
+
+local function notify_opacity(window, opacity, suffix)
+  window:toast_notification("wezterm", string.format("Opacity: %.0f%%%s", opacity * 100, suffix or ""), nil, 1000)
+end
+
+-- Opacity adjustment handlers
+function M.increase_opacity(window, _)
+  notify_opacity(window, apply_opacity(window, 0.05))
 end
 
 function M.decrease_opacity(window, _)
-  local overrides = window:get_config_overrides() or {}
-  if not overrides.window_background_opacity then overrides.window_background_opacity = constants.DEFAULT_OPACITY end
-  overrides.window_background_opacity = math.max(overrides.window_background_opacity - 0.05, 0.1)
-  overrides.text_background_opacity = overrides.window_background_opacity
-  window:set_config_overrides(overrides)
-  window:toast_notification(
-    "wezterm",
-    string.format("Opacity: %.0f%%", overrides.window_background_opacity * 100),
-    nil,
-    1000
-  )
+  notify_opacity(window, apply_opacity(window, -0.05))
 end
 
 function M.reset_opacity(window, _)
-  local overrides = window:get_config_overrides() or {}
-  overrides.window_background_opacity = constants.DEFAULT_OPACITY
-  overrides.text_background_opacity = constants.DEFAULT_OPACITY
-  window:set_config_overrides(overrides)
-  window:toast_notification(
-    "wezterm",
-    string.format("Opacity: %.0f%% (reset)", constants.DEFAULT_OPACITY * 100),
-    nil,
-    1000
-  )
+  notify_opacity(window, apply_opacity(window), " (reset)")
 end
 
 -- Status update handler for showing mode indicators
