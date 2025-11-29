@@ -7,6 +7,19 @@ local M = {}
 
 -- LSP keymaps using vim.keymap.set directly
 
+-- Ensure mini.pick is loaded before mini.extra pickers to keep MiniPick global available
+local function use_lsp_picker(scope, fallback)
+  local pick_ok = pcall(require, "mini.pick")
+  local extra_ok, mini_extra = pcall(require, "mini.extra")
+  if pick_ok and extra_ok then
+    mini_extra.pickers.lsp { scope = scope }
+    return true
+  end
+
+  if fallback then fallback() end
+  return false
+end
+
 local function jump_diagnostic(count)
   local jump = vim.diagnostic.jump
   if type(jump) == "function" then
@@ -75,13 +88,9 @@ local function setup_keymaps(client, bufnr)
     end
 
     if has_references or #clients > 0 then
-      -- Use mini.pick for LSP references
-      local ok, mini_extra = pcall(require, "mini.extra")
-      if ok then
-        mini_extra.pickers.lsp { scope = "references" }
-      else
+      use_lsp_picker("references", function()
         vim.lsp.buf.references()
-      end
+      end)
     else
       vim.notify("No LSP clients attached or references not supported", vim.log.levels.WARN)
     end
@@ -108,13 +117,9 @@ local function setup_keymaps(client, bufnr)
     end
 
     if has_symbols or #clients > 0 then
-      -- Use mini.pick for LSP document symbols
-      local ok, mini_extra = pcall(require, "mini.extra")
-      if ok then
-        mini_extra.pickers.lsp { scope = "document_symbol" }
-      else
+      use_lsp_picker("document_symbol", function()
         vim.lsp.buf.document_symbol()
-      end
+      end)
     else
       vim.notify("No LSP clients attached or document symbols not supported", vim.log.levels.WARN)
     end

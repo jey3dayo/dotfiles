@@ -74,8 +74,9 @@ zsh-profile                # Detailed profiling
 ^[                         # FZF branch/worktree navigator
 ^g^g                       # Git diff widget
 ^g^s                       # Git status widget
-^g^a                       # Git add widget
-^g^b                       # Git branch/worktree widget
+^g^a                       # Git add -p widget
+^g^b / ^gs                 # Git branch/worktree navigator (fzf)
+^g^w / ^gw                 # Git worktree manager
 ^g^K                       # FZF kill process
 ```
 

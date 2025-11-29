@@ -9,13 +9,14 @@ zsh-help() {
     echo "  ^g^g     - git diff widget"
     echo "  ^g^s     - git status widget"
     echo "  ^g^a     - git add interactive widget"
-    echo "  ^g^b     - git branch/worktree widget"
+    echo "  ^g^b     - git branch/worktree widget (alias: ^gs)"
+    echo "  ^g^w     - git worktree manager (alias: ^gw)"
     echo "  ^g^K     - fzf kill process widget"
     echo "  ^R       - fzf history search"
     echo "  ^T       - fzf file finder"
     echo ""
     echo "Alternative key combinations:"
-    echo "  ^gg, ^gs, ^ga, ^gb - Single ^g variants"
+    echo "  ^gg (diff), ^gs (branch), ^ga (add), ^gw (worktree)"
     ;;
   aliases | abbr)
     echo "📝 Command Abbreviations:"

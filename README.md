@@ -1,17 +1,30 @@
 # Personal Dotfiles
 
-⚡ High-performance macOS development environment tuned for speed, consistency, and developer experience.
+**最終更新**: 2025-11-29  
+**対象**: 開発者  
+**タグ**: `category/setup`, `layer/core`, `environment/macos`, `audience/developer`
 
-## Documentation
+High-performance macOS development environment tuned for speed, consistency, and developer experience.
 
-- `docs/README.md` — navigation for all human-facing docs
-- `docs/documentation-guidelines.md` — tagging/metadata rules and review checklists
-- `.kiro/steering/` — AI context documents always loaded in sessions
-- `docs/performance.md` — single source for performance metrics and targets
+## Highlights
+
+- Performance-first dotfiles with local CI parity (`mise run ci`) before merges
+- Documentation centralized in `docs/` with navigation at `docs/README.md` and AI context in `.kiro/steering/`
+- Modular stack: Zsh (6-tier), Neovim (Lazy.nvim), WezTerm (tmux-style) with FZF-backed Git widgets
+- Versioning via Mise + Homebrew; AI/CLI helpers documented in `CLAUDE.md` and `.claude/`
+
+## Documentation Map
+
+- Navigation: `docs/README.md`
+- Setup (SST): `docs/setup.md`
+- Performance metrics/history: `docs/performance.md`
+- Maintenance cadence & troubleshooting: `docs/maintenance.md`
+- AI steering (always loaded): `.kiro/steering/`
+- Tool inventory: `TOOLS.md`
 
 ## Getting Started
 
-- Canonical setup steps live in `docs/setup.md` (gitconfig requirements, verification, and environment notes)
+- Canonical steps live in `docs/setup.md` (gitconfig requirements, verification, environment notes)
 - TL;DR: clone, add `~/.gitconfig_local`, then run the installer
 
 ```bash
@@ -22,32 +35,37 @@ sh ./setup.sh && brew bundle
 exec zsh
 ```
 
-## Performance & Reliability
+## Quality & CI
 
-- Metrics, targets, and history are tracked centrally in `docs/performance.md`
-- Goal: sub-second shell/terminal startup and near-instant Neovim load even with AI/LSP enabled
-- Use `mise run ci` locally to validate configuration drift before merges
+- Local gate: `mise run ci` (GitHub Actions equivalent)
+- Formatting bundle: `mise run format` (Markdown/JS/TOML/YAML/Lua/Shell)
+- Lint bundle: `mise run lint`
+- Documentation rules: `docs/documentation-guidelines.md`
 
 ## Core Stack
 
-- **Zsh + Sheldon**: 6-tier priority loading with mise-aware PATH optimization
-- **Neovim + Lazy.nvim**: AI assistance (Supermaven) with fast startup on M3
+- **Zsh + Sheldon**: 6-tier priority loading with mise-aware PATH optimization and 50+ Git abbreviations/widgets
+- **Neovim + Lazy.nvim**: AI assistance (Supermaven) with LSP-heavy yet fast startup
 - **WezTerm**: Primary terminal with Lua config and tmux-style workflow; Alacritty as GPU-accelerated alternative
-- **Git**: 50+ abbreviations and custom widgets backed by FZF integrations
+- **Git + FZF**: Widgets and fuzzy pickers for repo/status/add flows
 - **Versioning**: Mise for language runtimes; Homebrew for system packages
 
 ## Architecture
 
 ```
 dotfiles/
+├── .claude/       # AI assistance, commands, review criteria
+├── .github/       # Workflows
+├── .kiro/         # Steering docs (always-loaded AI context)
+├── docs/          # Human-facing documentation (SST per topic)
 ├── zsh/           # Shell (6-tier loading)
 ├── nvim/          # Editor (Lua config, 15+ LSP)
 ├── git/           # Version control (widgets, abbreviations)
 ├── wezterm/       # Terminal (Lua config, tmux-style)
 ├── alacritty/     # Alternative terminal (GPU-accelerated)
 ├── tmux/          # Session management
-├── Brewfile       # Package management
-└── .claude/       # AI assistance & documentation
+├── Brewfile       # Package management (Homebrew)
+└── setup.sh       # Installer entrypoint
 ```
 
 ## Shortcuts & Commands
@@ -61,9 +79,9 @@ zsh-help aliases           # Aliases reference
 # Git workflow (FZF-backed widgets; see docs/tools/fzf-integration.md)
 Ctrl+]                     # FZF repository selector
 Ctrl+[                     # FZF branch/worktree navigator
-Ctrl+g Ctrl+g             # Git diff widget
-Ctrl+g Ctrl+s             # Git status widget
-Ctrl+g Ctrl+a             # Git add widget
+Ctrl+g Ctrl+g              # Git diff widget
+Ctrl+g Ctrl+s              # Git status widget
+Ctrl+g Ctrl+a              # Git add widget
 
 # WezTerm (Ctrl+x leader key)
 Ctrl+x c                   # New tab
@@ -72,17 +90,17 @@ Alt+hjkl                   # Pane navigation
 
 # Package management
 brew bundle                # Install all packages
-mise install              # Setup language versions
+mise install               # Setup language versions
 ```
 
 ## Maintenance
 
 - Operational cadence and troubleshooting live in `docs/maintenance.md`
-- Weekly: `brew update && brew upgrade`, sync plugins (sheldon/nvim/tmux)
+- Weekly: `brew update && brew upgrade`, sync plugins (Sheldon/Neovim/tmux)
 - Monthly: measure shell startup (`time zsh -lic exit`), prune unused plugins
 - Always before merge: `mise run ci`
 
 ---
 
-**Status**: Production-ready (2025-10-16)  
+**Status**: Production-ready (2025-11-29)  
 **License**: MIT — optimized for modern development workflows with focus on speed, consistency, and developer experience.

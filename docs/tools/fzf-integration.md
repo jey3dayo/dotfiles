@@ -31,11 +31,13 @@ FZF は以下の層で横断的に統合されています：
 
 ### Git Integration
 
-| コマンド      | 機能                            | 実装場所                 |
-| ------------- | ------------------------------- | ------------------------ |
-| `^[` / `^g^b` | ブランチ/ワークツリー選択 (FZF) | zsh/config/tools/git.zsh |
-| `^g^g`        | Git diff ウィジェット (FZF)     | zsh/config/tools/git.zsh |
-| `^g^s`        | Git status ウィジェット (FZF)   | zsh/config/tools/git.zsh |
+| コマンド       | 機能                                | 実装場所                 |
+| -------------- | ----------------------------------- | ------------------------ |
+| `^[` / `^g^b`  | ブランチ/ワークツリー選択 (FZF)     | zsh/config/tools/git.zsh |
+| `gco()`        | FZF git checkout (ブランチ選択)     | zsh/lazy-sources/fzf.zsh |
+| `^g^g`         | Git diff ウィジェット (FZF)         | zsh/config/tools/git.zsh |
+| `^g^s`         | Git status ウィジェット (FZF)       | zsh/config/tools/git.zsh |
+| `^g^w` / `^gw` | Git worktree 管理ウィジェット (FZF) | zsh/config/tools/git.zsh |
 
 ### Tmux Integration
 
@@ -190,6 +192,8 @@ bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
 ^[                    # Branch/worktree navigator (cd or switch)
 ^g^g                  # Git diff with FZF
 ^g^s                  # Git status with FZF
+gco                   # FZF branch checkout
+^g^b / ^gs            # Git branch/worktree operations (fzf)
 
 # 3. File operations
 ^T                    # File selection
