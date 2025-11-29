@@ -4,25 +4,26 @@
 **対象**: 開発者・上級者
 **タグ**: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 
-1.1s 起動のモジュラー Zsh。Sheldon + zsh-defer でロードを最小化し、FZF/Git ウィジェットと PATH 最適化を組み合わせたコアレイヤーです。性能計測と改善履歴の単一情報源は `docs/performance.md`。
+1.1s 起動のモジュラー Zsh。Sheldon + zsh-defer でロードを最小化し、FZF/Git ウィジェットと PATH 最適化を組み合わせたコアレイヤーです。compinit は 24h/変更検知で再構築し、Sheldon キャッシュは plugins.toml 更新時に自動再生成。性能計測と改善履歴の単一情報源は `docs/performance.md`。
 
 ## 構成サマリ
 
 - `ZDOTDIR=$HOME/.config/zsh` に統一し、ログイン/非ログインで同一構成
-- `.zshenv` で XDG と最小 PATH、`.zprofile` で mise 優先の完全 PATH を構成
-- `init/completion.zsh` で compinit と zcompdump キャッシュを管理し、`init/sheldon.zsh` でプラグインを生成・ロード
-- `config/loader.zsh` が core → tools → functions → os の順に統一読み込み
-- `zsh-help` / `path-check` / `zsh-quick-check` で状態確認、FZF ウィジェットで ghq/git ワークフローを高速化
+- `.zshenv` で XDG/最低限の PATH（mise shims のみ）と環境変数を定義、`.zprofile` で `typeset -U path` による重複除去と完全 PATH を再構成
+- `init/completion.zsh` が compinit を 24h/補完更新で再構築し、7日以上の zcompdump を自動削除。`_post_compinit_hooks` で gh/mise などの補完も後追い登録
+- `init/sheldon.zsh` は plugins.toml 更新検知でキャッシュ生成し、Sheldon ロード後に mise shims を最優先に再配置
+- `config/loader.zsh` が core → tools → functions → os を統一ロード。tools は `fzf/git/mise/starship` を即時、brew/gh/debug 等は zsh-defer で段階遅延（3s/8s/12s/15s）
+- `zsh-help` / `path-check` / `zsh-quick-check` / `mise-status` で状態確認、FZF ウィジェットと `wtcd` で ghq/git ワークフローを高速化
 
 ## ディレクトリとロード順
 
 ### ロードシーケンス
 
-1. **.zshenv**: XDG 変数、`ZDOTDIR`、最低限の PATH（mise shims）と環境変数を定義。
-2. **.zprofile**: ロケール/エディタ設定、`mise activate zsh`、PATH を mise > user > language > Android SDK > Homebrew > system の順で再構成。
-3. **.zshrc**: ヒストリと zsh オプションを設定後、`init/*.zsh` を実行（補完セットアップと Sheldon キャッシュ生成）、続けて `sources/*.zsh` を読み込み。
-4. **config/loader.zsh**: helper 経由で core（aliases/path utils）→ tools（brew/fzf/gh/git/mise/starship 等）→ functions → os-specific を統一ロードし、helper 関数をクリーンアップ。
-5. **lazy-sources/\*.zsh**: Arch/WSL/OrbStack/FZF 追加設定などを zsh-defer で遅延読み込み。
+1. **.zshenv**: XDG 変数と `ZDOTDIR` を固定、GHQ/Android/Java/Brewfile などの環境変数を先に設定。非ログイン用の最小 PATH は mise shims のみ。
+2. **.zprofile**: ロケール/エディタ設定、`typeset -U path cdpath fpath manpath` で重複除去、`mise activate zsh` 後に PATH を mise > user > language > Android SDK > Homebrew > system の順に再構成。
+3. **.zshrc**: ヒストリと zsh オプションを設定後、`init/*.zsh` を実行（compinit + Sheldon キャッシュ生成・mise PATH 再優先）、続いて `sources/*.zsh`（config loader と補完スタイル）を読み込み。
+4. **config/loader.zsh**: helper 経由で core（aliases/path utils）→ tools（即時: fzf/git/mise/starship, 遅延: brew/gh/debug 他）→ functions → os-specific を統一ロードし、helper を消去。
+5. **lazy-sources/\*.zsh**: Arch/WSL/OrbStack/FZF/履歴検索などを zsh-defer 経由で遅延ロード（Sheldon で `dotfiles-lazy-sources` として一括管理）。
 
 ### ディレクトリ構造（主要）
 
@@ -46,20 +47,20 @@ zsh/
 ## PATH と環境管理
 
 - PATH の単一情報源は `.zprofile`。非ログインシェル向けの最小 PATH は `.zshenv` に限定。
-- 優先順位: mise shims → `$HOME/{bin,.local/bin}` → 言語ツール（cargo/go/pnpm 等）→ Android SDK → Homebrew → system。
-- `path-check` で重複や欠落を検査し、`zsh-quick-check` で PATH/ツールの健全性を一括確認。
-- 補完キャッシュは `${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump` 配下に生成され、7日以上古いファイルは自動削除。
+- 優先順位: mise shims → `$HOME/{bin,.local/bin}` → 言語ツール（deno/cargo/go/pnpm 等）→ Android SDK → Homebrew → system。`typeset -U path` で重複を抑止。
+- `path-check` で重複や欠落を検査し（mise shims は除外）、`zsh-quick-check` で PATH/主要ツール/メモリ使用をまとめて確認。
+- 補完キャッシュは `${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump` 配下に生成され、24h/補完更新で再構築。7日以上古い zcompdump は自動削除し、手動では `cleanup_zcompdump` 関数でクリーンアップ。
 
 ## プラグイン構成（Sheldon）
 
-| カテゴリ              | プラグイン                                                              | 役割                                              |
-| --------------------- | ----------------------------------------------------------------------- | ------------------------------------------------- |
-| Core/Deferred         | zsh-defer, oh-my-zsh `functions`/`clipboard`/`sudo`                     | 起動時の遅延読み込みと基本ユーティリティ          |
-| Completion/Navigation | zsh-completions, fzf-tab, zoxide                                        | 補完強化とディレクトリ移動高速化                  |
-| Search/UX             | fzf, zsh-autosuggestions, fast-syntax-highlighting                      | ファジー検索と入力体験向上                        |
-| Git Workflow          | fzf-git.sh                                                              | ブランチ/ワークツリー/ファイル/スタッシュピッカー |
-| Tool Completions      | pnpm-shell-completion (+install), ni-completion, eza, bun, 1password/op | ツール固有補完と PATH 追加                        |
-| Quality               | command-not-found, zsh-abbr                                             | 補助機能と省略語展開                              |
+| カテゴリ              | プラグイン                                                                      | 役割                                                   |
+| --------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Bootstrap/Core        | zsh-defer, oh-my-zsh `functions`/`clipboard`/`sudo`, zsh-abbr                   | 遅延基盤と基本ユーティリティ、abbr 展開                |
+| Completion/Navigation | zsh-completions (fpath 追加), fzf-tab, zoxide                                   | 補完強化とディレクトリ移動高速化（`alias j=z` + init） |
+| Search/UX             | fzf, zsh-autosuggestions, fast-syntax-highlighting                              | ファジー検索・入力体験向上（highlight は最後にロード） |
+| Git Workflow          | fzf-git.sh                                                                      | ブランチ/ワークツリー/ファイル/スタッシュピッカー      |
+| Tool Completions      | pnpm-shell-completion (+install), ni-completion, eza, bun, 1password/op         | ツール固有補完と PATH 追加                             |
+| Quality/Ops           | command-not-found, dotfiles-lazy-sources (arch/wsl/orbstack/fzf/history-search) | 補助機能と OS/FZF 拡張の遅延読込                       |
 
 ## キー操作とワークフロー
 
@@ -72,19 +73,23 @@ zsh-help aliases     # 省略語一覧
 zsh-help tools       # インストール済みツール確認
 path-check           # PATH 重複/欠落診断
 zsh-quick-check      # PATH + 主要ツールの健全性チェック
+mise-status          # mise のデータ/キャッシュ/アクティブツール確認
+cleanup_zcompdump    # zcompdump 手動クリーンアップ（確認付き）
 ```
 
 ### Git / FZF ウィジェット
 
 ```bash
-^]          # ghq リポジトリ選択
-^[          # ブランチ/ワークツリー切替 (fzf)
-^g^g        # Git diff
-^g^s        # Git status
-^g^a        # Git add -p
-^g^b / ^gs  # ブランチ/ワークツリー切替 (fzf)
-^g^w / ^gw  # Git worktree 管理
-^g^K        # プロセス kill (fzf)
+^]            # ghq リポジトリ選択（fzf, README プレビュー付き）
+^gg / ^g^g    # Git diff ウィジェット
+^g^s          # Git status ウィジェット
+^ga / ^g^a    # Git add -p ウィジェット
+^gs / ^g^b    # ブランチ切替（既存 WT があれば cd）
+^gw / ^g^w    # Git worktree 管理（開く/追加/一覧/削除）
+^g^z          # スタッシュピッカー（fzf-git.sh 提供時）
+^g^f          # Git ファイル/差分ピッカー（fzf-git.sh 提供時）
+^g^K          # プロセス kill (fzf)
+wtcd <branch> # 指定ブランチの worktree に即座に cd（補完付き）
 ```
 
 ### FZF 統合
@@ -92,14 +97,17 @@ zsh-quick-check      # PATH + 主要ツールの健全性チェック
 ```bash
 ^R          # ヒストリ検索
 ^T          # ファイル検索
+FZF_DEFAULT_OPTS  # `--height 50% --reverse`
+FZF_CTRL_R_OPTS   # プレビュー/クリップボードコピー付き履歴検索
+FZF_CTRL_T_OPTS   # bat プレビュー付きファイル検索
 ```
 
 ## パフォーマンスと検証
 
 - ベンチマークと改善履歴は `docs/performance.md` を参照（単一情報源）。
-- 迅速な確認: `time zsh -lic exit` / `zsh-quick-check` / `path-check`。
-- 詳細分析: `zmodload zsh/zprof; zprof | head -20`、必要に応じて `~/.cache/zsh/zcompdump*` を削除して `compinit` を再構築。
-- 補完キャッシュやプラグイン生成は zsh 起動時に自動更新されるため、異常時は `exec zsh` で再起動して再生成。
+- 迅速な確認: `time zsh -lic exit` / `zsh-quick-check` / `path-check` / `mise-status`。
+- 詳細分析: `export ZSH_DEBUG=1; zsh -i` → `zprof | head -20`、必要に応じて `${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump*` を削除して `compinit` を再構築。
+- 補完キャッシュやプラグイン生成は zsh 起動時に自動更新（plugins.toml 更新検知で再生成）されるため、異常時は `exec zsh` で再起動して再生成。
 
 ## カスタマイズと拡張
 
