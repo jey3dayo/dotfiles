@@ -55,103 +55,53 @@ git_status() {
 
 _register_git_widget git_status '^g^s'
 
-# Git branch/worktree navigator widget (fzf)
-git_branch_nav_widget() {
-  if ! _is_git_repo || ! command -v fzf >/dev/null 2>&1; then
-    zle reset-prompt
-    return
-  fi
-
-  local repo_root
-  repo_root=$(git rev-parse --show-toplevel)
-
-  local -A branch_worktree
-  local -a candidates
-  local worktree_pairs
-
-  worktree_pairs=$(git worktree list --porcelain | awk '
+# Worktree path resolver for a branch
+_git_worktree_for_branch() {
+  local branch="$1"
+  git worktree list --porcelain | awk -v target="$branch" '
     $1=="worktree" { path=$2 }
-    $1=="branch"  { br=$2; sub("^refs/heads/","",br); print br "\t" path; path="" }
-  ')
-
-  while IFS=$'\t' read -r wt_branch wt_path; do
-    [[ -z "$wt_branch" || -z "$wt_path" ]] && continue
-    branch_worktree[$wt_branch]="$wt_path"
-    candidates+=("worktree\t${wt_branch}\t${wt_path}\t${wt_path}")
-  done <<< "$worktree_pairs"
-
-  while IFS=$'\t' read -r name date subject; do
-    candidates+=("branch\t${name}\t${branch_worktree[$name]:-}\t${date} ${subject}")
-  done < <(git for-each-ref --format='%(refname:short)\t%(committerdate:relative)\t%(contents:subject)' --sort=-committerdate refs/heads)
-
-  if (( ${#candidates[@]} == 0 )); then
-    zle reset-prompt
-    return
-  fi
-
-  local preview_cmd selected kind entry_name entry_path entry_desc
-  preview_cmd=$'IFS=\t read -r kind name path desc <<< "{}";\n'\
-$'if [[ $kind == worktree ]]; then\n'\
-$'  git -C "$path" status --short --branch;\n'\
-$'  echo;\n'\
-$'  git -C "$path" log --oneline --decorate -5;\n'\
-$'else\n'\
-$'  if [[ -n "$path" ]]; then\n'\
-$'    git -C "$path" status --short --branch;\n'\
-$'    echo;\n'\
-$'  fi\n'\
-$'  git -C '"$repo_root"' log --oneline --decorate -5 "$name";\n'\
-$'fi'
-
-  selected=$(printf "%s\n" "${candidates[@]}" | fzf \
-    --prompt="branch/worktree > " \
-    --header="Enter: worktree→cd, branch→switch/cd" \
-    --with-nth=2,3,4 \
-    --delimiter=$'\t' \
-    --preview="$preview_cmd" \
-    --preview-window="right:60%" \
-    --reverse \
-    --border \
-    --ansi)
-
-  if [[ -z "$selected" ]]; then
-    zle reset-prompt
-    return
-  fi
-
-  IFS=$'\t' read -r kind entry_name entry_path entry_desc <<< "$selected"
-
-  if [[ "$kind" == "worktree" ]]; then
-    if [[ -d "$entry_path" ]]; then
-      cd "$entry_path"
-    else
-      echo "worktree path missing: $entry_path"
-    fi
-  else
-    if [[ -n "$entry_path" && -d "$entry_path" ]]; then
-      cd "$entry_path"
-    else
-      echo "git switch $entry_name"
-      git switch "$entry_name"
-    fi
-  fi
-
-  zle reset-prompt
+    $1=="branch" {
+      br=$2
+      sub("^refs/heads/", "", br)
+      if (br == target) { print path; exit }
+      path=""
+    }
+  '
 }
-zle -N git_branch_nav_widget git_branch_nav_widget
-bindkey '^g^b' git_branch_nav_widget
-bindkey '\e' git_branch_nav_widget
 
-# Git switch widget (local branch switching with fzf)
+# Branch selector (prefers fzf-git)
+_git_select_branch() {
+  if command -v _fzf_git_branches >/dev/null 2>&1; then
+    _fzf_git_branches | head -n1
+  else
+    git branch --format='%(refname:short)' | fzf --prompt="Switch to branch: " --height=40% --reverse --preview="git log --oneline --graph --color=always {}"
+  fi
+}
+
+# Git switch widget using fzf-git for selection
 _git_switch_branch() {
   command -v fzf >/dev/null 2>&1 || return 0
 
   local branch
-  # Show only local branches (excluding remote branches)
-  branch=$(git branch --format='%(refname:short)' | fzf --prompt="Switch to branch: " --height=40% --reverse --preview="git log --oneline --graph --color=always {}")
-  if [[ -n "$branch" ]]; then
+  branch=$(_git_select_branch)
+  if [[ -z "$branch" ]]; then
+    return 0
+  fi
+
+  local worktree_path
+  worktree_path=$(_git_worktree_for_branch "$branch")
+  if [[ -n "$worktree_path" && -d "$worktree_path" ]]; then
+    echo "cd $worktree_path"
+    cd "$worktree_path"
+    return 0
+  fi
+
+  if git rev-parse --verify --quiet "$branch" >/dev/null 2>&1; then
     echo "git switch $branch"
     git switch "$branch"
+  else
+    echo "git switch --track --guess $branch"
+    git switch --track --guess "$branch"
   fi
 }
 
@@ -178,6 +128,14 @@ git_worktree_widget() {
   _git_widget _git_worktree_menu
 }
 
+_git_select_worktree() {
+  if command -v _fzf_git_worktrees >/dev/null 2>&1; then
+    _fzf_git_worktrees | head -n1
+  else
+    git worktree list --porcelain | awk '/^worktree / { print $2 }' | fzf --prompt="Select worktree: " --height=40% --reverse
+  fi
+}
+
 _git_worktree_menu() {
   command -v fzf >/dev/null 2>&1 || return 0
 
@@ -195,20 +153,10 @@ _git_worktree_menu() {
   if [[ -n "$choice" ]]; then
     case "$choice" in
       "🔀 Open Worktree")
-        # Parse git worktree list and select worktree
-        local worktree_info
-        worktree_info=$(git worktree list --porcelain | awk '
-          /^worktree / { path = substr($0, 10); }
-          /^branch / {
-            branch = $2;
-            sub("^refs/heads/", "", branch);
-            print branch "\t" path;
-            path = ""; branch = ""
-          }
-        ' | fzf --prompt="Select worktree: " --height=40% --reverse --delimiter='\t' --with-nth=1)
+        local worktree_path
+        worktree_path=$(_git_select_worktree)
 
-        if [[ -n "$worktree_info" ]]; then
-          local worktree_path=$(echo "$worktree_info" | cut -f2)
+        if [[ -n "$worktree_path" ]]; then
           if [[ -d "$worktree_path" ]]; then
             echo "cd $worktree_path"
             cd "$worktree_path"
@@ -243,24 +191,17 @@ _git_worktree_menu() {
         git worktree list
         ;;
       "🗑️  Remove Worktree")
-        # Select and remove worktree
-        local worktree_info
-        worktree_info=$(git worktree list --porcelain | awk '
-          /^worktree / {
-            path = substr($0, 10);
-            getline;
-            if ($0 !~ /^branch/) { next; }
-          }
-          /^branch / {
-            branch = $2;
-            sub("^refs/heads/", "", branch);
-            print branch "\t" path;
-            path = ""; branch = ""
-          }
-        ' | grep -v "$(git rev-parse --show-toplevel)" | fzf --prompt="Remove worktree: " --height=40% --reverse --delimiter='\t' --with-nth=1)
+        local worktree_path
+        worktree_path=$(_git_select_worktree)
 
-        if [[ -n "$worktree_info" ]]; then
-          local worktree_path=$(echo "$worktree_info" | cut -f2)
+        if [[ -n "$worktree_path" ]]; then
+          local current_root
+          current_root=$(git rev-parse --show-toplevel)
+          if [[ "$worktree_path" == "$current_root" ]]; then
+            echo "Cannot remove current worktree: $worktree_path"
+            return 1
+          fi
+
           echo "git worktree remove $worktree_path"
           git worktree remove "$worktree_path"
         fi
@@ -270,6 +211,11 @@ _git_worktree_menu() {
 }
 
 _register_git_widget git_worktree_widget '^gw' '^g^w'
+
+# Expose fzf-git stash picker (status uses ^g^s)
+if command -v fzf-git-stashes-widget >/dev/null 2>&1; then
+  bindkey '^g^z' fzf-git-stashes-widget
+fi
 
 # Worktree quick cd by branch name
 wtcd() {

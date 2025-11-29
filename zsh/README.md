@@ -71,12 +71,13 @@ zsh-profile                # Detailed profiling
 
 ```bash
 ^]                         # FZF ghq repository selector
-^[                         # FZF branch/worktree navigator
 ^g^g                       # Git diff widget
 ^g^s                       # Git status widget
 ^g^a                       # Git add -p widget
-^g^b / ^gs                 # Git branch/worktree navigator (fzf)
-^g^w / ^gw                 # Git worktree manager
+^g^b / ^gs                 # Git branch switcher (fzf-git powered)
+^g^w / ^gw                 # Git worktree manager (fzf-git powered)
+^g^z                       # fzf-git stash picker
+^g^f                       # fzf-git file picker
 ^g^K                       # FZF kill process
 ```
 
@@ -141,7 +142,7 @@ kill-fzf()      # Process killer with preview
 ### Development Plugins (Tier 3-4)
 
 - **zsh-abbr**: Abbreviation expansion
-- **forgit**: Interactive git operations
+- **fzf-git.sh**: Interactive git pickers (branches/files/stash/worktree)
 - **zsh-you-should-use**: Alias reminders
 
 ### Theme & UI (Tier 5-6)

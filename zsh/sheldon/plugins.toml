@@ -47,6 +47,10 @@ apply = ["fpath-src"]
 github = "junegunn/fzf"
 apply = ['fzf-install', 'source']
 
+[plugins.fzf-git]
+github = "junegunn/fzf-git.sh"
+apply = ["source"]
+
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
 
