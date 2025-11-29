@@ -2,6 +2,7 @@
 local utils = require "core.utils"
 local with = utils.with
 local config = require "lsp.config"
+local autoformat = require "lsp.autoformat"
 
 local M = {}
 
@@ -85,8 +86,12 @@ end
 local function format_buffer(bufnr, options)
   options = options or {}
   local specific_formatter = options.formatter
+  local force = options.force
 
-  if vim.g[config.format.state.global] then return nil end
+  if not force and not autoformat.is_enabled(bufnr) then
+    vim.notify("Autoformat is disabled (:AutoFormatEnable で再有効化)", vim.log.levels.INFO)
+    return
+  end
 
   -- Try conform.nvim first
   if format_with_conform(bufnr, specific_formatter) then return end
@@ -115,26 +120,7 @@ local function create_format_command(bufnr, options)
 end
 
 -- Auto-format setup
-local _format_autocmd_registered = false
 local _format_commands_registered = false
-
-local function register_autocmd()
-  if _format_autocmd_registered then return end
-  _format_autocmd_registered = true
-
-  utils.autocmd("BufWritePre", {
-    pattern = "*",
-    callback = function(event)
-      local buf = event.buf
-      local buf_vars = vim.b[buf] or {}
-
-      -- Check if auto-format is disabled
-      if vim.g.disable_autoformat or buf_vars.disable_autoformat then return end
-
-      create_format_command(buf)
-    end,
-  })
-end
 
 local function register_commands()
   if _format_commands_registered then return end
@@ -196,7 +182,6 @@ M.setup = function(bufnr, client, args)
     vim.notify(string.format("Setting up modern formatter for buffer: %d", bufnr), vim.log.levels.INFO)
   end
 
-  register_autocmd()
   register_commands()
 end
 

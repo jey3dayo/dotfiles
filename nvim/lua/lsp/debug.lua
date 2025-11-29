@@ -210,9 +210,10 @@ function M.check_lsp_status()
   -- Formatter status
   echo_newline()
   echo_header "Formatter Status"
-  local format_config = require("lsp.config").format
-  local global_format_disabled = vim.g[format_config.state.global] == 1
-  local buffer_format_disabled = vim.b[format_config.state.buffer] == 1
+  local autoformat = require "lsp.autoformat"
+  local format_state = autoformat.state(bufnr)
+  local global_format_disabled = format_state.global_disabled
+  local buffer_format_disabled = format_state.buffer_disabled
 
   echo("• Global formatting: ", "Normal")
   echo(global_format_disabled and "✗ OFF" or "✓ ON", global_format_disabled and "DiagnosticError" or "DiagnosticOk")
@@ -258,10 +259,10 @@ function M.check_lsp_status()
   end
 
   -- Format on save status
-  local format_on_save = vim.api.nvim_buf_get_option(bufnr, "formatexpr") ~= ""
+  local format_on_save = not (global_format_disabled or buffer_format_disabled)
   echo_newline()
   echo("• Format on save: ", "Normal")
-  echo(format_on_save and "configured" or "not configured", format_on_save and "DiagnosticWarn" or "Normal")
+  echo(format_on_save and "enabled" or "disabled", format_on_save and "DiagnosticOk" or "DiagnosticWarn")
   echo_newline()
 
   -- Key bindings reminder
