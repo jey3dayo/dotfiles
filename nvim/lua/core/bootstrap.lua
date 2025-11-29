@@ -24,6 +24,7 @@ end
 local immediate_modules = {
   { name = "lsp.quiet" }, -- quiet LSP logs before anything else
   { name = "core.utils" }, -- utility shortcuts used by later modules
+  { name = "core.compat" }, -- compatibility shims for deprecated APIs
   { name = "options" }, -- core options
   { name = "keymaps" }, -- basic keymaps + leader
   { name = "filetype" }, -- filetype detection overrides
