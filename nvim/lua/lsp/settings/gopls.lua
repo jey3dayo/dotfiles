@@ -27,6 +27,14 @@ return {
 
     -- Normal LSP keymaps and configurations for Go files
     local opts = { noremap = true, silent = true, buffer = bufnr }
+    local function jump_diagnostic(count)
+      vim.diagnostic.jump {
+        count = count,
+        on_jump = function(_, local_bufnr)
+          vim.diagnostic.open_float(local_bufnr, { scope = "cursor", focus = false })
+        end,
+      }
+    end
 
     -- Go-specific keymaps
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
@@ -35,8 +43,12 @@ return {
     vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
     vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-    vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-    vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "[d", function()
+      jump_diagnostic(-1)
+    end, opts)
+    vim.keymap.set("n", "]d", function()
+      jump_diagnostic(1)
+    end, opts)
     vim.keymap.set("n", "<leader>f", function()
       vim.lsp.buf.format { async = true }
     end, opts)
