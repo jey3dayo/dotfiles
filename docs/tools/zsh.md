@@ -57,6 +57,7 @@ zsh/
 | Core/Deferred         | zsh-defer, oh-my-zsh `functions`/`clipboard`/`sudo`                     | 起動時の遅延読み込みと基本ユーティリティ |
 | Completion/Navigation | zsh-completions, fzf-tab, zoxide                                        | 補完強化とディレクトリ移動高速化         |
 | Search/UX             | fzf, zsh-autosuggestions, fast-syntax-highlighting                      | ファジー検索と入力体験向上               |
+| Git Workflow          | fzf-git.sh                                                              | ブランチ/ワークツリー/ファイル/スタッシュピッカー |
 | Tool Completions      | pnpm-shell-completion (+install), ni-completion, eza, bun, 1password/op | ツール固有補完と PATH 追加               |
 | Quality               | command-not-found, zsh-abbr                                             | 補助機能と省略語展開                     |
 

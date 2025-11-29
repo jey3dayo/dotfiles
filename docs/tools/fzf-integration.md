@@ -24,20 +24,24 @@ FZF は以下の層で横断的に統合されています：
 | キーバインド | 機能                   | 場所        |
 | ------------ | ---------------------- | ----------- |
 | `^]`         | ghq リポジトリ選択     | Shell (Zsh) |
+| `^g?`        | fzf-git キーマップ表示 | Shell (Zsh) |
 | `^g^K`       | プロセス選択・kill     | Shell (Zsh) |
 | `^R`         | コマンド履歴検索       | Shell (Zsh) |
 | `^T`         | ファイル選択           | Shell (Zsh) |
-| `^[`         | ブランチ/WT ナビゲート | Shell (Zsh) |
 
 ### Git Integration
 
-| コマンド       | 機能                                | 実装場所                 |
-| -------------- | ----------------------------------- | ------------------------ |
-| `^[` / `^g^b`  | ブランチ/ワークツリー選択 (FZF)     | zsh/config/tools/git.zsh |
-| `gco()`        | FZF git checkout (ブランチ選択)     | zsh/lazy-sources/fzf.zsh |
-| `^g^g`         | Git diff ウィジェット (FZF)         | zsh/config/tools/git.zsh |
-| `^g^s`         | Git status ウィジェット (FZF)       | zsh/config/tools/git.zsh |
-| `^g^w` / `^gw` | Git worktree 管理ウィジェット (FZF) | zsh/config/tools/git.zsh |
+| コマンド       | 機能                                       | 実装場所                           |
+| -------------- | ------------------------------------------ | ---------------------------------- |
+| `^g^b` / `^gs` | ブランチ切り替え (既存WTがあれば cd)       | zsh/config/tools/git.zsh (fzf-git) |
+| `^g^w` / `^gw` | ワークツリー管理 (fzf-git選択 + 追加/削除) | zsh/config/tools/git.zsh           |
+| `^g^z`         | スタッシュ確認・削除 (fzf-git)             | fzf-git.sh                         |
+| `^g^f`         | Gitファイル/差分ピッカー (fzf-git)         | fzf-git.sh                         |
+| `^g?`          | fzf-git キーバインドヘルプ                 | fzf-git.sh                         |
+| `gco()`        | FZF git checkout (ブランチ選択)            | zsh/lazy-sources/fzf.zsh           |
+| `^g^g`         | Git diff ウィジェット (FZF)                | zsh/config/tools/git.zsh           |
+| `^g^s`         | Git status ウィジェット (FZF)              | zsh/config/tools/git.zsh           |
+| `^g^a`         | Git add -p ウィジェット (FZF)              | zsh/config/tools/git.zsh           |
 
 ### Tmux Integration
 
@@ -105,6 +109,21 @@ github = "Aloxaf/fzf-tab"
 defer = "2"  # Critical path optimization
 ```
 
+#### fzf-git (Git Pickers)
+
+```bash
+# sheldon/plugins.toml
+[plugins.fzf-git]
+github = "junegunn/fzf-git.sh"
+apply = ["source"]
+```
+
+- `^g^f`: Git files / diff picker
+- `^g^b` / `^gs`: Branch switcher (worktree-aware)
+- `^g^w` / `^gw`: Worktree selector (remove with `ctrl-x`)
+- `^g^z`: Stash picker (`ctrl-x` to drop)
+- `^g?`: Keybinding list
+
 ### Git Layer Integration
 
 **Performance Impact**: ✅ 最適化済み - FZF統合による操作効率90%向上
@@ -118,16 +137,15 @@ defer = "2"  # Critical path optimization
 **Implementation**:
 
 ```bash
-# Branch/worktree navigator (excerpt)
-git_branch_nav_widget() {
-  local selected
-  selected=$(git worktree list --porcelain | awk '
-    $1=="worktree"{path=$2}
-    $1=="branch"{br=$2; sub("^refs/heads/","",br); print "worktree\t" br "\t" path; path=""}
-  ' | fzf --prompt="branch/worktree > " --delimiter=$'\t' --with-nth=2,3)
+# Worktree-aware branch switcher using fzf-git selectors
+_git_switch_branch() {
+  local branch
+  branch=$(_fzf_git_branches | head -n1)
+  [[ -z "$branch" ]] && return
 
-  IFS=$'\t' read -r kind name path <<< "$selected"
-  [[ $kind == "worktree" ]] && cd "$path" || git switch "$name"
+  local worktree_path
+  worktree_path=$(_git_worktree_for_branch "$branch")
+  [[ -n "$worktree_path" ]] && cd "$worktree_path" || git switch --track --guess "$branch"
 }
 ```
 
@@ -189,11 +207,13 @@ bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
 ^]                    # Select repository via FZF + ghq
 
 # 2. Git operations
-^[                    # Branch/worktree navigator (cd or switch)
 ^g^g                  # Git diff with FZF
 ^g^s                  # Git status with FZF
+^g^b / ^gs            # Branch switcher (fzf-git; cd if worktree exists)
+^g^w / ^gw            # Worktree manager (fzf-git selector + create/remove)
+^g^z                  # Stash picker (fzf-git; ctrl-x to drop)
+^g^f                  # Git file picker (fzf-git)
 gco                   # FZF branch checkout
-^g^b / ^gs            # Git branch/worktree operations (fzf)
 
 # 3. File operations
 ^T                    # File selection
