@@ -1,56 +1,48 @@
 # Personal Dotfiles
 
-⚡ **High-performance macOS development environment** - Optimized for speed, consistency, and developer experience.
+⚡ High-performance macOS development environment tuned for speed, consistency, and developer experience.
 
-## 🚀 Performance Achievements
+## Documentation
 
-📊 **詳細なパフォーマンス指標**: [Performance Statistics](docs/performance.md)
+- `docs/README.md` — navigation for all human-facing docs
+- `docs/documentation-guidelines.md` — tagging/metadata rules and review checklists
+- `.kiro/steering/` — AI context documents always loaded in sessions
+- `docs/performance.md` — single source for performance metrics and targets
 
-| Component           | Current    | Improvement |
-| ------------------- | ---------- | ----------- |
-| **Zsh startup**     | **1.1s**   | 43% faster  |
-| **Neovim startup**  | **<100ms** | 50% faster  |
-| **WezTerm startup** | **800ms**  | 35% faster  |
+## Getting Started
 
-## ✨ Core Features
-
-- **🐚 Zsh**: Modular plugin system with 6-tier priority loading (1.1s startup)
-- **🚀 Neovim**: 15+ language LSP support with AI assistance (Supermaven)
-- **🔧 Terminal**: WezTerm (primary) + Alacritty with tmux-style workflow
-- **⚡ Git**: 50+ abbreviations and custom widgets for enhanced workflow
-- **🎨 Theming**: Unified Gruvbox design across all tools
-- **🛠️ Version Management**: Mise for language versions, Homebrew for packages
-
-## ⚡ Quick Setup
+- Canonical setup steps live in `docs/setup.md` (gitconfig requirements, verification, and environment notes)
+- TL;DR: clone, add `~/.gitconfig_local`, then run the installer
 
 ```bash
-# 1. Clone repository
 git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
 cd ~/src/github.com/jey3dayo/dotfiles
-
-# 2. Configure Git (REQUIRED)
-cat > ~/.gitconfig_local << EOF
-[user]
-    name = Your Name
-    email = your.email@example.com
-EOF
-
-# 3. Run automated setup
+# ~/.gitconfig_local を作成した上で実行（手順詳細は docs/setup.md）
 sh ./setup.sh && brew bundle
-
-# 4. Restart shell
 exec zsh
 ```
 
-📖 **詳細なセットアップ手順**: [Setup Guide](docs/setup.md)
+## Performance & Reliability
 
-## 📁 Architecture
+- Metrics, targets, and history are tracked centrally in `docs/performance.md`
+- Goal: sub-second shell/terminal startup and near-instant Neovim load even with AI/LSP enabled
+- Use `mise run ci` locally to validate configuration drift before merges
+
+## Core Stack
+
+- **Zsh + Sheldon**: 6-tier priority loading with mise-aware PATH optimization
+- **Neovim + Lazy.nvim**: AI assistance (Supermaven) with fast startup on M3
+- **WezTerm**: Primary terminal with Lua config and tmux-style workflow; Alacritty as GPU-accelerated alternative
+- **Git**: 50+ abbreviations and custom widgets backed by FZF integrations
+- **Versioning**: Mise for language runtimes; Homebrew for system packages
+
+## Architecture
 
 ```
 dotfiles/
-├── zsh/           # Shell (1.2s startup, 6-tier loading)
+├── zsh/           # Shell (6-tier loading)
 ├── nvim/          # Editor (Lua config, 15+ LSP)
-├── git/           # Version control (widgets, 50+ abbrevs)
+├── git/           # Version control (widgets, abbreviations)
 ├── wezterm/       # Terminal (Lua config, tmux-style)
 ├── alacritty/     # Alternative terminal (GPU-accelerated)
 ├── tmux/          # Session management
@@ -58,16 +50,15 @@ dotfiles/
 └── .claude/       # AI assistance & documentation
 ```
 
-## 🎮 Essential Commands
+## Shortcuts & Commands
 
 ```bash
-# Shell optimization
+# Shell help
 zsh-help                   # Interactive help system
 zsh-help keybinds          # Key bindings reference
 zsh-help aliases           # Aliases reference
 
-# Git workflow (custom widgets)
-# See: docs/tools/fzf-integration.md for complete FZF guide
+# Git workflow (FZF-backed widgets; see docs/tools/fzf-integration.md)
 Ctrl+]                     # FZF repository selector
 Ctrl+g Ctrl+g             # Git status widget
 Ctrl+g Ctrl+s             # Git add widget
@@ -82,55 +73,14 @@ brew bundle                # Install all packages
 mise install              # Setup language versions
 ```
 
-## 🛠️ Key Technologies
+## Maintenance
 
-### Core Stack
-
-- **Zsh + Sheldon**: 6-tier priority loading, 39ms mise optimization
-- **Neovim + Lazy.nvim**: AI assistance (Supermaven), sub-95ms startup
-- **WezTerm**: Primary terminal with Lua configuration and tmux-style workflow
-- **Alacritty**: GPU-accelerated alternative terminal
-
-### Development Tools
-
-- **Mise**: Multi-language version management
-- **FZF**: Unified search ([Integration Guide](docs/tools/fzf-integration.md))
-- **GitHub CLI**: Repository automation
-- **1Password**: SSH key management
-
-### Design System
-
-- **Theme**: Gruvbox/Tokyo Night consistency
-- **Typography**: JetBrains Mono + Nerd Font ligatures
-- **Performance**: GPU acceleration, lazy loading
-
-## 📚 Documentation
-
-- **[Setup Guide](docs/setup.md)** - 詳細なインストール手順
-- **[Tools List](TOOLS.md)** - 管理対象ツール一覧
-- **[Documentation Index](docs/README.md)** - 全ドキュメント体系へのナビゲーション
-- **[Steering Documents](.kiro/steering/)** - AIセッション向けハイレベルコンテキスト
-
-## 🔧 Maintenance
-
-```bash
-# Weekly updates
-brew update && brew upgrade
-
-# Performance monitoring
-zsh-help tools             # Check installed tools
-zsh-help                   # Verify configuration
-
-# Configuration audit (quarterly)
-# - Plugin usage review
-# - Performance optimization
-# - Configuration cleanup
-
-# Local CI checks
-mise run ci                # Run all CI checks locally
-```
+- Operational cadence and troubleshooting live in `docs/maintenance.md`
+- Weekly: `brew update && brew upgrade`, sync plugins (sheldon/nvim/tmux)
+- Monthly: measure shell startup (`time zsh -lic exit`), prune unused plugins
+- Always before merge: `mise run ci`
 
 ---
 
-**Status**: Production-ready (2025-10-16)
-**License**: MIT - Optimized for modern development workflows with focus on speed, consistency, and developer experience.
+**Status**: Production-ready (2025-10-16)  
+**License**: MIT — optimized for modern development workflows with focus on speed, consistency, and developer experience.
