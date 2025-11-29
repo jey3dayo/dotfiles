@@ -13,3 +13,16 @@ claude/local/node_modules/
 # Auto-generated files (external tools)
 AWS VPN Client/
 configstore/
+
+# Legacy browser plugins (ES5 syntax, not maintained)
+.vimperator/
+
+# Generated or external-managed files (exclude from Prettier)
+.clang-format
+Brewfile.lock.json
+nvim/lazy-lock.json
+nvim/snippets/*.json
+# managed by Karabiner, keep entire directory out of prettier
+karabiner/
+.kiro/steering/product.md
+.surfingkeys.js
