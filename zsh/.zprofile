@@ -15,10 +15,6 @@ typeset -U path cdpath fpath manpath
 if [[ -x /opt/homebrew/bin/mise ]]; then
   # Activate mise for tool availability and environment variables
   eval "$(/opt/homebrew/bin/mise activate zsh)"
-  # Force initial hook execution
-  if (( $+functions[_mise_hook] )); then
-    _mise_hook
-  fi
 fi
 
 # Complete PATH setup (executed after macOS path_helper)
