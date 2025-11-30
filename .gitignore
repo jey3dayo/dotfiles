@@ -151,9 +151,10 @@ global_rules.md
 *.a
 *.al
 *.bk
-*.backup
 *.bk.*
+*.backup
 *.bak
+*.bak.*
 *.la
 *.lo
 *.mode1v3
