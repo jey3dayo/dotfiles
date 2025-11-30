@@ -50,6 +50,9 @@ on:
 jobs:
   format-and-lint:
     runs-on: ubuntu-latest
+    env:
+      # Relax network hiccups when fetching tool version metadata
+      MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
 
     steps:
       - name: Checkout repository
