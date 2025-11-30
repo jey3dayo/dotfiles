@@ -1,0 +1,6 @@
+# XDG Base Directory準拠のGit設定を読み込む
+# グローバル設定: ~/.config/git/config
+# ローカル設定: ~/.gitconfig_local
+[include]
+  path = ~/.config/git/config
+  path = ~/.gitconfig_local

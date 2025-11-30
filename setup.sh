@@ -46,6 +46,29 @@ link() {
   ln -sfn "$src" "$dest"
 }
 
+install_home_file() {
+  src=$1
+  dest=$2
+
+  if [ ! -f "$src" ]; then
+    printf "Missing source: %s\n" "$src" >&2
+    return 1
+  fi
+
+  if [ -f "$dest" ]; then
+    if cmp -s "$src" "$dest"; then
+      printf "Unchanged: %s\n" "$dest"
+      return 0
+    fi
+    backup="${dest}.bak.$(date +%s)"
+    mv "$dest" "$backup"
+    printf "Backed up %s -> %s\n" "$dest" "$backup"
+  fi
+
+  cp "$src" "$dest"
+  printf "Installed: %s\n" "$dest"
+}
+
 # Base directories (idempotent)
 mkdir -p \
   "$HOME/tmp" \
@@ -64,32 +87,17 @@ fi
 
 ln -sfn "$DOTFILES" "$HOME/.config"
 
-# XDG non-compliant tools - Entrypoints only
-# Zsh - Load via ZDOTDIR
-link "$DOTFILES/zsh/.zshenv" "$HOME/.zshenv"
+# Install HOME entrypoints from home/ directory
+for file in "$DOTFILES/home"/.[!.]*; do
+  [ -f "$file" ] || continue
+  filename=$(basename "$file")
+  install_home_file "$file" "$HOME/$filename"
+done
 
-# Git - Load via include directive
-if [ ! -f "$HOME/.gitconfig" ]; then
-  cat > "$HOME/.gitconfig" << 'EOF'
-[include]
-  path = ~/.config/git/config
-  path = ~/.gitconfig_local
-EOF
-  printf "Created %s\n" "$HOME/.gitconfig"
-fi
-
-# SSH - Not XDG-compliant
+# SSH - Not XDG-compliant (symlink)
 link "$DOTFILES/ssh/config" "$HOME/.ssh/config"
 
-# Tmux - Load via source-file directive
-if [ ! -f "$HOME/.tmux.conf" ]; then
-  cat > "$HOME/.tmux.conf" << 'EOF'
-source-file ~/.config/.tmux/main.conf
-EOF
-  printf "Created %s\n" "$HOME/.tmux.conf"
-fi
-
-# AWSume - Not XDG-compliant
+# AWSume - Not XDG-compliant (symlink)
 link "$DOTFILES/awsume/config.yaml" "$HOME/.awsume/config.yaml"
 
 # SSH permissions
