@@ -2,29 +2,29 @@
 set -eu
 
 resolve_repo_root() {
-    target=$0
+  target=$0
 
-    case $target in
+  case $target in
     /*) ;;
     *) target=$(command -v -- "$target") ;;
+  esac
+
+  while [ -L "$target" ]; do
+    link=$(readlink "$target")
+    case $link in
+      /*) target=$link ;;
+      *) target=$(dirname "$target")/$link ;;
     esac
+  done
 
-    while [ -L "$target" ]; do
-        link=$(readlink "$target")
-        case $link in
-        /*) target=$link ;;
-        *) target=$(dirname "$target")/$link ;;
-        esac
-    done
-
-    cd "$(dirname "$target")" && pwd -P
+  cd "$(dirname "$target")" && pwd -P
 }
 
 DOTFILES=${DOTFILES:-"$(resolve_repo_root)"}
 
 if [ ! -d "$DOTFILES" ]; then
-    echo "Dotfiles directory not found: $DOTFILES" >&2
-    exit 1
+  echo "Dotfiles directory not found: $DOTFILES" >&2
+  exit 1
 fi
 
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
@@ -33,36 +33,36 @@ XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state"}
 
 link() {
-    src=$1
-    dest=$2
+  src=$1
+  dest=$2
 
-    if [ ! -e "$src" ]; then
-        printf "Missing source: %s\n" "$src" >&2
-        exit 1
-    fi
+  if [ ! -e "$src" ]; then
+    printf "Missing source: %s\n" "$src" >&2
+    exit 1
+  fi
 
-    if [ -e "$dest" ] && [ ! -L "$dest" ]; then
-        backup="${dest}.bak.$(date +%s)"
-        mv "$dest" "$backup"
-        printf "Backed up %s to %s\n" "$dest" "$backup"
-    fi
+  if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+    backup="${dest}.bak.$(date +%s)"
+    mv "$dest" "$backup"
+    printf "Backed up %s to %s\n" "$dest" "$backup"
+  fi
 
-    mkdir -p "$(dirname "$dest")"
-    ln -sfn "$src" "$dest"
+  mkdir -p "$(dirname "$dest")"
+  ln -sfn "$src" "$dest"
 }
 
 # Base directories (idempotent)
 mkdir -p \
-    "$HOME/tmp" \
-    "$XDG_CONFIG_HOME" \
-    "$XDG_CACHE_HOME" \
-    "$XDG_DATA_HOME" \
-    "$XDG_STATE_HOME" \
-    "$HOME/.local/share/zsh-autocomplete" \
-    "$HOME/.mise" \
-    "$HOME/.ssh/ssh_config.d" \
-    "$HOME/.ssh/sockets" \
-    "$HOME/.awsume"
+  "$HOME/tmp" \
+  "$XDG_CONFIG_HOME" \
+  "$XDG_CACHE_HOME" \
+  "$XDG_DATA_HOME" \
+  "$XDG_STATE_HOME" \
+  "$HOME/.local/share/zsh-autocomplete" \
+  "$HOME/.mise" \
+  "$HOME/.ssh/ssh_config.d" \
+  "$HOME/.ssh/sockets" \
+  "$HOME/.awsume"
 
 # XDG config directories managed by the repo
 CONFIG_DIRS="
@@ -91,7 +91,7 @@ zsh-abbr
 "
 
 for dir in $CONFIG_DIRS; do
-    link "$DOTFILES/$dir" "$XDG_CONFIG_HOME/$dir"
+  link "$DOTFILES/$dir" "$XDG_CONFIG_HOME/$dir"
 done
 
 # File-level configs
@@ -121,7 +121,7 @@ link "$XDG_CONFIG_HOME/ssh/config" "$HOME/.ssh/config"
 chmod 700 "$HOME/.ssh"
 
 if [ -f "$DOTFILES/.gitmodules" ]; then
-    git -C "$DOTFILES" submodule update --init --recursive
+  git -C "$DOTFILES" submodule update --init --recursive
 fi
 
 printf "Dotfiles setup complete. XDG config: %s\n" "$XDG_CONFIG_HOME"
