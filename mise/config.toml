@@ -225,6 +225,16 @@ run = [
   "fd -e md -X prettier --check",
 ]
 
+[tasks."lint:toml"]
+description = "TOML ファイルをチェック（TOML_FILES で対象を限定可能）"
+run = """
+if [ -n "${TOML_FILES:-}" ]; then
+  taplo format --check ${TOML_FILES}
+else
+  taplo format --check .
+fi
+"""
+
 [tasks."lint:yaml"]
 description = "YAML ファイルをチェック（prettier + yamllint、YAML_FILES で対象を限定可能）"
 run = """
@@ -249,8 +259,14 @@ fi
 """
 
 [tasks."lint:shell"]
-description = "シェルスクリプトをチェック"
-run = "fd -e sh -X shfmt -d -i 2 -ci -bn"
+description = "シェルスクリプトをチェック（SH_FILES で対象を限定可能）"
+run = """
+if [ -n "${SH_FILES:-}" ]; then
+  shfmt -d -i 2 -ci -bn ${SH_FILES}
+else
+  fd -e sh -X shfmt -d -i 2 -ci -bn
+fi
+"""
 
 [tasks."lint:links"]
 description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
