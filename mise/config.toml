@@ -250,7 +250,7 @@ fi
 
 [tasks."lint:shell"]
 description = "シェルスクリプトをチェック"
-run = "fd -e sh -X shfmt -d"
+run = "fd -e sh -X shfmt -d -i 2 -ci -bn"
 
 [tasks."lint:links"]
 description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
