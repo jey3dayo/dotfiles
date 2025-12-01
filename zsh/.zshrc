@@ -2,7 +2,9 @@
 : "${XDG_STATE_HOME:=${HOME}/.local/state}"
 bindkey -e
 
-HISTFILE="${XDG_STATE_HOME}/zsh/history"
+# Keep zsh history in the traditional ~/.zsh_history by default for consistency
+# with existing shells; allow overriding via HISTFILE before shell startup.
+: "${HISTFILE:=${HOME}/.zsh_history}"
 mkdir -p "${HISTFILE:h}"
 HISTSIZE=100000
 SAVEHIST=100000
