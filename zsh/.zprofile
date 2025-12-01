@@ -19,11 +19,9 @@ fi
 
 # Complete PATH setup (executed after macOS path_helper)
 # macOS /etc/zprofile runs path_helper which reorders PATH
-# This ensures our desired priority: mise > user paths > system > Homebrew
+# This ensures our desired priority: user paths > system > Homebrew
+# Note: mise shims are managed automatically by 'mise activate' above
 path=(
-  # Version-managed tools (highest priority)
-  $HOME/.mise/shims(N-)
-
   # User binaries
   $HOME/{bin,sbin}(N-)
   $HOME/.local/{bin,sbin}(N-)
