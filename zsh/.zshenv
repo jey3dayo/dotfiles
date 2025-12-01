@@ -12,7 +12,8 @@ export ZDOTDIR GIT_CONFIG_GLOBAL
 # Temporary Files
 if [[ ! -d "$TMPDIR" ]]; then
   export TMPDIR="/tmp/$LOGNAME"
-  mkdir -p -m 700 "$TMPDIR"
+  mkdir -p "$TMPDIR"
+  chmod 700 "$TMPDIR"
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
@@ -30,17 +31,12 @@ export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
 export CODEX_CONFIG="$HOME/.config/codex/config.yaml"
 
-# Minimal PATH setup for non-login shells
-# Full PATH configuration is in .zprofile (executed after macOS path_helper)
-# Only critical paths that must be available in all zsh contexts
-path=(
-  $HOME/.mise/shims(N-)
-  $path
-)
+# PATH configuration is in .zprofile (executed after macOS path_helper)
+# mise shims are managed automatically by 'mise activate' in .zprofile
 
 fpath=(
   ~/.awsume/zsh-autocomplete/
   ~/.local/share/zsh-autocomplete/
-  $fpath)
+  "${fpath[@]}")
 
 # vim: set syntax=zsh:
