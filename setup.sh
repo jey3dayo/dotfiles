@@ -21,11 +21,32 @@ resolve_repo_root() {
 }
 
 DOTFILES=${DOTFILES:-"$(resolve_repo_root)"}
+BACKUP_ROOT=${BACKUP_ROOT:-"$HOME/.local/state/dotfiles"}
+BACKUP_DIR=""
 
 if [ ! -d "$DOTFILES" ]; then
   echo "Dotfiles directory not found: $DOTFILES" >&2
   exit 1
 fi
+
+backup_path() {
+  target=$1
+
+  if [ -z "$BACKUP_DIR" ]; then
+    BACKUP_DIR="$BACKUP_ROOT/$(date +%Y%m%d%H%M%S)"
+    mkdir -p "$BACKUP_DIR"
+  fi
+
+  case $target in
+    "$HOME"/*) rel=${target#"$HOME"/} ;;
+    *) rel=$(basename "$target") ;;
+  esac
+
+  path="$BACKUP_DIR/$rel"
+  path_dir=$(dirname "$path")
+  [ "$path_dir" != "." ] && mkdir -p "$path_dir"
+  printf "%s\n" "$path"
+}
 
 link() {
   src=$1
@@ -37,7 +58,7 @@ link() {
   fi
 
   if [ -e "$dest" ] && [ ! -L "$dest" ]; then
-    backup="${dest}.bak.$(date +%s)"
+    backup=$(backup_path "$dest")
     mv "$dest" "$backup"
     printf "Backed up %s to %s\n" "$dest" "$backup"
   fi
@@ -60,7 +81,7 @@ install_home_file() {
       printf "Unchanged: %s\n" "$dest"
       return 0
     fi
-    backup="${dest}.bak.$(date +%s)"
+    backup=$(backup_path "$dest")
     mv "$dest" "$backup"
     printf "Backed up %s -> %s\n" "$dest" "$backup"
   fi
@@ -80,7 +101,7 @@ mkdir -p \
 
 # Main symlink: ~/.config -> dotfiles
 if [ -e "$HOME/.config" ] && [ ! -L "$HOME/.config" ]; then
-  backup="$HOME/.config.bak.$(date +%s)"
+  backup=$(backup_path "$HOME/.config")
   mv "$HOME/.config" "$backup"
   printf "Backed up existing .config to %s\n" "$backup"
 fi
