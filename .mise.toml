@@ -29,7 +29,14 @@ depends = [
 # 集約タスク（Lintまとめ）
 [tasks.lint]
 description = "全体の品質チェック（GitHub Actions互換）- 並列実行"
-depends = ["lint:biome", "lint:markdown", "lint:toml", "lint:yaml", "lint:lua", "lint:shell"]
+depends = [
+  "lint:biome",
+  "lint:markdown",
+  "lint:toml",
+  "lint:yaml",
+  "lint:lua",
+  "lint:shell",
+]
 
 # 更新タスク（mac/local 依存）
 [tasks.update]
@@ -53,7 +60,7 @@ run = [
 # CI/CD
 [tasks.ci]
 description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
-depends = ["lint", "lint:links"]
+depends = ["format", "lint:links"]
 
 [tasks."ci:install"]
 description = "CI に必要な追加ツールをインストール"
