@@ -4,7 +4,12 @@ local lsp_config = require "lsp.config"
 local capabilities = require("lsp.capabilities").setup()
 local handlers = require "lsp.handlers"
 
+local function resolve_tsserver_path()
+  return lsp_utils.get_mason_package_path("typescript-language-server", "node_modules/typescript/lib/tsserver.js")
+end
+
 local config_files = lsp_config.formatters["typescript-tools"].config_files
+local tsserver_path = resolve_tsserver_path()
 
 return {
   root_dir = lsp_utils.create_root_pattern(config_files),
@@ -31,5 +36,6 @@ return {
       allowIncompleteCompletions = false,
       allowRenameOfImportPath = false,
     },
+    tsserver_path = tsserver_path,
   },
 }

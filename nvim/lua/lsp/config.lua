@@ -110,6 +110,13 @@ M.installed_tree_sitter = {
   "yaml",
 }
 
+-- Mason-managed tools that aren't LSP servers but are required by other plugins
+M.mason_tools = {
+  ensure_installed = {
+    "typescript-language-server", -- Provides a bundled TypeScript/tsserver for typescript-tools.nvim
+  },
+}
+
 -- Linter configurations for nvim-lint
 M.linters = {
   javascript = { "eslint" },
