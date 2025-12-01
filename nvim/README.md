@@ -35,7 +35,7 @@ nvim/
 - **LSP/Formatting**: nvim-lspconfig, mason.nvim + mason-lspconfig, conform.nvim, nvim-lint, native LSP UI tweaks, fidget.nvim
 - **Syntax**: nvim-treesitter, ts-context-commentstring, vim-matchup, rainbow-delimiters
 - **Git**: vim-fugitive (+ vim-rhubarb + gitlinker), diffview.nvim, neogit, gitsigns.nvim
-- **Language extras**: nvim-lua-gf, vim-rake/rails, jsgf.vim, vim-markdown, vim-prisma, markdown-preview.nvim
+- **Language extras**: vim-rake/rails, jsgf.vim, vim-prisma, markdown-preview.nvim
 - **Utilities**: trouble.nvim, nvim-projectconfig, suda.vim, vim-startuptime
 
 ## Language & Formatting Support
