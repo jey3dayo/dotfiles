@@ -260,7 +260,7 @@ fi
 """
 
 [tasks."lint:shell"]
-description = "シェルスクリプトをチェック（SH_FILES で対象を限定可能）"
+description = "シェルスクリプト (.sh/.zsh) をチェック（SH_FILES で対象を限定可能）"
 run = """
 if [ -n "${SH_FILES:-}" ]; then
   shfmt -d -i 2 -ci -bn ${SH_FILES}
@@ -268,6 +268,7 @@ if [ -n "${SH_FILES:-}" ]; then
 else
   fd -e sh -X shfmt -d -i 2 -ci -bn
   fd -e sh -X shellcheck
+  fd -e zsh zsh/lazy-sources zsh/sources -X shellcheck
 fi
 """
 
