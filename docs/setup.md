@@ -1,6 +1,6 @@
 # 🚀 Setup Guide
 
-**最終更新**: 2025-11-29
+**最終更新**: 2025-12-01
 **対象**: 開発者・初心者
 **タグ**: `category/guide`, `category/configuration`, `layer/core`, `environment/macos`, `audience/beginner`
 
@@ -51,17 +51,10 @@ git config user.name    # Verify your name appears
 
 ## Maintenance
 
+- 定期メンテナンスとトラブルシューティングのSSTは [Maintenance Guide](maintenance.md)（週次/月次/四半期タスクを集約）
+- パフォーマンス測定・改善履歴・診断手順のSSTは [Performance](performance.md)
+- セットアップ直後の健全性チェック:
+
 ```bash
-# Weekly updates
-brew update && brew upgrade
-
-# Performance monitoring
-time zsh -lic exit         # Track startup time
-zsh-help tools             # Verify tool configuration
-
-# Local CI checks
-mise run ci                # Run all CI checks locally
-
-# Monthly: プラグイン更新とパフォーマンス測定
-# Quarterly: 設定監査、不要ファイル削除
+mise run ci
 ```
