@@ -20,10 +20,9 @@ _set_completion_styles() {
 }
 
 # compinit初期化済みの場合はスタイルを適用
-if (( $+functions[compdef] )); then
+if whence -w compdef >/dev/null 2>&1; then
   _set_completion_styles
 fi
 
 # vim: set syntax=zsh:
-
 

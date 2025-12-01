@@ -2,7 +2,7 @@
 
 # WSL: Force home directory on startup if in Windows directory
 if [[ "$PWD" == /mnt/c/Users/* ]] || [[ "$PWD" == /c/Users/* ]]; then
-  cd "$HOME"
+  cd "$HOME" || exit
 fi
 
 # WSL-specific PATH adjustments
