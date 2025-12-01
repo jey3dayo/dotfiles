@@ -39,7 +39,7 @@ function M.get_formatter_priority(formatter_name)
     biome = 1, -- Highest priority
     prettier = 2,
     eslint = 3, -- Lower priority for formatting (better for linting)
-    ts_ls = 4, -- Lowest priority for formatting (better for diagnostics)
+    ["typescript-tools"] = 4, -- Lowest priority for formatting (better for diagnostics)
   }
 
   return defaults[formatter_name] or 99
@@ -50,7 +50,7 @@ function M.should_format_with(client_name)
   -- These are primarily linters, not formatters
   local lint_only = {
     eslint = true, -- Use for diagnostics, not formatting
-    ts_ls = true, -- Use for TypeScript diagnostics, not formatting
+    ["typescript-tools"] = true, -- Use for TypeScript diagnostics, not formatting
   }
 
   -- If biome is available, don't use prettier

@@ -165,13 +165,14 @@ function M.check_lsp_status()
   echo(")", "Normal")
   echo_newline()
 
-  -- Check ts_ls
-  local ts_ls_files = config.formatters.ts_ls.config_files
-  local ts_ls_has_files = utils.has_config_files(ts_ls_files)
-  echo("• ts_ls: ", "Normal")
+  -- Check TypeScript tools
+  local ts_tools_config = config.formatters["typescript-tools"]
+  local ts_tools_files = ts_tools_config and ts_tools_config.config_files or {}
+  local ts_tools_has_files = utils.has_config_files(ts_tools_files)
+  echo("• typescript-tools: ", "Normal")
   echo("enabled", "DiagnosticOk")
-  echo(" (tsconfig.json: ", "Normal")
-  echo(ts_ls_has_files and "found" or "not found", ts_ls_has_files and "DiagnosticOk" or "DiagnosticError")
+  echo(" (ts/js config: ", "Normal")
+  echo(ts_tools_has_files and "found" or "not found", ts_tools_has_files and "DiagnosticOk" or "DiagnosticError")
   echo(")", "Normal")
   echo_newline()
 
@@ -186,12 +187,11 @@ function M.check_lsp_status()
   end
   echo_newline()
 
-  -- Mason installation status
+  -- Tooling status
   echo_newline()
-  echo_header "Mason Installation Status"
+  echo_header "Tooling Status"
   local mason_registry = require "mason-registry"
   local eslint_pkg = mason_registry.get_package "eslint-lsp"
-  local ts_ls_pkg = mason_registry.get_package "typescript-language-server"
 
   echo("• eslint-lsp: ", "Normal")
   echo(
@@ -200,11 +200,8 @@ function M.check_lsp_status()
   )
   echo_newline()
 
-  echo("• typescript-language-server: ", "Normal")
-  echo(
-    ts_ls_pkg:is_installed() and "✓ installed" or "✗ not installed",
-    ts_ls_pkg:is_installed() and "DiagnosticOk" or "DiagnosticError"
-  )
+  echo("• typescript-tools.nvim: ", "Normal")
+  echo("plugin-managed (uses tsserver from system TypeScript)", "DiagnosticInfo")
   echo_newline()
 
   -- Formatter status
@@ -317,22 +314,15 @@ function M.start_lsp_manually(server_name)
     lspconfig.eslint.setup(config)
     vim.cmd "LspStart eslint"
     print "Manually started eslint"
-  elseif server_name == "ts_ls" then
-    local extends = utils.safe_require "lsp.settings.ts_ls"
-    local handlers = require "lsp.handlers"
-    local config = vim.tbl_deep_extend("force", {
-      on_attach = function(client, bufnr)
-        print(string.format("ts_ls attached to buffer %d", bufnr))
-        handlers.on_attach(client, bufnr)
-        -- Enable diagnostics
-        if client.server_capabilities.diagnosticProvider then vim.diagnostic.enable(true, { bufnr = bufnr }) end
-      end,
-      capabilities = require("lsp.capabilities").setup(),
-      handlers = handlers.handlers,
-    }, extends or {})
-    lspconfig.ts_ls.setup(config)
-    vim.cmd "LspStart ts_ls"
-    print "Manually started ts_ls"
+  elseif server_name == "typescript-tools" then
+    local ok = pcall(require, "typescript-tools")
+    if not ok then
+      print "typescript-tools.nvim not available"
+      return
+    end
+
+    vim.cmd "LspStart typescript-tools"
+    print "Manually started typescript-tools"
   else
     print("Unknown server: " .. server_name)
   end
@@ -439,7 +429,7 @@ vim.api.nvim_create_user_command("LspStartManual", function(opts)
 end, {
   nargs = 1,
   complete = function()
-    return { "eslint", "ts_ls" }
+    return { "eslint", "typescript-tools" }
   end,
 })
 vim.api.nvim_create_user_command("LspTestFormatter", M.test_formatter, {})

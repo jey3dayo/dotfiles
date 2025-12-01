@@ -40,7 +40,7 @@ nvim/
 
 ## Language & Formatting Support
 
-- **JS/TS/Vue**: `ts_ls` + `eslint` (autostarts when config files exist); Conform uses `eslint_d` → `prettier` (+ `biome` when `biome.json` is present); lint via nvim-lint `eslint`
+- **JS/TS/Vue**: `typescript-tools.nvim` (tsserver wrapper) + `eslint`; Conform uses `eslint_d` → `prettier` (+ `biome` when `biome.json` is present); lint via nvim-lint `eslint`
 - **Python**: `pylsp` + `ruff`; formatting through `ruff_format`/`ruff_fix`
 - **Go**: `gopls` with `gofmt` + `goimports`
 - **Lua**: `lua_ls` + `stylua`
@@ -52,7 +52,7 @@ nvim/
 
 - **Search & files**: `,f` files, `,,` resume picker, `,gr` live grep, `,b` buffers, `,d` diagnostics, `,Fs`/`,FS` document/workspace symbols, `,e` open mini.files, `,E` open mini.files at buffer dir
 - **LSP nav**: `tt` definition, `tj` references, `tk` implementation, `tl` type definition
-- **Formatting**: `<C-e>f` auto-select formatter, `<C-e>b/p/e/s` for Biome/Prettier/ESLint/ts_ls
+- **Formatting**: `<C-e>f` auto-select formatter, `<C-e>b/p/e/s` for Biome/Prettier/ESLint/TypeScript Tools
 - **Maintenance**: `,sp` Lazy UI, `,sm` MasonUpdate, `,st` TSUpdate all, `,su` Lazy update
 - **Tabs/windows**: `<C-t>c/d/o/n/p` tab actions, `gt/gT` cycle tabs, `<Tab>` cycles windows
 

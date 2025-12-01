@@ -1,3 +1,5 @@
+local ft = require "core.filetypes"
+
 -- LSP configuration with optimized loading order and dependencies
 return {
   -- Core LSP infrastructure - must load first
@@ -43,6 +45,22 @@ return {
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
       require "config/nvim-lint"
+    end,
+  },
+
+  -- Enhanced TypeScript experience (tsserver wrapper)
+  {
+    "pmizio/typescript-tools.nvim",
+    ft = ft.js_project,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "neovim/nvim-lspconfig",
+    },
+    opts = function()
+      return require "lsp.settings.typescript-tools"
+    end,
+    config = function(_, opts)
+      require("typescript-tools").setup(opts)
     end,
   },
 
