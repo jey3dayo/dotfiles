@@ -3,6 +3,15 @@
 # プロジェクト固有の集約・mac依存タスクをここで定義
 # ========================================
 
+[tools]
+prettier = "latest"
+stylua = "latest"
+shfmt = "latest"
+shellcheck = "latest"
+lua = "5.1.5"             # LuaRocks/Neovim require Lua 5.1
+luajit = "latest"
+yamllint = "latest"       # YAML lint
+
 # 集約タスク（フォーマット系まとめ）
 [tasks.format]
 description = "コードとドキュメントの自動フォーマット"
@@ -37,6 +46,18 @@ depends = [
   "lint:lua",
   "lint:shell",
 ]
+
+[tasks."lint:shell"]
+description = "シェルスクリプトをチェック（SH_FILES で対象を限定可能）"
+run = """
+if [ -n "${SH_FILES:-}" ]; then
+  shfmt -d -i 2 -ci -bn ${SH_FILES}
+  shellcheck ${SH_FILES}
+else
+  fd -e sh -X shfmt -d -i 2 -ci -bn
+  fd -e sh -X shellcheck
+fi
+"""
 
 # 更新タスク（mac/local 依存）
 [tasks.update]
