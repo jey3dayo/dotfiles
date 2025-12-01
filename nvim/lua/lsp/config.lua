@@ -43,7 +43,6 @@ M.servers = {
   ruff = { installed = true, enabled = true },
   tailwindcss = { installed = true, enabled = true },
   taplo = { installed = true, enabled = true },
-  ts_ls = { installed = true, enabled = true },
   eslint = { installed = true, enabled = true },
   typos_lsp = { installed = true, enabled = true },
   vimls = { installed = true, enabled = true },
@@ -134,10 +133,10 @@ M.linters = {
 }
 
 M.formatters = {
-  ts_ls = {
+  ["typescript-tools"] = {
     config_files = { "tsconfig.json", "jsconfig.json" },
     formatter_priority = {
-      priority = 3,
+      priority = 4,
       overrides = {},
     },
   },
@@ -166,7 +165,7 @@ M.formatters = {
     formatter_priority = {
       priority = 1,
       overrides = {
-        -- ts_lsは言語機能のため停止しない
+        -- TypeScript LSPは言語機能のため停止しない
         -- eslint = true, -- ESLintも構文チェックのため停止しない
         prettier = true, -- prettierはフォーマット専用なので置き換え可能
       },
@@ -187,7 +186,7 @@ M.formatters = {
     formatter_priority = {
       priority = 2,
       overrides = {
-        -- ts_lsは言語機能のため停止しない
+        -- TypeScript LSPは言語機能のため停止しない
         -- eslint = true, -- ESLintも構文チェックのため停止しない
       },
     },

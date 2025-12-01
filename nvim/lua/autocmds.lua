@@ -136,7 +136,7 @@ define_autocmds {
 }
 
 -- 競合するLSPがある場合、client.stop()をかける
--- ts_lsとbiomeが競合するので、ts_lsを止める等
+-- TypeScript Toolsとbiomeが競合するので、TypeScript側を止める等
 local lsp_augroup = utils.augroup("LspFormatting", { clear = true })
 
 define_autocmd("LspAttach", {
