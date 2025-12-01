@@ -4,6 +4,7 @@ bindkey -e
 
 # Keep history under XDG state by default; allow HISTFILE override if set.
 : "${HISTFILE:=${XDG_STATE_HOME}/zsh/history}"
+HISTFILE_INITIAL="$HISTFILE"
 mkdir -p "${HISTFILE:h}"
 HISTSIZE=100000
 SAVEHIST=100000
@@ -50,4 +51,11 @@ for f in "${ZDOTDIR:-$HOME}"/init/*.zsh; do source "${f}"; done
 
 # Source additional configurations
 for f in "${ZDOTDIR:-$HOME}"/sources/*.zsh; do source "${f}"; done
+
+# Restore preferred history location after plugins/sources load.
+HISTFILE="${HISTFILE_INITIAL:-${XDG_STATE_HOME}/zsh/history}"
+mkdir -p "${HISTFILE:h}"
+export HISTFILE
+HISTSIZE=100000
+SAVEHIST=100000
 # vim: set syntax=zsh:
