@@ -38,6 +38,18 @@ depends = [
   "lint:shell",
 ]
 
+[tasks."lint:shell"]
+description = "シェルスクリプトをチェック（SH_FILES で対象を限定可能）"
+run = """
+if [ -n "${SH_FILES:-}" ]; then
+  shfmt -d -i 2 -ci -bn ${SH_FILES}
+  shellcheck ${SH_FILES}
+else
+  fd -e sh -X shfmt -d -i 2 -ci -bn
+  fd -e sh -X shellcheck
+fi
+"""
+
 # 更新タスク（mac/local 依存）
 [tasks.update]
 description = "すべての依存関係を更新"
