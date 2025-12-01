@@ -2,7 +2,8 @@
 : "${XDG_STATE_HOME:=${HOME}/.local/state}"
 bindkey -e
 
-HISTFILE="${XDG_STATE_HOME}/zsh/history"
+# Keep history under XDG state by default; allow HISTFILE override if set.
+: "${HISTFILE:=${XDG_STATE_HOME}/zsh/history}"
 mkdir -p "${HISTFILE:h}"
 HISTSIZE=100000
 SAVEHIST=100000
