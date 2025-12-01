@@ -12,6 +12,7 @@ export ZDOTDIR GIT_CONFIG_GLOBAL
 # History file should be set before shell init so history loads
 # even if .zshrc is skipped. Keep it under XDG state by default.
 : "${HISTFILE:=${XDG_STATE_HOME}/zsh/history}"
+export HISTFILE
 
 # Temporary Files
 if [[ ! -d "$TMPDIR" ]]; then
