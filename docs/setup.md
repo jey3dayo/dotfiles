@@ -51,7 +51,7 @@ git config user.name    # Verify your name appears
 
 ## Maintenance
 
-- 定期メンテナンスとトラブルシューティングのSSTは [Maintenance Guide](maintenance.md)（週次/月次/四半期タスクを集約）
+- 定期メンテナンスとトラブルシューティングのSSTは [Maintenance Guide](maintenance.md)
 - パフォーマンス測定・改善履歴・診断手順のSSTは [Performance](performance.md)
 - セットアップ直後の健全性チェック:
 
