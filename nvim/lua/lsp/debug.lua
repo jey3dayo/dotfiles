@@ -200,8 +200,15 @@ function M.check_lsp_status()
   )
   echo_newline()
 
+  local tsserver_path =
+    require("lsp.utils").get_mason_package_path("typescript-language-server", "node_modules/typescript/lib/tsserver.js")
   echo("• typescript-tools.nvim: ", "Normal")
-  echo("plugin-managed (uses tsserver from system TypeScript)", "DiagnosticInfo")
+  if tsserver_path then
+    echo("using Mason TypeScript (tsserver): ", "DiagnosticOk")
+    echo(tsserver_path, "DiagnosticInfo")
+  else
+    echo("TypeScript not found (install via Mason or workspace node_modules)", "DiagnosticWarn")
+  end
   echo_newline()
 
   -- Formatter status
