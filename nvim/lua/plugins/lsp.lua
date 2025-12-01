@@ -1,4 +1,5 @@
 local ft = require "core.filetypes"
+local deps = require "core.dependencies"
 
 -- LSP configuration with optimized loading order and dependencies
 return {
@@ -53,8 +54,8 @@ return {
     "pmizio/typescript-tools.nvim",
     ft = ft.js_project,
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "neovim/nvim-lspconfig",
+      deps.plenary,
+      deps.lspconfig,
     },
     opts = function()
       return require "lsp.settings.typescript-tools"
