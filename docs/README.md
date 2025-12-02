@@ -44,7 +44,7 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 - **[Neovim Configuration](tools/nvim.md)** - Editor layer: LSP、AI支援、プラグイン最適化
 - **[WezTerm Configuration](tools/wezterm.md)** - Terminal layer: 設定、キーバインド、統合
 - **[SSH Configuration](tools/ssh.md)** - 階層的設定、セキュリティ管理
-- **[FZF Integration](tools/fzf-integration.md)** - クロスツール統合、ワークフロー
+- **[FZF Integration](tools/fzf-integration.md)** - クロスツール統合、ワークフロー（FZF/Git キーバインドのSST）
 
 ## 🧭 Single Source of Truth (SST)
 

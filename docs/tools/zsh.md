@@ -6,6 +6,8 @@
 
 高速起動のモジュラー Zsh。Sheldon + zsh-defer でロードを最小化し、FZF/Git ウィジェットと PATH 最適化を組み合わせたコアレイヤーです。compinit は 24h/変更検知で再構築し、Sheldon キャッシュは plugins.toml 更新時に自動再生成。パフォーマンスの目標値・実測値は `docs/performance.md` を単一情報源とし、本書では構成と運用のみを扱います。
 
+🔗 キーバインド一覧: [FZF Integration > Git Integration](./fzf-integration.md#git-integration) に集約（Zsh/FZF/Git のショートカット検索はここを参照）。
+
 ## 構成サマリ
 
 - `ZDOTDIR=$HOME/.config/zsh` に統一し、ログイン/非ログインで同一構成
