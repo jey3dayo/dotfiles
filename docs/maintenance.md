@@ -1,6 +1,6 @@
 # 🔧 Maintenance Guide
 
-**最終更新**: 2025-10-17
+**最終更新**: 2025-12-01
 **対象**: 開発者
 **タグ**: `category/maintenance`, `category/guide`, `layer/support`, `audience/developer`
 
@@ -34,32 +34,14 @@ nvim --headless -c 'lua require("lazy").sync()' -c 'q'          # Neovim
 
 ## パフォーマンス監視
 
-```bash
-# 設定確認
-zsh-help                   # 総合ヘルプシステム
-zsh-help tools             # インストール済みツール確認
-
-# Zsh 起動時間測定
-time zsh -lic exit
-
-# プラグイン統計・クリーンアップ
-nvim --headless -c 'lua require("lazy").profile()' -c 'q'
-nvim --headless -c 'lua require("lazy").clean()' -c 'q'
-
-# 詳細なパフォーマンス分析
-# 詳細は docs/performance.md を参照
-```
+- 測定コマンドと改善履歴の単一情報源は [Performance](performance.md)（本書ではスケジュールのみ保持）
+- 月次レビューや設定変更後は performance.md の「Monitoring Tools」と「Performance History」に沿って測定・更新する
 
 ## トラブルシューティング
 
 ### 起動時間の突然の増加
 
-**診断手順:**
-
-1. `time zsh -lic exit` で現在の起動時間測定
-2. `zsh-help tools` でツール状態確認
-3. 最近の設定変更内容確認
-4. プラグインの個別無効化テスト
+詳細な診断・復旧手順は [Performance](performance.md) の「Troubleshooting」に集約。測定結果と差分を performance.md へ記録し、プラグイン更新や PATH 変更の影響を確認する。
 
 ### LSPサーバーエラー
 
