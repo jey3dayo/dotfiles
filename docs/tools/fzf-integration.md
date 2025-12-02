@@ -5,6 +5,7 @@
 **タグ**: `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced`
 
 FZF (Fuzzy Finder) は dotfiles 全体で統一的なファジー検索体験を提供する中核コンポーネントです。
+FZF/Git キーバインドとワークフローの一覧は本書を単一情報源とし、他ドキュメントからは参照のみとします（重複防止）。
 
 ## 🎯 Overview
 
@@ -31,17 +32,18 @@ FZF は以下の層で横断的に統合されています：
 
 ### Git Integration
 
-| コマンド       | 機能                                       | 実装場所                           |
-| -------------- | ------------------------------------------ | ---------------------------------- |
-| `^g^b` / `^gs` | ブランチ切り替え (既存WTがあれば cd)       | zsh/config/tools/git.zsh (fzf-git) |
-| `^g^w` / `^gw` | ワークツリー管理 (fzf-git選択 + 追加/削除) | zsh/config/tools/git.zsh           |
-| `^g^z`         | スタッシュ確認・削除 (fzf-git)             | fzf-git.sh                         |
-| `^g^f`         | Gitファイル/差分ピッカー (fzf-git)         | fzf-git.sh                         |
-| `^g?`          | fzf-git キーバインドヘルプ                 | fzf-git.sh                         |
-| `gco()`        | FZF git checkout (ブランチ選択)            | zsh/lazy-sources/fzf.zsh           |
-| `^g^g`         | Git diff ウィジェット (FZF)                | zsh/config/tools/git.zsh           |
-| `^g^s`         | Git status ウィジェット (FZF)              | zsh/config/tools/git.zsh           |
-| `^g^a`         | Git add -p ウィジェット (FZF)              | zsh/config/tools/git.zsh           |
+| コマンド        | 機能                                       | 実装場所                           |
+| --------------- | ------------------------------------------ | ---------------------------------- |
+| `^g^b` / `^gs`  | ブランチ切り替え (既存WTがあれば cd)       | zsh/config/tools/git.zsh (fzf-git) |
+| `^g^w` / `^gw`  | ワークツリー管理 (fzf-git選択 + 追加/削除) | zsh/config/tools/git.zsh           |
+| `^g^z`          | スタッシュ確認・削除 (fzf-git)             | fzf-git.sh                         |
+| `^g^f`          | Gitファイル/差分ピッカー (fzf-git)         | fzf-git.sh                         |
+| `^g?`           | fzf-git キーバインドヘルプ                 | fzf-git.sh                         |
+| `gco()`         | FZF git checkout (ブランチ選択)            | zsh/lazy-sources/fzf.zsh           |
+| `wtcd <branch>` | ブランチの worktree に即座に cd            | zsh/config/tools/git.zsh           |
+| `^g^g`          | Git diff ウィジェット (FZF)                | zsh/config/tools/git.zsh           |
+| `^g^s`          | Git status ウィジェット (FZF)              | zsh/config/tools/git.zsh           |
+| `^g^a`          | Git add -p ウィジェット (FZF)              | zsh/config/tools/git.zsh           |
 
 ### Tmux Integration
 

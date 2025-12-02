@@ -4,7 +4,9 @@
 **対象**: 開発者・上級者
 **タグ**: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 
-1.1s 起動のモジュラー Zsh。Sheldon + zsh-defer でロードを最小化し、FZF/Git ウィジェットと PATH 最適化を組み合わせたコアレイヤーです。compinit は 24h/変更検知で再構築し、Sheldon キャッシュは plugins.toml 更新時に自動再生成。性能計測と改善履歴の単一情報源は `docs/performance.md`。
+高速起動のモジュラー Zsh。Sheldon + zsh-defer でロードを最小化し、FZF/Git ウィジェットと PATH 最適化を組み合わせたコアレイヤーです。compinit は 24h/変更検知で再構築し、Sheldon キャッシュは plugins.toml 更新時に自動再生成。パフォーマンスの目標値・実測値は `docs/performance.md` を単一情報源とし、本書では構成と運用のみを扱います。
+
+🔗 キーバインド一覧: [FZF Integration > Git Integration](./fzf-integration.md#git-integration) に集約（Zsh/FZF/Git のショートカット検索はここを参照）。
 
 ## 構成サマリ
 
@@ -64,6 +66,8 @@ zsh/
 
 ## キー操作とワークフロー
 
+FZF/Git キーバインドとワークフローの詳細は重複を避けるため `docs/tools/fzf-integration.md` に集約し、ここでは確認系のコマンドのみ掲載します。
+
 ### ヘルプ/ステータス
 
 ```bash
@@ -79,29 +83,8 @@ cleanup_zcompdump    # zcompdump 手動クリーンアップ（確認付き）
 
 ### Git / FZF ウィジェット
 
-```bash
-^]            # ghq リポジトリ選択（fzf, README プレビュー付き）
-^gg / ^g^g    # Git diff ウィジェット
-^g^s          # Git status ウィジェット
-^ga / ^g^a    # Git add -p ウィジェット
-^gs / ^g^b    # ブランチ切替（既存 WT があれば cd）
-^gw / ^g^w    # Git worktree 管理（開く/追加/一覧/削除）
-^g^z          # スタッシュピッカー（fzf-git.sh 提供時）
-^g^f          # Git ファイル/差分ピッカー（fzf-git.sh 提供時）
-^g?           # fzf-git キーバインドヘルプ（fzf-git.sh 提供時）
-^g^K          # プロセス kill (fzf)
-wtcd <branch> # 指定ブランチの worktree に即座に cd（補完付き）
-```
-
-### FZF 統合
-
-```bash
-^R          # ヒストリ検索
-^T          # ファイル検索
-FZF_DEFAULT_OPTS  # `--height 50% --reverse`
-FZF_CTRL_R_OPTS   # プレビュー/クリップボードコピー付き履歴検索
-FZF_CTRL_T_OPTS   # bat プレビュー付きファイル検索
-```
+- Git/FZF キーバインド一覧は `docs/tools/fzf-integration.md` を参照（単一情報源）
+- `wtcd <branch>`: 指定ブランチの worktree に即座に cd（補完付き）
 
 ## パフォーマンスと検証
 
