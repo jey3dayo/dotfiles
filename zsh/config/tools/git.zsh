@@ -16,9 +16,9 @@ _git_widget() {
   fi
 
   "$action" "$@"
-  local status=$?
+  local exit_status=$?
   zle reset-prompt
-  return $status
+  return $exit_status
 }
 
 _register_git_widget() {
