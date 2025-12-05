@@ -16,7 +16,9 @@ M.get_mason_package_path = function(pkg_name, relative_path)
   if not ok_registry then return nil end
 
   local ok_pkg, pkg = pcall(registry.get_package, pkg_name)
-  if not ok_pkg or not pkg:is_installed() then return nil end
+  if not ok_pkg or not pkg then return nil end
+  if type(pkg.is_installed) ~= "function" or type(pkg.get_install_path) ~= "function" then return nil end
+  if not pkg:is_installed() then return nil end
 
   local base = pkg:get_install_path()
   if not relative_path then return base end
