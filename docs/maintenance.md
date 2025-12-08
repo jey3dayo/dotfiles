@@ -140,28 +140,40 @@ cp ~/.zshrc ~/.config/zsh/backup/zshrc.$(date +%Y%m%d)
 
 ### mise統合
 
-Brewfileは`mise run update`コマンドで自動的に更新されます：
+Brewfileは`mise`タスクで管理できます：
 
 ```bash
-# 全依存関係を更新（Brewfile含む）
-mise run update
+# 現在のインストール状況を保存
+mise run brewfile:backup
 
-# Brewfileのみバックアップ
-mise run update:brewfile-backup
+# Brewfileからパッケージをインストール
+mise run brewfile:restore
+
+# 全依存関係を更新
+mise run update
 ```
 
-**自動バックアップ機能**:
+**新規Macセットアップ手順**:
 
-- `mise run update`実行時、Brewfileが自動的に再生成されます
-- 差分がある場合のみGitコミットが作成されます（コミットメッセージ: `chore: update Brewfile`）
-- Homebrewがインストールされていない環境では自動的にスキップされます
+1. Homebrewインストール:
+
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+2. dotfilesクローン後、Brewfileから一括インストール:
+
+   ```bash
+   brew bundle install
+   ```
+
+3. 以降は`mise run`コマンドが使用可能
 
 **実行内容**（`mise run update`）:
 
 1. Git submodules更新
 2. Homebrewパッケージ更新（`brew upgrade --formula`）
-3. **Brewfileバックアップ**（`brew bundle dump` + Git自動コミット）
-4. 外部リポジトリ更新
+3. 外部リポジトリ更新
 
 ### パッケージ追加手順
 

@@ -3,6 +3,22 @@
 # プロジェクト固有の集約・mac依存タスクをここで定義
 # ========================================
 
+# ========================================
+# Brewfile 管理
+# ========================================
+
+[tasks."brewfile:backup"]
+description = "現在のインストール状況をBrewfileに保存（差分あればコミット）"
+run = "if command -v brew >/dev/null 2>&1; then brew bundle dump --file=Brewfile --force && git add Brewfile && git diff --cached --quiet || git commit -m 'chore: update Brewfile'; else echo 'Homebrew not installed'; fi"
+
+[tasks."brewfile:restore"]
+description = "Brewfileからパッケージをインストール（新規Mac対応）"
+run = "if command -v brew >/dev/null 2>&1; then brew bundle install --no-upgrade; else echo 'Homebrew not installed. Install: /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"'; fi"
+
+# ========================================
+# 集約タスク
+# ========================================
+
 # 集約タスク（フォーマット系まとめ）
 [tasks.format]
 description = "コードとドキュメントの自動フォーマット"
@@ -41,7 +57,7 @@ depends = [
 # 更新タスク（mac/local 依存）
 [tasks.update]
 description = "すべての依存関係を更新"
-depends = ["update:submodules", "update:brew", "update:brewfile-backup", "update:external-repos"]
+depends = ["update:submodules", "update:brew", "update:external-repos"]
 
 [tasks."update:submodules"]
 description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
@@ -50,10 +66,6 @@ run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD 
 [tasks."update:brew"]
 description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
 run = "if command -v brew >/dev/null 2>&1; then (brew update 2>&1 | grep -v \"definition is invalid\" || true) && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
-
-[tasks."update:brewfile-backup"]
-description = "Brewfile を Git にバックアップ（差分あればコミット）"
-run = "if command -v brew >/dev/null 2>&1; then brew bundle dump --file=Brewfile --force && git add Brewfile && git diff --cached --quiet || git commit -m 'chore: update Brewfile'; else echo 'Homebrew not installed, skipping Brewfile backup'; fi"
 
 [tasks."update:external-repos"]
 description = "外部 Git リポジトリを更新（強制リセット）"
