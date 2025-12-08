@@ -31,10 +31,10 @@ zsh-help() {
       abbr -S | grep -E "^abbr.*(ls|cat|vim|top|df|du)=" | sort
       echo ""
       echo "Development tools:"
-      abbr -S | grep -E "^abbr.*(docker|nx|rg|ag)=" | sort
+      abbr -S | grep -E "^abbr.*(docker|nx|rg)=" | sort
       echo ""
       echo "Other abbreviations:"
-      abbr -S | grep -vE "^abbr.*(g[a-z]=|ls|cat|vim|top|df|du|docker|nx|rg|ag)=" | sort
+      abbr -S | grep -vE "^abbr.*(g[a-z]=|ls|cat|vim|top|df|du|docker|nx|rg)=" | sort
     else
       echo "zsh-abbr plugin not loaded"
     fi

@@ -120,3 +120,172 @@ find ~/.cache -name "*.old" -delete
 mkdir -p ~/.config/zsh/backup
 cp ~/.zshrc ~/.config/zsh/backup/zshrc.$(date +%Y%m%d)
 ```
+
+## Brewfile管理
+
+### 構造
+
+- **セクション別整理**: 20のカテゴリに分類（Taps, Core Libraries, Development Tools, etc.）
+- **全パッケージ管理**: 依存関係を含む全パッケージを明示（`brew bundle dump`ベース）
+- **コメント付き**: 各セクション・特殊設定に説明コメントを追加
+
+### 特殊設定
+
+| パッケージ      | 設定                        | 理由                                           |
+| --------------- | --------------------------- | ---------------------------------------------- |
+| `node`          | `link: false`               | mise (.mise.toml) で実バージョン管理、競合回避 |
+| `mysql`         | `restart_service: :changed` | サービス自動再起動                             |
+| `utf8proc`      | `args: ["HEAD"]`            | Julia依存のためHEADが必要                      |
+| `postgresql@14` | バージョン固定              | 意図的にバージョン14を固定                     |
+
+### mise統合
+
+Brewfileは`mise run update`コマンドで自動的に更新されます：
+
+```bash
+# 全依存関係を更新（Brewfile含む）
+mise run update
+
+# Brewfileのみバックアップ
+mise run update:brewfile-backup
+```
+
+**自動バックアップ機能**:
+
+- `mise run update`実行時、Brewfileが自動的に再生成されます
+- 差分がある場合のみGitコミットが作成されます（コミットメッセージ: `chore: update Brewfile`）
+- Homebrewがインストールされていない環境では自動的にスキップされます
+
+**実行内容**（`mise run update`）:
+
+1. Git submodules更新
+2. Homebrewパッケージ更新（`brew upgrade --formula`）
+3. **Brewfileバックアップ**（`brew bundle dump` + Git自動コミット）
+4. 外部リポジトリ更新
+
+### パッケージ追加手順
+
+1. **インストール**:
+
+   ```bash
+   brew install <package>
+   ```
+
+2. **Brewfile更新**:
+
+   ```bash
+   # 現在の状態をダンプ
+   brew bundle dump --force --file=/tmp/brewfile-new.txt
+
+   # 差分確認
+   diff Brewfile /tmp/brewfile-new.txt
+   ```
+
+3. **適切なセクションに追加**:
+
+   - 機能・用途に応じたセクションを選択
+   - アルファベット順に挿入（セクション内）
+   - 必要に応じてコメント追加
+
+4. **動作確認**:
+   ```bash
+   brew bundle install --no-upgrade
+   ```
+
+### Brewfile再生成手順
+
+**定期的な全体更新（月次推奨）**:
+
+```bash
+# 1. バックアップ作成
+cp Brewfile Brewfile.backup.$(date +%Y%m%d)
+
+# 2. 現在の状態を完全ダンプ
+brew bundle dump --force --file=/tmp/brewfile-complete.txt
+
+# 3. 差分確認
+diff Brewfile /tmp/brewfile-complete.txt
+
+# 4. 新規パッケージをセクションに統合
+# （手動でBrewfileの適切なセクションに追加）
+
+# 5. 構文チェック
+brew bundle check
+
+# 6. テスト
+brew bundle install --no-upgrade --verbose
+```
+
+### セクション構成
+
+| No  | セクション名                      | 説明                                 | 主要パッケージ例                  |
+| --- | --------------------------------- | ------------------------------------ | --------------------------------- |
+| 1   | **Taps**                          | サードパーティリポジトリ             | aws/tap, github/gh, hashicorp/tap |
+| 2   | **Core Libraries & Dependencies** | 基盤ライブラリ（X11, Cairo, Glib等） | cairo, glib, libxau, freetype     |
+| 3   | **Build Tools & Compilers**       | ビルドツール、コンパイラ             | gcc, llvm, cmake, ninja           |
+| 4   | **Development Tools**             | バージョン管理、コード検索           | git, gh, ghq, lazygit             |
+| 5   | **Languages & Runtimes**          | プログラミング言語                   | ruby, python, lua, rust, node     |
+| 6   | **Shell & Terminal**              | Shell拡張、ターミナル                | zsh, sheldon, tmux, starship      |
+| 7   | **CLI Utilities**                 | 検索、テキスト処理、ファイル管理     | ripgrep, bat, fzf, jq             |
+| 8   | **System Monitoring**             | システム監視、パフォーマンス         | btop, htop, dark-mode             |
+| 9   | **DevOps & Cloud**                | Container、Kubernetes、IaC           | docker, kubernetes-cli, terraform |
+| 10  | **Databases**                     | データベース、キャッシュ             | mysql, postgresql@14, redis       |
+| 11  | **Security & Networking**         | VPN、認証、暗号化                    | gnupg, openvpn, tailscale         |
+| 12  | **Linters & Formatters**          | コード品質、静的解析                 | biome, shellcheck, ruff           |
+| 13  | **Package Management**            | パッケージマネージャー               | mise, pipx, uv                    |
+| 14  | **Documentation**                 | Markdown、PlantUML、Graphviz         | pandoc, graphviz, marksman        |
+| 15  | **Build Tools (Lang)**            | 言語固有ビルドツール                 | gradle, maven, sbt                |
+| 16  | **Specialized Tools**             | 特定用途向けツール                   | aspell, mecab, grpcurl            |
+| 17  | **Casks**                         | デスクトップアプリケーション         | claude-code, wezterm, raycast     |
+| 18  | **Fonts**                         | フォント                             | nerd-font, powerline-symbols      |
+| 19  | **MAS**                           | Mac App Store アプリ                 | Xcode, 1Password, Reeder          |
+| 20  | **VSCode**                        | エディタ拡張                         | copilot, gitlens, remote-ssh      |
+| 21  | **Go Packages**                   | Go開発ツール                         | golangci-lint, wire, lambroll     |
+
+### トラブルシューティング
+
+#### パッケージインストールエラー
+
+```bash
+# 依存関係の問題
+brew doctor
+brew update
+brew upgrade
+
+# 特定パッケージの再インストール
+brew reinstall <package>
+
+# Casksの問題
+brew reinstall --cask <cask>
+```
+
+#### Brewfile構文エラー
+
+```bash
+# 構文チェック
+brew bundle check
+
+# Brewfileの検証
+brew bundle install --no-upgrade --dry-run
+```
+
+#### 古いツールのクリーンアップ
+
+```bash
+# Brewfileに含まれないパッケージをリスト
+brew bundle cleanup --force
+
+# 未使用の依存関係削除
+brew autoremove
+
+# キャッシュクリア
+brew cleanup
+```
+
+### ベストプラクティス
+
+1. **定期的な更新**: 月次でBrewfileと実際のインストール状況を同期
+2. **バージョン管理**: Brewfile をGit管理し、変更履歴を追跡
+3. **コメント追加**: 特殊な設定や重要なパッケージにはコメントを付与
+4. **テスト**: 変更後は必ず`brew bundle check`で検証
+5. **バックアップ**: 大きな変更前にはバックアップを作成
