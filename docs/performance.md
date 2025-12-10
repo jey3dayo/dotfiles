@@ -280,7 +280,7 @@ top -l 1 | grep PhysMem
 - [Zsh Configuration](tools/zsh.md) - 詳細な最適化戦略
 - [Neovim Configuration](tools/nvim.md) - プラグイン最適化
 - [Maintenance Guide](maintenance.md) - 定期メンテナンス
-- [Documentation Guidelines](documentation-guidelines.md) - ドキュメント管理
+- [Documentation Rules](../.claude/rules/documentation-rules.md) - ドキュメント管理
 
 ---
 

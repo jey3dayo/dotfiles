@@ -171,7 +171,7 @@ raycast/
 ```
 docs/
 ├── README.md                    # Documentation index
-├── documentation-guidelines.md  # Documentation standards
+├── .claude/rules/documentation-rules.md  # Documentation standards (Claude rules)
 ├── performance.md               # Performance metrics
 ├── setup.md                     # Setup guide
 ├── maintenance.md               # Maintenance procedures
@@ -253,7 +253,7 @@ Priority Tier | Files         | Purpose
 
 ### Documentation
 
-- **Lowercase with hyphens**: `documentation-guidelines.md`, `fzf-integration.md`
+- **Lowercase with hyphens**: e.g., `fzf-integration.md`
 - **README per directory**: Each major directory has `README.md`
 - **Tool-specific**: Under `docs/tools/` (e.g., `docs/tools/zsh.md`)
 
@@ -320,7 +320,7 @@ return config
 ### 4. Documentation-Driven
 
 - **Metadata**: All docs include update date and target audience
-- **Guidelines**: [Documentation Guidelines](../docs/documentation-guidelines.md)
+- **Guidelines**: [Documentation Rules](../.claude/rules/documentation-rules.md)
 - **Consistency**: Unified tag system (category/tool/layer/environment)
 
 ### 5. Version Control Everything
