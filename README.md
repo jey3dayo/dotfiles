@@ -40,7 +40,7 @@ exec zsh
 - Local gate: `mise run ci` (GitHub Actions equivalent)
 - Formatting bundle: `mise run format` (Markdown/JS/TOML/YAML/Lua/Shell)
 - Lint bundle: `mise run lint`
-- Documentation rules: `docs/documentation-guidelines.md`
+- Documentation rules: `.claude/rules/documentation-rules.md`
 
 ## Core Stack
 

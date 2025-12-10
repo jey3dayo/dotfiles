@@ -35,7 +35,7 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 
 #### 📋 Documentation Governance
 
-- **[Documentation Guidelines](documentation-guidelines.md)** - タグ体系、メタデータ形式、品質基準
+- **[Documentation Rules](../.claude/rules/documentation-rules.md)** - タグ体系、メタデータ形式、品質基準
 
 #### 🛠️ Tool-Specific Documentation
 
@@ -51,7 +51,7 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 - **Setup**: `docs/setup.md` に全て集約（README ではリンクのみ）
 - **Performance**: `docs/performance.md` にメトリクス・履歴を一本化
 - **Maintenance**: `docs/maintenance.md` に定期/臨時タスクを集約
-- **Documentation rules**: `docs/documentation-guidelines.md` にタグ/メタデータ/チェックリストを集約
+- **Documentation rules**: `.claude/rules/documentation-rules.md` にタグ/メタデータ/チェックリストを集約
 - **Tool details**: `docs/tools/*.md` にツール固有の設定・最適化を集約
 
 ## 🗺️ Quick Navigation
