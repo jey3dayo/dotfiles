@@ -1,3 +1,13 @@
+---
+paths:
+  - "docs/setup.md"
+  - "setup.sh"
+  - ".mise.toml"
+  - "mise/config.toml"
+  - "Brewfile"
+  - "Brewfile.lock.json"
+---
+
 # Setup and Environment Rules
 
 Purpose: enforce the single source for onboarding steps and verification. Scope: initial clone, required tools, and validation commands.

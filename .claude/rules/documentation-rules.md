@@ -1,3 +1,12 @@
+---
+paths:
+  - "docs/**/*.md"
+  - "README.md"
+  - "CLAUDE.md"
+  - "TOOLS.md"
+  - "global_rules.md"
+---
+
 # Documentation Rules
 
 Purpose: keep documentation governance rules concise for Claude. Scope: tagging, metadata, duplication control, and size limits for `docs/`.

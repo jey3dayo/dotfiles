@@ -1,3 +1,9 @@
+---
+paths:
+  - "nvim/**"
+  - "docs/tools/nvim.md"
+---
+
 # Neovim Rules
 
 Purpose: keep the Lua-first, <100ms Neovim configuration stable. Scope: architecture, LSP/tooling, performance safeguards.

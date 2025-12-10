@@ -1,3 +1,11 @@
+---
+paths:
+  - ".claude/**"
+  - "CLAUDE.md"
+  - "codex/**"
+  - "cursor/**"
+---
+
 # AI Tools and Claude Usage
 
 Purpose: guide Claude Code usage, command system, and context sources. Scope: steering docs, project quick links, and CI commands available through Claude.

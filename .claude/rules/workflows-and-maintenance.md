@@ -1,3 +1,16 @@
+---
+paths:
+  - "docs/maintenance.md"
+  - "docs/performance.md"
+  - ".github/workflows/**/*.yml"
+  - ".github/PULL_REQUEST_TEMPLATE.md"
+  - ".claude/commands/**/*.sh"
+  - ".mise.toml"
+  - "mise/config.toml"
+  - "Brewfile"
+  - "Brewfile.lock.json"
+---
+
 # Workflows and Maintenance
 
 Purpose: keep recurring operations and troubleshooting guardrails concise. Scope: maintenance cadences, Brewfile management, and where to log performance findings.

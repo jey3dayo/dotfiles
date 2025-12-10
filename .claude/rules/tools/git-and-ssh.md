@@ -1,3 +1,11 @@
+---
+paths:
+  - "git/**"
+  - "ssh/**"
+  - "docs/tools/git.md"
+  - "docs/tools/ssh.md"
+---
+
 # Git and SSH Rules
 
 Purpose: enforce configuration hierarchy for Git and SSH with secure overrides. Scope: config locations, include order, 1Password integration, and add/diagnose workflows.

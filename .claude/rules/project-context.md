@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*"
+---
+
 # Project Context
 
 Purpose: concise project overview for Claude. Scope: what this repo is, where to read high-level intent, and which SST docs to load.
