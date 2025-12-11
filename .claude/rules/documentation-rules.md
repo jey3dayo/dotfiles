@@ -17,6 +17,16 @@ Sources: docs/README.md.
 - Date format is YYYY-MM-DD; update it on every content change.
 - Include at least one `category/` and one `layer/` tag. Balance audience and environment tags for clarity.
 
+## Claude rule frontmatter
+- Use YAML frontmatter with `paths` as a list; quote brace globs. Example:
+  ```yaml
+  ---
+  paths:
+    - "{src,lib}/**/*.ts"
+    - "tests/**/*.test.ts"
+  ---
+  ```
+
 ## Tag vocabulary (short list)
 - category: shell, editor, terminal, git, performance, integration, configuration, guide, reference, maintenance, documentation.
 - tool: zsh, nvim, wezterm, tmux, git, fzf, ssh, mise, homebrew.
