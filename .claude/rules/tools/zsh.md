@@ -1,3 +1,7 @@
+---
+paths: zsh/**/*, docs/tools/zsh.md
+---
+
 # Zsh Rules
 
 Purpose: preserve the fast, modular Zsh setup. Scope: load order, PATH policy, plugin tiers, caching, and maintenance hooks.

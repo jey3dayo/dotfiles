@@ -1,3 +1,7 @@
+---
+paths: docs/performance.md, docs/tools/nvim.md, docs/tools/zsh.md, docs/tools/wezterm.md, zsh/**/*, nvim/**/*, wezterm/**/*, alacritty/**/*, tmux/**/*
+---
+
 # Performance Rules
 
 Purpose: single source for performance targets, measurement commands, and troubleshooting. Scope: Zsh, Neovim, WezTerm startup, monitoring tools, and optimization phases.

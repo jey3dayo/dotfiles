@@ -1,3 +1,7 @@
+---
+paths: .kiro/steering/**/*.md, README.md, docs/README.md, docs/setup.md, docs/performance.md, docs/maintenance.md
+---
+
 # Project Context
 
 Purpose: concise project overview for Claude. Scope: what this repo is, where to read high-level intent, and which SST docs to load.
