@@ -1,10 +1,5 @@
 ---
-paths:
-  - "docs/**/*.md"
-  - "README.md"
-  - "CLAUDE.md"
-  - "TOOLS.md"
-  - "global_rules.md"
+paths: docs/**/*.md, README.md, CLAUDE.md, TOOLS.md, global_rules.md
 ---
 
 # Documentation Rules

@@ -1,9 +1,5 @@
 ---
-paths:
-  - ".claude/**/*"
-  - "CLAUDE.md"
-  - "codex/**/*"
-  - "cursor/**/*"
+paths: .claude/**/*, CLAUDE.md, codex/**/*, cursor/**/*
 ---
 
 # AI Tools and Claude Usage

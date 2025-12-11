@@ -1,14 +1,5 @@
 ---
-paths:
-  - "docs/performance.md"
-  - "docs/tools/nvim.md"
-  - "docs/tools/zsh.md"
-  - "docs/tools/wezterm.md"
-  - "zsh/**/*"
-  - "nvim/**/*"
-  - "wezterm/**/*"
-  - "alacritty/**/*"
-  - "tmux/**/*"
+paths: docs/performance.md, docs/tools/nvim.md, docs/tools/zsh.md, docs/tools/wezterm.md, zsh/**/*, nvim/**/*, wezterm/**/*, alacritty/**/*, tmux/**/*
 ---
 
 # Performance Rules
