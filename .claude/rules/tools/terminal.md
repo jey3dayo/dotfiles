@@ -1,8 +1,5 @@
 ---
-paths:
-  - "wezterm/**/*"
-  - "alacritty/**/*"
-  - "docs/tools/wezterm.md"
+paths: wezterm/**/*, alacritty/**/*, docs/tools/wezterm.md
 ---
 
 # Terminal Rules (WezTerm)

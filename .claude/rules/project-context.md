@@ -1,11 +1,5 @@
 ---
-paths:
-  - ".kiro/steering/**/*.md"
-  - "README.md"
-  - "docs/README.md"
-  - "docs/setup.md"
-  - "docs/performance.md"
-  - "docs/maintenance.md"
+paths: .kiro/steering/**/*.md, README.md, docs/README.md, docs/setup.md, docs/performance.md, docs/maintenance.md
 ---
 
 # Project Context

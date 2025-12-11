@@ -1,9 +1,5 @@
 ---
-paths:
-  - "docs/tools/fzf-integration.md"
-  - "zsh/config/tools/fzf.zsh"
-  - "zsh/sources/styles.zsh"
-  - "zsh/**/*fzf*.zsh"
+paths: docs/tools/fzf-integration.md, zsh/config/tools/fzf.zsh, zsh/sources/styles.zsh, zsh/**/*fzf*.zsh
 ---
 
 # FZF Integration Rules

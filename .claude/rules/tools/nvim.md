@@ -1,7 +1,5 @@
 ---
-paths:
-  - "nvim/**/*"
-  - "docs/tools/nvim.md"
+paths: nvim/**/*, docs/tools/nvim.md
 ---
 
 # Neovim Rules

@@ -1,9 +1,5 @@
 ---
-paths:
-  - "git/**/*"
-  - "ssh/**/*"
-  - "docs/tools/git.md"
-  - "docs/tools/ssh.md"
+paths: git/**/*, ssh/**/*, docs/tools/git.md, docs/tools/ssh.md
 ---
 
 # Git and SSH Rules

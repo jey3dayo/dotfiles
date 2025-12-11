@@ -1,11 +1,5 @@
 ---
-paths:
-  - "docs/setup.md"
-  - "setup.sh"
-  - ".mise.toml"
-  - "mise/config.toml"
-  - "Brewfile"
-  - "Brewfile.lock.json"
+paths: docs/setup.md, setup.sh, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json
 ---
 
 # Setup and Environment Rules
