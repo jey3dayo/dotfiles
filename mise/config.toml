@@ -242,10 +242,10 @@ run = """
 if [ -n "${YAML_FILES:-}" ]; then
   prettier --check ${YAML_FILES}
   # yamllint は YAML_FILES 指定時も .github/ ディレクトリをチェック
-  yamllint .github/
+  yamllint -f parsable .github/
 else
   fd -e yml -e yaml -X prettier --check
-  yamllint .github/
+  yamllint -f parsable .github/
 fi
 """
 
@@ -272,9 +272,20 @@ else
 fi
 """
 
+[tasks."lint:dockerfile"]
+description = "Dockerfile をチェック（hadolint、--no-color オプション付き）"
+run = """
+if [ -n "${DOCKERFILE_FILES:-}" ]; then
+  hadolint --no-color ${DOCKERFILE_FILES}
+else
+  fd -t f -e dockerfile -X hadolint --no-color
+  fd -t f --glob 'Dockerfile*' -X hadolint --no-color
+fi
+"""
+
 [tasks."lint:links"]
 description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
-run = "fd -e md -x markdown-link-check --config .markdown-link-check.json"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json -q"
 
 [tasks."lint:links:verbose"]
 description = "Markdown リンクチェック（詳細モード）"
