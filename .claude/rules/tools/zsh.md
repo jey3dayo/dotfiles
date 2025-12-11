@@ -1,6 +1,6 @@
 ---
 paths:
-  - "zsh/**"
+  - "zsh/**/*"
   - "docs/tools/zsh.md"
 ---
 

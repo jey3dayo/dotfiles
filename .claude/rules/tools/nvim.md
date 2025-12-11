@@ -1,6 +1,6 @@
 ---
 paths:
-  - "nvim/**"
+  - "nvim/**/*"
   - "docs/tools/nvim.md"
 ---
 

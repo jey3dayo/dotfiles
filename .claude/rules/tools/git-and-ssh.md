@@ -1,7 +1,7 @@
 ---
 paths:
-  - "git/**"
-  - "ssh/**"
+  - "git/**/*"
+  - "ssh/**/*"
   - "docs/tools/git.md"
   - "docs/tools/ssh.md"
 ---

@@ -1,7 +1,7 @@
 ---
 paths:
-  - "wezterm/**"
-  - "alacritty/**"
+  - "wezterm/**/*"
+  - "alacritty/**/*"
   - "docs/tools/wezterm.md"
 ---
 
