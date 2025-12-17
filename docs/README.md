@@ -1,6 +1,6 @@
 # 📖 Documentation Navigation
 
-**最終更新**: 2025-11-29
+**最終更新**: 2025-12-17
 **対象**: 開発者
 **タグ**: `category/guide`, `layer/support`, `environment/macos`, `audience/developer`
 
@@ -39,12 +39,14 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 
 #### 🛠️ Tool-Specific Documentation
 
-- **[Git Configuration](tools/git.md)** - Git 設定の構成、include 順序、署名オプション
-- **[Zsh Configuration](tools/zsh.md)** - Shell layer: 最適化、プラグイン管理、パフォーマンス
-- **[Neovim Configuration](tools/nvim.md)** - Editor layer: LSP、AI支援、プラグイン最適化
-- **[WezTerm Configuration](tools/wezterm.md)** - Terminal layer: 設定、キーバインド、統合
-- **[SSH Configuration](tools/ssh.md)** - 階層的設定、セキュリティ管理
-- **[FZF Integration](tools/fzf-integration.md)** - クロスツール統合、ワークフロー（FZF/Git キーバインドのSST）
+詳細な実装ガイド（SST）。対応するClaudeルールは [`.claude/rules/tools/`](../.claude/rules/tools/) を参照。
+
+- **[Git Configuration](tools/git.md)** - Git 設定の構成、include 順序、署名オプション ([Claude Rules](../.claude/rules/tools/git.md))
+- **[Zsh Configuration](tools/zsh.md)** - Shell layer: 最適化、プラグイン管理、パフォーマンス ([Claude Rules](../.claude/rules/tools/zsh.md))
+- **[Neovim Configuration](tools/nvim.md)** - Editor layer: LSP、AI支援、プラグイン最適化 ([Claude Rules](../.claude/rules/tools/nvim.md))
+- **[WezTerm Configuration](tools/wezterm.md)** - Terminal layer: 設定、キーバインド、統合 ([Claude Rules](../.claude/rules/tools/wezterm.md))
+- **[SSH Configuration](tools/ssh.md)** - 階層的設定、セキュリティ管理 ([Claude Rules](../.claude/rules/tools/ssh.md))
+- **[FZF Integration](tools/fzf-integration.md)** - クロスツール統合、ワークフロー（FZF/Git キーバインドのSST） ([Claude Rules](../.claude/rules/tools/fzf-integration.md))
 
 ## 🧭 Single Source of Truth (SST)
 

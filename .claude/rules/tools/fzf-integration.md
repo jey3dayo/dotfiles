@@ -1,11 +1,13 @@
 ---
 paths: docs/tools/fzf-integration.md, zsh/config/tools/fzf.zsh, zsh/sources/styles.zsh, zsh/**/*fzf*.zsh
+source: docs/tools/fzf-integration.md
 ---
 
 # FZF Integration Rules
 
 Purpose: centralize FZF bindings and cross-tool integrations. Scope: keymaps, layer coverage, and config locations.
-Sources: docs/tools/fzf-integration.md.
+
+**Detailed Reference**: See [docs/tools/fzf-integration.md](../../docs/tools/fzf-integration.md) for comprehensive implementation guide, examples, and troubleshooting.
 
 ## Scope and SST
 

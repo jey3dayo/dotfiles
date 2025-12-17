@@ -1,10 +1,18 @@
 # 💻 Neovim Configuration Guide
 
-**最終更新**: 2025-10-17
+**最終更新**: 2025-12-17
 **対象**: 開発者・上級者
 **タグ**: `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`
 
 100ms未満の高速起動と15言語対応のLSPを備えたモダンなLua設定です。
+
+## 🤖 Claude Rules
+
+このドキュメントの凝縮版ルールは [`.claude/rules/tools/nvim.md`](../../.claude/rules/tools/nvim.md) で管理されています。
+
+- **目的**: Claude AIが常に参照する簡潔なルール（26-31行）
+- **適用範囲**: YAML frontmatter `paths:` で定義
+- **関係**: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
 ## 🏆 2025年ベストプラクティス準拠度評価
 
