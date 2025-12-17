@@ -75,7 +75,8 @@ zsh-profile                # Detailed profiling
 ^g^s                       # Git status widget
 ^g^a                       # Git add -p widget
 ^g^b / ^gs                 # Git branch switcher (fzf-git powered)
-^g^w / ^gw                 # Git worktree manager (fzf-git powered)
+^g^W / ^gW                 # Git worktree manager (menu: Open/New/List/Remove)
+^g^w / ^gw                 # Git worktree open (direct selection)
 ^g^z                       # fzf-git stash picker
 ^g^f                       # fzf-git file picker
 ^g^K                       # FZF kill process

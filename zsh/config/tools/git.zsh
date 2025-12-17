@@ -210,7 +210,30 @@ _git_worktree_menu() {
   fi
 }
 
-_register_git_widget git_worktree_widget '^gw' '^g^w'
+# Git worktree open widget (direct worktree selection without menu)
+git_worktree_open_widget() {
+  _git_widget _git_worktree_open
+}
+
+_git_worktree_open() {
+  command -v fzf >/dev/null 2>&1 || return 0
+
+  local worktree_path
+  worktree_path=$(_git_select_worktree)
+
+  if [[ -n "$worktree_path" ]]; then
+    if [[ -d "$worktree_path" ]]; then
+      echo "cd $worktree_path"
+      cd "$worktree_path"
+    else
+      echo "Warning: Worktree path does not exist: $worktree_path"
+      echo "Consider running: git worktree prune"
+    fi
+  fi
+}
+
+_register_git_widget git_worktree_widget '^g^W' '^gW'
+_register_git_widget git_worktree_open_widget '^gw' '^g^w'
 
 # Expose fzf-git stash picker (status uses ^g^s)
 if command -v fzf-git-stashes-widget >/dev/null 2>&1; then

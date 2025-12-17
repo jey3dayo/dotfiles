@@ -9,7 +9,8 @@ zsh-help() {
     echo "  ^g^s     - git status widget"
     echo "  ^g^a     - git add interactive widget"
     echo "  ^g^b     - git branch switcher (alias: ^gs)"
-    echo "  ^g^w     - git worktree manager (alias: ^gw)"
+    echo "  ^g^W     - git worktree manager (menu: Open/New/List/Remove, alias: ^gW)"
+    echo "  ^g^w     - git worktree open (direct selection, alias: ^gw)"
     echo "  ^g^z     - fzf-git stash picker"
     echo "  ^g^f     - fzf-git file picker"
     echo "  ^g?      - fzf-git keybinding help"
@@ -18,7 +19,8 @@ zsh-help() {
     echo "  ^T       - fzf file finder"
     echo ""
     echo "Alternative key combinations:"
-    echo "  ^gg (diff), ^gs (branch), ^ga (add), ^gw (worktree)"
+    echo "  ^gg (diff), ^gs (branch), ^ga (add)"
+    echo "  ^gW (worktree menu), ^gw (worktree open)"
     ;;
   aliases | abbr)
     echo "📝 Command Abbreviations:"
