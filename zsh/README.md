@@ -71,16 +71,21 @@ zsh-profile                # Detailed profiling
 
 ```bash
 ^]                         # FZF ghq repository selector
-^g^g                       # Git diff widget
-^g^s                       # Git status widget
-^g^a                       # Git add -p widget
-^g^b / ^gs                 # Git branch switcher (fzf-git powered)
-^g^W / ^gW                 # Git worktree manager (menu: Open/New/List/Remove)
-^g^w / ^gw                 # Git worktree open (direct selection)
-^g^z                       # fzf-git stash picker
+^gg  / ^g^g                # Git diff widget
+^gs  / ^g^s                # Git status widget
+^ga  / ^g^a                # Git add -p widget
+^gb  / ^g^b                # Git branch switcher (fzf-git powered)
+^gW  / ^g^W                # Git worktree manager (menu: Open/New/List/Remove)
+^gw  / ^g^w                # Git worktree open (direct selection)
+^gz  / ^g^z                # fzf-git stash picker
 ^g^f                       # fzf-git file picker
-^g^K                       # FZF kill process
+^gx  / ^g^x                # FZF kill process
 ```
+
+**Note**: All `^g` commands support both patterns:
+
+- `^gX` (Ctrl+g, release Ctrl, then press X)
+- `^g^X` (Ctrl+g, hold Ctrl, then press X)
 
 ### FZF Integration
 

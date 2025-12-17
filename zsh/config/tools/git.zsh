@@ -53,7 +53,7 @@ git_status() {
   _git_widget _git_status
 }
 
-_register_git_widget git_status '^g^s'
+_register_git_widget git_status '^gs' '^g^s'
 
 # Worktree path resolver for a branch
 _git_worktree_for_branch() {
@@ -109,16 +109,18 @@ git_switch_widget() {
   _git_widget _git_switch_branch
 }
 
-_register_git_widget git_switch_widget '^gs' '^g^b'
+_register_git_widget git_switch_widget '^gb' '^g^b'
 
 # Git add widget function
-_git_add_patch() {
-  echo git add -p
-  git add -p
-}
-
 git_add_interactive() {
-  _git_widget _git_add_patch
+  if ! _is_git_repo; then
+    zle reset-prompt
+    return 1
+  fi
+
+  # Accept current line and run git add -p in the shell
+  BUFFER="git add -p"
+  zle accept-line
 }
 
 _register_git_widget git_add_interactive '^ga' '^g^a'
@@ -235,8 +237,9 @@ _git_worktree_open() {
 _register_git_widget git_worktree_widget '^g^W' '^gW'
 _register_git_widget git_worktree_open_widget '^gw' '^g^w'
 
-# Expose fzf-git stash picker (status uses ^g^s)
+# Expose fzf-git stash picker
 if command -v fzf-git-stashes-widget >/dev/null 2>&1; then
+  bindkey '^gz' fzf-git-stashes-widget
   bindkey '^g^z' fzf-git-stashes-widget
 fi
 

@@ -46,19 +46,3 @@ if [[ -f ~/.ssh/config ]] || [[ -d ~/.ssh/ssh_config.d ]] || [[ -f ${XDG_CONFIG_
   alias s='ssh $(_ssh_hosts | fzf --prompt "SSH> " --height 40% --reverse)'
 fi
 
-# Process kill widget
-fzf-kill-widget() {
-  local pid
-  if [[ "${UID}" != "0" ]]; then
-    pid=$(ps -f -u "${UID}" | sed 1d | _fzf_cmd | awk '{print $2}')
-  else
-    pid=$(ps -ef | sed 1d | _fzf_cmd | awk '{print $2}')
-  fi
-
-  if [[ -n "${pid}" ]]; then
-    printf '%s\n' "${pid}" | xargs kill "-${1:-9}"
-  fi
-  zle reset-prompt
-}
-zle -N fzf-kill-widget
-bindkey '^g^K' fzf-kill-widget
