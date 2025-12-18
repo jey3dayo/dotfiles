@@ -50,6 +50,17 @@ yamllint = "latest"       # YAML lint
 "npm:markdown-link-check" = "latest"
 taplo = "latest"
 
+# ========================================
+# Cargo-based tools (Rust CLI utilities)
+# ========================================
+# Usage: mise install to install all tools
+# Syntax: "cargo:<crate-name>" = "version"
+# Note: bat, ripgrep, fd, eza, hexyl, zoxide are managed by Homebrew (see Brewfile)
+"cargo:needle-cli" = "latest"          # Semantic code search
+"cargo:similarity-ts" = "latest"       # TypeScript/JavaScript code similarity analyzer
+"cargo:wrkflw" = "latest"              # GitHub Actions workflow runner
+"cargo:bandwhich" = "latest"           # Network bandwidth monitor
+
 [tasks."format:biome"]
 description = "JS/TS/JSON ファイルをフォーマット（BIOME_FILES で対象を限定可能）"
 run = """
