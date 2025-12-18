@@ -1,6 +1,6 @@
 # 🔍 FZF Integration Guide
 
-**最終更新**: 2025-10-17
+**最終更新**: 2025-12-17
 **対象**: 開発者・上級者
 **タグ**: `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced`
 
@@ -8,6 +8,14 @@ FZF (Fuzzy Finder) は dotfiles 全体で統一的なファジー検索体験を
 FZF/Git キーバインドとワークフローの一覧は本書を単一情報源とし、他ドキュメントからは参照のみとします（重複防止）。
 
 ## 🎯 Overview
+
+## 🤖 Claude Rules
+
+このドキュメントの凝縮版ルールは [`.claude/rules/tools/fzf-integration.md`](../../.claude/rules/tools/fzf-integration.md) で管理されています。
+
+- **目的**: Claude AIが常に参照する簡潔なルール（26-31行）
+- **適用範囲**: YAML frontmatter `paths:` で定義
+- **関係**: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
 ### 統合範囲
 
@@ -22,28 +30,31 @@ FZF は以下の層で横断的に統合されています：
 
 ### Global Shortcuts
 
-| キーバインド | 機能                   | 場所        |
-| ------------ | ---------------------- | ----------- |
-| `^]`         | ghq リポジトリ選択     | Shell (Zsh) |
-| `^g?`        | fzf-git キーマップ表示 | Shell (Zsh) |
-| `^g^K`       | プロセス選択・kill     | Shell (Zsh) |
-| `^R`         | コマンド履歴検索       | Shell (Zsh) |
-| `^T`         | ファイル選択           | Shell (Zsh) |
+| キーバインド   | 機能                   | 場所        |
+| -------------- | ---------------------- | ----------- |
+| `^]`           | ghq リポジトリ選択     | Shell (Zsh) |
+| `^g?`          | fzf-git キーマップ表示 | Shell (Zsh) |
+| `^gx` / `^g^x` | プロセス選択・kill     | Shell (Zsh) |
+| `^R`           | コマンド履歴検索       | Shell (Zsh) |
+| `^T`           | ファイル選択           | Shell (Zsh) |
+
+**Note**: All `^g` commands support both patterns (`^gX` or `^g^X`)
 
 ### Git Integration
 
-| コマンド        | 機能                                       | 実装場所                           |
-| --------------- | ------------------------------------------ | ---------------------------------- |
-| `^g^b` / `^gs`  | ブランチ切り替え (既存WTがあれば cd)       | zsh/config/tools/git.zsh (fzf-git) |
-| `^g^w` / `^gw`  | ワークツリー管理 (fzf-git選択 + 追加/削除) | zsh/config/tools/git.zsh           |
-| `^g^z`          | スタッシュ確認・削除 (fzf-git)             | fzf-git.sh                         |
-| `^g^f`          | Gitファイル/差分ピッカー (fzf-git)         | fzf-git.sh                         |
-| `^g?`           | fzf-git キーバインドヘルプ                 | fzf-git.sh                         |
-| `gco()`         | FZF git checkout (ブランチ選択)            | zsh/lazy-sources/fzf.zsh           |
-| `wtcd <branch>` | ブランチの worktree に即座に cd            | zsh/config/tools/git.zsh           |
-| `^g^g`          | Git diff ウィジェット (FZF)                | zsh/config/tools/git.zsh           |
-| `^g^s`          | Git status ウィジェット (FZF)              | zsh/config/tools/git.zsh           |
-| `^g^a`          | Git add -p ウィジェット (FZF)              | zsh/config/tools/git.zsh           |
+| コマンド        | 機能                                        | 実装場所                           |
+| --------------- | ------------------------------------------- | ---------------------------------- |
+| `^gg` / `^g^g`  | Git diff ウィジェット (FZF)                 | zsh/config/tools/git.zsh           |
+| `^gs` / `^g^s`  | Git status ウィジェット (FZF)               | zsh/config/tools/git.zsh           |
+| `^ga` / `^g^a`  | Git add -p ウィジェット (FZF)               | zsh/config/tools/git.zsh           |
+| `^gb` / `^g^b`  | ブランチ切り替え (既存WTがあれば cd)        | zsh/config/tools/git.zsh (fzf-git) |
+| `^gW` / `^g^W`  | ワークツリーメニュー (Open/New/List/Remove) | zsh/config/tools/git.zsh           |
+| `^gw` / `^g^w`  | ワークツリー直接選択・cd                    | zsh/config/tools/git.zsh           |
+| `^gz` / `^g^z`  | スタッシュ確認・削除 (fzf-git)              | fzf-git.sh                         |
+| `^g^f`          | Gitファイル/差分ピッカー (fzf-git)          | fzf-git.sh                         |
+| `^g?`           | fzf-git キーバインドヘルプ                  | fzf-git.sh                         |
+| `gco()`         | FZF git checkout (ブランチ選択)             | zsh/lazy-sources/fzf.zsh           |
+| `wtcd <branch>` | ブランチの worktree に即座に cd             | zsh/config/tools/git.zsh           |
 
 ### Tmux Integration
 

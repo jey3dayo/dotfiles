@@ -1,3 +1,7 @@
+---
+paths: docs/**/*.md, README.md, CLAUDE.md, TOOLS.md, global_rules.md
+---
+
 # Documentation Rules
 
 Purpose: keep documentation governance rules concise for Claude. Scope: tagging, metadata, duplication control, and size limits for `docs/`.
@@ -7,6 +11,16 @@ Sources: docs/README.md.
 - Header fields must include `最終更新`, `対象`, and 3-5 prefixed tags (`category/`, `layer/`, `environment/`, `audience/`; add `tool/` when relevant).
 - Date format is YYYY-MM-DD; update it on every content change.
 - Include at least one `category/` and one `layer/` tag. Balance audience and environment tags for clarity.
+
+## Claude rule frontmatter
+- Use YAML frontmatter with `paths` as a list; quote brace globs. Example:
+  ```yaml
+  ---
+  paths:
+    - "{src,lib}/**/*.ts"
+    - "tests/**/*.test.ts"
+  ---
+  ```
 
 ## Tag vocabulary (short list)
 - category: shell, editor, terminal, git, performance, integration, configuration, guide, reference, maintenance, documentation.

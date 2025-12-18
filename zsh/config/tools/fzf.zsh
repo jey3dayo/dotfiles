@@ -13,4 +13,18 @@ if command -v fzf >/dev/null 2>&1; then
   export FZF_CTRL_T_OPTS="
     --preview 'bat -n --color=always {}'
     --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+  # Process kill widget
+  fzf-kill-widget() {
+    # Run the kill command in the shell for proper interactive behavior
+    if [[ "${UID}" != "0" ]]; then
+      BUFFER="ps -f -u \${UID} | sed 1d | fzf --prompt 'Kill> ' --height 40% --reverse | awk '{print \$2}' | xargs kill -9"
+    else
+      BUFFER="ps -ef | sed 1d | fzf --prompt 'Kill> ' --height 40% --reverse | awk '{print \$2}' | xargs kill -9"
+    fi
+    zle accept-line
+  }
+  zle -N fzf-kill-widget
+  bindkey '^gx' fzf-kill-widget
+  bindkey '^g^x' fzf-kill-widget
 fi
