@@ -24,16 +24,45 @@ High-performance macOS development environment tuned for speed, consistency, and
 
 ## Getting Started
 
-- Canonical steps live in `docs/setup.md` (gitconfig requirements, verification, environment notes)
-- TL;DR: clone, add `~/.gitconfig_local`, then run the installer
+### Quick Setup (Recommended for Fresh macOS)
 
 ```bash
+# 1. Clone repository
 git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
 cd ~/src/github.com/jey3dayo/dotfiles
-# ~/.gitconfig_local を作成した上で実行（手順詳細は docs/setup.md）
-sh ./setup.sh && brew bundle
+
+# 2. Bootstrap (installs Homebrew if needed)
+sh ./bin/bootstrap
+
+# 3. Configure Git identity (required)
+cat > ~/.gitconfig_local << EOF
+[user]
+    name = Your Name
+    email = your.email@example.com
+EOF
+
+# 4. Setup and install packages
+sh ./bin/setup && brew bundle
+
+# 5. Restart shell
 exec zsh
+
+# 6. Verify installation
+zsh-help
 ```
+
+**What bin/bootstrap does**:
+
+- ✅ Installs Homebrew if not present
+- ✅ Detects architecture (Apple Silicon vs Intel)
+- ✅ Validates prerequisites (macOS, git, zsh, curl)
+- ✅ Sets up brew command in current session
+
+### Manual Setup (Already Have Homebrew)
+
+If Homebrew is already installed, skip bootstrap and follow docs/setup.md directly.
+
+📚 **Detailed documentation**: See `docs/setup.md` for troubleshooting and environment notes.
 
 ## Quality & CI
 
@@ -58,14 +87,16 @@ dotfiles/
 ├── .github/       # Workflows
 ├── .kiro/         # Steering docs (always-loaded AI context)
 ├── docs/          # Human-facing documentation (SST per topic)
+├── bin/           # Setup scripts
+│   ├── bootstrap  # Homebrew installer (1-shot)
+│   └── setup      # Environment setup (repeatable)
 ├── zsh/           # Shell (6-tier loading)
 ├── nvim/          # Editor (Lua config, 15+ LSP)
 ├── git/           # Version control (widgets, abbreviations)
 ├── wezterm/       # Terminal (Lua config, tmux-style)
 ├── alacritty/     # Alternative terminal (GPU-accelerated)
 ├── tmux/          # Session management
-├── Brewfile       # Package management (Homebrew)
-└── setup.sh       # Installer entrypoint
+└── Brewfile       # Package management (Homebrew)
 ```
 
 ## Shortcuts & Commands
