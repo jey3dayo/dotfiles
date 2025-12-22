@@ -8,11 +8,11 @@
 
 ## Bootstrap (Recommended for Fresh macOS)
 
-新規Macの場合、`bin/bootstrap`を使用してHomebrewを自動インストール:
+新規Macの場合、`bin/bootstrap.sh`を使用してHomebrewを自動インストール:
 
 ```bash
 cd ~/src/github.com/jey3dayo/dotfiles
-sh ./bin/bootstrap
+sh ./bin/bootstrap.sh
 ```
 
 **実行内容**:
@@ -57,7 +57,7 @@ exec zsh
 Use bootstrap script for automated Homebrew installation:
 
 ```bash
-sh ./bin/bootstrap
+sh ./bin/bootstrap.sh
 ```
 
 ### Manual Installation
@@ -96,7 +96,7 @@ mise run ci
 
 ## Troubleshooting
 
-### Bootstrap後に "Command not found: brew"
+### bootstrap.sh実行後に "Command not found: brew"
 
 現在のシェルにHomebrewを追加:
 
@@ -113,7 +113,7 @@ eval "$(/usr/local/bin/brew shellenv)"
 ### Bootstrapがネットワークエラーで失敗
 
 - インターネット接続を確認
-- リトライ: `sh ./bin/bootstrap`
+- リトライ: `sh ./bin/bootstrap.sh`
 - または手動でHomebrewをインストール（前提条件セクション参照）
 
 ### Homebrewが既に存在する場合
