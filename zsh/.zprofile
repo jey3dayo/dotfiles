@@ -25,6 +25,7 @@ path=(
   # User binaries
   $HOME/{bin,sbin}(N-)
   $HOME/.local/{bin,sbin}(N-)
+  $HOME/.claude/bin(N-)
 
   # Language-specific tools
   $HOME/.deno/bin(N-)
