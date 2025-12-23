@@ -11,6 +11,9 @@ vfox = false
 idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
 
+[settings.pipx]
+uvx = true
+
 [env]
 _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
@@ -36,9 +39,10 @@ actionlint = "latest"     # GitHub Actions workflow lint
 biome = "latest"
 fd = "latest"
 go = "1.23.3"
-node = "22.20.0"
+node = "24"
 python = "3.13.4"
 "pipx:uv" = "latest"
+"pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
 prettier = "latest"
 stylua = "latest"
 shfmt = "latest"
@@ -48,6 +52,7 @@ luajit = "latest"
 yamllint = "latest"       # YAML lint
 "npm:markdownlint-cli2" = "latest"
 "npm:markdown-link-check" = "latest"
+"npm:@openai/codex" = "latest"
 taplo = "latest"
 
 # ========================================
