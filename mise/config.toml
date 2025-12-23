@@ -50,9 +50,20 @@ shellcheck = "latest"
 lua = "5.1.5"             # LuaRocks/Neovim require Lua 5.1
 luajit = "latest"
 yamllint = "latest"       # YAML lint
-"npm:markdownlint-cli2" = "latest"
-"npm:markdown-link-check" = "latest"
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"
+"npm:@fsouza/prettierd" = "latest"
 "npm:@openai/codex" = "latest"
+"npm:aicommits" = "latest"
+"npm:corepack" = "latest"
+"npm:husky" = "latest"
+"npm:markdown-link-check" = "latest"
+"npm:markdownlint-cli2" = "latest"
+"npm:neovim" = "latest"
+"npm:npm" = "latest"
+"npm:npm-check-updates" = "latest"
+"npm:textlint" = "latest"
+"npm:textlint-rule-preset-ja-technical-writing" = "latest"
 taplo = "latest"
 
 # ========================================

@@ -92,7 +92,7 @@ zsh --no-rcs                                    # 最小構成での起動
 
 # 依存関係の再構築
 brew bundle --force
-mise install node@latest && npm install -g @fsouza/prettierd
+mise install node@latest && mise install npm:@fsouza/prettierd
 mise install python@latest && pip install -r requirements.txt
 
 # バックアップからの復元
