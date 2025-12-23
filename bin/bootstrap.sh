@@ -39,29 +39,29 @@ fi
 
 print_header() {
   printf "\n"
-  printf "${BOLD}${BLUE}========================================${NC}\n"
-  printf "${BOLD}${BLUE}  Dotfiles Bootstrap${NC}\n"
-  printf "${BOLD}${BLUE}========================================${NC}\n"
+  printf "%b\n" "${BOLD}${BLUE}========================================${NC}"
+  printf "%b\n" "${BOLD}${BLUE}  Dotfiles Bootstrap${NC}"
+  printf "%b\n" "${BOLD}${BLUE}========================================${NC}"
   printf "\n"
   printf "This script will install Homebrew if not present.\n"
-  printf "It will ${BOLD}NOT${NC} modify any existing configurations.\n"
+  printf "%b\n" "It will ${BOLD}NOT${NC} modify any existing configurations."
   printf "\n"
 }
 
 print_status() {
-  printf "${BLUE}[INFO]${NC} %s\n" "$1"
+  printf "%b %s\n" "${BLUE}[INFO]${NC}" "$1"
 }
 
 print_success() {
-  printf "${GREEN}[✓]${NC} %s\n" "$1"
+  printf "%b %s\n" "${GREEN}[✓]${NC}" "$1"
 }
 
 print_error() {
-  printf "${RED}[ERROR]${NC} %s\n" "$1" >&2
+  printf "%b %s\n" "${RED}[ERROR]${NC}" "$1" >&2
 }
 
 print_warning() {
-  printf "${YELLOW}[WARN]${NC} %s\n" "$1"
+  printf "%b %s\n" "${YELLOW}[WARN]${NC}" "$1"
 }
 
 # ==============================================================================
@@ -150,7 +150,7 @@ check_homebrew_installed() {
   # Check if brew binary exists at expected location
   if [ -x "${HOMEBREW_PREFIX}/bin/brew" ]; then
     # brew exists but not in PATH, add it to current session
-    print_status "Homebrew found at ${HOMEBREW_PREFIX}/bin/brew, adding to PATH..."
+    print_warning "Homebrew found at ${HOMEBREW_PREFIX}/bin/brew, adding to PATH..."
     eval "$("${HOMEBREW_PREFIX}/bin/brew" shellenv)"
     return 0
   fi
@@ -168,7 +168,7 @@ install_homebrew() {
   printf "\n"
 
   # Confirm installation
-  printf "${YELLOW}Do you want to install Homebrew now? (y/N):${NC} "
+  printf "%b" "${YELLOW}Do you want to install Homebrew now? (y/N):${NC} "
   read -r response
   case "$response" in
     [yY][eE][sS] | [yY]) ;;
@@ -225,37 +225,37 @@ install_homebrew() {
 # ==============================================================================
 
 show_next_steps() {
-  printf "${BOLD}${GREEN}========================================${NC}\n"
-  printf "${BOLD}${GREEN}  Bootstrap Complete!${NC}\n"
-  printf "${BOLD}${GREEN}========================================${NC}\n"
+  printf "%b\n" "${BOLD}${GREEN}========================================${NC}"
+  printf "%b\n" "${BOLD}${GREEN}  Bootstrap Complete!${NC}"
+  printf "%b\n" "${BOLD}${GREEN}========================================${NC}"
   printf "\n"
 
-  printf "${BOLD}Next Steps:${NC}\n"
+  printf "%b\n" "${BOLD}Next Steps:${NC}"
   printf "\n"
 
-  printf "${BOLD}${BLUE}1.${NC} ${BOLD}Configure Git identity${NC} (required):\n"
-  printf "   ${YELLOW}cat > ~/.gitconfig_local << EOF\n"
+  printf "%b\n" "${BOLD}${BLUE}1.${NC} ${BOLD}Configure Git identity${NC} (required):"
+  printf "%b\n" "   ${YELLOW}cat > ~/.gitconfig_local << EOF"
   printf "   [user]\n"
   printf "       name = Your Name\n"
   printf "       email = your.email@example.com\n"
-  printf "   EOF${NC}\n"
+  printf "%b\n" "   EOF${NC}"
   printf "\n"
 
-  printf "${BOLD}${BLUE}2.${NC} ${BOLD}Run setup and install packages${NC}:\n"
-  printf "   ${YELLOW}sh ./setup.sh && brew bundle${NC}\n"
+  printf "%b\n" "${BOLD}${BLUE}2.${NC} ${BOLD}Run setup and install packages${NC}:"
+  printf "%b\n" "   ${YELLOW}sh ./setup.sh && brew bundle${NC}"
   printf "\n"
 
-  printf "${BOLD}${BLUE}3.${NC} ${BOLD}Restart shell${NC}:\n"
-  printf "   ${YELLOW}exec zsh${NC}\n"
+  printf "%b\n" "${BOLD}${BLUE}3.${NC} ${BOLD}Restart shell${NC}:"
+  printf "%b\n" "   ${YELLOW}exec zsh${NC}"
   printf "\n"
 
-  printf "${BOLD}${BLUE}4.${NC} ${BOLD}Verify installation${NC}:\n"
-  printf "   ${YELLOW}zsh-help${NC}\n"
-  printf "   ${YELLOW}zsh-help tools${NC}\n"
+  printf "%b\n" "${BOLD}${BLUE}4.${NC} ${BOLD}Verify installation${NC}:"
+  printf "%b\n" "   ${YELLOW}zsh-help${NC}"
+  printf "%b\n" "   ${YELLOW}zsh-help tools${NC}"
   printf "\n"
 
-  printf "${BOLD}📚 Detailed Documentation:${NC}\n"
-  printf "   $(pwd)/docs/setup.md\n"
+  printf "%b\n" "${BOLD}📚 Detailed Documentation:${NC}"
+  printf "   %s/docs/setup.md\n" "$(pwd)"
   printf "\n"
 }
 

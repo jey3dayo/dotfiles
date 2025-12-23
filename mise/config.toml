@@ -120,7 +120,7 @@ fi
 [tasks."format:markdown"]
 description = "Markdown ファイルをフォーマット"
 run = [
-  "markdownlint-cli2 --fix ${MD_GLOB} ${MD_EXCLUDES}",
+  "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
   "fd -e md -X prettier --write",
 ]
 
@@ -249,7 +249,7 @@ fi
 [tasks."lint:markdown"]
 description = "Markdown ファイルをチェック"
 run = [
-  "markdownlint-cli2 ${MD_GLOB} ${MD_EXCLUDES}",
+  "markdownlint-cli2 \"${MD_GLOB}\" ${MD_EXCLUDES}",
   "fd -e md -X prettier --check",
 ]
 
@@ -295,7 +295,7 @@ if [ -n "${SH_FILES:-}" ]; then
 else
   fd -e sh -X shfmt -d -i 2 -ci -bn
   fd -e sh -X shellcheck
-  fd --hidden -e zsh -X shellcheck
+  fd --hidden -e zsh -X zsh -n
 fi
 """
 

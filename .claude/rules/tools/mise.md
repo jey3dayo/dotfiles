@@ -151,6 +151,6 @@ mise doctor               # Check for issues
 
 ## Related Documentation
 
-- Official docs: https://mise.jdx.dev
+- Official docs: <https://mise.jdx.dev>
 - Project-specific mise usage: `docs/setup.md`
 - Maintenance workflows: `docs/maintenance.md`

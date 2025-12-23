@@ -13,8 +13,8 @@ Purpose: preserve the fast, modular Zsh setup. Scope: load order, PATH policy, p
 ## Load order and directories
 
 - ZDOTDIR is ~/.config/zsh; login and non-login share the same config.
-- Startup sequence: .zshenv (XDG and minimal PATH with mise shims) -> .zprofile (locale, dedupe path/cdpath/fpath, rebuild PATH order) -> .zshrc (history/options then init/_ for compinit and Sheldon cache) -> sources/_ -> config/loader.zsh (core -> tools -> functions -> os) -> lazy-sources/\*.zsh (deferred).
-- Respect directory roles: config/tools/_ for tool configs, config/os/_ for platform overrides, completions/ for bundled completion.
+- Startup sequence: .zshenv (XDG and minimal PATH with mise shims) -> .zprofile (locale, dedupe path/cdpath/fpath, rebuild PATH order) -> .zshrc (history/options then init/_for compinit and Sheldon cache) -> sources/_ -> config/loader.zsh (core -> tools -> functions -> os) -> lazy-sources/\*.zsh (deferred).
+- Respect directory roles: config/tools/_for tool configs, config/os/_ for platform overrides, completions/ for bundled completion.
 
 ## PATH and environment
 

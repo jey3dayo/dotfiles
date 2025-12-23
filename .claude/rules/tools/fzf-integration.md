@@ -17,7 +17,7 @@ Purpose: centralize FZF bindings and cross-tool integrations. Scope: keymaps, la
 ## Key bindings
 
 - Global: Ctrl+] ghq repo picker; Ctrl+R history; Ctrl+T file picker; Ctrl+g? show fzf-git maps; Ctrl+gx/Ctrl+g^x process kill.
-- Git-focused: Ctrl+gg/Ctrl+g^g diff; Ctrl+gs/Ctrl+g^s status; Ctrl+ga/Ctrl+g^a add -p; Ctrl+gb/Ctrl+g^b branch switch with worktree cd; Ctrl+gW/Ctrl+g^W worktree manager menu; Ctrl+gw/Ctrl+g^w direct worktree open; Ctrl+gz/Ctrl+g^z stash picker; Ctrl+g^f diff/file pickers; wtcd <branch> jumps to worktree.
+- Git-focused: Ctrl+gg/Ctrl+g^g diff; Ctrl+gs/Ctrl+g^s status; Ctrl+ga/Ctrl+g^a add -p; Ctrl+gb/Ctrl+g^b branch switch with worktree cd; Ctrl+gW/Ctrl+g^W worktree manager menu; Ctrl+gw/Ctrl+g^w direct worktree open; Ctrl+gz/Ctrl+g^z stash picker; Ctrl+g^f diff/file pickers; `wtcd <branch>` jumps to worktree.
 - Note: All Ctrl+g commands support both patterns (Ctrl+gX or Ctrl+g^X).
 - Tmux: prefix+s for session picker; prefix+w for window picker.
 
