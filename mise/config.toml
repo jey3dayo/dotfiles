@@ -334,4 +334,4 @@ fi
 
 [tasks."lint:lua:luacheck"]
 description = "luacheck を実行（利用可能な場合）"
-run = "if command -v luacheck >/dev/null 2>&1; then luacheck .; fi"
+run = "if command -v luacheck >/dev/null 2>&1; then luacheck -q .; fi"
