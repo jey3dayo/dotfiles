@@ -111,6 +111,22 @@ git_switch_widget() {
 
 _register_git_widget git_switch_widget '^gb' '^g^b'
 
+# Git browse widget (gh browse)
+_git_browse() {
+  if ! command -v gh >/dev/null 2>&1; then
+    echo "gh command not found. Please install GitHub CLI."
+    return 1
+  fi
+  echo gh browse
+  gh browse
+}
+
+git_browse_widget() {
+  _git_widget _git_browse
+}
+
+_register_git_widget git_browse_widget '^gB' '^g^B'
+
 # Git add widget function
 git_add_interactive() {
   if ! _is_git_repo; then
