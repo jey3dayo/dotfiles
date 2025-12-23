@@ -1,6 +1,3 @@
-export MISE_DATA_DIR=$HOME/.mise
-export MISE_CACHE_DIR=$MISE_DATA_DIR/cache
-
 command -v mise >/dev/null 2>&1 || return
 # Activation is handled in .zprofile (login shell)。ここでは補完・ユーティリティのみ。
 # 非ログインシェルで未活性の場合はスキップして早期リターン。
@@ -19,13 +16,13 @@ mise-status() {
   echo "━━━━━━━━━━━━━━━━━━━━"
   echo "Data directory: $MISE_DATA_DIR"
   echo "Cache directory: $MISE_CACHE_DIR"
-  echo "Shims directory: $HOME/.local/share/mise/shims"
+  echo "Shims directory: $MISE_DATA_DIR/shims"
   echo ""
   echo "Active tools:"
   mise list --current 2>/dev/null || echo "No tools configured"
   echo ""
   echo "PATH status:"
-  if [[ "$PATH" == *".local/share/mise/shims"* ]]; then
+  if [[ "$PATH" == *"$MISE_DATA_DIR/shims"* ]]; then
     echo "✅ mise shims in PATH"
   else
     echo "❌ mise shims not found in PATH"
