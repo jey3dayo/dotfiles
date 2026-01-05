@@ -1,8 +1,7 @@
 # Help functions for zsh configuration
 
 zsh-help() {
-  local -r profile_top_default=20
-  local profile_top_count=${ZSH_DEBUG_PROFILE_TOP_COUNT:-$profile_top_default}
+  local profile_top_count=$ZSH_DEBUG_PROFILE_TOP_COUNT
   case "$1" in
   keybinds | keys)
     echo "🔗 Custom Keybindings:"

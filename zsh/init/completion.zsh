@@ -1,9 +1,6 @@
 # zsh completion system initialization
 # 補完システムの初期化処理
 
-typeset -gr ZSH_COMPDUMP_MAX_AGE_DAYS=7
-typeset -gr ZSH_COMPDUMP_REBUILD_AGE_HOURS=24
-
 # キャッシュディレクトリ設定
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 
