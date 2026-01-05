@@ -67,6 +67,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libreadline-dev libncurses5-dev
 
+      - name: Import Node.js release key
+        run: |
+          gpg --keyserver keyserver.ubuntu.com --recv-keys 86C8D74642E67846F8E120284DAA80D1E737BC9F
+
       - name: Set up mise
         uses: jdx/mise-action@v3
         with:
