@@ -40,6 +40,10 @@ autoload zed
 if [ -f "$XDG_CONFIG_HOME/.env" ]; then
   source "$XDG_CONFIG_HOME/.env"
 fi
+# Load shared constants before init (used by completion, etc.)
+if [[ -r "${ZDOTDIR:-$HOME}/config/core/constants.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/config/core/constants.zsh"
+fi
 # Source initialization files first (order-dependent)
 for f in "${ZDOTDIR:-$HOME}"/init/*.zsh; do source "${f}"; done
 

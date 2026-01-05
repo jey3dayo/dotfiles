@@ -1,9 +1,5 @@
 # FZF integration - aliases, functions, and widgets
 
-typeset -gr ZSH_FZF_TMUX_HEIGHT_DEFAULT="40%"
-typeset -gr ZSH_FZF_PICKER_HEIGHT="40%"
-typeset -gr ZSH_FZF_PREVIEW_LINE_RANGE=80
-
 if ! command -v fzf >/dev/null 2>&1; then
   return
 fi
@@ -47,5 +43,5 @@ _ssh_hosts() {
 }
 
 if [[ -f ~/.ssh/config ]] || [[ -d ~/.ssh/ssh_config.d ]] || [[ -f ${XDG_CONFIG_HOME:-$HOME/.config}/ssh/ssh_config ]]; then
-  alias s='ssh $(_ssh_hosts | fzf --prompt "SSH> " --height '"$ZSH_FZF_PICKER_HEIGHT"' --reverse)'
+  alias s='ssh $(_ssh_hosts | fzf --prompt "SSH> " --height ${ZSH_FZF_PICKER_HEIGHT} --reverse)'
 fi

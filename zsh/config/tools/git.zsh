@@ -1,8 +1,5 @@
 # Git configuration and custom functions
 
-typeset -gr ZSH_GIT_FZF_HEIGHT="40%"
-typeset -gr ZSH_GIT_FZF_FALLBACK_LIMIT=1
-
 # Helper function to check if in git repository
 _is_git_repo() {
   [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = 'true' ]

@@ -55,6 +55,8 @@ jobs:
     env:
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
+      # Use GitHub Actions Lua/LuaRocks instead of mise-managed installs
+      MISE_DISABLE_TOOLS: "lua,luajit"
 
     steps:
       - name: Checkout repository
@@ -65,10 +67,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libreadline-dev libncurses5-dev
 
+      - name: Import Node.js release key
+        run: |
+          gpg --keyserver keyserver.ubuntu.com --recv-keys 86C8D74642E67846F8E120284DAA80D1E737BC9F
+
       - name: Set up mise
         uses: jdx/mise-action@v3
         with:
-          version: "2025.10.9"
+          version: "2025.12.13"
           cache: true
 
       - name: Set up Lua (LuaJIT) for luacheck

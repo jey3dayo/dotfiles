@@ -1,7 +1,5 @@
 command -v brew &>/dev/null || return
 
-typeset -gr BREW_ENV_DEFER_SECONDS=3
-
 # Custom brew environment setup that preserves mise tool priority
 # Note: brew unlink node was executed to avoid conflicts with mise-managed node
 _setup_brew_env() {

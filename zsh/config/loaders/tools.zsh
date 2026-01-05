@@ -6,10 +6,6 @@ load_tool_settings() {
   local -a critical_tools=(fzf git mise starship)
   local -A is_critical
   local has_zsh_defer=$(( $+functions[zsh-defer] ))
-  local -r DEFER_BREW_SECONDS=3
-  local -r DEFER_DEBUG_SECONDS=15
-  local -r DEFER_GH_SECONDS=8
-  local -r DEFER_DEFAULT_SECONDS=12
 
   # Critical tools - immediate load (minimal set)
   for critical_tool in $critical_tools; do
