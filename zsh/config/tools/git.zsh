@@ -1,5 +1,8 @@
 # Git configuration and custom functions
 
+typeset -gr ZSH_GIT_FZF_HEIGHT="40%"
+typeset -gr ZSH_GIT_FZF_FALLBACK_LIMIT=1
+
 # Helper function to check if in git repository
 _is_git_repo() {
   [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = 'true' ]
@@ -72,9 +75,9 @@ _git_worktree_for_branch() {
 # Branch selector (prefers fzf-git)
 _git_select_branch() {
   if command -v _fzf_git_branches >/dev/null 2>&1; then
-    _fzf_git_branches | head -n1
+    _fzf_git_branches | head -n "${ZSH_GIT_FZF_FALLBACK_LIMIT}"
   else
-    git branch --format='%(refname:short)' | fzf --prompt="Switch to branch: " --height=40% --reverse --preview="git log --oneline --graph --color=always {}"
+    git branch --format='%(refname:short)' | fzf --prompt="Switch to branch: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse --preview="git log --oneline --graph --color=always {}"
   fi
 }
 
@@ -148,9 +151,9 @@ git_worktree_widget() {
 
 _git_select_worktree() {
   if command -v _fzf_git_worktrees >/dev/null 2>&1; then
-    _fzf_git_worktrees | head -n1
+    _fzf_git_worktrees | head -n "${ZSH_GIT_FZF_FALLBACK_LIMIT}"
   else
-    git worktree list --porcelain | awk '/^worktree / { print $2 }' | fzf --prompt="Select worktree: " --height=40% --reverse
+    git worktree list --porcelain | awk '/^worktree / { print $2 }' | fzf --prompt="Select worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse
   fi
 }
 
@@ -166,7 +169,7 @@ _git_worktree_menu() {
 
   # Show menu
   local choice
-  choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Worktree Action: " --height=40% --reverse)
+  choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Worktree Action: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse)
 
   if [[ -n "$choice" ]]; then
     case "$choice" in

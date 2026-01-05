@@ -9,6 +9,11 @@ export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
 : "${GIT_CONFIG_GLOBAL:=$XDG_CONFIG_HOME/git/config}"
 export ZDOTDIR GIT_CONFIG_GLOBAL
 
+# mise data/cache directories (must be set before .zprofile activation)
+: "${MISE_DATA_DIR:=$HOME/.mise}"
+: "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
+export MISE_DATA_DIR MISE_CACHE_DIR
+
 # History file should be set before shell init so history loads
 # even if .zshrc is skipped. Keep it under XDG state by default.
 : "${HISTFILE:=${XDG_STATE_HOME}/zsh/history}"

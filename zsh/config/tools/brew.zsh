@@ -1,5 +1,7 @@
 command -v brew &>/dev/null || return
 
+typeset -gr BREW_ENV_DEFER_SECONDS=3
+
 # Custom brew environment setup that preserves mise tool priority
 # Note: brew unlink node was executed to avoid conflicts with mise-managed node
 _setup_brew_env() {
@@ -28,7 +30,7 @@ if (( $+functions[zsh-defer] )); then
   export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX"
 
   # Defer expensive operations but preserve mise priority
-  zsh-defer -t 3 _setup_brew_env
+  zsh-defer -t $BREW_ENV_DEFER_SECONDS _setup_brew_env
 else
   # Fallback for immediate loading
   _setup_brew_env

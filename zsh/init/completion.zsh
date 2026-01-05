@@ -1,6 +1,9 @@
 # zsh completion system initialization
 # 補完システムの初期化処理
 
+typeset -gr ZSH_COMPDUMP_MAX_AGE_DAYS=7
+typeset -gr ZSH_COMPDUMP_REBUILD_AGE_HOURS=24
+
 # キャッシュディレクトリ設定
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 
@@ -10,8 +13,8 @@ export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 # 古いzcompdumpファイルのクリーンアップ関数
 cleanup_old_zcompdump() {
   local cache_dir="${ZSH_COMPDUMP:h}"
-  # 7日以上古いファイルを削除
-  find "$cache_dir" -name "zcompdump*" -type f -mtime +7 -delete 2>/dev/null
+  # 設定日数以上古いファイルを削除
+  find "$cache_dir" -name "zcompdump*" -type f -mtime +"${ZSH_COMPDUMP_MAX_AGE_DAYS}" -delete 2>/dev/null
 }
 
 # post-compinit hooks実行
@@ -46,8 +49,8 @@ _init_completion() {
   zmodload -i zsh/complist
   autoload -Uz compinit
   local need_rebuild=0
-  # 24時間以上古い場合は再構築
-  [[ -n "${ZSH_COMPDUMP}"(#qNmh+24) ]] && need_rebuild=1
+  # 設定時間以上古い場合は再構築
+  [[ -n "${ZSH_COMPDUMP}"(#qNmh+${ZSH_COMPDUMP_REBUILD_AGE_HOURS}) ]] && need_rebuild=1
   # 補完ファイルがzcompdumpより新しければ再構築
   for comp_dir in "$completion_dir" "$user_completion_dir"; do
     for comp_file in "$comp_dir"/*(N); do
@@ -72,4 +75,3 @@ _init_completion() {
 _init_completion
 
 # vim: set syntax=zsh:
-

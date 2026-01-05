@@ -50,6 +50,20 @@ function M.has_config_files(config_files, dirname)
   return false
 end
 
+function M.is_large_file(bufnr, max_size)
+  local name = vim.api.nvim_buf_get_name(bufnr or 0)
+  if name == "" then return false end
+
+  local uv = vim.uv or vim.loop
+  if not uv or not uv.fs_stat then return false end
+
+  local ok, stat = pcall(uv.fs_stat, name)
+  if not ok or not stat or not stat.size then return false end
+
+  local limit = max_size or (1024 * 1024 * 2)
+  return stat.size > limit
+end
+
 -- Table utilities
 function M.extend(tab1, tab2)
   for _, value in ipairs(tab2 or {}) do

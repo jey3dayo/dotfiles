@@ -1,28 +1,13 @@
-local ft = require "core.filetypes"
+local factory = require "lsp.settings_factory"
 local lsp_utils = require "lsp.utils"
-local lsp_config = require "lsp.config"
-local capabilities = require("lsp.capabilities").setup()
-local handlers = require "lsp.handlers"
 
 local function resolve_tsserver_path()
   return lsp_utils.get_mason_package_path("typescript-language-server", "node_modules/typescript/lib/tsserver.js")
 end
 
-local config_files = lsp_config.formatters["typescript-tools"].config_files
 local tsserver_path = resolve_tsserver_path()
 
-return {
-  root_dir = lsp_utils.create_root_pattern(config_files),
-  filetypes = ft.js_project,
-  capabilities = capabilities,
-  handlers = handlers.handlers,
-  on_attach = function(client, bufnr)
-    if handlers and handlers.on_attach then handlers.on_attach(client, bufnr) end
-
-    client.config.settings = client.config.settings or {}
-    client.config.settings.tsserver_file_preferences = client.config.settings.tsserver_file_preferences or {}
-    client.config.settings.tsserver_file_preferences.disableSuggestions = true
-  end,
+local config = factory.create_js_server("typescript-tools", {
   settings = {
     separate_diagnostic_server = true,
     publish_diagnostic_on = "insert_leave",
@@ -38,4 +23,15 @@ return {
     },
     tsserver_path = tsserver_path,
   },
-}
+})
+
+local base_on_attach = config.on_attach
+config.on_attach = function(client, bufnr)
+  if base_on_attach then base_on_attach(client, bufnr) end
+
+  client.config.settings = client.config.settings or {}
+  client.config.settings.tsserver_file_preferences = client.config.settings.tsserver_file_preferences or {}
+  client.config.settings.tsserver_file_preferences.disableSuggestions = true
+end
+
+return config
