@@ -1,10 +1,15 @@
 # FZF configuration only - loaded early for immediate availability
 
+typeset -gr ZSH_FZF_DEFAULT_HEIGHT="50%"
+typeset -gr ZSH_FZF_KILL_HEIGHT="40%"
+typeset -gr ZSH_FZF_CTRL_R_PREVIEW_LINES=3
+typeset -gr ZSH_FZF_KILL_SIGNAL=9
+
 if command -v fzf >/dev/null 2>&1; then
-  export FZF_DEFAULT_OPTS="--height 50% --reverse"
+  export FZF_DEFAULT_OPTS="--height ${ZSH_FZF_DEFAULT_HEIGHT} --reverse"
 
   export FZF_CTRL_R_OPTS="
-    --preview 'echo {}' --preview-window up:3:hidden:wrap
+    --preview 'echo {}' --preview-window up:${ZSH_FZF_CTRL_R_PREVIEW_LINES}:hidden:wrap
     --bind 'ctrl-/:toggle-preview'
     --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
     --color header:italic
@@ -16,11 +21,12 @@ if command -v fzf >/dev/null 2>&1; then
 
   # Process kill widget
   fzf-kill-widget() {
+    local -r root_uid=0
     # Run the kill command in the shell for proper interactive behavior
-    if [[ "${UID}" != "0" ]]; then
-      BUFFER="ps -f -u \${UID} | sed 1d | fzf --prompt 'Kill> ' --height 40% --reverse | awk '{print \$2}' | xargs kill -9"
+    if [[ "${UID}" != "$root_uid" ]]; then
+      BUFFER="ps -f -u \${UID} | sed 1d | fzf --prompt 'Kill> ' --height ${ZSH_FZF_KILL_HEIGHT} --reverse | awk '{print \$2}' | xargs kill -${ZSH_FZF_KILL_SIGNAL}"
     else
-      BUFFER="ps -ef | sed 1d | fzf --prompt 'Kill> ' --height 40% --reverse | awk '{print \$2}' | xargs kill -9"
+      BUFFER="ps -ef | sed 1d | fzf --prompt 'Kill> ' --height ${ZSH_FZF_KILL_HEIGHT} --reverse | awk '{print \$2}' | xargs kill -${ZSH_FZF_KILL_SIGNAL}"
     fi
     zle accept-line
   }

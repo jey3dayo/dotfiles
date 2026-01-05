@@ -1,6 +1,8 @@
 # Help functions for zsh configuration
 
 zsh-help() {
+  local -r profile_top_default=20
+  local profile_top_count=${ZSH_DEBUG_PROFILE_TOP_COUNT:-$profile_top_default}
   case "$1" in
   keybinds | keys)
     echo "🔗 Custom Keybindings:"
@@ -104,7 +106,7 @@ zsh-help() {
     echo "To enable zsh profiling:"
     echo "  export ZSH_DEBUG=1"
     echo "  exec zsh"
-    echo "  zprof | head -20"
+    echo "  zprof | head -${profile_top_count}"
     ;;
   *)
     echo "🚀 Zsh Configuration Help"

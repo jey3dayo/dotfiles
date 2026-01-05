@@ -3,9 +3,11 @@ command -v mise >/dev/null 2>&1 || return
 # 非ログインシェルで未活性の場合はスキップして早期リターン。
 (( $+functions[_mise_hook] )) || return
 
+typeset -gr MISE_COMPLETION_DEFER_SECONDS=10
+
 # Defer only the completion for startup performance
 if (( $+functions[zsh-defer] )); then
-  zsh-defer -t 10 eval "$(mise complete -s zsh)"
+  zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval "$(mise complete -s zsh)"
 else
   eval "$(mise complete -s zsh)"
 fi
