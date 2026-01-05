@@ -1,10 +1,5 @@
 # FZF configuration only - loaded early for immediate availability
 
-typeset -gr ZSH_FZF_DEFAULT_HEIGHT="50%"
-typeset -gr ZSH_FZF_KILL_HEIGHT="40%"
-typeset -gr ZSH_FZF_CTRL_R_PREVIEW_LINES=3
-typeset -gr ZSH_FZF_KILL_SIGNAL=9
-
 if command -v fzf >/dev/null 2>&1; then
   export FZF_DEFAULT_OPTS="--height ${ZSH_FZF_DEFAULT_HEIGHT} --reverse"
 

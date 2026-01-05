@@ -1,9 +1,6 @@
 # Debug and profiling tools (development only)
 
 if [[ -n "$ZSH_DEBUG" ]]; then
-  typeset -gr ZSH_DEBUG_BENCHMARK_RUNS=5
-  typeset -gr ZSH_DEBUG_PROFILE_TOP_COUNT=20
-
   zmodload zsh/zprof
 
   # Benchmark shell startup time
