@@ -236,3 +236,6 @@ pulse/cookie
 
 # Codex 3rd Party
 .sdd
+
+# WSL Utilities
+wslu/

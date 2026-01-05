@@ -12,9 +12,11 @@ export GREP_OPTIONS='--color=auto'
 typeset -U path cdpath fpath manpath
 
 # Activate mise if available
+# Check Homebrew location first (before PATH is fully populated)
 if [[ -x /opt/homebrew/bin/mise ]]; then
-  # Activate mise for tool availability and environment variables
   eval "$(/opt/homebrew/bin/mise activate zsh)"
+elif command -v mise &>/dev/null; then
+  eval "$(mise activate zsh)"
 fi
 
 # Complete PATH setup (executed after macOS path_helper)

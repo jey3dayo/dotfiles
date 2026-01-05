@@ -40,16 +40,19 @@ biome = "latest"
 fd = "latest"
 go = "1.23.3"
 node = "24"
-python = "3.13.4"
+python = "3.13"
 "pipx:uv" = "latest"
-"pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
+# FIXME: Temporarily disabled due to CI failures - revisit when stable
+# "pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
 prettier = "latest"
 stylua = "latest"
 shfmt = "latest"
 shellcheck = "latest"
-lua = "5.1.5"             # LuaRocks/Neovim require Lua 5.1
-luajit = "latest"
+# FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
+# lua = "5.1.5"             # LuaRocks/Neovim require Lua 5.1
+# luajit = "latest"
 yamllint = "latest"       # YAML lint
+"npm:@antfu/ni" = "latest"
 "npm:@bufbuild/protoc-gen-es" = "latest"
 "npm:@connectrpc/protoc-gen-connect-es" = "latest"
 "npm:@fsouza/prettierd" = "latest"
