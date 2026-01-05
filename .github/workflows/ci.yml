@@ -55,6 +55,8 @@ jobs:
     env:
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
+      # Use GitHub Actions Lua/LuaRocks instead of mise-managed installs
+      MISE_DISABLE_TOOLS: "lua,luajit"
 
     steps:
       - name: Checkout repository
