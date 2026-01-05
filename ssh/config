@@ -2,11 +2,11 @@
 # Managed by dotfiles - DO NOT EDIT MANUALLY
 
 # Include configuration modules in priority order
-Include config.d/00-global.sshconfig
-Include config.d/01-1password.sshconfig
-Include config.d/10-dev-services.sshconfig
-Include config.d/20-home-network.sshconfig
-Include config.d/99-defaults.sshconfig
+Include ~/.config/ssh/config.d/00-global.sshconfig
+Include ~/.config/ssh/config.d/01-1password.sshconfig
+Include ~/.config/ssh/config.d/10-dev-services.sshconfig
+Include ~/.config/ssh/config.d/20-home-network.sshconfig
+Include ~/.config/ssh/config.d/99-defaults.sshconfig
 
 # Include local user-specific configurations (not managed by dotfiles)
 Include ~/.ssh/ssh_config.d/*
