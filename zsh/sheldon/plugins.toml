@@ -85,7 +85,7 @@ apply = ["defer"]
 [plugins.ni-completion]
 github = "snowsman/ni-completion"
 use = [".ni.zsh"]
-apply = ["source"]
+apply = ["defer"]
 
 [plugins.pnpm-shell-completion-install]
 github = "g-plane/pnpm-shell-completion"
