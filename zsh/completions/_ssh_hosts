@@ -1,60 +1,33 @@
 #autoload
 
 # Custom _ssh_hosts to fix completion issues
-# This version skips the _combination call that mixes users and hosts
+# This version provides simple host-only completions without users-hosts mixing
 
-local -a config_hosts config_files
-local config host key line
-integer ind
+local -a config_hosts
+local config host
 
 # Get SSH config file path
-if (( ind = ${words[(I)-F]} )); then
-  config=${~words[ind+1]} 2>/dev/null
-else
-  config="$HOME/.ssh/config"
-fi
+local config_file="${HOME}/.ssh/config"
 
-# Collect all SSH config files including Includes
-config_files=()
-if [[ -r $config ]]; then
-  config_files+=("$config")
-
-  # Parse Include directives
-  local include_line
-  while IFS= read -r include_line; do
-    if [[ "$include_line" =~ ^[[:space:]]*Include[[:space:]]+(.+)$ ]]; then
-      local include_pattern="${match[1]}"
-      # Expand ~ to HOME
-      include_pattern="${include_pattern/#\~/$HOME}"
-      # If relative path, prepend ~/.ssh/
-      [[ "$include_pattern" != /* ]] && include_pattern="$HOME/.ssh/$include_pattern"
-      # Expand glob pattern
-      local -a include_matches
-      include_matches=(${~include_pattern})
-      config_files+=("${include_matches[@]}")
-    fi
-  done < "$config"
-fi
-
-# Extract Host entries from all config files
-for config in "${config_files[@]}"; do
+# Collect all SSH hosts from config files
+for config in "$config_file" "${HOME}"/.ssh/ssh_config.d/*.sshconfig "${XDG_CONFIG_HOME:-$HOME/.config}"/ssh/config.d/*.sshconfig; do
   [[ -r "$config" ]] || continue
 
-  while IFS=$'=\t ' read -r key line; do
-    case "$key" in
-      ((#i)host)
-        for host in ${(z)line}; do
-          case $host in
-            (*[*?]*) ;;  # Skip wildcards
-            (*) config_hosts+=("$host") ;;
-          esac
-        done
-        ;;
-    esac
+  # Extract Host entries
+  while IFS= read -r line; do
+    # Match Host lines (case-insensitive)
+    if [[ "$line" =~ ^[[:space:]]*[Hh][Oo][Ss][Tt][[:space:]]+(.+)$ ]]; then
+      # Extract host names from the line
+      for host in ${(z)match[1]}; do
+        # Skip wildcards
+        [[ "$host" == *[*?]* ]] && continue
+        config_hosts+=("$host")
+      done
+    fi
   done < "$config"
 done
 
-# Provide completions
+# Provide completions (deduplicated)
 if (( ${#config_hosts} )); then
   _wanted hosts expl 'remote host name' \
     compadd -M 'm:{a-zA-Z}={A-Za-z} r:|.=* r:|=*' "$@" "${(@u)config_hosts}"
