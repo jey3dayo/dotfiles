@@ -56,4 +56,8 @@ mkdir -p "${HISTFILE:h}"
 export HISTFILE
 HISTSIZE=100000
 SAVEHIST=100000
+
+# SSH completion: disable user completion (only show hostnames, not system users)
+zstyle ':completion:*:(ssh|scp|sshfs):*' users
+
 # vim: set syntax=zsh:
