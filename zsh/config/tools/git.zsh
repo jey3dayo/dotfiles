@@ -125,7 +125,7 @@ git_browse_widget() {
   _git_widget _git_browse
 }
 
-_register_git_widget git_browse_widget '^gB' '^g^B'
+_register_git_widget git_browse_widget '^go' '^g^o'
 
 # Git add widget function
 git_add_interactive() {
