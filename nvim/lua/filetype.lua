@@ -13,7 +13,6 @@ local filetype = {
     [".taskmasterconfig"] = "json",
     ["Podfile"] = "ruby",
     ["babelrc"] = "json",
-    ["config"] = "gitconfig",
   },
 
   pattern = {
@@ -22,6 +21,9 @@ local filetype = {
     ["%.ts%.bk$"] = "typescriptreact",
     ["%.env.*$"] = "config",
     ["^user%-abbreviations$"] = "zsh",
+    [".*/ghostty/config$"] = "toml",
+    [".*/%.git/config$"] = "gitconfig",
+    [".*/git/config$"] = "gitconfig",
   },
 }
 
