@@ -1,9 +1,15 @@
-local config_dir = os.getenv "XDG_CONFIG_HOME" or os.getenv "HOME" .. "/.config"
+local config_dir = os.getenv "XDG_CONFIG_HOME" or (os.getenv "HOME" .. "/.config")
 local config_path = config_dir .. "/typos.toml"
 
 return {
+  -- Use Homebrew-installed typos-lsp (prefer over Mason version)
+  cmd = { "typos-lsp" },
   -- Prevent starting on non-file buffers to avoid crashes in older versions
   single_file_support = false,
+  -- typos-lsp automatically searches for typos.toml in:
+  -- 1. Current directory and parent directories
+  -- 2. $XDG_CONFIG_HOME/typos.toml or ~/.config/typos.toml
+  -- So explicit config path is usually not needed, but we set it for clarity
   init_options = {
     config = vim.fn.filereadable(config_path) == 1 and config_path or nil,
   },
@@ -22,6 +28,7 @@ return {
     debounce_text_changes = 300,
   },
   -- Add debug environment for troubleshooting
+  -- To verify config file detection, uncomment the debug line and check :LspLog
   cmd_env = {
     RUST_LOG = "warn", -- Only show warnings and errors
     -- Uncomment for debugging: RUST_LOG = "debug", RUST_BACKTRACE = "1"

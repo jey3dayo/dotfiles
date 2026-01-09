@@ -38,9 +38,9 @@ MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
 actionlint = "latest"     # GitHub Actions workflow lint
 biome = "latest"
 fd = "latest"
-go = "1.23.3"
+go = "1.25.5"
 node = "24"
-python = "3.13"
+python = "3.14"
 "pipx:uv" = "latest"
 # FIXME: Temporarily disabled due to CI failures - revisit when stable
 # "pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
@@ -74,7 +74,7 @@ taplo = "latest"
 # ========================================
 # Usage: mise install to install all tools
 # Syntax: "cargo:<crate-name>" = "version"
-# Note: bat, ripgrep, fd, eza, hexyl, zoxide are managed by Homebrew (see Brewfile)
+# Note: bat, ripgrep, fd, eza, hexyl, zoxide, typos-lsp are managed by Homebrew (see Brewfile)
 "cargo:needle-cli" = "latest"          # Semantic code search
 "cargo:similarity-ts" = "latest"       # TypeScript/JavaScript code similarity analyzer
 "cargo:wrkflw" = "latest"              # GitHub Actions workflow runner
