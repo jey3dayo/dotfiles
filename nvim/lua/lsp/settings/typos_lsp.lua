@@ -6,12 +6,15 @@ return {
   cmd = { "typos-lsp" },
   -- Prevent starting on non-file buffers to avoid crashes in older versions
   single_file_support = false,
-  -- typos-lsp automatically searches for typos.toml in:
-  -- 1. Current directory and parent directories
-  -- 2. $XDG_CONFIG_HOME/typos.toml or ~/.config/typos.toml
-  -- So explicit config path is usually not needed, but we set it for clarity
+  -- typos-lsp configuration file path
+  -- The server searches for .typos.toml/_typos.toml/typos.toml in workspace folders
+  -- and their parents, but does NOT automatically use ~/.config/typos.toml
+  -- We must explicitly set the config path to use the global config file
   init_options = {
-    config = vim.fn.filereadable(config_path) == 1 and config_path or nil,
+    -- Always use the global config file (expand ~ to full path)
+    config = vim.fn.expand(config_path),
+    -- Set diagnostic severity (Error, Warning, Info, Hint)
+    diagnosticSeverity = "Hint",
   },
   on_attach = function(client, bufnr)
     -- Disable some features that may cause crashes
