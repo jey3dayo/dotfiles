@@ -9,7 +9,7 @@
 font-family = "UDEV Gothic 35NFLG"
 font-family = "Inconsolata Nerd Font Mono"
 font-family = "Noto Color Emoji"
-font-size = 16
+font-size = 15
 
 ############################
 # Theme / Window (match WezTerm)
