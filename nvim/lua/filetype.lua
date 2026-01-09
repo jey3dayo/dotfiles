@@ -13,6 +13,12 @@ local filetype = {
     [".taskmasterconfig"] = "json",
     ["Podfile"] = "ruby",
     ["babelrc"] = "json",
+    ["config"] = function(path, _)
+      if path:match("/ghostty/config$") then
+        return "toml"
+      end
+      return "gitconfig"
+    end,
   },
 
   pattern = {
@@ -21,9 +27,6 @@ local filetype = {
     ["%.ts%.bk$"] = "typescriptreact",
     ["%.env.*$"] = "config",
     ["^user%-abbreviations$"] = "zsh",
-    [".*/ghostty/config$"] = "toml",
-    [".*/%.git/config$"] = "gitconfig",
-    [".*/git/config$"] = "gitconfig",
   },
 }
 
