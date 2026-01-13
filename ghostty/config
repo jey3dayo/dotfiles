@@ -4,6 +4,23 @@
 # disable-default-keybinds = false
 
 ############################
+# Shell Integration (Job Control)
+############################
+# Enable Ctrl+Z for job control (suspend/background jobs)
+# Ghostty may intercept Ctrl+Z by default, preventing SIGTSTP
+# Try multiple approaches to ensure the key reaches the shell
+
+# Send raw control characters directly to ensure they reach the shell
+# unbind may not work if Ghostty's default interceptor runs first
+# 0x1A = Ctrl+Z (SIGTSTP / suspend)
+keybind = ctrl+z=text:\x1a
+
+# Note: Ctrl+J is Line Feed (0x0A), same as Enter in most contexts
+# In Claude Code, it will submit the input (same as pressing Enter)
+# 0x0A = Ctrl+J (Line Feed / newline)
+keybind = ctrl+j=text:\x0a
+
+############################
 # Font (match WezTerm)
 ############################
 font-family = "UDEV Gothic 35NFLG"
