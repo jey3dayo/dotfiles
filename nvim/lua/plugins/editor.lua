@@ -493,6 +493,43 @@ return {
     end,
   },
 
+  -- Visual feedback for undo/redo operations
+  {
+    "y3owk1n/undo-glow.nvim",
+    event = "VeryLazy",
+    opts = {
+      animation = {
+        enabled = true,
+        duration = 100,
+        animation_type = "fade",
+        fps = 120,
+        easing = "in_out_cubic",
+      },
+      priority = 4096,
+      color_cache_size = 1000,
+      debounce_delay = 50,
+    },
+    config = function(_, opts)
+      local undo_glow = require "undo-glow"
+      undo_glow.setup(opts)
+
+      -- u/U でundo/redo（ハイライト付き）
+      vim.keymap.set("n", "u", undo_glow.undo, { desc = "Undo with highlight" })
+      vim.keymap.set("n", "U", undo_glow.redo, { desc = "Redo with highlight" })
+
+      -- p/P でペーストし、`] でペースト範囲の末尾へ移動
+      vim.keymap.set("n", "p", function()
+        undo_glow.paste_below()
+        vim.cmd.normal { args = { "`]" }, bang = true }
+      end, { desc = "Paste below with highlight" })
+
+      vim.keymap.set("n", "P", function()
+        undo_glow.paste_above()
+        vim.cmd.normal { args = { "`]" }, bang = true }
+      end, { desc = "Paste above with highlight" })
+    end,
+  },
+
   -- Text operators
   {
     "echasnovski/mini.operators",
