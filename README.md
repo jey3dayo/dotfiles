@@ -1,7 +1,7 @@
 # Personal Dotfiles
 
-**最終更新**: 2025-11-29  
-**対象**: 開発者  
+**最終更新**: 2025-11-29
+**対象**: 開発者
 **タグ**: `category/setup`, `layer/core`, `environment/macos`, `audience/developer`
 
 High-performance macOS development environment tuned for speed, consistency, and developer experience.
@@ -136,5 +136,5 @@ mise install               # Setup language versions
 
 ---
 
-**Status**: Production-ready (2025-11-29)  
+**Status**: Production-ready (2025-11-29)
 **License**: MIT — optimized for modern development workflows with focus on speed, consistency, and developer experience.
