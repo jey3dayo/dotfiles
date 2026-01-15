@@ -1,0 +1,19 @@
+{
+  "model": "zai/glm-4.7",
+  "provider": {
+    "zai": {
+      "name": "zai",
+      "models": {
+        "glm-4.7": {
+          "id": "glm-4.7",
+          "name": "glm-4.7"
+        }
+      },
+      "options": {
+        "apiKey": "{env:ZAI_API_KEY}",
+        "baseURL": "https://api.z.ai/api/coding/paas/v4"
+      }
+    }
+  },
+  "$schema": "https://opencode.ai/config.json"
+}
