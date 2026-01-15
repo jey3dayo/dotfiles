@@ -34,7 +34,7 @@ font-size = 15
 theme = "Gruvbox Dark Hard"
 background-opacity = 0.94
 background-opacity-cells = true
-window-padding-x = 0
+window-padding-x = 8
 window-padding-y = 0
 window-width = 180
 window-height = 50
@@ -118,7 +118,6 @@ keybind = ctrl+x>L=resize_split:right,10
 # 好みで元のまま（ctrl+x>x=close_surface）でもOK
 
 keybind = ctrl+x>x=close_surface
-# keybind = ctrl+x>X=close_tab   # ← Ghostty に close_tab がある場合のみ有効化
 
 
 ############################
@@ -142,15 +141,10 @@ keybind = ctrl+equal=increase_font_size:1
 keybind = ctrl+-=decrease_font_size:1
 keybind = ctrl+shift+equal=reset_font_size
 
-keybind = alt+h=goto_split:left
-keybind = alt+j=goto_split:down
-keybind = alt+k=goto_split:up
-keybind = alt+l=goto_split:right
-
 keybind = alt+ctrl+h=move_tab:-1
 keybind = alt+ctrl+l=move_tab:1
 
-keybind = alt+ctrl+shift+h=resize_split:left,2
-keybind = alt+ctrl+shift+j=resize_split:down,2
-keybind = alt+ctrl+shift+k=resize_split:up,2
-keybind = alt+ctrl+shift+l=resize_split:right,2
+keybind = alt+r>h=resize_split:left,32
+keybind = alt+r>j=resize_split:down,32
+keybind = alt+r>k=resize_split:up,32
+keybind = alt+r>l=resize_split:right,32
