@@ -14,9 +14,7 @@ local filetype = {
     ["Podfile"] = "ruby",
     ["babelrc"] = "json",
     ["config"] = function(path, _)
-      if path:match("/ghostty/config$") then
-        return "toml"
-      end
+      if path:match "/ghostty/config$" then return "toml" end
       return "gitconfig"
     end,
   },

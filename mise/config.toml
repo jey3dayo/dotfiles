@@ -237,8 +237,8 @@ description = "ドキュメントの完全な検証とフォーマット"
 depends = ["format:markdown", "lint:links", "lint:yaml"]
 
 [tasks."lint:docs"]
-description = "ドキュメント全体の検証（lint + リンク + YAML）"
-depends = ["lint:markdown", "lint:links", "lint:yaml"]
+description = "ドキュメント系ファイル（MD/YAML/JSON/Links）の統合Lint"
+depends = ["lint:markdown", "lint:yaml", "lint:biome", "lint:links"]
 
 [tasks."lint:biome"]
 description = "JS/TS/JSON ファイルをチェック（BIOME_FILES で対象を限定可能）"
