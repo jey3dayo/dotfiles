@@ -6,7 +6,7 @@
 [settings]
 env_file = '.env'
 experimental = true
-jobs = 8  # デフォルトの並列実行数
+jobs = 8                                                            # デフォルトの並列実行数
 vfox = false
 idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
@@ -35,7 +35,7 @@ MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
 # YAML_FILES = ""    # YAML ファイル
 
 [tools]
-actionlint = "latest"     # GitHub Actions workflow lint
+actionlint = "latest" # GitHub Actions workflow lint
 biome = "latest"
 fd = "latest"
 go = "1.25.5"
@@ -51,7 +51,7 @@ shellcheck = "latest"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"             # LuaRocks/Neovim require Lua 5.1
 # luajit = "latest"
-yamllint = "latest"       # YAML lint
+yamllint = "latest"                                        # YAML lint
 "npm:@antfu/ni" = "latest"
 "npm:@bufbuild/protoc-gen-es" = "latest"
 "npm:@connectrpc/protoc-gen-connect-es" = "latest"
@@ -75,10 +75,11 @@ taplo = "latest"
 # Usage: mise install to install all tools
 # Syntax: "cargo:<crate-name>" = "version"
 # Note: bat, ripgrep, fd, eza, hexyl, zoxide, typos-lsp are managed by Homebrew (see Brewfile)
-"cargo:needle-cli" = "latest"          # Semantic code search
-"cargo:similarity-ts" = "latest"       # TypeScript/JavaScript code similarity analyzer
-"cargo:wrkflw" = "latest"              # GitHub Actions workflow runner
-"cargo:bandwhich" = "latest"           # Network bandwidth monitor
+"cargo:needle-cli" = "latest"    # Semantic code search
+"cargo:similarity-ts" = "latest" # TypeScript/JavaScript code similarity analyzer
+"cargo:wrkflw" = "latest"        # GitHub Actions workflow runner
+"cargo:bandwhich" = "latest"     # Network bandwidth monitor
+opencode = "latest"
 
 [tasks."format:biome"]
 description = "JS/TS/JSON ファイルをフォーマット（BIOME_FILES で対象を限定可能）"
