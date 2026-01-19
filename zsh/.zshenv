@@ -19,6 +19,13 @@ export MISE_DATA_DIR MISE_CACHE_DIR
 : "${HISTFILE:=${XDG_STATE_HOME}/zsh/history}"
 export HISTFILE
 
+# History size must be set in .zshenv (not .zshrc) because tools like Claude Code
+# use 'zsh -c' which skips .zshrc, resulting in Zsh's defaults (HISTSIZE=30, SAVEHIST=0).
+# .zshenv is always sourced, ensuring proper history configuration in all contexts.
+HISTSIZE=100000
+SAVEHIST=100000
+export HISTSIZE SAVEHIST
+
 # Temporary Files
 if [[ ! -d "$TMPDIR" ]]; then
   export TMPDIR="/tmp/$LOGNAME"

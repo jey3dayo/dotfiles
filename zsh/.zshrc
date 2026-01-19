@@ -50,12 +50,16 @@ for f in "${ZDOTDIR:-$HOME}"/init/*.zsh; do source "${f}"; done
 # Source additional configurations
 for f in "${ZDOTDIR:-$HOME}"/sources/*.zsh; do source "${f}"; done
 
-# Enforce XDG history location after plugins/sources load.
-HISTFILE="${XDG_STATE_HOME}/zsh/history"
-mkdir -p "${HISTFILE:h}"
-export HISTFILE
+# History configuration
+# Must be set here in .zshrc (after /etc/zshrc) to override macOS system defaults.
+# /etc/zshrc sets HISTSIZE=2000 and SAVEHIST=1000, which we need to override.
+# For non-interactive contexts (like 'zsh -c'), .zshenv also sets these values.
 HISTSIZE=100000
 SAVEHIST=100000
+export HISTSIZE SAVEHIST
+
+# Ensure history directory exists
+mkdir -p "${HISTFILE:h}"
 
 # SSH completion: disable user completion (only show hostnames, not system users)
 zstyle ':completion:*:(ssh|scp|sshfs):*' users
