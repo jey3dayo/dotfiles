@@ -113,4 +113,49 @@ describe("wezterm utils", function()
       assert.are.equal("wezterm", title)
     end)
   end)
+
+  describe("abbreviate_home_dir", function()
+    it("should abbreviate home directory to ~", function()
+      local home = os.getenv "HOME" or os.getenv "USERPROFILE"
+      if home then
+        assert.are.equal("~", utils.abbreviate_home_dir(home))
+        assert.are.equal("~/Documents", utils.abbreviate_home_dir(home .. "/Documents"))
+      end
+    end)
+
+    it("should not abbreviate non-home paths", function()
+      assert.are.equal("/usr/local", utils.abbreviate_home_dir "/usr/local")
+    end)
+  end)
+
+  describe("exists", function()
+    it("should find element in array", function()
+      assert.is_true(utils.exists({ 1, 2, 3 }, 2))
+      assert.is_false(utils.exists({ 1, 2, 3 }, 4))
+    end)
+
+    it("should find element in nested tables", function()
+      assert.is_true(utils.exists({ 1, { 2, 3 } }, 3))
+    end)
+  end)
+
+  describe("convert_useful_path", function()
+    it("should convert and extract basename", function()
+      local result = utils.convert_useful_path "~/workspace/project"
+      assert.are.equal("project", result)
+    end)
+  end)
+
+  describe("font_with_fallback", function()
+    pending("requires wezterm runtime and constants module", function()
+      -- This function requires:
+      -- 1. wezterm.font_with_fallback API
+      -- 2. constants module with font.fallbacks configuration
+      -- Should be tested in integration tests with actual wezterm runtime
+      local font = utils.font_with_fallback("UDEV Gothic 35NFLG", { weight = "Bold" })
+      assert.is_not_nil(font)
+      assert.is_table(font.names)
+      assert.is_true(#font.names > 1)
+    end)
+  end)
 end)

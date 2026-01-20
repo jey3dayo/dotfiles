@@ -3,6 +3,6 @@ return {
     verbose = true,
     ROOT = {"spec"},
     pattern = "_spec",
-    lpath = "?.lua;?/init.lua;./?.lua;./?/init.lua"
+    lpath = "spec/mocks/?.lua;spec/mocks/?/init.lua;?.lua;?/init.lua;./?.lua;./?/init.lua"
   }
 }

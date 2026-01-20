@@ -1,12 +1,8 @@
 local ft = require "core.filetypes"
-local lsp_utils = require "lsp.utils"
-local lsp_config = require "lsp.config"
-local config_files = lsp_config.formatters.tailwindcss.config_files
+local factory = require "lsp.settings_factory"
 
-return {
-  autostart = function()
-    return lsp_config.has_formatter_config "tailwindcss"
-  end,
+return factory.create_formatter_server("tailwindcss", {
+  filetypes = ft.tailwind_supported,
   init_options = {
     includeLanguages = {
       eruby = "erb",
@@ -14,9 +10,11 @@ return {
       ["javascript.jsx"] = "javascriptreact",
     },
   },
-  root_dir = lsp_utils.create_root_pattern(config_files),
-  filetypes = ft.tailwind_supported,
   on_attach = function(client, bufnr)
+    -- Call default on_attach first
+    local handlers = require "lsp.handlers"
+    if handlers and handlers.on_attach then handlers.on_attach(client, bufnr) end
+
     -- Minimize TailwindCSS server verbosity
     client.config.trace = "off"
   end,
@@ -42,4 +40,4 @@ return {
       },
     },
   },
-}
+})
