@@ -573,8 +573,20 @@ return {
     },
     keys = {
       -- Yank history navigation
-      { "<leader>p", function() require("yanky").put("p", true) end, desc = "Put with yanky" },
-      { "<leader>P", function() require("yanky").put("P", true) end, desc = "Put before with yanky" },
+      {
+        "<leader>p",
+        function()
+          require("yanky").put("p", true)
+        end,
+        desc = "Put with yanky",
+      },
+      {
+        "<leader>P",
+        function()
+          require("yanky").put("P", true)
+        end,
+        desc = "Put before with yanky",
+      },
       { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history" },
       { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle backward through yank history" },
       { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after with filter" },

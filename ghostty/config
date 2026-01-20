@@ -4,6 +4,15 @@
 # disable-default-keybinds = false
 
 ############################
+# Keyboard Protocol
+############################
+# Prevent CSI-u escape sequences for better compatibility
+# This prevents Ghostty from sending escape sequences like ^[[5;13~
+# when modifier keys are combined with standard keys
+# Note: keybind-all-as-text is not supported in Ghostty 1.2.3,
+# so we explicitly bind each Enter combination below
+
+############################
 # Shell Integration (Job Control)
 ############################
 # Enable Ctrl+Z for job control (suspend/background jobs)
@@ -19,6 +28,17 @@ keybind = ctrl+z=text:\x1a
 # In Claude Code, it will submit the input (same as pressing Enter)
 # 0x0A = Ctrl+J (Line Feed / newline)
 keybind = ctrl+j=text:\x0a
+
+# Ctrl+Enter: explicitly send newline (same as Ctrl+J)
+# This prevents Ghostty from sending escape sequences like ^[[5;13~
+keybind = ctrl+enter=text:\x0a
+
+# Shift+Enter: also send newline for consistency
+# Some apps (like Claude Code) treat this as submit
+keybind = shift+enter=text:\x0a
+
+# Alt+Enter: prevent escape sequences, send newline
+keybind = alt+enter=text:\x0a
 
 ############################
 # Font (match WezTerm)
