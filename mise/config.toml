@@ -42,7 +42,6 @@ go = "1.25.5"
 node = "24"
 python = "3.14"
 "pipx:uv" = "latest"
-"pipx:pynvim" = "latest"
 # FIXME: Temporarily disabled due to CI failures - revisit when stable
 # "pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
 prettier = "latest"
@@ -353,6 +352,11 @@ echo "📦 Installing mise tools..."
 mise install
 
 echo ""
+echo "🐍 Installing Python packages for Neovim..."
+PYTHON_PATH=$(mise where python)/bin/python3
+$PYTHON_PATH -m pip install --quiet pynvim
+
+echo ""
 echo "🔍 Verifying critical tools..."
 command -v biome >/dev/null || echo "⚠️  biome not found"
 command -v prettier >/dev/null || echo "⚠️  prettier not found"
@@ -363,6 +367,7 @@ command -v taplo >/dev/null || echo "⚠️  taplo not found"
 command -v yamllint >/dev/null || echo "⚠️  yamllint not found"
 command -v markdownlint-cli2 >/dev/null || echo "⚠️  markdownlint-cli2 not found"
 command -v uvx >/dev/null || echo "⚠️  uv not found"
+$PYTHON_PATH -c "import pynvim; print('✓ pynvim:', pynvim.__version__)" || echo "⚠️  pynvim not found"
 
 echo ""
 echo "✅ Setup complete. Run 'mise tasks' to see available tasks."
