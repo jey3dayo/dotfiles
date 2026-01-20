@@ -4,7 +4,7 @@
 # ========================================
 
 [settings]
-env_file = '.env'
+env_file = '.env.local'
 experimental = true
 jobs = 8                                                            # デフォルトの並列実行数
 vfox = false
@@ -67,6 +67,7 @@ yamllint = "latest"                                        # YAML lint
 "npm:npm-check-updates" = "latest"
 "npm:textlint" = "latest"
 "npm:textlint-rule-preset-ja-technical-writing" = "latest"
+"npm:@dotenvx/dotenvx" = "latest"
 taplo = "latest"
 
 # ========================================
