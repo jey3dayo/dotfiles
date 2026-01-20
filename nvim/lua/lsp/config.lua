@@ -43,7 +43,7 @@ M.servers = {
   ruff = { installed = true, enabled = true },
   tailwindcss = { installed = true, enabled = true, autostart = "config_files" },
   taplo = { installed = true, enabled = true },
-  eslint = { installed = true, enabled = true, autostart = "config_files" },
+  eslint = { installed = true, enabled = true },
   typos_lsp = { installed = true, enabled = true },
   vimls = { installed = true, enabled = true },
   yamlls = { installed = true, enabled = true },
