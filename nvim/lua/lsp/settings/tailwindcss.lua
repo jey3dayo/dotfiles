@@ -5,7 +5,7 @@ local config_files = lsp_config.formatters.tailwindcss.config_files
 
 return {
   autostart = function()
-    return lsp_config.has_formatter_config("tailwindcss")
+    return lsp_config.has_formatter_config "tailwindcss"
   end,
   init_options = {
     includeLanguages = {
