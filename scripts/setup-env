@@ -33,7 +33,7 @@ fi
 
 # Decrypt .env to .env.local (use temp file for atomicity)
 TEMP_FILE="$ENV_LOCAL.tmp"
-if dotenvx decrypt "$ENV_FILE" --stdout > "$TEMP_FILE"; then
+if dotenvx decrypt -f "$ENV_FILE" --stdout > "$TEMP_FILE"; then
   mv "$TEMP_FILE" "$ENV_LOCAL"
   echo "✓ .env.local updated successfully"
 else
