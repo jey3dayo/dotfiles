@@ -20,6 +20,10 @@ keybind = ctrl+z=text:\x1a
 # 0x0A = Ctrl+J (Line Feed / newline)
 keybind = ctrl+j=text:\x0a
 
+# Ctrl+Enter: explicitly send newline (same as Ctrl+J)
+# This prevents Ghostty from sending escape sequences like ^[[5;13~
+keybind = ctrl+enter=text:\x0a
+
 ############################
 # Font (match WezTerm)
 ############################
