@@ -48,6 +48,8 @@ yamllint = "latest"      # YAML Linter
 
 ### 4. NPM Global Packages (Node.js グローバルパッケージ)
 
+**完全移行完了**: 全ての npm パッケージを mise で一元管理（npm/pnpm/bun グローバルには依存しない）
+
 ```toml
 [tools]
 # ユーティリティ・ツール
@@ -77,6 +79,47 @@ yamllint = "latest"      # YAML Linter
 
 # 環境変数管理
 "npm:@dotenvx/dotenvx" = "latest"
+
+# 開発ツール・Language Servers
+"npm:eslint_d" = "latest"
+"npm:typescript" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:vscode-json-languageserver" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:@typescript-eslint/eslint-plugin" = "latest"
+
+# ビルドツール
+"npm:esbuild" = "latest"
+
+# ユーティリティ
+"npm:zx" = "latest"
+
+# MCP サーバー (Model Context Protocol)
+"npm:@aikidosec/safe-chain" = "latest"
+"npm:@benborla29/mcp-server-mysql" = "latest"
+"npm:@modelcontextprotocol/server-filesystem" = "latest"
+"npm:@playwright/mcp" = "latest"
+"npm:@upstash/context7-mcp" = "latest"
+"npm:chrome-devtools-mcp" = "latest"
+"npm:exa-mcp-server" = "latest"
+"npm:o3-search-mcp" = "latest"
+
+# Claude/AI ツール
+"npm:@anthropic-ai/dxt" = "latest"
+"npm:@mariozechner/claude-bridge" = "latest"
+"npm:@sasazame/ccresume" = "latest"
+"npm:ccusage" = "latest"
+"npm:dev3000" = "latest"
+
+# クラウド・インフラ
+"npm:aws-cdk" = "latest"
+"npm:@google/clasp" = "latest"
+"npm:@google/gemini-cli" = "latest"
+
+# その他ツール
+"npm:greptile" = "latest"
+"npm:difit" = "latest"
+"npm:tuyapi" = "latest"
 ```
 
 ### 5. Cargo-based Tools (Rust CLI ユーティリティ)
@@ -104,24 +147,31 @@ opencode = "latest"              # コード検索・ナビゲーション
 yazi = "latest"                  # ターミナル ファイルマネージャー
 ```
 
-## Migration from global-package.json
+## Migration History
 
-**Before (deprecated)**: npm global packages in `global-package.json`
-**After (current)**: npm packages managed by mise with `npm:` prefix
+### Phase 1: global-package.json → mise (完了)
 
-Migration steps:
+**Before**: npm global packages in `global-package.json`
+**After**: npm packages managed by mise with `npm:` prefix
 
-1. Convert `global-package.json` dependencies to `"npm:<package-name>" = "latest"` in `mise.toml`
-2. Remove `global-package.json` file
-3. Update docs to reference mise instead of npm global install
-4. Run `mise install` to install all npm packages
+### Phase 2: npm/pnpm/bun グローバル → mise (完了)
+
+**Before**: 混在したパッケージ管理（npm グローバル 30+ パッケージ、bun グローバル 9 パッケージ）
+**After**: 完全に mise で一元管理
+
+削除実績:
+
+- npm グローバルから 2,624 パッケージを削除（MCP サーバー、開発ツール、Language Server 等）
+- bun グローバルは package.json が空で実質未使用（PATH で解決されない）
+- 維持: npm グローバルのローカルリンク（astro-my-profile, zx-scripts）のみ
 
 Benefits:
 
 - Single source of truth for all tools
 - Version pinning and reproducibility
 - Cross-platform consistency
-- No global npm pollution
+- No global npm/pnpm/bun pollution
+- Automatic installation via mise hooks
 
 ## Common Commands
 
@@ -221,17 +271,21 @@ mise doctor               # Check for issues
 
 ## Best Practices
 
-1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in `mise.toml`
-   - ❌ Never use `npm install -g` or `pip install --user`
+1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in `mise/config.toml`
+   - ❌ Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
    - ❌ Never maintain separate `global-package.json` or `requirements-global.txt`
-   - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in mise.toml
+   - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in mise/config.toml
    - Rationale: Single source of truth, reproducibility, version control
-2. **Version Pinning**: Use specific versions for project-critical tools
-3. **Latest for Development Tools**: Use "latest" for CLI tools that don't affect build
-4. **Document Breaking Changes**: Comment version pins with reason
-5. **Regular Updates**: Run `mise upgrade` weekly to stay current
-6. **Consolidation**: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, etc.)
-7. **Avoid Duplication**: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
+2. **Global Package Manager Check**: Regularly verify no duplicate packages
+   - Run `npm -g list --depth=0` - should only show local links (astro-my-profile, zx-scripts)
+   - Run `ls ~/.bun/install/global/node_modules/.bin` - should be empty or minimal
+   - If duplicates found, add to mise/config.toml and `npm uninstall -g <package>`
+3. **Version Pinning**: Use specific versions for project-critical tools
+4. **Latest for Development Tools**: Use "latest" for CLI tools that don't affect build
+5. **Document Breaking Changes**: Comment version pins with reason
+6. **Regular Updates**: Run `mise upgrade` weekly to stay current
+7. **Consolidation**: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, npm/pnpm/bun global, etc.)
+8. **Avoid Duplication**: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
 
 ## Related Documentation
 

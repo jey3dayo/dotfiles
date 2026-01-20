@@ -69,7 +69,9 @@ Sources: docs/maintenance.md.
   4. Insert alphabetically within the right section
   5. Run `brew bundle check` and `brew bundle install --no-upgrade` to validate
 - Monthly regeneration: backup current, dump to temp, review diffs, run checks, and test install with `--no-upgrade --verbose`.
-- **重複チェック**: 定期的に `npm -g list --depth=0` を実行し、mise で管理しているパッケージが npm グローバルに残っていないか確認
+- **重複チェック**: 定期的に以下のコマンドで mise で管理しているパッケージが他のパッケージマネージャーに残っていないか確認
+  - `npm -g list --depth=0` - npm グローバルはローカルリンク（astro-my-profile, zx-scripts）のみであること
+  - `bun pm ls -g` または `ls ~/.bun/install/global/node_modules/.bin` - bun グローバルは空であること
 
 ### mise management
 
@@ -78,6 +80,7 @@ Sources: docs/maintenance.md.
 - Monthly cleanup: `mise prune` to remove unused versions
 - Verification: `mise doctor` for health check, `mise ls` for installed tools
 - **重複回避**: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
+- **npm パッケージの完全移行完了**: 全ての開発ツール・MCP サーバー・Language Server は mise で一元管理（npm/pnpm/bun グローバルには依存しない）
 
 ## Backups and recovery
 

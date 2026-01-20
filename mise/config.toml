@@ -107,6 +107,47 @@ yamllint = "latest"              # YAML Linter
 # 環境変数管理
 "npm:@dotenvx/dotenvx" = "latest"  # .env ファイル管理・暗号化
 
+# 開発ツール・Language Servers
+"npm:eslint_d" = "latest"         # ESLint デーモン (エディタ統合)
+"npm:typescript" = "latest"       # TypeScript コンパイラ
+"npm:typescript-language-server" = "latest"  # TypeScript LSP
+"npm:vscode-json-languageserver" = "latest"  # JSON LSP
+"npm:vscode-langservers-extracted" = "latest"  # HTML/CSS/JSON/ESLint LSP
+"npm:@typescript-eslint/eslint-plugin" = "latest"  # TypeScript ESLint プラグイン
+
+# ビルドツール
+"npm:esbuild" = "latest"          # 高速 JavaScript/TypeScript バンドラー
+
+# ユーティリティ
+"npm:zx" = "latest"               # JavaScript シェルスクリプト
+
+# MCP サーバー (Model Context Protocol)
+"npm:@aikidosec/safe-chain" = "latest"  # MCP: セキュリティチェーン
+"npm:@benborla29/mcp-server-mysql" = "latest"  # MCP: MySQL サーバー
+"npm:@modelcontextprotocol/server-filesystem" = "latest"  # MCP: ファイルシステム
+"npm:@playwright/mcp" = "latest"  # MCP: Playwright 統合
+"npm:@upstash/context7-mcp" = "latest"  # MCP: Context7 統合
+"npm:chrome-devtools-mcp" = "latest"  # MCP: Chrome DevTools
+"npm:exa-mcp-server" = "latest"   # MCP: Exa サーバー
+"npm:o3-search-mcp" = "latest"    # MCP: O3 検索
+
+# Claude/AI ツール
+"npm:@anthropic-ai/dxt" = "latest"  # Anthropic DXT ツール
+"npm:@mariozechner/claude-bridge" = "latest"  # Claude ブリッジ
+"npm:@sasazame/ccresume" = "latest"  # Claude Code Resume
+"npm:ccusage" = "latest"          # Claude Code 使用状況トラッカー
+"npm:dev3000" = "latest"          # 開発サーバー
+
+# クラウド・インフラ
+"npm:aws-cdk" = "latest"          # AWS CDK
+"npm:@google/clasp" = "latest"    # Google Apps Script CLI
+"npm:@google/gemini-cli" = "latest"  # Google Gemini CLI
+
+# その他ツール
+"npm:greptile" = "latest"         # コード検索ツール
+"npm:difit" = "latest"            # ディフィットツール
+"npm:tuyapi" = "latest"           # Tuya API クライアント
+
 # ========================================
 # 5. Cargo-based Tools (Rust CLI ユーティリティ)
 # ========================================
