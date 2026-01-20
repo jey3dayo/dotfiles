@@ -3,6 +3,15 @@
 # プロジェクト固有の集約・mac依存タスクをここで定義
 # ========================================
 
+# タスク定義を mise/tasks/ から読み込み
+[task_config]
+includes = [
+  "mise/tasks/format.toml",
+  "mise/tasks/lint.toml",
+  "mise/tasks/test.toml",
+  "mise/tasks/integration.toml"
+]
+
 # ========================================
 # Environment Variable Management (dotenvx)
 # ========================================
@@ -38,41 +47,7 @@ run = "if command -v brew >/dev/null 2>&1; then brew bundle install --no-upgrade
 # ========================================
 # 集約タスク
 # ========================================
-
-# 集約タスク（フォーマット系まとめ）
-[tasks.format]
-description = "コードとドキュメントの自動フォーマット"
-depends = [
-  "format:biome",
-  "format:markdown",
-  "format:toml",
-  "format:yaml",
-  "format:lua",
-  "format:shell",
-]
-
-[tasks.check]
-description = "全フォーマットチェック（書き込みなし、CI向け）- 並列実行"
-depends = [
-  "format:biome:check",
-  "format:markdown:check",
-  "format:toml:check",
-  "format:yaml:check",
-  "format:lua:check",
-  "format:shell:check",
-]
-
-# 集約タスク（Lintまとめ）
-[tasks.lint]
-description = "全体の品質チェック（GitHub Actions互換）- 並列実行"
-depends = [
-  "lint:biome",
-  "lint:markdown",
-  "lint:toml",
-  "lint:yaml",
-  "lint:lua",
-  "lint:shell",
-]
+# format, lint, check タスクは mise/tasks/integration.toml で定義されています
 
 # 更新タスク（mac/local 依存）
 [tasks.update]

@@ -1,6 +1,6 @@
 # 🚀 Setup Guide
 
-**最終更新**: 2025-12-18
+**最終更新**: 2026-01-20
 **対象**: 開発者・初心者
 **タグ**: `category/guide`, `category/configuration`, `layer/core`, `environment/macos`, `audience/beginner`
 
@@ -69,6 +69,39 @@ If you prefer manual installation:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
+## Package Management Philosophy
+
+このプロジェクトでは **mise** を中心としたパッケージ管理を採用しています:
+
+### 原則
+
+- **mise 優先**: 全ての開発ツール・フォーマッター・Linter・Language Server は mise で一元管理
+- **Homebrew**: システム依存関係と GUI アプリケーションのみ
+- **npm/pnpm/bun グローバルは使用しない**: mise の `npm:` プレフィックスで管理
+
+### mise で管理するもの
+
+- 言語ランタイム（Go, Node.js, Python）
+- フォーマッター・Linter（biome, prettier, stylua, shellcheck 等）
+- 開発ツール（TypeScript, ESLint, esbuild 等）
+- MCP サーバー（Model Context Protocol）
+- CLI ツール（aws-cdk, gh, jq 等）
+
+### Homebrew で管理するもの
+
+- Neovim とその依存関係（lua, luajit, tree-sitter 等）
+- システムレベルのライブラリ
+- GUI アプリケーション（cask）
+
+### 重複回避ルール
+
+1. **新しいツールを追加する前**: `mise registry` で検索し、mise で管理できるか確認
+2. **定期的な重複チェック**:
+   - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
+   - `brew list --formula` - mise 管理ツールが含まれていないこと
+
+詳細は `.claude/rules/tools/mise.md` と `.claude/rules/workflows-and-maintenance.md` を参照。
+
 ## Verification
 
 ```bash
@@ -76,6 +109,7 @@ zsh-help                # Verify zsh configuration is loaded
 zsh-help tools          # Check installed tools
 nvim                    # First run installs plugins
 git config user.name    # Verify your name appears
+mise ls                 # List all mise-managed tools
 ```
 
 ## Environment-Specific Setup

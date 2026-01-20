@@ -1,0 +1,160 @@
+# ========================================
+# Format Tasks
+# ========================================
+# フォーマッター実行タスク（自動修正）
+# 各タスクは環境変数で対象ファイルを限定可能
+
+["format:biome"]
+description = "JS/TS/JSON ファイルをフォーマット（BIOME_FILES で対象を限定可能）"
+run = """
+if [ -n "${BIOME_FILES:-}" ]; then
+  biome format --write ${BIOME_FILES}
+else
+  biome format --write .
+fi
+"""
+
+["format:biome:check"]
+description = "JS/TS/JSON ファイルのフォーマットチェック（書き込みなし、BIOME_FILES で対象を限定可能）"
+run = """
+if [ -n "${BIOME_FILES:-}" ]; then
+  biome check --formatter-enabled=true --linter-enabled=false ${BIOME_FILES}
+else
+  biome check --formatter-enabled=true --linter-enabled=false .
+fi
+"""
+
+["format:prettier"]
+description = "Prettier でファイルをフォーマット（PRETTIER_FILES で対象を限定可能）"
+run = """
+if [ -n "${PRETTIER_FILES:-}" ]; then
+  prettier --write --ignore-unknown ${PRETTIER_FILES}
+else
+  prettier --write --ignore-unknown .
+fi
+"""
+
+["format:prettier:check"]
+description = "Prettier フォーマットチェック（書き込みなし、PRETTIER_FILES で対象を限定可能）"
+run = """
+if [ -n "${PRETTIER_FILES:-}" ]; then
+  prettier --check --ignore-unknown ${PRETTIER_FILES}
+else
+  prettier --check --ignore-unknown .
+fi
+"""
+
+["format:markdown"]
+description = "Markdown ファイルをフォーマット"
+run = [
+  "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
+  "fd -e md -X prettier --write",
+]
+
+["format:markdown:check"]
+description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
+run = "fd -e md -X prettier --check"
+
+["format:yaml"]
+description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"
+run = """
+if [ -n "${YAML_FILES:-}" ]; then
+  prettier --write ${YAML_FILES}
+else
+  fd -e yml -e yaml -X prettier --write
+fi
+"""
+
+["format:yaml:check"]
+description = "YAML ファイルのフォーマットチェック（書き込みなし、YAML_FILES で対象を限定可能）"
+run = """
+if [ -n "${YAML_FILES:-}" ]; then
+  prettier --check ${YAML_FILES}
+else
+  fd -e yml -e yaml -X prettier --check
+fi
+"""
+
+["format:lua"]
+description = "Lua ファイルをフォーマット（LUA_FILES で対象を限定可能）"
+run = """
+if [ -n "${LUA_FILES:-}" ]; then
+  stylua ${LUA_FILES}
+else
+  stylua .
+fi
+"""
+
+["format:lua:check"]
+description = "Lua ファイルのフォーマットチェック（書き込みなし、LUA_FILES で対象を限定可能）"
+run = """
+if [ -n "${LUA_FILES:-}" ]; then
+  stylua --check ${LUA_FILES}
+else
+  stylua --check .
+fi
+"""
+
+["format:shell"]
+description = "シェルスクリプトをフォーマット（SH_FILES で対象を限定可能）"
+run = """
+if [ -n "${SH_FILES:-}" ]; then
+  shfmt -w -i 2 -ci -bn ${SH_FILES}
+else
+  fd -e sh -X shfmt -w -i 2 -ci -bn
+fi
+"""
+
+["format:shell:check"]
+description = "シェルスクリプトのフォーマットチェック（書き込みなし、SH_FILES で対象を限定可能）"
+run = """
+if [ -n "${SH_FILES:-}" ]; then
+  shfmt -d -i 2 -ci -bn ${SH_FILES}
+else
+  fd -e sh -X shfmt -d -i 2 -ci -bn
+fi
+"""
+
+["format:toml"]
+description = "TOML ファイルをフォーマット（TOML_FILES で対象を限定可能）"
+run = """
+if [ -n "${TOML_FILES:-}" ]; then
+  taplo format ${TOML_FILES}
+else
+  taplo format .
+fi
+"""
+
+["format:toml:check"]
+description = "TOML ファイルのフォーマットチェック（書き込みなし、TOML_FILES で対象を限定可能）"
+run = """
+if [ -n "${TOML_FILES:-}" ]; then
+  taplo format --check ${TOML_FILES}
+else
+  taplo format --check .
+fi
+"""
+
+["format:python"]
+description = "Python ファイルをフォーマット（PY_FILES で対象を限定可能）"
+run = """
+if [ -n "${PY_FILES:-}" ]; then
+  uvx ruff format ${PY_FILES}
+else
+  uvx ruff format .
+fi
+"""
+
+["format:python:check"]
+description = "Python フォーマットチェック（書き込みなし、PY_FILES で対象を限定可能）"
+run = """
+if [ -n "${PY_FILES:-}" ]; then
+  uvx ruff format --check ${PY_FILES}
+else
+  uvx ruff format --check .
+fi
+"""
+
+["format:docs"]
+description = "ドキュメントの完全な検証とフォーマット"
+depends = ["format:markdown", "lint:links", "lint:yaml"]
