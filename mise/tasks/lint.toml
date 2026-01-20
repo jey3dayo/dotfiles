@@ -1,0 +1,109 @@
+# ========================================
+# Lint Tasks
+# ========================================
+# コード品質チェックタスク（チェックのみ、修正なし）
+# 各タスクは環境変数で対象ファイルを限定可能
+
+["lint:docs"]
+description = "ドキュメント系ファイル（MD/YAML/JSON/Links）の統合Lint"
+depends = ["lint:markdown", "lint:yaml", "lint:biome", "lint:links"]
+
+["lint:biome"]
+description = "JS/TS/JSON ファイルをチェック（BIOME_FILES で対象を限定可能）"
+run = """
+if [ -n "${BIOME_FILES:-}" ]; then
+  biome check ${BIOME_FILES}
+else
+  biome check .
+fi
+"""
+
+["lint:markdown"]
+description = "Markdown ファイルをチェック"
+run = [
+  "markdownlint-cli2 \"${MD_GLOB}\" ${MD_EXCLUDES}",
+  "fd -e md -X prettier --check",
+]
+
+["lint:toml"]
+description = "TOML ファイルをチェック（TOML_FILES で対象を限定可能）"
+run = """
+if [ -n "${TOML_FILES:-}" ]; then
+  taplo format --check ${TOML_FILES}
+else
+  taplo format --check .
+fi
+"""
+
+["lint:yaml"]
+description = "YAML ファイルをチェック（prettier + yamllint、YAML_FILES で対象を限定可能）"
+run = """
+if [ -n "${YAML_FILES:-}" ]; then
+  prettier --check ${YAML_FILES}
+  # yamllint は YAML_FILES 指定時も .github/ ディレクトリをチェック
+  yamllint -f parsable .github/
+else
+  fd -e yml -e yaml -X prettier --check
+  yamllint -f parsable .github/
+fi
+"""
+
+["lint:python"]
+description = "Python ファイルをチェック（PY_FILES で対象を限定可能）"
+run = """
+if [ -n "${PY_FILES:-}" ]; then
+  uvx ruff check ${PY_FILES}
+else
+  uvx ruff check .
+fi
+"""
+
+["lint:shell"]
+description = "シェルスクリプト (.sh/.zsh) をチェック（SH_FILES で対象を限定可能）"
+run = """
+if [ -n "${SH_FILES:-}" ]; then
+  shfmt -d -i 2 -ci -bn ${SH_FILES}
+  shellcheck ${SH_FILES}
+else
+  fd -e sh -X shfmt -d -i 2 -ci -bn
+  fd -e sh -X shellcheck
+  fd --hidden -e zsh -X zsh -n
+fi
+"""
+
+["lint:dockerfile"]
+description = "Dockerfile をチェック（hadolint、--no-color オプション付き）"
+run = """
+if [ -n "${DOCKERFILE_FILES:-}" ]; then
+  hadolint --no-color ${DOCKERFILE_FILES}
+else
+  fd -t f -e dockerfile -X hadolint --no-color
+  fd -t f --glob 'Dockerfile*' -X hadolint --no-color
+fi
+"""
+
+["lint:links"]
+description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json -q"
+
+["lint:links:verbose"]
+description = "Markdown リンクチェック（詳細モード）"
+run = "fd -e md -x markdown-link-check --config .markdown-link-check.json --verbose"
+
+["lint:lua"]
+description = "Lua ファイルをチェック"
+depends = ["lint:lua:stylua", "lint:lua:luacheck"]
+
+["lint:lua:stylua"]
+description = "Stylua でコードスタイルをチェック（LUA_FILES で対象を限定可能）"
+run = """
+if [ -n "${LUA_FILES:-}" ]; then
+  stylua --check ${LUA_FILES}
+else
+  stylua --check .
+fi
+"""
+
+["lint:lua:luacheck"]
+description = "luacheck を実行（利用可能な場合）"
+run = "if command -v luacheck >/dev/null 2>&1; then luacheck -q .; fi"

@@ -1,0 +1,29 @@
+# ========================================
+# Test Tasks
+# ========================================
+# テスト実行タスク
+
+["test:lua"]
+description = "Lua テストを実行(busted)"
+run = """
+# Add ~/.luarocks/bin to PATH if not already present
+export PATH="${HOME}/.luarocks/bin:${PATH}"
+busted --verbose spec/ nvim/spec/
+"""
+
+["test:lua:watch"]
+description = "Lua テストを監視モードで実行(ファイル変更時に自動再実行)"
+run = """
+export PATH="${HOME}/.luarocks/bin:${PATH}"
+if command -v fswatch >/dev/null 2>&1; then
+  echo "Watching spec/, nvim/spec/, and nvim/lua/ for changes..."
+  fswatch -o spec/ nvim/spec/ nvim/lua/ wezterm/ | while read; do
+    clear
+    echo "=== Running tests at $(date) ==="
+    busted --verbose spec/ nvim/spec/ || true
+  done
+else
+  echo "⚠️  fswatch not installed. Install with: brew install fswatch"
+  exit 1
+fi
+"""
