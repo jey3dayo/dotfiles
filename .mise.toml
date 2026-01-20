@@ -13,11 +13,11 @@ run = "scripts/setup-env"
 
 [tasks."env:encrypt"]
 description = "環境変数ファイルを暗号化"
-run = "dotenvx encrypt -f ~/.config/.env"
+run = "dotenvx encrypt -f ${XDG_CONFIG_HOME:-$HOME/.config}/.env"
 
 [tasks."env:decrypt"]
 description = "環境変数ファイルを復号化"
-run = "dotenvx decrypt -f ~/.config/.env"
+run = "DOTENV_PRIVATE_KEY_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys dotenvx decrypt -f ${XDG_CONFIG_HOME:-$HOME/.config}/.env"
 
 [hooks]
 # Decrypt .env to .env.local on directory enter
