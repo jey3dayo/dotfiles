@@ -91,8 +91,10 @@ jobs:
           restore-keys: |
             luarocks-${{ runner.os }}-
 
-      - name: Install luacheck
-        run: luarocks install --local luacheck
+      - name: Install LuaRocks packages
+        run: |
+          luarocks install --local luacheck
+          luarocks install --local busted
 
       - name: Add LuaRocks bin to PATH
         run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH

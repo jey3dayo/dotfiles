@@ -133,7 +133,7 @@ end
 function M.split_from_url(dir)
   if type(dir) ~= "string" then return "", "" end
   local hostname = ""
-  local path = ""
+  local path
 
   local scheme, rest = dir:match "^([%w%+%.%-]+)://(.+)$"
   local uri_path = rest or dir

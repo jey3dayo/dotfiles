@@ -96,7 +96,7 @@ run = [
 # CI/CD
 [tasks.ci]
 description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
-depends = ["format", "lint:docs", "lint:links"]
+depends = ["format", "lint:docs", "lint:links", "test:lua"]
 
 [tasks."ci:install"]
 description = "CI に必要な追加ツールをインストール"

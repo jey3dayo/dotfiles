@@ -1,28 +1,35 @@
+-- .luacheckrc
+-- Luacheck configuration for Neovim Lua files
+
+-- Global vim namespace
 globals = {
   "vim",
-  "Safe_require",
-  "Keymap",
-  "I_Keymap",
-  "V_Keymap",
-  "X_Keymap",
-  "O_Keymap",
-  "T_Keymap",
-  "autocmd",
-  "augroup",
-  "user_command",
 }
 
-exclude_files = {
-  ".luarocks/**",
+-- Read-only globals (for busted testing framework)
+read_globals = {
+  "describe",
+  "it",
+  "before_each",
+  "after_each",
+  "pending",
+  "assert",
+  "spy",
+  "mock",
+  "stub",
 }
 
--- Suppress warnings for unused arguments and variables in Neovim config
+-- Ignore specific warnings
 ignore = {
   "211", -- Unused local variable
   "212", -- Unused argument
   "213", -- Unused loop variable
-  "311", -- Value assigned to a local variable is unused
-  "431", -- Shadowing upvalue
+  "631", -- Line is too long
 }
 
-max_line_length = false
+-- Exclude directories
+exclude_files = {
+  "lua/plugins/",
+  ".luarocks/",
+  ".git/",
+}
