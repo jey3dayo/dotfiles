@@ -508,6 +508,11 @@ return {
       priority = 4096,
       color_cache_size = 1000,
       debounce_delay = 50,
+      -- Fallback colors for transparent terminals
+      fallback_for_transparency = {
+        bg = "#16161d", -- kanagawa-wave dark background
+        fg = "#dcd7ba", -- kanagawa-wave foreground
+      },
     },
     config = function(_, opts)
       local undo_glow = require "undo-glow"
@@ -527,6 +532,15 @@ return {
         undo_glow.paste_above()
         vim.cmd.normal { args = { "`]" }, bang = true }
       end, { desc = "Paste above with highlight" })
+
+      -- TextYankPost autocmd integration (undo-glow README recommended)
+      vim.api.nvim_create_autocmd("TextYankPost", {
+        group = vim.api.nvim_create_augroup("UndoGlowYank", { clear = true }),
+        desc = "Highlight yanked text with undo-glow animation",
+        callback = function()
+          undo_glow.yank()
+        end,
+      })
     end,
   },
 

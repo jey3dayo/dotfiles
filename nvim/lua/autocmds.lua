@@ -72,17 +72,6 @@ define_autocmds {
     },
   },
   {
-    event = "TextYankPost",
-    opts = {
-      pattern = "*",
-      callback = function()
-        local on_yank = (vim.hl or vim.highlight).on_yank
-        on_yank { timeout = 300 }
-      end,
-      desc = "Highlight on yank",
-    },
-  },
-  {
     event = "ModeChanged",
     opts = {
       pattern = "*:[vV\x16]*",
