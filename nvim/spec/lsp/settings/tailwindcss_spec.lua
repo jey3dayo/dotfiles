@@ -71,10 +71,7 @@ describe("lsp.settings.tailwindcss", function()
   end)
 
   it("should have correct filetypes", function()
-    assert.same(
-      { "html", "css", "javascriptreact", "typescriptreact", "vue" },
-      tailwindcss_config.filetypes
-    )
+    assert.same({ "html", "css", "javascriptreact", "typescriptreact", "vue" }, tailwindcss_config.filetypes)
   end)
 
   it("should have autostart function", function()

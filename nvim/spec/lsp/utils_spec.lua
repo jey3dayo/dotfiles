@@ -71,7 +71,7 @@ describe("lsp.utils", function()
       -- Reset mason-registry mock
       package.loaded["mason-registry"] = nil
 
-      local result = lsp_utils.get_mason_package_path("typescript-language-server")
+      local result = lsp_utils.get_mason_package_path "typescript-language-server"
       assert.is_nil(result)
     end)
 

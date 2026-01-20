@@ -55,9 +55,7 @@ _G.vim = {
     local function merge(t1, t2)
       for k, v in pairs(t2) do
         if type(v) == "table" and type(t1[k]) == "table" then
-          if behavior == "force" then
-            t1[k] = merge(t1[k], v)
-          end
+          if behavior == "force" then t1[k] = merge(t1[k], v) end
         else
           t1[k] = v
         end

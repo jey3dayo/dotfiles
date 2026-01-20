@@ -167,7 +167,7 @@ describe("lsp.settings_factory", function()
 
   describe("create_root_dir", function()
     it("should create root_dir function with config files", function()
-      local root_dir = factory.create_root_dir({ "config.js" })
+      local root_dir = factory.create_root_dir { "config.js" }
 
       assert.is_function(root_dir)
       assert.equals("/test/root", root_dir())
