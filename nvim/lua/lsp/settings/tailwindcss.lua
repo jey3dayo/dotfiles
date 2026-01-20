@@ -3,16 +3,10 @@ local lsp_utils = require "lsp.utils"
 local lsp_config = require "lsp.config"
 local config_files = lsp_config.formatters.tailwindcss.config_files
 
--- Tailwind設定ファイルの存在チェック
-local function has_tailwind_config()
-  for _, file in ipairs(config_files) do
-    if vim.fn.filereadable(vim.fn.getcwd() .. "/" .. file) == 1 then return true end
-  end
-  return false
-end
-
 return {
-  autostart = has_tailwind_config,
+  autostart = function()
+    return lsp_config.has_formatter_config("tailwindcss")
+  end,
   init_options = {
     includeLanguages = {
       eruby = "erb",

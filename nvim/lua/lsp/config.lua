@@ -41,9 +41,9 @@ M.servers = {
   prismals = { installed = true, enabled = true },
   pylsp = { installed = true, enabled = true },
   ruff = { installed = true, enabled = true },
-  tailwindcss = { installed = true, enabled = true },
+  tailwindcss = { installed = true, enabled = true, autostart = "config_files" },
   taplo = { installed = true, enabled = true },
-  eslint = { installed = true, enabled = true },
+  eslint = { installed = true, enabled = true, autostart = "config_files" },
   typos_lsp = { installed = true, enabled = true },
   vimls = { installed = true, enabled = true },
   yamlls = { installed = true, enabled = true },
@@ -70,6 +70,19 @@ end
 -- Backward compatibility aliases
 M.installed_servers = M.get_installed_servers()
 M.enabled_servers = M.get_enabled_servers()
+
+--- Check if config files exist for a formatter
+--- Delegates to core.utils.has_config_files for consistent file detection
+--- @param formatter_name string The formatter name (e.g., "tailwindcss", "eslint")
+--- @param dirname? string Optional directory to search from (defaults to cwd)
+--- @return boolean True if any config file exists
+function M.has_formatter_config(formatter_name, dirname)
+  local formatter = M.formatters[formatter_name]
+  if not formatter or not formatter.config_files then return false end
+
+  local core_utils = require "core.utils"
+  return core_utils.has_config_files(formatter.config_files, dirname)
+end
 
 M.installed_tree_sitter = {
   "astro",
