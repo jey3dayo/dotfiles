@@ -11,38 +11,97 @@ Purpose: unified tool version management with mise-en-place. Scope: config struc
 
 ## Tool Categories
 
-### Runtimes (語言)
+mise/config.toml は以下の 6 カテゴリで構成されています:
+
+### 1. Language Runtimes (言語ランタイム - 開発用)
 
 ```toml
 [tools]
-node = "latest"          # Node.js runtime
-python = "3.12"          # Python with specific version
-ruby = "latest"
-go = "latest"
-rust = "latest"
-lua = "5.1.5"            # Specific version for compatibility
+go = "1.25.5"            # Go ランタイム
+node = "24"              # Node.js ランタイム (開発用)
+python = "3.14"          # Python ランタイム (開発用)
+# lua/luajit は Homebrew で管理 (Neovim 依存関係のため)
 ```
 
-### CLI Tools (命令行工具)
+### 2. Package Managers (パッケージマネージャー)
 
 ```toml
 [tools]
-ghq = "latest"
-github-cli = "latest"
-shellcheck = "latest"
-yamllint = "latest"
-taplo = "latest"         # TOML formatter/linter
+"pipx:uv" = "latest"     # Python: 高速パッケージマネージャー
+bun = "latest"           # JavaScript ランタイム + パッケージマネージャー
 ```
 
-### NPM Packages (npm全局包)
+### 3. Formatters and Linters (フォーマッター・Linter - 統一管理)
 
 ```toml
 [tools]
-"npm:@fsouza/prettierd" = "latest"
-"npm:markdownlint-cli2" = "latest"
-"npm:markdown-link-check" = "latest"
-"npm:neovim" = "latest"
+actionlint = "latest"    # GitHub Actions ワークフロー Linter
+biome = "latest"         # JavaScript/TypeScript/JSON フォーマッター + Linter
+hadolint = "latest"      # Dockerfile Linter
+prettier = "latest"      # マルチ言語対応フォーマッター
+shellcheck = "latest"    # Shell スクリプト Linter
+shfmt = "latest"         # Shell スクリプト フォーマッター
+stylua = "latest"        # Lua フォーマッター
+taplo = "latest"         # TOML フォーマッター + Linter
+yamllint = "latest"      # YAML Linter
+```
+
+### 4. NPM Global Packages (Node.js グローバルパッケージ)
+
+```toml
+[tools]
+# ユーティリティ・ツール
+"npm:@antfu/ni" = "latest"
+"npm:corepack" = "latest"
 "npm:husky" = "latest"
+"npm:npm" = "latest"
+"npm:npm-check-updates" = "latest"
+
+# 開発・エディタ
+"npm:@fsouza/prettierd" = "latest"
+"npm:neovim" = "latest"
+
+# プロトコルバッファ・RPC
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"
+
+# AI・コミット支援
+"npm:@openai/codex" = "latest"
+"npm:aicommits" = "latest"
+
+# ドキュメント・Lint
+"npm:markdown-link-check" = "latest"
+"npm:markdownlint-cli2" = "latest"
+"npm:textlint" = "latest"
+"npm:textlint-rule-preset-ja-technical-writing" = "latest"
+
+# 環境変数管理
+"npm:@dotenvx/dotenvx" = "latest"
+```
+
+### 5. Cargo-based Tools (Rust CLI ユーティリティ)
+
+```toml
+[tools]
+"cargo:bandwhich" = "latest"     # ネットワーク帯域幅モニタリング
+"cargo:needle-cli" = "latest"    # セマンティックコード検索
+"cargo:similarity-ts" = "latest" # TypeScript/JavaScript コード類似度分析
+"cargo:wrkflw" = "latest"        # GitHub Actions ワークフロー実行
+```
+
+注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
+
+### 6. CLI Tools (コマンドラインユーティリティ)
+
+```toml
+[tools]
+aws-cli = "latest"               # AWS コマンドラインツール
+eza = "latest"                   # ls の Rust 実装
+fd = "latest"                    # find の高速 Rust 実装
+"github:cli/cli" = "latest"      # GitHub CLI
+jq = "latest"                    # JSON クエリ・パーサー
+opencode = "latest"              # コード検索・ナビゲーション
+yazi = "latest"                  # ターミナル ファイルマネージャー
 ```
 
 ## Migration from global-package.json
@@ -136,6 +195,30 @@ mise doctor               # Check for issues
 - To restore: `git checkout mise/config.toml && mise install`
 - Version history via git allows rollback
 
+## mise と Homebrew の使い分け
+
+### mise で管理するツール
+
+- **全ての開発ツール**: フォーマッター、Linter、CLI ツール
+- **全ての npm/pipx パッケージ**: "npm:" または "pipx:" プレフィックス付き
+- **開発用の言語ランタイム**: Node.js, Python, Go
+- **理由**: バージョン固定、プロジェクト別オーバーライド、再現性
+
+### Homebrew で管理するツール
+
+- **Neovim とその依存関係**: lua, luajit, luarocks, libuv, tree-sitter 等
+- **システムレベルのライブラリ**: 複数のツールから参照されるライブラリ
+- **GUI アプリケーション**: cask で管理
+- **システムツール用の言語ランタイム**: 必要な場合のみ (python@3.11, python@3.12 等)
+- **理由**: システム安定性、ビルド時間削減、OS 統合
+
+### ハイブリッド運用パターン
+
+- **Node.js**: Homebrew 版 (システム依存関係用) + mise 版 (開発用)
+- **Python**: Homebrew 版 (システムツール用) + mise 版 (開発用)
+- **Rust**: Homebrew 版 (rust-analyzer と共に) のみ使用
+- **Lua**: Homebrew 版 (Neovim 依存関係) のみ使用
+
 ## Best Practices
 
 1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in `mise.toml`
@@ -148,6 +231,7 @@ mise doctor               # Check for issues
 4. **Document Breaking Changes**: Comment version pins with reason
 5. **Regular Updates**: Run `mise upgrade` weekly to stay current
 6. **Consolidation**: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, etc.)
+7. **Avoid Duplication**: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
 
 ## Related Documentation
 

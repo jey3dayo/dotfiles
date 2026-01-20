@@ -34,53 +34,98 @@ MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
 # PRETTIER_FILES = "" # Prettier 対象ファイル
 # YAML_FILES = ""    # YAML ファイル
 
+# ========================================
+# ツール定義 (Tools)
+# ========================================
+# mise で管理する全ツールを定義
+# カテゴリ: 1) Runtimes, 2) Package Managers, 3) Formatters/Linters,
+#          4) NPM Packages, 5) Cargo Tools, 6) CLI Tools
+
 [tools]
-actionlint = "latest" # GitHub Actions workflow lint
-biome = "latest"
-fd = "latest"
-go = "1.25.5"
-node = "24"
-python = "3.14"
-"pipx:uv" = "latest"
-# FIXME: Temporarily disabled due to CI failures - revisit when stable
-# "pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
-prettier = "latest"
-stylua = "latest"
-shfmt = "latest"
-shellcheck = "latest"
+# ========================================
+# 1. Language Runtimes (言語ランタイム - 開発用)
+# ========================================
+# 注: システム依存関係用の Node.js/Python は Homebrew で管理
+go = "1.25.5"                    # Go ランタイム
+node = "24"                      # Node.js ランタイム (開発用)
+python = "3.14"                  # Python ランタイム (開発用)
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
-# lua = "5.1.5"             # LuaRocks/Neovim require Lua 5.1
-# luajit = "latest"
-yamllint = "latest"                                        # YAML lint
-"npm:@antfu/ni" = "latest"
-"npm:@bufbuild/protoc-gen-es" = "latest"
-"npm:@connectrpc/protoc-gen-connect-es" = "latest"
-"npm:@fsouza/prettierd" = "latest"
-"npm:@openai/codex" = "latest"
-"npm:aicommits" = "latest"
-"npm:corepack" = "latest"
-"npm:husky" = "latest"
-"npm:markdown-link-check" = "latest"
-"npm:markdownlint-cli2" = "latest"
-"npm:neovim" = "latest"
-"npm:npm" = "latest"
-"npm:npm-check-updates" = "latest"
-"npm:textlint" = "latest"
-"npm:textlint-rule-preset-ja-technical-writing" = "latest"
-"npm:@dotenvx/dotenvx" = "latest"
-taplo = "latest"
+# lua = "5.1.5"                  # LuaRocks/Neovim 互換版 (Homebrew で管理推奨)
+# luajit = "latest"              # LuaJIT (Homebrew で管理推奨)
 
 # ========================================
-# Cargo-based tools (Rust CLI utilities)
+# 2. Package Managers (パッケージマネージャー)
 # ========================================
-# Usage: mise install to install all tools
-# Syntax: "cargo:<crate-name>" = "version"
-# Note: bat, ripgrep, fd, eza, hexyl, zoxide, typos-lsp are managed by Homebrew (see Brewfile)
-"cargo:needle-cli" = "latest"    # Semantic code search
-"cargo:similarity-ts" = "latest" # TypeScript/JavaScript code similarity analyzer
-"cargo:wrkflw" = "latest"        # GitHub Actions workflow runner
-"cargo:bandwhich" = "latest"     # Network bandwidth monitor
-opencode = "latest"
+"pipx:uv" = "latest"             # Python: 高速パッケージマネージャー
+bun = "latest"                   # JavaScript ランタイム + パッケージマネージャー
+
+# FIXME: Temporarily disabled due to CI failures - revisit when stable
+# "pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
+
+# ========================================
+# 3. Formatters and Linters (フォーマッター・Linter - 統一管理)
+# ========================================
+actionlint = "latest"            # GitHub Actions ワークフロー Linter
+biome = "latest"                 # JavaScript/TypeScript/JSON フォーマッター + Linter
+hadolint = "latest"              # Dockerfile Linter
+prettier = "latest"              # マルチ言語対応フォーマッター
+shellcheck = "latest"            # Shell スクリプト Linter
+shfmt = "latest"                 # Shell スクリプト フォーマッター
+stylua = "latest"                # Lua フォーマッター
+taplo = "latest"                 # TOML フォーマッター + Linter
+yamllint = "latest"              # YAML Linter
+
+# ========================================
+# 4. NPM Global Packages (Node.js グローバルパッケージ)
+# ========================================
+
+# ユーティリティ・ツール
+"npm:@antfu/ni" = "latest"       # 統一パッケージマネージャーインターフェース
+"npm:corepack" = "latest"        # 複数のパッケージマネージャー管理
+"npm:husky" = "latest"           # Git hooks フレームワーク
+"npm:npm" = "latest"             # npm 本体
+"npm:npm-check-updates" = "latest"  # npm 依存関係の更新チェック
+
+# 開発・エディタ
+"npm:@fsouza/prettierd" = "latest"  # Prettier デーモン (エディタ統合)
+"npm:neovim" = "latest"          # Neovim Node.js クライアント
+
+# プロトコルバッファ・RPC
+"npm:@bufbuild/protoc-gen-es" = "latest"  # Protobuf: ECMAScript コード生成
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"  # Connect: ECMAScript RPC コード生成
+
+# AI・コミット支援
+"npm:@openai/codex" = "latest"   # OpenAI Codex SDK
+"npm:aicommits" = "latest"       # AI による自動コミットメッセージ生成
+
+# ドキュメント・Lint
+"npm:markdown-link-check" = "latest"  # Markdown リンク検証
+"npm:markdownlint-cli2" = "latest"    # Markdown Linter
+"npm:textlint" = "latest"        # 日本語テキスト Linter
+"npm:textlint-rule-preset-ja-technical-writing" = "latest"  # 日本語技術文章ルール
+
+# 環境変数管理
+"npm:@dotenvx/dotenvx" = "latest"  # .env ファイル管理・暗号化
+
+# ========================================
+# 5. Cargo-based Tools (Rust CLI ユーティリティ)
+# ========================================
+# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
+"cargo:bandwhich" = "latest"     # ネットワーク帯域幅モニタリング
+"cargo:needle-cli" = "latest"    # セマンティックコード検索
+"cargo:similarity-ts" = "latest" # TypeScript/JavaScript コード類似度分析
+"cargo:wrkflw" = "latest"        # GitHub Actions ワークフロー実行
+
+# ========================================
+# 6. CLI Tools (コマンドラインユーティリティ)
+# ========================================
+aws-cli = "latest"               # AWS コマンドラインツール
+eza = "latest"                   # ls の Rust 実装 (モダン出力)
+fd = "latest"                    # find の高速 Rust 実装
+"github:cli/cli" = "latest"      # GitHub CLI
+jq = "latest"                    # JSON クエリ・パーサー
+opencode = "latest"              # コード検索・ナビゲーション
+yazi = "latest"                  # ターミナル ファイルマネージャー
 
 [tasks."format:biome"]
 description = "JS/TS/JSON ファイルをフォーマット（BIOME_FILES で対象を限定可能）"
