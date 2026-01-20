@@ -132,7 +132,7 @@ yamllint = "latest"      # YAML Linter
 "cargo:wrkflw" = "latest"        # GitHub Actions ワークフロー実行
 ```
 
-注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
+注: bat, ripgrep, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
 
 ### 6. CLI Tools (コマンドラインユーティリティ)
 
