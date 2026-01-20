@@ -383,14 +383,7 @@ return {
     event = "VeryLazy",
     keys = {
       { "t", mode = { "n", "x", "o" }, false },
-      {
-        "s",
-        mode = { "n", "x", "o" },
-        function()
-          require("flash").jump()
-        end,
-        desc = "Flash",
-      },
+      -- Note: 's' key is managed by undo-glow.flash_jump() for highlight integration
       {
         "S",
         mode = { "n", "x", "o" },
@@ -508,6 +501,11 @@ return {
       priority = 4096,
       color_cache_size = 1000,
       debounce_delay = 50,
+      -- Fallback colors for transparent terminals
+      fallback_for_transparency = {
+        bg = "#16161d", -- kanagawa-wave dark background
+        fg = "#dcd7ba", -- kanagawa-wave foreground
+      },
     },
     config = function(_, opts)
       local undo_glow = require "undo-glow"
@@ -527,7 +525,61 @@ return {
         undo_glow.paste_above()
         vim.cmd.normal { args = { "`]" }, bang = true }
       end, { desc = "Paste above with highlight" })
+
+      -- TextYankPost autocmd integration (undo-glow README recommended)
+      vim.api.nvim_create_autocmd("TextYankPost", {
+        group = vim.api.nvim_create_augroup("UndoGlowYank", { clear = true }),
+        desc = "Highlight yanked text with undo-glow animation",
+        callback = function()
+          undo_glow.yank()
+        end,
+      })
+
+      -- Flash.nvim integration: highlight cursor after jumping
+      vim.keymap.set({ "n", "x", "o" }, "s", function()
+        require("undo-glow").flash_jump()
+      end, { desc = "Flash jump with highlight" })
     end,
+  },
+
+  -- Yank history and register management
+  {
+    "gbprod/yanky.nvim",
+    event = "VeryLazy",
+    dependencies = { "kkharji/sqlite.lua" }, -- optional: persistence
+    opts = {
+      ring = {
+        history_length = 100,
+        storage = "memory", -- or "sqlite" for persistence
+        sync_with_numbered_registers = true,
+        cancel_event = "update",
+      },
+      picker = {
+        select = {
+          action = nil, -- telescope integration can be added later
+        },
+      },
+      system_clipboard = {
+        sync_with_ring = true,
+      },
+      highlight = {
+        on_put = true,
+        on_yank = true,
+        timer = 300,
+      },
+      preserve_cursor_position = {
+        enabled = true,
+      },
+    },
+    keys = {
+      -- Yank history navigation
+      { "<leader>p", function() require("yanky").put("p", true) end, desc = "Put with yanky" },
+      { "<leader>P", function() require("yanky").put("P", true) end, desc = "Put before with yanky" },
+      { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history" },
+      { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle backward through yank history" },
+      { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after with filter" },
+      { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before with filter" },
+    },
   },
 
   -- Text operators

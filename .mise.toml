@@ -4,6 +4,26 @@
 # ========================================
 
 # ========================================
+# Environment Variable Management (dotenvx)
+# ========================================
+
+[tasks."setup-env"]
+description = ".env を .env.local に復号化（mise hooks から自動実行）"
+run = "scripts/setup-env"
+
+[tasks."env:encrypt"]
+description = "環境変数ファイルを暗号化"
+run = "dotenvx encrypt -f ${XDG_CONFIG_HOME:-$HOME/.config}/.env"
+
+[tasks."env:decrypt"]
+description = "環境変数ファイルを復号化"
+run = "DOTENV_PRIVATE_KEY_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys dotenvx decrypt -f ${XDG_CONFIG_HOME:-$HOME/.config}/.env"
+
+[hooks]
+# Decrypt .env to .env.local on directory enter
+enter = 'mise run setup-env || true'
+
+# ========================================
 # Brewfile 管理
 # ========================================
 

@@ -26,7 +26,12 @@ build/
 log/
 doc/tags
 doc/tags-*
-.env*
+
+# Environment Files
+.env.local
+.env.keys
+.env.backup.*
+!.env               # Track encrypted .env only
 stash/
 
 ## Go

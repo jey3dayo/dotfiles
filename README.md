@@ -32,7 +32,7 @@ git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfile
 cd ~/src/github.com/jey3dayo/dotfiles
 
 # 2. Bootstrap (installs Homebrew if needed)
-sh ./bin/bootstrap.sh
+sh ./scripts/bootstrap.sh
 
 # 3. Configure Git identity (required)
 cat > ~/.gitconfig_local << EOF
@@ -42,7 +42,7 @@ cat > ~/.gitconfig_local << EOF
 EOF
 
 # 4. Setup and install packages
-sh ./bin/setup && brew bundle
+sh ./scripts/setup && brew bundle
 
 # 5. Restart shell
 exec zsh
@@ -51,7 +51,7 @@ exec zsh
 zsh-help
 ```
 
-**What bin/bootstrap.sh does**:
+**What scripts/bootstrap.sh does**:
 
 - ✅ Installs Homebrew if not present
 - ✅ Detects architecture (Apple Silicon vs Intel)
@@ -87,7 +87,7 @@ dotfiles/
 ├── .github/       # Workflows
 ├── .kiro/         # Steering docs (always-loaded AI context)
 ├── docs/          # Human-facing documentation (SST per topic)
-├── bin/           # Setup scripts
+├── scripts/       # Setup scripts
 │   ├── bootstrap.sh  # Homebrew installer (1-shot)
 │   └── setup      # Environment setup (repeatable)
 ├── zsh/           # Shell (6-tier loading)
