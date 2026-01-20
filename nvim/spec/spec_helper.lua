@@ -28,6 +28,15 @@ _G.vim = {
   notify = function(msg, level)
     print(string.format("[%s] %s", level or "INFO", msg))
   end,
+  api = {
+    nvim_create_autocmd = function()
+      return 1
+    end,
+    nvim_create_augroup = function()
+      return 1
+    end,
+    nvim_create_user_command = function() end,
+  },
   deepcopy = function(orig)
     local copy
     if type(orig) == "table" then
