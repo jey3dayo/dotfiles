@@ -11,6 +11,7 @@ local base_config = {
 local config = {
   mac = with(base_config, {
     default_im_select = "com.apple.keylayout.ABC",
+    default_command = "im-select",
   }),
   windows = with(base_config, {
     -- default_im_select = "1033",
