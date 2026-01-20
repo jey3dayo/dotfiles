@@ -42,7 +42,7 @@ cat > ~/.gitconfig_local << EOF
 EOF
 
 # 4. Setup and install packages
-sh ./bin/setup && brew bundle
+sh ./scripts/setup && brew bundle
 
 # 5. Restart shell
 exec zsh
