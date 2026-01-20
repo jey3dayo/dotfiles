@@ -43,10 +43,16 @@ else
   echo "Generating .env.local for the first time..."
 fi
 
-# Decrypt .env to .env.local
-dotenvx decrypt "$ENV_FILE" --stdout > "$ENV_LOCAL"
-
-echo "✓ .env.local updated successfully"
+# Decrypt .env to .env.local (use temp file for atomicity)
+TEMP_FILE="$ENV_LOCAL.tmp"
+if dotenvx decrypt "$ENV_FILE" --stdout > "$TEMP_FILE"; then
+  mv "$TEMP_FILE" "$ENV_LOCAL"
+  echo "✓ .env.local updated successfully"
+else
+  rm -f "$TEMP_FILE"
+  echo "Error: Failed to decrypt .env" >&2
+  exit 1
+fi
 """
 
 [tasks."env:encrypt"]
@@ -59,7 +65,7 @@ run = "dotenvx decrypt -f ~/.config/.env"
 
 [hooks]
 # Decrypt .env to .env.local on directory enter
-enter = 'mise run setup-env 2>/dev/null || true'
+enter = 'mise run setup-env || true'
 
 # ========================================
 # Brewfile 管理
