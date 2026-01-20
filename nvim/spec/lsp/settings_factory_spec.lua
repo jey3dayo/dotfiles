@@ -1,5 +1,5 @@
 -- spec/lsp/settings_factory_spec.lua
-require "spec.spec_helper"
+require "nvim.spec.spec_helper"
 
 describe("lsp.settings_factory", function()
   local factory
@@ -33,6 +33,9 @@ describe("lsp.settings_factory", function()
       },
       config = {
         formatters = {
+          ["typescript-tools"] = {
+            config_files = { "tsconfig.json", "jsconfig.json" },
+          },
           tailwindcss = {
             config_files = {
               "tailwind.config.js",

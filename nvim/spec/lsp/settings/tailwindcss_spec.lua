@@ -1,5 +1,5 @@
 -- spec/lsp/settings/tailwindcss_spec.lua
-require "spec.spec_helper"
+require "nvim.spec.spec_helper"
 
 describe("lsp.settings.tailwindcss", function()
   local tailwindcss_config

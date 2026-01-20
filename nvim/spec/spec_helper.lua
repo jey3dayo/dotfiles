@@ -1,6 +1,19 @@
 -- spec_helper.lua
 -- Busted test helper for Neovim Lua modules
 
+-- Capture real cwd before mocking vim.fn.getcwd
+local real_cwd = os.getenv "PWD" or io.popen("pwd"):read "*l"
+
+-- Determine nvim directory path
+-- If we're running from nvim/, use current directory
+-- If we're running from parent (dotfiles/), use nvim subdirectory
+local nvim_dir
+if real_cwd:match "/nvim$" then
+  nvim_dir = real_cwd
+else
+  nvim_dir = real_cwd .. "/nvim"
+end
+
 -- Mock vim global for testing outside Neovim
 _G.vim = {
   log = {
@@ -69,7 +82,8 @@ _G.vim = {
 }
 
 -- Add lua/ directory to package path for requiring modules
-local nvim_path = vim.fn.getcwd() .. "/lua"
-package.path = package.path .. ";" .. nvim_path .. "/?.lua;" .. nvim_path .. "/?/init.lua"
+-- Use nvim_dir instead of mocked vim.fn.getcwd() to find actual nvim/lua path
+local nvim_lua_path = nvim_dir .. "/lua"
+package.path = package.path .. ";" .. nvim_lua_path .. "/?.lua;" .. nvim_lua_path .. "/?/init.lua"
 
 return {}
