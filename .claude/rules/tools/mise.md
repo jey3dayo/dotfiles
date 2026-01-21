@@ -41,41 +41,34 @@ The environment detection is integrated into Zsh startup via `zsh/init/mise-env.
 **Excluded Packages** (23個のnpmパッケージ + 1個のcargoパッケージ):
 
 1. **Editor Integration** (6個):
-
    - `neovim`, `typescript`, `typescript-language-server`
    - `vscode-json-languageserver`, `vscode-langservers-extracted`
    - `@typescript-eslint/eslint-plugin`
    - Reason: Remote development uses local machine's LSP
 
 2. **TypeScript/Lint Tools** (2個):
-
    - `eslint_d`, `@typescript-eslint/eslint-plugin`
    - Reason: Editor integration required
 
 3. **Browser/GUI MCPs** (5個):
-
    - `@playwright/mcp` (~300MB), `chrome-devtools-mcp`
    - `@aikidosec/safe-chain`, `@benborla29/mcp-server-mysql`, `exa-mcp-server`
    - Reason: GUI environment required, large dependencies
 
 4. **Claude/AI Development Tools** (2個):
-
    - `@anthropic-ai/dxt`, `ccusage`
    - Reason: Desktop development tools, not used in server environment
    - Note: `@mariozechner/claude-bridge`, `@sasazame/ccresume` maintained for remote access
 
 5. **Cloud Infrastructure** (3個):
-
    - `aws-cdk` (~150MB), `@google/clasp`, `@google/gemini-cli`
    - Reason: Heavy dependencies, AWS CLI sufficient
 
 6. **Protobuf/RPC** (2個):
-
    - `@bufbuild/protoc-gen-es`, `@connectrpc/protoc-gen-connect-es`
    - Reason: Not doing gRPC development
 
 7. **Other Tools** (2個):
-
    - `difit`, `greptile`
    - Reason: Not used in server environment
    - Note: `tuyapi` maintained for IoT automation

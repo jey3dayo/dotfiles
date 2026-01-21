@@ -72,4 +72,7 @@ depends = ["format", "lint:docs", "lint:links", "test:lua"]
 
 [tasks."ci:install"]
 description = "CI に必要な追加ツールをインストール"
-run = "luarocks install --local luacheck"
+run = """
+luarocks install --local luacheck
+luarocks install --local busted
+"""

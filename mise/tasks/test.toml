@@ -8,6 +8,17 @@ description = "Lua テストを実行(busted)"
 run = """
 # Add ~/.luarocks/bin to PATH if not already present
 export PATH="${HOME}/.luarocks/bin:${PATH}"
+
+# Check if busted is installed
+if ! command -v busted >/dev/null 2>&1; then
+  echo "⚠️  busted not found. Installing via luarocks..."
+  luarocks install --local busted
+  if ! command -v busted >/dev/null 2>&1; then
+    echo "❌ Failed to install busted. Please run: mise run ci:install"
+    exit 1
+  fi
+fi
+
 busted --verbose spec/ nvim/spec/
 """
 
