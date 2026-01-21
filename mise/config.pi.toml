@@ -149,26 +149,16 @@ yamllint = "latest"              # YAML Linter
 "npm:tuyapi" = "latest"           # Tuya API クライアント
 
 # ========================================
-# 5. Cargo-based Tools
+# 5. CLI Tools (コマンドラインユーティリティ - 共通ツールのみ)
 # ========================================
-# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理
-# 注: 以下は macOS のみ（Raspberry Pi 除外）
-"cargo:bandwhich" = { version = "latest", os = ["macos"] }
-"cargo:needle-cli" = { version = "latest", os = ["macos"] }
-"cargo:similarity-ts" = { version = "latest", os = ["macos"] }
-"cargo:wrkflw" = { version = "latest", os = ["macos"] }
-
-# ========================================
-# 6. CLI Tools
-# ========================================
-aws-cli = "latest"
-eza = "latest"
-fd = "latest"
-"github:cli/cli" = "latest"
-hadolint = { version = "latest", os = ["macos"] }
-jq = "latest"
-opencode = { version = "latest", os = ["macos"] }
-yazi = "latest"
+# 注: Cargo系ツールは除外（ARM互換性考慮）
+aws-cli = "latest"               # AWS コマンドラインツール
+eza = "latest"                   # ls の Rust 実装 (モダン出力)
+fd = "latest"                    # find の高速 Rust 実装
+"github:cli/cli" = "latest"      # GitHub CLI
+jq = "latest"                    # JSON クエリ・パーサー
+# 注: opencode は x86_64/macOS のみのため除外
+yazi = "latest"                  # ターミナル ファイルマネージャー
 
 # ========================================
 # タスク設定 (Task Configuration)
