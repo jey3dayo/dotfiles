@@ -78,10 +78,10 @@ jobs:
           cache: true
 
       - name: Set up Lua (LuaJIT) for luacheck
-        uses: leafo/gh-actions-lua@v11
+        uses: leafo/gh-actions-lua@v12
 
       - name: Set up LuaRocks
-        uses: leafo/gh-actions-luarocks@v5
+        uses: leafo/gh-actions-luarocks@v6
 
       - name: Cache LuaRocks packages
         uses: actions/cache@v4
