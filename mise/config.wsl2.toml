@@ -152,22 +152,21 @@ yamllint = "latest"              # YAML Linter
 # 5. Cargo-based Tools (WSL2専用含む)
 # ========================================
 # 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理
-# WSL2環境では以下のツールをサポート
-"cargo:bandwhich" = "latest"      # ネットワーク帯域幅監視
-"cargo:needle-cli" = "latest"     # Needle CLI ツール
-"cargo:similarity-ts" = "latest"  # TypeScript 類似度検索
-"cargo:wrkflw" = "latest"         # ワークフローツール
+"cargo:bandwhich" = "latest"
+"cargo:needle-cli" = "latest"
+"cargo:similarity-ts" = "latest"
+"cargo:wrkflw" = "latest"
 
 # ========================================
 # 6. CLI Tools (コマンドラインユーティリティ)
 # ========================================
-aws-cli = "latest"               # AWS コマンドラインツール
-eza = "latest"                   # ls の Rust 実装 (モダン出力)
-fd = "latest"                    # find の高速 Rust 実装
-"github:cli/cli" = "latest"      # GitHub CLI
-jq = "latest"                    # JSON クエリ・パーサー
-opencode = "latest"              # WSL2環境でも利用可能
-yazi = "latest"                  # ターミナル ファイルマネージャー
+aws-cli = "latest"
+eza = "latest"
+fd = "latest"
+"github:cli/cli" = "latest"
+jq = "latest"
+opencode = "latest"
+yazi = "latest"
 
 # ========================================
 # タスク設定 (Task Configuration)

@@ -152,21 +152,21 @@ yamllint = "latest"              # YAML Linter
 # 5. Cargo-based Tools (Rust CLI ユーティリティ)
 # ========================================
 # 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
-"cargo:bandwhich" = "latest"     # ネットワーク帯域幅モニタリング
-"cargo:needle-cli" = "latest"    # セマンティックコード検索
-"cargo:similarity-ts" = "latest" # TypeScript/JavaScript コード類似度分析
-"cargo:wrkflw" = "latest"        # GitHub Actions ワークフロー実行
+"cargo:bandwhich" = "latest"
+"cargo:needle-cli" = "latest"
+"cargo:similarity-ts" = "latest"
+"cargo:wrkflw" = "latest"
 
 # ========================================
 # 6. CLI Tools (コマンドラインユーティリティ)
 # ========================================
-aws-cli = "latest"               # AWS コマンドラインツール
-eza = "latest"                   # ls の Rust 実装 (モダン出力)
-fd = "latest"                    # find の高速 Rust 実装
-"github:cli/cli" = "latest"      # GitHub CLI
-jq = "latest"                    # JSON クエリ・パーサー
-opencode = "latest"              # コード検索・ナビゲーション
-yazi = "latest"                  # ターミナル ファイルマネージャー
+aws-cli = "latest"
+eza = "latest"
+fd = "latest"
+"github:cli/cli" = "latest"
+jq = "latest"
+opencode = "latest"
+yazi = "latest"
 
 # ========================================
 # タスク設定 (Task Configuration)

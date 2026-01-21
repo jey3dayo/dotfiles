@@ -149,16 +149,15 @@ yamllint = "latest"              # YAML Linter
 "npm:tuyapi" = "latest"           # Tuya API クライアント
 
 # ========================================
-# 5. CLI Tools (コマンドラインユーティリティ - 共通ツールのみ)
+# 5. CLI Tools (コマンドラインユーティリティ)
 # ========================================
 # 注: Cargo系ツールは除外（ARM互換性考慮）
-aws-cli = "latest"               # AWS コマンドラインツール
-eza = "latest"                   # ls の Rust 実装 (モダン出力)
-fd = "latest"                    # find の高速 Rust 実装
-"github:cli/cli" = "latest"      # GitHub CLI
-jq = "latest"                    # JSON クエリ・パーサー
-# 注: opencode は x86_64/macOS のみのため除外
-yazi = "latest"                  # ターミナル ファイルマネージャー
+aws-cli = "latest"
+eza = "latest"
+fd = "latest"
+"github:cli/cli" = "latest"
+jq = "latest"
+yazi = "latest"
 
 # ========================================
 # タスク設定 (Task Configuration)

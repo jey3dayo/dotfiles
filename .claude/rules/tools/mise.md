@@ -5,9 +5,29 @@ Purpose: unified tool version management with mise-en-place. Scope: config struc
 ## Configuration Structure
 
 - Main config: `mise/config.toml` defines all tools (runtimes, CLI tools, npm packages)
+- Environment-specific configs:
+  - `mise/config.toml` - Default (macOS/Linux x86_64)
+  - `mise/config.wsl2.toml` - WSL2 with cargo tools
+  - `mise/config.pi.toml` - Raspberry Pi (no cargo tools for ARM compatibility)
 - Directory-local: `mise.toml` for project-specific overrides
 - Env vars: `.mise.env` or `[env]` section in config.toml
 - Config precedence: directory-local → user config (~/.config/mise/config.toml) → global defaults
+
+### Environment Detection
+
+mise automatically selects the appropriate configuration based on the environment:
+
+- **Default (macOS/Linux x86_64)**: Uses `mise/config.toml` (includes all tools)
+- **WSL2**: Uses `mise/config.wsl2.toml` (includes cargo tools)
+- **Raspberry Pi**: Uses `mise/config.pi.toml` (excludes cargo tools)
+
+Detection happens via `scripts/setup-mise-env.sh` which sets `MISE_CONFIG_FILE` based on:
+
+- WSL2: `$WSL_DISTRO_NAME` environment variable or `/proc/version` containing "microsoft"/"WSL"
+- Raspberry Pi: `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
+- Default: All other environments
+
+The environment detection is integrated into Zsh startup via `zsh/init/mise-env.zsh`.
 
 ## Tool Categories
 
