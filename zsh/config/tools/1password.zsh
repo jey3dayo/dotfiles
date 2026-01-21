@@ -23,7 +23,10 @@ elif [[ "$(uname -r)" =~ "microsoft" ]] || [[ "$(uname -r)" =~ "WSL" ]]; then
       windows_user=$(ls -1 /mnt/c/Users | grep -v -E '^(Public|Default|All Users|Default User)$' | head -1)
     fi
   fi
-  OP_CLI_PATH="/mnt/c/Users/${windows_user}/AppData/Local/Microsoft/WinGet/Packages/AgileBits.1Password.CLI_Microsoft.Winget.Source_8wekyb3d8bbwe/op.exe"
+  # Only set OP_CLI_PATH if we found a valid Windows username
+  if [[ -n "$windows_user" ]]; then
+    OP_CLI_PATH="/mnt/c/Users/${windows_user}/AppData/Local/Microsoft/WinGet/Packages/AgileBits.1Password.CLI_Microsoft.Winget.Source_8wekyb3d8bbwe/op.exe"
+  fi
 fi
 
 # Function wrapper for op command (more reliable than alias)
