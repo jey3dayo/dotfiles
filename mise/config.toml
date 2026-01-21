@@ -131,7 +131,6 @@ yamllint = "latest"
 
 # Claude/AI ツール
 "npm:@anthropic-ai/dxt" = "latest"
-"npm:@mariozechner/claude-bridge" = "latest"
 "npm:@sasazame/ccresume" = "latest"
 "npm:ccusage" = "latest"
 "npm:dev3000" = "latest"

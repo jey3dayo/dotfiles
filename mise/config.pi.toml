@@ -6,7 +6,7 @@
 [settings]
 env_file = '.env.local'
 experimental = true
-jobs = 8                                                            # デフォルトの並列実行数
+jobs = 2                                                            # Raspberry Pi メモリ制約対応: 並列数削減でスワップ回避
 vfox = false
 idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
@@ -86,11 +86,7 @@ yamllint = "latest"
 
 # 開発・エディタ
 "npm:@fsouza/prettierd" = "latest"
-"npm:neovim" = "latest"
-
-# プロトコルバッファ・RPC
-"npm:@bufbuild/protoc-gen-es" = "latest"
-"npm:@connectrpc/protoc-gen-connect-es" = "latest"
+# 注: neovim は除外 (リモート開発でローカルマシンのLSP使用)
 
 # AI・コミット支援
 "npm:@openai/codex" = "latest"
@@ -105,13 +101,7 @@ yamllint = "latest"
 # 環境変数管理
 "npm:@dotenvx/dotenvx" = "latest"
 
-# 開発ツール・Language Servers
-"npm:eslint_d" = "latest"
-"npm:typescript" = "latest"
-"npm:typescript-language-server" = "latest"
-"npm:vscode-json-languageserver" = "latest"
-"npm:vscode-langservers-extracted" = "latest"
-"npm:@typescript-eslint/eslint-plugin" = "latest"
+# 注: Language Servers は除外 (リモート開発でローカルマシンのLSP使用)
 
 # ビルドツール
 "npm:esbuild" = "latest"
@@ -120,30 +110,19 @@ yamllint = "latest"
 "npm:zx" = "latest"
 
 # MCP サーバー (Model Context Protocol)
-"npm:@aikidosec/safe-chain" = "latest"
-"npm:@benborla29/mcp-server-mysql" = "latest"
+# 注: 軽量かつサーバー環境で有用なMCPのみ維持
 "npm:@modelcontextprotocol/server-filesystem" = "latest"
-"npm:@playwright/mcp" = "latest"
 "npm:@upstash/context7-mcp" = "latest"
-"npm:chrome-devtools-mcp" = "latest"
-"npm:exa-mcp-server" = "latest"
 "npm:o3-search-mcp" = "latest"
 
 # Claude/AI ツール
-"npm:@anthropic-ai/dxt" = "latest"
+# 注: デスクトップ開発ツール (dxt, dev3000, ccusage) は除外
 "npm:@mariozechner/claude-bridge" = "latest"
 "npm:@sasazame/ccresume" = "latest"
-"npm:ccusage" = "latest"
-"npm:dev3000" = "latest"
 
-# クラウド・インフラ
-"npm:aws-cdk" = "latest"
-"npm:@google/clasp" = "latest"
-"npm:@google/gemini-cli" = "latest"
+# 注: クラウド・インフラツールは除外 (aws-cli で十分)
 
 # その他ツール
-"npm:greptile" = "latest"
-"npm:difit" = "latest"
 "npm:tuyapi" = "latest"
 
 # ========================================
