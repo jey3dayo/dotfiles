@@ -67,8 +67,8 @@ bun = "latest"                   # JavaScript ランタイム + パッケージ�
 # ========================================
 actionlint = "latest"            # GitHub Actions ワークフロー Linter
 biome = "latest"                 # JavaScript/TypeScript/JSON フォーマッター + Linter
+hadolint = "latest"              # Dockerfile Linter
 prettier = "latest"              # マルチ言語対応フォーマッター
-# 注: hadolint は macOS/Linux x86_64 のみ (プラットフォーム固有セクション参照)
 shellcheck = "latest"            # Shell スクリプト Linter
 shfmt = "latest"                 # Shell スクリプト フォーマッター
 stylua = "latest"                # Lua フォーマッター
@@ -149,26 +149,24 @@ yamllint = "latest"              # YAML Linter
 "npm:tuyapi" = "latest"           # Tuya API クライアント
 
 # ========================================
-# 5. Cargo-based Tools
+# 5. Cargo-based Tools (Rust CLI ユーティリティ)
 # ========================================
-# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理
-# 注: 以下は macOS のみ（Raspberry Pi 除外）
-"cargo:bandwhich" = { version = "latest", os = ["macos"] }
-"cargo:needle-cli" = { version = "latest", os = ["macos"] }
-"cargo:similarity-ts" = { version = "latest", os = ["macos"] }
-"cargo:wrkflw" = { version = "latest", os = ["macos"] }
+# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
+"cargo:bandwhich" = "latest"     # ネットワーク帯域幅モニタリング
+"cargo:needle-cli" = "latest"    # セマンティックコード検索
+"cargo:similarity-ts" = "latest" # TypeScript/JavaScript コード類似度分析
+"cargo:wrkflw" = "latest"        # GitHub Actions ワークフロー実行
 
 # ========================================
-# 6. CLI Tools
+# 6. CLI Tools (コマンドラインユーティリティ)
 # ========================================
-aws-cli = "latest"
-eza = "latest"
-fd = "latest"
-"github:cli/cli" = "latest"
-hadolint = { version = "latest", os = ["macos"] }
-jq = "latest"
-opencode = { version = "latest", os = ["macos"] }
-yazi = "latest"
+aws-cli = "latest"               # AWS コマンドラインツール
+eza = "latest"                   # ls の Rust 実装 (モダン出力)
+fd = "latest"                    # find の高速 Rust 実装
+"github:cli/cli" = "latest"      # GitHub CLI
+jq = "latest"                    # JSON クエリ・パーサー
+opencode = "latest"              # コード検索・ナビゲーション
+yazi = "latest"                  # ターミナル ファイルマネージャー
 
 # ========================================
 # タスク設定 (Task Configuration)
