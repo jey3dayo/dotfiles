@@ -111,13 +111,11 @@ yamllint = "latest"
 
 # MCP サーバー (Model Context Protocol)
 # 注: 軽量かつサーバー環境で有用なMCPのみ維持
-"npm:@modelcontextprotocol/server-filesystem" = "latest"
 "npm:@upstash/context7-mcp" = "latest"
 "npm:o3-search-mcp" = "latest"
 
 # Claude/AI ツール
 # 注: デスクトップ開発ツール (dxt, dev3000, ccusage) は除外
-"npm:@mariozechner/claude-bridge" = "latest"
 "npm:@sasazame/ccresume" = "latest"
 
 # 注: クラウド・インフラツールは除外 (aws-cli で十分)
@@ -130,7 +128,6 @@ yamllint = "latest"
 # ========================================
 # 注: Cargo系ツールは除外（ARM互換性考慮）
 # 注: opencode は除外（x86_64のみサポート）
-aws-cli = "latest"
 eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"
