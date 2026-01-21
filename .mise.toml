@@ -29,8 +29,8 @@ description = "環境変数ファイルを復号化"
 run = "DOTENV_PRIVATE_KEY_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys dotenvx decrypt -f ${XDG_CONFIG_HOME:-$HOME/.config}/.env"
 
 [hooks]
-# Decrypt .env to .env.local on directory enter
-enter = 'mise run setup-env || true'
+# Decrypt .env to .env.local on directory enter (silent execution)
+enter = 'mise run setup-env >/dev/null 2>&1 || true'
 
 # ========================================
 # Brewfile 管理
