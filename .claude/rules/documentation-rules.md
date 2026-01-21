@@ -37,7 +37,7 @@ Sources: docs/README.md.
 - Setup steps live in docs/setup.md; READMEs should link instead of repeating commands.
 - Performance metrics and history live in docs/performance.md; other docs reference it without duplicating numbers.
 - Maintenance schedules and troubleshooting live in docs/maintenance.md; repeat only pointers elsewhere.
-- Tool details belong in docs/tools/*.md; cross-reference from other docs.
+- Tool details belong in docs/tools/\*.md; cross-reference from other docs.
 - Documentation governance stays in this file; keep docs/README.md as the lightweight human navigation page.
 
 ## Size and structure
@@ -50,6 +50,31 @@ Sources: docs/README.md.
 - On any doc change, refresh `最終更新`, validate tags, and keep links consistent with SSTs.
 - Check for duplicate content against SST docs before adding text.
 - Keep docs/README.md as navigation only; avoid embedding procedures or metrics there.
+
+## Formatting constraints
+
+- **List items**: Avoid bold text at the start of list items (`- **Text**:` pattern)
+- **Emphasis in structure**: Use headings (`###`) for structured sections instead of bold lists
+- **Rationale**: Headings provide better document structure, enable table-of-contents generation, and improve navigation
+
+Example:
+
+```markdown
+# ❌ Avoid
+
+- **Command Management**: Custom commands
+- **AI Assistance**: Context for AI
+
+# ✅ Prefer
+
+### Command Management
+
+Custom commands
+
+### AI Assistance
+
+Context for AI
+```
 
 ## Cross-link hygiene
 

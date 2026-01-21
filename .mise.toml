@@ -18,7 +18,7 @@ includes = [
 
 [tasks."setup-env"]
 description = ".env を .env.local に復号化（mise hooks から自動実行）"
-run = "scripts/setup-env"
+run = "scripts/setup-env.sh"
 
 [tasks."env:encrypt"]
 description = "環境変数ファイルを暗号化"
@@ -29,8 +29,8 @@ description = "環境変数ファイルを復号化"
 run = "DOTENV_PRIVATE_KEY_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys dotenvx decrypt -f ${XDG_CONFIG_HOME:-$HOME/.config}/.env"
 
 [hooks]
-# Decrypt .env to .env.local on directory enter
-enter = 'mise run setup-env || true'
+# Decrypt .env to .env.local on directory enter (silent on success, show critical errors)
+enter = 'mise run setup-env 2>&1 | grep -E "^(❌|Error:)" || true'
 
 # ========================================
 # Brewfile 管理
@@ -45,11 +45,8 @@ description = "Brewfileからパッケージをインストール（新規Mac対
 run = "if command -v brew >/dev/null 2>&1; then brew bundle install --no-upgrade; else echo 'Homebrew not installed. Install: /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"'; fi"
 
 # ========================================
-# 集約タスク
-# ========================================
-# format, lint, check タスクは mise/tasks/integration.toml で定義されています
-
 # 更新タスク（mac/local 依存）
+# ========================================
 [tasks.update]
 description = "すべての依存関係を更新"
 depends = ["update:submodules", "update:brew", "update:external-repos"]

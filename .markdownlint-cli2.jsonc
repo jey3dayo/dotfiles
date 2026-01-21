@@ -9,8 +9,6 @@
     "MD013": false,
     // Duplicate headings - disabled for sectioned documents
     "MD024": false,
-    // Emphasis used instead of a heading - disabled for flexible styling
-    "MD036": false,
     // Code block language specification - disabled for simple blocks
     "MD040": false,
     // First line as header - allow for more flexible document structure

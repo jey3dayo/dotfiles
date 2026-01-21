@@ -45,20 +45,20 @@ nvim --headless -c 'lua require("lazy").sync()' -c 'q'          # Neovim
 
 ### LSPサーバーエラー
 
-**診断手順:**
+#### 診断手順
 
 1. `:LspInfo` でサーバー状態確認
 2. `:Mason` でサーバーインストール状況確認
 3. ログ確認: `~/.local/share/nvim/lsp.log`
 
-**解決方法:**
+#### 解決方法
 
 - サーバーの再インストール
 - Node.js/Python環境の確認
 
 ### Git認証エラー
 
-**診断手順:**
+#### 診断手順
 
 1. SSH鍵確認: `ssh -T git@github.com`
 2. 1Password CLI連携状況確認
@@ -153,7 +153,7 @@ mise run brewfile:restore
 mise run update
 ```
 
-**新規Macセットアップ手順**:
+#### 新規Macセットアップ手順
 
 1. Homebrewインストール:
 
@@ -169,7 +169,7 @@ mise run update
 
 3. 以降は`mise run`コマンドが使用可能
 
-**実行内容**（`mise run update`）:
+#### 実行内容（`mise run update`）
 
 1. Git submodules更新
 2. Homebrewパッケージ更新（`brew upgrade --formula`）
@@ -206,7 +206,7 @@ mise run update
 
 ### Brewfile再生成手順
 
-**定期的な全体更新（月次推奨）**:
+#### 定期的な全体更新（月次推奨）
 
 ```bash
 # 1. バックアップ作成
