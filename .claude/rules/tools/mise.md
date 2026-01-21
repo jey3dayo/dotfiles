@@ -38,7 +38,7 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
 
-**Excluded Packages** (29個のnpmパッケージ + 1個のlanguage runtime + 全cargoツール):
+**Excluded Packages** (28個のnpmパッケージ + 1個のlanguage runtime + 1個のCLIツール + 全cargoツール):
 
 1. **Language Runtimes** (1個):
    - `go`
@@ -59,14 +59,14 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
    - `@aikidosec/safe-chain`, `@benborla29/mcp-server-mysql`, `exa-mcp-server`
    - Reason: GUI environment required, large dependencies
 
-5. **Claude/AI Development Tools** (2個):
-   - `@anthropic-ai/dxt`, `ccusage`
+5. **Claude/AI Development Tools** (4個):
+   - `@anthropic-ai/dxt`, `@mariozechner/claude-bridge`, `ccusage`, `dev3000`
    - Reason: Desktop development tools, not used in server environment
-   - Note: `@sasazame/ccresume` maintained for remote access
+   - Note: `@sasazame/ccresume` maintained for session management
 
-6. **Cloud Infrastructure** (3個):
-   - `aws-cdk` (~150MB), `@google/clasp`, `@google/gemini-cli`
-   - Reason: Heavy dependencies, AWS CLI sufficient
+6. **Cloud Infrastructure** (4個):
+   - `aws-cli`, `aws-cdk` (~150MB), `@google/clasp`, `@google/gemini-cli`
+   - Reason: Heavy dependencies, not needed in server environment
 
 7. **Protobuf/RPC** (2個):
    - `@bufbuild/protoc-gen-es`, `@connectrpc/protoc-gen-connect-es`
@@ -87,16 +87,18 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 **Maintained Packages** (lightweight and useful for server operations):
 
 - Utilities: `@antfu/ni`, `npm`, `npm-check-updates`, `zx`
-- Documentation: `markdown-link-check`, `markdownlint-cli2`, `textlint`
+- Documentation: `markdown-link-check`, `markdownlint-cli2`, `textlint`, `textlint-rule-preset-ja-technical-writing`
 - Environment: `@dotenvx/dotenvx`
+- Formatters/Linters: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
 - AI: `@openai/codex`, `aicommits`
 - Claude: `@sasazame/ccresume`
-- MCP Essential: `@upstash/context7-mcp`, `o3-search-mcp`
-- CLI Tools: `aws-cli`, `eza`, `fd`, `gh`, `jq`, `opencode`, `yazi`
+- MCP: `@upstash/context7-mcp`, `o3-search-mcp`
+- CLI Tools: `eza`, `fd`, `gh`, `jq`, `opencode`, `yazi`
+- Runtimes: `node`, `python`, `bun`, `pipx:uv`
 
 **Expected Benefits**:
 
-- Install time: ~40-50 minutes faster (29 npm packages + go runtime + all cargo tools excluded)
+- Install time: ~40-50 minutes faster (28 npm packages + go runtime + aws-cli + all cargo tools excluded)
 - Disk usage: ~2GB reduction
 - Memory usage: ~800MB reduction during installation (parallel execution control)
 
