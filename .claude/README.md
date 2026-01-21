@@ -16,10 +16,21 @@ This directory contains Claude-specific configurations, documentation, and proje
 
 ## 🎯 Purpose
 
-- **Command Management**: Custom Claude Code commands and workflows
-- **AI Assistance**: Context for Claude AI to provide targeted help
-- **Project Data**: Session-specific configurations and context
-- **Task Tracking**: Persistent todo management across sessions
+### Command Management
+
+Custom Claude Code commands and workflows
+
+### AI Assistance
+
+Context for Claude AI to provide targeted help
+
+### Project Data
+
+Session-specific configurations and context
+
+### Task Tracking
+
+Persistent todo management across sessions
 
 **Note**: General documentation has been moved to `docs/` directory for better organization and maintainability.
 
@@ -73,8 +84,13 @@ dotfiles employs a **Progressive Disclosure** design pattern with two distinct d
 
 This separation follows:
 
-- **skill-creator**: Progressive Disclosure (metadata → body → resources)
-- **rules-creator**: Rules Hierarchy (guidelines → steering → rules → hookify)
+#### skill-creator
+
+Progressive Disclosure (metadata → body → resources)
+
+#### rules-creator
+
+Rules Hierarchy (guidelines → steering → rules → hookify)
 
 **Benefits**:
 
@@ -87,9 +103,17 @@ This separation follows:
 
 ### Commands System
 
-- **Custom Commands**: Project-specific Claude Code commands
-- **Workflows**: Automated development workflows
-- **Task Automation**: Streamlined development processes
+#### Custom Commands
+
+Project-specific Claude Code commands
+
+#### Workflows
+
+Automated development workflows
+
+#### Task Automation
+
+Streamlined development processes
 
 ### Project Data
 
@@ -107,28 +131,53 @@ This separation follows:
 
 This directory is automatically managed by Claude Code. Key files:
 
-- **commands/**: Custom Claude Code commands and workflows
-- **projects/**: Session data and project context
-- **todos/**: Task management JSON files
-- **settings.json**: Claude Code configuration
+### commands/
+
+Custom Claude Code commands and workflows
+
+### projects/
+
+Session data and project context
+
+### todos/
+
+Task management JSON files
+
+### settings.json
+
+Claude Code configuration
 
 ## 📚 Documentation
 
 All general documentation has been consolidated in the `docs/` directory:
 
-- **Main Guides**: `docs/` - Setup, performance, maintenance, and tools
-- **Tool Documentation**: `docs/tools/` - Tool-specific configurations and guides
-  - `zsh.md` - Shell configuration and optimization
-  - `nvim.md` - Neovim setup and language support
-  - `wezterm.md` - Terminal configuration
-  - `ssh.md` - SSH configuration management
-  - `fzf-integration.md` - Fuzzy search integration
+### Main Guides
+
+`docs/` - Setup, performance, maintenance, and tools
+
+### Tool Documentation
+
+`docs/tools/` - Tool-specific configurations and guides:
+
+- `zsh.md` - Shell configuration and optimization
+- `nvim.md` - Neovim setup and language support
+- `wezterm.md` - Terminal configuration
+- `ssh.md` - SSH configuration management
+- `fzf-integration.md` - Fuzzy search integration
 
 ## 🧹 Maintenance
 
-- **Todos**: 18 active files, cleaned automatically
-- **Local**: 177M for Claude CLI and dependencies
-- **Projects**: Session-specific data, managed by Claude
+### Todos
+
+18 active files, cleaned automatically
+
+### Local
+
+177M for Claude CLI and dependencies
+
+### Projects
+
+Session-specific data, managed by Claude
 
 ---
 
