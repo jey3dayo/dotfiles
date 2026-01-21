@@ -15,7 +15,15 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   fi
 elif [[ "$(uname -r)" =~ "microsoft" ]] || [[ "$(uname -r)" =~ "WSL" ]]; then
   # WSL2: Use Windows version of 1Password CLI
-  OP_CLI_PATH='/mnt/c/Users/j138c/AppData/Local/Microsoft/WinGet/Packages/AgileBits.1Password.CLI_Microsoft.Winget.Source_8wekyb3d8bbwe/op.exe'
+  # Try to detect Windows username dynamically
+  local windows_user="${USER}"
+  if [[ -d "/mnt/c/Users" ]]; then
+    # If the WSL user doesn't exist in Windows, try to find the first user directory
+    if [[ ! -d "/mnt/c/Users/${windows_user}" ]]; then
+      windows_user=$(ls -1 /mnt/c/Users | grep -v -E '^(Public|Default|All Users|Default User)$' | head -1)
+    fi
+  fi
+  OP_CLI_PATH="/mnt/c/Users/${windows_user}/AppData/Local/Microsoft/WinGet/Packages/AgileBits.1Password.CLI_Microsoft.Winget.Source_8wekyb3d8bbwe/op.exe"
 fi
 
 # Function wrapper for op command (more reliable than alias)
@@ -45,11 +53,25 @@ export DOTENV_KEYS_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys"
 restore-env-keys() {
   local item_id="${1:-$OP_DOTENV_KEYS_ITEM_ID}"
   local output_path="${2:-$DOTENV_KEYS_PATH}"
+  local temp_path="${output_path}.tmp"
+
+  # Check if 1Password CLI is available
+  if [[ -z "$OP_CLI_PATH" ]] || [[ ! -x "$OP_CLI_PATH" ]]; then
+    echo "Error: 1Password CLI not found or not executable" >&2
+    return 1
+  fi
 
   echo "Restoring .env.keys from 1Password..."
-  "$OP_CLI_PATH" document get "$item_id" --account="$OP_ACCOUNT" > "$output_path"
-  chmod 600 "$output_path"
-  echo "✓ Restored to $output_path with permissions 600"
+  # Use temp file to avoid truncating existing keys on failure
+  if "$OP_CLI_PATH" document get "$item_id" --account="$OP_ACCOUNT" > "$temp_path"; then
+    mv "$temp_path" "$output_path"
+    chmod 600 "$output_path"
+    echo "✓ Restored to $output_path with permissions 600"
+  else
+    echo "Error: Failed to restore .env.keys from 1Password" >&2
+    rm -f "$temp_path"
+    return 1
+  fi
 }
 
 # Helper function to update .env.keys in 1Password
@@ -58,14 +80,24 @@ update-env-keys() {
   local item_id="${1:-$OP_DOTENV_KEYS_ITEM_ID}"
   local source_path="${2:-$DOTENV_KEYS_PATH}"
 
+  # Check if 1Password CLI is available
+  if [[ -z "$OP_CLI_PATH" ]] || [[ ! -x "$OP_CLI_PATH" ]]; then
+    echo "Error: 1Password CLI not found or not executable" >&2
+    return 1
+  fi
+
   if [[ ! -f "$source_path" ]]; then
-    echo "Error: $source_path not found"
+    echo "Error: $source_path not found" >&2
     return 1
   fi
 
   echo "Updating .env.keys in 1Password..."
-  "$OP_CLI_PATH" document edit "$item_id" "$source_path" --account="$OP_ACCOUNT"
-  echo "✓ Updated dotfiles-env-keys in 1Password"
+  if "$OP_CLI_PATH" document edit "$item_id" "$source_path" --account="$OP_ACCOUNT"; then
+    echo "✓ Updated dotfiles-env-keys in 1Password"
+  else
+    echo "Error: Failed to update .env.keys in 1Password" >&2
+    return 1
+  fi
 }
 
 # vim: set syntax=zsh:
