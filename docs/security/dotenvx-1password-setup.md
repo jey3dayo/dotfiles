@@ -169,14 +169,28 @@ cat .env | grep DOTENV_PUBLIC_KEY
 
 ### ヘルパー関数
 
-- `restore-env-keys`: 1Passwordから `.env.keys` を復元
-- `update-env-keys`: ローカルの `.env.keys` を1Passwordに更新
+- `restore-env-keys [item_id] [output_path]`: 1Passwordから `.env.keys` を復元
+  - 引数なし: デフォルト設定を使用
+  - 引数あり: カスタムアイテムID/パスを指定可能
+- `update-env-keys [item_id] [source_path]`: ローカルの `.env.keys` を1Passwordに更新
+  - 引数なし: デフォルト設定を使用
+  - 引数あり: カスタムアイテムID/パスを指定可能
 - `op`: クロスプラットフォームで動作する1Password CLIラッパー
 
 ### 環境変数
 
 - `OP_CLI_PATH`: 1Password CLIの実行パス（自動検出）
 - `OP_ACCOUNT`: デフォルトアカウントID（personal: CNRNCJQSBBBYZESUWAMXLHQFBI）
+- `OP_DOTENV_KEYS_ITEM_ID`: デフォルトのdotenv keysアイテムID
+- `DOTENV_KEYS_PATH`: .env.keysファイルのデフォルトパス（`~/.config/.env.keys`）
+
+これらの環境変数は `.zshrc` などで上書き可能です：
+
+```bash
+# カスタム設定例
+export OP_DOTENV_KEYS_ITEM_ID='your-custom-item-id'
+export DOTENV_KEYS_PATH='/path/to/your/.env.keys'
+```
 
 ## 関連ドキュメント
 

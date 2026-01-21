@@ -35,13 +35,16 @@ else
   fi
 fi
 
-# Default account (personal)
+# Default 1Password configuration
 export OP_ACCOUNT='CNRNCJQSBBBYZESUWAMXLHQFBI'
+export OP_DOTENV_KEYS_ITEM_ID='qz4xx3fngju6njadaughgn4e3e'
+export DOTENV_KEYS_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys"
 
 # Helper function to restore .env.keys from 1Password
+# Usage: restore-env-keys [item_id] [output_path]
 restore-env-keys() {
-  local item_id='qz4xx3fngju6njadaughgn4e3e'
-  local output_path="${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys"
+  local item_id="${1:-$OP_DOTENV_KEYS_ITEM_ID}"
+  local output_path="${2:-$DOTENV_KEYS_PATH}"
 
   echo "Restoring .env.keys from 1Password..."
   "$OP_CLI_PATH" document get "$item_id" --account="$OP_ACCOUNT" > "$output_path"
@@ -50,9 +53,10 @@ restore-env-keys() {
 }
 
 # Helper function to update .env.keys in 1Password
+# Usage: update-env-keys [item_id] [source_path]
 update-env-keys() {
-  local item_id='qz4xx3fngju6njadaughgn4e3e'
-  local source_path="${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys"
+  local item_id="${1:-$OP_DOTENV_KEYS_ITEM_ID}"
+  local source_path="${2:-$DOTENV_KEYS_PATH}"
 
   if [[ ! -f "$source_path" ]]; then
     echo "Error: $source_path not found"
