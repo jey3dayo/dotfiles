@@ -35,27 +35,31 @@ Sources: docs/maintenance.md.
 
 ### mise 優先原則
 
-**原則**: 開発ツール・フォーマッター・Linter は mise で統一管理。Homebrew はシステム依存関係と GUI アプリのみ。
+#### 原則
 
-**mise で管理**:
+開発ツール・フォーマッター・Linter は mise で統一管理。Homebrew はシステム依存関係と GUI アプリのみ。
+
+#### mise で管理
 
 - 全ての開発ツール（フォーマッター、Linter、CLI ツール）
 - 全ての npm/pipx パッケージ
 - 開発用の言語ランタイム（Node.js, Python, Go）
 
-**Homebrew で管理**:
+#### Homebrew で管理
 
 - Neovim とその依存関係（lua, luajit, luarocks, libuv 等）
 - システムレベルのライブラリ
 - GUI アプリケーション（cask）
 - システムツール用の言語ランタイム（必要な場合のみ）
 
-**ハイブリッド運用**:
+#### ハイブリッド運用
 
 - Node.js: Homebrew 版（システム依存関係用） + mise 版（開発用）
 - Python: Homebrew 版（システムツール用） + mise 版（開発用）
 
-**理由**: Single Source of Truth、バージョン固定、プロジェクト別オーバーライド、再現性
+#### 理由
+
+Single Source of Truth、バージョン固定、プロジェクト別オーバーライド、再現性
 
 ### Brewfile management
 

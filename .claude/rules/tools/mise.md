@@ -151,7 +151,7 @@ yamllint = "latest"
 "cargo:wrkflw" = "latest"
 ```
 
-**環境別の取り扱い**:
+#### 環境別の取り扱い
 
 - **Default** (`config.toml`): 全てのcargoツールをインストール
 - **Raspberry Pi** (`config.pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
@@ -171,7 +171,7 @@ opencode = "latest"
 yazi = "latest"
 ```
 
-**環境別の取り扱い**:
+#### 環境別の取り扱い
 
 - **Default**: 全てのCLIツールをインストール
 - **Raspberry Pi**: `opencode` を除外（x86_64のみサポート）

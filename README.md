@@ -51,7 +51,7 @@ exec zsh
 zsh-help
 ```
 
-**What scripts/bootstrap.sh does**:
+### What scripts/bootstrap.sh does
 
 - ✅ Installs Homebrew if not present
 - ✅ Detects architecture (Apple Silicon vs Intel)

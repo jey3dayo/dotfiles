@@ -42,16 +42,18 @@ dotfiles employs a **Progressive Disclosure** design pattern with two distinct d
 
 #### `.claude/rules/tools/` (AI Enforcement Rules)
 
-**Purpose**: Concise 26-31 line rules for Claude AI
+##### Purpose
 
-**Characteristics**:
+Concise 26-31 line rules for Claude AI.
+
+##### Characteristics
 
 - Always loaded into AI context
 - YAML frontmatter with `paths:` and `source:` fields
 - Condensed policy statements and constraints
 - References detailed documentation via `source:` field
 
-**Files**:
+##### Files
 
 - `fzf-integration.md` → FZF bindings and integration rules
 - `git.md` → Git configuration hierarchy rules
@@ -62,16 +64,18 @@ dotfiles employs a **Progressive Disclosure** design pattern with two distinct d
 
 #### `docs/tools/` (Detailed Reference)
 
-**Purpose**: Comprehensive 100-300 line implementation guides
+##### Purpose
 
-**Characteristics**:
+Comprehensive 100-300 line implementation guides.
+
+##### Characteristics
 
 - Loaded on-demand by Claude when needed
 - Standard markdown with metadata headers
 - Complete implementation details, examples, troubleshooting
 - SST (Single Source of Truth) for tool documentation
 
-**Files**:
+##### Files
 
 - `fzf-integration.md` (317 lines) - Comprehensive keybindings and workflows
 - `git.md` (59 lines) - Git configuration details
@@ -92,7 +96,7 @@ Progressive Disclosure (metadata → body → resources)
 
 Rules Hierarchy (guidelines → steering → rules → hookify)
 
-**Benefits**:
+#### Benefits
 
 - ✅ Token-efficient: Only load detailed docs when necessary
 - ✅ Separation of concerns: User docs vs. AI enforcement rules
