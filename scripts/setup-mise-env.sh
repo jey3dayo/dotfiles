@@ -41,7 +41,7 @@ setup_mise_config() {
       ;;
     *)
       # Default for macOS, WSL2, and other Linux distributions
-      export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.toml"
+      export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.default.toml"
       ;;
   esac
 

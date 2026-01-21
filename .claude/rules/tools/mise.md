@@ -4,29 +4,54 @@ Purpose: unified tool version management with mise-en-place. Scope: config struc
 
 ## Configuration Structure
 
-- Main config: `mise/config.toml` defines all tools (runtimes, CLI tools, npm packages)
-- Environment-specific configs:
-  - `mise/config.toml` - Default (macOS/Linux/WSL2)
-  - `mise/config.pi.toml` - Raspberry Pi (excludes cargo tools and opencode for ARM compatibility)
-- Directory-local: `mise.toml` for project-specific overrides
-- Env vars: `.mise.env` or `[env]` section in config.toml
-- Config precedence: directory-local → user config (~/.config/mise/config.toml) → global defaults
+mise設定は環境別ファイルで管理されています:
+
+### Main config: `mise/config.toml`
+
+**内容**: 設定のみ（ツール定義なし）
+- グローバル設定: `experimental`, `env_file`, `trusted_config_paths`
+- 環境変数定義
+- **重要**: ツールは定義しない（マージによる意図しない追加を防ぐため）
+
+### Environment-specific configs:
+
+- **`mise/config.default.toml`** - デフォルト（macOS/Linux/WSL2）
+  - jobs = 8（デスクトップ/ワークステーション向け）
+  - 全ツール: 73個（go, node, python, npm 46個, cargo 4個, CLI 7個, formatters/linters 9個）
+
+- **`mise/config.pi.toml`** - Raspberry Pi（ARMサーバー環境）
+  - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
+  - 最小ツールセット: 24個（go除外、npm軽量版、cargo全除外）
+
+### Directory-local: `mise.toml`
+
+プロジェクト固有のオーバーライド（例: .mise.toml at repo root）
+
+### Env vars: `.mise.env` or `[env]` section
+
+環境変数定義（dotenvx 暗号化サポート）
+
+### Config precedence
+
+directory-local → environment-specific (via MISE_CONFIG_FILE) → user config → global defaults
 
 ### Environment Detection
 
 mise automatically selects the appropriate configuration based on the environment:
 
-- **Default (macOS/Linux/WSL2)**: Uses `mise/config.toml` (includes all tools)
+- **Default (macOS/Linux/WSL2)**: Uses `mise/config.default.toml` (includes all tools)
 - **Raspberry Pi**: Uses `mise/config.pi.toml` (optimized for server environment)
 
 Detection happens via `scripts/setup-mise-env.sh` which sets `MISE_CONFIG_FILE` based on:
 
 - Raspberry Pi: `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
-- Default: All other environments (macOS, Linux, WSL2)
+- WSL2: `WSL_DISTRO_NAME` environment variable or `/proc/version` containing "microsoft" or "WSL"
+- macOS: `uname -s` returning "Darwin"
+- Default: All other environments (generic Linux)
 
 The environment detection is integrated into `.zshenv` (sourced before `.zprofile` activates mise).
 
-**Note**: hadolint is included in `config.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
+**Note**: hadolint is included in `config.default.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
 
 ### Environment-specific Package Exclusions
 
@@ -37,6 +62,7 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 **Performance Settings**:
 
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
+  - ※ config.default.toml は `jobs = 8`（デスクトップ環境向け）
 
 **Excluded Packages** (28個のnpmパッケージ + 1個のlanguage runtime + 1個のCLIツール + 全cargoツール):
 
@@ -102,18 +128,18 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 - Disk usage: ~2GB reduction
 - Memory usage: ~800MB reduction during installation (parallel execution control)
 
-## Tool Categories
+## Tool Categories (config.default.toml)
 
-mise/config.toml は以下の 6 カテゴリで構成されています:
+mise/config.default.toml は以下の 6 カテゴリで構成されています:
 
 ### 1. Language Runtimes
 
 ```toml
 [tools]
+go = "1.25.5"
 node = "24"
 python = "3.14"
 # lua/luajit は Homebrew で管理 (Neovim 依存関係のため)
-# go は config.pi.toml では除外（サーバー環境では不要）
 ```
 
 ### 2. Package Managers
@@ -227,7 +253,7 @@ yamllint = "latest"
 
 #### 環境別の取り扱い
 
-- **Default** (`config.toml`): 全てのcargoツールをインストール
+- **Default** (`config.default.toml`): 全てのcargoツールをインストール
 - **Raspberry Pi** (`config.pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
 
 注: bat, ripgrep, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
@@ -345,7 +371,7 @@ mise doctor               # Check for issues
 ### Backup and Restore
 
 - Config files are tracked in dotfiles repo
-- To restore: `git checkout mise/config.toml && mise install`
+- To restore: `git checkout mise/config.default.toml mise/config.pi.toml && mise install`
 - Version history via git allows rollback
 
 ## mise と Homebrew の使い分け
@@ -374,15 +400,15 @@ mise doctor               # Check for issues
 
 ## Best Practices
 
-1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in `mise/config.toml`
+1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml` or `mise/config.pi.toml`)
    - ❌ Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
    - ❌ Never maintain separate `global-package.json` or `requirements-global.txt`
-   - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in mise/config.toml
+   - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in environment-specific config files
    - Rationale: Single source of truth, reproducibility, version control
 2. **Global Package Manager Check**: Regularly verify no duplicate packages
    - Run `npm -g list --depth=0` - should only show local links (astro-my-profile, zx-scripts)
    - Run `ls ~/.bun/install/global/node_modules/.bin` - should be empty or minimal
-   - If duplicates found, add to mise/config.toml and `npm uninstall -g <package>`
+   - If duplicates found, add to environment-specific config and `npm uninstall -g <package>`
 3. **Version Pinning**: Use specific versions for project-critical tools
 4. **Latest for Development Tools**: Use "latest" for CLI tools that don't affect build
 5. **Document Breaking Changes**: Comment version pins with reason

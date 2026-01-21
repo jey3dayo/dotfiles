@@ -53,6 +53,8 @@ jobs:
   format-and-lint:
     runs-on: ubuntu-latest
     env:
+      # Use default configuration for CI (macOS/Linux/WSL2)
+      MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.default.toml
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
       # Use GitHub Actions Lua/LuaRocks instead of mise-managed installs
