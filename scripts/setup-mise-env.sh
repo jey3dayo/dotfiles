@@ -36,13 +36,11 @@ setup_mise_config() {
   env_type=$(detect_environment)
 
   case "$env_type" in
-    wsl2)
-      export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.wsl2.toml"
-      ;;
     pi)
       export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.pi.toml"
       ;;
-    macos | default)
+    *)
+      # Default for macOS, WSL2, and other Linux distributions
       export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.toml"
       ;;
   esac

@@ -6,9 +6,8 @@ Purpose: unified tool version management with mise-en-place. Scope: config struc
 
 - Main config: `mise/config.toml` defines all tools (runtimes, CLI tools, npm packages)
 - Environment-specific configs:
-  - `mise/config.toml` - Default (macOS/Linux x86_64)
-  - `mise/config.wsl2.toml` - WSL2 with cargo tools
-  - `mise/config.pi.toml` - Raspberry Pi (no cargo tools for ARM compatibility)
+  - `mise/config.toml` - Default (macOS/Linux/WSL2)
+  - `mise/config.pi.toml` - Raspberry Pi (excludes cargo tools and opencode for ARM compatibility)
 - Directory-local: `mise.toml` for project-specific overrides
 - Env vars: `.mise.env` or `[env]` section in config.toml
 - Config precedence: directory-local → user config (~/.config/mise/config.toml) → global defaults
@@ -17,17 +16,17 @@ Purpose: unified tool version management with mise-en-place. Scope: config struc
 
 mise automatically selects the appropriate configuration based on the environment:
 
-- **Default (macOS/Linux x86_64)**: Uses `mise/config.toml` (includes all tools)
-- **WSL2**: Uses `mise/config.wsl2.toml` (includes cargo tools)
-- **Raspberry Pi**: Uses `mise/config.pi.toml` (excludes cargo tools)
+- **Default (macOS/Linux/WSL2)**: Uses `mise/config.toml` (includes all tools)
+- **Raspberry Pi**: Uses `mise/config.pi.toml` (excludes cargo tools and opencode)
 
 Detection happens via `scripts/setup-mise-env.sh` which sets `MISE_CONFIG_FILE` based on:
 
-- WSL2: `$WSL_DISTRO_NAME` environment variable or `/proc/version` containing "microsoft"/"WSL"
 - Raspberry Pi: `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
-- Default: All other environments
+- Default: All other environments (macOS, Linux, WSL2)
 
 The environment detection is integrated into Zsh startup via `zsh/init/mise-env.zsh`.
+
+**Note**: hadolint is included in `config.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
 
 ## Tool Categories
 
@@ -154,7 +153,7 @@ yamllint = "latest"
 
 **環境別の取り扱い**:
 
-- **Default/WSL2** (`config.toml`, `config.wsl2.toml`): 全てのcargoツールをインストール
+- **Default** (`config.toml`): 全てのcargoツールをインストール
 - **Raspberry Pi** (`config.pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
 
 注: bat, ripgrep, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
@@ -174,7 +173,7 @@ yazi = "latest"
 
 **環境別の取り扱い**:
 
-- **Default/WSL2**: 全てのCLIツールをインストール
+- **Default**: 全てのCLIツールをインストール
 - **Raspberry Pi**: `opencode` を除外（x86_64のみサポート）
 
 ## Migration History
