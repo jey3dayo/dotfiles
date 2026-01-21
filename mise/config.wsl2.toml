@@ -38,118 +38,116 @@ MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
 # ツール定義 (Tools)
 # ========================================
 # mise で管理する全ツールを定義
-# カテゴリ: 1) Runtimes, 2) Package Managers, 3) Formatters/Linters,
-#          4) NPM Packages, 5) Cargo Tools, 6) CLI Tools
 
 [tools]
 # ========================================
-# 1. Language Runtimes (言語ランタイム - 開発用)
+# Language Runtimes (言語ランタイム - 開発用)
 # ========================================
 # 注: システム依存関係用の Node.js/Python は Homebrew で管理
-go = "1.25.5"                    # Go ランタイム
-node = "24"                      # Node.js ランタイム (開発用)
-python = "3.14"                  # Python ランタイム (開発用)
+go = "1.25.5"
+node = "24"
+python = "3.14"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
-# lua = "5.1.5"                  # LuaRocks/Neovim 互換版 (Homebrew で管理推奨)
-# luajit = "latest"              # LuaJIT (Homebrew で管理推奨)
+# lua = "5.1.5"
+# luajit = "latest"
 
 # ========================================
-# 2. Package Managers (パッケージマネージャー)
+# Package Managers (パッケージマネージャー)
 # ========================================
-"pipx:uv" = "latest"             # Python: 高速パッケージマネージャー
-bun = "latest"                   # JavaScript ランタイム + パッケージマネージャー
+"pipx:uv" = "latest"
+bun = "latest"
 
 # FIXME: Temporarily disabled due to CI failures - revisit when stable
 # "pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
 
 # ========================================
-# 3. Formatters and Linters (フォーマッター・Linter - 統一管理)
+# Formatters and Linters (フォーマッター・Linter)
 # ========================================
-actionlint = "latest"            # GitHub Actions ワークフロー Linter
-biome = "latest"                 # JavaScript/TypeScript/JSON フォーマッター + Linter
-prettier = "latest"              # マルチ言語対応フォーマッター
+actionlint = "latest"
+biome = "latest"
+prettier = "latest"
 # 注: hadolint は macOS/Linux x86_64 のみ (プラットフォーム固有セクション参照)
-shellcheck = "latest"            # Shell スクリプト Linter
-shfmt = "latest"                 # Shell スクリプト フォーマッター
-stylua = "latest"                # Lua フォーマッター
-taplo = "latest"                 # TOML フォーマッター + Linter
-yamllint = "latest"              # YAML Linter
+shellcheck = "latest"
+shfmt = "latest"
+stylua = "latest"
+taplo = "latest"
+yamllint = "latest"
 
 # ========================================
-# 4. NPM Global Packages (Node.js グローバルパッケージ)
+# NPM Global Packages (Node.js グローバルパッケージ)
 # ========================================
 
 # ユーティリティ・ツール
-"npm:@antfu/ni" = "latest"       # 統一パッケージマネージャーインターフェース
-"npm:corepack" = "latest"        # 複数のパッケージマネージャー管理
-"npm:husky" = "latest"           # Git hooks フレームワーク
-"npm:npm" = "latest"             # npm 本体
-"npm:npm-check-updates" = "latest"  # npm 依存関係の更新チェック
+"npm:@antfu/ni" = "latest"
+"npm:corepack" = "latest"
+"npm:husky" = "latest"
+"npm:npm" = "latest"
+"npm:npm-check-updates" = "latest"
 
 # 開発・エディタ
-"npm:@fsouza/prettierd" = "latest"  # Prettier デーモン (エディタ統合)
-"npm:neovim" = "latest"          # Neovim Node.js クライアント
+"npm:@fsouza/prettierd" = "latest"
+"npm:neovim" = "latest"
 
 # プロトコルバッファ・RPC
-"npm:@bufbuild/protoc-gen-es" = "latest"  # Protobuf: ECMAScript コード生成
-"npm:@connectrpc/protoc-gen-connect-es" = "latest"  # Connect: ECMAScript RPC コード生成
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"
 
 # AI・コミット支援
-"npm:@openai/codex" = "latest"   # OpenAI Codex SDK
-"npm:aicommits" = "latest"       # AI による自動コミットメッセージ生成
+"npm:@openai/codex" = "latest"
+"npm:aicommits" = "latest"
 
 # ドキュメント・Lint
-"npm:markdown-link-check" = "latest"  # Markdown リンク検証
-"npm:markdownlint-cli2" = "latest"    # Markdown Linter
-"npm:textlint" = "latest"        # 日本語テキスト Linter
-"npm:textlint-rule-preset-ja-technical-writing" = "latest"  # 日本語技術文章ルール
+"npm:markdown-link-check" = "latest"
+"npm:markdownlint-cli2" = "latest"
+"npm:textlint" = "latest"
+"npm:textlint-rule-preset-ja-technical-writing" = "latest"
 
 # 環境変数管理
-"npm:@dotenvx/dotenvx" = "latest"  # .env ファイル管理・暗号化
+"npm:@dotenvx/dotenvx" = "latest"
 
 # 開発ツール・Language Servers
-"npm:eslint_d" = "latest"         # ESLint デーモン (エディタ統合)
-"npm:typescript" = "latest"       # TypeScript コンパイラ
-"npm:typescript-language-server" = "latest"  # TypeScript LSP
-"npm:vscode-json-languageserver" = "latest"  # JSON LSP
-"npm:vscode-langservers-extracted" = "latest"  # HTML/CSS/JSON/ESLint LSP
-"npm:@typescript-eslint/eslint-plugin" = "latest"  # TypeScript ESLint プラグイン
+"npm:eslint_d" = "latest"
+"npm:typescript" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:vscode-json-languageserver" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:@typescript-eslint/eslint-plugin" = "latest"
 
 # ビルドツール
-"npm:esbuild" = "latest"          # 高速 JavaScript/TypeScript バンドラー
+"npm:esbuild" = "latest"
 
 # ユーティリティ
-"npm:zx" = "latest"               # JavaScript シェルスクリプト
+"npm:zx" = "latest"
 
 # MCP サーバー (Model Context Protocol)
-"npm:@aikidosec/safe-chain" = "latest"  # MCP: セキュリティチェーン
-"npm:@benborla29/mcp-server-mysql" = "latest"  # MCP: MySQL サーバー
-"npm:@modelcontextprotocol/server-filesystem" = "latest"  # MCP: ファイルシステム
-"npm:@playwright/mcp" = "latest"  # MCP: Playwright 統合
-"npm:@upstash/context7-mcp" = "latest"  # MCP: Context7 統合
-"npm:chrome-devtools-mcp" = "latest"  # MCP: Chrome DevTools
-"npm:exa-mcp-server" = "latest"   # MCP: Exa サーバー
-"npm:o3-search-mcp" = "latest"    # MCP: O3 検索
+"npm:@aikidosec/safe-chain" = "latest"
+"npm:@benborla29/mcp-server-mysql" = "latest"
+"npm:@modelcontextprotocol/server-filesystem" = "latest"
+"npm:@playwright/mcp" = "latest"
+"npm:@upstash/context7-mcp" = "latest"
+"npm:chrome-devtools-mcp" = "latest"
+"npm:exa-mcp-server" = "latest"
+"npm:o3-search-mcp" = "latest"
 
 # Claude/AI ツール
-"npm:@anthropic-ai/dxt" = "latest"  # Anthropic DXT ツール
-"npm:@mariozechner/claude-bridge" = "latest"  # Claude ブリッジ
-"npm:@sasazame/ccresume" = "latest"  # Claude Code Resume
-"npm:ccusage" = "latest"          # Claude Code 使用状況トラッカー
-"npm:dev3000" = "latest"          # 開発サーバー
+"npm:@anthropic-ai/dxt" = "latest"
+"npm:@mariozechner/claude-bridge" = "latest"
+"npm:@sasazame/ccresume" = "latest"
+"npm:ccusage" = "latest"
+"npm:dev3000" = "latest"
 
 # クラウド・インフラ
-"npm:aws-cdk" = "latest"          # AWS CDK
-"npm:@google/clasp" = "latest"    # Google Apps Script CLI
-"npm:@google/gemini-cli" = "latest"  # Google Gemini CLI
+"npm:aws-cdk" = "latest"
+"npm:@google/clasp" = "latest"
+"npm:@google/gemini-cli" = "latest"
 
 # その他ツール
-"npm:greptile" = "latest"         # コード検索ツール
-"npm:difit" = "latest"            # ディフィットツール
-"npm:tuyapi" = "latest"           # Tuya API クライアント
+"npm:greptile" = "latest"
+"npm:difit" = "latest"
+"npm:tuyapi" = "latest"
 
 # ========================================
-# 5. Cargo-based Tools (WSL2専用含む)
+# Cargo-based Tools (Rust CLI ユーティリティ)
 # ========================================
 # 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理
 "cargo:bandwhich" = "latest"
@@ -158,7 +156,7 @@ yamllint = "latest"              # YAML Linter
 "cargo:wrkflw" = "latest"
 
 # ========================================
-# 6. CLI Tools (コマンドラインユーティリティ)
+# CLI Tools (コマンドラインユーティリティ)
 # ========================================
 aws-cli = "latest"
 eza = "latest"
