@@ -114,11 +114,11 @@ yamllint = "latest"
 # CLI Tools (コマンドラインユーティリティ)
 # ========================================
 # 注: Cargo系ツールは除外（ARM互換性考慮）
-# 注: opencode は除外（x86_64のみサポート）
 eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
+opencode = "latest"
 yazi = "latest"
 
 # ========================================
