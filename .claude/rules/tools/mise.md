@@ -24,7 +24,7 @@ Detection happens via `scripts/setup-mise-env.sh` which sets `MISE_CONFIG_FILE` 
 - Raspberry Pi: `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
 - Default: All other environments (macOS, Linux, WSL2)
 
-The environment detection is integrated into Zsh startup via `zsh/init/mise-env.zsh`.
+The environment detection is integrated into `.zshenv` (sourced before `.zprofile` activates mise).
 
 **Note**: hadolint is included in `config.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
 

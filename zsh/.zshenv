@@ -14,6 +14,11 @@ export ZDOTDIR GIT_CONFIG_GLOBAL
 : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
 export MISE_DATA_DIR MISE_CACHE_DIR
 
+# mise config file selection based on environment (must be before mise activate)
+if [[ -f "${HOME}/src/github.com/jey3dayo/dotfiles/scripts/setup-mise-env.sh" ]]; then
+  source "${HOME}/src/github.com/jey3dayo/dotfiles/scripts/setup-mise-env.sh"
+fi
+
 # History file should be set before shell init so history loads
 # even if .zshrc is skipped. Keep it under XDG state by default.
 : "${HISTFILE:=${XDG_STATE_HOME}/zsh/history}"
