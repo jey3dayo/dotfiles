@@ -146,11 +146,16 @@ yamllint = "latest"
 
 ```toml
 [tools]
-"cargo:bandwhich" = { version = "latest", os = ["macos"] }
-"cargo:needle-cli" = { version = "latest", os = ["macos"] }
-"cargo:similarity-ts" = { version = "latest", os = ["macos"] }
-"cargo:wrkflw" = { version = "latest", os = ["macos"] }
+"cargo:bandwhich" = "latest"
+"cargo:needle-cli" = "latest"
+"cargo:similarity-ts" = "latest"
+"cargo:wrkflw" = "latest"
 ```
+
+**環境別の取り扱い**:
+
+- **Default/WSL2** (`config.toml`, `config.wsl2.toml`): 全てのcargoツールをインストール
+- **Raspberry Pi** (`config.pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
 
 注: bat, ripgrep, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
 
@@ -162,11 +167,15 @@ aws-cli = "latest"
 eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"
-hadolint = { version = "latest", os = ["macos"] }
 jq = "latest"
-opencode = { version = "latest", os = ["macos"] }
+opencode = "latest"
 yazi = "latest"
 ```
+
+**環境別の取り扱い**:
+
+- **Default/WSL2**: 全てのCLIツールをインストール
+- **Raspberry Pi**: `opencode` を除外（x86_64のみサポート）
 
 ## Migration History
 
