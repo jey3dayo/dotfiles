@@ -13,37 +13,37 @@ Purpose: unified tool version management with mise-en-place. Scope: config struc
 
 mise/config.toml は以下の 6 カテゴリで構成されています:
 
-### 1. Language Runtimes (言語ランタイム - 開発用)
+### 1. Language Runtimes
 
 ```toml
 [tools]
-go = "1.25.5"            # Go ランタイム
-node = "24"              # Node.js ランタイム (開発用)
-python = "3.14"          # Python ランタイム (開発用)
+go = "1.25.5"
+node = "24"
+python = "3.14"
 # lua/luajit は Homebrew で管理 (Neovim 依存関係のため)
 ```
 
-### 2. Package Managers (パッケージマネージャー)
+### 2. Package Managers
 
 ```toml
 [tools]
-"pipx:uv" = "latest"     # Python: 高速パッケージマネージャー
-bun = "latest"           # JavaScript ランタイム + パッケージマネージャー
+"pipx:uv" = "latest"
+bun = "latest"
 ```
 
-### 3. Formatters and Linters (フォーマッター・Linter - 統一管理)
+### 3. Formatters and Linters
 
 ```toml
 [tools]
-actionlint = "latest"    # GitHub Actions ワークフロー Linter
-biome = "latest"         # JavaScript/TypeScript/JSON フォーマッター + Linter
-hadolint = "latest"      # Dockerfile Linter
-prettier = "latest"      # マルチ言語対応フォーマッター
-shellcheck = "latest"    # Shell スクリプト Linter
-shfmt = "latest"         # Shell スクリプト フォーマッター
-stylua = "latest"        # Lua フォーマッター
-taplo = "latest"         # TOML フォーマッター + Linter
-yamllint = "latest"      # YAML Linter
+actionlint = "latest"
+biome = "latest"
+hadolint = "latest"
+prettier = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+stylua = "latest"
+taplo = "latest"
+yamllint = "latest"
 ```
 
 ### 4. NPM Global Packages (Node.js グローバルパッケージ)
@@ -122,29 +122,29 @@ yamllint = "latest"      # YAML Linter
 "npm:tuyapi" = "latest"
 ```
 
-### 5. Cargo-based Tools (Rust CLI ユーティリティ)
+### 5. Cargo-based Tools
 
 ```toml
 [tools]
-"cargo:bandwhich" = "latest"     # ネットワーク帯域幅モニタリング
-"cargo:needle-cli" = "latest"    # セマンティックコード検索
-"cargo:similarity-ts" = "latest" # TypeScript/JavaScript コード類似度分析
-"cargo:wrkflw" = "latest"        # GitHub Actions ワークフロー実行
+"cargo:bandwhich" = "latest"
+"cargo:needle-cli" = "latest"
+"cargo:similarity-ts" = "latest"
+"cargo:wrkflw" = "latest"
 ```
 
 注: bat, ripgrep, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
 
-### 6. CLI Tools (コマンドラインユーティリティ)
+### 6. CLI Tools
 
 ```toml
 [tools]
-aws-cli = "latest"               # AWS コマンドラインツール
-eza = "latest"                   # ls の Rust 実装
-fd = "latest"                    # find の高速 Rust 実装
-"github:cli/cli" = "latest"      # GitHub CLI
-jq = "latest"                    # JSON クエリ・パーサー
-opencode = "latest"              # コード検索・ナビゲーション
-yazi = "latest"                  # ターミナル ファイルマネージャー
+aws-cli = "latest"
+eza = "latest"
+fd = "latest"
+"github:cli/cli" = "latest"
+jq = "latest"
+opencode = "latest"
+yazi = "latest"
 ```
 
 ## Migration History
