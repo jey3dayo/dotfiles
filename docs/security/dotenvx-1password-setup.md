@@ -72,6 +72,7 @@ restore-env-keys
 ```
 
 この関数は `.config/zsh/config/tools/1password.zsh` で定義されており、以下を自動で実行します：
+
 - 1Passwordから `dotfiles-env-keys` を取得
 - `~/.config/.env.keys` に保存
 - パーミッションを 600 に設定
