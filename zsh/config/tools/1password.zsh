@@ -16,7 +16,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 elif [[ "$(uname -r)" =~ "microsoft" ]] || [[ "$(uname -r)" =~ "WSL" ]]; then
   # WSL2: Use Windows version of 1Password CLI
   # Try to detect Windows username dynamically
-  local windows_user="${USER}"
+  windows_user="${USER}"
   if [[ -d "/mnt/c/Users" ]]; then
     # If the WSL user doesn't exist in Windows, try to find the first user directory
     if [[ ! -d "/mnt/c/Users/${windows_user}" ]]; then
