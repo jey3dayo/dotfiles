@@ -6,7 +6,9 @@ dotenvxの秘密鍵 (`.env.keys`) を1Passwordで安全に管理する方法。
 
 ## 前提条件
 
-- 1Password CLIがインストール済み (`brew install --cask 1password-cli`)
+- 1Password CLIがインストール済み
+  - **macOS**: `brew install --cask 1password-cli`
+  - **WSL2**: `winget install AgileBits.1Password.CLI` (Windows側で実行)
 - 1Password GUIアプリでサインイン済み
 - dotenvxがセットアップ済み (`.env` と `.env.keys` が存在)
 
@@ -21,9 +23,11 @@ op --version
 # アカウントリスト確認
 op account list
 
-# サインイン(必要な場合)
+# サインイン(必要な場合、macOSのみ)
 eval $(op signin)
 ```
+
+**注意**: WSL2環境では、Windows版1Password Desktopが起動していれば自動的に認証されます。
 
 ### 2. .env.keysを1Passwordに保存
 
@@ -58,7 +62,21 @@ cp ~/.config/.env.keys ~/.config/.env.keys.backup
 
 ### .env.keysの復元
 
-新しいマシンや環境で `.env.keys` を復元する場合:
+新しいマシンや環境で `.env.keys` を復元する場合、**ヘルパー関数を使う方法（推奨）**と手動で復元する方法があります:
+
+#### 方法A: ヘルパー関数を使用（推奨）
+
+```bash
+# 簡単に復元
+restore-env-keys
+```
+
+この関数は `.config/zsh/config/tools/1password.zsh` で定義されており、以下を自動で実行します：
+- 1Passwordから `dotfiles-env-keys` を取得
+- `~/.config/.env.keys` に保存
+- パーミッションを 600 に設定
+
+#### 方法B: 手動で復元
 
 ```bash
 # 1Passwordから復元
@@ -93,9 +111,21 @@ op whoami
 ### .env.keysが見つからない
 
 ```bash
-# 1Passwordから復元
+# ヘルパー関数で簡単に復元（推奨）
+restore-env-keys
+
+# または手動で復元
 op document get "dotfiles-env-keys" --vault "Private" > ~/.config/.env.keys
 chmod 600 ~/.config/.env.keys
+```
+
+### .env.keysを更新したい
+
+ローカルの `.env.keys` を更新した後、1Passwordにも反映させる場合:
+
+```bash
+# ヘルパー関数を使用
+update-env-keys
 ```
 
 ### 復号化エラー
@@ -128,8 +158,29 @@ cat .env | grep DOTENV_PUBLIC_KEY
    - 秘密鍵は定期的にローテーション推奨
    - `dotenvx encrypt --key <new-key>` で再暗号化
 
+## クロスプラットフォーム対応
+
+このセットアップはmacOSとWSL2の両方で動作します:
+
+- **macOS**: Homebrew経由でインストールされた `op` コマンドを使用
+- **WSL2**: Windows版1Password CLIを `/mnt/c/` パス経由で使用
+
+プラットフォーム検出は `.config/zsh/config/tools/1password.zsh` で自動的に行われます。
+
+### ヘルパー関数
+
+- `restore-env-keys`: 1Passwordから `.env.keys` を復元
+- `update-env-keys`: ローカルの `.env.keys` を1Passwordに更新
+- `op`: クロスプラットフォームで動作する1Password CLIラッパー
+
+### 環境変数
+
+- `OP_CLI_PATH`: 1Password CLIの実行パス（自動検出）
+- `OP_ACCOUNT`: デフォルトアカウントID（personal: CNRNCJQSBBBYZESUWAMXLHQFBI）
+
 ## 関連ドキュメント
 
 - [dotenvx公式ドキュメント](https://dotenvx.com/encryption)
 - [1Password CLI リファレンス](https://developer.1password.com/docs/cli/)
 - [mise Rules - dotenvx統合](../../.claude/rules/tools/mise.md)
+- [1Password CLI設定](../../zsh/config/tools/1password.zsh)
