@@ -16,6 +16,15 @@
       "pattern": "TODO\\.md$"
     }
   ],
+  "replacementPatterns": [],
+  "httpHeaders": [
+    {
+      "urls": ["https://github.com"],
+      "headers": {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+      }
+    }
+  ],
   "timeout": "20s",
   "retryOn429": true,
   "retryCount": 5,
