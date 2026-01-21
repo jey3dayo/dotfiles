@@ -149,14 +149,14 @@ yamllint = "latest"              # YAML Linter
 "npm:tuyapi" = "latest"           # Tuya API クライアント
 
 # ========================================
-# 5. Cargo-based Tools (Rust CLI ユーティリティ)
+# 5. Cargo-based Tools
 # ========================================
-# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
-# 注: 以下のツールは macOS のみでインストール（Raspberry Pi では重すぎるため除外）
-"cargo:bandwhich" = { version = "latest", os = ["macos"] }     # ネットワーク帯域幅モニタリング
-"cargo:needle-cli" = { version = "latest", os = ["macos"] }    # セマンティックコード検索
-"cargo:similarity-ts" = { version = "latest", os = ["macos"] } # TypeScript/JavaScript コード類似度分析
-"cargo:wrkflw" = { version = "latest", os = ["macos"] }        # GitHub Actions ワークフロー実行
+# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理
+# 注: 以下は macOS のみ（Raspberry Pi 除外）
+"cargo:bandwhich" = { version = "latest", os = ["macos"] }
+"cargo:needle-cli" = { version = "latest", os = ["macos"] }
+"cargo:similarity-ts" = { version = "latest", os = ["macos"] }
+"cargo:wrkflw" = { version = "latest", os = ["macos"] }
 
 # ========================================
 # 6. CLI Tools (コマンドラインユーティリティ)
