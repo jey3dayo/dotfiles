@@ -15,7 +15,7 @@ cd ~/src/github.com/jey3dayo/dotfiles
 sh ./bin/bootstrap.sh
 ```
 
-**実行内容**:
+### 実行内容
 
 - Homebrewインストール（存在しない場合）
 - アーキテクチャ検出（Apple Silicon vs Intel）
@@ -23,7 +23,7 @@ sh ./bin/bootstrap.sh
 - 現在のセッションで`brew`コマンドを使用可能に設定
 - 次ステップへのガイド表示
 
-**その後、以下のQuick Setupステップに従ってください。**
+その後、以下のQuick Setupステップに従ってください。
 
 ---
 

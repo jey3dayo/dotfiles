@@ -51,6 +51,31 @@ Sources: docs/README.md.
 - Check for duplicate content against SST docs before adding text.
 - Keep docs/README.md as navigation only; avoid embedding procedures or metrics there.
 
+## Formatting constraints
+
+- **List items**: Avoid bold text at the start of list items (`- **Text**:` pattern)
+- **Emphasis in structure**: Use headings (`###`) for structured sections instead of bold lists
+- **Rationale**: Headings provide better document structure, enable table-of-contents generation, and improve navigation
+
+Example:
+
+```markdown
+# ❌ Avoid
+
+- **Command Management**: Custom commands
+- **AI Assistance**: Context for AI
+
+# ✅ Prefer
+
+### Command Management
+
+Custom commands
+
+### AI Assistance
+
+Context for AI
+```
+
 ## Cross-link hygiene
 
 - Maintain working internal links and avoid repeating data; rely on navigation docs for discovery.

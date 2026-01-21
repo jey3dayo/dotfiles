@@ -65,8 +65,8 @@ bun = "latest"
 # ========================================
 actionlint = "latest"
 biome = "latest"
-hadolint = "latest"
 prettier = "latest"
+# 注: hadolint は macOS/Linux x86_64 のみ (プラットフォーム固有セクション参照)
 shellcheck = "latest"
 shfmt = "latest"
 stylua = "latest"
@@ -147,23 +147,15 @@ yamllint = "latest"
 "npm:tuyapi" = "latest"
 
 # ========================================
-# Cargo-based Tools (Rust CLI ユーティリティ)
-# ========================================
-# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理
-"cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "latest"
-"cargo:similarity-ts" = "latest"
-"cargo:wrkflw" = "latest"
-
-# ========================================
 # CLI Tools (コマンドラインユーティリティ)
 # ========================================
+# 注: Cargo系ツールは除外（ARM互換性考慮）
+# 注: opencode は除外（x86_64のみサポート）
 aws-cli = "latest"
 eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
-opencode = "latest"
 yazi = "latest"
 
 # ========================================

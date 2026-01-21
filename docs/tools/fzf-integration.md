@@ -107,13 +107,13 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 **Performance Impact**: ✅ Optimized - 遅延読み込みで起動時間への影響なし
 
-**Key Features**:
+#### Key Features
 
 - **Repository Navigation**: `^]` による ghq 統合
 - **Process Management**: `^g^K` による直感的プロセス操作
 - **Command History**: `^R` の強化された履歴検索
 
-**Implementation**:
+#### Implementation
 
 ```bash
 # Priority loading in sheldon/plugins.toml
@@ -141,13 +141,13 @@ apply = ["source"]
 
 **Performance Impact**: ✅ 最適化済み - FZF統合による操作効率90%向上
 
-**Key Features**:
+#### Key Features
 
 - **Branch Selection**: 直感的ブランチ切り替え
 - **File Selection**: ステージング・差分確認の効率化
 - **Repository Management**: ghq + FZF による統合管理
 
-**Implementation**:
+#### Implementation
 
 ```bash
 # Worktree-aware branch switcher using fzf-git selectors
@@ -166,12 +166,12 @@ _git_switch_branch() {
 
 **Performance Impact**: ✅ セッション切り替え時間90%短縮
 
-**Key Features**:
+#### Key Features
 
 - **Session Management**: FZF による高速セッション選択
 - **Window Navigation**: 効率的ウィンドウ切り替え
 
-**Implementation**:
+#### Implementation
 
 ```bash
 # tmux.conf integration
@@ -186,7 +186,7 @@ bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
 
 **Performance Improvement**: 60% faster file searching
 
-**Key Features**:
+#### Key Features
 
 - **File Search**: 高速ファイル検索
 - **Text Search**: live grep 統合
