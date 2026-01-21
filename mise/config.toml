@@ -159,16 +159,16 @@ yamllint = "latest"              # YAML Linter
 "cargo:wrkflw" = { version = "latest", os = ["macos"] }
 
 # ========================================
-# 6. CLI Tools (コマンドラインユーティリティ)
+# 6. CLI Tools
 # ========================================
-aws-cli = "latest"               # AWS コマンドラインツール
-eza = "latest"                   # ls の Rust 実装 (モダン出力)
-fd = "latest"                    # find の高速 Rust 実装
-"github:cli/cli" = "latest"      # GitHub CLI
-hadolint = { version = "latest", os = ["macos"] }  # Dockerfile Linter
-jq = "latest"                    # JSON クエリ・パーサー
-opencode = { version = "latest", os = ["macos"] }  # コード検索・ナビゲーション
-yazi = "latest"                  # ターミナル ファイルマネージャー
+aws-cli = "latest"
+eza = "latest"
+fd = "latest"
+"github:cli/cli" = "latest"
+hadolint = { version = "latest", os = ["macos"] }
+jq = "latest"
+opencode = { version = "latest", os = ["macos"] }
+yazi = "latest"
 
 # ========================================
 # タスク設定 (Task Configuration)

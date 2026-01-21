@@ -126,10 +126,10 @@ yamllint = "latest"
 
 ```toml
 [tools]
-"cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "latest"
-"cargo:similarity-ts" = "latest"
-"cargo:wrkflw" = "latest"
+"cargo:bandwhich" = { version = "latest", os = ["macos"] }
+"cargo:needle-cli" = { version = "latest", os = ["macos"] }
+"cargo:similarity-ts" = { version = "latest", os = ["macos"] }
+"cargo:wrkflw" = { version = "latest", os = ["macos"] }
 ```
 
 注: bat, ripgrep, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
@@ -142,8 +142,9 @@ aws-cli = "latest"
 eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"
+hadolint = { version = "latest", os = ["macos"] }
 jq = "latest"
-opencode = "latest"
+opencode = { version = "latest", os = ["macos"] }
 yazi = "latest"
 ```
 
