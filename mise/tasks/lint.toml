@@ -20,10 +20,10 @@ fi
 
 ["lint:markdown"]
 description = "Markdown ファイルをチェック"
-run = [
-  "markdownlint-cli2 \"${MD_GLOB}\" ${MD_EXCLUDES}",
-  "fd -e md -X prettier --check",
-]
+run = """
+markdownlint-cli2 "${MD_GLOB}" ${MD_EXCLUDES}
+prettier --check '**/*.md'
+"""
 
 ["lint:toml"]
 description = "TOML ファイルをチェック（TOML_FILES で対象を限定可能）"
