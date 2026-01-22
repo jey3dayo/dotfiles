@@ -19,6 +19,7 @@ mise/
 Environment detection is handled by `scripts/setup-mise-env.sh` (sourced in `zsh/.zshenv`).
 
 **Automatic Configuration Selection**:
+
 - Raspberry Pi → `config.pi.toml`
 - macOS/Linux/WSL2 → `config.default.toml`
 
@@ -26,10 +27,10 @@ Environment detection is handled by `scripts/setup-mise-env.sh` (sourced in `zsh
 
 ## Tool Counts
 
-| Environment | Config File | Tools | Jobs | Notes |
-|-------------|-------------|-------|------|-------|
-| Default | config.default.toml | 73 | 8 | Full toolset (go, 46 npm, 4 cargo, 7 CLI) |
-| Raspberry Pi | config.pi.toml | 24 | 2 | Optimized (no go, minimal npm, no cargo) |
+| Environment  | Config File         | Tools | Jobs | Notes                                     |
+| ------------ | ------------------- | ----- | ---- | ----------------------------------------- |
+| Default      | config.default.toml | 73    | 8    | Full toolset (go, 46 npm, 4 cargo, 7 CLI) |
+| Raspberry Pi | config.pi.toml      | 24    | 2    | Optimized (no go, minimal npm, no cargo)  |
 
 ## Migration from Old Structure
 
@@ -39,6 +40,7 @@ Environment detection is handled by `scripts/setup-mise-env.sh` (sourced in `zsh
 **Migration**: Automatic on shell restart after pulling changes. No manual steps required.
 
 **Verification**:
+
 ```bash
 echo $MISE_CONFIG_FILE
 mise ls --json | jq 'length'  # Should be 73 (default) or 24 (pi)
@@ -47,6 +49,7 @@ mise ls --json | jq 'length'  # Should be 73 (default) or 24 (pi)
 ## Development
 
 **Common Commands**:
+
 ```bash
 mise install             # Install all tools from active config
 mise upgrade             # Update all tools
@@ -56,6 +59,7 @@ mise doctor              # Health check
 ```
 
 **See Also**:
+
 - `.claude/rules/tools/mise.md` - Comprehensive documentation
 - `scripts/setup-mise-env.sh` - Environment detection logic
 - `.mise.toml` - Project-level tasks

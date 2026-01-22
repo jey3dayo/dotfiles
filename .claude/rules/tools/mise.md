@@ -9,11 +9,12 @@ mise設定は環境別ファイルで管理されています:
 ### Main config: `mise/config.toml`
 
 **内容**: 設定のみ（ツール定義なし）
+
 - グローバル設定: `experimental`, `env_file`, `trusted_config_paths`
 - 環境変数定義
 - **重要**: ツールは定義しない（マージによる意図しない追加を防ぐため）
 
-### Environment-specific configs:
+### Environment-specific configs
 
 - **`mise/config.default.toml`** - デフォルト（macOS/Linux/WSL2）
   - jobs = 8（デスクトップ/ワークステーション向け）
@@ -107,8 +108,9 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
    - Reason: Not used in server environment
 
 10. **Cargo Tools** (全て):
-   - `bandwhich`, `needle-cli`, `similarity-ts`, `wrkflw`
-   - Reason: ARM compatibility issues and long build times
+
+- `bandwhich`, `needle-cli`, `similarity-ts`, `wrkflw`
+- Reason: ARM compatibility issues and long build times
 
 **Maintained Packages** (lightweight and useful for server operations):
 
