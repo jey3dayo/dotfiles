@@ -4,29 +4,55 @@ Purpose: unified tool version management with mise-en-place. Scope: config struc
 
 ## Configuration Structure
 
-- Main config: `mise/config.toml` defines all tools (runtimes, CLI tools, npm packages)
-- Environment-specific configs:
-  - `mise/config.toml` - Default (macOS/Linux/WSL2)
-  - `mise/config.pi.toml` - Raspberry Pi (excludes cargo tools and opencode for ARM compatibility)
-- Directory-local: `mise.toml` for project-specific overrides
-- Env vars: `.mise.env` or `[env]` section in config.toml
-- Config precedence: directory-local → user config (~/.config/mise/config.toml) → global defaults
+mise設定は環境別ファイルで管理されています:
+
+### Main config: `mise/config.toml`
+
+**内容**: 設定のみ（ツール定義なし）
+
+- グローバル設定: `experimental`, `env_file`, `trusted_config_paths`
+- 環境変数定義
+- **重要**: ツールは定義しない（マージによる意図しない追加を防ぐため）
+
+### Environment-specific configs
+
+- **`mise/config.default.toml`** - デフォルト（macOS/Linux/WSL2）
+  - jobs = 8（デスクトップ/ワークステーション向け）
+  - 全ツール: 73個（go, node, python, npm 46個, cargo 4個, CLI 7個, formatters/linters 9個）
+
+- **`mise/config.pi.toml`** - Raspberry Pi（ARMサーバー環境）
+  - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
+  - 最小ツールセット: 24個（go除外、npm軽量版、cargo全除外）
+
+### Directory-local: `mise.toml`
+
+プロジェクト固有のオーバーライド（例: .mise.toml at repo root）
+
+### Env vars: `.mise.env` or `[env]` section
+
+環境変数定義（dotenvx 暗号化サポート）
+
+### Config precedence
+
+directory-local → environment-specific (via MISE_CONFIG_FILE) → user config → global defaults
 
 ### Environment Detection
 
 mise automatically selects the appropriate configuration based on the environment:
 
-- **Default (macOS/Linux/WSL2)**: Uses `mise/config.toml` (includes all tools)
+- **Default (macOS/Linux/WSL2)**: Uses `mise/config.default.toml` (includes all tools)
 - **Raspberry Pi**: Uses `mise/config.pi.toml` (optimized for server environment)
 
 Detection happens via `scripts/setup-mise-env.sh` which sets `MISE_CONFIG_FILE` based on:
 
 - Raspberry Pi: `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
-- Default: All other environments (macOS, Linux, WSL2)
+- WSL2: `WSL_DISTRO_NAME` environment variable or `/proc/version` containing "microsoft" or "WSL"
+- macOS: `uname -s` returning "Darwin"
+- Default: All other environments (generic Linux)
 
-The environment detection is integrated into Zsh startup via `zsh/init/mise-env.zsh`.
+The environment detection is integrated into `.zshenv` (sourced before `.zprofile` activates mise).
 
-**Note**: hadolint is included in `config.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
+**Note**: hadolint is included in `config.default.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
 
 ### Environment-specific Package Exclusions
 
@@ -37,68 +63,76 @@ The environment detection is integrated into Zsh startup via `zsh/init/mise-env.
 **Performance Settings**:
 
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
+  - ※ config.default.toml は `jobs = 8`（デスクトップ環境向け）
 
-**Excluded Packages** (23個のnpmパッケージ + 1個のcargoパッケージ):
+**Excluded Packages** (28個のnpmパッケージ + 1個のlanguage runtime + 1個のCLIツール + 全cargoツール):
 
-1. **Editor Integration** (6個):
+1. **Language Runtimes** (1個):
+   - `go`
+   - Reason: Not used in server environment
+
+2. **Editor Integration** (6個):
    - `neovim`, `typescript`, `typescript-language-server`
    - `vscode-json-languageserver`, `vscode-langservers-extracted`
    - `@typescript-eslint/eslint-plugin`
    - Reason: Remote development uses local machine's LSP
 
-2. **TypeScript/Lint Tools** (2個):
-   - `eslint_d`, `@typescript-eslint/eslint-plugin`
+3. **TypeScript/Lint Tools** (1個):
+   - `eslint_d`
    - Reason: Editor integration required
 
-3. **Browser/GUI MCPs** (5個):
+4. **Browser/GUI MCPs** (5個):
    - `@playwright/mcp` (~300MB), `chrome-devtools-mcp`
    - `@aikidosec/safe-chain`, `@benborla29/mcp-server-mysql`, `exa-mcp-server`
    - Reason: GUI environment required, large dependencies
 
-4. **Claude/AI Development Tools** (2個):
-   - `@anthropic-ai/dxt`, `ccusage`
+5. **Claude/AI Development Tools** (4個):
+   - `@anthropic-ai/dxt`, `@mariozechner/claude-bridge`, `ccusage`, `dev3000`
    - Reason: Desktop development tools, not used in server environment
-   - Note: `@mariozechner/claude-bridge`, `@sasazame/ccresume` maintained for remote access
+   - Note: `@sasazame/ccresume` maintained for session management
 
-5. **Cloud Infrastructure** (3個):
-   - `aws-cdk` (~150MB), `@google/clasp`, `@google/gemini-cli`
-   - Reason: Heavy dependencies, AWS CLI sufficient
+6. **Cloud Infrastructure** (4個):
+   - `aws-cli`, `aws-cdk` (~150MB), `@google/clasp`, `@google/gemini-cli`
+   - Reason: Heavy dependencies, not needed in server environment
 
-6. **Protobuf/RPC** (2個):
+7. **Protobuf/RPC** (2個):
    - `@bufbuild/protoc-gen-es`, `@connectrpc/protoc-gen-connect-es`
    - Reason: Not doing gRPC development
 
-7. **Other Tools** (2個):
+8. **Development Tools** (5個):
+   - `husky`, `corepack`, `esbuild`, `@fsouza/prettierd`, `tuyapi`
+   - Reason: Not needed in server environment
+
+9. **Other Tools** (2個):
    - `difit`, `greptile`
    - Reason: Not used in server environment
-   - Note: `tuyapi` maintained for IoT automation
 
-8. **Cargo Tools** (1個):
-   - `needle-cli`
-   - Reason: Unknown usage, long build time
-   - Note: Other cargo tools excluded entirely for ARM compatibility
+10. **Cargo Tools** (全て):
+
+- `bandwhich`, `needle-cli`, `similarity-ts`, `wrkflw`
+- Reason: ARM compatibility issues and long build times
 
 **Maintained Packages** (lightweight and useful for server operations):
 
-- Utilities: `@antfu/ni`, `npm-check-updates`, `zx`
-- Documentation: `markdown-link-check`, `markdownlint-cli2`, `textlint`
+- Utilities: `@antfu/ni`, `npm`, `npm-check-updates`, `zx`
+- Documentation: `markdown-link-check`, `markdownlint-cli2`, `textlint`, `textlint-rule-preset-ja-technical-writing`
 - Environment: `@dotenvx/dotenvx`
-- Editor: `@fsouza/prettierd`
-- Build: `esbuild`
-- AI: `@openai/codex`, `aicommits` (maintained by user request)
-- Claude: `@sasazame/ccresume` (session management)
-- IoT: `tuyapi` (automation)
-- MCP Essential: `@modelcontextprotocol/server-filesystem`, `@upstash/context7-mcp`, `o3-search-mcp`
+- Formatters/Linters: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
+- AI: `@openai/codex`, `aicommits`
+- Claude: `@sasazame/ccresume`
+- MCP: `@upstash/context7-mcp`, `o3-search-mcp`
+- CLI Tools: `eza`, `fd`, `gh`, `jq`, `opencode`, `yazi`
+- Runtimes: `node`, `python`, `bun`, `pipx:uv`
 
 **Expected Benefits**:
 
-- Install time: ~30-40 minutes faster (package reduction + memory swap avoidance)
-- Disk usage: ~1.5GB reduction
+- Install time: ~40-50 minutes faster (28 npm packages + go runtime + aws-cli + all cargo tools excluded)
+- Disk usage: ~2GB reduction
 - Memory usage: ~800MB reduction during installation (parallel execution control)
 
-## Tool Categories
+## Tool Categories (config.default.toml)
 
-mise/config.toml は以下の 6 カテゴリで構成されています:
+mise/config.default.toml は以下の 6 カテゴリで構成されています:
 
 ### 1. Language Runtimes
 
@@ -221,7 +255,7 @@ yamllint = "latest"
 
 #### 環境別の取り扱い
 
-- **Default** (`config.toml`): 全てのcargoツールをインストール
+- **Default** (`config.default.toml`): 全てのcargoツールをインストール
 - **Raspberry Pi** (`config.pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
 
 注: bat, ripgrep, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
@@ -242,7 +276,7 @@ yazi = "latest"
 #### 環境別の取り扱い
 
 - **Default**: 全てのCLIツールをインストール
-- **Raspberry Pi**: `opencode` を除外（x86_64のみサポート）
+- **Raspberry Pi**: 全てのCLIツールをインストール
 
 ## Migration History
 
@@ -339,7 +373,7 @@ mise doctor               # Check for issues
 ### Backup and Restore
 
 - Config files are tracked in dotfiles repo
-- To restore: `git checkout mise/config.toml && mise install`
+- To restore: `git checkout mise/config.default.toml mise/config.pi.toml && mise install`
 - Version history via git allows rollback
 
 ## mise と Homebrew の使い分け
@@ -368,15 +402,15 @@ mise doctor               # Check for issues
 
 ## Best Practices
 
-1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in `mise/config.toml`
+1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml` or `mise/config.pi.toml`)
    - ❌ Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
    - ❌ Never maintain separate `global-package.json` or `requirements-global.txt`
-   - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in mise/config.toml
+   - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in environment-specific config files
    - Rationale: Single source of truth, reproducibility, version control
 2. **Global Package Manager Check**: Regularly verify no duplicate packages
    - Run `npm -g list --depth=0` - should only show local links (astro-my-profile, zx-scripts)
    - Run `ls ~/.bun/install/global/node_modules/.bin` - should be empty or minimal
-   - If duplicates found, add to mise/config.toml and `npm uninstall -g <package>`
+   - If duplicates found, add to environment-specific config and `npm uninstall -g <package>`
 3. **Version Pinning**: Use specific versions for project-critical tools
 4. **Latest for Development Tools**: Use "latest" for CLI tools that don't affect build
 5. **Document Breaking Changes**: Comment version pins with reason

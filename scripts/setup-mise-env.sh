@@ -2,7 +2,7 @@
 # Environment detection script for mise configuration
 # Automatically selects the appropriate mise config based on the environment
 
-DOTFILES_ROOT="${DOTFILES_ROOT:-${HOME}/src/github.com/jey3dayo/dotfiles}"
+DOTFILES_ROOT="${DOTFILES_ROOT:-${XDG_CONFIG_HOME:-${HOME}/.config}}"
 
 detect_environment() {
   # WSL2 detection
@@ -41,7 +41,7 @@ setup_mise_config() {
       ;;
     *)
       # Default for macOS, WSL2, and other Linux distributions
-      export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.toml"
+      export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.default.toml"
       ;;
   esac
 

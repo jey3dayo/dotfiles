@@ -1,14 +1,21 @@
 # ========================================
-# グローバル mise 設定（ツール・共通設定のみ）
-# ~/.config/mise/config.toml
+# デフォルト mise 設定（Mac/Linux/WSL2 共通）
+# ~/src/github.com/jey3dayo/dotfiles/mise/config.default.toml
+# ========================================
+# この設定ファイルは以下の環境で使用されます:
+# - macOS (Darwin)
+# - Linux (default)
+# - WSL2 (Ubuntu on Windows)
+#
+# Raspberry Pi は config.pi.toml を使用します。
 # ========================================
 
 [settings]
 env_file = '.env.local'
 experimental = true
-jobs = 2                                                            # Raspberry Pi メモリ制約対応: 並列数削減でスワップ回避
+jobs = 8                                                            # デフォルトの並列実行数
 vfox = false
-idiomatic_version_file_enable_tools = []
+idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
 
 [settings.pipx]
@@ -44,7 +51,8 @@ MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
 # Language Runtimes (言語ランタイム - 開発用)
 # ========================================
 # 注: システム依存関係用の Node.js/Python は Homebrew で管理
-node = "24"
+go = "1.25.5"
+node = "lts"
 python = "3.14"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"
@@ -64,8 +72,8 @@ bun = "latest"
 # ========================================
 actionlint = "latest"
 biome = "latest"
+hadolint = "latest"
 prettier = "latest"
-# 注: hadolint は macOS/Linux x86_64 のみ (プラットフォーム固有セクション参照)
 shellcheck = "latest"
 shfmt = "latest"
 stylua = "latest"
@@ -78,8 +86,18 @@ yamllint = "latest"
 
 # ユーティリティ・ツール
 "npm:@antfu/ni" = "latest"
+"npm:corepack" = "latest"
+"npm:husky" = "latest"
 "npm:npm" = "latest"
 "npm:npm-check-updates" = "latest"
+
+# 開発・エディタ
+"npm:@fsouza/prettierd" = "latest"
+"npm:neovim" = "latest"
+
+# プロトコルバッファ・RPC
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"
 
 # AI・コミット支援
 "npm:@openai/codex" = "latest"
@@ -94,23 +112,59 @@ yamllint = "latest"
 # 環境変数管理
 "npm:@dotenvx/dotenvx" = "latest"
 
-# 注: Language Servers は除外 (リモート開発でローカルマシンのLSP使用)
+# 開発ツール・Language Servers
+"npm:eslint_d" = "latest"
+"npm:typescript" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:vscode-json-languageserver" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:@typescript-eslint/eslint-plugin" = "latest"
+
+# ビルドツール
+"npm:esbuild" = "latest"
+
+# ユーティリティ
+"npm:zx" = "latest"
 
 # MCP サーバー (Model Context Protocol)
-# 注: 軽量かつサーバー環境で有用なMCPのみ維持
+"npm:@aikidosec/safe-chain" = "latest"
+"npm:@benborla29/mcp-server-mysql" = "latest"
+"npm:@modelcontextprotocol/server-filesystem" = "latest"
+"npm:@playwright/mcp" = "latest"
 "npm:@upstash/context7-mcp" = "latest"
+"npm:chrome-devtools-mcp" = "latest"
+"npm:exa-mcp-server" = "latest"
 "npm:o3-search-mcp" = "latest"
 
 # Claude/AI ツール
-# 注: デスクトップ開発ツール (dxt, dev3000, ccusage) は除外
+"npm:@anthropic-ai/dxt" = "latest"
 "npm:@sasazame/ccresume" = "latest"
+"npm:ccusage" = "latest"
+"npm:dev3000" = "latest"
 
-# 注: クラウド・インフラツールは除外 (aws-cli で十分)
+# クラウド・インフラ
+"npm:aws-cdk" = "latest"
+"npm:@google/clasp" = "latest"
+"npm:@google/gemini-cli" = "latest"
+
+# その他ツール
+"npm:greptile" = "latest"
+"npm:difit" = "latest"
+"npm:tuyapi" = "latest"
+
+# ========================================
+# Cargo-based Tools (Rust CLI ユーティリティ)
+# ========================================
+# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理
+"cargo:bandwhich" = "latest"
+"cargo:needle-cli" = "latest"
+"cargo:similarity-ts" = "latest"
+"cargo:wrkflw" = "latest"
 
 # ========================================
 # CLI Tools (コマンドラインユーティリティ)
 # ========================================
-# 注: Cargo系ツールは除外（ARM互換性考慮）
+aws-cli = "latest"
 eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"
