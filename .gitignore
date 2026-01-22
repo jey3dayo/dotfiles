@@ -85,6 +85,14 @@ fish/
 fisher/
 karabiner/automatic_backups/
 github-copilot/
+
+# Auto-generated telemetry configs
+clerk/
+nextjs-nodejs/
+
+# OpenCode external skill symlinks
+opencode/skills/
+
 op/
 jgit/
 raycast/
