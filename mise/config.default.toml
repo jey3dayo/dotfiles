@@ -52,7 +52,7 @@ MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
 # ========================================
 # 注: システム依存関係用の Node.js/Python は Homebrew で管理
 go = "1.25.5"
-node = "24"
+node = "lts"
 python = "3.14"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"

@@ -96,9 +96,6 @@ yamllint = "latest"
 
 # 注: Language Servers は除外 (リモート開発でローカルマシンのLSP使用)
 
-# ユーティリティ
-"npm:zx" = "latest"
-
 # MCP サーバー (Model Context Protocol)
 # 注: 軽量かつサーバー環境で有用なMCPのみ維持
 "npm:@upstash/context7-mcp" = "latest"
