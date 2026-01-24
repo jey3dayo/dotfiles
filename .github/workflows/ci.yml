@@ -53,8 +53,8 @@ jobs:
   format-and-lint:
     runs-on: ubuntu-latest
     env:
-      # Use CI-optimized configuration (13 tools vs 73 in default)
-      # Reduces install time from 20+ minutes to <5 minutes
+      # Use CI-optimized configuration with minimal toolset
+      # Significantly reduces install time compared to default config
       MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
