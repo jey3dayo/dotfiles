@@ -36,6 +36,11 @@ _register_git_widget() {
   done
 }
 
+# git-wt list helper (skip header if present)
+_git_wt_list() {
+  command git wt | awk 'NR==1 && $1=="PATH" && $2=="BRANCH" {next} {print}'
+}
+
 # Git diff widget function
 _git_diff() {
   echo git diff
@@ -170,7 +175,7 @@ _git_worktree_menu() {
       "🔀 Switch Worktree")
         # Use git-wt output piped through fzf
         local worktree
-        worktree=$(command git wt | tail -n +2 | fzf --prompt="Switch to worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
+        worktree=$(_git_wt_list | fzf --prompt="Switch to worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
 
         if [[ -n "$worktree" ]]; then
           local wt_path
@@ -201,7 +206,7 @@ _git_worktree_menu() {
         ;;
       "🗑️ Remove Worktree")
         local worktrees
-        worktrees=(${(f)"$(command git wt | tail -n +2 | fzf --multi --prompt="Remove worktree (Tab to select multiple): " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')"})
+        worktrees=(${(f)"$(_git_wt_list | fzf --multi --prompt="Remove worktree (Tab to select multiple): " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{if ($1=="*") print $2; else print $1}')"})
 
         if [[ ${#worktrees[@]} -gt 0 ]]; then
           # Show selected worktrees
@@ -213,20 +218,22 @@ _git_worktree_menu() {
           echo -n "Delete branches too? [y/N]: "
           read -r confirm
 
-          local delete_flag
+          local delete_branches=false
           case "$confirm" in
             [yY]*)
-              delete_flag="-d"
-              ;;
-            *)
-              delete_flag="-D"
+              delete_branches=true
               ;;
           esac
 
           # Remove each worktree
           for worktree in "${worktrees[@]}"; do
-            echo "git wt $delete_flag $worktree"
-            git wt "$delete_flag" "$worktree"
+            if $delete_branches; then
+              echo "git wt -d $worktree"
+              git wt -d "$worktree"
+            else
+              echo "git worktree remove $worktree"
+              git worktree remove "$worktree"
+            fi
           done
         fi
         ;;
@@ -247,7 +254,7 @@ _git_worktree_open() {
   }
 
   local worktree
-  worktree=$(command git wt | tail -n +2 | fzf --prompt="Open worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
+  worktree=$(_git_wt_list | fzf --prompt="Open worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
 
   if [[ -n "$worktree" ]]; then
     local wt_path
@@ -283,7 +290,7 @@ wt() {
   if [[ $# -eq 0 ]]; then
     # No arguments: interactive fzf selection
     local worktree
-    worktree=$(command git wt | tail -n +2 | fzf --prompt="Select worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
+    worktree=$(_git_wt_list | fzf --prompt="Select worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
 
     if [[ -n "$worktree" ]]; then
       local wt_path
@@ -309,7 +316,7 @@ _wt() {
 
   if command -v git-wt >/dev/null 2>&1; then
     local -a wt_branches
-    wt_branches=(${(f)"$(command git wt | tail -n +2 | awk '{print $(NF-1)}')"})
+    wt_branches=(${(f)"$(_git_wt_list | awk '{print $(NF-1)}')"})
     compadd -a wt_branches
   fi
 }
