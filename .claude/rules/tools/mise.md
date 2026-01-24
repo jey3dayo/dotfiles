@@ -18,11 +18,17 @@ mise設定は環境別ファイルで管理されています:
 
 - **`mise/config.default.toml`** - デフォルト（macOS/Linux/WSL2）
   - jobs = 8（デスクトップ/ワークステーション向け）
-  - 全ツール: 73個（go, node, python, npm 46個, cargo 4個, CLI 7個, formatters/linters 9個）
+  - 全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
 
 - **`mise/config.pi.toml`** - Raspberry Pi（ARMサーバー環境）
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
-  - 最小ツールセット: 24個（go除外、npm軽量版、cargo全除外）
+  - 最小ツールセット（go除外、npm軽量版、cargo全除外）
+
+- **`mise/config.ci.toml`** - CI/CD（GitHub Actions最適化）
+  - jobs = 4（GitHub Actions runners: 2コア）
+  - CI必須ツールのみ（formatters, linters, npm packages, CLI tools）
+  - 大幅に削減されたツールセットで高速インストール
+  - 除外: 全language runtimes（Actions提供）、開発ツール、MCP/Claude/Cloudツール
 
 ### Directory-local: `mise.toml`
 
@@ -40,11 +46,13 @@ directory-local → environment-specific (via MISE_CONFIG_FILE) → user config 
 
 mise automatically selects the appropriate configuration based on the environment:
 
+- **CI/CD**: Uses `mise/config.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
 - **Default (macOS/Linux/WSL2)**: Uses `mise/config.default.toml` (includes all tools)
 - **Raspberry Pi**: Uses `mise/config.pi.toml` (optimized for server environment)
 
 Detection happens via `scripts/setup-mise-env.sh` which sets `MISE_CONFIG_FILE` based on:
 
+- CI: `CI` or `GITHUB_ACTIONS` environment variables
 - Raspberry Pi: `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
 - WSL2: `WSL_DISTRO_NAME` environment variable or `/proc/version` containing "microsoft" or "WSL"
 - macOS: `uname -s` returning "Darwin"
@@ -126,9 +134,17 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 
 **Expected Benefits**:
 
-- Install time: ~40-50 minutes faster (28 npm packages + go runtime + aws-cli + all cargo tools excluded)
-- Disk usage: ~2GB reduction
-- Memory usage: ~800MB reduction during installation (parallel execution control)
+- Install time: Significantly faster (many npm packages, go runtime, aws-cli, and all cargo tools excluded)
+- Disk usage: Substantially reduced
+- Memory usage: Reduced during installation (parallel execution control)
+
+## Configuration Comparison
+
+| Config              | Toolset           | Use Case                       | Performance     |
+| ------------------- | ----------------- | ------------------------------ | --------------- |
+| config.default.toml | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install  |
+| config.pi.toml      | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install  |
+| config.ci.toml      | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install |
 
 ## Tool Categories (config.default.toml)
 

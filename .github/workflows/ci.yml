@@ -53,8 +53,9 @@ jobs:
   format-and-lint:
     runs-on: ubuntu-latest
     env:
-      # Use default configuration for CI (macOS/Linux/WSL2)
-      MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.default.toml
+      # Use CI-optimized configuration with minimal toolset
+      # Significantly reduces install time compared to default config
+      MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
       # Use GitHub Actions Lua/LuaRocks instead of mise-managed installs
