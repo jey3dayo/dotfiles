@@ -5,6 +5,12 @@
 DOTFILES_ROOT="${DOTFILES_ROOT:-${XDG_CONFIG_HOME:-${HOME}/.config}}"
 
 detect_environment() {
+  # CI environment detection (GitHub Actions, GitLab CI, etc.)
+  if [ "${CI:-false}" = "true" ] || [ "${GITHUB_ACTIONS:-false}" = "true" ]; then
+    echo "ci"
+    return
+  fi
+
   # WSL2 detection
   # Check both WSL_DISTRO_NAME environment variable and /proc/version
   if [ -n "$WSL_DISTRO_NAME" ] || grep -qE "(microsoft|WSL)" /proc/version 2>/dev/null; then
@@ -36,6 +42,9 @@ setup_mise_config() {
   env_type=$(detect_environment)
 
   case "$env_type" in
+    ci)
+      export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.ci.toml"
+      ;;
     pi)
       export MISE_CONFIG_FILE="${DOTFILES_ROOT}/mise/config.pi.toml"
       ;;

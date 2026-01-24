@@ -1,0 +1,49 @@
+# ========================================
+# CI-Optimized mise Configuration
+# ~/src/github.com/jey3dayo/dotfiles/mise/config.ci.toml
+# ========================================
+# GitHub Actions CI 専用設定（11 tools, <5 min install）
+#
+# ツール数比較:
+# - config.default.toml: 73 tools (20+ min)
+# - config.pi.toml: 24 tools (8-12 min)
+# - config.ci.toml: 11 tools (<5 min) ← 85% 削減
+# ========================================
+
+[settings]
+env_file = '.env.local'
+experimental = true
+jobs = 4                                                            # GitHub Actions runners: 2 cores
+vfox = false
+idiomatic_version_file_enable_tools = []
+trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
+
+[settings.pipx]
+uvx = true
+
+[env]
+_.source = [".venv/bin/activate"]
+YAMLLINT_CONFIG_FILE = "yamllint/config"
+MD_GLOB = "**/*.md"
+MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
+
+# ========================================
+# ツール定義 - CI必須ツールのみ (11個)
+# ========================================
+
+[tools]
+# Package Managers (1)
+"pipx:uv" = "latest" # uvx for ruff execution
+# Formatters and Linters (7)
+biome = "latest"      # JS/TS/JSON
+prettier = "latest"   # General
+shellcheck = "latest" # Shell lint
+shfmt = "latest"      # Shell format
+stylua = "latest"     # Lua format
+taplo = "latest"      # TOML format
+yamllint = "latest"   # YAML lint
+# NPM Packages (2)
+"npm:markdown-link-check" = "latest"
+"npm:markdownlint-cli2" = "latest"
+# CLI Tools (1)
+fd = "latest" # File discovery

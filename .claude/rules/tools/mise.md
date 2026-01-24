@@ -24,6 +24,12 @@ mise設定は環境別ファイルで管理されています:
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
   - 最小ツールセット: 24個（go除外、npm軽量版、cargo全除外）
 
+- **`mise/config.ci.toml`** - CI/CD（GitHub Actions最適化）
+  - jobs = 4（GitHub Actions runners: 2コア）
+  - CI必須ツールのみ: 11個（formatters 7個, npm 2個, pipx 1個, CLI 1個）
+  - インストール時間: <5分（config.default.toml比 85%削減）
+  - 除外: 全language runtimes（Actions提供）、開発ツール、MCP/Claude/Cloudツール
+
 ### Directory-local: `mise.toml`
 
 プロジェクト固有のオーバーライド（例: .mise.toml at repo root）
@@ -40,11 +46,13 @@ directory-local → environment-specific (via MISE_CONFIG_FILE) → user config 
 
 mise automatically selects the appropriate configuration based on the environment:
 
+- **CI/CD**: Uses `mise/config.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
 - **Default (macOS/Linux/WSL2)**: Uses `mise/config.default.toml` (includes all tools)
 - **Raspberry Pi**: Uses `mise/config.pi.toml` (optimized for server environment)
 
 Detection happens via `scripts/setup-mise-env.sh` which sets `MISE_CONFIG_FILE` based on:
 
+- CI: `CI` or `GITHUB_ACTIONS` environment variables
 - Raspberry Pi: `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
 - WSL2: `WSL_DISTRO_NAME` environment variable or `/proc/version` containing "microsoft" or "WSL"
 - macOS: `uname -s` returning "Darwin"
@@ -129,6 +137,14 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 - Install time: ~40-50 minutes faster (28 npm packages + go runtime + aws-cli + all cargo tools excluded)
 - Disk usage: ~2GB reduction
 - Memory usage: ~800MB reduction during installation (parallel execution control)
+
+## Tool Count Comparison
+
+| Config              | Tools | Use Case                       | Install Time |
+| ------------------- | ----- | ------------------------------ | ------------ |
+| config.default.toml | 73    | Development (macOS/Linux/WSL2) | 15-20 min    |
+| config.pi.toml      | 24    | Server (Raspberry Pi ARM)      | 8-12 min     |
+| config.ci.toml      | 11    | CI/CD (GitHub Actions)         | <5 min       |
 
 ## Tool Categories (config.default.toml)
 
