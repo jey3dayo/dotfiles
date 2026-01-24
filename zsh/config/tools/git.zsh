@@ -200,24 +200,34 @@ _git_worktree_menu() {
         git wt
         ;;
       "🗑️ Remove Worktree")
-        local worktree
-        worktree=$(command git wt | tail -n +2 | fzf --prompt="Remove worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
+        local worktrees
+        worktrees=(${(f)"$(command git wt | tail -n +2 | fzf --multi --prompt="Remove worktree (Tab to select multiple): " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')"})
 
-        if [[ -n "$worktree" ]]; then
-          # Confirm deletion
-          echo "Delete worktree: $worktree"
-          echo -n "Delete branch too? [y/N]: "
+        if [[ ${#worktrees[@]} -gt 0 ]]; then
+          # Show selected worktrees
+          echo "Selected worktrees to remove:"
+          printf '  - %s\n' "${worktrees[@]}"
+          echo ""
+
+          # Ask for deletion mode (once for all)
+          echo -n "Delete branches too? [y/N]: "
           read -r confirm
+
+          local delete_flag
           case "$confirm" in
             [yY]*)
-              echo "git wt -d $worktree"
-              git wt -d "$worktree"
+              delete_flag="-d"
               ;;
             *)
-              echo "git wt -D $worktree (force, preserving branch if possible)"
-              git wt -D "$worktree"
+              delete_flag="-D"
               ;;
           esac
+
+          # Remove each worktree
+          for worktree in "${worktrees[@]}"; do
+            echo "git wt $delete_flag $worktree"
+            git wt "$delete_flag" "$worktree"
+          done
         fi
         ;;
     esac
