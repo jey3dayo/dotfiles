@@ -5,6 +5,11 @@ _is_git_repo() {
   [ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = 'true' ]
 }
 
+# git-wt shell integration (enable automatic directory switching)
+if command -v git-wt >/dev/null 2>&1; then
+  eval "$(git wt --init zsh)"
+fi
+
 # Shared helpers for git widgets
 _git_widget() {
   local action="$1"
@@ -55,20 +60,6 @@ git_status() {
 
 _register_git_widget git_status '^gs' '^g^s'
 
-# Worktree path resolver for a branch
-_git_worktree_for_branch() {
-  local branch="$1"
-  git worktree list --porcelain | awk -v target="$branch" '
-    $1=="worktree" { path=$2 }
-    $1=="branch" {
-      br=$2
-      sub("^refs/heads/", "", br)
-      if (br == target) { print path; exit }
-      path=""
-    }
-  '
-}
-
 # Branch selector (prefers fzf-git)
 _git_select_branch() {
   if command -v _fzf_git_branches >/dev/null 2>&1; then
@@ -88,8 +79,18 @@ _git_switch_branch() {
     return 0
   fi
 
+  # Check if branch has a worktree using git worktree list
   local worktree_path
-  worktree_path=$(_git_worktree_for_branch "$branch")
+  worktree_path=$(git worktree list --porcelain | awk -v target="$branch" '
+    $1=="worktree" { path=$2 }
+    $1=="branch" {
+      br=$2
+      sub("^refs/heads/", "", br)
+      if (br == target) { print path; exit }
+      path=""
+    }
+  ')
+
   if [[ -n "$worktree_path" && -d "$worktree_path" ]]; then
     echo "cd $worktree_path"
     cd "$worktree_path"
@@ -141,28 +142,24 @@ git_add_interactive() {
 
 _register_git_widget git_add_interactive '^ga' '^g^a'
 
-# Git worktree management widget (using fzf if available)
+# Git worktree management widget (using git-wt)
 git_worktree_widget() {
   _git_widget _git_worktree_menu
 }
 
-_git_select_worktree() {
-  if command -v _fzf_git_worktrees >/dev/null 2>&1; then
-    _fzf_git_worktrees | head -n "${ZSH_GIT_FZF_FALLBACK_LIMIT}"
-  else
-    git worktree list --porcelain | awk '/^worktree / { print $2 }' | fzf --prompt="Select worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse
-  fi
-}
-
 _git_worktree_menu() {
   command -v fzf >/dev/null 2>&1 || return 0
+  command -v git-wt >/dev/null 2>&1 || {
+    echo "git-wt not installed. Install with: mise install"
+    return 1
+  }
 
-  # Build menu options
+  # Build menu options (git-wt powered)
   local options=()
-  options+=("🔀 Open Worktree")
+  options+=("🔀 Switch Worktree")
   options+=("➕ New Worktree")
   options+=("📋 List Worktrees")
-  options+=("🗑️  Remove Worktree")
+  options+=("🗑️ Remove Worktree")
 
   # Show menu
   local choice
@@ -170,58 +167,57 @@ _git_worktree_menu() {
 
   if [[ -n "$choice" ]]; then
     case "$choice" in
-      "🔀 Open Worktree")
-        local worktree_path
-        worktree_path=$(_git_select_worktree)
+      "🔀 Switch Worktree")
+        # Use git-wt output piped through fzf
+        local worktree
+        worktree=$(command git wt | tail -n +2 | fzf --prompt="Switch to worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
 
-        if [[ -n "$worktree_path" ]]; then
-          if [[ -d "$worktree_path" ]]; then
-            echo "cd $worktree_path"
-            cd "$worktree_path"
-          else
-            echo "Warning: Worktree path does not exist: $worktree_path"
-            echo "Consider running: git worktree prune"
+        if [[ -n "$worktree" ]]; then
+          local wt_path
+          wt_path=$(command git wt --nocd "$worktree" 2>&1 | tail -1)
+          if [[ -d "$wt_path" ]]; then
+            BUFFER="cd $wt_path"
+            zle accept-line
           fi
         fi
         ;;
       "➕ New Worktree")
-        # Create new worktree - use vared for better zle integration
-        local branch_name=""
-        vared -p "Enter branch name for new worktree: " branch_name
+        # Use fzf with print-query to get branch name input
+        local branch_name
+        branch_name=$(echo "" | fzf --print-query --prompt="Enter branch name for new worktree: " --height=5 | head -1)
         if [[ -n "$branch_name" ]]; then
-          # Get the parent directory of current repo
-          local repo_root=$(git rev-parse --show-toplevel)
-          local parent_dir=$(dirname "$repo_root")
-          local worktree_path="$parent_dir/$branch_name"
-
-          echo "git worktree add $worktree_path -b $branch_name"
-          git worktree add "$worktree_path" -b "$branch_name"
-
-          # If successful, cd to new worktree
-          if [[ $? -eq 0 ]] && [[ -d "$worktree_path" ]]; then
-            cd "$worktree_path"
+          echo "Creating worktree for branch: $branch_name"
+          local wt_path
+          wt_path=$(command git wt --nocd "$branch_name" 2>&1 | tail -1)
+          if [[ -d "$wt_path" ]]; then
+            echo "cd $wt_path"
+            cd "$wt_path"
           fi
         fi
         ;;
       "📋 List Worktrees")
-        # Show worktree list
-        echo "git worktree list"
-        git worktree list
+        echo "git wt"
+        git wt
         ;;
-      "🗑️  Remove Worktree")
-        local worktree_path
-        worktree_path=$(_git_select_worktree)
+      "🗑️ Remove Worktree")
+        local worktree
+        worktree=$(command git wt | tail -n +2 | fzf --prompt="Remove worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
 
-        if [[ -n "$worktree_path" ]]; then
-          local current_root
-          current_root=$(git rev-parse --show-toplevel)
-          if [[ "$worktree_path" == "$current_root" ]]; then
-            echo "Cannot remove current worktree: $worktree_path"
-            return 1
-          fi
-
-          echo "git worktree remove $worktree_path"
-          git worktree remove "$worktree_path"
+        if [[ -n "$worktree" ]]; then
+          # Confirm deletion
+          echo "Delete worktree: $worktree"
+          echo -n "Delete branch too? [y/N]: "
+          read -r confirm
+          case "$confirm" in
+            [yY]*)
+              echo "git wt -d $worktree"
+              git wt -d "$worktree"
+              ;;
+            *)
+              echo "git wt -D $worktree (force, preserving branch if possible)"
+              git wt -D "$worktree"
+              ;;
+          esac
         fi
         ;;
     esac
@@ -235,17 +231,20 @@ git_worktree_open_widget() {
 
 _git_worktree_open() {
   command -v fzf >/dev/null 2>&1 || return 0
+  command -v git-wt >/dev/null 2>&1 || {
+    echo "git-wt not installed. Install with: mise install"
+    return 1
+  }
 
-  local worktree_path
-  worktree_path=$(_git_select_worktree)
+  local worktree
+  worktree=$(command git wt | tail -n +2 | fzf --prompt="Open worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
 
-  if [[ -n "$worktree_path" ]]; then
-    if [[ -d "$worktree_path" ]]; then
-      echo "cd $worktree_path"
-      cd "$worktree_path"
-    else
-      echo "Warning: Worktree path does not exist: $worktree_path"
-      echo "Consider running: git worktree prune"
+  if [[ -n "$worktree" ]]; then
+    local wt_path
+    wt_path=$(command git wt --nocd "$worktree" 2>&1 | tail -1)
+    if [[ -d "$wt_path" ]]; then
+      BUFFER="cd $wt_path"
+      zle accept-line
     fi
   fi
 }
@@ -259,70 +258,50 @@ if command -v fzf-git-stashes-widget >/dev/null 2>&1; then
   bindkey '^g^z' fzf-git-stashes-widget
 fi
 
-# Worktree quick cd by branch name
-wtcd() {
-  local branch="$1"
-  if [[ -z "$branch" ]]; then
-    echo "usage: wtcd <branch>"
-    return 1
-  fi
-
+# Interactive git-wt wrapper with fzf filtering
+wt() {
   if ! _is_git_repo; then
-    echo "wtcd: not in a git worktree"
+    echo "wt: not in a git worktree"
     return 1
   fi
 
-  local wt_path
-  wt_path=$(git worktree list --porcelain | awk -v b="$branch" '
-    $1=="worktree" { p=$2 }
-    $1=="branch" {
-      br=$2
-      sub("^refs/heads/", "", br)
-      if (br == b) { print p; exit }
-    }
-  ')
-
-  if [[ -z "$wt_path" ]]; then
-    echo "no worktree for $branch"
+  if ! command -v git-wt >/dev/null 2>&1; then
+    echo "git-wt not installed. Install with: mise install"
     return 1
   fi
 
-  if [[ ! -d "$wt_path" ]]; then
-    echo "worktree path missing: $wt_path"
-    echo "consider: git worktree prune"
-    return 1
-  fi
+  if [[ $# -eq 0 ]]; then
+    # No arguments: interactive fzf selection
+    local worktree
+    worktree=$(command git wt | tail -n +2 | fzf --prompt="Select worktree: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse | awk '{print $(NF-1)}')
 
-  cd "$wt_path"
+    if [[ -n "$worktree" ]]; then
+      local wt_path
+      wt_path=$(command git wt --nocd "$worktree" 2>&1 | tail -1)
+      if [[ -d "$wt_path" ]]; then
+        cd "$wt_path"
+      fi
+    fi
+  else
+    # Arguments provided: pass through to git wt and cd to result
+    local wt_path
+    wt_path=$(command git wt --nocd "$@" 2>&1 | tail -1)
+    if [[ -d "$wt_path" ]]; then
+      cd "$wt_path"
+    fi
+  fi
 }
 
-# Dedicated completion (decoupled from git's _git to avoid __git_find_on_cmdline errors)
-_wtcd() {
+# Zsh completion for wt wrapper
+_wt() {
   emulate -L zsh
   _is_git_repo || return 1
-  local -a wt_branches
-  wt_branches=(${(f)"$(git worktree list --porcelain | awk '
-    $1=="branch" {
-      br=$2
-      sub("^refs/heads/", "", br)
-      print br
-    }
-  ')"})
-  compadd -a wt_branches
+
+  if command -v git-wt >/dev/null 2>&1; then
+    local -a wt_branches
+    wt_branches=(${(f)"$(command git wt | tail -n +2 | awk '{print $(NF-1)}')"})
+    compadd -a wt_branches
+  fi
 }
 
-# Completion setup that overwrites any _git fallback
-_wtcd_register_completion() {
-  (( $+functions[compdef] )) || return 1
-  compdef -d wtcd 2>/dev/null
-  compdef _wtcd wtcd
-}
-
-# Apply now; if compinit isn't ready, queue a hook for later
-if ! _wtcd_register_completion 2>/dev/null; then
-  typeset -g -a _post_compinit_hooks
-  _post_compinit_hooks+=("_wtcd_register_completion")
-fi
-
-autoload -Uz add-zsh-hook 2>/dev/null
-(( $+functions[add-zsh-hook] )) && add-zsh-hook -Uz precmd _wtcd_register_completion
+compdef _wt wt

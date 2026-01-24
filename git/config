@@ -76,6 +76,9 @@
 [log]
   ; date = iso
   date = relative
+
+[wt]
+  basedir = ".worktrees"
 [user]
 	name = Junya Nakazato
 	email = j138cm@gmail.com
