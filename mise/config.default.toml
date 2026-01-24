@@ -102,6 +102,7 @@ yamllint = "latest"
 # AI・コミット支援
 "npm:@openai/codex" = "latest"
 "npm:aicommits" = "latest"
+"npm:clawdbot" = "latest"
 
 # ドキュメント・Lint
 "npm:markdown-link-check" = "latest"
