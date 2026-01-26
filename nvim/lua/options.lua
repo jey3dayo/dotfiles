@@ -98,11 +98,27 @@ local global_options = {
   loaded_ruby_provider = 0,
   loaded_node_provider = 0,
   loaded_perl_provider = 0,
-  python3_host_prog = vim.fn.trim(vim.fn.system "mise where python") .. "/bin/python3",
+  loaded_python3_provider = 0, -- Python providerを無効化（同期的なmiseコマンド実行を回避）
 }
 
 for k, v in pairs(global_options) do
   vim.g[k] = v
+end
+
+-- WSL2環境でのクリップボード設定（os.luaから移動）
+if vim.fn.has("wsl") == 1 then
+  vim.g.clipboard = {
+    name = "win32yank-wsl",
+    copy = {
+      ["+"] = "/mnt/d/Programs/Neovim/bin/win32yank.exe -i --crlf",
+      ["*"] = "/mnt/d/Programs/Neovim/bin/win32yank.exe -i --crlf",
+    },
+    paste = {
+      ["+"] = "/mnt/d/Programs/Neovim/bin/win32yank.exe -o --lf",
+      ["*"] = "/mnt/d/Programs/Neovim/bin/win32yank.exe -o --lf",
+    },
+    cache_enabled = 0,
+  }
 end
 
 vim.opt.shortmess:append "c"
