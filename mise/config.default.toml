@@ -94,6 +94,7 @@ yamllint = "latest"
 # 開発・エディタ
 "npm:@fsouza/prettierd" = "latest"
 "npm:neovim" = "latest"
+"npm:tree-sitter-cli" = "latest"
 
 # プロトコルバッファ・RPC
 "npm:@bufbuild/protoc-gen-es" = "latest"
@@ -169,6 +170,7 @@ aws-cli = "latest"
 eza = "latest"
 fd = "latest"
 "go:github.com/k1LoW/git-wt" = "latest"
+"go:golang.org/x/tools/cmd/goimports" = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
 opencode = "latest"
