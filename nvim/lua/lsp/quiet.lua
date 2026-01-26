@@ -9,7 +9,7 @@ local config = require "lsp.config"
 --- @return nil
 function M.setup()
   -- Set LSP log level to OFF to minimize file logging
-  vim.lsp.set_log_level "OFF"
+  vim.lsp.log.set_level "OFF"
 
   -- Store original notify
   local original_notify = vim.notify
@@ -83,8 +83,8 @@ end
 --- Toggle between quiet and debug modes for troubleshooting
 --- @return nil
 function M.toggle_debug()
-  if vim.lsp.get_log_level() == vim.log.levels.OFF then
-    vim.lsp.set_log_level "WARN"
+  if vim.lsp.log.get_level() == vim.log.levels.OFF then
+    vim.lsp.log.set_level "WARN"
     -- Restore original notify and verbose handlers
     vim.notify = M._original_notify
     vim.lsp.handlers["window/logMessage"] = nil
