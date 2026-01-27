@@ -28,12 +28,31 @@ local function has_prettier_config(target)
   return has_formatter_config("prettier", target)
 end
 
+-- Check if a command is available in PATH
+local function command_exists(cmd)
+  return vim.fn.executable(cmd) > 0
+end
+
 local function format_with_prettier_or_biome(bufnr)
-  if has_prettier_config(bufnr) then return { "prettier", stop_after_first = true } end
+  -- Prefer Prettier when config file exists and command is available
+  if has_prettier_config(bufnr) and command_exists("prettier") then
+    return { "prettier", stop_after_first = true }
+  end
 
-  if has_biome_config(bufnr) then return { "biome", stop_after_first = true } end
+  -- Fallback to Biome when config exists and command is available
+  if has_biome_config(bufnr) and command_exists("biome") then
+    return { "biome", stop_after_first = true }
+  end
 
-  return { "prettier", stop_after_first = true }
+  -- Final fallback: prefer Biome if available, otherwise Prettier
+  if command_exists("biome") then
+    return { "biome", stop_after_first = true }
+  elseif command_exists("prettier") then
+    return { "prettier", stop_after_first = true }
+  end
+
+  -- No formatter available - return empty to avoid errors
+  return {}
 end
 
 local js_like_formatters = format_with_prettier_or_biome
@@ -100,13 +119,23 @@ require("conform").setup {
       env = { ESLINT_USE_FLAT_CONFIG = "true" },
     },
 
-    -- Prettier formatter with fallback when no config files
+    -- Prettier formatter with command availability check
     prettier = {
       -- Use mise shim, fallback handled by PATH
       command = "prettier",
-      -- Always enable prettier
+      -- Only enable when prettier command is available
       condition = function(_, _)
-        return true
+        return command_exists("prettier")
+      end,
+    },
+
+    -- Biome formatter with command availability check
+    biome = {
+      -- Use mise shim, fallback handled by PATH
+      command = "biome",
+      -- Only enable when biome command is available
+      condition = function(_, _)
+        return command_exists("biome")
       end,
     },
   },
