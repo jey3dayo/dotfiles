@@ -4,23 +4,40 @@ local autoformat = require "lsp.autoformat"
 local lsp_config = require "lsp.config"
 local util = require "conform.util"
 
-local function has_biome_config(bufnr)
-  local name = vim.api.nvim_buf_get_name(bufnr)
-  local dirname = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
-  return utils.has_config_files(lsp_config.formatters.biome.config_files, dirname)
+local function resolve_dir(target)
+  if type(target) == "string" then return target end
+  local name = vim.api.nvim_buf_get_name(target or 0)
+  return name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
 end
 
-local function js_like_formatters(bufnr)
-  local formatters = { "eslint_d", "prettier" }
-  if has_biome_config(bufnr) then table.insert(formatters, 2, "biome") end
-  return formatters
+local function has_formatter_config(formatter, target)
+  local config = lsp_config.formatters[formatter]
+  if not (config and config.config_files) then return false end
+  return utils.has_config_files(config.config_files, resolve_dir(target))
 end
 
-local function json_like_formatters(bufnr)
-  local formatters = { "prettier" }
-  if has_biome_config(bufnr) then table.insert(formatters, 1, "biome") end
-  return formatters
+local function has_eslint_config(target)
+  return has_formatter_config("eslint", target)
 end
+
+local function has_biome_config(target)
+  return has_formatter_config("biome", target)
+end
+
+local function has_prettier_config(target)
+  return has_formatter_config("prettier", target)
+end
+
+local function format_with_prettier_or_biome(bufnr)
+  if has_prettier_config(bufnr) then return { "prettier", stop_after_first = true } end
+
+  if has_biome_config(bufnr) then return { "biome", stop_after_first = true } end
+
+  return { "prettier", stop_after_first = true }
+end
+
+local js_like_formatters = format_with_prettier_or_biome
+local json_like_formatters = format_with_prettier_or_biome
 
 require("conform").setup {
   formatters_by_ft = {
@@ -72,6 +89,10 @@ require("conform").setup {
       command = util.from_node_modules "eslint_d",
       -- Allow exit code 1 (lint errors fixed) so Conform doesn't treat it as failure
       exit_codes = { 0, 1 },
+      -- Only use ESLint formatter when a config exists
+      condition = function(_, ctx)
+        return has_eslint_config(ctx and ctx.dirname or nil)
+      end,
       -- Recognize monorepo roots using centralized config
       cwd = util.root_file(vim.list_extend(lsp_config.formatters.eslint.config_files, { "package.json", ".git" })),
       -- Optional extra flags for performance

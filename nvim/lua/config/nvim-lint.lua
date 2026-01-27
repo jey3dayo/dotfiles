@@ -3,6 +3,49 @@ local lint = require "lint"
 local utils = require "core.utils"
 local lsp_config = require "lsp.config"
 
+local function has_eslint_config(bufnr)
+  local name = vim.api.nvim_buf_get_name(bufnr or 0)
+  local dirname = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
+  return utils.has_config_files(lsp_config.formatters.eslint.config_files, dirname)
+end
+
+local function eslint_cmd_available()
+  local linter = lint.linters.eslint
+  if not linter then return false end
+  local cmd = type(linter.cmd) == "function" and linter.cmd() or linter.cmd
+  return cmd and vim.fn.executable(cmd) == 1
+end
+
+local function linter_cmd_available(name)
+  local linter = lint.linters[name]
+  if not linter then return false end
+  local cmd = type(linter.cmd) == "function" and linter.cmd() or linter.cmd
+  if type(cmd) == "table" then cmd = cmd[1] end
+  return cmd and vim.fn.executable(cmd) == 1
+end
+
+local function get_linters_for_buf(bufnr)
+  local ft = vim.bo[bufnr or 0].filetype
+  local list = {}
+
+  local ft_linters = lint.linters_by_ft[ft] or {}
+  local global_linters = lint.linters_by_ft["*"] or {}
+
+  for _, linter_name in ipairs(ft_linters) do
+    if linter_name == "eslint" then
+      if has_eslint_config(bufnr) and eslint_cmd_available() then table.insert(list, linter_name) end
+    elseif linter_cmd_available(linter_name) then
+      table.insert(list, linter_name)
+    end
+  end
+
+  for _, linter_name in ipairs(global_linters) do
+    if linter_cmd_available(linter_name) then table.insert(list, linter_name) end
+  end
+
+  return list
+end
+
 -- Configure linters by filetype using centralized config
 lint.linters_by_ft = lsp_config.linters
 
@@ -57,7 +100,8 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
       100,
       0,
       vim.schedule_wrap(function()
-        lint.try_lint()
+        local linters = get_linters_for_buf(0)
+        if #linters > 0 then lint.try_lint(linters) end
         timer:close()
       end)
     )
@@ -89,7 +133,8 @@ end, {
 
 -- Manual lint command
 vim.api.nvim_create_user_command("Lint", function()
-  lint.try_lint()
+  local linters = get_linters_for_buf(0)
+  if #linters > 0 then lint.try_lint(linters) end
 end, { desc = "Run linters for current buffer" })
 
 -- Debug info command
