@@ -44,7 +44,8 @@ local function format_with_prettier_or_biome(bufnr)
     return { "biome", stop_after_first = true }
   end
 
-  -- Final fallback: prefer Biome if available, otherwise Prettier
+  -- Final fallback: when no config files exist, prefer Biome for better performance
+  -- Note: Projects preferring Prettier should have a config file (.prettierrc*, package.json)
   if command_exists("biome") then
     return { "biome", stop_after_first = true }
   elseif command_exists("prettier") then
