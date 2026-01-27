@@ -189,6 +189,7 @@ M.formatters = {
       "prettier.config.js",
       "prettier.config.cjs",
       ".prettierrc.toml",
+      "package.json", -- Prettier config can be in package.json under "prettier" key
     },
     formatter_priority = {
       priority = 2,

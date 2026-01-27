@@ -4,23 +4,60 @@ local autoformat = require "lsp.autoformat"
 local lsp_config = require "lsp.config"
 local util = require "conform.util"
 
-local function has_biome_config(bufnr)
-  local name = vim.api.nvim_buf_get_name(bufnr)
-  local dirname = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
-  return utils.has_config_files(lsp_config.formatters.biome.config_files, dirname)
+local function resolve_dir(target)
+  if type(target) == "string" then return target end
+  local name = vim.api.nvim_buf_get_name(target or 0)
+  return name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
 end
 
-local function js_like_formatters(bufnr)
-  local formatters = { "eslint_d", "prettier" }
-  if has_biome_config(bufnr) then table.insert(formatters, 2, "biome") end
-  return formatters
+local function has_formatter_config(formatter, target)
+  local config = lsp_config.formatters[formatter]
+  if not (config and config.config_files) then return false end
+  return utils.has_config_files(config.config_files, resolve_dir(target))
 end
 
-local function json_like_formatters(bufnr)
-  local formatters = { "prettier" }
-  if has_biome_config(bufnr) then table.insert(formatters, 1, "biome") end
-  return formatters
+local function has_eslint_config(target)
+  return has_formatter_config("eslint", target)
 end
+
+local function has_biome_config(target)
+  return has_formatter_config("biome", target)
+end
+
+local function has_prettier_config(target)
+  return has_formatter_config("prettier", target)
+end
+
+-- Check if a command is available in PATH
+local function command_exists(cmd)
+  return vim.fn.executable(cmd) > 0
+end
+
+local function format_with_prettier_or_biome(bufnr)
+  -- Prefer Prettier when config file exists and command is available
+  if has_prettier_config(bufnr) and command_exists("prettier") then
+    return { "prettier", stop_after_first = true }
+  end
+
+  -- Fallback to Biome when config exists and command is available
+  if has_biome_config(bufnr) and command_exists("biome") then
+    return { "biome", stop_after_first = true }
+  end
+
+  -- Final fallback: when no config files exist, prefer Biome for better performance
+  -- Note: Projects preferring Prettier should have a config file (.prettierrc*, package.json)
+  if command_exists("biome") then
+    return { "biome", stop_after_first = true }
+  elseif command_exists("prettier") then
+    return { "prettier", stop_after_first = true }
+  end
+
+  -- No formatter available - return empty to avoid errors
+  return {}
+end
+
+local js_like_formatters = format_with_prettier_or_biome
+local json_like_formatters = format_with_prettier_or_biome
 
 require("conform").setup {
   formatters_by_ft = {
@@ -72,6 +109,10 @@ require("conform").setup {
       command = util.from_node_modules "eslint_d",
       -- Allow exit code 1 (lint errors fixed) so Conform doesn't treat it as failure
       exit_codes = { 0, 1 },
+      -- Only use ESLint formatter when a config exists
+      condition = function(_, ctx)
+        return has_eslint_config(ctx and ctx.dirname or nil)
+      end,
       -- Recognize monorepo roots using centralized config
       cwd = util.root_file(vim.list_extend(lsp_config.formatters.eslint.config_files, { "package.json", ".git" })),
       -- Optional extra flags for performance
@@ -79,13 +120,23 @@ require("conform").setup {
       env = { ESLINT_USE_FLAT_CONFIG = "true" },
     },
 
-    -- Prettier formatter with fallback when no config files
+    -- Prettier formatter with command availability check
     prettier = {
       -- Use mise shim, fallback handled by PATH
       command = "prettier",
-      -- Always enable prettier
+      -- Only enable when prettier command is available
       condition = function(_, _)
-        return true
+        return command_exists("prettier")
+      end,
+    },
+
+    -- Biome formatter with command availability check
+    biome = {
+      -- Use mise shim, fallback handled by PATH
+      command = "biome",
+      -- Only enable when biome command is available
+      condition = function(_, _)
+        return command_exists("biome")
       end,
     },
   },

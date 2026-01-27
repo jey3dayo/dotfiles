@@ -9,8 +9,14 @@ local function get_git_dir()
   return utils.get_git_dir and utils.get_git_dir() or vim.fn.systemlist("git rev-parse --show-toplevel")[1] or ""
 end
 
+local function ensure_minipick()
+  local ok, mini_pick = pcall(require, "mini.pick")
+  if ok and _G.MiniPick == nil then mini_pick.setup() end
+  return ok
+end
+
 local function with_extra(fn)
-  local pick_ok = pcall(require, "mini.pick")
+  local pick_ok = ensure_minipick()
   if not pick_ok then
     vim.notify("mini.pick not available", vim.log.levels.ERROR)
     return
@@ -196,6 +202,8 @@ local mappings = {
 }
 
 function M.setup()
+  ensure_minipick()
+
   for _, map in ipairs(mappings) do
     vim.keymap.set(map.mode or "n", map.lhs, map.rhs, { desc = map.desc })
   end

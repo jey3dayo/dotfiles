@@ -8,8 +8,14 @@ local M = {}
 -- LSP keymaps using vim.keymap.set directly
 
 -- Ensure mini.pick is loaded before mini.extra pickers to keep MiniPick global available
+local function ensure_minipick()
+  local ok, mini_pick = pcall(require, "mini.pick")
+  if ok and _G.MiniPick == nil then mini_pick.setup() end
+  return ok
+end
+
 local function use_lsp_picker(scope, fallback)
-  local pick_ok = pcall(require, "mini.pick")
+  local pick_ok = ensure_minipick()
   local extra_ok, mini_extra = pcall(require, "mini.extra")
   if pick_ok and extra_ok then
     mini_extra.pickers.lsp { scope = scope }
