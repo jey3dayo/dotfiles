@@ -106,7 +106,7 @@ for k, v in pairs(global_options) do
 end
 
 -- WSL2環境でのクリップボード設定（os.luaから移動）
-if vim.fn.has("wsl") == 1 then
+if vim.fn.has "wsl" == 1 then
   vim.g.clipboard = {
     name = "win32yank-wsl",
     copy = {
