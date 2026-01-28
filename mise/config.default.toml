@@ -90,6 +90,7 @@ yamllint = "latest"
 "npm:husky" = "latest"
 "npm:npm" = "latest"
 "npm:npm-check-updates" = "latest"
+"npm:agent-browser" = "latest"
 
 # 開発・エディタ
 "npm:@fsouza/prettierd" = "latest"
