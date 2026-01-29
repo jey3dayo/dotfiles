@@ -41,6 +41,18 @@ _git_wt_list() {
   command git wt | awk 'NR==1 && $1=="PATH" && $2=="BRANCH" {next} {print}'
 }
 
+# Local branch list helper (excluding current branch if possible)
+_git_branch_list() {
+  local current_branch
+  current_branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+  if [[ -n "$current_branch" ]]; then
+    git for-each-ref refs/heads --format='%(refname:short)' | grep -Fxv "$current_branch"
+  else
+    git for-each-ref refs/heads --format='%(refname:short)'
+  fi
+}
+
 # Git diff widget function
 _git_diff() {
   echo git diff
@@ -165,6 +177,7 @@ _git_worktree_menu() {
   options+=("➕ New Worktree")
   options+=("📋 List Worktrees")
   options+=("🗑️ Remove Worktree")
+  options+=("🧹 Remove Branch")
 
   # Show menu
   local choice
@@ -233,6 +246,36 @@ _git_worktree_menu() {
             else
               echo "git worktree remove $worktree"
               git worktree remove "$worktree"
+            fi
+          done
+        fi
+        ;;
+      "🧹 Remove Branch")
+        local branches
+        branches=(${(f)"$(_git_branch_list | fzf --multi --prompt="Remove branch (Tab to select multiple): " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse --preview="git log --oneline --graph --color=always --max-count=20 {}")"})
+
+        if [[ ${#branches[@]} -gt 0 ]]; then
+          echo "Selected branches to remove:"
+          printf '  - %s\n' "${branches[@]}"
+          echo ""
+
+          echo -n "Force delete (including unmerged)? [y/N]: "
+          read -r confirm
+
+          local force_delete=false
+          case "$confirm" in
+            [yY]*)
+              force_delete=true
+              ;;
+          esac
+
+          for branch in "${branches[@]}"; do
+            if $force_delete; then
+              echo "git branch -D $branch"
+              git branch -D "$branch"
+            else
+              echo "git branch -d $branch"
+              git branch -d "$branch"
             fi
           done
         fi
