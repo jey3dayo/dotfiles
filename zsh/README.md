@@ -71,7 +71,7 @@ zsh-profile                # Detailed profiling
 
 ```bash
 ^]                         # FZF ghq repository selector
-^gg  / ^g^g                # Git diff widget
+^gg  / ^g^g                # Git menu (status/diff/add/switch/worktree)
 ^gs  / ^g^s                # Git status widget
 ^ga  / ^g^a                # Git add -p widget
 ^gb  / ^g^b                # Git branch switcher (fzf-git powered)

@@ -6,7 +6,7 @@ zsh-help() {
   keybinds | keys)
     echo "🔗 Custom Keybindings:"
     echo "  ^]       - fzf ghq repository selector"
-    echo "  ^gg / ^g^g     - git diff widget"
+    echo "  ^gg / ^g^g     - git menu (status/diff/add/switch/worktree)"
     echo "  ^gs / ^g^s     - git status widget"
     echo "  ^ga / ^g^a     - git add interactive widget"
     echo "  ^gb / ^g^b     - git branch switcher"
