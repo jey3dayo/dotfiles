@@ -175,6 +175,7 @@ fd = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
 opencode = "latest"
+usage = "latest"
 yazi = "latest"
 
 # ========================================
