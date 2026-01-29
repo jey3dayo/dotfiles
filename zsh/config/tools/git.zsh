@@ -79,10 +79,10 @@ _git_menu() {
   command -v fzf >/dev/null 2>&1 || return 0
 
   local options=()
+  options+=("🧾 Diff")
   options+=("📄 Status")
   options+=("🔀 Switch Branch")
   options+=("🔄 Sync")
-  options+=("🧾 Diff")
   options+=("➕ Add (patch)")
   options+=("🔀 Switch Worktree")
   options+=("➕ New Worktree")
