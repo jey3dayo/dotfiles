@@ -253,4 +253,5 @@ pulse/cookie
 # WSL Utilities
 wslu/
 
-systemd
+systemd/
+gogcli/
