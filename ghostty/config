@@ -97,6 +97,7 @@ keybind = ctrl+x>-=new_split:down
 
 
 # Ctrl-x \ : split right
+keybind = ctrl+x>backslash=new_split:right
 keybind = ctrl+x>¥=new_split:right
 keybind = ctrl+x>|=new_split:right
 
