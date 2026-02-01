@@ -1,5 +1,5 @@
 # Global SSH Configuration
-# Applied to all hosts with highest priority
+# Applied to all hosts
 
 Host *
   # Connection optimization
@@ -7,19 +7,30 @@ Host *
   ServerAliveCountMax 10
   TCPKeepAlive yes
   IPQoS lowdelay none
-  
+
   # Connection sharing for performance
   ControlMaster auto
   ControlPath ~/.ssh/sockets/%r@%h:%p
   ControlPersist 600
-  
-  # Authentication optimization  
+
+  # Authentication optimization
   GSSAPIAuthentication no
   PreferredAuthentications publickey,password
-  
-  # macOS Keychain integration
-  UseKeychain yes
-  
+
+  # Default authentication settings
+  IdentityFile ~/.ssh/id_rsa
+  PasswordAuthentication yes
+  PubkeyAuthentication yes
+
+  # Default connection settings
+  Port 22
+  Protocol 2
+  ForwardAgent no
+  ForwardX11 no
+
   # Legacy server compatibility
   HostKeyAlgorithms +ssh-rsa
   PubkeyAcceptedKeyTypes +ssh-rsa
+
+  # Compression for slow connections (disabled by default)
+  # Compression yes
