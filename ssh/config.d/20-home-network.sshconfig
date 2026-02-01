@@ -3,6 +3,13 @@
 
 # Raspberry Pi (unified configuration)
 Host pi
+  HostName 192.168.50.158
+  User pi
+  Port 10022
+  IdentityFile ~/.ssh/id_rsa
+  IdentitiesOnly yes
+
+Host pi-local
   HostName raspberrypi.local
   User pi
   Port 10022
@@ -25,8 +32,8 @@ Host nas
   IdentityFile ~/.ssh/id_rsa
   IdentitiesOnly yes
 
-# New Mac (temporary - should be configured with proper hostname)
-Host newmac
+# Mac
+Host mac
   HostName 192.168.50.141
   User t00114
   Port 22
