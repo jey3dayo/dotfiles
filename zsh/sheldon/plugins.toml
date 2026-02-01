@@ -2,17 +2,17 @@ shell = "zsh"
 
 [templates]
 fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
-defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
+defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer -t 1 source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
 fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n"
 exec = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
-exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" &> /dev/null) \n{% endfor %}"
+exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" > /dev/null 2>&1 < /dev/null) \n{% endfor %}"
 
-# Priority 1: Essential startup components (immediate load)
+# Essential components
 [plugins.zsh-defer]
 github = "romkatv/zsh-defer"
 apply = ["source"]
 
-# Priority 2: Core functionality (minimal defer)
+# Core functionality
 [plugins.clipboard]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'lib'
@@ -23,7 +23,6 @@ github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
 apply = ["defer"]
 
-# Priority 3: Enhanced functionality (standard defer)
 [plugins.functions]
 github = "ohmyzsh/ohmyzsh"
 dir = 'lib'
@@ -36,46 +35,56 @@ apply = ["defer"]
 
 [plugins.zsh-abbr]
 github = 'olets/zsh-abbr'
-apply = ["defer"]
+apply = ["source"]
 
-# Priority 4: FZF ecosystem (critical path optimization)
+# Completion system - must load before fzf-tab
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+use = ["src"]
+apply = ["fpath-src"]
+
 [plugins.fzf]
 github = "junegunn/fzf"
 apply = ['fzf-install', 'source']
 
+[plugins.fzf-git]
+github = "junegunn/fzf-git.sh"
+apply = ["source"]
+
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
-apply = ["defer"]
-
-# Priority 5: Completion system (grouped for efficiency)
-[plugins.zsh-completions]
-github = "zsh-users/zsh-completions"
-use = ["src"]
-apply = ["defer", "fpath-src"]
 
 [plugins.command-not-found]
 github = 'ohmyzsh/ohmyzsh'
 dir = 'plugins'
 apply = ["defer"]
 
-# Priority 6: UI enhancements (lower priority defer)
+# UI enhancements
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
 apply = ["defer"]
 
+# Syntax highlighting - must be last
 [plugins.fast-syntax-highlighting]
 github = "zdharma-continuum/fast-syntax-highlighting"
-apply = ["defer"]
+apply = ["source"]
 
 [plugins.zoxide.hooks]
 post = '''
-alias j=z
-export _ZO_RESOLVE_SYMLINKS=1
-eval "$(zoxide init zsh)"
+if command -v zoxide >/dev/null 2>&1; then
+  alias j=z
+  export _ZO_RESOLVE_SYMLINKS=1
+  eval "$(zoxide init zsh)"
+fi
 '''
 
 [plugins.pnpm-shell-completion]
 github = "g-plane/pnpm-shell-completion"
+apply = ["defer"]
+
+[plugins.ni-completion]
+github = "snowsman/ni-completion"
+use = [".ni.zsh"]
 apply = ["defer"]
 
 [plugins.pnpm-shell-completion-install]
@@ -103,6 +112,6 @@ dir = 'plugins'
 apply = ["defer"]
 
 [plugins.dotfiles-lazy-sources]
-local = "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/lazy-sources"
+local = "~/.config/zsh/lazy-sources"
 use = ["*.zsh"]
 apply = ["defer"]

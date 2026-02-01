@@ -1,8 +1,46 @@
-[tools]
-node = "22"
-ruby = "system"
-python = "latest"
+# ========================================
+# グローバル mise 設定（ツール定義なし）
+# ~/.config/mise/config.toml
+# ========================================
+# このファイルは環境共通の設定のみを定義します。
+# ツール定義は OS 別設定ファイルで管理:
+#   - Mac/Linux/WSL2: config.default.toml
+#   - Raspberry Pi: config.pi.toml
+#
+# MISE_CONFIG_FILE 環境変数により自動的に適切な設定ファイルが選択されます。
+# ========================================
 
 [settings]
+env_file = '.env.local'
 experimental = true
+# jobs は各 OS 固有ファイルで定義（default: 8, pi: 2）
 vfox = false
+idiomatic_version_file_enable_tools = []
+trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
+
+[settings.pipx]
+uvx = true
+
+[env]
+_.source = [".venv/bin/activate"]
+YAMLLINT_CONFIG_FILE = "yamllint/config"
+MD_GLOB = "**/*.md"
+MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
+
+# ========================================
+# オプション環境変数（ファイル限定処理）
+# ========================================
+# フォーマット/lint タスクで特定ファイルのみ処理する場合に設定
+# 例: SH_FILES="script1.sh script2.sh" mise run format:shell
+#
+# SH_FILES = ""      # シェルスクリプト
+# PY_FILES = ""      # Python ファイル
+# LUA_FILES = ""     # Lua ファイル
+# TOML_FILES = ""    # TOML ファイル
+# BIOME_FILES = ""   # JS/TS/JSON ファイル (biome)
+# PRETTIER_FILES = "" # Prettier 対象ファイル
+# YAML_FILES = ""    # YAML ファイル
+
+# ========================================
+# ツール定義は config.default.toml または config.pi.toml を参照
+# ========================================

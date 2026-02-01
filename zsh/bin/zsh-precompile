@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# Precompile zsh config files to .zwc ahead of time.
+# This keeps runtime fast without hooking into `source`.
+
+set -euo pipefail
+
+ZDOTDIR=${ZDOTDIR:-$HOME/.config/zsh}
+
+echo "Precompiling zsh configs under $ZDOTDIR"
+
+# Find .zsh / .zshrc files under ZDOTDIR and precompile to .zwc
+while IFS= read -r file; do
+  zwc="${file}.zwc"
+  if [[ ! -r "$zwc" || "$file" -nt "$zwc" ]]; then
+    echo "  zcompile ${file#$ZDOTDIR/}"
+    zcompile -R "$zwc" "$file"
+  fi
+done < <(find "$ZDOTDIR" -type f \( -name '*.zsh' -o -name '*.zshrc' \) | sort)
+
+echo "Done"

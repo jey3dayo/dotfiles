@@ -1,5 +1,6 @@
 local wezterm = require "wezterm"
 local utils = require "./utils"
+local constants = require "./constants"
 
 local act = wezterm.action
 
@@ -42,8 +43,9 @@ local tmux_keybinds = {
   {
     key = "r",
     mods = "ALT",
-    action = act {
-      ActivateKeyTable = {
+    action = act.Multiple {
+      act.EmitEvent "activate-resize-mode",
+      act.ActivateKeyTable {
         name = "resize_pane",
         one_shot = false,
         timeout_milliseconds = 3000,
@@ -51,7 +53,26 @@ local tmux_keybinds = {
       },
     },
   },
+
+  -- Macros
+  -- テキストを全ペーンに送信して、Ctrl+Enterで送信
+  {
+    key = "E",
+    mods = "CTRL|SHIFT",
+    action = wezterm.action_callback(function(window, pane)
+      local tab = window:active_tab()
+      -- 全てのペーンにテキストを送信
+      for _, p in ipairs(tab:panes()) do
+        -- SendStringでテキストを送信
+        window:perform_action(act.SendString "続きを進めて", p)
+        -- SendKeyでCtrl+Enterを送信（Claude Code送信用）
+        window:perform_action(act.SendKey { key = "Enter", mods = "CTRL" }, p)
+      end
+    end),
+  },
 }
+
+-- Opacity adjustment is now handled in events.lua
 
 local wezterm_keybinds = {
   -- Tab
@@ -84,16 +105,22 @@ for i = 1, 8 do
 end
 
 local key_tables = {
-  -- ALT+r -> [j, k, h, l]
+  -- ALT+r -> [j, k, h, l] and [+, -] for opacity
   resize_pane = {
     { key = "h", action = act { AdjustPaneSize = { "Left", 1 } } },
     { key = "l", action = act { AdjustPaneSize = { "Right", 1 } } },
     { key = "k", action = act { AdjustPaneSize = { "Up", 1 } } },
     { key = "j", action = act { AdjustPaneSize = { "Down", 1 } } },
 
+    -- Opacity adjustment (will exit resize mode, but that's WezTerm limitation)
+    { key = "+", action = act { EmitEvent = "increase-opacity" } },
+    { key = "-", action = act { EmitEvent = "decrease-opacity" } },
+    { key = "0", action = act { EmitEvent = "reset-opacity" } },
+
     -- Cancel the mode by pressing escape
-    { key = "Escape", action = "PopKeyTable" },
-    { key = "c", mods = "CTRL", action = "PopKeyTable" },
+    { key = "Escape", action = act.Multiple { act.PopKeyTable, act.EmitEvent "deactivate-resize-mode" } },
+    { key = "c", mods = "CTRL", action = act.Multiple { act.PopKeyTable, act.EmitEvent "deactivate-resize-mode" } },
+    { key = "q", action = act.Multiple { act.PopKeyTable, act.EmitEvent "deactivate-resize-mode" } },
   },
   copy_mode = {
     {
@@ -306,7 +333,7 @@ if wezterm.target_triple:find "windows" then keys = utils.array_concat(keys, win
 return {
   -- TODO: いつかtrueにする
   disable_default_key_bindings = false,
-  leader = { key = "x", mods = "CTRL", timeout_milliseconds = 1000 },
+  leader = constants.leader,
   keys = keys,
   key_tables = key_tables,
   mouse_bindings = mouse_bindings,

@@ -1,7 +1,7 @@
 # Core aliases and environment setup
 
 case ${OSTYPE} in
-  darwin*)
+darwin*)
   # gnu
   alias sed="gsed"
   alias grep="ggrep"
@@ -11,6 +11,8 @@ case ${OSTYPE} in
   ;;
 esac
 
-if command -v colordiff>/dev/null; then
+if command -v colordiff >/dev/null; then
   alias diff="colordiff"
 fi
+
+# Claude CLI is installed via Homebrew at /opt/homebrew/bin/claude

@@ -1,0 +1,19 @@
+# Default SSH Configuration
+# Fallback settings applied last (lowest priority)
+
+# Default identity file (if not specified in host config)
+Host *
+  IdentityFile ~/.ssh/id_rsa
+
+# Default connection settings for unmatched hosts
+Host *
+  Port 22
+  Protocol 2
+  ForwardAgent no
+  ForwardX11 no
+  PasswordAuthentication yes
+  PubkeyAuthentication yes
+  
+# Compression for slow connections (can be enabled per host)
+# Host *
+#   Compression yes

@@ -1,0 +1,109 @@
+{
+  "console.log": {
+    "prefix": "cl",
+    "body": ["console.log(${1:value});"],
+    "description": "Console log"
+  },
+  "console.log with label": {
+    "prefix": "co",
+    "body": ["console.log('${1:label}:', ${2:value});"],
+    "description": "Console log with label"
+  },
+  "console.error": {
+    "prefix": "ce",
+    "body": ["console.error(${1:error});"],
+    "description": "Console error"
+  },
+  "console.table": {
+    "prefix": "ct",
+    "body": ["console.table(${1:data});"],
+    "description": "Console table"
+  },
+  "console.time": {
+    "prefix": "ctime",
+    "body": ["console.time('${1:label}');", "${2:// code to measure}", "console.timeEnd('${1:label}');"],
+    "description": "Console time measurement"
+  },
+  "async function": {
+    "prefix": "af",
+    "body": [
+      "async function ${1:functionName}(${2:params}): Promise<${3:ReturnType}> {",
+      "  ${4:// implementation}",
+      "}"
+    ],
+    "description": "Async function declaration"
+  },
+  "arrow function": {
+    "prefix": "arrow",
+    "body": ["const ${1:functionName} = (${2:params}): ${3:ReturnType} => {", "  ${4:// implementation}", "};"],
+    "description": "Arrow function"
+  },
+  "async arrow function": {
+    "prefix": "aarrow",
+    "body": [
+      "const ${1:functionName} = async (${2:params}): Promise<${3:ReturnType}> => {",
+      "  ${4:// implementation}",
+      "};"
+    ],
+    "description": "Async arrow function"
+  },
+  "interface": {
+    "prefix": "interface",
+    "body": ["interface ${1:InterfaceName} {", "  ${2:property}: ${3:type};", "}"],
+    "description": "TypeScript interface"
+  },
+  "type alias": {
+    "prefix": "type",
+    "body": ["type ${1:TypeName} = ${2:Type};"],
+    "description": "TypeScript type alias"
+  },
+  "try-catch": {
+    "prefix": "try",
+    "body": [
+      "try {",
+      "  ${1:// code that might throw}",
+      "} catch (error) {",
+      "  console.error('${2:Error message}:', error);",
+      "  ${3:// error handling}",
+      "}"
+    ],
+    "description": "Try-catch block"
+  },
+  "async try-catch": {
+    "prefix": "atry",
+    "body": [
+      "try {",
+      "  ${1:const result = await someAsyncOperation();}",
+      "} catch (error) {",
+      "  console.error('${2:Error message}:', error);",
+      "  ${3:// error handling}",
+      "}"
+    ],
+    "description": "Async try-catch block"
+  },
+  "import default": {
+    "prefix": "imp",
+    "body": ["import ${1:name} from '${2:module}';"],
+    "description": "Import default"
+  },
+  "import named": {
+    "prefix": "impn",
+    "body": ["import { ${1:namedImport} } from '${2:module}';"],
+    "description": "Import named"
+  },
+  "import type": {
+    "prefix": "impt",
+    "body": ["import type { ${1:Type} } from '${2:module}';"],
+    "description": "Import type"
+  },
+  "export default": {
+    "prefix": "exp",
+    "body": ["export default ${1:value};"],
+    "description": "Export default"
+  },
+  "export named": {
+    "prefix": "expn",
+    "body": ["export { ${1:name} };"],
+    "description": "Export named"
+  }
+}

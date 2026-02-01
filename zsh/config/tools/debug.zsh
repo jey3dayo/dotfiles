@@ -7,18 +7,18 @@ if [[ -n "$ZSH_DEBUG" ]]; then
   zsh-benchmark() {
     echo "🔍 Benchmarking zsh startup time..."
     echo ""
-    for i in {1..5}; do
+    for (( i = 1; i <= ZSH_DEBUG_BENCHMARK_RUNS; i++ )); do
       echo "Run $i:"
-      time ( zsh -i -c exit )
+      time (zsh -i -c exit)
       echo ""
     done
   }
 
   # Show zsh profiling information
   zsh-profile() {
-    echo "📊 Zsh Profile Information (top 20):"
+    echo "📊 Zsh Profile Information (top ${ZSH_DEBUG_PROFILE_TOP_COUNT}):"
     echo ""
-    zprof | head -20
+    zprof | head -${ZSH_DEBUG_PROFILE_TOP_COUNT}
   }
 
   # Clear zsh profiling data

@@ -1,15 +1,41 @@
 # XDG base directories
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_DATA_HOME="$HOME/.local/share"
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+: "${XDG_STATE_HOME:=$HOME/.local/state}"
+export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
 
-export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
+: "${ZDOTDIR:=${XDG_CONFIG_HOME}/zsh}"
+: "${GIT_CONFIG_GLOBAL:=$XDG_CONFIG_HOME/git/config}"
+export ZDOTDIR GIT_CONFIG_GLOBAL
+
+# mise data/cache directories (must be set before .zprofile activation)
+: "${MISE_DATA_DIR:=$HOME/.mise}"
+: "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
+export MISE_DATA_DIR MISE_CACHE_DIR
+
+# mise config file selection based on environment (must be before mise activate)
+if [[ -f "${XDG_CONFIG_HOME}/scripts/setup-mise-env.sh" ]]; then
+  source "${XDG_CONFIG_HOME}/scripts/setup-mise-env.sh"
+fi
+
+# History file should be set before shell init so history loads
+# even if .zshrc is skipped. Keep it under XDG state by default.
+: "${HISTFILE:=${XDG_STATE_HOME}/zsh/history}"
+export HISTFILE
+
+# History size must be set in .zshenv (not .zshrc) because tools like Claude Code
+# use 'zsh -c' which skips .zshrc, resulting in Zsh's defaults (HISTSIZE=30, SAVEHIST=0).
+# .zshenv is always sourced, ensuring proper history configuration in all contexts.
+HISTSIZE=100000
+SAVEHIST=100000
+export HISTSIZE SAVEHIST
 
 # Temporary Files
 if [[ ! -d "$TMPDIR" ]]; then
   export TMPDIR="/tmp/$LOGNAME"
-  mkdir -p -m 700 "$TMPDIR"
+  mkdir -p "$TMPDIR"
+  chmod 700 "$TMPDIR"
 fi
 
 TMPPREFIX="${TMPDIR%/}/zsh"
@@ -21,41 +47,19 @@ export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
 export JAVA_OPTS="-Djava.net.useSystemProxies=true"
 export CATALINA_HOME=/opt/homebrew/Cellar/tomcat/10.1.19/libexec/
 export ANT_OPTS=-Dbuild.sysclasspath=ignore
-export GOPATH=$HOME
 export BUN_INSTALL="$HOME/.bun"
 export HOMEBREW_BUNDLE_FILE_GLOBAL="$XDG_CONFIG_HOME/Brewfile"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
-export BIOME_CONFIG_PATH="$HOME/.config/biome.json"
-export CODEX_CONFIG="$HOME/.config/.codex/config.yaml"
-# export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
-# export SSH_AUTH_SOCK=~/.1password/agent.sock
+export CODEX_CONFIG="$HOME/.config/codex/config.yaml"
 
-path=(
-  # railsビルド用
-  # /opt/homebrew/opt/mysql@5.7/bin(N-/)
-  $HOME/{bin,sbin}(N-/)
-  $HOME/.local/{bin,sbin}(N-/)
-  /usr/local/{bin,sbin}(N-/)
-  $HOME/.deno/bin(N-/)
-  $HOME/.cargo/bin(N-/)
-  /usr/local/opt/openjdk/bin:(N-/)
-  /usr/local/opt/coreutils/libexec/gnubin(N-/)
-  $GOPATH/bin(N-/)
-  $BUN_INSTALL/bin(N-/)
-  $PNPM_HOME(N-/)
-  $HOME/.local/npm-global/bin
-  $ANDROID_SDK_ROOT/emulator(N-/)
-  $ANDROID_SDK_ROOT/tools(N-/)
-  $ANDROID_SDK_ROOT/tools/bin(N-/)
-  $ANDROID_SDK_ROOT/platform-tools(N-/)
-  $path
-)
+# PATH configuration is in .zprofile (executed after macOS path_helper)
+# mise shims are managed automatically by 'mise activate' in .zprofile
 
-alias awsume="source \$(pyenv which awsume)"
 fpath=(
   ~/.awsume/zsh-autocomplete/
   ~/.local/share/zsh-autocomplete/
-  $fpath)
+  "${fpath[@]}")
 
 # vim: set syntax=zsh:
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"

@@ -1,0 +1,9 @@
+# External dependencies (not searchable by design)
+node_modules/
+tmux/plugins/
+fisher/
+zsh/.zinit/
+claude/local/node_modules/
+
+# Temporary symlinks
+codex/AGENTS.md

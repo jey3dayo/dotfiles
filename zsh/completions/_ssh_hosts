@@ -1,0 +1,34 @@
+#autoload
+
+# Custom _ssh_hosts to fix completion issues
+# This version provides simple host-only completions without users-hosts mixing
+
+local -a config_hosts
+local config host
+
+# Get SSH config file path
+local config_file="${HOME}/.ssh/config"
+
+# Collect all SSH hosts from config files
+for config in "$config_file" "${HOME}"/.ssh/ssh_config.d/*.sshconfig "${XDG_CONFIG_HOME:-$HOME/.config}"/ssh/config.d/*.sshconfig; do
+  [[ -r "$config" ]] || continue
+
+  # Extract Host entries
+  while IFS= read -r line; do
+    # Match Host lines (case-insensitive)
+    if [[ "$line" =~ ^[[:space:]]*[Hh][Oo][Ss][Tt][[:space:]]+(.+)$ ]]; then
+      # Extract host names from the line
+      for host in ${(z)match[1]}; do
+        # Skip wildcards
+        [[ "$host" == *[*?]* ]] && continue
+        config_hosts+=("$host")
+      done
+    fi
+  done < "$config"
+done
+
+# Provide completions (deduplicated)
+if (( ${#config_hosts} )); then
+  _wanted hosts expl 'remote host name' \
+    compadd -M 'm:{a-zA-Z}={A-Za-z} r:|.=* r:|=*' "$@" "${(@u)config_hosts}"
+fi

@@ -1,0 +1,106 @@
+name: CI - Format and Lint
+
+on:
+  push:
+    paths:
+      - "**/*.md"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.lua"
+      - "**/*.sh"
+      - "**/*.zsh"
+      - "**/*.ts"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.mts"
+      - "**/*.jsx"
+      - "**/*.tsx"
+      - "**/*.json"
+      - "**/*.jsonc"
+      - "biome.json"
+      - "stylua.toml"
+      - ".styluaignore"
+      - "mise.toml"
+      - ".markdown-link-check.json"
+      - ".github/workflows/ci.yml"
+  pull_request:
+    paths:
+      - "**/*.md"
+      - "**/*.yml"
+      - "**/*.yaml"
+      - "**/*.lua"
+      - "**/*.sh"
+      - "**/*.zsh"
+      - "**/*.ts"
+      - "**/*.js"
+      - "**/*.mjs"
+      - "**/*.cjs"
+      - "**/*.mts"
+      - "**/*.jsx"
+      - "**/*.tsx"
+      - "**/*.json"
+      - "**/*.jsonc"
+      - "biome.json"
+      - "stylua.toml"
+      - ".styluaignore"
+      - "mise.toml"
+      - ".markdown-link-check.json"
+      - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+jobs:
+  format-and-lint:
+    runs-on: ubuntu-latest
+    env:
+      # Use CI-optimized configuration with minimal toolset
+      # Significantly reduces install time compared to default config
+      MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
+      # Relax network hiccups when fetching tool version metadata
+      MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
+      # Use GitHub Actions Lua/LuaRocks instead of mise-managed installs
+      MISE_DISABLE_TOOLS: "lua,luajit"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libreadline-dev libncurses5-dev
+
+      - name: Import Node.js release key
+        run: |
+          gpg --keyserver keyserver.ubuntu.com --recv-keys 86C8D74642E67846F8E120284DAA80D1E737BC9F
+
+      - name: Set up mise
+        uses: jdx/mise-action@v3
+        with:
+          version: "2025.12.13"
+          cache: true
+
+      - name: Set up Lua (LuaJIT) for luacheck
+        uses: leafo/gh-actions-lua@v12
+
+      - name: Set up LuaRocks
+        uses: leafo/gh-actions-luarocks@v6
+
+      - name: Cache LuaRocks packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.luarocks
+          key: luarocks-${{ runner.os }}-${{ hashFiles('**/mise.toml') }}
+          restore-keys: |
+            luarocks-${{ runner.os }}-
+
+      - name: Install LuaRocks packages
+        run: |
+          luarocks install --local luacheck
+          luarocks install --local busted
+
+      - name: Add LuaRocks bin to PATH
+        run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH
+
+      - name: Run all CI checks
+        run: mise run ci

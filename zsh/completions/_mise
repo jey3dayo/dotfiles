@@ -1,0 +1,44 @@
+#compdef mise
+local curcontext="$curcontext"
+
+# caching config
+_usage_mise_cache_policy() {
+  if [[ -z "${lifetime}" ]]; then
+    lifetime=$((60*60*4)) # 4 hours
+  fi
+  local -a oldp
+  oldp=( "$1"(Nms+${lifetime}) )
+  (( $#oldp ))
+}
+
+_mise() {
+  typeset -A opt_args
+  local curcontext="$curcontext" spec_file cache_dir lifetime
+
+  if ! command -v usage &> /dev/null; then
+      return 0
+  fi
+
+  cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/mise"
+  spec_file="${cache_dir}/usage-spec.txt"
+  lifetime=$((60*60*4)) # 4 hours
+  if [[ ! -f "$spec_file" || -n "$spec_file"(Nms+${lifetime}) ]]; then
+    mkdir -p "$cache_dir" 2>/dev/null
+    mise usage >| "$spec_file" 2>/dev/null
+  fi
+
+  if [[ ! -s "$spec_file" ]]; then
+    return 0
+  fi
+
+  _arguments "*: :(($(usage complete-word --shell zsh -f "$spec_file" -- "${words[@]}" )))"
+  return 0
+}
+
+if [ "$funcstack[1]" = "_mise" ]; then
+    _mise "$@"
+else
+    compdef _mise mise
+fi
+
+# vim: noet ci pi sts=0 sw=4 ts=4

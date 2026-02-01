@@ -1,0 +1,257 @@
+# Operating System Files
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100/
+.fseventsd/
+.Spotlight-V100/
+.TemporaryItems/
+.Trashes/
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB/
+.AppleDesktop/
+Network Trash Folder/
+Temporary Items/
+.apdisk
+
+## Windows
+Thumbs.db
+
+# Development Environment
+## Project
+build/
+log/
+doc/tags
+doc/tags-*
+
+# Environment Files
+.env.local
+.env.keys
+.env.backup.*
+!.env               # Track encrypted .env only
+stash/
+
+## Go
+go/
+
+## Editor/IDE
+.idea/
+# .vscode/
+.project/
+.classpath/
+.settings/
+jsconfig.json
+
+## Vim
+Session.vim
+.vim/.VimballRecord
+.vim/dict/
+.vim/doc/
+.vim/GetLatest/
+.vim/bundle/
+.vim/chalice/cache/
+<Plug>*
+projects-config/*
+!projects-config/.gitkeep
+nvim_startup.log
+
+## Zsh
+zsh/.zsh_sessions/
+zsh/.zsh_history
+zsh/sheldon/sheldon.zsh
+zsh/.zinit/
+zsh/.zcompdump*
+zsh/.zcompcache/
+
+## Git
+git/local.gitconfig
+
+# Tools and Applications
+.vimperator/info/
+.subversion/auth/
+.netrwhist
+.python-version
+iterm2/
+.yarnclean
+yarn/
+.direnv/
+.venv
+composer/
+configstore/
+fish/
+fisher/
+karabiner/automatic_backups/
+github-copilot/
+
+# Auto-generated telemetry configs
+clerk/
+nextjs-nodejs/
+
+# OpenCode external skill symlinks
+opencode/skills/
+
+op/
+jgit/
+raycast/
+cvim/
+cycloud/
+lazygit/
+.wrangler/
+mise/trusted-configs/
+# SSH Configuration (sensitive files)
+## Private keys and certificates
+**/id_*
+**/id_*.pub
+**/*_rsa
+**/*_rsa.pub
+**/*_dsa
+**/*_dsa.pub
+**/*_ecdsa
+**/*_ecdsa.pub
+**/*_ed25519
+**/*_ed25519.pub
+*.pem
+*.key
+*.crt
+*.cert
+*.p12
+*.pfx
+
+## SSH sensitive configurations
+ssh/config.d/*-private-*.sshconfig
+ssh/config.d/*-confidential-*.sshconfig
+ssh/config.d/*-secret-*.sshconfig
+ssh/config.d/*-prod-*.sshconfig
+ssh/config.d/*-production-*.sshconfig
+ssh/config.d/*-corp-*.sshconfig
+ssh/config.d/*-work-*.sshconfig
+ssh/config.d/*-company-*.sshconfig
+ssh/ssh_config.d/private-host.sshconfig
+ssh.backup*
+
+## SSH runtime files
+ssh/known_hosts
+ssh/known_hosts.*
+ssh/known_hosts_*
+ssh/sockets/
+ssh/.ssh/sockets/
+ssh/agent.*
+ssh/ssh-agent.*
+ssh/*.sock
+irb/irb_history
+AWS VPN Client/
+AWSVPNClient/
+.perman-aws-vault
+1Password/ssh/
+Autodesk/
+browser-launcher/
+rest-client/
+dlv/
+gh/hosts.yml
+ghkw
+hub
+swiftpm
+repomix-output.txt
+.cursorrules
+.windsurfrules
+global_rules.md
+
+# Temporary and Generated Files
+*~
+*.a
+*.al
+*.bk
+*.bk.*
+*.backup
+*.bak
+*.bak.*
+*.la
+*.lo
+*.mode1v3
+*.o
+*.old
+*.org
+*.pbxuser
+*.pyo
+*.so
+*.dump
+*.diff
+*.output
+*.zwc
+*.jse
+*.tags
+*.local
+sample.*
+*.stash.*
+*.my.sh
+*.jsxe
+*.orig
+*.rej
+nohup.out
+out.typos
+
+# Temporary tracking/review documents (underscore prefix)
+_*.md
+
+# Temporary dirs
+*backup*
+
+TODO.md
+repomix.config.json
+repomix-output.txt
+.repomixignore
+
+.ignore
+services/cagra-web
+services/cygate-web/net
+vendor
+
+.clinerules
+.aider*
+
+# Claude AI Tools
+claude/
+!claude/settings.json
+**/.claude/settings.local.json
+
+# Claude Code Configuration
+.claude/local/
+.claude/projects/
+.claude/statsig/
+.claude/todos/
+
+# Zed Editor
+zed/conversations/
+zed/prompts/
+zed/cache/
+zed/logs/
+zed/state*
+zed/*.db
+zed/*.lock
+zed/*.log
+
+# nvim
+*.swp
+
+# XDG User Directories
+user-dirs.dirs
+user-dirs.locale
+
+# PulseAudio
+pulse/cookie
+
+# mcp
+.serena
+.mcp.json
+
+# Codex 3rd Party
+.sdd
+
+# WSL Utilities
+wslu/
+
+systemd/
+gogcli/

@@ -1,0 +1,26 @@
+{
+  // Markdownlint configuration for dotfiles project
+  // Optimized for technical documentation with Japanese content
+  "config": {
+    "default": true,
+    // Heading increment - disabled for flexible document structure
+    "MD001": false,
+    // Line length - disabled for code blocks and long links
+    "MD013": false,
+    // Duplicate headings - disabled for sectioned documents
+    "MD024": false,
+    // Code block language specification - disabled for simple blocks
+    "MD040": false,
+    // First line as header - allow for more flexible document structure
+    "MD041": false,
+    // Table column style - allow any style (aligned, compact, padded)
+    "MD060": false,
+  },
+  "ignores": [
+    "**/node_modules",
+    "tmux/plugins/**",
+    "fisher/**",
+    "zsh/.zinit/**",
+    "opencode/skills/**",
+  ],
+}

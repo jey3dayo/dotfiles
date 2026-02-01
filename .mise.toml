@@ -1,0 +1,78 @@
+# ========================================
+# ~/.config 配下のみで有効にする mise タスク
+# プロジェクト固有の集約・mac依存タスクをここで定義
+# ========================================
+
+# タスク定義を mise/tasks/ から読み込み
+[task_config]
+includes = [
+  "mise/tasks/format.toml",
+  "mise/tasks/lint.toml",
+  "mise/tasks/test.toml",
+  "mise/tasks/integration.toml"
+]
+
+# ========================================
+# Environment Variable Management (dotenvx)
+# ========================================
+
+[tasks."setup-env"]
+description = ".env を .env.local に復号化（mise hooks から自動実行）"
+run = "scripts/setup-env.sh"
+
+[tasks."env:encrypt"]
+description = "環境変数ファイルを暗号化"
+run = "dotenvx encrypt -f ${XDG_CONFIG_HOME:-$HOME/.config}/.env"
+
+[tasks."env:decrypt"]
+description = "環境変数ファイルを復号化"
+run = "DOTENV_PRIVATE_KEY_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys dotenvx decrypt -f ${XDG_CONFIG_HOME:-$HOME/.config}/.env"
+
+[hooks]
+# Decrypt .env to .env.local on directory enter (silent on success, show critical errors)
+enter = 'mise run setup-env 2>&1 | grep -E "^(❌|Error:)" || true'
+
+# ========================================
+# Brewfile 管理
+# ========================================
+
+[tasks."brewfile:backup"]
+description = "現在のインストール状況をBrewfileに保存（差分あればコミット）"
+run = "if command -v brew >/dev/null 2>&1; then brew bundle dump --file=Brewfile --force && git add Brewfile && git diff --cached --quiet || git commit -m 'chore: update Brewfile'; else echo 'Homebrew not installed'; fi"
+
+[tasks."brewfile:restore"]
+description = "Brewfileからパッケージをインストール（新規Mac対応）"
+run = "if command -v brew >/dev/null 2>&1; then brew bundle install --no-upgrade; else echo 'Homebrew not installed. Install: /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"'; fi"
+
+# ========================================
+# 更新タスク（mac/local 依存）
+# ========================================
+[tasks.update]
+description = "すべての依存関係を更新"
+depends = ["update:submodules", "update:brew", "update:external-repos"]
+
+[tasks."update:submodules"]
+description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
+run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote; else echo 'No submodules configured, skipping'; fi"
+
+[tasks."update:brew"]
+description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
+run = "if command -v brew >/dev/null 2>&1; then (brew update 2>&1 | grep -v \"definition is invalid\" || true) && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
+
+[tasks."update:external-repos"]
+description = "外部 Git リポジトリを更新（強制リセット）"
+run = [
+  "if [ -d ~/src/github.com/brookhong/Surfingkeys ]; then cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd; else echo 'Skip: ~/src/github.com/brookhong/Surfingkeys not found'; fi",
+]
+
+# CI/CD
+[tasks.ci]
+description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
+depends = ["format", "lint:docs", "lint:links", "test:lua"]
+
+[tasks."ci:install"]
+description = "CI に必要な追加ツールをインストール"
+run = """
+luarocks install --local luacheck
+luarocks install --local busted
+"""

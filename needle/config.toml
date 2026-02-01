@@ -1,0 +1,33 @@
+# Needle configuration file
+# All fields are optional - CLI arguments override these values
+# Uncomment and modify the options you want to customize
+
+# Only include PRs updated in the last N days (default: 30)
+# days = 30
+
+# Only show PRs from these orgs/users
+# org = ["my-company", "my-username"]
+
+# Only show these specific repos (owner/repo)
+# include = ["my-company/important-repo"]
+
+# Exclude these repos from the list (owner/repo)
+# exclude = ["my-company/noisy-repo", "my-company/legacy-repo"]
+
+# Include PRs where review is requested from teams you're in (default: false)
+# include_team_requests = false
+
+# Ring terminal bell on important events (default: false)
+# bell = false
+
+# Disable desktop notifications (default: false, i.e. notifications enabled)
+# no_notifications = false
+
+# Hide columns in list view
+# hide_pr_numbers = false
+# hide_repo = false
+# hide_author = false
+
+# Auto-refresh intervals in seconds
+# refresh_interval_list_secs = 180    # 3 minutes for list view
+# refresh_interval_details_secs = 30  # 30 seconds for details view

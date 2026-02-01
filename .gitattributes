@@ -1,0 +1,13 @@
+# Auto-normalize line endings
+* text=auto
+
+# Lock files (auto-generated, suppress diff, use ours on merge)
+nvim/lazy-lock.json linguist-generated=true -diff merge=ours
+Brewfile.lock.json linguist-generated=true -diff merge=ours
+
+# Shell scripts (force LF)
+*.sh text eol=lf
+
+# Windows scripts (force CRLF)
+*.bat text eol=crlf
+*.cmd text eol=crlf

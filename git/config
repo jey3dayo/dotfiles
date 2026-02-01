@@ -1,27 +1,20 @@
 [include]
-  path = ~/.config/git/diff.gitconfig
-  path = ~/.config/git/ghq.gitconfig
-  path = ~/.config/git/alias.gitconfig
+  path = diff.gitconfig
+  path = ghq.gitconfig
+  path = alias.gitconfig
 
 [core]
-  excludesfile = ~/.config/git/gitignore
+  excludesfile = ~/.config/.gitignore
   attributesfile = ~/.config/git/attributes
   quotepath = false
   editor = nvim
+  whitespace = -trailing-space
 
 [init]
   defaultBranch = main
 
 [branch]
   sort = -committerdate
-
-[branch "main"]
-  remote = origin
-  merge = refs/heads/main
-
-[branch "master"]
-  remote = origin
-  merge = refs/heads/master
 
 [color]
   branch = auto
@@ -45,7 +38,7 @@
   followTags = true
 
 [pull]
-  rebase = true
+  rebase = false
 
 [fetch]
   prune = true
@@ -83,3 +76,18 @@
 [log]
   ; date = iso
   date = relative
+
+[wt]
+  basedir = ".worktrees"
+[user]
+	name = Junya Nakazato
+	email = j138cm@gmail.com
+
+[include]
+  path = ~/.gitconfig_local
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !gh auth git-credential

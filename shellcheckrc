@@ -1,3 +1,6 @@
+# Default shell for zsh dotfiles
+shell=bash
+
 disable=SC2034
 disable=SC2006
 disable=SC2046

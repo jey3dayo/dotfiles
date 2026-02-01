@@ -11,6 +11,7 @@ extend-exclude = [
   "AWSVPNClient/**",
   "db/sql/**",
   "internals/**",
+  "tmux/plugins/**",
 ]
 
 # [default]
@@ -30,7 +31,6 @@ regist = "regist"
 reserv = "reserv"
 iterm = "iterm"
 sur = "sur"
-noice = "noice"
 
 ue = "ue"
 fo = "fo"
@@ -47,3 +47,7 @@ THA = "THA"
 TTO = "TTO"
 myu = "myu"
 ono = "ono"
+typ = "typ"
+ser = "ser"
+Inofficial = "Inofficial"
+noice = "noice"

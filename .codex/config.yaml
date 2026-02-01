@@ -1,6 +1,0 @@
-model: gpt-4o
-approvalMode: suggest
-fullAutoErrorMode: ask-user
-notify: true
-
-language: ja

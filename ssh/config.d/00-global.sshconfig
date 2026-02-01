@@ -1,0 +1,25 @@
+# Global SSH Configuration
+# Applied to all hosts with highest priority
+
+Host *
+  # Connection optimization
+  ServerAliveInterval 30
+  ServerAliveCountMax 10
+  TCPKeepAlive yes
+  IPQoS lowdelay none
+  
+  # Connection sharing for performance
+  ControlMaster auto
+  ControlPath ~/.ssh/sockets/%r@%h:%p
+  ControlPersist 600
+  
+  # Authentication optimization  
+  GSSAPIAuthentication no
+  PreferredAuthentications publickey,password
+  
+  # macOS Keychain integration
+  UseKeychain yes
+  
+  # Legacy server compatibility
+  HostKeyAlgorithms +ssh-rsa
+  PubkeyAcceptedKeyTypes +ssh-rsa

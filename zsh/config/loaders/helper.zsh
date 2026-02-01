@@ -14,10 +14,10 @@ _defer_or_source() {
 # ディレクトリ内のzshファイルを読み込む関数
 _load_zsh_files() {
   local dir="$1"
-  local defer="$2"  # "defer" または "immediate"
-  
+  local defer="$2" # "defer" または "immediate"
+
   [[ ! -d "$dir" ]] && return
-  
+
   for file in "$dir"/*.zsh; do
     if [[ -r "$file" ]]; then
       if [[ "$defer" == "defer" ]]; then
@@ -29,4 +29,4 @@ _load_zsh_files() {
   done
 }
 
-# vim: set syntax=zsh: 
+# vim: set syntax=zsh:

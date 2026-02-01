@@ -1,0 +1,63 @@
+{
+  "main function": {
+    "prefix": "main",
+    "body": ["func main() {", "\t${1:// implementation}", "}"],
+    "description": "Main function"
+  },
+  "function": {
+    "prefix": "func",
+    "body": ["func ${1:functionName}(${2:params}) ${3:returnType} {", "\t${4:// implementation}", "}"],
+    "description": "Function declaration"
+  },
+  "method": {
+    "prefix": "method",
+    "body": [
+      "func (${1:receiver} ${2:Type}) ${3:methodName}(${4:params}) ${5:returnType} {",
+      "\t${6:// implementation}",
+      "}"
+    ],
+    "description": "Method declaration"
+  },
+  "error check": {
+    "prefix": "iferr",
+    "body": ["if err != nil {", "\t${1:return err}", "}"],
+    "description": "Error check"
+  },
+  "struct": {
+    "prefix": "struct",
+    "body": ["type ${1:StructName} struct {", "\t${2:Field} ${3:Type}", "}"],
+    "description": "Struct declaration"
+  },
+  "interface": {
+    "prefix": "interface",
+    "body": ["type ${1:InterfaceName} interface {", "\t${2:Method}(${3:params}) ${4:returnType}", "}"],
+    "description": "Interface declaration"
+  },
+  "for range": {
+    "prefix": "forr",
+    "body": ["for ${1:index}, ${2:value} := range ${3:slice} {", "\t${4:// implementation}", "}"],
+    "description": "For range loop"
+  },
+  "goroutine": {
+    "prefix": "go",
+    "body": ["go func() {", "\t${1:// implementation}", "}()"],
+    "description": "Anonymous goroutine"
+  },
+  "channel": {
+    "prefix": "chan",
+    "body": ["${1:ch} := make(chan ${2:Type}${3:, ${4:buffer}})"],
+    "description": "Channel declaration"
+  },
+  "select": {
+    "prefix": "select",
+    "body": [
+      "select {",
+      "case ${1:value} := <-${2:channel}:",
+      "\t${3:// handle value}",
+      "default:",
+      "\t${4:// default case}",
+      "}"
+    ],
+    "description": "Select statement"
+  }
+}
