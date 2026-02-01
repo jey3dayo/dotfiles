@@ -1,10 +1,6 @@
 local wezterm = require "wezterm"
 local wsl_domains = wezterm.default_wsl_domains()
 
-for _, dom in ipairs(wsl_domains) do
-  dom.default_cwd = "~"
-end
-
 return {
   default_domain = "WSL:Ubuntu",
   default_prog = { "wsl.exe" },
@@ -20,7 +16,7 @@ return {
 
   -- window
   font_size = 12,
-  initial_cols = 130,
-  initial_rows = 30,
+  initial_cols = 200,
+  initial_rows = 60,
   window_decorations = "TITLE",
 }
