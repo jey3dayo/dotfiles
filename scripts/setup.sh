@@ -17,7 +17,8 @@ resolve_repo_root() {
     esac
   done
 
-  cd "$(dirname "$target")" && pwd -P
+  # Go to script directory, then up one level to repo root
+  cd "$(dirname "$target")/.." && pwd -P
 }
 
 DOTFILES=${DOTFILES:-"$(resolve_repo_root)"}

@@ -1,0 +1,23 @@
+# macOS-specific SSH Configuration
+# Applied only on macOS/Darwin systems
+#
+# ARCHITECTURE: This file is conditionally included via Match exec in main config.
+# - IgnoreUnknown UseKeychain is declared in main config (global scope)
+# - UseKeychain is ignored on non-macOS systems (where it's unrecognized)
+# - On macOS, UseKeychain is recognized and applied
+#
+# NOTE: Match exec block is NOT needed here because the file itself is
+# conditionally included. All directives here apply only on macOS.
+
+# macOS Keychain integration
+Host *
+  UseKeychain yes
+  AddKeysToAgent yes
+
+# OrbStack SSH integration (macOS Docker alternative)
+# Uncomment if OrbStack is installed:
+# Include ~/.orbstack/ssh/config
+
+# Colima SSH integration (macOS Docker alternative)
+# Uncomment if Colima is installed:
+# Include ~/.colima/ssh_config

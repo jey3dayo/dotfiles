@@ -54,7 +54,6 @@ python = "3.14"
 # Package Managers (パッケージマネージャー)
 # ========================================
 "pipx:uv" = "latest"
-bun = "latest"
 
 # FIXME: Temporarily disabled due to CI failures - revisit when stable
 # "pipx:git+https://github.com/agentskills/agentskills.git" = "main#subdirectory=skills-ref"
@@ -104,6 +103,7 @@ yamllint = "latest"
 # Claude/AI ツール
 # 注: デスクトップ開発ツール (dxt, dev3000, ccusage) は除外
 "npm:@sasazame/ccresume" = "latest"
+"npm:openclawd" = "latest"
 
 # 注: クラウド・インフラツールは除外 (aws-cli で十分)
 
@@ -115,7 +115,6 @@ eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
-opencode = "latest"
 yazi = "latest"
 
 # ========================================

@@ -23,7 +23,6 @@ Host *
   PubkeyAuthentication yes
 
   # Default connection settings
-  Port 22
   Protocol 2
   ForwardAgent no
   ForwardX11 no
