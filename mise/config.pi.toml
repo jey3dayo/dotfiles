@@ -19,8 +19,6 @@ _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
 MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
-# fd コマンド用の除外パターン（シンボリックリンク）
-FD_MD_EXCLUDE = "--exclude 'codex/AGENTS.md' --exclude 'opencode/AGENTS.md'"
 
 # ========================================
 # オプション環境変数（ファイル限定処理）

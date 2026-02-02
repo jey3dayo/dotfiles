@@ -84,11 +84,13 @@ fi
 
 ["lint:links"]
 description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
-run = "fd -e md ${FD_MD_EXCLUDE} -x markdown-link-check --config .markdown-link-check.json -q"
+# シンボリックリンク除外: codex/AGENTS.md, opencode/AGENTS.md
+run = "fd -e md --exclude codex/AGENTS.md --exclude opencode/AGENTS.md -x markdown-link-check --config .markdown-link-check.json -q"
 
 ["lint:links:verbose"]
 description = "Markdown リンクチェック（詳細モード）"
-run = "fd -e md ${FD_MD_EXCLUDE} -x markdown-link-check --config .markdown-link-check.json --verbose"
+# シンボリックリンク除外: codex/AGENTS.md, opencode/AGENTS.md
+run = "fd -e md --exclude codex/AGENTS.md --exclude opencode/AGENTS.md -x markdown-link-check --config .markdown-link-check.json --verbose"
 
 ["lint:lua"]
 description = "Lua ファイルをチェック"
