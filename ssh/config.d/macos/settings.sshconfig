@@ -10,8 +10,9 @@
 # conditionally included. All directives here apply only on macOS.
 
 # macOS Keychain integration
-UseKeychain yes
-AddKeysToAgent yes
+Host *
+  UseKeychain yes
+  AddKeysToAgent yes
 
 # OrbStack SSH integration (macOS Docker alternative)
 # Uncomment if OrbStack is installed:
