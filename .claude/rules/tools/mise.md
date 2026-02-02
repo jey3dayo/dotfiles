@@ -318,6 +318,18 @@ yazi = "latest"
 **Before**: miseのnpmバックエンドがnpmを使用
 **After**: miseのnpmバックエンドがpnpmを使用（`settings.npm.package_manager = "pnpm"`）
 
+**Implementation Details** (Completed 2026-02-03):
+
+1. mise updated: v2025.7.17 → v2025.12.13 (to support `settings.npm.package_manager`)
+2. Bootstrap process:
+   - Temporarily set `package_manager = "npm"` to install pnpm itself
+   - Installed `npm:pnpm@10.28.2` using npm backend
+   - Switched back to `package_manager = "pnpm"`
+3. npm global cleanup:
+   - Removed `@openai/codex`, `aicommits`, `markdown-link-check` from npm global
+   - Verified npm global is empty (only local links remain)
+4. Verification: `mise install "npm:openclawd"` confirmed using pnpm backend
+
 Benefits:
 
 - Single source of truth for all tools
