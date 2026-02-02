@@ -48,12 +48,12 @@ fi
 description = "Markdown ファイルをフォーマット"
 run = [
   "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
-  "fd -e md --exclude codex/AGENTS.md --exclude opencode/AGENTS.md -X prettier --write",
+  "fd -e md -X prettier --write",
 ]
 
 ["format:markdown:check"]
 description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
-run = "fd -e md --exclude codex/AGENTS.md --exclude opencode/AGENTS.md -X prettier --check"
+run = "fd -e md -X prettier --check"
 
 ["format:yaml"]
 description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"
