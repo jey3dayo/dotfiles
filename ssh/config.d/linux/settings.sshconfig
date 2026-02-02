@@ -1,0 +1,18 @@
+# Linux/WSL2-specific SSH Configuration
+# Applied only on Linux systems
+#
+# ARCHITECTURE: This file is conditionally included via Match exec in main config.
+# All directives here apply only on Linux systems.
+#
+# NOTE: Match exec block is NOT needed here for basic Linux-specific settings
+# because the file itself is conditionally included. However, you can use
+# nested Match exec for further refinement (e.g., WSL2-only settings).
+
+# Currently no Linux-specific settings
+# Add Linux-specific SSH options here as needed
+
+# WSL2-specific settings (nested match for further refinement)
+# Uncomment and add WSL2-only settings if needed:
+# Match exec "uname -r | grep -qi microsoft"
+#   # WSL2-specific settings here
+# Match all

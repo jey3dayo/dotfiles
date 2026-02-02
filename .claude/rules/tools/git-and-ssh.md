@@ -12,32 +12,56 @@ Sources: docs/tools/git.md, docs/tools/ssh.md.
 
 ## SSH configuration
 
-- Tracked configs under ~/.config/ssh/: config, config.d/00-global/01-1password/10-dev-services/20-home-network/30-macos/31-linux, templates/, README.
-- Local sensitive data stays under ~/.ssh/ (ssh_config.d, sockets). Precedence: 00-global -> 01-1password -> 10-dev-services -> 20-home-network -> 30-macos -> 31-linux -> local overrides.
+### Directory structure
+
+```
+~/.config/ssh/
+├── config (main config file)
+└── config.d/
+    ├── common/          # Cross-platform settings
+    │   ├── 00-global.sshconfig
+    │   ├── 01-1password.sshconfig
+    │   ├── 10-dev-services.sshconfig
+    │   └── 20-home-network.sshconfig
+    ├── macos/           # macOS-specific settings
+    │   └── settings.sshconfig
+    └── linux/           # Linux/WSL2-specific settings
+        └── settings.sshconfig
+```
+
+- Tracked configs under ~/.config/ssh/: config, config.d/{common,macos,linux}/\*.
+- Local sensitive data stays under ~/.ssh/ (ssh_config.d, sockets).
+- Load order: IgnoreUnknown declaration -> common/_ (alphanumeric: 00->01->10->20) -> platform-specific (macos/_ or linux/\* via Match exec) -> local overrides.
 - 1Password SSH agent is optional; enable by uncommenting IdentityAgent lines when available.
 - Security: use ed25519 keys; permissions 700 on ~/.ssh and ~/.config/ssh, 644 on configs, 600 on private keys.
-- Host onboarding: choose the right config.d file, set HostName/User/Port, test with `ssh -T hostname`; for GitHub behind firewall use Host github.com with Port 443.
+- Host onboarding: choose the right config.d/common file, set HostName/User/Port, test with `ssh -T hostname`; for GitHub behind firewall use Host github.com with Port 443.
 - Maintenance: prune stale sockets in ~/.ssh/sockets (e.g., find -mtime +1 -delete); validate with `ssh -vvv` for debug and `ssh-add -l` for agent status.
 
 ### Platform-specific settings
 
-**macOS (30-macos.sshconfig)**:
+**Architecture**: Directory-based organization with conditional Include and `IgnoreUnknown` for cross-platform compatibility.
 
-- macOS-specific settings (UseKeychain, OrbStack, Colima) are managed via ssh/config.d/30-macos.sshconfig
-- Git managed (committed): setup.sh実行後すぐに設定反映
-- Match exec判定: `Match exec "uname | grep -qi darwin"` でmacOSのみ適用
-- Linux/WSL2: ファイルは存在するがMatch失敗により設定無視（エラーなし）
-- OrbStack/Colima: 30-macos.sshconfig内でMatch判定により条件付きInclude
+**macOS (config.d/macos/settings.sshconfig)**:
 
-**Linux/WSL2 (31-linux.sshconfig)**:
+- macOS-specific settings (UseKeychain, AddKeysToAgent, OrbStack, Colima) managed via config.d/macos/settings.sshconfig
+- Git managed (committed): fixed file always present in repository, no setup.sh generation needed
+- Cross-platform compatibility: `IgnoreUnknown UseKeychain` declared in main config allows Linux to safely ignore unrecognized macOS directives
+- Conditional Include: `Match exec "uname -s | grep -q Darwin"` in main config includes macos/\* only on macOS
+- Linux/WSL2: Directory exists but not included due to Match exec failure (no error)
+- OrbStack/Colima: Optional Include directives in settings.sshconfig (commented out by default)
 
-- Linux/WSL2-specific settings managed via ssh/config.d/31-linux.sshconfig
+**Linux/WSL2 (config.d/linux/settings.sshconfig)**:
+
+- Linux/WSL2-specific settings managed via config.d/linux/settings.sshconfig
+- Git managed (committed): fixed file always present in repository, no setup.sh generation needed
 - Currently empty placeholder for future extensions
-- Match exec判定: `Match exec "uname | grep -qi linux"` でLinuxのみ適用
-- WSL2判定: `Match exec "uname -r | grep -qi microsoft"` でWSL2のみ適用
-- macOS: ファイルは存在するがMatch失敗により設定無視（エラーなし）
+- Conditional Include: `Match exec "uname | grep -qi linux"` in main config includes linux/\* only on Linux
+- WSL2 refinement: Nested `Match exec "uname -r | grep -qi microsoft"` available for WSL2-only settings (commented out)
+- macOS: Directory exists but not included due to Match exec failure (no error)
 
 ### Configuration consolidation
 
-- Global settings consolidated into 00-global.sshconfig (previously split between 00-global and 99-defaults)
+- Common settings consolidated into config.d/common/ directory (00-global, 01-1password, 10-dev-services, 20-home-network)
+- Platform-specific settings separated into config.d/macos/ and config.d/linux/
+- Wildcard Include (`common/*`) for easy maintenance with alphanumeric ordering
 - Single source for all global SSH settings

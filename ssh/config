@@ -1,14 +1,23 @@
 # SSH Configuration - Hierarchical Include Structure
 # Managed by dotfiles - DO NOT EDIT MANUALLY
 
-# Managed configs (tracked in dotfiles)
-# Load in priority order
-Include ~/.config/ssh/config.d/00-global.sshconfig
-Include ~/.config/ssh/config.d/01-1password.sshconfig
-Include ~/.config/ssh/config.d/10-dev-services.sshconfig
-Include ~/.config/ssh/config.d/20-home-network.sshconfig
-Include ~/.config/ssh/config.d/30-macos.sshconfig
-Include ~/.config/ssh/config.d/31-linux.sshconfig
+# Ignore platform-specific options for cross-platform compatibility
+# This must be declared before any includes
+IgnoreUnknown UseKeychain
+
+# Common settings (all platforms)
+# Files are loaded in alphanumeric order: 00-*, 01-*, 10-*, 20-*
+Include ~/.config/ssh/config.d/common/*
+
+# Platform-specific settings (macOS)
+Match exec "uname -s | grep -q Darwin"
+  Include ~/.config/ssh/config.d/macos/*
+Match all
+
+# Platform-specific settings (Linux/WSL2)
+Match exec "uname | grep -qi linux"
+  Include ~/.config/ssh/config.d/linux/*
+Match all
 
 # Local overrides (untracked, for sensitive data)
 Include ~/.ssh/ssh_config.d/*
