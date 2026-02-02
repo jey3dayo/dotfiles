@@ -8,6 +8,7 @@ tmux/plugins/
 fisher/
 zsh/.zinit/
 codex/AGENTS.md
+opencode/AGENTS.md
 claude/local/node_modules/
 
 # Auto-generated files (external tools)
