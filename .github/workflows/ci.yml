@@ -78,6 +78,11 @@ jobs:
         run: |
           gpg --keyserver keyserver.ubuntu.com --recv-keys 86C8D74642E67846F8E120284DAA80D1E737BC9F
 
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Set up mise
         uses: jdx/mise-action@v3
         with:

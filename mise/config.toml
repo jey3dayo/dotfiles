@@ -21,6 +21,9 @@ trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
 [settings.pipx]
 uvx = true
 
+[settings.npm]
+package_manager = "pnpm"
+
 [env]
 _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"

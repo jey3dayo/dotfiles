@@ -1,6 +1,6 @@
 # Mise Rules
 
-Purpose: unified tool version management with mise-en-place. Scope: config structure, npm package migration, tool installation, and maintenance workflows.
+Purpose: unified tool version management with mise-en-place. Scope: config structure, npm package migration with pnpm backend, tool installation, and maintenance workflows.
 
 ## Configuration Structure
 
@@ -11,6 +11,7 @@ mise設定は環境別ファイルで管理されています:
 **内容**: 設定のみ（ツール定義なし）
 
 - グローバル設定: `experimental`, `env_file`, `trusted_config_paths`
+- **pnpmバックエンド設定**: `settings.npm.package_manager = "pnpm"` - npmバックエンドがpnpmを使用
 - 環境変数定義
 - **重要**: ツールは定義しない（マージによる意図しない追加を防ぐため）
 
@@ -312,6 +313,11 @@ yazi = "latest"
 - bun グローバルは package.json が空で実質未使用（PATH で解決されない）
 - 維持: npm グローバルのローカルリンク（astro-my-profile, zx-scripts）のみ
 
+### Phase 3: npm → pnpm バックエンド移行 (完了)
+
+**Before**: miseのnpmバックエンドがnpmを使用
+**After**: miseのnpmバックエンドがpnpmを使用（`settings.npm.package_manager = "pnpm"`）
+
 Benefits:
 
 - Single source of truth for all tools
@@ -319,6 +325,9 @@ Benefits:
 - Cross-platform consistency
 - No global npm/pnpm/bun pollution
 - Automatic installation via mise hooks
+- **Faster installation**: pnpmのシンボリックリンク + グローバルストア
+- **Reduced disk usage**: パッケージ重複排除
+- **npm:プレフィックスのまま使用可能**: 既存の設定を変更不要
 
 ## Common Commands
 
@@ -422,6 +431,7 @@ mise doctor               # Check for issues
    - ❌ Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
    - ❌ Never maintain separate `global-package.json` or `requirements-global.txt`
    - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in environment-specific config files
+   - **Note**: `npm:` prefix is used even though pnpm is the backend (configured via `settings.npm.package_manager = "pnpm"`)
    - Rationale: Single source of truth, reproducibility, version control
 2. **Global Package Manager Check**: Regularly verify no duplicate packages
    - Run `npm -g list --depth=0` - should only show local links (astro-my-profile, zx-scripts)
