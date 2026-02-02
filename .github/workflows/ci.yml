@@ -22,7 +22,9 @@ on:
       - "stylua.toml"
       - ".styluaignore"
       - "mise.toml"
+      - "mise/**/*.toml"
       - ".markdown-link-check.json"
+      - ".prettierignore"
       - ".github/workflows/ci.yml"
   pull_request:
     paths:
@@ -45,7 +47,9 @@ on:
       - "stylua.toml"
       - ".styluaignore"
       - "mise.toml"
+      - "mise/**/*.toml"
       - ".markdown-link-check.json"
+      - ".prettierignore"
       - ".github/workflows/ci.yml"
   workflow_dispatch:
 

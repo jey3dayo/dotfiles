@@ -21,12 +21,6 @@ trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
 [settings.pipx]
 uvx = true
 
-[env]
-_.source = [".venv/bin/activate"]
-YAMLLINT_CONFIG_FILE = "yamllint/config"
-MD_GLOB = "**/*.md"
-MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit"
-
 # ========================================
 # オプション環境変数（ファイル限定処理）
 # ========================================
