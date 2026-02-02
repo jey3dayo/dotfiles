@@ -109,6 +109,7 @@ eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
+"npm:pnpm" = "latest"
 yazi = "latest"
 
 # ========================================
