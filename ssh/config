@@ -1,16 +1,14 @@
 # SSH Configuration - Hierarchical Include Structure
 # Managed by dotfiles - DO NOT EDIT MANUALLY
 
-# Include configuration modules in priority order
+# Managed configs (tracked in dotfiles)
+# Load in priority order
 Include ~/.config/ssh/config.d/00-global.sshconfig
 Include ~/.config/ssh/config.d/01-1password.sshconfig
 Include ~/.config/ssh/config.d/10-dev-services.sshconfig
 Include ~/.config/ssh/config.d/20-home-network.sshconfig
-Include ~/.config/ssh/config.d/99-defaults.sshconfig
+Include ~/.config/ssh/config.d/30-macos.sshconfig
+Include ~/.config/ssh/config.d/31-linux.sshconfig
 
-# Include local user-specific configurations (not managed by dotfiles)
+# Local overrides (untracked, for sensitive data)
 Include ~/.ssh/ssh_config.d/*
-
-# Include platform-specific configurations
-Include ~/.orbstack/ssh/config
-#Include ~/.colima/ssh_config

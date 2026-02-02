@@ -1,0 +1,11 @@
+# Linux/WSL2-specific SSH Configuration
+# Applied only on Linux systems via Match directive
+# macOS: This file exists but Match fails, settings are ignored
+
+# Linux-specific settings (currently empty, placeholder for future use)
+# Match exec "uname | grep -qi linux"
+#   # Add Linux-specific settings here
+
+# WSL2-specific settings (currently empty, placeholder for future use)
+# Match exec "uname -r | grep -qi microsoft"
+#   # Add WSL2-specific settings here

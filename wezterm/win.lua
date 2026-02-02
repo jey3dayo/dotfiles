@@ -2,10 +2,6 @@ local wezterm = require "wezterm"
 local constants = require "./constants"
 local wsl_domains = wezterm.default_wsl_domains()
 
-for _, dom in ipairs(wsl_domains) do
-  dom.default_cwd = "~"
-end
-
 return {
   default_domain = "WSL:Ubuntu",
   default_prog = { "wsl.exe" },

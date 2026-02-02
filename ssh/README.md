@@ -31,7 +31,8 @@
 │   ├── 01-1password.sshconfig   # 1Password SSH Agent
 │   ├── 10-dev-services.sshconfig    # 開発サービス（GitHub等）
 │   ├── 20-home-network.sshconfig    # ホームネットワーク
-│   └── 99-defaults.sshconfig    # デフォルト設定（最低優先）
+│   ├── 30-macos.sshconfig       # macOS専用設定
+│   └── 31-linux.sshconfig       # Linux/WSL2専用設定
 ├── templates/             # 設定テンプレート
 │   ├── host-template.sshconfig
 │   └── service-template.sshconfig
@@ -50,10 +51,9 @@
 ├── ~/.config/ssh/config.d/01-1password.sshconfig   # 認証設定
 ├── ~/.config/ssh/config.d/10-dev-services.sshconfig    # 開発環境
 ├── ~/.config/ssh/config.d/20-home-network.sshconfig    # ホームラボ
-├── ~/.config/ssh/config.d/99-defaults.sshconfig    # デフォルト
-├── ~/.ssh/ssh_config.d/*         # ローカル個別設定（機密情報）
-├── ~/.orbstack/ssh/config        # OrbStack自動生成
-└── ~/.colima/ssh_config          # Colima設定（無効化）
+├── ~/.config/ssh/config.d/30-macos.sshconfig       # macOS専用設定
+├── ~/.config/ssh/config.d/31-linux.sshconfig       # Linux/WSL2専用設定
+└── ~/.ssh/ssh_config.d/*         # ローカル個別設定（機密情報）
 ```
 
 ## 📋 設定内容詳細
@@ -64,19 +64,17 @@
 # SSH Configuration - Hierarchical Include Structure
 # Managed by dotfiles - DO NOT EDIT MANUALLY
 
-# Include configuration modules in priority order
+# Managed configs (tracked in dotfiles)
+# Load in priority order
 Include ~/.config/ssh/config.d/00-global.sshconfig
 Include ~/.config/ssh/config.d/01-1password.sshconfig
 Include ~/.config/ssh/config.d/10-dev-services.sshconfig
 Include ~/.config/ssh/config.d/20-home-network.sshconfig
-Include ~/.config/ssh/config.d/99-defaults.sshconfig
+Include ~/.config/ssh/config.d/30-macos.sshconfig
+Include ~/.config/ssh/config.d/31-linux.sshconfig
 
-# Include local user-specific configurations (not managed by dotfiles)
+# Local overrides (untracked, for sensitive data)
 Include ~/.ssh/ssh_config.d/*
-
-# Include platform-specific configurations
-Include ~/.orbstack/ssh/config
-#Include ~/.colima/ssh_config
 ```
 
 ### グローバル設定（00-global.sshconfig）
@@ -96,9 +94,6 @@ Host *
   # 認証最適化
   GSSAPIAuthentication no
   PreferredAuthentications publickey,password
-
-  # macOS統合
-  UseKeychain yes
 ```
 
 ### 開発サービス設定（10-dev-services.sshconfig）
@@ -148,6 +143,89 @@ Host *
   IdentityAgent none
 ```
 
+## 🖥️ プラットフォーム固有設定
+
+### macOS専用設定（30-macos.sshconfig）
+
+macOS環境でのみ適用される設定です。Linux/WSL2では`Match exec`判定により無視されます。
+
+#### 自動適用される設定
+
+**macOS Keychain統合**:
+
+- `UseKeychain yes` - SSH鍵のパスフレーズをKeychainに保存
+- `AddKeysToAgent yes` - ssh-agentに鍵を自動追加
+
+**OrbStack/Colima統合**:
+
+- OrbStack SSH config自動読み込み（macOSのみ）
+- Colima SSH config（デフォルト無効、必要に応じてコメント解除）
+
+#### 動作の仕組み
+
+```sshconfig
+Match exec "uname | grep -qi darwin"
+  UseKeychain yes
+  AddKeysToAgent yes
+```
+
+- macOS: `uname`が`Darwin`を返す → Match成功 → 設定適用
+- Linux/WSL2: `uname`が`Linux`を返す → Match失敗 → 設定無視
+
+#### 確認方法
+
+```bash
+# macOS環境
+ssh -G github.com | grep -i keychain
+# 出力: usekeychain yes
+
+# Linux/WSL2環境
+ssh -G github.com | grep -i keychain
+# 出力: usekeychain no（または出力なし）
+```
+
+### Linux/WSL2専用設定（31-linux.sshconfig）
+
+Linux/WSL2環境でのみ適用される設定です。macOSでは`Match exec`判定により無視されます。
+
+#### 現在の状態
+
+**初期状態**: 空のプレースホルダー（将来の拡張用）
+
+- Linux固有の設定が必要になった場合に使用
+- WSL2専用の設定も記述可能
+
+#### 動作の仕組み
+
+```sshconfig
+# Linux-specific settings
+Match exec "uname | grep -qi linux"
+  # Add Linux-specific settings here
+
+# WSL2-specific settings
+Match exec "uname -r | grep -qi microsoft"
+  # Add WSL2-specific settings here
+```
+
+- Linux/WSL2: `uname`が`Linux`を返す → Match成功 → 設定適用
+- macOS: `uname`が`Darwin`を返す → Match失敗 → 設定無視
+
+#### 確認方法
+
+```bash
+# Linux/WSL2環境
+uname
+# 出力: Linux
+
+uname -r | grep -i microsoft
+# WSL2の場合: マッチング成功（出力あり）
+# ネイティブLinuxの場合: マッチング失敗（出力なし）
+
+# macOS環境
+uname
+# 出力: Darwin
+```
+
 ## 🎮 モジュール管理
 
 ### 設定ファイルの優先度
@@ -158,7 +236,8 @@ Host *
 - `01-` : 認証設定（1Password等）
 - `10-` : 開発サービス
 - `20-` : ホームネットワーク
-- `99-` : デフォルト設定
+- `30-` : プラットフォーム固有設定（macOS）
+- `31-` : プラットフォーム固有設定（Linux/WSL2）
 
 ### 新しいホスト追加手順
 
