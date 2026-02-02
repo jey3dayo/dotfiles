@@ -14,8 +14,6 @@ trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
 [settings.pipx]
 uvx = true
 
-# [env] セクションを削除（mise/config.toml から継承）
-
 # ========================================
 # オプション環境変数（ファイル限定処理）
 # ========================================
