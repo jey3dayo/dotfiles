@@ -74,65 +74,32 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
   - ※ config.default.toml は `jobs = 8`（デスクトップ環境向け）
 
-**Excluded Packages** (28個のnpmパッケージ + 1個のCLIツール + 全cargoツール):
+**Excluded Packages**:
 
-注: Go ランタイムは latest 版として含まれるようになりました（ユーザー要求による）
+サーバー/自動化環境として最適化されており、以下のカテゴリを除外:
 
-1. **Language Runtimes** (0個):
-   - （なし）
+- **大容量パッケージ**: `@openai/codex` (391MB), `@playwright/mcp` (~300MB), `aws-cdk` (~150MB) 等
+- **エディタ統合ツール**: LSP、TypeScript関連、`eslint_d` 等（リモート開発でローカルマシンのLSP使用）
+- **GUI/ブラウザ依存ツール**: Playwright MCP、Chrome DevTools MCP 等
+- **デスクトップ開発ツール**: Claude AI開発ツール（`dxt`, `dev3000`, `ccusage` 等）
+- **クラウド/インフラツール**: AWS CLI、Google Clasp、gRPC関連 等
+- **全cargoツール**: ARM互換性とビルド時間考慮
 
-2. **Editor Integration** (6個):
-   - `neovim`, `typescript`, `typescript-language-server`
-   - `vscode-json-languageserver`, `vscode-langservers-extracted`
-   - `@typescript-eslint/eslint-plugin`
-   - Reason: Remote development uses local machine's LSP
+詳細な除外パッケージリストは `mise/config.default.toml` と `mise/config.pi.toml` の差分を参照。
 
-3. **TypeScript/Lint Tools** (1個):
-   - `eslint_d`
-   - Reason: Editor integration required
+**Maintained Packages**:
 
-4. **Browser/GUI MCPs** (5個):
-   - `@playwright/mcp` (~300MB), `chrome-devtools-mcp`
-   - `@aikidosec/safe-chain`, `@benborla29/mcp-server-mysql`, `exa-mcp-server`
-   - Reason: GUI environment required, large dependencies
+軽量かつサーバー運用に有用なツールのみを維持:
 
-5. **Claude/AI Development Tools** (4個):
-   - `@anthropic-ai/dxt`, `@mariozechner/claude-bridge`, `ccusage`, `dev3000`
-   - Reason: Desktop development tools, not used in server environment
-   - Note: `@sasazame/ccresume` maintained for session management
+- **ユーティリティ**: `@antfu/ni`, `npm`, `npm-check-updates`
+- **ドキュメント**: `markdown-link-check`, `markdownlint-cli2`, `textlint`
+- **フォーマッター/Linter**: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
+- **AI/Claude**: `aicommits`, `@sasazame/ccresume`, `openclaw`
+- **MCP**: `@upstash/context7-mcp`, `o3-search-mcp`
+- **CLI**: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
+- **ランタイム**: `go` (latest), `node`, `python`, `pipx:uv`
 
-6. **Cloud Infrastructure** (4個):
-   - `aws-cli`, `aws-cdk` (~150MB), `@google/clasp`, `@google/gemini-cli`
-   - Reason: Heavy dependencies, not needed in server environment
-
-7. **Protobuf/RPC** (2個):
-   - `@bufbuild/protoc-gen-es`, `@connectrpc/protoc-gen-connect-es`
-   - Reason: Not doing gRPC development
-
-8. **Development Tools** (5個):
-   - `husky`, `corepack`, `esbuild`, `@fsouza/prettierd`, `tuyapi`
-   - Reason: Not needed in server environment
-
-9. **Other Tools** (2個):
-   - `difit`, `greptile`
-   - Reason: Not used in server environment
-
-10. **Cargo Tools** (全て):
-
-- `bandwhich`, `needle-cli`, `similarity-ts`, `wrkflw`
-- Reason: ARM compatibility issues and long build times
-
-**Maintained Packages** (lightweight and useful for server operations):
-
-- Utilities: `@antfu/ni`, `npm`, `npm-check-updates`
-- Documentation: `markdown-link-check`, `markdownlint-cli2`, `textlint`, `textlint-rule-preset-ja-technical-writing`
-- Environment: `@dotenvx/dotenvx`
-- Formatters/Linters: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
-- AI: `aicommits`
-- Claude: `@sasazame/ccresume`, `openclaw`
-- MCP: `@upstash/context7-mcp`, `o3-search-mcp`
-- CLI Tools: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
-- Runtimes: `go`, `node`, `python`, `pipx:uv`
+具体的なパッケージバージョンは `mise/config.pi.toml` を参照。
 
 **Expected Benefits**:
 
