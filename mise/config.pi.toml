@@ -108,7 +108,6 @@ yamllint = "latest"
 # 注: Cargo系ツールは除外（ARM互換性考慮）
 eza = "latest"
 fd = "latest"
-"go:github.com/k1LoW/git-wt" = "latest"
 "go:golang.org/x/tools/cmd/goimports" = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
