@@ -97,7 +97,7 @@ yamllint = "latest"
 # Claude/AI ツール
 # 注: デスクトップ開発ツール (dxt, dev3000, ccusage) は除外
 "npm:@sasazame/ccresume" = "latest"
-"npm:openclawd" = "latest"
+"npm:openclaw" = "latest"
 
 # 注: クラウド・インフラツールは除外 (aws-cli で十分)
 
