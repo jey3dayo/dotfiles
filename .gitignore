@@ -255,3 +255,7 @@ wslu/
 
 systemd/
 gogcli/
+
+# OpenClaw secrets
+openclaw/*.env
+openclaw/gateway.env
