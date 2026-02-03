@@ -38,6 +38,7 @@ uvx = true
 # Language Runtimes (言語ランタイム - 開発用)
 # ========================================
 # 注: システム依存関係用の Node.js/Python は Homebrew で管理
+go = "latest"
 node = "24"
 python = "3.14"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
@@ -107,6 +108,7 @@ yamllint = "latest"
 # 注: Cargo系ツールは除外（ARM互換性考慮）
 eza = "latest"
 fd = "latest"
+"go:golang.org/x/tools/cmd/goimports" = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
 yazi = "latest"
