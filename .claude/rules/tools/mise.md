@@ -74,11 +74,12 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
   - ※ config.default.toml は `jobs = 8`（デスクトップ環境向け）
 
-**Excluded Packages** (28個のnpmパッケージ + 1個のlanguage runtime + 1個のCLIツール + 全cargoツール):
+**Excluded Packages** (28個のnpmパッケージ + 1個のCLIツール + 全cargoツール):
+
+注: Go ランタイムは latest 版として含まれるようになりました（ユーザー要求による）
 
 1. **Language Runtimes** (0個):
    - （なし）
-   - Note: Piでも `go` は利用する（gogcli等のビルド用途）
 
 2. **Editor Integration** (6個):
    - `neovim`, `typescript`, `typescript-language-server`
@@ -131,11 +132,11 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 - Claude: `@sasazame/ccresume`
 - MCP: `@upstash/context7-mcp`, `o3-search-mcp`
 - CLI Tools: `eza`, `fd`, `gh`, `jq`, `opencode`, `yazi`
-- Runtimes: `node`, `python`, `bun`, `pipx:uv`
+- Runtimes: `go`, `node`, `python`, `bun`, `pipx:uv`
 
 **Expected Benefits**:
 
-- Install time: Significantly faster (many npm packages, go runtime, aws-cli, and all cargo tools excluded)
+- Install time: Significantly faster (many npm packages, aws-cli, and all cargo tools excluded)
 - Disk usage: Substantially reduced
 - Memory usage: Reduced during installation (parallel execution control)
 
