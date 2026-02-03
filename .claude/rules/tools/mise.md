@@ -128,7 +128,7 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 - Documentation: `markdown-link-check`, `markdownlint-cli2`, `textlint`, `textlint-rule-preset-ja-technical-writing`
 - Environment: `@dotenvx/dotenvx`
 - Formatters/Linters: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
-- AI: `@openai/codex`, `aicommits`
+- AI: `aicommits`
 - Claude: `@sasazame/ccresume`, `openclaw`
 - MCP: `@upstash/context7-mcp`, `o3-search-mcp`
 - CLI Tools: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
