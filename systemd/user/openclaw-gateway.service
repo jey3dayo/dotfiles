@@ -1,0 +1,20 @@
+[Unit]
+Description=OpenClaw Gateway (v2026.2.1)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart="%h/.mise/shims/openclaw" gateway --port 18789
+Restart=always
+RestartSec=5
+KillMode=process
+Environment=HOME=%h
+Environment="PATH=%h/.mise/shims:/usr/local/bin:/usr/bin:/bin:%h/.local/bin:%h/bin"
+Environment=OPENCLAW_GATEWAY_PORT=18789
+Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
+Environment=OPENCLAW_SERVICE_MARKER=openclaw
+Environment=OPENCLAW_SERVICE_KIND=gateway
+Environment=OPENCLAW_SERVICE_VERSION=2026.2.1
+
+[Install]
+WantedBy=default.target

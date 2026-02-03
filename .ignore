@@ -5,3 +5,5 @@ raycast/extensions
 node_modules
 tmux/plugins
 .yarn
+opencode
+codex

@@ -253,5 +253,11 @@ pulse/cookie
 # WSL Utilities
 wslu/
 
-systemd/
+# Google Utilities
 gogcli/
+
+# systemd
+## Auto-generated symlinks by systemctl enable
+systemd/user/*.target.wants/
+systemd/user/*.service.wants/
+systemd/user/*.timer.wants/
