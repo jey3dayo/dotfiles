@@ -255,3 +255,9 @@ wslu/
 
 # Google Cloud
 gogcli/
+
+# systemd
+## Auto-generated symlinks by systemctl enable
+systemd/user/*.target.wants/
+systemd/user/*.service.wants/
+systemd/user/*.timer.wants/
