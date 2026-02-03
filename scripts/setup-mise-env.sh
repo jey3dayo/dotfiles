@@ -60,8 +60,3 @@ setup_mise_config() {
 
 # Execute setup
 setup_mise_config
-
-# Activate mise for the current shell
-if command -v mise &>/dev/null; then
-  eval "$(mise activate bash)"
-fi
