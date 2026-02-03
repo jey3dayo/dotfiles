@@ -253,7 +253,7 @@ pulse/cookie
 # WSL Utilities
 wslu/
 
-# Google Cloud
+# Google Utilities
 gogcli/
 
 # systemd
