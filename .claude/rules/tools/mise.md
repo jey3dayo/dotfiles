@@ -23,7 +23,7 @@ mise設定は環境別ファイルで管理されています:
 
 - **`mise/config.pi.toml`** - Raspberry Pi（ARMサーバー環境）
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
-  - 最小ツールセット（go除外、npm軽量版、cargo全除外）
+  - 最小ツールセット（goランタイム latest版を含む、npm軽量版、cargo全除外）
 
 - **`mise/config.ci.toml`** - CI/CD（GitHub Actions最適化）
   - jobs = 4（GitHub Actions runners: 2コア）
@@ -76,9 +76,9 @@ The environment detection is integrated into `.zshenv` (sourced before `.zprofil
 
 **Excluded Packages** (28個のnpmパッケージ + 1個のlanguage runtime + 1個のCLIツール + 全cargoツール):
 
-1. **Language Runtimes** (1個):
-   - `go`
-   - Reason: Not used in server environment
+1. **Language Runtimes** (0個):
+   - （なし）
+   - Note: Piでも `go` は利用する（gogcli等のビルド用途）
 
 2. **Editor Integration** (6個):
    - `neovim`, `typescript`, `typescript-language-server`
