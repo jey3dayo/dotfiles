@@ -49,7 +49,7 @@ run = "if command -v brew >/dev/null 2>&1; then brew bundle install --no-upgrade
 # ========================================
 [tasks.update]
 description = "すべての依存関係を更新"
-depends = ["update:submodules", "update:brew", "update:external-repos"]
+depends = ["update:submodules", "update:brew", "update:apt", "update:external-repos"]
 
 [tasks."update:submodules"]
 description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
@@ -58,6 +58,10 @@ run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD 
 [tasks."update:brew"]
 description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
 run = "if command -v brew >/dev/null 2>&1; then (brew update 2>&1 | grep -v \"definition is invalid\" || true) && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
+
+[tasks."update:apt"]
+description = "APT パッケージを更新（Ubuntu/Debian 環境）"
+run = "if command -v apt-get >/dev/null 2>&1 && [ -f /etc/debian_version ]; then sudo apt-get update && sudo apt-get upgrade -y; else echo 'APT not available, skipping apt update'; fi"
 
 [tasks."update:external-repos"]
 description = "外部 Git リポジトリを更新（強制リセット）"
