@@ -69,9 +69,9 @@ else
   fd -t f -H -p '^scripts/' -X shfmt -d -i 2 -ci -bn
   fd -t f -H -p '^scripts/' -X shellcheck
 
-  # Bash entrypoints under home/
-  bash -n home/.bashrc home/.bash_profile
-  shellcheck home/.bashrc home/.bash_profile
+  # Bash entrypoints
+  bash -n bash/.bashrc bash/.bash_profile
+  shellcheck bash/.bashrc bash/.bash_profile
 
   # .sh files elsewhere
   fd -e sh -X shfmt -d -i 2 -ci -bn
