@@ -1,5 +1,7 @@
-# Minimal bash setup to avoid errors when using bash.
-# Keep bash config lightweight; zsh remains the primary shell.
+# bash entrypoint (tracked)
+# - Keep environment setup stable (XDG + mise)
+# - Provide a sane interactive default (prompt + colors)
+# - Allow local overrides via ~/.bashrc_local
 
 # XDG base directories
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
@@ -48,4 +50,48 @@ export PATH
 # Activate mise if available
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate bash)"
+fi
+
+# ------------------------------------------------------------------------------
+# Interactive-only settings
+# ------------------------------------------------------------------------------
+case $- in
+  *i*) ;;
+  *) return ;;
+ esac
+
+# Enable color prompt for common terminals
+case "${TERM:-}" in
+  xterm-color|*-256color) color_prompt=yes ;;
+ esac
+
+if [ "${color_prompt:-}" = yes ]; then
+  PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+  PS1='\u@\h:\w\$ '
+fi
+unset color_prompt
+
+# Enable color support of ls/grep if available
+if command -v dircolors >/dev/null 2>&1; then
+  if [ -r "$HOME/.dircolors" ]; then
+    eval "$(dircolors -b "$HOME/.dircolors")"
+  else
+    eval "$(dircolors -b)"
+  fi
+  alias ls='ls --color=auto'
+  alias grep='grep --color=auto'
+  alias fgrep='fgrep --color=auto'
+  alias egrep='egrep --color=auto'
+fi
+
+# Common aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Local overrides (not tracked)
+if [ -f "$HOME/.bashrc_local" ]; then
+  # shellcheck disable=SC1090,SC1091
+  . "$HOME/.bashrc_local"
 fi
