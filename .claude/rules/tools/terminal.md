@@ -1,3 +1,7 @@
+---
+paths: wezterm/**/*, ghostty/**/*, alacritty/**/*, docs/tools/wezterm.md
+---
+
 # Terminal Rules (WezTerm)
 
 Purpose: keep the GPU-accelerated WezTerm setup consistent. Scope: config structure, key bindings, platform handling.

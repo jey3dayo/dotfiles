@@ -1,3 +1,7 @@
+---
+paths: mise/**/*, .mise.toml, scripts/setup-mise-env.sh, zsh/.zshenv, bash/.bashrc, docs/setup.md, docs/maintenance.md, docs/tools/mise.md
+---
+
 # Mise Rules
 
 Purpose: unified tool version management with mise-en-place. Scope: config structure, npm package migration with pnpm backend, tool installation, and maintenance workflows.
