@@ -1,5 +1,5 @@
 [Unit]
-Description=OpenClaw Gateway (v2026.2.1)
+Description=OpenClaw Gateway (v2026.2.2-3)
 After=network-online.target
 Wants=network-online.target
 
@@ -17,9 +17,7 @@ Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
-Environment=OPENCLAW_SERVICE_VERSION=2026.2.1
-
-# Secrets should be injected via a drop-in with EnvironmentFile (not committed).
+Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
 
 [Install]
 WantedBy=default.target
