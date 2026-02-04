@@ -1,0 +1,10 @@
+[Unit]
+Description=Run cleanup at ~05:00 daily
+
+[Timer]
+OnCalendar=*-*-* 05:00:00
+Persistent=true
+RandomizedDelaySec=15m
+
+[Install]
+WantedBy=timers.target

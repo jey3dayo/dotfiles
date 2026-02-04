@@ -1,0 +1,6 @@
+[Unit]
+Description=Periodic cleanup (mise/pnpm/npm) to reduce disk usage
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/openclaw-cleanup.sh
