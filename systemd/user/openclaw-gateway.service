@@ -4,10 +4,13 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+# Use mise shim so the command stays portable across machines.
 ExecStart="%h/.mise/shims/openclaw" gateway --port 18789
+
 Restart=always
 RestartSec=5
 KillMode=process
+
 Environment=HOME=%h
 Environment="PATH=%h/.mise/shims:/usr/local/bin:/usr/bin:/bin:%h/.local/bin:%h/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
@@ -15,6 +18,8 @@ Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
 Environment=OPENCLAW_SERVICE_VERSION=2026.2.1
+
+# Secrets should be injected via a drop-in with EnvironmentFile (not committed).
 
 [Install]
 WantedBy=default.target
