@@ -27,6 +27,7 @@ path=(
   # User binaries
   $HOME/{bin,sbin}(N-)
   $HOME/.local/{bin,sbin}(N-)
+  $XDG_CONFIG_HOME/scripts(N-)
   $HOME/.claude/bin(N-)
 
   # Language-specific tools

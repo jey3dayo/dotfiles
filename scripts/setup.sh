@@ -116,6 +116,15 @@ for file in "$DOTFILES/home"/.[!.]*; do
   install_home_file "$file" "$HOME/$filename"
 done
 
+# Install bash entrypoints (keep them separate from home/ like zsh/)
+if [ -d "$DOTFILES/bash" ]; then
+  for file in "$DOTFILES/bash"/.[!.]*; do
+    [ -f "$file" ] || continue
+    filename=$(basename "$file")
+    install_home_file "$file" "$HOME/$filename"
+  done
+fi
+
 # SSH - Not XDG-compliant (symlink)
 link "$DOTFILES/ssh/config" "$HOME/.ssh/config"
 

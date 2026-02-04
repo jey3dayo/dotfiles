@@ -101,6 +101,9 @@ run = """
 if [ -n "${SH_FILES:-}" ]; then
   shfmt -w -i 2 -ci -bn ${SH_FILES}
 else
+  # scripts/ (some files have no extension)
+  fd -t f -H -p '^scripts/' -X shfmt -w -i 2 -ci -bn
+  # .sh files elsewhere
   fd -e sh -X shfmt -w -i 2 -ci -bn
 fi
 """
