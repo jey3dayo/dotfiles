@@ -15,7 +15,7 @@ export MISE_DATA_DIR MISE_CACHE_DIR
 
 # mise config file selection based on environment
 if [ -f "${XDG_CONFIG_HOME}/scripts/setup-mise-env.sh" ]; then
-  # shellcheck disable=SC1090
+  # shellcheck disable=SC1090,SC1091
   . "${XDG_CONFIG_HOME}/scripts/setup-mise-env.sh"
 fi
 

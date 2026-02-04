@@ -59,15 +59,27 @@ fi
 """
 
 ["lint:shell"]
-description = "シェルスクリプト (.sh/.zsh) をチェック（SH_FILES で対象を限定可能）"
+description = "シェルスクリプトをチェック（SH_FILES で対象を限定可能）"
 run = """
 if [ -n "${SH_FILES:-}" ]; then
   shfmt -d -i 2 -ci -bn ${SH_FILES}
   shellcheck ${SH_FILES}
 else
+  # scripts/ (some files have no extension)
+  fd -t f -H -p '^scripts/' -X shfmt -d -i 2 -ci -bn
+  fd -t f -H -p '^scripts/' -X shellcheck
+
+  # Bash entrypoints under home/
+  bash -n home/.bashrc home/.bash_profile
+  shellcheck home/.bashrc home/.bash_profile
+
+  # .sh files elsewhere
   fd -e sh -X shfmt -d -i 2 -ci -bn
   fd -e sh -X shellcheck
+
+  # zsh syntax check (.zsh + zsh/bin/*)
   fd --hidden -e zsh -X zsh -n
+  fd -t f -H -p '^zsh/bin/' -X zsh -n
 fi
 """
 
