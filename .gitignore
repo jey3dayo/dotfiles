@@ -261,3 +261,7 @@ gogcli/
 systemd/user/*.target.wants/
 systemd/user/*.service.wants/
 systemd/user/*.timer.wants/
+
+# home-manager
+## Auto-generated environment configuration
+environment.d/
