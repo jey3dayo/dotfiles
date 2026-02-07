@@ -89,6 +89,7 @@ let
     ".gitconfig" = "home/.gitconfig";
     ".tmux.conf" = "home/.tmux.conf";
     ".zshenv" = "home/.zshenv";
+    ".zshrc" = "home/.zshrc";
   };
 
   # Bash files to deploy
@@ -227,10 +228,26 @@ in
     home.activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         # Initialize Git submodules for tmux plugins
-        if [ -d "${cfg.repoPath}/.git" ]; then
+        repo_path="${cfg.repoPath}"
+        worktree=""
+
+        if ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$repo_path"
+        else
+          for candidate in \
+            "${config.home.homeDirectory}/src/github.com/jey3dayo/dotfiles" \
+            "${config.home.homeDirectory}/src/dotfiles" \
+            "${config.home.homeDirectory}/dotfiles"; do
+            if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+              worktree="$candidate"
+              break
+            fi
+          done
+        fi
+
+        if [ -n "$worktree" ]; then
           echo "Initializing Git submodules for tmux plugins..."
-          cd "${cfg.repoPath}"
-          ${pkgs.git}/bin/git submodule update --init --recursive
+          ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive
         fi
       ''
     );
