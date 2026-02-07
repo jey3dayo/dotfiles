@@ -35,7 +35,7 @@ Sources: docs/tools/git.md, docs/tools/ssh.md.
 
 - Tracked configs under ~/.config/ssh/: config, config.d/{common,macos,linux}/\*.
 - Local sensitive data stays under ~/.ssh/ (ssh_config.d, sockets).
-- Load order: IgnoreUnknown declaration -> common/_ (alphanumeric: 00->01->10->20) -> platform-specific (macos/_ or linux/\* via Match exec) -> local overrides.
+- Load order: IgnoreUnknown declaration -> common/_(alphanumeric: 00->01->10->20) -> platform-specific (macos/_ or linux/\* via Match exec) -> local overrides.
 - 1Password SSH agent is optional; enable by uncommenting IdentityAgent lines when available.
 - Security: use ed25519 keys; permissions 700 on ~/.ssh and ~/.config/ssh, 644 on configs, 600 on private keys.
 - Host onboarding: choose the right config.d/common file, set HostName/User/Port, test with `ssh -T hostname`; for GitHub behind firewall use Host github.com with Port 443.

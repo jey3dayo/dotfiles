@@ -82,6 +82,6 @@ cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
 ## 参考
 
-- Home Manager公式: https://nix-community.github.io/home-manager/
-- gitignore.nix: https://github.com/hercules-ci/gitignore.nix
-- XDG Base Directory: https://specifications.freedesktop.org/basedir-spec/
+- Home Manager公式: <https://nix-community.github.io/home-manager/>
+- gitignore.nix: <https://github.com/hercules-ci/gitignore.nix>
+- XDG Base Directory: <https://specifications.freedesktop.org/basedir-spec/>
