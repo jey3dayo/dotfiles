@@ -18,7 +18,7 @@
   programs.dotfiles = {
     enable = true;
     repoPath = ./.;  # dotfiles repository root
-    repoWorktreePath = null;  # Auto-detect from repoPath or fallback paths
+    repoWorktreePath = "${homeDirectory}/src/github.com/jey3dayo/dotfiles";  # Required when repoPath is in the Nix store
     environment = null;  # Auto-detect (override with "ci"/"pi"/"wsl2"/"macos"/"default")
 
     # Deployment options (Phase 2: enable file deployment)

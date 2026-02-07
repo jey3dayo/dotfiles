@@ -17,13 +17,37 @@ let
   # gitignore.nix を使った真のgitignore-aware filter
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
+  repoPathStr = toString cfg.repoPath;
+  repoPathIsStore = lib.strings.hasPrefix builtins.storeDir repoPathStr;
+
+  autoWorktreeCandidates = lib.filter (p: p != null && builtins.pathExists p) (
+    if repoPathIsStore then [] else [ repoPathStr ]
+  );
+
+  autoWorktreePath = lib.findFirst (p: builtins.pathExists p) null autoWorktreeCandidates;
+  repoWorktreePathResolved =
+    if cfg.repoWorktreePath != null then
+      cfg.repoWorktreePath
+    else
+      autoWorktreePath;
+
+  repoCandidates = lib.filter (p: p != null && builtins.pathExists p) (
+    (if repoWorktreePathResolved != null then [ repoWorktreePathResolved ] else [])
+    ++ (if repoPathIsStore then [] else [ repoPathStr ])
+  );
+
+  tmuxSource =
+    if repoWorktreePathResolved != null then
+      config.lib.file.mkOutOfStoreSymlink "${repoWorktreePathResolved}/tmux"
+    else
+      "${cleanedRepo}/tmux";
+
   # XDG directories to deploy to ~/.config/ (静的なもののみ)
   xdgConfigDirs = [
     # Core tools (already managed)
     "git"
     # mise: excluded - writable trust DB required (managed individually below)
     "nvim"
-    "tmux"
     "zsh"
 
     # Terminal emulators
@@ -167,6 +191,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.repoWorktreePath == null || builtins.pathExists cfg.repoWorktreePath;
+        message = "programs.dotfiles.repoWorktreePath points to a non-existent path: ${toString cfg.repoWorktreePath}";
+      }
+      {
+        assertion = !(cfg.initSubmodules && repoPathIsStore && repoWorktreePathResolved == null);
+        message = "programs.dotfiles.repoWorktreePath is required when repoPath is in the Nix store and initSubmodules is enabled.";
+      }
+    ];
+
     # Set MISE_CONFIG_FILE environment variable based on detected environment
     home.sessionVariables = {
       MISE_CONFIG_FILE = "${config.xdg.configHome}/mise/config.${environment}.toml";
@@ -196,6 +231,13 @@ in
             xdgConfigDirs
         )
       ))
+
+      # tmux uses out-of-store symlink so submodules initialized during activation are visible immediately
+      (lib.mkIf cfg.deployXdgConfig {
+        ".config/tmux" = {
+          source = tmuxSource;
+        };
+      })
 
       # XDG config files (individual files in ~/.config/)
       (lib.mkIf cfg.deployXdgConfig (
@@ -254,6 +296,66 @@ in
       })
     ];
 
+    # Migrate legacy setup.sh artifacts before Home Manager checks for collisions.
+    home.activation.dotfiles-legacy-migration = lib.mkIf (cfg.deployXdgConfig || cfg.deployEntryPoints || cfg.deployBash) (
+      lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
+        ${lib.optionalString cfg.deployXdgConfig ''
+          config_dir="${config.xdg.configHome}"
+          if [ -L "$config_dir" ]; then
+            config_target="$(readlink -e "$config_dir" 2>/dev/null || true)"
+            if [ -n "$config_target" ]; then
+              for candidate in ${lib.concatStringsSep " " (map lib.escapeShellArg repoCandidates)}; do
+                candidate_real="$(readlink -e "$candidate" 2>/dev/null || true)"
+                if [ -n "$candidate_real" ] && [[ "$config_target" == "$candidate_real" || "$config_target" == "$candidate_real/"* ]]; then
+                  backup="${config_dir}.dotfiles-backup"
+                  if [ -e "$backup" ]; then
+                    i=1
+                    while [ -e "${backup}.${i}" ]; do
+                      i=$((i + 1))
+                    done
+                    backup="${backup}.${i}"
+                  fi
+                  warnEcho "Detected legacy ~/.config symlink into dotfiles repo; moving to '$backup' before activation."
+                  run mv "$config_dir" "$backup"
+                  run mkdir -p "$config_dir"
+                  break
+                fi
+              done
+            fi
+          fi
+        ''}
+
+        ${lib.optionalString (cfg.deployEntryPoints || cfg.deployBash) ''
+          home_file_pattern="$(readlink -e ${lib.escapeShellArg builtins.storeDir})/*-home-manager-files/*"
+          for rel in \
+            ".aicommits" \
+            ".gitconfig" \
+            ".tmux.conf" \
+            ".zshenv" \
+            ".zshrc" \
+            ".bashrc" \
+            ".bash_profile"; do
+            target="$HOME/$rel"
+            if [ -e "$target" ]; then
+              if [ -L "$target" ] && [[ "$(readlink "$target")" == $home_file_pattern ]]; then
+                continue
+              fi
+              backup="${target}.dotfiles-backup"
+              if [ -e "$backup" ]; then
+                i=1
+                while [ -e "${backup}.${i}" ]; do
+                  i=$((i + 1))
+                done
+                backup="${backup}.${i}"
+              fi
+              warnEcho "Backing up legacy $target to '$backup' before activation."
+              run mv "$target" "$backup"
+            fi
+          done
+        ''}
+      ''
+    );
+
     # Ensure writable directories (not Nix store symlinks) for runtime state
     home.activation.dotfiles-writable-dirs = lib.mkIf cfg.deployXdgConfig (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -291,7 +393,7 @@ in
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         # Initialize Git submodules for tmux plugins
         repo_path="${cfg.repoPath}"
-        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
+        repo_worktree="${lib.optionalString (repoWorktreePathResolved != null) repoWorktreePathResolved}"
         worktree=""
 
         if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -301,10 +403,7 @@ in
         elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
           worktree="$repo_path"
         else
-          for candidate in \
-            "${config.home.homeDirectory}/src/github.com/jey3dayo/dotfiles" \
-            "${config.home.homeDirectory}/src/dotfiles" \
-            "${config.home.homeDirectory}/dotfiles"; do
+          for candidate in ${lib.concatStringsSep " " (map lib.escapeShellArg repoCandidates)}; do
             if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
               worktree="$candidate"
               break
