@@ -1,5 +1,5 @@
 {
-  description = "Dotfiles with Home Manager for mise configuration";
+  description = "Dotfiles - Unified configuration management with Home Manager";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -15,13 +15,17 @@
       nixpkgs,
       home-manager,
       ...
-    }:
+    }@inputs:
+    let
+      # Import helper modules
+      mkDotfilesModule = import ./nix/dotfiles-module.nix;
+    in
     {
-      # Home Manager module (usable by external flakes)
-      homeManagerModules.default = import ./nix/mise-module.nix;
+      # HM module (usable by external flakes)
+      homeManagerModules.default = mkDotfilesModule;
 
-      # Home Manager configuration: `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure`
-      # --impure required: builtins.getEnv for environment detection
+      # HM configuration: `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure`
+      # --impure required: builtins.getEnv for $USER/$HOME, builtins.currentSystem for pkgs
       homeConfigurations.${builtins.getEnv "USER"} =
         let
           username = builtins.getEnv "USER";
@@ -33,12 +37,7 @@
             self.homeManagerModules.default
             ./home.nix
           ];
-          extraSpecialArgs = {
-            inherit
-              username
-              homeDirectory
-              ;
-          };
+          extraSpecialArgs = { inherit inputs username homeDirectory; };
         };
     };
 }
