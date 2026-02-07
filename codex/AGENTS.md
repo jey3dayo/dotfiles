@@ -1,1 +1,0 @@
-/Users/t00114/.config/CLAUDE.md
