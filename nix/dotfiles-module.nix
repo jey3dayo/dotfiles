@@ -109,7 +109,7 @@ in
           entryPointFiles
       ))
 
-      # XDG config directories
+      # XDG config directories (symlink entire directory)
       (lib.mkIf cfg.deployXdgConfig (
         lib.listToAttrs (
           map
@@ -117,7 +117,7 @@ in
               name = ".config/${dir}";
               value = {
                 source = "${cfg.repoPath}/${dir}";
-                recursive = true;
+                # No recursive = true: create directory-level symlinks
               };
             })
             xdgConfigDirs

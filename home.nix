@@ -20,12 +20,12 @@
     repoPath = ./.;  # dotfiles repository root
     environment = null;  # Auto-detect (override with "ci"/"pi"/"wsl2"/"macos"/"default")
 
-    # Deployment options (Phase 1: test environment variables and submodules only)
-    deployEntryPoints = false;  # Deploy ~/.gitconfig, ~/.zshenv, etc.
-    deployXdgConfig = false;    # Deploy ~/.config/{zsh,nvim,git,tmux,mise,etc.}
-    deploySsh = false;          # Deploy ~/.ssh/config
-    deployBash = false;         # Deploy ~/.bashrc, ~/.bash_profile
-    deployAwsume = false;       # Deploy ~/.awsume/config.yaml
+    # Deployment options (Phase 2: enable file deployment)
+    deployEntryPoints = true;   # Deploy ~/.gitconfig, ~/.zshenv, etc.
+    deployXdgConfig = true;     # Deploy ~/.config/{zsh,nvim,git,tmux,mise,etc.}
+    deploySsh = true;           # Deploy ~/.ssh/config
+    deployBash = true;          # Deploy ~/.bashrc, ~/.bash_profile
+    deployAwsume = true;        # Deploy ~/.awsume/config.yaml
     initSubmodules = true;      # Initialize Git submodules (tmux plugins)
   };
 

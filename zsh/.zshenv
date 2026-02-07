@@ -14,10 +14,9 @@ export ZDOTDIR GIT_CONFIG_GLOBAL
 : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
 export MISE_DATA_DIR MISE_CACHE_DIR
 
-# mise config file selection based on environment (must be before mise activate)
-if [[ -f "${XDG_CONFIG_HOME}/scripts/setup-mise-env.sh" ]]; then
-  source "${XDG_CONFIG_HOME}/scripts/setup-mise-env.sh"
-fi
+# mise config file is set by Home Manager (hm-session-vars.sh)
+# Environment detection: CI > Raspberry Pi > Default (WSL2/macOS/Linux)
+# No manual sourcing of setup-mise-env.sh required
 
 # History file should be set before shell init so history loads
 # even if .zshrc is skipped. Keep it under XDG state by default.
