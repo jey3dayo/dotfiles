@@ -35,7 +35,7 @@ return {
     end,
   },
 
-  -- Input method switcher (disabled on WSL - uncomment for Mac/Windows)
+  -- Input method switcher (disabled on WSL)
   {
     "keaising/im-select.nvim",
     cond = function()
