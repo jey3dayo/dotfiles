@@ -55,15 +55,17 @@ mise automatically selects the appropriate configuration based on the environmen
 - **Default (macOS/Linux/WSL2)**: Uses `mise/config.default.toml` (includes all tools)
 - **Raspberry Pi**: Uses `mise/config.pi.toml` (optimized for server environment)
 
-Detection happens via `scripts/setup-mise-env.sh` which sets `MISE_CONFIG_FILE` based on:
+**Detection Method (Home Manager)**:
 
-- CI: `CI` or `GITHUB_ACTIONS` environment variables
-- Raspberry Pi: `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
-- WSL2: `WSL_DISTRO_NAME` environment variable or `/proc/version` containing "microsoft" or "WSL"
-- macOS: `uname -s` returning "Darwin"
-- Default: All other environments (generic Linux)
+Environment detection is now managed by Home Manager's Nix module (`nix/env-detect.nix`), which sets `MISE_CONFIG_FILE` via `home.sessionVariables`:
 
-The environment detection is integrated into `.zshenv` (sourced before `.zprofile` activates mise).
+- **CI**: `$CI` or `$GITHUB_ACTIONS` environment variables
+- **Raspberry Pi**: ARM architecture + `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
+- **Default**: All other environments (WSL2, macOS, generic Linux)
+
+Priority: CI > Raspberry Pi > Default
+
+The environment variable is automatically loaded via `hm-session-vars.sh` (sourced by shells). No manual configuration required.
 
 **Note**: hadolint is included in `config.default.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
 

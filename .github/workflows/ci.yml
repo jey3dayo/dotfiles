@@ -59,6 +59,7 @@ jobs:
     env:
       # Use CI-optimized configuration with minimal toolset
       # Significantly reduces install time compared to default config
+      # Note: Local environments use Home Manager for automatic environment detection
       MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
