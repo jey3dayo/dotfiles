@@ -56,7 +56,6 @@ let
   # XDG config files (dotfiles in ~/.config/)
   xdgConfigFiles = [
     ".agignore"
-    ".aicommits"
     ".asdfrc"
     ".busted"
     ".clang-format"
@@ -86,6 +85,7 @@ let
 
   # Entry point files to deploy to home directory
   entryPointFiles = {
+    ".aicommits" = ".aicommits";
     ".gitconfig" = "home/.gitconfig";
     ".tmux.conf" = "home/.tmux.conf";
     ".zshenv" = "home/.zshenv";
