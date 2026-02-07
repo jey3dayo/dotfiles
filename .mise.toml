@@ -69,6 +69,29 @@ run = [
   "if [ -d ~/src/github.com/brookhong/Surfingkeys ]; then cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd; else echo 'Skip: ~/src/github.com/brookhong/Surfingkeys not found'; fi",
 ]
 
+# ========================================
+# Home Manager 管理
+# ========================================
+[tasks."hm:switch"]
+description = "Home Manager を適用（dotfiles配布）"
+run = "home-manager switch --flake . --impure"
+
+[tasks."hm:check"]
+description = "Home Manager 設定の検証（ビルドのみ、適用なし）"
+run = "home-manager build --flake . --impure"
+
+[tasks."hm:generations"]
+description = "Home Manager の世代一覧を表示"
+run = "home-manager generations"
+
+[tasks."hm:rollback"]
+description = "Home Manager を前の世代にロールバック"
+run = "home-manager switch --flake . --impure --switch-generation $(home-manager generations | head -2 | tail -1 | awk '{print $NF}')"
+
+[tasks."hm:clean"]
+description = "古い Home Manager 世代を削除（30日以上前）"
+run = "home-manager expire-generations '-30 days'"
+
 # CI/CD
 [tasks.ci]
 description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
@@ -80,3 +103,7 @@ run = """
 luarocks install --local luacheck
 luarocks install --local busted
 """
+
+[tasks."ci:deploy"]
+description = "CI環境でファイル配布（Home Manager）"
+run = "home-manager switch --flake . --impure"

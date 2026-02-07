@@ -112,5 +112,40 @@ jobs:
       - name: Add LuaRocks bin to PATH
         run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH
 
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+
+      - name: Install Home Manager and deploy dotfiles
+        run: |
+          nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+          nix-channel --update
+          export NIX_PATH=$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels${NIX_PATH:+:$NIX_PATH}
+          nix-shell '<home-manager>' -A install
+          mise run ci:deploy
+
+      - name: Verify dotfiles deployment
+        run: |
+          # エントリーポイントファイルの確認
+          for file in .bashrc .bash_profile .zshenv .gitconfig .tmux.conf; do
+            if [ -L "$HOME/$file" ]; then
+              echo "✅ $file は正常にデプロイされました"
+            else
+              echo "❌ $file のデプロイに失敗しました"
+              exit 1
+            fi
+          done
+
+          # ~/.config/内のシンボリックリンク数を確認
+          link_count=$(find ~/.config -maxdepth 1 -type l | wc -l)
+          echo "📊 ~/.config/ 内のシンボリックリンク数: $link_count"
+
+          if [ "$link_count" -ge 46 ]; then
+            echo "✅ 期待されるファイル数（46個以上）が配置されました"
+          else
+            echo "⚠️ 配置されたファイル数が期待値より少ない（期待: 46個以上、実際: $link_count個）"
+          fi
+
       - name: Run all CI checks
         run: mise run ci
