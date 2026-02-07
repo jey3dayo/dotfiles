@@ -18,6 +18,7 @@
   programs.dotfiles = {
     enable = true;
     repoPath = ./.;  # dotfiles repository root
+    repoWorktreePath = "${homeDirectory}/src/github.com/jey3dayo/dotfiles";
     environment = null;  # Auto-detect (override with "ci"/"pi"/"wsl2"/"macos"/"default")
 
     # Deployment options (Phase 2: enable file deployment)

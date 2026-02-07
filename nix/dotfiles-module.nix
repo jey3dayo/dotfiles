@@ -110,6 +110,15 @@ in
       description = "Path to dotfiles repository root.";
     };
 
+    repoWorktreePath = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = ''
+        Path to the dotfiles working tree on disk (used for git submodule init).
+        Use this when repoPath points to the Nix store (e.g. repoPath = ./.).
+      '';
+    };
+
     environment = lib.mkOption {
       type = lib.types.nullOr (lib.types.enum [ "ci" "pi" "default" ]);
       default = null;
@@ -282,9 +291,14 @@ in
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         # Initialize Git submodules for tmux plugins
         repo_path="${cfg.repoPath}"
+        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
         worktree=""
 
-        if ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$repo_worktree"
+        elif [ -n "${DOTFILES_WORKTREE:-}" ] && ${pkgs.git}/bin/git -C "$DOTFILES_WORKTREE" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$DOTFILES_WORKTREE"
+        elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
           worktree="$repo_path"
         else
           for candidate in \
