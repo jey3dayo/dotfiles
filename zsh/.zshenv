@@ -51,7 +51,6 @@ export BUN_INSTALL="$HOME/.bun"
 export HOMEBREW_BUNDLE_FILE_GLOBAL="$XDG_CONFIG_HOME/Brewfile"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
-export CODEX_CONFIG="$HOME/.config/codex/config.yaml"
 
 # PATH configuration is in .zprofile (executed after macOS path_helper)
 # mise shims are managed automatically by 'mise activate' in .zprofile

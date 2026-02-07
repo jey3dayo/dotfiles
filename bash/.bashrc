@@ -26,7 +26,6 @@ export GHQ_ROOT=~/src
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/.ripgreprc"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
-export CODEX_CONFIG="$HOME/.config/codex/config.yaml"
 
 # PATH (keep it simple; don't try to replicate zsh's path logic)
 case ":$PATH:" in
