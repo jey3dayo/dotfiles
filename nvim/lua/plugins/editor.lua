@@ -35,11 +35,18 @@ return {
     end,
   },
 
-  -- Input method switcher
+  -- Input method switcher (disabled on WSL - uncomment for Mac/Windows)
   {
     "keaising/im-select.nvim",
+    cond = function()
+      local ok, utils = pcall(require, "core.utils")
+      if not ok then return false end
+      return utils.get_os() ~= "wsl"
+    end,
     event = "InsertEnter",
-    opts = require "config/im-select",
+    opts = function()
+      return require "config/im-select"
+    end,
   },
 
   -- Extra utilities (required by many mini plugins)
