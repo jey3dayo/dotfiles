@@ -3,5 +3,5 @@ Description=Periodic cleanup (mise/pnpm/npm) to reduce disk usage
 
 [Service]
 Type=oneshot
-# Run the script from the dotfiles repo (installed via Home Manager as ~/.config/scripts/openclaw-cleanup).
+# Run the script deployed by Home Manager to ~/.config/scripts/openclaw-cleanup
 ExecStart=%h/.config/scripts/openclaw-cleanup
