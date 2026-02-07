@@ -106,4 +106,4 @@ luarocks install --local busted
 
 [tasks."ci:deploy"]
 description = "CI環境でファイル配布（Home Manager）"
-run = "home-manager switch --flake . --impure"
+run = "home-manager switch --flake . --impure -b backup"
