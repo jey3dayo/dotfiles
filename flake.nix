@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    gitignore = {
+      url = "github:hercules-ci/gitignore.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -14,11 +18,12 @@
       self,
       nixpkgs,
       home-manager,
+      gitignore,
       ...
     }@inputs:
     let
       # Import helper modules
-      mkDotfilesModule = import ./nix/dotfiles-module.nix;
+      mkDotfilesModule = import ./nix/dotfiles-module.nix { inherit gitignore; };
     in
     {
       # HM module (usable by external flakes)

@@ -1,5 +1,6 @@
 # Home Manager module: programs.dotfiles
 # Manages dotfiles distribution using home.file and home.activation
+{ gitignore }:
 { config, lib, pkgs, ... }:
 
 let
@@ -13,13 +14,74 @@ let
     else
       envDetect.detectEnvironment pkgs;
 
-  # XDG directories to deploy to ~/.config/
+  # gitignore.nix を使った真のgitignore-aware filter
+  cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
+
+  # XDG directories to deploy to ~/.config/ (静的なもののみ)
   xdgConfigDirs = [
+    # Core tools (already managed)
     "git"
     "mise"
     "nvim"
     "tmux"
     "zsh"
+
+    # Terminal emulators
+    "alacritty"
+    "wezterm"
+
+    # Shell enhancements
+    "zsh-abbr"
+
+    # Editors and IDEs
+    "cursor"
+    "ghostty"
+
+    # Development tools
+    "helm"
+    "efm-langserver"
+    "needle"
+    "opencode"
+
+    # System monitoring
+    "btop"
+    "htop"
+
+    # Misc tools
+    "flipper"
+    "projects-config"
+    "yamllint"
+  ];
+
+  # XDG config files (dotfiles in ~/.config/)
+  xdgConfigFiles = [
+    ".agignore"
+    ".aicommits"
+    ".asdfrc"
+    ".busted"
+    ".clang-format"
+    ".colordiffrc"
+    ".ctags"
+    ".cvimrc"
+    ".editorconfig"
+    ".env"                # dotenvx暗号化済み
+    ".fdignore"
+    ".gvimrc"
+    ".ignore"
+    ".luacheckrc"
+    ".luarc.json"
+    ".markdown-link-check.json"
+    ".markdownlint-cli2.jsonc"
+    ".marksman.toml"
+    ".mise.toml"
+    ".prettierignore"
+    ".rainbarf.conf"
+    ".ripgreprc"
+    ".rubocop.yml"
+    ".screenrc"
+    ".styluaignore"
+    ".surfingkeys.js"
+    ".vimperatorrc"
   ];
 
   # Entry point files to deploy to home directory
@@ -104,7 +166,7 @@ in
       (lib.mkIf cfg.deployEntryPoints (
         lib.mapAttrs
           (name: relativePath: {
-            source = "${cfg.repoPath}/${relativePath}";
+            source = "${cleanedRepo}/${relativePath}";
           })
           entryPointFiles
       ))
@@ -116,19 +178,31 @@ in
             (dir: {
               name = ".config/${dir}";
               value = {
-                source = "${cfg.repoPath}/${dir}";
-                # No recursive = true: create directory-level symlinks
+                source = "${cleanedRepo}/${dir}";
               };
             })
             xdgConfigDirs
         )
       ))
 
+      # XDG config files (individual files in ~/.config/)
+      (lib.mkIf cfg.deployXdgConfig (
+        lib.listToAttrs (
+          map
+            (file: {
+              name = ".config/${file}";
+              value = {
+                source = "${cleanedRepo}/${file}";
+              };
+            })
+            xdgConfigFiles
+        )
+      ))
+
       # SSH config (with proper permissions)
       (lib.mkIf cfg.deploySsh {
         ".ssh/config" = {
-          source = "${cfg.repoPath}/ssh/config";
-          # Note: Home Manager handles SSH permissions automatically
+          source = "${cleanedRepo}/ssh/config";
         };
       })
 
@@ -136,7 +210,7 @@ in
       (lib.mkIf cfg.deployBash (
         lib.mapAttrs
           (name: relativePath: {
-            source = "${cfg.repoPath}/${relativePath}";
+            source = "${cleanedRepo}/${relativePath}";
           })
           bashFiles
       ))
@@ -144,7 +218,7 @@ in
       # AWSume config
       (lib.mkIf cfg.deployAwsume {
         ".awsume/config.yaml" = {
-          source = "${cfg.repoPath}/awsume/config.yaml";
+          source = "${cleanedRepo}/awsume/config.yaml";
         };
       })
     ];
