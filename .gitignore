@@ -257,7 +257,8 @@ wslu/
 gogcli/
 
 # systemd
-## Auto-generated symlinks by systemctl enable
+## Auto-generated files by systemctl enable and home-manager
+systemd/user/*.target
 systemd/user/*.target.wants/
 systemd/user/*.service.wants/
 systemd/user/*.timer.wants/
