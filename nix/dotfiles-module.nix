@@ -281,7 +281,7 @@ in
 
         # Copy tasks directory content if source exists
         if [ -d "${cleanedRepo}/mise/tasks" ]; then
-          cp -r "${cleanedRepo}/mise/tasks"/* "$mise_tasks_dir/" 2>/dev/null || true
+          cp -r "${cleanedRepo}/mise/tasks"/. "$mise_tasks_dir/" 2>/dev/null || true
         fi
       ''
     );

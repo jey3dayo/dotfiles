@@ -114,8 +114,6 @@ jobs:
 
       - name: Install Nix
         uses: cachix/install-nix-action@v30
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
 
       - name: Deploy dotfiles with Home Manager
         run: mise run ci:deploy
@@ -123,7 +121,7 @@ jobs:
       - name: Verify dotfiles deployment
         run: |
           # エントリーポイントファイルの確認
-          for file in .bashrc .bash_profile .zshenv .gitconfig .tmux.conf; do
+          for file in .bashrc .bash_profile .zshenv .zshrc .gitconfig .tmux.conf; do
             if [ -L "$HOME/$file" ]; then
               echo "✅ $file は正常にデプロイされました"
             else
