@@ -43,16 +43,13 @@ cat > ~/.gitconfig_local << EOF
     email = your.email@example.com
 EOF
 
-# 3. Install Nix (if not already installed)
-sh <(curl -L https://nixos.org/nix/install) --daemon
-
-# 4. Apply dotfiles via Home Manager
-home-manager switch --flake . --impure
-
-# 5. Install Homebrew packages
+# 3. Install Homebrew packages (includes Nix)
 brew bundle
 
-# 6. Restart shell
+# 4. Apply dotfiles via Home Manager (Nix flake-based)
+nix run home-manager -- switch --flake . --impure
+
+# 5. Restart shell
 exec zsh
 ```
 
@@ -68,12 +65,14 @@ sh ./bin/bootstrap.sh
 
 ### Manual Installation
 
-If you prefer manual installation:
+If you prefer manual installation or bootstrap script is not available:
 
 ```bash
-# Install Homebrew
+# Install Homebrew (official method)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
+
+**Note**: Homebrew's official installer requires `curl`. If `curl` is unavailable, use the bootstrap script (`bin/bootstrap.sh`) which handles the installation process. For Nix installation, this repository uses `brew bundle` (via Brewfile) instead of the curl-based installer to maintain consistency with the package management philosophy.
 
 ## Package Management Philosophy
 
