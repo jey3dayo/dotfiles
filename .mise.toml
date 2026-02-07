@@ -86,7 +86,7 @@ run = "home-manager generations"
 
 [tasks."hm:rollback"]
 description = "Home Manager を前の世代にロールバック"
-run = "home-manager switch --flake . --impure --switch-generation $(home-manager generations | head -2 | tail -1 | awk '{print $NF}')"
+run = "home-manager switch --flake . --impure --rollback || home-manager switch --flake . --impure --switch-generation $(home-manager generations | head -2 | tail -1 | awk '{print $(NF-2)}')"
 
 [tasks."hm:clean"]
 description = "古い Home Manager 世代を削除（30日以上前）"

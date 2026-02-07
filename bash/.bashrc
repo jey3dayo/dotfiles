@@ -15,10 +15,18 @@ export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
 : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
 export MISE_DATA_DIR MISE_CACHE_DIR
 
-# mise config file selection based on environment
-if [ -f "${XDG_CONFIG_HOME}/scripts/setup-mise-env.sh" ]; then
-  # shellcheck disable=SC1090,SC1091
-  . "${XDG_CONFIG_HOME}/scripts/setup-mise-env.sh"
+# mise config file is set by Home Manager (hm-session-vars.sh)
+# Environment detection: CI > Raspberry Pi > Default (WSL2/macOS/Linux)
+if [ -z "${DOTFILES_HM_SESSION_VARS_LOADED:-}" ]; then
+  if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
+    # shellcheck disable=SC1090,SC1091
+    . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+    export DOTFILES_HM_SESSION_VARS_LOADED=1
+  elif [ -f "$HOME/.config/home-manager/home-manager.sh" ]; then
+    # shellcheck disable=SC1090,SC1091
+    . "$HOME/.config/home-manager/home-manager.sh"
+    export DOTFILES_HM_SESSION_VARS_LOADED=1
+  fi
 fi
 
 # Basic env vars used across tools

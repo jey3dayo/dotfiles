@@ -49,7 +49,7 @@ let
 
     # Misc tools
     "flipper"
-    "projects-config"
+    "scripts"
     "yamllint"
   ];
 
@@ -81,6 +81,8 @@ let
     ".styluaignore"
     ".surfingkeys.js"
     ".vimperatorrc"
+    "Brewfile"
+    "typos.toml"
   ];
 
   # Entry point files to deploy to home directory
@@ -223,6 +225,23 @@ in
         };
       })
     ];
+
+    # Ensure projects-config is a real writable directory (not a Nix store symlink)
+    home.activation.dotfiles-projects-config = lib.mkIf cfg.deployXdgConfig (
+      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        projects_dir="${config.xdg.configHome}/projects-config"
+
+        if [ -L "$projects_dir" ]; then
+          rm -f "$projects_dir"
+        fi
+
+        if [ -e "$projects_dir" ] && [ ! -d "$projects_dir" ]; then
+          echo "Warning: $projects_dir exists and is not a directory; skipping creation." >&2
+        else
+          mkdir -p "$projects_dir"
+        fi
+      ''
+    );
 
     # Git submodule initialization (activation script)
     home.activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
