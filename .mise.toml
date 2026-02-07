@@ -9,7 +9,7 @@ includes = [
   "mise/tasks/format.toml",
   "mise/tasks/lint.toml",
   "mise/tasks/test.toml",
-  "mise/tasks/integration.toml"
+  "mise/tasks/integration.toml",
 ]
 
 # ========================================
@@ -49,7 +49,12 @@ run = "if command -v brew >/dev/null 2>&1; then brew bundle install --no-upgrade
 # ========================================
 [tasks.update]
 description = "すべての依存関係を更新"
-depends = ["update:submodules", "update:brew", "update:apt", "update:external-repos"]
+depends = [
+  "update:submodules",
+  "update:brew",
+  "update:apt",
+  "update:external-repos",
+]
 
 [tasks."update:submodules"]
 description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
@@ -106,4 +111,4 @@ luarocks install --local busted
 
 [tasks."ci:deploy"]
 description = "CI環境でファイル配布（Home Manager）"
-run = "home-manager switch --flake . --impure -b backup"
+run = "nix run home-manager -- switch --flake . --impure -b backup"
