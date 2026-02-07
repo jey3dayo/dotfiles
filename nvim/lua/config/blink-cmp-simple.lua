@@ -2,10 +2,8 @@
 require("blink.cmp").setup {
   keymap = {
     preset = "default",
+    ["<Tab>"] = {}, -- Disabled: override below with Supermaven priority
     ["<C-k>"] = { "accept", "snippet_forward", "fallback" },
-    ["<Tab>"] = { "accept", "snippet_forward", "fallback" },
-    ["<S-Tab>"] = { "snippet_backward", "fallback" },
-    ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
   },
 
   sources = {
@@ -53,3 +51,19 @@ if ok and health.report_sources then
     return result
   end
 end
+
+-- Tab key: Supermaven (AI) > blink.cmp (LSP) > default tab
+vim.keymap.set("i", "<Tab>", function()
+  local ok, supermaven = pcall(require, "supermaven-nvim.completion_preview")
+  if ok and supermaven.has_suggestion() then
+    supermaven.on_accept_suggestion()
+    return
+  end
+
+  local blink = require "blink.cmp"
+  if blink.is_visible() then
+    blink.accept()
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
+  end
+end, { desc = "Accept Supermaven or blink.cmp" })

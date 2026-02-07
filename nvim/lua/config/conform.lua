@@ -35,20 +35,16 @@ end
 
 local function format_with_prettier_or_biome(bufnr)
   -- Prefer Prettier when config file exists and command is available
-  if has_prettier_config(bufnr) and command_exists("prettier") then
-    return { "prettier", stop_after_first = true }
-  end
+  if has_prettier_config(bufnr) and command_exists "prettier" then return { "prettier", stop_after_first = true } end
 
   -- Fallback to Biome when config exists and command is available
-  if has_biome_config(bufnr) and command_exists("biome") then
-    return { "biome", stop_after_first = true }
-  end
+  if has_biome_config(bufnr) and command_exists "biome" then return { "biome", stop_after_first = true } end
 
   -- Final fallback: when no config files exist, prefer Biome for better performance
   -- Note: Projects preferring Prettier should have a config file (.prettierrc*, package.json)
-  if command_exists("biome") then
+  if command_exists "biome" then
     return { "biome", stop_after_first = true }
-  elseif command_exists("prettier") then
+  elseif command_exists "prettier" then
     return { "prettier", stop_after_first = true }
   end
 
@@ -126,7 +122,7 @@ require("conform").setup {
       command = "prettier",
       -- Only enable when prettier command is available
       condition = function(_, _)
-        return command_exists("prettier")
+        return command_exists "prettier"
       end,
     },
 
@@ -136,7 +132,7 @@ require("conform").setup {
       command = "biome",
       -- Only enable when biome command is available
       condition = function(_, _)
-        return command_exists("biome")
+        return command_exists "biome"
       end,
     },
   },

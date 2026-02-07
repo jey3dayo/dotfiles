@@ -1,5 +1,5 @@
 ---
-paths: docs/setup.md, setup.sh, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json
+paths: docs/setup.md, flake.nix, home.nix, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json
 ---
 
 # Setup and Environment Rules
@@ -7,12 +7,16 @@ paths: docs/setup.md, setup.sh, .mise.toml, mise/config.toml, Brewfile, Brewfile
 Purpose: enforce the single source for onboarding steps and verification. Scope: initial clone, required tools, and validation commands.
 Sources: docs/setup.md.
 
-## Setup flow (macOS)
+## Setup flow (macOS/Linux/WSL2)
 
 - Clone repo to ~/src/github.com/jey3dayo/dotfiles and enter the directory.
 - Create ~/.gitconfig_local with user name/email before running setup.
-- Run `sh ./setup.sh && brew bundle` for automated setup; restart shell via `exec zsh`.
 - Install Homebrew first if missing using the official install script.
+- Run `brew bundle` to install dependencies.
+- Run `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure` to apply dotfiles configuration.
+- Restart shell via `exec zsh`.
+
+**Note**: Home Manager manages dotfiles deployment. Environment is auto-detected (CI > Raspberry Pi > Default).
 
 ## Verification
 

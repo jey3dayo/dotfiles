@@ -59,6 +59,7 @@ jobs:
     env:
       # Use CI-optimized configuration with minimal toolset
       # Significantly reduces install time compared to default config
+      # Note: Local environments use Home Manager for automatic environment detection
       MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
@@ -110,6 +111,34 @@ jobs:
 
       - name: Add LuaRocks bin to PATH
         run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
+
+      - name: Deploy dotfiles with Home Manager
+        run: mise run ci:deploy
+
+      - name: Verify dotfiles deployment
+        run: |
+          # エントリーポイントファイルの確認
+          for file in .bashrc .bash_profile .zshenv .zshrc .gitconfig .tmux.conf; do
+            if [ -L "$HOME/$file" ]; then
+              echo "✅ $file は正常にデプロイされました"
+            else
+              echo "❌ $file のデプロイに失敗しました"
+              exit 1
+            fi
+          done
+
+          # ~/.config/内のシンボリックリンク数を確認
+          link_count=$(find ~/.config -maxdepth 1 -type l | wc -l)
+          echo "📊 ~/.config/ 内のシンボリックリンク数: $link_count"
+
+          if [ "$link_count" -ge 46 ]; then
+            echo "✅ 期待されるファイル数（46個以上）が配置されました"
+          else
+            echo "⚠️ 配置されたファイル数が期待値より少ない（期待: 46個以上、実際: $link_count個）"
+          fi
 
       - name: Run all CI checks
         run: mise run ci

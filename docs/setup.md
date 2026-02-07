@@ -29,7 +29,7 @@ sh ./bin/bootstrap.sh
 
 ## Quick Setup
 
-**前提条件**: Homebrewがインストール済み（上記bootstrap実行、または既にインストール済み）
+**前提条件**: Homebrew と Nix がインストール済み（上記bootstrap実行、または既にインストール済み）
 
 ```bash
 # 1. Clone repository
@@ -43,10 +43,13 @@ cat > ~/.gitconfig_local << EOF
     email = your.email@example.com
 EOF
 
-# 3. Run automated setup
-sh ./scripts/setup && brew bundle
+# 3. Install Homebrew packages (includes Nix)
+brew bundle
 
-# 4. Restart shell
+# 4. Apply dotfiles via Home Manager (Nix flake-based)
+nix run home-manager -- switch --flake . --impure
+
+# 5. Restart shell
 exec zsh
 ```
 
@@ -62,12 +65,14 @@ sh ./bin/bootstrap.sh
 
 ### Manual Installation
 
-If you prefer manual installation:
+If you prefer manual installation or bootstrap script is not available:
 
 ```bash
-# Install Homebrew
+# Install Homebrew (official method)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
+
+**Note**: Homebrew's official installer requires `curl`. If `curl` is unavailable, use the bootstrap script (`bin/bootstrap.sh`) which handles the installation process. For Nix installation, this repository uses `brew bundle` (via Brewfile) instead of the curl-based installer to maintain consistency with the package management philosophy.
 
 ## Package Management Philosophy
 

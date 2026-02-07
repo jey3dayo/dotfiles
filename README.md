@@ -1,13 +1,14 @@
 # Personal Dotfiles
 
-**最終更新**: 2025-11-29
+**最終更新**: 2026-02-07
 **対象**: 開発者
-**タグ**: `category/setup`, `layer/core`, `environment/macos`, `audience/developer`
+**タグ**: `category/setup`, `layer/core`, `environment/cross-platform`, `audience/developer`
 
-High-performance macOS development environment tuned for speed, consistency, and developer experience.
+High-performance development environment tuned for speed, consistency, and developer experience. Managed with Home Manager for declarative configuration.
 
 ## Highlights
 
+- **Declarative Configuration**: Home Manager-based deployment with automatic environment detection (CI/Pi/Default)
 - Performance-first dotfiles with local CI parity (`mise run ci`) before merges
 - Documentation centralized in `docs/` with navigation at `docs/README.md` and AI context in `.kiro/steering/`
 - Modular stack: Zsh (6-tier), Neovim (Lazy.nvim), WezTerm (tmux-style) with FZF-backed Git widgets
@@ -24,14 +25,14 @@ High-performance macOS development environment tuned for speed, consistency, and
 
 ## Getting Started
 
-### Quick Setup (Recommended for Fresh macOS)
+### Quick Setup (macOS/Linux/WSL2)
 
 ```bash
 # 1. Clone repository
 git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
 cd ~/src/github.com/jey3dayo/dotfiles
 
-# 2. Bootstrap (installs Homebrew if needed)
+# 2. Bootstrap (installs Homebrew if needed on macOS)
 sh ./scripts/bootstrap.sh
 
 # 3. Configure Git identity (required)
@@ -41,14 +42,18 @@ cat > ~/.gitconfig_local << EOF
     email = your.email@example.com
 EOF
 
-# 4. Setup and install packages
-sh ./scripts/setup && brew bundle
+# 4. Install packages
+brew bundle  # macOS only
 
-# 5. Restart shell
+# 5. Apply dotfiles configuration with Home Manager
+home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure
+
+# 6. Restart shell
 exec zsh
 
-# 6. Verify installation
+# 7. Verify installation
 zsh-help
+mise doctor
 ```
 
 ### What scripts/bootstrap.sh does
@@ -57,6 +62,13 @@ zsh-help
 - ✅ Detects architecture (Apple Silicon vs Intel)
 - ✅ Validates prerequisites (macOS, git, zsh, curl)
 - ✅ Sets up brew command in current session
+
+### What Changed (Home Manager Migration)
+
+- ✅ **Declarative Configuration**: Configuration files deployed via Nix/Home Manager
+- ✅ **Automatic Environment Detection**: CI > Raspberry Pi > Default (WSL2/macOS/Linux)
+- ✅ **No More setup.sh**: Replaced by `home-manager switch --flake . --impure`
+- ✅ **Reproducible**: Nix ensures identical configuration across machines
 
 ### Manual Setup (Already Have Homebrew)
 
@@ -83,13 +95,17 @@ If Homebrew is already installed, skip bootstrap and follow docs/setup.md direct
 
 ```
 dotfiles/
+├── flake.nix      # Home Manager entrypoint
+├── home.nix       # User configuration
+├── nix/           # Home Manager modules
+│   ├── dotfiles-module.nix  # Custom module
+│   └── env-detect.nix       # Environment detection
 ├── .claude/       # AI assistance, commands, review criteria
 ├── .github/       # Workflows
 ├── .kiro/         # Steering docs (always-loaded AI context)
 ├── docs/          # Human-facing documentation (SST per topic)
 ├── scripts/       # Setup scripts
-│   ├── bootstrap.sh  # Homebrew installer (1-shot)
-│   └── setup      # Environment setup (repeatable)
+│   └── bootstrap.sh  # Homebrew installer (1-shot)
 ├── zsh/           # Shell (6-tier loading)
 ├── nvim/          # Editor (Lua config, 15+ LSP)
 ├── git/           # Version control (widgets, abbreviations)
@@ -131,10 +147,11 @@ mise install               # Setup language versions
 
 - Operational cadence and troubleshooting live in `docs/maintenance.md`
 - Weekly: `brew update && brew upgrade`, sync plugins (Sheldon/Neovim/tmux)
-- Monthly: measure shell startup (`time zsh -lic exit`), prune unused plugins
+- Monthly: `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure`, measure shell startup, prune unused plugins
+- Rollback: `home-manager generations` to list, `home-manager switch --generation <number>` to rollback
 - Always before merge: `mise run ci`
 
 ---
 
-**Status**: Production-ready (2025-11-29)
+**Status**: Production-ready (2026-02-07)
 **License**: MIT — optimized for modern development workflows with focus on speed, consistency, and developer experience.

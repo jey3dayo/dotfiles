@@ -5,6 +5,7 @@
 ```
 mise/
 ├── config.toml         # Settings-only (no tools)
+├── config.ci.toml      # CI (GitHub Actions, jobs=4)
 ├── config.default.toml # Mac/Linux/WSL2 (73 tools, jobs=8)
 ├── config.pi.toml      # Raspberry Pi (24 tools, jobs=2)
 └── tasks/              # Shared task definitions
@@ -16,19 +17,22 @@ mise/
 
 ## Environment Detection
 
-Environment detection is handled by `scripts/setup-mise-env.sh` (sourced in `zsh/.zshenv`).
+Environment detection is handled by Home Manager (`nix/env-detect.nix`) and exported via
+`home.sessionVariables` (loaded by shells through `hm-session-vars.sh`).
 
 **Automatic Configuration Selection**:
 
+- CI (GitHub Actions) → `config.ci.toml`
 - Raspberry Pi → `config.pi.toml`
 - macOS/Linux/WSL2 → `config.default.toml`
 
-**Environment Variable**: `MISE_CONFIG_FILE` is set before mise activation.
+**Environment Variable**: `MISE_CONFIG_FILE` is set before mise activation by Home Manager.
 
 ## Tool Counts
 
 | Environment  | Config File         | Tools | Jobs | Notes                                     |
 | ------------ | ------------------- | ----- | ---- | ----------------------------------------- |
+| CI           | config.ci.toml      | 11    | 4    | Minimal toolset for Actions               |
 | Default      | config.default.toml | 73    | 8    | Full toolset (go, 46 npm, 4 cargo, 7 CLI) |
 | Raspberry Pi | config.pi.toml      | 24    | 2    | Optimized (no go, minimal npm, no cargo)  |
 
@@ -61,5 +65,6 @@ mise doctor              # Health check
 **See Also**:
 
 - `.claude/rules/tools/mise.md` - Comprehensive documentation
-- `scripts/setup-mise-env.sh` - Environment detection logic
+- `nix/env-detect.nix` - Environment detection logic
+- `nix/dotfiles-module.nix` - Home Manager wiring for `MISE_CONFIG_FILE`
 - `.mise.toml` - Project-level tasks
