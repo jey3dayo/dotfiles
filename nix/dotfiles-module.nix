@@ -21,7 +21,7 @@ let
   xdgConfigDirs = [
     # Core tools (already managed)
     "git"
-    "mise"
+    # mise: excluded - writable trust DB required (managed individually below)
     "nvim"
     "tmux"
     "zsh"
@@ -224,21 +224,55 @@ in
           source = "${cleanedRepo}/awsume/config.yaml";
         };
       })
+
+      # mise static configs (dynamic files like trusted-configs/ need writable directory)
+      (lib.mkIf cfg.deployXdgConfig {
+        ".config/mise/config.toml" = {
+          source = "${cleanedRepo}/mise/config.toml";
+        };
+        ".config/mise/config.default.toml" = {
+          source = "${cleanedRepo}/mise/config.default.toml";
+        };
+        ".config/mise/config.pi.toml" = {
+          source = "${cleanedRepo}/mise/config.pi.toml";
+        };
+        ".config/mise/config.ci.toml" = {
+          source = "${cleanedRepo}/mise/config.ci.toml";
+        };
+        ".config/mise/README.md" = {
+          source = "${cleanedRepo}/mise/README.md";
+        };
+      })
     ];
 
-    # Ensure projects-config is a real writable directory (not a Nix store symlink)
-    home.activation.dotfiles-projects-config = lib.mkIf cfg.deployXdgConfig (
+    # Ensure writable directories (not Nix store symlinks) for runtime state
+    home.activation.dotfiles-writable-dirs = lib.mkIf cfg.deployXdgConfig (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        # projects-config: nvim-projectconfig writes project settings
         projects_dir="${config.xdg.configHome}/projects-config"
-
         if [ -L "$projects_dir" ]; then
           rm -f "$projects_dir"
         fi
-
         if [ -e "$projects_dir" ] && [ ! -d "$projects_dir" ]; then
           echo "Warning: $projects_dir exists and is not a directory; skipping creation." >&2
         else
           mkdir -p "$projects_dir"
+        fi
+
+        # mise: trusted-configs/ and other runtime state need write access
+        mise_dir="${config.xdg.configHome}/mise"
+        mise_tasks_dir="$mise_dir/tasks"
+
+        # Create mise directory if it doesn't exist or is a symlink
+        if [ -L "$mise_dir" ]; then
+          echo "Warning: $mise_dir is a symlink; removing to create real directory" >&2
+          rm -f "$mise_dir"
+        fi
+        mkdir -p "$mise_dir" "$mise_tasks_dir"
+
+        # Copy tasks directory content if source exists
+        if [ -d "${cleanedRepo}/mise/tasks" ]; then
+          cp -r "${cleanedRepo}/mise/tasks"/* "$mise_tasks_dir/" 2>/dev/null || true
         fi
       ''
     );

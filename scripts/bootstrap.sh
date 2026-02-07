@@ -241,15 +241,22 @@ show_next_steps() {
   printf "%b\n" "   EOF${NC}"
   printf "\n"
 
-  printf "%b\n" "${BOLD}${BLUE}2.${NC} ${BOLD}Run setup and install packages${NC}:"
-  printf "%b\n" "   ${YELLOW}sh ./setup.sh && brew bundle${NC}"
+  printf "%b\n" "${BOLD}${BLUE}2.${NC} ${BOLD}Install Nix and Home Manager${NC}:"
+  printf "%b\n" "   ${YELLOW}# Install Nix (if not already installed)"
+  printf "%b\n" "   sh <(curl -L https://nixos.org/nix/install) --daemon${NC}"
+  printf "%b\n" "   ${YELLOW}# Apply dotfiles via Home Manager"
+  printf "%b\n" "   home-manager switch --flake . --impure${NC}"
   printf "\n"
 
-  printf "%b\n" "${BOLD}${BLUE}3.${NC} ${BOLD}Restart shell${NC}:"
+  printf "%b\n" "${BOLD}${BLUE}3.${NC} ${BOLD}Install Homebrew packages${NC}:"
+  printf "%b\n" "   ${YELLOW}brew bundle${NC}"
+  printf "\n"
+
+  printf "%b\n" "${BOLD}${BLUE}4.${NC} ${BOLD}Restart shell${NC}:"
   printf "%b\n" "   ${YELLOW}exec zsh${NC}"
   printf "\n"
 
-  printf "%b\n" "${BOLD}${BLUE}4.${NC} ${BOLD}Verify installation${NC}:"
+  printf "%b\n" "${BOLD}${BLUE}5.${NC} ${BOLD}Verify installation${NC}:"
   printf "%b\n" "   ${YELLOW}zsh-help${NC}"
   printf "%b\n" "   ${YELLOW}zsh-help tools${NC}"
   printf "\n"

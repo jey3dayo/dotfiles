@@ -29,7 +29,7 @@ sh ./bin/bootstrap.sh
 
 ## Quick Setup
 
-**前提条件**: Homebrewがインストール済み（上記bootstrap実行、または既にインストール済み）
+**前提条件**: Homebrew と Nix がインストール済み（上記bootstrap実行、または既にインストール済み）
 
 ```bash
 # 1. Clone repository
@@ -43,10 +43,16 @@ cat > ~/.gitconfig_local << EOF
     email = your.email@example.com
 EOF
 
-# 3. Run automated setup
-sh ./scripts/setup && brew bundle
+# 3. Install Nix (if not already installed)
+sh <(curl -L https://nixos.org/nix/install) --daemon
 
-# 4. Restart shell
+# 4. Apply dotfiles via Home Manager
+home-manager switch --flake . --impure
+
+# 5. Install Homebrew packages
+brew bundle
+
+# 6. Restart shell
 exec zsh
 ```
 
