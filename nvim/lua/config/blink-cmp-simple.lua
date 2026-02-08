@@ -54,8 +54,8 @@ end
 
 -- Tab key: Supermaven (AI) > blink.cmp (LSP) > default tab
 vim.keymap.set("i", "<Tab>", function()
-  local ok, supermaven = pcall(require, "supermaven-nvim.completion_preview")
-  if ok and supermaven.has_suggestion() then
+  local supermaven_ok, supermaven = pcall(require, "supermaven-nvim.completion_preview")
+  if supermaven_ok and supermaven.has_suggestion() then
     supermaven.on_accept_suggestion()
     return
   end

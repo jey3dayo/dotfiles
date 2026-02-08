@@ -1,5 +1,5 @@
 # Home Manager configuration for dotfiles
-{ config, pkgs, username, homeDirectory, ... }:
+{ config, pkgs, lib, inputs, username, homeDirectory, ... }:
 
 {
   # Basic home-manager settings
@@ -28,6 +28,22 @@
     deployBash = true;          # Deploy ~/.bashrc, ~/.bash_profile
     deployAwsume = true;        # Deploy ~/.awsume/config.yaml
     initSubmodules = true;      # Initialize Git submodules (tmux plugins)
+  };
+
+  # Agent skills are managed inside this repo (migrated from ~/.agents)
+  programs.agent-skills = {
+    enable = true;
+
+    # Use skills-internal as local overrides to avoid external duplication conflicts
+    localSkillsPath = ./agents/skills-internal;
+
+    sources = import ./agents/nix/sources.nix { inherit inputs; };
+
+    skills.enable =
+      let selection = import ./agents/nix/selection.nix;
+      in if selection ? enable then selection.enable else null;
+
+    targets = import ./agents/nix/targets.nix;
   };
 
   # This value determines the Home Manager release that your configuration is compatible with.

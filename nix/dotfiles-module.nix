@@ -23,7 +23,7 @@ let
     "git"
     # mise: excluded - writable trust DB required (managed individually below)
     "nvim"
-    "tmux"
+    # tmux: excluded - submodule plugins/ require real directory (managed via activation script)
     "zsh"
 
     # Terminal emulators
@@ -83,6 +83,13 @@ let
     ".vimperatorrc"
     "Brewfile"
     "typos.toml"
+    # tmux static config files (plugins/ managed via activation script)
+    "tmux/copy-paste.conf"
+    "tmux/default.session.conf"
+    "tmux/keyconfig.conf"
+    "tmux/options.conf"
+    "tmux/tmux.conf"
+    "tmux/tpm.conf"
   ];
 
   # Entry point files to deploy to home directory
@@ -252,6 +259,13 @@ in
           source = "${cleanedRepo}/mise/README.md";
         };
       })
+
+      # gh static config (hosts.yml is dynamic and user-managed)
+      (lib.mkIf cfg.deployXdgConfig {
+        ".config/gh/config.yml" = {
+          source = "${cleanedRepo}/gh/config.yml";
+        };
+      })
     ];
 
     # Ensure writable directories (not Nix store symlinks) for runtime state
@@ -282,6 +296,58 @@ in
         # Copy tasks directory content if source exists
         if [ -d "${cleanedRepo}/mise/tasks" ]; then
           cp -r "${cleanedRepo}/mise/tasks"/. "$mise_tasks_dir/" 2>/dev/null || true
+        fi
+      ''
+    );
+
+    # tmux configuration with submodule support
+    home.activation.dotfiles-tmux-plugins = lib.mkIf cfg.deployXdgConfig (
+      lib.hm.dag.entryAfter [ "writeBoundary" "dotfiles-submodules" ] ''
+        tmux_config_dir="${config.xdg.configHome}/tmux"
+        tmux_plugins_dir="$tmux_config_dir/plugins"
+
+        # Create tmux directory (remove symlink if exists)
+        if [ -L "$tmux_config_dir" ]; then
+          echo "Warning: $tmux_config_dir is a symlink; removing to create real directory" >&2
+          rm -f "$tmux_config_dir"
+        fi
+        mkdir -p "$tmux_config_dir" "$tmux_plugins_dir"
+
+        # Copy static config files (symlinks will be created by home.file)
+        # This ensures the directory structure exists before symlinks are created
+
+        # Copy plugins directory structure (prefer worktree so submodules are available)
+        repo_path="${cfg.repoPath}"
+        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
+        worktree=""
+
+        if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$repo_worktree"
+        elif [ -n "''${DOTFILES_WORKTREE:-}" ] && ${pkgs.git}/bin/git -C "''${DOTFILES_WORKTREE}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="''${DOTFILES_WORKTREE}"
+        elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$repo_path"
+        else
+          for candidate in \
+            "${config.home.homeDirectory}/src/github.com/jey3dayo/dotfiles" \
+            "${config.home.homeDirectory}/src/dotfiles" \
+            "${config.home.homeDirectory}/dotfiles"; do
+            if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+              worktree="$candidate"
+              break
+            fi
+          done
+        fi
+
+        plugins_source=""
+        if [ -n "$worktree" ] && [ -d "$worktree/tmux/plugins" ]; then
+          plugins_source="$worktree/tmux/plugins"
+        elif [ -d "${cleanedRepo}/tmux/plugins" ]; then
+          plugins_source="${cleanedRepo}/tmux/plugins"
+        fi
+
+        if [ -n "$plugins_source" ]; then
+          cp -r "$plugins_source"/. "$tmux_plugins_dir/" 2>/dev/null || true
         fi
       ''
     );

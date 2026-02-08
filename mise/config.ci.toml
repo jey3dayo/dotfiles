@@ -28,6 +28,8 @@ uvx = true
 [tools]
 # Package Managers
 "pipx:uv" = "latest" # uvx for ruff execution
+# Runtime
+node = "lts"
 # Formatters and Linters
 biome = "latest"      # JS/TS/JSON
 prettier = "latest"   # General

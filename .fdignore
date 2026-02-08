@@ -5,6 +5,9 @@ fisher/
 zsh/.zinit/
 claude/local/node_modules/
 
+# Imported agent skills (managed separately)
+agents/skills/
+
 # Temporary symlinks
 codex/AGENTS.md
 opencode/AGENTS.md
