@@ -32,4 +32,5 @@ exclude_files = {
   "lua/plugins/",
   ".luarocks/",
   ".git/",
+  "result/",
 }
