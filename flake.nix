@@ -56,8 +56,10 @@
           # Import agent-skills module if .agents directory exists
           # This requires --impure flag when running home-manager switch
           agentSkillsPath = "${homeDirectory}/.agents/nix/module.nix";
+          hasAgentSkills =
+            homeDirectory != "" && builtins.pathExists agentSkillsPath;
           agentSkillsModule =
-            if builtins.pathExists agentSkillsPath
+            if hasAgentSkills
             then import agentSkillsPath
             else { config, ... }: { };  # Empty module if .agents doesn't exist
 
@@ -69,14 +71,14 @@
 
           # Add agent-skills module only if it exists
           allModules =
-            if builtins.pathExists agentSkillsPath
+            if hasAgentSkills
             then baseModules ++ [ agentSkillsModule ]
             else baseModules;
         in
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
           modules = allModules;
-          extraSpecialArgs = { inherit inputs username homeDirectory; };
+          extraSpecialArgs = { inherit inputs username homeDirectory hasAgentSkills; };
         };
     };
 }

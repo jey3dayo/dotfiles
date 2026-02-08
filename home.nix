@@ -1,5 +1,5 @@
 # Home Manager configuration for dotfiles
-{ config, pkgs, inputs, username, homeDirectory, ... }:
+{ config, pkgs, lib, inputs, username, homeDirectory, hasAgentSkills, ... }:
 
 {
   # Basic home-manager settings
@@ -32,7 +32,8 @@
 
   # Enable agent-skills module (from ~/.agents)
   # Configuration mirrors ~/.agents/home.nix for compatibility
-  programs.agent-skills = {
+  # Only enabled when .agents directory exists
+  programs.agent-skills = lib.mkIf hasAgentSkills {
     enable = true;
 
     # Local skills directory from ~/.agents
