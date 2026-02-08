@@ -6,67 +6,11 @@ description: |
   [Keywords] task, pr, worktree, ci, fix, github, issue, implementation
 ---
 
-# Task to PR (v2: Context-aware)
+# Task to PR
 
 ## Purpose
 
 Verify the task/request (or GitHub Issue) and execute E2E: worktree creation, implementation, local checks, PR creation, CI monitoring, and auto-fixing.
-
-**v2 improvements**: Automatic detection of execution context (new task vs existing branch vs existing PR) and adaptive phase selection.
-
-## Execution Context Detection
-
-### Step 0: Detect Work Context (NEW)
-
-**Before Phase 1, detect the current state**:
-
-```bash
-# 1. Current branch
-current_branch=$(git branch --show-current)
-default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-
-# 2. Check if we're in a worktree
-is_worktree=$([ $(git worktree list | wc -l) -gt 1 ] && echo "yes" || echo "no")
-
-# 3. Check if PR exists for current branch
-# Note: gh pr view without arguments checks the current branch's PR
-pr_exists=$(gh pr view --json number 2>/dev/null && echo "yes" || echo "no")
-```
-
-**Decision matrix**:
-
-| Context                   | Current Branch      | Worktree? | PR? | Start Phase | Notes                                    |
-| ------------------------- | ------------------- | --------- | --- | ----------- | ---------------------------------------- |
-| **New task**              | main/master/default | No        | No  | Phase 1     | Full workflow                            |
-| **Resume implementation** | feature-branch      | No/Yes    | No  | Phase 1\*   | Skip worktree creation (Phase 2-3)       |
-| **Resume validation**     | feature-branch      | No/Yes    | No  | Phase 4     | If code is implemented, start validation |
-| **CI fix only**           | feature-branch      | No/Yes    | Yes | Phase 6     | PR exists, monitor/fix CI                |
-
-\*Phase 1 still runs for context gathering and task decomposition, but Phase 2-3 (worktree creation) are skipped.
-
-**User notification**:
-
-```
-[Context Detection]
-✓ Branch: feat/user-auth (feature branch)
-✓ Worktree: Yes
-✓ PR: No
-
-→ Detected context: Resume implementation
-→ Starting from: Phase 1 (context gathering)
-→ Will skip: Phase 2-3 (worktree creation - already in worktree)
-```
-
-### User Override
-
-Users can force specific behavior:
-
-```
-/task-to-pr --new           # Force full workflow (create new worktree even on feature branch)
-/task-to-pr --resume        # Resume from current context (default)
-/task-to-pr --ci-only       # Skip to Phase 6 (CI monitoring)
-/task-to-pr --stop-at-impl  # Stop after Phase 5 (implementation), no PR creation
-```
 
 ## Inputs
 
@@ -78,19 +22,15 @@ Collect the following inputs (when available):
 - `worktree`: Worktree name/path (optional)
 - `pr_title`: PR title (optional; can be inferred from the request)
 - `pr_labels`: PR labels (optional, when allowed by the repository)
-- `--new`, `--resume`, `--ci-only`, `--stop-at-impl`: Execution mode overrides
 
 ## Workflow Overview
 
 ```
-Phase 0: Context Detection (NEW)
-  └─ Step 0: Detect current state and determine start phase
-
 Phase 1: Planning
   ├─ Step 1: Context gathering and request validation
   └─ Step 2: Task decomposition and planning
 
-Phase 2: Preparation (CONDITIONAL: skip if on feature branch)
+Phase 2: Preparation
   ├─ Step 3: Worktree creation
   └─ Step 4: Worktree initialization
 
@@ -100,57 +40,16 @@ Phase 3: Implementation
 Phase 4: Validation
   └─ Step 6: Run local checks
 
-Phase 5: PR (CONDITIONAL: skip if PR exists or --stop-at-impl)
+Phase 5: PR
   ├─ Step 7: Prepare PR content
   └─ Step 8: Create PR
 
-Phase 6: CI Monitoring (CONDITIONAL: skip if PR doesn't exist)
+Phase 6: CI Monitoring (New)
   ├─ Step 9: CI monitoring loop
   └─ Step 10: CI failure fix loop
 ```
 
 ## Detailed Workflow
-
-### Phase 0: Context Detection (NEW)
-
-#### Step 0: Detect Current State and Determine Start Phase
-
-**Detect current context**:
-
-```bash
-current_branch=$(git branch --show-current)
-default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-is_feature_branch=$([[ "$current_branch" != "$default_branch" ]] && echo "yes" || echo "no")
-# gh pr view without arguments automatically checks the current branch's PR
-pr_exists=$(gh pr view --json number 2>/dev/null && echo "yes" || echo "no")
-```
-
-**Determine execution path**:
-
-```markdown
-if user_override == "--new":
-start_phase = Phase 1 (force full workflow)
-elif user_override == "--ci-only":
-start_phase = Phase 6 (CI monitoring only)
-elif user_override == "--stop-at-impl":
-start_phase = Phase 1 (but stop after Phase 5)
-elif pr_exists == "yes":
-start_phase = Phase 6 (PR exists, monitor/fix CI)
-elif is_feature_branch == "yes":
-start_phase = Phase 1 (skip Phase 2-3: worktree creation)
-else:
-start_phase = Phase 1 (full workflow)
-```
-
-**Communicate detected context to user**:
-
-```
-[Context Detection]
-✓ Branch: {current_branch}
-✓ Context: {New task|Resume implementation|CI fix}
-→ Execution plan: Starting from Phase {N}
-→ Skipping: {phases to skip}
-```
 
 ### Phase 1: Planning
 
@@ -177,19 +76,9 @@ start_phase = Phase 1 (full workflow)
 
 **When Simple**:
 
-- No TaskCreate needed; proceed directly to next phase
+- No TaskCreate needed; proceed directly to Step 3
 
-### Phase 2: Preparation (CONDITIONAL)
-
-**Skip if**:
-
-- Current branch is a feature branch (not main/master)
-- User specified `--ci-only`
-
-**Execute if**:
-
-- Current branch is main/master/default branch
-- User specified `--new` (force)
+### Phase 2: Preparation
 
 #### Step 3: Worktree Creation
 
@@ -248,26 +137,7 @@ start_phase = Phase 1 (full workflow)
   - `build` (or the closest equivalent)
 - Report results and failures clearly
 
-**If checks fail**:
-
-- **Attempt to fix automatically** (see `references/ci-fix-patterns.md`)
-- **Apply fixes locally but do NOT commit** - let the user review changes first
-- If unable to fix, report to user and wait for resolution
-- Do NOT proceed to Phase 5 (PR creation) if checks fail
-
-### Phase 5: PR (CONDITIONAL)
-
-**Skip if**:
-
-- PR already exists for current branch
-- Local checks failed (Phase 4)
-- User specified `--stop-at-impl`
-
-**Execute if**:
-
-- No PR exists
-- Local checks passed
-- Not in `--ci-only` mode
+### Phase 5: PR
 
 #### Step 7: Prepare PR Content
 
@@ -288,16 +158,7 @@ start_phase = Phase 1 (full workflow)
 - Use `gh pr create` with the prepared template body
 - Share the PR URL
 
-### Phase 6: CI Monitoring (CONDITIONAL)
-
-**Skip if**:
-
-- No PR exists
-- User specified `--stop-at-impl`
-
-**Execute if**:
-
-- PR exists (either created in Phase 5 or pre-existing)
+### Phase 6: CI Monitoring (New)
 
 #### Step 9: CI Monitoring Loop
 
@@ -343,88 +204,7 @@ done
 - Commit message format: `fix(ci): {error category} - {short description}`
 - Always push after each fix to retrigger CI
 
-## Progress Reporting (NEW)
-
-**At the start of each phase, output**:
-
-```
-🔄 Phase N: <Phase Name>
-├─ Current step: <Step description>
-├─ Skipped: <phases skipped and why>
-└─ Status: <in_progress|completed>
-```
-
-**Example**:
-
-```
-🔄 Phase 0: Context Detection
-├─ Current step: Detecting work context
-└─ Status: completed
-
-[Context Detection]
-✓ Branch: feat/user-auth (feature branch)
-✓ Worktree: Yes
-✓ PR: No
-→ Detected context: Resume implementation
-→ Starting from: Phase 1 (context gathering)
-→ Skipping: Phase 2-3 (worktree creation - already in worktree)
-
-🔄 Phase 1: Planning
-├─ Current step: Context gathering and request validation
-└─ Status: in_progress
-```
-
-## Decision Log (NEW)
-
-**For debugging, output decision rationale**:
-
-```
-[Decision] Context: Resume implementation
-  Reason: Current branch 'feat/user-auth' is not the default branch
-  Action: Skipping Phase 2-3 (worktree creation)
-
-[Decision] Complexity: Complex
-  Reason: 3+ files affected (auth.ts, middleware.ts, tests/auth.test.ts)
-  Action: Creating 4 subtasks with TaskCreate
-
-[Decision] Plan approval: Skipped
-  Reason: User did not specify --require-approval
-  Action: Proceeding to Phase 3 (Implementation)
-```
-
 ## Quick Reference
-
-### Context Detection Commands
-
-```bash
-# Detect current branch
-git branch --show-current
-
-# Detect default branch
-git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'
-
-# Check if PR exists
-gh pr view --json number 2>/dev/null
-
-# Check worktree status
-git worktree list
-```
-
-### Execution Mode Examples
-
-```bash
-# Standard: auto-detect context
-/task-to-pr Add user authentication
-
-# Force new worktree creation
-/task-to-pr --new Add user authentication
-
-# CI monitoring only (PR already exists)
-/task-to-pr --ci-only
-
-# Stop before PR creation
-/task-to-pr --stop-at-impl Refactor auth module
-```
 
 ### Task Decomposition Decision
 
@@ -458,13 +238,9 @@ git add . && git commit -m "fix(ci): {category} - {short description}" && git pu
 ## Output Expectations
 
 - Respond in Japanese
-- Always output context detection results (Phase 0)
-- Always output decision rationale for phase skipping
 - If the request cannot be validated, explain why and confirm next steps
 - If multiple PR templates exist, confirm which to use
-- **Commit policy**:
-  - Phase 1-5: Do not commit unless explicitly requested by the user
-  - Phase 6 (CI fixes): Automatically commit and push fixes without confirmation (up to 3 attempts)
+- Do not commit unless explicitly requested
 - CI monitoring and fixes run automatically (no confirmation; report only when attempts are exceeded)
 
 ## Terminology and Style Guide

@@ -179,6 +179,52 @@ rg "(let|import).*agent-skills" flake.nix
 - `0f56233a`: 誤って動的生成に戻した（失敗）
 - `7fbed181`: 再度静的化（現在のアプローチ）
 
+## Worktree Detection
+
+### 検出優先度
+
+Worktree の検出は以下の優先順位で行われます（高 → 低）:
+
+1. **programs.dotfiles.repoWorktreePath** - 明示的に指定されたパス
+2. **$DOTFILES_WORKTREE** - 環境変数による一時的な指定
+3. **programs.dotfiles.repoPath** - Nix ストアでない場合はリポジトリパスを使用
+4. **programs.dotfiles.repoWorktreeCandidates** - カスタム検索リスト
+5. **デフォルト候補** - `$HOME/src/github.com/$USER/dotfiles`, `$HOME/src/dotfiles`, `$HOME/dotfiles`
+
+### カスタム検索パスの設定
+
+**使用例**:
+
+```nix
+programs.dotfiles = {
+  enable = true;
+  repoPath = ./.;
+  repoWorktreeCandidates = [
+    "/custom/path/to/dotfiles"
+    "${config.home.homeDirectory}/my-dotfiles"
+  ];
+};
+```
+
+**環境変数による一時的な上書き**:
+
+```bash
+DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
+```
+
+### SSoT パターン
+
+Worktree detection logic は `nix/dotfiles-module.nix` の `detectWorktreeScript` で一元定義され、以下の activation script で再利用されます:
+
+- `dotfiles-tmux-plugins`: tmux plugins のコピー（submodule が必要）
+- `dotfiles-submodules`: Git submodule の初期化
+
+**利点**:
+
+1. **保守性**: 検出ロジックの変更が1箇所で済む
+2. **一貫性**: 両方の activation script で同じロジックを使用
+3. **テスト容易性**: 検出ロジックを個別にテスト可能
+
 ### gitignore-aware フィルタ
 
 `gitignore.nix`を使用して、`.gitignore`パターンに従ったファイルを自動除外:
