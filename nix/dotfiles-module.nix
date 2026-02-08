@@ -27,7 +27,8 @@ let
     else
       defaultWorktreeCandidates;
 
-  worktreeCandidateList = lib.concatStringsSep " " (map lib.escapeShellArg worktreeCandidates);
+  # Generate candidate array in bash-safe way (one per line, properly quoted)
+  worktreeCandidateLines = lib.concatMapStringsSep "\n" (path: "  ${lib.escapeShellArg path}") worktreeCandidates;
 
   detectWorktreeScript = ''
     repo_path="${cfg.repoPath}"
@@ -41,7 +42,11 @@ let
     elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
       worktree="$repo_path"
     else
-      for candidate in ${worktreeCandidateList}; do
+      # Use bash array for safe iteration with spaces in paths
+      candidates=(
+${worktreeCandidateLines}
+      )
+      for candidate in "''${candidates[@]}"; do
         if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
           worktree="$candidate"
           break

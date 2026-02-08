@@ -29,6 +29,7 @@ default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remote
 is_worktree=$([ $(git worktree list | wc -l) -gt 1 ] && echo "yes" || echo "no")
 
 # 3. Check if PR exists for current branch
+# Note: gh pr view without arguments checks the current branch's PR
 pr_exists=$(gh pr view --json number 2>/dev/null && echo "yes" || echo "no")
 ```
 
@@ -120,6 +121,7 @@ Phase 6: CI Monitoring (CONDITIONAL: skip if PR doesn't exist)
 current_branch=$(git branch --show-current)
 default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
 is_feature_branch=$([[ "$current_branch" != "$default_branch" ]] && echo "yes" || echo "no")
+# gh pr view without arguments automatically checks the current branch's PR
 pr_exists=$(gh pr view --json number 2>/dev/null && echo "yes" || echo "no")
 ```
 
@@ -248,7 +250,8 @@ start_phase = Phase 1 (full workflow)
 
 **If checks fail**:
 
-- Attempt to fix automatically (see `references/ci-fix-patterns.md`)
+- **Attempt to fix automatically** (see `references/ci-fix-patterns.md`)
+- **Apply fixes locally but do NOT commit** - let the user review changes first
 - If unable to fix, report to user and wait for resolution
 - Do NOT proceed to Phase 5 (PR creation) if checks fail
 
@@ -459,7 +462,9 @@ git add . && git commit -m "fix(ci): {category} - {short description}" && git pu
 - Always output decision rationale for phase skipping
 - If the request cannot be validated, explain why and confirm next steps
 - If multiple PR templates exist, confirm which to use
-- Do not commit unless explicitly requested
+- **Commit policy**:
+  - Phase 1-5: Do not commit unless explicitly requested by the user
+  - Phase 6 (CI fixes): Automatically commit and push fixes without confirmation (up to 3 attempts)
 - CI monitoring and fixes run automatically (no confirmation; report only when attempts are exceeded)
 
 ## Terminology and Style Guide
