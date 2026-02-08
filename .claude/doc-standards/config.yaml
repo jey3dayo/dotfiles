@@ -1,0 +1,50 @@
+project:
+  name: "dotfiles"
+  language: "ja"
+
+metadata:
+  required_fields:
+    - "最終更新"
+    - "対象"
+    - "タグ"
+
+  formats:
+    date: "YYYY-MM-DD"
+    tags: "backtick-wrapped, comma-separated"
+
+  freshness:
+    warning_days: 180
+
+tags:
+  tier_system:
+    - "category/"
+    - "layer/"
+    - "environment/"
+    - "audience/"
+    - "tool/"
+
+  min_required:
+    - "category/"
+    - "layer/"
+
+  max_recommended: 5
+
+  reference_file: "references/tag-taxonomy.md"
+
+size:
+  recommended: 500
+  warning: 1000
+  hard_limit: 2000
+
+quality:
+  links:
+    validate: true
+    update_readme: false
+
+integration:
+  rules_file: ".claude/rules/documentation-rules.md"
+  docs_hub: "docs/README.md"
+
+response:
+  language: "ja"
+  format: "technical"

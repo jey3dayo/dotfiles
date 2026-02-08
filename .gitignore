@@ -198,6 +198,8 @@ repomix-output.txt
 *.bk
 *.bk.*
 *.backup
+result
+result-*
 *.bak
 *.bak.*
 *.old

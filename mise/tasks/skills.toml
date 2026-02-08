@@ -1,0 +1,24 @@
+# ========================================
+# Skills Tasks
+# ========================================
+# Agent skills 管理タスク
+
+["skills:install"]
+description = "HM でスキルをインストール"
+run = "home-manager switch --flake . --impure"
+
+["skills:list"]
+description = "有効スキル一覧を表示"
+run = "nix run .#list"
+
+["skills:validate"]
+description = "スキル構成バリデーション"
+run = "nix run .#validate"
+
+["skills:update"]
+description = "全ソース更新（flake inputs）"
+run = "nix flake update --flake ."
+
+["skills:fix:bold-headings"]
+description = "skills-internal の太字見出しを ### へ変換"
+run = "node ./agents/scripts/replace-bold-headings.js"

@@ -1,0 +1,5 @@
+# ========================================
+# Local Tasks (Legacy placeholder)
+# ========================================
+# タスクはドメイン別に分割しました。
+# 参照: mise/tasks/{skills,env,brewfile,updates,home-manager,ci}.toml

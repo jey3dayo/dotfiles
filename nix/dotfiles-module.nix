@@ -6,6 +6,7 @@
 let
   cfg = config.programs.dotfiles;
   envDetect = import ./env-detect.nix { inherit pkgs lib; };
+  files = import ./dotfiles-files.nix;
 
   # Detect environment or use user override
   environment =
@@ -17,88 +18,43 @@ let
   # gitignore.nix を使った真のgitignore-aware filter
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
-  # XDG directories to deploy to ~/.config/ (静的なもののみ)
-  xdgConfigDirs = [
-    # Core tools (already managed)
-    "git"
-    # mise: excluded - writable trust DB required (managed individually below)
-    "nvim"
-    "tmux"
-    "zsh"
+  xdgConfigDirs = files.xdg.dirs;
+  xdgConfigFiles = files.xdg.files;
+  entryPointFiles = files.entryPointFiles;
+  bashFiles = files.bashFiles;
+  sshFiles = files.sshFiles;
+  awsumeFiles = files.awsumeFiles;
 
-    # Terminal emulators
-    "alacritty"
-    "wezterm"
+  mkHomeFiles = fileset:
+    lib.mapAttrs
+      (_: relativePath: {
+        source = "${cleanedRepo}/${relativePath}";
+      })
+      fileset;
 
-    # Shell enhancements
-    "zsh-abbr"
+  mkXdgDirs = dirs:
+    lib.listToAttrs (
+      map
+        (dir: {
+          name = ".config/${dir}";
+          value = {
+            source = "${cleanedRepo}/${dir}";
+          };
+        })
+        dirs
+    );
 
-    # Editors and IDEs
-    "cursor"
-    "ghostty"
-
-    # Development tools
-    "helm"
-    "efm-langserver"
-    "needle"
-    "opencode"
-
-    # System monitoring
-    "btop"
-    "htop"
-
-    # Misc tools
-    "flipper"
-    "scripts"
-    "yamllint"
-  ];
-
-  # XDG config files (dotfiles in ~/.config/)
-  xdgConfigFiles = [
-    ".agignore"
-    ".asdfrc"
-    ".busted"
-    ".clang-format"
-    ".colordiffrc"
-    ".ctags"
-    ".cvimrc"
-    ".editorconfig"
-    ".env"                # dotenvx暗号化済み
-    ".fdignore"
-    ".gvimrc"
-    ".ignore"
-    ".luacheckrc"
-    ".luarc.json"
-    ".markdown-link-check.json"
-    ".markdownlint-cli2.jsonc"
-    ".marksman.toml"
-    ".mise.toml"
-    ".prettierignore"
-    ".rainbarf.conf"
-    ".ripgreprc"
-    ".rubocop.yml"
-    ".screenrc"
-    ".styluaignore"
-    ".surfingkeys.js"
-    ".vimperatorrc"
-    "Brewfile"
-    "typos.toml"
-  ];
-
-  # Entry point files to deploy to home directory
-  entryPointFiles = {
-    ".aicommits" = ".aicommits";
-    ".gitconfig" = "home/.gitconfig";
-    ".tmux.conf" = "home/.tmux.conf";
-    ".zshenv" = "home/.zshenv";
-    ".zshrc" = "home/.zshrc";
-  };
-
-  # Bash files to deploy
-  bashFiles = {
-    ".bashrc" = "bash/.bashrc";
-    ".bash_profile" = "bash/.bash_profile";
-  };
+  mkXdgFiles = filesList:
+    lib.listToAttrs (
+      map
+        (file: {
+          name = ".config/${file}";
+          value = {
+            source = "${cleanedRepo}/${file}";
+          };
+        })
+        filesList
+    );
 
 in
 {
@@ -175,83 +131,22 @@ in
     # Deploy configuration files
     home.file = lib.mkMerge [
       # Entry point files (home directory)
-      (lib.mkIf cfg.deployEntryPoints (
-        lib.mapAttrs
-          (name: relativePath: {
-            source = "${cleanedRepo}/${relativePath}";
-          })
-          entryPointFiles
-      ))
+      (lib.mkIf cfg.deployEntryPoints (mkHomeFiles entryPointFiles))
 
       # XDG config directories (symlink entire directory)
-      (lib.mkIf cfg.deployXdgConfig (
-        lib.listToAttrs (
-          map
-            (dir: {
-              name = ".config/${dir}";
-              value = {
-                source = "${cleanedRepo}/${dir}";
-              };
-            })
-            xdgConfigDirs
-        )
-      ))
+      (lib.mkIf cfg.deployXdgConfig (mkXdgDirs xdgConfigDirs))
 
       # XDG config files (individual files in ~/.config/)
-      (lib.mkIf cfg.deployXdgConfig (
-        lib.listToAttrs (
-          map
-            (file: {
-              name = ".config/${file}";
-              value = {
-                source = "${cleanedRepo}/${file}";
-              };
-            })
-            xdgConfigFiles
-        )
-      ))
+      (lib.mkIf cfg.deployXdgConfig (mkXdgFiles xdgConfigFiles))
 
       # SSH config (with proper permissions)
-      (lib.mkIf cfg.deploySsh {
-        ".ssh/config" = {
-          source = "${cleanedRepo}/ssh/config";
-        };
-      })
+      (lib.mkIf cfg.deploySsh (mkHomeFiles sshFiles))
 
       # Bash files
-      (lib.mkIf cfg.deployBash (
-        lib.mapAttrs
-          (name: relativePath: {
-            source = "${cleanedRepo}/${relativePath}";
-          })
-          bashFiles
-      ))
+      (lib.mkIf cfg.deployBash (mkHomeFiles bashFiles))
 
       # AWSume config
-      (lib.mkIf cfg.deployAwsume {
-        ".awsume/config.yaml" = {
-          source = "${cleanedRepo}/awsume/config.yaml";
-        };
-      })
-
-      # mise static configs (dynamic files like trusted-configs/ need writable directory)
-      (lib.mkIf cfg.deployXdgConfig {
-        ".config/mise/config.toml" = {
-          source = "${cleanedRepo}/mise/config.toml";
-        };
-        ".config/mise/config.default.toml" = {
-          source = "${cleanedRepo}/mise/config.default.toml";
-        };
-        ".config/mise/config.pi.toml" = {
-          source = "${cleanedRepo}/mise/config.pi.toml";
-        };
-        ".config/mise/config.ci.toml" = {
-          source = "${cleanedRepo}/mise/config.ci.toml";
-        };
-        ".config/mise/README.md" = {
-          source = "${cleanedRepo}/mise/README.md";
-        };
-      })
+      (lib.mkIf cfg.deployAwsume (mkHomeFiles awsumeFiles))
     ];
 
     # Ensure writable directories (not Nix store symlinks) for runtime state
@@ -282,6 +177,58 @@ in
         # Copy tasks directory content if source exists
         if [ -d "${cleanedRepo}/mise/tasks" ]; then
           cp -r "${cleanedRepo}/mise/tasks"/. "$mise_tasks_dir/" 2>/dev/null || true
+        fi
+      ''
+    );
+
+    # tmux configuration with submodule support
+    home.activation.dotfiles-tmux-plugins = lib.mkIf cfg.deployXdgConfig (
+      lib.hm.dag.entryAfter [ "writeBoundary" "dotfiles-submodules" ] ''
+        tmux_config_dir="${config.xdg.configHome}/tmux"
+        tmux_plugins_dir="$tmux_config_dir/plugins"
+
+        # Create tmux directory (remove symlink if exists)
+        if [ -L "$tmux_config_dir" ]; then
+          echo "Warning: $tmux_config_dir is a symlink; removing to create real directory" >&2
+          rm -f "$tmux_config_dir"
+        fi
+        mkdir -p "$tmux_config_dir" "$tmux_plugins_dir"
+
+        # Copy static config files (symlinks will be created by home.file)
+        # This ensures the directory structure exists before symlinks are created
+
+        # Copy plugins directory structure (prefer worktree so submodules are available)
+        repo_path="${cfg.repoPath}"
+        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
+        worktree=""
+
+        if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$repo_worktree"
+        elif [ -n "''${DOTFILES_WORKTREE:-}" ] && ${pkgs.git}/bin/git -C "''${DOTFILES_WORKTREE}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="''${DOTFILES_WORKTREE}"
+        elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$repo_path"
+        else
+          for candidate in \
+            "${config.home.homeDirectory}/src/github.com/jey3dayo/dotfiles" \
+            "${config.home.homeDirectory}/src/dotfiles" \
+            "${config.home.homeDirectory}/dotfiles"; do
+            if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+              worktree="$candidate"
+              break
+            fi
+          done
+        fi
+
+        plugins_source=""
+        if [ -n "$worktree" ] && [ -d "$worktree/tmux/plugins" ]; then
+          plugins_source="$worktree/tmux/plugins"
+        elif [ -d "${cleanedRepo}/tmux/plugins" ]; then
+          plugins_source="${cleanedRepo}/tmux/plugins"
+        fi
+
+        if [ -n "$plugins_source" ]; then
+          cp -r "$plugins_source"/. "$tmux_plugins_dir/" 2>/dev/null || true
         fi
       ''
     );

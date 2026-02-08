@@ -25,6 +25,32 @@ High-performance development environment tuned for speed, consistency, and devel
 
 ## Getting Started
 
+### Prerequisites
+
+- `git`
+- `zsh`
+- `curl`
+- `Homebrew` (macOS) or your system package manager
+- `nix` (installed via `brew bundle` in this repo for macOS)
+- Optional: `home-manager` (otherwise use `nix run home-manager -- ...`)
+
+If you're on a fresh macOS machine, `scripts/bootstrap.sh` installs Homebrew and validates `git`, `zsh`, and `curl`.
+
+Linux/WSL2 package installs (examples):
+
+```bash
+# Ubuntu/Debian
+sudo apt update && sudo apt install -y git zsh curl
+
+# Fedora
+sudo dnf install -y git zsh curl
+
+# Arch
+sudo pacman -S --noconfirm git zsh curl
+```
+
+Install Nix on Linux/WSL2 via the official installer, then verify `nix` is on PATH.
+
 ### Quick Setup (macOS/Linux/WSL2)
 
 ```bash
@@ -46,6 +72,10 @@ EOF
 brew bundle  # macOS only
 
 # 5. Apply dotfiles configuration with Home Manager
+# If `home-manager` is not on PATH yet, use nix run (recommended for first setup)
+nix run home-manager -- switch --flake ~/src/github.com/jey3dayo/dotfiles --impure
+
+# Or, if you already have home-manager installed
 home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure
 
 # 6. Restart shell
@@ -67,7 +97,7 @@ mise doctor
 
 - ✅ **Declarative Configuration**: Configuration files deployed via Nix/Home Manager
 - ✅ **Automatic Environment Detection**: CI > Raspberry Pi > Default (WSL2/macOS/Linux)
-- ✅ **No More setup.sh**: Replaced by `home-manager switch --flake . --impure`
+- ✅ **No More setup.sh**: Replaced by `nix run home-manager -- switch --flake . --impure` (or `home-manager switch --flake . --impure` if installed)
 - ✅ **Reproducible**: Nix ensures identical configuration across machines
 
 ### Manual Setup (Already Have Homebrew)
