@@ -62,6 +62,17 @@
             if hasAgentSkills
             then import agentSkillsPath
             else { config, ... }: { };  # Empty module if .agents doesn't exist
+          agentHomePath = "${homeDirectory}/.agents/home.nix";
+          hasAgentHome =
+            homeDirectory != "" && builtins.pathExists agentHomePath;
+          agentHomeModule =
+            if hasAgentHome
+            then import agentHomePath
+            else { config, ... }: { };
+          agentHomeOverrides =
+            if hasAgentHome
+            then { lib, ... }: { programs.home-manager.enable = lib.mkForce true; }
+            else { config, ... }: { };
 
           # Base modules that always exist
           baseModules = [
@@ -70,10 +81,10 @@
           ];
 
           # Add agent-skills module only if it exists
-          allModules =
-            if hasAgentSkills
-            then baseModules ++ [ agentSkillsModule ]
-            else baseModules;
+          extraModules =
+            (if hasAgentSkills then [ agentSkillsModule ] else [])
+            ++ (if hasAgentHome then [ agentHomeModule agentHomeOverrides ] else []);
+          allModules = baseModules ++ extraModules;
         in
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
