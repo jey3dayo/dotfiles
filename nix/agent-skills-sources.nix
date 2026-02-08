@@ -24,6 +24,7 @@
       vercel = "."; # baseDir直下
     };
     selection.enable = [
+      "composition-patterns"
       "web-design-guidelines"
     ];
   };
