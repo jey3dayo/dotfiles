@@ -1,11 +1,11 @@
 # External skill source mappings (flake inputs -> source paths)
 { inputs, agentSkills ? import ./agent-skills.nix }:
 let
-  baseDirs = agentSkills.baseDirs;
-  openaiSkillsBase = "${inputs.openai-skills}/${baseDirs.openai-skills}";
-  vercelSkillsBase = "${inputs.vercel-agent-skills}/${baseDirs.vercel-agent-skills}";
-  agentBrowserBase = "${inputs.vercel-agent-browser}/${baseDirs.vercel-agent-browser}";
-  uiUxProMaxBase = "${inputs.ui-ux-pro-max}/${baseDirs.ui-ux-pro-max}";
+  sources = agentSkills.inputs;
+  openaiSkillsBase = "${inputs.openai-skills}/${sources.openai-skills.baseDir}";
+  vercelSkillsBase = "${inputs.vercel-agent-skills}/${sources.vercel-agent-skills.baseDir}";
+  agentBrowserBase = "${inputs.vercel-agent-browser}/${sources.vercel-agent-browser.baseDir}";
+  uiUxProMaxBase = "${inputs.ui-ux-pro-max}/${sources.ui-ux-pro-max.baseDir}";
 in
 {
   openai-curated.path = "${openaiSkillsBase}/.curated";

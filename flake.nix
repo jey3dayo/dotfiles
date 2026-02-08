@@ -2,6 +2,12 @@
   description = "Dotfiles - Unified configuration management with Home Manager";
 
   inputs =
+    let
+      agentSkills = import ./nix/agent-skills.nix;
+      agentInputs = builtins.mapAttrs
+        (_: value: builtins.removeAttrs value [ "baseDir" "selection" ])
+        agentSkills.inputs;
+    in
     {
       nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
       home-manager = {
@@ -13,7 +19,7 @@
         url = "github:hercules-ci/gitignore.nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-    } // (import ./nix/agent-skills.nix).inputs;
+    } // agentInputs;
 
   outputs =
     {
