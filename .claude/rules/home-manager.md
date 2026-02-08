@@ -56,6 +56,62 @@ cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
    - `xdgConfigDirs`にディレクトリ名を追加
    - または`xdgConfigFiles`に個別ファイルを追加
 
+### tmux handling (submodule対応)
+
+**管理方法**: activation scriptで実体化（miseパターン）
+
+**理由**:
+
+- `tmux/plugins/`はGit submoduleで、TPM（Tmux Plugin Manager）が実行時に更新
+- read-onlyのNixストアへのsymlinkでは動作しない
+- miseの`tasks/`と同様の性質（動的コンテンツ）
+
+**実装**:
+
+```nix
+# 静的設定ファイル: xdgConfigFilesで個別管理
+xdgConfigFiles = [
+  "tmux/copy-paste.conf"
+  "tmux/default.session.conf"
+  "tmux/keyconfig.conf"
+  "tmux/options.conf"
+  "tmux/tmux.conf"
+  "tmux/tpm.conf"
+];
+
+# 動的plugins/: activation scriptでcp -r
+home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  tmux_config_dir="${config.xdg.configHome}/tmux"
+  mkdir -p "$tmux_config_dir/plugins"
+  if [ -d "${cleanedRepo}/tmux/plugins" ]; then
+    cp -r "${cleanedRepo}/tmux/plugins"/. "$tmux_config_dir/plugins/" 2>/dev/null || true
+  fi
+'';
+```
+
+**DAG依存**: `dotfiles-submodules`が`dotfiles-tmux-plugins`の後に実行されるよう、`entryAfter`に依存を追加
+
+### gh handling
+
+**管理方法**: 静的`config.yml`のみsymlink配布
+
+**理由**:
+
+- `hosts.yml`は動的ファイル（OAuth認証情報）でユーザーが書き込む
+- `config.yml`は静的設定で、miseパターンに倣いsymlinkで配布
+- 最小限の変更で一貫性を保つ
+
+**実装**:
+
+```nix
+# gh static config (hosts.yml is dynamic and user-managed)
+".config/gh/config.yml" = {
+  source = "${cleanedRepo}/gh/config.yml";
+};
+```
+
+**パターン整合性**: miseが静的ファイルを個別symlink（`config.toml`等）、動的`trusted-configs/`を実体化する方式と一致
+
 ### トラブルシューティング
 
 #### 書き込みエラーが発生する場合
