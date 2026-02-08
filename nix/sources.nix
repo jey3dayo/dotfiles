@@ -1,17 +1,26 @@
 # External skill source mappings (flake inputs -> source paths)
+# Dynamically generates catalog paths from agent-skills-sources.nix
 { inputs, agentSkills ? import ./agent-skills.nix }:
 let
   sources = agentSkills.inputs;
-  openaiSkillsBase = "${inputs.openai-skills}/${sources.openai-skills.baseDir}";
-  vercelSkillsBase = "${inputs.vercel-agent-skills}/${sources.vercel-agent-skills.baseDir}";
-  agentBrowserBase = "${inputs.vercel-agent-browser}/${sources.vercel-agent-browser.baseDir}";
-  uiUxProMaxBase = "${inputs.ui-ux-pro-max}/${sources.ui-ux-pro-max.baseDir}";
+
+  # Build catalog paths for a single source
+  # sourceName: e.g., "openai-skills"
+  # sourceConfig: e.g., { url, flake, baseDir, catalogs, selection }
+  buildCatalogs = sourceName: sourceConfig:
+    let
+      base = "${inputs.${sourceName}}/${sourceConfig.baseDir}";
+    in
+    builtins.mapAttrs
+      (catalogName: subPath: {
+        path = if subPath == "." then base else "${base}/${subPath}";
+      })
+      sourceConfig.catalogs;
+
+  # Merge all catalog definitions from all sources
+  allCatalogs = builtins.foldl'
+    (acc: sourceName: acc // (buildCatalogs sourceName sources.${sourceName}))
+    {}
+    (builtins.attrNames sources);
 in
-{
-  openai-curated.path = "${openaiSkillsBase}/.curated";
-  openai-system.path = "${openaiSkillsBase}/.system";
-  vercel.path = vercelSkillsBase;
-  agent-browser.path = "${agentBrowserBase}/agent-browser";
-  # Use repo root so symlink targets under src/ are included in Nix store.
-  ui-ux-pro-max.path = uiUxProMaxBase;
-}
+allCatalogs
