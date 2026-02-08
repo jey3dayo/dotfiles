@@ -40,7 +40,7 @@
     sources = import ./nix/sources.nix { inherit inputs; };
 
     skills.enable =
-      let selection = import ./nix/selection.nix;
+      let selection = (import ./nix/agent-skills.nix).selection;
       in if selection ? enable then selection.enable else null;
 
     targets = import ./nix/targets.nix;

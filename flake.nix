@@ -3,7 +3,7 @@
 
   inputs =
     let
-      agentInputs = import ./nix/agent-inputs.nix;
+      agentSkills = import ./nix/agent-skills.nix;
     in
     {
       nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -16,7 +16,7 @@
         url = "github:hercules-ci/gitignore.nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-    } // agentInputs;
+    } // agentSkills.inputs;
 
   outputs =
     {
@@ -77,7 +77,7 @@
         targets = import ./nix/targets.nix;
         agentLib = import ./agents/nix/lib.nix { inherit pkgs; nixlib = nixpkgs.lib; };
         sources = import ./nix/sources.nix { inherit inputs; };
-        selection = import ./nix/selection.nix;
+        selection = (import ./nix/agent-skills.nix).selection;
         catalog = agentLib.discoverCatalog {
           inherit sources;
           localPath = ./agents/skills-internal;
