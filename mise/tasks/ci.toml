@@ -1,0 +1,18 @@
+# ========================================
+# CI/CD
+# ========================================
+
+["ci"]
+description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
+depends = ["format", "lint:docs", "lint:links", "test:lua", "skills:validate"]
+
+["ci:install"]
+description = "CI に必要な追加ツールをインストール"
+run = """
+luarocks install --local luacheck
+luarocks install --local busted
+"""
+
+["ci:deploy"]
+description = "CI環境でファイル配布（Home Manager）"
+run = "nix run home-manager -- switch --flake . --impure -b backup"

@@ -10,6 +10,12 @@ includes = [
   "mise/tasks/lint.toml",
   "mise/tasks/test.toml",
   "mise/tasks/integration.toml",
+  "mise/tasks/skills.toml",
+  "mise/tasks/env.toml",
+  "mise/tasks/brewfile.toml",
+  "mise/tasks/updates.toml",
+  "mise/tasks/home-manager.toml",
+  "mise/tasks/ci.toml",
   "mise/tasks/local.toml",
 ]
 
