@@ -52,7 +52,7 @@
       # HM module (usable by external flakes)
       homeManagerModules.default = mkDotfilesModule;
 
-      # HM configuration: `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure`
+      # HM configuration: `home-manager switch --flake "$HOME/src/github.com/$USER/dotfiles" --impure`
       # --impure required: builtins.getEnv for $USER/$HOME, builtins.currentSystem for pkgs
       homeConfigurations.${builtins.getEnv "USER"} =
         let

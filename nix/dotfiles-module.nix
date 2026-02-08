@@ -15,6 +15,41 @@ let
     else
       envDetect.detectEnvironment pkgs;
 
+  defaultWorktreeCandidates = [
+    "${config.home.homeDirectory}/src/github.com/${config.home.username}/dotfiles"
+    "${config.home.homeDirectory}/src/dotfiles"
+    "${config.home.homeDirectory}/dotfiles"
+  ];
+
+  worktreeCandidates =
+    if cfg.repoWorktreeCandidates != [] then
+      cfg.repoWorktreeCandidates
+    else
+      defaultWorktreeCandidates;
+
+  worktreeCandidateList = lib.concatStringsSep " " (map lib.escapeShellArg worktreeCandidates);
+
+  detectWorktreeScript = ''
+    repo_path="${cfg.repoPath}"
+    repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
+    worktree=""
+
+    if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      worktree="$repo_worktree"
+    elif [ -n "''${DOTFILES_WORKTREE:-}" ] && ${pkgs.git}/bin/git -C "''${DOTFILES_WORKTREE}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      worktree="''${DOTFILES_WORKTREE}"
+    elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+      worktree="$repo_path"
+    else
+      for candidate in ${worktreeCandidateList}; do
+        if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$candidate"
+          break
+        fi
+      done
+    fi
+  '';
+
   # gitignore.nix を使った真のgitignore-aware filter
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
@@ -72,6 +107,15 @@ in
       description = ''
         Path to the dotfiles working tree on disk (used for git submodule init).
         Use this when repoPath points to the Nix store (e.g. repoPath = ./.).
+      '';
+    };
+
+    repoWorktreeCandidates = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = ''
+        Candidate worktree paths to search when repoWorktreePath is null.
+        Absolute paths are recommended. If empty, defaults to common locations under $HOME.
       '';
     };
 
@@ -198,27 +242,7 @@ in
         # This ensures the directory structure exists before symlinks are created
 
         # Copy plugins directory structure (prefer worktree so submodules are available)
-        repo_path="${cfg.repoPath}"
-        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
-        worktree=""
-
-        if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-          worktree="$repo_worktree"
-        elif [ -n "''${DOTFILES_WORKTREE:-}" ] && ${pkgs.git}/bin/git -C "''${DOTFILES_WORKTREE}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-          worktree="''${DOTFILES_WORKTREE}"
-        elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-          worktree="$repo_path"
-        else
-          for candidate in \
-            "${config.home.homeDirectory}/src/github.com/jey3dayo/dotfiles" \
-            "${config.home.homeDirectory}/src/dotfiles" \
-            "${config.home.homeDirectory}/dotfiles"; do
-            if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-              worktree="$candidate"
-              break
-            fi
-          done
-        fi
+        ${detectWorktreeScript}
 
         plugins_source=""
         if [ -n "$worktree" ] && [ -d "$worktree/tmux/plugins" ]; then
@@ -237,27 +261,7 @@ in
     home.activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         # Initialize Git submodules for tmux plugins
-        repo_path="${cfg.repoPath}"
-        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
-        worktree=""
-
-        if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-          worktree="$repo_worktree"
-        elif [ -n "''${DOTFILES_WORKTREE:-}" ] && ${pkgs.git}/bin/git -C "''${DOTFILES_WORKTREE}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-          worktree="''${DOTFILES_WORKTREE}"
-        elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-          worktree="$repo_path"
-        else
-          for candidate in \
-            "${config.home.homeDirectory}/src/github.com/jey3dayo/dotfiles" \
-            "${config.home.homeDirectory}/src/dotfiles" \
-            "${config.home.homeDirectory}/dotfiles"; do
-            if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-              worktree="$candidate"
-              break
-            fi
-          done
-        fi
+        ${detectWorktreeScript}
 
         if [ -n "$worktree" ]; then
           echo "Initializing Git submodules for tmux plugins..."
