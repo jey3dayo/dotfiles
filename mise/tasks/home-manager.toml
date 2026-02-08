@@ -1,0 +1,32 @@
+# ========================================
+# Home Manager 管理
+# ========================================
+
+["hm:switch"]
+description = "Home Manager を適用（dotfiles配布）"
+run = "home-manager switch --flake . --impure"
+
+["hm:check"]
+description = "Home Manager 設定の検証（ビルドのみ、適用なし）"
+run = "home-manager build --flake . --impure"
+
+["hm:generations"]
+description = "Home Manager の世代一覧を表示"
+run = "home-manager generations"
+
+["hm:rollback"]
+description = "Home Manager を前の世代にロールバック"
+run = """
+  # List generations and select the previous one
+  prev_gen=$(home-manager generations | head -2 | tail -1 | awk '{print $NF}')
+  if [ -z "$prev_gen" ]; then
+    echo "❌ No previous generation found"
+    exit 1
+  fi
+  echo "📦 Rolling back to generation: $prev_gen"
+  home-manager switch --flake . --impure --switch-generation "$prev_gen"
+"""
+
+["hm:clean"]
+description = "古い Home Manager 世代を削除（30日以上前）"
+run = "home-manager expire-generations '-30 days'"
