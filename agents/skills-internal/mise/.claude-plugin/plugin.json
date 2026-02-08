@@ -1,0 +1,7 @@
+{
+  "name": "mise",
+  "version": "1.0.0",
+  "description": "mise (mise-en-place) タスクランナー・ツールバージョン管理スキル。mise.toml構成、タスク定義、パッケージ一元管理",
+  "author": { "name": "jey3dayo" },
+  "skills": ["./skills/"]
+}

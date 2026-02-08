@@ -1,0 +1,9 @@
+{
+  "name": "command-creator",
+  "version": "1.0.0",
+  "description": "効果的なslashコマンドの作成ガイド。構造、デザインパターン、ベストプラクティス",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

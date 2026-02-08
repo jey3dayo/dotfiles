@@ -1,0 +1,6 @@
+{
+  "name": "rules-creator",
+  "version": "2.0.0",
+  "description": "Claude Code ルールの作成ガイド。CLAUDE.md と .claude/rules/ の使い分け",
+  "skills": ["./SKILL.md"]
+}

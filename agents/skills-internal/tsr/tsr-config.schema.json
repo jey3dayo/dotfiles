@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TSR Configuration",
+  "description": "Configuration schema for TSR (TypeScript Remove Unused) skill",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration version",
+      "default": "1.0.0"
+    },
+    "tsconfig": {
+      "type": "string",
+      "description": "Path to tsconfig.json file (relative to project root)",
+      "default": "tsconfig.json"
+    },
+    "ignoreFile": {
+      "type": "string",
+      "description": "Path to .tsrignore file (relative to project root)",
+      "default": ".tsrignore"
+    },
+    "entryPatterns": {
+      "type": "array",
+      "description": "Entry point patterns for TSR analysis",
+      "items": {
+        "type": "string"
+      },
+      "default": ["src/.*\\.(ts|tsx)$"]
+    },
+    "maxDeletionPerRun": {
+      "type": "integer",
+      "description": "Maximum number of items to delete per run",
+      "minimum": 1,
+      "default": 10
+    },
+    "includeDts": {
+      "type": "boolean",
+      "description": "Include .d.ts files in analysis",
+      "default": false
+    },
+    "recursive": {
+      "type": "boolean",
+      "description": "Enable recursive deletion mode",
+      "default": false
+    },
+    "ignorePatterns": {
+      "type": "array",
+      "description": "Additional ignore patterns (merged with .tsrignore)",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "verification": {
+      "type": "object",
+      "description": "Verification settings after deletion",
+      "properties": {
+        "typeCheck": {
+          "type": "boolean",
+          "description": "Run type check after deletion",
+          "default": true
+        },
+        "lint": {
+          "type": "boolean",
+          "description": "Run linter after deletion",
+          "default": true
+        },
+        "test": {
+          "type": "boolean",
+          "description": "Run tests after deletion",
+          "default": false
+        }
+      }
+    },
+    "reporting": {
+      "type": "object",
+      "description": "Reporting settings",
+      "properties": {
+        "outputPath": {
+          "type": "string",
+          "description": "Path to output TSR report (supports date template: {date})",
+          "default": "/tmp/tsr-report-{date}.txt"
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "Enable verbose output",
+          "default": false
+        }
+      }
+    },
+    "framework": {
+      "type": "object",
+      "description": "Framework-specific settings",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["nextjs", "react", "node", "custom"],
+          "description": "Framework type",
+          "default": "nextjs"
+        },
+        "nextjs": {
+          "type": "object",
+          "description": "Next.js specific settings",
+          "properties": {
+            "appRouter": {
+              "type": "boolean",
+              "description": "Use App Router (Next.js 13+)",
+              "default": true
+            },
+            "pagesRouter": {
+              "type": "boolean",
+              "description": "Use Pages Router",
+              "default": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

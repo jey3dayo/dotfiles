@@ -1,0 +1,9 @@
+{
+  "name": "doc-standards",
+  "version": "1.0.0",
+  "description": "ドキュメント標準化フレームワーク。メタデータ、タグ階層、サイズ管理、品質チェック",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

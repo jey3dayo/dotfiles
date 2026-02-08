@@ -1,0 +1,9 @@
+{
+  "name": "react",
+  "version": "1.0.0",
+  "description": "Reactプロジェクトレビュー（Context7統合）",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./skills/"]
+}

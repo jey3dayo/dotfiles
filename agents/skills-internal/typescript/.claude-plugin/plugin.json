@@ -1,0 +1,9 @@
+{
+  "name": "typescript",
+  "version": "1.0.0",
+  "description": "TypeScriptプロジェクト専門レビュースキル。型安全性、TypeScriptベストプラクティス、コンパイラオプション評価",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./skills/"]
+}

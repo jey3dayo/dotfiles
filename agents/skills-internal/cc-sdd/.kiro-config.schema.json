@@ -1,0 +1,218 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Kiro Configuration Schema",
+  "description": "Configuration schema for cc-sdd (Claude Code Spec-Driven Development) Kiro workflow",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Configuration schema version",
+      "default": "1.0.0"
+    },
+    "paths": {
+      "type": "object",
+      "description": "Directory paths for Kiro workflow",
+      "properties": {
+        "root": {
+          "type": "string",
+          "description": "Root directory for all Kiro files",
+          "default": ".kiro"
+        },
+        "steering": {
+          "type": "string",
+          "description": "Directory for steering files (relative to root)",
+          "default": "steering"
+        },
+        "specs": {
+          "type": "string",
+          "description": "Directory for specification files (relative to root)",
+          "default": "specs"
+        },
+        "settings": {
+          "type": "string",
+          "description": "Directory for settings files (relative to root)",
+          "default": "settings"
+        },
+        "templates": {
+          "type": "string",
+          "description": "Directory for template files (relative to settings)",
+          "default": "templates"
+        },
+        "rules": {
+          "type": "string",
+          "description": "Directory for rule files (relative to settings)",
+          "default": "rules"
+        }
+      },
+      "required": ["root", "steering", "specs", "settings"],
+      "additionalProperties": false
+    },
+    "workflow": {
+      "type": "object",
+      "description": "Workflow customization options",
+      "properties": {
+        "defaultLanguage": {
+          "type": "string",
+          "enum": ["ja", "en"],
+          "description": "Default language for generated documents",
+          "default": "ja"
+        },
+        "autoApproval": {
+          "type": "boolean",
+          "description": "Enable auto-approval for phases (not recommended)",
+          "default": false
+        },
+        "phases": {
+          "type": "object",
+          "description": "Phase configuration",
+          "properties": {
+            "requirements": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "template": {
+                  "type": "string",
+                  "description": "Custom template path (relative to templates directory)"
+                }
+              }
+            },
+            "design": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "template": {
+                  "type": "string",
+                  "description": "Custom template path (relative to templates directory)"
+                }
+              }
+            },
+            "tasks": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "default": true
+                },
+                "template": {
+                  "type": "string",
+                  "description": "Custom template path (relative to templates directory)"
+                }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "templates": {
+      "type": "object",
+      "description": "Template file mappings",
+      "properties": {
+        "specs": {
+          "type": "object",
+          "properties": {
+            "init": {
+              "type": "string",
+              "default": "specs/init.json"
+            },
+            "requirementsInit": {
+              "type": "string",
+              "default": "specs/requirements-init.md"
+            },
+            "requirements": {
+              "type": "string",
+              "default": "specs/requirements.md"
+            },
+            "design": {
+              "type": "string",
+              "default": "specs/design.md"
+            },
+            "tasks": {
+              "type": "string",
+              "default": "specs/tasks.md"
+            }
+          }
+        },
+        "steering": {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "default": "steering-custom"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "rules": {
+      "type": "object",
+      "description": "Rule file mappings",
+      "properties": {
+        "earsFormat": {
+          "type": "string",
+          "default": "ears-format.md"
+        },
+        "designPrinciples": {
+          "type": "string",
+          "default": "design-principles.md"
+        },
+        "designDiscoveryLight": {
+          "type": "string",
+          "default": "design-discovery-light.md"
+        },
+        "designDiscoveryFull": {
+          "type": "string",
+          "default": "design-discovery-full.md"
+        },
+        "designReview": {
+          "type": "string",
+          "default": "design-review.md"
+        },
+        "gapAnalysis": {
+          "type": "string",
+          "default": "gap-analysis.md"
+        },
+        "steeringPrinciples": {
+          "type": "string",
+          "default": "steering-principles.md"
+        },
+        "tasksGeneration": {
+          "type": "string",
+          "default": "tasks-generation.md"
+        }
+      },
+      "additionalProperties": true
+    },
+    "validation": {
+      "type": "object",
+      "description": "Validation rules",
+      "properties": {
+        "requireApproval": {
+          "type": "boolean",
+          "description": "Require explicit approval between phases",
+          "default": true
+        },
+        "checkTaskCoverage": {
+          "type": "boolean",
+          "description": "Validate that all requirements are covered in tasks",
+          "default": true
+        },
+        "enforcePhaseOrder": {
+          "type": "boolean",
+          "description": "Enforce sequential phase progression",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["version", "paths"],
+  "additionalProperties": false
+}

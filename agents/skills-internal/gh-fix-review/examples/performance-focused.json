@@ -1,0 +1,60 @@
+{
+  "version": "1.0",
+  "description": "Performance-focused configuration for high-performance projects",
+  "priorities": {
+    "critical": {
+      "keywords": ["memory leak", "cpu spike", "crash", "deadlock", "infinite loop"],
+      "emoji": "🔴"
+    },
+    "high": {
+      "keywords": ["performance", "slow", "optimization", "bottleneck", "latency", "throughput"],
+      "emoji": "🟠"
+    },
+    "major": {
+      "keywords": ["cache", "lazy load", "bundle size", "render", "reflow", "efficiency"],
+      "emoji": "🟡"
+    },
+    "minor": {
+      "keywords": ["nit", "style"],
+      "emoji": "🟢"
+    }
+  },
+  "categories": {
+    "performance": {
+      "keywords": [
+        "performance",
+        "optimization",
+        "cache",
+        "lazy load",
+        "bundle size",
+        "render",
+        "reflow",
+        "memory",
+        "cpu"
+      ],
+      "description": "Performance critical issues"
+    },
+    "memory": {
+      "keywords": ["memory leak", "memory usage", "garbage collection", "heap"],
+      "description": "Memory management"
+    },
+    "rendering": {
+      "keywords": ["render", "reflow", "repaint", "fps", "animation"],
+      "description": "Rendering performance"
+    },
+    "network": {
+      "keywords": ["network", "api call", "request", "latency", "bandwidth"],
+      "description": "Network optimization"
+    }
+  },
+  "quality_gates": {
+    "type_check": true,
+    "lint": true,
+    "test": false,
+    "auto_rollback": true
+  },
+  "output": {
+    "language": "ja",
+    "verbose": true
+  }
+}

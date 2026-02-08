@@ -1,0 +1,9 @@
+{
+  "name": "dotfiles-integration",
+  "version": "1.0.0",
+  "description": "ドットファイルのクロスツール統合パターン。Shell/Editor/Terminal相互作用の評価",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

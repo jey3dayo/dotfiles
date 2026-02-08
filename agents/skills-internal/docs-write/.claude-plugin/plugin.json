@@ -1,0 +1,9 @@
+{
+  "name": "docs-write",
+  "version": "1.0.0",
+  "description": "Markdownドキュメント作成・整形のガイド。mise の docs:fix/docs:format 運用と書き方基準を提供",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./skills/"]
+}

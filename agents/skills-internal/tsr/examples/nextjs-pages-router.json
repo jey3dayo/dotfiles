@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "tsconfig": "tsconfig.json",
+  "ignoreFile": ".tsrignore",
+  "entryPatterns": ["src/.*\\.(ts|tsx)$", "pages/.*\\.(ts|tsx)$"],
+  "maxDeletionPerRun": 10,
+  "includeDts": false,
+  "recursive": false,
+  "ignorePatterns": ["pages/api/**", "pages/_app.tsx", "pages/_document.tsx"],
+  "verification": {
+    "typeCheck": true,
+    "lint": true,
+    "test": false
+  },
+  "reporting": {
+    "outputPath": "/tmp/tsr-report-{date}.txt",
+    "verbose": false
+  },
+  "framework": {
+    "type": "nextjs",
+    "nextjs": {
+      "appRouter": false,
+      "pagesRouter": true
+    }
+  }
+}

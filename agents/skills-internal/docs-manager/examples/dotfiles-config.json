@@ -1,0 +1,57 @@
+{
+  "docs_root": "./docs",
+  "project_type": "dotfiles",
+  "required_tags": ["category/", "tool/", "layer/", "environment/", "audience/"],
+  "tag_separator": ", ",
+  "size_limits": {
+    "ideal": 300,
+    "acceptable": 500,
+    "warning": 1000,
+    "maximum": 2000
+  },
+  "metadata_format": {
+    "date_field": "最終更新",
+    "date_format": "YYYY-MM-DD",
+    "audience_field": "対象",
+    "tags_field": "タグ"
+  },
+  "custom_rules": {
+    "detection_patterns": [
+      {
+        "pattern": "docs/tools/{zsh,nvim,wezterm}.md",
+        "description": "Core tool documentation files"
+      }
+    ],
+    "performance_impact_required": ["docs/tools/zsh.md", "docs/tools/nvim.md"],
+    "update_frequency": {
+      "docs/tools/zsh.md": "monthly",
+      "docs/tools/nvim.md": "monthly",
+      "docs/tools/wezterm.md": "monthly",
+      "docs/performance.md": "monthly"
+    },
+    "detail_level_required": "⭐⭐⭐⭐"
+  },
+  "link_validation": {
+    "enabled": true,
+    "config_file": ".markdown-link-check.json"
+  },
+  "tag_vocabulary": {
+    "category/": [
+      "shell",
+      "editor",
+      "terminal",
+      "git",
+      "performance",
+      "integration",
+      "configuration",
+      "guide",
+      "reference",
+      "maintenance",
+      "documentation"
+    ],
+    "tool/": ["zsh", "nvim", "wezterm", "tmux", "git", "fzf", "ssh", "mise", "homebrew"],
+    "layer/": ["core", "tool", "support"],
+    "environment/": ["macos", "linux", "cross-platform"],
+    "audience/": ["developer", "ops", "beginner", "advanced"]
+  }
+}

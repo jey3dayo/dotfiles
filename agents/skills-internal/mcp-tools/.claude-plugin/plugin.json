@@ -1,0 +1,9 @@
+{
+  "name": "mcp-tools",
+  "version": "1.0.0",
+  "description": "MCPサーバーセットアップ・セキュリティガイド。設定、インストール、環境変数管理",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}
