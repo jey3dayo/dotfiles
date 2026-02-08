@@ -47,6 +47,44 @@ mise設定は環境別ファイルで管理されています:
 
 directory-local → environment-specific (via MISE_CONFIG_FILE) → user config → global defaults
 
+## Directory Layout (mise/)
+
+```
+mise/
+├── README.md              # mise 運用の概要
+├── config.toml            # 共通設定のみ（ツール定義なし、env/設定）
+├── config.default.toml    # macOS/Linux/WSL2 向けフル構成
+├── config.pi.toml         # Raspberry Pi 向け最小構成
+├── config.ci.toml         # CI/CD 向け最小構成
+└── tasks/                 # mise run で使うタスク群
+    ├── format.toml        # 汎用フォーマット
+    ├── lint.toml          # 汎用 lint
+    ├── test.toml          # テスト実行
+    ├── integration.toml   # format/lint/check などの統合タスク
+    └── local.toml         # ローカル専用（brew/hm/skills/更新）
+```
+
+`.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/tasks/*.toml` を読み込む。
+
+## Task Design (Generic vs Local)
+
+- 汎用: `mise/tasks/{format,lint,test,integration}.toml` に集約
+- ローカル専用: `mise/tasks/local.toml` に集約（Homebrew, Home Manager, skills, update など）
+- 追加タスクはまず汎用に入れるか検討し、環境依存・運用系のみ `local.toml` に置く
+
+## Variable-driven Control
+
+`mise/config.toml` の `[env]` を使って、タスクの対象や挙動を制御する。
+
+- `MD_GLOB`: Markdown 対象（例: `**/*.md`）
+- `MD_EXCLUDES`: Markdown 除外（例: `#agents/skills`）
+- `TASK_EXCLUDES`: `fd` の除外指定（例: `--exclude agents/skills`）
+- `MARKDOWN_LINK_CONFIG`: `markdown-link-check` 用設定ファイル
+- `YAMLLINT_CONFIG_FILE`: `yamllint` 設定ファイル
+- `*_FILES` 系: 特定ファイルだけ処理（`SH_FILES`, `PY_FILES`, `LUA_FILES`, `TOML_FILES`, `BIOME_FILES`, `PRETTIER_FILES`, `YAML_FILES`）
+
+`TASK_EXCLUDES` は汎用タスクの除外に使う。現在は `agents/skills` のみ除外し、`agents/skills-internal` は汎用 lint/format 対象に含める。
+
 ### Environment Detection
 
 mise automatically selects the appropriate configuration based on the environment:
@@ -318,8 +356,17 @@ Benefits:
 ## Common Commands
 
 ```bash
+# List available tasks
+mise tasks
+
 # Install all tools from config
 mise install
+
+# Run generic tasks
+mise run format
+mise run lint
+mise run check
+mise run lint:links
 
 # Update all tools to latest versions
 mise upgrade
