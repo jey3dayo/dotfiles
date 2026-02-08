@@ -1,9 +1,0 @@
-{
-  "name": "react-grid-layout",
-  "version": "1.0.0",
-  "description": "react-grid-layout実装パターン（Context7統合）",
-  "author": {
-    "name": "jey3dayo"
-  },
-  "skills": ["./skills/"]
-}
