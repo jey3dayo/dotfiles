@@ -6,6 +6,7 @@
 let
   cfg = config.programs.dotfiles;
   envDetect = import ./env-detect.nix { inherit pkgs lib; };
+  files = import ./dotfiles-files.nix;
 
   # Detect environment or use user override
   environment =
@@ -17,95 +18,43 @@ let
   # gitignore.nix を使った真のgitignore-aware filter
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
-  # XDG directories to deploy to ~/.config/ (静的なもののみ)
-  xdgConfigDirs = [
-    # Core tools (already managed)
-    "git"
-    # mise: excluded - writable trust DB required (managed individually below)
-    "nvim"
-    # tmux: excluded - submodule plugins/ require real directory (managed via activation script)
-    "zsh"
+  xdgConfigDirs = files.xdg.dirs;
+  xdgConfigFiles = files.xdg.files;
+  entryPointFiles = files.entryPointFiles;
+  bashFiles = files.bashFiles;
+  sshFiles = files.sshFiles;
+  awsumeFiles = files.awsumeFiles;
 
-    # Terminal emulators
-    "alacritty"
-    "wezterm"
+  mkHomeFiles = fileset:
+    lib.mapAttrs
+      (_: relativePath: {
+        source = "${cleanedRepo}/${relativePath}";
+      })
+      fileset;
 
-    # Shell enhancements
-    "zsh-abbr"
+  mkXdgDirs = dirs:
+    lib.listToAttrs (
+      map
+        (dir: {
+          name = ".config/${dir}";
+          value = {
+            source = "${cleanedRepo}/${dir}";
+          };
+        })
+        dirs
+    );
 
-    # Editors and IDEs
-    "cursor"
-    "ghostty"
-
-    # Development tools
-    "helm"
-    "efm-langserver"
-    "needle"
-    "opencode"
-
-    # System monitoring
-    "btop"
-    "htop"
-
-    # Misc tools
-    "flipper"
-    "scripts"
-    "yamllint"
-  ];
-
-  # XDG config files (dotfiles in ~/.config/)
-  xdgConfigFiles = [
-    ".agignore"
-    ".asdfrc"
-    ".busted"
-    ".clang-format"
-    ".colordiffrc"
-    ".ctags"
-    ".cvimrc"
-    ".editorconfig"
-    ".env"                # dotenvx暗号化済み
-    ".fdignore"
-    ".gvimrc"
-    ".ignore"
-    ".luacheckrc"
-    ".luarc.json"
-    ".markdown-link-check.json"
-    ".markdownlint-cli2.jsonc"
-    ".marksman.toml"
-    ".mise.toml"
-    ".prettierignore"
-    ".rainbarf.conf"
-    ".ripgreprc"
-    ".rubocop.yml"
-    ".screenrc"
-    ".styluaignore"
-    ".surfingkeys.js"
-    ".vimperatorrc"
-    "Brewfile"
-    "typos.toml"
-    # tmux static config files (plugins/ managed via activation script)
-    "tmux/copy-paste.conf"
-    "tmux/default.session.conf"
-    "tmux/keyconfig.conf"
-    "tmux/options.conf"
-    "tmux/tmux.conf"
-    "tmux/tpm.conf"
-  ];
-
-  # Entry point files to deploy to home directory
-  entryPointFiles = {
-    ".aicommits" = ".aicommits";
-    ".gitconfig" = "home/.gitconfig";
-    ".tmux.conf" = "home/.tmux.conf";
-    ".zshenv" = "home/.zshenv";
-    ".zshrc" = "home/.zshrc";
-  };
-
-  # Bash files to deploy
-  bashFiles = {
-    ".bashrc" = "bash/.bashrc";
-    ".bash_profile" = "bash/.bash_profile";
-  };
+  mkXdgFiles = filesList:
+    lib.listToAttrs (
+      map
+        (file: {
+          name = ".config/${file}";
+          value = {
+            source = "${cleanedRepo}/${file}";
+          };
+        })
+        filesList
+    );
 
 in
 {
@@ -182,90 +131,22 @@ in
     # Deploy configuration files
     home.file = lib.mkMerge [
       # Entry point files (home directory)
-      (lib.mkIf cfg.deployEntryPoints (
-        lib.mapAttrs
-          (name: relativePath: {
-            source = "${cleanedRepo}/${relativePath}";
-          })
-          entryPointFiles
-      ))
+      (lib.mkIf cfg.deployEntryPoints (mkHomeFiles entryPointFiles))
 
       # XDG config directories (symlink entire directory)
-      (lib.mkIf cfg.deployXdgConfig (
-        lib.listToAttrs (
-          map
-            (dir: {
-              name = ".config/${dir}";
-              value = {
-                source = "${cleanedRepo}/${dir}";
-              };
-            })
-            xdgConfigDirs
-        )
-      ))
+      (lib.mkIf cfg.deployXdgConfig (mkXdgDirs xdgConfigDirs))
 
       # XDG config files (individual files in ~/.config/)
-      (lib.mkIf cfg.deployXdgConfig (
-        lib.listToAttrs (
-          map
-            (file: {
-              name = ".config/${file}";
-              value = {
-                source = "${cleanedRepo}/${file}";
-              };
-            })
-            xdgConfigFiles
-        )
-      ))
+      (lib.mkIf cfg.deployXdgConfig (mkXdgFiles xdgConfigFiles))
 
       # SSH config (with proper permissions)
-      (lib.mkIf cfg.deploySsh {
-        ".ssh/config" = {
-          source = "${cleanedRepo}/ssh/config";
-        };
-      })
+      (lib.mkIf cfg.deploySsh (mkHomeFiles sshFiles))
 
       # Bash files
-      (lib.mkIf cfg.deployBash (
-        lib.mapAttrs
-          (name: relativePath: {
-            source = "${cleanedRepo}/${relativePath}";
-          })
-          bashFiles
-      ))
+      (lib.mkIf cfg.deployBash (mkHomeFiles bashFiles))
 
       # AWSume config
-      (lib.mkIf cfg.deployAwsume {
-        ".awsume/config.yaml" = {
-          source = "${cleanedRepo}/awsume/config.yaml";
-        };
-      })
-
-      # mise static configs (dynamic files like trusted-configs/ need writable directory)
-      (lib.mkIf cfg.deployXdgConfig {
-        ".config/mise/config.toml" = {
-          source = "${cleanedRepo}/mise/config.toml";
-        };
-        ".config/mise/config.default.toml" = {
-          source = "${cleanedRepo}/mise/config.default.toml";
-        };
-        ".config/mise/config.pi.toml" = {
-          source = "${cleanedRepo}/mise/config.pi.toml";
-        };
-        ".config/mise/config.ci.toml" = {
-          source = "${cleanedRepo}/mise/config.ci.toml";
-        };
-        ".config/mise/README.md" = {
-          source = "${cleanedRepo}/mise/README.md";
-        };
-      })
-
-      # gh static config (hosts.yml is dynamic and user-managed)
-      (lib.mkIf cfg.deployXdgConfig {
-        ".config/gh/config.yml" = {
-          source = "${cleanedRepo}/gh/config.yml";
-        };
-      })
+      (lib.mkIf cfg.deployAwsume (mkHomeFiles awsumeFiles))
     ];
 
     # Ensure writable directories (not Nix store symlinks) for runtime state
