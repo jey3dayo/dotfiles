@@ -89,7 +89,7 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 '';
 ```
 
-**DAG依存**: `dotfiles-submodules`が`dotfiles-tmux-plugins`の後に実行されるよう、`entryAfter`に依存を追加
+**DAG依存**: `dotfiles-tmux-plugins`が`dotfiles-submodules`の後に実行されるよう、`entryAfter`に依存を追加
 
 ### gh handling
 
