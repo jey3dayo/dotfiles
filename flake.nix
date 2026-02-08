@@ -53,17 +53,29 @@
         let
           username = builtins.getEnv "USER";
           homeDirectory = builtins.getEnv "HOME";
-          # Import agent-skills module directly using HOME environment variable
+          # Import agent-skills module if .agents directory exists
           # This requires --impure flag when running home-manager switch
-          agentSkillsModule = import "${homeDirectory}/.agents/nix/module.nix";
+          agentSkillsPath = "${homeDirectory}/.agents/nix/module.nix";
+          agentSkillsModule =
+            if builtins.pathExists agentSkillsPath
+            then import agentSkillsPath
+            else { config, ... }: { };  # Empty module if .agents doesn't exist
+
+          # Base modules that always exist
+          baseModules = [
+            self.homeManagerModules.default  # dotfiles module
+            ./home.nix
+          ];
+
+          # Add agent-skills module only if it exists
+          allModules =
+            if builtins.pathExists agentSkillsPath
+            then baseModules ++ [ agentSkillsModule ]
+            else baseModules;
         in
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
-          modules = [
-            self.homeManagerModules.default  # dotfiles module
-            agentSkillsModule                # agent-skills module (direct import)
-            ./home.nix
-          ];
+          modules = allModules;
           extraSpecialArgs = { inherit inputs username homeDirectory; };
         };
     };
