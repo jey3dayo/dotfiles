@@ -1,25 +1,39 @@
 {
   description = "Dotfiles - Unified configuration management with Home Manager";
 
-  inputs =
-    let
-      agentSources = import ./nix/agent-skills-sources.nix;
-      agentInputs = builtins.mapAttrs
-        (_: src: { inherit (src) url flake; })
-        agentSources;
-    in
-    {
-      nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-      home-manager = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      flake-utils.url = "github:numtide/flake-utils";
-      gitignore = {
-        url = "github:hercules-ci/gitignore.nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    } // agentInputs;
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flake-utils.url = "github:numtide/flake-utils";
+    gitignore = {
+      url = "github:hercules-ci/gitignore.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Agent-skills external sources (flake = false: raw git repos)
+    # NOTE: These must be manually kept in sync with nix/agent-skills-sources.nix
+    #       Flake spec requires literal inputs - dynamic generation not allowed
+    #       agent-skills-sources.nix remains the SSoT for baseDir and selection metadata
+    openai-skills = {
+      url = "github:openai/skills";
+      flake = false;
+    };
+    vercel-agent-skills = {
+      url = "github:vercel-labs/agent-skills";
+      flake = false;
+    };
+    vercel-agent-browser = {
+      url = "github:vercel-labs/agent-browser";
+      flake = false;
+    };
+    ui-ux-pro-max = {
+      url = "github:nextlevelbuilder/ui-ux-pro-max-skill";
+      flake = false;
+    };
+  };
 
   outputs =
     {
