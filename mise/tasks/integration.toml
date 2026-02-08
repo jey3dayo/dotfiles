@@ -50,7 +50,6 @@ echo "... (run 'mise tasks' to see all)"
 [format]
 description = "コードとドキュメントの自動フォーマット"
 depends = [
-  "skills:fix:bold-headings",
   "format:biome",
   "format:prettier",
   "format:markdown",

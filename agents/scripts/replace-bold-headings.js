@@ -3,8 +3,8 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
-const repoRoot = path.resolve(__dirname, "..");
-const targetDir = path.join(repoRoot, "skills-internal");
+const repoRoot = path.resolve(__dirname, "../..");
+const targetDir = path.join(repoRoot, "agents", "skills-internal");
 
 if (!fs.existsSync(targetDir) || !fs.statSync(targetDir).isDirectory()) {
   console.error(`skills-internal not found: ${targetDir}`);
