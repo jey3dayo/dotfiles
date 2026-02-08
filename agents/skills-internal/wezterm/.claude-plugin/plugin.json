@@ -1,0 +1,9 @@
+{
+  "name": "wezterm",
+  "version": "1.0.0",
+  "description": "WezTerm設定レビュー。GPU加速、キーバインド、テーマ統合、クロスプラットフォーム互換性",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

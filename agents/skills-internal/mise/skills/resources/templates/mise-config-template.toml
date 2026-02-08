@@ -1,0 +1,386 @@
+# mise Configuration Template
+#
+# This template provides a comprehensive starting point for mise configuration
+# Customize this file based on your project's technology stack
+#
+# Documentation: https://mise.jdx.dev
+# File locations:
+#   - User global: ~/.config/mise/config.toml
+#   - Project-local: ./mise.toml
+
+# ========================================
+# Settings
+# ========================================
+[settings]
+# Number of parallel jobs for mise operations
+# Defaults to number of CPU cores
+jobs = 8
+
+# Enable paranoid mode (stricter checks)
+paranoid = true
+
+# Verbose output (useful for debugging)
+# verbose = true
+
+# Experimental features
+# experimental = true
+
+# ========================================
+# Environment Variables
+# ========================================
+[env]
+# Project-wide environment variables
+# These are set when mise is activated in the project directory
+
+# Development environment
+NODE_ENV = "development"
+
+# Rust backtrace for better error messages
+RUST_BACKTRACE = "1"
+
+# Custom project paths
+# PROJECT_ROOT = "{{ cwd }}"
+# DATA_DIR = "{{ config_root }}/data"
+
+# ========================================
+# Tool Version Management
+# ========================================
+[tools]
+
+# ========================================
+# Runtimes (Language Implementations)
+# ========================================
+
+# Node.js - JavaScript/TypeScript runtime
+node = "latest" # Or pin: "22.0.0" for reproducibility
+
+# Python - Python interpreter
+python = "latest" # Or pin: "3.12.0"
+
+# Ruby - Ruby interpreter
+# ruby = "latest"
+
+# Go - Go language
+# go = "latest"
+
+# Rust - Rust toolchain
+# rust = "stable"         # Or "nightly", "1.75.0"
+
+# Lua - Lua interpreter (often needed for Neovim)
+# lua = "5.1.5"           # Lua 5.1 for LuaRocks compatibility
+
+# LuaJIT - High-performance Lua
+# luajit = "latest"
+
+# ========================================
+# CLI Tools (Standalone Binaries)
+# ========================================
+
+# Version Control
+github-cli = "latest" # gh command
+# gitlab-cli = "latest"   # glab command
+
+# Development Tools
+# ghq = "latest"          # Repository manager
+# direnv = "latest"       # Directory-based environment switcher
+
+# Shell/Script Tools
+# shellcheck = "latest"   # Shell script linter
+# shfmt = "latest"        # Shell script formatter
+
+# File/Text Processing
+# jq = "latest"           # JSON processor
+# yq = "latest"           # YAML processor
+# ripgrep = "latest"      # Fast grep (rg)
+# fd = "latest"           # Fast find
+# bat = "latest"          # Cat with syntax highlighting
+
+# Linters/Formatters
+# yamllint = "latest"     # YAML linter
+# taplo = "latest"        # TOML formatter/linter
+
+# Container/Cloud Tools
+# docker = "latest"
+# kubectl = "latest"
+# terraform = "latest"
+
+# ========================================
+# NPM Global Packages
+# ========================================
+# Prefix with "npm:" to install via npm
+# These packages are installed in isolated environments per version
+
+# Formatters/Linters
+"npm:prettier" = "latest"
+# "npm:eslint" = "latest"
+# "npm:@biomejs/biome" = "latest"
+
+# Build Tools
+# "npm:typescript" = "latest"
+# "npm:vite" = "latest"
+# "npm:webpack" = "latest"
+# "npm:esbuild" = "latest"
+
+# Development Servers
+# "npm:http-server" = "latest"
+# "npm:serve" = "latest"
+
+# Process Managers
+# "npm:pm2" = "latest"
+# "npm:nodemon" = "latest"
+
+# Testing
+# "npm:jest" = "latest"
+# "npm:vitest" = "latest"
+
+# Package Management
+"npm:npm" = "latest"
+# "npm:pnpm" = "latest"
+# "npm:yarn" = "latest"
+
+# Neovim Integration
+# "npm:neovim" = "latest"                # Node.js client for Neovim
+# "npm:@fsouza/prettierd" = "latest"     # Prettier daemon for faster formatting
+
+# Framework CLIs
+# "npm:@angular/cli" = "latest"
+# "npm:@vue/cli" = "latest"
+# "npm:create-react-app" = "latest"
+
+# Utility Tools
+# "npm:npm-check-updates" = "latest"     # Update package.json dependencies
+# "npm:tldr" = "latest"                  # Simplified man pages
+
+# Protocol Buffers
+# "npm:@bufbuild/protoc-gen-es" = "latest"
+# "npm:@connectrpc/protoc-gen-connect-es" = "latest"
+
+# Documentation
+# "npm:markdownlint-cli2" = "latest"
+# "npm:markdown-link-check" = "latest"
+
+# AI/Automation
+# "npm:aicommits" = "latest"             # AI-powered commit messages
+# "npm:@openai/codex" = "latest"
+
+# ========================================
+# Python Global Packages (via pipx)
+# ========================================
+# Prefix with "pipx:" for isolated Python tool installation
+# Each package runs in its own virtual environment
+
+# Formatters/Linters
+# "pipx:black" = "latest"        # Python code formatter
+# "pipx:ruff" = "latest"         # Fast Python linter
+# "pipx:pylint" = "latest"       # Python code analyzer
+# "pipx:mypy" = "latest"         # Static type checker
+
+# Package Management
+# "pipx:poetry" = "latest"       # Python dependency management
+# "pipx:pipenv" = "latest"       # Python virtualenv manager
+# "pipx:hatch" = "latest"        # Modern Python project manager
+
+# Development Tools
+# "pipx:ipython" = "latest"      # Enhanced Python shell
+# "pipx:jupyter" = "latest"      # Jupyter notebooks
+
+# Documentation
+# "pipx:mkdocs" = "latest"       # Static site generator for docs
+# "pipx:sphinx" = "latest"       # Python documentation generator
+
+# Testing
+# "pipx:pytest" = "latest"       # Python testing framework
+# "pipx:tox" = "latest"          # Test automation tool
+
+# HTTP/API Tools
+# "pipx:httpie" = "latest"       # User-friendly HTTP client
+
+# ========================================
+# Ruby Gems (if using Ruby)
+# ========================================
+# "gem:bundler" = "latest"
+# "gem:rails" = "latest"
+
+# ========================================
+# Go Tools (if using Go)
+# ========================================
+# "go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
+# "go:golang.org/x/tools/cmd/goimports" = "latest"
+
+# ========================================
+# Cargo Packages (if using Rust)
+# ========================================
+# "cargo:cargo-watch" = "latest"
+# "cargo:cargo-edit" = "latest"
+
+# ========================================
+# Task Definitions
+# ========================================
+[tasks]
+
+# ----------------------------------------
+# Development Tasks
+# ----------------------------------------
+
+[tasks.install]
+description = "Install all dependencies"
+run = "mise install"
+
+[tasks.update]
+description = "Update all tools to latest versions"
+run = "mise upgrade"
+
+[tasks.check]
+description = "Check mise installation and configuration"
+run = "mise doctor"
+
+# ----------------------------------------
+# Build Tasks
+# ----------------------------------------
+
+# [tasks.build]
+# description = "Build project"
+# run = "npm run build"    # Or: cargo build, go build, etc.
+
+# [tasks.clean]
+# description = "Clean build artifacts"
+# run = "rm -rf dist/ build/ target/"
+
+# ----------------------------------------
+# Test Tasks
+# ----------------------------------------
+
+# [tasks.test]
+# description = "Run tests"
+# depends = ["build"]
+# run = "npm test"         # Or: cargo test, pytest, go test, etc.
+
+# [tasks.test-watch]
+# description = "Run tests in watch mode"
+# run = "npm run test:watch"
+
+# ----------------------------------------
+# Lint/Format Tasks
+# ----------------------------------------
+
+# [tasks.lint]
+# description = "Lint code"
+# run = "npm run lint"     # Or: cargo clippy, go vet, etc.
+
+# [tasks.format]
+# description = "Format code"
+# run = "npm run format"   # Or: cargo fmt, gofmt, black, etc.
+
+# [tasks.format-check]
+# description = "Check code formatting"
+# run = "npm run format:check"
+
+# ----------------------------------------
+# CI Tasks
+# ----------------------------------------
+
+# [tasks.ci]
+# description = "Full CI pipeline"
+# depends = ["format-check", "lint", "test", "build"]
+
+# ----------------------------------------
+# Alias Examples
+# ----------------------------------------
+
+# [tasks.b]
+# alias = "build"
+
+# [tasks.t]
+# alias = "test"
+
+# [tasks.f]
+# alias = "format"
+
+# [tasks."+all"]
+# description = "Run all checks"
+# depends = ["lint", "test", "build"]
+
+# ========================================
+# Hooks (Optional)
+# ========================================
+
+# [hooks]
+# # Run when entering directory
+# enter = "echo 'Welcome to {{ cwd }}'"
+
+# # Run when leaving directory
+# leave = "echo 'Goodbye from {{ cwd }}'"
+
+# # Run before any task
+# preinstall = "echo 'About to install tools...'"
+
+# # Run after any task
+# postinstall = "echo 'Tools installed successfully!'"
+
+# ========================================
+# Plugins (Optional)
+# ========================================
+
+# [plugins]
+# # Custom plugin configuration
+# # See: https://mise.jdx.dev/plugins.html
+
+# ========================================
+# Usage Examples
+# ========================================
+
+# Install all tools:
+#   mise install
+
+# Install specific tool:
+#   mise install node@22
+#   mise install "npm:prettier@latest"
+
+# List installed tools:
+#   mise ls
+
+# Run a task:
+#   mise run build
+#   mise run test
+
+# Use tool in current shell:
+#   mise exec -- node --version
+#   mise exec -- prettier --version
+
+# Activate mise in shell (add to .zshrc/.bashrc):
+#   eval "$(mise activate zsh)"
+
+# Check configuration:
+#   mise doctor
+
+# Update mise itself:
+#   mise self-update
+
+# ========================================
+# Best Practices
+# ========================================
+
+# 1. Centralized Package Management
+#    - Declare ALL npm/Python packages in this file
+#    - Never use: npm install -g, pip install --user
+#    - Rationale: Single source of truth, reproducibility
+
+# 2. Version Pinning
+#    - Project-local: Pin specific versions for reproducibility
+#    - User global: Use "latest" for flexibility
+#    - CI/CD: Always pin versions
+
+# 3. Task Organization
+#    - Group related tasks with common prefixes
+#    - Use `depends` for prerequisites
+#    - Keep tasks focused on single responsibility
+
+# 4. Documentation
+#    - Add `description` to all tasks
+#    - Comment tool choices and version decisions
+#    - Keep this file as project documentation
+
+# 5. Version Control
+#    - Commit this file to git
+#    - Update team when adding new tools
+#    - Document any platform-specific requirements

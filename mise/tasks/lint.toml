@@ -54,7 +54,7 @@ run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff check ${PY_FILES}
 else
-  uvx ruff check .
+  uvx ruff check --exclude agents/skills --exclude agents/skills-internal .
 fi
 """
 

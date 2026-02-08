@@ -1,0 +1,10 @@
+{
+  "name": "code-review",
+  "version": "1.0.0",
+  "description": "包括的なコード品質評価とレビュー。5段階評価システムとプロジェクト固有の基準統合",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "commands": ["./commands/"],
+  "skills": ["./skills/"]
+}

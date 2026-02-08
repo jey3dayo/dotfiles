@@ -1,0 +1,9 @@
+{
+  "name": "drawio",
+  "version": "1.0.0",
+  "description": "プロフェッショナルなDraw.ioダイアグラム作成支援。AWS構成図、フローチャート、シーケンス図、ER図をXML形式で生成",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./skills/"]
+}

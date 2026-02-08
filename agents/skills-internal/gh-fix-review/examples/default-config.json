@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0",
+  "description": "Default PR review automation configuration",
+  "priorities": {
+    "critical": {
+      "keywords": [
+        "critical",
+        "bug",
+        "security",
+        "vulnerability",
+        "broken",
+        "error",
+        "failure",
+        "crash"
+      ],
+      "emoji": "🔴"
+    },
+    "high": {
+      "keywords": ["important", "major", "should fix", "必須", "required", "blocking", "urgent"],
+      "emoji": "🟠"
+    },
+    "major": {
+      "keywords": ["consider", "recommend", "推奨", "improvement", "optimize", "refactor"],
+      "emoji": "🟡"
+    },
+    "minor": {
+      "keywords": ["nit", "style", "formatting", "typo", "suggestion", "optional"],
+      "emoji": "🟢"
+    }
+  },
+  "categories": {
+    "security": ["security", "vulnerability", "auth", "permission", "xss", "sql injection"],
+    "performance": ["performance", "slow", "optimization", "cache", "memory"],
+    "bug": ["bug", "error", "broken", "fail", "incorrect"],
+    "style": ["style", "format", "naming", "convention", "prettier", "eslint"],
+    "refactor": ["refactor", "clean", "simplify", "duplication", "dry"],
+    "test": ["test", "coverage", "mock", "assertion"],
+    "docs": ["documentation", "comment", "readme", "説明"]
+  },
+  "tracking": {
+    "output_path": "docs/_review-fixes.md",
+    "include_in_git": false,
+    "auto_update": true
+  },
+  "filters": {
+    "ignore_bots": [],
+    "only_bots": [],
+    "ignore_authors": [],
+    "min_priority": "minor"
+  },
+  "quality_gates": {
+    "run_type_check": true,
+    "run_lint": true,
+    "run_tests": false,
+    "auto_rollback_on_failure": true
+  },
+  "todo_integration": {
+    "enabled": true,
+    "max_concurrent_todos": 1,
+    "auto_progress": true
+  }
+}

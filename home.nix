@@ -30,7 +30,21 @@
     initSubmodules = true;      # Initialize Git submodules (tmux plugins)
   };
 
-  # agent-skills is managed by ~/.agents/home.nix (when present)
+  # Agent skills are managed inside this repo (migrated from ~/.agents)
+  programs.agent-skills = {
+    enable = true;
+
+    # Use skills-internal as local overrides to avoid external duplication conflicts
+    localSkillsPath = ./agents/skills-internal;
+
+    sources = import ./agents/nix/sources.nix { inherit inputs; };
+
+    skills.enable =
+      let selection = import ./agents/nix/selection.nix;
+      in if selection ? enable then selection.enable else null;
+
+    targets = import ./agents/nix/targets.nix;
+  };
 
   # This value determines the Home Manager release that your configuration is compatible with.
   # You should not change this value, even if you update Home Manager.

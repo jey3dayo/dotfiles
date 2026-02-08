@@ -53,25 +53,11 @@
         let
           username = builtins.getEnv "USER";
           homeDirectory = builtins.getEnv "HOME";
-          # Import agent-skills module if .agents directory exists
-          # This requires --impure flag when running home-manager switch
-          agentSkillsPath = "${homeDirectory}/.agents/nix/module.nix";
-          hasAgentSkills =
-            homeDirectory != "" && builtins.pathExists agentSkillsPath;
+          # Agent-skills module is bundled in this repo
+          agentSkillsPath = ./agents/nix/module.nix;
           agentSkillsModule =
-            if hasAgentSkills
+            if builtins.pathExists agentSkillsPath
             then import agentSkillsPath
-            else { config, ... }: { };  # Empty module if .agents doesn't exist
-          agentHomePath = "${homeDirectory}/.agents/home.nix";
-          hasAgentHome =
-            homeDirectory != "" && builtins.pathExists agentHomePath;
-          agentHomeModule =
-            if hasAgentHome
-            then import agentHomePath
-            else { config, ... }: { };
-          agentHomeOverrides =
-            if hasAgentHome
-            then { lib, ... }: { programs.home-manager.enable = lib.mkForce true; }
             else { config, ... }: { };
 
           # Base modules that always exist
@@ -80,16 +66,16 @@
             ./home.nix
           ];
 
-          # Add agent-skills module only if it exists
-          extraModules =
-            (if hasAgentSkills then [ agentSkillsModule ] else [])
-            ++ (if hasAgentHome then [ agentHomeModule agentHomeOverrides ] else []);
-          allModules = baseModules ++ extraModules;
+          # Add agent-skills module if it exists in repo
+          allModules =
+            if builtins.pathExists agentSkillsPath
+            then baseModules ++ [ agentSkillsModule ]
+            else baseModules;
         in
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
           modules = allModules;
-          extraSpecialArgs = { inherit inputs username homeDirectory hasAgentSkills; };
+          extraSpecialArgs = { inherit inputs username homeDirectory; };
         };
     };
 }

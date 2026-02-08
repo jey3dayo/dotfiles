@@ -144,7 +144,7 @@ run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff format ${PY_FILES}
 else
-  uvx ruff format .
+  uvx ruff format --exclude agents/skills --exclude agents/skills-internal .
 fi
 """
 
@@ -154,7 +154,7 @@ run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff format --check ${PY_FILES}
 else
-  uvx ruff format --check .
+  uvx ruff format --check --exclude agents/skills --exclude agents/skills-internal .
 fi
 """
 

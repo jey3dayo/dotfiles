@@ -1,0 +1,9 @@
+{
+  "name": "golang",
+  "version": "1.0.0",
+  "description": "Goコードレビュー（Context7統合）",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./skills/"]
+}

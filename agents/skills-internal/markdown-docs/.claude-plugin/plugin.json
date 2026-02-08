@@ -1,0 +1,9 @@
+{
+  "name": "markdown-docs",
+  "version": "1.0.0",
+  "description": "Markdownドキュメントレビュー・改善。文章品質、構造、技術的正確性",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

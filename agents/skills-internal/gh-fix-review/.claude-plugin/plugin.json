@@ -1,0 +1,9 @@
+{
+  "name": "gh-fix-review",
+  "version": "1.0.0",
+  "description": "GitHub PRレビューコメントの自動処理。CodeRabbit/人間コメントの分類と修正",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

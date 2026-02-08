@@ -1,0 +1,9 @@
+{
+  "name": "code-quality-improvement",
+  "version": "1.0.0",
+  "description": "体系的なコード品質改善スキル。ESLintエラー修正、型安全性向上、コード品質向上のワークフロー",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

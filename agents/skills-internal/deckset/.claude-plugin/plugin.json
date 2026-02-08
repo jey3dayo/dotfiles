@@ -1,0 +1,9 @@
+{
+  "name": "deckset",
+  "version": "1.0.0",
+  "description": "Decksetプレゼンテーション作成支援スキル。Deckset特有の構文、画像モディファイア、メタデータ設定をガイド",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./skills/"]
+}

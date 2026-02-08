@@ -1,0 +1,9 @@
+{
+  "name": "nvim",
+  "version": "1.0.0",
+  "description": "Neovim設定レビュー（Context7統合）",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./skills/"]
+}

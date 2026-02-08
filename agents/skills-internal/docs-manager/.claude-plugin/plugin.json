@@ -1,0 +1,9 @@
+{
+  "name": "docs-manager",
+  "version": "1.0.0",
+  "description": "ドキュメント検証・管理。メタデータ、タグ、サイズ、リンク検証",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

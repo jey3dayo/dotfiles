@@ -1,0 +1,36 @@
+{
+  "docs_root": "./docs",
+  "project_type": "generic",
+  "required_tags": ["category/", "audience/"],
+  "optional_tags": ["environment/"],
+  "tag_separator": ", ",
+  "size_limits": {
+    "ideal": 300,
+    "acceptable": 500,
+    "warning": 1000,
+    "maximum": 2000
+  },
+  "metadata_format": {
+    "date_field": "最終更新",
+    "date_format": "YYYY-MM-DD",
+    "audience_field": "対象",
+    "tags_field": "タグ"
+  },
+  "link_validation": {
+    "enabled": true,
+    "config_file": ".markdown-link-check.json"
+  },
+  "tag_vocabulary": {
+    "category/": [
+      "documentation",
+      "guide",
+      "reference",
+      "api",
+      "tutorial",
+      "operations",
+      "architecture"
+    ],
+    "audience/": ["developer", "user", "contributor", "maintainer", "beginner", "advanced"],
+    "environment/": ["development", "staging", "production"]
+  }
+}

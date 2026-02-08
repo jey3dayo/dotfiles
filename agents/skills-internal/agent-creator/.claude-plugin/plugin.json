@@ -1,0 +1,9 @@
+{
+  "name": "agent-creator",
+  "version": "1.0.0",
+  "description": "サブエージェント定義の作成ガイド。構造、設計パターン、ツールアクセス管理を提供",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

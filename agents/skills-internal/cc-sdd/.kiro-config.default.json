@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0",
+  "paths": {
+    "root": ".kiro",
+    "steering": "steering",
+    "specs": "specs",
+    "settings": "settings",
+    "templates": "templates",
+    "rules": "rules"
+  },
+  "workflow": {
+    "defaultLanguage": "ja",
+    "autoApproval": false,
+    "phases": {
+      "requirements": {
+        "enabled": true
+      },
+      "design": {
+        "enabled": true
+      },
+      "tasks": {
+        "enabled": true
+      }
+    }
+  },
+  "templates": {
+    "specs": {
+      "init": "specs/init.json",
+      "requirementsInit": "specs/requirements-init.md",
+      "requirements": "specs/requirements.md",
+      "design": "specs/design.md",
+      "tasks": "specs/tasks.md"
+    },
+    "steering": {
+      "custom": "steering-custom"
+    }
+  },
+  "rules": {
+    "earsFormat": "ears-format.md",
+    "designPrinciples": "design-principles.md",
+    "designDiscoveryLight": "design-discovery-light.md",
+    "designDiscoveryFull": "design-discovery-full.md",
+    "designReview": "design-review.md",
+    "gapAnalysis": "gap-analysis.md",
+    "steeringPrinciples": "steering-principles.md",
+    "tasksGeneration": "tasks-generation.md"
+  },
+  "validation": {
+    "requireApproval": true,
+    "checkTaskCoverage": true,
+    "enforcePhaseOrder": true
+  }
+}

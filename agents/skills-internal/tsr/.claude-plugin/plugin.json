@@ -1,0 +1,9 @@
+{
+  "name": "tsr",
+  "version": "1.0.0",
+  "description": "未使用TypeScript/Reactコードの検出・削除。TSRツール活用",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./SKILL.md"]
+}

@@ -22,5 +22,7 @@
     "fisher/**",
     "zsh/.zinit/**",
     "opencode/skills/**",
+    "agents/skills/**",
+    "agents/skills-internal/**",
   ],
 }

@@ -1,0 +1,136 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Project Detection Configuration",
+  "description": "Configuration schema for code-review project detection and evaluation rules",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Project type name (e.g., 'Next.js Fullstack', 'Go API', 'React SPA')"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of this project type"
+    },
+    "detectors": {
+      "type": "array",
+      "description": "Detection rules for identifying this project type",
+      "items": {
+        "$ref": "#/definitions/Detector"
+      }
+    },
+    "techStack": {
+      "type": "array",
+      "description": "Technology stack identifiers",
+      "items": {
+        "type": "string"
+      }
+    },
+    "skills": {
+      "type": "array",
+      "description": "Skills to integrate for this project type",
+      "items": {
+        "$ref": "#/definitions/SkillReference"
+      }
+    },
+    "evaluation": {
+      "$ref": "#/definitions/EvaluationConfig",
+      "description": "Evaluation configuration for this project type"
+    },
+    "priority": {
+      "type": "integer",
+      "description": "Detection priority (higher = checked first)",
+      "default": 0
+    }
+  },
+  "required": ["name", "detectors", "techStack"],
+  "definitions": {
+    "Detector": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "file_exists",
+            "file_pattern",
+            "file_content",
+            "package_dependency",
+            "directory_structure"
+          ],
+          "description": "Type of detector"
+        },
+        "path": {
+          "type": "string",
+          "description": "File or directory path to check"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Pattern to match (for file_pattern and file_content types)"
+        },
+        "dependency": {
+          "type": "string",
+          "description": "Dependency name to check (for package_dependency type)"
+        },
+        "condition": {
+          "type": "string",
+          "enum": ["required", "optional"],
+          "default": "required",
+          "description": "Whether this detector is required or optional"
+        }
+      },
+      "required": ["type"]
+    },
+    "SkillReference": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Skill identifier (e.g., 'typescript', 'react', 'security')"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "default": "medium",
+          "description": "Skill priority for this project type"
+        },
+        "focus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Specific focus areas for this skill"
+        }
+      },
+      "required": ["name"]
+    },
+    "EvaluationConfig": {
+      "type": "object",
+      "properties": {
+        "weights": {
+          "type": "object",
+          "description": "Dimension weights for this project type",
+          "properties": {
+            "code_quality": { "type": "number", "minimum": 0, "maximum": 1 },
+            "security": { "type": "number", "minimum": 0, "maximum": 1 },
+            "performance": { "type": "number", "minimum": 0, "maximum": 1 },
+            "testing": { "type": "number", "minimum": 0, "maximum": 1 },
+            "error_handling": { "type": "number", "minimum": 0, "maximum": 1 },
+            "architecture": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "guidelines": {
+          "type": "array",
+          "description": "Evaluation guidelines files to merge",
+          "items": {
+            "type": "string"
+          }
+        },
+        "customRules": {
+          "type": "object",
+          "description": "Project-specific custom rules",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

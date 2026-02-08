@@ -1,0 +1,22 @@
+{
+  "name": "cc-sdd",
+  "version": "1.0.0",
+  "description": "Standardized Kiro-style spec-driven development plugin with configurable directory structure. Provides a consistent workflow from requirements to design to implementation tasks.",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "commands": ["./commands/"],
+  "skills": ["./SKILL.md"],
+  "tags": ["spec-driven", "kiro", "workflow", "requirements", "design", "tasks", "development"],
+  "keywords": [
+    "kiro",
+    "spec-driven",
+    "specification",
+    "steering",
+    "cc-sdd",
+    "スペック駆動開発",
+    "要件定義",
+    "設計",
+    "実装"
+  ]
+}

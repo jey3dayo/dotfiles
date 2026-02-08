@@ -1,0 +1,199 @@
+{
+  "priorities": {
+    "critical": {
+      "keywords": [
+        "critical",
+        "bug",
+        "security",
+        "vulnerability",
+        "broken",
+        "error",
+        "failure",
+        "crash",
+        "致命的",
+        "セキュリティ",
+        "脆弱性"
+      ],
+      "emoji": "🔴"
+    },
+    "high": {
+      "keywords": [
+        "important",
+        "major",
+        "should fix",
+        "required",
+        "blocking",
+        "urgent",
+        "必須",
+        "重要",
+        "緊急"
+      ],
+      "emoji": "🟠"
+    },
+    "major": {
+      "keywords": [
+        "consider",
+        "recommend",
+        "improvement",
+        "optimize",
+        "refactor",
+        "推奨",
+        "改善",
+        "最適化"
+      ],
+      "emoji": "🟡"
+    },
+    "minor": {
+      "keywords": [
+        "nit",
+        "style",
+        "formatting",
+        "typo",
+        "suggestion",
+        "optional",
+        "軽微",
+        "スタイル",
+        "提案"
+      ],
+      "emoji": "🟢"
+    }
+  },
+  "categories": {
+    "security": {
+      "keywords": [
+        "security",
+        "vulnerability",
+        "auth",
+        "authentication",
+        "authorization",
+        "permission",
+        "xss",
+        "sql injection",
+        "csrf",
+        "セキュリティ",
+        "認証",
+        "認可"
+      ],
+      "description": "Security-related issues"
+    },
+    "performance": {
+      "keywords": [
+        "performance",
+        "slow",
+        "optimization",
+        "cache",
+        "memory",
+        "cpu",
+        "パフォーマンス",
+        "最適化",
+        "メモリ"
+      ],
+      "description": "Performance optimization"
+    },
+    "bug": {
+      "keywords": [
+        "bug",
+        "error",
+        "broken",
+        "fail",
+        "incorrect",
+        "wrong",
+        "バグ",
+        "エラー",
+        "不具合"
+      ],
+      "description": "Bug fixes"
+    },
+    "style": {
+      "keywords": [
+        "style",
+        "format",
+        "formatting",
+        "naming",
+        "convention",
+        "prettier",
+        "eslint",
+        "lint",
+        "スタイル",
+        "フォーマット"
+      ],
+      "description": "Code style and formatting"
+    },
+    "refactor": {
+      "keywords": [
+        "refactor",
+        "clean",
+        "simplify",
+        "duplication",
+        "dry",
+        "リファクタリング",
+        "重複",
+        "簡素化"
+      ],
+      "description": "Code refactoring"
+    },
+    "test": {
+      "keywords": ["test", "testing", "coverage", "mock", "assertion", "テスト", "カバレッジ"],
+      "description": "Testing improvements"
+    },
+    "docs": {
+      "keywords": ["documentation", "comment", "readme", "doc", "説明", "ドキュメント", "コメント"],
+      "description": "Documentation updates"
+    },
+    "accessibility": {
+      "keywords": ["accessibility", "a11y", "aria", "screen reader", "アクセシビリティ"],
+      "description": "Accessibility improvements"
+    },
+    "i18n": {
+      "keywords": [
+        "i18n",
+        "internationalization",
+        "localization",
+        "translation",
+        "国際化",
+        "多言語"
+      ],
+      "description": "Internationalization"
+    }
+  },
+  "bots": {
+    "coderabbitai": {
+      "username": "coderabbitai",
+      "trusted": true,
+      "priority_boost": 0
+    },
+    "github-actions": {
+      "username": "github-actions",
+      "trusted": true,
+      "priority_boost": 0
+    },
+    "dependabot": {
+      "username": "dependabot",
+      "trusted": true,
+      "priority_boost": 0
+    },
+    "renovate": {
+      "username": "renovate",
+      "trusted": true,
+      "priority_boost": 0
+    },
+    "sonarcloud": {
+      "username": "sonarcloud",
+      "trusted": true,
+      "priority_boost": 1
+    }
+  },
+  "paths": {
+    "tracking_file": "docs/_review-fixes.md"
+  },
+  "quality_gates": {
+    "type_check": true,
+    "lint": true,
+    "test": false,
+    "auto_rollback": true
+  },
+  "output": {
+    "language": "ja",
+    "verbose": false
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "description": "Security-focused configuration for projects with strict security requirements",
+  "priorities": {
+    "critical": {
+      "keywords": [
+        "security",
+        "vulnerability",
+        "exploit",
+        "injection",
+        "xss",
+        "csrf",
+        "authentication",
+        "authorization",
+        "data leak",
+        "sensitive"
+      ],
+      "emoji": "🔴"
+    },
+    "high": {
+      "keywords": [
+        "permission",
+        "access control",
+        "encryption",
+        "validation",
+        "sanitize",
+        "escape"
+      ],
+      "emoji": "🟠"
+    },
+    "major": {
+      "keywords": ["security best practice", "hardening", "secure coding"],
+      "emoji": "🟡"
+    },
+    "minor": {
+      "keywords": ["nit", "style"],
+      "emoji": "🟢"
+    }
+  },
+  "categories": {
+    "security": {
+      "keywords": [
+        "security",
+        "vulnerability",
+        "exploit",
+        "injection",
+        "xss",
+        "csrf",
+        "authentication",
+        "authorization"
+      ],
+      "description": "Critical security issues"
+    },
+    "data-protection": {
+      "keywords": ["data leak", "sensitive", "pii", "personal information", "encryption"],
+      "description": "Data protection and privacy"
+    },
+    "access-control": {
+      "keywords": ["permission", "access control", "role", "privilege"],
+      "description": "Access control and authorization"
+    }
+  },
+  "bots": {
+    "sonarcloud": {
+      "username": "sonarcloud",
+      "trusted": true,
+      "priority_boost": 1
+    },
+    "snyk": {
+      "username": "snyk",
+      "trusted": true,
+      "priority_boost": 1
+    }
+  },
+  "quality_gates": {
+    "type_check": true,
+    "lint": true,
+    "test": true,
+    "auto_rollback": true
+  }
+}

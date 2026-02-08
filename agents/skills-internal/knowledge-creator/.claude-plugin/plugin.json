@@ -1,0 +1,7 @@
+{
+  "name": "knowledge-creator",
+  "version": "1.0.0",
+  "description": "知識分類・作成システム。Skill/Agent/Command/Rulesの最適フォーマットを自動判定",
+  "author": { "name": "jey3dayo" },
+  "skills": ["./skills/"]
+}

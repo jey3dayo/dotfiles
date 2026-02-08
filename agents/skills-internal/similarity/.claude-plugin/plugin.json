@@ -1,0 +1,9 @@
+{
+  "name": "similarity",
+  "version": "1.0.0",
+  "description": "TypeScript/JavaScriptコード類似度検出スキル。重複コード発見とリファクタリング支援",
+  "author": {
+    "name": "jey3dayo"
+  },
+  "skills": ["./skills/"]
+}

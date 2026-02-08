@@ -1,0 +1,278 @@
+{
+  "$schema": "../schemas/project-detection-schema.json",
+  "projects": [
+    {
+      "name": "Next.js Fullstack",
+      "description": "Next.js application with full-stack features",
+      "priority": 100,
+      "detectors": [
+        {
+          "type": "package_dependency",
+          "dependency": "next",
+          "condition": "required"
+        },
+        {
+          "type": "file_exists",
+          "path": "package.json",
+          "condition": "required"
+        }
+      ],
+      "techStack": ["typescript", "react", "next"],
+      "skills": [
+        {
+          "name": "typescript",
+          "priority": "high",
+          "focus": ["type_safety", "strict_mode", "type_guards"]
+        },
+        {
+          "name": "react",
+          "priority": "high",
+          "focus": ["hooks", "performance", "component_design"]
+        },
+        {
+          "name": "security",
+          "priority": "high",
+          "focus": ["input_validation", "auth", "data_protection"]
+        }
+      ],
+      "evaluation": {
+        "weights": {
+          "code_quality": 0.2,
+          "security": 0.2,
+          "performance": 0.15,
+          "testing": 0.15,
+          "error_handling": 0.15,
+          "architecture": 0.15
+        },
+        "guidelines": [
+          "evaluation-guidelines.md",
+          "typescript/guidelines.md",
+          "react/guidelines.md",
+          "security/guidelines.md"
+        ]
+      }
+    },
+    {
+      "name": "React SPA",
+      "description": "React Single Page Application",
+      "priority": 80,
+      "detectors": [
+        {
+          "type": "package_dependency",
+          "dependency": "react",
+          "condition": "required"
+        },
+        {
+          "type": "file_exists",
+          "path": "package.json",
+          "condition": "required"
+        }
+      ],
+      "techStack": ["typescript", "react"],
+      "skills": [
+        {
+          "name": "typescript",
+          "priority": "high",
+          "focus": ["type_safety", "strict_mode"]
+        },
+        {
+          "name": "react",
+          "priority": "high",
+          "focus": ["hooks", "performance", "component_design", "a11y"]
+        },
+        {
+          "name": "security",
+          "priority": "medium",
+          "focus": ["xss_prevention", "secure_storage"]
+        }
+      ],
+      "evaluation": {
+        "weights": {
+          "code_quality": 0.25,
+          "security": 0.1,
+          "performance": 0.2,
+          "testing": 0.2,
+          "error_handling": 0.1,
+          "architecture": 0.15
+        },
+        "guidelines": [
+          "evaluation-guidelines.md",
+          "typescript/guidelines.md",
+          "react/guidelines.md"
+        ]
+      }
+    },
+    {
+      "name": "Go API",
+      "description": "Go language API server",
+      "priority": 90,
+      "detectors": [
+        {
+          "type": "file_exists",
+          "path": "go.mod",
+          "condition": "required"
+        },
+        {
+          "type": "file_pattern",
+          "pattern": "**/*_handler.go",
+          "condition": "optional"
+        }
+      ],
+      "techStack": ["go"],
+      "skills": [
+        {
+          "name": "golang",
+          "priority": "high",
+          "focus": ["error_handling", "concurrency", "idioms"]
+        },
+        {
+          "name": "security",
+          "priority": "high",
+          "focus": ["input_validation", "auth", "data_protection"]
+        }
+      ],
+      "evaluation": {
+        "weights": {
+          "code_quality": 0.2,
+          "security": 0.25,
+          "performance": 0.2,
+          "testing": 0.05,
+          "error_handling": 0.15,
+          "architecture": 0.15
+        },
+        "guidelines": ["evaluation-guidelines.md", "golang/guidelines.md", "security/guidelines.md"]
+      }
+    },
+    {
+      "name": "Go Clean Architecture",
+      "description": "Go API with Clean Architecture pattern",
+      "priority": 95,
+      "detectors": [
+        {
+          "type": "file_exists",
+          "path": "go.mod",
+          "condition": "required"
+        },
+        {
+          "type": "directory_structure",
+          "path": "domain",
+          "condition": "required"
+        },
+        {
+          "type": "directory_structure",
+          "path": "usecase",
+          "condition": "required"
+        },
+        {
+          "type": "directory_structure",
+          "path": "infrastructure",
+          "condition": "required"
+        }
+      ],
+      "techStack": ["go", "clean-architecture"],
+      "skills": [
+        {
+          "name": "golang",
+          "priority": "high",
+          "focus": ["error_handling", "concurrency", "idioms"]
+        },
+        {
+          "name": "clean-architecture",
+          "priority": "medium",
+          "focus": ["layer_separation", "dependency_rule", "domain_modeling"]
+        },
+        {
+          "name": "security",
+          "priority": "high",
+          "focus": ["input_validation", "auth", "data_protection"]
+        }
+      ],
+      "evaluation": {
+        "weights": {
+          "code_quality": 0.2,
+          "security": 0.25,
+          "performance": 0.2,
+          "testing": 0.05,
+          "error_handling": 0.15,
+          "architecture": 0.15
+        },
+        "guidelines": [
+          "evaluation-guidelines.md",
+          "golang/guidelines.md",
+          "clean-architecture/guidelines.md",
+          "security/guidelines.md"
+        ]
+      }
+    },
+    {
+      "name": "TypeScript Node.js",
+      "description": "TypeScript Node.js backend",
+      "priority": 70,
+      "detectors": [
+        {
+          "type": "file_exists",
+          "path": "package.json",
+          "condition": "required"
+        },
+        {
+          "type": "file_exists",
+          "path": "tsconfig.json",
+          "condition": "required"
+        }
+      ],
+      "techStack": ["typescript", "node"],
+      "skills": [
+        {
+          "name": "typescript",
+          "priority": "high",
+          "focus": ["type_safety", "strict_mode", "type_guards"]
+        },
+        {
+          "name": "security",
+          "priority": "high",
+          "focus": ["input_validation", "auth", "data_protection"]
+        }
+      ],
+      "evaluation": {
+        "weights": {
+          "code_quality": 0.2,
+          "security": 0.25,
+          "performance": 0.2,
+          "testing": 0.1,
+          "error_handling": 0.15,
+          "architecture": 0.1
+        },
+        "guidelines": [
+          "evaluation-guidelines.md",
+          "typescript/guidelines.md",
+          "security/guidelines.md"
+        ]
+      }
+    },
+    {
+      "name": "Generic Project",
+      "description": "Fallback for unrecognized project types",
+      "priority": 0,
+      "detectors": [
+        {
+          "type": "file_pattern",
+          "pattern": "**/*",
+          "condition": "optional"
+        }
+      ],
+      "techStack": [],
+      "skills": [],
+      "evaluation": {
+        "weights": {
+          "code_quality": 0.2,
+          "security": 0.2,
+          "performance": 0.15,
+          "testing": 0.15,
+          "error_handling": 0.15,
+          "architecture": 0.15
+        },
+        "guidelines": ["evaluation-guidelines.md"]
+      }
+    }
+  ]
+}
