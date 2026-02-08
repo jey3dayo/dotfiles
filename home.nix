@@ -37,7 +37,10 @@
     # Use skills-internal as local overrides to avoid external duplication conflicts
     localSkillsPath = ./agents/skills-internal;
 
-    sources = import ./nix/sources.nix { inherit inputs; };
+    sources = import ./nix/sources.nix {
+      inherit inputs;
+      agentSkills = import ./nix/agent-skills.nix;
+    };
 
     skills.enable =
       let selection = (import ./nix/agent-skills.nix).selection;

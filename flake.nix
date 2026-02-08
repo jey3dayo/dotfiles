@@ -2,9 +2,6 @@
   description = "Dotfiles - Unified configuration management with Home Manager";
 
   inputs =
-    let
-      agentSkills = import ./nix/agent-skills.nix;
-    in
     {
       nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
       home-manager = {
@@ -16,7 +13,7 @@
         url = "github:hercules-ci/gitignore.nix";
         inputs.nixpkgs.follows = "nixpkgs";
       };
-    } // agentSkills.inputs;
+    } // (import ./nix/agent-skills.nix).inputs;
 
   outputs =
     {
@@ -76,8 +73,9 @@
         pkgs = nixpkgs.legacyPackages.${system};
         targets = import ./nix/targets.nix;
         agentLib = import ./agents/nix/lib.nix { inherit pkgs; nixlib = nixpkgs.lib; };
-        sources = import ./nix/sources.nix { inherit inputs; };
-        selection = (import ./nix/agent-skills.nix).selection;
+        agentSkills = import ./nix/agent-skills.nix;
+        sources = import ./nix/sources.nix { inherit inputs agentSkills; };
+        selection = agentSkills.selection;
         catalog = agentLib.discoverCatalog {
           inherit sources;
           localPath = ./agents/skills-internal;

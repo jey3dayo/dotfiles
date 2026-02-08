@@ -20,6 +20,13 @@
     };
   };
 
+  baseDirs = {
+    openai-skills = "skills";
+    vercel-agent-skills = "skills";
+    vercel-agent-browser = "skills";
+    ui-ux-pro-max = ".";
+  };
+
   selection = {
     # Enabled skill IDs (shared between home.nix and `nix run .#install`)
     # If `enable` is omitted or null, all discovered skills are enabled.
