@@ -35,14 +35,14 @@ developブランチと同期して
 
 ## トリガーキーワード
 
-### 日本語:
+### 日本語
 
 - "mainと同期して"
 - "最新にして"
 - "originと同期"
 - "デフォルトブランチから更新"
 
-### 英語:
+### 英語
 
 - "sync with origin"
 - "pull main"
@@ -83,13 +83,13 @@ developブランチと同期して
 
 リモートのデフォルトブランチを検出するBashスクリプト。
 
-### 使用方法:
+### 使用方法
 
 ```bash
 bash ~/.agents/skills/sync-origin/scripts/detect-default-branch.sh [remote-name]
 ```
 
-### 例:
+### 例
 
 ```bash
 # originのデフォルトブランチを検出

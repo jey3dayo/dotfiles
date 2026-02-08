@@ -49,13 +49,13 @@ Automatically polish code by executing lint/format/test and fixing errors iterat
 
 When `--with-comments` flag is provided:
 
-### Remove:
+### Remove
 
 - Comments that merely repeat code content
 - Self-evident comments (e.g., "constructor" above constructor)
 - Obvious statements
 
-### Preserve:
+### Preserve
 
 - WHY explanations
 - Complex business logic explanations

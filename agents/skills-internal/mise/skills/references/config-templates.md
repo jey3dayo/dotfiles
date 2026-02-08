@@ -480,7 +480,7 @@ depends = [
 ]
 ```
 
-### Corresponding GitHub Actions:
+### Corresponding GitHub Actions
 
 ```yaml
 # .github/workflows/ci.yml
@@ -513,7 +513,7 @@ description = "Pre-push validation"
 depends = ["test", "build"]
 ```
 
-### With Husky:
+### With Husky
 
 ```json
 {

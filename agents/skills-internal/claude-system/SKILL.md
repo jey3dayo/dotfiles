@@ -21,7 +21,7 @@ paths:
 
 # Claude System Integration
 
-## Claude Code is your creative design partner with exceptional ideation and architectural thinking abilities.
+## Claude Code is your creative design partner with exceptional ideation and architectural thinking abilities
 
 ## Context Management (CRITICAL)
 
@@ -61,7 +61,7 @@ Claude Code excels at:
 
 Think of Claude Code as your design partner who helps you think through complex problems creatively.
 
-### When you need creative thinking → Use subprocess → Subprocess consults Claude Code.
+### When you need creative thinking → Use subprocess → Subprocess consults Claude Code
 
 ## Claude vs Codex vs Gemini: Choose the Right Tool
 
@@ -111,7 +111,7 @@ Skip Claude Code for:
 
 ## How to Consult (via Subprocess)
 
-### IMPORTANT: Use subprocess to preserve main context.
+### IMPORTANT: Use subprocess to preserve main context
 
 ### Recommended: Subprocess Pattern
 
@@ -137,7 +137,7 @@ Create a background subprocess that calls Claude Code:
 
 ### Subprocess Patterns by Task Type
 
-### Design Ideation Pattern:
+### Design Ideation Pattern
 
 ```bash
 claude -p "Generate 3-5 design alternatives for {feature}.
@@ -147,7 +147,7 @@ Include pros/cons and architectural implications." \
   2>/dev/null > .claude/docs/design/design-alternatives.md
 ```
 
-### Requirement Clarification Pattern:
+### Requirement Clarification Pattern
 
 ```bash
 claude -p "The user requested: '{vague_request}'.
@@ -157,7 +157,7 @@ Explore possible interpretations and create clarifying questions." \
   2>/dev/null > .claude/docs/design/requirement-clarification.md
 ```
 
-### Bulk File Operation Pattern:
+### Bulk File Operation Pattern
 
 ```bash
 claude -p "Bulk operation task: {description}
@@ -168,7 +168,7 @@ Operation: {operation_details}" \
   2>/dev/null > .claude/docs/design/bulk-operation-log.md
 ```
 
-### Architectural Design Pattern:
+### Architectural Design Pattern
 
 ```bash
 claude -p "Design architecture for {system}.
@@ -331,4 +331,4 @@ ls -la ~/.claude/
 claude -p "test" --model sonnet 2>&1 | head
 ```
 
-### Use Claude Code (via subprocess) for creative design, Codex for reasoning, Gemini for research.
+### Use Claude Code (via subprocess) for creative design, Codex for reasoning, Gemini for research

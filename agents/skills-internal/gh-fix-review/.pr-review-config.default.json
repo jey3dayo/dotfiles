@@ -17,44 +17,15 @@
       "emoji": "🔴"
     },
     "high": {
-      "keywords": [
-        "important",
-        "major",
-        "should fix",
-        "required",
-        "blocking",
-        "urgent",
-        "必須",
-        "重要",
-        "緊急"
-      ],
+      "keywords": ["important", "major", "should fix", "required", "blocking", "urgent", "必須", "重要", "緊急"],
       "emoji": "🟠"
     },
     "major": {
-      "keywords": [
-        "consider",
-        "recommend",
-        "improvement",
-        "optimize",
-        "refactor",
-        "推奨",
-        "改善",
-        "最適化"
-      ],
+      "keywords": ["consider", "recommend", "improvement", "optimize", "refactor", "推奨", "改善", "最適化"],
       "emoji": "🟡"
     },
     "minor": {
-      "keywords": [
-        "nit",
-        "style",
-        "formatting",
-        "typo",
-        "suggestion",
-        "optional",
-        "軽微",
-        "スタイル",
-        "提案"
-      ],
+      "keywords": ["nit", "style", "formatting", "typo", "suggestion", "optional", "軽微", "スタイル", "提案"],
       "emoji": "🟢"
     }
   },
@@ -91,17 +62,7 @@
       "description": "Performance optimization"
     },
     "bug": {
-      "keywords": [
-        "bug",
-        "error",
-        "broken",
-        "fail",
-        "incorrect",
-        "wrong",
-        "バグ",
-        "エラー",
-        "不具合"
-      ],
+      "keywords": ["bug", "error", "broken", "fail", "incorrect", "wrong", "バグ", "エラー", "不具合"],
       "description": "Bug fixes"
     },
     "style": {
@@ -120,16 +81,7 @@
       "description": "Code style and formatting"
     },
     "refactor": {
-      "keywords": [
-        "refactor",
-        "clean",
-        "simplify",
-        "duplication",
-        "dry",
-        "リファクタリング",
-        "重複",
-        "簡素化"
-      ],
+      "keywords": ["refactor", "clean", "simplify", "duplication", "dry", "リファクタリング", "重複", "簡素化"],
       "description": "Code refactoring"
     },
     "test": {
@@ -145,14 +97,7 @@
       "description": "Accessibility improvements"
     },
     "i18n": {
-      "keywords": [
-        "i18n",
-        "internationalization",
-        "localization",
-        "translation",
-        "国際化",
-        "多言語"
-      ],
+      "keywords": ["i18n", "internationalization", "localization", "translation", "国際化", "多言語"],
       "description": "Internationalization"
     }
   },

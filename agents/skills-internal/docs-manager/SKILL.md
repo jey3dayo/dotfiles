@@ -422,7 +422,7 @@ Reference documentation and validation rules:
 
 **Problem:** No `.docs-manager-config.json` found
 
-### Solution:
+### Solution
 
 Uses generic defaults with `./docs` as documentation root. To customize:
 
@@ -435,7 +435,7 @@ cp templates/docs-manager-config.template.json .docs-manager-config.json
 
 **Problem:** Document lacks required metadata fields
 
-### Solution:
+### Solution
 
 Add complete metadata block at document top using configured format:
 
@@ -451,7 +451,7 @@ Add complete metadata block at document top using configured format:
 
 **Problem:** Tags missing prefix or using wrong separator
 
-### Solution:
+### Solution
 
 - Use `prefix/value` format
 - Check configured tag separator (comma vs. space)
@@ -461,7 +461,7 @@ Add complete metadata block at document top using configured format:
 
 **Problem:** Document exceeds configured maximum size
 
-### Solution:
+### Solution
 
 1. Identify logical section boundaries
 2. Create separate files for major topics
@@ -472,7 +472,7 @@ Add complete metadata block at document top using configured format:
 
 **Problem:** Internal or external links not working
 
-### Solution:
+### Solution
 
 - Use relative paths for internal links (relative to `docs_root`)
 - Run configured link checker regularly

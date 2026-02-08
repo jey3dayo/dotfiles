@@ -32,7 +32,7 @@ Define what the task actually does:
 - **Execution**: Runs serially inside the task's shell
 - **Usage**: Core logic, command sequences, inline sub-tasks
 
-### Example:
+### Example
 
 ```toml
 [tasks.test]
@@ -51,7 +51,7 @@ Declare what must complete before this task starts:
 - **Execution**: Builds global DAG, runs once, enables parallelism
 - **Usage**: Ordering constraints, shared setup tasks, fan-out patterns
 
-### Example:
+### Example
 
 ```toml
 [tasks.test]
@@ -60,7 +60,7 @@ depends = ["build", "lint"]  # Parallel execution
 run = "cargo test"
 ```
 
-### Key Distinction:
+### Key Distinction
 
 - `run`: WHAT this task does (imperative)
 - `depends`: WHAT must finish BEFORE (declarative)
@@ -69,13 +69,13 @@ run = "cargo test"
 
 Design effective task shortcuts for developer productivity.
 
-### Alias Strategy:
+### Alias Strategy
 
 - **Single character** (`b`, `t`, `l`): Daily-use tasks (build, test, lint)
 - **Two characters** (`cb`, `fmt`, `ci`): Common operations
 - **Prefix with `+`** (`+ci`, `+all`): Meta-tasks that orchestrate others
 
-### Example:
+### Example
 
 ```toml
 [tasks.build]
@@ -138,14 +138,14 @@ prisma migrate deploy
 
 Organize mise.toml for maintainability and clarity.
 
-### Recommended Order:
+### Recommended Order
 
 1. `[settings]` - Global mise settings
 2. `[env]` - Project-wide environment variables
 3. `[tools]` - Tool versions
 4. `[tasks]` - Task definitions (see internal structure below)
 
-### Task Section Internal Structure:
+### Task Section Internal Structure
 
 Within the `[tasks]` section, organize tasks logically by responsibility:
 
@@ -161,7 +161,7 @@ Within the `[tasks]` section, organize tasks logically by responsibility:
    - Example: `ci`, `+all`, `release`
    - Characteristics: High-level coordination, often used in CI/CD
 
-### Recommended Comment Structure:
+### Recommended Comment Structure
 
 ```toml
 # ========================================
@@ -189,7 +189,7 @@ Within the `[tasks]` section, organize tasks logically by responsibility:
 depends = ["format", "lint", "test", "build"]
 ```
 
-### Example:
+### Example
 
 ```toml
 # mise.toml
@@ -219,7 +219,7 @@ Manage language runtimes and global packages in a unified, version-controlled ma
 - **✅ DO**: Declare ALL npm and Python packages in `mise.toml` using `"npm:<package>"` or `"pipx:<package>"`
 - **❌ DON'T**: Use `npm install -g` or `pip install --user` - leads to drift and reproducibility issues
 
-### Tool Categories:
+### Tool Categories
 
 ```toml
 [tools]
@@ -242,14 +242,14 @@ shellcheck = "latest"
 "pipx:ruff" = "latest"
 ```
 
-### Migration from global-package.json:
+### Migration from global-package.json
 
 1. Convert each dependency to `"npm:<package-name>" = "latest"`
 2. Remove `global-package.json` and update docs
 3. Run `mise install` to install all tools
 4. Verify with `mise ls` and `which <command>`
 
-### Benefits:
+### Benefits
 
 - Single source of truth for all tools and packages
 - Version control and team consistency
@@ -262,19 +262,19 @@ shellcheck = "latest"
 
 Leverage mise's advanced capabilities for complex workflows.
 
-### Additional Dependencies:
+### Additional Dependencies
 
 - `depends_post`: Tasks that run after this task completes
 - `wait_for`: Soft dependency (only waits if already running)
 
-### Task Properties:
+### Task Properties
 
 - `retry`: Number of retries on failure
 - `timeout`: Maximum execution time
 - `dir`: Working directory override
 - `env`: Task-specific environment variables
 
-### Example:
+### Example
 
 ```toml
 [tasks.integration-test]
@@ -349,14 +349,14 @@ When reviewing existing mise.toml:
 
 ### Issue: Nested mise Calls
 
-### Problem:
+### Problem
 
 ```toml
 [tasks.bad]
 run = "mise build && mise test"  # ❌ Creates nested processes
 ```
 
-### Solution:
+### Solution
 
 ```toml
 [tasks.good]
@@ -368,7 +368,7 @@ run = [
 
 ### Issue: Wrong Dependency Type
 
-### Problem:
+### Problem
 
 ```toml
 [tasks.test]
@@ -378,7 +378,7 @@ run = [
 ]
 ```
 
-### Solution:
+### Solution
 
 ```toml
 [tasks.test]
@@ -388,7 +388,7 @@ run = "cargo test"
 
 ### Issue: Missing Parallelism
 
-### Problem:
+### Problem
 
 ```toml
 [tasks.ci]
@@ -399,7 +399,7 @@ run = [
 ]  # ❌ All serial
 ```
 
-### Solution:
+### Solution
 
 ```toml
 [tasks.ci]

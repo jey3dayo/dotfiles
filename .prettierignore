@@ -11,7 +11,16 @@ codex/AGENTS.md
 opencode/AGENTS.md
 claude/local/node_modules/
 agents/skills/
-agents/skills-internal/
+
+# JS/TS/JSON are formatted by Biome
+**/*.js
+**/*.cjs
+**/*.mjs
+**/*.ts
+**/*.mts
+**/*.tsx
+**/*.jsx
+**/*.json
 
 # Auto-generated files (external tools)
 AWS VPN Client/

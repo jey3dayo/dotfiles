@@ -18,14 +18,7 @@
       "emoji": "🔴"
     },
     "high": {
-      "keywords": [
-        "permission",
-        "access control",
-        "encryption",
-        "validation",
-        "sanitize",
-        "escape"
-      ],
+      "keywords": ["permission", "access control", "encryption", "validation", "sanitize", "escape"],
       "emoji": "🟠"
     },
     "major": {

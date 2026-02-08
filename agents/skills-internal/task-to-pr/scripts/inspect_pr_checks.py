@@ -83,13 +83,17 @@ def parse_args() -> argparse.Namespace:
         ),
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--repo", default=".", help="Path inside the target Git repository.")
+    parser.add_argument(
+        "--repo", default=".", help="Path inside the target Git repository."
+    )
     parser.add_argument(
         "--pr", default=None, help="PR number or URL (defaults to current branch PR)."
     )
     parser.add_argument("--max-lines", type=int, default=DEFAULT_MAX_LINES)
     parser.add_argument("--context", type=int, default=DEFAULT_CONTEXT_LINES)
-    parser.add_argument("--json", action="store_true", help="Emit JSON instead of text output.")
+    parser.add_argument(
+        "--json", action="store_true", help="Emit JSON instead of text output."
+    )
     return parser.parse_args()
 
 
@@ -180,7 +184,14 @@ def resolve_pr(pr_value: str | None, repo_root: Path) -> str | None:
 
 
 def fetch_checks(pr_value: str, repo_root: Path) -> list[dict[str, Any]] | None:
-    primary_fields = ["name", "state", "conclusion", "detailsUrl", "startedAt", "completedAt"]
+    primary_fields = [
+        "name",
+        "state",
+        "conclusion",
+        "detailsUrl",
+        "startedAt",
+        "completedAt",
+    ]
     result = run_gh_command(
         ["pr", "checks", pr_value, "--json", ",".join(primary_fields)],
         cwd=repo_root,
@@ -198,7 +209,9 @@ def fetch_checks(pr_value: str, repo_root: Path) -> list[dict[str, Any]] | None:
                 "completedAt",
                 "workflow",
             ]
-            selected_fields = [field for field in fallback_fields if field in available_fields]
+            selected_fields = [
+                field for field in fallback_fields if field in available_fields
+            ]
             if not selected_fields:
                 print("Error: No available fields for gh pr checks.", file=sys.stderr)
                 return None
@@ -318,7 +331,9 @@ def fetch_run_metadata(run_id: str, repo_root: Path) -> dict[str, Any] | None:
         "headSha",
         "url",
     ]
-    result = run_gh_command(["run", "view", run_id, "--json", ",".join(fields)], cwd=repo_root)
+    result = run_gh_command(
+        ["run", "view", run_id, "--json", ",".join(fields)], cwd=repo_root
+    )
     if result.returncode != 0:
         return None
     try:
@@ -368,7 +383,9 @@ def fetch_job_log(job_id: str, repo_root: Path) -> tuple[str, str]:
     if not repo_slug:
         return "", "Error: Unable to resolve repository name for job logs."
     endpoint = f"/repos/{repo_slug}/actions/jobs/{job_id}/logs"
-    returncode, stdout_bytes, stderr = run_gh_command_raw(["api", endpoint], cwd=repo_root)
+    returncode, stdout_bytes, stderr = run_gh_command_raw(
+        ["api", endpoint], cwd=repo_root
+    )
     if returncode != 0:
         message = (stderr or stdout_bytes.decode(errors="replace")).strip()
         return "", message or "gh api job logs failed"

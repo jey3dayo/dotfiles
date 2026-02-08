@@ -29,8 +29,8 @@
       "!**/.vim/lazy-lock.json",
       "!**/.surfingkeys.js",
       "!**/agents/skills",
-      "!**/agents/skills-internal",
       "!**/agents/scripts",
+      "!**/result",
       "!**/AWS VPN Client",
       "!**/configstore"
     ]

@@ -34,7 +34,7 @@ rust = "stable"
 
 ### run – WHAT THIS TASK DOES
 
-### Characteristics:
+### Characteristics
 
 - Mandatory key for every task
 - Can be a single string, an array of strings, or an array mixing scripts and task objects
@@ -45,7 +45,7 @@ rust = "stable"
 
 **Use Case:** A "build-then-package" meta-task
 
-### Example:
+### Example
 
 ```toml
 [tasks.release]
@@ -58,7 +58,7 @@ run = [
 
 ### depends – WHAT MUST FINISH _BEFORE_ THIS TASK CAN START
 
-### Characteristics:
+### Characteristics
 
 - Pure declarative prerequisites
 - Accepts a list of task names (optionally with args)
@@ -70,7 +70,7 @@ run = [
 
 **Use Case:** Fan-out parallelism with proper prerequisites
 
-### Example:
+### Example
 
 ```toml
 [tasks.test]
@@ -226,7 +226,7 @@ steps:
 
 ### ✗ Calling mise Inside run Strings
 
-### Problem:
+### Problem
 
 ```toml
 [tasks.bad]
@@ -249,7 +249,7 @@ run = [
 
 mise will detect and error, but it's often quicker to run `mise task deps <task>` to visualise before committing.
 
-### Example:
+### Example
 
 ```bash
 mise task deps test
@@ -259,7 +259,7 @@ mise task deps test
 
 Remember they are global within one mise.toml.
 
-### Problem:
+### Problem
 
 ```toml
 [tasks.test]
@@ -273,7 +273,7 @@ alias = ["t"]  # ❌ Conflict
 
 ### Additional Dependencies
 
-### depends_post:
+### depends_post
 
 ```toml
 [tasks.test]
@@ -282,7 +282,7 @@ depends_post = ["cleanup"]  # Runs after test completes
 run = "pytest"
 ```
 
-### wait_for:
+### wait_for
 
 ```toml
 [tasks.integration-test]
@@ -292,7 +292,7 @@ run = "pytest tests/integration"
 
 ### Task Properties
 
-### Complete Example:
+### Complete Example
 
 ```toml
 [tasks.e2e]

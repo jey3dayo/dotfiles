@@ -18,7 +18,7 @@ metadata:
 
 以下のようなリクエストで起動します：
 
-### 日本語:
+### 日本語
 
 - "mainと同期して"
 - "最新にして"
@@ -26,7 +26,7 @@ metadata:
 - "デフォルトブランチから更新"
 - "main/master/developからpull"
 
-### 英語:
+### 英語
 
 - "sync with origin"
 - "pull main"
@@ -50,7 +50,7 @@ git status --short
 # 未コミットの変更がある場合は警告
 ```
 
-### 未コミットの変更がある場合:
+### 未コミットの変更がある場合
 
 - ユーザーに確認を求める
 - オプション提示: stash、commit、または作業を中断
@@ -64,13 +64,13 @@ git status --short
 bash ~/.agents/skills/sync-origin/scripts/detect-default-branch.sh [remote-name]
 ```
 
-### 検出方法（優先順）:
+### 検出方法（優先順）
 
 1. `git symbolic-ref refs/remotes/origin/HEAD`
 2. `git remote show origin | grep "HEAD branch"`
 3. 一般的なブランチ名のチェック（main, master, develop）
 
-### 明示的な指定:
+### 明示的な指定
 
 ユーザーが `--base <branch>` を指定した場合は、その値を優先します。
 
@@ -132,7 +132,7 @@ git diff --name-only --diff-filter=U
 git diff <file>
 ```
 
-### 提示する選択肢:
+### 提示する選択肢
 
 - ファイルごとに内容を確認して手動マージ
 - `git checkout --ours <file>` で現在の変更を維持
@@ -221,7 +221,7 @@ git rebase --autostash origin/<default-branch>
 
 ### 4. コンフリクトが解決できない
 
-### 対処手順:
+### 対処手順
 
 1. 現在の状態を保存: `git stash`
 2. クリーンな状態から再試行
@@ -281,18 +281,18 @@ git rebase --autostash origin/<default-branch>
 
 リモートのデフォルトブランチを検出するBashスクリプト。
 
-### 使用方法:
+### 使用方法
 
 ```bash
 bash ~/.agents/skills/sync-origin/scripts/detect-default-branch.sh [remote-name]
 ```
 
-### 出力:
+### 出力
 
 - 成功: デフォルトブランチ名（例: main）
 - 失敗: エラーメッセージ（stderr）、exit code 1
 
-### 検出ロジック:
+### 検出ロジック
 
 1. `git symbolic-ref` による検出
 2. `git remote show` による検出

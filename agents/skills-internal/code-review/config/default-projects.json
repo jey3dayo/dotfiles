@@ -95,11 +95,7 @@
           "error_handling": 0.1,
           "architecture": 0.15
         },
-        "guidelines": [
-          "evaluation-guidelines.md",
-          "typescript/guidelines.md",
-          "react/guidelines.md"
-        ]
+        "guidelines": ["evaluation-guidelines.md", "typescript/guidelines.md", "react/guidelines.md"]
       }
     },
     {
@@ -242,11 +238,7 @@
           "error_handling": 0.15,
           "architecture": 0.1
         },
-        "guidelines": [
-          "evaluation-guidelines.md",
-          "typescript/guidelines.md",
-          "security/guidelines.md"
-        ]
+        "guidelines": ["evaluation-guidelines.md", "typescript/guidelines.md", "security/guidelines.md"]
       }
     },
     {

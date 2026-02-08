@@ -5,9 +5,9 @@
  * for calendar and schedule applications.
  */
 
-import React from 'react';
-import { Layout } from 'react-grid-layout';
-import { SafeGridLayout } from './safe-wrapper';
+import React from "react";
+import type { Layout } from "react-grid-layout";
+import { SafeGridLayout } from "./safe-wrapper";
 
 /**
  * LayoutsById: Fast O(1) lookup by ID
@@ -19,10 +19,10 @@ type LayoutsById = Record<string, Layout>;
  */
 interface TimedLayoutInput {
   id: string;
-  baseLayoutKey: string;  // Reference layout for x position (e.g., "room-A")
-  startKey: string;       // Time slot key for start position (e.g., "time-09:00")
-  endKey: string;         // Time slot key for end position (e.g., "time-11:00")
-  width: number;          // Width in grid units
+  baseLayoutKey: string; // Reference layout for x position (e.g., "room-A")
+  startKey: string; // Time slot key for start position (e.g., "time-09:00")
+  endKey: string; // Time slot key for end position (e.g., "time-11:00")
+  width: number; // Width in grid units
   layoutsById: LayoutsById;
   static?: boolean;
 }
@@ -51,7 +51,7 @@ export const createTimedSpanLayout = ({
 
   // Validate all required data is available
   if (x === undefined || startY === null || endY === null) {
-    console.warn('[createTimedSpanLayout] Missing required data:', {
+    console.warn("[createTimedSpanLayout] Missing required data:", {
       id,
       baseLayoutKey,
       startKey,
@@ -60,7 +60,7 @@ export const createTimedSpanLayout = ({
       hasStartY: startY !== null,
       hasEndY: endY !== null,
     });
-    return null;  // Return null if data incomplete
+    return null; // Return null if data incomplete
   }
 
   // Calculate height from time span
@@ -84,7 +84,7 @@ export function SimpleCalendarExample() {
     const layoutsById: LayoutsById = {};
 
     // Step 1: Register time slots
-    const timeSlots = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'];
+    const timeSlots = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
     timeSlots.forEach((time, index) => {
       layoutsById[`time-${time}`] = {
         i: `time-${time}`,
@@ -98,11 +98,11 @@ export function SimpleCalendarExample() {
 
     // Step 2: Register rooms
     const rooms = [
-      { id: 'room-A', name: 'Room A', x: 2 },
-      { id: 'room-B', name: 'Room B', x: 6 },
-      { id: 'room-C', name: 'Room C', x: 10 },
+      { id: "room-A", name: "Room A", x: 2 },
+      { id: "room-B", name: "Room B", x: 6 },
+      { id: "room-C", name: "Room C", x: 10 },
     ];
-    rooms.forEach(room => {
+    rooms.forEach((room) => {
       layoutsById[room.id] = {
         i: room.id,
         x: room.x,
@@ -116,30 +116,30 @@ export function SimpleCalendarExample() {
     // Step 3: Generate event layouts using time-based pattern
     const events = [
       {
-        id: 'event-1',
-        roomId: 'room-A',
-        startTime: '09:00',
-        endTime: '11:00',
-        name: 'Meeting A',
+        id: "event-1",
+        roomId: "room-A",
+        startTime: "09:00",
+        endTime: "11:00",
+        name: "Meeting A",
       },
       {
-        id: 'event-2',
-        roomId: 'room-B',
-        startTime: '10:00',
-        endTime: '12:00',
-        name: 'Workshop B',
+        id: "event-2",
+        roomId: "room-B",
+        startTime: "10:00",
+        endTime: "12:00",
+        name: "Workshop B",
       },
       {
-        id: 'event-3',
-        roomId: 'room-C',
-        startTime: '13:00',
-        endTime: '14:00',
-        name: 'Presentation C',
+        id: "event-3",
+        roomId: "room-C",
+        startTime: "13:00",
+        endTime: "14:00",
+        name: "Presentation C",
       },
     ];
 
     const eventLayouts = events
-      .map(event =>
+      .map((event) =>
         createTimedSpanLayout({
           id: event.id,
           baseLayoutKey: event.roomId,
@@ -147,18 +147,18 @@ export function SimpleCalendarExample() {
           endKey: `time-${event.endTime}`,
           width: 4,
           layoutsById,
-        })
+        }),
       )
       .filter((layout): layout is Layout => layout !== null);
 
     // Combine all layouts
     const allLayouts = [
-      ...timeSlots.map(time => layoutsById[`time-${time}`]),
-      ...rooms.map(room => layoutsById[room.id]),
+      ...timeSlots.map((time) => layoutsById[`time-${time}`]),
+      ...rooms.map((room) => layoutsById[room.id]),
       ...eventLayouts,
     ];
 
-    console.log('[SimpleCalendar] Generated layouts:', {
+    console.log("[SimpleCalendar] Generated layouts:", {
       timeSlots: timeSlots.length,
       rooms: rooms.length,
       events: eventLayouts.length,
@@ -177,7 +177,7 @@ export function SimpleCalendarExample() {
   const gridWidth = cols * 24;
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: "20px" }}>
       <h1>Simple Calendar Example</h1>
 
       <div className="info">
@@ -205,21 +205,16 @@ export function SimpleCalendarExample() {
         isResizable={false}
         useCSSTransforms={true}
       >
-        {layout.map(item => {
-          const isTimeSlot = item.i.startsWith('time-');
-          const isRoom = item.i.startsWith('room-');
-          const isEvent = item.i.startsWith('event-');
+        {layout.map((item) => {
+          const isTimeSlot = item.i.startsWith("time-");
+          const isRoom = item.i.startsWith("room-");
+          const isEvent = item.i.startsWith("event-");
 
           return (
-            <div
-              key={item.i}
-              className={`grid-item ${
-                isTimeSlot ? 'time-slot' : isRoom ? 'room' : 'event'
-              }`}
-            >
-              {isTimeSlot && item.i.replace('time-', '')}
-              {isRoom && item.i.replace('room-', 'Room ')}
-              {isEvent && item.i.replace('event-', 'Event ')}
+            <div key={item.i} className={`grid-item ${isTimeSlot ? "time-slot" : isRoom ? "room" : "event"}`}>
+              {isTimeSlot && item.i.replace("time-", "")}
+              {isRoom && item.i.replace("room-", "Room ")}
+              {isEvent && item.i.replace("event-", "Event ")}
             </div>
           );
         })}
@@ -287,7 +282,7 @@ export function AdvancedCalendarExample() {
     const layoutsById: LayoutsById = {};
 
     // Register time grid (30-minute intervals)
-    const times = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00'];
+    const times = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"];
     times.forEach((time, index) => {
       layoutsById[`time-${time}`] = {
         i: `time-${time}`,
@@ -301,10 +296,10 @@ export function AdvancedCalendarExample() {
 
     // Register multiple floors
     const floors = [
-      { id: 'floor-1', name: '1F', x: 2, w: 6 },
-      { id: 'floor-2', name: '2F', x: 8, w: 6 },
+      { id: "floor-1", name: "1F", x: 2, w: 6 },
+      { id: "floor-2", name: "2F", x: 8, w: 6 },
     ];
-    floors.forEach(floor => {
+    floors.forEach((floor) => {
       layoutsById[floor.id] = {
         i: floor.id,
         x: floor.x,
@@ -317,12 +312,12 @@ export function AdvancedCalendarExample() {
 
     // Register rooms within floors
     const rooms = [
-      { id: 'room-101', floorId: 'floor-1', x: 2, w: 3 },
-      { id: 'room-102', floorId: 'floor-1', x: 5, w: 3 },
-      { id: 'room-201', floorId: 'floor-2', x: 8, w: 3 },
-      { id: 'room-202', floorId: 'floor-2', x: 11, w: 3 },
+      { id: "room-101", floorId: "floor-1", x: 2, w: 3 },
+      { id: "room-102", floorId: "floor-1", x: 5, w: 3 },
+      { id: "room-201", floorId: "floor-2", x: 8, w: 3 },
+      { id: "room-202", floorId: "floor-2", x: 11, w: 3 },
     ];
-    rooms.forEach(room => {
+    rooms.forEach((room) => {
       layoutsById[room.id] = {
         i: room.id,
         x: room.x,
@@ -336,42 +331,42 @@ export function AdvancedCalendarExample() {
     // Generate reservations with varying durations
     const reservations = [
       {
-        id: 'reservation-1',
-        roomId: 'room-101',
-        startTime: '09:00',
-        endTime: '10:30',
+        id: "reservation-1",
+        roomId: "room-101",
+        startTime: "09:00",
+        endTime: "10:30",
       },
       {
-        id: 'reservation-2',
-        roomId: 'room-102',
-        startTime: '10:00',
-        endTime: '11:00',
+        id: "reservation-2",
+        roomId: "room-102",
+        startTime: "10:00",
+        endTime: "11:00",
       },
       {
-        id: 'reservation-3',
-        roomId: 'room-201',
-        startTime: '09:30',
-        endTime: '12:00',
+        id: "reservation-3",
+        roomId: "room-201",
+        startTime: "09:30",
+        endTime: "12:00",
       },
     ];
 
     const reservationLayouts = reservations
-      .map(reservation =>
+      .map((reservation) =>
         createTimedSpanLayout({
           id: reservation.id,
           baseLayoutKey: reservation.roomId,
           startKey: `time-${reservation.startTime}`,
           endKey: `time-${reservation.endTime}`,
-          width: rooms.find(r => r.id === reservation.roomId)?.w || 3,
+          width: rooms.find((r) => r.id === reservation.roomId)?.w || 3,
           layoutsById,
-        })
+        }),
       )
       .filter((layout): layout is Layout => layout !== null);
 
     return [
-      ...times.map(time => layoutsById[`time-${time}`]),
-      ...floors.map(floor => layoutsById[floor.id]),
-      ...rooms.map(room => layoutsById[room.id]),
+      ...times.map((time) => layoutsById[`time-${time}`]),
+      ...floors.map((floor) => layoutsById[floor.id]),
+      ...rooms.map((room) => layoutsById[room.id]),
       ...reservationLayouts,
     ];
   }, []);
@@ -384,7 +379,7 @@ export function AdvancedCalendarExample() {
   const gridWidth = cols * 24;
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: "20px" }}>
       <h1>Advanced Calendar Example</h1>
 
       <div className="features">
@@ -409,26 +404,26 @@ export function AdvancedCalendarExample() {
         isDraggable={false}
         isResizable={false}
       >
-        {layout.map(item => {
-          const isTime = item.i.startsWith('time-');
-          const isFloor = item.i.startsWith('floor-');
-          const isRoom = item.i.startsWith('room-');
-          const isReservation = item.i.startsWith('reservation-');
+        {layout.map((item) => {
+          const isTime = item.i.startsWith("time-");
+          const isFloor = item.i.startsWith("floor-");
+          const isRoom = item.i.startsWith("room-");
+          const isReservation = item.i.startsWith("reservation-");
 
-          let className = 'grid-item';
+          let className = "grid-item";
           let content = item.i;
 
           if (isTime) {
-            className += ' time';
-            content = item.i.replace('time-', '');
+            className += " time";
+            content = item.i.replace("time-", "");
           } else if (isFloor) {
-            className += ' floor';
-            content = item.i.replace('floor-', 'Floor ');
+            className += " floor";
+            content = item.i.replace("floor-", "Floor ");
           } else if (isRoom) {
-            className += ' room';
-            content = `Room ${item.i.replace('room-', '')}`;
+            className += " room";
+            content = `Room ${item.i.replace("room-", "")}`;
           } else if (isReservation) {
-            className += ' reservation';
+            className += " reservation";
             content = `Reserved (${item.h * 30}min)`;
           }
 

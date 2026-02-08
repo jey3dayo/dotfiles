@@ -234,12 +234,12 @@ export default function CalendarPage() {
 }
 ```
 
-### Pros:
+### Pros
 
 - Simple and clean
 - No SSR complexity
 
-### Cons:
+### Cons
 
 - Component not rendered on server
 - May impact SEO if grid content is important
@@ -262,13 +262,13 @@ const gridWidth = cols * 24;  // Fixed calculation
 </SafeGridLayout>
 ```
 
-### Pros:
+### Pros
 
 - SSR-compatible
 - Predictable rendering
 - No hydration mismatches
 
-### Cons:
+### Cons
 
 - Not responsive to container size
 - Requires manual width management

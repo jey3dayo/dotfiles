@@ -60,7 +60,7 @@ depends = ["docs:lint", "docs:format:check", "docs:links"]
 
 ### Pattern 1: Namespace Organization
 
-### Structure:
+### Structure
 
 ```toml
 [tasks."docs:lint"]
@@ -70,13 +70,13 @@ depends = ["docs:lint", "docs:format:check", "docs:links"]
 [tasks."docs:format:check"]
 ```
 
-### Benefits:
+### Benefits
 
 - Groups related tasks with `:` separator
 - Clear hierarchy: `docs:operation:variant`
 - Easy to discover related tasks with `mise tasks | grep docs:`
 
-### Usage:
+### Usage
 
 ```bash
 mise docs:lint          # Run specific task
@@ -85,7 +85,7 @@ mise tasks | grep docs: # List all docs tasks
 
 ### Pattern 2: Check/Fix Pairs
 
-### Pattern:
+### Pattern
 
 ```toml
 [tasks."docs:format:check"]
@@ -97,13 +97,13 @@ description = "Prettierでフォーマット"
 run = "prettier --write --cache '...'"
 ```
 
-### Convention:
+### Convention
 
 - `:check` suffix for validation (CI-friendly)
 - No suffix for modification (developer-friendly)
 - Base command is the action, check is the variant
 
-### Benefits:
+### Benefits
 
 - Clear intent: check vs modify
 - CI uses `:check` tasks
@@ -111,7 +111,7 @@ run = "prettier --write --cache '...'"
 
 ### Pattern 3: Meta-Tasks with depends
 
-### Implementation:
+### Implementation
 
 ```toml
 [tasks.format]
@@ -123,13 +123,13 @@ description = "全体検証(修正はしない)"
 depends = ["docs:lint", "docs:format:check", "docs:links"]
 ```
 
-### Key Points:
+### Key Points
 
 - **No run property** - Pure orchestration via depends
 - **Parallel execution** - All dependencies run concurrently
 - **Short aliases** - `format` and `lint` are easy to type
 
-### Execution Flow:
+### Execution Flow
 
 ```bash
 mise format
@@ -146,7 +146,7 @@ mise lint
 
 ### Pattern 4: Tool Version Management
 
-### Configuration:
+### Configuration
 
 ```toml
 [tools]
@@ -155,13 +155,13 @@ fd = 'latest'       # ファイル検索用
 prettier = 'latest' # コードフォーマッター
 ```
 
-### Benefits:
+### Benefits
 
 - Explicit version control
 - Comments explain tool purpose
 - Team uses consistent versions
 
-### Alternative Patterns:
+### Alternative Patterns
 
 ```toml
 [tools]
@@ -172,20 +172,20 @@ node = "latest"     # Always latest (not recommended for reproducibility)
 
 ### Pattern 5: Environment Path Extension
 
-### Configuration:
+### Configuration
 
 ```toml
 [env]
 _.path = ['./node_modules/.bin']
 ```
 
-### Purpose:
+### Purpose
 
 - Add `node_modules/.bin` to PATH
 - Use npm-installed tools without npx
 - Enables direct command usage in tasks
 
-### Effect:
+### Effect
 
 ```bash
 # Without _.path
@@ -223,7 +223,7 @@ mise docs:links
 
 ### Task Composition
 
-### Building Complex Workflows:
+### Building Complex Workflows
 
 ```toml
 # Individual tasks (fine-grained)
@@ -243,7 +243,7 @@ depends = ["lint", "test", "build"]
 
 ### 1. Use depends for Orchestration
 
-### Before (Sequential):
+### Before (Sequential)
 
 ```toml
 [tasks.format-all]
@@ -253,14 +253,14 @@ run = [
 ]
 ```
 
-### After (Parallel):
+### After (Parallel)
 
 ```toml
 [tasks.format]
 depends = ["docs:fix", "docs:format"]
 ```
 
-### Benefits:
+### Benefits
 
 - 2x faster (parallel execution)
 - Easier to maintain (reuse existing tasks)
@@ -268,12 +268,12 @@ depends = ["docs:fix", "docs:format"]
 
 ### 2. Consistent Naming
 
-### Pattern:
+### Pattern
 
 - `namespace:action:variant`
 - Examples: `docs:format`, `docs:format:check`, `docs:links:verbose`
 
-### Benefits:
+### Benefits
 
 - Predictable task names
 - Easy to grep and filter
@@ -281,14 +281,14 @@ depends = ["docs:fix", "docs:format"]
 
 ### 3. Short Meta-Task Names
 
-### Pattern:
+### Pattern
 
 ```toml
 [tasks.format]  # Not "format-all" or "format:all"
 [tasks.lint]    # Not "lint-all" or "lint:check"
 ```
 
-### Rationale:
+### Rationale
 
 - Quick to type
 - Common operations deserve simple names
@@ -298,7 +298,7 @@ depends = ["docs:fix", "docs:format"]
 
 ### ❌ Duplicate Logic
 
-### Bad:
+### Bad
 
 ```toml
 [tasks.format-md]
@@ -311,7 +311,7 @@ run = [
 ]
 ```
 
-### Good:
+### Good
 
 ```toml
 [tasks."docs:format"]
@@ -323,7 +323,7 @@ depends = ["docs:format", "code:format"]
 
 ### ❌ Missing depends for Parallel Work
 
-### Bad:
+### Bad
 
 ```toml
 [tasks.ci]
@@ -333,7 +333,7 @@ run = [
 ]  # Sequential
 ```
 
-### Good:
+### Good
 
 ```toml
 [tasks.ci]
@@ -342,7 +342,7 @@ depends = ["lint", "test"]  # Parallel
 
 ### ❌ Inconsistent Naming
 
-### Bad:
+### Bad
 
 ```toml
 [tasks.check-docs]
@@ -350,7 +350,7 @@ depends = ["lint", "test"]  # Parallel
 [tasks.lintMarkdown]
 ```
 
-### Good:
+### Good
 
 ```toml
 [tasks."docs:check"]
@@ -360,7 +360,7 @@ depends = ["lint", "test"]  # Parallel
 
 ## Summary
 
-### Key Takeaways:
+### Key Takeaways
 
 1. **Namespace with colons** - `docs:lint`, `docs:format`
 2. **Use depends for meta-tasks** - Enables parallelism
@@ -368,7 +368,7 @@ depends = ["lint", "test"]  # Parallel
 4. **Short names for common tasks** - `format`, `lint`, `test`
 5. **Tool version management** - Explicit in `[tools]`
 
-### Result:
+### Result
 
 - Fast parallel execution
 - Maintainable task definitions

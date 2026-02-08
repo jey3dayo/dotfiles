@@ -50,13 +50,7 @@
       "properties": {
         "type": {
           "type": "string",
-          "enum": [
-            "file_exists",
-            "file_pattern",
-            "file_content",
-            "package_dependency",
-            "directory_structure"
-          ],
+          "enum": ["file_exists", "file_pattern", "file_content", "package_dependency", "directory_structure"],
           "description": "Type of detector"
         },
         "path": {

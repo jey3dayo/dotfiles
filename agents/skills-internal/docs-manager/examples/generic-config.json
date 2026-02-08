@@ -21,15 +21,7 @@
     "config_file": ".markdown-link-check.json"
   },
   "tag_vocabulary": {
-    "category/": [
-      "documentation",
-      "guide",
-      "reference",
-      "api",
-      "tutorial",
-      "operations",
-      "architecture"
-    ],
+    "category/": ["documentation", "guide", "reference", "api", "tutorial", "operations", "architecture"],
     "audience/": ["developer", "user", "contributor", "maintainer", "beginner", "advanced"],
     "environment/": ["development", "staging", "production"]
   }

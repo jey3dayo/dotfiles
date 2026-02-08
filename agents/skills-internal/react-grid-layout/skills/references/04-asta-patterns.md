@@ -65,7 +65,7 @@ import {
 const gridWidth = cols * CALENDAR_ROW_HEIGHT;
 ```
 
-### Benefits:
+### Benefits
 
 - Centralized configuration
 - Easy to adjust dimensions globally
@@ -190,7 +190,7 @@ registerLayouts(roomLayouts, layoutsById);
 const roomLayout = layoutsById["room-123"];
 ```
 
-### Why use this pattern:
+### Why use this pattern
 
 - Fast lookups for time-based calculations
 - Prevents duplicate layout generation

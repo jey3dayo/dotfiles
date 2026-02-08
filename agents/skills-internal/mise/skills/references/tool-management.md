@@ -170,13 +170,13 @@ echo "Then run: mise install"
 
 ### 1. Runtimes (Language Implementations)
 
-### Characteristics:
+### Characteristics
 
 - Provide language interpreters/compilers
 - Often have ecosystem package managers (npm, pip, cargo, etc.)
 - Version-sensitive for compatibility
 
-### Examples:
+### Examples
 
 ```toml
 [tools]
@@ -192,7 +192,7 @@ ruby = "latest"
 go = "1.21"               # Latest 1.21.x
 ```
 
-### Version Selection Strategy:
+### Version Selection Strategy
 
 - **Project-local**: Pin specific versions for reproducibility
 - **User global**: Use `"latest"` for personal tools
@@ -200,13 +200,13 @@ go = "1.21"               # Latest 1.21.x
 
 ### 2. CLI Tools (Standalone Binaries)
 
-### Characteristics:
+### Characteristics
 
 - Self-contained executables
 - No runtime dependencies (or bundled)
 - Generally safe to use `"latest"`
 
-### Examples:
+### Examples
 
 ```toml
 [tools]
@@ -221,7 +221,7 @@ bat = "latest"            # Cat with syntax highlighting
 
 ### 3. NPM Global Packages
 
-### Characteristics:
+### Characteristics
 
 - JavaScript packages installed globally
 - Require Node.js runtime
@@ -229,7 +229,7 @@ bat = "latest"            # Cat with syntax highlighting
 
 **Prefix Syntax:** `"npm:<package-name>"`
 
-### Examples:
+### Examples
 
 ```toml
 [tools]
@@ -253,7 +253,7 @@ bat = "latest"            # Cat with syntax highlighting
 "npm:@vue/cli" = "latest"
 ```
 
-### Important Notes:
+### Important Notes
 
 - Scoped packages (starting with `@`) must include the full scope
 - Package names must match npm registry exactly
@@ -261,7 +261,7 @@ bat = "latest"            # Cat with syntax highlighting
 
 ### 4. Python Global Packages (via pipx)
 
-### Characteristics:
+### Characteristics
 
 - Python packages installed in isolated environments
 - Uses `pipx` for isolation (similar to `npx`)
@@ -269,7 +269,7 @@ bat = "latest"            # Cat with syntax highlighting
 
 **Prefix Syntax:** `"pipx:<package-name>"`
 
-### Examples:
+### Examples
 
 ```toml
 [tools]
@@ -291,7 +291,7 @@ bat = "latest"            # Cat with syntax highlighting
 "pipx:sphinx" = "latest"
 ```
 
-### Advantages of pipx:
+### Advantages of pipx
 
 - Each package in isolated virtual environment
 - No dependency conflicts
@@ -301,7 +301,7 @@ bat = "latest"            # Cat with syntax highlighting
 
 ### Shell Integration (Zsh Example)
 
-### Setup in `.zshrc`:
+### Setup in `.zshrc`
 
 ```zsh
 # Activate mise
@@ -315,7 +315,7 @@ export MISE_DATA_DIR="${HOME}/.local/share/mise"
 export MISE_CONFIG_DIR="${HOME}/.config/mise"
 ```
 
-### Benefits:
+### Benefits
 
 - Automatic PATH management
 - Tool shimming (fake binaries that route to mise-managed versions)
@@ -323,7 +323,7 @@ export MISE_CONFIG_DIR="${HOME}/.config/mise"
 
 ### Neovim Integration
 
-### Ensure tools are available:
+### Ensure tools are available
 
 ```toml
 [tools]
@@ -337,7 +337,7 @@ export MISE_CONFIG_DIR="${HOME}/.config/mise"
 "pipx:black" = "latest"
 ```
 
-### Neovim Lua Config:
+### Neovim Lua Config
 
 ```lua
 -- ~/.config/nvim/lua/config/mise.lua
@@ -358,7 +358,7 @@ end
 
 ### CI/CD Integration
 
-### GitHub Actions Example:
+### GitHub Actions Example
 
 ```yaml
 name: CI
@@ -389,7 +389,7 @@ jobs:
           python -m pytest
 ```
 
-### GitLab CI Example:
+### GitLab CI Example
 
 ```yaml
 default:
@@ -410,7 +410,7 @@ test:
 
 #### Issue 1: Tool Not Found After Installation
 
-### Symptoms:
+### Symptoms
 
 ```bash
 $ mise install
@@ -419,7 +419,7 @@ $ which prettier
 prettier not found
 ```
 
-### Solutions:
+### Solutions
 
 ```bash
 # 1. Verify installation
@@ -440,7 +440,7 @@ mise exec -- prettier --version
 
 #### Issue 2: Version Conflict with System Tools
 
-### Symptoms:
+### Symptoms
 
 ```bash
 $ which node
@@ -453,7 +453,7 @@ $ mise current node
 20.0.0  # mise thinks it's using v20
 ```
 
-### Solutions:
+### Solutions
 
 ```bash
 # 1. Check PATH order
@@ -474,7 +474,7 @@ which node  # Should now point to ~/.local/share/mise/...
 
 #### Issue 3: NPM Package Command Not Found
 
-### Symptoms:
+### Symptoms
 
 ```bash
 $ mise install "npm:prettier"
@@ -483,7 +483,7 @@ $ prettier --version
 prettier: command not found
 ```
 
-### Solutions:
+### Solutions
 
 ```bash
 # 1. Check if binary name differs from package name
@@ -506,14 +506,14 @@ mise install "npm:@angular/cli"
 
 #### Issue 4: Python pipx Package Issues
 
-### Symptoms:
+### Symptoms
 
 ```bash
 $ mise install "pipx:black"
 Error: pipx backend not available
 ```
 
-### Solutions:
+### Solutions
 
 ```bash
 # 1. Ensure pipx is installed
@@ -533,7 +533,7 @@ pipx list
 
 #### Slow Shell Startup
 
-### Diagnosis:
+### Diagnosis
 
 ```bash
 # Benchmark shell startup
@@ -543,7 +543,7 @@ time zsh -i -c exit
 time eval "$(mise activate zsh)"
 ```
 
-### Optimization:
+### Optimization
 
 ```zsh
 # ~/.zshrc
@@ -631,7 +631,7 @@ description = "CI pipeline"
 depends = ["format-check", "lint"]
 ```
 
-### Usage:
+### Usage
 
 ```bash
 mise run format      # Uses mise-managed prettier

@@ -7,7 +7,6 @@ claude/local/node_modules/
 
 # Imported agent skills (managed separately)
 agents/skills/
-agents/skills-internal/
 
 # Temporary symlinks
 codex/AGENTS.md

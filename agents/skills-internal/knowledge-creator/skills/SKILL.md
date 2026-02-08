@@ -75,7 +75,7 @@ Guide through creation process
 | **Command** | Interactive operation     | User invocation | Project-specific       | Manual     | ⚠️ Optional       |
 | **Rules**   | Constraints & guidelines  | Always active   | Project-specific       | Enforced   | ❌ Not applicable |
 
-### Agent Skills Standard Structure:
+### Agent Skills Standard Structure
 
 ```
 skill-name/
@@ -89,7 +89,7 @@ skill-name/
 
 #### Skill ✨
 
-### Best For:
+### Best For
 
 - Capability extension for agents (e.g., mise tool management, React patterns)
 - Technology-specific best practices with executable workflows
@@ -97,20 +97,20 @@ skill-name/
 - Knowledge requiring Progressive Disclosure (overview + detailed references)
 - Automation-ready procedures with optional scripts
 
-### Structure Components:
+### Structure Components
 
 - **SKILL.md**: YAML frontmatter + instructions (required)
 - **scripts/**: Automation workflows, validation tools (recommended)
 - **references/**: Detailed documentation (optional, for complex topics)
 - **assets/**: Templates, config files (optional)
 
-### Examples:
+### Examples
 
 - Tool ecosystem knowledge (mise, Docker, Kubernetes) + setup scripts
 - Framework patterns (React hooks, Vue composition API) + code generators
 - Language conventions (TypeScript best practices) + linting automation
 
-### Indicators:
+### Indicators
 
 - "繰り返し使う知識" (repeatable knowledge)
 - "他のプラットフォームでも使える" (usable in other platforms/agents)
@@ -122,21 +122,21 @@ skill-name/
 
 #### Agent 🤖
 
-### Best For:
+### Best For
 
 - Autonomous task execution
 - Multi-step workflows
 - Tasks requiring decision-making
 - Domain-specific operations
 
-### Examples:
+### Examples
 
 - Code review automation
 - Error fixing workflows
 - Deployment procedures
 - Security scanning
 
-### Indicators:
+### Indicators
 
 - "自動実行" (automatic execution)
 - "タスクの実行" (task execution)
@@ -145,21 +145,21 @@ skill-name/
 
 #### Command 📝
 
-### Best For:
+### Best For
 
 - User-initiated operations
 - Interactive workflows
 - Project-specific tasks
 - Single-purpose operations
 
-### Examples:
+### Examples
 
 - Git commit helpers
 - Code formatting triggers
 - Test runners
 - Build orchestration
 
-### Indicators:
+### Indicators
 
 - "手動実行" (manual execution)
 - "ユーザーが起動" (user invoked)
@@ -168,21 +168,21 @@ skill-name/
 
 #### Rules 📋
 
-### Best For:
+### Best For
 
 - Project-specific constraints
 - Coding standards
 - Process guidelines
 - Architectural decisions
 
-### Examples:
+### Examples
 
 - Type safety requirements
 - Error handling patterns
 - File structure conventions
 - Naming standards
 
-### Indicators:
+### Indicators
 
 - "プロジェクト固有" (project-specific)
 - "ルール" (rules)
@@ -247,11 +247,11 @@ Based on classification, route to:
 
 ### Example 1: Tool Knowledge
 
-### Input:
+### Input
 
 > "mise設定のベストプラクティスをまとめたい"
 
-### Analysis:
+### Analysis
 
 - Repeatable knowledge ✓
 - Cross-project applicable ✓
@@ -262,11 +262,11 @@ Based on classification, route to:
 
 ### Example 2: Automation Task
 
-### Input:
+### Input
 
 > "コードレビューを自動化したい"
 
-### Analysis:
+### Analysis
 
 - Autonomous execution ✓
 - Multi-step workflow ✓
@@ -277,11 +277,11 @@ Based on classification, route to:
 
 ### Example 3: User Operation
 
-### Input:
+### Input
 
 > "Git commitを簡単にするコマンドが欲しい"
 
-### Analysis:
+### Analysis
 
 - User-initiated ✓
 - Interactive operation ✓
@@ -292,11 +292,11 @@ Based on classification, route to:
 
 ### Example 4: Project Constraints
 
-### Input:
+### Input
 
 > "anyを使わないルールを設定したい"
 
-### Analysis:
+### Analysis
 
 - Project-specific constraint ✓
 - Coding standard ✓
@@ -316,7 +316,7 @@ Some knowledge may fit multiple categories:
 - **Primary:** Skill (configuration knowledge)
 - **Secondary:** Agent (validation automation)
 
-### Recommendation:
+### Recommendation
 
 1. Create Skill for mise configuration
 2. Create Agent that references the Skill
@@ -353,7 +353,7 @@ Based on your answers, I'll recommend the best format.
 
 **When:** Classification result is "Skill"
 
-### Actions:
+### Actions
 
 1. Activate `skill-creator` skill
 2. Provide analyzed context
@@ -364,7 +364,7 @@ Based on your answers, I'll recommend the best format.
 
 **When:** Classification result is "Agent"
 
-### Actions:
+### Actions
 
 1. Activate `agent-creator` skill
 2. Map keywords to tool selection
@@ -375,7 +375,7 @@ Based on your answers, I'll recommend the best format.
 
 **When:** Classification result is "Command"
 
-### Actions:
+### Actions
 
 1. Activate `command-creator` skill
 2. Determine design pattern (Simple, Phase-Based, Session Management)
@@ -386,7 +386,7 @@ Based on your answers, I'll recommend the best format.
 
 **When:** Classification result is "Rules"
 
-### Actions:
+### Actions
 
 1. Activate `rules-creator` skill
 2. Determine rules type (Guidelines, Rules, Steering, Hookify)

@@ -42,7 +42,7 @@ skill-name/
 
 The heart of every skill. Must contain:
 
-### 1. YAML Frontmatter (Required Fields):
+### 1. YAML Frontmatter (Required Fields)
 
 ```yaml
 ---
@@ -54,14 +54,14 @@ description: | # How/when to use this skill
 ---
 ```
 
-### 2. Markdown Body (Instructions):
+### 2. Markdown Body (Instructions)
 
 - Procedural guidance for agents
 - Best practices and patterns
 - References to bundled resources
 - Integration points with other skills
 
-### Example SKILL.md:
+### Example SKILL.md
 
 ```markdown
 ---
@@ -108,7 +108,7 @@ See `references/config-guide.md` for ESLint and tsconfig setup.
 
 Executable workflows that agents can run. This is what makes skills **actionable**, not just informational.
 
-### Best Practices:
+### Best Practices
 
 ```
 scripts/
@@ -119,7 +119,7 @@ scripts/
 └── cleanup.sh         # Cleanup procedures
 ```
 
-### Guidelines:
+### Guidelines
 
 - **Shebang required**: `#!/usr/bin/env bash`, `#!/usr/bin/env python3`
 - **Executable permissions**: `chmod +x scripts/*`
@@ -127,7 +127,7 @@ scripts/
 - **Error handling**: Exit codes (0 = success, non-zero = failure)
 - **Documentation**: Comment scripts thoroughly
 
-### Example `scripts/validate.sh`:
+### Example `scripts/validate.sh`
 
 ```bash
 #!/usr/bin/env bash
@@ -157,7 +157,7 @@ exit 0
 
 Detailed documentation loaded on-demand. Keeps SKILL.md concise while providing depth when needed.
 
-### Structure:
+### Structure
 
 ```
 references/
@@ -168,7 +168,7 @@ references/
 └── advanced.md        # Advanced topics
 ```
 
-### Progressive Disclosure Pattern:
+### Progressive Disclosure Pattern
 
 - **SKILL.md**: Overview + quick start (< 5KB ideal)
 - **references/**: Detailed guides (loaded only when needed)
@@ -177,7 +177,7 @@ references/
 
 Templates, configuration files, and resources.
 
-### Structure:
+### Structure
 
 ```
 assets/
@@ -196,13 +196,13 @@ Agent Skills are designed for **efficient context management** through progressi
 
 ### Phase 1: Discovery 🔍
 
-### What Loads:
+### What Loads
 
 - Skill name
 - Description (from YAML frontmatter)
 - Keywords
 
-### Agent Behavior:
+### Agent Behavior
 
 - Loads ALL skill names/descriptions at startup
 - Builds internal index for task matching
@@ -212,18 +212,18 @@ Agent Skills are designed for **efficient context management** through progressi
 
 ### Phase 2: Activation ⚡
 
-### Trigger Conditions:
+### Trigger Conditions
 
 - Task keywords match skill description
 - User explicitly mentions skill
 - Related skill already activated
 
-### What Loads:
+### What Loads
 
 - Full SKILL.md content
 - References to scripts/references/assets (not content yet)
 
-### Agent Behavior:
+### Agent Behavior
 
 - Reads instructions completely
 - Understands available resources
@@ -233,13 +233,13 @@ Agent Skills are designed for **efficient context management** through progressi
 
 ### Phase 3: Execution 🚀
 
-### What Loads:
+### What Loads
 
 - Specific reference files (on-demand)
 - Script content (when executed)
 - Asset files (as needed)
 
-### Agent Behavior:
+### Agent Behavior
 
 - Executes bundled scripts
 - Loads templates for generation
@@ -281,19 +281,19 @@ The open format means:
 
 ### Platform-Specific Notes
 
-### Claude Code:
+### Claude Code
 
 - Skills loaded from `~/.claude/skills/`
 - Supports all standard components
 - Progressive disclosure fully implemented
 
-### GitHub Copilot:
+### GitHub Copilot
 
 - Skills in `.github/copilot/skills/`
 - Focus on code generation use cases
 - Limited script execution (security model)
 
-### Cursor:
+### Cursor
 
 - Skills in `.cursor/skills/`
 - Strong emphasis on references/ for context
@@ -464,7 +464,7 @@ Use this checklist to ensure Agent Skills compliance:
 
 ### From Static Documentation
 
-### Before (Markdown Doc):
+### Before (Markdown Doc)
 
 ```markdown
 # TypeScript Guide
@@ -484,7 +484,7 @@ Run: `tsc file.ts`
 Use strict mode, avoid `any`, etc.
 ```
 
-### After (Agent Skill):
+### After (Agent Skill)
 
 ```
 typescript-guide/
@@ -497,7 +497,7 @@ typescript-guide/
     └── troubleshooting.md # Common issues
 ```
 
-### Benefits:
+### Benefits
 
 - Agents can execute setup automatically
 - Progressive disclosure keeps context efficient
@@ -509,7 +509,7 @@ typescript-guide/
 
 **After:** Unified skills that agents discover dynamically
 
-### Migration Steps:
+### Migration Steps
 
 1. Identify repeatable knowledge domains
 2. Create skill directory structure
@@ -537,7 +537,7 @@ mise/
         └── mise-config.toml     # Template config
 ```
 
-### Key Features:
+### Key Features
 
 - Executable migration script
 - Validation automation
@@ -560,7 +560,7 @@ react-testing/
         └── component.test.tsx.template
 ```
 
-### Key Features:
+### Key Features
 
 - Automated test setup
 - Template-based generation
@@ -624,4 +624,4 @@ Agent Skills represent a **paradigm shift** in how we package knowledge for AI a
 
 By following this standard, you create knowledge packages that agents can discover, understand, and execute reliably across multiple platforms.
 
-### Build once, deploy everywhere. Extend agent capabilities, not just documentation.
+### Build once, deploy everywhere. Extend agent capabilities, not just documentation

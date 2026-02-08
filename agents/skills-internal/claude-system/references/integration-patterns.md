@@ -523,7 +523,7 @@ Output:
 
 ### Diagram Formats
 
-### Mermaid Example:
+### Mermaid Example
 
 ```mermaid
 graph TD

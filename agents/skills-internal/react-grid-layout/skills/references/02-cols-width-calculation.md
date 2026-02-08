@@ -21,7 +21,7 @@ react-grid-layout uses a **grid unit system** for layout calculations:
 - **Grid Units**: Abstract units for positioning (x, y, w, h in Layout items)
 - **Pixels**: Actual screen dimensions (width, rowHeight in ReactGridLayout props)
 
-### Conversion Formula:
+### Conversion Formula
 
 ```
 Pixel Width = (Grid Units × Row Height) + (Margins × (Grid Units - 1))
@@ -50,12 +50,12 @@ Pixel Width = (Grid Units × Row Height) + (Margins × (Grid Units - 1))
 cols: number; // default: 12
 ```
 
-### Purpose:
+### Purpose
 
 - Defines the maximum number of columns in the grid
 - All layout items must have `x + w ≤ cols`
 
-### Common Values:
+### Common Values
 
 - **12**: Standard (Bootstrap-style) - highly divisible (1, 2, 3, 4, 6, 12)
 - **24**: Fine-grained control
@@ -67,12 +67,12 @@ cols: number; // default: 12
 width: number; // Required for drag calculations
 ```
 
-### Purpose:
+### Purpose
 
 - Required for react-grid-layout to calculate pixel positions during dragging
 - Determines the actual rendered width of the grid
 
-### Two Approaches:
+### Two Approaches
 
 1. **Manual**: Calculate and provide width explicitly
 2. **Automatic**: Use `WidthProvider` HOC (not suitable for SSR)
@@ -81,7 +81,7 @@ width: number; // Required for drag calculations
 
 ### Approach 1: Fixed Values (Simplest)
 
-### When to use:
+### When to use
 
 - Simple, non-responsive layouts
 - Known container dimensions
@@ -102,20 +102,20 @@ const ROW_HEIGHT = 30;
 </ReactGridLayout>
 ```
 
-### Pros:
+### Pros
 
 - Simple and predictable
 - Works with SSR
 - Easy to reason about
 
-### Cons:
+### Cons
 
 - Not responsive
 - May not fit content optimally
 
 ### Approach 2: WidthProvider (Responsive)
 
-### When to use:
+### When to use
 
 - Responsive layouts
 - Container width varies
@@ -135,19 +135,19 @@ const GridLayoutWithWidth = WidthProvider(ReactGridLayout);
 </GridLayoutWithWidth>
 ```
 
-### Pros:
+### Pros
 
 - Automatically responsive
 - No manual width calculation
 
-### Cons:
+### Cons
 
 - Not SSR-compatible (width is undefined on server)
 - Less control over exact dimensions
 
 ### Approach 3: Dynamic Calculation (ASTA Pattern)
 
-### When to use:
+### When to use
 
 - Content-driven grid sizing
 - Variable number of columns based on data
@@ -174,13 +174,13 @@ const gridWidth = cols * rowHeight;
 </ReactGridLayout>
 ```
 
-### Pros:
+### Pros
 
 - Adapts to actual content
 - SSR-compatible
 - Optimal space usage
 
-### Cons:
+### Cons
 
 - More complex logic
 - Requires careful layout generation
@@ -263,12 +263,12 @@ function DynamicGridLayout({ layout: inputLayout }: { layout: Layout[] }) {
 const pointsX = layout.map(({ x, w }) => x + w);
 ```
 
-### What this does:
+### What this does
 
 - For each layout item, calculate its rightmost edge: `x + w`
 - Example: `{ x: 2, w: 3 }` → right edge is at column 5
 
-### Example:
+### Example
 
 ```typescript
 const layout = [
@@ -286,13 +286,13 @@ const pointsX = [4, 10, 12];
 const cols = pointsX.length > 0 ? Math.max(...pointsX) : 150;
 ```
 
-### What this does:
+### What this does
 
 - Find the highest value in `pointsX` (rightmost item position)
 - This becomes the minimum number of columns needed
 - Fallback to 150 if empty (ASTA convention)
 
-### Example:
+### Example
 
 ```typescript
 const pointsX = [4, 10, 12];
@@ -314,12 +314,12 @@ const cols = 150; // Fallback ensures grid has width
 const gridWidth = cols * CALENDAR_ROW_HEIGHT;
 ```
 
-### Simple proportional calculation:
+### Simple proportional calculation
 
 - Each column occupies `rowHeight` pixels
 - Total width = columns × pixels per column
 
-### Example:
+### Example
 
 ```typescript
 const cols = 12;
@@ -363,7 +363,7 @@ const layout = [
 
 **Problem:** Item width (20) exceeds cols (12) → rendering issues
 
-### Solution:
+### Solution
 
 ```typescript
 // ✅ Good: Calculate cols from layout
@@ -381,7 +381,7 @@ const cols = Math.max(...layout.map(({ x, w }) => x + w)); // -Infinity!
 
 **Problem:** `Math.max()` on empty array returns `-Infinity`
 
-### Solution:
+### Solution
 
 ```typescript
 // ✅ Good: Provide fallback
@@ -402,7 +402,7 @@ const layout = [
 const cols = Math.max(...layout.map(({ x, w }) => x + w)); // TypeError!
 ```
 
-### Solution:
+### Solution
 
 ```typescript
 // ✅ Good: Filter out invalid items
@@ -419,7 +419,7 @@ const cols = Math.max(...validLayout.map(({ x, w }) => x + w));
 const gridWidth = cols * rowHeight; // Doesn't account for margins!
 ```
 
-### For exact calculations including margins:
+### For exact calculations including margins
 
 ```typescript
 // ✅ Better: Account for margins
@@ -427,7 +427,7 @@ const [marginX, marginY] = margin;
 const gridWidth = cols * rowHeight + (cols - 1) * marginX;
 ```
 
-### However, ASTA pattern uses simplified calculation:
+### However, ASTA pattern uses simplified calculation
 
 ```typescript
 // ✅ ASTA: Simplified (margins are small, negligible impact)
@@ -445,7 +445,7 @@ function GridLayout({ data }) {
 }
 ```
 
-### Solution:
+### Solution
 
 ```typescript
 // ✅ Good: Memoize expensive calculations
@@ -479,7 +479,7 @@ console.log("[Grid Debug]", {
 });
 ```
 
-### Example Output:
+### Example Output
 
 ```
 [Grid Debug] {
@@ -614,7 +614,7 @@ function OptimizedGridLayout({ events, rooms, times }) {
 
 ### Avoid Recalculation on Every Render
 
-### ❌ Bad:
+### ❌ Bad
 
 ```typescript
 function GridLayout({ data }) {
@@ -625,7 +625,7 @@ function GridLayout({ data }) {
 }
 ```
 
-### ✅ Good:
+### ✅ Good
 
 ```typescript
 function GridLayout({ data }) {

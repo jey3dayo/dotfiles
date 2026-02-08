@@ -13,6 +13,58 @@ includes = [
 ]
 
 # ========================================
+# Agent Skills (skills-internal)
+# ========================================
+
+[env]
+MARKDOWN_LINK_CONFIG = ".markdown-link-check.json"
+AGENTS_MD_FILES = "fd -e md --type f --no-follow . agents/skills-internal"
+
+[tasks."agents:docs:lint"]
+description = "agents/skills-internal の Markdown lint"
+run = "$AGENTS_MD_FILES -X markdownlint-cli2"
+
+[tasks."agents:docs:fix"]
+description = "agents/skills-internal の Markdown lint 自動修正"
+run = "$AGENTS_MD_FILES -X markdownlint-cli2 --fix"
+
+[tasks."agents:docs:links"]
+description = "agents/skills-internal の Markdown リンクチェック"
+run = "$AGENTS_MD_FILES -X markdown-link-check --quiet --config ${MARKDOWN_LINK_CONFIG}"
+
+[tasks."agents:docs:links:verbose"]
+description = "agents/skills-internal の Markdown リンクチェック（詳細）"
+run = "$AGENTS_MD_FILES -X markdown-link-check --verbose --config ${MARKDOWN_LINK_CONFIG}"
+
+[tasks."agents:docs:format"]
+description = "agents/skills-internal の Prettier フォーマット"
+run = "$AGENTS_MD_FILES -X prettier --write --log-level warn --ignore-path /dev/null"
+
+[tasks."agents:docs:format:check"]
+description = "agents/skills-internal の Prettier フォーマットチェック"
+run = "$AGENTS_MD_FILES -X prettier --check --ignore-path /dev/null"
+
+[tasks."skills:install"]
+description = "HM でスキルをインストール"
+run = "home-manager switch --flake . --impure"
+
+[tasks."skills:list"]
+description = "有効スキル一覧を表示"
+run = "nix run .#list"
+
+[tasks."skills:validate"]
+description = "スキル構成バリデーション"
+run = "nix run .#validate"
+
+[tasks."skills:update"]
+description = "全ソース更新（flake inputs）"
+run = "nix flake update --flake ."
+
+[tasks."skills:fix:bold-headings"]
+description = "skills-internal の太字見出しを ### へ変換"
+run = "node ./agents/scripts/replace-bold-headings.js"
+
+# ========================================
 # Environment Variable Management (dotenvx)
 # ========================================
 
@@ -109,7 +161,16 @@ run = "home-manager expire-generations '-30 days'"
 # CI/CD
 [tasks.ci]
 description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
-depends = ["format", "lint:docs", "lint:links", "test:lua"]
+depends = [
+  "format",
+  "lint:docs",
+  "lint:links",
+  "test:lua",
+  "agents:docs:lint",
+  "agents:docs:format:check",
+  "agents:docs:links",
+  "skills:validate",
+]
 
 [tasks."ci:install"]
 description = "CI に必要な追加ツールをインストール"

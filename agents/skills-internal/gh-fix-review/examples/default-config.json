@@ -4,16 +4,7 @@
   "description": "Default PR review automation configuration",
   "priorities": {
     "critical": {
-      "keywords": [
-        "critical",
-        "bug",
-        "security",
-        "vulnerability",
-        "broken",
-        "error",
-        "failure",
-        "crash"
-      ],
+      "keywords": ["critical", "bug", "security", "vulnerability", "broken", "error", "failure", "crash"],
       "emoji": "🔴"
     },
     "high": {
