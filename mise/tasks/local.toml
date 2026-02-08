@@ -3,33 +3,6 @@
 # プロジェクト固有の集約・mac依存タスクをここで定義
 # ========================================
 
-# ========================================
-# Agent Skills (skills-internal)
-# ========================================
-
-["agents:docs:lint"]
-description = "agents/skills-internal の Markdown lint"
-run = "$AGENTS_MD_FILES -X markdownlint-cli2"
-
-["agents:docs:fix"]
-description = "agents/skills-internal の Markdown lint 自動修正"
-run = "$AGENTS_MD_FILES -X markdownlint-cli2 --fix"
-
-["agents:docs:links"]
-description = "agents/skills-internal の Markdown リンクチェック"
-run = "$AGENTS_MD_FILES -X markdown-link-check --quiet --config ${MARKDOWN_LINK_CONFIG}"
-
-["agents:docs:links:verbose"]
-description = "agents/skills-internal の Markdown リンクチェック（詳細）"
-run = "$AGENTS_MD_FILES -X markdown-link-check --verbose --config ${MARKDOWN_LINK_CONFIG}"
-
-["agents:docs:format"]
-description = "agents/skills-internal の Prettier フォーマット"
-run = "$AGENTS_MD_FILES -X prettier --write --log-level warn --ignore-path /dev/null"
-
-["agents:docs:format:check"]
-description = "agents/skills-internal の Prettier フォーマットチェック"
-run = "$AGENTS_MD_FILES -X prettier --check --ignore-path /dev/null"
 
 ["skills:install"]
 description = "HM でスキルをインストール"
@@ -152,9 +125,6 @@ depends = [
   "lint:docs",
   "lint:links",
   "test:lua",
-  "agents:docs:lint",
-  "agents:docs:format:check",
-  "agents:docs:links",
   "skills:validate",
 ]
 

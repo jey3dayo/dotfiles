@@ -53,8 +53,6 @@ depends = [
   "format:biome",
   "format:prettier",
   "format:markdown",
-  "agents:docs:fix",
-  "agents:docs:format",
   "format:yaml",
   "format:lua",
   "format:shell",

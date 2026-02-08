@@ -47,7 +47,7 @@ fi
 ["format:markdown"]
 description = "Markdown ファイルをフォーマット"
 run = [
-  "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES} ${AGENTS_MD_EXCLUDES}",
+  "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
   "fd -e md -X prettier --write",
 ]
 
@@ -104,7 +104,7 @@ else
   # scripts/ (some files have no extension)
   fd -t f -H -p '^scripts/' -X shfmt -w -i 2 -ci -bn
   # .sh files elsewhere
-  fd -e sh ${AGENTS_EXCLUDES} -X shfmt -w -i 2 -ci -bn
+  fd -e sh ${TASK_EXCLUDES} -X shfmt -w -i 2 -ci -bn
 fi
 """
 
@@ -114,7 +114,7 @@ run = """
 if [ -n "${SH_FILES:-}" ]; then
   shfmt -d -i 2 -ci -bn ${SH_FILES}
 else
-  fd -e sh ${AGENTS_EXCLUDES} -X shfmt -d -i 2 -ci -bn
+  fd -e sh ${TASK_EXCLUDES} -X shfmt -d -i 2 -ci -bn
 fi
 """
 
@@ -124,7 +124,7 @@ run = """
 if [ -n "${TOML_FILES:-}" ]; then
   taplo format ${TOML_FILES}
 else
-  fd -e toml ${AGENTS_EXCLUDES} -X taplo format
+  fd -e toml ${TASK_EXCLUDES} -X taplo format
 fi
 """
 
@@ -134,7 +134,7 @@ run = """
 if [ -n "${TOML_FILES:-}" ]; then
   taplo format --check ${TOML_FILES}
 else
-  fd -e toml ${AGENTS_EXCLUDES} -X taplo format --check
+  fd -e toml ${TASK_EXCLUDES} -X taplo format --check
 fi
 """
 
@@ -144,7 +144,7 @@ run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff format ${PY_FILES}
 else
-  uvx ruff format ${AGENTS_EXCLUDES} .
+  uvx ruff format ${TASK_EXCLUDES} .
 fi
 """
 
@@ -154,7 +154,7 @@ run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff format --check ${PY_FILES}
 else
-  uvx ruff format --check ${AGENTS_EXCLUDES} .
+  uvx ruff format --check ${TASK_EXCLUDES} .
 fi
 """
 

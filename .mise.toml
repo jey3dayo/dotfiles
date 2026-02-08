@@ -14,12 +14,11 @@ includes = [
 ]
 
 # ========================================
-# Agent Skills (skills-internal)
+# Markdown config
 # ========================================
 
 [env]
 MARKDOWN_LINK_CONFIG = ".markdown-link-check.json"
-AGENTS_MD_FILES = "fd -e md --type f --no-follow . agents/skills-internal"
 
 [hooks]
 # Decrypt .env to .env.local on directory enter (silent on success, show critical errors)
