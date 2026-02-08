@@ -1,25 +1,36 @@
 {
   description = "Dotfiles - Unified configuration management with Home Manager";
 
-  inputs =
-    let
-      agentSkills = import ./nix/agent-skills.nix;
-      agentInputs = builtins.mapAttrs
-        (_: value: builtins.removeAttrs value [ "baseDir" "selection" ])
-        agentSkills.inputs;
-    in
-    {
-      nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-      home-manager = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-      flake-utils.url = "github:numtide/flake-utils";
-      gitignore = {
-        url = "github:hercules-ci/gitignore.nix";
-        inputs.nixpkgs.follows = "nixpkgs";
-      };
-    } // agentInputs;
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flake-utils.url = "github:numtide/flake-utils";
+    gitignore = {
+      url = "github:hercules-ci/gitignore.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Agent-skills external sources (flake = false: raw git repos)
+    openai-skills = {
+      url = "github:openai/skills";
+      flake = false;
+    };
+    vercel-agent-skills = {
+      url = "github:vercel-labs/agent-skills";
+      flake = false;
+    };
+    vercel-agent-browser = {
+      url = "github:vercel-labs/agent-browser";
+      flake = false;
+    };
+    ui-ux-pro-max = {
+      url = "github:nextlevelbuilder/ui-ux-pro-max-skill";
+      flake = false;
+    };
+  };
 
   outputs =
     {
