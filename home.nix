@@ -37,13 +37,13 @@
     # Use skills-internal as local overrides to avoid external duplication conflicts
     localSkillsPath = ./agents/skills-internal;
 
-    sources = import ./agents/nix/sources.nix { inherit inputs; };
+    sources = import ./nix/sources.nix { inherit inputs; };
 
     skills.enable =
-      let selection = import ./agents/nix/selection.nix;
+      let selection = import ./nix/selection.nix;
       in if selection ? enable then selection.enable else null;
 
-    targets = import ./agents/nix/targets.nix;
+    targets = import ./nix/targets.nix;
   };
 
   # This value determines the Home Manager release that your configuration is compatible with.

@@ -88,10 +88,10 @@
     ] (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        targets = import ./agents/nix/targets.nix;
+        targets = import ./nix/targets.nix;
         agentLib = import ./agents/nix/lib.nix { inherit pkgs; nixlib = nixpkgs.lib; };
-        sources = import ./agents/nix/sources.nix { inherit inputs; };
-        selection = import ./agents/nix/selection.nix;
+        sources = import ./nix/sources.nix { inherit inputs; };
+        selection = import ./nix/selection.nix;
         catalog = agentLib.discoverCatalog {
           inherit sources;
           localPath = ./agents/skills-internal;
