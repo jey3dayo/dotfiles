@@ -1,0 +1,14 @@
+{
+  "name": "@jey3dayo/tsr-config-loader",
+  "version": "1.0.0",
+  "description": "TSR Configuration Loader with cascading configuration support",
+  "type": "module",
+  "main": "config-loader.ts",
+  "scripts": {
+    "load": "node --loader ts-node/esm config-loader.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.29",
+    "typescript": "^5.9.3"
+  }
+}

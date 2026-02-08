@@ -1,0 +1,51 @@
+name: claude-system
+version: 1.0.0
+runtime: skill
+metadata:
+  title: Claude System Integration
+  description: |
+    PROACTIVELY consult Claude Code for creative design, ideation, and ambiguous
+    requirement exploration. Provides design brainstorming, architectural ideation,
+    and interactive dialogue for unclear requirements.
+  icon: 🎨
+  color: "#7C3AED"
+  category: orchestration
+  tags:
+    - design
+    - ideation
+    - creativity
+    - architecture
+    - brainstorming
+  author:
+    name: ~/.agents team
+  triggers:
+    keywords:
+      - design ideas
+      - brainstorm
+      - explore requirements
+      - clarify
+      - architecture
+      - ideation
+      - creative
+    phrases:
+      - "デザインアイデアを出して"
+      - "設計して"
+      - "ブレストして"
+      - "アイデア出して"
+      - "要件を整理して"
+      - "明確にして"
+      - "アーキテクチャを考えて"
+      - "ファイルを一括で編集"
+capabilities:
+  - creative_design
+  - architectural_ideation
+  - requirement_clarification
+  - fast_file_operations
+  - design_exploration
+  - interactive_dialogue
+integration:
+  compatible_with:
+    - codex
+    - gemini
+  call_pattern: subprocess
+  output_location: .claude/docs/design/

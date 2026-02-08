@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "verification": {
+    "typeCheck": true,
+    "lint": true,
+    "test": true
+  },
+  "reporting": {
+    "outputPath": "~/tsr-reports/tsr-{date}.txt",
+    "verbose": true
+  },
+  "maxDeletionPerRun": 10
+}

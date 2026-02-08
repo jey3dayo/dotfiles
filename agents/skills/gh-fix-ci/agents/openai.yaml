@@ -1,0 +1,5 @@
+interface:
+  display_name: "GitHub Fix CI"
+  short_description: "Debug failing GitHub Actions CI"
+  icon_small: "./assets/github-small.svg"
+  icon_large: "./assets/github.png"

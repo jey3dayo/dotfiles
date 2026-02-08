@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "description": "Minimal configuration with essential settings only",
+  "priorities": {
+    "critical": {
+      "keywords": ["critical", "bug", "error"],
+      "emoji": "🔴"
+    },
+    "high": {
+      "keywords": ["important", "should fix"],
+      "emoji": "🟠"
+    },
+    "major": {
+      "keywords": ["consider", "recommend"],
+      "emoji": "🟡"
+    },
+    "minor": {
+      "keywords": ["nit", "style"],
+      "emoji": "🟢"
+    }
+  },
+  "categories": {}
+}

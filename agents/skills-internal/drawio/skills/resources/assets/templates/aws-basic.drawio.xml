@@ -1,0 +1,69 @@
+<mxfile host="app.diagrams.net" modified="2025-12-17T10:00:00.000Z" agent="Claude Code drawio skill" version="24.0.0">
+  <diagram name="AWS Basic Architecture" id="aws-basic-001">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" defaultFontFamily="Helvetica">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- Layer 1: Arrows (Background) -->
+        <mxCell id="arrow-alb-ecs" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" parent="1" source="alb" target="ecs-service" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow-ecs-rds" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;dashed=1;" parent="1" source="ecs-service" target="rds" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="arrow-ecs-cloudwatch" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=1;dashed=1;" parent="1" source="ecs-service" target="cloudwatch" edge="1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 2: Labels -->
+        <mxCell id="label-http" value="HTTP/HTTPS" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="315" y="150" width="130" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="label-db-conn" value="DB Connection" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="480" y="305" width="160" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="label-metrics" value="Metrics/Logs" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontFamily=Helvetica;" parent="1" vertex="1">
+          <mxGeometry x="250" y="415" width="140" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="label-title" value="AWS Basic Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontFamily=Helvetica;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="270" y="50" width="300" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 3: VPC Container (Background Rectangle) -->
+        <mxCell id="vpc" value="VPC (10.0.0.0/16)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;fontFamily=Helvetica;dashed=1;dashPattern=8 8;strokeWidth=2;fillColor=none;align=left;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="150" y="120" width="550" height="350" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 4: Subnet Containers -->
+        <mxCell id="subnet-public" value="Public Subnet (10.0.1.0/24)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;fontFamily=Helvetica;dashed=1;strokeWidth=1;fillColor=none;align=left;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="170" y="160" width="250" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="subnet-private" value="Private Subnet (10.0.2.0/24)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=16;fontFamily=Helvetica;dashed=1;strokeWidth=1;fillColor=none;align=left;verticalAlign=top;" parent="1" vertex="1">
+          <mxGeometry x="430" y="160" width="250" height="140" as="geometry"/>
+        </mxCell>
+
+        <!-- Layer 5: AWS Components (Shapes) -->
+        <!-- ALB (Public Subnet) -->
+        <mxCell id="alb" value="Application&#xa;Load Balancer" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;fontFamily=Helvetica;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="210" y="200" width="170" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- ECS Service (Private Subnet) -->
+        <mxCell id="ecs-service" value="ECS Fargate&#xa;Service (2 tasks)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=18;fontFamily=Helvetica;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="470" y="200" width="170" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- RDS (Private Subnet - Below) -->
+        <mxCell id="rds" value="RDS Aurora&#xa;(Multi-AZ)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fontSize=18;fontFamily=Helvetica;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="510" y="350" width="120" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- CloudWatch (Outside VPC - Below Left) -->
+        <mxCell id="cloudwatch" value="CloudWatch&#xa;Monitoring" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fontSize=18;fontFamily=Helvetica;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="170" y="370" width="160" height="100" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PR Review Automation Configuration",
+  "description": "Configuration schema for PR review automation skill",
+  "type": "object",
+  "properties": {
+    "priorities": {
+      "type": "object",
+      "description": "Priority classification rules",
+      "properties": {
+        "critical": {
+          "type": "object",
+          "properties": {
+            "keywords": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Keywords that indicate critical priority"
+            },
+            "emoji": { "type": "string", "default": "🔴" }
+          }
+        },
+        "high": {
+          "type": "object",
+          "properties": {
+            "keywords": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "emoji": { "type": "string", "default": "🟠" }
+          }
+        },
+        "major": {
+          "type": "object",
+          "properties": {
+            "keywords": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "emoji": { "type": "string", "default": "🟡" }
+          }
+        },
+        "minor": {
+          "type": "object",
+          "properties": {
+            "keywords": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "emoji": { "type": "string", "default": "🟢" }
+          }
+        }
+      },
+      "required": ["critical", "high", "major", "minor"]
+    },
+    "categories": {
+      "type": "object",
+      "description": "Category classification rules",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["keywords"]
+      }
+    },
+    "bots": {
+      "type": "object",
+      "description": "Known review bot configurations",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "trusted": { "type": "boolean", "default": true },
+          "priority_boost": { "type": "integer", "default": 0 }
+        }
+      }
+    },
+    "paths": {
+      "type": "object",
+      "description": "File path configurations",
+      "properties": {
+        "tracking_file": {
+          "type": "string",
+          "default": "docs/_review-fixes.md",
+          "description": "Path for tracking document"
+        }
+      }
+    },
+    "quality_gates": {
+      "type": "object",
+      "description": "Quality gate configurations",
+      "properties": {
+        "type_check": { "type": "boolean", "default": true },
+        "lint": { "type": "boolean", "default": true },
+        "test": { "type": "boolean", "default": false },
+        "auto_rollback": { "type": "boolean", "default": true }
+      }
+    },
+    "output": {
+      "type": "object",
+      "description": "Output format configurations",
+      "properties": {
+        "language": {
+          "type": "string",
+          "enum": ["ja", "en"],
+          "default": "ja"
+        },
+        "verbose": { "type": "boolean", "default": false }
+      }
+    }
+  },
+  "required": ["priorities", "categories"]
+}

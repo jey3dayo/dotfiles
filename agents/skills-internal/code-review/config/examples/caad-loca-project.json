@@ -1,0 +1,123 @@
+{
+  "$schema": "../../schemas/project-detection-schema.json",
+  "name": "CAAD Loca Next",
+  "description": "CAAD Loca Next.js project with Clean Architecture and Result<T,E> pattern",
+  "priority": 150,
+  "detectors": [
+    {
+      "type": "package_dependency",
+      "dependency": "next",
+      "condition": "required"
+    },
+    {
+      "type": "directory_structure",
+      "path": "src/lib/repositories",
+      "condition": "required"
+    },
+    {
+      "type": "directory_structure",
+      "path": "src/lib/services",
+      "condition": "required"
+    },
+    {
+      "type": "directory_structure",
+      "path": "src/app/actions",
+      "condition": "required"
+    },
+    {
+      "type": "file_pattern",
+      "pattern": "src/lib/result/**/*.ts",
+      "condition": "optional"
+    }
+  ],
+  "techStack": ["typescript", "react", "next", "clean-architecture"],
+  "skills": [
+    {
+      "name": "typescript",
+      "priority": "high",
+      "focus": ["type_safety", "any_elimination", "type_guards", "result_pattern"]
+    },
+    {
+      "name": "react",
+      "priority": "high",
+      "focus": ["hooks", "performance", "component_design"]
+    },
+    {
+      "name": "clean-architecture",
+      "priority": "high",
+      "focus": ["layer_separation", "repository_pattern", "service_layer", "action_layer"]
+    },
+    {
+      "name": "security",
+      "priority": "high",
+      "focus": ["input_validation", "auth", "data_protection"]
+    }
+  ],
+  "evaluation": {
+    "weights": {
+      "code_quality": 0.2,
+      "security": 0.2,
+      "performance": 0.15,
+      "testing": 0.15,
+      "error_handling": 0.15,
+      "architecture": 0.15
+    },
+    "guidelines": [
+      "evaluation-guidelines.md",
+      "typescript/guidelines.md",
+      "react/guidelines.md",
+      "clean-architecture/guidelines.md",
+      "security/guidelines.md",
+      "caad-loca/patterns.md"
+    ],
+    "customRules": {
+      "resultPattern": {
+        "required": true,
+        "layers": ["repository", "service", "action", "transform"],
+        "helpers": ["executeRepositoryArrayOperation", "handleRepositoryArrayOperationWithMapping"]
+      },
+      "typeSafety": {
+        "anyTypeLimit": 0,
+        "typeAssertionLimit": 0,
+        "explicitTypeAnnotations": true,
+        "zodValidation": true
+      },
+      "layerSeparation": {
+        "repository": {
+          "allowedImports": ["prisma", "result"],
+          "responsibility": "Data access only"
+        },
+        "service": {
+          "allowedImports": ["repository", "transformers", "result"],
+          "responsibility": "Business logic"
+        },
+        "action": {
+          "allowedImports": ["service", "auth", "transformers", "result"],
+          "responsibility": "Auth + Service call + Transform + Revalidate"
+        },
+        "transform": {
+          "allowedImports": ["types", "zod", "result"],
+          "responsibility": "Pure functions for data transformation"
+        }
+      },
+      "performance": {
+        "activeOnlyFiltering": true,
+        "singleQueryFetch": true,
+        "parallelDataFetch": true,
+        "cacheStrategy": "TTL"
+      },
+      "functionalProgramming": {
+        "immutability": true,
+        "pureFunctions": true,
+        "sideEffectMinimization": true,
+        "closureStateManagement": true
+      },
+      "testing": {
+        "strategy": "full-mock",
+        "pattern": "AAA",
+        "integrationTests": true,
+        "edgeCases": true
+      }
+    }
+  }
+}

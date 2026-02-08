@@ -1,0 +1,225 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Docs Manager Configuration",
+  "type": "object",
+  "properties": {
+    "docs_root": {
+      "type": "string",
+      "description": "Root directory for documentation (default: ./docs)",
+      "default": "./docs"
+    },
+    "project_type": {
+      "type": "string",
+      "description": "Project type: generic, dotfiles, pr-labeler, terraform-infra, or custom",
+      "enum": ["generic", "dotfiles", "pr-labeler", "terraform-infra", "custom"],
+      "default": "generic"
+    },
+    "required_tags": {
+      "type": "array",
+      "description": "Required tag prefixes (e.g., category/, audience/)",
+      "items": {
+        "type": "string"
+      },
+      "default": ["category/", "audience/"]
+    },
+    "optional_tags": {
+      "type": "array",
+      "description": "Optional tag prefixes",
+      "items": {
+        "type": "string"
+      },
+      "default": ["environment/"]
+    },
+    "tag_separator": {
+      "type": "string",
+      "description": "Separator between tags in metadata (comma or space)",
+      "enum": [", ", " "],
+      "default": ", "
+    },
+    "size_limits": {
+      "type": "object",
+      "description": "Document size guidelines (in lines)",
+      "properties": {
+        "ideal": {
+          "type": "integer",
+          "description": "Ideal document size",
+          "default": 300
+        },
+        "acceptable": {
+          "type": "integer",
+          "description": "Acceptable document size",
+          "default": 500
+        },
+        "warning": {
+          "type": "integer",
+          "description": "Size warning threshold",
+          "default": 1000
+        },
+        "maximum": {
+          "type": "integer",
+          "description": "Maximum document size (must split if exceeded)",
+          "default": 2000
+        }
+      },
+      "default": {
+        "ideal": 300,
+        "acceptable": 500,
+        "warning": 1000,
+        "maximum": 2000
+      }
+    },
+    "metadata_format": {
+      "type": "object",
+      "description": "Metadata field configuration",
+      "properties": {
+        "date_field": {
+          "type": "string",
+          "description": "Name of the date field",
+          "default": "最終更新"
+        },
+        "date_format": {
+          "type": "string",
+          "description": "Date format (ISO 8601)",
+          "default": "YYYY-MM-DD"
+        },
+        "audience_field": {
+          "type": "string",
+          "description": "Name of the audience field",
+          "default": "対象"
+        },
+        "tags_field": {
+          "type": "string",
+          "description": "Name of the tags field",
+          "default": "タグ"
+        }
+      },
+      "default": {
+        "date_field": "最終更新",
+        "date_format": "YYYY-MM-DD",
+        "audience_field": "対象",
+        "tags_field": "タグ"
+      }
+    },
+    "custom_rules": {
+      "type": "object",
+      "description": "Project-specific validation rules",
+      "properties": {
+        "detection_patterns": {
+          "type": "array",
+          "description": "File/directory patterns for project type detection",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "description": "Glob pattern to match"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of what this pattern detects"
+              }
+            }
+          },
+          "default": []
+        },
+        "required_files": {
+          "type": "array",
+          "description": "Required documentation files",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "update_frequency": {
+          "type": "object",
+          "description": "Required update frequency for specific files",
+          "additionalProperties": {
+            "type": "string",
+            "enum": ["weekly", "monthly", "quarterly", "yearly"]
+          },
+          "default": {}
+        },
+        "performance_impact_required": {
+          "type": "array",
+          "description": "Files that must document performance impact",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "detail_level_required": {
+          "type": "string",
+          "description": "Required detail level for critical documents (e.g., ⭐⭐⭐⭐)",
+          "default": ""
+        }
+      },
+      "default": {}
+    },
+    "link_validation": {
+      "type": "object",
+      "description": "Link validation configuration",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable link validation",
+          "default": true
+        },
+        "config_file": {
+          "type": "string",
+          "description": "Path to markdown-link-check config file",
+          "default": ".markdown-link-check.json"
+        }
+      },
+      "default": {
+        "enabled": true,
+        "config_file": ".markdown-link-check.json"
+      }
+    },
+    "tools": {
+      "type": "object",
+      "description": "External tool integration",
+      "properties": {
+        "linter": {
+          "type": "string",
+          "description": "Linting command",
+          "default": ""
+        },
+        "formatter": {
+          "type": "string",
+          "description": "Formatting command",
+          "default": ""
+        },
+        "link_checker": {
+          "type": "string",
+          "description": "Link checking command",
+          "default": "markdown-link-check"
+        }
+      },
+      "default": {}
+    },
+    "tag_vocabulary": {
+      "type": "object",
+      "description": "Allowed tag values per prefix",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "default": {}
+    }
+  },
+  "required": ["docs_root", "project_type"],
+  "default": {
+    "docs_root": "./docs",
+    "project_type": "generic",
+    "required_tags": ["category/", "audience/"],
+    "tag_separator": ", ",
+    "size_limits": {
+      "ideal": 300,
+      "acceptable": 500,
+      "warning": 1000,
+      "maximum": 2000
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "version": "1.0.0",
+  "tsconfig": "tsconfig.json",
+  "ignoreFile": ".tsrignore",
+  "entryPatterns": ["src/.*\\.(ts|tsx)$"],
+  "maxDeletionPerRun": 15,
+  "includeDts": false,
+  "recursive": false,
+  "ignorePatterns": ["src/setupTests.ts", "src/reportWebVitals.ts"],
+  "verification": {
+    "typeCheck": true,
+    "lint": true,
+    "test": true
+  },
+  "reporting": {
+    "outputPath": "/tmp/tsr-report-{date}.txt",
+    "verbose": false
+  },
+  "framework": {
+    "type": "react"
+  }
+}

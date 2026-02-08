@@ -1,0 +1,47 @@
+{
+  "docs_root": "./documentation",
+  "project_type": "custom",
+  "required_tags": ["category/", "audience/"],
+  "optional_tags": ["priority/", "status/"],
+  "tag_separator": " ",
+  "size_limits": {
+    "ideal": 400,
+    "acceptable": 800,
+    "warning": 1500,
+    "maximum": 3000
+  },
+  "metadata_format": {
+    "date_field": "Last Updated",
+    "date_format": "YYYY-MM-DD",
+    "audience_field": "Target Audience",
+    "tags_field": "Tags"
+  },
+  "custom_rules": {
+    "detection_patterns": [
+      {
+        "pattern": ".project-config.yml",
+        "description": "Project configuration file"
+      }
+    ],
+    "required_files": ["README.md", "CONTRIBUTING.md"],
+    "update_frequency": {
+      "README.md": "quarterly",
+      "CONTRIBUTING.md": "yearly"
+    }
+  },
+  "link_validation": {
+    "enabled": true,
+    "config_file": ".markdown-link-check.json"
+  },
+  "tools": {
+    "linter": "npm run lint:docs",
+    "formatter": "npm run format:docs",
+    "link_checker": "markdown-link-check"
+  },
+  "tag_vocabulary": {
+    "category/": ["architecture", "api", "guide", "tutorial", "reference"],
+    "audience/": ["internal", "external", "developer", "user"],
+    "priority/": ["critical", "high", "medium", "low"],
+    "status/": ["draft", "review", "published", "deprecated"]
+  }
+}
