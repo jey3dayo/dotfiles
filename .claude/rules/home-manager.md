@@ -31,6 +31,154 @@ Purpose: Home Manager統合における管理方針とガイドライン。
   - `zed/` - `cache/`, `logs/`への書き込み
   - `mise/` - `trusted-configs/`への書き込み（既に管理済みだが`.gitignore`で除外）
 
+## Flake Inputs と Agent Skills 管理
+
+### Nix Flake の inputs 制約
+
+**重要な制約**: Nix flake の `inputs` セクションは**静的な attrset**（リテラル定義）である必要があります。
+
+**禁止されているパターン**:
+
+```nix
+# ❌ 動的評価（let-in + import）
+inputs = let
+  sources = import ./nix/agent-skills-sources.nix;
+  dynamicInputs = builtins.mapAttrs (_: src: { inherit (src) url flake; }) sources;
+in { ... } // dynamicInputs;
+```
+
+**エラー**: `error: expected a set but got a thunk`
+
+**理由**: flake 評価時に inputs は完全に静的である必要があり、実行時評価（thunk）は許可されません。
+
+### Agent Skills の分割管理
+
+**設計アプローチ**: SSoT（Single Source of Truth）とフラットな inputs の併用
+
+| ファイル                       | 役割               | 管理項目                                     |
+| ------------------------------ | ------------------ | -------------------------------------------- |
+| `nix/agent-skills-sources.nix` | SSoT（メタデータ） | url, flake, baseDir, selection.enable        |
+| `flake.nix` inputs             | Flake inputs定義   | url, flake のみ（**手動同期が必要**）        |
+| `nix/sources.nix`              | 統合処理           | inputs と baseDir を結合してスキルパスを生成 |
+| `nix/agent-skills.nix`         | スキル選択         | selection.enable を抽出                      |
+
+**トレードオフ**:
+
+- ✅ Flake 仕様に準拠
+- ✅ メタデータは SSoT で集約管理
+- ❌ URL/flake 属性が重複（制約上の妥協）
+
+**実装例**:
+
+```nix
+# nix/agent-skills-sources.nix (SSoT)
+{
+  openai-skills = {
+    url = "github:openai/skills";
+    flake = false;
+    baseDir = "skills";
+    selection.enable = [ "gh-fix-ci" "skill-creator" ];
+  };
+}
+
+# flake.nix (手動同期が必要)
+inputs = {
+  # NOTE: agent-skills-sources.nix と手動同期
+  #       Flake spec requires literal inputs
+  openai-skills = {
+    url = "github:openai/skills";
+    flake = false;
+  };
+};
+
+# nix/sources.nix (統合)
+let
+  agentSkills = import ./agent-skills-sources.nix;
+  inputs = /* flake inputs */;
+in {
+  openai-skills = "${inputs.openai-skills}/${agentSkills.openai-skills.baseDir}";
+}
+```
+
+### 新しいスキルソースを追加する際のチェックリスト
+
+1. **agent-skills-sources.nix を更新**
+
+   ```nix
+   new-skill-source = {
+     url = "github:org/repo";
+     flake = false;
+     baseDir = "skills";  # またはリポジトリルート "."
+     selection.enable = [ "skill-name" ];
+   };
+   ```
+
+2. **flake.nix の inputs に追加**（手動同期）
+
+   ```nix
+   inputs = {
+     # ... 既存の inputs
+     new-skill-source = {
+       url = "github:org/repo";  # agent-skills-sources.nix と一致させる
+       flake = false;
+     };
+   };
+   ```
+
+3. **検証**
+
+   ```bash
+   # Flake 評価の成功確認
+   nix flake show
+
+   # 新しい input が認識されているか確認
+   nix flake metadata | grep new-skill-source
+
+   # Home Manager ビルド
+   home-manager build --flake ~/src/github.com/jey3dayo/dotfiles --impure --dry-run
+   ```
+
+4. **スキル配布の確認**
+
+   ```bash
+   home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure
+   ls -la ~/.claude/skills/ | grep <skill-name>
+   ```
+
+### トラブルシューティング（Flake Inputs）
+
+#### "expected a set but got a thunk" エラー
+
+**症状**: `nix flake show/metadata/check` が失敗
+
+```
+error: expected a set but got a thunk
+```
+
+**原因**: flake.nix の inputs セクションで動的評価を使用している
+
+**確認手順**:
+
+```bash
+# inputs セクションを確認
+rg "inputs\s*=" flake.nix -A 10
+
+# let-in や import の使用を確認
+rg "(let|import).*agent-skills" flake.nix
+```
+
+**対策**:
+
+1. inputs を静的リテラル定義に変更（`let-in` を削除）
+2. agent-skills-sources.nix と flake.nix の URL/flake を同期
+3. `nix flake show` で検証
+
+**参考コミット**:
+
+- `d6888cb8`: 初回の静的化実施
+- `0f56233a`: 誤って動的生成に戻した（失敗）
+- `7fbed181`: 再度静的化（現在のアプローチ）
+
 ### gitignore-aware フィルタ
 
 `gitignore.nix`を使用して、`.gitignore`パターンに従ったファイルを自動除外:
