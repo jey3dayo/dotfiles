@@ -302,7 +302,7 @@ in
 
     # tmux configuration with submodule support
     home.activation.dotfiles-tmux-plugins = lib.mkIf cfg.deployXdgConfig (
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      lib.hm.dag.entryAfter [ "writeBoundary" "dotfiles-submodules" ] ''
         tmux_config_dir="${config.xdg.configHome}/tmux"
         tmux_plugins_dir="$tmux_config_dir/plugins"
 
@@ -316,16 +316,45 @@ in
         # Copy static config files (symlinks will be created by home.file)
         # This ensures the directory structure exists before symlinks are created
 
-        # Copy plugins directory structure (populated by submodule init later)
-        if [ -d "${cleanedRepo}/tmux/plugins" ]; then
-          cp -r "${cleanedRepo}/tmux/plugins"/. "$tmux_plugins_dir/" 2>/dev/null || true
+        # Copy plugins directory structure (prefer worktree so submodules are available)
+        repo_path="${cfg.repoPath}"
+        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
+        worktree=""
+
+        if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$repo_worktree"
+        elif [ -n "''${DOTFILES_WORKTREE:-}" ] && ${pkgs.git}/bin/git -C "''${DOTFILES_WORKTREE}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="''${DOTFILES_WORKTREE}"
+        elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+          worktree="$repo_path"
+        else
+          for candidate in \
+            "${config.home.homeDirectory}/src/github.com/jey3dayo/dotfiles" \
+            "${config.home.homeDirectory}/src/dotfiles" \
+            "${config.home.homeDirectory}/dotfiles"; do
+            if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+              worktree="$candidate"
+              break
+            fi
+          done
+        fi
+
+        plugins_source=""
+        if [ -n "$worktree" ] && [ -d "$worktree/tmux/plugins" ]; then
+          plugins_source="$worktree/tmux/plugins"
+        elif [ -d "${cleanedRepo}/tmux/plugins" ]; then
+          plugins_source="${cleanedRepo}/tmux/plugins"
+        fi
+
+        if [ -n "$plugins_source" ]; then
+          cp -r "$plugins_source"/. "$tmux_plugins_dir/" 2>/dev/null || true
         fi
       ''
     );
 
     # Git submodule initialization (activation script)
     home.activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
-      lib.hm.dag.entryAfter [ "writeBoundary" "dotfiles-tmux-plugins" ] ''
+      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         # Initialize Git submodules for tmux plugins
         repo_path="${cfg.repoPath}"
         repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
