@@ -4,7 +4,29 @@
 let
   inherit (nixlib) filterAttrs mapAttrsToList concatStringsSep
     hasAttr attrNames length elem;
-  inherit (builtins) readDir pathExists toJSON seq;
+  inherit (builtins) readDir pathExists toJSON seq stringLength substring;
+
+  hasPrefix = prefix: str:
+    let
+      prefixLen = stringLength prefix;
+      strLen = stringLength str;
+    in
+      if strLen < prefixLen then
+        false
+      else
+        substring 0 prefixLen str == prefix;
+
+  removePrefix = prefix: str:
+    if hasPrefix prefix str then
+      substring (stringLength prefix) (stringLength str - stringLength prefix) str
+    else
+      str;
+
+  stripDotPrefix = str:
+    if hasPrefix "./" str then
+      substring 2 (stringLength str - 2) str
+    else
+      str;
 
   # Scan a single source path and return { skillId = { id, path, source }; }
   scanSource = sourceName: sourcePath:
@@ -147,6 +169,35 @@ in {
     in
       pkgs.writeShellScriptBin "skills-list" ''
         ${pkgs.jq}/bin/jq . "${jsonFile}"
+      '';
+
+  # Create a script that outputs install report (Markdown table)
+  mkReportScript = { skills, sourceMeta }:
+    let
+      skillList = mapAttrsToList (id: skill: { inherit id; inherit (skill) path source; }) skills;
+      reportList = map (s:
+        let
+          meta =
+            if hasAttr s.source sourceMeta then
+              sourceMeta.${s.source}
+            else
+              throw "Missing source metadata for source '${s.source}'";
+          rootStr = toString meta.root;
+          branch = meta.branch or "main";
+          relPath = stripDotPrefix (removePrefix "${rootStr}/" (toString s.path));
+        in
+        {
+          id = s.id;
+          url = "${meta.repoUrl}/tree/${branch}/${relPath}";
+        }
+      ) skillList;
+      header = "| Skill | URL |\n| --- | --- |\n";
+      rows = concatStringsSep "\n" (map (r: "| ${r.id} | ${r.url} |") reportList);
+      output = header + rows + "\n";
+      reportFile = pkgs.writeText "skills-install-report.md" output;
+    in
+      pkgs.writeShellScriptBin "skills-report" ''
+        cat ${reportFile}
       '';
 
   # Create a validation script that checks bundle integrity
