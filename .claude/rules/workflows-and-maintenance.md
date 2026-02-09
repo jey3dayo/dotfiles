@@ -10,7 +10,7 @@ Sources: docs/maintenance.md.
 ## Cadence
 
 - Weekly: `brew update && brew upgrade` + `mise upgrade`; refresh plugins (`sheldon update`, `nvim --headless -c 'lua require("lazy").sync()' -c q`, tmux plugin updater).
-- Monthly: run zsh benchmarks and review config for unused items; clean logs; record metrics in docs/performance.md; `mise prune` to remove unused versions; run `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure` to apply any dotfiles updates.
+- Monthly: run zsh benchmarks and review config for unused items; clean logs; record metrics in docs/performance.md; `mise prune` to remove unused versions; run `home-manager switch --flake ~/.config --impure` to apply any dotfiles updates.
 - Quarterly: full settings audit, dependency pruning, and backup verification.
 
 ## Troubleshooting routing
@@ -89,5 +89,5 @@ Single Source of Truth、バージョン固定、プロジェクト別オーバ�
 ## Backups and recovery
 
 - For Brewfile changes, keep dated backups before large edits.
-- Emergency shell recovery: `zsh --no-rcs` to bypass config; reinstall dependencies via `brew bundle --force`, `mise install ...`, and `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure` when required.
+- Emergency shell recovery: `zsh --no-rcs` to bypass config; reinstall dependencies via `brew bundle --force`, `mise install ...`, and `home-manager switch --flake ~/.config --impure` when required.
 - Home Manager rollback: `home-manager generations` to list, `home-manager switch --generation <number>` to rollback.

@@ -1,6 +1,6 @@
 # ========================================
 # デフォルト mise 設定（Mac/Linux/WSL2 共通）
-# ~/src/github.com/jey3dayo/dotfiles/mise/config.default.toml
+# ~/.config/mise/config.default.toml
 # ========================================
 # この設定ファイルは以下の環境で使用されます:
 # - macOS (Darwin)

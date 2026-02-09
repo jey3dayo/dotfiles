@@ -8,11 +8,11 @@
 
 ## Bootstrap (Recommended for Fresh macOS)
 
-新規Macの場合、`bin/bootstrap.sh`を使用してHomebrewを自動インストール:
+新規Macの場合、`scripts/bootstrap.sh`を使用してHomebrewを自動インストール:
 
 ```bash
-cd ~/src/github.com/jey3dayo/dotfiles
-sh ./bin/bootstrap.sh
+cd ~/.config
+sh ./scripts/bootstrap.sh
 ```
 
 ### 実行内容
@@ -33,8 +33,8 @@ sh ./bin/bootstrap.sh
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
-cd ~/src/github.com/jey3dayo/dotfiles
+git clone https://github.com/jey3dayo/dotfiles ~/.config
+cd ~/.config
 
 # 2. Configure Git (REQUIRED)
 cat > ~/.gitconfig_local << EOF
@@ -60,7 +60,7 @@ exec zsh
 Use bootstrap script for automated Homebrew installation:
 
 ```bash
-sh ./bin/bootstrap.sh
+sh ./scripts/bootstrap.sh
 ```
 
 ### Manual Installation
@@ -72,7 +72,7 @@ If you prefer manual installation or bootstrap script is not available:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-**Note**: Homebrew's official installer requires `curl`. If `curl` is unavailable, use the bootstrap script (`bin/bootstrap.sh`) which handles the installation process. For Nix installation, this repository uses `brew bundle` (via Brewfile) instead of the curl-based installer to maintain consistency with the package management philosophy.
+**Note**: Homebrew's official installer requires `curl`. If `curl` is unavailable, use the bootstrap script (`scripts/bootstrap.sh`) which handles the installation process. For Nix installation, this repository uses `brew bundle` (via Brewfile) instead of the curl-based installer to maintain consistency with the package management philosophy.
 
 ## Package Management Philosophy
 
@@ -152,7 +152,7 @@ eval "$(/usr/local/bin/brew shellenv)"
 ### Bootstrapがネットワークエラーで失敗
 
 - インターネット接続を確認
-- リトライ: `sh ./bin/bootstrap.sh`
+- リトライ: `sh ./scripts/bootstrap.sh`
 - または手動でHomebrewをインストール（前提条件セクション参照）
 
 ### Homebrewが既に存在する場合

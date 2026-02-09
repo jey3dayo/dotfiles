@@ -55,8 +55,8 @@ Install Nix on Linux/WSL2 via the official installer, then verify `nix` is on PA
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
-cd ~/src/github.com/jey3dayo/dotfiles
+git clone https://github.com/jey3dayo/dotfiles ~/.config
+cd ~/.config
 
 # 2. Bootstrap (installs Homebrew if needed on macOS)
 sh ./scripts/bootstrap.sh
@@ -73,10 +73,10 @@ brew bundle  # macOS only
 
 # 5. Apply dotfiles configuration with Home Manager
 # If `home-manager` is not on PATH yet, use nix run (recommended for first setup)
-nix run home-manager -- switch --flake ~/src/github.com/jey3dayo/dotfiles --impure
+nix run home-manager -- switch --flake ~/.config --impure
 
 # Or, if you already have home-manager installed
-home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure
+home-manager switch --flake ~/.config --impure
 
 # 6. Restart shell
 exec zsh
@@ -177,7 +177,7 @@ mise install               # Setup language versions
 
 - Operational cadence and troubleshooting live in `docs/maintenance.md`
 - Weekly: `brew update && brew upgrade`, sync plugins (Sheldon/Neovim/tmux)
-- Monthly: `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure`, measure shell startup, prune unused plugins
+- Monthly: `home-manager switch --flake ~/.config --impure`, measure shell startup, prune unused plugins
 - Rollback: `home-manager generations` to list, `home-manager switch --generation <number>` to rollback
 - Always before merge: `mise run ci`
 

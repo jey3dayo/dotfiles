@@ -9,11 +9,11 @@ Sources: docs/setup.md.
 
 ## Setup flow (macOS/Linux/WSL2)
 
-- Clone repo to ~/src/github.com/jey3dayo/dotfiles and enter the directory.
+- Clone repo to ~/.config and enter the directory.
 - Create ~/.gitconfig_local with user name/email before running setup.
 - Install Homebrew first if missing using the official install script.
 - Run `brew bundle` to install dependencies.
-- Run `home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure` to apply dotfiles configuration.
+- Run `home-manager switch --flake ~/.config --impure` to apply dotfiles configuration.
 - Restart shell via `exec zsh`.
 
 **Note**: Home Manager manages dotfiles deployment. Environment is auto-detected (CI > Raspberry Pi > Default).

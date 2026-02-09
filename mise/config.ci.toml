@@ -1,6 +1,6 @@
 # ========================================
 # CI-Optimized mise Configuration
-# ~/src/github.com/jey3dayo/dotfiles/mise/config.ci.toml
+# ~/.config/mise/config.ci.toml
 # ========================================
 # GitHub Actions CI 専用設定（最小ツールセット）
 #

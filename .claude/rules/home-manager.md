@@ -135,13 +135,13 @@ in {
    nix flake metadata | grep new-skill-source
 
    # Home Manager ビルド
-   home-manager build --flake ~/src/github.com/jey3dayo/dotfiles --impure --dry-run
+   home-manager build --flake ~/.config --impure --dry-run
    ```
 
 4. **スキル配布の確認**
 
    ```bash
-   home-manager switch --flake ~/src/github.com/jey3dayo/dotfiles --impure
+   home-manager switch --flake ~/.config --impure
    ls -la ~/.claude/skills/ | grep <skill-name>
    ```
 

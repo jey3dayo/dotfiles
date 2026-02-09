@@ -16,6 +16,7 @@ let
       envDetect.detectEnvironment pkgs;
 
   defaultWorktreeCandidates = [
+    "${config.home.homeDirectory}/.config"
     "${config.home.homeDirectory}/src/github.com/${config.home.username}/dotfiles"
     "${config.home.homeDirectory}/src/dotfiles"
     "${config.home.homeDirectory}/dotfiles"

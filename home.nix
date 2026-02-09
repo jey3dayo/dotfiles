@@ -23,7 +23,7 @@
 
     # Deployment options (Phase 2: enable file deployment)
     deployEntryPoints = true;   # Deploy ~/.gitconfig, ~/.zshenv, etc.
-    deployXdgConfig = true;     # Deploy ~/.config/{zsh,nvim,git,tmux,mise,etc.}
+    deployXdgConfig = false;    # ~/.config is the git worktree (no HM sync)
     deploySsh = true;           # Deploy ~/.ssh/config
     deployBash = true;          # Deploy ~/.bashrc, ~/.bash_profile
     deployAwsume = true;        # Deploy ~/.awsume/config.yaml

@@ -203,7 +203,7 @@ brew install tmux alacritty
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/jey3dayo/dotfiles ~/src/github.com/jey3dayo/dotfiles
+git clone https://github.com/jey3dayo/dotfiles ~/.config
 
 # 2. Configure Git (REQUIRED)
 cat > ~/.gitconfig_local << EOF
@@ -213,7 +213,7 @@ cat > ~/.gitconfig_local << EOF
 EOF
 
 # 3. Run setup
-cd ~/src/github.com/jey3dayo/dotfiles
+cd ~/.config
 sh ./setup.sh && brew bundle
 
 # 4. Restart shell
