@@ -94,6 +94,33 @@
         targets = import ./nix/targets.nix;
         agentLib = import ./agents/nix/lib.nix { inherit pkgs; nixlib = nixpkgs.lib; };
         agentSkills = import ./nix/agent-skills.nix;
+        sourceDefs = agentSkills.inputs;
+        toGithubUrl = url:
+          if nixpkgs.lib.hasPrefix "github:" url then
+            "https://github.com/" + nixpkgs.lib.removePrefix "github:" url
+          else
+            url;
+        externalSourceMeta =
+          nixpkgs.lib.foldl' (acc: sourceName:
+            let
+              sourceConfig = sourceDefs.${sourceName};
+              repoUrl = toGithubUrl sourceConfig.url;
+              root = inputs.${sourceName};
+            in
+            acc // {
+              ${sourceName} = {
+                inherit repoUrl root;
+                branch = "main";
+              };
+            }
+          ) {} (nixpkgs.lib.attrNames sourceDefs);
+        sourceMeta = externalSourceMeta // {
+          local = {
+            repoUrl = "https://github.com/jey3dayo/dotfiles";
+            root = ./.;
+            branch = "main";
+          };
+        };
         sources = import ./nix/sources.nix { inherit inputs agentSkills; };
         selection = agentSkills.selection;
         catalog = agentLib.discoverCatalog {
@@ -139,6 +166,10 @@
           list = {
             type = "app";
             program = "${agentLib.mkListScript { inherit catalog selectedSkills; }}/bin/skills-list";
+          };
+          report = {
+            type = "app";
+            program = "${agentLib.mkReportScript { skills = selectedSkills; inherit sourceMeta; }}/bin/skills-report";
           };
           validate = {
             type = "app";
