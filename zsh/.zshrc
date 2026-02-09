@@ -9,7 +9,6 @@ setopt auto_name_dirs
 setopt auto_param_keys
 setopt auto_param_slash
 setopt auto_pushd
-setopt auto_remove_slash
 setopt complete_aliases
 setopt complete_in_word
 setopt correct
@@ -33,7 +32,6 @@ setopt notify
 setopt print_eight_bit
 setopt prompt_subst
 setopt pushd_ignore_dups
-setopt rm_star_silent
 setopt rm_star_wait
 setopt share_history
 autoload -Uz zed
