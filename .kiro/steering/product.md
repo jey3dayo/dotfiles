@@ -1,11 +1,11 @@
 # Product Overview - Personal Dotfiles
 
-**Last Updated**: 2025-10-21
+**Last Updated**: 2026-02-09
 **Inclusion Mode**: Always Included
 
 ## Product Overview
 
-High-performance macOS development environment configuration optimized for speed, consistency, and developer experience. This dotfiles repository provides a complete, battle-tested setup for modern software development with focus on shell productivity, editor efficiency, and terminal workflow optimization.
+High-performance cross-platform (macOS/Linux/WSL2) development environment configuration optimized for speed, consistency, and developer experience. This dotfiles repository provides a complete, battle-tested setup for modern software development with focus on shell productivity, editor efficiency, terminal workflow optimization, and declarative deployment via Home Manager.
 
 ## Core Features
 
@@ -50,11 +50,15 @@ High-performance macOS development environment configuration optimized for speed
   - GitHub CLI for repository automation
   - 1Password for SSH key management
 
+- **Declarative & Reproducible Delivery**
+  - Nix Home Manager provides consistent, repeatable configuration across machines
+  - Environment detection (CI/Pi/Default) keeps platform-specific differences minimal
+
 ## Target Use Case
 
 ### Primary Users
 
-Software developers on macOS who value:
+Software developers on macOS/Linux/WSL2 (and CI/Raspberry Pi environments) who value:
 
 - **Performance**: Fast startup times and responsive tools
 - **Consistency**: Unified configuration across terminal, editor, and shell
@@ -72,7 +76,8 @@ Software developers on macOS who value:
 
 2. **New Machine Setup**
 
-   - Automated installation via `setup.sh`
+   - Bootstrap via `scripts/bootstrap.sh` (macOS) and package installation via Homebrew/Nix
+   - Apply configuration with `home-manager switch --flake ~/.config --impure`
    - Consistent environment across multiple machines
    - Version-controlled configurations
    - Easy backup and restore
@@ -131,4 +136,5 @@ Software developers on macOS who value:
 2. **Layer-Based Documentation**: Organized by Core/Tool/Support layers
 3. **AI Integration**: Claude Code commands for automated maintenance
 4. **Spec-Driven Development**: Kiro framework integration for structured changes
-5. **Quality Gates**: Local CI checks matching GitHub Actions
+5. **Declarative Configuration**: Home Manager + Nix flake for reproducible environments
+6. **Quality Gates**: Local CI checks matching GitHub Actions

@@ -1,6 +1,6 @@
 # ========================================
 # CI-Optimized mise Configuration
-# ~/src/github.com/jey3dayo/dotfiles/mise/config.ci.toml
+# ~/.config/mise/config.ci.toml
 # ========================================
 # GitHub Actions CI 専用設定（最小ツールセット）
 #
@@ -16,7 +16,7 @@ experimental = true
 jobs = 4                                                            # GitHub Actions runners: 2 cores
 vfox = false
 idiomatic_version_file_enable_tools = []
-trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
+trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 
 [settings.pipx]
 uvx = true

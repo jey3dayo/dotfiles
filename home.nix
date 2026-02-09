@@ -23,7 +23,15 @@
 
     # Deployment options (Phase 2: enable file deployment)
     deployEntryPoints = true;   # Deploy ~/.gitconfig, ~/.zshenv, etc.
-    deployXdgConfig = true;     # Deploy ~/.config/{zsh,nvim,git,tmux,mise,etc.}
+    deployXdgConfig =
+      let
+        configWorktree = "${homeDirectory}/.config";
+        isConfigWorktree =
+          builtins.pathExists "${configWorktree}/flake.nix" &&
+          builtins.pathExists "${configWorktree}/home.nix" &&
+          builtins.pathExists "${configWorktree}/nix/dotfiles-module.nix";
+      in
+      !isConfigWorktree;        # Disable only when repo is actually ~/.config
     deploySsh = true;           # Deploy ~/.ssh/config
     deployBash = true;          # Deploy ~/.bashrc, ~/.bash_profile
     deployAwsume = true;        # Deploy ~/.awsume/config.yaml

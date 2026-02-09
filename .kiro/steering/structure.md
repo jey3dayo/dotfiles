@@ -1,29 +1,32 @@
 # Project Structure - Personal Dotfiles
 
-**Last Updated**: 2025-10-21
+**Last Updated**: 2026-02-09
 **Inclusion Mode**: Always Included
 
 ## Root Directory Organization
 
 ```
 dotfiles/
-├── .claude/              # AI assistance configuration and commands
 ├── .github/              # GitHub Actions workflows (CI/CD)
-├── .kiro/                # Spec-driven development (Kiro framework)
-├── .serena/              # Coding agent memories and context
+├── .kiro/steering/       # Project steering (Kiro)
 ├── alacritty/            # Alacritty terminal configuration
-├── docs/                 # Comprehensive documentation
-├── git/                  # Git configuration and aliases
-├── karabiner/            # Keyboard customization (macOS)
-├── nvim/                 # Neovim editor configuration (Lua)
-├── raycast/              # Raycast productivity extensions
-├── ssh/                  # SSH configuration (hierarchical)
-├── tmux/                 # Tmux session management
+├── ghostty/              # Ghostty terminal configuration
 ├── wezterm/              # WezTerm terminal configuration (Lua)
+├── nvim/                 # Neovim editor configuration (Lua)
 ├── zsh/                  # Zsh shell configuration
+├── git/                  # Git configuration and aliases
+├── ssh/                  # SSH configuration (hierarchical)
+├── karabiner/            # Keyboard customization (macOS)
+├── tmux/                 # Tmux session management
+├── docs/                 # Comprehensive documentation
+├── nix/                  # Home Manager modules
+├── scripts/              # Bootstrap and helper scripts
+├── home/                 # Entry-point dotfiles for deployment
+├── mise/                 # Mise config and task definitions
 ├── Brewfile              # Homebrew package manifest
-├── mise.toml             # Mise version management
-├── setup.sh              # Automated setup script
+├── .mise.toml            # Mise tasks entrypoint
+├── flake.nix             # Nix flake entrypoint
+├── home.nix              # Home Manager configuration
 ├── README.md             # Main documentation
 └── TOOLS.md              # Managed tools inventory
 ```
@@ -32,25 +35,25 @@ dotfiles/
 
 ### `zsh/` - Shell Configuration
 
-**Purpose**: Modular Zsh configuration with 6-tier loading system
+**Purpose**: Modular Zsh configuration with layered loaders and plugin bootstrap
 
 ```
 zsh/
-├── .zshrc                # Main Zsh configuration (symlinked to ~/.zshrc)
-├── .zshenv               # Environment variables (symlinked to ~/.zshenv)
-├── configs/              # Modular configuration files
-│   ├── 00-env.zsh       # Tier 1: Environment setup
-│   ├── 10-path.zsh      # Tier 1: PATH configuration
-│   ├── 20-aliases.zsh   # Tier 2: Command aliases
-│   ├── 30-functions.zsh # Tier 3: Custom functions
-│   ├── 40-keybinds.zsh  # Tier 4: Keyboard shortcuts
-│   ├── 50-prompt.zsh    # Tier 5: Prompt configuration
-│   └── 60-completion.zsh# Tier 6: Completion system
-├── plugins/              # Plugin-specific configurations
-└── README.md             # Zsh-specific documentation
+├── .zshrc/.zshenv/.zprofile/.zlogin  # Entry points (symlinked by Home Manager)
+├── config/                           # Layered configs (core/tools/os)
+│   ├── core/
+│   ├── tools/
+│   ├── os/
+│   ├── loaders/
+│   └── loader.zsh
+├── init/                             # Bootstrap and plugin manager hooks
+├── sheldon/                          # Plugin manifest (plugins.toml)
+├── functions/                        # Custom functions
+├── completions/                      # Completion definitions
+└── README.md                         # Zsh-specific documentation
 ```
 
-**Loading Order**: Files loaded numerically (00 → 60) for optimized startup
+**Loading Order**: `config/loader.zsh` orchestrates core → tools → functions → OS
 
 ### `nvim/` - Neovim Configuration
 
@@ -60,17 +63,12 @@ zsh/
 nvim/
 ├── init.lua              # Entry point
 ├── lua/
-│   ├── config/           # Core configuration
-│   │   ├── options.lua  # Editor options
-│   │   ├── keymaps.lua  # Key mappings
-│   │   └── autocmds.lua # Auto commands
+│   ├── core/             # Bootstrap and defaults
+│   ├── config/           # Plugin settings and editor config
 │   ├── plugins/          # Plugin specifications (Lazy.nvim)
-│   │   ├── lsp.lua      # LSP configuration
-│   │   ├── treesitter.lua # Syntax parsing
-│   │   ├── telescope.lua # Fuzzy finder
-│   │   └── ...          # Other plugins
-│   └── utils/            # Utility functions
+│   └── lsp/              # LSP wiring and settings
 ├── snippets/             # Custom code snippets
+├── spec/                 # Lua specs and helpers
 └── README.md             # Neovim-specific documentation
 ```
 
@@ -82,12 +80,13 @@ nvim/
 
 ```
 wezterm/
-├── wezterm.lua           # Main configuration
-├── config/               # Modular configuration
-│   ├── appearance.lua   # Theme and colors
-│   ├── keys.lua         # Keyboard shortcuts
-│   ├── tabs.lua         # Tab management
-│   └── panes.lua        # Pane management
+├── wezterm.lua           # Entrypoint (loads config.lua)
+├── config.lua            # Core config builder
+├── keybinds.lua          # Keyboard shortcuts
+├── ui.lua                # Theme and UI settings
+├── events.lua            # Event handlers
+├── os.lua                # OS-specific adjustments
+├── utils.lua             # Helpers
 └── README.md             # WezTerm-specific documentation
 ```
 
@@ -99,7 +98,7 @@ wezterm/
 
 ```
 git/
-├── config                # メイン Git 設定（setup.sh で ~/.gitconfig にリンク）
+├── config                # メイン Git 設定（Home Manager で ~/.gitconfig にリンク）
 ├── alias.gitconfig       # エイリアス/ショートカット（config から include）
 ├── diff.gitconfig        # delta/diff 設定
 ├── ghq.gitconfig         # ghq ルート設定
@@ -129,6 +128,15 @@ alacritty/
 
 **Purpose**: GPU-accelerated lightweight alternative to WezTerm
 
+### `ghostty/` - Alternative Terminal
+
+```
+ghostty/
+└── config               # Ghostty configuration
+```
+
+**Purpose**: Lightweight alternative terminal configuration
+
 ### `ssh/` - SSH Configuration
 
 ```
@@ -152,17 +160,54 @@ karabiner/
 
 **Purpose**: macOS keyboard remapping for ergonomic workflows
 
-### `raycast/` - Productivity Tools
+### `nix/` + Flake Files - Home Manager Configuration
 
 ```
-raycast/
-└── extensions/           # Custom Raycast extensions
-    ├── [uuid]/          # Extension-specific directories
-    │   └── *.js         # Extension scripts
-    └── ...
+nix/
+├── dotfiles-module.nix   # Home Manager module
+├── env-detect.nix        # CI/Pi/Default environment detection
+└── ...                   # Additional HM helpers
+flake.nix                 # Flake entrypoint
+home.nix                  # Home Manager configuration
 ```
 
-**Integration**: Spotify, AWS, Arc browser, color utilities
+**Purpose**: Declarative deployment and environment selection
+
+### `home/` - Entry-Point Dotfiles
+
+```
+home/
+├── .zshrc
+├── .zshenv
+├── .tmux.conf
+└── .gitconfig
+```
+
+**Purpose**: Files deployed to `$HOME` by Home Manager
+
+### `mise/` - Tool & Task Configuration
+
+```
+mise/
+├── config.toml           # Shared settings
+├── config.default.toml   # Default tool definitions
+├── config.ci.toml        # CI-specific tool definitions
+├── config.pi.toml        # Raspberry Pi tool definitions
+└── tasks/                # Task bundles referenced by .mise.toml
+```
+
+**Purpose**: Environment-specific tool definitions and task bundles
+
+### `scripts/` - Bootstrap & Helpers
+
+```
+scripts/
+├── bootstrap.sh          # Homebrew bootstrap (macOS)
+├── setup-env.sh          # Environment setup helpers
+└── openclaw-cleanup      # Optional cleanup utility
+```
+
+**Purpose**: Setup and maintenance helpers
 
 ## Documentation Structure
 
@@ -171,7 +216,6 @@ raycast/
 ```
 docs/
 ├── README.md                    # Documentation index
-├── .claude/rules/documentation-rules.md  # Documentation standards (Claude rules)
 ├── performance.md               # Performance metrics
 ├── setup.md                     # Setup guide
 ├── maintenance.md               # Maintenance procedures
@@ -184,19 +228,6 @@ docs/
 ```
 
 **Organization**: Layer-based documentation (Core/Tool/Support)
-
-### `.claude/` - AI Assistance
-
-```
-.claude/
-├── README.md             # Claude Code integration guide
-├── review-criteria.md    # Code review standards
-└── commands/             # Custom slash commands
-    ├── refactoring.md   # Refactoring workflows
-    └── update-readme.md # Documentation automation
-```
-
-**Purpose**: AI-assisted development and maintenance
 
 ### `.kiro/` - Spec-Driven Development
 
@@ -216,19 +247,17 @@ docs/
 
 - **Principle**: Each tool has isolated configuration directory
 - **Benefits**: Easy to understand, update, and version control
-- **Symlinks**: Setup script creates symlinks from repo to home directory
+- **Deployment**: Home Manager deploys entry-point dotfiles (from `home/`)
 
-### Tiered Loading (Zsh)
+### Layered Loading (Zsh)
 
 ```
-Priority Tier | Files         | Purpose
---------------|---------------|----------------------------------
-1             | 00-*.zsh      | Critical environment setup
-2             | 10-*.zsh      | PATH and core utilities
-3             | 20-*.zsh      | Aliases and shortcuts
-4             | 30-*.zsh      | Custom functions
-5             | 40-*.zsh      | Interactive features
-6             | 50-*.zsh      | Theme and prompt
+Stage         | Location         | Purpose
+--------------|------------------|----------------------------------
+Core          | config/core/     | Base environment and PATH setup
+Tools         | config/tools/    | Tool integrations (git, fzf, mise)
+Functions     | functions/       | Custom functions and utilities
+OS            | config/os/       | Platform-specific tweaks
 ```
 
 ### Lazy Loading (Neovim)
@@ -248,8 +277,8 @@ Priority Tier | Files         | Purpose
 ### Configuration Files
 
 - **Dotfiles**: Leading dot (e.g., `.zshrc`, `.tmux.conf`)
-- **Tool configs**: Tool name + format (e.g., `wezterm.lua`, `mise.toml`)
-- **Numbered prefixes**: For load order (e.g., `00-env.zsh`, `10-path.zsh`)
+- **Tool configs**: Tool name + format (e.g., `wezterm.lua`, `mise/config.toml`)
+- **Loader-based ordering**: Zsh load order is controlled by `config/loader.zsh`
 
 ### Documentation
 
@@ -259,7 +288,7 @@ Priority Tier | Files         | Purpose
 
 ### Scripts
 
-- **Shell scripts**: `.sh` extension (e.g., `setup.sh`)
+- **Shell scripts**: `.sh` extension (e.g., `scripts/bootstrap.sh`)
 - **CI scripts**: Descriptive names (e.g., `ci-local.sh`)
 - **Executables**: No extension, executable bit set
 
@@ -269,9 +298,9 @@ Priority Tier | Files         | Purpose
 
 ```zsh
 # Load order (managed by .zshrc):
-# 1. Environment (.zshenv)
+# 1. Environment (.zshenv/.zprofile)
 # 2. Sheldon plugins
-# 3. Config files (00-*.zsh → 60-*.zsh)
+# 3. config/loader.zsh (core → tools → functions → OS)
 # 4. Local overrides (~/.zshrc.local)
 ```
 
@@ -279,22 +308,18 @@ Priority Tier | Files         | Purpose
 
 ```lua
 -- Standard import pattern:
-local config = require('config.options')
-local utils = require('utils.helpers')
+require("core.bootstrap").setup()
 
--- Plugin specifications in plugins/ directory
--- Auto-loaded by Lazy.nvim
+-- Plugin specs live under lua/plugins/ and are auto-loaded by Lazy.nvim
 ```
 
 ### WezTerm Configuration
 
 ```lua
--- Main wezterm.lua imports modular configs:
-local appearance = require('config.appearance')
-local keys = require('config.keys')
+-- wezterm.lua delegates to config.lua
+return require "./config"
 
--- Returns combined configuration table
-return config
+-- config.lua composes ui/keybinds/os/events into the final config table
 ```
 
 ## Key Architectural Principles
@@ -320,7 +345,7 @@ return config
 ### 4. Documentation-Driven
 
 - **Metadata**: All docs include update date and target audience
-- **Guidelines**: [Documentation Rules](../.claude/rules/documentation-rules.md)
+- **Guidelines**: Documentation rules referenced from `docs/README.md`
 - **Consistency**: Unified tag system (category/tool/layer/environment)
 
 ### 5. Version Control Everything
