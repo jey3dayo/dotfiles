@@ -18,13 +18,13 @@ _load_zsh_files() {
 
   [[ ! -d "$dir" ]] && return
 
-  for file in "$dir"/*.zsh; do
-    if [[ -r "$file" ]]; then
-      if [[ "$defer" == "defer" ]]; then
-        _defer_or_source "$file"
-      else
-        source "$file"
-      fi
+  local file
+  for file in "$dir"/*.zsh(N); do
+    [[ -r "$file" ]] || continue
+    if [[ "$defer" == "defer" ]]; then
+      _defer_or_source "$file"
+    else
+      source "$file"
     fi
   done
 }
