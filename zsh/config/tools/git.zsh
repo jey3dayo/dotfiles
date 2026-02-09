@@ -279,29 +279,29 @@ _git_diff_menu_action() {
 
 _git_sync_action() {
   local options=()
-  options+=("Fetch (prune)")
-  options+=("Update current (ff-only)")
   options+=("Update base (main/develop)")
+  options+=("Update current (ff-only)")
   options+=("Rebase current onto base (main/develop)")
+  options+=("Fetch (prune)")
 
   local choice
   choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Sync Action: " --height=10 --reverse)
 
   if [[ -n "$choice" ]]; then
     case "$choice" in
-      "Fetch (prune)")
-        echo "git fetch origin --prune"
-        git fetch origin --prune
+      "Update base (main/develop)")
+        _git_sync_update_base_action
         ;;
       "Update current (ff-only)")
         echo "git pull --ff-only"
         git pull --ff-only
         ;;
-      "Update base (main/develop)")
-        _git_sync_update_base_action
-        ;;
       "Rebase current onto base (main/develop)")
         _git_sync_rebase_action
+        ;;
+      "Fetch (prune)")
+        echo "git fetch origin --prune"
+        git fetch origin --prune
         ;;
     esac
   fi
