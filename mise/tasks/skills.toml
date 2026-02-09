@@ -11,6 +11,10 @@ run = "home-manager switch --flake . --impure"
 description = "インストール対象スキルのURLレポートを出力"
 run = "nix run .#report"
 
+["skills:report"]
+description = "インストール対象スキルのURLレポートを出力"
+run = "nix run .#report"
+
 ["skills:list"]
 description = "有効スキル一覧を表示"
 run = "nix run .#list"
