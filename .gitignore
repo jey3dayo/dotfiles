@@ -59,6 +59,7 @@ Session.vim
 projects-config/*
 !projects-config/.gitkeep
 nvim_startup.log
+nvim/lazy-lock.json
 *.swp
 
 ## Zed Editor
