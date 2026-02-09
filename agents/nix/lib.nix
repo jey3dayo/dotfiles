@@ -3,7 +3,7 @@
 
 let
   inherit (nixlib) filterAttrs mapAttrsToList concatStringsSep
-    hasAttr attrNames length elem;
+    hasAttr attrNames length elem sort;
   inherit (builtins) readDir pathExists toJSON seq stringLength substring;
 
   hasPrefix = prefix: str:
@@ -175,6 +175,7 @@ in {
   mkReportScript = { skills, sourceMeta }:
     let
       skillList = mapAttrsToList (id: skill: { inherit id; inherit (skill) path source; }) skills;
+      typeOrder = { internal = 0; external = 1; };
       reportList = map (s:
         let
           meta =
@@ -188,11 +189,17 @@ in {
         in
         {
           id = s.id;
+          type = if s.source == "local" then "internal" else "external";
           url = "${meta.repoUrl}/tree/${branch}/${relPath}";
         }
       ) skillList;
-      header = "| Skill | URL |\n| --- | --- |\n";
-      rows = concatStringsSep "\n" (map (r: "| ${r.id} | ${r.url} |") reportList);
+      sorted = sort (a: b:
+        if typeOrder.${a.type} == typeOrder.${b.type}
+        then a.id < b.id
+        else typeOrder.${a.type} < typeOrder.${b.type}
+      ) reportList;
+      header = "| Skill | Type | URL |\n| --- | --- | --- |\n";
+      rows = concatStringsSep "\n" (map (r: "| ${r.id} | ${r.type} | ${r.url} |") sorted);
       output = header + rows + "\n";
       reportFile = pkgs.writeText "skills-install-report.md" output;
     in
