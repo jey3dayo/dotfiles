@@ -66,4 +66,3 @@ fpath=(
   "${fpath[@]}")
 
 # vim: set syntax=zsh:
-[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
