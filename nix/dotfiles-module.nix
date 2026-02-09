@@ -36,20 +36,37 @@ let
     repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
     worktree=""
 
-    if [ -n "$repo_worktree" ] && ${pkgs.git}/bin/git -C "$repo_worktree" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-      worktree="$repo_worktree"
-    elif [ -n "''${DOTFILES_WORKTREE:-}" ] && ${pkgs.git}/bin/git -C "''${DOTFILES_WORKTREE}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-      worktree="''${DOTFILES_WORKTREE}"
-    elif ${pkgs.git}/bin/git -C "$repo_path" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-      worktree="$repo_path"
+    is_dotfiles_repo() {
+      local candidate="$1"
+
+      if ! ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        return 1
+      fi
+
+      local root
+      root="$(${pkgs.git}/bin/git -C "$candidate" rev-parse --show-toplevel 2>/dev/null)" || return 1
+
+      if [ -f "$root/flake.nix" ] && [ -f "$root/home.nix" ] && [ -f "$root/nix/dotfiles-module.nix" ]; then
+        worktree="$root"
+        return 0
+      fi
+
+      return 1
+    }
+
+    if [ -n "$repo_worktree" ] && is_dotfiles_repo "$repo_worktree"; then
+      :
+    elif [ -n "''${DOTFILES_WORKTREE:-}" ] && is_dotfiles_repo "''${DOTFILES_WORKTREE}"; then
+      :
+    elif is_dotfiles_repo "$repo_path"; then
+      :
     else
       # Use bash array for safe iteration with spaces in paths
       candidates=(
 ${worktreeCandidateLines}
       )
       for candidate in "''${candidates[@]}"; do
-        if ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-          worktree="$candidate"
+        if is_dotfiles_repo "$candidate"; then
           break
         fi
       done
