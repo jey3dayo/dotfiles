@@ -106,13 +106,14 @@
               sourceConfig = sourceDefs.${sourceName};
               repoUrl = toGithubUrl sourceConfig.url;
               root = inputs.${sourceName};
-            in
-            acc // {
-              ${sourceName} = {
+              baseMeta = {
                 inherit repoUrl root;
                 branch = "main";
               };
-            }
+              catalogMeta = nixpkgs.lib.mapAttrs (_catalogName: _subPath: baseMeta)
+                sourceConfig.catalogs;
+            in
+            acc // { ${sourceName} = baseMeta; } // catalogMeta
           ) {} (nixpkgs.lib.attrNames sourceDefs);
         sourceMeta = externalSourceMeta // {
           local = {
