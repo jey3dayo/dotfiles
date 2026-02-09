@@ -206,7 +206,6 @@ in {
       pkgs.writeShellScriptBin "skills-report" ''
         cat ${reportFile}
       '';
-
   # Create a validation script that checks bundle integrity
   mkValidateScript = { catalog, selectedSkills, bundle }:
     let
