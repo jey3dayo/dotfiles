@@ -81,7 +81,7 @@ run = """
 if [ -n "${LUA_FILES:-}" ]; then
   stylua ${LUA_FILES}
 else
-  stylua .
+  fd --hidden -e lua ${TASK_EXCLUDES} -X stylua
 fi
 """
 
@@ -91,7 +91,7 @@ run = """
 if [ -n "${LUA_FILES:-}" ]; then
   stylua --check ${LUA_FILES}
 else
-  stylua --check .
+  fd --hidden -e lua ${TASK_EXCLUDES} -X stylua --check
 fi
 """
 

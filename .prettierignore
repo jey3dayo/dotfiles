@@ -7,6 +7,9 @@ node_modules/
 tmux/plugins/
 fisher/
 zsh/.zinit/
+.worktrees/
+result/
+result-*/
 codex/AGENTS.md
 opencode/AGENTS.md
 claude/local/node_modules/

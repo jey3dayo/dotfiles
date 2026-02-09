@@ -1,4 +1,5 @@
 .git
+.worktrees
 .wrangler
 .vim
 raycast/extensions
@@ -7,3 +8,5 @@ tmux/plugins
 .yarn
 opencode
 codex
+result
+result-*

@@ -198,6 +198,7 @@ repomix-output.txt
 *.bk
 *.bk.*
 *.backup
+.worktrees/
 result
 result-*
 *.bak
