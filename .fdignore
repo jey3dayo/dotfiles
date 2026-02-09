@@ -4,6 +4,9 @@ tmux/plugins/
 fisher/
 zsh/.zinit/
 claude/local/node_modules/
+.worktrees/
+result/
+result-*/
 
 # Imported agent skills (managed separately)
 agents/skills/

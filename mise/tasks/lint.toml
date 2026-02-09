@@ -112,10 +112,18 @@ run = """
 if [ -n "${LUA_FILES:-}" ]; then
   stylua --check ${LUA_FILES}
 else
-  stylua --check .
+  fd --hidden -e lua ${TASK_EXCLUDES} -X stylua --check
 fi
 """
 
 ["lint:lua:luacheck"]
 description = "luacheck を実行（利用可能な場合）"
-run = "if command -v luacheck >/dev/null 2>&1; then luacheck -q .; fi"
+run = """
+if command -v luacheck >/dev/null 2>&1; then
+  if [ -n "${LUA_FILES:-}" ]; then
+    luacheck -q ${LUA_FILES}
+  else
+    fd --hidden -e lua ${TASK_EXCLUDES} -X luacheck -q
+  fi
+fi
+"""
