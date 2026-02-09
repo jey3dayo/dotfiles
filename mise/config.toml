@@ -16,7 +16,7 @@ experimental = true
 # jobs は各 OS 固有ファイルで定義（default: 8, pi: 2）
 vfox = false
 idiomatic_version_file_enable_tools = []
-trusted_config_paths = ["~/src/github.com", "/private/var/folders"]
+trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 
 [settings.pipx]
 uvx = true
