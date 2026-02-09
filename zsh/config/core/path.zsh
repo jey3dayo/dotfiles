@@ -4,59 +4,96 @@
 
 # PATH optimization utility function
 path-check() {
-  echo "🔍 PATH Analysis"
-  echo "━━━━━━━━━━━━━━━━━━━"
-  echo "Total entries: $(echo $PATH | tr ':' '\n' | wc -l | tr -d ' ')"
-  echo "Unique entries: $(echo $PATH | tr ':' '\n' | sort -u | wc -l | tr -d ' ')"
+  emulate -L zsh
+  local -a path_entries=("${path[@]}")
+  local -a unique_entries=("${(u)path_entries[@]}")
+  local -A seen
+  local -a duplicates missing
+  local dir
 
-  local duplicates=$(echo $PATH | tr ':' '\n' | sort | uniq -d)
-  if [[ -n "$duplicates" ]]; then
-    echo "⚠️  Duplicates found:"
-    echo "$duplicates"
+  print -r -- "🔍 PATH Analysis"
+  print -r -- "━━━━━━━━━━━━━━━━━━━"
+  print -r -- "Total entries: ${#path_entries}"
+  print -r -- "Unique entries: ${#unique_entries}"
+
+  for dir in "${path_entries[@]}"; do
+    (( seen[$dir]++ ))
+    if (( seen[$dir] == 2 )); then
+      duplicates+=("$dir")
+    fi
+  done
+
+  if (( ${#duplicates[@]} )); then
+    print -r -- "⚠️  Duplicates found:"
+    printf '%s\n' "${duplicates[@]}"
   else
-    echo "✅ No duplicates"
+    print -r -- "✅ No duplicates"
   fi
 
   # Check for potentially missing directories (skip mise paths as they're dynamic)
-  local missing=0
-  for dir in $(echo $PATH | tr ':' '\n' | grep -v '\.mise'); do
-    if [[ ! -d "$dir" ]]; then
-      [[ $missing -eq 0 ]] && echo "❌ Missing directories:"
-      echo "  $dir"
-      ((missing++))
-    fi
+  for dir in "${path_entries[@]}"; do
+    [[ $dir == *".mise"* ]] && continue
+    [[ -z "$dir" ]] && dir="."
+    [[ -d "$dir" ]] || missing+=("$dir")
   done
-  [[ $missing -eq 0 ]] && echo "✅ All paths exist"
+
+  if (( ${#missing[@]} )); then
+    print -r -- "❌ Missing directories:"
+    printf '  %s\n' "${missing[@]}"
+  else
+    print -r -- "✅ All paths exist"
+  fi
 }
 
 # Quick system check function
 zsh-quick-check() {
-  echo "🚀 Zsh Quick System Check"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  emulate -L zsh
+  local -a path_entries=("${path[@]}")
+  local -A seen
+  local -a duplicates
+  local dir tool
+
+  for dir in "${path_entries[@]}"; do
+    (( seen[$dir]++ ))
+    if (( seen[$dir] == 2 )); then
+      duplicates+=("$dir")
+    fi
+  done
+
+  print -r -- "🚀 Zsh Quick System Check"
+  print -r -- "━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
   # Performance indicators
-  echo "📊 Performance:"
-  echo "  Functions loaded: $(typeset -f | grep '^[a-zA-Z]' | wc -l | tr -d ' ')"
-  echo "  Aliases defined: $(alias | wc -l | tr -d ' ')"
+  print -r -- "📊 Performance:"
+  print -r -- "  Functions loaded: $(typeset -f | grep '^[a-zA-Z]' | wc -l | tr -d ' ')"
+  print -r -- "  Aliases defined: $(alias | wc -l | tr -d ' ')"
 
   # PATH status
-  echo "\n🛤️  PATH Status:"
-  echo "  Total entries: $(echo $PATH | tr ':' '\n' | wc -l | tr -d ' ')"
-  echo "  Duplicates: $(echo $PATH | tr ':' '\n' | sort | uniq -d | wc -l | tr -d ' ')"
+  print -r -- ""
+  print -r -- "🛤️  PATH Status:"
+  print -r -- "  Total entries: ${#path_entries}"
+  print -r -- "  Duplicates: ${#duplicates[@]}"
 
   # Tool availability
-  echo "\n🔧 Key Tools:"
+  print -r -- ""
+  print -r -- "🔧 Key Tools:"
   local tools=(git fzf mise sheldon starship)
-  for tool in $tools; do
-    if command -v $tool >/dev/null 2>&1; then
-      echo "  ✅ $tool"
+  for tool in "${tools[@]}"; do
+    if command -v "$tool" >/dev/null 2>&1; then
+      print -r -- "  ✅ $tool"
     else
-      echo "  ❌ $tool (not found)"
+      print -r -- "  ❌ $tool (not found)"
     fi
   done
 
   # Memory usage (approximate)
   local pid=$$
-  local mem=$(ps -o rss= -p $pid 2>/dev/null | tr -d ' ')
-  [[ -n "$mem" ]] && echo "\n💾 Memory: ${mem}KB" || echo "\n💾 Memory: N/A"
+  local mem=$(ps -o rss= -p "$pid" 2>/dev/null | tr -d ' ')
+  if [[ -n "$mem" ]]; then
+    print -r -- ""
+    print -r -- "💾 Memory: ${mem}KB"
+  else
+    print -r -- ""
+    print -r -- "💾 Memory: N/A"
+  fi
 }

@@ -3,9 +3,10 @@ shell = "zsh"
 [templates]
 fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
 defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer -t 1 source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
-fzf-install = "{{ dir }}/install --bin > /dev/null \n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n"
+fzf-install = "{% if dir %}if [[ ! -x \"{{ dir }}/bin/fzf\" ]]; then \"{{ dir }}/install\" --bin > /dev/null; fi\n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n{% endif %}"
 exec = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
 exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" > /dev/null 2>&1 < /dev/null) \n{% endfor %}"
+pnpm-shell-completion-install = "pnpm_shell_completion_install() {\n  emulate -L zsh\n  local dir=\"{{ dir }}\"\n  local bin=\"$dir/pnpm-shell-completion\"\n  local version_file=\"$dir/.pnpm-shell-completion.version\"\n  local version=\"\"\n\n  if [[ -r \"$dir/Cargo.toml\" ]]; then\n    version=\"$(grep '^version = ' \"$dir/Cargo.toml\" | cut -d'\"' -f2 2>/dev/null)\"\n  fi\n\n  if [[ -x \"$bin\" && -n \"$version\" && -r \"$version_file\" && \"$(<\"$version_file\")\" == \"$version\" ]]; then\n    return 0\n  fi\n\n  (cd \"$dir\" && echo y | \"$dir/zplug.zsh\" > /dev/null 2>&1 < /dev/null)\n  [[ -n \"$version\" ]] && print -r -- \"$version\" >| \"$version_file\"\n}\n\npnpm_shell_completion_install\nunset -f pnpm_shell_completion_install\n"
 
 # Essential components
 [plugins.zsh-defer]
@@ -90,7 +91,7 @@ apply = ["defer"]
 [plugins.pnpm-shell-completion-install]
 github = "g-plane/pnpm-shell-completion"
 use = ["zplug.zsh"]
-apply = ["exec_with_confirm"]
+apply = ["pnpm-shell-completion-install"]
 
 [plugins.1password-op]
 github = "unixorn/1password-op.plugin.zsh"

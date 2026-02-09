@@ -19,6 +19,9 @@ elif command -v mise &>/dev/null; then
   eval "$(mise activate zsh)"
 fi
 
+# Load cargo environment for login shells.
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+
 # Complete PATH setup (executed after macOS path_helper)
 # macOS /etc/zprofile runs path_helper which reorders PATH
 # This ensures our desired priority: user paths > system > Homebrew

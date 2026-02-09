@@ -45,6 +45,23 @@ if [[ -n "$ZSH_DEBUG" ]]; then
     fi
   }
 
+  # Demo helper to verify rm_star_* behavior without touching real files.
+  rm-star-demo() {
+    emulate -L zsh
+    local demo_dir
+    demo_dir="$(mktemp -d "${TMPDIR:-/tmp}/rm-star-demo.XXXXXX")" || return 1
+    print -r -- "Demo dir: $demo_dir"
+    (
+      cd "$demo_dir" || exit 1
+      : > one.txt
+      : > two.txt
+      : > three.txt
+      print -r -- "Running: rm *"
+      rm *
+    )
+    rm -rf "$demo_dir"
+  }
+
   # Monitor file loading times
   zsh-load-monitor() {
     echo "📁 File Loading Monitor:"
@@ -58,5 +75,6 @@ if [[ -n "$ZSH_DEBUG" ]]; then
   echo "  zsh-profile      - Show profiling data"
   echo "  zsh-profile-clear - Clear profiling data"
   echo "  zsh-debug-info   - Show debug information"
+  echo "  rm-star-demo     - Verify rm_star_* prompt behavior"
   echo "  zsh-load-monitor - Monitor file loading"
 fi

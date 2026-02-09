@@ -6,9 +6,10 @@ load_tool_settings() {
   local -a critical_tools=(fzf git mise starship)
   local -A is_critical
   local has_zsh_defer=$(( $+functions[zsh-defer] ))
+  local critical_tool tool_file tool_name
 
   # Critical tools - immediate load (minimal set)
-  for critical_tool in $critical_tools; do
+  for critical_tool in "${critical_tools[@]}"; do
     is_critical[$critical_tool]=1
     [[ -f "$config_dir/tools/$critical_tool.zsh" ]] && source "$config_dir/tools/$critical_tool.zsh"
   done
