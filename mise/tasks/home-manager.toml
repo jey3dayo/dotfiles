@@ -14,6 +14,10 @@ run = "home-manager build --flake . --impure"
 description = "Home Manager の世代一覧を表示"
 run = "home-manager generations"
 
+["hm:news"]
+description = "Home Manager の news を表示（flake用）"
+run = "home-manager news --flake . --impure"
+
 ["hm:rollback"]
 description = "Home Manager を前の世代にロールバック"
 run = """
