@@ -1,7 +1,11 @@
-#!/usr/bin/env node
+#!/usr/bin/env tsx
 
-const fs = require("node:fs");
-const path = require("node:path");
+import * as fs from "node:fs";
+import * as path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const repoRoot = path.resolve(__dirname, "../..");
 const targetDir = path.join(repoRoot, "agents", "skills-internal");
