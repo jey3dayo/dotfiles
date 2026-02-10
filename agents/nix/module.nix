@@ -28,21 +28,18 @@ let
     name = "agent-skills-bundle";
   };
 
-  # Commands bundle (flat structure, copy files not symlink)
+  # Commands bundle (supports subdirectories, copy files not symlink)
   commandsBundle =
     if cfg.localCommandsPath != null && builtins.pathExists cfg.localCommandsPath then
-      let
-        commandFiles = lib.filterAttrs
-          (name: type: type == "regular" && lib.hasSuffix ".md" name)
-          (builtins.readDir cfg.localCommandsPath);
-      in
-        pkgs.runCommand "agent-commands-bundle" {} ''
-          mkdir -p $out
-          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: _:
-            # Use cp not ln -s to create real copies in bundle
-            "cp ${cfg.localCommandsPath}/${name} $out/${name}"
-          ) commandFiles)}
-        ''
+      pkgs.runCommand "agent-commands-bundle" {} ''
+        mkdir -p $out
+        # Copy entire directory structure preserving subdirectories
+        cp -r ${cfg.localCommandsPath}/. $out/
+        # Find and preserve only .md files (remove non-.md files)
+        find $out -type f ! -name "*.md" -delete
+        # Remove empty directories
+        find $out -type d -empty -delete
+      ''
     else null;
 
 in {
@@ -198,17 +195,35 @@ in {
         ) cfg.targets
       ) cfg.configFiles)
       ++
-      # Commands distribution (flat symlinks to ~/.claude/commands/)
+      # Commands distribution (recursive symlinks to ~/.claude/commands/)
       [
         (if commandsBundle != null then
           let
-            commandFiles = lib.filterAttrs
-              (name: type: type == "regular" && lib.hasSuffix ".md" name)
-              (builtins.readDir commandsBundle);
+            # Recursively find all .md files in commandsBundle
+            findCommandFiles = dir: prefix:
+              let
+                entries = builtins.readDir dir;
+                processEntry = name: type:
+                  let
+                    path = "${dir}/${name}";
+                    relPath = if prefix == "" then name else "${prefix}/${name}";
+                  in
+                    if type == "directory" then
+                      findCommandFiles path relPath
+                    else if type == "regular" && lib.hasSuffix ".md" name then
+                      { ${relPath} = path; }
+                    else
+                      {};
+              in
+                lib.foldl' (acc: entry:
+                  acc // (processEntry entry.name entry.type)
+                ) {} (lib.mapAttrsToList (name: type: { inherit name type; }) entries);
+
+            commandFiles = findCommandFiles commandsBundle "";
           in
-            lib.mapAttrs' (name: _:
-              lib.nameValuePair ".claude/commands/${name}" {
-                source = "${commandsBundle}/${name}";
+            lib.mapAttrs' (relPath: srcPath:
+              lib.nameValuePair ".claude/commands/${relPath}" {
+                source = srcPath;
               }
             ) commandFiles
         else
