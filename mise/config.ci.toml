@@ -41,5 +41,6 @@ yamllint = "latest"   # YAML lint
 # NPM Packages
 "npm:markdown-link-check" = "latest"
 "npm:markdownlint-cli2" = "latest"
+"npm:tsx" = "latest"
 # CLI Tools
 fd = "latest" # File discovery

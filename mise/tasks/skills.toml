@@ -19,6 +19,10 @@ run = "nix run .#report"
 description = "有効スキル一覧を表示"
 run = "nix run .#list"
 
+["skills:add"]
+description = "スキルを追加（例: mise run skills:add -- owner/repo や tree URL）"
+run = "tsx ./agents/scripts/skills-add.ts"
+
 ["skills:validate"]
 description = "スキル構成バリデーション"
 run = "nix run .#validate"
@@ -29,4 +33,4 @@ run = "nix flake update --flake ."
 
 ["skills:fix:bold-headings"]
 description = "skills-internal の太字見出しを ### へ変換"
-run = "node ./agents/scripts/replace-bold-headings.js"
+run = "tsx ./agents/scripts/replace-bold-headings.ts"

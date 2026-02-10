@@ -112,6 +112,7 @@ yamllint = "latest"
 # 開発ツール・Language Servers
 "npm:eslint_d" = "latest"
 "npm:typescript" = "latest"
+"npm:tsx" = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
