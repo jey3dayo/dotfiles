@@ -56,6 +56,16 @@
       in if selection ? enable then selection.enable else null;
 
     targets = import ./nix/targets.nix;
+
+    configFiles = [
+      {
+        src = ./CLAUDE.md;
+        default = "CLAUDE.md";
+        rename = {
+          opencode = "AGENTS.md";
+        };
+      }
+    ];
   };
 
   # This value determines the Home Manager release that your configuration is compatible with.
