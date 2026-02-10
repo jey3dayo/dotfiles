@@ -6,6 +6,35 @@ paths: nix/**, flake.nix, home.nix
 
 Purpose: Home Manager統合における管理方針とガイドライン。
 
+## 用語集
+
+このドキュメントで使用する重要な用語:
+
+### Worktree
+
+Git リポジトリの作業ディレクトリ。Home Manager は設定ファイルを Nix ストアにコピーするため、Git submodule の初期化には元の Git リポジトリ (worktree) が必要。
+
+### Activation Script
+
+Home Manager の切り替え時に実行されるスクリプト。ファイルコピー、ディレクトリ作成、Git 操作などの初期化処理に使用。`home.activation.*` で定義。
+
+### DAG (Directed Acyclic Graph)
+
+Activation script の依存関係を管理する仕組み。`entryAfter`/`entryBefore` で実行順序を指定。
+
+### SSoT (Single Source of Truth)
+
+単一の信頼できる情報源。このプロジェクトでは:
+
+- `agent-skills-sources.nix`: スキルメタデータの SSoT
+- `dotfiles-module.nix` の `detectWorktreeScript`: worktree 検出ロジックの SSoT
+
+### cleanedRepo
+
+`gitignore.nix` によって `.gitignore` パターンを適用したリポジトリパス。機密情報や動的ファイルを自動除外。
+
+**実装**: `nix/dotfiles-module.nix` L77
+
 ## 管理方針
 
 ### 方針1: 静的ファイルのみ管理（採用）
@@ -30,6 +59,8 @@ Purpose: Home Manager統合における管理方針とガイドライン。
   - `karabiner/` - `automatic_backups/`への書き込み
   - `zed/` - `cache/`, `logs/`への書き込み
   - `mise/` - `trusted-configs/`への書き込み（既に管理済みだが`.gitignore`で除外）
+
+**実装**: `nix/dotfiles-files.nix` (xdg.dirs, xdg.files)
 
 ## Flake Inputs と Agent Skills 管理
 
@@ -67,6 +98,8 @@ in { ... } // dynamicInputs;
 - ✅ Flake 仕様に準拠
 - ✅ メタデータは SSoT で集約管理
 - ❌ URL/flake 属性が重複（制約上の妥協）
+
+**実装**: `nix/agent-skills-sources.nix`, `nix/sources.nix`
 
 **実装例**:
 
@@ -147,6 +180,59 @@ in {
 
 ### トラブルシューティング（Flake Inputs）
 
+#### Agent Skills が配布されない
+
+**症状**: `~/.claude/skills/` が空または一部のスキルのみ存在
+
+**確認手順**:
+
+```bash
+# 1. Home Manager generation の確認
+home-manager generations | head -3
+
+# 2. 最新 generation に agent-skills が含まれるか
+ls -la $(home-manager generations | head -1 | awk '{print $NF}')/home-files/.claude/skills/
+
+# 3. flake inputs の認識確認
+nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
+```
+
+**原因と対策**:
+
+**原因1**: 別の flake から `home-manager switch` を実行した
+
+- Generation が上書きされ、`~/.config` の設定が反映されていない
+- **対策**: `~/.config` から再度 switch を実行
+  ```bash
+  home-manager switch --flake ~/.config --impure
+  ```
+
+**原因2**: flake.nix と agent-skills-sources.nix の不整合
+
+- 手動同期が必要な URL/flake 属性が一致していない
+- **確認**: 両ファイルの URL 一覧を比較
+
+  ```bash
+  # agent-skills-sources.nix の URL 一覧
+  rg 'url = ' nix/agent-skills-sources.nix
+
+  # flake.nix の inputs URL 一覧
+  rg 'url = "github:.*skills' flake.nix
+  ```
+
+- **対策**: 不一致箇所を手動同期（agent-skills-sources.nix → flake.nix）
+
+**原因3**: selection.enable の設定ミス
+
+- スキル名が catalog に存在しない、またはタイポ
+- **確認**: スキル名が catalog に存在するか
+  ```bash
+  mise run skills:report
+  ```
+- **対策**: `nix/agent-skills-sources.nix` の `selection.enable` を修正
+
+**参考**: `~/.claude/rules/troubleshooting.md` の「Nix Home Manager でスキルが配布されない」セクション
+
 #### "expected a set but got a thunk" エラー
 
 **症状**: `nix flake show/metadata/check` が失敗
@@ -175,21 +261,35 @@ rg "(let|import).*agent-skills" flake.nix
 
 **参考コミット**:
 
-- `d6888cb8`: 初回の静的化実施
-- `0f56233a`: 誤って動的生成に戻した（失敗）
-- `7fbed181`: 再度静的化（現在のアプローチ）
+- `2f1e3e34`: Agent Skills の初回統合（migrate agent skills into dotfiles）
+- `139dd809`: dotfiles との統合修正（fix: integrate agent skills with dotfiles）
+- `56543bda`: catalog 定義の統合（integrate catalog definitions into agent-skills-sources.nix）
+
+**Note**: Flake inputs の静的定義要件は Nix の仕様制約によるもので、実装の歴史的経緯よりも制約の理解が重要。
 
 ## Worktree Detection
 
 ### 検出優先度
 
-Worktree の検出は以下の優先順位で行われます（高 → 低）:
+Worktree は以下の順序で検出されます:
 
-1. **programs.dotfiles.repoWorktreePath** - 明示的に指定されたパス
-2. **$DOTFILES_WORKTREE** - 環境変数による一時的な指定
-3. **programs.dotfiles.repoPath** - Nix ストアでない場合はリポジトリパスを使用
-4. **programs.dotfiles.repoWorktreeCandidates** - カスタム検索リスト
-5. **デフォルト候補** - `$HOME/src/github.com/$USER/dotfiles`, `$HOME/src/dotfiles`, `$HOME/dotfiles`
+```
+[1] repoWorktreePath (明示指定)
+        ↓ 見つからない
+[2] $DOTFILES_WORKTREE (環境変数)
+        ↓ 見つからない
+[3] repoPath (Nixストアでない場合)
+        ↓ 見つからない
+[4] repoWorktreeCandidates (カスタムリスト)
+        ↓ 見つからない
+[5] デフォルト候補 (~/.config, ~/src/*/dotfiles, ~/dotfiles)
+```
+
+各候補で `is_dotfiles_repo()` 検証を実施:
+
+- Git リポジトリ root に `flake.nix` / `home.nix` / `nix/dotfiles-module.nix` が存在
+
+**実装**: `nix/dotfiles-module.nix` L34-74 (`detectWorktreeScript`)
 
 ### カスタム検索パスの設定
 
@@ -225,6 +325,8 @@ Worktree detection logic は `nix/dotfiles-module.nix` の `detectWorktreeScript
 2. **一貫性**: 両方の activation script で同じロジックを使用
 3. **テスト容易性**: 検出ロジックを個別にテスト可能
 
+**実装**: `nix/dotfiles-module.nix` L34-74 (`detectWorktreeScript`)
+
 ### gitignore-aware フィルタ
 
 `gitignore.nix`を使用して、`.gitignore`パターンに従ったファイルを自動除外:
@@ -239,16 +341,70 @@ cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 - `gh/hosts.yml`, `mise/trusted-configs/`などの動的ファイルを除外
 - untrackedファイルは含まれるが、`.gitignore`パターンで除外されるものは除外
 
-### 新しいツールを追加する際のチェックリスト
+#### デバッグ: 意図しないファイルの除外/含有
 
-1. ツールが実行時にファイルを生成・更新するか確認
-2. 生成されるファイルが`.gitignore`で除外されているか確認
-3. 除外されていない場合:
-   - ディレクトリ全体を管理対象から除外
-   - または、静的ファイルのみを個別に管理
-4. 静的ファイルのみの場合:
-   - `xdgConfigDirs`にディレクトリ名を追加
-   - または`xdgConfigFiles`に個別ファイルを追加
+**症状**: 設定ファイルが配布されない、または機密ファイルが含まれる
+
+**確認手順**:
+
+```bash
+# 1. .gitignore のパターン確認
+cat .gitignore | grep -E "(config|mise|gh)"
+
+# 2. Git の追跡状態確認 (untracked かつ .gitignore にマッチするものは除外)
+git status --ignored
+
+# 3. Home Manager のビルドログで cleanedRepo の内容確認
+home-manager build --flake ~/.config --impure --show-trace 2>&1 | grep -A 5 "cleanedRepo"
+```
+
+**対策**:
+
+- **除外されるべきファイルが含まれる**: `.gitignore` にパターン追加
+- **必要なファイルが除外される**:
+  - `.gitignore` から削除、または
+  - `xdgConfigFiles` で個別管理（mise, tmux, gh パターン参照）
+
+**実装**: `nix/dotfiles-module.nix` L77 (`cleanedRepo = gitignore.lib.gitignoreSource`)
+
+### 新しいツールを追加する際の判定フロー
+
+```
+[Q1] 実行時にファイルを生成・更新するか?
+├─ Yes → [Q2] 生成ファイルは .gitignore で除外されているか?
+│          ├─ Yes → [Action A] 静的ファイルのみ管理
+│          └─ No  → [Action B] ディレクトリ全体を除外
+└─ No  → [Action C] ディレクトリ全体を管理
+
+[Action A] 静的ファイルのみ管理:
+  1. nix/dotfiles-files.nix の xdg.files に個別追加
+  2. activation script で動的コンテンツをコピー (mise/tmux パターン)
+
+[Action B] ディレクトリ全体を除外:
+  1. .gitignore にパターン追加
+  2. 静的ファイルが必要なら [Action A] を併用
+
+[Action C] ディレクトリ全体を管理:
+  1. nix/dotfiles-files.nix の xdg.dirs に追加
+```
+
+**検証コマンド** (全パターン共通):
+
+```bash
+# 1. 設定変更をビルド検証
+home-manager build --flake ~/.config --impure --dry-run
+
+# 2. 適用
+home-manager switch --flake ~/.config --impure
+
+# 3. シンボリックリンク確認
+readlink ~/.config/<tool-name>
+
+# 4. ツールが正常動作するか確認
+<tool> --version
+```
+
+**実装**: `nix/dotfiles-files.nix` (xdg.dirs, xdg.files)
 
 ### tmux handling (submodule対応)
 
@@ -284,6 +440,8 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 ```
 
 **DAG依存**: `dotfiles-tmux-plugins`が`dotfiles-submodules`の後に実行されるよう、`entryAfter`に依存を追加
+
+**実装**: `nix/dotfiles-module.nix` L252-281 (dotfiles-tmux-plugins activation)
 
 ### gh handling
 
