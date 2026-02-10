@@ -217,6 +217,8 @@ result-*
 *.o
 *.so
 *.pyo
+*.pyc
+__pycache__/
 
 ## Xcode
 *.mode1v3
