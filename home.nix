@@ -44,6 +44,7 @@
 
     # Use skills-internal as local overrides to avoid external duplication conflicts
     localSkillsPath = ./agents/skills-internal;
+    localCommandsPath = ./agents/commands-internal;
 
     sources = import ./nix/sources.nix {
       inherit inputs;

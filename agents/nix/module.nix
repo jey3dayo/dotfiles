@@ -28,6 +28,23 @@ let
     name = "agent-skills-bundle";
   };
 
+  # Commands bundle (flat structure, copy files not symlink)
+  commandsBundle =
+    if cfg.localCommandsPath != null && builtins.pathExists cfg.localCommandsPath then
+      let
+        commandFiles = lib.filterAttrs
+          (name: type: type == "regular" && lib.hasSuffix ".md" name)
+          (builtins.readDir cfg.localCommandsPath);
+      in
+        pkgs.runCommand "agent-commands-bundle" {} ''
+          mkdir -p $out
+          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: _:
+            # Use cp not ln -s to create real copies in bundle
+            "cp ${cfg.localCommandsPath}/${name} $out/${name}"
+          ) commandFiles)}
+        ''
+    else null;
+
 in {
   options.programs.agent-skills = {
     enable = lib.mkEnableOption "AI Agent Skills management";
@@ -47,6 +64,12 @@ in {
       type = lib.types.nullOr lib.types.path;
       default = null;
       description = "Path to local skills directory (skills-internal). Local skills override external on conflict.";
+    };
+
+    localCommandsPath = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Path to local commands directory (e.g., ./agents/commands-internal)";
     };
 
     skills.enable = lib.mkOption {
@@ -137,8 +160,11 @@ in {
         configDirCommands = lib.mapAttrsToList (_name: target: ''
           ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
         '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
+        commandsDirCommand = lib.optionalString (commandsBundle != null) ''
+          ${pkgs.coreutils}/bin/mkdir -p "$HOME/.claude/commands"
+        '';
       in
-        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands));
+        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ commandsDirCommand ]));
 
     # link targets: per-skill directory symlinks to Nix store (default)
     # Each skill dir becomes a symlink: ~/.claude/skills/agent-creator → /nix/store/.../agent-creator
@@ -171,6 +197,23 @@ in {
           else {}
         ) cfg.targets
       ) cfg.configFiles)
+      ++
+      # Commands distribution (flat symlinks to ~/.claude/commands/)
+      [
+        (if commandsBundle != null then
+          let
+            commandFiles = lib.filterAttrs
+              (name: type: type == "regular" && lib.hasSuffix ".md" name)
+              (builtins.readDir commandsBundle);
+          in
+            lib.mapAttrs' (name: _:
+              lib.nameValuePair ".claude/commands/${name}" {
+                source = "${commandsBundle}/${name}";
+              }
+            ) commandFiles
+        else
+          {})
+      ]
     );
   };
 }
