@@ -1,0 +1,1 @@
+../../../commands-internal/shared/error-handler.md

@@ -1,0 +1,1 @@
+../../../commands-internal/kiro/spec-init.md

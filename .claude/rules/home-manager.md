@@ -488,6 +488,200 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 2. Nixストア内のファイルに変更が含まれているか確認
 3. `home-manager switch`を再実行
 
+## Agent Skills配布アーキテクチャ
+
+### 統合フロー
+
+Agent Skillsは以下の4段階で統合・配布されます：
+
+1. **Sources統合**: `discoverCatalog` (lib.nix L105-127)
+   - **Distributions**: `agents/distributions/default/` （バンドル層、オプション）
+   - **Internal skills**: `agents/skills-internal/` （42スキル）
+   - **External skills**: Flake inputs → `agents/skills/` （symlinks）
+   - **優先度**: Local > External > Distribution
+   - Conflict detection: External間の重複検出
+   - Local overrides: Internal skills が External/Distribution を上書き
+
+2. **Skills選択**: `selectSkills` (lib.nix L129-138)
+   - `selection.enable`で選択されたskillsのみ
+   - Local skills（skills-internal/）は常に含まれる
+
+3. **Bundle生成**: `mkBundle` (lib.nix L140-160)
+   - 選択されたskillsのみをNix storeにコピー
+   - rsync -aLによる完全コピー（symlinkを実体化）
+
+4. **配布**: Home Manager (module.nix L169-178)
+   - Per-skill symlinkで`~/.claude/skills/`へ配布
+   - `.system`ファイルは書き込み可能
+
+**実装**: `agents/nix/lib.nix` (scanDistribution, discoverCatalog), `agents/nix/module.nix`
+
+### Commands配布
+
+Commands（slash commands）の配布フロー:
+
+- **Source**: `agents/commands-internal/` （43ファイル、subdirectories対応）
+- **Bundle**: `commandsBundle` (module.nix L32-43)
+  - `.md`ファイルのみフィルタリング
+  - Subdirectory構造を維持（`clean/`, `kiro/`, `shared/`）
+- **配布**: Recursive symlinks (module.nix L199-231)
+  - `~/.claude/commands/` へ配布
+
+**実装**: `nix/module.nix` L32-43, L199-231
+
+### CLAUDE.md配布
+
+Target-specific名前変更に対応（2025-02-11実装）:
+
+- **Source**: `CLAUDE.md` (リポジトリルート)
+- **配布**: `configFiles` (module.nix L245-261)
+  - Claude Code: `~/.claude/CLAUDE.md`
+  - OpenCode: `~/.opencode/AGENTS.md` （名前変更）
+  - その他: 各targetの設定ファイル名に変換
+
+**実装**: `nix/module.nix` L245-261
+
+### Distributions層の実装（2025-02-11追加）
+
+#### 概要
+
+`agents/distributions/` ディレクトリは、複数のコンポーネント（skills、commands、config）を論理的にバンドリングするための配布層です。
+
+#### 構造
+
+```
+agents/distributions/
+  ├── README.md
+  └── default/              # デフォルトバンドル
+      ├── skills/           # skills-internal/* へのsymlinks
+      ├── commands/         # commands-internal/*.md へのsymlinks
+      └── config/           # 設定ファイル群
+```
+
+#### 使用方法
+
+**home.nix での設定**:
+
+```nix
+programs.agent-skills = {
+  enable = true;
+
+  # Option 1: distributions を使用（バンドル配布）
+  distributionsPath = ./agents/distributions/default;
+
+  # Option 2: 個別に指定（従来の方法、併用可能）
+  localSkillsPath = ./agents/skills-internal;
+  localCommandsPath = ./agents/commands-internal;
+};
+```
+
+#### 優先度と循環参照の回避
+
+**優先度**: Local > External > Distribution
+
+- `localSkillsPath` が最優先（Internal skills）
+- `sources` が次優先（External skills）
+- `distributionsPath` が最低優先（Bundle層）
+
+**循環参照の回避**:
+
+distributionsは**静的パス**として扱われ、sources統合**前**にスキャンされます：
+
+```nix
+# lib.nix L105-127
+discoverCatalog = { sources, localPath, distributionsPath ? null }:
+  let
+    # 1. distributions をスキャン（静的パス、循環なし）
+    distributionResult = scanDistribution distributionsPath;
+
+    # 2. external sources をスキャン
+    externalSkills = foldl' scanSourceAutoDetect sources;
+
+    # 3. local skills をスキャン
+    localSkills = scanSource localPath;
+
+    # 4. マージ（local > external > distribution）
+  in distributionResult.skills // externalSkills // localSkills;
+```
+
+distributionsは`mkBundle`の**入力**ではなく、`discoverCatalog`の**入力**なので、循環参照は発生しません。
+
+#### symlinkベースの実装
+
+distributions/内はsymlinkで構成されるため：
+
+- **実体は元のディレクトリ**（skills-internal、commands-internal）
+- **sourceタグは実体のソース**を反映（"local"として表示される）
+- **物理的な重複なし**（ディスク効率的）
+
+#### 設計判断
+
+**distributions/を追加した理由**:
+
+1. ✅ 論理的なバンドリング単位を提供
+2. ✅ カスタムバンドルの作成が容易
+3. ✅ skills + commands + config の統合配布
+4. ✅ 循環参照を回避する安全な実装
+
+**既存実装との共存**:
+
+- ❌ distributions/は既存のlocalPath/sourcesを**置き換えない**
+- ✅ オプショナルな追加レイヤー
+- ✅ 従来の個別配布フローも引き続き使用可能
+
+#### `-internal`命名について
+
+**現状**: `skills-internal/`, `commands-internal/`というサフィックス付き命名
+
+**評価**:
+
+- ✅ Internal（非公開）vs External（公開）の区別が明確
+- ✅ distributions/配下でも元のソース名が保たれる
+- ✅ 実装の本質的な問題ではない
+
+**推奨**: 命名変更は非推奨（distributions/により論理的な整理が可能になったため、物理名は変更不要）
+
+### 配布構造の検証
+
+#### Skills配布確認
+
+```bash
+# 1. Catalogに全skillsが含まれているか
+nix run ~/.config#list
+
+# 2. Skills配布先の確認
+ls -la ~/.claude/skills/ | wc -l
+# 期待: 42 (internal) + 選択されたexternal数
+
+# 3. Symlink構造の確認
+readlink ~/.claude/skills/agent-creator
+# 期待: /nix/store/.../agent-creator
+```
+
+#### Commands配布確認
+
+```bash
+# 1. Commands配布先の確認
+tree ~/.claude/commands/ -L 2
+# 期待: 43ファイル（root + clean/ + kiro/ + shared/）
+
+# 2. Subdirectory構造の確認
+ls -la ~/.claude/commands/kiro/ | wc -l
+# 期待: kiroサブディレクトリ内のコマンド数
+```
+
+#### CLAUDE.md/AGENTS.md配布確認
+
+```bash
+# 1. Claude向け配布
+readlink ~/.claude/CLAUDE.md
+# 期待: /nix/store/.../CLAUDE.md
+
+# 2. OpenCode向け配布（renamed）
+readlink ~/.opencode/AGENTS.md
+# 期待: /nix/store/.../AGENTS.md
+```
+
 ## 参考
 
 - Home Manager公式: <https://nix-community.github.io/home-manager/>

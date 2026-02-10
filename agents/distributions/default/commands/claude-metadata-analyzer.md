@@ -1,0 +1,1 @@
+../../../commands-internal/shared/claude-metadata-analyzer.md

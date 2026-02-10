@@ -1,0 +1,1 @@
+../../../commands-internal/skill-up.md

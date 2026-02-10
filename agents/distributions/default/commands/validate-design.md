@@ -1,0 +1,1 @@
+../../../commands-internal/kiro/validate-design.md

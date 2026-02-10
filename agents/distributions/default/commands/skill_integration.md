@@ -1,0 +1,1 @@
+../../../commands-internal/shared/skill_integration.md

@@ -8,6 +8,7 @@ let
   catalog = agentLib.discoverCatalog {
     sources = cfg.sources;
     localPath = cfg.localSkillsPath;
+    distributionsPath = cfg.distributionsPath;
   };
 
   localSkillIds = lib.attrNames (lib.filterAttrs (_: skill: skill.source == "local") catalog);
@@ -67,6 +68,12 @@ in {
       type = lib.types.nullOr lib.types.path;
       default = null;
       description = "Path to local commands directory (e.g., ./agents/commands-internal)";
+    };
+
+    distributionsPath = lib.mkOption {
+      type = lib.types.nullOr lib.types.path;
+      default = null;
+      description = "Path to distributions directory (e.g., ./agents/distributions/default). Provides bundled skills, commands, and config.";
     };
 
     skills.enable = lib.mkOption {

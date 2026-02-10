@@ -1,0 +1,1 @@
+../../../commands-internal/debug-chrome.md

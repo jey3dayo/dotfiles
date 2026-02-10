@@ -66,11 +66,56 @@ let
       else
         claudeSkills;
 
-in {
-  # Discover all available skills from sources + local path
-  # Returns: { skillId = { id, path, source }; ... }
-  discoverCatalog = { sources, localPath }:
+  # Scan distributions directory for bundled components
+  # Returns: { skills = { skillId = { id, path, source }; ... }; commands = path or null; }
+  scanDistribution = distributionPath:
     let
+      skillsPath = distributionPath + "/skills";
+      commandsPath = distributionPath + "/commands";
+      configPath = distributionPath + "/config";
+
+      # Scan skills subdirectories (may contain symlinks to skills-internal, etc.)
+      scannedSkills =
+        if pathExists skillsPath then
+          let
+            skillDirs = readDir skillsPath;
+            # Handle both direct skill dirs and symlinked source dirs
+            processSkillEntry = name: type:
+              let entryPath = skillsPath + "/${name}";
+              in
+                if type == "directory" || type == "symlink" then
+                  # Check if it's a skill directory directly
+                  if pathExists (entryPath + "/SKILL.md") then
+                    { ${name} = { id = name; path = entryPath; source = "distribution"; }; }
+                  else
+                    # Or scan it as a source directory (e.g., skills-internal symlink)
+                    scanSource "distribution" entryPath
+                else {};
+          in
+            builtins.foldl' (acc: entry:
+              acc // (processSkillEntry entry.name entry.value)
+            ) {} (builtins.attrValues (builtins.mapAttrs (name: type: { inherit name type; }) skillDirs))
+        else {};
+    in {
+      skills = scannedSkills;
+      commands = if pathExists commandsPath then commandsPath else null;
+      config = if pathExists configPath then configPath else null;
+    };
+
+in {
+  inherit scanDistribution;
+
+  # Discover all available skills from sources + local path + distributions
+  # Returns: { skillId = { id, path, source }; ... }
+  discoverCatalog = { sources, localPath, distributionsPath ? null }:
+    let
+      # Scan distributions first (if provided)
+      distributionResult =
+        if distributionsPath != null && pathExists distributionsPath then
+          scanDistribution distributionsPath
+        else
+          { skills = {}; commands = null; config = null; };
+
       # Scan each external source
       externalSkills = builtins.foldl' (acc: srcName:
         let
@@ -94,9 +139,10 @@ in {
           scanSource "local" localPath
         else {};
 
-      # Local overrides external (local wins on conflict)
+      # Priority: local > external > distribution
+      # Distribution skills are lowest priority (can be overridden by external/local)
     in
-      externalSkills // localSkills;
+      distributionResult.skills // externalSkills // localSkills;
 
   # Filter catalog by enable list
   # Returns: { skillId = { id, path, source }; ... } (only enabled ones)

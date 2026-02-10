@@ -1,0 +1,1 @@
+../../../commands-internal/clean/full.md
