@@ -6,7 +6,7 @@ Home Manager と Nix Flake を使った dotfiles 管理とトラブルシュー�
 
 このスキルは、Home Manager による dotfiles 管理の統合操作とトラブルシューティングを提供します。
 
-**主な機能**:
+### 主な機能
 
 - 設定適用 (home-manager switch)
 - 世代管理 (generations, rollback)
@@ -45,7 +45,7 @@ nix-dotfiles/
 ~/.config/agents/skills-internal/nix-dotfiles/scripts/diagnose.sh
 ```
 
-**チェック項目**:
+### チェック項目
 
 - Generation 検証
 - Symlink 検証
@@ -71,7 +71,7 @@ home-manager switch --generation <N>
 
 Quick Start に特化したガイド。
 
-**主なセクション**:
+### 主なセクション
 
 - Quick Start (最頻出操作)
 - Core Workflows (新ツール追加、Agent Skills 追加)
@@ -83,7 +83,7 @@ Quick Start に特化したガイド。
 
 詳細な診断手順（症状 → 原因 → 確認 → 対策）
 
-**主なトピック**:
+### 主なトピック
 
 - Agent Skills が配布されない
 - Flake inputs エラー
@@ -95,7 +95,7 @@ Quick Start に特化したガイド。
 
 全コマンドリファレンス
 
-**カバー範囲**:
+### カバー範囲
 
 - home-manager コマンド (switch, build, generations, rollback)
 - nix flake コマンド (show, metadata, check, update, lock)
@@ -106,7 +106,7 @@ Quick Start に特化したガイド。
 
 Flake 構造、Worktree SSoT、gitignore フィルタリング
 
-**主なセクション**:
+### 主なセクション
 
 - 用語集 (Worktree, Activation Script, DAG, SSoT, cleanedRepo)
 - Flake 構造
@@ -162,7 +162,7 @@ ls -la ~/.config/agents/skills-internal/nix-dotfiles/scripts/
 ~/.config/agents/skills-internal/nix-dotfiles/scripts/diagnose.sh
 ```
 
-**期待される出力**:
+### 期待される出力
 
 - `[✓]` または `[✗]` による視覚的フィードバック
 - 失敗時に Quick fixes の提案
