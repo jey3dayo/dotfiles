@@ -342,7 +342,7 @@ When helping create new documentation:
 - ドキュメントレビュー要求時
 - 技術ドキュメント作成時
 
-**統合例**:
+### 統合例
 
 ```
 ユーザー: "README.mdを改善してクリアで読みやすくしたい"

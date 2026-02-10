@@ -4,7 +4,7 @@ This document provides detailed guidance on managing language runtimes, CLI tool
 
 ## Core Philosophy: Centralized Package Management
 
-**Principle:** ALL development tools and packages MUST be declared in `mise.toml` for reproducibility and version control.
+### Principle:
 
 ### Why Centralization?
 
@@ -75,7 +75,7 @@ mise supports multiple config locations with clear precedence:
 2. **User global**: `~/.config/mise/config.toml`
 3. **System-wide**: `/etc/mise/config.toml` (lowest priority)
 
-**Best Practice**: Use user global config (`~/.config/mise/config.toml`) for personal tools, project-local for project-specific versions.
+### Best Practice
 
 ## Migration from global-package.json
 
@@ -217,7 +217,7 @@ fd = "latest"             # Fast find alternative
 bat = "latest"            # Cat with syntax highlighting
 ```
 
-**Best Practice**: Use `"latest"` unless specific version required for compatibility.
+### Best Practice
 
 ### 3. NPM Global Packages
 
@@ -227,7 +227,7 @@ bat = "latest"            # Cat with syntax highlighting
 - Require Node.js runtime
 - Often provide CLI commands
 
-**Prefix Syntax:** `"npm:<package-name>"`
+### Prefix Syntax:
 
 ### Examples
 
@@ -267,7 +267,7 @@ bat = "latest"            # Cat with syntax highlighting
 - Uses `pipx` for isolation (similar to `npx`)
 - Prevents dependency conflicts
 
-**Prefix Syntax:** `"pipx:<package-name>"`
+### Prefix Syntax:
 
 ### Examples
 

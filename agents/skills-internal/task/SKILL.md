@@ -48,17 +48,17 @@ Integrate project information and execution history:
 
 Select optimal agent with confidence-based scoring:
 
-**Simple Tasks** (complexity < 0.8):
+### Simple Tasks
 
 - Single agent execution
 - Direct task completion
 
-**Complex Tasks** (complexity ≥ 0.8):
+### Complex Tasks
 
 - Multi-agent coordination
 - Task decomposition and parallel execution
 
-**Agent Capability Mapping**:
+### Agent Capability Mapping
 
 - error-fixer: Error fixing, type safety, code quality
 - orchestrator: Implementation, refactoring, task decomposition
@@ -87,7 +87,7 @@ Enable with `--deep-think` or `--thinking` flags:
 - Focus areas: root cause analysis, design decisions, optimization strategies, implementation strategies
 - Complexity-based threshold (0.7)
 
-**Focus Area Detection**:
+### Focus Area Detection
 
 - Root cause: "なぜ", "why", "原因", "cause"
 - Design: "設計", "design", "アーキテクチャ", "architecture"
@@ -166,11 +166,11 @@ This command integrates with shared utilities:
 
 Auto-loads relevant skills based on task analysis:
 
-**Framework Skills**:
+### Framework Skills
 
 - integration-framework: TaskContext standardization, Communication Bus patterns
 
-**Technology Stack Skills** (auto-detected):
+### Technology Stack Skills
 
 - typescript: Type safety, any-type elimination, Result<T,E> patterns
 - react: Component design, Hooks, performance optimization

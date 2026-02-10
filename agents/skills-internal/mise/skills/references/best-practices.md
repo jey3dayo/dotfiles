@@ -43,7 +43,7 @@ rust = "stable"
 - They are **not deduplicated** across the whole DAG
 - Won't run in parallel with siblings
 
-**Use Case:** A "build-then-package" meta-task
+### Use Case:
 
 ### Example
 
@@ -68,7 +68,7 @@ run = [
 - Great for fan-out/fan-in graphs such as "test depends on lint & build"
 - Cannot encode post-steps; use `depends_post` for that
 
-**Use Case:** Fan-out parallelism with proper prerequisites
+### Use Case:
 
 ### Example
 
@@ -235,7 +235,7 @@ run = "mise build && mise test"  # ❌ Nested mise process
 
 This launches a nested mise process without DAG awareness.
 
-**Solution:** Use the structured `{ task = "x" }` form instead:
+### Solution:
 
 ```toml
 [tasks.good]
@@ -346,5 +346,5 @@ With this structure your mise.toml stays:
 
 ---
 
-**Source:** Field-tested practices from 2025, synthesized from real-world mise usage patterns.
-**Documentation:** [mise.jdx.dev](https://mise.jdx.dev/tasks/)
+### Source:
+### Documentation:

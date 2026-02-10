@@ -83,7 +83,7 @@ Specify the target readers for the document.
 
 ### Common Audiences
 
-**Generic Projects**:
+### Generic Projects
 
 - Developer
 - User
@@ -92,7 +92,7 @@ Specify the target readers for the document.
 - Beginner
 - Advanced
 
-**Specialized Projects**:
+### Specialized Projects
 
 - Operations/Ops
 - SRE
@@ -117,13 +117,13 @@ Tags use prefix notation: `prefix/value`
 
 ### Common Tag Prefixes
 
-**Universal Prefixes**:
+### Universal Prefixes
 
 - `category/` - Document category
 - `audience/` - Target reader type
 - `environment/` - Environment context
 
-**Project-Specific Prefixes**:
+### Project-Specific Prefixes
 
 - `tool/` - Specific tool or technology
 - `layer/` - Architecture layer
@@ -134,13 +134,13 @@ Tags use prefix notation: `prefix/value`
 
 Two standard formats:
 
-**Comma-Separated** (with backticks):
+### Comma-Separated
 
 ```markdown
 **タグ**: `category/guide`, `audience/developer`, `environment/production`
 ```
 
-**Space-Separated** (with backticks):
+### Space-Separated
 
 ```markdown
 **タグ**: `category/guide` `audience/developer` `environment/production`

@@ -206,9 +206,9 @@ monorepo/
 
 ### Issue: Configuration Not Applied
 
-**Symptom**: Changes to `.tsr-config.json` don't seem to take effect
+### Symptom
 
-**Solution**:
+### Solution
 
 ```bash
 # Verify JSON syntax
@@ -223,9 +223,9 @@ diff .tsr-config.json examples/nextjs-app-router.json
 
 ### Issue: Old Patterns Not Working
 
-**Symptom**: `.tsrignore` patterns not being respected
+### Symptom
 
-**Solution**:
+### Solution
 
 ```bash
 # Check ignoreFile path
@@ -240,9 +240,9 @@ cat .tsrignore
 
 ### Issue: Reports in Wrong Location
 
-**Symptom**: Reports not saved to expected location
+### Symptom
 
-**Solution**:
+### Solution
 
 ```bash
 # Check resolved output path
@@ -306,6 +306,6 @@ For issues or questions:
 
 ---
 
-**Estimated Migration Time**: 5-10 minutes per project
-**Difficulty**: Easy
-**Breaking Changes**: None (backward compatible with .tsrignore)
+### Estimated Migration Time
+### Difficulty
+### Breaking Changes

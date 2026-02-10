@@ -101,7 +101,7 @@ Provide output in the language specified in config (default: `ja`) with the foll
 5. **Next Step**: Command block showing `/kiro:spec-requirements <feature-name>`
 6. **Notes**: Explain why only initialization was performed (2-3 sentences on phase separation)
 
-**Format Requirements**:
+### Format Requirements
 
 - Use Markdown headings (##, ###)
 - Wrap commands in code blocks

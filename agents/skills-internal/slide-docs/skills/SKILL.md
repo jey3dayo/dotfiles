@@ -12,7 +12,7 @@ description: |
 
 Comprehensive review and creation support for Markdown-based presentation slides. Evaluate slide quality across storytelling, visual design, message clarity, and presentation effectiveness. Apply industry best practices with actionable improvements.
 
-**Tool-Specific Syntax**: Use Context7 MCP for up-to-date documentation:
+### Tool-Specific Syntax
 
 - Marp: `/marp-team/marp-cli` (64 snippets, score 82.6)
 - reveal.js: `/hakimel/reveal.js` (131 snippets, score 94.5)
@@ -159,4 +159,4 @@ Example queries:
 - "Custom backgrounds and transitions in [tool-name]"
 ```
 
-**Always verify syntax with Context7** when working with specific presentation tools to ensure up-to-date, accurate implementation details.
+### Always verify syntax with Context7

@@ -48,7 +48,7 @@ Project Root/
 
 Configurable detection system using multiple detector types:
 
-**Detector Types**:
+### Detector Types
 
 - `file_exists`: Check if a file exists at specified path
 - `file_pattern`: Match files using glob patterns
@@ -56,7 +56,7 @@ Configurable detection system using multiple detector types:
 - `package_dependency`: Check package.json dependencies
 - `directory_structure`: Verify directory structure
 
-**Detection Process**:
+### Detection Process
 
 ```python
 def detect_project_type():
@@ -114,7 +114,7 @@ def integrate_skills(project_info):
     return skills
 ```
 
-**Available Skills**:
+### Available Skills
 
 - `typescript`: Type safety, strict mode, type guards, Result pattern
 - `react`: Component design, hooks, performance, a11y
@@ -125,7 +125,7 @@ def integrate_skills(project_info):
 
 ### Evaluation System
 
-**Configuration-based evaluation**:
+### Configuration-based evaluation
 
 ```json
 {
@@ -152,7 +152,7 @@ def integrate_skills(project_info):
 }
 ```
 
-**Star Rating System**:
+### Star Rating System
 
 | Rating     | Description  | Criteria                                     |
 | ---------- | ------------ | -------------------------------------------- |
@@ -168,7 +168,7 @@ def integrate_skills(project_info):
 
 Comprehensive quality assessment with structured evaluation.
 
-**Features**:
+### Features
 
 - Project type auto-detection
 - Configuration-based skill integration
@@ -176,7 +176,7 @@ Comprehensive quality assessment with structured evaluation.
 - Star ratings with detailed comments
 - Prioritized action plan
 
-**Usage**:
+### Usage
 
 ```bash
 /review                    # Detailed review
@@ -187,14 +187,14 @@ Comprehensive quality assessment with structured evaluation.
 
 Quick practical analysis focused on immediate issues.
 
-**Features**:
+### Features
 
 - Parallel sub-agent execution (security, performance, quality, architecture)
 - Fast issue detection
 - Immediate fix suggestions
 - Severity prioritization
 
-**Usage**:
+### Usage
 
 ```bash
 /review --simple           # Quick review
@@ -317,7 +317,7 @@ For projects using the old hardcoded project detection:
 3. **Customize as needed** (weights, skills, custom rules)
 4. **Place in project root** as `.code-review-config.json`
 
-**Migration examples provided**:
+### Migration examples provided
 
 - `config/examples/caad-loca-project.json` - Clean Architecture with Result<T,E>
 - `config/examples/.code-review-config.json` - Generic custom project
@@ -357,7 +357,7 @@ Reference in configuration:
 
 Full schema available at: `schemas/project-detection-schema.json`
 
-**Key properties**:
+### Key properties
 
 - `name`: Project type identifier
 - `description`: Human-readable description
@@ -383,4 +383,4 @@ Full schema available at: `schemas/project-detection-schema.json`
 
 ---
 
-**Goal**: Provide flexible, configurable code reviews that adapt to any project structure while maintaining consistent quality standards.
+### Goal

@@ -381,27 +381,27 @@ jobs:
 
 ### Configuration Not Found
 
-**Problem**: `.docs-manager-config.json` not found
+### Problem
 
-**Solution**: Uses default generic configuration. Create configuration file in project root if customization needed.
+### Solution
 
 ### Invalid Configuration
 
-**Problem**: Configuration file has errors
+### Problem
 
-**Solution**: Validate against schema in `templates/docs-manager-config.template.json`. Check JSON syntax and required fields.
+### Solution
 
 ### Tag Validation Errors
 
-**Problem**: Tags not recognized
+### Problem
 
-**Solution**: Check `tag_vocabulary` in configuration. Add missing tags or update vocabulary.
+### Solution
 
 ### Link Validation Failures
 
-**Problem**: Many false positives in link checking
+### Problem
 
-**Solution**: Configure `.markdown-link-check.json` with appropriate ignore patterns and replacement rules.
+### Solution
 
 ## Best Practices
 

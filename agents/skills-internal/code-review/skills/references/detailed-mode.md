@@ -548,4 +548,4 @@ def perform_serena_analysis(targets, options):
 
 ---
 
-**目標**: プロジェクトの文脈を理解し、技術スタックに応じた精緻で実用的なレビューを提供すること。
+### 目標

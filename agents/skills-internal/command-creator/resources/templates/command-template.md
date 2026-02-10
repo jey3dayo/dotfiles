@@ -64,7 +64,7 @@ argument-hint: "[required-arg] [--optional-flag]"
 ### よくある問題
 
 1. **問題**: 説明
-   **解決策**: 修正方法
+   ### 解決策
 
 ## 品質チェック
 

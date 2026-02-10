@@ -6,7 +6,7 @@
 
 ### 例1: 大規模リファクタリング後のクリーンアップ
 
-**シナリオ**: Service層のリファクタリングで多数の関数が不要になった
+### シナリオ
 
 ```bash
 # Before リファクタリング
@@ -19,7 +19,7 @@
 # 多数の未使用関数が残存
 ```
 
-**実行手順**:
+### 実行手順
 
 ```bash
 # 1. リファクタリング完了をコミット
@@ -53,7 +53,7 @@ git add -A
 git commit -m "chore: remove unused service functions after refactoring"
 ```
 
-**結果**:
+### 結果
 
 ```
 Before:
@@ -68,7 +68,7 @@ After:
 
 ### 例2: モノレポからの機能抽出後
 
-**シナリオ**: 特定機能を別パッケージに切り出した後のクリーンアップ
+### シナリオ
 
 ```bash
 # 機能抽出前
@@ -88,7 +88,7 @@ packages/
   shipping-service/       # 新パッケージ
 ```
 
-**実行手順**:
+### 実行手順
 
 ```bash
 cd packages/web
@@ -129,7 +129,7 @@ git add -A
 git commit -m "chore: cleanup after extracting payment and shipping features"
 ```
 
-**結果**:
+### 結果
 
 ```
 Removed:
@@ -141,9 +141,9 @@ Removed:
 
 ### 例3: 週次メンテナンスルーチン
 
-**シナリオ**: 定期的なコードベースクリーンアップ
+### シナリオ
 
-**毎週月曜 9:00 に実行**:
+### 毎週月曜 9:00 に実行
 
 ```bash
 #!/bin/bash
@@ -212,7 +212,7 @@ gh pr create \
 echo "=== Maintenance Complete ==="
 ```
 
-**実行結果の例**:
+### 実行結果の例
 
 ```
 Week 1: 12 items removed
@@ -226,9 +226,9 @@ Total removed in month: 25 items
 
 ### 例4: CI/CD統合による継続的チェック
 
-**シナリオ**: Pull Requestごとにデッドコードをチェック
+### シナリオ
 
-**.github/workflows/tsr-check.yml**:
+### .github/workflows/tsr-check.yml
 
 ```yaml
 name: TSR Dead Code Check
@@ -309,7 +309,7 @@ jobs:
           exit 1
 ```
 
-**実行例**:
+### 実行例
 
 ```
 PR #123: feature/add-user-profile
@@ -326,7 +326,7 @@ PR #125: feature/payment-integration
 
 ### 例5: テスト削除後のクリーンアップ
 
-**シナリオ**: E2Eテストを別リポジトリに移行
+### シナリオ
 
 ```bash
 # Before
@@ -348,7 +348,7 @@ rm -rf src/tests/e2e
 # test-utils.ts, e2e-fixtures.ts が未使用に
 ```
 
-**実行手順**:
+### 実行手順
 
 ```bash
 # 1. E2Eテスト削除をコミット
@@ -382,7 +382,7 @@ git commit -m "chore: cleanup e2e test utilities after migration"
 
 ### プロジェクトA: 中規模Next.jsアプリケーション
 
-**Before TSR**:
+### Before TSR
 
 ```
 Files: 450
@@ -391,7 +391,7 @@ Build Time: 45s
 Bundle Size: 320KB
 ```
 
-**After 1 month of TSR**:
+### After 1 month of TSR
 
 ```
 Files: 420 (-30)
@@ -406,7 +406,7 @@ Average per run: 19.5
 
 ### プロジェクトB: 大規模モノレポ
 
-**Before TSR**:
+### Before TSR
 
 ```
 Packages: 12
@@ -415,7 +415,7 @@ Lines of Code: 180,000
 Dead Code Rate: ~8%
 ```
 
-**After 3 months of TSR**:
+### After 3 months of TSR
 
 ```
 Packages: 12
@@ -436,4 +436,4 @@ Average per run: 28.5
 
 ---
 
-**目標**: 実践的な例を通じて、TSRを効果的に活用する方法を理解する
+### 目標

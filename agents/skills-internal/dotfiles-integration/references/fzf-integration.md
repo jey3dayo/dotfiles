@@ -1,8 +1,8 @@
 # 🔍 FZF Integration Guide
 
-**最終更新**: 2025-10-17
-**対象**: 開発者・上級者
-**タグ**: `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced`
+### 最終更新
+### 対象
+### タグ
 
 FZF (Fuzzy Finder) は dotfiles 全体で統一的なファジー検索体験を提供する中核コンポーネントです。
 
@@ -85,15 +85,15 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 ### Shell Layer Integration
 
-**Performance Impact**: ✅ Optimized - 遅延読み込みで起動時間への影響なし
+### Performance Impact
 
-**Key Features**:
+### Key Features
 
 - **Repository Navigation**: `^]` による ghq 統合
 - **Process Management**: `^g^K` による直感的プロセス操作
 - **Command History**: `^R` の強化された履歴検索
 
-**Implementation**:
+### Implementation
 
 ```bash
 # Priority loading in sheldon/plugins.toml
@@ -104,15 +104,15 @@ defer = "2"  # Critical path optimization
 
 ### Git Layer Integration
 
-**Performance Impact**: ✅ 最適化済み - FZF統合による操作効率90%向上
+### Performance Impact
 
-**Key Features**:
+### Key Features
 
 - **Branch Selection**: 直感的ブランチ切り替え
 - **File Selection**: ステージング・差分確認の効率化
 - **Repository Management**: ghq + FZF による統合管理
 
-**Implementation**:
+### Implementation
 
 ```bash
 # Git aliases with FZF integration
@@ -126,14 +126,14 @@ gco() {
 
 ### Terminal Layer Integration
 
-**Performance Impact**: ✅ セッション切り替え時間90%短縮
+### Performance Impact
 
-**Key Features**:
+### Key Features
 
 - **Session Management**: FZF による高速セッション選択
 - **Window Navigation**: 効率的ウィンドウ切り替え
 
-**Implementation**:
+### Implementation
 
 ```bash
 # tmux.conf integration
@@ -144,11 +144,11 @@ bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
 
 ### Editor Layer Integration
 
-**Status**: ✅ telescope.nvim → fzf-lua 移行完了
+### Status
 
-**Performance Improvement**: 60% faster file searching
+### Performance Improvement
 
-**Key Features**:
+### Key Features
 
 - **File Search**: 高速ファイル検索
 - **Text Search**: live grep 統合
@@ -277,6 +277,6 @@ sheldon source --verbose
 
 ---
 
-**Last Updated**: 2025-10-03  
-**Status**: Production Ready - 全層統合完了  
-**Performance**: All optimization targets achieved
+### Last Updated
+### Status
+### Performance

@@ -93,7 +93,7 @@ The skill will automatically discover and load your configuration.
 
 ### For Users: Documentation Workflow
 
-**Creating New Documentation**:
+### Creating New Documentation
 
 1. Skill detects document creation intent
 2. Loads project config and tag taxonomy
@@ -102,7 +102,7 @@ The skill will automatically discover and load your configuration.
 5. Validates size against project thresholds
 6. Performs quality check using project standards
 
-**User Experience**:
+### User Experience
 
 - Responses in project-configured language
 - Tag suggestions from project taxonomy
@@ -224,7 +224,7 @@ When suggesting tags, provide rationale (adapt to project language):
 
 ### Document Scope
 
-**Do**:
+### Do
 
 - Focus on single topic per document
 - Keep under recommended size (default: 500 lines)
@@ -232,7 +232,7 @@ When suggesting tags, provide rationale (adapt to project language):
 - Use clear, descriptive titles
 - Include concrete examples
 
-**Don't**:
+### Don't
 
 - Mix multiple unrelated topics
 - Create oversized documents (>2000 lines)
@@ -242,7 +242,7 @@ When suggesting tags, provide rationale (adapt to project language):
 
 ### Tag Application
 
-**Do**:
+### Do
 
 - Use canonical format (`category/`, `audience/`, `environment/`)
 - Combine multiple tags appropriately
@@ -250,7 +250,7 @@ When suggesting tags, provide rationale (adapt to project language):
 - Select tags that match document purpose
 - Include required tiers per project config
 
-**Don't**:
+### Don't
 
 - Use non-canonical format (tags without prefixes)
 - Over-tag (respect project max_recommended)
@@ -260,7 +260,7 @@ When suggesting tags, provide rationale (adapt to project language):
 
 ### Quality Maintenance
 
-**Do**:
+### Do
 
 - Update last_updated field on every edit
 - Check links periodically
@@ -268,7 +268,7 @@ When suggesting tags, provide rationale (adapt to project language):
 - Keep code examples up-to-date
 - Validate metadata completeness
 
-**Don't**:
+### Don't
 
 - Leave stale dates
 - Ignore broken links
@@ -325,14 +325,14 @@ If project has configuration, also load (when needed):
 
 ### Progressive Disclosure
 
-**Principle**: Load only what is needed for the current task.
+### Principle
 
 - **Creating new doc**: Load metadata-template + tag-system + project tags
 - **Checking size**: Load size-guidelines only
 - **Adding to registry**: Load document-mapping only (if project has it)
 - **Final review**: Load quality-checklist only
 
-**Avoid**: Loading all references at once (wastes context window).
+### Avoid
 
 ---
 
@@ -364,7 +364,7 @@ This skill works with:
 - **Documentation hub** (`docs/README.md` or project-specific location)
 - **Document mapping** (project-defined registry)
 
-**Workflow**:
+### Workflow
 
 1. User requests documentation creation
 2. This skill triggers automatically
@@ -380,7 +380,7 @@ This skill works with:
 
 See `README.md` in this directory for complete setup instructions.
 
-**Quick Start**:
+### Quick Start
 
 1. Create `.claude/doc-standards/config.yaml`
 2. Define tag taxonomy in `references/tag-taxonomy.md`

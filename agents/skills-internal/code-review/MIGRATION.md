@@ -23,7 +23,7 @@ This guide helps you migrate from the old hardcoded project detection system to 
 
 ### Step 1: Understand Current Detection
 
-**v1.x Detection Logic** (hardcoded in `detailed-mode.md`):
+### v1.x Detection Logic
 
 ```python
 def analyze_project():
@@ -49,7 +49,7 @@ def analyze_project():
     return project_info
 ```
 
-**v2.0 Detection** (configuration-driven):
+### v2.0 Detection
 
 ```python
 def detect_project_type():
@@ -92,7 +92,7 @@ If your project matches a standard type, no migration needed:
 /review
 ```
 
-**Built-in defaults handle**:
+### Built-in defaults handle
 
 - Next.js with TypeScript/React
 - Go API servers
@@ -151,16 +151,16 @@ For custom requirements or CAAD Loca-like projects:
 
 ### Step 4: Migrate CAAD Loca Specific Rules
 
-**Old**: Hardcoded in `caad-loca-patterns.md`
+### Old
 
-**New**: Configuration file with custom rules
+### New
 
 ```bash
 # Copy CAAD Loca template
 cp ~/.claude/plugins/code-review/config/examples/caad-loca-project.json .code-review-config.json
 ```
 
-**Key customizations in config**:
+### Key customizations in config
 
 ```json
 {
@@ -200,9 +200,9 @@ cp ~/.claude/plugins/code-review/config/examples/caad-loca-project.json .code-re
 
 ### Step 5: Update Evaluation Guidelines
 
-**Old**: Guidelines embedded in code
+### Old
 
-**New**: Reference guidelines in config
+### New
 
 1. **Keep existing guidelines**:
 
@@ -245,21 +245,21 @@ cp ~/.claude/plugins/code-review/config/examples/caad-loca-project.json .code-re
 
 ### Scenario 1: Standard Next.js Project
 
-**v1.x**: Automatically detected as "Next.js Fullstack"
+### v1.x
 
-**v2.0**: Still automatically detected (built-in default)
+### v2.0
 
-**Action**: None required ✅
+### Action
 
 ---
 
 ### Scenario 2: Custom TypeScript Project
 
-**v1.x**: Detected as "TypeScript Node.js" but missing specific rules
+### v1.x
 
-**v2.0**: Create custom config
+### v2.0
 
-**Action**:
+### Action
 
 1. Copy template
 2. Add custom rules
@@ -293,11 +293,11 @@ Example:
 
 ### Scenario 3: CAAD Loca Project
 
-**v1.x**: Used hardcoded `caad-loca-patterns.md`
+### v1.x
 
-**v2.0**: Use CAAD Loca template
+### v2.0
 
-**Action**:
+### Action
 
 ```bash
 cp config/examples/caad-loca-project.json .code-review-config.json
@@ -314,11 +314,11 @@ Verify custom rules are preserved:
 
 ### Scenario 4: Multi-Project Monorepo
 
-**v1.x**: Single detection per run
+### v1.x
 
-**v2.0**: Per-directory configuration support
+### v2.0
 
-**Action**:
+### Action
 
 ```
 monorepo/
@@ -342,9 +342,9 @@ cd shared && /review
 
 ### Issue 1: Wrong Project Type Detected
 
-**Symptom**: Review uses incorrect evaluation criteria
+### Symptom
 
-**Solution**:
+### Solution
 
 1. Check `.code-review-config.json` exists in project root
 2. Verify priority is higher than default (200+)
@@ -367,9 +367,9 @@ Example fix:
 
 ### Issue 2: Custom Rules Not Applied
 
-**Symptom**: Evaluation doesn't enforce custom rules
+### Symptom
 
-**Solution**:
+### Solution
 
 1. Validate JSON syntax
 2. Check schema compliance:
@@ -382,9 +382,9 @@ Example fix:
 
 ### Issue 3: Skills Not Loading
 
-**Symptom**: Missing technology-specific evaluation
+### Symptom
 
-**Solution**:
+### Solution
 
 1. Verify skill names match available skills
 2. Check skill focus areas are valid
@@ -464,4 +464,4 @@ For migration assistance:
 
 ---
 
-**Recommendation**: Start with built-in defaults, then gradually customize as needs emerge. Most projects won't require custom configuration.
+### Recommendation

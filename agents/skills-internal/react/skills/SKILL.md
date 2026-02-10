@@ -62,7 +62,7 @@ context7.query(
 );
 ```
 
-**Available Context7 React Libraries**:
+### Available Context7 React Libraries
 
 - `/websites/18_react_dev` (recommended, 3921 snippets, score: 82.6)
 - `/websites/react_dev` (4359 snippets, score: 74.5)
@@ -70,10 +70,10 @@ context7.query(
 
 ## Project-Specific Evaluation Criteria (⭐️ 5-Star System)
 
-**Component Design**: ⭐⭐⭐⭐⭐ (5/5) = SRP adherence + type-safe Props + reusable + clean state | ⭐☆☆☆☆ (1/5) = monolithic + no types + Props drilling
-**Hooks Usage**: Correct deps ✅ | Appropriate memoization ✅ | Custom Hooks design ✅ | No anti-patterns ✅
-**Performance**: Minimal re-renders ✅ | Efficient lists ✅ | Optimized bundle ✅ | No leaks ✅
-**Accessibility**: Semantic HTML ✅ | ARIA attributes ✅ | Keyboard nav ✅ | Screen reader ✅
+### Component Design
+### Hooks Usage
+### Performance
+### Accessibility
 
 ## Review Workflow
 
@@ -81,19 +81,19 @@ context7.query(
 
 ## Common Issues (Project-Specific)
 
-**Component Design**: >300 lines | Props drilling >3 levels | Wrong state scope
-**Hooks**: Missing deps | Premature optimization | Poor custom Hooks
-**Performance**: No React.memo | Missing keys | No virtualization >100 items | Memory leaks
-**Accessibility**: div onClick | No keyboard support | Missing ARIA
+### Component Design
+### Hooks
+### Performance
+### Accessibility
 
 ## 🤖 Agent Integration
 
-**Code-Reviewer**: ⭐️5段階評価、最適化提案 | **Orchestrator**: 実装戦略、状態管理設計 | **Error-Fixer**: 依存配列修正、メモ化実装
+### Code-Reviewer
 
-**自動ロード条件**: "React" | "Hooks" | .jsx/.tsx | useState/useEffect | package.json react依存
+### 自動ロード条件
 
-**統合例**: ユーザー要求 → TaskContext → プロジェクト検出(React+TS) → スキルロード(react,typescript) → エージェント実行(code-reviewer→error-fixer) → Context7クエリ → 実装完了
+### 統合例
 
 ## Related Skills
 
-**typescript**: 型安全Props、Hooks型推論 | **clean-architecture**: レイヤー分離 | **security**: XSS防止、CSP
+### typescript

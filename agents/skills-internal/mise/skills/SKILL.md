@@ -256,7 +256,7 @@ shellcheck = "latest"
 - Cross-platform reproducibility
 - No global npm/pip pollution
 
-**Reference:** See `references/tool-management.md` for detailed migration guides, troubleshooting, and integration patterns.
+### Reference:
 
 ### 6. Advanced Features
 
@@ -343,7 +343,7 @@ When reviewing existing mise.toml:
 6. **Check Best Practices**: Verify against reference guidelines
 7. **Performance**: Consider compilation time and execution efficiency
 
-**Reference:** See `references/best-practices.md` for comprehensive guidelines from 2025 field-tested practices.
+### Reference:
 
 ## Common Issues
 
@@ -433,7 +433,7 @@ Detailed documentation loaded as needed:
 - `config-templates.md` - Common mise.toml templates and patterns
 - `tool-management.md` - Tool version management, Centralized Package Management, npm/Python migration guides, troubleshooting
 
-**Usage:** Reference these files when designing complex workflows, validating configurations, or managing tools and packages.
+### Usage:
 
 ## 🤖 Agent Integration
 
@@ -468,7 +468,7 @@ Detailed documentation loaded as needed:
 - タスク依存関係、エイリアスについて質問
 - ワークフロー自動化の最適化要求
 
-**統合例**:
+### 統合例
 
 ```
 ユーザー: "mise.tomlのタスク依存関係を最適化"

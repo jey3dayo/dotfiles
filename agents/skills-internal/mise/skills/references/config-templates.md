@@ -594,4 +594,4 @@ When creating mise.toml:
 
 ---
 
-**Note:** These templates are starting points. Adapt them to your project's specific needs and tooling.
+### Note:

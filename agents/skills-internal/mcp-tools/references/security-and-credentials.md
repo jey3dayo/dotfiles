@@ -14,7 +14,7 @@ MCPサーバーのセキュリティベストプラクティスと認証情報�
 
 #### 1. 平文パスワードの保存
 
-**問題**:
+### 問題
 
 ```json
 {
@@ -28,7 +28,7 @@ MCPサーバーのセキュリティベストプラクティスと認証情報�
 }
 ```
 
-**リスク**:
+### リスク
 
 - 設定ファイルがGitにコミットされる
 - 他のユーザーに見られる
@@ -36,7 +36,7 @@ MCPサーバーのセキュリティベストプラクティスと認証情報�
 
 #### 2. 過度な権限付与
 
-**問題**:
+### 問題
 
 ```json
 {
@@ -52,7 +52,7 @@ MCPサーバーのセキュリティベストプラクティスと認証情報�
 }
 ```
 
-**リスク**:
+### リスク
 
 - システムファイルへのアクセス
 - 意図しない削除・変更
@@ -60,14 +60,14 @@ MCPサーバーのセキュリティベストプラクティスと認証情報�
 
 #### 3. トークンのスコープ過多
 
-**問題**:
+### 問題
 
 ```
 GitHub Token with full `repo`, `admin:org`, `delete_repo` scopes
 // ❌ 必要以上の権限
 ```
 
-**リスク**:
+### リスク
 
 - リポジトリの削除
 - 組織設定の変更
@@ -79,9 +79,9 @@ GitHub Token with full `repo`, `admin:org`, `delete_repo` scopes
 
 ### 方法1: 環境変数の活用
 
-**推奨度**: ⭐️⭐️⭐️⭐️
+### 推奨度
 
-**セットアップ手順**:
+### セットアップ手順
 
 ```bash
 # 1. シェル設定ファイルに追加
@@ -131,13 +131,13 @@ source ~/.zshrc
 }
 ```
 
-**利点**:
+### 利点
 
 - ✅ 設定ファイルに平文パスワードなし
 - ✅ 環境別に異なる値を使用可能
 - ✅ Gitにコミットしても安全
 
-**欠点**:
+### 欠点
 
 - ❌ シェル設定ファイルも保護が必要
 - ❌ ユーザー切り替え時に再設定が必要
@@ -146,9 +146,9 @@ source ~/.zshrc
 
 ### 方法2: 別ファイルでの管理
 
-**推奨度**: ⭐️⭐️⭐️⭐️⭐️
+### 推奨度
 
-**セットアップ手順**:
+### セットアップ手順
 
 ```bash
 # 1. 専用ディレクトリ作成
@@ -179,13 +179,13 @@ if [ -f ~/.claude/secrets/.env ]; then
 fi
 ```
 
-**利点**:
+### 利点
 
 - ✅ 認証情報が集中管理
 - ✅ .gitignoreで確実に除外
 - ✅ ファイル権限で保護
 
-**欠点**:
+### 欠点
 
 - ❌ バックアップ管理が必要
 - ❌ チーム共有時の手順が増える
@@ -194,9 +194,9 @@ fi
 
 ### 方法3: macOS Keychainの活用
 
-**推奨度**: ⭐️⭐️⭐️⭐️⭐️ (macOSのみ)
+### 推奨度
 
-**セットアップ手順**:
+### セットアップ手順
 
 ```bash
 # 1. Keychainにパスワードを保存
@@ -237,13 +237,13 @@ security find-generic-password -a $USER -s mysql_root_password -w
 }
 ```
 
-**利点**:
+### 利点
 
 - ✅ macOSネイティブの暗号化
 - ✅ ファイルに平文で保存されない
 - ✅ システムレベルのセキュリティ
 
-**欠点**:
+### 欠点
 
 - ❌ macOS専用
 - ❌ 初期セットアップが複雑
@@ -252,9 +252,9 @@ security find-generic-password -a $USER -s mysql_root_password -w
 
 ### 方法4: 1Passwordまたは他のパスワードマネージャー
 
-**推奨度**: ⭐️⭐️⭐️⭐️⭐️
+### 推奨度
 
-**1Password CLIの使用例**:
+### 1Password CLIの使用例
 
 ```bash
 # 1. 1Password CLIをインストール
@@ -287,13 +287,13 @@ op item create \
 }
 ```
 
-**利点**:
+### 利点
 
 - ✅ 専用ツールによる暗号化
 - ✅ チーム共有が簡単
 - ✅ 監査ログ
 
-**欠点**:
+### 欠点
 
 - ❌ 有料サービス
 - ❌ 追加のセットアップ
@@ -304,7 +304,7 @@ op item create \
 
 ### Filesystem Serverのアクセス制限
 
-**❌ 悪い例**:
+### ❌ 悪い例
 
 ```json
 {
@@ -320,7 +320,7 @@ op item create \
 }
 ```
 
-**✅ 良い例**:
+### ✅ 良い例
 
 ```json
 {
@@ -343,7 +343,7 @@ op item create \
 }
 ```
 
-**ベストプラクティス**:
+### ベストプラクティス
 
 - プロジェクトごとにサーバーを分ける
 - 読み取り専用が必要な場合は別のインスタンス
@@ -351,21 +351,21 @@ op item create \
 
 ### GitHub Tokenのスコープ制限
 
-**❌ 悪い例**:
+### ❌ 悪い例
 
 ```
 Scopes: repo, admin:org, delete_repo, workflow, write:packages
 // すべての権限を付与
 ```
 
-**✅ 良い例**:
+### ✅ 良い例
 
 ```
 Scopes: repo, read:org
 // 必要最小限の権限のみ
 ```
 
-**推奨スコープ**:
+### 推奨スコープ
 
 | 用途               | 必要なスコープ             |
 | ------------------ | -------------------------- |
@@ -377,7 +377,7 @@ Scopes: repo, read:org
 
 ### データベース接続のユーザー制限
 
-**❌ 悪い例**:
+### ❌ 悪い例
 
 ```json
 {
@@ -387,7 +387,7 @@ Scopes: repo, read:org
 }
 ```
 
-**✅ 良い例**:
+### ✅ 良い例
 
 ```bash
 # 1. 専用ユーザー作成
@@ -415,7 +415,7 @@ FLUSH PRIVILEGES;
 
 ### 開発・ステージング・本番の分離
 
-**ディレクトリ構造**:
+### ディレクトリ構造
 
 ```
 ~/.claude/
@@ -427,7 +427,7 @@ FLUSH PRIVILEGES;
 └── claude_desktop_config.json
 ```
 
-**開発環境**:
+### 開発環境
 
 ```bash
 # ~/.claude/secrets/.env.development
@@ -438,7 +438,7 @@ MYSQL_PASSWORD=dev_password
 MYSQL_DATABASE=myapp_dev
 ```
 
-**ステージング環境**:
+### ステージング環境
 
 ```bash
 # ~/.claude/secrets/.env.staging
@@ -449,7 +449,7 @@ MYSQL_PASSWORD=staging_password
 MYSQL_DATABASE=myapp_staging
 ```
 
-**本番環境**:
+### 本番環境
 
 ```bash
 # ~/.claude/secrets/.env.production
@@ -460,7 +460,7 @@ MYSQL_PASSWORD=prod_secure_password
 MYSQL_DATABASE=myapp_prod
 ```
 
-**シェル設定での環境切り替え**:
+### シェル設定での環境切り替え
 
 ```bash
 # ~/.zshrc
@@ -472,7 +472,7 @@ if [ -f ~/.claude/secrets/.env.$CLAUDE_ENV ]; then
 fi
 ```
 
-**使用方法**:
+### 使用方法
 
 ```bash
 # 開発環境（デフォルト）
@@ -544,7 +544,7 @@ CLAUDE_ENV=production open -a Claude
 - renderer.log      # UIレンダリングログ
 ```
 
-**ログ確認コマンド**:
+### ログ確認コマンド
 
 ```bash
 # 最新のMCPエラーを確認
@@ -559,7 +559,7 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
 
 ### 認証情報の監査
 
-**定期的に確認すべき項目**:
+### 定期的に確認すべき項目
 
 1. **使用されていないトークン**
 
@@ -589,7 +589,7 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
 
 ### 認証情報漏洩時の対処
 
-**即座に実行**:
+### 即座に実行
 
 1. **トークン・パスワードの無効化**
 
@@ -618,7 +618,7 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
    open -a Claude
    ```
 
-**フォローアップ**:
+### フォローアップ
 
 1. **影響範囲の調査**
    - 漏洩したトークンの使用履歴を確認

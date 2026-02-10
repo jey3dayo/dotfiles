@@ -15,7 +15,7 @@ Provide comprehensive code review and quality evaluation framework with dual-mod
 
 Comprehensive quality assessment with structured evaluation:
 
-**Features**:
+### Features
 
 - ⭐️ 5-level evaluation system across multiple dimensions
 - Project type auto-detection (Go API, React SPA, Next.js fullstack, etc.)
@@ -24,7 +24,7 @@ Comprehensive quality assessment with structured evaluation:
 - Detailed improvement proposals with action plans
 - Impact analysis with Serena integration (optional)
 
-**When to use**:
+### When to use
 
 - Comprehensive quality gate reviews
 - Pre-release quality assessment
@@ -32,7 +32,7 @@ Comprehensive quality assessment with structured evaluation:
 - Learning and mentoring scenarios
 - Establishing quality baselines
 
-**Typical workflow**:
+### Typical workflow
 
 1. Create pre-review checkpoint (git commit)
 2. Detect project type and stack
@@ -46,7 +46,7 @@ Comprehensive quality assessment with structured evaluation:
 
 Quick practical analysis focused on immediate issues:
 
-**Features**:
+### Features
 
 - Sub-agent composition (security, performance, quality, architecture agents)
 - Fast issue detection and classification
@@ -54,7 +54,7 @@ Quick practical analysis focused on immediate issues:
 - Problem prioritization by severity
 - Streamlined output for rapid iteration
 
-**When to use**:
+### When to use
 
 - Daily development workflow
 - Quick sanity checks before commits
@@ -62,7 +62,7 @@ Quick practical analysis focused on immediate issues:
 - CI/CD integration
 - Time-constrained reviews
 
-**Typical workflow**:
+### Typical workflow
 
 1. Create pre-review checkpoint (git commit)
 2. Launch specialized sub-agents in parallel
@@ -73,13 +73,13 @@ Quick practical analysis focused on immediate issues:
 
 ## Mode Selection
 
-**Automatic detection**:
+### Automatic detection
 
 - Presence of `--simple` flag → Simple Mode
 - Presence of `--with-impact`, `--deep-analysis`, `--verify-spec` → Detailed Mode with Serena
 - Default (no flags) → Detailed Mode
 
-**Manual specification**:
+### Manual specification
 
 ```bash
 /review                    # Detailed mode
@@ -91,7 +91,7 @@ Quick practical analysis focused on immediate issues:
 
 ### Signature-Free Policy
 
-**IMPORTANT**: Adhere strictly to clean commit practices:
+### IMPORTANT
 
 - NEVER add `Co-authored-by: Claude` to commits
 - NEVER use emojis in commits, PRs, issues, or git content
@@ -111,7 +111,7 @@ git add -A
 git commit -m "Pre-review checkpoint" || echo "No changes to commit"
 ```
 
-**Benefits**:
+### Benefits
 
 - Easy rollback if needed
 - Clear before/after comparison
@@ -122,7 +122,7 @@ git commit -m "Pre-review checkpoint" || echo "No changes to commit"
 
 Convert findings into actionable GitHub issues:
 
-**Process**:
+### Process
 
 1. Complete review and identify issues
 2. Prompt user: "Create GitHub issues for critical findings?"
@@ -135,20 +135,20 @@ Convert findings into actionable GitHub issues:
 4. If "Todos only", maintain local TODO tracking
 5. If "Summary", provide consolidated report
 
-**Important**: NO Claude signatures or AI attribution in issues
+### Important
 
 ### TODO Management
 
 Systematic issue tracking using TodoWrite:
 
-**When to create TODOs**:
+### When to create TODOs
 
 - Multiple issues found (3+ items)
 - Complex multi-step remediation needed
 - Coordinated fixes across multiple files
 - Tracking review progress
 
-**TODO structure**:
+### TODO structure
 
 - Group by category (security, performance, quality, etc.)
 - Prioritize by severity (critical → minor)
@@ -233,7 +233,7 @@ criteria = merge_criteria_files([
 
 ### Step 3: Review Execution
 
-**Detailed Mode**:
+### Detailed Mode
 
 ```python
 # Execute comprehensive review
@@ -251,7 +251,7 @@ ratings = generate_ratings(result, criteria)
 action_plan = create_prioritized_actions(result)
 ```
 
-**Simple Mode**:
+### Simple Mode
 
 ```python
 # Launch sub-agents in parallel
@@ -352,7 +352,7 @@ GitHub issue integration guide:
 /review
 ```
 
-**Execution**:
+### Execution
 
 1. Creates checkpoint: `git commit -m "Pre-review checkpoint"`
 2. Detects: Next.js fullstack project
@@ -368,7 +368,7 @@ GitHub issue integration guide:
 /review --simple
 ```
 
-**Execution**:
+### Execution
 
 1. Creates checkpoint
 2. Launches 4 sub-agents in parallel
@@ -382,7 +382,7 @@ GitHub issue integration guide:
 /review --with-impact
 ```
 
-**Execution**:
+### Execution
 
 1. Standard detailed review process
 2. Additionally uses Serena to analyze:
@@ -398,7 +398,7 @@ GitHub issue integration guide:
 /review --simple --fix
 ```
 
-**Execution**:
+### Execution
 
 1. Quick review via sub-agents
 2. Identifies auto-fixable issues
@@ -410,7 +410,7 @@ GitHub issue integration guide:
 
 This skill is invoked by the `/review` command:
 
-**Command structure**:
+### Command structure
 
 ```bash
 /review [options]
@@ -426,14 +426,14 @@ Options:
   --branch <name>       # Compare against branch
 ```
 
-**Command responsibilities**:
+### Command responsibilities
 
 - Parse flags and options
 - Invoke code-review skill with appropriate mode
 - Handle result display and formatting
 - Coordinate follow-up actions
 
-**Skill responsibilities**:
+### Skill responsibilities
 
 - Execute review logic
 - Integrate technology skills
@@ -456,7 +456,7 @@ All reviews must:
 
 ---
 
-**Goal**: Deliver comprehensive, contextual code reviews that combine the depth of detailed evaluation with the speed of quick analysis, automatically adapting to project needs while maintaining consistent quality standards.
+### Goal
 
 ## 📚 Related Documentation
 

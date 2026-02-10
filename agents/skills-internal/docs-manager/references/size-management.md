@@ -21,28 +21,28 @@ Document size limits are configurable via `.docs-manager-config.json`:
 
 ### Standard Size Categories
 
-**✅ Ideal** (≤ ideal limit, default: 300 lines):
+### ✅ Ideal
 
 - Quick comprehension
 - Easy to scan and navigate
 - Optimal for AI processing
 - Recommended for most documents
 
-**⚠️ Acceptable** (≤ acceptable limit, default: 500 lines):
+### ⚠️ Acceptable
 
 - Still manageable
 - Detailed technical content
 - Monitor for growth
 - Consider organization improvements
 
-**⚠️ Large** (≤ warning limit, default: 1000 lines):
+### ⚠️ Large
 
 - Difficult to navigate
 - Consider splitting
 - Identify logical boundaries
 - Plan separation strategy
 
-**🚫 Too Large** (> maximum limit, default: 2000 lines):
+### 🚫 Too Large
 
 - Must split
 - Approaching AI context limits
@@ -79,7 +79,7 @@ Document size limits are configurable via `.docs-manager-config.json`:
 
 Separate by distinct subject matter:
 
-**Before**:
+### Before
 
 ```
 large-guide.md (1500 lines)
@@ -91,7 +91,7 @@ large-guide.md (1500 lines)
 └── API Reference
 ```
 
-**After**:
+### After
 
 ```
 README.md (index, 100 lines)
@@ -106,7 +106,7 @@ api-reference.md (450 lines)
 
 Separate by target reader:
 
-**Before**:
+### Before
 
 ```
 documentation.md (1200 lines)
@@ -115,7 +115,7 @@ documentation.md (1200 lines)
 ├── Admin Guide
 ```
 
-**After**:
+### After
 
 ```
 README.md (index, 50 lines)
@@ -128,7 +128,7 @@ admin-guide.md (300 lines)
 
 Separate overview from detailed content:
 
-**Before**:
+### Before
 
 ```
 architecture.md (1400 lines)
@@ -138,7 +138,7 @@ architecture.md (1400 lines)
 ├── Implementation Examples
 ```
 
-**After**:
+### After
 
 ```
 architecture-overview.md (300 lines)
@@ -154,7 +154,7 @@ examples.md (300 lines)
 
 Separate by workflow or lifecycle:
 
-**Before**:
+### Before
 
 ```
 complete-guide.md (1600 lines)
@@ -165,7 +165,7 @@ complete-guide.md (1600 lines)
 ├── Operations
 ```
 
-**After**:
+### After
 
 ```
 README.md (index, 100 lines)
@@ -315,28 +315,28 @@ docs/
 
 Structure content in layers of increasing detail:
 
-**Layer 1: Overview** (100-200 lines):
+### Layer 1: Overview
 
 - High-level purpose
 - Key concepts
 - Quick start
 - Links to detailed docs
 
-**Layer 2: User Guide** (300-500 lines):
+### Layer 2: User Guide
 
 - Common use cases
 - Step-by-step instructions
 - Basic troubleshooting
 - Links to reference docs
 
-**Layer 3: Reference** (400-800 lines):
+### Layer 3: Reference
 
 - Complete API documentation
 - All configuration options
 - Detailed specifications
 - Advanced topics
 
-**Layer 4: Deep Dive** (varies):
+### Layer 4: Deep Dive
 
 - Implementation details
 - Architecture decisions
@@ -345,7 +345,7 @@ Structure content in layers of increasing detail:
 
 ### Example: Progressive API Documentation
 
-**api-overview.md** (200 lines):
+### api-overview.md
 
 ```markdown
 # API Overview
@@ -359,11 +359,11 @@ For complete API reference, see:
 - [Configuration API](api/configuration.md)
 ```
 
-**api/authentication.md** (400 lines):
+### api/authentication.md
 
 Detailed authentication endpoints, parameters, examples.
 
-**api/authentication-advanced.md** (600 lines):
+### api/authentication-advanced.md
 
 OAuth flows, custom authentication, security considerations.
 
@@ -468,9 +468,9 @@ Track document growth:
 
 ### Over-Splitting
 
-**Problem**: Too many small documents
+### Problem
 
-**Solution**:
+### Solution
 
 - Aim for 300-500 line documents
 - Combine closely related topics
@@ -478,9 +478,9 @@ Track document growth:
 
 ### Under-Splitting
 
-**Problem**: Documents still too large
+### Problem
 
-**Solution**:
+### Solution
 
 - Be more aggressive with splitting
 - Create more granular topics
@@ -488,9 +488,9 @@ Track document growth:
 
 ### Poor Navigation
 
-**Problem**: Users can't find content
+### Problem
 
-**Solution**:
+### Solution
 
 - Create clear index documents
 - Add breadcrumbs
@@ -499,9 +499,9 @@ Track document growth:
 
 ### Broken Links
 
-**Problem**: Split causes broken references
+### Problem
 
-**Solution**:
+### Solution
 
 - Use link validation tools
 - Update all references systematically

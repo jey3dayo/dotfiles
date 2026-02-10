@@ -18,42 +18,42 @@ This skill provides specialized review guidance for TypeScript projects, focusin
 
 Delegate generic TypeScript questions to Context7 MCP with library ID `/websites/typescriptlang` or `/microsoft/typescript`:
 
-**Type Guards and Unknown**:
+### Type Guards and Unknown
 
 ```
 Query: "TypeScript type guards unknown types implementation"
 Result: typeof, instanceof, user-defined type predicates
 ```
 
-**Generics and Constraints**:
+### Generics and Constraints
 
 ```
 Query: "TypeScript generics type constraints examples"
 Result: Generic type parameters, extends keyword, default types
 ```
 
-**Union and Intersection Types**:
+### Union and Intersection Types
 
 ```
 Query: "TypeScript discriminated unions intersection types"
 Result: Union type narrowing, tagged unions, type composition
 ```
 
-**Utility Types**:
+### Utility Types
 
 ```
 Query: "TypeScript utility types Partial Pick Omit Record"
 Result: Built-in utility types for type transformations
 ```
 
-**tsconfig.json Options**:
+### tsconfig.json Options
 
 ```
 Query: "TypeScript strict mode compiler options configuration"
 Result: strict, noImplicitAny, strictNullChecks, etc.
 ```
 
-**Performance Optimization**:
+### Performance Optimization
 
 ```
 Query: "TypeScript compilation performance bundle size optimization"
@@ -73,43 +73,43 @@ Result: type-only imports, tree shaking, build performance
 
 ### Zero-Any Policy
 
-**Goal**: Eliminate all `any` types from codebase
+### Goal
 
-**Strategies**: Replace `any` with `unknown` + type guards, use type inference, define explicit interfaces, implement user-defined type guards
+### Strategies
 
-**Justification Required**: If `any` is truly necessary, document why
+### Justification Required
 
 ### Result Type Pattern (Recommended)
 
-**Pattern**: `type Result<T, E> = { success: true; data: T } | { success: false; error: E };`
+### Pattern
 
-**Benefits**: Type-safe error handling, explicit success/failure states, no exception throwing, composable discriminated unions
+### Benefits
 
 ### Type Assertion Guidelines
 
-**Minimize**: Avoid `as` type assertions whenever possible
+### Minimize
 
-**Prefer**: Type guards and type narrowing (`data is Type` predicates)
+### Prefer
 
 ### Strict Mode Compliance
 
-**Required**: `strict: true`, `noImplicitAny: true`, `strictNullChecks: true` in tsconfig.json
+### Required
 
-**Verification**: Check tsconfig.json compilerOptions, scan codebase for `any` types
+### Verification
 
 ## ⭐️ 5-Star Evaluation Criteria
 
 ### Type Safety Assessment
 
-**⭐⭐⭐⭐⭐ (5/5) Excellent**: Zero `any`, minimal type assertions, active type guards, full strict mode, Result<T,E> pattern
+### ⭐⭐⭐⭐⭐ (5/5) Excellent
 
-**⭐⭐⭐⭐☆ (4/5) Good**: Rare justified `any`, controlled assertions, good type guard coverage, most strict flags enabled
+### ⭐⭐⭐⭐☆ (4/5) Good
 
-**⭐⭐⭐☆☆ (3/5) Standard**: Some `any` usage, moderate assertions, basic type guards, partial strict mode
+### ⭐⭐⭐☆☆ (3/5) Standard
 
-**⭐⭐☆☆☆ (2/5) Needs Improvement**: Frequent `any`, heavy assertion reliance, missing type guards, strict mode not enabled
+### ⭐⭐☆☆☆ (2/5) Needs Improvement
 
-**⭐☆☆☆☆ (1/5) Requires Overhaul**: Pervasive `any`, type system circumvented, no type guards, minimal TypeScript benefit
+### ⭐☆☆☆☆ (1/5) Requires Overhaul
 
 ### Type Definition Quality
 
@@ -161,7 +161,7 @@ When reviewing TypeScript code:
 - TypeScriptコンパイルエラー対応時
 - プロジェクト検出: TypeScriptプロジェクト
 
-**統合例**:
+### 統合例
 
 ```
 ユーザー: "TypeScriptの型エラーを修正してany型を排除"

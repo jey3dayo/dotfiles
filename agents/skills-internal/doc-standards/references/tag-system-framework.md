@@ -8,13 +8,13 @@ Generic 3-tier tag system architecture for documentation classification.
 
 This framework defines a flexible 3-tier tag system that projects can customize with their own tag values.
 
-**3-Tier System**:
+### 3-Tier System
 
 ```
 `category/value`, `audience/value`, `environment/value`
 ```
 
-**Format Rules**:
+### Format Rules
 
 - Always use prefix (`category/`, `audience/`, `environment/`)
 - Lowercase values after prefix
@@ -28,11 +28,11 @@ This framework defines a flexible 3-tier tag system that projects can customize 
 
 ### Tier 1: Category Tags (prefix: `category/`)
 
-**Purpose**: Primary topic classification
+### Purpose
 
-**Required**: YES (minimum 1 tag, or per project config)
+### Required
 
-**Examples** (projects define their own values):
+### Examples
 
 - `category/guide` - Step-by-step procedures
 - `category/reference` - API docs, schemas
@@ -43,7 +43,7 @@ This framework defines a flexible 3-tier tag system that projects can customize 
 - `category/security` - Security procedures
 - `category/monitoring` - Monitoring setup
 
-**Usage**:
+### Usage
 
 - Select based on document's primary topic
 - Multiple categories allowed for cross-cutting docs
@@ -53,11 +53,11 @@ This framework defines a flexible 3-tier tag system that projects can customize 
 
 ### Tier 2: Audience Tags (prefix: `audience/`)
 
-**Purpose**: Target reader identification
+### Purpose
 
-**Required**: YES (minimum 1 tag, or per project config)
+### Required
 
-**Generic Audience Types** (projects customize):
+### Generic Audience Types
 
 - `audience/developer` - Development team
 - `audience/operations` - Operations team
@@ -68,7 +68,7 @@ This framework defines a flexible 3-tier tag system that projects can customize 
 - `audience/manager` - Technical managers
 - `audience/all` - All technical staff
 
-**Usage**:
+### Usage
 
 - Select based on intended readers
 - Multiple audiences allowed
@@ -78,11 +78,11 @@ This framework defines a flexible 3-tier tag system that projects can customize 
 
 ### Tier 3: Environment Tags (prefix: `environment/`)
 
-**Purpose**: Deployment scope specification
+### Purpose
 
-**Required**: NO (use only for environment-specific docs)
+### Required
 
-**Common Environment Types**:
+### Common Environment Types
 
 - `environment/development` - Local development
 - `environment/staging` - Staging environment
@@ -90,7 +90,7 @@ This framework defines a flexible 3-tier tag system that projects can customize 
 - `environment/testing` - Test environments
 - `environment/sandbox` - Sandbox/experimental
 
-**Usage**:
+### Usage
 
 - Omit for docs applicable to all environments
 - Use only for environment-specific procedures
@@ -109,7 +109,7 @@ All tags MUST use tier prefix:
 ❌ Wrong: `guide`, `developer`, `staging`
 ```
 
-**Validation Pattern**: `^[a-z]+\/[a-z-]+$`
+### Validation Pattern
 
 ---
 
@@ -134,7 +134,7 @@ Tags MUST be formatted per project config (default: comma-separated, backtick-wr
 ❌ Wrong: `category/guide` `audience/developer` (missing separator)
 ```
 
-**Configuration**:
+### Configuration
 
 ```yaml
 metadata:
@@ -261,7 +261,7 @@ def validate_tags(tags, project_taxonomy, project_config):
 
 ### Pattern 1: Single Topic, Single Audience
 
-**Use case**: Focused guide for one role
+### Use case
 
 ```markdown
 **Tags**: `category/testing`, `audience/developer`
@@ -271,7 +271,7 @@ def validate_tags(tags, project_taxonomy, project_config):
 
 ### Pattern 2: Single Topic, Multiple Audiences
 
-**Use case**: Procedures involving multiple teams
+### Use case
 
 ```markdown
 **Tags**: `category/deployment`, `audience/developer`, `audience/operations`
@@ -281,7 +281,7 @@ def validate_tags(tags, project_taxonomy, project_config):
 
 ### Pattern 3: Multiple Topics, Single Audience
 
-**Use case**: Comprehensive guide covering related topics
+### Use case
 
 ```markdown
 **Tags**: `category/infrastructure`, `category/security`, `audience/devops`
@@ -291,7 +291,7 @@ def validate_tags(tags, project_taxonomy, project_config):
 
 ### Pattern 4: Environment-Specific Operations
 
-**Use case**: Environment-specific procedures
+### Use case
 
 ```markdown
 **Tags**: `category/operations`, `audience/operations`, `environment/production`
@@ -301,7 +301,7 @@ def validate_tags(tags, project_taxonomy, project_config):
 
 ### Pattern 5: Cross-Cutting Documentation
 
-**Use case**: Meta-documentation, standards, policies
+### Use case
 
 ```markdown
 **Tags**: `category/documentation`, `category/standards`, `audience/all`
@@ -460,4 +460,4 @@ tags:
 - `difficulty/beginner`, `difficulty/advanced` - Skill level
 - `type/guide`, `type/reference`, `type/runbook` - Document type
 
-**Note**: Standard 3-tier system covers most needs; add custom tiers only when necessary.
+### Note

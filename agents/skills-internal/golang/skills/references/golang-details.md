@@ -13,11 +13,11 @@ Assess adherence to Go community conventions and idiomatic patterns:
 - Descriptive names for package-level declarations
 - Interface names: `-er` suffix convention (`Reader`, `Writer`)
 
-**⭐️5**: Perfect adherence to Go naming conventions
-**⭐️4**: Mostly idiomatic with minor inconsistencies
-**⭐️3**: Mix of idiomatic and non-idiomatic naming
-**⭐️2**: Frequent violations of naming conventions
-**⭐️1**: Non-Go-like naming throughout
+### ⭐️5
+### ⭐️4
+### ⭐️3
+### ⭐️2
+### ⭐️1
 
 #### Code Organization
 
@@ -61,7 +61,7 @@ Evaluate Go's explicit error handling patterns:
 - Appropriate error wrapping with context
 - Custom error types when beneficial
 
-**Pattern: Error Wrapping (Go 1.13+)**:
+### Pattern: Error Wrapping (Go 1.13+)
 
 ```go
 // ✅ Good: Error wrapping with context
@@ -96,11 +96,11 @@ if errors.As(err, &valErr) {
 }
 ```
 
-**⭐️5**: Comprehensive error handling, proper wrapping, custom types where appropriate
-**⭐️4**: Good error handling, minor improvements possible
-**⭐️3**: Basic error handling, some gaps
-**⭐️2**: Inconsistent error handling, errors ignored
-**⭐️1**: Poor error handling, frequent silent failures
+### ⭐️5
+### ⭐️4
+### ⭐️3
+### ⭐️2
+### ⭐️1
 
 ### 3. Concurrency
 
@@ -166,11 +166,11 @@ func consume(in <-chan int) {
 - `sync.Once` for one-time initialization
 - `sync.Pool` for object reuse
 
-**⭐️5**: Safe concurrency, proper synchronization, leak-free
-**⭐️4**: Good concurrency patterns, minor issues
-**⭐️3**: Basic concurrency, some potential races
-**⭐️2**: Unsafe concurrency, likely races
-**⭐️1**: Dangerous concurrency, definite races
+### ⭐️5
+### ⭐️4
+### ⭐️3
+### ⭐️2
+### ⭐️1
 
 ### 4. Memory Management
 
@@ -219,11 +219,11 @@ func distance(p1, p2 *Point) float64 {
 - Connection pooling
 - File handle management
 
-**⭐️5**: Optimal memory usage, minimal GC pressure
-**⭐️4**: Good memory management, minor optimizations possible
-**⭐️3**: Acceptable memory usage, some waste
-**⭐️2**: Excessive allocations, GC issues
-**⭐️1**: Memory leaks, severe GC problems
+### ⭐️5
+### ⭐️4
+### ⭐️3
+### ⭐️2
+### ⭐️1
 
 ### 5. Interface Design
 
@@ -258,11 +258,11 @@ type DataStore interface {
 - Structs implement implicitly
 - Clear interface purpose
 
-**⭐️5**: Excellent interface design, small and focused
-**⭐️4**: Good interfaces, some could be smaller
-**⭐️3**: Reasonable interfaces, some over-specification
-**⭐️2**: Large interfaces, tight coupling
-**⭐️1**: Interface misuse, defeats purpose
+### ⭐️5
+### ⭐️4
+### ⭐️3
+### ⭐️2
+### ⭐️1
 
 ### 6. Standard Library Usage
 
@@ -290,17 +290,17 @@ resp, err := httpGetWithContext(ctx, url)
 resp, err := http.Get(url)
 ```
 
-**⭐️5**: Excellent standard library usage, appropriate choices
-**⭐️4**: Good usage, mostly appropriate
-**⭐️3**: Basic usage, some missed opportunities
-**⭐️2**: Poor standard library usage, reinventing wheels
-**⭐️1**: Misuse of standard library, safety issues
+### ⭐️5
+### ⭐️4
+### ⭐️3
+### ⭐️2
+### ⭐️1
 
 ## Go-Specific Anti-Patterns
 
 ### Common Issues
 
-**1. Goroutine Leaks**:
+### 1. Goroutine Leaks
 
 ```go
 // ❌ Bad: Goroutine never exits
@@ -323,7 +323,7 @@ go func() {
 }()
 ```
 
-**2. Race Conditions**:
+### 2. Race Conditions
 
 ```go
 // ❌ Bad: Concurrent map access
@@ -346,7 +346,7 @@ func get(key string) string {
 }
 ```
 
-**3. Inefficient String Concatenation**:
+### 3. Inefficient String Concatenation
 
 ```go
 // ❌ Bad: String concatenation in loop
@@ -405,7 +405,7 @@ Query: "goroutine leak prevention patterns"
 Library: /golang/go
 ```
 
-**Note**: Limit to 3 Context7 queries per review to maintain efficiency.
+### Note
 
 ## Go Tools Integration
 
@@ -539,7 +539,7 @@ When reviewing Go code:
 - go.mod、go.sumファイル存在
 - プロジェクト検出: Goプロジェクト
 
-**統合例**:
+### 統合例
 
 ```
 ユーザー: "Goの並行処理コードをレビューしてraceコンディションを修正"
@@ -565,4 +565,4 @@ Go並行処理パターン + race detector実行
 
 ---
 
-**Note**: This skill provides Go-specific review guidance. For general code quality assessment, refer to the code-review skill.
+### Note

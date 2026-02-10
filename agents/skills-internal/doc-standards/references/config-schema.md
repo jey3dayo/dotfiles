@@ -94,13 +94,13 @@ response:
 
 ### project
 
-**project.name**: Project identifier used in prompts and messages
+### project.name
 
 - Type: `string`
 - Example: `"ASTA"`, `"MyProject"`, `"Acme Inc."`
 - Required: Yes
 
-**project.language**: Primary project language (affects field labels, response language)
+### project.language
 
 - Type: `string` (ISO 639-1 language code)
 - Example: `"en"` (English), `"ja"` (Japanese), `"es"` (Spanish)
@@ -111,7 +111,7 @@ response:
 
 ### metadata
 
-**metadata.required_fields**: List of required metadata fields in documentation
+### metadata.required_fields
 
 - Type: `array` of `string`
 - Example: `["emoji_icon", "last_updated", "audience", "tags"]`
@@ -123,21 +123,21 @@ response:
   - Custom fields as needed
 - Required: Yes
 
-**metadata.formats.date**: Date format specification
+### metadata.formats.date
 
 - Type: `string`
 - Example: `"YYYY-MM-DD"`, `"MM/DD/YYYY"`, `"DD.MM.YYYY"`
 - Default: `"YYYY-MM-DD"`
 - Required: No
 
-**metadata.formats.tags**: Tag formatting specification
+### metadata.formats.tags
 
 - Type: `string`
 - Example: `"backtick-wrapped, comma-separated"`, `"square-bracket-wrapped, space-separated"`
 - Default: `"backtick-wrapped, comma-separated"`
 - Required: No
 
-**metadata.freshness.warning_days**: Days before doc is flagged as stale
+### metadata.freshness.warning_days
 
 - Type: `number`
 - Example: `180` (6 months), `90` (3 months)
@@ -148,7 +148,7 @@ response:
 
 ### tags
 
-**tags.tier_system**: List of tag tier prefixes defining the tag system
+### tags.tier_system
 
 - Type: `array` of `string`
 - Example: `["category/", "audience/", "environment/"]`
@@ -156,14 +156,14 @@ response:
 - Can add custom tiers: `["category/", "audience/", "environment/", "priority/"]`
 - Required: Yes
 
-**tags.min_required**: Required tag tiers (must have at least one tag from each)
+### tags.min_required
 
 - Type: `array` of `string`
 - Example: `["category/", "audience/"]`
 - Common: Require category and audience, make environment optional
 - Required: Yes
 
-**tags.max_recommended**: Maximum recommended tag count
+### tags.max_recommended
 
 - Type: `number`
 - Example: `5`, `3`, `7`
@@ -171,7 +171,7 @@ response:
 - Purpose: Prevent over-tagging
 - Required: No
 
-**tags.reference_file**: Path to tag taxonomy file
+### tags.reference_file
 
 - Type: `string`
 - Example:
@@ -184,28 +184,28 @@ response:
 
 ### size
 
-**size.recommended**: Ideal target line count
+### size.recommended
 
 - Type: `number`
 - Example: `500`, `400`, `600`
 - Purpose: Sweet spot for readability
 - Required: Yes
 
-**size.warning**: Warning threshold - consider splitting
+### size.warning
 
 - Type: `number`
 - Example: `1000`, `800`, `1200`
 - Purpose: Flag docs approaching size limits
 - Required: Yes
 
-**size.hard_limit**: Must-split threshold
+### size.hard_limit
 
 - Type: `number`
 - Example: `2000`, `1600`, `2400`
 - Purpose: Hard limit requiring immediate split
 - Required: Yes
 
-**size.examples_file**: Path to project split examples (optional)
+### size.examples_file
 
 - Type: `string`
 - Example: `"references/size-guidelines-examples.md"`
@@ -216,14 +216,14 @@ response:
 
 ### quality
 
-**quality.checklist_file**: Path to project quality examples (optional)
+### quality.checklist_file
 
 - Type: `string`
 - Example: `"references/quality-checklist-examples.md"`
 - Purpose: Provide project-specific validation examples
 - Required: No
 
-**quality.mapping.enabled**: Enable document mapping registry
+### quality.mapping.enabled
 
 - Type: `boolean`
 - Example: `true`, `false`
@@ -231,13 +231,13 @@ response:
 - Default: `false`
 - Required: No
 
-**quality.mapping.file**: Path to document mapping file
+### quality.mapping.file
 
 - Type: `string`
 - Example: `"references/document-mapping.md"`
 - Required: Only if `mapping.enabled: true`
 
-**quality.links.validate**: Enable link validation
+### quality.links.validate
 
 - Type: `boolean`
 - Example: `true`, `false`
@@ -245,7 +245,7 @@ response:
 - Default: `true`
 - Required: No
 
-**quality.links.update_readme**: Auto-update navigation hub
+### quality.links.update_readme
 
 - Type: `boolean`
 - Example: `true`, `false`
@@ -253,13 +253,13 @@ response:
 - Default: `false`
 - Required: No
 
-**quality.links.readme_path**: Path to navigation hub
+### quality.links.readme_path
 
 - Type: `string`
 - Example: `"docs/README.md"`, `"README.md"`
 - Required: Only if `links.update_readme: true`
 
-**quality.freshness**: Review frequency by document type (in days)
+### quality.freshness
 
 - Type: `object` with numeric values
 - Example:
@@ -278,14 +278,14 @@ response:
 
 ### integration
 
-**integration.rules_file**: Path to project documentation rules
+### integration.rules_file
 
 - Type: `string`
 - Example: `".claude/rules/documentation-rules.md"`
 - Purpose: Link to high-level project rules
 - Required: No
 
-**integration.docs_hub**: Path to docs navigation hub
+### integration.docs_hub
 
 - Type: `string`
 - Example: `"docs/README.md"`, `"documentation/INDEX.md"`
@@ -296,7 +296,7 @@ response:
 
 ### response
 
-**response.language**: Output language for skill responses
+### response.language
 
 - Type: `string` (ISO 639-1 language code)
 - Example: `"ja"` (Japanese), `"en"` (English), `"es"` (Spanish)
@@ -304,7 +304,7 @@ response:
 - Default: `"en"`
 - Required: No
 
-**response.format**: Response style/formality
+### response.format
 
 - Type: `"conversational"` | `"formal"` | `"technical"`
 - Example: `"conversational"` (friendly), `"formal"` (professional), `"technical"` (concise)
@@ -344,7 +344,7 @@ size:
   hard_limit: 2000
 ```
 
-**Note**: You must also create `references/tag-taxonomy.md` defining your project's tag values.
+### Note
 
 ---
 
@@ -515,7 +515,7 @@ touch .claude/doc-standards/config.yaml
 
 ### Step 3: Create Tag Taxonomy
 
-**Required**: Create `references/tag-taxonomy.md` with your project's tag values:
+### Required
 
 ```bash
 touch .claude/doc-standards/references/tag-taxonomy.md
@@ -567,9 +567,9 @@ Test by creating a new document or asking the skill about documentation standard
 
 ### Config Not Found
 
-**Symptom**: Skill uses default English responses, can't find project tags
+### Symptom
 
-**Solution**:
+### Solution
 
 - Verify config file exists at `.claude/doc-standards/config.yaml`
 - Check file permissions (must be readable)
@@ -577,9 +577,9 @@ Test by creating a new document or asking the skill about documentation standard
 
 ### Tag Taxonomy Not Loaded
 
-**Symptom**: Skill can't suggest project tags
+### Symptom
 
-**Solution**:
+### Solution
 
 - Verify `tags.reference_file` path is correct
 - Check that taxonomy file exists and is readable
@@ -587,9 +587,9 @@ Test by creating a new document or asking the skill about documentation standard
 
 ### Invalid Configuration
 
-**Symptom**: Skill errors when loading config
+### Symptom
 
-**Solution**:
+### Solution
 
 - Validate YAML syntax
 - Check all required fields are present

@@ -102,9 +102,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### From 1.x to 2.0
 
-**For standard projects**: No action required. Built-in defaults provide same behavior.
+### For standard projects
 
-**For custom projects**: Create `.code-review-config.json` in project root.
+### For custom projects
 
 See `MIGRATION.md` for detailed migration guide.
 

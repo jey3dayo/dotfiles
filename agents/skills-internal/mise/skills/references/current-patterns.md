@@ -377,5 +377,5 @@ depends = ["lint", "test"]  # Parallel
 
 ---
 
-**Source:** Extracted from Claude Code dotfiles project
-**Date:** 2025-10-29
+### Source:
+### Date:

@@ -163,14 +163,14 @@ prefix + s  # FZF session selection
 
 ### Layer Boundary Problems
 
-**Issues**:
+### Issues
 
 - Tight coupling between tools
 - Unclear separation of concerns
 - Redundant functionality
 - Conflicting configurations
 
-**Solutions**:
+### Solutions
 
 - Define clear interfaces
 - Document layer responsibilities
@@ -179,14 +179,14 @@ prefix + s  # FZF session selection
 
 ### Theme Inconsistency Problems
 
-**Issues**:
+### Issues
 
 - Mismatched colors across tools
 - Different transparency levels
 - Inconsistent fonts
 - Visual disharmony
 
-**Solutions**:
+### Solutions
 
 - Adopt unified Gruvbox theme
 - Standardize opacity settings
@@ -195,14 +195,14 @@ prefix + s  # FZF session selection
 
 ### FZF Integration Problems
 
-**Issues**:
+### Issues
 
 - Inconsistent keybindings
 - Poor performance in some contexts
 - Missing integrations
 - Redundant implementations
 
-**Solutions**:
+### Solutions
 
 - Unify keybinding patterns
 - Optimize FZF configurations
@@ -211,14 +211,14 @@ prefix + s  # FZF session selection
 
 ### Dependency Conflict Problems
 
-**Issues**:
+### Issues
 
 - Version conflicts
 - Circular dependencies
 - Unnecessary dependencies
 - Outdated tools
 
-**Solutions**:
+### Solutions
 
 - Document dependency tree
 - Use version managers (mise)
@@ -229,7 +229,7 @@ prefix + s  # FZF session selection
 
 ### Cross-Layer Integration Quality
 
-**⭐⭐⭐⭐⭐ (5/5) Excellent**:
+### ⭐⭐⭐⭐⭐ (5/5) Excellent
 
 - Seamless tool transitions
 - Unified theme (Gruvbox)
@@ -237,7 +237,7 @@ prefix + s  # FZF session selection
 - Clear layer boundaries
 - <3s total startup time
 
-**⭐⭐⭐⭐☆ (4/5) Good**:
+### ⭐⭐⭐⭐☆ (4/5) Good
 
 - Good tool integration
 - Mostly consistent theme
@@ -245,7 +245,7 @@ prefix + s  # FZF session selection
 - Defined layer structure
 - <5s total startup time
 
-**⭐⭐⭐☆☆ (3/5) Standard**:
+### ⭐⭐⭐☆☆ (3/5) Standard
 
 - Basic integration
 - Partial theme consistency
@@ -253,7 +253,7 @@ prefix + s  # FZF session selection
 - Acceptable boundaries
 - <8s total startup time
 
-**⭐⭐☆☆☆ (2/5) Needs Improvement**:
+### ⭐⭐☆☆☆ (2/5) Needs Improvement
 
 - Minimal integration
 - Inconsistent theming
@@ -261,7 +261,7 @@ prefix + s  # FZF session selection
 - Unclear boundaries
 - > 8s total startup time
 
-**⭐☆☆☆☆ (1/5) Requires Overhaul**:
+### ⭐☆☆☆☆ (1/5) Requires Overhaul
 
 - No integration strategy
 - Conflicting themes
@@ -301,7 +301,7 @@ Assess based on:
 
 ### Unify Theme Implementation
 
-**Before**:
+### Before
 
 ```lua
 -- WezTerm: custom colors
@@ -313,7 +313,7 @@ vim.cmd('colorscheme onedark')
 -- Zsh: no theme coordination
 ```
 
-**After**:
+### After
 
 ```lua
 -- Unified Gruvbox across all tools
@@ -329,7 +329,7 @@ format = """... # Gruvbox colors
 
 ### Centralize FZF Configuration
 
-**Before**:
+### Before
 
 ```bash
 # Different FZF settings per tool
@@ -338,7 +338,7 @@ format = """... # Gruvbox colors
 # Nvim: separate plugin config
 ```
 
-**After**:
+### After
 
 ```bash
 # Centralized FZF configuration
@@ -352,7 +352,7 @@ export FZF_DEFAULT_OPTS="--color=bg+:#3c3836,bg:#32302f..."
 
 ### Optimize Cross-Layer Workflows
 
-**Before**:
+### Before
 
 ```bash
 # Manual, disconnected workflow
@@ -362,7 +362,7 @@ nvim file.txt
 tmux new-session
 ```
 
-**After**:
+### After
 
 ```bash
 # Integrated FZF workflow

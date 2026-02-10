@@ -136,14 +136,14 @@ Review copy mode configuration and productivity features:
 
 ### Performance Problems
 
-**Issues**:
+### Issues
 
 - Slow rendering or lag
 - High CPU/GPU usage
 - Poor font rendering
 - Sluggish input response
 
-**Solutions**:
+### Solutions
 
 - Enable WebGpu front-end
 - Set appropriate power preference
@@ -152,14 +152,14 @@ Review copy mode configuration and productivity features:
 
 ### Keybinding Problems
 
-**Issues**:
+### Issues
 
 - Keybinding conflicts
 - Unintuitive shortcuts
 - Missing essential functions
 - Inconsistent patterns
 
-**Solutions**:
+### Solutions
 
 - Implement leader key pattern
 - Follow Tmux conventions
@@ -168,14 +168,14 @@ Review copy mode configuration and productivity features:
 
 ### Theme Problems
 
-**Issues**:
+### Issues
 
 - Inconsistent theming across tools
 - Poor readability
 - Mismatched colors
 - Accessibility issues
 
-**Solutions**:
+### Solutions
 
 - Adopt unified theme (Gruvbox)
 - Verify contrast ratios
@@ -184,14 +184,14 @@ Review copy mode configuration and productivity features:
 
 ### Configuration Structure Problems
 
-**Issues**:
+### Issues
 
 - Monolithic wezterm.lua
 - Hardcoded values
 - No platform handling
 - Poor organization
 
-**Solutions**:
+### Solutions
 
 - Modularize into separate files
 - Use variables and constants
@@ -202,35 +202,35 @@ Review copy mode configuration and productivity features:
 
 ### Performance Assessment
 
-**⭐⭐⭐⭐⭐ (5/5) Excellent**:
+### ⭐⭐⭐⭐⭐ (5/5) Excellent
 
 - GPU acceleration enabled
 - Startup time <500ms
 - Smooth rendering
 - Optimized settings
 
-**⭐⭐⭐⭐☆ (4/5) Good**:
+### ⭐⭐⭐⭐☆ (4/5) Good
 
 - GPU acceleration active
 - Startup time <1s
 - Good performance
 - Minor optimization opportunities
 
-**⭐⭐⭐☆☆ (3/5) Standard**:
+### ⭐⭐⭐☆☆ (3/5) Standard
 
 - Basic GPU support
 - Startup time <2s
 - Acceptable performance
 - Some inefficiencies
 
-**⭐⭐☆☆☆ (2/5) Needs Improvement**:
+### ⭐⭐☆☆☆ (2/5) Needs Improvement
 
 - Software rendering
 - Slow startup (>2s)
 - Noticeable lag
 - Poor optimization
 
-**⭐☆☆☆☆ (1/5) Requires Overhaul**:
+### ⭐☆☆☆☆ (1/5) Requires Overhaul
 
 - No GPU acceleration
 - Very slow startup
@@ -268,14 +268,14 @@ Assess based on:
 
 ### Enable GPU Acceleration
 
-**Before**:
+### Before
 
 ```lua
 -- Default or software rendering
 config.front_end = "Software"
 ```
 
-**After**:
+### After
 
 ```lua
 -- Hardware acceleration
@@ -285,7 +285,7 @@ config.webgpu_power_preference = "HighPerformance"
 
 ### Implement Leader Key Pattern
 
-**Before**:
+### Before
 
 ```lua
 -- Direct keybindings
@@ -293,7 +293,7 @@ config.webgpu_power_preference = "HighPerformance"
 { key = 'x', mods = 'ALT', action = act.CloseCurrentPane { confirm = true } },
 ```
 
-**After**:
+### After
 
 ```lua
 -- Leader key pattern (Tmux-style)
@@ -306,7 +306,7 @@ keys = {
 
 ### Modularize Configuration
 
-**Before**:
+### Before
 
 ```lua
 -- Monolithic wezterm.lua (200+ lines)
@@ -317,7 +317,7 @@ config.colors = {...}
 -- everything mixed together
 ```
 
-**After**:
+### After
 
 ```lua
 -- wezterm.lua (entry point)
@@ -380,7 +380,7 @@ When reviewing WezTerm configurations:
 - ターミナルエミュレータ設定レビュー要求
 - dotfiles統合タスク時
 
-**統合例**:
+### 統合例
 
 ```
 ユーザー: "WezTerm設定をレビューしてGPU最適化を改善"

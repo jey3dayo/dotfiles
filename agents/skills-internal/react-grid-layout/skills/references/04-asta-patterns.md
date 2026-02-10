@@ -101,7 +101,7 @@ export const addDateTimeLayouts = (params: {
 };
 ```
 
-**Purpose:** Register date/time grid positions for use in time-based calculations
+### Purpose:
 
 #### 2. createDateLayouts
 
@@ -136,7 +136,7 @@ export const createDateLayouts = (params: {
 };
 ```
 
-**Purpose:** Create header layouts for date/time columns
+### Purpose:
 
 #### 3. registerLayouts
 
@@ -154,7 +154,7 @@ export const registerLayouts = (
 };
 ```
 
-**Purpose:** Convert layout array to ID-indexed map for fast lookup
+### Purpose:
 
 #### 4. filterValidLayouts
 
@@ -171,7 +171,7 @@ export const filterValidLayouts = (
 };
 ```
 
-**Purpose:** Clean layout array before rendering
+### Purpose:
 
 ### Layout Registry Pattern
 

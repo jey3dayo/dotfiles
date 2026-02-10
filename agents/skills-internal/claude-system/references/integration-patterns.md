@@ -47,7 +47,7 @@ Evaluate: Scalability, complexity, migration path" \
 - **Glob**: ファイルパターン検索
 - **Grep**: コード内容検索
 
-**No writes** → 安全な分析専用パターン
+### No writes
 
 ## Pattern 2: Design with Prototyping
 
@@ -97,7 +97,7 @@ Output:
 - **Edit**: 既存ファイル編集
 - **Glob/Grep**: 探索
 
-**Writes enabled** → プロトタイプ作成可能
+### Writes enabled
 
 ## Pattern 3: Interactive Design Refinement
 

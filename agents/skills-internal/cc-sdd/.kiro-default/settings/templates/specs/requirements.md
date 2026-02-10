@@ -8,7 +8,7 @@
 
 ### Requirement 1: {{REQUIREMENT_AREA_1}}
 
-**Objective:** As a {{ROLE}}, I want {{CAPABILITY}}, so that {{BENEFIT}}
+### Objective:
 
 #### Acceptance Criteria
 
@@ -20,7 +20,7 @@
 
 ### Requirement 2: {{REQUIREMENT_AREA_2}}
 
-**Objective:** As a {{ROLE}}, I want {{CAPABILITY}}, so that {{BENEFIT}}
+### Objective:
 
 #### Acceptance Criteria
 

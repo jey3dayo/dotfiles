@@ -199,9 +199,9 @@ After migration, validate your configuration:
 
 ### Issue 1: Commands Can't Find Files
 
-**Symptom**: Error messages like "No spec found for [feature]"
+### Symptom
 
-**Solution**:
+### Solution
 
 1. Check that `.kiro-config.json` exists:
 
@@ -223,9 +223,9 @@ After migration, validate your configuration:
 
 ### Issue 2: Template Files Not Found
 
-**Symptom**: Error messages like "Template file not found"
+### Symptom
 
-**Solution**:
+### Solution
 
 1. Check that settings directory has templates:
 
@@ -241,9 +241,9 @@ After migration, validate your configuration:
 
 ### Issue 3: Invalid JSON Configuration
 
-**Symptom**: Error parsing `.kiro-config.json`
+### Symptom
 
-**Solution**:
+### Solution
 
 1. Validate JSON syntax:
 
@@ -259,9 +259,9 @@ After migration, validate your configuration:
 
 ### Issue 4: Permission Errors
 
-**Symptom**: Can't read/write files in `.kiro/` directory
+### Symptom
 
-**Solution**:
+### Solution
 
 ```bash
 # Fix permissions

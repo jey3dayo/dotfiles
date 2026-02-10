@@ -123,7 +123,7 @@ PR Review Automationスキルは以下の順序で設定ファイルを探しま
 | `keywords` | `string[]` | この優先度を示すキーワードリスト |
 | `emoji`    | `string`   | 表示用の絵文字                   |
 
-**注意事項**:
+### 注意事項
 
 - キーワードは大文字小文字を区別しません
 - 日本語と英語のキーワードを混在可能
@@ -138,7 +138,7 @@ PR Review Automationスキルは以下の順序で設定ファイルを探しま
 | `keywords`    | `string[]` | このカテゴリを示すキーワードリスト |
 | `description` | `string`   | カテゴリの説明（オプション）       |
 
-**デフォルトカテゴリ**:
+### デフォルトカテゴリ
 
 - `security` - セキュリティ関連
 - `performance` - パフォーマンス最適化
@@ -160,7 +160,7 @@ PR Review Automationスキルは以下の順序で設定ファイルを探しま
 | `trusted`        | `boolean` | 信頼できるボットかどうか    |
 | `priority_boost` | `number`  | 優先度を調整する値（-2～2） |
 
-**priority_boost の動作**:
+### priority_boost の動作
 
 - `1`: 優先度を1段階上げる（minor → major）
 - `-1`: 優先度を1段階下げる（high → major）
@@ -318,9 +318,9 @@ ajv validate -s .pr-review-config.schema.json -d .pr-review-config.json
 
 ### 設定ファイルが読み込まれない
 
-**症状**: デフォルト設定が使用される
+### 症状
 
-**確認事項**:
+### 確認事項
 
 1. ファイル名が正しいか（`.pr-review-config.json`）
 2. JSON形式が正しいか（`jq '.' .pr-review-config.json`で確認）
@@ -328,9 +328,9 @@ ajv validate -s .pr-review-config.schema.json -d .pr-review-config.json
 
 ### 優先度分類が期待通りに動作しない
 
-**症状**: コメントが意図しない優先度に分類される
+### 症状
 
-**確認事項**:
+### 確認事項
 
 1. キーワードの順序（より高い優先度から評価）
 2. キーワードの大文字小文字（自動的に小文字変換される）
@@ -338,9 +338,9 @@ ajv validate -s .pr-review-config.schema.json -d .pr-review-config.json
 
 ### カスタムカテゴリが認識されない
 
-**症状**: カスタムカテゴリが "other" に分類される
+### 症状
 
-**確認事項**:
+### 確認事項
 
 1. `categories` オブジェクトに正しく定義されているか
 2. `keywords` 配列が空でないか

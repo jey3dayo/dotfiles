@@ -91,7 +91,7 @@ ${CWD}/${config.paths.root}/${config.paths.settings}/${config.paths.templates}/$
 
 When commands need to reference files:
 
-**Before (hardcoded)**:
+### Before (hardcoded)
 
 ```
 - Read `.kiro/steering/*.md`
@@ -99,7 +99,7 @@ When commands need to reference files:
 - Read `.kiro/settings/templates/specs/init.json`
 ```
 
-**After (config-based)**:
+### After (config-based)
 
 ```
 - Read `${KIRO_ROOT}/${STEERING_DIR}/*.md`

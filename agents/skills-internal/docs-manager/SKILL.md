@@ -18,23 +18,23 @@ All paths and project-specific rules are configurable via `.docs-manager-config.
 
 ### 1. Configuration System
 
-**Configuration File**: `.docs-manager-config.json` in project root
+### Configuration File
 
-**Configuration Loading**:
+### Configuration Loading
 
 1. Check for `.docs-manager-config.json` in project root
 2. If not found, use default generic configuration
 3. Load project type from configuration
 4. Apply project-specific rules from configuration
 
-**Default Behavior**:
+### Default Behavior
 
 - Documentation root: `./docs`
 - Project type: `generic`
 - Required tags: `category/`, `audience/`
 - Tag separator: `,` (comma-space)
 
-**Configuration Options**:
+### Configuration Options
 
 ```json
 {
@@ -57,13 +57,13 @@ See `templates/docs-manager-config.template.json` for complete schema and `examp
 
 Verify required metadata presence and format.
 
-**Required Fields** (configurable via `metadata_format`):
+### Required Fields
 
 - Date field (default: `**最終更新**: YYYY-MM-DD`)
 - Audience field (default: `**対象**: [Target Audience]`)
 - Tags field (default: `**タグ**: [tags]`)
 
-**Validation Process**:
+### Validation Process
 
 1. Parse metadata block from document header
 2. Check all required fields present
@@ -71,7 +71,7 @@ Verify required metadata presence and format.
 4. Flag documents not updated in 6+ months
 5. Verify audience specification clarity
 
-**Configurable Options**:
+### Configurable Options
 
 ```json
 {
@@ -88,7 +88,7 @@ Verify required metadata presence and format.
 
 Validate tags against project-specific requirements.
 
-**Tag Validation**:
+### Tag Validation
 
 1. Load required/optional tags from configuration
 2. Check tag separator format (comma vs. space)
@@ -96,7 +96,7 @@ Validate tags against project-specific requirements.
 4. Validate tag values against vocabulary (if configured)
 5. Flag unknown or misspelled tags
 
-**Configurable Tag Vocabulary**:
+### Configurable Tag Vocabulary
 
 ```json
 {
@@ -107,20 +107,20 @@ Validate tags against project-specific requirements.
 }
 ```
 
-**Reference**: Load tag vocabulary from configuration or provide defaults for detected project type.
+### Reference
 
 ### 4. Document Size Management
 
 Monitor and enforce size guidelines.
 
-**Size Thresholds** (configurable via `size_limits`):
+### Size Thresholds
 
 - ✅ Ideal: ≤ configured ideal size (default: 300 lines)
 - ⚠️ Acceptable: ≤ configured acceptable size (default: 500 lines)
 - ⚠️ Large: ≤ configured warning size (default: 1000 lines)
 - 🚫 Too Large: > configured maximum size (default: 2000 lines)
 
-**Size Check**:
+### Size Check
 
 1. Count total lines in document
 2. Classify by configured size category
@@ -132,14 +132,14 @@ Monitor and enforce size guidelines.
 
 Verify internal and external links work correctly.
 
-**Link Types**:
+### Link Types
 
 - Internal file references: `[text](./other-doc.md)`
 - Section anchors: `[text](#section-heading)`
 - External URLs: `[text](https://example.com)`
 - Image paths: `![alt](./images/pic.png)`
 
-**Validation**:
+### Validation
 
 1. Extract all markdown links
 2. Check internal file references exist (relative to `docs_root`)
@@ -148,7 +148,7 @@ Verify internal and external links work correctly.
 5. Validate image paths
 6. Report broken references
 
-**Tool Integration** (configurable via `link_validation`):
+### Tool Integration
 
 ```bash
 # Use configured link checker tool
@@ -170,7 +170,7 @@ Configuration:
 
 Apply rules based on configuration.
 
-**Detection Patterns**:
+### Detection Patterns
 
 Use `custom_rules.detection_patterns` to identify project characteristics:
 
@@ -187,7 +187,7 @@ Use `custom_rules.detection_patterns` to identify project characteristics:
 }
 ```
 
-**Update Frequency Tracking**:
+### Update Frequency Tracking
 
 ```json
 {
@@ -200,7 +200,7 @@ Use `custom_rules.detection_patterns` to identify project characteristics:
 }
 ```
 
-**Required Files**:
+### Required Files
 
 ```json
 {
@@ -210,7 +210,7 @@ Use `custom_rules.detection_patterns` to identify project characteristics:
 }
 ```
 
-**Performance Impact Documentation**:
+### Performance Impact Documentation
 
 ```json
 {
@@ -224,7 +224,7 @@ Use `custom_rules.detection_patterns` to identify project characteristics:
 
 Verify consistent structure across documentation.
 
-**Standard Sections**:
+### Standard Sections
 
 1. Metadata Block (title, date, audience, tags)
 2. Overview/概要 (purpose and scope)
@@ -232,7 +232,7 @@ Verify consistent structure across documentation.
 4. Related Links/関連リンク (cross-references)
 5. Update History/更新履歴 (change log)
 
-**Icon Standards**:
+### Icon Standards
 
 Use consistent emoji icons:
 
@@ -264,7 +264,7 @@ To review documentation:
 6. Generate comprehensive report
 7. Provide prioritized improvement list
 
-**Example**:
+### Example
 
 ```
 User: "Review all documentation"
@@ -292,7 +292,7 @@ To help create new documentation:
 6. Guide content organization
 7. Validate against configured guidelines before finalizing
 
-**Example**:
+### Example
 
 ```
 User: "Help me create a troubleshooting guide"
@@ -353,13 +353,13 @@ Configure external tools via `tools` section:
 
 ### Example Configurations
 
-**Generic Project** (`examples/generic-config.json`):
+### Generic Project
 
 - Minimal configuration
 - Standard metadata format
 - Basic tag vocabulary
 
-**Specialized Projects** (`examples/dotfiles-config.json`, etc.):
+### Specialized Projects
 
 - Project-specific detection patterns
 - Custom tag vocabulary
@@ -386,7 +386,7 @@ Calculate documentation health score:
 - ✅ Link integrity (20%)
 - ✅ Update freshness (15%)
 
-**Score Interpretation**:
+### Score Interpretation
 
 - 90-100%: Excellent (well-maintained)
 - 70-89%: Good (minor improvements)
@@ -420,7 +420,7 @@ Reference documentation and validation rules:
 
 ### Missing Configuration
 
-**Problem:** No `.docs-manager-config.json` found
+### Problem:
 
 ### Solution
 
@@ -433,7 +433,7 @@ cp templates/docs-manager-config.template.json .docs-manager-config.json
 
 ### Missing Metadata
 
-**Problem:** Document lacks required metadata fields
+### Problem:
 
 ### Solution
 
@@ -449,7 +449,7 @@ Add complete metadata block at document top using configured format:
 
 ### Wrong Tag Format
 
-**Problem:** Tags missing prefix or using wrong separator
+### Problem:
 
 ### Solution
 
@@ -459,7 +459,7 @@ Add complete metadata block at document top using configured format:
 
 ### Document Too Large
 
-**Problem:** Document exceeds configured maximum size
+### Problem:
 
 ### Solution
 
@@ -470,7 +470,7 @@ Add complete metadata block at document top using configured format:
 
 ### Broken Links
 
-**Problem:** Internal or external links not working
+### Problem:
 
 ### Solution
 
@@ -513,7 +513,7 @@ Add complete metadata block at document top using configured format:
 - ドキュメント構造検証要求時
 - プロジェクト固有ドキュメント標準適用時
 
-**統合例**:
+### 統合例
 
 ```
 ユーザー: "ドキュメントリンクを検証・修正"

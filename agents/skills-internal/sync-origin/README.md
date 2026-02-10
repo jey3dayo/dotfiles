@@ -106,7 +106,7 @@ bash ~/.agents/skills/sync-origin/scripts/detect-default-branch.sh origin
 fatal: 'origin' does not appear to be a git repository
 ```
 
-**対処:** リモートを追加するか、正しいリモート名を指定
+### 対処:
 
 ### デフォルトブランチが検出できない
 
@@ -114,7 +114,7 @@ fatal: 'origin' does not appear to be a git repository
 Could not detect default branch
 ```
 
-**対処:** 明示的にブランチ名を指定
+### 対処:
 
 ### コンフリクトが解決できない
 

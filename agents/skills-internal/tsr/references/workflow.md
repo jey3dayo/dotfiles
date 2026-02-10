@@ -55,7 +55,7 @@ wc -l /tmp/tsr-report-$(date +%Y%m%d).txt
 
 スキル内でレポートを解析し、以下を分類:
 
-**カテゴリー分類**:
+### カテゴリー分類
 
 1. **安全に削除可能** (90%以上の確実性)
    - 明らかに未使用のユーティリティ関数
@@ -103,7 +103,7 @@ pnpm tsr:fix
 # ※設定により自動実行される
 ```
 
-**問題が発生した場合**:
+### 問題が発生した場合
 
 ```bash
 # ロールバック
@@ -380,14 +380,14 @@ echo "  node config-loader.ts  # View merged config"
 
 ### 問題1: 設定が読み込まれない
 
-**症状**:
+### 症状
 
 ```bash
 node config-loader.ts
 # Config Source: default (expected: project or home)
 ```
 
-**対処法**:
+### 対処法
 
 ```bash
 # 設定ファイルの存在確認
@@ -403,7 +403,7 @@ chmod 644 .tsr-config.json
 
 ### 問題2: 削除後にビルドエラー
 
-**症状**:
+### 症状
 
 ```bash
 pnpm tsr:fix
@@ -411,7 +411,7 @@ pnpm build
 # Error: Module not found
 ```
 
-**対処法**:
+### 対処法
 
 ```bash
 # ロールバック
@@ -427,14 +427,14 @@ pnpm tsr:fix
 
 ### 問題3: 検証が実行されない
 
-**症状**:
+### 症状
 
 ```bash
 pnpm tsr:fix
 # 削除は成功するが、type-check/lintが実行されない
 ```
 
-**対処法**:
+### 対処法
 
 ```bash
 # verification 設定を確認
@@ -451,14 +451,14 @@ vim .tsr-config.json
 
 ### 問題4: レポートが期待した場所に保存されない
 
-**症状**:
+### 症状
 
 ```bash
 # reporting.outputPath: "~/tsr-reports/tsr-{date}.txt"
 # しかし /tmp/tsr-report-*.txt に保存される
 ```
 
-**対処法**:
+### 対処法
 
 ```bash
 # 設定の優先度を確認
@@ -574,4 +574,4 @@ git commit -m "chore: add TSR configuration"
 
 ---
 
-**目標**: 設定システムを活用した、安全で効果的なデッドコード削除ワークフローを確立する
+### 目標

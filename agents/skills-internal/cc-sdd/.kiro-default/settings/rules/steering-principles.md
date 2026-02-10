@@ -27,7 +27,7 @@ Steering files are **project memory**, not exhaustive specifications.
 
 ### Example Comparison
 
-**Bad** (Specification-like):
+### Bad
 
 ```markdown
 - /components/Button.tsx - Primary button with variants
@@ -36,7 +36,7 @@ Steering files are **project memory**, not exhaustive specifications.
   ... (50+ files)
 ```
 
-**Good** (Project Memory):
+### Good
 
 ```markdown
 ## UI Components (`/components/ui/`)

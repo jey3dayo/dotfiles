@@ -6,9 +6,9 @@ Generic metadata structure applicable to any documentation system.
 
 ## Overview
 
-**Purpose**: Define standardized metadata header format for documentation.
+### Purpose
 
-**When to use**:
+### When to use
 
 - Creating new documentation
 - Updating existing documentation headers
@@ -33,7 +33,7 @@ All documentation should include metadata in this format (field labels configura
 [Brief description of document purpose]
 ```
 
-**Configurability**:
+### Configurability
 
 - Field labels can be customized per project (e.g., "最終更新" vs "Last Updated")
 - Date format configurable (default: YYYY-MM-DD)
@@ -45,11 +45,11 @@ All documentation should include metadata in this format (field labels configura
 
 ### Field 1: Icon Header
 
-**Format**: `# [Emoji] [Title]`
+### Format
 
-**Purpose**: Visual identification and document type indication
+### Purpose
 
-**Common Icon Categories**:
+### Common Icon Categories
 
 - **General**: 📄 📝 📋
 - **Deployment/Operations**: 🚀 🔧 ⚙️
@@ -60,26 +60,26 @@ All documentation should include metadata in this format (field labels configura
 - **Reference**: 📚 📖 📘
 - **Tutorial/Guide**: 🎓 🚩 🗺️
 
-**Validation**: Must start with `#` followed by single emoji and title
+### Validation
 
 ---
 
 ### Field 2: Last Updated
 
-**Format**: `**Last Updated**: YYYY-MM-DD` (or project-configured label)
+### Format
 
-**Purpose**: Track document freshness and maintenance status
+### Purpose
 
-**Rules**:
+### Rules
 
 - Must use ISO 8601 date format (YYYY-MM-DD) by default
 - Should be updated on every significant edit
 - Used for review scheduling
 - Can trigger stale warnings (e.g., 6+ months old)
 
-**Validation**: Date must be valid and in correct format
+### Validation
 
-**Configuration Options**:
+### Configuration Options
 
 ```yaml
 metadata:
@@ -93,11 +93,11 @@ metadata:
 
 ### Field 3: Target Audience
 
-**Format**: `**Audience**: [Audience description]` (or project-configured label)
+### Format
 
-**Purpose**: Identify intended readers for the document
+### Purpose
 
-**Generic Audience Types** (customize per project):
+### Generic Audience Types
 
 - Developer
 - Operations
@@ -107,29 +107,29 @@ metadata:
 - Manager
 - End User
 
-**Rules**:
+### Rules
 
 - Should match at least one audience tag in Tags field
 - Multiple audiences allowed (comma-separated)
 - Should align with document content and complexity
 
-**Validation**: Audience should correspond to `audience/*` tags
+### Validation
 
 ---
 
 ### Field 4: Tags
 
-**Format**: `**Tags**:`category/value`,`audience/value`,`environment/value`` (or project-configured label)
+### Format
 
-**Purpose**: Enable document discovery and categorization
+### Purpose
 
-**Tag Structure** (3-tier system - see `tag-system-framework.md`):
+### Tag Structure
 
 - **Category tags** (`category/`): Primary topic classification
 - **Audience tags** (`audience/`): Target reader identification
 - **Environment tags** (`environment/`): Deployment scope (optional)
 
-**Rules**:
+### Rules
 
 - Must use canonical format with prefixes
 - At least one `category/` tag required (or per project config)
@@ -138,7 +138,7 @@ metadata:
 - Maximum tags configurable (default: 5 tags recommended)
 - Tags must be comma-separated with backticks (or project-configured format)
 
-**Validation**:
+### Validation
 
 - All tags must use canonical format (`prefix/value`)
 - Tags must exist in project tag taxonomy
@@ -150,9 +150,9 @@ metadata:
 
 ### Type 1: Guide/Tutorial
 
-**Purpose**: Step-by-step procedures, how-to guides, tutorials
+### Purpose
 
-**Example**:
+### Example
 
 ```markdown
 # 🎓 [Feature] Implementation Guide
@@ -166,7 +166,7 @@ metadata:
 This guide explains how to implement [feature]...
 ```
 
-**Characteristics**:
+### Characteristics
 
 - Icon: 🎓 (tutorial) or 📘 (guide)
 - Audience: Usually single role
@@ -177,9 +177,9 @@ This guide explains how to implement [feature]...
 
 ### Type 2: Reference Documentation
 
-**Purpose**: API references, command references, data schemas
+### Purpose
 
-**Example**:
+### Example
 
 ```markdown
 # 📚 [System] Reference
@@ -193,7 +193,7 @@ This guide explains how to implement [feature]...
 Complete reference of [system/API/commands]...
 ```
 
-**Characteristics**:
+### Characteristics
 
 - Icon: 📚 (reference) or 📖 (documentation)
 - Audience: Multiple audiences common
@@ -204,9 +204,9 @@ Complete reference of [system/API/commands]...
 
 ### Type 3: Operations/Runbook
 
-**Purpose**: Operational procedures, runbooks, troubleshooting
+### Purpose
 
-**Example**:
+### Example
 
 ```markdown
 # 🔧 [System] Operations Guide
@@ -220,7 +220,7 @@ Complete reference of [system/API/commands]...
 Procedures for operating [system]...
 ```
 
-**Characteristics**:
+### Characteristics
 
 - Icon: 🔧 (operations) or 🚀 (deployment)
 - Audience: Multiple roles common
@@ -234,7 +234,7 @@ Procedures for operating [system]...
 
 Use this checklist when creating or updating documentation:
 
-**Format Validation**:
+### Format Validation
 
 - [ ] Icon present in H1 title
 - [ ] Last Updated field present with correct date format
@@ -242,7 +242,7 @@ Use this checklist when creating or updating documentation:
 - [ ] Tags field present with proper formatting
 - [ ] All tags use canonical format (`prefix/value`)
 
-**Content Validation**:
+### Content Validation
 
 - [ ] At least one `category/` tag (or project-required tiers)
 - [ ] At least one `audience/` tag (or project-required tiers)
@@ -250,14 +250,14 @@ Use this checklist when creating or updating documentation:
 - [ ] Environment tags used only for env-specific docs
 - [ ] Tag count within project limits
 
-**Consistency Validation**:
+### Consistency Validation
 
 - [ ] Document content matches selected tags
 - [ ] Tags consistent with similar documents
 - [ ] Icon appropriate for document type
 - [ ] Date is current (updated on every edit)
 
-**Structure Validation**:
+### Structure Validation
 
 - [ ] Overview section present
 - [ ] Brief description explains document purpose
@@ -267,7 +267,7 @@ Use this checklist when creating or updating documentation:
 
 ## Common Mistakes
 
-**Avoid**:
+### Avoid
 
 - ❌ Using tags without prefixes: `AWS`, `developer`, `staging`
 - ❌ Missing required fields
@@ -276,7 +276,7 @@ Use this checklist when creating or updating documentation:
 - ❌ Generic-only tags without specific categories
 - ❌ Mismatched audience: Audience field doesn't match audience tags
 
-**Correct Example**:
+### Correct Example
 
 ```markdown
 # ✅ Good Example
@@ -288,7 +288,7 @@ Use this checklist when creating or updating documentation:
 **Tags**: `category/guide`, `category/architecture`, `audience/developer`, `audience/architect`
 ```
 
-**Incorrect Example**:
+### Incorrect Example
 
 ```markdown
 # ❌ Bad Example (no icon, invalid date, wrong tag format)

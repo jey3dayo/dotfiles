@@ -4,7 +4,7 @@
 
 ### 1. Memory Server - 会話間コンテキスト保持
 
-**用途**: 会話をまたいで情報を記憶
+### 用途
 
 ```json
 {
@@ -19,7 +19,7 @@
 
 ### 2. Filesystem Server - ファイル操作
 
-**用途**: 指定ディレクトリのファイル読み書き
+### 用途
 
 ```json
 {
@@ -36,11 +36,11 @@
 }
 ```
 
-**セキュリティ**: アクセス可能なディレクトリを限定
+### セキュリティ
 
 ### 3. GitHub Server - GitHub統合（公式）
 
-**用途**: リポジトリ管理、Issue/PR操作
+### 用途
 
 ```json
 {
@@ -56,11 +56,11 @@
 }
 ```
 
-**セキュリティ**: トークンは環境変数から読み込み推奨
+### セキュリティ
 
 ### 4. PostgreSQL/MySQL Server - データベース操作
 
-**PostgreSQL**:
+### PostgreSQL
 
 ```json
 {
@@ -76,7 +76,7 @@
 }
 ```
 
-**MySQL**:
+### MySQL
 
 ```json
 {
@@ -96,11 +96,11 @@
 }
 ```
 
-**セキュリティ**: パスワードは環境変数から読み込み推奨
+### セキュリティ
 
 ### 5. Brave Search - Web検索
 
-**用途**: 最新情報の検索
+### 用途
 
 ```json
 {
@@ -118,7 +118,7 @@
 
 ### 6. Slack Server - Slack統合
 
-**用途**: チャンネル読み書き、メッセージ送信
+### 用途
 
 ```json
 {
@@ -263,7 +263,7 @@ security add-generic-password -a $USER -s mysql_password -w "melody"
 
 ### サーバーが起動しない
 
-**チェック項目**:
+### チェック項目
 
 1. Node.jsがインストールされているか確認
 
@@ -288,9 +288,9 @@ security add-generic-password -a $USER -s mysql_password -w "melody"
 
 ### 権限エラー
 
-**原因**: Filesystem Serverのパスが不正、または環境変数が未設定
+### 原因
 
-**解決策**:
+### 解決策
 
 1. パスの確認
 
@@ -315,9 +315,9 @@ security add-generic-password -a $USER -s mysql_password -w "melody"
 
 ### 環境変数が認識されない
 
-**原因**: Claude Desktopが環境変数を読み込めていない
+### 原因
 
-**解決策**:
+### 解決策
 
 1. Claude Desktopを完全に終了
 
@@ -497,7 +497,7 @@ export MYSQL_PASSWORD="different_secure_password"
 - "外部ツール統合"、"GitHub統合"、"データベース統合"に言及
 - 環境変数、APIキー、トークン管理について質問
 
-**統合例**:
+### 統合例
 
 ```
 ユーザー: "GitHub MCPサーバーを安全に設定したい"

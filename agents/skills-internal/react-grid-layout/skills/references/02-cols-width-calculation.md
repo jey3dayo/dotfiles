@@ -361,7 +361,7 @@ const layout = [
 ];
 ```
 
-**Problem:** Item width (20) exceeds cols (12) → rendering issues
+### Problem:
 
 ### Solution
 
@@ -379,7 +379,7 @@ const layout = [];
 const cols = Math.max(...layout.map(({ x, w }) => x + w)); // -Infinity!
 ```
 
-**Problem:** `Math.max()` on empty array returns `-Infinity`
+### Problem:
 
 ### Solution
 

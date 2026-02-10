@@ -4,14 +4,14 @@ Configurable code review and quality assessment system with flexible project det
 
 ## What's New in v2.0
 
-**Configuration-Based Architecture**:
+### Configuration-Based Architecture
 
 - Project detection through configuration files (no more hardcoded logic)
 - Pluggable evaluation rules
 - Custom project type support
 - Backward compatible with v1.x
 
-**Key Improvements**:
+### Key Improvements
 
 - Separate project-specific rules from core logic
 - Easy addition of new project types

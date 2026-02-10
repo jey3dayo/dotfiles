@@ -34,7 +34,7 @@ const data: unknown = response.data;
 const handler = (e: Event) => console.log(e);
 ```
 
-**any→unknown移行の利点**:
+### any→unknown移行の利点
 
 - 型安全性: unknownは使用前に型チェックを強制
 - 後方互換性: any→unknownは安全な変換

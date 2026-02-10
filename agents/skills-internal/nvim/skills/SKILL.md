@@ -22,7 +22,7 @@ This skill focuses on **dotfiles-specific patterns and review criteria**.
 
 ### 1. Startup Performance (Target: <200ms)
 
-**Dotfiles Check**:
+### Dotfiles Check
 
 - Measure: `nvim --startuptime startup.log`, `:Lazy profile`
 - Large file detection (>2MB) in `config/autocmds.lua`
@@ -31,7 +31,7 @@ This skill focuses on **dotfiles-specific patterns and review criteria**.
 
 ### 2. LSP Integration (Target: 15+ languages)
 
-**Dotfiles Files**:
+### Dotfiles Files
 
 - `nvim/lua/plugins/lsp.lua`: mason.nvim + mason-lspconfig
 - `ensure_installed` list with `automatic_installation = true`
@@ -39,7 +39,7 @@ This skill focuses on **dotfiles-specific patterns and review criteria**.
 
 ### 3. Plugin Management (lazy.nvim + modular specs)
 
-**Dotfiles Structure**:
+### Dotfiles Structure
 
 - `nvim/lua/plugins/{editor,lsp,ui,git}.lua` - modular plugin specs
 - Event triggers: `VeryLazy`, `BufReadPre`, `CmdlineEnter`
@@ -47,7 +47,7 @@ This skill focuses on **dotfiles-specific patterns and review criteria**.
 
 ### 4. Lua Configuration (Complete Lua, no Vimscript)
 
-**Dotfiles Organization**:
+### Dotfiles Organization
 
 - `init.lua` → `lua/config/{lazy,options,keymaps,autocmds}.lua`
 - Support `local.lua` overrides (gitignored)
@@ -55,7 +55,7 @@ This skill focuses on **dotfiles-specific patterns and review criteria**.
 
 ### 5. AI Integration (Supermaven/Copilot)
 
-**Dotfiles Check**:
+### Dotfiles Check
 
 - `lua/plugins/ai.lua` or `completion.lua`
 - Performance: <50ms latency (verify with profiling)
@@ -161,7 +161,7 @@ Refer to `.claude/rules/tools/` for cross-tool patterns.
 
 ## Context7 Integration Examples
 
-**For generic questions, query Context7 first**:
+### For generic questions, query Context7 first
 
 ```
 # Neovim API usage
@@ -177,7 +177,7 @@ Query: "How to setup language servers with nvim-lspconfig"
 Library: /neovim/neovim
 ```
 
-**Then apply to dotfiles**:
+### Then apply to dotfiles
 
 ```lua
 -- Query Context7 for API details, then apply to dotfiles structure
@@ -216,13 +216,13 @@ vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = 'Fin
 
 ## Reference Material
 
-**Context7 Libraries** (generic docs):
+### Context7 Libraries
 
 - `/websites/neovim_io_doc` - Official docs
 - `/folke/lazy.nvim` - Plugin manager
 - `/neovim/neovim` - Source code
 
-**Dotfiles Docs**:
+### Dotfiles Docs
 
 - `.claude/rules/tools/nvim.md` - Neovim-specific rules
 - `docs/performance.md` - Performance benchmarks

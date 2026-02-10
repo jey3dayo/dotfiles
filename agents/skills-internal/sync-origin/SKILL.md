@@ -201,7 +201,7 @@ git rebase --autostash origin/<default-branch>
 # エラー: fatal: 'origin' does not appear to be a git repository
 ```
 
-**対処:** リモートを追加するか、正しいリモート名を指定
+### 対処:
 
 ### 2. デフォルトブランチが検出できない
 
@@ -209,7 +209,7 @@ git rebase --autostash origin/<default-branch>
 # エラー: Could not detect default branch
 ```
 
-**対処:** `--base` オプションで明示的に指定
+### 対処:
 
 ### 3. ネットワークエラー
 
@@ -217,7 +217,7 @@ git rebase --autostash origin/<default-branch>
 # エラー: fatal: unable to access '...': Could not resolve host
 ```
 
-**対処:** ネットワーク接続を確認し、再試行
+### 対処:
 
 ### 4. コンフリクトが解決できない
 

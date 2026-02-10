@@ -24,7 +24,7 @@ Execute comprehensive code review by delegating to the `code-review` skill with 
 
 ### No-Signature Policy
 
-**IMPORTANT**: Strictly enforce in all outputs:
+### IMPORTANT
 
 - Never include "Co-authored-by: Claude" in commits
 - Never include "Generated with Claude Code"
@@ -42,7 +42,7 @@ Comprehensive quality assessment:
 - Technology stack skill integration (typescript, react, golang, security, etc.)
 - Detailed improvement suggestions and action plans
 
-**Usage**:
+### Usage
 
 ```bash
 /review                    # Basic review
@@ -59,7 +59,7 @@ Fast issue detection:
 - Immediate fix suggestions
 - GitHub issue integration option
 
-**Usage**:
+### Usage
 
 ```bash
 /review --simple           # Quick review
@@ -73,7 +73,7 @@ Diagnose and fix GitHub Actions CI failures:
 - `ci-diagnostics` skill for failure classification and fix planning
 - `gh-fix-ci` skill for log retrieval assistance
 
-**Usage**:
+### Usage
 
 ```bash
 /review --fix-ci           # Diagnose current branch PR
@@ -88,7 +88,7 @@ Execute both CI diagnosis and PR comment fixes in a unified flow:
 - Create fix plan based on both CI failures and PR comments
 - Only one PR number can be specified
 
-**Usage**:
+### Usage
 
 ```bash
 /review --fix-ci --fix-pr      # Both on current branch PR
@@ -105,7 +105,7 @@ Automatically fix GitHub PR review comments:
 - Automatic fixes and quality assurance
 - Tracking document generation
 
-**Usage**:
+### Usage
 
 ```bash
 /review --fix-pr           # Fix current branch PR
@@ -123,7 +123,7 @@ Review targets are automatically determined by priority:
 3. Diff with develop branch (`git diff origin/develop`)
 4. Recently modified files
 
-**Explicit specification**:
+### Explicit specification
 
 ```bash
 /review --staged           # Staged changes only

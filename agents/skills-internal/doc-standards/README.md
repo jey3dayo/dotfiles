@@ -8,14 +8,14 @@ Generic, project-agnostic documentation standards skill for Claude Code.
 
 This skill provides a flexible framework for enforcing documentation standards across projects. It discovers project-specific configuration and adapts its behavior accordingly.
 
-**Key Features**:
+### Key Features
 
 - **Metadata template application** - Standardized headers with validation
 - **Tag system guidance** - 3-tier tag taxonomy support
 - **Size management** - Automatic threshold monitoring and split suggestions
 - **Quality validation** - Comprehensive quality checks
 
-**Configuration Discovery**:
+### Configuration Discovery
 
 The skill automatically discovers project configuration at `.claude/doc-standards/config.yaml` and loads project-specific tag taxonomies, examples, and preferences.
 
@@ -25,13 +25,13 @@ The skill automatically discovers project configuration at `.claude/doc-standard
 
 ### For New Projects
 
-**Step 1**: Create configuration directory
+### Step 1
 
 ```bash
 mkdir -p .claude/doc-standards/references
 ```
 
-**Step 2**: Create minimal `config.yaml`
+### Step 2
 
 ```bash
 cat > .claude/doc-standards/config.yaml << 'EOF'
@@ -61,7 +61,7 @@ size:
 EOF
 ```
 
-**Step 3**: Define your project's tags
+### Step 3
 
 ```bash
 cat > .claude/doc-standards/references/tag-taxonomy.md << 'EOF'
@@ -83,7 +83,7 @@ cat > .claude/doc-standards/references/tag-taxonomy.md << 'EOF'
 EOF
 ```
 
-**Step 4**: Start using the skill
+### Step 4
 
 Create documentation and the skill will automatically apply your standards:
 
@@ -129,7 +129,7 @@ Create documentation and the skill will automatically apply your standards:
     └── quality-checklist-examples.md        # Project validation examples (OPTIONAL)
 ```
 
-**Alternative**: Projects can also use `.claude/skills/doc-standards/references/` for taxonomy (legacy pattern).
+### Alternative
 
 ---
 
@@ -200,7 +200,7 @@ The skill activates when users:
 
 ### Examples
 
-**Creating new doc** (English project):
+### Creating new doc
 
 ```
 User: "Create a new deployment guide"
@@ -211,7 +211,7 @@ Skill: "I'll help you create a deployment guide with proper metadata.
        Let me apply the template..."
 ```
 
-**Creating new doc** (Japanese project):
+### Creating new doc
 
 ```
 User: "新しいデプロイメントガイドを作成"
@@ -388,9 +388,9 @@ quality:
 
 ### Issue: Skill not finding config
 
-**Symptom**: Skill uses English defaults, can't find project tags
+### Symptom
 
-**Solution**:
+### Solution
 
 ```bash
 # Verify config exists
@@ -405,9 +405,9 @@ chmod 644 .claude/doc-standards/config.yaml
 
 ### Issue: Tags not loading
 
-**Symptom**: Skill can't suggest project tags
+### Symptom
 
-**Solution**:
+### Solution
 
 ```bash
 # Check path in config
@@ -422,9 +422,9 @@ cat .claude/doc-standards/references/tag-taxonomy.md
 
 ### Issue: Wrong language responses
 
-**Symptom**: Skill responds in English but project uses Japanese
+### Symptom
 
-**Solution**:
+### Solution
 
 ```yaml
 # Add to config.yaml

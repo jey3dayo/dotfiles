@@ -23,33 +23,33 @@ Trigger this skill when:
 
 Generate AWS infrastructure diagrams with official icons and proper layout.
 
-**Use when:** Infrastructure documentation, system design reviews, architecture proposals needed.
+### Use when:
 
-**Outputs:** VPC, subnets, ALB, ECS, RDS, Lambda, CloudWatch with proper connections and labeling.
+### Outputs:
 
 ### 2. Flowcharts
 
 Generate process flowcharts with standard shapes and proper routing.
 
-**Use when:** Business process documentation, workflow visualization, logic flow explanation needed.
+### Use when:
 
-**Outputs:** Process boxes, decision diamonds, terminators, connectors with clean routing.
+### Outputs:
 
 ### 3. Sequence Diagrams
 
 Generate interaction flow diagrams showing component communication.
 
-**Use when:** API documentation, system interaction design, integration flow explanation needed.
+### Use when:
 
-**Outputs:** Participants, sync/async messages, lifelines, activation boxes.
+### Outputs:
 
 ### 4. ER Diagrams
 
 Generate entity-relationship diagrams for data modeling.
 
-**Use when:** Database design documentation, data model explanation, table relationship visualization needed.
+### Use when:
 
-**Outputs:** Entity boxes with attributes, relationships (1:1, 1:N, N:M), cardinality notation.
+### Outputs:
 
 ## How to Use This Skill
 
@@ -112,7 +112,7 @@ Generate entity-relationship diagrams for data modeling.
 <mxCell value="Text" style="...; fontFamily=Helvetica; fontSize=18; ..." />
 ```
 
-**IMPORTANT:** PNG/SVG export requires explicit `fontFamily` in EVERY text element. `defaultFontFamily` alone is insufficient.
+### IMPORTANT:
 
 #### Layout Requirements
 
@@ -188,7 +188,7 @@ All templates include:
 
 Load these as needed using progressive disclosure:
 
-**`xml-structure.md`** (ALWAYS LOAD FIRST)
+### `xml-structure.md`
 
 - Draw.io XML format fundamentals
 - mxGraphModel and mxCell structure
@@ -273,7 +273,7 @@ Load these as needed using progressive disclosure:
 
 ### Issue: Font changes after PNG export
 
-**Cause:** Missing element-level `fontFamily`
+### Cause:
 
 #### Solution
 
@@ -286,13 +286,13 @@ Add `fontFamily=Helvetica` to each.
 
 ### Issue: Arrows appear in front of shapes
 
-**Cause:** Wrong XML order
+### Cause:
 
-**Solution:** Move arrow cells to beginning of root element (before shapes).
+### Solution:
 
 ### Issue: Japanese text wraps unexpectedly
 
-**Cause:** Insufficient width
+### Cause:
 
 #### Solution
 
@@ -302,7 +302,7 @@ width = charCount × 35 + 10
 
 ### Issue: Elements not aligned to grid
 
-**Cause:** Coordinates not multiples of 10
+### Cause:
 
 #### Solution
 
@@ -402,6 +402,6 @@ This skill creates professional draw.io diagrams by:
 3. **Following layout rules** (layer order, spacing, grid)
 4. **Outputting complete XML** with usage instructions
 
-**Key Success Factor:** Explicit `fontFamily` in every text element ensures consistent rendering across app preview and PNG/SVG export.
+### Key Success Factor:
 
 Load `references/xml-structure.md` first for every diagram, then load other references as needed based on diagram type and complexity.

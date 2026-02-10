@@ -4,9 +4,9 @@
 
 ## Document Length Guidelines (Max 1000 lines)
 
-**Purpose**: Provide sufficient detail to ensure implementation consistency across different implementers, preventing interpretation drift.
+### Purpose
 
-**Approach**:
+### Approach
 
 - Include essential sections that directly inform implementation decisions
 - Omit optional sections unless critical to preventing implementation errors
@@ -18,9 +18,9 @@
 ## Overview
 
 2-3 paragraphs max
-**Purpose**: This feature delivers [specific value] to [target users].
-**Users**: [Target user groups] will utilize this for [specific workflows].
-**Impact** (if applicable): Changes the current [system state] by [specific modifications].
+### Purpose
+### Users
+### Impact
 
 ### Goals
 
@@ -47,9 +47,9 @@ When modifying existing systems:
 
 ### High-Level Architecture
 
-**RECOMMENDED**: Include Mermaid diagram showing system architecture (required for complex features, optional for simple additions)
+### RECOMMENDED
 
-**Architecture Integration**:
+### Architecture Integration
 
 - Existing patterns preserved: [list key patterns]
 - New components rationale: [why each is needed]
@@ -58,24 +58,24 @@ When modifying existing systems:
 
 ### Technology Stack and Design Decisions
 
-**Generation Instructions** (DO NOT include this section in design.md):
+### Generation Instructions
 Adapt content based on feature classification from Discovery & Analysis Phase:
 
-**For New Features (greenfield)**:
+### For New Features (greenfield)
 Generate Technology Stack section with ONLY relevant layers:
 
 - Include only applicable technology layers (e.g., skip Frontend for CLI tools, skip Infrastructure for libraries)
 - For each technology choice, provide: selection, rationale, and alternatives considered
 - Include Architecture Pattern Selection if making architectural decisions
 
-**For Extensions/Additions to Existing Systems**:
+### For Extensions/Additions to Existing Systems
 Generate Technology Alignment section instead:
 
 - Document how feature aligns with existing technology stack
 - Note any new dependencies or libraries being introduced
 - Justify deviations from established patterns if necessary
 
-**Key Design Decisions**:
+### Key Design Decisions
 Generate 1-3 critical technical decisions that significantly impact the implementation.
 Each decision should follow this format:
 
@@ -90,7 +90,7 @@ Skip this entire section for simple CRUD operations or when following establishe
 
 ## System Flows
 
-**Flow Design Generation Instructions** (DO NOT include this section in design.md):
+### Flow Design Generation Instructions
 Generate appropriate flow diagrams ONLY when the feature requires flow visualization. Select from:
 
 - **Sequence Diagrams**: For user interactions across multiple components
@@ -104,7 +104,7 @@ When included, provide concise Mermaid diagrams specific to the actual feature r
 
 ## Requirements Traceability
 
-**Traceability Generation Instructions** (DO NOT include this section in design.md):
+### Traceability Generation Instructions
 Generate traceability mapping ONLY for complex features with multiple requirements or when explicitly needed for compliance/validation.
 
 When included, create a mapping table showing how each EARS requirement is realized:
@@ -122,7 +122,7 @@ Skip this section for simple features with straightforward 1:1 requirement-to-co
 
 ## Components and Interfaces
 
-**Component Design Generation Instructions** (DO NOT include this section in design.md):
+### Component Design Generation Instructions
 Structure components by domain boundaries or architectural layers. Generate only relevant subsections based on component type.
 Group related components under domain/layer headings for clarity.
 
@@ -143,7 +143,7 @@ Group related components under domain/layer headings for clarity.
 - **Outbound**: Components/services this component depends on
 - **External**: Third-party services, libraries, or external systems
 
-**External Dependencies Investigation** (when using external libraries/services):
+### External Dependencies Investigation
 
 - Use WebSearch to locate official documentation, GitHub repos, and community resources
 - Use WebFetch to retrieve and analyze documentation pages, API references, and usage examples
@@ -157,7 +157,7 @@ Group related components under domain/layer headings for clarity.
 
 Select and generate ONLY the relevant contract types for each component:
 
-**Service Interface** (for business logic components):
+### Service Interface
 
 ```typescript
 interface [ComponentName]Service {
@@ -171,7 +171,7 @@ interface [ComponentName]Service {
 - **Postconditions**: What is guaranteed after successful execution
 - **Invariants**: What remains true throughout
 
-**API Contract** (for REST/GraphQL endpoints):
+### API Contract
 
 | Method | Endpoint      | Request       | Response | Errors        |
 | ------ | ------------- | ------------- | -------- | ------------- |
@@ -179,14 +179,14 @@ interface [ComponentName]Service {
 
 With detailed schemas only for complex payloads
 
-**Event Contract** (for event-driven components):
+### Event Contract
 
 - **Published Events**: Event name, schema, trigger conditions
 - **Subscribed Events**: Event name, handling strategy, idempotency
 - **Ordering**: Guaranteed order requirements
 - **Delivery**: At-least-once, at-most-once, or exactly-once
 
-**Batch/Job Contract** (for scheduled/triggered processes):
+### Batch/Job Contract
 
 - **Trigger**: Schedule, event, or manual trigger conditions
 - **Input**: Data source and validation rules
@@ -194,13 +194,13 @@ With detailed schemas only for complex payloads
 - **Idempotency**: How repeat executions are handled
 - **Recovery**: Failure handling and retry strategy
 
-**State Management** (only if component maintains state):
+### State Management
 
 - **State Model**: States and valid transitions
 - **Persistence**: Storage strategy and consistency model
 - **Concurrency**: Locking, optimistic/pessimistic control
 
-**Integration Strategy** (when modifying existing systems):
+### Integration Strategy
 
 - **Modification Approach**: Extend, wrap, or refactor existing code
 - **Backward Compatibility**: What must be maintained
@@ -208,22 +208,22 @@ With detailed schemas only for complex payloads
 
 ## Data Models
 
-**Data Model Generation Instructions** (DO NOT include this section in design.md):
+### Data Model Generation Instructions
 Generate only relevant data model sections based on the system's data requirements and chosen architecture.
 Progress from conceptual to physical as needed for implementation clarity.
 
 ### Domain Model
 
-**When to include**: Complex business domains with rich behavior and rules
+### When to include
 
-**Core Concepts**:
+### Core Concepts
 
 - **Aggregates**: Define transactional consistency boundaries
 - **Entities**: Business objects with unique identity and lifecycle
 - **Value Objects**: Immutable descriptive aspects without identity
 - **Domain Events**: Significant state changes in the domain
 
-**Business Rules & Invariants**:
+### Business Rules & Invariants
 
 - Constraints that must always be true
 - Validation rules and their enforcement points
@@ -233,16 +233,16 @@ Include conceptual diagram (Mermaid) only when relationships are complex enough 
 
 ### Logical Data Model
 
-**When to include**: When designing data structures independent of storage technology
+### When to include
 
-**Structure Definition**:
+### Structure Definition
 
 - Entity relationships and cardinality
 - Attributes and their types
 - Natural keys and identifiers
 - Referential integrity rules
 
-**Consistency & Integrity**:
+### Consistency & Integrity
 
 - Transaction boundaries
 - Cascading rules
@@ -250,30 +250,30 @@ Include conceptual diagram (Mermaid) only when relationships are complex enough 
 
 ### Physical Data Model
 
-**When to include**: When implementation requires specific storage design decisions
+### When to include
 
-**For Relational Databases**:
+### For Relational Databases
 
 - Table definitions with data types
 - Primary/foreign keys and constraints
 - Indexes and performance optimizations
 - Partitioning strategy for scale
 
-**For Document Stores**:
+### For Document Stores
 
 - Collection structures
 - Embedding vs referencing decisions
 - Sharding key design
 - Index definitions
 
-**For Event Stores**:
+### For Event Stores
 
 - Event schema definitions
 - Stream aggregation strategies
 - Snapshot policies
 - Projection definitions
 
-**For Key-Value/Wide-Column Stores**:
+### For Key-Value/Wide-Column Stores
 
 - Key design patterns
 - Column families or value structures
@@ -281,21 +281,21 @@ Include conceptual diagram (Mermaid) only when relationships are complex enough 
 
 ### Data Contracts & Integration
 
-**When to include**: Systems with service boundaries or external integrations
+### When to include
 
-**API Data Transfer**:
+### API Data Transfer
 
 - Request/response schemas
 - Validation rules
 - Serialization format (JSON, Protobuf, etc.)
 
-**Event Schemas**:
+### Event Schemas
 
 - Published event structures
 - Schema versioning strategy
 - Backward/forward compatibility rules
 
-**Cross-Service Data Management**:
+### Cross-Service Data Management
 
 - Distributed transaction patterns (Saga, 2PC)
 - Data synchronization strategies
@@ -312,11 +312,11 @@ Concrete error handling patterns and recovery mechanisms for each error type.
 
 ### Error Categories and Responses
 
-**User Errors** (4xx): Invalid input → field-level validation; Unauthorized → auth guidance; Not found → navigation help
-**System Errors** (5xx): Infrastructure failures → graceful degradation; Timeouts → circuit breakers; Exhaustion → rate limiting  
-**Business Logic Errors** (422): Rule violations → condition explanations; State conflicts → transition guidance
+### User Errors
+### System Errors
+### Business Logic Errors
 
-**Process Flow Visualization** (when complex business logic exists):
+### Process Flow Visualization
 Include Mermaid flowchart only for complex error scenarios with business workflows.
 
 ### Monitoring
@@ -336,7 +336,7 @@ Error tracking, logging, and health monitoring implementation.
 
 ### Security Considerations
 
-**Include when**: Features handle authentication, sensitive data, external integrations, or user permissions
+### Include when
 
 - Threat modeling, security controls, compliance requirements
 - Authentication and authorization patterns
@@ -344,7 +344,7 @@ Error tracking, logging, and health monitoring implementation.
 
 ### Performance & Scalability
 
-**Include when**: Features have specific performance requirements, high load expectations, or scaling concerns
+### Include when
 
 - Target metrics and measurement strategies
 - Scaling approaches (horizontal/vertical)
@@ -352,6 +352,6 @@ Error tracking, logging, and health monitoring implementation.
 
 ### Migration Strategy
 
-**REQUIRED**: Include Mermaid flowchart showing migration phases
+### REQUIRED
 
-**Process**: Phase breakdown, rollback triggers, validation checkpoints
+### Process

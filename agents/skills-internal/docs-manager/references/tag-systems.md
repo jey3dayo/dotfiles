@@ -16,9 +16,9 @@ All projects use these standard tag prefix formats:
 
 ### dotfiles Project
 
-**Required Tags**: `category/`, `tool/`, `layer/`, `environment/`, `audience/`
+### Required Tags
 
-**Category Tags** (`category/`):
+### Category Tags
 
 - `category/shell` - Shell (Zsh) configuration and optimization
 - `category/editor` - Editor (Neovim) related
@@ -32,7 +32,7 @@ All projects use these standard tag prefix formats:
 - `category/maintenance` - Maintenance procedures
 - `category/documentation` - Documentation management
 
-**Tool Tags** (`tool/`):
+### Tool Tags
 
 - `tool/zsh` - Zsh shell (1.1s startup target)
 - `tool/nvim` - Neovim editor (<100ms startup)
@@ -44,26 +44,26 @@ All projects use these standard tag prefix formats:
 - `tool/mise` - Version management tool
 - `tool/homebrew` - Package management
 
-**Layer Tags** (`layer/`) - dotfiles-specific:
+### Layer Tags
 
 - `layer/core` - Core settings (Shell, Git)
 - `layer/tool` - Tool-specific settings (Editor, Terminal)
 - `layer/support` - Cross-cutting concerns (Performance, Integration)
 
-**Environment Tags** (`environment/`):
+### Environment Tags
 
 - `environment/macos` - macOS specific
 - `environment/linux` - Linux compatible
 - `environment/cross-platform` - Platform independent
 
-**Audience Tags** (`audience/`):
+### Audience Tags
 
 - `audience/developer` - For developers
 - `audience/ops` - For operations staff
 - `audience/beginner` - For beginners
 - `audience/advanced` - For advanced users
 
-**Special Requirements**:
+### Special Requirements
 
 - Performance impact notation required for `docs/tools/zsh.md` and `docs/tools/nvim.md`
 - 3 core technologies (Zsh, Neovim, WezTerm) require ⭐⭐⭐⭐ detail level
@@ -71,10 +71,10 @@ All projects use these standard tag prefix formats:
 
 ### pr-labeler Project
 
-**Required Tags**: `category/`, `audience/`
-**Optional Tags**: `environment/`
+### Required Tags
+### Optional Tags
 
-**Category Tags** (`category/`):
+### Category Tags
 
 - `category/documentation` - Documentation management
 - `category/action` - GitHub Action definition and configuration
@@ -87,20 +87,20 @@ All projects use these standard tag prefix formats:
 - `category/operations` - Operations and maintenance
 - `category/cc-sdd` - cc-sdd related documentation
 
-**Audience Tags** (`audience/`):
+### Audience Tags
 
 - `audience/developer` - For developers
 - `audience/contributor` - For contributors
 - `audience/user` - For end users
 - `audience/maintainer` - For maintainers
 
-**Environment Tags** (`environment/`):
+### Environment Tags
 
 - `environment/development` - Development environment
 - `environment/testing` - Testing environment
 - `environment/production` - Production environment (GitHub Actions runtime)
 
-**Special Features**:
+### Special Features
 
 - cc-sdd workflow integration with `.specify/` directory
 - Status tracking: ✅ 作成済, 📝 計画中, ⏳ 随時更新
@@ -108,9 +108,9 @@ All projects use these standard tag prefix formats:
 
 ### caad-terraform-infra Project
 
-**Required Tags**: `category/`, `audience/`, `environment/`
+### Required Tags
 
-**Category Tags** (`category/`):
+### Category Tags
 
 - `category/infrastructure` - Terraform/VPN/AWS configuration
 - `category/security` - SAML authentication/certificates/IAM
@@ -120,7 +120,7 @@ All projects use these standard tag prefix formats:
 - `category/architecture` - Architecture design
 - `category/documentation` - Documentation management
 
-**Audience Tags** (`audience/`):
+### Audience Tags
 
 - `audience/developer` - Developers
 - `audience/operations` - Operations staff
@@ -128,13 +128,13 @@ All projects use these standard tag prefix formats:
 - `audience/architect` - System architects
 - `audience/system-admin` - System administrators
 
-**Environment Tags** (`environment/`):
+### Environment Tags
 
 - `environment/caad-aws-ndev` - Nearshore environment
 - `environment/caad-aws` - CAAD environment
 - `environment/shared` - Shared/common
 
-**Special Features**:
+### Special Features
 
 - Multi-account AWS environment support
 - mise task integration for linting and formatting
@@ -174,15 +174,15 @@ All projects require at minimum:
 
 ### Project-Specific Requirements
 
-**dotfiles**:
+### dotfiles
 
 - Must include: `category/`, `tool/`, `layer/`, `environment/`, `audience/`
 
-**pr-labeler**:
+### pr-labeler
 
 - Must include: `category/`, `audience/`
 
-**caad-terraform-infra**:
+### caad-terraform-infra
 
 - Must include: `category/`, `audience/`, `environment/`
 

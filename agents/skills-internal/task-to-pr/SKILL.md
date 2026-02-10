@@ -12,13 +12,13 @@ description: |
 
 Verify the task/request (or GitHub Issue) and execute E2E: worktree creation, implementation, local checks, PR creation, CI monitoring, and auto-fixing.
 
-**v2 improvements**: Automatic detection of execution context (new task vs existing branch vs existing PR) and adaptive phase selection.
+### v2 improvements
 
 ## Execution Context Detection
 
 ### Step 0: Detect Work Context (NEW)
 
-**Before Phase 1, detect the current state**:
+### Before Phase 1, detect the current state
 
 ```bash
 # 1. Current branch
@@ -33,7 +33,7 @@ is_worktree=$([ $(git worktree list | wc -l) -gt 1 ] && echo "yes" || echo "no")
 pr_exists=$(gh pr view --json number 2>/dev/null && echo "yes" || echo "no")
 ```
 
-**Decision matrix**:
+### Decision matrix
 
 | Context                   | Current Branch      | Worktree? | PR? | Start Phase | Notes                                    |
 | ------------------------- | ------------------- | --------- | --- | ----------- | ---------------------------------------- |
@@ -44,7 +44,7 @@ pr_exists=$(gh pr view --json number 2>/dev/null && echo "yes" || echo "no")
 
 \*Phase 1 still runs for context gathering and task decomposition, but Phase 2-3 (worktree creation) are skipped.
 
-**User notification**:
+### User notification
 
 ```
 [Context Detection]
@@ -115,7 +115,7 @@ Phase 6: CI Monitoring (CONDITIONAL: skip if PR doesn't exist)
 
 #### Step 0: Detect Current State and Determine Start Phase
 
-**Detect current context**:
+### Detect current context
 
 ```bash
 current_branch=$(git branch --show-current)
@@ -125,7 +125,7 @@ is_feature_branch=$([[ "$current_branch" != "$default_branch" ]] && echo "yes" |
 pr_exists=$(gh pr view --json number 2>/dev/null && echo "yes" || echo "no")
 ```
 
-**Determine execution path**:
+### Determine execution path
 
 ```markdown
 if user_override == "--new":
@@ -142,7 +142,7 @@ else:
 start_phase = Phase 1 (full workflow)
 ```
 
-**Communicate detected context to user**:
+### Communicate detected context to user
 
 ```
 [Context Detection]
@@ -164,29 +164,29 @@ start_phase = Phase 1 (full workflow)
 
 #### Step 2: Task Decomposition and Planning
 
-**Complexity assessment**:
+### Complexity assessment
 
 - Simple: single file, clear change, 3 steps or fewer
 - Complex: multiple files, architectural changes, more than 3 steps
 
-**When Complex**:
+### When Complex
 
 - Register subtasks with `TaskCreate` (see `references/task-decomposition.md`)
 - Set dependencies (`TaskUpdate` with `addBlockedBy`)
 - For large/risky changes, share a plan and wait for approval
 
-**When Simple**:
+### When Simple
 
 - No TaskCreate needed; proceed directly to next phase
 
 ### Phase 2: Preparation (CONDITIONAL)
 
-**Skip if**:
+### Skip if
 
 - Current branch is a feature branch (not main/master)
 - User specified `--ci-only`
 
-**Execute if**:
+### Execute if
 
 - Current branch is main/master/default branch
 - User specified `--new` (force)
@@ -203,7 +203,7 @@ start_phase = Phase 1 (full workflow)
 
 #### Step 4: Worktree Initialization
 
-**Dependency installation (Node projects)**:
+### Dependency installation (Node projects)
 
 - If `package.json` exists, detect the package manager and install dependencies.
 - Priority order:
@@ -214,7 +214,7 @@ start_phase = Phase 1 (full workflow)
      - `package-lock.json` / `npm-shrinkwrap.json` → `npm install`
   3. If `package.json` exists without a lockfile → use `ni` (if available) or ask the user
 
-**Environment files (.env / .env.keys)**:
+### Environment files (.env / .env.keys)
 
 - If `.env` exists in the parent repo but not in the worktree → copy to worktree root
 - If `.env.keys` exists in the parent repo → copy to worktree root (even if `.env` is committed)
@@ -224,7 +224,7 @@ start_phase = Phase 1 (full workflow)
 
 #### Step 5: Subtask Implementation Loop
 
-**When Complex**:
+### When Complex
 
 1. Use `TaskList` to get the next available task (prioritize by ID; `blockedBy` empty)
 2. `TaskUpdate` status to `in_progress`
@@ -232,7 +232,7 @@ start_phase = Phase 1 (full workflow)
 4. `TaskUpdate` status to `completed`
 5. Repeat until all subtasks are done
 
-**When Simple**:
+### When Simple
 
 - Keep changes minimal and within scope
 - Follow `AGENTS.md` and project rules
@@ -248,7 +248,7 @@ start_phase = Phase 1 (full workflow)
   - `build` (or the closest equivalent)
 - Report results and failures clearly
 
-**If checks fail**:
+### If checks fail
 
 - **Attempt to fix automatically** (see `references/ci-fix-patterns.md`)
 - **Apply fixes locally but do NOT commit** - let the user review changes first
@@ -257,13 +257,13 @@ start_phase = Phase 1 (full workflow)
 
 ### Phase 5: PR (CONDITIONAL)
 
-**Skip if**:
+### Skip if
 
 - PR already exists for current branch
 - Local checks failed (Phase 4)
 - User specified `--stop-at-impl`
 
-**Execute if**:
+### Execute if
 
 - No PR exists
 - Local checks passed
@@ -290,18 +290,18 @@ start_phase = Phase 1 (full workflow)
 
 ### Phase 6: CI Monitoring (CONDITIONAL)
 
-**Skip if**:
+### Skip if
 
 - No PR exists
 - User specified `--stop-at-impl`
 
-**Execute if**:
+### Execute if
 
 - PR exists (either created in Phase 5 or pre-existing)
 
 #### Step 9: CI Monitoring Loop
 
-**Automated monitoring process**:
+### Automated monitoring process
 
 ```bash
 while true; do
@@ -313,7 +313,7 @@ while true; do
 done
 ```
 
-**User notifications**:
+### User notifications
 
 - On CI start: "CI is running. I'll monitor until completion."
 - On success: "All CI checks succeeded ✓"
@@ -321,7 +321,7 @@ done
 
 #### Step 10: CI Failure Fix Loop (Automatic, No Confirmation)
 
-**Auto-fix process (max 3 attempts)**:
+### Auto-fix process (max 3 attempts)
 
 1. Get error details with `scripts/inspect_pr_checks.py`
 2. Determine error category (type errors, lint, test failures, build errors)
@@ -329,7 +329,7 @@ done
 4. Implement fix → commit → push
 5. Return to Step 9 and re-monitor
 
-**When attempts are exceeded**:
+### When attempts are exceeded
 
 - If CI still fails after 3 auto-fix attempts, report:
   - Fixes attempted
@@ -337,7 +337,7 @@ done
   - Recommended next steps
 - Ask for manual intervention
 
-**Notes**:
+### Notes
 
 - Fixes are executed automatically without confirmation
 - Commit message format: `fix(ci): {error category} - {short description}`
@@ -345,7 +345,7 @@ done
 
 ## Progress Reporting (NEW)
 
-**At the start of each phase, output**:
+### At the start of each phase, output
 
 ```
 🔄 Phase N: <Phase Name>
@@ -354,7 +354,7 @@ done
 └─ Status: <in_progress|completed>
 ```
 
-**Example**:
+### Example
 
 ```
 🔄 Phase 0: Context Detection
@@ -376,7 +376,7 @@ done
 
 ## Decision Log (NEW)
 
-**For debugging, output decision rationale**:
+### For debugging, output decision rationale
 
 ```
 [Decision] Context: Resume implementation

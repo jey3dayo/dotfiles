@@ -190,7 +190,7 @@ interface AdminCreateInput extends BaseCreateInput {
 similarity-ts --threshold 0.9 src/services/ > /tmp/similarity-services.md
 ```
 
-**レポート内容例**:
+### レポート内容例
 
 ```
 Found 15 similar function pairs
@@ -205,7 +205,7 @@ Medium Priority (90-95%):
 - updateUser vs updateAdmin (91%)
 ```
 
-**解析結果と計画**:
+### 解析結果と計画
 
 ```markdown
 ## 解析サマリー
@@ -251,7 +251,7 @@ Medium Priority (90-95%):
 similarity-ts --filter-function-body "FormData" --threshold 0.85 src/actions/ > /tmp/similarity-actions.md
 ```
 
-**レポート内容例**:
+### レポート内容例
 
 ```
 Found 8 similar FormData processing patterns
@@ -263,7 +263,7 @@ Pattern: FormData → Validation → Service Call
 - deleteUserAction vs deletePostAction (89%)
 ```
 
-**解析結果と計画**:
+### 解析結果と計画
 
 ````markdown
 ## パターン分析
@@ -362,4 +362,4 @@ similarity-ts --threshold 0.9 src/ > /tmp/similarity-after.md
 
 ---
 
-**目標**: レポート解析を通じて、効果的で安全なリファクタリング計画を立案する
+### 目標

@@ -40,7 +40,7 @@ Analyze the gap between requirements and existing codebase to inform implementat
 
 #### Option A: Extend Existing Components
 
-**When to consider**: Feature fits naturally into existing structure
+### When to consider
 
 - **Which files/modules to extend**:
   - Identify specific files requiring changes
@@ -57,7 +57,7 @@ Analyze the gap between requirements and existing codebase to inform implementat
   - Check if single responsibility principle is maintained
   - Assess if file size remains manageable
 
-**Trade-offs**:
+### Trade-offs
 
 - ✅ Minimal new files, faster initial development
 - ✅ Leverages existing patterns and infrastructure
@@ -66,7 +66,7 @@ Analyze the gap between requirements and existing codebase to inform implementat
 
 #### Option B: Create New Components
 
-**When to consider**: Feature has distinct responsibility or existing components are already complex
+### When to consider
 
 - **Rationale for new creation**:
   - Clear separation of concerns justifies new file
@@ -83,7 +83,7 @@ Analyze the gap between requirements and existing codebase to inform implementat
   - Interfaces with existing components
   - Data flow and control flow
 
-**Trade-offs**:
+### Trade-offs
 
 - ✅ Clean separation of concerns
 - ✅ Easier to test in isolation
@@ -93,7 +93,7 @@ Analyze the gap between requirements and existing codebase to inform implementat
 
 #### Option C: Hybrid Approach
 
-**When to consider**: Complex features requiring both extension and new creation
+### When to consider
 
 - **Combination strategy**:
   - Which parts extend existing components
@@ -110,7 +110,7 @@ Analyze the gap between requirements and existing codebase to inform implementat
   - Feature flags or configuration
   - Rollback strategy
 
-**Trade-offs**:
+### Trade-offs
 
 - ✅ Balanced approach for complex features
 - ✅ Allows iterative refinement

@@ -14,7 +14,7 @@ Provide specialized review guidance for Go projects, focusing on idiomatic Go pa
 
 ## Context7 MCP Integration
 
-**Up-to-date Go documentation access** via Context7:
+### Up-to-date Go documentation access
 
 - **Go Standard Library** (`/websites/pkg_go_dev_std_go1_25_3`): 3,636 snippets, score 82.8
 - **Effective Go** (`/websites/go_dev_doc`): 3,861 snippets, score 69.8

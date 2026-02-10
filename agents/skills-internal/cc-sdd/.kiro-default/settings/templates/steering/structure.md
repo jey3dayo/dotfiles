@@ -8,15 +8,15 @@
 
 ### [Pattern Name]
 
-**Location**: `/path/`  
-**Purpose**: [What belongs here]  
-**Example**: [Brief example]
+### Location
+### Purpose
+### Example
 
 ### [Pattern Name]
 
-**Location**: `/path/`  
-**Purpose**: [What belongs here]  
-**Example**: [Brief example]
+### Location
+### Purpose
+### Example
 
 ## Naming Conventions
 
@@ -32,7 +32,7 @@ import { Something } from "@/path"; // Absolute
 import { Local } from "./local"; // Relative
 ```
 
-**Path Aliases**:
+### Path Aliases
 
 - `@/`: [Maps to]
 

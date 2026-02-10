@@ -173,7 +173,7 @@ const GridLayoutWithChildren = ReactGridLayout as React.ComponentType<
 </GridLayoutWithChildren>
 ```
 
-**Recommendation:** Use SafeGridLayout wrapper for cleaner, maintainable code.
+### Recommendation:
 
 ## Next.js SSR Considerations
 
@@ -285,7 +285,7 @@ const ResponsiveGridLayout = WidthProvider(SafeGridLayout);
 const GridLayout = dynamic(() => import("./GridLayout"), { ssr: false });
 ```
 
-**Recommendation for ASTA:** Use Solution 2 (explicit width) for SSR compatibility and predictable rendering.
+### Recommendation for ASTA:
 
 ## Type-Safe Patterns
 
@@ -425,7 +425,7 @@ const layout = buildLayout({
 // Error: Property 'children' is missing in type 'ReactGridLayoutProps'
 ```
 
-**Solution:** Use SafeGridLayout wrapper
+### Solution:
 
 ```typescript
 // ✅ Fixed
@@ -443,7 +443,7 @@ const layout = [
 ];
 ```
 
-**Solution:** Use correct property names
+### Solution:
 
 ```typescript
 // ✅ Fixed
@@ -457,7 +457,7 @@ const layout: Layout[] = [{ i: "a", x: 0, y: 0, w: 1, h: 2 }];
 <ReactGridLayout width="1200" {...props}>  // string instead of number
 ```
 
-**Solution:** Use number type
+### Solution:
 
 ```typescript
 // ✅ Fixed
@@ -475,7 +475,7 @@ const handleDragStop = (layout: Layout[]) => {
 <ReactGridLayout onDragStop={handleDragStop} />
 ```
 
-**Solution:** Use correct callback signature
+### Solution:
 
 ```typescript
 // ✅ Fixed
@@ -498,7 +498,7 @@ const layout: Layout[] = [
 ];
 ```
 
-**Solution:** Filter out null/undefined
+### Solution:
 
 ```typescript
 // ✅ Fixed

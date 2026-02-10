@@ -51,7 +51,7 @@ ASTA uses react-grid-layout for calendar systems with time-based event positioni
 - **Studio Calendar**: Studio/room scheduling (src/components/Calendar/Studio/)
 - **RoomSchedule Calendar**: Dressing room scheduling (src/components/Calendar/RoomSchedule/)
 
-**Key pattern**: See `references/04-asta-patterns.md` for:
+### Key pattern
 
 - Constants management (CALENDAR_ROW_HEIGHT, CALENDAR_CELL_MARGIN)
 - Layout utilities (layoutUtils.ts, timedLayout.ts)
@@ -71,7 +71,7 @@ const cols = Math.max(...pointsX) || 150;
 const gridWidth = cols * rowHeight;
 ```
 
-**Details**: See `references/02-cols-width-calculation.md` for:
+### Details
 
 - Dynamic vs fixed calculation strategies
 - Common calculation mistakes
@@ -91,7 +91,7 @@ const SafeGridLayout: React.FC<SafeGridLayoutProps> = props => {
 };
 ```
 
-**SSR considerations**: See `references/03-typescript-nextjs.md` for:
+### SSR considerations
 
 - Type-safe wrappers
 - Dynamic imports with ssr: false

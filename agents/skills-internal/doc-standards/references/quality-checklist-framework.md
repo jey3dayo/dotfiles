@@ -6,9 +6,9 @@ Generic documentation quality validation framework.
 
 ## Overview
 
-**Purpose**: Ensure documentation meets quality standards before commit and during periodic reviews.
+### Purpose
 
-**When to use**:
+### When to use
 
 - Final validation before committing new documentation
 - Reviewing existing documentation
@@ -316,7 +316,7 @@ For regular documentation audits:
 
 ⚠️ **Maturity**: Usable, needs improvement
 
-**Action**: Schedule improvement during next update cycle
+### Action
 
 ---
 
@@ -333,7 +333,7 @@ For regular documentation audits:
 
 ❌ **Maturity**: Unreliable, needs major revision
 
-**Action**: Prioritize immediate improvement or archive
+### Action
 
 ---
 
@@ -369,7 +369,7 @@ Projects can provide real-world validation examples in:
 - `.claude/doc-standards/references/quality-checklist-examples.md`
 - Or `.claude/skills/doc-standards/references/quality-checklist-examples.md`
 
-**Example structure**:
+### Example structure
 
 ```markdown
 # Quality Checklist Examples
@@ -475,7 +475,7 @@ find docs -name "*.md" -mtime +180  # >180 days old
 
 ## Summary
 
-**Remember**:
+### Remember
 
 1. **Validate metadata** - Complete, correct, consistent
 2. **Check content quality** - Clear, accurate, appropriate
@@ -483,4 +483,4 @@ find docs -name "*.md" -mtime +180  # >180 days old
 4. **Verify navigation** - Links work, discoverable
 5. **Maintain freshness** - Update regularly, archive obsolete
 
-**Goal**: Maintain reliable, usable documentation that serves users effectively.
+### Goal

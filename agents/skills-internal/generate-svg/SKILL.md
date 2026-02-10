@@ -63,7 +63,7 @@ allowed-tools: Read, Write, Bash
 - **フォーマット**: SVG 1.1
 - **保存先**: `docs/article/[feature-name]/images/`
 
-**保存先の例**:
+### 保存先の例
 
 - `docs/article/tmp-driven-development/images/architecture-diagram.svg`
 - `docs/article/uv-workspace/images/flow-diagram.svg`
@@ -85,13 +85,13 @@ allowed-tools: Read, Write, Bash
 
 ### 透過背景とダークモード対応
 
-**目標**:
+### 目標
 
 - ✅ 白背景が完全に透過
 - ✅ iOS/Androidのダークモードでも自然に表示
 - ✅ どんな背景色でもロゴが映える
 
-**実装原則**:
+### 実装原則
 
 1. **背景要素を含めない**
    - SVGに `<rect fill="white">` や `<rect fill="#FFFFFF">` などの背景要素を含めない
@@ -193,13 +193,13 @@ Border:    #BDBDBD (グレー)
 docs/article/[feature-name]/images/[説明的なファイル名].svg
 ```
 
-**保存パスの例**:
+### 保存パスの例
 
 - `docs/article/tmp-driven-development/images/architecture-diagram.svg`
 - `docs/article/uv-workspace/images/workflow-flow.svg`
 - `docs/article/html-to-markdown-converter/images/before-after-comparison.svg`
 
-**ファイル名の命名規則**:
+### ファイル名の命名規則
 
 - 小文字とハイフンを使用
 - 図解の内容が分かる名前

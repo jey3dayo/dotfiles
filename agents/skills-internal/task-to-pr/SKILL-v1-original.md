@@ -63,18 +63,18 @@ Phase 6: CI Monitoring (New)
 
 #### Step 2: Task Decomposition and Planning
 
-**Complexity assessment**:
+### Complexity assessment
 
 - Simple: single file, clear change, 3 steps or fewer
 - Complex: multiple files, architectural changes, more than 3 steps
 
-**When Complex**:
+### When Complex
 
 - Register subtasks with `TaskCreate` (see `references/task-decomposition.md`)
 - Set dependencies (`TaskUpdate` with `addBlockedBy`)
 - For large/risky changes, share a plan and wait for approval
 
-**When Simple**:
+### When Simple
 
 - No TaskCreate needed; proceed directly to Step 3
 
@@ -92,7 +92,7 @@ Phase 6: CI Monitoring (New)
 
 #### Step 4: Worktree Initialization
 
-**Dependency installation (Node projects)**:
+### Dependency installation (Node projects)
 
 - If `package.json` exists, detect the package manager and install dependencies.
 - Priority order:
@@ -103,7 +103,7 @@ Phase 6: CI Monitoring (New)
      - `package-lock.json` / `npm-shrinkwrap.json` → `npm install`
   3. If `package.json` exists without a lockfile → use `ni` (if available) or ask the user
 
-**Environment files (.env / .env.keys)**:
+### Environment files (.env / .env.keys)
 
 - If `.env` exists in the parent repo but not in the worktree → copy to worktree root
 - If `.env.keys` exists in the parent repo → copy to worktree root (even if `.env` is committed)
@@ -113,7 +113,7 @@ Phase 6: CI Monitoring (New)
 
 #### Step 5: Subtask Implementation Loop
 
-**When Complex**:
+### When Complex
 
 1. Use `TaskList` to get the next available task (prioritize by ID; `blockedBy` empty)
 2. `TaskUpdate` status to `in_progress`
@@ -121,7 +121,7 @@ Phase 6: CI Monitoring (New)
 4. `TaskUpdate` status to `completed`
 5. Repeat until all subtasks are done
 
-**When Simple**:
+### When Simple
 
 - Keep changes minimal and within scope
 - Follow `AGENTS.md` and project rules
@@ -162,7 +162,7 @@ Phase 6: CI Monitoring (New)
 
 #### Step 9: CI Monitoring Loop
 
-**Automated monitoring process**:
+### Automated monitoring process
 
 ```bash
 while true; do
@@ -174,7 +174,7 @@ while true; do
 done
 ```
 
-**User notifications**:
+### User notifications
 
 - On CI start: "CI is running. I'll monitor until completion."
 - On success: "All CI checks succeeded ✓"
@@ -182,7 +182,7 @@ done
 
 #### Step 10: CI Failure Fix Loop (Automatic, No Confirmation)
 
-**Auto-fix process (max 3 attempts)**:
+### Auto-fix process (max 3 attempts)
 
 1. Get error details with `scripts/inspect_pr_checks.py`
 2. Determine error category (type errors, lint, test failures, build errors)
@@ -190,7 +190,7 @@ done
 4. Implement fix → commit → push
 5. Return to Step 9 and re-monitor
 
-**When attempts are exceeded**:
+### When attempts are exceeded
 
 - If CI still fails after 3 auto-fix attempts, report:
   - Fixes attempted
@@ -198,7 +198,7 @@ done
   - Recommended next steps
 - Ask for manual intervention
 
-**Notes**:
+### Notes
 
 - Fixes are executed automatically without confirmation
 - Commit message format: `fix(ci): {error category} - {short description}`

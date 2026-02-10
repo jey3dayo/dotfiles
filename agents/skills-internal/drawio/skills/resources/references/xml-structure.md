@@ -398,7 +398,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**arcSize:** 角の丸み (0-50, 50=完全な円)
+### arcSize:
 
 ### Diamond (Decision)
 
@@ -464,7 +464,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Problem:** fontFamily が指定されていない → PNG エクスポート時にフォントが崩れる
+### Problem:
 
 ✅ **After (Good):**
 
@@ -476,7 +476,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Fixed:** fontFamily=Helvetica を追加、width も調整 (3文字 × 35px)
+### Fixed:
 
 ### Example 2: Wrong Layer Order
 
@@ -502,7 +502,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </root>
 ```
 
-**Problem:** 矢印が図形の後 → 矢印が前面にレンダリングされる
+### Problem:
 
 ✅ **After (Good):**
 
@@ -526,7 +526,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </root>
 ```
 
-**Fixed:** 矢印を最初に配置 → 背面にレンダリング
+### Fixed:
 
 ### Example 3: Insufficient Width for Japanese
 
@@ -540,7 +540,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Problem:** width=100 が不足 (7文字 × 35px = 245px必要) → テキストが折り返される
+### Problem:
 
 ✅ **After (Good):**
 
@@ -552,7 +552,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Fixed:** width=255 (7文字 × 35px + 10px margin)
+### Fixed:
 
 ### Example 4: Missing page="0"
 
@@ -564,7 +564,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
               defaultFontFamily="Helvetica">
 ```
 
-**Problem:** page="1" → ページ境界が表示される、エクスポート時にページサイズに制限される
+### Problem:
 
 ✅ **After (Good):**
 
@@ -574,7 +574,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
               defaultFontFamily="Helvetica">
 ```
 
-**Fixed:** page="0" → 無限キャンバス、必要な部分のみエクスポート
+### Fixed:
 
 ### Example 5: Wrong Font Size
 
@@ -588,7 +588,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Problem:** fontSize=12 (標準) → 小さくて読みにくい
+### Problem:
 
 ✅ **After (Good):**
 
@@ -600,7 +600,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Fixed:** fontSize=18 (1.5倍) → 読みやすさ向上、height も調整
+### Fixed:
 
 ### Example 6: Background Color
 
@@ -614,7 +614,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Problem:** fillColor=#FFFFFF → 背景色が固定される、透明度なし
+### Problem:
 
 ✅ **After (Good):**
 
@@ -626,7 +626,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Fixed:** fillColor を削除 → 透明背景、柔軟性向上
+### Fixed:
 
 ### Example 7: Grid Misalignment
 
@@ -640,7 +640,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Problem:** 座標が 10 の倍数でない → グリッド配置がずれる
+### Problem:
 
 ✅ **After (Good):**
 
@@ -652,7 +652,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Fixed:** 全座標を 10 の倍数に丸める
+### Fixed:
 
 ### Example 8: Arrow Label Spacing
 
@@ -672,7 +672,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Problem:** 矢印とラベルが近すぎる (5px) → 重なって見にくい
+### Problem:
 
 ✅ **After (Good):**
 
@@ -690,7 +690,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-**Fixed:** 25px のスペース確保 (推奨: ≥20px)
+### Fixed:
 
 ### Example 9: No defaultFontFamily
 
@@ -707,7 +707,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxGraphModel>
 ```
 
-**Problem:** defaultFontFamily が未指定 → 一部の環境でフォントが不安定
+### Problem:
 
 ✅ **After (Good):**
 
@@ -722,7 +722,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxGraphModel>
 ```
 
-**Fixed:** defaultFontFamily="Helvetica" を追加
+### Fixed:
 
 ### Example 10: Complete Minimal Diagram
 

@@ -14,13 +14,13 @@ All of the following are true:
 - Change is clear (straightforward modification or bug fix)
 - Can be completed in 3 steps or fewer
 
-**Examples**:
+### Examples
 
 - Fixing a typo
 - Updating a single function
 - Updating a config file
 
-**Action**: Do not use TaskCreate; implement directly.
+### Action
 
 ### Complex (Decomposition Needed)
 
@@ -31,20 +31,20 @@ Any of the following are true:
 - More than 3 steps of work
 - Impacts multiple components/modules
 
-**Examples**:
+### Examples
 
 - Adding a new feature
 - Refactoring
 - Fixing bugs across multiple areas
 - API changes
 
-**Action**: Register subtasks with TaskCreate.
+### Action
 
 ## TaskCreate Patterns
 
 ### Feature Addition Pattern
 
-**Example**: Add user authentication
+### Example
 
 ```markdown
 TaskCreate #1: "Define data models"
@@ -67,13 +67,13 @@ activeForm: "Adding tests"
 blockedBy: [#3]
 ```
 
-**Dependency reasoning**:
+### Dependency reasoning
 
 - Data model → API → middleware → tests (linear dependency)
 
 ### Refactoring Pattern
 
-**Example**: Reorganize component directory structure
+### Example
 
 ```markdown
 TaskCreate #1: "Design new directory structure"
@@ -101,13 +101,13 @@ activeForm: "Running tests"
 blockedBy: [#4]
 ```
 
-**Dependency reasoning**:
+### Dependency reasoning
 
 - Design → Atomic move → Composite move → import fixes → tests (linear dependency)
 
 ### Bug Fix Pattern
 
-**Example**: Fix a data race bug
+### Example
 
 ```markdown
 TaskCreate #1: "Investigate root cause"
@@ -130,7 +130,7 @@ activeForm: "Adding regression tests"
 blockedBy: [#3]
 ```
 
-**Dependency reasoning**:
+### Dependency reasoning
 
 - Investigation → fix → edge cases → tests (linear dependency)
 
@@ -151,7 +151,7 @@ Parallel execution is possible when:
 - No mutual dependency
 - Can be worked on at the same time
 
-**Example**:
+### Example
 
 ```markdown
 TaskCreate #1: "Implement user API"
@@ -167,7 +167,7 @@ Use multiple dependencies when:
 - Completion of multiple tasks is required
 - Integration task
 
-**Example**:
+### Example
 
 ```markdown
 TaskCreate #1: "Implement user API"

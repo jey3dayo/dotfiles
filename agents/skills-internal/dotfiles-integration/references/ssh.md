@@ -1,8 +1,8 @@
 # 🔐 SSH Configuration
 
-**最終更新**: 2025-10-17
-**対象**: 開発者
-**タグ**: `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer`
+### 最終更新
+### 対象
+### タグ
 
 階層的なSSH設定管理システムで、用途別ファイル分離によりセキュリティと保守性を両立しています。
 
@@ -108,7 +108,7 @@ ssh -T git@github.com    # GitHub接続テスト
 2. 設定ファイルのコメントアウト解除
 3. `ssh-add -l` で確認
 
-**利点**: パスワードレス認証・安全な鍵管理・生体認証連携
+### 利点
 
 ### SSH鍵管理
 

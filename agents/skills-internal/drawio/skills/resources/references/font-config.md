@@ -228,7 +228,7 @@ style="fontFamily=Noto Sans JP;fontSize=18;"
 
 ### Recommendation
 
-**Helvetica を推奨** (理由: クロスプラットフォーム対応、安定性)
+### Helvetica を推奨
 
 ## Fallback Font Chains
 

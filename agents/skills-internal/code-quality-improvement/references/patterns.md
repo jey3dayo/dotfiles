@@ -120,9 +120,9 @@ const PERMISSION_IDS: readonly string[] = ["read", "write", "delete"];
 
 ### 1. 層境界ルール例外パターン
 
-**課題**: Hooks層からApp Actions層への依存がClean Architectureの原則に反するが、ReactのServer Actions呼び出しパターンとして正当
+### 課題
 
-**解決策**: 段階的例外設定アプローチ
+### 解決策
 
 #### アプローチ1: ファイルパターンベース例外（推奨⭐⭐⭐⭐⭐）
 
@@ -206,7 +206,7 @@ export function verifyFormDataSupport(): void {
 }
 ```
 
-**重要発見**: Claude Codeが未使用変数警告を避けるため`_`プレフィックスを追加するが、実際の使用箇所は修正されず、実行時エラーを引き起こす。
+### 重要発見
 
 ### 2. 安全な削除戦略
 
@@ -474,7 +474,7 @@ export const RESULT_TYPE_NAMES = {
 };
 ```
 
-**教訓**: ESLintルール内での定数アクセス方法と定義の一貫性確認が重要
+### 教訓
 
 ### 2. 型ガードユーティリティの作成パターン
 
@@ -495,7 +495,7 @@ export function isCMXMapInfoLike(
 }
 ```
 
-**効果**: 型アサーションを型ガードに置換し、型安全性を向上
+### 効果
 
 ### 3. プロパティ名不一致の解決パターン
 
@@ -511,7 +511,7 @@ const macAddressData = {
 };
 ```
 
-**教訓**: 層間での命名規約違いは明示的なマッピングで解決
+### 教訓
 
 ### 4. Object.entries型推論修正
 
@@ -727,5 +727,5 @@ return safeExecute(
 
 ---
 
-**最終更新**: 2025-07-07
-**適用実績**: 未使用変数386個削減、型エラー100%解決、Clean Architecture境界0違反達成
+### 最終更新
+### 適用実績

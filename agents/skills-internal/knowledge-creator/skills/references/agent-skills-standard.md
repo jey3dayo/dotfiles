@@ -4,9 +4,9 @@ Comprehensive guide to the Agent Skills specification and how to create cross-pl
 
 ## What Are Agent Skills?
 
-**Agent Skills** are a lightweight, open format for extending AI agent capabilities with specialized knowledge and workflows. They represent a paradigm shift from static documentation to executable, discoverable knowledge packages.
+### Agent Skills
 
-**Official Specification:** <https://agentskills.io>
+### Official Specification:
 
 ### Core Philosophy
 
@@ -208,7 +208,7 @@ Agent Skills are designed for **efficient context management** through progressi
 - Builds internal index for task matching
 - Minimal memory footprint (< 1KB per skill)
 
-**Goal:** Fast initialization, broad capability awareness
+### Goal:
 
 ### Phase 2: Activation ⚡
 
@@ -229,7 +229,7 @@ Agent Skills are designed for **efficient context management** through progressi
 - Understands available resources
 - Plans execution strategy
 
-**Goal:** Just-in-time context loading
+### Goal:
 
 ### Phase 3: Execution 🚀
 
@@ -245,7 +245,7 @@ Agent Skills are designed for **efficient context management** through progressi
 - Loads templates for generation
 - References detailed docs for complex tasks
 
-**Goal:** Maximum efficiency, load only what's needed
+### Goal:
 
 ### Performance Benefits
 
@@ -255,7 +255,7 @@ Agent Skills are designed for **efficient context management** through progressi
 | Activation | 3-5 skills   | 5 KB             | 15-25 KB   |
 | Execution  | 1-2 skills   | 10-50 KB         | 10-100 KB  |
 
-**Result:** Handle hundreds of skills with minimal overhead.
+### Result:
 
 ## Cross-Platform Portability
 
@@ -299,13 +299,13 @@ The open format means:
 - Strong emphasis on references/ for context
 - Interactive script execution prompts
 
-**Best Practice:** Test skills on primary platform, validate portability assumptions.
+### Best Practice:
 
 ## Skill Design Patterns
 
 ### Pattern 1: Information Skill (No Scripts)
 
-**Use Case:** Knowledge reference, best practices, guidelines
+### Use Case:
 
 ```
 skill-name/
@@ -315,11 +315,11 @@ skill-name/
     └── examples.md
 ```
 
-**Example:** React Hooks patterns, TypeScript idioms
+### Example:
 
 ### Pattern 2: Automation Skill (With Scripts)
 
-**Use Case:** Executable workflows, validation, code generation
+### Use Case:
 
 ```
 skill-name/
@@ -331,11 +331,11 @@ skill-name/
     └── templates/
 ```
 
-**Example:** Project scaffolding, linting automation, deployment workflows
+### Example:
 
 ### Pattern 3: Hybrid Skill (Full Stack)
 
-**Use Case:** Complex domains requiring both knowledge and automation
+### Use Case:
 
 ```
 skill-name/
@@ -351,7 +351,7 @@ skill-name/
     └── examples/
 ```
 
-**Example:** Framework setup (Next.js, Django), tool ecosystems (Docker, Kubernetes)
+### Example:
 
 ## Best Practices
 
@@ -505,9 +505,9 @@ typescript-guide/
 
 ### From Tool-Specific Docs to Skills
 
-**Before:** Separate docs for each tool (README.md, CONTRIBUTING.md, etc.)
+### Before:
 
-**After:** Unified skills that agents discover dynamically
+### After:
 
 ### Migration Steps
 
@@ -591,27 +591,27 @@ react-testing/
 
 ### Q: Do all skills need scripts/?
 
-**A:** No. Information-only skills (patterns, best practices) don't require scripts. Use them when automation adds value.
+### A:
 
 ### Q: How do I handle secrets in skills?
 
-**A:** Never commit secrets. Use environment variables or prompt for input. Document required env vars in SKILL.md.
+### A:
 
 ### Q: Can skills depend on other skills?
 
-**A:** Yes, but document dependencies clearly. Agents may need to activate multiple skills.
+### A:
 
 ### Q: How do I version skills?
 
-**A:** Use git tags or semantic versioning in directory names (e.g., `skill-v1.0.0/`). Document breaking changes.
+### A:
 
 ### Q: Are skills language-specific?
 
-**A:** No, but some platforms have language preferences. Python/bash/node are most portable.
+### A:
 
 ### Q: How do I test skills?
 
-**A:** Test on your primary agent platform. Validate scripts manually. Check cross-platform compatibility if targeting multiple agents.
+### A:
 
 ## Conclusion
 

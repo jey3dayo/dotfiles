@@ -24,7 +24,7 @@ python scripts/inspect_pr_checks.py --max-lines 200 --context 50
 
 ### Output Format
 
-**Text output**:
+### Text output
 
 ```
 PR #123: analyzed 2 failed checks.
@@ -44,7 +44,7 @@ Failure snippet:
 ------------------------------------------------------------
 ```
 
-**JSON output** (`--json`):
+### JSON output
 
 ```json
 {
@@ -90,16 +90,16 @@ git push
 
 ### 1. Type Errors (TypeScript)
 
-**Detection keywords**:
+### Detection keywords
 
 - `TS2345`, `TS2339`, `TS2322`, `TS7006`, `TS2571`
 - `error TS`, `Type 'X' is not assignable`, `Property 'X' does not exist`
 
-**Fix strategies**:
+### Fix strategies
 
 #### A. Fix type mismatches
 
-**Pattern**: Argument or return types do not match
+### Pattern
 
 ```typescript
 // Error example
@@ -117,7 +117,7 @@ function validateToken(token: string | null) { ... }
 
 #### B. Property does not exist
 
-**Pattern**: Accessing a property that does not exist on the type
+### Pattern
 
 ```typescript
 // Error example
@@ -139,7 +139,7 @@ if ("email" in user) {
 
 #### C. Implicit any
 
-**Pattern**: Parameter has implicit any type
+### Pattern
 
 ```typescript
 // Error example
@@ -152,16 +152,16 @@ function processData(data: unknown) { ... } // when type is unknown
 
 ### 2. Lint Errors (ESLint)
 
-**Detection keywords**:
+### Detection keywords
 
 - `error`, `warning`, `eslint`, `Expected`, `Unexpected`
 - File path and rule name (e.g., `no-unused-vars`, `@typescript-eslint/no-explicit-any`)
 
-**Fix strategies**:
+### Fix strategies
 
 #### A. Unused variables
 
-**Rules**: `no-unused-vars`, `@typescript-eslint/no-unused-vars`
+### Rules
 
 ```typescript
 // Error example
@@ -176,7 +176,7 @@ const _unused = 42; // when constrained (e.g., error handling)
 
 #### B. Explicit any
 
-**Rule**: `@typescript-eslint/no-explicit-any`
+### Rule
 
 ```typescript
 // Error example
@@ -194,7 +194,7 @@ function process<T>(data: T) { ... }
 
 #### C. Unnecessary type assertions
 
-**Rule**: `@typescript-eslint/no-unnecessary-type-assertion`
+### Rule
 
 ```typescript
 // Error example
@@ -206,16 +206,16 @@ const value = someValue;
 
 ### 3. Test Failures
 
-**Detection keywords**:
+### Detection keywords
 
 - `FAIL`, `FAILED`, `expected`, `received`, `AssertionError`
 - `Test Suites:`, `Tests:`, `jest`, `vitest`, `mocha`
 
-**Fix strategies**:
+### Fix strategies
 
 #### A. Assertion failures
 
-**Pattern**: Expected value does not match actual value
+### Pattern
 
 ```typescript
 // Error example
@@ -238,7 +238,7 @@ function calculate(): number {
 
 #### B. Missing mocks
 
-**Pattern**: External dependency is not mocked properly
+### Pattern
 
 ```typescript
 // Error example
@@ -254,7 +254,7 @@ vi.mock("axios", () => ({
 
 #### C. Missing await
 
-**Pattern**: Missing `await` for async code
+### Pattern
 
 ```typescript
 // Error example
@@ -272,16 +272,16 @@ test("fetches data", async () => {
 
 ### 4. Build Errors
 
-**Detection keywords**:
+### Detection keywords
 
 - `Error: Cannot find module`, `Module not found`, `ENOENT`
 - `Build failed`, `Compilation error`
 
-**Fix strategies**:
+### Fix strategies
 
 #### A. Missing modules
 
-**Pattern**: Dependency not installed
+### Pattern
 
 ```bash
 # Error example
@@ -295,7 +295,7 @@ pnpm add lodash
 
 #### B. Incorrect import paths
 
-**Pattern**: File path is incorrect
+### Pattern
 
 ```typescript
 // Error example
@@ -309,7 +309,7 @@ import { helper } from "@/utils/helper"; // using alias
 
 #### C. Build config errors
 
-**Pattern**: Issue in tsconfig.json or webpack config
+### Pattern
 
 ```json
 // Error example: "Cannot find name 'process'"

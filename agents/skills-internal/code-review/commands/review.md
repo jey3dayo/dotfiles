@@ -18,7 +18,7 @@ argument-hint: "[--simple] [--staged|--recent|--branch <name>] [--with-impact] [
 
 ### 署名なしポリシー
 
-**IMPORTANT**: すべての出力において以下を厳守：
+### IMPORTANT
 
 - ❌ **NEVER** "Co-authored-by: Claude" をcommitに含めない
 - ❌ **NEVER** "Generated with Claude Code" を含めない
@@ -38,7 +38,7 @@ argument-hint: "[--simple] [--staged|--recent|--branch <name>] [--with-impact] [
 - 技術スタック別スキル統合（typescript, react, golang, security, etc.）
 - 詳細な改善提案とアクションプラン
 
-**使用例**:
+### 使用例
 
 ```bash
 /review                    # 基本レビュー
@@ -55,7 +55,7 @@ argument-hint: "[--simple] [--staged|--recent|--branch <name>] [--with-impact] [
 - 即座の修正提案
 - GitHub issue連携オプション
 
-**使用例**:
+### 使用例
 
 ```bash
 /review --simple           # クイックレビュー
@@ -83,7 +83,7 @@ argument-hint: "[--simple] [--staged|--recent|--branch <name>] [--with-impact] [
 3. 開発ブランチとの差分（`git diff origin/develop`など）
 4. 最近変更されたファイル
 
-**明示的指定**:
+### 明示的指定
 
 ```bash
 /review --staged           # ステージされた変更のみ
@@ -118,7 +118,7 @@ GitHub PRのレビューコメントを自動修正：
 - 自動修正と品質保証
 - トラッキングドキュメント生成
 
-**使用例**:
+### 使用例
 
 ```bash
 /review --fix-pr           # 現在のブランチのPR修正
@@ -287,13 +287,13 @@ git commit -m "Pre-review checkpoint" || echo "No changes to commit"
 
 #### 1. コード品質 (Code Quality)
 
-**チェック項目**:
+### チェック項目
 
 - **可読性**: 適切な変数・関数名、コメントの適切性、コードの構造化
 - **保守性**: DRY原則の遵守、単一責任原則、適切な抽象化
 - **一貫性**: コーディング規約の遵守、命名規則の統一、フォーマットの統一
 
-**問題パターン**:
+### 問題パターン
 
 - 長すぎる関数 (100行超)
 - 深すぎるネスト (4階層超)
@@ -302,13 +302,13 @@ git commit -m "Pre-review checkpoint" || echo "No changes to commit"
 
 #### 2. セキュリティ (Security)
 
-**チェック項目**:
+### チェック項目
 
 - **入力検証**: ユーザー入力のサニタイゼーション、適切なバリデーション、SQLインジェクション対策
 - **認証・認可**: 適切な権限チェック、セッション管理、パスワード処理
 - **データ保護**: 機密情報の適切な扱い、暗号化の使用
 
-**問題パターン**:
+### 問題パターン
 
 - ハードコードされた認証情報
 - 未検証の外部入力
@@ -317,12 +317,12 @@ git commit -m "Pre-review checkpoint" || echo "No changes to commit"
 
 #### 3. パフォーマンス (Performance)
 
-**チェック項目**:
+### チェック項目
 
 - **基本的な最適化**: 不要な処理の排除、効率的なアルゴリズム、リソース使用量の考慮
 - **スケーラビリティ**: パフォーマンスボトルネックの回避、メモリ使用量の最適化
 
-**問題パターン**:
+### 問題パターン
 
 - N+1クエリ問題
 - 不要なループ処理
@@ -331,12 +331,12 @@ git commit -m "Pre-review checkpoint" || echo "No changes to commit"
 
 #### 4. テスト (Testing)
 
-**チェック項目**:
+### チェック項目
 
 - **カバレッジ**: 重要な機能のテスト、エッジケースの考慮、適切なテストレベル
 - **テスト品質**: 読みやすいテストコード、独立性の確保、メンテナンス性
 
-**評価基準**:
+### 評価基準
 
 - ⭐️5: 包括的なテスト、高カバレッジ（80%+）、優れたテスト設計
 - ⭐️4: 十分なテスト、良好なカバレッジ（70%+）、適切なテスト設計
@@ -346,13 +346,13 @@ git commit -m "Pre-review checkpoint" || echo "No changes to commit"
 
 #### 5. エラーハンドリング (Error Handling)
 
-**チェック項目**:
+### チェック項目
 
 - **例外処理**: 適切なエラーキャッチ、ユーザーフレンドリーなエラーメッセージ、ログ出力の適切性
 - **エラー伝播**: エラーの適切な伝播、復旧可能なエラーの処理
 - **型安全**: Result<T,E>パターンの活用（TypeScriptの場合）
 
-**推奨パターン**:
+### 推奨パターン
 
 ```typescript
 type Result<T, E> = { success: true; data: T } | { success: false; error: E };
@@ -360,13 +360,13 @@ type Result<T, E> = { success: true; data: T } | { success: false; error: E };
 
 #### 6. アーキテクチャ (Architecture)
 
-**チェック項目**:
+### チェック項目
 
 - **層分離**: 責任分離、依存関係の適切性
 - **拡張性**: 新機能追加の容易さ
 - **ドメインモデリング**: ビジネスロジックの表現
 
-**評価基準**:
+### 評価基準
 
 - ⭐️5: 優れた層分離、高い拡張性、明確なドメインモデル
 - ⭐️4: 適切な層分離、良好な拡張性、合理的なモデル
@@ -386,19 +386,19 @@ TypeScript固有の詳細な観点については、以下を参照してくだ�
 
 #### 主要なTypeScript観点（サマリー）
 
-**型安全性**:
+### 型安全性
 
 - ⚠️ **any型の排除**: Zero `any` typesを目標
 - **型ガードの実装**: `as`アサーションより型ガードを優先
 - **strictモード準拠**: tsconfig.jsonで全strictフラグを有効化
 
-**型定義品質**:
+### 型定義品質
 
 - **Interface vs Type**: オブジェクト形状はInterface、Union型はType
 - **Generics**: 適切な型制約（extends）を活用
 - **Discriminated Unions**: 型安全なパターンマッチング
 
-**エラーハンドリング**:
+### エラーハンドリング
 
 - **Result<T, E>パターン**: 型安全なエラー表現
 
@@ -411,7 +411,7 @@ function fetchUser(id: string): Result<User, FetchError> {
 }
 ```
 
-**パフォーマンス**:
+### パフォーマンス
 
 - **Type-Only Imports**: `import type { User }` でバンドルサイズ最適化
 - 複雑な型定義の回避
@@ -468,7 +468,7 @@ gh auth status
 
 ### スキルシステム
 
-**code-review スキル**は以下のような高度な機能を提供します：
+### code-review スキル
 
 - プロジェクトタイプの自動検出（TypeScript、React、Go等）
 - 技術スタック別の専門的なレビュー観点の自動統合
@@ -491,4 +491,4 @@ gh auth status
 
 ---
 
-**目標**: プロジェクトに最適化された、実用的で一貫性のあるコードレビューを提供すること。
+### 目標

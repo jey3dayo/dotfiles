@@ -12,9 +12,9 @@ description: |
 
 This skill provides intelligent classification of knowledge and automatic routing to the appropriate creation tool. Following the [Agent Skills standard](https://agentskills.io), this skill helps create **agent capability extensions** that are portable, executable, and follow progressive disclosure principles.
 
-**Core Capability:** Transform "I want to document X" into structured, agent-executable knowledge that extends AI capabilities.
+### Core Capability:
 
-**Standards Compliance:** Built on the Agent Skills specification (agentskills.io), supporting cross-platform portability (Claude Code, GitHub Copilot, Cursor, VS Code, etc.)
+### Standards Compliance:
 
 ## Agent Skills Philosophy
 
@@ -25,7 +25,7 @@ Agent Skills are **lightweight, open format extensions** that package:
 - References (supporting materials)
 - Assets (templates, resources)
 
-**Key Principle:** "Build capabilities once, deploy them across multiple agent products."
+### Key Principle:
 
 ### Progressive Disclosure Architecture
 
@@ -118,7 +118,7 @@ skill-name/
 - "ベストプラクティス" (best practices)
 - Technology/framework names in description
 
-**Cross-Platform Benefit:** Skills work with Claude Code, GitHub Copilot, Cursor, VS Code - build once, deploy everywhere.
+### Cross-Platform Benefit:
 
 #### Agent 🤖
 
@@ -206,7 +206,7 @@ System analyzes:
 - **Reusability**: High (applicable to any mise project)
 - **Execution**: Reference material, not automated
 
-**Classification Confidence:** 0.95 → Skill
+### Classification Confidence:
 
 ### Step 3: Recommendation
 
@@ -258,7 +258,7 @@ Based on classification, route to:
 - Technical best practices ✓
 - → **Skill** (90% confidence)
 
-**Action:** Route to `skill-creator`
+### Action:
 
 ### Example 2: Automation Task
 
@@ -273,7 +273,7 @@ Based on classification, route to:
 - Decision-making required ✓
 - → **Agent** (95% confidence)
 
-**Action:** Route to `agent-creator`
+### Action:
 
 ### Example 3: User Operation
 
@@ -288,7 +288,7 @@ Based on classification, route to:
 - Project-specific ✓
 - → **Command** (90% confidence)
 
-**Action:** Route to `command-creator`
+### Action:
 
 ### Example 4: Project Constraints
 
@@ -303,7 +303,7 @@ Based on classification, route to:
 - Always enforced ✓
 - → **Rules** (85% confidence)
 
-**Action:** Route to `rules-creator`
+### Action:
 
 ## Advanced Features
 
@@ -311,7 +311,7 @@ Based on classification, route to:
 
 Some knowledge may fit multiple categories:
 
-**Example:** "mise configuration with automated validation"
+### Example:
 
 - **Primary:** Skill (configuration knowledge)
 - **Secondary:** Agent (validation automation)
@@ -351,7 +351,7 @@ Based on your answers, I'll recommend the best format.
 
 ### Skill Creator Integration
 
-**When:** Classification result is "Skill"
+### When:
 
 ### Actions
 
@@ -362,7 +362,7 @@ Based on your answers, I'll recommend the best format.
 
 ### Agent Creator Integration
 
-**When:** Classification result is "Agent"
+### When:
 
 ### Actions
 
@@ -373,7 +373,7 @@ Based on your answers, I'll recommend the best format.
 
 ### Command Creator Integration
 
-**When:** Classification result is "Command"
+### When:
 
 ### Actions
 
@@ -384,7 +384,7 @@ Based on your answers, I'll recommend the best format.
 
 ### Rules Creator Integration
 
-**When:** Classification result is "Rules"
+### When:
 
 ### Actions
 

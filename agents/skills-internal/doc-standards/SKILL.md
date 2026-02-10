@@ -18,14 +18,14 @@ description: |
 
 Enforce documentation standards through automated metadata validation, tag system guidance, size management, and quality checks. **Project-agnostic framework** that adapts to project-specific configuration.
 
-**Core Capabilities**:
+### Core Capabilities
 
 - Metadata template application and validation
 - Tag tier system guidance (category/audience/environment)
 - Document size management with split strategies
 - Quality checklist validation
 
-**Configuration Discovery**:
+### Configuration Discovery
 
 1. Load generic framework from `~/.claude/skills/doc-standards/`
 2. Check for project config at `.claude/doc-standards/config.yaml`
@@ -57,8 +57,8 @@ Check for project configuration:
 .claude/doc-standards/config.yaml
 ```
 
-**If found**: Load project settings (language, tag taxonomy, size thresholds, etc.)
-**If not found**: Use minimal defaults and provide setup guidance
+### If found
+### If not found
 
 ### Step 3: Load Project References
 
@@ -92,20 +92,20 @@ The skill will check both locations and use whichever is found.
 
 Apply standardized metadata format to documentation.
 
-**What it does**:
+### What it does
 
 - Generate metadata header with required fields
 - Ensure correct date format (project-configured or YYYY-MM-DD default)
 - Suggest appropriate tags based on content
 - Validate field completeness
 
-**When to use**:
+### When to use
 
 - Creating new .md files
 - Adding metadata to existing documentation
 - Updating outdated metadata format
 
-**How it works**:
+### How it works
 
 1. Load `references/metadata-template-framework.md` for structure
 2. Load project config for field names and formats
@@ -117,20 +117,20 @@ Apply standardized metadata format to documentation.
 
 Guide appropriate tag selection from project's tag taxonomy.
 
-**What it does**:
+### What it does
 
 - Support 3-tier tag systems: `category/`, `audience/`, `environment/`
 - Validate canonical format (prefix/value)
 - Check tag combinations
 - Load project-specific tag values
 
-**When to use**:
+### When to use
 
 - Selecting tags for new documentation
 - Updating tags for existing docs
 - Understanding project tag system
 
-**How it works**:
+### How it works
 
 1. Load `references/tag-system-framework.md` for tier architecture
 2. Load project's `tag-taxonomy.md` for specific values
@@ -145,21 +145,21 @@ Guide appropriate tag selection from project's tag taxonomy.
 
 Monitor document size and suggest splits when necessary.
 
-**What it does**:
+### What it does
 
 - Track line counts during creation
 - Warn when approaching size thresholds
 - Suggest split strategies for large docs
 - Provide decision tree for split decisions
 
-**When to use**:
+### When to use
 
 - Document exceeds recommended size (default: 500 lines)
 - Document contains multiple distinct topics
 - Mixing beginner and advanced content
 - Targeting multiple audiences
 
-**How it works**:
+### How it works
 
 1. Monitor current line count
 2. Apply size thresholds from project config (or defaults: 500/1000/2000)
@@ -175,21 +175,21 @@ Monitor document size and suggest splits when necessary.
 
 Validate documentation against quality standards.
 
-**What it does**:
+### What it does
 
 - Metadata quality checks
 - Content quality checks
 - Link validation
 - Navigation checks
 
-**When to use**:
+### When to use
 
 - Final validation before committing
 - Reviewing existing documentation
 - Conducting periodic reviews
 - Checking link validity
 
-**How it works**:
+### How it works
 
 1. Load `references/quality-checklist-framework.md` for framework
 2. Load project examples if available

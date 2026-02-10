@@ -10,7 +10,7 @@
 
 ### 署名なしポリシー
 
-**CRITICAL**: すべてのGitHub issueは以下のポリシーを厳守：
+### CRITICAL
 
 - ❌ **NEVER** "Created by Claude" などのAI署名を含めない
 - ❌ **NEVER** "Generated with Claude Code" などの生成ツール表記を含めない
@@ -536,4 +536,4 @@ elif mode == "todo_only":
 
 ---
 
-**重要**: すべてのGitHub issueは技術的内容のみを含み、AI署名や生成ツール表記を一切含めないこと。
+### 重要

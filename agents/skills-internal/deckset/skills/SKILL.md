@@ -29,7 +29,7 @@ Provide proper Deckset syntax for creating presentations:
 
 #### Metadata Configuration
 
-**Critical**: All metadata must be placed at the very beginning of the file:
+### Critical
 
 ```markdown
 footer: Your Footer Text

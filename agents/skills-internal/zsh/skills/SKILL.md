@@ -12,7 +12,7 @@ description: |
 
 This skill provides specialized review guidance for Zsh shell configurations, focusing on startup performance optimization, plugin management, and modern shell configuration patterns. Evaluate configurations for performance metrics, modular design, and compliance with 2025 Zsh best practices.
 
-**Context7 Integration**: This skill leverages Context7 MCP for up-to-date Zsh, oh-my-zsh, and zinit documentation. Generic documentation has been removed in favor of Context7 queries.
+### Context7 Integration
 
 ## Core Evaluation Areas
 
@@ -56,21 +56,21 @@ Evaluate plugin ecosystem and loading strategies:
 
 #### Plugin Manager (2025 Best Practices)
 
-**For oh-my-zsh questions**, use Context7:
+### For oh-my-zsh questions
 
 ```
 Query: mcp__plugin_context7_context7__query-docs
 Library ID: /ohmyzsh/ohmyzsh
 ```
 
-**For zinit questions**, use Context7:
+### For zinit questions
 
 ```
 Query: mcp__plugin_context7_context7__query-docs
 Library ID: /zdharma-continuum/zinit
 ```
 
-**Dotfiles uses Sheldon** (Rust-based, modern):
+### Dotfiles uses Sheldon
 
 - ⭐⭐⭐⭐⭐ Compliant with 2025 standards
 - High-speed loading, TOML configuration
@@ -190,35 +190,35 @@ Assess reliability and error management:
 
 ### Startup Performance Assessment
 
-**⭐⭐⭐⭐⭐ (5/5) Excellent**:
+### ⭐⭐⭐⭐⭐ (5/5) Excellent
 
 - Startup time <100ms
 - Full lazy loading implementation
 - Optimized plugin priorities
 - Compiled `.zwc` files active
 
-**⭐⭐⭐⭐☆ (4/5) Good**:
+### ⭐⭐⭐⭐☆ (4/5) Good
 
 - Startup time <500ms
 - Partial lazy loading
 - Organized plugin loading
 - Some compilation present
 
-**⭐⭐⭐☆☆ (3/5) Standard**:
+### ⭐⭐⭐☆☆ (3/5) Standard
 
 - Startup time <1s
 - Basic plugin management
 - Some optimization attempts
 - Minimal lazy loading
 
-**⭐⭐☆☆☆ (2/5) Needs Improvement**:
+### ⭐⭐☆☆☆ (2/5) Needs Improvement
 
 - Startup time 1-2s
 - Synchronous loading
 - No clear organization
 - Missing optimizations
 
-**⭐☆☆☆☆ (1/5) Requires Overhaul**:
+### ⭐☆☆☆☆ (1/5) Requires Overhaul
 
 - Startup time >2s
 - No plugin management
@@ -247,7 +247,7 @@ Assess based on:
 
 ### Optimize Startup Time
 
-**Before**:
+### Before
 
 ```zsh
 # Synchronous loading
@@ -255,7 +255,7 @@ source /path/to/plugin1.zsh
 source /path/to/plugin2.zsh
 ```
 
-**After**:
+### After
 
 ```zsh
 # Tiered lazy loading
@@ -265,7 +265,7 @@ zsh-defer -t 2 source /path/to/non-critical.zsh
 
 ### Implement Modular Structure
 
-**Before**:
+### Before
 
 ```zsh
 # Monolithic .zshrc (500+ lines)
@@ -275,7 +275,7 @@ function myfunction() { ... }
 # ... everything mixed together
 ```
 
-**After**:
+### After
 
 ```zsh
 # Modular structure
@@ -290,7 +290,7 @@ _load_config functions
 
 ### Optimize PATH Management
 
-**Before**:
+### Before
 
 ```zsh
 # .zshrc - PATH conflicts with path_helper
@@ -298,7 +298,7 @@ export PATH=$HOME/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 ```
 
-**After**:
+### After
 
 ```zsh
 # .zprofile - After macOS path_helper
@@ -329,19 +329,19 @@ When reviewing Zsh configurations:
 
 ### When to Query Context7
 
-**Query oh-my-zsh** for:
+### Query oh-my-zsh
 
 - Plugin documentation
 - Theme configuration
 - Framework features
 
-**Query zinit** for:
+### Query zinit
 
 - Advanced plugin management
 - Turbo mode patterns
 - Ice modifiers
 
-**Query Zsh official docs** for:
+### Query Zsh official docs
 
 - Core shell features
 - Builtin functions

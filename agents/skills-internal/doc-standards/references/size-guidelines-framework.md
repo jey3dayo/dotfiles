@@ -6,9 +6,9 @@ Generic size management framework with thresholds and split strategies.
 
 ## Overview
 
-**Purpose**: Maintain readable, maintainable documentation by monitoring size and suggesting splits when necessary.
+### Purpose
 
-**Core Principle**: **Single responsibility per document** - Each document should focus on one primary topic or workflow.
+### Core Principle
 
 ---
 
@@ -16,31 +16,31 @@ Generic size management framework with thresholds and split strategies.
 
 ### Recommended Size: ~500 lines
 
-**Why**: Sweet spot for single-read comprehension and easy maintenance
+### Why
 
-**Characteristics**:
+### Characteristics
 
 - Can be read in 10-15 minutes
 - Easy to maintain and update
 - Clear scope and purpose
 - Good cognitive load balance
 
-**Action**: Continue writing within this range
+### Action
 
 ---
 
 ### Warning Size: 1000 lines
 
-**Why**: Approaching readability limits, starting to become unwieldy
+### Why
 
-**Characteristics**:
+### Characteristics
 
 - Requires 20-30 minutes to read fully
 - Becoming harder to maintain
 - May contain multiple topics
 - Starting to lose focus
 
-**Action**:
+### Action
 
 - Review document for natural split points
 - Consider splitting if multiple distinct topics exist
@@ -50,16 +50,16 @@ Generic size management framework with thresholds and split strategies.
 
 ### Hard Limit: 2000 lines
 
-**Why**: Too large for effective use, must be split
+### Why
 
-**Characteristics**:
+### Characteristics
 
 - Requires 40+ minutes to read
 - Difficult to maintain
 - Likely contains multiple topics
 - Poor user experience
 
-**Action**: **MUST split immediately**
+### Action
 
 - Apply decision tree to determine split strategy
 - Create multiple focused documents
@@ -96,20 +96,20 @@ Q4: Does it cover distinct lifecycle phases?
 
 ## Split Strategy 1: Topic-Based Split
 
-**When to use**: Document covers multiple unrelated or loosely related topics
+### When to use
 
-**How to split**:
+### How to split
 
 - Create one document per major topic
 - Each document becomes self-contained
 - Add navigation hub if needed
 
-**Tag Strategy**:
+### Tag Strategy
 
 - Each doc gets specific category tags for its topic
 - Maintain common audience/environment tags if applicable
 
-**Example** (generic):
+### Example
 
 ```
 Original: "System Operations Guide" (1500 lines)
@@ -123,7 +123,7 @@ Tags:
   - Monitoring Setup: `category/monitoring`, `category/operations`
 ```
 
-**Benefits**:
+### Benefits
 
 - Clear single responsibility per doc
 - Easier to find relevant content
@@ -133,21 +133,21 @@ Tags:
 
 ## Split Strategy 2: Role-Based Split
 
-**When to use**: Document serves multiple distinct audiences (developer/operations/security)
+### When to use
 
-**How to split**:
+### How to split
 
 - Create role-specific documents
 - Extract shared content into common doc if needed
 - Each doc focuses on one role's needs
 
-**Tag Strategy**:
+### Tag Strategy
 
 - Split by audience tags
 - Maintain common category tags
 - Keep environment tags if applicable
 
-**Example** (generic):
+### Example
 
 ```
 Original: "Application Deployment Guide" (1200 lines)
@@ -161,7 +161,7 @@ Tags:
   - Architecture: `category/deployment`, `audience/all`
 ```
 
-**Benefits**:
+### Benefits
 
 - Role-appropriate content and detail level
 - Reduced cognitive load per role
@@ -171,21 +171,21 @@ Tags:
 
 ## Split Strategy 3: Level-Based Split
 
-**When to use**: Document mixes beginner/quick-start with advanced/comprehensive content
+### When to use
 
-**How to split**:
+### How to split
 
 - Create "Essential" or "Quick Start" doc (beginner)
 - Create "Advanced" or "Complete Reference" doc
 - Link between them
 
-**Tag Strategy**:
+### Tag Strategy
 
 - Same category and audience tags for both
 - Differentiate by title/description
 - Consider adding difficulty indicator in title
 
-**Example** (generic):
+### Example
 
 ```
 Original: "API Integration Guide" (1400 lines)
@@ -196,7 +196,7 @@ Tags (both docs):
   - `category/reference`, `category/guide`, `audience/developer`
 ```
 
-**Benefits**:
+### Benefits
 
 - Beginners get fast path to success
 - Advanced users get comprehensive details
@@ -206,21 +206,21 @@ Tags (both docs):
 
 ## Split Strategy 4: Phase-Based Split
 
-**When to use**: Document covers entire lifecycle (setup → operations → troubleshooting)
+### When to use
 
-**How to split**:
+### How to split
 
 - Split by lifecycle phase
 - Each doc covers one phase completely
 - Create navigation hub linking all phases
 
-**Tag Strategy**:
+### Tag Strategy
 
 - Phase-specific category tags
 - Add environment tags per phase if applicable
 - Common audience tags
 
-**Example** (generic):
+### Example
 
 ```
 Original: "Infrastructure Management" (1600 lines)
@@ -235,7 +235,7 @@ Tags:
   - Troubleshooting: `category/infrastructure`, `category/operations`, `audience/operations`
 ```
 
-**Benefits**:
+### Benefits
 
 - Users find phase-appropriate content
 - Clear workflow progression
@@ -288,19 +288,19 @@ After splitting a document, validate:
 
 ### Best Practices
 
-**Plan scope upfront**:
+### Plan scope upfront
 
 - Define single clear purpose
 - Identify target size (aim for <500 lines)
 - Consider split from start if topic is large
 
-**Monitor during creation**:
+### Monitor during creation
 
 - Check line count periodically
 - Split proactively when approaching 500 lines
 - Don't wait until 1000+ lines
 
-**Use modular structure**:
+### Use modular structure
 
 - Separate sections could become docs
 - Plan for future splits
@@ -314,14 +314,14 @@ After splitting a document, validate:
 
 Some docs legitimately need to be large (e.g., complete API reference, schema documentation):
 
-**When large size is acceptable**:
+### When large size is acceptable
 
 - Single cohesive topic (e.g., API reference)
 - Reference material (not narrative)
 - Benefit from completeness
 - Well-structured with clear navigation
 
-**Mitigation strategies**:
+### Mitigation strategies
 
 - Excellent table of contents
 - Clear section structure
@@ -343,7 +343,7 @@ size:
   examples_file: "references/size-guidelines-examples.md" # Project examples (optional)
 ```
 
-**Customization**:
+### Customization
 
 - Adjust thresholds based on project needs
 - Some projects may prefer 400/800/1600
@@ -359,7 +359,7 @@ Projects can provide real-world split examples in:
 - `.claude/doc-standards/references/size-guidelines-examples.md`
 - Or `.claude/skills/doc-standards/references/size-guidelines-examples.md`
 
-**Example structure**:
+### Example structure
 
 ```markdown
 # Size Guidelines Examples
@@ -463,7 +463,7 @@ Add size checks to CI pipeline:
 
 ## Summary
 
-**Remember**:
+### Remember
 
 1. **Aim for ~500 lines** - Sweet spot for readability
 2. **Plan split at 1000 lines** - Warning threshold
@@ -471,4 +471,4 @@ Add size checks to CI pipeline:
 4. **Use decision tree** - Choose appropriate strategy
 5. **Validate post-split** - Ensure quality and navigation
 
-**Goal**: Maintain focused, readable, maintainable documentation that serves users effectively.
+### Goal
