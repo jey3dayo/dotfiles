@@ -33,7 +33,7 @@ const walk = (dir) => {
 walk(targetDir);
 
 const fenceOpen = /^\s*(`{3,}|~{3,})/;
-const boldOnly = /^(\s*)\*\*([^*][\s\S]*?)\*\*\s*$/;
+const boldOnly = /^(\s*)\*\*([^*][\s\S]*?)\*\*(.*)$/;
 
 let totalFiles = 0;
 let totalReplacements = 0;
