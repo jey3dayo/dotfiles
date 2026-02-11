@@ -9,7 +9,8 @@ I'll improve code readability while preserving exact functionality.
 
 ## Strategic Thinking Process
 
-<think>
+### Thinking Notes
+
 Before making any changes, I need to consider:
 
 1. **Code Analysis**
@@ -34,7 +35,6 @@ Before making any changes, I need to consider:
    - How can I ensure functionality remains identical?
    - What tests exist to verify behavior?
    - Should I add temporary logging to verify flow?
-     </think>
 
 Based on this analysis, I'll proceed safely:
 

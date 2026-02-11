@@ -19,7 +19,8 @@ argument-hint:
 
 ## 🧠 Strategic Analysis Process
 
-<think>
+### Thinking Notes
+
 クリーンアップを安全かつ効果的に実行するため、以下の戦略を採用：
 
 1. **安全性最優先**
@@ -36,7 +37,6 @@ argument-hint:
    - cleanproject: ファイル整理機能
    - remove-comments: コメント最適化
    - docs: ドキュメント管理
-     </think>
 
 ## 🚀 Implementation Strategy
 

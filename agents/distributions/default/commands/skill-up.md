@@ -544,7 +544,7 @@ Phase 1の結果を統合し、移行計画を提示：
 承認しますか？ (y/n)
 ```
 
-**ユーザー承認後、Phase 3へ進む**
+### ユーザー承認後、Phase 3へ進む
 
 ### Phase 3: 移行実施（承認後）
 
@@ -907,7 +907,7 @@ cd ~/src/github.com/my-project
 
 - 3層アーキテクチャ詳細: CLAUDE.md（skills/ → agents/commands/ → commands/shared/）
 - `Agents and Commands` スキル（skills/agents-and-commands、未インストールの場合あり）
-- [Skill作成ガイド](../skills/.system/skill-creator/SKILL.md)
+- Skill作成ガイド: `skill-creator`（system skill・このリポジトリ外）
 - [Command作成ガイド](README.md)
 
 ## 🎮 RPGメタファー

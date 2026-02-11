@@ -9,7 +9,8 @@ I'll help clean up development artifacts while preserving your working code.
 
 ## Strategic Thinking Process
 
-<think>
+### Thinking Notes
+
 Before cleaning, I need to carefully consider:
 
 1. **Artifact Identification**
@@ -35,7 +36,6 @@ Before cleaning, I need to carefully consider:
    - Check file age - older files are usually safer to remove
    - Verify with git status what's tracked vs untracked
    - Group similar files for batch decision making
-     </think>
 
 Based on this analysis, I'll create a git checkpoint for safety:
 

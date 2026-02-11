@@ -28,9 +28,9 @@ fi
 description = "Prettier でファイルをフォーマット（PRETTIER_FILES で対象を限定可能）"
 run = """
 if [ -n "${PRETTIER_FILES:-}" ]; then
-  prettier --write --ignore-unknown --log-level error ${PRETTIER_FILES}
+  prettier --write --ignore-unknown --log-level error ${PRETTIER_FILES} > /dev/null
 else
-  prettier --write --ignore-unknown --log-level error .
+  prettier --write --ignore-unknown --log-level error . > /dev/null
 fi
 """
 
@@ -38,9 +38,9 @@ fi
 description = "Prettier フォーマットチェック（書き込みなし、PRETTIER_FILES で対象を限定可能）"
 run = """
 if [ -n "${PRETTIER_FILES:-}" ]; then
-  prettier --check --ignore-unknown ${PRETTIER_FILES}
+  prettier --check --ignore-unknown --log-level error ${PRETTIER_FILES}
 else
-  prettier --check --ignore-unknown .
+  prettier --check --ignore-unknown --log-level error .
 fi
 """
 
@@ -48,20 +48,20 @@ fi
 description = "Markdown ファイルをフォーマット"
 run = [
   "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
-  "fd -e md ${TASK_EXCLUDES} -X prettier --write",
+  "fd -e md ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null",
 ]
 
 ["format:markdown:check"]
 description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
-run = "fd -e md ${TASK_EXCLUDES} -X prettier --check"
+run = "fd -e md ${TASK_EXCLUDES} -X prettier --check --log-level error"
 
 ["format:yaml"]
 description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"
 run = """
 if [ -n "${YAML_FILES:-}" ]; then
-  prettier --write ${YAML_FILES}
+  prettier --write --log-level error ${YAML_FILES} > /dev/null
 else
-  fd -e yml -e yaml -X prettier --write
+  fd -e yml -e yaml -X prettier --write --log-level error >/dev/null
 fi
 """
 
@@ -69,9 +69,9 @@ fi
 description = "YAML ファイルのフォーマットチェック（書き込みなし、YAML_FILES で対象を限定可能）"
 run = """
 if [ -n "${YAML_FILES:-}" ]; then
-  prettier --check ${YAML_FILES}
+  prettier --check --log-level error ${YAML_FILES}
 else
-  fd -e yml -e yaml -X prettier --check
+  fd -e yml -e yaml -X prettier --check --log-level error
 fi
 """
 

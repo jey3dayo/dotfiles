@@ -83,7 +83,7 @@ Phase 1 の分析結果に基づいて、最適な実行方法を選択します
 
 #### 優先順位
 
-**1. mise タスク（最優先）**
+##### 1. mise タスク（最優先）
 
 `mise.toml` に `docs:*` タスクが定義されている場合、これを優先的に使用：
 
@@ -101,7 +101,7 @@ mise run docs:links
 mise run docs:check
 ```
 
-**2. pnpm/npm スクリプト**
+##### 2. pnpm/npm スクリプト
 
 `package.json` に `docs:*` スクリプトが定義されている場合：
 
@@ -110,7 +110,7 @@ pnpm docs:fix
 npm run docs:fix
 ```
 
-**3. 直接実行（タスク定義がない場合）**
+##### 3. 直接実行（タスク定義がない場合）
 
 設定ファイルを自動検出して実行：
 
@@ -122,7 +122,7 @@ pnpx markdownlint-cli2 --fix '**/*.md'
 fd -e md -X pnpx markdown-link-check --config .markdown-link-check.json
 ```
 
-**4. docs-manager エージェント（高度な分析が必要な場合）**
+##### 4. docs-manager エージェント（高度な分析が必要な場合）
 
 以下の場合にエージェントを起動：
 
@@ -155,20 +155,20 @@ def determine_execution_method(context):
 
 各ドキュメントを多角的に分析し、修正が必要な問題を特定：
 
-**リンク問題**
+#### リンク問題
 
 - 内部リンク切れ: `[text](./missing-file.md)`
 - 外部リンク切れ: `[text](https://dead-link.com)`
 - 相対パス問題: `../../../complex-path.md`
 
-**フォーマット問題**
+#### フォーマット問題
 
 - Markdownシンタックスエラー
 - 不適切なヘッダー階層
 - テーブルフォーマット不整合
 - コードブロック言語指定不足
 
-**構造問題**
+#### 構造問題
 
 - 目次（TOC）の不整合
 - セクション順序の論理性
@@ -357,17 +357,17 @@ fd -e md -X pnpx markdown-link-check --config .markdown-link-check.json --verbos
 
 プロジェクトに設定ファイルがない場合、以下を提案：
 
-**1. 基本設定の生成**
+#### 1. 基本設定の生成
 
 `.markdownlint-cli2.jsonc` と `.markdown-link-check.json` のテンプレートを提供
 
-**2. プロジェクト特性に応じたカスタマイズ**
+#### 2. プロジェクト特性に応じたカスタマイズ
 
 - **API ドキュメント**: コードブロック言語指定を厳格化（`MD040: true`）
 - **チュートリアル**: 長い行を許可（`MD013: false`）、インラインHTMLを有効化
 - **技術仕様書**: 厳格なヘッダー階層、テーブル整列を強制
 
-**3. docs-manager エージェントによる生成**
+#### 3. docs-manager エージェントによる生成
 
 高度な分析に基づいて最適な設定を生成
 
@@ -436,7 +436,7 @@ def execute_fix_docs():
 
 ### 実行例
 
-**Case 1: mise タスクがある場合**
+#### Case 1: mise タスクがある場合
 
 ```bash
 /fix-docs
@@ -447,7 +447,7 @@ def execute_fix_docs():
 → 完了
 ```
 
-**Case 2: mise タスクがなく、設定ファイルがある場合**
+#### Case 2: mise タスクがなく、設定ファイルがある場合
 
 ```bash
 /fix-docs
@@ -458,7 +458,7 @@ def execute_fix_docs():
 → 完了
 ```
 
-**Case 3: 設定ファイルがない場合**
+#### Case 3: 設定ファイルがない場合
 
 ```bash
 /fix-docs
@@ -711,29 +711,29 @@ def integrate_docs_manager_agent():
 
 ### 各ステップの詳細
 
-**1. mise.toml チェック**
+#### 1. mise.toml チェック
 
 - プロジェクトルートで `mise.toml` の存在を確認
 - 存在する場合は `docs:*` タスクを抽出
 
-**2. タスク定義チェック**
+#### 2. タスク定義チェック
 
 - `docs:fix`, `docs:lint`, `docs:links`, `docs:check` の定義を確認
 - タスクが定義されている場合は優先的に使用
 
-**3. 設定ファイルチェック**
+#### 3. 設定ファイルチェック
 
 - `.markdownlint-cli2.jsonc` または `.markdownlint.yml`
 - `.markdown-link-check.json`
 - 設定ファイルの妥当性検証
 
-**4. 実行方法決定**
+#### 4. 実行方法決定
 
 - **mise実行**: `mise run docs:fix && mise run docs:links`
 - **設定使用**: `pnpx markdownlint-cli2 --fix '**/*.md'` + リンクチェック
 - **設定生成**: テンプレートから設定ファイル生成 → docs-manager エージェント起動
 
-**5. 結果検証**
+#### 5. 結果検証
 
 - 修正内容の確認
 - エラー有無のチェック

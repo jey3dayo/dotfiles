@@ -138,7 +138,7 @@ Context7統合 (context7-integration.md) [オプション]
 
 ### 実装状態
 
-**すべてのコマンドは仕様定義のみです**
+#### すべてのコマンドは仕様定義のみです
 
 - ✅ 優れた設計思想とアーキテクチャ
 - ✅ 包括的な機能仕様
@@ -215,8 +215,8 @@ Context7統合 (context7-integration.md) [オプション]
 
 ### 設計ドキュメント
 
-- [統合レビューシステム](review.md)
-- [タスクルーター](task.md)
+- `統合レビューシステム`（`review.md` は未作成）
+- `タスクルーター`（`task.md` は未作成）
 - [タスク管理](todos.md)
 - [知見記録](learnings.md)
 
@@ -268,9 +268,9 @@ Context7統合 (context7-integration.md) [オプション]
 
 ### フィードバック方法
 
-- GitHub Issues: [リポジトリURL]
-- ディスカッション: [ディスカッションURL]
-- メール: [連絡先]
+- GitHub Issues: リポジトリの Issues タブを利用
+- ディスカッション: リポジトリの Discussions タブを利用
+- メール: メンテナー連絡先（未公開）
 
 ---
 

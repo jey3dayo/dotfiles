@@ -25,7 +25,17 @@ run = "tsx ./agents/scripts/skills-add.ts"
 
 ["skills:validate"]
 description = "スキル構成バリデーション"
-run = "nix run .#validate"
+run = """
+if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
+  echo "Skip skills:validate (SKIP_NIX_VALIDATE=1)"
+  exit 0
+fi
+
+# Use temp cache for sandbox/readonly-home environments.
+cache_root="${TMPDIR:-/tmp}/${USER:-user}/dotfiles-mise-cache"
+mkdir -p "$cache_root"
+XDG_CACHE_HOME="$cache_root" nix run .#validate
+"""
 
 ["skills:validate:distribution"]
 description = "distributions/default が SSoT ルールに準拠しているか検証"
