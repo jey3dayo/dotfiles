@@ -62,11 +62,11 @@
 
     configFiles = [
       {
-        src = ./CLAUDE.md;
-        default = "CLAUDE.md";
+        src = ./AGENTS.md;
+        default = "AGENTS.md";
         rename = {
-          opencode = "AGENTS.md";
-          openclaw = "AGENTS.md";
+          opencode = "CLAUDE.md";
+          openclaw = "CLAUDE.md";
         };
       }
     ];
