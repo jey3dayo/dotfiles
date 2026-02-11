@@ -50,6 +50,39 @@ let
       ''
     else null;
 
+  # Commands are distributed only to these targets.
+  commandTargetNames = [ "claude" "codex" "cursor" "opencode" "openclaw" ];
+
+  # These targets are strictly synced from ~/.config/agents (SSoT):
+  # existing commands directory content is cleared before linkGeneration.
+  strictCommandSyncTargetNames = [ "claude" "codex" "cursor" "opencode" "openclaw" ];
+
+  # Recursively find all .md files in commandsBundle.
+  commandFiles =
+    if commandsBundle != null then
+      let
+        findCommandFiles = dir: prefix:
+          let
+            entries = builtins.readDir dir;
+            processEntry = name: type:
+              let
+                path = "${dir}/${name}";
+                relPath = if prefix == "" then name else "${prefix}/${name}";
+              in
+                if type == "directory" then
+                  findCommandFiles path relPath
+                else if type == "regular" && lib.hasSuffix ".md" name then
+                  { ${relPath} = path; }
+                else
+                  {};
+          in
+            lib.foldl' (acc: entry:
+              acc // (processEntry entry.name entry.type)
+            ) {} (lib.mapAttrsToList (name: type: { inherit name type; }) entries);
+      in
+        findCommandFiles commandsBundle ""
+    else {};
+
 in {
   options.programs.agent-skills = {
     enable = lib.mkEnableOption "AI Agent Skills management";
@@ -171,9 +204,23 @@ in {
         configDirCommands = lib.mapAttrsToList (_name: target: ''
           ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
         '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
-        commandsDirCommand = lib.optionalString (commandsBundle != null) ''
-          ${pkgs.coreutils}/bin/mkdir -p "$HOME/.claude/commands"
-        '';
+        commandsDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (targetName: target:
+          if target.enable && commandsBundle != null && lib.elem targetName commandTargetNames then
+            let baseDir = lib.removeSuffix "/skills" target.dest;
+            in ''
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/commands"
+            ''
+          else ""
+        ) cfg.targets);
+        commandsDirResetCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (targetName: target:
+          if target.enable && commandsBundle != null && lib.elem targetName strictCommandSyncTargetNames then
+            let baseDir = lib.removeSuffix "/skills" target.dest;
+            in ''
+              ${pkgs.coreutils}/bin/rm -rf "$HOME/${baseDir}/commands"
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/commands"
+            ''
+          else ""
+        ) cfg.targets);
         rulesDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
           if target.enable && (lib.attrNames distributionResult.rules) != [] then
             let baseDir = lib.removeSuffix "/skills" target.dest;
@@ -195,7 +242,7 @@ in {
           else ""
         ) cfg.targets);
       in
-        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ commandsDirCommand rulesDirCommands agentsDirCommands ]));
+        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ commandsDirResetCommands commandsDirCommands rulesDirCommands agentsDirCommands ]));
 
     # link targets: per-skill directory symlinks to Nix store (default)
     # Each skill dir becomes a symlink: ~/.claude/skills/agent-creator → /nix/store/.../agent-creator
@@ -229,40 +276,21 @@ in {
         ) cfg.targets
       ) cfg.configFiles)
       ++
-      # Commands distribution (recursive symlinks to ~/.claude/commands/)
-      [
-        (if commandsBundle != null then
+      # Commands distribution (recursive symlinks to target-specific commands directories)
+      (lib.mapAttrsToList (targetName: target:
+        if target.enable && commandsBundle != null && lib.elem targetName commandTargetNames then
           let
-            # Recursively find all .md files in commandsBundle
-            findCommandFiles = dir: prefix:
-              let
-                entries = builtins.readDir dir;
-                processEntry = name: type:
-                  let
-                    path = "${dir}/${name}";
-                    relPath = if prefix == "" then name else "${prefix}/${name}";
-                  in
-                    if type == "directory" then
-                      findCommandFiles path relPath
-                    else if type == "regular" && lib.hasSuffix ".md" name then
-                      { ${relPath} = path; }
-                    else
-                      {};
-              in
-                lib.foldl' (acc: entry:
-                  acc // (processEntry entry.name entry.type)
-                ) {} (lib.mapAttrsToList (name: type: { inherit name type; }) entries);
-
-            commandFiles = findCommandFiles commandsBundle "";
+            baseDir = lib.removeSuffix "/skills" target.dest;
           in
             lib.mapAttrs' (relPath: srcPath:
-              lib.nameValuePair ".claude/commands/${relPath}" {
+              lib.nameValuePair "${baseDir}/commands/${relPath}" {
                 source = srcPath;
+                force = true;
               }
             ) commandFiles
         else
-          {})
-      ]
+          {}
+      ) cfg.targets)
       ++
       # Rules distribution (symlinks to each target's rules directory)
       (lib.mapAttrsToList (_name: target:

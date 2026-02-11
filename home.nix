@@ -66,6 +66,7 @@
         default = "CLAUDE.md";
         rename = {
           opencode = "AGENTS.md";
+          openclaw = "AGENTS.md";
         };
       }
     ];
