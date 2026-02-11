@@ -116,7 +116,7 @@
             acc // { ${sourceName} = baseMeta; } // catalogMeta
           ) {} (nixpkgs.lib.attrNames sourceDefs);
         sourceMeta = externalSourceMeta // {
-          local = {
+          distribution = {
             repoUrl = "https://github.com/jey3dayo/dotfiles";
             root = ./.;
             branch = "main";
@@ -126,16 +126,17 @@
         selection = agentSkills.selection;
         catalog = agentLib.discoverCatalog {
           inherit sources;
-          localPath = ./agents/skills-internal;
+          localPath = null;
+          distributionsPath = ./agents/distributions/default;
         };
         enableConfig = if selection ? enable then selection.enable else null;
-        localSkillIds = nixpkgs.lib.attrNames
-          (nixpkgs.lib.filterAttrs (_: skill: skill.source == "local") catalog);
+        distributionSkillIds = nixpkgs.lib.attrNames
+          (nixpkgs.lib.filterAttrs (_: skill: skill.source == "distribution") catalog);
         enableList =
           if enableConfig == null then
             nixpkgs.lib.attrNames catalog
           else
-            nixpkgs.lib.unique (enableConfig ++ localSkillIds);
+            nixpkgs.lib.unique (enableConfig ++ distributionSkillIds);
         selectedSkills =
           if enableConfig == null then
             catalog

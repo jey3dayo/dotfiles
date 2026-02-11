@@ -114,7 +114,7 @@ Document patterns and principles, not exhaustive lists.
 
 Chat summary only (files updated directly).
 
-### Bootstrap:
+### Bootstrap
 
 ```
 ✅ Steering Created
@@ -127,7 +127,7 @@ Chat summary only (files updated directly).
 Review and approve as Source of Truth.
 ```
 
-### Sync:
+### Sync
 
 ```
 ✅ Steering Updated

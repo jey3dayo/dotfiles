@@ -8,10 +8,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const repoRoot = path.resolve(__dirname, "../..");
-const targetDir = path.join(repoRoot, "agents", "skills-internal");
+const targetDir = path.join(repoRoot, "agents", "distributions", "default", "skills");
 
 if (!fs.existsSync(targetDir) || !fs.statSync(targetDir).isDirectory()) {
-  console.error(`skills-internal not found: ${targetDir}`);
+  console.error(`default skills directory not found: ${targetDir}`);
   process.exit(1);
 }
 
@@ -96,5 +96,5 @@ if (totalReplacements === 0) {
 }
 
 console.log(
-  `Replaced ${totalReplacements} bold-only headings across ${totalFiles} files in skills-internal.`,
+  `Replaced ${totalReplacements} bold-only headings across ${totalFiles} files in distributions/default/skills.`,
 );

@@ -19,12 +19,13 @@ let
   };
 
   localSkillIds = lib.attrNames (lib.filterAttrs (_: skill: skill.source == "local") catalog);
+  distributionSkillIds = lib.attrNames (lib.filterAttrs (_: skill: skill.source == "distribution") catalog);
   allSkillIds = lib.attrNames catalog;
   enableList =
     if cfg.skills.enable == null then
       allSkillIds
     else
-      lib.unique (cfg.skills.enable ++ localSkillIds);
+      lib.unique (cfg.skills.enable ++ localSkillIds ++ distributionSkillIds);
 
   selectedSkills = agentLib.selectSkills {
     inherit catalog;
@@ -36,13 +37,21 @@ let
     name = "agent-skills-bundle";
   };
 
+  commandsSourcePath =
+    if distributionResult.commands != null then
+      distributionResult.commands
+    else if cfg.localCommandsPath != null && builtins.pathExists cfg.localCommandsPath then
+      cfg.localCommandsPath
+    else
+      null;
+
   # Commands bundle (supports subdirectories, copy files not symlink)
   commandsBundle =
-    if cfg.localCommandsPath != null && builtins.pathExists cfg.localCommandsPath then
+    if commandsSourcePath != null then
       pkgs.runCommand "agent-commands-bundle" {} ''
         mkdir -p $out
         # Copy entire directory structure preserving subdirectories
-        cp -r ${cfg.localCommandsPath}/. $out/
+        cp -r ${commandsSourcePath}/. $out/
         # Find and preserve only .md files (remove non-.md files)
         find $out -type f ! -name "*.md" -delete
         # Remove empty directories
@@ -101,13 +110,13 @@ in {
     localSkillsPath = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Path to local skills directory (skills-internal). Local skills override external on conflict.";
+      description = "Optional legacy override path for local skills. Deprecated: use distributionsPath as single source of truth.";
     };
 
     localCommandsPath = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Path to local commands directory (e.g., ./agents/commands-internal)";
+      description = "Optional legacy override path for local commands. Deprecated: use distributionsPath/commands.";
     };
 
     distributionsPath = lib.mkOption {
@@ -119,7 +128,7 @@ in {
     skills.enable = lib.mkOption {
       type = lib.types.nullOr (lib.types.listOf lib.types.str);
       default = null;
-      description = "List of skill IDs to enable (null = all discovered skills; local skills are always included).";
+      description = "List of skill IDs to enable (null = all discovered skills; local/distribution skills are always included).";
     };
 
     targets = lib.mkOption {

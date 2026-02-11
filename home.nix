@@ -42,12 +42,8 @@
   programs.agent-skills = {
     enable = true;
 
-    # Use distributions for bundled deployment
+    # Single source of truth for internal skills/commands
     distributionsPath = ./agents/distributions/default;
-
-    # Use skills-internal as local overrides to avoid external duplication conflicts
-    localSkillsPath = ./agents/skills-internal;
-    localCommandsPath = ./agents/commands-internal;
 
     sources = import ./nix/sources.nix {
       inherit inputs;

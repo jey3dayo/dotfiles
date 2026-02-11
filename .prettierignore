@@ -14,8 +14,6 @@ codex/AGENTS.md
 opencode/AGENTS.md
 claude/local/node_modules/
 agents/skills/
-agents/commands-internal/
-agents/distributions/default/commands/
 
 # JS/TS/JSON are formatted by Biome
 **/*.js

@@ -12,9 +12,11 @@
 ```
 distributions/
   ├── README.md           # このファイル
-  ├── default/            # デフォルト配布パッケージ
-  │   ├── skills/         # スキル群（skills-internalからのsymlink）
-  │   ├── commands/       # コマンド群（commands-internalからのsymlink）
+  ├── default/            # デフォルト配布パッケージ（SSoT）
+  │   ├── skills/         # スキル群（実体ファイル）
+  │   ├── commands/       # コマンド群（実体ファイル）
+  │   ├── rules/          # ルール群
+  │   ├── agents/         # エージェント群
   │   └── config/         # 設定ファイル群
   └── custom-bundle/      # カスタム配布パッケージ（オプション）
       └── ...
@@ -24,7 +26,7 @@ distributions/
 
 ### 1. デフォルトパッケージ
 
-`distributions/default/` は skills-internal と commands-internal を統合したパッケージ：
+`distributions/default/` は internal skills/commands の単一ソースです：
 
 ```nix
 programs.agent-skills = {
@@ -35,23 +37,20 @@ programs.agent-skills = {
 
 ### 2. カスタムパッケージ
 
-プロジェクト固有のパッケージを作成：
+プロジェクト固有のパッケージを作成（実体ファイルを配置）：
 
 ```bash
 mkdir -p distributions/my-bundle/{skills,commands,config}
-ln -s ../../skills-internal/my-skill distributions/my-bundle/skills/
+cp -r distributions/default/skills/<skill-id> distributions/my-bundle/skills/
 ```
 
 ## 設計原則
 
-1. **Symlinkベース**: distributions/内はsymlinkで構成（実体は元のディレクトリ）
+1. **SSoTベース**: `distributions/default/` 配下の実体ファイルを正本とする
 2. **バンドル単位の配布**: ディレクトリ単位で配布パッケージを定義
-3. **循環参照の回避**: distributionsは静的パス、sources統合前に定義
+3. **Nix統合**: `distributionsPath` を基点に skills/commands/rules/agents を配布
 
 ## 既存実装との関係
 
-- **skills-internal/**: Internal skills（42スキル）
-- **commands-internal/**: Commands（43ファイル、subdirectories）
-- **distributions/**: 上記を統合した配布パッケージ
-
-distributions/を使用しない場合、既存の個別配布フローが使用されます。
+- **distributions/default/**: Internal assets の単一ソース
+- **sources (flake inputs)**: External skills を追加する入力レイヤー

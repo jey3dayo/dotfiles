@@ -23,7 +23,5 @@
     "zsh/.zinit/**",
     "opencode/skills/**",
     "agents/skills/**",
-    "agents/commands-internal/**",
-    "agents/distributions/default/commands/**",
   ],
 }

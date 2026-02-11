@@ -328,6 +328,7 @@ aws sts get-caller-identity
    ```
 
 3. **アプリケーション動作確認**
+
    ```bash
    curl https://asta-stg.caad.isca.jp/api/health
    ```

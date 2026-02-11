@@ -66,10 +66,10 @@ perman-aws-vault print -p ~/.config/perman-aws-vault/aws-caad-admin-role  # CAAD
 
 ### ASTA環境
 
-| 環境       | クラスター名            | サービス名   | CPU  | Memory | URL                           |
-| ---------- | ----------------------- | ------------ | ---- | ------ | ----------------------------- |
-| Staging    | asta-staging-cluster    | asta-service | 512  | 1024   | https://asta-stg.caad.isca.jp |
-| Production | asta-production-cluster | asta-service | 1024 | 2048   | https://asta.caad.isca.jp     |
+| 環境       | クラスター名            | サービス名   | CPU  | Memory | URL                             |
+| ---------- | ----------------------- | ------------ | ---- | ------ | ------------------------------- |
+| Staging    | asta-staging-cluster    | asta-service | 512  | 1024   | <https://asta-stg.caad.isca.jp> |
+| Production | asta-production-cluster | asta-service | 1024 | 2048   | <https://asta.caad.isca.jp>     |
 
 ### ECRリポジトリ
 
