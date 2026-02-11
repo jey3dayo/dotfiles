@@ -98,7 +98,6 @@ let
               acc // (processSkillEntry entry.name entry.type)
             ) {} (mapAttrsToList (name: type: { inherit name type; }) skillDirs)
         else {};
-
       # Scan rules directory for .md files
       scannedRules =
         if pathExists rulesPath then
@@ -115,7 +114,7 @@ let
               in
                 if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
                   { ${ruleId} = { id = ruleId; path = entryPath; source = "distribution"; }; }
-                else if type == "directory" then
+                else if type == "directory" || type == "symlink" then
                   # Scan subdirectory (e.g., rules/frontend/)
                   let
                     subEntries = if pathExists entryPath then readDir entryPath else {};
@@ -157,7 +156,7 @@ let
               in
                 if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
                   { ${agentId} = { id = agentId; path = entryPath; source = "distribution"; }; }
-                else if type == "directory" then
+                else if type == "directory" || type == "symlink" then
                   # Scan subdirectory (e.g., agents/kiro/)
                   let
                     subEntries = if pathExists entryPath then readDir entryPath else {};
