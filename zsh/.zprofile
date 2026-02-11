@@ -7,7 +7,6 @@ export VISUAL='nvim'
 export PAGER='less'
 
 export LISTMAX=0
-export GREP_OPTIONS='--color=auto'
 
 typeset -U path cdpath fpath manpath
 

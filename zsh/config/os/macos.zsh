@@ -11,6 +11,4 @@ if [[ "$OSTYPE" == darwin* ]]; then
   elif [[ -d "/usr/local/Homebrew" ]]; then
     export HOMEBREW_PREFIX="/usr/local"
   fi
-
-  path=("$HOMEBREW_PREFIX"/{bin,sbin}(N-/) $path)
 fi
