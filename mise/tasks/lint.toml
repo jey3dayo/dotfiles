@@ -22,7 +22,7 @@ fi
 description = "Markdown ファイルをチェック"
 run = """
 markdownlint-cli2 "${MD_GLOB}" ${MD_EXCLUDES}
-prettier --check --log-level error '**/*.md'
+fd -e md ${TASK_EXCLUDES} -X prettier --check --log-level error
 """
 
 ["lint:toml"]

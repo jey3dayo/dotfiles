@@ -3,10 +3,9 @@
 # ========================================
 
 ["ci"]
-description = "すべての CI チェックをローカル実行（GitHub Actions と同じ）"
+description = "すべての CI チェックをローカル実行（GitHub Actions と同じ、書き込みなし）"
 depends = [
-  "format",
-  "lint:docs",
+  "check",
   "lint:links",
   "test:lua",
   "skills:validate",

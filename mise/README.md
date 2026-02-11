@@ -6,8 +6,8 @@
 mise/
 ├── config.toml         # Settings-only (no tools)
 ├── config.ci.toml      # CI (GitHub Actions, jobs=4)
-├── config.default.toml # Mac/Linux/WSL2 (73 tools, jobs=8)
-├── config.pi.toml      # Raspberry Pi (24 tools, jobs=2)
+├── config.default.toml # Mac/Linux/WSL2 (75 tools, jobs=8)
+├── config.pi.toml      # Raspberry Pi (32 tools, jobs=2)
 └── tasks/              # Shared task definitions
     ├── format.toml
     ├── lint.toml
@@ -32,9 +32,9 @@ Environment detection is handled by Home Manager (`nix/env-detect.nix`) and expo
 
 | Environment  | Config File         | Tools | Jobs | Notes                                     |
 | ------------ | ------------------- | ----- | ---- | ----------------------------------------- |
-| CI           | config.ci.toml      | 11    | 4    | Minimal toolset for Actions               |
-| Default      | config.default.toml | 73    | 8    | Full toolset (go, 46 npm, 4 cargo, 7 CLI) |
-| Raspberry Pi | config.pi.toml      | 24    | 2    | Optimized (no go, minimal npm, no cargo)  |
+| CI           | config.ci.toml      | 13    | 4    | Minimal toolset for Actions               |
+| Default      | config.default.toml | 75    | 8    | Full toolset (go, 46 npm, 4 cargo, 7 CLI) |
+| Raspberry Pi | config.pi.toml      | 32    | 2    | Optimized (minimal npm, no cargo)         |
 
 ## Migration from Old Structure
 
@@ -47,7 +47,7 @@ Environment detection is handled by Home Manager (`nix/env-detect.nix`) and expo
 
 ```bash
 echo $MISE_CONFIG_FILE
-mise ls --json | jq 'length'  # Should be 73 (default) or 24 (pi)
+mise ls --json | jq 'length'  # Should be 75 (default), 32 (pi), or 13 (ci)
 ```
 
 ## Development

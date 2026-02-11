@@ -114,6 +114,9 @@ run = """
 if [ -n "${SH_FILES:-}" ]; then
   shfmt -d -i 2 -ci -bn ${SH_FILES}
 else
+  # scripts/ (some files have no extension)
+  fd -t f -H -p '^scripts/' -X shfmt -d -i 2 -ci -bn
+  # .sh files elsewhere
   fd -e sh ${TASK_EXCLUDES} -X shfmt -d -i 2 -ci -bn
 fi
 """
