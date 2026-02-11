@@ -67,12 +67,14 @@ let
         claudeSkills;
 
   # Scan distributions directory for bundled components
-  # Returns: { skills = { skillId = { id, path, source }; ... }; commands = path or null; }
+  # Returns: { skills = { skillId = { id, path, source }; ... }; commands = path or null; rules = { ruleId = { id, path, source }; ... }; agents = { agentId = { id, path, source }; ... }; }
   scanDistribution = distributionPath:
     let
       skillsPath = distributionPath + "/skills";
       commandsPath = distributionPath + "/commands";
       configPath = distributionPath + "/config";
+      rulesPath = distributionPath + "/rules";
+      agentsPath = distributionPath + "/agents";
 
       # Scan skills subdirectories (may contain symlinks to skills-internal, etc.)
       scannedSkills =
@@ -96,10 +98,96 @@ let
               acc // (processSkillEntry entry.name entry.type)
             ) {} (mapAttrsToList (name: type: { inherit name type; }) skillDirs)
         else {};
+
+      # Scan rules directory for .md files
+      scannedRules =
+        if pathExists rulesPath then
+          let
+            ruleEntries = readDir rulesPath;
+            processRuleEntry = name: type:
+              let
+                entryPath = rulesPath + "/${name}";
+                # Remove .md suffix to get rule ID
+                ruleId = if nixlib.hasSuffix ".md" name then
+                  nixlib.removeSuffix ".md" name
+                else
+                  name;
+              in
+                if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
+                  { ${ruleId} = { id = ruleId; path = entryPath; source = "distribution"; }; }
+                else if type == "directory" || type == "symlink" then
+                  # Scan subdirectory (e.g., rules/frontend/)
+                  let
+                    subEntries = if pathExists entryPath then readDir entryPath else {};
+                    processSubEntry = subName: subType:
+                      let
+                        subPath = entryPath + "/${subName}";
+                        subId = if nixlib.hasSuffix ".md" subName then
+                          "${name}/${nixlib.removeSuffix ".md" subName}"
+                        else
+                          "${name}/${subName}";
+                      in
+                        if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
+                          { ${subId} = { id = subId; path = subPath; source = "distribution"; }; }
+                        else {};
+                  in
+                    builtins.foldl' (acc: entry:
+                      acc // (processSubEntry entry.name entry.type)
+                    ) {} (mapAttrsToList (n: t: { name = n; type = t; }) subEntries)
+                else {};
+          in
+            builtins.foldl' (acc: entry:
+              acc // (processRuleEntry entry.name entry.type)
+            ) {} (mapAttrsToList (name: type: { inherit name type; }) ruleEntries)
+        else {};
+
+      # Scan agents directory for .md files
+      scannedAgents =
+        if pathExists agentsPath then
+          let
+            agentEntries = readDir agentsPath;
+            processAgentEntry = name: type:
+              let
+                entryPath = agentsPath + "/${name}";
+                # Remove .md suffix to get agent ID
+                agentId = if nixlib.hasSuffix ".md" name then
+                  nixlib.removeSuffix ".md" name
+                else
+                  name;
+              in
+                if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
+                  { ${agentId} = { id = agentId; path = entryPath; source = "distribution"; }; }
+                else if type == "directory" || type == "symlink" then
+                  # Scan subdirectory (e.g., agents/kiro/)
+                  let
+                    subEntries = if pathExists entryPath then readDir entryPath else {};
+                    processSubEntry = subName: subType:
+                      let
+                        subPath = entryPath + "/${subName}";
+                        subId = if nixlib.hasSuffix ".md" subName then
+                          "${name}/${nixlib.removeSuffix ".md" subName}"
+                        else
+                          "${name}/${subName}";
+                      in
+                        if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
+                          { ${subId} = { id = subId; path = subPath; source = "distribution"; }; }
+                        else {};
+                  in
+                    builtins.foldl' (acc: entry:
+                      acc // (processSubEntry entry.name entry.type)
+                    ) {} (mapAttrsToList (n: t: { name = n; type = t; }) subEntries)
+                else {};
+          in
+            builtins.foldl' (acc: entry:
+              acc // (processAgentEntry entry.name entry.type)
+            ) {} (mapAttrsToList (name: type: { inherit name type; }) agentEntries)
+        else {};
     in {
       skills = scannedSkills;
       commands = if pathExists commandsPath then commandsPath else null;
       config = if pathExists configPath then configPath else null;
+      rules = scannedRules;
+      agents = scannedAgents;
     };
 
 in {
@@ -114,7 +202,7 @@ in {
         if distributionsPath != null && pathExists distributionsPath then
           scanDistribution distributionsPath
         else
-          { skills = {}; commands = null; config = null; };
+          { skills = {}; commands = null; config = null; rules = {}; agents = {}; };
 
       # Scan each external source
       externalSkills = builtins.foldl' (acc: srcName:
