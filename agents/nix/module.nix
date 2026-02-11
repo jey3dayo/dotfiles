@@ -19,12 +19,13 @@ let
   };
 
   localSkillIds = lib.attrNames (lib.filterAttrs (_: skill: skill.source == "local") catalog);
+  distributionSkillIds = lib.attrNames (lib.filterAttrs (_: skill: skill.source == "distribution") catalog);
   allSkillIds = lib.attrNames catalog;
   enableList =
     if cfg.skills.enable == null then
       allSkillIds
     else
-      lib.unique (cfg.skills.enable ++ localSkillIds);
+      lib.unique (cfg.skills.enable ++ localSkillIds ++ distributionSkillIds);
 
   selectedSkills = agentLib.selectSkills {
     inherit catalog;
@@ -36,19 +37,60 @@ let
     name = "agent-skills-bundle";
   };
 
+  commandsSourcePath =
+    if distributionResult.commands != null then
+      distributionResult.commands
+    else if cfg.localCommandsPath != null && builtins.pathExists cfg.localCommandsPath then
+      cfg.localCommandsPath
+    else
+      null;
+
   # Commands bundle (supports subdirectories, copy files not symlink)
   commandsBundle =
-    if cfg.localCommandsPath != null && builtins.pathExists cfg.localCommandsPath then
+    if commandsSourcePath != null then
       pkgs.runCommand "agent-commands-bundle" {} ''
         mkdir -p $out
         # Copy entire directory structure preserving subdirectories
-        cp -r ${cfg.localCommandsPath}/. $out/
+        cp -r ${commandsSourcePath}/. $out/
         # Find and preserve only .md files (remove non-.md files)
         find $out -type f ! -name "*.md" -delete
         # Remove empty directories
         find $out -type d -empty -delete
       ''
     else null;
+
+  # Commands are distributed only to these targets.
+  commandTargetNames = [ "claude" "codex" "cursor" "opencode" "openclaw" ];
+
+  # These targets are strictly synced from ~/.config/agents (SSoT):
+  # existing commands directory content is cleared before linkGeneration.
+  strictCommandSyncTargetNames = [ "claude" "codex" "cursor" "opencode" "openclaw" ];
+
+  # Recursively find all .md files in commandsBundle.
+  commandFiles =
+    if commandsBundle != null then
+      let
+        findCommandFiles = dir: prefix:
+          let
+            entries = builtins.readDir dir;
+            processEntry = name: type:
+              let
+                path = "${dir}/${name}";
+                relPath = if prefix == "" then name else "${prefix}/${name}";
+              in
+                if type == "directory" then
+                  findCommandFiles path relPath
+                else if type == "regular" && lib.hasSuffix ".md" name then
+                  { ${relPath} = path; }
+                else
+                  {};
+          in
+            lib.foldl' (acc: entry:
+              acc // (processEntry entry.name entry.type)
+            ) {} (lib.mapAttrsToList (name: type: { inherit name type; }) entries);
+      in
+        findCommandFiles commandsBundle ""
+    else {};
 
 in {
   options.programs.agent-skills = {
@@ -68,13 +110,13 @@ in {
     localSkillsPath = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Path to local skills directory (skills-internal). Local skills override external on conflict.";
+      description = "Optional legacy override path for local skills. Deprecated: use distributionsPath as single source of truth.";
     };
 
     localCommandsPath = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Path to local commands directory (e.g., ./agents/commands-internal)";
+      description = "Optional legacy override path for local commands. Deprecated: use distributionsPath/commands.";
     };
 
     distributionsPath = lib.mkOption {
@@ -86,7 +128,7 @@ in {
     skills.enable = lib.mkOption {
       type = lib.types.nullOr (lib.types.listOf lib.types.str);
       default = null;
-      description = "List of skill IDs to enable (null = all discovered skills; local skills are always included).";
+      description = "List of skill IDs to enable (null = all discovered skills; local/distribution skills are always included).";
     };
 
     targets = lib.mkOption {
@@ -171,31 +213,59 @@ in {
         configDirCommands = lib.mapAttrsToList (_name: target: ''
           ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
         '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
-        commandsDirCommand = lib.optionalString (commandsBundle != null) ''
-          ${pkgs.coreutils}/bin/mkdir -p "$HOME/.claude/commands"
-        '';
-        rulesDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
-          if target.enable && (lib.attrNames distributionResult.rules) != [] then
+        commandsDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (targetName: target:
+          if target.enable && commandsBundle != null && lib.elem targetName commandTargetNames then
             let baseDir = lib.removeSuffix "/skills" target.dest;
             in ''
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/commands"
+            ''
+          else ""
+        ) cfg.targets);
+        commandsDirResetCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (targetName: target:
+          if target.enable && commandsBundle != null && lib.elem targetName strictCommandSyncTargetNames then
+            let baseDir = lib.removeSuffix "/skills" target.dest;
+            in ''
+              ${pkgs.coreutils}/bin/rm -rf "$HOME/${baseDir}/commands"
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/commands"
+            ''
+          else ""
+        ) cfg.targets);
+        rulesDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
+          if target.enable && (lib.attrNames distributionResult.rules) != [] then
+            let
+              baseDir = lib.removeSuffix "/skills" target.dest;
+              # Extract parent directories from rule IDs (e.g., "frontend/react" -> "frontend")
+              parentDirs = lib.unique (lib.filter (d: d != "") (lib.map (id:
+                let parts = lib.splitString "/" id;
+                in if lib.length parts > 1 then lib.head parts else ""
+              ) (lib.attrNames distributionResult.rules)));
+            in ''
               ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/rules"
+              ${lib.concatMapStringsSep "\n" (dir: ''
+                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/rules/${dir}"
+              '') parentDirs}
             ''
           else ""
         ) cfg.targets);
         agentsDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
           if target.enable && (lib.attrNames distributionResult.agents) != [] then
-            let baseDir = lib.removeSuffix "/skills" target.dest;
+            let
+              baseDir = lib.removeSuffix "/skills" target.dest;
+              # Extract parent directories from agent IDs (e.g., "kiro/spec-design" -> "kiro")
+              parentDirs = lib.unique (lib.filter (d: d != "") (lib.map (id:
+                let parts = lib.splitString "/" id;
+                in if lib.length parts > 1 then lib.head parts else ""
+              ) (lib.attrNames distributionResult.agents)));
             in ''
               ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents"
-              # Create kiro subdirectory if needed
-              ${lib.optionalString (lib.any (id: lib.hasPrefix "kiro/" id) (lib.attrNames distributionResult.agents)) ''
-                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents/kiro"
-              ''}
+              ${lib.concatMapStringsSep "\n" (dir: ''
+                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents/${dir}"
+              '') parentDirs}
             ''
           else ""
         ) cfg.targets);
       in
-        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ commandsDirCommand rulesDirCommands agentsDirCommands ]));
+        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ commandsDirResetCommands commandsDirCommands rulesDirCommands agentsDirCommands ]));
 
     # link targets: per-skill directory symlinks to Nix store (default)
     # Each skill dir becomes a symlink: ~/.claude/skills/agent-creator → /nix/store/.../agent-creator
@@ -229,40 +299,21 @@ in {
         ) cfg.targets
       ) cfg.configFiles)
       ++
-      # Commands distribution (recursive symlinks to ~/.claude/commands/)
-      [
-        (if commandsBundle != null then
+      # Commands distribution (recursive symlinks to target-specific commands directories)
+      (lib.mapAttrsToList (targetName: target:
+        if target.enable && commandsBundle != null && lib.elem targetName commandTargetNames then
           let
-            # Recursively find all .md files in commandsBundle
-            findCommandFiles = dir: prefix:
-              let
-                entries = builtins.readDir dir;
-                processEntry = name: type:
-                  let
-                    path = "${dir}/${name}";
-                    relPath = if prefix == "" then name else "${prefix}/${name}";
-                  in
-                    if type == "directory" then
-                      findCommandFiles path relPath
-                    else if type == "regular" && lib.hasSuffix ".md" name then
-                      { ${relPath} = path; }
-                    else
-                      {};
-              in
-                lib.foldl' (acc: entry:
-                  acc // (processEntry entry.name entry.type)
-                ) {} (lib.mapAttrsToList (name: type: { inherit name type; }) entries);
-
-            commandFiles = findCommandFiles commandsBundle "";
+            baseDir = lib.removeSuffix "/skills" target.dest;
           in
             lib.mapAttrs' (relPath: srcPath:
-              lib.nameValuePair ".claude/commands/${relPath}" {
+              lib.nameValuePair "${baseDir}/commands/${relPath}" {
                 source = srcPath;
+                force = true;
               }
             ) commandFiles
         else
-          {})
-      ]
+          {}
+      ) cfg.targets)
       ++
       # Rules distribution (symlinks to each target's rules directory)
       (lib.mapAttrsToList (_name: target:
@@ -275,6 +326,7 @@ in {
             rulesFiles = lib.mapAttrs' (ruleId: rule:
               lib.nameValuePair "${baseDir}/rules/${ruleId}.md" {
                 source = rule.path;
+                force = true;
               }
             ) distributionResult.rules;
           in
@@ -293,6 +345,7 @@ in {
             agentsFiles = lib.mapAttrs' (agentId: agent:
               lib.nameValuePair "${baseDir}/agents/${agentId}.md" {
                 source = agent.path;
+                force = true;
               }
             ) distributionResult.agents;
           in

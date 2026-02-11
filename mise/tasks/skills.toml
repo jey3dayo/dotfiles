@@ -27,10 +27,14 @@ run = "tsx ./agents/scripts/skills-add.ts"
 description = "スキル構成バリデーション"
 run = "nix run .#validate"
 
+["skills:validate:distribution"]
+description = "distributions/default が SSoT ルールに準拠しているか検証"
+run = "bash ./agents/scripts/validate-default-distribution.sh"
+
 ["skills:update"]
 description = "全ソース更新（flake inputs）"
 run = "nix flake update --flake ."
 
 ["skills:fix:bold-headings"]
-description = "skills-internal の太字見出しを ### へ変換"
+description = "distributions/default/skills の太字見出しを ### へ変換"
 run = "tsx ./agents/scripts/replace-bold-headings.ts"

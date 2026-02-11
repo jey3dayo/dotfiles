@@ -76,7 +76,7 @@ let
       rulesPath = distributionPath + "/rules";
       agentsPath = distributionPath + "/agents";
 
-      # Scan skills subdirectories (may contain symlinks to skills-internal, etc.)
+      # Scan skills subdirectories
       scannedSkills =
         if pathExists skillsPath then
           let
@@ -89,8 +89,11 @@ let
                   # Check if it's a skill directory directly
                   if pathExists (entryPath + "/SKILL.md") then
                     { ${name} = { id = name; path = entryPath; source = "distribution"; }; }
+                  # Support nested skill layout: <skill-id>/skills/SKILL.md
+                  else if pathExists (entryPath + "/skills/SKILL.md") then
+                    { ${name} = { id = name; path = entryPath + "/skills"; source = "distribution"; }; }
                   else
-                    # Or scan it as a source directory (e.g., skills-internal symlink)
+                    # Or scan it as a source directory
                     scanSource "distribution" entryPath
                 else {};
           in
@@ -98,7 +101,6 @@ let
               acc // (processSkillEntry entry.name entry.type)
             ) {} (mapAttrsToList (name: type: { inherit name type; }) skillDirs)
         else {};
-
       # Scan rules directory for .md files
       scannedRules =
         if pathExists rulesPath then
@@ -221,16 +223,16 @@ in {
             acc // scanned
       ) {} (attrNames sources);
 
-      # Scan local skills (skills-internal)
+      # Scan local skills (optional legacy override path)
       localSkills =
         if localPath != null && pathExists localPath then
           scanSource "local" localPath
         else {};
 
-      # Priority: local > external > distribution
-      # Distribution skills are lowest priority (can be overridden by external/local)
+      # Priority: local > distribution > external
+      # distributions/default is the internal single source of truth.
     in
-      distributionResult.skills // externalSkills // localSkills;
+      externalSkills // distributionResult.skills // localSkills;
 
   # Filter catalog by enable list
   # Returns: { skillId = { id, path, source }; ... } (only enabled ones)
@@ -323,7 +325,7 @@ in {
         in
         {
           id = s.id;
-          type = if s.source == "local" then "internal" else "external";
+          type = if s.source == "local" || s.source == "distribution" then "internal" else "external";
           url = "${meta.repoUrl}/tree/${branch}/${relPath}";
         }
       ) skillList;
