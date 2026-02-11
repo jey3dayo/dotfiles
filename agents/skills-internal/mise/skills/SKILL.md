@@ -256,7 +256,7 @@ shellcheck = "latest"
 - Cross-platform reproducibility
 - No global npm/pip pollution
 
-### Reference:
+### Reference
 
 ### 6. Advanced Features
 
@@ -343,7 +343,7 @@ When reviewing existing mise.toml:
 6. **Check Best Practices**: Verify against reference guidelines
 7. **Performance**: Consider compilation time and execution efficiency
 
-### Reference:
+### Reference
 
 ## Common Issues
 
@@ -433,7 +433,7 @@ Detailed documentation loaded as needed:
 - `config-templates.md` - Common mise.toml templates and patterns
 - `tool-management.md` - Tool version management, Centralized Package Management, npm/Python migration guides, troubleshooting
 
-### Usage:
+### Usage
 
 ## 🤖 Agent Integration
 

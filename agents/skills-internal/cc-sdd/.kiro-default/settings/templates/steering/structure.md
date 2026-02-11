@@ -9,13 +9,13 @@
 ### [Pattern Name]
 
 ### Location
-### Purpose
+
 ### Example
 
 ### [Pattern Name]
 
 ### Location
-### Purpose
+
 ### Example
 
 ## Naming Conventions

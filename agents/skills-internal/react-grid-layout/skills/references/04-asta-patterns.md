@@ -101,7 +101,7 @@ export const addDateTimeLayouts = (params: {
 };
 ```
 
-### Purpose:
+### Purpose
 
 #### 2. createDateLayouts
 
@@ -136,7 +136,7 @@ export const createDateLayouts = (params: {
 };
 ```
 
-### Purpose:
+### Purpose
 
 #### 3. registerLayouts
 
@@ -154,7 +154,7 @@ export const registerLayouts = (
 };
 ```
 
-### Purpose:
+### Purpose
 
 #### 4. filterValidLayouts
 
@@ -171,7 +171,7 @@ export const filterValidLayouts = (
 };
 ```
 
-### Purpose:
+### Purpose
 
 ### Layout Registry Pattern
 

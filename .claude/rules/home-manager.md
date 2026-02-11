@@ -203,6 +203,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 
 - Generation が上書きされ、`~/.config` の設定が反映されていない
 - **対策**: `~/.config` から再度 switch を実行
+
   ```bash
   home-manager switch --flake ~/.config --impure
   ```
@@ -225,10 +226,14 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 **原因3**: selection.enable の設定ミス
 
 - スキル名が catalog に存在しない、またはタイポ
+
 - **確認**: スキル名が catalog に存在するか
+
   ```bash
+
   mise run skills:report
   ```
+
 - **対策**: `nix/agent-skills-sources.nix` の `selection.enable` を修正
 
 **参考**: `~/.claude/rules/troubleshooting.md` の「Nix Home Manager でスキルが配布されない」セクション

@@ -18,8 +18,11 @@
 ## Overview
 
 2-3 paragraphs max
+
 ### Purpose
+
 ### Users
+
 ### Impact
 
 ### Goals
@@ -59,9 +62,11 @@ When modifying existing systems:
 ### Technology Stack and Design Decisions
 
 ### Generation Instructions
+
 Adapt content based on feature classification from Discovery & Analysis Phase:
 
 ### For New Features (greenfield)
+
 Generate Technology Stack section with ONLY relevant layers:
 
 - Include only applicable technology layers (e.g., skip Frontend for CLI tools, skip Infrastructure for libraries)
@@ -69,6 +74,7 @@ Generate Technology Stack section with ONLY relevant layers:
 - Include Architecture Pattern Selection if making architectural decisions
 
 ### For Extensions/Additions to Existing Systems
+
 Generate Technology Alignment section instead:
 
 - Document how feature aligns with existing technology stack
@@ -76,6 +82,7 @@ Generate Technology Alignment section instead:
 - Justify deviations from established patterns if necessary
 
 ### Key Design Decisions
+
 Generate 1-3 critical technical decisions that significantly impact the implementation.
 Each decision should follow this format:
 
@@ -84,6 +91,7 @@ Each decision should follow this format:
 - **Alternatives**: [2-3 other approaches considered]
 - **Selected Approach**: [What was chosen and how it works]
 - **Rationale**: [Why this is optimal for the specific context]
+
 - **Trade-offs**: [What we gain vs. what we sacrifice]
 
 Skip this entire section for simple CRUD operations or when following established patterns without deviation.
@@ -91,12 +99,14 @@ Skip this entire section for simple CRUD operations or when following establishe
 ## System Flows
 
 ### Flow Design Generation Instructions
+
 Generate appropriate flow diagrams ONLY when the feature requires flow visualization. Select from:
 
 - **Sequence Diagrams**: For user interactions across multiple components
 - **Process Flow Charts**: For complex algorithms, decision branches, or state machines
 - **Data Flow Diagrams**: For data transformations, ETL processes, or data pipelines
 - **State Diagrams**: For complex state transitions
+
 - **Event Flow**: For async/event-driven architectures
 
 Skip this section entirely for simple CRUD operations or features without complex flows.
@@ -105,6 +115,7 @@ When included, provide concise Mermaid diagrams specific to the actual feature r
 ## Requirements Traceability
 
 ### Traceability Generation Instructions
+
 Generate traceability mapping ONLY for complex features with multiple requirements or when explicitly needed for compliance/validation.
 
 When included, create a mapping table showing how each EARS requirement is realized:
@@ -123,6 +134,7 @@ Skip this section for simple features with straightforward 1:1 requirement-to-co
 ## Components and Interfaces
 
 ### Component Design Generation Instructions
+
 Structure components by domain boundaries or architectural layers. Generate only relevant subsections based on component type.
 Group related components under domain/layer headings for clarity.
 
@@ -209,6 +221,7 @@ With detailed schemas only for complex payloads
 ## Data Models
 
 ### Data Model Generation Instructions
+
 Generate only relevant data model sections based on the system's data requirements and chosen architecture.
 Progress from conceptual to physical as needed for implementation clarity.
 
@@ -302,6 +315,7 @@ Include conceptual diagram (Mermaid) only when relationships are complex enough 
 - Eventual consistency handling
 
 Skip any section not directly relevant to the feature being designed.
+
 Focus on aspects that influence implementation decisions.
 
 ## Error Handling
@@ -313,10 +327,13 @@ Concrete error handling patterns and recovery mechanisms for each error type.
 ### Error Categories and Responses
 
 ### User Errors
+
 ### System Errors
+
 ### Business Logic Errors
 
 ### Process Flow Visualization
+
 Include Mermaid flowchart only for complex error scenarios with business workflows.
 
 ### Monitoring
@@ -353,5 +370,10 @@ Error tracking, logging, and health monitoring implementation.
 ### Migration Strategy
 
 ### REQUIRED
+
+### Process
+
+
+## REQUIRED
 
 ### Process

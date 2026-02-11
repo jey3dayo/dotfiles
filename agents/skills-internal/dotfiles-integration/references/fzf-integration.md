@@ -1,8 +1,6 @@
 # 🔍 FZF Integration Guide
 
 ### 最終更新
-### 対象
-### タグ
 
 FZF (Fuzzy Finder) は dotfiles 全体で統一的なファジー検索体験を提供する中核コンポーネントです。
 
@@ -278,5 +276,5 @@ sheldon source --verbose
 ---
 
 ### Last Updated
-### Status
+
 ### Performance

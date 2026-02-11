@@ -72,7 +72,7 @@ All projects use these standard tag prefix formats:
 ### pr-labeler Project
 
 ### Required Tags
-### Optional Tags
+
 
 ### Category Tags
 

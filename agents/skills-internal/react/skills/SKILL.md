@@ -71,8 +71,11 @@ context7.query(
 ## Project-Specific Evaluation Criteria (⭐️ 5-Star System)
 
 ### Component Design
+
 ### Hooks Usage
+
 ### Performance
+
 ### Accessibility
 
 ## Review Workflow
@@ -82,8 +85,11 @@ context7.query(
 ## Common Issues (Project-Specific)
 
 ### Component Design
+
 ### Hooks
+
 ### Performance
+
 ### Accessibility
 
 ## 🤖 Agent Integration

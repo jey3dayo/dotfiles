@@ -594,4 +594,4 @@ When creating mise.toml:
 
 ---
 
-### Note:
+### Note

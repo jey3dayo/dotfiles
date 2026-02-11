@@ -1,7 +1,9 @@
 # 💻 Neovim Configuration Guide
 
 ### 最終更新
+
 ### 対象
+
 ### タグ
 
 100ms未満の高速起動と15言語対応のLSPを備えたモダンなLua設定です。
@@ -157,6 +159,7 @@ nvim/
 ## サポート言語
 
 ### プログラミング言語
+
 Java, PHP, Ruby, Swift, Kotlin, C#, Dart, Shell
 
 ### マークアップ

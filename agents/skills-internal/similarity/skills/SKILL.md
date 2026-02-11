@@ -456,4 +456,5 @@ similarity-ts --experimental-types --threshold 0.95 src/types/ > /tmp/similarity
 ---
 
 ### 使用タイミング
+
 ### 所要時間

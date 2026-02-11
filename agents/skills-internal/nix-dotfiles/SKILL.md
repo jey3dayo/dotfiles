@@ -334,8 +334,11 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 1. **別の flake から switch を実行した**
    - Generation が上書きされた
    - **対策**: `~/.config` から再度 switch を実行
-     ```bash
+
      home-manager switch --flake ~/.config --impure
+
+     ```
+
      ```
 
 2. **flake.nix と agent-skills-sources.nix の不整合**
@@ -354,10 +357,14 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 
 3. **selection.enable の設定ミス**
    - スキル名が catalog に存在しない、またはタイポ
+
    - **確認**:
+
      ```bash
+
      mise run skills:report
      ```
+
    - **対策**: `nix/agent-skills-sources.nix` の `selection.enable` を修正
 
 ### 詳細

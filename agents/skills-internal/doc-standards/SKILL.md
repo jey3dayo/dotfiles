@@ -58,7 +58,7 @@ Check for project configuration:
 ```
 
 ### If found
-### If not found
+
 
 ### Step 3: Load Project References
 

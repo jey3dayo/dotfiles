@@ -307,5 +307,7 @@ For issues or questions:
 ---
 
 ### Estimated Migration Time
+
 ### Difficulty
+
 ### Breaking Changes

@@ -8,7 +8,7 @@
 
 ### Requirement 1: {{REQUIREMENT_AREA_1}}
 
-### Objective:
+### Objective
 
 #### Acceptance Criteria
 
@@ -20,7 +20,7 @@
 
 ### Requirement 2: {{REQUIREMENT_AREA_2}}
 
-### Objective:
+### Objective
 
 #### Acceptance Criteria
 

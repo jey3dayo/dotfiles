@@ -420,7 +420,7 @@ Reference documentation and validation rules:
 
 ### Missing Configuration
 
-### Problem:
+### Problem
 
 ### Solution
 
@@ -433,7 +433,7 @@ cp templates/docs-manager-config.template.json .docs-manager-config.json
 
 ### Missing Metadata
 
-### Problem:
+### Problem
 
 ### Solution
 
@@ -449,7 +449,7 @@ Add complete metadata block at document top using configured format:
 
 ### Wrong Tag Format
 
-### Problem:
+### Problem
 
 ### Solution
 
@@ -459,7 +459,7 @@ Add complete metadata block at document top using configured format:
 
 ### Document Too Large
 
-### Problem:
+### Problem
 
 ### Solution
 
@@ -470,7 +470,7 @@ Add complete metadata block at document top using configured format:
 
 ### Broken Links
 
-### Problem:
+### Problem
 
 ### Solution
 

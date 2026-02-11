@@ -43,12 +43,12 @@ JIT Strategy: Fetch codebase files when needed, not upfront
 
 Show Subagent summary to user:
 
-### Bootstrap:
+### Bootstrap
 
 - Generated steering files: product.md, tech.md, structure.md
 - Review and approve as Source of Truth
 
-### Sync:
+### Sync
 
 - Updated steering files
 - Code drift warnings

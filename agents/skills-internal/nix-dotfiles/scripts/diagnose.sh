@@ -41,7 +41,7 @@ check_generation() {
     gen_epoch=$(date -d "$gen_time" +%s 2>/dev/null || echo 0)
     local now_epoch
     now_epoch=$(date +%s)
-    local age_hours=$(( (now_epoch - gen_epoch) / 3600 ))
+    local age_hours=$(((now_epoch - gen_epoch) / 3600))
 
     if [ "$age_hours" -gt 24 ]; then
       echo -e "  ${YELLOW}⚠${NC}  Warning: Generation is $age_hours hours old"
@@ -177,10 +177,10 @@ check_worktree() {
 
   local found=false
   for candidate in "${candidates[@]}"; do
-    if [ -d "$candidate" ] && \
-       [ -f "$candidate/flake.nix" ] && \
-       [ -f "$candidate/home.nix" ] && \
-       [ -f "$candidate/nix/dotfiles-module.nix" ]; then
+    if [ -d "$candidate" ] \
+      && [ -f "$candidate/flake.nix" ] \
+      && [ -f "$candidate/home.nix" ] \
+      && [ -f "$candidate/nix/dotfiles-module.nix" ]; then
       echo -e "${GREEN}[✓]${NC} Worktree check: Found at $candidate"
       found=true
       break

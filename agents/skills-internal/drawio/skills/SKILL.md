@@ -23,33 +23,33 @@ Trigger this skill when:
 
 Generate AWS infrastructure diagrams with official icons and proper layout.
 
-### Use when:
+### Use when
 
-### Outputs:
+### Outputs
 
 ### 2. Flowcharts
 
 Generate process flowcharts with standard shapes and proper routing.
 
-### Use when:
+### Use when
 
-### Outputs:
+### Outputs
 
 ### 3. Sequence Diagrams
 
 Generate interaction flow diagrams showing component communication.
 
-### Use when:
+### Use when
 
-### Outputs:
+### Outputs
 
 ### 4. ER Diagrams
 
 Generate entity-relationship diagrams for data modeling.
 
-### Use when:
+### Use when
 
-### Outputs:
+### Outputs
 
 ## How to Use This Skill
 
@@ -112,7 +112,7 @@ Generate entity-relationship diagrams for data modeling.
 <mxCell value="Text" style="...; fontFamily=Helvetica; fontSize=18; ..." />
 ```
 
-### IMPORTANT:
+### IMPORTANT
 
 #### Layout Requirements
 
@@ -273,7 +273,7 @@ Load these as needed using progressive disclosure:
 
 ### Issue: Font changes after PNG export
 
-### Cause:
+### Cause
 
 #### Solution
 
@@ -286,13 +286,13 @@ Add `fontFamily=Helvetica` to each.
 
 ### Issue: Arrows appear in front of shapes
 
-### Cause:
+### Cause
 
-### Solution:
+### Solution
 
 ### Issue: Japanese text wraps unexpectedly
 
-### Cause:
+### Cause
 
 #### Solution
 
@@ -302,7 +302,7 @@ width = charCount × 35 + 10
 
 ### Issue: Elements not aligned to grid
 
-### Cause:
+### Cause
 
 #### Solution
 
@@ -402,6 +402,6 @@ This skill creates professional draw.io diagrams by:
 3. **Following layout rules** (layer order, spacing, grid)
 4. **Outputting complete XML** with usage instructions
 
-### Key Success Factor:
+### Key Success Factor
 
 Load `references/xml-structure.md` first for every diagram, then load other references as needed based on diagram type and complexity.

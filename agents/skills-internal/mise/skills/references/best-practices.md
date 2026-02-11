@@ -43,7 +43,7 @@ rust = "stable"
 - They are **not deduplicated** across the whole DAG
 - Won't run in parallel with siblings
 
-### Use Case:
+### Use Case
 
 ### Example
 
@@ -68,7 +68,7 @@ run = [
 - Great for fan-out/fan-in graphs such as "test depends on lint & build"
 - Cannot encode post-steps; use `depends_post` for that
 
-### Use Case:
+### Use Case
 
 ### Example
 
@@ -235,7 +235,7 @@ run = "mise build && mise test"  # ❌ Nested mise process
 
 This launches a nested mise process without DAG awareness.
 
-### Solution:
+### Solution
 
 ```toml
 [tasks.good]
@@ -346,5 +346,6 @@ With this structure your mise.toml stays:
 
 ---
 
-### Source:
-### Documentation:
+### Source
+
+### Documentation

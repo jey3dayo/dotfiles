@@ -398,7 +398,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### arcSize:
+### arcSize
 
 ### Diamond (Decision)
 
@@ -464,7 +464,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -476,7 +476,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 2: Wrong Layer Order
 
@@ -502,7 +502,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </root>
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -526,7 +526,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </root>
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 3: Insufficient Width for Japanese
 
@@ -540,7 +540,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -552,7 +552,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 4: Missing page="0"
 
@@ -564,7 +564,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
               defaultFontFamily="Helvetica">
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -574,7 +574,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
               defaultFontFamily="Helvetica">
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 5: Wrong Font Size
 
@@ -588,7 +588,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -600,7 +600,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 6: Background Color
 
@@ -614,7 +614,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -626,7 +626,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 7: Grid Misalignment
 
@@ -640,7 +640,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -652,7 +652,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 8: Arrow Label Spacing
 
@@ -672,7 +672,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -690,7 +690,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxCell>
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 9: No defaultFontFamily
 
@@ -707,7 +707,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxGraphModel>
 ```
 
-### Problem:
+### Problem
 
 ✅ **After (Good):**
 
@@ -722,7 +722,7 @@ XMLの記述順序 = レンダリング順序 (z-index):
 </mxGraphModel>
 ```
 
-### Fixed:
+### Fixed
 
 ### Example 10: Complete Minimal Diagram
 

@@ -6,7 +6,7 @@ Comprehensive guide to the Agent Skills specification and how to create cross-pl
 
 ### Agent Skills
 
-### Official Specification:
+### Official Specification
 
 ### Core Philosophy
 
@@ -208,7 +208,7 @@ Agent Skills are designed for **efficient context management** through progressi
 - Builds internal index for task matching
 - Minimal memory footprint (< 1KB per skill)
 
-### Goal:
+### Goal
 
 ### Phase 2: Activation ⚡
 
@@ -229,7 +229,7 @@ Agent Skills are designed for **efficient context management** through progressi
 - Understands available resources
 - Plans execution strategy
 
-### Goal:
+### Goal
 
 ### Phase 3: Execution 🚀
 
@@ -245,7 +245,7 @@ Agent Skills are designed for **efficient context management** through progressi
 - Loads templates for generation
 - References detailed docs for complex tasks
 
-### Goal:
+### Goal
 
 ### Performance Benefits
 
@@ -255,7 +255,7 @@ Agent Skills are designed for **efficient context management** through progressi
 | Activation | 3-5 skills   | 5 KB             | 15-25 KB   |
 | Execution  | 1-2 skills   | 10-50 KB         | 10-100 KB  |
 
-### Result:
+### Result
 
 ## Cross-Platform Portability
 
@@ -299,13 +299,13 @@ The open format means:
 - Strong emphasis on references/ for context
 - Interactive script execution prompts
 
-### Best Practice:
+### Best Practice
 
 ## Skill Design Patterns
 
 ### Pattern 1: Information Skill (No Scripts)
 
-### Use Case:
+### Use Case
 
 ```
 skill-name/
@@ -315,11 +315,11 @@ skill-name/
     └── examples.md
 ```
 
-### Example:
+### Example
 
 ### Pattern 2: Automation Skill (With Scripts)
 
-### Use Case:
+### Use Case
 
 ```
 skill-name/
@@ -331,11 +331,11 @@ skill-name/
     └── templates/
 ```
 
-### Example:
+### Example
 
 ### Pattern 3: Hybrid Skill (Full Stack)
 
-### Use Case:
+### Use Case
 
 ```
 skill-name/
@@ -351,7 +351,7 @@ skill-name/
     └── examples/
 ```
 
-### Example:
+### Example
 
 ## Best Practices
 
@@ -505,9 +505,9 @@ typescript-guide/
 
 ### From Tool-Specific Docs to Skills
 
-### Before:
+### Before
 
-### After:
+### After
 
 ### Migration Steps
 
@@ -591,27 +591,27 @@ react-testing/
 
 ### Q: Do all skills need scripts/?
 
-### A:
+### A
 
 ### Q: How do I handle secrets in skills?
 
-### A:
+### A
 
 ### Q: Can skills depend on other skills?
 
-### A:
+### A
 
 ### Q: How do I version skills?
 
-### A:
+### A
 
 ### Q: Are skills language-specific?
 
-### A:
+### A
 
 ### Q: How do I test skills?
 
-### A:
+### A
 
 ## Conclusion
 

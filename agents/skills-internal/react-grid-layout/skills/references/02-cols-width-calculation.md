@@ -361,7 +361,7 @@ const layout = [
 ];
 ```
 
-### Problem:
+### Problem
 
 ### Solution
 
@@ -379,7 +379,7 @@ const layout = [];
 const cols = Math.max(...layout.map(({ x, w }) => x + w)); // -Infinity!
 ```
 
-### Problem:
+### Problem
 
 ### Solution
 

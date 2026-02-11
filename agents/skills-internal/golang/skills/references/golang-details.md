@@ -14,9 +14,13 @@ Assess adherence to Go community conventions and idiomatic patterns:
 - Interface names: `-er` suffix convention (`Reader`, `Writer`)
 
 ### ⭐️5
+
 ### ⭐️4
+
 ### ⭐️3
+
 ### ⭐️2
+
 ### ⭐️1
 
 #### Code Organization
@@ -97,9 +101,13 @@ if errors.As(err, &valErr) {
 ```
 
 ### ⭐️5
+
 ### ⭐️4
+
 ### ⭐️3
+
 ### ⭐️2
+
 ### ⭐️1
 
 ### 3. Concurrency
@@ -167,9 +175,13 @@ func consume(in <-chan int) {
 - `sync.Pool` for object reuse
 
 ### ⭐️5
+
 ### ⭐️4
+
 ### ⭐️3
+
 ### ⭐️2
+
 ### ⭐️1
 
 ### 4. Memory Management
@@ -220,9 +232,13 @@ func distance(p1, p2 *Point) float64 {
 - File handle management
 
 ### ⭐️5
+
 ### ⭐️4
+
 ### ⭐️3
+
 ### ⭐️2
+
 ### ⭐️1
 
 ### 5. Interface Design
@@ -259,9 +275,13 @@ type DataStore interface {
 - Clear interface purpose
 
 ### ⭐️5
+
 ### ⭐️4
+
 ### ⭐️3
+
 ### ⭐️2
+
 ### ⭐️1
 
 ### 6. Standard Library Usage
@@ -291,9 +311,13 @@ resp, err := http.Get(url)
 ```
 
 ### ⭐️5
+
 ### ⭐️4
+
 ### ⭐️3
+
 ### ⭐️2
+
 ### ⭐️1
 
 ## Go-Specific Anti-Patterns

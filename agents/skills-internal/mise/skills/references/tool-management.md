@@ -4,7 +4,7 @@ This document provides detailed guidance on managing language runtimes, CLI tool
 
 ## Core Philosophy: Centralized Package Management
 
-### Principle:
+### Principle
 
 ### Why Centralization?
 
@@ -227,7 +227,7 @@ bat = "latest"            # Cat with syntax highlighting
 - Require Node.js runtime
 - Often provide CLI commands
 
-### Prefix Syntax:
+### Prefix Syntax
 
 ### Examples
 
@@ -267,7 +267,7 @@ bat = "latest"            # Cat with syntax highlighting
 - Uses `pipx` for isolation (similar to `npx`)
 - Prevents dependency conflicts
 
-### Prefix Syntax:
+### Prefix Syntax
 
 ### Examples
 

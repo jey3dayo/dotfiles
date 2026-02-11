@@ -1,7 +1,9 @@
 # 🖥️ WezTerm Configuration
 
 ### 最終更新
+
 ### 対象
+
 ### タグ
 
 GPU加速対応のLuaベースモジュラーターミナル設定です。
