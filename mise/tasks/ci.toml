@@ -7,7 +7,7 @@ description = "すべての CI チェックをローカル実行（GitHub Action
 depends = [
   "check",
   "lint:links",
-  "test:lua",
+  "test",
   "skills:validate",
   "skills:validate:distribution",
 ]

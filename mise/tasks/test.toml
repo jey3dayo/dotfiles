@@ -3,6 +3,10 @@
 # ========================================
 # テスト実行タスク
 
+["test"]
+description = "テストを実行（集約）"
+depends = ["test:lua"]
+
 ["test:lua"]
 description = "Lua テストを実行(busted)"
 run = """
