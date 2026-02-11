@@ -93,8 +93,8 @@ let
                 else {};
           in
             builtins.foldl' (acc: entry:
-              acc // (processSkillEntry entry.name entry.value)
-            ) {} (builtins.attrValues (builtins.mapAttrs (name: type: { inherit name type; }) skillDirs))
+              acc // (processSkillEntry entry.name entry.type)
+            ) {} (mapAttrsToList (name: type: { inherit name type; }) skillDirs)
         else {};
     in {
       skills = scannedSkills;
