@@ -1,0 +1,4 @@
+display_name: "Create PR 📤"
+short_description: "Format, commit, and create GitHub PRs automatically"
+default_prompt: "Format my code, create appropriate commits, and make a PR"
+command_alias: "create-pr"
