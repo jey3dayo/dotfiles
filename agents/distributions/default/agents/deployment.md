@@ -50,10 +50,10 @@ color: green
 
 ### ASTA環境
 
-| 環境       | URL                           | CPU  | Memory | 用途         |
-| ---------- | ----------------------------- | ---- | ------ | ------------ |
-| Staging    | https://asta-stg.caad.isca.jp | 512  | 1024   | テスト・検証 |
-| Production | https://asta.caad.isca.jp     | 1024 | 2048   | 本番運用     |
+| 環境       | URL                             | CPU  | Memory | 用途         |
+| ---------- | ------------------------------- | ---- | ------ | ------------ |
+| Staging    | <https://asta-stg.caad.isca.jp> | 512  | 1024   | テスト・検証 |
+| Production | <https://asta.caad.isca.jp>     | 1024 | 2048   | 本番運用     |
 
 ### GitHub Actions ワークフロー
 
@@ -418,7 +418,7 @@ gh pr create \
   --title "Release v1.7.0"
 ```
 
-リリースPRが作成されました: CyberAgent-Infosys/caad-asta のリリースPR（pull/<number> を指定）
+リリースPRが作成されました: CyberAgent-Infosys/caad-asta のリリースPR（`pull/123` の形式で指定）
 
 【次のステップ】
 
