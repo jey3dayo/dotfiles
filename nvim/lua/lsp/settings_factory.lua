@@ -62,10 +62,19 @@ function M.create_formatter_server(server_name, overrides)
   local config = vim.deepcopy(base_configs.formatter)
 
   -- Add root_dir gating for formatter servers.
-  -- This keeps attach behavior project-local without relying on startup cwd.
+  -- Keep autostart as a function for compatibility with existing specs/callers.
+  -- NOTE: When called without a target directory, return true to avoid
+  -- startup-cwd based global disable decisions.
   if deps.config and deps.config.formatters and deps.config.formatters[server_name] then
     local formatter_config = deps.config.formatters[server_name]
     if formatter_config.config_files then
+      if deps.core_utils and deps.core_utils.has_config_files then
+        config.autostart = function(target_dir)
+          if not target_dir or target_dir == "" then return true end
+          return deps.core_utils.has_config_files(formatter_config.config_files, target_dir)
+        end
+      end
+
       -- Add root_dir detection
       if deps.utils and deps.utils.create_root_pattern then
         config.root_dir = deps.utils.create_root_pattern(formatter_config.config_files)
