@@ -15,8 +15,10 @@ argument-hint: <feature-name>
   - Provide clear visibility into progress
     </background_information>
 
-<instructions>
+## Instructions
+
 ## Core Task
+
 Generate status report for feature **$1** showing progress across all phases.
 
 ## Execution Steps
@@ -51,7 +53,6 @@ Create report in the language specified in spec.json covering:
 - Use language from spec.json
 - Calculate accurate completion percentages
 - Identify specific next action commands
-  </instructions>
 
 ## Tool Guidance
 

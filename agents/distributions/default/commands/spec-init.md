@@ -15,8 +15,10 @@ argument-hint: <project-description>
   - Provide clear path to next phase (requirements generation)
     </background_information>
 
-<instructions>
+## Instructions
+
 ## Core Task
+
 Generate a unique feature name from the project description ($ARGUMENTS) and initialize the specification structure.
 
 ## Execution Steps
@@ -38,7 +40,6 @@ Generate a unique feature name from the project description ($ARGUMENTS) and ini
 - Follow stage-by-stage development principles
 - Maintain strict phase separation
 - Only initialization is performed in this phase
-  </instructions>
 
 ## Tool Guidance
 

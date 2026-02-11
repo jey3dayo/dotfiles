@@ -9,7 +9,8 @@ I'll analyze your codebase to predict potential problems before they impact your
 
 ## Strategic Thinking Process
 
-<think>
+### Thinking Notes
+
 To make accurate predictions, I need to consider:
 
 1. **Pattern Recognition**
@@ -35,7 +36,6 @@ To make accurate predictions, I need to consider:
    - Look for patterns that break at 10x, 100x scale
    - Check for technical debt accumulation
    - Identify brittleness in integration points
-     </think>
 
 Based on this analysis framework, I'll use native tools for comprehensive analysis:
 

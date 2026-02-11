@@ -9,7 +9,8 @@ I'll analyze everything needed for your successful contribution based on your cu
 
 ## Strategic Thinking Process
 
-<think>
+### Thinking Notes
+
 For a successful contribution, I need to analyze:
 
 1. **Current Work Context**
@@ -36,7 +37,6 @@ For a successful contribution, I need to analyze:
    - Are there any lint warnings?
    - Is documentation updated?
    - Are commits well-organized?
-     </think>
 
 Based on this framework, I'll begin by detecting your context:
 

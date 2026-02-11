@@ -15,7 +15,8 @@ argument-hint: <project-description> [--auto]
   - All generated specs maintain quality comparable to manual workflow
     </background_information>
 
-<instructions>
+## Instructions
+
 ## ⚠️ CRITICAL: Automatic Mode Execution Rules
 
 **If `--auto` flag is present in `$ARGUMENTS`, you are in AUTOMATIC MODE.**
@@ -267,8 +268,6 @@ Output final completion summary (see Output Description section) and exit.
 - Any phase failure stops the workflow
 - Display error and current state
 - Suggest manual recovery command
-
-</instructions>
 
 ## Tool Guidance
 
