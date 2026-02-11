@@ -275,6 +275,7 @@ in {
             rulesFiles = lib.mapAttrs' (ruleId: rule:
               lib.nameValuePair "${baseDir}/rules/${ruleId}.md" {
                 source = rule.path;
+                force = true;
               }
             ) distributionResult.rules;
           in
@@ -293,6 +294,7 @@ in {
             agentsFiles = lib.mapAttrs' (agentId: agent:
               lib.nameValuePair "${baseDir}/agents/${agentId}.md" {
                 source = agent.path;
+                force = true;
               }
             ) distributionResult.agents;
           in
