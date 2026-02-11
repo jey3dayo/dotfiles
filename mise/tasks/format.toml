@@ -28,9 +28,9 @@ fi
 description = "Prettier でファイルをフォーマット（PRETTIER_FILES で対象を限定可能）"
 run = """
 if [ -n "${PRETTIER_FILES:-}" ]; then
-  prettier --write --ignore-unknown ${PRETTIER_FILES}
+  prettier --write --ignore-unknown --log-level error ${PRETTIER_FILES}
 else
-  prettier --write --ignore-unknown .
+  prettier --write --ignore-unknown --log-level error .
 fi
 """
 
