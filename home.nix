@@ -43,7 +43,7 @@
     enable = true;
 
     # Use distributions for bundled deployment (optional)
-    distributionsPath = ./agents/distributions/default;
+    # distributionsPath = ./agents/distributions/default;
 
     # Use skills-internal as local overrides to avoid external duplication conflicts
     localSkillsPath = ./agents/skills-internal;
