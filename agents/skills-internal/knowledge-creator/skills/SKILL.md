@@ -75,6 +75,12 @@ Guide through creation process
 | **Command** | Interactive operation     | User invocation | Project-specific       | Manual     | ⚠️ Optional       |
 | **Rules**   | Constraints & guidelines  | Always active   | Project-specific       | Enforced   | ❌ Not applicable |
 
+### Additional Knowledge Domains
+
+| Domain                      | Skill Reference       | Purpose                                                   | Keywords                                   |
+| --------------------------- | --------------------- | --------------------------------------------------------- | ------------------------------------------ |
+| **Distribution Management** | distributions-manager | Bundle creation, deployment architecture, Nix integration | distributions, bundle, symlink, deployment |
+
 ### Agent Skills Standard Structure
 
 ```
@@ -242,6 +248,18 @@ Based on classification, route to:
 - **Agent** → `agent-creator` skill
 - **Command** → `command-creator` skill
 - **Rules** → `rules-creator` skill
+
+### Special Routing Rules
+
+#### Distribution & Deployment
+
+For questions about distributions, bundles, or deployment:
+
+- **Bundle management** → `distributions-manager` skill
+- **Nix deployment issues** → `distributions-manager` skill (architecture reference)
+- **Symlink patterns** → `distributions-manager` skill
+- **Priority conflicts** → `distributions-manager` skill (priority-mechanism reference)
+- **Custom bundle creation** → `distributions-manager` skill (creating-bundles reference)
 
 ## Quick Start Examples
 

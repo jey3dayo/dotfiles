@@ -1,0 +1,133 @@
+# Distribution Bundle Structure Template
+
+## Directory Layout
+
+```
+distributions/<bundle-name>/
+├── skills/                          # Skill symlinks
+│   ├── skill-1 -> ../../../skills-internal/skill-1
+│   ├── skill-2 -> ../../../skills-internal/skill-2
+│   └── external-skill -> ../../../skills/external-skill
+├── commands/                        # Command symlinks
+│   ├── command-1 -> ../../../commands-internal/command-1
+│   └── command-group -> ../../../commands-internal/command-group/
+│       ├── subcommand-1/
+│       │   └── command.ts
+│       └── subcommand-2/
+│           └── command.ts
+├── config/                          # Optional configuration
+│   ├── shared-rules.md              # Shared Claude Code rules
+│   ├── bundle-config.json           # Bundle metadata
+│   └── templates/                   # Reusable templates
+│       └── template.md
+└── README.md                        # Bundle documentation
+```
+
+---
+
+## Symlink Patterns
+
+### Skills
+
+```bash
+# From: distributions/<bundle-name>/skills/
+# To:   skills-internal/<skill-name>/
+cd distributions/<bundle-name>/skills
+ln -s ../../../skills-internal/<skill-name> ./
+```
+
+### Commands
+
+```bash
+# Single command
+cd distributions/<bundle-name>/commands
+ln -s ../../../commands-internal/<command-name> ./
+
+# Command group (with subcommands)
+ln -s ../../../commands-internal/<command-group> ./
+```
+
+---
+
+## File Requirements
+
+### Required Files
+
+- **README.md**: Bundle purpose, contents, installation
+- **skills/**: At least one skill symlink
+- **commands/**: At least one command symlink
+
+### Optional Files
+
+- **config/shared-rules.md**: Claude Code instructions for bundle users
+- **config/bundle-config.json**: Metadata (version, maintainers, etc.)
+- **config/templates/**: Reusable templates for skills/commands
+
+---
+
+## Naming Conventions
+
+- **Bundle name**: lowercase-with-hyphens (e.g., `frontend-tools`, `backend-utils`)
+- **README.md**: Required at bundle root
+- **config/**: Optional, use for shared configurations only
+
+---
+
+## Example: Minimal Bundle
+
+```
+distributions/minimal-bundle/
+├── skills/
+│   └── my-skill -> ../../../skills-internal/my-skill
+├── commands/
+│   └── my-command -> ../../../commands-internal/my-command
+└── README.md
+```
+
+---
+
+## Example: Complete Bundle
+
+```
+distributions/complete-bundle/
+├── skills/
+│   ├── react -> ../../../skills-internal/react
+│   ├── ui-ux-pro-max -> ../../../skills-internal/ui-ux-pro-max
+│   └── external-skill -> ../../../skills/external-skill
+├── commands/
+│   ├── polish -> ../../../commands-internal/polish
+│   ├── review -> ../../../commands-internal/review
+│   └── kiro -> ../../../commands-internal/kiro/
+├── config/
+│   ├── shared-rules.md
+│   ├── bundle-config.json
+│   └── templates/
+│       └── component-template.tsx
+└── README.md
+```
+
+---
+
+## Validation Commands
+
+```bash
+# Check structure
+tree -L 2 distributions/<bundle-name>/
+
+# Validate symlinks
+find distributions/<bundle-name>/ -type l -exec test ! -e {} \; -print
+
+# Count skills
+ls -1 distributions/<bundle-name>/skills/ | wc -l
+
+# Count commands
+find distributions/<bundle-name>/commands/ -name "command.ts" | wc -l
+```
+
+---
+
+## Related
+
+- **README.template.md**: Template for bundle README
+- **creating-bundles.md**: Step-by-step creation guide
+- **checklist.md**: QA checklist for validation

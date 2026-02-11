@@ -82,7 +82,19 @@ argument-hint: [required-arg] [--optional-flag]
 1. 目的と入力/出力を定義
 2. テンプレートに沿って作成
 3. テストと移行手順を確認
+4. **配布方法を検討** - distributions-manager スキルを参照
+
+## 配布方法
+
+コマンド作成後の配布については `distributions-manager` スキルを参照してください:
+
+- **Custom bundle への追加**: 特定のワークフロー向けバンドル作成
+- **Default bundle への統合**: 標準配布への追加
+- **Subdirectory structure の維持**: コマンドグループの整合性保持
+
+詳細: `distributions-manager` スキルの `references/creating-bundles.md`
 
 ## 関連リソース
 
 - `references/command-details.md`
+- **distributions-manager** スキル - コマンド配布とバンドル管理
