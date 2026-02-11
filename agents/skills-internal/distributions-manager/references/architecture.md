@@ -33,7 +33,7 @@ scanDistribution = distributionPath:
       foldl' (a: b: a // b) {} scannedResults;
 ```
 
-**Key features**:
+### Key features
 
 - **Directory/symlink support**: Handles both direct directories and symlinks
 - **Recursive scanning**: Uses `scanSource` for nested structures
@@ -59,7 +59,7 @@ discoverCatalog = { distributionsPath ? null, ... }:
     distributionSkills // externalSkills // localSkills;
 ```
 
-**Priority mechanism**: Right-associative `//` operator ensures Local overwrites External, which overwrites Distribution.
+### Priority mechanism
 
 ---
 
@@ -80,7 +80,7 @@ processCommandEntry = name: type:
     else {};
 ```
 
-**Subdirectory example**:
+### Subdirectory example
 
 ```
 distributions/default/commands/
@@ -120,7 +120,7 @@ distributionSkills = scanDistribution (distributionsPath + "/skills");
 # Nix sees: /home/j138/.config/agents/skills-internal/my-skill
 ```
 
-**Key insight**: Symlinks are dereferenced by the filesystem, so Nix only sees the target paths. This prevents evaluation loops.
+### Key insight
 
 ---
 

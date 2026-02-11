@@ -35,7 +35,7 @@ WIN_HOST_IP=$(ip route show default | grep -oP '(?<=via )\d+(\.\d+){3}')
 echo $WIN_HOST_IP
 ```
 
-**よくある間違い:** WSL2 自身の IP(`ip addr show eth0`)を使うと接続できない。
+### よくある間違い:
 
 ## `--user-data-dir` は Windows パスにする(必須)
 
@@ -49,7 +49,7 @@ WSL のパス(`/home/...`)を指定すると Chrome がデータディレクト�
 --user-data-dir="$HOME/.chrome-debug-profile"
 ```
 
-**自動取得:**
+### 自動取得:
 
 ```bash
 WIN_USER=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')

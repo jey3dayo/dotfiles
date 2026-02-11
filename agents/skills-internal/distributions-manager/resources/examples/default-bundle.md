@@ -24,7 +24,7 @@ distributions/default/
 
 #### Mixed Sources
 
-**From skills-internal/ (35 skills)**:
+### From skills-internal/ (35 skills)
 
 - agent-creator
 - chrome-debug
@@ -62,7 +62,7 @@ distributions/default/
 - agent-browser (MCP integration)
 - cc-sdd (Kiro spec-driven development)
 
-**From skills/ (7 skills)**:
+### From skills/ (7 skills)
 
 External skills (symlinked to `skills/` directory):
 
@@ -107,7 +107,7 @@ From `commands-internal/`:
 
 #### Command Groups (7 groups)
 
-**1. kiro/** (9 subcommands):
+### 1. kiro/
 
 - spec-design
 - spec-impl
@@ -122,12 +122,12 @@ From `commands-internal/`:
 - validate-gap
 - validate-impl
 
-**2. clean/** (2 subcommands):
+### 2. clean/
 
 - files
 - full
 
-**3. shared/** (11 utilities):
+### 3. shared/
 
 - agent-selector
 - claude-metadata-analyzer
@@ -141,11 +141,11 @@ From `commands-internal/`:
 - skill-mapping-engine
 - task-context
 
-**4. code-review/** (1 subcommand):
+### 4. code-review/
 
 - code-review
 
-**5. document-skills/** (13 skills):
+### 5. document-skills/
 
 - algorithmic-art
 - brand-guidelines
@@ -163,7 +163,7 @@ From `commands-internal/`:
 - webapp-testing
 - xlsx
 
-**6. frontend-design/** (1 subcommand):
+### 6. frontend-design/
 
 - frontend-design
 
@@ -177,7 +177,7 @@ From `commands-internal/`:
 distributions/default/skills/react -> ../../../skills-internal/react
 ```
 
-**Count**: ~35 skills
+### Count
 
 ---
 
@@ -187,7 +187,7 @@ distributions/default/skills/react -> ../../../skills-internal/react
 distributions/default/skills/document-skills:skill-creator -> ../../../skills/document-skills:skill-creator
 ```
 
-**Count**: ~7 skills
+### Count
 
 ---
 
@@ -197,7 +197,7 @@ distributions/default/skills/document-skills:skill-creator -> ../../../skills/do
 distributions/default/commands/kiro -> ../../../commands-internal/kiro
 ```
 
-**Count**: ~7 command groups
+### Count
 
 ---
 
@@ -261,7 +261,7 @@ skills/react/                 (External)
 distributions/default/skills/react/ (Distribution)
 ```
 
-**Deployed**: `skills-internal/react/` (Local wins)
+### Deployed
 
 ---
 
@@ -271,7 +271,7 @@ distributions/default/skills/react/ (Distribution)
 distributions/default/skills/custom-skill/
 ```
 
-**Deployed**: `distributions/default/skills/custom-skill/` (No conflicts)
+### Deployed
 
 ---
 
@@ -318,7 +318,7 @@ After changes, update `distributions/default/README.md` with new counts and desc
 | Config         | 0 (not used)        |
 | **Total**      | ~29,400             |
 
-**Note**: Progressive disclosure ensures only relevant skills/commands are loaded per session.
+### Note
 
 ---
 

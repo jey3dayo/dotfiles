@@ -10,7 +10,7 @@ Distributions use symlinks to reference skills and commands without duplication.
 
 ### 1. Relative Paths
 
-**Always use relative paths**, never absolute:
+### Always use relative paths
 
 ```bash
 # ✅ Correct (relative)
@@ -20,7 +20,7 @@ ln -s ../../../skills-internal/my-skill ./
 ln -s /home/j138/.config/agents/skills-internal/my-skill ./
 ```
 
-**Rationale**:
+### Rationale
 
 - Portable across environments
 - Nix-friendly (works in `/nix/store/`)
@@ -38,7 +38,7 @@ distributions/default/skills/my-skill → ../../../skills-internal/my-skill
       1           2       3 (../ levels)
 ```
 
-**Template**:
+### Template
 
 ```bash
 # From: distributions/<bundle>/skills/
@@ -68,7 +68,7 @@ ls -la my-skill
 test -e my-skill && echo "Valid" || echo "Broken"
 ```
 
-**Automation**:
+### Automation
 
 ```bash
 # Find all broken symlinks
@@ -81,21 +81,21 @@ find distributions/ -type l -exec test ! -e {} \; -print
 
 ### Pattern 1: Direct Skill Link
 
-**Use case**: Single skill from `skills-internal/`
+### Use case
 
 ```bash
 cd distributions/my-bundle/skills
 ln -s ../../../skills-internal/react ./
 ```
 
-**Nix processing**:
+### Nix processing
 
 ```nix
 # Nix sees:
 { react = { id = "react"; path = /path/to/skills-internal/react; source = "distribution"; }; }
 ```
 
-**Validation**:
+### Validation
 
 ```bash
 test -f ../../../skills-internal/react/SKILL.md
@@ -105,27 +105,27 @@ test -f ../../../skills-internal/react/SKILL.md
 
 ### Pattern 2: External Skill Link
 
-**Use case**: Skill from `skills/` (external sources)
+### Use case
 
 ```bash
 cd distributions/my-bundle/skills
 ln -s ../../../skills/external-skill ./
 ```
 
-**Priority note**: If same skill exists in `skills-internal/`, local version takes precedence (Local > External > Distribution).
+### Priority note
 
 ---
 
 ### Pattern 3: Command Directory Link
 
-**Use case**: Command with subcommands (e.g., `kiro/`)
+### Use case
 
 ```bash
 cd distributions/my-bundle/commands
 ln -s ../../../commands-internal/kiro ./
 ```
 
-**Structure**:
+### Structure
 
 ```
 commands-internal/kiro/
@@ -137,9 +137,9 @@ commands-internal/kiro/
     └── command.ts
 ```
 
-**Result**: 3 commands (`kiro:spec-init`, `kiro:spec-tasks`, `kiro:spec-impl`)
+### Result
 
-**Nix processing**:
+### Nix processing
 
 ```nix
 # Nix recursively scans kiro/
@@ -154,7 +154,7 @@ commands-internal/kiro/
 
 ### Pattern 4: Nested Skill Links (Future)
 
-**Use case**: Organize skills in subdirectories
+### Use case
 
 ```bash
 cd distributions/my-bundle/skills
@@ -164,9 +164,9 @@ ln -s ../../../../skills-internal/react ./
 ln -s ../../../../skills-internal/ui-ux-pro-max ./
 ```
 
-**Note**: Path depth increases by 1 (`../` → `../../../../`)
+### Note
 
-**Validation**:
+### Validation
 
 ```bash
 # Check from nested location
@@ -185,7 +185,7 @@ test -f ../../../../skills-internal/react/SKILL.md
 ln -s /home/j138/.config/agents/skills-internal/my-skill ./
 ```
 
-**Problem**: Breaks in Nix environments, not portable.
+### Problem
 
 ---
 
@@ -196,7 +196,7 @@ ln -s /home/j138/.config/agents/skills-internal/my-skill ./
 cp -r ../../../skills-internal/my-skill ./
 ```
 
-**Problem**: Duplication, no updates, maintenance burden.
+### Problem
 
 ---
 
@@ -208,7 +208,7 @@ cp -r ../../../skills-internal/my-skill ./
 # distributions/default/skills/my-skill → skills-internal/my-skill/
 ```
 
-**Problem**: Evaluation loop (prevented by static scanning in Nix).
+### Problem
 
 ---
 
@@ -219,7 +219,7 @@ cp -r ../../../skills-internal/my-skill ./
 ln -s ../../../distributions/other-bundle/skills/my-skill ./
 ```
 
-**Problem**: Creates dependency between distributions, defeats purpose.
+### Problem
 
 ---
 
@@ -237,7 +237,7 @@ path = /nix/store/.../skills-internal/my-skill
 path = /home/j138/.config/agents/skills-internal/my-skill
 ```
 
-**Key insight**: Nix only sees **resolved paths**, not the symlink itself.
+### Key insight
 
 ---
 
@@ -253,7 +253,7 @@ else if type == "symlink" then
   scanSource "distribution" entryPath
 ```
 
-**Behavior**:
+### Behavior
 
 - **Skill directory symlink**: Treat as single skill (if `SKILL.md` exists)
 - **Non-skill directory symlink**: Recurse into subdirectories
@@ -270,7 +270,7 @@ else if type == "symlink" then
 type == "directory" || type == "symlink"
 ```
 
-**Equivalence**: Directories and symlinks are processed identically (both can contain `SKILL.md`).
+### Equivalence
 
 ---
 

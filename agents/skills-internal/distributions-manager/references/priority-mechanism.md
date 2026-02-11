@@ -12,7 +12,7 @@ The distributions layer introduces a three-tier priority system for skill and co
 Local > External > Distribution
 ```
 
-**Meaning**:
+### Meaning
 
 - **Local** (`skills-internal/`, `commands-internal/`): Highest priority, overwrites all
 - **External** (`skills/`): Medium priority, overwrites Distribution
@@ -36,7 +36,7 @@ discoverCatalog = { distributionsPath, ... }:
     distributionSkills // externalSkills // localSkills;
 ```
 
-**Evaluation order**:
+### Evaluation order
 
 ```nix
 # Step 1: Merge Distribution and External
@@ -45,7 +45,7 @@ temp = distributionSkills // externalSkills;
 final = temp // localSkills;
 ```
 
-**Result**: Local entries overwrite External, which overwrites Distribution.
+### Result
 
 ---
 
@@ -59,7 +59,7 @@ skills/react/                        (External)
 skills-internal/react/               (Local)
 ```
 
-**Resolution**:
+### Resolution
 
 ```nix
 {
@@ -67,7 +67,7 @@ skills-internal/react/               (Local)
 }
 ```
 
-**Winner**: Local (`skills-internal/react`)
+### Winner
 
 ---
 
@@ -78,7 +78,7 @@ distributions/default/skills/ui-ux-pro-max/  (Distribution)
 skills/ui-ux-pro-max/                        (External)
 ```
 
-**Resolution**:
+### Resolution
 
 ```nix
 {
@@ -86,7 +86,7 @@ skills/ui-ux-pro-max/                        (External)
 }
 ```
 
-**Winner**: External (`skills/ui-ux-pro-max`)
+### Winner
 
 ---
 
@@ -96,7 +96,7 @@ skills/ui-ux-pro-max/                        (External)
 distributions/default/skills/custom-skill/  (Distribution)
 ```
 
-**Resolution**:
+### Resolution
 
 ```nix
 {
@@ -104,7 +104,7 @@ distributions/default/skills/custom-skill/  (Distribution)
 }
 ```
 
-**Winner**: Distribution (no conflicts)
+### Winner
 
 ---
 
@@ -112,9 +112,9 @@ distributions/default/skills/custom-skill/  (Distribution)
 
 ### Use Case 1: Override Distribution Default
 
-**Scenario**: Distribution provides `react` skill, but you want to use a custom version.
+### Scenario
 
-**Solution**:
+### Solution
 
 ```bash
 # Create local override
@@ -128,9 +128,9 @@ cp -r distributions/default/skills/react/ skills-internal/react/
 
 ### Use Case 2: Test External Skill Before Localizing
 
-**Scenario**: Test an external skill from `skills/` before adding to `skills-internal/`.
+### Scenario
 
-**Solution**:
+### Solution
 
 ```bash
 # Add to skills/ (External)
@@ -147,9 +147,9 @@ mv skills/my-skill skills-internal/
 
 ### Use Case 3: Distribution as Fallback
 
-**Scenario**: Provide default skills in distribution, allow users to override locally.
+### Scenario
 
-**Solution**:
+### Solution
 
 ```bash
 # Distribution provides baseline
@@ -173,7 +173,7 @@ distributions/ → skills-internal/ → distributions/ (loop)
 
 ### Solution: Static Scanning
 
-**Distributions are scanned BEFORE sources**:
+### Distributions are scanned BEFORE sources
 
 ```nix
 # Scan order
@@ -182,7 +182,7 @@ distributions/ → skills-internal/ → distributions/ (loop)
 3. localSkills = scanSource(...)
 ```
 
-**Key insight**: Distributions use **static paths** (symlinks resolve at filesystem level), preventing evaluation loops.
+### Key insight
 
 ---
 
@@ -280,9 +280,9 @@ distributions/default/skills/react → ../../../skills-internal/react
 distributions/default/skills/react-copy → ../../../skills-internal/react
 ```
 
-**Result**: Two entries in catalog (`react`, `react-copy`), both pointing to same source.
+### Result
 
-**Behavior**: Allowed, but creates duplication (avoid by using single symlink).
+### Behavior
 
 ---
 
@@ -292,14 +292,14 @@ distributions/default/skills/react-copy → ../../../skills-internal/react
 distributions/default/skills/my-skill → ../../../skills/my-skill
 ```
 
-**Priority**:
+### Priority
 
 - Distribution entry: `source = "distribution"`
 - External entry: `source = "external"`
 
-**Winner**: External (overwrites distribution in merge).
+### Winner
 
-**Effect**: Symlink is redundant (external would be loaded anyway).
+### Effect
 
 ---
 
@@ -309,7 +309,7 @@ distributions/default/skills/my-skill → ../../../skills/my-skill
 distributions/default/skills/broken → ../../../skills-internal/nonexistent
 ```
 
-**Nix behavior**:
+### Nix behavior
 
 ```nix
 pathExists (entryPath + "/SKILL.md")
@@ -318,7 +318,7 @@ pathExists (entryPath + "/SKILL.md")
 # Entry is skipped, no error
 ```
 
-**Validation**: Use validation scripts to catch before deployment.
+### Validation
 
 ---
 

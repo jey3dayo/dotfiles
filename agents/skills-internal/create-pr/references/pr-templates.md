@@ -14,14 +14,14 @@ Phase 4: GitHub PR作成時のテンプレート検出とPR本文生成の完全
 
 PR本文は、リポジトリの `.github/PULL_REQUEST_TEMPLATE.md` を検出して使用するか、デフォルトの日本語フォーマットで生成します。
 
-**目的**:
+### 目的
 
 - リポジトリのPRテンプレートを尊重
 - 日本語で分かりやすいPR本文を生成
 - コミット内容から自動的にサマリーを作成
 - レビュアーが必要な情報を網羅
 
-**実行タイミング**: Phase 4（PR作成時）
+### 実行タイミング
 
 ## PRテンプレート検出
 
@@ -81,7 +81,7 @@ def generate_pr_body_with_template(commit_groups, branch_name, options):
         return generate_pr_body(commit_groups, branch_name)
 ```
 
-**オプション**:
+### オプション
 
 - `--template <path>`: カスタムテンプレートパスを指定
 - `--no-template`: テンプレートを使用せずデフォルトフォーマットを強制
@@ -273,7 +273,7 @@ def generate_changes_section(commit_groups):
 
 ### テンプレート例
 
-**元のテンプレート**:
+### 元のテンプレート
 
 ```markdown
 ## Description
@@ -293,7 +293,7 @@ def generate_changes_section(commit_groups):
 <!-- Checklist -->
 ```
 
-**埋め込み後**:
+### 埋め込み後
 
 ```markdown
 ## Description
@@ -331,14 +331,14 @@ def generate_changes_section(commit_groups):
 
 ### 概要セクション
 
-**目的**: PR全体の変更を一目で把握できるサマリー
+### 目的
 
-**構成**:
+### 構成
 
 - コミットメッセージの一覧（絵文字付き）
 - 変更の意図を簡潔に説明
 
-**例**:
+### 例
 
 ```markdown
 ## 概要
@@ -350,15 +350,15 @@ def generate_changes_section(commit_groups):
 
 ### 変更内容セクション
 
-**目的**: 詳細な変更ファイルとコミットの内訳
+### 目的
 
-**構成**:
+### 構成
 
 - コミット数の表示
 - 変更タイプごとのファイルリスト
 - 5ファイルを超える場合は省略表示
 
-**例**:
+### 例
 
 ```markdown
 ## 変更内容
@@ -381,15 +381,15 @@ def generate_changes_section(commit_groups):
 
 ### テスト計画セクション
 
-**目的**: レビュアーがテストすべき項目を明示
+### 目的
 
-**構成**:
+### 構成
 
 - チェックボックス形式
 - 標準的なテスト項目
 - 機能固有のテスト項目（必要に応じて）
 
-**例**:
+### 例
 
 ```markdown
 ## テスト計画
@@ -402,14 +402,14 @@ def generate_changes_section(commit_groups):
 
 ### チェックリストセクション
 
-**目的**: PR作成者がクリアすべき項目
+### 目的
 
-**構成**:
+### 構成
 
 - 自動的にチェック済み: コードフォーマット
 - レビュアー確認項目: テスト、ドキュメント、破壊的変更
 
-**例**:
+### 例
 
 ```markdown
 ## チェックリスト
@@ -422,4 +422,4 @@ def generate_changes_section(commit_groups):
 
 ---
 
-**参照**: このドキュメントはPhase 4のPRテンプレート処理の詳細仕様です。実行フローの概要は [SKILL.md](../SKILL.md) を参照してください。
+### 参照

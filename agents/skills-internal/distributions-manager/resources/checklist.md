@@ -48,7 +48,7 @@
 - [ ] All skill targets contain `SKILL.md`
 - [ ] Path depth is correct (3 levels: `../../../`)
 
-**Validation command**:
+### Validation command
 
 ```bash
 find distributions/<bundle-name>/skills/ -type l -exec sh -c '
@@ -65,7 +65,7 @@ find distributions/<bundle-name>/skills/ -type l -exec sh -c '
 - [ ] All command targets contain `command.ts` (directly or in subdirectories)
 - [ ] Path depth is correct (3 levels: `../../../`)
 
-**Validation command**:
+### Validation command
 
 ```bash
 find distributions/<bundle-name>/commands/ -type l -exec sh -c '
@@ -78,7 +78,7 @@ find distributions/<bundle-name>/commands/ -type l -exec sh -c '
 
 - [ ] No broken symlinks detected
 
-**Validation command**:
+### Validation command
 
 ```bash
 find distributions/<bundle-name>/ -type l -exec test ! -e {} \; -print
@@ -151,7 +151,7 @@ home-manager switch --flake ~/.config --impure
 - [ ] Skills symlinks created in `~/.claude/skills/`
 - [ ] Commands available in catalog
 
-**Verification**:
+### Verification
 
 ```bash
 ls -la ~/.claude/skills/ | grep -f <(ls -1 distributions/<bundle-name>/skills/)
@@ -178,7 +178,7 @@ mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "distributi
 - [ ] Local overrides take precedence (if applicable)
 - [ ] External overrides take precedence over distribution (if applicable)
 
-**Check source attribution**:
+### Check source attribution
 
 ```bash
 mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
@@ -321,7 +321,7 @@ find "$BUNDLE_PATH/commands/" -type l -exec sh -c '
 echo "✅ Validation complete"
 ```
 
-**Usage**:
+### Usage
 
 ```bash
 bash resources/scripts/validate-bundle.sh my-bundle

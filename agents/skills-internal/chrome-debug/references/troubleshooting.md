@@ -4,9 +4,9 @@
 
 ### Chrome が「データディレクトリにアクセスできない」
 
-**原因:** `--user-data-dir` に WSL パスを指定している
+### 原因:
 
-**解決:** Windows パス(`C:\...`)に変更
+### 解決:
 
 ```bash
 # 正しい
@@ -18,9 +18,9 @@
 
 ### `wget http://localhost:9222` が接続できない
 
-**原因:** WSL2 のポートフォワーディングが効いていない
+### 原因:
 
-**解決:** Windows ホスト IP(デフォルトゲートウェイ)を使う
+### 解決:
 
 ```bash
 WIN_HOST_IP=$(ip route show default | grep -oP '(?<=via )\d+(\.\d+){3}')
@@ -32,9 +32,9 @@ powershell.exe -Command "Test-NetConnection -ComputerName localhost -Port 9222"
 
 ### MCP Chrome DevTools がタイムアウト
 
-**原因:** WSL2 自身の IP(`eth0`)を使っている。Chrome は Windows 側で動作している
+### 原因:
 
-**解決:** Windows ホスト IP で MCP を再登録し、Claude Code を再起動
+### 解決:
 
 ```bash
 WIN_HOST_IP=$(ip route show default | grep -oP '(?<=via )\d+(\.\d+){3}')
@@ -52,9 +52,9 @@ npm install -g agent-browser
 
 ### snapshot で要素が見つからない
 
-**原因:** ページがまだ読み込み中、または JavaScript が実行されていない
+### 原因:
 
-**解決:**
+### 解決:
 
 ```bash
 agent-browser wait --load networkidle
@@ -64,38 +64,38 @@ agent-browser snapshot -i
 
 ### ref が無効(stale ref エラー)
 
-**原因:** ページ遷移や DOM の変更後に古い ref を使用
+### 原因:
 
-**解決:** 操作後は必ず `agent-browser snapshot -i` で ref を更新
+### 解決:
 
 ### WSL2 で headed モードが表示されない
 
-**原因:** X Server が設定されていない
+### 原因:
 
-**解決:** headless モード(デフォルト)を使用し、snapshot とスクリーンショットで確認
+### 解決:
 
 ## 認証・セッション
 
 ### headless でのリダイレクトループ
 
-**症状:** headless ブラウザ(未ログイン/セッションなし)で認証が必要なページに直接アクセスすると、認証ハンドシェイクが失敗してループすることがある
+### 症状:
 
-**確認:**
+### 確認:
 
 ```bash
 agent-browser get url  # URL が変わり続けていないか
 ```
 
-**対処:**
+### 対処:
 
 - 実ブラウザで問題がなければ、headless 固有の問題として無視可能
 - agent-browser のセッション保存(`state save/load`)を活用してログイン状態を維持
 
 ### セッションが保持されない
 
-**原因:** Cookie やローカルストレージが失われている
+### 原因:
 
-**対処:**
+### 対処:
 
 ```bash
 # セッション状態を保存してから再利用

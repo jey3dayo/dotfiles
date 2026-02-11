@@ -29,22 +29,22 @@ WSL2 環境でのリモートデバッグ、MCP Chrome DevTools 連携、agent-b
 
 Chrome をリモートデバッグモードで起動し、MCP 経由で操作する。
 
-**セットアップ**: → `references/wsl-setup.md`
+### セットアップ
 
-**ワークフロー**:
+### ワークフロー
 
 1. Chrome をデバッグモードで起動
 2. MCP 接続を確認
 3. `take_snapshot` → `list_console_messages` → `list_network_requests` → `evaluate_script`
 4. `take_screenshot` で結果を保存
 
-**診断チェックリスト**: → `references/devtools-checklist.md`
+### 診断チェックリスト
 
 ### 2. agent-browser
 
 ページ操作の自動化とスクリーンショット取得に最適。
 
-**ワークフロー**:
+### ワークフロー
 
 ```bash
 agent-browser open <TARGET_URL>
@@ -53,7 +53,7 @@ agent-browser snapshot -i
 agent-browser snapshot -i  # ref を更新
 ```
 
-**診断パターン**: → `references/agent-browser-patterns.md`
+### 診断パターン
 
 ### 3. 手動 DevTools(F12)
 

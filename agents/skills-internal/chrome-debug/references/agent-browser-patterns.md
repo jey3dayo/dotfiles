@@ -17,7 +17,7 @@ agent-browser click @e2
 agent-browser snapshot -i
 ```
 
-**重要:** 操作後は必ず `snapshot -i` で ref を更新する。古い ref を使うと stale ref エラーになる。
+### 重要:
 
 ## 診断パターン
 
@@ -132,7 +132,7 @@ agent-browser screenshot "$DEBUG_DIR/page.png"
 agent-browser screenshot --full "$DEBUG_DIR/page-full.png"
 ```
 
-**重要:** 毎回新しい日付フォルダ(`YYYYMMDDHHMM`)を作成してから保存すること。
+### 重要:
 
 ## headed モード(ビジュアルデバッグ)
 
@@ -149,4 +149,4 @@ agent-browser record start debug-session.webm
 agent-browser record stop
 ```
 
-**注意:** WSL2 で headed モードを使うには X Server が必要。設定されていない場合は headless(デフォルト)を使用する。
+### 注意:

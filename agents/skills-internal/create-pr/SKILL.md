@@ -21,7 +21,7 @@ description: |
 
 ## 🇯🇵 重要: 日本語設定
 
-**このスキルで生成されるすべてのPR（プルリクエスト）の内容は日本語で作成されます。**
+### このスキルで生成されるすべてのPR（プルリクエスト）の内容は日本語で作成されます。
 
 - PRタイトル（コミットメッセージは英語でも、PR説明は日本語）
 - PR本文のセクションヘッダー（概要、変更内容、テスト計画、チェックリスト）
@@ -97,7 +97,7 @@ Phase 4: PR作成/更新（Issue参照付き）
 - **Python**: pyproject.toml検出 → black/ruff
 - **Rust**: Cargo.toml検出 → cargo fmt
 
-**詳細**: フォーマッター検出は `shared/project-detector.md` を使用します。
+### 詳細
 
 ### Phase 2: フォーマット実行・変更確認
 
@@ -116,7 +116,7 @@ Phase 4: PR作成/更新（Issue参照付き）
 - **Co-Author付与**: Claude Code署名を自動追加
 - **単一コミットモード**: `--single-commit` で分割せずに作成
 
-**詳細**: コミット分割の完全な仕様は [references/commit-patterns.md](references/commit-patterns.md) を参照してください。
+### 詳細
 
 ### Phase 3.5: 既存PR検出と対応方針決定
 
@@ -139,7 +139,7 @@ Phase 4: PR作成/更新（Issue参照付き）
 - **対話的選択**: リンクするIssueとキーワードを選択
 - **自動リンク**: `--auto-link` で検出されたオープンIssueを自動リンク
 
-**詳細**: Issue連携の完全な仕様は [references/github-integration.md](references/github-integration.md) を参照してください。
+### 詳細
 
 ### Phase 4: GitHub PR 作成または更新
 
@@ -151,7 +151,7 @@ Phase 4: PR作成/更新（Issue参照付き）
 - **リモートプッシュ**: `-u origin <branch>` で追跡設定
 - **PRオプション**: `--draft`, `--base`, カスタムテンプレート
 
-**詳細**: PRテンプレートとセクション構造は [references/pr-templates.md](references/pr-templates.md) を参照してください。
+### 詳細
 
 ## 🎯 特徴
 
@@ -201,7 +201,7 @@ Phase 4: PR作成/更新（Issue参照付き）
   - Human主導の実装 + AI補助のPR化
   - Phase 1-4の4段階
 
-**両者は補完的**: `/task-to-pr`は新規実装、`/create-pr`は既存変更のPR化。
+### 両者は補完的
 
 ## 制約・注意事項
 
@@ -261,4 +261,4 @@ Phase 4: PR作成/更新（Issue参照付き）
 
 ---
 
-**目標**: フォーマット・コミット・PR作成の一連の作業を完全自動化し、開発フローを効率化
+### 目標

@@ -32,7 +32,7 @@ tree my-bundle
 # └── config/
 ```
 
-**Naming conventions**:
+### Naming conventions
 
 - Lowercase with hyphens: `my-bundle`, `frontend-tools`, `backend-utils`
 - Descriptive: Reflect the bundle's purpose
@@ -56,7 +56,7 @@ ls -la
 # lrwxrwxrwx external-skill -> ../../../skills/external-skill
 ```
 
-**Tips**:
+### Tips
 
 - Use relative paths: `../../../skills-internal/` (not absolute)
 - Verify targets exist: `ls -la ../../../skills-internal/my-skill`
@@ -81,7 +81,7 @@ ls -la
 # lrwxrwxrwx kiro -> ../../../commands-internal/kiro
 ```
 
-**Subdirectory support**:
+### Subdirectory support
 
 ```bash
 # Example: kiro command directory
@@ -123,7 +123,7 @@ cat > bundle-config.json <<EOF
 EOF
 ```
 
-**Config types**:
+### Config types
 
 - **Rules**: Markdown files for Claude Code instructions
 - **Templates**: Reusable templates for skills/commands
@@ -172,14 +172,14 @@ EOF
 
 ### Step 6: Update Nix Configuration
 
-**Option A: Replace default bundle**
+### Option A: Replace default bundle
 
 ```nix
 # home/j138/.agents/flake.nix (or ~/.config/flake.nix)
 distributionsPath = ~/agents/distributions/my-bundle;
 ```
 
-**Option B: Keep both (manual merge)**
+### Option B: Keep both (manual merge)
 
 ```bash
 # Copy my-bundle contents to default/
@@ -187,7 +187,7 @@ cp -r my-bundle/skills/* default/skills/
 cp -r my-bundle/commands/* default/commands/
 ```
 
-**Option C: Multi-bundle support (future)**
+### Option C: Multi-bundle support (future)
 
 Currently not supported. Single distribution path only.
 
@@ -209,7 +209,7 @@ ls -la ~/.claude/skills/ | grep -E 'my-skill|external-skill'
 mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "local")'
 ```
 
-**Common issues**:
+### Common issues
 
 - **Symlink broken**: Check relative path depth (`../../../`)
 - **Skill not deployed**: Verify `SKILL.md` exists in target

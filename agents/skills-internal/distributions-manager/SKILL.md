@@ -36,13 +36,13 @@ Distributions are pre-configured bundles that combine:
 - **Commands**: Symlinks to `commands-internal/` (supports subdirectories)
 - **Config**: Shared configuration files
 
-**Key benefits**:
+### Key benefits
 
 - **No duplication**: Symlink-based architecture
 - **Bundle management**: Group related tools together
 - **Flexible deployment**: Optional layer that coexists with existing workflows
 
-**Current implementation** (as of 2025-02-11):
+### Current implementation
 
 - 84 symlinks in `distributions/default/` (42 skills + 42 commands)
 - Priority: Local > External > Distribution

@@ -14,14 +14,14 @@ Phase 3.5とPhase 3.7: 既存PR検出、更新、GitHub Issue自動リンクの�
 
 GitHub統合は、GitHub CLI (`gh`) を使用してPRとIssueを操作します。
 
-**目的**:
+### 目的
 
 - 既存PRの検出と重複作成防止
 - 既存PRの更新による柔軟なワークフロー
 - Issue参照の自動検出とPRへのリンク
 - GitHub APIの効率的な利用
 
-**必須ツール**: `gh` (GitHub CLI)
+### 必須ツール
 
 ## Phase 3.5: 既存PR検出と更新
 
@@ -55,7 +55,7 @@ def check_existing_pr(branch_name):
         return None
 ```
 
-**検出条件**:
+### 検出条件
 
 - ブランチ名一致: `--head <branch_name>`
 - 状態フィルター: `OPEN` または `DRAFT` のみ
@@ -113,7 +113,7 @@ def decide_pr_action(existing_pr, options):
         return 'abort'
 ```
 
-**アクション**:
+### アクション
 
 - `abort`: 処理を中止（`--check-only` または ユーザーキャンセル）
 - `create`: 新規PR作成（既存PRなし、`--force-new`、またはユーザー選択）
@@ -167,7 +167,7 @@ EOF
         return None
 ```
 
-**更新内容**:
+### 更新内容
 
 - PRタイトル: `--title`
 - PR本文: `--body` (HEREDOC使用)
@@ -206,7 +206,7 @@ def extract_issues_from_branch_name(branch_name):
     return list(set(issues))
 ```
 
-**対応パターン**:
+### 対応パターン
 
 - `feat/123-description` → `123`
 - `fix/issue-456-bug` → `456`
@@ -240,7 +240,7 @@ def extract_issues_from_commits(commit_groups):
     return list(set(issues))
 ```
 
-**対応パターン**:
+### 対応パターン
 
 - `#123` → `123`
 - `fixes #123` → `123`
@@ -297,7 +297,7 @@ def validate_issues(issue_numbers, options={}):
     return validation_results
 ```
 
-**検証結果**:
+### 検証結果
 
 - `valid`: オープン状態のIssue（リンク可能）
 - `invalid`: 存在しないIssue（除外）
@@ -459,9 +459,9 @@ def add_issue_references_to_body(pr_body, linked_issues):
     return pr_body
 ```
 
-**挿入位置**: "## 概要" セクションの直後
+### 挿入位置
 
-**出力例**:
+### 出力例
 
 ```markdown
 ## 概要
@@ -561,4 +561,4 @@ if validation_results['invalid']:
 
 ---
 
-**参照**: このドキュメントはPhase 3.5とPhase 3.7の詳細仕様です。実行フローの概要は [SKILL.md](../SKILL.md) を参照してください。
+### 参照
