@@ -1,5 +1,3 @@
--- Clear all autocmds (from base.lua)
-vim.cmd "autocmd!"
 vim.scriptencoding = "utf-8"
 
 -- ~/.cache/nvim

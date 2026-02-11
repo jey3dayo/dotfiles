@@ -21,7 +21,11 @@ function M.create_lsp_component(get_clients_fn, label, color_config)
     function()
       local bufnr = vim.api.nvim_get_current_buf()
       local clients = get_clients_fn(bufnr)
-      return #clients > 0 and table.concat(clients, ",") or "N/A"
+
+      if type(clients) == "string" then return clients ~= "" and clients or "N/A" end
+      if type(clients) == "table" then return #clients > 0 and table.concat(clients, ",") or "N/A" end
+
+      return "N/A"
     end,
     icon = label,
     color = color_config,
