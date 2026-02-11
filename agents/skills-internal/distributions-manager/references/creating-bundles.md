@@ -22,13 +22,15 @@ This guide walks through creating a custom distribution bundle from scratch. Use
 cd /home/j138/.config/agents/distributions
 
 # Create bundle directory
-mkdir -p my-bundle/{skills,commands,config}
+mkdir -p my-bundle/{skills,commands,rules,agents,config}
 
 # Verify structure
 tree my-bundle
 # my-bundle/
 # ├── skills/
 # ├── commands/
+# ├── rules/
+# ├── agents/
 # └── config/
 ```
 
@@ -99,7 +101,70 @@ tree ../../../commands-internal/kiro
 
 ---
 
-### Step 4: Add Configuration (Optional)
+### Step 4: Add Rules
+
+```bash
+cd ../rules
+
+# Symlink from ~/.claude/rules/
+ln -s ~/.claude/rules/claude-md-design.md ./
+
+# Or create bundle-specific rules
+cat > my-rule.md <<EOF
+# My Custom Rule
+
+This is a custom rule for my bundle.
+EOF
+
+# Verify
+ls -la
+# lrwxrwxrwx claude-md-design.md -> /home/j138/.claude/rules/claude-md-design.md
+# -rw-r--r-- my-rule.md
+```
+
+### Tips
+
+- Rules are markdown files containing instructions for Claude Code
+- Can symlink from `~/.claude/rules/` or create new files
+- Support subdirectories (e.g., `rules/frontend/react.md`)
+
+---
+
+### Step 5: Add Agents
+
+```bash
+cd ../agents
+
+# Symlink individual agents
+ln -s ~/.claude/agents/code-reviewer.md ./
+ln -s ~/.claude/agents/error-fixer.md ./
+
+# Symlink agent directory (with sub-agents)
+ln -s ~/.claude/agents/kiro ./
+
+# Verify
+ls -la
+# lrwxrwxrwx code-reviewer.md -> /home/j138/.claude/agents/code-reviewer.md
+# lrwxrwxrwx error-fixer.md -> /home/j138/.claude/agents/error-fixer.md
+# lrwxrwxrwx kiro -> /home/j138/.claude/agents/kiro
+```
+
+### Subdirectory support
+
+```bash
+# Example: kiro agent directory
+tree ~/.claude/agents/kiro
+# kiro/
+# ├── spec-design.md
+# ├── spec-impl.md
+# └── validate-impl.md
+
+# Result: 3 agents (kiro/spec-design, kiro/spec-impl, kiro/validate-impl)
+```
+
+---
+
+### Step 6: Add Configuration (Optional)
 
 ```bash
 cd ../config

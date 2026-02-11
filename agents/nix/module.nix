@@ -5,6 +5,13 @@ let
   cfg = config.programs.agent-skills;
   agentLib = import ./lib.nix { inherit pkgs; nixlib = lib; };
 
+  # Get distribution result for rules/agents access
+  distributionResult =
+    if cfg.distributionsPath != null && builtins.pathExists cfg.distributionsPath then
+      agentLib.scanDistribution cfg.distributionsPath
+    else
+      { skills = {}; commands = null; config = null; rules = {}; agents = {}; };
+
   catalog = agentLib.discoverCatalog {
     sources = cfg.sources;
     localPath = cfg.localSkillsPath;
@@ -167,8 +174,28 @@ in {
         commandsDirCommand = lib.optionalString (commandsBundle != null) ''
           ${pkgs.coreutils}/bin/mkdir -p "$HOME/.claude/commands"
         '';
+        rulesDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
+          if target.enable && (lib.attrNames distributionResult.rules) != [] then
+            let baseDir = lib.removeSuffix "/skills" target.dest;
+            in ''
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/rules"
+            ''
+          else ""
+        ) cfg.targets);
+        agentsDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
+          if target.enable && (lib.attrNames distributionResult.agents) != [] then
+            let baseDir = lib.removeSuffix "/skills" target.dest;
+            in ''
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents"
+              # Create kiro subdirectory if needed
+              ${lib.optionalString (lib.any (id: lib.hasPrefix "kiro/" id) (lib.attrNames distributionResult.agents)) ''
+                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents/kiro"
+              ''}
+            ''
+          else ""
+        ) cfg.targets);
       in
-        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ commandsDirCommand ]));
+        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ commandsDirCommand rulesDirCommands agentsDirCommands ]));
 
     # link targets: per-skill directory symlinks to Nix store (default)
     # Each skill dir becomes a symlink: ~/.claude/skills/agent-creator → /nix/store/.../agent-creator
@@ -236,6 +263,42 @@ in {
         else
           {})
       ]
+      ++
+      # Rules distribution (symlinks to each target's rules directory)
+      (lib.mapAttrsToList (_name: target:
+        if target.enable && (lib.attrNames distributionResult.rules) != [] then
+          let
+            # Extract base directory from target.dest (e.g., ".claude/skills" -> ".claude")
+            baseDir = lib.removeSuffix "/skills" target.dest;
+            # Add .keep file to ensure directory is created
+            keepFile = { "${baseDir}/rules/.keep".text = ""; };
+            rulesFiles = lib.mapAttrs' (ruleId: rule:
+              lib.nameValuePair "${baseDir}/rules/${ruleId}.md" {
+                source = rule.path;
+              }
+            ) distributionResult.rules;
+          in
+            keepFile // rulesFiles
+        else {}
+      ) cfg.targets)
+      ++
+      # Agents distribution (symlinks to each target's agents directory)
+      (lib.mapAttrsToList (_name: target:
+        if target.enable && (lib.attrNames distributionResult.agents) != [] then
+          let
+            # Extract base directory from target.dest (e.g., ".claude/skills" -> ".claude")
+            baseDir = lib.removeSuffix "/skills" target.dest;
+            # Add .keep file to ensure directory is created
+            keepFile = { "${baseDir}/agents/.keep".text = ""; };
+            agentsFiles = lib.mapAttrs' (agentId: agent:
+              lib.nameValuePair "${baseDir}/agents/${agentId}.md" {
+                source = agent.path;
+              }
+            ) distributionResult.agents;
+          in
+            keepFile // agentsFiles
+        else {}
+      ) cfg.targets)
     );
   };
 }

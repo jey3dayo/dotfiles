@@ -34,6 +34,8 @@ Distributions are pre-configured bundles that combine:
 
 - **Skills**: Symlinks to `skills/` and `skills-internal/`
 - **Commands**: Symlinks to `commands-internal/` (supports subdirectories)
+- **Rules**: Symlinks to `~/.claude/rules/` (markdown files)
+- **Agents**: Symlinks to `~/.claude/agents/` (markdown files, supports subdirectories)
 - **Config**: Shared configuration files
 
 ### Key benefits
@@ -44,9 +46,10 @@ Distributions are pre-configured bundles that combine:
 
 ### Current implementation
 
-- 84 symlinks in `distributions/default/` (42 skills + 42 commands)
+- 100+ symlinks in `distributions/default/` (42 skills + 42 commands + 1 rule + 15 agents)
 - Priority: Local > External > Distribution
 - Cyclic reference prevention (static paths, scanned before sources)
+- Supports subdirectories (e.g., `agents/kiro/`, `commands/shared/`)
 
 ---
 

@@ -95,6 +95,72 @@ Each subdirectory with `command.ts` is treated as a separate command.
 
 ---
 
+## Rules and Agents Processing
+
+Rules and agents are `.md` files that support subdirectory structures:
+
+```nix
+# agents/nix/lib.nix (simplified)
+scanDistribution = distributionPath:
+  let
+    rulesPath = distributionPath + "/rules";
+    agentsPath = distributionPath + "/agents";
+
+    # Scan rules directory for .md files
+    scannedRules =
+      if pathExists rulesPath then
+        let
+          ruleEntries = readDir rulesPath;
+          processRuleEntry = name: type:
+            let
+              entryPath = rulesPath + "/${name}";
+              ruleId = if hasSuffix ".md" name then
+                removeSuffix ".md" name
+              else
+                name;
+            in
+              if (type == "regular" || type == "symlink") && hasSuffix ".md" name then
+                { ${ruleId} = { id = ruleId; path = entryPath; source = "distribution"; }; }
+              else if type == "directory" || type == "symlink" then
+                # Scan subdirectory recursively
+                scanRuleSubdirectory entryPath name
+              else {};
+        in
+          foldl' (a: b: a // b) {} (mapAttrsToList processRuleEntry ruleEntries)
+      else {};
+  in
+    { skills = ...; commands = ...; rules = scannedRules; agents = scannedAgents; };
+```
+
+### Subdirectory example
+
+```
+distributions/default/
+├── rules/
+│   └── claude-md-design.md -> ~/.claude/rules/claude-md-design.md
+└── agents/
+    ├── aws-operations.md -> ~/.claude/agents/aws-operations.md
+    ├── code-reviewer.md -> ~/.claude/agents/code-reviewer.md
+    └── kiro/ -> ~/.claude/agents/kiro/  (symlink to dir)
+        ├── spec-design.md
+        ├── spec-impl.md
+        └── validate-impl.md
+```
+
+### ID generation for subdirectories
+
+Subdirectory structure is preserved in IDs:
+
+- `agents/kiro/spec-design.md` → ID: `kiro/spec-design`
+- `rules/frontend/react.md` → ID: `frontend/react`
+
+These IDs are used for deployment paths:
+
+- `.claude/agents/kiro/spec-design.md`
+- `.claude/rules/frontend/react.md`
+
+---
+
 ## Cyclic Reference Prevention
 
 ### Static Paths

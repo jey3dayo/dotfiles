@@ -12,6 +12,8 @@ The `distributions/default/` bundle is the reference implementation created on 2
 distributions/default/
 ├── skills/           (42 skills)
 ├── commands/         (42 commands, some with subcommands)
+├── rules/            (1 rule file)
+├── agents/           (15 agent files, including kiro/ subdirectory)
 ├── config/           (optional, not currently used)
 └── README.md
 ```
@@ -169,6 +171,69 @@ From `commands-internal/`:
 
 ---
 
+## Rules Analysis
+
+### Total Rules: 1
+
+From `~/.claude/rules/`:
+
+- claude-md-design.md
+
+### Purpose
+
+Rules are markdown files containing instructions and guidelines for Claude Code. They define:
+
+- Design principles for CLAUDE.md
+- Separation of responsibilities
+- Documentation structure guidelines
+
+---
+
+## Agents Analysis
+
+### Total Agents: 15 (14 individual + 1 subdirectory)
+
+#### Individual Agents (14)
+
+From `~/.claude/agents/`:
+
+- aws-operations
+- code-reviewer
+- debug-operations
+- deep-explore
+- deployment
+- docs-manager
+- error-fixer
+- github-pr-reviewer
+- monitoring-alerts
+- orchestrator
+- quality-validation
+- researcher
+- serena
+- terraform-operations
+
+#### Agent Group: kiro/ (9 sub-agents)
+
+- spec-design
+- spec-impl
+- spec-requirements
+- spec-tasks
+- steering
+- steering-custom
+- validate-design
+- validate-gap
+- validate-impl
+
+### Purpose
+
+Agents are specialized task handlers that:
+
+- Automate complex workflows
+- Provide domain-specific expertise
+- Integrate with external tools and services
+
+---
+
 ## Symlink Patterns
 
 ### Pattern 1: Direct Skill Link
@@ -197,7 +262,37 @@ distributions/default/skills/document-skills:skill-creator -> ../../../skills/do
 distributions/default/commands/kiro -> ../../../commands-internal/kiro
 ```
 
-### Count
+### Count: 7 command groups
+
+---
+
+### Pattern 4: Rules Link
+
+```bash
+distributions/default/rules/claude-md-design.md -> ~/.claude/rules/claude-md-design.md
+```
+
+### Count: 1 rule
+
+---
+
+### Pattern 5: Agent Link
+
+```bash
+distributions/default/agents/code-reviewer.md -> ~/.claude/agents/code-reviewer.md
+```
+
+### Count: 14 individual agents
+
+---
+
+### Pattern 6: Agent Group Link
+
+```bash
+distributions/default/agents/kiro -> ~/.claude/agents/kiro
+```
+
+### Count: 1 agent group (9 sub-agents)
 
 ---
 
@@ -213,6 +308,18 @@ ls -1 distributions/default/skills/ | wc -l
 # Count command directories
 ls -1 distributions/default/commands/ | wc -l
 # Output: 42 (includes command groups)
+
+# Count rules
+ls -1 distributions/default/rules/ | wc -l
+# Output: 1
+
+# Count agents (individual files)
+ls -1 distributions/default/agents/*.md | wc -l
+# Output: 14
+
+# Count agent directories
+ls -d distributions/default/agents/*/ | wc -l
+# Output: 1 (kiro/)
 
 # Count total command.ts files
 find distributions/default/commands/ -name "command.ts" | wc -l
@@ -315,8 +422,10 @@ After changes, update `distributions/default/README.md` with new counts and desc
 | -------------- | ------------------- |
 | Skills (42)    | ~12,600 (300/skill) |
 | Commands (84+) | ~16,800 (200/cmd)   |
+| Rules (1)      | ~200 (200/rule)     |
+| Agents (23)    | ~4,600 (200/agent)  |
 | Config         | 0 (not used)        |
-| **Total**      | ~29,400             |
+| **Total**      | ~34,200             |
 
 ### Note
 
