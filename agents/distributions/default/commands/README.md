@@ -268,9 +268,9 @@ Context7統合 (context7-integration.md) [オプション]
 
 ### フィードバック方法
 
-- GitHub Issues: [リポジトリURL]
-- ディスカッション: [ディスカッションURL]
-- メール: [連絡先]
+- GitHub Issues: リポジトリの Issues タブを利用
+- ディスカッション: リポジトリの Discussions タブを利用
+- メール: メンテナー連絡先（未公開）
 
 ---
 
