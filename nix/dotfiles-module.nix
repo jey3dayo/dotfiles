@@ -288,7 +288,9 @@ in
 
         if [ -n "$worktree" ]; then
           echo "Initializing Git submodules for tmux plugins..."
-          ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive
+          if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
+            echo "Warning: failed to initialize tmux plugin submodules; continuing activation." >&2
+          fi
         fi
       ''
     );
