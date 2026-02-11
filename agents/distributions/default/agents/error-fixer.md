@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/error-fixer.md
+../../../.claude/agents/error-fixer.md

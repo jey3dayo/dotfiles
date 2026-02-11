@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/deep-explore.md
+../../../.claude/agents/deep-explore.md

@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/code-reviewer.md
+../../../.claude/agents/code-reviewer.md

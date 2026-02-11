@@ -1,1 +1,1 @@
-/home/j138/.claude/rules/claude-md-design.md
+../../../.claude/rules/claude-md-design.md

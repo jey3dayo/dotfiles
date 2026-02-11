@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/docs-manager.md
+../../../.claude/agents/docs-manager.md

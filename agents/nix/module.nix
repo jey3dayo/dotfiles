@@ -223,21 +223,35 @@ in {
         ) cfg.targets);
         rulesDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
           if target.enable && (lib.attrNames distributionResult.rules) != [] then
-            let baseDir = lib.removeSuffix "/skills" target.dest;
+            let
+              baseDir = lib.removeSuffix "/skills" target.dest;
+              # Extract parent directories from rule IDs (e.g., "frontend/react" -> "frontend")
+              parentDirs = lib.unique (lib.filter (d: d != "") (lib.map (id:
+                let parts = lib.splitString "/" id;
+                in if lib.length parts > 1 then lib.head parts else ""
+              ) (lib.attrNames distributionResult.rules)));
             in ''
               ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/rules"
+              ${lib.concatMapStringsSep "\n" (dir: ''
+                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/rules/${dir}"
+              '') parentDirs}
             ''
           else ""
         ) cfg.targets);
         agentsDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
           if target.enable && (lib.attrNames distributionResult.agents) != [] then
-            let baseDir = lib.removeSuffix "/skills" target.dest;
+            let
+              baseDir = lib.removeSuffix "/skills" target.dest;
+              # Extract parent directories from agent IDs (e.g., "kiro/spec-design" -> "kiro")
+              parentDirs = lib.unique (lib.filter (d: d != "") (lib.map (id:
+                let parts = lib.splitString "/" id;
+                in if lib.length parts > 1 then lib.head parts else ""
+              ) (lib.attrNames distributionResult.agents)));
             in ''
               ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents"
-              # Create kiro subdirectory if needed
-              ${lib.optionalString (lib.any (id: lib.hasPrefix "kiro/" id) (lib.attrNames distributionResult.agents)) ''
-                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents/kiro"
-              ''}
+              ${lib.concatMapStringsSep "\n" (dir: ''
+                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents/${dir}"
+              '') parentDirs}
             ''
           else ""
         ) cfg.targets);

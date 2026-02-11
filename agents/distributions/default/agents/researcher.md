@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/researcher.md
+../../../.claude/agents/researcher.md

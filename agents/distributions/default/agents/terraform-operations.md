@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/terraform-operations.md
+../../../.claude/agents/terraform-operations.md

@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/deployment.md
+../../../.claude/agents/deployment.md

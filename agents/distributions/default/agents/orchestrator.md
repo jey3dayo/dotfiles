@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/orchestrator.md
+../../../.claude/agents/orchestrator.md

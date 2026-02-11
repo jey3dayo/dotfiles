@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/quality-validation.md
+../../../.claude/agents/quality-validation.md

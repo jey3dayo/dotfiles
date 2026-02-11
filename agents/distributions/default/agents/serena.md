@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/serena.md
+../../../.claude/agents/serena.md

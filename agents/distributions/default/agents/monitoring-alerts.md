@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/monitoring-alerts.md
+../../../.claude/agents/monitoring-alerts.md

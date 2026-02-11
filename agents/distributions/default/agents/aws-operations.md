@@ -1,1 +1,1 @@
-/home/j138/.claude/agents/aws-operations.md
+../../../.claude/agents/aws-operations.md
