@@ -10,12 +10,11 @@ export LISTMAX=0
 
 typeset -U path cdpath fpath manpath
 
-# Activate mise if available
-# Check Homebrew location first (before PATH is fully populated)
-if [[ -x /opt/homebrew/bin/mise ]]; then
-  eval "$(/opt/homebrew/bin/mise activate zsh)"
-elif command -v mise &>/dev/null; then
-  eval "$(mise activate zsh)"
+# Activate mise (env vars configured in .zshenv)
+# See: config/tools/mise.zsh (_mise_activate helper)
+if [[ -f "${ZDOTDIR}/config/tools/mise.zsh" ]]; then
+  source "${ZDOTDIR}/config/tools/mise.zsh"
+  _mise_activate
 fi
 
 # Load cargo environment for login shells.

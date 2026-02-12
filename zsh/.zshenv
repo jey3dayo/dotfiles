@@ -9,6 +9,14 @@ export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
 : "${GIT_CONFIG_GLOBAL:=$XDG_CONFIG_HOME/git/config}"
 export ZDOTDIR GIT_CONFIG_GLOBAL
 
+# ========================================
+# mise Environment Configuration
+# ========================================
+# TIMING: Must be in .zshenv (all shell types, before .zprofile)
+# RELATED: .zprofile (login activation), .zshrc (non-login activation)
+# FALLBACK: Home Manager sets MISE_CONFIG_FILE; this provides fallback
+# ========================================
+
 # mise data/cache directories (must be set before .zprofile activation)
 : "${MISE_DATA_DIR:=$HOME/.mise}"
 : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
@@ -22,7 +30,20 @@ elif [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/home-manager/home-manager.sh" ]]; 
 fi
 
 # Environment detection: CI > Raspberry Pi > Default (WSL2/macOS/Linux)
-# No manual sourcing of setup-mise-env.sh required
+# Fallback when Home Manager is not available
+if [[ -z "$MISE_CONFIG_FILE" ]]; then
+  if [[ -n "$CI" || -n "$GITHUB_ACTIONS" ]]; then
+    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.ci.toml"
+  elif [[ "$(uname -m)" == "aarch64" ]] && [[ -f /sys/firmware/devicetree/base/model ]] && grep -q "Raspberry Pi" /sys/firmware/devicetree/base/model 2>/dev/null; then
+    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.pi.toml"
+  else
+    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.default.toml"
+  fi
+fi
+
+# NOTE: mise activation happens in:
+#   - .zprofile (login shells) → calls _mise_activate from config/tools/mise.zsh
+#   - .zshrc (non-login shells) → calls _mise_activate from config/tools/mise.zsh
 
 # History file should be set before shell init so history loads
 # even if .zshrc is skipped. Keep it under XDG state by default.

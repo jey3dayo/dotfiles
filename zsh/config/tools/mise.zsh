@@ -1,9 +1,42 @@
+# ========================================
+# mise Activation Helper
+# ========================================
+# USAGE: Called by .zprofile (login) and .zshrc (non-login)
+# TIMING: Requires MISE_* env vars from .zshenv
+# ========================================
+
+# Activate mise for PATH management (idempotent)
+_mise_activate() {
+  # Skip if already activated
+  typeset -f mise >/dev/null && return 0
+
+  # Find mise executable
+  local mise_path=""
+  if [[ -x /opt/homebrew/bin/mise ]]; then
+    mise_path="/opt/homebrew/bin/mise"
+  elif command -v mise &>/dev/null; then
+    mise_path="$(command -v mise)"
+  else
+    return 1 # mise not found
+  fi
+
+  # Activate
+  eval "$($mise_path activate zsh)"
+}
+
+# ========================================
+# mise Completion and Utilities
+# ========================================
+
 command -v mise >/dev/null 2>&1 || return
 
-# Shortcut for local CI
-alias refresh="mise ci"
-# Activation is handled in .zprofile (login shell)。ここでは補完・ユーティリティのみ。
-# 非ログインシェルで未活性の場合はスキップして早期リターン。
+# Activate mise for non-login shells (login shells already activated in .zprofile)
+# This is executed when config/tools/mise.zsh is sourced by config/loader.zsh in .zshrc
+if [[ -o interactive && ! -o login ]]; then
+  _mise_activate
+fi
+
+# Check if mise is activated (skip completion if not)
 (( $+functions[_mise_hook] )) || return
 
 # Defer only the completion for startup performance
