@@ -17,7 +17,7 @@ Implementation Engineは、あらゆるソース（URL、ローカルファイ�
 
 ## Session Intelligence
 
-### セッション管理の仕組み:
+### セッション管理の仕組み
 
 セッションファイルは**現在のプロジェクトディレクトリ**の `implement/` フォルダに格納されます（HOMEディレクトリや親ディレクトリではありません）。
 
@@ -28,12 +28,12 @@ Implementation Engineは、あらゆるソース（URL、ローカルファイ�
     └── state.json       # セッション状態とチェックポイント
 ```
 
-### 自動レジューム:
+### 自動レジューム
 
 - `/implement` 実行時、`implement/` ディレクトリが存在すれば自動的に前回の続きから再開
 - 新規実装の場合は自動的にディレクトリとファイルを作成
 
-### セッション操作コマンド:
+### セッション操作コマンド
 
 ```bash
 /implement                  # 自動検出してレジュームまたは新規開始
@@ -48,21 +48,21 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 
 ### Phase 1: Initial Setup & Analysis
 
-### 必須の初期ステップ:
+### 必須の初期ステップ
 
 1. `implement/` ディレクトリの存在確認（current working directory内）
 2. セッションファイル検出（`state.json`, `plan.md`）
 3. セッションが存在する場合はレジューム、ない場合は新規作成
 4. 実装開始前に完全な分析を実施
 
-### ソース検出:
+### ソース検出
 
 - Web URLs（GitHub、GitLab、CodePen、JSFiddle、ドキュメントサイト）
 - ローカルパス（ファイル、フォルダ、既存コード）
 - 実装プラン（チェックリスト付き.mdファイル）
 - 機能説明文（リサーチ用）
 
-### プロジェクト理解:
+### プロジェクト理解
 
 - アーキテクチャパターン（Glob/Readで分析）
 - 既存の依存関係とバージョン
@@ -71,14 +71,14 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 
 ### Phase 2: Strategic Planning
 
-### 計画作成:
+### 計画作成
 
 - ソース機能をプロジェクトアーキテクチャにマッピング
 - 依存関係の互換性を識別
 - 統合アプローチの設計
 - テスト可能な単位に分割
 
-### `implement/plan.md` フォーマット:
+### `implement/plan.md` フォーマット
 
 ```markdown
 # Implementation Plan - [timestamp]
@@ -117,21 +117,21 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 
 ### Phase 3: Intelligent Adaptation
 
-### 依存関係解決:
+### 依存関係解決
 
 - ソースライブラリを既存のものにマッピング
 - 重複を避けて既存ユーティリティを再利用
 - パターンをコードベースに合わせて変換
 - 非推奨のアプローチを最新の標準に更新
 
-### コード変換:
+### コード変換
 
 - 命名規則を統一
 - エラーハンドリングパターンを踏襲
 - 状態管理アプローチを維持
 - テストスタイルを保持
 
-### 大規模リポジトリ対応:
+### 大規模リポジトリ対応
 
 スマートサンプリングを使用:
 
@@ -142,7 +142,7 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 
 ### Phase 4: Implementation Execution
 
-### 実行プロセス:
+### 実行プロセス
 
 1. コア機能の実装
 2. サポートユーティリティの追加
@@ -150,7 +150,7 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 4. 新機能をカバーするテストの更新
 5. すべてが正しく動作することを検証
 
-### 進捗トラッキング:
+### 進捗トラッキング
 
 - `implement/plan.md` を各項目完了時に更新
 - `implement/state.json` にチェックポイントを記録
@@ -158,7 +158,7 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 
 ### Phase 5: Quality Assurance
 
-### 検証ステップ:
+### 検証ステップ
 
 - 既存のlintコマンドを実行
 - テストスイートを実行
@@ -168,7 +168,7 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 
 ### Phase 6: Implementation Validation
 
-### 統合分析:
+### 統合分析
 
 1. **Coverage Check** - 計画されたすべての機能が実装されているか検証
 2. **Integration Points** - すべての接続が機能するか検証
@@ -176,7 +176,7 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 4. **TODO Scan** - 残っているTODOを発見
 5. **Documentation** - ドキュメントが変更を反映しているか確認
 
-### 検証レポート形式:
+### 検証レポート形式
 
 ```
 IMPLEMENTATION VALIDATION
@@ -195,7 +195,7 @@ ENHANCEMENT OPPORTUNITIES:
 
 ## Deep Validation Process
 
-### すべての検証コマンド（`finish`, `verify`, `complete`, `enhance`）は同じ包括的プロセスを実行します:
+### すべての検証コマンド（`finish`, `verify`, `complete`, `enhance`）は同じ包括的プロセスを実行します
 
 いずれかのコマンドを実行すると、以下が自動的に実行されます:
 
@@ -207,11 +207,11 @@ ENHANCEMENT OPPORTUNITIES:
 6. **Integration Analysis** - 統合ポイントの徹底分析
 7. **Completeness Report** - 機能カバレッジ、テストカバレッジ、パフォーマンスベンチマークを報告
 
-### 結果:
+### 結果
 
 ## Execution Guarantee
 
-### ワークフローは常にこの順序に従います:
+### ワークフローは常にこの順序に従います
 
 1. **Setup session** - 状態ファイルを最初に作成/ロード
 2. **Analyze source & target** - 完全な理解
@@ -220,7 +220,7 @@ ENHANCEMENT OPPORTUNITIES:
 5. **Execute systematically** - 計画に従って更新しながら実行
 6. **Validate integration** - 要求時に検証を実行
 
-### 以下は決して行いません:
+### 以下は決して行いません
 
 - 書面計画なしで実装を開始
 - ソースまたはプロジェクト分析をスキップ
@@ -230,7 +230,7 @@ ENHANCEMENT OPPORTUNITIES:
 
 ## 使用例
 
-### 単一ソース:
+### 単一ソース
 
 ```bash
 /implement https://github.com/user/feature
@@ -238,13 +238,13 @@ ENHANCEMENT OPPORTUNITIES:
 /implement "Stripeのような決済処理"
 ```
 
-### 複数ソース:
+### 複数ソース
 
 ```bash
 /implement https://github.com/projectA ./local-examples/
 ```
 
-### セッション再開:
+### セッション再開
 
 ```bash
 /implement              # 自動検出してレジューム
@@ -252,7 +252,7 @@ ENHANCEMENT OPPORTUNITIES:
 /implement status       # 進捗確認
 ```
 
-### Deep Validationコマンド:
+### Deep Validationコマンド
 
 ```bash
 /implement finish       # 徹底的なテストと検証で完成

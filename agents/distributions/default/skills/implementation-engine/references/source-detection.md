@@ -15,7 +15,7 @@ Implementation Engineは4種類のソースを認識します:
 
 ### 対応サイト
 
-### GitHub:
+### GitHub
 
 ```
 https://github.com/user/repo
@@ -23,7 +23,7 @@ https://github.com/user/repo/tree/main/path/to/code
 https://github.com/user/repo/blob/main/file.ts
 ```
 
-### GitLab:
+### GitLab
 
 ```
 https://gitlab.com/user/repo
@@ -31,32 +31,32 @@ https://gitlab.com/user/repo/-/tree/main/path
 https://gitlab.com/user/repo/-/blob/main/file.ts
 ```
 
-### CodePen:
+### CodePen
 
 ```
 https://codepen.io/user/pen/abc123
 https://codepen.io/user/full/abc123
 ```
 
-### JSFiddle:
+### JSFiddle
 
 ```
 https://jsfiddle.net/user/abc123/
 ```
 
-### CodeSandbox:
+### CodeSandbox
 
 ```
 https://codesandbox.io/s/abc123
 ```
 
-### StackBlitz:
+### StackBlitz
 
 ```
 https://stackblitz.com/edit/abc123
 ```
 
-### ドキュメントサイト:
+### ドキュメントサイト
 
 ```
 https://docs.example.com/guide/feature
@@ -84,7 +84,7 @@ function categorizeWebURL(url: string): WebSourceType {
 
 ### 処理方法
 
-### GitHub/GitLab リポジトリ:
+### GitHub/GitLab リポジトリ
 
 ```typescript
 async function processGitHubRepo(url: string) {
@@ -108,7 +108,7 @@ async function processGitHubRepo(url: string) {
 }
 ```
 
-### Code Playgrounds:
+### Code Playgrounds
 
 ```typescript
 async function processCodePen(url: string) {
@@ -128,7 +128,7 @@ async function processCodePen(url: string) {
 }
 ```
 
-### ドキュメントサイト:
+### ドキュメントサイト
 
 ```typescript
 async function processDocumentation(url: string) {
@@ -152,7 +152,7 @@ async function processDocumentation(url: string) {
 
 ### 対応パス
 
-### 単一ファイル:
+### 単一ファイル
 
 ```
 ./src/auth/login.ts
@@ -160,7 +160,7 @@ async function processDocumentation(url: string) {
 ../legacy/auth-system.js
 ```
 
-### ディレクトリ:
+### ディレクトリ
 
 ```
 ./legacy-code/
@@ -168,7 +168,7 @@ async function processDocumentation(url: string) {
 ../old-implementation/
 ```
 
-### 実装プラン:
+### 実装プラン
 
 ```
 ./implement/plan.md
@@ -204,7 +204,7 @@ function categorizeLocalPath(path: string): LocalSourceType {
 
 ### 処理方法
 
-### 単一ファイル:
+### 単一ファイル
 
 ```typescript
 async function processFile(filePath: string) {
@@ -221,7 +221,7 @@ async function processFile(filePath: string) {
 }
 ```
 
-### ディレクトリ:
+### ディレクトリ
 
 ```typescript
 async function processDirectory(dirPath: string) {
@@ -241,7 +241,7 @@ async function processDirectory(dirPath: string) {
 }
 ```
 
-### 実装プラン:
+### 実装プラン
 
 ```typescript
 async function processImplementationPlan(planPath: string) {
@@ -525,21 +525,21 @@ async function processSourceWithFallback(input: string) {
 
 ## ベストプラクティス
 
-### ソース検出:
+### ソース検出
 
 1. 明示的なタイプより推論を優先
 2. エラーハンドリングを常に実装
 3. 複数ソースをサポート
 4. フォールバック戦略を用意
 
-### 処理最適化:
+### 処理最適化
 
 1. 大きなソースは段階的にロード
 2. 不要なファイルをスキップ
 3. 並列処理を活用
 4. キャッシュを利用
 
-### ユーザー体験:
+### ユーザー体験
 
 1. ソースタイプを明確に報告
 2. 処理進捗を表示

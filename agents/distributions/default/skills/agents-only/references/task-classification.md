@@ -192,7 +192,7 @@ def analyze_task_intent(task_description):
 
 ### 使用例
 
-- "https://github.com/org/repo/pull/123 をレビュー"
+- "<https://github.com/org/repo/pull/123> をレビュー"
 - "PR #456 を確認"
 - "/pr/789 の品質評価"
 

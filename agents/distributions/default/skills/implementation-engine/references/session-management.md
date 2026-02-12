@@ -4,7 +4,7 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 
 ## ディレクトリ構造
 
-### セッションファイルの配置:
+### セッションファイルの配置
 
 ```
 <project-root>/
@@ -14,9 +14,9 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
     └── source-analysis.md   # 元のソース詳細分析（Deep Validation時に作成）
 ```
 
-### 重要:
+### 重要
 
-### 禁止:
+### 禁止
 
 - `$HOME/implement/` - HOMEディレクトリには作成しない
 - `../implement/` - 親ディレクトリには作成しない
@@ -97,7 +97,6 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 ## Risk Mitigation
 
 - **Potential Issues**:
-
   - [Issue 1]: [Description and impact]
   - [Issue 2]: [Description and impact]
 
@@ -116,7 +115,7 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 
 ### セクション詳細
 
-### Source Analysis:
+### Source Analysis
 
 元のソースに関する完全な情報。実装の基礎となる分析。
 
@@ -127,7 +126,7 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 - **Complexity**: 実装の複雑さ評価
 - **Estimated Time**: 推定所要時間
 
-### Target Integration:
+### Target Integration
 
 プロジェクトへの統合方法。
 
@@ -136,7 +135,7 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 - **Pattern Matching**: プロジェクトスタイルへの適応方法
 - **Architecture Compatibility**: プロジェクトアーキテクチャとの整合性
 
-### Implementation Tasks:
+### Implementation Tasks
 
 フェーズ別のタスクリスト。チェックボックスで進捗を追跡。
 
@@ -146,15 +145,15 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 - [⏳] In-progress task (optional)
 ```
 
-### Validation Checklist:
+### Validation Checklist
 
 完了基準。すべてチェックされるまで実装は完了とみなされない。
 
-### Risk Mitigation:
+### Risk Mitigation
 
 潜在的な問題とロールバック戦略。
 
-### Progress Tracking:
+### Progress Tracking
 
 セッションのメタデータと進捗。
 
@@ -213,15 +212,15 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 
 ### フィールド説明
 
-### session_id:
+### session_id
 
 セッションの一意識別子。フォーマット: `impl-YYYY-MM-DD-HHMM`
 
-### started / last_updated:
+### started / last_updated
 
 ISO 8601形式のタイムスタンプ。
 
-### current_phase:
+### current_phase
 
 現在のフェーズ:
 
@@ -232,23 +231,23 @@ ISO 8601形式のタイムスタンプ。
 - `qa` - Phase 5: Quality Assurance
 - `validation` - Phase 6: Implementation Validation
 
-### current_task:
+### current_task
 
 現在実行中のタスクの説明。
 
-### completed_tasks:
+### completed_tasks
 
 完了したタスクのリスト。
 
-### total_tasks:
+### total_tasks
 
 計画された全タスク数。
 
-### completion_percentage:
+### completion_percentage
 
 進捗率（0-100）。
 
-### checkpoints:
+### checkpoints
 
 各チェックポイントの詳細:
 
@@ -258,7 +257,7 @@ ISO 8601形式のタイムスタンプ。
 - `git_commit` - Gitコミットハッシュ（あれば）
 - `note` - 追加のメモ
 
-### source:
+### source
 
 ソース情報:
 
@@ -266,7 +265,7 @@ ISO 8601形式のタイムスタンプ。
 - `location` - パスまたはURL
 - `analyzed` - 分析完了フラグ
 
-### project:
+### project
 
 プロジェクト情報:
 
@@ -274,7 +273,7 @@ ISO 8601形式のタイムスタンプ。
 - `language` - 主要言語
 - `patterns_analyzed` - パターン分析完了フラグ
 
-### quality_checks:
+### quality_checks
 
 品質チェック状態:
 
@@ -373,28 +372,28 @@ quality_status = state['quality_checks']
 
 ### セッション操作コマンド
 
-### 自動検出とレジューム:
+### 自動検出とレジューム
 
 ```bash
 /implement
 # → 自動的に既存セッションを検出してレジューム
 ```
 
-### 明示的レジューム:
+### 明示的レジューム
 
 ```bash
 /implement resume
 # → 必ず既存セッションをレジューム（ない場合はエラー）
 ```
 
-### ステータス確認:
+### ステータス確認
 
 ```bash
 /implement status
 # → 現在のセッション状態を表示（実装は開始しない）
 ```
 
-### 新規セッション開始:
+### 新規セッション開始
 
 ```bash
 /implement new [source]
@@ -497,7 +496,7 @@ def update_quality_checks():
 
 ### ファイル書き込みタイミング
 
-### 必ず書き込むタイミング:
+### 必ず書き込むタイミング
 
 1. タスク完了時
 2. フェーズ遷移時
@@ -505,14 +504,14 @@ def update_quality_checks():
 4. エラー発生時
 5. ユーザーがセッションを中断する前
 
-### 書き込み頻度:
+### 書き込み頻度
 
 - 最小間隔: 5分（自動保存）
 - 推奨間隔: タスク単位
 
 ### エラーハンドリング
 
-### state.json が破損している場合:
+### state.json が破損している場合
 
 ```python
 try:
@@ -524,7 +523,7 @@ except json.JSONDecodeError:
     save_state(state)
 ```
 
-### plan.md が破損している場合:
+### plan.md が破損している場合
 
 ```python
 try:
@@ -538,7 +537,7 @@ except (FileNotFoundError, ValueError):
     save_plan(plan)
 ```
 
-### 両方が破損している場合:
+### 両方が破損している場合
 
 ```bash
 Error: Session files are corrupted
@@ -595,27 +594,27 @@ def save_on_interrupt():
 
 ## ベストプラクティス
 
-### セッション管理:
+### セッション管理
 
 1. 頻繁にチェックポイントを作成（タスク単位）
 2. 意味のあるコミットメッセージを使用
 3. state.json と plan.md を常に同期
 4. 品質チェックを定期的に実行
 
-### ファイル構造:
+### ファイル構造
 
 1. `implement/` は必ず現在のディレクトリに作成
 2. 追加ファイルは `implement/` 内に配置
 3. 一時ファイルは `.gitignore` に追加
 
-### エラー対策:
+### エラー対策
 
 1. 定期的なバックアップ（Git経由）
 2. state.json の検証
 3. plan.md の構造チェック
 4. 破損時の再構築ロジック
 
-### パフォーマンス:
+### パフォーマンス
 
 1. 大きなファイルは `implement/` に含めない
 2. state.json は軽量に保つ（<10KB推奨）

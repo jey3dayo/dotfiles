@@ -6,7 +6,7 @@ Implementation Engineのリスク軽減戦略。Rollback、git checkpoint、実�
 
 ### Git Checkpoints
 
-### 自動checkpoint作成:
+### 自動checkpoint作成
 
 ```bash
 # Implementation Engineは各フェーズ完了時に自動的にcheckpointを作成
@@ -19,16 +19,16 @@ Phase 5 完了 → git commit -m "checkpoint: complete QA phase"
 Phase 6 完了 → git commit -m "checkpoint: complete validation phase"
 ```
 
-### 重要:
+### 重要
 
-### checkpoint確認:
+### checkpoint確認
 
 ```bash
 # 最近のcheckpointsを表示
 git log --grep="checkpoint:" --oneline -10
 ```
 
-### 特定checkpointへのrollback:
+### 特定checkpointへのrollback
 
 ```bash
 # checkpoint一覧表示
@@ -40,7 +40,7 @@ git reset --hard <commit-hash>
 
 ### Manual Checkpoints
 
-### 重要な変更前にcheckpointを作成:
+### 重要な変更前にcheckpointを作成
 
 ```bash
 # 手動checkpoint作成
@@ -48,7 +48,7 @@ git add .
 git commit -m "checkpoint: before major refactoring"
 ```
 
-### 推奨タイミング:
+### 推奨タイミング
 
 1. 大規模なリファクタリング前
 2. 破壊的変更前
@@ -58,7 +58,7 @@ git commit -m "checkpoint: before major refactoring"
 
 ### Stash Strategy
 
-### 一時的な変更の保存:
+### 一時的な変更の保存
 
 ```bash
 # 現在の変更をstash
@@ -75,7 +75,7 @@ git stash pop
 
 ### 事前リスク分析
 
-### plan.md作成時に潜在的問題を識別:
+### plan.md作成時に潜在的問題を識別
 
 ```markdown
 ## Risk Mitigation
@@ -85,7 +85,6 @@ git stash pop
 #### High Risk
 
 1. **Breaking Change: API Contract Modification**
-
    - Impact: Existing API consumers will break
    - Probability: High
    - Mitigation:
@@ -106,7 +105,6 @@ git stash pop
 #### Medium Risk
 
 3. **Performance Degradation**
-
    - Impact: Slower response times
    - Probability: Medium
    - Mitigation:
@@ -138,7 +136,7 @@ git stash pop
 
 ### 動的リスク検出
 
-### 実装中のリスク検出:
+### 実装中のリスク検出
 
 ```typescript
 // リスク検出システム
@@ -183,7 +181,7 @@ function detectRisks(implementation) {
 
 ### Pre-Implementation Checklist
 
-### 実装開始前の確認:
+### 実装開始前の確認
 
 ```markdown
 ## Pre-Implementation Checklist
@@ -216,7 +214,7 @@ function detectRisks(implementation) {
 - [ ] Stakeholders informed
 ```
 
-### 確認プロンプト:
+### 確認プロンプト
 
 ```
 Ready to start implementation?
@@ -243,7 +241,7 @@ Continue? [Y/n]
 
 ### Phase Transition Confirmation
 
-### 各フェーズ完了時の確認:
+### 各フェーズ完了時の確認
 
 ```
 Phase 3 (Intelligent Adaptation) Complete
@@ -268,7 +266,7 @@ Proceed to Phase 4 (Implementation Execution)? [Y/n]
 
 ### Change Impact Assessment
 
-### 変更の影響範囲を分析:
+### 変更の影響範囲を分析
 
 ```typescript
 function assessImpact(changes) {
@@ -303,7 +301,7 @@ function assessImpact(changes) {
 }
 ```
 
-### 影響レポート:
+### 影響レポート
 
 ```markdown
 ## Impact Analysis
@@ -351,7 +349,7 @@ Breaking changes require:
 
 ### Quick Recovery
 
-### 即座にロールバック:
+### 即座にロールバック
 
 ```bash
 # 最後のcheckpointに戻る
@@ -367,7 +365,7 @@ git stash pop
 
 ### Partial Recovery
 
-### 特定のファイルのみロールバック:
+### 特定のファイルのみロールバック
 
 ```bash
 # 特定ファイルを復元
@@ -379,7 +377,7 @@ git checkout HEAD~1 -- src/auth/*.ts
 
 ### Database Recovery
 
-### データベース変更のロールバック:
+### データベース変更のロールバック
 
 ```bash
 # Rollback scriptを実行
@@ -393,7 +391,7 @@ psql -d mydb -f rollback.sql
 
 ### Implementation Monitoring
 
-### 実装中のモニタリング:
+### 実装中のモニタリング
 
 ```typescript
 // モニタリングシステム
@@ -427,7 +425,7 @@ function monitorImplementation(session) {
 
 ### Quality Gates
 
-### 品質ゲート:
+### 品質ゲート
 
 ```typescript
 // 各フェーズの品質ゲート
@@ -492,7 +490,7 @@ function checkQualityGate(phase, results) {
 
 ### Complete Rollback
 
-### 完全なロールバック手順:
+### 完全なロールバック手順
 
 ```bash
 # 1. 実装前のcommitを特定
@@ -514,7 +512,7 @@ git push --force-with-lease origin feature-branch
 
 ### Incremental Rollback
 
-### 段階的なロールバック:
+### 段階的なロールバック
 
 ```bash
 # Phase 6 → Phase 5
@@ -528,28 +526,28 @@ git reset --hard $(git log --grep="checkpoint: complete execution phase" --forma
 
 ## ベストプラクティス
 
-### リスク軽減:
+### リスク軽減
 
 1. すべてのフェーズ完了時にcheckpointを作成
 2. 大きな変更前に手動checkpointを作成
 3. 潜在的問題を事前に識別
 4. 各問題に対する軽減戦略を用意
 
-### 回復手順:
+### 回復手順
 
 1. ロールバック計画を常に用意
 2. データベース変更は必ずrollback scriptを作成
 3. 本番環境への適用前にステージングでテスト
 4. モニタリングとアラートを設定
 
-### 品質保証:
+### 品質保証
 
 1. 各フェーズで品質ゲートをチェック
 2. 継続的にテストを実行
 3. エラーを即座に検出
 4. パフォーマンスを常に監視
 
-### コミュニケーション:
+### コミュニケーション
 
 1. リスクを明確に文書化
 2. ステークホルダーに通知

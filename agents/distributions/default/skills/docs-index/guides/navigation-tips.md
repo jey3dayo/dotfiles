@@ -160,13 +160,11 @@ cc-sdd スキル → spec-driven-agent
 ### ドキュメントが見つからない
 
 1. **インデックスを確認**
-
    - `indexes/skills-index.md`
    - `indexes/commands-index.md`
    - `indexes/agents-index.md`
 
 2. **キーワード検索**
-
    - 日本語/英語両方のキーワードを試す
    - 類義語・関連語でも検索
 
@@ -246,4 +244,5 @@ claude-marketplace-sync スキルを参照
 ---
 
 ### 更新日
+
 ### 関連

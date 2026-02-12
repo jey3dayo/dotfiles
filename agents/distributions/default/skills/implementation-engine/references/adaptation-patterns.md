@@ -6,7 +6,7 @@ Implementation Engineが元のコードをプロジェクトアーキテクチ�
 
 ### ライブラリマッピング戦略
 
-### 1. 既存ライブラリの再利用:
+### 1. 既存ライブラリの再利用
 
 ```typescript
 // Source code uses axios
@@ -21,7 +21,7 @@ import { apiFetch } from "@/lib/api";
 const response = await apiFetch("/api/data");
 ```
 
-### マッピングの例:
+### マッピングの例
 
 ```markdown
 | Source Library | Project Equivalent | Action                   |
@@ -33,7 +33,7 @@ const response = await apiFetch("/api/data");
 | redux          | zustand            | Adapt to zustand store   |
 ```
 
-### 2. バージョン互換性の確認:
+### 2. バージョン互換性の確認
 
 ```typescript
 // Source: React 18 features
@@ -50,7 +50,7 @@ function useIdPolyfill() {
 }
 ```
 
-### 3. 重複の回避:
+### 3. 重複の回避
 
 ```typescript
 // Source: Custom utility function
@@ -67,7 +67,7 @@ import { debounce } from "lodash";
 // Use existing implementation instead
 ```
 
-### 4. 非推奨APIの更新:
+### 4. 非推奨APIの更新
 
 ```typescript
 // Source: Old API
@@ -85,7 +85,7 @@ useEffect(() => {
 
 ### 1. 命名規則の統一
 
-### snake_case → camelCase:
+### snake_case → camelCase
 
 ```typescript
 // Source
@@ -101,7 +101,7 @@ function userAuthentication(userName, password) {
 }
 ```
 
-### kebab-case → camelCase (CSS modules):
+### kebab-case → camelCase (CSS modules)
 
 ```css
 /* Source */
@@ -117,7 +117,7 @@ function userAuthentication(userName, password) {
 
 ### 2. エラーハンドリングパターンの適応
 
-### try-catch everywhere → Custom error boundary:
+### try-catch everywhere → Custom error boundary
 
 ```typescript
 // Source: try-catch everywhere
@@ -147,7 +147,7 @@ async function fetchUser(id) {
 }
 ```
 
-### Error classes:
+### Error classes
 
 ```typescript
 // Source: Generic Error
@@ -159,7 +159,7 @@ throw new UserNotFoundError(userId);
 
 ### 3. 状態管理アプローチの維持
 
-### useState + useEffect → SWR:
+### useState + useEffect → SWR
 
 ```typescript
 // Source: Manual state management
@@ -179,7 +179,7 @@ useEffect(() => {
 const { data, error, isLoading } = useSWR("/api/data", fetcher);
 ```
 
-### Redux → Zustand:
+### Redux → Zustand
 
 ```typescript
 // Source: Redux
@@ -194,7 +194,7 @@ const { user, isAuthenticated } = useAuthStore();
 
 ### 4. テストスタイルの保持
 
-### Mocha/Chai → Jest:
+### Mocha/Chai → Jest
 
 ```typescript
 // Source: Mocha + Chai
@@ -214,7 +214,7 @@ describe("User", () => {
 });
 ```
 
-### Enzyme → Testing Library:
+### Enzyme → Testing Library
 
 ```typescript
 // Source: Enzyme
@@ -229,7 +229,7 @@ fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
 
 ### 5. モジュールシステムの変換
 
-### CommonJS → ES Modules:
+### CommonJS → ES Modules
 
 ```javascript
 // Source: CommonJS
@@ -255,7 +255,7 @@ export function createApp() {
 
 ### スマートサンプリング
 
-### 優先順位:
+### 優先順位
 
 1. **最優先: エントリーポイントとコア機能**
 
@@ -268,7 +268,7 @@ Phase 1 Files:
 - src/config/index.ts (configuration)
 ```
 
-2. **高優先度: 主要機能モジュール**
+1. **高優先度: 主要機能モジュール**
 
 ```
 Phase 2 Files:
@@ -278,7 +278,7 @@ Phase 2 Files:
 - src/lib/ (core utilities)
 ```
 
-3. **中優先度: サポートコード**
+1. **中優先度: サポートコード**
 
 ```
 Phase 3 Files:
@@ -288,7 +288,7 @@ Phase 3 Files:
 - src/components/ (UI components)
 ```
 
-4. **低優先度: テストとドキュメント**
+1. **低優先度: テストとドキュメント**
 
 ```
 Phase 4 Files (as needed):
@@ -297,7 +297,7 @@ Phase 4 Files (as needed):
 - examples/ (examples)
 ```
 
-### スキップすべきファイル:
+### スキップすべきファイル
 
 ```
 Never Read:
@@ -407,7 +407,7 @@ function extractConventions(codebase) {
 }
 ```
 
-### 命名スタイルの検出:
+### 命名スタイルの検出
 
 ```typescript
 function detectNamingStyle(files) {
@@ -420,7 +420,7 @@ function detectNamingStyle(files) {
 }
 ```
 
-### インポートスタイルの検出:
+### インポートスタイルの検出
 
 ```typescript
 function detectImportStyle(files) {
@@ -578,7 +578,7 @@ function ensureTypes(code) {
 
 ## ベストプラクティス
 
-### 適応プロセス:
+### 適応プロセス
 
 1. プロジェクトパターンを最優先
 2. 既存のライブラリを再利用
@@ -586,7 +586,7 @@ function ensureTypes(code) {
 4. 非推奨APIを更新
 5. 一貫性を保つ
 
-### 品質保証:
+### 品質保証
 
 1. 変換後にテストを実行
 2. 型チェックを確認
@@ -594,7 +594,7 @@ function ensureTypes(code) {
 4. パフォーマンスを検証
 5. 既存機能が動作することを確認
 
-### ドキュメント:
+### ドキュメント
 
 1. 重要な変換を記録
 2. 決定の理由を文書化
