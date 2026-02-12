@@ -248,7 +248,7 @@ $ todo-orchestrator batch high
 
 ## 関連スキル・コマンド
 
-- **[task-context](../task-context/)**: タスクコンテキスト管理（軽依存）
+- **[integration-framework](../integration-framework/)**: TaskContext標準化とワークフロー統合（軽依存）
 - **TodoWrite**: 統合必須ツール
 - **/task**: 自然言語タスク実行
 - **/learnings**: 実行パターン学習
