@@ -99,6 +99,7 @@ yamllint = "latest"
 "npm:@openai/codex" = "latest"
 "npm:aicommits" = "latest"
 "npm:clawdbot" = "latest"
+"npm:vibe-kanban" = "latest"
 
 # ドキュメント・Lint
 "npm:markdown-link-check" = "latest"
