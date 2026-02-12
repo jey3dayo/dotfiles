@@ -80,7 +80,7 @@ check_prerequisites() {
   print_success "macOS detected"
 
   # Check git
-  if ! command -v git > /dev/null 2>&1; then
+  if ! command -v git >/dev/null 2>&1; then
     print_error "git is not installed."
     print_error "Please install Xcode Command Line Tools first:"
     print_error "  xcode-select --install"
@@ -89,7 +89,7 @@ check_prerequisites() {
   print_success "git found: $(command -v git)"
 
   # Check zsh
-  if ! command -v zsh > /dev/null 2>&1; then
+  if ! command -v zsh >/dev/null 2>&1; then
     print_error "zsh is not installed."
     print_error "Please install zsh via Homebrew or system package manager."
     exit 1
@@ -97,7 +97,7 @@ check_prerequisites() {
   print_success "zsh found: $(command -v zsh)"
 
   # Check curl
-  if ! command -v curl > /dev/null 2>&1; then
+  if ! command -v curl >/dev/null 2>&1; then
     print_error "curl is not installed."
     print_error "curl is required to download Homebrew installer."
     exit 1
@@ -143,7 +143,7 @@ detect_architecture() {
 
 check_homebrew_installed() {
   # Check if brew command is available
-  if command -v brew > /dev/null 2>&1; then
+  if command -v brew >/dev/null 2>&1; then
     return 0
   fi
 
@@ -209,7 +209,7 @@ install_homebrew() {
   fi
 
   # Verify installation
-  if ! command -v brew > /dev/null 2>&1; then
+  if ! command -v brew >/dev/null 2>&1; then
     print_error "brew command not available after installation"
     print_error "Please restart your terminal and try again."
     exit 1

@@ -141,7 +141,6 @@ From `commands-internal/`:
 - refactoring-summary
 - skill-integration
 - skill-mapping-engine
-- task-context
 
 ### 4. code-review/
 

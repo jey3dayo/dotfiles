@@ -201,21 +201,27 @@ main() {
   echo "=== Nix Dotfiles Diagnostic ==="
   echo ""
 
-  local checks=(
-    "check_generation"
-    "check_symlinks"
-    "check_flake_inputs"
-    "check_worktree"
-  )
-
   local all_passed=true
 
-  for check in "${checks[@]}"; do
-    if ! $check; then
-      all_passed=false
-    fi
-    echo ""
-  done
+  if ! check_generation; then
+    all_passed=false
+  fi
+  echo ""
+
+  if ! check_symlinks; then
+    all_passed=false
+  fi
+  echo ""
+
+  if ! check_flake_inputs; then
+    all_passed=false
+  fi
+  echo ""
+
+  if ! check_worktree; then
+    all_passed=false
+  fi
+  echo ""
 
   echo "=== Summary ==="
   if $all_passed; then
