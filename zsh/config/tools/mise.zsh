@@ -41,10 +41,10 @@ command -v mise > /dev/null 2>&1 || return
 alias refresh="mise ci"
 
 # Load completion only if mise is activated (check for _mise_hook function)
-if (($ + functions[_mise_hook])); then
+if (( $+functions[_mise_hook] )); then
   # Defer only the completion for startup performance
   if command -v usage > /dev/null 2>&1; then
-    if (($ + functions[zsh - defer])); then
+    if (( $+functions[zsh-defer] )); then
       zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval "$(mise complete -s zsh)"
     else
       eval "$(mise complete -s zsh)"
