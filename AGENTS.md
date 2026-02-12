@@ -1,14 +1,286 @@
-# Dotfiles - Claude Entry
+# 🤝 AI 開発協働ガイド
 
-Claude向けルールとコンテキストは `.claude/rules/` に集約しました。詳細は以下を参照してください。
+## 🤝 協働の基本原則
 
-- プロジェクト概要: `.claude/rules/project-context.md`
-- AI利用/コマンド: `.claude/rules/claude-code-usage.md`
-- セットアップ: `.claude/rules/setup-and-env.md`（SST: `docs/setup.md`）
-- パフォーマンス: `.claude/rules/performance.md`（SST: `docs/performance.md`）
-- 運用/メンテ: `.claude/rules/workflows-and-maintenance.md`（SST: `docs/maintenance.md`）
-- ドキュメント規約: `.claude/rules/documentation-rules.md`
-- ツール別: `.claude/rules/tools/`（Zsh/Neovim/WezTerm/Git+SSH/FZF）
-- レビュー基準: `.claude/review-criteria.md`
+### 1. 相互尊重と透明性
 
-Steering docs (常時ロード): `.kiro/steering/{product.md,tech.md,structure.md}`
+- ユーザーの時間と判断を尊重し、自分の能力を信じて最善を尽くす
+- 分からないことは素直に「分からない」と言い、思考プロセスをオープンにする
+- 内部で英語思考を行ってもよいが、最終的な回答・説明は必ず日本語で提供する
+
+### 2. 責任感と品質保証
+
+- 大規模変更時は事前計画共有で承認を得る
+- 品質保証（lint/test/build）は必ず実行
+- 既存テストなど重要なものは勝手に削除しない
+
+### 3. コミュニケーションと継続改善
+
+- 作業完了時は適切に報告、問題や疑問があれば遠慮なく相談
+- ユーザーからのフィードバックを真摯に受け止め、深い思考で本質的な洞察を目指す
+
+## 🎯 重要な開発原則
+
+- **型安全性**: 型アサーション排除、any 型排除
+- **エラーハンドリング**: 適切なエラー処理パターンの実装
+- **バリデーション**: 入力値の適切な検証
+
+## 📦 スキル開発ガイドライン
+
+### スキル配置の検討
+
+新しいスキルを作成する際は、以下の優先順位で配置先を検討してください：
+
+1. **Marketplace Repository（優先）**: `~/src/github.com/jey3dayo/claude-code-marketplace`
+   - 用途: 再利用可能な汎用スキル、技術スタック特化スキル（React、TypeScript等）
+   - メリット: Git管理、配布容易、GitHub自動バックアップ
+   - 例: react, typescript, nvim, mise, dotenvx
+
+2. **Local Skills**: `~/.claude/skills/`
+   - 用途: システム/メタスキル、実験的スキル、プロジェクト特化スキル
+   - メリット: 即座に利用可能、軽量
+   - 例: agents-and-commands, integration-framework, claude-marketplace-sync
+
+### Marketplace Repository構造
+
+```
+claude-code-marketplace/
+├── .claude-plugin/
+│   └── marketplace.json          # プラグイン登録
+└── plugins/
+    ├── dev-tools/                # 開発ツール系
+    ├── docs/                     # ドキュメント系
+    └── utils/                    # ユーティリティ系
+```
+
+### 新規スキル作成フロー
+
+1. 配置先を検討（marketplace優先）
+2. marketplace選択時:
+   - `plugins/{category}/{skill-name}/` ディレクトリ作成
+   - `.claude-plugin/plugin.json` 作成（jey3dayo所有権）
+   - `skills/SKILL.md` 作成
+   - `marketplace.json` にエントリ追加
+   - Git commit & push
+3. local選択時:
+   - `~/.claude/skills/{skill-name}/` ディレクトリ作成
+   - `SKILL.md` 作成
+
+### マーケットプレイス有効化
+
+```bash
+/plugin marketplace add ~/src/github.com/jey3dayo/claude-code-marketplace
+```
+
+## 🏆 品質保証指針
+
+### テスト戦略
+
+- **静的解析（基盤）**: 型システム厳格設定、動的型排除
+- **統合テスト（メイン）**: ユーザー操作シナリオ、AAA パターン厳守
+- **ユニット/E2E テスト（最小限）**: 純粋関数・重要フローのみ
+
+### 品質保証実行
+
+- 必須: テスト実行、型チェック、リンター、フォーマッター
+- 完了時チェック: 型エラー 0 件 / リント違反 0 件 / 全テスト成功 / 既存機能動作確認
+
+## 🚀 実装ワークフロー
+
+### 基本フロー
+
+1. **計画承認** → 大規模変更時は事前に変更概要を共有
+2. **コード理解** → 下記ツール優先順で効率的に探索
+3. **型安全実装** → 影響範囲確認・テスト実装
+4. **品質保証** → lint/test/build実行・完了報告
+
+### ツール選択の原則
+
+**コード理解ツール優先順位**（トークン効率重視）:
+
+1. **MCP Serena** (`mcp__serena__*`) - 関数・クラス・シンボル解析
+2. **Grep/ripgrep** - パターン検索・横断的調査
+3. **Read** - 設定ファイル・小規模ファイル・最終手段
+
+**禁止**: `find`, `grep`, `cat`, `head`, `tail` → 上記専用ツールを使用
+
+### 未使用変数の取り扱い
+
+- **原則**: 未使用変数は削除またはリファクタリングで対応
+- **例外的に`_`プレフィックス許可（真に避けられない制約のみ）**:
+  - エラーハンドリング: `_error`, `_err` (catch 文など)
+  - フレームワーク制約: 必須引数で使用しない場合
+  - 関数引数: `_param`など
+
+## 💬 コミュニケーションガイド
+
+### 報告タイミング
+
+- **計画提示時**: 事前承認確認
+- **不確実性発見時**: 素直に「分からない」と報告
+- **問題発生時**: 早期相談・透明な情報共有
+- **作業完了時**: 適切な完了報告
+
+### 相談・確認方法
+
+- **技術的疑問**: ドキュメント確認後に相談
+- **実装方針**: 複数選択肢を比較提示
+- **品質問題**: エラー詳細・再現手順を共有
+
+## 🤖 効率化支援
+
+### MCP Serena統合活用
+
+- **シンボル解析**: `get_symbols_overview` でファイル構造を把握
+- **関数・クラス検索**: `find_symbol` で特定の実装を発見
+- **依存関係追跡**: `find_referencing_symbols` で影響範囲を特定
+- **パターン検索**: `search_for_pattern` で横断的な調査
+
+### o3-search エージェント活用
+
+複雑なエラーや技術的な疑問は `mcp__o3__o3-search` で最新情報を取得
+
+---
+
+## 📌 重要な動作指針
+
+### ファイル操作の原則
+
+- **要求されたことだけを実行**: 余計な作業や追加機能を勝手に実装しない
+- **既存ファイル優先**: 新規ファイル作成は必要最小限に留め、既存ファイルの編集を優先
+- **ドキュメント作成制限**: README.mdや\*.mdファイルは明示的に要求された場合のみ作成
+
+## 📌 ドキュメント作成の原則
+
+### 優先順位（高→低）
+
+1. **Skill** - 再利用可能な知識、Progressive Disclosure可能
+2. **Agent** - 複雑なタスクの自動化、ワークフロー実行
+3. **Command** - ユーザー向けインタラクティブ操作
+4. **Rules/Steering** - プロジェクト固有の制約・ガイダンス
+5. **Docs** - 上記で表現できない場合のみ最小限に使用
+
+### 判断フロー
+
+新しい知識を追加する
+↓
+Q: 繰り返し使う知識か？
+↓ YES → Skill として実装
+↓ NO
+↓
+Q: 自動実行すべきタスクか？
+↓ YES → Agent として実装
+↓ NO
+↓
+Q: ユーザーが手動実行するか？
+↓ YES → Command として実装
+↓ NO
+↓
+Q: プロジェクト固有のルールか？
+↓ YES → Rules/Steering に記載
+↓ NO
+↓
+最小限のドキュメントとして docs/ に記載
+（可能な限り避ける）
+
+### Git コミット規約
+
+- **コミットメッセージ形式**:
+  - 変更内容を簡潔に記述するのみ
+  - 追加の署名やフッターは不要
+
+## 🔧 Claude Code 機能リファレンス
+
+### 🆕 統合システム（推奨）
+
+#### コード品質改善
+
+- **[統合レビューシステム](commands/review.md)** - `/review` プロジェクト自動判定・エージェント統合
+  - 詳細モード: ⭐️5段階評価
+  - シンプルモード: 並列エージェント実行
+  - **PRレビュー修正**: `/review --fix-pr` でGitHub PRコメント自動修正
+
+- **[コード品質保証](commands/polish.md)** - `/polish` lint/format/test実行＋自動修正
+  - エラーが出なくなるまで自動修正を繰り返し
+  - `--with-comments` でコメント整理も実行
+  - プロジェクト設定を自動検出
+
+#### タスク管理
+
+- **[インテリジェント・タスク・ルーター](commands/task.md)** - `/task` 自然言語でのタスク実行
+- **[Todo管理](commands/todos.md)** - `/todos` インタラクティブなタスク管理
+- **[学習記録](commands/learnings.md)** - `/learnings` 構造化された知見管理
+
+### 📚 スキルシステム
+
+**Progressive Disclosure型スキルアーキテクチャ** - コンテキスト効率5x向上、ロード時間<2秒
+
+主要スキル:
+
+- **[統合フレームワーク](skills/integration-framework/SKILL.md)** - TaskContext、Communication Bus、エージェント/コマンド統合パターン
+- **[エージェント＆コマンド活用](skills/agents-and-commands/SKILL.md)** - タスク分類、ツール選択、ワークフロー最適化
+- **[コードレビューシステム](skills/code-review/SKILL.md)** - ⭐️5段階評価、プロジェクト自動検出、技術スキル統合
+- **[MCPツール統合](skills/mcp-tools/SKILL.md)** - MCPサーバーセットアップ、セキュリティ、トラブルシューティング
+- **[ドキュメントインデックス](skills/docs-index/SKILL.md)** - ドキュメント検索、ナビゲーション、クイックリファレンス
+
+**特徴**:
+
+- 初回ロード時は概要のみ（16KB平均）、詳細は必要時にロード（83KB平均）
+- 日本語/英語バイリンガルトリガーキーワード
+- エージェント/コマンドと自動統合
+
+### 📚 その他のドキュメント
+
+**主要なシステムドキュメントはskills/システムに統合されています。** [docs-index](skills/docs-index/SKILL.md)で確認できます。
+
+- [共通ライブラリ](commands/shared/) - コマンド間で共有されるユーティリティ
+- [旧コマンド移行ガイド](commands/migration-guide.md) - 旧コマンドからの移行手順
+
+#### Spec-Driven Development（仕様駆動開発）
+
+- **[cc-sdd スキル](skills/cc-sdd/)** - Kiro形式のスペック駆動開発
+  - インテリジェント・ルーター: 自動的に適切なコマンドを選択・実行
+  - `/kiro:` コマンドファミリーとの統合インターフェース
+  - ステアリング（プロジェクト全体のガイド）＋仕様（個別機能の開発プロセス）
+
+**2つの使用方法**:
+
+1. **スキル経由（推奨）**: 自然言語でcc-sddスキルを呼び出し、適切なコマンドを自動実行
+
+   ```
+   例: "新機能の仕様を作りたい" → cc-sddが `/kiro:spec-init` を自動実行
+   ```
+
+2. **直接コマンド実行**: `/kiro:` コマンドを直接実行（既存ワークフローと互換）
+
+   ```bash
+   /kiro:spec-init "詳細な説明"     # 仕様初期化
+   /kiro:spec-requirements <feature> # 要件定義生成
+   /kiro:spec-design <feature>      # 技術設計作成
+   /kiro:spec-tasks <feature>       # 実装タスク生成
+   /kiro:spec-impl <feature>        # TDD実装
+   /kiro:spec-status <feature>      # 進捗確認
+   ```
+
+**詳細**: [cc-sdd SKILL.md](skills/cc-sdd/SKILL.md) を参照
+
+### 🎯 クイックスタート
+
+```bash
+# コード品質改善
+/polish                           # lint/format/test実行＋自動修正
+/polish --with-comments           # コメント整理も実行
+
+# コードレビュー
+/review                           # 包括的レビュー
+/review --fix-pr                  # PRレビューコメント修正
+/review --simple --fix            # クイックレビュー＋自動修正
+
+# タスク実行
+/task "コードをレビューして"
+/task "パフォーマンスを改善して"
+
+# Spec-Driven Development
+cc-sdd を呼び出して適切なコマンドを自動選択
+または /kiro:spec-init で直接開始
+```
