@@ -1,1 +1,1 @@
-/home/j138/.claude/CLAUDE.md
+/Users/t00114/.claude/CLAUDE.md
