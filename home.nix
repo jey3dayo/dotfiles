@@ -22,16 +22,8 @@
     environment = null;  # Auto-detect (override with "ci"/"pi"/"wsl2"/"macos"/"default")
 
     # Deployment options (Phase 2: enable file deployment)
+    # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager
     deployEntryPoints = true;   # Deploy ~/.gitconfig, ~/.zshenv, etc.
-    deployXdgConfig =
-      let
-        configWorktree = "${homeDirectory}/.config";
-        isConfigWorktree =
-          builtins.pathExists "${configWorktree}/flake.nix" &&
-          builtins.pathExists "${configWorktree}/home.nix" &&
-          builtins.pathExists "${configWorktree}/nix/dotfiles-module.nix";
-      in
-      !isConfigWorktree;        # Disable only when repo is actually ~/.config
     deploySsh = true;           # Deploy ~/.ssh/config
     deployBash = true;          # Deploy ~/.bashrc, ~/.bash_profile
     deployAwsume = true;        # Deploy ~/.awsume/config.yaml
