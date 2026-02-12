@@ -48,7 +48,7 @@ echo "... (run 'mise tasks' to see all)"
 """
 
 [format]
-description = "コードとドキュメントの自動フォーマット"
+description = "コードとドキュメントの自動フォーマット（書き込みあり）"
 depends = [
   "format:biome",
   "format:prettier",
@@ -61,19 +61,20 @@ depends = [
 ]
 
 [lint]
-description = "全体の品質チェック（GitHub Actions互換）- 並列実行"
+description = "静的解析・構文チェックの集約タスク（書き込みなし）"
 depends = [
   "lint:biome",
   "lint:markdown",
   "lint:yaml",
   "lint:lua",
   "lint:shell",
-  "lint:toml",
   "lint:python",
+  "lint:dockerfile",
+  "lint:links",
 ]
 
-[check]
-description = "全フォーマットチェック（書き込みなし、CI向け）- 並列実行"
+["check:format"]
+description = "フォーマットチェック集約（書き込みなし）"
 depends = [
   "format:biome:check",
   "format:prettier:check",
@@ -83,5 +84,12 @@ depends = [
   "format:shell:check",
   "format:toml:check",
   "format:python:check",
-  "lint",
 ]
+
+["check:lint"]
+description = "lint チェック集約（lint と同義）"
+depends = ["lint"]
+
+[check]
+description = "CI向け総合チェック（check:format + check:lint）"
+depends = ["check:format", "check:lint"]

@@ -2,19 +2,16 @@
 # Lint Tasks
 # ========================================
 # コード品質チェックタスク（チェックのみ、修正なし）
+# フォーマット判定は基本的に format:*:check へ集約
 # 各タスクは環境変数で対象ファイルを限定可能
-
-["lint:docs"]
-description = "ドキュメント系ファイル（MD/YAML/JSON/Links）の統合Lint"
-depends = ["lint:markdown", "lint:yaml", "lint:biome", "lint:links"]
 
 ["lint:biome"]
 description = "JS/TS/JSON ファイルをチェック（BIOME_FILES で対象を限定可能）"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
-  biome check ${BIOME_FILES}
+  biome lint ${BIOME_FILES}
 else
-  biome check .
+  biome lint .
 fi
 """
 
@@ -22,29 +19,15 @@ fi
 description = "Markdown ファイルをチェック"
 run = """
 markdownlint-cli2 "${MD_GLOB}" ${MD_EXCLUDES}
-fd -e md ${TASK_EXCLUDES} -X prettier --check --log-level error
-"""
-
-["lint:toml"]
-description = "TOML ファイルをチェック（TOML_FILES で対象を限定可能）"
-run = """
-if [ -n "${TOML_FILES:-}" ]; then
-  taplo format --check ${TOML_FILES}
-else
-  fd -e toml ${TASK_EXCLUDES} -X taplo format --check
-fi
 """
 
 ["lint:yaml"]
-description = "YAML ファイルをチェック（prettier + yamllint、YAML_FILES で対象を限定可能）"
+description = "YAML ファイルをチェック（yamllint、YAML_FILES で対象を限定可能）"
 run = """
 if [ -n "${YAML_FILES:-}" ]; then
-  prettier --check --log-level error ${YAML_FILES}
-  # yamllint は YAML_FILES 指定時も .github/ ディレクトリをチェック
-  yamllint -f parsable .github/
+  yamllint -f parsable ${YAML_FILES}
 else
-  fd -e yml -e yaml -X prettier --check --log-level error
-  yamllint -f parsable .github/
+  fd -e yml -e yaml ${TASK_EXCLUDES} -X yamllint -f parsable
 fi
 """
 
@@ -117,23 +100,9 @@ fi
 description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
 run = "fd -e md ${TASK_EXCLUDES} -x markdown-link-check --config ${MARKDOWN_LINK_CONFIG} -q"
 
-["lint:links:verbose"]
-description = "Markdown リンクチェック（詳細モード）"
-run = "fd -e md ${TASK_EXCLUDES} -x markdown-link-check --config ${MARKDOWN_LINK_CONFIG} --verbose"
-
 ["lint:lua"]
-description = "Lua ファイルをチェック"
-depends = ["lint:lua:stylua", "lint:lua:luacheck"]
-
-["lint:lua:stylua"]
-description = "Stylua でコードスタイルをチェック（LUA_FILES で対象を限定可能）"
-run = """
-if [ -n "${LUA_FILES:-}" ]; then
-  stylua --check ${LUA_FILES}
-else
-  fd --hidden -e lua ${TASK_EXCLUDES} -X stylua --check
-fi
-"""
+description = "Lua ファイルをチェック（luacheck）"
+depends = ["lint:lua:luacheck"]
 
 ["lint:lua:luacheck"]
 description = "luacheck を実行（利用可能な場合）"

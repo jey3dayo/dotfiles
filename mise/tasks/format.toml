@@ -209,4 +209,4 @@ fi
 
 ["format:docs"]
 description = "ドキュメントの完全な検証とフォーマット"
-depends = ["format:markdown", "lint:links", "lint:yaml"]
+depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]

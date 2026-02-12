@@ -4,13 +4,7 @@
 
 ["ci"]
 description = "すべての CI チェックをローカル実行（GitHub Actions と同じ、書き込みなし）"
-depends = [
-  "check",
-  "lint:links",
-  "test",
-  "skills:validate",
-  "skills:validate:distribution",
-]
+depends = ["check", "test", "skills:validate", "skills:validate:distribution"]
 
 ["ci:install"]
 description = "CI に必要な追加ツールをインストール"
