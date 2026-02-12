@@ -11,4 +11,9 @@ if [[ "$OSTYPE" == darwin* ]]; then
   elif [[ -d "/usr/local/Homebrew" ]]; then
     export HOMEBREW_PREFIX="/usr/local"
   fi
+
+  # Claude Code CLI
+  if [[ -d "$HOME/.claude/local" ]]; then
+    path=("$HOME/.claude/local" $path)
+  fi
 fi
