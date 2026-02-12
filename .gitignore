@@ -270,6 +270,3 @@ systemd/user/*.timer.wants/
 
 ## home-manager
 environment.d/
-
-# Agent commands shared utilities (動的ファイル、Nix配布対象外)
-agents/distributions/default/commands/shared/*.py
