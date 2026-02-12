@@ -52,15 +52,10 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) PATH="$PNPM_HOME:$PATH" ;;
  esac
-
-# Claude Code CLI (macOS/Linux)
-if [ -d "$HOME/.claude/local" ]; then
-  case ":$PATH:" in
-    *":$HOME/.claude/local:"*) ;;
-    *) PATH="$HOME/.claude/local:$PATH" ;;
-  esac
-fi
-
+case ":$PATH:" in
+  *":$HOME/.claude/local:"*) ;;
+  *) [ -d "$HOME/.claude/local" ] && PATH="$HOME/.claude/local:$PATH" ;;
+ esac
 export PATH
 
 # Activate mise if available
