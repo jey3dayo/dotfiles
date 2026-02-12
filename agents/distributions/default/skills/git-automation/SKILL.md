@@ -4,7 +4,7 @@ description: Smart Git workflow automation - intelligent commits with quality ga
 disable-model-invocation: true
 user-invocable: true
 allowed-tools: Bash, Read, Grep, Write
-argument-hint: [commit|pr] [options]
+argument-hint: "[commit|pr] [options]"
 ---
 
 # Git Automation - スマートGitワークフロー自動化

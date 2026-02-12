@@ -1,15 +1,14 @@
-# Todo Orchestrator - 統合タスク管理システム
-
 ---
-
 name: todo-orchestrator
 description: Unified task management system with interactive execution and AI-driven analysis. Shows TODO list, allows selection, executes tasks. Use when managing tasks, checking progress, or executing planned work.
-argument-hint: [add [description]] [--list] [--priority=&lt;level&gt;] [--suggest]
+argument-hint: "[add [description]] [--list] [--priority=<level>] [--suggest]"
 disable-model-invocation: true
 user-invocable: true
 allowed-tools: Read, Write, Edit, Bash, Grep, TodoWrite
 
 ---
+
+# Todo Orchestrator - 統合タスク管理システム
 
 ## 概要
 

@@ -1,7 +1,7 @@
 ---
 name: code-review-system
 description: Comprehensive code review with multiple modes - detailed (5-star evaluation), simple (parallel agents), PR review, CI diagnostics. Use when reviewing code quality, fixing PR comments, or diagnosing CI failures.
-argument-hint: [--simple] [--staged|--recent|--branch <name>] [--with-impact] [--fix] [--fix-ci [pr-number]] [--fix-pr [pr-number]]
+argument-hint: "[--simple] [--staged|--recent|--branch <name>] [--with-impact] [--fix] [--fix-ci [pr-number]] [--fix-pr [pr-number]]"
 disable-model-invocation: true
 user-invocable: true
 allowed-tools: Task, Bash(gh:*), Read, Grep, Glob

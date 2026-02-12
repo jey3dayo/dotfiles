@@ -4,7 +4,7 @@ description: Intelligent project documentation manager with AI-driven content ge
 disable-model-invocation: true
 user-invocable: true
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash
-argument-hint: [create|update|fix] [target]
+argument-hint: "[create|update|fix] [target]"
 ---
 
 # Documentation Management

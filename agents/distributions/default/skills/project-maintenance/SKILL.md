@@ -4,7 +4,7 @@ description: Project cleanup and maintenance automation with Serena semantic ana
 disable-model-invocation: true
 user-invocable: true
 allowed-tools: Read, Grep, Glob, Bash, mcp__serena__*
-argument-hint: [full|files] [options]
+argument-hint: "[full|files] [options]"
 ---
 
 # Project Maintenance - プロジェクトメンテナンス自動化

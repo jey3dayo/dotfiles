@@ -1,7 +1,7 @@
 ---
 name: learnings-knowledge
 description: AI-driven knowledge recording with categorization and auto-suggestion. Use when capturing insights, documenting fixes, or recording architectural decisions.
-argument-hint: [category] <description> [--search <query>] [--export <format>]
+argument-hint: "[category] <description> [--search <query>] [--export <format>]"
 disable-model-invocation: false
 user-invocable: true
 ---
