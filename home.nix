@@ -53,6 +53,7 @@
         src = ./AGENTS.md;
         default = "AGENTS.md";
         rename = {
+          claude = "CLAUDE.md";
           opencode = "CLAUDE.md";
           openclaw = "CLAUDE.md";
         };
