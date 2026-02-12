@@ -28,23 +28,27 @@ _mise_activate() {
 # mise Completion and Utilities
 # ========================================
 
-command -v mise >/dev/null 2>&1 || return
-
 # Activate mise for non-login shells (login shells already activated in .zprofile)
 # This is executed when config/tools/mise.zsh is sourced by config/loader.zsh in .zshrc
 if [[ -o interactive && ! -o login ]]; then
   _mise_activate
 fi
 
-# Check if mise is activated (skip completion if not)
-(( $+functions[_mise_hook] )) || return
+# Early return if mise is not available
+command -v mise >/dev/null 2>&1 || return
 
-# Defer only the completion for startup performance
-if command -v usage >/dev/null 2>&1; then
-  if (( $+functions[zsh-defer] )); then
-    zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval "$(mise complete -s zsh)"
-  else
-    eval "$(mise complete -s zsh)"
+# Shortcut for local CI
+alias refresh="mise ci"
+
+# Load completion only if mise is activated (check for _mise_hook function)
+if (( $+functions[_mise_hook] )); then
+  # Defer only the completion for startup performance
+  if command -v usage >/dev/null 2>&1; then
+    if (( $+functions[zsh-defer] )); then
+      zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval "$(mise complete -s zsh)"
+    else
+      eval "$(mise complete -s zsh)"
+    fi
   fi
 fi
 
