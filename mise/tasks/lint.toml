@@ -63,8 +63,10 @@ if [ -n "${SH_FILES:-}" ]; then
     shellcheck ${shfmt_files}
   fi
 
-  if [ -n "${zsh_files}" ]; then
+  if [ -n "${zsh_files}" ] && command -v zsh >/dev/null 2>&1; then
     zsh -n ${zsh_files}
+  elif [ -n "${zsh_files}" ]; then
+    echo "⚠️ zsh not found; skipping zsh syntax check for:${zsh_files}"
   fi
 else
   # scripts/ (some files have no extension)
@@ -80,8 +82,12 @@ else
   fd -e sh ${TASK_EXCLUDES} -X shellcheck
 
   # zsh syntax check (.zsh + zsh/bin/*)
-  fd --hidden -e zsh -X zsh -n
-  fd -t f -H -p '^zsh/bin/' -X zsh -n
+  if command -v zsh >/dev/null 2>&1; then
+    fd --hidden -e zsh -X zsh -n
+    fd -t f -H -p '^zsh/bin/' -X zsh -n
+  else
+    echo "⚠️ zsh not found; skipping zsh syntax checks"
+  fi
 fi
 """
 
