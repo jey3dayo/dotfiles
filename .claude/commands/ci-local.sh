@@ -64,9 +64,15 @@ EOF
 }
 
 setup_ci_env() {
-  # Use CI-optimized mise config by default for parity with GitHub Actions.
-  if [[ -z "${MISE_CONFIG_FILE:-}" ]]; then
-    export MISE_CONFIG_FILE="$PROJECT_ROOT/mise/config.ci.toml"
+  # Force CI-optimized mise config for parity with GitHub Actions.
+  local ci_config="$PROJECT_ROOT/mise/config.ci.toml"
+  local previous_config="${MISE_CONFIG_FILE:-}"
+
+  export MISE_CONFIG_FILE="$ci_config"
+
+  if [[ -n "$previous_config" && "$previous_config" != "$ci_config" ]]; then
+    log_info "MISE_CONFIG_FILE を CI 用に上書き: $previous_config -> $MISE_CONFIG_FILE"
+  else
     log_info "MISE_CONFIG_FILE を設定: $MISE_CONFIG_FILE"
   fi
 }
@@ -145,7 +151,6 @@ run_ci_checks() {
   log_section "CI チェックの実行"
 
   cd "$PROJECT_ROOT"
-  setup_ci_env
 
   # CI workflow parity: deploy step (best effort in local environment)
   if command -v nix >/dev/null 2>&1; then
@@ -218,6 +223,7 @@ main() {
   done
 
   check_mise_installation
+  setup_ci_env
 
   case $command in
     setup)
