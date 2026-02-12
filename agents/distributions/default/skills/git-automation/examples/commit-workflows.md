@@ -310,7 +310,7 @@ git merge develop
 
 ### コミット粒度
 
-**推奨**:
+### 推奨
 
 ```bash
 # 意味のある単位でコミット
@@ -319,7 +319,7 @@ git merge develop
 /git-automation commit "test: add auth tests"
 ```
 
-**非推奨**:
+### 非推奨
 
 ```bash
 # 大きすぎるコミット

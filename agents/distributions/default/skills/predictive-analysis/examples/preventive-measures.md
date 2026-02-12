@@ -6,7 +6,7 @@
 
 ### 1. コード品質ゲート
 
-**CI/CDパイプラインに組み込む**:
+### CI/CDパイプラインに組み込む
 
 ```yaml
 # .github/workflows/quality-check.yml
@@ -43,7 +43,7 @@ jobs:
 
 ### 2. Pre-commit Hooks
 
-**Huskyでローカル検証**:
+### Huskyでローカル検証
 
 ```json
 // package.json
@@ -65,7 +65,7 @@ jobs:
 
 ### 3. コードレビューチェックリスト
 
-**PRテンプレートに組み込む**:
+### PRテンプレートに組み込む
 
 ```markdown
 ## Code Review Checklist
@@ -99,7 +99,7 @@ jobs:
 
 ### ESLint設定
 
-**セキュリティとパフォーマンスの検出**:
+### セキュリティとパフォーマンスの検出
 
 ```javascript
 // .eslintrc.js
@@ -134,7 +134,7 @@ module.exports = {
 
 ### SonarQube設定
 
-**包括的なコード品質管理**:
+### 包括的なコード品質管理
 
 ```yaml
 # sonar-project.properties
@@ -160,7 +160,7 @@ sonar.security.enabled=true
 
 ### 1. レイヤードアーキテクチャ
 
-**責任の分離**:
+### 責任の分離
 
 ```typescript
 // src/architecture/
@@ -221,7 +221,7 @@ export class OrderController {
 
 ### 2. 依存性注入
 
-**テスタビリティと疎結合**:
+### テスタビリティと疎結合
 
 ```typescript
 // DIコンテナ
@@ -266,7 +266,7 @@ class OrderService {
 
 ### 3. エラーハンドリング戦略
 
-**構造化されたエラー処理**:
+### 構造化されたエラー処理
 
 ```typescript
 // エラークラス階層
@@ -328,7 +328,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 ### 1. ロギング戦略
 
-**構造化ログ**:
+### 構造化ログ
 
 ```typescript
 import winston from "winston";
@@ -360,7 +360,7 @@ logger.error("Payment failed", {
 
 ### 2. メトリクス収集
 
-**Prometheusメトリクス**:
+### Prometheusメトリクス
 
 ```typescript
 import promClient from "prom-client";
@@ -406,7 +406,7 @@ app.use((req, res, next) => {
 
 ### 3. ヘルスチェック
 
-**包括的なヘルスエンドポイント**:
+### 包括的なヘルスエンドポイント
 
 ```typescript
 app.get("/health", async (req, res) => {
@@ -452,7 +452,7 @@ async function checkExternalAPI() {
 
 ### 1. 入力検証
 
-**Zodを使った型安全な検証**:
+### Zodを使った型安全な検証
 
 ```typescript
 import { z } from "zod";
@@ -481,7 +481,7 @@ app.post("/users", async (req, res) => {
 
 ### 2. レート制限
 
-**柔軟なレート制限**:
+### 柔軟なレート制限
 
 ```typescript
 import rateLimit from "express-rate-limit";
@@ -512,7 +512,7 @@ app.use("/search", searchLimiter);
 
 ### 3. CORS設定
 
-**適切なCORS設定**:
+### 適切なCORS設定
 
 ```typescript
 import cors from "cors";

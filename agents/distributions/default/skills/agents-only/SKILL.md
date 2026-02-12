@@ -37,7 +37,7 @@ result = select_optimal_agent("Refactor TypeScript React app", context)
 # }
 ```
 
-**使用タイミング**: Task tool呼び出し時のエージェント選択
+### 使用タイミング
 
 #### detect_relevant_skills(task_description, context=None)
 
@@ -51,7 +51,7 @@ skills = detect_relevant_skills(
 # -> [SkillSuggestion(name="typescript", reason="...", confidence=0.86), ...]
 ```
 
-**使用タイミング**: タスク開始前のスキル自動ロード
+### 使用タイミング
 
 #### calculate_agent_scores(context)
 
@@ -65,7 +65,7 @@ scores = calculate_agent_scores({
 # -> [{"name": "error-fixer", "confidence": 0.95, ...}, ...]
 ```
 
-**使用タイミング**: 複数エージェント候補の比較評価
+### 使用タイミング
 
 ## 🤖 Available Agents (7エージェント)
 

@@ -40,7 +40,7 @@ def extract_requirements(description):
     return requirements
 ```
 
-**例**:
+### 例
 
 ```
 入力: "パスワードリセット機能の実装"
@@ -94,7 +94,7 @@ def identify_impact_scope(requirements):
     )
 ```
 
-**例**:
+### 例
 
 ```
 【影響ファイル】
@@ -163,7 +163,7 @@ def evaluate_priority(requirements, impact_scope):
     )
 ```
 
-**例**:
+### 例
 
 ```
 【優先度評価】
@@ -205,7 +205,7 @@ def identify_dependencies(requirements, impact_scope):
     )
 ```
 
-**例**:
+### 例
 
 ```
 【依存関係】
@@ -262,7 +262,7 @@ def estimate_effort(requirements, impact_scope, priority):
     )
 ```
 
-**例**:
+### 例
 
 ```
 【工数推定】
@@ -350,7 +350,7 @@ def format_todo(task, analysis_result):
     return todo
 ```
 
-**TodoWriteフォーマット例**:
+### TodoWriteフォーマット例
 
 ```python
 TodoWrite([
@@ -368,7 +368,7 @@ TodoWrite([
 ])
 ```
 
-**.claude/TODO.mdフォーマット例**:
+### .claude/TODO.mdフォーマット例
 
 ```markdown
 ## 🟡 P2: パスワードリセット機能の実装 (5h)

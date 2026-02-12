@@ -175,7 +175,7 @@ def apply_exclusions(targets, guidelines):
 
 ### 例1: セキュリティ重視プロジェクト
 
-**ガイドライン**: `./.claude/review-guidelines.md`
+### ガイドライン
 
 ```markdown
 # セキュリティ重視プロジェクト
@@ -200,7 +200,7 @@ def apply_exclusions(targets, guidelines):
 - API応答時間500ms以内
 ```
 
-**統合後の評価基準**:
+### 統合後の評価基準
 
 ```python
 evaluation_criteria = {
@@ -232,7 +232,7 @@ evaluation_criteria = {
 
 ### 例2: パフォーマンス重視プロジェクト
 
-**ガイドライン**: `./.claude/review-guidelines.md`
+### ガイドライン
 
 ```markdown
 # パフォーマンス重視プロジェクト
@@ -256,7 +256,7 @@ evaluation_criteria = {
 - 基本的なセキュリティ対策
 ```
 
-**統合後の評価基準**:
+### 統合後の評価基準
 
 ```python
 evaluation_criteria = {
@@ -287,7 +287,7 @@ evaluation_criteria = {
 
 ### 例3: 既存コードベースの段階的改善
 
-**ガイドライン**: `./.claude/review-guidelines.md`
+### ガイドライン
 
 ```markdown
 # 段階的改善プロジェクト
@@ -320,7 +320,7 @@ evaluation_criteria = {
 - `src/utils/helpers.ts` の any型（次フェーズで修正）
 ```
 
-**統合後の動作**:
+### 統合後の動作
 
 ```python
 # Legacy code is excluded
@@ -367,7 +367,7 @@ ignored_issues = [
 
 `./.claude/commands/review.md` を作成することで、完全にカスタマイズされたレビューコマンドを定義できます。
 
-**例**: `./.claude/commands/review.md`
+### 例
 
 ````markdown
 ---

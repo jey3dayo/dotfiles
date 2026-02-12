@@ -22,7 +22,7 @@
 /task "README.mdを更新"
 ```
 
-**期待される動作**
+### 期待される動作
 
 1. タスク意図の自動分析
 2. 最適なエージェントの選択
@@ -46,7 +46,7 @@
 /task "ステージされた変更をレビュー"
 ```
 
-**期待される動作**
+### 期待される動作
 
 1. GitHub PR意図を自動検出
 2. `github-pr-reviewer` エージェントを選択
@@ -63,7 +63,7 @@
 /task "新機能を実装してテストを書いてドキュメントも更新"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Task Analysis
@@ -88,7 +88,7 @@ Integrated Result
 /task "Go言語でClean Architectureに従ってREST APIを実装"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Task Analysis
@@ -118,7 +118,7 @@ Implementation
 /task "なぜこのテストが失敗するのか原因を調査して修正案を提示"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Task Analysis
@@ -155,7 +155,7 @@ Solution Phase
 /task "Userクラスの定義と全ての使用箇所を見つけて"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Task Analysis
@@ -182,7 +182,7 @@ Result Visualization
 /task "UserRepositoryクラスの名前を変更して全ての参照を更新"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Semantic Analysis Detection
@@ -211,7 +211,7 @@ Verification
 /task "このクラスの依存関係を分析して図にして"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Agent: serena + researcher
@@ -239,7 +239,7 @@ React Hooksの最新APIを使用した実装。
 /task "React HooksのuseStateとuseEffectの使い方を教えて"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Library Detection: "React Hooks"
@@ -266,7 +266,7 @@ Next.js 14の最新機能を使用した実装。
 /task "Next.js 14のApp Routerでデータフェッチングを実装"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Library Detection: "Next.js 14", "App Router"
@@ -293,7 +293,7 @@ TypeScriptの高度な型システムを使用した実装。
 /task "TypeScriptでジェネリック型を使った関数を実装"
 ```
 
-**実行フロー**
+### 実行フロー
 
 ```
 Library Detection: "TypeScript", "ジェネリック"
@@ -322,7 +322,7 @@ Type-safe implementation
 /task --interactive "複雑な問題を解決"
 ```
 
-**対話フロー**
+### 対話フロー
 
 ```
 1. Initial Analysis
@@ -353,7 +353,7 @@ Type-safe implementation
 /task --dry-run "大規模リファクタリング"
 ```
 
-**ドライラン出力**
+### ドライラン出力
 
 ```markdown
 ## Dry Run Report
@@ -392,7 +392,7 @@ Task: "大規模リファクタリング"
 /task --verbose "パフォーマンス最適化"
 ```
 
-**詳細ログ**
+### 詳細ログ
 
 ```
 [00:00] Task Analysis Started
@@ -425,7 +425,7 @@ Task: "大規模リファクタリング"
 /task --thinking "なぜこのエラーが発生するか調査"
 ```
 
-**Deep Thinking 実行**
+### Deep Thinking 実行
 
 ```
 🧠 Deep Thinking モードが有効になりました

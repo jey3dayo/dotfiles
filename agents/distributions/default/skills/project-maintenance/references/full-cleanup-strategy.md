@@ -50,7 +50,7 @@ mcp__serena__list_dir(".", recursive=true)
 mcp__serena__get_symbols_overview()  # 主要ファイルの概要把握
 ```
 
-**実行内容**:
+### 実行内容
 
 - Gitチェックポイント作成（ロールバック用）
 - プロジェクト構造の把握
@@ -84,7 +84,7 @@ def detect_unused_symbols():
     return unused_symbols
 ```
 
-**検出ロジック**:
+### 検出ロジック
 
 1. プロジェクト内の全シンボル（関数、クラス、変数）を取得
 2. 各シンボルの参照箇所を検索
@@ -114,7 +114,7 @@ for pattern in debug_patterns:
     )
 ```
 
-**検出対象**:
+### 検出対象
 
 - デバッグプリント文
 - デバッグ用関数呼び出し
@@ -147,7 +147,7 @@ def remove_redundant_comments():
     ]
 ```
 
-**削除基準**:
+### 削除基準
 
 - 空のコメント行
 - 区切り線のみのコメント
@@ -188,7 +188,7 @@ def is_safe_to_remove(match):
     return True
 ```
 
-**削除基準**:
+### 削除基準
 
 - 条件分岐内の独立したデバッグコード
 - 副作用のないログ出力
@@ -220,7 +220,7 @@ def cleanup_unused_imports():
                 remove_import(file_path, imp)
 ```
 
-**整理ロジック**:
+### 整理ロジック
 
 1. ファイル内のimport文を全て取得
 2. 各インポートの参照箇所を検索
@@ -265,14 +265,14 @@ def is_protected_file(file_path):
     return any(p in file_path for p in protected_patterns)
 ```
 
-**削除対象**:
+### 削除対象
 
 - 一時ファイル（_.log, _.tmp, \*~）
 - システムファイル（.DS_Store, Thumbs.db）
 - コンパイル生成物（_.pyc, _.class）
 - キャッシュディレクトリ
 
-**保護対象**:
+### 保護対象
 
 - `.claude/` ディレクトリ
 - `.git/` ディレクトリ
@@ -327,7 +327,7 @@ def create_consolidation_plan(duplicates):
     return plan
 ```
 
-**統合ロジック**:
+### 統合ロジック
 
 1. docsディレクトリ内のファイルを全て解析
 2. キーフレーズを抽出して類似ドキュメントを検索
@@ -451,9 +451,9 @@ experimental/
 
 ### 問題: 重要なコードが未使用と判定される
 
-**原因**: リフレクションや動的呼び出しで使用されている
+### 原因
 
-**対処**:
+### 対処
 
 ```python
 # @preserve コメントで保護
@@ -464,9 +464,9 @@ def dynamic_handler():
 
 ### 問題: テストが失敗する
 
-**原因**: テスト用のモックやフィクスチャが削除された
+### 原因
 
-**対処**:
+### 対処
 
 ```bash
 # ロールバックしてテストディレクトリを除外
@@ -477,9 +477,9 @@ echo "tests/" >> .cleanupignore
 
 ### 問題: ビルドが失敗する
 
-**原因**: 生成コードや型定義が削除された
+### 原因
 
-**対処**:
+### 対処
 
 ```bash
 # ロールバックして生成ファイルを保護

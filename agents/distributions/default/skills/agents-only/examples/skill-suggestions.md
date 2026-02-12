@@ -71,7 +71,7 @@ def requires_framework_knowledge(description_lower):
     return any(keyword in description_lower for keyword in framework_keywords)
 ```
 
-**使用例**:
+### 使用例
 
 ```python
 # パターン1: TaskContext統合
@@ -109,7 +109,7 @@ def requires_tool_selection_guidance(description_lower):
     return matches >= 2
 ```
 
-**使用例**:
+### 使用例
 
 ```python
 # パターン1: ツール選択相談
@@ -144,7 +144,7 @@ def mentions_mcp_servers(description_lower):
     return any(keyword in description_lower for keyword in mcp_keywords)
 ```
 
-**使用例**:
+### 使用例
 
 ```python
 # パターン1: MCPセットアップ
@@ -179,7 +179,7 @@ def needs_documentation_guidance(description_lower):
     return any(keyword in description_lower for keyword in docs_keywords)
 ```
 
-**使用例**:
+### 使用例
 
 ```python
 # パターン1: ドキュメント検索

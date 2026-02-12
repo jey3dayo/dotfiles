@@ -28,9 +28,9 @@ Claude Codeのドキュメント、スキル、コマンド、エージェント
 
 ### トリガーキーワード
 
-**日本語**: ドキュメント、ガイド、スキル一覧、コマンド一覧、エージェント一覧、使い方、リファレンス、検索、ナビゲーション
+### 日本語
 
-**英語**: documentation, docs, guide, skills list, commands list, agents list, how to use, reference, search, navigation
+### 英語
 
 ## クイックリファレンス
 
@@ -72,21 +72,21 @@ Claude Codeのドキュメント、スキル、コマンド、エージェント
 
 ### カテゴリ別検索
 
-**スキルを探す時**:
+### スキルを探す時
 
 - 技術スタック特化: `typescript`, `react`, `golang`, `zsh`, `nvim`
 - ドキュメント系: `docs-write`, `markdown-docs`, `slide-docs`
 - 開発ツール: `mise`, `dotenvx`, `similarity`, `tsr`
 - セキュリティ: `security`, `dotfiles-integration`
 
-**コマンドを探す時**:
+### コマンドを探す時
 
 - コード品質: `/polish`, `/review`, `/fix-todos`
 - タスク管理: `/task`, `/todos`, `/create-todos`
 - Git操作: `/commit`, `/create-pr`
 - Spec-Driven: `/kiro:spec-init`, `/kiro:spec-design`, `/kiro:spec-impl`
 
-**エージェントを探す時**:
+### エージェントを探す時
 
 - コードレビュー: `code-reviewer`, `github-pr-reviewer`
 - エラー修正: `error-fixer`
@@ -135,7 +135,7 @@ Claude Codeのドキュメント、スキル、コマンド、エージェント
 
 ### Q5: スキルが読み込まれない
 
-**Nix Home Manager環境**:
+### Nix Home Manager環境
 
 - `home-manager generations` で現在のgenerationを確認
 - `home-manager switch --flake ~/.agents --impure` で再適用

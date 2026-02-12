@@ -4,7 +4,7 @@ PRテンプレート、署名ポリシー、日本語対応の詳細仕様です
 
 ## 日本語対応の原則
 
-**すべてのPR内容は日本語で生成されます。**
+### すべてのPR内容は日本語で生成されます。
 
 - PRタイトル: 日本語または英語（コミットメッセージに準拠）
 - PR本文: 完全日本語
@@ -281,21 +281,21 @@ def generate_pr_title(commit_groups, options):
 
 ### タイトル形式
 
-**単一変更**:
+### 単一変更
 
 ```
 feat(auth): add login functionality
 fix(api): resolve timeout issue
 ```
 
-**複数変更（同じタイプ）**:
+### 複数変更（同じタイプ）
 
 ```
 feat: multiple feature updates
 fix: multiple bug fixes
 ```
 
-**複数変更（混合タイプ）**:
+### 複数変更（混合タイプ）
 
 ```
 feat: feature, refactor, test updates

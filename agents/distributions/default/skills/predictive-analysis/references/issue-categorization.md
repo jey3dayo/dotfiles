@@ -10,7 +10,7 @@
 
 #### 1.1 インジェクション攻撃
 
-**SQLインジェクション**:
+### SQLインジェクション
 
 ```typescript
 // 危険: パラメータ化されていないクエリ
@@ -21,7 +21,7 @@ const query = "SELECT * FROM users WHERE id = ?";
 db.query(query, [userId]);
 ```
 
-**コマンドインジェクション**:
+### コマンドインジェクション
 
 ```typescript
 // 危険: ユーザー入力を直接シェルコマンドに渡す
@@ -32,7 +32,7 @@ if (!/^[a-zA-Z0-9_-]+$/.test(userInput)) throw new Error("Invalid input");
 fs.unlink(path.join(SAFE_DIR, userInput));
 ```
 
-**XSS (Cross-Site Scripting)**:
+### XSS (Cross-Site Scripting)
 
 ```typescript
 // 危険: エスケープなしのHTML挿入
@@ -46,7 +46,7 @@ element.innerHTML = DOMPurify.sanitize(userInput);
 
 #### 1.2 認証・認可の不備
 
-**認証バイパス**:
+### 認証バイパス
 
 ```typescript
 // 危険: 認証チェックの欠如
@@ -60,7 +60,7 @@ app.get("/admin/users", authenticateAdmin, (req, res) => {
 });
 ```
 
-**不適切なセッション管理**:
+### 不適切なセッション管理
 
 ```typescript
 // 危険: セッションの有効期限なし
@@ -72,7 +72,7 @@ session.set("user", userData, { maxAge: 3600000 }); // 1時間
 
 #### 1.3 データ露出
 
-**ハードコードされたシークレット**:
+### ハードコードされたシークレット
 
 ```typescript
 // 危険: ソースコードに秘密情報
@@ -82,7 +82,7 @@ const API_KEY = "sk_live_1234567890abcdef";
 const API_KEY = process.env.API_KEY;
 ```
 
-**過剰なデータ露出**:
+### 過剰なデータ露出
 
 ```typescript
 // 危険: パスワードハッシュを含む全データ返却
@@ -98,7 +98,7 @@ res.json({
 
 #### 1.4 暗号化の問題
 
-**弱い暗号化アルゴリズム**:
+### 弱い暗号化アルゴリズム
 
 ```typescript
 // 危険: MD5, SHA1
@@ -114,7 +114,7 @@ const hash = await bcrypt.hash(password, 12);
 
 #### 2.1 アルゴリズム効率
 
-**O(n²) 以上の複雑度**:
+### O(n²) 以上の複雑度
 
 ```typescript
 // 危険: ネストループによる O(n²)
@@ -132,7 +132,7 @@ users.forEach((user) => {
 });
 ```
 
-**不要な再計算**:
+### 不要な再計算
 
 ```typescript
 // 危険: ループ内で毎回計算
@@ -153,7 +153,7 @@ for (let i = 0; i < items.length; i++) {
 
 #### 2.2 データベースの問題
 
-**N+1 クエリ**:
+### N+1 クエリ
 
 ```typescript
 // 危険: ループ内でクエリ実行
@@ -168,7 +168,7 @@ const users = await User.findAll({
 });
 ```
 
-**インデックスの欠如**:
+### インデックスの欠如
 
 ```sql
 -- 危険: インデックスなしの検索
@@ -180,7 +180,7 @@ CREATE INDEX idx_orders_user_status ON orders(user_id, status);
 
 #### 2.3 メモリ管理
 
-**メモリリーク**:
+### メモリリーク
 
 ```typescript
 // 危険: イベントリスナーの削除忘れ
@@ -193,7 +193,7 @@ const cleanup = () => {
 };
 ```
 
-**無制限なキャッシュ**:
+### 無制限なキャッシュ
 
 ```typescript
 // 危険: サイズ制限なし
@@ -208,7 +208,7 @@ const cache = new LRUCache({ max: 1000, ttl: 3600000 });
 
 #### 2.4 非同期処理の非効率
 
-**逐次的な非同期処理**:
+### 逐次的な非同期処理
 
 ```typescript
 // 危険: 順番に実行
@@ -230,7 +230,7 @@ const [user, orders, products] = await Promise.all([
 
 #### 3.1 高複雑度
 
-**循環的複雑度が高い**:
+### 循環的複雑度が高い
 
 ```typescript
 // 危険: CC = 25
@@ -254,7 +254,7 @@ function processOrder(order, user, config) {
 
 #### 3.2 コード重複
 
-**ロジックの重複**:
+### ロジックの重複
 
 ```typescript
 // 危険: 同じロジックが複数箇所
@@ -277,7 +277,7 @@ function validateEmail(email) {
 
 #### 3.3 密結合
 
-**ハードコードされた依存**:
+### ハードコードされた依存
 
 ```typescript
 // 危険: 具体的な実装への依存
@@ -300,7 +300,7 @@ class OrderService {
 
 #### 3.4 不適切な命名
 
-**意味不明な名前**:
+### 意味不明な名前
 
 ```typescript
 // 危険: 省略形や意味不明な名前

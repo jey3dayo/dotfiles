@@ -8,7 +8,7 @@
 
 project-detectorを使用してプロジェクトタイプとスタックを自動判定します。
 
-**判定可能なプロジェクトタイプ**:
+### 判定可能なプロジェクトタイプ
 
 - Web Application (React, Vue, Angular, Svelte等)
 - API/Backend (Node.js, Python, Go, Rust等)
@@ -18,7 +18,7 @@ project-detectorを使用してプロジェクトタイプとスタックを自�
 - Mobile Application
 - Documentation Site
 
-**検出される技術スタック情報**:
+### 検出される技術スタック情報
 
 ```json
 {
@@ -68,7 +68,7 @@ def analyze_project():
 
 ### シンボル解析によるコード理解
 
-**get_symbols_overview**: ファイル構造の把握
+### get_symbols_overview
 
 ```python
 def analyze_file_structure(file_path):
@@ -92,7 +92,7 @@ def analyze_file_structure(file_path):
     }
 ```
 
-**find_symbol**: 特定のシンボル検索
+### find_symbol
 
 ```python
 def find_public_api():
@@ -118,7 +118,7 @@ def find_public_api():
     return api_docs
 ```
 
-**find_referencing_symbols**: 依存関係追跡
+### find_referencing_symbols
 
 ```python
 def analyze_feature_impact(feature_name):
@@ -152,14 +152,14 @@ def analyze_feature_impact(feature_name):
 
 #### Web Application
 
-**重点ドキュメント**:
+### 重点ドキュメント
 
 - Setup Guide: 開発環境のセットアップ
 - Component Documentation: コンポーネント使用例
 - Styling Guide: デザインシステム
 - Deployment Guide: デプロイ手順
 
-**生成パターン**:
+### 生成パターン
 
 ```markdown
 # Setup Guide
@@ -194,14 +194,14 @@ ${generateEnvDocs()}
 
 #### API/Backend
 
-**重点ドキュメント**:
+### 重点ドキュメント
 
 - API Reference: エンドポイント仕様
 - Authentication: 認証方法
 - Database Schema: データベース構造
 - Deployment: サーバーセットアップ
 
-**生成パターン**:
+### 生成パターン
 
 ```markdown
 # API Reference
@@ -221,14 +221,14 @@ ${generateErrorCodeDocs()}
 
 #### CLI Tool
 
-**重点ドキュメント**:
+### 重点ドキュメント
 
 - Command Reference: コマンド一覧
 - Configuration: 設定ファイル
 - Examples: 使用例
 - Troubleshooting: よくある問題
 
-**生成パターン**:
+### 生成パターン
 
 ```markdown
 # Command Reference
@@ -246,14 +246,14 @@ ${generateConfigDocs()}
 
 #### Library/Framework
 
-**重点ドキュメント**:
+### 重点ドキュメント
 
 - API Reference: 完全なAPI仕様
 - Getting Started: クイックスタート
 - Examples: 実用例
 - Migration Guides: バージョン移行
 
-**生成パターン**:
+### 生成パターン
 
 ```markdown
 # API Reference
@@ -336,20 +336,20 @@ def identify_documentation_gaps(project_analysis):
 
 ### ギャップの優先順位付け
 
-**高優先度**:
+### 高優先度
 
 - 公開APIの未ドキュメント
 - READMEの不在
 - セットアップ手順の不足
 - 破壊的変更の未記載
 
-**中優先度**:
+### 中優先度
 
 - 設定オプションの未ドキュメント
 - トラブルシューティングガイドの不足
 - パフォーマンスガイドの不足
 
-**低優先度**:
+### 低優先度
 
 - 内部実装の詳細
 - エッジケースの例

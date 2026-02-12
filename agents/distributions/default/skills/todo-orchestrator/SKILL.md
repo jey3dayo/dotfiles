@@ -15,12 +15,12 @@ allowed-tools: Read, Write, Edit, Bash, Grep, TodoWrite
 
 Todo Orchestratorは、**TodoWrite + .claude/TODO.md**を統合したインテリジェントなタスク管理システムです。インタラクティブなUI、AI駆動の優先度分析、依存関係の自動検出により、効率的なタスク実行をサポートします。
 
-**統合データソース**:
+### 統合データソース
 
 - **TodoWrite**: セッション内タスク、リアルタイム更新
 - **.claude/TODO.md**: 永続的タスク、人間編集可能、Git管理
 
-**主な特徴**:
+### 主な特徴
 
 - **インタラクティブモード**: 番号選択 → 確認 → 実行 → 自動更新
 - **AI駆動優先度分析**: 複雑度・影響範囲・依存関係を自動評価
@@ -56,7 +56,7 @@ todo-orchestrator --suggest
 3. **自動実行**: タスク実行、進捗表示、エラーハンドリング
 4. **結果更新**: TodoWrite更新、学習データ蓄積
 
-**選択オプション**:
+### 選択オプション
 
 - 番号指定: `1`, `3`, `1-5`, `1,3,5`
 - 優先度一括: `high`, `medium`, `low`
@@ -68,23 +68,23 @@ todo-orchestrator --suggest
 
 番号選択による直感的なタスク実行フロー。依存関係チェック、実行前確認、リアルタイム進捗表示。
 
-**詳細**: [references/interactive-execution-flow.md](references/interactive-execution-flow.md)
+### 詳細
 
 ### 2. 統合タスク管理
 
 TodoWriteと.claude/TODO.mdを統合表示。優先度ソート、重複排除、自動同期。
 
-**詳細**: [references/data-source-integration.md](references/data-source-integration.md)
+### 詳細
 
 ### 3. AI駆動優先度システム
 
-**P1 🟢 即座実行**: 1-2時間、簡単、安全、即座に着手可能
-**P2 🟡 標準実行**: 半日、中程度、検証必要、標準的な作業フロー
-**P3 🟠 慎重実行**: 1-2日、複雑、テスト必要、慎重な計画と実装
-**P4 🟦 統合実行**: 複数コンポーネント、統合テスト、依存関係考慮
-**P5 🔴 計画実行**: 1週間以上、設計検討、高リスク、大規模変更
+### P1 🟢 即座実行
+### P2 🟡 標準実行
+### P3 🟠 慎重実行
+### P4 🟦 統合実行
+### P5 🔴 計画実行
 
-**詳細**: [references/priority-system.md](references/priority-system.md)
+### 詳細
 
 ### 4. Todo追加機能（AI分析）
 
@@ -96,7 +96,7 @@ TodoWriteと.claude/TODO.mdを統合表示。優先度ソート、重複排除�
 - **依存関係**: ブロック/被ブロックタスクを特定
 - **工数推定**: 実装時間の見積もり
 
-**詳細**: [references/todo-add-flow.md](references/todo-add-flow.md)
+### 詳細
 
 ### 5. スマート実行モード
 
@@ -119,7 +119,7 @@ todo-orchestrator batch 1-5,8          # 範囲指定
 todo-orchestrator batch quick          # P1のみ
 ```
 
-**詳細**: [examples/smart-modes.md](examples/smart-modes.md)
+### 詳細
 
 ## 基本使用例
 
@@ -221,7 +221,7 @@ $ todo-orchestrator batch high
 
 両ソースを統合し、優先度ソート、重複排除、自動同期。
 
-**詳細**: [references/data-source-integration.md](references/data-source-integration.md)
+### 詳細
 
 ## 品質保証チェックリスト
 

@@ -82,7 +82,7 @@ allowed-tools: Task, Read, Grep, Glob, WebFetch
 5. Add JWT token generation
 ```
 
-**詳細**: [Phase 1-4詳細フロー](references/processing-architecture.md)を参照
+### 詳細
 
 ### Phase 2: Dynamic Context Integration
 
@@ -109,7 +109,7 @@ context = enhance_context_with_docs(context, detected_libraries)
 # context.documentation に最新API情報が追加される
 ```
 
-**詳細**: [Dynamic Context Integration](references/processing-architecture.md#phase-2-dynamic-context-integration)
+### 詳細
 
 ### Phase 3: Intelligent Agent Selection
 
@@ -135,7 +135,7 @@ context = enhance_context_with_docs(context, detected_libraries)
 | docs-manager       | ドキュメント管理       | ⭐⭐⭐⭐   | ⚡⚡⚡⚡⚡ | リンク検証、更新         |
 | serena             | セマンティック分析     | ⭐⭐⭐⭐⭐ | ⚡⚡⚡⚡⚡ | シンボル検索、影響分析   |
 
-**詳細**:
+### 詳細
 
 - [エージェント詳細プロファイル](references/agent-profiles.md)
 - [選択アルゴリズム](references/agent-selection-logic.md)
@@ -168,7 +168,7 @@ context = enhance_context_with_docs(context, detected_libraries)
 📚 **Library Docs**: express, passport, bcrypt
 ```
 
-**詳細**: [Execution & Optimization](references/processing-architecture.md#phase-4-execution--optimization)
+### 詳細
 
 ## 🧠 Deep Thinking Mode
 
@@ -245,7 +245,7 @@ context = enhance_context_with_docs(context, detected_libraries)
 /task --verbose "パフォーマンス最適化"
 ```
 
-**詳細**: [使用パターン集](examples/usage-patterns.md)
+### 詳細
 
 ## 📊 Continuous Learning System
 
@@ -305,7 +305,7 @@ context = enhance_context_with_docs(context, detected_libraries)
 | API/バックエンド       | security          | OWASP Top 10、入力検証、認証・認可                 |
 | セマンティック解析必要 | semantic-analysis | シンボル検索、影響分析、依存関係追跡               |
 
-**詳細**: [スキル統合ガイド](references/skill-integration-guide.md)
+### 詳細
 
 ## 📁 Reference Documentation
 

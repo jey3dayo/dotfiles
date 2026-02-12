@@ -18,7 +18,7 @@ AI駆動でConventional Commits準拠のメッセージを生成します。
 
 ### 構成要素
 
-**Type** (必須):
+### Type
 
 - `feat`: 新機能
 - `fix`: バグ修正
@@ -29,23 +29,23 @@ AI駆動でConventional Commits準拠のメッセージを生成します。
 - `chore`: その他（依存関係更新、ビルド設定等）
 - `perf`: パフォーマンス改善
 
-**Scope** (オプション):
+### Scope
 
 - 影響を受けるコンポーネント・モジュール名
 - 例: `auth`, `api`, `ui`, `db`
 
-**Subject** (必須):
+### Subject
 
 - 変更の簡潔な説明（50文字以内推奨）
 - 現在形・命令形（"add" not "added"）
 - 先頭小文字、末尾ピリオドなし
 
-**Body** (オプション):
+### Body
 
 - 変更の理由・詳細説明
 - "why"を重視（"what"はdiffで分かる）
 
-**Footer** (オプション):
+### Footer
 
 - Breaking Changes
 - Issue参照（Closes #123）
@@ -517,7 +517,7 @@ EOF
         raise Exception("Commit failed")
 ```
 
-**重要**: 以下は絶対に行いません：
+### 重要
 
 - "Co-authored-by: Claude" 追加
 - "Generated with Claude Code" 追加

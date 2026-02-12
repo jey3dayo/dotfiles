@@ -6,14 +6,14 @@
 
 ### Express.js / Node.js
 
-**重点分析項目**:
+### 重点分析項目
 
 1. セキュリティリスク (認証・認可)
 2. N+1クエリ問題
 3. 非同期処理の非効率
 4. メモリリーク
 
-**よくある問題パターン**:
+### よくある問題パターン
 
 ```typescript
 // パターン1: ミドルウェアの順序ミス
@@ -56,7 +56,7 @@ app.post("/process", async (req, res) => {
 });
 ```
 
-**分析コマンド例**:
+### 分析コマンド例
 
 ```bash
 # セキュリティリスク
@@ -72,14 +72,14 @@ grep -r "addEventListener\|on\(" --include="*.ts" | grep -v "removeEventListener
 
 ### React / Frontend SPA
 
-**重点分析項目**:
+### 重点分析項目
 
 1. 不要な再レンダリング
 2. メモリリーク (イベントリスナー、タイマー)
 3. バンドルサイズ
 4. XSS脆弱性
 
-**よくある問題パターン**:
+### よくある問題パターン
 
 ```tsx
 // パターン1: 依存配列の不備
@@ -120,7 +120,7 @@ import map from "lodash/map"; // 必要な関数のみ → 2KB
 const result = map(data, fn);
 ```
 
-**分析コマンド例**:
+### 分析コマンド例
 
 ```bash
 # useEffect依存配列チェック
@@ -135,14 +135,14 @@ npx webpack-bundle-analyzer dist/stats.json
 
 ### Next.js / SSR
 
-**重点分析項目**:
+### 重点分析項目
 
 1. データフェッチ戦略 (getServerSideProps vs getStaticProps)
 2. 画像最適化
 3. API Routes のセキュリティ
 4. ハイドレーションの問題
 
-**よくある問題パターン**:
+### よくある問題パターン
 
 ```tsx
 // パターン1: 不適切なデータフェッチ
@@ -189,14 +189,14 @@ export default async function handler(req, res) {
 
 ### PostgreSQL / MySQL
 
-**重点分析項目**:
+### 重点分析項目
 
 1. インデックスの欠如
 2. N+1クエリ
 3. トランザクションの不備
 4. スロークエリ
 
-**よくある問題パターン**:
+### よくある問題パターン
 
 ```sql
 -- パターン1: インデックスなしの検索
@@ -225,7 +225,7 @@ UPDATE accounts SET balance = balance + 100 WHERE id = 2;
 COMMIT;
 ```
 
-**分析コマンド例**:
+### 分析コマンド例
 
 ```bash
 # スロークエリ検出 (PostgreSQL)
@@ -237,14 +237,14 @@ psql -c "SELECT schemaname, tablename, indexname FROM pg_indexes WHERE tablename
 
 ### ORM (Prisma, TypeORM, Sequelize)
 
-**重点分析項目**:
+### 重点分析項目
 
 1. N+1クエリ
 2. Eager/Lazy loadingの使い分け
 3. トランザクション管理
 4. 生成されるクエリの効率
 
-**よくある問題パターン**:
+### よくある問題パターン
 
 ```typescript
 // パターン1: N+1クエリ (TypeORM)
@@ -281,14 +281,14 @@ await getConnection().transaction(async (manager) => {
 
 ## マイクロサービス / API
 
-**重点分析項目**:
+### 重点分析項目
 
 1. API設計 (RESTful, GraphQL)
 2. レート制限
 3. エラーハンドリング
 4. サーキットブレーカー
 
-**よくある問題パターン**:
+### よくある問題パターン
 
 ```typescript
 // パターン1: レート制限なし
@@ -329,14 +329,14 @@ breaker.fallback(() => ({ error: "Service temporarily unavailable" }));
 
 ## CLIツール
 
-**重点分析項目**:
+### 重点分析項目
 
 1. メモリリーク
 2. ストリーム処理
 3. エラーハンドリング
 4. 進捗表示
 
-**よくある問題パターン**:
+### よくある問題パターン
 
 ```typescript
 // パターン1: 大量ファイルの一括読み込み
@@ -371,14 +371,14 @@ async function processFiles() {
 
 ## モバイルアプリ (React Native)
 
-**重点分析項目**:
+### 重点分析項目
 
 1. パフォーマンス (FlatList最適化)
 2. メモリ管理
 3. バッテリー消費
 4. ネットワーク効率
 
-**よくある問題パターン**:
+### よくある問題パターン
 
 ```tsx
 // パターン1: FlatListの非最適化
@@ -423,7 +423,7 @@ useEffect(() => {
 
 ### 小規模 (<5,000行)
 
-**フォーカス**:
+### フォーカス
 
 - セキュリティの基本 (認証、入力検証)
 - 明らかなパフォーマンス問題のみ
@@ -431,7 +431,7 @@ useEffect(() => {
 
 ### 中規模 (5,000-50,000行)
 
-**フォーカス**:
+### フォーカス
 
 - セキュリティ全般
 - N+1クエリ、O(n²) アルゴリズム
@@ -440,7 +440,7 @@ useEffect(() => {
 
 ### 大規模 (50,000行以上)
 
-**フォーカス**:
+### フォーカス
 
 - すべてのカテゴリ
 - アーキテクチャレベルの問題

@@ -22,7 +22,7 @@ allowed-tools: Task, Bash(gh:*), Read, Grep, Glob
 
 ### 署名なしポリシー
 
-**IMPORTANT**: すべての出力において以下を厳守：
+### IMPORTANT
 
 - ❌ **NEVER** "Co-authored-by: Claude" をcommitに含めない
 - ❌ **NEVER** "Generated with Claude Code" を含めない
@@ -40,7 +40,7 @@ allowed-tools: Task, Bash(gh:*), Read, Grep, Glob
 - 技術スタック別スキル統合（typescript, react, golang, security, etc.）
 - 詳細な改善提案とアクションプラン
 
-**使用例**:
+### 使用例
 
 ```bash
 /review                    # 基本レビュー
@@ -57,7 +57,7 @@ allowed-tools: Task, Bash(gh:*), Read, Grep, Glob
 - 即座の修正提案
 - GitHub issue連携オプション
 
-**使用例**:
+### 使用例
 
 ```bash
 /review --simple           # クイックレビュー
@@ -71,7 +71,7 @@ GitHub Actions CI失敗の診断と修正計画の作成を行います。
 - `ci-diagnostics` スキルで失敗分類と修正計画を生成
 - `gh-fix-ci` スキルでログ取得を補助
 
-**使用例**:
+### 使用例
 
 ```bash
 /review --fix-ci           # 現在のブランチのPRを診断
@@ -83,7 +83,7 @@ GitHub Actions CI失敗の診断と修正計画の作成を行います。
 
 CI診断とPRコメント修正を同一フローで実行します。両方の結果を踏まえて修正計画を作成します。
 
-**使用例**:
+### 使用例
 
 ```bash
 /review --fix-ci --fix-pr      # 現在のブランチのPRで両方実行
@@ -112,7 +112,7 @@ CI診断とPRコメント修正を同一フローで実行します。両方の�
 3. 開発ブランチとの差分（`git diff origin/develop`など）
 4. 最近変更されたファイル
 
-**明示的指定**:
+### 明示的指定
 
 ```bash
 /review --staged           # ステージされた変更のみ
@@ -261,4 +261,4 @@ Serena MCPサーバーが設定されているか確認してください（`.cl
 
 ---
 
-**目標**: プロジェクトに最適化された、実用的で一貫性のあるコードレビューを提供すること。
+### 目標

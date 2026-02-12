@@ -49,22 +49,22 @@ def detect_project_type():
 
 ### Next.js プロジェクト
 
-**特徴**:
+### 特徴
 
 - SSR/SSG対応
 - API Routes
 - パフォーマンス最適化（Image、Font、Script）
 - セキュリティ（CSRF、XSS）
 
-**統合スキル**: `typescript`, `react`, `security`
+### 統合スキル
 
-**評価重点**:
+### 評価重点
 
 1. **TypeScript**: 型安全性、strict mode
 2. **React**: Server Components、Client Components、Hooks
 3. **Security**: API Routes認証、入力検証、CSP
 
-**評価基準**:
+### 評価基準
 
 ```python
 evaluation_criteria = {
@@ -103,7 +103,7 @@ evaluation_criteria = {
 }
 ```
 
-**レビュー例**:
+### レビュー例
 
 ````markdown
 ## Next.js プロジェクトレビュー結果
@@ -140,21 +140,21 @@ evaluation_criteria = {
 
 ### React SPA プロジェクト
 
-**特徴**:
+### 特徴
 
 - クライアントサイドレンダリング
 - 状態管理（Redux、Zustand、Context）
 - バンドルサイズ最適化
 - コンポーネント設計
 
-**統合スキル**: `typescript`, `react`
+### 統合スキル
 
-**評価重点**:
+### 評価重点
 
 1. **TypeScript**: 型安全性、strict mode
 2. **React**: コンポーネント設計、状態管理、パフォーマンス
 
-**評価基準**:
+### 評価基準
 
 ```python
 evaluation_criteria = {
@@ -193,7 +193,7 @@ evaluation_criteria = {
 }
 ```
 
-**レビュー例**:
+### レビュー例
 
 ````markdown
 ## React SPA プロジェクトレビュー結果
@@ -233,21 +233,21 @@ evaluation_criteria = {
 
 ### Node.js API プロジェクト
 
-**特徴**:
+### 特徴
 
 - RESTful API 設計
 - 認証・認可
 - エラーハンドリング
 - セキュリティ（SQL Injection、XSS、CSRF）
 
-**統合スキル**: `typescript`, `security`
+### 統合スキル
 
-**評価重点**:
+### 評価重点
 
 1. **TypeScript**: 型安全性、strict mode
 2. **Security**: 入力検証、認証・認可、データ保護
 
-**評価基準**:
+### 評価基準
 
 ```python
 evaluation_criteria = {
@@ -287,7 +287,7 @@ evaluation_criteria = {
 }
 ```
 
-**レビュー例**:
+### レビュー例
 
 ````markdown
 ## Node.js API プロジェクトレビュー結果
@@ -327,22 +327,22 @@ evaluation_criteria = {
 
 ### Go API プロジェクト
 
-**特徴**:
+### 特徴
 
 - イディオマティック Go
 - 並行処理（goroutine、channel）
 - エラーハンドリング（error wrapping）
 - Clean Architecture
 
-**統合スキル**: `golang`, `security`, `clean-architecture`
+### 統合スキル
 
-**評価重点**:
+### 評価重点
 
 1. **Golang**: エラーハンドリング、並行処理、イディオム
 2. **Security**: 入力検証、認証・認証
 3. **Clean Architecture**: 層分離、依存規則
 
-**評価基準**:
+### 評価基準
 
 ```python
 evaluation_criteria = {
@@ -382,7 +382,7 @@ evaluation_criteria = {
 }
 ```
 
-**レビュー例**:
+### レビュー例
 
 ````markdown
 ## Go API プロジェクトレビュー結果

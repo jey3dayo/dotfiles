@@ -68,7 +68,7 @@ if [ -n "$(git status --porcelain)" ]; then
 fi
 ```
 
-**チェック内容**:
+### チェック内容
 
 1. Gitチェックポイント作成（ロールバック用）
 2. 未コミット変更の確認
@@ -105,7 +105,7 @@ def detect_cleanup_targets(pattern=None):
     return files_to_clean
 ```
 
-**ツール選択**:
+### ツール選択
 
 - **Glob**: ファイルパターンマッチング（高速、効率的）
 - **Grep**: デバッグステートメント検出
@@ -151,7 +151,7 @@ def is_protected_file(file_path):
     return False
 ```
 
-**保護対象**:
+### 保護対象
 
 1. **設定ディレクトリ**: `.claude/`, `.git/`
 2. **依存関係**: `node_modules/`, `vendor/`
@@ -181,7 +181,7 @@ def check_active_processes(file_path):
     return False, None
 ```
 
-**チェック内容**:
+### チェック内容
 
 - ファイルをオープンしているプロセス
 - 実行中のプログラムによる参照
@@ -227,7 +227,7 @@ def safe_remove(file_path):
         return False
 ```
 
-**削除フロー**:
+### 削除フロー
 
 1. 保護ファイルチェック → スキップ
 2. アクティブプロセスチェック → スキップ
@@ -338,7 +338,7 @@ def filter_by_age(files, max_age_days=7):
     return old_files
 ```
 
-**使用例**:
+### 使用例
 
 ```bash
 # 7日以上古いログファイルのみ削除
@@ -399,7 +399,7 @@ logs/audit/*.log
 *.backup
 ```
 
-**読み込みロジック**:
+### 読み込みロジック
 
 ```python
 def load_ignore_patterns():
@@ -451,7 +451,7 @@ def filter_untracked_only(files):
     return untracked
 ```
 
-**使用例**:
+### 使用例
 
 ```bash
 # 未追跡ファイルのみ削除
@@ -482,9 +482,9 @@ def filter_untracked_only(files):
 
 ### 問題: 重要なファイルが削除された
 
-**原因**: パターンが広すぎる
+### 原因
 
-**対処**:
+### 対処
 
 ```bash
 # ロールバック
@@ -496,9 +496,9 @@ git reset --hard HEAD~1
 
 ### 問題: アクティブファイルが削除できない
 
-**原因**: プロセスが使用中
+### 原因
 
-**対処**:
+### 対処
 
 ```bash
 # プロセスを確認
@@ -511,9 +511,9 @@ kill <PID>
 
 ### 問題: 削除後にビルドが失敗
 
-**原因**: 必要なキャッシュが削除された
+### 原因
 
-**対処**:
+### 対処
 
 ```bash
 # キャッシュを再生成

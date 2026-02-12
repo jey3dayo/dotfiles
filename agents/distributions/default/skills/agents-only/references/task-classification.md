@@ -95,16 +95,16 @@ def analyze_task_intent(task_description):
 
 ### error (エラー・品質系)
 
-**信頼度**: 0.9
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - 日本語: エラー、型、品質、any型、型安全
 - 英語: error, type, eslint, lint, quality
 
-**最適エージェント**: error-fixer (0.95)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "TypeScriptのエラーを修正"
 - "ESLint違反を解消"
@@ -112,16 +112,16 @@ def analyze_task_intent(task_description):
 
 ### implement (実装・構築系)
 
-**信頼度**: 0.85
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - 日本語: 実装、作成、追加、機能、開発
 - 英語: implement, create, add, feature, develop
 
-**最適エージェント**: orchestrator (0.9)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "新しいユーザー認証機能を実装"
 - "ダッシュボードコンポーネントを作成"
@@ -129,16 +129,16 @@ def analyze_task_intent(task_description):
 
 ### fix (修正系)
 
-**信頼度**: 0.8
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - 日本語: 修正、直、バグ、問題
 - 英語: fix, bug, issue
 
-**最適エージェント**: orchestrator (0.7), error-fixer (0.6)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "ログイン画面のバグを修正"
 - "パフォーマンス問題を解決"
@@ -146,16 +146,16 @@ def analyze_task_intent(task_description):
 
 ### analyze (調査・分析系)
 
-**信頼度**: 0.85
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - 日本語: 調査、分析、原因、なぜ、理解
 - 英語: investigate, analyze, cause, why, understand
 
-**最適エージェント**: researcher (0.9), serena (0.85)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "パフォーマンス問題の原因を調査"
 - "コードベースを分析して依存関係を把握"
@@ -163,17 +163,17 @@ def analyze_task_intent(task_description):
 
 ### review (レビュー系)
 
-**信頼度**: 0.9 (明示的) / 0.95 (Git関連)
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - 日本語: レビュー、確認、評価、品質
 - 英語: review, check, evaluate, quality
 - Git関連: origin/, develop, main, branch, pr
 
-**最適エージェント**: code-reviewer (0.9), github-pr-reviewer (0.98)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "コード品質をレビュー"
 - "origin/developとの差分を確認"
@@ -181,16 +181,16 @@ def analyze_task_intent(task_description):
 
 ### github_pr (GitHub PR専用)
 
-**信頼度**: 0.99 (最高優先度)
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - URL: github.com, pull/, /pr
 - 記法: #pr, pr #
 
-**最適エージェント**: github-pr-reviewer (0.99)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "https://github.com/org/repo/pull/123 をレビュー"
 - "PR #456 を確認"
@@ -198,16 +198,16 @@ def analyze_task_intent(task_description):
 
 ### refactor (リファクタリング系)
 
-**信頼度**: 0.85
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - 日本語: リファクタ、改善、整理、名前変更、移動
 - 英語: refactor, improve, organize, rename, move
 
-**最適エージェント**: serena (0.95), orchestrator (0.8)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "コンポーネントをリファクタリング"
 - "関数名をより明確に改善"
@@ -215,16 +215,16 @@ def analyze_task_intent(task_description):
 
 ### navigate (ナビゲーション系)
 
-**信頼度**: 0.8
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - 日本語: 探、検索、どこ、参照、使用
 - 英語: find, search, where, reference, usage
 
-**最適エージェント**: serena (0.98), researcher (0.6)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "この関数の使用箇所を探す"
 - "シンボル定義がどこにあるか検索"
@@ -232,16 +232,16 @@ def analyze_task_intent(task_description):
 
 ### docs (ドキュメント系)
 
-**信頼度**: 0.85
+### 信頼度
 
-**キーワード**:
+### キーワード
 
 - 日本語: ドキュメント、リンク
 - 英語: document, doc, link, markdown, md
 
-**最適エージェント**: docs-manager (0.95)
+### 最適エージェント
 
-**使用例**:
+### 使用例
 
 - "READMEを更新"
 - "ドキュメントのリンク切れを修正"

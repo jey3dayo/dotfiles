@@ -167,13 +167,13 @@ Claude Codeでは、スラッシュコマンド（`/`で始まる）を使用し
 
 ### スキルのインストール
 
-**Marketplaceスキル**:
+### Marketplaceスキル
 
 ```bash
 /plugin marketplace add ~/src/github.com/jey3dayo/claude-code-marketplace
 ```
 
-**Localスキル**:
+### Localスキル
 
 `~/.claude/skills/` にスキルディレクトリを配置。
 
@@ -207,4 +207,4 @@ Claude Codeでは、スラッシュコマンド（`/`で始まる）を使用し
 
 ---
 
-**更新日**: 2025-02-12
+### 更新日

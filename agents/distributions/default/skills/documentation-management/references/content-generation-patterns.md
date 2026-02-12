@@ -34,7 +34,7 @@ ${license}
 
 ### セクション生成関数
 
-**Features Section**:
+### Features Section
 
 ```python
 def generate_features_list(project_analysis):
@@ -51,7 +51,7 @@ def generate_features_list(project_analysis):
     return "\n".join(features)
 ```
 
-**Installation Section**:
+### Installation Section
 
 ```python
 def generate_install_instructions(project_type, package_manager):

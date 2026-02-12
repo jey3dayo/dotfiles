@@ -6,20 +6,20 @@ code-review-systemが統合するスキルの詳細仕様です。
 
 ### code-review (必須)
 
-**目的**: 統合レビューシステムのコアスキル
+### 目的
 
-**トリガー**: すべてのレビューモード実行時
+### トリガー
 
-**統合タイミング**: `/review`コマンド実行時に必ず起動
+### 統合タイミング
 
-**提供内容**:
+### 提供内容
 
 - ⭐️5段階評価システム（1〜5の星評価）
 - プロジェクトタイプ自動判定（Next.js, React SPA, Node.js API, Go API等）
 - 技術スタック別スキル自動統合
 - code-reviewerエージェント連携
 
-**統合フロー**:
+### 統合フロー
 
 ```
 /review コマンド
@@ -37,7 +37,7 @@ code-reviewer エージェント実行
 ⭐️評価レポート生成（日本語）
 ```
 
-**統合例**:
+### 統合例
 
 ```python
 # Invoke code-review skill
@@ -61,20 +61,20 @@ skill_result = execute_skill("code-review", {
 
 ### ci-diagnostics (CI診断モード)
 
-**目的**: GitHub Actions CI失敗の診断と修正計画の作成
+### 目的
 
-**トリガー**: `--fix-ci`フラグ使用時
+### トリガー
 
-**統合タイミング**: `/review --fix-ci [PR番号]` 実行時
+### 統合タイミング
 
-**提供内容**:
+### 提供内容
 
 - 失敗チェックの収集と分類（lint, test, build, deploy等）
 - エラーログ解析と影響ファイル特定
 - 修正計画と推奨スキルの提示
 - gh-fix-ciスキルとの連携
 
-**統合フロー**:
+### 統合フロー
 
 ```
 /review --fix-ci 123
@@ -92,7 +92,7 @@ gh-fix-ci でログ取得
 修正計画生成（日本語）
 ```
 
-**統合例**:
+### 統合例
 
 ```python
 # Get PR number
@@ -115,13 +115,13 @@ skill_result = execute_skill("ci-diagnostics", {
 
 ### gh-fix-review (PRレビューモード)
 
-**目的**: GitHub PRレビューコメント自動修正
+### 目的
 
-**トリガー**: `--fix-pr`フラグ使用時
+### トリガー
 
-**統合タイミング**: `/review --fix-pr [PR番号]` 実行時
+### 統合タイミング
 
-**提供内容**:
+### 提供内容
 
 - コメント優先度分類（Critical/High/Major/Minor）
 - ボット別コメント分類（coderabbitai, github-actions等）
@@ -130,7 +130,7 @@ skill_result = execute_skill("ci-diagnostics", {
 - トラッキングドキュメント生成
 - TodoWrite統合
 
-**統合フロー**:
+### 統合フロー
 
 ```
 /review --fix-pr 123
@@ -150,7 +150,7 @@ PR情報取得（gh CLI）
 トラッキングドキュメント生成
 ```
 
-**統合例**:
+### 統合例
 
 ```python
 # Get PR number
@@ -177,13 +177,13 @@ skill_result = execute_skill("gh-fix-review", {
 
 ### semantic-analysis (詳細モード・Serenaフラグ)
 
-**目的**: シンボルレベルの深い解析
+### 目的
 
-**トリガー**: `--with-impact`, `--deep-analysis`, `--verify-spec`フラグ使用時
+### トリガー
 
-**統合タイミング**: API変更やBreaking change検出が必要な場合
+### 統合タイミング
 
-**提供内容**:
+### 提供内容
 
 - シンボル検索と参照追跡
 - 影響範囲分析（API変更の影響を受けるファイル特定）
@@ -191,7 +191,7 @@ skill_result = execute_skill("gh-fix-review", {
 - 依存関係グラフ生成
 - Serena MCPツール統合
 
-**統合フロー**:
+### 統合フロー
 
 ```
 /review --with-impact
@@ -210,7 +210,7 @@ Serena MCPツール使用:
 詳細レポート生成（日本語）
 ```
 
-**統合例**:
+### 統合例
 
 ```python
 # Detect Serena options
@@ -278,14 +278,14 @@ def load_skills_for_project(project_type):
 
 #### typescript スキル
 
-**評価観点**:
+### 評価観点
 
 - 型安全性（any型排除、strict mode、type guards）
 - TypeScript best practices
 - 型推論の活用
 - genericsの適切な使用
 
-**統合例**:
+### 統合例
 
 ```python
 if "typescript" in tech_skills:
@@ -302,14 +302,14 @@ if "typescript" in tech_skills:
 
 #### react スキル
 
-**評価観点**:
+### 評価観点
 
 - Hooks使用パターン（useEffect cleanup、依存配列）
 - パフォーマンス最適化（useMemo、useCallback、React.memo）
 - コンポーネント設計（単一責任、prop drilling回避）
 - 状態管理（useState vs useReducer、Context適切使用）
 
-**統合例**:
+### 統合例
 
 ```python
 if "react" in tech_skills:
@@ -326,14 +326,14 @@ if "react" in tech_skills:
 
 #### golang スキル
 
-**評価観点**:
+### 評価観点
 
 - エラーハンドリング（error wrapping、context伝播）
 - 並行処理（goroutine、channel、sync package）
 - イディオマティックGo（naming、package structure）
 - インターフェース設計（小さいインターフェース、依存性逆転）
 
-**統合例**:
+### 統合例
 
 ```python
 if "golang" in tech_skills:
@@ -350,14 +350,14 @@ if "golang" in tech_skills:
 
 #### security スキル
 
-**評価観点**:
+### 評価観点
 
 - 入力検証（SQL injection、XSS、CSRF）
 - 認証・認可（JWT、OAuth、RBAC）
 - データ保護（暗号化、sensitive data handling）
 - セキュアコーディング（OWASP Top 10）
 
-**統合例**:
+### 統合例
 
 ```python
 if "security" in tech_skills:
@@ -374,14 +374,14 @@ if "security" in tech_skills:
 
 #### clean-architecture スキル
 
-**評価観点**:
+### 評価観点
 
 - 層分離（presentation、application、domain、infrastructure）
 - 依存規則（内側層への単方向依存）
 - ドメインモデリング（エンティティ、値オブジェクト、集約）
 - インターフェース分離（境界での抽象化）
 
-**統合例**:
+### 統合例
 
 ```python
 if "clean-architecture" in tech_skills:

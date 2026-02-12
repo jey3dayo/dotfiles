@@ -245,5 +245,5 @@ claude-marketplace-sync スキルを参照
 
 ---
 
-**更新日**: 2025-02-12
-**関連**: `docs-index` スキル, `quick-start.md` ガイド
+### 更新日
+### 関連

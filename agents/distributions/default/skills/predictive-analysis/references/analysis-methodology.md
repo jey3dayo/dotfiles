@@ -34,7 +34,7 @@ MI = 171 - 5.2 * ln(HV) - 0.23 * CC - 16.2 * ln(LOC);
 
 #### セキュリティパターン
 
-**SQLインジェクション検出**:
+### SQLインジェクション検出
 
 ```regex
 Pattern: (execute|query|run)\s*\(\s*[`'"].*\$\{.*\}.*[`'"]\s*\)
@@ -42,7 +42,7 @@ Context: データベース操作関数
 Risk: Critical
 ```
 
-**XSS脆弱性検出**:
+### XSS脆弱性検出
 
 ```regex
 Pattern: innerHTML\s*=.*\$\{.*\}
@@ -50,7 +50,7 @@ Context: DOM操作
 Risk: High
 ```
 
-**ハードコードされたシークレット**:
+### ハードコードされたシークレット
 
 ```regex
 Patterns:
@@ -61,7 +61,7 @@ Risk: Critical
 
 #### パフォーマンスパターン
 
-**O(n²) 以上のアルゴリズム**:
+### O(n²) 以上のアルゴリズム
 
 ```typescript
 // ネストループ検出
@@ -75,7 +75,7 @@ Context: ORM操作、API呼び出し
 Risk: High
 ```
 
-**メモリリーク**:
+### メモリリーク
 
 ```typescript
 // キャッシュの無制限な成長
@@ -90,7 +90,7 @@ Risk: Medium to High
 
 #### 循環的複雑度 (McCabe Complexity)
 
-**計算方法**:
+### 計算方法
 
 ```
 CC = E - N + 2P
@@ -99,14 +99,14 @@ N: ノード数 (実行可能な文)
 P: 連結成分数 (通常は1)
 ```
 
-**閾値**:
+### 閾値
 
 - 1-10: シンプル、低リスク
 - 11-20: 中程度の複雑さ、テスト必要
 - 21-50: 複雑、リファクタリング推奨
 - 50+: 非常に複雑、分割必須
 
-**検出例**:
+### 検出例
 
 ```typescript
 function processPayment(order, user, config) {
@@ -123,14 +123,14 @@ function processPayment(order, user, config) {
 
 #### 認知的複雑度
 
-**ペナルティスコア**:
+### ペナルティスコア
 
 - ネストされた制御構造: +1 per level
 - 早期リターン/continue/break: +1
 - 再帰呼び出し: +1
 - 論理演算子の連鎖: +1 per operator
 
-**例**:
+### 例
 
 ```typescript
 function validateOrder(order) {
@@ -168,17 +168,17 @@ Threshold: 1ファイルあたり >15 imports
 
 #### カップリング分析
 
-**求心的結合度 (Afferent Coupling - Ca)**:
+### 求心的結合度 (Afferent Coupling - Ca)
 
 - このモジュールに依存しているモジュールの数
 - 高い = 影響範囲が広い = 変更リスク高
 
-**遠心的結合度 (Efferent Coupling - Ce)**:
+### 遠心的結合度 (Efferent Coupling - Ce)
 
 - このモジュールが依存しているモジュールの数
 - 高い = 依存が多い = 脆弱性
 
-**不安定性 (Instability)**:
+### 不安定性 (Instability)
 
 ```
 I = Ce / (Ca + Ce)
@@ -196,7 +196,7 @@ I = Ce / (Ca + Ce)
 3. 同一ハッシュの検出で重複を特定
 ```
 
-**閾値**:
+### 閾値
 
 - 5-10行の重複: Medium (リファクタリング推奨)
 - 10-20行の重複: High (共通化必須)
@@ -232,7 +232,7 @@ git log --format=format: --name-only | sort | uniq -c | sort -nr
 High Change Frequency + High Bug Density = Critical Hotspot
 ```
 
-**リスク判定**:
+### リスク判定
 
 - 変更頻度 > 月10回 かつ バグ密度 > 0.5/100LOC: High Risk
 - 変更頻度 > 月5回 かつ 高複雑度: Medium Risk
@@ -241,7 +241,7 @@ High Change Frequency + High Bug Density = Critical Hotspot
 
 #### リソース使用予測
 
-**メモリ使用量**:
+### メモリ使用量
 
 ```
 Estimated Memory = Data Size × Growth Rate × Safety Margin
@@ -253,7 +253,7 @@ Estimated Memory = Data Size × Growth Rate × Safety Margin
   1年後: 100 × 1.2^12 = 892 MB
 ```
 
-**レスポンスタイム予測**:
+### レスポンスタイム予測
 
 ```
 Response Time = O(f(n)) × Data Scale Factor
@@ -280,7 +280,7 @@ Risk Level: High (スケール時に確実に問題化)
 
 ### Grep ツールの活用
 
-**問題パターンの検索**:
+### 問題パターンの検索
 
 ```bash
 # セキュリティリスク
@@ -294,7 +294,7 @@ grep -r "await.*for" --include="*.ts" --include="*.js"
 
 ### Glob ツールの活用
 
-**ファイル構造の解析**:
+### ファイル構造の解析
 
 ```bash
 # 大規模ファイルの検出
@@ -306,7 +306,7 @@ glob "**/{[A-Z]*,[a-z]*}.{ts,js}"
 
 ### Read ツールの活用
 
-**詳細なコード解析**:
+### 詳細なコード解析
 
 ```
 1. Grep/Globで候補を絞り込み
@@ -316,7 +316,7 @@ glob "**/{[A-Z]*,[a-z]*}.{ts,js}"
 
 ### MCP Serena の活用
 
-**シンボルレベルの解析**:
+### シンボルレベルの解析
 
 ```bash
 # 関数の複雑性を評価

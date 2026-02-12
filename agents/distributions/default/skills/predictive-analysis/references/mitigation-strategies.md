@@ -6,7 +6,7 @@
 
 ### SQLインジェクション対策
 
-**戦略**: パラメータ化されたクエリの使用
+### 戦略
 
 ```typescript
 // Before: 脆弱
@@ -21,7 +21,7 @@ db.execute(query, [userEmail]);
 const user = await User.findOne({ where: { email: userEmail } });
 ```
 
-**追加対策**:
+### 追加対策
 
 - ORM/クエリビルダーの活用 (Prisma, TypeORM, Knex)
 - 入力バリデーションとサニタイゼーション
@@ -29,7 +29,7 @@ const user = await User.findOne({ where: { email: userEmail } });
 
 ### XSS対策
 
-**戦略**: 出力のエスケープとサニタイゼーション
+### 戦略
 
 ```typescript
 // Before: 脆弱
@@ -48,7 +48,7 @@ element.innerHTML = DOMPurify.sanitize(userInput);
 // Vue: {{ userInput }} (自動エスケープ)
 ```
 
-**追加対策**:
+### 追加対策
 
 - Content Security Policy (CSP) の設定
 - HttpOnly, Secure フラグ付きクッキー
@@ -56,7 +56,7 @@ element.innerHTML = DOMPurify.sanitize(userInput);
 
 ### 認証・認可の強化
 
-**戦略**: 多層防御とミドルウェアパターン
+### 戦略
 
 ```typescript
 // Before: 認証なし
@@ -97,7 +97,7 @@ function requireRole(role) {
 }
 ```
 
-**追加対策**:
+### 追加対策
 
 - セッションタイムアウトの設定
 - レート制限 (ブルートフォース対策)
@@ -106,7 +106,7 @@ function requireRole(role) {
 
 ### シークレット管理
 
-**戦略**: 環境変数と秘密情報管理システム
+### 戦略
 
 ```typescript
 // Before: ハードコード
@@ -126,7 +126,7 @@ async function getSecret(secretName) {
 }
 ```
 
-**.env ファイル管理**:
+### .env ファイル管理
 
 ```bash
 # .gitignore に追加
@@ -143,7 +143,7 @@ DATABASE_URL=postgresql://localhost:5432/mydb
 
 ### アルゴリズム最適化
 
-**戦略**: データ構造の選択とアルゴリズムの改善
+### 戦略
 
 ```typescript
 // Before: O(n²)
@@ -173,7 +173,7 @@ function findDuplicates(arr) {
 }
 ```
 
-**最適化パターン**:
+### 最適化パターン
 
 - **配列 → Set/Map**: O(n) の検索が必要な場合
 - **ネストループ → 単一ループ**: データの前処理で解決
@@ -181,7 +181,7 @@ function findDuplicates(arr) {
 
 ### N+1クエリ問題の解決
 
-**戦略**: バッチ取得とJOIN
+### 戦略
 
 ```typescript
 // Before: N+1 クエリ
@@ -217,7 +217,7 @@ const orders = await orderLoader.load(userId);
 
 ### メモリリーク対策
 
-**戦略**: 適切なクリーンアップとLRUキャッシュ
+### 戦略
 
 ```typescript
 // Before: メモリリーク
@@ -250,7 +250,7 @@ const cleanup = eventManager.addEventListener(handleEvent);
 cleanup();
 ```
 
-**LRUキャッシュの実装**:
+### LRUキャッシュの実装
 
 ```typescript
 import LRU from "lru-cache";
@@ -268,7 +268,7 @@ const cache = new LRU({
 
 ### 非同期処理の最適化
 
-**戦略**: 並列化とバッチ処理
+### 戦略
 
 ```typescript
 // Before: 逐次処理
@@ -309,7 +309,7 @@ for await (const result of processLargeDataset(largeArray)) {
 
 ### 複雑性の削減
 
-**戦略**: 関数分割と早期リターン
+### 戦略
 
 ```typescript
 // Before: 高複雑度 (CC = 20)
@@ -336,7 +336,7 @@ function processOrder(order, user, config) {
 }
 ```
 
-**リファクタリングパターン**:
+### リファクタリングパターン
 
 - **Extract Method**: 長い関数を小さな関数に分割
 - **Replace Nested Conditional with Guard Clauses**: 早期リターンで浅いネスト
@@ -344,7 +344,7 @@ function processOrder(order, user, config) {
 
 ### コード重複の解消
 
-**戦略**: 共通化とテンプレートメソッドパターン
+### 戦略
 
 ```typescript
 // Before: 重複
@@ -394,7 +394,7 @@ class UserValidator extends EntityValidator<User> {
 
 ### 密結合の解消
 
-**戦略**: 依存性注入とインターフェース
+### 戦略
 
 ```typescript
 // Before: 密結合
@@ -436,7 +436,7 @@ const orderService = new OrderService(mockPayment);
 
 ### ハードコード制限の解消
 
-**戦略**: 設定外部化と動的スケーリング
+### 戦略
 
 ```typescript
 // Before: ハードコード
@@ -467,7 +467,7 @@ const pool = new Pool({
 
 ### 単一障害点の排除
 
-**戦略**: 冗長化と分散化
+### 戦略
 
 ```typescript
 // Before: メモリ内キャッシュ (単一障害点)
@@ -497,7 +497,7 @@ async function getCachedData(key) {
 
 ### 構造化されたエラー処理
 
-**戦略**: カスタムエラークラスと一貫したハンドリング
+### 戦略
 
 ```typescript
 // エラークラスの定義

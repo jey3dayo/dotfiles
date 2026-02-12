@@ -40,7 +40,7 @@ if [ "$CURRENT_BRANCH" = "main" ] || [ "$CURRENT_BRANCH" = "master" ]; then
 fi
 ```
 
-**チェック項目**:
+### チェック項目
 
 1. 未コミット変更の有無
 2. 現在のブランチ（mainブランチは警告）
@@ -61,7 +61,7 @@ CHECKPOINT_HASH=$(git rev-parse HEAD)
 echo "Checkpoint created: $CHECKPOINT_HASH"
 ```
 
-**重要性**:
+### 重要性
 
 - ロールバック可能性の確保
 - 変更履歴の記録
@@ -129,7 +129,7 @@ def check_symbol_references(symbol_path, file_path):
     }
 ```
 
-**追跡対象**:
+### 追跡対象
 
 1. **直接参照**: 明示的な呼び出し・使用
 2. **間接参照**: 継承、実装、デコレータ

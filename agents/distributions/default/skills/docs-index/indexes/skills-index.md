@@ -87,10 +87,10 @@
 
 ---
 
-**更新日**: 2026-02-12
-**スキル数**: 49件（Local: 13件、Marketplace: 36件）
+### 更新日
+### スキル数
 
-**Local Skills内訳**:
+### Local Skills内訳
 
 - Foundation（Phase 1）: 3件
 - Core Workflow（Phase 2）: 6件

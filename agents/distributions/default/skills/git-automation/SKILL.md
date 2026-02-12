@@ -176,9 +176,9 @@ project = detect_project_type()
 [body]
 ```
 
-**Type**: feat, fix, docs, style, refactor, test, chore
+### Type
 
-**生成プロセス**:
+### 生成プロセス
 
 1. 変更ファイル分析
 2. Diff内容解析
@@ -187,9 +187,9 @@ project = detect_project_type()
 
 ### PR タイトル・本文
 
-**タイトル**: コミットグループから主要変更を抽出
+### タイトル
 
-**本文構造**:
+### 本文構造
 
 ```markdown
 ## 概要
@@ -260,7 +260,7 @@ EOF
 
 ### 署名なしポリシー
 
-**絶対に行わないこと**:
+### 絶対に行わないこと
 
 - "Co-authored-by" 追加
 - "Generated with Claude Code" 追加
@@ -268,7 +268,7 @@ EOF
 - Git設定・認証情報の変更
 - 絵文字の使用（コミット、PR）
 
-**理由**: ユーザーの完全な所有権と真正性を保証
+### 理由
 
 ### エラーハンドリング
 

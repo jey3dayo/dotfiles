@@ -36,7 +36,7 @@ argument-hint: [full|files] [options]
 - **import文整理**: 未使用インポートの自動削除
 - **ドキュメント統合**: 重複解消と一貫性確保
 
-**実行フェーズ**:
+### 実行フェーズ
 
 1. セーフティチェック（Gitチェックポイント作成）
 2. Serenaセマンティック解析
@@ -53,7 +53,7 @@ argument-hint: [full|files] [options]
 - **キャッシュファイル**: \*.pyc, **pycache**
 - **プロジェクト固有**: カスタムパターン対応
 
-**保護機能**:
+### 保護機能
 
 - `.claude/`, `.git/`, `node_modules/` 自動除外
 - 設定ファイル保護（.env, config/\*）

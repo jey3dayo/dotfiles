@@ -2,7 +2,7 @@
 
 🎉 **完了**: Commandsシステムは完全に廃止されました（2026-02-12）
 
-**移行完了状況**:
+### 移行完了状況
 
 - ✅ Phase 1: Foundation（agents-only, docs-index作成）
 - ✅ Phase 2: Core Workflows（6スキル移行：learnings-knowledge, code-quality-automation, implementation-engine, todo-orchestrator, task-router, code-review-system）
@@ -55,15 +55,15 @@
 
 ## 移行メリット
 
-**Progressive Disclosure**: 初回ロード平均8.8%（91.2%トークン削減）
-**サポートファイル**: templates/, examples/, references/
-**動的コンテキスト注入**: `` `!command` ``
-**Agent Skills標準**: 複数AIツール間で相互運用
+### Progressive Disclosure
+### サポートファイル
+### 動的コンテキスト注入
+### Agent Skills標準
 
-**Total削減**: 78コマンド（26,466行）→ 13スキル（32,651行）
+### Total削減
 
 ---
 
-**最終更新**: 2026-02-12
-**移行完了**: Phase 1-6（全コマンド廃止）
-**参考**: [commands-deprecation.md](../../../../../../.claude/rules/commands-deprecation.md)
+### 最終更新
+### 移行完了
+### 参考

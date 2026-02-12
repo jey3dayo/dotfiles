@@ -4,7 +4,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
 
 ## 概要
 
-**統一検証プロセス:**
+### 統一検証プロセス:
 
 すべての検証コマンドは同じプロセスを実行します:
 
@@ -21,9 +21,9 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
 
 ### Step 1: Deep Original Source Analysis
 
-**目的:** 元のソースのあらゆる側面を徹底的に分析
+### 目的:
 
-**実行内容:**
+### 実行内容:
 
 1. **完全なソース読み込み:**
 
@@ -129,13 +129,13 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    write_file('implement/source-analysis.md', analysis)
    ```
 
-**出力:** `implement/source-analysis.md` - 元のソースの完全な分析
+### 出力:
 
 ### Step 2: Requirements Verification
 
-**目的:** 現在の実装が元の要件を満たしているか検証
+### 目的:
 
-**実行内容:**
+### 実行内容:
 
 1. **機能マッピング:**
 
@@ -213,13 +213,13 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - [⚠️] Token stored in localStorage (not secure!)
    ```
 
-**出力:** 要件カバレッジレポート、欠落機能リスト
+### 出力:
 
 ### Step 3: Comprehensive Testing
 
-**目的:** すべての新規コードに対する包括的なテストを作成・実行
+### 目的:
 
-**実行内容:**
+### 実行内容:
 
 1. **新機能のテスト作成:**
 
@@ -330,13 +330,13 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    });
    ```
 
-**出力:** 包括的なテストスイート、テスト実行結果
+### 出力:
 
 ### Step 4: Deep Code Analysis
 
-**目的:** コードの品質、完全性、セキュリティを分析
+### 目的:
 
-**実行内容:**
+### 実行内容:
 
 1. **不完全なTODOのチェック:**
 
@@ -484,13 +484,13 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - ⚠️ Form submit only works with mouse click
    ```
 
-**出力:** コード分析レポート、改善リスト
+### 出力:
 
 ### Step 5: Automatic Refinement
 
-**目的:** 発見された問題を自動的に修正
+### 目的:
 
-**実行内容:**
+### 実行内容:
 
 1. **失敗したテストの修正:**
 
@@ -613,13 +613,13 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    }
    ````
 
-**出力:** 改善されたコード、修正レポート
+### 出力:
 
 ### Step 6: Integration Analysis
 
-**目的:** 統合ポイントを徹底的に分析し検証
+### 目的:
 
-**実行内容:**
+### 実行内容:
 
 1. **統合ポイントの徹底分析:**
 
@@ -745,13 +745,13 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - [ ] Provide migration guide for consumers
    ```
 
-**出力:** 統合分析レポート、互換性レポート
+### 出力:
 
 ### Step 7: Completeness Report
 
-**目的:** 最終的な完全性レポートを生成
+### 目的:
 
-**実行内容:**
+### 実行内容:
 
 ```markdown
 # Implementation Completeness Report
@@ -950,7 +950,7 @@ production-ready.
 **Overall Status: 95% Complete - Production Ready with Minor Fixes**
 ```
 
-**出力:** 包括的な完全性レポート
+### 出力:
 
 ## Deep Validation実行フロー
 
@@ -976,9 +976,9 @@ User runs: /implement finish|verify|complete|enhance
 
 ## 結果
 
-**100%完全で、テスト済み、本番環境対応の実装がすべての要件を満たします。**
+### 100%完全で、テスト済み、本番環境対応の実装がすべての要件を満たします。
 
-**特徴:**
+### 特徴:
 
 - すべての機能が実装されている
 - 包括的なテストカバレッジ
@@ -1002,14 +1002,14 @@ User runs: /implement finish|verify|complete|enhance
 
 ## ベストプラクティス
 
-**Deep Validation実行タイミング:**
+### Deep Validation実行タイミング:
 
 1. **実装完了後:** すべてのタスクが完了したと思ったとき
 2. **重要なマイルストーン後:** 大きな機能が完成したとき
 3. **本番環境デプロイ前:** 最終確認として
 4. **レビュー前:** コードレビューに提出する前
 
-**注意点:**
+### 注意点:
 
 - Deep Validationは時間がかかる（10-30分程度）
 - すべてのテストが実行される

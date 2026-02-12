@@ -6,19 +6,19 @@ code-review-systemのよくある問題と解決方法です。
 
 ### チェックポイント作成が失敗する
 
-**症状**:
+### 症状
 
 ```
 error: Nothing added to the commit but untracked files present
 Pre-review checkpoint failed
 ```
 
-**原因**:
+### 原因
 
 - 変更がステージされていない
 - すべてのファイルが.gitignoreで除外されている
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # ステージされた変更を確認
@@ -31,11 +31,11 @@ git add <file>
 # "No changes to commit" は問題ではない
 ```
 
-**注意**: チェックポイント作成失敗はレビューを停止しません。変更がない場合は正常な動作です。
+### 注意
 
 ### チェックポイントのリストを確認したい
 
-**コマンド**:
+### コマンド
 
 ```bash
 # 最近のコミットを確認
@@ -45,7 +45,7 @@ git log --oneline --grep="Pre-review checkpoint" | head -10
 git log --oneline | grep "Pre-review checkpoint" | head -10
 ```
 
-**期待される出力**:
+### 期待される出力
 
 ```
 abc1234 Pre-review checkpoint
@@ -55,7 +55,7 @@ ghi9012 Pre-review checkpoint
 
 ### チェックポイントに戻したい
 
-**コマンド**:
+### コマンド
 
 ```bash
 # チェックポイントのハッシュを確認
@@ -72,16 +72,16 @@ git diff <checkpoint-hash>
 
 ### GitHub issue作成が失敗する
 
-**症状**:
+### 症状
 
 ```
 error: gh: command not found
 GitHub issue creation failed
 ```
 
-**原因**: gh CLIがインストールされていない
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # macOS
@@ -99,15 +99,15 @@ gh auth status
 
 ### issue作成時に認証エラーが出る
 
-**症状**:
+### 症状
 
 ```
 error: authentication failed
 ```
 
-**原因**: gh CLIが認証されていない、またはトークンが期限切れ
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # 認証状態を確認
@@ -122,7 +122,7 @@ gh auth login --with-token < token.txt
 
 ### 作成されたissueを確認したい
 
-**コマンド**:
+### コマンド
 
 ```bash
 # 最近のissueを確認
@@ -139,16 +139,16 @@ gh issue view <issue-number> --web
 
 ### Serenaオプションが動作しない
 
-**症状**:
+### 症状
 
 ```
 error: Serena MCP server not found
 --with-impact option ignored
 ```
 
-**原因**: Serena MCPサーバーが設定されていない、または起動していない
+### 原因
 
-**解決方法**:
+### 解決方法
 
 #### 1. MCP設定ファイルを確認
 
@@ -160,7 +160,7 @@ ls -la ~/.claude/mcp.json
 cat ~/.claude/mcp.json | grep serena
 ```
 
-**期待される内容**:
+### 期待される内容
 
 ```json
 {
@@ -190,11 +190,11 @@ MCP設定変更後は、Claude Codeを再起動してください。
 
 ### Serenaオプションが遅い
 
-**症状**: `--with-impact`や`--deep-analysis`を使うとレビューが非常に遅い
+### 症状
 
-**原因**: Serena MCPツールは大規模なコードベースで時間がかかる
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # 対象ファイルを限定する
@@ -208,11 +208,11 @@ MCP設定変更後は、Claude Codeを再起動してください。
 
 ### プロジェクトタイプが誤検出される
 
-**症状**: 誤ったプロジェクトタイプが検出され、不適切なスキルが統合される
+### 症状
 
-**原因**: 設定ファイルの競合、または複数のプロジェクトタイプが混在
+### 原因
 
-**デバッグ方法**:
+### デバッグ方法
 
 ```bash
 # プロジェクトタイプを確認するスクリプトを実行
@@ -220,7 +220,7 @@ MCP設定変更後は、Claude Codeを再起動してください。
 /review --debug-project-type
 ```
 
-**暫定的な解決方法**:
+### 暫定的な解決方法
 
 プロジェクト固有のガイドラインファイルで明示的に指定：
 
@@ -235,11 +235,11 @@ MCP設定変更後は、Claude Codeを再起動してください。
 
 ### 技術スタック別スキルが統合されない
 
-**症状**: プロジェクトタイプは正しいが、期待されるスキルが統合されない
+### 症状
 
-**原因**: スキルが存在しない、またはMarketplaceプラグインが追加されていない
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # スキルの存在を確認
@@ -264,11 +264,11 @@ cat ~/.claude/config.json | grep marketplace
 
 ### シンプルモードが期待通りに動作しない
 
-**症状**: シンプルモードで並列エージェントが実行されない
+### 症状
 
-**原因**: code-reviewスキルのバージョンが古い、または設定が不正
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # code-reviewスキルの更新
@@ -281,11 +281,11 @@ git pull
 
 ### 詳細モードの⭐️評価が表示されない
 
-**症状**: 詳細モードで⭐️評価が表示されない
+### 症状
 
-**原因**: code-reviewスキルが古い、または日本語出力が設定されていない
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # code-reviewスキルの更新
@@ -300,15 +300,15 @@ grep -r "日本語" ~/.claude/skills/code-review-system/
 
 ### CI診断モードでPR番号が見つからない
 
-**症状**:
+### 症状
 
 ```
 error: PR not found for current branch
 ```
 
-**原因**: 現在のブランチにPRが関連付けられていない
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # PR番号を明示的に指定
@@ -323,15 +323,15 @@ gh pr list --head $(git branch --show-current)
 
 ### CI診断モードでログが取得できない
 
-**症状**:
+### 症状
 
 ```
 error: Failed to fetch CI logs
 ```
 
-**原因**: GitHub Actionsが実行されていない、またはgh CLIの権限不足
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # GitHub Actionsの実行状況を確認
@@ -348,15 +348,15 @@ gh auth refresh -s repo
 
 ### PRコメントが取得できない
 
-**症状**:
+### 症状
 
 ```
 error: No review comments found
 ```
 
-**原因**: PRにレビューコメントがない、またはgh CLIの権限不足
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # PRコメントを確認
@@ -371,7 +371,7 @@ gh auth refresh -s repo
 
 ### 特定のボットのコメントのみを修正したい
 
-**コマンド**:
+### コマンド
 
 ```bash
 # coderabbitai のコメントのみ修正
@@ -385,11 +385,11 @@ gh auth refresh -s repo
 
 ### レビューが非常に遅い
 
-**症状**: レビューに5分以上かかる
+### 症状
 
-**原因**: 対象ファイルが多すぎる、またはSerenaオプションを使用
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # 対象を限定する
@@ -405,11 +405,11 @@ gh auth refresh -s repo
 
 ### 大規模なプロジェクトでレビューがタイムアウトする
 
-**症状**: レビューが途中で停止する
+### 症状
 
-**原因**: 対象ファイルが多すぎる
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # ファイルを分割してレビュー
@@ -429,11 +429,11 @@ gh auth refresh -s repo
 
 ### レビュー結果が日本語で出力されない
 
-**症状**: レビュー結果が英語で出力される
+### 症状
 
-**原因**: 日本語出力設定が無視されている
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # CLAUDE.md に日本語出力設定があるか確認
@@ -446,15 +446,15 @@ cat ~/.claude/skills/code-review-system/SKILL.md | grep "日本語"
 
 ### コマンドが認識されない
 
-**症状**:
+### 症状
 
 ```
 error: /review: command not found
 ```
 
-**原因**: コマンドが正しくインストールされていない
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # コマンドファイルの存在を確認
@@ -466,15 +466,15 @@ ls ~/src/github.com/jey3dayo/claude-code-marketplace/commands/review.md
 
 ### スキルが見つからない
 
-**症状**:
+### 症状
 
 ```
 error: code-review skill not found
 ```
 
-**原因**: スキルが正しくインストールされていない
+### 原因
 
-**解決方法**:
+### 解決方法
 
 ```bash
 # スキルの存在を確認
@@ -556,7 +556,7 @@ tail -f ~/.claude/logs/claude.log
 
 ### Q: レビュー結果を保存したい
 
-**A**: レビュー結果はターミナルに出力されます。保存するには：
+### A
 
 ```bash
 # ファイルにリダイレクト
@@ -568,7 +568,7 @@ tail -f ~/.claude/logs/claude.log
 
 ### Q: 複数のブランチをレビューしたい
 
-**A**: ブランチを切り替えてレビュー：
+### A
 
 ```bash
 # 各ブランチでレビュー
@@ -584,7 +584,7 @@ git checkout feature/branch3
 
 ### Q: レビュー基準をカスタマイズしたい
 
-**A**: プロジェクト固有のガイドラインファイルを作成：
+### A
 
 ```bash
 # .claude/review-guidelines.md を作成

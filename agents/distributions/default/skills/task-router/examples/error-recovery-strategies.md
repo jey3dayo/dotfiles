@@ -42,13 +42,13 @@ def handle_execution_error(error, context):
 
 ### 1. 認証エラー (AuthenticationError)
 
-**症状**
+### 症状
 
 - APIキーが無効
 - トークンが期限切れ
 - 権限不足
 
-**検出方法**
+### 検出方法
 
 ```python
 def is_authentication_error(error):
@@ -66,7 +66,7 @@ def is_authentication_error(error):
     return any(pattern in error_message for pattern in auth_patterns)
 ```
 
-**リカバリー戦略**
+### リカバリー戦略
 
 ```python
 class AuthenticationRecoveryStrategy:
@@ -87,7 +87,7 @@ class AuthenticationRecoveryStrategy:
         return None
 ```
 
-**実例**
+### 実例
 
 ```
 Error: Context7 authentication failed
@@ -102,13 +102,13 @@ Result: Partial Success (without Context7)
 
 ### 2. リソース制限エラー (ResourceLimitError)
 
-**症状**
+### 症状
 
 - API レート制限
 - メモリ不足
 - タイムアウト
 
-**検出方法**
+### 検出方法
 
 ```python
 def is_resource_limit_error(error):
@@ -126,7 +126,7 @@ def is_resource_limit_error(error):
     return any(pattern in error_message for pattern in limit_patterns)
 ```
 
-**リカバリー戦略**
+### リカバリー戦略
 
 ```python
 class ResourceLimitRecoveryStrategy:
@@ -150,7 +150,7 @@ class ResourceLimitRecoveryStrategy:
             return retry_execution(context)
 ```
 
-**実例**
+### 実例
 
 ```
 Error: API rate limit exceeded (429)
@@ -165,13 +165,13 @@ Result: Success (after 2 retries)
 
 ### 3. パースエラー (ParseError)
 
-**症状**
+### 症状
 
 - JSONパースエラー
 - 構文エラー
 - 不正なフォーマット
 
-**検出方法**
+### 検出方法
 
 ```python
 def is_parse_error(error):
@@ -188,7 +188,7 @@ def is_parse_error(error):
     return any(pattern in error_message for pattern in parse_patterns)
 ```
 
-**リカバリー戦略**
+### リカバリー戦略
 
 ```python
 class ParseRecoveryStrategy:
@@ -210,7 +210,7 @@ class ParseRecoveryStrategy:
             return partial_result
 ```
 
-**実例**
+### 実例
 
 ```
 Error: JSON parse error in response
@@ -225,13 +225,13 @@ Result: Partial Success (80% data recovered)
 
 ### 4. 実行タイムアウト (TimeoutError)
 
-**症状**
+### 症状
 
 - 処理時間超過
 - 応答なし
 - デッドロック
 
-**検出方法**
+### 検出方法
 
 ```python
 def is_timeout_error(error):
@@ -248,7 +248,7 @@ def is_timeout_error(error):
     return any(pattern in error_message for pattern in timeout_patterns)
 ```
 
-**リカバリー戦略**
+### リカバリー戦略
 
 ```python
 class TimeoutRecoveryStrategy:
@@ -271,7 +271,7 @@ class TimeoutRecoveryStrategy:
             return execute_subtasks_parallel(subtasks)
 ```
 
-**実例**
+### 実例
 
 ```
 Error: Execution timeout (2 min exceeded)
@@ -316,7 +316,7 @@ class ExponentialBackoff:
                 time.sleep(delay)
 ```
 
-**使用例**
+### 使用例
 
 ```python
 backoff = ExponentialBackoff()
@@ -397,7 +397,7 @@ class FallbackChain:
         raise AllStrategiesFailedError(errors)
 ```
 
-**使用例**
+### 使用例
 
 ```python
 fallback = FallbackChain([
@@ -514,7 +514,7 @@ def generate_recommendations(task_description, project_type):
     return recommendations
 ```
 
-**推奨事項の例**
+### 推奨事項の例
 
 ```markdown
 ## 📊 Recommendations
