@@ -13,6 +13,8 @@
       hasEnvValue = name: value: builtins.getEnv name == value;
 
       # File content checker (returns false if file doesn't exist)
+      # Note: /sys/firmware/devicetree/base/model contains NUL bytes, so builtins.readFile
+      # cannot represent it as a Nix string. Use a text source without NULs instead.
       fileContains = path: pattern:
         let
           fileExists = builtins.pathExists path;
@@ -20,14 +22,19 @@
         in
         fileExists && builtins.match ".*${pattern}.*" content != null;
 
+      # Raspberry Pi detection helper.
+      # NOTE: Many device-tree model files contain NUL bytes, which `builtins.readFile`
+      # cannot represent as a Nix string. `/proc/cpuinfo` is safe text.
+      isRaspberryPiModel =
+        builtins.match ".*Raspberry Pi.*" (builtins.readFile "/proc/cpuinfo") != null;
+
       # CI detection: $CI or $GITHUB_ACTIONS environment variables
       isCI = hasEnvValue "CI" "true" || hasEnvValue "GITHUB_ACTIONS" "true";
 
-      # Raspberry Pi detection: ARM architecture + device tree model contains "Raspberry Pi"
-      # Note: This check is approximate and relies on /sys/firmware/devicetree/base/model
+      # Raspberry Pi detection: ARM architecture + model string contains "Raspberry Pi"
       isRaspberryPi =
         (pkgs.stdenv.hostPlatform.isAarch64 || pkgs.stdenv.hostPlatform.isAarch32) &&
-        fileContains /sys/firmware/devicetree/base/model "Raspberry Pi";
+        isRaspberryPiModel;
 
     in
     # Priority: CI > Pi > Default (includes WSL2, macOS, generic Linux)
