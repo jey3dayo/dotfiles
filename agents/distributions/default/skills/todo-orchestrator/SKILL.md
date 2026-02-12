@@ -5,7 +5,6 @@ argument-hint: "[add [description]] [--list] [--priority=<level>] [--suggest]"
 disable-model-invocation: true
 user-invocable: true
 allowed-tools: Read, Write, Edit, Bash, Grep, TodoWrite
-
 ---
 
 # Todo Orchestrator - 統合タスク管理システム
