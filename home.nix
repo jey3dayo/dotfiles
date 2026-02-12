@@ -11,14 +11,7 @@
     rsync  # Required for copy-tree deployment
   ];
 
-  # Starship prompt
-  programs.starship = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-  };
-
-  # NOTE: starship.toml is already at ~/.config/starship.toml because this repo is ~/.config
+  # Tools are installed via mise; Home Manager focuses on config distribution.
 
   # Let Home Manager manage itself
   programs.home-manager.enable = true;

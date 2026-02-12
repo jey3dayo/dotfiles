@@ -158,6 +158,7 @@ yamllint = "latest"
 "cargo:needle-cli" = "latest"
 "cargo:similarity-ts" = "latest"
 "cargo:wrkflw" = "latest"
+"cargo:starship" = "latest"
 
 # ========================================
 # CLI Tools (コマンドラインユーティリティ)
