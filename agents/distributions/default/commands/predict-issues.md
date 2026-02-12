@@ -3,6 +3,19 @@ description: Predictive code analysis to identify potential problems
 argument-hint: [options]
 ---
 
+> ⚠️ **DEPRECATED**: このコマンドは廃止予定です。
+>
+> **移行先**: `predictive-analysis` スキル (`~/.claude/skills/predictive-analysis/`)
+>
+> 新しいスキルは以下の機能を提供します：
+>
+> - リスク予測: 4象限マトリクス、スコアリング計算式
+> - アンチパターン検出: セキュリティ/パフォーマンス/技術的負債
+> - 保守性評価: 循環的複雑度、認知的複雑度の測定
+> - プロジェクト別分析パターン
+>
+> **Phase 3で移行完了** (2026-02-12)
+
 # Predictive Code Analysis
 
 I'll analyze your codebase to predict potential problems before they impact your project.
@@ -14,18 +27,21 @@ I'll analyze your codebase to predict potential problems before they impact your
 To make accurate predictions, I need to consider:
 
 1. **Pattern Recognition**
+
    - Which code patterns commonly lead to problems?
    - Are there growing complexity hotspots?
    - Do I see anti-patterns that will cause issues at scale?
    - Are there ticking time bombs (hardcoded values, assumptions)?
 
 2. **Risk Assessment Framework**
+
    - Likelihood: How probable is this issue to occur?
    - Impact: How severe would the consequences be?
    - Timeline: When might this become a problem?
    - Effort: How hard would it be to fix now vs later?
 
 3. **Common Problem Categories**
+
    - Performance: O(n²) algorithms, memory leaks, inefficient queries
    - Maintainability: High complexity, poor naming, tight coupling
    - Security: Input validation gaps, exposed secrets, weak auth

@@ -3,6 +3,19 @@ description: Intelligent project documentation manager
 argument-hint: [path]
 ---
 
+> ⚠️ **DEPRECATED**: このコマンドは廃止予定です。
+>
+> **移行先**: `documentation-management` スキル (`~/.claude/skills/documentation-management/`)
+>
+> 新しいスキルは以下の機能を提供します：
+>
+> - AI駆動プロジェクト分析（project-detector + MCP Serena統合）
+> - Progressive Disclosure戦略（段階的情報提供）
+> - スマート更新（変更影響の自動追跡）
+> - リンク検証（整合性チェック）
+>
+> **Phase 3で移行完了** (2026-02-12)
+
 # Documentation Manager
 
 I'll intelligently manage your project documentation by analyzing what actually happened and updating ALL relevant docs accordingly.
@@ -52,6 +65,7 @@ When you run `/docs update` or after implementations, I'll:
 1. **Run `/understand`** to analyze current codebase
 2. **Compare** code reality vs documentation
 3. **Identify** what needs updating:
+
    - New features not documented
    - Changed APIs or interfaces
    - Removed features still in docs

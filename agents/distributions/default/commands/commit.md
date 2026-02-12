@@ -3,6 +3,19 @@ description: Smart git commit with quality checks and meaningful message generat
 argument-hint: [message]
 ---
 
+> ⚠️ **DEPRECATED**: このコマンドは廃止予定です。
+>
+> **移行先**: `git-automation` スキル (`~/.claude/skills/git-automation/`)
+>
+> 新しいスキルは以下の機能を提供します：
+>
+> - Smart Commit: 品質ゲート付きインテリジェントコミット
+> - Auto PR: Format→Commit→Push→PR作成/更新の統合フロー
+> - 既存PR検出と自動更新
+> - 署名なしポリシー
+>
+> **Phase 3で移行完了** (2026-02-12)
+
 # Smart Git Commit
 
 I'll analyze your changes and create a meaningful commit message.

@@ -3,6 +3,19 @@ description: Automatic format, commit, and GitHub PR creation system
 argument-hint: [options]
 ---
 
+> ⚠️ **DEPRECATED**: このコマンドは廃止予定です。
+>
+> **移行先**: `git-automation` スキル (`~/.claude/skills/git-automation/`)
+>
+> 新しいスキルは以下の機能を提供します：
+>
+> - Auto PR: Format→Commit→Push→PR作成/更新の統合フロー
+> - 既存PR検出と自動更新（重複防止）
+> - 品質ゲート（Lint/Test/Build）
+> - 日本語完全対応のPRテンプレート
+>
+> **Phase 3で移行完了** (2026-02-12)
+
 # Create PR - 自動フォーマット・コミット・PR作成システム
 
 プロジェクトのフォーマッターを自動検出し、コード整形・適切なコミット分割・GitHub PR作成を一括実行する統合コマンドです。

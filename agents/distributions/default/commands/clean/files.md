@@ -3,6 +3,19 @@ description: Clean up development artifacts while preserving working code
 argument-hint: [pattern]
 ---
 
+> ⚠️ **DEPRECATED**: このコマンドは廃止予定です。
+>
+> **移行先**: `project-maintenance` スキル (`~/.claude/skills/project-maintenance/`)
+>
+> 新しいスキルは以下の機能を提供します：
+>
+> - ターゲットクリーンアップ: ファイルパターンマッチングによる軽量クリーンアップ
+> - 保護機能: .gitignore、node_modules等の自動除外
+> - セーフティチェック: 削除前の確認と参照チェック
+> - プロジェクト別パターン対応
+>
+> **Phase 3で移行完了** (2026-02-12)
+
 # Clean Files - ファイル・アーティファクト整理
 
 I'll help clean up development artifacts while preserving your working code.
@@ -13,18 +26,21 @@ I'll help clean up development artifacts while preserving your working code.
 Before cleaning, I need to carefully consider:
 
 1. **Artifact Identification**
+
    - What patterns indicate temporary/debug files?
    - Which files might look temporary but are actually important?
    - Are there project-specific conventions for temp files?
    - What about generated files that should be kept?
 
 2. **Safety Analysis**
+
    - Which deletions are definitely safe?
    - Which require more careful inspection?
    - Are there active processes using these files?
    - Could removing these break the development environment?
 
 3. **Common Pitfalls**
+
    - .env files might look like artifacts but contain config
    - .cache directories might be needed for performance
    - Some .tmp files might be active session data
