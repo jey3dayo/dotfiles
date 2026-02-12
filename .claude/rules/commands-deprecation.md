@@ -75,6 +75,25 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 **削除結果**: 16ファイル完全削除（廃止警告→削除への移行完了）
 
+### Phase 5.1 Kiro Commands削除（✅ 完了）
+
+**Kiro関連（12ファイル）** ← cc-sdd スキルで統合済み:
+
+1. `commands/kiro/spec-init.md` → cc-sdd
+2. `commands/kiro/spec-requirements.md` → cc-sdd
+3. `commands/kiro/spec-design.md` → cc-sdd
+4. `commands/kiro/spec-tasks.md` → cc-sdd
+5. `commands/kiro/spec-impl.md` → cc-sdd
+6. `commands/kiro/spec-status.md` → cc-sdd
+7. `commands/kiro/spec-quick.md` → cc-sdd
+8. `commands/kiro/validate-design.md` → cc-sdd
+9. `commands/kiro/validate-gap.md` → cc-sdd
+10. `commands/kiro/validate-impl.md` → cc-sdd
+11. `commands/kiro/steering.md` → cc-sdd
+12. `commands/kiro/steering-custom.md` → cc-sdd
+
+**削除理由**: cc-sdd スキル（agents/distributions/default/skills/cc-sdd/）で既に完全統合済み
+
 ## 移行統計
 
 ### 総合
