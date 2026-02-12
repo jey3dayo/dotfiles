@@ -173,6 +173,73 @@ def extract_tech_stack(text: str, files: List[Path]) -> List[str]:
     return sorted(list(tech_stack))
 
 
+def infer_project_from_files() -> str:
+    """
+    Infer project description from common project files
+
+    Searches for and reads (in priority order):
+    - README.md
+    - CLAUDE.md
+    - AGENTS.md
+    - .kiro/steering/*.md
+    - package.json, requirements.txt, Cargo.toml
+
+    Returns:
+        Inferred project description
+    """
+    description_parts = []
+
+    # Priority 1: README.md
+    readme_paths = [Path("README.md"), Path("readme.md")]
+    for readme_path in readme_paths:
+        if readme_path.exists():
+            try:
+                with open(readme_path) as f:
+                    content = f.read(5000)  # First 5000 chars
+                    description_parts.append(f"README: {content}")
+                    break
+            except Exception:
+                pass
+
+    # Priority 2: CLAUDE.md
+    claude_paths = [Path("CLAUDE.md"), Path(".claude/CLAUDE.md")]
+    for claude_path in claude_paths:
+        if claude_path.exists():
+            try:
+                with open(claude_path) as f:
+                    content = f.read(3000)
+                    description_parts.append(f"CLAUDE.md: {content}")
+                    break
+            except Exception:
+                pass
+
+    # Priority 3: AGENTS.md
+    agents_path = Path("AGENTS.md")
+    if agents_path.exists():
+        try:
+            with open(agents_path) as f:
+                content = f.read(2000)
+                description_parts.append(f"AGENTS.md: {content}")
+        except Exception:
+            pass
+
+    # Priority 4: .kiro/steering/*.md
+    kiro_steering = Path(".kiro/steering")
+    if kiro_steering.exists():
+        for md_file in kiro_steering.glob("*.md"):
+            try:
+                with open(md_file) as f:
+                    content = f.read(1000)
+                    description_parts.append(f"{md_file.name}: {content}")
+            except Exception:
+                pass
+
+    if description_parts:
+        return "\n\n".join(description_parts)
+    else:
+        return "General software project"
+
+
 def analyze_context(
     description: str, files: Optional[List[str]] = None
 ) -> ProjectContext:
@@ -180,12 +247,16 @@ def analyze_context(
     Analyze project context from description and files
 
     Args:
-        description: Project description text
+        description: Project description text (if empty, auto-infer from files)
         files: List of file paths to analyze (optional)
 
     Returns:
         ProjectContext object
     """
+    # Auto-infer if description is empty
+    if not description or description.strip() == "":
+        description = infer_project_from_files()
+
     file_paths = [Path(f) for f in (files or [])] if files else []
 
     domain = detect_domain(description)
@@ -309,7 +380,11 @@ def main():
     parser = argparse.ArgumentParser(
         description="Analyze project context and generate questions"
     )
-    parser.add_argument("--input", required=True, help="Project description")
+    parser.add_argument(
+        "--input",
+        default="",
+        help="Project description (if empty, auto-infer from files)",
+    )
     parser.add_argument("--files", help="Comma-separated list of files to analyze")
     parser.add_argument("--output", help="Output file path (JSON)")
     parser.add_argument(

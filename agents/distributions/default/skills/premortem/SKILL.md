@@ -34,6 +34,22 @@ Premortem Analysisは、プロジェクトマネジメント手法の「Premorte
 
 ### 基本的な呼び出し
 
+#### 自動推察モード（プロジェクト説明なし）
+
+```bash
+/premortem
+```
+
+**動作**:
+
+- README.md、CLAUDE.md、AGENTS.md等を自動読み込み
+- プロジェクトの性質（ドメイン、技術スタック、成熟度）を推察
+- 推察結果に基づいて3-5個の関連質問を提示
+
+**推奨**: プロジェクトルートで実行すると最も効果的です。
+
+#### 明示的なプロジェクト説明
+
 ```bash
 /premortem "Next.js + PostgreSQLでブログプラットフォームを構築する計画"
 ```
@@ -184,15 +200,23 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 
 ```markdown
 1. ユーザー入力を解析
-   - プロジェクト説明を抽出
-   - 技術スタックキーワードを検出
+   - プロジェクト説明が提供された場合: その説明を使用
+   - プロジェクト説明が未提供の場合: 自動推察モード
 
-2. 関連ファイルを自動検出（存在する場合）
-   - .kiro/steering/\*.md
-   - package.json, requirements.txt, Cargo.toml
-   - README.md, docs/\*.md
+2. 自動推察モード（説明未提供時）
+   優先順位でプロジェクトドキュメントを読み込み:
+   - README.md - プロジェクト概要
+   - CLAUDE.md - プロジェクト方針・技術スタック
+   - AGENTS.md - エージェント設定・開発方針
+   - .kiro/steering/\*.md - プロジェクト知識ベース
+   - package.json, requirements.txt, Cargo.toml - 依存関係
+   - docs/\*.md - 追加ドキュメント
 
-3. ProjectContext生成
+3. コンテキスト統合
+   - 収集した情報を統合してプロジェクト説明を生成
+   - 技術スタック、ドメイン、成熟度を推定
+
+4. ProjectContext生成
    scripts/analyze_context.py を実行
 ```
 
