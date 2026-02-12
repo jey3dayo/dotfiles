@@ -28,8 +28,12 @@
       #   which `builtins.readFile` cannot represent as a Nix string.
       # - `/proc/cpuinfo` is safe text on Linux, but doesn't exist on e.g. Darwin.
       isRaspberryPiModel =
-        pkgs.stdenv.isLinux && builtins.pathExists "/proc/cpuinfo" &&
-        builtins.match ".*Raspberry Pi.*" (builtins.readFile "/proc/cpuinfo") != null;
+        let
+          cpuinfoPath = "/proc/cpuinfo";
+          cpuinfo = builtins.tryEval (builtins.readFile cpuinfoPath);
+        in
+        pkgs.stdenv.isLinux && cpuinfo.success &&
+        builtins.match ".*Raspberry Pi.*" cpuinfo.value != null;
 
       # CI detection: $CI or $GITHUB_ACTIONS environment variables
       isCI = hasEnvValue "CI" "true" || hasEnvValue "GITHUB_ACTIONS" "true";
