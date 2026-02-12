@@ -12,7 +12,7 @@ depends = [
 ]
 
 ["update:submodules"]
-description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
+description = "Git サブモジュールを最新に更新（ローカル変更を破棄、ネストは固定コミットに同期）"
 run = """
 if [ ! -f .gitmodules ]; then
   echo "No submodules configured, skipping"
@@ -21,7 +21,10 @@ fi
 
 git submodule sync --recursive
 git submodule foreach --recursive "git reset --hard HEAD && git clean -fd"
-GIT_HTTP_VERSION=HTTP/1.1 git -c http.version=HTTP/1.1 submodule update --remote --recursive
+# Update only top-level submodules to latest remote tip
+GIT_HTTP_VERSION=HTTP/1.1 git -c http.version=HTTP/1.1 submodule update --remote
+# Then align nested submodules to commits pinned by each parent submodule
+git submodule update --init --recursive
 """
 
 ["update:brew"]
