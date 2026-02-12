@@ -50,12 +50,13 @@ let
     if commandsSourcePath != null then
       pkgs.runCommand "agent-commands-bundle" {} ''
         mkdir -p $out
-        # Copy entire directory structure preserving subdirectories
-        cp -r ${commandsSourcePath}/. $out/
-        # Find and preserve only .md files (remove non-.md files)
-        find $out -type f ! -name "*.md" -delete
-        # Remove empty directories
-        find $out -type d -empty -delete
+        # Copy only .md files preserving directory structure
+        cd ${commandsSourcePath}
+        find . -type f -name "*.md" | while IFS= read -r file; do
+          dir="$out/$(dirname "$file")"
+          mkdir -p "$dir"
+          cp "$file" "$out/$file"
+        done
       ''
     else null;
 
