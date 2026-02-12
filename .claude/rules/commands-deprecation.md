@@ -11,7 +11,8 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 | Phase 1 | ✅ 完了    | Foundation（基礎スキル作成）      | Week 1   |
 | Phase 2 | ✅ 完了    | Core Workflows（主要6スキル移行） | Week 2-7 |
 | Phase 3 | ✅ 完了    | Secondary（二次4スキル移行）      | Week 8   |
-| Phase 4 | 🟡 進行中  | Commands廃止マーキング            | Week 8   |
+| Phase 4 | ✅ 完了    | Commands廃止マーキング            | Week 8   |
+| Phase 5 | ✅ 完了    | 移行済みCommands削除              | Week 8   |
 
 ### Phase 2 移行スキル（✅ 完了）
 
@@ -47,6 +48,32 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 - 移行先スキル名とパス
 - 新スキルの主要機能
 - Phase 3完了日（2026-02-12）
+
+### Phase 5 移行済みCommands削除（✅ 完了）
+
+**Phase 2関連（10ファイル）**:
+
+1. `commands/learnings.md` → learnings-knowledge
+2. `commands/polish.md` → code-quality-automation
+3. `commands/implement.md` → implementation-engine
+4. `commands/todos.md` → todo-orchestrator
+5. `commands/create-todos.md` → todo-orchestrator
+6. `commands/find-todos.md` → todo-orchestrator
+7. `commands/fix-todos.md` → todo-orchestrator
+8. `commands/task.md` → task-router
+9. `commands/review.md` → code-review-system
+
+**Phase 3関連（6ファイル）** ← 既にPhase 4で廃止警告追加済み:
+
+1. `commands/commit.md` → git-automation
+2. `commands/create-pr.md` → git-automation
+3. `commands/predict-issues.md` → predictive-analysis
+4. `commands/docs.md` → documentation-management
+5. `commands/fix-docs.md` → documentation-management
+6. `commands/clean/full.md` → project-maintenance
+7. `commands/clean/files.md` → project-maintenance
+
+**削除結果**: 16ファイル完全削除（廃止警告→削除への移行完了）
 
 ## 移行統計
 
@@ -125,5 +152,6 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 ---
 
 **最終更新**: 2026-02-12
-**移行完了**: Phase 1-3（Foundation + Core + Secondary）
-**次回作業**: Phase 4完了後のCommands完全廃止検討
+**移行完了**: Phase 1-5（Foundation + Core + Secondary + 廃止警告 + Commands削除）
+**残存Commands**: shared/（共通ユーティリティ）、kiro/（Spec-Driven Development）、その他未移行Commands
+**次回作業**: 残存Commandsの段階的移行検討
