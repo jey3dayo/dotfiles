@@ -113,7 +113,7 @@ if [ -n "${SH_FILES:-}" ]; then
   done
 
   if [ -n "${shfmt_files}" ]; then
-    shfmt -w -i 2 -ci -bn -sr ${shfmt_files}
+    shfmt -w -i 2 -ci -bn ${shfmt_files}
   fi
 
   if [ -n "${zsh_files}" ]; then
@@ -121,9 +121,9 @@ if [ -n "${SH_FILES:-}" ]; then
   fi
 else
   # scripts/ (some files have no extension)
-  fd -t f -H -p '^scripts/' -X shfmt -w -i 2 -ci -bn -sr
+  fd -t f -H -p '^scripts/' -X shfmt -w -i 2 -ci -bn
   # .sh files elsewhere
-  fd -e sh ${TASK_EXCLUDES} -X shfmt -w -i 2 -ci -bn -sr
+  fd -e sh ${TASK_EXCLUDES} -X shfmt -w -i 2 -ci -bn
 
   # .zsh files
   fd -e zsh ${TASK_EXCLUDES} -X beautysh -i 2
@@ -149,7 +149,7 @@ if [ -n "${SH_FILES:-}" ]; then
   done
 
   if [ -n "${shfmt_files}" ]; then
-    shfmt -d -i 2 -ci -bn -sr ${shfmt_files}
+    shfmt -d -i 2 -ci -bn ${shfmt_files}
   fi
 
   if [ -n "${zsh_files}" ]; then
@@ -157,9 +157,9 @@ if [ -n "${SH_FILES:-}" ]; then
   fi
 else
   # scripts/ (some files have no extension)
-  fd -t f -H -p '^scripts/' -X shfmt -d -i 2 -ci -bn -sr
+  fd -t f -H -p '^scripts/' -X shfmt -d -i 2 -ci -bn
   # .sh files elsewhere
-  fd -e sh ${TASK_EXCLUDES} -X shfmt -d -i 2 -ci -bn -sr
+  fd -e sh ${TASK_EXCLUDES} -X shfmt -d -i 2 -ci -bn
 
   # .zsh files
   fd -e zsh ${TASK_EXCLUDES} -X beautysh -i 2 -c

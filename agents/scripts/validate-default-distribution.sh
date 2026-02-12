@@ -18,7 +18,7 @@ fi
 
 if [ -d "${skills_dir}" ]; then
   while IFS= read -r -d '' link; do
-    rel="${link#${repo_root}/}"
+    rel="${link#"${repo_root}"/}"
     fail "Symlink is not allowed in default skills: ${rel}"
   done < <(find "${skills_dir}" -type l -print0)
 
@@ -27,7 +27,7 @@ if [ -d "${skills_dir}" ]; then
     [ -d "${skill_path}" ] || continue
     skill_count=$((skill_count + 1))
     if [ ! -f "${skill_path}/SKILL.md" ] && [ ! -f "${skill_path}/skills/SKILL.md" ]; then
-      rel="${skill_path#${repo_root}/}"
+      rel="${skill_path#"${repo_root}"/}"
       fail "Missing SKILL.md: ${rel}/SKILL.md (or ${rel}/skills/SKILL.md)"
     fi
   done

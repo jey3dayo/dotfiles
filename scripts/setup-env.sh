@@ -27,7 +27,7 @@ if [ ! -f "$ENV_KEYS" ]; then
 fi
 
 # Check if dotenvx is available
-if ! command -v dotenvx > /dev/null 2>&1; then
+if ! command -v dotenvx >/dev/null 2>&1; then
   echo "" >&2
   echo "❌ CRITICAL: dotenvx not found" >&2
   echo "" >&2
@@ -50,7 +50,7 @@ fi
 
 # Decrypt .env to .env.local (use temp file for atomicity)
 TEMP_FILE="$ENV_LOCAL.tmp"
-if DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" dotenvx decrypt -f "$ENV_FILE" --stdout > "$TEMP_FILE" 2> /dev/null; then
+if DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" dotenvx decrypt -f "$ENV_FILE" --stdout >"$TEMP_FILE" 2>/dev/null; then
   mv "$TEMP_FILE" "$ENV_LOCAL"
   chmod 600 "$ENV_LOCAL"
   echo "✓ .env.local updated successfully"

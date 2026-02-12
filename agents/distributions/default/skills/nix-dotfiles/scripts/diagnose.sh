@@ -16,7 +16,7 @@ check_generation() {
 
   # Get latest generation
   local latest_gen
-  if ! latest_gen=$(home-manager generations 2> /dev/null | head -1); then
+  if ! latest_gen=$(home-manager generations 2>/dev/null | head -1); then
     echo -e "${RED}[✗]${NC} Generation check: home-manager not found or no generations"
     return 1
   fi
@@ -31,14 +31,14 @@ check_generation() {
   gen_path=$(echo "$latest_gen" | awk '{print $NF}')
 
   # Check if .claude exists in generation
-  if find "$gen_path/home-files/" -path "*claude*" -print -quit 2> /dev/null | grep -q .; then
+  if find "$gen_path/home-files/" -path "*claude*" -print -quit 2>/dev/null | grep -q .; then
     echo -e "${GREEN}[✓]${NC} Generation check: .claude found in latest generation"
 
     # Check generation age (warning if older than 24h)
     local gen_time
     gen_time=$(echo "$latest_gen" | awk '{print $1, $2}')
     local gen_epoch
-    gen_epoch=$(date -d "$gen_time" +%s 2> /dev/null || echo 0)
+    gen_epoch=$(date -d "$gen_time" +%s 2>/dev/null || echo 0)
     local now_epoch
     now_epoch=$(date +%s)
     local age_hours=$(((now_epoch - gen_epoch) / 3600))
@@ -112,21 +112,21 @@ check_flake_inputs() {
 
   # Count inputs in flake.nix (excluding nixpkgs, home-manager, etc.)
   local flake_inputs_count
-  flake_inputs_count=$(rg -o 'url = "github:.*/.*skills' "$config_dir/flake.nix" 2> /dev/null | wc -l || echo 0)
+  flake_inputs_count=$(rg -o 'url = "github:.*/.*skills' "$config_dir/flake.nix" 2>/dev/null | wc -l || echo 0)
 
   # Count sources in agent-skills-sources.nix
   local sources_count=0
   if [ -f "$config_dir/nix/agent-skills-sources.nix" ]; then
-    sources_count=$(rg -o '^\s+[a-z-]+\s*=' "$config_dir/nix/agent-skills-sources.nix" 2> /dev/null | wc -l || echo 0)
+    sources_count=$(rg -o '^\s+[a-z-]+\s*=' "$config_dir/nix/agent-skills-sources.nix" 2>/dev/null | wc -l || echo 0)
   fi
 
   # Extract URLs from both files for comparison
   local flake_urls
-  flake_urls=$(rg -o 'url = "github:[^"]+' "$config_dir/flake.nix" 2> /dev/null | grep skills | sort || true)
+  flake_urls=$(rg -o 'url = "github:[^"]+' "$config_dir/flake.nix" 2>/dev/null | grep skills | sort || true)
 
   local sources_urls=""
   if [ -f "$config_dir/nix/agent-skills-sources.nix" ]; then
-    sources_urls=$(rg -o 'url = "github:[^"]+' "$config_dir/nix/agent-skills-sources.nix" 2> /dev/null | sort || true)
+    sources_urls=$(rg -o 'url = "github:[^"]+' "$config_dir/nix/agent-skills-sources.nix" 2>/dev/null | sort || true)
   fi
 
   # Compare URLs
@@ -201,21 +201,27 @@ main() {
   echo "=== Nix Dotfiles Diagnostic ==="
   echo ""
 
-  local checks=(
-    "check_generation"
-    "check_symlinks"
-    "check_flake_inputs"
-    "check_worktree"
-  )
-
   local all_passed=true
 
-  for check in "${checks[@]}"; do
-    if ! $check; then
-      all_passed=false
-    fi
-    echo ""
-  done
+  if ! check_generation; then
+    all_passed=false
+  fi
+  echo ""
+
+  if ! check_symlinks; then
+    all_passed=false
+  fi
+  echo ""
+
+  if ! check_flake_inputs; then
+    all_passed=false
+  fi
+  echo ""
+
+  if ! check_worktree; then
+    all_passed=false
+  fi
+  echo ""
 
   echo "=== Summary ==="
   if $all_passed; then
