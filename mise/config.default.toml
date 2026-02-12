@@ -73,6 +73,7 @@ shfmt = "latest"
 stylua = "latest"
 taplo = "latest"
 yamllint = "latest"
+"pipx:beautysh" = "latest"
 
 # ========================================
 # NPM Global Packages (Node.js グローバルパッケージ)
