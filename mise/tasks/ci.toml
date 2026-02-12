@@ -12,7 +12,3 @@ run = """
 luarocks install --local luacheck
 luarocks install --local busted
 """
-
-["ci:deploy"]
-description = "CI環境でファイル配布（Home Manager）"
-run = "nix run home-manager -- switch --flake . --impure -b backup"

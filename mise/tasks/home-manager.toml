@@ -34,3 +34,7 @@ run = """
 ["hm:clean"]
 description = "古い Home Manager 世代を削除（30日以上前）"
 run = "home-manager expire-generations '-30 days'"
+
+["hm:deploy"]
+description = "Home Manager を適用（CI/自動化用、バックアップ付き）"
+run = "nix run home-manager -- switch --flake . --impure -b backup"
