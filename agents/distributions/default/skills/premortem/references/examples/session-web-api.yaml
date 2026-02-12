@@ -1,0 +1,261 @@
+# Premortem Session Example: Web API Design
+
+timestamp: "2026-02-13T14:30:22+09:00"
+
+context:
+  domain: web-development
+  maturity: mvp
+  tech_stack:
+    - Next.js
+    - PostgreSQL
+    - Vercel
+  scale: medium
+  description: |
+    Next.js + PostgreSQLでブログプラットフォームを構築する計画。
+    記事の作成、編集、公開、コメント機能を提供する。
+    VercelにデプロイしてMVPとして公開予定。
+
+selected_questions:
+  - id: WEB-001
+    category: api-design
+    priority: critical
+    score: 0.92
+    text: |
+      RESTful設計原則は遵守されていますか？
+      - リソースベースのURL設計（/users/{id}、/orders/{id}）になっていますか？
+      - HTTPメソッド（GET、POST、PUT、DELETE、PATCH）の使い分けは適切ですか？
+      - ステータスコード（200、201、400、401、404、500等）の使用は正しいですか？
+      - HATEOAS（Hypermedia as the Engine of Application State）は検討しましたか？
+
+  - id: GEN-011
+    category: security
+    priority: critical
+    score: 0.88
+    text: |
+      認証・認可アーキテクチャは定義されていますか？
+      - OAuth2.0、JWT、セッションベース、どの方式を選択しますか？
+      - リフレッシュトークンのローテーション戦略は？
+      - パスワードハッシュアルゴリズム（bcrypt、argon2）の選定は？
+
+  - id: WEB-012
+    category: performance
+    priority: high
+    score: 0.85
+    text: |
+      データベースインデックス設計は最適ですか？
+      - 頻繁に検索されるカラムにインデックスは張られていますか？
+      - 複合インデックス（composite index）の順序は適切ですか？
+      - インデックスのメンテナンスコスト（書き込み性能への影響）は考慮していますか？
+
+  - id: GEN-019
+    category: reliability
+    priority: high
+    score: 0.82
+    text: |
+      レート制限とスロットリングは実装されていますか？
+      - APIエンドポイントごとのレート制限は？
+      - DoS/DDoS対策は考慮されていますか？
+      - バーストトラフィックへの対応は？
+
+  - id: WEB-006
+    category: security
+    priority: critical
+    score: 0.78
+    text: |
+      OWASP Top 10対策は実装されていますか？
+      - インジェクション（SQL、NoSQL、コマンド）対策は？
+      - 認証の不備（ブルートフォース、セッション管理）対策は？
+      - 機密データの露出（暗号化、マスキング）対策は？
+
+questions_and_responses:
+  - question_id: WEB-001
+    question_text: "RESTful設計原則は遵守されていますか？"
+    response: |
+      はい、リソースベースのURL設計を採用しています。
+      - /posts/{id} - 記事取得・更新・削除
+      - /posts/{id}/comments - コメント一覧・投稿
+      HTTPメソッドも適切に使い分けています（GET、POST、PUT、DELETE）。
+      ステータスコードも標準に従っています。
+      HATEOASは今回は採用しない予定です（MVPのため）。
+    analysis:
+      is_sufficient: true
+      missing_concepts: []
+      risk_level: covered
+
+  - question_id: GEN-011
+    question_text: "認証・認可アーキテクチャは定義されていますか？"
+    response: |
+      まだ詳細は決めていませんが、NextAuthを使う予定です。
+      JWTを使うことになると思います。
+    analysis:
+      is_sufficient: false
+      missing_concepts:
+        - refresh_token
+        - password_hashing
+        - mfa
+      risk_level: critical
+    follow_up:
+      - question: |
+          NextAuthでJWTを使う場合、以下を検討していますか？
+          - リフレッシュトークンのローテーション（セキュリティ強化のため）
+          - パスワードハッシュアルゴリズム（bcrypt、argon2等）
+          - 多要素認証（MFA）の実装計画
+        response: |
+          リフレッシュトークンは検討していませんでした。調べます。
+          パスワードハッシュはNextAuthがデフォルトで提供するものを使う予定です。
+          MFAは将来の拡張として検討します。
+
+  - question_id: WEB-012
+    question_text: "データベースインデックス設計は最適ですか？"
+    response: |
+      記事テーブルにはcreated_atとuser_idにインデックスを張る予定です。
+      複合インデックスの順序は、よく検索されるuser_idを先にしています。
+      書き込み性能への影響は考慮していませんでした。
+    analysis:
+      is_sufficient: true
+      missing_concepts:
+        - write_performance
+      risk_level: low
+      note: インデックス設計は概ね適切だが、書き込み性能の監視が必要
+
+  - question_id: GEN-019
+    question_text: "レート制限とスロットリングは実装されていますか？"
+    response: |
+      検討していませんでした。必要ですか？MVPなので後回しにしようと思っていました。
+    analysis:
+      is_sufficient: false
+      missing_concepts:
+        - rate_limiting
+        - dos_protection
+      risk_level: medium
+    follow_up:
+      - question: |
+          MVPでもレート制限は重要です。理由:
+          - 悪意ある攻撃からの保護
+          - インフラコストの制御
+          - 公平なリソース利用の確保
+
+          VercelのEdge Middlewareを使えば簡単に実装できます。検討されますか？
+        response: |
+          なるほど、MVPでも必要なんですね。VercelのEdge Middlewareを調べて実装します。
+
+  - question_id: WEB-006
+    question_text: "OWASP Top 10対策は実装されていますか？"
+    response: |
+      SQLインジェクションは、ORMを使っているので大丈夫だと思います。
+      認証の不備対策は、NextAuthが提供するセッション管理を使います。
+      機密データの露出については、環境変数で管理する予定です。
+    analysis:
+      is_sufficient: true
+      missing_concepts:
+        - csrf
+        - xss
+      risk_level: medium
+      note: 基本的な対策はあるが、CSRFとXSSの明示的な対策が不足
+
+findings:
+  critical:
+    - question_id: GEN-011
+      title: 認証・認可アーキテクチャの未定義
+      description: |
+        リフレッシュトークンのローテーション戦略が未検討。
+        パスワードハッシュアルゴリズムの選定が曖昧。
+        多要素認証（MFA）の計画が未定。
+      recommendation: |
+        NextAuthのドキュメントを参照し、以下を決定してください：
+        - JWT + リフレッシュトークンの実装方法
+        - bcryptまたはargon2の明示的な選定
+        - MFAの実装タイムライン（MVP後でも可）
+      resources:
+        - https://next-auth.js.org/configuration/options
+        - https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
+
+  medium:
+    - question_id: GEN-019
+      title: レート制限の未実装
+      description: |
+        APIエンドポイントへのレート制限が未実装。
+        DoS/DDoS対策が計画に含まれていない。
+      recommendation: |
+        VercelのEdge Middlewareを使ったレート制限を実装してください。
+        初期設定例: 1分間に100リクエスト、IPアドレスベース。
+      resources:
+        - https://vercel.com/docs/concepts/functions/edge-middleware
+        - https://github.com/vercel/examples/tree/main/edge-functions/rate-limiting
+
+    - question_id: WEB-006
+      title: CSRF/XSS対策の明示不足
+      description: |
+        CSRF（Cross-Site Request Forgery）対策が明示されていない。
+        XSS（Cross-Site Scripting）対策が具体的に計画されていない。
+      recommendation: |
+        Next.jsのCSRFトークン機能を有効化してください。
+        コンテンツセキュリティポリシー（CSP）の設定を検討してください。
+      resources:
+        - https://nextjs.org/docs/advanced-features/security-headers
+
+  low:
+    - question_id: WEB-012
+      title: インデックスの書き込み性能監視
+      description: |
+        インデックスが書き込み性能に与える影響が未考慮。
+      recommendation: |
+        PostgreSQLのスロークエリログを有効化し、書き込み性能を監視してください。
+      resources:
+        - https://www.postgresql.org/docs/current/runtime-config-logging.html
+
+  covered:
+    - question_id: WEB-001
+      title: RESTful設計原則
+    - question_id: WEB-012
+      title: データベースインデックス設計（基本）
+
+action_items:
+  - priority: critical
+    title: 認証戦略の明確化
+    description: NextAuthのJWT + リフレッシュトークン実装を調査・設計
+    resources:
+      - https://next-auth.js.org/configuration/options
+    estimated_hours: 4
+
+  - priority: medium
+    title: レート制限の実装
+    description: Vercel Edge Middlewareを使ったレート制限を実装
+    resources:
+      - https://vercel.com/docs/concepts/functions/edge-middleware
+    estimated_hours: 2
+
+  - priority: medium
+    title: セキュリティヘッダーの設定
+    description: CSRF、CSP、その他のセキュリティヘッダーを設定
+    resources:
+      - https://nextjs.org/docs/advanced-features/security-headers
+    estimated_hours: 1
+
+  - priority: low
+    title: データベース性能監視の設定
+    description: PostgreSQLスロークエリログの有効化
+    resources:
+      - https://www.postgresql.org/docs/current/runtime-config-logging.html
+    estimated_hours: 0.5
+
+summary: |
+  # セッション結果サマリ
+
+  **発見された盲点**: 3件の重要な盲点を発見しました。
+
+  1. **Critical**: 認証・認可アーキテクチャの詳細が未定義
+     - NextAuthを使う方針は決まっているが、リフレッシュトークン、パスワードハッシュ、MFAの具体的な実装計画が不足
+
+  2. **Medium**: レート制限が未実装
+     - MVPでも重要なセキュリティ対策として、Vercel Edge Middlewareの活用を推奨
+
+  3. **Medium**: CSRF/XSS対策の明示不足
+     - Next.jsのセキュリティ機能を活用し、CSPヘッダーの設定を推奨
+
+  **次のステップ**:
+  1. 認証戦略の詳細設計（4時間見積もり）
+  2. レート制限の実装（2時間見積もり）
+  3. セキュリティヘッダーの設定（1時間見積もり）
+
+  設計フェーズでこれらの盲点を発見できたことで、実装フェーズでの手戻りを大幅に削減できます。

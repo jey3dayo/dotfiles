@@ -1,0 +1,332 @@
+# Web Development Questions - Web開発固有の20問
+# カテゴリ: API Design, Security, Performance, Data
+
+questions:
+  # API Design (5問)
+  - id: WEB-001
+    category: api-design
+    priority: critical
+    text: |
+      RESTful設計原則は遵守されていますか？
+      - リソースベースのURL設計（/users/{id}、/orders/{id}）になっていますか？
+      - HTTPメソッド（GET、POST、PUT、DELETE、PATCH）の使い分けは適切ですか？
+      - ステータスコード（200、201、400、401、404、500等）の使用は正しいですか？
+      - HATEOAS（Hypermedia as the Engine of Application State）は検討しましたか？
+    triggers:
+      - rest
+      - api
+      - http
+      - endpoint
+    relevance_boost:
+      domains: [web-development]
+      maturity: [mvp, production]
+
+  - id: WEB-002
+    category: api-design
+    priority: high
+    text: |
+      GraphQL vs REST、選択根拠は明確ですか？
+      - クライアントの多様性（Web、モバイル、サードパーティ）からRESTが適切ですか？
+      - オーバーフェッチング/アンダーフェッチング問題が深刻ですか？
+      - GraphQLのスキーマ設計とN+1問題対策（DataLoader）は理解していますか？
+    triggers:
+      - graphql
+      - rest
+      - api
+    relevance_boost:
+      domains: [web-development]
+      maturity: [mvp, production]
+
+  - id: WEB-003
+    category: api-design
+    priority: high
+    text: |
+      APIペイロード検証は実装されていますか？
+      - リクエストボディのスキーマ検証（JSON Schema、Joi、Zod等）は？
+      - 必須フィールド、型、範囲の検証は？
+      - 検証エラー時のレスポンスフォーマット（詳細なエラーメッセージ）は統一されていますか？
+    triggers:
+      - validation
+      - payload
+      - schema
+    relevance_boost:
+      domains: [web-development]
+      maturity: [mvp, production]
+
+  - id: WEB-004
+    category: api-design
+    priority: medium
+    text: |
+      APIドキュメントは自動生成されますか？
+      - OpenAPI（Swagger）、GraphQLスキーマからの自動生成は？
+      - ドキュメントとコードの同期を保つ仕組みは？
+      - 例示リクエスト/レスポンスは含まれていますか？
+    triggers:
+      - documentation
+      - swagger
+      - openapi
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-005
+    category: api-design
+    priority: medium
+    text: |
+      ページネーション戦略は定義されていますか？
+      - オフセットベース（offset/limit）、カーソルベース（cursor）、どちらを採用？
+      - 大量データのページネーション性能は考慮されていますか？
+      - 次ページへのリンク（Link header、next_cursor等）は提供されますか？
+    triggers:
+      - pagination
+      - paging
+      - list
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  # Security (5問)
+  - id: WEB-006
+    category: security
+    priority: critical
+    text: |
+      OWASP Top 10対策は実装されていますか？
+      - インジェクション（SQL、NoSQL、コマンド）対策は？
+      - 認証の不備（ブルートフォース、セッション管理）対策は？
+      - 機密データの露出（暗号化、マスキング）対策は？
+      - XXE（XML External Entity）、SSRF対策は？
+    triggers:
+      - owasp
+      - security
+      - vulnerability
+    relevance_boost:
+      domains: [web-development]
+      maturity: [mvp, production]
+
+  - id: WEB-007
+    category: security
+    priority: critical
+    text: |
+      CORS設定は適切ですか？
+      - 許可するオリジン（Access-Control-Allow-Origin）は明示的に指定していますか？
+      - ワイルドカード（\*）の使用は避けていますか（認証情報付きリクエストの場合）？
+      - プリフライトリクエスト（OPTIONS）への対応は？
+    triggers:
+      - cors
+      - cross-origin
+      - api
+    relevance_boost:
+      domains: [web-development]
+      maturity: [mvp, production]
+
+  - id: WEB-008
+    category: security
+    priority: high
+    text: |
+      セッション管理とトークン戦略は明確ですか？
+      - JWTの署名アルゴリズム（HS256 vs RS256）の選択根拠は？
+      - トークンの有効期限（access token: 15分、refresh token: 7日等）は適切ですか？
+      - トークンの保管場所（localStorage vs httpOnly cookie）のセキュリティリスクは理解していますか？
+    triggers:
+      - jwt
+      - session
+      - token
+    relevance_boost:
+      domains: [web-development]
+      maturity: [mvp, production]
+
+  - id: WEB-009
+    category: security
+    priority: high
+    text: |
+      CSRF（Cross-Site Request Forgery）対策は実装されていますか？
+      - CSRFトークンの生成・検証は？
+      - SameSite Cookie属性の設定は？
+      - ステート変更API（POST、PUT、DELETE）への対策は優先されていますか？
+    triggers:
+      - csrf
+      - security
+      - token
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-010
+    category: security
+    priority: medium
+    text: |
+      コンテンツセキュリティポリシー（CSP）は設定されていますか？
+      - script-src、style-src、img-src等のディレクティブは定義されていますか？
+      - XSS攻撃の軽減効果は理解していますか？
+      - Report-Only モードでテストしましたか？
+    triggers:
+      - csp
+      - content-security-policy
+      - xss
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  # Performance (5問)
+  - id: WEB-011
+    category: performance
+    priority: high
+    text: |
+      キャッシュ戦略は明確ですか？
+      - CDN（CloudFront、Fastly等）の活用は？
+      - アプリケーションレベルキャッシュ（Redis、Memcached）の使い分けは？
+      - HTTPキャッシュヘッダー（Cache-Control、ETag）の設定は？
+    triggers:
+      - cache
+      - cdn
+      - performance
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-012
+    category: performance
+    priority: high
+    text: |
+      データベースインデックス設計は最適ですか？
+      - 頻繁に検索されるカラムにインデックスは張られていますか？
+      - 複合インデックス（composite index）の順序は適切ですか？
+      - インデックスのメンテナンスコスト（書き込み性能への影響）は考慮していますか？
+    triggers:
+      - database
+      - index
+      - performance
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-013
+    category: performance
+    priority: critical
+    text: |
+      N+1クエリ問題の対策はされていますか？
+      - ORMの遅延ロード（lazy loading）が原因のN+1は特定されていますか？
+      - Eager loading（JOIN、WITH句）の使用は適切ですか？
+      - データベースクエリのログ監視は設定されていますか？
+    triggers:
+      - n+1
+      - query
+      - performance
+      - orm
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-014
+    category: performance
+    priority: high
+    text: |
+      レスポンスタイム目標（p95/p99）は設定されていますか？
+      - API: p95 < 200ms、p99 < 500ms 等の目標は明確ですか？
+      - ページロード: FCP（First Contentful Paint）< 1.8s 等の目標は？
+      - 目標未達時のアラート設定は？
+    triggers:
+      - latency
+      - response-time
+      - performance
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-015
+    category: performance
+    priority: medium
+    text: |
+      フロントエンドの最適化戦略はありますか？
+      - コード分割（code splitting）、遅延ロードの適用は？
+      - 画像最適化（WebP、圧縮、レスポンシブ画像）は？
+      - バンドルサイズの監視（webpack-bundle-analyzer等）は？
+    triggers:
+      - frontend
+      - optimization
+      - bundle
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  # Data (5問)
+  - id: WEB-016
+    category: data
+    priority: high
+    text: |
+      データベーススキーマ正規化は適切ですか？
+      - 第3正規形（3NF）までは達成されていますか？
+      - 非正規化（denormalization）の適用箇所と理由は明確ですか？
+      - 正規化によるJOINのパフォーマンス影響は考慮されていますか？
+    triggers:
+      - database
+      - schema
+      - normalization
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-017
+    category: data
+    priority: critical
+    text: |
+      トランザクション整合性は確保されていますか？
+      - ACID特性が必要な操作は特定されていますか？
+      - 分散トランザクション（2PC、Saga）の必要性は検討しましたか？
+      - トランザクション分離レベル（READ COMMITTED、SERIALIZABLE等）の選択根拠は？
+    triggers:
+      - transaction
+      - consistency
+      - acid
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-018
+    category: data
+    priority: high
+    text: |
+      データマイグレーション戦略は明確ですか？
+      - スキーマ変更時の後方互換性は保たれますか？
+      - Blue-Green deployment でのマイグレーション順序は？
+      - ロールバック手順は定義されていますか？
+    triggers:
+      - migration
+      - schema
+      - deployment
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-019
+    category: data
+    priority: medium
+    text: |
+      コネクションプール設定は最適ですか？
+      - プールサイズ（min、max）の設定根拠は？
+      - アイドルコネクションのタイムアウト設定は？
+      - コネクション枯渇時の挙動（エラー、待機）は定義されていますか？
+    triggers:
+      - connection-pool
+      - database
+      - performance
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: WEB-020
+    category: data
+    priority: medium
+    text: |
+      データアーカイブ・削除戦略はありますか？
+      - 古いデータの削除基準（6ヶ月以上前等）は？
+      - 論理削除（soft delete）vs 物理削除の使い分けは？
+      - GDPR等の法規制に基づくデータ削除要求への対応は？
+    triggers:
+      - archive
+      - deletion
+      - gdpr
+      - data-retention
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]

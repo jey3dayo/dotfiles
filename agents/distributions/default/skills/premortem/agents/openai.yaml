@@ -1,0 +1,3 @@
+display_name: Premortem Analysis
+short_description: Predict project failure causes before they happen with expert-guided questions
+default_prompt: Analyze my project plan and identify potential blind spots

@@ -1,0 +1,581 @@
+# Generic Questions - 全ドメイン共通の35問
+# カテゴリ: Architecture, Security, Reliability, Cost, Monitoring, Testing
+
+questions:
+  # Architecture (8問)
+  - id: GEN-001
+    category: architecture
+    priority: critical
+    text: |
+      このシステムのスケーラビリティ上限は明確ですか？
+      - 同時接続数の想定（ピーク時）は？
+      - データ量の成長予測（1年後、3年後）は？
+      - スケールアウト戦略（水平/垂直）は定義されていますか？
+      - ボトルネックとなるコンポーネントを特定していますか？
+    triggers:
+      - scale
+      - growth
+      - users
+      - capacity
+      - concurrent
+    relevance_boost:
+      domains: [web-development, mobile-apps, data-systems]
+      maturity: [mvp, production]
+
+  - id: GEN-002
+    category: architecture
+    priority: critical
+    text: |
+      単一障害点（SPOF）は特定・排除されていますか？
+      - どのコンポーネントが落ちるとシステム全体が停止しますか？
+      - データベース、キャッシュ、メッセージキューの冗長化は？
+      - ロードバランサー自体の冗長化は考慮されていますか？
+    triggers:
+      - availability
+      - redundancy
+      - failover
+      - high-availability
+    relevance_boost:
+      domains: [web-development, infrastructure, data-systems]
+      maturity: [production]
+
+  - id: GEN-003
+    category: architecture
+    priority: high
+    text: |
+      レイヤー分離は適切ですか？
+      - プレゼンテーション、ビジネスロジック、データアクセス層は分離されていますか？
+      - 各レイヤーの責務は明確ですか？
+      - レイヤー間の依存関係は適切ですか（循環依存はないか）？
+    triggers:
+      - architecture
+      - design
+      - layer
+      - separation
+    relevance_boost:
+      domains: [web-development, mobile-apps]
+      maturity: [mvp, production]
+
+  - id: GEN-004
+    category: architecture
+    priority: high
+    text: |
+      マイクロサービス vs モノリス、選択根拠は明確ですか？
+      - チームサイズ、リリース頻度、スケール要件から判断していますか？
+      - サービス境界の定義基準は？（ビジネスドメイン、技術的境界）
+      - サービス間通信の方法（同期/非同期、REST/gRPC/メッセージング）は決定していますか？
+    triggers:
+      - microservices
+      - monolith
+      - architecture
+      - service
+    relevance_boost:
+      domains: [web-development, data-systems]
+      maturity: [mvp, production]
+
+  - id: GEN-005
+    category: architecture
+    priority: medium
+    text: |
+      APIバージョニング戦略はありますか？
+      - URLベース（/v1/、/v2/）、ヘッダーベース、どちらを採用？
+      - 旧バージョンのサポート期間は？
+      - 破壊的変更の導入プロセスは定義されていますか？
+    triggers:
+      - api
+      - versioning
+      - breaking-change
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: GEN-006
+    category: architecture
+    priority: high
+    text: |
+      状態管理の方針は明確ですか？
+      - セッション情報はどこに保持しますか？（メモリ、Redis、DB）
+      - ステートレス設計を意識していますか？
+      - 分散環境での状態同期はどうしますか？
+    triggers:
+      - state
+      - session
+      - stateless
+      - cache
+    relevance_boost:
+      domains: [web-development, mobile-apps]
+      maturity: [mvp, production]
+
+  - id: GEN-007
+    category: architecture
+    priority: medium
+    text: |
+      依存関係の方向性は適切ですか？
+      - 上位レイヤーが下位レイヤーに依存していますか？（依存性逆転の原則）
+      - インターフェースを使った抽象化はできていますか？
+      - サードパーティライブラリへの依存を局所化していますか？
+    triggers:
+      - dependency
+      - coupling
+      - interface
+    relevance_boost:
+      domains: [web-development, mobile-apps]
+      maturity: [production]
+
+  - id: GEN-008
+    category: architecture
+    priority: medium
+    text: |
+      イベント駆動アーキテクチャの必要性を検討しましたか？
+      - 非同期処理が必要な箇所は特定されていますか？
+      - イベントソーシングやCQRSの適用は検討しましたか？
+      - メッセージキューの選定基準は？（RabbitMQ、Kafka、SQS等）
+    triggers:
+      - event
+      - async
+      - queue
+      - messaging
+    relevance_boost:
+      domains: [web-development, data-systems]
+      maturity: [production]
+
+  # Security (7問)
+  - id: GEN-009
+    category: security
+    priority: critical
+    text: |
+      最小権限の原則は適用されていますか？
+      - ユーザーロール定義は適切ですか？
+      - APIエンドポイントごとの権限チェックは？
+      - データベースアクセス権限は最小化されていますか？
+    triggers:
+      - security
+      - permission
+      - role
+      - access-control
+    relevance_boost:
+      domains: [web-development, mobile-apps, data-systems]
+      maturity: [mvp, production]
+
+  - id: GEN-010
+    category: security
+    priority: critical
+    text: |
+      データ暗号化戦略は明確ですか？
+      - 通信の暗号化（TLS/SSL）は必須ですか？
+      - 保存データの暗号化は必要ですか？（PII、クレジットカード情報等）
+      - 暗号化キーの管理方法は？（HSM、KMS、手動ローテーション）
+    triggers:
+      - encryption
+      - tls
+      - ssl
+      - security
+    relevance_boost:
+      domains: [web-development, mobile-apps, data-systems]
+      maturity: [production]
+
+  - id: GEN-011
+    category: security
+    priority: critical
+    text: |
+      認証・認可アーキテクチャは定義されていますか？
+      - OAuth2.0、JWT、セッションベース、どの方式を選択しますか？
+      - リフレッシュトークンのローテーション戦略は？
+      - パスワードハッシュアルゴリズム（bcrypt、argon2）の選定は？
+    triggers:
+      - authentication
+      - authorization
+      - oauth
+      - jwt
+    relevance_boost:
+      domains: [web-development, mobile-apps]
+      maturity: [mvp, production]
+
+  - id: GEN-012
+    category: security
+    priority: high
+    text: |
+      入力検証とサニタイゼーションは徹底されていますか？
+      - SQLインジェクション対策（プリペアドステートメント）は？
+      - XSS対策（エスケープ処理、CSP）は？
+      - ファイルアップロードの検証（拡張子、MIME、サイズ）は？
+    triggers:
+      - validation
+      - sanitization
+      - injection
+      - xss
+    relevance_boost:
+      domains: [web-development]
+      maturity: [mvp, production]
+
+  - id: GEN-013
+    category: security
+    priority: high
+    text: |
+      セキュリティ監査ログは設計されていますか？
+      - 認証成功/失敗のログは記録されますか？
+      - 権限変更、データアクセスのログは？
+      - ログの改ざん防止（append-only、署名）は考慮されていますか？
+    triggers:
+      - audit
+      - logging
+      - security
+      - compliance
+    relevance_boost:
+      domains: [web-development, data-systems]
+      maturity: [production]
+
+  - id: GEN-014
+    category: security
+    priority: medium
+    text: |
+      秘密情報の管理方法は確立されていますか？
+      - APIキー、パスワード、証明書の保管場所は？（Vault、Secrets Manager）
+      - コードリポジトリに秘密情報を含めない仕組みは？
+      - 秘密情報のローテーション手順は？
+    triggers:
+      - secrets
+      - credentials
+      - api-key
+      - vault
+    relevance_boost:
+      domains: [web-development, infrastructure]
+      maturity: [production]
+
+  - id: GEN-015
+    category: security
+    priority: medium
+    text: |
+      セキュリティテスト計画はありますか？
+      - ペネトレーションテストの実施予定は？
+      - 脆弱性スキャンツール（OWASP ZAP、Burp Suite）の導入は？
+      - セキュリティコードレビューのチェックリストは？
+    triggers:
+      - security-testing
+      - penetration
+      - vulnerability
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  # Reliability (6問)
+  - id: GEN-016
+    category: reliability
+    priority: critical
+    text: |
+      RTO/RPOは定義されていますか？
+      - 目標復旧時間（RTO）は何時間/分ですか？
+      - 目標復旧時点（RPO）はどの程度のデータ損失まで許容しますか？
+      - これらの目標を達成するアーキテクチャになっていますか？
+    triggers:
+      - rto
+      - rpo
+      - recovery
+      - disaster
+    relevance_boost:
+      domains: [web-development, infrastructure, data-systems]
+      maturity: [production]
+
+  - id: GEN-017
+    category: reliability
+    priority: critical
+    text: |
+      バックアップ・リカバリ戦略は明確ですか？
+      - バックアップ頻度（毎日、毎時、リアルタイム）は？
+      - バックアップの保管場所（別リージョン、別クラウド）は？
+      - リカバリ手順は文書化され、テストされていますか？
+    triggers:
+      - backup
+      - recovery
+      - restore
+    relevance_boost:
+      domains: [data-systems, infrastructure]
+      maturity: [production]
+
+  - id: GEN-018
+    category: reliability
+    priority: high
+    text: |
+      障害発生時のフォールバック戦略はありますか？
+      - 部分障害時にサービスを縮退運転できますか？
+      - サーキットブレーカーパターンは適用されていますか？
+      - リトライ戦略（指数バックオフ、最大試行回数）は定義されていますか？
+    triggers:
+      - failover
+      - fallback
+      - circuit-breaker
+      - retry
+    relevance_boost:
+      domains: [web-development, data-systems]
+      maturity: [production]
+
+  - id: GEN-019
+    category: reliability
+    priority: high
+    text: |
+      レート制限とスロットリングは実装されていますか？
+      - APIエンドポイントごとのレート制限は？
+      - DoS/DDoS対策は考慮されていますか？
+      - バーストトラフィックへの対応は？
+    triggers:
+      - rate-limit
+      - throttling
+      - dos
+      - traffic
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: GEN-020
+    category: reliability
+    priority: medium
+    text: |
+      カオスエンジニアリング計画はありますか？
+      - 意図的に障害を起こして耐性をテストする予定は？
+      - どのコンポーネントから開始しますか？
+      - 本番環境での実施計画は？
+    triggers:
+      - chaos
+      - resilience
+      - testing
+    relevance_boost:
+      domains: [infrastructure]
+      maturity: [production]
+
+  - id: GEN-021
+    category: reliability
+    priority: medium
+    text: |
+      タイムアウト設定は適切ですか？
+      - API呼び出し、データベースクエリのタイムアウトは設定されていますか？
+      - タイムアウト値の根拠は？（p99レイテンシ + バッファ等）
+      - タイムアウト発生時の処理は定義されていますか？
+    triggers:
+      - timeout
+      - latency
+      - performance
+    relevance_boost:
+      domains: [web-development, data-systems]
+      maturity: [production]
+
+  # Cost (4問)
+  - id: GEN-022
+    category: cost
+    priority: high
+    text: |
+      月額運用コストの概算はしていますか？
+      - コンピューティング、ストレージ、ネットワークの各コストは？
+      - 予算オーバー時のアラート設定は？
+      - コスト配分（開発環境、本番環境）は定義されていますか？
+    triggers:
+      - cost
+      - budget
+      - pricing
+    relevance_boost:
+      domains: [infrastructure, data-systems]
+      maturity: [mvp, production]
+
+  - id: GEN-023
+    category: cost
+    priority: medium
+    text: |
+      スケール時のコスト増加率は試算されていますか？
+      - ユーザー数2倍、10倍時のコストシミュレーションは？
+      - 線形スケールしないコスト（データ転送量等）は特定されていますか？
+    triggers:
+      - scaling
+      - cost
+      - growth
+    relevance_boost:
+      domains: [infrastructure, data-systems]
+      maturity: [production]
+
+  - id: GEN-024
+    category: cost
+    priority: medium
+    text: |
+      コスト最適化の機会を特定していますか？
+      - リザーブドインスタンス、Savings Plansの活用は？
+      - オートスケーリングによる無駄削減は？
+      - ストレージクラスの最適化（Hot/Cool/Archive）は？
+    triggers:
+      - optimization
+      - cost
+      - savings
+    relevance_boost:
+      domains: [infrastructure]
+      maturity: [production]
+
+  - id: GEN-025
+    category: cost
+    priority: low
+    text: |
+      技術選択とコストのトレードオフは明確ですか？
+      - マネージドサービス vs 自己管理のコスト比較は？
+      - オープンソース vs 商用ツールの選択根拠は？
+    triggers:
+      - technology
+      - trade-off
+      - cost
+    relevance_boost:
+      domains: [infrastructure]
+      maturity: [mvp, production]
+
+  # Monitoring (5問)
+  - id: GEN-026
+    category: monitoring
+    priority: critical
+    text: |
+      アラート対象メトリクスは定義されていますか？
+      - ビジネスメトリクス（売上、CVR等）は？
+      - システムメトリクス（CPU、メモリ、ディスク）は？
+      - アプリケーションメトリクス（エラー率、レスポンスタイム）は？
+    triggers:
+      - monitoring
+      - metrics
+      - alert
+    relevance_boost:
+      domains: [web-development, infrastructure]
+      maturity: [production]
+
+  - id: GEN-027
+    category: monitoring
+    priority: high
+    text: |
+      ログ収集・保管戦略は明確ですか？
+      - 構造化ログ（JSON等）の採用は？
+      - ログレベル（DEBUG、INFO、WARN、ERROR）の使い分けは？
+      - ログの保管期間とアーカイブ戦略は？
+    triggers:
+      - logging
+      - log-management
+    relevance_boost:
+      domains: [web-development, infrastructure]
+      maturity: [production]
+
+  - id: GEN-028
+    category: monitoring
+    priority: high
+    text: |
+      SLO/SLIは定義されていますか？
+      - サービスレベル目標（SLO）の具体的な数値は？（例: 99.9% uptime）
+      - サービスレベル指標（SLI）は何を測定しますか？（可用性、レイテンシ等）
+      - エラーバジェットの考え方は導入していますか？
+    triggers:
+      - slo
+      - sli
+      - sla
+      - availability
+    relevance_boost:
+      domains: [web-development, infrastructure]
+      maturity: [production]
+
+  - id: GEN-029
+    category: monitoring
+    priority: medium
+    text: |
+      インシデント対応プロセスは定義されていますか？
+      - オンコール体制は整備されていますか？
+      - インシデント重要度の分類基準は？
+      - ポストモーテム（事後分析）の実施手順は？
+    triggers:
+      - incident
+      - oncall
+      - postmortem
+    relevance_boost:
+      domains: [infrastructure]
+      maturity: [production]
+
+  - id: GEN-030
+    category: monitoring
+    priority: medium
+    text: |
+      分散トレーシングは導入されていますか？
+      - サービス間のリクエストフローを追跡できますか？
+      - OpenTelemetry、Jaeger、Zipkin等のツールは検討されていますか？
+      - パフォーマンスボトルネックの特定方法は？
+    triggers:
+      - tracing
+      - observability
+      - performance
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  # Testing (5問)
+  - id: GEN-031
+    category: testing
+    priority: high
+    text: |
+      テストカバレッジ目標は設定されていますか？
+      - 単体テスト、統合テスト、E2Eテストの目標カバレッジは？
+      - クリティカルパスは100%カバーしていますか？
+    triggers:
+      - testing
+      - coverage
+      - quality
+    relevance_boost:
+      domains: [web-development, mobile-apps]
+      maturity: [mvp, production]
+
+  - id: GEN-032
+    category: testing
+    priority: high
+    text: |
+      クリティカルパスは定義されていますか？
+      - ユーザー登録、ログイン、決済等の主要フローは明確ですか？
+      - これらのフローのテスト優先度は最高ですか？
+    triggers:
+      - critical-path
+      - testing
+      - flow
+    relevance_boost:
+      domains: [web-development, mobile-apps]
+      maturity: [mvp, production]
+
+  - id: GEN-033
+    category: testing
+    priority: medium
+    text: |
+      テスト環境の本番再現性は確保されていますか？
+      - ステージング環境は本番と同等の構成ですか？
+      - テストデータは本番相当の規模ですか？
+      - 本番のトラフィックパターンを再現できますか？
+    triggers:
+      - test-environment
+      - staging
+      - production
+    relevance_boost:
+      domains: [web-development, infrastructure]
+      maturity: [production]
+
+  - id: GEN-034
+    category: testing
+    priority: medium
+    text: |
+      パフォーマンステスト計画はありますか？
+      - 負荷テスト（想定トラフィック）の実施予定は？
+      - ストレステスト（限界値の特定）の計画は？
+      - テスト結果の評価基準（レスポンスタイム、スループット）は？
+    triggers:
+      - performance
+      - load-testing
+      - stress-testing
+    relevance_boost:
+      domains: [web-development]
+      maturity: [production]
+
+  - id: GEN-035
+    category: testing
+    priority: low
+    text: |
+      テスト自動化戦略は明確ですか？
+      - CI/CDパイプラインでのテスト実行は？
+      - テスト失敗時のデプロイブロック設定は？
+      - テストメンテナンスコストは考慮されていますか？
+    triggers:
+      - test-automation
+      - ci-cd
+    relevance_boost:
+      domains: [web-development, mobile-apps]
+      maturity: [production]
