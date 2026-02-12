@@ -29,7 +29,7 @@ _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
 MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit #agents/skills #.worktrees #result #result-*"
-TASK_EXCLUDES = "--exclude agents/skills --exclude .worktrees --exclude result --exclude result-*"
+TASK_EXCLUDES = "--exclude agents/skills --exclude .worktrees --exclude result --exclude result-* --exclude .luarocks"
 
 # ========================================
 # オプション環境変数（ファイル限定処理）
