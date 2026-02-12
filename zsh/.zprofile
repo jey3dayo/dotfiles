@@ -29,7 +29,7 @@ path=(
   $HOME/{bin,sbin}(N-)
   $HOME/.local/{bin,sbin}(N-)
   $XDG_CONFIG_HOME/scripts(N-)
-  $HOME/.claude/bin(N-)
+  $HOME/.claude/{bin,local}(N-)
 
   # Language-specific tools
   $HOME/.deno/bin(N-)

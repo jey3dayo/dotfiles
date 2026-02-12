@@ -1,7 +1,6 @@
 # bash entrypoint (tracked)
 # - Keep environment setup stable (XDG + mise)
 # - Provide a sane interactive default (prompt + colors)
-# - Allow local overrides via ~/.bashrc_local
 
 # XDG base directories
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
@@ -52,6 +51,10 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) PATH="$PNPM_HOME:$PATH" ;;
  esac
+case ":$PATH:" in
+  *":$HOME/.claude/local:"*) ;;
+  *) [ -d "$HOME/.claude/local" ] && PATH="$HOME/.claude/local:$PATH" ;;
+ esac
 export PATH
 
 # Activate mise if available
@@ -97,8 +100,7 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# Local overrides (not tracked)
-if [ -f "$HOME/.bashrc_local" ]; then
-  # shellcheck disable=SC1090,SC1091
-  . "$HOME/.bashrc_local"
+# Starship prompt (if available)
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init bash)"
 fi
