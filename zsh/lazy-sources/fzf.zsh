@@ -1,6 +1,6 @@
 # FZF integration - aliases, functions, and widgets
 
-if ! command -v fzf >/dev/null 2>&1; then
+if ! command -v fzf > /dev/null 2>&1; then
   return
 fi
 
@@ -13,7 +13,7 @@ _fzf_cmd() {
 }
 
 # GHQ integration
-if command -v ghq >/dev/null 2>&1; then
+if command -v ghq > /dev/null 2>&1; then
   alias ghq-repos="ghq list -p | fzf --prompt 'GHQ> ' --height ${ZSH_FZF_PICKER_HEIGHT} --reverse"
   alias ghq-repo='cd $(ghq-repos)'
 
@@ -38,7 +38,7 @@ _ssh_hosts() {
     "${XDG_CONFIG_HOME:-$HOME/.config}"/ssh/ssh_config \
     "${XDG_CONFIG_HOME:-$HOME/.config}"/ssh/ssh_config.d/* \
     "${XDG_CONFIG_HOME:-$HOME/.config}"/ssh/config.d/*; do
-    [[ -f "$config" ]] && grep -iE "^host[[:space:]]+[^*]" "$config" 2>/dev/null
+    [[ -f "$config" ]] && grep -iE "^host[[:space:]]+[^*]" "$config" 2> /dev/null
   done | grep -F -v "*" | awk '{print $2}' | sort -u
 }
 

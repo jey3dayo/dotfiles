@@ -1,4 +1,4 @@
-if command -v sw_vers >/dev/null 2>&1 && command -v arch >/dev/null 2>&1; then
+if command -v sw_vers > /dev/null 2>&1 && command -v arch > /dev/null 2>&1; then
   alias x64='exec arch -x86_64 /bin/zsh'
   alias a64='exec arch -arm64e /bin/zsh'
   switch-arch() {

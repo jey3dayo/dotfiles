@@ -4,9 +4,9 @@
 # 補完スタイル設定
 _set_completion_styles() {
   # LS_COLORS環境変数の初期化
-  if command -v gdircolors >/dev/null 2>&1; then
+  if command -v gdircolors > /dev/null 2>&1; then
     eval "$(gdircolors -b)"
-  elif command -v dircolors >/dev/null 2>&1; then
+  elif command -v dircolors > /dev/null 2>&1; then
     eval "$(dircolors -b)"
   else
     # fallback: 基本的な色設定
@@ -20,9 +20,8 @@ _set_completion_styles() {
 }
 
 # compinit初期化済みの場合はスタイルを適用
-if whence -w compdef >/dev/null 2>&1; then
+if whence -w compdef > /dev/null 2>&1; then
   _set_completion_styles
 fi
 
 # vim: set syntax=zsh:
-

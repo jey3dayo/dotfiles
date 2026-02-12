@@ -9,10 +9,10 @@ sheldon_cache="$cache_dir/sheldon/sheldon.zsh"
 sheldon_toml="$SHELDON_CONFIG_DIR/plugins.toml"
 
 # キャッシュがない、またはキャッシュが古い場合にキャッシュを作成
-if command -v sheldon >/dev/null 2>&1; then
+if command -v sheldon > /dev/null 2>&1; then
   if [[ ! -r "$sheldon_cache" || "$sheldon_toml" -nt "$sheldon_cache" ]]; then
     mkdir -p "$cache_dir/sheldon"
-    sheldon source >$sheldon_cache
+    sheldon source > $sheldon_cache
   fi
   source "$sheldon_cache"
 fi
