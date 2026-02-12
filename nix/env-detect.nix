@@ -23,9 +23,12 @@
         fileExists && builtins.match ".*${pattern}.*" content != null;
 
       # Raspberry Pi detection helper.
-      # NOTE: Many device-tree model files contain NUL bytes, which `builtins.readFile`
-      # cannot represent as a Nix string. `/proc/cpuinfo` is safe text.
+      # NOTE:
+      # - `/sys/firmware/devicetree/base/model` (and `/proc/device-tree/model`) often contain NUL bytes,
+      #   which `builtins.readFile` cannot represent as a Nix string.
+      # - `/proc/cpuinfo` is safe text on Linux, but doesn't exist on e.g. Darwin.
       isRaspberryPiModel =
+        pkgs.stdenv.isLinux && builtins.pathExists "/proc/cpuinfo" &&
         builtins.match ".*Raspberry Pi.*" (builtins.readFile "/proc/cpuinfo") != null;
 
       # CI detection: $CI or $GITHUB_ACTIONS environment variables
