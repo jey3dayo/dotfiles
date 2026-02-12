@@ -3,8 +3,12 @@
 # ========================================
 
 ["ci"]
-description = "すべての CI チェックをローカル実行（GitHub Actions と同じ、書き込みなし）"
+description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
 depends = ["check", "test", "skills:validate", "skills:validate:distribution"]
+
+["ci:full"]
+description = "CI チェック + デプロイ（GitHub Actions と同じワークフロー）"
+depends = ["ci", "hm:deploy"]
 
 ["ci:install"]
 description = "CI に必要な追加ツールをインストール"

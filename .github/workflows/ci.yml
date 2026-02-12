@@ -116,7 +116,7 @@ jobs:
         uses: cachix/install-nix-action@v30
 
       - name: Deploy dotfiles with Home Manager
-        run: mise run ci:deploy
+        run: mise run hm:deploy
 
       - name: Verify dotfiles deployment
         run: |

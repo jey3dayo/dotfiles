@@ -72,6 +72,44 @@ mise/
 - ローカル専用: `mise/tasks/local.toml` に集約（Homebrew, Home Manager, skills, update など）
 - 追加タスクはまず汎用に入れるか検討し、環境依存・運用系のみ `local.toml` に置く
 
+### CI/CD タスク構造
+
+**責任の分離**:
+
+- **CI検証タスク** (`ci`): 読み取り専用の検証（lint, test, format check）
+- **CI完全実行** (`ci:full`): 検証 + デプロイ（GitHub Actionsと同じワークフロー）
+- **デプロイタスク** (`hm:deploy`): 状態変更を伴うシステム設定の適用
+
+**タスクの使い分け**:
+
+- `mise run ci` - ローカルでの検証のみ（書き込みなし、高速）
+- `mise run ci:full` - GitHub Actionsと同じワークフロー全体をローカルで実行（検証 + デプロイ）
+- `mise run hm:deploy` - Home Managerデプロイのみ（バックアップ付き）
+- `mise run hm:switch` - ローカル開発用のHome Manager適用（バックアップなし）
+- `mise run hm:check` - 設定検証のみ（ビルドのみ、適用なし）
+
+**GitHub Actions統合**:
+
+```yaml
+- name: Deploy dotfiles with Home Manager
+  run: mise run hm:deploy # CI環境向けバックアップ付きデプロイ
+
+- name: Run all CI checks
+  run: mise run ci # 検証タスクのみ（書き込みなし）
+```
+
+**依存関係グラフ**:
+
+```
+ci:full
+├── hm:deploy (Home Managerデプロイ)
+└── ci (検証のみ)
+    ├── check
+    ├── test
+    ├── skills:validate
+    └── skills:validate:distribution
+```
+
 ## Variable-driven Control
 
 `mise/config.toml` の `[env]` を使って、タスクの対象や挙動を制御する。
