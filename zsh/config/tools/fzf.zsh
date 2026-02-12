@@ -1,6 +1,6 @@
 # FZF configuration only - loaded early for immediate availability
 
-if command -v fzf >/dev/null 2>&1; then
+if command -v fzf > /dev/null 2>&1; then
   # Workaround for zsh 5.9+: upstream fzf scripts restore shell options via
   # `eval $__fzf_*_options`, and the serialized options include `zle on/off`.
   # Setting `zle` via `setopt` is invalid, so patch those eval lines in cache.
@@ -37,7 +37,7 @@ if command -v fzf >/dev/null 2>&1; then
   local fzf_shell_dir="${XDG_DATA_HOME:-$HOME/.local/share}/sheldon/repos/github.com/junegunn/fzf/shell"
   _source_patched_fzf_script "$fzf_shell_dir/completion.zsh" "completion.zsh"
   _source_patched_fzf_script "$fzf_shell_dir/key-bindings.zsh" "key-bindings.zsh"
-  unfunction _source_patched_fzf_script 2>/dev/null
+  unfunction _source_patched_fzf_script 2> /dev/null
 
   export FZF_DEFAULT_OPTS="--height ${ZSH_FZF_DEFAULT_HEIGHT} --reverse"
 

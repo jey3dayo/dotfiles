@@ -23,10 +23,10 @@ load_tool_settings() {
     if (( has_zsh_defer )); then
       # Optimized staggered loading for minimal startup impact
       case "$tool_name" in
-      brew) zsh-defer -t $DEFER_BREW_SECONDS source "$tool_file" ;;   # Load after mise for proper priority
-      debug) zsh-defer -t $DEFER_DEBUG_SECONDS source "$tool_file" ;; # Debug tools rarely needed at startup
-      gh) zsh-defer -t $DEFER_GH_SECONDS source "$tool_file" ;;       # GitHub tools - moderate priority
-      *) zsh-defer -t $DEFER_DEFAULT_SECONDS source "$tool_file" ;;   # Everything else - low priority
+        brew) zsh-defer -t $DEFER_BREW_SECONDS source "$tool_file" ;;   # Load after mise for proper priority
+        debug) zsh-defer -t $DEFER_DEBUG_SECONDS source "$tool_file" ;; # Debug tools rarely needed at startup
+        gh) zsh-defer -t $DEFER_GH_SECONDS source "$tool_file" ;;       # GitHub tools - moderate priority
+        *) zsh-defer -t $DEFER_DEFAULT_SECONDS source "$tool_file" ;;   # Everything else - low priority
       esac
     else
       source "$tool_file"

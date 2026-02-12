@@ -1,4 +1,4 @@
-command -v brew &>/dev/null || return
+command -v brew &> /dev/null || return
 
 # Custom brew environment setup that preserves mise tool priority
 # Note: brew unlink node was executed to avoid conflicts with mise-managed node
@@ -21,7 +21,7 @@ fi
 [[ -x $BREW_PATH/brew ]] && alias brew="arch -arch $ARCH $BREW_PATH/brew"
 
 # Ultra-deferred brew initialization for maximum startup speed
-if (( $+functions[zsh-defer] )); then
+if (($ + functions[zsh - defer])); then
   # Set minimal env vars immediately, defer full shellenv
   export HOMEBREW_PREFIX="$([[ "$(arch)" == arm64 ]] && echo /opt/homebrew || echo /usr/local)"
   export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"

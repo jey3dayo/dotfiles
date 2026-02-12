@@ -32,7 +32,7 @@ _init_completion() {
   if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
     fpath=(/opt/homebrew/share/zsh/site-functions "${fpath[@]}")
   fi
-  
+
   # プロジェクト固有の補完ディレクトリ
   local completion_dir="${${(%):-%x}:A:h:h}/completions"
   if [[ -d "$completion_dir" ]]; then

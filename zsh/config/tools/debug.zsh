@@ -7,7 +7,7 @@ if [[ -n "$ZSH_DEBUG" ]]; then
   zsh-benchmark() {
     echo "🔍 Benchmarking zsh startup time..."
     echo ""
-    for (( i = 1; i <= ZSH_DEBUG_BENCHMARK_RUNS; i++ )); do
+    for ((i = 1; i <= ZSH_DEBUG_BENCHMARK_RUNS; i++)); do
       echo "Run $i:"
       time (zsh -i -c exit)
       echo ""
@@ -40,7 +40,7 @@ if [[ -n "$ZSH_DEBUG" ]]; then
     echo ""
     echo "Function Count: $(typeset -f | grep -c '^[a-zA-Z_-].*() {')"
     echo "Alias Count: $(alias | wc -l)"
-    if command -v abbr >/dev/null 2>&1; then
+    if command -v abbr > /dev/null 2>&1; then
       echo "Abbreviation Count: $(abbr -S | wc -l)"
     fi
   }

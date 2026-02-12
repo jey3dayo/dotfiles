@@ -8,13 +8,13 @@
 # Activate mise for PATH management (idempotent)
 _mise_activate() {
   # Skip if already activated
-  typeset -f mise >/dev/null && return 0
+  typeset -f mise > /dev/null && return 0
 
   # Find mise executable
   local mise_path=""
   if [[ -x /opt/homebrew/bin/mise ]]; then
     mise_path="/opt/homebrew/bin/mise"
-  elif command -v mise &>/dev/null; then
+  elif command -v mise &> /dev/null; then
     mise_path="$(command -v mise)"
   else
     return 1 # mise not found
@@ -35,16 +35,16 @@ if [[ -o interactive && ! -o login ]]; then
 fi
 
 # Early return if mise is not available
-command -v mise >/dev/null 2>&1 || return
+command -v mise > /dev/null 2>&1 || return
 
 # Shortcut for local CI
 alias refresh="mise ci"
 
 # Load completion only if mise is activated (check for _mise_hook function)
-if (( $+functions[_mise_hook] )); then
+if (($ + functions[_mise_hook])); then
   # Defer only the completion for startup performance
-  if command -v usage >/dev/null 2>&1; then
-    if (( $+functions[zsh-defer] )); then
+  if command -v usage > /dev/null 2>&1; then
+    if (($ + functions[zsh - defer])); then
       zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval "$(mise complete -s zsh)"
     else
       eval "$(mise complete -s zsh)"
@@ -61,7 +61,7 @@ mise-status() {
   echo "Shims directory: $MISE_DATA_DIR/shims"
   echo ""
   echo "Active tools:"
-  mise list --current 2>/dev/null || echo "No tools configured"
+  mise list --current 2> /dev/null || echo "No tools configured"
   echo ""
   echo "PATH status:"
   if [[ "$PATH" == *"$MISE_DATA_DIR/shims"* ]]; then

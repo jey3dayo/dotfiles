@@ -1,11 +1,11 @@
-if ! command -v gh >/dev/null 2>&1; then
+if ! command -v gh > /dev/null 2>&1; then
   return
 fi
 
 # Use zsh-defer if available, otherwise run immediately if compdef exists
-if (( $+functions[zsh-defer] )); then
+if (($ + functions[zsh - defer])); then
   zsh-defer eval "$(gh completion -s zsh)"
-elif (( $+functions[compdef] )); then
+elif (($ + functions[compdef])); then
   eval "$(gh completion -s zsh)"
 else
   # Queue for later execution after compinit

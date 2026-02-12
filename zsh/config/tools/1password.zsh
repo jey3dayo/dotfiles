@@ -3,7 +3,7 @@
 # Detect platform and set appropriate CLI path
 if [[ "$OSTYPE" == "darwin"* ]]; then
   # macOS: Use Homebrew-installed op CLI
-  if command -v op &>/dev/null; then
+  if command -v op &> /dev/null; then
     OP_CLI_PATH="$(command -v op)"
   else
     # Fallback to common macOS paths
@@ -36,7 +36,7 @@ if [[ -n "$OP_CLI_PATH" ]] && [[ -x "$OP_CLI_PATH" ]]; then
   }
 else
   # If op is in PATH, use it directly
-  if command -v op &>/dev/null; then
+  if command -v op &> /dev/null; then
     # op is already in PATH, no wrapper needed
     :
   else

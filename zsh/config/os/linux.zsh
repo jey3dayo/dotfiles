@@ -9,7 +9,7 @@ fi
 # WSL2-specific settings
 if [[ -n "$WSL_DISTRO_NAME" ]]; then
   # Use wslview for WSL browser integration (opens Windows default browser)
-  if (( $+commands[wslview] )); then
+  if (($ + commands[wslview])); then
     export BROWSER=wslview
   fi
 fi

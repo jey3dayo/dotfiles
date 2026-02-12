@@ -1,14 +1,14 @@
 # Core aliases and environment setup
 
 case ${OSTYPE} in
-darwin*)
-  # gnu
-  alias sed="gsed"
-  alias grep="ggrep"
-  ;;
+  darwin*)
+    # gnu
+    alias sed="gsed"
+    alias grep="ggrep"
+    ;;
 esac
 
-if command -v colordiff >/dev/null; then
+if command -v colordiff > /dev/null; then
   alias diff="colordiff"
 fi
 
