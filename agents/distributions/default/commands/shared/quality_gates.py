@@ -17,6 +17,7 @@ from pathlib import Path
 @dataclass
 class QualityCheckResult:
     """Result of a quality check."""
+
     success: bool
     command: str
     stdout: str
@@ -49,17 +50,14 @@ class QualityGates:
             QualityCheckResult
         """
         result = subprocess.run(
-            command,
-            cwd=self.project_root,
-            capture_output=True,
-            text=True
+            command, cwd=self.project_root, capture_output=True, text=True
         )
 
         return QualityCheckResult(
             success=result.returncode == 0,
             command=" ".join(command),
             stdout=result.stdout,
-            stderr=result.stderr
+            stderr=result.stderr,
         )
 
     def type_check(self) -> QualityCheckResult:
@@ -75,14 +73,20 @@ class QualityGates:
             ["pnpm", "tsc", "--noEmit"],
             ["npm", "run", "type-check"],
             ["yarn", "type-check"],
-            ["tsc", "--noEmit"]
+            ["tsc", "--noEmit"],
         ]
 
         for cmd in commands:
             result = self._run_command(cmd, "Type checking")
-            if result.success or "error TS" in result.stdout or "error TS" in result.stderr:
+            if (
+                result.success
+                or "error TS" in result.stdout
+                or "error TS" in result.stderr
+            ):
                 # Count TypeScript errors
-                error_count = result.stdout.count("error TS") + result.stderr.count("error TS")
+                error_count = result.stdout.count("error TS") + result.stderr.count(
+                    "error TS"
+                )
                 result.error_count = error_count
                 return result
 
@@ -91,7 +95,7 @@ class QualityGates:
             success=True,
             command="type-check",
             stdout="Type checking skipped (no suitable command found)",
-            stderr=""
+            stderr="",
         )
 
     def lint(self, fix: bool = False) -> QualityCheckResult:
@@ -108,7 +112,7 @@ class QualityGates:
             ["pnpm", "lint"] + (["--fix"] if fix else []),
             ["npm", "run", "lint"] + (["--", "--fix"] if fix else []),
             ["yarn", "lint"] + (["--fix"] if fix else []),
-            ["eslint", "."] + (["--fix"] if fix else [])
+            ["eslint", "."] + (["--fix"] if fix else []),
         ]
 
         for cmd in commands:
@@ -119,11 +123,14 @@ class QualityGates:
                 if "✖" in stdout_stderr or "problem" in stdout_stderr:
                     # Try to extract counts
                     import re
+
                     error_match = re.search(r"(\d+)\s+error", stdout_stderr)
                     warning_match = re.search(r"(\d+)\s+warning", stdout_stderr)
 
                     result.error_count = int(error_match.group(1)) if error_match else 0
-                    result.warning_count = int(warning_match.group(1)) if warning_match else 0
+                    result.warning_count = (
+                        int(warning_match.group(1)) if warning_match else 0
+                    )
 
                 return result
 
@@ -131,7 +138,7 @@ class QualityGates:
             success=True,
             command="lint",
             stdout="Linting skipped (no suitable command found)",
-            stderr=""
+            stderr="",
         )
 
     def test(self, files: Optional[List[str]] = None) -> QualityCheckResult:
@@ -151,19 +158,23 @@ class QualityGates:
             ["npm", "test"] + file_args,
             ["yarn", "test"] + file_args,
             ["jest"] + file_args,
-            ["pytest"] + file_args
+            ["pytest"] + file_args,
         ]
 
         for cmd in commands:
             result = self._run_command(cmd, "Testing")
-            if result.success or "test" in result.stdout.lower() or "test" in result.stderr.lower():
+            if (
+                result.success
+                or "test" in result.stdout.lower()
+                or "test" in result.stderr.lower()
+            ):
                 return result
 
         return QualityCheckResult(
             success=True,
             command="test",
             stdout="Testing skipped (no suitable command found)",
-            stderr=""
+            stderr="",
         )
 
     def build(self) -> QualityCheckResult:
@@ -173,11 +184,7 @@ class QualityGates:
         Returns:
             QualityCheckResult
         """
-        commands = [
-            ["pnpm", "build"],
-            ["npm", "run", "build"],
-            ["yarn", "build"]
-        ]
+        commands = [["pnpm", "build"], ["npm", "run", "build"], ["yarn", "build"]]
 
         for cmd in commands:
             result = self._run_command(cmd, "Building")
@@ -188,7 +195,7 @@ class QualityGates:
             success=True,
             command="build",
             stdout="Build skipped (no suitable command found)",
-            stderr=""
+            stderr="",
         )
 
     def run_all(
@@ -197,7 +204,7 @@ class QualityGates:
         lint: bool = True,
         test: bool = True,
         build: bool = False,
-        fix_lint: bool = False
+        fix_lint: bool = False,
     ) -> Dict[str, QualityCheckResult]:
         """
         Run all quality gates.
@@ -218,7 +225,9 @@ class QualityGates:
             print("  📝 Type checking...")
             results["type_check"] = self.type_check()
             if not results["type_check"].success:
-                print(f"    ❌ Type check failed ({results['type_check'].error_count} errors)")
+                print(
+                    f"    ❌ Type check failed ({results['type_check'].error_count} errors)"
+                )
                 return results
             print("    ✅ Type check passed")
 
@@ -228,7 +237,9 @@ class QualityGates:
             if not results["lint"].success:
                 error_count = results["lint"].error_count
                 warning_count = results["lint"].warning_count
-                print(f"    ❌ Lint failed ({error_count} errors, {warning_count} warnings)")
+                print(
+                    f"    ❌ Lint failed ({error_count} errors, {warning_count} warnings)"
+                )
                 return results
             print("    ✅ Lint passed")
 
@@ -252,8 +263,7 @@ class QualityGates:
 
 
 def validate_changes(
-    project_root: Optional[str] = None,
-    run_tests: bool = True
+    project_root: Optional[str] = None, run_tests: bool = True
 ) -> bool:
     """
     Validate changes using all quality gates.
@@ -266,11 +276,6 @@ def validate_changes(
         True if all checks pass
     """
     gates = QualityGates(project_root)
-    results = gates.run_all(
-        type_check=True,
-        lint=True,
-        test=run_tests,
-        build=False
-    )
+    results = gates.run_all(type_check=True, lint=True, test=run_tests, build=False)
 
     return all(r.success for r in results.values())

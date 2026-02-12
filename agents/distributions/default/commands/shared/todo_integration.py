@@ -14,6 +14,7 @@ from dataclasses import dataclass
 @dataclass
 class Todo:
     """Todo item."""
+
     content: str
     status: str  # "pending", "in_progress", "completed"
     activeForm: str
@@ -23,7 +24,7 @@ class Todo:
         return {
             "content": self.content,
             "status": self.status,
-            "activeForm": self.activeForm
+            "activeForm": self.activeForm,
         }
 
 
@@ -46,11 +47,7 @@ class TodoManager:
             # Auto-generate active form by converting to present continuous
             active_form = self._convert_to_active_form(content)
 
-        todo = Todo(
-            content=content,
-            status="pending",
-            activeForm=active_form
-        )
+        todo = Todo(content=content, status="pending", activeForm=active_form)
         self.todos.append(todo)
 
     def mark_in_progress(self, index: int) -> None:
@@ -189,8 +186,7 @@ def create_todos_from_tasks(tasks: List[str]) -> List[Dict[str, str]]:
 
 
 def create_refactoring_todos(
-    analysis_results: Dict[str, Any],
-    proposals: List[Dict[str, Any]]
+    analysis_results: Dict[str, Any], proposals: List[Dict[str, Any]]
 ) -> List[Dict[str, str]]:
     """
     Create todos for refactoring tasks.
@@ -207,36 +203,31 @@ def create_refactoring_todos(
     # Add analysis phase
     manager.add_todo(
         "Analyze code quality and identify improvement areas",
-        "Analyzing code quality and identifying improvement areas"
+        "Analyzing code quality and identifying improvement areas",
     )
 
     # Add proposal generation
     manager.add_todo(
         "Generate improvement proposals with priorities",
-        "Generating improvement proposals with priorities"
+        "Generating improvement proposals with priorities",
     )
 
     # Add implementation tasks based on proposals
     for i, proposal in enumerate(proposals, 1):
-        priority_emoji = {
-            10: "🔴",
-            9: "🔴",
-            8: "🟠",
-            7: "🟠",
-            6: "🟡",
-            5: "🟡"
-        }.get(proposal.get("priority", 5), "🟢")
+        priority_emoji = {10: "🔴", 9: "🔴", 8: "🟠", 7: "🟠", 6: "🟡", 5: "🟡"}.get(
+            proposal.get("priority", 5), "🟢"
+        )
 
         content = f"{priority_emoji} {proposal.get('type', 'Fix')}: {proposal.get('description', f'Proposal {i}')}"
         manager.add_todo(
             content,
-            content.replace("Fix:", "Fixing:").replace("Refactor:", "Refactoring:")
+            content.replace("Fix:", "Fixing:").replace("Refactor:", "Refactoring:"),
         )
 
     # Add validation phase
     manager.add_todo(
         "Run quality gates (type-check, lint, test)",
-        "Running quality gates (type-check, lint, test)"
+        "Running quality gates (type-check, lint, test)",
     )
 
     # Mark first as in_progress
@@ -247,8 +238,7 @@ def create_refactoring_todos(
 
 
 def create_review_todos(
-    review_mode: str,
-    issues: List[Dict[str, Any]]
+    review_mode: str, issues: List[Dict[str, Any]]
 ) -> List[Dict[str, str]]:
     """
     Create todos for review tasks.
@@ -266,12 +256,12 @@ def create_review_todos(
     if review_mode == "simple":
         manager.add_todo(
             "Run quick code review with parallel agents",
-            "Running quick code review with parallel agents"
+            "Running quick code review with parallel agents",
         )
     else:
         manager.add_todo(
             "Run comprehensive code review with ⭐️ ratings",
-            "Running comprehensive code review with ⭐️ ratings"
+            "Running comprehensive code review with ⭐️ ratings",
         )
 
     # Add issue-specific todos
@@ -281,7 +271,7 @@ def create_review_todos(
             "critical": "🔴",
             "high": "🟠",
             "medium": "🟡",
-            "low": "🟢"
+            "low": "🟢",
         }.get(priority, "🟡")
 
         content = f"{priority_emoji} {issue.get('category', 'Issue')}: {issue.get('message', 'Fix issue')}"

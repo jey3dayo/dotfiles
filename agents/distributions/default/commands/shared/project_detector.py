@@ -22,7 +22,7 @@ class ProjectInfo:
         language: str,
         frameworks: List[str],
         tools: List[str],
-        root_dir: str
+        root_dir: str,
     ):
         self.project_type = project_type
         self.language = language
@@ -72,7 +72,9 @@ def detect_project_type(start_dir: Optional[str] = None) -> ProjectInfo:
                 # Detect frameworks
                 if "next" in deps:
                     frameworks.append("nextjs")
-                    project_type = "nextjs-fullstack" if "prisma" in deps else "nextjs-frontend"
+                    project_type = (
+                        "nextjs-fullstack" if "prisma" in deps else "nextjs-frontend"
+                    )
                 elif "react" in deps:
                     frameworks.append("react")
                     project_type = "react-app"
@@ -135,7 +137,7 @@ def detect_project_type(start_dir: Optional[str] = None) -> ProjectInfo:
         language=language,
         frameworks=frameworks,
         tools=tools,
-        root_dir=str(root)
+        root_dir=str(root),
     )
 
 

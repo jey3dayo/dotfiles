@@ -12,7 +12,14 @@ import subprocess
 from typing import Any, Dict, List, Optional, Tuple
 
 
-DEFAULT_FIELDS = ["name", "state", "conclusion", "detailsUrl", "startedAt", "completedAt"]
+DEFAULT_FIELDS = [
+    "name",
+    "state",
+    "conclusion",
+    "detailsUrl",
+    "startedAt",
+    "completedAt",
+]
 FALLBACK_FIELDS = [
     "name",
     "state",
@@ -46,7 +53,11 @@ def _parse_available_fields(message: str) -> List[str]:
 
     inline_match = re.search(r"available fields:\s*([^\n]+)", message, re.IGNORECASE)
     if inline_match:
-        return [field.strip().strip(",") for field in inline_match.group(1).split(",") if field.strip()]
+        return [
+            field.strip().strip(",")
+            for field in inline_match.group(1).split(",")
+            if field.strip()
+        ]
 
     fields: List[str] = []
     collecting = False
@@ -120,7 +131,9 @@ def is_check_failed(check: Dict[str, Any]) -> bool:
     )
 
 
-def get_failed_checks(pr_number: int, repo: Optional[str] = None) -> List[Dict[str, Any]]:
+def get_failed_checks(
+    pr_number: int, repo: Optional[str] = None
+) -> List[Dict[str, Any]]:
     """Get only failed checks."""
     checks = get_pr_checks(pr_number, repo)
     return [check for check in checks if is_check_failed(check)]
@@ -217,7 +230,9 @@ def _classify_failure_type(check_name: str, log_text: str) -> str:
     name_lower = (check_name or "").lower()
     log_lower = (log_text or "").lower()
 
-    if any(keyword in name_lower for keyword in ["type", "tsc", "typescript", "typecheck"]):
+    if any(
+        keyword in name_lower for keyword in ["type", "tsc", "typescript", "typecheck"]
+    ):
         return "type_error"
     if "error ts" in log_lower or "typescript" in log_lower:
         return "type_error"
@@ -244,10 +259,15 @@ def _default_fix_strategy(failure_type: str) -> str:
         "test_failure": "Identify failing tests, fix test data/mocks, and align assertions.",
         "build_error": "Inspect build logs, verify configuration and dependencies, and fix compile errors.",
         "unknown": "Inspect logs and narrow down the failure cause before applying fixes.",
-    }.get(failure_type, "Inspect logs and narrow down the failure cause before applying fixes.")
+    }.get(
+        failure_type,
+        "Inspect logs and narrow down the failure cause before applying fixes.",
+    )
 
 
-def analyze_ci_failures(pr_number: int, repo: Optional[str] = None) -> List[Dict[str, Any]]:
+def analyze_ci_failures(
+    pr_number: int, repo: Optional[str] = None
+) -> List[Dict[str, Any]]:
     """Comprehensive CI failure analysis."""
     failed_checks = get_failed_checks(pr_number, repo)
     results: List[Dict[str, Any]] = []
@@ -266,7 +286,9 @@ def analyze_ci_failures(pr_number: int, repo: Optional[str] = None) -> List[Dict
         else:
             error_details = []
 
-        files_affected = sorted({entry.get("file", "") for entry in error_details if entry.get("file")})
+        files_affected = sorted(
+            {entry.get("file", "") for entry in error_details if entry.get("file")}
+        )
 
         results.append(
             {
