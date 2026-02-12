@@ -31,13 +31,13 @@ uvx = true
 # Runtime
 node = "lts"
 # Formatters and Linters
-biome = "latest"      # JS/TS/JSON
-prettier = "latest"   # General
-shellcheck = "latest" # Shell lint
-shfmt = "latest"      # Shell format
-stylua = "latest"     # Lua format
-taplo = "latest"      # TOML format
-yamllint = "latest"   # YAML lint
+biome = "latest"           # JS/TS/JSON
+prettier = "latest"        # General
+shellcheck = "latest"      # Shell lint
+shfmt = "latest"           # Shell format
+stylua = "latest"          # Lua format
+taplo = "latest"           # TOML format
+yamllint = "latest"        # YAML lint
 "pipx:beautysh" = "latest" # Shell format (Python-based)
 # NPM Packages
 "npm:markdown-link-check" = "latest"
