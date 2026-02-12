@@ -13,7 +13,16 @@ depends = [
 
 ["update:submodules"]
 description = "Git サブモジュールを最新に更新（ローカル変更を破棄）"
-run = "if [ -f .gitmodules ]; then git submodule foreach 'git reset --hard HEAD && git clean -fd' && git submodule update --remote; else echo 'No submodules configured, skipping'; fi"
+run = """
+if [ ! -f .gitmodules ]; then
+  echo "No submodules configured, skipping"
+  exit 0
+fi
+
+git submodule sync --recursive
+git submodule foreach --recursive "git reset --hard HEAD && git clean -fd"
+GIT_HTTP_VERSION=HTTP/1.1 git -c http.version=HTTP/1.1 submodule update --remote --recursive
+"""
 
 ["update:brew"]
 description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
