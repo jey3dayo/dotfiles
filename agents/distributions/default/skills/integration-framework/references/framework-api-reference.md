@@ -48,13 +48,11 @@ interface TaskRequest {
 }
 ```
 
-### 説明
+**説明**: 新しいTaskContextを作成します。
 
-#### 戻り値
+**戻り値**: 生成されたTaskContext
 
-生成されたTaskContext
-
-### 例
+**例**:
 
 ```typescript
 const context = contextManager.createContext({
@@ -78,17 +76,15 @@ interface ProjectContext {
 }
 ```
 
-### 説明
+**説明**: プロジェクトのコンテキスト情報をロードします。
 
-### パラメータ
+**パラメータ**:
 
 - `root`: プロジェクトルートディレクトリ
 
-#### 戻り値
+**戻り値**: ProjectContext
 
-ProjectContext
-
-### 例
+**例**:
 
 ```typescript
 const projectContext = contextManager.loadProjectContext("./");
@@ -107,18 +103,16 @@ type EnhancedTaskContext = TaskContext & {
 }
 ```
 
-### 説明
+**説明**: エージェント固有のコンテキストを追加します。
 
-### パラメータ
+**パラメータ**:
 
 - `context`: ベースとなるTaskContext
 - `agentType`: エージェント名
 
-#### 戻り値
+**戻り値**: 強化されたTaskContext
 
-強化されたTaskContext
-
-### 例
+**例**:
 
 ```typescript
 const enhanced = contextManager.enhanceForAgent(context, "error-fixer");
@@ -133,18 +127,16 @@ createChildContext(
 ): TaskContext
 ```
 
-### 説明
+**説明**: 親タスクから子タスクのコンテキストを作成します。
 
-### パラメータ
+**パラメータ**:
 
 - `parent`: 親TaskContext
 - `request`: 子タスクのリクエスト
 
-#### 戻り値
+**戻り値**: 子TaskContext
 
-子TaskContext
-
-### 例
+**例**:
 
 ```typescript
 const childContext = contextManager.createChildContext(parentContext, {
@@ -164,15 +156,15 @@ shareContext(
 ): void
 ```
 
-### 説明
+**説明**: タスク間でデータを共有します。
 
-### パラメータ
+**パラメータ**:
 
 - `fromId`: 送信元タスクID
 - `toId`: 送信先タスクID
 - `data`: 共有するデータ
 
-### 例
+**例**:
 
 ```typescript
 contextManager.shareContext(task1.id, task2.id, {
@@ -189,18 +181,16 @@ getSharedData(
 ): any | null
 ```
 
-### 説明
+**説明**: 共有データを取得します。
 
-### パラメータ
+**パラメータ**:
 
 - `fromId`: 送信元タスクID
 - `toId`: 受信側タスクID
 
-#### 戻り値
+**戻り値**: 共有データ（存在しない場合はnull）
 
-共有データ（存在しない場合はnull）
-
-### 例
+**例**:
 
 ```typescript
 const sharedData = contextManager.getSharedData(task1.id, task2.id);
@@ -225,11 +215,9 @@ enum ProjectType {
 }
 ```
 
-### 説明
+**説明**: プロジェクトタイプを自動検出します。
 
-#### 戻り値
-
-ProjectType
+**戻り値**: ProjectType
 
 #### detectTechStack
 
@@ -243,11 +231,9 @@ interface TechStack {
 }
 ```
 
-### 説明
+**説明**: 使用されている技術スタックを検出します。
 
-#### 戻り値
-
-TechStack配列
+**戻り値**: TechStack配列
 
 #### getGitStatus
 
@@ -266,11 +252,9 @@ interface GitStatus {
 }
 ```
 
-### 説明
+**説明**: Git状態を取得します。
 
-#### 戻り値
-
-GitStatus
+**戻り値**: GitStatus
 
 #### getEnvironmentInfo
 
@@ -288,11 +272,9 @@ interface EnvironmentInfo {
 }
 ```
 
-### 説明
+**説明**: 環境情報を取得します。
 
-#### 戻り値
-
-EnvironmentInfo
+**戻り値**: EnvironmentInfo
 
 #### analyzeIntent
 
@@ -307,11 +289,9 @@ interface Intent {
 }
 ```
 
-### 説明
+**説明**: 自然言語リクエストから意図を分析します。
 
-#### 戻り値
-
-Intent
+**戻り値**: Intent
 
 ---
 
@@ -346,13 +326,13 @@ interface Event {
 }
 ```
 
-### 説明
+**説明**: イベントを発行します。
 
-### パラメータ
+**パラメータ**:
 
 - `event`: 発行するイベント
 
-### 例
+**例**:
 
 ```typescript
 communicationBus.publish({
@@ -374,18 +354,16 @@ type EventHandler = (event: Event) => void | Promise<void>;
 type Unsubscribe = () => void;
 ```
 
-### 説明
+**説明**: イベントを購読します。
 
-### パラメータ
+**パラメータ**:
 
 - `eventType`: イベントタイプ（ワイルドカード対応: "task.\*"）
 - `handler`: イベントハンドラー関数
 
-#### 戻り値
+**戻り値**: 購読解除関数
 
-購読解除関数
-
-### 例
+**例**:
 
 ```typescript
 const unsubscribe = communicationBus.subscribe("task.completed", (event) => {
@@ -422,19 +400,17 @@ interface Response {
 }
 ```
 
-### 説明
+**説明**: エージェント/コマンドにリクエストを送信します。
 
-### パラメータ
+**パラメータ**:
 
 - `target`: ターゲット名
 - `message`: メッセージ
 - `timeout`: タイムアウト（ミリ秒、デフォルト: 30000）
 
-#### 戻り値
+**戻り値**: Promise<Response>
 
-`Promise<Response>`
-
-### 例
+**例**:
 
 ```typescript
 const response = await communicationBus.request(
@@ -460,14 +436,14 @@ type RequestHandler = (
 ) => Promise<Response> | Response;
 ```
 
-### 説明
+**説明**: リクエストハンドラーを登録します。
 
-### パラメータ
+**パラメータ**:
 
 - `name`: ハンドラー名
 - `handler`: ハンドラー関数
 
-### 例
+**例**:
 
 ```typescript
 communicationBus.registerHandler("custom-agent", async (message) => {
@@ -505,18 +481,16 @@ interface WorkflowResult {
 }
 ```
 
-### 説明
+**説明**: ワークフローを実行します。
 
-### パラメータ
+**パラメータ**:
 
 - `workflow`: ワークフロー定義
 - `context`: TaskContext
 
-#### 戻り値
+**戻り値**: Promise<WorkflowResult>
 
-`Promise<WorkflowResult>`
-
-### 例
+**例**:
 
 ```typescript
 const result = await communicationBus.executeWorkflow({
@@ -562,13 +536,11 @@ interface BusMetrics {
 }
 ```
 
-### 説明
+**説明**: Communication Busのメトリクスを取得します。
 
-#### 戻り値
+**戻り値**: BusMetrics
 
-BusMetrics
-
-### 例
+**例**:
 
 ```typescript
 const metrics = communicationBus.getMetrics();
@@ -583,9 +555,9 @@ console.log("Average response time:", metrics.requests.averageResponseTime);
 shutdown(): Promise<void>
 ```
 
-### 説明
+**説明**: Communication Busを正常にシャットダウンします。
 
-### 例
+**例**:
 
 ```typescript
 await communicationBus.shutdown();
@@ -637,13 +609,11 @@ class FrameworkError extends Error {
 }
 ```
 
-### 説明
+**説明**: 標準化されたエラーを作成します。
 
-#### 戻り値
+**戻り値**: FrameworkError
 
-FrameworkError
-
-### 例
+**例**:
 
 ```typescript
 const error = errorHandler.createError(
@@ -673,18 +643,16 @@ interface ErrorHandlingResult {
 }
 ```
 
-### 説明
+**説明**: エラーをハンドリングし、可能であれば回復を試みます。
 
-### パラメータ
+**パラメータ**:
 
 - `error`: エラーオブジェクト
 - `context`: TaskContext
 
-#### 戻り値
+**戻り値**: Promise<ErrorHandlingResult>
 
-`Promise<ErrorHandlingResult>`
-
-### 例
+**例**:
 
 ```typescript
 try {
@@ -714,19 +682,17 @@ interface RecoveryResult {
 }
 ```
 
-### 説明
+**説明**: エラーからの回復を試みます。
 
-### パラメータ
+**パラメータ**:
 
 - `error`: FrameworkError
 - `context`: TaskContext
 - `maxAttempts`: 最大試行回数（デフォルト: 3）
 
-#### 戻り値
+**戻り値**: Promise<RecoveryResult>
 
-`Promise<RecoveryResult>`
-
-### 例
+**例**:
 
 ```typescript
 const recovery = await errorHandler.attemptRecovery(error, context);
@@ -748,13 +714,11 @@ interface ErrorStatistics {
 }
 ```
 
-### 説明
+**説明**: エラー統計を取得します。
 
-#### 戻り値
+**戻り値**: ErrorStatistics
 
-ErrorStatistics
-
-### 例
+**例**:
 
 ```typescript
 const stats = errorHandler.getErrorStatistics();
@@ -781,13 +745,11 @@ interface ErrorReport {
 }
 ```
 
-### 説明
+**説明**: 詳細なエラーレポートを作成します。
 
-#### 戻り値
+**戻り値**: ErrorReport
 
-ErrorReport
-
-### 例
+**例**:
 
 ```typescript
 const report = errorHandler.createDetailedErrorReport(error);
@@ -839,17 +801,15 @@ interface QualityMetrics {
 }
 ```
 
-### 説明
+**説明**: タスクを実行します。
 
-### パラメータ
+**パラメータ**:
 
 - `request`: TaskRequest
 
-#### 戻り値
+**戻り値**: Promise<TaskResult>
 
-`Promise<TaskResult>`
-
-### 例
+**例**:
 
 ```typescript
 const result = await orchestrator.executeTask({
@@ -868,18 +828,16 @@ executeWorkflow(
 ): Promise<WorkflowResult>
 ```
 
-### 説明
+**説明**: ワークフローを実行します（Communication Bus経由）。
 
-### パラメータ
+**パラメータ**:
 
 - `workflow`: ワークフロー定義
 - `context`: TaskContext
 
-#### 戻り値
+**戻り値**: Promise<WorkflowResult>
 
-`Promise<WorkflowResult>`
-
-### 例
+**例**:
 
 ```typescript
 const result = await orchestrator.executeWorkflow(workflow, context);
@@ -903,13 +861,11 @@ interface SystemStatus {
 }
 ```
 
-### 説明
+**説明**: システムステータスを取得します。
 
-#### 戻り値
+**戻り値**: SystemStatus
 
-SystemStatus
-
-### 例
+**例**:
 
 ```typescript
 const status = orchestrator.getSystemStatus();
@@ -928,13 +884,11 @@ interface PerformanceAnalytics {
 }
 ```
 
-### 説明
+**説明**: パフォーマンス分析を取得します。
 
-#### 戻り値
+**戻り値**: PerformanceAnalytics
 
-PerformanceAnalytics
-
-### 例
+**例**:
 
 ```typescript
 const analytics = orchestrator.getPerformanceAnalytics();
@@ -947,9 +901,9 @@ console.log("Overall success rate:", analytics.overall.successRate);
 shutdown(): Promise<void>
 ```
 
-### 説明
+**説明**: Orchestratorを正常にシャットダウンします。
 
-### 例
+**例**:
 
 ```typescript
 await orchestrator.shutdown();
@@ -980,9 +934,9 @@ interface AgentConfig {
 }
 ```
 
-### 説明
+**説明**: エージェントを登録します。
 
-### 例
+**例**:
 
 ```typescript
 agentAdapter.registerAgent("custom-agent", {
@@ -1008,9 +962,9 @@ interface AgentResult {
 }
 ```
 
-### 説明
+**説明**: エージェントを実行します。
 
-### 例
+**例**:
 
 ```typescript
 const result = await agentAdapter.executeAgent("error-fixer", context);
@@ -1024,13 +978,11 @@ selectAgent(
 ): string
 ```
 
-### 説明
+**説明**: TaskContextに基づいて最適なエージェントを選択します。
 
-#### 戻り値
+**戻り値**: エージェント名
 
-エージェント名
-
-### 例
+**例**:
 
 ```typescript
 const agentName = agentAdapter.selectAgent(context);
@@ -1044,13 +996,11 @@ getCapabilities(
 ): string[]
 ```
 
-### 説明
+**説明**: エージェントの能力を取得します。
 
-#### 戻り値
+**戻り値**: 能力の配列
 
-能力の配列
-
-### 例
+**例**:
 
 ```typescript
 const capabilities = agentAdapter.getCapabilities("error-fixer");
@@ -1079,9 +1029,9 @@ interface CommandConfig {
 }
 ```
 
-### 説明
+**説明**: コマンドを登録します。
 
-### 例
+**例**:
 
 ```typescript
 commandAdapter.registerCommand("custom-command", {
@@ -1111,9 +1061,9 @@ interface CommandResult {
 }
 ```
 
-### 説明
+**説明**: コマンドを実行します。
 
-### 例
+**例**:
 
 ```typescript
 const result = await commandAdapter.executeCommand(
@@ -1129,13 +1079,11 @@ const result = await commandAdapter.executeCommand(
 getCommands(): string[]
 ```
 
-### 説明
+**説明**: 登録されているすべてのコマンド名を取得します。
 
-#### 戻り値
+**戻り値**: コマンド名の配列
 
-コマンド名の配列
-
-### 例
+**例**:
 
 ```typescript
 const commands = commandAdapter.getCommands();
@@ -1164,13 +1112,11 @@ interface RoutingDecision {
 }
 ```
 
-### 説明
+**説明**: タスクのルーティングを決定します。
 
-#### 戻り値
+**戻り値**: Promise<RoutingDecision>
 
-`Promise<RoutingDecision>`
-
-### 例
+**例**:
 
 ```typescript
 const decision = await taskRouter.route(request);
@@ -1184,13 +1130,11 @@ analyzeIntent(
 ): Intent
 ```
 
-### 説明
+**説明**: 自然言語リクエストから意図を分析します。
 
-#### 戻り値
+**戻り値**: Intent
 
-Intent
-
-### 例
+**例**:
 
 ```typescript
 const intent = taskRouter.analyzeIntent("Fix TypeScript errors");
@@ -1211,13 +1155,11 @@ interface AgentMatch {
 }
 ```
 
-### 説明
+**説明**: 意図とエージェント能力をマッチングします。
 
-#### 戻り値
+**戻り値**: AgentMatch配列
 
-AgentMatch配列
-
-### 例
+**例**:
 
 ```typescript
 const matches = taskRouter.matchCapabilities(intent, agents);
@@ -1233,13 +1175,11 @@ const matches = taskRouter.matchCapabilities(intent, agents);
 getOrchestrator(): IntegrationOrchestrator
 ```
 
-### 説明
+**説明**: グローバルOrchestratorインスタンスを取得します。
 
-#### 戻り値
+**戻り値**: IntegrationOrchestrator
 
-IntegrationOrchestrator
-
-### 例
+**例**:
 
 ```typescript
 const orchestrator = getOrchestrator();
@@ -1257,9 +1197,9 @@ interface FrameworkConfig {
 }
 ```
 
-### 説明
+**説明**: フレームワークを初期化します。
 
-### 例
+**例**:
 
 ```typescript
 await initializeFramework({

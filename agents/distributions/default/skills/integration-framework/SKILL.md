@@ -27,7 +27,7 @@ Integration Frameworkは、エージェントとコマンド間の結合性と�
 
 ### トリガーキーワード
 
-### 日本語
+**日本語**:
 
 - "統合フレームワーク", "インテグレーションフレームワーク"
 - "TaskContext", "タスクコンテキスト"
@@ -35,7 +35,7 @@ Integration Frameworkは、エージェントとコマンド間の結合性と�
 - "エージェント開発", "コマンド開発"
 - "コンポーネント統合", "ワークフローオーケストレーション"
 
-### English
+**English**:
 
 - "integration framework"
 - "TaskContext", "task context"
@@ -84,7 +84,7 @@ interface TaskContext {
 }
 ```
 
-### 詳細
+**詳細**: `references/task-context-specification.md`で完全な仕様を参照
 
 ### 2. Communication Bus - イベント駆動通信
 
@@ -106,7 +106,7 @@ const result = await communicationBus.request("error-fixer", {
 });
 ```
 
-### 詳細
+**詳細**: `references/communication-bus-api.md`でAPIリファレンスを参照
 
 ### 3. Agent/Command Adapters - 統合アダプター
 
@@ -116,7 +116,7 @@ const result = await communicationBus.request("error-fixer", {
 - **Command Adapter**: コマンド実行を標準化
 - **Integration Orchestrator**: 全体の調整とルーティング
 
-### 詳細
+**詳細**: `references/adapters-and-orchestration.md`で実装パターンを参照
 
 ### 4. Error Handler - 高度なエラーハンドリング
 

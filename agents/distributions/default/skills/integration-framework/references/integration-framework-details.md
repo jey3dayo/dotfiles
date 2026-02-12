@@ -77,7 +77,7 @@ Integration Orchestrator
 /review  # プロジェクトタイプを自動検出し、適切な基準を適用
 ```
 
-### 詳細
+**詳細**: `commands/task.md`, `commands/review.md`を参照
 
 ### エージェントの強化
 
@@ -306,7 +306,7 @@ const result = await orchestrator.executeTask({
 - TaskContext、Communication Busに言及
 - 統合フレームワーク、インテグレーションフレームワークに言及
 
-### 統合例
+**統合例**:
 
 ```
 ユーザー: "新しいコマンドを作成したい"
