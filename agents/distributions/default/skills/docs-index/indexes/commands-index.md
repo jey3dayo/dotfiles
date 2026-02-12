@@ -66,4 +66,4 @@
 
 **最終更新**: 2026-02-12
 **移行完了**: Phase 1-6（全コマンド廃止）
-**参考**: [commands-deprecation.md](../../../.claude/rules/commands-deprecation.md)
+**参考**: [commands-deprecation.md](../../../../../../.claude/rules/commands-deprecation.md)
