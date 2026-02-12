@@ -12,7 +12,8 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 | Phase 2 | ✅ 完了    | Core Workflows（主要6スキル移行） | Week 2-7 |
 | Phase 3 | ✅ 完了    | Secondary（二次4スキル移行）      | Week 8   |
 | Phase 4 | ✅ 完了    | Commands廃止マーキング            | Week 8   |
-| Phase 5 | ✅ 完了    | 移行済みCommands削除              | Week 8   |
+| Phase 5 | ✅ 完了    | 移行済みCommands削除（16+12件）   | Week 8   |
+| Phase 6 | ✅ 完了    | Commands完全削除（50件）          | Week 8   |
 
 ### Phase 2 移行スキル（✅ 完了）
 
@@ -94,6 +95,35 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 **削除理由**: cc-sdd スキル（agents/distributions/default/skills/cc-sdd/）で既に完全統合済み
 
+### Phase 6 Commands完全削除（✅ 完了）
+
+**全Commandsディレクトリ削除（50ファイル）**:
+
+**トップレベル（32ファイル）**:
+
+- spec-_, validate-_, steering-\* (kiro重複)
+- agent-selector.md, claude-metadata-analyzer.md (統合関連)
+- context7-integration.md, integration-matrix.md (統合関連)
+- task-context.md, skill-mapping-engine.md (統合関連)
+- project-detector.md, error-handler.md (shared重複)
+- debug-chrome.md, maintain-claude.md, make-it-pretty.md (未移行)
+- contributing.md, migration-guide.md, README.md (ドキュメント)
+- その他
+
+**shared/（18ファイル）**:
+
+- \*.py: agent_selector.py, project_detector.py, ci_operations.py等
+- \*.md: 各種統合ドキュメント
+
+**削除理由**:
+
+- 主要機能は13スキルに完全移行済み
+- 統合関連ドキュメントは integration-framework スキルに統合
+- shared/ユーティリティはスキル内で再実装
+- 未移行Commandsは使用頻度低く、必要時に再実装可能
+
+**Commands廃止完了**: agents/distributions/default/commands/ ディレクトリ全体削除
+
 ## 移行統計
 
 ### 総合
@@ -172,5 +202,5 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 **最終更新**: 2026-02-12
 **移行完了**: Phase 1-5（Foundation + Core + Secondary + 廃止警告 + Commands削除）
-**残存Commands**: shared/（共通ユーティリティ）、kiro/（Spec-Driven Development）、その他未移行Commands
-**次回作業**: 残存Commandsの段階的移行検討
+**残存Commands**: なし（完全削除完了）
+**次回作業**: Skills運用と継続的改善
