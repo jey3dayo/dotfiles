@@ -64,6 +64,8 @@ if command -v fzf > /dev/null 2>&1; then
     zle accept-line
   }
   zle -N fzf-kill-widget
-  bindkey '^gx' fzf-kill-widget
-  bindkey '^g^x' fzf-kill-widget
+  for keymap in emacs viins vicmd; do
+    bindkey -M "$keymap" '^gx' fzf-kill-widget
+    bindkey -M "$keymap" '^g^x' fzf-kill-widget
+  done
 fi

@@ -40,6 +40,19 @@ _register_git_widget() {
   done
 }
 
+# Ensure Ctrl-G is always a safe prefix key in all keymaps.
+# Without this, vi keymaps may keep `list-expand`, which can trigger
+# git completion internals outside completion context.
+_set_ctrl_g_prefix() {
+  local -a keymaps=(emacs viins vicmd)
+  local keymap
+  for keymap in "${keymaps[@]}"; do
+    bindkey -M "$keymap" '^g' send-break
+  done
+}
+
+_set_ctrl_g_prefix
+
 # git-wt list helper (skip header if present)
 _git_wt_list() {
   command git wt | awk 'NR==1 && $1=="PATH" && $2=="BRANCH" {next} {print}'
@@ -83,37 +96,47 @@ _git_menu() {
   command -v fzf >/dev/null 2>&1 || return 0
 
   local options=()
-  options+=("🧾 Diff")
-  options+=("📄 Status")
-  options+=("🔀 Switch Branch")
   options+=("🔄 Sync")
+  options+=("📄 Status")
+  options+=("🧾 Diff")
   options+=("➕ Add (patch)")
-  options+=("🔀 Switch Worktree")
-  options+=("➕ New Worktree")
-  options+=("📋 List Worktrees")
-  options+=("🗑️ Remove Worktree")
-  options+=("🧹 Remove Branch")
   if command -v fzf-git-stashes-widget >/dev/null 2>&1; then
     options+=("📦 Stash Picker")
   fi
+  options+=("🔀 Switch Branch")
+  options+=("🔀 Switch Worktree")
+  options+=("🧾 Diff (staged)")
+  options+=("↩️ Restore (patch)")
+  options+=("✅ Commit")
+  options+=("⬆️ Push")
+  options+=("🚧 Stash Push")
+  options+=("🔀 Rebase Continue/Abort")
+  options+=("📜 Log (graph)")
+  options+=("➕ New Worktree")
+  options+=("📋 List Worktrees")
   options+=("🌐 Browse (gh)")
+  options+=("🧹 Remove Branch")
+  options+=("🗑️ Remove Worktree")
 
   local choice
   choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Git Action: " --height="${ZSH_GIT_FZF_HEIGHT}" --reverse)
 
   if [[ -n "$choice" ]]; then
     case "$choice" in
+      "🔄 Sync")
+        _git_sync_action
+        ;;
       "📄 Status")
         _git_status
         ;;
       "🧾 Diff")
         _git_diff_menu_action
         ;;
-      "🔄 Sync")
-        _git_sync_action
-        ;;
       "➕ Add (patch)")
         git_add_interactive
+        ;;
+      "📦 Stash Picker")
+        fzf-git-stashes-widget
         ;;
       "🔀 Switch Branch")
         _git_switch_branch
@@ -121,23 +144,41 @@ _git_menu() {
       "🔀 Switch Worktree")
         _git_worktree_switch_action
         ;;
+      "🧾 Diff (staged)")
+        _git_diff_staged_action
+        ;;
+      "↩️ Restore (patch)")
+        _git_restore_patch_action
+        ;;
+      "✅ Commit")
+        _git_commit_action
+        ;;
+      "⬆️ Push")
+        _git_push_action
+        ;;
+      "🚧 Stash Push")
+        _git_stash_push_action
+        ;;
+      "🔀 Rebase Continue/Abort")
+        _git_rebase_action
+        ;;
+      "📜 Log (graph)")
+        _git_log_graph_action
+        ;;
       "➕ New Worktree")
         _git_worktree_new_action
         ;;
       "📋 List Worktrees")
         _git_worktree_list_action
         ;;
-      "🗑️ Remove Worktree")
-        _git_worktree_remove_action
-        ;;
       "🧹 Remove Branch")
         _git_worktree_remove_branch_action
         ;;
-      "📦 Stash Picker")
-        fzf-git-stashes-widget
-        ;;
       "🌐 Browse (gh)")
         _git_browse
+        ;;
+      "🗑️ Remove Worktree")
+        _git_worktree_remove_action
         ;;
     esac
   fi
@@ -279,6 +320,129 @@ _git_diff_menu_action() {
       git diff --name-only origin/main
       ;;
   esac
+}
+
+_git_diff_staged_action() {
+  echo "git diff --cached"
+  git diff --cached
+}
+
+_git_restore_patch_action() {
+  if (( ${+widgets[accept-line]} )); then
+    BUFFER="git restore -p"
+    zle accept-line
+  else
+    echo "git restore -p"
+    git restore -p
+  fi
+}
+
+_git_commit_action() {
+  if git diff --cached --quiet --ignore-submodules --; then
+    echo "No staged changes. Stage files first (e.g., git add -p)."
+    return 1
+  fi
+
+  echo "git commit"
+  git commit
+}
+
+_git_push_action() {
+  local current_branch
+  current_branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null)
+  if [[ -z "$current_branch" ]]; then
+    echo "Not on a branch (detached HEAD). Checkout a branch first."
+    return 1
+  fi
+
+  if git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" >/dev/null 2>&1; then
+    echo "git push"
+    git push
+    return $?
+  fi
+
+  local remote
+  remote="origin"
+  if ! git remote get-url "$remote" >/dev/null 2>&1; then
+    remote=$(git remote | awk 'NR==1{print $1}')
+  fi
+
+  if [[ -z "$remote" ]]; then
+    echo "No git remote found. Add remote first."
+    return 1
+  fi
+
+  echo "git push -u $remote $current_branch"
+  git push -u "$remote" "$current_branch"
+}
+
+_git_stash_push_action() {
+  local stash_message
+  stash_message=$(printf '\n' | fzf --print-query --prompt="Stash message (empty=default): " --height=5 --reverse | awk 'NR==1 { print }')
+
+  if [[ -n "$stash_message" ]]; then
+    echo "git stash push -m \"$stash_message\""
+    git stash push -m "$stash_message"
+  else
+    echo "git stash push"
+    git stash push
+  fi
+}
+
+_git_rebase_in_progress() {
+  local git_dir
+  git_dir=$(git rev-parse --git-dir 2>/dev/null) || return 1
+  [[ -d "$git_dir/rebase-merge" || -d "$git_dir/rebase-apply" ]]
+}
+
+_git_rebase_action() {
+  local options=()
+  options+=("Continue")
+  options+=("Abort")
+  options+=("Skip")
+  options+=("Status")
+
+  local choice
+  choice=$(printf '%s\n' "${options[@]}" | fzf --prompt="Rebase Action: " --height=8 --reverse)
+  if [[ -z "$choice" ]]; then
+    return 0
+  fi
+
+  case "$choice" in
+    "Status")
+      echo "git status -sb"
+      git status -sb
+      ;;
+    "Continue")
+      if ! _git_rebase_in_progress; then
+        echo "No rebase in progress."
+        return 1
+      fi
+      echo "git rebase --continue"
+      git rebase --continue
+      ;;
+    "Abort")
+      if ! _git_rebase_in_progress; then
+        echo "No rebase in progress."
+        return 1
+      fi
+      echo "git rebase --abort"
+      git rebase --abort
+      ;;
+    "Skip")
+      if ! _git_rebase_in_progress; then
+        echo "No rebase in progress."
+        return 1
+      fi
+      echo "git rebase --skip"
+      git rebase --skip
+      ;;
+  esac
+}
+
+_git_log_graph_action() {
+  echo "git log --oneline --graph --decorate --all -n 50"
+  git log --oneline --graph --decorate --all -n 50
 }
 
 _git_sync_action() {
@@ -522,8 +686,10 @@ _register_git_widget git_worktree_open_widget '^gw' '^g^w'
 
 # Expose fzf-git stash picker
 if command -v fzf-git-stashes-widget >/dev/null 2>&1; then
-  bindkey '^gz' fzf-git-stashes-widget
-  bindkey '^g^z' fzf-git-stashes-widget
+  for keymap in emacs viins vicmd; do
+    bindkey -M "$keymap" '^gz' fzf-git-stashes-widget
+    bindkey -M "$keymap" '^g^z' fzf-git-stashes-widget
+  done
 fi
 
 # Interactive git-wt wrapper with fzf filtering
