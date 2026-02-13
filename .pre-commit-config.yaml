@@ -1,0 +1,151 @@
+# Pre-commit hooks configuration
+# https://pre-commit.com/
+# Install: pre-commit install
+# Run manually: pre-commit run --all-files
+
+# Global exclude patterns (aligned with mise TASK_EXCLUDES)
+exclude: '^(agents/skills/|\.worktrees/|result/|result-.*|\.luarocks/)'
+
+repos:
+  - repo: local
+    hooks:
+      # Lua formatting
+      - id: stylua
+        name: Format Lua files with StyLua
+        entry: stylua
+        language: system
+        types: [lua]
+        pass_filenames: true
+
+      # Lua linting
+      - id: luacheck
+        name: Lint Lua files with luacheck
+        entry: luacheck
+        args: ["-q"]
+        language: system
+        types: [lua]
+        pass_filenames: true
+
+      # Shell formatting (.sh files)
+      - id: shfmt
+        name: Format shell scripts with shfmt
+        entry: shfmt
+        args: ["-w", "-i", "2", "-ci", "-bn"]
+        language: system
+        types: [shell]
+        pass_filenames: true
+
+      # Zsh formatting (.zsh files)
+      - id: beautysh
+        name: Format Zsh scripts with beautysh
+        entry: beautysh
+        args: ["-i", "2"]
+        language: system
+        files: \.zsh$
+        pass_filenames: true
+        exclude: '^(zsh/\.zinit|fisher)'
+
+      # Shell linting
+      - id: shellcheck
+        name: Lint shell scripts with shellcheck
+        entry: shellcheck
+        language: system
+        types: [shell]
+        pass_filenames: true
+
+      # Zsh syntax check
+      - id: zsh-syntax
+        name: Check Zsh syntax
+        entry: zsh
+        args: ["-n"]
+        language: system
+        files: \.zsh$
+        pass_filenames: true
+        exclude: '^(zsh/\.zinit|fisher)'
+
+      # YAML linting
+      - id: yamllint
+        name: Lint YAML files with yamllint
+        entry: yamllint
+        args: ["-f", "parsable"]
+        language: system
+        types: [yaml]
+        pass_filenames: true
+
+      # Markdown linting
+      - id: markdownlint
+        name: Lint Markdown files with markdownlint-cli2
+        entry: markdownlint-cli2
+        language: system
+        types: [markdown]
+        pass_filenames: true
+
+      # Prettier (Markdown/YAML formatting)
+      - id: prettier
+        name: Format Markdown/YAML with Prettier
+        entry: prettier
+        args: ["--write", "--ignore-unknown", "--log-level", "error"]
+        language: system
+        types_or: [markdown, yaml]
+        pass_filenames: true
+
+      # Python formatting
+      - id: ruff-format
+        name: Format Python files with ruff
+        entry: bash
+        args:
+          - -c
+          - uvx ruff format "$@"
+          - --
+        language: system
+        types: [python]
+        pass_filenames: true
+
+      # Python linting
+      - id: ruff-check
+        name: Lint Python files with ruff
+        entry: bash
+        args:
+          - -c
+          - uvx ruff check --fix "$@"
+          - --
+        language: system
+        types: [python]
+        pass_filenames: true
+
+      # TOML formatting
+      - id: taplo
+        name: Format TOML files with taplo
+        entry: taplo
+        args: ["format"]
+        language: system
+        types: [toml]
+        pass_filenames: true
+
+      # TypeScript/JavaScript formatting and linting
+      - id: biome
+        name: Format and lint JS/TS with Biome
+        entry: biome
+        args: ["check", "--write"]
+        language: system
+        types_or: [javascript, jsx, typescript, tsx, json]
+        pass_filenames: true
+
+      # Dockerfile linting
+      - id: hadolint
+        name: Lint Dockerfiles with hadolint
+        entry: hadolint
+        args: ["--no-color"]
+        language: system
+        types: [dockerfile]
+        pass_filenames: true
+
+      # Markdown link checking (manual stage only - slow)
+      - id: markdown-link-check
+        name: Check Markdown links
+        entry: markdown-link-check
+        args: ["--config", ".markdown-link-check.json", "-q"]
+        language: system
+        types: [markdown]
+        pass_filenames: true
+        stages: [manual]
