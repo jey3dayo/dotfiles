@@ -100,6 +100,11 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# AI CLIs
+alias cl='claude --dangerously-skip-permissions'
+alias co='codex --yolo'
+alias cz='ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic ANTHROPIC_AUTH_TOKEN="$ZAI_API_KEY" claude --dangerously-skip-permissions'
+
 # Starship prompt (if available)
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init bash)"

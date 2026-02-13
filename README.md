@@ -19,7 +19,7 @@ High-performance development environment tuned for speed, consistency, and devel
 - Navigation: `docs/README.md`
 - Setup (SST): `docs/setup.md`
 - Performance metrics/history: `docs/performance.md`
-- Maintenance cadence & troubleshooting: `docs/maintenance.md`
+- Maintenance cadence & troubleshooting: `.claude/rules/workflows-and-maintenance.md`
 - AI steering (always loaded): `.kiro/steering/`
 - Tool inventory: `TOOLS.md`
 
@@ -175,7 +175,7 @@ mise install               # Setup language versions
 
 ## Maintenance
 
-- Operational cadence and troubleshooting live in `docs/maintenance.md`
+- Operational cadence and troubleshooting live in `.claude/rules/workflows-and-maintenance.md`
 - Weekly: `brew update && brew upgrade`, sync plugins (Sheldon/Neovim/tmux)
 - Monthly: `home-manager switch --flake ~/.config --impure`, measure shell startup, prune unused plugins
 - Rollback: `home-manager generations` to list, `home-manager switch --generation <number>` to rollback

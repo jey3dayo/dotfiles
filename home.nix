@@ -11,6 +11,8 @@
     rsync  # Required for copy-tree deployment
   ];
 
+  # Tools are installed via mise; Home Manager focuses on config distribution.
+
   # Let Home Manager manage itself
   programs.home-manager.enable = true;
 

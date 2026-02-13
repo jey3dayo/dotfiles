@@ -1,5 +1,5 @@
 ---
-paths: .kiro/steering/**/*.md, README.md, docs/README.md, docs/setup.md, docs/performance.md, docs/maintenance.md
+paths: .kiro/steering/**/*.md, README.md, docs/README.md, docs/setup.md, docs/performance.md
 ---
 
 # Project Context
@@ -20,7 +20,9 @@ Purpose: concise project overview for Claude. Scope: what this repo is, where to
 
 - Setup: `docs/setup.md`
 - Performance metrics/history: `docs/performance.md`
-- Maintenance and troubleshooting schedules: `docs/maintenance.md`
+- Maintenance schedules, workflows, and troubleshooting: `.claude/rules/workflows-and-maintenance.md`
+- Brewfile management: `.claude/rules/workflows-and-maintenance.md`
+- Tool installation policy: `.claude/rules/tools/tool-install-policy.md`
 - Documentation governance: `.claude/rules/documentation-rules.md` (rules) with `docs/README.md` for navigation
 - Tool details: `docs/tools/*.md` (Zsh, Neovim, WezTerm, SSH, FZF, Git)
 

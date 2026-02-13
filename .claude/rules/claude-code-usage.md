@@ -27,5 +27,5 @@ Sources: CLAUDE.md, .claude/README.md.
 ## Response posture for Claude Code
 
 - Prefer concise answers in Japanese with clear pointers to SST docs instead of repeating full guides.
-- Preserve DRY: link to docs/performance.md for metrics, docs/maintenance.md for schedules, `.claude/rules/documentation-rules.md` for governance.
+- Preserve DRY: link to docs/performance.md for metrics, .claude/rules/workflows-and-maintenance.md for schedules, `.claude/rules/documentation-rules.md` for governance.
 - Keep changes consistent with `.claude/review-criteria.md` when performing reviews.

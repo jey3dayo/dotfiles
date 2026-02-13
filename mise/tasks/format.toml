@@ -171,9 +171,9 @@ fi
 description = "TOML ファイルをフォーマット（TOML_FILES で対象を限定可能）"
 run = """
 if [ -n "${TOML_FILES:-}" ]; then
-  taplo format ${TOML_FILES}
+  RUST_LOG=taplo=warn taplo format ${TOML_FILES}
 else
-  fd -e toml ${TASK_EXCLUDES} -X taplo format
+  fd -e toml ${TASK_EXCLUDES} -X env RUST_LOG=taplo=warn taplo format
 fi
 """
 
@@ -181,9 +181,9 @@ fi
 description = "TOML ファイルのフォーマットチェック（書き込みなし、TOML_FILES で対象を限定可能）"
 run = """
 if [ -n "${TOML_FILES:-}" ]; then
-  taplo format --check ${TOML_FILES}
+  RUST_LOG=taplo=warn taplo format --check ${TOML_FILES}
 else
-  fd -e toml ${TASK_EXCLUDES} -X taplo format --check
+  fd -e toml ${TASK_EXCLUDES} -X env RUST_LOG=taplo=warn taplo format --check
 fi
 """
 
@@ -210,3 +210,11 @@ fi
 ["format:docs"]
 description = "ドキュメントの完全な検証とフォーマット"
 depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]
+
+["format:markdown:bold-headings"]
+description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能、デフォルト: skills）"
+run = "tsx ./agents/scripts/replace-bold-headings.ts"
+
+["format:markdown:bold-headings:check"]
+description = "Markdown ファイルの太字見出しチェック（変更なし）"
+run = "tsx ./agents/scripts/replace-bold-headings.ts --dry-run"
