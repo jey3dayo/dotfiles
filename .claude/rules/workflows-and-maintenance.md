@@ -10,8 +10,78 @@ Sources: docs/performance.md (for performance tracking).
 ## Cadence
 
 - Weekly: `brew update && brew upgrade` + `mise upgrade`; refresh plugins (`sheldon update`, `nvim --headless -c 'lua require("lazy").sync()' -c q`, tmux plugin updater).
-- Monthly: run zsh benchmarks and review config for unused items; clean logs; record metrics in docs/performance.md; `mise prune` to remove unused versions; run `home-manager switch --flake ~/.config --impure` to apply any dotfiles updates.
+- Monthly: run zsh benchmarks and review config for unused items; clean logs; record metrics in docs/performance.md; `mise prune` to remove unused versions; run `home-manager switch --flake ~/.config --impure` to apply any dotfiles updates; **Nix cleanup** (see [Nix Home Manager Maintenance](#nix-home-manager-maintenance)).
 - Quarterly: full settings audit, dependency pruning, and backup verification.
+
+## Code Quality Checks
+
+### Lua Type Checking and Error Handling
+
+#### Automated Type Checking
+
+Lua設定ファイル（Neovim、WezTerm）の型チェックは複数レイヤーで自動実行されます:
+
+**エディタ内（リアルタイム）**:
+
+- LuaLS: LSPによる型チェック（`.luarc.json`で設定）
+- nvim-lint: 保存時・挿入モード終了時に自動実行（`luacheck`）
+
+**ローカル開発**:
+
+```bash
+mise run check         # format + lint（luacheckを含む）
+mise run lint:lua      # luacheckのみ実行
+mise run format:lua    # styluaでフォーマット
+```
+
+**pre-commit（commit前）**:
+
+```bash
+pre-commit install     # 初回のみ
+# 以降、git commit時に自動実行（stylua + luacheck）
+```
+
+**CI/CD（GitHub Actions）**:
+
+- `mise run ci`で自動実行（format検証 + luacheck + busted）
+
+#### Tools Configuration
+
+| ツール   | 設定ファイル  | 用途                                 |
+| -------- | ------------- | ------------------------------------ |
+| LuaLS    | `.luarc.json` | LSP型チェック、vim APIサポート       |
+| luacheck | `.luacheckrc` | 静的解析、未使用変数検出             |
+| StyLua   | `stylua.toml` | フォーマット（120文字幅、2スペース） |
+
+#### Error Handling Patterns
+
+実装済みのgraceful degradation:
+
+1. **安全なモジュール読み込み** (`core/module_loader.lua:28-42`)
+   - `pcall`による例外処理
+   - 失敗キャッシュで重複エラー回避
+
+2. **段階的フォールバック** (`core/bootstrap.lua`)
+   - オプショナルモジュール → サイレント失敗
+   - 必須モジュール → 警告表示（非ブロッキング）
+
+3. **非ブロッキング通知**
+   - `vim.schedule`で起動をブロックしない
+
+#### Troubleshooting
+
+```bash
+# luacheckが見つからない場合
+mise run ci:install    # luacheckとbustedをインストール
+
+# エディタ内でlintが動作しない
+:LintInfo              # nvim-lintの状態確認
+:Lint                  # 手動lint実行
+
+# pre-commitエラー
+pre-commit run --all-files  # 全ファイルに対して実行
+pre-commit autoupdate       # フックの更新
+```
 
 ## Troubleshooting routing
 
@@ -259,8 +329,46 @@ brew cleanup
 - **重複回避**: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
 - **npm パッケージの完全移行完了**: 全ての開発ツール・MCP サーバー・Language Server は mise で一元管理（npm/pnpm/bun グローバルには依存しない）
 
+## Nix Home Manager Maintenance
+
+### Monthly cleanup
+
+**定期実行** (月次メンテナンス時):
+
+```bash
+# 1. 古いgenerationsを削除（90日または20世代を保持）
+echo "=== Removing old Home Manager generations ==="
+home-manager remove-generations 90d
+
+# 2. 参照されていないstoreパスを削除
+echo "=== Running garbage collection ==="
+nix-collect-garbage -d
+
+# 3. ディスク使用量を確認
+echo "=== Disk usage after cleanup ==="
+df -h /nix/store
+```
+
+**保持ポリシー**: 90日または20世代（いずれか先に到達した方）を保持
+
+### Disk usage monitoring
+
+定期的に `/nix/store` のディスク使用量を確認：
+
+| 使用率 | 状態 | アクション                            |
+| ------ | ---- | ------------------------------------- |
+| < 50%  | 正常 | 定期メンテナンスのみ                  |
+| 50-70% | 注意 | 早めにGC実行を検討                    |
+| 70-85% | 警告 | 即座にGC実行、不要なgenerationsを削除 |
+| > 85%  | 危険 | アグレッシブなクリーンアップ実施      |
+
+### 詳細ドキュメント
+
+- 運用ポリシー詳細: `.claude/rules/nix-maintenance.md`
+- ディザスタリカバリ手順: `docs/disaster-recovery.md`
+
 ## Backups and recovery
 
 - For Brewfile changes, keep dated backups before large edits.
 - Emergency shell recovery: `zsh --no-rcs` to bypass config; reinstall dependencies via `brew bundle --force`, `mise install ...`, and `home-manager switch --flake ~/.config --impure` when required.
-- Home Manager rollback: `home-manager generations` to list, `home-manager switch --generation <number>` to rollback.
+- Home Manager rollback: `home-manager generations` to list, `home-manager switch --generation <number>` to rollback; see `docs/disaster-recovery.md` for detailed recovery scenarios.
