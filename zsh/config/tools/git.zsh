@@ -29,10 +29,14 @@ _git_widget() {
 _register_git_widget() {
   local widget="$1"
   shift
+  local -a keymaps=(emacs viins vicmd)
+  local keymap key
 
   zle -N "$widget" "$widget"
   for key in "$@"; do
-    bindkey "$key" "$widget"
+    for keymap in "${keymaps[@]}"; do
+      bindkey -M "$keymap" "$key" "$widget"
+    done
   done
 }
 
