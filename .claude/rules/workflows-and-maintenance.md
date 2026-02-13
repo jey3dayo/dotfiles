@@ -93,6 +93,9 @@ pre-commit run --all-files
 
 # 特定のフックのみ実行
 pre-commit run stylua --all-files
+
+# manual stageのフックを実行（markdown-link-check）
+pre-commit run --hook-stage manual markdown-link-check --all-files
 ```
 
 #### Dual Management Strategy
@@ -104,16 +107,34 @@ pre-commit run stylua --all-files
 - pre-commit: 変更ファイルのみ高速チェック（commit時自動実行）
 - mise tasks: 全ファイル一括処理（手動/CI実行）
 
+**統合済みツール一覧**:
+
+| カテゴリ   | ツール                 | pre-commit | mise tasks | 備考             |
+| ---------- | ---------------------- | ---------- | ---------- | ---------------- |
+| Lua        | stylua, luacheck       | ✅         | ✅         | 完全統合         |
+| Shell      | shfmt, shellcheck      | ✅         | ✅         | .sh files        |
+| Zsh        | beautysh, zsh -n       | ✅         | ✅         | .zsh files       |
+| YAML       | yamllint, prettier     | ✅         | ✅         | lint → format順  |
+| Markdown   | markdownlint, prettier | ✅         | ✅         | lint → format順  |
+| Python     | ruff (format/check)    | ✅         | ✅         | 完全統合         |
+| TOML       | taplo                  | ✅         | ✅         | 完全統合         |
+| JS/TS      | biome                  | ✅         | ✅         | 完全統合         |
+| Dockerfile | hadolint               | ✅         | ✅         | 完全統合         |
+| Links      | markdown-link-check    | ✅ manual  | ✅         | 重いため手動実行 |
+
 **メンテナンス時の注意**:
 
 ツールの引数や設定を変更する際は**両方**を更新してください：
 
-| 変更内容         | 更新が必要なファイル                                              |
-| ---------------- | ----------------------------------------------------------------- |
-| luacheckの引数   | `.pre-commit-config.yaml` + `mise/tasks/lint.toml`                |
-| styluaの引数     | `.pre-commit-config.yaml` + `mise/tasks/format.toml`              |
-| 除外パス         | `.pre-commit-config.yaml` + `mise/tasks/env.toml` (TASK_EXCLUDES) |
-| 新しいツール追加 | `.pre-commit-config.yaml` + 該当するmiseタスク                    |
+| 変更内容         | 更新が必要なファイル                                                        |
+| ---------------- | --------------------------------------------------------------------------- |
+| luacheckの引数   | `.pre-commit-config.yaml` + `mise/tasks/lint.toml`                          |
+| styluaの引数     | `.pre-commit-config.yaml` + `mise/tasks/format.toml`                        |
+| prettierの引数   | `.pre-commit-config.yaml` + `mise/tasks/format.toml`                        |
+| beautyshの引数   | `.pre-commit-config.yaml` + `mise/tasks/format.toml`                        |
+| hadolintの引数   | `.pre-commit-config.yaml` + `mise/tasks/lint.toml`                          |
+| 除外パス         | `.pre-commit-config.yaml` (exclude) + `mise/tasks/env.toml` (TASK_EXCLUDES) |
+| 新しいツール追加 | `.pre-commit-config.yaml` + 該当するmiseタスク                              |
 
 **チェックリスト**（ツール設定変更時）:
 
