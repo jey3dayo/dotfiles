@@ -111,13 +111,16 @@ description = "Lua ファイルをチェック（luacheck）"
 depends = ["lint:lua:luacheck"]
 
 ["lint:lua:luacheck"]
-description = "luacheck を実行（利用可能な場合）"
+description = "luacheck を実行（必須）"
 run = """
-if command -v luacheck >/dev/null 2>&1; then
-  if [ -n "${LUA_FILES:-}" ]; then
-    luacheck -q ${LUA_FILES}
-  else
-    fd --hidden -e lua ${TASK_EXCLUDES} -X luacheck -q
-  fi
+if ! command -v luacheck >/dev/null 2>&1; then
+  echo "❌ luacheck not found. Run: mise run ci:install"
+  exit 1
+fi
+
+if [ -n "${LUA_FILES:-}" ]; then
+  luacheck -q ${LUA_FILES}
+else
+  fd --hidden -e lua ${TASK_EXCLUDES} -X luacheck -q
 fi
 """
