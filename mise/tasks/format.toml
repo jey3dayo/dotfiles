@@ -212,7 +212,7 @@ description = "ドキュメントの完全な検証とフォーマット"
 depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]
 
 ["format:markdown:bold-headings"]
-description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能）"
+description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能、デフォルト: skills）"
 run = "tsx ./agents/scripts/replace-bold-headings.ts"
 
 ["format:markdown:bold-headings:check"]
