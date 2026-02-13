@@ -125,7 +125,7 @@ mise ls                 # List all mise-managed tools
 
 ## Maintenance
 
-- 定期メンテナンスとトラブルシューティングのSSTは [Maintenance Guide](maintenance.md)
+- 定期メンテナンスとトラブルシューティングのSSTは [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md)
 - パフォーマンス測定・改善履歴・診断手順のSSTは [Performance](performance.md)
 - セットアップ直後の健全性チェック:
 
@@ -162,4 +162,4 @@ eval "$(/usr/local/bin/brew shellenv)"
 
 ### その他のトラブルシューティング
 
-詳細なトラブルシューティング手順は [Maintenance Guide](maintenance.md) を参照してください。
+詳細なトラブルシューティング手順は [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) を参照してください。

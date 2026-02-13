@@ -300,12 +300,10 @@ python3 scripts/github_integration.py \
 ### 短期（1-2週間）
 
 1. **バッチモードの実装**
-
    - 全質問一括提示
    - ユーザーが一度に回答
 
 2. **Selectiveモードの実装**
-
    - GitHub Issues作成時にインタラクティブに選択
 
 3. **MCP Serena実装の完成**
@@ -315,12 +313,10 @@ python3 scripts/github_integration.py \
 ### 中期（1-2ヶ月）
 
 1. **学習機能**
-
    - 過去のセッション履歴から学習
    - よくカバーされる質問は優先度DOWN
 
 2. **カスタム質問プール**
-
    - プロジェクト固有の質問を追加
    - `.premortem/custom-questions.yaml`
 
@@ -331,12 +327,10 @@ python3 scripts/github_integration.py \
 ### 長期（3ヶ月以上）
 
 1. **AIベースの質問生成**
-
    - LLMでプロジェクト特化質問を動的生成
    - 質問プールの自動更新
 
 2. **チーム知識ベース統合**
-
    - チーム内の過去プロジェクトから学習
    - ドメイン特化の質問強化
 
@@ -376,15 +370,12 @@ python3 scripts/github_integration.py \
 ## 既知の制限事項
 
 1. **質問プールの更新**
-
    - 定期的な更新が必要（新技術、新ベストプラクティス）
 
 2. **ドメインカバレッジ**
-
    - 組み込み、ゲーム開発等は質問が限定的
 
 3. **信頼度の限界**
-
    - ヒューリスティックベース（完璧ではない）
    - プロジェクトドキュメントの品質に依存
 
@@ -408,7 +399,7 @@ python3 scripts/github_integration.py \
 
 ## 参考資料
 
-- [計画書](../../../.claude.code/plan-*.md): リファクタ計画の詳細
+- 計画書（`.claude.code/plan-*.md`）: リファクタ計画の詳細（セッション終了後に削除された履歴的参照）
 - `SKILL.md`: ユーザー向けドキュメント
 - `references/frameworks/`: 分析フレームワークの詳細
 

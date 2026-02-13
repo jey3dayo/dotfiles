@@ -31,7 +31,7 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 #### 🔧 Operational Guides
 
 - **[Performance](performance.md)** - 詳細メトリクス、ベンチマーク、最適化履歴
-- **[Maintenance](maintenance.md)** - 定期メンテナンス、トラブルシューティング、更新履歴
+- **[Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md)** - 定期メンテナンス、トラブルシューティング、更新履歴
 
 #### 📋 Documentation Governance
 
@@ -68,11 +68,11 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 
 1. [Steering Documents](../.kiro/steering/) で全体像を把握
 2. [Performance](performance.md) で最適化を確認
-3. [Maintenance](maintenance.md) で運用を理解
+3. [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) で運用を理解
 
 ### トラブルシューティング
 
-1. [Maintenance Guide](maintenance.md) でよくある問題を確認
+1. [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) でよくある問題を確認
 2. Tool-specific docs で詳細を調査
 
 ## 📊 Performance

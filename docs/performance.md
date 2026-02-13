@@ -5,7 +5,7 @@
 **タグ**: `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
 
 パフォーマンス測定、監視、最適化のための包括的ガイドです。
-測定手順・改善履歴・トラブルシュートの単一情報源は本書で管理し、実行スケジュールは [Maintenance](maintenance.md) を参照します。
+測定手順・改善履歴・トラブルシュートの単一情報源は本書で管理し、実行スケジュールは [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) を参照します。
 
 ## 📊 Current Performance Metrics
 
@@ -279,7 +279,7 @@ top -l 1 | grep PhysMem
 
 - [Zsh Configuration](tools/zsh.md) - 詳細な最適化戦略
 - [Neovim Configuration](tools/nvim.md) - プラグイン最適化
-- [Maintenance Guide](maintenance.md) - 定期メンテナンス
+- [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) - 定期メンテナンス
 - [Documentation Rules](../.claude/rules/documentation-rules.md) - ドキュメント管理
 
 ---

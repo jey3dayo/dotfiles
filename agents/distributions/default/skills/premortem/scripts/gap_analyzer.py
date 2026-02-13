@@ -8,22 +8,15 @@ and identifies gaps between current project state and best practices.
 
 import argparse
 import json
-import re
 from dataclasses import dataclass, asdict
 from enum import Enum
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple
 
-try:
-    import yaml
-    YAML_AVAILABLE = True
-except ImportError:
-    YAML_AVAILABLE = False
-    print("Warning: PyYAML not installed. Using JSON fallback.")
-
 
 class GapStatus(Enum):
     """Gap analysis status"""
+
     COVERED = "covered"  # Already addressed in project
     NEEDS_CLARIFICATION = "needs_clarification"  # Partially addressed
     MISSING = "missing"  # Not addressed at all
@@ -33,6 +26,7 @@ class GapStatus(Enum):
 @dataclass
 class AutoAnswer:
     """Automatically inferred answer from project files"""
+
     text: str
     confidence: float  # 0.0-1.0
     sources: List[str]  # File paths that contributed to the answer
@@ -41,6 +35,7 @@ class AutoAnswer:
 @dataclass
 class Gap:
     """Identified gap in project planning"""
+
     question_id: str
     question_text: str
     status: GapStatus
@@ -65,7 +60,7 @@ class ProjectFileAnalyzer:
             return None
 
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read(max_chars)
                 self.file_cache[file_path] = content
                 return content
@@ -115,9 +110,7 @@ class ProjectFileAnalyzer:
         return relevant_files
 
     def extract_relevant_content(
-        self,
-        file_path: Path,
-        question: Dict
+        self, file_path: Path, question: Dict
     ) -> Optional[Tuple[str, float]]:
         """
         Extract content relevant to the question
@@ -144,7 +137,7 @@ class ProjectFileAnalyzer:
 
         # Extract relevant paragraphs
         relevant_paragraphs = []
-        paragraphs = content.split('\n\n')
+        paragraphs = content.split("\n\n")
 
         for para in paragraphs:
             para_lower = para.lower()
@@ -152,7 +145,7 @@ class ProjectFileAnalyzer:
                 relevant_paragraphs.append(para.strip())
 
         if relevant_paragraphs:
-            return ('\n\n'.join(relevant_paragraphs[:5]), relevance_score)
+            return ("\n\n".join(relevant_paragraphs[:5]), relevance_score)
 
         return None
 
@@ -163,11 +156,7 @@ class GapAnalyzer:
     def __init__(self):
         self.file_analyzer = ProjectFileAnalyzer()
 
-    def infer_answer(
-        self,
-        question: Dict,
-        project_files: List[Path]
-    ) -> AutoAnswer:
+    def infer_answer(self, question: Dict, project_files: List[Path]) -> AutoAnswer:
         """
         Automatically infer answer from project files
 
@@ -194,7 +183,7 @@ class GapAnalyzer:
             return AutoAnswer(
                 text="No relevant information found in project files.",
                 confidence=0.0,
-                sources=[]
+                sources=[],
             )
 
         # Average confidence across sources
@@ -203,16 +192,10 @@ class GapAnalyzer:
         answer_text = "\n\n---\n\n".join(answer_parts)
 
         return AutoAnswer(
-            text=answer_text,
-            confidence=min(avg_confidence, 1.0),
-            sources=sources
+            text=answer_text, confidence=min(avg_confidence, 1.0), sources=sources
         )
 
-    def calculate_coverage(
-        self,
-        question: Dict,
-        auto_answer: AutoAnswer
-    ) -> float:
+    def calculate_coverage(self, question: Dict, auto_answer: AutoAnswer) -> float:
         """
         Calculate how well the question is covered (0.0-1.0)
 
@@ -239,10 +222,7 @@ class GapAnalyzer:
         return min(coverage, 1.0)
 
     def classify_gap(
-        self,
-        question: Dict,
-        auto_answer: AutoAnswer,
-        coverage: float
+        self, question: Dict, auto_answer: AutoAnswer, coverage: float
     ) -> GapStatus:
         """Classify gap based on coverage and confidence"""
 
@@ -261,10 +241,7 @@ class GapAnalyzer:
             return GapStatus.MISSING
 
     def generate_recommendation(
-        self,
-        question: Dict,
-        gap_status: GapStatus,
-        auto_answer: AutoAnswer
+        self, question: Dict, gap_status: GapStatus, auto_answer: AutoAnswer
     ) -> str:
         """Generate actionable recommendation"""
 
@@ -302,15 +279,11 @@ class GapAnalyzer:
 
         else:  # NOT_APPLICABLE
             return (
-                f"ℹ️ This question may not apply to your project. "
-                f"Verify and mark as not applicable if confirmed."
+                "ℹ️ This question may not apply to your project. "
+                "Verify and mark as not applicable if confirmed."
             )
 
-    def analyze_gap(
-        self,
-        question: Dict,
-        project_files: List[Path]
-    ) -> Gap:
+    def analyze_gap(self, question: Dict, project_files: List[Path]) -> Gap:
         """
         Perform complete gap analysis for a question
 
@@ -331,9 +304,7 @@ class GapAnalyzer:
         gap_status = self.classify_gap(question, auto_answer, coverage)
 
         # Step 4: Generate recommendation
-        recommendation = self.generate_recommendation(
-            question, gap_status, auto_answer
-        )
+        recommendation = self.generate_recommendation(question, gap_status, auto_answer)
 
         return Gap(
             question_id=question.get("id", "UNKNOWN"),
@@ -342,13 +313,11 @@ class GapAnalyzer:
             auto_answer=auto_answer if auto_answer.confidence > 0 else None,
             coverage=coverage,
             recommendation=recommendation,
-            priority=question.get("priority", "medium")
+            priority=question.get("priority", "medium"),
         )
 
     def analyze_all_questions(
-        self,
-        questions: List[Dict],
-        project_root: Path = Path(".")
+        self, questions: List[Dict], project_root: Path = Path(".")
     ) -> List[Gap]:
         """
         Analyze all questions and return gaps
@@ -378,19 +347,10 @@ def main():
         description="Analyze gaps between project state and premortem questions"
     )
     parser.add_argument(
-        "--questions",
-        required=True,
-        help="JSON file with selected questions"
+        "--questions", required=True, help="JSON file with selected questions"
     )
-    parser.add_argument(
-        "--output",
-        help="Output file path (JSON)"
-    )
-    parser.add_argument(
-        "--project-root",
-        default=".",
-        help="Project root directory"
-    )
+    parser.add_argument("--output", help="Output file path (JSON)")
+    parser.add_argument("--project-root", default=".", help="Project root directory")
 
     args = parser.parse_args()
 
@@ -401,10 +361,7 @@ def main():
 
     # Perform gap analysis
     analyzer = GapAnalyzer()
-    gaps = analyzer.analyze_all_questions(
-        questions,
-        Path(args.project_root)
-    )
+    gaps = analyzer.analyze_all_questions(questions, Path(args.project_root))
 
     # Convert to dict for JSON serialization
     result = {
@@ -412,7 +369,7 @@ def main():
             {
                 **asdict(gap),
                 "status": gap.status.value,
-                "auto_answer": asdict(gap.auto_answer) if gap.auto_answer else None
+                "auto_answer": asdict(gap.auto_answer) if gap.auto_answer else None,
             }
             for gap in gaps
         ],
@@ -426,12 +383,12 @@ def main():
             "not_applicable": sum(
                 1 for g in gaps if g.status == GapStatus.NOT_APPLICABLE
             ),
-        }
+        },
     }
 
     # Output
     if args.output:
-        with open(args.output, 'w') as f:
+        with open(args.output, "w") as f:
             json.dump(result, f, indent=2, ensure_ascii=False)
     else:
         print(json.dumps(result, indent=2, ensure_ascii=False))

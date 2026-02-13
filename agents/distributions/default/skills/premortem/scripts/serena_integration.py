@@ -9,13 +9,13 @@ gap detection with codebase-level insights.
 import json
 import subprocess
 from dataclasses import dataclass
-from pathlib import Path
 from typing import List, Dict, Optional
 
 
 @dataclass
 class SerenaSymbol:
     """Symbol found by Serena"""
+
     name: str
     kind: str  # "function", "class", "interface", etc.
     file_path: str
@@ -26,6 +26,7 @@ class SerenaSymbol:
 @dataclass
 class SerenaSearchResult:
     """Result from Serena search"""
+
     query: str
     symbols: List[SerenaSymbol]
     success: bool
@@ -66,10 +67,7 @@ class SerenaClient:
         # TODO: Implement actual Serena API call
         # Example: mcp__serena__find_symbol(symbol_name)
         return SerenaSearchResult(
-            query=symbol_name,
-            symbols=[],
-            success=False,
-            error="Serena not available"
+            query=symbol_name, symbols=[], success=False, error="Serena not available"
         )
 
     def _fallback_search(self, pattern: str) -> SerenaSearchResult:
@@ -88,63 +86,56 @@ class SerenaClient:
                 [
                     "rg",
                     "--json",
-                    "--max-count", "10",
-                    "--type-add", "code:*.{ts,tsx,js,jsx,py,go,rs,java}",
-                    "--type", "code",
-                    pattern
+                    "--max-count",
+                    "10",
+                    "--type-add",
+                    "code:*.{ts,tsx,js,jsx,py,go,rs,java}",
+                    "--type",
+                    "code",
+                    pattern,
                 ],
                 capture_output=True,
                 text=True,
-                timeout=5
+                timeout=5,
             )
 
             symbols = []
             if result.returncode == 0:
-                for line in result.stdout.strip().split('\n'):
+                for line in result.stdout.strip().split("\n"):
                     if not line:
                         continue
                     try:
                         match = json.loads(line)
                         if match.get("type") == "match":
                             data = match.get("data", {})
-                            symbols.append(SerenaSymbol(
-                                name=pattern,
-                                kind="unknown",
-                                file_path=data.get("path", {}).get("text", ""),
-                                line=data.get("line_number", 0),
-                                documentation=None
-                            ))
+                            symbols.append(
+                                SerenaSymbol(
+                                    name=pattern,
+                                    kind="unknown",
+                                    file_path=data.get("path", {}).get("text", ""),
+                                    line=data.get("line_number", 0),
+                                    documentation=None,
+                                )
+                            )
                     except json.JSONDecodeError:
                         continue
 
             return SerenaSearchResult(
-                query=pattern,
-                symbols=symbols,
-                success=True,
-                error=None
+                query=pattern, symbols=symbols, success=True, error=None
             )
 
         except subprocess.TimeoutExpired:
             return SerenaSearchResult(
-                query=pattern,
-                symbols=[],
-                success=False,
-                error="Search timeout"
+                query=pattern, symbols=[], success=False, error="Search timeout"
             )
         except FileNotFoundError:
             # ripgrep not available, return empty result
             return SerenaSearchResult(
-                query=pattern,
-                symbols=[],
-                success=False,
-                error="ripgrep not available"
+                query=pattern, symbols=[], success=False, error="ripgrep not available"
             )
         except Exception as e:
             return SerenaSearchResult(
-                query=pattern,
-                symbols=[],
-                success=False,
-                error=str(e)
+                query=pattern, symbols=[], success=False, error=str(e)
             )
 
     def search_for_pattern(self, pattern: str) -> SerenaSearchResult:
@@ -240,9 +231,7 @@ class SerenaEnhancedAnalyzer:
         return results
 
     def enhance_auto_answer(
-        self,
-        auto_answer: str,
-        codebase_results: Dict[str, List[SerenaSymbol]]
+        self, auto_answer: str, codebase_results: Dict[str, List[SerenaSymbol]]
     ) -> str:
         """
         Enhance auto answer with codebase findings

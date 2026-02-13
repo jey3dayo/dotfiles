@@ -11,12 +11,12 @@ import json
 import subprocess
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import Path
 from typing import List, Dict, Optional
 
 
 class IssueCreationMode(Enum):
     """Mode for creating issues"""
+
     ALL = "all"  # Create issues for all gaps
     CRITICAL_HIGH = "critical_high"  # Only critical and high priority
     SELECTIVE = "selective"  # Let user select interactively
@@ -26,6 +26,7 @@ class IssueCreationMode(Enum):
 @dataclass
 class GitHubIssue:
     """GitHub Issue data"""
+
     title: str
     body: str
     labels: List[str]
@@ -42,10 +43,7 @@ class GitHubClient:
         """Check if gh CLI is available and authenticated"""
         try:
             result = subprocess.run(
-                ["gh", "auth", "status"],
-                capture_output=True,
-                text=True,
-                timeout=5
+                ["gh", "auth", "status"], capture_output=True, text=True, timeout=5
             )
             return result.returncode == 0
         except (FileNotFoundError, subprocess.TimeoutExpired):
@@ -68,9 +66,13 @@ class GitHubClient:
         try:
             # Build gh issue create command
             cmd = [
-                "gh", "issue", "create",
-                "--title", issue.title,
-                "--body", issue.body,
+                "gh",
+                "issue",
+                "create",
+                "--title",
+                issue.title,
+                "--body",
+                issue.body,
             ]
 
             # Add labels
@@ -78,12 +80,7 @@ class GitHubClient:
                 cmd.extend(["--label", label])
 
             # Execute command
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
 
             if result.returncode == 0:
                 # gh returns the issue URL
@@ -118,7 +115,7 @@ class GitHubClient:
                 ["gh", "issue", "list", "--search", title, "--json", "url,title"],
                 capture_output=True,
                 text=True,
-                timeout=10
+                timeout=10,
             )
 
             if result.returncode == 0:
@@ -149,21 +146,16 @@ class IssueGenerator:
         Returns:
             Formatted title
         """
-        question_id = gap.get("question_id", "UNKNOWN")
         priority = gap.get("priority", "medium")
-        status = gap.get("status", "missing")
 
         # Emoji prefix based on priority
-        prefix = {
-            "critical": "🔴",
-            "high": "🟠",
-            "medium": "🟡",
-            "low": "🟢"
-        }.get(priority, "📝")
+        prefix = {"critical": "🔴", "high": "🟠", "medium": "🟡", "low": "🟢"}.get(
+            priority, "📝"
+        )
 
         # Extract first line of question as short title
         question_text = gap.get("question_text", "")
-        first_line = question_text.split('\n')[0][:80]
+        first_line = question_text.split("\n")[0][:80]
 
         return f"{prefix} [Premortem] {first_line}"
 
@@ -260,9 +252,7 @@ class IssueGenerator:
         return labels
 
     def create_issue_from_gap(
-        self,
-        gap: Dict,
-        check_existing: bool = True
+        self, gap: Dict, check_existing: bool = True
     ) -> Optional[str]:
         """
         Create GitHub Issue from gap
@@ -288,15 +278,13 @@ class IssueGenerator:
             title=title,
             body=self.format_issue_body(gap),
             labels=self.determine_labels(gap),
-            priority=gap.get("priority", "medium")
+            priority=gap.get("priority", "medium"),
         )
 
         return self.gh_client.create_issue(issue)
 
     def create_issues_from_gaps(
-        self,
-        gaps: List[Dict],
-        mode: IssueCreationMode = IssueCreationMode.SELECTIVE
+        self, gaps: List[Dict], mode: IssueCreationMode = IssueCreationMode.SELECTIVE
     ) -> Dict[str, List[str]]:
         """
         Create GitHub Issues from multiple gaps
@@ -308,11 +296,7 @@ class IssueGenerator:
         Returns:
             Dict with "created" and "skipped" lists of issue URLs
         """
-        result = {
-            "created": [],
-            "skipped": [],
-            "errors": []
-        }
+        result = {"created": [], "skipped": [], "errors": []}
 
         # Filter gaps based on mode
         filtered_gaps = self._filter_gaps_by_mode(gaps, mode)
@@ -332,9 +316,7 @@ class IssueGenerator:
         return result
 
     def _filter_gaps_by_mode(
-        self,
-        gaps: List[Dict],
-        mode: IssueCreationMode
+        self, gaps: List[Dict], mode: IssueCreationMode
     ) -> List[Dict]:
         """Filter gaps based on creation mode"""
 
@@ -343,7 +325,8 @@ class IssueGenerator:
 
         elif mode == IssueCreationMode.CRITICAL_HIGH:
             return [
-                g for g in gaps
+                g
+                for g in gaps
                 if g.get("priority") in ["critical", "high"]
                 and g.get("status") != "covered"
             ]
@@ -362,20 +345,16 @@ def main():
         description="Create GitHub Issues from premortem gap analysis"
     )
     parser.add_argument(
-        "--gaps",
-        required=True,
-        help="JSON file with gap analysis results"
+        "--gaps", required=True, help="JSON file with gap analysis results"
     )
     parser.add_argument(
         "--mode",
         choices=["all", "critical_high", "selective", "none"],
         default="selective",
-        help="Issue creation mode"
+        help="Issue creation mode",
     )
     parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Print issues without creating them"
+        "--dry-run", action="store_true", help="Print issues without creating them"
     )
 
     args = parser.parse_args()

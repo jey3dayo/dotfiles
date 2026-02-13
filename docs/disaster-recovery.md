@@ -222,6 +222,7 @@ nix run home-manager -- switch --flake ~/.config --impure
 - 初回実行時は大量のパッケージがダウンロードされる
 - ネットワーク速度により時間がかかる
 - エラーが発生した場合は、flake.lockを削除して再試行:
+
   ```bash
   cd ~/.config
   rm flake.lock
