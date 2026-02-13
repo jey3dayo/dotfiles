@@ -171,9 +171,9 @@ fi
 description = "TOML ファイルをフォーマット（TOML_FILES で対象を限定可能）"
 run = """
 if [ -n "${TOML_FILES:-}" ]; then
-  taplo format ${TOML_FILES}
+  RUST_LOG=taplo=warn taplo format ${TOML_FILES}
 else
-  fd -e toml ${TASK_EXCLUDES} -X taplo format
+  fd -e toml ${TASK_EXCLUDES} -X env RUST_LOG=taplo=warn taplo format
 fi
 """
 
@@ -181,9 +181,9 @@ fi
 description = "TOML ファイルのフォーマットチェック（書き込みなし、TOML_FILES で対象を限定可能）"
 run = """
 if [ -n "${TOML_FILES:-}" ]; then
-  taplo format --check ${TOML_FILES}
+  RUST_LOG=taplo=warn taplo format --check ${TOML_FILES}
 else
-  fd -e toml ${TASK_EXCLUDES} -X taplo format --check
+  fd -e toml ${TASK_EXCLUDES} -X env RUST_LOG=taplo=warn taplo format --check
 fi
 """
 

@@ -1,5 +1,5 @@
 ---
-paths: mise/**/*, .mise.toml, scripts/setup-mise-env.sh, zsh/.zshenv, bash/.bashrc, docs/setup.md, docs/maintenance.md, docs/tools/mise.md
+paths: mise/**/*, .mise.toml, scripts/setup-mise-env.sh, zsh/.zshenv, bash/.bashrc, docs/setup.md, docs/tools/mise.md
 ---
 
 # Mise Rules
@@ -519,4 +519,4 @@ mise doctor               # Check for issues
 
 - Official docs: <https://mise.jdx.dev>
 - Project-specific mise usage: `docs/setup.md`
-- Maintenance workflows: `docs/maintenance.md`
+- Maintenance workflows: `.claude/rules/workflows-and-maintenance.md`

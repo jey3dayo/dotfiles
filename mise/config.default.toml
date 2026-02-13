@@ -48,6 +48,7 @@ uvx = true
 go = "1.25.5"
 node = "lts"
 python = "3.14"
+rust = "stable" # rustfmt (nvim conform) and cargo:* tool installs
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"
 # luajit = "latest"

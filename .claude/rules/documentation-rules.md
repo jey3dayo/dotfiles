@@ -36,7 +36,7 @@ Sources: docs/README.md.
 
 - Setup steps live in docs/setup.md; READMEs should link instead of repeating commands.
 - Performance metrics and history live in docs/performance.md; other docs reference it without duplicating numbers.
-- Maintenance schedules and troubleshooting live in docs/maintenance.md; repeat only pointers elsewhere.
+- Maintenance schedules and troubleshooting live in .claude/rules/workflows-and-maintenance.md; repeat only pointers elsewhere.
 - Tool details belong in docs/tools/\*.md; cross-reference from other docs.
 - Documentation governance stays in this file; keep docs/README.md as the lightweight human navigation page.
 

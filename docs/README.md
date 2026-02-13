@@ -52,7 +52,7 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 
 - **Setup**: `docs/setup.md` に全て集約（README ではリンクのみ）
 - **Performance**: `docs/performance.md` にメトリクス・履歴を一本化
-- **Maintenance**: `docs/maintenance.md` に定期/臨時タスクを集約
+- **Maintenance**: `.claude/rules/workflows-and-maintenance.md` に定期/臨時タスクを集約
 - **Documentation rules**: `.claude/rules/documentation-rules.md` にタグ/メタデータ/チェックリストを集約
 - **Tool details**: `docs/tools/*.md` にツール固有の設定・最適化を集約
 
