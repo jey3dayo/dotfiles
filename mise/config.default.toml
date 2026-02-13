@@ -153,7 +153,6 @@ yamllint = "latest"
 # ========================================
 # Cargo-based Tools (Rust CLI ユーティリティ)
 # ========================================
-# 注: bat, ripgrep, eza, hexyl, zoxide, typos-lsp は Homebrew で管理
 "cargo:bandwhich" = "latest"
 "cargo:needle-cli" = "latest"
 "cargo:similarity-ts" = "latest"
@@ -164,15 +163,20 @@ yamllint = "latest"
 # CLI Tools (コマンドラインユーティリティ)
 # ========================================
 aws-cli = "latest"
+bat = "latest"
 eza = "latest"
 fd = "latest"
 "go:github.com/k1LoW/git-wt" = "latest"
 "go:golang.org/x/tools/cmd/goimports" = "latest"
 "github:cli/cli" = "latest"
+hexyl = "latest"
 jq = "latest"
 opencode = "latest"
+ripgrep = "latest"
 usage = "latest"
+"cargo:typos-lsp" = "latest"
 yazi = "latest"
+zoxide = "latest"
 
 # ========================================
 # タスク設定 (Task Configuration)
