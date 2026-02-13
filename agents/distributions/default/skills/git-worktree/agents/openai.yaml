@@ -1,0 +1,147 @@
+# OpenAI Metadata for git-worktree skill
+# Generated on 2026-02-14
+
+name: git-worktree
+display_name: Git Worktree Management
+short_description: Manage multiple Git working trees with git-wt and native worktree commands
+description: |
+  Comprehensive Git worktree management using git-wt (k1LoW) and native git worktree commands.
+  Supports parallel feature development, AI agent workflows, PR reviews, and CI/CD integration.
+
+  Key Features:
+  - Create and manage multiple worktrees for parallel development
+  - Switch between worktrees without stashing
+  - Hooks for automated setup and cleanup
+  - Shell integration (Zsh) for interactive workflows
+  - Configuration management and troubleshooting
+
+  Use Cases:
+  - Working on multiple features simultaneously
+  - PR review without affecting current work
+  - Hotfix development without disrupting feature work
+  - AI agent parallel task execution
+  - CI/CD parallel builds and tests
+
+categories:
+  - Development Tools
+  - Git Workflow
+  - Developer Productivity
+
+keywords:
+  - git
+  - worktree
+  - git-wt
+  - parallel development
+  - branch isolation
+  - feature branches
+  - ai-agent
+  - workflow automation
+
+trigger_keywords:
+  - worktree
+  - git-wt
+  - parallel branches
+  - multiple branches
+  - branch isolation
+  - .worktrees
+
+version: 1.0.0
+last_updated: 2026-02-14
+
+default_prompt: |
+  Help me set up git worktree for parallel feature development. I want to:
+  1. Configure the .worktrees directory
+  2. Learn basic worktree operations
+  3. Set up hooks for automated dependency installation
+
+resources:
+  - name: SKILL.md
+    type: documentation
+    description: Main skill documentation with quick start and core concepts
+    size_estimate: 300 lines
+
+  - name: references/git-wt-commands.md
+    type: reference
+    description: Complete command reference for git-wt
+    size_estimate: 370 lines
+
+  - name: references/configuration.md
+    type: reference
+    description: Configuration options for git-wt and git worktree
+    size_estimate: 450 lines
+
+  - name: references/workflows.md
+    type: reference
+    description: Practical workflow patterns and use cases
+    size_estimate: 550 lines
+
+  - name: references/troubleshooting.md
+    type: reference
+    description: Troubleshooting guide for common issues
+    size_estimate: 650 lines
+
+  - name: scripts/check-worktree-config.sh
+    type: script
+    description: Diagnostic tool for worktree configuration validation
+    executable: true
+
+dependencies:
+  required:
+    - name: git
+      version: ">=2.30"
+      description: Git version control system with worktree support
+
+  optional:
+    - name: git-wt
+      version: ">=0.15.0"
+      description: Enhanced git worktree wrapper by k1LoW
+      install: mise install go:github.com/k1LoW/git-wt@latest
+
+    - name: fzf
+      description: Fuzzy finder for interactive worktree selection
+      install: brew install fzf (or package manager of choice)
+
+integration:
+  zsh:
+    functions:
+      - gwt: git-wt alias
+      - gwtl: git wt list
+      - gwtc: git wt create (interactive)
+      - gwts: git wt switch (interactive)
+      - gwtr: git wt remove (interactive)
+    source: ~/.config/zsh/config/tools/git.zsh
+
+  git_config:
+    - key: wt.basedir
+      value: .worktrees
+      scope: local
+      description: Base directory for worktrees
+
+    - key: wt.autoSetupRemote
+      value: true
+      scope: local
+      description: Automatically set up remote tracking
+
+    - key: worktree.guessRemote
+      value: true
+      scope: global
+      description: Guess remote branch when creating worktree
+
+  ignore_files:
+    - .gitignore: .worktrees/
+    - .fdignore: .worktrees/
+    - .prettierignore: .worktrees/
+
+author:
+  name: Claude Code User
+  created: 2026-02-14
+
+license: MIT
+
+tags:
+  - git
+  - worktree
+  - productivity
+  - workflow
+  - parallel-development
+  - ai-agent-workflows
