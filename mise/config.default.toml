@@ -153,6 +153,7 @@ yamllint = "latest"
 # ========================================
 # Cargo-based Tools (Rust CLI ユーティリティ)
 # ========================================
+# 注: typos-lsp は Homebrew で管理
 "cargo:bandwhich" = "latest"
 "cargo:needle-cli" = "latest"
 "cargo:similarity-ts" = "latest"
@@ -174,7 +175,6 @@ jq = "latest"
 opencode = "latest"
 ripgrep = "latest"
 usage = "latest"
-"cargo:typos-lsp" = "latest"
 yazi = "latest"
 zoxide = "latest"
 
