@@ -44,6 +44,28 @@ def format_report(session_data: Dict, output_format: str = "markdown") -> str:
     )
     report_lines.append("")
 
+    # Executive Summary (if gap analysis available)
+    gap_summary = session_data.get("gap_summary", {})
+    if gap_summary:
+        report_lines.append("## Executive Summary")
+        report_lines.append("")
+        total = gap_summary.get("total", 0)
+        covered = gap_summary.get("covered", 0)
+        needs_clarification = gap_summary.get("needs_clarification", 0)
+        missing = gap_summary.get("missing", 0)
+
+        report_lines.append(f"**Total Questions Analyzed**: {total}")
+        report_lines.append(f"- ✅ Already Covered: {covered}")
+        report_lines.append(f"- ⚠️ Needs Clarification: {needs_clarification}")
+        report_lines.append(f"- 🔴 Missing/Not Addressed: {missing}")
+        report_lines.append("")
+
+        # Coverage percentage
+        if total > 0:
+            coverage_pct = (covered / total) * 100
+            report_lines.append(f"**Overall Coverage**: {coverage_pct:.1f}%")
+            report_lines.append("")
+
     # Project Context
     context = session_data.get("context", {})
     report_lines.append("## Project Context")
@@ -56,8 +78,14 @@ def format_report(session_data: Dict, output_format: str = "markdown") -> str:
     report_lines.append(f"**Description**: {context.get('description', 'N/A')}")
     report_lines.append("")
 
-    # Findings by risk level
+    # Findings - support both old and new formats
+    gaps = session_data.get("gaps", [])
     findings = session_data.get("findings", [])
+
+    # Convert gaps to findings format if gaps exist
+    if gaps and not findings:
+        findings = convert_gaps_to_findings(gaps)
+
     critical = [f for f in findings if f.get("risk_level") == "critical"]
     medium = [f for f in findings if f.get("risk_level") == "medium"]
     low = [f for f in findings if f.get("risk_level") == "low"]
@@ -132,6 +160,54 @@ def format_report(session_data: Dict, output_format: str = "markdown") -> str:
     report_lines.append("")
 
     return "\n".join(report_lines)
+
+
+def convert_gaps_to_findings(gaps: List[Dict]) -> List[Dict]:
+    """
+    Convert gap analysis results to findings format
+
+    Args:
+        gaps: List of gap dicts from gap_analyzer
+
+    Returns:
+        List of findings compatible with old format
+    """
+    findings = []
+
+    for gap in gaps:
+        status = gap.get("status", "missing")
+        priority = gap.get("priority", "medium")
+
+        # Map status to risk_level
+        if status == "covered":
+            risk_level = "covered"
+        elif status == "needs_clarification":
+            risk_level = "medium"
+        elif status == "missing":
+            risk_level = "critical" if priority == "critical" else "high"
+        else:  # not_applicable
+            continue  # Skip non-applicable questions
+
+        auto_answer = gap.get("auto_answer", {})
+        sources = auto_answer.get("sources", []) if auto_answer else []
+
+        finding = {
+            "title": gap.get("question_id", "Unknown"),
+            "description": gap.get("question_text", ""),
+            "risk_level": risk_level,
+            "recommendation": gap.get("recommendation", ""),
+            "coverage": gap.get("coverage", 0.0),
+            "sources": sources,
+        }
+
+        # Add auto answer if available
+        if auto_answer and auto_answer.get("text"):
+            finding["auto_answer"] = auto_answer.get("text")
+            finding["confidence"] = auto_answer.get("confidence", 0.0)
+
+        findings.append(finding)
+
+    return findings
 
 
 def categorize_findings(questions_and_responses: List[Dict]) -> List[Dict]:

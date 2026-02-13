@@ -199,8 +199,9 @@ Usage:
   replace-bold-headings [directory] [options]
 
 Arguments:
-  directory               Target directory to process (default: agents/distributions/default/skills)
-                         Use "." for current directory
+  directory               Target directory to process
+                         Default: agents/distributions/default/skills (optimized for Claude Code skills)
+                         Can specify any directory (e.g., ".", ".claude", "docs")
 
 Options:
   --dry-run              Show changes without modifying files
@@ -208,25 +209,17 @@ Options:
   --help, -h             Show this help message
 
 Examples:
-  # Process default directory
+  # Process default directory (skills)
   tsx replace-bold-headings.ts
+  mise run skills:fix:bold-headings
 
-  # Process current directory
+  # Process other directories
   tsx replace-bold-headings.ts .
-
-  # Process specific directory
-  tsx replace-bold-headings.ts /path/to/docs
+  tsx replace-bold-headings.ts .claude
+  mise run format:markdown:bold-headings -- docs
 
   # Dry run mode
   tsx replace-bold-headings.ts . --dry-run
-
-  # Verbose output
-  tsx replace-bold-headings.ts . --verbose
-
-  # With mise
-  mise run skills:fix:bold-headings
-  mise run format:markdown:bold-headings
-  mise run format:markdown:bold-headings -- /path/to/docs --dry-run
 `);
 }
 
