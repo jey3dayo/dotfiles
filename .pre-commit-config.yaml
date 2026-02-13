@@ -128,7 +128,8 @@ repos:
         entry: biome
         args: ["check", "--write"]
         language: system
-        types_or: [javascript, jsx, typescript, tsx, json]
+        types_or: [javascript, json]
+        files: \.(js|jsx|ts|tsx|json)$
         pass_filenames: true
 
       # Dockerfile linting

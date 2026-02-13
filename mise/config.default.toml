@@ -178,6 +178,7 @@ ripgrep = "latest"
 usage = "latest"
 yazi = "latest"
 zoxide = "latest"
+"pipx:pre-commit" = "latest"
 
 # ========================================
 # タスク設定 (Task Configuration)
