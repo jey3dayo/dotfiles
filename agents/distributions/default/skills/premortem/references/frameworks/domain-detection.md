@@ -8,69 +8,69 @@
 
 ### Web Development
 
-**キーワード**:
+### キーワード
 
 - フロントエンド: `react`, `vue`, `angular`, `svelte`
 - バックエンド: `node.js`, `express`, `django`, `flask`, `rails`, `spring`
 - API: `api`, `rest`, `graphql`, `http`
 - 一般: `web`, `frontend`, `backend`, `fullstack`
 
-**例**:
+### 例
 
 - "Next.js + PostgreSQLでブログプラットフォームを構築" → `web-development`
 - "RESTful APIを使ったECサイト" → `web-development`
 
 ### Mobile Apps
 
-**キーワード**:
+### キーワード
 
 - iOS: `ios`, `swift`, `swiftui`, `uikit`
 - Android: `android`, `kotlin`, `jetpack`
 - クロスプラットフォーム: `react-native`, `flutter`, `xamarin`
 - 一般: `mobile`, `app`
 
-**例**:
+### 例
 
 - "SwiftUIでiOSアプリを開発" → `mobile-apps`
 - "FlutterでクロスプラットフォームアプリをQ開発" → `mobile-apps`
 
 ### Data Systems
 
-**キーワード**:
+### キーワード
 
 - ビッグデータ: `spark`, `hadoop`, `flink`, `kafka`
 - パイプライン: `etl`, `pipeline`, `warehouse`, `lakehouse`
 - データプラットフォーム: `bigquery`, `redshift`, `snowflake`
 - 一般: `data-engineering`, `analytics`
 
-**例**:
+### 例
 
 - "Sparkを使ったETLパイプライン構築" → `data-systems`
 - "BigQueryでデータウェアハウスを設計" → `data-systems`
 
 ### Infrastructure
 
-**キーワード**:
+### キーワード
 
 - コンテナ: `kubernetes`, `k8s`, `docker`, `container`
 - IaC: `terraform`, `ansible`, `cloudformation`
 - クラウド: `aws`, `gcp`, `azure`, `cloud`
 - 一般: `devops`, `infrastructure`, `deployment`
 
-**例**:
+### 例
 
 - "TerraformでAWSインフラを構築" → `infrastructure`
 - "Kubernetesクラスタの設計" → `infrastructure`
 
 ### Security
 
-**キーワード**:
+### キーワード
 
 - セキュリティ: `security`, `encryption`, `authentication`
 - 認証: `oauth`, `jwt`, `iam`, `rbac`
 - 脆弱性: `penetration`, `vulnerability`, `compliance`
 
-**例**:
+### 例
 
 - "OAuth2.0を使った認証基盤" → `security`
 - "脆弱性診断システムの構築" → `security`
@@ -104,7 +104,7 @@ def detect_domain(text: str) -> str:
 
 プロジェクトが複数のドメインにまたがる場合（例: Web + インフラ）、スコアの高い方を優先します。
 
-**例**:
+### 例
 
 - "Next.jsアプリをKubernetesにデプロイ"
   - Web: 2ポイント（next.js、アプリ）

@@ -14,14 +14,14 @@ description: |
 
 Premortem Analysisは、プロジェクトマネジメント手法の「Premortem（事前検死）」に基づき、計画段階で失敗原因を予測するスキルです。
 
-**核心的な価値**:
+### 核心的な価値
 
 - 計画段階での盲点を早期発見（実装前に問題を特定）
 - 業界標準のベストプラクティスの見落とし防止
 - 専門家の暗黙知を質問形式で可視化
 - 後工程でのトラブル（障害、コスト増）の予防
 
-**既存スキルとの差別化**:
+### 既存スキルとの差別化
 
 | スキル                  | タイミング   | 焦点                               |
 | ----------------------- | ------------ | ---------------------------------- |
@@ -40,13 +40,13 @@ Premortem Analysisは、プロジェクトマネジメント手法の「Premorte
 /premortem
 ```
 
-**動作**:
+### 動作
 
 - README.md、CLAUDE.md、AGENTS.md等を自動読み込み
 - プロジェクトの性質（ドメイン、技術スタック、成熟度）を推察
 - 推察結果に基づいて3-5個の関連質問を提示
 
-**推奨**: プロジェクトルートで実行すると最も効果的です。
+### 推奨
 
 #### 明示的なプロジェクト説明
 
@@ -54,7 +54,7 @@ Premortem Analysisは、プロジェクトマネジメント手法の「Premorte
 /premortem "Next.js + PostgreSQLでブログプラットフォームを構築する計画"
 ```
 
-**期待される動作**:
+### 期待される動作
 
 1. コンテキスト解析（ドメイン: web-development、成熟度: mvp）
 2. 3-5個の質問が提示される（認証アーキテクチャ、DB設計、APIレート制限等）
@@ -108,7 +108,7 @@ class ProjectContext:
     description: str         # プロジェクト説明
 ```
 
-**解析要素**:
+### 解析要素
 
 1. **ドメイン判定**: 技術スタック、キーワードから推定
    - "React", "API" → web-development
@@ -127,7 +127,7 @@ class ProjectContext:
 
 ### Layer 2: Question Selection（質問選択）
 
-**質問プール構成**:
+### 質問プール構成
 
 - `references/questions/generic.yaml` (35問) - 全ドメイン共通
 - `references/questions/web-development.yaml` (20問)
@@ -136,7 +136,7 @@ class ProjectContext:
 - `references/questions/infrastructure.yaml` (19問)
 - `references/questions/security.yaml` (25問)
 
-**スコアリングロジック**（0.0-1.0）:
+### スコアリングロジック
 
 ```python
 def score_question(question: Dict, context: ProjectContext) -> float:
@@ -161,7 +161,7 @@ def score_question(question: Dict, context: ProjectContext) -> float:
     return min(score, 1.0)
 ```
 
-**選択基準**:
+### 選択基準
 
 - スコア0.5以上の質問のみ選択
 - 上位3-5問を抽出（優先度でソート）
@@ -173,7 +173,7 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 
 各質問を1つずつ提示し、ユーザー回答を分析：
 
-**質問フォーマット**:
+### 質問フォーマット
 
 ```markdown
 ## Q1: 認証・認可アーキテクチャ（Priority: Critical）
@@ -188,7 +188,7 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 **なぜ重要か**: 認証の脆弱性は後から修正が困難で、セキュリティインシデントに直結します。
 ```
 
-**回答分析**:
+### 回答分析
 
 - 不足概念の検出（例: "JWT使う" → "リフレッシュトークンは？"と深堀り）
 - 最大2回の深堀り質問（コンテキスト過負荷を防ぐ）
@@ -296,7 +296,7 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 → /validate-design に結果反映
 ```
 
-**連携メリット**:
+### 連携メリット
 
 - 設計の形式的妥当性（validate-design）と概念的完全性（premortem）を両方チェック
 - 設計の手戻りを最小化
@@ -313,7 +313,7 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 → サブタスク生成前に盲点を解消
 ```
 
-**連携メリット**:
+### 連携メリット
 
 - タスク分解前に見落としを防止
 - 実装フェーズでの手戻り削減
@@ -326,7 +326,7 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 /premortem "新規プロジェクトの計画概要"
 ```
 
-**使用タイミング**:
+### 使用タイミング
 
 - プロジェクト企画書作成後
 - 技術選定前のリスク洗い出し
@@ -345,7 +345,7 @@ python3 scripts/analyze_context.py \
   --output context.json
 ```
 
-**出力例**:
+### 出力例
 
 ```json
 {
@@ -370,7 +370,7 @@ python3 scripts/format_report.py \
   --output report.md
 ```
 
-**出力例**:
+### 出力例
 
 ```markdown
 # Premortem Analysis Report

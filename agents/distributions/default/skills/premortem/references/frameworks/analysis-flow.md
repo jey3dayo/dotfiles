@@ -32,7 +32,7 @@ README.md                   # プロジェクト概要
 docs/*.md                   # ドキュメント
 ```
 
-**検出ロジック**:
+### 検出ロジック
 
 ```python
 def auto_detect_files() -> List[Path]:
@@ -107,7 +107,7 @@ def score_question(question: Dict, context: ProjectContext) -> float:
     return min(score, 1.0)
 ```
 
-**スコア例**:
+### スコア例
 
 | 質問ID  | トリガー | ドメイン | 成熟度 | 技術 | 合計スコア |
 | ------- | -------- | -------- | ------ | ---- | ---------- |
@@ -149,7 +149,7 @@ def select_top_questions(
         return sorted_q[:min_count]
 ```
 
-**選択例**:
+### 選択例
 
 ```
 選択された質問（5問）:
