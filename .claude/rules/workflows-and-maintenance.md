@@ -68,6 +68,67 @@ pre-commit install     # 初回のみ
 3. **非ブロッキング通知**
    - `vim.schedule`で起動をブロックしない
 
+#### Pre-commit Setup
+
+```bash
+# 初回インストール（pipx経由で推奨）
+mise use -g pipx:pre-commit
+
+# フックを有効化
+cd ~/.config
+pre-commit install
+
+# 動作確認（全ファイルに対してテスト実行）
+pre-commit run --all-files
+```
+
+**使い方**:
+
+```bash
+# 通常のcommit（stagedファイルのみ自動チェック）
+git commit -m "..."
+
+# 手動で全ファイルチェック
+pre-commit run --all-files
+
+# 特定のフックのみ実行
+pre-commit run stylua --all-files
+```
+
+#### Dual Management Strategy
+
+`.pre-commit-config.yaml`と`mise/tasks/*.toml`は**意図的に二重管理**しています：
+
+**理由**:
+
+- pre-commit: 変更ファイルのみ高速チェック（commit時自動実行）
+- mise tasks: 全ファイル一括処理（手動/CI実行）
+
+**メンテナンス時の注意**:
+
+ツールの引数や設定を変更する際は**両方**を更新してください：
+
+| 変更内容         | 更新が必要なファイル                                              |
+| ---------------- | ----------------------------------------------------------------- |
+| luacheckの引数   | `.pre-commit-config.yaml` + `mise/tasks/lint.toml`                |
+| styluaの引数     | `.pre-commit-config.yaml` + `mise/tasks/format.toml`              |
+| 除外パス         | `.pre-commit-config.yaml` + `mise/tasks/env.toml` (TASK_EXCLUDES) |
+| 新しいツール追加 | `.pre-commit-config.yaml` + 該当するmiseタスク                    |
+
+**チェックリスト**（ツール設定変更時）:
+
+```bash
+# 1. 両方のファイルを更新
+
+# 2. pre-commitで動作確認
+pre-commit run --all-files
+
+# 3. mise tasksで動作確認
+mise run check
+
+# 4. 結果が一致することを確認
+```
+
 #### Troubleshooting
 
 ```bash
@@ -81,6 +142,9 @@ mise run ci:install    # luacheckとbustedをインストール
 # pre-commitエラー
 pre-commit run --all-files  # 全ファイルに対して実行
 pre-commit autoupdate       # フックの更新
+
+# pre-commitをスキップしてcommit（緊急時のみ）
+git commit --no-verify -m "..."
 ```
 
 ## Troubleshooting routing
