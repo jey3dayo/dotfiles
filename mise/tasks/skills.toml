@@ -5,7 +5,7 @@
 
 ["skills:install"]
 description = "HM でスキルをインストール"
-run = "home-manager switch --flake . --impure"
+run = "mise run hm:switch"
 
 ["skills:install:report"]
 description = "インストール対象スキルのURLレポートを出力"
@@ -13,9 +13,13 @@ run = """
 if ! command -v nix >/dev/null 2>&1; then
   # Load Nix env when installed via Determinate/Nix daemon (common on Linux)
   if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   fi
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  echo "❌ nix not found. Install Nix before running skills:install:report" >&2
+  exit 127
 fi
 
 nix run .#report
@@ -26,9 +30,13 @@ description = "インストール対象スキルのURLレポートを出力"
 run = """
 if ! command -v nix >/dev/null 2>&1; then
   if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   fi
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  echo "❌ nix not found. Install Nix before running skills:report" >&2
+  exit 127
 fi
 
 nix run .#report
@@ -39,9 +47,13 @@ description = "有効スキル一覧を表示"
 run = """
 if ! command -v nix >/dev/null 2>&1; then
   if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   fi
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  echo "❌ nix not found. Install Nix before running skills:list" >&2
+  exit 127
 fi
 
 nix run .#list
@@ -61,7 +73,6 @@ fi
 
 if ! command -v nix >/dev/null 2>&1; then
   if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   fi
 fi
@@ -86,9 +97,13 @@ description = "全ソース更新（flake inputs）"
 run = """
 if ! command -v nix >/dev/null 2>&1; then
   if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
   fi
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  echo "❌ nix not found. Install Nix before running skills:update" >&2
+  exit 127
 fi
 
 nix flake update --flake .

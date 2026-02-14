@@ -14,48 +14,20 @@ export ZDOTDIR GIT_CONFIG_GLOBAL
 # ========================================
 # TIMING: Must be in .zshenv (all shell types, before .zprofile)
 # RELATED: .zprofile (login activation), .zshrc (non-login activation)
-# FALLBACK: Home Manager sets MISE_CONFIG_FILE; this provides fallback
+# FALLBACK: Home Manager sets MISE_CONFIG_FILE; local fallback lives in config/tools/mise-env.zsh
 # ========================================
 
-# mise data/cache directories (must be set before .zprofile activation)
-: "${MISE_DATA_DIR:=$HOME/.mise}"
-: "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
-export MISE_DATA_DIR MISE_CACHE_DIR
-
-# Home Manager session vars (MISE_CONFIG_FILE, etc.) must load before mise activation.
-if [[ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]]; then
-  source "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-elif [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}/home-manager/home-manager.sh" ]]; then
-  source "${XDG_CONFIG_HOME:-$HOME/.config}/home-manager/home-manager.sh"
-fi
-
-# Environment detection: CI > Raspberry Pi > Default (WSL2/macOS/Linux)
-# Fallback when Home Manager is not available
-if [[ -z "$MISE_CONFIG_FILE" ]]; then
-  if [[ -n "$CI" || -n "$GITHUB_ACTIONS" ]]; then
-    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.ci.toml"
-  elif [[ "$(uname -m)" == "aarch64" || "$(uname -m)" == "armv7l" || "$(uname -m)" == "armv6l" ]]; then
-    # /sys/firmware/devicetree/base/model may contain NUL bytes; strip them before matching.
-    _pi_model=""
-    _cpuinfo=""
-    if [[ -r /sys/firmware/devicetree/base/model ]]; then
-      _pi_model="$(tr -d '\000' </sys/firmware/devicetree/base/model 2>/dev/null)"
-    fi
-    if [[ -r /proc/cpuinfo ]]; then
-      _cpuinfo="$(</proc/cpuinfo)"
-    fi
-
-    if [[ "$_pi_model" == *"Raspberry Pi"* ]]; then
-      export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.pi.toml"
-    elif [[ "$_cpuinfo" == *"Raspberry Pi"* || "$_cpuinfo" == *"BCM27"* || "$_cpuinfo" == *"BCM283"* ]]; then
-      export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.pi.toml"
-    else
-      export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.default.toml"
-    fi
-    unset _pi_model _cpuinfo
-  else
-    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.default.toml"
-  fi
+# Keep .zshenv small: bootstrap logic is delegated to a dedicated file.
+if [[ -f "${ZDOTDIR}/config/tools/mise-env.zsh" ]]; then
+  source "${ZDOTDIR}/config/tools/mise-env.zsh"
+  _mise_bootstrap_env
+  unfunction _mise_bootstrap_env _mise_detect_environment _mise_is_raspberry_pi _mise_source_home_manager_session_vars 2>/dev/null
+else
+  : "${MISE_DATA_DIR:=$HOME/.mise}"
+  : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
+  export MISE_DATA_DIR MISE_CACHE_DIR
+  : "${MISE_CONFIG_FILE:=${XDG_CONFIG_HOME}/mise/config.default.toml}"
+  export MISE_CONFIG_FILE
 fi
 
 # NOTE: mise activation happens in:

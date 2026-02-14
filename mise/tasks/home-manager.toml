@@ -8,10 +8,12 @@ run = """
 if command -v home-manager >/dev/null 2>&1; then
   home-manager switch --flake . --impure
 else
-  # fallback: run via nix (works even when home-manager isn't installed globally)
   if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+  if ! command -v nix >/dev/null 2>&1; then
+    echo "❌ nix not found. Cannot run home-manager fallback." >&2
+    exit 127
   fi
   nix run home-manager -- switch --flake . --impure
 fi
@@ -24,8 +26,11 @@ if command -v home-manager >/dev/null 2>&1; then
   home-manager build --flake . --impure
 else
   if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+  if ! command -v nix >/dev/null 2>&1; then
+    echo "❌ nix not found. Cannot run home-manager fallback." >&2
+    exit 127
   fi
   nix run home-manager -- build --flake . --impure
 fi
@@ -33,29 +38,104 @@ fi
 
 ["hm:generations"]
 description = "Home Manager の世代一覧を表示"
-run = "home-manager generations"
+run = """
+if command -v home-manager >/dev/null 2>&1; then
+  home-manager generations
+else
+  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+  if ! command -v nix >/dev/null 2>&1; then
+    echo "❌ nix not found. Cannot run home-manager fallback." >&2
+    exit 127
+  fi
+  nix run home-manager -- generations
+fi
+"""
 
 ["hm:news"]
 description = "Home Manager の news を表示（flake用）"
-run = "home-manager news --flake . --impure"
+run = """
+if command -v home-manager >/dev/null 2>&1; then
+  home-manager news --flake . --impure
+else
+  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+  if ! command -v nix >/dev/null 2>&1; then
+    echo "❌ nix not found. Cannot run home-manager fallback." >&2
+    exit 127
+  fi
+  nix run home-manager -- news --flake . --impure
+fi
+"""
 
 ["hm:rollback"]
 description = "Home Manager を前の世代にロールバック"
 run = """
-  # List generations and select the previous one
-  prev_gen=$(home-manager generations | head -2 | tail -1 | awk '{print $NF}')
-  if [ -z "$prev_gen" ]; then
-    echo "❌ No previous generation found"
-    exit 1
+run_hm() {
+  if command -v home-manager >/dev/null 2>&1; then
+    home-manager "$@"
+    return
   fi
-  echo "📦 Rolling back to generation: $prev_gen"
-  home-manager switch --flake . --impure --switch-generation "$prev_gen"
+
+  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+
+  if ! command -v nix >/dev/null 2>&1; then
+    echo "❌ nix not found. Cannot run home-manager fallback." >&2
+    return 127
+  fi
+
+  nix run home-manager -- "$@"
+}
+
+generations_output="$(run_hm generations)"
+if [ "$?" -ne 0 ]; then
+  exit "$?"
+fi
+
+prev_gen="$(printf "%s\n" "$generations_output" | awk 'NR==2 { print $NF; exit }')"
+if [ -z "$prev_gen" ]; then
+  echo "❌ No previous generation found"
+  exit 1
+fi
+
+echo "📦 Rolling back to generation: $prev_gen"
+run_hm switch --flake . --impure --switch-generation "$prev_gen"
 """
 
 ["hm:clean"]
 description = "古い Home Manager 世代を削除（30日以上前）"
-run = "home-manager expire-generations '-30 days'"
+run = """
+if command -v home-manager >/dev/null 2>&1; then
+  home-manager expire-generations '-30 days'
+else
+  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+  if ! command -v nix >/dev/null 2>&1; then
+    echo "❌ nix not found. Cannot run home-manager fallback." >&2
+    exit 127
+  fi
+  nix run home-manager -- expire-generations '-30 days'
+fi
+"""
 
 ["hm:deploy"]
 description = "Home Manager を適用（CI/自動化用、バックアップ付き）"
-run = "nix run home-manager -- switch --flake . --impure -b backup"
+run = """
+if command -v home-manager >/dev/null 2>&1; then
+  home-manager switch --flake . --impure -b backup
+else
+  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+  if ! command -v nix >/dev/null 2>&1; then
+    echo "❌ nix not found. Cannot run home-manager fallback." >&2
+    exit 127
+  fi
+  nix run home-manager -- switch --flake . --impure -b backup
+fi
+"""
