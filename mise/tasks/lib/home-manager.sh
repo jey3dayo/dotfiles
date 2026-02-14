@@ -7,6 +7,7 @@ ensure_nix_or_fail() {
 
   if ! command -v nix >/dev/null 2>&1; then
     if [ -f "$NIX_DAEMON_PROFILE" ]; then
+      # shellcheck source=/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
       . "$NIX_DAEMON_PROFILE"
     fi
   fi
