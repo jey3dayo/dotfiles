@@ -27,18 +27,20 @@
       # - `/sys/firmware/devicetree/base/model` (and `/proc/device-tree/model`) often contain NUL bytes,
       #   which `builtins.readFile` cannot represent as a Nix string.
       # - `/proc/cpuinfo` is safe text on Linux, but doesn't exist on e.g. Darwin.
+      # - On Raspberry Pi 4/5, /proc/cpuinfo doesn't contain "Raspberry Pi" string
+      # - Instead, check for ARM architecture only (isAarch64/isAarch32 implies Raspberry Pi in this context)
       isRaspberryPiModel =
         let
           cpuinfoPath = "/proc/cpuinfo";
           cpuinfo = builtins.tryEval (builtins.readFile cpuinfoPath);
         in
-        pkgs.stdenv.isLinux && cpuinfo.success &&
-        builtins.match ".*Raspberry Pi.*" cpuinfo.value != null;
+        pkgs.stdenv.isLinux && cpuinfo.success;
 
       # CI detection: $CI or $GITHUB_ACTIONS environment variables
       isCI = hasEnvValue "CI" "true" || hasEnvValue "GITHUB_ACTIONS" "true";
 
-      # Raspberry Pi detection: ARM architecture + model string contains "Raspberry Pi"
+      # Raspberry Pi detection: ARM architecture on Linux (simplified detection)
+      # Note: In this dotfiles context, ARM Linux is assumed to be Raspberry Pi
       isRaspberryPi =
         (pkgs.stdenv.hostPlatform.isAarch64 || pkgs.stdenv.hostPlatform.isAarch32) &&
         isRaspberryPiModel;
