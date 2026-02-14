@@ -4,11 +4,32 @@
 
 ["hm:switch"]
 description = "Home Manager を適用（dotfiles配布）"
-run = "home-manager switch --flake . --impure"
+run = """
+if command -v home-manager >/dev/null 2>&1; then
+  home-manager switch --flake . --impure
+else
+  # fallback: run via nix (works even when home-manager isn't installed globally)
+  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+  nix run home-manager -- switch --flake . --impure
+fi
+"""
 
 ["hm:check"]
 description = "Home Manager 設定の検証（ビルドのみ、適用なし）"
-run = "home-manager build --flake . --impure"
+run = """
+if command -v home-manager >/dev/null 2>&1; then
+  home-manager build --flake . --impure
+else
+  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+  nix run home-manager -- build --flake . --impure
+fi
+"""
 
 ["hm:generations"]
 description = "Home Manager の世代一覧を表示"
