@@ -9,15 +9,43 @@ run = "home-manager switch --flake . --impure"
 
 ["skills:install:report"]
 description = "インストール対象スキルのURLレポートを出力"
-run = "nix run .#report"
+run = """
+if ! command -v nix >/dev/null 2>&1; then
+  # Load Nix env when installed via Determinate/Nix daemon (common on Linux)
+  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+fi
+
+nix run .#report
+"""
 
 ["skills:report"]
 description = "インストール対象スキルのURLレポートを出力"
-run = "nix run .#report"
+run = """
+if ! command -v nix >/dev/null 2>&1; then
+  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+fi
+
+nix run .#report
+"""
 
 ["skills:list"]
 description = "有効スキル一覧を表示"
-run = "nix run .#list"
+run = """
+if ! command -v nix >/dev/null 2>&1; then
+  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+fi
+
+nix run .#list
+"""
 
 ["skills:add"]
 description = "スキルを追加（例: mise run skills:add -- owner/repo や tree URL）"
@@ -29,6 +57,18 @@ run = """
 if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
   echo "Skip skills:validate (SKIP_NIX_VALIDATE=1)"
   exit 0
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  echo "❌ nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" >&2
+  exit 127
 fi
 
 # Use temp cache for sandbox/readonly-home environments.
@@ -43,7 +83,16 @@ run = "bash ./agents/scripts/validate-default-distribution.sh"
 
 ["skills:update"]
 description = "全ソース更新（flake inputs）"
-run = "nix flake update --flake ."
+run = """
+if ! command -v nix >/dev/null 2>&1; then
+  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
+    # shellcheck disable=SC1091
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+fi
+
+nix flake update --flake .
+"""
 
 ["skills:fix:bold-headings"]
 description = "distributions/default/skills の太字見出しを ### へ変換"
