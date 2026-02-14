@@ -34,9 +34,25 @@ fi
 if [[ -z "$MISE_CONFIG_FILE" ]]; then
   if [[ -n "$CI" || -n "$GITHUB_ACTIONS" ]]; then
     export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.ci.toml"
-  elif [[ "$(uname -m)" == "aarch64" ]] && [[ -f /sys/firmware/devicetree/base/model ]]; then
-    # Note: /sys/firmware/devicetree/base/model exists on Raspberry Pi, content check unnecessary
-    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.pi.toml"
+  elif [[ "$(uname -m)" == "aarch64" || "$(uname -m)" == "armv7l" || "$(uname -m)" == "armv6l" ]]; then
+    # /sys/firmware/devicetree/base/model may contain NUL bytes; strip them before matching.
+    _pi_model=""
+    _cpuinfo=""
+    if [[ -r /sys/firmware/devicetree/base/model ]]; then
+      _pi_model="$(tr -d '\000' </sys/firmware/devicetree/base/model 2>/dev/null)"
+    fi
+    if [[ -r /proc/cpuinfo ]]; then
+      _cpuinfo="$(</proc/cpuinfo)"
+    fi
+
+    if [[ "$_pi_model" == *"Raspberry Pi"* ]]; then
+      export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.pi.toml"
+    elif [[ "$_cpuinfo" == *"Raspberry Pi"* || "$_cpuinfo" == *"BCM27"* || "$_cpuinfo" == *"BCM283"* ]]; then
+      export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.pi.toml"
+    else
+      export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.default.toml"
+    fi
+    unset _pi_model _cpuinfo
   else
     export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.default.toml"
   fi
