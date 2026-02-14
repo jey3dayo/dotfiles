@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # bash entrypoint (tracked)
 # - Keep environment setup stable (XDG + mise)
 # - Provide a sane interactive default (prompt + colors)
