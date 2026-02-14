@@ -5,19 +5,34 @@
 
 ["skills:install"]
 description = "HM でスキルをインストール"
-run = "home-manager switch --flake . --impure"
+run = "mise run hm:switch"
 
 ["skills:install:report"]
 description = "インストール対象スキルのURLレポートを出力"
-run = "nix run .#report"
+run = """
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix before running skills:install:report" || exit $?
+
+nix run .#report
+"""
 
 ["skills:report"]
 description = "インストール対象スキルのURLレポートを出力"
-run = "nix run .#report"
+run = """
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix before running skills:report" || exit $?
+
+nix run .#report
+"""
 
 ["skills:list"]
 description = "有効スキル一覧を表示"
-run = "nix run .#list"
+run = """
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix before running skills:list" || exit $?
+
+nix run .#list
+"""
 
 ["skills:add"]
 description = "スキルを追加（例: mise run skills:add -- owner/repo や tree URL）"
@@ -31,6 +46,9 @@ if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
   exit 0
 fi
 
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
+
 # Use temp cache for sandbox/readonly-home environments.
 cache_root="${TMPDIR:-/tmp}/${USER:-user}/dotfiles-mise-cache"
 mkdir -p "$cache_root"
@@ -43,7 +61,12 @@ run = "bash ./agents/scripts/validate-default-distribution.sh"
 
 ["skills:update"]
 description = "全ソース更新（flake inputs）"
-run = "nix flake update --flake ."
+run = """
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix before running skills:update" || exit $?
+
+nix flake update --flake .
+"""
 
 ["skills:fix:bold-headings"]
 description = "distributions/default/skills の太字見出しを ### へ変換"
