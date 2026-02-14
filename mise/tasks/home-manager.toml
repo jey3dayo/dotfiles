@@ -5,95 +5,40 @@
 ["hm:switch"]
 description = "Home Manager を適用（dotfiles配布）"
 run = """
-if command -v home-manager >/dev/null 2>&1; then
-  home-manager switch --flake . --impure
-else
-  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-  if ! command -v nix >/dev/null 2>&1; then
-    echo "❌ nix not found. Cannot run home-manager fallback." >&2
-    exit 127
-  fi
-  nix run home-manager -- switch --flake . --impure
-fi
+. "./mise/tasks/lib/home-manager.sh"
+run_hm switch --flake . --impure
 """
 
 ["hm:check"]
 description = "Home Manager 設定の検証（ビルドのみ、適用なし）"
 run = """
-if command -v home-manager >/dev/null 2>&1; then
-  home-manager build --flake . --impure
-else
-  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-  if ! command -v nix >/dev/null 2>&1; then
-    echo "❌ nix not found. Cannot run home-manager fallback." >&2
-    exit 127
-  fi
-  nix run home-manager -- build --flake . --impure
-fi
+. "./mise/tasks/lib/home-manager.sh"
+run_hm build --flake . --impure
 """
 
 ["hm:generations"]
 description = "Home Manager の世代一覧を表示"
 run = """
-if command -v home-manager >/dev/null 2>&1; then
-  home-manager generations
-else
-  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-  if ! command -v nix >/dev/null 2>&1; then
-    echo "❌ nix not found. Cannot run home-manager fallback." >&2
-    exit 127
-  fi
-  nix run home-manager -- generations
-fi
+. "./mise/tasks/lib/home-manager.sh"
+run_hm generations
 """
 
 ["hm:news"]
 description = "Home Manager の news を表示（flake用）"
 run = """
-if command -v home-manager >/dev/null 2>&1; then
-  home-manager news --flake . --impure
-else
-  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-  if ! command -v nix >/dev/null 2>&1; then
-    echo "❌ nix not found. Cannot run home-manager fallback." >&2
-    exit 127
-  fi
-  nix run home-manager -- news --flake . --impure
-fi
+. "./mise/tasks/lib/home-manager.sh"
+run_hm news --flake . --impure
 """
 
 ["hm:rollback"]
 description = "Home Manager を前の世代にロールバック"
 run = """
-run_hm() {
-  if command -v home-manager >/dev/null 2>&1; then
-    home-manager "$@"
-    return
-  fi
-
-  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-
-  if ! command -v nix >/dev/null 2>&1; then
-    echo "❌ nix not found. Cannot run home-manager fallback." >&2
-    return 127
-  fi
-
-  nix run home-manager -- "$@"
-}
+. "./mise/tasks/lib/home-manager.sh"
 
 generations_output="$(run_hm generations)"
-if [ "$?" -ne 0 ]; then
-  exit "$?"
+status="$?"
+if [ "$status" -ne 0 ]; then
+  exit "$status"
 fi
 
 prev_gen="$(printf "%s\n" "$generations_output" | awk 'NR==2 { print $NF; exit }')"
@@ -109,33 +54,13 @@ run_hm switch --flake . --impure --switch-generation "$prev_gen"
 ["hm:clean"]
 description = "古い Home Manager 世代を削除（30日以上前）"
 run = """
-if command -v home-manager >/dev/null 2>&1; then
-  home-manager expire-generations '-30 days'
-else
-  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-  if ! command -v nix >/dev/null 2>&1; then
-    echo "❌ nix not found. Cannot run home-manager fallback." >&2
-    exit 127
-  fi
-  nix run home-manager -- expire-generations '-30 days'
-fi
+. "./mise/tasks/lib/home-manager.sh"
+run_hm expire-generations '-30 days'
 """
 
 ["hm:deploy"]
 description = "Home Manager を適用（CI/自動化用、バックアップ付き）"
 run = """
-if command -v home-manager >/dev/null 2>&1; then
-  home-manager switch --flake . --impure -b backup
-else
-  if ! command -v nix >/dev/null 2>&1 && [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-  if ! command -v nix >/dev/null 2>&1; then
-    echo "❌ nix not found. Cannot run home-manager fallback." >&2
-    exit 127
-  fi
-  nix run home-manager -- switch --flake . --impure -b backup
-fi
+. "./mise/tasks/lib/home-manager.sh"
+run_hm switch --flake . --impure -b backup
 """
