@@ -34,7 +34,8 @@ fi
 if [[ -z "$MISE_CONFIG_FILE" ]]; then
   if [[ -n "$CI" || -n "$GITHUB_ACTIONS" ]]; then
     export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.ci.toml"
-  elif [[ "$(uname -m)" == "aarch64" ]] && [[ -f /sys/firmware/devicetree/base/model ]] && grep -q "Raspberry Pi" /sys/firmware/devicetree/base/model 2>/dev/null; then
+  elif [[ "$(uname -m)" == "aarch64" ]] && [[ -f /sys/firmware/devicetree/base/model ]]; then
+    # Note: /sys/firmware/devicetree/base/model exists on Raspberry Pi, content check unnecessary
     export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.pi.toml"
   else
     export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.default.toml"
