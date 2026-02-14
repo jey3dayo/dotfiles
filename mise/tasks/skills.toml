@@ -5,18 +5,13 @@
 
 ["skills:install"]
 description = "HM でスキルをインストール"
-run = "home-manager switch --flake . --impure"
+run = "mise run hm:switch"
 
 ["skills:install:report"]
 description = "インストール対象スキルのURLレポートを出力"
 run = """
-if ! command -v nix >/dev/null 2>&1; then
-  # Load Nix env when installed via Determinate/Nix daemon (common on Linux)
-  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-fi
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix before running skills:install:report" || exit $?
 
 nix run .#report
 """
@@ -24,12 +19,8 @@ nix run .#report
 ["skills:report"]
 description = "インストール対象スキルのURLレポートを出力"
 run = """
-if ! command -v nix >/dev/null 2>&1; then
-  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-fi
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix before running skills:report" || exit $?
 
 nix run .#report
 """
@@ -37,12 +28,8 @@ nix run .#report
 ["skills:list"]
 description = "有効スキル一覧を表示"
 run = """
-if ! command -v nix >/dev/null 2>&1; then
-  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-fi
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix before running skills:list" || exit $?
 
 nix run .#list
 """
@@ -59,17 +46,8 @@ if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
   exit 0
 fi
 
-if ! command -v nix >/dev/null 2>&1; then
-  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-fi
-
-if ! command -v nix >/dev/null 2>&1; then
-  echo "❌ nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" >&2
-  exit 127
-fi
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
 
 # Use temp cache for sandbox/readonly-home environments.
 cache_root="${TMPDIR:-/tmp}/${USER:-user}/dotfiles-mise-cache"
@@ -84,12 +62,8 @@ run = "bash ./agents/scripts/validate-default-distribution.sh"
 ["skills:update"]
 description = "全ソース更新（flake inputs）"
 run = """
-if ! command -v nix >/dev/null 2>&1; then
-  if [ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]; then
-    # shellcheck disable=SC1091
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  fi
-fi
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix before running skills:update" || exit $?
 
 nix flake update --flake .
 """
