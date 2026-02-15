@@ -74,10 +74,7 @@ const countChar = (str, char) => {
   return count;
 };
 
-const stripCommentsAndStrings = (line) =>
-  line
-    .replace(/"([^"\\]|\\.)*"/g, "")
-    .replace(/#.*/, "");
+const stripComments = (line) => line.replace(/#.*/, ""); // コメントのみ削除、文字列リテラルは保持
 
 const extractSourceBlocks = (content) => {
   const lines = content.split(/\r?\n/);
@@ -86,7 +83,7 @@ const extractSourceBlocks = (content) => {
   let current = null;
   for (let i = 0; i < lines.length; i += 1) {
     const raw = lines[i];
-    const sanitized = stripCommentsAndStrings(raw);
+    const sanitized = stripComments(raw);
     if (depth === 1 && !current) {
       const match = sanitized.match(/^\s*([A-Za-z0-9_-]+)\s*=\s*\{\s*$/);
       if (match) {
@@ -119,18 +116,31 @@ const extractSourceBlocks = (content) => {
 const normalizeUrl = (url) => {
   if (!url) return null;
   let normalized = url;
+
+  // github: プレフィックスをHTTPS形式に変換
   if (normalized.startsWith("github:")) {
-    normalized = normalized.replace(/^github:/, "https://github.com/");
-  } else if (normalized.startsWith("git+")) {
+    normalized = `https://github.com/${normalized.slice("github:".length)}`;
+  }
+
+  // git+ プレフィックスを削除
+  if (normalized.startsWith("git+")) {
     normalized = normalized.replace(/^git\+/, "");
   }
+
+  // path: はそのまま解決
   if (normalized.startsWith("path:")) {
     const rel = normalized.slice("path:".length);
     return path.resolve(repoRoot, rel);
   }
+
+  // .git サフィックスを削除
   normalized = normalized.replace(/\.git$/, "");
+
+  // クエリとフラグメントを削除
   normalized = normalized.split("?")[0].split("#")[0];
-  return normalized;
+
+  // 大文字小文字を統一（GitHub URLは大文字小文字を区別しない）
+  return normalized.toLowerCase();
 };
 
 const sanitizeName = (value) =>
@@ -482,7 +492,7 @@ const updateSelectionInLines = (lines, sourceName, skillsToAdd) => {
         }
       }
 
-      const sanitized = stripCommentsAndStrings(line);
+      const sanitized = stripComments(line);
       braceDepth += countChar(sanitized, "{") - countChar(sanitized, "}");
       if (braceDepth === 0) {
         sourceEnd = i;
@@ -606,7 +616,7 @@ const insertSourceBlock = (lines, blockLines) => {
   let insertIndex = -1;
   let depth = 0;
   for (let i = 0; i < lines.length; i += 1) {
-    const sanitized = stripCommentsAndStrings(lines[i]);
+    const sanitized = stripComments(lines[i]);
     depth += countChar(sanitized, "{") - countChar(sanitized, "}");
     if (depth === 0) {
       insertIndex = i;

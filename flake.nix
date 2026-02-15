@@ -17,26 +17,27 @@
     # NOTE: These must be manually kept in sync with nix/agent-skills-sources.nix
     #       Flake spec requires literal inputs - dynamic generation not allowed
     #       agent-skills-sources.nix remains the SSoT for baseDir and selection metadata
+    heyvhuang-ship-faster = {
+      url = "github:Heyvhuang/ship-faster";
+      flake = false;
+    };
     openai-skills = {
       url = "github:openai/skills";
-      flake = false;
-    };
-    vercel-agent-skills = {
-      url = "github:vercel-labs/agent-skills";
-      flake = false;
-    };
-    vercel-agent-browser = {
-      url = "github:vercel-labs/agent-browser";
       flake = false;
     };
     ui-ux-pro-max = {
       url = "github:nextlevelbuilder/ui-ux-pro-max-skill";
       flake = false;
     };
-    heyvhuang-ship-faster = {
-      url = "github:Heyvhuang/ship-faster";
+    vercel-agent-browser = {
+      url = "github:vercel-labs/agent-browser";
       flake = false;
     };
+    vercel-agent-skills = {
+      url = "github:vercel-labs/agent-skills";
+      flake = false;
+    };
+    # END Agent-skills external sources
   };
 
   outputs =
