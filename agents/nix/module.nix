@@ -43,9 +43,11 @@ in {
 
     sources = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule {
-        options.path = lib.mkOption {
-          type = lib.types.path;
-          description = "Path to external skill source directory.";
+        options = {
+          path = lib.mkOption {
+            type = lib.types.path;
+            description = "Path to external skill source directory.";
+          };
         };
       });
       default = {};
