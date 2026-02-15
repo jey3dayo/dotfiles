@@ -1,5 +1,5 @@
 [Unit]
-Description=OpenClaw Gateway (v2026.2.2-3)
+Description=OpenClaw Gateway (v2026.2.13)
 After=network-online.target
 Wants=network-online.target
 
@@ -25,7 +25,7 @@ Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
-Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
+Environment=OPENCLAW_SERVICE_VERSION=2026.2.13
 
 [Install]
 WantedBy=default.target
