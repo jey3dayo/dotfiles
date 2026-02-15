@@ -1,0 +1,35 @@
+[Unit]
+Description=OpenClaw Gateway (vVERSION)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# 完全なNode.jsパスとOpenClawエントリーポイントを指定
+# （`openclaw gateway install` 実行時に自動生成される）
+ExecStart="/path/to/node" "/path/to/openclaw/dist/index.js" gateway --port 18789
+
+# 常に再起動（クラッシュ時も自動復旧）
+Restart=always
+
+# ✅ 推奨: 10秒待機（旧プロセス完全終了を保証、Telegram APIコンフリクト回避）
+# ⚠️ 注意: 5秒以下は非推奨（Raspberry Piで再起動ループ発生）
+RestartSec=10
+
+# ✅ 推奨: mixed または control-group（子プロセスも確実に終了）
+# ❌ 非推奨: process（子プロセスが残留しコンフリクト発生の可能性）
+KillMode=mixed
+
+# 環境変数
+Environment=HOME=/home/USERNAME
+Environment="PATH=/home/USERNAME/.local/share/pnpm:/home/USERNAME/.bun/bin:/home/USERNAME/.local/bin:/home/USERNAME/.npm-global/bin:/home/USERNAME/bin:/home/USERNAME/.nvm/current/bin:/home/USERNAME/.fnm/current/bin:/home/USERNAME/.volta/bin:/home/USERNAME/.asdf/shims:/usr/local/bin:/usr/bin:/bin"
+Environment=OPENCLAW_GATEWAY_PORT=18789
+Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
+Environment=OPENCLAW_SERVICE_MARKER=openclaw
+Environment=OPENCLAW_SERVICE_KIND=gateway
+Environment=OPENCLAW_SERVICE_VERSION=VERSION
+
+# セキュリティ: トークンは別ファイルから読み込み
+EnvironmentFile=%h/.openclaw/gateway.env
+
+[Install]
+WantedBy=default.target

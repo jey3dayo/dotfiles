@@ -25,6 +25,7 @@
     };
     selection.enable = [
       "composition-patterns"
+      "react-best-practices"
       "web-design-guidelines"
     ];
   };

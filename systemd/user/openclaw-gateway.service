@@ -4,17 +4,18 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-# Use mise shim so the command stays portable across machines.
-ExecStart="%h/.mise/shims/openclaw" gateway --port 18789
-
+ExecStart="/home/j138/.mise/installs/node/24.13.1/bin/node" "/home/j138/.local/share/pnpm/global/5/.pnpm/openclaw@2026.2.2-3_@napi-rs+canvas@0.1.89_@types+express@5.0.6_node-llama-cpp@3.15.1_signal-polyfill@0.2.2/node_modules/openclaw/dist/index.js" gateway --port 18789
 Restart=always
 RestartSec=5
 KillMode=process
-
-Environment=HOME=%h
-Environment="PATH=%h/.mise/shims:/usr/local/bin:/usr/bin:/bin:%h/.local/bin:%h/bin"
+Environment=HOME=/home/j138
+Environment="PATH=/home/j138/.local/share/pnpm:/home/j138/.bun/bin:/home/j138/.local/bin:/home/j138/.npm-global/bin:/home/j138/bin:/home/j138/.nvm/current/bin:/home/j138/.fnm/current/bin:/home/j138/.volta/bin:/home/j138/.asdf/shims:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
+Environment=OPENCLAW_SERVICE_MARKER=openclaw
+Environment=OPENCLAW_SERVICE_KIND=gateway
+Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
+EnvironmentFile=%h/.openclaw/gateway.env
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
 Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
