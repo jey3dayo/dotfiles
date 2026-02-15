@@ -11,6 +11,14 @@ Restart=always
 RestartSec=5
 KillMode=process
 
+# Resource limits (temporarily disabled for debugging)
+# MemoryMax=512M
+# MemoryHigh=384M
+# CPUQuota=50%
+
+# Watchdog (temporarily disabled - caused timeout issues)
+# WatchdogSec=60
+
 Environment=HOME=%h
 Environment="PATH=%h/.mise/shims:/usr/local/bin:/usr/bin:/bin:%h/.local/bin:%h/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789

@@ -1,7 +1,14 @@
 [Unit]
 Description=Periodic cleanup (mise/pnpm/npm) to reduce disk usage
+After=default.target
+Wants=openclaw-gateway.service
 
 [Service]
 Type=oneshot
+Environment="PATH=%h/.local/bin:%h/.mise/shims:/usr/local/bin:/usr/bin:/bin"
+Environment=HOME=%h
 # Run the script deployed by Home Manager to ~/.config/scripts/openclaw-cleanup
 ExecStart=%h/.config/scripts/openclaw-cleanup
+
+Restart=on-failure
+RestartSec=60

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Explicitly add mise/pnpm/npm to PATH
+export PATH="$HOME/.local/bin:$PATH"
+
 logdir="${XDG_CACHE_HOME:-$HOME/.cache}/openclaw"
 mkdir -p "$logdir"
 log="$logdir/cleanup.log"
@@ -8,6 +11,7 @@ log="$logdir/cleanup.log"
 {
   echo "=== openclaw-cleanup $(date -Is) ==="
   echo "host=$(hostname) user=$USER"
+  echo "PATH=$PATH"  # PATH確認用
   echo "--- df (before) ---"
   df -h /
 
@@ -27,12 +31,14 @@ log="$logdir/cleanup.log"
 
   echo "--- npm cache clean ---"
   if command -v npm >/dev/null 2>&1; then
-    npm cache clean --force || true
+    npm cache clean --force 2>&1 | grep -v "npm warn" || true
   else
     echo "npm: not found"
   fi
 
   echo "--- df (after) ---"
   df -h /
-  echo
-} >>"$log" 2>&1
+  echo "=== done ==="
+} >> "$log" 2>&1
+
+echo "Log: $log"
