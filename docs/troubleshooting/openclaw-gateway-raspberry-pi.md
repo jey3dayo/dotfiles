@@ -1,20 +1,27 @@
 # OpenClaw Gateway起動問題 - Raspberry Pi ARM環境
 
-**ステータス**: 既知の問題（未解決）
+**ステータス**: ✅ 解決済み
 **最終更新**: 2026-02-15
 **環境**: Raspberry Pi, ARM64, 4コア, 3.7GB RAM
-**影響**: openClaw Gateway起動時にCPU 99%消費、ポートリスニングせず
+**影響**: openClaw Gateway起動時にCPU 99%消費、ポートリスニングせず → **gateway.env作成で解決**
 
 ## 問題概要
 
-openClaw Gateway（バージョン2026.2.1、2026.2.13で確認）がRaspberry Pi ARM環境で正常に起動しません。
+openClaw Gateway（バージョン2026.2.1、2026.2.13で確認）がRaspberry Pi ARM環境で正常に起動しない問題が発生しましたが、**gateway.envファイルの作成で解決しました**。
 
-**症状**:
+**当初の症状**:
 
 - プロセスは起動するが、**CPU 99.9%を消費し続ける**
 - **ポート18789をリスニングしない**
 - 90秒以上待機しても状態変わらず
 - systemdログに標準出力/エラー出力なし
+
+**解決後の状態** (2026-02-15 14:16):
+
+- ✅ CPU使用率: 27.5%（起動1分35秒後、正常範囲）
+- ✅ ポート18789: LISTEN状態、正常動作
+- ✅ WebSocketサーバー: `ws://0.0.0.0:18789` でリスニング
+- ✅ 各種サービス: Discord bot, Telegram bot, Browser service 全て起動成功
 
 **検証済みの動作**:
 
@@ -48,30 +55,45 @@ openClaw Gateway（バージョン2026.2.1、2026.2.13で確認）がRaspberry P
 4. **openClaw設定修正**
    - 完全リセット＋再セットアップ実施
    - gateway.bind=lan, gateway.port=18789設定
-   - override.conf削除（EnvironmentFile問題修正）
+   - override.conf復元（EnvironmentFile参照を有効化）
 
-### ❌ 未解決の問題
+5. **gateway.env作成** ⭐ **決定的な解決策**
+   - `~/.openclaw/gateway.env`を作成
+   - `OPENCLAW_GATEWAY_PORT=18789`を定義
+   - `OPENCLAW_GATEWAY_TOKEN`を新規生成（openssl rand -hex 32）
+   - override.confからEnvironmentFileとして読み込み
 
-**Gateway起動問題**は上記の修正後も継続しています。
+6. **openclawバージョン更新**
+   - 2026.2.1 → 2026.2.13に更新
+   - `openclaw doctor --fix`実行で自動修復
 
-## 根本原因の推測
+### ✅ 解決した問題
 
-### 仮説1: openClaw初期化処理のバグ
+**Gateway起動問題**は**gateway.envファイルの作成**で完全に解決しました。
 
-- Raspberry PiのARMアーキテクチャ固有の問題
-- Node.jsバージョン互換性の問題
-- openClawの依存パッケージ（llama-cpp, canvas等）のビルド問題
+## 根本原因（判明）
 
-### 仮説2: システムリソース不足
+**原因**: `override.conf`が`~/.openclaw/gateway.env`を参照していたが、ファイルが存在しなかった。
 
-- CPU負荷が既に高い（2026-02-15時点: load average 3.57, 5.63, 4.71）
-- k3s-server、claude プロセスが既にリソース消費
-- openClawの初期化処理がタイムアウト
+### 問題の流れ
 
-### 仮説3: 設定ファイルの破損
+1. systemd の`override.conf`に`EnvironmentFile=%h/.openclaw/gateway.env`が設定されていた
+2. `gateway.env`ファイルが存在しない状態で起動
+3. 環境変数（特に`OPENCLAW_GATEWAY_TOKEN`）が読み込まれない
+4. 認証情報不足でGatewayが初期化に失敗
+5. 無限ループまたはリトライでCPU 99%消費
 
-- リセット後も同じ問題が発生
-- 設定ファイル形式の問題ではない可能性
+### 解決方法
+
+`~/.openclaw/gateway.env`を作成し、必要な環境変数を定義：
+
+```bash
+# OpenClaw Gateway environment variables
+OPENCLAW_GATEWAY_PORT=18789
+OPENCLAW_GATEWAY_TOKEN=<新規生成したTOKEN>
+```
+
+これにより、systemdがEnvironmentFileを正常に読み込み、Gatewayが起動できるようになった。
 
 ## 推奨される対処法
 
