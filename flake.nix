@@ -33,6 +33,10 @@
       url = "github:nextlevelbuilder/ui-ux-pro-max-skill";
       flake = false;
     };
+    heyvhuang-ship-faster = {
+      url = "github:Heyvhuang/ship-faster";
+      flake = false;
+    };
   };
 
   outputs =
