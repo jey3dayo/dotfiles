@@ -139,8 +139,8 @@ const normalizeUrl = (url) => {
   // クエリとフラグメントを削除
   normalized = normalized.split("?")[0].split("#")[0];
 
-  // 大文字小文字を統一（GitHub URLは大文字小文字を区別しない）
-  return normalized.toLowerCase();
+  // 大文字小文字を統一（GitHub URLのみ - GitLabなどは大文字小文字を区別）
+  return normalized.startsWith("https://github.com/") ? normalized.toLowerCase() : normalized;
 };
 
 const sanitizeName = (value) =>
