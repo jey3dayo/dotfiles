@@ -161,12 +161,17 @@ npm --version
    - Watchdog無効化、リソース制限コメントアウト
 
 5. `/home/pi/.config/systemd/user/openclaw-gateway.service.d/override.conf`
-   - 削除（EnvironmentFile問題修正）
+   - 復元（EnvironmentFileを参照）
 
-6. `/home/pi/.openclaw/openclaw.json`
-   - 完全リセット＋再セットアップ
+6. `/home/pi/.openclaw/gateway.env` ⭐ **新規作成**
+   - `OPENCLAW_GATEWAY_PORT=18789`
+   - `OPENCLAW_GATEWAY_TOKEN=<新規生成>`
+   - **重要**: このファイルには機密情報（TOKEN）が含まれるため、Gitで管理しないこと
 
-7. `/home/pi/.config/systemd/user/default.target.wants/openclaw.service`
+7. `/home/pi/.openclaw/openclaw.json`
+   - 完全リセット＋再セットアップ（バージョン2026.2.13に更新）
+
+8. `/home/pi/.config/systemd/user/default.target.wants/openclaw.service`
    - 削除（孤立シンボリックリンク）
 
 ## バックアップ
