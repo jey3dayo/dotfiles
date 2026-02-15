@@ -218,7 +218,7 @@ telnet pi.local 18789
 
 ```bash
 # miseでopenclawがインストールされているか確認
-mise ls |ográepenclaw
+mise ls | grep openclaw
 
 # インストールされていない場合はインストール
 mise install openclaw
