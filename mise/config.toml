@@ -28,8 +28,8 @@ package_manager = "pnpm"
 _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
-MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit #agents/skills #.worktrees #result #result-*"
-TASK_EXCLUDES = "--exclude agents/skills --exclude .worktrees --exclude result --exclude result-* --exclude .luarocks"
+MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit #agents/external #.worktrees #result #result-* #.kiro"
+TASK_EXCLUDES = "--exclude agents/external --exclude .worktrees --exclude result --exclude result-* --exclude .luarocks --exclude .kiro"
 
 # ========================================
 # オプション環境変数（ファイル限定処理）

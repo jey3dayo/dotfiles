@@ -132,7 +132,7 @@
         catalog = agentLib.discoverCatalog {
           inherit sources;
           localPath = null;
-          distributionsPath = ./agents/distributions/default;
+          distributionsPath = ./agents/internal;
         };
         enableConfig = if selection ? enable then selection.enable else null;
         distributionSkillIds = nixpkgs.lib.attrNames

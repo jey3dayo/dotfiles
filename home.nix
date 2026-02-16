@@ -37,7 +37,7 @@
     enable = true;
 
     # Single source of truth for internal skills/commands
-    distributionsPath = ./agents/distributions/default;
+    distributionsPath = ./agents/internal;
 
     sources = import ./nix/sources.nix {
       inherit inputs;

@@ -1,0 +1,15 @@
+# Gitleaks Configuration
+# https://github.com/gitleaks/gitleaks
+
+title = "dotfiles gitleaks config"
+
+# Allowlist: paths to exclude from scanning
+[allowlist]
+description = "Allowlisted files"
+paths = [
+  # Claude Code transcripts (conversation history)
+  '''claude/projects/.*\.jsonl$''',
+
+  # Raycast extensions (public client IDs)
+  '''raycast/extensions/.*\.(js|ts)$''',
+]

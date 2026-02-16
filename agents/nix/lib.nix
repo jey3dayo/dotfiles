@@ -224,7 +224,7 @@ in {
         else {};
 
       # Priority: local > distribution > external
-      # distributions/default is the internal single source of truth.
+      # agents/internal is the single source of truth.
     in
       externalSkills // distributionResult.skills // localSkills;
 

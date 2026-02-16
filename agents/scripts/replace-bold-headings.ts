@@ -200,7 +200,7 @@ Usage:
 
 Arguments:
   directory               Target directory to process
-                         Default: agents/distributions/default/skills (optimized for Claude Code skills)
+                         Default: agents/internal/skills (optimized for Claude Code skills)
                          Can specify any directory (e.g., ".", ".claude", "docs")
 
 Options:

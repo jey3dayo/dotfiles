@@ -55,9 +55,9 @@ mkdir -p "$cache_root"
 XDG_CACHE_HOME="$cache_root" nix run .#validate
 """
 
-["skills:validate:distribution"]
-description = "distributions/default が SSoT ルールに準拠しているか検証"
-run = "bash ./agents/scripts/validate-default-distribution.sh"
+["skills:validate:internal"]
+description = "agents/internal が SSoT ルールに準拠しているか検証"
+run = "bash ./agents/scripts/validate-internal.sh"
 
 ["skills:update"]
 description = "全ソース更新（flake inputs）"
@@ -69,5 +69,9 @@ nix flake update --flake .
 """
 
 ["skills:fix:bold-headings"]
-description = "distributions/default/skills の太字見出しを ### へ変換"
+description = "agents/internal/skills の太字見出しを ### へ変換"
 run = "tsx ./agents/scripts/replace-bold-headings.ts"
+
+["skills:check"]
+description = "Skills配布検証（~/.claude/skills/ のカウントとリンク確認）"
+run = "scripts/skills-check.sh"
