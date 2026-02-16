@@ -1,0 +1,9 @@
+# Gitleaks Ignore File
+# Files that are already in .gitignore but trigger false positives in gitleaks
+
+# Claude Code transcripts (conversation history with code examples)
+claude/projects/**/*.jsonl
+
+# Raycast extensions (contain public client IDs, not secrets)
+raycast/extensions/**/*.js
+raycast/extensions/**/*.ts

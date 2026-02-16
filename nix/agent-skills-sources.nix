@@ -59,6 +59,7 @@
       heyvhuang-ship-faster = ".";
     };
     selection.enable = [
+      "cloudflare"
       "tool-openclaw"
     ];
   };

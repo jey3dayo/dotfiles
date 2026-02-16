@@ -150,3 +150,10 @@ repos:
         types: [markdown]
         pass_filenames: true
         stages: [manual]
+
+  # Security scanning
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+        args: ["--config=.gitleaks.toml"]
