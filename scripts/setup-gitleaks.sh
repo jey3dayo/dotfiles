@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
 # ==============================================================================
 # Gitleaks Setup Script - Security Scanning Configuration

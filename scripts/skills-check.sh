@@ -81,12 +81,12 @@ printf "\n"
 # ==============================================================================
 
 printf "%b\n" "${BOLD}Home Manager Generation:${NC}"
-LATEST_GEN=$(home-manager generations 2>/dev/null | head -1 || echo "N/A")
+LATEST_GEN=$(home-manager generations 2>/dev/null | sed -n '1p')
 
-if [ "$LATEST_GEN" != "N/A" ]; then
-  GEN_ID=$(echo "$LATEST_GEN" | awk '{print $1}')
-  GEN_DATE=$(echo "$LATEST_GEN" | awk '{print $2, $3}')
-  GEN_PATH=$(echo "$LATEST_GEN" | awk '{print $NF}')
+if [ -n "$LATEST_GEN" ]; then
+  GEN_ID=$(printf "%s\n" "$LATEST_GEN" | sed -n 's/.* id \([0-9][0-9]*\) -> .*/\1/p')
+  GEN_DATE=$(printf "%s\n" "$LATEST_GEN" | awk '{print $1, $2}')
+  GEN_PATH=$(printf "%s\n" "$LATEST_GEN" | sed 's/^.* -> //; s/ (current)$//')
   printf "  ID: %s\n" "$GEN_ID"
   printf "  Date: %s\n" "$GEN_DATE"
   printf "  Path: %s\n" "$GEN_PATH"
@@ -117,7 +117,7 @@ BROKEN_LINKS=0
 VALID_LINKS=0
 
 for skill_dir in "$SKILLS_DIR"/*; do
-  [ -e "$skill_dir" ] || continue
+  [ -e "$skill_dir" ] || [ -L "$skill_dir" ] || continue
   skill_name=$(basename "$skill_dir")
 
   # Skip .system
@@ -125,11 +125,17 @@ for skill_dir in "$SKILLS_DIR"/*; do
 
   if [ -L "$skill_dir" ]; then
     target=$(readlink "$skill_dir")
-    if [ -d "$target" ]; then
+    link_dir=$(dirname "$skill_dir")
+    case "$target" in
+      /*) resolved_target="$target" ;;
+      *) resolved_target="$link_dir/$target" ;;
+    esac
+
+    if [ -d "$resolved_target" ]; then
       VALID_LINKS=$((VALID_LINKS + 1))
     else
       BROKEN_LINKS=$((BROKEN_LINKS + 1))
-      printf "  %b✗ Broken: %s → %s%b\n" "$RED" "$skill_name" "$target" "$NC"
+      printf "  %b✗ Broken: %s → %s%b\n" "$RED" "$skill_name" "$resolved_target" "$NC"
     fi
   else
     printf "  %b⚠ Not a symlink: %s%b\n" "$YELLOW" "$skill_name" "$NC"
