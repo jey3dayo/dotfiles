@@ -140,7 +140,7 @@ cp .config/newtool/config.local .config/newtool/config.local.example
 ```yaml
 # Security scanning
 - repo: https://github.com/gitleaks/gitleaks
-  rev: v8.21.2
+  rev: v8.30.0
   hooks:
     - id: gitleaks
 ```
@@ -343,12 +343,14 @@ git push --force-with-lease origin main
 **事後対応（1日以内）**:
 
 1. **インシデントレポート作成**:
+
    - 何が漏洩したか
    - いつプッシュされたか
    - 誰がアクセス可能だったか
    - どのように無効化したか
 
 2. **再発防止策**:
+
    - `.gitignore` にパターン追加
    - pre-commitフックの強化
    - チームへのセキュリティトレーニング
@@ -389,11 +391,13 @@ git push --force-with-lease origin main
 **事後対応（1週間以内）**:
 
 1. **セキュリティ監査**:
+
    - すべての設定ファイルをレビュー
    - `.gitignore` を徹底的に見直し
    - pre-commitフックを必須化
 
 2. **アクセスログ確認**:
+
    - GitHub Insightsで誰がクローンしたか確認
    - 外部からのアクセスがあった場合、影響範囲を調査
 
