@@ -4,20 +4,18 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-# Use mise shim so the command stays portable across machines.
-ExecStart="%h/.mise/shims/openclaw" gateway --port 18789
-
+ExecStart=%h/.local/share/pnpm/openclaw gateway --port 18789
 Restart=always
-RestartSec=5
-KillMode=process
-
+RestartSec=10
+KillMode=mixed
 Environment=HOME=%h
-Environment="PATH=%h/.mise/shims:/usr/local/bin:/usr/bin:/bin:%h/.local/bin:%h/bin"
+Environment="PATH=%h/.local/share/pnpm:%h/.bun/bin:%h/.local/bin:%h/.npm-global/bin:%h/bin:%h/.nvm/current/bin:%h/.fnm/current/bin:%h/.volta/bin:%h/.asdf/shims:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
 Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
+EnvironmentFile=%h/.openclaw/gateway.env
 
 [Install]
 WantedBy=default.target

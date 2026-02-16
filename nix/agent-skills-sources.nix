@@ -25,6 +25,7 @@
     };
     selection.enable = [
       "composition-patterns"
+      "react-best-practices"
       "web-design-guidelines"
     ];
   };
@@ -48,6 +49,17 @@
     };
     selection.enable = [
       "ui-ux-pro-max"
+    ];
+  };
+  heyvhuang-ship-faster = {
+    url = "github:Heyvhuang/ship-faster";
+    flake = false;
+    baseDir = "skills";
+    catalogs = {
+      heyvhuang-ship-faster = ".";
+    };
+    selection.enable = [
+      "tool-openclaw"
     ];
   };
 }

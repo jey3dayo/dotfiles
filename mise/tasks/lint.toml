@@ -46,17 +46,26 @@ description = "シェルスクリプトをチェック（SH_FILES で対象を�
 run = """
 if [ -n "${SH_FILES:-}" ]; then
   zsh_files=""
+  bash_files=""
   shfmt_files=""
   for file in ${SH_FILES}; do
     case "$file" in
       *.zsh|zsh/bin/*)
         zsh_files="${zsh_files} ${file}"
         ;;
+      bash/.bashrc|bash/.bash_profile)
+        bash_files="${bash_files} ${file}"
+        ;;
       *)
         shfmt_files="${shfmt_files} ${file}"
         ;;
     esac
   done
+
+  if [ -n "${bash_files}" ]; then
+    bash -n ${bash_files}
+    shellcheck -s bash ${bash_files}
+  fi
 
   if [ -n "${shfmt_files}" ]; then
     shfmt -d -i 2 -ci -bn ${shfmt_files}
@@ -75,7 +84,7 @@ else
 
   # Bash entrypoints
   bash -n bash/.bashrc bash/.bash_profile
-  shellcheck bash/.bashrc bash/.bash_profile
+  shellcheck -s bash bash/.bashrc bash/.bash_profile
 
   # .sh files elsewhere
   fd -e sh ${TASK_EXCLUDES} -X shfmt -d -i 2 -ci -bn

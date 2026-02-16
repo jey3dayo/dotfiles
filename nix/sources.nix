@@ -6,7 +6,7 @@ let
 
   # Build catalog paths for a single source
   # sourceName: e.g., "openai-skills"
-  # sourceConfig: e.g., { url, flake, baseDir, catalogs, selection }
+  # sourceConfig: e.g., { url, flake, baseDir, catalogs }
   buildCatalogs = sourceName: sourceConfig:
     let
       base = "${inputs.${sourceName}}/${sourceConfig.baseDir}";

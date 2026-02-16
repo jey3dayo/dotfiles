@@ -57,6 +57,7 @@ actionlint = "latest"
 biome = "latest"
 prettier = "latest"
 # 注: hadolint は macOS/Linux x86_64 のみ (プラットフォーム固有セクション参照)
+"pipx:beautysh" = "latest"
 shellcheck = "latest"
 shfmt = "latest"
 stylua = "latest"
@@ -110,11 +111,6 @@ fd = "latest"
 "github:cli/cli" = "latest"
 jq = "latest"
 yazi = "latest"
-
-# ========================================
-# Cargo-based Tools (Rust CLI ユーティリティ)
-# ========================================
-"cargo:starship" = "latest"
 
 # ========================================
 # タスク設定 (Task Configuration)
