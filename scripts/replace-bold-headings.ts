@@ -91,15 +91,15 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
     // Bold labels with suffix (colon, parentheses, etc.)
     // Example: "**メリット**:" -> "#### メリット"
     // Example: "**セットアップ** (初回のみ):" -> "#### セットアップ (初回のみ)"
-    const boldLabelWithSuffix = /^(\s*)\*\*([^*]+)\*\*\s*([\(:].*)?$/;
+    const boldLabelWithSuffix = /^(\s*)\*\*([^*]+)\*\*\s*([(:].*)?$/;
 
     // Bold labels in ordered list items are normalized to plain text.
     // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
-    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
+    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:-]\s*.*)?$/;
 
     // Bold labels in unordered list items are normalized to plain text.
     // Example: "- **Text**:" -> "- Text:"
-    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
+    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:-]\s*.*)?$/;
 
     let inFence = false;
     let fenceChar = "";
@@ -152,7 +152,7 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
 
         // Check if there's meaningful content after the colon
         const colonMatch = suffix.match(/:\s*(.+)/);
-        if (colonMatch && colonMatch[1].trim()) {
+        if (colonMatch?.[1].trim()) {
           // There's content after the colon - preserve bold
           return line;
         }
@@ -163,7 +163,7 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
       }
 
       const labelMatch = line.match(boldLabelWithSuffix);
-      if (labelMatch && labelMatch[3]) {
+      if (labelMatch?.[3]) {
         // Only process if suffix exists
         const indent = labelMatch[1];
         const text = labelMatch[2].trim();
@@ -189,7 +189,7 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
 
         // Check if there's content after ":"
         const colonMatch = suffix.match(/:\s*(.+)/);
-        if (colonMatch && colonMatch[1].trim()) {
+        if (colonMatch?.[1].trim()) {
           // There's meaningful content after the colon - keep as bold
           return line;
         }
@@ -359,11 +359,11 @@ function main() {
 
   if (errorCount > 0) {
     console.error(`\n${errorCount} file(s) failed to process:`);
-    results
-      .filter((r) => r.error)
-      .forEach((r) => {
-        console.error(`  ${r.path}: ${r.error!.message}`);
-      });
+    results.forEach((r) => {
+      if (r.error) {
+        console.error(`  ${r.path}: ${r.error.message}`);
+      }
+    });
     process.exit(1);
   }
 }
