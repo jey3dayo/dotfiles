@@ -172,10 +172,12 @@ When updating configuration schema:
 ## Step 1: Load Configuration
 
 1. Use **Read** to load `.kiro-config.json` from project root
+
    - If not found, use `.kiro-config.default.json`
    - Parse JSON and validate structure
 
 2. Resolve all paths relative to current working directory
+
    - KIRO_ROOT = ${CWD}/${config.paths.root}
    - KIRO_STEERING = ${KIRO_ROOT}/${config.paths.steering}
    - KIRO_SPECS = ${KIRO_ROOT}/${config.paths.specs}

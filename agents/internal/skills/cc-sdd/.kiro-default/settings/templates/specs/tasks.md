@@ -5,6 +5,7 @@
 Use this structure for all implementation tasks:
 
 - [ ] {{MAJOR_NUMBER}}. {{MAJOR_TASK_DESCRIPTION}}
+
   - {{DETAIL_ITEM_1}}
   - {{DETAIL_ITEM_2}}
   - {{DETAIL_ITEM_3}}
@@ -18,6 +19,7 @@ Use this structure for all implementation tasks:
 ## Example (Reference Only)
 
 - [ ] 1. Set up project foundation and infrastructure
+
   - Initialize project with required technology stack
   - Configure server infrastructure and request handling
   - Establish data storage and caching layer
@@ -26,6 +28,7 @@ Use this structure for all implementation tasks:
 
 - [ ] 2. Build authentication and user management system
 - [ ] 2.1 Implement core authentication functionality
+
   - Set up user data storage with validation rules
   - Implement secure authentication mechanism
   - Build user registration functionality
@@ -33,6 +36,7 @@ Use this structure for all implementation tasks:
   - _Requirements: 7.1, 7.2_
 
 - [ ] 2.2 Enable email service integration
+
   - Implement secure credential storage system
   - Build authentication flow for email providers
   - Create email connection validation logic

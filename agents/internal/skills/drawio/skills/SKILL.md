@@ -228,6 +228,7 @@ Load these as needed using progressive disclosure:
    ```
 
 4. **Place arrows first** (background layer)
+
    - Arrows → Labels → Shapes in XML order
 
 5. **Calculate width for Japanese text**
@@ -237,12 +238,15 @@ Load these as needed using progressive disclosure:
    ```
 
 6. **Maintain minimum spacing**
+
    - Arrows to labels: ≥20px
 
 7. **Align to grid**
+
    - All x, y, width, height: multiples of 10
 
 8. **Use transparent background**
+
    - No fillColor specification
 
 9. **Set page="0"**
@@ -251,19 +255,24 @@ Load these as needed using progressive disclosure:
 ### ❌ DON'T
 
 1. **Don't rely on defaultFontFamily alone**
+
    - PNG/SVG export ignores it
    - Must specify at element level
 
 2. **Don't use fontSize=12**
+
    - Too small, use 18px
 
 3. **Don't forget fontFamily in any text element**
+
    - Every single text element needs it
 
 4. **Don't place shapes before arrows**
+
    - Arrows render on top (wrong)
 
 5. **Don't use insufficient width for Japanese**
+
    - 30-40px per character required
 
 6. **Don't use fillColor**

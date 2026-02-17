@@ -32,6 +32,7 @@
 新しいスキルを作成する際は、以下の優先順位で配置先を検討してください：
 
 1. **Marketplace Repository（優先）**: `~/src/github.com/jey3dayo/claude-code-marketplace`
+
    - 用途: 再利用可能な汎用スキル、技術スタック特化スキル（React、TypeScript等）
    - メリット: Git管理、配布容易、GitHub自動バックアップ
    - 例: react, typescript, nvim, mise, dotenvx
@@ -196,6 +197,7 @@ Q: プロジェクト固有のルールか？
 #### コード品質改善
 
 - **統合レビューシステム** - `/review` プロジェクト自動判定・エージェント統合
+
   - 詳細モード: ⭐️5段階評価
   - シンプルモード: 並列エージェント実行
   - **PRレビュー修正**: `/review --fix-pr` でGitHub PRコメント自動修正

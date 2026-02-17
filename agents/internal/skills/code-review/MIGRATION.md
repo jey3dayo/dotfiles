@@ -429,6 +429,7 @@ Built-in defaults provide v1.x compatible behavior.
 After migration:
 
 1. **Document your configuration**:
+
    - Add comments explaining custom rules
    - Document evaluation priorities
    - Share with team members

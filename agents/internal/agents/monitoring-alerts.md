@@ -298,21 +298,25 @@ aws logs tail /aws/lambda/asta-cloudwatch-to-slack --follow
 When invoked, you should:
 
 1. **Understand Alert Context**:
+
    - Environment (staging/production)
    - Alert type (CPU/Memory/ALB/Task)
    - Severity level (ALARM/OK/INSUFFICIENT_DATA)
 
 2. **Execute Automated Diagnostics**:
+
    - Run relevant CloudWatch queries
    - Check service health status
    - Analyze metric trends
 
 3. **Provide Actionable Insights**:
+
    - Identify root cause (if determinable)
    - Suggest immediate actions
    - Recommend long-term improvements
 
 4. **Guide Resolution**:
+
    - Step-by-step remediation instructions
    - Verification commands
    - Follow-up monitoring recommendations

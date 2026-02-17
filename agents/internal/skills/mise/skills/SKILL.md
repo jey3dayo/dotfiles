@@ -150,10 +150,12 @@ Organize mise.toml for maintainability and clarity.
 Within the `[tasks]` section, organize tasks logically by responsibility:
 
 1. **Individual Commands** - Concrete tasks that perform actual work
+
    - Example: `format:terraform`, `lint:app`, `build:frontend`
    - Characteristics: Contains `run` with actual commands
 
 2. **Aggregation Tasks** - Tasks that orchestrate multiple related commands
+
    - Example: `format`, `lint`, `test`
    - Characteristics: Uses `depends` to coordinate related tasks
 

@@ -280,11 +280,13 @@ code-review-systemを使った5つの実践的なワークフローです。
 ### よく見つかる問題パターン
 
 1. **SQL Injection**: 過去 3 回、src/api/\*.ts で検出
+
    - パターン: 直接的な文字列連結
    - 推奨: パラメータ化クエリの使用
    - 関連: learnings/security/sql-injection.md
 
 2. **useEffect 依存配列**: 過去 5 回検出
+
    - パターン: 外部変数を依存配列に含めていない
    - 推奨: ESLint react-hooks/exhaustive-deps の有効化
    - 関連: learnings/react/useeffect-deps.md

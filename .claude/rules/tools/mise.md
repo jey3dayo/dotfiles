@@ -22,10 +22,12 @@ mise設定は環境別ファイルで管理されています:
 ### Environment-specific configs
 
 - **`mise/config.default.toml`** - デフォルト（macOS/Linux/WSL2）
+
   - jobs = 8（デスクトップ/ワークステーション向け）
   - 全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
 
 - **`mise/config.pi.toml`** - Raspberry Pi（ARMサーバー環境）
+
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
   - 最小ツールセット（goランタイム latest版を含む、npm軽量版、cargo全除外）
 

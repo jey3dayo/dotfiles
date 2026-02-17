@@ -206,14 +206,17 @@ def validate_tags(tags, project_taxonomy, project_config):
 ### Selecting Category Tags
 
 1. **Identify primary topic**:
+
    - What is the document primarily about?
    - What is the main category?
 
 2. **Consider cross-cutting concerns**:
+
    - Does the doc cover multiple topics?
    - Use multiple category tags if applicable
 
 3. **Reference project taxonomy**:
+
    - Load project's `tag-taxonomy.md`
    - Select from available category values
 
@@ -226,10 +229,12 @@ def validate_tags(tags, project_taxonomy, project_config):
 ### Selecting Audience Tags
 
 1. **Identify target readers**:
+
    - Who will read this document?
    - What roles/teams are involved?
 
 2. **Consider skill level**:
+
    - Developer-focused content → `audience/developer`
    - Operations procedures → `audience/operations`
    - Cross-team → Multiple audience tags
@@ -243,10 +248,12 @@ def validate_tags(tags, project_taxonomy, project_config):
 ### Selecting Environment Tags
 
 1. **Check environment specificity**:
+
    - Is doc environment-specific? → Add environment tag
    - Applies to all environments? → Omit environment tags
 
 2. **Use specific environments**:
+
    - Production-only → `environment/production`
    - Staging procedures → `environment/staging`
    - Local development → `environment/development`

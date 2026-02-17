@@ -20,6 +20,7 @@ argument-hint: <project-description>
 ## Step 1: Load Configuration
 
 1. Use **Read** to load `.kiro-config.json` from current working directory
+
    - If not found, use built-in default configuration
    - Parse JSON and validate structure
 
@@ -42,6 +43,7 @@ argument-hint: <project-description>
 ## Step 2: Generate Feature Name and Check Uniqueness
 
 1. Generate feature name from project description ($ARGUMENTS):
+
    - Convert to kebab-case
    - Keep 2-4 words maximum
    - Make descriptive and unique
@@ -61,10 +63,12 @@ argument-hint: <project-description>
 ## Step 4: Initialize Files Using Templates
 
 1. Use **Read** to fetch templates:
+
    - `${TEMPLATE_INIT_JSON}` → spec.json template
    - `${TEMPLATE_REQ_INIT_MD}` → requirements.md template
 
 2. Replace placeholders in templates:
+
    - `{{FEATURE_NAME}}` → generated feature name
    - `{{TIMESTAMP}}` → current ISO 8601 timestamp
    - `{{PROJECT_DESCRIPTION}}` → $ARGUMENTS

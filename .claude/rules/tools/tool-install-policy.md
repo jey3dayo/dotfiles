@@ -286,6 +286,7 @@ When migrating a tool from Homebrew to mise:
    ```
 
 7. **Update documentation**
+
    - Add migration note to commit message
    - Update `.claude/rules/workflows-and-maintenance.md` if needed
 

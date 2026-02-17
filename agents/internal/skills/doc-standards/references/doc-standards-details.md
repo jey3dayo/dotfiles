@@ -116,6 +116,7 @@ The skill will automatically discover and load your configuration.
 If no project config found (`.claude/doc-standards/config.yaml` doesn't exist):
 
 1. **Use minimal defaults**:
+
    - Metadata template: H1 + date + audience + tags
    - Tag system: 3-tier (category/audience/environment)
    - Size thresholds: 500/1000/2000 lines
@@ -285,24 +286,28 @@ When suggesting tags, provide rationale (adapt to project language):
 Load these progressively as needed:
 
 1. **`references/metadata-template-framework.md`**
+
    - Standard metadata structure
    - Required field patterns
    - Document type templates
    - **Load when**: Creating headers, validating format
 
 2. **`references/tag-system-framework.md`**
+
    - 3-tier tag architecture
    - Canonical format rules
    - Tag validation logic
    - **Load when**: Understanding tag system, validating tags
 
 3. **`references/size-guidelines-framework.md`**
+
    - Size thresholds (customizable per project)
    - Decision tree for splits
    - 4 split strategies
    - **Load when**: Document approaching threshold, split decisions
 
 4. **`references/quality-checklist-framework.md`**
+
    - Metadata quality checks
    - Content quality checks
    - Link validation framework
@@ -348,6 +353,7 @@ Response language is determined by project configuration:
    ```
 
 2. **Use configured language**:
+
    - Japanese (`ja`): "メタデータテンプレートを適用します"
    - English (`en`): "Applying metadata template"
    - Spanish (`es`): "Aplicando plantilla de metadatos"

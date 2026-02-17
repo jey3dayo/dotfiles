@@ -63,6 +63,7 @@ argument-hint: [required-arg] [--optional-flag]
 ### YAMLフロントマター
 
 - **description** (必須): `/help` に表示される説明文
+
   - 明確な動詞で開始（例: "実行", "分析", "作成"）
   - 具体的な機能を記述
   - 20-100文字を目安に

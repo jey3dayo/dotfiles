@@ -155,6 +155,7 @@ All projects use this standard format:
 ### Tag Separator
 
 - **dotfiles & pr-labeler**: Comma-separated backticked tags
+
   - Example: `` `category/shell`, `tool/zsh`, `layer/core` ``
 
 - **caad-terraform-infra**: Space-separated backticked tags
