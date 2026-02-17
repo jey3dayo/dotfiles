@@ -104,16 +104,13 @@ code-review/
 Configuration files are loaded in priority order:
 
 1. **Project-specific** (priority 200+)
-
    - `.code-review-config.json` in project root
    - `.claude/code-review-config.json`
 
 2. **User custom** (priority 100-199)
-
    - `~/.claude/code-review/custom-projects.json`
 
 3. **Built-in defaults** (priority 0-99)
-
    - `config/default-projects.json`
 
 4. **Generic fallback** (priority 0)
@@ -364,25 +361,21 @@ jsonschema -i .code-review-config.json -s schemas/project-detection-schema.json
 ### Configuration Design
 
 1. **Set appropriate priority**
-
    - Project-specific: 200+
    - User custom: 100-199
    - Built-in: 0-99
 
 2. **Use specific detectors**
-
    - Combine multiple detectors for accuracy
    - Mark critical detectors as "required"
    - Use "optional" for supplementary checks
 
 3. **Focus skills appropriately**
-
    - High priority: Core project concerns
    - Medium: Important but not critical
    - Low: Nice-to-have improvements
 
 4. **Weight evaluation dimensions**
-
    - API projects: High security, performance
    - Frontend: High code quality, performance
    - Libraries: High architecture, testing
@@ -469,7 +462,6 @@ Part of Claude Code Marketplace - Dev Tools Collection
 ## Version History
 
 - **v2.0.0** (2025-01-15)
-
   - Configuration-based project detection
   - JSON schema validation
   - Custom rules support

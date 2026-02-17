@@ -58,12 +58,10 @@ pre-commit install     # 初回のみ
 実装済みのgraceful degradation:
 
 1. **安全なモジュール読み込み** (`core/module_loader.lua:28-42`)
-
    - `pcall`による例外処理
    - 失敗キャッシュで重複エラー回避
 
 2. **段階的フォールバック** (`core/bootstrap.lua`)
-
    - オプショナルモジュール → サイレント失敗
    - 必須モジュール → 警告表示（非ブロッキング）
 
@@ -283,7 +281,6 @@ mise run update
 ### Package addition workflow
 
 1. **追加先を判定**:
-
    - **まず mise で管理できるか確認**: `mise registry` で検索
    - 言語ランタイム・クロスプラットフォーム CLI → `mise/config.*.toml` に追加
    - GUI・macOS 固有依存・macOS サービス → `Brewfile` に追加
@@ -305,7 +302,6 @@ mise run update
    ```
 
 4. **適切なセクションに追加**:
-
    - 機能・用途に応じたセクションを選択
    - アルファベット順に挿入（セクション内）
    - 必要に応じてコメント追加

@@ -44,13 +44,11 @@ allowed-tools: Task, Read, Grep, Glob, WebFetch
 #### 3層分析システム
 
 1. **Semantic Layer** (意味理解)
-
    - 9種類の意図タイプ分類: error, implement, fix, analyze, review, github_pr, refactor, navigate, docs
    - タスク構造の分解
    - 実行可能な単位への変換
 
 2. **Intent Layer** (意図分析)
-
    - 主要意図と副次的意図の抽出
    - キーワードベースの確信度スコアリング
    - タスクカテゴリの決定

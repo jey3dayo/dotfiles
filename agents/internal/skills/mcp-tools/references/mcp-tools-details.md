@@ -274,7 +274,6 @@ security add-generic-password -a $USER -s mysql_password -w "melody"
    ```
 
 2. ログを確認
-
    - Claude Desktop → Settings → Developer → Logs
 
 3. コマンドパスが正しいか確認

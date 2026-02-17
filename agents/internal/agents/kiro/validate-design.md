@@ -45,7 +45,6 @@ Interactive design quality review for feature based on approved requirements and
 ## Execution Steps
 
 1. **Load Context**:
-
    - Read `.kiro/specs/{feature}/spec.json` for language and metadata
    - Read `.kiro/specs/{feature}/requirements.md` for requirements
    - Read `.kiro/specs/{feature}/design.md` for design document
@@ -55,11 +54,9 @@ Interactive design quality review for feature based on approved requirements and
      - This provides complete project memory and context
 
 2. **Read Review Guidelines**:
-
    - Read `.kiro/settings/rules/design-review.md` for review criteria and process
 
 3. **Execute Design Review**:
-
    - Follow design-review.md process: Analysis → Critical Issues → Strengths → GO/NO-GO
    - Limit to 3 most important concerns
    - Engage interactively with user

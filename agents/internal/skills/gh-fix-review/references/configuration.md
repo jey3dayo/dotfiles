@@ -349,17 +349,14 @@ ajv validate -s .pr-review-config.schema.json -d .pr-review-config.json
 ## ベストプラクティス
 
 1. **プロジェクト固有の設定はプロジェクトルートに配置**
-
    - `.pr-review-config.json` をプロジェクトルートに作成
    - `.gitignore` に追加してチーム共有するかを検討
 
 2. **個人設定はホームディレクトリに配置**
-
    - `~/.pr-review-config.json` を作成
    - 複数プロジェクトで共通の設定を定義
 
 3. **段階的なカスタマイズ**
-
    - まずデフォルト設定で試す
    - 必要に応じて少しずつカスタマイズ
    - 過度に複雑な設定は避ける

@@ -10,13 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - **Configuration-based project detection system**
-
   - JSON schema validation for configuration files
   - Priority-based detection with pluggable rules
   - Multiple configuration sources (project-specific, user, built-in)
 
 - **Flexible detector types**
-
   - `file_exists`: Check file existence
   - `file_pattern`: Glob pattern matching
   - `file_content`: Content pattern matching
@@ -24,13 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `directory_structure`: Directory structure verification
 
 - **Custom rules support**
-
   - Project-specific validation rules in configuration
   - Arbitrary custom rule definitions
   - Structured rule objects (e.g., layer separation)
 
 - **Built-in project types**
-
   - Next.js Fullstack (priority 100)
   - Go Clean Architecture (priority 95)
   - Go API (priority 90)
@@ -39,7 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Generic Project fallback (priority 0)
 
 - **Example configurations**
-
   - CAAD Loca project template with Result<T,E> pattern
   - Generic custom project template
   - Multiple scenario examples in documentation
@@ -53,13 +48,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - **Project detection abstracted from code to configuration**
-
   - Removed hardcoded detection logic from `detailed-mode.md`
   - Moved CAAD Loca specific rules to example configuration
   - Evaluation weights now configurable per project
 
 - **Skill integration now configuration-driven**
-
   - Skills specified in configuration with priority and focus
   - Technology stack identifiers moved to config
 

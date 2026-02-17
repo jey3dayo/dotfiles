@@ -361,7 +361,6 @@ DoS対策が計画に含まれていません。
 ## Recommended Actions
 
 1. **認証方式の選定** (critical priority)
-
    - OAuth2.0、JWT、セッションベースの比較検討
    - Resources: https://auth0.com/docs
 

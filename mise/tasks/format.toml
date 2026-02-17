@@ -48,12 +48,12 @@ fi
 description = "Markdown ファイルをフォーマット"
 run = [
   "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
-  "fd -e md ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null",
+  "fd -H -e md ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null",
 ]
 
 ["format:markdown:check"]
 description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
-run = "fd -e md ${TASK_EXCLUDES} -X prettier --check --log-level error"
+run = "fd -H -e md ${TASK_EXCLUDES} -X prettier --check"
 
 ["format:yaml"]
 description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"

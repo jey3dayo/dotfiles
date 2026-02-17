@@ -91,7 +91,6 @@ All other tools serve to enhance or support these core components, while deploym
 - **AI Assistance**: Supermaven integration
 - **Startup**: <100ms (50% improvement)
 - **Key Modules**:
-
   - `lua/core/` - bootstrap and defaults
   - `lua/config/` - plugin settings and editor config
   - `lua/plugins/` - plugin specs (Lazy.nvim)

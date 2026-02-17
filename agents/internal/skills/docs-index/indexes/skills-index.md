@@ -21,7 +21,7 @@
 | `implementation-engine`   | Smart feature implementation with session persistence. Use when implementing features, resuming work, or verifying implementations. 6-phase workflow with Deep Validation support.                                                                        |
 | `todo-orchestrator`       | Unified task management system. Shows TODO list, allows selection, executes tasks. Use when managing tasks, checking progress, or executing planned work. P1-P5 priority system with TodoWrite integration.                                               |
 | `task-router`             | Intelligent task router. Analyzes natural language requests, selects optimal agents, and orchestrates execution. Use when user provides task descriptions like "review this code" or "improve performance". 4-phase processing with Context7 integration. |
-| `code-review-system`      | Comprehensive code review with multiple modes - detailed (⭐️5-star evaluation), simple (parallel agents), PR review, CI diagnostics. Use when reviewing code quality, fixing PR comments, or diagnosing CI failures.                                     |
+| `code-review-system`      | Comprehensive code review with multiple modes - detailed (⭐️5-star evaluation), simple (parallel agents), PR review, CI diagnostics. Use when reviewing code quality, fixing PR comments, or diagnosing CI failures.                                      |
 
 ### Secondary Skills（Phase 3）
 
