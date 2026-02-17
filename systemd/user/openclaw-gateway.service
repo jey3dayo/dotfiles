@@ -9,8 +9,12 @@ Wants=network-online.target
 # Prerequisites: pnpm installed via mise, openclaw globally installed
 ExecStart=%h/.local/share/pnpm/openclaw gateway --port 18789
 Restart=always
-RestartSec=5
-KillMode=process
+# Wait 10s before restart (recommended for Pi to avoid restart loops)
+# Ensures complete process termination and prevents Telegram API conflicts
+RestartSec=10
+# Use 'mixed' to ensure child processes are also terminated on service stop
+# Prevents port occupation and resource leaks
+KillMode=mixed
 
 # Resource limits (temporarily disabled for debugging)
 # MemoryMax=512M
