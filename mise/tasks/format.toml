@@ -46,6 +46,10 @@ fi
 
 ["format:markdown"]
 description = "Markdown ファイルをフォーマット"
+depends = ["format:markdown:bold-headings", "format:markdownlint"]
+
+["format:markdownlint"]
+description = "Markdownlint + Prettier で Markdown をフォーマット"
 run = [
   "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
   "fd -H -e md ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null",
@@ -53,6 +57,10 @@ run = [
 
 ["format:markdown:check"]
 description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
+depends = ["format:markdown:bold-headings:check", "format:markdownlint:check"]
+
+["format:markdownlint:check"]
+description = "Markdownlint + Prettier の Markdown チェック（書き込みなし）"
 run = "fd -H -e md ${TASK_EXCLUDES} -X prettier --check"
 
 ["format:yaml"]
@@ -212,7 +220,7 @@ description = "ドキュメントの完全な検証とフォーマット"
 depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]
 
 ["format:markdown:bold-headings"]
-description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能、デフォルト: skills）"
+description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能、デフォルト: agents/internal）"
 run = "tsx ./agents/scripts/replace-bold-headings.ts"
 
 ["format:markdown:bold-headings:check"]
