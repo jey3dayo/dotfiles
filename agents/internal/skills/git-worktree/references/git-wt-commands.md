@@ -26,12 +26,12 @@ List all worktrees.
 git wt list [options]
 ```
 
-**Options**:
+### Options
 
 - `--verbose`: Show detailed information (branch, commit, status)
 - `--porcelain`: Machine-readable output
 
-**Examples**:
+### Examples
 
 ```bash
 # Simple list
@@ -44,7 +44,7 @@ git wt list --verbose
 git wt list --porcelain
 ```
 
-**Output Format** (verbose):
+### Output Format
 
 ```
 feature-a    .worktrees/feature-a    [feature/a 1a2b3c4] WIP: implement auth
@@ -59,11 +59,11 @@ Create a new worktree.
 git wt create <branch> [options]
 ```
 
-**Arguments**:
+### Arguments
 
 - `<branch>`: Branch name for the new worktree
 
-**Options**:
+### Options
 
 - `--path <path>`: Custom worktree path (default: auto-generated from branch name)
 - `--start-point <ref>`: Start point (commit, tag, branch)
@@ -74,7 +74,7 @@ git wt create <branch> [options]
 - `--checkout`: Checkout after creation (default: true)
 - `--no-checkout`: Don't checkout after creation
 
-**Examples**:
+### Examples
 
 ```bash
 # Create new branch and worktree
@@ -96,7 +96,7 @@ git wt create feature/test --copy .env --copy config.json
 git wt create --detach abc123def
 ```
 
-**Auto-generated Path**:
+### Auto-generated Path
 
 Branch name `feature/user-auth` → Worktree path `.worktrees/user-auth`
 
@@ -110,15 +110,15 @@ Switch to a worktree (requires shell integration).
 git wt switch [worktree]
 ```
 
-**Arguments**:
+### Arguments
 
 - `[worktree]`: Worktree name or path (optional for interactive mode)
 
-**Options**:
+### Options
 
 - `--interactive, -i`: Interactive selection (fuzzy finder)
 
-**Examples**:
+### Examples
 
 ```bash
 # Switch by branch name
@@ -132,7 +132,7 @@ git wt switch
 git wt switch -i
 ```
 
-**Note**: Shell integration required. For Zsh, use functions in `zsh/config/tools/git.zsh`.
+### Note
 
 ### remove
 
@@ -142,15 +142,15 @@ Remove a worktree.
 git wt remove <worktree> [options]
 ```
 
-**Arguments**:
+### Arguments
 
 - `<worktree>`: Worktree name or path
 
-**Options**:
+### Options
 
 - `--force, -f`: Force removal (ignore uncommitted changes)
 
-**Examples**:
+### Examples
 
 ```bash
 # Safe removal (checks for uncommitted changes)
@@ -163,7 +163,7 @@ git wt remove -f feature/old-experiment
 git wt remove .worktrees/temporary
 ```
 
-**Safety Check**:
+### Safety Check
 
 Without `--force`, `git wt remove` will fail if:
 
@@ -178,12 +178,12 @@ Clean up worktree information.
 git wt prune [options]
 ```
 
-**Options**:
+### Options
 
 - `--dry-run, -n`: Show what would be pruned
 - `--verbose, -v`: Show detailed information
 
-**Examples**:
+### Examples
 
 ```bash
 # Prune stale worktree information
@@ -196,7 +196,7 @@ git wt prune --dry-run
 git wt prune -v
 ```
 
-**Use Cases**:
+### Use Cases
 
 - Worktree directory deleted manually
 - Corrupted worktree metadata
@@ -211,15 +211,15 @@ git wt lock <worktree> [options]
 git wt unlock <worktree>
 ```
 
-**Arguments**:
+### Arguments
 
 - `<worktree>`: Worktree name or path
 
-**Options** (lock only):
+### Options
 
 - `--reason <reason>`: Reason for locking
 
-**Examples**:
+### Examples
 
 ```bash
 # Lock worktree
@@ -229,7 +229,7 @@ git wt lock feature/important --reason "Long-running build"
 git wt unlock feature/important
 ```
 
-**Use Cases**:
+### Use Cases
 
 - Prevent accidental removal during long-running operations
 - Mark worktrees as critical
@@ -242,12 +242,12 @@ Move a worktree to a new location.
 git wt move <worktree> <new-path>
 ```
 
-**Arguments**:
+### Arguments
 
 - `<worktree>`: Current worktree name or path
 - `<new-path>`: New path for worktree
 
-**Examples**:
+### Examples
 
 ```bash
 # Move worktree
@@ -257,7 +257,7 @@ git wt move feature/test .worktrees/test-new-location
 git wt move old-path/.worktrees/feature .worktrees/feature
 ```
 
-**Note**: Updates Git metadata automatically.
+### Note
 
 ### repair
 
@@ -267,11 +267,11 @@ Repair worktree metadata.
 git wt repair [worktree]
 ```
 
-**Arguments**:
+### Arguments
 
 - `[worktree]`: Specific worktree to repair (optional, repairs all if omitted)
 
-**Examples**:
+### Examples
 
 ```bash
 # Repair all worktrees
@@ -281,7 +281,7 @@ git wt repair
 git wt repair feature/broken
 ```
 
-**Use Cases**:
+### Use Cases
 
 - Corrupted worktree metadata
 - After manual directory moves
@@ -293,14 +293,14 @@ git wt repair feature/broken
 
 Executed after worktree creation.
 
-**Location**: `.git/hooks/post-worktree-add`
+### Location
 
-**Arguments**:
+### Arguments
 
 1. Worktree path
 2. Branch name
 
-**Example**:
+### Example
 
 ```bash
 #!/bin/bash
@@ -323,14 +323,14 @@ echo "Worktree $BRANCH initialized at $WORKTREE_PATH"
 
 Executed after worktree removal.
 
-**Location**: `.git/hooks/post-worktree-remove`
+### Location
 
-**Arguments**:
+### Arguments
 
 1. Worktree path
 2. Branch name
 
-**Example**:
+### Example
 
 ```bash
 #!/bin/bash
@@ -378,7 +378,7 @@ echo "Worktree $BRANCH removed from $WORKTREE_PATH"
 | Config file          | ✅     | ❌           |
 | Script-friendly      | ✅     | ✅           |
 
-**Recommendation**:
+### Recommendation
 
 - **Development**: Use `git wt` for enhanced features
 - **Automation/CI**: Use `git worktree` for portability
@@ -391,5 +391,6 @@ echo "Worktree $BRANCH removed from $WORKTREE_PATH"
 
 ---
 
-**Version**: 1.0.0 (git-wt 0.15.0+)
-**Last Updated**: 2026-02-14
+### Version
+
+### Last Updated

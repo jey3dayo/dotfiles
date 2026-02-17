@@ -27,9 +27,11 @@ sudo git config --system wt.basedir ".worktrees"
 
 Base directory for worktrees.
 
-**Type**: String
-**Default**: `.worktrees`
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Set base directory
@@ -40,7 +42,7 @@ git config wt.basedir ".worktree"
 git config wt.basedir "worktrees"
 ```
 
-**Important**: When changing this value, also update:
+### Important
 
 - `.gitignore`
 - `.fdignore`
@@ -51,18 +53,20 @@ git config wt.basedir "worktrees"
 
 Template for auto-generating worktree names from branch names.
 
-**Type**: String (Go template)
-**Default**: `{{.BranchName}}`
-**Scope**: Local or Global
+### Type
 
-**Template Variables**:
+### Default
+
+### Scope
+
+### Template Variables
 
 - `{{.BranchName}}`: Full branch name (e.g., `feature/user-auth`)
 - `{{.ShortBranchName}}`: Last component (e.g., `user-auth`)
 - `{{.Prefix}}`: Branch prefix (e.g., `feature`)
 - `{{.Timestamp}}`: Current timestamp (Unix)
 
-**Examples**:
+### Examples
 
 ```bash
 # Use short branch name only
@@ -82,9 +86,11 @@ git config wt.nameTemplate "{{.ShortBranchName}}-{{.Timestamp}}"
 
 Files to automatically copy to new worktrees.
 
-**Type**: String (comma-separated)
-**Default**: `` (empty)
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Copy .env file
@@ -94,7 +100,7 @@ git config wt.copyFiles ".env"
 git config wt.copyFiles ".env,config.local.json,.vscode/settings.json"
 ```
 
-**Use Cases**:
+### Use Cases
 
 - Environment files (`.env`, `.env.local`)
 - Local configuration (`config.local.json`)
@@ -105,25 +111,30 @@ git config wt.copyFiles ".env,config.local.json,.vscode/settings.json"
 
 Automatically set up remote tracking for new branches.
 
-**Type**: Boolean
-**Default**: `false`
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Enable auto-setup
 git config wt.autoSetupRemote true
 ```
 
-**Behavior**:
+### Behavior
+
 When `true`, new branches created with `git wt create` will automatically track their remote counterpart (if it exists).
 
 ### wt.defaultRemote
 
 Default remote for new branches.
 
-**Type**: String
-**Default**: `origin`
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Set default remote
@@ -134,24 +145,28 @@ git config wt.defaultRemote "upstream"
 
 Automatically checkout worktree after creation.
 
-**Type**: Boolean
-**Default**: `true`
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Disable auto-checkout
 git config wt.checkoutAfterCreate false
 ```
 
-**Use Case**: When creating multiple worktrees in batch without switching to them.
+### Use Case
 
 ### wt.pruneAfterRemove
 
 Automatically prune worktree metadata after removal.
 
-**Type**: Boolean
-**Default**: `false`
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Enable auto-prune
@@ -162,9 +177,11 @@ git config wt.pruneAfterRemove true
 
 Default reason for locking worktrees.
 
-**Type**: String
-**Default**: `` (empty)
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Set default lock reason
@@ -179,16 +196,18 @@ Native git worktree configuration options.
 
 Guess remote branch when creating worktree with existing branch name.
 
-**Type**: Boolean
-**Default**: `true`
-**Scope**: Global or Local
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Enable guess remote
 git config worktree.guessRemote true
 ```
 
-**Example**:
+### Example
 
 ```bash
 # With guessRemote=true
@@ -206,9 +225,11 @@ git worktree add .worktrees/feature feature
 
 Path to post-add hook script.
 
-**Type**: String
-**Default**: `.git/hooks/post-worktree-add`
-**Scope**: Local
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Custom hook location
@@ -219,9 +240,11 @@ git config wt.hooks.postAdd "/usr/local/bin/worktree-init.sh"
 
 Path to post-remove hook script.
 
-**Type**: String
-**Default**: `.git/hooks/post-worktree-remove`
-**Scope**: Local
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Custom hook location
@@ -232,9 +255,11 @@ git config wt.hooks.postRemove "/usr/local/bin/worktree-cleanup.sh"
 
 Enable or disable hooks.
 
-**Type**: Boolean
-**Default**: `true`
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Disable hooks
@@ -247,9 +272,11 @@ git config wt.hooks.enabled false
 
 Enable shell integration features.
 
-**Type**: Boolean
-**Default**: `true`
-**Scope**: Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Enable shell integration
@@ -260,31 +287,35 @@ git config --global wt.shell.integration true
 
 Change directory after switching worktree.
 
-**Type**: Boolean
-**Default**: `true`
-**Scope**: Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Enable auto-cd
 git config --global wt.shell.cdAfterSwitch true
 ```
 
-**Note**: Requires shell integration (Zsh functions).
+### Note
 
 ### wt.shell.promptFormat
 
 Format for shell prompt when in worktree.
 
-**Type**: String
-**Default**: `[wt:%s]`
-**Scope**: Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Custom prompt format
 git config --global wt.shell.promptFormat "⚙️ %s"
 ```
 
-**Template Variables**:
+### Template Variables
 
 - `%s`: Worktree name
 
@@ -294,16 +325,18 @@ git config --global wt.shell.promptFormat "⚙️ %s"
 
 Fuzzy finder command for interactive mode.
 
-**Type**: String
-**Default**: `fzf`
-**Scope**: Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Use custom fuzzy finder
 git config --global wt.interactive.fuzzyFinder "peco"
 ```
 
-**Supported Finders**:
+### Supported Finders
 
 - `fzf` (recommended)
 - `peco`
@@ -314,9 +347,11 @@ git config --global wt.interactive.fuzzyFinder "peco"
 
 Options for fuzzy finder.
 
-**Type**: String
-**Default**: `--height=40% --reverse --border`
-**Scope**: Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Custom fzf options
@@ -329,24 +364,28 @@ git config --global wt.interactive.fuzzyFinderOptions "--height=50% --reverse --
 
 Automatically remove untracked files when deleting worktree.
 
-**Type**: Boolean
-**Default**: `false`
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Enable auto-removal of untracked files
 git config wt.cleanup.autoRemoveUntracked true
 ```
 
-**Warning**: This will delete untracked files without confirmation. Use with caution.
+### Warning
 
 ### wt.security.allowUnsafeOperations
 
 Allow potentially unsafe operations (force delete, etc.).
 
-**Type**: Boolean
-**Default**: `false`
-**Scope**: Local
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Allow unsafe operations (not recommended)
@@ -357,16 +396,18 @@ git config wt.security.allowUnsafeOperations true
 
 Create worktrees in parallel (experimental).
 
-**Type**: Integer
-**Default**: `1` (sequential)
-**Scope**: Local or Global
+### Type
+
+### Default
+
+### Scope
 
 ```bash
 # Enable parallel creation (max 4 worktrees)
 git config wt.performance.parallelCreate 4
 ```
 
-**Note**: Experimental feature. May cause issues with hooks or file copying.
+### Note
 
 ## Recommended Configuration
 
@@ -420,9 +461,9 @@ git config --local wt.checkoutAfterCreate false
 
 git-wt also supports YAML configuration file.
 
-**Location**: `~/.config/git-wt/config.yaml` or `$GIT_WT_CONFIG`
+### Location
 
-**Example**:
+### Example
 
 ```yaml
 # ~/.config/git-wt/config.yaml
@@ -459,7 +500,7 @@ performance:
   parallelCreate: 1
 ```
 
-**Priority**: YAML config < Global git config < Local git config
+### Priority
 
 ## Troubleshooting Configuration
 
@@ -505,5 +546,6 @@ scripts/check-worktree-config.sh
 
 ---
 
-**Version**: 1.0.0 (git-wt 0.15.0+)
-**Last Updated**: 2026-02-14
+### Version
+
+### Last Updated

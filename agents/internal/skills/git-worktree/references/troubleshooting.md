@@ -6,15 +6,15 @@ Comprehensive troubleshooting guide for common Git worktree issues and their sol
 
 ### Issue: Branch Already Checked Out
 
-**Symptom**:
+### Symptom
 
 ```
 fatal: 'feature/user-auth' is already checked out at '/path/to/repo/.worktrees/user-auth'
 ```
 
-**Cause**: The same branch is already used in another worktree. Git prevents checking out the same branch in multiple worktrees.
+### Cause
 
-**Solutions**:
+### Solutions
 
 #### Option 1: Switch to existing worktree
 
@@ -45,20 +45,20 @@ git wt create feature/user-auth
 git wt create feature/user-auth-v2
 ```
 
-**Prevention**: Always check existing worktrees before creating new ones.
+### Prevention
 
 ### Issue: Worktree Directory Deleted Manually
 
-**Symptom**:
+### Symptom
 
 ```
 # git wt list shows worktree, but directory doesn't exist
 fatal: '/path/to/repo/.worktrees/deleted' does not exist
 ```
 
-**Cause**: Worktree directory was deleted manually without using `git wt remove`.
+### Cause
 
-**Solution**:
+### Solution
 
 ```bash
 # Prune stale worktree metadata
@@ -68,7 +68,7 @@ git worktree prune -v
 git wt list
 ```
 
-**If prune doesn't work**:
+### If prune doesn't work
 
 ```bash
 # Manual cleanup
@@ -78,19 +78,19 @@ rm -rf .git/worktrees/deleted
 git wt list
 ```
 
-**Prevention**: Always use `git wt remove` to delete worktrees.
+### Prevention
 
 ### Issue: Locked Worktree Cannot Be Removed
 
-**Symptom**:
+### Symptom
 
 ```
 fatal: 'feature/locked' is locked; reason: Long-running build
 ```
 
-**Cause**: Worktree was locked to prevent accidental removal.
+### Cause
 
-**Solution**:
+### Solution
 
 ```bash
 # Unlock worktree
@@ -100,7 +100,7 @@ git worktree unlock .worktrees/locked
 git wt remove feature/locked
 ```
 
-**Force removal** (if unlock fails):
+### Force removal
 
 ```bash
 # Remove lock file manually
@@ -110,20 +110,20 @@ rm .git/worktrees/locked/locked
 git wt remove feature/locked
 ```
 
-**Prevention**: Document lock reasons and unlock when no longer needed.
+### Prevention
 
 ### Issue: Uncommitted Changes Prevent Removal
 
-**Symptom**:
+### Symptom
 
 ```
 error: Worktree contains uncommitted changes
 fatal: Cannot remove worktree 'feature/work-in-progress'
 ```
 
-**Cause**: Worktree has uncommitted changes and `--force` flag not used.
+### Cause
 
-**Solutions**:
+### Solutions
 
 #### Option 1: Commit changes
 
@@ -153,11 +153,11 @@ git stash pop
 git wt remove -f work-in-progress
 ```
 
-**Warning**: Force removal discards uncommitted changes permanently.
+### Warning
 
 ### Issue: Configuration Not Recognized
 
-**Symptom**:
+### Symptom
 
 ```
 # Configuration set but not applied
@@ -167,9 +167,9 @@ git config wt.basedir
 # But worktrees created in current directory
 ```
 
-**Cause**: Configuration scope issue (local vs global) or syntax error.
+### Cause
 
-**Diagnosis**:
+### Diagnosis
 
 ```bash
 # Check configuration origin
@@ -182,9 +182,9 @@ git config --list | grep ^wt\.
 cat .git/config
 ```
 
-**Solutions**:
+### Solutions
 
-**Fix scope**:
+### Fix scope
 
 ```bash
 # Remove global config
@@ -194,7 +194,7 @@ git config --global --unset wt.basedir
 git config --local wt.basedir ".worktrees"
 ```
 
-**Fix syntax** (in `.git/config`):
+### Fix syntax
 
 ```ini
 # Incorrect
@@ -206,7 +206,7 @@ git config --local wt.basedir ".worktrees"
     basedir = ".worktrees"
 ```
 
-**Validate configuration**:
+### Validate configuration
 
 ```bash
 # Use diagnostic script
@@ -215,7 +215,7 @@ scripts/check-worktree-config.sh
 
 ### Issue: Shell Integration Not Working
 
-**Symptom**:
+### Symptom
 
 ```bash
 # Command not found
@@ -227,9 +227,9 @@ gwts
 # → (no directory change)
 ```
 
-**Cause**: Shell functions not loaded or `git-wt` not in PATH.
+### Cause
 
-**Diagnosis**:
+### Diagnosis
 
 ```bash
 # Check if git-wt is installed
@@ -240,9 +240,9 @@ type gwt
 type gwts
 ```
 
-**Solutions**:
+### Solutions
 
-**For git-wt command**:
+### For git-wt command
 
 ```bash
 # Check installation
@@ -255,7 +255,7 @@ mise install go:github.com/k1LoW/git-wt@latest
 echo $PATH | grep -o '[^:]*mise[^:]*'
 ```
 
-**For Zsh functions**:
+### For Zsh functions
 
 ```bash
 # Check if functions are loaded
@@ -268,7 +268,7 @@ source ~/.config/zsh/config/tools/git.zsh
 type gwts
 ```
 
-**Reload shell**:
+### Reload shell
 
 ```bash
 exec zsh
@@ -276,16 +276,16 @@ exec zsh
 
 ### Issue: File Copying Not Working
 
-**Symptom**:
+### Symptom
 
 ```bash
 git wt create feature/test --copy .env
 # → .env file not copied to worktree
 ```
 
-**Cause**: Source file doesn't exist or `--copy` syntax incorrect.
+### Cause
 
-**Diagnosis**:
+### Diagnosis
 
 ```bash
 # Check if source file exists
@@ -298,9 +298,9 @@ pwd
 git wt --version
 ```
 
-**Solutions**:
+### Solutions
 
-**Fix file path**:
+### Fix file path
 
 ```bash
 # Use absolute path
@@ -311,7 +311,7 @@ cd /path/to/repo
 git wt create feature/test --copy .env
 ```
 
-**Use configuration**:
+### Use configuration
 
 ```bash
 # Set permanent copy files
@@ -321,7 +321,7 @@ git config wt.copyFiles ".env,.env.local"
 git wt create feature/test
 ```
 
-**Manual copy as fallback**:
+### Manual copy as fallback
 
 ```bash
 # Create worktree
@@ -333,7 +333,7 @@ cp .env .worktrees/test/.env
 
 ### Issue: Hooks Not Executing
 
-**Symptom**:
+### Symptom
 
 ```bash
 # Hook exists but doesn't execute
@@ -341,9 +341,9 @@ ls -la .git/hooks/post-worktree-add
 # → -rw-r--r-- (not executable)
 ```
 
-**Cause**: Hook file not executable or hooks disabled.
+### Cause
 
-**Diagnosis**:
+### Diagnosis
 
 ```bash
 # Check executable bit
@@ -353,9 +353,9 @@ ls -la .git/hooks/post-worktree-add
 git config wt.hooks.enabled
 ```
 
-**Solutions**:
+### Solutions
 
-**Fix permissions**:
+### Fix permissions
 
 ```bash
 # Make hook executable
@@ -366,7 +366,7 @@ chmod +x .git/hooks/post-worktree-remove
 ls -la .git/hooks/post-worktree-*
 ```
 
-**Enable hooks**:
+### Enable hooks
 
 ```bash
 # Check if disabled
@@ -376,7 +376,7 @@ git config wt.hooks.enabled
 git config wt.hooks.enabled true
 ```
 
-**Verify hook execution**:
+### Verify hook execution
 
 ```bash
 # Add debug output to hook
@@ -391,15 +391,15 @@ cat /tmp/worktree-hook.log
 
 ### Issue: Worktree Path Conflicts
 
-**Symptom**:
+### Symptom
 
 ```
 fatal: '/path/to/repo/.worktrees/feature' already exists
 ```
 
-**Cause**: Target directory already exists (from previous worktree or manual creation).
+### Cause
 
-**Solutions**:
+### Solutions
 
 #### Option 1: Remove existing directory
 
@@ -428,21 +428,21 @@ git wt create feature/new-feature --path .worktrees/feature-v2
 git wt create -f feature/new-feature
 ```
 
-**Warning**: Force creation may lose data in existing directory.
+### Warning
 
 ## Performance Issues
 
 ### Issue: Slow Worktree Creation
 
-**Symptom**: `git wt create` takes several minutes.
+### Symptom
 
-**Causes**:
+### Causes
 
 - Large repository
 - Slow disk I/O
 - Post-add hook running heavy operations
 
-**Diagnosis**:
+### Diagnosis
 
 ```bash
 # Time the operation
@@ -452,9 +452,9 @@ time git wt create test
 time .git/hooks/post-worktree-add .worktrees/test test
 ```
 
-**Solutions**:
+### Solutions
 
-**Optimize hooks**:
+### Optimize hooks
 
 ```bash
 # Make hooks faster
@@ -474,7 +474,7 @@ cd "$WORKTREE_PATH"
 # Don't wait for completion
 ```
 
-**Use `--no-checkout`**:
+### Use `--no-checkout`
 
 ```bash
 # Skip checkout for faster creation
@@ -485,7 +485,7 @@ cd .worktrees/test
 git checkout feature/test
 ```
 
-**Disable hooks temporarily**:
+### Disable hooks temporarily
 
 ```bash
 git config wt.hooks.enabled false
@@ -495,13 +495,13 @@ git config wt.hooks.enabled true
 
 ### Issue: Excessive Disk Usage
 
-**Symptom**: Multiple worktrees consuming too much disk space.
+### Symptom
 
-**Cause**: Each worktree has its own `node_modules` or build artifacts.
+### Cause
 
-**Solutions**:
+### Solutions
 
-**Share node_modules** (symlink approach):
+### Share node_modules
 
 ```bash
 # Create shared node_modules
@@ -515,7 +515,7 @@ rm -rf node_modules
 ln -s ../../.cache/node_modules node_modules
 ```
 
-**Clean up build artifacts**:
+### Clean up build artifacts
 
 ```bash
 # Add to post-remove hook
@@ -528,7 +528,7 @@ rm -rf "$WORKTREE_PATH/.next"
 rm -rf "$WORKTREE_PATH/build"
 ```
 
-**Use workspace feature** (for monorepos):
+### Use workspace feature
 
 ```bash
 # package.json (root)
@@ -543,15 +543,15 @@ rm -rf "$WORKTREE_PATH/build"
 
 ### Issue: Corrupted Worktree Metadata
 
-**Symptom**:
+### Symptom
 
 ```
 fatal: not a git repository: '/path/to/repo/.git/worktrees/broken'
 ```
 
-**Cause**: Corrupted worktree metadata in `.git/worktrees/`.
+### Cause
 
-**Solution**:
+### Solution
 
 ```bash
 # Repair worktree
@@ -567,9 +567,9 @@ git wt create -b existing-branch
 
 ### Issue: Detached HEAD in Worktree
 
-**Symptom**: Worktree shows detached HEAD unexpectedly.
+### Symptom
 
-**Diagnosis**:
+### Diagnosis
 
 ```bash
 cd .worktrees/feature-a
@@ -577,7 +577,7 @@ git status
 # → HEAD detached at abc123
 ```
 
-**Solution**:
+### Solution
 
 ```bash
 # Checkout branch
@@ -589,9 +589,9 @@ git checkout -b feature/feature-a-recovered
 
 ### Issue: Upstream Tracking Lost
 
-**Symptom**: Push fails because upstream not set.
+### Symptom
 
-**Solution**:
+### Solution
 
 ```bash
 cd .worktrees/feature-a
@@ -603,7 +603,7 @@ git branch --set-upstream-to=origin/feature/feature-a
 git push -u origin feature/feature-a
 ```
 
-**Prevention**: Enable auto-setup remote.
+### Prevention
 
 ```bash
 git config wt.autoSetupRemote true
@@ -721,7 +721,7 @@ EOF
 
 ### Team Guidelines
 
-**Document worktree conventions**:
+### Document worktree conventions
 
 1. Always use `.worktrees/` as base directory
 2. Use `git wt` commands only
@@ -739,7 +739,7 @@ EOF
 
 ### Nuclear Option: Reset Everything
 
-**Warning**: This will remove ALL worktrees and their branches.
+### Warning
 
 ```bash
 # Backup first
@@ -762,5 +762,6 @@ git worktree list
 
 ---
 
-**Version**: 1.0.0
-**Last Updated**: 2026-02-14
+### Version
+
+### Last Updated
