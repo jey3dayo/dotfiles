@@ -1,6 +1,6 @@
 # 📖 Documentation Navigation
 
-**最終更新**: 2025-12-17
+**最終更新**: 2026-02-18
 **対象**: 開発者
 **タグ**: `category/guide`, `layer/support`, `environment/macos`, `audience/developer`
 
