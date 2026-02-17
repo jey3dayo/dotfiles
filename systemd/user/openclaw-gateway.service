@@ -4,6 +4,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+# WSL2: pnpm global install (this path)
+# Pi: pnpm global install (same path, requires: pnpm add -g openclaw)
+# Prerequisites: pnpm installed via mise, openclaw globally installed
 ExecStart=%h/.local/share/pnpm/openclaw gateway --port 18789
 Restart=always
 RestartSec=5
@@ -20,6 +23,10 @@ KillMode=process
 Environment=HOME=%h
 # Use mise 'latest' symlinks for automatic version tracking
 # Avoids mise shim overhead and prevents recursive process spawning
+# Prerequisites:
+#   - mise installed with node and go configured
+#   - Verify symlinks exist: ls -la ~/.mise/installs/{node,go}/latest
+#   - mise automatically creates 'latest' symlink when installing tools
 Environment="PATH=%h/.mise/installs/node/latest/bin:%h/.mise/installs/go/latest/bin:%h/.local/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
