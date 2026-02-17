@@ -1,113 +1,113 @@
-# Agents Directory Structure
+# Agents ディレクトリ構造
 
-This directory contains Claude Code agent skills, commands, and configurations organized into internal and external assets.
+このディレクトリには、内部アセットと外部アセットに整理された Claude Code のエージェントスキル、コマンド、設定が含まれています。
 
-## Directory Structure
+## ディレクトリ構造
 
 ```
 agents/
-├── internal/          # Internal assets (single source of truth)
-│   ├── skills/       # Bundled skills
-│   ├── commands/     # Slash commands
-│   ├── agents/       # Agent definitions
-│   └── rules/        # Project rules
-├── external/         # External skills from marketplace
-├── nix/              # Nix implementation
-│   ├── lib.nix       # Core logic (scan, discover, bundle)
-│   ├── module.nix    # Home Manager module
-│   └── README.md     # Nix implementation details
-└── scripts/          # Maintenance scripts
+├── internal/          # 内部アセット（信頼できる唯一の情報源）
+│   ├── skills/       # バンドルされたスキル
+│   ├── commands/     # スラッシュコマンド
+│   ├── agents/       # エージェント定義
+│   └── rules/        # プロジェクトルール
+├── external/         # マーケットプレイスからの外部スキル
+├── nix/              # Nix 実装
+│   ├── lib.nix       # コアロジック（スキャン、検出、バンドル）
+│   ├── module.nix    # Home Manager モジュール
+│   └── README.md     # Nix 実装の詳細
+└── scripts/          # メンテナンススクリプト
 ```
 
 ## Internal vs External
 
 ### agents/internal/
 
-**Purpose**: Single source of truth for internal assets
+**目的**: 内部アセットの信頼できる唯一の情報源
 
-**Contents**:
+**内容**:
 
-- **skills/**: Core skills developed and maintained in this repository
-- **commands/**: Slash commands for interactive operations
-- **agents/**: Subagent definitions for specialized tasks
-- **rules/**: Project-specific rules and guidelines
+- **skills/**: このリポジトリで開発・管理されているコアスキル
+- **commands/**: インタラクティブ操作用のスラッシュコマンド
+- **agents/**: 特殊タスク用のサブエージェント定義
+- **rules/**: プロジェクト固有のルールとガイドライン
 
-**Distribution**: All contents are automatically distributed to `~/.claude/` via Home Manager
+**配布**: すべてのコンテンツは Home Manager を介して自動的に `~/.claude/` に配布されます
 
 ### agents/external/
 
-**Purpose**: External skills from marketplace and third-party sources
+**目的**: マーケットプレイスおよびサードパーティソースからの外部スキル
 
-**Contents**:
+**内容**:
 
-- Skills from Claude Code Marketplace
-- Skills from OpenAI curated collection
-- Skills from Vercel, Heyvhuang, and other providers
+- Claude Code Marketplace のスキル
+- OpenAI キュレーションコレクションのスキル
+- Vercel、Heyvhuang、その他プロバイダーのスキル
 
-**Management**: Configured via `nix/agent-skills-sources.nix` and `flake.nix` inputs
+**管理**: `nix/agent-skills-sources.nix` および `flake.nix` の inputs で設定
 
-## Usage
+## 使用方法
 
-### Deploying Changes
+### 変更のデプロイ
 
 ```bash
-# Apply all changes to ~/.claude/
+# すべての変更を ~/.claude/ に適用
 home-manager switch --flake ~/.config --impure
 
-# Verify deployment
+# デプロイ確認
 ls ~/.claude/skills/ | wc -l
 ```
 
-### Validation
+### 検証
 
 ```bash
-# Validate internal assets structure
+# 内部アセット構造の検証
 bash ./agents/scripts/validate-internal.sh
 
-# Validate skill catalog
+# スキルカタログの検証
 nix run .#validate
 ```
 
-### Adding New Skills
+### 新しいスキルの追加
 
-**Internal skills** (developed in this repo):
+**内部スキル**（このリポジトリで開発）:
 
-1. Create skill directory under `agents/internal/skills/<skill-name>/`
-2. Add `SKILL.md` with skill definition
-3. Run `home-manager switch --flake ~/.config --impure`
+1. `agents/internal/skills/<skill-name>/` 配下にスキルディレクトリを作成
+2. スキル定義を含む `SKILL.md` を追加
+3. `home-manager switch --flake ~/.config --impure` を実行
 
-**External skills** (from marketplace):
+**外部スキル**（マーケットプレイスから）:
 
-1. Add to `nix/agent-skills-sources.nix`
-2. Add flake input to `flake.nix`
-3. Run `nix flake update && home-manager switch --flake ~/.config --impure`
+1. `nix/agent-skills-sources.nix` に追加
+2. `flake.nix` に flake input を追加
+3. `nix flake update && home-manager switch --flake ~/.config --impure` を実行
 
-## Architecture
+## アーキテクチャ
 
-### Catalog Discovery
+### カタログ検出
 
-Skills are discovered in priority order:
+スキルは以下の優先順位で検出されます：
 
-1. **Local** (`localPath` - deprecated, for legacy compatibility)
-2. **Distribution** (`agents/internal/` - primary source)
-3. **External** (flake inputs via `sources`)
+1. **Local** (`localPath` - 非推奨、レガシー互換性のため)
+2. **Distribution** (`agents/internal/` - 主要ソース)
+3. **External** (`sources` 経由の flake inputs)
 
-### Selection
+### 選択
 
-- Distribution skills: Always included
-- External skills: Filtered by `selection.enable` in `nix/agent-skills-sources.nix`
-- Result: Merged catalog with unique skill IDs
+- Distribution スキル: 常に含まれる
+- External スキル: `nix/agent-skills-sources.nix` の `selection.enable` でフィルタリング
+- 結果: 一意のスキル ID を持つマージされたカタログ
 
-### Bundling
+### バンドリング
 
-Selected skills are bundled into Nix store and distributed via Home Manager to `~/.claude/skills/` as per-skill symlinks.
+選択されたスキルは Nix ストアにバンドルされ、Home Manager を介してスキルごとのシンボリックリンクとして `~/.claude/skills/` に配布されます。
 
-## References
+## 参考資料
 
-- **Nix Implementation**: `agents/nix/README.md`
-- **Home Manager Rules**: `.claude/rules/home-manager.md`
-- **Agent Skills Sources**: `nix/agent-skills-sources.nix`
+- **Nix 実装**: `agents/nix/README.md`
+- **Home Manager ルール**: `.claude/rules/home-manager.md`
+- **Agent Skills ソース**: `nix/agent-skills-sources.nix`
 
 ---
 
-**Last Updated**: 2026-02-16
+**最終更新**: 2026-02-17
