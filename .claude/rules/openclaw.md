@@ -125,6 +125,49 @@ npm cache clean --force 2>&1 | grep -v "npm warn" || true
 
 **ログファイル**: `~/.cache/openclaw/cleanup.log`
 
+### systemd設計の原則
+
+#### サービスごとの最適化
+
+OpenClawのsystemd設定は、**サービス特性に応じた最適化**を行っています。
+
+##### Gateway Service（永続サービス）
+
+**PATH設計**:
+
+- mise最新バイナリへの直接パス参照
+- shim経由のオーバーヘッド回避（起動時間50-100ms削減）
+- 永続サービスのため、起動速度が重要
+
+**KillMode設計**: `mixed`
+
+- メインプロセス（openclaw gateway）とその子プロセス（Telegram Bot等）を確実に終了
+- ポート占有やリソースリーク防止に必須
+
+##### Cleanup Service（ワンショット）
+
+**PATH設計**:
+
+- mise shimを使用してポータビリティ確保
+- miseが管理するバージョンを自動的に使用
+- 日次1回実行のため、shimオーバーヘッド（50-100ms）は無視可能
+
+**KillMode設計**: 未設定（デフォルトのcontrol-group）
+
+- Type=oneshotのため、ExecStart完了時点でプロセスが終了
+- 残存プロセスが存在しないため、KillMode指定は不要
+
+#### 設計原則のまとめ
+
+| 項目     | Gateway Service   | Cleanup Service         | 理由                             |
+| -------- | ----------------- | ----------------------- | -------------------------------- |
+| Type     | simple（永続）    | oneshot（ワンショット） | サービスのライフサイクルの違い   |
+| PATH     | 直接バイナリ参照  | mise shim経由           | パフォーマンス vs ポータビリティ |
+| KillMode | mixed（子も終了） | 未設定（デフォルト）    | 子プロセス管理の必要性           |
+| Restart  | always            | on-failure              | 永続 vs エラー時のみ             |
+
+**この分離設計により、各サービスが最適化され、保守性も確保されています。**
+
 ## Common Operations
 
 ### Gateway管理

@@ -47,8 +47,10 @@ class SerenaClient:
 
     def _check_availability(self) -> bool:
         """Check if Serena is available"""
-        # TODO: Implement actual Serena availability check
-        # For now, assume not available and use fallback
+        # NOTE: Serena integration intentionally postponed (2026-02-18)
+        # Rationale: ripgrep fallback provides sufficient functionality
+        # for premortem analysis. May reconsider if semantic analysis
+        # becomes critical in the future.
         return False
 
     def find_symbol(self, symbol_name: str) -> SerenaSearchResult:
@@ -64,8 +66,8 @@ class SerenaClient:
         if not self.available:
             return self._fallback_search(symbol_name)
 
-        # TODO: Implement actual Serena API call
-        # Example: mcp__serena__find_symbol(symbol_name)
+        # NOTE: Serena API integration postponed - using fallback
+        # Future implementation: mcp__serena__find_symbol(symbol_name)
         return SerenaSearchResult(
             query=symbol_name, symbols=[], success=False, error="Serena not available"
         )
