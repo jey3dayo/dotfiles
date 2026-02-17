@@ -152,17 +152,29 @@ function processFile(
           return line;
         }
 
-        // Process suffix: remove trailing colon, keep parentheses
-        let headingText = text;
-        // ":" or ": something" -> remove entirely
-        // "(note):" -> keep "(note)", remove ":"
-        const cleanSuffix = suffix.replace(/:\s*$/, "").trim();
-        if (cleanSuffix && !cleanSuffix.startsWith(":")) {
-          headingText = `${text} ${cleanSuffix}`;
+        // Check if suffix is just parentheses with optional colon like "(note):"
+        const parenOnlyPattern = /^\s*\([^)]+\)\s*:?\s*$/;
+        if (suffix.match(parenOnlyPattern)) {
+          // This is just a parenthetical note - convert to heading
+          let headingText = text;
+          const cleanSuffix = suffix.replace(/:\s*$/, "").trim();
+          if (cleanSuffix) {
+            headingText = `${text} ${cleanSuffix}`;
+          }
+          fileReplacements += 1;
+          return `${indent}#### ${headingText}`;
         }
 
+        // Check if there's content after ":"
+        const colonMatch = suffix.match(/:\s*(.+)/);
+        if (colonMatch && colonMatch[1].trim()) {
+          // There's meaningful content after the colon - keep as bold
+          return line;
+        }
+
+        // Just ":" or whitespace - convert to heading
         fileReplacements += 1;
-        return `${indent}#### ${headingText}`;
+        return `${indent}#### ${text}`;
       }
 
       const headingMatch = line.match(boldOnlyHeading);
