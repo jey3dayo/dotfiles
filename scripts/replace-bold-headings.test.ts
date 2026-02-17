@@ -45,6 +45,30 @@ const testCases = [
     expected: "1. Read Guidelines: 必ず最初に読む",
     shouldConvert: true, // Should remove bold but keep content
   },
+  {
+    name: "Unordered list with bold label (colon only)",
+    input: "- **Text**:",
+    expected: "- Text:",
+    shouldConvert: true,
+  },
+  {
+    name: "Unordered list with bold label and content (MUST preserve bold)",
+    input: "- **Text**: content here",
+    expected: "- **Text**: content here",
+    shouldConvert: false,
+  },
+  {
+    name: "Unordered list with bold label and Japanese content (MUST preserve bold)",
+    input: "- **メリット**: 初回ロード軽量",
+    expected: "- **メリット**: 初回ロード軽量",
+    shouldConvert: false,
+  },
+  {
+    name: "Unordered list with bold label (no colon)",
+    input: "- **OpenClaw関連（4ファイル）**",
+    expected: "- OpenClaw関連（4ファイル）",
+    shouldConvert: true,
+  },
 ];
 
 // Create test file

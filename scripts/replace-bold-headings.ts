@@ -144,10 +144,22 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
         const prefix = unorderedListLabelMatch[1];
         const text = unorderedListLabelMatch[2];
         const suffix = unorderedListLabelMatch[3] ?? "";
-        if (!text.includes("**")) {
-          fileReplacements += 1;
-          return `${prefix}${text}${suffix}`;
+
+        // Skip if nested bold exists
+        if (text.includes("**")) {
+          return line;
         }
+
+        // Check if there's meaningful content after the colon
+        const colonMatch = suffix.match(/:\s*(.+)/);
+        if (colonMatch && colonMatch[1].trim()) {
+          // There's content after the colon - preserve bold
+          return line;
+        }
+
+        // Just ":" or no suffix - remove bold
+        fileReplacements += 1;
+        return `${prefix}${text}${suffix}`;
       }
 
       const labelMatch = line.match(boldLabelWithSuffix);
