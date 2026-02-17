@@ -77,11 +77,7 @@ function resolveTargetPaths(userInputs: string[]): string[] {
 // File Processing
 // ========================================
 
-function processFile(
-  filePath: string,
-  dryRun: boolean,
-  verbose: boolean,
-): FileResult {
+function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileResult {
   try {
     const original = fs.readFileSync(filePath, "utf8");
     const eol = original.includes("\r\n") ? "\r\n" : "\n";
@@ -99,8 +95,7 @@ function processFile(
 
     // Bold labels in ordered list items are normalized to plain text.
     // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
-    const boldOrderedListLabel =
-      /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
+    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
 
     let inFence = false;
     let fenceChar = "";
@@ -323,9 +318,7 @@ function main() {
   }
 
   // 統計情報の集計
-  const successCount = results.filter(
-    (r) => !r.error && r.replacements > 0,
-  ).length;
+  const successCount = results.filter((r) => !r.error && r.replacements > 0).length;
   const errorCount = results.filter((r) => r.error).length;
   const totalReplacements = results.reduce((sum, r) => sum + r.replacements, 0);
 
@@ -334,9 +327,7 @@ function main() {
     console.log("No bold heading/label patterns found.");
   } else {
     const verb = args.dryRun ? "Found" : "Replaced";
-    console.log(
-      `${verb} ${totalReplacements} bold heading/label pattern(s) across ${successCount} file(s).`,
-    );
+    console.log(`${verb} ${totalReplacements} bold heading/label pattern(s) across ${successCount} file(s).`);
   }
 
   if (errorCount > 0) {
