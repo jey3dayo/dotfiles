@@ -66,7 +66,7 @@ function resolveTargetDirectory(userInput: string | null): string {
   // デフォルト値（引数なしの場合）
   if (!userInput) {
     const repoRoot = path.resolve(__dirname, "../..");
-    return path.join(repoRoot, "agents", "internal", "skills");
+    return path.join(repoRoot, "agents", "internal");
   }
 
   // ユーザー指定のパスを解決
@@ -200,7 +200,7 @@ Usage:
 
 Arguments:
   directory               Target directory to process
-                         Default: agents/internal/skills (optimized for Claude Code skills)
+                         Default: agents/internal (skills, agents, rules, commands)
                          Can specify any directory (e.g., ".", ".claude", "docs")
 
 Options:
@@ -209,7 +209,7 @@ Options:
   --help, -h             Show this help message
 
 Examples:
-  # Process default directory (skills)
+  # Process default directory (internal assets)
   tsx replace-bold-headings.ts
   mise run skills:fix:bold-headings
 
