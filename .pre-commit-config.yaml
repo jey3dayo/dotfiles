@@ -73,9 +73,17 @@ repos:
         pass_filenames: true
 
       # Markdown linting
+      - id: markdown-bold-headings
+        name: Normalize internal Markdown bold headings
+        entry: tsx ./agents/scripts/replace-bold-headings.ts
+        language: system
+        files: ^agents/internal/.*\.md$
+        pass_filenames: true
+
       - id: markdownlint
         name: Lint Markdown files with markdownlint-cli2
         entry: markdownlint-cli2
+        args: ["--fix"]
         language: system
         types: [markdown]
         pass_filenames: true

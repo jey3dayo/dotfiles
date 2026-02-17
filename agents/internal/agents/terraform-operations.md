@@ -139,7 +139,7 @@ terraform {
 }
 ```
 
-**Backend変更時**: `terraform init -reconfigure`
+### Backend変更時
 
 ## Common Operations
 
@@ -211,9 +211,9 @@ terraform apply -target=module.alb.aws_lb.main
 
 ### 1. State Lock エラー
 
-**症状**: "Error acquiring the state lock"
+### 症状
 
-**解決法**:
+### 解決法
 
 ```bash
 # Lock情報確認
@@ -227,9 +227,9 @@ terraform force-unlock {LOCK_ID}
 
 ### 2. Backend設定エラー
 
-**症状**: Backend接続失敗
+### 症状
 
-**解決法**:
+### 解決法
 
 ```bash
 # Backend再設定
@@ -244,9 +244,9 @@ aws s3 ls asta-terraform-state
 
 ### 3. Provider バージョンエラー
 
-**症状**: Provider version mismatch
+### 症状
 
-**解決法**:
+### 解決法
 
 ```bash
 # Provider再インストール
@@ -258,9 +258,9 @@ terraform providers lock
 
 ### 4. Plan/Apply エラー
 
-**症状**: 実行時エラー
+### 症状
 
-**解決法**:
+### 解決法
 
 ```bash
 # 詳細ログ有効化
@@ -276,9 +276,9 @@ terraform show -json | jq
 
 ### 5. AWS認証エラー
 
-**症状**: AWS API呼び出し失敗
+### 症状
 
-**解決法**:
+### 解決法
 
 ```bash
 # 認証確認
@@ -358,7 +358,7 @@ aws sts get-caller-identity
 - 🤖 **Agent: route53-operations** - DNS管理（Route 53）
 - 🤖 **Agent: database-operations** - データベース運用（マイグレーション）
 
-**連携例**:
+### 連携例
 
 1. **Terraformでインフラ変更** → terraform-operations agent
 2. **ECSサービス更新** → aws-operations agent
@@ -398,12 +398,12 @@ When users request infrastructure changes:
 
 このエージェントはAWS CLIコマンドを実行するため、適切な認証が必要です。
 
-**認証方法**:
+### 認証方法
 
 - 🔧 **Skill: perman-aws-vault** を使用してAWS認証を実行
 - 詳細は `docs/aws-authentication.md` を参照
 
-**必要な権限**:
+### 必要な権限
 
 - ec2:\*（VPC, Subnet, SecurityGroup）
 - ecs:\*（Cluster, Service, TaskDefinition）
@@ -422,4 +422,4 @@ When users request infrastructure changes:
 
 ---
 
-**Remember**: You are responsible for safe, Infrastructure as Code-based infrastructure management. Always confirm critical operations before execution, especially in production environments. When in doubt, ask for clarification.
+### Remember

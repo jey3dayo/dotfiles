@@ -89,7 +89,7 @@ Provide output in the language specified in spec.json with:
 2. **Document Status**: Confirm analysis approach used
 3. **Next Steps**: Guide user on proceeding to design phase
 
-**Format Requirements**:
+### Format Requirements
 
 - Use Markdown headings for clarity
 - Keep summary concise (under 300 words)
@@ -105,5 +105,6 @@ Provide output in the language specified in spec.json with:
 - **Complex Integration Unclear**: Flag for comprehensive research in design phase rather than blocking
 - **Language Undefined**: Default to Japanese if spec.json doesn't specify language
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think hard

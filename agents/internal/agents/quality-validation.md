@@ -28,7 +28,7 @@ pnpm tsx scripts/type-assertion-fix-plan.ts
 cat TYPE_ASSERTION_FIX_PLAN.md
 ```
 
-**検証基準**:
+### 検証基準
 
 - 型エラー0件必須
 - `as`型アサーション完全排除
@@ -50,7 +50,7 @@ pnpm lint:fix
 pnpm report:lint
 ```
 
-**検証基準**:
+### 検証基準
 
 - リント違反0件必須
 - ESLintカスタムルール準拠
@@ -78,7 +78,7 @@ pnpm report:test
 pnpm report:test:quick
 ```
 
-**検証基準**:
+### 検証基準
 
 - 全テスト成功必須
 - Testing Trophyパターン準拠（統合テスト中心）
@@ -99,7 +99,7 @@ pnpm validate:layers:rules
 pnpm validate:all
 ```
 
-**検証基準**:
+### 検証基準
 
 - 層間依存関係ルール準拠
 - 循環依存なし
@@ -120,7 +120,7 @@ pnpm debug:apis
 pnpm debug:schemas
 ```
 
-**注意事項**:
+### 注意事項
 
 - `NODE_TLS_REJECT_UNAUTHORIZED=0` 必須（CMX API接続時）
 - 実環境への影響を最小化
@@ -141,7 +141,7 @@ pnpm db:sql "SELECT table_name FROM information_schema.tables WHERE table_schema
 pnpm db:sql "SELECT COUNT(*) as total_users FROM users"
 ```
 
-**検証基準**:
+### 検証基準
 
 - Prismaスキーマ準拠
 - データ整合性確保

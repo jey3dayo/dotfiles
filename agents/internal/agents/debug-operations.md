@@ -26,21 +26,21 @@ ls -la logs/dev.log || touch logs/dev.log
 
 #### 状況別対処コマンド
 
-**サーバー未起動の場合**:
+### サーバー未起動の場合
 
 ```bash
 # デバッグモードで起動
 pnpm dev:debug
 ```
 
-**サーバー問題の場合**:
+### サーバー問題の場合
 
 ```bash
 # 再起動
 pnpm dev:restart
 ```
 
-**ポート使用エラーの場合**:
+### ポート使用エラーの場合
 
 ```bash
 # プロセス確認・停止
@@ -49,7 +49,7 @@ lsof -ti:3000 | xargs kill -9
 pnpm dev
 ```
 
-**環境変数問題の場合**:
+### 環境変数問題の場合
 
 ```bash
 # .env.local確認・作成
@@ -83,7 +83,7 @@ grep -i error logs/dev.log | awk '{print $4}' | sort | uniq -c
 
 #### ログパターン理解
 
-**正常動作**:
+### 正常動作
 
 ```
 [INFO] Server started on port 3000
@@ -91,7 +91,7 @@ grep -i error logs/dev.log | awk '{print $4}' | sort | uniq -c
 [INFO] CMX API authenticated
 ```
 
-**警告レベル**:
+### 警告レベル
 
 ```
 [WARN] CMX device offline
@@ -99,7 +99,7 @@ grep -i error logs/dev.log | awk '{print $4}' | sort | uniq -c
 [WARN] Rate limit approaching
 ```
 
-**エラーレベル**:
+### エラーレベル
 
 ```
 [ERROR] Database connection failed
@@ -128,7 +128,7 @@ grep -E "(CMX_API_ERROR|AUTH_ERROR|DB_ERROR)" logs/dev.log
 Error: listen EADDRINUSE: address already in use :::3000
 ```
 
-**自動解決コマンド**:
+### 自動解決コマンド
 
 ```bash
 lsof -ti:3000 | xargs kill -9
@@ -158,7 +158,7 @@ lsof -ti:3000 | xargs kill -9
 Error: Environment variable NEXTAUTH_SECRET is not set
 ```
 
-**自動解決**:
+### 自動解決
 
 ```bash
 ls -la .env.local || cp .env.example .env.local
@@ -171,7 +171,7 @@ echo "⚠️ 環境変数を設定してください: .env.local"
 PrismaClientKnownRequestError: Can't reach database server
 ```
 
-**自動解決**:
+### 自動解決
 
 ```bash
 npx prisma generate
@@ -184,7 +184,7 @@ npx prisma db push
 CMX_API_ERROR: Failed to authenticate with CMX
 ```
 
-**自動診断**:
+### 自動診断
 
 ```bash
 grep "CMX_API" logs/dev.log | tail -5
@@ -197,7 +197,7 @@ grep "NODE_TLS_REJECT_UNAUTHORIZED" .env.local || echo "NODE_TLS_REJECT_UNAUTHOR
 Type error: Property 'xxx' does not exist on type 'yyy'
 ```
 
-**自動解決**:
+### 自動解決
 
 ```bash
 npx prisma generate
@@ -211,7 +211,7 @@ pnpm build
 ESLint: Rule 'xxx' was not found
 ```
 
-**自動解決**:
+### 自動解決
 
 ```bash
 rm -rf node_modules package-lock.json
@@ -220,7 +220,7 @@ pnpm install
 
 #### プロジェクト固有の問題パターン
 
-**認証関連**:
+### 認証関連
 
 ```
 NextAuth.js: Authentication failed
@@ -233,7 +233,7 @@ grep "NEXTAUTH" .env.local
 grep "NextAuth" logs/dev.log | tail -5
 ```
 
-**CMX統合関連**:
+### CMX統合関連
 
 ```
 CMX: Device not found
@@ -246,7 +246,7 @@ grep "CMX" logs/dev.log | tail -10
 curl -k $CMX_API_URL/api/v1/status || echo "CMX接続確認失敗"
 ```
 
-**Prisma関連**:
+### Prisma関連
 
 ```
 Prisma: Database schema is not in sync
@@ -259,7 +259,7 @@ npx prisma db push
 npx prisma generate
 ```
 
-**画像・アセット関連**:
+### 画像・アセット関連
 
 ```
 404: Image not found
@@ -293,7 +293,7 @@ User: "サーバーが起動しない"
 Agent: まず、ポートの状態を確認しましょう...
 ```
 
-**実行ステップ**:
+### 実行ステップ
 
 1. `lsof -i:3000` でポート確認
 2. ポート使用中なら `lsof -ti:3000 | xargs kill -9`
@@ -307,7 +307,7 @@ User: "エラーログを確認したい"
 Agent: どの範囲のログを確認しますか？
 ```
 
-**実行ステップ**:
+### 実行ステップ
 
 1. `grep -i error logs/dev.log | tail -20` で最近のエラー確認
 2. エラーパターン分類（認証/DB/API/その他）
@@ -320,7 +320,7 @@ User: "CMX APIに接続できない"
 Agent: CMX接続の診断を実行します...
 ```
 
-**実行ステップ**:
+### 実行ステップ
 
 1. `grep "CMX" logs/dev.log | tail -10` でログ確認
 2. `grep "NODE_TLS_REJECT_UNAUTHORIZED" .env.local` で環境変数確認
@@ -351,7 +351,7 @@ Agent: CMX接続の診断を実行します...
 Error: Test timeout exceeded
 ```
 
-**診断コマンド**:
+### 診断コマンド
 
 ```bash
 # E2Eテスト環境チェック
@@ -368,7 +368,7 @@ pnpm e2e:test --headed --debug
 Error: expect.toBeVisible: Element not found
 ```
 
-**診断・修正**:
+### 診断・修正
 
 ```bash
 # UI要素確認
@@ -384,7 +384,7 @@ npx playwright show-trace trace.zip
 Error: Authentication failed in E2E setup
 ```
 
-**診断コマンド**:
+### 診断コマンド
 
 ```bash
 # 認証セットアップ確認
@@ -460,7 +460,7 @@ pnpm e2e:test src/e2e/basic/minimal.spec.ts
 
 #### Step 4: よくあるPlaywrightエラーの修正
 
-**セレクタエラー**:
+### セレクタエラー
 
 ```typescript
 // ❌ 間違い: page.$() は要素取得のみ
@@ -470,7 +470,7 @@ await page.$("text=ボタン").click();
 await page.locator("text=ボタン").click();
 ```
 
-**タイムアウトエラー**:
+### タイムアウトエラー
 
 ```typescript
 // ❌ 固定待機は避ける
@@ -481,7 +481,7 @@ await page.waitForLoadState("networkidle");
 await expect(page.locator(".content")).toBeVisible();
 ```
 
-**権限エラーへの対応**:
+### 権限エラーへの対応
 
 ```typescript
 // ✅ 権限エラーも正常な動作として扱う

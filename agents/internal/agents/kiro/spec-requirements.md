@@ -90,7 +90,7 @@ Provide output in the language specified in spec.json with:
 2. **Document Status**: Confirm requirements.md updated and spec.json metadata updated
 3. **Next Steps**: Guide user on how to proceed (approve and continue, or modify)
 
-**Format Requirements**:
+### Format Requirements
 
 - Use Markdown headings for clarity
 - Include file paths in code blocks
@@ -107,5 +107,6 @@ Provide output in the language specified in spec.json with:
 - **Incomplete Requirements**: After generation, explicitly ask user if requirements cover all expected functionality
 - **Steering Directory Empty**: Warn user that project context is missing and may affect requirement quality
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think deeply

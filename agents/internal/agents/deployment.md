@@ -74,7 +74,7 @@ color: green
 | Git Hash         | `da32263`         | 特定コミット     | 全ビルド        |
 | ブランチ付きHash | `develop-da32263` | ブランチ識別付き | 全ビルド        |
 
-**推奨デプロイタグ**:
+### 推奨デプロイタグ
 
 - 通常デプロイ: `staging-latest`
 - PR検証: `pr-XXX-latest`
@@ -90,7 +90,7 @@ color: green
 | Git Hash             | `da32263`              | 特定コミット     | 全ビルド    |
 | ブランチ付きHash     | `main-da32263`         | ブランチ識別付き | 全ビルド    |
 
-**推奨デプロイタグ**:
+### 推奨デプロイタグ
 
 - リリースデプロイ: `v1.7.0` (バージョンタグ)
 - 緊急時: `production-candidate`
@@ -217,7 +217,7 @@ git pull origin develop
 mise run ci
 ```
 
-**品質チェック項目**:
+### 品質チェック項目
 
 - ✅ すべてのテストが成功
 - ✅ リントエラーなし
@@ -237,7 +237,7 @@ pnpm version minor
 pnpm version major
 ```
 
-**注意**: `pnpm version`コマンドは自動的に：
+### 注意
 
 - package.jsonのバージョンを更新
 - Gitコミットを作成
@@ -262,7 +262,7 @@ gh pr create \
   --title "Release v$(grep '"version"' package.json | cut -d'"' -f4)"
 ```
 
-**PR内容確認**:
+### PR内容確認
 
 - タイトル: "Release v1.7.0" 形式
 - ベースブランチ: main
@@ -307,7 +307,7 @@ gh workflow run "Deploy Application to ECS" \
   -f deployment_target=v1.7.0
 ```
 
-**重要**: deployment_targetには、Step 1の`pnpm version`で作成されたリリースタグ（v1.x.x）を指定します。
+### 重要
 
 ### Hotfix手順（緊急修正）
 
@@ -565,7 +565,7 @@ aws ecs update-service \
   --profile aws-caad-admin-role
 ```
 
-**注意**: この方法はGitHub Actionsのデプロイ履歴と乖離する可能性があるため、最終手段としてのみ使用。
+### 注意
 
 ## Integration with Other Systems
 
@@ -596,13 +596,13 @@ graph LR
 
 ### aws-operations agent連携
 
-**委譲する操作**:
+### 委譲する操作
 
 - **ECSサービス管理**: サービス状態確認、タスク数確認、強制デプロイ
 - **CloudWatchログ監視**: リアルタイムログ監視、エラーログ検索、メトリクス確認
 - **ECRイメージ管理**: イメージ一覧取得、タグ確認、イメージ削除
 
-**連携例**:
+### 連携例
 
 ```
 deployment agent: "ECSサービスの状態を確認したい"
@@ -612,7 +612,7 @@ aws-operations agent: ECSサービス詳細情報を取得・報告
 deployment agent: 状態に基づいてデプロイ判断
 ```
 
-**使用タイミング**:
+### 使用タイミング
 
 - デプロイ前のECS状態確認
 - デプロイ後の動作検証
@@ -620,13 +620,13 @@ deployment agent: 状態に基づいてデプロイ判断
 
 ### ecr-lifecycle agent連携
 
-**委譲する操作**:
+### 委譲する操作
 
 - **タグ戦略**: 環境別タグ命名規則の詳細説明
 - **ライフサイクルポリシー**: 古いイメージの自動削除ルール
 - **イメージクリーンアップ**: 不要イメージの特定と削除
 
-**連携例**:
+### 連携例
 
 ```
 deployment agent: "デプロイ可能なECRタグを確認したい"
@@ -636,7 +636,7 @@ ecr-lifecycle agent: 環境別の推奨タグ戦略を提示
 deployment agent: 推奨タグを使用してデプロイ実行
 ```
 
-**使用タイミング**:
+### 使用タイミング
 
 - デプロイターゲット選択時
 - ECRイメージ管理の相談時
@@ -644,13 +644,13 @@ deployment agent: 推奨タグを使用してデプロイ実行
 
 ### cicd-pipeline agent連携
 
-**委譲する操作**:
+### 委譲する操作
 
 - **GitHub Actionsワークフロー管理**: ワークフロー設計、トリガー設定、パラメータ管理
 - **GitHub Secrets管理**: Secrets更新、権限管理、セキュリティ設定
 - **品質チェック統合**: テスト実行、リント実行、ビルド検証
 
-**連携例**:
+### 連携例
 
 ```
 deployment agent: "リリース前の品質チェックを実行したい"
@@ -660,7 +660,7 @@ cicd-pipeline agent: GitHub Actionsの品質チェックワークフローを実
 deployment agent: 品質チェック結果に基づいてリリース判断
 ```
 
-**使用タイミング**:
+### 使用タイミング
 
 - リリース前の品質チェック
 - ワークフロー設定変更時
@@ -668,13 +668,13 @@ deployment agent: 品質チェック結果に基づいてリリース判断
 
 ### perman-aws-vault skill連携
 
-**委譲する操作**:
+### 委譲する操作
 
 - **AWS認証**: CIBA認証、一時認証情報取得、キャッシュ管理
 - **プロファイル選択**: 環境別プロファイル選択（ニアショア/CAAD）
 - **認証トラブルシューティング**: 認証エラー解決、トークン更新、権限確認
 
-**連携例**:
+### 連携例
 
 ```
 deployment agent: "AWS認証が必要"
@@ -684,7 +684,7 @@ perman-aws-vault skill: 環境に応じた認証情報を取得
 deployment agent: 認証情報を使用してAWS操作実行
 ```
 
-**使用タイミング**:
+### 使用タイミング
 
 - デプロイ実行前のAWS認証
 - 認証エラー発生時
@@ -696,13 +696,13 @@ deployment agent: 認証情報を使用してAWS操作実行
 
 各agentは自身の専門領域に集中し、他の領域は適切なagentに委譲します。
 
-**deployment agentの責任**:
+### deployment agentの責任
 
 - リリースフロー管理
 - デプロイ実行判断
 - デプロイ後検証の調整
 
-**他agentへの委譲**:
+### 他agentへの委譲
 
 - AWS CLI実行 → aws-operations
 - ECRタグ戦略 → ecr-lifecycle
@@ -804,9 +804,9 @@ deployment agent: 「再デプロイを実行します」
 
 ### デプロイ失敗
 
-**症状**: GitHub Actionsワークフローが失敗
+### 症状
 
-**対処**:
+### 対処
 
 1. ワークフローログを確認
 2. エラーメッセージから原因特定
@@ -815,9 +815,9 @@ deployment agent: 「再デプロイを実行します」
 
 ### タスク起動失敗
 
-**症状**: ECSタスクが起動しない
+### 症状
 
-**対処**:
+### 対処
 
 1. タスク定義を確認
 2. CloudWatchログでエラー確認
@@ -826,9 +826,9 @@ deployment agent: 「再デプロイを実行します」
 
 ### ヘルスチェック失敗
 
-**症状**: ALBヘルスチェックがUnhealthy
+### 症状
 
-**対処**:
+### 対処
 
 1. ターゲットヘルスを確認
 2. アプリケーションログを確認

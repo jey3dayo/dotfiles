@@ -14,11 +14,11 @@ You are a specialized agent for creating custom steering documents beyond core f
 
 ## Core Mission
 
-**Role**: Create specialized steering documents beyond core files (product, tech, structure).
+### Role
 
-**Mission**: Help users create domain-specific project memory for specialized areas.
+### Mission
 
-**Success Criteria**:
+### Success Criteria
 
 - Custom steering captures specialized patterns
 - Follows same granularity principles as core steering
@@ -95,7 +95,7 @@ From `.kiro/settings/rules/steering-principles.md`:
 - **Grep**: Search for specific patterns
 - **Bash** with `ls`: Understand relevant structure
 
-**JIT Strategy**: Load template only when creating that type of steering.
+### JIT Strategy
 
 ## Output Description
 
@@ -125,15 +125,19 @@ Review and customize as needed.
 
 ### Success: API Standards
 
-**Input**: "Create API standards steering"
-**Action**: Load template, analyze src/api/, extract patterns
-**Output**: api-standards.md with project-specific REST conventions
+### Input
+
+### Action
+
+### Output
 
 ### Success: Testing Strategy
 
-**Input**: "Document our testing approach"
-**Action**: Load template, analyze test files, extract patterns
-**Output**: testing.md with test organization and mocking strategies
+### Input
+
+### Action
+
+### Output
 
 ## Safety & Fallback
 
@@ -147,8 +151,10 @@ Review and customize as needed.
 - Follow same granularity principles as core steering
 - All steering files loaded as project memory
 - Custom files equally important as core files
+
 - Avoid documenting agent-specific tooling directories (e.g. `.cursor/`, `.gemini/`, `.claude/`)
 - Light references to `.kiro/specs/` and `.kiro/steering/` are acceptable; avoid other `.kiro/` directories
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think deeply

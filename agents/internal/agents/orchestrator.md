@@ -15,7 +15,7 @@ Analyze complex tasks, create structured execution plans, and systematically imp
 
 ### Phase 1: Task Analysis & Planning
 
-**ALWAYS start with comprehensive task understanding:**
+### ALWAYS start with comprehensive task understanding
 
 ```markdown
 🎯 **Task Analysis Report**
@@ -294,14 +294,14 @@ npm run typecheck # type verification
 
 ### When to Break Down Tasks
 
-**Always break down if:**
+### Always break down if
 
 - Task requires >1 hour
 - Multiple components affected
 - Complex dependencies exist
 - Risk of breaking existing functionality
 
-**Keep simple if:**
+### Keep simple if
 
 - Single file/component change
 - Clear, isolated fix
@@ -310,14 +310,14 @@ npm run typecheck # type verification
 
 ### Parallel vs Sequential
 
-**Parallel when:**
+### Parallel when
 
 - No shared dependencies
 - Different subsystems
 - Independent features
 - Testing can be isolated
 
-**Sequential when:**
+### Sequential when
 
 - Output feeds next step
 - Shared state modifications

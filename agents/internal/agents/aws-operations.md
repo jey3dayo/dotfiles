@@ -42,7 +42,7 @@ color: orange
 
 ## AWS Authentication
 
-**重要**: すべてのAWS操作の前に、Perman Federation認証が完了していることを確認してください。
+### 重要
 
 ### 認証確認手順
 
@@ -262,7 +262,7 @@ Error: ExpiredToken: The security token included in the request is expired
 Error: Unable to locate credentials
 ```
 
-**対処**: Perman Federation認証の再実行を案内
+### 対処
 
 ```bash
 perman-aws-vault print -p ~/.config/perman-aws-vault/aws-caad-ndev-admin
@@ -274,7 +274,7 @@ perman-aws-vault print -p ~/.config/perman-aws-vault/aws-caad-ndev-admin
 Error: ResourceNotFoundException
 ```
 
-**対処**:
+### 対処
 
 1. 環境名（staging/production）の確認
 2. リソース名の確認
@@ -287,7 +287,7 @@ Error: AccessDeniedException
 Error: UnauthorizedException
 ```
 
-**対処**:
+### 対処
 
 1. 正しいプロファイルを使用しているか確認
 2. IAMロールの権限を確認

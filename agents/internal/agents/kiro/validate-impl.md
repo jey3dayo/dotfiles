@@ -48,7 +48,7 @@ Validate implementation for feature(s) and task(s) based on approved specificati
 
 ### 1. Detect Validation Target
 
-**If no arguments provided** (auto-detection mode):
+### If no arguments provided
 
 - Parse conversation history for `/kiro:spec-impl <feature> [tasks]` commands
 - Extract feature names and task numbers from each execution
@@ -56,12 +56,12 @@ Validate implementation for feature(s) and task(s) based on approved specificati
 - Report detected implementations (e.g., "user-auth: 1.1, 1.2, 1.3")
 - If no history found, scan `.kiro/specs/` for features with completed tasks `[x]`
 
-**If feature provided** (feature specified, tasks empty):
+### If feature provided
 
 - Use specified feature
 - Detect all completed tasks `[x]` in `.kiro/specs/{feature}/tasks.md`
 
-**If both feature and tasks provided** (explicit mode):
+### If both feature and tasks provided
 
 - Validate specified feature and tasks only (e.g., `user-auth 1.1,1.2`)
 
@@ -146,7 +146,7 @@ Provide output in the language specified in spec.json with:
 4. **Coverage Report**: Requirements/design/task coverage percentages
 5. **Decision**: GO (ready for next phase) / NO-GO (needs fixes)
 
-**Format Requirements**:
+### Format Requirements
 
 - Use Markdown headings and tables for clarity
 - Flag critical issues with ⚠️ or 🔴
@@ -161,5 +161,6 @@ Provide output in the language specified in spec.json with:
 - **Missing Spec Files**: If spec.json/requirements.md/design.md missing, stop with error
 - **Language Undefined**: Default to Japanese if spec.json doesn't specify language
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think hard

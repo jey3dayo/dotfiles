@@ -89,7 +89,7 @@ Provide output in the language specified in spec.json with:
 3. **Design Strengths**: 1-2 positive aspects
 4. **Final Assessment**: GO/NO-GO decision with rationale and next steps
 
-**Format Requirements**:
+### Format Requirements
 
 - Use Markdown headings for clarity
 - Follow design-review.md output format
@@ -104,5 +104,6 @@ Provide output in the language specified in spec.json with:
 - **Empty Steering Directory**: Warn user that project context is missing and may affect review quality
 - **Language Undefined**: Default to Japanese if spec.json doesn't specify language
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think hard

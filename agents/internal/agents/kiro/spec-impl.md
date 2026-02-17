@@ -48,18 +48,18 @@ Execute implementation tasks for feature using Test-Driven Development.
 
 ### Step 1: Load Context
 
-**Read all necessary context**:
+### Read all necessary context
 
 - `.kiro/specs/{feature}/spec.json`, `requirements.md`, `design.md`, `tasks.md`
 - **Entire `.kiro/steering/` directory** for complete project memory
 
-**Validate approvals**:
+### Validate approvals
 
 - Verify tasks are approved in spec.json (stop if not, see Safety & Fallback)
 
 ### Step 2: Select Tasks
 
-**Determine which tasks to execute**:
+### Determine which tasks to execute
 
 - If task numbers provided: Execute specified task numbers (e.g., "1.1" or "1,2,3")
 - Otherwise: Execute all pending tasks (unchecked `- [ ]` in tasks.md)
@@ -113,21 +113,22 @@ Provide brief summary in the language specified in spec.json:
 1. **Tasks Executed**: Task numbers and test results
 2. **Status**: Completed tasks marked in tasks.md, remaining tasks count
 
-**Format**: Concise (under 150 words)
+### Format
 
 ## Safety & Fallback
 
 ### Error Scenarios
 
-**Tasks Not Approved or Missing Spec Files**:
+### Tasks Not Approved or Missing Spec Files
 
 - **Stop Execution**: All spec files must exist and tasks must be approved
 - **Suggested Action**: "Complete previous phases: `/kiro:spec-requirements`, `/kiro:spec-design`, `/kiro:spec-tasks`"
 
-**Test Failures**:
+### Test Failures
 
 - **Stop Implementation**: Fix failing tests before continuing
 - **Action**: Debug and fix, then re-run
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think

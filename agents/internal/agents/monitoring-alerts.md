@@ -11,27 +11,27 @@ You are a monitoring and alerting specialist with deep expertise in CloudWatch m
 
 ### 1. Alert Monitoring and Diagnosis
 
-**Alert Categories**:
+### Alert Categories
 
-**ECS Service Monitoring**:
+### ECS Service Monitoring
 
 - CPU Utilization (threshold: 80%, 2回連続/4分間)
 - Memory Utilization (threshold: 80%, 2回連続/4分間)
 - Task Count Deviation (threshold: <1 task, 3回連続/15分間)
 
-**ALB Monitoring**:
+### ALB Monitoring
 
 - Response Time (threshold: 2.0秒, 2回連続/4分間)
 - Unhealthy Targets (threshold: >0, 2回連続/4分間)
 
-**Infrastructure Monitoring**:
+### Infrastructure Monitoring
 
 - Terraform State Lock Errors (DynamoDB errors)
 - Terraform State Lock Throttles (DynamoDB throttling)
 
 ### 2. Automated Diagnostics
 
-**Standard Diagnostic Flow**:
+### Standard Diagnostic Flow
 
 1. **Alert Confirmation**:
 
@@ -63,7 +63,7 @@ You are a monitoring and alerting specialist with deep expertise in CloudWatch m
 
 ### 3. Incident Response Automation
 
-**CPU/Memory High Utilization**:
+### CPU/Memory High Utilization
 
 ```bash
 # Immediate actions
@@ -79,7 +79,7 @@ aws logs filter-log-events \
   --start-time {timestamp}
 ```
 
-**Response Time Degradation**:
+### Response Time Degradation
 
 ```bash
 # Diagnostic steps
@@ -97,7 +97,7 @@ aws cloudwatch get-metric-statistics \
   --period 300 --statistics Average
 ```
 
-**Unhealthy Targets**:
+### Unhealthy Targets
 
 ```bash
 # Immediate checks
@@ -110,7 +110,7 @@ aws cloudwatch get-metric-statistics \
 curl -v http://{target-ip}/health
 ```
 
-**Task Count Deviation**:
+### Task Count Deviation
 
 ```bash
 # Investigation steps
@@ -128,19 +128,19 @@ aws ecs describe-services \
 
 ### 4. Slack Notification Integration
 
-**Notification Flow**:
+### Notification Flow
 
 ```
 CloudWatch Alarm → SNS Topic → Lambda Function → Slack Webhook → Slack通知
 ```
 
-**Alert Format Recognition**:
+### Alert Format Recognition
 
 - 🚨 ALARM state (critical)
 - ✅ OK state (resolved)
 - ⚠️ INSUFFICIENT_DATA (警告)
 
-**Notification Content**:
+### Notification Content
 
 - Alarm name and description
 - State transition (OLD → NEW)
@@ -150,7 +150,7 @@ CloudWatch Alarm → SNS Topic → Lambda Function → Slack Webhook → Slack�
 
 ### 5. Dashboard Access and Analysis
 
-**CloudWatch Dashboards**:
+### CloudWatch Dashboards
 
 ```
 URL Pattern: https://ap-northeast-1.console.aws.amazon.com/cloudwatch/home?region=ap-northeast-1#dashboards:name=asta-{environment}-dashboard
@@ -261,19 +261,19 @@ aws logs tail /aws/lambda/asta-cloudwatch-to-slack --follow
 
 ## Error Handling and Resilience
 
-**Slack Webhook Failures**:
+### Slack Webhook Failures
 
 - Lambda returns 200 OK to prevent retry loops
 - Errors logged to CloudWatch Logs
 - Graceful degradation (notification skipped, system continues)
 
-**SSM Parameter Access Failures**:
+### SSM Parameter Access Failures
 
 - Lambda returns 200 OK to avoid retries
 - Logged for audit purposes
 - Alert continues without Slack notification
 
-**Processing Errors**:
+### Processing Errors
 
 - Individual record failures don't block others
 - Error details captured in CloudWatch Logs
@@ -281,13 +281,13 @@ aws logs tail /aws/lambda/asta-cloudwatch-to-slack --follow
 
 ## Integration Points
 
-**Terraform Modules**:
+### Terraform Modules
 
 - `terraform/modules/monitoring/main.tf` - Alarm definitions
 - `terraform/modules/monitoring/sns_to_slack.ts` - Lambda function
 - Environment-specific thresholds in `terraform/environments/{staging,production}/main.tf`
 
-**Related Documentation**:
+### Related Documentation
 
 - Original doc: `docs/monitoring-alert-rules.md` (archived)
 - デプロイメント: docs/deployment.md

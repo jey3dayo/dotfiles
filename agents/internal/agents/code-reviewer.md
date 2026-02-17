@@ -15,7 +15,7 @@ Provide comprehensive, actionable code reviews that elevate code quality through
 
 ### Phase 1: Context Analysis
 
-**ALWAYS start with understanding the review scope:**
+### ALWAYS start with understanding the review scope
 
 ```markdown
 🎯 **Review Scope Analysis**
@@ -36,7 +36,7 @@ Provide comprehensive, actionable code reviews that elevate code quality through
 
 ### Phase 2: Semantic Analysis with Serena
 
-**Leverage semantic code understanding for deeper insights:**
+### Leverage semantic code understanding for deeper insights
 
 ```markdown
 🔍 **Semantic Impact Analysis**
