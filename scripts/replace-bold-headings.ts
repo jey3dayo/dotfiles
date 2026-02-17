@@ -65,8 +65,8 @@ function parseArguments(): ParsedArgs {
 function resolveTargetPaths(userInputs: string[]): string[] {
   // デフォルト値（引数なしの場合）
   if (userInputs.length === 0) {
-    const repoRoot = path.resolve(__dirname, "../..");
-    return [path.join(repoRoot, "agents", "internal")];
+    const repoRoot = path.resolve(__dirname, "..");
+    return [repoRoot]; // Repository root (all markdown files)
   }
 
   // ユーザー指定のパスを解決
@@ -262,7 +262,7 @@ Usage:
 
 Arguments:
   paths                   Target file/directory paths to process
-                         Default: agents/internal (skills, agents, rules, commands)
+                         Default: . (repository root - all markdown files)
                          Can specify multiple paths
 
 Options:
@@ -271,18 +271,17 @@ Options:
   --help, -h             Show this help message
 
 Examples:
-  # Process default directory (internal assets)
+  # Process all markdown files in repository
   tsx replace-bold-headings.ts
   mise run skills:fix:bold-headings
 
-  # Process other directories
-  tsx replace-bold-headings.ts .
+  # Process specific directories
   tsx replace-bold-headings.ts .claude
   tsx replace-bold-headings.ts docs README.md
   mise run format:markdown:bold-headings -- docs
 
   # Dry run mode
-  tsx replace-bold-headings.ts . --dry-run
+  tsx replace-bold-headings.ts --dry-run
 `);
 }
 
