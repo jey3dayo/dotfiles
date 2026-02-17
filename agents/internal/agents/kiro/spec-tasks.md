@@ -49,7 +49,7 @@ Generate implementation tasks for the feature based on approved requirements and
 
 ### Step 1: Load Context
 
-**Read all necessary context**:
+### Read all necessary context
 
 - `.kiro/specs/{feature}/spec.json`, `requirements.md`, `design.md`
 - `.kiro/specs/{feature}/tasks.md` (if exists, for merge mode)
@@ -58,7 +58,7 @@ Generate implementation tasks for the feature based on approved requirements and
 - Determine execution mode:
   - `sequential = (sequential flag is true)`
 
-**Validate approvals**:
+### Validate approvals
 
 - If auto-approve flag is true: Auto-approve requirements and design in spec.json
 - Otherwise: Verify both approved (stop if not, see Safety & Fallback)
@@ -69,7 +69,7 @@ Generate implementation tasks for the feature based on approved requirements and
 - Read `.kiro/settings/rules/tasks-parallel-analysis.md` for parallel judgement criteria
 - Read `.kiro/settings/templates/specs/tasks.md` for format (supports `(P)` markers)
 
-**Generate task list following all rules**:
+### Generate task list following all rules
 
 - Use language specified in spec.json
 - Map all requirements to tasks
@@ -82,7 +82,7 @@ Generate implementation tasks for the feature based on approved requirements and
 
 ### Step 3: Finalize
 
-**Write and update**:
+### Write and update
 
 - Create/update `.kiro/specs/{feature}/tasks.md`
 - Update spec.json metadata:
@@ -110,45 +110,46 @@ Generate implementation tasks for the feature based on approved requirements and
 
 Provide brief summary in the language specified in spec.json:
 
-1. **Status**: Confirm tasks generated at `.kiro/specs/{feature}/tasks.md`
-2. **Task Summary**:
+1. Status: Confirm tasks generated at `.kiro/specs/{feature}/tasks.md`
+2. Task Summary:
    - Total: X major tasks, Y sub-tasks
    - All Z requirements covered
    - Average task size: 1-3 hours per sub-task
-3. **Quality Validation**:
+3. Quality Validation:
    - ✅ All requirements mapped to tasks
    - ✅ Task dependencies verified
    - ✅ Testing tasks included
-4. **Next Action**: Review tasks and proceed when ready
+4. Next Action: Review tasks and proceed when ready
 
-**Format**: Concise (under 200 words)
+### Format
 
 ## Safety & Fallback
 
 ### Error Scenarios
 
-**Requirements or Design Not Approved**:
+### Requirements or Design Not Approved
 
 - **Stop Execution**: Cannot proceed without approved requirements and design
 - **User Message**: "Requirements and design must be approved before task generation"
 - **Suggested Action**: "Run `/kiro:spec-tasks {feature} -y` to auto-approve both and proceed"
 
-**Missing Requirements or Design**:
+### Missing Requirements or Design
 
 - **Stop Execution**: Both documents must exist
 - **User Message**: "Missing requirements.md or design.md at `.kiro/specs/{feature}/`"
 - **Suggested Action**: "Complete requirements and design phases first"
 
-**Incomplete Requirements Coverage**:
+### Incomplete Requirements Coverage
 
 - **Warning**: "Not all requirements mapped to tasks. Review coverage."
 - **User Action Required**: Confirm intentional gaps or regenerate tasks
 
-**Template/Rules Missing**:
+### Template/Rules Missing
 
 - **User Message**: "Template or rules files missing in `.kiro/settings/`"
 - **Fallback**: Use inline basic structure with warning
 - **Suggested Action**: "Check repository setup or restore template files"
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think deeply

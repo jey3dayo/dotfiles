@@ -63,7 +63,7 @@ argument-hint: "[required-arg] [--optional-flag]"
 
 ### よくある問題
 
-1. **問題**: 説明
+1. 問題: 説明
 
 - [ ] Lintがパス
 - [ ] テストがパス

@@ -351,11 +351,11 @@ pnpm report:similarity  # reports/similarity-report.md に出力
 
 ### 段階的なリファクタリング
 
-1. **検出**: similarity-tsで類似度95%以上を検出
-2. **分析**: 該当箇所の詳細分析（MCP Serena活用）
-3. **計画**: 共通化の影響範囲を評価
-4. **実行**: テストを書いてから共通化
-5. **検証**: type-check, lint, test実行
+1. 検出: similarity-tsで類似度95%以上を検出
+2. 分析: 該当箇所の詳細分析（MCP Serena活用）
+3. 計画: 共通化の影響範囲を評価
+4. 実行: テストを書いてから共通化
+5. 検証: type-check, lint, test実行
 
 ## ⚠️ 制約・注意事項
 

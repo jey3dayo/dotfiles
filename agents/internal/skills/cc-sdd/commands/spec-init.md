@@ -20,7 +20,6 @@ argument-hint: <project-description>
 ## Step 1: Load Configuration
 
 1. Use **Read** to load `.kiro-config.json` from current working directory
-
    - If not found, use built-in default configuration
    - Parse JSON and validate structure
 
@@ -43,7 +42,6 @@ argument-hint: <project-description>
 ## Step 2: Generate Feature Name and Check Uniqueness
 
 1. Generate feature name from project description ($ARGUMENTS):
-
    - Convert to kebab-case
    - Keep 2-4 words maximum
    - Make descriptive and unique
@@ -63,12 +61,10 @@ argument-hint: <project-description>
 ## Step 4: Initialize Files Using Templates
 
 1. Use **Read** to fetch templates:
-
    - `${TEMPLATE_INIT_JSON}` → spec.json template
    - `${TEMPLATE_REQ_INIT_MD}` → requirements.md template
 
 2. Replace placeholders in templates:
-
    - `{{FEATURE_NAME}}` → generated feature name
    - `{{TIMESTAMP}}` → current ISO 8601 timestamp
    - `{{PROJECT_DESCRIPTION}}` → $ARGUMENTS
@@ -98,12 +94,12 @@ argument-hint: <project-description>
 
 Provide output in the language specified in config (default: `ja`) with the following structure:
 
-1. **Configuration Used**: Brief mention if using custom or default config
-2. **Generated Feature Name**: `feature-name` format with 1-2 sentence rationale
-3. **Project Summary**: Brief summary (1 sentence)
-4. **Created Files**: Bullet list with full paths (use resolved paths, not variables)
-5. **Next Step**: Command block showing `/kiro:spec-requirements <feature-name>`
-6. **Notes**: Explain why only initialization was performed (2-3 sentences on phase separation)
+1. Configuration Used: Brief mention if using custom or default config
+2. Generated Feature Name: `feature-name` format with 1-2 sentence rationale
+3. Project Summary: Brief summary (1 sentence)
+4. Created Files: Bullet list with full paths (use resolved paths, not variables)
+5. Next Step: Command block showing `/kiro:spec-requirements <feature-name>`
+6. Notes: Explain why only initialization was performed (2-3 sentences on phase separation)
 
 ### Format Requirements
 

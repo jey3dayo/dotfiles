@@ -44,8 +44,7 @@ Interactive design quality review for feature based on approved requirements and
 
 ## Execution Steps
 
-1. **Load Context**:
-
+1. Load Context:
    - Read `.kiro/specs/{feature}/spec.json` for language and metadata
    - Read `.kiro/specs/{feature}/requirements.md` for requirements
    - Read `.kiro/specs/{feature}/design.md` for design document
@@ -54,18 +53,16 @@ Interactive design quality review for feature based on approved requirements and
      - All custom steering files (regardless of mode settings)
      - This provides complete project memory and context
 
-2. **Read Review Guidelines**:
-
+2. Read Review Guidelines:
    - Read `.kiro/settings/rules/design-review.md` for review criteria and process
 
-3. **Execute Design Review**:
-
+3. Execute Design Review:
    - Follow design-review.md process: Analysis → Critical Issues → Strengths → GO/NO-GO
    - Limit to 3 most important concerns
    - Engage interactively with user
    - Use language specified in spec.json for output
 
-4. **Provide Decision and Next Steps**:
+4. Provide Decision and Next Steps:
    - Clear GO/NO-GO decision with rationale
    - Guide user on proceeding based on decision
 
@@ -87,12 +84,12 @@ Interactive design quality review for feature based on approved requirements and
 
 Provide output in the language specified in spec.json with:
 
-1. **Review Summary**: Brief overview (2-3 sentences) of design quality and readiness
-2. **Critical Issues**: Maximum 3, following design-review.md format
-3. **Design Strengths**: 1-2 positive aspects
-4. **Final Assessment**: GO/NO-GO decision with rationale and next steps
+1. Review Summary: Brief overview (2-3 sentences) of design quality and readiness
+2. Critical Issues: Maximum 3, following design-review.md format
+3. Design Strengths: 1-2 positive aspects
+4. Final Assessment: GO/NO-GO decision with rationale and next steps
 
-**Format Requirements**:
+### Format Requirements
 
 - Use Markdown headings for clarity
 - Follow design-review.md output format
@@ -107,5 +104,6 @@ Provide output in the language specified in spec.json with:
 - **Empty Steering Directory**: Warn user that project context is missing and may affect review quality
 - **Language Undefined**: Default to Japanese if spec.json doesn't specify language
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think hard

@@ -582,11 +582,11 @@ $ /project-maintenance full --code-only
 
 ### 段階的検証アプローチ
 
-1. **Small scope first**: 小規模から開始
-2. **Frequent testing**: 頻繁にテスト実行
-3. **Incremental commits**: 段階的にコミット
-4. **Team review**: チームレビューを依頼
-5. **Monitoring**: 本番環境での監視
+1. Small scope first: 小規模から開始
+2. Frequent testing: 頻繁にテスト実行
+3. Incremental commits: 段階的にコミット
+4. Team review: チームレビューを依頼
+5. Monitoring: 本番環境での監視
 
 ### 安全な実行パターン
 

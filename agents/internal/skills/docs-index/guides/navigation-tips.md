@@ -159,18 +159,16 @@ cc-sdd スキル → spec-driven-agent
 
 ### ドキュメントが見つからない
 
-1. **インデックスを確認**
-
+1. インデックスを確認
    - `indexes/skills-index.md`
    - `indexes/commands-index.md`
    - `indexes/agents-index.md`
 
-2. **キーワード検索**
-
+2. キーワード検索
    - 日本語/英語両方のキーワードを試す
    - 類義語・関連語でも検索
 
-3. **カテゴリから探す**
+3. カテゴリから探す
    - Dev-Tools, Docs, Utils のカテゴリ別に探索
 
 ### スキルが動作しない

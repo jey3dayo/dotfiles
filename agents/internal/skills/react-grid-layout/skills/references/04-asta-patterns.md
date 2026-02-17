@@ -300,10 +300,10 @@ const eventLayout = createTimedSpanLayout({
 
 ### Benefits of Time-Based Pattern
 
-1. **Automatic Positioning**: Events align to time slots automatically
-2. **Consistent Layout**: All items follow same time grid
-3. **Easy Updates**: Change time slot positions without updating events
-4. **Null-Safe**: Returns null if required data missing
+1. Automatic Positioning: Events align to time slots automatically
+2. Consistent Layout: All items follow same time grid
+3. Easy Updates: Change time slot positions without updating events
+4. Null-Safe: Returns null if required data missing
 
 ## Implementation Patterns
 

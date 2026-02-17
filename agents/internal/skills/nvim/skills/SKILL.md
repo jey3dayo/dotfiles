@@ -99,15 +99,15 @@ This skill focuses on **dotfiles-specific patterns and review criteria**.
 
 ## Review Workflow (Dotfiles-Specific)
 
-1. **Measure**: `nvim --startuptime`, `:Lazy profile`
-2. **Structure**: `init.lua` → `lua/config/` → `lua/plugins/`
-3. **Plugins**: Count, check `lazy-lock.json`, verify event triggers
-4. **LSP**: `lua/plugins/lsp.lua` mason setup, 15+ languages
-5. **Keybindings**: Space leader, no conflicts
-6. **AI**: `lua/plugins/ai.lua`, <50ms latency
-7. **Performance**: `docs/performance.md` targets
-8. **Health**: `:checkhealth` for providers/LSP
-9. **Standards**: Lua-only, lazy.nvim, LSP-native, AI integration
+1. Measure: `nvim --startuptime`, `:Lazy profile`
+2. Structure: `init.lua` → `lua/config/` → `lua/plugins/`
+3. Plugins: Count, check `lazy-lock.json`, verify event triggers
+4. LSP: `lua/plugins/lsp.lua` mason setup, 15+ languages
+5. Keybindings: Space leader, no conflicts
+6. AI: `lua/plugins/ai.lua`, <50ms latency
+7. Performance: `docs/performance.md` targets
+8. Health: `:checkhealth` for providers/LSP
+9. Standards: Lua-only, lazy.nvim, LSP-native, AI integration
 
 ## Dotfiles-Specific Patterns
 

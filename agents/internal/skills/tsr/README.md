@@ -45,7 +45,7 @@ pnpm tsr:fix
 ### Configuration Priority (Cascading)
 
 1. **Project Root** (highest): `.tsr-config.json`
-2. **Home Directory**: `~/.config/tsr/config.json`
+2. Home Directory: `~/.config/tsr/config.json`
 3. **Default** (lowest): `tsr-config.default.json`
 
 ### Configuration Files

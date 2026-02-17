@@ -354,8 +354,8 @@ Codex: "論理的推論 → Codex自身で分析" ✓
 
 ## Best Practices
 
-1. **Clear task description**: 具体的なコンテキストと制約を含める
-2. **Appropriate tool restrictions**: 必要最小限の`--allowedTools`を指定
-3. **Model selection**: Haiku (quick), Sonnet (standard), Opus (complex)
-4. **Artifact preservation**: 設計ドキュメントを`.claude/docs/design/`に保存
-5. **Subprocess isolation**: メインプロセスのコンテキスト汚染を避ける
+1. Clear task description: 具体的なコンテキストと制約を含める
+2. Appropriate tool restrictions: 必要最小限の`--allowedTools`を指定
+3. Model selection: Haiku (quick), Sonnet (standard), Opus (complex)
+4. Artifact preservation: 設計ドキュメントを`.claude/docs/design/`に保存
+5. Subprocess isolation: メインプロセスのコンテキスト汚染を避ける

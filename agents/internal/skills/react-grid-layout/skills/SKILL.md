@@ -99,11 +99,11 @@ const SafeGridLayout: React.FC<SafeGridLayoutProps> = props => {
 
 ## Implementation Workflow
 
-1. **Query Context7**: Get latest API documentation
-2. **Apply ASTA Patterns**: Use project-specific time-based layout logic
-3. **Calculate Sizing**: Use ASTA's dynamic cols/width calculation
-4. **Handle SSR**: Apply SafeGridLayout wrapper for Next.js
-5. **Test**: Verify calendar rendering and interaction
+1. Query Context7: Get latest API documentation
+2. Apply ASTA Patterns: Use project-specific time-based layout logic
+3. Calculate Sizing: Use ASTA's dynamic cols/width calculation
+4. Handle SSR: Apply SafeGridLayout wrapper for Next.js
+5. Test: Verify calendar rendering and interaction
 
 ## Progressive Documentation
 

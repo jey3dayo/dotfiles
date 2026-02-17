@@ -8,11 +8,11 @@ This document provides detailed guidance on managing language runtimes, CLI tool
 
 ### Why Centralization?
 
-1. **Single Source of Truth**: One file tracks all dependencies
-2. **Version Control**: Tools and versions committed with code
-3. **Team Consistency**: Everyone uses the same tool versions
-4. **Cross-Platform**: Works identically on macOS, Linux, Windows (WSL)
-5. **No Global Pollution**: No accidental drift from `npm i -g` or `pip install --user`
+1. Single Source of Truth: One file tracks all dependencies
+2. Version Control: Tools and versions committed with code
+3. Team Consistency: Everyone uses the same tool versions
+4. Cross-Platform: Works identically on macOS, Linux, Windows (WSL)
+5. No Global Pollution: No accidental drift from `npm i -g` or `pip install --user`
 
 ## Configuration Structure
 
@@ -71,9 +71,9 @@ taplo = "latest"         # TOML formatter/linter
 
 mise supports multiple config locations with clear precedence:
 
-1. **Project-local**: `./mise.toml` (highest priority)
-2. **User global**: `~/.config/mise/config.toml`
-3. **System-wide**: `/etc/mise/config.toml` (lowest priority)
+1. Project-local: `./mise.toml` (highest priority)
+2. User global: `~/.config/mise/config.toml`
+3. System-wide: `/etc/mise/config.toml` (lowest priority)
 
 ### Best Practice
 

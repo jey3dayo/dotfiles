@@ -257,7 +257,7 @@ export function createApp() {
 
 ### 優先順位
 
-1. **最優先: エントリーポイントとコア機能**
+1. 最優先: エントリーポイントとコア機能
 
 ```
 Phase 1 Files:
@@ -268,7 +268,7 @@ Phase 1 Files:
 - src/config/index.ts (configuration)
 ```
 
-1. **高優先度: 主要機能モジュール**
+1. 高優先度: 主要機能モジュール
 
 ```
 Phase 2 Files:
@@ -278,7 +278,7 @@ Phase 2 Files:
 - src/lib/ (core utilities)
 ```
 
-1. **中優先度: サポートコード**
+1. 中優先度: サポートコード
 
 ```
 Phase 3 Files:
@@ -288,7 +288,7 @@ Phase 3 Files:
 - src/components/ (UI components)
 ```
 
-1. **低優先度: テストとドキュメント**
+1. 低優先度: テストとドキュメント
 
 ```
 Phase 4 Files (as needed):

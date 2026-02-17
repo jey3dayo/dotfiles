@@ -477,10 +477,10 @@ find docs -name "*.md" -mtime +180  # >180 days old
 
 ### Remember
 
-1. **Validate metadata** - Complete, correct, consistent
-2. **Check content quality** - Clear, accurate, appropriate
-3. **Validate technical** - Examples work, commands correct
-4. **Verify navigation** - Links work, discoverable
-5. **Maintain freshness** - Update regularly, archive obsolete
+1. Validate metadata - Complete, correct, consistent
+2. Check content quality - Clear, accurate, appropriate
+3. Validate technical - Examples work, commands correct
+4. Verify navigation - Links work, discoverable
+5. Maintain freshness - Update regularly, archive obsolete
 
 ### Goal

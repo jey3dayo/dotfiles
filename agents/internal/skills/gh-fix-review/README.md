@@ -204,11 +204,11 @@ This skill integrates with:
 
 This skill has been generalized from CAAD-specific implementation:
 
-1. **Externalized Keywords** - No hardcoded rules
-2. **Dynamic Categories** - Custom category definitions
-3. **Bot Configuration** - Flexible bot handling
-4. **Path Customization** - Configurable file paths
-5. **Quality Gate Control** - Adjustable quality checks
+1. Externalized Keywords - No hardcoded rules
+2. Dynamic Categories - Custom category definitions
+3. Bot Configuration - Flexible bot handling
+4. Path Customization - Configurable file paths
+5. Quality Gate Control - Adjustable quality checks
 
 ## Support
 

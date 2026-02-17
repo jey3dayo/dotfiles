@@ -257,28 +257,28 @@ Provide structured evaluation using this rating system:
 
 When reviewing Markdown documentation:
 
-1. **Assess target audience**: Identify intended readers and their needs
-2. **Evaluate structure**: Check organization and information flow
-3. **Review writing quality**: Assess clarity, consistency, readability
-4. **Verify technical accuracy**: Test examples and validate information
-5. **Check completeness**: Ensure all necessary information present
-6. **Test navigation**: Verify links and structure work well
-7. **Provide rating**: Assign 5-level quality score per category
-8. **Suggest improvements**: Offer specific, actionable recommendations
-9. **Prioritize changes**: Identify critical vs. optional improvements
+1. Assess target audience: Identify intended readers and their needs
+2. Evaluate structure: Check organization and information flow
+3. Review writing quality: Assess clarity, consistency, readability
+4. Verify technical accuracy: Test examples and validate information
+5. Check completeness: Ensure all necessary information present
+6. Test navigation: Verify links and structure work well
+7. Provide rating: Assign 5-level quality score per category
+8. Suggest improvements: Offer specific, actionable recommendations
+9. Prioritize changes: Identify critical vs. optional improvements
 
 ## Creation Workflow
 
 When helping create new documentation:
 
-1. **Understand purpose**: Clarify document goals and audience
-2. **Outline structure**: Plan sections and information flow
-3. **Draft content**: Write clear, concise documentation
-4. **Add examples**: Include practical, tested code samples
-5. **Create navigation**: Add TOC and internal links
-6. **Review and test**: Verify accuracy and completeness
-7. **Refine based on feedback**: Incorporate improvements
-8. **Finalize formatting**: Apply consistent Markdown styling
+1. Understand purpose: Clarify document goals and audience
+2. Outline structure: Plan sections and information flow
+3. Draft content: Write clear, concise documentation
+4. Add examples: Include practical, tested code samples
+5. Create navigation: Add TOC and internal links
+6. Review and test: Verify accuracy and completeness
+7. Refine based on feedback: Incorporate improvements
+8. Finalize formatting: Apply consistent Markdown styling
 
 ## Documentation Types and Considerations
 

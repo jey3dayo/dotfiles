@@ -15,19 +15,19 @@ cc-sdd (Claude Code Spec-Driven Development) provides a structured, phase-based 
 
 ### For New Projects
 
-1. **Copy default configuration**
+1. Copy default configuration
 
    ```bash
    cp .kiro-config.default.json .kiro-config.json
    ```
 
-2. **Copy default directory structure**
+2. Copy default directory structure
 
    ```bash
    cp -r .kiro-default .kiro
    ```
 
-3. **Initialize your first spec**
+3. Initialize your first spec
 
    ```bash
    /kiro:spec-init "Your feature description"
@@ -214,11 +214,11 @@ engineering/specs/guidelines/ + engineering/specs/projects/
 
 ## Development Rules
 
-1. **3-Stage Approval**: Requirements → Design → Tasks → Implementation
-2. **Phase Separation**: No phase skipping allowed
-3. **Human Review**: Explicit approval required at each phase
-4. **Task Tracking**: Update task status during implementation
-5. **Configuration Respect**: Follow project-specific settings
+1. 3-Stage Approval: Requirements → Design → Tasks → Implementation
+2. Phase Separation: No phase skipping allowed
+3. Human Review: Explicit approval required at each phase
+4. Task Tracking: Update task status during implementation
+5. Configuration Respect: Follow project-specific settings
 
 ## Configuration Schema
 

@@ -499,10 +499,10 @@ run = ["pytest"]
 
 ### Configuration Tips
 
-1. **Format before Lint**: Format実行後にLintを実行
-2. **Strict Rules**: 厳格なルールを設定（型安全性重視）
-3. **Auto-fix First**: 自動修正可能なルールを優先
-4. **CI Integration**: CIでも同じルールを実行
+1. Format before Lint: Format実行後にLintを実行
+2. Strict Rules: 厳格なルールを設定（型安全性重視）
+3. Auto-fix First: 自動修正可能なルールを優先
+4. CI Integration: CIでも同じルールを実行
 
 ### Performance Optimization
 

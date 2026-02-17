@@ -125,17 +125,17 @@ Integration Orchestrator
 
 ### 新しいコマンドの作成
 
-1. **TaskContextを理解**: `references/task-context-specification.md`を参照
+1. TaskContextを理解: `references/task-context-specification.md`を参照
 2. **Command Adapterパターン**を使用: `references/adapters-and-orchestration.md`
-3. **Communication Busと統合**: `references/communication-bus-api.md`
-4. **エラーハンドリングを実装**: 統一されたError Handlerを使用
+3. Communication Busと統合: `references/communication-bus-api.md`
+4. エラーハンドリングを実装: 統一されたError Handlerを使用
 
 ### 新しいエージェントの作成
 
-1. **エージェント仕様を定義**: capabilities, input/output
-2. **Agent Adapterで登録**: 標準化されたインターフェース
-3. **TaskContextを活用**: プロジェクトコンテキストと実行状態を取得
-4. **Communication Busを統合**: 他のコンポーネントとの通信
+1. エージェント仕様を定義: capabilities, input/output
+2. Agent Adapterで登録: 標準化されたインターフェース
+3. TaskContextを活用: プロジェクトコンテキストと実行状態を取得
+4. Communication Busを統合: 他のコンポーネントとの通信
 
 ### テストとデバッグ
 
@@ -408,10 +408,10 @@ console.log("回復成功率:", errorStats.recoveryRate);
 
 問題、質問、または貢献については:
 
-1. **ドキュメント**: このガイドとインラインコメントを確認
-2. **テスト**: 統合テストを実行して機能を検証
-3. **デバッグ**: デバッグモードを有効にして詳細なログを取得
-4. **パフォーマンス**: メトリクスと分析を監視して最適化
+1. ドキュメント: このガイドとインラインコメントを確認
+2. テスト: 統合テストを実行して機能を検証
+3. デバッグ: デバッグモードを有効にして詳細なログを取得
+4. パフォーマンス: メトリクスと分析を監視して最適化
 
 ---
 

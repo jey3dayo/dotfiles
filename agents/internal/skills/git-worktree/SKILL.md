@@ -42,7 +42,7 @@ git wt remove -f feature/new-feature
 - **git wt**: k1LoW版の高機能ラッパー（hooks、ファイルコピー、シェル統合対応）
 - **git worktree**: Git公式のネイティブコマンド（シンプル、標準的）
 
-**推奨**: 通常は`git wt`を使用し、スクリプトや自動化では`git worktree`を使用
+### 推奨
 
 ## Core Concepts
 
@@ -50,14 +50,14 @@ git wt remove -f feature/new-feature
 
 Git worktreeは、同一リポジトリの異なるブランチを別々のディレクトリで同時に作業できる機能です。
 
-**利点**:
+### 利点
 
 - ブランチ切り替え時のstash不要
 - 並列開発が容易（複数PRの同時作業）
 - ビルド/テストの並列実行
 - AI agentによるタスク並列化
 
-**制限**:
+### 制限
 
 - 同じブランチは複数のworktreeで同時チェックアウト不可
 - メインリポジトリ（`.git`ディレクトリがある場所）は保護すべき
@@ -77,9 +77,9 @@ Git worktreeは、同一リポジトリの異なるブランチを別々のデ�
 └── ...
 ```
 
-**設定**: `git config wt.basedir ".worktrees"`
+### 設定
 
-**代替**: `.worktree`（単数形）も可能。変更時は`.gitignore`、`.fdignore`、`.prettierignore`も更新が必要。
+### 代替
 
 ### デフォルトブランチの保護
 
@@ -99,7 +99,7 @@ cd .worktrees/feature-x
 
 ### 新規Worktree作成
 
-**新しいブランチで作成**:
+### 新しいブランチで作成
 
 ```bash
 # 基本形（ブランチ名からworktree名を自動生成）
@@ -113,7 +113,7 @@ git wt create feature/user-auth --path .worktrees/auth-feature
 git wt create feature/bugfix --start-point v1.2.3
 ```
 
-**既存ブランチで作成**:
+### 既存ブランチで作成
 
 ```bash
 # リモートブランチから
@@ -136,23 +136,23 @@ git wt switch .worktrees/user-auth
 git wt switch
 ```
 
-**Note**: `git wt switch`はシェル統合（Zsh）が必要。統合がない場合は手動で`cd`。
+### Note
 
 ### Worktree削除
 
-**安全な削除**（変更がないことを確認）:
+### 安全な削除
 
 ```bash
 git wt remove feature/user-auth
 ```
 
-**強制削除**（変更を破棄）:
+### 強制削除
 
 ```bash
 git wt remove -f feature/user-auth
 ```
 
-**未追跡のworktreeをクリーンアップ**:
+### 未追跡のworktreeをクリーンアップ
 
 ```bash
 git worktree prune
@@ -186,13 +186,13 @@ git config wt.nameTemplate "{{.BranchName}}"
 git config wt.autoSetupRemote true
 ```
 
-**グローバル設定**:
+### グローバル設定
 
 ```bash
 git config --global wt.basedir ".worktrees"
 ```
 
-**リポジトリローカル設定** (推奨):
+### リポジトリローカル設定
 
 ```bash
 git config --local wt.basedir ".worktrees"
@@ -209,7 +209,7 @@ Worktree作成/削除時に自動実行されるフック:
 - `.git/hooks/post-worktree-add`: Worktree作成後
 - `.git/hooks/post-worktree-remove`: Worktree削除後
 
-**使用例**: 依存関係の自動インストール、設定ファイルのコピー
+### 使用例
 
 詳細は [`references/workflows.md`](references/workflows.md#hooks) を参照。
 
@@ -233,7 +233,7 @@ git config wt.copyFiles ".env,config.local.json"
 
 ### シェル統合
 
-**Zsh統合** (このリポジトリで利用可能):
+### Zsh統合
 
 `zsh/config/tools/git.zsh`に以下の関数が実装済み:
 
@@ -243,7 +243,7 @@ git config wt.copyFiles ".env,config.local.json"
 - `gwts`: git wt switch（対話的選択）
 - `gwtr`: git wt remove（対話的選択）
 
-**使い方**:
+### 使い方
 
 ```bash
 # 対話的にworktreeを作成
@@ -307,7 +307,7 @@ cd .worktrees/feature-b
 
 ### よくある問題
 
-**問題**: `fatal: 'feature/x' is already checked out at ...`
+### 問題
 
 ```bash
 # 原因: 同じブランチが別のworktreeで使用中
@@ -317,7 +317,7 @@ git wt list  # 使用中のブランチを確認
 git wt remove feature/x  # 必要に応じて削除
 ```
 
-**問題**: Worktree削除後もディレクトリが残る
+### 問題
 
 ```bash
 # 原因: Gitメタデータのみ削除された
@@ -327,7 +327,7 @@ rm -rf .worktrees/old-worktree
 git worktree prune
 ```
 
-**問題**: 設定が認識されない
+### 問題
 
 ```bash
 # 診断スクリプトで確認
@@ -383,6 +383,8 @@ git config --list | grep wt.
 
 ---
 
-**Version**: 1.0.0
-**Last Updated**: 2026-02-14
-**Target**: git-wt 0.15.0+
+### Version
+
+### Last Updated
+
+### Target

@@ -15,7 +15,7 @@ Detect, diagnose, and automatically fix code quality issues using systematic app
 
 ### Phase 1: Comprehensive Error Detection
 
-**ALWAYS start with multi-dimensional analysis:**
+### ALWAYS start with multi-dimensional analysis
 
 ```markdown
 🔍 **Error Detection Report**
@@ -370,14 +370,14 @@ fi
 
 ### When to Auto-fix vs Manual
 
-**Auto-fix**:
+### Auto-fix
 
 - Formatting issues
 - Simple type annotations
 - Unused code removal
 - Standard pattern migrations
 
-**Manual Review Required**:
+### Manual Review Required
 
 - Business logic changes
 - API contract modifications

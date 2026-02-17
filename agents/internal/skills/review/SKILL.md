@@ -235,9 +235,9 @@ Delegate to appropriate skill based on mode:
 
 This command operates with the following priority:
 
-1. **Project-specific command**: Execute `./.claude/commands/review.md` if exists
-2. **Project-specific guidelines**: Apply `./.claude/review-guidelines.md` if exists
-3. **Generic review**: Use code-review skill default behavior if none above
+1. Project-specific command: Execute `./.claude/commands/review.md` if exists
+2. Project-specific guidelines: Apply `./.claude/review-guidelines.md` if exists
+3. Generic review: Use code-review skill default behavior if none above
 
 ### Guideline File Customization
 

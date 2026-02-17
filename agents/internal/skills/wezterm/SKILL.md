@@ -52,10 +52,10 @@ Review keybinding organization and ergonomics:
 
 #### Keybinding Categories
 
-1. **Tab Management**: New, switch, close, rename
-2. **Pane Management**: Split (horizontal/vertical), navigate, resize, zoom
-3. **Copy Mode**: Enter, navigate, select, yank
-4. **Quick Actions**: Font size, transparency, search
+1. Tab Management: New, switch, close, rename
+2. Pane Management: Split (horizontal/vertical), navigate, resize, zoom
+3. Copy Mode: Enter, navigate, select, yank
+4. Quick Actions: Font size, transparency, search
 
 #### Ergonomics
 
@@ -336,16 +336,16 @@ return config
 
 When reviewing WezTerm configurations:
 
-1. **Check GPU settings**: Verify WebGpu front-end and power preference
-2. **Test startup**: Measure startup time
-3. **Review keybindings**: Check leader key and organization
-4. **Evaluate theme**: Verify Gruvbox consistency
-5. **Test copy mode**: Confirm Vim-style keybindings work
-6. **Check structure**: Verify modular organization
-7. **Test platform support**: Verify OS-specific settings
-8. **Review transparency**: Check background opacity
-9. **Test functionality**: Ensure all features work
-10. **Compare against best practices**: Assess overall quality
+1. Check GPU settings: Verify WebGpu front-end and power preference
+2. Test startup: Measure startup time
+3. Review keybindings: Check leader key and organization
+4. Evaluate theme: Verify Gruvbox consistency
+5. Test copy mode: Confirm Vim-style keybindings work
+6. Check structure: Verify modular organization
+7. Test platform support: Verify OS-specific settings
+8. Review transparency: Check background opacity
+9. Test functionality: Ensure all features work
+10. Compare against best practices: Assess overall quality
 
 ## 🤖 Agent Integration
 

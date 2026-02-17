@@ -36,9 +36,9 @@ model: claude-sonnet-4-5
 
 ## 分析プロセス
 
-1. **Phase 1**: [説明]
-2. **Phase 2**: [説明]
-3. **Phase 3**: [説明]
+1. Phase 1: [説明]
+2. Phase 2: [説明]
+3. Phase 3: [説明]
 
 ## 出力形式
 

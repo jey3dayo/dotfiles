@@ -101,9 +101,9 @@ draw.io ファイルの基本構造:
 
 draw.io には 3 種類の cell があります:
 
-1. **Vertex (図形)**: `vertex="1"`
-2. **Edge (コネクタ/矢印)**: `edge="1"`
-3. **Container (グループ)**: `vertex="1"` with children
+1. Vertex (図形): `vertex="1"`
+2. Edge (コネクタ/矢印): `edge="1"`
+3. Container (グループ): `vertex="1"` with children
 
 ### Vertex Cell (Shape)
 

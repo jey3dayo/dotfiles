@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 // ========================================
 
 interface ParsedArgs {
-  targetDir: string | null;
+  targetPaths: string[];
   dryRun: boolean;
   verbose: boolean;
   showHelp: boolean;
@@ -31,7 +31,7 @@ interface FileResult {
 function parseArguments(): ParsedArgs {
   const args = process.argv.slice(2);
   const result: ParsedArgs = {
-    targetDir: null,
+    targetPaths: [],
     dryRun: false,
     verbose: false,
     showHelp: false,
@@ -47,8 +47,8 @@ function parseArguments(): ParsedArgs {
     } else if (arg === "--verbose" || arg === "-v") {
       result.verbose = true;
     } else if (!arg.startsWith("-")) {
-      // 位置引数（ディレクトリパス）
-      result.targetDir = arg;
+      // 位置引数（ファイル/ディレクトリパス）
+      result.targetPaths.push(arg);
     } else {
       console.error(`Unknown option: ${arg}`);
       process.exit(1);
@@ -62,29 +62,15 @@ function parseArguments(): ParsedArgs {
 // Path Resolution
 // ========================================
 
-function resolveTargetDirectory(userInput: string | null): string {
+function resolveTargetPaths(userInputs: string[]): string[] {
   // デフォルト値（引数なしの場合）
-  if (!userInput) {
+  if (userInputs.length === 0) {
     const repoRoot = path.resolve(__dirname, "../..");
-    return path.join(repoRoot, "agents", "distributions", "default", "skills");
+    return [path.join(repoRoot, "agents", "internal")];
   }
 
   // ユーザー指定のパスを解決
-  const resolved = path.resolve(process.cwd(), userInput);
-
-  // 存在チェック
-  if (!fs.existsSync(resolved)) {
-    console.error(`Directory not found: ${resolved}`);
-    process.exit(1);
-  }
-
-  // ディレクトリチェック
-  if (!fs.statSync(resolved).isDirectory()) {
-    console.error(`Not a directory: ${resolved}`);
-    process.exit(1);
-  }
-
-  return resolved;
+  return userInputs.map((input) => path.resolve(process.cwd(), input));
 }
 
 // ========================================
@@ -102,7 +88,14 @@ function processFile(
     const lines = original.split(eol);
 
     const fenceOpen = /^\s*(`{3,}|~{3,})/;
-    const boldOnly = /^(\s*)\*\*([^*][\s\S]*?)\*\*(.*)$/;
+    // Standalone bold-only lines are treated as pseudo headings.
+    // Example: "**Overview**" -> "### Overview"
+    const boldOnlyHeading = /^(\s*)\*\*([^*][\s\S]*?)\*\*\s*$/;
+
+    // Bold labels in ordered list items are normalized to plain text.
+    // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
+    const boldOrderedListLabel =
+      /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
 
     let inFence = false;
     let fenceChar = "";
@@ -131,16 +124,27 @@ function processFile(
         return line;
       }
 
-      const boldMatch = line.match(boldOnly);
-      if (!boldMatch) {
+      const listLabelMatch = line.match(boldOrderedListLabel);
+      if (listLabelMatch) {
+        const prefix = listLabelMatch[1];
+        const text = listLabelMatch[2];
+        const suffix = listLabelMatch[3] ?? "";
+        if (!text.includes("**")) {
+          fileReplacements += 1;
+          return `${prefix}${text}${suffix}`;
+        }
+      }
+
+      const headingMatch = line.match(boldOnlyHeading);
+      if (!headingMatch) {
         return line;
       }
 
-      const indent = boldMatch[1];
-      if (boldMatch[2].includes("**")) {
+      const indent = headingMatch[1];
+      if (headingMatch[2].includes("**")) {
         return line;
       }
-      const text = boldMatch[2].trim();
+      const text = headingMatch[2].trim();
       fileReplacements += 1;
       return `${indent}### ${text}`;
     });
@@ -169,8 +173,8 @@ function processFile(
 // Directory Walking
 // ========================================
 
-function collectMarkdownFiles(dir: string): string[] {
-  const markdownFiles: string[] = [];
+function collectMarkdownFiles(targets: string[]): string[] {
+  const markdownFiles = new Set<string>();
 
   const walk = (currentDir: string) => {
     for (const entry of fs.readdirSync(currentDir, { withFileTypes: true })) {
@@ -180,13 +184,29 @@ function collectMarkdownFiles(dir: string): string[] {
         continue;
       }
       if (entry.isFile() && fullPath.endsWith(".md")) {
-        markdownFiles.push(fullPath);
+        markdownFiles.add(fullPath);
       }
     }
   };
 
-  walk(dir);
-  return markdownFiles;
+  for (const target of targets) {
+    if (!fs.existsSync(target)) {
+      console.error(`Path not found: ${target}`);
+      process.exit(1);
+    }
+
+    const stat = fs.statSync(target);
+    if (stat.isDirectory()) {
+      walk(target);
+      continue;
+    }
+
+    if (stat.isFile() && target.endsWith(".md")) {
+      markdownFiles.add(target);
+    }
+  }
+
+  return Array.from(markdownFiles).sort();
 }
 
 // ========================================
@@ -196,12 +216,12 @@ function collectMarkdownFiles(dir: string): string[] {
 function showUsage() {
   console.log(`
 Usage:
-  replace-bold-headings [directory] [options]
+  replace-bold-headings [paths...] [options]
 
 Arguments:
-  directory               Target directory to process
-                         Default: agents/distributions/default/skills (optimized for Claude Code skills)
-                         Can specify any directory (e.g., ".", ".claude", "docs")
+  paths                   Target file/directory paths to process
+                         Default: agents/internal (skills, agents, rules, commands)
+                         Can specify multiple paths
 
 Options:
   --dry-run              Show changes without modifying files
@@ -209,13 +229,14 @@ Options:
   --help, -h             Show this help message
 
 Examples:
-  # Process default directory (skills)
+  # Process default directory (internal assets)
   tsx replace-bold-headings.ts
   mise run skills:fix:bold-headings
 
   # Process other directories
   tsx replace-bold-headings.ts .
   tsx replace-bold-headings.ts .claude
+  tsx replace-bold-headings.ts docs README.md
   mise run format:markdown:bold-headings -- docs
 
   # Dry run mode
@@ -235,15 +256,18 @@ function main() {
     process.exit(0);
   }
 
-  const targetDir = resolveTargetDirectory(args.targetDir);
+  const targetPaths = resolveTargetPaths(args.targetPaths);
 
-  console.log(`Target directory: ${targetDir}`);
+  console.log("Target path(s):");
+  for (const targetPath of targetPaths) {
+    console.log(`- ${targetPath}`);
+  }
   if (args.dryRun) {
     console.log("(Dry run mode - no files will be modified)");
   }
 
-  // ディレクトリ走査
-  const markdownFiles = collectMarkdownFiles(targetDir);
+  // ファイル収集
+  const markdownFiles = collectMarkdownFiles(targetPaths);
 
   if (markdownFiles.length === 0) {
     console.log("No markdown files found.");
@@ -266,11 +290,11 @@ function main() {
 
   // 結果表示
   if (totalReplacements === 0) {
-    console.log("No bold-only headings found.");
+    console.log("No bold heading/label patterns found.");
   } else {
     const verb = args.dryRun ? "Found" : "Replaced";
     console.log(
-      `${verb} ${totalReplacements} bold-only heading(s) across ${successCount} file(s) in ${targetDir}.`,
+      `${verb} ${totalReplacements} bold heading/label pattern(s) across ${successCount} file(s).`,
     );
   }
 

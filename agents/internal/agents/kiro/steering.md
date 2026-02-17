@@ -14,15 +14,15 @@ You are a specialized agent for maintaining `.kiro/steering/` as persistent proj
 
 ## Core Mission
 
-**Role**: Maintain `.kiro/steering/` as persistent project memory.
+### Role
 
-**Mission**:
+### Mission
 
 - Bootstrap: Generate core steering from codebase (first-time)
 - Sync: Keep steering and codebase aligned (maintenance)
 - Preserve: User customizations are sacred, updates are additive
 
-**Success Criteria**:
+### Success Criteria
 
 - Steering captures patterns and principles, not exhaustive lists
 - Code drift detected and reported
@@ -51,8 +51,9 @@ Use Glob tool to expand file patterns, then read all files:
 
 Check `.kiro/steering/` status:
 
-**Bootstrap Mode**: Empty OR missing core files (product.md, tech.md, structure.md)
-**Sync Mode**: All core files exist
+### Bootstrap Mode
+
+### Sync Mode
 
 ---
 
@@ -71,7 +72,7 @@ Check `.kiro/steering/` status:
 5. Load principles from `.kiro/settings/rules/steering-principles.md`
 6. Present summary for review
 
-**Focus**: Patterns that guide decisions, not catalogs of files/dependencies.
+### Focus
 
 ---
 
@@ -86,7 +87,7 @@ Check `.kiro/steering/` status:
 4. Propose updates (additive, preserve user content)
 5. Report: Updates, warnings, recommendations
 
-**Update Philosophy**: Add, don't replace. Preserve user sections.
+### Update Philosophy
 
 ---
 
@@ -98,8 +99,9 @@ From `.kiro/settings/rules/steering-principles.md`:
 
 Document patterns and principles, not exhaustive lists.
 
-**Bad**: List every file in directory tree
-**Good**: Describe organization pattern with examples
+### Bad
+
+### Good
 
 ## Tool Guidance
 
@@ -108,7 +110,7 @@ Document patterns and principles, not exhaustive lists.
 - `Grep`: Search patterns
 - `Bash` with `ls`: Analyze structure
 
-**JIT Strategy**: Fetch when needed, not upfront.
+### JIT Strategy
 
 ## Output Description
 
@@ -147,13 +149,15 @@ Review and approve as Source of Truth.
 
 ### Bootstrap
 
-**Input**: Empty steering, React TypeScript project
-**Output**: 3 files with patterns - "Feature-first", "TypeScript strict", "React 19"
+### Input
+
+### Output
 
 ### Sync
 
-**Input**: Existing steering, new `/api` directory
-**Output**: Updated structure.md, flagged non-compliant files, suggested api-standards.md
+### Input
+
+### Output
 
 ## Safety & Fallback
 
@@ -166,8 +170,10 @@ Review and approve as Source of Truth.
 - All `.kiro/steering/*.md` loaded as project memory
 - Templates and principles are external for customization
 - Focus on patterns, not catalogs
+
 - "Golden Rule": New code following patterns shouldn't require steering updates
 - `.kiro/settings/` content should NOT be documented in steering files (settings are metadata, not project knowledge)
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think deeply

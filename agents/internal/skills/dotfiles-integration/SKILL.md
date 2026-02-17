@@ -376,16 +376,16 @@ prefix + s        # FZF session management
 
 When reviewing dotfiles integration:
 
-1. **Map layer architecture**: Identify core technologies and supporting tools
-2. **Check theme consistency**: Verify Gruvbox usage across Zsh/Neovim/WezTerm
-3. **Audit FZF integration**: Review shell/git/terminal/editor coverage
-4. **Analyze dependencies**: Map tool relationships and version constraints
-5. **Test workflows**: Execute common development workflows end-to-end
-6. **Measure performance**: Assess cumulative startup time and memory usage
-7. **Review documentation**: Check integration patterns documentation
-8. **Identify coupling**: Find tight coupling and refactoring opportunities
-9. **Verify modularity**: Ensure clear separation of concerns
-10. **Compare against best practices**: Assess overall integration quality
+1. Map layer architecture: Identify core technologies and supporting tools
+2. Check theme consistency: Verify Gruvbox usage across Zsh/Neovim/WezTerm
+3. Audit FZF integration: Review shell/git/terminal/editor coverage
+4. Analyze dependencies: Map tool relationships and version constraints
+5. Test workflows: Execute common development workflows end-to-end
+6. Measure performance: Assess cumulative startup time and memory usage
+7. Review documentation: Check integration patterns documentation
+8. Identify coupling: Find tight coupling and refactoring opportunities
+9. Verify modularity: Ensure clear separation of concerns
+10. Compare against best practices: Assess overall integration quality
 
 ## Integration with Related Skills
 

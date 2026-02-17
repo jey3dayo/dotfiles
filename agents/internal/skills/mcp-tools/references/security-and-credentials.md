@@ -561,14 +561,14 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
 
 ### 定期的に確認すべき項目
 
-1. **使用されていないトークン**
+1. 使用されていないトークン
 
    ```bash
    # GitHubトークンの最終使用日を確認
    # GitHub Settings → Developer settings → Personal access tokens
    ```
 
-2. **過度な権限を持つトークン**
+2. 過度な権限を持つトークン
 
    ```bash
    # トークンのスコープを確認
@@ -576,7 +576,7 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
         https://api.github.com/user
    ```
 
-3. **漏洩の可能性**
+3. 漏洩の可能性
 
    ```bash
    # 設定ファイルがGitにコミットされていないか確認
@@ -591,7 +591,7 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
 
 ### 即座に実行
 
-1. **トークン・パスワードの無効化**
+1. トークン・パスワードの無効化
 
    ```bash
    # GitHub Token
@@ -602,7 +602,7 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
    ALTER USER 'username'@'localhost' IDENTIFIED BY 'new_secure_password';
    ```
 
-2. **環境変数の更新**
+2. 環境変数の更新
 
    ```bash
    # 新しいトークンを設定
@@ -610,7 +610,7 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
    source ~/.zshrc
    ```
 
-3. **設定ファイルの更新**
+3. 設定ファイルの更新
 
    ```bash
    # Claude Desktopを再起動
@@ -620,18 +620,16 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
 
 ### フォローアップ
 
-1. **影響範囲の調査**
-
+1. 影響範囲の調査
    - 漏洩したトークンの使用履歴を確認
    - 不正アクセスの有無を調査
 
-2. **再発防止策**
-
+2. 再発防止策
    - より安全な管理方法に移行（Keychain、1Password等）
    - セキュリティチェックリストの再確認
    - .gitignoreの徹底
 
-3. **チーム通知**
+3. チーム通知
    - 影響を受ける可能性のあるチームメンバーに通知
    - セキュリティポリシーの見直し
 
@@ -641,41 +639,36 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
 
 ### 優先度: 高
 
-1. **平文パスワードの排除**
-
+1. 平文パスワードの排除
    - 環境変数、Keychain、パスワードマネージャーを使用
 
-2. **最小権限の原則**
-
+2. 最小権限の原則
    - Filesystem: 必要なディレクトリのみ
    - GitHub Token: 必要なスコープのみ
    - Database: 専用ユーザー、必要な権限のみ
 
-3. **.gitignoreの徹底**
+3. .gitignoreの徹底
    - 設定ファイル、認証情報ファイルを除外
 
 ### 優先度: 中
 
-1. **環境別の分離**
-
+1. 環境別の分離
    - 開発・ステージング・本番で異なる認証情報
 
-2. **定期的な監査**
-
+2. 定期的な監査
    - トークンの使用状況確認
    - 不要なトークンの削除
 
-3. **ログの監視**
+3. ログの監視
    - エラーログの定期的な確認
    - 不正アクセスの検知
 
 ### 優先度: 低
 
-1. **トークンのローテーション**
-
+1. トークンのローテーション
    - 3-6ヶ月ごとにトークン・パスワードを変更
 
-2. **バックアップ**
+2. バックアップ
    - 認証情報の安全なバックアップ（暗号化）
 
 ---

@@ -10,23 +10,23 @@ This guide helps you migrate from the legacy cc-sdd skill to the standardized cc
 
 For new projects starting with cc-sdd:
 
-1. **Copy default configuration**
+1. Copy default configuration
 
    ```bash
    cp .kiro-config.default.json .kiro-config.json
    ```
 
-2. **Copy default directory structure**
+2. Copy default directory structure
 
    ```bash
    cp -r .kiro-default .kiro
    ```
 
-3. **Customize if needed**
+3. Customize if needed
 
    Edit `.kiro-config.json` to match your project structure.
 
-4. **Initialize first specification**
+4. Initialize first specification
 
    ```bash
    /kiro:spec-init "Your feature description"
@@ -38,7 +38,7 @@ For projects already using cc-sdd with `.kiro/` directory:
 
 #### Option A: Keep Current Structure (Recommended)
 
-1. **Create config matching current structure**
+1. Create config matching current structure
 
    ```bash
    # Copy default config
@@ -61,14 +61,14 @@ For projects already using cc-sdd with `.kiro/` directory:
    }
    ```
 
-2. **Verify existing structure**
+2. Verify existing structure
 
    ```bash
    ls -la .kiro/
    # Should show: steering/, specs/, settings/
    ```
 
-3. **Test commands**
+3. Test commands
 
    ```bash
    /kiro:spec-status [existing-feature]
@@ -78,7 +78,7 @@ For projects already using cc-sdd with `.kiro/` directory:
 
 If you want to reorganize your project:
 
-1. **Define new structure in config**
+1. Define new structure in config
 
    Create `.kiro-config.json`:
 
@@ -94,7 +94,7 @@ If you want to reorganize your project:
    }
    ```
 
-2. **Move existing files**
+2. Move existing files
 
    ```bash
    # Create new structure
@@ -113,7 +113,7 @@ If you want to reorganize your project:
    rm -rf .kiro
    ```
 
-3. **Verify migration**
+3. Verify migration
 
    ```bash
    /kiro:spec-status [feature-name]
@@ -123,7 +123,7 @@ If you want to reorganize your project:
 
 For teams managing multiple projects with different conventions:
 
-1. **Project A: Traditional structure**
+1. Project A: Traditional structure
 
    `.kiro-config.json`:
 
@@ -137,7 +137,7 @@ For teams managing multiple projects with different conventions:
    }
    ```
 
-2. **Project B: Documentation-centric**
+2. Project B: Documentation-centric
 
    `.kiro-config.json`:
 
@@ -151,7 +151,7 @@ For teams managing multiple projects with different conventions:
    }
    ```
 
-3. **Project C: Monorepo**
+3. Project C: Monorepo
 
    `.kiro-config.json`:
 
@@ -169,14 +169,14 @@ For teams managing multiple projects with different conventions:
 
 After migration, validate your configuration:
 
-1. **Check config syntax**
+1. Check config syntax
 
    ```bash
    # Read and parse config
    cat .kiro-config.json | jq .
    ```
 
-2. **Verify paths exist**
+2. Verify paths exist
 
    ```bash
    # For default config
@@ -185,7 +185,7 @@ After migration, validate your configuration:
    ls -la .kiro/settings/
    ```
 
-3. **Test commands**
+3. Test commands
 
    ```bash
    # List existing specs
@@ -301,7 +301,7 @@ The standardized plugin maintains full backward compatibility:
 
 If migration causes issues:
 
-1. **Remove config file**
+1. Remove config file
 
    ```bash
    rm .kiro-config.json

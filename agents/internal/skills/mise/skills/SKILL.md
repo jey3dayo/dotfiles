@@ -149,17 +149,15 @@ Organize mise.toml for maintainability and clarity.
 
 Within the `[tasks]` section, organize tasks logically by responsibility:
 
-1. **Individual Commands** - Concrete tasks that perform actual work
-
+1. Individual Commands - Concrete tasks that perform actual work
    - Example: `format:terraform`, `lint:app`, `build:frontend`
    - Characteristics: Contains `run` with actual commands
 
-2. **Aggregation Tasks** - Tasks that orchestrate multiple related commands
-
+2. Aggregation Tasks - Tasks that orchestrate multiple related commands
    - Example: `format`, `lint`, `test`
    - Characteristics: Uses `depends` to coordinate related tasks
 
-3. **Aliases/Meta-Tasks** - Top-level orchestration for common workflows
+3. Aliases/Meta-Tasks - Top-level orchestration for common workflows
    - Example: `ci`, `+all`, `release`
    - Characteristics: High-level coordination, often used in CI/CD
 
@@ -337,13 +335,13 @@ run = "pytest tests/integration"
 
 When reviewing existing mise.toml:
 
-1. **Check Structure**: Verify section ordering and organization
-2. **Analyze Dependencies**: Review `depends` vs `run` usage
-3. **Evaluate Parallelism**: Identify opportunities for parallel execution
-4. **Validate Aliases**: Check for conflicts and intuitive naming
-5. **Test DAG**: Run `mise task deps <task>` to visualize
-6. **Check Best Practices**: Verify against reference guidelines
-7. **Performance**: Consider compilation time and execution efficiency
+1. Check Structure: Verify section ordering and organization
+2. Analyze Dependencies: Review `depends` vs `run` usage
+3. Evaluate Parallelism: Identify opportunities for parallel execution
+4. Validate Aliases: Check for conflicts and intuitive naming
+5. Test DAG: Run `mise task deps <task>` to visualize
+6. Check Best Practices: Verify against reference guidelines
+7. Performance: Consider compilation time and execution efficiency
 
 ### Reference
 

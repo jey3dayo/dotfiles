@@ -53,25 +53,22 @@ Document size limits are configurable via `.docs-manager-config.json`:
 
 ### Indicators for Splitting
 
-1. **Size-Based**:
-
+1. Size-Based:
    - Document exceeds warning threshold
    - More than 10 major sections
    - Difficulty finding specific content
 
-2. **Content-Based**:
-
+2. Content-Based:
    - Multiple distinct topics
    - Different target audiences mixed
    - Varying levels of detail
 
-3. **Maintenance-Based**:
-
+3. Maintenance-Based:
    - Different update frequencies
    - Separate ownership/responsibility
    - Independent versioning needs
 
-4. **Usage-Based**:
+4. Usage-Based:
    - Sections frequently referenced independently
    - Different access patterns
    - Selective reading common
@@ -441,31 +438,31 @@ Track document growth:
 
 ### Before Splitting
 
-1. **Identify Natural Boundaries**: Look for logical section divisions
-2. **Consider Usage Patterns**: How users access the content
-3. **Plan Navigation**: Design clear navigation structure
-4. **Preserve Context**: Maintain relationships between split sections
+1. Identify Natural Boundaries: Look for logical section divisions
+2. Consider Usage Patterns: How users access the content
+3. Plan Navigation: Design clear navigation structure
+4. Preserve Context: Maintain relationships between split sections
 
 ### During Splitting
 
-1. **Create Index First**: Build navigation hub
-2. **Split One Section at a Time**: Incremental approach
-3. **Update Cross-References**: Fix links as you go
-4. **Test Navigation**: Verify user can find content
+1. Create Index First: Build navigation hub
+2. Split One Section at a Time: Incremental approach
+3. Update Cross-References: Fix links as you go
+4. Test Navigation: Verify user can find content
 
 ### After Splitting
 
-1. **Validate Links**: Ensure all references work
-2. **Check Metadata**: Verify all documents have proper metadata
-3. **Update Documentation**: Reflect new structure
-4. **Monitor Feedback**: Gather user input on new organization
+1. Validate Links: Ensure all references work
+2. Check Metadata: Verify all documents have proper metadata
+3. Update Documentation: Reflect new structure
+4. Monitor Feedback: Gather user input on new organization
 
 ### Maintenance
 
-1. **Regular Reviews**: Quarterly size checks
-2. **Growth Monitoring**: Track document expansion
-3. **User Feedback**: Listen to navigation difficulties
-4. **Continuous Improvement**: Refine structure as needed
+1. Regular Reviews: Quarterly size checks
+2. Growth Monitoring: Track document expansion
+3. User Feedback: Listen to navigation difficulties
+4. Continuous Improvement: Refine structure as needed
 
 ## Common Pitfalls
 

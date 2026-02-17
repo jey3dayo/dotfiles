@@ -8,7 +8,7 @@ Practical workflow patterns for Git worktree usage in various development scenar
 
 Standard workflow for feature development with worktrees.
 
-**Setup**:
+### Setup
 
 ```bash
 # Main repository stays on default branch (main)
@@ -20,7 +20,7 @@ git wt create feature/user-authentication
 cd .worktrees/user-authentication
 ```
 
-**Development**:
+### Development
 
 ```bash
 # Work on feature
@@ -34,7 +34,7 @@ git add tests/auth.test.ts
 git commit -m "test: add authentication tests"
 ```
 
-**Cleanup**:
+### Cleanup
 
 ```bash
 # After PR is merged
@@ -47,7 +47,7 @@ git branch -d feature/user-authentication
 
 Working on multiple features simultaneously.
 
-**Scenario**: You need to work on Feature A while waiting for Feature B's CI/CD.
+### Scenario
 
 ```bash
 # Feature A: Primary work
@@ -68,7 +68,7 @@ git wt switch feature/api-endpoints
 gwts  # Interactive selection (with Zsh integration)
 ```
 
-**Benefits**:
+### Benefits
 
 - No stashing required
 - Each feature has its own `node_modules` (if needed)
@@ -78,7 +78,7 @@ gwts  # Interactive selection (with Zsh integration)
 
 Quickly fix production issues without affecting current work.
 
-**Scenario**: Critical bug in production, but you're in the middle of feature development.
+### Scenario
 
 ```bash
 # Current work (in progress, uncommitted changes)
@@ -130,7 +130,7 @@ git wt remove pr-123
 git branch -d pr-123
 ```
 
-**Tip**: Automate with GitHub CLI:
+### Tip
 
 ```bash
 # Fetch and create worktree in one command
@@ -143,7 +143,7 @@ gh pr checkout 123 && git wt create -b pr-123
 
 Multiple AI agents working on different tasks in parallel.
 
-**Architecture**:
+### Architecture
 
 ```
 Main Repo (coordinator)
@@ -152,7 +152,7 @@ Main Repo (coordinator)
 └── .worktrees/agent-3-task-c/  # Agent 3: Feature C
 ```
 
-**Setup Script** (example):
+### Setup Script
 
 ```bash
 #!/bin/bash
@@ -174,7 +174,7 @@ for i in "${!TASKS[@]}"; do
 done
 ```
 
-**Agent Execution**:
+### Agent Execution
 
 ```bash
 # Agent 1
@@ -190,7 +190,7 @@ cd .worktrees/agent-3-task-c
 # ... AI agent works here ...
 ```
 
-**Cleanup**:
+### Cleanup
 
 ```bash
 #!/bin/bash
@@ -214,7 +214,7 @@ done
 
 Use worktrees for parallel CI builds.
 
-**Scenario**: Test multiple branches or configurations simultaneously.
+### Scenario
 
 ```bash
 #!/bin/bash
@@ -241,7 +241,7 @@ wait
 echo "All CI tests completed"
 ```
 
-**Benefits**:
+### Benefits
 
 - Parallel execution (faster CI)
 - Isolated dependencies
@@ -251,7 +251,7 @@ echo "All CI tests completed"
 
 Maintain multiple release branches simultaneously.
 
-**Scenario**: Support multiple versions (v1.x, v2.x, v3.x).
+### Scenario
 
 ```bash
 # Create worktrees for each release branch
@@ -413,28 +413,28 @@ echo "Cleanup completed for $BRANCH"
 
 Establish team conventions for worktree usage.
 
-**Team Guidelines**:
+### Team Guidelines
 
-1. **Base Directory**: Always use `.worktrees/`
-2. **Naming Convention**: `{type}/{description}` (e.g., `feature/user-auth`)
-3. **Main Branch Protection**: Never work directly in main repository
-4. **Cleanup**: Remove worktrees after PR merge
+1. Base Directory: Always use `.worktrees/`
+2. Naming Convention: `{type}/{description}` (e.g., `feature/user-auth`)
+3. Main Branch Protection: Never work directly in main repository
+4. Cleanup: Remove worktrees after PR merge
 
-**Shared Configuration** (`.gitattributes`):
+### Shared Configuration
 
 ```gitattributes
 # .gitattributes
 .worktrees/** linguist-vendored
 ```
 
-**Shared Configuration** (`.gitignore`):
+### Shared Configuration
 
 ```gitignore
 # .gitignore
 .worktrees/
 ```
 
-**Shared Configuration** (`mise.toml` / `justfile`):
+### Shared Configuration
 
 ```toml
 # mise.toml
@@ -449,7 +449,7 @@ run = "git wt list | grep -v main | xargs -I {} git wt remove {}"
 
 Efficient code review workflow for teams.
 
-**Reviewer Workflow**:
+### Reviewer Workflow
 
 ```bash
 # Reviewer fetches PR
@@ -474,7 +474,7 @@ cd /path/to/repo
 git wt remove pr-456-review
 ```
 
-**Author Workflow** (addressing review comments):
+### Author Workflow
 
 ```bash
 # Create worktree for PR fixes
@@ -499,7 +499,7 @@ git wt remove pr-456-fixes
 
 Worktrees share the same `.git` object database, saving disk space.
 
-**Disk Usage Comparison**:
+### Disk Usage Comparison
 
 ```bash
 # Without worktrees (3 clones)
@@ -509,13 +509,13 @@ Worktrees share the same `.git` object database, saving disk space.
 1 × (repo size) + 2 × (working directory) = 1GB + 2 × 100MB = 1.2GB
 ```
 
-**Savings**: ~60% disk space
+### Savings
 
 ### Parallel Operations
 
 Leverage worktrees for parallel operations.
 
-**Example: Parallel Testing**:
+### Example: Parallel Testing
 
 ```bash
 #!/bin/bash
@@ -541,7 +541,7 @@ echo "All tests completed"
 
 Share build caches between worktrees.
 
-**Configuration** (`.env`):
+### Configuration
 
 ```bash
 # Shared cache directory
@@ -549,7 +549,7 @@ BUILD_CACHE_DIR=/path/to/repo/.cache/build
 NODE_MODULES_CACHE=/path/to/repo/.cache/node_modules
 ```
 
-**Hook Integration**:
+### Hook Integration
 
 ```bash
 #!/bin/bash
@@ -604,5 +604,6 @@ git wt remove locked-worktree
 
 ---
 
-**Version**: 1.0.0
-**Last Updated**: 2026-02-14
+### Version
+
+### Last Updated

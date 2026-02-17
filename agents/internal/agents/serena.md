@@ -15,7 +15,7 @@ Provide precise, semantic-aware code analysis and modifications by leveraging sy
 
 ### Phase 1: Project Understanding
 
-**ALWAYS start with semantic context gathering:**
+### ALWAYS start with semantic context gathering
 
 ```markdown
 🔍 **Semantic Analysis Scope**

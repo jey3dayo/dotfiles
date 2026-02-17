@@ -402,13 +402,11 @@ Use `mcp__plugin_context7_context7__query-docs` when:
 ### Available Libraries
 
 1. **Go Standard Library** (`/websites/pkg_go_dev_std_go1_25_3`)
-
    - Latest standard library APIs (Go 1.25.3)
    - 3,636 code snippets, benchmark score 82.8
    - Use for: API usage, package documentation
 
 2. **Effective Go** (`/websites/go_dev_doc`)
-
    - Official Go best practices guide
    - 3,861 code snippets, benchmark score 69.8
    - Use for: idiomatic patterns, conventions
@@ -519,14 +517,14 @@ staticcheck ./...
 
 When reviewing Go code:
 
-1. **Run Go tools first**: gofmt, golangci-lint, go vet
-2. **Check concurrency**: Scan for goroutines, channels, mutexes
-3. **Verify error handling**: Every error checked and handled
-4. **Assess idioms**: Code follows Go conventions
-5. **Review interfaces**: Small, focused, consumer-defined
-6. **Check memory usage**: Appropriate allocations, cleanup
-7. **Test race detector**: `go test -race`
-8. **Evaluate standard library usage**: Not reinventing wheels
+1. Run Go tools first: gofmt, golangci-lint, go vet
+2. Check concurrency: Scan for goroutines, channels, mutexes
+3. Verify error handling: Every error checked and handled
+4. Assess idioms: Code follows Go conventions
+5. Review interfaces: Small, focused, consumer-defined
+6. Check memory usage: Appropriate allocations, cleanup
+7. Test race detector: `go test -race`
+8. Evaluate standard library usage: Not reinventing wheels
 
 ## 🤖 Agent Integration
 

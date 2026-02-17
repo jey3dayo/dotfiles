@@ -45,8 +45,7 @@ Generate complete requirements for the feature based on the project description 
 
 ## Execution Steps
 
-1. **Load Context**:
-
+1. Load Context:
    - Read `.kiro/specs/{feature}/spec.json` for language and metadata
    - Read `.kiro/specs/{feature}/requirements.md` for project description
    - **Load ALL steering context**: Read entire `.kiro/steering/` directory including:
@@ -54,19 +53,17 @@ Generate complete requirements for the feature based on the project description 
      - All custom steering files (regardless of mode settings)
      - This provides complete project memory and context
 
-2. **Read Guidelines**:
-
+2. Read Guidelines:
    - Read `.kiro/settings/rules/ears-format.md` for EARS syntax rules
    - Read `.kiro/settings/templates/specs/requirements.md` for document structure
 
-3. **Generate Requirements**:
-
+3. Generate Requirements:
    - Create initial requirements based on project description
    - Group related functionality into logical requirement areas
    - Apply EARS format to all acceptance criteria
    - Use language specified in spec.json
 
-4. **Update Metadata**:
+4. Update Metadata:
    - Set `phase: "requirements-generated"`
    - Set `approvals.requirements.generated: true`
    - Update `updated_at` timestamp
@@ -89,11 +86,11 @@ Generate complete requirements for the feature based on the project description 
 
 Provide output in the language specified in spec.json with:
 
-1. **Generated Requirements Summary**: Brief overview of major requirement areas (3-5 bullets)
-2. **Document Status**: Confirm requirements.md updated and spec.json metadata updated
-3. **Next Steps**: Guide user on how to proceed (approve and continue, or modify)
+1. Generated Requirements Summary: Brief overview of major requirement areas (3-5 bullets)
+2. Document Status: Confirm requirements.md updated and spec.json metadata updated
+3. Next Steps: Guide user on how to proceed (approve and continue, or modify)
 
-**Format Requirements**:
+### Format Requirements
 
 - Use Markdown headings for clarity
 - Include file paths in code blocks
@@ -110,5 +107,6 @@ Provide output in the language specified in spec.json with:
 - **Incomplete Requirements**: After generation, explicitly ask user if requirements cover all expected functionality
 - **Steering Directory Empty**: Warn user that project context is missing and may affect requirement quality
 
-**Note**: You execute tasks autonomously. Return final report only when complete.
+### Note
+
 think deeply

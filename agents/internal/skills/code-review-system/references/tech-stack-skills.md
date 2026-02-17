@@ -60,9 +60,9 @@ def detect_project_type():
 
 ### 評価重点
 
-1. **TypeScript**: 型安全性、strict mode
-2. **React**: Server Components、Client Components、Hooks
-3. **Security**: API Routes認証、入力検証、CSP
+1. TypeScript: 型安全性、strict mode
+2. React: Server Components、Client Components、Hooks
+3. Security: API Routes認証、入力検証、CSP
 
 ### 評価基準
 
@@ -151,8 +151,8 @@ evaluation_criteria = {
 
 ### 評価重点
 
-1. **TypeScript**: 型安全性、strict mode
-2. **React**: コンポーネント設計、状態管理、パフォーマンス
+1. TypeScript: 型安全性、strict mode
+2. React: コンポーネント設計、状態管理、パフォーマンス
 
 ### 評価基準
 
@@ -244,8 +244,8 @@ evaluation_criteria = {
 
 ### 評価重点
 
-1. **TypeScript**: 型安全性、strict mode
-2. **Security**: 入力検証、認証・認可、データ保護
+1. TypeScript: 型安全性、strict mode
+2. Security: 入力検証、認証・認可、データ保護
 
 ### 評価基準
 
@@ -338,9 +338,9 @@ evaluation_criteria = {
 
 ### 評価重点
 
-1. **Golang**: エラーハンドリング、並行処理、イディオム
-2. **Security**: 入力検証、認証・認証
-3. **Clean Architecture**: 層分離、依存規則
+1. Golang: エラーハンドリング、並行処理、イディオム
+2. Security: 入力検証、認証・認証
+3. Clean Architecture: 層分離、依存規則
 
 ### 評価基準
 
@@ -553,8 +553,8 @@ for skill_name, skill_module in loaded_skills.items():
 
 技術スタック別スキル統合により：
 
-1. **プロジェクト適応**: 技術スタックに最適化された評価基準
-2. **自動化**: 手動設定不要、プロジェクト検出で自動統合
-3. **拡張性**: 新しい技術スタック対応が容易
-4. **一貫性**: 統一されたレビュー品質
-5. **効率性**: Progressive Disclosure で必要な情報のみロード
+1. プロジェクト適応: 技術スタックに最適化された評価基準
+2. 自動化: 手動設定不要、プロジェクト検出で自動統合
+3. 拡張性: 新しい技術スタック対応が容易
+4. 一貫性: 統一されたレビュー品質
+5. 効率性: Progressive Disclosure で必要な情報のみロード

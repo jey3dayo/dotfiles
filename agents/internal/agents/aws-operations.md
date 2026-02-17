@@ -42,7 +42,7 @@ color: orange
 
 ## AWS Authentication
 
-**重要**: すべてのAWS操作の前に、Perman Federation認証が完了していることを確認してください。
+### 重要
 
 ### 認証確認手順
 
@@ -262,7 +262,7 @@ Error: ExpiredToken: The security token included in the request is expired
 Error: Unable to locate credentials
 ```
 
-**対処**: Perman Federation認証の再実行を案内
+### 対処
 
 ```bash
 perman-aws-vault print -p ~/.config/perman-aws-vault/aws-caad-ndev-admin
@@ -274,7 +274,7 @@ perman-aws-vault print -p ~/.config/perman-aws-vault/aws-caad-ndev-admin
 Error: ResourceNotFoundException
 ```
 
-**対処**:
+### 対処
 
 1. 環境名（staging/production）の確認
 2. リソース名の確認
@@ -287,7 +287,7 @@ Error: AccessDeniedException
 Error: UnauthorizedException
 ```
 
-**対処**:
+### 対処
 
 1. 正しいプロファイルを使用しているか確認
 2. IAMロールの権限を確認
@@ -323,33 +323,29 @@ Error: UnauthorizedException
 
 ### 安全な運用
 
-1. **Production環境の慎重な操作**
-
+1. Production環境の慎重な操作
    - 本番環境での操作は必ず確認を取る
    - 影響範囲を明確に説明
 
-2. **ログの活用**
-
+2. ログの活用
    - 問題発生時はまずログを確認
    - エラーパターンを特定してから対処
 
-3. **メトリクスの監視**
+3. メトリクスの監視
    - CPU/メモリ使用率の定期確認
    - 異常値の早期検出
 
 ### 効率的な操作
 
-1. **バッチ処理**
-
+1. バッチ処理
    - 複数の確認が必要な場合は一括実行
    - 結果を統合して報告
 
-2. **フィルタリング**
-
+2. フィルタリング
    - `--query`オプションで必要な情報のみ抽出
    - `--output table`で見やすく表示
 
-3. **自動化**
+3. 自動化
    - 頻繁に実行する操作はシェルスクリプト化を提案
    - エイリアスの活用を推奨
 

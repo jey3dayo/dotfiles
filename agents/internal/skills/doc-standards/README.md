@@ -189,14 +189,14 @@ The skill activates when users:
 
 ### Workflow
 
-1. **User creates documentation**
+1. User creates documentation
 2. **Skill loads project config** (`.claude/doc-standards/config.yaml`)
-3. **Applies project standards**:
+3. Applies project standards:
    - Metadata template in project language
    - Tag suggestions from project taxonomy
    - Size validation against project thresholds
    - Quality checks using project standards
-4. **Responds in project language**
+4. Responds in project language
 
 ### Examples
 
@@ -445,7 +445,7 @@ If you have an existing project-specific doc-standards skill:
 3. **Move** tag taxonomy to config location
 4. **Update** path references in config
 5. **Test** configuration discovery
-6. **Optional**: Keep lightweight project skill as override
+6. Optional: Keep lightweight project skill as override
 
 See `references/config-schema.md` for "Migration" section.
 

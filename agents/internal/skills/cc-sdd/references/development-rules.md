@@ -78,22 +78,19 @@ Requirements → Design → Tasks → Implementation の順序を守る
 
 各段階は前の段階の成果物に基づきます：
 
-1. **Requirements（要件定義）**
-
+1. Requirements（要件定義）
    - 何を作るのかを明確化
    - EARS形式で受入基準を定義
 
-2. **Design（技術設計）**
-
+2. Design（技術設計）
    - どのように作るのかを設計
    - アーキテクチャと技術選択を文書化
 
-3. **Tasks（実装タスク）**
-
+3. Tasks（実装タスク）
    - 作業を管理可能な単位に分割
    - 実装の手順を明確化
 
-4. **Implementation（実装）**
+4. Implementation（実装）
    - タスクに従って実装
    - 品質を保証しながら進める
 
@@ -153,14 +150,14 @@ Requirements → Design → Tasks → Implementation の順序を守る
 
 ### 承認方法
 
-1. **対話的承認**
+1. 対話的承認
 
    ```
    /kiro:spec-design user-auth -y
    # -y フラグで前フェーズを自動承認
    ```
 
-2. **手動承認**
+2. 手動承認
 
    ```
    # spec.json を手動で編集

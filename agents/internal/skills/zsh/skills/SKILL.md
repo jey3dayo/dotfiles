@@ -315,15 +315,15 @@ path=(
 
 When reviewing Zsh configurations:
 
-1. **Measure baseline**: Run `zsh-benchmark` to establish current performance
-2. **Check structure**: Verify modular organization (config/, tools/, functions/)
-3. **Audit plugins**: Review plugin count, manager, and loading strategy
-4. **Evaluate PATH**: Examine PATH construction and priorities
-5. **Test lazy loading**: Verify deferred loading implementation
-6. **Review documentation**: Check help systems and comments
-7. **Verify compilation**: Ensure `.zwc` files exist
-8. **Profile performance**: Use `zprof` for detailed analysis
-9. **Compare against 2025 standards**: Assess best practices compliance
+1. Measure baseline: Run `zsh-benchmark` to establish current performance
+2. Check structure: Verify modular organization (config/, tools/, functions/)
+3. Audit plugins: Review plugin count, manager, and loading strategy
+4. Evaluate PATH: Examine PATH construction and priorities
+5. Test lazy loading: Verify deferred loading implementation
+6. Review documentation: Check help systems and comments
+7. Verify compilation: Ensure `.zwc` files exist
+8. Profile performance: Use `zprof` for detailed analysis
+9. Compare against 2025 standards: Assess best practices compliance
 
 ## Context7 Usage Guidelines
 
@@ -382,7 +382,7 @@ Query: "How to use parameter expansion modifiers"
 
 ### Optimization Opportunities
 
-1. **Startup Time**: Implement more aggressive lazy loading to reach <100ms target
-2. **Plugin Audit**: Review necessity of all plugins
-3. **Completion Optimization**: Defer completion initialization
-4. **Profile Analysis**: Use `zprof` to identify remaining bottlenecks
+1. Startup Time: Implement more aggressive lazy loading to reach <100ms target
+2. Plugin Audit: Review necessity of all plugins
+3. Completion Optimization: Defer completion initialization
+4. Profile Analysis: Use `zprof` to identify remaining bottlenecks

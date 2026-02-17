@@ -14,7 +14,10 @@ set -eu
 # ==============================================================================
 
 # Constants
-CONFIG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}"
+# Derive repository root from script location (works regardless of clone path)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+CONFIG_ROOT="$REPO_ROOT"
 GITLEAKS_IGNORE="$CONFIG_ROOT/.gitleaksignore"
 GITLEAKS_CONFIG="$CONFIG_ROOT/.gitleaks.toml"
 

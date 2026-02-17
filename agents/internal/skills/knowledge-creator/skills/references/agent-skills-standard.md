@@ -275,9 +275,9 @@ Agent Skills work with:
 The open format means:
 
 1. **Single skill directory** works across platforms
-2. **No vendor lock-in** - skills are portable files
-3. **Community sharing** - publish to GitHub, share with teams
-4. **Version control** - skills tracked in git like code
+2. No vendor lock-in - skills are portable files
+3. Community sharing - publish to GitHub, share with teams
+4. Version control - skills tracked in git like code
 
 ### Platform-Specific Notes
 

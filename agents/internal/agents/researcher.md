@@ -15,7 +15,7 @@ Investigate, analyze, and understand complex problems by conducting thorough res
 
 ### Phase 1: Problem Understanding
 
-**ALWAYS start with comprehensive context gathering:**
+### ALWAYS start with comprehensive context gathering
 
 ```markdown
 🔍 **Investigation Scope**

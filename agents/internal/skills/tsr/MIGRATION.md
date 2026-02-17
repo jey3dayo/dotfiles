@@ -275,12 +275,12 @@ pnpm tsr 'src/.*\.(ts|tsx)$'
 
 ## Benefits of Migration
 
-1. **Centralized Configuration**: All settings in one place
-2. **Type Safety**: JSON schema validation
-3. **Reusability**: Share settings across projects
-4. **Flexibility**: Override defaults per project
-5. **Automation**: Framework-specific detection
-6. **Verification**: Automated quality checks
+1. Centralized Configuration: All settings in one place
+2. Type Safety: JSON schema validation
+3. Reusability: Share settings across projects
+4. Flexibility: Override defaults per project
+5. Automation: Framework-specific detection
+6. Verification: Automated quality checks
 
 ## Migration Checklist
 

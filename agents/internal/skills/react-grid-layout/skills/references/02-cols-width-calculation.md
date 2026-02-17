@@ -74,8 +74,8 @@ width: number; // Required for drag calculations
 
 ### Two Approaches
 
-1. **Manual**: Calculate and provide width explicitly
-2. **Automatic**: Use `WidthProvider` HOC (not suitable for SSR)
+1. Manual: Calculate and provide width explicitly
+2. Automatic: Use `WidthProvider` HOC (not suitable for SSR)
 
 ## Calculation Approaches
 
@@ -329,10 +329,10 @@ const gridWidth = 12 * 24; // 288 pixels
 
 ### Why This Pattern Works
 
-1. **Content-Driven**: Grid size adapts to actual content
-2. **SSR-Compatible**: All calculations happen with available data
-3. **Predictable**: No external dependencies (window width, etc.)
-4. **Efficient**: Uses React.useMemo for expensive layout calculations
+1. Content-Driven: Grid size adapts to actual content
+2. SSR-Compatible: All calculations happen with available data
+3. Predictable: No external dependencies (window width, etc.)
+4. Efficient: Uses React.useMemo for expensive layout calculations
 
 ### When to Use This Pattern
 

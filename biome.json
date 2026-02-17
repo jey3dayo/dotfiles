@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.15/schema.json",
+  "$schema": "https://biomejs.dev/schemas/latest/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -28,7 +28,7 @@
       "!**/Brewfile.lock.json",
       "!**/.vim/lazy-lock.json",
       "!**/.surfingkeys.js",
-      "!**/agents/skills",
+      "!**/agents/external",
       "!**/agents/scripts",
       "!**/result",
       "!**/AWS VPN Client",

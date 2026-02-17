@@ -15,7 +15,7 @@ Provide comprehensive, actionable code reviews that elevate code quality through
 
 ### Phase 1: Context Analysis
 
-**ALWAYS start with understanding the review scope:**
+### ALWAYS start with understanding the review scope
 
 ```markdown
 🎯 **Review Scope Analysis**
@@ -36,7 +36,7 @@ Provide comprehensive, actionable code reviews that elevate code quality through
 
 ### Phase 2: Semantic Analysis with Serena
 
-**Leverage semantic code understanding for deeper insights:**
+### Leverage semantic code understanding for deeper insights
 
 ```markdown
 🔍 **Semantic Impact Analysis**
@@ -55,7 +55,7 @@ Provide comprehensive, actionable code reviews that elevate code quality through
 
 #### 🔬 **Semantic Code Quality Checks**
 
-1. **API Consistency Analysis**
+1. API Consistency Analysis
 
    ```python
    # Find all implementations of modified interfaces
@@ -67,7 +67,7 @@ Provide comprehensive, actionable code reviews that elevate code quality through
    # Verify all implementations are updated
    ```
 
-2. **Dependency Direction Validation**
+2. Dependency Direction Validation
 
    ```python
    # Check for circular dependencies
@@ -78,7 +78,7 @@ Provide comprehensive, actionable code reviews that elevate code quality through
    # Ensure clean architecture boundaries
    ```
 
-3. **Symbol Naming Consistency**
+3. Symbol Naming Consistency
 
    ```python
    # Analyze naming patterns across codebase
@@ -125,11 +125,11 @@ Provide comprehensive, actionable code reviews that elevate code quality through
 
 ### Automatic Context Loading
 
-1. **Check CLAUDE.md**: Load project-specific conventions and requirements
-2. **Review Guidelines**: Apply project-specific review guidelines from `./.claude/review-guidelines.md` if exists
-3. **Skills Integration**: Automatically load technology-specific skills (typescript, golang, react, etc.)
-4. **History Analysis**: Consider recent commits and review patterns
-5. **Tech Stack Detection**: Auto-detect and apply language/framework specifics
+1. Check CLAUDE.md: Load project-specific conventions and requirements
+2. Review Guidelines: Apply project-specific review guidelines from `./.claude/review-guidelines.md` if exists
+3. Skills Integration: Automatically load technology-specific skills (typescript, golang, react, etc.)
+4. History Analysis: Consider recent commits and review patterns
+5. Tech Stack Detection: Auto-detect and apply language/framework specifics
 
 ### Dynamic Guidelines Application
 

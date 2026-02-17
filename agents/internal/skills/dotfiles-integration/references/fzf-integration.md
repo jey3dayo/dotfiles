@@ -207,21 +207,21 @@ nvim                  # fzf-lua integration
 
 ### Configuration Management
 
-1. **Centralized Settings**: FZF options in `config/tools/fzf.zsh`
-2. **Theme Consistency**: Gruvbox integration across all tools
-3. **Performance Priority**: Critical path optimization in sheldon
+1. Centralized Settings: FZF options in `config/tools/fzf.zsh`
+2. Theme Consistency: Gruvbox integration across all tools
+3. Performance Priority: Critical path optimization in sheldon
 
 ### Integration Patterns
 
-1. **Lazy Loading**: Non-critical functions loaded on-demand
-2. **Widget Integration**: Zsh widgets for consistent UX
-3. **Fallback Handling**: Graceful degradation when FZF unavailable
+1. Lazy Loading: Non-critical functions loaded on-demand
+2. Widget Integration: Zsh widgets for consistent UX
+3. Fallback Handling: Graceful degradation when FZF unavailable
 
 ### Performance Optimization
 
-1. **Deferred Loading**: Sheldon priority management
-2. **Function Caching**: Expensive operations cached
-3. **Preview Optimization**: Efficient preview commands
+1. Deferred Loading: Sheldon priority management
+2. Function Caching: Expensive operations cached
+3. Preview Optimization: Efficient preview commands
 
 ## 🔧 Troubleshooting
 

@@ -97,7 +97,6 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 ## Risk Mitigation
 
 - **Potential Issues**:
-
   - [Issue 1]: [Description and impact]
   - [Issue 2]: [Description and impact]
 

@@ -374,7 +374,6 @@ def generate_link_validation_report(project_root):
 ### Broken Links (3)
 
 1. **docs/api.md:45**
-
    - Link: `[Configuration](../config.md)`
    - Target: `../config.md` (not found)
    - Suggestion: Use `../configuration/options.md`

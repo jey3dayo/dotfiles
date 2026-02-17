@@ -362,11 +362,11 @@ depends = ["lint", "test"]  # Parallel
 
 ### Key Takeaways
 
-1. **Namespace with colons** - `docs:lint`, `docs:format`
-2. **Use depends for meta-tasks** - Enables parallelism
-3. **Check/fix pairs** - Clear CI vs development intent
-4. **Short names for common tasks** - `format`, `lint`, `test`
-5. **Tool version management** - Explicit in `[tools]`
+1. Namespace with colons - `docs:lint`, `docs:format`
+2. Use depends for meta-tasks - Enables parallelism
+3. Check/fix pairs - Clear CI vs development intent
+4. Short names for common tasks - `format`, `lint`, `test`
+5. Tool version management - Explicit in `[tools]`
 
 ### Result
 

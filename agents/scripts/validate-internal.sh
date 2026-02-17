@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-dist_root="${repo_root}/agents/distributions/default"
+dist_root="${repo_root}/agents/internal"
 skills_dir="${dist_root}/skills"
 
 errors=0

@@ -8,8 +8,8 @@ on:
       - "nix/**"
       - "home.nix"
       - "agents/nix/**"
-      - "agents/distributions/default/**"
-      - "agents/scripts/validate-default-distribution.sh"
+      - "agents/internal/**"
+      - "agents/scripts/validate-internal.sh"
   pull_request:
     paths:
       - "flake.nix"
@@ -17,8 +17,8 @@ on:
       - "nix/**"
       - "home.nix"
       - "agents/nix/**"
-      - "agents/distributions/default/**"
-      - "agents/scripts/validate-default-distribution.sh"
+      - "agents/internal/**"
+      - "agents/scripts/validate-internal.sh"
   workflow_dispatch:
 
 permissions:
@@ -52,8 +52,8 @@ jobs:
       - name: Validate skills
         run: nix run .#validate
 
-      - name: Validate default distribution
-        run: bash ./agents/scripts/validate-default-distribution.sh
+      - name: Validate internal assets
+        run: bash ./agents/scripts/validate-internal.sh
 
       - name: Build bundle
         run: nix build .#bundle

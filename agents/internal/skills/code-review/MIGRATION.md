@@ -103,13 +103,13 @@ If your project matches a standard type, no migration needed:
 
 For custom requirements or CAAD Loca-like projects:
 
-1. **Copy template**:
+1. Copy template:
 
    ```bash
    cp ~/.claude/plugins/code-review/config/examples/.code-review-config.json .code-review-config.json
    ```
 
-2. **Customize for your project**:
+2. Customize for your project:
 
    ```json
    {
@@ -143,7 +143,7 @@ For custom requirements or CAAD Loca-like projects:
    }
    ```
 
-3. **Test detection**:
+3. Test detection:
 
    ```bash
    /review --debug
@@ -204,7 +204,7 @@ cp ~/.claude/plugins/code-review/config/examples/caad-loca-project.json .code-re
 
 ### New
 
-1. **Keep existing guidelines**:
+1. Keep existing guidelines:
 
    ```
    Project Root/
@@ -214,7 +214,7 @@ cp ~/.claude/plugins/code-review/config/examples/caad-loca-project.json .code-re
        └── architecture.md
    ```
 
-2. **Reference in config**:
+2. Reference in config:
 
    ```json
    {
@@ -418,30 +418,29 @@ Built-in defaults provide v1.x compatible behavior.
 
 ## Benefits of Migration
 
-1. **Flexibility**: Add custom project types without code changes
-2. **Maintainability**: Configuration separate from core logic
-3. **Reusability**: Share configs across projects/teams
-4. **Validation**: JSON schema ensures correct configuration
-5. **Extensibility**: Easy to add new detectors and rules
+1. Flexibility: Add custom project types without code changes
+2. Maintainability: Configuration separate from core logic
+3. Reusability: Share configs across projects/teams
+4. Validation: JSON schema ensures correct configuration
+5. Extensibility: Easy to add new detectors and rules
 
 ## Next Steps
 
 After migration:
 
-1. **Document your configuration**:
-
+1. Document your configuration:
    - Add comments explaining custom rules
    - Document evaluation priorities
    - Share with team members
 
-2. **Create team templates**:
+2. Create team templates:
 
    ```bash
    # Save as team template
    cp .code-review-config.json ~/.claude/code-review/team-template.json
    ```
 
-3. **Integrate with CI/CD**:
+3. Integrate with CI/CD:
 
    ```yaml
    # .github/workflows/code-review.yml
@@ -449,7 +448,7 @@ After migration:
      run: /review --simple
    ```
 
-4. **Monitor and refine**:
+4. Monitor and refine:
    - Adjust weights based on review results
    - Add custom rules as patterns emerge
    - Update detectors for accuracy

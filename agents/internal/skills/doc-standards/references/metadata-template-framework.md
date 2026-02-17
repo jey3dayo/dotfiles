@@ -336,10 +336,10 @@ metadata:
 
 Projects can customize:
 
-1. **Field Labels**: Use native language labels (e.g., "最終更新" for Japanese)
-2. **Date Formats**: Use regional date formats
-3. **Icon Conventions**: Define project-specific icon meanings
-4. **Tag Formatting**: Adjust separator and wrapper characters
-5. **Required Fields**: Add or remove fields per project needs
+1. Field Labels: Use native language labels (e.g., "最終更新" for Japanese)
+2. Date Formats: Use regional date formats
+3. Icon Conventions: Define project-specific icon meanings
+4. Tag Formatting: Adjust separator and wrapper characters
+5. Required Fields: Add or remove fields per project needs
 
 See project's `.claude/doc-standards/config.yaml` for active configuration.

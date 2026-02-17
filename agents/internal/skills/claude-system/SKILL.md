@@ -82,10 +82,10 @@ Think of Claude Code as your design partner who helps you think through complex 
 
 ALWAYS consult Claude Code BEFORE:
 
-1. **Creative design & ideation** - New feature concepts, architectural patterns
-2. **Ambiguous requirements** - When user's intent is unclear or underspecified
-3. **Design exploration** - Exploring multiple approaches, brainstorming solutions
-4. **Fast file operations** - Bulk read/write operations, rapid prototyping
+1. Creative design & ideation - New feature concepts, architectural patterns
+2. Ambiguous requirements - When user's intent is unclear or underspecified
+3. Design exploration - Exploring multiple approaches, brainstorming solutions
+4. Fast file operations - Bulk read/write operations, rapid prototyping
 
 ### Trigger Phrases (User Input)
 
@@ -307,11 +307,11 @@ Safety: Preview changes before applying." \
 
 ## Integration Best Practices
 
-1. **Clear delegation boundaries**: Use Claude for design, Codex for reasoning, Gemini for research
-2. **Structured output**: Save design artifacts to `.claude/docs/design/` for future reference
-3. **Subprocess isolation**: Run Claude in background to avoid context contamination
-4. **Cost awareness**: Use Haiku for quick tasks, Sonnet for standard, Opus for complex
-5. **Tool restrictions**: Limit `--allowedTools` to minimum required for task
+1. Clear delegation boundaries: Use Claude for design, Codex for reasoning, Gemini for research
+2. Structured output: Save design artifacts to `.claude/docs/design/` for future reference
+3. Subprocess isolation: Run Claude in background to avoid context contamination
+4. Cost awareness: Use Haiku for quick tasks, Sonnet for standard, Opus for complex
+5. Tool restrictions: Limit `--allowedTools` to minimum required for task
 
 ## Error Handling
 

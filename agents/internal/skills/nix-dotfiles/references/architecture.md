@@ -109,9 +109,9 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["dotfiles-submodu
 
 ### 利点
 
-1. **保守性**: 変更が1箇所で済む
-2. **一貫性**: すべての参照元で同じロジックを使用
-3. **テスト容易性**: SSoT を個別にテスト可能
+1. 保守性: 変更が1箇所で済む
+2. 一貫性: すべての参照元で同じロジックを使用
+3. テスト容易性: SSoT を個別にテスト可能
 
 ---
 
@@ -406,7 +406,7 @@ in
 
 ### 新しいスキルソースを追加する際のチェックリスト
 
-1. **agent-skills-sources.nix を更新**
+1. agent-skills-sources.nix を更新
 
    ```nix
    new-skill-source = {
@@ -429,7 +429,7 @@ in
    };
    ```
 
-3. **検証**
+3. 検証
 
    ```bash
    # Flake 評価の成功確認
@@ -442,7 +442,7 @@ in
    home-manager build --flake ~/.config --impure --dry-run
    ```
 
-4. **スキル配布の確認**
+4. スキル配布の確認
 
    ```bash
    home-manager switch --flake ~/.config --impure
@@ -577,9 +577,9 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["dotfiles-submodu
 
 ### 利点
 
-1. **保守性**: 検出ロジックの変更が1箇所で済む
-2. **一貫性**: 両方の activation script で同じロジックを使用
-3. **テスト容易性**: 検出ロジックを個別にテスト可能
+1. 保守性: 検出ロジックの変更が1箇所で済む
+2. 一貫性: 両方の activation script で同じロジックを使用
+3. テスト容易性: 検出ロジックを個別にテスト可能
 
 ---
 
@@ -826,8 +826,8 @@ home.activation.dotfiles-mise = lib.hm.dag.entryAfter ["writeBoundary"] ''
 
 ### ベストプラクティス
 
-1. **エラーハンドリング**: `|| true` でエラーを無視（activation script の失敗を防ぐ）
-2. **SSoT の再利用**: `detectWorktreeScript` を再利用
-3. **DAG 依存の明示**: `entryAfter` で実行順序を明確化
-4. **ディレクトリの作成**: `mkdir -p` で必要なディレクトリを作成
-5. **条件分岐**: `[ -n "$worktree" ]` で worktree 検出成功時のみ実行
+1. エラーハンドリング: `|| true` でエラーを無視（activation script の失敗を防ぐ）
+2. SSoT の再利用: `detectWorktreeScript` を再利用
+3. DAG 依存の明示: `entryAfter` で実行順序を明確化
+4. ディレクトリの作成: `mkdir -p` で必要なディレクトリを作成
+5. 条件分岐: `[ -n "$worktree" ]` で worktree 検出成功時のみ実行

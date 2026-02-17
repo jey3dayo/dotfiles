@@ -8,14 +8,14 @@ Implementation Engineの6フェーズ詳細手順。各フェーズは厳密な�
 
 ### セッション検出と初期化
 
-1. **ディレクトリ確認**: 現在の作業ディレクトリで `implement/` の存在を確認
-2. **セッションファイル検出**:
+1. ディレクトリ確認: 現在の作業ディレクトリで `implement/` の存在を確認
+2. セッションファイル検出:
    - `implement/state.json` を探す
    - `implement/plan.md` を探す
-3. **分岐判定**:
+3. 分岐判定:
    - ファイルが見つかった場合: 既存セッションをレジューム
    - ファイルがない場合: 新規セッションを初期化
-4. **実装前の完全分析**: 実装を開始する前にすべての分析を完了
+4. 実装前の完全分析: 実装を開始する前にすべての分析を完了
 
 ### 重要
 
@@ -44,26 +44,24 @@ Implementation Engineの6フェーズ詳細手順。各フェーズは厳密な�
 
 ### アーキテクチャパターンの理解
 
-1. **ディレクトリ構造**: Globでプロジェクトレイアウトをスキャン
+1. ディレクトリ構造: Globでプロジェクトレイアウトをスキャン
 
    ```bash
    # 例: Next.js, React, Express等のパターン検出
    src/, app/, pages/, components/, lib/, utils/
    ```
 
-2. **既存依存関係**: `package.json`, `requirements.txt`, `Cargo.toml`等を読む
-
+2. 既存依存関係: `package.json`, `requirements.txt`, `Cargo.toml`等を読む
    - バージョン確認
    - フレームワーク識別
    - ビルドツール検出
 
-3. **コード規約**:
-
+3. コード規約:
    - ESLint/Prettier設定
    - TypeScript設定
    - テストフレームワーク設定
 
-4. **確立されたパターン**:
+4. 確立されたパターン:
    - ファイル命名規則
    - インポート構造
    - エラーハンドリングパターン
@@ -152,11 +150,11 @@ Original → Target
 
 ### 必須セクション
 
-1. **Source Analysis** - ソースの種類、機能、依存関係、複雑度
-2. **Target Integration** - 統合ポイント、影響を受けるファイル、パターンマッチング
-3. **Implementation Tasks** - 優先順位付きチェックリスト
-4. **Validation Checklist** - 完了基準
-5. **Risk Mitigation** - 潜在的問題とロールバック戦略
+1. Source Analysis - ソースの種類、機能、依存関係、複雑度
+2. Target Integration - 統合ポイント、影響を受けるファイル、パターンマッチング
+3. Implementation Tasks - 優先順位付きチェックリスト
+4. Validation Checklist - 完了基準
+5. Risk Mitigation - 潜在的問題とロールバック戦略
 
 ### 計画提示
 
@@ -168,7 +166,7 @@ Original → Target
 
 ### ライブラリマッピング戦略
 
-1. **既存ライブラリの再利用**:
+1. 既存ライブラリの再利用:
 
    ```
    Source uses: axios
@@ -176,7 +174,7 @@ Original → Target
    Action: Use existing wrapper instead of adding axios
    ```
 
-2. **バージョン互換性の確認**:
+2. バージョン互換性の確認:
 
    ```
    Source: React 18 features
@@ -184,7 +182,7 @@ Original → Target
    Action: Adapt code to React 17 API or propose upgrade
    ```
 
-3. **重複の回避**:
+3. 重複の回避:
 
    ```
    Source: Custom utility functions
@@ -192,7 +190,7 @@ Original → Target
    Action: Replace custom utils with lodash methods
    ```
 
-4. **標準への更新**:
+4. 標準への更新:
 
    ```
    Source: Deprecated API usage
@@ -262,19 +260,17 @@ describe("feature", () => {
 
 ### サンプリング戦略
 
-1. **コア機能を優先**:
-
+1. コア機能を優先:
    - エントリーポイント (main.js, index.ts)
    - 主要機能モジュール
    - クリティカルパス
 
-2. **必要に応じてサポートコード**:
-
+2. 必要に応じてサポートコード:
    - ユーティリティ関数（実際に使用されているもののみ）
    - 型定義
    - 設定ファイル
 
-3. **スキップすべきもの**:
+3. スキップすべきもの:
    - 生成ファイル (`dist/`, `build/`, `.next/`)
    - テストデータ (`fixtures/`, `mocks/`)
    - ドキュメント（実装には不要）
@@ -600,25 +596,22 @@ QUALITY METRICS:
 
 検証後のアクション:
 
-1. **未完了項目の処理**:
-
+1. 未完了項目の処理:
    - 優先度を決定
    - 今すぐ完了 vs 次のスプリント
    - TODOをissueトラッカーに記録
 
-2. **ドキュメント更新**:
-
+2. ドキュメント更新:
    - README.mdに新機能を追加
    - API documentationを更新
    - 変更ログを記録
 
-3. **マイグレーションガイド**:
-
+3. マイグレーションガイド:
    - 破壊的変更がある場合
    - 移行手順の作成
    - 影響を受けるコードのリスト
 
-4. **ナレッジベース更新**:
+4. ナレッジベース更新:
    - 学んだパターンを記録
    - 問題と解決策をドキュメント化
    - ベストプラクティスを共有
@@ -629,7 +622,7 @@ QUALITY METRICS:
 
 ### ユーザーが `/implement` または `/implement resume` を実行したとき
 
-1. **既存セッションのロード**:
+1. 既存セッションのロード:
 
    ```bash
    # Check for implement directory
@@ -642,7 +635,7 @@ QUALITY METRICS:
    cat implement/plan.md
    ```
 
-2. **進捗サマリーの表示**:
+2. 進捗サマリーの表示:
 
    ```markdown
    ## Session Resume
@@ -662,7 +655,7 @@ QUALITY METRICS:
    - Integrate with existing auth system (12:30)
    ```
 
-3. **最後のチェックポイントから継続**:
+3. 最後のチェックポイントから継続:
    - 前回の決定とコンテキストを維持
    - 中断した箇所から正確に再開
    - 計画に従って次のタスクに進む

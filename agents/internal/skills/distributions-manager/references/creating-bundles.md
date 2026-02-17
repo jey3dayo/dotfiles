@@ -370,12 +370,12 @@ home-manager switch --flake ~/.config --impure
 
 ## Best Practices
 
-1. **Document purpose**: Clear README explaining bundle's use case
-2. **Semantic versioning**: Use version numbers for bundles
-3. **Test before deploy**: Always run dry-run first
-4. **Group logically**: Skills/commands should have thematic coherence
-5. **Avoid duplication**: Use distributions for grouping, not copying
-6. **Maintain atomicity**: Each skill/command should work independently
+1. Document purpose: Clear README explaining bundle's use case
+2. Semantic versioning: Use version numbers for bundles
+3. Test before deploy: Always run dry-run first
+4. Group logically: Skills/commands should have thematic coherence
+5. Avoid duplication: Use distributions for grouping, not copying
+6. Maintain atomicity: Each skill/command should work independently
 
 ---
 

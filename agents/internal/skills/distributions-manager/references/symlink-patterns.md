@@ -303,12 +303,12 @@ find bundles/ -type l -exec sh -c '
 
 ## Best Practices
 
-1. **Use relative paths**: Always `../../../` depth
-2. **Validate targets**: Check `SKILL.md` / `command.ts` exists
-3. **Test resolution**: Use `readlink -f` to verify target
-4. **Avoid nesting**: Keep distributions flat (one level deep)
-5. **Document structure**: Update README with symlink sources
-6. **Automate validation**: Run validation scripts before deployment
+1. Use relative paths: Always `../../../` depth
+2. Validate targets: Check `SKILL.md` / `command.ts` exists
+3. Test resolution: Use `readlink -f` to verify target
+4. Avoid nesting: Keep distributions flat (one level deep)
+5. Document structure: Update README with symlink sources
+6. Automate validation: Run validation scripts before deployment
 
 ---
 
