@@ -192,12 +192,12 @@ def integrate_tech_skills(project_info):
 
 ### Available Technology Skills
 
-- **typescript**: Type safety, strict mode, type guards, Result pattern
-- **react**: Component design, hooks usage, performance optimization
-- **golang**: Idiomatic Go, error handling, concurrency patterns
-- **security**: Input validation, authentication, authorization, encryption
-- **clean-architecture**: Layer separation, dependency rules, domain modeling
-- **semantic-analysis**: Symbol-level analysis, impact assessment, reference tracking
+- typescript: Type safety, strict mode, type guards, Result pattern
+- react: Component design, hooks usage, performance optimization
+- golang: Idiomatic Go, error handling, concurrency patterns
+- security: Input validation, authentication, authorization, encryption
+- clean-architecture: Layer separation, dependency rules, domain modeling
+- semantic-analysis: Symbol-level analysis, impact assessment, reference tracking
 
 ## Review Workflow
 

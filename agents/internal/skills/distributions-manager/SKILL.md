@@ -32,17 +32,17 @@ related_skills:
 
 Distributions are pre-configured bundles that combine:
 
-- **Skills**: Symlinks to `skills/` and `skills-internal/`
-- **Commands**: Symlinks to `commands-internal/` (supports subdirectories)
-- **Rules**: Symlinks to `~/.claude/rules/` (markdown files)
-- **Agents**: Symlinks to `~/.claude/agents/` (markdown files, supports subdirectories)
-- **Config**: Shared configuration files
+- Skills: Symlinks to `skills/` and `skills-internal/`
+- Commands: Symlinks to `commands-internal/` (supports subdirectories)
+- Rules: Symlinks to `~/.claude/rules/` (markdown files)
+- Agents: Symlinks to `~/.claude/agents/` (markdown files, supports subdirectories)
+- Config: Shared configuration files
 
 ### Key benefits
 
-- **No duplication**: Symlink-based architecture
-- **Bundle management**: Group related tools together
-- **Flexible deployment**: Optional layer that coexists with existing workflows
+- No duplication: Symlink-based architecture
+- Bundle management: Group related tools together
+- Flexible deployment: Optional layer that coexists with existing workflows
 
 ### Current implementation
 
@@ -69,20 +69,20 @@ Use this skill when:
 
 ### Architecture & Implementation
 
-- **references/architecture.md**: Nix implementation details, `scanDistribution()` function, integration with `discoverCatalog()`
-- **references/priority-mechanism.md**: Priority order, conflict resolution, cyclic reference prevention
+- references/architecture.md: Nix implementation details, `scanDistribution()` function, integration with `discoverCatalog()`
+- references/priority-mechanism.md: Priority order, conflict resolution, cyclic reference prevention
 
 ### Practical Guides
 
-- **references/creating-bundles.md**: Step-by-step guide for custom bundle creation
-- **references/symlink-patterns.md**: Design patterns for symlink-based architecture
+- references/creating-bundles.md: Step-by-step guide for custom bundle creation
+- references/symlink-patterns.md: Design patterns for symlink-based architecture
 
 ### Resources
 
-- **resources/templates/bundle-structure.txt**: Directory structure template
-- **resources/templates/README.template.md**: Bundle README template
-- **resources/examples/default-bundle.md**: Analysis of `internal/`
-- **resources/checklist.md**: QA checklist for bundle creation
+- resources/templates/bundle-structure.txt: Directory structure template
+- resources/templates/README.template.md: Bundle README template
+- resources/examples/default-bundle.md: Analysis of `internal/`
+- resources/checklist.md: QA checklist for bundle creation
 
 ---
 
@@ -128,10 +128,10 @@ mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "local")'
 
 ## Related Skills
 
-- **skill-creator**: Creating new skills to add to distributions
-- **command-creator**: Creating new commands to add to distributions
-- **rules-creator**: Creating shared rules for bundle configurations
-- **knowledge-creator**: Routing distribution-related questions
+- skill-creator: Creating new skills to add to distributions
+- command-creator: Creating new commands to add to distributions
+- rules-creator: Creating shared rules for bundle configurations
+- knowledge-creator: Routing distribution-related questions
 
 ---
 

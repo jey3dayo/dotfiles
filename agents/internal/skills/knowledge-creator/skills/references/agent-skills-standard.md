@@ -121,11 +121,11 @@ scripts/
 
 ### Guidelines
 
-- **Shebang required**: `#!/usr/bin/env bash`, `#!/usr/bin/env python3`
-- **Executable permissions**: `chmod +x scripts/*`
-- **Cross-platform**: Use portable shell syntax or language-specific scripts
-- **Error handling**: Exit codes (0 = success, non-zero = failure)
-- **Documentation**: Comment scripts thoroughly
+- Shebang required: `#!/usr/bin/env bash`, `#!/usr/bin/env python3`
+- Executable permissions: `chmod +x scripts/*`
+- Cross-platform: Use portable shell syntax or language-specific scripts
+- Error handling: Exit codes (0 = success, non-zero = failure)
+- Documentation: Comment scripts thoroughly
 
 ### Example `scripts/validate.sh`
 
@@ -170,8 +170,8 @@ references/
 
 ### Progressive Disclosure Pattern
 
-- **SKILL.md**: Overview + quick start (< 5KB ideal)
-- **references/**: Detailed guides (loaded only when needed)
+- SKILL.md: Overview + quick start (< 5KB ideal)
+- references/: Detailed guides (loaded only when needed)
 
 ### assets/ (Optional)
 
@@ -267,7 +267,7 @@ Agent Skills work with:
 - **GitHub Copilot** (Microsoft)
 - **Cursor** (Anysphere)
 - **VS Code Extensions** (various)
-- **OpenAI Codex**
+- OpenAI Codex
 - Custom agent implementations
 
 ### "Build Once, Deploy Everywhere"
@@ -571,21 +571,21 @@ react-testing/
 
 ### Official Specifications
 
-- **Agent Skills**: <https://agentskills.io>
-- **What Are Skills**: <https://agentskills.io/what-are-skills>
-- **Skill Structure**: <https://agentskills.io/skill-structure>
+- Agent Skills: <https://agentskills.io>
+- What Are Skills: <https://agentskills.io/what-are-skills>
+- Skill Structure: <https://agentskills.io/skill-structure>
 
 ### Platform Documentation
 
-- **Claude Code Skills**: Claude Code documentation
-- **OpenAI Codex Skills**: <https://developers.openai.com/codex/skills/>
-- **GitHub Copilot Extensions**: GitHub documentation
+- Claude Code Skills: Claude Code documentation
+- OpenAI Codex Skills: <https://developers.openai.com/codex/skills/>
+- GitHub Copilot Extensions: GitHub documentation
 
 ### Community
 
-- **Agent Skills GitHub**: <https://github.com/agentskills> (if available)
-- **Examples Repository**: Community-contributed skills
-- **Discussion Forum**: Platform-specific communities
+- Agent Skills GitHub: <https://github.com/agentskills> (if available)
+- Examples Repository: Community-contributed skills
+- Discussion Forum: Platform-specific communities
 
 ## FAQ
 
@@ -617,10 +617,10 @@ react-testing/
 
 Agent Skills represent a **paradigm shift** in how we package knowledge for AI agents:
 
-- **From static docs → executable capabilities**
-- **From single-platform → cross-platform portability**
-- **From monolithic → progressive disclosure**
-- **From informational → actionable**
+- From static docs → executable capabilities
+- From single-platform → cross-platform portability
+- From monolithic → progressive disclosure
+- From informational → actionable
 
 By following this standard, you create knowledge packages that agents can discover, understand, and execute reliably across multiple platforms.
 

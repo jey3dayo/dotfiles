@@ -324,7 +324,7 @@ pathExists (entryPath + "/SKILL.md")
 
 ## Related References
 
-- **architecture.md**: Nix merge implementation
-- **creating-bundles.md**: Bundle creation considering priority
-- **symlink-patterns.md**: Symlink design patterns
-- **resources/checklist.md**: Validation checklist (Priority section)
+- architecture.md: Nix merge implementation
+- creating-bundles.md: Bundle creation considering priority
+- symlink-patterns.md: Symlink design patterns
+- resources/checklist.md: Validation checklist (Priority section)

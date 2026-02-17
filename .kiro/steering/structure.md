@@ -245,9 +245,9 @@ docs/
 
 ### Modular Configuration
 
-- **Principle**: Each tool has isolated configuration directory
-- **Benefits**: Easy to understand, update, and version control
-- **Deployment**: Home Manager deploys entry-point dotfiles (from `home/`)
+- Principle: Each tool has isolated configuration directory
+- Benefits: Easy to understand, update, and version control
+- Deployment: Home Manager deploys entry-point dotfiles (from `home/`)
 
 ### Layered Loading (Zsh)
 
@@ -262,35 +262,35 @@ OS            | config/os/       | Platform-specific tweaks
 
 ### Lazy Loading (Neovim)
 
-- **Mechanism**: Lazy.nvim plugin manager
-- **Strategy**: Load plugins on events, commands, or file types
-- **Result**: <100ms startup time despite 30+ plugins
+- Mechanism: Lazy.nvim plugin manager
+- Strategy: Load plugins on events, commands, or file types
+- Result: <100ms startup time despite 30+ plugins
 
 ### Lua-Based Configuration
 
-- **Tools**: Neovim, WezTerm
-- **Benefits**: Type safety, better tooling, performance
-- **Structure**: Modular `lua/` directories with clear separation
+- Tools: Neovim, WezTerm
+- Benefits: Type safety, better tooling, performance
+- Structure: Modular `lua/` directories with clear separation
 
 ## File Naming Conventions
 
 ### Configuration Files
 
-- **Dotfiles**: Leading dot (e.g., `.zshrc`, `.tmux.conf`)
-- **Tool configs**: Tool name + format (e.g., `wezterm.lua`, `mise/config.toml`)
-- **Loader-based ordering**: Zsh load order is controlled by `config/loader.zsh`
+- Dotfiles: Leading dot (e.g., `.zshrc`, `.tmux.conf`)
+- Tool configs: Tool name + format (e.g., `wezterm.lua`, `mise/config.toml`)
+- Loader-based ordering: Zsh load order is controlled by `config/loader.zsh`
 
 ### Documentation
 
-- **Lowercase with hyphens**: e.g., `fzf-integration.md`
-- **README per directory**: Each major directory has `README.md`
-- **Tool-specific**: Under `docs/tools/` (e.g., `docs/tools/zsh.md`)
+- Lowercase with hyphens: e.g., `fzf-integration.md`
+- README per directory: Each major directory has `README.md`
+- Tool-specific: Under `docs/tools/` (e.g., `docs/tools/zsh.md`)
 
 ### Scripts
 
-- **Shell scripts**: `.sh` extension (e.g., `scripts/bootstrap.sh`)
-- **CI scripts**: Descriptive names (e.g., `ci-local.sh`)
-- **Executables**: No extension, executable bit set
+- Shell scripts: `.sh` extension (e.g., `scripts/bootstrap.sh`)
+- CI scripts: Descriptive names (e.g., `ci-local.sh`)
+- Executables: No extension, executable bit set
 
 ## Import Organization
 
@@ -326,49 +326,49 @@ return require "./config"
 
 ### 1. Performance First
 
-- **Measurement**: Regular benchmarking (`zsh-benchmark`, Neovim startup profiling)
-- **Optimization**: Lazy loading, deferred initialization, minimal dependencies
-- **Targets**: Zsh <1.2s, Neovim <100ms, WezTerm <1s
+- Measurement: Regular benchmarking (`zsh-benchmark`, Neovim startup profiling)
+- Optimization: Lazy loading, deferred initialization, minimal dependencies
+- Targets: Zsh <1.2s, Neovim <100ms, WezTerm <1s
 
 ### 2. Modularity
 
-- **Separation**: Each tool in isolated directory
-- **Independence**: Tools can be updated without affecting others
-- **Reusability**: Configurations can be extracted for other projects
+- Separation: Each tool in isolated directory
+- Independence: Tools can be updated without affecting others
+- Reusability: Configurations can be extracted for other projects
 
 ### 3. Type Safety
 
-- **Lua Preference**: For tools that support it (Neovim, WezTerm)
-- **Benefits**: Better IDE support, fewer runtime errors
-- **Validation**: CI checks for syntax and formatting
+- Lua Preference: For tools that support it (Neovim, WezTerm)
+- Benefits: Better IDE support, fewer runtime errors
+- Validation: CI checks for syntax and formatting
 
 ### 4. Documentation-Driven
 
-- **Metadata**: All docs include update date and target audience
-- **Guidelines**: Documentation rules referenced from `docs/README.md`
-- **Consistency**: Unified tag system (category/tool/layer/environment)
+- Metadata: All docs include update date and target audience
+- Guidelines: Documentation rules referenced from `docs/README.md`
+- Consistency: Unified tag system (category/tool/layer/environment)
 
 ### 5. Version Control Everything
 
-- **Tracking**: All configurations in Git
-- **Excludes**: Secrets in `.gitconfig_local`, `.env` files
-- **History**: Changes tracked for rollback capability
+- Tracking: All configurations in Git
+- Excludes: Secrets in `.gitconfig_local`, `.env` files
+- History: Changes tracked for rollback capability
 
 ### 6. AI-Assisted Maintenance
 
-- **Claude Code**: Integrated commands for updates and reviews
-- **MCP Tools**: Serena (code analysis), O3 (technical consultation)
-- **Automation**: `/refactoring`, `/update-readme` commands
+- Claude Code: Integrated commands for updates and reviews
+- MCP Tools: Serena (code analysis), O3 (technical consultation)
+- Automation: `/refactoring`, `/update-readme` commands
 
 ### 7. Quality Gates
 
-- **Local CI**: `mise run ci` matches GitHub Actions
-- **Formatting**: Biome (JS), Prettier (Markdown), shfmt (Shell)
-- **Linting**: Lua linting, YAML validation
-- **Pre-commit**: Optional hooks for quality assurance
+- Local CI: `mise run ci` matches GitHub Actions
+- Formatting: Biome (JS), Prettier (Markdown), shfmt (Shell)
+- Linting: Lua linting, YAML validation
+- Pre-commit: Optional hooks for quality assurance
 
 ### 8. Unified Theming
 
-- **Color Scheme**: Gruvbox/Tokyo Night across all tools
-- **Typography**: JetBrains Mono with Nerd Fonts
-- **Consistency**: Same visual experience in terminal, editor, documentation
+- Color Scheme: Gruvbox/Tokyo Night across all tools
+- Typography: JetBrains Mono with Nerd Fonts
+- Consistency: Same visual experience in terminal, editor, documentation

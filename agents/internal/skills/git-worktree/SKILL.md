@@ -39,8 +39,8 @@ git wt remove -f feature/new-feature
 
 ### git wt vs git worktree
 
-- **git wt**: k1LoW版の高機能ラッパー（hooks、ファイルコピー、シェル統合対応）
-- **git worktree**: Git公式のネイティブコマンド（シンプル、標準的）
+- git wt: k1LoW版の高機能ラッパー（hooks、ファイルコピー、シェル統合対応）
+- git worktree: Git公式のネイティブコマンド（シンプル、標準的）
 
 ### 推奨
 
@@ -342,10 +342,10 @@ git config --list | grep wt.
 
 ## References
 
-- **[Command Reference](references/git-wt-commands.md)**: 全コマンドの詳細リファレンス
-- **[Configuration](references/configuration.md)**: 全設定オプション詳細
-- **[Workflows](references/workflows.md)**: 実践的なワークフローパターン
-- **[Troubleshooting](references/troubleshooting.md)**: 問題解決ガイド
+- [Command Reference](references/git-wt-commands.md): 全コマンドの詳細リファレンス
+- [Configuration](references/configuration.md): 全設定オプション詳細
+- [Workflows](references/workflows.md): 実践的なワークフローパターン
+- [Troubleshooting](references/troubleshooting.md): 問題解決ガイド
 
 ## External Resources
 

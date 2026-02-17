@@ -194,9 +194,9 @@ go = "1.21"               # Latest 1.21.x
 
 ### Version Selection Strategy
 
-- **Project-local**: Pin specific versions for reproducibility
-- **User global**: Use `"latest"` for personal tools
-- **CI/CD**: Always pin specific versions
+- Project-local: Pin specific versions for reproducibility
+- User global: Use `"latest"` for personal tools
+- CI/CD: Always pin specific versions
 
 ### 2. CLI Tools (Standalone Binaries)
 
@@ -678,10 +678,10 @@ fi
 
 ## Related Resources
 
-- **Official Docs**: <https://mise.jdx.dev>
-- **Tool Registry**: <https://mise.jdx.dev/registry.html>
-- **GitHub**: <https://github.com/jdx/mise>
-- **Community**: <https://github.com/jdx/mise/discussions>
+- Official Docs: <https://mise.jdx.dev>
+- Tool Registry: <https://mise.jdx.dev/registry.html>
+- GitHub: <https://github.com/jdx/mise>
+- Community: <https://github.com/jdx/mise/discussions>
 
 ## See Also
 

@@ -14,8 +14,8 @@ You are a specialized agent for verifying that implementation aligns with approv
 
 ## Core Mission
 
-- **Mission**: Verify that implementation aligns with approved requirements, design, and tasks
-- **Success Criteria**:
+- Mission: Verify that implementation aligns with approved requirements, design, and tasks
+- Success Criteria:
   - All specified tasks marked as completed
   - Tests exist and pass for implemented functionality
   - Requirements traceability confirmed (EARS requirements covered)
@@ -73,7 +73,7 @@ For each detected feature:
 - Read `.kiro/specs/<feature>/requirements.md` for requirements
 - Read `.kiro/specs/<feature>/design.md` for design structure
 - Read `.kiro/specs/<feature>/tasks.md` for task list
-- **Load ALL steering context**: Read entire `.kiro/steering/` directory including:
+- Load ALL steering context: Read entire `.kiro/steering/` directory including:
   - Default files: `structure.md`, `tech.md`, `product.md`
   - All custom steering files (regardless of mode settings)
 
@@ -123,18 +123,18 @@ Provide summary in the language specified in spec.json:
 
 ## Important Constraints
 
-- **Conversation-aware**: Prioritize conversation history for auto-detection
-- **Non-blocking warnings**: Design deviations are warnings unless critical
-- **Test-first focus**: Test coverage is mandatory for GO decision
-- **Traceability required**: All requirements must be traceable to implementation
+- Conversation-aware: Prioritize conversation history for auto-detection
+- Non-blocking warnings: Design deviations are warnings unless critical
+- Test-first focus: Test coverage is mandatory for GO decision
+- Traceability required: All requirements must be traceable to implementation
 
 ## Tool Guidance
 
-- **Conversation parsing**: Extract `/kiro:spec-impl` patterns from history
-- **Read context**: Load all specs and steering before validation
-- **Bash for tests**: Execute test commands to verify pass status
-- **Grep for traceability**: Search codebase for requirement evidence
-- **Glob for structure**: Verify file structure matches design
+- Conversation parsing: Extract `/kiro:spec-impl` patterns from history
+- Read context: Load all specs and steering before validation
+- Bash for tests: Execute test commands to verify pass status
+- Grep for traceability: Search codebase for requirement evidence
+- Glob for structure: Verify file structure matches design
 
 ## Output Description
 
@@ -156,10 +156,10 @@ Provide output in the language specified in spec.json with:
 
 ### Error Scenarios
 
-- **No Implementation Found**: If no `/kiro:spec-impl` in history and no `[x]` tasks, report "No implementations detected"
-- **Test Command Unknown**: If test framework unclear, warn and skip test validation (manual verification required)
-- **Missing Spec Files**: If spec.json/requirements.md/design.md missing, stop with error
-- **Language Undefined**: Default to Japanese if spec.json doesn't specify language
+- No Implementation Found: If no `/kiro:spec-impl` in history and no `[x]` tasks, report "No implementations detected"
+- Test Command Unknown: If test framework unclear, warn and skip test validation (manual verification required)
+- Missing Spec Files: If spec.json/requirements.md/design.md missing, stop with error
+- Language Undefined: Default to Japanese if spec.json doesn't specify language
 
 ### Note
 

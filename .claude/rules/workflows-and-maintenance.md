@@ -222,9 +222,9 @@ Single Source of Truth、バージョン固定、プロジェクト別オーバ�
 
 Brewfile は責務分離に基づいた厳選管理を行います:
 
-- **Home Manager**: 設定配布のみ（ツールインストールなし）
-- **mise**: クロスプラットフォーム CLI、言語ランタイム、開発ツール
-- **Homebrew**: macOS 固有の依存関係、GUI アプリ、システムライブラリ
+- Home Manager: 設定配布のみ（ツールインストールなし）
+- mise: クロスプラットフォーム CLI、言語ランタイム、開発ツール
+- Homebrew: macOS 固有の依存関係、GUI アプリ、システムライブラリ
 
 #### 厳選管理の原則
 
@@ -281,7 +281,7 @@ mise run update
 ### Package addition workflow
 
 1. 追加先を判定:
-   - **まず mise で管理できるか確認**: `mise registry` で検索
+   - まず mise で管理できるか確認: `mise registry` で検索
    - 言語ランタイム・クロスプラットフォーム CLI → `mise/config.*.toml` に追加
    - GUI・macOS 固有依存・macOS サービス → `Brewfile` に追加
 
@@ -411,8 +411,8 @@ brew cleanup
 - Weekly updates: `mise upgrade` to update all tools
 - Monthly cleanup: `mise prune` to remove unused versions
 - Verification: `mise doctor` for health check, `mise ls` for installed tools
-- **重複回避**: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
-- **npm パッケージの完全移行完了**: 全ての開発ツール・MCP サーバー・Language Server は mise で一元管理（npm/pnpm/bun グローバルには依存しない）
+- 重複回避: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
+- npm パッケージの完全移行完了: 全ての開発ツール・MCP サーバー・Language Server は mise で一元管理（npm/pnpm/bun グローバルには依存しない）
 
 ## Nix Home Manager Maintenance
 

@@ -436,7 +436,7 @@ $ /review
 
 ## 関連リファレンス
 
-- **カテゴリ詳細**: `learning-categories.md`
-- **記録プロセス**: `recording-process.md`
-- **記録例**: `examples/learning-records.md`
-- **統合ワークフロー**: `examples/integration-workflows.md`
+- カテゴリ詳細: `learning-categories.md`
+- 記録プロセス: `recording-process.md`
+- 記録例: `examples/learning-records.md`
+- 統合ワークフロー: `examples/integration-workflows.md`

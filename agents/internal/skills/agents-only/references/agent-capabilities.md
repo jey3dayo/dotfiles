@@ -55,15 +55,15 @@ AGENT_CAPABILITIES = {
 
 ### Quality Score (品質スコア)
 
-- **0.95-1.0**: 最高品質（code-reviewer, github-pr-reviewer）
-- **0.90-0.94**: 高品質（error-fixer, orchestrator, docs-manager, serena）
-- **0.85-0.89**: 標準品質（researcher）
+- 0.95-1.0: 最高品質（code-reviewer, github-pr-reviewer）
+- 0.90-0.94: 高品質（error-fixer, orchestrator, docs-manager, serena）
+- 0.85-0.89: 標準品質（researcher）
 
 ### Speed Score (速度スコア)
 
-- **0.90-1.0**: 高速実行（error-fixer, docs-manager）
-- **0.85-0.89**: 標準速度（orchestrator, github-pr-reviewer, serena）
-- **0.70-0.84**: 慎重実行（code-reviewer, researcher）
+- 0.90-1.0: 高速実行（error-fixer, docs-manager）
+- 0.85-0.89: 標準速度（orchestrator, github-pr-reviewer, serena）
+- 0.70-0.84: 慎重実行（code-reviewer, researcher）
 
 ## 🎯 エージェント選択基準
 

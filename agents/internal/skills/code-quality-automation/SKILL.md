@@ -24,12 +24,12 @@ allowed-tools: Bash, Read, Grep, Edit
 
 ### Supported Languages
 
-- **JavaScript/TypeScript**: ESLint, Prettier, Jest
-- **Python**: Black, Flake8, pytest
-- **Go**: gofmt, golangci-lint
-- **Rust**: rustfmt, clippy, cargo test
-- **Markdown**: markdownlint, prettier
-- **Ruby**: rubocop, rspec
+- JavaScript/TypeScript: ESLint, Prettier, Jest
+- Python: Black, Flake8, pytest
+- Go: gofmt, golangci-lint
+- Rust: rustfmt, clippy, cargo test
+- Markdown: markdownlint, prettier
+- Ruby: rubocop, rspec
 
 ## 🔄 Execution Flow
 
@@ -228,5 +228,5 @@ test = ["npm test"]
 
 `--with-comments` は、コードの可読性を向上させるためのツールです：
 
-- **削除**: コードを読めば分かる冗長なコメント
-- **保持**: WHY（なぜ）を説明するコメント、TODO、警告
+- 削除: コードを読めば分かる冗長なコメント
+- 保持: WHY（なぜ）を説明するコメント、TODO、警告

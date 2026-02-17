@@ -295,17 +295,17 @@ search_for_pattern(
 
 ### Over Text-Based Search
 
-- **Precision**: Find exact symbols, not text matches
-- **Context**: Understand scope and relationships
-- **Safety**: Know all impacts before changes
-- **Intelligence**: Leverage language understanding
+- Precision: Find exact symbols, not text matches
+- Context: Understand scope and relationships
+- Safety: Know all impacts before changes
+- Intelligence: Leverage language understanding
 
 ### For Large Codebases
 
-- **Efficiency**: Navigate without reading everything
-- **Structure**: Understand architecture quickly
-- **Relationships**: See connections clearly
-- **Refactoring**: Make changes confidently
+- Efficiency: Navigate without reading everything
+- Structure: Understand architecture quickly
+- Relationships: See connections clearly
+- Refactoring: Make changes confidently
 
 ## 📈 Success Patterns
 

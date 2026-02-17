@@ -8,8 +8,8 @@ argument-hint: <project-description>
 
 ## Background Information
 
-- **Mission**: Initialize the first phase of spec-driven development by creating directory structure and metadata for a new specification
-- **Success Criteria**:
+- Mission: Initialize the first phase of spec-driven development by creating directory structure and metadata for a new specification
+- Success Criteria:
   - Generate appropriate feature name from project description
   - Create unique spec structure without conflicts
   - Provide clear path to next phase (requirements generation)
@@ -110,12 +110,12 @@ Provide output in the language specified in config (default: `ja`) with the foll
 
 ## Safety & Fallback
 
-- **Missing Config**: If `.kiro-config.json` not found, use default configuration and notify user
-- **Invalid Config**: If config is malformed, fall back to defaults and report validation errors
-- **Ambiguous Feature Name**: If feature name generation is unclear, propose 2-3 options and ask user to select
-- **Template Missing**: If template files don't exist at configured paths, report error with specific missing file path and suggest running setup
-- **Directory Conflict**: If feature name already exists, append numeric suffix (e.g., `feature-name-2`) and notify user of automatic conflict resolution
-- **Write Failure**: Report error with specific path and suggest checking permissions or disk space
+- Missing Config: If `.kiro-config.json` not found, use default configuration and notify user
+- Invalid Config: If config is malformed, fall back to defaults and report validation errors
+- Ambiguous Feature Name: If feature name generation is unclear, propose 2-3 options and ask user to select
+- Template Missing: If template files don't exist at configured paths, report error with specific missing file path and suggest running setup
+- Directory Conflict: If feature name already exists, append numeric suffix (e.g., `feature-name-2`) and notify user of automatic conflict resolution
+- Write Failure: Report error with specific path and suggest checking permissions or disk space
 
 ## Configuration Example
 

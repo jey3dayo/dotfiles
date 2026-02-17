@@ -86,13 +86,13 @@ Generate Technology Alignment section instead:
 Generate 1-3 critical technical decisions that significantly impact the implementation.
 Each decision should follow this format:
 
-- **Decision**: [Specific technical choice made]
-- **Context**: [Problem or requirement driving this decision]
-- **Alternatives**: [2-3 other approaches considered]
-- **Selected Approach**: [What was chosen and how it works]
-- **Rationale**: [Why this is optimal for the specific context]
+- Decision: [Specific technical choice made]
+- Context: [Problem or requirement driving this decision]
+- Alternatives: [2-3 other approaches considered]
+- Selected Approach: [What was chosen and how it works]
+- Rationale: [Why this is optimal for the specific context]
 
-- **Trade-offs**: [What we gain vs. what we sacrifice]
+- Trade-offs: [What we gain vs. what we sacrifice]
 
 Skip this entire section for simple CRUD operations or when following established patterns without deviation.
 
@@ -102,12 +102,12 @@ Skip this entire section for simple CRUD operations or when following establishe
 
 Generate appropriate flow diagrams ONLY when the feature requires flow visualization. Select from:
 
-- **Sequence Diagrams**: For user interactions across multiple components
-- **Process Flow Charts**: For complex algorithms, decision branches, or state machines
-- **Data Flow Diagrams**: For data transformations, ETL processes, or data pipelines
-- **State Diagrams**: For complex state transitions
+- Sequence Diagrams: For user interactions across multiple components
+- Process Flow Charts: For complex algorithms, decision branches, or state machines
+- Data Flow Diagrams: For data transformations, ETL processes, or data pipelines
+- State Diagrams: For complex state transitions
 
-- **Event Flow**: For async/event-driven architectures
+- Event Flow: For async/event-driven architectures
 
 Skip this section entirely for simple CRUD operations or features without complex flows.
 When included, provide concise Mermaid diagrams specific to the actual feature requirements.
@@ -126,8 +126,8 @@ When included, create a mapping table showing how each EARS requirement is reali
 
 Alternative format for simpler cases:
 
-- **1.1**: Realized by [Component X] through [Interface Y]
-- **1.2**: Implemented in [Component Z] with [Flow diagram reference]
+- 1.1: Realized by [Component X] through [Interface Y]
+- 1.2: Implemented in [Component Z] with [Flow diagram reference]
 
 Skip this section for simple features with straightforward 1:1 requirement-to-component mappings.
 
@@ -144,16 +144,16 @@ Group related components under domain/layer headings for clarity.
 
 ##### Responsibility & Boundaries
 
-- **Primary Responsibility**: Single, clear statement of what this component does
-- **Domain Boundary**: Which domain/subdomain this belongs to
-- **Data Ownership**: What data this component owns and manages
-- **Transaction Boundary**: Scope of transactional consistency (if applicable)
+- Primary Responsibility: Single, clear statement of what this component does
+- Domain Boundary: Which domain/subdomain this belongs to
+- Data Ownership: What data this component owns and manages
+- Transaction Boundary: Scope of transactional consistency (if applicable)
 
 ##### Dependencies
 
-- **Inbound**: Components/services that depend on this component
-- **Outbound**: Components/services this component depends on
-- **External**: Third-party services, libraries, or external systems
+- Inbound: Components/services that depend on this component
+- Outbound: Components/services this component depends on
+- External: Third-party services, libraries, or external systems
 
 ### External Dependencies Investigation
 
@@ -179,9 +179,9 @@ interface [ComponentName]Service {
 }
 ```
 
-- **Preconditions**: What must be true before calling
-- **Postconditions**: What is guaranteed after successful execution
-- **Invariants**: What remains true throughout
+- Preconditions: What must be true before calling
+- Postconditions: What is guaranteed after successful execution
+- Invariants: What remains true throughout
 
 ### API Contract
 
@@ -193,30 +193,30 @@ With detailed schemas only for complex payloads
 
 ### Event Contract
 
-- **Published Events**: Event name, schema, trigger conditions
-- **Subscribed Events**: Event name, handling strategy, idempotency
-- **Ordering**: Guaranteed order requirements
-- **Delivery**: At-least-once, at-most-once, or exactly-once
+- Published Events: Event name, schema, trigger conditions
+- Subscribed Events: Event name, handling strategy, idempotency
+- Ordering: Guaranteed order requirements
+- Delivery: At-least-once, at-most-once, or exactly-once
 
 ### Batch/Job Contract
 
-- **Trigger**: Schedule, event, or manual trigger conditions
-- **Input**: Data source and validation rules
-- **Output**: Results destination and format
-- **Idempotency**: How repeat executions are handled
-- **Recovery**: Failure handling and retry strategy
+- Trigger: Schedule, event, or manual trigger conditions
+- Input: Data source and validation rules
+- Output: Results destination and format
+- Idempotency: How repeat executions are handled
+- Recovery: Failure handling and retry strategy
 
 ### State Management
 
-- **State Model**: States and valid transitions
-- **Persistence**: Storage strategy and consistency model
-- **Concurrency**: Locking, optimistic/pessimistic control
+- State Model: States and valid transitions
+- Persistence: Storage strategy and consistency model
+- Concurrency: Locking, optimistic/pessimistic control
 
 ### Integration Strategy
 
-- **Modification Approach**: Extend, wrap, or refactor existing code
-- **Backward Compatibility**: What must be maintained
-- **Migration Path**: How to transition from current to target state
+- Modification Approach: Extend, wrap, or refactor existing code
+- Backward Compatibility: What must be maintained
+- Migration Path: How to transition from current to target state
 
 ## Data Models
 
@@ -231,10 +231,10 @@ Progress from conceptual to physical as needed for implementation clarity.
 
 ### Core Concepts
 
-- **Aggregates**: Define transactional consistency boundaries
-- **Entities**: Business objects with unique identity and lifecycle
-- **Value Objects**: Immutable descriptive aspects without identity
-- **Domain Events**: Significant state changes in the domain
+- Aggregates: Define transactional consistency boundaries
+- Entities: Business objects with unique identity and lifecycle
+- Value Objects: Immutable descriptive aspects without identity
+- Domain Events: Significant state changes in the domain
 
 ### Business Rules & Invariants
 

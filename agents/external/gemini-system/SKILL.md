@@ -171,8 +171,8 @@ gemini -p "Transcribe and summarize: decisions, action items" < meeting.mp3 2>/d
 
 ## Why Gemini?
 
-- **1M token context**: Entire repositories at once
-- **Google Search**: Latest information and docs
-- **Multimodal**: Native PDF/video/audio processing
-- **Fast exploration**: Quick overview before deep work
-- **Shared context**: Results saved for Claude/Codex
+- 1M token context: Entire repositories at once
+- Google Search: Latest information and docs
+- Multimodal: Native PDF/video/audio processing
+- Fast exploration: Quick overview before deep work
+- Shared context: Results saved for Claude/Codex

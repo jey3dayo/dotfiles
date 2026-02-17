@@ -190,9 +190,9 @@ EOF
 
 ### Config types
 
-- **Rules**: Markdown files for Claude Code instructions
-- **Templates**: Reusable templates for skills/commands
-- **Metadata**: JSON/YAML configuration files
+- Rules: Markdown files for Claude Code instructions
+- Templates: Reusable templates for skills/commands
+- Metadata: JSON/YAML configuration files
 
 ---
 
@@ -276,9 +276,9 @@ mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "local")'
 
 ### Common issues
 
-- **Symlink broken**: Check relative path depth (`../../../`)
-- **Skill not deployed**: Verify `SKILL.md` exists in target
-- **Priority conflict**: Local source overwrites distribution (expected behavior)
+- Symlink broken: Check relative path depth (`../../../`)
+- Skill not deployed: Verify `SKILL.md` exists in target
+- Priority conflict: Local source overwrites distribution (expected behavior)
 
 ---
 
@@ -381,8 +381,8 @@ home-manager switch --flake ~/.config --impure
 
 ## Related References
 
-- **architecture.md**: Nix implementation details
-- **symlink-patterns.md**: Symlink design patterns
-- **priority-mechanism.md**: Conflict resolution
-- **resources/checklist.md**: Comprehensive QA checklist
-- **resources/templates/**: Bundle templates
+- architecture.md: Nix implementation details
+- symlink-patterns.md: Symlink design patterns
+- priority-mechanism.md: Conflict resolution
+- resources/checklist.md: Comprehensive QA checklist
+- resources/templates/: Bundle templates

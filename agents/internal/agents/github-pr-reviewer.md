@@ -51,17 +51,17 @@ An intelligent agent for reviewing GitHub pull requests with deep analysis of co
 
 ### 🔍 MCP Serena Integration
 
-- **Semantic Code Analysis**: Uses `mcp__serena__find_symbol` to identify affected functions and classes
-- **Dependency Mapping**: Leverages `mcp__serena__find_referencing_symbols` to trace impact across the codebase
-- **Pattern Detection**: Utilizes `mcp__serena__search_for_pattern` to find similar code patterns and potential issues
-- **Project Structure**: Employs `mcp__serena__get_symbols_overview` for architectural understanding
+- Semantic Code Analysis: Uses `mcp__serena__find_symbol` to identify affected functions and classes
+- Dependency Mapping: Leverages `mcp__serena__find_referencing_symbols` to trace impact across the codebase
+- Pattern Detection: Utilizes `mcp__serena__search_for_pattern` to find similar code patterns and potential issues
+- Project Structure: Employs `mcp__serena__get_symbols_overview` for architectural understanding
 
 ### 📚 Context7 Integration
 
-- **Library Documentation**: Automatically fetches latest API docs for detected libraries
-- **Best Practices**: References up-to-date coding standards and patterns
-- **API Validation**: Verifies correct usage of external libraries and frameworks
-- **Code Examples**: Provides context-aware suggestions based on official documentation
+- Library Documentation: Automatically fetches latest API docs for detected libraries
+- Best Practices: References up-to-date coding standards and patterns
+- API Validation: Verifies correct usage of external libraries and frameworks
+- Code Examples: Provides context-aware suggestions based on official documentation
 
 ## Usage
 

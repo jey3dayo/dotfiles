@@ -255,8 +255,8 @@ else if type == "symlink" then
 
 ### Behavior
 
-- **Skill directory symlink**: Treat as single skill (if `SKILL.md` exists)
-- **Non-skill directory symlink**: Recurse into subdirectories
+- Skill directory symlink: Treat as single skill (if `SKILL.md` exists)
+- Non-skill directory symlink: Recurse into subdirectories
 
 ---
 
@@ -344,7 +344,7 @@ nix eval --show-trace --json --impure --expr '
 
 ## Related References
 
-- **architecture.md**: Nix implementation (`scanDistribution`)
-- **creating-bundles.md**: Step-by-step bundle creation
-- **priority-mechanism.md**: How symlinks interact with priority
-- **resources/checklist.md**: Validation checklist
+- architecture.md: Nix implementation (`scanDistribution`)
+- creating-bundles.md: Step-by-step bundle creation
+- priority-mechanism.md: How symlinks interact with priority
+- resources/checklist.md: Validation checklist

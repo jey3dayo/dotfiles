@@ -380,8 +380,8 @@ echo "Worktree $BRANCH removed from $WORKTREE_PATH"
 
 ### Recommendation
 
-- **Development**: Use `git wt` for enhanced features
-- **Automation/CI**: Use `git worktree` for portability
+- Development: Use `git wt` for enhanced features
+- Automation/CI: Use `git worktree` for portability
 
 ## See Also
 

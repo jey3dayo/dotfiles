@@ -88,9 +88,9 @@ argument-hint: [required-arg] [--optional-flag]
 
 コマンド作成後の配布については `distributions-manager` スキルを参照してください:
 
-- **Custom bundle への追加**: 特定のワークフロー向けバンドル作成
-- **Default bundle への統合**: 標準配布への追加
-- **Subdirectory structure の維持**: コマンドグループの整合性保持
+- Custom bundle への追加: 特定のワークフロー向けバンドル作成
+- Default bundle への統合: 標準配布への追加
+- Subdirectory structure の維持: コマンドグループの整合性保持
 
 詳細: `distributions-manager` スキルの `references/creating-bundles.md`
 

@@ -331,7 +331,7 @@ bash resources/scripts/validate-bundle.sh my-bundle
 
 ## Related References
 
-- **creating-bundles.md**: Step-by-step creation guide
-- **symlink-patterns.md**: Symlink design patterns
-- **priority-mechanism.md**: Priority validation
-- **templates/bundle-structure.txt**: Structure template
+- creating-bundles.md: Step-by-step creation guide
+- symlink-patterns.md: Symlink design patterns
+- priority-mechanism.md: Priority validation
+- templates/bundle-structure.txt: Structure template

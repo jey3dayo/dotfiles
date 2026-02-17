@@ -162,10 +162,10 @@ Monitor document size and suggest splits when necessary.
 2. Apply size thresholds from project config (or defaults: 500/1000/2000)
 3. Load `references/size-guidelines-framework.md` for decision tree
 4. Suggest split strategy:
-   - **Topic-based split**: Unrelated content
-   - **Role-based split**: Multiple audiences
-   - **Level-based split**: Beginner/advanced mix
-   - **Phase-based split**: Lifecycle phases (setup/operations/troubleshooting)
+   - Topic-based split: Unrelated content
+   - Role-based split: Multiple audiences
+   - Level-based split: Beginner/advanced mix
+   - Phase-based split: Lifecycle phases (setup/operations/troubleshooting)
 5. Load project examples if available
 
 ### 4. Quality Validation

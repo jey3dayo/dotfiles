@@ -59,37 +59,37 @@ Comprehensive review and creation support for Markdown-based presentation slides
 
 ### 1. Slide Structure
 
-- **Clear narrative arc**: Introduction → body → conclusion
-- **Logical flow**: Ideas progress naturally
-- **One message per slide**: Each slide communicates single concept
-- **Appropriate slide count**: Total number relative to presentation length
-- **Section clarity**: Clear delineation of major sections
+- Clear narrative arc: Introduction → body → conclusion
+- Logical flow: Ideas progress naturally
+- One message per slide: Each slide communicates single concept
+- Appropriate slide count: Total number relative to presentation length
+- Section clarity: Clear delineation of major sections
 
 ### 2. Content and Messaging
 
-- **Conciseness**: Short, impactful statements (6×6 rule: max 6 lines, 6 words/line)
-- **Impact**: Memorable phrases, effective data presentation
-- **Readability**: Adequate font size (minimum 24pt body), color contrast, whitespace
-- **Key point emphasis**: Important information stands out
-- **Clear call-to-action**: Explicit next steps
+- Conciseness: Short, impactful statements (6×6 rule: max 6 lines, 6 words/line)
+- Impact: Memorable phrases, effective data presentation
+- Readability: Adequate font size (minimum 24pt body), color contrast, whitespace
+- Key point emphasis: Important information stands out
+- Clear call-to-action: Explicit next steps
 
 ### 3. Visual Design
 
-- **Visual hierarchy**: Clear title/body distinction, consistent layout
-- **Image quality**: High-resolution, professional images with proper attribution
-- **Color design**: Limited palette (3-4 colors), brand consistency, accessibility
-- **Balance and alignment**: Proper positioning, embrace whitespace
+- Visual hierarchy: Clear title/body distinction, consistent layout
+- Image quality: High-resolution, professional images with proper attribution
+- Color design: Limited palette (3-4 colors), brand consistency, accessibility
+- Balance and alignment: Proper positioning, embrace whitespace
 
 ### 4. Technical Elements
 
-- **Code display**: Syntax highlighting, readable font size, key section emphasis
-- **Data visualization**: Appropriate chart selection, clear labeling, purposeful animation
-- **Asset management**: Verified paths, consistent encoding (UTF-8)
+- Code display: Syntax highlighting, readable font size, key section emphasis
+- Data visualization: Appropriate chart selection, clear labeling, purposeful animation
+- Asset management: Verified paths, consistent encoding (UTF-8)
 
 ### 5. Presentation Utility
 
-- **Speaker support**: Comprehensive notes, timing indicators, Q&A preparation
-- **Audience consideration**: Technical term definitions, cultural awareness, accessibility
+- Speaker support: Comprehensive notes, timing indicators, Q&A preparation
+- Audience consideration: Technical term definitions, cultural awareness, accessibility
 
 ## Review Workflow
 
@@ -116,34 +116,34 @@ Comprehensive review and creation support for Markdown-based presentation slides
 
 ### Structural Problems
 
-- **Issue**: Lack of clear narrative, illogical flow
-- **Fix**: Establish clear beginning/middle/end, add transition slides
+- Issue: Lack of clear narrative, illogical flow
+- Fix: Establish clear beginning/middle/end, add transition slides
 
 ### Visual Problems
 
-- **Issue**: Text too small, information overload, inconsistent design
-- **Fix**: Increase font sizes (≥24pt), one-message-per-slide, consistent template
+- Issue: Text too small, information overload, inconsistent design
+- Fix: Increase font sizes (≥24pt), one-message-per-slide, consistent template
 
 ### Message Problems
 
-- **Issue**: Unclear main points, excessive jargon, no call-to-action
-- **Fix**: Emphasize key messages, define technical terms, include explicit next steps
+- Issue: Unclear main points, excessive jargon, no call-to-action
+- Fix: Emphasize key messages, define technical terms, include explicit next steps
 
 ### Technical Problems
 
-- **Issue**: Broken layouts, missing images, encoding errors
-- **Fix**: Test on target platform, verify asset paths, use UTF-8 consistently
+- Issue: Broken layouts, missing images, encoding errors
+- Fix: Test on target platform, verify asset paths, use UTF-8 consistently
 
 ## Best Practices Summary
 
-- **Start with "why"**: Begin with problem statement
-- **Rule of three**: Focus on three main points
-- **Story arc**: Follow clear narrative structure
-- **End with action**: Conclude with specific next steps
-- **High-resolution assets**: Use quality images
-- **Embrace whitespace**: Avoid cluttered slides
-- **Minimal animation**: Use sparingly and purposefully
-- **Rehearse thoroughly**: Practice delivery multiple times
+- Start with "why": Begin with problem statement
+- Rule of three: Focus on three main points
+- Story arc: Follow clear narrative structure
+- End with action: Conclude with specific next steps
+- High-resolution assets: Use quality images
+- Embrace whitespace: Avoid cluttered slides
+- Minimal animation: Use sparingly and purposefully
+- Rehearse thoroughly: Practice delivery multiple times
 
 ## Integration with Context7 MCP
 

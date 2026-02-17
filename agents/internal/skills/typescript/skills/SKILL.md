@@ -138,21 +138,21 @@ When reviewing TypeScript code:
 
 ### Error-Fixer Agent
 
-- **提供内容**: TypeScript型エラー修正、any型排除戦略、strictモード対応
-- **タイミング**: TypeScriptエラー修正・型安全性向上時
-- **コンテキスト**: 型エラー自動修正、any→unknown変換、型ガード実装、tsconfig.json最適化
+- 提供内容: TypeScript型エラー修正、any型排除戦略、strictモード対応
+- タイミング: TypeScriptエラー修正・型安全性向上時
+- コンテキスト: 型エラー自動修正、any→unknown変換、型ガード実装、tsconfig.json最適化
 
 ### Code-Reviewer Agent
 
-- **提供内容**: TypeScript型安全性評価基準、ベストプラクティス
-- **タイミング**: TypeScriptコードレビュー時
-- **コンテキスト**: ⭐️5段階評価、型アサーション評価、Result<T,E>パターン、パフォーマンス影響
+- 提供内容: TypeScript型安全性評価基準、ベストプラクティス
+- タイミング: TypeScriptコードレビュー時
+- コンテキスト: ⭐️5段階評価、型アサーション評価、Result<T,E>パターン、パフォーマンス影響
 
 ### Orchestrator Agent
 
-- **提供内容**: TypeScriptプロジェクト構成、アーキテクチャパターン
-- **タイミング**: TypeScript機能実装・リファクタリング時
-- **コンテキスト**: モジュール構成、型定義ファイル管理、コンパイラオプション設定
+- 提供内容: TypeScriptプロジェクト構成、アーキテクチャパターン
+- タイミング: TypeScript機能実装・リファクタリング時
+- コンテキスト: モジュール構成、型定義ファイル管理、コンパイラオプション設定
 
 ### 自動ロード条件
 
@@ -183,6 +183,6 @@ TypeScript型エラー修正パターン + any型排除戦略
 
 ## Integration with Related Skills
 
-- **react skill**: For React + TypeScript projects
-- **clean-architecture skill**: For TypeScript architecture patterns
-- **security skill**: For type-safe security implementations
+- react skill: For React + TypeScript projects
+- clean-architecture skill: For TypeScript architecture patterns
+- security skill: For type-safe security implementations

@@ -112,9 +112,9 @@ const result = await communicationBus.request("error-fixer", {
 
 既存のエージェントとコマンドをフレームワークに統合:
 
-- **Agent Adapter**: エージェントにTaskContextを提供
-- **Command Adapter**: コマンド実行を標準化
-- **Integration Orchestrator**: 全体の調整とルーティング
+- Agent Adapter: エージェントにTaskContextを提供
+- Command Adapter: コマンド実行を標準化
+- Integration Orchestrator: 全体の調整とルーティング
 
 ### 詳細
 

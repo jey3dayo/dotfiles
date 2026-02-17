@@ -13,7 +13,7 @@ Claude Code は以下の2箇所から rules（markdown ファイル）を自動�
 
 - `CLAUDE.md` / `.claude/CLAUDE.md` と同等の扱い
 - サブディレクトリも再帰的に探索される（例: `rules/frontend/react.md`）
-- **シンボリックリンク対応**: 共有ルールを symlink で参照可能
+- シンボリックリンク対応: 共有ルールを symlink で参照可能
 
 ### ベストプラクティス
 

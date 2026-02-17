@@ -58,24 +58,24 @@
 
 ### プロジェクト情報
 
-- **[Product Overview](.kiro/steering/product.md)** - プロダクト概要、価値提案
-- **[Technology Stack](.kiro/steering/tech.md)** - 技術スタック詳細、コマンド
-- **[Project Structure](.kiro/steering/structure.md)** - ディレクトリ構造、パターン
+- [Product Overview](.kiro/steering/product.md) - プロダクト概要、価値提案
+- [Technology Stack](.kiro/steering/tech.md) - 技術スタック詳細、コマンド
+- [Project Structure](.kiro/steering/structure.md) - ディレクトリ構造、パターン
 
 ### 実装ガイド
 
-- **[Documentation Index](docs/README.md)** - 全ドキュメント体系
-- **[Setup Guide](docs/setup.md)** - セットアップ手順
-- **[Performance](docs/performance.md)** - パフォーマンス測定
-- **[Maintenance](.claude/rules/workflows-and-maintenance.md)** - メンテナンス手順
+- [Documentation Index](docs/README.md) - 全ドキュメント体系
+- [Setup Guide](docs/setup.md) - セットアップ手順
+- [Performance](docs/performance.md) - パフォーマンス測定
+- [Maintenance](.claude/rules/workflows-and-maintenance.md) - メンテナンス手順
 
 ### ツール別詳細
 
-- **[Zsh](docs/tools/zsh.md)** - Shell最適化、パフォーマンス
-- **[Neovim](docs/tools/nvim.md)** - エディタ設定、LSP、AI統合
-- **[WezTerm](docs/tools/wezterm.md)** - ターミナル設定、キーバインド
-- **[SSH](docs/tools/ssh.md)** - SSH階層設定、セキュリティ
-- **[FZF Integration](docs/tools/fzf-integration.md)** - Git/Zsh統合ワークフロー
+- [Zsh](docs/tools/zsh.md) - Shell最適化、パフォーマンス
+- [Neovim](docs/tools/nvim.md) - エディタ設定、LSP、AI統合
+- [WezTerm](docs/tools/wezterm.md) - ターミナル設定、キーバインド
+- [SSH](docs/tools/ssh.md) - SSH階層設定、セキュリティ
+- [FZF Integration](docs/tools/fzf-integration.md) - Git/Zsh統合ワークフロー
 
 ---
 

@@ -120,9 +120,9 @@ Flake 構造、Worktree SSoT、gitignore フィルタリング
 
 ### Progressive Disclosure
 
-- **Quick Start**: 基本操作だけで完結（SKILL.md）
-- **詳細 References**: 深い診断やアーキテクチャ理解（references/）
-- **ToC 付き**: 各 reference ファイルに Table of Contents
+- Quick Start: 基本操作だけで完結（SKILL.md）
+- 詳細 References: 深い診断やアーキテクチャ理解（references/）
+- ToC 付き: 各 reference ファイルに Table of Contents
 
 ### SSoT (Single Source of Truth)
 

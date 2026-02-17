@@ -18,11 +18,11 @@
 
 **絶対にコミットしてはいけない**：
 
-- **SSH秘密鍵**: `id_rsa`, `id_ed25519`, `*.pem`
-- **GPG秘密鍵**: `secring.gpg`, `*.key`
-- **APIトークン**: GitHub Personal Access Tokens, AWS Credentials
-- **パスワード**: 平文パスワード、データベース認証情報
-- **証明書秘密鍵**: `*.key`, `*.p12`, `*.pfx`
+- SSH秘密鍵: `id_rsa`, `id_ed25519`, `*.pem`
+- GPG秘密鍵: `secring.gpg`, `*.key`
+- APIトークン: GitHub Personal Access Tokens, AWS Credentials
+- パスワード: 平文パスワード、データベース認証情報
+- 証明書秘密鍵: `*.key`, `*.p12`, `*.pfx`
 
 #### 除外パターン (`.gitignore`)
 
@@ -45,9 +45,9 @@
 
 **環境ごとに異なる値、公開非推奨**：
 
-- **環境変数ファイル**: `.env`, `.env.local`, `.envrc`
-- **設定ファイルのローカル上書き**: `config.local`, `*.secret`
-- **セッショントークン**: ブラウザcookies、一時認証トークン
+- 環境変数ファイル: `.env`, `.env.local`, `.envrc`
+- 設定ファイルのローカル上書き: `config.local`, `*.secret`
+- セッショントークン: ブラウザcookies、一時認証トークン
 
 #### 除外パターン (`.gitignore`)
 
@@ -67,9 +67,9 @@
 
 **機密性は低いが、リポジトリサイズ肥大化の原因**：
 
-- **ビルド成果物**: `result`, `result-*`, `dist/`, `build/`
-- **一時ファイル**: `*.tmp`, `*.log`, `.DS_Store`
-- **依存関係キャッシュ**: `node_modules/`, `.venv/`, `__pycache__/`
+- ビルド成果物: `result`, `result-*`, `dist/`, `build/`
+- 一時ファイル: `*.tmp`, `*.log`, `.DS_Store`
+- 依存関係キャッシュ: `node_modules/`, `.venv/`, `__pycache__/`
 
 #### 除外パターン (`.gitignore`)
 
@@ -99,12 +99,12 @@ __pycache__/
 
 プロジェクトの `.gitignore` は273行で、以下をカバーしています：
 
-- **SSH keys**: 完全カバー（秘密鍵、known_hosts）
-- **GPG keys**: 完全カバー（秘密鍵、トラストDB）
-- **API credentials**: 完全カバー（AWS、GitHub、Linear等）
-- **環境変数**: 完全カバー（`.env*`, `.envrc`）
-- **Nix成果物**: 完全カバー（`result*`, `.luarocks/`）
-- **IDE設定**: 完全カバー（`.vscode/`, `.idea/`）
+- SSH keys: 完全カバー（秘密鍵、known_hosts）
+- GPG keys: 完全カバー（秘密鍵、トラストDB）
+- API credentials: 完全カバー（AWS、GitHub、Linear等）
+- 環境変数: 完全カバー（`.env*`, `.envrc`）
+- Nix成果物: 完全カバー（`result*`, `.luarocks/`）
+- IDE設定: 完全カバー（`.vscode/`, `.idea/`）
 
 ### .gitignoreメンテナンス
 

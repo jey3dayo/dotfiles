@@ -356,9 +356,9 @@ similarity-ts --threshold 0.9 src/ > /tmp/similarity-after.md
 
 ## 🔗 関連リソース
 
-- **メインスキル**: `skill.md`
-- **MCP Serena統合**: 影響範囲分析に活用
-- **Refactoringコマンド**: `/refactoring` で自動適用
+- メインスキル: `skill.md`
+- MCP Serena統合: 影響範囲分析に活用
+- Refactoringコマンド: `/refactoring` で自動適用
 
 ---
 

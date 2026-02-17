@@ -125,9 +125,9 @@ depends = ["docs:lint", "docs:format:check", "docs:links"]
 
 ### Key Points
 
-- **No run property** - Pure orchestration via depends
-- **Parallel execution** - All dependencies run concurrently
-- **Short aliases** - `format` and `lint` are easy to type
+- No run property - Pure orchestration via depends
+- Parallel execution - All dependencies run concurrently
+- Short aliases - `format` and `lint` are easy to type
 
 ### Execution Flow
 

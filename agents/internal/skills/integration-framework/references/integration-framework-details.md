@@ -268,10 +268,10 @@ const result = await orchestrator.executeTask({
 
 より詳細な情報については、references/ディレクトリを参照してください:
 
-- **task-context-specification.md**: TaskContext完全仕様、すべてのプロパティと型
-- **communication-bus-api.md**: Communication Bus API、イベントパターン、ワークフロー実行
-- **adapters-and-orchestration.md**: エージェント/コマンドアダプター実装、Integration Orchestrator
-- **framework-api-reference.md**: Context Manager、Error Handler、パフォーマンス監視API
+- task-context-specification.md: TaskContext完全仕様、すべてのプロパティと型
+- communication-bus-api.md: Communication Bus API、イベントパターン、ワークフロー実行
+- adapters-and-orchestration.md: エージェント/コマンドアダプター実装、Integration Orchestrator
+- framework-api-reference.md: Context Manager、Error Handler、パフォーマンス監視API
 
 ## 🤖 Agent Integration
 
@@ -279,9 +279,9 @@ const result = await orchestrator.executeTask({
 
 ### All Agents（全エージェント共通）
 
-- **提供内容**: TaskContext標準化、Communication Busパターン、エラーハンドリング戦略
-- **タイミング**: エージェント実行時に自動的にコンテキストを強化
-- **コンテキスト**:
+- 提供内容: TaskContext標準化、Communication Busパターン、エラーハンドリング戦略
+- タイミング: エージェント実行時に自動的にコンテキストを強化
+- コンテキスト:
   - プロジェクト固有の実行コンテキスト
   - 強化されたエラー検出パターン
   - 履歴パフォーマンスデータ
@@ -289,15 +289,15 @@ const result = await orchestrator.executeTask({
 
 ### Orchestrator Agent
 
-- **提供内容**: ワークフローオーケストレーション、マルチエージェント調整
-- **タイミング**: 複雑なタスクの分割・実行時
-- **コンテキスト**: Integration Orchestratorパターン、Communication Bus API
+- 提供内容: ワークフローオーケストレーション、マルチエージェント調整
+- タイミング: 複雑なタスクの分割・実行時
+- コンテキスト: Integration Orchestratorパターン、Communication Bus API
 
 ### Error-Fixer Agent
 
-- **提供内容**: Error Handler統合、自動回復戦略
-- **タイミング**: エラー修正・品質改善タスク実行時
-- **コンテキスト**: エラー分類パターン、回復メカニズム、品質メトリクス
+- 提供内容: Error Handler統合、自動回復戦略
+- タイミング: エラー修正・品質改善タスク実行時
+- コンテキスト: エラー分類パターン、回復メカニズム、品質メトリクス
 
 ### 自動ロード条件
 
@@ -326,14 +326,14 @@ TaskContext作成
 
 ## 関連スキル
 
-- **command-creator**: 新しいコマンドの作成方法
-- **agent-creator**: 新しいエージェントの作成方法
-- **agents-and-commands**: エージェントとコマンドの使い分け
+- command-creator: 新しいコマンドの作成方法
+- agent-creator: 新しいエージェントの作成方法
+- agents-and-commands: エージェントとコマンドの使い分け
 
 ## 関連コマンド
 
-- **/task**: インテリジェントタスクルーター（このフレームワークを使用）
-- **/review**: 統合コードレビュー（プロジェクト検出を使用）
+- /task: インテリジェントタスクルーター（このフレームワークを使用）
+- /review: 統合コードレビュー（プロジェクト検出を使用）
 
 ## 統合例
 

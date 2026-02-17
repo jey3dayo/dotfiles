@@ -412,7 +412,7 @@ $ npm audit
 
 ## 関連リファレンス
 
-- **カテゴリ詳細**: `references/learning-categories.md`
-- **記録プロセス**: `references/recording-process.md`
-- **活用パターン**: `references/usage-patterns.md`
-- **記録例**: `learning-records.md`
+- カテゴリ詳細: `references/learning-categories.md`
+- 記録プロセス: `references/recording-process.md`
+- 活用パターン: `references/usage-patterns.md`
+- 記録例: `learning-records.md`

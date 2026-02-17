@@ -144,7 +144,7 @@ See: `references/refactoring-task.md`
 
 ## Why Codex?
 
-- **Deep reasoning**: Complex analysis and problem-solving
-- **Code expertise**: Implementation strategies and patterns
-- **Consistency**: Same project context via `context-loader` skill
-- **Parallel work**: Background execution keeps you productive
+- Deep reasoning: Complex analysis and problem-solving
+- Code expertise: Implementation strategies and patterns
+- Consistency: Same project context via `context-loader` skill
+- Parallel work: Background execution keeps you productive

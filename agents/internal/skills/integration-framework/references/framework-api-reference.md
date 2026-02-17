@@ -1340,9 +1340,9 @@ const response = await communicationBus.request(
 
 ## 関連リファレンス
 
-- **task-context-specification.md**: TaskContext詳細仕様
-- **communication-bus-api.md**: Communication Bus詳細API
-- **adapters-and-orchestration.md**: Adapters詳細実装
+- task-context-specification.md: TaskContext詳細仕様
+- communication-bus-api.md: Communication Bus詳細API
+- adapters-and-orchestration.md: Adapters詳細実装
 
 ---
 

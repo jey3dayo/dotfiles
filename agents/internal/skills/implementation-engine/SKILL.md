@@ -275,7 +275,7 @@ ENHANCEMENT OPPORTUNITIES:
 
 ## 依存関係
 
-- **project-detector** - プロジェクト構造の自動検出（参照のみ、軽依存）
+- project-detector - プロジェクト構造の自動検出（参照のみ、軽依存）
 
 ## トリガーキーワード
 

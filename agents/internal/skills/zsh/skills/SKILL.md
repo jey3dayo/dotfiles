@@ -25,7 +25,7 @@ Assess and optimize shell initialization time:
 - Measure current startup time (`zsh-benchmark`)
 - Compare against target (<100ms ideal, <1s acceptable)
 - Identify bottlenecks through profiling
-- **Goal**: Achieve <100ms startup time
+- Goal: Achieve <100ms startup time
 
 #### Optimization Strategies (Dotfiles-Specific)
 
@@ -365,20 +365,20 @@ Query: "How to use parameter expansion modifiers"
 
 ## Integration with Related Skills
 
-- **code-review skill**: For overall quality assessment framework
-- **semantic-analysis skill**: For dependency analysis between configuration files
-- **dotfiles-integration skill**: For cross-tool integration patterns (FZF, Git, etc.)
+- code-review skill: For overall quality assessment framework
+- semantic-analysis skill: For dependency analysis between configuration files
+- dotfiles-integration skill: For cross-tool integration patterns (FZF, Git, etc.)
 
 ## Dotfiles-Specific Patterns
 
 ### Current Dotfiles Status (as of 2025)
 
-- **Plugin Manager**: Sheldon (Rust-based, modern)
-- **Startup Time**: ~1.1s (good, but can improve to <100ms)
-- **Architecture**: ⭐⭐⭐⭐⭐ Modular, clean separation
-- **Lazy Loading**: ⭐⭐⭐⭐⭐ 6-stage prioritization
-- **PATH Management**: ⭐⭐⭐⭐⭐ Optimized, duplicate removal
-- **Compilation**: ⭐⭐⭐⭐⭐ Auto-compile `.zwc` system
+- Plugin Manager: Sheldon (Rust-based, modern)
+- Startup Time: ~1.1s (good, but can improve to <100ms)
+- Architecture: ⭐⭐⭐⭐⭐ Modular, clean separation
+- Lazy Loading: ⭐⭐⭐⭐⭐ 6-stage prioritization
+- PATH Management: ⭐⭐⭐⭐⭐ Optimized, duplicate removal
+- Compilation: ⭐⭐⭐⭐⭐ Auto-compile `.zwc` system
 
 ### Optimization Opportunities
 

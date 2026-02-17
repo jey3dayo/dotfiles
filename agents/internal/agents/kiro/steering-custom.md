@@ -82,17 +82,17 @@ Load template when needed, customize for project.
 
 From `.kiro/settings/rules/steering-principles.md`:
 
-- **Patterns over lists**: Document patterns, not every file/component
-- **Single domain**: One topic per file
-- **Concrete examples**: Show patterns with code
-- **Maintainable size**: 100-200 lines typical
-- **Security first**: Never include secrets or sensitive data
+- Patterns over lists: Document patterns, not every file/component
+- Single domain: One topic per file
+- Concrete examples: Show patterns with code
+- Maintainable size: 100-200 lines typical
+- Security first: Never include secrets or sensitive data
 
 ## Tool Guidance
 
-- **Read**: Load template, analyze existing code
-- **Glob**: Find related files for pattern analysis
-- **Grep**: Search for specific patterns
+- Read: Load template, analyze existing code
+- Glob: Find related files for pattern analysis
+- Grep: Search for specific patterns
 - **Bash** with `ls`: Understand relevant structure
 
 ### JIT Strategy
@@ -141,9 +141,9 @@ Review and customize as needed.
 
 ## Safety & Fallback
 
-- **No template**: Generate from scratch based on domain knowledge
-- **Security**: Never include secrets (load principles)
-- **Validation**: Ensure doesn't duplicate core steering content
+- No template: Generate from scratch based on domain knowledge
+- Security: Never include secrets (load principles)
+- Validation: Ensure doesn't duplicate core steering content
 
 ## Notes
 

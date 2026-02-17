@@ -10,9 +10,9 @@
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/nvim.md`](../../.claude/rules/tools/nvim.md) で管理されています。
 
-- **目的**: Claude AIが常に参照する簡潔なルール（26-31行）
-- **適用範囲**: YAML frontmatter `paths:` で定義
-- **関係**: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
+- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 適用範囲: YAML frontmatter `paths:` で定義
+- 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
 ## 🏆 2025年ベストプラクティス準拠度評価
 
@@ -73,9 +73,9 @@ require('lspconfig')[server].setup() -- 言語別詳細設定
 
 #### **優秀な設計パターン**
 
-- **完全Lua化**: Vimscriptの完全排除、2025年標準準拠
-- **階層化設計**: `init.lua` → `config/` → `plugins/` の明確な分離
-- **遅延読み込み戦略**: プラグインの条件付き・イベント駆動読み込み
+- 完全Lua化: Vimscriptの完全排除、2025年標準準拠
+- 階層化設計: `init.lua` → `config/` → `plugins/` の明確な分離
+- 遅延読み込み戦略: プラグインの条件付き・イベント駆動読み込み
 
 ```lua
 -- 現在の優秀なアーキテクチャ例
@@ -88,9 +88,9 @@ nvim/
 
 #### **高度な最適化戦略**
 
-- **段階的読み込み**: コア → UI → LSP → AI の優先度別読み込み
-- **大ファイル対策**: 2MB超ファイルでTreesitter無効化
-- **不要プロバイダー削除**: Python/Ruby プロバイダー無効化による軽量化
+- 段階的読み込み: コア → UI → LSP → AI の優先度別読み込み
+- 大ファイル対策: 2MB超ファイルでTreesitter無効化
+- 不要プロバイダー削除: Python/Ruby プロバイダー無効化による軽量化
 
 ### ⚡ **プラグイン選択品質: A+**
 
@@ -110,9 +110,9 @@ nvim/
 
 #### **優秀な点**
 
-- **言語幅の広さ**: 15言語対応は業界平均（8-10言語）を大幅上回る
-- **設定の柔軟性**: `local.lua`による環境固有カスタマイゼーション
-- **デバッグサポート**: `:checkhealth`, `:Lazy profile` による診断システム
+- 言語幅の広さ: 15言語対応は業界平均（8-10言語）を大幅上回る
+- 設定の柔軟性: `local.lua`による環境固有カスタマイゼーション
+- デバッグサポート: `:checkhealth`, `:Lazy profile` による診断システム
 
 #### **改善機会（微細レベル）**
 
@@ -137,10 +137,10 @@ nvim/
 
 ## 主要機能
 
-- **高性能**: lazy.nvim最適化による100ms未満起動
-- **LSP対応**: 15以上のプログラミング言語をフルサポート
-- **AI統合**: Supermaven-nvim
-- **モダンUI**: Telescope、nvim-tree、高速ナビゲーション
+- 高性能: lazy.nvim最適化による100ms未満起動
+- LSP対応: 15以上のプログラミング言語をフルサポート
+- AI統合: Supermaven-nvim
+- モダンUI: Telescope、nvim-tree、高速ナビゲーション
 
 ## パフォーマンス指標
 
@@ -204,26 +204,26 @@ K               -- ホバー表示
 
 ### コア
 
-- **lazy.nvim**: 遅延読み込みプラグインマネージャー
-- **nvim-lspconfig**: LSP設定
-- **mason.nvim**: LSPサーバー管理
+- lazy.nvim: 遅延読み込みプラグインマネージャー
+- nvim-lspconfig: LSP設定
+- mason.nvim: LSPサーバー管理
 
 ### UI・ナビゲーション
 
-- **telescope.nvim**: ファジーファインダー
-- **nvim-tree.lua**: ファイルエクスプローラー
-- **harpoon**: 高速ファイルナビゲーション
+- telescope.nvim: ファジーファインダー
+- nvim-tree.lua: ファイルエクスプローラー
+- harpoon: 高速ファイルナビゲーション
 
 ### AI・開発
 
-- **supermaven-nvim**: AI コード補完
-- **gitsigns.nvim**: Git統合
+- supermaven-nvim: AI コード補完
+- gitsigns.nvim: Git統合
 
 ## テーマ・UI
 
-- **メインテーマ**: Gruvbox（他ツールと統一）
-- **透明背景**: ターミナル統合
-- **ステータスライン**: モード、Gitブランチ、LSP状態、診断情報
+- メインテーマ: Gruvbox（他ツールと統一）
+- 透明背景: ターミナル統合
+- ステータスライン: モード、Gitブランチ、LSP状態、診断情報
 
 ## 最適化設定
 

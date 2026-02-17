@@ -203,9 +203,9 @@ Task(subagent_type="quality", ...)
 
 ### 命名規則
 
-- **kebab-case**: `command-name.md`
-- **説明的**: 名前から機能が推測できる
-- **一般的すぎない**: `helper` ではなく `import-resolver`
+- kebab-case: `command-name.md`
+- 説明的: 名前から機能が推測できる
+- 一般的すぎない: `helper` ではなく `import-resolver`
 
 ### ディレクトリ構造
 
@@ -227,8 +227,8 @@ commands/
 
 ### グループ化の基準
 
-- **機能的関連性**: 同じワークフローの一部
-- **ドメイン**: 特定領域に特化（kiro、clean、etc.）
+- 機能的関連性: 同じワークフローの一部
+- ドメイン: 特定領域に特化（kiro、clean、etc.）
 
 ## 統合ポイント
 
@@ -414,11 +414,11 @@ cp my-command.md .claude/commands/
 
 ## 関連リソース
 
-- **agent-creator skill**: サブエージェント定義の作成方法
-- **rules-creator skill**: コマンドが強制するルールの作成方法
-- **skill-creator skill**: より広いドメインの場合
-- **agents-and-commands skill**: エージェントとコマンドの違い
-- **integration-framework skill**: 統合パターン
+- agent-creator skill: サブエージェント定義の作成方法
+- rules-creator skill: コマンドが強制するルールの作成方法
+- skill-creator skill: より広いドメインの場合
+- agents-and-commands skill: エージェントとコマンドの違い
+- integration-framework skill: 統合パターン
 
 ---
 

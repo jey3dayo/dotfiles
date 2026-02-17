@@ -116,32 +116,32 @@ EOF
 
 ## 🛠️ ツール情報
 
-- **コマンド**: `tsr` (v1.3.4)
-- **パッケージ**: devDependenciesに含まれる
-- **対応言語**: TypeScript, JavaScript (React対応)
-- **検出方式**: TypeScriptコンパイラAPI + 静的解析
-- **設定システム**: カスケーディング設定ローダー
+- コマンド: `tsr` (v1.3.4)
+- パッケージ: devDependenciesに含まれる
+- 対応言語: TypeScript, JavaScript (React対応)
+- 検出方式: TypeScriptコンパイラAPI + 静的解析
+- 設定システム: カスケーディング設定ローダー
 
 ## 📋 主要機能
 
 ### 1. 未使用コード検出
 
-- **未使用エクスポート**: 他のファイルから参照されていないexport
-- **未使用ファイル**: プロジェクト内で一切使用されていないファイル
-- **エントリーポイント追跡**: 正規表現パターンでエントリーポイントを指定
+- 未使用エクスポート: 他のファイルから参照されていないexport
+- 未使用ファイル: プロジェクト内で一切使用されていないファイル
+- エントリーポイント追跡: 正規表現パターンでエントリーポイントを指定
 
 ### 2. 安全な削除ワークフロー
 
 - **検出モード** (`tsr`): 未使用コードをレポート(変更なし)
 - **削除モード** (`tsr --write`): 実際に削除を実行
 - **再帰モード** (`tsr --recursive`): クリーンになるまで繰り返し実行
-- **自動検証**: 設定に基づいて type-check/lint/test を自動実行
+- 自動検証: 設定に基づいて type-check/lint/test を自動実行
 
 ### 3. 誤検出の除外
 
-- **.tsrignore**: 誤検出パターンを定義
-- **フレームワーク自動除外**: Next.js/React特有のファイルを自動判定
-- **カスタムパターン**: プロジェクト固有の除外パターンを設定
+- .tsrignore: 誤検出パターンを定義
+- フレームワーク自動除外: Next.js/React特有のファイルを自動判定
+- カスタムパターン: プロジェクト固有の除外パターンを設定
 
 ## 🚀 基本的な使い方
 
@@ -466,25 +466,25 @@ pnpm tsr:fix
 
 ### 詳細ドキュメント
 
-- **config-loader.ts**: 設定ローダーの実装
-- **tsr-config.schema.json**: 設定スキーマ定義
-- **tsr-config.default.json**: デフォルト設定
-- **references/workflow.md**: 実行ワークフローの詳細
-- **references/tsrignore.md**: .tsrignore設定ガイド
-- **references/examples.md**: 実践例とユースケース
+- config-loader.ts: 設定ローダーの実装
+- tsr-config.schema.json: 設定スキーマ定義
+- tsr-config.default.json: デフォルト設定
+- references/workflow.md: 実行ワークフローの詳細
+- references/tsrignore.md: .tsrignore設定ガイド
+- references/examples.md: 実践例とユースケース
 
 ### 外部リソース
 
-- **TSRリポジトリ**: [GitHub - line/tsr](https://github.com/line/tsr)
-- **プロジェクト固有ガイド**: `CLAUDE.md`, `.claude/essential/integration-guide.md`
+- TSRリポジトリ: [GitHub - line/tsr](https://github.com/line/tsr)
+- プロジェクト固有ガイド: `CLAUDE.md`, `.claude/essential/integration-guide.md`
 
 ## 🎯 期待される成果
 
-- **コードベースのスリム化**: 未使用コードの削除により、保守性向上
-- **ビルド時間の短縮**: 不要なファイルの削除により、コンパイル時間削減
-- **バンドルサイズの削減**: 未使用コードの除去により、最終バンドルサイズ削減
-- **コードの可読性向上**: 使用されているコードのみが残り、理解しやすくなる
-- **設定の柔軟性**: プロジェクト固有とグローバル設定の統合管理
+- コードベースのスリム化: 未使用コードの削除により、保守性向上
+- ビルド時間の短縮: 不要なファイルの削除により、コンパイル時間削減
+- バンドルサイズの削減: 未使用コードの除去により、最終バンドルサイズ削減
+- コードの可読性向上: 使用されているコードのみが残り、理解しやすくなる
+- 設定の柔軟性: プロジェクト固有とグローバル設定の統合管理
 
 ## 🎓 実践的なワークフロー
 

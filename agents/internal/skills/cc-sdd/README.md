@@ -7,7 +7,7 @@ A standardized, configurable plugin for Kiro-style spec-driven development in Cl
 cc-sdd (Claude Code Spec-Driven Development) provides a structured, phase-based approach to software development with:
 
 - **Configurable directory structure** via `.kiro-config.json`
-- **3-phase workflow**: Steering → Specification → Implementation
+- 3-phase workflow: Steering → Specification → Implementation
 - **Progressive disclosure** for efficient context loading
 - **Multi-project support** with per-project customization
 
@@ -201,10 +201,10 @@ engineering/specs/guidelines/ + engineering/specs/projects/
 
 ## Documentation
 
-- **[SKILL.md](SKILL.md)** - Complete plugin documentation
-- **[MIGRATION.md](MIGRATION.md)** - Migration guide from legacy cc-sdd
-- **[shared/config-loader.md](shared/config-loader.md)** - Configuration system details
-- **[references/](references/)** - Detailed reference documentation
+- [SKILL.md](SKILL.md) - Complete plugin documentation
+- [MIGRATION.md](MIGRATION.md) - Migration guide from legacy cc-sdd
+- [shared/config-loader.md](shared/config-loader.md) - Configuration system details
+- [references/](references/) - Detailed reference documentation
   - `workflow.md` - Complete workflow details
   - `steering-system.md` - Steering system guide
   - `specification-system.md` - Specification system guide
@@ -226,11 +226,11 @@ Full schema available in `.kiro-config.schema.json`.
 
 Key configuration sections:
 
-- **paths**: Directory structure
-- **workflow**: Language, auto-approval, phase settings
-- **templates**: Template file paths
-- **rules**: Rule file paths
-- **validation**: Validation requirements
+- paths: Directory structure
+- workflow: Language, auto-approval, phase settings
+- templates: Template file paths
+- rules: Rule file paths
+- validation: Validation requirements
 
 ## Migration
 

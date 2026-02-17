@@ -14,9 +14,9 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 
 プロジェクトの高レベルコンテキストを提供。AI セッションで常時ロードされます。
 
-- **[Product Overview](../.kiro/steering/product.md)** - プロダクト概要、機能、ユースケース、価値提案
-- **[Technology Stack](../.kiro/steering/tech.md)** - アーキテクチャ、技術スタック、開発環境、コマンド
-- **[Project Structure](../.kiro/steering/structure.md)** - ディレクトリ構造、設計パターン、命名規則
+- [Product Overview](../.kiro/steering/product.md) - プロダクト概要、機能、ユースケース、価値提案
+- [Technology Stack](../.kiro/steering/tech.md) - アーキテクチャ、技術スタック、開発環境、コマンド
+- [Project Structure](../.kiro/steering/structure.md) - ディレクトリ構造、設計パターン、命名規則
 
 ### 📚 Detailed Documentation (Human Reference)
 
@@ -26,35 +26,35 @@ dotfiles プロジェクトのドキュメント体系へのナビゲーショ�
 
 #### 🚀 Getting Started
 
-- **[Setup Guide](setup.md)** - インストール、初期設定、検証手順
+- [Setup Guide](setup.md) - インストール、初期設定、検証手順
 
 #### 🔧 Operational Guides
 
-- **[Performance](performance.md)** - 詳細メトリクス、ベンチマーク、最適化履歴
-- **[Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md)** - 定期メンテナンス、トラブルシューティング、更新履歴
+- [Performance](performance.md) - 詳細メトリクス、ベンチマーク、最適化履歴
+- [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) - 定期メンテナンス、トラブルシューティング、更新履歴
 
 #### 📋 Documentation Governance
 
-- **[Documentation Rules](../.claude/rules/documentation-rules.md)** - タグ体系、メタデータ形式、品質基準
+- [Documentation Rules](../.claude/rules/documentation-rules.md) - タグ体系、メタデータ形式、品質基準
 
 #### 🛠️ Tool-Specific Documentation
 
 詳細な実装ガイド（SST）。対応するClaudeルールは [`.claude/rules/tools/`](../.claude/rules/tools/) を参照。
 
-- **[Git Configuration](tools/git.md)** - Git 設定の構成、include 順序、署名オプション ([Claude Rules](../.claude/rules/tools/git.md))
-- **[Zsh Configuration](tools/zsh.md)** - Shell layer: 最適化、プラグイン管理、パフォーマンス ([Claude Rules](../.claude/rules/tools/zsh.md))
-- **[Neovim Configuration](tools/nvim.md)** - Editor layer: LSP、AI支援、プラグイン最適化 ([Claude Rules](../.claude/rules/tools/nvim.md))
-- **[WezTerm Configuration](tools/wezterm.md)** - Terminal layer: 設定、キーバインド、統合 ([Claude Rules](../.claude/rules/tools/wezterm.md))
-- **[SSH Configuration](tools/ssh.md)** - 階層的設定、セキュリティ管理 ([Claude Rules](../.claude/rules/tools/ssh.md))
-- **[FZF Integration](tools/fzf-integration.md)** - クロスツール統合、ワークフロー（FZF/Git キーバインドのSST） ([Claude Rules](../.claude/rules/tools/fzf-integration.md))
+- [Git Configuration](tools/git.md) - Git 設定の構成、include 順序、署名オプション ([Claude Rules](../.claude/rules/tools/git.md))
+- [Zsh Configuration](tools/zsh.md) - Shell layer: 最適化、プラグイン管理、パフォーマンス ([Claude Rules](../.claude/rules/tools/zsh.md))
+- [Neovim Configuration](tools/nvim.md) - Editor layer: LSP、AI支援、プラグイン最適化 ([Claude Rules](../.claude/rules/tools/nvim.md))
+- [WezTerm Configuration](tools/wezterm.md) - Terminal layer: 設定、キーバインド、統合 ([Claude Rules](../.claude/rules/tools/wezterm.md))
+- [SSH Configuration](tools/ssh.md) - 階層的設定、セキュリティ管理 ([Claude Rules](../.claude/rules/tools/ssh.md))
+- [FZF Integration](tools/fzf-integration.md) - クロスツール統合、ワークフロー（FZF/Git キーバインドのSST） ([Claude Rules](../.claude/rules/tools/fzf-integration.md))
 
 ## 🧭 Single Source of Truth (SST)
 
-- **Setup**: `docs/setup.md` に全て集約（README ではリンクのみ）
-- **Performance**: `docs/performance.md` にメトリクス・履歴を一本化
-- **Maintenance**: `.claude/rules/workflows-and-maintenance.md` に定期/臨時タスクを集約
-- **Documentation rules**: `.claude/rules/documentation-rules.md` にタグ/メタデータ/チェックリストを集約
-- **Tool details**: `docs/tools/*.md` にツール固有の設定・最適化を集約
+- Setup: `docs/setup.md` に全て集約（README ではリンクのみ）
+- Performance: `docs/performance.md` にメトリクス・履歴を一本化
+- Maintenance: `.claude/rules/workflows-and-maintenance.md` に定期/臨時タスクを集約
+- Documentation rules: `.claude/rules/documentation-rules.md` にタグ/メタデータ/チェックリストを集約
+- Tool details: `docs/tools/*.md` にツール固有の設定・最適化を集約
 
 ## 🗺️ Quick Navigation
 

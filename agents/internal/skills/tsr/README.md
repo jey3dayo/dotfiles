@@ -165,11 +165,11 @@ See `references/workflow.md` for CI/CD integration examples.
 
 ## Documentation
 
-- **SKILL.md**: Complete skill documentation
-- **references/workflow.md**: Detailed workflow guide
-- **references/tsrignore.md**: .tsrignore configuration
-- **references/examples.md**: Real-world usage examples
-- **examples/README.md**: Configuration templates guide
+- SKILL.md: Complete skill documentation
+- references/workflow.md: Detailed workflow guide
+- references/tsrignore.md: .tsrignore configuration
+- references/examples.md: Real-world usage examples
+- examples/README.md: Configuration templates guide
 
 ## Configuration Schema
 

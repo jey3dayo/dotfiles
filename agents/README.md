@@ -27,10 +27,10 @@ agents/
 
 #### 内容
 
-- **skills/**: このリポジトリで開発・管理されているコアスキル
-- **commands/**: インタラクティブ操作用のスラッシュコマンド
-- **agents/**: 特殊タスク用のサブエージェント定義
-- **rules/**: プロジェクト固有のルールとガイドライン
+- skills/: このリポジトリで開発・管理されているコアスキル
+- commands/: インタラクティブ操作用のスラッシュコマンド
+- agents/: 特殊タスク用のサブエージェント定義
+- rules/: プロジェクト固有のルールとガイドライン
 
 **配布**: すべてのコンテンツは Home Manager を介して自動的に `~/.claude/` に配布されます
 
@@ -104,9 +104,9 @@ nix run .#validate
 
 ## 参考資料
 
-- **Nix 実装**: `agents/nix/README.md`
-- **Home Manager ルール**: `.claude/rules/home-manager.md`
-- **Agent Skills ソース**: `nix/agent-skills-sources.nix`
+- Nix 実装: `agents/nix/README.md`
+- Home Manager ルール: `.claude/rules/home-manager.md`
+- Agent Skills ソース: `nix/agent-skills-sources.nix`
 
 ---
 

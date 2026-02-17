@@ -62,10 +62,10 @@ Never include:
 
 ## Quality Standards
 
-- **Single domain**: One topic per file
-- **Concrete examples**: Show patterns with code
-- **Explain rationale**: Why decisions were made
-- **Maintainable size**: 100-200 lines typical
+- Single domain: One topic per file
+- Concrete examples: Show patterns with code
+- Explain rationale: Why decisions were made
+- Maintainable size: 100-200 lines typical
 
 ---
 
@@ -80,7 +80,7 @@ Never include:
 
 ## File-Specific Focus
 
-- **product.md**: Purpose, value, business context (not exhaustive features)
-- **tech.md**: Key frameworks, standards, conventions (not all dependencies)
-- **structure.md**: Organization patterns, naming rules (not directory trees)
-- **Custom files**: Specialized patterns (API, testing, security, etc.)
+- product.md: Purpose, value, business context (not exhaustive features)
+- tech.md: Key frameworks, standards, conventions (not all dependencies)
+- structure.md: Organization patterns, naming rules (not directory trees)
+- Custom files: Specialized patterns (API, testing, security, etc.)

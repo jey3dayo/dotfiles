@@ -18,8 +18,8 @@ This document provides comprehensive guidance on calculating `cols` and `width` 
 
 react-grid-layout uses a **grid unit system** for layout calculations:
 
-- **Grid Units**: Abstract units for positioning (x, y, w, h in Layout items)
-- **Pixels**: Actual screen dimensions (width, rowHeight in ReactGridLayout props)
+- Grid Units: Abstract units for positioning (x, y, w, h in Layout items)
+- Pixels: Actual screen dimensions (width, rowHeight in ReactGridLayout props)
 
 ### Conversion Formula
 
@@ -38,9 +38,9 @@ Pixel Width = (Grid Units × Row Height) + (Margins × (Grid Units - 1))
 >
 ```
 
-- **cols**: Defines the grid's column structure (logical)
-- **width**: Defines the container's pixel width (physical)
-- **rowHeight**: Converts grid units to pixels
+- cols: Defines the grid's column structure (logical)
+- width: Defines the container's pixel width (physical)
+- rowHeight: Converts grid units to pixels
 
 ## The Two Required Props
 
@@ -57,9 +57,9 @@ cols: number; // default: 12
 
 ### Common Values
 
-- **12**: Standard (Bootstrap-style) - highly divisible (1, 2, 3, 4, 6, 12)
-- **24**: Fine-grained control
-- **Dynamic**: Calculated from actual layout content (ASTA pattern)
+- 12: Standard (Bootstrap-style) - highly divisible (1, 2, 3, 4, 6, 12)
+- 24: Fine-grained control
+- Dynamic: Calculated from actual layout content (ASTA pattern)
 
 ### 2. width (Container Width in Pixels)
 

@@ -43,9 +43,9 @@ Evaluate: Scalability, complexity, migration path" \
 
 ### Tool Restrictions
 
-- **Read**: ファイル内容の読み取り
-- **Glob**: ファイルパターン検索
-- **Grep**: コード内容検索
+- Read: ファイル内容の読み取り
+- Glob: ファイルパターン検索
+- Grep: コード内容検索
 
 ### No writes
 
@@ -92,10 +92,10 @@ Output:
 
 ### Tool Restrictions
 
-- **Read**: コンテキスト収集
-- **Write**: 新規ファイル作成
-- **Edit**: 既存ファイル編集
-- **Glob/Grep**: 探索
+- Read: コンテキスト収集
+- Write: 新規ファイル作成
+- Edit: 既存ファイル編集
+- Glob/Grep: 探索
 
 ### Writes enabled
 

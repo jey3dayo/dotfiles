@@ -14,18 +14,18 @@ user-invocable: true
 
 ## 使用タイミング
 
-- **即座に記録が必要な場合（🔴🟠）**
+- 即座に記録が必要な場合（🔴🟠）
   - 重大なバグ修正・障害対応後
   - アーキテクチャ決定・設計パターン適用時
   - セキュリティ脆弱性の発見・対策時
   - パフォーマンス最適化の成功事例
 
-- **開発効率向上のために記録（🟡）**
+- 開発効率向上のために記録（🟡）
   - 効果的なテスト戦略の発見
   - デバッグ手法の改善
   - リンターエラーの修正パターン
 
-- **ベストプラクティスとして記録（🟢）**
+- ベストプラクティスとして記録（🟢）
   - クリーンなコード設計の発見
   - 再利用可能なコンポーネントの実装
   - データベース設計の最適化
@@ -129,9 +129,9 @@ user-invocable: true
 
 ## 定量的効果
 
-- **同一エラーの再発防止率**: 95%以上
-- **実装時間の短縮**: 平均30%
-- **コードレビュー指摘事項の削減**: 40%
+- 同一エラーの再発防止率: 95%以上
+- 実装時間の短縮: 平均30%
+- コードレビュー指摘事項の削減: 40%
 
 ## プライバシー・セキュリティ
 
@@ -150,11 +150,11 @@ user-invocable: true
 
 ## 詳細リファレンス
 
-- **カテゴリ詳細**: `references/learning-categories.md`
-- **記録プロセス**: `references/recording-process.md`
-- **活用パターン**: `references/usage-patterns.md`
-- **記録例**: `examples/learning-records.md`
-- **統合ワークフロー**: `examples/integration-workflows.md`
+- カテゴリ詳細: `references/learning-categories.md`
+- 記録プロセス: `references/recording-process.md`
+- 活用パターン: `references/usage-patterns.md`
+- 記録例: `examples/learning-records.md`
+- 統合ワークフロー: `examples/integration-workflows.md`
 
 ---
 

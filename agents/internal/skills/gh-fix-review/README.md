@@ -57,10 +57,10 @@ Create a `.pr-review-config.json` file in your project root or home directory:
 
 Define custom keywords for each priority level:
 
-- **Critical**: Security vulnerabilities, crashes, data loss
-- **High**: Important bugs, blocking issues
-- **Major**: Improvements, optimizations
-- **Minor**: Style fixes, typos
+- Critical: Security vulnerabilities, crashes, data loss
+- High: Important bugs, blocking issues
+- Major: Improvements, optimizations
+- Minor: Style fixes, typos
 
 ### Flexible Category System
 
@@ -195,10 +195,10 @@ echo ".pr-review-config.json" >> .gitignore
 
 This skill integrates with:
 
-- **GitHub CLI** - PR and review comment retrieval
-- **TodoWrite** - Progress tracking
-- **Quality Gates** - Automated quality checks
-- **Agent Selector** - Optimal agent selection for fixes
+- GitHub CLI - PR and review comment retrieval
+- TodoWrite - Progress tracking
+- Quality Gates - Automated quality checks
+- Agent Selector - Optimal agent selection for fixes
 
 ## Generalization Features
 

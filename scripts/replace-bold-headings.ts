@@ -97,6 +97,10 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
     // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
     const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
 
+    // Bold labels in unordered list items are normalized to plain text.
+    // Example: "- **Text**:" -> "- Text:"
+    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
+
     let inFence = false;
     let fenceChar = "";
     let fenceLen = 0;
@@ -129,6 +133,17 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
         const prefix = listLabelMatch[1];
         const text = listLabelMatch[2];
         const suffix = listLabelMatch[3] ?? "";
+        if (!text.includes("**")) {
+          fileReplacements += 1;
+          return `${prefix}${text}${suffix}`;
+        }
+      }
+
+      const unorderedListLabelMatch = line.match(boldUnorderedListLabel);
+      if (unorderedListLabelMatch) {
+        const prefix = unorderedListLabelMatch[1];
+        const text = unorderedListLabelMatch[2];
+        const suffix = unorderedListLabelMatch[3] ?? "";
         if (!text.includes("**")) {
           fileReplacements += 1;
           return `${prefix}${text}${suffix}`;

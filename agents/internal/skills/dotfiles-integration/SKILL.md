@@ -20,9 +20,9 @@ Assess the three-layer architecture and interactions:
 
 #### Primary Technologies (Core Layer)
 
-- **Zsh**: Shell foundation (startup time: 1.1s target <100ms)
-- **Neovim**: Editor (startup time: <100ms)
-- **WezTerm**: Terminal (startup time: 800ms target <1s)
+- Zsh: Shell foundation (startup time: 1.1s target <100ms)
+- Neovim: Editor (startup time: <100ms)
+- WezTerm: Terminal (startup time: 800ms target <1s)
 
 #### Integration Quality
 
@@ -389,11 +389,11 @@ When reviewing dotfiles integration:
 
 ## Integration with Related Skills
 
-- **zsh skill**: For shell layer optimization and plugin management
-- **nvim skill**: For editor layer configuration and LSP integration
-- **wezterm skill**: For terminal layer and GPU optimization
-- **code-review skill**: For overall quality assessment framework
-- **semantic-analysis skill**: For dependency graph analysis
+- zsh skill: For shell layer optimization and plugin management
+- nvim skill: For editor layer configuration and LSP integration
+- wezterm skill: For terminal layer and GPU optimization
+- code-review skill: For overall quality assessment framework
+- semantic-analysis skill: For dependency graph analysis
 
 ## Reference Material
 

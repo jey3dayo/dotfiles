@@ -202,7 +202,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 **原因1**: 別の flake から `home-manager switch` を実行した
 
 - Generation が上書きされ、`~/.config` の設定が反映されていない
-- **対策**: `~/.config` から再度 switch を実行
+- 対策: `~/.config` から再度 switch を実行
 
   ```bash
   home-manager switch --flake ~/.config --impure
@@ -211,7 +211,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 **原因2**: flake.nix と agent-skills-sources.nix の不整合
 
 - 手動同期が必要な URL/flake 属性が一致していない
-- **確認**: 両ファイルの URL 一覧を比較
+- 確認: 両ファイルの URL 一覧を比較
 
   ```bash
   # agent-skills-sources.nix の URL 一覧
@@ -221,20 +221,20 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
   rg 'url = "github:.*skills' flake.nix
   ```
 
-- **対策**: 不一致箇所を手動同期（agent-skills-sources.nix → flake.nix）
+- 対策: 不一致箇所を手動同期（agent-skills-sources.nix → flake.nix）
 
 **原因3**: selection.enable の設定ミス
 
 - スキル名が catalog に存在しない、またはタイポ
 
-- **確認**: スキル名が catalog に存在するか
+- 確認: スキル名が catalog に存在するか
 
   ```bash
 
   mise run skills:report
   ```
 
-- **対策**: `nix/agent-skills-sources.nix` の `selection.enable` を修正
+- 対策: `nix/agent-skills-sources.nix` の `selection.enable` を修正
 
 **参考**: `~/.claude/rules/troubleshooting.md` の「Nix Home Manager でスキルが配布されない」セクション
 
@@ -365,8 +365,8 @@ home-manager build --flake ~/.config --impure --show-trace 2>&1 | grep -A 5 "cle
 
 #### 対策
 
-- **除外されるべきファイルが含まれる**: `.gitignore` にパターン追加
-- **必要なファイルが除外される**:
+- 除外されるべきファイルが含まれる: `.gitignore` にパターン追加
+- 必要なファイルが除外される:
   - `.gitignore` から削除、または
   - `xdgConfigFiles` で個別管理（mise, tmux, gh パターン参照）
 
@@ -500,10 +500,10 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 Agent Skillsは以下の4段階で統合・配布されます：
 
 1. Sources統合: `discoverCatalog` (lib.nix L105-127)
-   - **Distributions**: `agents/internal/` （バンドル層、オプション）
-   - **Internal skills**: `agents/internal/skills/`
-   - **External skills**: Flake inputs → `agents/external/` （symlinks）
-   - **優先度**: Local > External > Distribution
+   - Distributions: `agents/internal/` （バンドル層、オプション）
+   - Internal skills: `agents/internal/skills/`
+   - External skills: Flake inputs → `agents/external/` （symlinks）
+   - 優先度: Local > External > Distribution
    - Conflict detection: External間の重複検出
    - Local overrides: Internal skills が External/Distribution を上書き
 
@@ -525,11 +525,11 @@ Agent Skillsは以下の4段階で統合・配布されます：
 
 Commands（slash commands）の配布フロー:
 
-- **Source**: `agents/internal/commands/` （43ファイル、subdirectories対応）
-- **Bundle**: `commandsBundle` (module.nix L32-43)
+- Source: `agents/internal/commands/` （43ファイル、subdirectories対応）
+- Bundle: `commandsBundle` (module.nix L32-43)
   - `.md`ファイルのみフィルタリング
   - Subdirectory構造を維持（`clean/`, `kiro/`, `shared/`）
-- **配布**: Recursive symlinks (module.nix L199-231)
+- 配布: Recursive symlinks (module.nix L199-231)
   - `~/.claude/commands/` へ配布
 
 **実装**: `nix/module.nix` L32-43, L199-231
@@ -538,8 +538,8 @@ Commands（slash commands）の配布フロー:
 
 Target-specific名前変更に対応（2025-02-11実装）:
 
-- **Source**: `CLAUDE.md` (リポジトリルート)
-- **配布**: `configFiles` (module.nix L245-261)
+- Source: `CLAUDE.md` (リポジトリルート)
+- 配布: `configFiles` (module.nix L245-261)
   - Claude Code: `~/.claude/CLAUDE.md`
   - OpenCode: `~/.opencode/AGENTS.md` （名前変更）
   - その他: 各targetの設定ファイル名に変換

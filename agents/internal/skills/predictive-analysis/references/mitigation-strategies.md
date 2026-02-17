@@ -175,9 +175,9 @@ function findDuplicates(arr) {
 
 ### 最適化パターン
 
-- **配列 → Set/Map**: O(n) の検索が必要な場合
-- **ネストループ → 単一ループ**: データの前処理で解決
-- **再帰 → ループ**: スタックオーバーフロー回避
+- 配列 → Set/Map: O(n) の検索が必要な場合
+- ネストループ → 単一ループ: データの前処理で解決
+- 再帰 → ループ: スタックオーバーフロー回避
 
 ### N+1クエリ問題の解決
 
@@ -338,9 +338,9 @@ function processOrder(order, user, config) {
 
 ### リファクタリングパターン
 
-- **Extract Method**: 長い関数を小さな関数に分割
-- **Replace Nested Conditional with Guard Clauses**: 早期リターンで浅いネスト
-- **Replace Conditional with Polymorphism**: 条件分岐をクラス階層に変換
+- Extract Method: 長い関数を小さな関数に分割
+- Replace Nested Conditional with Guard Clauses: 早期リターンで浅いネスト
+- Replace Conditional with Polymorphism: 条件分岐をクラス階層に変換
 
 ### コード重複の解消
 

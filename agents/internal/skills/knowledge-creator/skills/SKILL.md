@@ -105,10 +105,10 @@ skill-name/
 
 ### Structure Components
 
-- **SKILL.md**: YAML frontmatter + instructions (required)
-- **scripts/**: Automation workflows, validation tools (recommended)
-- **references/**: Detailed documentation (optional, for complex topics)
-- **assets/**: Templates, config files (optional)
+- SKILL.md: YAML frontmatter + instructions (required)
+- scripts/: Automation workflows, validation tools (recommended)
+- references/: Detailed documentation (optional, for complex topics)
+- assets/: Templates, config files (optional)
 
 ### Examples
 
@@ -207,10 +207,10 @@ User provides natural language description:
 
 System analyzes:
 
-- **Keywords**: "migrate", "npm packages", "mise"
-- **Context**: Tool management, configuration
-- **Reusability**: High (applicable to any mise project)
-- **Execution**: Reference material, not automated
+- Keywords: "migrate", "npm packages", "mise"
+- Context: Tool management, configuration
+- Reusability: High (applicable to any mise project)
+- Execution: Reference material, not automated
 
 ### Classification Confidence
 
@@ -342,9 +342,9 @@ Some knowledge may fit multiple categories:
 
 ### Confidence Thresholds
 
-- **≥ 90%**: Direct recommendation
-- **70-89%**: Present top 2 options with trade-offs
-- **< 70%**: Ask clarifying questions
+- ≥ 90%: Direct recommendation
+- 70-89%: Present top 2 options with trade-offs
+- < 70%: Ask clarifying questions
 
 ### Clarifying Questions
 
@@ -464,9 +464,9 @@ For in-depth classification logic and Agent Skills standards, see:
 
 ### External Resources
 
-- **Agent Skills Specification**: <https://agentskills.io>
-- **What Are Agent Skills**: <https://agentskills.io/what-are-skills>
-- **OpenAI Codex Skills**: <https://developers.openai.com/codex/skills/>
+- Agent Skills Specification: <https://agentskills.io>
+- What Are Agent Skills: <https://agentskills.io/what-are-skills>
+- OpenAI Codex Skills: <https://developers.openai.com/codex/skills/>
 
 ## 🤖 Agent Integration
 
@@ -474,15 +474,15 @@ This skill provides knowledge classification to agents and commands:
 
 ### Orchestrator Agent
 
-- **Context**: Knowledge format recommendations
-- **Timing**: When creating documentation structure
-- **Use Case**: Planning documentation architecture
+- Context: Knowledge format recommendations
+- Timing: When creating documentation structure
+- Use Case: Planning documentation architecture
 
 ### Error-Fixer Agent
 
-- **Context**: Misclassified knowledge detection
-- **Timing**: When reviewing documentation structure
-- **Use Case**: Suggesting reclassification
+- Context: Misclassified knowledge detection
+- Timing: When reviewing documentation structure
+- Use Case: Suggesting reclassification
 
 ### 自動ロード条件
 
@@ -504,8 +504,8 @@ Activate this skill when:
 
 ## See Also
 
-- **skill-creator** - Create new skills with Progressive Disclosure
-- **agent-creator** - Create autonomous task agents
-- **command-creator** - Create interactive user commands
-- **rules-creator** - Create project rules and steering documents
-- **Integration Framework** - TaskContext and agent/command integration patterns
+- skill-creator - Create new skills with Progressive Disclosure
+- agent-creator - Create autonomous task agents
+- command-creator - Create interactive user commands
+- rules-creator - Create project rules and steering documents
+- Integration Framework - TaskContext and agent/command integration patterns

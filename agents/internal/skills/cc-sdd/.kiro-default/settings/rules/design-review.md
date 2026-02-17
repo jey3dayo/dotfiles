@@ -6,11 +6,11 @@ Conduct interactive quality review of technical design documents to ensure they 
 
 ## Review Philosophy
 
-- **Quality assurance, not perfection seeking**
-- **Critical focus**: Limit to 3 most important concerns
-- **Interactive dialogue**: Engage with designer, not one-way evaluation
-- **Balanced assessment**: Recognize strengths and weaknesses
-- **Clear decision**: Definitive GO/NO-GO with rationale
+- Quality assurance, not perfection seeking
+- Critical focus: Limit to 3 most important concerns
+- Interactive dialogue: Engage with designer, not one-way evaluation
+- Balanced assessment: Recognize strengths and weaknesses
+- Clear decision: Definitive GO/NO-GO with rationale
 
 ## Scope & Non-Goals
 
@@ -72,8 +72,8 @@ Acknowledge 1-2 strong aspects to maintain balanced feedback.
 
 ### Step 4: Decide GO/NO-GO
 
-- **GO**: No critical architectural misalignment, requirements addressed, clear implementation path, acceptable risks
-- **NO-GO**: Fundamental conflicts, critical gaps, high failure risk, disproportionate complexity
+- GO: No critical architectural misalignment, requirements addressed, clear implementation path, acceptable risks
+- NO-GO: Fundamental conflicts, critical gaps, high failure risk, disproportionate complexity
 
 ## Traceability & Evidence
 
@@ -121,6 +121,6 @@ Engage on designer's perspective, alternatives, clarifications, and necessary ch
 ## Final Checklist
 
 - **Critical Issues ≤ 3** and each includes Impact and Recommendation
-- **Traceability**: Each issue references requirement ID/section
-- **Evidence**: Each issue cites design doc location
-- **Decision**: GO/NO-GO with clear rationale and next steps
+- Traceability: Each issue references requirement ID/section
+- Evidence: Each issue cites design doc location
+- Decision: GO/NO-GO with clear rationale and next steps

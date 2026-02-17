@@ -81,9 +81,9 @@ Check `.kiro/steering/` status:
 1. Load all existing steering (`.kiro/steering/*.md`)
 2. Analyze codebase for changes (JIT)
 3. Detect drift:
-   - **Steering → Code**: Missing elements → Warning
-   - **Code → Steering**: New patterns → Update candidate
-   - **Custom files**: Check relevance
+   - Steering → Code: Missing elements → Warning
+   - Code → Steering: New patterns → Update candidate
+   - Custom files: Check relevance
 4. Propose updates (additive, preserve user content)
 5. Report: Updates, warnings, recommendations
 
@@ -161,9 +161,9 @@ Review and approve as Source of Truth.
 
 ## Safety & Fallback
 
-- **Security**: Never include keys, passwords, secrets (see principles)
-- **Uncertainty**: Report both states, ask user
-- **Preservation**: Add rather than replace when in doubt
+- Security: Never include keys, passwords, secrets (see principles)
+- Uncertainty: Report both states, ask user
+- Preservation: Add rather than replace when in doubt
 
 ## Notes
 

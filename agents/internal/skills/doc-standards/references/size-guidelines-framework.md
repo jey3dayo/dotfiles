@@ -393,9 +393,9 @@ Projects can provide real-world split examples in:
 
 ## Integration with Other Frameworks
 
-- **Metadata template**: Update metadata for each split document
-- **Tag system**: Apply appropriate tags per split strategy
-- **Quality checks**: Validate post-split quality
+- Metadata template: Update metadata for each split document
+- Tag system: Apply appropriate tags per split strategy
+- Quality checks: Validate post-split quality
 
 ---
 

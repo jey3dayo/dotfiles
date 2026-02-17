@@ -9,8 +9,8 @@ description: Claude Code Marketplace構築支援。カテゴリバンドル管�
 
 以下のキーワードを検出した場合、このスキルを自動的にロードします：
 
-- **日本語**: "marketplace", "マーケットプレイス", "プラグイン追加", "バンドル", "plugin.json", "marketplace.json"
-- **English**: "marketplace", "plugin", "bundle", "category bundle", "marketplace.json"
+- 日本語: "marketplace", "マーケットプレイス", "プラグイン追加", "バンドル", "plugin.json", "marketplace.json"
+- English: "marketplace", "plugin", "bundle", "category bundle", "marketplace.json"
 
 ## スキルの目的
 
@@ -254,8 +254,8 @@ plugins/{category}/{plugin}/
 
 ### どちらを選ぶべきか
 
-- **パターンA**: references/resources/が多い、将来的に拡張予定
-- **パターンB**: 小規模、シンプルな構造で十分
+- パターンA: references/resources/が多い、将来的に拡張予定
+- パターンB: 小規模、シンプルな構造で十分
 
 ## 構造検証
 
@@ -408,9 +408,9 @@ ls -la plugins/{category}/{plugin_name}/
 }
 ```
 
-- **MAJOR**: 破壊的変更
-- **MINOR**: 機能追加（後方互換性あり）
-- **PATCH**: バグ修正
+- MAJOR: 破壊的変更
+- MINOR: 機能追加（後方互換性あり）
+- PATCH: バグ修正
 
 ## 自動化スクリプト例
 

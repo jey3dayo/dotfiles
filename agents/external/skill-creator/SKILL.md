@@ -87,30 +87,30 @@ Every SKILL.md consists of:
 
 Executable code (Python/Bash/etc.) for tasks that require deterministic reliability or are repeatedly rewritten.
 
-- **When to include**: When the same code is being rewritten repeatedly or deterministic reliability is needed
-- **Example**: `scripts/rotate_pdf.py` for PDF rotation tasks
-- **Benefits**: Token efficient, deterministic, may be executed without loading into context
-- **Note**: Scripts may still need to be read by Codex for patching or environment-specific adjustments
+- When to include: When the same code is being rewritten repeatedly or deterministic reliability is needed
+- Example: `scripts/rotate_pdf.py` for PDF rotation tasks
+- Benefits: Token efficient, deterministic, may be executed without loading into context
+- Note: Scripts may still need to be read by Codex for patching or environment-specific adjustments
 
 ##### References (`references/`)
 
 Documentation and reference material intended to be loaded as needed into context to inform Codex's process and thinking.
 
-- **When to include**: For documentation that Codex should reference while working
-- **Examples**: `references/finance.md` for financial schemas, `references/mnda.md` for company NDA template, `references/policies.md` for company policies, `references/api_docs.md` for API specifications
-- **Use cases**: Database schemas, API documentation, domain knowledge, company policies, detailed workflow guides
-- **Benefits**: Keeps SKILL.md lean, loaded only when Codex determines it's needed
-- **Best practice**: If files are large (>10k words), include grep search patterns in SKILL.md
-- **Avoid duplication**: Information should live in either SKILL.md or references files, not both. Prefer references files for detailed information unless it's truly core to the skill—this keeps SKILL.md lean while making information discoverable without hogging the context window. Keep only essential procedural instructions and workflow guidance in SKILL.md; move detailed reference material, schemas, and examples to references files.
+- When to include: For documentation that Codex should reference while working
+- Examples: `references/finance.md` for financial schemas, `references/mnda.md` for company NDA template, `references/policies.md` for company policies, `references/api_docs.md` for API specifications
+- Use cases: Database schemas, API documentation, domain knowledge, company policies, detailed workflow guides
+- Benefits: Keeps SKILL.md lean, loaded only when Codex determines it's needed
+- Best practice: If files are large (>10k words), include grep search patterns in SKILL.md
+- Avoid duplication: Information should live in either SKILL.md or references files, not both. Prefer references files for detailed information unless it's truly core to the skill—this keeps SKILL.md lean while making information discoverable without hogging the context window. Keep only essential procedural instructions and workflow guidance in SKILL.md; move detailed reference material, schemas, and examples to references files.
 
 ##### Assets (`assets/`)
 
 Files not intended to be loaded into context, but rather used within the output Codex produces.
 
-- **When to include**: When the skill needs files that will be used in the final output
-- **Examples**: `assets/logo.png` for brand assets, `assets/slides.pptx` for PowerPoint templates, `assets/frontend-template/` for HTML/React boilerplate, `assets/font.ttf` for typography
-- **Use cases**: Templates, images, icons, boilerplate code, fonts, sample documents that get copied or modified
-- **Benefits**: Separates output resources from documentation, enables Codex to use files without loading them into context
+- When to include: When the skill needs files that will be used in the final output
+- Examples: `assets/logo.png` for brand assets, `assets/slides.pptx` for PowerPoint templates, `assets/frontend-template/` for HTML/React boilerplate, `assets/font.ttf` for typography
+- Use cases: Templates, images, icons, boilerplate code, fonts, sample documents that get copied or modified
+- Benefits: Separates output resources from documentation, enables Codex to use files without loading them into context
 
 #### What to Not Include in a Skill
 
@@ -209,8 +209,8 @@ Codex reads REDLINING.md or OOXML.md only when the user needs those features.
 
 ### Important guidelines:
 
-- **Avoid deeply nested references** - Keep references one level deep from SKILL.md. All reference files should link directly from SKILL.md.
-- **Structure longer reference files** - For files longer than 100 lines, include a table of contents at the top so Codex can see the full scope when previewing.
+- Avoid deeply nested references - Keep references one level deep from SKILL.md. All reference files should link directly from SKILL.md.
+- Structure longer reference files - For files longer than 100 lines, include a table of contents at the top so Codex can see the full scope when previewing.
 
 ## Skill Creation Process
 
@@ -322,8 +322,8 @@ When editing the (newly-generated or existing) skill, remember that the skill is
 
 Consult these helpful guides based on your skill's needs:
 
-- **Multi-step processes**: See references/workflows.md for sequential workflows and conditional logic
-- **Specific output formats or quality standards**: See references/output-patterns.md for template and example patterns
+- Multi-step processes: See references/workflows.md for sequential workflows and conditional logic
+- Specific output formats or quality standards: See references/output-patterns.md for template and example patterns
 
 These files contain established best practices for effective skill design.
 

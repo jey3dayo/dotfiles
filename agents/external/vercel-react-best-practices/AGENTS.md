@@ -2179,13 +2179,13 @@ function SearchResults() {
 
 ### Benefits:
 
-- **Automatic pending state**: No need to manually manage `setIsLoading(true/false)`
+- Automatic pending state: No need to manually manage `setIsLoading(true/false)`
 
-- **Error resilience**: Pending state correctly resets even if the transition throws
+- Error resilience: Pending state correctly resets even if the transition throws
 
-- **Better responsiveness**: Keeps the UI responsive during updates
+- Better responsiveness: Keeps the UI responsive during updates
 
-- **Interrupt handling**: New transitions automatically cancel pending ones
+- Interrupt handling: New transitions automatically cancel pending ones
 
 Reference: [https://react.dev/reference/react/useTransition](https://react.dev/reference/react/useTransition)
 

@@ -96,8 +96,8 @@ def detect_domain(text: str) -> str:
 
 ## Fallback Strategy
 
-- **複数ドメインに該当**: スコアが最も高いドメインを選択
-- **どのドメインにも該当しない**: デフォルトで`web-development`を返す
+- 複数ドメインに該当: スコアが最も高いドメインを選択
+- どのドメインにも該当しない: デフォルトで`web-development`を返す
   - 理由: Web開発が最も一般的なユースケース
 
 ## Multi-Domain Projects

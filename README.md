@@ -8,7 +8,7 @@ High-performance development environment tuned for speed, consistency, and devel
 
 ## Highlights
 
-- **Declarative Configuration**: Home Manager-based deployment with automatic environment detection (CI/Pi/Default)
+- Declarative Configuration: Home Manager-based deployment with automatic environment detection (CI/Pi/Default)
 - Performance-first dotfiles with local CI parity (`mise run ci`) before merges
 - Documentation centralized in `docs/` with navigation at `docs/README.md` and AI context in `.kiro/steering/`
 - Modular stack: Zsh (6-tier), Neovim (Lazy.nvim), WezTerm (tmux-style) with FZF-backed Git widgets
@@ -115,11 +115,11 @@ If Homebrew is already installed, skip bootstrap and follow docs/setup.md direct
 
 ## Core Stack
 
-- **Zsh + Sheldon**: 6-tier priority loading with mise-aware PATH optimization and 50+ Git abbreviations/widgets
-- **Neovim + Lazy.nvim**: AI assistance (Supermaven) with LSP-heavy yet fast startup
-- **WezTerm**: Primary terminal with Lua config and tmux-style workflow; Alacritty as GPU-accelerated alternative
-- **Git + FZF**: Widgets and fuzzy pickers for repo/status/add flows
-- **Versioning**: Mise for language runtimes; Homebrew for system packages
+- Zsh + Sheldon: 6-tier priority loading with mise-aware PATH optimization and 50+ Git abbreviations/widgets
+- Neovim + Lazy.nvim: AI assistance (Supermaven) with LSP-heavy yet fast startup
+- WezTerm: Primary terminal with Lua config and tmux-style workflow; Alacritty as GPU-accelerated alternative
+- Git + FZF: Widgets and fuzzy pickers for repo/status/add flows
+- Versioning: Mise for language runtimes; Homebrew for system packages
 
 ## Architecture
 

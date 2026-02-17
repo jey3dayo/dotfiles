@@ -422,6 +422,6 @@ vim.g.node_host_prog = vim.fn.expand("~/.local/share/mise/installs/node/latest/b
 
 ## Related Documents
 
-- **Detailed Guide**: `references/tool-management.md`
-- **Configuration Template**: `resources/templates/mise-config-template.toml`
-- **Task Aliases**: See `SKILL.md` Section 5
+- Detailed Guide: `references/tool-management.md`
+- Configuration Template: `resources/templates/mise-config-template.toml`
+- Task Aliases: See `SKILL.md` Section 5

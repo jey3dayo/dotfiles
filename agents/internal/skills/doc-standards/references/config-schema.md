@@ -178,7 +178,7 @@ response:
   - `"references/tag-taxonomy.md"` (in `.claude/doc-standards/`)
   - `"../skills/doc-standards/references/tag-taxonomy.md"` (in `.claude/skills/doc-standards/`)
 - Required: Yes
-- **Note**: File must exist and define project's specific tag values
+- Note: File must exist and define project's specific tag values
 
 ---
 

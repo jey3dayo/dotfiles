@@ -271,28 +271,28 @@ pnpm validate:layers
 
 ### 品質保証の必須条件
 
-- **型エラー0件必須**: `pnpm type-check` でエラーなし
-- **リント違反0件必須**: `pnpm lint` でエラーなし
-- **全テスト成功必須**: `pnpm test` で全テストパス
-- **Result<T,E>パターン準拠**: エラーハンドリングの統一
+- 型エラー0件必須: `pnpm type-check` でエラーなし
+- リント違反0件必須: `pnpm lint` でエラーなし
+- 全テスト成功必須: `pnpm test` で全テストパス
+- Result<T,E>パターン準拠: エラーハンドリングの統一
 
 ### 実装制約
 
-- **Prisma使用制限**:
+- Prisma使用制限:
   - Server Component層: Service層経由必須
   - Client Component層: 使用不可
   - Service層: 直接使用OK
 
-- **Server Actions統合**:
+- Server Actions統合:
   - FormData検証: Zodスキーマ使用
   - エラーハンドリング: `localizeServiceError()`
   - 型変換: `toServerActionResult()`
 
 ### テスト戦略（Testing Trophy）
 
-- **静的解析（基盤）**: 型システム厳格設定、動的型排除
-- **統合テスト（メイン）**: ユーザー操作シナリオ、AAAパターン厳守
-- **ユニット/E2E テスト（最小限）**: 純粋関数・重要フローのみ
+- 静的解析（基盤）: 型システム厳格設定、動的型排除
+- 統合テスト（メイン）: ユーザー操作シナリオ、AAAパターン厳守
+- ユニット/E2E テスト（最小限）: 純粋関数・重要フローのみ
 
 ## 📊 品質メトリクス
 

@@ -353,9 +353,9 @@ When reviewing WezTerm configurations:
 
 ### Code-Reviewer Agent
 
-- **提供内容**: WezTerm設定品質評価、GPU最適化検証、テーマ統合確認
-- **タイミング**: WezTerm設定レビュー時
-- **コンテキスト**:
+- 提供内容: WezTerm設定品質評価、GPU最適化検証、テーマ統合確認
+- タイミング: WezTerm設定レビュー時
+- コンテキスト:
   - ⭐️5段階評価（GPU設定、キーバインディング、テーマ統合、クロスプラットフォーム対応）
   - WebGpu front-end検証
   - Gruvboxテーマ一貫性チェック
@@ -363,15 +363,15 @@ When reviewing WezTerm configurations:
 
 ### Orchestrator Agent
 
-- **提供内容**: WezTerm設定最適化計画、モジュール構成設計
-- **タイミング**: WezTerm設定改善・最適化時
-- **コンテキスト**: GPU設定最適化、キーバインディング設計、テーマ統合、プラットフォーム対応
+- 提供内容: WezTerm設定最適化計画、モジュール構成設計
+- タイミング: WezTerm設定改善・最適化時
+- コンテキスト: GPU設定最適化、キーバインディング設計、テーマ統合、プラットフォーム対応
 
 ### Error-Fixer Agent
 
-- **提供内容**: WezTerm設定エラー修正、Lua構文修正
-- **タイミング**: WezTerm起動エラー・設定エラー対応時
-- **コンテキスト**: 設定エラー診断、Lua構文修正、GPU設定修正
+- 提供内容: WezTerm設定エラー修正、Lua構文修正
+- タイミング: WezTerm起動エラー・設定エラー対応時
+- コンテキスト: 設定エラー診断、Lua構文修正、GPU設定修正
 
 ### 自動ロード条件
 
@@ -400,10 +400,10 @@ TaskContext作成
 
 ## Integration with Related Skills
 
-- **code-review skill**: For overall quality assessment
-- **zsh skill**: For shell integration and theme consistency
-- **nvim skill**: For editor integration and theme alignment
-- **dotfiles-integration skill**: For cross-tool theming and productivity workflows
+- code-review skill: For overall quality assessment
+- zsh skill: For shell integration and theme consistency
+- nvim skill: For editor integration and theme alignment
+- dotfiles-integration skill: For cross-tool theming and productivity workflows
 
 ## Reference Material
 

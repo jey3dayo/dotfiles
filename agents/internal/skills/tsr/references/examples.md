@@ -430,9 +430,9 @@ Average per run: 28.5
 
 ## 🔗 関連リソース
 
-- **メインスキル**: `../skill.md`
-- **ワークフロー**: `workflow.md`
-- **.tsrignore設定**: `tsrignore.md`
+- メインスキル: `../skill.md`
+- ワークフロー: `workflow.md`
+- .tsrignore設定: `tsrignore.md`
 
 ---
 
