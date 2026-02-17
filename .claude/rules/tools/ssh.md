@@ -19,7 +19,7 @@ Purpose: enforce secure SSH configuration hierarchy. Scope: config locations, in
 
 ### Platform-specific settings
 
-**macOS (30-macos.sshconfig)**:
+#### macOS (30-macos.sshconfig)
 
 - macOS-specific settings (UseKeychain, OrbStack, Colima) managed via ssh/config.d/30-macos.sshconfig
 - Git managed (committed): setup.sh実行後すぐに設定反映
@@ -27,7 +27,7 @@ Purpose: enforce secure SSH configuration hierarchy. Scope: config locations, in
 - Linux/WSL2: ファイルは存在するがMatch失敗により設定無視（エラーなし）
 - OrbStack/Colima: 30-macos.sshconfig内でMatch判定により条件付きInclude
 
-**Linux/WSL2 (31-linux.sshconfig)**:
+#### Linux/WSL2 (31-linux.sshconfig)
 
 - Linux/WSL2-specific settings managed via ssh/config.d/31-linux.sshconfig
 - Currently empty placeholder for future extensions

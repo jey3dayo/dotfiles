@@ -11,7 +11,7 @@ When comparing arrays with expensive operations (sorting, deep equality, seriali
 
 In real-world applications, this optimization is especially valuable when the comparison runs in hot paths (event handlers, render loops).
 
-**Incorrect (always runs expensive comparison):**
+### Incorrect (always runs expensive comparison):
 
 ```typescript
 function hasChanges(current: string[], original: string[]) {
@@ -22,7 +22,7 @@ function hasChanges(current: string[], original: string[]) {
 
 Two O(n log n) sorts run even when `current.length` is 5 and `original.length` is 100. There is also overhead of joining the arrays and comparing the strings.
 
-**Correct (O(1) length check first):**
+### Correct (O(1) length check first):
 
 ```typescript
 function hasChanges(current: string[], original: string[]) {

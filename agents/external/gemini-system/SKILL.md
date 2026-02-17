@@ -12,7 +12,7 @@ metadata:
 
 # Gemini System — Research & Multimodal Specialist
 
-**Gemini CLI (latest: Gemini 3 Pro/Flash, stable: Gemini 2.5 series) is your research specialist with 1M token context.**
+### Gemini CLI (latest: Gemini 3 Pro/Flash, stable: Gemini 2.5 series) is your research specialist with 1M token context.
 
 > **詳細ルール**: `.claude/rules/gemini-delegation.md`
 
@@ -59,7 +59,7 @@ metadata:
 
 ### Recommended: Subagent Pattern
 
-**Use Task tool with `subagent_type='general-purpose'` to preserve main context.**
+### Use Task tool with `subagent_type='general-purpose'` to preserve main context.
 
 ```
 Task tool parameters:

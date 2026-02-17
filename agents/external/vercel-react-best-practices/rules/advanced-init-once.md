@@ -9,7 +9,7 @@ tags: initialization, useEffect, app-startup, side-effects
 
 Do not put app-wide initialization that must run once per app load inside `useEffect([])` of a component. Components can remount and effects will re-run. Use a module-level guard or top-level init in the entry module instead.
 
-**Incorrect (runs twice in dev, re-runs on remount):**
+### Incorrect (runs twice in dev, re-runs on remount):
 
 ```tsx
 function Comp() {
@@ -22,7 +22,7 @@ function Comp() {
 }
 ```
 
-**Correct (once per app load):**
+### Correct (once per app load):
 
 ```tsx
 let didInit = false

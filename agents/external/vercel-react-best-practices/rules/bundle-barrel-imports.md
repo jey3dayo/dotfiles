@@ -13,7 +13,7 @@ Popular icon and component libraries can have **up to 10,000 re-exports** in the
 
 **Why tree-shaking doesn't help:** When a library is marked as external (not bundled), the bundler can't optimize it. If you bundle it to enable tree-shaking, builds become substantially slower analyzing the entire module graph.
 
-**Incorrect (imports entire library):**
+### Incorrect (imports entire library):
 
 ```tsx
 import { Check, X, Menu } from 'lucide-react'
@@ -24,7 +24,7 @@ import { Button, TextField } from '@mui/material'
 // Loads 2,225 modules, takes ~4.2s extra in dev
 ```
 
-**Correct (imports only what you need):**
+### Correct (imports only what you need):
 
 ```tsx
 import Check from 'lucide-react/dist/esm/icons/check'
@@ -37,7 +37,7 @@ import TextField from '@mui/material/TextField'
 // Loads only what you use
 ```
 
-**Alternative (Next.js 13.5+):**
+### Alternative (Next.js 13.5+):
 
 ```js
 // next.config.js - use optimizePackageImports

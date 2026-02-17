@@ -69,7 +69,10 @@ class SerenaClient:
         # NOTE: Semantic analysis API integration postponed - using grep-based fallback
         # Future: Consider integrating semantic code analysis tools when available
         return SerenaSearchResult(
-            query=symbol_name, symbols=[], success=False, error="Semantic analysis not available"
+            query=symbol_name,
+            symbols=[],
+            success=False,
+            error="Semantic analysis not available",
         )
 
     def _fallback_search(self, pattern: str) -> SerenaSearchResult:

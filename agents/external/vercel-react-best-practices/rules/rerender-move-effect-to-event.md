@@ -9,7 +9,7 @@ tags: rerender, useEffect, events, side-effects, dependencies
 
 If a side effect is triggered by a specific user action (submit, click, drag), run it in that event handler. Do not model the action as state + effect; it makes effects re-run on unrelated changes and can duplicate the action.
 
-**Incorrect (event modeled as state + effect):**
+### Incorrect (event modeled as state + effect):
 
 ```tsx
 function Form() {
@@ -27,7 +27,7 @@ function Form() {
 }
 ```
 
-**Correct (do it in the handler):**
+### Correct (do it in the handler):
 
 ```tsx
 function Form() {

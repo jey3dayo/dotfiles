@@ -67,14 +67,14 @@ Software developers on macOS/Linux/WSL2 (and CI/Raspberry Pi environments) who v
 
 ### Specific Scenarios
 
-1. **Daily Development Workflow**
+1. Daily Development Workflow
 
    - Quick terminal access with minimal startup delay
    - Seamless Git operations through custom widgets
    - Efficient code editing with LSP support
    - Multi-project navigation with FZF integration
 
-2. **New Machine Setup**
+2. New Machine Setup
 
    - Bootstrap via `scripts/bootstrap.sh` (macOS) and package installation via Homebrew/Nix
    - Apply configuration with `home-manager switch --flake ~/.config --impure`
@@ -82,14 +82,14 @@ Software developers on macOS/Linux/WSL2 (and CI/Raspberry Pi environments) who v
    - Version-controlled configurations
    - Easy backup and restore
 
-3. **Performance-Conscious Development**
+3. Performance-Conscious Development
 
    - Monitored startup times via `zsh-benchmark`
    - Lazy-loading strategies for plugins
    - Optimized plugin selection (39ms mise integration)
    - Regular performance audits
 
-4. **Cross-Tool Integration**
+4. Cross-Tool Integration
    - WezTerm ↔ Neovim workflow integration
    - Git ↔ FZF search capabilities
    - Terminal ↔ Editor theme synchronization
@@ -132,9 +132,9 @@ Software developers on macOS/Linux/WSL2 (and CI/Raspberry Pi environments) who v
 
 ## Differentiators from Other Dotfiles
 
-1. **Performance Metrics**: Actual measured startup times with improvement tracking
-2. **Layer-Based Documentation**: Organized by Core/Tool/Support layers
-3. **AI Integration**: Claude Code commands for automated maintenance
-4. **Spec-Driven Development**: Kiro framework integration for structured changes
-5. **Declarative Configuration**: Home Manager + Nix flake for reproducible environments
-6. **Quality Gates**: Local CI checks matching GitHub Actions
+1. Performance Metrics: Actual measured startup times with improvement tracking
+2. Layer-Based Documentation: Organized by Core/Tool/Support layers
+3. AI Integration: Claude Code commands for automated maintenance
+4. Spec-Driven Development: Kiro framework integration for structured changes
+5. Declarative Configuration: Home Manager + Nix flake for reproducible environments
+6. Quality Gates: Local CI checks matching GitHub Actions

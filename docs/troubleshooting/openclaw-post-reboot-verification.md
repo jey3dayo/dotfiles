@@ -42,14 +42,14 @@ ss -tlnp | grep 18789
 curl http://localhost:18789/health
 ```
 
-**期待される結果**:
+#### 期待される結果
 
 - ✅ `active (running)` 状態
 - ✅ プロセスのCPU使用率が正常範囲（<10%）
 - ✅ ポート18789がLISTEN状態
 - ✅ ヘルスチェックが応答する
 
-**失敗した場合**:
+#### 失敗した場合
 
 - ❌ CPU 99%消費が継続
 - ❌ ポートがリスニングしない
@@ -67,7 +67,7 @@ systemctl --user status openclaw-cleanup.service
 systemctl --user list-timers openclaw-cleanup.timer
 ```
 
-**期待される結果**:
+#### 期待される結果
 
 - ✅ Timer が `NEXT` 列に次回実行時刻を表示
 - ✅ Service が `inactive (dead)` または最近実行された形跡
@@ -85,7 +85,7 @@ cat ~/.cache/openclaw/cleanup.log
 grep "PATH=" ~/.cache/openclaw/cleanup.log | tail -1
 ```
 
-**期待される結果**:
+#### 期待される結果
 
 - ✅ エラーなく実行完了
 - ✅ `mise`, `pnpm`, `npm` が全て見つかる
@@ -101,7 +101,7 @@ openclaw doctor --deep
 openclaw config list
 ```
 
-**期待される結果**:
+#### 期待される結果
 
 - ✅ 診断でエラーなし
 - ✅ Gateway設定が正しく表示される
@@ -119,7 +119,7 @@ df -h /
 free -h
 ```
 
-**期待される結果**:
+#### 期待される結果
 
 - ✅ load average が正常範囲（<2.0）
 - ✅ ディスク使用率が92%以下
@@ -131,11 +131,11 @@ free -h
 
 全てのチェックが✅の場合:
 
-1. **問題解決を記録**:
+1. 問題解決を記録:
    - `docs/troubleshooting/openclaw-gateway-raspberry-pi.md` に「再起動で解決」を追記
    - システムリソース不足が原因だったと記録
 
-2. **定期監視を設定**:
+2. 定期監視を設定:
    - Gateway serviceの定期チェックをcronまたはsystemd timerで設定
    - CPU使用率監視スクリプトを追加（オプション）
 
@@ -143,7 +143,7 @@ free -h
 
 Step 2でCPU 99%消費が継続する場合:
 
-1. **ログ収集**:
+1. ログ収集:
 
    ```bash
    # systemdログ
@@ -157,11 +157,11 @@ Step 2でCPU 99%消費が継続する場合:
    strace -f ~/.mise/shims/openclaw gateway --port 18789 2>&1 | head -500 >> ~/openclaw-gateway-strace.log
    ```
 
-2. **既知の問題として確定**:
+2. 既知の問題として確定:
    - `docs/troubleshooting/openclaw-gateway-raspberry-pi.md` に「再起動後も未解決」を追記
    - Raspberry Pi ARM環境固有の問題として記録
 
-3. **代替案の検討**:
+3. 代替案の検討:
    - **Option 1**: openClawコミュニティへ報告（ログファイルとシステム情報を添付）
    - **Option 2**: 別マシン（x86_64）でGatewayを実行
    - **Option 3**: openClaw使用を一時停止し、代替ツールを検討
@@ -170,11 +170,11 @@ Step 2でCPU 99%消費が継続する場合:
 
 Step 2は失敗、Step 4は成功の場合:
 
-1. **部分的な成功を記録**:
+1. 部分的な成功を記録:
    - Cleanup機能は正常動作
    - Gateway問題は未解決
 
-2. **定期クリーンアップ継続**:
+2. 定期クリーンアップ継続:
    - `openclaw-cleanup.timer` は有効なまま
    - ディスク使用量監視を継続
 
@@ -280,13 +280,13 @@ Gateway問題は既知の問題として記録します。
 
 月次メンテナンス（毎月第一日曜日）で以下を確認:
 
-1. **Cleanup実行履歴**:
+1. Cleanup実行履歴:
 
    ```bash
    tail -50 ~/.cache/openclaw/cleanup.log
    ```
 
-2. **ディスク使用量推移**:
+2. ディスク使用量推移:
 
    ```bash
    df -h / | tail -1
@@ -298,7 +298,8 @@ Gateway問題は既知の問題として記録します。
    systemctl --user status openclaw-gateway.service
    ```
 
-4. **mise/pnpm/npmバージョン更新**:
+4. mise/pnpm/npmバージョン更新:
+
    ```bash
    mise upgrade
    mise prune

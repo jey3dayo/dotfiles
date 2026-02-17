@@ -29,11 +29,11 @@
 
 ### ロードシーケンス
 
-1. **.zshenv**: XDG 変数と `ZDOTDIR` を固定、GHQ/Android/Java/Brewfile などの環境変数を先に設定。非ログイン用の最小 PATH は mise shims のみ。
-2. **.zprofile**: ロケール/エディタ設定、`typeset -U path cdpath fpath manpath` で重複除去、`mise activate zsh` 後に PATH を mise > user > language > Android SDK > Homebrew > system の順に再構成。
-3. **.zshrc**: ヒストリと zsh オプションを設定後、`init/*.zsh` を実行（compinit + Sheldon キャッシュ生成・mise PATH 再優先）、続いて `sources/*.zsh`（config loader と補完スタイル）を読み込み。
-4. **config/loader.zsh**: helper 経由で core（aliases/path utils）→ tools（即時: fzf/git/mise/starship, 遅延: brew/gh/debug 他）→ functions → os-specific を統一ロードし、helper を消去。
-5. **lazy-sources/\*.zsh**: Arch/WSL/OrbStack/FZF/履歴検索などを zsh-defer 経由で遅延ロード（Sheldon で `dotfiles-lazy-sources` として一括管理）。
+1. .zshenv: XDG 変数と `ZDOTDIR` を固定、GHQ/Android/Java/Brewfile などの環境変数を先に設定。非ログイン用の最小 PATH は mise shims のみ。
+2. .zprofile: ロケール/エディタ設定、`typeset -U path cdpath fpath manpath` で重複除去、`mise activate zsh` 後に PATH を mise > user > language > Android SDK > Homebrew > system の順に再構成。
+3. .zshrc: ヒストリと zsh オプションを設定後、`init/*.zsh` を実行（compinit + Sheldon キャッシュ生成・mise PATH 再優先）、続いて `sources/*.zsh`（config loader と補完スタイル）を読み込み。
+4. config/loader.zsh: helper 経由で core（aliases/path utils）→ tools（即時: fzf/git/mise/starship, 遅延: brew/gh/debug 他）→ functions → os-specific を統一ロードし、helper を消去。
+5. lazy-sources/\*.zsh: Arch/WSL/OrbStack/FZF/履歴検索などを zsh-defer 経由で遅延ロード（Sheldon で `dotfiles-lazy-sources` として一括管理）。
 
 ### ディレクトリ構造（主要）
 

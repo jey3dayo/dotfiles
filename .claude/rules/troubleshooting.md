@@ -30,7 +30,7 @@ Claude Code は以下の2箇所から rules（markdown ファイル）を自動�
 **原因**: 別の `home-manager switch` が後から実行され、generation が上書きされた。
 Home Manager は1プロファイルしか管理しないため、後勝ちになる。
 
-**確認手順**:
+#### 確認手順
 
 ```bash
 # 現在の generation を確認

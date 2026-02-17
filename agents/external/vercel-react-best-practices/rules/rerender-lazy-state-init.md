@@ -9,7 +9,7 @@ tags: react, hooks, useState, performance, initialization
 
 Pass a function to `useState` for expensive initial values. Without the function form, the initializer runs on every render even though the value is only used once.
 
-**Incorrect (runs on every render):**
+### Incorrect (runs on every render):
 
 ```tsx
 function FilteredList({ items }: { items: Item[] }) {
@@ -31,7 +31,7 @@ function UserProfile() {
 }
 ```
 
-**Correct (runs only once):**
+### Correct (runs only once):
 
 ```tsx
 function FilteredList({ items }: { items: Item[] }) {

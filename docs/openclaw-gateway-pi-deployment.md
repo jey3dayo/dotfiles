@@ -4,13 +4,13 @@
 
 このドキュメントは、OpenClaw Gateway サービスをWSL2環境からRaspberry Piに配布し、systemd user serviceとして起動するための手順を提供します。
 
-**配布内容**:
+#### 配布内容
 
 - systemd user service定義ファイル
 - サービス設定のオーバーライド
 - 環境変数ファイル（認証トークンとすべての秘密情報を含む）
 
-**対象環境**:
+#### 対象環境
 
 - **転送元**: WSL2（現在の環境）
 - **転送先**: Raspberry Pi（`pi.local`）
@@ -72,7 +72,7 @@ scp ~/.config/systemd/user/openclaw-gateway.service.d/override.conf pi@pi.local:
 scp ~/.openclaw/gateway.env pi@pi.local:~/.openclaw/
 ```
 
-**転送されるファイルの内容**:
+#### 転送されるファイルの内容
 
 - **openclaw-gateway.service**: サービス定義（ポート18789、mise shim使用）
 - **override.conf**: 環境変数ファイルの読み込み設定
@@ -214,7 +214,7 @@ telnet pi.local 18789
 
 **原因**: mise shimが見つからない、またはopenclawがインストールされていない
 
-**解決策**:
+#### 解決策
 
 ```bash
 # miseでopenclawがインストールされているか確認
@@ -237,7 +237,7 @@ systemctl --user restart openclaw-gateway.service
 
 **原因**: `gateway.env`のパーミッションが正しく設定されていない
 
-**解決策**:
+#### 解決策
 
 ```bash
 # パーミッション確認
@@ -254,7 +254,7 @@ systemctl --user restart openclaw-gateway.service
 
 **原因**: 他のプロセスがポート18789を使用している
 
-**解決策**:
+#### 解決策
 
 ```bash
 # ポート18789を使用しているプロセスを確認
@@ -278,7 +278,7 @@ systemctl --user restart openclaw-gateway.service
 
 **原因**: Node.jsモジュールが不足している、またはopenclawのバージョンが古い
 
-**解決策**:
+#### 解決策
 
 ```bash
 # openclawを最新バージョンに更新
@@ -293,7 +293,7 @@ systemctl --user restart openclaw-gateway.service
 
 **原因**: Pi再起動後、ユーザーログアウト時にuser serviceが停止する
 
-**解決策**:
+#### 解決策
 
 ```bash
 # systemd lingeringを有効化（ユーザーログアウト後もuser serviceが動作し続ける）

@@ -31,12 +31,12 @@
 
 新しいスキルを作成する際は、以下の優先順位で配置先を検討してください：
 
-1. **Marketplace Repository（優先）**: `~/src/github.com/jey3dayo/claude-code-marketplace`
+1. Marketplace Repository（優先）: `~/src/github.com/jey3dayo/claude-code-marketplace`
    - 用途: 再利用可能な汎用スキル、技術スタック特化スキル（React、TypeScript等）
    - メリット: Git管理、配布容易、GitHub自動バックアップ
    - 例: react, typescript, nvim, mise, dotenvx
 
-2. **Local Skills**: `~/.claude/skills/`
+2. Local Skills: `~/.claude/skills/`
    - 用途: システム/メタスキル、実験的スキル、プロジェクト特化スキル
    - メリット: 即座に利用可能、軽量
    - 例: agents-and-commands, integration-framework, claude-marketplace-sync
@@ -99,8 +99,8 @@ claude-code-marketplace/
 **コード理解ツール優先順位**（トークン効率重視）:
 
 1. **MCP Serena** (`mcp__serena__*`) - 関数・クラス・シンボル解析
-2. **Grep/ripgrep** - パターン検索・横断的調査
-3. **Read** - 設定ファイル・小規模ファイル・最終手段
+2. Grep/ripgrep - パターン検索・横断的調査
+3. Read - 設定ファイル・小規模ファイル・最終手段
 
 **禁止**: `find`, `grep`, `cat`, `head`, `tail` → 上記専用ツールを使用
 
@@ -154,11 +154,11 @@ claude-code-marketplace/
 
 ### 優先順位（高→低）
 
-1. **Skill** - 再利用可能な知識、Progressive Disclosure可能
-2. **Agent** - 複雑なタスクの自動化、ワークフロー実行
-3. **Command** - ユーザー向けインタラクティブ操作
-4. **Rules/Steering** - プロジェクト固有の制約・ガイダンス
-5. **Docs** - 上記で表現できない場合のみ最小限に使用
+1. Skill - 再利用可能な知識、Progressive Disclosure可能
+2. Agent - 複雑なタスクの自動化、ワークフロー実行
+3. Command - ユーザー向けインタラクティブ操作
+4. Rules/Steering - プロジェクト固有の制約・ガイダンス
+5. Docs - 上記で表現できない場合のみ最小限に使用
 
 ### 判断フロー
 
@@ -223,7 +223,7 @@ Q: プロジェクト固有のルールか？
 - **MCPツール統合** - MCPサーバーセットアップ、セキュリティ、トラブルシューティング
 - **ドキュメントインデックス** - ドキュメント検索、ナビゲーション、クイックリファレンス
 
-**特徴**:
+#### 特徴
 
 - 初回ロード時は概要のみ（16KB平均）、詳細は必要時にロード（83KB平均）
 - 日本語/英語バイリンガルトリガーキーワード
@@ -236,15 +236,15 @@ Q: プロジェクト固有のルールか？
   - `/kiro:` コマンドファミリーとの統合インターフェース
   - ステアリング（プロジェクト全体のガイド）＋仕様（個別機能の開発プロセス）
 
-**2つの使用方法**:
+#### 2つの使用方法
 
-1. **スキル経由（推奨）**: 自然言語でcc-sddスキルを呼び出し、適切なコマンドを自動実行
+1. スキル経由（推奨）: 自然言語でcc-sddスキルを呼び出し、適切なコマンドを自動実行
 
    ```
    例: "新機能の仕様を作りたい" → cc-sddが `/kiro:spec-init` を自動実行
    ```
 
-2. **直接コマンド実行**: `/kiro:` コマンドを直接実行（既存ワークフローと互換）
+2. 直接コマンド実行: `/kiro:` コマンドを直接実行（既存ワークフローと互換）
 
    ```bash
    /kiro:spec-init "詳細な説明"     # 仕様初期化

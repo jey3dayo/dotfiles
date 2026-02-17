@@ -74,13 +74,13 @@ mise/
 
 ### CI/CD タスク構造
 
-**責任の分離**:
+#### 責任の分離
 
 - **CI検証タスク** (`ci`): 読み取り専用の検証（lint, test, format check）
 - **CI完全実行** (`ci:full`): 検証 + デプロイ（GitHub Actionsと同じワークフロー）
 - **デプロイタスク** (`hm:deploy`): 状態変更を伴うシステム設定の適用
 
-**タスクの使い分け**:
+#### タスクの使い分け
 
 - `mise run ci` - ローカルでの検証のみ（書き込みなし、高速）
 - `mise run ci:full` - GitHub Actionsと同じワークフロー全体をローカルで実行（検証 + デプロイ）
@@ -88,7 +88,7 @@ mise/
 - `mise run hm:switch` - ローカル開発用のHome Manager適用（バックアップなし）
 - `mise run hm:check` - 設定検証のみ（ビルドのみ、適用なし）
 
-**GitHub Actions統合**:
+#### GitHub Actions統合
 
 ```yaml
 - name: Deploy dotfiles with Home Manager
@@ -98,7 +98,7 @@ mise/
   run: mise run ci # 検証タスクのみ（書き込みなし）
 ```
 
-**依存関係グラフ**:
+#### 依存関係グラフ
 
 ```
 ci:full
@@ -131,7 +131,7 @@ mise automatically selects the appropriate configuration based on the environmen
 - **Default (macOS/Linux/WSL2)**: Uses `mise/config.default.toml` (includes all tools)
 - **Raspberry Pi**: Uses `mise/config.pi.toml` (optimized for server environment)
 
-**Detection Method (Home Manager)**:
+#### Detection Method (Home Manager)
 
 Environment detection is now managed by Home Manager's Nix module (`nix/env-detect.nix`), which sets `MISE_CONFIG_FILE` via `home.sessionVariables`:
 
@@ -151,12 +151,12 @@ The environment variable is automatically loaded via `hm-session-vars.sh` (sourc
 
 サーバー/自動化環境として最適化されており、以下のパッケージを除外:
 
-**Performance Settings**:
+#### Performance Settings
 
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
   - ※ config.default.toml は `jobs = 8`（デスクトップ環境向け）
 
-**Excluded Packages**:
+#### Excluded Packages
 
 サーバー/自動化環境として最適化されており、以下のカテゴリを除外:
 
@@ -169,7 +169,7 @@ The environment variable is automatically loaded via `hm-session-vars.sh` (sourc
 
 詳細な除外パッケージリストは `mise/config.default.toml` と `mise/config.pi.toml` の差分を参照。
 
-**Maintained Packages**:
+#### Maintained Packages
 
 軽量かつサーバー運用に有用なツールのみを維持:
 
@@ -183,7 +183,7 @@ The environment variable is automatically loaded via `hm-session-vars.sh` (sourc
 
 具体的なパッケージバージョンは `mise/config.pi.toml` を参照。
 
-**Expected Benefits**:
+#### Expected Benefits
 
 - Install time: Significantly faster (many npm packages, aws-cli, and all cargo tools excluded)
 - Disk usage: Substantially reduced
@@ -368,7 +368,7 @@ yazi = "latest"
 **Before**: miseのnpmバックエンドがnpmを使用
 **After**: miseのnpmバックエンドがpnpmを使用（`settings.npm.package_manager = "pnpm"`）
 
-**Implementation Details** (Completed 2026-02-03):
+#### Implementation Details (Completed 2026-02-03)
 
 1. mise updated: v2025.7.17 → v2025.12.13 (to support `settings.npm.package_manager`)
 2. Bootstrap process:
@@ -498,22 +498,22 @@ mise doctor               # Check for issues
 
 ## Best Practices
 
-1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml` or `mise/config.pi.toml`)
+1. Centralized Package Management: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml` or `mise/config.pi.toml`)
    - ❌ Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
    - ❌ Never maintain separate `global-package.json` or `requirements-global.txt`
    - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in environment-specific config files
    - **Note**: `npm:` prefix is used even though pnpm is the backend (configured via `settings.npm.package_manager = "pnpm"`)
    - Rationale: Single source of truth, reproducibility, version control
-2. **Global Package Manager Check**: Regularly verify no duplicate packages
+2. Global Package Manager Check: Regularly verify no duplicate packages
    - Run `npm -g list --depth=0` - should only show local links (astro-my-profile, zx-scripts)
    - Run `ls ~/.bun/install/global/node_modules/.bin` - should be empty or minimal
    - If duplicates found, add to environment-specific config and `npm uninstall -g <package>`
-3. **Version Pinning**: Use specific versions for project-critical tools
-4. **Latest for Development Tools**: Use "latest" for CLI tools that don't affect build
-5. **Document Breaking Changes**: Comment version pins with reason
-6. **Regular Updates**: Run `mise upgrade` weekly to stay current
-7. **Consolidation**: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, npm/pnpm/bun global, etc.)
-8. **Avoid Duplication**: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
+3. Version Pinning: Use specific versions for project-critical tools
+4. Latest for Development Tools: Use "latest" for CLI tools that don't affect build
+5. Document Breaking Changes: Comment version pins with reason
+6. Regular Updates: Run `mise upgrade` weekly to stay current
+7. Consolidation: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, npm/pnpm/bun global, etc.)
+8. Avoid Duplication: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
 
 ## Related Documentation
 

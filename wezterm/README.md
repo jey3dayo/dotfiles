@@ -376,10 +376,10 @@ git commit -m "Update WezTerm configuration"
 
 ### Development Workflow
 
-1. **Primary Terminal**: Alternative to Alacritty with more features
-2. **Multi-Session**: Tab-based workflow with visual feedback
-3. **Cross-Platform**: Consistent experience across systems
-4. **Integration**: Seamless with existing dotfiles ecosystem
+1. Primary Terminal: Alternative to Alacritty with more features
+2. Multi-Session: Tab-based workflow with visual feedback
+3. Cross-Platform: Consistent experience across systems
+4. Integration: Seamless with existing dotfiles ecosystem
 
 ### Advanced Usage
 

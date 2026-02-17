@@ -109,7 +109,7 @@ echo "Processes: $(ps aux | wc -l)"
 
 #### 現在の実装
 
-1. **6段階プラグイン読み込み**
+1. 6段階プラグイン読み込み
 
    ```toml
    # sheldon/plugins.toml
@@ -123,12 +123,12 @@ echo "Processes: $(ps aux | wc -l)"
    # 視覚要素（最後）
    ```
 
-2. **mise即座初期化**
+2. mise即座初期化
    - macOS path_helper対応
    - ツール即座利用可能
    - 1.1s起動を維持
 
-3. **PATH最適化**
+3. PATH最適化
    - 重複自動除去 (`typeset -gaU path`)
    - 存在確認による無駄削除
    - 優先度制御（mise > Homebrew > system）
@@ -157,13 +157,13 @@ echo "Processes: $(ps aux | wc -l)"
 
 #### 現在の実装
 
-1. **lazy.nvim活用**
+1. lazy.nvim活用
 
    ```lua
    defaults = { lazy = true }  -- デフォルト遅延
    ```
 
-2. **大ファイル対策**
+2. 大ファイル対策
 
    ```lua
    -- Treesitter無効化（>2MB）
@@ -174,7 +174,7 @@ echo "Processes: $(ps aux | wc -l)"
    end
    ```
 
-3. **不要プロバイダー無効化**
+3. 不要プロバイダー無効化
 
    ```lua
    vim.g.loaded_python3_provider = 0

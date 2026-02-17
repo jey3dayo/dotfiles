@@ -42,12 +42,12 @@ zsh/
 
 ### 6-Tier Plugin Loading
 
-1. **Essential**: Core functionality (zsh-autosuggestions)
-2. **Completion**: Tab completion enhancements
-3. **Navigation**: Directory and file navigation
-4. **Git**: Version control integration
-5. **Utility**: Development tools and helpers
-6. **Theme**: Prompt and visual elements
+1. Essential: Core functionality (zsh-autosuggestions)
+2. Completion: Tab completion enhancements
+3. Navigation: Directory and file navigation
+4. Git: Version control integration
+5. Utility: Development tools and helpers
+6. Theme: Prompt and visual elements
 
 ## 🎮 Essential Commands
 
@@ -226,23 +226,23 @@ sheldon lock --update
 
 ### Startup Speed
 
-1. **Profile regularly**: Use `zsh-benchmark` weekly
-2. **Lazy load**: Defer heavy tools (mise, nvm, etc.)
-3. **Compile files**: Ensure all .zsh files are compiled
-4. **Plugin audit**: Remove unused plugins quarterly
+1. Profile regularly: Use `zsh-benchmark` weekly
+2. Lazy load: Defer heavy tools (mise, nvm, etc.)
+3. Compile files: Ensure all .zsh files are compiled
+4. Plugin audit: Remove unused plugins quarterly
 
 ### Memory Usage
 
-1. **History limits**: Set reasonable HISTSIZE
-2. **Completion cache**: Clear periodically
-3. **Plugin cleanup**: Remove redundant functionality
+1. History limits: Set reasonable HISTSIZE
+2. Completion cache: Clear periodically
+3. Plugin cleanup: Remove redundant functionality
 
 ### Workflow Efficiency
 
-1. **Learn abbreviations**: Master the 50+ shortcuts
-2. **Use widgets**: Git widgets save keystrokes
-3. **FZF everything**: File, repo, process selection
-4. **Help system**: `zsh-help` for quick reference
+1. Learn abbreviations: Master the 50+ shortcuts
+2. Use widgets: Git widgets save keystrokes
+3. FZF everything: File, repo, process selection
+4. Help system: `zsh-help` for quick reference
 
 ## 📋 Maintenance
 

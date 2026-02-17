@@ -9,7 +9,7 @@ tags: async, parallelization, dependencies, better-all
 
 For operations with partial dependencies, use `better-all` to maximize parallelism. It automatically starts each task at the earliest possible moment.
 
-**Incorrect (profile waits for config unnecessarily):**
+### Incorrect (profile waits for config unnecessarily):
 
 ```typescript
 const [user, config] = await Promise.all([
@@ -19,7 +19,7 @@ const [user, config] = await Promise.all([
 const profile = await fetchProfile(user.id)
 ```
 
-**Correct (config and profile run in parallel):**
+### Correct (config and profile run in parallel):
 
 ```typescript
 import { all } from 'better-all'
@@ -33,7 +33,7 @@ const { user, config, profile } = await all({
 })
 ```
 
-**Alternative without extra dependencies:**
+### Alternative without extra dependencies:
 
 We can also create all the promises first, and do `Promise.all()` at the end.
 

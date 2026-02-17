@@ -76,7 +76,7 @@ echo "=== Disk usage after cleanup ==="
 df -h /nix/store
 ```
 
-**オプション説明**:
+#### オプション説明
 
 - `home-manager remove-generations 90d`: 90日以前のgenerationsを削除
 - `nix-collect-garbage -d`: 古いprofilesと未使用のstoreパスを削除
@@ -100,7 +100,7 @@ nix-collect-garbage --delete-old
 df -h /nix/store
 ```
 
-**注意**:
+#### 注意
 
 - ロールバック不可能になる（現在のgenerationのみ残る）
 - 緊急時のみ実施
@@ -119,7 +119,7 @@ nix-collect-garbage -d
 df -h /nix/store
 ```
 
-**使用ケース**:
+#### 使用ケース
 
 - 頻繁に設定を変更する期間
 - 実験的な変更を試している場合
@@ -153,10 +153,10 @@ du -sh /nix/store/* | sort -rh | head -20
 
 ### ディスク使用量削減のベストプラクティス
 
-1. **定期的なGC**: 月次メンテナンスでgenerationsとGCを実行
-2. **不要なflake inputsの削除**: 使用していないflake inputsを`flake.nix`から削除
-3. **flake update頻度の調整**: 必要な時のみflake updateを実行
-4. **ビルドキャッシュの活用**: `substituters`を設定してバイナリキャッシュを活用
+1. 定期的なGC: 月次メンテナンスでgenerationsとGCを実行
+2. 不要なflake inputsの削除: 使用していないflake inputsを`flake.nix`から削除
+3. flake update頻度の調整: 必要な時のみflake updateを実行
+4. ビルドキャッシュの活用: `substituters`を設定してバイナリキャッシュを活用
 
 ---
 
@@ -173,13 +173,13 @@ du -sh /nix/store/* | sort -rh | head -20
 
 ### 推奨実行タイミング
 
-**月次メンテナンス**:
+#### 月次メンテナンス
 
 - 毎月第一日曜日（または第一週末）
 - `workflows-and-maintenance.md`の月次メンテナンスセクションを参照
 - 他のツール（Homebrew、mise）のメンテナンスと同時実施
 
-**即座に実行すべきケース**:
+#### 即座に実行すべきケース
 
 - ディスク使用量が70%を超えた場合
 - Home Managerの適用が"No space left on device"エラーで失敗した場合
@@ -191,12 +191,12 @@ du -sh /nix/store/* | sort -rh | head -20
 
 ### Q: GC実行後もディスク使用量が減らない
 
-**原因**:
+#### 原因
 
 - まだ参照されているstoreパスが多い
 - 最近のgenerationsが大量のパッケージを参照している
 
-**解決策**:
+#### 解決策
 
 ```bash
 # 現在のgenerations数を確認
@@ -216,7 +216,7 @@ df -h /nix/store
 
 **原因**: 削除しようとしているstoreパスが、現在実行中のプロセスで使用されている
 
-**解決策**:
+#### 解決策
 
 ```bash
 # すべてのnix関連プロセスを確認
@@ -234,7 +234,7 @@ nix-collect-garbage -d
 
 **原因**: プロファイルのパーミッション問題
 
-**解決策**:
+#### 解決策
 
 ```bash
 # ホームディレクトリのnix-profilesを確認
@@ -251,7 +251,7 @@ home-manager remove-generations 90d
 
 **原因**: 必要なstoreパスが削除された可能性
 
-**解決策**:
+#### 解決策
 
 ```bash
 # flakeをクリーンビルド

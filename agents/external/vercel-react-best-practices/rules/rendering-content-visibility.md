@@ -9,7 +9,7 @@ tags: rendering, css, content-visibility, long-lists
 
 Apply `content-visibility: auto` to defer off-screen rendering.
 
-**CSS:**
+### CSS:
 
 ```css
 .message-item {
@@ -18,7 +18,7 @@ Apply `content-visibility: auto` to defer off-screen rendering.
 }
 ```
 
-**Example:**
+### Example:
 
 ```tsx
 function MessageList({ messages }: { messages: Message[] }) {

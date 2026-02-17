@@ -9,7 +9,7 @@ tags: rerender, derived-state, media-query, optimization
 
 Subscribe to derived boolean state instead of continuous values to reduce re-render frequency.
 
-**Incorrect (re-renders on every pixel change):**
+### Incorrect (re-renders on every pixel change):
 
 ```tsx
 function Sidebar() {
@@ -19,7 +19,7 @@ function Sidebar() {
 }
 ```
 
-**Correct (re-renders only when boolean changes):**
+### Correct (re-renders only when boolean changes):
 
 ```tsx
 function Sidebar() {

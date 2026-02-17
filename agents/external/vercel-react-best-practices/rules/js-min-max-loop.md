@@ -9,7 +9,7 @@ tags: javascript, arrays, performance, sorting, algorithms
 
 Finding the smallest or largest element only requires a single pass through the array. Sorting is wasteful and slower.
 
-**Incorrect (O(n log n) - sort to find latest):**
+### Incorrect (O(n log n) - sort to find latest):
 
 ```typescript
 interface Project {
@@ -26,7 +26,7 @@ function getLatestProject(projects: Project[]) {
 
 Sorts the entire array just to find the maximum value.
 
-**Incorrect (O(n log n) - sort for oldest and newest):**
+### Incorrect (O(n log n) - sort for oldest and newest):
 
 ```typescript
 function getOldestAndNewest(projects: Project[]) {
@@ -37,7 +37,7 @@ function getOldestAndNewest(projects: Project[]) {
 
 Still sorts unnecessarily when only min/max are needed.
 
-**Correct (O(n) - single loop):**
+### Correct (O(n) - single loop):
 
 ```typescript
 function getLatestProject(projects: Project[]) {
@@ -71,7 +71,7 @@ function getOldestAndNewest(projects: Project[]) {
 
 Single pass through the array, no copying, no sorting.
 
-**Alternative (Math.min/Math.max for small arrays):**
+### Alternative (Math.min/Math.max for small arrays):
 
 ```typescript
 const numbers = [5, 2, 8, 1, 9]

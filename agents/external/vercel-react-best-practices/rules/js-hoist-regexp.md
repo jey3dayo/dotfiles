@@ -9,7 +9,7 @@ tags: javascript, regexp, optimization, memoization
 
 Don't create RegExp inside render. Hoist to module scope or memoize with `useMemo()`.
 
-**Incorrect (new RegExp every render):**
+### Incorrect (new RegExp every render):
 
 ```tsx
 function Highlighter({ text, query }: Props) {
@@ -19,7 +19,7 @@ function Highlighter({ text, query }: Props) {
 }
 ```
 
-**Correct (memoize or hoist):**
+### Correct (memoize or hoist):
 
 ```tsx
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -34,7 +34,7 @@ function Highlighter({ text, query }: Props) {
 }
 ```
 
-**Warning (global regex has mutable state):**
+### Warning (global regex has mutable state):
 
 Global regex (`/g`) has mutable `lastIndex` state:
 

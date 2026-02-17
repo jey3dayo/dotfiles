@@ -9,7 +9,7 @@
 
 **ファイル**: `/home/pi/.config/scripts/openclaw-cleanup`
 
-**変更内容**:
+#### 変更内容
 
 ```bash
 # 追加: PATH設定
@@ -30,7 +30,7 @@ npm cache clean --force 2>&1 | grep -v "npm warn" || true
 
 **ファイル**: `/home/pi/.config/systemd/user/openclaw-cleanup.timer`
 
-**変更内容**:
+#### 変更内容
 
 ```ini
 [Unit]
@@ -54,7 +54,7 @@ WantedBy=timers.target
 
 **ファイル**: `/home/pi/.config/systemd/user/openclaw-cleanup.service`
 
-**変更内容**:
+#### 変更内容
 
 ```ini
 [Unit]
@@ -80,7 +80,7 @@ RestartSec=60       # 追加
 
 **ファイル**: `/home/pi/.config/systemd/user/openclaw-gateway.service`
 
-**変更内容**:
+#### 変更内容
 
 ```ini
 [Service]
@@ -137,7 +137,7 @@ Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
 
 **変更内容**: **完全リセット＋再セットアップ**
 
-**設定内容**:
+#### 設定内容
 
 - `gateway.bind = lan`
 - `gateway.port = 18789`
@@ -151,16 +151,16 @@ Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
 
 ### 実施したクリーンアップ
 
-1. **mise prune**
+1. mise prune
    - kubectl 1.28.15 削除
    - pnpm 10.28.2 削除
    - python 3.13.5 削除
 
-2. **pnpm store prune**
+2. pnpm store prune
    - 14,156ファイル削除
    - 152パッケージ削除
 
-3. **nix-collect-garbage**
+3. nix-collect-garbage
    - 73.6 MiB解放
    - 古いgenerations削除（5世代）
    - 古いprofiles削除
@@ -182,19 +182,19 @@ Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
 
 ### Gateway起動問題
 
-**症状**:
+#### 症状
 
 - プロセスは起動するがCPU 99.9%を消費
 - ポート18789をリスニングしない
 - 90秒以上待機しても状態変わらず
 
-**可能性**:
+#### 可能性
 
 1. Raspberry Pi ARM64環境固有の問題
 2. openClawの依存パッケージビルド問題
 3. システムリソース不足（load average高い）
 
-**次のステップ**:
+#### 次のステップ
 
 - システム再起動推奨
 - 再起動後もダメならコミュニティへ報告

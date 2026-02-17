@@ -9,7 +9,7 @@ tags: rerender, transitions, startTransition, performance
 
 Mark frequent, non-urgent state updates as transitions to maintain UI responsiveness.
 
-**Incorrect (blocks UI on every scroll):**
+### Incorrect (blocks UI on every scroll):
 
 ```tsx
 function ScrollTracker() {
@@ -22,7 +22,7 @@ function ScrollTracker() {
 }
 ```
 
-**Correct (non-blocking updates):**
+### Correct (non-blocking updates):
 
 ```tsx
 import { startTransition } from 'react'

@@ -128,9 +128,9 @@ The skill should only contain the information needed for an AI agent to do the j
 
 Skills use a three-level loading system to manage context efficiently:
 
-1. **Metadata (name + description)** - Always in context (~100 words)
-2. **SKILL.md body** - When skill triggers (<5k words)
-3. **Bundled resources** - As needed by Codex (Unlimited because scripts can be executed without reading into context window)
+1. Metadata (name + description) - Always in context (~100 words)
+2. SKILL.md body - When skill triggers (<5k words)
+3. Bundled resources - As needed by Codex (Unlimited because scripts can be executed without reading into context window)
 
 #### Progressive Disclosure Patterns
 
@@ -138,7 +138,7 @@ Keep SKILL.md body to the essentials and under 500 lines to minimize context blo
 
 **Key principle:** When a skill supports multiple variations, frameworks, or options, keep only the core workflow and selection guidance in SKILL.md. Move variant-specific details (patterns, examples, configuration) into separate reference files.
 
-**Pattern 1: High-level guide with references**
+### Pattern 1: High-level guide with references
 
 ```markdown
 # PDF Processing
@@ -157,7 +157,7 @@ Extract text with pdfplumber:
 
 Codex loads FORMS.md, REFERENCE.md, or EXAMPLES.md only when needed.
 
-**Pattern 2: Domain-specific organization**
+### Pattern 2: Domain-specific organization
 
 For Skills with multiple domains, organize content by domain to avoid loading irrelevant context:
 
@@ -186,7 +186,7 @@ cloud-deploy/
 
 When the user chooses AWS, Codex only reads aws.md.
 
-**Pattern 3: Conditional details**
+### Pattern 3: Conditional details
 
 Show basic content, link to advanced content:
 
@@ -207,7 +207,7 @@ For simple edits, modify the XML directly.
 
 Codex reads REDLINING.md or OOXML.md only when the user needs those features.
 
-**Important guidelines:**
+### Important guidelines:
 
 - **Avoid deeply nested references** - Keep references one level deep from SKILL.md. All reference files should link directly from SKILL.md.
 - **Structure longer reference files** - For files longer than 100 lines, include a table of contents at the top so Codex can see the full scope when previewing.
@@ -369,7 +369,7 @@ The validation script checks YAML frontmatter format, required fields, and namin
 
 After testing the skill, users may request improvements. Often this happens right after using the skill, with fresh context of how the skill performed.
 
-**Iteration workflow:**
+### Iteration workflow:
 
 1. Use the skill on real tasks
 2. Notice struggles or inefficiencies

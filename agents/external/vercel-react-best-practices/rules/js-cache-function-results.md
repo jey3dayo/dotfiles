@@ -9,7 +9,7 @@ tags: javascript, cache, memoization, performance
 
 Use a module-level Map to cache function results when the same function is called repeatedly with the same inputs during render.
 
-**Incorrect (redundant computation):**
+### Incorrect (redundant computation):
 
 ```typescript
 function ProjectList({ projects }: { projects: Project[] }) {
@@ -26,7 +26,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
 }
 ```
 
-**Correct (cached results):**
+### Correct (cached results):
 
 ```typescript
 // Module-level cache
@@ -55,7 +55,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
 }
 ```
 
-**Simpler pattern for single-value functions:**
+### Simpler pattern for single-value functions:
 
 ```typescript
 let isLoggedInCache: boolean | null = null

@@ -13,7 +13,7 @@
 
 ## シナリオA: 最近の変更をロールバック
 
-**適用ケース**:
+#### 適用ケース
 
 - 最新のHome Manager適用後に問題が発生した
 - 特定の設定変更が原因で動作が不安定になった
@@ -27,7 +27,7 @@
 home-manager generations | head -10
 ```
 
-**出力例**:
+#### 出力例
 
 ```
 2026-02-13 13:16 : id 7 -> /nix/store/8w8zasds1g70bv0a0dsc01mgswm1ld09-home-manager-generation (current)
@@ -35,7 +35,7 @@ home-manager generations | head -10
 2026-02-12 18:16 : id 5 -> /nix/store/zxd49h44anxs3v3hq4lvb86wmcd34p38-home-manager-generation
 ```
 
-**確認ポイント**:
+#### 確認ポイント
 
 - `(current)` が現在の世代
 - `id` が世代番号（ロールバック時に使用）
@@ -48,7 +48,7 @@ home-manager generations | head -10
 home-manager switch --generation 6
 ```
 
-**重要**:
+#### 重要
 
 - ロールバックは即座に適用される
 - 新しい世代は作成されず、指定した世代にポインタが移動する
@@ -84,7 +84,7 @@ home-manager switch --generation 5
 
 ## シナリオB: 完全な破損からの復旧
 
-**適用ケース**:
+#### 適用ケース
 
 - すべてのgenerationsが破損している
 - Home Managerプロファイルが削除された
@@ -139,7 +139,7 @@ cd ~/.config
 home-manager switch --flake . --impure
 ```
 
-**重要**:
+#### 重要
 
 - `--impure`フラグは必須（環境変数を使用するため）
 - 初回は時間がかかる（パッケージのダウンロード）
@@ -177,7 +177,7 @@ rm -rf ~/.config.backup-*
 
 ## シナリオC: /nix/store破損時の復旧
 
-**適用ケース**:
+#### 適用ケース
 
 - `/nix/store`が破損した
 - Nixデーモンが起動しない
@@ -217,7 +217,7 @@ nix --version
 nix run home-manager -- switch --flake ~/.config --impure
 ```
 
-**注意**:
+#### 注意
 
 - 初回実行時は大量のパッケージがダウンロードされる
 - ネットワーク速度により時間がかかる
@@ -322,7 +322,7 @@ brew doctor
 
 **原因**: 別のflakeから`home-manager switch`が実行された可能性
 
-**解決策**:
+#### 解決策
 
 ```bash
 # 正しいflakeから再適用
@@ -339,7 +339,7 @@ ls -la ~ | grep -E '(agents|dotfiles)'
 
 **原因**: `/nix/store`の大量ファイルによるファイルディスクリプタ不足
 
-**解決策**:
+#### 解決策
 
 ```bash
 # macOSの場合、ulimitを一時的に増やす
@@ -353,7 +353,7 @@ home-manager switch --flake ~/.config --impure
 
 **原因**: flake.lockが古い、または破損している
 
-**解決策**:
+#### 解決策
 
 ```bash
 cd ~/.config
@@ -366,7 +366,7 @@ home-manager switch --flake . --impure
 
 **原因**: スキル配布パスの問題、または個別スキルの破損
 
-**解決策**:
+#### 解決策
 
 ```bash
 # スキル配布パスの確認

@@ -9,7 +9,7 @@ tags: server, cache, react-cache, deduplication
 
 Use `React.cache()` for server-side request deduplication. Authentication and database queries benefit most.
 
-**Usage:**
+### Usage:
 
 ```typescript
 import { cache } from 'react'
@@ -25,11 +25,11 @@ export const getCurrentUser = cache(async () => {
 
 Within a single request, multiple calls to `getCurrentUser()` execute the query only once.
 
-**Avoid inline objects as arguments:**
+### Avoid inline objects as arguments:
 
 `React.cache()` uses shallow equality (`Object.is`) to determine cache hits. Inline objects create new references each call, preventing cache hits.
 
-**Incorrect (always cache miss):**
+### Incorrect (always cache miss):
 
 ```typescript
 const getUser = cache(async (params: { uid: number }) => {
@@ -41,7 +41,7 @@ getUser({ uid: 1 })
 getUser({ uid: 1 })  // Cache miss, runs query again
 ```
 
-**Correct (cache hit):**
+### Correct (cache hit):
 
 ```typescript
 const getUser = cache(async (uid: number) => {
@@ -61,7 +61,7 @@ getUser(params)  // Query runs
 getUser(params)  // Cache hit (same reference)
 ```
 
-**Next.js-Specific Note:**
+### Next.js-Specific Note:
 
 In Next.js, the `fetch` API is automatically extended with request memoization. Requests with the same URL and options are automatically deduplicated within a single request, so you don't need `React.cache()` for `fetch` calls. However, `React.cache()` is still essential for other async tasks:
 

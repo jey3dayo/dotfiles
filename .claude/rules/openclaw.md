@@ -16,13 +16,13 @@ OPENCLAW_GATEWAY_PORT=18789
 OPENCLAW_GATEWAY_TOKEN=<新規生成したTOKEN>
 ```
 
-**重要**:
+#### 重要
 
 - このファイルには機密情報（TOKEN）が含まれる
 - Gitで管理しない（`.config`リポジトリ外に配置）
 - バックアップ時は機密情報として扱う
 
-**TOKEN生成方法**:
+#### TOKEN生成方法
 
 ```bash
 # 新しいTOKENを生成
@@ -38,13 +38,13 @@ echo "OPENCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)" >> ~/.openclaw/gateway.env
 
 **ファイル**: `~/.config/systemd/user/openclaw-gateway.service`
 
-**設計原則**:
+#### 設計原則
 
 - mise shimを使用（ポータビリティ確保）
 - 環境変数はgateway.env経由で読み込み
 - リソース制限とWatchdogは無効化（Raspberry Pi対応）
 
-**主要設定**:
+#### 主要設定
 
 ```ini
 [Service]
@@ -69,7 +69,7 @@ EnvironmentFile=%h/.openclaw/gateway.env
 
 **目的**: 定期的なディスククリーンアップ（mise/pnpm/npm）
 
-**主要設定**:
+#### 主要設定
 
 ```ini
 [Unit]
@@ -106,14 +106,14 @@ WantedBy=timers.target
 
 **ファイル**: `~/.config/scripts/openclaw-cleanup`
 
-**機能**:
+#### 機能
 
 - mise prune: 古いバージョン削除
 - pnpm store prune: 未使用パッケージ削除
 - npm cache clean: キャッシュクリア
 - ディスク使用量記録
 
-**重要な設定**:
+#### 重要な設定
 
 ```bash
 # PATH設定（mise/pnpm/npmを確実に発見）
@@ -133,7 +133,7 @@ OpenClawのsystemd設定は、**サービス特性に応じた最適化**を行�
 
 ##### Gateway Service（永続サービス）
 
-**PATH設計**:
+#### PATH設計
 
 - mise最新バイナリへの直接パス参照
 - shim経由のオーバーヘッド回避（起動時間50-100ms削減）
@@ -146,7 +146,7 @@ OpenClawのsystemd設定は、**サービス特性に応じた最適化**を行�
 
 ##### Cleanup Service（ワンショット）
 
-**PATH設計**:
+#### PATH設計
 
 - mise shimを使用してポータビリティ確保
 - miseが管理するバージョンを自動的に使用
@@ -166,7 +166,7 @@ OpenClawのsystemd設定は、**サービス特性に応じた最適化**を行�
 | KillMode | mixed（子も終了） | 未設定（デフォルト）    | 子プロセス管理の必要性           |
 | Restart  | always            | on-failure              | 永続 vs エラー時のみ             |
 
-**この分離設計により、各サービスが最適化され、保守性も確保されています。**
+### この分離設計により、各サービスが最適化され、保守性も確保されています
 
 ## Common Operations
 
@@ -249,26 +249,27 @@ free -h
 
 ### 定期メンテナンス（月次）
 
-1. **バージョン更新**:
+1. バージョン更新:
 
    ```bash
    mise upgrade
    mise prune
    ```
 
-2. **Cleanup実行履歴確認**:
+2. Cleanup実行履歴確認:
 
    ```bash
    tail -50 ~/.cache/openclaw/cleanup.log
    ```
 
-3. **ディスク使用量確認**:
+3. ディスク使用量確認:
 
    ```bash
    df -h /
    ```
 
-4. **Gateway状態確認**:
+4. Gateway状態確認:
+
    ```bash
    systemctl --user status openclaw-gateway.service
    ```
@@ -292,33 +293,34 @@ systemctl --user list-timers openclaw-cleanup.timer
 
 **症状**: CPU 99%消費、ポートリスニングせず
 
-**確認手順**:
+#### 確認手順
 
-1. **gateway.envが存在するか**:
+1. gateway.envが存在するか:
 
    ```bash
    ls -la ~/.openclaw/gateway.env
    ```
 
-2. **override.confが正しいか**:
+2. override.confが正しいか:
 
    ```bash
    cat ~/.config/systemd/user/openclaw-gateway.service.d/override.conf
    ```
 
-3. **環境変数が読み込まれているか**:
+3. 環境変数が読み込まれているか:
 
    ```bash
    systemctl --user show openclaw-gateway.service | grep Environment
    ```
 
-4. **詳細ログ確認**:
+4. 詳細ログ確認:
+
    ```bash
    journalctl --user -u openclaw-gateway.service -n 100
    strace -f ~/.mise/shims/openclaw gateway --port 18789 2>&1 | head -500
    ```
 
-**解決方法**:
+#### 解決方法
 
 1. **gateway.envを作成**（存在しない場合）:
 
@@ -330,14 +332,15 @@ systemctl --user list-timers openclaw-cleanup.timer
    EOF
    ```
 
-2. **serviceを再起動**:
+2. serviceを再起動:
 
    ```bash
    systemctl --user daemon-reload
    systemctl --user restart openclaw-gateway.service
    ```
 
-3. **動作確認**:
+3. 動作確認:
+
    ```bash
    systemctl --user status openclaw-gateway.service
    ss -tlnp | grep 18789
@@ -347,7 +350,7 @@ systemctl --user list-timers openclaw-cleanup.timer
 
 **症状**: mise/pnpm/npm が見つからない
 
-**確認手順**:
+#### 確認手順
 
 ```bash
 # PATH設定確認
@@ -357,13 +360,14 @@ grep "PATH=" ~/.cache/openclaw/cleanup.log | tail -1
 ~/.config/scripts/openclaw-cleanup
 ```
 
-**解決方法**:
+#### 解決方法
 
-1. **PATHが正しく設定されているか確認**:
+1. PATHが正しく設定されているか確認:
    - scriptに`export PATH="$HOME/.local/bin:$PATH"`が含まれているか
    - serviceに`Environment="PATH=..."`が設定されているか
 
-2. **mise/pnpm/npmが実在するか**:
+2. mise/pnpm/npmが実在するか:
+
    ```bash
    which mise pnpm npm
    ls -la ~/.local/bin/mise
@@ -374,7 +378,7 @@ grep "PATH=" ~/.cache/openclaw/cleanup.log | tail -1
 
 **症状**: `EACCES: permission denied`
 
-**解決方法**:
+#### 解決方法
 
 ```bash
 # ファイルパーミッション確認
@@ -390,7 +394,7 @@ chmod 755 ~/.config/scripts/openclaw-cleanup
 
 **症状**: `Port 18789 is already in use`
 
-**確認手順**:
+#### 確認手順
 
 ```bash
 # ポート使用プロセス確認
@@ -398,7 +402,7 @@ ss -tlnp | grep 18789
 lsof -i :18789
 ```
 
-**解決方法**:
+#### 解決方法
 
 ```bash
 # 既存プロセスを停止
@@ -428,12 +432,12 @@ systemctl --user start openclaw-gateway.service
    systemctl --user restart openclaw-gateway.service
    ```
 
-2. **TOKENのバックアップ**:
+2. TOKENのバックアップ:
    - 暗号化されたストレージに保存
    - パスワードマネージャーに記録
    - `.env`ファイルとして管理しない
 
-3. **ネットワーク公開時の注意**:
+3. ネットワーク公開時の注意:
    - Gateway は`lan` (0.0.0.0) にバインドされている
    - ファイアウォール設定で外部アクセスを制限
    - 強力なTOKENを使用
@@ -455,13 +459,13 @@ tail -f /tmp/openclaw/openclaw-$(date +%Y-%m-%d).log
 
 ### Raspberry Pi ARM環境
 
-**特性**:
+#### 特性
 
 - メモリ制約: 3.7GB RAM
 - ARM64アーキテクチャ
 - k3s-serverと共存
 
-**最適化**:
+#### 最適化
 
 - リソース制限無効化（MemoryMax, CPUQuota）
 - Watchdog無効化（タイムアウト回避）
@@ -515,16 +519,16 @@ systemctl --user restart openclaw-gateway.service
 
 ### 定期確認項目
 
-**日次**:
+#### 日次
 
 - Gateway動作状態（自動監視推奨）
 
-**週次**:
+#### 週次
 
 - ログファイルサイズ
 - ディスク使用量
 
-**月次**:
+#### 月次
 
 - mise/pnpm/npm更新
 - セキュリティ監査

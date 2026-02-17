@@ -100,8 +100,8 @@ If you prefer manual installation or bootstrap script is not available:
 
 ### 重複回避ルール
 
-1. **新しいツールを追加する前**: `mise registry` で検索し、mise で管理できるか確認
-2. **定期的な重複チェック**:
+1. 新しいツールを追加する前: `mise registry` で検索し、mise で管理できるか確認
+2. 定期的な重複チェック:
    - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
    - `brew list --formula` - mise 管理ツールが含まれていないこと
 

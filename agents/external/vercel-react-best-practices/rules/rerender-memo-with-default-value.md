@@ -13,7 +13,7 @@ When memoized component has a default value for some non-primitive optional para
 
 To address this issue, extract the default value into a constant.
 
-**Incorrect (`onClick` has different values on every rerender):**
+### Incorrect (`onClick` has different values on every rerender):
 
 ```tsx
 const UserAvatar = memo(function UserAvatar({ onClick = () => {} }: { onClick?: () => void }) {
@@ -24,7 +24,7 @@ const UserAvatar = memo(function UserAvatar({ onClick = () => {} }: { onClick?: 
 <UserAvatar />
 ```
 
-**Correct (stable default value):**
+### Correct (stable default value):
 
 ```tsx
 const NOOP = () => {};

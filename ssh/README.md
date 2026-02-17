@@ -151,12 +151,12 @@ macOS環境でのみ適用される設定です。Linux/WSL2では`Match exec`�
 
 #### 自動適用される設定
 
-**macOS Keychain統合**:
+#### macOS Keychain統合
 
 - `UseKeychain yes` - SSH鍵のパスフレーズをKeychainに保存
 - `AddKeysToAgent yes` - ssh-agentに鍵を自動追加
 
-**OrbStack/Colima統合**:
+#### OrbStack/Colima統合
 
 - OrbStack SSH config自動読み込み（macOSのみ）
 - Colima SSH config（デフォルト無効、必要に応じてコメント解除）
@@ -241,10 +241,10 @@ uname
 
 ### 新しいホスト追加手順
 
-1. **テンプレート使用**: `templates/host-template.sshconfig`をコピー
-2. **適切なファイル選択**: 用途に応じて10-,20-,30-等に追加
-3. **設定カスタマイズ**: HostName, User, Portを設定
-4. **テスト**: `ssh -T hostname`で接続確認
+1. テンプレート使用: `templates/host-template.sshconfig`をコピー
+2. 適切なファイル選択: 用途に応じて10-,20-,30-等に追加
+3. 設定カスタマイズ: HostName, User, Portを設定
+4. テスト: `ssh -T hostname`で接続確認
 
 ## 🎮 基本使用方法
 
@@ -290,10 +290,10 @@ cat ~/.config/ssh/config.d/10-dev-services.sshconfig
 
 #### 有効化手順
 
-1. **1Password設定**: SSH Agent機能を有効化
-2. **鍵登録**: 1Password内でSSH鍵を管理
-3. **設定ファイル**: `01-1password.sshconfig`のコメントアウト解除
-4. **確認**: `ssh-add -l`で鍵一覧表示
+1. 1Password設定: SSH Agent機能を有効化
+2. 鍵登録: 1Password内でSSH鍵を管理
+3. 設定ファイル: `01-1password.sshconfig`のコメントアウト解除
+4. 確認: `ssh-add -l`で鍵一覧表示
 
 #### 利点
 

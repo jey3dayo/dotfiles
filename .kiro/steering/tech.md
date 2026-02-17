@@ -9,9 +9,9 @@
 
 The dotfiles are built around three core technologies that form the interactive foundation:
 
-1. **Zsh** - Shell environment (1.1s startup)
-2. **WezTerm** - Primary terminal emulator (800ms startup)
-3. **Neovim** - Code editor (<100ms startup)
+1. Zsh - Shell environment (1.1s startup)
+2. WezTerm - Primary terminal emulator (800ms startup)
+3. Neovim - Code editor (<100ms startup)
 
 All other tools serve to enhance or support these core components, while deployment and environment parity are handled by Home Manager + Nix.
 

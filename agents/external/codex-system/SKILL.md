@@ -13,7 +13,7 @@ metadata:
 
 # Codex System — Deep Reasoning Partner
 
-**Codex CLI (gpt-5.3-codex) is your highly capable supporter for deep reasoning tasks.**
+### Codex CLI (gpt-5.3-codex) is your highly capable supporter for deep reasoning tasks.
 
 > **詳細ルール**: `.claude/rules/codex-delegation.md`
 
@@ -49,7 +49,7 @@ metadata:
 
 ### Recommended: Subagent Pattern
 
-**Use Task tool with `subagent_type='general-purpose'` to preserve main context.**
+### Use Task tool with `subagent_type='general-purpose'` to preserve main context.
 
 ```
 Task tool parameters:

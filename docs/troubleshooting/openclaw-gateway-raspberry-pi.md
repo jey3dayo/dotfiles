@@ -9,21 +9,21 @@
 
 openClaw Gateway（バージョン2026.2.1、2026.2.13で確認）がRaspberry Pi ARM環境で正常に起動しない問題が発生しましたが、**gateway.envファイルの作成で解決しました**。
 
-**当初の症状**:
+#### 当初の症状
 
 - プロセスは起動するが、**CPU 99.9%を消費し続ける**
 - **ポート18789をリスニングしない**
 - 90秒以上待機しても状態変わらず
 - systemdログに標準出力/エラー出力なし
 
-**解決後の状態** (2026-02-15 14:16):
+#### 解決後の状態 (2026-02-15 14:16)
 
 - ✅ CPU使用率: 27.5%（起動1分35秒後、正常範囲）
 - ✅ ポート18789: LISTEN状態、正常動作
 - ✅ WebSocketサーバー: `ws://0.0.0.0:18789` でリスニング
 - ✅ 各種サービス: Discord bot, Telegram bot, Browser service 全て起動成功
 
-**検証済みの動作**:
+#### 検証済みの動作
 
 - ✓ mise（バージョン管理ツール）
 - ✓ pnpm（パッケージマネージャー）
@@ -35,24 +35,24 @@ openClaw Gateway（バージョン2026.2.1、2026.2.13で確認）がRaspberry P
 
 ### ✅ 成功した修正
 
-1. **ディスク容量改善**
+1. ディスク容量改善
    - mise prune: kubectl, pnpm, python古いバージョン削除
    - pnpm store prune: 14,156ファイル、152パッケージ削除
    - nix-collect-garbage: 73.6 MiB + 古いgenerations削除
    - **結果**: ディスク使用率 94% → 92% に改善
 
-2. **systemd設定修正**
+2. systemd設定修正
    - 孤立シンボリックリンク削除: `default.target.wants/openclaw.service`
    - `openclaw-cleanup.timer`: `After=default.target` 追加
    - `openclaw-cleanup.service`: PATH設定、環境変数、Retry設定追加
    - `openclaw-gateway.service`: Watchdog無効化（タイムアウト問題回避）
 
-3. **Cleanup Script修正**
+3. Cleanup Script修正
    - PATH設定追加: `export PATH="$HOME/.local/bin:$PATH"`
    - PATH確認用ログ出力追加
    - npm cache clean出力フィルタリング改善
 
-4. **openClaw設定修正**
+4. openClaw設定修正
    - 完全リセット＋再セットアップ実施
    - gateway.bind=lan, gateway.port=18789設定
    - override.conf復元（EnvironmentFile参照を有効化）
@@ -63,7 +63,7 @@ openClaw Gateway（バージョン2026.2.1、2026.2.13で確認）がRaspberry P
    - `OPENCLAW_GATEWAY_TOKEN`を新規生成（openssl rand -hex 32）
    - override.confからEnvironmentFileとして読み込み
 
-6. **openclawバージョン更新**
+6. openclawバージョン更新
    - 2026.2.1 → 2026.2.13に更新
    - `openclaw doctor --fix`実行で自動修復
 
@@ -112,7 +112,7 @@ ss -tlnp | grep 18789
 curl http://localhost:18789/health
 ```
 
-**期待効果**:
+#### 期待効果
 
 - システムリソースのリセット
 - systemd依存関係の再初期化
