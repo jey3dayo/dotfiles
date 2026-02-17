@@ -30,10 +30,10 @@ ln -s /home/j138/.config/agents/skills-internal/my-skill ./
 
 ### 2. Path Depth Calculation
 
-From `distributions/default/skills/` to target:
+From `internal/skills/` to target:
 
 ```
-distributions/default/skills/my-skill → ../../../skills-internal/my-skill
+internal/skills/my-skill → ../../../skills-internal/my-skill
       ↓           ↓       ↓
       1           2       3 (../ levels)
 ```
@@ -41,11 +41,11 @@ distributions/default/skills/my-skill → ../../../skills-internal/my-skill
 ### Template
 
 ```bash
-# From: distributions/<bundle>/skills/
+# From: bundles/<bundle>/skills/
 # To:   skills-internal/<skill>/
 ln -s ../../../skills-internal/<skill> ./
 
-# From: distributions/<bundle>/commands/
+# From: bundles/<bundle>/commands/
 # To:   commands-internal/<command>/
 ln -s ../../../commands-internal/<command> ./
 ```
@@ -72,7 +72,7 @@ test -e my-skill && echo "Valid" || echo "Broken"
 
 ```bash
 # Find all broken symlinks
-find distributions/ -type l -exec test ! -e {} \; -print
+find bundles/ -type l -exec test ! -e {} \; -print
 ```
 
 ---
@@ -84,7 +84,7 @@ find distributions/ -type l -exec test ! -e {} \; -print
 ### Use case
 
 ```bash
-cd distributions/my-bundle/skills
+cd bundles/my-bundle/skills
 ln -s ../../../skills-internal/react ./
 ```
 
@@ -108,7 +108,7 @@ test -f ../../../skills-internal/react/SKILL.md
 ### Use case
 
 ```bash
-cd distributions/my-bundle/skills
+cd bundles/my-bundle/skills
 ln -s ../../../skills/external-skill ./
 ```
 
@@ -121,7 +121,7 @@ ln -s ../../../skills/external-skill ./
 ### Use case
 
 ```bash
-cd distributions/my-bundle/commands
+cd bundles/my-bundle/commands
 ln -s ../../../commands-internal/kiro ./
 ```
 
@@ -157,7 +157,7 @@ commands-internal/kiro/
 ### Use case
 
 ```bash
-cd distributions/my-bundle/skills
+cd bundles/my-bundle/skills
 mkdir -p frontend
 cd frontend
 ln -s ../../../../skills-internal/react ./
@@ -170,7 +170,7 @@ ln -s ../../../../skills-internal/ui-ux-pro-max ./
 
 ```bash
 # Check from nested location
-cd distributions/my-bundle/skills/frontend
+cd bundles/my-bundle/skills/frontend
 test -f ../../../../skills-internal/react/SKILL.md
 ```
 
@@ -204,8 +204,8 @@ cp -r ../../../skills-internal/my-skill ./
 
 ```bash
 # Don't do this
-# skills-internal/my-skill/ → distributions/default/skills/my-skill
-# distributions/default/skills/my-skill → skills-internal/my-skill/
+# skills-internal/my-skill/ → internal/skills/my-skill
+# internal/skills/my-skill → skills-internal/my-skill/
 ```
 
 ### Problem
@@ -216,7 +216,7 @@ cp -r ../../../skills-internal/my-skill ./
 
 ```bash
 # Don't do this
-ln -s ../../../distributions/other-bundle/skills/my-skill ./
+ln -s ../../../bundles/other-bundle/skills/my-skill ./
 ```
 
 ### Problem
@@ -230,7 +230,7 @@ ln -s ../../../distributions/other-bundle/skills/my-skill ./
 Nix dereferences symlinks at filesystem level:
 
 ```nix
-# distributions/default/skills/my-skill → ../../../skills-internal/my-skill
+# internal/skills/my-skill → ../../../skills-internal/my-skill
 # Nix sees:
 path = /nix/store/.../skills-internal/my-skill
 # or (in development):
@@ -280,10 +280,10 @@ type == "directory" || type == "symlink"
 
 ```bash
 # Find broken symlinks
-find distributions/ -type l -exec test ! -e {} \; -print
+find bundles/ -type l -exec test ! -e {} \; -print
 
 # Check SKILL.md presence
-find distributions/*/skills/ -type l -exec sh -c '
+find bundles/*/skills/ -type l -exec sh -c '
   target=$(readlink -f "$1")
   test -f "$target/SKILL.md" || echo "Missing SKILL.md: $1"
 ' _ {} \;
@@ -293,7 +293,7 @@ find distributions/*/skills/ -type l -exec sh -c '
 
 ```bash
 # Verify relative paths use correct depth
-find distributions/ -type l -exec sh -c '
+find bundles/ -type l -exec sh -c '
   link=$(readlink "$1")
   echo "$1 -> $link" | grep -E "^\.\./\.\./\.\." || echo "Incorrect depth: $1"
 ' _ {} \;
@@ -318,13 +318,13 @@ find distributions/ -type l -exec sh -c '
 
 ```bash
 # Check symlink target
-ls -la distributions/default/skills/my-skill
+ls -la internal/skills/my-skill
 
 # Resolve symlink fully
-readlink -f distributions/default/skills/my-skill
+readlink -f internal/skills/my-skill
 
 # Test target exists
-test -e distributions/default/skills/my-skill && echo "OK" || echo "Broken"
+test -e internal/skills/my-skill && echo "OK" || echo "Broken"
 ```
 
 ### Nix Evaluation Issues
@@ -335,8 +335,8 @@ nix-store --query --references $(nix-build --no-out-link ~/.config -A home.activ
 
 # Trace evaluation
 nix eval --show-trace --json --impure --expr '
-  let lib = import ~/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
-  in lib.discoverCatalog { distributionsPath = ~/agents/distributions/default; }
+  let lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
+  in lib.discoverCatalog { distributionsPath = ~/.config/agents/internal; }
 '
 ```
 

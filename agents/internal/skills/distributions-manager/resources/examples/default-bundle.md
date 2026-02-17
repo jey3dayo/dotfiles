@@ -2,14 +2,14 @@
 
 ## Overview
 
-The `distributions/default/` bundle is the reference implementation created on 2025-02-11. It demonstrates the full capabilities of the distributions system.
+The `internal/` bundle is the reference implementation created on 2025-02-11. It demonstrates the full capabilities of the distributions system.
 
 ---
 
 ## Structure
 
 ```
-distributions/default/
+internal/
 ├── skills/           (42 skills)
 ├── commands/         (42 commands, some with subcommands)
 ├── rules/            (1 rule file)
@@ -238,7 +238,7 @@ Agents are specialized task handlers that:
 ### Pattern 1: Direct Skill Link
 
 ```bash
-distributions/default/skills/react -> ../../../skills-internal/react
+internal/skills/react -> ../../../skills-internal/react
 ```
 
 ### Count
@@ -248,7 +248,7 @@ distributions/default/skills/react -> ../../../skills-internal/react
 ### Pattern 2: External Skill Link
 
 ```bash
-distributions/default/skills/document-skills:skill-creator -> ../../../skills/document-skills:skill-creator
+internal/skills/document-skills:skill-creator -> ../../../skills/document-skills:skill-creator
 ```
 
 ### Count
@@ -258,7 +258,7 @@ distributions/default/skills/document-skills:skill-creator -> ../../../skills/do
 ### Pattern 3: Command Group Link
 
 ```bash
-distributions/default/commands/kiro -> ../../../commands-internal/kiro
+internal/commands/kiro -> ../../../commands-internal/kiro
 ```
 
 ### Count: 7 command groups
@@ -268,7 +268,7 @@ distributions/default/commands/kiro -> ../../../commands-internal/kiro
 ### Pattern 4: Rules Link
 
 ```bash
-distributions/default/rules/claude-md-design.md -> ~/.claude/rules/claude-md-design.md
+internal/rules/claude-md-design.md -> ~/.claude/rules/claude-md-design.md
 ```
 
 ### Count: 1 rule
@@ -278,7 +278,7 @@ distributions/default/rules/claude-md-design.md -> ~/.claude/rules/claude-md-des
 ### Pattern 5: Agent Link
 
 ```bash
-distributions/default/agents/code-reviewer.md -> ~/.claude/agents/code-reviewer.md
+internal/agents/code-reviewer.md -> ~/.claude/agents/code-reviewer.md
 ```
 
 ### Count: 14 individual agents
@@ -288,7 +288,7 @@ distributions/default/agents/code-reviewer.md -> ~/.claude/agents/code-reviewer.
 ### Pattern 6: Agent Group Link
 
 ```bash
-distributions/default/agents/kiro -> ~/.claude/agents/kiro
+internal/agents/kiro -> ~/.claude/agents/kiro
 ```
 
 ### Count: 1 agent group (9 sub-agents)
@@ -301,27 +301,27 @@ distributions/default/agents/kiro -> ~/.claude/agents/kiro
 
 ```bash
 # Count skills
-ls -1 distributions/default/skills/ | wc -l
+ls -1 internal/skills/ | wc -l
 # Output: 42
 
 # Count command directories
-ls -1 distributions/default/commands/ | wc -l
+ls -1 internal/commands/ | wc -l
 # Output: 42 (includes command groups)
 
 # Count rules
-ls -1 distributions/default/rules/ | wc -l
+ls -1 internal/rules/ | wc -l
 # Output: 1
 
 # Count agents (individual files)
-ls -1 distributions/default/agents/*.md | wc -l
+ls -1 internal/agents/*.md | wc -l
 # Output: 14
 
 # Count agent directories
-ls -d distributions/default/agents/*/ | wc -l
+ls -d internal/agents/*/ | wc -l
 # Output: 1 (kiro/)
 
 # Count total command.ts files
-find distributions/default/commands/ -name "command.ts" | wc -l
+find internal/commands/ -name "command.ts" | wc -l
 # Output: 84+ (includes subcommands)
 ```
 
@@ -329,11 +329,11 @@ find distributions/default/commands/ -name "command.ts" | wc -l
 
 ```bash
 # Check for broken symlinks
-find distributions/default/ -type l -exec test ! -e {} \; -print
+find internal/ -type l -exec test ! -e {} \; -print
 # Output: (empty if all valid)
 
 # Verify SKILL.md presence
-find distributions/default/skills/ -type l -exec sh -c '
+find internal/skills/ -type l -exec sh -c '
   target=$(readlink -f "$1")
   test -f "$target/SKILL.md" || echo "Missing: $1"
 ' _ {} \;
@@ -364,7 +364,7 @@ mise run skills:list 2>/dev/null | jq '[.skills[] | .source] | group_by(.) | map
 ```
 skills-internal/react/        (Local)
 skills/react/                 (External)
-distributions/default/skills/react/ (Distribution)
+internal/skills/react/ (Distribution)
 ```
 
 ### Deployed
@@ -374,7 +374,7 @@ distributions/default/skills/react/ (Distribution)
 ### Example 2: Skill in Distribution Only
 
 ```
-distributions/default/skills/custom-skill/
+internal/skills/custom-skill/
 ```
 
 ### Deployed
@@ -396,7 +396,7 @@ distributions/default/skills/custom-skill/
 ### Adding Skills
 
 ```bash
-cd distributions/default/skills
+cd internal/skills
 ln -s ../../../skills-internal/new-skill ./
 home-manager switch --flake ~/.config --impure
 ```
@@ -404,14 +404,14 @@ home-manager switch --flake ~/.config --impure
 ### Removing Skills
 
 ```bash
-cd distributions/default/skills
+cd internal/skills
 rm old-skill
 home-manager switch --flake ~/.config --impure
 ```
 
 ### Updating README
 
-After changes, update `distributions/default/README.md` with new counts and descriptions.
+After changes, update `internal/README.md` with new counts and descriptions.
 
 ---
 
@@ -432,7 +432,7 @@ After changes, update `distributions/default/README.md` with new counts and desc
 
 ## Related Files
 
-- **distributions/default/README.md**: Official bundle documentation
+- **internal/README.md**: Official bundle documentation
 - **agents/nix/lib.nix**: Implementation (`scanDistribution`)
 - **references/creating-bundles.md**: How to create similar bundles
 - **references/symlink-patterns.md**: Symlink design patterns used

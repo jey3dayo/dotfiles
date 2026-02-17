@@ -500,7 +500,6 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 Agent Skillsは以下の4段階で統合・配布されます：
 
 1. **Sources統合**: `discoverCatalog` (lib.nix L105-127)
-
    - **Distributions**: `agents/internal/` （バンドル層、オプション）
    - **Internal skills**: `agents/internal/skills/`
    - **External skills**: Flake inputs → `agents/external/` （symlinks）
@@ -509,12 +508,10 @@ Agent Skillsは以下の4段階で統合・配布されます：
    - Local overrides: Internal skills が External/Distribution を上書き
 
 2. **Skills選択**: `selectSkills` (lib.nix L129-138)
-
    - `selection.enable`で選択されたskillsのみ
-   - Local skills（skills-internal/）は常に含まれる
+   - Local skills（`agents/internal/skills/`）は常に含まれる
 
 3. **Bundle生成**: `mkBundle` (lib.nix L140-160)
-
    - 選択されたskillsのみをNix storeにコピー
    - rsync -aLによる完全コピー（symlinkを実体化）
 
@@ -528,7 +525,7 @@ Agent Skillsは以下の4段階で統合・配布されます：
 
 Commands（slash commands）の配布フロー:
 
-- **Source**: `agents/commands-internal/` （43ファイル、subdirectories対応）
+- **Source**: `agents/internal/commands/` （43ファイル、subdirectories対応）
 - **Bundle**: `commandsBundle` (module.nix L32-43)
   - `.md`ファイルのみフィルタリング
   - Subdirectory構造を維持（`clean/`, `kiro/`, `shared/`）
@@ -553,17 +550,21 @@ Target-specific名前変更に対応（2025-02-11実装）:
 
 #### 概要
 
-`agents/distributions/` ディレクトリは、複数のコンポーネント（skills、commands、config）を論理的にバンドリングするための配布層です。
+`agents/internal/` ディレクトリは、skills・commands・rules・agents・config をまとめる配布層です。
 
 #### 構造
 
 ```
-agents/distributions/
-  ├── README.md
-  └── default/              # デフォルトバンドル
-      ├── skills/           # skills-internal/* へのsymlinks
-      ├── commands/         # commands-internal/*.md へのsymlinks
-      └── config/           # 設定ファイル群
+agents/
+  ├── internal/             # デフォルトバンドル（SSoT）
+  │   ├── skills/
+  │   ├── commands/
+  │   ├── rules/
+  │   ├── agents/
+  │   └── config/
+  ├── external/             # 外部スキルソース
+  ├── nix/
+  └── scripts/
 ```
 
 #### 使用方法
@@ -616,9 +617,9 @@ distributionsは`mkBundle`の**入力**ではなく、`discoverCatalog`の**入�
 
 #### symlinkベースの実装
 
-distributions/内はsymlinkで構成されるため：
+distribution層はsymlinkを含む構成を取れるため：
 
-- **実体は元のディレクトリ**（skills-internal、commands-internal）
+- **実体は元のディレクトリ**（例: `agents/internal/skills`, `agents/internal/commands`）
 - **sourceタグは実体のソース**を反映（"local"として表示される）
 - **物理的な重複なし**（ディスク効率的）
 
@@ -639,15 +640,15 @@ distributions/内はsymlinkで構成されるため：
 
 #### `-internal`命名について
 
-**現状**: `skills-internal/`, `commands-internal/`というサフィックス付き命名
+**現状**: `agents/internal/skills/`, `agents/internal/commands/` という配置
 
 **評価**:
 
 - ✅ Internal（非公開）vs External（公開）の区別が明確
-- ✅ distributions/配下でも元のソース名が保たれる
+- ✅ distributionsPath配下でも元のソース名が保たれる
 - ✅ 実装の本質的な問題ではない
 
-**推奨**: 命名変更は非推奨（distributions/により論理的な整理が可能になったため、物理名は変更不要）
+**推奨**: 現行命名を維持（`internal`/`external` で論理整理済み）
 
 ### 配布構造の検証
 

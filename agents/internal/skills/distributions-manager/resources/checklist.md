@@ -23,7 +23,7 @@
 
 ### Directory Creation
 
-- [ ] Bundle directory created: `distributions/<bundle-name>/`
+- [ ] Bundle directory created: `bundles/<bundle-name>/`
 - [ ] Subdirectories created:
   - [ ] `skills/`
   - [ ] `commands/`
@@ -51,7 +51,7 @@
 ### Validation command
 
 ```bash
-find distributions/<bundle-name>/skills/ -type l -exec sh -c '
+find bundles/<bundle-name>/skills/ -type l -exec sh -c '
   target=$(readlink -f "$1")
   test -f "$target/SKILL.md" || echo "Missing SKILL.md: $1"
 ' _ {} \;
@@ -68,7 +68,7 @@ find distributions/<bundle-name>/skills/ -type l -exec sh -c '
 ### Validation command
 
 ```bash
-find distributions/<bundle-name>/commands/ -type l -exec sh -c '
+find bundles/<bundle-name>/commands/ -type l -exec sh -c '
   target=$(readlink -f "$1")
   find "$target" -name "command.ts" -print -quit | grep -q . || echo "Missing command.ts: $1"
 ' _ {} \;
@@ -81,7 +81,7 @@ find distributions/<bundle-name>/commands/ -type l -exec sh -c '
 ### Validation command
 
 ```bash
-find distributions/<bundle-name>/ -type l -exec test ! -e {} \; -print
+find bundles/<bundle-name>/ -type l -exec test ! -e {} \; -print
 # Should output nothing
 ```
 
@@ -154,7 +154,7 @@ home-manager switch --flake ~/.config --impure
 ### Verification
 
 ```bash
-ls -la ~/.claude/skills/ | grep -f <(ls -1 distributions/<bundle-name>/skills/)
+ls -la ~/.claude/skills/ | grep -f <(ls -1 bundles/<bundle-name>/skills/)
 ```
 
 ### Runtime
@@ -288,7 +288,7 @@ mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
 # validate-bundle.sh
 
 BUNDLE_NAME="${1:-default}"
-BUNDLE_PATH="distributions/$BUNDLE_NAME"
+BUNDLE_PATH="bundles/$BUNDLE_NAME"
 
 echo "Validating bundle: $BUNDLE_NAME"
 

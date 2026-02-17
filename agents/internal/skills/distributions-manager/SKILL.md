@@ -2,7 +2,7 @@
 name: distributions-manager
 version: 1.0.0
 description: |
-  Explains the distributions/ management system for bundling skills,
+  Explains the distribution management system for bundling skills,
   commands, and configurations. Use when planning to create custom
   distributions or understand the bundling architecture.
 triggers:
@@ -46,7 +46,7 @@ Distributions are pre-configured bundles that combine:
 
 ### Current implementation
 
-- 100+ symlinks in `distributions/default/` (42 skills + 42 commands + 1 rule + 15 agents)
+- 100+ symlinks in `internal/` (42 skills + 42 commands + 1 rule + 15 agents)
 - Priority: Local > External > Distribution
 - Cyclic reference prevention (static paths, scanned before sources)
 - Supports subdirectories (e.g., `agents/kiro/`, `commands/shared/`)
@@ -81,7 +81,7 @@ Use this skill when:
 
 - **resources/templates/bundle-structure.txt**: Directory structure template
 - **resources/templates/README.template.md**: Bundle README template
-- **resources/examples/default-bundle.md**: Analysis of `distributions/default/`
+- **resources/examples/default-bundle.md**: Analysis of `internal/`
 - **resources/checklist.md**: QA checklist for bundle creation
 
 ---
@@ -91,11 +91,11 @@ Use this skill when:
 ### View Current Distributions
 
 ```bash
-# List all distributions
-ls -la agents/distributions/
-
 # Inspect default bundle
-tree agents/distributions/default/
+tree agents/internal/
+
+# Optional: list custom bundles (if using distributions directory)
+ls -la agents/bundles/
 ```
 
 ### Create a Custom Bundle
@@ -104,11 +104,11 @@ See **references/creating-bundles.md** for detailed steps.
 
 ```bash
 # Create bundle structure
-mkdir -p agents/distributions/my-bundle/{skills,commands,config}
+mkdir -p agents/bundles/my-bundle/{skills,commands,config}
 
 # Add skills
-cd agents/distributions/my-bundle/skills
-ln -s ../../../skills-internal/my-skill ./
+cd agents/bundles/my-bundle/skills
+ln -s ../../../internal/skills/my-skill ./
 
 # Deploy
 home-manager switch --flake ~/.config --impure

@@ -81,7 +81,7 @@ orchestrator
 新しいエージェントを作成する場合:
 
 1. **設計**: `agent-creator` スキルで構造設計
-2. **実装**: `~/.config/agents/distributions/default/agents/` に配置
+2. **実装**: `~/.config/agents/internal/agents/` に配置
 3. **統合**: `integration-framework` に基づいた実装
 4. **テスト**: 小規模タスクで検証
 

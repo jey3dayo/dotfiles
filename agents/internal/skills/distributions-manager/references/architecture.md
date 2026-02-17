@@ -83,7 +83,7 @@ processCommandEntry = name: type:
 ### Subdirectory example
 
 ```
-distributions/default/commands/
+internal/commands/
 ├── kiro -> ../../../commands-internal/kiro/  (symlink to dir)
 │   ├── spec-init/
 │   │   └── command.ts
@@ -135,7 +135,7 @@ scanDistribution = distributionPath:
 ### Subdirectory example
 
 ```
-distributions/default/
+internal/
 ├── rules/
 │   └── claude-md-design.md -> ~/.claude/rules/claude-md-design.md
 └── agents/
@@ -179,11 +179,11 @@ Distributions are scanned **before** sources to prevent circular dependencies:
 ```nix
 # Static path resolution
 distributionSkills = scanDistribution (distributionsPath + "/skills");
-# → /nix/store/...-distributions/default/skills
+# → /nix/store/...-internal/skills
 
-# Symlinks resolve at filesystem level, not Nix level
-# Example: distributions/default/skills/my-skill -> ../../../skills-internal/my-skill
-# Nix sees: /home/j138/.config/agents/skills-internal/my-skill
+# Entries can be directories or symlinks; resolution happens at filesystem level
+# Example: internal/skills/my-skill
+# Nix sees: /home/j138/.config/agents/internal/skills/my-skill
 ```
 
 ### Key insight
@@ -196,7 +196,7 @@ distributionSkills = scanDistribution (distributionsPath + "/skills");
 graph TD
     A[home-manager switch] --> B[discoverCatalog]
     B --> C[scanDistribution]
-    C --> D[readDir distributions/default/skills]
+    C --> D[readDir internal/skills]
     D --> E[Process symlinks]
     E --> F[Merge with External/Local]
     F --> G[Generate ~/.claude/skills/]
@@ -204,7 +204,7 @@ graph TD
 
 ### Step-by-step
 
-1. **Nix evaluation**: `scanDistribution()` reads `distributions/default/skills/`
+1. **Nix evaluation**: `scanDistribution()` reads `internal/skills/`
 2. **Symlink processing**: Each symlink is checked for `SKILL.md`
 3. **Catalog merge**: Distribution entries merged with External/Local
 4. **Priority resolution**: Local overwrites conflicts
@@ -220,9 +220,9 @@ home-manager build --flake ~/.config --impure --dry-run
 
 # Inspect generated catalog
 nix eval --json --impure --expr '
-  let lib = import ~/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
+  let lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
       catalog = lib.discoverCatalog {
-        distributionsPath = ~/agents/distributions/default;
+        distributionsPath = ~/.config/agents/internal;
         # ... other paths
       };
   in builtins.attrNames catalog.skills
@@ -238,7 +238,7 @@ ls -la ~/.claude/skills/
 
 ### Why Symlinks?
 
-- **No duplication**: Source of truth remains in `skills-internal/`
+- **No duplication**: Source of truth remains in `agents/internal/skills/`
 - **Easy updates**: Changes to source automatically reflected
 - **Nix-friendly**: Symlinks are resolved at filesystem level
 - **Bundle flexibility**: Same skill can appear in multiple distributions
@@ -260,13 +260,13 @@ ls -la ~/.claude/skills/
 ## Related Files
 
 - **agents/nix/lib.nix**: Main implementation
-- **home/j138/.agents/flake.nix**: Home Manager integration (calls `discoverCatalog`)
-- **agents/distributions/default/**: Example bundle
+- **~/.config/flake.nix**: Home Manager integration (calls `discoverCatalog`)
+- **agents/internal/**: Example bundle
 
 ---
 
 ## Future Considerations
 
-- **Multi-bundle support**: Currently single distribution (`default/`), could support multiple
+- **Multi-bundle support**: Currently single distribution (`internal/`), could support multiple
 - **Bundle versioning**: Semantic versioning for bundle releases
 - **Validation tools**: CLI for checking bundle integrity

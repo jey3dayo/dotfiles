@@ -19,7 +19,7 @@ This guide walks through creating a custom distribution bundle from scratch. Use
 ### Step 1: Create Bundle Structure
 
 ```bash
-cd /home/j138/.config/agents/distributions
+cd /home/j138/.config/agents/bundles
 
 # Create bundle directory
 mkdir -p my-bundle/{skills,commands,rules,agents,config}
@@ -221,7 +221,7 @@ Custom distribution for [workflow/team name].
 
 ## Installation
 
-Included in \`distributions/my-bundle/\`. Deploy with:
+Included in \`bundles/my-bundle/\`. Deploy with:
 
 \`\`\`bash
 home-manager switch --flake ~/.config --impure
@@ -240,16 +240,16 @@ EOF
 ### Option A: Replace default bundle
 
 ```nix
-# home/j138/.agents/flake.nix (or ~/.config/flake.nix)
-distributionsPath = ~/agents/distributions/my-bundle;
+# ~/.config/flake.nix
+distributionsPath = ~/.config/agents/bundles/my-bundle;
 ```
 
 ### Option B: Keep both (manual merge)
 
 ```bash
-# Copy my-bundle contents to default/
-cp -r my-bundle/skills/* default/skills/
-cp -r my-bundle/commands/* default/commands/
+# Copy my-bundle contents to internal/
+cp -r bundles/my-bundle/skills/* internal/skills/
+cp -r bundles/my-bundle/commands/* internal/commands/
 ```
 
 ### Option C: Multi-bundle support (future)
@@ -314,7 +314,7 @@ find my-bundle/commands/ -type l -exec sh -c '
 ### Frontend Bundle
 
 ```bash
-distributions/frontend-bundle/
+bundles/frontend-bundle/
 ├── skills/
 │   ├── react -> ../../../skills-internal/react
 │   ├── ui-ux-pro-max -> ../../../skills-internal/ui-ux-pro-max
@@ -328,7 +328,7 @@ distributions/frontend-bundle/
 ### Backend Bundle
 
 ```bash
-distributions/backend-bundle/
+bundles/backend-bundle/
 ├── skills/
 │   ├── golang -> ../../../skills-internal/golang
 │   └── mise -> ../../../skills-internal/mise
@@ -345,7 +345,7 @@ distributions/backend-bundle/
 ### Adding Skills to Existing Bundle
 
 ```bash
-cd distributions/my-bundle/skills
+cd bundles/my-bundle/skills
 ln -s ../../../skills-internal/new-skill ./
 home-manager switch --flake ~/.config --impure
 ```
@@ -353,7 +353,7 @@ home-manager switch --flake ~/.config --impure
 ### Removing Skills
 
 ```bash
-cd distributions/my-bundle/skills
+cd bundles/my-bundle/skills
 rm my-skill  # Remove symlink (does not delete source)
 home-manager switch --flake ~/.config --impure
 ```

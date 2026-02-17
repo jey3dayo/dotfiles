@@ -28,7 +28,7 @@
 
 ## Installation
 
-This bundle is included in `distributions/[bundle-name]/`.
+This bundle is included in `bundles/[bundle-name]/`.
 
 ### Deploy with Nix Home Manager
 
@@ -80,7 +80,7 @@ mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "local")'
 
 ```bash
 # Create local override in skills-internal/
-cp -r distributions/[bundle-name]/skills/[skill] skills-internal/
+cp -r bundles/[bundle-name]/skills/[skill] skills-internal/
 # Modify skills-internal/[skill]/SKILL.md
 ```
 
@@ -91,7 +91,7 @@ cp -r distributions/[bundle-name]/skills/[skill] skills-internal/
 ### Adding Skills
 
 ```bash
-cd distributions/[bundle-name]/skills
+cd bundles/[bundle-name]/skills
 ln -s ../../../skills-internal/[new-skill] ./
 home-manager switch --flake ~/.config --impure
 ```
@@ -99,7 +99,7 @@ home-manager switch --flake ~/.config --impure
 ### Removing Skills
 
 ```bash
-cd distributions/[bundle-name]/skills
+cd bundles/[bundle-name]/skills
 rm [skill-name]
 home-manager switch --flake ~/.config --impure
 ```

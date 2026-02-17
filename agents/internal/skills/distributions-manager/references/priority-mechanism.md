@@ -16,7 +16,7 @@ Local > External > Distribution
 
 - **Local** (`skills-internal/`, `commands-internal/`): Highest priority, overwrites all
 - **External** (`skills/`): Medium priority, overwrites Distribution
-- **Distribution** (`distributions/default/`): Lowest priority, default fallback
+- **Distribution** (`internal/`): Lowest priority, default fallback
 
 ---
 
@@ -54,7 +54,7 @@ final = temp // localSkills;
 ### Scenario 1: Same Skill in All Sources
 
 ```
-distributions/default/skills/react/  (Distribution)
+internal/skills/react/  (Distribution)
 skills/react/                        (External)
 skills-internal/react/               (Local)
 ```
@@ -74,7 +74,7 @@ skills-internal/react/               (Local)
 ### Scenario 2: Skill in Distribution + External Only
 
 ```
-distributions/default/skills/ui-ux-pro-max/  (Distribution)
+internal/skills/ui-ux-pro-max/  (Distribution)
 skills/ui-ux-pro-max/                        (External)
 ```
 
@@ -93,14 +93,14 @@ skills/ui-ux-pro-max/                        (External)
 ### Scenario 3: Skill in Distribution Only
 
 ```
-distributions/default/skills/custom-skill/  (Distribution)
+internal/skills/custom-skill/  (Distribution)
 ```
 
 ### Resolution
 
 ```nix
 {
-  custom-skill = { id = "custom-skill"; path = /path/to/distributions/.../custom-skill; source = "distribution"; };
+  custom-skill = { id = "custom-skill"; path = /path/to/bundles/.../custom-skill; source = "distribution"; };
 }
 ```
 
@@ -118,7 +118,7 @@ distributions/default/skills/custom-skill/  (Distribution)
 
 ```bash
 # Create local override
-cp -r distributions/default/skills/react/ skills-internal/react/
+cp -r internal/skills/react/ skills-internal/react/
 # Modify skills-internal/react/SKILL.md
 
 # Result: Local version takes precedence
@@ -153,7 +153,7 @@ mv skills/my-skill skills-internal/
 
 ```bash
 # Distribution provides baseline
-distributions/default/skills/baseline-skill/
+internal/skills/baseline-skill/
 
 # Users can override by creating:
 skills-internal/baseline-skill/
@@ -165,10 +165,10 @@ skills-internal/baseline-skill/
 
 ### Problem
 
-If distributions reference sources, and sources reference distributions:
+If bundles reference sources, and sources reference bundles:
 
 ```
-distributions/ → skills-internal/ → distributions/ (loop)
+bundles/ → skills-internal/ → bundles/ (loop)
 ```
 
 ### Solution: Static Scanning
@@ -190,7 +190,7 @@ distributions/ → skills-internal/ → distributions/ (loop)
 
 ```nix
 # Distribution symlink
-distributions/default/skills/my-skill → ../../../skills-internal/my-skill
+internal/skills/my-skill → ../../../skills-internal/my-skill
 
 # Nix resolves at filesystem level:
 readDir (distributionsPath + "/skills")
@@ -215,7 +215,7 @@ mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
 # Expected output:
 # {"id": "react", "source": "local"}        (from skills-internal/)
 # {"id": "ui-ux", "source": "external"}     (from skills/)
-# {"id": "custom", "source": "distribution"} (from distributions/)
+# {"id": "custom", "source": "distribution"} (from bundles/)
 ```
 
 ---
@@ -226,7 +226,7 @@ mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
 # Check which version is deployed
 ls -la ~/.claude/skills/react
 
-# Expected: symlink to skills-internal/ (not distributions/)
+# Expected: symlink to skills-internal/ (not bundles/)
 # ~/.claude/skills/react -> /path/to/skills-internal/react
 ```
 
@@ -238,11 +238,11 @@ ls -la ~/.claude/skills/react
 # Evaluate catalog with trace
 nix eval --show-trace --json --impure --expr '
   let
-    lib = import ~/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
+    lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
     catalog = lib.discoverCatalog {
-      distributionsPath = ~/agents/distributions/default;
-      skillsPath = ~/agents/skills-internal;
-      skillsExternalPath = ~/agents/skills;
+      distributionsPath = ~/.config/agents/internal;
+      skillsPath = ~/.config/agents/internal/skills;
+      skillsExternalPath = ~/.config/agents/external;
     };
   in
     catalog.skills.react
@@ -263,11 +263,11 @@ nix eval --show-trace --json --impure --expr '
 
 ## Priority Matrix
 
-| Skill Location                  | Priority | Source Tag     | Overwrites      |
-| ------------------------------- | -------- | -------------- | --------------- |
-| `skills-internal/`              | Highest  | `local`        | All             |
-| `skills/`                       | Medium   | `external`     | Distribution    |
-| `distributions/default/skills/` | Lowest   | `distribution` | None (fallback) |
+| Skill Location     | Priority | Source Tag     | Overwrites      |
+| ------------------ | -------- | -------------- | --------------- |
+| `skills-internal/` | Highest  | `local`        | All             |
+| `skills/`          | Medium   | `external`     | Distribution    |
+| `internal/skills/` | Lowest   | `distribution` | None (fallback) |
 
 ---
 
@@ -276,8 +276,8 @@ nix eval --show-trace --json --impure --expr '
 ### Edge Case 1: Same Skill in Distribution via Different Paths
 
 ```
-distributions/default/skills/react → ../../../skills-internal/react
-distributions/default/skills/react-copy → ../../../skills-internal/react
+internal/skills/react → ../../../skills-internal/react
+internal/skills/react-copy → ../../../skills-internal/react
 ```
 
 ### Result
@@ -289,7 +289,7 @@ distributions/default/skills/react-copy → ../../../skills-internal/react
 ### Edge Case 2: Distribution Symlink to External
 
 ```
-distributions/default/skills/my-skill → ../../../skills/my-skill
+internal/skills/my-skill → ../../../skills/my-skill
 ```
 
 ### Priority
@@ -306,7 +306,7 @@ distributions/default/skills/my-skill → ../../../skills/my-skill
 ### Edge Case 3: Broken Symlink in Distribution
 
 ```
-distributions/default/skills/broken → ../../../skills-internal/nonexistent
+internal/skills/broken → ../../../skills-internal/nonexistent
 ```
 
 ### Nix behavior

@@ -3,7 +3,7 @@
 ## Directory Layout
 
 ```
-distributions/<bundle-name>/
+bundles/<bundle-name>/
 ├── skills/                          # Skill symlinks
 │   ├── skill-1 -> ../../../skills-internal/skill-1
 │   ├── skill-2 -> ../../../skills-internal/skill-2
@@ -30,9 +30,9 @@ distributions/<bundle-name>/
 ### Skills
 
 ```bash
-# From: distributions/<bundle-name>/skills/
+# From: bundles/<bundle-name>/skills/
 # To:   skills-internal/<skill-name>/
-cd distributions/<bundle-name>/skills
+cd bundles/<bundle-name>/skills
 ln -s ../../../skills-internal/<skill-name> ./
 ```
 
@@ -40,7 +40,7 @@ ln -s ../../../skills-internal/<skill-name> ./
 
 ```bash
 # Single command
-cd distributions/<bundle-name>/commands
+cd bundles/<bundle-name>/commands
 ln -s ../../../commands-internal/<command-name> ./
 
 # Command group (with subcommands)
@@ -76,7 +76,7 @@ ln -s ../../../commands-internal/<command-group> ./
 ## Example: Minimal Bundle
 
 ```
-distributions/minimal-bundle/
+bundles/minimal-bundle/
 ├── skills/
 │   └── my-skill -> ../../../skills-internal/my-skill
 ├── commands/
@@ -89,7 +89,7 @@ distributions/minimal-bundle/
 ## Example: Complete Bundle
 
 ```
-distributions/complete-bundle/
+bundles/complete-bundle/
 ├── skills/
 │   ├── react -> ../../../skills-internal/react
 │   ├── ui-ux-pro-max -> ../../../skills-internal/ui-ux-pro-max
@@ -112,16 +112,16 @@ distributions/complete-bundle/
 
 ```bash
 # Check structure
-tree -L 2 distributions/<bundle-name>/
+tree -L 2 bundles/<bundle-name>/
 
 # Validate symlinks
-find distributions/<bundle-name>/ -type l -exec test ! -e {} \; -print
+find bundles/<bundle-name>/ -type l -exec test ! -e {} \; -print
 
 # Count skills
-ls -1 distributions/<bundle-name>/skills/ | wc -l
+ls -1 bundles/<bundle-name>/skills/ | wc -l
 
 # Count commands
-find distributions/<bundle-name>/commands/ -name "command.ts" | wc -l
+find bundles/<bundle-name>/commands/ -name "command.ts" | wc -l
 ```
 
 ---
