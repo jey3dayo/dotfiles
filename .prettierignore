@@ -13,7 +13,7 @@ result-*/
 codex/AGENTS.md
 opencode/AGENTS.md
 claude/local/node_modules/
-agents/skills/
+agents/external/
 
 # JS/TS/JSON are formatted by Biome
 **/*.js
