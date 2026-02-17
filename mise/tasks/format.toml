@@ -46,14 +46,22 @@ fi
 
 ["format:markdown"]
 description = "Markdown ファイルをフォーマット"
+depends = ["format:markdown:bold-headings", "format:markdownlint"]
+
+["format:markdownlint"]
+description = "Markdownlint + Prettier で Markdown をフォーマット"
 run = [
   "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
-  "fd -e md ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null",
+  "fd -H -e md ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null",
 ]
 
 ["format:markdown:check"]
 description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
-run = "fd -e md ${TASK_EXCLUDES} -X prettier --check --log-level error"
+depends = ["format:markdown:bold-headings:check", "format:markdownlint:check"]
+
+["format:markdownlint:check"]
+description = "Markdownlint + Prettier の Markdown チェック（書き込みなし）"
+run = "fd -H -e md ${TASK_EXCLUDES} -X prettier --check"
 
 ["format:yaml"]
 description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"
@@ -212,9 +220,9 @@ description = "ドキュメントの完全な検証とフォーマット"
 depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]
 
 ["format:markdown:bold-headings"]
-description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能、デフォルト: skills）"
-run = "tsx ./agents/scripts/replace-bold-headings.ts"
+description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能、デフォルト: リポジトリ全体）"
+run = "tsx ./scripts/replace-bold-headings.ts"
 
 ["format:markdown:bold-headings:check"]
 description = "Markdown ファイルの太字見出しチェック（変更なし）"
-run = "tsx ./agents/scripts/replace-bold-headings.ts --dry-run"
+run = "tsx ./scripts/replace-bold-headings.ts --dry-run"

@@ -75,7 +75,7 @@ Three-layer tool management architecture policy defining responsibility boundari
 - GUI application management
 - Robust dependency resolution
 
-**Current state**: 229 formulae + 79 casks (as of 2026-02-12)
+**Current state**: 211 formulae + 79 casks (as of 2026-02-17)
 
 ## Decision Flowchart
 
@@ -131,6 +131,38 @@ Language runtimes follow a hybrid pattern based on system dependencies:
    - NO → Homebrew (if system-wide version is acceptable)
 
 **Example**: `python@3.11` was removed from Brewfile because no system tools require it. Projects use mise-managed Python versions.
+
+## VS Code Extensions Management
+
+**Policy**: Manage VS Code extensions via Brewfile `vscode` section
+
+**Rationale**:
+
+- Consistency with other GUI applications (cask)
+- Unified management with Homebrew bundle
+- Version pinning via extension IDs
+
+**Example**:
+
+```ruby
+vscode "github.copilot"
+vscode "ms-python.python"
+```
+
+## Go Tools Management
+
+**Policy**: Prefer mise `go:` prefix over Homebrew `go` section
+
+| Method                | Use case                                    | Example                       |
+| --------------------- | ------------------------------------------- | ----------------------------- |
+| **mise** (優先)       | Development tools, project-specific         | `go:golang.org/x/tools/gopls` |
+| **Homebrew** (最小限) | System-wide tools with complex dependencies | `brew "golangci-lint"`        |
+
+**Current Homebrew go section**: 4 tools only
+
+- `golangci-lint` - Linter aggregator
+- `lambroll` - AWS Lambda deployment
+- `wire` - Dependency injection
 
 ## starship Case Study
 
@@ -202,11 +234,14 @@ tree-sitter = "latest"  # tree-sitter-cli for development
 ### Check for duplicate tools
 
 ```bash
-# Extract Homebrew formulae
+# Extract Homebrew formulae (exclude special prefixes)
 grep '^brew ' Brewfile | sed 's/brew "\(.*\)".*/\1/' | sort > /tmp/brew_tools.txt
 
-# Extract mise tools
-grep '^\w\+\s*=' mise/config.default.toml | sed 's/\s*=.*//' | sort > /tmp/mise_tools.txt
+# Extract mise tools (exclude npm:, cargo:, go:, pipx: prefixes)
+grep '^\w\+\s*=' mise/config.default.toml | \
+  sed 's/\s*=.*//' | \
+  grep -v '^npm:' | grep -v '^cargo:' | grep -v '^go:' | grep -v '^pipx:' | \
+  sort > /tmp/mise_tools.txt
 
 # Find duplicates
 comm -12 /tmp/brew_tools.txt /tmp/mise_tools.txt
@@ -218,6 +253,9 @@ comm -12 /tmp/brew_tools.txt /tmp/mise_tools.txt
 
 - `tree-sitter` (library) vs `tree-sitter` (CLI) - Different packages
 - `python@3.13` (system) vs `python` (mise) - Hybrid pattern
+- `neovim` (Homebrew) vs `npm:neovim` (mise) - Different packages
+  - Homebrew: Neovim binary and system dependencies
+  - mise: Node.js LSP client (npm package)
 
 ### Check mise tool availability
 

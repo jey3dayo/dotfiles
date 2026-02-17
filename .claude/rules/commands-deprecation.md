@@ -93,7 +93,7 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 11. `commands/kiro/steering.md` → cc-sdd
 12. `commands/kiro/steering-custom.md` → cc-sdd
 
-**削除理由**: cc-sdd スキル（agents/distributions/default/skills/cc-sdd/）で既に完全統合済み
+**削除理由**: cc-sdd スキル（agents/internal/skills/cc-sdd/）で既に完全統合済み
 
 ### Phase 6 Commands完全削除（✅ 完了）
 
@@ -122,7 +122,7 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 - shared/ユーティリティはスキル内で再実装
 - 未移行Commandsは使用頻度低く、必要時に再実装可能
 
-**Commands廃止完了**: agents/distributions/default/commands/ ディレクトリ全体削除
+**Commands廃止完了**: agents/internal/commands/ ディレクトリ全体削除
 
 ## 移行統計
 

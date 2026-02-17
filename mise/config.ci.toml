@@ -22,6 +22,16 @@ trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 uvx = true
 
 # ========================================
+# 環境変数（CI でもローカルと同じ対象範囲を使用）
+# ========================================
+
+[env]
+YAMLLINT_CONFIG_FILE = "yamllint/config"
+MD_GLOB = "**/*.md"
+MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit #agents/external #.worktrees #result #result-* #.kiro"
+TASK_EXCLUDES = "--exclude agents/external --exclude .worktrees --exclude result --exclude result-* --exclude .luarocks --exclude .kiro"
+
+# ========================================
 # ツール定義 - CI必須ツールのみ
 # ========================================
 

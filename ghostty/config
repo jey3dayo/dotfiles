@@ -158,9 +158,9 @@ keybind = ctrl+x>r=reload_config
 # WezTerm-like non-prefix keys
 ############################
 
-keybind = ctrl+equal=increase_font_size:1
+keybind = ctrl++=increase_font_size:1
 keybind = ctrl+-=decrease_font_size:1
-keybind = ctrl+shift+equal=reset_font_size
+keybind = ctrl+0=reset_font_size
 
 keybind = alt+ctrl+h=move_tab:-1
 keybind = alt+ctrl+l=move_tab:1

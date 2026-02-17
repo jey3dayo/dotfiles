@@ -154,10 +154,11 @@ yamllint = "latest"
 # Cargo-based Tools (Rust CLI ユーティリティ)
 # ========================================
 # 注: typos-lsp は Homebrew で管理
+# バージョン固定: DNS解決の一時的な障害回避のため (2026-02-17)
 "cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "latest"
-"cargo:similarity-ts" = "latest"
-"cargo:wrkflw" = "latest"
+"cargo:needle-cli" = "0.14.1"
+"cargo:similarity-ts" = "0.4.1"
+"cargo:wrkflw" = "0.7.3"
 "cargo:starship" = "latest"
 
 # ========================================

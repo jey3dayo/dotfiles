@@ -31,10 +31,7 @@ const countChar = (str, char) => {
   return count;
 };
 
-const stripCommentsAndStrings = (line) =>
-  line
-    .replace(/"([^"\\]|\\.)*"/g, "")
-    .replace(/#.*/, "");
+const stripComments = (line) => line.replace(/#.*/, ""); // コメントのみ削除、文字列リテラルは保持
 
 const extractSources = (content) => {
   const lines = content.split(/\r?\n/);
@@ -43,7 +40,7 @@ const extractSources = (content) => {
   let current = null;
   for (let i = 0; i < lines.length; i += 1) {
     const raw = lines[i];
-    const sanitized = stripCommentsAndStrings(raw);
+    const sanitized = stripComments(raw);
     if (depth === 1 && !current) {
       const match = sanitized.match(/^\s*([A-Za-z0-9_-]+)\s*=\s*\{\s*$/);
       if (match) {
@@ -94,7 +91,7 @@ const ensureInputsBlock = (lines) => {
   let inputsEnd = -1;
   let depth = 0;
   for (let i = 0; i < lines.length; i += 1) {
-    const sanitized = stripCommentsAndStrings(lines[i]);
+    const sanitized = stripComments(lines[i]);
     if (inputsStart === -1 && /^\s*inputs\s*=\s*\{\s*$/.test(sanitized)) {
       inputsStart = i;
       depth = 1;

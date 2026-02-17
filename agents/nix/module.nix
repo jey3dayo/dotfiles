@@ -43,9 +43,11 @@ in {
 
     sources = lib.mkOption {
       type = lib.types.attrsOf (lib.types.submodule {
-        options.path = lib.mkOption {
-          type = lib.types.path;
-          description = "Path to external skill source directory.";
+        options = {
+          path = lib.mkOption {
+            type = lib.types.path;
+            description = "Path to external skill source directory.";
+          };
         };
       });
       default = {};
@@ -61,7 +63,7 @@ in {
     distributionsPath = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Path to distributions directory (e.g., ./agents/distributions/default). Provides bundled skills, commands, and config.";
+      description = "Path to internal assets directory (e.g., ./agents/internal). Provides bundled skills, commands, and config.";
     };
 
     skills.enable = lib.mkOption {

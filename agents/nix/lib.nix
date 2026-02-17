@@ -33,7 +33,9 @@ let
     let
       entries = readDir sourcePath;
       dirs = attrNames (filterAttrs (_: type: type == "directory") entries);
-      skills = builtins.filter (name: pathExists (sourcePath + "/${name}/SKILL.md")) dirs;
+      skills = builtins.filter (name:
+        pathExists (sourcePath + "/${name}/SKILL.md")
+      ) dirs;
     in
       builtins.listToAttrs (map (name: {
         inherit name;
@@ -206,21 +208,13 @@ in {
         else
           { skills = {}; commands = null; config = null; rules = {}; agents = {}; };
 
-      # Scan each external source
+      # Scan each external source (last-wins on duplicate skill IDs)
       externalSkills = builtins.foldl' (acc: srcName:
         let
           src = sources.${srcName};
           scanned = scanSourceAutoDetect srcName src.path;
-          duplicates = builtins.filter (id: hasAttr id acc) (attrNames scanned);
-          duplicateDetails = builtins.map (id:
-            "${id} (existing: ${acc.${id}.source}, new: ${scanned.${id}.source})"
-          ) duplicates;
         in
-          # External sources: error on duplicate skill IDs to avoid silent overrides
-          if duplicates != [] then
-            throw "Duplicate skill ids found across external sources: ${concatStringsSep ", " duplicateDetails}. Resolve by renaming or removing the duplicates."
-          else
-            acc // scanned
+          acc // scanned
       ) {} (attrNames sources);
 
       # Scan local skills (optional legacy override path)
@@ -230,7 +224,7 @@ in {
         else {};
 
       # Priority: local > distribution > external
-      # distributions/default is the internal single source of truth.
+      # agents/internal is the single source of truth.
     in
       externalSkills // distributionResult.skills // localSkills;
 

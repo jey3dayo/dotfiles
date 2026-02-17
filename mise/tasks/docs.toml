@@ -1,0 +1,19 @@
+# ========================================
+# ドキュメントメンテナンス
+# ========================================
+
+["docs:update-counts"]
+description = "Update tool counts in documentation"
+run = '''
+#!/bin/bash
+BREW_COUNT=$(grep '^brew ' Brewfile | wc -l | tr -d ' ')
+CASK_COUNT=$(grep '^cask ' Brewfile | wc -l | tr -d ' ')
+MISE_COUNT=$(grep '^\w\+\s*=' mise/config.default.toml | wc -l | tr -d ' ')
+
+echo "=== Current Tool Counts ==="
+echo "Homebrew: $BREW_COUNT formulae + $CASK_COUNT casks"
+echo "mise: $MISE_COUNT tools"
+echo ""
+echo "Update the following line in .claude/rules/tools/tool-install-policy.md:"
+echo "**Current state**: $BREW_COUNT formulae + $CASK_COUNT casks (as of $(date +%Y-%m-%d))"
+'''

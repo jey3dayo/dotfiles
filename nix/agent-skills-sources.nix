@@ -1,6 +1,18 @@
 # Agent skills source definitions (single source of truth)
 {
   # Agent-skills external sources (flake = false: raw git repos)
+  benjitaylor-agentation = {
+    url = "github:benjitaylor/agentation";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      benjitaylor-agentation = "skills";
+    };
+    selection.enable = [
+      "agentation"
+      "agentation-self-driving"
+    ];
+  };
   openai-skills = {
     url = "github:openai/skills";
     flake = false;
@@ -25,6 +37,7 @@
     };
     selection.enable = [
       "composition-patterns"
+      "react-best-practices"
       "web-design-guidelines"
     ];
   };
@@ -48,6 +61,18 @@
     };
     selection.enable = [
       "ui-ux-pro-max"
+    ];
+  };
+  heyvhuang-ship-faster = {
+    url = "github:Heyvhuang/ship-faster";
+    flake = false;
+    baseDir = "skills";
+    catalogs = {
+      heyvhuang-ship-faster = ".";
+    };
+    selection.enable = [
+      "cloudflare"
+      "tool-openclaw"
     ];
   };
 }

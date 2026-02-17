@@ -16,7 +16,7 @@ includes = [
   "mise/tasks/updates.toml",
   "mise/tasks/home-manager.toml",
   "mise/tasks/ci.toml",
-  "mise/tasks/local.toml",
+  "mise/tasks/docs.toml",
 ]
 
 # ========================================

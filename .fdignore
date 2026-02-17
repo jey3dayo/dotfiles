@@ -9,7 +9,7 @@ result/
 result-*/
 
 # Imported agent skills (managed separately)
-agents/skills/
+agents/external/
 
 # Temporary symlinks
 codex/AGENTS.md
