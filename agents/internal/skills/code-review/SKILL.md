@@ -19,12 +19,10 @@ Provide comprehensive code review and quality evaluation framework with configur
 ### Configuration Sources (Priority Order)
 
 1. **Project-specific config** (highest priority)
-
    - `.code-review-config.json` in project root
    - `.claude/code-review-config.json`
 
 2. **User config**
-
    - `~/.claude/code-review/custom-projects.json`
 
 3. **Default config** (fallback)
@@ -156,13 +154,13 @@ def integrate_skills(project_info):
 
 ### Star Rating System
 
-| Rating          | Description  | Criteria                                     |
-| --------------- | ------------ | -------------------------------------------- |
+| Rating     | Description  | Criteria                                     |
+| ---------- | ------------ | -------------------------------------------- |
 | ⭐️⭐️⭐️⭐️⭐️ | Exceptional  | All dimensions excellent, custom rules met   |
-| ⭐️⭐️⭐️⭐️    | Excellent    | Most dimensions strong, minor improvements   |
-| ⭐️⭐️⭐️       | Good         | Acceptable quality, some improvements needed |
-| ⭐️⭐️          | Needs Work   | Multiple issues, significant improvements    |
-| ⭐️             | Major Issues | Critical problems, substantial rework        |
+| ⭐️⭐️⭐️⭐️   | Excellent    | Most dimensions strong, minor improvements   |
+| ⭐️⭐️⭐️     | Good         | Acceptable quality, some improvements needed |
+| ⭐️⭐️       | Needs Work   | Multiple issues, significant improvements    |
+| ⭐️         | Major Issues | Critical problems, substantial rework        |
 
 ## Review Modes
 

@@ -219,13 +219,11 @@ Medium Priority (90-95%):
 ### Phase 1: 高優先度（即時実行）
 
 1. **共通Repository層の作成**
-
    - `src/lib/repository/base-repository.ts`
    - `findByIdOrThrow<T>` 関数を実装
    - `delete<T>` 関数を実装
 
 2. **影響範囲**:
-
    - user-service.ts: 2関数
    - admin-service.ts: 2関数
    - テスト: 4ファイル

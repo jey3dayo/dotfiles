@@ -54,19 +54,16 @@ Document size limits are configurable via `.docs-manager-config.json`:
 ### Indicators for Splitting
 
 1. **Size-Based**:
-
    - Document exceeds warning threshold
    - More than 10 major sections
    - Difficulty finding specific content
 
 2. **Content-Based**:
-
    - Multiple distinct topics
    - Different target audiences mixed
    - Varying levels of detail
 
 3. **Maintenance-Based**:
-
    - Different update frequencies
    - Separate ownership/responsibility
    - Independent versioning needs

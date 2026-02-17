@@ -44,23 +44,19 @@ Use Glob tool to expand file patterns, then read all files:
 ## Workflow
 
 1. **Ask user** for custom steering needs:
-
    - Domain/topic (e.g., "API standards", "testing approach")
    - Specific requirements or patterns to document
 
 2. **Check if template exists**:
-
    - Load from `.kiro/settings/templates/steering-custom/{name}.md` if available
    - Use as starting point, customize based on project
 
 3. **Analyze codebase** (JIT) for relevant patterns:
-
    - **Glob** for related files
    - **Read** for existing implementations
    - **Grep** for specific patterns
 
 4. **Generate custom steering**:
-
    - Follow template structure if available
    - Apply principles from `.kiro/settings/rules/steering-principles.md`
    - Focus on patterns, not exhaustive lists

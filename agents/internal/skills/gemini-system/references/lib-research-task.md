@@ -88,7 +88,6 @@ gemini -p "Research 'pydantic' v2 with focus on:
    ```
 
 2. **Save output to docs**
-
    - Claude saves Gemini's output to `.claude/docs/libraries/{library_name}.md`
 
 3. **Update existing docs**

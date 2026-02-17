@@ -541,24 +541,20 @@ const client = authenticate(process.env.API_KEY);
 ドキュメント更新が必要なタイミング:
 
 1. **新機能追加**
-
    - README.mdの機能一覧
    - API documentationの新エンドポイント
    - CHANGELOG.mdのAddedセクション
 
 2. **既存機能変更**
-
    - 影響を受けるすべてのドキュメント
    - CHANGELOG.mdのChangedセクション
    - Migration guideが必要な場合
 
 3. **バグ修正**
-
    - CHANGELOG.mdのFixedセクション
    - Troubleshooting guide（該当する場合）
 
 4. **廃止予定機能**
-
    - CHANGELOG.mdのDeprecatedセクション
    - Migration guide
 

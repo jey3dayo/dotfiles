@@ -85,7 +85,6 @@ git stash pop
 #### High Risk
 
 1. **Breaking Change: API Contract Modification**
-
    - Impact: Existing API consumers will break
    - Probability: High
    - Mitigation:
@@ -106,7 +105,6 @@ git stash pop
 #### Medium Risk
 
 3. **Performance Degradation**
-
    - Impact: Slower response times
    - Probability: Medium
    - Mitigation:

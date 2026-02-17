@@ -304,7 +304,6 @@ aws sts get-caller-identity
    ```
 
 2. **影響範囲確認**
-
    - 削除されるリソースはないか？
    - 本番トラフィクへの影響は？
    - ロールバック手順は？
@@ -371,25 +370,21 @@ aws sts get-caller-identity
 When users request infrastructure changes:
 
 1. **Understand the request**:
-
    - 環境は？（staging/production）
    - 変更内容は？（CPU/メモリ、ALB、DNS...）
    - 緊急度は？
 
 2. **Confirm critical details**:
-
    - 本番環境への影響
    - ダウンタイムの有無
    - ロールバック計画
 
 3. **Execute safely**:
-
    - terraform planで変更内容を確認
    - 本番環境では特に慎重に実施
    - 計画ファイル（-out=tfplan）を使用
 
 4. **Verify completion**:
-
    - terraform output確認
    - ECSサービス状態確認
    - アプリケーション動作確認

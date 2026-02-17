@@ -23,24 +23,20 @@ Automatically polish code by executing lint/format/test and fixing errors iterat
 ## Workflow
 
 1. **Detect Configuration**
-
    - Check for mise.toml tasks (format, lint, lint-fix)
    - Check for package.json scripts (format, lint, lint:fix, test)
 
 2. **Execute Format**
-
    - Run `mise run format` or `npm run format`
    - Report formatted files
 
 3. **Execute Lint & Fix**
-
    - Run lint command
    - If errors found, run lint-fix command
    - If errors remain, attempt manual fixes
    - Repeat until clean or max attempts reached
 
 4. **Execute Tests**
-
    - Run test command if available
    - Fix test failures if detected
    - Repeat until passing or max attempts reached

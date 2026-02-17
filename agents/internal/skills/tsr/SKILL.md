@@ -321,18 +321,15 @@ console.log(ignoreContent);
 以下は使用されているが、誤検出される可能性があります:
 
 1. **Next.js特有のファイル**
-
    - `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`
    - API Routes (`src/app/api/**/*.ts`)
    - Middleware (`middleware.ts`)
 
 2. **動的インポート**
-
    - `import()` による遅延ロード
    - 文字列ベースのインポート
 
 3. **テスト関連**
-
    - テストファイル (_.test.ts,_.spec.ts)
    - Storybook (\*.stories.tsx)
    - モックデータ (src/mocks/\*\*)

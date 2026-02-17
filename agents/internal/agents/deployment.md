@@ -123,12 +123,10 @@ aws sts get-caller-identity
 #### 手動実行手順
 
 1. **GitHub ActionsページへアクセOH**
-
    - リポジトリ: `CyberAgent-Infosys/caad-asta`
    - Actions → Deploy Application to ECS
 
 2. **パラメータ設定**
-
    - `environment`: staging または production
    - `deployment_target`: ECRタグ（例: `v1.7.0`, `staging-latest`）
 
@@ -278,7 +276,6 @@ gh pr create \
 mainブランチへのマージ後、自動的に：
 
 1. **ECRビルドワークフロー起動**
-
    - `.github/workflows/ecr-deploy.yml`が実行
    - Dockerイメージがビルドされてasta-productionリポジトリへプッシュ
 
@@ -755,13 +752,11 @@ deployment agent: 「再デプロイを実行します」
 ### デプロイ前チェックリスト
 
 1. **コード品質**
-
    - ✅ すべてのテストが成功
    - ✅ リントエラーなし
    - ✅ 型エラーなし
 
 2. **インフラ準備**
-
    - ✅ AWS認証完了
    - ✅ ECRイメージ存在確認
    - ✅ 環境変数設定確認
@@ -774,13 +769,11 @@ deployment agent: 「再デプロイを実行します」
 ### Production環境の特別な注意
 
 1. **慎重な実行**
-
    - 明示的な確認を取る
    - 影響範囲を説明
    - ロールバック手順を確認
 
 2. **監視強化**
-
    - デプロイ後15分間のログ監視
    - エラーメトリクスの確認
    - ヘルスチェック確認
@@ -793,13 +786,11 @@ deployment agent: 「再デプロイを実行します」
 ### デプロイ後の確認
 
 1. **即座の確認（5分以内）**
-
    - サービス起動確認
    - HTTPヘルスチェック
    - エラーログ確認
 
 2. **短期確認（15分以内）**
-
    - CPU/メモリ使用率
    - リクエスト成功率
    - レスポンスタイム

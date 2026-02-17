@@ -291,13 +291,11 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 
 ```markdown
 1. ユーザー入力を解析
-
    - プロジェクト説明が提供された場合: その説明を使用
    - プロジェクト説明が未提供の場合: 自動推察モード
 
 2. 自動推察モード（説明未提供時）
    優先順位でプロジェクトドキュメントを読み込み:
-
    - README.md - プロジェクト概要
    - CLAUDE.md - プロジェクト方針・技術スタック
    - AGENTS.md - エージェント設定・開発方針
@@ -312,22 +310,18 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 
 ```markdown
 1. 質問プールロード & 選択
-
    - generic.yaml + {domain}.yaml から読み込み
    - スコアリングで上位3-5問を選択
 
 2. 各質問について並列で自動分析:
    a. プロジェクトファイル解析
-
    - README.md、CLAUDE.md、steering/\*.md から関連情報を抽出
    - 信頼度スコアを計算
 
    b. コードベース検索（オプション）
-
    - MCP Serena または fallback grep で関連実装を検索
 
    c. ギャップ分析
-
    - 充足度を計算 (0.0-1.0)
    - 状態分類:
      ✅ Covered (>0.8)
@@ -341,13 +335,11 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 
 ```markdown
 1. Executive Summary
-
    - 発見された盲点の総数と内訳
    - カバレッジ統計
    - クリティカルな問題のハイライト
 
 2. Detailed Findings（質問ごと）
-
    - 質問テキスト
    - 自動推測された回答（信頼度付き）
    - ギャップの詳細
@@ -382,7 +374,6 @@ def score_question(question: Dict, context: ProjectContext) -> float:
 1. 質問を1つずつ提示（マークダウン形式）
 
 2. ユーザー回答を分析
-
    - 回答内容から不足概念を検出
    - 必要に応じて深堀り質問（最大2回）
 

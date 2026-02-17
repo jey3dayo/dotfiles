@@ -279,7 +279,6 @@ pnpm validate:layers
 ### 実装制約
 
 - **Prisma使用制限**:
-
   - Server Component層: Service層経由必須
   - Client Component層: 使用不可
   - Service層: 直接使用OK
