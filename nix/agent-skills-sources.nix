@@ -1,3 +1,6 @@
+# Agent skills source definitions (single source of truth)
+{
+  # Agent-skills external sources (flake = false: raw git repos)
   benjitaylor-agentation = {
     url = "github:benjitaylor/agentation";
     flake = false;
@@ -10,9 +13,6 @@
       "agentation-self-driving"
     ];
   };
-# Agent skills source definitions (single source of truth)
-{
-  # Agent-skills external sources (flake = false: raw git repos)
   openai-skills = {
     url = "github:openai/skills";
     flake = false;
