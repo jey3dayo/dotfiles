@@ -150,11 +150,11 @@ Original → Target
 
 ### 必須セクション
 
-1. **Source Analysis** - ソースの種類、機能、依存関係、複雑度
-2. **Target Integration** - 統合ポイント、影響を受けるファイル、パターンマッチング
-3. **Implementation Tasks** - 優先順位付きチェックリスト
-4. **Validation Checklist** - 完了基準
-5. **Risk Mitigation** - 潜在的問題とロールバック戦略
+1. Source Analysis - ソースの種類、機能、依存関係、複雑度
+2. Target Integration - 統合ポイント、影響を受けるファイル、パターンマッチング
+3. Implementation Tasks - 優先順位付きチェックリスト
+4. Validation Checklist - 完了基準
+5. Risk Mitigation - 潜在的問題とロールバック戦略
 
 ### 計画提示
 

@@ -22,7 +22,7 @@ Provide comprehensive code review and quality evaluation framework with configur
    - `.code-review-config.json` in project root
    - `.claude/code-review-config.json`
 
-2. **User config**
+2. User config
    - `~/.claude/code-review/custom-projects.json`
 
 3. **Default config** (fallback)

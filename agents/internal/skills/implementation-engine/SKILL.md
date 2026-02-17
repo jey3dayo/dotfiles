@@ -170,11 +170,11 @@ Implementation Engineは以下の6フェーズを順守して実装を進めま�
 
 ### 統合分析
 
-1. **Coverage Check** - 計画されたすべての機能が実装されているか検証
-2. **Integration Points** - すべての接続が機能するか検証
-3. **Test Coverage** - 新しいコードがテストされているか確認
-4. **TODO Scan** - 残っているTODOを発見
-5. **Documentation** - ドキュメントが変更を反映しているか確認
+1. Coverage Check - 計画されたすべての機能が実装されているか検証
+2. Integration Points - すべての接続が機能するか検証
+3. Test Coverage - 新しいコードがテストされているか確認
+4. TODO Scan - 残っているTODOを発見
+5. Documentation - ドキュメントが変更を反映しているか確認
 
 ### 検証レポート形式
 
@@ -199,13 +199,13 @@ ENHANCEMENT OPPORTUNITIES:
 
 いずれかのコマンドを実行すると、以下が自動的に実行されます:
 
-1. **Deep Original Source Analysis** - 元のコード/要件のあらゆる側面を徹底分析
-2. **Requirements Verification** - 現在の実装と元の要件を比較
-3. **Comprehensive Testing** - すべての新規コードに対するテスト作成
-4. **Deep Code Analysis** - 不完全なTODO、ハードコード値、エラーハンドリングをチェック
-5. **Automatic Refinement** - 失敗したテストの修正、部分的実装の完成
-6. **Integration Analysis** - 統合ポイントの徹底分析
-7. **Completeness Report** - 機能カバレッジ、テストカバレッジ、パフォーマンスベンチマークを報告
+1. Deep Original Source Analysis - 元のコード/要件のあらゆる側面を徹底分析
+2. Requirements Verification - 現在の実装と元の要件を比較
+3. Comprehensive Testing - すべての新規コードに対するテスト作成
+4. Deep Code Analysis - 不完全なTODO、ハードコード値、エラーハンドリングをチェック
+5. Automatic Refinement - 失敗したテストの修正、部分的実装の完成
+6. Integration Analysis - 統合ポイントの徹底分析
+7. Completeness Report - 機能カバレッジ、テストカバレッジ、パフォーマンスベンチマークを報告
 
 ### 結果
 
@@ -213,12 +213,12 @@ ENHANCEMENT OPPORTUNITIES:
 
 ### ワークフローは常にこの順序に従います
 
-1. **Setup session** - 状態ファイルを最初に作成/ロード
-2. **Analyze source & target** - 完全な理解
-3. **Write plan** - `implement/plan.md` に完全な実装計画を記述
-4. **Show plan** - 実装前に計画概要を提示
-5. **Execute systematically** - 計画に従って更新しながら実行
-6. **Validate integration** - 要求時に検証を実行
+1. Setup session - 状態ファイルを最初に作成/ロード
+2. Analyze source & target - 完全な理解
+3. Write plan - `implement/plan.md` に完全な実装計画を記述
+4. Show plan - 実装前に計画概要を提示
+5. Execute systematically - 計画に従って更新しながら実行
+6. Validate integration - 要求時に検証を実行
 
 ### 以下は決して行いません
 

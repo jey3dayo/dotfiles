@@ -140,11 +140,11 @@ Provide summary in the language specified in spec.json:
 
 Provide output in the language specified in spec.json with:
 
-1. **Detected Target**: Features and tasks being validated (if auto-detected)
-2. **Validation Summary**: Brief overview per feature (pass/fail counts)
-3. **Issues**: List of validation failures with severity and location
-4. **Coverage Report**: Requirements/design/task coverage percentages
-5. **Decision**: GO (ready for next phase) / NO-GO (needs fixes)
+1. Detected Target: Features and tasks being validated (if auto-detected)
+2. Validation Summary: Brief overview per feature (pass/fail counts)
+3. Issues: List of validation failures with severity and location
+4. Coverage Report: Requirements/design/task coverage percentages
+5. Decision: GO (ready for next phase) / NO-GO (needs fixes)
 
 ### Format Requirements
 

@@ -110,16 +110,16 @@ Generate implementation tasks for the feature based on approved requirements and
 
 Provide brief summary in the language specified in spec.json:
 
-1. **Status**: Confirm tasks generated at `.kiro/specs/{feature}/tasks.md`
-2. **Task Summary**:
+1. Status: Confirm tasks generated at `.kiro/specs/{feature}/tasks.md`
+2. Task Summary:
    - Total: X major tasks, Y sub-tasks
    - All Z requirements covered
    - Average task size: 1-3 hours per sub-task
-3. **Quality Validation**:
+3. Quality Validation:
    - ✅ All requirements mapped to tasks
    - ✅ Task dependencies verified
    - ✅ Testing tasks included
-4. **Next Action**: Review tasks and proceed when ready
+4. Next Action: Review tasks and proceed when ready
 
 ### Format
 

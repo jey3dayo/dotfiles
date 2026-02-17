@@ -6,9 +6,9 @@ Utility to load and merge Kiro configuration from multiple sources with fallback
 
 ## Configuration Resolution Order
 
-1. **Project-specific**: `.kiro-config.json` in project root
-2. **User-level**: `~/.config/kiro/config.json` (optional)
-3. **Default**: Built-in default configuration
+1. Project-specific: `.kiro-config.json` in project root
+2. User-level: `~/.config/kiro/config.json` (optional)
+3. Default: Built-in default configuration
 
 ## Loading Logic
 
@@ -150,19 +150,19 @@ If configured directories don't exist:
 
 Commands should validate configuration at startup:
 
-1. **Required paths exist**: `root`, `steering`, `specs`, `settings`
-2. **Template files accessible**: Check that referenced templates exist
-3. **Rule files accessible**: Verify rule files can be read
-4. **Version compatibility**: Warn if config version is newer than supported
+1. Required paths exist: `root`, `steering`, `specs`, `settings`
+2. Template files accessible: Check that referenced templates exist
+3. Rule files accessible: Verify rule files can be read
+4. Version compatibility: Warn if config version is newer than supported
 
 ## Migration Support
 
 When updating configuration schema:
 
-1. **Version check**: Compare config.version with supported version
-2. **Auto-migration**: Apply transformations if schema changed
-3. **Backup**: Create `.kiro-config.json.backup` before migration
-4. **Report**: Show what was migrated and why
+1. Version check: Compare config.version with supported version
+2. Auto-migration: Apply transformations if schema changed
+3. Backup: Create `.kiro-config.json.backup` before migration
+4. Report: Show what was migrated and why
 
 ## Example: Load Config in Command
 
@@ -194,8 +194,8 @@ Use resolved paths instead of hardcoded `.kiro/` paths...
 
 ## Benefits
 
-1. **Portability**: Projects can customize their Kiro structure
-2. **Flexibility**: Support different team conventions
-3. **Backwards compatibility**: Default config matches current structure
-4. **Migration path**: Easy to update existing projects
-5. **Multi-project**: Different projects can use different structures
+1. Portability: Projects can customize their Kiro structure
+2. Flexibility: Support different team conventions
+3. Backwards compatibility: Default config matches current structure
+4. Migration path: Easy to update existing projects
+5. Multi-project: Different projects can use different structures

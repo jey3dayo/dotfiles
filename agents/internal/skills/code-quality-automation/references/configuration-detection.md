@@ -8,7 +8,7 @@
 
 1. **mise.toml** (highest priority)
 2. **package.json** scripts
-3. **Fallback**: Language-specific defaults
+3. Fallback: Language-specific defaults
 
 ### Rationale
 
@@ -331,10 +331,10 @@ test = ["npm test"]
 
 ### Benefits of mise.toml
 
-1. **Language-agnostic**: 同じ構造で複数言語をサポート
-2. **Tool-agnostic**: どのツールでも統一的に実行
-3. **Composable**: 複数コマンドの組み合わせが容易
-4. **Discoverable**: `mise tasks` で一覧表示
+1. Language-agnostic: 同じ構造で複数言語をサポート
+2. Tool-agnostic: どのツールでも統一的に実行
+3. Composable: 複数コマンドの組み合わせが容易
+4. Discoverable: `mise tasks` で一覧表示
 
 ### Migration from package.json
 

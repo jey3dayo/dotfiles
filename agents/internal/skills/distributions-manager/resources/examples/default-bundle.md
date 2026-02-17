@@ -383,11 +383,11 @@ internal/skills/custom-skill/
 
 ## Best Practices Demonstrated
 
-1. **Mixed sources**: Combines skills-internal/ and skills/
-2. **Command groups**: Uses subdirectories for related commands (kiro/, clean/)
-3. **Utility separation**: Shared utilities in `shared/` command group
-4. **External integration**: Includes document-skills from external sources
-5. **Namespace conventions**: Uses `:` for external skills (e.g., `document-skills:skill-creator`)
+1. Mixed sources: Combines skills-internal/ and skills/
+2. Command groups: Uses subdirectories for related commands (kiro/, clean/)
+3. Utility separation: Shared utilities in `shared/` command group
+4. External integration: Includes document-skills from external sources
+5. Namespace conventions: Uses `:` for external skills (e.g., `document-skills:skill-creator`)
 
 ---
 

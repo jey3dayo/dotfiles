@@ -204,11 +204,11 @@ graph TD
 
 ### Step-by-step
 
-1. **Nix evaluation**: `scanDistribution()` reads `internal/skills/`
-2. **Symlink processing**: Each symlink is checked for `SKILL.md`
-3. **Catalog merge**: Distribution entries merged with External/Local
-4. **Priority resolution**: Local overwrites conflicts
-5. **Deployment**: Symlinks created in `~/.claude/skills/`
+1. Nix evaluation: `scanDistribution()` reads `internal/skills/`
+2. Symlink processing: Each symlink is checked for `SKILL.md`
+3. Catalog merge: Distribution entries merged with External/Local
+4. Priority resolution: Local overwrites conflicts
+5. Deployment: Symlinks created in `~/.claude/skills/`
 
 ---
 

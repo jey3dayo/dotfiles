@@ -47,7 +47,7 @@ Use Glob tool to expand file patterns, then read all files:
    - Domain/topic (e.g., "API standards", "testing approach")
    - Specific requirements or patterns to document
 
-2. **Check if template exists**:
+2. Check if template exists:
    - Load from `.kiro/settings/templates/steering-custom/{name}.md` if available
    - Use as starting point, customize based on project
 
@@ -56,7 +56,7 @@ Use Glob tool to expand file patterns, then read all files:
    - **Read** for existing implementations
    - **Grep** for specific patterns
 
-4. **Generate custom steering**:
+4. Generate custom steering:
    - Follow template structure if available
    - Apply principles from `.kiro/settings/rules/steering-principles.md`
    - Focus on patterns, not exhaustive lists
@@ -68,13 +68,13 @@ Use Glob tool to expand file patterns, then read all files:
 
 Templates available in `.kiro/settings/templates/steering-custom/`:
 
-1. **api-standards.md** - REST/GraphQL conventions, error handling
-2. **testing.md** - Test organization, mocking, coverage
-3. **security.md** - Auth patterns, input validation, secrets
-4. **database.md** - Schema design, migrations, query patterns
-5. **error-handling.md** - Error types, logging, retry strategies
-6. **authentication.md** - Auth flows, permissions, session management
-7. **deployment.md** - CI/CD, environments, rollback procedures
+1. api-standards.md - REST/GraphQL conventions, error handling
+2. testing.md - Test organization, mocking, coverage
+3. security.md - Auth patterns, input validation, secrets
+4. database.md - Schema design, migrations, query patterns
+5. error-handling.md - Error types, logging, retry strategies
+6. authentication.md - Auth flows, permissions, session management
+7. deployment.md - CI/CD, environments, rollback procedures
 
 Load template when needed, customize for project.
 

@@ -25,7 +25,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
 
 ### 実行内容
 
-1. **完全なソース読み込み:**
+1. 完全なソース読み込み:
 
    ```python
    # 元のソースを徹底的に読む
@@ -37,7 +37,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
        original_requirements = parse_description(source_text)
    ```
 
-2. **実装パターンの研究:**
+2. 実装パターンの研究:
 
    ```markdown
    ## Implementation Patterns Analysis
@@ -64,7 +64,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - Naming conventions
    ```
 
-3. **機能性とビジネスロジックの文書化:**
+3. 機能性とビジネスロジックの文書化:
 
    ```markdown
    ## Complete Functionality Map
@@ -91,7 +91,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - Edge case handling
    ```
 
-4. **コード構造と依存関係のマッピング:**
+4. コード構造と依存関係のマッピング:
 
    ```markdown
    ## Code Structure Map
@@ -122,7 +122,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - @/utils/validation → utils/validation
    ```
 
-5. **包括的分析ドキュメントの作成:**
+5. 包括的分析ドキュメントの作成:
 
    ```bash
    # 分析結果を保存
@@ -137,7 +137,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
 
 ### 実行内容
 
-1. **機能マッピング:**
+1. 機能マッピング:
 
    ```markdown
    ## Feature Mapping
@@ -150,7 +150,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    | OAuth integration | -                  | ❌ Missing  |
    ```
 
-2. **欠落機能の識別:**
+2. 欠落機能の識別:
 
    ```markdown
    ## Missing Features
@@ -171,7 +171,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - Login history tracking
    ```
 
-3. **エッジケースのチェック:**
+3. エッジケースのチェック:
 
    ```typescript
    // Original edge cases
@@ -191,7 +191,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    }
    ```
 
-4. **振る舞いの検証:**
+4. 振る舞いの検証:
 
    ```markdown
    ## Behavior Verification
@@ -221,7 +221,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
 
 ### 実行内容
 
-1. **新機能のテスト作成:**
+1. 新機能のテスト作成:
 
    ```typescript
    // 各新機能に対するテストを作成
@@ -256,13 +256,13 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    });
    ```
 
-2. **既存テストスイートの実行:**
+2. 既存テストスイートの実行:
 
    ```bash
    npm run test
    ```
 
-3. **統合テストの作成:**
+3. 統合テストの作成:
 
    ```typescript
    // エンドツーエンドフローをテスト
@@ -283,7 +283,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    });
    ```
 
-4. **エラーシナリオのテスト:**
+4. エラーシナリオのテスト:
 
    ```typescript
    describe("Error Scenarios", () => {
@@ -309,7 +309,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    });
    ```
 
-5. **パフォーマンス要件の検証:**
+5. パフォーマンス要件の検証:
 
    ```typescript
    describe("Performance Requirements", () => {
@@ -338,7 +338,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
 
 ### 実行内容
 
-1. **不完全なTODOのチェック:**
+1. 不完全なTODOのチェック:
 
    ```bash
    # すべてのTODOを検索
@@ -369,7 +369,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - [ ] TODO: Optimize token storage (auth/storage.ts:56)
    ```
 
-2. **ハードコード値の発見:**
+2. ハードコード値の発見:
 
    ```typescript
    // ハードコード値をスキャン
@@ -406,7 +406,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
      → Move to config: `MAX_RETRY_ATTEMPTS`
    ```
 
-3. **エラーハンドリング完全性の検証:**
+3. エラーハンドリング完全性の検証:
 
    ```typescript
    // すべての非同期関数をチェック
@@ -440,7 +440,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
      → Recommendation: Add error logging
    ```
 
-4. **セキュリティの分析:**
+4. セキュリティの分析:
 
    ```markdown
    ## Security Analysis
@@ -464,7 +464,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - ⚠️ No rate limiting on login endpoint
    ```
 
-5. **アクセシビリティ要件のチェック:**
+5. アクセシビリティ要件のチェック:
 
    ```markdown
    ## Accessibility Analysis
@@ -492,7 +492,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
 
 ### 実行内容
 
-1. **失敗したテストの修正:**
+1. 失敗したテストの修正:
 
    ```python
    # テスト失敗を検出
@@ -509,7 +509,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
        retest(failure.test)
    ```
 
-2. **部分的実装の完成:**
+2. 部分的実装の完成:
 
    ```typescript
    // 不完全な関数を完成させる
@@ -530,7 +530,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    }
    ```
 
-3. **欠落しているエラーハンドリングの追加:**
+3. 欠落しているエラーハンドリングの追加:
 
    ```typescript
    // Before: エラーハンドリングなし
@@ -557,7 +557,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    }
    ```
 
-4. **パフォーマンスボトルネックの最適化:**
+4. パフォーマンスボトルネックの最適化:
 
    ```typescript
    // Before: 非効率的な実装
@@ -584,7 +584,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    }
    ```
 
-5. **コードドキュメントの改善:**
+5. コードドキュメントの改善:
 
    ````typescript
    // Before: ドキュメントなし
@@ -621,7 +621,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
 
 ### 実行内容
 
-1. **統合ポイントの徹底分析:**
+1. 統合ポイントの徹底分析:
 
    ```markdown
    ## Integration Points Analysis
@@ -655,7 +655,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    - ❌ Route guards for admin pages missing
    ```
 
-2. **APIコントラクトの検証:**
+2. APIコントラクトの検証:
 
    ```typescript
    // 元のAPIコントラクトと新しい実装を比較
@@ -677,7 +677,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    verifyContractMatch(originalContract, newImplementation);
    ```
 
-3. **データベーススキーマ互換性のチェック:**
+3. データベーススキーマ互換性のチェック:
 
    ```sql
    -- Original schema
@@ -699,7 +699,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    );
    ```
 
-4. **UI/UXフローの検証:**
+4. UI/UXフローの検証:
 
    ```markdown
    ## UI/UX Flow Validation
@@ -726,7 +726,7 @@ Implementation EngineのDeep Validation - すべての検証コマンド（finis
    Fix: Change redirect from '/' to '/dashboard'
    ```
 
-5. **後方互換性の保証:**
+5. 後方互換性の保証:
 
    ```markdown
    ## Backward Compatibility Check

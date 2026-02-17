@@ -64,13 +64,13 @@ Generate technical design document for feature based on approved requirements.
 
 ### Critical: This phase ensures design is based on complete, accurate information
 
-1. **Classify Feature Type**:
+1. Classify Feature Type:
    - **New Feature** (greenfield) → Full discovery required
    - **Extension** (existing system) → Integration-focused discovery
    - **Simple Addition** (CRUD/UI) → Minimal or no discovery
    - **Complex Integration** → Comprehensive analysis required
 
-2. **Execute Appropriate Discovery Process**:
+2. Execute Appropriate Discovery Process:
    - **For Complex/New Features**
      - Read and execute `.kiro/settings/rules/design-discovery-full.md`
      - Conduct thorough research using WebSearch/WebFetch:
@@ -87,7 +87,7 @@ Generate technical design document for feature based on approved requirements.
    - **For Simple Additions**
      - Skip formal discovery, quick pattern check only
 
-3. **Retain Discovery Findings for Step 3**:
+3. Retain Discovery Findings for Step 3:
    - External API contracts and constraints
    - Technology decisions with rationale
    - Existing patterns to follow or extend
@@ -96,11 +96,11 @@ Generate technical design document for feature based on approved requirements.
 
 ### Step 3: Generate Design Document
 
-1. **Load Design Template and Rules**:
+1. Load Design Template and Rules:
    - Read `.kiro/settings/templates/specs/design.md` for structure
    - Read `.kiro/settings/rules/design-principles.md` for principles
 
-2. **Generate Design Document**:
+2. Generate Design Document:
    - **Follow specs/design.md template structure and generation instructions strictly**
    - **Integrate all discovery findings**: Use researched information (APIs, patterns, technologies) throughout component definitions, architecture decisions, and integration points
    - If existing design.md found in Step 1, use it as reference context (merge mode)
@@ -139,10 +139,10 @@ Generate technical design document for feature based on approved requirements.
 
 Provide brief summary in the language specified in spec.json:
 
-1. **Status**: Confirm design document generated at `.kiro/specs/{feature}/design.md`
-2. **Discovery Type**: Which discovery process was executed (full/light/minimal)
-3. **Key Findings**: 2-3 critical insights from discovery that shaped the design
-4. **Next Action**: Approval workflow guidance (see Safety & Fallback)
+1. Status: Confirm design document generated at `.kiro/specs/{feature}/design.md`
+2. Discovery Type: Which discovery process was executed (full/light/minimal)
+3. Key Findings: 2-3 critical insights from discovery that shaped the design
+4. Next Action: Approval workflow guidance (see Safety & Fallback)
 
 ### Format
 

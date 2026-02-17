@@ -44,7 +44,7 @@ Analyze implementation gap for feature based on approved requirements and existi
 
 ## Execution Steps
 
-1. **Load Context**:
+1. Load Context:
    - Read `.kiro/specs/{feature}/spec.json` for language and metadata
    - Read `.kiro/specs/{feature}/requirements.md` for requirements
    - **Load ALL steering context**: Read entire `.kiro/steering/` directory including:
@@ -52,17 +52,17 @@ Analyze implementation gap for feature based on approved requirements and existi
      - All custom steering files (regardless of mode settings)
      - This provides complete project memory and context
 
-2. **Read Analysis Guidelines**:
+2. Read Analysis Guidelines:
    - Read `.kiro/settings/rules/gap-analysis.md` for comprehensive analysis framework
 
-3. **Execute Gap Analysis**:
+3. Execute Gap Analysis:
    - Follow gap-analysis.md framework for thorough investigation
    - Analyze existing codebase using Grep and Read tools
    - Use WebSearch/WebFetch for external dependency research if needed
    - Evaluate multiple implementation approaches (extend/new/hybrid)
    - Use language specified in spec.json for output
 
-4. **Generate Analysis Document**:
+4. Generate Analysis Document:
    - Create comprehensive gap analysis following the output guidelines in gap-analysis.md
    - Present multiple viable options with trade-offs
    - Flag areas requiring further research
@@ -85,9 +85,9 @@ Analyze implementation gap for feature based on approved requirements and existi
 
 Provide output in the language specified in spec.json with:
 
-1. **Analysis Summary**: Brief overview (3-5 bullets) of scope, challenges, and recommendations
-2. **Document Status**: Confirm analysis approach used
-3. **Next Steps**: Guide user on proceeding to design phase
+1. Analysis Summary: Brief overview (3-5 bullets) of scope, challenges, and recommendations
+2. Document Status: Confirm analysis approach used
+3. Next Steps: Guide user on proceeding to design phase
 
 ### Format Requirements
 

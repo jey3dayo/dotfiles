@@ -517,14 +517,14 @@ staticcheck ./...
 
 When reviewing Go code:
 
-1. **Run Go tools first**: gofmt, golangci-lint, go vet
-2. **Check concurrency**: Scan for goroutines, channels, mutexes
-3. **Verify error handling**: Every error checked and handled
-4. **Assess idioms**: Code follows Go conventions
-5. **Review interfaces**: Small, focused, consumer-defined
-6. **Check memory usage**: Appropriate allocations, cleanup
-7. **Test race detector**: `go test -race`
-8. **Evaluate standard library usage**: Not reinventing wheels
+1. Run Go tools first: gofmt, golangci-lint, go vet
+2. Check concurrency: Scan for goroutines, channels, mutexes
+3. Verify error handling: Every error checked and handled
+4. Assess idioms: Code follows Go conventions
+5. Review interfaces: Small, focused, consumer-defined
+6. Check memory usage: Appropriate allocations, cleanup
+7. Test race detector: `go test -race`
+8. Evaluate standard library usage: Not reinventing wheels
 
 ## 🤖 Agent Integration
 

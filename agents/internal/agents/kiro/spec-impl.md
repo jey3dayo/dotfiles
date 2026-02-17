@@ -68,28 +68,28 @@ Execute implementation tasks for feature using Test-Driven Development.
 
 For each selected task, follow Kent Beck's TDD cycle:
 
-1. **RED - Write Failing Test**:
+1. RED - Write Failing Test:
    - Write test for the next small piece of functionality
    - Test should fail (code doesn't exist yet)
    - Use descriptive test names
 
-2. **GREEN - Write Minimal Code**:
+2. GREEN - Write Minimal Code:
    - Implement simplest solution to make test pass
    - Focus only on making THIS test pass
    - Avoid over-engineering
 
-3. **REFACTOR - Clean Up**:
+3. REFACTOR - Clean Up:
    - Improve code structure and readability
    - Remove duplication
    - Apply design patterns where appropriate
    - Ensure all tests still pass after refactoring
 
-4. **VERIFY - Validate Quality**:
+4. VERIFY - Validate Quality:
    - All tests pass (new and existing)
    - No regressions in existing functionality
    - Code coverage maintained or improved
 
-5. **MARK COMPLETE**:
+5. MARK COMPLETE:
    - Update checkbox from `- [ ]` to `- [x]` in tasks.md
 
 ## Critical Constraints
@@ -110,8 +110,8 @@ For each selected task, follow Kent Beck's TDD cycle:
 
 Provide brief summary in the language specified in spec.json:
 
-1. **Tasks Executed**: Task numbers and test results
-2. **Status**: Completed tasks marked in tasks.md, remaining tasks count
+1. Tasks Executed: Task numbers and test results
+2. Status: Completed tasks marked in tasks.md, remaining tasks count
 
 ### Format
 

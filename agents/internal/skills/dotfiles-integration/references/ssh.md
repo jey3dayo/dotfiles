@@ -34,12 +34,12 @@
 
 ### 読み込み優先度
 
-1. **00-global**: 全体設定
-2. **01-1password**: 認証設定
-3. **10-dev-services**: 開発環境
-4. **20-home-network**: ホームラボ
-5. **99-defaults**: デフォルト
-6. **ローカル設定**: 機密情報（Git管理外）
+1. 00-global: 全体設定
+2. 01-1password: 認証設定
+3. 10-dev-services: 開発環境
+4. 20-home-network: ホームラボ
+5. 99-defaults: デフォルト
+6. ローカル設定: 機密情報（Git管理外）
 
 ## 主要設定ファイル
 

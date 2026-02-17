@@ -17,7 +17,7 @@ TypeScript/Reactプロジェクトの未使用コード(デッドコード)を�
 TSRは以下の順序で設定を読み込み、マージします:
 
 1. **プロジェクトルート** (最高優先): `.tsr-config.json`
-2. **ホームディレクトリ**: `~/.config/tsr/config.json`
+2. ホームディレクトリ: `~/.config/tsr/config.json`
 3. **デフォルト設定** (最低優先): `tsr-config.default.json`
 
 ### 設定ファイル形式
@@ -222,9 +222,9 @@ pnpm tsr:check > /tmp/tsr-report.txt
 
 レポートを確認し、以下を分類:
 
-1. **安全に削除可能**: 明らかに未使用
-2. **要確認**: 誤検出の可能性あり
-3. **保持**: 必要だが使用が追跡できないもの
+1. 安全に削除可能: 明らかに未使用
+2. 要確認: 誤検出の可能性あり
+3. 保持: 必要だが使用が追跡できないもの
 
 ### Step 4: .tsrignore更新
 
@@ -320,30 +320,30 @@ console.log(ignoreContent);
 
 以下は使用されているが、誤検出される可能性があります:
 
-1. **Next.js特有のファイル**
+1. Next.js特有のファイル
    - `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`
    - API Routes (`src/app/api/**/*.ts`)
    - Middleware (`middleware.ts`)
 
-2. **動的インポート**
+2. 動的インポート
    - `import()` による遅延ロード
    - 文字列ベースのインポート
 
-3. **テスト関連**
+3. テスト関連
    - テストファイル (_.test.ts,_.spec.ts)
    - Storybook (\*.stories.tsx)
    - モックデータ (src/mocks/\*\*)
 
-4. **型定義**
+4. 型定義
    - 型定義ファイル (\*.d.ts)
    - 型のみのエクスポート
 
 ### 安全な削除のために
 
-1. **段階的な削除**: `maxDeletionPerRun`設定で制御(デフォルト10件)
-2. **自動検証**: `verification`設定で削除後の検証を自動化
-3. **Git commit**: 削除前にコミットしてロールバック可能に
-4. **.tsrignore管理**: 誤検出パターンを適切に管理
+1. 段階的な削除: `maxDeletionPerRun`設定で制御(デフォルト10件)
+2. 自動検証: `verification`設定で削除後の検証を自動化
+3. Git commit: 削除前にコミットしてロールバック可能に
+4. .tsrignore管理: 誤検出パターンを適切に管理
 
 ## 🔧 高度な使用方法
 

@@ -231,11 +231,11 @@ Safety:
 
 ### Safety Protocol
 
-1. **Backup**: 変更前のファイルコピー
-2. **Dry-run**: 変更のプレビュー
-3. **Incremental**: 段階的な適用
-4. **Validation**: 各段階での検証
-5. **Rollback plan**: 失敗時の復旧手順
+1. Backup: 変更前のファイルコピー
+2. Dry-run: 変更のプレビュー
+3. Incremental: 段階的な適用
+4. Validation: 各段階での検証
+5. Rollback plan: 失敗時の復旧手順
 
 ## Pattern 5: Design Comparison & Trade-off Analysis
 
@@ -621,10 +621,10 @@ Output:
 
 ### 4. Safety Protocols
 
-1. **Backup**: 変更前のコピー作成
-2. **Validation**: 各段階での検証
-3. **Logging**: すべての操作を記録
-4. **Rollback**: 復旧手順を準備
+1. Backup: 変更前のコピー作成
+2. Validation: 各段階での検証
+3. Logging: すべての操作を記録
+4. Rollback: 復旧手順を準備
 
 ### 5. Context Management
 

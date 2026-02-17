@@ -145,31 +145,31 @@ terraform {
 
 ### インフラ変更の基本フロー
 
-1. **環境選択**
+1. 環境選択
 
    ```bash
    cd terraform/environments/staging  # または production
    ```
 
-2. **初期化（必要時）**
+2. 初期化（必要時）
 
    ```bash
    terraform init
    ```
 
-3. **変更内容確認**
+3. 変更内容確認
 
    ```bash
    terraform plan -out=tfplan
    ```
 
-4. **変更適用**
+4. 変更適用
 
    ```bash
    terraform apply "tfplan"
    ```
 
-5. **ECSサービス更新**
+5. ECSサービス更新
 
    ```bash
    aws ecs update-service \
@@ -178,7 +178,7 @@ terraform {
      --force-new-deployment
    ```
 
-6. **動作確認**
+6. 動作確認
 
    ```bash
    # Staging
@@ -297,37 +297,37 @@ aws sts get-caller-identity
 
 ### 変更前確認
 
-1. **Plan実行**
+1. Plan実行
 
    ```bash
    terraform plan -out=tfplan
    ```
 
-2. **影響範囲確認**
+2. 影響範囲確認
    - 削除されるリソースはないか？
    - 本番トラフィクへの影響は？
    - ロールバック手順は？
 
-3. **関係者通知**
+3. 関係者通知
    - 本番変更は事前通知
    - メンテナンスウィンドウ設定
 
 ### 変更後確認
 
-1. **Apply成功確認**
+1. Apply成功確認
 
    ```bash
    echo $?  # 0なら成功
    ```
 
-2. **リソース状態確認**
+2. リソース状態確認
 
    ```bash
    terraform output
    aws ecs describe-services --cluster asta-staging-cluster --services asta-service
    ```
 
-3. **アプリケーション動作確認**
+3. アプリケーション動作確認
 
    ```bash
    curl https://asta-stg.caad.isca.jp/api/health
@@ -369,27 +369,27 @@ aws sts get-caller-identity
 
 When users request infrastructure changes:
 
-1. **Understand the request**:
+1. Understand the request:
    - 環境は？（staging/production）
    - 変更内容は？（CPU/メモリ、ALB、DNS...）
    - 緊急度は？
 
-2. **Confirm critical details**:
+2. Confirm critical details:
    - 本番環境への影響
    - ダウンタイムの有無
    - ロールバック計画
 
-3. **Execute safely**:
+3. Execute safely:
    - terraform planで変更内容を確認
    - 本番環境では特に慎重に実施
    - 計画ファイル（-out=tfplan）を使用
 
-4. **Verify completion**:
+4. Verify completion:
    - terraform output確認
    - ECSサービス状態確認
    - アプリケーション動作確認
 
-5. **Provide documentation**:
+5. Provide documentation:
    - 実行したコマンドの記録
    - 発生した問題と解決法
    - 次回の改善提案

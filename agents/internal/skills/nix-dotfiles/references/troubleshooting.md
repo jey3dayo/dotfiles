@@ -227,7 +227,7 @@ in {
 
 1. **inputs を静的リテラル定義に変更**（`let-in` を削除）
 
-2. **agent-skills-sources.nix と flake.nix の URL/flake を同期**
+2. agent-skills-sources.nix と flake.nix の URL/flake を同期
 
    ```bash
    # agent-skills-sources.nix の URL 一覧
@@ -239,7 +239,7 @@ in {
    # 差分があれば手動で同期
    ```
 
-3. **検証**
+3. 検証
 
    ```bash
    nix flake show ~/.config
@@ -338,9 +338,9 @@ Worktree detection logic は `nix/dotfiles-module.nix` の `detectWorktreeScript
 
 ### 利点
 
-1. **保守性**: 検出ロジックの変更が1箇所で済む
-2. **一貫性**: 両方の activation script で同じロジックを使用
-3. **テスト容易性**: 検出ロジックを個別にテスト可能
+1. 保守性: 検出ロジックの変更が1箇所で済む
+2. 一貫性: 両方の activation script で同じロジックを使用
+3. テスト容易性: 検出ロジックを個別にテスト可能
 
 ### 実装
 
@@ -499,9 +499,9 @@ xdgConfigFiles = [
 
 ### ベストプラクティス
 
-1. **静的ファイルは tracked に保つ**: Git で追跡し、.gitignore で除外しない
-2. **動的ファイルは .gitignore で除外**: 実行時生成ファイルは除外
-3. **個別管理が必要な場合は明示**: `xdgConfigFiles` で個別管理
+1. 静的ファイルは tracked に保つ: Git で追跡し、.gitignore で除外しない
+2. 動的ファイルは .gitignore で除外: 実行時生成ファイルは除外
+3. 個別管理が必要な場合は明示: `xdgConfigFiles` で個別管理
 
 ### 実装例
 

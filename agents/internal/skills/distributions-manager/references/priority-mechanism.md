@@ -253,11 +253,11 @@ nix eval --show-trace --json --impure --expr '
 
 ## Best Practices
 
-1. **Use distributions for defaults**: Provide baseline skills/commands
-2. **Override locally for customization**: Create local versions in `skills-internal/`
-3. **Test externally before localizing**: Use `skills/` for evaluation
-4. **Document overrides**: Note which skills are overridden in README
-5. **Avoid distribution-to-distribution links**: Keeps priority simple
+1. Use distributions for defaults: Provide baseline skills/commands
+2. Override locally for customization: Create local versions in `skills-internal/`
+3. Test externally before localizing: Use `skills/` for evaluation
+4. Document overrides: Note which skills are overridden in README
+5. Avoid distribution-to-distribution links: Keeps priority simple
 
 ---
 

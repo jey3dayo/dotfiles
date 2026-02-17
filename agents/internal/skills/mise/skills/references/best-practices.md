@@ -130,13 +130,13 @@ timeout     = "10m"
 
 ### Recommendations
 
-1. **Lower-case kebab for names; 1-2 char aliases**
+1. Lower-case kebab for names; 1-2 char aliases
    - Short aliases (`b` for build, `t` for test) speed up CLI use
-2. **Always give description**
+2. Always give description
    - It feeds `mise tasks` and shell completions
-3. **Group meta-tasks under a "+" prefix**
+3. Group meta-tasks under a "+" prefix
    - `+ci`, `+all` so they sort to the top and are obviously not leaf commands
-4. **Keep shell in check**
+4. Keep shell in check
    - If the run array grows past ~5 lines, move it to a standalone script or a file task
 
 ## 5. Organising Aliases

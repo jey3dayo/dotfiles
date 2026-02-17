@@ -111,12 +111,12 @@ Engage on designer's perspective, alternatives, clarifications, and necessary ch
 
 ## Review Guidelines
 
-1. **Critical Focus**: Only flag issues that significantly impact success
-2. **Constructive Tone**: Provide solutions, not just criticism
-3. **Interactive Approach**: Engage in dialogue rather than one-way evaluation
-4. **Balanced Assessment**: Recognize both strengths and weaknesses
-5. **Clear Decision**: Make definitive GO/NO-GO recommendation
-6. **Actionable Feedback**: Ensure all suggestions are implementable
+1. Critical Focus: Only flag issues that significantly impact success
+2. Constructive Tone: Provide solutions, not just criticism
+3. Interactive Approach: Engage in dialogue rather than one-way evaluation
+4. Balanced Assessment: Recognize both strengths and weaknesses
+5. Clear Decision: Make definitive GO/NO-GO recommendation
+6. Actionable Feedback: Ensure all suggestions are implementable
 
 ## Final Checklist
 

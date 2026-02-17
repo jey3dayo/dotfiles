@@ -115,13 +115,13 @@ The skill will automatically discover and load your configuration.
 
 If no project config found (`.claude/doc-standards/config.yaml` doesn't exist):
 
-1. **Use minimal defaults**:
+1. Use minimal defaults:
    - Metadata template: H1 + date + audience + tags
    - Tag system: 3-tier (category/audience/environment)
    - Size thresholds: 500/1000/2000 lines
    - Response language: English
 
-2. **Prompt user to create config**:
+2. Prompt user to create config:
 
    ```
    No project configuration found at .claude/doc-standards/config.yaml.
@@ -135,7 +135,7 @@ If no project config found (`.claude/doc-standards/config.yaml` doesn't exist):
    Using minimal defaults for now.
    ```
 
-3. **Require manual tag taxonomy**:
+3. Require manual tag taxonomy:
    - User must define tags manually without taxonomy file
    - Skill validates format but doesn't suggest specific values
 
@@ -188,11 +188,11 @@ When creating new documentation, provide this template (adapt to project languag
 
 ## Next Steps
 
-1. **Review and adjust tags** - Verify suggested tags match document purpose
-2. **Add to project navigation** - Create link in docs/README.md or similar
-3. **Update document mapping** - Register in mapping table (if project uses one)
-4. **Commit changes** - Use project commit conventions
-5. **Schedule review** - Set future review date per project policy
+1. Review and adjust tags - Verify suggested tags match document purpose
+2. Add to project navigation - Create link in docs/README.md or similar
+3. Update document mapping - Register in mapping table (if project uses one)
+4. Commit changes - Use project commit conventions
+5. Schedule review - Set future review date per project policy
 
 ````
 
@@ -284,31 +284,31 @@ When suggesting tags, provide rationale (adapt to project language):
 
 Load these progressively as needed:
 
-1. **`references/metadata-template-framework.md`**
+1. `references/metadata-template-framework.md`
    - Standard metadata structure
    - Required field patterns
    - Document type templates
    - **Load when**: Creating headers, validating format
 
-2. **`references/tag-system-framework.md`**
+2. `references/tag-system-framework.md`
    - 3-tier tag architecture
    - Canonical format rules
    - Tag validation logic
    - **Load when**: Understanding tag system, validating tags
 
-3. **`references/size-guidelines-framework.md`**
+3. `references/size-guidelines-framework.md`
    - Size thresholds (customizable per project)
    - Decision tree for splits
    - 4 split strategies
    - **Load when**: Document approaching threshold, split decisions
 
-4. **`references/quality-checklist-framework.md`**
+4. `references/quality-checklist-framework.md`
    - Metadata quality checks
    - Content quality checks
    - Link validation framework
    - **Load when**: Final validation, periodic reviews
 
-5. **`references/config-schema.md`**
+5. `references/config-schema.md`
    - Complete config.yaml schema
    - Field descriptions
    - Configuration examples
@@ -347,7 +347,7 @@ Response language is determined by project configuration:
      language: "ja" # or "en", "es", etc.
    ```
 
-2. **Use configured language**:
+2. Use configured language:
    - Japanese (`ja`): "メタデータテンプレートを適用します"
    - English (`en`): "Applying metadata template"
    - Spanish (`es`): "Aplicando plantilla de metadatos"

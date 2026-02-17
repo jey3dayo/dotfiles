@@ -93,24 +93,24 @@ Comprehensive review and creation support for Markdown-based presentation slides
 
 ## Review Workflow
 
-1. **Assess overall structure**: Evaluate narrative flow and organization
-2. **Review each slide**: Check individual slide quality
-3. **Evaluate visual design**: Assess consistency and aesthetics
-4. **Check technical elements**: Verify code, data, media
-5. **Test presentation utility**: Review speaker notes and audience considerations
-6. **Provide rating**: Assign 5-level quality score per category
-7. **Suggest improvements**: Offer specific, actionable recommendations
-8. **Prioritize changes**: Identify critical vs. optional improvements
+1. Assess overall structure: Evaluate narrative flow and organization
+2. Review each slide: Check individual slide quality
+3. Evaluate visual design: Assess consistency and aesthetics
+4. Check technical elements: Verify code, data, media
+5. Test presentation utility: Review speaker notes and audience considerations
+6. Provide rating: Assign 5-level quality score per category
+7. Suggest improvements: Offer specific, actionable recommendations
+8. Prioritize changes: Identify critical vs. optional improvements
 
 ## Creation Workflow
 
-1. **Understand objectives**: Clarify purpose and audience
-2. **Outline structure**: Plan narrative arc (Rule of three: focus on 3 main points)
-3. **Draft content**: Create slide content following best practices
-4. **Design visuals**: Apply consistent, professional design
-5. **Add speaker notes**: Provide comprehensive presenter guidance
-6. **Review and iterate**: Evaluate against quality criteria
-7. **Prepare for delivery**: Finalize timing and transitions
+1. Understand objectives: Clarify purpose and audience
+2. Outline structure: Plan narrative arc (Rule of three: focus on 3 main points)
+3. Draft content: Create slide content following best practices
+4. Design visuals: Apply consistent, professional design
+5. Add speaker notes: Provide comprehensive presenter guidance
+6. Review and iterate: Evaluate against quality criteria
+7. Prepare for delivery: Finalize timing and transitions
 
 ## Common Issues and Quick Fixes
 

@@ -79,11 +79,11 @@ Global configuration for all projects (place in `~/.config/tsr/config.json`).
 
 Edit the configuration files to match your project structure:
 
-1. **Entry Patterns**: Adjust regex patterns to match your source directory structure
-2. **Max Deletion**: Set higher values for more aggressive cleanup
-3. **Verification**: Enable/disable type-check, lint, test based on your workflow
-4. **Ignore Patterns**: Add project-specific paths to ignore
-5. **Framework**: Set the correct framework type and options
+1. Entry Patterns: Adjust regex patterns to match your source directory structure
+2. Max Deletion: Set higher values for more aggressive cleanup
+3. Verification: Enable/disable type-check, lint, test based on your workflow
+4. Ignore Patterns: Add project-specific paths to ignore
+5. Framework: Set the correct framework type and options
 
 ## Cascading Priority
 

@@ -88,7 +88,14 @@ function processFile(
     const lines = original.split(eol);
 
     const fenceOpen = /^\s*(`{3,}|~{3,})/;
-    const boldOnly = /^(\s*)\*\*([^*][\s\S]*?)\*\*(.*)$/;
+    // Standalone bold-only lines are treated as pseudo headings.
+    // Example: "**Overview**" -> "### Overview"
+    const boldOnlyHeading = /^(\s*)\*\*([^*][\s\S]*?)\*\*\s*$/;
+
+    // Bold labels in ordered list items are normalized to plain text.
+    // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
+    const boldOrderedListLabel =
+      /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
 
     let inFence = false;
     let fenceChar = "";
@@ -117,16 +124,27 @@ function processFile(
         return line;
       }
 
-      const boldMatch = line.match(boldOnly);
-      if (!boldMatch) {
+      const listLabelMatch = line.match(boldOrderedListLabel);
+      if (listLabelMatch) {
+        const prefix = listLabelMatch[1];
+        const text = listLabelMatch[2];
+        const suffix = listLabelMatch[3] ?? "";
+        if (!text.includes("**")) {
+          fileReplacements += 1;
+          return `${prefix}${text}${suffix}`;
+        }
+      }
+
+      const headingMatch = line.match(boldOnlyHeading);
+      if (!headingMatch) {
         return line;
       }
 
-      const indent = boldMatch[1];
-      if (boldMatch[2].includes("**")) {
+      const indent = headingMatch[1];
+      if (headingMatch[2].includes("**")) {
         return line;
       }
-      const text = boldMatch[2].trim();
+      const text = headingMatch[2].trim();
       fileReplacements += 1;
       return `${indent}### ${text}`;
     });
@@ -272,11 +290,11 @@ function main() {
 
   // 結果表示
   if (totalReplacements === 0) {
-    console.log("No bold-only headings found.");
+    console.log("No bold heading/label patterns found.");
   } else {
     const verb = args.dryRun ? "Found" : "Replaced";
     console.log(
-      `${verb} ${totalReplacements} bold-only heading(s) across ${successCount} file(s).`,
+      `${verb} ${totalReplacements} bold heading/label pattern(s) across ${successCount} file(s).`,
     );
   }
 

@@ -123,14 +123,14 @@ Strict mode configuration, compiler options, build configuration, ESLint + TypeS
 
 When reviewing TypeScript code:
 
-1. **Check tsconfig.json**: Verify strict mode and compiler options
-2. **Scan for `any`**: Identify and eliminate `any` type usage
-3. **Review type assertions**: Minimize and justify all assertions
-4. **Evaluate type definitions**: Assess interfaces, types, and generics
-5. **Check error handling**: Verify Result<T,E> pattern or type-safe alternatives
-6. **Test type narrowing**: Ensure proper type guards
-7. **Verify tool integration**: Check ESLint and TypeScript alignment
-8. **Assess performance**: Consider compilation and bundle impact
+1. Check tsconfig.json: Verify strict mode and compiler options
+2. Scan for `any`: Identify and eliminate `any` type usage
+3. Review type assertions: Minimize and justify all assertions
+4. Evaluate type definitions: Assess interfaces, types, and generics
+5. Check error handling: Verify Result<T,E> pattern or type-safe alternatives
+6. Test type narrowing: Ensure proper type guards
+7. Verify tool integration: Check ESLint and TypeScript alignment
+8. Assess performance: Consider compilation and bundle impact
 
 ## 🤖 Agent Integration
 

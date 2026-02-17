@@ -465,10 +465,10 @@ Add size checks to CI pipeline:
 
 ### Remember
 
-1. **Aim for ~500 lines** - Sweet spot for readability
-2. **Plan split at 1000 lines** - Warning threshold
-3. **Must split at 2000 lines** - Hard limit
-4. **Use decision tree** - Choose appropriate strategy
-5. **Validate post-split** - Ensure quality and navigation
+1. Aim for ~500 lines - Sweet spot for readability
+2. Plan split at 1000 lines - Warning threshold
+3. Must split at 2000 lines - Hard limit
+4. Use decision tree - Choose appropriate strategy
+5. Validate post-split - Ensure quality and navigation
 
 ### Goal

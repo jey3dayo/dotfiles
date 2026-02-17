@@ -405,13 +405,13 @@ jobs:
 
 ## Best Practices
 
-1. **Start Simple**: Begin with generic configuration, add customization as needed
-2. **Version Control**: Commit `.docs-manager-config.json` to repository
-3. **Document Changes**: Update configuration documentation when adding custom rules
-4. **Regular Reviews**: Periodically review and update configuration
-5. **Team Alignment**: Ensure team understands tag vocabulary and metadata requirements
-6. **Automation**: Integrate validation in CI/CD pipeline
-7. **Incremental Adoption**: Apply rules gradually to existing documentation
+1. Start Simple: Begin with generic configuration, add customization as needed
+2. Version Control: Commit `.docs-manager-config.json` to repository
+3. Document Changes: Update configuration documentation when adding custom rules
+4. Regular Reviews: Periodically review and update configuration
+5. Team Alignment: Ensure team understands tag vocabulary and metadata requirements
+6. Automation: Integrate validation in CI/CD pipeline
+7. Incremental Adoption: Apply rules gradually to existing documentation
 
 ## FAQ
 

@@ -94,12 +94,12 @@ argument-hint: <project-description>
 
 Provide output in the language specified in config (default: `ja`) with the following structure:
 
-1. **Configuration Used**: Brief mention if using custom or default config
-2. **Generated Feature Name**: `feature-name` format with 1-2 sentence rationale
-3. **Project Summary**: Brief summary (1 sentence)
-4. **Created Files**: Bullet list with full paths (use resolved paths, not variables)
-5. **Next Step**: Command block showing `/kiro:spec-requirements <feature-name>`
-6. **Notes**: Explain why only initialization was performed (2-3 sentences on phase separation)
+1. Configuration Used: Brief mention if using custom or default config
+2. Generated Feature Name: `feature-name` format with 1-2 sentence rationale
+3. Project Summary: Brief summary (1 sentence)
+4. Created Files: Bullet list with full paths (use resolved paths, not variables)
+5. Next Step: Command block showing `/kiro:spec-requirements <feature-name>`
+6. Notes: Explain why only initialization was performed (2-3 sentences on phase separation)
 
 ### Format Requirements
 
