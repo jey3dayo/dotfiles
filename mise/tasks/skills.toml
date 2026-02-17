@@ -69,8 +69,8 @@ nix flake update --flake .
 """
 
 ["skills:fix:bold-headings"]
-description = "agents/internal/skills の太字見出しを ### へ変換"
-run = "tsx ./agents/scripts/replace-bold-headings.ts"
+description = "リポジトリ全体の Markdown の太字見出しを ### へ変換"
+run = "tsx ./scripts/replace-bold-headings.ts"
 
 ["skills:check"]
 description = "Skills配布検証（~/.claude/skills/ のカウントとリンク確認）"

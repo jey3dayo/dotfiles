@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "benjitaylor-agentation": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771187766,
+        "narHash": "sha256-jP3XZI0wOE3GAU8TU3EI0jmmPOr7LibxShN/CZ62LGw=",
+        "owner": "benjitaylor",
+        "repo": "agentation",
+        "rev": "b2d967a3887649b02283e86964aab25d24d0296b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "benjitaylor",
+        "repo": "agentation",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -20,7 +36,9 @@
     },
     "gitignore": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1762808025,
@@ -54,7 +72,9 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1771132481,
@@ -104,6 +124,7 @@
     },
     "root": {
       "inputs": {
+        "benjitaylor-agentation": "benjitaylor-agentation",
         "flake-utils": "flake-utils",
         "gitignore": "gitignore",
         "heyvhuang-ship-faster": "heyvhuang-ship-faster",

@@ -17,6 +17,10 @@
     # NOTE: These must be manually kept in sync with nix/agent-skills-sources.nix
     #       Flake spec requires literal inputs - dynamic generation not allowed
     #       agent-skills-sources.nix remains the SSoT for baseDir and selection metadata
+    benjitaylor-agentation = {
+      url = "github:benjitaylor/agentation";
+      flake = false;
+    };
     heyvhuang-ship-faster = {
       url = "github:Heyvhuang/ship-faster";
       flake = false;
