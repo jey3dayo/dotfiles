@@ -66,7 +66,7 @@ function resolveTargetDirectory(userInput: string | null): string {
   // デフォルト値（引数なしの場合）
   if (!userInput) {
     const repoRoot = path.resolve(__dirname, "../..");
-    return path.join(repoRoot, "agents", "distributions", "default", "skills");
+    return path.join(repoRoot, "agents", "internal", "skills");
   }
 
   // ユーザー指定のパスを解決
