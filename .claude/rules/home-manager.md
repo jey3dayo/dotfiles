@@ -500,18 +500,21 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 Agent Skillsは以下の4段階で統合・配布されます：
 
 1. **Sources統合**: `discoverCatalog` (lib.nix L105-127)
+
    - **Distributions**: `agents/internal/` （バンドル層、オプション）
-   - **Internal skills**: `agents/internal/skills/` （56スキル）
+   - **Internal skills**: `agents/internal/skills/`
    - **External skills**: Flake inputs → `agents/external/` （symlinks）
    - **優先度**: Local > External > Distribution
    - Conflict detection: External間の重複検出
    - Local overrides: Internal skills が External/Distribution を上書き
 
 2. **Skills選択**: `selectSkills` (lib.nix L129-138)
+
    - `selection.enable`で選択されたskillsのみ
    - Local skills（skills-internal/）は常に含まれる
 
 3. **Bundle生成**: `mkBundle` (lib.nix L140-160)
+
    - 選択されたskillsのみをNix storeにコピー
    - rsync -aLによる完全コピー（symlinkを実体化）
 

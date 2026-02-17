@@ -7,7 +7,7 @@ This directory contains Claude Code agent skills, commands, and configurations o
 ```
 agents/
 ├── internal/          # Internal assets (single source of truth)
-│   ├── skills/       # Bundled skills (56 skills)
+│   ├── skills/       # Bundled skills
 │   ├── commands/     # Slash commands
 │   ├── agents/       # Agent definitions
 │   └── rules/        # Project rules
@@ -27,7 +27,7 @@ agents/
 
 **Contents**:
 
-- **skills/**: Core skills developed and maintained in this repository (56+ skills)
+- **skills/**: Core skills developed and maintained in this repository
 - **commands/**: Slash commands for interactive operations
 - **agents/**: Subagent definitions for specialized tasks
 - **rules/**: Project-specific rules and guidelines
@@ -55,7 +55,7 @@ agents/
 home-manager switch --flake ~/.config --impure
 
 # Verify deployment
-ls ~/.claude/skills/ | wc -l  # Should show 65+ skills
+ls ~/.claude/skills/ | wc -l
 ```
 
 ### Validation
