@@ -92,6 +92,11 @@ function processFile(
     // Example: "**Overview**" -> "### Overview"
     const boldOnlyHeading = /^(\s*)\*\*([^*][\s\S]*?)\*\*\s*$/;
 
+    // Bold labels with suffix (colon, parentheses, etc.)
+    // Example: "**メリット**:" -> "#### メリット"
+    // Example: "**セットアップ** (初回のみ):" -> "#### セットアップ (初回のみ)"
+    const boldLabelWithSuffix = /^(\s*)\*\*([^*]+)\*\*\s*([\(:].*)?$/;
+
     // Bold labels in ordered list items are normalized to plain text.
     // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
     const boldOrderedListLabel =
@@ -133,6 +138,31 @@ function processFile(
           fileReplacements += 1;
           return `${prefix}${text}${suffix}`;
         }
+      }
+
+      const labelMatch = line.match(boldLabelWithSuffix);
+      if (labelMatch && labelMatch[3]) {
+        // Only process if suffix exists
+        const indent = labelMatch[1];
+        const text = labelMatch[2].trim();
+        const suffix = labelMatch[3];
+
+        // Skip lines with nested bold
+        if (text.includes("**")) {
+          return line;
+        }
+
+        // Process suffix: remove trailing colon, keep parentheses
+        let headingText = text;
+        // ":" or ": something" -> remove entirely
+        // "(note):" -> keep "(note)", remove ":"
+        const cleanSuffix = suffix.replace(/:\s*$/, "").trim();
+        if (cleanSuffix && !cleanSuffix.startsWith(":")) {
+          headingText = `${text} ${cleanSuffix}`;
+        }
+
+        fileReplacements += 1;
+        return `${indent}#### ${headingText}`;
       }
 
       const headingMatch = line.match(boldOnlyHeading);
