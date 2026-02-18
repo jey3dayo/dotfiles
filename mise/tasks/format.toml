@@ -5,22 +5,24 @@
 # 各タスクは環境変数で対象ファイルを限定可能
 
 ["format:biome"]
-description = "JS/TS/JSON ファイルをフォーマット（BIOME_FILES で対象を限定可能）"
+description = "JS/TS/JSON ファイルをフォーマット + Biome lint の安全な自動修正（BIOME_FILES で対象を限定可能）"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
   biome format --write ${BIOME_FILES}
+  biome lint --write ${BIOME_FILES}
 else
   biome format --write .
+  biome lint --write .
 fi
 """
 
 ["format:biome:check"]
-description = "JS/TS/JSON ファイルのフォーマットチェック（書き込みなし、BIOME_FILES で対象を限定可能）"
+description = "JS/TS/JSON ファイルのフォーマット + lint チェック（書き込みなし、BIOME_FILES で対象を限定可能）"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
-  biome check --formatter-enabled=true --linter-enabled=false ${BIOME_FILES}
+  biome check --formatter-enabled=true --linter-enabled=true ${BIOME_FILES}
 else
-  biome check --formatter-enabled=true --linter-enabled=false .
+  biome check --formatter-enabled=true --linter-enabled=true .
 fi
 """
 

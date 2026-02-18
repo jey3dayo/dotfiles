@@ -7,15 +7,6 @@
 description = "HM でスキルをインストール"
 run = "mise run hm:switch"
 
-["skills:install:report"]
-description = "インストール対象スキルのURLレポートを出力"
-run = """
-. "./mise/tasks/lib/home-manager.sh"
-ensure_nix_or_fail "nix not found. Install Nix before running skills:install:report" || exit $?
-
-nix run .#report
-"""
-
 ["skills:report"]
 description = "インストール対象スキルのURLレポートを出力"
 run = """
@@ -24,6 +15,10 @@ ensure_nix_or_fail "nix not found. Install Nix before running skills:report" || 
 
 nix run .#report
 """
+
+["skills:install:report"]
+description = "インストール対象スキルのURLレポートを出力（互換エイリアス）"
+depends = ["skills:report"]
 
 ["skills:list"]
 description = "有効スキル一覧を表示"
