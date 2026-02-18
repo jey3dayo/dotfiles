@@ -81,7 +81,7 @@ console.log("Running bold heading replacement tests...\n");
 // Import the processing function (would need to export it from main script)
 // For now, we'll run the script and check output
 
-import { execSync } from "child_process";
+import { execSync } from "node:child_process";
 
 try {
   const scriptPath = path.join(__dirname, "replace-bold-headings.ts");
