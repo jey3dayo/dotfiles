@@ -9,7 +9,7 @@ tags: client, event-listeners, scrolling, performance, touch, wheel
 
 Add `{ passive: true }` to touch and wheel event listeners to enable immediate scrolling. Browsers normally wait for listeners to finish to check if `preventDefault()` is called, causing scroll delay.
 
-**Incorrect:**
+### Incorrect:
 
 ```typescript
 useEffect(() => {
@@ -26,7 +26,7 @@ useEffect(() => {
 }, [])
 ```
 
-**Correct:**
+### Correct:
 
 ```typescript
 useEffect(() => {

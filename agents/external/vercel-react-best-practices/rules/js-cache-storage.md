@@ -9,7 +9,7 @@ tags: javascript, localStorage, storage, caching, performance
 
 `localStorage`, `sessionStorage`, and `document.cookie` are synchronous and expensive. Cache reads in memory.
 
-**Incorrect (reads storage on every call):**
+### Incorrect (reads storage on every call):
 
 ```typescript
 function getTheme() {
@@ -18,7 +18,7 @@ function getTheme() {
 // Called 10 times = 10 storage reads
 ```
 
-**Correct (Map cache):**
+### Correct (Map cache):
 
 ```typescript
 const storageCache = new Map<string, string | null>()
@@ -38,7 +38,7 @@ function setLocalStorage(key: string, value: string) {
 
 Use a Map (not a hook) so it works everywhere: utilities, event handlers, not just React components.
 
-**Cookie caching:**
+### Cookie caching:
 
 ```typescript
 let cookieCache: Record<string, string> | null = null
@@ -53,7 +53,7 @@ function getCookie(name: string) {
 }
 ```
 
-**Important (invalidate on external changes):**
+### Important (invalidate on external changes):
 
 If storage can change externally (another tab, server-set cookies), invalidate cache:
 

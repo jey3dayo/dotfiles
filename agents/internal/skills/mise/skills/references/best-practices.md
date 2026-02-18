@@ -6,11 +6,11 @@ This document contains comprehensive best practices for mise (mise-en-place) tas
 
 ### Project Structure
 
-- **Single mise.toml at project root**
+- Single mise.toml at project root
   - Only introduce per-package mise.toml files in a monorepo when those packages can be built/tested in isolation
-- **Deterministic ordering**: Place `[settings]`, `[env]`, `[tools]` first, then `[tasks]` in alphabetical order
-- **External scripts**: Put long scripts in `mise-tasks/` or `scripts/` and call them from tasks rather than embedding >3 lines of shell in the run array
-- **Lockfile**: Check in `mise.lock` if you enable the experimental lockfile feature so CI matches local dev
+- Deterministic ordering: Place `[settings]`, `[env]`, `[tools]` first, then `[tasks]` in alphabetical order
+- External scripts: Put long scripts in `mise-tasks/` or `scripts/` and call them from tasks rather than embedding >3 lines of shell in the run array
+- Lockfile: Check in `mise.lock` if you enable the experimental lockfile feature so CI matches local dev
 
 ### Typical Skeleton
 
@@ -104,9 +104,9 @@ Put them in a separate task and depend on it.
 
 ### Edge Cases
 
-- **Need something to run after the main body no matter what?**
+- Need something to run after the main body no matter what?
   - Use `depends_post`
-- **Need to wait for a long-running task if it happens to be running, but not trigger it otherwise?**
+- Need to wait for a long-running task if it happens to be running, but not trigger it otherwise?
   - Use `wait_for`
 
 ## 4. Task Block Best Practices
@@ -340,9 +340,9 @@ run = "playwright test"
 
 With this structure your mise.toml stays:
 
-- **Readable**: Clear separation of concerns
-- **Parallel-friendly**: Optimal use of depends for concurrency
-- **Maintainable**: Easy to extend and modify as project grows
+- Readable: Clear separation of concerns
+- Parallel-friendly: Optimal use of depends for concurrency
+- Maintainable: Easy to extend and modify as project grows
 
 ---
 

@@ -4,12 +4,12 @@ Modern GPU-accelerated terminal emulator with comprehensive Lua-based configurat
 
 ## ✨ Key Features
 
-- **🎨 Modern UI**: Gruvbox theme with 92% transparency and custom tab styling
-- **⚡ Performance**: WebGpu GPU acceleration for smooth rendering
-- **🔧 Modular Config**: Lua-based configuration with organized module system
-- **🌐 Cross-Platform**: macOS/Windows support with WSL integration
-- **⌨️ Tmux-Style**: Leader key system (`Ctrl+x`) for terminal multiplexing
-- **📱 Copy Mode**: Vim-style navigation and text selection
+- 🎨 Modern UI: Gruvbox theme with 92% transparency and custom tab styling
+- ⚡ Performance: WebGpu GPU acceleration for smooth rendering
+- 🔧 Modular Config: Lua-based configuration with organized module system
+- 🌐 Cross-Platform: macOS/Windows support with WSL integration
+- ⌨️ Tmux-Style: Leader key system (`Ctrl+x`) for terminal multiplexing
+- 📱 Copy Mode: Vim-style navigation and text selection
 
 ## 📈 Performance & Features
 
@@ -36,10 +36,10 @@ wezterm/
 
 ### Configuration Philosophy
 
-- **Separation of Concerns**: Each module handles specific functionality
-- **Platform Detection**: Automatic Windows/macOS configuration switching
-- **Utility Functions**: Shared helpers for common operations
-- **Extensibility**: Easy to add new features and customizations
+- Separation of Concerns: Each module handles specific functionality
+- Platform Detection: Automatic Windows/macOS configuration switching
+- Utility Functions: Shared helpers for common operations
+- Extensibility: Easy to add new features and customizations
 
 ## 🎮 Key Bindings
 
@@ -130,10 +130,10 @@ initial_rows = 50
 
 ### Custom Tab Styling
 
-- **Arrow Separators**: Unicode right arrows between tabs
-- **Process Names**: Show running command or working directory
-- **Hover Effects**: Visual feedback with bold text
-- **New Tab Button**: Styled consistently with theme
+- Arrow Separators: Unicode right arrows between tabs
+- Process Names: Show running command or working directory
+- Hover Effects: Visual feedback with bold text
+- New Tab Button: Styled consistently with theme
 
 ### GPU Acceleration
 
@@ -147,15 +147,15 @@ front_end = "WebGpu"
 
 #### macOS Integration
 
-- **Native Decorations**: Proper window controls
-- **Fullscreen Mode**: True macOS fullscreen support
-- **Font Rendering**: Optimized for Retina displays
+- Native Decorations: Proper window controls
+- Fullscreen Mode: True macOS fullscreen support
+- Font Rendering: Optimized for Retina displays
 
 #### Windows/WSL Support
 
-- **WSL Detection**: Automatic Ubuntu environment setup
-- **Path Conversion**: Windows path handling
-- **Font Fallbacks**: Consistent rendering across platforms
+- WSL Detection: Automatic Ubuntu environment setup
+- Path Conversion: Windows path handling
+- Font Fallbacks: Consistent rendering across platforms
 
 ## 🛠️ Utility Functions
 
@@ -324,15 +324,15 @@ config.keys = {
 
 ### Shell Integration
 
-- **Directory Detection**: Automatic working directory display
-- **Process Monitoring**: Show running command in tab title
-- **Exit Codes**: Visual feedback for command success/failure
+- Directory Detection: Automatic working directory display
+- Process Monitoring: Show running command in tab title
+- Exit Codes: Visual feedback for command success/failure
 
 ### External Tools
 
-- **Tmux Compatibility**: Leader key system matches tmux workflow
-- **Vim Integration**: Copy mode mirrors vim navigation
-- **Git Workflow**: Optimized for development tasks
+- Tmux Compatibility: Leader key system matches tmux workflow
+- Vim Integration: Copy mode mirrors vim navigation
+- Git Workflow: Optimized for development tasks
 
 ## 📋 Maintenance
 
@@ -376,17 +376,17 @@ git commit -m "Update WezTerm configuration"
 
 ### Development Workflow
 
-1. **Primary Terminal**: Alternative to Alacritty with more features
-2. **Multi-Session**: Tab-based workflow with visual feedback
-3. **Cross-Platform**: Consistent experience across systems
-4. **Integration**: Seamless with existing dotfiles ecosystem
+1. Primary Terminal: Alternative to Alacritty with more features
+2. Multi-Session: Tab-based workflow with visual feedback
+3. Cross-Platform: Consistent experience across systems
+4. Integration: Seamless with existing dotfiles ecosystem
 
 ### Advanced Usage
 
-- **Remote Development**: SSH session management
-- **Container Work**: Docker/WSL integration
-- **Presentation**: High-DPI display optimization
-- **Accessibility**: Customizable visual feedback
+- Remote Development: SSH session management
+- Container Work: Docker/WSL integration
+- Presentation: High-DPI display optimization
+- Accessibility: Customizable visual feedback
 
 ---
 

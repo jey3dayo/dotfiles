@@ -20,7 +20,7 @@ mise/
 Environment detection is handled by Home Manager (`nix/env-detect.nix`) and exported via
 `home.sessionVariables` (loaded by shells through `hm-session-vars.sh`).
 
-**Automatic Configuration Selection**:
+#### Automatic Configuration Selection
 
 - CI (GitHub Actions) → `config.ci.toml`
 - Raspberry Pi → `config.pi.toml`
@@ -43,7 +43,7 @@ Environment detection is handled by Home Manager (`nix/env-detect.nix`) and expo
 
 **Migration**: Automatic on shell restart after pulling changes. No manual steps required.
 
-**Verification**:
+#### Verification
 
 ```bash
 echo $MISE_CONFIG_FILE
@@ -52,7 +52,7 @@ mise ls --json | jq 'length'  # Should be 75 (default), 32 (pi), or 13 (ci)
 
 ## Development
 
-**Common Commands**:
+#### Common Commands
 
 ```bash
 mise install             # Install all tools from active config
@@ -62,7 +62,7 @@ mise outdated            # Check for updates
 mise doctor              # Health check
 ```
 
-**See Also**:
+#### See Also
 
 - `.claude/rules/tools/mise.md` - Comprehensive documentation
 - `nix/env-detect.nix` - Environment detection logic

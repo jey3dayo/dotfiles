@@ -8,21 +8,21 @@
 
 ### Skills ([count])
 
-- **[skill-name]**: [Brief description of what this skill does]
-- **[skill-name]**: [Brief description]
+- [skill-name]: [Brief description of what this skill does]
+- [skill-name]: [Brief description]
 - ...
 
 ### Commands ([count])
 
-- **[command-name]**: [Brief description of what this command does]
-- **[command-group:subcommand]**: [Brief description]
+- [command-name]: [Brief description of what this command does]
+- [command-group:subcommand]: [Brief description]
 - ...
 
 ### Configuration
 
-- **config/shared-rules.md**: [Description of shared rules]
-- **config/bundle-config.json**: [Description of bundle metadata]
-- **config/templates/**: [Description of included templates]
+- config/shared-rules.md: [Description of shared rules]
+- config/bundle-config.json: [Description of bundle metadata]
+- config/templates/: [Description of included templates]
 
 ---
 

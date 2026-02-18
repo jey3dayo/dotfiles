@@ -532,9 +532,9 @@ When reviewing Go code:
 
 ### Code-Reviewer Agent
 
-- **提供内容**: Go慣用句評価、並行処理安全性検証、エラーハンドリング評価
-- **タイミング**: Goコードレビュー時
-- **コンテキスト**:
+- 提供内容: Go慣用句評価、並行処理安全性検証、エラーハンドリング評価
+- タイミング: Goコードレビュー時
+- コンテキスト:
   - ⭐️5段階評価（Go慣用句、エラー処理、並行処理、インターフェース設計）
   - goroutine安全性チェック
   - channelパターン評価
@@ -542,9 +542,9 @@ When reviewing Go code:
 
 ### Orchestrator Agent
 
-- **提供内容**: Goプロジェクト構造、Clean Architecture実装
-- **タイミング**: Go機能実装・リファクタリング時
-- **コンテキスト**:
+- 提供内容: Goプロジェクト構造、Clean Architecture実装
+- タイミング: Go機能実装・リファクタリング時
+- コンテキスト:
   - 標準プロジェクトレイアウト
   - パッケージ設計パターン
   - 並行処理設計（goroutine, channel, sync）
@@ -552,9 +552,9 @@ When reviewing Go code:
 
 ### Error-Fixer Agent
 
-- **提供内容**: Goエラーハンドリング修正、並行処理バグ修正
-- **タイミング**: Goエラー修正時
-- **コンテキスト**: エラーチェック実装、defer/panic/recover修正、raceコンディション修正
+- 提供内容: Goエラーハンドリング修正、並行処理バグ修正
+- タイミング: Goエラー修正時
+- コンテキスト: エラーチェック実装、defer/panic/recover修正、raceコンディション修正
 
 ### 自動ロード条件
 
@@ -583,9 +583,9 @@ Go並行処理パターン + race detector実行
 
 ## Integration with Related Skills
 
-- **security skill**: Go-specific security concerns (SQL injection, etc.)
-- **clean-architecture skill**: Go project structure patterns
-- **code-review skill**: General code quality with Go-specific additions
+- security skill: Go-specific security concerns (SQL injection, etc.)
+- clean-architecture skill: Go project structure patterns
+- code-review skill: General code quality with Go-specific additions
 
 ---
 

@@ -106,9 +106,9 @@ Claude Codeのドキュメント、スキル、コマンド、エージェント
 
 ### Q1: スキル、コマンド、エージェントの違いは？
 
-- **Skill**: 再利用可能な知識とワークフロー。Progressive Disclosure設計で必要時にロード。
-- **Command**: ユーザーが手動実行するインタラクティブ操作（例: `/review`, `/polish`）。
-- **Agent**: 複雑なタスクの自動実行。他のエージェントやスキルと連携。
+- Skill: 再利用可能な知識とワークフロー。Progressive Disclosure設計で必要時にロード。
+- Command: ユーザーが手動実行するインタラクティブ操作（例: `/review`, `/polish`）。
+- Agent: 複雑なタスクの自動実行。他のエージェントやスキルと連携。
 
 ### Q2: 新しいスキル/コマンドを作成したい
 
@@ -147,10 +147,10 @@ Claude Codeのドキュメント、スキル、コマンド、エージェント
 
 ## 参照
 
-- **Global Instructions**: `~/.claude/CLAUDE.md`
-- **Project Instructions**: `~/CLAUDE.md`
-- **Troubleshooting**: `.claude/rules/troubleshooting.md`
-- **Migration Guide**: `commands/migration-guide.md`
+- Global Instructions: `~/.claude/CLAUDE.md`
+- Project Instructions: `~/CLAUDE.md`
+- Troubleshooting: `.claude/rules/troubleshooting.md`
+- Migration Guide: `commands/migration-guide.md`
 
 ## 更新履歴
 

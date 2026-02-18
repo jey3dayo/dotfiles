@@ -45,14 +45,14 @@ Three-layer tool management architecture policy defining responsibility boundari
 - Development tools (AWS CLI, kubectl, terraform, etc.)
 - Environment-specific configurations (`default`, `pi`, `ci`)
 
-**Advantages**:
+#### Advantages
 
 - Version pinning per project (`.tool-versions`)
 - Environment isolation (no global pollution)
 - Cross-platform compatibility (macOS/Linux/WSL2)
 - Fast installation/switching
 
-**Key files**:
+#### Key files
 
 - `mise/config.default.toml`: Main environment (180+ tools)
 - `mise/config.pi.toml`: Raspberry Pi environment (50 tools)
@@ -68,7 +68,7 @@ Three-layer tool management architecture policy defining responsibility boundari
 - Neovim ecosystem (tree-sitter library, dependencies)
 - Tools with complex native dependencies (mysql, podman)
 
-**Advantages**:
+#### Advantages
 
 - Native macOS integration
 - System-level libraries
@@ -115,18 +115,18 @@ Language runtimes follow a hybrid pattern based on system dependencies:
 | Java/JVM | ✅   | ⚠️ (for system tools) | mise handles development versions          |
 | Perl     | ⚠️   | ✅                    | macOS system dependency                    |
 
-**Legend**:
+#### Legend
 
 - ✅ Primary installation method
 - ❌ Not recommended
 - ⚠️ Only if system tool requires it
 
-**Hybrid pattern decision criteria**:
+#### Hybrid pattern decision criteria
 
-1. **System tool dependency**: Does a Homebrew formula require this runtime?
+1. System tool dependency: Does a Homebrew formula require this runtime?
    - YES → Keep in Homebrew (e.g., `python@3.13` for system tools)
    - NO → Use mise only
-2. **Development use**: Is this for project development?
+2. Development use: Is this for project development?
    - YES → mise (with version pinning)
    - NO → Homebrew (if system-wide version is acceptable)
 
@@ -136,13 +136,13 @@ Language runtimes follow a hybrid pattern based on system dependencies:
 
 **Policy**: Manage VS Code extensions via Brewfile `vscode` section
 
-**Rationale**:
+#### Rationale
 
 - Consistency with other GUI applications (cask)
 - Unified management with Homebrew bundle
 - Version pinning via extension IDs
 
-**Example**:
+#### Example
 
 ```ruby
 vscode "github.copilot"
@@ -168,19 +168,19 @@ vscode "ms-python.python"
 
 **Migration path**: Homebrew → Home Manager → mise
 
-**Final architecture**:
+#### Final architecture
 
 - Binary: `mise install starship` (mise/config.default.toml)
 - Configuration: Home Manager manages `~/.config/starship.toml`
 
-**Rationale**:
+#### Rationale
 
 - starship is a cross-platform CLI tool (mise responsibility)
 - Home Manager distributes configuration only (no binary installation)
 - Version pinning enables reproducibility across environments
 - Aligns with three-layer architecture principles
 
-**Related**:
+#### Related
 
 - PR #106: Home Manager starship configuration
 - PR #108: starship binary moved to mise
@@ -249,7 +249,7 @@ comm -12 /tmp/brew_tools.txt /tmp/mise_tools.txt
 
 **Expected result**: Empty (no duplicates)
 
-**Known exceptions**:
+#### Known exceptions
 
 - `tree-sitter` (library) vs `tree-sitter` (CLI) - Different packages
 - `python@3.13` (system) vs `python` (mise) - Hybrid pattern
@@ -282,27 +282,27 @@ grep -E '^brew "(usage|pipx|python@3.11|python@3.12|rust|tree-sitter-cli|zx)"' B
 
 When migrating a tool from Homebrew to mise:
 
-1. **Verify mise availability**
+1. Verify mise availability
 
    ```bash
    mise registry | grep <tool-name>
    ```
 
-2. **Add to mise configuration**
+2. Add to mise configuration
 
    ```toml
    [tools]
    <tool-name> = "latest"  # or specific version
    ```
 
-3. **Test mise installation**
+3. Test mise installation
 
    ```bash
    mise install <tool-name>
    mise exec <tool-name> -- <command>
    ```
 
-4. **Remove from Brewfile**
+4. Remove from Brewfile
 
    ```bash
    # Delete the brew line
@@ -310,24 +310,24 @@ When migrating a tool from Homebrew to mise:
    mv Brewfile.tmp Brewfile
    ```
 
-5. **Uninstall Homebrew version**
+5. Uninstall Homebrew version
 
    ```bash
    brew uninstall <tool-name>
    ```
 
-6. **Verify command availability**
+6. Verify command availability
 
    ```bash
    which <tool-name>  # Should point to ~/.local/share/mise/installs
    <tool-name> --version
    ```
 
-7. **Update documentation**
+7. Update documentation
    - Add migration note to commit message
    - Update `.claude/rules/workflows-and-maintenance.md` if needed
 
-8. **Test across environments**
+8. Test across environments
 
    ```bash
    mise run ci  # Local CI validation
@@ -339,7 +339,7 @@ When migrating a tool from Homebrew to mise:
 
 ### When to keep tools in Homebrew
 
-1. **Neovim dependencies**: System libraries required by Neovim plugins
+1. Neovim dependencies: System libraries required by Neovim plugins
 
    ```ruby
    brew "tree-sitter"      # C library
@@ -347,21 +347,21 @@ When migrating a tool from Homebrew to mise:
    brew "utf8proc"         # Unicode library
    ```
 
-2. **System tool dependencies**: Tools required by other Homebrew formulae
+2. System tool dependencies: Tools required by other Homebrew formulae
 
    ```bash
    # Check dependencies before removing
    brew uses --installed <tool-name>
    ```
 
-3. **Complex native compilation**: Tools with difficult cross-platform builds
+3. Complex native compilation: Tools with difficult cross-platform builds
 
    ```ruby
    brew "mysql"            # Complex native deps
    brew "podman"           # Requires QEMU/vde
    ```
 
-4. **macOS-specific integration**: Tools that need system-level integration
+4. macOS-specific integration: Tools that need system-level integration
 
    ```ruby
    brew "defaultbrowser"   # macOS default browser API
@@ -370,10 +370,10 @@ When migrating a tool from Homebrew to mise:
 
 ### When mise is NOT suitable
 
-1. **GUI applications**: Always use Homebrew cask
-2. **System libraries**: Always use Homebrew formulae
-3. **MAS applications**: Always use Homebrew MAS
-4. **Tools not in mise registry**: Check availability first
+1. GUI applications: Always use Homebrew cask
+2. System libraries: Always use Homebrew formulae
+3. MAS applications: Always use Homebrew MAS
+4. Tools not in mise registry: Check availability first
 
    ```bash
    mise registry | grep <tool-name>
@@ -384,37 +384,37 @@ When migrating a tool from Homebrew to mise:
 
 ### Monthly audit (recommended)
 
-1. **Check for duplicates**
+1. Check for duplicates
 
    ```bash
    comm -12 /tmp/brew_tools.txt /tmp/mise_tools.txt
    ```
 
-2. **Review mise registry updates**
+2. Review mise registry updates
 
    ```bash
    mise registry update
    mise outdated
    ```
 
-3. **Validate Brewfile policy compliance**
+3. Validate Brewfile policy compliance
 
    ```bash
    # Check for CLI tools in Brewfile (should be minimal)
    grep '^brew ' Brewfile | wc -l  # Target: <50 CLI tools
    ```
 
-4. **Update documentation**
+4. Update documentation
    - Refresh tool counts in this document
    - Update migration examples
    - Document new exceptions
 
 ### Quarterly review
 
-1. **Re-evaluate hybrid patterns**: Check if system tools still require specific runtimes
-2. **Consolidate mise configurations**: Merge redundant environment configs
-3. **Prune unused tools**: Remove tools no longer needed
-4. **Update mise to latest version**: `mise self-update`
+1. Re-evaluate hybrid patterns: Check if system tools still require specific runtimes
+2. Consolidate mise configurations: Merge redundant environment configs
+3. Prune unused tools: Remove tools no longer needed
+4. Update mise to latest version: `mise self-update`
 
 ## References
 

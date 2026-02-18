@@ -349,6 +349,6 @@ UIコンポーネントの設計、アクセシビリティ、ユーザーエク
 
 ## 関連リファレンス
 
-- **記録プロセス**: `recording-process.md`
-- **活用パターン**: `usage-patterns.md`
-- **記録例**: `examples/learning-records.md`
+- 記録プロセス: `recording-process.md`
+- 活用パターン: `usage-patterns.md`
+- 記録例: `examples/learning-records.md`

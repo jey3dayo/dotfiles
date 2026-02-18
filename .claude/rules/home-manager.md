@@ -68,7 +68,7 @@ Activation script の依存関係を管理する仕組み。`entryAfter`/`entryB
 
 **重要な制約**: Nix flake の `inputs` セクションは**静的な attrset**（リテラル定義）である必要があります。
 
-**禁止されているパターン**:
+#### 禁止されているパターン
 
 ```nix
 # ❌ 動的評価（let-in + import）
@@ -93,7 +93,7 @@ in { ... } // dynamicInputs;
 | `nix/sources.nix`              | 統合処理           | inputs と baseDir を結合してスキルパスを生成 |
 | `nix/agent-skills.nix`         | スキル選択         | selection.enable を抽出                      |
 
-**トレードオフ**:
+#### トレードオフ
 
 - ✅ Flake 仕様に準拠
 - ✅ メタデータは SSoT で集約管理
@@ -101,7 +101,7 @@ in { ... } // dynamicInputs;
 
 **実装**: `nix/agent-skills-sources.nix`, `nix/sources.nix`
 
-**実装例**:
+#### 実装例
 
 ```nix
 # nix/agent-skills-sources.nix (SSoT)
@@ -135,7 +135,7 @@ in {
 
 ### 新しいスキルソースを追加する際のチェックリスト
 
-1. **agent-skills-sources.nix を更新**
+1. agent-skills-sources.nix を更新
 
    ```nix
    new-skill-source = {
@@ -158,7 +158,7 @@ in {
    };
    ```
 
-3. **検証**
+3. 検証
 
    ```bash
    # Flake 評価の成功確認
@@ -171,7 +171,7 @@ in {
    home-manager build --flake ~/.config --impure --dry-run
    ```
 
-4. **スキル配布の確認**
+4. スキル配布の確認
 
    ```bash
    home-manager switch --flake ~/.config --impure
@@ -184,7 +184,7 @@ in {
 
 **症状**: `~/.claude/skills/` が空または一部のスキルのみ存在
 
-**確認手順**:
+#### 確認手順
 
 ```bash
 # 1. Home Manager generation の確認
@@ -197,12 +197,12 @@ ls -la $(home-manager generations | head -1 | awk '{print $NF}')/home-files/.cla
 nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 ```
 
-**原因と対策**:
+#### 原因と対策
 
 **原因1**: 別の flake から `home-manager switch` を実行した
 
 - Generation が上書きされ、`~/.config` の設定が反映されていない
-- **対策**: `~/.config` から再度 switch を実行
+- 対策: `~/.config` から再度 switch を実行
 
   ```bash
   home-manager switch --flake ~/.config --impure
@@ -211,7 +211,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 **原因2**: flake.nix と agent-skills-sources.nix の不整合
 
 - 手動同期が必要な URL/flake 属性が一致していない
-- **確認**: 両ファイルの URL 一覧を比較
+- 確認: 両ファイルの URL 一覧を比較
 
   ```bash
   # agent-skills-sources.nix の URL 一覧
@@ -221,20 +221,20 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
   rg 'url = "github:.*skills' flake.nix
   ```
 
-- **対策**: 不一致箇所を手動同期（agent-skills-sources.nix → flake.nix）
+- 対策: 不一致箇所を手動同期（agent-skills-sources.nix → flake.nix）
 
 **原因3**: selection.enable の設定ミス
 
 - スキル名が catalog に存在しない、またはタイポ
 
-- **確認**: スキル名が catalog に存在するか
+- 確認: スキル名が catalog に存在するか
 
   ```bash
 
   mise run skills:report
   ```
 
-- **対策**: `nix/agent-skills-sources.nix` の `selection.enable` を修正
+- 対策: `nix/agent-skills-sources.nix` の `selection.enable` を修正
 
 **参考**: `~/.claude/rules/troubleshooting.md` の「Nix Home Manager でスキルが配布されない」セクション
 
@@ -248,7 +248,7 @@ error: expected a set but got a thunk
 
 **原因**: flake.nix の inputs セクションで動的評価を使用している
 
-**確認手順**:
+#### 確認手順
 
 ```bash
 # inputs セクションを確認
@@ -258,13 +258,13 @@ rg "inputs\s*=" flake.nix -A 10
 rg "(let|import).*agent-skills" flake.nix
 ```
 
-**対策**:
+#### 対策
 
 1. inputs を静的リテラル定義に変更（`let-in` を削除）
 2. agent-skills-sources.nix と flake.nix の URL/flake を同期
 3. `nix flake show` で検証
 
-**参考コミット**:
+#### 参考コミット
 
 - `2f1e3e34`: Agent Skills の初回統合（migrate agent skills into dotfiles）
 - `139dd809`: dotfiles との統合修正（fix: integrate agent skills with dotfiles）
@@ -298,7 +298,7 @@ Worktree は以下の順序で検出されます:
 
 ### カスタム検索パスの設定
 
-**使用例**:
+#### 使用例
 
 ```nix
 programs.dotfiles = {
@@ -311,7 +311,7 @@ programs.dotfiles = {
 };
 ```
 
-**環境変数による一時的な上書き**:
+#### 環境変数による一時的な上書き
 
 ```bash
 DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
@@ -324,11 +324,11 @@ Worktree detection logic は `nix/dotfiles-module.nix` の `detectWorktreeScript
 - `dotfiles-tmux-plugins`: tmux plugins のコピー（submodule が必要）
 - `dotfiles-submodules`: Git submodule の初期化
 
-**利点**:
+#### 利点
 
-1. **保守性**: 検出ロジックの変更が1箇所で済む
-2. **一貫性**: 両方の activation script で同じロジックを使用
-3. **テスト容易性**: 検出ロジックを個別にテスト可能
+1. 保守性: 検出ロジックの変更が1箇所で済む
+2. 一貫性: 両方の activation script で同じロジックを使用
+3. テスト容易性: 検出ロジックを個別にテスト可能
 
 **実装**: `nix/dotfiles-module.nix` L34-74 (`detectWorktreeScript`)
 
@@ -350,7 +350,7 @@ cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
 **症状**: 設定ファイルが配布されない、または機密ファイルが含まれる
 
-**確認手順**:
+#### 確認手順
 
 ```bash
 # 1. .gitignore のパターン確認
@@ -363,10 +363,10 @@ git status --ignored
 home-manager build --flake ~/.config --impure --show-trace 2>&1 | grep -A 5 "cleanedRepo"
 ```
 
-**対策**:
+#### 対策
 
-- **除外されるべきファイルが含まれる**: `.gitignore` にパターン追加
-- **必要なファイルが除外される**:
+- 除外されるべきファイルが含まれる: `.gitignore` にパターン追加
+- 必要なファイルが除外される:
   - `.gitignore` から削除、または
   - `xdgConfigFiles` で個別管理（mise, tmux, gh パターン参照）
 
@@ -393,7 +393,7 @@ home-manager build --flake ~/.config --impure --show-trace 2>&1 | grep -A 5 "cle
   1. nix/dotfiles-files.nix の xdg.dirs に追加
 ```
 
-**検証コマンド** (全パターン共通):
+#### 検証コマンド (全パターン共通)
 
 ```bash
 # 1. 設定変更をビルド検証
@@ -415,13 +415,13 @@ readlink ~/.config/<tool-name>
 
 **管理方法**: activation scriptで実体化（miseパターン）
 
-**理由**:
+#### 理由
 
 - `tmux/plugins/`はGit submoduleで、TPM（Tmux Plugin Manager）が実行時に更新
 - read-onlyのNixストアへのsymlinkでは動作しない
 - miseの`tasks/`と同様の性質（動的コンテンツ）
 
-**実装**:
+#### 実装
 
 ```nix
 # 静的設定ファイル: xdgConfigFilesで個別管理
@@ -452,13 +452,13 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 
 **管理方法**: 静的`config.yml`のみsymlink配布
 
-**理由**:
+#### 理由
 
 - `hosts.yml`は動的ファイル（OAuth認証情報）でユーザーが書き込む
 - `config.yml`は静的設定で、miseパターンに倣いsymlinkで配布
 - 最小限の変更で一貫性を保つ
 
-**実装**:
+#### 実装
 
 ```nix
 # gh static config (hosts.yml is dynamic and user-managed)
@@ -499,23 +499,23 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 
 Agent Skillsは以下の4段階で統合・配布されます：
 
-1. **Sources統合**: `discoverCatalog` (lib.nix L105-127)
-   - **Distributions**: `agents/internal/` （バンドル層、オプション）
-   - **Internal skills**: `agents/internal/skills/`
-   - **External skills**: Flake inputs → `agents/external/` （symlinks）
-   - **優先度**: Local > External > Distribution
+1. Sources統合: `discoverCatalog` (lib.nix L105-127)
+   - Distributions: `agents/internal/` （バンドル層、オプション）
+   - Internal skills: `agents/internal/skills/`
+   - External skills: Flake inputs → `agents/external/` （symlinks）
+   - 優先度: Local > External > Distribution
    - Conflict detection: External間の重複検出
    - Local overrides: Internal skills が External/Distribution を上書き
 
-2. **Skills選択**: `selectSkills` (lib.nix L129-138)
+2. Skills選択: `selectSkills` (lib.nix L129-138)
    - `selection.enable`で選択されたskillsのみ
    - Local skills（`agents/internal/skills/`）は常に含まれる
 
-3. **Bundle生成**: `mkBundle` (lib.nix L140-160)
+3. Bundle生成: `mkBundle` (lib.nix L140-160)
    - 選択されたskillsのみをNix storeにコピー
    - rsync -aLによる完全コピー（symlinkを実体化）
 
-4. **配布**: Home Manager (module.nix L169-178)
+4. 配布: Home Manager (module.nix L169-178)
    - Per-skill symlinkで`~/.claude/skills/`へ配布
    - `.system`ファイルは書き込み可能
 
@@ -525,11 +525,11 @@ Agent Skillsは以下の4段階で統合・配布されます：
 
 Commands（slash commands）の配布フロー:
 
-- **Source**: `agents/internal/commands/` （43ファイル、subdirectories対応）
-- **Bundle**: `commandsBundle` (module.nix L32-43)
+- Source: `agents/internal/commands/` （43ファイル、subdirectories対応）
+- Bundle: `commandsBundle` (module.nix L32-43)
   - `.md`ファイルのみフィルタリング
   - Subdirectory構造を維持（`clean/`, `kiro/`, `shared/`）
-- **配布**: Recursive symlinks (module.nix L199-231)
+- 配布: Recursive symlinks (module.nix L199-231)
   - `~/.claude/commands/` へ配布
 
 **実装**: `nix/module.nix` L32-43, L199-231
@@ -538,8 +538,8 @@ Commands（slash commands）の配布フロー:
 
 Target-specific名前変更に対応（2025-02-11実装）:
 
-- **Source**: `CLAUDE.md` (リポジトリルート)
-- **配布**: `configFiles` (module.nix L245-261)
+- Source: `CLAUDE.md` (リポジトリルート)
+- 配布: `configFiles` (module.nix L245-261)
   - Claude Code: `~/.claude/CLAUDE.md`
   - OpenCode: `~/.opencode/AGENTS.md` （名前変更）
   - その他: 各targetの設定ファイル名に変換
@@ -569,7 +569,7 @@ agents/
 
 #### 使用方法
 
-**home.nix での設定**:
+#### home.nix での設定
 
 ```nix
 programs.agent-skills = {
@@ -592,7 +592,7 @@ programs.agent-skills = {
 - `sources` が次優先（External skills）
 - `distributionsPath` が最低優先（Bundle層）
 
-**循環参照の回避**:
+#### 循環参照の回避
 
 distributionsは**静的パス**として扱われ、sources統合**前**にスキャンされます：
 
@@ -625,14 +625,14 @@ distribution層はsymlinkを含む構成を取れるため：
 
 #### 設計判断
 
-**distributions/を追加した理由**:
+#### distributions/を追加した理由
 
 1. ✅ 論理的なバンドリング単位を提供
 2. ✅ カスタムバンドルの作成が容易
 3. ✅ skills + commands + config の統合配布
 4. ✅ 循環参照を回避する安全な実装
 
-**既存実装との共存**:
+#### 既存実装との共存
 
 - ❌ distributions/は既存のlocalPath/sourcesを**置き換えない**
 - ✅ オプショナルな追加レイヤー
@@ -642,7 +642,7 @@ distribution層はsymlinkを含む構成を取れるため：
 
 **現状**: `agents/internal/skills/`, `agents/internal/commands/` という配置
 
-**評価**:
+#### 評価
 
 - ✅ Internal（非公開）vs External（公開）の区別が明確
 - ✅ distributionsPath配下でも元のソース名が保たれる

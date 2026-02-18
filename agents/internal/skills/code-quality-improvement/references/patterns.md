@@ -714,16 +714,16 @@ return safeExecute(
 
 ### プロジェクト固有ドキュメント
 
-- **型安全性緊急ガイド**: `docs/development/type-safety-comprehensive-guide.md`
-- **開発効率ガイド**: `docs/development/development-efficiency-guide.md`
-- **ESLintアーキテクチャルール**: `docs/development/eslint-custom-rules-guide.md`
-- **Layer境界管理Tips**: `docs/development/layer-boundary-management-tips.md`
+- 型安全性緊急ガイド: `docs/development/type-safety-comprehensive-guide.md`
+- 開発効率ガイド: `docs/development/development-efficiency-guide.md`
+- ESLintアーキテクチャルール: `docs/development/eslint-custom-rules-guide.md`
+- Layer境界管理Tips: `docs/development/layer-boundary-management-tips.md`
 
 ### レイヤー別ガイド
 
-- **Action Layer**: `docs/layers/core/action-layer.md`
-- **Transform Layer**: `docs/layers/core/transform-layer.md`
-- **Value Object Layer**: `docs/layers/support/value-object-layer.md`
+- Action Layer: `docs/layers/core/action-layer.md`
+- Transform Layer: `docs/layers/core/transform-layer.md`
+- Value Object Layer: `docs/layers/support/value-object-layer.md`
 
 ---
 

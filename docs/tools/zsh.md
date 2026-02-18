@@ -12,9 +12,9 @@
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/zsh.md`](../../.claude/rules/tools/zsh.md) で管理されています。
 
-- **目的**: Claude AIが常に参照する簡潔なルール（26-31行）
-- **適用範囲**: YAML frontmatter `paths:` で定義
-- **関係**: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
+- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 適用範囲: YAML frontmatter `paths:` で定義
+- 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
 ## 構成サマリ
 
@@ -29,11 +29,11 @@
 
 ### ロードシーケンス
 
-1. **.zshenv**: XDG 変数と `ZDOTDIR` を固定、GHQ/Android/Java/Brewfile などの環境変数を先に設定。非ログイン用の最小 PATH は mise shims のみ。
-2. **.zprofile**: ロケール/エディタ設定、`typeset -U path cdpath fpath manpath` で重複除去、`mise activate zsh` 後に PATH を mise > user > language > Android SDK > Homebrew > system の順に再構成。
-3. **.zshrc**: ヒストリと zsh オプションを設定後、`init/*.zsh` を実行（compinit + Sheldon キャッシュ生成・mise PATH 再優先）、続いて `sources/*.zsh`（config loader と補完スタイル）を読み込み。
-4. **config/loader.zsh**: helper 経由で core（aliases/path utils）→ tools（即時: fzf/git/mise/starship, 遅延: brew/gh/debug 他）→ functions → os-specific を統一ロードし、helper を消去。
-5. **lazy-sources/\*.zsh**: Arch/WSL/OrbStack/FZF/履歴検索などを zsh-defer 経由で遅延ロード（Sheldon で `dotfiles-lazy-sources` として一括管理）。
+1. .zshenv: XDG 変数と `ZDOTDIR` を固定、GHQ/Android/Java/Brewfile などの環境変数を先に設定。非ログイン用の最小 PATH は mise shims のみ。
+2. .zprofile: ロケール/エディタ設定、`typeset -U path cdpath fpath manpath` で重複除去、`mise activate zsh` 後に PATH を mise > user > language > Android SDK > Homebrew > system の順に再構成。
+3. .zshrc: ヒストリと zsh オプションを設定後、`init/*.zsh` を実行（compinit + Sheldon キャッシュ生成・mise PATH 再優先）、続いて `sources/*.zsh`（config loader と補完スタイル）を読み込み。
+4. config/loader.zsh: helper 経由で core（aliases/path utils）→ tools（即時: fzf/git/mise/starship, 遅延: brew/gh/debug 他）→ functions → os-specific を統一ロードし、helper を消去。
+5. lazy-sources/\*.zsh: Arch/WSL/OrbStack/FZF/履歴検索などを zsh-defer 経由で遅延ロード（Sheldon で `dotfiles-lazy-sources` として一括管理）。
 
 ### ディレクトリ構造（主要）
 
@@ -103,12 +103,12 @@ cleanup_zcompdump    # zcompdump 手動クリーンアップ（確認付き）
 
 ## カスタマイズと拡張
 
-- **PATH/環境**: `.zprofile`（優先順位）、`.zshenv`（最小構成）を編集。XDG 経由で管理。
-- **プラグイン**: `sheldon/plugins.toml` に追記（`defer` テンプレート推奨）。
-- **ツール別設定**: `config/tools/*.zsh` に追加（git/fzf/mise/starship など既存ファイルを踏襲）。
-- **OS 別**: `config/os/macos.zsh` を基準に、`linux.zsh` / `windows.zsh` を追加すると自動検出で読み込み。
-- **補完**: `zsh/completions` または `~/.config/zsh/completions` にファイルを置くと `compinit` が検出。
-- **遅延スクリプト**: `lazy-sources/*.zsh` に環境依存の設定を追加し、zsh-defer 経由でロード。
+- PATH/環境: `.zprofile`（優先順位）、`.zshenv`（最小構成）を編集。XDG 経由で管理。
+- プラグイン: `sheldon/plugins.toml` に追記（`defer` テンプレート推奨）。
+- ツール別設定: `config/tools/*.zsh` に追加（git/fzf/mise/starship など既存ファイルを踏襲）。
+- OS 別: `config/os/macos.zsh` を基準に、`linux.zsh` / `windows.zsh` を追加すると自動検出で読み込み。
+- 補完: `zsh/completions` または `~/.config/zsh/completions` にファイルを置くと `compinit` が検出。
+- 遅延スクリプト: `lazy-sources/*.zsh` に環境依存の設定を追加し、zsh-defer 経由でロード。
 
 ## 運用・メンテナンス
 

@@ -675,7 +675,7 @@ grep "ERROR" ~/Library/Logs/Claude/mcp.log
 
 ## 関連ドキュメント
 
-- **server-configurations.md**: 全MCPサーバーの詳細設定
-- **SKILL.md**: MCP Toolsクイックスタートガイド
+- server-configurations.md: 全MCPサーバーの詳細設定
+- SKILL.md: MCP Toolsクイックスタートガイド
 
 このドキュメントは、MCPサーバーのセキュリティを最大化するための包括的なガイドです。セキュリティは継続的なプロセスであり、定期的な見直しと改善が重要です。

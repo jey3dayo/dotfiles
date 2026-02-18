@@ -9,7 +9,7 @@ tags: rerender, searchParams, localStorage, optimization
 
 Don't subscribe to dynamic state (searchParams, localStorage) if you only read it inside callbacks.
 
-**Incorrect (subscribes to all searchParams changes):**
+### Incorrect (subscribes to all searchParams changes):
 
 ```tsx
 function ShareButton({ chatId }: { chatId: string }) {
@@ -24,7 +24,7 @@ function ShareButton({ chatId }: { chatId: string }) {
 }
 ```
 
-**Correct (reads on demand, no subscription):**
+### Correct (reads on demand, no subscription):
 
 ```tsx
 function ShareButton({ chatId }: { chatId: string }) {

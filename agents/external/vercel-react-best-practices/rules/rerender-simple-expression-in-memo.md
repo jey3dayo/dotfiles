@@ -10,7 +10,7 @@ tags: rerender, useMemo, optimization
 When an expression is simple (few logical or arithmetical operators) and has a primitive result type (boolean, number, string), do not wrap it in `useMemo`.
 Calling `useMemo` and comparing hook dependencies may consume more resources than the expression itself.
 
-**Incorrect:**
+### Incorrect:
 
 ```tsx
 function Header({ user, notifications }: Props) {
@@ -23,7 +23,7 @@ function Header({ user, notifications }: Props) {
 }
 ```
 
-**Correct:**
+### Correct:
 
 ```tsx
 function Header({ user, notifications }: Props) {

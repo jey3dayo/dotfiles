@@ -372,9 +372,9 @@ Projects define specific tag values in `.claude/doc-standards/references/tag-tax
 
 ## Integration with Other Frameworks
 
-- **Metadata template**: Use `metadata-template-framework.md` for tag field format
-- **Size management**: Tags help identify split strategies (e.g., split by audience)
-- **Quality checks**: Validate tag format and taxonomy compliance
+- Metadata template: Use `metadata-template-framework.md` for tag field format
+- Size management: Tags help identify split strategies (e.g., split by audience)
+- Quality checks: Validate tag format and taxonomy compliance
 
 ---
 

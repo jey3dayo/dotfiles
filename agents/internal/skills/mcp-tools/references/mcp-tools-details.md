@@ -462,8 +462,8 @@ export MYSQL_PASSWORD="different_secure_password"
 
 より詳細な情報については、references/ディレクトリを参照してください:
 
-- **server-configurations.md**: 全MCPサーバーの詳細設定とカタログ
-- **security-and-credentials.md**: セキュリティ深掘り、認証情報管理のベストプラクティス
+- server-configurations.md: 全MCPサーバーの詳細設定とカタログ
+- security-and-credentials.md: セキュリティ深掘り、認証情報管理のベストプラクティス
 
 ## 🤖 Agent Integration
 
@@ -471,24 +471,24 @@ export MYSQL_PASSWORD="different_secure_password"
 
 ### Orchestrator Agent
 
-- **提供内容**: MCPサーバー設定ワークフロー、段階的導入戦略
-- **タイミング**: MCPサーバー設定・外部ツール統合タスク実行時
-- **コンテキスト**:
+- 提供内容: MCPサーバー設定ワークフロー、段階的導入戦略
+- タイミング: MCPサーバー設定・外部ツール統合タスク実行時
+- コンテキスト:
   - 主要MCPサーバー設定パターン（Memory, GitHub, Database等）
   - セキュリティベストプラクティス（環境変数、Keychain活用）
   - トラブルシューティング手順
 
 ### Researcher Agent
 
-- **提供内容**: MCPサーバー調査、新規サーバー評価
-- **タイミング**: 新しいMCPサーバーの調査・比較検討時
-- **コンテキスト**: 利用可能なMCPサーバーカタログ、選定基準、互換性確認
+- 提供内容: MCPサーバー調査、新規サーバー評価
+- タイミング: 新しいMCPサーバーの調査・比較検討時
+- コンテキスト: 利用可能なMCPサーバーカタログ、選定基準、互換性確認
 
 ### Error-Fixer Agent
 
-- **提供内容**: MCP設定エラーの診断・修正
-- **タイミング**: MCPサーバー起動失敗・権限エラー対応時
-- **コンテキスト**: トラブルシューティングパターン、環境変数設定、権限設定
+- 提供内容: MCP設定エラーの診断・修正
+- タイミング: MCPサーバー起動失敗・権限エラー対応時
+- コンテキスト: トラブルシューティングパターン、環境変数設定、権限設定
 
 ### 自動ロード条件
 
@@ -517,8 +517,8 @@ GitHub MCP設定パターン + セキュリティベストプラクティス
 
 ## 関連スキル
 
-- **integration-framework**: TaskContext、Communication Bus統合
-- **agents-and-commands**: エージェント/コマンドとMCPツールの統合
+- integration-framework: TaskContext、Communication Bus統合
+- agents-and-commands: エージェント/コマンドとMCPツールの統合
 
 ## 参考リンク
 

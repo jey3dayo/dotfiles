@@ -20,9 +20,9 @@
 
 ## Naming Conventions
 
-- **Files**: [Pattern, e.g., PascalCase, kebab-case]
-- **Components**: [Pattern]
-- **Functions**: [Pattern]
+- Files: [Pattern, e.g., PascalCase, kebab-case]
+- Components: [Pattern]
+- Functions: [Pattern]
 
 ## Import Organization
 

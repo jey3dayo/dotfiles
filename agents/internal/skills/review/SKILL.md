@@ -20,7 +20,7 @@ Execute comprehensive code review by delegating to the `code-review` skill with 
 - This command executes LOCAL reviews only
 - NO GitHub PR comment posting functionality
 - All review results are displayed locally
-- **All output is in Japanese**
+- All output is in Japanese
 
 ### No-Signature Policy
 
@@ -185,10 +185,10 @@ git commit -m "Pre-review checkpoint" || echo "No changes to commit"
 
 Delegate to appropriate skill based on mode:
 
-- **ci_pr_combined**: Execute both `ci-diagnostics` and `pr-review-automation`
-- **ci_diagnosis**: Execute `ci-diagnostics` skill
-- **pr_review_automation**: Execute `pr-review-automation` skill
-- **detailed/simple**: Execute `code-review` skill
+- ci_pr_combined: Execute both `ci-diagnostics` and `pr-review-automation`
+- ci_diagnosis: Execute `ci-diagnostics` skill
+- pr_review_automation: Execute `pr-review-automation` skill
+- detailed/simple: Execute `code-review` skill
 
 ## Options
 
@@ -253,12 +253,12 @@ These files are automatically integrated into evaluation guidelines when present
 
 The code-review skill automatically integrates these skills:
 
-- **typescript**: TypeScript-specific perspectives (type safety, strict mode, type guards)
-- **react**: React-specific perspectives (hooks, performance, component design)
-- **golang**: Go-specific perspectives (error handling, concurrency, idioms)
-- **security**: Security perspectives (input validation, auth/authz, data protection)
-- **clean-architecture**: Architecture perspectives (layer separation, dependency rules, domain modeling)
-- **semantic-analysis**: Semantic analysis (symbol tracking, impact analysis)
+- typescript: TypeScript-specific perspectives (type safety, strict mode, type guards)
+- react: React-specific perspectives (hooks, performance, component design)
+- golang: Go-specific perspectives (error handling, concurrency, idioms)
+- security: Security perspectives (input validation, auth/authz, data protection)
+- clean-architecture: Architecture perspectives (layer separation, dependency rules, domain modeling)
+- semantic-analysis: Semantic analysis (symbol tracking, impact analysis)
 
 Appropriate skills are auto-selected based on project type.
 

@@ -333,7 +333,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 
 1. 別の flake から switch を実行した
    - Generation が上書きされた
-   - **対策**: `~/.config` から再度 switch を実行
+   - 対策: `~/.config` から再度 switch を実行
 
      home-manager switch --flake ~/.config --impure
 
@@ -343,7 +343,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 
 2. flake.nix と agent-skills-sources.nix の不整合
    - URL/flake 属性が一致していない
-   - **確認**:
+   - 確認:
 
      ```bash
      # agent-skills-sources.nix の URL 一覧
@@ -353,19 +353,19 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
      rg 'url = "github:.*skills' ~/.config/flake.nix
      ```
 
-   - **対策**: 不一致箇所を手動同期（agent-skills-sources.nix → flake.nix）
+   - 対策: 不一致箇所を手動同期（agent-skills-sources.nix → flake.nix）
 
 3. selection.enable の設定ミス
    - スキル名が catalog に存在しない、またはタイポ
 
-   - **確認**:
+   - 確認:
 
      ```bash
 
      mise run skills:report
      ```
 
-   - **対策**: `nix/agent-skills-sources.nix` の `selection.enable` を修正
+   - 対策: `nix/agent-skills-sources.nix` の `selection.enable` を修正
 
 ### 詳細
 

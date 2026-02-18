@@ -65,8 +65,8 @@ function parseArguments(): ParsedArgs {
 function resolveTargetPaths(userInputs: string[]): string[] {
   // デフォルト値（引数なしの場合）
   if (userInputs.length === 0) {
-    const repoRoot = path.resolve(__dirname, "../..");
-    return [path.join(repoRoot, "agents", "internal")];
+    const repoRoot = path.resolve(__dirname, "..");
+    return [repoRoot]; // Repository root (all markdown files)
   }
 
   // ユーザー指定のパスを解決
@@ -77,11 +77,7 @@ function resolveTargetPaths(userInputs: string[]): string[] {
 // File Processing
 // ========================================
 
-function processFile(
-  filePath: string,
-  dryRun: boolean,
-  verbose: boolean,
-): FileResult {
+function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileResult {
   try {
     const original = fs.readFileSync(filePath, "utf8");
     const eol = original.includes("\r\n") ? "\r\n" : "\n";
@@ -99,8 +95,11 @@ function processFile(
 
     // Bold labels in ordered list items are normalized to plain text.
     // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
-    const boldOrderedListLabel =
-      /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
+    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
+
+    // Bold labels in unordered list items are normalized to plain text.
+    // Example: "- **Text**:" -> "- Text:"
+    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:\-]\s*.*)?$/;
 
     let inFence = false;
     let fenceChar = "";
@@ -138,6 +137,29 @@ function processFile(
           fileReplacements += 1;
           return `${prefix}${text}${suffix}`;
         }
+      }
+
+      const unorderedListLabelMatch = line.match(boldUnorderedListLabel);
+      if (unorderedListLabelMatch) {
+        const prefix = unorderedListLabelMatch[1];
+        const text = unorderedListLabelMatch[2];
+        const suffix = unorderedListLabelMatch[3] ?? "";
+
+        // Skip if nested bold exists
+        if (text.includes("**")) {
+          return line;
+        }
+
+        // Check if there's meaningful content after the colon
+        const colonMatch = suffix.match(/:\s*(.+)/);
+        if (colonMatch && colonMatch[1].trim()) {
+          // There's content after the colon - preserve bold
+          return line;
+        }
+
+        // Just ":" or no suffix - remove bold
+        fileReplacements += 1;
+        return `${prefix}${text}${suffix}`;
       }
 
       const labelMatch = line.match(boldLabelWithSuffix);
@@ -262,7 +284,7 @@ Usage:
 
 Arguments:
   paths                   Target file/directory paths to process
-                         Default: agents/internal (skills, agents, rules, commands)
+                         Default: . (repository root - all markdown files)
                          Can specify multiple paths
 
 Options:
@@ -271,18 +293,17 @@ Options:
   --help, -h             Show this help message
 
 Examples:
-  # Process default directory (internal assets)
+  # Process all markdown files in repository
   tsx replace-bold-headings.ts
   mise run skills:fix:bold-headings
 
-  # Process other directories
-  tsx replace-bold-headings.ts .
+  # Process specific directories
   tsx replace-bold-headings.ts .claude
   tsx replace-bold-headings.ts docs README.md
   mise run format:markdown:bold-headings -- docs
 
   # Dry run mode
-  tsx replace-bold-headings.ts . --dry-run
+  tsx replace-bold-headings.ts --dry-run
 `);
 }
 
@@ -324,9 +345,7 @@ function main() {
   }
 
   // 統計情報の集計
-  const successCount = results.filter(
-    (r) => !r.error && r.replacements > 0,
-  ).length;
+  const successCount = results.filter((r) => !r.error && r.replacements > 0).length;
   const errorCount = results.filter((r) => r.error).length;
   const totalReplacements = results.reduce((sum, r) => sum + r.replacements, 0);
 
@@ -335,9 +354,7 @@ function main() {
     console.log("No bold heading/label patterns found.");
   } else {
     const verb = args.dryRun ? "Found" : "Replaced";
-    console.log(
-      `${verb} ${totalReplacements} bold heading/label pattern(s) across ${successCount} file(s).`,
-    );
+    console.log(`${verb} ${totalReplacements} bold heading/label pattern(s) across ${successCount} file(s).`);
   }
 
   if (errorCount > 0) {

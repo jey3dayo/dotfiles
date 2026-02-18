@@ -42,17 +42,17 @@ Analyze the gap between requirements and existing codebase to inform implementat
 
 ### When to consider
 
-- **Which files/modules to extend**:
+- Which files/modules to extend:
   - Identify specific files requiring changes
   - Assess impact on existing functionality
   - Evaluate backward compatibility concerns
 
-- **Compatibility assessment**:
+- Compatibility assessment:
   - Check if extension respects existing interfaces
   - Verify no breaking changes to consumers
   - Assess test coverage impact
 
-- **Complexity and maintainability**:
+- Complexity and maintainability:
   - Evaluate cognitive load of additional functionality
   - Check if single responsibility principle is maintained
   - Assess if file size remains manageable
@@ -68,17 +68,17 @@ Analyze the gap between requirements and existing codebase to inform implementat
 
 ### When to consider
 
-- **Rationale for new creation**:
+- Rationale for new creation:
   - Clear separation of concerns justifies new file
   - Existing components are already complex
   - Feature has distinct lifecycle or dependencies
 
-- **Integration points**:
+- Integration points:
   - How new components connect to existing system
   - APIs or interfaces exposed
   - Dependencies on existing components
 
-- **Responsibility boundaries**:
+- Responsibility boundaries:
   - Clear definition of what new component owns
   - Interfaces with existing components
   - Data flow and control flow
@@ -95,17 +95,17 @@ Analyze the gap between requirements and existing codebase to inform implementat
 
 ### When to consider
 
-- **Combination strategy**:
+- Combination strategy:
   - Which parts extend existing components
   - Which parts warrant new components
   - How they interact
 
-- **Phased implementation**:
+- Phased implementation:
   - Initial phase: minimal viable changes
   - Subsequent phases: refactoring or new components
   - Migration strategy if needed
 
-- **Risk mitigation**:
+- Risk mitigation:
   - Incremental rollout approach
   - Feature flags or configuration
   - Rollback strategy
@@ -145,8 +145,8 @@ Analyze the gap between requirements and existing codebase to inform implementat
 
 ## Principles
 
-- **Information over decisions**: Provide analysis and options, not final choices
-- **Multiple viable options**: Offer credible alternatives when applicable
-- **Explicit gaps and assumptions**: Flag unknowns and constraints clearly
-- **Context-aware**: Align with existing patterns and architecture limits
-- **Transparent effort and risk**: Justify labels succinctly
+- Information over decisions: Provide analysis and options, not final choices
+- Multiple viable options: Offer credible alternatives when applicable
+- Explicit gaps and assumptions: Flag unknowns and constraints clearly
+- Context-aware: Align with existing patterns and architecture limits
+- Transparent effort and risk: Justify labels succinctly

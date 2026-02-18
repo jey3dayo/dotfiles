@@ -10,16 +10,16 @@
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/ssh.md`](../../.claude/rules/tools/ssh.md) で管理されています。
 
-- **目的**: Claude AIが常に参照する簡潔なルール（26-31行）
-- **適用範囲**: YAML frontmatter `paths:` で定義
-- **関係**: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
+- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 適用範囲: YAML frontmatter `paths:` で定義
+- 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
 ## 主要機能
 
-- **1Password SSH Agent統合**: パスワードレス認証
-- **階層的設定管理**: 用途別ファイル分離
-- **接続最適化**: Keep-Alive・圧縮設定
-- **プラットフォーム統合**: OrbStack・Docker対応
+- 1Password SSH Agent統合: パスワードレス認証
+- 階層的設定管理: 用途別ファイル分離
+- 接続最適化: Keep-Alive・圧縮設定
+- プラットフォーム統合: OrbStack・Docker対応
 
 ## 設定構造
 
@@ -44,12 +44,12 @@
 
 ### 読み込み優先度
 
-1. **00-global**: 全体設定
-2. **01-1password**: 認証設定
-3. **10-dev-services**: 開発環境
-4. **20-home-network**: ホームラボ
-5. **99-defaults**: デフォルト
-6. **ローカル設定**: 機密情報（Git管理外）
+1. 00-global: 全体設定
+2. 01-1password: 認証設定
+3. 10-dev-services: 開発環境
+4. 20-home-network: ホームラボ
+5. 99-defaults: デフォルト
+6. ローカル設定: 機密情報（Git管理外）
 
 ## 主要設定ファイル
 
@@ -189,15 +189,15 @@ ssh -T git@github.com
 
 ## パフォーマンス
 
-- **接続速度**: Keep-Alive設定・接続共有による高速化
-- **セキュリティ**: 1Password統合・Ed25519鍵
-- **管理性**: 階層的設定・用途別分離
+- 接続速度: Keep-Alive設定・接続共有による高速化
+- セキュリティ: 1Password統合・Ed25519鍵
+- 管理性: 階層的設定・用途別分離
 
 ## ツール連携
 
-- **Git**: GitHub/GitLabでの企業ファイアウォール対応
-- **開発環境**: OrbStack・VSCode Remote-SSH連携
-- **Terminal**: WezTerm・Zsh補完機能
+- Git: GitHub/GitLabでの企業ファイアウォール対応
+- 開発環境: OrbStack・VSCode Remote-SSH連携
+- Terminal: WezTerm・Zsh補完機能
 
 ---
 

@@ -9,7 +9,7 @@ tags: rendering, ssr, hydration, localStorage, flicker
 
 When rendering content that depends on client-side storage (localStorage, cookies), avoid both SSR breakage and post-hydration flickering by injecting a synchronous script that updates the DOM before React hydrates.
 
-**Incorrect (breaks SSR):**
+### Incorrect (breaks SSR):
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
@@ -26,7 +26,7 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
 
 Server-side rendering will fail because `localStorage` is undefined.
 
-**Incorrect (visual flickering):**
+### Incorrect (visual flickering):
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
@@ -50,7 +50,7 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
 
 Component first renders with default value (`light`), then updates after hydration, causing a visible flash of incorrect content.
 
-**Correct (no flicker, no hydration mismatch):**
+### Correct (no flicker, no hydration mismatch):
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {

@@ -6,11 +6,11 @@ This guide helps you migrate from the old TSR skill setup to the new flexible co
 
 The new TSR plugin introduces:
 
-- **Cascading Configuration**: Project > Home > Default
-- **JSON Schema Validation**: Structured configuration with validation
-- **Framework Detection**: Automatic detection and configuration
-- **Flexible Verification**: Configure type-check, lint, test per project
-- **Template Reports**: Date-templated output paths
+- Cascading Configuration: Project > Home > Default
+- JSON Schema Validation: Structured configuration with validation
+- Framework Detection: Automatic detection and configuration
+- Flexible Verification: Configure type-check, lint, test per project
+- Template Reports: Date-templated output paths
 
 ## Migration Steps
 

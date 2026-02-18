@@ -236,15 +236,15 @@ tools: ["Read", "Grep", "Bash", "Glob"]
 
 ### 必須ツール
 
-- **Read**: ファイル内容の読み込み
-- **Glob**: ファイルパターンマッチング
-- **Grep**: コンテンツ検索
+- Read: ファイル内容の読み込み
+- Glob: ファイルパターンマッチング
+- Grep: コンテンツ検索
 
 ### 任意ツール
 
-- **Bash**: コマンド実行、テスト、ビルド
-- **Edit/Write**: ファイル変更（read-only原則に注意）
-- **Task**: サブエージェント呼び出し（オーケストレーター用）
+- Bash: コマンド実行、テスト、ビルド
+- Edit/Write: ファイル変更（read-only原則に注意）
+- Task: サブエージェント呼び出し（オーケストレーター用）
 
 ### MCP統合
 
@@ -273,15 +273,15 @@ agents/
 
 ### 命名規則
 
-- **kebab-case**: `agent-name.md`
-- **説明的**: 名前がドメイン/目的を反映
-- **一般的すぎない**: `helper` ではなく `import-resolver`
-- **グループ化**: 関連エージェントはサブディレクトリに
+- kebab-case: `agent-name.md`
+- 説明的: 名前がドメイン/目的を反映
+- 一般的すぎない: `helper` ではなく `import-resolver`
+- グループ化: 関連エージェントはサブディレクトリに
 
 ### 配置場所
 
-- **グローバル**: `/Users/t00114/.claude/agents/`
-- **プロジェクト固有**: `.claude/agents/`
+- グローバル: `/Users/t00114/.claude/agents/`
+- プロジェクト固有: `.claude/agents/`
 
 ## 統合ポイント
 
@@ -534,11 +534,11 @@ results = await parallel_execute([
 
 ## 関連リソース
 
-- **command-creator skill**: エージェントを使用するコマンドの作成方法
-- **rules-creator skill**: エージェントが検証するルールの作成方法
-- **skill-creator skill**: より広いドメインエコシステムの場合
-- **agents-and-commands skill**: エージェントとコマンドの違い
-- **integration-framework skill**: 統合パターン
+- command-creator skill: エージェントを使用するコマンドの作成方法
+- rules-creator skill: エージェントが検証するルールの作成方法
+- skill-creator skill: より広いドメインエコシステムの場合
+- agents-and-commands skill: エージェントとコマンドの違い
+- integration-framework skill: 統合パターン
 
 ---
 

@@ -401,9 +401,9 @@ def create_consolidation_plan(duplicates):
 
 ### 自動保護機能
 
-- **プロテクトパターン**: `.claude/`, `.git/`, `node_modules/`
-- **設定ファイル保護**: `.env`, `config/*`
-- **実行前バックアップ**: Gitチェックポイント必須
+- プロテクトパターン: `.claude/`, `.git/`, `node_modules/`
+- 設定ファイル保護: `.env`, `config/*`
+- 実行前バックアップ: Gitチェックポイント必須
 
 ### リカバリー機能
 

@@ -31,10 +31,10 @@ argument-hint: "[full|files] [options]"
 
 プロジェクト全体を包括的にクリーンアップ:
 
-- **未使用シンボル検出**: 関数、クラス、変数の参照追跡
-- **デバッグコード削除**: console.log、print、TODO等
-- **import文整理**: 未使用インポートの自動削除
-- **ドキュメント統合**: 重複解消と一貫性確保
+- 未使用シンボル検出: 関数、クラス、変数の参照追跡
+- デバッグコード削除: console.log、print、TODO等
+- import文整理: 未使用インポートの自動削除
+- ドキュメント統合: 重複解消と一貫性確保
 
 ### 実行フェーズ
 
@@ -48,10 +48,10 @@ argument-hint: "[full|files] [options]"
 
 特定のファイル・パターンをクリーンアップ:
 
-- **一時ファイル**: _.log,_.tmp, \*~
-- **システムファイル**: .DS_Store, Thumbs.db
-- **キャッシュファイル**: \*.pyc, **pycache**
-- **プロジェクト固有**: カスタムパターン対応
+- 一時ファイル: _.log,_.tmp, \*~
+- システムファイル: .DS_Store, Thumbs.db
+- キャッシュファイル: \*.pyc, **pycache**
+- プロジェクト固有: カスタムパターン対応
 
 ### 保護機能
 
@@ -98,10 +98,10 @@ git reset --hard HEAD~1  # チェックポイントに戻る
 
 ### MCP Serena統合
 
-- **セマンティック解析**: 構文だけでなく意味を理解
-- **依存関係追跡**: 安全な削除判定
-- **効率的検索**: パターンマッチング最適化
-- **構造理解**: プロジェクト全体の把握
+- セマンティック解析: 構文だけでなく意味を理解
+- 依存関係追跡: 安全な削除判定
+- 効率的検索: パターンマッチング最適化
+- 構造理解: プロジェクト全体の把握
 
 ### プロジェクト判定
 
@@ -157,16 +157,16 @@ project-detectorとの統合により:
 
 このスキルの詳細仕様とベストプラクティスは以下を参照:
 
-- **[フルクリーンアップ戦略](references/full-cleanup-strategy.md)** - Serenaセマンティック解析の詳細
-- **[ターゲットクリーンアップ戦略](references/targeted-cleanup-strategy.md)** - ファイル単位クリーンアップ
-- **[セーフティチェック](references/safety-checks.md)** - 事前検証と参照確認
-- **[クリーンアップポリシー](references/cleanup-policies.md)** - 削除ポリシーとバックアップ
+- [フルクリーンアップ戦略](references/full-cleanup-strategy.md) - Serenaセマンティック解析の詳細
+- [ターゲットクリーンアップ戦略](references/targeted-cleanup-strategy.md) - ファイル単位クリーンアップ
+- [セーフティチェック](references/safety-checks.md) - 事前検証と参照確認
+- [クリーンアップポリシー](references/cleanup-policies.md) - 削除ポリシーとバックアップ
 
 実用例とワークフロー:
 
-- **[クリーンアップワークフロー](examples/cleanup-workflows.md)** - 実行例とベストプラクティス
-- **[セーフティ検証](examples/safety-validation.md)** - セーフティチェック実行例
-- **[ロールバック戦略](examples/rollback-strategies.md)** - 問題発生時の対処法
+- [クリーンアップワークフロー](examples/cleanup-workflows.md) - 実行例とベストプラクティス
+- [セーフティ検証](examples/safety-validation.md) - セーフティチェック実行例
+- [ロールバック戦略](examples/rollback-strategies.md) - 問題発生時の対処法
 
 ## 重要な注意事項
 
@@ -177,6 +177,6 @@ project-detectorとの統合により:
 
 ## 他コマンドとの統合
 
-- **`/review`**: クリーンアップ後の品質確認
-- **`/polish`**: lint/format/test実行
-- **`/docs`**: ドキュメント品質の最終確認
+- `/review`: クリーンアップ後の品質確認
+- `/polish`: lint/format/test実行
+- `/docs`: ドキュメント品質の最終確認

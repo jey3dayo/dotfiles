@@ -432,7 +432,7 @@ After changes, update `internal/README.md` with new counts and descriptions.
 
 ## Related Files
 
-- **internal/README.md**: Official bundle documentation
-- **agents/nix/lib.nix**: Implementation (`scanDistribution`)
-- **references/creating-bundles.md**: How to create similar bundles
-- **references/symlink-patterns.md**: Symlink design patterns used
+- internal/README.md: Official bundle documentation
+- agents/nix/lib.nix: Implementation (`scanDistribution`)
+- references/creating-bundles.md: How to create similar bundles
+- references/symlink-patterns.md: Symlink design patterns used

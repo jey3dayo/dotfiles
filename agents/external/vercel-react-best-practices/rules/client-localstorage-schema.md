@@ -9,7 +9,7 @@ tags: client, localStorage, storage, versioning, data-minimization
 
 Add version prefix to keys and store only needed fields. Prevents schema conflicts and accidental storage of sensitive data.
 
-**Incorrect:**
+### Incorrect:
 
 ```typescript
 // No version, stores everything, no error handling
@@ -17,7 +17,7 @@ localStorage.setItem('userConfig', JSON.stringify(fullUserObject))
 const data = localStorage.getItem('userConfig')
 ```
 
-**Correct:**
+### Correct:
 
 ```typescript
 const VERSION = 'v2'
@@ -52,7 +52,7 @@ function migrate() {
 }
 ```
 
-**Store minimal fields from server responses:**
+### Store minimal fields from server responses:
 
 ```typescript
 // User object has 20+ fields, only store what UI needs

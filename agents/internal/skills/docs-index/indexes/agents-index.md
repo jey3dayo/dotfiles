@@ -18,28 +18,28 @@ Claude Codeで利用可能なエージェント一覧。
 
 ### コード品質関連
 
-- **コードレビューが必要**: `code-reviewer` または `/review` コマンド
-- **PRレビュー対応**: `github-pr-reviewer` または `/review --fix-pr`
-- **エラー修正**: `error-fixer` または `/polish`
-- **コード整形**: `/polish` コマンド（自動エージェント選択）
+- コードレビューが必要: `code-reviewer` または `/review` コマンド
+- PRレビュー対応: `github-pr-reviewer` または `/review --fix-pr`
+- エラー修正: `error-fixer` または `/polish`
+- コード整形: `/polish` コマンド（自動エージェント選択）
 
 ### ドキュメント関連
 
-- **ドキュメント管理**: `docs-manager` または `/docs`
-- **ドキュメント修正**: `/fix-docs` コマンド
-- **README作成**: `docs-manager` + `markdown-docs` スキル
+- ドキュメント管理: `docs-manager` または `/docs`
+- ドキュメント修正: `/fix-docs` コマンド
+- README作成: `docs-manager` + `markdown-docs` スキル
 
 ### タスク実行関連
 
-- **自動タスク判定**: `/task` コマンド（task-router連携）
-- **複雑なワークフロー**: `orchestrator`
-- **ToDo管理**: `/todos` コマンド
+- 自動タスク判定: `/task` コマンド（task-router連携）
+- 複雑なワークフロー: `orchestrator`
+- ToDo管理: `/todos` コマンド
 
 ### 開発支援関連
 
-- **実装支援**: `/implement` コマンド
-- **リファクタリング**: `refactoring-agent`
-- **技術調査**: `researcher` + o3-search MCP
+- 実装支援: `/implement` コマンド
+- リファクタリング: `refactoring-agent`
+- 技術調査: `researcher` + o3-search MCP
 
 ## エージェント統合パターン
 

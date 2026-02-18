@@ -48,8 +48,8 @@ context7.query(
 
 ASTA uses react-grid-layout for calendar systems with time-based event positioning:
 
-- **Studio Calendar**: Studio/room scheduling (src/components/Calendar/Studio/)
-- **RoomSchedule Calendar**: Dressing room scheduling (src/components/Calendar/RoomSchedule/)
+- Studio Calendar: Studio/room scheduling (src/components/Calendar/Studio/)
+- RoomSchedule Calendar: Dressing room scheduling (src/components/Calendar/RoomSchedule/)
 
 ### Key pattern
 
@@ -108,10 +108,10 @@ const SafeGridLayout: React.FC<SafeGridLayoutProps> = props => {
 ## Progressive Documentation
 
 - **SKILL.md** (this file): Overview and Context7 integration
-- **references/04-asta-patterns.md**: ASTA calendar patterns (always load for ASTA projects)
-- **references/02-cols-width-calculation.md**: Load for sizing issues
-- **references/03-typescript-nextjs.md**: Load for TypeScript/SSR issues
-- **examples/timed-layout.tsx**: ASTA implementation example
+- references/04-asta-patterns.md: ASTA calendar patterns (always load for ASTA projects)
+- references/02-cols-width-calculation.md: Load for sizing issues
+- references/03-typescript-nextjs.md: Load for TypeScript/SSR issues
+- examples/timed-layout.tsx: ASTA implementation example
 
 ## Common Use Cases
 

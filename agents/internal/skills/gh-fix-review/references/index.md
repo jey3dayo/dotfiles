@@ -4,7 +4,7 @@
 
 ### 設定関連
 
-- **[configuration.md](configuration.md)** - 設定ファイルの詳細リファレンス
+- [configuration.md](configuration.md) - 設定ファイルの詳細リファレンス
   - 設定ファイルのスキーマ
   - 各設定項目の説明
   - プロジェクト固有の設定例

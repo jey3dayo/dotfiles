@@ -9,7 +9,7 @@ tags: async, await, conditional, optimization
 
 Move `await` operations into the branches where they're actually used to avoid blocking code paths that don't need them.
 
-**Incorrect (blocks both branches):**
+### Incorrect (blocks both branches):
 
 ```typescript
 async function handleRequest(userId: string, skipProcessing: boolean) {
@@ -25,7 +25,7 @@ async function handleRequest(userId: string, skipProcessing: boolean) {
 }
 ```
 
-**Correct (only blocks when needed):**
+### Correct (only blocks when needed):
 
 ```typescript
 async function handleRequest(userId: string, skipProcessing: boolean) {
@@ -40,7 +40,7 @@ async function handleRequest(userId: string, skipProcessing: boolean) {
 }
 ```
 
-**Another example (early return optimization):**
+### Another example (early return optimization):
 
 ```typescript
 // Incorrect: always fetches permissions

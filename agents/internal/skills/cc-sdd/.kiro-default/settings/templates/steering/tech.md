@@ -6,9 +6,9 @@
 
 ## Core Technologies
 
-- **Language**: [e.g., TypeScript, Python]
-- **Framework**: [e.g., React, Next.js, Django]
-- **Runtime**: [e.g., Node.js 20+]
+- Language: [e.g., TypeScript, Python]
+- Framework: [e.g., React, Next.js, Django]
+- Runtime: [e.g., Node.js 20+]
 
 ## Key Libraries
 

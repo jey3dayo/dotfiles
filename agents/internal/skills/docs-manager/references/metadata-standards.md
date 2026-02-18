@@ -31,9 +31,9 @@ Fields can be customized via configuration:
 
 Common variations:
 
-- **English**: `Last Updated`, `Target Audience`, `Tags`
-- **Japanese**: `最終更新`, `対象`, `タグ`
-- **Custom**: Any field names matching your project conventions
+- English: `Last Updated`, `Target Audience`, `Tags`
+- Japanese: `最終更新`, `対象`, `タグ`
+- Custom: Any field names matching your project conventions
 
 ## Date Field
 

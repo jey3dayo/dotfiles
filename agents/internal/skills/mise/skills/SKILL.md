@@ -14,9 +14,9 @@ This skill provides specialized guidance for working with mise (mise-en-place), 
 
 mise combines:
 
-- **Task Runner**: Execute development workflows with dependency management
-- **Tool Version Manager**: Manage language runtimes and tools
-- **Environment Manager**: Handle project-specific environment variables
+- Task Runner: Execute development workflows with dependency management
+- Tool Version Manager: Manage language runtimes and tools
+- Environment Manager: Handle project-specific environment variables
 
 ## Core Capabilities
 
@@ -28,9 +28,9 @@ Create well-structured task definitions with proper separation of concerns.
 
 Define what the task actually does:
 
-- **Purpose**: Contains the actual commands to execute
-- **Execution**: Runs serially inside the task's shell
-- **Usage**: Core logic, command sequences, inline sub-tasks
+- Purpose: Contains the actual commands to execute
+- Execution: Runs serially inside the task's shell
+- Usage: Core logic, command sequences, inline sub-tasks
 
 ### Example
 
@@ -47,9 +47,9 @@ run = [
 
 Declare what must complete before this task starts:
 
-- **Purpose**: Pure declarative prerequisites
-- **Execution**: Builds global DAG, runs once, enables parallelism
-- **Usage**: Ordering constraints, shared setup tasks, fan-out patterns
+- Purpose: Pure declarative prerequisites
+- Execution: Builds global DAG, runs once, enables parallelism
+- Usage: Ordering constraints, shared setup tasks, fan-out patterns
 
 ### Example
 
@@ -216,8 +216,8 @@ Manage language runtimes and global packages in a unified, version-controlled ma
 
 #### Core Principle: Centralized Package Management
 
-- **✅ DO**: Declare ALL npm and Python packages in `mise.toml` using `"npm:<package>"` or `"pipx:<package>"`
-- **❌ DON'T**: Use `npm install -g` or `pip install --user` - leads to drift and reproducibility issues
+- ✅ DO: Declare ALL npm and Python packages in `mise.toml` using `"npm:<package>"` or `"pipx:<package>"`
+- ❌ DON'T: Use `npm install -g` or `pip install --user` - leads to drift and reproducibility issues
 
 ### Tool Categories
 
@@ -417,10 +417,10 @@ depends = ["lint", "test", "build"]  # ✅ Parallel execution
 
 ### With Development Tools
 
-- **Linters**: Integrate via tasks with proper dependencies
-- **Formatters**: Create format/format:check task pairs
-- **Test Runners**: Use `depends` for setup tasks
-- **Build Systems**: Coordinate with mise's DAG
+- Linters: Integrate via tasks with proper dependencies
+- Formatters: Create format/format:check task pairs
+- Test Runners: Use `depends` for setup tasks
+- Build Systems: Coordinate with mise's DAG
 
 ## Resources
 
@@ -441,9 +441,9 @@ Detailed documentation loaded as needed:
 
 ### Orchestrator Agent
 
-- **提供内容**: mise.toml設計、タスク依存関係管理、ワークフロー最適化
-- **タイミング**: miseタスクランナー設定・最適化時
-- **コンテキスト**:
+- 提供内容: mise.toml設計、タスク依存関係管理、ワークフロー最適化
+- タイミング: miseタスクランナー設定・最適化時
+- コンテキスト:
   - タスク定義ベストプラクティス
   - 依存関係管理（depends, run連鎖）
   - コマンド構成パターン
@@ -451,15 +451,15 @@ Detailed documentation loaded as needed:
 
 ### Code-Reviewer Agent
 
-- **提供内容**: mise.toml品質評価、設定レビュー
-- **タイミング**: mise設定レビュー時
-- **コンテキスト**: タスク構造評価、依存関係検証、ベストプラクティス準拠
+- 提供内容: mise.toml品質評価、設定レビュー
+- タイミング: mise設定レビュー時
+- コンテキスト: タスク構造評価、依存関係検証、ベストプラクティス準拠
 
 ### Error-Fixer Agent
 
-- **提供内容**: mise設定エラー修正、タスク依存関係修正
-- **タイミング**: mise実行エラー対応時
-- **コンテキスト**: 設定エラー診断、依存関係ループ検出、タスク修正
+- 提供内容: mise設定エラー修正、タスク依存関係修正
+- タイミング: mise実行エラー対応時
+- コンテキスト: 設定エラー診断、依存関係ループ検出、タスク修正
 
 ### 自動ロード条件
 

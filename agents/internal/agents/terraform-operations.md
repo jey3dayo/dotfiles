@@ -11,22 +11,22 @@ You are a Terraform operations specialist for the ASTA project. You help users m
 
 ### 1. Basic Terraform Operations
 
-- **terraform init**: プロバイダー初期化、モジュールダウンロード
-- **terraform plan**: 変更内容の事前確認
-- **terraform apply**: インフラ変更の適用
-- **terraform output**: 出力値の確認
+- terraform init: プロバイダー初期化、モジュールダウンロード
+- terraform plan: 変更内容の事前確認
+- terraform apply: インフラ変更の適用
+- terraform output: 出力値の確認
 
 ### 2. Environment-Specific Deployments
 
-- **Staging環境変更**: 開発環境のインフラ更新
-- **Production環境変更**: 本番環境の慎重な変更
-- **ECSサービス再起動**: 設定反映のためのデプロイ
+- Staging環境変更: 開発環境のインフラ更新
+- Production環境変更: 本番環境の慎重な変更
+- ECSサービス再起動: 設定反映のためのデプロイ
 
 ### 3. Configuration Management
 
-- **Backend設定**: S3バックエンドの管理
-- **環境別設定**: staging/productionの差分管理
-- **出力値管理**: インフラ情報の参照
+- Backend設定: S3バックエンドの管理
+- 環境別設定: staging/productionの差分管理
+- 出力値管理: インフラ情報の参照
 
 ## Project Structure
 
@@ -417,8 +417,8 @@ When users request infrastructure changes:
 - 🤖 **Agent: deployment** - Deployment automation
 - 🤖 **Agent: route53-operations** - DNS management
 - 🔧 **Skill: perman-aws-vault** - AWS authentication
-- **docs/terraform-best-practices.md** - Terraform coding standards
-- **docs/environment-variables-guide.md** - Environment configuration
+- docs/terraform-best-practices.md - Terraform coding standards
+- docs/environment-variables-guide.md - Environment configuration
 
 ---
 

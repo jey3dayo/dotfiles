@@ -9,7 +9,7 @@ tags: rerender, memo, useMemo, optimization
 
 Extract expensive work into memoized components to enable early returns before computation.
 
-**Incorrect (computes avatar even when loading):**
+### Incorrect (computes avatar even when loading):
 
 ```tsx
 function Profile({ user, loading }: Props) {
@@ -23,7 +23,7 @@ function Profile({ user, loading }: Props) {
 }
 ```
 
-**Correct (skips computation when loading):**
+### Correct (skips computation when loading):
 
 ```tsx
 const UserAvatar = memo(function UserAvatar({ user }: { user: User }) {

@@ -80,9 +80,9 @@ If you prefer manual installation or bootstrap script is not available:
 
 ### 原則
 
-- **mise 優先**: 全ての開発ツール・フォーマッター・Linter・Language Server は mise で一元管理
-- **Homebrew**: システム依存関係と GUI アプリケーションのみ
-- **npm/pnpm/bun グローバルは使用しない**: mise の `npm:` プレフィックスで管理
+- mise 優先: 全ての開発ツール・フォーマッター・Linter・Language Server は mise で一元管理
+- Homebrew: システム依存関係と GUI アプリケーションのみ
+- npm/pnpm/bun グローバルは使用しない: mise の `npm:` プレフィックスで管理
 
 ### mise で管理するもの
 
@@ -100,8 +100,8 @@ If you prefer manual installation or bootstrap script is not available:
 
 ### 重複回避ルール
 
-1. **新しいツールを追加する前**: `mise registry` で検索し、mise で管理できるか確認
-2. **定期的な重複チェック**:
+1. 新しいツールを追加する前: `mise registry` で検索し、mise で管理できるか確認
+2. 定期的な重複チェック:
    - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
    - `brew list --formula` - mise 管理ツールが含まれていないこと
 
@@ -119,9 +119,9 @@ mise ls                 # List all mise-managed tools
 
 ## Environment-Specific Setup
 
-- **Work Environment**: Add work-specific config to `~/.gitconfig_local`
-- **SSH Keys**: Generate with `ssh-keygen -t ed25519 -C "email@example.com"`
-- **Terminal**: WezTerm auto-loads config, Alacritty requires restart
+- Work Environment: Add work-specific config to `~/.gitconfig_local`
+- SSH Keys: Generate with `ssh-keygen -t ed25519 -C "email@example.com"`
+- Terminal: WezTerm auto-loads config, Alacritty requires restart
 
 ## Maintenance
 

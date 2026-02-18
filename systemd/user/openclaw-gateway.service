@@ -1,21 +1,42 @@
 [Unit]
-Description=OpenClaw Gateway (v2026.2.2-3)
+Description=OpenClaw Gateway (v2026.2.13)
 After=network-online.target
 Wants=network-online.target
 
 [Service]
+# WSL2: pnpm global install (this path)
+# Pi: pnpm global install (same path, requires: pnpm add -g openclaw)
+# Prerequisites: pnpm installed via mise, openclaw globally installed
 ExecStart=%h/.local/share/pnpm/openclaw gateway --port 18789
 Restart=always
+# Wait 10s before restart (recommended for Pi to avoid restart loops)
+# Ensures complete process termination and prevents Telegram API conflicts
 RestartSec=10
+# Use 'mixed' to ensure child processes are also terminated on service stop
+# Prevents port occupation and resource leaks
 KillMode=mixed
+
+# Resource limits (temporarily disabled for debugging)
+# MemoryMax=512M
+# MemoryHigh=384M
+# CPUQuota=50%
+
+# Watchdog (temporarily disabled - caused timeout issues)
+# WatchdogSec=60
+
 Environment=HOME=%h
-Environment="PATH=%h/.local/share/pnpm:%h/.bun/bin:%h/.local/bin:%h/.npm-global/bin:%h/bin:%h/.nvm/current/bin:%h/.fnm/current/bin:%h/.volta/bin:%h/.asdf/shims:/usr/local/bin:/usr/bin:/bin"
+# Use mise 'latest' symlinks for automatic version tracking
+# Avoids mise shim overhead and prevents recursive process spawning
+# Prerequisites:
+#   - mise installed with node and go configured
+#   - Verify symlinks exist: ls -la ~/.mise/installs/{node,go}/latest
+#   - mise automatically creates 'latest' symlink when installing tools
+Environment="PATH=%h/.mise/installs/node/latest/bin:%h/.mise/installs/go/latest/bin:%h/.local/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
-Environment=OPENCLAW_SERVICE_VERSION=2026.2.2-3
-EnvironmentFile=%h/.openclaw/gateway.env
+Environment=OPENCLAW_SERVICE_VERSION=2026.2.13
 
 [Install]
 WantedBy=default.target

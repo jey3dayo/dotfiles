@@ -565,12 +565,12 @@ git commit -m "chore: add TSR configuration"
 
 ## 🔗 関連リソース
 
-- **メインスキル**: `../SKILL.md`
-- **設定スキーマ**: `../tsr-config.schema.json`
-- **設定ローダー**: `../config-loader.ts`
-- **設定例**: `../examples/`
-- **.tsrignore設定**: `tsrignore.md`
-- **実践例**: `examples.md`
+- メインスキル: `../SKILL.md`
+- 設定スキーマ: `../tsr-config.schema.json`
+- 設定ローダー: `../config-loader.ts`
+- 設定例: `../examples/`
+- .tsrignore設定: `tsrignore.md`
+- 実践例: `examples.md`
 
 ---
 

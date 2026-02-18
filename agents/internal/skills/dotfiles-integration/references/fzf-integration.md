@@ -10,10 +10,10 @@ FZF (Fuzzy Finder) は dotfiles 全体で統一的なファジー検索体験を
 
 FZF は以下の層で横断的に統合されています：
 
-- **Shell Layer**: コマンド履歴、プロセス管理、ディレクトリ移動
-- **Git Layer**: リポジトリ選択、ブランチ切り替え、ファイル選択
-- **Terminal Layer**: Tmux セッション管理
-- **Editor Layer**: Neovim ファイル検索（telescope → fzf-lua 移行済み）
+- Shell Layer: コマンド履歴、プロセス管理、ディレクトリ移動
+- Git Layer: リポジトリ選択、ブランチ切り替え、ファイル選択
+- Terminal Layer: Tmux セッション管理
+- Editor Layer: Neovim ファイル検索（telescope → fzf-lua 移行済み）
 
 ## ⌨️ Key Bindings
 
@@ -87,9 +87,9 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 ### Key Features
 
-- **Repository Navigation**: `^]` による ghq 統合
-- **Process Management**: `^g^K` による直感的プロセス操作
-- **Command History**: `^R` の強化された履歴検索
+- Repository Navigation: `^]` による ghq 統合
+- Process Management: `^g^K` による直感的プロセス操作
+- Command History: `^R` の強化された履歴検索
 
 ### Implementation
 
@@ -106,9 +106,9 @@ defer = "2"  # Critical path optimization
 
 ### Key Features
 
-- **Branch Selection**: 直感的ブランチ切り替え
-- **File Selection**: ステージング・差分確認の効率化
-- **Repository Management**: ghq + FZF による統合管理
+- Branch Selection: 直感的ブランチ切り替え
+- File Selection: ステージング・差分確認の効率化
+- Repository Management: ghq + FZF による統合管理
 
 ### Implementation
 
@@ -128,8 +128,8 @@ gco() {
 
 ### Key Features
 
-- **Session Management**: FZF による高速セッション選択
-- **Window Navigation**: 効率的ウィンドウ切り替え
+- Session Management: FZF による高速セッション選択
+- Window Navigation: 効率的ウィンドウ切り替え
 
 ### Implementation
 
@@ -148,9 +148,9 @@ bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
 
 ### Key Features
 
-- **File Search**: 高速ファイル検索
-- **Text Search**: live grep 統合
-- **Buffer Management**: 効率的バッファ切り替え
+- File Search: 高速ファイル検索
+- Text Search: live grep 統合
+- Buffer Management: 効率的バッファ切り替え
 
 ## 📈 Performance Metrics
 
@@ -263,8 +263,8 @@ sheldon source --verbose
 
 ### Documentation Links
 
-- **Shell Integration**: 詳細は dotfiles リポジトリの `docs/zsh/references/zsh.md` を参照
-- **Terminal Integration**: 詳細は dotfiles リポジトリの `docs/wezterm/references/wezterm.md` を参照
+- Shell Integration: 詳細は dotfiles リポジトリの `docs/zsh/references/zsh.md` を参照
+- Terminal Integration: 詳細は dotfiles リポジトリの `docs/wezterm/references/wezterm.md` を参照
 
 ### Implementation Files
 

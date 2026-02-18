@@ -9,7 +9,7 @@ tags: server, rsc, serialization, props
 
 The React Server/Client boundary serializes all object properties into strings and embeds them in the HTML response and subsequent RSC requests. This serialized data directly impacts page weight and load time, so **size matters a lot**. Only pass fields that the client actually uses.
 
-**Incorrect (serializes all 50 fields):**
+### Incorrect (serializes all 50 fields):
 
 ```tsx
 async function Page() {
@@ -23,7 +23,7 @@ function Profile({ user }: { user: User }) {
 }
 ```
 
-**Correct (serializes only 1 field):**
+### Correct (serializes only 1 field):
 
 ```tsx
 async function Page() {

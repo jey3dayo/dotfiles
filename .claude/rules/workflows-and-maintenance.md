@@ -21,12 +21,12 @@ Sources: docs/performance.md (for performance tracking).
 
 Lua設定ファイル（Neovim、WezTerm）の型チェックは複数レイヤーで自動実行されます:
 
-**エディタ内（リアルタイム）**:
+#### エディタ内（リアルタイム）
 
 - LuaLS: LSPによる型チェック（`.luarc.json`で設定）
 - nvim-lint: 保存時・挿入モード終了時に自動実行（`luacheck`）
 
-**ローカル開発**:
+#### ローカル開発
 
 ```bash
 mise run check         # format + lint（luacheckを含む）
@@ -34,14 +34,14 @@ mise run lint:lua      # luacheckのみ実行
 mise run format:lua    # styluaでフォーマット
 ```
 
-**pre-commit（commit前）**:
+#### pre-commit（commit前）
 
 ```bash
 pre-commit install     # 初回のみ
 # 以降、git commit時に自動実行（stylua + luacheck）
 ```
 
-**CI/CD（GitHub Actions）**:
+#### CI/CD（GitHub Actions）
 
 - `mise run ci`で自動実行（format検証 + luacheck + busted）
 
@@ -65,7 +65,7 @@ pre-commit install     # 初回のみ
    - オプショナルモジュール → サイレント失敗
    - 必須モジュール → 警告表示（非ブロッキング）
 
-3. **非ブロッキング通知**
+3. 非ブロッキング通知
    - `vim.schedule`で起動をブロックしない
 
 #### Pre-commit Setup
@@ -82,7 +82,7 @@ pre-commit install
 pre-commit run --all-files
 ```
 
-**使い方**:
+#### 使い方
 
 ```bash
 # 通常のcommit（stagedファイルのみ自動チェック）
@@ -102,12 +102,12 @@ pre-commit run --hook-stage manual markdown-link-check --all-files
 
 `.pre-commit-config.yaml`と`mise/tasks/*.toml`は**意図的に二重管理**しています：
 
-**理由**:
+#### 理由
 
 - pre-commit: 変更ファイルのみ高速チェック（commit時自動実行）
 - mise tasks: 全ファイル一括処理（手動/CI実行）
 
-**統合済みツール一覧**:
+#### 統合済みツール一覧
 
 | カテゴリ   | ツール                 | pre-commit | mise tasks | 備考             |
 | ---------- | ---------------------- | ---------- | ---------- | ---------------- |
@@ -122,7 +122,7 @@ pre-commit run --hook-stage manual markdown-link-check --all-files
 | Dockerfile | hadolint               | ✅         | ✅         | 完全統合         |
 | Links      | markdown-link-check    | ✅ manual  | ✅         | 重いため手動実行 |
 
-**メンテナンス時の注意**:
+#### メンテナンス時の注意
 
 ツールの引数や設定を変更する際は**両方**を更新してください：
 
@@ -222,11 +222,11 @@ Single Source of Truth、バージョン固定、プロジェクト別オーバ�
 
 Brewfile は責務分離に基づいた厳選管理を行います:
 
-- **Home Manager**: 設定配布のみ（ツールインストールなし）
-- **mise**: クロスプラットフォーム CLI、言語ランタイム、開発ツール
-- **Homebrew**: macOS 固有の依存関係、GUI アプリ、システムライブラリ
+- Home Manager: 設定配布のみ（ツールインストールなし）
+- mise: クロスプラットフォーム CLI、言語ランタイム、開発ツール
+- Homebrew: macOS 固有の依存関係、GUI アプリ、システムライブラリ
 
-**厳選管理の原則**:
+#### 厳選管理の原則
 
 - ローカル環境の全インストール状態をそのまま反映しない
 - 各セクション・特殊設定に理由を明記するコメント付き
@@ -280,18 +280,18 @@ mise run update
 
 ### Package addition workflow
 
-1. **追加先を判定**:
-   - **まず mise で管理できるか確認**: `mise registry` で検索
+1. 追加先を判定:
+   - まず mise で管理できるか確認: `mise registry` で検索
    - 言語ランタイム・クロスプラットフォーム CLI → `mise/config.*.toml` に追加
    - GUI・macOS 固有依存・macOS サービス → `Brewfile` に追加
 
-2. **Brewfile 対象ならインストール**:
+2. Brewfile 対象ならインストール:
 
    ```bash
    brew install <package>
    ```
 
-3. **Brewfile 更新（候補抽出）**:
+3. Brewfile 更新（候補抽出）:
 
    ```bash
    # 現在の状態をダンプ
@@ -301,12 +301,12 @@ mise run update
    diff Brewfile /tmp/brewfile-new.txt
    ```
 
-4. **適切なセクションに追加**:
+4. 適切なセクションに追加:
    - 機能・用途に応じたセクションを選択
    - アルファベット順に挿入（セクション内）
    - 必要に応じてコメント追加
 
-5. **動作確認**:
+5. 動作確認:
 
    ```bash
    brew bundle check
@@ -391,11 +391,11 @@ brew cleanup
 
 ### Best practices
 
-1. **定期的な更新**: 月次で Brewfile と実際のインストール状況を同期
-2. **バージョン管理**: Brewfile を Git 管理し、変更履歴を追跡
-3. **コメント追加**: 特殊な設定や重要なパッケージにはコメントを付与
-4. **テスト**: 変更後は必ず `brew bundle check` で検証
-5. **バックアップ**: 大きな変更前にはバックアップを作成
+1. 定期的な更新: 月次で Brewfile と実際のインストール状況を同期
+2. バージョン管理: Brewfile を Git 管理し、変更履歴を追跡
+3. コメント追加: 特殊な設定や重要なパッケージにはコメントを付与
+4. テスト: 変更後は必ず `brew bundle check` で検証
+5. バックアップ: 大きな変更前にはバックアップを作成
 
 ### Duplicate check
 
@@ -411,14 +411,14 @@ brew cleanup
 - Weekly updates: `mise upgrade` to update all tools
 - Monthly cleanup: `mise prune` to remove unused versions
 - Verification: `mise doctor` for health check, `mise ls` for installed tools
-- **重複回避**: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
-- **npm パッケージの完全移行完了**: 全ての開発ツール・MCP サーバー・Language Server は mise で一元管理（npm/pnpm/bun グローバルには依存しない）
+- 重複回避: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
+- npm パッケージの完全移行完了: 全ての開発ツール・MCP サーバー・Language Server は mise で一元管理（npm/pnpm/bun グローバルには依存しない）
 
 ## Nix Home Manager Maintenance
 
 ### Monthly cleanup
 
-**定期実行** (月次メンテナンス時):
+#### 定期実行 (月次メンテナンス時)
 
 ```bash
 # 1. 古いgenerationsを削除（90日または20世代を保持）

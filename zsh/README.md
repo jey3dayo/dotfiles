@@ -4,12 +4,12 @@ High-performance Zsh configuration with 1.1s startup time (43% improvement) and 
 
 ## ✨ Key Features
 
-- **🚀 Performance**: 1.8s → 1.1s startup (43% improvement)
-- **📦 Plugin Management**: Sheldon with 6-tier priority loading
-- **⚡ Optimization**: mise lazy loading (-39.88ms critical improvement)
-- **🔍 Git Integration**: Custom widgets and 50+ abbreviations
-- **🔎 FZF Integration**: Repository, file, and process search
-- **📚 Help System**: Comprehensive `zsh-help` command
+- 🚀 Performance: 1.8s → 1.1s startup (43% improvement)
+- 📦 Plugin Management: Sheldon with 6-tier priority loading
+- ⚡ Optimization: mise lazy loading (-39.88ms critical improvement)
+- 🔍 Git Integration: Custom widgets and 50+ abbreviations
+- 🔎 FZF Integration: Repository, file, and process search
+- 📚 Help System: Comprehensive `zsh-help` command
 
 ## 📈 Performance Metrics
 
@@ -42,12 +42,12 @@ zsh/
 
 ### 6-Tier Plugin Loading
 
-1. **Essential**: Core functionality (zsh-autosuggestions)
-2. **Completion**: Tab completion enhancements
-3. **Navigation**: Directory and file navigation
-4. **Git**: Version control integration
-5. **Utility**: Development tools and helpers
-6. **Theme**: Prompt and visual elements
+1. Essential: Core functionality (zsh-autosuggestions)
+2. Completion: Tab completion enhancements
+3. Navigation: Directory and file navigation
+4. Git: Version control integration
+5. Utility: Development tools and helpers
+6. Theme: Prompt and visual elements
 
 ## 🎮 Essential Commands
 
@@ -122,10 +122,10 @@ l      → ls -CF
 
 ### Environment Optimizations
 
-- **Lazy mise loading**: Deferred until first use
-- **Conditional loading**: Tools load only if available
-- **Path optimization**: Efficient PATH management
-- **Cache utilization**: Command completion caching
+- Lazy mise loading: Deferred until first use
+- Conditional loading: Tools load only if available
+- Path optimization: Efficient PATH management
+- Cache utilization: Command completion caching
 
 ### Custom Functions
 
@@ -140,21 +140,21 @@ kill-fzf()      # Process killer with preview
 
 ### Core Plugins (Tier 1-2)
 
-- **zsh-autosuggestions**: Command suggestions
-- **zsh-syntax-highlighting**: Syntax coloring
-- **zsh-completions**: Enhanced completions
-- **fzf-tab**: FZF-powered tab completion
+- zsh-autosuggestions: Command suggestions
+- zsh-syntax-highlighting: Syntax coloring
+- zsh-completions: Enhanced completions
+- fzf-tab: FZF-powered tab completion
 
 ### Development Plugins (Tier 3-4)
 
-- **zsh-abbr**: Abbreviation expansion
-- **fzf-git.sh**: Interactive git pickers (branches/files/stash/worktree)
-- **zsh-you-should-use**: Alias reminders
+- zsh-abbr: Abbreviation expansion
+- fzf-git.sh: Interactive git pickers (branches/files/stash/worktree)
+- zsh-you-should-use: Alias reminders
 
 ### Theme & UI (Tier 5-6)
 
-- **starship**: Cross-shell prompt
-- **zsh-notify**: Command completion notifications
+- starship: Cross-shell prompt
+- zsh-notify: Command completion notifications
 
 ## 🔍 Debug & Profiling
 
@@ -226,23 +226,23 @@ sheldon lock --update
 
 ### Startup Speed
 
-1. **Profile regularly**: Use `zsh-benchmark` weekly
-2. **Lazy load**: Defer heavy tools (mise, nvm, etc.)
-3. **Compile files**: Ensure all .zsh files are compiled
-4. **Plugin audit**: Remove unused plugins quarterly
+1. Profile regularly: Use `zsh-benchmark` weekly
+2. Lazy load: Defer heavy tools (mise, nvm, etc.)
+3. Compile files: Ensure all .zsh files are compiled
+4. Plugin audit: Remove unused plugins quarterly
 
 ### Memory Usage
 
-1. **History limits**: Set reasonable HISTSIZE
-2. **Completion cache**: Clear periodically
-3. **Plugin cleanup**: Remove redundant functionality
+1. History limits: Set reasonable HISTSIZE
+2. Completion cache: Clear periodically
+3. Plugin cleanup: Remove redundant functionality
 
 ### Workflow Efficiency
 
-1. **Learn abbreviations**: Master the 50+ shortcuts
-2. **Use widgets**: Git widgets save keystrokes
-3. **FZF everything**: File, repo, process selection
-4. **Help system**: `zsh-help` for quick reference
+1. Learn abbreviations: Master the 50+ shortcuts
+2. Use widgets: Git widgets save keystrokes
+3. FZF everything: File, repo, process selection
+4. Help system: `zsh-help` for quick reference
 
 ## 📋 Maintenance
 

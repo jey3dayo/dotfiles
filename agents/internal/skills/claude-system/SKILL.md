@@ -251,10 +251,10 @@ claude -p "{task}" \
 
 ## Why Subprocess Pattern?
 
-- **Context preservation**: Main orchestrator stays lightweight
-- **Full capture**: Subprocess can save entire Claude output to file
-- **Concise handoff**: Main only receives key insights
-- **Parallel work**: Background subprocesses enable concurrent design exploration
+- Context preservation: Main orchestrator stays lightweight
+- Full capture: Subprocess can save entire Claude output to file
+- Concise handoff: Main only receives key insights
+- Parallel work: Background subprocesses enable concurrent design exploration
 
 ## Task Templates
 

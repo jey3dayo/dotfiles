@@ -288,31 +288,31 @@ Load these progressively as needed:
    - Standard metadata structure
    - Required field patterns
    - Document type templates
-   - **Load when**: Creating headers, validating format
+   - Load when: Creating headers, validating format
 
 2. `references/tag-system-framework.md`
    - 3-tier tag architecture
    - Canonical format rules
    - Tag validation logic
-   - **Load when**: Understanding tag system, validating tags
+   - Load when: Understanding tag system, validating tags
 
 3. `references/size-guidelines-framework.md`
    - Size thresholds (customizable per project)
    - Decision tree for splits
    - 4 split strategies
-   - **Load when**: Document approaching threshold, split decisions
+   - Load when: Document approaching threshold, split decisions
 
 4. `references/quality-checklist-framework.md`
    - Metadata quality checks
    - Content quality checks
    - Link validation framework
-   - **Load when**: Final validation, periodic reviews
+   - Load when: Final validation, periodic reviews
 
 5. `references/config-schema.md`
    - Complete config.yaml schema
    - Field descriptions
    - Configuration examples
-   - **Load when**: Setting up new project, updating config
+   - Load when: Setting up new project, updating config
 
 ### Project-Specific References
 
@@ -327,10 +327,10 @@ If project has configuration, also load (when needed):
 
 ### Principle
 
-- **Creating new doc**: Load metadata-template + tag-system + project tags
-- **Checking size**: Load size-guidelines only
-- **Adding to registry**: Load document-mapping only (if project has it)
-- **Final review**: Load quality-checklist only
+- Creating new doc: Load metadata-template + tag-system + project tags
+- Checking size: Load size-guidelines only
+- Adding to registry: Load document-mapping only (if project has it)
+- Final review: Load quality-checklist only
 
 ### Avoid
 

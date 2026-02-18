@@ -13,10 +13,10 @@ AdaptersとIntegration Orchestratorは、既存のエージェントとコマン
 
 ### 目的
 
-- **後方互換性**: 既存のエージェント/コマンドを変更なしで動作
-- **機能強化**: TaskContext、Communication Bus等の新機能を提供
-- **統一インターフェース**: 一貫したタスク実行インターフェース
-- **ルーティング最適化**: インテリジェントなエージェント/コマンド選択
+- 後方互換性: 既存のエージェント/コマンドを変更なしで動作
+- 機能強化: TaskContext、Communication Bus等の新機能を提供
+- 統一インターフェース: 一貫したタスク実行インターフェース
+- ルーティング最適化: インテリジェントなエージェント/コマンド選択
 
 ### いつ使うか
 
@@ -822,9 +822,9 @@ errorHandler: async (error, context) => {
 
 ## 関連リファレンス
 
-- **task-context-specification.md**: TaskContextの詳細仕様
-- **communication-bus-api.md**: Communication Busとの統合
-- **framework-api-reference.md**: API完全リファレンス
+- task-context-specification.md: TaskContextの詳細仕様
+- communication-bus-api.md: Communication Busとの統合
+- framework-api-reference.md: API完全リファレンス
 
 ---
 

@@ -392,7 +392,7 @@ test("ユーザー登録が正しく動作すること", async () => {
 
 ## 関連リファレンス
 
-- **カテゴリ詳細**: `references/learning-categories.md`
-- **記録プロセス**: `references/recording-process.md`
-- **活用パターン**: `references/usage-patterns.md`
-- **統合ワークフロー**: `integration-workflows.md`
+- カテゴリ詳細: `references/learning-categories.md`
+- 記録プロセス: `references/recording-process.md`
+- 活用パターン: `references/usage-patterns.md`
+- 統合ワークフロー: `integration-workflows.md`

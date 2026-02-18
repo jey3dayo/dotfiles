@@ -310,17 +310,17 @@ User: "Help me create a troubleshooting guide"
 
 Periodic maintenance based on configuration:
 
-- **Configured Frequency**: Check `custom_rules.update_frequency`
-- **Quarterly**: Review all metadata for accuracy
-- **Bi-annually**: Check for documents not updated in 6+ months
-- **Continuous**: Link validation on document changes
+- Configured Frequency: Check `custom_rules.update_frequency`
+- Quarterly: Review all metadata for accuracy
+- Bi-annually: Check for documents not updated in 6+ months
+- Continuous: Link validation on document changes
 
 ## Integration
 
 ### With Other Skills
 
-- **markdown-docs**: Content quality evaluation (writing, technical accuracy)
-- **docs-manager**: Structure, metadata, tag compliance (this skill)
+- markdown-docs: Content quality evaluation (writing, technical accuracy)
+- docs-manager: Structure, metadata, tag compliance (this skill)
 
 Use together for complete documentation review:
 
@@ -485,9 +485,9 @@ Add complete metadata block at document top using configured format:
 
 ### Docs-Manager Agent
 
-- **提供内容**: ドキュメントディレクトリの整合性確保、リンク切れ検出・修正
-- **タイミング**: ドキュメント修正・構造最適化時
-- **コンテキスト**:
+- 提供内容: ドキュメントディレクトリの整合性確保、リンク切れ検出・修正
+- タイミング: ドキュメント修正・構造最適化時
+- コンテキスト:
   - 設定ファイルベースの検証
   - リンク切れ検出と自動修正
   - メタデータ検証（設定可能なフィールド）
@@ -496,15 +496,15 @@ Add complete metadata block at document top using configured format:
 
 ### Orchestrator Agent
 
-- **提供内容**: ドキュメントリファクタリング計画、構造改善
-- **タイミング**: ドキュメント体系の大規模改善時
-- **コンテキスト**: ディレクトリ構造設計、Progressive Disclosure実装、タグシステム統合
+- 提供内容: ドキュメントリファクタリング計画、構造改善
+- タイミング: ドキュメント体系の大規模改善時
+- コンテキスト: ディレクトリ構造設計、Progressive Disclosure実装、タグシステム統合
 
 ### Researcher Agent
 
-- **提供内容**: ドキュメント調査、情報収集
-- **タイミング**: ドキュメント発見・整理時
-- **コンテキスト**: ドキュメント配置原則、リソースナビゲーション
+- 提供内容: ドキュメント調査、情報収集
+- タイミング: ドキュメント発見・整理時
+- コンテキスト: ドキュメント配置原則、リソースナビゲーション
 
 ### 自動ロード条件
 

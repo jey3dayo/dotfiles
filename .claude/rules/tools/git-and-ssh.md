@@ -45,7 +45,7 @@ Sources: docs/tools/git.md, docs/tools/ssh.md.
 
 **Architecture**: Directory-based organization with conditional Include and `IgnoreUnknown` for cross-platform compatibility.
 
-**macOS (config.d/macos/settings.sshconfig)**:
+#### macOS (config.d/macos/settings.sshconfig)
 
 - macOS-specific settings (UseKeychain, AddKeysToAgent, OrbStack, Colima) managed via config.d/macos/settings.sshconfig
 - Git managed (committed): fixed file always present in repository, no setup.sh generation needed
@@ -54,7 +54,7 @@ Sources: docs/tools/git.md, docs/tools/ssh.md.
 - Linux/WSL2: Directory exists but not included due to Match exec failure (no error)
 - OrbStack/Colima: Optional Include directives in settings.sshconfig (commented out by default)
 
-**Linux/WSL2 (config.d/linux/settings.sshconfig)**:
+#### Linux/WSL2 (config.d/linux/settings.sshconfig)
 
 - Linux/WSL2-specific settings managed via config.d/linux/settings.sshconfig
 - Git managed (committed): fixed file always present in repository, no setup.sh generation needed

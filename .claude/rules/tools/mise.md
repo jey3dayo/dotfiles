@@ -15,21 +15,21 @@ mise設定は環境別ファイルで管理されています:
 **内容**: 設定のみ（ツール定義なし）
 
 - グローバル設定: `experimental`, `env_file`, `trusted_config_paths`
-- **pnpmバックエンド設定**: `settings.npm.package_manager = "pnpm"` - npmバックエンドがpnpmを使用
+- pnpmバックエンド設定: `settings.npm.package_manager = "pnpm"` - npmバックエンドがpnpmを使用
 - 環境変数定義
-- **重要**: ツールは定義しない（マージによる意図しない追加を防ぐため）
+- 重要: ツールは定義しない（マージによる意図しない追加を防ぐため）
 
 ### Environment-specific configs
 
-- **`mise/config.default.toml`** - デフォルト（macOS/Linux/WSL2）
+- `mise/config.default.toml` - デフォルト（macOS/Linux/WSL2）
   - jobs = 8（デスクトップ/ワークステーション向け）
   - 全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
 
-- **`mise/config.pi.toml`** - Raspberry Pi（ARMサーバー環境）
+- `mise/config.pi.toml` - Raspberry Pi（ARMサーバー環境）
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
   - 最小ツールセット（goランタイム latest版を含む、npm軽量版、cargo全除外）
 
-- **`mise/config.ci.toml`** - CI/CD（GitHub Actions最適化）
+- `mise/config.ci.toml` - CI/CD（GitHub Actions最適化）
   - jobs = 4（GitHub Actions runners: 2コア）
   - CI必須ツールのみ（formatters, linters, npm packages, CLI tools）
   - 大幅に削減されたツールセットで高速インストール
@@ -74,13 +74,13 @@ mise/
 
 ### CI/CD タスク構造
 
-**責任の分離**:
+#### 責任の分離
 
 - **CI検証タスク** (`ci`): 読み取り専用の検証（lint, test, format check）
 - **CI完全実行** (`ci:full`): 検証 + デプロイ（GitHub Actionsと同じワークフロー）
 - **デプロイタスク** (`hm:deploy`): 状態変更を伴うシステム設定の適用
 
-**タスクの使い分け**:
+#### タスクの使い分け
 
 - `mise run ci` - ローカルでの検証のみ（書き込みなし、高速）
 - `mise run ci:full` - GitHub Actionsと同じワークフロー全体をローカルで実行（検証 + デプロイ）
@@ -88,7 +88,7 @@ mise/
 - `mise run hm:switch` - ローカル開発用のHome Manager適用（バックアップなし）
 - `mise run hm:check` - 設定検証のみ（ビルドのみ、適用なし）
 
-**GitHub Actions統合**:
+#### GitHub Actions統合
 
 ```yaml
 - name: Deploy dotfiles with Home Manager
@@ -98,7 +98,7 @@ mise/
   run: mise run ci # 検証タスクのみ（書き込みなし）
 ```
 
-**依存関係グラフ**:
+#### 依存関係グラフ
 
 ```
 ci:full
@@ -127,17 +127,17 @@ ci:full
 
 mise automatically selects the appropriate configuration based on the environment:
 
-- **CI/CD**: Uses `mise/config.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
-- **Default (macOS/Linux/WSL2)**: Uses `mise/config.default.toml` (includes all tools)
-- **Raspberry Pi**: Uses `mise/config.pi.toml` (optimized for server environment)
+- CI/CD: Uses `mise/config.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
+- Default (macOS/Linux/WSL2): Uses `mise/config.default.toml` (includes all tools)
+- Raspberry Pi: Uses `mise/config.pi.toml` (optimized for server environment)
 
-**Detection Method (Home Manager)**:
+#### Detection Method (Home Manager)
 
 Environment detection is now managed by Home Manager's Nix module (`nix/env-detect.nix`), which sets `MISE_CONFIG_FILE` via `home.sessionVariables`:
 
-- **CI**: `$CI` or `$GITHUB_ACTIONS` environment variables
-- **Raspberry Pi**: ARM architecture + `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
-- **Default**: All other environments (WSL2, macOS, generic Linux)
+- CI: `$CI` or `$GITHUB_ACTIONS` environment variables
+- Raspberry Pi: ARM architecture + `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
+- Default: All other environments (WSL2, macOS, generic Linux)
 
 Priority: CI > Raspberry Pi > Default
 
@@ -151,39 +151,39 @@ The environment variable is automatically loaded via `hm-session-vars.sh` (sourc
 
 サーバー/自動化環境として最適化されており、以下のパッケージを除外:
 
-**Performance Settings**:
+#### Performance Settings
 
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
   - ※ config.default.toml は `jobs = 8`（デスクトップ環境向け）
 
-**Excluded Packages**:
+#### Excluded Packages
 
 サーバー/自動化環境として最適化されており、以下のカテゴリを除外:
 
-- **大容量パッケージ**: `@openai/codex` (391MB), `@playwright/mcp` (~300MB), `aws-cdk` (~150MB) 等
-- **エディタ統合ツール**: LSP、TypeScript関連、`eslint_d` 等（リモート開発でローカルマシンのLSP使用）
-- **GUI/ブラウザ依存ツール**: Playwright MCP、Chrome DevTools MCP 等
-- **デスクトップ開発ツール**: Claude AI開発ツール（`dxt`, `dev3000`, `ccusage` 等）
-- **クラウド/インフラツール**: AWS CLI、Google Clasp、gRPC関連 等
-- **全cargoツール**: ARM互換性とビルド時間考慮
+- 大容量パッケージ: `@openai/codex` (391MB), `@playwright/mcp` (~300MB), `aws-cdk` (~150MB) 等
+- エディタ統合ツール: LSP、TypeScript関連、`eslint_d` 等（リモート開発でローカルマシンのLSP使用）
+- GUI/ブラウザ依存ツール: Playwright MCP、Chrome DevTools MCP 等
+- デスクトップ開発ツール: Claude AI開発ツール（`dxt`, `dev3000`, `ccusage` 等）
+- クラウド/インフラツール: AWS CLI、Google Clasp、gRPC関連 等
+- 全cargoツール: ARM互換性とビルド時間考慮
 
 詳細な除外パッケージリストは `mise/config.default.toml` と `mise/config.pi.toml` の差分を参照。
 
-**Maintained Packages**:
+#### Maintained Packages
 
 軽量かつサーバー運用に有用なツールのみを維持:
 
-- **ユーティリティ**: `@antfu/ni`, `npm`, `npm-check-updates`
-- **ドキュメント**: `markdown-link-check`, `markdownlint-cli2`, `textlint`
-- **フォーマッター/Linter**: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
-- **AI/Claude**: `aicommits`, `@sasazame/ccresume`, `openclaw`
-- **MCP**: `@upstash/context7-mcp`, `o3-search-mcp`
-- **CLI**: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
-- **ランタイム**: `go` (latest), `node`, `python`, `pipx:uv`
+- ユーティリティ: `@antfu/ni`, `npm`, `npm-check-updates`
+- ドキュメント: `markdown-link-check`, `markdownlint-cli2`, `textlint`
+- フォーマッター/Linter: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
+- AI/Claude: `aicommits`, `@sasazame/ccresume`, `openclaw`
+- MCP: `@upstash/context7-mcp`, `o3-search-mcp`
+- CLI: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
+- ランタイム: `go` (latest), `node`, `python`, `pipx:uv`
 
 具体的なパッケージバージョンは `mise/config.pi.toml` を参照。
 
-**Expected Benefits**:
+#### Expected Benefits
 
 - Install time: Significantly faster (many npm packages, aws-cli, and all cargo tools excluded)
 - Disk usage: Substantially reduced
@@ -342,8 +342,8 @@ yazi = "latest"
 
 #### 環境別の取り扱い
 
-- **Default**: 全てのCLIツールをインストール
-- **Raspberry Pi**: 全てのCLIツールをインストール
+- Default: 全てのCLIツールをインストール
+- Raspberry Pi: 全てのCLIツールをインストール
 
 ## Migration History
 
@@ -368,7 +368,7 @@ yazi = "latest"
 **Before**: miseのnpmバックエンドがnpmを使用
 **After**: miseのnpmバックエンドがpnpmを使用（`settings.npm.package_manager = "pnpm"`）
 
-**Implementation Details** (Completed 2026-02-03):
+#### Implementation Details (Completed 2026-02-03)
 
 1. mise updated: v2025.7.17 → v2025.12.13 (to support `settings.npm.package_manager`)
 2. Bootstrap process:
@@ -387,9 +387,9 @@ Benefits:
 - Cross-platform consistency
 - No global npm/pnpm/bun pollution
 - Automatic installation via mise hooks
-- **Faster installation**: pnpmのシンボリックリンク + グローバルストア
-- **Reduced disk usage**: パッケージ重複排除
-- **npm:プレフィックスのまま使用可能**: 既存の設定を変更不要
+- Faster installation: pnpmのシンボリックリンク + グローバルストア
+- Reduced disk usage: パッケージ重複排除
+- npm:プレフィックスのまま使用可能: 既存の設定を変更不要
 
 ## Common Commands
 
@@ -476,44 +476,44 @@ mise doctor               # Check for issues
 
 ### mise で管理するツール
 
-- **全ての開発ツール**: フォーマッター、Linter、CLI ツール
-- **全ての npm/pipx パッケージ**: "npm:" または "pipx:" プレフィックス付き
-- **開発用の言語ランタイム**: Node.js, Python, Go
-- **理由**: バージョン固定、プロジェクト別オーバーライド、再現性
+- 全ての開発ツール: フォーマッター、Linter、CLI ツール
+- 全ての npm/pipx パッケージ: "npm:" または "pipx:" プレフィックス付き
+- 開発用の言語ランタイム: Node.js, Python, Go
+- 理由: バージョン固定、プロジェクト別オーバーライド、再現性
 
 ### Homebrew で管理するツール
 
-- **Neovim とその依存関係**: lua, luajit, luarocks, libuv, tree-sitter 等
-- **システムレベルのライブラリ**: 複数のツールから参照されるライブラリ
-- **GUI アプリケーション**: cask で管理
-- **システムツール用の言語ランタイム**: 必要な場合のみ (python@3.11, python@3.12 等)
-- **理由**: システム安定性、ビルド時間削減、OS 統合
+- Neovim とその依存関係: lua, luajit, luarocks, libuv, tree-sitter 等
+- システムレベルのライブラリ: 複数のツールから参照されるライブラリ
+- GUI アプリケーション: cask で管理
+- システムツール用の言語ランタイム: 必要な場合のみ (python@3.11, python@3.12 等)
+- 理由: システム安定性、ビルド時間削減、OS 統合
 
 ### ハイブリッド運用パターン
 
-- **Node.js**: Homebrew 版 (システム依存関係用) + mise 版 (開発用)
-- **Python**: Homebrew 版 (システムツール用) + mise 版 (開発用)
-- **Rust**: Homebrew 版 (rust-analyzer と共に) のみ使用
-- **Lua**: Homebrew 版 (Neovim 依存関係) のみ使用
+- Node.js: Homebrew 版 (システム依存関係用) + mise 版 (開発用)
+- Python: Homebrew 版 (システムツール用) + mise 版 (開発用)
+- Rust: Homebrew 版 (rust-analyzer と共に) のみ使用
+- Lua: Homebrew 版 (Neovim 依存関係) のみ使用
 
 ## Best Practices
 
-1. **Centralized Package Management**: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml` or `mise/config.pi.toml`)
+1. Centralized Package Management: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml` or `mise/config.pi.toml`)
    - ❌ Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
    - ❌ Never maintain separate `global-package.json` or `requirements-global.txt`
    - ✅ Always use `"npm:<package>"` or `"pipx:<package>"` in environment-specific config files
-   - **Note**: `npm:` prefix is used even though pnpm is the backend (configured via `settings.npm.package_manager = "pnpm"`)
+   - Note: `npm:` prefix is used even though pnpm is the backend (configured via `settings.npm.package_manager = "pnpm"`)
    - Rationale: Single source of truth, reproducibility, version control
-2. **Global Package Manager Check**: Regularly verify no duplicate packages
+2. Global Package Manager Check: Regularly verify no duplicate packages
    - Run `npm -g list --depth=0` - should only show local links (astro-my-profile, zx-scripts)
    - Run `ls ~/.bun/install/global/node_modules/.bin` - should be empty or minimal
    - If duplicates found, add to environment-specific config and `npm uninstall -g <package>`
-3. **Version Pinning**: Use specific versions for project-critical tools
-4. **Latest for Development Tools**: Use "latest" for CLI tools that don't affect build
-5. **Document Breaking Changes**: Comment version pins with reason
-6. **Regular Updates**: Run `mise upgrade` weekly to stay current
-7. **Consolidation**: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, npm/pnpm/bun global, etc.)
-8. **Avoid Duplication**: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
+3. Version Pinning: Use specific versions for project-critical tools
+4. Latest for Development Tools: Use "latest" for CLI tools that don't affect build
+5. Document Breaking Changes: Comment version pins with reason
+6. Regular Updates: Run `mise upgrade` weekly to stay current
+7. Consolidation: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, npm/pnpm/bun global, etc.)
+8. Avoid Duplication: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
 
 ## Related Documentation
 

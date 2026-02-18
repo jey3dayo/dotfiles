@@ -104,7 +104,7 @@ git rebase origin/<default-branch>
 
 以下のケースは自動で解決します：
 
-- **ours/theirs戦略が明確な場合:**
+- ours/theirs戦略が明確な場合:
   - ドキュメントファイル（README.md等）: ours優先
   - 設定ファイル（package-lock.json等）: 再生成
   - 自動生成ファイル: theirs優先

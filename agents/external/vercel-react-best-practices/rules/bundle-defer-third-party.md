@@ -9,7 +9,7 @@ tags: bundle, third-party, analytics, defer
 
 Analytics, logging, and error tracking don't block user interaction. Load them after hydration.
 
-**Incorrect (blocks initial bundle):**
+### Incorrect (blocks initial bundle):
 
 ```tsx
 import { Analytics } from '@vercel/analytics/react'
@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-**Correct (loads after hydration):**
+### Correct (loads after hydration):
 
 ```tsx
 import dynamic from 'next/dynamic'

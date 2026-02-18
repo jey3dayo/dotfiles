@@ -17,8 +17,8 @@ This document describes ASTA project-specific patterns for react-grid-layout imp
 
 ASTA uses react-grid-layout for two main calendar systems:
 
-- **Studio Calendar**: Studio/room scheduling with event and stream management
-- **RoomSchedule Calendar**: Dressing room scheduling
+- Studio Calendar: Studio/room scheduling with event and stream management
+- RoomSchedule Calendar: Dressing room scheduling
 
 ### Architecture
 

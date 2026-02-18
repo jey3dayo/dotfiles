@@ -53,9 +53,9 @@ Sources: docs/README.md.
 
 ## Formatting constraints
 
-- **List items**: Avoid bold text at the start of list items (`- **Text**:` pattern)
-- **Emphasis in structure**: Use headings (`###`) for structured sections instead of bold lists
-- **Rationale**: Headings provide better document structure, enable table-of-contents generation, and improve navigation
+- List items: Avoid bold text at the start of list items (`- **Text**:` pattern)
+- Emphasis in structure: Use headings (`###`) for structured sections instead of bold lists
+- Rationale: Headings provide better document structure, enable table-of-contents generation, and improve navigation
 
 Example:
 

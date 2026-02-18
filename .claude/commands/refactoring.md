@@ -14,28 +14,28 @@
 
 リファクタリングは必ずツール別に分類して実行します：
 
-- **zsh/** - Shell設定・プラグイン・パフォーマンス最適化
-- **nvim/** - Neovim設定・LSP・Lua設定・プラグイン管理
-- **wezterm/** - Terminal設定・キーバインド・テーマ・UI設定
-- **git/** - Git設定・エイリアス・hooks・ワークフロー
-- **ssh/** - SSH設定・セキュリティ・接続最適化
-- **tmux/** - Terminal multiplexer設定・セッション管理
-- **general** - 横断的設定・セットアップスクリプト
+- zsh/ - Shell設定・プラグイン・パフォーマンス最適化
+- nvim/ - Neovim設定・LSP・Lua設定・プラグイン管理
+- wezterm/ - Terminal設定・キーバインド・テーマ・UI設定
+- git/ - Git設定・エイリアス・hooks・ワークフロー
+- ssh/ - SSH設定・セキュリティ・接続最適化
+- tmux/ - Terminal multiplexer設定・セッション管理
+- general - 横断的設定・セットアップスクリプト
 
 ## 参考ファイル
 
 ### 設計指針
 
-- **`.claude/project-knowledge.md`** - 設定パターン・ベストプラクティス・アンチパターン
-- **`.claude/project-improvements.md`** - 過去の改善履歴・学習事項
-- **`.claude/common-patterns.md`** - 定型実装・設定パターン
+- `.claude/project-knowledge.md` - 設定パターン・ベストプラクティス・アンチパターン
+- `.claude/project-improvements.md` - 過去の改善履歴・学習事項
+- `.claude/common-patterns.md` - 定型実装・設定パターン
 
 ## 実行フロー
 
-1. **ツール別対象特定**: リファクタリング対象の設定ファイルをツール別に特定
-2. **既存パターン照合**: 該当ツールの確立されたパターンとの照合
-3. **ツール固有改善**: 各ツールの設計指針に基づく改善実行
-4. **記録**: 改善内容を`.claude/learnings-[tool].md`と`project-improvements.md`に記録
+1. ツール別対象特定: リファクタリング対象の設定ファイルをツール別に特定
+2. 既存パターン照合: 該当ツールの確立されたパターンとの照合
+3. ツール固有改善: 各ツールの設計指針に基づく改善実行
+4. 記録: 改善内容を`.claude/learnings-[tool].md`と`project-improvements.md`に記録
 
 ## リファクタリング原則
 

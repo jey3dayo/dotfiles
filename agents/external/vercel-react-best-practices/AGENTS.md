@@ -1,6 +1,6 @@
 # React Best Practices
 
-**Version 1.0.0**  
+### Version 1.0.0
 Vercel Engineering  
 January 2026
 
@@ -90,17 +90,17 @@ Comprehensive performance optimization guide for React and Next.js applications,
 
 ## 1. Eliminating Waterfalls
 
-**Impact: CRITICAL**
+### Impact: CRITICAL
 
 Waterfalls are the #1 performance killer. Each sequential await adds full network latency. Eliminating them yields the largest gains.
 
 ### 1.1 Defer Await Until Needed
 
-**Impact: HIGH (avoids blocking unused code paths)**
+### Impact: HIGH (avoids blocking unused code paths)
 
 Move `await` operations into the branches where they're actually used to avoid blocking code paths that don't need them.
 
-**Incorrect: blocks both branches**
+### Incorrect: blocks both branches
 
 ```typescript
 async function handleRequest(userId: string, skipProcessing: boolean) {
@@ -116,7 +116,7 @@ async function handleRequest(userId: string, skipProcessing: boolean) {
 }
 ```
 
-**Correct: only blocks when needed**
+### Correct: only blocks when needed
 
 ```typescript
 async function handleRequest(userId: string, skipProcessing: boolean) {
@@ -131,7 +131,7 @@ async function handleRequest(userId: string, skipProcessing: boolean) {
 }
 ```
 
-**Another example: early return optimization**
+### Another example: early return optimization
 
 ```typescript
 // Incorrect: always fetches permissions
@@ -172,11 +172,11 @@ This optimization is especially valuable when the skipped branch is frequently t
 
 ### 1.2 Dependency-Based Parallelization
 
-**Impact: CRITICAL (2-10× improvement)**
+### Impact: CRITICAL (2-10× improvement)
 
 For operations with partial dependencies, use `better-all` to maximize parallelism. It automatically starts each task at the earliest possible moment.
 
-**Incorrect: profile waits for config unnecessarily**
+### Incorrect: profile waits for config unnecessarily
 
 ```typescript
 const [user, config] = await Promise.all([
@@ -186,7 +186,7 @@ const [user, config] = await Promise.all([
 const profile = await fetchProfile(user.id)
 ```
 
-**Correct: config and profile run in parallel**
+### Correct: config and profile run in parallel
 
 ```typescript
 import { all } from 'better-all'
@@ -200,7 +200,7 @@ const { user, config, profile } = await all({
 })
 ```
 
-**Alternative without extra dependencies:**
+### Alternative without extra dependencies:
 
 ```typescript
 const userPromise = fetchUser()
@@ -219,11 +219,11 @@ Reference: [https://github.com/shuding/better-all](https://github.com/shuding/be
 
 ### 1.3 Prevent Waterfall Chains in API Routes
 
-**Impact: CRITICAL (2-10× improvement)**
+### Impact: CRITICAL (2-10× improvement)
 
 In API routes and Server Actions, start independent operations immediately, even if you don't await them yet.
 
-**Incorrect: config waits for auth, data waits for both**
+### Incorrect: config waits for auth, data waits for both
 
 ```typescript
 export async function GET(request: Request) {
@@ -234,7 +234,7 @@ export async function GET(request: Request) {
 }
 ```
 
-**Correct: auth and config start immediately**
+### Correct: auth and config start immediately
 
 ```typescript
 export async function GET(request: Request) {
@@ -253,11 +253,11 @@ For operations with more complex dependency chains, use `better-all` to automati
 
 ### 1.4 Promise.all() for Independent Operations
 
-**Impact: CRITICAL (2-10× improvement)**
+### Impact: CRITICAL (2-10× improvement)
 
 When async operations have no interdependencies, execute them concurrently using `Promise.all()`.
 
-**Incorrect: sequential execution, 3 round trips**
+### Incorrect: sequential execution, 3 round trips
 
 ```typescript
 const user = await fetchUser()
@@ -265,7 +265,7 @@ const posts = await fetchPosts()
 const comments = await fetchComments()
 ```
 
-**Correct: parallel execution, 1 round trip**
+### Correct: parallel execution, 1 round trip
 
 ```typescript
 const [user, posts, comments] = await Promise.all([
@@ -277,11 +277,11 @@ const [user, posts, comments] = await Promise.all([
 
 ### 1.5 Strategic Suspense Boundaries
 
-**Impact: HIGH (faster initial paint)**
+### Impact: HIGH (faster initial paint)
 
 Instead of awaiting data in async components before returning JSX, use Suspense boundaries to show the wrapper UI faster while data loads.
 
-**Incorrect: wrapper blocked by data fetching**
+### Incorrect: wrapper blocked by data fetching
 
 ```tsx
 async function Page() {
@@ -302,7 +302,7 @@ async function Page() {
 
 The entire layout waits for data even though only the middle section needs it.
 
-**Correct: wrapper shows immediately, data streams in**
+### Correct: wrapper shows immediately, data streams in
 
 ```tsx
 function Page() {
@@ -328,7 +328,7 @@ async function DataDisplay() {
 
 Sidebar, Header, and Footer render immediately. Only DataDisplay waits for data.
 
-**Alternative: share promise across components**
+### Alternative: share promise across components
 
 ```tsx
 function Page() {
@@ -361,7 +361,7 @@ function DataSummary({ dataPromise }: { dataPromise: Promise<Data> }) {
 
 Both components share the same promise, so only one fetch occurs. Layout renders immediately while both components wait together.
 
-**When NOT to use this pattern:**
+### When NOT to use this pattern:
 
 - Critical data needed for layout decisions (affects positioning)
 
@@ -377,13 +377,13 @@ Both components share the same promise, so only one fetch occurs. Layout renders
 
 ## 2. Bundle Size Optimization
 
-**Impact: CRITICAL**
+### Impact: CRITICAL
 
 Reducing initial bundle size improves Time to Interactive and Largest Contentful Paint.
 
 ### 2.1 Avoid Barrel File Imports
 
-**Impact: CRITICAL (200-800ms import cost, slow builds)**
+### Impact: CRITICAL (200-800ms import cost, slow builds)
 
 Import directly from source files instead of barrel files to avoid loading thousands of unused modules. **Barrel files** are entry points that re-export multiple modules (e.g., `index.js` that does `export * from './module'`).
 
@@ -391,7 +391,7 @@ Popular icon and component libraries can have **up to 10,000 re-exports** in the
 
 **Why tree-shaking doesn't help:** When a library is marked as external (not bundled), the bundler can't optimize it. If you bundle it to enable tree-shaking, builds become substantially slower analyzing the entire module graph.
 
-**Incorrect: imports entire library**
+### Incorrect: imports entire library
 
 ```tsx
 import { Check, X, Menu } from 'lucide-react'
@@ -402,7 +402,7 @@ import { Button, TextField } from '@mui/material'
 // Loads 2,225 modules, takes ~4.2s extra in dev
 ```
 
-**Correct: imports only what you need**
+### Correct: imports only what you need
 
 ```tsx
 import Check from 'lucide-react/dist/esm/icons/check'
@@ -415,7 +415,7 @@ import TextField from '@mui/material/TextField'
 // Loads only what you use
 ```
 
-**Alternative: Next.js 13.5+**
+### Alternative: Next.js 13.5+
 
 ```js
 // next.config.js - use optimizePackageImports
@@ -438,11 +438,11 @@ Reference: [https://vercel.com/blog/how-we-optimized-package-imports-in-next-js]
 
 ### 2.2 Conditional Module Loading
 
-**Impact: HIGH (loads large data only when needed)**
+### Impact: HIGH (loads large data only when needed)
 
 Load large data or modules only when a feature is activated.
 
-**Example: lazy-load animation frames**
+### Example: lazy-load animation frames
 
 ```tsx
 function AnimationPlayer({ enabled, setEnabled }: { enabled: boolean; setEnabled: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -465,11 +465,11 @@ The `typeof window !== 'undefined'` check prevents bundling this module for SSR,
 
 ### 2.3 Defer Non-Critical Third-Party Libraries
 
-**Impact: MEDIUM (loads after hydration)**
+### Impact: MEDIUM (loads after hydration)
 
 Analytics, logging, and error tracking don't block user interaction. Load them after hydration.
 
-**Incorrect: blocks initial bundle**
+### Incorrect: blocks initial bundle
 
 ```tsx
 import { Analytics } from '@vercel/analytics/react'
@@ -486,7 +486,7 @@ export default function RootLayout({ children }) {
 }
 ```
 
-**Correct: loads after hydration**
+### Correct: loads after hydration
 
 ```tsx
 import dynamic from 'next/dynamic'
@@ -510,11 +510,11 @@ export default function RootLayout({ children }) {
 
 ### 2.4 Dynamic Imports for Heavy Components
 
-**Impact: CRITICAL (directly affects TTI and LCP)**
+### Impact: CRITICAL (directly affects TTI and LCP)
 
 Use `next/dynamic` to lazy-load large components not needed on initial render.
 
-**Incorrect: Monaco bundles with main chunk ~300KB**
+### Incorrect: Monaco bundles with main chunk ~300KB
 
 ```tsx
 import { MonacoEditor } from './monaco-editor'
@@ -524,7 +524,7 @@ function CodePanel({ code }: { code: string }) {
 }
 ```
 
-**Correct: Monaco loads on demand**
+### Correct: Monaco loads on demand
 
 ```tsx
 import dynamic from 'next/dynamic'
@@ -541,11 +541,11 @@ function CodePanel({ code }: { code: string }) {
 
 ### 2.5 Preload Based on User Intent
 
-**Impact: MEDIUM (reduces perceived latency)**
+### Impact: MEDIUM (reduces perceived latency)
 
 Preload heavy bundles before they're needed to reduce perceived latency.
 
-**Example: preload on hover/focus**
+### Example: preload on hover/focus
 
 ```tsx
 function EditorButton({ onClick }: { onClick: () => void }) {
@@ -567,7 +567,7 @@ function EditorButton({ onClick }: { onClick: () => void }) {
 }
 ```
 
-**Example: preload when feature flag is enabled**
+### Example: preload when feature flag is enabled
 
 ```tsx
 function FlagsProvider({ children, flags }: Props) {
@@ -589,19 +589,19 @@ The `typeof window !== 'undefined'` check prevents bundling preloaded modules fo
 
 ## 3. Server-Side Performance
 
-**Impact: HIGH**
+### Impact: HIGH
 
 Optimizing server-side rendering and data fetching eliminates server-side waterfalls and reduces response times.
 
 ### 3.1 Authenticate Server Actions Like API Routes
 
-**Impact: CRITICAL (prevents unauthorized access to server mutations)**
+### Impact: CRITICAL (prevents unauthorized access to server mutations)
 
 Server Actions (functions with `"use server"`) are exposed as public endpoints, just like API routes. Always verify authentication and authorization **inside** each Server Action—do not rely solely on middleware, layout guards, or page-level checks, as Server Actions can be invoked directly.
 
 Next.js documentation explicitly states: "Treat Server Actions with the same security considerations as public-facing API endpoints, and verify if the user is allowed to perform a mutation."
 
-**Incorrect: no authentication check**
+### Incorrect: no authentication check
 
 ```typescript
 'use server'
@@ -613,7 +613,7 @@ export async function deleteUser(userId: string) {
 }
 ```
 
-**Correct: authentication inside the action**
+### Correct: authentication inside the action
 
 ```typescript
 'use server'
@@ -639,7 +639,7 @@ export async function deleteUser(userId: string) {
 }
 ```
 
-**With input validation:**
+### With input validation:
 
 ```typescript
 'use server'
@@ -685,18 +685,18 @@ Reference: [https://nextjs.org/docs/app/guides/authentication](https://nextjs.or
 
 ### 3.2 Avoid Duplicate Serialization in RSC Props
 
-**Impact: LOW (reduces network payload by avoiding duplicate serialization)**
+### Impact: LOW (reduces network payload by avoiding duplicate serialization)
 
 RSC→client serialization deduplicates by object reference, not value. Same reference = serialized once; new reference = serialized again. Do transformations (`.toSorted()`, `.filter()`, `.map()`) in client, not server.
 
-**Incorrect: duplicates array**
+### Incorrect: duplicates array
 
 ```tsx
 // RSC: sends 6 strings (2 arrays × 3 items)
 <ClientList usernames={usernames} usernamesOrdered={usernames.toSorted()} />
 ```
 
-**Correct: sends 3 strings**
+### Correct: sends 3 strings
 
 ```tsx
 // RSC: send once
@@ -707,7 +707,7 @@ RSC→client serialization deduplicates by object reference, not value. Same ref
 const sorted = useMemo(() => [...usernames].sort(), [usernames])
 ```
 
-**Nested deduplication behavior:**
+### Nested deduplication behavior:
 
 ```tsx
 // string[] - duplicates everything
@@ -723,13 +723,13 @@ Deduplication works recursively. Impact varies by data type:
 
 - `object[]`: **LOW impact** - array duplicated, but nested objects deduplicated by reference
 
-**Operations breaking deduplication: create new references**
+### Operations breaking deduplication: create new references
 
 - Arrays: `.toSorted()`, `.filter()`, `.map()`, `.slice()`, `[...arr]`
 
 - Objects: `{...obj}`, `Object.assign()`, `structuredClone()`, `JSON.parse(JSON.stringify())`
 
-**More examples:**
+### More examples:
 
 ```tsx
 // ❌ Bad
@@ -746,11 +746,11 @@ Deduplication works recursively. Impact varies by data type:
 
 ### 3.3 Cross-Request LRU Caching
 
-**Impact: HIGH (caches across requests)**
+### Impact: HIGH (caches across requests)
 
 `React.cache()` only works within one request. For data shared across sequential requests (user clicks button A then button B), use an LRU cache.
 
-**Implementation:**
+### Implementation:
 
 ```typescript
 import { LRUCache } from 'lru-cache'
@@ -783,11 +783,11 @@ Reference: [https://github.com/isaacs/node-lru-cache](https://github.com/isaacs/
 
 ### 3.4 Minimize Serialization at RSC Boundaries
 
-**Impact: HIGH (reduces data transfer size)**
+### Impact: HIGH (reduces data transfer size)
 
 The React Server/Client boundary serializes all object properties into strings and embeds them in the HTML response and subsequent RSC requests. This serialized data directly impacts page weight and load time, so **size matters a lot**. Only pass fields that the client actually uses.
 
-**Incorrect: serializes all 50 fields**
+### Incorrect: serializes all 50 fields
 
 ```tsx
 async function Page() {
@@ -801,7 +801,7 @@ function Profile({ user }: { user: User }) {
 }
 ```
 
-**Correct: serializes only 1 field**
+### Correct: serializes only 1 field
 
 ```tsx
 async function Page() {
@@ -817,11 +817,11 @@ function Profile({ name }: { name: string }) {
 
 ### 3.5 Parallel Data Fetching with Component Composition
 
-**Impact: CRITICAL (eliminates server-side waterfalls)**
+### Impact: CRITICAL (eliminates server-side waterfalls)
 
 React Server Components execute sequentially within a tree. Restructure with composition to parallelize data fetching.
 
-**Incorrect: Sidebar waits for Page's fetch to complete**
+### Incorrect: Sidebar waits for Page's fetch to complete
 
 ```tsx
 export default async function Page() {
@@ -840,7 +840,7 @@ async function Sidebar() {
 }
 ```
 
-**Correct: both fetch simultaneously**
+### Correct: both fetch simultaneously
 
 ```tsx
 async function Header() {
@@ -863,7 +863,7 @@ export default function Page() {
 }
 ```
 
-**Alternative with children prop:**
+### Alternative with children prop:
 
 ```tsx
 async function Header() {
@@ -896,11 +896,11 @@ export default function Page() {
 
 ### 3.6 Per-Request Deduplication with React.cache()
 
-**Impact: MEDIUM (deduplicates within request)**
+### Impact: MEDIUM (deduplicates within request)
 
 Use `React.cache()` for server-side request deduplication. Authentication and database queries benefit most.
 
-**Usage:**
+### Usage:
 
 ```typescript
 import { cache } from 'react'
@@ -916,11 +916,11 @@ export const getCurrentUser = cache(async () => {
 
 Within a single request, multiple calls to `getCurrentUser()` execute the query only once.
 
-**Avoid inline objects as arguments:**
+### Avoid inline objects as arguments:
 
 `React.cache()` uses shallow equality (`Object.is`) to determine cache hits. Inline objects create new references each call, preventing cache hits.
 
-**Incorrect: always cache miss**
+### Incorrect: always cache miss
 
 ```typescript
 const getUser = cache(async (params: { uid: number }) => {
@@ -932,7 +932,7 @@ getUser({ uid: 1 })
 getUser({ uid: 1 })  // Cache miss, runs query again
 ```
 
-**Correct: cache hit**
+### Correct: cache hit
 
 ```typescript
 const params = { uid: 1 }
@@ -942,7 +942,7 @@ getUser(params)  // Cache hit (same reference)
 
 If you must pass objects, pass the same reference:
 
-**Next.js-Specific Note:**
+### Next.js-Specific Note:
 
 In Next.js, the `fetch` API is automatically extended with request memoization. Requests with the same URL and options are automatically deduplicated within a single request, so you don't need `React.cache()` for `fetch` calls. However, `React.cache()` is still essential for other async tasks:
 
@@ -962,11 +962,11 @@ Reference: [https://react.dev/reference/react/cache](https://react.dev/reference
 
 ### 3.7 Use after() for Non-Blocking Operations
 
-**Impact: MEDIUM (faster response times)**
+### Impact: MEDIUM (faster response times)
 
 Use Next.js's `after()` to schedule work that should execute after a response is sent. This prevents logging, analytics, and other side effects from blocking the response.
 
-**Incorrect: blocks response**
+### Incorrect: blocks response
 
 ```tsx
 import { logUserAction } from '@/app/utils'
@@ -986,7 +986,7 @@ export async function POST(request: Request) {
 }
 ```
 
-**Correct: non-blocking**
+### Correct: non-blocking
 
 ```tsx
 import { after } from 'next/server'
@@ -1014,7 +1014,7 @@ export async function POST(request: Request) {
 
 The response is sent immediately while logging happens in the background.
 
-**Common use cases:**
+### Common use cases:
 
 - Analytics tracking
 
@@ -1026,7 +1026,7 @@ The response is sent immediately while logging happens in the background.
 
 - Cleanup tasks
 
-**Important notes:**
+### Important notes:
 
 - `after()` runs even if the response fails or redirects
 
@@ -1038,17 +1038,17 @@ Reference: [https://nextjs.org/docs/app/api-reference/functions/after](https://n
 
 ## 4. Client-Side Data Fetching
 
-**Impact: MEDIUM-HIGH**
+### Impact: MEDIUM-HIGH
 
 Automatic deduplication and efficient data fetching patterns reduce redundant network requests.
 
 ### 4.1 Deduplicate Global Event Listeners
 
-**Impact: LOW (single listener for N components)**
+### Impact: LOW (single listener for N components)
 
 Use `useSWRSubscription()` to share global event listeners across component instances.
 
-**Incorrect: N instances = N listeners**
+### Incorrect: N instances = N listeners
 
 ```tsx
 function useKeyboardShortcut(key: string, callback: () => void) {
@@ -1066,7 +1066,7 @@ function useKeyboardShortcut(key: string, callback: () => void) {
 
 When using the `useKeyboardShortcut` hook multiple times, each instance will register a new listener.
 
-**Correct: N instances = 1 listener**
+### Correct: N instances = 1 listener
 
 ```tsx
 import useSWRSubscription from 'swr/subscription'
@@ -1114,11 +1114,11 @@ function Profile() {
 
 ### 4.2 Use Passive Event Listeners for Scrolling Performance
 
-**Impact: MEDIUM (eliminates scroll delay caused by event listeners)**
+### Impact: MEDIUM (eliminates scroll delay caused by event listeners)
 
 Add `{ passive: true }` to touch and wheel event listeners to enable immediate scrolling. Browsers normally wait for listeners to finish to check if `preventDefault()` is called, causing scroll delay.
 
-**Incorrect:**
+### Incorrect:
 
 ```typescript
 useEffect(() => {
@@ -1135,7 +1135,7 @@ useEffect(() => {
 }, [])
 ```
 
-**Correct:**
+### Correct:
 
 ```typescript
 useEffect(() => {
@@ -1158,11 +1158,11 @@ useEffect(() => {
 
 ### 4.3 Use SWR for Automatic Deduplication
 
-**Impact: MEDIUM-HIGH (automatic deduplication)**
+### Impact: MEDIUM-HIGH (automatic deduplication)
 
 SWR enables request deduplication, caching, and revalidation across component instances.
 
-**Incorrect: no deduplication, each instance fetches**
+### Incorrect: no deduplication, each instance fetches
 
 ```tsx
 function UserList() {
@@ -1175,7 +1175,7 @@ function UserList() {
 }
 ```
 
-**Correct: multiple instances share one request**
+### Correct: multiple instances share one request
 
 ```tsx
 import useSWR from 'swr'
@@ -1185,7 +1185,7 @@ function UserList() {
 }
 ```
 
-**For immutable data:**
+### For immutable data:
 
 ```tsx
 import { useImmutableSWR } from '@/lib/swr'
@@ -1195,7 +1195,7 @@ function StaticContent() {
 }
 ```
 
-**For mutations:**
+### For mutations:
 
 ```tsx
 import { useSWRMutation } from 'swr/mutation'
@@ -1210,11 +1210,11 @@ Reference: [https://swr.vercel.app](https://swr.vercel.app)
 
 ### 4.4 Version and Minimize localStorage Data
 
-**Impact: MEDIUM (prevents schema conflicts, reduces storage size)**
+### Impact: MEDIUM (prevents schema conflicts, reduces storage size)
 
 Add version prefix to keys and store only needed fields. Prevents schema conflicts and accidental storage of sensitive data.
 
-**Incorrect:**
+### Incorrect:
 
 ```typescript
 // No version, stores everything, no error handling
@@ -1222,7 +1222,7 @@ localStorage.setItem('userConfig', JSON.stringify(fullUserObject))
 const data = localStorage.getItem('userConfig')
 ```
 
-**Correct:**
+### Correct:
 
 ```typescript
 const VERSION = 'v2'
@@ -1257,7 +1257,7 @@ function migrate() {
 }
 ```
 
-**Store minimal fields from server responses:**
+### Store minimal fields from server responses:
 
 ```typescript
 // User object has 20+ fields, only store what UI needs
@@ -1279,17 +1279,17 @@ function cachePrefs(user: FullUser) {
 
 ## 5. Re-render Optimization
 
-**Impact: MEDIUM**
+### Impact: MEDIUM
 
 Reducing unnecessary re-renders minimizes wasted computation and improves UI responsiveness.
 
 ### 5.1 Calculate Derived State During Rendering
 
-**Impact: MEDIUM (avoids redundant renders and state drift)**
+### Impact: MEDIUM (avoids redundant renders and state drift)
 
 If a value can be computed from current props/state, do not store it in state or update it in an effect. Derive it during render to avoid extra renders and state drift. Do not set state in effects solely in response to prop changes; prefer derived values or keyed resets instead.
 
-**Incorrect: redundant state and effect**
+### Incorrect: redundant state and effect
 
 ```tsx
 function Form() {
@@ -1305,7 +1305,7 @@ function Form() {
 }
 ```
 
-**Correct: derive during render**
+### Correct: derive during render
 
 ```tsx
 function Form() {
@@ -1321,11 +1321,11 @@ Reference: [https://react.dev/learn/you-might-not-need-an-effect](https://react.
 
 ### 5.2 Defer State Reads to Usage Point
 
-**Impact: MEDIUM (avoids unnecessary subscriptions)**
+### Impact: MEDIUM (avoids unnecessary subscriptions)
 
 Don't subscribe to dynamic state (searchParams, localStorage) if you only read it inside callbacks.
 
-**Incorrect: subscribes to all searchParams changes**
+### Incorrect: subscribes to all searchParams changes
 
 ```tsx
 function ShareButton({ chatId }: { chatId: string }) {
@@ -1340,7 +1340,7 @@ function ShareButton({ chatId }: { chatId: string }) {
 }
 ```
 
-**Correct: reads on demand, no subscription**
+### Correct: reads on demand, no subscription
 
 ```tsx
 function ShareButton({ chatId }: { chatId: string }) {
@@ -1356,13 +1356,13 @@ function ShareButton({ chatId }: { chatId: string }) {
 
 ### 5.3 Do not wrap a simple expression with a primitive result type in useMemo
 
-**Impact: LOW-MEDIUM (wasted computation on every render)**
+### Impact: LOW-MEDIUM (wasted computation on every render)
 
 When an expression is simple (few logical or arithmetical operators) and has a primitive result type (boolean, number, string), do not wrap it in `useMemo`.
 
 Calling `useMemo` and comparing hook dependencies may consume more resources than the expression itself.
 
-**Incorrect:**
+### Incorrect:
 
 ```tsx
 function Header({ user, notifications }: Props) {
@@ -1375,7 +1375,7 @@ function Header({ user, notifications }: Props) {
 }
 ```
 
-**Correct:**
+### Correct:
 
 ```tsx
 function Header({ user, notifications }: Props) {
@@ -1388,13 +1388,13 @@ function Header({ user, notifications }: Props) {
 
 ### 5.4 Extract Default Non-primitive Parameter Value from Memoized Component to Constant
 
-**Impact: MEDIUM (restores memoization by using a constant for default value)**
+### Impact: MEDIUM (restores memoization by using a constant for default value)
 
 When memoized component has a default value for some non-primitive optional parameter, such as an array, function, or object, calling the component without that parameter results in broken memoization. This is because new value instances are created on every rerender, and they do not pass strict equality comparison in `memo()`.
 
 To address this issue, extract the default value into a constant.
 
-**Incorrect: `onClick` has different values on every rerender**
+### Incorrect: `onClick` has different values on every rerender
 
 ```tsx
 const UserAvatar = memo(function UserAvatar({ onClick = () => {} }: { onClick?: () => void }) {
@@ -1405,7 +1405,7 @@ const UserAvatar = memo(function UserAvatar({ onClick = () => {} }: { onClick?: 
 <UserAvatar />
 ```
 
-**Correct: stable default value**
+### Correct: stable default value
 
 ```tsx
 const NOOP = () => {};
@@ -1420,11 +1420,11 @@ const UserAvatar = memo(function UserAvatar({ onClick = NOOP }: { onClick?: () =
 
 ### 5.5 Extract to Memoized Components
 
-**Impact: MEDIUM (enables early returns)**
+### Impact: MEDIUM (enables early returns)
 
 Extract expensive work into memoized components to enable early returns before computation.
 
-**Incorrect: computes avatar even when loading**
+### Incorrect: computes avatar even when loading
 
 ```tsx
 function Profile({ user, loading }: Props) {
@@ -1438,7 +1438,7 @@ function Profile({ user, loading }: Props) {
 }
 ```
 
-**Correct: skips computation when loading**
+### Correct: skips computation when loading
 
 ```tsx
 const UserAvatar = memo(function UserAvatar({ user }: { user: User }) {
@@ -1460,11 +1460,11 @@ function Profile({ user, loading }: Props) {
 
 ### 5.6 Narrow Effect Dependencies
 
-**Impact: LOW (minimizes effect re-runs)**
+### Impact: LOW (minimizes effect re-runs)
 
 Specify primitive dependencies instead of objects to minimize effect re-runs.
 
-**Incorrect: re-runs on any user field change**
+### Incorrect: re-runs on any user field change
 
 ```tsx
 useEffect(() => {
@@ -1472,7 +1472,7 @@ useEffect(() => {
 }, [user])
 ```
 
-**Correct: re-runs only when id changes**
+### Correct: re-runs only when id changes
 
 ```tsx
 useEffect(() => {
@@ -1480,7 +1480,7 @@ useEffect(() => {
 }, [user.id])
 ```
 
-**For derived state, compute outside effect:**
+### For derived state, compute outside effect:
 
 ```tsx
 // Incorrect: runs on width=767, 766, 765...
@@ -1501,11 +1501,11 @@ useEffect(() => {
 
 ### 5.7 Put Interaction Logic in Event Handlers
 
-**Impact: MEDIUM (avoids effect re-runs and duplicate side effects)**
+### Impact: MEDIUM (avoids effect re-runs and duplicate side effects)
 
 If a side effect is triggered by a specific user action (submit, click, drag), run it in that event handler. Do not model the action as state + effect; it makes effects re-run on unrelated changes and can duplicate the action.
 
-**Incorrect: event modeled as state + effect**
+### Incorrect: event modeled as state + effect
 
 ```tsx
 function Form() {
@@ -1523,7 +1523,7 @@ function Form() {
 }
 ```
 
-**Correct: do it in the handler**
+### Correct: do it in the handler
 
 ```tsx
 function Form() {
@@ -1542,11 +1542,11 @@ Reference: [https://react.dev/learn/removing-effect-dependencies#should-this-cod
 
 ### 5.8 Subscribe to Derived State
 
-**Impact: MEDIUM (reduces re-render frequency)**
+### Impact: MEDIUM (reduces re-render frequency)
 
 Subscribe to derived boolean state instead of continuous values to reduce re-render frequency.
 
-**Incorrect: re-renders on every pixel change**
+### Incorrect: re-renders on every pixel change
 
 ```tsx
 function Sidebar() {
@@ -1556,7 +1556,7 @@ function Sidebar() {
 }
 ```
 
-**Correct: re-renders only when boolean changes**
+### Correct: re-renders only when boolean changes
 
 ```tsx
 function Sidebar() {
@@ -1567,11 +1567,11 @@ function Sidebar() {
 
 ### 5.9 Use Functional setState Updates
 
-**Impact: MEDIUM (prevents stale closures and unnecessary callback recreations)**
+### Impact: MEDIUM (prevents stale closures and unnecessary callback recreations)
 
 When updating state based on the current state value, use the functional update form of setState instead of directly referencing the state variable. This prevents stale closures, eliminates unnecessary dependencies, and creates stable callback references.
 
-**Incorrect: requires state as dependency**
+### Incorrect: requires state as dependency
 
 ```tsx
 function TodoList() {
@@ -1593,7 +1593,7 @@ function TodoList() {
 
 The first callback is recreated every time `items` changes, which can cause child components to re-render unnecessarily. The second callback has a stale closure bug—it will always reference the initial `items` value.
 
-**Correct: stable callbacks, no stale closures**
+### Correct: stable callbacks, no stale closures
 
 ```tsx
 function TodoList() {
@@ -1613,17 +1613,17 @@ function TodoList() {
 }
 ```
 
-**Benefits:**
+### Benefits:
 
-1. **Stable callback references** - Callbacks don't need to be recreated when state changes
+1. Stable callback references - Callbacks don't need to be recreated when state changes
 
-2. **No stale closures** - Always operates on the latest state value
+2. No stale closures - Always operates on the latest state value
 
-3. **Fewer dependencies** - Simplifies dependency arrays and reduces memory leaks
+3. Fewer dependencies - Simplifies dependency arrays and reduces memory leaks
 
-4. **Prevents bugs** - Eliminates the most common source of React closure bugs
+4. Prevents bugs - Eliminates the most common source of React closure bugs
 
-**When to use functional updates:**
+### When to use functional updates:
 
 - Any setState that depends on the current state value
 
@@ -1633,7 +1633,7 @@ function TodoList() {
 
 - Async operations that update state
 
-**When direct updates are fine:**
+### When direct updates are fine:
 
 - Setting state to a static value: `setCount(0)`
 
@@ -1645,11 +1645,11 @@ function TodoList() {
 
 ### 5.10 Use Lazy State Initialization
 
-**Impact: MEDIUM (wasted computation on every render)**
+### Impact: MEDIUM (wasted computation on every render)
 
 Pass a function to `useState` for expensive initial values. Without the function form, the initializer runs on every render even though the value is only used once.
 
-**Incorrect: runs on every render**
+### Incorrect: runs on every render
 
 ```tsx
 function FilteredList({ items }: { items: Item[] }) {
@@ -1671,7 +1671,7 @@ function UserProfile() {
 }
 ```
 
-**Correct: runs only once**
+### Correct: runs only once
 
 ```tsx
 function FilteredList({ items }: { items: Item[] }) {
@@ -1699,11 +1699,11 @@ For simple primitives (`useState(0)`), direct references (`useState(props.value)
 
 ### 5.11 Use Transitions for Non-Urgent Updates
 
-**Impact: MEDIUM (maintains UI responsiveness)**
+### Impact: MEDIUM (maintains UI responsiveness)
 
 Mark frequent, non-urgent state updates as transitions to maintain UI responsiveness.
 
-**Incorrect: blocks UI on every scroll**
+### Incorrect: blocks UI on every scroll
 
 ```tsx
 function ScrollTracker() {
@@ -1716,7 +1716,7 @@ function ScrollTracker() {
 }
 ```
 
-**Correct: non-blocking updates**
+### Correct: non-blocking updates
 
 ```tsx
 import { startTransition } from 'react'
@@ -1735,11 +1735,11 @@ function ScrollTracker() {
 
 ### 5.12 Use useRef for Transient Values
 
-**Impact: MEDIUM (avoids unnecessary re-renders on frequent updates)**
+### Impact: MEDIUM (avoids unnecessary re-renders on frequent updates)
 
 When a value changes frequently and you don't want a re-render on every update (e.g., mouse trackers, intervals, transient flags), store it in `useRef` instead of `useState`. Keep component state for UI; use refs for temporary DOM-adjacent values. Updating a ref does not trigger a re-render.
 
-**Incorrect: renders every update**
+### Incorrect: renders every update
 
 ```tsx
 function Tracker() {
@@ -1766,7 +1766,7 @@ function Tracker() {
 }
 ```
 
-**Correct: no re-render for tracking**
+### Correct: no re-render for tracking
 
 ```tsx
 function Tracker() {
@@ -1806,17 +1806,17 @@ function Tracker() {
 
 ## 6. Rendering Performance
 
-**Impact: MEDIUM**
+### Impact: MEDIUM
 
 Optimizing the rendering process reduces the work the browser needs to do.
 
 ### 6.1 Animate SVG Wrapper Instead of SVG Element
 
-**Impact: LOW (enables hardware acceleration)**
+### Impact: LOW (enables hardware acceleration)
 
 Many browsers don't have hardware acceleration for CSS3 animations on SVG elements. Wrap SVG in a `<div>` and animate the wrapper instead.
 
-**Incorrect: animating SVG directly - no hardware acceleration**
+### Incorrect: animating SVG directly - no hardware acceleration
 
 ```tsx
 function LoadingSpinner() {
@@ -1833,7 +1833,7 @@ function LoadingSpinner() {
 }
 ```
 
-**Correct: animating wrapper div - hardware accelerated**
+### Correct: animating wrapper div - hardware accelerated
 
 ```tsx
 function LoadingSpinner() {
@@ -1855,11 +1855,11 @@ This applies to all CSS transforms and transitions (`transform`, `opacity`, `tra
 
 ### 6.2 CSS content-visibility for Long Lists
 
-**Impact: HIGH (faster initial render)**
+### Impact: HIGH (faster initial render)
 
 Apply `content-visibility: auto` to defer off-screen rendering.
 
-**CSS:**
+### CSS:
 
 ```css
 .message-item {
@@ -1868,7 +1868,7 @@ Apply `content-visibility: auto` to defer off-screen rendering.
 }
 ```
 
-**Example:**
+### Example:
 
 ```tsx
 function MessageList({ messages }: { messages: Message[] }) {
@@ -1889,11 +1889,11 @@ For 1000 messages, browser skips layout/paint for ~990 off-screen items (10× fa
 
 ### 6.3 Hoist Static JSX Elements
 
-**Impact: LOW (avoids re-creation)**
+### Impact: LOW (avoids re-creation)
 
 Extract static JSX outside components to avoid re-creation.
 
-**Incorrect: recreates element every render**
+### Incorrect: recreates element every render
 
 ```tsx
 function LoadingSkeleton() {
@@ -1909,7 +1909,7 @@ function Container() {
 }
 ```
 
-**Correct: reuses same element**
+### Correct: reuses same element
 
 ```tsx
 const loadingSkeleton = (
@@ -1931,23 +1931,23 @@ This is especially helpful for large and static SVG nodes, which can be expensiv
 
 ### 6.4 Optimize SVG Precision
 
-**Impact: LOW (reduces file size)**
+### Impact: LOW (reduces file size)
 
 Reduce SVG coordinate precision to decrease file size. The optimal precision depends on the viewBox size, but in general reducing precision should be considered.
 
-**Incorrect: excessive precision**
+### Incorrect: excessive precision
 
 ```svg
 <path d="M 10.293847 20.847362 L 30.938472 40.192837" />
 ```
 
-**Correct: 1 decimal place**
+### Correct: 1 decimal place
 
 ```svg
 <path d="M 10.3 20.8 L 30.9 40.2" />
 ```
 
-**Automate with SVGO:**
+### Automate with SVGO:
 
 ```bash
 npx svgo --precision=1 --multipass icon.svg
@@ -1955,11 +1955,11 @@ npx svgo --precision=1 --multipass icon.svg
 
 ### 6.5 Prevent Hydration Mismatch Without Flickering
 
-**Impact: MEDIUM (avoids visual flicker and hydration errors)**
+### Impact: MEDIUM (avoids visual flicker and hydration errors)
 
 When rendering content that depends on client-side storage (localStorage, cookies), avoid both SSR breakage and post-hydration flickering by injecting a synchronous script that updates the DOM before React hydrates.
 
-**Incorrect: breaks SSR**
+### Incorrect: breaks SSR
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
@@ -1976,7 +1976,7 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
 
 Server-side rendering will fail because `localStorage` is undefined.
 
-**Incorrect: visual flickering**
+### Incorrect: visual flickering
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
@@ -2000,7 +2000,7 @@ function ThemeWrapper({ children }: { children: ReactNode }) {
 
 Component first renders with default value (`light`), then updates after hydration, causing a visible flash of incorrect content.
 
-**Correct: no flicker, no hydration mismatch**
+### Correct: no flicker, no hydration mismatch
 
 ```tsx
 function ThemeWrapper({ children }: { children: ReactNode }) {
@@ -2033,11 +2033,11 @@ This pattern is especially useful for theme toggles, user preferences, authentic
 
 ### 6.6 Suppress Expected Hydration Mismatches
 
-**Impact: LOW-MEDIUM (avoids noisy hydration warnings for known differences)**
+### Impact: LOW-MEDIUM (avoids noisy hydration warnings for known differences)
 
 In SSR frameworks (e.g., Next.js), some values are intentionally different on server vs client (random IDs, dates, locale/timezone formatting). For these *expected* mismatches, wrap the dynamic text in an element with `suppressHydrationWarning` to prevent noisy warnings. Do not use this to hide real bugs. Don’t overuse it.
 
-**Incorrect: known mismatch warnings**
+### Incorrect: known mismatch warnings
 
 ```tsx
 function Timestamp() {
@@ -2045,7 +2045,7 @@ function Timestamp() {
 }
 ```
 
-**Correct: suppress expected mismatch only**
+### Correct: suppress expected mismatch only
 
 ```tsx
 function Timestamp() {
@@ -2059,11 +2059,11 @@ function Timestamp() {
 
 ### 6.7 Use Activity Component for Show/Hide
 
-**Impact: MEDIUM (preserves state/DOM)**
+### Impact: MEDIUM (preserves state/DOM)
 
 Use React's `<Activity>` to preserve state/DOM for expensive components that frequently toggle visibility.
 
-**Usage:**
+### Usage:
 
 ```tsx
 import { Activity } from 'react'
@@ -2081,11 +2081,11 @@ Avoids expensive re-renders and state loss.
 
 ### 6.8 Use Explicit Conditional Rendering
 
-**Impact: LOW (prevents rendering 0 or NaN)**
+### Impact: LOW (prevents rendering 0 or NaN)
 
 Use explicit ternary operators (`? :`) instead of `&&` for conditional rendering when the condition can be `0`, `NaN`, or other falsy values that render.
 
-**Incorrect: renders "0" when count is 0**
+### Incorrect: renders "0" when count is 0
 
 ```tsx
 function Badge({ count }: { count: number }) {
@@ -2100,7 +2100,7 @@ function Badge({ count }: { count: number }) {
 // When count = 5, renders: <div><span class="badge">5</span></div>
 ```
 
-**Correct: renders nothing when count is 0**
+### Correct: renders nothing when count is 0
 
 ```tsx
 function Badge({ count }: { count: number }) {
@@ -2117,11 +2117,11 @@ function Badge({ count }: { count: number }) {
 
 ### 6.9 Use useTransition Over Manual Loading States
 
-**Impact: LOW (reduces re-renders and improves code clarity)**
+### Impact: LOW (reduces re-renders and improves code clarity)
 
 Use `useTransition` instead of manual `useState` for loading states. This provides built-in `isPending` state and automatically manages transitions.
 
-**Incorrect: manual loading state**
+### Incorrect: manual loading state
 
 ```tsx
 function SearchResults() {
@@ -2147,7 +2147,7 @@ function SearchResults() {
 }
 ```
 
-**Correct: useTransition with built-in pending state**
+### Correct: useTransition with built-in pending state
 
 ```tsx
 import { useTransition, useState } from 'react'
@@ -2177,15 +2177,15 @@ function SearchResults() {
 }
 ```
 
-**Benefits:**
+### Benefits:
 
-- **Automatic pending state**: No need to manually manage `setIsLoading(true/false)`
+- Automatic pending state: No need to manually manage `setIsLoading(true/false)`
 
-- **Error resilience**: Pending state correctly resets even if the transition throws
+- Error resilience: Pending state correctly resets even if the transition throws
 
-- **Better responsiveness**: Keeps the UI responsive during updates
+- Better responsiveness: Keeps the UI responsive during updates
 
-- **Interrupt handling**: New transitions automatically cancel pending ones
+- Interrupt handling: New transitions automatically cancel pending ones
 
 Reference: [https://react.dev/reference/react/useTransition](https://react.dev/reference/react/useTransition)
 
@@ -2193,17 +2193,17 @@ Reference: [https://react.dev/reference/react/useTransition](https://react.dev/r
 
 ## 7. JavaScript Performance
 
-**Impact: LOW-MEDIUM**
+### Impact: LOW-MEDIUM
 
 Micro-optimizations for hot paths can add up to meaningful improvements.
 
 ### 7.1 Avoid Layout Thrashing
 
-**Impact: MEDIUM (prevents forced synchronous layouts and reduces performance bottlenecks)**
+### Impact: MEDIUM (prevents forced synchronous layouts and reduces performance bottlenecks)
 
 Avoid interleaving style writes with layout reads. When you read a layout property (like `offsetWidth`, `getBoundingClientRect()`, or `getComputedStyle()`) between style changes, the browser is forced to trigger a synchronous reflow.
 
-**This is OK: browser batches style changes**
+### This is OK: browser batches style changes
 
 ```typescript
 function updateElementStyles(element: HTMLElement) {
@@ -2215,7 +2215,7 @@ function updateElementStyles(element: HTMLElement) {
 }
 ```
 
-**Incorrect: interleaved reads and writes force reflows**
+### Incorrect: interleaved reads and writes force reflows
 
 ```typescript
 function layoutThrashing(element: HTMLElement) {
@@ -2226,7 +2226,7 @@ function layoutThrashing(element: HTMLElement) {
 }
 ```
 
-**Correct: batch writes, then read once**
+### Correct: batch writes, then read once
 
 ```typescript
 function updateElementStyles(element: HTMLElement) {
@@ -2241,7 +2241,7 @@ function updateElementStyles(element: HTMLElement) {
 }
 ```
 
-**Correct: batch reads, then writes**
+### Correct: batch reads, then writes
 
 ```typescript
 function updateElementStyles(element: HTMLElement) {
@@ -2251,9 +2251,9 @@ function updateElementStyles(element: HTMLElement) {
 }
 ```
 
-**Better: use CSS classes**
+### Better: use CSS classes
 
-**React example:**
+### React example:
 
 ```tsx
 // Incorrect: interleaving style changes with layout queries
@@ -2287,11 +2287,11 @@ See [this gist](https://gist.github.com/paulirish/5d52fb081b3570c81e3a) and [CSS
 
 ### 7.2 Build Index Maps for Repeated Lookups
 
-**Impact: LOW-MEDIUM (1M ops to 2K ops)**
+### Impact: LOW-MEDIUM (1M ops to 2K ops)
 
 Multiple `.find()` calls by the same key should use a Map.
 
-**Incorrect (O(n) per lookup):**
+### Incorrect (O(n) per lookup):
 
 ```typescript
 function processOrders(orders: Order[], users: User[]) {
@@ -2302,7 +2302,7 @@ function processOrders(orders: Order[], users: User[]) {
 }
 ```
 
-**Correct (O(1) per lookup):**
+### Correct (O(1) per lookup):
 
 ```typescript
 function processOrders(orders: Order[], users: User[]) {
@@ -2321,11 +2321,11 @@ For 1000 orders × 1000 users: 1M ops → 2K ops.
 
 ### 7.3 Cache Property Access in Loops
 
-**Impact: LOW-MEDIUM (reduces lookups)**
+### Impact: LOW-MEDIUM (reduces lookups)
 
 Cache object property lookups in hot paths.
 
-**Incorrect: 3 lookups × N iterations**
+### Incorrect: 3 lookups × N iterations
 
 ```typescript
 for (let i = 0; i < arr.length; i++) {
@@ -2333,7 +2333,7 @@ for (let i = 0; i < arr.length; i++) {
 }
 ```
 
-**Correct: 1 lookup total**
+### Correct: 1 lookup total
 
 ```typescript
 const value = obj.config.settings.value
@@ -2345,11 +2345,11 @@ for (let i = 0; i < len; i++) {
 
 ### 7.4 Cache Repeated Function Calls
 
-**Impact: MEDIUM (avoid redundant computation)**
+### Impact: MEDIUM (avoid redundant computation)
 
 Use a module-level Map to cache function results when the same function is called repeatedly with the same inputs during render.
 
-**Incorrect: redundant computation**
+### Incorrect: redundant computation
 
 ```typescript
 function ProjectList({ projects }: { projects: Project[] }) {
@@ -2366,7 +2366,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
 }
 ```
 
-**Correct: cached results**
+### Correct: cached results
 
 ```typescript
 // Module-level cache
@@ -2395,7 +2395,7 @@ function ProjectList({ projects }: { projects: Project[] }) {
 }
 ```
 
-**Simpler pattern for single-value functions:**
+### Simpler pattern for single-value functions:
 
 ```typescript
 let isLoggedInCache: boolean | null = null
@@ -2421,11 +2421,11 @@ Reference: [https://vercel.com/blog/how-we-made-the-vercel-dashboard-twice-as-fa
 
 ### 7.5 Cache Storage API Calls
 
-**Impact: LOW-MEDIUM (reduces expensive I/O)**
+### Impact: LOW-MEDIUM (reduces expensive I/O)
 
 `localStorage`, `sessionStorage`, and `document.cookie` are synchronous and expensive. Cache reads in memory.
 
-**Incorrect: reads storage on every call**
+### Incorrect: reads storage on every call
 
 ```typescript
 function getTheme() {
@@ -2434,7 +2434,7 @@ function getTheme() {
 // Called 10 times = 10 storage reads
 ```
 
-**Correct: Map cache**
+### Correct: Map cache
 
 ```typescript
 const storageCache = new Map<string, string | null>()
@@ -2454,7 +2454,7 @@ function setLocalStorage(key: string, value: string) {
 
 Use a Map (not a hook) so it works everywhere: utilities, event handlers, not just React components.
 
-**Cookie caching:**
+### Cookie caching:
 
 ```typescript
 let cookieCache: Record<string, string> | null = null
@@ -2469,7 +2469,7 @@ function getCookie(name: string) {
 }
 ```
 
-**Important: invalidate on external changes**
+### Important: invalidate on external changes
 
 ```typescript
 window.addEventListener('storage', (e) => {
@@ -2487,11 +2487,11 @@ If storage can change externally (another tab, server-set cookies), invalidate c
 
 ### 7.6 Combine Multiple Array Iterations
 
-**Impact: LOW-MEDIUM (reduces iterations)**
+### Impact: LOW-MEDIUM (reduces iterations)
 
 Multiple `.filter()` or `.map()` calls iterate the array multiple times. Combine into one loop.
 
-**Incorrect: 3 iterations**
+### Incorrect: 3 iterations
 
 ```typescript
 const admins = users.filter(u => u.isAdmin)
@@ -2499,7 +2499,7 @@ const testers = users.filter(u => u.isTester)
 const inactive = users.filter(u => !u.isActive)
 ```
 
-**Correct: 1 iteration**
+### Correct: 1 iteration
 
 ```typescript
 const admins: User[] = []
@@ -2515,13 +2515,13 @@ for (const user of users) {
 
 ### 7.7 Early Length Check for Array Comparisons
 
-**Impact: MEDIUM-HIGH (avoids expensive operations when lengths differ)**
+### Impact: MEDIUM-HIGH (avoids expensive operations when lengths differ)
 
 When comparing arrays with expensive operations (sorting, deep equality, serialization), check lengths first. If lengths differ, the arrays cannot be equal.
 
 In real-world applications, this optimization is especially valuable when the comparison runs in hot paths (event handlers, render loops).
 
-**Incorrect: always runs expensive comparison**
+### Incorrect: always runs expensive comparison
 
 ```typescript
 function hasChanges(current: string[], original: string[]) {
@@ -2532,7 +2532,7 @@ function hasChanges(current: string[], original: string[]) {
 
 Two O(n log n) sorts run even when `current.length` is 5 and `original.length` is 100. There is also overhead of joining the arrays and comparing the strings.
 
-**Correct (O(1) length check first):**
+### Correct (O(1) length check first):
 
 ```typescript
 function hasChanges(current: string[], original: string[]) {
@@ -2564,11 +2564,11 @@ This new approach is more efficient because:
 
 ### 7.8 Early Return from Functions
 
-**Impact: LOW-MEDIUM (avoids unnecessary computation)**
+### Impact: LOW-MEDIUM (avoids unnecessary computation)
 
 Return early when result is determined to skip unnecessary processing.
 
-**Incorrect: processes all items even after finding answer**
+### Incorrect: processes all items even after finding answer
 
 ```typescript
 function validateUsers(users: User[]) {
@@ -2591,7 +2591,7 @@ function validateUsers(users: User[]) {
 }
 ```
 
-**Correct: returns immediately on first error**
+### Correct: returns immediately on first error
 
 ```typescript
 function validateUsers(users: User[]) {
@@ -2610,11 +2610,11 @@ function validateUsers(users: User[]) {
 
 ### 7.9 Hoist RegExp Creation
 
-**Impact: LOW-MEDIUM (avoids recreation)**
+### Impact: LOW-MEDIUM (avoids recreation)
 
 Don't create RegExp inside render. Hoist to module scope or memoize with `useMemo()`.
 
-**Incorrect: new RegExp every render**
+### Incorrect: new RegExp every render
 
 ```tsx
 function Highlighter({ text, query }: Props) {
@@ -2624,7 +2624,7 @@ function Highlighter({ text, query }: Props) {
 }
 ```
 
-**Correct: memoize or hoist**
+### Correct: memoize or hoist
 
 ```tsx
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -2639,7 +2639,7 @@ function Highlighter({ text, query }: Props) {
 }
 ```
 
-**Warning: global regex has mutable state**
+### Warning: global regex has mutable state
 
 ```typescript
 const regex = /foo/g
@@ -2651,11 +2651,11 @@ Global regex (`/g`) has mutable `lastIndex` state:
 
 ### 7.10 Use Loop for Min/Max Instead of Sort
 
-**Impact: LOW (O(n) instead of O(n log n))**
+### Impact: LOW (O(n) instead of O(n log n))
 
 Finding the smallest or largest element only requires a single pass through the array. Sorting is wasteful and slower.
 
-**Incorrect (O(n log n) - sort to find latest):**
+### Incorrect (O(n log n) - sort to find latest):
 
 ```typescript
 interface Project {
@@ -2672,7 +2672,7 @@ function getLatestProject(projects: Project[]) {
 
 Sorts the entire array just to find the maximum value.
 
-**Incorrect (O(n log n) - sort for oldest and newest):**
+### Incorrect (O(n log n) - sort for oldest and newest):
 
 ```typescript
 function getOldestAndNewest(projects: Project[]) {
@@ -2683,7 +2683,7 @@ function getOldestAndNewest(projects: Project[]) {
 
 Still sorts unnecessarily when only min/max are needed.
 
-**Correct (O(n) - single loop):**
+### Correct (O(n) - single loop):
 
 ```typescript
 function getLatestProject(projects: Project[]) {
@@ -2717,7 +2717,7 @@ function getOldestAndNewest(projects: Project[]) {
 
 Single pass through the array, no copying, no sorting.
 
-**Alternative: Math.min/Math.max for small arrays**
+### Alternative: Math.min/Math.max for small arrays
 
 ```typescript
 const numbers = [5, 2, 8, 1, 9]
@@ -2729,18 +2729,18 @@ This works for small arrays, but can be slower or just throw an error for very l
 
 ### 7.11 Use Set/Map for O(1) Lookups
 
-**Impact: LOW-MEDIUM (O(n) to O(1))**
+### Impact: LOW-MEDIUM (O(n) to O(1))
 
 Convert arrays to Set/Map for repeated membership checks.
 
-**Incorrect (O(n) per check):**
+### Incorrect (O(n) per check):
 
 ```typescript
 const allowedIds = ['a', 'b', 'c', ...]
 items.filter(item => allowedIds.includes(item.id))
 ```
 
-**Correct (O(1) per check):**
+### Correct (O(1) per check):
 
 ```typescript
 const allowedIds = new Set(['a', 'b', 'c', ...])
@@ -2749,11 +2749,11 @@ items.filter(item => allowedIds.has(item.id))
 
 ### 7.12 Use toSorted() Instead of sort() for Immutability
 
-**Impact: MEDIUM-HIGH (prevents mutation bugs in React state)**
+### Impact: MEDIUM-HIGH (prevents mutation bugs in React state)
 
 `.sort()` mutates the array in place, which can cause bugs with React state and props. Use `.toSorted()` to create a new sorted array without mutation.
 
-**Incorrect: mutates original array**
+### Incorrect: mutates original array
 
 ```typescript
 function UserList({ users }: { users: User[] }) {
@@ -2766,7 +2766,7 @@ function UserList({ users }: { users: User[] }) {
 }
 ```
 
-**Correct: creates new array**
+### Correct: creates new array
 
 ```typescript
 function UserList({ users }: { users: User[] }) {
@@ -2779,13 +2779,13 @@ function UserList({ users }: { users: User[] }) {
 }
 ```
 
-**Why this matters in React:**
+### Why this matters in React:
 
 1. Props/state mutations break React's immutability model - React expects props and state to be treated as read-only
 
 2. Causes stale closure bugs - Mutating arrays inside closures (callbacks, effects) can lead to unexpected behavior
 
-**Browser support: fallback for older browsers**
+### Browser support: fallback for older browsers
 
 ```typescript
 // Fallback for older browsers
@@ -2794,7 +2794,7 @@ const sorted = [...items].sort((a, b) => a.value - b.value)
 
 `.toSorted()` is available in all modern browsers (Chrome 110+, Safari 16+, Firefox 115+, Node.js 20+). For older environments, use spread operator:
 
-**Other immutable array methods:**
+### Other immutable array methods:
 
 - `.toSorted()` - immutable sort
 
@@ -2808,17 +2808,17 @@ const sorted = [...items].sort((a, b) => a.value - b.value)
 
 ## 8. Advanced Patterns
 
-**Impact: LOW**
+### Impact: LOW
 
 Advanced patterns for specific cases that require careful implementation.
 
 ### 8.1 Initialize App Once, Not Per Mount
 
-**Impact: LOW-MEDIUM (avoids duplicate init in development)**
+### Impact: LOW-MEDIUM (avoids duplicate init in development)
 
 Do not put app-wide initialization that must run once per app load inside `useEffect([])` of a component. Components can remount and effects will re-run. Use a module-level guard or top-level init in the entry module instead.
 
-**Incorrect: runs twice in dev, re-runs on remount**
+### Incorrect: runs twice in dev, re-runs on remount
 
 ```tsx
 function Comp() {
@@ -2831,7 +2831,7 @@ function Comp() {
 }
 ```
 
-**Correct: once per app load**
+### Correct: once per app load
 
 ```tsx
 let didInit = false
@@ -2852,11 +2852,11 @@ Reference: [https://react.dev/learn/you-might-not-need-an-effect#initializing-th
 
 ### 8.2 Store Event Handlers in Refs
 
-**Impact: LOW (stable subscriptions)**
+### Impact: LOW (stable subscriptions)
 
 Store callbacks in refs when used in effects that shouldn't re-subscribe on callback changes.
 
-**Incorrect: re-subscribes on every render**
+### Incorrect: re-subscribes on every render
 
 ```tsx
 function useWindowEvent(event: string, handler: (e) => void) {
@@ -2867,7 +2867,7 @@ function useWindowEvent(event: string, handler: (e) => void) {
 }
 ```
 
-**Correct: stable subscription**
+### Correct: stable subscription
 
 ```tsx
 import { useEffectEvent } from 'react'
@@ -2882,17 +2882,17 @@ function useWindowEvent(event: string, handler: (e) => void) {
 }
 ```
 
-**Alternative: use `useEffectEvent` if you're on latest React:**
+### Alternative: use `useEffectEvent` if you're on latest React:
 
 `useEffectEvent` provides a cleaner API for the same pattern: it creates a stable function reference that always calls the latest version of the handler.
 
 ### 8.3 useEffectEvent for Stable Callback Refs
 
-**Impact: LOW (prevents effect re-runs)**
+### Impact: LOW (prevents effect re-runs)
 
 Access latest values in callbacks without adding them to dependency arrays. Prevents effect re-runs while avoiding stale closures.
 
-**Incorrect: effect re-runs on every callback change**
+### Incorrect: effect re-runs on every callback change
 
 ```tsx
 function SearchInput({ onSearch }: { onSearch: (q: string) => void }) {
@@ -2905,7 +2905,7 @@ function SearchInput({ onSearch }: { onSearch: (q: string) => void }) {
 }
 ```
 
-**Correct: using React's useEffectEvent**
+### Correct: using React's useEffectEvent
 
 ```tsx
 import { useEffectEvent } from 'react';

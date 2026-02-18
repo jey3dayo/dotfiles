@@ -9,7 +9,7 @@ tags: rendering, transitions, useTransition, loading, state
 
 Use `useTransition` instead of manual `useState` for loading states. This provides built-in `isPending` state and automatically manages transitions.
 
-**Incorrect (manual loading state):**
+### Incorrect (manual loading state):
 
 ```tsx
 function SearchResults() {
@@ -35,7 +35,7 @@ function SearchResults() {
 }
 ```
 
-**Correct (useTransition with built-in pending state):**
+### Correct (useTransition with built-in pending state):
 
 ```tsx
 import { useTransition, useState } from 'react'
@@ -65,11 +65,11 @@ function SearchResults() {
 }
 ```
 
-**Benefits:**
+### Benefits:
 
-- **Automatic pending state**: No need to manually manage `setIsLoading(true/false)`
-- **Error resilience**: Pending state correctly resets even if the transition throws
-- **Better responsiveness**: Keeps the UI responsive during updates
-- **Interrupt handling**: New transitions automatically cancel pending ones
+- Automatic pending state: No need to manually manage `setIsLoading(true/false)`
+- Error resilience: Pending state correctly resets even if the transition throws
+- Better responsiveness: Keeps the UI responsive during updates
+- Interrupt handling: New transitions automatically cancel pending ones
 
 Reference: [useTransition](https://react.dev/reference/react/useTransition)

@@ -210,10 +210,10 @@ Freshness, update frequency, and sustainability
 
 Check based on doc type:
 
-- **Operations docs**: Review every 3 months
-- **Reference docs**: Review every 6 months
-- **Architecture docs**: Review every 12 months
-- **Historical docs**: Archive if >12 months old
+- Operations docs: Review every 3 months
+- Reference docs: Review every 6 months
+- Architecture docs: Review every 12 months
+- Historical docs: Archive if >12 months old
 
 ### Sustainability
 
@@ -431,9 +431,9 @@ Projects can provide real-world validation examples in:
 
 ## Integration with Other Frameworks
 
-- **Metadata template**: Validate against project metadata format
-- **Tag system**: Check tags against project taxonomy
-- **Size guidelines**: Validate size and suggest splits if needed
+- Metadata template: Validate against project metadata format
+- Tag system: Check tags against project taxonomy
+- Size guidelines: Validate size and suggest splits if needed
 
 ---
 

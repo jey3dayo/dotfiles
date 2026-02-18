@@ -275,7 +275,7 @@ The standardized plugin maintains full backward compatibility:
 - **Default configuration** matches legacy structure (`.kiro/`)
 - **All existing commands** work without changes
 - **Existing specs** are recognized automatically
-- **No forced migration** - legacy projects work as-is
+- No forced migration - legacy projects work as-is
 
 ## Best Practices
 

@@ -158,9 +158,9 @@ Record execution results and improve future accuracy:
 
 This command integrates with shared utilities:
 
-- **integration-framework**: TaskContext標準化とCommunication Busパターン
-- **agents-only**: Agent selection logic and capability matrix
-- **project-detector**: Project type detection (referenced from integration-framework)
+- integration-framework: TaskContext標準化とCommunication Busパターン
+- agents-only: Agent selection logic and capability matrix
+- project-detector: Project type detection (referenced from integration-framework)
 
 ### Skill Integration
 

@@ -18,7 +18,7 @@ allowed-tools: Task, Bash(gh:*), Read, Grep, Glob
 - このシステムはローカルでのレビューのみを実行します
 - GitHub PRへのコメント投稿機能はありません
 - レビュー結果はローカルに表示されます
-- **すべてのレビュー結果は日本語で出力されます**
+- すべてのレビュー結果は日本語で出力されます
 
 ### 署名なしポリシー
 
@@ -210,11 +210,11 @@ GitHub PRのレビューコメントを自動修正：
 
 code-reviewスキルは以下のスキルを自動的に統合します：
 
-- **typescript**: TypeScript固有の観点（型安全性、strictモード、type guards）
-- **react**: React固有の観点（hooks、パフォーマンス、コンポーネント設計）
-- **golang**: Go固有の観点（error handling、concurrency、idioms）
-- **security**: セキュリティ観点（入力検証、認証・認可、データ保護）
-- **clean-architecture**: アーキテクチャ観点（層分離、依存規則、ドメインモデリング）
+- typescript: TypeScript固有の観点（型安全性、strictモード、type guards）
+- react: React固有の観点（hooks、パフォーマンス、コンポーネント設計）
+- golang: Go固有の観点（error handling、concurrency、idioms）
+- security: セキュリティ観点（入力検証、認証・認可、データ保護）
+- clean-architecture: アーキテクチャ観点（層分離、依存規則、ドメインモデリング）
 
 プロジェクトタイプに応じて適切なスキルが自動選択されます。
 

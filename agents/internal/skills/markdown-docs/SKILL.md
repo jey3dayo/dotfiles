@@ -20,24 +20,24 @@ Assess the clarity, consistency, and readability of documentation:
 
 #### Clarity
 
-- **Concise language**: Check for clear, straightforward explanations
-- **Technical term definitions**: Verify jargon is properly explained
-- **Ambiguity elimination**: Identify vague or unclear statements
-- **One concept per sentence**: Ensure focused, digestible content
+- Concise language: Check for clear, straightforward explanations
+- Technical term definitions: Verify jargon is properly explained
+- Ambiguity elimination: Identify vague or unclear statements
+- One concept per sentence: Ensure focused, digestible content
 
 #### Consistency
 
-- **Terminology unification**: Verify consistent use of terms
-- **Tone consistency**: Check unified writing style (formal/informal)
-- **Notation consistency**: Ensure unified format (e.g., katakana vs. English)
-- **Formatting consistency**: Verify uniform structure and styling
+- Terminology unification: Verify consistent use of terms
+- Tone consistency: Check unified writing style (formal/informal)
+- Notation consistency: Ensure unified format (e.g., katakana vs. English)
+- Formatting consistency: Verify uniform structure and styling
 
 #### Readability
 
-- **Appropriate paragraphing**: Check logical content division
-- **Effective bullet lists**: Review list usage for clarity
-- **Information emphasis**: Verify important content stands out
-- **Visual hierarchy**: Ensure clear structure through formatting
+- Appropriate paragraphing: Check logical content division
+- Effective bullet lists: Review list usage for clarity
+- Information emphasis: Verify important content stands out
+- Visual hierarchy: Ensure clear structure through formatting
 
 ### 2. Document Structure
 
@@ -45,24 +45,24 @@ Evaluate the organization and architecture of information:
 
 #### Information Architecture
 
-- **Logical flow**: Check natural progression of information
-- **Appropriate heading hierarchy**: Verify `#`, `##`, `###` usage
-- **Section relationships**: Ensure logical connections between sections
-- **Table of contents**: Assess need for and accuracy of TOC
+- Logical flow: Check natural progression of information
+- Appropriate heading hierarchy: Verify `#`, `##`, `###` usage
+- Section relationships: Ensure logical connections between sections
+- Table of contents: Assess need for and accuracy of TOC
 
 #### Completeness
 
-- **Comprehensive coverage**: Verify all necessary information included
-- **Prerequisites statement**: Check clear specification of requirements
-- **Limitations documentation**: Ensure constraints are documented
-- **Troubleshooting information**: Review problem-solving guidance
+- Comprehensive coverage: Verify all necessary information included
+- Prerequisites statement: Check clear specification of requirements
+- Limitations documentation: Ensure constraints are documented
+- Troubleshooting information: Review problem-solving guidance
 
 #### Navigation
 
-- **Internal linking**: Assess appropriate cross-references
-- **External references**: Check links to related documentation
-- **Searchable keywords**: Verify strategic keyword placement
-- **Clear section markers**: Ensure easy navigation
+- Internal linking: Assess appropriate cross-references
+- External references: Check links to related documentation
+- Searchable keywords: Verify strategic keyword placement
+- Clear section markers: Ensure easy navigation
 
 ### 3. Technical Accuracy
 
@@ -70,17 +70,17 @@ Verify the correctness and utility of technical content:
 
 #### Content Accuracy
 
-- **Technical correctness**: Validate accuracy of technical information
-- **Code example verification**: Ensure examples work as documented
-- **Version information**: Check clear version specifications
-- **Currency of information**: Verify documentation is up-to-date
+- Technical correctness: Validate accuracy of technical information
+- Code example verification: Ensure examples work as documented
+- Version information: Check clear version specifications
+- Currency of information: Verify documentation is up-to-date
 
 #### Practicality
 
-- **Executable procedures**: Ensure step-by-step instructions work
-- **Concrete examples**: Verify practical, working examples
-- **Edge case coverage**: Check unusual scenario documentation
-- **Best practices**: Ensure recommended approaches are included
+- Executable procedures: Ensure step-by-step instructions work
+- Concrete examples: Verify practical, working examples
+- Edge case coverage: Check unusual scenario documentation
+- Best practices: Ensure recommended approaches are included
 
 ### 4. Reader Experience
 
@@ -88,17 +88,17 @@ Assess documentation from the user's perspective:
 
 #### Target Audience
 
-- **Audience level specification**: Clear indication of intended readers
-- **Prerequisite knowledge**: Explicit statement of required background
-- **Technical term glossary**: Definitions for specialized vocabulary
-- **Learning curve consideration**: Appropriate complexity progression
+- Audience level specification: Clear indication of intended readers
+- Prerequisite knowledge: Explicit statement of required background
+- Technical term glossary: Definitions for specialized vocabulary
+- Learning curve consideration: Appropriate complexity progression
 
 #### Usability
 
-- **Quick start guide**: Presence of fast on-ramp for users
-- **FAQ section**: Common questions and answers
-- **Code samples and configurations**: Practical, copy-paste examples
-- **Visual aids**: Effective use of diagrams and illustrations
+- Quick start guide: Presence of fast on-ramp for users
+- FAQ section: Common questions and answers
+- Code samples and configurations: Practical, copy-paste examples
+- Visual aids: Effective use of diagrams and illustrations
 
 ### 5. Markdown Usage
 
@@ -106,17 +106,17 @@ Evaluate proper and effective Markdown syntax:
 
 #### Syntax Correctness
 
-- **Heading levels**: Appropriate use of `#` hierarchy
-- **Link formatting**: Correct link syntax and functionality
-- **Code block language specification**: Proper ` ```language ` usage
-- **Table structure**: Well-formed table syntax
+- Heading levels: Appropriate use of `#` hierarchy
+- Link formatting: Correct link syntax and functionality
+- Code block language specification: Proper ` ```language ` usage
+- Table structure: Well-formed table syntax
 
 #### Advanced Features
 
-- **Diagram insertion**: Appropriate visual element inclusion
-- **Alert/notice boxes**: Effective use of callouts for important information
-- **Task lists**: Proper checkbox syntax when applicable
-- **Collapsible sections**: Use of `<details>` for optional content
+- Diagram insertion: Appropriate visual element inclusion
+- Alert/notice boxes: Effective use of callouts for important information
+- Task lists: Proper checkbox syntax when applicable
+- Collapsible sections: Use of `<details>` for optional content
 
 ## 5-Level Quality Assessment
 
@@ -227,31 +227,31 @@ Provide structured evaluation using this rating system:
 
 ### Structure Best Practices
 
-- **Start with overview**: Begin with purpose and scope
-- **Progressive disclosure**: Move from simple to complex
-- **Consistent sections**: Use standard structure (Installation, Usage, API, etc.)
-- **Clear hierarchy**: Maintain logical heading levels
+- Start with overview: Begin with purpose and scope
+- Progressive disclosure: Move from simple to complex
+- Consistent sections: Use standard structure (Installation, Usage, API, etc.)
+- Clear hierarchy: Maintain logical heading levels
 
 ### Writing Best Practices
 
-- **Active voice**: Use direct, active constructions
-- **Present tense**: Write in present tense for clarity
-- **Second person**: Address reader directly ("you can...")
-- **Imperative mood**: Use commands for instructions ("Run the command...")
+- Active voice: Use direct, active constructions
+- Present tense: Write in present tense for clarity
+- Second person: Address reader directly ("you can...")
+- Imperative mood: Use commands for instructions ("Run the command...")
 
 ### Technical Best Practices
 
-- **Tested examples**: Verify all code examples work
-- **Version specification**: Document tested versions
-- **Platform notes**: Specify OS/environment requirements
-- **Copy-paste ready**: Provide ready-to-use code snippets
+- Tested examples: Verify all code examples work
+- Version specification: Document tested versions
+- Platform notes: Specify OS/environment requirements
+- Copy-paste ready: Provide ready-to-use code snippets
 
 ### Maintenance Best Practices
 
-- **Update timestamps**: Note last revision date
-- **Change logging**: Track significant updates
-- **Link validation**: Regularly check all links
-- **User feedback**: Incorporate common questions
+- Update timestamps: Note last revision date
+- Change logging: Track significant updates
+- Link validation: Regularly check all links
+- User feedback: Incorporate common questions
 
 ## Review Workflow
 
@@ -284,31 +284,31 @@ When helping create new documentation:
 
 ### README Files
 
-- **Essential sections**: Description, Installation, Usage, Contributing, License
-- **Quick start**: Immediate value for new users
-- **Badges**: Build status, coverage, version information
-- **Visual appeal**: Screenshots or demos when applicable
+- Essential sections: Description, Installation, Usage, Contributing, License
+- Quick start: Immediate value for new users
+- Badges: Build status, coverage, version information
+- Visual appeal: Screenshots or demos when applicable
 
 ### API Documentation
 
-- **Endpoint documentation**: Clear parameter and response descriptions
-- **Authentication**: Security and credential information
-- **Examples**: Request and response samples
-- **Error codes**: Comprehensive error documentation
+- Endpoint documentation: Clear parameter and response descriptions
+- Authentication: Security and credential information
+- Examples: Request and response samples
+- Error codes: Comprehensive error documentation
 
 ### Guides and Tutorials
 
-- **Learning objectives**: Clear statement of what readers will learn
-- **Step-by-step**: Detailed, sequential instructions
-- **Checkpoints**: Verification steps along the way
-- **Troubleshooting**: Common issues and solutions
+- Learning objectives: Clear statement of what readers will learn
+- Step-by-step: Detailed, sequential instructions
+- Checkpoints: Verification steps along the way
+- Troubleshooting: Common issues and solutions
 
 ### Technical Specifications
 
-- **Precision**: Exact, unambiguous language
-- **Completeness**: Comprehensive coverage of all details
-- **Examples**: Clarifying illustrations of specs
-- **References**: Links to related specifications
+- Precision: Exact, unambiguous language
+- Completeness: Comprehensive coverage of all details
+- Examples: Clarifying illustrations of specs
+- References: Links to related specifications
 
 ## 🤖 Agent Integration
 
@@ -316,24 +316,24 @@ When helping create new documentation:
 
 ### Code-Reviewer Agent（ドキュメントレビュー時）
 
-- **提供内容**: Markdownドキュメント品質評価、ライティング改善提案
-- **タイミング**: README、技術ドキュメントレビュー時
-- **コンテキスト**:
+- 提供内容: Markdownドキュメント品質評価、ライティング改善提案
+- タイミング: README、技術ドキュメントレビュー時
+- コンテキスト:
   - ⭐️5段階評価（構造、内容品質、読みやすさ、技術正確性）
   - ドキュメントタイプ別評価基準（README, API docs, Guides）
   - 改善提案と優先度付け
 
 ### Orchestrator Agent
 
-- **提供内容**: ドキュメント作成戦略、構造設計
-- **タイミング**: 新規ドキュメント作成・大規模改善時
-- **コンテキスト**: ドキュメントタイプ選択、構造パターン、セクション設計
+- 提供内容: ドキュメント作成戦略、構造設計
+- タイミング: 新規ドキュメント作成・大規模改善時
+- コンテキスト: ドキュメントタイプ選択、構造パターン、セクション設計
 
 ### Docs-Manager Agent
 
-- **提供内容**: Markdownファイルの整合性確保、リンク管理
-- **タイミング**: ドキュメント構造最適化時
-- **コンテキスト**: リンク切れ検出、メタデータ管理、ファイル配置
+- 提供内容: Markdownファイルの整合性確保、リンク管理
+- タイミング: ドキュメント構造最適化時
+- コンテキスト: リンク切れ検出、メタデータ管理、ファイル配置
 
 ### 自動ロード条件
 
@@ -362,9 +362,9 @@ TaskContext作成
 
 ## Integration with Related Skills
 
-- **slide-docs skill**: For presenting documentation content as slides
-- **deckset skill**: For creating documentation presentations
-- **docs-manager skill**: For maintaining documentation file organization and link integrity
+- slide-docs skill: For presenting documentation content as slides
+- deckset skill: For creating documentation presentations
+- docs-manager skill: For maintaining documentation file organization and link integrity
 
 ## 詳細リファレンス
 

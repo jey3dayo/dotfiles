@@ -200,10 +200,10 @@ Claude Codeでは、スラッシュコマンド（`/`で始まる）を使用し
 
 ## 次のステップ
 
-- **詳細ガイド**: `guides/navigation-tips.md`
-- **統合フレームワーク**: `integration-framework` スキル
-- **コードレビュー**: `code-review` スキル
-- **Spec-Driven Development**: `cc-sdd` スキル
+- 詳細ガイド: `guides/navigation-tips.md`
+- 統合フレームワーク: `integration-framework` スキル
+- コードレビュー: `code-review` スキル
+- Spec-Driven Development: `cc-sdd` スキル
 
 ---
 

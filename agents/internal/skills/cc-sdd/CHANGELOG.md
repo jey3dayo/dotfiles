@@ -63,8 +63,8 @@ See [MIGRATION.md](MIGRATION.md) for detailed migration instructions from legacy
 
 ### Version Numbering
 
-- **1.x.x**: Standardized plugin with configurable structure
-- **0.x.x**: Legacy skill with hardcoded `.kiro/` paths
+- 1.x.x: Standardized plugin with configurable structure
+- 0.x.x: Legacy skill with hardcoded `.kiro/` paths
 
 ### Upgrade Path
 

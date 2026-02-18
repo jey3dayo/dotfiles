@@ -9,7 +9,7 @@ tags: bundle, dynamic-import, code-splitting, next-dynamic
 
 Use `next/dynamic` to lazy-load large components not needed on initial render.
 
-**Incorrect (Monaco bundles with main chunk ~300KB):**
+### Incorrect (Monaco bundles with main chunk ~300KB):
 
 ```tsx
 import { MonacoEditor } from './monaco-editor'
@@ -19,7 +19,7 @@ function CodePanel({ code }: { code: string }) {
 }
 ```
 
-**Correct (Monaco loads on demand):**
+### Correct (Monaco loads on demand):
 
 ```tsx
 import dynamic from 'next/dynamic'

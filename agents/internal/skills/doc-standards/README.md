@@ -10,10 +10,10 @@ This skill provides a flexible framework for enforcing documentation standards a
 
 ### Key Features
 
-- **Metadata template application** - Standardized headers with validation
-- **Tag system guidance** - 3-tier tag taxonomy support
-- **Size management** - Automatic threshold monitoring and split suggestions
-- **Quality validation** - Comprehensive quality checks
+- Metadata template application - Standardized headers with validation
+- Tag system guidance - 3-tier tag taxonomy support
+- Size management - Automatic threshold monitoring and split suggestions
+- Quality validation - Comprehensive quality checks
 
 ### Configuration Discovery
 
@@ -455,9 +455,9 @@ See `references/config-schema.md` for "Migration" section.
 
 ### Documentation
 
-- **SKILL.md**: Complete skill capabilities and usage
-- **references/config-schema.md**: Full configuration reference
-- **references/**: Framework documentation for each component
+- SKILL.md: Complete skill capabilities and usage
+- references/config-schema.md: Full configuration reference
+- references/: Framework documentation for each component
 
 ### Getting Help
 

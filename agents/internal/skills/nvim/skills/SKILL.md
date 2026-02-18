@@ -75,27 +75,27 @@ This skill focuses on **dotfiles-specific patterns and review criteria**.
 
 ### LSP Integration Quality
 
-- **5⭐**: 15+ languages, mason auto-install, pcall wrapping, full features
-- **4⭐**: 10-14 languages, mason integration, basic error handling
-- **3⭐**: 5-9 languages, manual setup, partial features
-- **2⭐**: <5 languages, manual installation, basic setup
-- **1⭐**: No LSP or broken configuration
+- 5⭐: 15+ languages, mason auto-install, pcall wrapping, full features
+- 4⭐: 10-14 languages, mason integration, basic error handling
+- 3⭐: 5-9 languages, manual setup, partial features
+- 2⭐: <5 languages, manual installation, basic setup
+- 1⭐: No LSP or broken configuration
 
 ### Plugin Ecosystem Health
 
-- **5⭐**: lazy.nvim, 90%+ event/cmd/ft triggers, lock file tracked
-- **4⭐**: lazy.nvim, 70%+ lazy-loaded, documented
-- **3⭐**: packer, 50%+ lazy-loaded, some docs
-- **2⭐**: vim-plug, minimal lazy loading, no docs
-- **1⭐**: Legacy manager, no lazy loading
+- 5⭐: lazy.nvim, 90%+ event/cmd/ft triggers, lock file tracked
+- 4⭐: lazy.nvim, 70%+ lazy-loaded, documented
+- 3⭐: packer, 50%+ lazy-loaded, some docs
+- 2⭐: vim-plug, minimal lazy loading, no docs
+- 1⭐: Legacy manager, no lazy loading
 
 ### 2025 Best Practices
 
-- **5⭐**: Complete Lua, lazy.nvim, mason LSP, AI integration
-- **4⭐**: Complete Lua, lazy.nvim, mason LSP
-- **3⭐**: Mostly Lua, modern plugin manager
-- **2⭐**: Mixed Lua/Vimscript, legacy manager
-- **1⭐**: Vimscript-based configuration
+- 5⭐: Complete Lua, lazy.nvim, mason LSP, AI integration
+- 4⭐: Complete Lua, lazy.nvim, mason LSP
+- 3⭐: Mostly Lua, modern plugin manager
+- 2⭐: Mixed Lua/Vimscript, legacy manager
+- 1⭐: Vimscript-based configuration
 
 ## Review Workflow (Dotfiles-Specific)
 
@@ -143,9 +143,9 @@ nvim/
 
 Check consistency with:
 
-- **WezTerm**: Gruvbox theme, Nerd Font compatibility
-- **Zsh**: Shared FZF keybindings, environment variables
-- **Git**: Editor integration (git commit, git rebase)
+- WezTerm: Gruvbox theme, Nerd Font compatibility
+- Zsh: Shared FZF keybindings, environment variables
+- Git: Editor integration (git commit, git rebase)
 
 Refer to `.claude/rules/tools/` for cross-tool patterns.
 
@@ -188,18 +188,18 @@ vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = 'Fin
 
 ### Code-Reviewer Agent
 
-- **提供**: ⭐️5段階評価、Dotfiles構造評価、lazy loading検証、AI統合評価
-- **タイミング**: Neovim設定レビュー時
+- 提供: ⭐️5段階評価、Dotfiles構造評価、lazy loading検証、AI統合評価
+- タイミング: Neovim設定レビュー時
 
 ### Orchestrator Agent
 
-- **提供**: 設定最適化計画、プラグイン選定、パフォーマンス改善
-- **タイミング**: 設定改善・最適化時
+- 提供: 設定最適化計画、プラグイン選定、パフォーマンス改善
+- タイミング: 設定改善・最適化時
 
 ### Error-Fixer Agent
 
-- **提供**: 設定エラー診断、プラグイン競合解決、Lua構文修正
-- **タイミング**: 起動エラー・プラグインエラー時
+- 提供: 設定エラー診断、プラグイン競合解決、Lua構文修正
+- タイミング: 起動エラー・プラグインエラー時
 
 ### 自動ロード条件
 
@@ -209,10 +209,10 @@ vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = 'Fin
 
 ## Integration with Related Skills
 
-- **code-review**: 全体的な品質評価フレームワーク
-- **typescript**: TypeScript LSP設定レビュー
-- **semantic-analysis**: プラグイン依存関係分析
-- **dotfiles-integration**: クロスツール連携（Gruvbox、ターミナル統合）
+- code-review: 全体的な品質評価フレームワーク
+- typescript: TypeScript LSP設定レビュー
+- semantic-analysis: プラグイン依存関係分析
+- dotfiles-integration: クロスツール連携（Gruvbox、ターミナル統合）
 
 ## Reference Material
 

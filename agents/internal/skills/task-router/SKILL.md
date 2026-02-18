@@ -88,10 +88,10 @@ allowed-tools: Task, Read, Grep, Glob, WebFetch
 
 #### 統合される情報
 
-- **プロジェクト情報**: タイプ、技術スタック、構造、規約
-- **実行履歴**: 類似タスクの成功率、平均時間、推奨エージェント
-- **環境情報**: リソース制約、利用可能なツール
-- **ライブラリドキュメント**: Context7による最新API情報
+- プロジェクト情報: タイプ、技術スタック、構造、規約
+- 実行履歴: 類似タスクの成功率、平均時間、推奨エージェント
+- 環境情報: リソース制約、利用可能なツール
+- ライブラリドキュメント: Context7による最新API情報
 
 #### Context7統合
 
@@ -183,10 +183,10 @@ context = enhance_context_with_docs(context, detected_libraries)
 
 タスクの内容から以下の焦点領域を自動的に決定します。
 
-- **root_cause_analysis**: 「なぜ」「原因」「理由」を含む場合
-- **design_decisions**: 「設計」「アーキテクチャ」「パターン」を含む場合
-- **optimization_strategies**: 「最適」「改善」「パフォーマンス」を含む場合
-- **implementation_strategies**: 「実装」「方法」「アプローチ」を含む場合
+- root_cause_analysis: 「なぜ」「原因」「理由」を含む場合
+- design_decisions: 「設計」「アーキテクチャ」「パターン」を含む場合
+- optimization_strategies: 「最適」「改善」「パフォーマンス」を含む場合
+- implementation_strategies: 「実装」「方法」「アプローチ」を含む場合
 
 ## 🎯 Usage Examples
 
@@ -260,9 +260,9 @@ context = enhance_context_with_docs(context, detected_libraries)
 
 類似タスクから以下を生成します。
 
-- **成功率**: 同様のタスクの成功確率
-- **期待時間**: 平均実行時間
-- **推奨エージェント**: 最も高いパフォーマンスを示したエージェント
+- 成功率: 同様のタスクの成功確率
+- 期待時間: 平均実行時間
+- 推奨エージェント: 最も高いパフォーマンスを示したエージェント
 
 ```markdown
 ## 🧠 Learning Insights
@@ -283,15 +283,15 @@ context = enhance_context_with_docs(context, detected_libraries)
 
 ### 統合フレームワーク
 
-- **integration-framework**: TaskContext標準化、Communication Busパターン
-- **agents-only**: エージェント選択ロジックと能力マトリックス
-- **mcp-tools**: Context7やその他MCPサーバー統合
+- integration-framework: TaskContext標準化、Communication Busパターン
+- agents-only: エージェント選択ロジックと能力マトリックス
+- mcp-tools: Context7やその他MCPサーバー統合
 
 ### コマンド統合
 
-- **TodoWrite**: 実行後のフォローアップタスクを自動追加
-- **Learnings**: 実行から得られた知見を自動記録
-- **Review**: 実装タスク完了後の自動レビュー起動
+- TodoWrite: 実行後のフォローアップタスクを自動追加
+- Learnings: 実行から得られた知見を自動記録
+- Review: 実装タスク完了後の自動レビュー起動
 
 ### 技術スタック別スキル (自動検出)
 

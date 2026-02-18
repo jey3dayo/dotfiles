@@ -10,16 +10,16 @@ GPU加速対応のLuaベースモジュラーターミナル設定です。
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/wezterm.md`](../../.claude/rules/tools/wezterm.md) で管理されています。
 
-- **目的**: Claude AIが常に参照する簡潔なルール（26-31行）
-- **適用範囲**: YAML frontmatter `paths:` で定義
-- **関係**: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
+- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 適用範囲: YAML frontmatter `paths:` で定義
+- 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
 ## 主要機能
 
-- **パフォーマンス**: WebGpu GPU加速
-- **UI**: Gruvboxテーマ、92%透明度、カスタムタブスタイル
-- **多重化**: Tmuxスタイルリーダーキー（`Ctrl+x`）
-- **コピーモード**: Vim風ナビゲーション・テキスト選択
+- パフォーマンス: WebGpu GPU加速
+- UI: Gruvboxテーマ、92%透明度、カスタムタブスタイル
+- 多重化: Tmuxスタイルリーダーキー（`Ctrl+x`）
+- コピーモード: Vim風ナビゲーション・テキスト選択
 
 ## 設定構造
 
@@ -105,10 +105,10 @@ end
 
 ## 統合機能
 
-- **統一テーマ**: 他dotfilesツールとのGruvbox統一
-- **透明背景**: Tmux・シェルとのシームレス統合
-- **GPU最適化**: 高速描画・低レイテンシー操作
-- **クロスプラットフォーム**: macOS/Windows/Linux対応
+- 統一テーマ: 他dotfilesツールとのGruvbox統一
+- 透明背景: Tmux・シェルとのシームレス統合
+- GPU最適化: 高速描画・低レイテンシー操作
+- クロスプラットフォーム: macOS/Windows/Linux対応
 
 ## トラブルシューティング
 

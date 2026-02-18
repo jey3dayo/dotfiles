@@ -35,7 +35,7 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 以下のCommandsファイルに廃止警告を追加：
 
-**Phase 3関連（6ファイル）**:
+#### Phase 3関連（6ファイル）
 
 1. `commands/commit.md` → `git-automation`スキル
 2. `commands/create-pr.md` → `git-automation`スキル
@@ -44,7 +44,7 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 5. `commands/clean/full.md` → `project-maintenance`スキル
 6. `commands/clean/files.md` → `project-maintenance`スキル
 
-**廃止警告内容**:
+#### 廃止警告内容
 
 - 移行先スキル名とパス
 - 新スキルの主要機能
@@ -52,7 +52,7 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 ### Phase 5 移行済みCommands削除（✅ 完了）
 
-**Phase 2関連（10ファイル）**:
+#### Phase 2関連（10ファイル）
 
 1. `commands/learnings.md` → learnings-knowledge
 2. `commands/polish.md` → code-quality-automation
@@ -97,9 +97,9 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 ### Phase 6 Commands完全削除（✅ 完了）
 
-**全Commandsディレクトリ削除（50ファイル）**:
+#### 全Commandsディレクトリ削除（50ファイル）
 
-**トップレベル（32ファイル）**:
+#### トップレベル（32ファイル）
 
 - spec-_, validate-_, steering-\* (kiro重複)
 - agent-selector.md, claude-metadata-analyzer.md (統合関連)
@@ -110,12 +110,12 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 - contributing.md, migration-guide.md, README.md (ドキュメント)
 - その他
 
-**shared/（18ファイル）**:
+#### shared/（18ファイル）
 
 - \*.py: agent_selector.py, project_detector.py, ci_operations.py等
 - \*.md: 各種統合ドキュメント
 
-**削除理由**:
+#### 削除理由
 
 - 主要機能は13スキルに完全移行済み
 - 統合関連ドキュメントは integration-framework スキルに統合
@@ -128,26 +128,26 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 ### 総合
 
-- **移行完了スキル数**: 13件（Foundation 3件 + Core 6件 + Secondary 4件）
-- **元のコマンド行数**: 2,020行（Phase 3分のみ）
-- **新スキル総行数**: 32,425行（Phase 1-3合計）
-- **拡張率**: 16.1倍（体系的仕様化と実用例追加）
-- **Progressive Disclosure効率**: 初回ロード平均8.8%（91.2%トークン削減）
+- 移行完了スキル数: 13件（Foundation 3件 + Core 6件 + Secondary 4件）
+- 元のコマンド行数: 2,020行（Phase 3分のみ）
+- 新スキル総行数: 32,425行（Phase 1-3合計）
+- 拡張率: 16.1倍（体系的仕様化と実用例追加）
+- Progressive Disclosure効率: 初回ロード平均8.8%（91.2%トークン削減）
 
 ### Phase別詳細
 
-**Phase 1** (Foundation):
+#### Phase 1 (Foundation)
 
 - agents-only: 1,663行
 - docs-index: 862行
 - integration-framework: 統合実施
 
-**Phase 2** (Core Workflows):
+#### Phase 2 (Core Workflows)
 
 - 総行数: 17,521行
 - 平均トークン削減: 91.9%
 
-**Phase 3** (Secondary):
+#### Phase 3 (Secondary)
 
 - 総行数: 14,904行
 - 平均トークン削減: 69%
@@ -158,7 +158,7 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 **必須**: 新規機能は**Skillsとして実装**してください。Commandsとしての実装は禁止です。
 
-**理由**:
+#### 理由
 
 - Commands廃止予定のため、新規Commandsは技術的負債となる
 - Skillsの方が機能的に優れている（Progressive Disclosure、サポートファイル、高度な制御）
@@ -181,11 +181,11 @@ Commandsシステムは**廃止予定**です。現在、Skillsシステムへ�
 
 ### Skillsの利点
 
-1. **Progressive Disclosure**: 初回ロード軽量（<20KB）、詳細は必要時にロード
-2. **サポートファイル**: ディレクトリ構造でテンプレート、サンプル、スクリプトを整理
-3. **呼び出し制御**: `disable-model-invocation`, `user-invocable`で実行タイミングを細かく制御
-4. **Agent Skills標準**: 複数のAIツール間で相互運用可能
-5. **動的コンテキスト注入**: `` `!command` ``でリアルタイムデータ取得
+1. Progressive Disclosure: 初回ロード軽量（<20KB）、詳細は必要時にロード
+2. サポートファイル: ディレクトリ構造でテンプレート、サンプル、スクリプトを整理
+3. 呼び出し制御: `disable-model-invocation`, `user-invocable`で実行タイミングを細かく制御
+4. Agent Skills標準: 複数のAIツール間で相互運用可能
+5. 動的コンテキスト注入: `` `!command` ``でリアルタイムデータ取得
 
 ### Commandsの制限
 

@@ -9,7 +9,7 @@ tags: client, swr, deduplication, data-fetching
 
 SWR enables request deduplication, caching, and revalidation across component instances.
 
-**Incorrect (no deduplication, each instance fetches):**
+### Incorrect (no deduplication, each instance fetches):
 
 ```tsx
 function UserList() {
@@ -22,7 +22,7 @@ function UserList() {
 }
 ```
 
-**Correct (multiple instances share one request):**
+### Correct (multiple instances share one request):
 
 ```tsx
 import useSWR from 'swr'
@@ -32,7 +32,7 @@ function UserList() {
 }
 ```
 
-**For immutable data:**
+### For immutable data:
 
 ```tsx
 import { useImmutableSWR } from '@/lib/swr'
@@ -42,7 +42,7 @@ function StaticContent() {
 }
 ```
 
-**For mutations:**
+### For mutations:
 
 ```tsx
 import { useSWRMutation } from 'swr/mutation'

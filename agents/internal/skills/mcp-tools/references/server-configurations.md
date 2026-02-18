@@ -908,7 +908,7 @@ uv pip install wcgw
 
 ## 関連ドキュメント
 
-- **security-and-credentials.md**: セキュリティベストプラクティス、認証情報管理
-- **SKILL.md**: MCP Toolsクイックスタートガイド
+- security-and-credentials.md: セキュリティベストプラクティス、認証情報管理
+- SKILL.md: MCP Toolsクイックスタートガイド
 
 このドキュメントは、すべてのMCPサーバーを活用するための完全なリファレンスです。プロジェクトのニーズに応じて、適切なサーバーを選択・設定してください。

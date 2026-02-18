@@ -9,7 +9,7 @@ tags: api-routes, server-actions, waterfalls, parallelization
 
 In API routes and Server Actions, start independent operations immediately, even if you don't await them yet.
 
-**Incorrect (config waits for auth, data waits for both):**
+### Incorrect (config waits for auth, data waits for both):
 
 ```typescript
 export async function GET(request: Request) {
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
 }
 ```
 
-**Correct (auth and config start immediately):**
+### Correct (auth and config start immediately):
 
 ```typescript
 export async function GET(request: Request) {

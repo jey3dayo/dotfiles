@@ -251,7 +251,7 @@ start_phase = Phase 1 (full workflow)
 ### If checks fail
 
 - **Attempt to fix automatically** (see `references/ci-fix-patterns.md`)
-- **Apply fixes locally but do NOT commit** - let the user review changes first
+- Apply fixes locally but do NOT commit - let the user review changes first
 - If unable to fix, report to user and wait for resolution
 - Do NOT proceed to Phase 5 (PR creation) if checks fail
 
@@ -462,7 +462,7 @@ git add . && git commit -m "fix(ci): {category} - {short description}" && git pu
 - Always output decision rationale for phase skipping
 - If the request cannot be validated, explain why and confirm next steps
 - If multiple PR templates exist, confirm which to use
-- **Commit policy**:
+- Commit policy:
   - Phase 1-5: Do not commit unless explicitly requested by the user
   - Phase 6 (CI fixes): Automatically commit and push fixes without confirmation (up to 3 attempts)
 - CI monitoring and fixes run automatically (no confirmation; report only when attempts are exceeded)

@@ -119,21 +119,21 @@ Implementation Engineのセッション管理システム。`implement/` ディ�
 
 元のソースに関する完全な情報。実装の基礎となる分析。
 
-- **Source Type**: URL, Local Path, Description, Implementation Plan
-- **Source Location**: 正確なパスまたはURL
-- **Core Features**: 実装する機能のリスト（優先順位付き）
-- **Dependencies**: 必要なライブラリとバージョン
-- **Complexity**: 実装の複雑さ評価
-- **Estimated Time**: 推定所要時間
+- Source Type: URL, Local Path, Description, Implementation Plan
+- Source Location: 正確なパスまたはURL
+- Core Features: 実装する機能のリスト（優先順位付き）
+- Dependencies: 必要なライブラリとバージョン
+- Complexity: 実装の複雑さ評価
+- Estimated Time: 推定所要時間
 
 ### Target Integration
 
 プロジェクトへの統合方法。
 
-- **Integration Points**: 既存システムとの接続箇所
-- **Affected Files**: 変更または作成するファイルのリスト
-- **Pattern Matching**: プロジェクトスタイルへの適応方法
-- **Architecture Compatibility**: プロジェクトアーキテクチャとの整合性
+- Integration Points: 既存システムとの接続箇所
+- Affected Files: 変更または作成するファイルのリスト
+- Pattern Matching: プロジェクトスタイルへの適応方法
+- Architecture Compatibility: プロジェクトアーキテクチャとの整合性
 
 ### Implementation Tasks
 

@@ -9,24 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Configuration-based project detection system**
+- Configuration-based project detection system
   - JSON schema validation for configuration files
   - Priority-based detection with pluggable rules
   - Multiple configuration sources (project-specific, user, built-in)
 
-- **Flexible detector types**
+- Flexible detector types
   - `file_exists`: Check file existence
   - `file_pattern`: Glob pattern matching
   - `file_content`: Content pattern matching
   - `package_dependency`: Package.json dependency checking
   - `directory_structure`: Directory structure verification
 
-- **Custom rules support**
+- Custom rules support
   - Project-specific validation rules in configuration
   - Arbitrary custom rule definitions
   - Structured rule objects (e.g., layer separation)
 
-- **Built-in project types**
+- Built-in project types
   - Next.js Fullstack (priority 100)
   - Go Clean Architecture (priority 95)
   - Go API (priority 90)
@@ -34,12 +34,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - TypeScript Node.js (priority 70)
   - Generic Project fallback (priority 0)
 
-- **Example configurations**
+- Example configurations
   - CAAD Loca project template with Result<T,E> pattern
   - Generic custom project template
   - Multiple scenario examples in documentation
 
-- **Comprehensive documentation**
+- Comprehensive documentation
   - README.md with quick start guide
   - SKILL.md with full API reference
   - MIGRATION.md for v1.x users
@@ -47,16 +47,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Project detection abstracted from code to configuration**
+- Project detection abstracted from code to configuration
   - Removed hardcoded detection logic from `detailed-mode.md`
   - Moved CAAD Loca specific rules to example configuration
   - Evaluation weights now configurable per project
 
-- **Skill integration now configuration-driven**
+- Skill integration now configuration-driven
   - Skills specified in configuration with priority and focus
   - Technology stack identifiers moved to config
 
-- **Evaluation guidelines referenced, not embedded**
+- Evaluation guidelines referenced, not embedded
   - Guidelines loaded from paths specified in configuration
   - Support for project-specific guideline files
 

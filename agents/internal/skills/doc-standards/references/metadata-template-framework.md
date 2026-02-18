@@ -51,14 +51,14 @@ All documentation should include metadata in this format (field labels configura
 
 ### Common Icon Categories
 
-- **General**: 📄 📝 📋
-- **Deployment/Operations**: 🚀 🔧 ⚙️
-- **Infrastructure**: 🏗️ 🌐 ☁️
-- **Security**: 🔐 🔒 🛡️
-- **Monitoring**: 📊 📈 📉
-- **Testing/Quality**: 🧪 ✅ 🔍
-- **Reference**: 📚 📖 📘
-- **Tutorial/Guide**: 🎓 🚩 🗺️
+- General: 📄 📝 📋
+- Deployment/Operations: 🚀 🔧 ⚙️
+- Infrastructure: 🏗️ 🌐 ☁️
+- Security: 🔐 🔒 🛡️
+- Monitoring: 📊 📈 📉
+- Testing/Quality: 🧪 ✅ 🔍
+- Reference: 📚 📖 📘
+- Tutorial/Guide: 🎓 🚩 🗺️
 
 ### Validation
 
@@ -326,9 +326,9 @@ metadata:
 
 ## Integration with Other Frameworks
 
-- **Tag selection**: Use `tag-system-framework.md` for tag structure and validation
-- **Size management**: Use `size-guidelines-framework.md` when document exceeds thresholds
-- **Quality checks**: Use `quality-checklist-framework.md` for final validation
+- Tag selection: Use `tag-system-framework.md` for tag structure and validation
+- Size management: Use `size-guidelines-framework.md` when document exceeds thresholds
+- Quality checks: Use `quality-checklist-framework.md` for final validation
 
 ---
 

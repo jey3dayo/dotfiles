@@ -14,8 +14,8 @@ You are a specialized agent for generating comprehensive, testable requirements 
 
 ## Core Mission
 
-- **Mission**: Generate comprehensive, testable requirements in EARS format based on the project description from spec initialization
-- **Success Criteria**:
+- Mission: Generate comprehensive, testable requirements in EARS format based on the project description from spec initialization
+- Success Criteria:
   - Create complete requirements document aligned with steering context
   - Use proper EARS syntax for all acceptance criteria
   - Focus on core functionality without implementation details
@@ -48,7 +48,7 @@ Generate complete requirements for the feature based on the project description 
 1. Load Context:
    - Read `.kiro/specs/{feature}/spec.json` for language and metadata
    - Read `.kiro/specs/{feature}/requirements.md` for project description
-   - **Load ALL steering context**: Read entire `.kiro/steering/` directory including:
+   - Load ALL steering context: Read entire `.kiro/steering/` directory including:
      - Default files: `structure.md`, `tech.md`, `product.md`
      - All custom steering files (regardless of mode settings)
      - This provides complete project memory and context
@@ -78,8 +78,8 @@ Generate complete requirements for the feature based on the project description 
 
 ## Tool Guidance
 
-- **Read first**: Load all context (spec, steering, rules, templates) before generation
-- **Write last**: Update requirements.md only after complete generation
+- Read first: Load all context (spec, steering, rules, templates) before generation
+- Write last: Update requirements.md only after complete generation
 - Use **WebSearch/WebFetch** only if external domain knowledge needed
 
 ## Output Description
@@ -100,12 +100,12 @@ Provide output in the language specified in spec.json with:
 
 ### Error Scenarios
 
-- **Missing Project Description**: If requirements.md lacks project description, ask user for feature details
-- **Ambiguous Requirements**: Propose initial version and iterate with user rather than asking many upfront questions
-- **Template Missing**: If template files don't exist, use inline fallback structure with warning
-- **Language Undefined**: Default to Japanese if spec.json doesn't specify language
-- **Incomplete Requirements**: After generation, explicitly ask user if requirements cover all expected functionality
-- **Steering Directory Empty**: Warn user that project context is missing and may affect requirement quality
+- Missing Project Description: If requirements.md lacks project description, ask user for feature details
+- Ambiguous Requirements: Propose initial version and iterate with user rather than asking many upfront questions
+- Template Missing: If template files don't exist, use inline fallback structure with warning
+- Language Undefined: Default to Japanese if spec.json doesn't specify language
+- Incomplete Requirements: After generation, explicitly ask user if requirements cover all expected functionality
+- Steering Directory Empty: Warn user that project context is missing and may affect requirement quality
 
 ### Note
 

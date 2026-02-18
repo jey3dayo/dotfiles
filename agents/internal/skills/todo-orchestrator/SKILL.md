@@ -15,16 +15,16 @@ Todo Orchestratorは、**TodoWrite + .claude/TODO.md**を統合したインテ�
 
 ### 統合データソース
 
-- **TodoWrite**: セッション内タスク、リアルタイム更新
-- **.claude/TODO.md**: 永続的タスク、人間編集可能、Git管理
+- TodoWrite: セッション内タスク、リアルタイム更新
+- .claude/TODO.md: 永続的タスク、人間編集可能、Git管理
 
 ### 主な特徴
 
-- **インタラクティブモード**: 番号選択 → 確認 → 実行 → 自動更新
-- **AI駆動優先度分析**: 複雑度・影響範囲・依存関係を自動評価
-- **依存関係管理**: ブロック状態の検出と実行順序の最適化
-- **スマート実行**: 並列実行、バッチ処理、工数推定
-- **品質保証統合**: 実行前後の自動チェック
+- インタラクティブモード: 番号選択 → 確認 → 実行 → 自動更新
+- AI駆動優先度分析: 複雑度・影響範囲・依存関係を自動評価
+- 依存関係管理: ブロック状態の検出と実行順序の最適化
+- スマート実行: 並列実行、バッチ処理、工数推定
+- 品質保証統合: 実行前後の自動チェック
 
 ## 使用方法
 
@@ -92,11 +92,11 @@ TodoWriteと.claude/TODO.mdを統合表示。優先度ソート、重複排除�
 
 タスク説明から自動的に以下を分析:
 
-- **要件抽出**: タスクの具体的要件を明確化
-- **影響範囲**: 変更が及ぶコンポーネントを特定
-- **優先度評価**: P1-P5の自動判定（複雑度・リスク・緊急度）
-- **依存関係**: ブロック/被ブロックタスクを特定
-- **工数推定**: 実装時間の見積もり
+- 要件抽出: タスクの具体的要件を明確化
+- 影響範囲: 変更が及ぶコンポーネントを特定
+- 優先度評価: P1-P5の自動判定（複雑度・リスク・緊急度）
+- 依存関係: ブロック/被ブロックタスクを特定
+- 工数推定: 実装時間の見積もり
 
 ### 詳細
 
@@ -250,18 +250,18 @@ $ todo-orchestrator batch high
 
 ## 関連スキル・コマンド
 
-- **[integration-framework](../integration-framework/)**: TaskContext標準化とワークフロー統合（軽依存）
-- **TodoWrite**: 統合必須ツール
-- **/task**: 自然言語タスク実行
-- **/learnings**: 実行パターン学習
+- [integration-framework](../integration-framework/): TaskContext標準化とワークフロー統合（軽依存）
+- TodoWrite: 統合必須ツール
+- /task: 自然言語タスク実行
+- /learnings: 実行パターン学習
 
 ## 制約・注意事項
 
 ### 実行制約
 
-- **依存関係**: ブロックされているタスクは自動スキップ
-- **並列実行**: ファイル競合がある場合は順次実行
-- **エラー時**: 実行を中断し、状態をロールバック
+- 依存関係: ブロックされているタスクは自動スキップ
+- 並列実行: ファイル競合がある場合は順次実行
+- エラー時: 実行を中断し、状態をロールバック
 
 ### データ整合性
 
@@ -277,9 +277,9 @@ $ todo-orchestrator batch high
 
 ## 詳細リファレンス
 
-- **[インタラクティブ実行フロー](references/interactive-execution-flow.md)**: Phase 1-3の詳細UI
-- **[優先度システム](references/priority-system.md)**: P1-P5の判定基準と実行戦略
-- **[Todo追加フロー](references/todo-add-flow.md)**: AI駆動分析の5要素
-- **[データソース統合](references/data-source-integration.md)**: TodoWrite + .claude/TODO.md統合
-- **[実行パターン集](examples/interactive-patterns.md)**: 実際の実行例とログ
-- **[スマート実行モード](examples/smart-modes.md)**: auto/smart/parallel/estimate/batch
+- [インタラクティブ実行フロー](references/interactive-execution-flow.md): Phase 1-3の詳細UI
+- [優先度システム](references/priority-system.md): P1-P5の判定基準と実行戦略
+- [Todo追加フロー](references/todo-add-flow.md): AI駆動分析の5要素
+- [データソース統合](references/data-source-integration.md): TodoWrite + .claude/TODO.md統合
+- [実行パターン集](examples/interactive-patterns.md): 実際の実行例とログ
+- [スマート実行モード](examples/smart-modes.md): auto/smart/parallel/estimate/batch

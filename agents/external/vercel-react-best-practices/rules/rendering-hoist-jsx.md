@@ -9,7 +9,7 @@ tags: rendering, jsx, static, optimization
 
 Extract static JSX outside components to avoid re-creation.
 
-**Incorrect (recreates element every render):**
+### Incorrect (recreates element every render):
 
 ```tsx
 function LoadingSkeleton() {
@@ -25,7 +25,7 @@ function Container() {
 }
 ```
 
-**Correct (reuses same element):**
+### Correct (reuses same element):
 
 ```tsx
 const loadingSkeleton = (

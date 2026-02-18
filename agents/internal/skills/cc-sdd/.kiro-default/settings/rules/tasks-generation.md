@@ -39,8 +39,8 @@ Focus on capabilities and outcomes, not code structure.
 
 ### Guidelines
 
-- **Major tasks**: As many sub-tasks as logically needed (group by cohesion)
-- **Sub-tasks**: 1-3 hours each, 3-10 details per sub-task
+- Major tasks: As many sub-tasks as logically needed (group by cohesion)
+- Sub-tasks: 1-3 hours each, 3-10 details per sub-task
 - Balance between too granular and too broad
 
 ### Don't force arbitrary numbers
@@ -71,8 +71,8 @@ Focus on capabilities and outcomes, not code structure.
 
 ### Maximum 2 Levels
 
-- **Level 1**: Major tasks (1, 2, 3, 4...)
-- **Level 2**: Sub-tasks (1.1, 1.2, 2.1, 2.2...)
+- Level 1: Major tasks (1, 2, 3, 4...)
+- Level 2: Sub-tasks (1.1, 1.2, 2.1, 2.2...)
 - **No deeper nesting** (no 1.1.1)
 
 ### Sequential Numbering

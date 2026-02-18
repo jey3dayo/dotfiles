@@ -8,14 +8,14 @@ Docs Manager provides systematic documentation quality assurance through configu
 
 ## Features
 
-- **Configurable Paths**: Set documentation root directory via configuration
-- **Metadata Validation**: Verify required metadata fields and formats
-- **Tag System Compliance**: Validate tags against project-specific vocabulary
-- **Size Management**: Monitor document size and suggest splits
-- **Link Validation**: Check internal and external links
-- **Project-Specific Rules**: Apply custom validation rules
-- **Multiple Project Types**: Built-in support for generic, dotfiles, pr-labeler, terraform-infra projects
-- **Extensible**: Easy to add custom project types
+- Configurable Paths: Set documentation root directory via configuration
+- Metadata Validation: Verify required metadata fields and formats
+- Tag System Compliance: Validate tags against project-specific vocabulary
+- Size Management: Monitor document size and suggest splits
+- Link Validation: Check internal and external links
+- Project-Specific Rules: Apply custom validation rules
+- Multiple Project Types: Built-in support for generic, dotfiles, pr-labeler, terraform-infra projects
+- Extensible: Easy to add custom project types
 
 ## Quick Start
 
@@ -246,10 +246,10 @@ docs-manager/
 
 ## Reference Documentation
 
-- **[Metadata Standards](references/metadata-standards.md)**: Comprehensive guide to metadata formats, validation rules, and best practices
-- **[Size Management](references/size-management.md)**: Document size guidelines, splitting strategies, and structure organization
-- **[Tag Systems](references/tag-systems.md)**: Tag system definitions and project-specific requirements
-- **[Configuration Templates](references/config-templates.md)**: Detailed configuration examples and templates
+- [Metadata Standards](references/metadata-standards.md): Comprehensive guide to metadata formats, validation rules, and best practices
+- [Size Management](references/size-management.md): Document size guidelines, splitting strategies, and structure organization
+- [Tag Systems](references/tag-systems.md): Tag system definitions and project-specific requirements
+- [Configuration Templates](references/config-templates.md): Detailed configuration examples and templates
 
 ## Project Types
 
@@ -337,9 +337,9 @@ Add custom validation via configuration:
 
 The docs-manager skill automatically integrates with:
 
-- **docs-index**: Documentation discovery and navigation
-- **markdown-docs**: Content quality evaluation
-- **code-review**: Documentation review in code review workflow
+- docs-index: Documentation discovery and navigation
+- markdown-docs: Content quality evaluation
+- code-review: Documentation review in code review workflow
 
 ### With External Tools
 

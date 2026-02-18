@@ -17,9 +17,9 @@
 
 ### Tools
 
-- **Format**: Prettier
-- **Lint**: ESLint
-- **Test**: Jest, Vitest, Mocha
+- Format: Prettier
+- Lint: ESLint
+- Test: Jest, Vitest, Mocha
 
 ### Configuration
 
@@ -106,9 +106,9 @@ npm test
 
 ### Tools
 
-- **Format**: Black, isort
-- **Lint**: Flake8, pylint
-- **Test**: pytest
+- Format: Black, isort
+- Lint: Flake8, pylint
+- Test: pytest
 
 ### Configuration
 
@@ -168,9 +168,9 @@ pytest
 
 ### Tools
 
-- **Format**: gofmt, goimports
-- **Lint**: golangci-lint
-- **Test**: go test
+- Format: gofmt, goimports
+- Lint: golangci-lint
+- Test: go test
 
 ### Configuration
 
@@ -232,9 +232,9 @@ go test ./...
 
 ### Tools
 
-- **Format**: rustfmt
-- **Lint**: clippy
-- **Test**: cargo test
+- Format: rustfmt
+- Lint: clippy
+- Test: cargo test
 
 ### Configuration
 
@@ -290,9 +290,9 @@ cargo test
 
 ### Tools
 
-- **Format**: Prettier
-- **Lint**: markdownlint
-- **Test**: ⊘ Not applicable
+- Format: Prettier
+- Lint: markdownlint
+- Test: ⊘ Not applicable
 
 ### Configuration
 
@@ -348,9 +348,9 @@ markdownlint --fix '**/*.md'
 
 ### Tools
 
-- **Format**: rubocop (auto-format)
-- **Lint**: rubocop
-- **Test**: rspec
+- Format: rubocop (auto-format)
+- Lint: rubocop
+- Test: rspec
 
 ### Configuration
 
@@ -491,11 +491,11 @@ run = ["pytest"]
 
 推奨する組み合わせ：
 
-- **JavaScript/TypeScript**: ESLint + Prettier + Jest
-- **Python**: Black + Flake8 + pytest
-- **Go**: gofmt + golangci-lint + go test
-- **Rust**: rustfmt + clippy + cargo test
-- **Markdown**: markdownlint + Prettier
+- JavaScript/TypeScript: ESLint + Prettier + Jest
+- Python: Black + Flake8 + pytest
+- Go: gofmt + golangci-lint + go test
+- Rust: rustfmt + clippy + cargo test
+- Markdown: markdownlint + Prettier
 
 ### Configuration Tips
 

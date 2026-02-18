@@ -15,9 +15,9 @@ argument-hint: [target-path]
 
 予測的コード分析システムは、以下のリスクカテゴリを評価します:
 
-- **技術的負債**: 複雑性の増大、保守困難なコード
-- **セキュリティリスク**: 入力検証の不備、脆弱性パターン
-- **パフォーマンスボトルネック**: 非効率なアルゴリズム、スケーラビリティ問題
+- 技術的負債: 複雑性の増大、保守困難なコード
+- セキュリティリスク: 入力検証の不備、脆弱性パターン
+- パフォーマンスボトルネック: 非効率なアルゴリズム、スケーラビリティ問題
 
 ## 基本使用例
 
@@ -90,10 +90,10 @@ argument-hint: [target-path]
 
 各予測には以下が含まれます:
 
-- **具体的なコード位置**: ファイル名、行番号、関数名
-- **問題の説明**: なぜ将来的に問題になるか
-- **影響の見積もり**: タイムラインと影響範囲
-- **修正提案**: 優先度付きの予防措置
+- 具体的なコード位置: ファイル名、行番号、関数名
+- 問題の説明: なぜ将来的に問題になるか
+- 影響の見積もり: タイムラインと影響範囲
+- 修正提案: 優先度付きの予防措置
 
 ## クイックスタート
 
@@ -142,23 +142,23 @@ argument-hint: [target-path]
 
 より詳細な情報は以下を参照してください:
 
-- **[リスク評価フレームワーク](references/risk-assessment-framework.md)**: 評価基準と重要度判定の詳細
-- **[分析手法](references/analysis-methodology.md)**: 静的解析とパターン検出の実装
-- **[問題分類体系](references/issue-categorization.md)**: 技術的負債/セキュリティ/パフォーマンスの分類詳細
-- **[リスク軽減戦略](references/mitigation-strategies.md)**: カテゴリ別の対策パターン
+- [リスク評価フレームワーク](references/risk-assessment-framework.md): 評価基準と重要度判定の詳細
+- [分析手法](references/analysis-methodology.md): 静的解析とパターン検出の実装
+- [問題分類体系](references/issue-categorization.md): 技術的負債/セキュリティ/パフォーマンスの分類詳細
+- [リスク軽減戦略](references/mitigation-strategies.md): カテゴリ別の対策パターン
 
 ## 実用例
 
 実際のプロジェクトでの使用例:
 
-- **[リスクレポート例](examples/risk-report-examples.md)**: 実際の分析レポートと対応例
-- **[プロジェクト別分析](examples/project-specific-analysis.md)**: フレームワーク/言語別の分析パターン
-- **[予防措置の提案](examples/preventive-measures.md)**: 具体的な予防策と実装例
+- [リスクレポート例](examples/risk-report-examples.md): 実際の分析レポートと対応例
+- [プロジェクト別分析](examples/project-specific-analysis.md): フレームワーク/言語別の分析パターン
+- [予防措置の提案](examples/preventive-measures.md): 具体的な予防策と実装例
 
 ## 依存関係
 
-- **project-detector**: プロジェクト種別の自動判定
-- **MCP Serena**: コード構造解析と依存関係追跡
+- project-detector: プロジェクト種別の自動判定
+- MCP Serena: コード構造解析と依存関係追跡
 
 ## 重要な注意事項
 

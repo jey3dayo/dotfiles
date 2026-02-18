@@ -35,10 +35,10 @@ scanDistribution = distributionPath:
 
 ### Key features
 
-- **Directory/symlink support**: Handles both direct directories and symlinks
-- **Recursive scanning**: Uses `scanSource` for nested structures
-- **Lazy evaluation**: Only scans if `distributionPath` exists
-- **Source tagging**: All entries marked with `source = "distribution"`
+- Directory/symlink support: Handles both direct directories and symlinks
+- Recursive scanning: Uses `scanSource` for nested structures
+- Lazy evaluation: Only scans if `distributionPath` exists
+- Source tagging: All entries marked with `source = "distribution"`
 
 ### Integration with discoverCatalog
 
@@ -238,35 +238,35 @@ ls -la ~/.claude/skills/
 
 ### Why Symlinks?
 
-- **No duplication**: Source of truth remains in `agents/internal/skills/`
-- **Easy updates**: Changes to source automatically reflected
-- **Nix-friendly**: Symlinks are resolved at filesystem level
-- **Bundle flexibility**: Same skill can appear in multiple distributions
+- No duplication: Source of truth remains in `agents/internal/skills/`
+- Easy updates: Changes to source automatically reflected
+- Nix-friendly: Symlinks are resolved at filesystem level
+- Bundle flexibility: Same skill can appear in multiple distributions
 
 ### Why Static Scanning?
 
-- **Prevents cycles**: No evaluation dependencies between distributions and sources
-- **Predictable order**: Distribution < External < Local
-- **Simple debugging**: Scan order is explicit
+- Prevents cycles: No evaluation dependencies between distributions and sources
+- Predictable order: Distribution < External < Local
+- Simple debugging: Scan order is explicit
 
 ### Why Optional?
 
-- **Backwards compatibility**: Existing workflows (Local/External) unaffected
-- **Incremental adoption**: Teams can opt-in gradually
-- **Zero overhead**: If `distributionsPath = null`, no scanning occurs
+- Backwards compatibility: Existing workflows (Local/External) unaffected
+- Incremental adoption: Teams can opt-in gradually
+- Zero overhead: If `distributionsPath = null`, no scanning occurs
 
 ---
 
 ## Related Files
 
-- **agents/nix/lib.nix**: Main implementation
-- **~/.config/flake.nix**: Home Manager integration (calls `discoverCatalog`)
-- **agents/internal/**: Example bundle
+- agents/nix/lib.nix: Main implementation
+- ~/.config/flake.nix: Home Manager integration (calls `discoverCatalog`)
+- agents/internal/: Example bundle
 
 ---
 
 ## Future Considerations
 
-- **Multi-bundle support**: Currently single distribution (`internal/`), could support multiple
-- **Bundle versioning**: Semantic versioning for bundle releases
-- **Validation tools**: CLI for checking bundle integrity
+- Multi-bundle support: Currently single distribution (`internal/`), could support multiple
+- Bundle versioning: Semantic versioning for bundle releases
+- Validation tools: CLI for checking bundle integrity

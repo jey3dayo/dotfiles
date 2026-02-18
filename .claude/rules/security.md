@@ -18,13 +18,13 @@
 
 **絶対にコミットしてはいけない**：
 
-- **SSH秘密鍵**: `id_rsa`, `id_ed25519`, `*.pem`
-- **GPG秘密鍵**: `secring.gpg`, `*.key`
-- **APIトークン**: GitHub Personal Access Tokens, AWS Credentials
-- **パスワード**: 平文パスワード、データベース認証情報
-- **証明書秘密鍵**: `*.key`, `*.p12`, `*.pfx`
+- SSH秘密鍵: `id_rsa`, `id_ed25519`, `*.pem`
+- GPG秘密鍵: `secring.gpg`, `*.key`
+- APIトークン: GitHub Personal Access Tokens, AWS Credentials
+- パスワード: 平文パスワード、データベース認証情報
+- 証明書秘密鍵: `*.key`, `*.p12`, `*.pfx`
 
-**除外パターン** (`.gitignore`):
+#### 除外パターン (`.gitignore`)
 
 ```gitignore
 # SSH keys
@@ -45,11 +45,11 @@
 
 **環境ごとに異なる値、公開非推奨**：
 
-- **環境変数ファイル**: `.env`, `.env.local`, `.envrc`
-- **設定ファイルのローカル上書き**: `config.local`, `*.secret`
-- **セッショントークン**: ブラウザcookies、一時認証トークン
+- 環境変数ファイル: `.env`, `.env.local`, `.envrc`
+- 設定ファイルのローカル上書き: `config.local`, `*.secret`
+- セッショントークン: ブラウザcookies、一時認証トークン
 
-**除外パターン** (`.gitignore`):
+#### 除外パターン (`.gitignore`)
 
 ```gitignore
 # Environment variables
@@ -67,11 +67,11 @@
 
 **機密性は低いが、リポジトリサイズ肥大化の原因**：
 
-- **ビルド成果物**: `result`, `result-*`, `dist/`, `build/`
-- **一時ファイル**: `*.tmp`, `*.log`, `.DS_Store`
-- **依存関係キャッシュ**: `node_modules/`, `.venv/`, `__pycache__/`
+- ビルド成果物: `result`, `result-*`, `dist/`, `build/`
+- 一時ファイル: `*.tmp`, `*.log`, `.DS_Store`
+- 依存関係キャッシュ: `node_modules/`, `.venv/`, `__pycache__/`
 
-**除外パターン** (`.gitignore`):
+#### 除外パターン (`.gitignore`)
 
 ```gitignore
 # Build artifacts
@@ -99,20 +99,20 @@ __pycache__/
 
 プロジェクトの `.gitignore` は273行で、以下をカバーしています：
 
-- **SSH keys**: 完全カバー（秘密鍵、known_hosts）
-- **GPG keys**: 完全カバー（秘密鍵、トラストDB）
-- **API credentials**: 完全カバー（AWS、GitHub、Linear等）
-- **環境変数**: 完全カバー（`.env*`, `.envrc`）
-- **Nix成果物**: 完全カバー（`result*`, `.luarocks/`）
-- **IDE設定**: 完全カバー（`.vscode/`, `.idea/`）
+- SSH keys: 完全カバー（秘密鍵、known_hosts）
+- GPG keys: 完全カバー（秘密鍵、トラストDB）
+- API credentials: 完全カバー（AWS、GitHub、Linear等）
+- 環境変数: 完全カバー（`.env*`, `.envrc`）
+- Nix成果物: 完全カバー（`result*`, `.luarocks/`）
+- IDE設定: 完全カバー（`.vscode/`, `.idea/`）
 
 ### .gitignoreメンテナンス
 
 新しいツールや設定を追加する際は、以下を確認：
 
-1. **秘密情報を含む可能性**: → `.gitignore` に追加
-2. **環境固有の設定**: → `.gitignore` に追加、`.example` ファイルを提供
-3. **一時ファイル**: → `.gitignore` に追加
+1. 秘密情報を含む可能性: → `.gitignore` に追加
+2. 環境固有の設定: → `.gitignore` に追加、`.example` ファイルを提供
+3. 一時ファイル: → `.gitignore` に追加
 
 **例**: 新しいツール `newtool` を追加する場合：
 
@@ -184,7 +184,7 @@ pre-commit run --all-files
    sh ./scripts/setup-gitleaks.sh --create-baseline
    ```
 
-2. **個別にコメントで除外**:
+2. 個別にコメントで除外:
 
    ```python
    # gitleaks:allow
@@ -193,10 +193,10 @@ pre-commit run --all-files
 
 #### True Positiveの場合
 
-1. **即座にコミットを中止**
-2. **秘密情報を削除または環境変数に移行**
-3. **該当ファイルを `.gitignore` に追加**
-4. **既にコミット済みの場合**: → [インシデント対応手順](#インシデント対応手順) を参照
+1. 即座にコミットを中止
+2. 秘密情報を削除または環境変数に移行
+3. 該当ファイルを `.gitignore` に追加
+4. 既にコミット済みの場合: → [インシデント対応手順](#インシデント対応手順) を参照
 
 ### pre-commitフックのバイパス（非推奨）
 
@@ -210,7 +210,7 @@ git commit --no-verify -m "emergency fix"
 SKIP=gitleaks git commit -m "commit message"
 ```
 
-**バイパスする前に**:
+#### バイパスする前に
 
 - なぜスキップする必要があるのか？
 - 本当にセキュリティリスクがないか？
@@ -283,7 +283,7 @@ sed -i '' 's/actual_secret/YOUR_SECRET_HERE/g' ~/.config/newtool/config.secret.e
 
 **影響**: ローカルのみ、リモートには影響なし
 
-**対応**:
+#### 対応
 
 ```bash
 # 1. 最新コミットを取り消し（変更は保持）
@@ -306,7 +306,7 @@ git commit -m "fix: remove secret and update .gitignore"
 
 **影響**: リモートリポジトリに秘密情報が露出
 
-**緊急対応（10分以内）**:
+#### 緊急対応（10分以内）
 
 ```bash
 # 1. 秘密情報を即座に無効化
@@ -321,7 +321,7 @@ git push origin --delete branch-name
 # Slack/Teams等で即座に報告
 ```
 
-**恒久対応（1時間以内）**:
+#### 恒久対応（1時間以内）
 
 ```bash
 # 1. git-filter-repoで履歴から削除
@@ -340,20 +340,20 @@ git push --force-with-lease origin main
 # 古いクローンには秘密情報が残っているため
 ```
 
-**事後対応（1日以内）**:
+#### 事後対応（1日以内）
 
-1. **インシデントレポート作成**:
+1. インシデントレポート作成:
    - 何が漏洩したか
    - いつプッシュされたか
    - 誰がアクセス可能だったか
    - どのように無効化したか
 
-2. **再発防止策**:
+2. 再発防止策:
    - `.gitignore` にパターン追加
    - pre-commitフックの強化
    - チームへのセキュリティトレーニング
 
-3. **影響範囲の確認**:
+3. 影響範囲の確認:
    - GitHub Advanced Securityでスキャン（Enterpriseの場合）
    - gitleaksで全履歴スキャン
    - 他のリポジトリへの影響確認
@@ -362,7 +362,7 @@ git push --force-with-lease origin main
 
 **影響**: 誰でもアクセス可能、最高レベルの緊急対応
 
-**即座に（5分以内）**:
+#### 即座に（5分以内）
 
 ```bash
 # 1. すべての秘密情報を即座に無効化
@@ -374,7 +374,7 @@ git push --force-with-lease origin main
 # GitHub Settings → Danger Zone → Change visibility
 ```
 
-**緊急対応（30分以内）**:
+#### 緊急対応（30分以内）
 
 ```bash
 # 1. 履歴から完全削除（シナリオ2と同様）
@@ -386,18 +386,18 @@ git push --force-with-lease origin main
 # 件名: "Remove cached sensitive data from public repository"
 ```
 
-**事後対応（1週間以内）**:
+#### 事後対応（1週間以内）
 
-1. **セキュリティ監査**:
+1. セキュリティ監査:
    - すべての設定ファイルをレビュー
    - `.gitignore` を徹底的に見直し
    - pre-commitフックを必須化
 
-2. **アクセスログ確認**:
+2. アクセスログ確認:
    - GitHub Insightsで誰がクローンしたか確認
    - 外部からのアクセスがあった場合、影響範囲を調査
 
-3. **チームトレーニング**:
+3. チームトレーニング:
    - セキュリティベストプラクティスの再教育
    - インシデント事例の共有
 
