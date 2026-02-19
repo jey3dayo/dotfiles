@@ -31,7 +31,7 @@ nix run .#list
 
 ["skills:add"]
 description = "スキルを追加（例: mise run skills:add -- owner/repo や tree URL）"
-run = "tsx ./agents/scripts/skills-add.ts"
+run = "tsx ./agents/scripts/skills-add/index.ts"
 
 ["skills:validate"]
 description = "スキル構成バリデーション"

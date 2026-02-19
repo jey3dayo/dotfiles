@@ -5,7 +5,11 @@
 
 ["test"]
 description = "テストを実行（集約）"
-depends = ["test:lua"]
+depends = ["test:lua", "test:ts"]
+
+["test:ts"]
+description = "TypeScript スクリプトのユニットテストを実行"
+run = "tsx --test agents/scripts/skills-add/utils.test.ts"
 
 ["test:lua"]
 description = "Lua テストを実行(busted)"
