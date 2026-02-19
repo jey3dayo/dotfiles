@@ -615,10 +615,12 @@ const buildSourceBlock = ({
 const insertSourceBlock = (lines, blockLines) => {
   let insertIndex = -1;
   let depth = 0;
+  let seenPositiveDepth = false;
   for (let i = 0; i < lines.length; i += 1) {
     const sanitized = stripComments(lines[i]);
     depth += countChar(sanitized, "{") - countChar(sanitized, "}");
-    if (depth === 0) {
+    if (depth > 0) seenPositiveDepth = true;
+    if (seenPositiveDepth && depth === 0) {
       insertIndex = i;
       break;
     }
