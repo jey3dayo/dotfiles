@@ -64,6 +64,9 @@ jobs:
       # Note: Local environments use Home Manager for automatic environment detection
       MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
       # This repository defines tasks in `.mise.toml`; force mise to resolve that filename.
+      # `MISE_DEFAULT_CONFIG_FILENAME` is for older mise versions.
+      MISE_DEFAULT_CONFIG_FILENAME: ".mise.toml"
+      # `MISE_OVERRIDE_CONFIG_FILENAMES` is for newer mise versions.
       MISE_OVERRIDE_CONFIG_FILENAMES: ".mise.toml"
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
