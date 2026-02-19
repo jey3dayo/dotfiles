@@ -6,9 +6,15 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd -- "${script_dir}/../../.." && pwd)"
 cd "${repo_root}"
 
+# Ensure required dependency exists.
+if ! command -v fd >/dev/null 2>&1; then
+  echo "❌ fd not found. Please install fd (https://github.com/sharkdp/fd)"
+  exit 1
+fi
+
 # Node test runner compatible test files.
 mapfile -t node_test_files < <(
-  fd --type f --glob "*.test.ts" --exclude "replace-bold-headings.test.ts" . agents/scripts scripts | sort
+  fd --type f --glob "*.test.ts" --exclude "replace-bold-headings.test.ts" agents/scripts scripts | sort -u
 )
 
 if ((${#node_test_files[@]} > 0)); then
