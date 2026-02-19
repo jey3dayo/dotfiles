@@ -9,7 +9,18 @@ depends = ["test:lua", "test:ts"]
 
 ["test:ts"]
 description = "TypeScript スクリプトのユニットテストを実行"
-run = "tsx --test agents/scripts/skills-add/utils.test.ts"
+run = """
+set -e
+tsx --test \
+  agents/scripts/skills-add/utils.test.ts \
+  agents/scripts/skills-add/index.test.ts \
+  agents/scripts/skills-sync-inputs.test.ts \
+  agents/scripts/validate-internal.test.ts \
+  scripts/setup-env.test.ts \
+  scripts/setup-gitleaks.test.ts
+tsx scripts/replace-bold-headings.test.ts
+tsx agents/scripts/replace-bold-headings.test.ts
+"""
 
 ["test:lua"]
 description = "Lua テストを実行(busted)"

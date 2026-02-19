@@ -6,17 +6,20 @@ import * as os from "node:os";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-import type { DiscoveryResult, ExistingSources, SkillInfo } from "./types.ts";
+import type { ExistingSources } from "./types.ts";
+import {
+  CliArgumentError,
+  discoverSkills,
+  looksLikeSource,
+  parseArgs,
+  parseSourceInput,
+} from "./index-lib.ts";
 import {
   buildSourceBlock,
   deriveCatalogs,
   extractSourceBlocks,
   insertSourceBlock,
-  isTruthy,
   normalizeUrl,
-  parseFrontmatter,
-  parseGitHubUrl,
-  parseGitLabUrl,
   sanitizeName,
   toGitUrl,
   updateSelectionInLines,
@@ -98,245 +101,22 @@ const toPathUrl = (absPath: string): string => {
   return `path:${normalized}`;
 };
 
-const looksLikeSource = (value: string): boolean => {
-  if (!value) return false;
-  if (fs.existsSync(value)) return true;
-  if (/^https?:\/\//i.test(value)) return true;
-  if (/^[\w.-]+\/[\w.-]+$/.test(value)) return true;
-  if (/^git@/.test(value)) return true;
-  if (/\.git$/.test(value)) return true;
-  return false;
-};
+if (args.length === 0 || args.includes("-h") || args.includes("--help")) {
+  usage(args.length === 0 ? 1 : 0);
+}
 
-const parseSourceInput = (value: string) => {
-  if (fs.existsSync(value)) {
-    const abs = path.resolve(value);
-    return { kind: "local" as const, path: abs, hintPath: null };
+let parsedArgs: ReturnType<typeof parseArgs>;
+try {
+  parsedArgs = parseArgs(args);
+} catch (error) {
+  if (error instanceof CliArgumentError) {
+    console.error(error.message);
+    usage(1);
   }
-  if (/^[\w.-]+\/[\w.-]+$/.test(value)) {
-    return {
-      kind: "github" as const,
-      url: `https://github.com/${value}`,
-      owner: value.split("/")[0],
-      repo: value.split("/")[1],
-      ref: null,
-      hintPath: null,
-    };
-  }
-  if (/^https?:\/\//i.test(value)) {
-    try {
-      const parsed = new URL(value);
-      const host = parsed.hostname.toLowerCase();
-      if (host.includes("github.com")) {
-        return parseGitHubUrl(parsed);
-      }
-      if (host.includes("gitlab.com")) {
-        return parseGitLabUrl(parsed);
-      }
-      return { kind: "git" as const, url: value, ref: null, hintPath: null };
-    } catch {
-      return { kind: "git" as const, url: value, ref: null, hintPath: null };
-    }
-  }
-  if (/^git@/.test(value)) {
-    return { kind: "git" as const, url: value, ref: null, hintPath: null };
-  }
-  if (/\.git$/.test(value)) {
-    return { kind: "git" as const, url: value, ref: null, hintPath: null };
-  }
-  return null;
-};
+  throw error;
+}
 
-const readSkillInfo = (skillDir: string) => {
-  const skillFile = path.join(skillDir, "SKILL.md");
-  if (!fs.existsSync(skillFile)) return null;
-  const content = fs.readFileSync(skillFile, "utf8");
-  const meta = parseFrontmatter(content);
-  return { file: skillFile, meta };
-};
-
-const discoverSkills = ({
-  repoPath,
-  pathHint,
-}: {
-  repoPath: string;
-  pathHint: string | null;
-}): DiscoveryResult => {
-  const includeInternal = isTruthy(process.env.INSTALL_INTERNAL_SKILLS);
-  const candidateRoots = [
-    "skills",
-    "skills/.curated",
-    "skills/.experimental",
-    "skills/.system",
-    ".agents/skills",
-    ".agent/skills",
-    ".augment/skills",
-    ".claude/skills",
-    ".cursor/skills",
-  ];
-
-  const skillRoots: string[] = [];
-  const skillMap = new Map<string, SkillInfo>();
-  let impliedSkill: string | null = null;
-
-  let restrictedRoot: string | null = null;
-  if (pathHint) {
-    const hintAbs = path.join(repoPath, pathHint);
-    if (fs.existsSync(hintAbs)) {
-      if (fs.statSync(hintAbs).isFile()) {
-        restrictedRoot = path.dirname(hintAbs);
-      } else {
-        const skillFile = path.join(hintAbs, "SKILL.md");
-        if (fs.existsSync(skillFile)) {
-          const info = readSkillInfo(hintAbs);
-          if (info && (includeInternal || !info.meta.internal)) {
-            impliedSkill = path.basename(hintAbs);
-          }
-          restrictedRoot = path.dirname(hintAbs);
-        } else {
-          restrictedRoot = hintAbs;
-        }
-      }
-    }
-  }
-
-  const rootsToScan = restrictedRoot
-    ? [restrictedRoot]
-    : [repoPath, ...candidateRoots.map((root) => path.join(repoPath, root))];
-
-  const uniqueRoots = new Set<string>();
-  for (const root of rootsToScan) {
-    if (!root || !fs.existsSync(root) || !fs.statSync(root).isDirectory()) {
-      continue;
-    }
-    const normalized = path.resolve(root);
-    if (uniqueRoots.has(normalized)) continue;
-    uniqueRoots.add(normalized);
-
-    const rootSkillFile = path.join(normalized, "SKILL.md");
-    if (fs.existsSync(rootSkillFile)) {
-      const info = readSkillInfo(normalized);
-      if (info && (includeInternal || !info.meta.internal)) {
-        skillMap.set("__root__", {
-          id: "__root__",
-          dir: normalized,
-          meta: info.meta,
-          root: normalized,
-        });
-        skillRoots.push(normalized);
-      }
-    }
-
-    const entries = fs.readdirSync(normalized, { withFileTypes: true });
-    for (const entry of entries) {
-      if (!entry.isDirectory()) continue;
-      const skillDir = path.join(normalized, entry.name);
-      const info = readSkillInfo(skillDir);
-      if (!info) continue;
-      if (!includeInternal && info.meta.internal) continue;
-      skillMap.set(entry.name, {
-        id: entry.name,
-        dir: skillDir,
-        meta: info.meta,
-        root: normalized,
-      });
-      if (!skillRoots.includes(normalized)) {
-        skillRoots.push(normalized);
-      }
-    }
-  }
-
-  const skills = Array.from(skillMap.values()).filter((skill) => skill.id !== "__root__");
-  const rootSkill = skillMap.get("__root__") ?? null;
-
-  return {
-    skills,
-    rootSkill,
-    skillRoots,
-    impliedSkill,
-  };
-};
-
-const parseArgs = () => {
-  if (args.length === 0 || args.includes("-h") || args.includes("--help")) {
-    usage(args.length === 0 ? 1 : 0);
-  }
-
-  const options = {
-    list: false,
-    all: false,
-    skills: [] as string[],
-    yes: false,
-    dryRun: false,
-    global: false,
-    agent: false,
-    sourceOverride: null as string | null,
-  };
-  const positional: string[] = [];
-
-  let i = 0;
-  while (i < args.length) {
-    const arg = args[i];
-    if (arg === "--list" || arg === "-l") {
-      options.list = true;
-      i += 1;
-      continue;
-    }
-    if (arg === "--all") {
-      options.all = true;
-      i += 1;
-      continue;
-    }
-    if (arg === "--skill" || arg === "-s") {
-      i += 1;
-      while (i < args.length && !args[i].startsWith("-")) {
-        options.skills.push(args[i]);
-        i += 1;
-      }
-      continue;
-    }
-    if (arg === "--yes" || arg === "-y") {
-      options.yes = true;
-      i += 1;
-      continue;
-    }
-    if (arg === "--dry-run") {
-      options.dryRun = true;
-      i += 1;
-      continue;
-    }
-    if (arg === "--global" || arg === "-g") {
-      options.global = true;
-      i += 1;
-      continue;
-    }
-    if (arg === "--agent" || arg === "-a") {
-      options.agent = true;
-      i += 1;
-      continue;
-    }
-    if (arg === "--source" || arg === "--src") {
-      const next = args[i + 1];
-      if (!next) {
-        console.error("Missing value for --source");
-        usage(1);
-      }
-      options.sourceOverride = next;
-      i += 2;
-      continue;
-    }
-    if (arg.startsWith("-")) {
-      console.error(`Unknown option: ${arg}`);
-      usage(1);
-    }
-    positional.push(arg);
-    i += 1;
-  }
-
-  return { options, positional };
-};
-
-const { options, positional } = parseArgs();
+const { options, positional } = parsedArgs;
 
 if (options.global || options.agent) {
   console.warn("Note: --global/--agent are no-ops; this repo manages skills via Nix.");
