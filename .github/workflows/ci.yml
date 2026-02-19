@@ -77,6 +77,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Prepare mise task include path
+        run: |
+          # `.mise.toml` includes task files under `.config/mise/tasks/*`.
+          # In CI checkout directories, this path does not exist by default.
+          # Mirror local layout so older mise versions can resolve task definitions.
+          [ -e .config ] || ln -s . .config
+
       - name: Install build dependencies
         run: |
           sudo apt-get update
