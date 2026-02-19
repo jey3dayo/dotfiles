@@ -102,7 +102,6 @@
       },
       "original": {
         "owner": "millionco",
-        "ref": "main",
         "repo": "react-doctor",
         "type": "github"
       }
