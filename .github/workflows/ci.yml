@@ -21,6 +21,7 @@ on:
       - "biome.json"
       - "stylua.toml"
       - ".styluaignore"
+      - ".mise.toml"
       - "mise.toml"
       - "mise/**/*.toml"
       - ".markdown-link-check.json"
@@ -46,6 +47,7 @@ on:
       - "biome.json"
       - "stylua.toml"
       - ".styluaignore"
+      - ".mise.toml"
       - "mise.toml"
       - "mise/**/*.toml"
       - ".markdown-link-check.json"
@@ -61,6 +63,11 @@ jobs:
       # Significantly reduces install time compared to default config
       # Note: Local environments use Home Manager for automatic environment detection
       MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
+      # This repository defines tasks in `.mise.toml`; force mise to resolve that filename.
+      # `MISE_DEFAULT_CONFIG_FILENAME` is for older mise versions.
+      MISE_DEFAULT_CONFIG_FILENAME: ".mise.toml"
+      # `MISE_OVERRIDE_CONFIG_FILENAMES` is for newer mise versions.
+      MISE_OVERRIDE_CONFIG_FILENAMES: ".mise.toml"
       # Relax network hiccups when fetching tool version metadata
       MISE_FETCH_REMOTE_VERSIONS_TIMEOUT: "60"
       # Use GitHub Actions Lua/LuaRocks instead of mise-managed installs
@@ -69,6 +76,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Prepare mise task include path
+        run: |
+          # `.mise.toml` includes task files under `.config/mise/tasks/*`.
+          # In CI checkout directories, this path does not exist by default.
+          # Mirror local layout so older mise versions can resolve task definitions.
+          [ -e .config ] || ln -s . .config
 
       - name: Install build dependencies
         run: |
@@ -100,7 +114,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.luarocks
-          key: luarocks-${{ runner.os }}-${{ hashFiles('**/mise.toml') }}
+          key: luarocks-${{ runner.os }}-${{ hashFiles('**/.mise.toml', '**/mise.toml') }}
           restore-keys: |
             luarocks-${{ runner.os }}-
 
