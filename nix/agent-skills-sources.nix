@@ -1,15 +1,3 @@
-  benjitaylor-agentation = {
-    url = "github:benjitaylor/agentation";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      benjitaylor-agentation = "skills";
-    };
-    selection.enable = [
-      "agentation"
-      "agentation-self-driving"
-    ];
-  };
 # Agent skills source definitions (single source of truth)
 {
   # Agent-skills external sources (flake = false: raw git repos)
@@ -85,6 +73,17 @@
     selection.enable = [
       "cloudflare"
       "tool-openclaw"
+    ];
+  };
+  millionco-react-doctor = {
+    url = "github:millionco/react-doctor";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      millionco-react-doctor = "skills";
+    };
+    selection.enable = [
+      "react-doctor"
     ];
   };
 }

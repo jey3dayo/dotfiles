@@ -935,8 +935,9 @@ let newLines = existingSources.lines.slice();
 let anyChanges = false;
 
 if (!existingSourceName) {
-  const finalUrl = ref
-    ? (sourceUrl.includes("?") ? `${sourceUrl}&ref=${ref}` : `${sourceUrl}?ref=${ref}`)
+  const isDefaultBranch = ref === "main" || ref === "master";
+  const finalUrl = ref && !isDefaultBranch
+    ? (sourceUrl.startsWith("github:") ? `${sourceUrl}/${ref}` : sourceUrl.includes("?") ? `${sourceUrl}&ref=${ref}` : `${sourceUrl}?ref=${ref}`)
     : sourceUrl;
   const newSourceBlock = buildSourceBlock({
     sourceName,

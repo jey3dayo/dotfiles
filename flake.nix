@@ -25,6 +25,10 @@
       url = "github:Heyvhuang/ship-faster";
       flake = false;
     };
+    millionco-react-doctor = {
+      url = "github:millionco/react-doctor";
+      flake = false;
+    };
     openai-skills = {
       url = "github:openai/skills";
       flake = false;
