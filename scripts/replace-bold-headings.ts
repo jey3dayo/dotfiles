@@ -244,6 +244,11 @@ function collectMarkdownFiles(targets: string[]): string[] {
     for (const entry of fs.readdirSync(currentDir, { withFileTypes: true })) {
       const fullPath = path.join(currentDir, entry.name);
       if (entry.isDirectory()) {
+        // Skip git submodules (.git exists as a file, not a directory)
+        const gitPath = path.join(fullPath, ".git");
+        if (fs.existsSync(gitPath) && fs.statSync(gitPath).isFile()) {
+          continue;
+        }
         walk(fullPath);
         continue;
       }
