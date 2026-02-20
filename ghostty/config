@@ -40,6 +40,9 @@ keybind = shift+enter=text:\x0a
 # Alt+Enter: prevent escape sequences, send newline
 keybind = alt+enter=text:\x0a
 
+# Cmd+Enter: unbind default fullscreen toggle
+keybind = cmd+enter=unbind
+
 ############################
 # Font (match WezTerm)
 ############################

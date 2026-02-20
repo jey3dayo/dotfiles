@@ -75,4 +75,15 @@
       "tool-openclaw"
     ];
   };
+  millionco-react-doctor = {
+    url = "github:millionco/react-doctor";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      millionco-react-doctor = "skills";
+    };
+    selection.enable = [
+      "react-doctor"
+    ];
+  };
 }

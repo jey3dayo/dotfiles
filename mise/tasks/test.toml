@@ -5,7 +5,13 @@
 
 ["test"]
 description = "テストを実行（集約）"
-depends = ["test:lua"]
+depends = ["test:lua", "test:ts"]
+
+["test:ts"]
+description = "TypeScript スクリプトのユニットテストを実行"
+run = """
+bash ./mise/tasks/lib/run-ts-tests.sh
+"""
 
 ["test:lua"]
 description = "Lua テストを実行(busted)"

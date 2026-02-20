@@ -121,8 +121,8 @@ agent-browser wait --load networkidle
 WSL2 環境でユーザーにスクリーンショットを見せる場合:
 
 ```bash
-# 保存先: ~/user_home/Downloads は Windows の Downloads フォルダへのシンボリックリンク
-DEBUG_DIR=~/user_home/Downloads/debug/$(date +%Y%m%d%H%M)
+# 保存先: カレントディレクトリ配下の .debug/
+DEBUG_DIR=.debug/$(date +%Y%m%d%H%M)
 mkdir -p "$DEBUG_DIR"
 
 # 通常のスクリーンショット

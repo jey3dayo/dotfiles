@@ -90,6 +90,22 @@
         "type": "github"
       }
     },
+    "millionco-react-doctor": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771465412,
+        "narHash": "sha256-SIZWhO3JUF8B1py3AGdLeTr/0ezj+cM4UebfujvZLCQ=",
+        "owner": "millionco",
+        "repo": "react-doctor",
+        "rev": "0299fc40a863eb458606417c83eb41ec514eeaf1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "millionco",
+        "repo": "react-doctor",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1771008912,
@@ -129,6 +145,7 @@
         "gitignore": "gitignore",
         "heyvhuang-ship-faster": "heyvhuang-ship-faster",
         "home-manager": "home-manager",
+        "millionco-react-doctor": "millionco-react-doctor",
         "nixpkgs": "nixpkgs",
         "openai-skills": "openai-skills",
         "ui-ux-pro-max": "ui-ux-pro-max",

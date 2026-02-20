@@ -15,7 +15,7 @@
 
 - [ ] フロントエンド
 - [ ] API
-- [ ] Terraform/インフラ
+- [ ] インフラ
 - [ ] CI/CD
 - [ ] ドキュメント
 
@@ -26,9 +26,4 @@
 ## 確認済み
 
 - [ ] 動作確認完了
-- [ ] 品質チェック通過 (`pnpm lint && pnpm type-check && pnpm build`)
-- [ ] Terraform変更時: `terraform validate && terraform plan`
-
----
-
-<!-- CodeRabbitの自動生成コメントはここに挿入されます -->
+- [ ] lint / test / build 通過

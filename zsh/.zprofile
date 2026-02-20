@@ -8,7 +8,8 @@ export PAGER='less'
 
 export LISTMAX=0
 
-typeset -U path cdpath fpath manpath
+typeset -gaU path
+typeset -U cdpath fpath manpath
 
 # Activate mise (env vars configured in .zshenv)
 # See: config/tools/mise.zsh (_mise_activate helper)

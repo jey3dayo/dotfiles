@@ -6,17 +6,17 @@
 # タスク定義を mise/tasks/ から読み込み
 [task_config]
 includes = [
-  "mise/tasks/format.toml",
-  "mise/tasks/lint.toml",
-  "mise/tasks/test.toml",
-  "mise/tasks/integration.toml",
-  "mise/tasks/skills.toml",
-  "mise/tasks/env.toml",
-  "mise/tasks/brewfile.toml",
-  "mise/tasks/updates.toml",
-  "mise/tasks/home-manager.toml",
-  "mise/tasks/ci.toml",
-  "mise/tasks/docs.toml",
+  ".config/mise/tasks/format.toml",
+  ".config/mise/tasks/lint.toml",
+  ".config/mise/tasks/test.toml",
+  ".config/mise/tasks/integration.toml",
+  ".config/mise/tasks/skills.toml",
+  ".config/mise/tasks/env.toml",
+  ".config/mise/tasks/brewfile.toml",
+  ".config/mise/tasks/updates.toml",
+  ".config/mise/tasks/home-manager.toml",
+  ".config/mise/tasks/ci.toml",
+  ".config/mise/tasks/docs.toml",
 ]
 
 # ========================================

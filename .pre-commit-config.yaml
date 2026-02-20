@@ -26,40 +26,42 @@ repos:
         types: [lua]
         pass_filenames: true
 
-      # Shell formatting (.sh files)
+      # Shell formatting (.sh files only; .zsh handled by beautysh below)
       - id: shfmt
         name: Format shell scripts with shfmt
         entry: shfmt
         args: ["-w", "-i", "2", "-ci", "-bn"]
         language: system
         types: [shell]
+        exclude: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|zsh/bin/zsh-precompile$)'
         pass_filenames: true
 
-      # Zsh formatting (.zsh files)
+      # Zsh formatting (.zsh files and zsh dotfiles)
       - id: beautysh
         name: Format Zsh scripts with beautysh
         entry: beautysh
         args: ["-i", "2"]
         language: system
-        files: \.zsh$
+        files: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$)'
         pass_filenames: true
         exclude: '^(zsh/\.zinit|fisher)'
 
-      # Shell linting
+      # Shell linting (.sh files only; .zsh uses zsh-syntax check below)
       - id: shellcheck
         name: Lint shell scripts with shellcheck
         entry: shellcheck
         language: system
         types: [shell]
+        exclude: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|zsh/bin/zsh-precompile$)'
         pass_filenames: true
 
-      # Zsh syntax check
+      # Zsh syntax check (including zsh dotfiles)
       - id: zsh-syntax
         name: Check Zsh syntax
         entry: zsh
         args: ["-n"]
         language: system
-        files: \.zsh$
+        files: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$)'
         pass_filenames: true
         exclude: '^(zsh/\.zinit|fisher)'
 
@@ -70,12 +72,13 @@ repos:
         args: ["-f", "parsable"]
         language: system
         types: [yaml]
+        exclude: '\.clang-format$'
         pass_filenames: true
 
       # Markdown linting
       - id: markdown-bold-headings
         name: Normalize internal Markdown bold headings
-        entry: tsx ./agents/scripts/replace-bold-headings.ts
+        entry: tsx ./scripts/replace-bold-headings.ts
         language: system
         files: ^agents/internal/.*\.md$
         pass_filenames: true
