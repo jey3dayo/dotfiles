@@ -19,11 +19,10 @@ Host *
 
   # Default authentication settings
   IdentityFile ~/.ssh/id_rsa
-  PasswordAuthentication yes
+  PasswordAuthentication no
   PubkeyAuthentication yes
 
   # Default connection settings
-  Protocol 2
   ForwardAgent no
   ForwardX11 no
 
