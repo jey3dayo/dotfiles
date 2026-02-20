@@ -337,7 +337,6 @@ mas "Pages", id: 409201541
 mas "Perplexity", id: 6714467650
 mas "Reeder", id: 1529448980
 mas "Reeder", id: 6475002485
-mas "Slack", id: 803453959
 mas "Tailscale", id: 1475387142
 mas "TestFlight", id: 899247664
 mas "The Unarchiver", id: 425424353
