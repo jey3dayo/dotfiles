@@ -11,7 +11,7 @@ log="$logdir/cleanup.log"
 {
   echo "=== openclaw-cleanup $(date -Is) ==="
   echo "host=$(hostname) user=$USER"
-  echo "PATH=$PATH"  # PATH確認用
+  echo "PATH=$PATH" # PATH確認用
   echo "--- df (before) ---"
   df -h /
 
@@ -39,6 +39,6 @@ log="$logdir/cleanup.log"
   echo "--- df (after) ---"
   df -h /
   echo "=== done ==="
-} >> "$log" 2>&1
+} >>"$log" 2>&1
 
 echo "Log: $log"

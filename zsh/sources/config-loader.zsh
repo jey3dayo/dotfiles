@@ -4,7 +4,6 @@
 load_config_loader() {
   local config_loader="${ZDOTDIR:-$HOME/.config/zsh}/config/loader.zsh"
   if [[ -r "$config_loader" ]]; then
-    # shellcheck source=~/.config/zsh/config/loader.zsh disable=SC1090
     source "$config_loader"
   fi
 }

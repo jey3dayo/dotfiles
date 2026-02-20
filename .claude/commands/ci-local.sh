@@ -77,7 +77,6 @@ setup_ci_env() {
   fi
 }
 
-
 verify_deployment() {
   # Mirror "Verify dotfiles deployment" step in .github/workflows/ci.yml.
   local file
@@ -94,7 +93,7 @@ verify_deployment() {
 
   local link_count
   link_count=$(find "$HOME/.config" -maxdepth 1 -type l | wc -l)
-  log_info "~/.config/ 内のシンボリックリンク数: $link_count"
+  log_info "$HOME/.config/ 内のシンボリックリンク数: $link_count"
 
   if [ "$link_count" -ge 46 ]; then
     log_success "期待されるファイル数（46個以上）が配置されました"

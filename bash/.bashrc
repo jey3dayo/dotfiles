@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # bash entrypoint (tracked)
 # - Keep environment setup stable (XDG + mise)
 # - Provide a sane interactive default (prompt + colors)
@@ -38,23 +39,23 @@ export NI_CONFIG_FILE="$HOME/.config/nirc"
 case ":$PATH:" in
   *":$HOME/bin:"*) ;;
   *) PATH="$HOME/bin:$PATH" ;;
- esac
+esac
 case ":$PATH:" in
   *":$HOME/.local/bin:"*) ;;
   *) PATH="$HOME/.local/bin:$PATH" ;;
- esac
+esac
 case ":$PATH:" in
   *":$XDG_CONFIG_HOME/scripts:"*) ;;
   *) PATH="$XDG_CONFIG_HOME/scripts:$PATH" ;;
- esac
+esac
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) PATH="$PNPM_HOME:$PATH" ;;
- esac
+esac
 case ":$PATH:" in
   *":$HOME/.claude/local:"*) ;;
   *) [ -d "$HOME/.claude/local" ] && PATH="$HOME/.claude/local:$PATH" ;;
- esac
+esac
 export PATH
 
 # Activate mise if available
@@ -68,12 +69,12 @@ fi
 case $- in
   *i*) ;;
   *) return ;;
- esac
+esac
 
 # Enable color prompt for common terminals
 case "${TERM:-}" in
-  xterm-color|*-256color) color_prompt=yes ;;
- esac
+  xterm-color | *-256color) color_prompt=yes ;;
+esac
 
 if [ "${color_prompt:-}" = yes ]; then
   PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
