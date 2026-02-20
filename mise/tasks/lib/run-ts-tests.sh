@@ -6,9 +6,14 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd -- "${script_dir}/../../.." && pwd)"
 cd "${repo_root}"
 
-# Ensure required dependency exists.
+# Ensure required dependencies exist.
 if ! command -v fd >/dev/null 2>&1; then
   echo "❌ fd not found. Please install fd (https://github.com/sharkdp/fd)"
+  exit 1
+fi
+
+if ! command -v tsx >/dev/null 2>&1; then
+  echo "❌ tsx not found. Please install tsx"
   exit 1
 fi
 
