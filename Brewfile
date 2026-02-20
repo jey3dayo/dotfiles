@@ -70,13 +70,11 @@ brew "coreutils"
 brew "cscope"
 brew "ctop"
 brew "dark-mode"
-brew "deno"
 brew "dialog"
 brew "graphite2"
 brew "harfbuzz"
 brew "icu4c@77"
 brew "digdag"
-brew "direnv"
 brew "docbook"
 brew "docbook-xsl"
 brew "docker"
@@ -247,12 +245,15 @@ cask "asana"
 cask "autodesk-fusion"
 cask "aws-vpn-client"
 cask "bartender"
+cask "bitwarden"
 cask "caffeine"
 cask "chatgpt"
 cask "choosy"
 cask "cleanshot"
+cask "coteditor"
 cask "cursor"
 cask "cyberduck"
+cask "daisydisk"
 cask "deckset"
 cask "deepl"
 cask "deskpad"
@@ -303,6 +304,7 @@ cask "slack"
 cask "spotify"
 cask "tableplus"
 cask "teamviewer"
+cask "the-unarchiver"
 cask "tradingview"
 cask "tunnelbear"
 cask "ungoogled-chromium"
@@ -322,10 +324,7 @@ mas "1Password for Safari", id: 1569813296
 mas "Amphetamine", id: 937984704
 mas "Apple Configurator", id: 1037126344
 mas "BetterSnapTool", id: 417375580
-mas "Bitwarden", id: 1352778147
 mas "CommentScreen", id: 1450950860
-mas "CotEditor", id: 1024640650
-mas "DaisyDisk", id: 411643860
 mas "Darkroom", id: 953286746
 mas "Developer", id: 640199958
 mas "Howler Timer", id: 428846772
@@ -339,7 +338,6 @@ mas "Reeder", id: 1529448980
 mas "Reeder", id: 6475002485
 mas "Tailscale", id: 1475387142
 mas "TestFlight", id: 899247664
-mas "The Unarchiver", id: 425424353
 mas "Xcode", id: 497799835
 vscode "amazonwebservices.aws-toolkit-vscode"
 vscode "asvetliakov.vscode-neovim"

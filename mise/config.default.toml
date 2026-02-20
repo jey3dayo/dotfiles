@@ -45,6 +45,7 @@ uvx = true
 # Language Runtimes (言語ランタイム - 開発用)
 # ========================================
 # 注: システム依存関係用の Node.js/Python は Homebrew で管理
+deno = "latest"
 go = "1.25.5"
 node = "lts"
 python = "3.14"
