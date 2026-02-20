@@ -70,12 +70,6 @@ Layout/TrailingBlankLines:
 Style/Layout:
   AutoCorrect: true
 
-Style/Layout:
-  AutoCorrect: true
-
-Style/Layout:
-  AutoCorrect: true
-
 Layout/SpaceAroundEqualsInParameterDefault:
   AutoCorrect: true
 

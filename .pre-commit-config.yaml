@@ -33,16 +33,16 @@ repos:
         args: ["-w", "-i", "2", "-ci", "-bn"]
         language: system
         types: [shell]
-        exclude: \.zsh$
+        exclude: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|zsh/bin/zsh-precompile$)'
         pass_filenames: true
 
-      # Zsh formatting (.zsh files)
+      # Zsh formatting (.zsh files and zsh dotfiles)
       - id: beautysh
         name: Format Zsh scripts with beautysh
         entry: beautysh
         args: ["-i", "2"]
         language: system
-        files: \.zsh$
+        files: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$)'
         pass_filenames: true
         exclude: '^(zsh/\.zinit|fisher)'
 
@@ -52,16 +52,16 @@ repos:
         entry: shellcheck
         language: system
         types: [shell]
-        exclude: \.zsh$
+        exclude: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|zsh/bin/zsh-precompile$)'
         pass_filenames: true
 
-      # Zsh syntax check
+      # Zsh syntax check (including zsh dotfiles)
       - id: zsh-syntax
         name: Check Zsh syntax
         entry: zsh
         args: ["-n"]
         language: system
-        files: \.zsh$
+        files: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$)'
         pass_filenames: true
         exclude: '^(zsh/\.zinit|fisher)'
 
@@ -72,6 +72,7 @@ repos:
         args: ["-f", "parsable"]
         language: system
         types: [yaml]
+        exclude: '\.clang-format$'
         pass_filenames: true
 
       # Markdown linting

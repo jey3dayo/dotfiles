@@ -73,6 +73,6 @@ export NI_CONFIG_FILE="$HOME/.config/nirc"
 fpath=(
   ~/.awsume/zsh-autocomplete/
   ~/.local/share/zsh-autocomplete/
-  "${fpath[@]}")
+"${fpath[@]}")
 
 # vim: set syntax=zsh:
