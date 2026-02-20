@@ -15,7 +15,6 @@ load_tool_settings() {
   # Critical tools - immediate load (minimal set)
   for critical_tool in "${critical_tools[@]}"; do
     is_critical[$critical_tool]=1
-    # shellcheck disable=SC1090
     [[ -f "$config_dir/tools/$critical_tool.zsh" ]] && source "$config_dir/tools/$critical_tool.zsh"
   done
 
@@ -36,7 +35,6 @@ load_tool_settings() {
         *) zsh-defer -t "$DEFER_DEFAULT_SECONDS" source "$tool_file" ;;   # Everything else - low priority
       esac
     else
-      # shellcheck disable=SC1090
       source "$tool_file"
     fi
   done
