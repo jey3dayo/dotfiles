@@ -17,18 +17,24 @@
       # - `/proc/cpuinfo` is a pseudo filesystem file (size 0), so `builtins.readFile`
       #   returns an empty string during Nix evaluation — it cannot be used for detection.
       # - `/sys/firmware/devicetree/base/model` contains NUL bytes, so `builtins.readFile`
-      #   would fail, but `builtins.pathExists` works reliably.
-      # - `/boot/firmware/config.txt` is a Raspberry Pi-specific boot configuration file.
-      # - We use file existence checks instead of content parsing for reliable detection.
+      #   would fail, but `builtins.pathExists` works reliably. However, this file exists
+      #   on many ARM Linux systems (Jetson, Odroid, etc.), not just Raspberry Pi.
+      # - `/boot/firmware/config.txt` is Raspberry Pi-specific boot configuration.
+      # - We require BOTH markers (AND condition) to avoid false positives on non-Pi ARM SBCs.
       isRaspberryPiModel =
         let
           hasDeviceTree = builtins.pathExists "/sys/firmware/devicetree/base/model";
           hasPiBootConfig = builtins.pathExists "/boot/firmware/config.txt";
         in
-        pkgs.stdenv.isLinux && (hasDeviceTree || hasPiBootConfig);
+        pkgs.stdenv.isLinux && hasDeviceTree && hasPiBootConfig;
 
       # CI detection: $CI or $GITHUB_ACTIONS environment variables
       isCI = hasEnvValue "CI" "true" || hasEnvValue "GITHUB_ACTIONS" "true";
+
+      # Explicit environment override via $DOTFILES_ENVIRONMENT
+      # Allows manual control: DOTFILES_ENVIRONMENT=pi home-manager switch ...
+      envOverride = builtins.getEnv "DOTFILES_ENVIRONMENT";
+      hasEnvOverride = envOverride == "ci" || envOverride == "pi" || envOverride == "default";
 
       # Raspberry Pi detection: ARM Linux + Raspberry Pi specific file markers
       isRaspberryPi =
@@ -36,8 +42,9 @@
         isRaspberryPiModel;
 
     in
-    # Priority: CI > Pi > Default (includes WSL2, macOS, generic Linux)
-    if isCI then "ci"
+    # Priority: Explicit override > CI > Pi > Default
+    if hasEnvOverride then envOverride
+    else if isCI then "ci"
     else if isRaspberryPi then "pi"
     else "default";
 
