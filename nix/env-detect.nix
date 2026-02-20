@@ -14,26 +14,23 @@
 
       # Raspberry Pi detection helper.
       # NOTE:
-      # - `/sys/firmware/devicetree/base/model` (and `/proc/device-tree/model`) often contain NUL bytes,
-      #   which `builtins.readFile` cannot represent as a Nix string.
-      # - `/proc/cpuinfo` is safe text on Linux, but doesn't exist on e.g. Darwin.
-      # - On Raspberry Pi 4/5, model name can be missing in some fields, so check BCM SoC IDs as fallback.
+      # - `/proc/cpuinfo` is a pseudo filesystem file (size 0), so `builtins.readFile`
+      #   returns an empty string during Nix evaluation — it cannot be used for detection.
+      # - `/sys/firmware/devicetree/base/model` contains NUL bytes, so `builtins.readFile`
+      #   would fail, but `builtins.pathExists` works reliably.
+      # - `/boot/firmware/config.txt` is a Raspberry Pi-specific boot configuration file.
+      # - We use file existence checks instead of content parsing for reliable detection.
       isRaspberryPiModel =
         let
-          cpuinfoPath = "/proc/cpuinfo";
-          cpuinfoRead = builtins.tryEval (builtins.readFile cpuinfoPath);
-          cpuinfo = if cpuinfoRead.success then cpuinfoRead.value else "";
-          hasRaspberryPiString = builtins.match ".*Raspberry Pi.*" cpuinfo != null;
-          hasBcm27xxString = builtins.match ".*BCM27[0-9][0-9].*" cpuinfo != null;
-          hasBcm283xString = builtins.match ".*BCM283[0-9].*" cpuinfo != null;
+          hasDeviceTree = builtins.pathExists "/sys/firmware/devicetree/base/model";
+          hasPiBootConfig = builtins.pathExists "/boot/firmware/config.txt";
         in
-        pkgs.stdenv.isLinux && cpuinfoRead.success &&
-        (hasRaspberryPiString || hasBcm27xxString || hasBcm283xString);
+        pkgs.stdenv.isLinux && (hasDeviceTree || hasPiBootConfig);
 
       # CI detection: $CI or $GITHUB_ACTIONS environment variables
       isCI = hasEnvValue "CI" "true" || hasEnvValue "GITHUB_ACTIONS" "true";
 
-      # Raspberry Pi detection: ARM Linux + Raspberry Pi specific cpuinfo markers
+      # Raspberry Pi detection: ARM Linux + Raspberry Pi specific file markers
       isRaspberryPi =
         (pkgs.stdenv.hostPlatform.isAarch64 || pkgs.stdenv.hostPlatform.isAarch32) &&
         isRaspberryPiModel;
