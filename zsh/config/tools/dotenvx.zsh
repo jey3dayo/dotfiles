@@ -1,4 +1,3 @@
-# shellcheck shell=bash
 # ========================================
 # dotenvx - encrypted .env loader
 # ========================================
