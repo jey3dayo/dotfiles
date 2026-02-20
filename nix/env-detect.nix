@@ -14,33 +14,37 @@
 
       # Raspberry Pi detection helper.
       # NOTE:
-      # - `/sys/firmware/devicetree/base/model` (and `/proc/device-tree/model`) often contain NUL bytes,
-      #   which `builtins.readFile` cannot represent as a Nix string.
-      # - `/proc/cpuinfo` is safe text on Linux, but doesn't exist on e.g. Darwin.
-      # - On Raspberry Pi 4/5, model name can be missing in some fields, so check BCM SoC IDs as fallback.
+      # - `/proc/cpuinfo` is a pseudo filesystem file (size 0), so `builtins.readFile`
+      #   returns an empty string during Nix evaluation — it cannot be used for detection.
+      # - `/sys/firmware/devicetree/base/model` contains NUL bytes, so `builtins.readFile`
+      #   would fail, but `builtins.pathExists` works reliably. However, this file exists
+      #   on many ARM Linux systems (Jetson, Odroid, etc.), not just Raspberry Pi.
+      # - `/boot/firmware/config.txt` is Raspberry Pi-specific boot configuration.
+      # - We require BOTH markers (AND condition) to avoid false positives on non-Pi ARM SBCs.
       isRaspberryPiModel =
         let
-          cpuinfoPath = "/proc/cpuinfo";
-          cpuinfoRead = builtins.tryEval (builtins.readFile cpuinfoPath);
-          cpuinfo = if cpuinfoRead.success then cpuinfoRead.value else "";
-          hasRaspberryPiString = builtins.match ".*Raspberry Pi.*" cpuinfo != null;
-          hasBcm27xxString = builtins.match ".*BCM27[0-9][0-9].*" cpuinfo != null;
-          hasBcm283xString = builtins.match ".*BCM283[0-9].*" cpuinfo != null;
+          hasDeviceTree = builtins.pathExists "/sys/firmware/devicetree/base/model";
+          hasPiBootConfig = builtins.pathExists "/boot/firmware/config.txt";
         in
-        pkgs.stdenv.isLinux && cpuinfoRead.success &&
-        (hasRaspberryPiString || hasBcm27xxString || hasBcm283xString);
+        pkgs.stdenv.isLinux && hasDeviceTree && hasPiBootConfig;
 
       # CI detection: $CI or $GITHUB_ACTIONS environment variables
       isCI = hasEnvValue "CI" "true" || hasEnvValue "GITHUB_ACTIONS" "true";
 
-      # Raspberry Pi detection: ARM Linux + Raspberry Pi specific cpuinfo markers
+      # Explicit environment override via $DOTFILES_ENVIRONMENT
+      # Allows manual control: DOTFILES_ENVIRONMENT=pi home-manager switch ...
+      envOverride = builtins.getEnv "DOTFILES_ENVIRONMENT";
+      hasEnvOverride = envOverride == "ci" || envOverride == "pi" || envOverride == "default";
+
+      # Raspberry Pi detection: ARM Linux + Raspberry Pi specific file markers
       isRaspberryPi =
         (pkgs.stdenv.hostPlatform.isAarch64 || pkgs.stdenv.hostPlatform.isAarch32) &&
         isRaspberryPiModel;
 
     in
-    # Priority: CI > Pi > Default (includes WSL2, macOS, generic Linux)
-    if isCI then "ci"
+    # Priority: Explicit override > CI > Pi > Default
+    if hasEnvOverride then envOverride
+    else if isCI then "ci"
     else if isRaspberryPi then "pi"
     else "default";
 
