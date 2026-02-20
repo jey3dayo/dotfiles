@@ -19,8 +19,8 @@ load_tool_settings() {
   done
 
   # Non-critical tools - ultra-deferred load with optimized timing
+  setopt local_options null_glob
   for tool_file in "$config_dir/tools"/*.zsh; do
-    [[ -e "$tool_file" ]] || continue
     tool_name="${tool_file:t:r}"
     # Skip already loaded critical tools
     ((is_critical[$tool_name])) && continue

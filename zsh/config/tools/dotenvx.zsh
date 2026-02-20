@@ -11,7 +11,7 @@ _dotenvx_load_global_env() {
 
   local vars
   vars=$(dotenvx get --format shell -f "$env_file" 2>/dev/null) || return 0
-  eval "export ${vars}"
+  eval "${vars}"
 }
 
 _dotenvx_load_global_env
