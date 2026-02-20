@@ -1,4 +1,3 @@
-# shellcheck shell=bash
 # Tool settings loader
 # 開発ツール関連の設定
 
@@ -19,8 +18,7 @@ load_tool_settings() {
   done
 
   # Non-critical tools - ultra-deferred load with optimized timing
-  setopt local_options null_glob
-  for tool_file in "$config_dir/tools"/*.zsh; do
+  for tool_file in "$config_dir/tools"/*.zsh(N); do
     tool_name="${tool_file:t:r}"
     # Skip already loaded critical tools
     ((is_critical[$tool_name])) && continue

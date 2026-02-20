@@ -37,3 +37,24 @@ Purpose: preserve the fast, modular Zsh setup. Scope: load order, PATH policy, p
 
 - Add new tool configs under config/tools/\*.zsh and load via config/loader.zsh; prefer deferred loading for non-essential tools.
 - OS-specific changes belong in config/os/\*.zsh and should auto-detect platform.
+
+## Glob qualifiers
+
+`.zsh` files are processed by **beautysh + `zsh -n`** only. shfmt and shellcheck are excluded (see `.pre-commit-config.yaml` and `mise/tasks/`). Zsh-specific glob qualifiers are fully supported.
+
+Use glob qualifiers to write safe, idiomatic zsh:
+
+```zsh
+# Null glob: no error if no matches
+for f in "$dir"/*.zsh(N); do ...
+
+# Null glob + plain files only (no symlinks, no dirs)
+for f in "$dir"/*.zsh(N.); do ...
+
+# Null glob + dirs only
+for d in "$dir"/*/(N); do ...
+```
+
+Do **not** use `setopt null_glob` workarounds — `(N)` in the glob itself is the idiomatic zsh way.
+
+Do **not** add `# shellcheck shell=bash` to `.zsh` files; shellcheck does not run on them.

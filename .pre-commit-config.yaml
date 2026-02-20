@@ -26,13 +26,14 @@ repos:
         types: [lua]
         pass_filenames: true
 
-      # Shell formatting (.sh files)
+      # Shell formatting (.sh files only; .zsh handled by beautysh below)
       - id: shfmt
         name: Format shell scripts with shfmt
         entry: shfmt
         args: ["-w", "-i", "2", "-ci", "-bn"]
         language: system
         types: [shell]
+        exclude: \.zsh$
         pass_filenames: true
 
       # Zsh formatting (.zsh files)
@@ -45,12 +46,13 @@ repos:
         pass_filenames: true
         exclude: '^(zsh/\.zinit|fisher)'
 
-      # Shell linting
+      # Shell linting (.sh files only; .zsh uses zsh-syntax check below)
       - id: shellcheck
         name: Lint shell scripts with shellcheck
         entry: shellcheck
         language: system
         types: [shell]
+        exclude: \.zsh$
         pass_filenames: true
 
       # Zsh syntax check
