@@ -1,5 +1,13 @@
 # Home Manager configuration for dotfiles
-{ config, pkgs, lib, inputs, username, homeDirectory, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  username,
+  homeDirectory,
+  ...
+}:
 
 {
   # Basic home-manager settings
@@ -8,7 +16,7 @@
 
   # Fundamental packages (if needed)
   home.packages = with pkgs; [
-    rsync  # Required for copy-tree deployment
+    rsync # Required for copy-tree deployment
   ];
 
   # Tools are installed via mise; Home Manager focuses on config distribution.
@@ -19,17 +27,17 @@
   # Enable dotfiles module
   programs.dotfiles = {
     enable = true;
-    repoPath = ./.;  # dotfiles repository root
-    repoWorktreePath = null;  # Auto-detect from repoPath or fallback paths
-    environment = null;  # Auto-detect (override with "ci"/"pi"/"wsl2"/"macos"/"default")
+    repoPath = ./.; # dotfiles repository root
+    repoWorktreePath = null; # Auto-detect from repoPath or fallback paths
+    environment = null; # Auto-detect (override with "ci"/"pi"/"default")
 
     # Deployment options (Phase 2: enable file deployment)
     # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager
-    deployEntryPoints = true;   # Deploy ~/.gitconfig, ~/.zshenv, etc.
-    deploySsh = true;           # Deploy ~/.ssh/config
-    deployBash = true;          # Deploy ~/.bashrc, ~/.bash_profile
-    deployAwsume = true;        # Deploy ~/.awsume/config.yaml
-    initSubmodules = true;      # Initialize Git submodules (tmux plugins)
+    deployEntryPoints = true; # Deploy ~/.gitconfig, ~/.zshenv, etc.
+    deploySsh = true; # Deploy ~/.ssh/config
+    deployBash = true; # Deploy ~/.bashrc, ~/.bash_profile
+    deployAwsume = true; # Deploy ~/.awsume/config.yaml
+    initSubmodules = true; # Initialize Git submodules (tmux plugins)
   };
 
   # Agent skills are managed inside this repo (migrated from ~/.agents)
@@ -45,8 +53,10 @@
     };
 
     skills.enable =
-      let selection = (import ./nix/agent-skills.nix).selection;
-      in if selection ? enable then selection.enable else null;
+      let
+        selection = (import ./nix/agent-skills.nix).selection;
+      in
+      if selection ? enable then selection.enable else null;
 
     targets = import ./nix/targets.nix;
 
