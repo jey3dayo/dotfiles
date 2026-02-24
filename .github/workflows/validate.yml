@@ -10,6 +10,7 @@ on:
       - "agents/nix/**"
       - "agents/internal/**"
       - "agents/scripts/validate-internal.sh"
+      - "scripts/check-flake-sync.sh"
   pull_request:
     paths:
       - "flake.nix"
@@ -19,6 +20,7 @@ on:
       - "agents/nix/**"
       - "agents/internal/**"
       - "agents/scripts/validate-internal.sh"
+      - "scripts/check-flake-sync.sh"
   workflow_dispatch:
 
 permissions:
@@ -39,6 +41,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Check flake inputs sync
+        run: sh ./scripts/check-flake-sync.sh
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
