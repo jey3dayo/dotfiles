@@ -697,7 +697,7 @@ Agent Skills の検証は3つのレイヤーで構成されています。
 
 ### `nix run .#validate` (`mkValidateScript`)
 
-**実装**: `agents/nix/lib.nix` L340-385
+**実装**: `agents/nix/lib.nix` L446-502
 
 実行時にバンドルの整合性を検証するスクリプト。
 
@@ -711,7 +711,7 @@ Agent Skills の検証は3つのレイヤーで構成されています。
 
 ### `nix flake check` (`mkChecks`)
 
-**実装**: `agents/nix/lib.nix` L388-402
+**実装**: `agents/nix/lib.nix` L505-524
 
 Nix の評価時に実行される純粋な検証。
 
