@@ -59,8 +59,9 @@ extract_flake_inputs() {
       name = n
     }
     in_block && /url[[:space:]]*=/ {
-      split($0, parts, "\"")
-      url = parts[2]
+      # Extract text between first and last double-quotes (handles edge cases)
+      match($0, /"[^"]*"/)
+      url = substr($0, RSTART + 1, RLENGTH - 2)
       if (name != "" && url != "") {
         print name "=" url
         name = ""
@@ -77,16 +78,17 @@ extract_sources() {
   # Parse top-level attribute names and their url values
   awk '
     # Top-level attribute: lines like "  openai-skills = {"
-    # Must be at indent level 2 (2 spaces), not deeper
-    /^  [a-zA-Z][a-zA-Z0-9_-]* = \{/ {
+    # Flexible indent (handles nixfmt variations) but excludes nested attrs
+    # by requiring the name to start after leading whitespace only
+    /^[[:space:]]+[a-zA-Z][a-zA-Z0-9_-]*[[:space:]]*=[[:space:]]*\{/ && !/^[[:space:]]{4,}/ {
       gsub(/^[[:space:]]+/, "")
       gsub(/[[:space:]]*=.*/, "")
       name = $0
     }
     # URL line inside an attribute block
     /url[[:space:]]*=/ && name != "" {
-      split($0, parts, "\"")
-      url = parts[2]
+      match($0, /"[^"]*"/)
+      url = substr($0, RSTART + 1, RLENGTH - 2)
       if (url != "") {
         print name "=" url
         name = ""
