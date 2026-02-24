@@ -2,75 +2,90 @@
 { pkgs, nixlib }:
 
 let
-  inherit (nixlib) filterAttrs mapAttrsToList concatStringsSep
-    hasAttr attrNames length elem sort;
-  inherit (builtins) readDir pathExists toJSON seq stringLength substring;
+  inherit (nixlib)
+    filterAttrs
+    mapAttrsToList
+    concatStringsSep
+    hasAttr
+    attrNames
+    length
+    elem
+    sort
+    ;
+  inherit (builtins)
+    readDir
+    pathExists
+    toJSON
+    seq
+    stringLength
+    substring
+    ;
 
-  hasPrefix = prefix: str:
+  hasPrefix =
+    prefix: str:
     let
       prefixLen = stringLength prefix;
       strLen = stringLength str;
     in
-      if strLen < prefixLen then
-        false
-      else
-        substring 0 prefixLen str == prefix;
+    if strLen < prefixLen then false else substring 0 prefixLen str == prefix;
 
-  removePrefix = prefix: str:
+  removePrefix =
+    prefix: str:
     if hasPrefix prefix str then
       substring (stringLength prefix) (stringLength str - stringLength prefix) str
     else
       str;
 
-  stripDotPrefix = str:
-    if hasPrefix "./" str then
-      substring 2 (stringLength str - 2) str
-    else
-      str;
+  stripDotPrefix = str: if hasPrefix "./" str then substring 2 (stringLength str - 2) str else str;
 
   # Scan a single source path and return { skillId = { id, path, source }; }
-  scanSource = sourceName: sourcePath:
+  scanSource =
+    sourceName: sourcePath:
     let
       entries = readDir sourcePath;
       dirs = attrNames (filterAttrs (_: type: type == "directory") entries);
-      skills = builtins.filter (name:
-        pathExists (sourcePath + "/${name}/SKILL.md")
-      ) dirs;
+      skills = builtins.filter (name: pathExists (sourcePath + "/${name}/SKILL.md")) dirs;
     in
-      builtins.listToAttrs (map (name: {
+    builtins.listToAttrs (
+      map (name: {
         inherit name;
         value = {
           id = name;
           path = sourcePath + "/${name}";
           source = sourceName;
         };
-      }) skills);
+      }) skills
+    );
 
   # Detect if source root is itself a skill, or contains sub-skills
-  scanSourceAutoDetect = sourceName: sourcePath:
+  scanSourceAutoDetect =
+    sourceName: sourcePath:
     let
       claudeSkillsPath = sourcePath + "/.claude/skills";
-      direct =
-        if pathExists sourcePath then
-          scanSource sourceName sourcePath
-        else
-          {};
+      direct = if pathExists sourcePath then scanSource sourceName sourcePath else { };
       claudeSkills =
-        if direct == {} && pathExists claudeSkillsPath then
+        if direct == { } && pathExists claudeSkillsPath then
           scanSource sourceName claudeSkillsPath
         else
-          {};
+          { };
     in
-      if pathExists (sourcePath + "/SKILL.md") then
-        { ${sourceName} = { id = sourceName; path = sourcePath; source = sourceName; }; }
-      else if direct != {} then
-        direct
-      else
-        claudeSkills;
+    if pathExists (sourcePath + "/SKILL.md") then
+      {
+        ${sourceName} = {
+          id = sourceName;
+          path = sourcePath;
+          source = sourceName;
+        };
+      }
+    else if direct != { } then
+      direct
+    else
+      claudeSkills;
 
   # Scan distributions directory for bundled components
   # Returns: { skills = { skillId = { id, path, source }; ... }; commands = path or null; rules = { ruleId = { id, path, source }; ... }; agents = { agentId = { id, path, source }; ... }; }
-  scanDistribution = distributionPath:
+  scanDistribution =
+    distributionPath:
     let
       skillsPath = distributionPath + "/skills";
       commandsPath = distributionPath + "/commands";
@@ -84,109 +99,162 @@ let
           let
             skillDirs = readDir skillsPath;
             # Handle both direct skill dirs and symlinked source dirs
-            processSkillEntry = name: type:
-              let entryPath = skillsPath + "/${name}";
+            processSkillEntry =
+              name: type:
+              let
+                entryPath = skillsPath + "/${name}";
               in
-                if type == "directory" || type == "symlink" then
-                  # Check if it's a skill directory directly
-                  if pathExists (entryPath + "/SKILL.md") then
-                    { ${name} = { id = name; path = entryPath; source = "distribution"; }; }
-                  # Support nested skill layout: <skill-id>/skills/SKILL.md
-                  else if pathExists (entryPath + "/skills/SKILL.md") then
-                    { ${name} = { id = name; path = entryPath + "/skills"; source = "distribution"; }; }
-                  else
-                    # Or scan it as a source directory
-                    scanSource "distribution" entryPath
-                else {};
+              if type == "directory" || type == "symlink" then
+                # Check if it's a skill directory directly
+                if pathExists (entryPath + "/SKILL.md") then
+                  {
+                    ${name} = {
+                      id = name;
+                      path = entryPath;
+                      source = "distribution";
+                    };
+                  }
+                # Support nested skill layout: <skill-id>/skills/SKILL.md
+                else if pathExists (entryPath + "/skills/SKILL.md") then
+                  {
+                    ${name} = {
+                      id = name;
+                      path = entryPath + "/skills";
+                      source = "distribution";
+                    };
+                  }
+                else
+                  # Or scan it as a source directory
+                  scanSource "distribution" entryPath
+              else
+                { };
           in
-            builtins.foldl' (acc: entry:
-              acc // (processSkillEntry entry.name entry.type)
-            ) {} (mapAttrsToList (name: type: { inherit name type; }) skillDirs)
-        else {};
+          builtins.foldl' (acc: entry: acc // (processSkillEntry entry.name entry.type)) { } (
+            mapAttrsToList (name: type: { inherit name type; }) skillDirs
+          )
+        else
+          { };
       # Scan rules directory for .md files
       scannedRules =
         if pathExists rulesPath then
           let
             ruleEntries = readDir rulesPath;
-            processRuleEntry = name: type:
+            processRuleEntry =
+              name: type:
               let
                 entryPath = rulesPath + "/${name}";
                 # Remove .md suffix to get rule ID
-                ruleId = if nixlib.hasSuffix ".md" name then
-                  nixlib.removeSuffix ".md" name
-                else
-                  name;
+                ruleId = if nixlib.hasSuffix ".md" name then nixlib.removeSuffix ".md" name else name;
               in
-                if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
-                  { ${ruleId} = { id = ruleId; path = entryPath; source = "distribution"; }; }
-                else if type == "directory" || type == "symlink" then
-                  # Scan subdirectory (e.g., rules/frontend/)
-                  let
-                    subEntries = if pathExists entryPath then readDir entryPath else {};
-                    processSubEntry = subName: subType:
-                      let
-                        subPath = entryPath + "/${subName}";
-                        subId = if nixlib.hasSuffix ".md" subName then
+              if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
+                {
+                  ${ruleId} = {
+                    id = ruleId;
+                    path = entryPath;
+                    source = "distribution";
+                  };
+                }
+              else if type == "directory" || type == "symlink" then
+                # Scan subdirectory (e.g., rules/frontend/)
+                let
+                  subEntries = if pathExists entryPath then readDir entryPath else { };
+                  processSubEntry =
+                    subName: subType:
+                    let
+                      subPath = entryPath + "/${subName}";
+                      subId =
+                        if nixlib.hasSuffix ".md" subName then
                           "${name}/${nixlib.removeSuffix ".md" subName}"
                         else
                           "${name}/${subName}";
-                      in
-                        if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
-                          { ${subId} = { id = subId; path = subPath; source = "distribution"; }; }
-                        else {};
-                  in
-                    builtins.foldl' (acc: entry:
-                      acc // (processSubEntry entry.name entry.type)
-                    ) {} (mapAttrsToList (n: t: { name = n; type = t; }) subEntries)
-                else {};
+                    in
+                    if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
+                      {
+                        ${subId} = {
+                          id = subId;
+                          path = subPath;
+                          source = "distribution";
+                        };
+                      }
+                    else
+                      { };
+                in
+                builtins.foldl' (acc: entry: acc // (processSubEntry entry.name entry.type)) { } (
+                  mapAttrsToList (n: t: {
+                    name = n;
+                    type = t;
+                  }) subEntries
+                )
+              else
+                { };
           in
-            builtins.foldl' (acc: entry:
-              acc // (processRuleEntry entry.name entry.type)
-            ) {} (mapAttrsToList (name: type: { inherit name type; }) ruleEntries)
-        else {};
+          builtins.foldl' (acc: entry: acc // (processRuleEntry entry.name entry.type)) { } (
+            mapAttrsToList (name: type: { inherit name type; }) ruleEntries
+          )
+        else
+          { };
 
       # Scan agents directory for .md files
       scannedAgents =
         if pathExists agentsPath then
           let
             agentEntries = readDir agentsPath;
-            processAgentEntry = name: type:
+            processAgentEntry =
+              name: type:
               let
                 entryPath = agentsPath + "/${name}";
                 # Remove .md suffix to get agent ID
-                agentId = if nixlib.hasSuffix ".md" name then
-                  nixlib.removeSuffix ".md" name
-                else
-                  name;
+                agentId = if nixlib.hasSuffix ".md" name then nixlib.removeSuffix ".md" name else name;
               in
-                if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
-                  { ${agentId} = { id = agentId; path = entryPath; source = "distribution"; }; }
-                else if type == "directory" || type == "symlink" then
-                  # Scan subdirectory (e.g., agents/kiro/)
-                  let
-                    subEntries = if pathExists entryPath then readDir entryPath else {};
-                    processSubEntry = subName: subType:
-                      let
-                        subPath = entryPath + "/${subName}";
-                        subId = if nixlib.hasSuffix ".md" subName then
+              if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
+                {
+                  ${agentId} = {
+                    id = agentId;
+                    path = entryPath;
+                    source = "distribution";
+                  };
+                }
+              else if type == "directory" || type == "symlink" then
+                # Scan subdirectory (e.g., agents/kiro/)
+                let
+                  subEntries = if pathExists entryPath then readDir entryPath else { };
+                  processSubEntry =
+                    subName: subType:
+                    let
+                      subPath = entryPath + "/${subName}";
+                      subId =
+                        if nixlib.hasSuffix ".md" subName then
                           "${name}/${nixlib.removeSuffix ".md" subName}"
                         else
                           "${name}/${subName}";
-                      in
-                        if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
-                          { ${subId} = { id = subId; path = subPath; source = "distribution"; }; }
-                        else {};
-                  in
-                    builtins.foldl' (acc: entry:
-                      acc // (processSubEntry entry.name entry.type)
-                    ) {} (mapAttrsToList (n: t: { name = n; type = t; }) subEntries)
-                else {};
+                    in
+                    if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
+                      {
+                        ${subId} = {
+                          id = subId;
+                          path = subPath;
+                          source = "distribution";
+                        };
+                      }
+                    else
+                      { };
+                in
+                builtins.foldl' (acc: entry: acc // (processSubEntry entry.name entry.type)) { } (
+                  mapAttrsToList (n: t: {
+                    name = n;
+                    type = t;
+                  }) subEntries
+                )
+              else
+                { };
           in
-            builtins.foldl' (acc: entry:
-              acc // (processAgentEntry entry.name entry.type)
-            ) {} (mapAttrsToList (name: type: { inherit name type; }) agentEntries)
-        else {};
-    in {
+          builtins.foldl' (acc: entry: acc // (processAgentEntry entry.name entry.type)) { } (
+            mapAttrsToList (name: type: { inherit name type; }) agentEntries
+          )
+        else
+          { };
+    in
+    {
       skills = scannedSkills;
       commands = if pathExists commandsPath then commandsPath else null;
       config = if pathExists configPath then configPath else null;
@@ -194,96 +262,124 @@ let
       agents = scannedAgents;
     };
 
-in {
+in
+{
   inherit scanDistribution;
 
   # Discover all available skills from sources + local path + distributions
   # Returns: { skillId = { id, path, source }; ... }
-  discoverCatalog = { sources, localPath, distributionsPath ? null }:
+  discoverCatalog =
+    {
+      sources,
+      localPath,
+      distributionsPath ? null,
+    }:
     let
       # Scan distributions first (if provided)
       distributionResult =
         if distributionsPath != null && pathExists distributionsPath then
           scanDistribution distributionsPath
         else
-          { skills = {}; commands = null; config = null; rules = {}; agents = {}; };
+          {
+            skills = { };
+            commands = null;
+            config = null;
+            rules = { };
+            agents = { };
+          };
 
       # Scan each external source (last-wins on duplicate skill IDs)
-      externalSkills = builtins.foldl' (acc: srcName:
+      externalSkills = builtins.foldl' (
+        acc: srcName:
         let
           src = sources.${srcName};
           scanned = scanSourceAutoDetect srcName src.path;
         in
-          acc // scanned
-      ) {} (attrNames sources);
+        acc // scanned
+      ) { } (attrNames sources);
 
       # Scan local skills (optional legacy override path)
       localSkills =
-        if localPath != null && pathExists localPath then
-          scanSource "local" localPath
-        else {};
+        if localPath != null && pathExists localPath then scanSource "local" localPath else { };
 
       # Priority: local > distribution > external
       # agents/internal is the single source of truth.
     in
-      externalSkills // distributionResult.skills // localSkills;
+    externalSkills // distributionResult.skills // localSkills;
 
   # Filter catalog by enable list
   # Returns: { skillId = { id, path, source }; ... } (only enabled ones)
-  selectSkills = { catalog, enable }:
+  selectSkills =
+    { catalog, enable }:
     let
       missing = builtins.filter (id: !(hasAttr id catalog)) enable;
     in
-      # Force evaluation of missing check
-      seq
-        (if missing != [] then
-          throw "Skills not found in catalog: ${concatStringsSep ", " missing}"
-        else null)
-        (filterAttrs (id: _: elem id enable) catalog);
+    # Force evaluation of missing check
+    seq (
+      if missing != [ ] then
+        throw "Skills not found in catalog: ${concatStringsSep ", " missing}"
+      else
+        null
+    ) (filterAttrs (id: _: elem id enable) catalog);
 
   # Create a Nix store derivation bundling all selected skills
-  mkBundle = { skills, name ? "agent-skills-bundle" }:
+  mkBundle =
+    {
+      skills,
+      name ? "agent-skills-bundle",
+    }:
     let
-      skillList = mapAttrsToList (id: skill: { inherit id; inherit (skill) path source; }) skills;
-      copyCommands = concatStringsSep "\n" (map (s:
-        ''
+      skillList = mapAttrsToList (id: skill: {
+        inherit id;
+        inherit (skill) path source;
+      }) skills;
+      copyCommands = concatStringsSep "\n" (
+        map (s: ''
           ${pkgs.rsync}/bin/rsync -aL "${s.path}/" "$out/${s.id}/"
-        ''
-      ) skillList);
+        '') skillList
+      );
       bundleInfo = toJSON {
         skills = map (s: { inherit (s) id source; }) skillList;
         count = length skillList;
       };
       bundleInfoFile = pkgs.writeText "bundle-info.json" bundleInfo;
     in
-      pkgs.runCommand name {} ''
-        set -euo pipefail
-        mkdir -p "$out"
-        ${copyCommands}
-        cp ${bundleInfoFile} "$out/.bundle-info"
-        chmod -R u+r "$out"
-      '';
+    pkgs.runCommand name { } ''
+      set -euo pipefail
+      mkdir -p "$out"
+      ${copyCommands}
+      cp ${bundleInfoFile} "$out/.bundle-info"
+      chmod -R u+r "$out"
+    '';
 
   # Create a sync script (fallback for non-HM usage)
-  mkSyncScript = { bundle, targets }:
+  mkSyncScript =
+    { bundle, targets }:
     pkgs.writeShellApplication {
       name = "skills-install";
-      runtimeInputs = [ pkgs.coreutils pkgs.jq pkgs.rsync ];
+      runtimeInputs = [
+        pkgs.coreutils
+        pkgs.jq
+        pkgs.rsync
+      ];
       text = ''
         echo "Installing agent skills..."
-        ${concatStringsSep "\n" (map (t: ''
-          dest="$HOME/${t.dest}"
-          mkdir -p "$dest"
-          rsync -aL --delete --exclude='/.system' "${bundle}/" "$dest/"
-          chmod -R u+w "$dest"
-          echo "  -> ${t.tool}: $dest"
-        '') targets)}
+        ${concatStringsSep "\n" (
+          map (t: ''
+            dest="$HOME/${t.dest}"
+            mkdir -p "$dest"
+            rsync -aL --delete --exclude='/.system' "${bundle}/" "$dest/"
+            chmod -R u+w "$dest"
+            echo "  -> ${t.tool}: $dest"
+          '') targets
+        )}
         echo "Done. $(jq -r '.count' "${bundle}/.bundle-info") skills installed to ${toString (length targets)} targets."
       '';
     };
 
   # Create a script that lists catalog & selected skills as JSON
-  mkListScript = { catalog, selectedSkills }:
+  mkListScript =
+    { catalog, selectedSkills }:
     let
       catalogInfo = mapAttrsToList (id: s: {
         inherit id;
@@ -297,16 +393,24 @@ in {
       };
       jsonFile = pkgs.writeText "skills-list.json" jsonData;
     in
-      pkgs.writeShellScriptBin "skills-list" ''
-        ${pkgs.jq}/bin/jq . "${jsonFile}"
-      '';
+    pkgs.writeShellScriptBin "skills-list" ''
+      ${pkgs.jq}/bin/jq . "${jsonFile}"
+    '';
 
   # Create a script that outputs install report (Markdown table)
-  mkReportScript = { skills, sourceMeta }:
+  mkReportScript =
+    { skills, sourceMeta }:
     let
-      skillList = mapAttrsToList (id: skill: { inherit id; inherit (skill) path source; }) skills;
-      typeOrder = { internal = 0; external = 1; };
-      reportList = map (s:
+      skillList = mapAttrsToList (id: skill: {
+        inherit id;
+        inherit (skill) path source;
+      }) skills;
+      typeOrder = {
+        internal = 0;
+        external = 1;
+      };
+      reportList = map (
+        s:
         let
           meta =
             if hasAttr s.source sourceMeta then
@@ -323,70 +427,88 @@ in {
           url = "${meta.repoUrl}/tree/${branch}/${relPath}";
         }
       ) skillList;
-      sorted = sort (a: b:
-        if typeOrder.${a.type} == typeOrder.${b.type}
-        then a.id < b.id
-        else typeOrder.${a.type} < typeOrder.${b.type}
+      sorted = sort (
+        a: b:
+        if typeOrder.${a.type} == typeOrder.${b.type} then
+          a.id < b.id
+        else
+          typeOrder.${a.type} < typeOrder.${b.type}
       ) reportList;
       header = "| Skill | Type | URL |\n| --- | --- | --- |\n";
       rows = concatStringsSep "\n" (map (r: "| ${r.id} | ${r.type} | ${r.url} |") sorted);
       output = header + rows + "\n";
       reportFile = pkgs.writeText "skills-install-report.md" output;
     in
-      pkgs.writeShellScriptBin "skills-report" ''
-        cat ${reportFile}
-      '';
+    pkgs.writeShellScriptBin "skills-report" ''
+      cat ${reportFile}
+    '';
   # Create a validation script that checks bundle integrity
-  mkValidateScript = { catalog, selectedSkills, bundle }:
+  mkValidateScript =
+    {
+      catalog,
+      selectedSkills,
+      bundle,
+    }:
     let
       catalogIds = attrNames catalog;
       selectedIds = attrNames selectedSkills;
     in
-      pkgs.writeShellScriptBin "skills-validate" ''
-        echo "Validating skill catalog..."
-        echo "  Total skills in catalog: ${toString (length catalogIds)}"
-        echo "  Selected skills: ${toString (length selectedIds)}"
+    pkgs.writeShellScriptBin "skills-validate" ''
+      echo "Validating skill catalog..."
+      echo "  Total skills in catalog: ${toString (length catalogIds)}"
+      echo "  Selected skills: ${toString (length selectedIds)}"
+      echo "  Unselected skills: $(( ${toString (length catalogIds)} - ${toString (length selectedIds)} ))"
 
-        errors=0
+      errors=0
 
-        # Verify each selected skill exists in bundle and has SKILL.md
-        selected_ids="${concatStringsSep " " selectedIds}"
-        if [ -n "$selected_ids" ]; then
-          for skill_name in $selected_ids; do
-            if [ ! -d "${bundle}/$skill_name" ]; then
-              echo "  ERROR: $skill_name missing from bundle"
-              errors=$((errors + 1))
-              continue
-            fi
-            if [ ! -f "${bundle}/$skill_name/SKILL.md" ]; then
-              echo "  ERROR: $skill_name missing SKILL.md"
-              errors=$((errors + 1))
-            fi
-          done
-        fi
-
-        # Verify no unexpected directories are missing SKILL.md
-        for skill_dir in "${bundle}"/*/; do
-          skill_name=$(basename "$skill_dir")
-          if [ ! -f "$skill_dir/SKILL.md" ]; then
+      # Verify each selected skill exists in bundle and has SKILL.md
+      selected_ids="${concatStringsSep " " selectedIds}"
+      if [ -n "$selected_ids" ]; then
+        for skill_name in $selected_ids; do
+          if [ ! -d "${bundle}/$skill_name" ]; then
+            echo "  ERROR: $skill_name missing from bundle"
+            errors=$((errors + 1))
+            continue
+          fi
+          if [ ! -f "${bundle}/$skill_name/SKILL.md" ]; then
             echo "  ERROR: $skill_name missing SKILL.md"
             errors=$((errors + 1))
           fi
         done
+      fi
 
-        echo ""
-        if [ "$errors" -gt 0 ]; then
-          echo "FAIL: $errors validation errors found"
-          exit 1
-        else
-          echo "All ${toString (length selectedIds)} selected skills validated."
-          echo "OK: All checks passed"
+      # Verify no unexpected directories are missing SKILL.md
+      for skill_dir in "${bundle}"/*/; do
+        skill_name=$(basename "$skill_dir")
+        if [ ! -f "$skill_dir/SKILL.md" ]; then
+          echo "  ERROR: $skill_name missing SKILL.md"
+          errors=$((errors + 1))
         fi
-      '';
+      done
+
+      # Bundle size information
+      bundle_size=$(du -sh "${bundle}" 2>/dev/null | cut -f1)
+      echo ""
+      echo "Bundle size: $bundle_size"
+
+      echo ""
+      if [ "$errors" -gt 0 ]; then
+        echo "FAIL: $errors validation errors found"
+        exit 1
+      else
+        echo "All ${toString (length selectedIds)} selected skills validated."
+        echo "OK: All checks passed"
+      fi
+    '';
 
   # Create nix flake checks
-  mkChecks = { bundle, catalog, selectedSkills }:
-    pkgs.runCommand "agent-skills-check" {} ''
+  mkChecks =
+    {
+      bundle,
+      catalog,
+      selectedSkills,
+    }:
+    pkgs.runCommand "agent-skills-check" { } ''
       # Verify bundle exists and has content
       test -f "${bundle}/.bundle-info"
 
