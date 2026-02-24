@@ -6,7 +6,8 @@
   # Detect environment based on system properties and environment variables
   # Returns: "ci" | "pi" | "default"
   # Note: WSL2, macOS, and generic Linux all use "default" configuration
-  detectEnvironment = pkgs:
+  detectEnvironment =
+    pkgs:
     let
       # Helper functions
       hasEnv = name: builtins.getEnv name != "";
@@ -38,20 +39,24 @@
 
       # Raspberry Pi detection: ARM Linux + Raspberry Pi specific file markers
       isRaspberryPi =
-        (pkgs.stdenv.hostPlatform.isAarch64 || pkgs.stdenv.hostPlatform.isAarch32) &&
-        isRaspberryPiModel;
+        (pkgs.stdenv.hostPlatform.isAarch64 || pkgs.stdenv.hostPlatform.isAarch32) && isRaspberryPiModel;
 
     in
     # Priority: Explicit override > CI > Pi > Default
-    if hasEnvOverride then envOverride
-    else if isCI then "ci"
-    else if isRaspberryPi then "pi"
-    else "default";
+    if hasEnvOverride then
+      envOverride
+    else if isCI then
+      "ci"
+    else if isRaspberryPi then
+      "pi"
+    else
+      "default";
 
   # Get mise config file path for the detected environment
   # Args: config - home-manager config object
   # Returns: path to mise config file
-  getMiseConfigPath = config: pkgs:
+  getMiseConfigPath =
+    config: pkgs:
     let
       self = import ./env-detect.nix { inherit pkgs lib; };
       environment = self.detectEnvironment pkgs;
