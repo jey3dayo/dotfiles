@@ -521,6 +521,35 @@ Agent Skillsは以下の4段階で統合・配布されます：
 
 **実装**: `agents/nix/lib.nix` (scanDistribution, discoverCatalog), `agents/nix/module.nix`
 
+### 外部ソース障害時の挙動
+
+Agent Skills の外部ソース（GitHub リポジトリ）が到達不能な場合の動作:
+
+#### シナリオ別の挙動
+
+| シナリオ                       | 挙動          | 理由                                             |
+| ------------------------------ | ------------- | ------------------------------------------------ |
+| `nix build` (キャッシュあり)   | 成功          | `flake.lock` + `/nix/store` キャッシュで動作     |
+| `nix flake update` (到達不能)  | 失敗          | 新しいリビジョンのフェッチが必要                 |
+| `nix build` (GC後、到達不能)   | 失敗          | キャッシュが消えており再フェッチが必要           |
+| flake input 欠落 (sources.nix) | 警告+スキップ | `builtins.hasAttr` ガードで graceful degradation |
+
+#### 設計方針: フェイルファースト + 部分的 graceful degradation
+
+- **flake.lock キャッシュ**: オフライン時の主要な防御層。`nix flake update` を実行しない限り、既存の `flake.lock` で固定されたリビジョンを `/nix/store` から取得
+- **sources.nix の防御的チェック**: `builtins.hasAttr sourceName inputs` で flake input の存在を確認。欠落している場合は `builtins.trace` で警告を出し、そのソースのカタログをスキップ
+- **selectSkills の throw**: `selection.enable` に指定されたスキルがカタログに見つからない場合は明示的にエラー。これにより、外部ソースがスキップされた結果として必要なスキルが欠けた場合に検出可能
+- **mkBundle の set -euo pipefail**: バンドル生成は全か無か（all-or-nothing）
+
+#### 運用上の注意
+
+1. **オフラインビルド**: `flake.lock` が最新であれば、`/nix/store` キャッシュが存在する限りオフラインでもビルド可能
+2. **GC 後の再ビルド**: `nix-collect-garbage` 後は外部ソースへのネットワーク接続が必要になる可能性がある
+3. **部分的失敗の検出**: 外部ソースがスキップされると、`selectSkills` が throw するため、暗黙的にスキルが欠落することはない
+4. **SSoT 不整合**: `agent-skills-sources.nix` と `flake.nix` の不整合検出は `scripts/check-flake-sync.sh` で CI チェック済み (#131)
+
+**実装**: `nix/sources.nix` (hasAttr ガード), `agents/nix/lib.nix` (selectSkills throw)
+
 ### Commands配布
 
 Commands（slash commands）の配布フロー:
