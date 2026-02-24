@@ -29,7 +29,7 @@
     enable = true;
     repoPath = ./.; # dotfiles repository root
     repoWorktreePath = null; # Auto-detect from repoPath or fallback paths
-    environment = null; # Auto-detect (override with "ci"/"pi"/"wsl2"/"macos"/"default")
+    environment = null; # Auto-detect (override with "ci"/"pi"/"default")
 
     # Deployment options (Phase 2: enable file deployment)
     # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager
