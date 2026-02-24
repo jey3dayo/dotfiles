@@ -70,3 +70,7 @@ run = "tsx ./scripts/replace-bold-headings.ts"
 ["skills:check"]
 description = "Skills配布検証（~/.claude/skills/ のカウントとリンク確認）"
 run = "scripts/skills-check.sh"
+
+["skills:check:sync"]
+description = "flake.nix と agent-skills-sources.nix の整合性チェック"
+run = "sh ./scripts/check-flake-sync.sh"
