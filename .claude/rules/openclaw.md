@@ -72,7 +72,7 @@ exec "${NODE}" "${OPENCLAW_MJS}" "$@"
 
 これにより **openclawアップデート後も設定変更不要**。
 
-**注意**:
+#### 注意
 
 - `latest` シムリンクはmiseが自動更新するとは限らないため、アップデート後に `ls -la ~/.mise/installs/npm-openclaw/latest` で確認する
 - Raspberry Piでは起動完了まで2〜3分かかる。`ss -tlnp | grep 18789` でポートが出るまで待つ
