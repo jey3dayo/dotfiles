@@ -1,9 +1,9 @@
 ---
 name: sync-origin
 description: |
-  現在のブランチをリモートのデフォルトブランチ（main/master/develop等）と同期し、
-  コンフリクトを自動解決する。"mainと同期して"、"最新にして"、"originと同期"、
-  "sync with origin"、"pull main"、"rebase on main"、"update from main" などで起動。
+  Sync the current branch with the remote default branch (main/master/develop, etc.)
+  and automatically resolve conflicts. Triggered by: "mainと同期して"、"最新にして"、"originと同期"、
+  "sync with origin", "pull main", "rebase on main", "update from main", etc.
 metadata:
   short-description: Sync current branch with remote default branch
 ---
@@ -12,13 +12,13 @@ metadata:
 
 ## Overview
 
-現在のブランチをリモートのデフォルトブランチと同期し、コンフリクトがあれば自動解決を試みるスキル。デフォルトブランチの自動検出、merge/rebase選択、段階的なコンフリクト解決をサポートします。
+A skill that syncs the current branch with the remote default branch and attempts to automatically resolve any conflicts. Supports auto-detection of the default branch, merge/rebase selection, and incremental conflict resolution.
 
 ## Trigger Conditions
 
-以下のようなリクエストで起動します：
+Activated by requests such as:
 
-### 日本語
+### Japanese
 
 - "mainと同期して"
 - "最新にして"
@@ -26,7 +26,7 @@ metadata:
 - "デフォルトブランチから更新"
 - "main/master/developからpull"
 
-### 英語
+### English
 
 - "sync with origin"
 - "pull main"
@@ -36,121 +36,121 @@ metadata:
 
 ## Workflow
 
-### 1. 事前確認
+### 1. Pre-flight Check
 
-作業を開始する前に、以下を確認します：
+Before starting work, verify the following:
 
 ```bash
-# 現在のブランチを確認
+# Check current branch
 git branch --show-current
 
-# 作業ツリーの状態を確認
+# Check working tree status
 git status --short
 
-# 未コミットの変更がある場合は警告
+# Warn if there are uncommitted changes
 ```
 
-### 未コミットの変更がある場合
+### When There Are Uncommitted Changes
 
-- ユーザーに確認を求める
-- オプション提示: stash、commit、または作業を中断
+- Ask user for confirmation
+- Present options: stash, commit, or abort the operation
 
-### 2. デフォルトブランチの検出
+### 2. Default Branch Detection
 
-リモートのデフォルトブランチを自動検出します：
+Automatically detect the remote default branch:
 
 ```bash
-# バンドルされたスクリプトを使用
+# Use the bundled script
 bash ~/.agents/skills/sync-origin/scripts/detect-default-branch.sh [remote-name]
 ```
 
-### 検出方法（優先順）
+### Detection Methods (in priority order)
 
 1. `git symbolic-ref refs/remotes/origin/HEAD`
 2. `git remote show origin | grep "HEAD branch"`
-3. 一般的なブランチ名のチェック（main, master, develop）
+3. Check common branch names (main, master, develop)
 
-### 明示的な指定
+### Explicit Specification
 
-ユーザーが `--base <branch>` を指定した場合は、その値を優先します。
+If the user specifies `--base <branch>`, that value takes priority.
 
-### 3. リモートからFetch
+### 3. Fetch from Remote
 
-最新の情報を取得します：
+Retrieve the latest information:
 
 ```bash
 git fetch origin
 ```
 
-### 4. 同期処理
+### 4. Sync Process
 
-#### 4.1 Merge（デフォルト）
+#### 4.1 Merge (Default)
 
 ```bash
 git merge origin/<default-branch>
 ```
 
-#### 4.2 Rebase（`--rebase` オプション使用時）
+#### 4.2 Rebase (when `--rebase` option is used)
 
 ```bash
 git rebase origin/<default-branch>
 ```
 
-### 5. コンフリクト解決
+### 5. Conflict Resolution
 
-コンフリクトが発生した場合、以下の段階的な解決を試みます：
+If conflicts occur, attempt the following incremental resolution:
 
-#### 5.1 自動解決可能なケース
+#### 5.1 Auto-Resolvable Cases
 
-以下のケースは自動で解決します：
+The following cases are resolved automatically:
 
-- ours/theirs戦略が明確な場合:
-  - ドキュメントファイル（README.md等）: ours優先
-  - 設定ファイル（package-lock.json等）: 再生成
-  - 自動生成ファイル: theirs優先
+- Cases where ours/theirs strategy is clear:
+  - Documentation files (README.md, etc.): prefer ours
+  - Generated config files (package-lock.json, etc.): regenerate
+  - Auto-generated files: prefer theirs
 
 ```bash
-# 例: package-lock.json のコンフリクト
+# Example: conflict in package-lock.json
 git checkout --theirs package-lock.json
-npm install  # 再生成
+npm install  # regenerate
 git add package-lock.json
 ```
 
-#### 5.2 手動対応が必要なケース
+#### 5.2 Cases Requiring Manual Resolution
 
-コード本体のコンフリクトなど、自動解決できない場合：
+When auto-resolution is not possible (e.g., conflicts in source code):
 
-1. コンフリクトファイルのリストを提示
-2. 各ファイルの内容を確認
-3. ユーザーに解決方法を相談
+1. Present list of conflicted files
+2. Review the content of each file
+3. Consult user on how to resolve
 
 ```bash
-# コンフリクトファイルのリスト
+# List of conflicted files
 git diff --name-only --diff-filter=U
 
-# 各ファイルの詳細
+# Details for each file
 git diff <file>
 ```
 
-### 提示する選択肢
+### Options Presented to User
 
-- ファイルごとに内容を確認して手動マージ
-- `git checkout --ours <file>` で現在の変更を維持
-- `git checkout --theirs <file>` でリモートの変更を採用
-- マージを中断 (`git merge --abort` または `git rebase --abort`)
+- Review each file's content and merge manually
+- `git checkout --ours <file>` to keep current changes
+- `git checkout --theirs <file>` to adopt remote changes
+- Abort the merge (`git merge --abort` or `git rebase --abort`)
 
-### 6. 完了確認
+### 6. Completion Check
 
-同期が完了したら、状態を確認します：
+Once sync is complete, verify the state:
 
 ```bash
-# 最終状態の確認
+# Check final state
 git status
 
-# ログの確認（直近の変更）
+# Check log (recent changes)
 git log --oneline -10
 
-# リモートとの差分確認
+# Check diff with remote
 git log HEAD..origin/<default-branch> --oneline
 ```
 
@@ -158,28 +158,28 @@ git log HEAD..origin/<default-branch> --oneline
 
 ### `--base <branch>`
 
-同期対象のブランチを明示的に指定します。
+Explicitly specify the branch to sync with.
 
 ```bash
-# 使用例
+# Usage example
 "developブランチと同期して" + --base develop
 ```
 
 ### `--rebase`
 
-merge の代わりに rebase を使用します。
+Use rebase instead of merge.
 
 ```bash
-# 使用例
+# Usage example
 "mainをrebaseして" + --rebase
 ```
 
 ### `--dry-run`
 
-実際の操作を行わず、何が起こるかを確認します。
+Preview what would happen without actually making changes.
 
 ```bash
-# 実行内容の確認
+# Preview what would be executed
 git fetch origin
 git merge-base HEAD origin/<default-branch>
 git log --oneline HEAD..origin/<default-branch>
@@ -187,7 +187,7 @@ git log --oneline HEAD..origin/<default-branch>
 
 ### `--auto-stash`
 
-未コミットの変更を自動的にstashします（rebase時のみ有効）。
+Automatically stash uncommitted changes (only valid with rebase).
 
 ```bash
 git rebase --autostash origin/<default-branch>
@@ -195,105 +195,105 @@ git rebase --autostash origin/<default-branch>
 
 ## Error Handling
 
-### 1. リモートが存在しない
+### 1. Remote Does Not Exist
 
 ```bash
-# エラー: fatal: 'origin' does not appear to be a git repository
+# Error: fatal: 'origin' does not appear to be a git repository
 ```
 
-### 対処
+### Resolution
 
-### 2. デフォルトブランチが検出できない
+### 2. Default Branch Cannot Be Detected
 
 ```bash
-# エラー: Could not detect default branch
+# Error: Could not detect default branch
 ```
 
-### 対処
+### Resolution
 
-### 3. ネットワークエラー
+### 3. Network Error
 
 ```bash
-# エラー: fatal: unable to access '...': Could not resolve host
+# Error: fatal: unable to access '...': Could not resolve host
 ```
 
-### 対処
+### Resolution
 
-### 4. コンフリクトが解決できない
+### 4. Conflict Cannot Be Resolved
 
-### 対処手順
+### Resolution Steps
 
-1. 現在の状態を保存: `git stash`
-2. クリーンな状態から再試行
-3. それでも解決できない場合は、手動マージを提案
+1. Save current state: `git stash`
+2. Retry from a clean state
+3. If still unresolvable, suggest manual merge
 
 ## Best Practices
 
-1. 定期的な同期: 長期間ブランチを更新していない場合は、コンフリクトが複雑になる前に同期
-2. コミット前に同期: 作業内容をコミットする前に、最新の状態と同期
+1. Sync regularly: If a branch has not been updated for a long time, sync before conflicts become complex
+2. Sync before committing: Sync with the latest state before committing your work
 3. rebase vs merge:
-   - 履歴をきれいに保ちたい場合: `--rebase`
-   - マージコミットを残したい場合: デフォルト（merge）
-4. dry-run活用: 大きな変更が予想される場合は、まず `--dry-run` で確認
+   - To keep a clean history: `--rebase`
+   - To preserve merge commits: default (merge)
+4. Use dry-run: When significant changes are expected, first check with `--dry-run`
 
 ## Examples
 
-### 例1: 基本的な同期
+### Example 1: Basic Sync
 
 ```
-ユーザー: "mainと同期して"
+User: "mainと同期して"
 
-1. 現在のブランチを確認: feature/new-feature
-2. デフォルトブランチを検出: main
+1. Check current branch: feature/new-feature
+2. Detect default branch: main
 3. git fetch origin
 4. git merge origin/main
-5. コンフリクトなし → 完了
+5. No conflicts → Complete
 ```
 
-### 例2: rebaseでの同期
+### Example 2: Sync with Rebase
 
 ```
-ユーザー: "mainをrebaseして"
+User: "mainをrebaseして"
 
-1. 現在のブランチを確認: feature/fix-bug
-2. デフォルトブランチを検出: main
+1. Check current branch: feature/fix-bug
+2. Detect default branch: main
 3. git fetch origin
 4. git rebase origin/main
-5. コンフリクトあり → 自動解決を試みる
-6. package-lock.json: 自動解決（再生成）
-7. src/app.ts: 手動対応が必要 → ユーザーに相談
+5. Conflicts found → Attempt auto-resolution
+6. package-lock.json: auto-resolved (regenerated)
+7. src/app.ts: requires manual resolution → Consult user
 ```
 
-### 例3: 明示的なブランチ指定
+### Example 3: Explicit Branch Specification
 
 ```
-ユーザー: "developと同期して" + --base develop
+User: "developと同期して" + --base develop
 
-1. 指定されたブランチを使用: develop
+1. Use specified branch: develop
 2. git fetch origin
 3. git merge origin/develop
-4. 完了
+4. Complete
 ```
 
 ## Resources
 
 ### scripts/detect-default-branch.sh
 
-リモートのデフォルトブランチを検出するBashスクリプト。
+A Bash script for detecting the remote default branch.
 
-### 使用方法
+### Usage
 
 ```bash
 bash ~/.agents/skills/sync-origin/scripts/detect-default-branch.sh [remote-name]
 ```
 
-### 出力
+### Output
 
-- 成功: デフォルトブランチ名（例: main）
-- 失敗: エラーメッセージ（stderr）、exit code 1
+- Success: Default branch name (e.g., main)
+- Failure: Error message (stderr), exit code 1
 
-### 検出ロジック
+### Detection Logic
 
-1. `git symbolic-ref` による検出
-2. `git remote show` による検出
-3. 一般的なブランチ名（main, master, develop）のチェック
+1. Detection via `git symbolic-ref`
+2. Detection via `git remote show`
+3. Check common branch names (main, master, develop)

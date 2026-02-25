@@ -20,7 +20,7 @@ Execute comprehensive code review by delegating to the `code-review` skill with 
 - This command executes LOCAL reviews only
 - NO GitHub PR comment posting functionality
 - All review results are displayed locally
-- All output is in Japanese
+- All output is in English
 
 ### No-Signature Policy
 
@@ -264,7 +264,7 @@ Appropriate skills are auto-selected based on project type.
 
 ## Notes
 
-- All output is in Japanese
+- All output is in English
 - Creates checkpoint before review
 - Automatically detects project type and loads relevant skills
 - PR number auto-detection for current branch

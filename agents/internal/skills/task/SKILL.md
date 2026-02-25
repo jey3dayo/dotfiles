@@ -89,10 +89,10 @@ Enable with `--deep-think` or `--thinking` flags:
 
 ### Focus Area Detection
 
-- Root cause: "なぜ", "why", "原因", "cause"
-- Design: "設計", "design", "アーキテクチャ", "architecture"
-- Optimization: "最適", "optimal", "改善", "improve"
-- Implementation: "実装", "implement", "方法", "method"
+- Root cause: "なぜ" (why), "why", "原因" (cause), "cause"
+- Design: "設計" (design), "design", "アーキテクチャ" (architecture), "architecture"
+- Optimization: "最適" (optimal), "optimal", "改善" (improve), "improve"
+- Implementation: "実装" (implement), "implement", "方法" (method), "method"
 
 ### Continuous Learning System
 
@@ -109,47 +109,47 @@ Record execution results and improve future accuracy:
 
 ```bash
 # Natural language task specification
-/task "このコードをレビューして品質を確認"
-/task "ユーザー認証機能を実装"
-/task "パフォーマンスを改善"
+/task "Review this code and check quality"
+/task "Implement user authentication feature"
+/task "Improve performance"
 
 # Git/branch-related reviews
-/task "origin/developでレビューして"
-/task "最新のコミットをレビュー"
+/task "Review against origin/develop"
+/task "Review the latest commit"
 ```
 
 ### Advanced Usage
 
 ```bash
 # Multi-step tasks
-/task "新機能を実装してテストを書いてドキュメントも更新"
+/task "Implement new feature, write tests, and update documentation"
 
 # Constrained tasks
-/task "Go言語でClean Architectureに従ってREST APIを実装"
+/task "Implement a REST API in Go following Clean Architecture"
 
 # Analysis tasks
-/task "なぜこのテストが失敗するのか原因を調査して修正案を提示"
+/task "Investigate why this test is failing and propose a fix"
 
 # Semantic analysis tasks
-/task "AuthServiceインターフェースの全ての実装を見つけて"
-/task "getUserByIdメソッドを呼び出している全ての場所を探して"
+/task "Find all implementations of the AuthService interface"
+/task "Find all places calling the getUserById method"
 ```
 
 ### Interactive Mode
 
 ```bash
 # Interactive execution
-/task --interactive "複雑な問題を解決"
+/task --interactive "Solve a complex problem"
 
 # Dry run
-/task --dry-run "大規模リファクタリング"
+/task --dry-run "Large-scale refactoring"
 
 # Verbose logging
-/task --verbose "パフォーマンス最適化"
+/task --verbose "Performance optimization"
 
 # Deep Thinking mode
-/task --deep-think "複雑な技術判断が必要なタスク"
-/task --thinking "なぜこのエラーが発生するか調査"
+/task --deep-think "Task requiring complex technical decisions"
+/task --thinking "Investigate why this error occurs"
 ```
 
 ## Integration Points
@@ -158,7 +158,7 @@ Record execution results and improve future accuracy:
 
 This command integrates with shared utilities:
 
-- integration-framework: TaskContext標準化とCommunication Busパターン
+- integration-framework: TaskContext standardization and Communication Bus patterns
 - agents-only: Agent selection logic and capability matrix
 - project-detector: Project type detection (referenced from integration-framework)
 
@@ -180,7 +180,7 @@ Auto-loads relevant skills based on task analysis:
 ## Execution Flow
 
 ```
-/task "TypeScript型エラーを修正"
+/task "Fix TypeScript type errors"
     ↓
 TaskContext creation (project detection)
     ↓
@@ -198,6 +198,6 @@ Execution complete
 ## Notes
 
 - Always executes via agent-based execution (no direct command execution)
-- All output is in Japanese
+- All output is in English
 - Metrics tracked: execution time, quality score, resource usage
 - Learning system records all executions for future improvement

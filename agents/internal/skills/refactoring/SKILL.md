@@ -1,221 +1,220 @@
 ---
 name: refactoring
 description: |
-  [What] TypeScript/JavaScript/React コードのリファクタリング統合ワークフロー。
-  similarity-ts（重複検出）と react-doctor（React診断）を組み合わせた段階的改善。
-  code-quality-improvement（ESLint/型安全性修正）と tsr（デッドコード削除）と連携する
-  オーケストレーター。
+  [What] Integrated refactoring workflow for TypeScript/JavaScript/React code.
+  Combines similarity-ts (duplicate detection) and react-doctor (React diagnostics) for incremental quality improvement.
+  Orchestrator that works with code-quality-improvement (ESLint/type safety fixes) and tsr (dead code removal).
   [When] Use when: "リファクタ", "refactor", "重複コード", "コード整理", "clean up",
   "duplicate code", "react-doctor", "similarity", "コードの品質を改善", "コードを綺麗に" の言及時。
-  React プロジェクト + TypeScript/JavaScript の両方に対応。
+  Supports both React projects and TypeScript/JavaScript projects.
 ---
 
-# Refactoring - TypeScript/JavaScript/React 統合リファクタリングワークフロー
+# Refactoring - Integrated TypeScript/JavaScript/React Refactoring Workflow
 
-`similarity-ts`（重複コード検出）と `react-doctor`（React診断）を組み合わせ、段階的にコード品質を改善するオーケストレータースキル。
+An orchestrator skill that combines `similarity-ts` (duplicate code detection) and `react-doctor` (React diagnostics) to incrementally improve code quality.
 
 ## 🎯 Core Mission
 
-複数の専門スキル（`similarity`、`react-doctor`、`code-quality-improvement`、`tsr`）を統合し、プロジェクトタイプに応じた最適なリファクタリング計画を立案・実行する。
+Integrate multiple specialized skills (`similarity`, `react-doctor`, `code-quality-improvement`, `tsr`) to create and execute an optimal refactoring plan based on project type.
 
-## 🏗️ 前提確認: プロジェクトタイプ判定
+## 🏗️ Prerequisites: Project Type Detection
 
 ```bash
-# React プロジェクト判定（package.json に "react" が含まれるか）
+# Detect React project (check if package.json contains "react")
 cat package.json | grep '"react"'
 
-# TypeScript プロジェクト判定
+# Detect TypeScript project
 ls tsconfig.json 2>/dev/null && echo "TypeScript project"
 ```
 
-| プロジェクトタイプ       | 実行ツール                         |
-| ------------------------ | ---------------------------------- |
-| React + TypeScript/JS    | react-doctor + similarity-ts + tsr |
-| TypeScript/JS（非React） | similarity-ts + tsr                |
+| Project Type              | Tools to Run                       |
+| ------------------------- | ---------------------------------- |
+| React + TypeScript/JS     | react-doctor + similarity-ts + tsr |
+| TypeScript/JS (non-React) | similarity-ts + tsr                |
 
 ---
 
-## 📋 3フェーズワークフロー
+## 📋 3-Phase Workflow
 
-### Phase 1: 診断 (Diagnose)
+### Phase 1: Diagnose
 
-#### 1-A: React プロジェクトの診断
+#### 1-A: React Project Diagnostics
 
 ```bash
-# package.json に "react" が含まれる場合のみ実行
+# Run only if package.json contains "react"
 npx -y react-doctor@latest . --verbose
 ```
 
-出力を `/tmp/react-doctor-report.txt` に保存して解析する。
+Save output to `/tmp/react-doctor-report.txt` for analysis.
 
-#### 1-B: 重複コード検出（全 TS/JS プロジェクト）
+#### 1-B: Duplicate Code Detection (All TS/JS Projects)
 
 ```bash
-# 90%以上の類似度でスキャン（重篤な重複から開始）
+# Scan at 90%+ similarity (start with severe duplicates)
 similarity-ts --threshold 0.9 . > /tmp/similarity-report.md
 
-# 型定義の重複チェック（オプション）
+# Check for duplicate type definitions (optional)
 similarity-ts --experimental-types --threshold 0.95 src/types/ >> /tmp/similarity-report.md
 ```
 
-詳細な使用方法 → `../similarity/skills/SKILL.md` を参照。
+For detailed usage, refer to `../similarity/skills/SKILL.md`.
 
 ---
 
-### Phase 2: 分析・計画 (Analyze & Plan)
+### Phase 2: Analyze & Plan
 
-診断結果を以下の優先度マトリクスで分類する。
+Classify diagnostic results using the following priority matrix.
 
-#### 優先度マトリクス
+#### Priority Matrix
 
-| Priority    | 条件                                               | アクション                 |
-| ----------- | -------------------------------------------------- | -------------------------- |
-| 🔴 Critical | react-doctor errors **かつ** similarity 95%+       | 即時修正（このセッション） |
-| 🟡 High     | react-doctor warnings **または** similarity 90-95% | 計画修正（優先度高）       |
-| 🟢 Low      | similarity 87-90%（デフォルト閾値）                | 将来候補（要確認）         |
+| Priority    | Condition                                      | Action                          |
+| ----------- | ---------------------------------------------- | ------------------------------- |
+| 🔴 Critical | react-doctor errors **AND** similarity 95%+    | Fix immediately (this session)  |
+| 🟡 High     | react-doctor warnings **OR** similarity 90-95% | Plan fix (high priority)        |
+| 🟢 Low      | similarity 87-90% (default threshold)          | Future candidate (needs review) |
 
-#### 計画の出力フォーマット
+#### Plan Output Format
 
 ```markdown
-## リファクタリング計画
+## Refactoring Plan
 
-### 診断サマリー
+### Diagnostics Summary
 
-- react-doctor スコア: XX/100（75+ = Great, 50-74 = Needs work, 0-49 = Critical）
-- 重複コードペア数: XX件（95%+: X件、90-95%: X件）
+- react-doctor score: XX/100 (75+ = Great, 50-74 = Needs work, 0-49 = Critical)
+- Duplicate code pairs: XX (95%+: X pairs, 90-95%: X pairs)
 
-### 優先アクション
+### Priority Actions
 
-1. 🔴 [Critical] react-doctor error: <内容> → <対処方法>
-2. 🔴 [Critical] 重複 95%+: <ファイル1> ↔ <ファイル2> → 共通関数抽出
-3. 🟡 [High] react-doctor warning: <内容> → <対処方法>
-4. 🟡 [High] 重複 90-95%: <ファイル1> ↔ <ファイル2> → パターン確認
+1. 🔴 [Critical] react-doctor error: <description> → <fix approach>
+2. 🔴 [Critical] Duplicate 95%+: <file1> ↔ <file2> → Extract common function
+3. 🟡 [High] react-doctor warning: <description> → <fix approach>
+4. 🟡 [High] Duplicate 90-95%: <file1> ↔ <file2> → Review pattern
 
-### 推定スコープ
+### Estimated Scope
 
-- 即時修正: X件
-- 計画修正: X件
-- 次回候補: X件
+- Immediate fixes: X items
+- Planned fixes: X items
+- Future candidates: X items
 ```
 
 ---
 
-### Phase 3: 実行 (Execute)
+### Phase 3: Execute
 
-#### 3-1: react-doctor エラーの修正
+#### 3-1: Fix react-doctor Errors
 
-react-doctor のエラー（最高重大度）から修正する。
+Fix react-doctor errors first (highest severity).
 
 ```
-Error 種別 → 修正アプローチ:
-- Architecture: components inside components → コンポーネントをトップレベルに移動
-- State & Effects: useState from props → 適切な state 管理へ変更
-- Security: hardcoded secrets → 環境変数へ移行
-- Bundle Size: barrel imports → 直接インポートへ変更
-- Next.js: missing metadata → metadata エクスポート追加
+Error Type → Fix Approach:
+- Architecture: components inside components → Move components to top level
+- State & Effects: useState from props → Change to proper state management
+- Security: hardcoded secrets → Migrate to environment variables
+- Bundle Size: barrel imports → Change to direct imports
+- Next.js: missing metadata → Add metadata export
 ```
 
-react-doctor スキルの詳細 → `../react-doctor/SKILL.md` を参照（存在する場合）。
+For react-doctor skill details, refer to `../react-doctor/SKILL.md` (if it exists).
 
-#### 3-2: 重複コード 95%+ の共通化
+#### 3-2: Consolidate Duplicate Code at 95%+
 
 ```typescript
-// パターン1: 単純関数抽出
-// Before: 2ファイルに98%類似の関数
-// After: 共通 utils に抽出し両ファイルからインポート
+// Pattern 1: Simple function extraction
+// Before: 98% similar functions in 2 files
+// After: Extract to common utils and import from both files
 
-// パターン2: ジェネリック化
-// Before: getUserById / getAdminById（94%類似）
-// After: findByIdOrThrow<T>(model, id, resourceName) に統合
+// Pattern 2: Generalization
+// Before: getUserById / getAdminById (94% similar)
+// After: Consolidate into findByIdOrThrow<T>(model, id, resourceName)
 
-// パターン3: 共通インターフェース抽出
-// Before: 類似した型定義が複数
-// After: Base 型 + extends で共通部分を一元管理
+// Pattern 3: Extract common interface
+// Before: Multiple similar type definitions
+// After: Base type + extends to centralize common parts
 ```
 
-similarity スキルの詳細 → `../similarity/skills/SKILL.md` を参照。
+For similarity skill details, refer to `../similarity/skills/SKILL.md`.
 
-#### 3-3: ESLint/型安全性の問題修正
+#### 3-3: Fix ESLint/Type Safety Issues
 
-重複解消後に残るコード品質の問題を修正する。
+Fix remaining code quality issues after deduplication.
 
 ```bash
-# 自動修正を試みる
+# Attempt auto-fix
 pnpm lint:fix
 
-# 残存エラーを確認
+# Check remaining errors
 pnpm lint 2>&1 | tail -20
 ```
 
-複雑な型安全性問題（any型排除、Result<T,E>パターン）→ `../code-quality-improvement/SKILL.md` に委譲。
+For complex type safety issues (any-type elimination, Result<T,E> patterns), delegate to `../code-quality-improvement/SKILL.md`.
 
-#### 3-4: デッドコード削除
+#### 3-4: Remove Dead Code
 
-リファクタリング後に未使用になったコードを削除する。
+Remove code that becomes unused after refactoring.
 
 ```bash
-# デッドコード検出
+# Detect dead code
 pnpm tsr:check > /tmp/tsr-report.txt
 
-# レポート確認後、段階的に削除
+# Review report, then remove incrementally
 pnpm tsr:fix
 ```
 
-tsr スキルの詳細 → `../tsr/SKILL.md` を参照。
+For tsr skill details, refer to `../tsr/SKILL.md`.
 
-#### 3-5: 検証（必須）
+#### 3-5: Verification (Required)
 
-### 各修正ステップの後に必ず実行する
+### Run after every fix step
 
 ```bash
 pnpm type-check && pnpm lint && pnpm test
 ```
 
-すべてパスするまで次のフェーズに進まない。
+Do not proceed to the next phase until all pass.
 
 ---
 
-## 🔄 スキル間の委譲
+## 🔄 Skill Delegation
 
-| 問題領域                | 委譲先スキル                           |
-| ----------------------- | -------------------------------------- |
-| 重複コードの詳細分析    | `../similarity/skills/SKILL.md`        |
-| ESLint エラー・型安全性 | `../code-quality-improvement/SKILL.md` |
-| デッドコード削除        | `../tsr/SKILL.md`                      |
-| React 固有パターン診断  | `../react-doctor/SKILL.md`（存在時）   |
-| 影響範囲・参照追跡      | MCP Serena: `find_referencing_symbols` |
+| Problem Area                      | Delegated Skill                        |
+| --------------------------------- | -------------------------------------- |
+| Detailed duplicate code analysis  | `../similarity/skills/SKILL.md`        |
+| ESLint errors / type safety       | `../code-quality-improvement/SKILL.md` |
+| Dead code removal                 | `../tsr/SKILL.md`                      |
+| React-specific pattern diagnosis  | `../react-doctor/SKILL.md` (if exists) |
+| Impact scope / reference tracking | MCP Serena: `find_referencing_symbols` |
 
 ---
 
-## ⚠️ 重要な注意事項
+## ⚠️ Important Notes
 
-### 段階的実行の原則
+### Principle of Incremental Execution
 
-1. 一度に大量変更しない: similarity 95%+ から開始し、90-95% は計画段階で止める
-2. コミットを挟む: 各フェーズ完了後に `git commit` してロールバック可能に保つ
-3. ビジネスロジックを確認: 高類似度 ≠ 必ず共通化すべき（意味が異なる場合がある）
+1. Do not make large-scale changes at once: Start with similarity 95%+, stop at 90-95% in the planning phase
+2. Commit between phases: After each phase, run `git commit` to keep rollback possible
+3. Verify business logic: High similarity ≠ must consolidate (may have different semantics)
 
-### MCP Serena との連携
+### Integration with MCP Serena
 
 ```bash
-# 共通化前に影響範囲を確認
-# mcp__serena__find_referencing_symbols で参照元を把握
-# mcp__serena__find_symbol で実装の詳細を確認
+# Check impact scope before consolidation
+# Use mcp__serena__find_referencing_symbols to identify callers
+# Use mcp__serena__find_symbol to check implementation details
 ```
 
-### 検証の徹底
+### Thorough Verification
 
 ```bash
-# 修正前: git stash or branch でバックアップ
-# 修正後: type-check + lint + test を必ず実行
+# Before fixes: backup with git stash or branch
+# After fixes: always run type-check + lint + test
 pnpm type-check && pnpm lint && pnpm test
 ```
 
 ---
 
-## 🎯 期待される成果
+## 🎯 Expected Outcomes
 
-- コード重複率の削減（目標: similarity 90%+ ゼロ）
-- react-doctor スコアの向上（目標: 75+）
-- デッドコードの除去によるコードベースのスリム化
-- 型安全性向上（型エラー 0件、ESLint 違反 0件）
+- Reduced code duplication (goal: zero similarity 90%+ pairs)
+- Improved react-doctor score (goal: 75+)
+- Leaner codebase through dead code removal
+- Improved type safety (0 type errors, 0 ESLint violations)
