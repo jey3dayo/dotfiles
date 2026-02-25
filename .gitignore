@@ -186,6 +186,7 @@ claude/*
 .clinerules
 global_rules.md
 .aider*
+.plans/
 
 ## Other AI Tools
 .sdd
