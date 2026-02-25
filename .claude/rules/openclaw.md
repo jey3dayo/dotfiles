@@ -49,30 +49,32 @@ echo "OPENCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)" >> ~/.openclaw/gateway.env
 
 ```ini
 [Service]
-ExecStart=/home/pi/.mise/installs/node/24.13.1/bin/node /home/pi/.mise/installs/npm-openclaw/latest/5/.pnpm/openclaw@<VERSION>_.../node_modules/openclaw/openclaw.mjs gateway --port 18789
+ExecStart=%h/.config/scripts/openclaw-gateway gateway --port 18789
 Restart=always
-RestartSec=5
-Environment=HOME=/home/pi
-Environment="PATH=/home/pi/.mise/shims:/usr/local/bin:/usr/bin:/bin:/home/pi/.local/bin"
+RestartSec=10
+KillMode=mixed
+Environment=HOME=%h
+Environment=TMPDIR=/tmp
+Environment="PATH=%h/.mise/shims:%h/.local/share/pnpm:%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
 ```
 
-#### ExecStart の組み立て方
+#### ラッパースクリプト (`~/.config/scripts/openclaw-gateway`)
 
-openclawをインストール・アップデートした後は以下で正しいパスを確認する:
+mise shimはsystemd環境でハングするため、`scripts/openclaw-gateway` でnodeとopenclaw.mjsのパスを動的解決する。
 
 ```bash
-# latestシムリンクの確認
-ls -la ~/.mise/installs/npm-openclaw/latest
-
-# openclaw.mjsの実体パスを確認
-ls ~/.mise/installs/npm-openclaw/latest/5/.pnpm/openclaw@*/node_modules/openclaw/openclaw.mjs
+#!/usr/bin/env bash
+NODE="${HOME}/.mise/installs/node/latest/bin/node"
+OPENCLAW_MJS=$(ls "${HOME}/.mise/installs/npm-openclaw/latest/5/.pnpm/openclaw@"*/node_modules/openclaw/openclaw.mjs 2>/dev/null | head -1)
+exec "${NODE}" "${OPENCLAW_MJS}" "$@"
 ```
+
+これにより **openclawアップデート後も設定変更不要**。
 
 **注意**:
 
-- エントリポイントは `openclaw.mjs`（`dist/index.js` は誤り）
-- `latest` シムリンクはmiseが自動更新するとは限らないため、アップデート後に必ず確認する
+- `latest` シムリンクはmiseが自動更新するとは限らないため、アップデート後に `ls -la ~/.mise/installs/npm-openclaw/latest` で確認する
 - Raspberry Piでは起動完了まで2〜3分かかる。`ss -tlnp | grep 18789` でポートが出るまで待つ
 
 **override.conf**: `~/.config/systemd/user/openclaw-gateway.service.d/override.conf`
