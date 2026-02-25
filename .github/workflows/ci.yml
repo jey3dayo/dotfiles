@@ -124,7 +124,7 @@ jobs:
           luarocks install --local busted
 
       - name: Add LuaRocks bin to PATH
-        run: echo "${HOME}/.luarocks/bin" >> $GITHUB_PATH
+        run: echo "${HOME}/.luarocks/bin" >> "$GITHUB_PATH"
 
       - name: Install Nix
         uses: cachix/install-nix-action@v30

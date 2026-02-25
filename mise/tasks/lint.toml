@@ -115,6 +115,16 @@ fi
 description = "Markdown リンクチェック（時間がかかるため個別実行推奨）"
 run = "fd -e md ${TASK_EXCLUDES} -x markdown-link-check --config ${MARKDOWN_LINK_CONFIG} -q"
 
+["lint:actions"]
+description = "GitHub Actions ワークフローをチェック（actionlint）"
+run = """
+if ! command -v actionlint >/dev/null 2>&1; then
+  echo "⚠️ actionlint not found, skipping"
+  exit 0
+fi
+actionlint
+"""
+
 ["lint:lua"]
 description = "Lua ファイルをチェック（luacheck）"
 depends = ["lint:lua:luacheck"]

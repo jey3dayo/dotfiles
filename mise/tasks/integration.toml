@@ -71,6 +71,7 @@ depends = [
   "lint:python",
   "lint:dockerfile",
   "lint:links",
+  "lint:actions",
 ]
 
 ["check:format"]
