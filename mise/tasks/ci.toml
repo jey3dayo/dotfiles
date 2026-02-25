@@ -9,9 +9,14 @@
 ["ci:gitleaks"]
 description = "gitleaks による secret スキャン"
 run = """
-if ! command -v gitleaks >/dev/null 2>&1; then
-  echo "Skip ci:gitleaks (gitleaks not found)"
+if [ "${SKIP_GITLEAKS:-0}" = "1" ]; then
+  echo "Skip ci:gitleaks (SKIP_GITLEAKS=1)"
   exit 0
+fi
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "Error: gitleaks not found. Install gitleaks or run with SKIP_GITLEAKS=1"
+  exit 1
 fi
 
 gitleaks git -v
