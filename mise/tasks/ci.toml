@@ -29,6 +29,7 @@ gitleaks git -v
 
 ["ci:verify-deploy"]
 description = "Home Manager デプロイの検証（エントリーポイント・シンボリックリンク確認）"
+depends = ["hm:deploy"]
 run = """
 # エントリーポイントファイルの確認
 for file in .bashrc .bash_profile .zshenv .zshrc .gitconfig .tmux.conf; do
