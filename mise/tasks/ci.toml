@@ -9,6 +9,11 @@
 ["ci:gitleaks"]
 description = "gitleaks による secret スキャン"
 run = """
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "Skip ci:gitleaks (gitleaks not found)"
+  exit 0
+fi
+
 gitleaks git -v
 """
 
