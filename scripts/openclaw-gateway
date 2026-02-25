@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# openclaw-gateway - バージョン非依存のgateway起動スクリプト
+# mise shim はsystemd環境でハングするため、直接バイナリを使用する
+
+NODE="${HOME}/.mise/installs/node/latest/bin/node"
+OPENCLAW_MJS=$(ls "${HOME}/.mise/installs/npm-openclaw/latest/5/.pnpm/openclaw@"*/node_modules/openclaw/openclaw.mjs 2>/dev/null | head -1)
+
+if [ -z "${OPENCLAW_MJS}" ]; then
+  echo "ERROR: openclaw.mjs not found under npm-openclaw/latest" >&2
+  exit 1
+fi
+
+exec "${NODE}" "${OPENCLAW_MJS}" "$@"
