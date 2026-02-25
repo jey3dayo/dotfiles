@@ -52,6 +52,8 @@ depends = [
 ]
 
 [lint]
+# lint:links（外部URLチェック）を含む完全版。ci タスク経由で GitHub Actions でも実行される。
+# 高速版は lint:quick を使うこと（lint:links 除外、~3-5s）。
 description = "静的解析・構文チェックの集約タスク（書き込みなし）"
 depends = [
   "lint:biome",
