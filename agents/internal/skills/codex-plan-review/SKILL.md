@@ -1,8 +1,9 @@
 ---
 name: codex-plan-review
 description: >-
-  実装プランファイルを Codex でレビューし、潜在的リスク・欠落ステップ・技術的懸念を
-  特定する。実装開始前にプランの品質チェックをしたい場合に使用する。
+  Review implementation plan files with Codex to identify potential risks,
+  missing steps, and technical concerns. Use when you want a quality check
+  before starting implementation.
   Triggers: "プランをレビュー", "plan review", "実装前にチェック",
   "codex でレビュー", "プランの確認", "review the plan".
 allowed-tools: Bash(codex:*), Bash(ls:*), Read
@@ -10,21 +11,21 @@ allowed-tools: Bash(codex:*), Bash(ls:*), Read
 
 # Codex Plan Review
 
-`~/.claude/plans/` の最新プランファイルを Codex でレビューし、問題点を報告する。
+Review the latest plan file in `~/.claude/plans/` with Codex and report any issues.
 
 ## Workflow
 
-### 1. 最新プランファイルを特定
+### 1. Identify the Latest Plan File
 
 ```bash
 ls -t ~/.claude/plans/*.md | head -1
 ```
 
-### 2. プラン内容を読み込む
+### 2. Read the Plan Content
 
-Read ツールでプランファイル全体を読み込む。
+Read the entire plan file using the Read tool.
 
-### 3. Codex でレビュー実行
+### 3. Run Review with Codex
 
 ```bash
 codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
@@ -41,8 +42,8 @@ Be specific and concise. If the plan looks solid, say so.
 " 2>/dev/null
 ```
 
-### 4. 結果を報告
+### 4. Report Results
 
-- 重大な問題あり → 具体的な指摘と改善案を提示し、対応するか確認
-- 軽微な懸念のみ → 注意点として共有し、実装着手は可
-- 問題なし → 実装着手可の旨を伝える
+- Critical issues found → Present specific findings and suggestions, confirm whether to address them
+- Minor concerns only → Share as notes; implementation can proceed
+- No issues → Confirm the plan is ready to implement
