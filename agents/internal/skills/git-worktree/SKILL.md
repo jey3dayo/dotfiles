@@ -11,256 +11,256 @@ description: |
 
 # Git Worktree Management
 
-Git worktreeを使った並列開発のための包括的なガイド。`git-wt`（k1LoW版）とネイティブ`git worktree`コマンドの効果的な使い方を提供します。
+A comprehensive guide for parallel development using Git worktrees. Provides effective usage of `git-wt` (k1LoW version) and native `git worktree` commands.
 
 ## Quick Start
 
-### 基本コマンド
+### Basic Commands
 
 ```bash
-# Worktree一覧表示
+# List worktrees
 git wt list
 
-# 新規worktree作成（新しいブランチ）
+# Create new worktree (new branch)
 git wt create feature/new-feature
 
-# 既存ブランチでworktree作成
+# Create worktree with existing branch
 git wt create -b existing-branch
 
-# Worktreeに切り替え
+# Switch to worktree
 git wt switch feature/new-feature
 
-# Worktree削除（安全）
+# Remove worktree (safe)
 git wt remove feature/new-feature
 
-# Worktree削除（強制）
+# Remove worktree (force)
 git wt remove -f feature/new-feature
 ```
 
 ### git wt vs git worktree
 
-- git wt: k1LoW版の高機能ラッパー（hooks、ファイルコピー、シェル統合対応）
-- git worktree: Git公式のネイティブコマンド（シンプル、標準的）
+- git wt: k1LoW's feature-rich wrapper (supports hooks, file copying, shell integration)
+- git worktree: Git's native official command (simple, standard)
 
-### 推奨
+### Recommendation
 
 ## Core Concepts
 
-### Worktreeとは
+### What is a Worktree?
 
-Git worktreeは、同一リポジトリの異なるブランチを別々のディレクトリで同時に作業できる機能です。
+Git worktree is a feature that allows you to work on different branches of the same repository in separate directories simultaneously.
 
-### 利点
+### Benefits
 
-- ブランチ切り替え時のstash不要
-- 並列開発が容易（複数PRの同時作業）
-- ビルド/テストの並列実行
-- AI agentによるタスク並列化
+- No need to stash when switching branches
+- Easy parallel development (working on multiple PRs simultaneously)
+- Parallel build/test execution
+- Task parallelization by AI agents
 
-### 制限
+### Limitations
 
-- 同じブランチは複数のworktreeで同時チェックアウト不可
-- メインリポジトリ（`.git`ディレクトリがある場所）は保護すべき
+- The same branch cannot be checked out in multiple worktrees simultaneously
+- The main repository (location with `.git` directory) should be protected
 
-### .worktrees ディレクトリ構造
+### .worktrees Directory Structure
 
-このリポジトリでは `.worktrees/` を標準ディレクトリとして使用：
+This repository uses `.worktrees/` as the standard directory:
 
 ```
 /path/to/repo/
 ├── .git/
 ├── .worktrees/
-│   ├── feature-a/       # ブランチ: feature/a
-│   ├── feature-b/       # ブランチ: feature/b
-│   └── hotfix-123/      # ブランチ: hotfix/123
+│   ├── feature-a/       # Branch: feature/a
+│   ├── feature-b/       # Branch: feature/b
+│   └── hotfix-123/      # Branch: hotfix/123
 ├── main-branch-files...
 └── ...
 ```
 
-### 設定
+### Configuration
 
-### 代替
+### Alternative
 
-### デフォルトブランチの保護
+### Protecting the Default Branch
 
-メインリポジトリ（`main`/`master`/`develop`）は作業用として使わず、worktreeのみで作業するのがベストプラクティス：
+Best practice is to not use the main repository (`main`/`master`/`develop`) for work, and only work in worktrees:
 
 ```bash
-# メインリポジトリはクリーンに保つ
+# Keep the main repository clean
 cd /path/to/repo
 git status  # Should be clean
 
-# 作業はworktreeで
+# Work in worktrees
 cd .worktrees/feature-x
 # ... work here ...
 ```
 
 ## Common Operations
 
-### 新規Worktree作成
+### Creating New Worktrees
 
-### 新しいブランチで作成
+### Create with New Branch
 
 ```bash
-# 基本形（ブランチ名からworktree名を自動生成）
+# Basic form (auto-generate worktree name from branch name)
 git wt create feature/user-auth
-# → .worktrees/user-auth/ が作成される
+# -> .worktrees/user-auth/ is created
 
-# Worktree名を明示指定
+# Explicitly specify worktree name
 git wt create feature/user-auth --path .worktrees/auth-feature
 
-# 特定のコミットから作成
+# Create from specific commit
 git wt create feature/bugfix --start-point v1.2.3
 ```
 
-### 既存ブランチで作成
+### Create with Existing Branch
 
 ```bash
-# リモートブランチから
+# From remote branch
 git wt create -b origin/feature/existing
 
-# ローカルブランチから
+# From local branch
 git wt create -b feature/local-branch
 ```
 
-### Worktree切り替え
+### Switching Worktrees
 
 ```bash
-# ブランチ名で切り替え
+# Switch by branch name
 git wt switch feature/user-auth
 
-# Worktreeパスで切り替え
+# Switch by worktree path
 git wt switch .worktrees/user-auth
 
-# 対話的選択（fuzzy finder）
+# Interactive selection (fuzzy finder)
 git wt switch
 ```
 
 ### Note
 
-### Worktree削除
+### Removing Worktrees
 
-### 安全な削除
+### Safe Removal
 
 ```bash
 git wt remove feature/user-auth
 ```
 
-### 強制削除
+### Force Removal
 
 ```bash
 git wt remove -f feature/user-auth
 ```
 
-### 未追跡のworktreeをクリーンアップ
+### Clean Up Untracked Worktrees
 
 ```bash
 git worktree prune
 ```
 
-### リスト表示と情報確認
+### Listing and Checking Information
 
 ```bash
-# シンプルなリスト
+# Simple list
 git wt list
 
-# 詳細情報（ブランチ、コミット、ステータス）
+# Detailed information (branch, commit, status)
 git wt list --verbose
 
-# ネイティブコマンドで確認
+# Check with native command
 git worktree list
 ```
 
 ## Configuration
 
-### 主要設定項目
+### Main Configuration Items
 
 ```bash
-# Worktreeのベースディレクトリ（必須）
+# Base directory for worktrees (required)
 git config wt.basedir ".worktrees"
 
-# デフォルトのworktree名生成パターン
+# Default worktree name generation pattern
 git config wt.nameTemplate "{{.BranchName}}"
 
-# 自動的にupstreamを設定
+# Automatically set upstream
 git config wt.autoSetupRemote true
 ```
 
-### グローバル設定
+### Global Configuration
 
 ```bash
 git config --global wt.basedir ".worktrees"
 ```
 
-### リポジトリローカル設定
+### Repository Local Configuration
 
 ```bash
 git config --local wt.basedir ".worktrees"
 ```
 
-詳細設定オプションは [`references/configuration.md`](references/configuration.md) を参照。
+Refer to [`references/configuration.md`](references/configuration.md) for detailed configuration options.
 
 ## Advanced Features
 
 ### Hooks
 
-Worktree作成/削除時に自動実行されるフック:
+Hooks that are automatically executed when worktrees are created/removed:
 
-- `.git/hooks/post-worktree-add`: Worktree作成後
-- `.git/hooks/post-worktree-remove`: Worktree削除後
+- `.git/hooks/post-worktree-add`: After worktree creation
+- `.git/hooks/post-worktree-remove`: After worktree removal
 
-### 使用例
+### Usage Examples
 
-詳細は [`references/workflows.md`](references/workflows.md#hooks) を参照。
+Refer to [`references/workflows.md`](references/workflows.md#hooks) for details.
 
-### ファイルコピーオプション
+### File Copy Options
 
-Worktree作成時に特定のファイルをコピー:
+Copy specific files when creating a worktree:
 
 ```bash
-# .env ファイルをコピー
+# Copy .env file
 git wt create feature/test --copy .env
 
-# 複数ファイル
+# Multiple files
 git wt create feature/test --copy .env --copy config.local.json
 ```
 
-設定で自動コピーも可能:
+Automatic copying can also be configured:
 
 ```bash
 git config wt.copyFiles ".env,config.local.json"
 ```
 
-### シェル統合
+### Shell Integration
 
-### Zsh統合
+### Zsh Integration
 
-`zsh/config/tools/git.zsh`に以下の関数が実装済み:
+The following functions are implemented in `zsh/config/tools/git.zsh`:
 
-- `gwt`: git wt のエイリアス
+- `gwt`: alias for git wt
 - `gwtl`: git wt list
-- `gwtc`: git wt create（対話的選択）
-- `gwts`: git wt switch（対話的選択）
-- `gwtr`: git wt remove（対話的選択）
+- `gwtc`: git wt create (interactive selection)
+- `gwts`: git wt switch (interactive selection)
+- `gwtr`: git wt remove (interactive selection)
 
-### 使い方
+### Usage
 
 ```bash
-# 対話的にworktreeを作成
+# Create worktree interactively
 gwtc
 
-# 対話的にworktreeに切り替え
+# Switch to worktree interactively
 gwts
 
-# リスト表示
+# List display
 gwtl
 ```
 
 ## Real-World Workflows
 
-### AI Agent並列実行
+### AI Agent Parallel Execution
 
-複数のAI agentがそれぞれのworktreeで作業:
+Multiple AI agents working in their respective worktrees:
 
 ```bash
 # Agent 1: Feature A
@@ -268,84 +268,84 @@ git wt create feature/agent-task-a
 cd .worktrees/agent-task-a
 # ... agent works here ...
 
-# Agent 2: Feature B（並列実行）
+# Agent 2: Feature B (parallel execution)
 git wt create feature/agent-task-b
 cd .worktrees/agent-task-b
 # ... agent works here ...
 ```
 
-### PR同時作業
+### Simultaneous PR Work
 
-複数のPRを同時に進める:
+Working on multiple PRs simultaneously:
 
 ```bash
-# PR #123の修正
+# Fix PR #123
 git wt create -b pr-123-fixes
 
-# PR #124のレビュー対応（並行作業）
+# Review PR #124 (parallel work)
 git wt create -b pr-124-review
 
-# メインの開発（さらに並行）
+# Main development (further parallel)
 git wt create feature/new-feature
 ```
 
-### ビルド/テストの並列実行
+### Parallel Build/Test Execution
 
 ```bash
-# メインworktreeでテスト実行中
+# Running tests in main worktree
 cd .worktrees/feature-a
 npm test &
 
-# 別worktreeで開発継続
+# Continue development in another worktree
 cd .worktrees/feature-b
 # ... continue working ...
 ```
 
-詳細なワークフローパターンは [`references/workflows.md`](references/workflows.md) を参照。
+Refer to [`references/workflows.md`](references/workflows.md) for detailed workflow patterns.
 
 ## Troubleshooting
 
-### よくある問題
+### Common Issues
 
-### 問題
+### Issue
 
 ```bash
-# 原因: 同じブランチが別のworktreeで使用中
-# 解決: 別のブランチ名を使うか、既存worktreeを削除
+# Cause: Same branch is being used in another worktree
+# Solution: Use a different branch name or delete the existing worktree
 
-git wt list  # 使用中のブランチを確認
-git wt remove feature/x  # 必要に応じて削除
+git wt list  # Check branches in use
+git wt remove feature/x  # Delete if necessary
 ```
 
-### 問題
+### Issue
 
 ```bash
-# 原因: Gitメタデータのみ削除された
-# 解決: 手動でディレクトリ削除 + prune
+# Cause: Only Git metadata was deleted
+# Solution: Manually delete directory + prune
 
 rm -rf .worktrees/old-worktree
 git worktree prune
 ```
 
-### 問題
+### Issue
 
 ```bash
-# 診断スクリプトで確認
+# Check with diagnostic script
 scripts/check-worktree-config.sh
 
-# 設定の確認
+# Check configuration
 git config wt.basedir
 git config --list | grep wt.
 ```
 
-詳細なトラブルシューティングは [`references/troubleshooting.md`](references/troubleshooting.md) を参照。
+Refer to [`references/troubleshooting.md`](references/troubleshooting.md) for detailed troubleshooting.
 
 ## References
 
-- [Command Reference](references/git-wt-commands.md): 全コマンドの詳細リファレンス
-- [Configuration](references/configuration.md): 全設定オプション詳細
-- [Workflows](references/workflows.md): 実践的なワークフローパターン
-- [Troubleshooting](references/troubleshooting.md): 問題解決ガイド
+- [Command Reference](references/git-wt-commands.md): Detailed reference for all commands
+- [Configuration](references/configuration.md): Detailed all configuration options
+- [Workflows](references/workflows.md): Practical workflow patterns
+- [Troubleshooting](references/troubleshooting.md): Problem resolution guide
 
 ## External Resources
 
@@ -357,15 +357,15 @@ git config --list | grep wt.
 
 ### Zsh Functions
 
-このリポジトリの`zsh/config/tools/git.zsh`に以下が実装済み:
+The following are implemented in `zsh/config/tools/git.zsh` of this repository:
 
-- Worktree管理関数（`gwt*`エイリアス）
-- 対話的選択（fzf統合）
-- 自動補完
+- Worktree management functions (`gwt*` aliases)
+- Interactive selection (fzf integration)
+- Auto-completion
 
 ### Git Config
 
-デフォルト設定（`git/config`）:
+Default configuration (`git/config`):
 
 ```ini
 [wt]
@@ -374,12 +374,12 @@ git config --list | grep wt.
 
 ### Ignore Files
 
-以下のファイルで`.worktrees/`が除外設定済み:
+`.worktrees/` is configured to be excluded in the following files:
 
 - `.gitignore`
 - `.fdignore`
 - `.prettierignore`
-- `mise/config.toml`（タスク除外）
+- `mise/config.toml` (task exclusion)
 
 ---
 
