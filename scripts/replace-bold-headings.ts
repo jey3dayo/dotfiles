@@ -248,6 +248,34 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
 // Directory Walking
 // ========================================
 
+// Directory names/patterns to skip — mirrors MD_EXCLUDES and TASK_EXCLUDES in mise config.
+// Checked against the directory's base name or a suffix of its path relative to the repo root.
+const SKIP_DIR_NAMES = new Set(["node_modules", ".worktrees", ".kiro", ".luarocks", "fisher"]);
+
+// Path-suffix patterns (matched against the full path using endsWith-style suffix).
+const SKIP_PATH_SUFFIXES = [path.join("tmux", "plugins"), path.join("zsh", ".zinit"), path.join("agents", "external")];
+
+function shouldSkipDir(fullPath: string): boolean {
+  const name = path.basename(fullPath);
+
+  // Exact directory name match
+  if (SKIP_DIR_NAMES.has(name)) return true;
+
+  // result / result-* (Nix build artifacts)
+  if (name === "result" || name.startsWith("result-")) return true;
+
+  // Git submodules (.git exists as a file, not a directory)
+  const gitPath = path.join(fullPath, ".git");
+  if (fs.existsSync(gitPath) && fs.statSync(gitPath).isFile()) return true;
+
+  // Path-suffix patterns (e.g. tmux/plugins, agents/external)
+  for (const suffix of SKIP_PATH_SUFFIXES) {
+    if (fullPath.endsWith(path.sep + suffix) || fullPath.endsWith(suffix)) return true;
+  }
+
+  return false;
+}
+
 function collectMarkdownFiles(targets: string[]): string[] {
   const markdownFiles = new Set<string>();
 
@@ -255,11 +283,7 @@ function collectMarkdownFiles(targets: string[]): string[] {
     for (const entry of fs.readdirSync(currentDir, { withFileTypes: true })) {
       const fullPath = path.join(currentDir, entry.name);
       if (entry.isDirectory()) {
-        // Skip git submodules (.git exists as a file, not a directory)
-        const gitPath = path.join(fullPath, ".git");
-        if (fs.existsSync(gitPath) && fs.statSync(gitPath).isFile()) {
-          continue;
-        }
+        if (shouldSkipDir(fullPath)) continue;
         walk(fullPath);
         continue;
       }

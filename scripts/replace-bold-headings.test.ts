@@ -1,6 +1,7 @@
 #!/usr/bin/env tsx
 
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -164,4 +165,83 @@ try {
     fs.unlinkSync(testFile);
   }
   process.exit(1);
+}
+
+// ========================================
+// Directory exclusion tests
+// ========================================
+
+console.log("\nRunning directory exclusion tests...\n");
+
+import { execSync as execSyncNode } from "node:child_process";
+
+const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "bold-headings-excl-"));
+
+// Bold pattern that WOULD be changed if processed
+const boldContent = "**Overview**\n";
+
+// Directories that must be excluded
+const excludedDirs = [
+  "node_modules",
+  ".worktrees",
+  ".kiro",
+  ".luarocks",
+  "fisher",
+  "result",
+  "result-abc",
+  path.join("tmux", "plugins"),
+  path.join("zsh", ".zinit"),
+  path.join("agents", "external"),
+];
+
+// Create test files inside each excluded directory
+for (const dir of excludedDirs) {
+  const fullDir = path.join(tmpRoot, dir);
+  fs.mkdirSync(fullDir, { recursive: true });
+  fs.writeFileSync(path.join(fullDir, "test.md"), boldContent, "utf8");
+}
+
+// Also create a normal file that SHOULD be processed
+const normalFile = path.join(tmpRoot, "normal.md");
+fs.writeFileSync(normalFile, boldContent, "utf8");
+
+const scriptPath2 = path.join(__dirname, "replace-bold-headings.ts");
+
+try {
+  execSyncNode(`tsx "${scriptPath2}" "${tmpRoot}"`, { encoding: "utf8", stdio: "pipe" });
+
+  let exclPass = 0;
+  let exclFail = 0;
+
+  // Check excluded dirs: content must be UNCHANGED
+  for (const dir of excludedDirs) {
+    const filePath = path.join(tmpRoot, dir, "test.md");
+    const content = fs.readFileSync(filePath, "utf8");
+    if (content === boldContent) {
+      exclPass++;
+      console.log(`✅ Excluded: ${dir}/test.md (unchanged)`);
+    } else {
+      exclFail++;
+      console.log(`❌ Excluded: ${dir}/test.md (was modified!)`);
+      console.log(`   Expected: "${boldContent.trim()}"`);
+      console.log(`   Actual:   "${content.trim()}"`);
+    }
+  }
+
+  // Check normal file: content must be CHANGED (bold converted to heading)
+  const normalContent = fs.readFileSync(normalFile, "utf8");
+  if (normalContent !== boldContent) {
+    exclPass++;
+    console.log(`✅ Normal file was processed (bold converted)`);
+  } else {
+    exclFail++;
+    console.log(`❌ Normal file was NOT processed (bold should have been converted)`);
+  }
+
+  const totalExcl = excludedDirs.length + 1;
+  console.log(`\nExclusion results: ${exclPass}/${totalExcl} passed`);
+
+  if (exclFail > 0) process.exit(1);
+} finally {
+  fs.rmSync(tmpRoot, { recursive: true, force: true });
 }
