@@ -1,100 +1,100 @@
 ---
 name: command-creator
 description: |
-  [What] 効果的なslashコマンドの作成ガイド。コマンド構造、デザインパターン、統合ポイント、ベストプラクティスを提供します。新しいコマンドを作成したい、既存コマンドを改善したい、コマンド設計パターンを理解したい場合に使用してください。
-  [When] Use when: command-creator を使う時
+  [What] Guide for creating effective slash commands. Provides command structure, design patterns, integration points, and best practices. Use when creating new commands, improving existing commands, or understanding command design patterns.
+  [When] Use when: using command-creator
   [Keywords] command creator, slash
 ---
 
 # Command Creator
 
-効果的なslashコマンドを作成するためのガイドです。
+A guide for creating effective slash commands.
 
-## このスキルについて
+## About This Skill
 
-Slashコマンドは、Claude Codeにおけるユーザー向けの明示的なワークフローエントリーポイントです。ユーザーが `/command` と入力することで起動され、特定のタスクを実行します。
+Slash commands are explicit workflow entry points for users in Claude Code. They are triggered when a user types `/command` and execute specific tasks.
 
-### スキルが提供するもの
+### What This Skill Provides
 
-1. コマンド設計パターン - 5つの実証済みパターン
-2. 統合ガイド - Agent/Skill/Shared Librariesとの連携方法
-3. テンプレートとチェックリスト - 実用的なスターターキット
-4. 実例 - 既存コマンドから抽出したベストプラクティス
+1. Command design patterns - 5 proven patterns
+2. Integration guide - How to connect with Agents/Skills/Shared Libraries
+3. Templates and checklists - Practical starter kit
+4. Real-world examples - Best practices extracted from existing commands
 
-## コマンドの構造
+## Command Structure
 
-### 必須要素
+### Required Elements
 
-すべてのコマンドは以下の構造を持ちます:
+All commands have the following structure:
 
 ```markdown
 ---
-description: コマンドの簡潔な説明（1行、20-100文字）
+description: Brief description of the command (1 line, 20-100 characters)
 argument-hint: [required-arg] [--optional-flag]
 ---
 
-# コマンド名
+# Command Name
 
-## 目的
+## Purpose
 
-[このコマンドが解決する問題]
+[The problem this command solves]
 
-## 使用方法
+## Usage
 
-[コマンドの呼び出し方法と引数]
+[How to invoke the command and its arguments]
 
-## ワークフロー
+## Workflow
 
-[実行ステップ - シンプルまたはフェーズベース]
+[Execution steps - simple or phase-based]
 
-## 統合
+## Integration
 
-[使用するagent/skill/shared libraries]
+[Agents/skills/shared libraries used]
 
-## 例
+## Examples
 
-[実際の使用例]
+[Real usage examples]
 
-## エラー処理
+## Error Handling
 
-[よくある問題と解決策]
+[Common issues and solutions]
 ```
 
-### YAMLフロントマター
+### YAML Frontmatter
 
-- **description** (必須): `/help` に表示される説明文
-  - 明確な動詞で開始（例: "実行", "分析", "作成"）
-  - 具体的な機能を記述
-  - 20-100文字を目安に
+- **description** (required): Description shown in `/help`
+  - Start with a clear verb (e.g., "Execute", "Analyze", "Create")
+  - Describe the specific functionality
+  - Aim for 20-100 characters
 
-- **argument-hint** (任意): 使用方法のパターン
-  - `[]` = 任意の引数
-  - `<>` = 必須の引数（ただし一般的には`[]`を使用）
-  - `--flag` = オプションフラグ
-  - 例: `[--simple] [--staged|--recent]`
+- **argument-hint** (optional): Usage pattern
+  - `[]` = optional argument
+  - `<>` = required argument (though `[]` is generally used)
+  - `--flag` = option flag
+  - Example: `[--simple] [--staged|--recent]`
 
-## 詳細リファレンス
+## Detailed References
 
-- デザインパターン/実装/統合/品質基準/テストは `references/command-details.md` を参照
+- For design patterns / implementation / integration / quality standards / testing, see `references/command-details.md`
 
-## 次のステップ
+## Next Steps
 
-1. 目的と入力/出力を定義
-2. テンプレートに沿って作成
-3. テストと移行手順を確認
-4. 配布方法を検討 - distributions-manager スキルを参照
+1. Define the purpose and inputs/outputs
+2. Create using the template
+3. Review testing and migration procedures
+4. Consider distribution method - see the distributions-manager skill
 
-## 配布方法
+## Distribution
 
-コマンド作成後の配布については `distributions-manager` スキルを参照してください:
+For distributing commands after creation, see the `distributions-manager` skill:
 
-- Custom bundle への追加: 特定のワークフロー向けバンドル作成
-- Default bundle への統合: 標準配布への追加
-- Subdirectory structure の維持: コマンドグループの整合性保持
+- Adding to a custom bundle: Create bundles for specific workflows
+- Integration into the default bundle: Add to standard distribution
+- Maintaining subdirectory structure: Preserve consistency of command groups
 
-詳細: `distributions-manager` スキルの `references/creating-bundles.md`
+Details: `references/creating-bundles.md` in the `distributions-manager` skill
 
-## 関連リソース
+## Related Resources
 
 - `references/command-details.md`
-- **distributions-manager** スキル - コマンド配布とバンドル管理
+- **distributions-manager** skill - Command distribution and bundle management

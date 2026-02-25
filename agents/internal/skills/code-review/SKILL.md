@@ -4,7 +4,7 @@ description: |
   [What] Configurable code review and quality assessment skill with project detection system.
   [When] Use when: code reviews, quality assessments, or evaluation guidance is needed.
   [Keywords] code review, quality assessment, review, security, performance, architecture, guidelines
-  [Note] Always responds in Japanese.
+  [Note] Always responds in English.
 version: 2.0.0
 ---
 
@@ -375,7 +375,6 @@ Full schema available at: `schemas/project-detection-schema.json`
 
 ## Notes
 
-- Always responds in Japanese
 - Configuration files use JSON format
 - Priority system ensures correct project detection
 - Custom rules support arbitrary project requirements

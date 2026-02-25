@@ -9,18 +9,18 @@ allowed-tools: Bash, Read, Grep, Edit
 
 # Code Quality Automation Skill
 
-コードをlint/format/testで磨き上げ、エラーが出なくなるまで自動修正を繰り返します。
+Polishes code through lint/format/test cycles, automatically repeating fixes until no errors remain.
 
 ## 🎯 Overview
 
-プロジェクトのlint/format/test設定を自動検出し、品質チェックと修正を繰り返し実行します。
+Automatically detects project lint/format/test configuration and runs quality checks with iterative fixing.
 
 ### Key Features
 
-- プロジェクト設定の自動検出（mise.toml, package.json）
-- エラーが出なくなるまで最大3回自動修正を繰り返す
-- Format → Lint → Test の段階的実行
-- オプションで冗長コメントの自動整理
+- Auto-detection of project configuration (mise.toml, package.json)
+- Automatically retries fixes up to 3 times until all errors are resolved
+- Staged execution: Format → Lint → Test
+- Optional automatic cleanup of verbose comments
 
 ### Supported Languages
 
@@ -35,45 +35,45 @@ allowed-tools: Bash, Read, Grep, Edit
 
 ### 1. Project Configuration Detection
 
-- `mise.toml` タスク検出（優先）
-- `package.json` スクリプト検出（フォールバック）
-- Lint/Format設定ファイル確認
+- `mise.toml` task detection (preferred)
+- `package.json` script detection (fallback)
+- Lint/Format configuration file verification
 
 ### 2. Format Execution
 
 ```bash
-mise run format  # または npm run format
+mise run format  # or npm run format
 ```
 
-- コードを自動整形
-- 一貫したスタイルを適用
+- Auto-formats code
+- Applies consistent style
 
 ### 3. Lint Execution & Auto-Fix
 
 ```bash
-mise run lint           # エラーチェック
-mise run lint-fix       # 自動修正
-# 手動修正（必要に応じて）
+mise run lint           # error check
+mise run lint-fix       # auto-fix
+# manual fix (if needed)
 ```
 
-- Lintエラー検出
-- 自動修正可能なエラーを修正
-- 残りのエラーは手動修正を試みる
+- Detects lint errors
+- Auto-fixes fixable errors
+- Attempts manual fix for remaining errors
 
 ### 4. Test Execution & Fix
 
 ```bash
-mise run test  # または npm test
+mise run test  # or npm test
 ```
 
-- テスト実行
-- 失敗したテストの修正
+- Runs tests
+- Fixes failing tests
 
 ### 5. Iteration
 
-- すべて成功するまで最大3回繰り返す
-- 各ステップの結果を表示
-- エラーが出なくなったら完了
+- Repeats up to 3 times until all checks pass
+- Displays result of each step
+- Completes when no errors remain
 
 ## 📝 Basic Usage
 
@@ -83,7 +83,7 @@ mise run test  # または npm test
 /polish
 ```
 
-すべてのステップ（format → lint → test）を実行します。
+Runs all steps (format → lint → test).
 
 ### With Comment Cleanup
 
@@ -91,44 +91,44 @@ mise run test  # または npm test
 /polish --with-comments
 ```
 
-品質チェックに加えて、冗長なコメントを整理します：
+In addition to quality checks, cleans up verbose comments:
 
-- コードの内容を繰り返すだけのコメントを削除
-- WHY説明、TODO、複雑なロジック説明は保持
-- 削除前にユーザーに確認
+- Removes comments that merely repeat what the code says
+- Preserves WHY explanations, TODOs, and complex logic explanations
+- Prompts user for confirmation before deletion
 
 ## 📊 Execution Example
 
 ```
-🔧 Code Polish を開始します
+🔧 Starting Code Polish
 
-📋 プロジェクト設定検出
-  ✅ mise.toml 検出: format, lint, lint-fix
-  ✅ package.json 検出: なし
+📋 Project configuration detection
+  ✅ mise.toml detected: format, lint, lint-fix
+  ✅ package.json detected: none
 
-🎨 Step 1/3: Format実行
+🎨 Step 1/3: Running Format
   $ mise run format
-  ✅ フォーマット完了（3ファイル更新）
+  ✅ Formatting complete (3 files updated)
 
-🔍 Step 2/3: Lint実行
+🔍 Step 2/3: Running Lint
   $ mise run lint
-  ❌ 5件のエラー検出
+  ❌ 5 errors detected
 
   $ mise run lint-fix
-  ✅ 5件中4件を自動修正
+  ✅ 4 of 5 errors auto-fixed
 
-  🔧 残り1件を手動修正中...
-  ✅ すべてのlintエラーを修正
+  🔧 Manually fixing remaining 1 error...
+  ✅ All lint errors resolved
 
-✅ Step 3/3: Test実行（スキップ - testコマンドなし）
+✅ Step 3/3: Test execution (skipped - no test command)
 
-🎉 Code Polish 完了！
-  - Format: ✅ 成功
-  - Lint: ✅ 成功（5件修正）
-  - Test: ⊘ スキップ
+🎉 Code Polish Complete!
+  - Format: ✅ Success
+  - Lint: ✅ Success (5 errors fixed)
+  - Test: ⊘ Skipped
 
-  試行回数: 2回
-  総実行時間: 12.3秒
+  Attempts: 2
+  Total execution time: 12.3s
 ```
 
 ## 🎯 Common Use Cases
@@ -136,77 +136,77 @@ mise run test  # または npm test
 ### 1. Development Quality Assurance
 
 ```bash
-# コードを書いた後、PRを作る前に実行
+# Run after writing code, before creating a PR
 /polish
 ```
 
-開発中に定期的に実行して、品質を維持します。
+Run periodically during development to maintain quality.
 
 ### 2. Post-Review Fix
 
 ```bash
-# レビュー指摘を修正した後に実行
+# Run after addressing review feedback
 /polish
 ```
 
-レビューのフィードバックを反映した後、全体の品質を確認します。
+After incorporating review feedback, verify overall quality.
 
 ### 3. Pre-Merge Final Check
 
 ```bash
-# マージ前の最終確認
+# Final check before merging
 /polish
-# すべて成功したら
+# Once all pass
 /commit
 /create-pr
 ```
 
-マージ前に最終的な品質チェックを実行します。
+Run a final quality check before merging.
 
 ## 📚 Detailed References
 
 ### Configuration Detection
 
-詳細な設定検出ロジック、検出されるタスク一覧、優先順位については：
+For detailed configuration detection logic, list of detected tasks, and priority order:
 → `references/configuration-detection.md`
 
 ### Execution Flow Details
 
-各ステップの詳細な実行ロジック、エラーハンドリング、成功/失敗判定については：
+For detailed execution logic for each step, error handling, and success/failure criteria:
 → `references/execution-flow.md`
 
 ### Comment Cleanup Rules
 
-`--with-comments` オプションの動作、削除/保持されるコメントパターンについては：
+For `--with-comments` option behavior and patterns for comments to delete/preserve:
 → `references/comment-cleanup.md`
 
 ### Language-Specific Support
 
-各言語の具体的な設定例、ツール一覧については：
+For concrete configuration examples and tool lists for each language:
 → `references/supported-projects.md`
 
 ### Workflow Examples
 
-実際のワークフロー例、実行結果サンプルについては：
+For real-world workflow examples and sample execution results:
 → `examples/workflow-examples.md`
 
 ### mise.toml Templates
 
-言語別のmise.toml設定テンプレートについては：
+For language-specific mise.toml configuration templates:
 → `examples/mise-toml-templates.md`
 
 ## 🔗 Related Commands
 
-- `/test` - テスト実行のみ
-- `/fix-imports` - import文の修正
-- `/clean:full` - プロジェクト全体のクリーンアップ
-- `/review` - コードレビュー実行
+- `/test` - Run tests only
+- `/fix-imports` - Fix import statements
+- `/clean:full` - Full project cleanup
+- `/review` - Run code review
 
 ## 💡 Tips
 
 ### Recommended: Use mise.toml
 
-プロジェクトに `mise.toml` を追加すると、統一的な品質チェックが可能：
+Adding `mise.toml` to your project enables unified quality checks:
 
 ```toml
 [tasks]
@@ -218,15 +218,15 @@ test = ["npm test"]
 
 ### Iterative Fixing
 
-このスキルは自動修正を繰り返すことで、手動介入を最小限にします：
+This skill minimizes manual intervention by repeating auto-fixes:
 
-1. 自動修正可能なエラーは `lint-fix` で解決
-2. 残りのエラーは手動修正を試みる
-3. すべて成功するまで繰り返す（最大3回）
+1. Auto-fixable errors are resolved with `lint-fix`
+2. Remaining errors are attempted manually
+3. Repeats until all pass (up to 3 times)
 
 ### Comment Cleanup Philosophy
 
-`--with-comments` は、コードの可読性を向上させるためのツールです：
+`--with-comments` is a tool to improve code readability:
 
-- 削除: コードを読めば分かる冗長なコメント
-- 保持: WHY（なぜ）を説明するコメント、TODO、警告
+- Removes: redundant comments that just restate what the code does
+- Preserves: WHY explanations, TODOs, warnings
