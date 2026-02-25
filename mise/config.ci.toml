@@ -54,4 +54,5 @@ yamllint = "latest"        # YAML lint
 "npm:markdownlint-cli2" = "latest"
 "npm:tsx" = "latest"
 # CLI Tools
-fd = "latest" # File discovery
+fd = "latest"       # File discovery
+gitleaks = "latest" # Secret scanning

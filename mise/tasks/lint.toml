@@ -118,10 +118,6 @@ run = "fd -e md ${TASK_EXCLUDES} -x markdown-link-check --config ${MARKDOWN_LINK
 ["lint:actions"]
 description = "GitHub Actions ワークフローをチェック（actionlint）"
 run = """
-if ! command -v actionlint >/dev/null 2>&1; then
-  echo "⚠️ actionlint not found, skipping"
-  exit 0
-fi
 actionlint
 """
 

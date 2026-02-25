@@ -4,7 +4,7 @@
 
 ["ci:quick"]
 description = "軽量チェック（format + lint のみ、Claude Code hooks 向け ~3-5s）"
-depends = ["check"]
+depends = ["check:format", "check:lint:quick"]
 
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
@@ -24,10 +24,6 @@ depends = ["ci", "hm:deploy", "ci:verify-deploy"]
 ["ci:gitleaks"]
 description = "gitleaks による secret スキャン"
 run = """
-if ! command -v gitleaks >/dev/null 2>&1; then
-  echo "⚠️ gitleaks not found, skipping"
-  exit 0
-fi
 gitleaks git -v
 """
 
