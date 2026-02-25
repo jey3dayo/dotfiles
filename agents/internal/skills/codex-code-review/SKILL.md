@@ -11,22 +11,22 @@ allowed-tools: Bash(codex:*), Bash(jq:*), Bash(git:*), Read, Edit, Grep, Glob
 
 # Codex Code Review
 
-コード変更を Codex でレビューし、問題があれば修正まで行う。
+Review code changes with Codex and apply fixes if issues are found.
 
 ## Workflow
 
-### 1. 変更の検出とモード判定
+### 1. Detect Changes and Determine Mode
 
 ```bash
 git status --porcelain
 ```
 
-- 出力あり → uncommitted changes モード
-- 出力なし → ブランチ差分モード（デフォルトブランチとの差分）
+- Output present → uncommitted changes mode
+- No output → branch diff mode (diff against default branch)
 
-### 2. レビュー実行
+### 2. Run Review
 
-#### uncommitted changes モード
+#### Uncommitted Changes Mode
 
 ```bash
 codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
@@ -46,7 +46,7 @@ $(git diff --cached)
 " 2>/dev/null
 ```
 
-#### ブランチ差分モード
+#### Branch Diff Mode
 
 ```bash
 BASE=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||'); BASE=${BASE:-main}
@@ -66,21 +66,21 @@ $(git diff ${BASE}...HEAD)
 " 2>/dev/null
 ```
 
-### 3. 結果の抽出
+### 3. Extract Results
 
 ```bash
-# JSON 出力から issues を抽出
+# Extract issues from JSON output
 echo '<codex output>' | jq '.issues'
 ```
 
-### 4. 結果評価と対応
+### 4. Evaluate and Respond
 
-- critical issues あり → 該当ファイルを Read し、Edit で修正を適用
-- warning のみ → ユーザーに共有し、修正するか確認
-- info のみ / 問題なし → レビュー完了を報告
+- Critical issues found → Read the affected file and apply fixes with Edit
+- Warnings only → Share with user and confirm whether to fix
+- Info only / no issues → Report review complete
 
-### 5. 修正後の再レビュー
+### 5. Re-review After Fixes
 
-修正を行った場合、ステップ 1 に戻り再レビューを実行する。
-問題が 0 件になるまで繰り返す（最大 3 回）。
-3 回で解決しない場合は残存 issues を報告し、ユーザーに判断を委ねる。
+If fixes were applied, return to step 1 and re-run the review.
+Repeat until zero issues remain (max 3 iterations).
+If unresolved after 3 attempts, report remaining issues and defer to the user.
