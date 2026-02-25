@@ -49,7 +49,7 @@ $(git diff --cached)
 #### ブランチ差分モード
 
 ```bash
-BASE=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||' || echo main)
+BASE=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||'); BASE=${BASE:-main}
 codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
 Review the following branch changes against ${BASE}. Identify:
 1. Bugs or logic errors
