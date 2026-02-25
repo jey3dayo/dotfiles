@@ -40,10 +40,34 @@ const testCases = [
     shouldConvert: false,
   },
   {
-    name: "Ordered list with bold label",
+    name: "Ordered list with bold label and content (MUST preserve bold)",
     input: "1. **Read Guidelines**: 必ず最初に読む",
-    expected: "1. Read Guidelines: 必ず最初に読む",
-    shouldConvert: true, // Should remove bold but keep content
+    expected: "1. **Read Guidelines**: 必ず最初に読む",
+    shouldConvert: false,
+  },
+  {
+    name: "Ordered list with bold label and Japanese content (MUST preserve bold)",
+    input: "1. **フェーズ1**: 説明",
+    expected: "1. **フェーズ1**: 説明",
+    shouldConvert: false,
+  },
+  {
+    name: "Ordered list with bold label and English content (MUST preserve bold)",
+    input: "1. **Phase 1**: Description",
+    expected: "1. **Phase 1**: Description",
+    shouldConvert: false,
+  },
+  {
+    name: "Ordered list with bold label and colon only",
+    input: "1. **Phase 1**:",
+    expected: "1. Phase 1:",
+    shouldConvert: true,
+  },
+  {
+    name: "Ordered list with bold label and arrow",
+    input: "1. **Phase 1** → do something",
+    expected: "1. Phase 1 → do something",
+    shouldConvert: true,
   },
   {
     name: "Unordered list with bold label (colon only)",

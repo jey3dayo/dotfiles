@@ -134,7 +134,16 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
         const prefix = listLabelMatch[1];
         const text = listLabelMatch[2];
         const suffix = listLabelMatch[3] ?? "";
+
         if (!text.includes("**")) {
+          // Preserve bold only when colon is followed by meaningful content.
+          // Arrow (→) does not preserve bold.
+          const colonMatch = suffix.match(/^(\s*:)\s*(.+)/);
+          if (colonMatch?.[2].trim()) {
+            // There's content after the colon - preserve bold
+            return line;
+          }
+
           fileReplacements += 1;
           return `${prefix}${text}${suffix}`;
         }
