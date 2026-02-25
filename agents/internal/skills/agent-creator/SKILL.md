@@ -59,14 +59,14 @@ This agent should be activated when:
 
 This agent uses the following tools:
 
-- **Tool1**: Purpose
-- **Tool2**: Purpose
+- Tool1: Purpose
+- Tool2: Purpose
 
 ## Analysis Process
 
-1. **Phase 1**: Description
-2. **Phase 2**: Description
-3. **Phase 3**: Description
+1. Phase 1: Description
+2. Phase 2: Description
+3. Phase 3: Description
 
 ## Output Format
 

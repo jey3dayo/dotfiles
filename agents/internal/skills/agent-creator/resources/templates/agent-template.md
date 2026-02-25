@@ -1,97 +1,97 @@
 ---
 name: agent-name
-description: エージェントの専門領域と使用タイミングの明確な説明
-tools: ["*"] # または ["Read", "Grep", "Bash"]
+description: Clear description of the agent's domain expertise and when to use it
+tools: ["*"] # or ["Read", "Grep", "Bash"]
 color: blue
 model: claude-sonnet-4-5
 ---
 
 # Agent Name
 
-## 役割
+## Role
 
-[エージェントのドメイン専門知識と主な責任を定義]
+[Define the agent's domain expertise and primary responsibilities]
 
-## 能力
+## Capabilities
 
-- 能力1
-- 能力2
-- 能力3
+- Capability 1
+- Capability 2
+- Capability 3
 
-## 起動コンテキスト
+## Activation Context
 
-このエージェントは以下の場合に起動されるべきです:
+This agent should be activated when:
 
-- 条件1
-- 条件2
-- 条件3
+- Condition 1
+- Condition 2
+- Condition 3
 
-## ツール使用
+## Tool Usage
 
-このエージェントは以下のツールを使用します:
+This agent uses the following tools:
 
-- Read: ソースファイル読み込み
-- Grep: パターン検索
-- Bash: 分析コマンド実行
+- Read: Load source files
+- Grep: Pattern search
+- Bash: Execute analysis commands
 
-## 分析プロセス
+## Analysis Process
 
-1. Phase 1: [説明]
-2. Phase 2: [説明]
-3. Phase 3: [説明]
+1. Phase 1: [Description]
+2. Phase 2: [Description]
+3. Phase 3: [Description]
 
-## 出力形式
+## Output Format
 
 ```markdown
-## 分析結果
+## Analysis Results
 
-### 発見事項
+### Findings
 
-1. **カテゴリー**: 説明
-   - 深刻度: High/Medium/Low
-   - 場所: file:line
-   - 推奨: アクション
+1. **[Category]**: Description
+   - Severity: High/Medium/Low
+   - Location: file:line
+   - Recommendation: Action
 
-### 要約
+### Summary
 
-- 総問題数: N
-- クリティカル: N
+- Total issues: N
+- Critical: N
 
-### 次のステップ
+### Next Steps
 
-- アクション項目
+- Action item
 ```
 
-## 統合
+## Integration
 
-### 親コマンド
+### Parent Commands
 
-- `/command-name`: このエージェントの統合方法
+- `/command-name`: How this agent integrates
 
-### 関連エージェント
+### Related Agents
 
-- `related-agent`: 関係の説明
+- `related-agent`: Description of the relationship
 
-## 例
+## Examples
 
-### 例1: 基本的な起動
+### Example 1: Basic Activation
 
 ```markdown
 Task(
 subagent_type="agent-name",
-description="コンポーネント分析",
-prompt="issuesを分析",
+description="Component analysis",
+prompt="Analyze issues",
 context={"file": "src/component.ts"}
 )
 ```
 
-### 例2: 高度な起動
+### Example 2: Advanced Activation
 
 ```markdown
 Task(
 subagent_type="agent-name",
-description="詳細分析",
-prompt="特定の焦点での深い分析",
+description="Detailed analysis",
+prompt="Deep analysis with specific focus",
 context={
 "files": ["src/a.ts", "src/b.ts"],
 "focus": "security"
@@ -99,16 +99,16 @@ context={
 )
 ```
 
-## 品質基準
+## Quality Criteria
 
-エージェントは以下を生成すべきです:
+The agent should produce output that is:
 
-- [ ] 構造化され解析可能
-- [ ] 深刻度インジケーターを含む
-- [ ] アクション可能な推奨事項を提供
-- [ ] 特定の場所を参照（file:line）
-- [ ] 発見事項を明確に要約
+- [ ] Structured and parseable
+- [ ] Includes severity indicators
+- [ ] Provides actionable recommendations
+- [ ] References specific locations (file:line)
+- [ ] Clearly summarizes findings
 
-## 注記
+## Notes
 
-[追加の注記、制限、または特別な考慮事項]
+[Additional notes, limitations, or special considerations]
