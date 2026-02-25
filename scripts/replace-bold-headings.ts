@@ -95,11 +95,12 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
 
     // Bold labels in ordered list items are normalized to plain text.
     // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
-    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:-]\s*.*)?$/;
+    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*(?:[:-]|\u2192)\s*.*)?$/;
 
     // Bold labels in unordered list items are normalized to plain text.
     // Example: "- **Text**:" -> "- Text:"
-    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(\s*[:-]\s*.*)?$/;
+    // Example: "- **key** → value" -> "- key → value"
+    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(\s*(?:[:-]|\u2192)\s*.*)?$/;
 
     let inFence = false;
     let fenceChar = "";
@@ -150,14 +151,15 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
           return line;
         }
 
-        // Check if there's meaningful content after the colon
-        const colonMatch = suffix.match(/:\s*(.+)/);
-        if (colonMatch?.[1].trim()) {
+        // Preserve bold only when colon is followed by meaningful content.
+        // Arrow (→) does not preserve bold.
+        const colonMatch = suffix.match(/^(\s*:)\s*(.+)/);
+        if (colonMatch?.[2].trim()) {
           // There's content after the colon - preserve bold
           return line;
         }
 
-        // Just ":" or no suffix - remove bold
+        // Just ":", "→ content", or no suffix - remove bold
         fileReplacements += 1;
         return `${prefix}${text}${suffix}`;
       }
