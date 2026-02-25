@@ -19,7 +19,7 @@ depends = [
 
 ["ci:full"]
 description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
-depends = ["ci", "hm:deploy"]
+depends = ["ci", "hm:deploy", "ci:verify-deploy"]
 
 ["ci:gitleaks"]
 description = "gitleaks による secret スキャン"
