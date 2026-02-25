@@ -2,24 +2,9 @@
 # CI/CD
 # ========================================
 
-["ci:quick"]
-description = "軽量チェック（format + lint のみ、Claude Code hooks 向け ~3-5s）"
-depends = ["check:format", "check:lint:quick"]
-
-["ci"]
-description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
-depends = [
-  "check",
-  "test",
-  "skills:validate",
-  "skills:validate:internal",
-  "skills:check:sync",
-  "ci:gitleaks",
-]
-
-["ci:full"]
-description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
-depends = ["ci", "hm:deploy", "ci:verify-deploy"]
+# ----------------------------------------
+# 個別タスク（コマンド）
+# ----------------------------------------
 
 ["ci:gitleaks"]
 description = "gitleaks による secret スキャン"
@@ -90,6 +75,29 @@ ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" 
 
 nix build .#bundle
 """
+
+# ----------------------------------------
+# 集約タスク（エイリアス）
+# ----------------------------------------
+
+["ci:quick"]
+description = "軽量チェック（format + lint のみ、Claude Code hooks 向け ~3-5s）"
+depends = ["check:format", "check:lint:quick"]
+
+["ci"]
+description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
+depends = [
+  "check",
+  "test",
+  "skills:validate",
+  "skills:validate:internal",
+  "skills:check:sync",
+  "ci:gitleaks",
+]
+
+["ci:full"]
+description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
+depends = ["ci", "hm:deploy", "ci:verify-deploy"]
 
 ["ci:nix"]
 description = "Nix 固有の深い検証（validate.yml 対応）"
