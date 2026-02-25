@@ -4,15 +4,14 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/home/pi/.mise/installs/node/24.13.1/bin/node /home/pi/.mise/installs/npm-openclaw/latest/5/.pnpm/openclaw@2026.2.23_@napi-rs+canvas@0.1.95_@types+express@5.0.6_hono@4.12.2_node-llama-cpp@3.15.1/node_modules/openclaw/openclaw.mjs gateway --port 18789
+ExecStart=/home/pi/.mise/installs/npm-openclaw/latest/bin/openclaw gateway --port 18789
 Restart=always
-RestartSec=5
-KillMode=process
-Environment=HOME=/home/pi
+RestartSec=10
+KillMode=mixed
+Environment=HOME=%h
 Environment=TMPDIR=/tmp
-Environment="PATH=/home/pi/.mise/shims:/home/pi/.local/share/pnpm:/home/pi/.local/bin:/home/pi/.npm-global/bin:/home/pi/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PATH=%h/.mise/shims:%h/.local/share/pnpm:%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
-Environment=OPENCLAW_GATEWAY_TOKEN=b1307d12f445435748c5a440c725bfd5514b16eb8e839728d1a6ab83f8d0598a
 Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
