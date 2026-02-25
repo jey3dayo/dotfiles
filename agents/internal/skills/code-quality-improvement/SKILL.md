@@ -8,119 +8,119 @@ description: |
 
 # Code Quality Improvement Skill
 
-## いつ使うか
+## When to Use
 
-このスキルは以下の場合に自動的にトリガーされます:
+This skill is automatically triggered when:
 
-- ESLintエラーを大量に修正する必要がある時
-- コード品質を段階的に改善したい時
-- 体系的なリファクタリングを実施する時
-- 型安全性を向上させたい時
-- クリーンアーキテクチャの境界違反を修正する時
+- You need to fix a large number of ESLint errors
+- You want to incrementally improve code quality
+- You are performing systematic refactoring
+- You want to improve type safety
+- You need to fix clean architecture boundary violations
 
-## トリガーキーワード
+## Trigger Keywords
 
 - "ESLintエラー", "ESLint error", "lint error"
 - "大量修正", "一括修正", "bulk fix"
-- "段階的修正", "phased approach", "段階的"
+- "段階的修正", "phased approach"
 - "コード品質改善", "code quality", "品質改善"
 - "リファクタリング", "refactoring"
 - "型安全性", "type safety"
 - "未使用変数", "unused variables"
 
-## 段階的ワークフロー
+## Phased Workflow
 
-### Phase 1: 準備・分析 (15-30分)
+### Phase 1: Preparation & Analysis (15-30 min)
 
-#### 1.1 エラー状況の把握
+#### 1.1 Assess Error State
 
 ```bash
-# 全体のエラー数を確認
+# Check total error count
 pnpm lint 2>&1 | tee lint-errors.log
 
-# カテゴリ別にエラー数を集計
-echo "未使用変数: $(pnpm lint 2>&1 | grep -c 'no-unused-vars')"
-echo "型アサーション: $(pnpm lint 2>&1 | grep -c 'no-type-assertions-without-validation')"
-echo "Result<T,E>パターン: $(pnpm lint 2>&1 | grep -c 'neverthrow/must-use-result')"
-echo "Layer境界違反: $(pnpm lint 2>&1 | grep -c 'enforce-layer-boundaries')"
+# Count errors by category
+echo "Unused vars: $(pnpm lint 2>&1 | grep -c 'no-unused-vars')"
+echo "Type assertions: $(pnpm lint 2>&1 | grep -c 'no-type-assertions-without-validation')"
+echo "Result<T,E> pattern: $(pnpm lint 2>&1 | grep -c 'neverthrow/must-use-result')"
+echo "Layer boundary: $(pnpm lint 2>&1 | grep -c 'enforce-layer-boundaries')"
 ```
 
-#### 1.2 優先度の決定
+#### 1.2 Prioritize Errors
 
-エラーを以下の優先度で分類:
+Classify errors by priority:
 
-| 優先度      | カテゴリ                       | 対応時期   | 例                                              |
-| ----------- | ------------------------------ | ---------- | ----------------------------------------------- |
-| 🔴 Critical | ビルド失敗・セキュリティリスク | 即座       | any型、型アサーション、バリデーション欠如       |
-| 🟠 High     | 実行時エラーの可能性           | 24時間以内 | 未使用変数の誤った削除、Result<T,E>パターン違反 |
-| 🟡 Medium   | アーキテクチャ一貫性           | 1週間以内  | Layer境界違反、責任分離違反                     |
-| 🟢 Low      | スタイルガイド違反             | 1ヶ月以内  | コードフォーマット、命名規約                    |
+| Priority    | Category                       | Timeline    | Examples                                            |
+| ----------- | ------------------------------ | ----------- | --------------------------------------------------- |
+| 🔴 Critical | Build failures, security risks | Immediately | `any` type, type assertions, missing validation     |
+| 🟠 High     | Potential runtime errors       | Within 24h  | Incorrect unused var removal, Result<T,E> violation |
+| 🟡 Medium   | Architecture consistency       | Within 1w   | Layer boundary violations, separation of concerns   |
+| 🟢 Low      | Style guide violations         | Within 1mo  | Code formatting, naming conventions                 |
 
-#### 1.3 修正計画の策定
+#### 1.3 Draft Fix Plan
 
 ```markdown
-## 修正計画
+## Fix Plan
 
-### 現状
+### Current State
 
-- Total errors: XXX件
-- Critical: XX件
-- High: XX件
-- Medium: XX件
-- Low: XX件
+- Total errors: XXX
+- Critical: XX
+- High: XX
+- Medium: XX
+- Low: XX
 
-### 目標
+### Goals
 
-- Phase 2完了時: Critical 0件、High 50%削減
-- Phase 3完了時: 全エラー 80%削減
+- After Phase 2: Critical 0, High reduced by 50%
+- After Phase 3: All errors reduced by 80%
 
-### アプローチ
+### Approach
 
-1. 自動修正可能なエラー → pnpm lint:fix
-2. パターン適用可能なエラー → 一括置換スクリプト
-3. 手動修正必要なエラー → 個別対応
+1. Auto-fixable errors → pnpm lint:fix
+2. Pattern-applicable errors → bulk replacement script
+3. Manual fixes required → handle individually
 ```
 
-### Phase 2: 実行 (1-3時間)
+### Phase 2: Execution (1-3 hours)
 
-#### 2.1 自動修正の実施
+#### 2.1 Apply Auto-Fixes
 
 ```bash
-# ステップ1: フォーマット修正
+# Step 1: Format
 pnpm format:prettier
 
-# ステップ2: ESLint自動修正
+# Step 2: ESLint auto-fix
 pnpm lint:fix
 
-# ステップ3: 効果測定
-echo "残存エラー: $(pnpm lint 2>&1 | grep -c 'error')"
+# Step 3: Measure impact
+echo "Remaining errors: $(pnpm lint 2>&1 | grep -c 'error')"
 ```
 
-#### 2.2 パターンベース一括修正
+#### 2.2 Pattern-Based Bulk Fixes
 
 ```bash
-# 未使用変数のアンダースコア削除（テストファイル）
+# Remove underscore prefix from unused vars in tests
 find src/tests -name "*.test.ts" -exec sed -i '' 's/const _\([a-zA-Z][a-zA-Z0-9_]*\) = /const \1 = /g' {} \;
 
-# 型アサーション → 型ガード置換（手動確認推奨）
-# 詳細はreferences/patterns.mdを参照
+# Type assertion → type guard replacement (manual review recommended)
+# See references/patterns.md for details
 ```
 
-#### 2.3 手動修正の実施
+#### 2.3 Manual Fixes
 
-優先度の高いエラーから順に手動修正:
+Fix in priority order:
 
-1. any型排除 → Zodスキーマ + unknown型
-2. 型アサーション削除 → 型ガード作成
-3. Result<T,E>パターン適用 → Service層統合
-4. Layer境界違反修正 → 依存関係整理
+1. Remove `any` types → Zod schema + `unknown`
+2. Remove type assertions → create type guards
+3. Apply Result<T,E> pattern → integrate into service layer
+4. Fix layer boundary violations → clean up dependencies
 
-詳細な修正パターンは [references/patterns.md](references/patterns.md) を参照
+See [references/patterns.md](references/patterns.md) for detailed fix patterns.
 
-#### 2.4 段階的コミット
+#### 2.4 Incremental Commits
 
 ```bash
-# 機能別・ファイル別にコミット
+# Commit by feature/file
 git add src/tests/**/*.test.ts
 git commit -m "fix: remove unused variable underscore prefixes in tests"
 
@@ -128,49 +128,49 @@ git add src/lib/services/**/*.ts
 git commit -m "refactor: apply Result<T,E> pattern to services"
 ```
 
-### Phase 3: 検証・完了 (30分-1時間)
+### Phase 3: Verification & Completion (30 min-1 hour)
 
-#### 3.1 品質保証
+#### 3.1 Quality Assurance
 
 ```bash
-# 必須チェック（全てパスすること）
-pnpm test          # 全テスト成功
-pnpm type-check    # 型エラー0件
-pnpm lint          # リント違反0件
-pnpm build         # ビルド成功（該当する場合）
+# Required checks (all must pass)
+pnpm test          # All tests pass
+pnpm type-check    # 0 type errors
+pnpm lint          # 0 lint violations
+pnpm build         # Build succeeds (if applicable)
 ```
 
-#### 3.2 効果測定・レポート
+#### 3.2 Measure Impact & Report
 
 ```markdown
-## 修正完了レポート
+## Fix Completion Report
 
-### 修正成果
+### Results
 
-- Total errors: XXX件 → YY件 (ZZ%削減)
-- Critical: XX件 → 0件 (100%解消)
-- High: XX件 → Y件 (ZZ%削減)
+- Total errors: XXX → YY (ZZ% reduction)
+- Critical: XX → 0 (100% resolved)
+- High: XX → Y (ZZ% reduction)
 
-### 品質指標
+### Quality Indicators
 
-- [ ] 全テスト成功
-- [ ] 型エラー0件
-- [ ] リント違反0件
-- [ ] ビルド成功
+- [ ] All tests pass
+- [ ] 0 type errors
+- [ ] 0 lint violations
+- [ ] Build succeeds
 
-### 主要な修正内容
+### Key Fixes Applied
 
-1. any型排除: XX箇所
-2. 型アサーション削除: XX箇所
-3. Result<T,E>パターン適用: XX箇所
-4. Layer境界違反修正: XX箇所
+1. `any` type removal: XX locations
+2. Type assertion removal: XX locations
+3. Result<T,E> pattern applied: XX locations
+4. Layer boundary violations fixed: XX locations
 ```
 
-## 重要な注意事項
+## Important Notes
 
-### 危険なパターン - 絶対に避けるべき修正
+### Dangerous Patterns — Fixes to Absolutely Avoid
 
-#### 1. Claude Codeの誤修正パターン
+#### 1. Claude Code Mis-fix Pattern
 
 ```typescript
 // ❌ 危険: アンダースコアだけ追加して使用箇所は未修正
@@ -191,25 +191,25 @@ export function verifyFormDataSupport(): void {
 }
 ```
 
-### 重要
+### Important
 
-#### 2. 自動修正が危険なルール
+#### 2. Rules Where Auto-Fix Is Dangerous
 
-以下のルールは自動修正を無効化済み（手動修正必須）:
+The following rules have auto-fix disabled (manual fix required):
 
-- `no-manual-success-error-patterns` - 未定義変数生成リスク
-- `no-type-assertions-without-validation` - 複雑な型変換
-- `require-result-pattern-in-services` - ロジック破壊リスク
+- `no-manual-success-error-patterns` - Risk of generating undefined variables
+- `no-type-assertions-without-validation` - Complex type conversions
+- `require-result-pattern-in-services` - Risk of breaking logic
 
-### 安全な修正順序
+### Safe Fix Order
 
-1. 自動修正可能 → `pnpm lint:fix`で自動実行
-2. パターン適用可能 → スクリプトで一括処理（テスト実行必須）
-3. 手動修正必要 → 慎重に個別対応
+1. Auto-fixable → run automatically with `pnpm lint:fix`
+2. Pattern-applicable → bulk script (must run tests)
+3. Manual fix required → handle individually with care
 
-## 層別修正戦略
+## Layer-Specific Fix Strategy
 
-### Service層
+### Service Layer
 
 ```typescript
 // 🔴 修正前: any型 + 型アサーション
@@ -224,7 +224,7 @@ async function getUser(id: string): ResultAsync<User, Error> {
 }
 ```
 
-### Action層
+### Action Layer
 
 ```typescript
 // 🔴 修正前: FormData型安全性なし
@@ -246,7 +246,7 @@ export async function createUser(formData: FormData) {
 }
 ```
 
-### Transform層
+### Transform Layer
 
 ```typescript
 // 🔴 修正前: 型アサーション
@@ -264,155 +264,155 @@ function transformData(raw: unknown): Result<User, Error> {
 }
 ```
 
-## チェックリスト
+## Checklist
 
-### Phase 1: 準備・分析
+### Phase 1: Preparation & Analysis
 
-- [ ] エラー状況把握完了（カテゴリ別集計）
-- [ ] 優先度決定完了（Critical/High/Medium/Low）
-- [ ] 修正計画策定完了（目標・アプローチ明確化）
-- [ ] バックアップ作成（git stash or branch）
+- [ ] Error state assessed (by category)
+- [ ] Priorities determined (Critical/High/Medium/Low)
+- [ ] Fix plan drafted (goals and approach defined)
+- [ ] Backup created (git stash or branch)
 
-### Phase 2: 実行
+### Phase 2: Execution
 
-- [ ] 自動修正実施完了（prettier + lint:fix）
-- [ ] パターンベース修正完了（スクリプト実行）
-- [ ] 手動修正実施完了（優先度順）
-- [ ] 段階的コミット完了（機能別・ファイル別）
-- [ ] 各ステップでテスト実行確認
+- [ ] Auto-fixes applied (prettier + lint:fix)
+- [ ] Pattern-based fixes complete (script run)
+- [ ] Manual fixes complete (in priority order)
+- [ ] Incremental commits done (by feature/file)
+- [ ] Tests run after each step
 
-### Phase 3: 検証・完了
+### Phase 3: Verification & Completion
 
-- [ ] 全テスト成功（pnpm test）
-- [ ] 型エラー0件（pnpm type-check）
-- [ ] リント違反0件（pnpm lint）
-- [ ] ビルド成功（該当する場合）
-- [ ] 効果測定レポート作成
-- [ ] ドキュメント更新（必要に応じて）
+- [ ] All tests pass (pnpm test)
+- [ ] 0 type errors (pnpm type-check)
+- [ ] 0 lint violations (pnpm lint)
+- [ ] Build succeeds (if applicable)
+- [ ] Impact measurement report created
+- [ ] Documentation updated (if needed)
 
-## 関連リソース
+## Related Resources
 
-### 詳細な修正パターン
+### Detailed Fix Patterns
 
-- [references/patterns.md](references/patterns.md) - ESLintエラー種類別の修正パターン
+- [references/patterns.md](references/patterns.md) - Fix patterns by ESLint error type
 
-### プロジェクト固有ガイド
+### Project-Specific Guides
 
-- Result<T,E>パターン: `.claude/essential/result-pattern.md`
-- レイヤー概要: `docs/layers/layer-overview.md`
-- 型安全性ガイド: `docs/development/type-safety-comprehensive-guide.md`
+- Result<T,E> pattern: `.claude/essential/result-pattern.md`
+- Layer overview: `docs/layers/layer-overview.md`
+- Type safety guide: `docs/development/type-safety-comprehensive-guide.md`
 
-### 関連コマンド
+### Related Commands
 
-- `/refactor` - 統合リファクタリング
-- `/review` - コードレビュー
-- `/polish` - コード品質保証
+- `/refactor` - Integrated refactoring
+- `/review` - Code review
+- `/polish` - Code quality assurance
 
-## 実績データ
+## Track Record
 
-### v2.1.0 /fix コマンド実績 (2025-07-07)
+### v2.1.0 /fix command results (2025-07-07)
 
-- TypeScriptエラー: 6件 → 0件 (100%解消)
-- ESLint警告: 9件 → 0件 (100%解消)
-- 自動修正率: 100%のAI駆動解決
+- TypeScript errors: 6 → 0 (100% resolved)
+- ESLint warnings: 9 → 0 (100% resolved)
+- Auto-fix rate: 100% AI-driven resolution
 
-### 大規模修正実績
+### Large-scale fix results
 
-- 未使用変数: 2,523個 → 2,137個 (386個削減、15%改善)
-- 型エラー: 複数 → 0件 (100%解消)
-- ESLintエラー: 500+ → 32件 (94%削減)
-- any型: 93件 → 0件 (100%排除)
+- Unused variables: 2,523 → 2,137 (386 removed, 15% improvement)
+- Type errors: multiple → 0 (100% resolved)
+- ESLint errors: 500+ → 32 (94% reduction)
+- `any` types: 93 → 0 (100% eliminated)
 
-## トラブルシューティング
+## Troubleshooting
 
-### よくある問題
+### Common Issues
 
-#### Q: pnpm lint:fix が一部のエラーを修正できない
+#### Q: pnpm lint:fix doesn't fix some errors
 
-A: 以下のルールは手動修正必須（自動修正無効化済み）
+A: The following rules require manual fixes (auto-fix disabled):
 
-- 型アサーション系
-- Result<T,E>パターン系
-- Layer境界違反系
+- Type assertion rules
+- Result<T,E> pattern rules
+- Layer boundary violation rules
 
-#### Q: テストが失敗する
+#### Q: Tests fail after fixes
 
-A: 未使用変数修正時の誤修正の可能性。以下を確認:
+A: Likely a mis-fix when removing unused variables. Check:
 
-1. `_`プレフィックス追加箇所の使用箇所チェック
-2. 削除した変数が実際に使用されていないか確認
-3. git diff で変更内容を詳細レビュー
+1. Verify all usages of locations where `_` prefix was added
+2. Confirm the removed variable was truly unused
+3. Review changes in detail with `git diff`
 
-#### Q: 型エラーが増えた
+#### Q: Type errors increased after fixes
 
-A: 型アサーション削除時の一時的増加は正常。適切な型ガードやバリデーションを追加することで解消
+A: A temporary increase when removing type assertions is normal. Add appropriate type guards or validation to resolve.
 
-## 学習ポイント
+## Lessons Learned
 
-### 成功パターン
+### Success Patterns
 
-1. 段階的修正（50-100個ずつ）
-2. 効果測定（修正前後の定量比較）
-3. 継続的テスト実行
-4. 機能別コミット
+1. Incremental fixes (50-100 at a time)
+2. Measure impact (quantitative before/after comparison)
+3. Continuous test execution
+4. Commit by feature
 
-### 避けるべきパターン
+### Patterns to Avoid
 
-1. 一括大量修正（リスク高）
-2. テストなしでの修正
-3. 自動修正への過度な依存
-4. エラーメッセージの無視
+1. Large bulk fixes (high risk)
+2. Fixing without running tests
+3. Over-reliance on auto-fix
+4. Ignoring error messages
 
 ## 🤖 Agent Integration
 
-このスキルは段階的なコード品質改善タスクを実行するエージェントに専門知識を提供します:
+This skill provides expertise to agents executing phased code quality improvement tasks:
 
-### Error-Fixer Agent（特に重要）
+### Error-Fixer Agent (especially important)
 
-- 提供内容: 3-Phase段階的品質改善戦略、ESLintエラー修正、型安全性向上
-- タイミング: ESLintエラー修正・大量修正・コード品質改善タスク実行時
-- コンテキスト:
-  - Phase 1: Surface Linter修正（ESLint auto-fix）
-  - Phase 2: Type Safety改善（any型排除、型ガード実装）
-  - Phase 3: Deep Quality向上（Result<T,E>、アーキテクチャパターン）
-  - 段階的修正戦略（50-100個ずつ）
-  - 効果測定と定量評価
+- Provides: 3-phase quality improvement strategy, ESLint error fixing, type safety improvements
+- When: ESLint error fixing, bulk fixes, code quality improvement tasks
+- Context:
+  - Phase 1: Surface linter fixes (ESLint auto-fix)
+  - Phase 2: Type safety improvements (eliminate `any`, implement type guards)
+  - Phase 3: Deep quality improvements (Result<T,E>, architecture patterns)
+  - Incremental fix strategy (50-100 at a time)
+  - Impact measurement and quantitative evaluation
 
 ### Orchestrator Agent
 
-- 提供内容: 品質改善計画策定、複数Phase調整
-- タイミング: 大規模品質改善プロジェクト実行時
-- コンテキスト: Phase進行管理、セッション管理、効果測定、リスク管理
+- Provides: Quality improvement planning, multi-phase coordination
+- When: Large-scale quality improvement projects
+- Context: Phase progress management, session management, impact measurement, risk management
 
 ### Code-Reviewer Agent
 
-- 提供内容: 品質改善効果の評価、継続的品質チェック
-- タイミング: Phase完了後の品質検証時
-- コンテキスト: 改善前後の定量比較、残存問題の特定、次Phase推奨
+- Provides: Quality improvement impact evaluation, continuous quality checks
+- When: Quality verification after phase completion
+- Context: Quantitative before/after comparison, identifying remaining issues, next phase recommendations
 
-### 自動ロード条件
+### Auto-load Conditions
 
-- "ESLintエラー"、"大量修正"、"段階的修正"に言及
-- "code quality"、"品質改善"、"リファクタリング"に言及
-- ESLintエラー100件以上のプロジェクト検出時
-- `/refactor`コマンド実行時
+- Mentions of "ESLintエラー", "大量修正", "段階的修正"
+- Mentions of "code quality", "品質改善", "リファクタリング"
+- Detection of projects with 100+ ESLint errors
+- When `/refactor` command is executed
 
-### 統合例
+### Integration Example
 
 ```
-ユーザー: "ESLintエラーを段階的に修正して型安全性を向上"
+User: "Fix ESLint errors incrementally and improve type safety"
     ↓
-TaskContext作成
+Create TaskContext
     ↓
-プロジェクト検出: TypeScript（ESLintエラー300件）
+Project detected: TypeScript (300 ESLint errors)
     ↓
-スキル自動ロード: code-quality-improvement, typescript
+Skills auto-loaded: code-quality-improvement, typescript
     ↓
-エージェント選択: error-fixer
-    ↓ (スキルコンテキスト提供)
-3-Phase戦略 + TypeScript型安全性パターン
+Agent selected: error-fixer
+    ↓ (skill context provided)
+3-phase strategy + TypeScript type safety patterns
     ↓
-Phase 1実行（100件修正）→ 継続確認 → Phase 2へ
+Phase 1 executed (100 fixes) → confirm continuation → Phase 2
     ↓
-実行完了（段階的品質向上、効果測定レポート）
+Complete (incremental quality improvement, impact measurement report)
 ```
