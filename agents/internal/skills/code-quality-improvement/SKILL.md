@@ -110,10 +110,10 @@ find src/tests -name "*.test.ts" -exec sed -i '' 's/const _\([a-zA-Z][a-zA-Z0-9_
 
 優先度の高いエラーから順に手動修正:
 
-1. **any型排除** → Zodスキーマ + unknown型
-2. **型アサーション削除** → 型ガード作成
-3. **Result<T,E>パターン適用** → Service層統合
-4. **Layer境界違反修正** → 依存関係整理
+1. any型排除 → Zodスキーマ + unknown型
+2. 型アサーション削除 → 型ガード作成
+3. Result<T,E>パターン適用 → Service層統合
+4. Layer境界違反修正 → 依存関係整理
 
 詳細な修正パターンは [references/patterns.md](references/patterns.md) を参照
 
@@ -203,9 +203,9 @@ export function verifyFormDataSupport(): void {
 
 ### 安全な修正順序
 
-1. **自動修正可能** → `pnpm lint:fix`で自動実行
-2. **パターン適用可能** → スクリプトで一括処理（テスト実行必須）
-3. **手動修正必要** → 慎重に個別対応
+1. 自動修正可能 → `pnpm lint:fix`で自動実行
+2. パターン適用可能 → スクリプトで一括処理（テスト実行必須）
+3. 手動修正必要 → 慎重に個別対応
 
 ## 層別修正戦略
 

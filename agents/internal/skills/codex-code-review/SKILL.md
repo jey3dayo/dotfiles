@@ -21,8 +21,8 @@ allowed-tools: Bash(codex:*), Bash(jq:*), Bash(git:*), Read, Edit, Grep, Glob
 git status --porcelain
 ```
 
-- **出力あり** → uncommitted changes モード
-- **出力なし** → ブランチ差分モード（デフォルトブランチとの差分）
+- 出力あり → uncommitted changes モード
+- 出力なし → ブランチ差分モード（デフォルトブランチとの差分）
 
 ### 2. レビュー実行
 
@@ -75,9 +75,9 @@ echo '<codex output>' | jq '.issues'
 
 ### 4. 結果評価と対応
 
-- **critical issues あり** → 該当ファイルを Read し、Edit で修正を適用
-- **warning のみ** → ユーザーに共有し、修正するか確認
-- **info のみ / 問題なし** → レビュー完了を報告
+- critical issues あり → 該当ファイルを Read し、Edit で修正を適用
+- warning のみ → ユーザーに共有し、修正するか確認
+- info のみ / 問題なし → レビュー完了を報告
 
 ### 5. 修正後の再レビュー
 

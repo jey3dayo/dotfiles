@@ -76,8 +76,8 @@ codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "Brief question
 ### Workflow (Subagent)
 
 1. **Spawn subagent** with Codex consultation prompt
-2. **Continue your work** → Subagent runs in parallel
-3. **Receive summary** → Subagent returns concise insights
+2. Continue your work → Subagent runs in parallel
+3. Receive summary → Subagent returns concise insights
 
 ### Sandbox Modes
 

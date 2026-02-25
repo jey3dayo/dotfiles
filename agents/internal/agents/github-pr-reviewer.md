@@ -85,10 +85,10 @@ github-pr-reviewer "Review PR #1234 focusing on security with latest guidelines"
 
 The agent automatically activates MCP tools when:
 
-- **Code structure changes** → MCP Serena semantic analysis
-- **Library usage detected** → Context7 documentation lookup
-- **Cross-file dependencies** → MCP Serena reference tracking
-- **API calls found** → Context7 best practices validation
+- Code structure changes → MCP Serena semantic analysis
+- Library usage detected → Context7 documentation lookup
+- Cross-file dependencies → MCP Serena reference tracking
+- API calls found → Context7 best practices validation
 
 ## 📊 Enhanced Output Format
 

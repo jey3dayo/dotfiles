@@ -360,10 +360,10 @@ aws sts get-caller-identity
 
 ### 連携例
 
-1. **Terraformでインフラ変更** → terraform-operations agent
-2. **ECSサービス更新** → aws-operations agent
-3. **DNS切り替え** → route53-operations agent
-4. **DBマイグレーション** → database-operations agent
+1. Terraformでインフラ変更 → terraform-operations agent
+2. ECSサービス更新 → aws-operations agent
+3. DNS切り替え → route53-operations agent
+4. DBマイグレーション → database-operations agent
 
 ## Interaction Guidelines
 
