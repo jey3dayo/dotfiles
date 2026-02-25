@@ -41,6 +41,7 @@ TASK_EXCLUDES = "--exclude agents/external --exclude .worktrees --exclude result
 # Runtime
 node = "lts"
 # Formatters and Linters
+actionlint = "latest"      # GitHub Actions lint
 biome = "latest"           # JS/TS/JSON
 prettier = "latest"        # General
 shellcheck = "latest"      # Shell lint
