@@ -23,5 +23,6 @@
     "zsh/.zinit/**",
     "opencode/skills/**",
     "agents/external/**",
+    ".plans/**",
   ],
 }
