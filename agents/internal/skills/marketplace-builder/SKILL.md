@@ -1,37 +1,37 @@
 ---
 name: marketplace-builder
-description: Claude Code Marketplace構築支援。カテゴリバンドル管理、プラグイン追加、構造検証の自動化
+description: Claude Code Marketplace build support. Automates category bundle management, plugin addition, and structure validation.
 ---
 
-# Marketplace Builder - Claude Code Marketplace構築支援
+# Marketplace Builder - Claude Code Marketplace Build Support
 
-## いつ使うか
+## When to Use
 
-以下のキーワードを検出した場合、このスキルを自動的にロードします：
+This skill is automatically loaded when the following keywords are detected:
 
-- 日本語: "marketplace", "マーケットプレイス", "プラグイン追加", "バンドル", "plugin.json", "marketplace.json"
+- Japanese: "marketplace", "マーケットプレイス", "プラグイン追加", "バンドル", "plugin.json", "marketplace.json"
 - English: "marketplace", "plugin", "bundle", "category bundle", "marketplace.json"
 
-## スキルの目的
+## Purpose
 
-Claude Code Marketplaceの構築と管理を効率化します：
+Streamlines building and managing Claude Code Marketplaces:
 
-1. カテゴリバンドル管理: カテゴリレベルでのプラグイン一括管理
-2. プラグイン追加ワークフロー: 新規プラグイン追加の標準化
-3. marketplace.json管理: シンプルで保守しやすい構造
-4. 構造検証: ディレクトリ構造とメタデータの整合性確認
+1. Category bundle management: Bulk management of plugins at the category level
+2. Plugin addition workflow: Standardized process for adding new plugins
+3. marketplace.json management: Simple, maintainable structure
+4. Structure validation: Verifying consistency of directory structure and metadata
 
-## カテゴリバンドル構造の基本
+## Category Bundle Structure Basics
 
-### 2つのアプローチ
+### Two Approaches
 
-#### アプローチA: カテゴリレベルのバンドル（推奨）
+#### Approach A: Category-Level Bundle (Recommended)
 
 ```
 plugins/
 ├── {category}/
 │   ├── .claude-plugin/
-│   │   └── plugin.json          # カテゴリ全体をバンドル化
+│   │   └── plugin.json          # Bundles the entire category
 │   ├── {plugin1}/
 │   │   └── skills/
 │   ├── {plugin2}/
@@ -40,12 +40,12 @@ plugins/
 │       └── skills/
 ```
 
-### メリット
+### Advantages
 
-- ✅ シンプルな管理（カテゴリ = バンドル）
-- ✅ 自動包含（新規プラグイン追加時、1ファイルのみ更新）
-- ✅ marketplace.jsonがコンパクト
-- ✅ シンボリックリンク不要
+- ✅ Simple management (category = bundle)
+- ✅ Auto-inclusion (only 1 file to update when adding new plugins)
+- ✅ Compact marketplace.json
+- ✅ No symbolic links required
 
 ### marketplace.json
 
@@ -56,13 +56,13 @@ plugins/
     {
       "name": "{category}-bundle",
       "source": "./plugins/{category}",
-      "description": "{category}カテゴリの全スキル（N個）"
+      "description": "All skills in the {category} category (N plugins)"
     }
   ]
 }
 ```
 
-#### アプローチB: 個別プラグイン登録（従来型）
+#### Approach B: Individual Plugin Registration (Traditional)
 
 ```
 plugins/
@@ -77,15 +77,15 @@ plugins/
 │       └── skills/
 ```
 
-### メリット
+### Advantages
 
-- ✅ 個別プラグインの独立性が高い
-- ✅ バージョン管理が細かく可能
+- ✅ High independence per individual plugin
+- ✅ Fine-grained version management
 
-### デメリット
+### Disadvantages
 
-- ⚠️ marketplace.jsonが肥大化
-- ⚠️ プラグイン追加時、2ファイル更新が必要
+- ⚠️ marketplace.json grows large
+- ⚠️ Requires updating 2 files when adding a plugin
 
 ### marketplace.json
 
@@ -96,103 +96,103 @@ plugins/
     {
       "name": "{plugin1}",
       "source": "./plugins/{category}/{plugin1}",
-      "description": "説明"
+      "description": "Description"
     },
     {
       "name": "{plugin2}",
       "source": "./plugins/{category}/{plugin2}",
-      "description": "説明"
+      "description": "Description"
     }
   ]
 }
 ```
 
-### どちらを選ぶべきか
+### Which Should You Choose?
 
-| 基準         | カテゴリバンドル | 個別プラグイン     |
-| ------------ | ---------------- | ------------------ |
-| プラグイン数 | 多い（10+）      | 少ない（<10）      |
-| 更新頻度     | 高い             | 低い               |
-| 管理者       | 単一             | 複数               |
-| 配布方法     | 一括インストール | 選択的インストール |
+| Criteria          | Category Bundle   | Individual Plugin      |
+| ----------------- | ----------------- | ---------------------- |
+| Number of plugins | Many (10+)        | Few (<10)              |
+| Update frequency  | High              | Low                    |
+| Maintainer        | Single            | Multiple               |
+| Distribution      | Bulk installation | Selective installation |
 
-### 推奨
+### Recommendation
 
-## 新規プラグイン追加ワークフロー
+## New Plugin Addition Workflow
 
-### カテゴリバンドル形式の場合
+### For Category Bundle Format
 
-#### Step 1: カテゴリ選択
+#### Step 1: Choose a Category
 
-プラグインの性質に応じてカテゴリを決定：
+Determine the category based on the plugin's nature:
 
 ```
-例:
-- dev-tools: 開発ツール、コード品質、レビュー
-- docs: ドキュメント作成、図表、プレゼン
-- utils: ユーティリティ、環境管理
-- infra: インフラ操作、デプロイ、監視
+Examples:
+- dev-tools: Development tools, code quality, reviews
+- docs: Documentation creation, diagrams, presentations
+- utils: Utilities, environment management
+- infra: Infrastructure operations, deployment, monitoring
 ```
 
-#### Step 2: ディレクトリ作成
+#### Step 2: Create Directory
 
 ```bash
-# プラグインディレクトリを作成
+# Create the plugin directory
 mkdir -p plugins/{category}/{plugin_name}/skills
 
-# または直下にSKILL.mdを配置する場合
+# Or place SKILL.md directly at the top level
 mkdir -p plugins/{category}/{plugin_name}
 ```
 
-#### Step 3: SKILL.md作成
+#### Step 3: Create SKILL.md
 
 ```markdown
 ---
 name: your-skill-name
-description: スキルの説明
+description: Skill description
 ---
 
-# スキル名
+# Skill Name
 
-スキルの詳細な説明と使用方法。
+Detailed description and usage of the skill.
 ```
 
-#### Step 4: カテゴリバンドルに追加
+#### Step 4: Add to Category Bundle
 
-`plugins/{category}/.claude-plugin/plugin.json` を編集:
+Edit `plugins/{category}/.claude-plugin/plugin.json`:
 
 ```json
 {
   "name": "{category}-bundle",
   "version": "1.0.0",
-  "description": "{category}カテゴリの全スキル",
+  "description": "All skills in the {category} category",
   "author": { "name": "your-name" },
   "skills": [
     "./existing-plugin/skills/",
-    "./your-plugin-name/skills/" // ← 追加
+    "./your-plugin-name/skills/" // ← Add this
   ]
 }
 ```
 
-### 重要
+### Important
 
-#### Step 5: 検証
+#### Step 5: Validate
 
 ```bash
-# カテゴリバンドルのplugin.json確認
+# Check category bundle plugin.json
 cat plugins/{category}/.claude-plugin/plugin.json | jq '.skills | length'
 
-# プラグイン数をカウント
+# Count number of plugins
 ls -1 plugins/{category}/ | grep -v ".claude-plugin" | wc -l
 
-# 整合性確認（plugin.jsonのエントリ数 = 実際のプラグイン数）
+# Consistency check (plugin.json entry count = actual plugin count)
 ```
 
-### 個別プラグイン形式の場合
+### For Individual Plugin Format
 
-#### Step 1-3: 同上
+#### Steps 1-3: Same as above
 
-#### Step 4: プラグインのplugin.json作成
+#### Step 4: Create plugin's plugin.json
 
 `plugins/{category}/{plugin_name}/.claude-plugin/plugin.json`:
 
@@ -200,13 +200,13 @@ ls -1 plugins/{category}/ | grep -v ".claude-plugin" | wc -l
 {
   "name": "{plugin_name}",
   "version": "1.0.0",
-  "description": "プラグインの説明",
+  "description": "Plugin description",
   "author": { "name": "your-name" },
   "skills": ["./skills/"]
 }
 ```
 
-#### Step 5: marketplace.jsonに登録
+#### Step 5: Register in marketplace.json
 
 `.claude-plugin/marketplace.json`:
 
@@ -216,7 +216,7 @@ ls -1 plugins/{category}/ | grep -v ".claude-plugin" | wc -l
     {
       "name": "{plugin_name}",
       "source": "./plugins/{category}/{plugin_name}",
-      "description": "説明",
+      "description": "Description",
       "version": "1.0.0",
       "author": { "name": "your-name" }
     }
@@ -224,9 +224,9 @@ ls -1 plugins/{category}/ | grep -v ".claude-plugin" | wc -l
 }
 ```
 
-## skills/構造パターン
+## skills/ Structure Patterns
 
-### パターンA: skills/サブディレクトリ（推奨）
+### Pattern A: skills/ Subdirectory (Recommended)
 
 ```
 plugins/{category}/{plugin}/
@@ -236,11 +236,11 @@ plugins/{category}/{plugin}/
     └── resources/
 ```
 
-### 利点
+### Advantages
 
-### plugin.jsonのパス
+### Path in plugin.json
 
-### パターンB: 直下にSKILL.md
+### Pattern B: SKILL.md at Top Level
 
 ```
 plugins/{category}/{plugin}/
@@ -248,38 +248,38 @@ plugins/{category}/{plugin}/
 └── references/
 ```
 
-### 利点
+### Advantages
 
-### plugin.jsonのパス
+### Path in plugin.json
 
-### どちらを選ぶべきか
+### Which Should You Choose?
 
-- パターンA: references/resources/が多い、将来的に拡張予定
-- パターンB: 小規模、シンプルな構造で十分
+- Pattern A: Many references/resources, planned future expansion
+- Pattern B: Small scale, simple structure is sufficient
 
-## 構造検証
+## Structure Validation
 
-### 基本検証コマンド
+### Basic Validation Commands
 
 ```bash
-# プラグイン数確認
+# Check plugin count
 ls -1 plugins/{category}/ | grep -v ".claude-plugin" | wc -l
 
-# skills/構造確認
+# Check skills/ structure
 for dir in plugins/{category}/*/; do
   name=$(basename "$dir")
   if [ -d "$dir/skills" ]; then
     echo "$name -> ./skills/"
   elif [ -f "$dir/SKILL.md" ]; then
-    echo "$name -> ./ (直下)"
+    echo "$name -> ./ (top level)"
   fi
 done
 
-# カテゴリバンドルのエントリ数確認
+# Check category bundle entry count
 cat plugins/{category}/.claude-plugin/plugin.json | jq '.skills | length'
 ```
 
-### 整合性チェックスクリプト
+### Consistency Check Script
 
 ```bash
 #!/bin/bash
@@ -287,134 +287,134 @@ cat plugins/{category}/.claude-plugin/plugin.json | jq '.skills | length'
 
 category=$1
 
-# 実際のプラグイン数
+# Actual plugin count
 actual=$(ls -1 plugins/$category/ | grep -v ".claude-plugin" | wc -l)
 
-# plugin.jsonのエントリ数
+# plugin.json entry count
 declared=$(cat plugins/$category/.claude-plugin/plugin.json | jq '.skills | length')
 
-echo "実際のプラグイン数: $actual"
-echo "plugin.jsonのエントリ数: $declared"
+echo "Actual plugin count: $actual"
+echo "plugin.json entry count: $declared"
 
 if [ "$actual" -eq "$declared" ]; then
-  echo "✅ 整合性OK"
+  echo "✅ Consistency OK"
 else
-  echo "❌ 不整合: $(($actual - $declared))個のプラグインが未登録"
+  echo "❌ Inconsistency: $(($actual - $declared)) plugin(s) not registered"
 fi
 ```
 
-## トラブルシューティング
+## Troubleshooting
 
-### 問題: プラグインがバンドルに含まれない
+### Problem: Plugin not included in bundle
 
-### 症状
+### Symptom
 
-### 原因
+### Cause
 
-### 解決策
+### Solution
 
 ```bash
-# plugin.jsonを確認
+# Check plugin.json
 cat plugins/{category}/.claude-plugin/plugin.json | jq '.skills'
 
-# パスを追加
+# Add path
 vim plugins/{category}/.claude-plugin/plugin.json
 ```
 
-### 問題: skills/構造のパスが間違っている
+### Problem: Incorrect path for skills/ structure
 
-### 症状
+### Symptom
 
-### 原因
+### Cause
 
-### 解決策
+### Solution
 
 ```bash
-# 実際の構造を確認
+# Check actual structure
 ls -la plugins/{category}/{plugin_name}/
 
-# plugin.jsonのパスを修正
-# パターンA: "./plugin/skills/"
-# パターンB: "./plugin/"
+# Fix path in plugin.json
+# Pattern A: "./plugin/skills/"
+# Pattern B: "./plugin/"
 ```
 
-### 問題: marketplace.jsonが肥大化
+### Problem: marketplace.json growing too large
 
-### 症状
+### Symptom
 
-### 原因
+### Cause
 
-### 解決策
+### Solution
 
 ```bash
-# カテゴリバンドル形式に移行
-# 1. カテゴリレベルのplugin.json作成
-# 2. marketplace.jsonをカテゴリバンドルのみに変更
-# 3. 個別プラグインのplugin.jsonを削除（任意）
+# Migrate to category bundle format
+# 1. Create category-level plugin.json
+# 2. Update marketplace.json to use category bundles only
+# 3. Remove individual plugin.json files (optional)
 ```
 
-## ベストプラクティス
+## Best Practices
 
-### 1. カテゴリ設計
-
-```
-良い例:
-- dev-tools（開発ツール全般）
-- docs（ドキュメント作成全般）
-- infra（インフラ操作全般）
-
-悪い例:
-- tools（抽象的すぎる）
-- misc（その他・雑多）
-- temp（一時的）
-```
-
-### 2. プラグイン命名
+### 1. Category Design
 
 ```
-良い例:
-- mise（ツール名）
-- react-grid-layout（技術スタック+機能）
-- code-review（機能）
+Good examples:
+- dev-tools (development tools in general)
+- docs (documentation creation in general)
+- infra (infrastructure operations in general)
 
-悪い例:
-- plugin1（意味不明）
-- my-tool（曖昧）
-- test（用途不明）
+Bad examples:
+- tools (too abstract)
+- misc (miscellaneous)
+- temp (temporary)
 ```
 
-### 3. descriptionの書き方
+### 2. Plugin Naming
+
+```
+Good examples:
+- mise (tool name)
+- react-grid-layout (tech stack + function)
+- code-review (function)
+
+Bad examples:
+- plugin1 (meaningless)
+- my-tool (ambiguous)
+- test (unclear purpose)
+```
+
+### 3. Writing descriptions
 
 ```json
 {
-  "description": "{機能}。{詳細}、{具体例}"
+  "description": "{function}. {details}, {concrete examples}"
 }
 ```
 
 ```
-良い例:
-"開発ツールカテゴリの全スキル（27プラグイン）。React、TypeScript、Go、コードレビュー等"
+Good example:
+"All skills in the dev-tools category (27 plugins). React, TypeScript, Go, code review, etc."
 
-悪い例:
-"いろいろなツール"
-"便利なスキル集"
+Bad example:
+"Various tools"
+"Useful skill collection"
 ```
 
-### 4. バージョン管理
+### 4. Version Management
 
 ```json
 {
-  "version": "1.0.0" // セマンティックバージョニング
+  "version": "1.0.0" // Semantic versioning
 }
 ```
 
-- MAJOR: 破壊的変更
-- MINOR: 機能追加（後方互換性あり）
-- PATCH: バグ修正
+- MAJOR: Breaking changes
+- MINOR: Feature additions (backward compatible)
+- PATCH: Bug fixes
 
-## 自動化スクリプト例
+## Automation Script Examples
 
-### プラグイン追加スクリプト
+### Plugin Addition Script
 
 ```bash
 #!/bin/bash
@@ -423,30 +423,30 @@ ls -la plugins/{category}/{plugin_name}/
 category=$1
 plugin=$2
 
-# 1. ディレクトリ作成
+# 1. Create directory
 mkdir -p plugins/$category/$plugin/skills
 
-# 2. SKILL.mdテンプレート生成
+# 2. Generate SKILL.md template
 cat > plugins/$category/$plugin/skills/SKILL.md <<EOF
 ---
 name: $plugin
-description: TODO: スキルの説明
+description: TODO: Skill description
 ---
 
 # $plugin
 
-TODO: スキルの詳細な説明
+TODO: Detailed description of the skill
 EOF
 
-# 3. カテゴリバンドルに追加
-# （JSON編集ツールが必要: jq等）
-echo "✅ プラグインディレクトリ作成完了"
-echo "次のステップ:"
-echo "1. SKILL.mdを編集"
-echo "2. plugins/$category/.claude-plugin/plugin.jsonにパスを追加"
+# 3. Add to category bundle
+# (Requires JSON editing tool: jq, etc.)
+echo "✅ Plugin directory created successfully"
+echo "Next steps:"
+echo "1. Edit SKILL.md"
+echo "2. Add path to plugins/$category/.claude-plugin/plugin.json"
 ```
 
-### バンドル検証スクリプト
+### Bundle Validation Script
 
 ```bash
 #!/bin/bash
@@ -460,10 +460,10 @@ for category in plugins/*/; do
     actual=$(ls -1 "$category" | grep -v ".claude-plugin" | wc -l)
     declared=$(cat "$category/.claude-plugin/plugin.json" | jq '.skills | length')
 
-    echo "実際: $actual, 登録: $declared"
+    echo "Actual: $actual, Registered: $declared"
 
     if [ "$actual" -ne "$declared" ]; then
-      echo "❌ 不整合"
+      echo "❌ Inconsistency"
     else
       echo "✅ OK"
     fi
@@ -471,19 +471,19 @@ for category in plugins/*/; do
 done
 ```
 
-## 関連リンク
+## Related Links
 
-- [公式ドキュメント: プラグインマーケットプレイス](https://code.claude.com/docs/en/plugin-marketplaces)
-- [公式ドキュメント: プラグインリファレンス](https://code.claude.com/docs/en/plugins-reference)
-- [公式ドキュメント: スキル作成](https://code.claude.com/docs/en/skills)
+- [Official Docs: Plugin Marketplace](https://code.claude.com/docs/en/plugin-marketplaces)
+- [Official Docs: Plugin Reference](https://code.claude.com/docs/en/plugins-reference)
+- [Official Docs: Creating Skills](https://code.claude.com/docs/en/skills)
 
-## まとめ
+## Summary
 
-このスキルを使うことで：
+By using this skill:
 
-1. ✅ **2つのアプローチを理解**: カテゴリバンドル vs 個別プラグイン
-2. ✅ **適切な選択**: プロジェクトの規模と要件に応じた構造選択
-3. ✅ **標準化されたワークフロー**: 新規プラグイン追加の手順統一
-4. ✅ **構造検証**: 整合性チェックと自動化
+1. ✅ **Understand the two approaches**: Category bundles vs individual plugins
+2. ✅ **Make appropriate choices**: Select structure based on project scale and requirements
+3. ✅ **Standardized workflow**: Unified process for adding new plugins
+4. ✅ **Structure validation**: Consistency checks and automation
 
-### 重要な原則
+### Key Principles

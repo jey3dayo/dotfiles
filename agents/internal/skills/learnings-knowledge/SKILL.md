@@ -6,156 +6,156 @@ disable-model-invocation: false
 user-invocable: true
 ---
 
-# Learnings Knowledge - AI駆動知見記録システム
+# Learnings Knowledge - AI-Driven Knowledge Recording System
 
-## 概要
+## Overview
 
-開発中に得た重要な知見・学習内容を体系的に記録し、チーム全体で共有・活用するためのAI駆動システム。類似タスク着手時の自動提案、エラー発生時の過去解決策の参照、コードレビュー時の設計パターン提案を実現します。
+An AI-driven system for systematically recording and sharing important insights and learnings gained during development across the entire team. Provides automatic suggestions when starting similar tasks, immediate reference to past solutions when errors occur, and design pattern suggestions during code reviews.
 
-## 使用タイミング
+## When to Use
 
-- 即座に記録が必要な場合（🔴🟠）
-  - 重大なバグ修正・障害対応後
-  - アーキテクチャ決定・設計パターン適用時
-  - セキュリティ脆弱性の発見・対策時
-  - パフォーマンス最適化の成功事例
+- When immediate recording is needed (🔴🟠)
+  - After critical bug fixes or incident response
+  - When applying architectural decisions or design patterns
+  - When discovering or addressing security vulnerabilities
+  - Successful performance optimization cases
 
-- 開発効率向上のために記録（🟡）
-  - 効果的なテスト戦略の発見
-  - デバッグ手法の改善
-  - リンターエラーの修正パターン
+- Recording to improve development efficiency (🟡)
+  - Discovering effective testing strategies
+  - Improving debugging techniques
+  - Patterns for fixing linter errors
 
-- ベストプラクティスとして記録（🟢）
-  - クリーンなコード設計の発見
-  - 再利用可能なコンポーネントの実装
-  - データベース設計の最適化
+- Recording as best practices (🟢)
+  - Discovering clean code design approaches
+  - Implementing reusable components
+  - Database design optimization
 
-## 7つの知見カテゴリ
+## 7 Knowledge Categories
 
-| 短縮形 | 完全形式                  | 用途                         |
-| ------ | ------------------------- | ---------------------------- |
-| `fix`  | `--category fix`          | リンター・コード品質修正     |
-| `arch` | `--category architecture` | アーキテクチャ・設計パターン |
-| `perf` | `--category performance`  | パフォーマンス最適化         |
-| `sec`  | `--category security`     | セキュリティ・認証           |
-| `test` | `--category testing`      | テスト・品質保証             |
-| `db`   | `--category database`     | データベース・永続化         |
-| `ui`   | `--category ui`           | UI・コンポーネント           |
+| Short form | Full form                 | Purpose                          |
+| ---------- | ------------------------- | -------------------------------- |
+| `fix`      | `--category fix`          | Linter and code quality fixes    |
+| `arch`     | `--category architecture` | Architecture and design patterns |
+| `perf`     | `--category performance`  | Performance optimization         |
+| `sec`      | `--category security`     | Security and authentication      |
+| `test`     | `--category testing`      | Testing and quality assurance    |
+| `db`       | `--category database`     | Database and persistence         |
+| `ui`       | `--category ui`           | UI and components                |
 
-### 詳細
+### Details
 
-## 基本使用例
+## Basic Usage Examples
 
 ```bash
-# カテゴリ指定なし（AIが自動分類）
-/learnings エラーハンドリングパターンを学習してください
+# No category specified (AI auto-classifies)
+/learnings Learn error handling patterns
 
-# 短縮形式（推奨）
-/learnings fix リンターの修正パターンを学習してください
-/learnings arch 層境界設計について学習してください
-/learnings perf 最適化手法を学習してください
-/learnings sec 認証フローの脆弱性対策を学習
-/learnings test 効果的なテストパターンを学習
-/learnings db キャッシュ戦略の最適化手法を学習
-/learnings ui コンポーネント設計のベストプラクティスを学習
+# Short form (recommended)
+/learnings fix Learn linter fix patterns
+/learnings arch Learn about layer boundary design
+/learnings perf Learn optimization techniques
+/learnings sec Learn vulnerability mitigation for authentication flows
+/learnings test Learn effective testing patterns
+/learnings db Learn cache strategy optimization techniques
+/learnings ui Learn component design best practices
 
-# 従来の完全形式（互換性維持）
-/learnings --category fix リンターの修正パターンを学習してください
+# Traditional full form (maintained for compatibility)
+/learnings --category fix Learn linter fix patterns
 ```
 
-## 知見記録の3段階プロセス
+## 3-Stage Knowledge Recording Process
 
-### 🔴🟠 Stage 1: 緊急・重要知見の即時記録
+### 🔴🟠 Stage 1: Immediate Recording of Critical Insights
 
-### 対象
+### Target
 
 ```bash
-/learnings arch 新しいアーキテクチャパターンの実装方法を学習
-/learnings sec 認証フローの脆弱性対策を学習
-/learnings perf キャッシュ戦略の最適化手法を学習
+/learnings arch Learn how to implement new architecture patterns
+/learnings sec Learn vulnerability mitigation for authentication flows
+/learnings perf Learn cache strategy optimization techniques
 ```
 
-### 🟡 Stage 2: 開発効率向上知見
+### 🟡 Stage 2: Development Efficiency Insights
 
-### 対象
+### Target
 
 ```bash
-/learnings test 効果的なテストパターンを学習
-/learnings fix デバッグの効率的な手法を学習
+/learnings test Learn effective testing patterns
+/learnings fix Learn efficient debugging techniques
 ```
 
-### 🟢 Stage 3: 実装パターン・ベストプラクティス
+### 🟢 Stage 3: Implementation Patterns and Best Practices
 
-### 対象
+### Target
 
 ```bash
-/learnings arch クリーンなコード設計を学習
-/learnings ui コンポーネント設計のベストプラクティスを学習
+/learnings arch Learn clean code design
+/learnings ui Learn component design best practices
 ```
 
-### 詳細
+### Details
 
-## 知見の活用方法
+## How to Use Knowledge
 
-### 1. 自動提案システム
+### 1. Automatic Suggestion System
 
-- 類似タスク着手時に関連知見を自動提示
-- エラー発生時に過去の解決策を即座に参照
-- コードレビュー時に設計パターンを提案
+- Automatically present related insights when starting similar tasks
+- Immediately reference past solutions when errors occur
+- Suggest design patterns during code reviews
 
-### 2. 知見の検索・参照
+### 2. Searching and Referencing Knowledge
 
 ```bash
-# カテゴリ別検索
-/learnings --search arch   # アーキテクチャ関連の知見一覧
-/learnings --search test   # テスト関連の知見一覧
+# Search by category
+/learnings --search arch   # List of architecture-related insights
+/learnings --search test   # List of testing-related insights
 
-# キーワード検索
-/learnings --search "error handling"  # エラーハンドリング関連
-/learnings --search "performance"      # パフォーマンス関連
+# Keyword search
+/learnings --search "error handling"  # Error handling related
+/learnings --search "performance"      # Performance related
 ```
 
-### 3. 知見の共有・エクスポート
+### 3. Sharing and Exporting Knowledge
 
 ```bash
-# マークダウン形式でエクスポート
+# Export in Markdown format
 /learnings --export markdown > learnings.md
 
-# JSON形式でエクスポート（システム連携用）
+# Export in JSON format (for system integration)
 /learnings --export json > learnings.json
 ```
 
-### 詳細
+### Details
 
-## 定量的効果
+## Measurable Impact
 
-- 同一エラーの再発防止率: 95%以上
-- 実装時間の短縮: 平均30%
-- コードレビュー指摘事項の削減: 40%
+- Recurrence prevention rate for identical errors: 95%+
+- Reduction in implementation time: average 30%
+- Reduction in code review findings: 40%
 
-## プライバシー・セキュリティ
+## Privacy and Security
 
-- プロジェクト固有の機密情報は自動マスキング
-- 個人情報・認証情報は記録対象外
-- 知見はプロジェクトスコープ内でのみ共有
+- Project-specific confidential information is automatically masked
+- Personal information and credentials are excluded from recording
+- Insights are shared only within project scope
 
-## 他コマンドとの統合
+## Integration with Other Commands
 
-- `/fix`: 修正時の知見を自動記録
-- `/review`: レビュー指摘を知見として保存
-- `/task`: 複雑タスクの解決パターンを記録
-- `/todos`: タスク完了時の学習内容を自動抽出
+- `/fix`: Automatically records insights during fixes
+- `/review`: Saves review findings as knowledge
+- `/task`: Records solution patterns for complex tasks
+- `/todos`: Automatically extracts learnings upon task completion
 
-### 詳細
+### Details
 
-## 詳細リファレンス
+## Detailed Reference
 
-- カテゴリ詳細: `references/learning-categories.md`
-- 記録プロセス: `references/recording-process.md`
-- 活用パターン: `references/usage-patterns.md`
-- 記録例: `examples/learning-records.md`
-- 統合ワークフロー: `examples/integration-workflows.md`
+- Category details: `references/learning-categories.md`
+- Recording process: `references/recording-process.md`
+- Usage patterns: `references/usage-patterns.md`
+- Recording examples: `examples/learning-records.md`
+- Integration workflows: `examples/integration-workflows.md`
 
 ---
 
-### 目標
+### Goals

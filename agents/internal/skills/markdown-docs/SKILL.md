@@ -312,52 +312,52 @@ When helping create new documentation:
 
 ## 🤖 Agent Integration
 
-このスキルはMarkdownドキュメント作成・改善タスクを実行するエージェントに専門知識を提供します:
+This skill provides specialized knowledge to agents executing Markdown documentation creation and improvement tasks:
 
-### Code-Reviewer Agent（ドキュメントレビュー時）
+### Code-Reviewer Agent (when reviewing documentation)
 
-- 提供内容: Markdownドキュメント品質評価、ライティング改善提案
-- タイミング: README、技術ドキュメントレビュー時
-- コンテキスト:
-  - ⭐️5段階評価（構造、内容品質、読みやすさ、技術正確性）
-  - ドキュメントタイプ別評価基準（README, API docs, Guides）
-  - 改善提案と優先度付け
+- Provides: Markdown document quality evaluation, writing improvement suggestions
+- Timing: When reviewing READMEs and technical documentation
+- Context:
+  - ⭐️ 5-level rating (structure, content quality, readability, technical accuracy)
+  - Evaluation criteria by document type (README, API docs, Guides)
+  - Improvement suggestions with prioritization
 
 ### Orchestrator Agent
 
-- 提供内容: ドキュメント作成戦略、構造設計
-- タイミング: 新規ドキュメント作成・大規模改善時
-- コンテキスト: ドキュメントタイプ選択、構造パターン、セクション設計
+- Provides: Documentation creation strategy, structural design
+- Timing: When creating new documents or performing large-scale improvements
+- Context: Document type selection, structure patterns, section design
 
 ### Docs-Manager Agent
 
-- 提供内容: Markdownファイルの整合性確保、リンク管理
-- タイミング: ドキュメント構造最適化時
-- コンテキスト: リンク切れ検出、メタデータ管理、ファイル配置
+- Provides: Ensuring Markdown file consistency, link management
+- Timing: When optimizing documentation structure
+- Context: Broken link detection, metadata management, file placement
 
-### 自動ロード条件
+### Auto-Load Conditions
 
-- "README"、"documentation"、"Markdown"、"technical writing"に言及
-- .mdファイル（README.md, CHANGELOG.md, CONTRIBUTING.md）操作時
-- ドキュメントレビュー要求時
-- 技術ドキュメント作成時
+- Mentions of "README", "documentation", "Markdown", or "technical writing"
+- When working with .md files (README.md, CHANGELOG.md, CONTRIBUTING.md)
+- When a document review is requested
+- When creating technical documentation
 
-### 統合例
+### Integration Example
 
 ```
-ユーザー: "README.mdを改善してクリアで読みやすくしたい"
+User: "I want to improve README.md to be clearer and more readable"
     ↓
-TaskContext作成
+TaskContext created
     ↓
-プロジェクト検出: Markdownドキュメント
+Project detected: Markdown documentation
     ↓
-スキル自動ロード: markdown-docs, docs-manager
+Skills auto-loaded: markdown-docs, docs-manager
     ↓
-エージェント選択: code-reviewer (document mode)
-    ↓ (スキルコンテキスト提供)
-⭐️5段階評価 + ライティング改善パターン
+Agent selected: code-reviewer (document mode)
+    ↓ (skill context provided)
+⭐️ 5-level rating + writing improvement patterns
     ↓
-実行完了（構造改善、読みやすさ向上、技術正確性確保）
+Execution complete (structure improved, readability enhanced, technical accuracy ensured)
 ```
 
 ## Integration with Related Skills
@@ -366,6 +366,6 @@ TaskContext作成
 - deckset skill: For creating documentation presentations
 - docs-manager skill: For maintaining documentation file organization and link integrity
 
-## 詳細リファレンス
+## Detailed Reference
 
 - `references/index.md`
