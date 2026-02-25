@@ -7,279 +7,279 @@ user-invocable: true
 allowed-tools: Read, Write, Edit, Bash, Grep, TodoWrite
 ---
 
-# Todo Orchestrator - 統合タスク管理システム
+# Todo Orchestrator - Unified Task Management System
 
-## 概要
+## Overview
 
-Todo Orchestratorは、**TodoWrite + .claude/TODO.md**を統合したインテリジェントなタスク管理システムです。インタラクティブなUI、AI駆動の優先度分析、依存関係の自動検出により、効率的なタスク実行をサポートします。
+Todo Orchestrator is an intelligent task management system integrating **TodoWrite + .claude/TODO.md**. It supports efficient task execution through an interactive UI, AI-driven priority analysis, and automatic dependency detection.
 
-### 統合データソース
+### Integrated Data Sources
 
-- TodoWrite: セッション内タスク、リアルタイム更新
-- .claude/TODO.md: 永続的タスク、人間編集可能、Git管理
+- TodoWrite: In-session tasks, real-time updates
+- .claude/TODO.md: Persistent tasks, human-editable, Git-managed
 
-### 主な特徴
+### Key Features
 
-- インタラクティブモード: 番号選択 → 確認 → 実行 → 自動更新
-- AI駆動優先度分析: 複雑度・影響範囲・依存関係を自動評価
-- 依存関係管理: ブロック状態の検出と実行順序の最適化
-- スマート実行: 並列実行、バッチ処理、工数推定
-- 品質保証統合: 実行前後の自動チェック
+- Interactive mode: Number selection → confirmation → execution → automatic update
+- AI-driven priority analysis: Automatic evaluation of complexity, impact scope, and dependencies
+- Dependency management: Detection of blocked states and optimization of execution order
+- Smart execution: Parallel execution, batch processing, effort estimation
+- Quality assurance integration: Automatic checks before and after execution
 
-## 使用方法
+## Usage
 
-### 基本的な使用
+### Basic Usage
 
 ```bash
-# インタラクティブモード（推奨）
+# Interactive mode (recommended)
 todo-orchestrator
 
-# タスク一覧表示のみ
+# List tasks only
 todo-orchestrator --list
 
-# タスク追加（AI分析付き）
-todo-orchestrator add "新しいタスクの説明"
+# Add task (with AI analysis)
+todo-orchestrator add "Description of new task"
 
-# 優先度指定で追加
-todo-orchestrator add "緊急タスク" --priority=P1
+# Add with priority specified
+todo-orchestrator add "Urgent task" --priority=P1
 
-# AI候補提案
+# AI suggestion proposals
 todo-orchestrator --suggest
 ```
 
-### インタラクティブモードの基本フロー
+### Basic Flow in Interactive Mode
 
-1. タスク表示・選択: 統合タスク一覧（優先度ソート済み）から番号選択
-2. 実行前確認: 依存関係・影響範囲・推定工数を確認
-3. 自動実行: タスク実行、進捗表示、エラーハンドリング
-4. 結果更新: TodoWrite更新、学習データ蓄積
+1. Task display and selection: Select by number from integrated task list (sorted by priority)
+2. Pre-execution confirmation: Check dependencies, impact scope, and estimated effort
+3. Automatic execution: Task execution, progress display, error handling
+4. Result update: TodoWrite update, learning data accumulation
 
-### 選択オプション
+### Selection Options
 
-- 番号指定: `1`, `3`, `1-5`, `1,3,5`
-- 優先度一括: `high`, `medium`, `low`
-- スキップ: `skip`, `s` で次回まで延期
+- Number specification: `1`, `3`, `1-5`, `1,3,5`
+- Bulk by priority: `high`, `medium`, `low`
+- Skip: `skip`, `s` to postpone to next time
 
-## 主要機能
+## Key Features
 
-### 1. インタラクティブ実行
+### 1. Interactive Execution
 
-番号選択による直感的なタスク実行フロー。依存関係チェック、実行前確認、リアルタイム進捗表示。
+Intuitive task execution flow via number selection. Dependency check, pre-execution confirmation, real-time progress display.
 
-### 詳細
+### Details
 
-### 2. 統合タスク管理
+### 2. Unified Task Management
 
-TodoWriteと.claude/TODO.mdを統合表示。優先度ソート、重複排除、自動同期。
+Integrated display of TodoWrite and .claude/TODO.md. Priority sorting, deduplication, automatic synchronization.
 
-### 詳細
+### Details
 
-### 3. AI駆動優先度システム
+### 3. AI-Driven Priority System
 
-### P1 🟢 即座実行
+### P1 🟢 Immediate Execution
 
-### P2 🟡 標準実行
+### P2 🟡 Standard Execution
 
-### P3 🟠 慎重実行
+### P3 🟠 Careful Execution
 
-### P4 🟦 統合実行
+### P4 🟦 Integrated Execution
 
-### P5 🔴 計画実行
+### P5 🔴 Planned Execution
 
-### 詳細
+### Details
 
-### 4. Todo追加機能（AI分析）
+### 4. Todo Addition Feature (AI Analysis)
 
-タスク説明から自動的に以下を分析:
+Automatically analyzes the following from task descriptions:
 
-- 要件抽出: タスクの具体的要件を明確化
-- 影響範囲: 変更が及ぶコンポーネントを特定
-- 優先度評価: P1-P5の自動判定（複雑度・リスク・緊急度）
-- 依存関係: ブロック/被ブロックタスクを特定
-- 工数推定: 実装時間の見積もり
+- Requirement extraction: Clarify specific requirements of the task
+- Impact scope: Identify components affected by changes
+- Priority evaluation: Automatic determination of P1-P5 (complexity, risk, urgency)
+- Dependencies: Identify blocking/blocked tasks
+- Effort estimation: Estimate implementation time
 
-### 詳細
+### Details
 
-### 5. スマート実行モード
+### 5. Smart Execution Mode
 
 ```bash
-# 自動最適化実行
+# Automatic optimized execution
 todo-orchestrator --mode=auto
 
-# インテリジェント優先順位
+# Intelligent priority ordering
 todo-orchestrator --mode=smart
 
-# 並列実行（依存関係考慮）
+# Parallel execution (respecting dependencies)
 todo-orchestrator --mode=parallel
 
-# 工数推定のみ
+# Effort estimation only
 todo-orchestrator --mode=estimate
 
-# バッチ実行
-todo-orchestrator batch high           # 高優先度一括
-todo-orchestrator batch 1-5,8          # 範囲指定
-todo-orchestrator batch quick          # P1のみ
+# Batch execution
+todo-orchestrator batch high           # Bulk high-priority
+todo-orchestrator batch 1-5,8          # Range specification
+todo-orchestrator batch quick          # P1 only
 ```
 
-### 詳細
+### Details
 
-## 基本使用例
+## Basic Usage Examples
 
-### 例1: インタラクティブ選択
+### Example 1: Interactive Selection
 
 ```
 $ todo-orchestrator
 
-=== 統合タスク一覧 ===
+=== Integrated Task List ===
 [1] 🟢 P1 | Fix login validation bug (1h)
 [2] 🟡 P2 | Add user profile page (4h)
 [3] 🟠 P3 | Refactor auth module (1d) [blocks: 1]
 [4] 🟦 P4 | Implement SSO integration (2d) [blocked by: 3]
 
-実行するタスク番号を選択: 1
+Select task number to execute: 1
 
-=== 実行前確認 ===
-タスク: Fix login validation bug
-優先度: P1 (即座実行)
-推定工数: 1時間
-依存関係: なし
-影響範囲: auth/login.ts, tests/auth.test.ts
+=== Pre-execution Confirmation ===
+Task: Fix login validation bug
+Priority: P1 (Immediate execution)
+Estimated effort: 1 hour
+Dependencies: None
+Impact scope: auth/login.ts, tests/auth.test.ts
 
-実行しますか? (y/n/skip): y
+Proceed? (y/n/skip): y
 
-[実行中] Fix login validation bug...
-✓ コード修正完了
-✓ テスト実行: PASS
+[Running] Fix login validation bug...
+✓ Code fix completed
+✓ Test execution: PASS
 ✓ Lint/Format: PASS
 
-[完了] タスク完了。TodoWrite更新済み。
+[Done] Task completed. TodoWrite updated.
 ```
 
-### 例2: タスク追加（AI分析）
+### Example 2: Task Addition (AI Analysis)
 
 ```
-$ todo-orchestrator add "パスワードリセット機能の実装"
+$ todo-orchestrator add "Implement password reset feature"
 
-[分析中] タスク要件を分析しています...
+[Analyzing] Analyzing task requirements...
 
-=== AI分析結果 ===
-優先度: P2 (標準実行)
-理由: 標準的な機能追加、既存パターン踏襲可能
+=== AI Analysis Results ===
+Priority: P2 (Standard execution)
+Reason: Standard feature addition, can follow existing patterns
 
-推定工数: 4-6時間
-- メール送信設定: 1h
-- トークン生成・検証: 2h
-- UI実装: 1-2h
-- テスト: 1h
+Estimated effort: 4-6 hours
+- Email sending setup: 1h
+- Token generation and validation: 2h
+- UI implementation: 1-2h
+- Tests: 1h
 
-影響範囲:
-- auth/password-reset.ts (新規)
-- auth/email-service.ts (変更)
-- pages/reset-password.tsx (新規)
+Impact scope:
+- auth/password-reset.ts (new)
+- auth/email-service.ts (modify)
+- pages/reset-password.tsx (new)
 
-依存関係:
-- メール送信機能が必要 (SMTP設定)
+Dependencies:
+- Email sending feature required (SMTP setup)
 
-追加しますか? (y/n/edit): y
-✓ タスク追加完了
+Add? (y/n/edit): y
+✓ Task added
 ```
 
-### 例3: 高優先度バッチ実行
+### Example 3: High-Priority Batch Execution
 
 ```
 $ todo-orchestrator batch high
 
-=== 高優先度タスク（P1-P2） ===
+=== High-Priority Tasks (P1-P2) ===
 [1] 🟢 P1 | Fix validation bug (1h)
 [2] 🟢 P1 | Update error messages (30m)
 [3] 🟡 P2 | Add loading states (2h)
 
-3タスクを実行します。続行しますか? (y/n): y
+Execute 3 tasks. Continue? (y/n): y
 
-[1/3] Fix validation bug... ✓ 完了 (52m)
-[2/3] Update error messages... ✓ 完了 (28m)
-[3/3] Add loading states... ✓ 完了 (1h 45m)
+[1/3] Fix validation bug... ✓ Done (52m)
+[2/3] Update error messages... ✓ Done (28m)
+[3/3] Add loading states... ✓ Done (1h 45m)
 
-=== バッチ実行完了 ===
-成功: 3/3
-合計時間: 3h 5m
+=== Batch Execution Complete ===
+Success: 3/3
+Total time: 3h 5m
 ```
 
-## データソース統合
+## Data Source Integration
 
-### TodoWrite（セッション内）
+### TodoWrite (In-Session)
 
-- リアルタイム更新
-- 会話コンテキスト内
-- 一時的なタスク
+- Real-time updates
+- Within conversation context
+- Temporary tasks
 
-### .claude/TODO.md（永続的）
+### .claude/TODO.md (Persistent)
 
-- Git管理可能
-- 人間編集可能
-- プロジェクト全体
+- Git-manageable
+- Human-editable
+- Whole project
 
-### 統合表示
+### Integrated Display
 
-両ソースを統合し、優先度ソート、重複排除、自動同期。
+Both sources are integrated with priority sorting, deduplication, and automatic synchronization.
 
-### 詳細
+### Details
 
-## 品質保証チェックリスト
+## Quality Assurance Checklist
 
-### 計画段階
+### Planning Stage
 
-- [ ] 要件が明確化されている
-- [ ] 影響範囲が特定されている
-- [ ] 依存関係が確認されている
-- [ ] 優先度が適切に設定されている
+- [ ] Requirements are clearly defined
+- [ ] Impact scope is identified
+- [ ] Dependencies are confirmed
+- [ ] Priority is appropriately set
 
-### 実行段階
+### Execution Stage
 
-- [ ] 実行前確認が完了している
-- [ ] 依存タスクがブロックされていない
-- [ ] 実行ログが記録されている
-- [ ] エラーハンドリングが適切
+- [ ] Pre-execution confirmation is complete
+- [ ] Dependent tasks are not blocked
+- [ ] Execution log is recorded
+- [ ] Error handling is appropriate
 
-### 完了段階
+### Completion Stage
 
-- [ ] テストが全て成功している
-- [ ] Lint/Formatが通っている
-- [ ] TodoWriteが更新されている
-- [ ] 学習データが蓄積されている
+- [ ] All tests pass
+- [ ] Lint/Format passes
+- [ ] TodoWrite is updated
+- [ ] Learning data is accumulated
 
-## 関連スキル・コマンド
+## Related Skills and Commands
 
-- [integration-framework](../integration-framework/): TaskContext標準化とワークフロー統合（軽依存）
-- TodoWrite: 統合必須ツール
-- /task: 自然言語タスク実行
-- /learnings: 実行パターン学習
+- [integration-framework](../integration-framework/): TaskContext standardization and workflow integration (lightweight dependency)
+- TodoWrite: Required integration tool
+- /task: Natural language task execution
+- /learnings: Execution pattern learning
 
-## 制約・注意事項
+## Constraints and Notes
 
-### 実行制約
+### Execution Constraints
 
-- 依存関係: ブロックされているタスクは自動スキップ
-- 並列実行: ファイル競合がある場合は順次実行
-- エラー時: 実行を中断し、状態をロールバック
+- Dependencies: Blocked tasks are automatically skipped
+- Parallel execution: Sequential execution when file conflicts exist
+- On error: Execution is interrupted and state is rolled back
 
-### データ整合性
+### Data Consistency
 
-- TodoWriteと.claude/TODO.mdの同期を定期確認
-- 重複タスクは統合表示時に自動マージ
-- 優先度変更時は両ソースに反映
+- Periodically verify synchronization between TodoWrite and .claude/TODO.md
+- Duplicate tasks are automatically merged in integrated display
+- Priority changes are reflected in both sources
 
-### 品質保証
+### Quality Assurance
 
-- P1-P2は実行前確認を簡略化可能
-- P3-P5は必ず実行前確認を行う
-- テスト失敗時は自動ロールバック
+- P1-P2 can simplify pre-execution confirmation
+- P3-P5 must always perform pre-execution confirmation
+- Automatic rollback on test failure
 
-## 詳細リファレンス
+## Detailed Reference
 
-- [インタラクティブ実行フロー](references/interactive-execution-flow.md): Phase 1-3の詳細UI
-- [優先度システム](references/priority-system.md): P1-P5の判定基準と実行戦略
-- [Todo追加フロー](references/todo-add-flow.md): AI駆動分析の5要素
-- [データソース統合](references/data-source-integration.md): TodoWrite + .claude/TODO.md統合
-- [実行パターン集](examples/interactive-patterns.md): 実際の実行例とログ
-- [スマート実行モード](examples/smart-modes.md): auto/smart/parallel/estimate/batch
+- [Interactive Execution Flow](references/interactive-execution-flow.md): Detailed UI for Phases 1-3
+- [Priority System](references/priority-system.md): P1-P5 determination criteria and execution strategies
+- [Todo Addition Flow](references/todo-add-flow.md): 5 elements of AI-driven analysis
+- [Data Source Integration](references/data-source-integration.md): TodoWrite + .claude/TODO.md integration
+- [Execution Pattern Collection](examples/interactive-patterns.md): Actual execution examples and logs
+- [Smart Execution Modes](examples/smart-modes.md): auto/smart/parallel/estimate/batch
