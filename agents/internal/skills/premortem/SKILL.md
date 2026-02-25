@@ -1,187 +1,187 @@
 ---
 name: premortem
 description: |
-  Planning/requirements/design段階でプロジェクト失敗原因を事前予測。
-  Premortem手法を用い、プロジェクト特性に応じて3-5個の質問を動的生成し、
-  未考慮の業界標準、技術リスク、アーキテクチャ欠陥を明らかにする。
+  Proactively predicts project failure causes during planning/requirements/design phases.
+  Uses the Premortem technique to dynamically generate 3-5 questions based on project characteristics,
+  and uncovers overlooked industry standards, technical risks, and architectural flaws.
   Use when: "premortem", "what could go wrong", "what am I missing", "failure prediction",
-  "planning review", "design validation"を要求された時。cc-sdd、task-routerとの連携に対応。
+  "planning review", "design validation" are requested. Supports integration with cc-sdd and task-router.
 ---
 
 # Premortem Analysis
 
 ## Overview
 
-Premortem Analysisは、プロジェクトマネジメント手法の「Premortem（事前検死）」に基づき、計画段階で失敗原因を予測するスキルです。
+Premortem Analysis is a skill based on the project management technique "Premortem" that predicts failure causes at the planning stage.
 
-### 核心的な価値
+### Core Value
 
-- 計画段階での盲点を早期発見（実装前に問題を特定）
-- 業界標準のベストプラクティスの見落とし防止
-- 専門家の暗黙知を質問形式で可視化
-- 後工程でのトラブル（障害、コスト増）の予防
+- Early discovery of blind spots at the planning stage (identify issues before implementation)
+- Prevention of overlooked industry standard best practices
+- Visualization of expert tacit knowledge in question form
+- Prevention of downstream troubles (failures, cost overruns)
 
-### 既存スキルとの差別化
+### Differentiation from Existing Skills
 
-| スキル                  | タイミング   | 焦点                               |
-| ----------------------- | ------------ | ---------------------------------- |
-| **predictive-analysis** | 実装後       | コードパターンからの将来リスク予測 |
-| **code-review-system**  | 実装後       | コード品質の4視点検査              |
-| **cc-sdd validation**   | 各段階終了時 | 形式的妥当性の検証                 |
-| **premortem**           | 計画段階     | 「専門家の暗黙知」を質問で喚起     |
+| Skill                   | Timing               | Focus                                         |
+| ----------------------- | -------------------- | --------------------------------------------- |
+| **predictive-analysis** | After implementation | Future risk prediction from code patterns     |
+| **code-review-system**  | After implementation | 4-perspective code quality inspection         |
+| **cc-sdd validation**   | End of each phase    | Formal validity verification                  |
+| **premortem**           | Planning phase       | Elicit "expert tacit knowledge" via questions |
 
 ## Quick Start
 
-### 実行モード
+### Execution Modes
 
-Premortermは3つのモードで実行できます：
+Premortem can be run in 3 modes:
 
-#### 🚀 自動モード（推奨）
-
-```bash
-/premortem --mode=auto "プロジェクト説明"
-# または単に
-/premortem "プロジェクト説明"
-```
-
-### 動作
-
-1. プロジェクトファイルを自動解析（README.md、CLAUDE.md、.kiro/steering/\*.md等）
-2. 質問を自動的に回答（プロジェクトコンテキストから推測）
-3. ギャップ分析を実行（Covered/Needs Clarification/Missing に分類）
-4. 包括的なレポートを生成
-5. 1回の確認のみ：「GitHub Issuesに登録しますか？」
-
-### 特徴
-
-- ⏱️ 最速（3-5分で完了）
-- 🤖 対話不要（最後の確認のみ）
-- 📊 自動ギャップ分析
-- 🎯 プロジェクトコンテキスト完全活用
-
-### 推奨ケース
-
-- 時間がない
-- プロジェクトドキュメントが充実している
-- 盲点を素早く発見したい
-
-#### 💬 対話モード（従来通り）
+#### Auto Mode (Recommended)
 
 ```bash
-/premortem --mode=interactive "プロジェクト説明"
+/premortem --mode=auto "project description"
+# or simply
+/premortem "project description"
 ```
 
-### 動作
+### Behavior
 
-1. 質問を1つずつ提示
-2. ユーザーが各質問に回答
-3. 深堀り質問（最大2回）
-4. 次の質問へ遷移
-5. 全質問終了後にレポート生成
+1. Automatically analyzes project files (README.md, CLAUDE.md, .kiro/steering/\*.md, etc.)
+2. Automatically answers questions (infers from project context)
+3. Runs gap analysis (classifies into Covered/Needs Clarification/Missing)
+4. Generates a comprehensive report
+5. Only 1 confirmation: "Register to GitHub Issues?"
 
-### 特徴
+### Features
 
-- 💭 詳細に議論できる
-- 🧠 人間の洞察を活用
-- 📝 各質問を丁寧に検討
+- Fastest (completes in 3-5 minutes)
+- No interaction needed (only final confirmation)
+- Automatic gap analysis
+- Full utilization of project context
 
-### 推奨ケース
+### Recommended When
 
-- ドキュメントが不足している
-- チーム内で詳細に議論したい
-- 各質問を深く掘り下げたい
+- You are short on time
+- Project documentation is well developed
+- You want to quickly discover blind spots
 
-#### ⚡ バッチモード（バランス重視）
+#### Interactive Mode (Traditional)
 
 ```bash
-/premortem --mode=batch "プロジェクト説明"
+/premortem --mode=interactive "project description"
 ```
 
-### 動作
+### Behavior
 
-1. すべての質問を一括提示
-2. ユーザーが一度に回答
-3. 必要に応じて追加質問（1-2回）
-4. レポート生成
+1. Presents questions one by one
+2. User answers each question
+3. Follow-up questions (max 2 times)
+4. Moves to next question
+5. Generates report after all questions are answered
 
-### 特徴
+### Features
 
-- ⚖️ 速度と対話のバランス
-- 📋 全体像を把握してから回答
-- 🔄 2-3回の対話で完了
+- Can discuss in detail
+- Leverages human insights
+- Carefully considers each question
 
-### 推奨ケース
+### Recommended When
 
-- 自動モードと対話モードの中間
-- 全質問を俯瞰してから回答したい
+- Documentation is insufficient
+- You want to discuss in detail within the team
+- You want to dig deeply into each question
 
-### 基本的な呼び出し
+#### Batch Mode (Balanced)
 
-#### 自動推察（プロジェクト説明なし）
+```bash
+/premortem --mode=batch "project description"
+```
+
+### Behavior
+
+1. Presents all questions at once
+2. User answers all at once
+3. Follow-up questions if needed (1-2 times)
+4. Generates report
+
+### Features
+
+- Balance between speed and interaction
+- Grasp the full picture before answering
+- Completes in 2-3 interactions
+
+### Recommended When
+
+- Between auto mode and interactive mode
+- You want to see all questions before answering
+
+### Basic Invocation
+
+#### Auto Inference (No Project Description)
 
 ```bash
 /premortem
-# または
+# or
 /premortem --mode=auto
 ```
 
-### 動作
+### Behavior
 
-- README.md、CLAUDE.md、AGENTS.md等を自動読み込み
-- プロジェクトの性質（ドメイン、技術スタック、成熟度）を推察
-- 推察結果に基づいて3-5個の関連質問を生成
-- 自動分析を実行
+- Automatically loads README.md, CLAUDE.md, AGENTS.md, etc.
+- Infers project nature (domain, tech stack, maturity)
+- Generates 3-5 relevant questions based on inferences
+- Runs automatic analysis
 
-#### 明示的なプロジェクト説明
-
-```bash
-/premortem "Next.js + PostgreSQLでブログプラットフォームを構築する計画"
-```
-
-### 期待される動作
-
-1. コンテキスト解析（ドメイン: web-development、成熟度: mvp）
-2. 3-5個の質問が生成される（認証アーキテクチャ、DB設計、APIレート制限等）
-3. **自動モード**：プロジェクトファイルから自動回答 → ギャップ分析 → レポート
-4. **対話モード**：各質問に対話的に回答 → レポート
-5. **バッチモード**：全質問を一括提示 → 回答 → レポート
-
-### 典型的な使用パターン
-
-#### パターン1: 単独使用（計画レビュー）
+#### Explicit Project Description
 
 ```bash
-/premortem "マイクロサービスでECサイトを構築。
-注文、在庫、決済の3サービスに分割予定。
-技術スタック: Node.js, MongoDB, RabbitMQ"
+/premortem "Planning to build a blog platform with Next.js + PostgreSQL"
 ```
 
-→ 分散トランザクション、サービス間通信、障害復旧戦略等の質問が提示される
+### Expected Behavior
 
-#### パターン2: cc-sdd連携（設計検証）
+1. Context analysis (domain: web-development, maturity: mvp)
+2. 3-5 questions are generated (authentication architecture, DB design, API rate limiting, etc.)
+3. **Auto mode**: Auto-answers from project files → gap analysis → report
+4. **Interactive mode**: Interactively answer each question → report
+5. **Batch mode**: All questions presented at once → answer → report
+
+### Typical Usage Patterns
+
+#### Pattern 1: Standalone (Planning Review)
+
+```bash
+/premortem "Building an EC site with microservices.
+Planning to split into 3 services: orders, inventory, payments.
+Tech stack: Node.js, MongoDB, RabbitMQ"
+```
+
+→ Questions about distributed transactions, inter-service communication, failure recovery strategy, etc. are presented
+
+#### Pattern 2: Integration with cc-sdd (Design Validation)
 
 ```bash
 /spec-design user-authentication
-→ design.md 生成完了
-/premortem "設計の盲点をチェック"
+→ design.md generated
+/premortem "Check for design blind spots"
 ```
 
-→ `.kiro/design/user-authentication.md`を読み込み、認証フローの脆弱性を質問
+→ Loads `.kiro/design/user-authentication.md` and asks questions about authentication flow vulnerabilities
 
-#### パターン3: task-router連携（複雑タスク分析）
+#### Pattern 3: Integration with task-router (Complex Task Analysis)
 
 ```bash
-/task "リアルタイムチャット機能を実装"
-→ task-router が要求分析
-→ premortem で技術選択の妥当性を検証
-→ WebSocket vs SSE、スケール戦略等の質問
+/task "Implement real-time chat feature"
+→ task-router analyzes requirements
+→ premortem validates technology selection
+→ Questions about WebSocket vs SSE, scaling strategy, etc.
 ```
 
 ## 3-Layer Question Generation Logic
 
-### Layer 1: Context Analysis（コンテキスト解析）
+### Layer 1: Context Analysis
 
-ユーザー入力とプロジェクトファイルから`ProjectContext`を生成：
+Generates `ProjectContext` from user input and project files:
 
 ```python
 @dataclass
@@ -190,310 +190,310 @@ class ProjectContext:
     maturity: str            # "poc", "mvp", "production"
     tech_stack: List[str]    # ["React", "Node.js", "PostgreSQL"]
     scale: str               # "small", "medium", "large"
-    description: str         # プロジェクト説明
+    description: str         # project description
 ```
 
-### 解析要素
+### Analysis Elements
 
-1. ドメイン判定: 技術スタック、キーワードから推定
+1. Domain determination: Estimated from tech stack and keywords
    - "React", "API" → web-development
    - "Swift", "iOS" → mobile-apps
    - "Spark", "ETL" → data-systems
-2. 成熟度推定: スコープ、タイムラインから判断
+2. Maturity estimation: Determined from scope and timeline
    - "POC", "prototype" → poc
    - "MVP", "beta" → mvp
    - "production", "enterprise" → production
-3. スケール判定: ユーザー数、データ量見積もりから
+3. Scale determination: From user count and data volume estimates
    - ~1K users → small
    - 1K-100K users → medium
    - 100K+ users → large
 
-詳細: `references/frameworks/domain-detection.md`
+Details: `references/frameworks/domain-detection.md`
 
-### Layer 2: Question Selection（質問選択）
+### Layer 2: Question Selection
 
-### 質問プール構成
+### Question Pool Composition
 
-- `references/questions/generic.yaml` (35問) - 全ドメイン共通
-- `references/questions/web-development.yaml` (20問)
-- `references/questions/mobile-apps.yaml` (18問)
-- `references/questions/data-systems.yaml` (22問)
-- `references/questions/infrastructure.yaml` (19問)
-- `references/questions/security.yaml` (25問)
+- `references/questions/generic.yaml` (35 questions) - Common across all domains
+- `references/questions/web-development.yaml` (20 questions)
+- `references/questions/mobile-apps.yaml` (18 questions)
+- `references/questions/data-systems.yaml` (22 questions)
+- `references/questions/infrastructure.yaml` (19 questions)
+- `references/questions/security.yaml` (25 questions)
 
-### スコアリングロジック
+### Scoring Logic
 
 ```python
 def score_question(question: Dict, context: ProjectContext) -> float:
     score = 0.0
 
-    # トリガーキーワードマッチ: +0.3
+    # Trigger keyword match: +0.3
     if any(t in context.description.lower() for t in question["triggers"]):
         score += 0.3
 
-    # ドメイン適合: +0.2
+    # Domain relevance: +0.2
     if context.domain in question.get("relevance_boost", {}).get("domains", []):
         score += 0.2
 
-    # 成熟度適合: +0.2
+    # Maturity relevance: +0.2
     if context.maturity in question.get("relevance_boost", {}).get("maturity", []):
         score += 0.2
 
-    # 技術スタックマッチ: +0.3
+    # Tech stack match: +0.3
     if any(tech.lower() in question["text"].lower() for tech in context.tech_stack):
         score += 0.3
 
     return min(score, 1.0)
 ```
 
-### 選択基準
+### Selection Criteria
 
-- スコア0.5以上の質問のみ選択
-- 上位3-5問を抽出（優先度でソート）
-- 重複カテゴリは排除（Architectureから最大2問等）
+- Only questions with score >= 0.5 are selected
+- Top 3-5 questions extracted (sorted by priority)
+- Duplicate categories are excluded (max 2 from Architecture, etc.)
 
-詳細: `references/frameworks/analysis-flow.md`
+Details: `references/frameworks/analysis-flow.md`
 
-### Layer 3: Interactive Review（対話的レビュー）
+### Layer 3: Interactive Review
 
-各質問を1つずつ提示し、ユーザー回答を分析：
+Presents each question one by one and analyzes user answers:
 
-### 質問フォーマット
+### Question Format
 
 ```markdown
-## Q1: 認証・認可アーキテクチャ（Priority: Critical）
+## Q1: Authentication/Authorization Architecture (Priority: Critical)
 
-このシステムの認証・認可戦略は明確ですか？
+Is the authentication and authorization strategy for this system clear?
 
-- OAuth2.0 / JWT / セッションベース、どの方式を選択しますか？
-- リフレッシュトークンのローテーション戦略は？
-- パスワードハッシュアルゴリズム（bcrypt、argon2）の選定は？
-- 多要素認証（MFA）の実装計画は？
+- OAuth2.0 / JWT / Session-based - which approach will you choose?
+- What is the refresh token rotation strategy?
+- Which password hashing algorithm (bcrypt, argon2) will be selected?
+- What is the plan for multi-factor authentication (MFA)?
 
-**なぜ重要か**: 認証の脆弱性は後から修正が困難で、セキュリティインシデントに直結します。
+**Why it matters**: Authentication vulnerabilities are difficult to fix later and directly lead to security incidents.
 ```
 
-### 回答分析
+### Answer Analysis
 
-- 不足概念の検出（例: "JWT使う" → "リフレッシュトークンは？"と深堀り）
-- 最大2回の深堀り質問（コンテキスト過負荷を防ぐ）
-- 次の質問へ遷移
+- Detection of missing concepts (e.g., "Using JWT" → follow-up "What about refresh tokens?")
+- Max 2 follow-up questions (to prevent context overload)
+- Transition to next question
 
 ## Workflow
 
-ワークフローは選択したモードによって異なります。
+The workflow varies depending on the selected mode.
 
-### 自動モード（--mode=auto, デフォルト）
+### Auto Mode (--mode=auto, Default)
 
-### 最も推奨されるモード
+### Most Recommended Mode
 
 #### Phase 1: Context Gathering
 
 ```markdown
-1. ユーザー入力を解析
-   - プロジェクト説明が提供された場合: その説明を使用
-   - プロジェクト説明が未提供の場合: 自動推察モード
+1. Analyze user input
+   - If project description is provided: use that description
+   - If project description is not provided: auto-inference mode
 
-2. 自動推察モード（説明未提供時）
-   優先順位でプロジェクトドキュメントを読み込み:
-   - README.md - プロジェクト概要
-   - CLAUDE.md - プロジェクト方針・技術スタック
-   - AGENTS.md - エージェント設定・開発方針
-   - .kiro/steering/\*.md - プロジェクト知識ベース
-   - package.json, requirements.txt, Cargo.toml - 依存関係
+2. Auto-inference mode (when description not provided)
+   Load project documents in priority order:
+   - README.md - project overview
+   - CLAUDE.md - project policy and tech stack
+   - AGENTS.md - agent configuration and development policy
+   - .kiro/steering/\*.md - project knowledge base
+   - package.json, requirements.txt, Cargo.toml - dependencies
 
-3. ProjectContext生成
-   scripts/analyze_context.py を実行
+3. Generate ProjectContext
+   Run scripts/analyze_context.py
 ```
 
-#### Phase 2: Question Generation & Auto-Analysis（並列実行）
+#### Phase 2: Question Generation & Auto-Analysis (Parallel Execution)
 
 ```markdown
-1. 質問プールロード & 選択
-   - generic.yaml + {domain}.yaml から読み込み
-   - スコアリングで上位3-5問を選択
+1. Load & select question pool
+   - Load from generic.yaml + {domain}.yaml
+   - Select top 3-5 questions by scoring
 
-2. 各質問について並列で自動分析:
-   a. プロジェクトファイル解析
-   - README.md、CLAUDE.md、steering/\*.md から関連情報を抽出
-   - 信頼度スコアを計算
+2. For each question, run auto-analysis in parallel:
+   a. Project file analysis
+   - Extract relevant information from README.md, CLAUDE.md, steering/\*.md
+   - Calculate confidence score
 
-   b. コードベース検索（オプション）
-   - MCP Serena または fallback grep で関連実装を検索
+   b. Codebase search (optional)
+   - Search related implementations using MCP Serena or fallback grep
 
-   c. ギャップ分析
-   - 充足度を計算 (0.0-1.0)
-   - 状態分類:
+   c. Gap analysis
+   - Calculate coverage (0.0-1.0)
+   - Classify status:
      ✅ Covered (>0.8)
      ⚠️ Needs Clarification (0.5-0.8)
      🔴 Missing (<0.5)
 
-   d. 推奨アクション生成
+   d. Generate recommended actions
 ```
 
 #### Phase 3: Report Generation
 
 ```markdown
 1. Executive Summary
-   - 発見された盲点の総数と内訳
-   - カバレッジ統計
-   - クリティカルな問題のハイライト
+   - Total count and breakdown of blind spots found
+   - Coverage statistics
+   - Highlight of critical issues
 
-2. Detailed Findings（質問ごと）
-   - 質問テキスト
-   - 自動推測された回答（信頼度付き）
-   - ギャップの詳細
-   - 推奨アクション
-   - 参考ソース（ファイルパス）
+2. Detailed Findings (per question)
+   - Question text
+   - Auto-inferred answer (with confidence)
+   - Gap details
+   - Recommended actions
+   - Reference sources (file paths)
 
 3. Prioritized Action Items
 ```
 
-#### Phase 4: User Confirmation（1回のみ）
+#### Phase 4: User Confirmation (Once Only)
 
 ```markdown
-"発見された盲点をGitHub Issuesに自動登録しますか？
+"Would you like to automatically register the found blind spots to GitHub Issues?
 
-- [ ] すべて登録
-- [ ] Critical/High のみ登録
-- [ ] 手動で選択
-- [ ] 登録しない（レポートのみ）"
+- [ ] Register all
+- [ ] Register Critical/High only
+- [ ] Select manually
+- [ ] Do not register (report only)"
 ```
 
-### 対話モード（--mode=interactive）
+### Interactive Mode (--mode=interactive)
 
-### 従来の方式
+### Traditional Approach
 
 #### Phase 1-2: Context & Questions
 
-（自動モードと同じ）
+(Same as auto mode)
 
 #### Phase 3: Interactive Review
 
 ```markdown
-1. 質問を1つずつ提示（マークダウン形式）
+1. Present questions one by one (in markdown format)
 
-2. ユーザー回答を分析
-   - 回答内容から不足概念を検出
-   - 必要に応じて深堀り質問（最大2回）
+2. Analyze user answers
+   - Detect missing concepts from answer content
+   - Follow-up questions if necessary (max 2 times)
 
-3. 次の質問へ（全5問繰り返し）
+3. Move to next question (repeat for all 5 questions)
 ```
 
 #### Phase 4: Report Generation
 
 ```markdown
-1. 発見された盲点をリスクレベル別に分類
+1. Classify found blind spots by risk level
    🔴 Critical / 🟡 Medium / 🟢 Low / ✅ Covered
 
-2. 推奨アクション提示
+2. Present recommended actions
 
-3. セッション保存（オプション）
+3. Save session (optional)
 ```
 
-### バッチモード（--mode=batch）
+### Batch Mode (--mode=batch)
 
-### バランス重視
+### Balanced Approach
 
 #### Phase 1-2: Context & Questions
 
-（自動モードと同じ）
+(Same as auto mode)
 
 #### Phase 3: Batch Review
 
 ```markdown
-1. すべての質問を一括提示
+1. Present all questions at once
 
-2. ユーザーが一度に回答
+2. User answers all at once
 
-3. 必要に応じて追加質問（1-2回）
+3. Follow-up questions if necessary (1-2 times)
 ```
 
 #### Phase 4: Report Generation
 
-（対話モードと同じ）
+(Same as interactive mode)
 
 ## Domain Coverage
 
-| ドメイン        | 質問数 | 重点領域                                      |
-| --------------- | ------ | --------------------------------------------- |
-| Generic         | 35問   | Architecture, Security, Reliability, Cost     |
-| Web Development | 20問   | API Design, Security, Performance, Data       |
-| Mobile Apps     | 18問   | Platform, Performance, Offline, Push          |
-| Data Systems    | 22問   | Schema, ETL, Scaling, Consistency             |
-| Infrastructure  | 19問   | Deployment, Monitoring, Disaster Recovery     |
-| Security        | 25問   | Authentication, Encryption, Compliance, OWASP |
+| Domain          | Questions | Focus Areas                                   |
+| --------------- | --------- | --------------------------------------------- |
+| Generic         | 35        | Architecture, Security, Reliability, Cost     |
+| Web Development | 20        | API Design, Security, Performance, Data       |
+| Mobile Apps     | 18        | Platform, Performance, Offline, Push          |
+| Data Systems    | 22        | Schema, ETL, Scaling, Consistency             |
+| Infrastructure  | 19        | Deployment, Monitoring, Disaster Recovery     |
+| Security        | 25        | Authentication, Encryption, Compliance, OWASP |
 
-各ドメインの詳細は対応する`references/questions/{domain}.yaml`を参照。
+See corresponding `references/questions/{domain}.yaml` for each domain's details.
 
 ## Integration Points
 
-### cc-sdd との連携
+### Integration with cc-sdd
 
-設計完了後に自動でpremortemを実行：
+Automatically run premortem after design is complete:
 
 ```bash
-# 設計フェーズ
+# Design phase
 /spec-design feature-name
-→ .kiro/design/feature-name.md 生成
+→ .kiro/design/feature-name.md generated
 
-# 自動トリガー（cc-sddの設定で有効化可能）
-→ premortem が設計内容を解析
-→ 盲点を発見
-→ /validate-design に結果反映
+# Auto trigger (can be enabled in cc-sdd settings)
+→ premortem analyzes design content
+→ Discovers blind spots
+→ Results reflected in /validate-design
 ```
 
-### 連携メリット
+### Integration Benefits
 
-- 設計の形式的妥当性（validate-design）と概念的完全性（premortem）を両方チェック
-- 設計の手戻りを最小化
+- Check both formal validity (validate-design) and conceptual completeness (premortem) of the design
+- Minimize design rework
 
-### task-router との連携
+### Integration with task-router
 
-複雑なタスク受領時に自動で盲点分析：
+Automatically run blind spot analysis when receiving complex tasks:
 
 ```bash
-/task "複雑な要求（例: 認証システム実装）"
+/task "Complex request (e.g., implement authentication system)"
 
-→ task-router が要求分析
-→ premortem で技術選択の妥当性を検証
-→ サブタスク生成前に盲点を解消
+→ task-router analyzes requirements
+→ premortem validates technology selection
+→ Resolve blind spots before generating subtasks
 ```
 
-### 連携メリット
+### Integration Benefits
 
-- タスク分解前に見落としを防止
-- 実装フェーズでの手戻り削減
+- Prevent overlooked items before task decomposition
+- Reduce rework in the implementation phase
 
-### 単独使用のシナリオ
+### Standalone Usage Scenario
 
-プロジェクト企画段階での早期検証：
+Early validation at the project planning stage:
 
 ```bash
-/premortem "新規プロジェクトの計画概要"
+/premortem "New project planning overview"
 ```
 
-### 使用タイミング
+### When to Use
 
-- プロジェクト企画書作成後
-- 技術選定前のリスク洗い出し
-- 見積もり前の課題特定
+- After creating a project plan
+- Risk identification before technology selection
+- Issue identification before estimation
 
 ## Scripts
 
 ### analyze_context.py
 
-プロジェクトコンテキストを解析し、適切な質問を選択：
+Analyzes project context and selects appropriate questions:
 
 ```bash
 python3 scripts/analyze_context.py \
-  --input "プロジェクト説明" \
+  --input "project description" \
   --files "package.json,README.md" \
   --output context.json \
   --questions-dir references/questions/
 ```
 
-### 出力例
+### Output Example
 
 ```json
 {
@@ -508,9 +508,9 @@ python3 scripts/analyze_context.py \
 }
 ```
 
-### gap_analyzer.py（新規）
+### gap_analyzer.py (New)
 
-プロジェクトファイルから自動的に回答を推測し、ギャップを分析：
+Automatically infers answers from project files and analyzes gaps:
 
 ```bash
 python3 scripts/gap_analyzer.py \
@@ -519,17 +519,17 @@ python3 scripts/gap_analyzer.py \
   --project-root .
 ```
 
-### 機能
+### Features
 
-- プロジェクトファイル（README.md、CLAUDE.md、steering/\*.md）から自動回答を推測
-- 信頼度スコアを計算（0.0-1.0）
-- ギャップを4つの状態に分類：
-  - ✅ Covered: 十分にカバーされている（coverage > 0.8）
-  - ⚠️ Needs Clarification: 部分的（0.5-0.8）
-  - 🔴 Missing: 未対応（< 0.5）
-  - ℹ️ Not Applicable: 該当しない
+- Automatically infers answers from project files (README.md, CLAUDE.md, steering/\*.md)
+- Calculates confidence score (0.0-1.0)
+- Classifies gaps into 4 states:
+  - ✅ Covered: Sufficiently covered (coverage > 0.8)
+  - ⚠️ Needs Clarification: Partial (0.5-0.8)
+  - 🔴 Missing: Not addressed (< 0.5)
+  - ℹ️ Not Applicable: Does not apply
 
-### 出力例
+### Output Example
 
 ```json
 {
@@ -539,7 +539,7 @@ python3 scripts/gap_analyzer.py \
       "status": "needs_clarification",
       "coverage": 0.65,
       "auto_answer": {
-        "text": "From README.md: JWT認証を使用...",
+        "text": "From README.md: Using JWT authentication...",
         "confidence": 0.7,
         "sources": ["README.md", ".kiro/steering/tech.md"]
       },
@@ -555,23 +555,23 @@ python3 scripts/gap_analyzer.py \
 }
 ```
 
-### serena_integration.py（新規）
+### serena_integration.py (New)
 
-MCP Serena統合でコードベースを検索（オプション）：
+Searches the codebase with MCP Serena integration (optional):
 
 ```bash
 python3 scripts/serena_integration.py
 ```
 
-### 機能
+### Features
 
-- MCP Serenaを使用したセマンティックコード解析
-- Serena未使用時はripgrepへフォールバック
-- 質問に関連する実装を自動検出
+- Semantic code analysis using MCP Serena
+- Falls back to ripgrep when Serena is unavailable
+- Automatically detects implementations relevant to questions
 
-### format_report.py（拡張版）
+### format_report.py (Extended)
 
-ギャップ分析結果を統合したレポートを生成：
+Generates a report integrating gap analysis results:
 
 ```bash
 python3 scripts/format_report.py \
@@ -579,14 +579,14 @@ python3 scripts/format_report.py \
   --output report.md
 ```
 
-### 新機能
+### New Features
 
-- Executive Summary（総合統計、カバレッジ率）
-- 自動推測された回答の表示（信頼度付き）
-- 参考ソースの明示（ファイルパス）
-- 優先度付きアクションアイテム
+- Executive Summary (overall statistics, coverage rate)
+- Display of auto-inferred answers (with confidence)
+- Explicit reference sources (file paths)
+- Prioritized action items
 
-### 出力例
+### Output Example
 
 ```markdown
 # Premortem Analysis Report
@@ -603,58 +603,58 @@ python3 scripts/format_report.py \
 
 ## Critical Issues (🔴)
 
-### 1. 認証アーキテクチャの未定義
+### 1. Undefined Authentication Architecture
 
 **Auto Answer** (Confidence: 30%):
-From README.md: "JWT認証を予定"
+From README.md: "Planning to use JWT authentication"
 
 **Recommendation**:
 🔴 CRITICAL: Address immediately before implementation:
 
-1. Research best practices for: OAuth2.0/JWT選択、リフレッシュトークン戦略
+1. Research best practices for: OAuth2.0/JWT selection, refresh token strategy
 2. Document decisions in .kiro/steering/ or design files
 
 **Sources**: README.md
 ```
 
-### github_integration.py（新規）
+### github_integration.py (New)
 
-発見されたギャップからGitHub Issuesを自動生成：
+Automatically creates GitHub Issues from discovered gaps:
 
 ```bash
-# Dry-run（実際には作成しない）
+# Dry-run (does not actually create)
 python3 scripts/github_integration.py \
   --gaps gaps.json \
   --mode critical_high \
   --dry-run
 
-# 実際にIssuesを作成
+# Actually create issues
 python3 scripts/github_integration.py \
   --gaps gaps.json \
   --mode all
 ```
 
-### モード
+### Modes
 
-- `all`: すべてのギャップからIssueを作成
-- `critical_high`: Critical/High優先度のみ
-- `selective`: インタラクティブに選択（今後実装）
-- `none`: 作成しない（dry-runのみ）
+- `all`: Create issues from all gaps
+- `critical_high`: Critical/High priority only
+- `selective`: Interactive selection (to be implemented)
+- `none`: Do not create (dry-run only)
 
-### 機能
+### Features
 
-- 適切なラベル自動付与（`premortem`, `priority:critical`, `needs-investigation`等）
-- Issue重複チェック（同名Issueが既にある場合スキップ）
-- リッチなIssueボディ（質問、自動回答、推奨アクション、ソース）
+- Automatic appropriate label assignment (`premortem`, `priority:critical`, `needs-investigation`, etc.)
+- Issue duplicate check (skip if an issue with the same name already exists)
+- Rich issue body (question, auto answer, recommended actions, sources)
 
-### Issue例
+### Issue Example
 
 ```markdown
-🔴 [Premortem] 認証アーキテクチャの詳細設計
+🔴 [Premortem] Detailed Design of Authentication Architecture
 
 ## Question
 
-OAuth2.0 / JWT / セッションベース、どの方式を選択しますか？
+OAuth2.0 / JWT / Session-based - which approach will you choose?
 
 ## Analysis
 
@@ -664,7 +664,7 @@ OAuth2.0 / JWT / セッションベース、どの方式を選択しますか？
 
 ## Current State (Auto-detected)
 
-From README.md: JWT認証を予定
+From README.md: Planning to use JWT authentication
 
 _Confidence: 30.0%_
 
@@ -683,37 +683,37 @@ _This issue was automatically generated by Premortem Analysis_
 
 ## Examples
 
-実際のセッション例:
+Real session examples:
 
-- `references/examples/session-web-api.yaml` - Web API設計のPremortem
-- `references/examples/session-ml-pipeline.yaml` - MLパイプラインのPremortem
+- `references/examples/session-web-api.yaml` - Premortem for Web API design
+- `references/examples/session-ml-pipeline.yaml` - Premortem for ML pipeline
 
-各例にはコンテキスト、提示された質問、ユーザー回答、発見された盲点が含まれます。
+Each example includes context, questions presented, user answers, and discovered blind spots.
 
 ## Best Practices
 
-1. 早期実行: 設計フェーズ開始直後に実行
-2. 正直な回答: 「分からない」は重要な情報
-3. 深堀りを恐れない: 追加質問は盲点発見のチャンス
-4. 結果を記録: セッション結果を設計ドキュメントに統合
-5. 定期的な再実行: プロジェクトスコープ変更時は再実行
+1. Run early: Execute immediately at the start of the design phase
+2. Honest answers: "I don't know" is important information
+3. Don't fear follow-up: Additional questions are opportunities to discover blind spots
+4. Record results: Integrate session results into design documents
+5. Re-run periodically: Re-run when project scope changes
 
 ## Limitations
 
-- 質問プールは定期的に更新が必要（新技術、新ベストプラクティス）
-- ドメイン外のプロジェクト（組み込み、ゲーム開発等）はカバレッジが限定的
-- 質問の関連度はヒューリスティック（完璧ではない）
+- Question pool requires periodic updates (new technologies, new best practices)
+- Coverage is limited for out-of-domain projects (embedded systems, game development, etc.)
+- Question relevance is heuristic (not perfect)
 
 ## Progressive Disclosure Efficiency
 
-- 初回ロード: metadata + SKILL.md = 15.5KB
-- 質問生成時: + questions/\*.yaml = 13KB
-- フルロード: + scripts/ + frameworks/ = 49.5KB
-- 削減率: 15.5KB / 49.5KB = **31.3%**
+- Initial load: metadata + SKILL.md = 15.5KB
+- During question generation: + questions/\*.yaml = 13KB
+- Full load: + scripts/ + frameworks/ = 49.5KB
+- Reduction rate: 15.5KB / 49.5KB = **31.3%**
 
 ## References
 
-- `references/frameworks/analysis-flow.md` - 質問生成フローの詳細
-- `references/frameworks/domain-detection.md` - ドメイン判定ロジックの詳細
-- `references/questions/*.yaml` - 全質問プール
-- `references/examples/*.yaml` - 実践例
+- `references/frameworks/analysis-flow.md` - Question generation flow details
+- `references/frameworks/domain-detection.md` - Domain detection logic details
+- `references/questions/*.yaml` - Full question pool
+- `references/examples/*.yaml` - Practical examples

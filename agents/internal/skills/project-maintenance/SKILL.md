@@ -7,126 +7,126 @@ allowed-tools: Read, Grep, Glob, Bash, mcp__serena__*
 argument-hint: "[full|files] [options]"
 ---
 
-# Project Maintenance - プロジェクトメンテナンス自動化
+# Project Maintenance - Project Maintenance Automation
 
-プロジェクトクリーンアップとメンテナンスを自動化するスキル。MCP Serenaのセマンティック解析とセーフティチェックにより、安全かつ効率的なコード整理を実現します。
+A skill that automates project cleanup and maintenance. Achieves safe and efficient code organization using MCP Serena's semantic analysis and safety checks.
 
-## 基本使用例
+## Basic Usage
 
 ```bash
-# フルクリーンアップ（包括的解析）
+# Full cleanup (comprehensive analysis)
 /project-maintenance full
 
-# ターゲットクリーンアップ（ファイル単位）
+# Targeted cleanup (file-level)
 /project-maintenance files [pattern]
 
-# プレビューモード
+# Preview mode
 /project-maintenance full --dry-run
 /project-maintenance files --dry-run
 ```
 
-## クリーンアップ戦略
+## Cleanup Strategies
 
-### 1. フルクリーンアップ（Serenaセマンティック解析）
+### 1. Full Cleanup (Serena Semantic Analysis)
 
-プロジェクト全体を包括的にクリーンアップ:
+Comprehensively cleans up the entire project:
 
-- 未使用シンボル検出: 関数、クラス、変数の参照追跡
-- デバッグコード削除: console.log、print、TODO等
-- import文整理: 未使用インポートの自動削除
-- ドキュメント統合: 重複解消と一貫性確保
+- Unused symbol detection: Track references for functions, classes, variables
+- Debug code removal: console.log, print, TODO, etc.
+- Import statement cleanup: Automatic removal of unused imports
+- Documentation consolidation: Eliminate duplication and ensure consistency
 
-### 実行フェーズ
+### Execution Phases
 
-1. セーフティチェック（Gitチェックポイント作成）
-2. Serenaセマンティック解析
-3. 未使用コード検出
-4. 段階的クリーンアップ実行
-5. 検証とレポート生成
+1. Safety check (create Git checkpoint)
+2. Serena semantic analysis
+3. Unused code detection
+4. Staged cleanup execution
+5. Verification and report generation
 
-### 2. ターゲットクリーンアップ（ファイル単位）
+### 2. Targeted Cleanup (File-Level)
 
-特定のファイル・パターンをクリーンアップ:
+Cleans up specific files and patterns:
 
-- 一時ファイル: _.log,_.tmp, \*~
-- システムファイル: .DS_Store, Thumbs.db
-- キャッシュファイル: \*.pyc, **pycache**
-- プロジェクト固有: カスタムパターン対応
+- Temporary files: _.log, _.tmp, \*~
+- System files: .DS_Store, Thumbs.db
+- Cache files: \*.pyc, **pycache**
+- Project-specific: custom pattern support
 
-### 保護機能
+### Protection Features
 
-- `.claude/`, `.git/`, `node_modules/` 自動除外
-- 設定ファイル保護（.env, config/\*）
-- アクティブプロセスチェック
+- Automatic exclusion of `.claude/`, `.git/`, `node_modules/`
+- Configuration file protection (.env, config/\*)
+- Active process check
 
-## セーフティチェック
+## Safety Checks
 
-全ての操作で以下を実行:
+The following are performed for all operations:
 
-1. 事前検証
-   - Gitステータス確認
-   - 未コミット変更の警告
-   - チェックポイント自動作成
+1. Pre-validation
+   - Confirm Git status
+   - Warning for uncommitted changes
+   - Automatic checkpoint creation
 
-2. 参照確認
-   - Serena依存関係追跡
-   - 未使用判定の精度確保
-   - 段階的削除による安全性
+2. Reference verification
+   - Serena dependency tracking
+   - Ensure accuracy of unused code detection
+   - Safety through staged deletion
 
-3. 事後検証
-   - テスト実行（存在する場合）
-   - リント/タイプチェック
-   - ロールバック可能性確保
+3. Post-validation
+   - Run tests (if available)
+   - Lint/type check
+   - Ensure rollback capability
 
-## クイックスタート
+## Quick Start
 
 ```bash
-# 1. フルクリーンアップ（推奨）
+# 1. Full cleanup (recommended)
 /project-maintenance full
 
-# 2. 一時ファイルのみ削除
+# 2. Remove only temporary files
 /project-maintenance files "**/*.{log,tmp}"
 
-# 3. プレビューで確認
+# 3. Preview before executing
 /project-maintenance full --dry-run
 
-# 4. 問題が発生した場合
-git reset --hard HEAD~1  # チェックポイントに戻る
+# 4. If a problem occurs
+git reset --hard HEAD~1  # return to checkpoint
 ```
 
-## 主要機能
+## Key Features
 
-### MCP Serena統合
+### MCP Serena Integration
 
-- セマンティック解析: 構文だけでなく意味を理解
-- 依存関係追跡: 安全な削除判定
-- 効率的検索: パターンマッチング最適化
-- 構造理解: プロジェクト全体の把握
+- Semantic analysis: Understands meaning, not just syntax
+- Dependency tracking: Safe deletion decisions
+- Efficient search: Optimized pattern matching
+- Structural understanding: Grasp of entire project
 
-### プロジェクト判定
+### Project Detection
 
-project-detectorとの統合により:
+Integration with project-detector enables:
 
-- プロジェクトタイプ自動判定
-- 適切なクリーンアップルール選択
-- 技術スタック固有の最適化
+- Automatic project type detection
+- Selection of appropriate cleanup rules
+- Tech stack-specific optimization
 
-### 実行モード
+### Execution Modes
 
 ```bash
-# デフォルト: 包括的クリーンアップ
+# Default: comprehensive cleanup
 /project-maintenance full
 
-# 選択的クリーンアップ
+# Selective cleanup
 /project-maintenance full --code-only
 /project-maintenance full --docs-only
 /project-maintenance full --files-only
 
-# セーフモード
+# Safe mode
 /project-maintenance full --dry-run
 ```
 
-## 実行レポート例
+## Execution Report Example
 
 ```markdown
 🧹 **Cleanup Report**
@@ -153,30 +153,30 @@ project-detectorとの統合により:
 - Cache files: 34 removed (128MB freed)
 ```
 
-## 詳細リファレンス
+## Detailed References
 
-このスキルの詳細仕様とベストプラクティスは以下を参照:
+For detailed specifications and best practices for this skill, see:
 
-- [フルクリーンアップ戦略](references/full-cleanup-strategy.md) - Serenaセマンティック解析の詳細
-- [ターゲットクリーンアップ戦略](references/targeted-cleanup-strategy.md) - ファイル単位クリーンアップ
-- [セーフティチェック](references/safety-checks.md) - 事前検証と参照確認
-- [クリーンアップポリシー](references/cleanup-policies.md) - 削除ポリシーとバックアップ
+- [Full Cleanup Strategy](references/full-cleanup-strategy.md) - Details of Serena semantic analysis
+- [Targeted Cleanup Strategy](references/targeted-cleanup-strategy.md) - File-level cleanup
+- [Safety Checks](references/safety-checks.md) - Pre-validation and reference verification
+- [Cleanup Policies](references/cleanup-policies.md) - Deletion policy and backup
 
-実用例とワークフロー:
+Practical examples and workflows:
 
-- [クリーンアップワークフロー](examples/cleanup-workflows.md) - 実行例とベストプラクティス
-- [セーフティ検証](examples/safety-validation.md) - セーフティチェック実行例
-- [ロールバック戦略](examples/rollback-strategies.md) - 問題発生時の対処法
+- [Cleanup Workflows](examples/cleanup-workflows.md) - Execution examples and best practices
+- [Safety Validation](examples/safety-validation.md) - Safety check execution examples
+- [Rollback Strategies](examples/rollback-strategies.md) - How to handle problems
 
-## 重要な注意事項
+## Important Notes
 
-- 大規模プロジェクトでは段階的実行を推奨
-- チーム開発では事前相談を推奨
-- 重要な設定ファイルは事前確認
-- `.cleanupignore` ファイルで除外パターン定義可能
+- For large projects, staged execution is recommended
+- For team development, prior consultation is recommended
+- Verify important configuration files in advance
+- Exclusion patterns can be defined in a `.cleanupignore` file
 
-## 他コマンドとの統合
+## Integration with Other Commands
 
-- `/review`: クリーンアップ後の品質確認
-- `/polish`: lint/format/test実行
-- `/docs`: ドキュメント品質の最終確認
+- `/review`: Quality check after cleanup
+- `/polish`: Run lint/format/test
+- `/docs`: Final documentation quality check
