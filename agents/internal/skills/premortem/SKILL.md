@@ -142,9 +142,9 @@ Premortem can be run in 3 modes:
 
 1. Context analysis (domain: web-development, maturity: mvp)
 2. 3-5 questions are generated (authentication architecture, DB design, API rate limiting, etc.)
-3. **Auto mode**: Auto-answers from project files → gap analysis → report
-4. **Interactive mode**: Interactively answer each question → report
-5. **Batch mode**: All questions presented at once → answer → report
+3. Auto mode: Auto-answers from project files → gap analysis → report
+4. Interactive mode: Interactively answer each question → report
+5. Batch mode: All questions presented at once → answer → report
 
 ### Typical Usage Patterns
 
