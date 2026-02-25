@@ -330,7 +330,7 @@ The following may be in use but could be falsely detected:
    - String-based imports
 
 3. Test-related
-   - Test files (_.test.ts, _.spec.ts)
+   - Test files (`_.test.ts`, `_.spec.ts`)
    - Storybook (\*.stories.tsx)
    - Mock data (src/mocks/\*\*)
 

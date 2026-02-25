@@ -48,7 +48,7 @@ Comprehensively cleans up the entire project:
 
 Cleans up specific files and patterns:
 
-- Temporary files: _.log, _.tmp, \*~
+- Temporary files: `_.log`, `_.tmp`, `*~`
 - System files: .DS_Store, Thumbs.db
 - Cache files: \*.pyc, **pycache**
 - Project-specific: custom pattern support
