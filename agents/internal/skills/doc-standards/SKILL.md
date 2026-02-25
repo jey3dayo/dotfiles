@@ -2,7 +2,7 @@
 name: doc-standards
 description: |
   [What] >-
-  [When] Use when: doc-standards を使う時
+  [When] Use when: working with doc-standards
   [Keywords] doc standards
   Generic documentation standards framework. Validates metadata templates,
   tag tier systems, size management guidelines, and quality checks.
@@ -197,16 +197,16 @@ Validate documentation against quality standards.
 
 ---
 
-## 詳細リファレンス
+## Detailed Reference
 
-- タグ体系/出力フォーマット/ベストプラクティスは `references/doc-standards-details.md` を参照
+- See `references/doc-standards-details.md` for tag system, output formats, and best practices
 
-## 次のステップ
+## Next Steps
 
-1. 設定ファイルを確認
-2. 対象ドキュメントでメタデータ検証
-3. 不足項目を補完
+1. Review the configuration file
+2. Validate metadata on target documents
+3. Fill in any missing fields
 
-## 関連リソース
+## Related Resources
 
 - `references/doc-standards-details.md`

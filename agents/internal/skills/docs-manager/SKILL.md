@@ -59,9 +59,9 @@ Verify required metadata presence and format.
 
 ### Required Fields
 
-- Date field (default: `**最終更新**: YYYY-MM-DD`)
-- Audience field (default: `**対象**: [Target Audience]`)
-- Tags field (default: `**タグ**: [tags]`)
+- Date field (default: `**Last Updated**: YYYY-MM-DD`)
+- Audience field (default: `**Audience**: [Target Audience]`)
+- Tags field (default: `**Tags**: [tags]`)
 
 ### Validation Process
 
@@ -76,10 +76,10 @@ Verify required metadata presence and format.
 ```json
 {
   "metadata_format": {
-    "date_field": "最終更新",
+    "date_field": "Last Updated",
     "date_format": "YYYY-MM-DD",
-    "audience_field": "対象",
-    "tags_field": "タグ"
+    "audience_field": "Audience",
+    "tags_field": "Tags"
   }
 }
 ```
@@ -227,10 +227,10 @@ Verify consistent structure across documentation.
 ### Standard Sections
 
 1. Metadata Block (title, date, audience, tags)
-2. Overview/概要 (purpose and scope)
+2. Overview (purpose and scope)
 3. Main Content (core documentation)
-4. Related Links/関連リンク (cross-references)
-5. Update History/更新履歴 (change log)
+4. Related Links (cross-references)
+5. Update History (change log)
 
 ### Icon Standards
 
@@ -442,9 +442,9 @@ Add complete metadata block at document top using configured format:
 ```markdown
 # 📚 [Title]
 
-**最終更新**: 2025-10-21
-**対象**: 開発者
-**タグ**: `category/documentation`, `audience/developer`
+**Last Updated**: 2025-10-21
+**Audience**: Developer
+**Tags**: `category/documentation`, `audience/developer`
 ```
 
 ### Wrong Tag Format
@@ -481,56 +481,56 @@ Add complete metadata block at document top using configured format:
 
 ## Agent Integration
 
-このスキルはドキュメント管理タスクを実行するエージェントに専門知識を提供します。
+This skill provides expertise to agents executing documentation management tasks.
 
 ### Docs-Manager Agent
 
-- 提供内容: ドキュメントディレクトリの整合性確保、リンク切れ検出・修正
-- タイミング: ドキュメント修正・構造最適化時
-- コンテキスト:
-  - 設定ファイルベースの検証
-  - リンク切れ検出と自動修正
-  - メタデータ検証（設定可能なフィールド）
-  - ドキュメント構造最適化
-  - プロジェクト固有ルール適用
+- Provides: Ensuring documentation directory integrity, detecting and fixing broken links
+- Timing: When fixing documentation or optimizing structure
+- Context:
+  - Configuration file-based validation
+  - Broken link detection and automatic repair
+  - Metadata validation (configurable fields)
+  - Documentation structure optimization
+  - Project-specific rule enforcement
 
 ### Orchestrator Agent
 
-- 提供内容: ドキュメントリファクタリング計画、構造改善
-- タイミング: ドキュメント体系の大規模改善時
-- コンテキスト: ディレクトリ構造設計、Progressive Disclosure実装、タグシステム統合
+- Provides: Documentation refactoring plans, structural improvements
+- Timing: During large-scale improvements to the documentation system
+- Context: Directory structure design, Progressive Disclosure implementation, tag system integration
 
 ### Researcher Agent
 
-- 提供内容: ドキュメント調査、情報収集
-- タイミング: ドキュメント発見・整理時
-- コンテキスト: ドキュメント配置原則、リソースナビゲーション
+- Provides: Documentation research, information gathering
+- Timing: When discovering or organizing documentation
+- Context: Documentation placement principles, resource navigation
 
-### 自動ロード条件
+### Auto-Load Conditions
 
-- "docs review"、"documentation quality"、"docs management"に言及
-- 設定されたドキュメントディレクトリ操作時
-- ドキュメント構造検証要求時
-- プロジェクト固有ドキュメント標準適用時
+- When mentioning "docs review", "documentation quality", or "docs management"
+- When working with files in the configured documentation directory
+- When requesting documentation structure validation
+- When applying project-specific documentation standards
 
-### 統合例
+### Integration Example
 
 ```
-ユーザー: "ドキュメントリンクを検証・修正"
+User: "Validate and fix documentation links"
     ↓
-TaskContext作成
+Create TaskContext
     ↓
-タスク分類: ドキュメント管理
+Task classification: documentation management
     ↓
-スキル自動ロード: docs-manager, docs-index
+Auto-load skills: docs-manager, docs-index
     ↓
-設定ファイルロード: .docs-manager-config.json
+Load configuration file: .docs-manager-config.json
     ↓
-エージェント選択: docs-manager
-    ↓ (スキルコンテキスト提供)
-リンク切れ検出 + メタデータ検証 + 自動修正
+Agent selection: docs-manager
+    ↓ (providing skill context)
+Broken link detection + metadata validation + automatic repair
     ↓
-実行完了（リンク整合性確保、構造最適化）
+Execution complete (link integrity ensured, structure optimized)
 ```
 
 ## Trigger Conditions
