@@ -14,39 +14,39 @@ metadata:
 
 ## Gemini CLI (latest: Gemini 3 Pro/Flash, stable: Gemini 2.5 series) is your research specialist with 1M token context
 
-> **詳細ルール**: `.claude/rules/gemini-delegation.md`
+> **Detailed rules**: `.claude/rules/gemini-delegation.md`
 
 ## Context Management (CRITICAL)
 
-### サブエージェント経由を推奨
+### Prefer Subagent Pattern
 
-| 状況                 | 方法                         |
-| -------------------- | ---------------------------- |
-| コードベース分析     | サブエージェント経由（推奨） |
-| ライブラリ調査       | サブエージェント経由（推奨） |
-| マルチモーダル       | サブエージェント経由（推奨） |
-| 短い質問 (1-2文回答) | 直接呼び出しOK               |
+| Situation                              | Method                     |
+| -------------------------------------- | -------------------------- |
+| Codebase analysis                      | Via subagent (recommended) |
+| Library research                       | Via subagent (recommended) |
+| Multimodal                             | Via subagent (recommended) |
+| Short questions (1-2 sentence answers) | Direct call OK             |
 
 ## Gemini vs Codex
 
-| Task                               | Gemini | Codex |
-| ---------------------------------- | ------ | ----- |
-| **リポジトリ全体理解**             | ✓      |       |
-| **ライブラリ調査**                 | ✓      |       |
-| **マルチモーダル (PDF/動画/音声)** | ✓      |       |
-| **最新ドキュメント検索**           | ✓      |       |
-| **設計判断**                       |        | ✓     |
-| **デバッグ**                       |        | ✓     |
-| **コード実装**                     |        | ✓     |
+| Task                              | Gemini | Codex |
+| --------------------------------- | ------ | ----- |
+| **Repository-wide understanding** | ✓      |       |
+| **Library research**              | ✓      |       |
+| **Multimodal (PDF/video/audio)**  | ✓      |       |
+| **Latest documentation search**   | ✓      |       |
+| **Design decisions**              |        | ✓     |
+| **Debugging**                     |        | ✓     |
+| **Code implementation**           |        | ✓     |
 
 ## When to Consult (MUST)
 
-| Situation             | Trigger Examples                                  |
-| --------------------- | ------------------------------------------------- |
-| **Research**          | 「調べて」「リサーチ」 / "Research" "Investigate" |
-| **Library docs**      | 「ライブラリ」「ドキュメント」 / "Library" "Docs" |
-| **Codebase analysis** | 「コードベース全体」 / "Entire codebase"          |
-| **Multimodal**        | 「PDF」「動画」「音声」 / "PDF" "Video" "Audio"   |
+| Situation             | Trigger Examples                 |
+| --------------------- | -------------------------------- |
+| **Research**          | "Research" "Investigate"         |
+| **Library docs**      | "Library" "Docs" "Documentation" |
+| **Codebase analysis** | "Entire codebase" "Codebase"     |
+| **Multimodal**        | "PDF" "Video" "Audio"            |
 
 ## When NOT to Consult
 
@@ -107,7 +107,7 @@ gemini -p "{question}" --output-format json 2>/dev/null
 1. Ask Gemini in **English**
 2. Receive response in **English**
 3. Synthesize and apply findings
-4. Report to user in **Japanese**
+4. Report to user in **their preferred language**
 
 ## Output Location
 
