@@ -74,3 +74,11 @@ run = "scripts/skills-check.sh"
 ["skills:check:sync"]
 description = "flake.nix と agent-skills-sources.nix の整合性チェック"
 run = "sh ./scripts/check-flake-sync.sh"
+
+["skills:upgrade"]
+description = "スキル全更新（update → install → check）"
+run = """
+mise run skills:update
+mise run skills:install
+mise run skills:check
+"""
