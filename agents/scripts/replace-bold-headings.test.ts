@@ -194,6 +194,12 @@ const excludedDirs = [
   path.join("agents", "external"),
 ];
 
+// Similar-looking but NOT excluded path (must still be processed)
+const boundaryLikeDir = path.join("mytmux", "plugins");
+const boundaryLikeFile = path.join(tmpRoot, boundaryLikeDir, "test.md");
+fs.mkdirSync(path.dirname(boundaryLikeFile), { recursive: true });
+fs.writeFileSync(boundaryLikeFile, boldContent, "utf8");
+
 // Create test files inside each excluded directory
 for (const dir of excludedDirs) {
   const fullDir = path.join(tmpRoot, dir);
@@ -238,7 +244,30 @@ try {
     console.log(`❌ Normal file was NOT processed (bold should have been converted)`);
   }
 
-  const totalExcl = excludedDirs.length + 1;
+  // Check boundary-like dir: content must be CHANGED (must not be over-skipped)
+  const boundaryLikeContent = fs.readFileSync(boundaryLikeFile, "utf8");
+  if (boundaryLikeContent !== boldContent) {
+    exclPass++;
+    console.log(`✅ Boundary-like dir was processed (${boundaryLikeDir})`);
+  } else {
+    exclFail++;
+    console.log(`❌ Boundary-like dir was skipped unexpectedly (${boundaryLikeDir})`);
+  }
+
+  // Check excluded root target: passing an excluded dir directly must still skip processing
+  const excludedRoot = path.join(tmpRoot, "node_modules");
+  execSyncNode(`tsx "${scriptPath2}" "${excludedRoot}"`, { encoding: "utf8", stdio: "pipe" });
+
+  const excludedRootContent = fs.readFileSync(path.join(excludedRoot, "test.md"), "utf8");
+  if (excludedRootContent === boldContent) {
+    exclPass++;
+    console.log(`✅ Excluded root target was skipped (node_modules)`);
+  } else {
+    exclFail++;
+    console.log(`❌ Excluded root target was processed unexpectedly (node_modules)`);
+  }
+
+  const totalExcl = excludedDirs.length + 3;
   console.log(`\nExclusion results: ${exclPass}/${totalExcl} passed`);
 
   if (exclFail > 0) process.exit(1);

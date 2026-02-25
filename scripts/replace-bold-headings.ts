@@ -270,7 +270,7 @@ function shouldSkipDir(fullPath: string): boolean {
 
   // Path-suffix patterns (e.g. tmux/plugins, agents/external)
   for (const suffix of SKIP_PATH_SUFFIXES) {
-    if (fullPath.endsWith(path.sep + suffix) || fullPath.endsWith(suffix)) return true;
+    if (fullPath.endsWith(path.sep + suffix)) return true;
   }
 
   return false;
@@ -301,6 +301,7 @@ function collectMarkdownFiles(targets: string[]): string[] {
 
     const stat = fs.statSync(target);
     if (stat.isDirectory()) {
+      if (shouldSkipDir(target)) continue;
       walk(target);
       continue;
     }
