@@ -415,6 +415,58 @@ kill <PID>
 systemctl --user start openclaw-gateway.service
 ```
 
+### Gateway起動後にポートがリスニングされない（MODULE_NOT_FOUND / shim hang）
+
+**症状**: `active (running)` なのに18789がリスニングされない、または `MODULE_NOT_FOUND` で即終了する
+
+**原因パターン**:
+
+1. openclawをアップデートしたが、serviceの `ExecStart` が古いバージョンパスをハードコードしたまま
+2. mise shimが応答しない（shimはmiseバイナリへのリンクで、systemd環境では正常動作しないことがある）
+
+#### 確認手順
+
+```bash
+# 1. インストール済みバージョン確認
+ls ~/.mise/installs/npm-openclaw/
+
+# 2. serviceが参照しているパスを確認
+systemctl --user cat openclaw-gateway.service | grep ExecStart
+
+# 3. 実体パスを取得
+mise which openclaw
+```
+
+#### 解決方法
+
+serviceの `ExecStart` を **nodeバイナリ直接** + **`npm-openclaw/latest` シムリンク経由** に修正する。
+
+```bash
+# latestシムリンクの確認（新バージョンを指しているか）
+ls -la ~/.mise/installs/npm-openclaw/latest
+
+# openclaw.mjsの実体パスを確認
+ls ~/.mise/installs/npm-openclaw/latest/5/.pnpm/openclaw@*/node_modules/openclaw/openclaw.mjs
+```
+
+`~/.config/systemd/user/openclaw-gateway.service` の `ExecStart` を以下の形式に更新:
+
+```ini
+ExecStart=/home/pi/.mise/installs/node/24.13.1/bin/node /home/pi/.mise/installs/npm-openclaw/latest/5/.pnpm/openclaw@<VERSION>_.../node_modules/openclaw/openclaw.mjs gateway --port 18789
+```
+
+```bash
+systemctl --user daemon-reload
+systemctl --user restart openclaw-gateway.service
+```
+
+#### 注意事項
+
+- **mise shimは使わない**: systemd環境でmise shimがハングする場合があるため、nodeバイナリとopenclaw.mjsは直接パスで指定する
+- **`dist/index.js` は誤り**: 正しいエントリポイントは `openclaw.mjs`
+- **`latest` シムリンク**: miseが自動更新するとは限らないため、アップデート後は `ls -la ~/.mise/installs/npm-openclaw/latest` で確認する
+- **起動時間**: Raspberry Piでは起動完了まで2〜3分かかる。`ss -tlnp | grep 18789` でポートが出るまで待つ
+
 ## Security Best Practices
 
 ### TOKEN管理
