@@ -41,6 +41,7 @@ TASK_EXCLUDES = "--exclude agents/external --exclude .worktrees --exclude result
 # Runtime
 node = "lts"
 # Formatters and Linters
+actionlint = "latest"      # GitHub Actions lint
 biome = "latest"           # JS/TS/JSON
 prettier = "latest"        # General
 shellcheck = "latest"      # Shell lint
@@ -54,4 +55,5 @@ yamllint = "latest"        # YAML lint
 "npm:markdownlint-cli2" = "latest"
 "npm:tsx" = "latest"
 # CLI Tools
-fd = "latest" # File discovery
+fd = "latest"       # File discovery
+gitleaks = "latest" # Secret scanning

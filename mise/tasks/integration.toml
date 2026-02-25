@@ -15,16 +15,7 @@ PYTHON_PATH=$(mise where python)/bin/python3
 $PYTHON_PATH -m pip install --quiet pynvim
 
 echo ""
-echo "🔍 Verifying critical tools..."
-command -v biome >/dev/null || echo "⚠️  biome not found"
-command -v prettier >/dev/null || echo "⚠️  prettier not found"
-command -v stylua >/dev/null || echo "⚠️  stylua not found"
-command -v shfmt >/dev/null || echo "⚠️  shfmt not found"
-command -v shellcheck >/dev/null || echo "⚠️  shellcheck not found"
-command -v taplo >/dev/null || echo "⚠️  taplo not found"
-command -v yamllint >/dev/null || echo "⚠️  yamllint not found"
-command -v markdownlint-cli2 >/dev/null || echo "⚠️  markdownlint-cli2 not found"
-command -v uvx >/dev/null || echo "⚠️  uv not found"
+echo "🐍 Verifying pynvim..."
 $PYTHON_PATH -c "import pynvim; print('✓ pynvim:', pynvim.__version__)" || echo "⚠️  pynvim not found"
 
 echo ""
@@ -61,6 +52,8 @@ depends = [
 ]
 
 [lint]
+# lint:links（外部URLチェック）を含む完全版。ci タスク経由で GitHub Actions でも実行される。
+# 高速版は lint:quick を使うこと（lint:links 除外、~3-5s）。
 description = "静的解析・構文チェックの集約タスク（書き込みなし）"
 depends = [
   "lint:biome",
@@ -71,6 +64,20 @@ depends = [
   "lint:python",
   "lint:dockerfile",
   "lint:links",
+  "lint:actions",
+]
+
+["lint:quick"]
+description = "静的解析・構文チェックの軽量集約（lint:links を除外）"
+depends = [
+  "lint:biome",
+  "lint:markdown",
+  "lint:yaml",
+  "lint:lua",
+  "lint:shell",
+  "lint:python",
+  "lint:dockerfile",
+  "lint:actions",
 ]
 
 ["check:format"]
@@ -89,6 +96,10 @@ depends = [
 ["check:lint"]
 description = "lint チェック集約（lint と同義）"
 depends = ["lint"]
+
+["check:lint:quick"]
+description = "lint チェック集約の軽量版（lint:links を除外）"
+depends = ["lint:quick"]
 
 [check]
 description = "CI向け総合チェック（check:format + check:lint）"

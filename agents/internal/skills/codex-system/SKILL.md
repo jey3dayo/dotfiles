@@ -15,28 +15,28 @@ metadata:
 
 ## Codex CLI (gpt-5.3-codex) is your highly capable supporter for deep reasoning tasks
 
-> **詳細ルール**: `.claude/rules/codex-delegation.md`
+> **Detailed rules**: `.claude/rules/codex-delegation.md`
 
 ## Context Management (CRITICAL)
 
-### サブエージェント経由を推奨
+### Prefer Subagent Pattern
 
-| 状況                 | 方法                         |
-| -------------------- | ---------------------------- |
-| 詳細な設計相談       | サブエージェント経由（推奨） |
-| デバッグ分析         | サブエージェント経由（推奨） |
-| 短い質問 (1-2文回答) | 直接呼び出しOK               |
+| Situation                              | Method                     |
+| -------------------------------------- | -------------------------- |
+| Detailed design consultation           | Via subagent (recommended) |
+| Debug analysis                         | Via subagent (recommended) |
+| Short questions (1-2 sentence answers) | Direct call OK             |
 
 ## When to Consult (MUST)
 
-| Situation                  | Trigger Examples                                     |
-| -------------------------- | ---------------------------------------------------- |
-| **Design decisions**       | 「どう設計？」「アーキテクチャ」 / "How to design?"  |
-| **Debugging**              | 「なぜ動かない？」「エラー」 / "Debug" "Error"       |
-| **Trade-off analysis**     | 「どちらがいい？」「比較して」 / "Compare" "Which?"  |
-| **Complex implementation** | 「実装方法」「どう作る？」 / "How to implement?"     |
-| **Refactoring**            | 「リファクタ」「シンプルに」 / "Refactor" "Simplify" |
-| **Code review**            | 「レビューして」「確認して」 / "Review" "Check"      |
+| Situation                  | Trigger Examples                       |
+| -------------------------- | -------------------------------------- |
+| **Design decisions**       | "How to design?" "Architecture"        |
+| **Debugging**              | "Why doesn't it work?" "Error" "Debug" |
+| **Trade-off analysis**     | "Which is better?" "Compare" "Which?"  |
+| **Complex implementation** | "How to implement?" "How to build?"    |
+| **Refactoring**            | "Refactor" "Simplify"                  |
+| **Code review**            | "Review this" "Check this"             |
 
 ## When NOT to Consult
 
@@ -76,8 +76,8 @@ codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "Brief question
 ### Workflow (Subagent)
 
 1. **Spawn subagent** with Codex consultation prompt
-2. **Continue your work** → Subagent runs in parallel
-3. **Receive summary** → Subagent returns concise insights
+2. Continue your work → Subagent runs in parallel
+3. Receive summary → Subagent returns concise insights
 
 ### Sandbox Modes
 
@@ -91,7 +91,7 @@ codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "Brief question
 1. Ask Codex in **English**
 2. Receive response in **English**
 3. Execute based on advice (or let Codex execute)
-4. Report to user in **Japanese**
+4. Report to user in **their preferred language**
 
 ## Task Templates
 

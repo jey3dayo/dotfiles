@@ -244,10 +244,10 @@ Integration:
 
 Based on classification, route to:
 
-- **Skill** → `skill-creator` skill
-- **Agent** → `agent-creator` skill
-- **Command** → `command-creator` skill
-- **Rules** → `rules-creator` skill
+- Skill → `skill-creator` skill
+- Agent → `agent-creator` skill
+- Command → `command-creator` skill
+- Rules → `rules-creator` skill
 
 ### Special Routing Rules
 
@@ -255,11 +255,11 @@ Based on classification, route to:
 
 For questions about distributions, bundles, or deployment:
 
-- **Bundle management** → `distributions-manager` skill
-- **Nix deployment issues** → `distributions-manager` skill (architecture reference)
-- **Symlink patterns** → `distributions-manager` skill
-- **Priority conflicts** → `distributions-manager` skill (priority-mechanism reference)
-- **Custom bundle creation** → `distributions-manager` skill (creating-bundles reference)
+- Bundle management → `distributions-manager` skill
+- Nix deployment issues → `distributions-manager` skill (architecture reference)
+- Symlink patterns → `distributions-manager` skill
+- Priority conflicts → `distributions-manager` skill (priority-mechanism reference)
+- Custom bundle creation → `distributions-manager` skill (creating-bundles reference)
 
 ## Quick Start Examples
 

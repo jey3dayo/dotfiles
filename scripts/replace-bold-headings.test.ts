@@ -69,6 +69,18 @@ const testCases = [
     expected: "- OpenClaw関連（4ファイル）",
     shouldConvert: true,
   },
+  {
+    name: "Unordered list with bold label and right arrow (should remove bold)",
+    input: "- **出力あり** → uncommitted changes モード",
+    expected: "- 出力あり → uncommitted changes モード",
+    shouldConvert: true,
+  },
+  {
+    name: "Unordered list with bold label and right arrow, Japanese (should remove bold)",
+    input: "- **critical issues あり** → 該当ファイルを Read し、Edit で修正を適用",
+    expected: "- critical issues あり → 該当ファイルを Read し、Edit で修正を適用",
+    shouldConvert: true,
+  },
 ];
 
 // Create test file

@@ -2,6 +2,88 @@
 # CI/CD
 # ========================================
 
+# ----------------------------------------
+# 個別タスク（コマンド）
+# ----------------------------------------
+
+["ci:gitleaks"]
+description = "gitleaks による secret スキャン"
+run = """
+gitleaks git -v
+"""
+
+["ci:verify-deploy"]
+description = "Home Manager デプロイの検証（エントリーポイント・シンボリックリンク確認）"
+depends = ["hm:deploy"]
+run = """
+# エントリーポイントファイルの確認
+for file in .bashrc .bash_profile .zshenv .zshrc .gitconfig .tmux.conf; do
+  if [ -L "$HOME/$file" ]; then
+    echo "✅ $file は正常にデプロイされました"
+  else
+    echo "❌ $file のデプロイに失敗しました"
+    exit 1
+  fi
+done
+
+# ~/.config/内のシンボリックリンク数を確認
+link_count=$(find ~/.config -maxdepth 1 -type l | wc -l)
+echo "📊 ~/.config/ 内のシンボリックリンク数: $link_count"
+
+if [ "$link_count" -ge 46 ]; then
+  echo "✅ 期待されるファイル数（46個以上）が配置されました"
+else
+  echo "⚠️ 配置されたファイル数が期待値より少ない（期待: 46個以上、実際: $link_count個）"
+fi
+"""
+
+["ci:install"]
+description = "CI に必要な追加ツールをインストール"
+run = """
+luarocks install --local luacheck
+luarocks install --local busted
+"""
+
+# ========================================
+# Nix 固有検証
+# ========================================
+
+["nix:check"]
+description = "nix flake check を実行"
+run = """
+if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
+  echo "Skip nix:check (SKIP_NIX_VALIDATE=1)"
+  exit 0
+fi
+
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
+
+nix flake check
+"""
+
+["nix:build:bundle"]
+description = "nix build .#bundle を実行"
+run = """
+if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
+  echo "Skip nix:build:bundle (SKIP_NIX_VALIDATE=1)"
+  exit 0
+fi
+
+. "./mise/tasks/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
+
+nix build .#bundle
+"""
+
+# ----------------------------------------
+# 集約タスク（エイリアス）
+# ----------------------------------------
+
+["ci:quick"]
+description = "軽量チェック（format + lint のみ、Claude Code hooks 向け ~3-5s）"
+depends = ["check:format", "check:lint:quick"]
+
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
 depends = [
@@ -10,15 +92,19 @@ depends = [
   "skills:validate",
   "skills:validate:internal",
   "skills:check:sync",
+  "ci:gitleaks",
 ]
 
 ["ci:full"]
-description = "CI チェック + デプロイ（GitHub Actions と同じワークフロー）"
-depends = ["ci", "hm:deploy"]
+description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
+run = [{ task = "ci:verify-deploy" }, { task = "ci" }]
 
-["ci:install"]
-description = "CI に必要な追加ツールをインストール"
-run = """
-luarocks install --local luacheck
-luarocks install --local busted
-"""
+["ci:nix"]
+description = "Nix 固有の深い検証（validate.yml 対応）"
+depends = [
+  "skills:validate",
+  "skills:validate:internal",
+  "skills:check:sync",
+  "nix:check",
+  "nix:build:bundle",
+]

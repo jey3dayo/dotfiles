@@ -543,10 +543,10 @@ Agent Skills の外部ソース（GitHub リポジトリ）が到達不能な場
 
 #### 運用上の注意
 
-1. **オフラインビルド**: `flake.lock` が最新であれば、`/nix/store` キャッシュが存在する限りオフラインでもビルド可能
-2. **GC 後の再ビルド**: `nix-collect-garbage` 後は外部ソースへのネットワーク接続が必要になる可能性がある
-3. **部分的失敗の検出**: 外部ソースがスキップされると、`selectSkills` が throw するため、暗黙的にスキルが欠落することはない
-4. **SSoT 不整合**: `agent-skills-sources.nix` と `flake.nix` の不整合検出は `scripts/check-flake-sync.sh` で CI チェック済み (#131)
+1. オフラインビルド: `flake.lock` が最新であれば、`/nix/store` キャッシュが存在する限りオフラインでもビルド可能
+2. GC 後の再ビルド: `nix-collect-garbage` 後は外部ソースへのネットワーク接続が必要になる可能性がある
+3. 部分的失敗の検出: 外部ソースがスキップされると、`selectSkills` が throw するため、暗黙的にスキルが欠落することはない
+4. SSoT 不整合: `agent-skills-sources.nix` と `flake.nix` の不整合検出は `scripts/check-flake-sync.sh` で CI チェック済み (#131)
 
 **実装**: `nix/sources.nix` (hasAttr ガード), `agents/nix/lib.nix` (selectSkills throw)
 

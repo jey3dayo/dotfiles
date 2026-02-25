@@ -68,7 +68,7 @@ Generate technical design document for feature based on approved requirements.
    - **New Feature** (greenfield) → Full discovery required
    - **Extension** (existing system) → Integration-focused discovery
    - **Simple Addition** (CRUD/UI) → Minimal or no discovery
-   - **Complex Integration** → Comprehensive analysis required
+   - Complex Integration → Comprehensive analysis required
 
 2. Execute Appropriate Discovery Process:
    - For Complex/New Features
