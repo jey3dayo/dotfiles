@@ -7,7 +7,7 @@ source: docs/tools/fzf-integration.md
 
 Purpose: centralize FZF bindings and cross-tool integrations. Scope: keymaps, layer coverage, and config locations.
 
-**Detailed Reference**: See [docs/tools/fzf-integration.md](../../docs/tools/fzf-integration.md) for comprehensive implementation guide, examples, and troubleshooting.
+Detailed Reference: See [docs/tools/fzf-integration.md](../../docs/tools/fzf-integration.md) for comprehensive implementation guide, examples, and troubleshooting.
 
 ## Scope and SST
 

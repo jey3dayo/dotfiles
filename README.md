@@ -1,8 +1,8 @@
 # Personal Dotfiles
 
-**最終更新**: 2026-02-07
-**対象**: 開発者
-**タグ**: `category/setup`, `layer/core`, `environment/cross-platform`, `audience/developer`
+最終更新: 2026-02-07
+対象: 開発者
+タグ: `category/setup`, `layer/core`, `environment/cross-platform`, `audience/developer`
 
 High-performance development environment tuned for speed, consistency, and developer experience. Managed with Home Manager for declarative configuration.
 
@@ -183,5 +183,5 @@ mise install               # Setup language versions
 
 ---
 
-**Status**: Production-ready (2026-02-07)
-**License**: MIT — optimized for modern development workflows with focus on speed, consistency, and developer experience.
+Status: Production-ready (2026-02-07)
+License: MIT — optimized for modern development workflows with focus on speed, consistency, and developer experience.

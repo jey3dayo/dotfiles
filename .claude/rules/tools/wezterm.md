@@ -7,7 +7,7 @@ source: docs/tools/wezterm.md
 
 Purpose: keep the GPU-accelerated WezTerm setup consistent. Scope: config structure, key bindings, platform handling.
 
-**Detailed Reference**: See [docs/tools/wezterm.md](../../docs/tools/wezterm.md) for comprehensive implementation guide, examples, and troubleshooting.
+Detailed Reference: See [docs/tools/wezterm.md](../../docs/tools/wezterm.md) for comprehensive implementation guide, examples, and troubleshooting.
 
 ## Config structure
 

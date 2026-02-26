@@ -136,14 +136,6 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
         const suffix = listLabelMatch[3] ?? "";
 
         if (!text.includes("**")) {
-          // Preserve bold only when colon is followed by meaningful content.
-          // Arrow (→) does not preserve bold.
-          const colonMatch = suffix.match(/^(\s*:)\s*(.+)/);
-          if (colonMatch?.[2].trim()) {
-            // There's content after the colon - preserve bold
-            return line;
-          }
-
           fileReplacements += 1;
           return `${prefix}${text}${suffix}`;
         }
@@ -160,15 +152,7 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
           return line;
         }
 
-        // Preserve bold only when colon is followed by meaningful content.
-        // Arrow (→) does not preserve bold.
-        const colonMatch = suffix.match(/^(\s*:)\s*(.+)/);
-        if (colonMatch?.[2].trim()) {
-          // There's content after the colon - preserve bold
-          return line;
-        }
-
-        // Just ":", "→ content", or no suffix - remove bold
+        // Remove bold regardless of content after colon
         fileReplacements += 1;
         return `${prefix}${text}${suffix}`;
       }
@@ -198,11 +182,11 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
           return `${indent}#### ${headingText}`;
         }
 
-        // Check if there's content after ":"
+        // Content after colon - strip bold, keep as plain text
         const colonMatch = suffix.match(/:\s*(.+)/);
         if (colonMatch?.[1].trim()) {
-          // There's meaningful content after the colon - keep as bold
-          return line;
+          fileReplacements += 1;
+          return `${indent}${text}${suffix}`;
         }
 
         // Just ":" or whitespace - convert to heading

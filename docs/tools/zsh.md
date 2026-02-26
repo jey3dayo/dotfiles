@@ -1,8 +1,8 @@
 # 🐚 Zsh Configuration & Optimization
 
-**最終更新**: 2025-12-17
-**対象**: 開発者・上級者
-**タグ**: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
+最終更新: 2025-12-17
+対象: 開発者・上級者
+タグ: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 
 高速起動のモジュラー Zsh。Sheldon + zsh-defer でロードを最小化し、FZF/Git ウィジェットと PATH 最適化を組み合わせたコアレイヤーです。compinit は 24h/変更検知で再構築し、Sheldon キャッシュは plugins.toml 更新時に自動再生成。パフォーマンスの目標値・実測値は `docs/performance.md` を単一情報源とし、本書では構成と運用のみを扱います。
 

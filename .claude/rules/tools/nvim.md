@@ -8,7 +8,7 @@ references: docs/performance.md
 
 Purpose: keep the Lua-first, <100ms Neovim configuration stable. Scope: architecture, LSP/tooling, performance safeguards.
 
-**Detailed Reference**: See [docs/tools/nvim.md](../../docs/tools/nvim.md) for comprehensive implementation guide, examples, and troubleshooting.
+Detailed Reference: See [docs/tools/nvim.md](../../docs/tools/nvim.md) for comprehensive implementation guide, examples, and troubleshooting.
 
 ## Architecture
 

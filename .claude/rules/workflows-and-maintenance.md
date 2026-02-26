@@ -434,7 +434,7 @@ echo "=== Disk usage after cleanup ==="
 df -h /nix/store
 ```
 
-**保持ポリシー**: 90日または20世代（いずれか先に到達した方）を保持
+保持ポリシー: 90日または20世代（いずれか先に到達した方）を保持
 
 ### Disk usage monitoring
 

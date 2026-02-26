@@ -114,7 +114,7 @@ __pycache__/
 2. 環境固有の設定: → `.gitignore` に追加、`.example` ファイルを提供
 3. 一時ファイル: → `.gitignore` に追加
 
-**例**: 新しいツール `newtool` を追加する場合：
+例: 新しいツール `newtool` を追加する場合：
 
 ```bash
 # 秘密情報を含む設定ファイルを除外
@@ -133,9 +133,9 @@ cp .config/newtool/config.local .config/newtool/config.local.example
 
 ### gitleaksフック
 
-**目的**: コミット前に秘密情報をスキャンし、誤ってコミットすることを防止
+目的: コミット前に秘密情報をスキャンし、誤ってコミットすることを防止
 
-**設定ファイル**: `.pre-commit-config.yaml`
+設定ファイル: `.pre-commit-config.yaml`
 
 ```yaml
 # Security scanning
@@ -281,7 +281,7 @@ sed -i '' 's/actual_secret/YOUR_SECRET_HERE/g' ~/.config/newtool/config.secret.e
 
 ### シナリオ1: 秘密情報を誤ってコミットした（プッシュ前）
 
-**影響**: ローカルのみ、リモートには影響なし
+影響: ローカルのみ、リモートには影響なし
 
 #### 対応
 
@@ -304,7 +304,7 @@ git commit -m "fix: remove secret and update .gitignore"
 
 ### シナリオ2: 秘密情報をプッシュしてしまった
 
-**影響**: リモートリポジトリに秘密情報が露出
+影響: リモートリポジトリに秘密情報が露出
 
 #### 緊急対応（10分以内）
 
@@ -360,7 +360,7 @@ git push --force-with-lease origin main
 
 ### シナリオ3: パブリックリポジトリで秘密情報を発見
 
-**影響**: 誰でもアクセス可能、最高レベルの緊急対応
+影響: 誰でもアクセス可能、最高レベルの緊急対応
 
 #### 即座に（5分以内）
 
@@ -421,5 +421,5 @@ git push --force-with-lease origin main
 
 ---
 
-**最終更新**: 2026-02-16
-**次回レビュー予定**: 2026-05-16（四半期後）
+最終更新: 2026-02-16
+次回レビュー予定: 2026-05-16（四半期後）

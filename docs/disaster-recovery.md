@@ -320,7 +320,7 @@ brew doctor
 
 ### Q: ロールバック後もスキルが見つからない
 
-**原因**: 別のflakeから`home-manager switch`が実行された可能性
+原因: 別のflakeから`home-manager switch`が実行された可能性
 
 #### 解決策
 
@@ -337,7 +337,7 @@ ls -la ~ | grep -E '(agents|dotfiles)'
 
 ### Q: "too many open files" エラー
 
-**原因**: `/nix/store`の大量ファイルによるファイルディスクリプタ不足
+原因: `/nix/store`の大量ファイルによるファイルディスクリプタ不足
 
 #### 解決策
 
@@ -351,7 +351,7 @@ home-manager switch --flake ~/.config --impure
 
 ### Q: flake.lockのハッシュ不一致エラー
 
-**原因**: flake.lockが古い、または破損している
+原因: flake.lockが古い、または破損している
 
 #### 解決策
 
@@ -364,7 +364,7 @@ home-manager switch --flake . --impure
 
 ### Q: 特定のスキルだけが見つからない
 
-**原因**: スキル配布パスの問題、または個別スキルの破損
+原因: スキル配布パスの問題、または個別スキルの破損
 
 #### 解決策
 
@@ -394,4 +394,4 @@ home-manager switch --flake ~/.config --impure
 
 ---
 
-**最終更新**: 2026-02-13
+最終更新: 2026-02-13

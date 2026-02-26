@@ -7,7 +7,7 @@ source: docs/tools/ssh.md
 
 Purpose: enforce secure SSH configuration hierarchy. Scope: config locations, include order, 1Password integration, and security best practices.
 
-**Detailed Reference**: See [docs/tools/ssh.md](../../docs/tools/ssh.md) for comprehensive implementation guide, examples, and troubleshooting.
+Detailed Reference: See [docs/tools/ssh.md](../../docs/tools/ssh.md) for comprehensive implementation guide, examples, and troubleshooting.
 
 ## SSH configuration
 

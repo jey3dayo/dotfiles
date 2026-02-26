@@ -1,8 +1,8 @@
 # 🚀 Setup Guide
 
-**最終更新**: 2026-01-20
-**対象**: 開発者・初心者
-**タグ**: `category/guide`, `category/configuration`, `layer/core`, `environment/macos`, `audience/beginner`
+最終更新: 2026-01-20
+対象: 開発者・初心者
+タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/macos`, `audience/beginner`
 
 ⚡ High-performance macOS development environment setup. 本ドキュメントがセットアップ情報のSSTであり、README はリンクのみを保持します。
 
@@ -29,7 +29,7 @@ sh ./scripts/bootstrap.sh
 
 ## Quick Setup
 
-**前提条件**: Homebrew と Nix がインストール済み（上記bootstrap実行、または既にインストール済み）
+前提条件: Homebrew と Nix がインストール済み（上記bootstrap実行、または既にインストール済み）
 
 ```bash
 # 1. Clone repository
@@ -72,7 +72,7 @@ If you prefer manual installation or bootstrap script is not available:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-**Note**: Homebrew's official installer requires `curl`. If `curl` is unavailable, use the bootstrap script (`scripts/bootstrap.sh`) which handles the installation process. For Nix installation, this repository uses `brew bundle` (via Brewfile) instead of the curl-based installer to maintain consistency with the package management philosophy.
+Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, use the bootstrap script (`scripts/bootstrap.sh`) which handles the installation process. For Nix installation, this repository uses `brew bundle` (via Brewfile) instead of the curl-based installer to maintain consistency with the package management philosophy.
 
 ## Package Management Philosophy
 

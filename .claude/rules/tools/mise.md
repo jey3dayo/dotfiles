@@ -12,7 +12,7 @@ mise設定は環境別ファイルで管理されています:
 
 ### Main config: `mise/config.toml`
 
-**内容**: 設定のみ（ツール定義なし）
+内容: 設定のみ（ツール定義なし）
 
 - グローバル設定: `experimental`, `env_file`, `trusted_config_paths`
 - pnpmバックエンド設定: `settings.npm.package_manager = "pnpm"` - npmバックエンドがpnpmを使用
@@ -143,7 +143,7 @@ Priority: CI > Raspberry Pi > Default
 
 The environment variable is automatically loaded via `hm-session-vars.sh` (sourced by shells). No manual configuration required.
 
-**Note**: hadolint is included in `config.default.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
+Note: hadolint is included in `config.default.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
 
 ### Environment-specific Package Exclusions
 
@@ -236,7 +236,7 @@ yamllint = "latest"
 
 ### 4. NPM Global Packages (Node.js グローバルパッケージ)
 
-**完全移行完了**: 全ての npm パッケージを mise で一元管理（npm/pnpm/bun グローバルには依存しない）
+完全移行完了: 全ての npm パッケージを mise で一元管理（npm/pnpm/bun グローバルには依存しない）
 
 ```toml
 [tools]
@@ -349,13 +349,13 @@ yazi = "latest"
 
 ### Phase 1: global-package.json → mise (完了)
 
-**Before**: npm global packages in `global-package.json`
-**After**: npm packages managed by mise with `npm:` prefix
+Before: npm global packages in `global-package.json`
+After: npm packages managed by mise with `npm:` prefix
 
 ### Phase 2: npm/pnpm/bun グローバル → mise (完了)
 
-**Before**: 混在したパッケージ管理（npm グローバル 30+ パッケージ、bun グローバル 9 パッケージ）
-**After**: 完全に mise で一元管理
+Before: 混在したパッケージ管理（npm グローバル 30+ パッケージ、bun グローバル 9 パッケージ）
+After: 完全に mise で一元管理
 
 削除実績:
 
@@ -365,8 +365,8 @@ yazi = "latest"
 
 ### Phase 3: npm → pnpm バックエンド移行 (完了)
 
-**Before**: miseのnpmバックエンドがnpmを使用
-**After**: miseのnpmバックエンドがpnpmを使用（`settings.npm.package_manager = "pnpm"`）
+Before: miseのnpmバックエンドがnpmを使用
+After: miseのnpmバックエンドがpnpmを使用（`settings.npm.package_manager = "pnpm"`）
 
 #### Implementation Details (Completed 2026-02-03)
 

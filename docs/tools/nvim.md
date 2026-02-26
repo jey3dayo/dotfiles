@@ -1,8 +1,8 @@
 # 💻 Neovim Configuration Guide
 
-**最終更新**: 2025-12-17
-**対象**: 開発者・上級者
-**タグ**: `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`
+最終更新: 2025-12-17
+対象: 開発者・上級者
+タグ: `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`
 
 100ms未満の高速起動と15言語対応のLSPを備えたモダンなLua設定です。
 
@@ -39,7 +39,7 @@
 | **UI・監視**     | 統合ダッシュボード     | 基本的なUI         | コマンドライン |
 | **2025年対応**   | ✅ 推奨選択肢          | ✅ 安定選択肢      | ❌ レガシー    |
 
-**結論**: lazy.nvimは2025年基準で最適。変更不要。
+結論: lazy.nvimは2025年基準で最適。変更不要。
 
 ### 🔍 **LSPエコシステム評価**
 
@@ -54,7 +54,7 @@ require('lspconfig')[server].setup() -- 言語別詳細設定
 -- external package managers -- Mason外部依存
 ```
 
-**評価**: 現在のMason統合は2025年標準。15言語対応は**業界標準を上回る**充実度。
+評価: 現在のMason統合は2025年標準。15言語対応は**業界標準を上回る**充実度。
 
 ### ⚡ **パフォーマンス水準**
 
@@ -65,7 +65,7 @@ require('lspconfig')[server].setup() -- 言語別詳細設定
 | 大ファイル処理     | >2MB制限   | 適応的     | 適切     |
 | メモリ使用量       | 最適化済み | 効率性重視 | 良好     |
 
-**改善余地**: 現在のパフォーマンスは目標を上回る。現状維持。
+改善余地: 現在のパフォーマンスは目標を上回る。現状維持。
 
 ## 🔍 詳細コード品質分析（A評価の根拠）
 
@@ -104,7 +104,7 @@ nvim/
 | **AI**             | supermaven-nvim         | AI補完支援        | ✅     |
 | **ナビゲーション** | nvim-tree.lua + harpoon | 多様な選択肢      | ✅     |
 
-**結論**: プラグイン選択は2025年標準と完全一致。優秀な判断。
+結論: プラグイン選択は2025年標準と完全一致。優秀な判断。
 
 ### 🛠️ **保守性・拡張性: A-**
 
@@ -133,7 +133,7 @@ nvim/
 
 ## 総合評価: A (94/100)
 
-**結論**: これは**2025年参考実装レベル**のNeovim設定。大幅な変更は不要で、現在の設計思想の継続が最適。
+結論: これは**2025年参考実装レベル**のNeovim設定。大幅な変更は不要で、現在の設計思想の継続が最適。
 
 ## 主要機能
 
@@ -164,10 +164,10 @@ nvim/
 
 ## サポート言語
 
-**プログラミング言語**: Lua, TypeScript/JavaScript, Python, Rust, Go, C/C++,
+プログラミング言語: Lua, TypeScript/JavaScript, Python, Rust, Go, C/C++,
 Java, PHP, Ruby, Swift, Kotlin, C#, Dart, Shell
 
-**マークアップ**: HTML/CSS, JSON, YAML, TOML, Markdown, Docker
+マークアップ: HTML/CSS, JSON, YAML, TOML, Markdown, Docker
 
 ## 主要キーバインド
 

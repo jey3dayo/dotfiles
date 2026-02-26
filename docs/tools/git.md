@@ -1,8 +1,8 @@
 # 🧭 Git Configuration
 
-**最終更新**: 2025-12-17  
-**対象**: 開発者  
-**タグ**: `category/configuration`, `tool/git`, `layer/tool`, `environment/cross-platform`, `audience/developer`
+最終更新: 2025-12-17  
+対象: 開発者  
+タグ: `category/configuration`, `tool/git`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 Git 関連設定は XDG (`~/.config/git/`) 配下に集約し、`setup.sh` でシンボリックリンクを張る運用です。グローバル設定と機密情報（`~/.gitconfig_local`）を分離し、機能別ファイルを `include` で読み込む構成にしています。
 

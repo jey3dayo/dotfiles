@@ -9,7 +9,7 @@ paths:
 
 Purpose: maintain Claude Code marketplace plugin management and weekly maintenance workflows. Scope: TOML configuration, sync commands, idempotent behavior, and backup/restore patterns.
 
-**Detailed Reference**: See `~/.claude/docs/claude-code.md` for comprehensive implementation guide, examples, and troubleshooting.
+Detailed Reference: See `~/.claude/docs/claude-code.md` for comprehensive implementation guide, examples, and troubleshooting.
 
 ## Configuration
 
