@@ -1,36 +1,36 @@
 ---
 name: agent-creator
 description: |
-  [What] サブエージェント定義の作成ガイド。構造、設計パターン、ツールアクセス管理、統合ポイントを提供します。
-  [When] Use when: 新規エージェントの作成、既存エージェントの改善、ツールアクセス設計や統合方法の検討を行う時。
+  [What] Guide for creating subagent definitions. Provides structure, design patterns, tool access management, and integration points.
+  [When] Use when: creating new agents, improving existing agents, or thinking through tool access design and integration approaches.
   [Keywords] agent, subagent, agent definition, tool access, integration, patterns, agent design
 ---
 
 # Agent Creator
 
-効果的なサブエージェント定義を作成するためのガイドです。
+A guide for creating effective subagent definitions.
 
-## このスキルについて
+## About This Skill
 
-Agentsは、Task tool経由で呼び出される専門的な自律実行ユニットです。特定のドメインの専門知識を持ち、ユーザーインタラクションなしで作業を完了します。
+Agents are specialized autonomous execution units invoked via the Task tool. They have expertise in specific domains and complete work without user interaction.
 
-### スキルが提供するもの
+### What This Skill Provides
 
-1. エージェント設計パターン - 5つの実証済みパターン
-2. ツールアクセス管理 - full/explicit/inheritedモードの使い方
-3. テンプレートとチェックリスト - 実用的なスターターキット
-4. 実例 - 既存エージェントから抽出したベストプラクティス
+1. Agent design patterns — 5 proven patterns
+2. Tool access management — how to use full/explicit/inherited modes
+3. Templates and checklists — practical starter kits
+4. Real examples — best practices extracted from existing agents
 
-## エージェントの構造
+## Agent Structure
 
-### 必須要素
+### Required Elements
 
-すべてのエージェントは以下の構造を持ちます:
+All agents have the following structure:
 
 ```markdown
 ---
 name: agent-name
-description: エージェントの専門領域と使用例
+description: Agent's domain of expertise and usage examples
 tools: ["*"] | ["tool1", "tool2", ...] | "inherit"
 color: blue
 model: claude-sonnet-4-5
@@ -38,95 +38,95 @@ model: claude-sonnet-4-5
 
 # Agent Name
 
-## 役割
+## Role
 
-[エージェントのドメイン専門知識と主な責任]
+[Agent's domain expertise and primary responsibilities]
 
-## 能力
+## Capabilities
 
-- 能力1
-- 能力2
-- 能力3
+- Capability 1
+- Capability 2
+- Capability 3
 
-## 起動コンテキスト
+## Activation Context
 
-このエージェントは以下の場合に起動されるべきです:
+This agent should be activated when:
 
-- 条件1
-- 条件2
+- Condition 1
+- Condition 2
 
-## ツール使用
+## Tool Usage
 
-このエージェントは以下のツールを使用します:
+This agent uses the following tools:
 
-- **Tool1**: 目的
-- **Tool2**: 目的
+- Tool1: Purpose
+- Tool2: Purpose
 
-## 分析プロセス
+## Analysis Process
 
-1. **フェーズ1**: 説明
-2. **フェーズ2**: 説明
-3. **フェーズ3**: 説明
+1. Phase 1: Description
+2. Phase 2: Description
+3. Phase 3: Description
 
-## 出力形式
+## Output Format
 
-[構造化された出力の形式]
+[Format for structured output]
 
-## 統合
+## Integration
 
-### 親コマンド
+### Parent Commands
 
-- `/command-name`: 統合方法
+- `/command-name`: How it integrates
 
-### 関連エージェント
+### Related Agents
 
-- `related-agent`: 関係の説明
+- `related-agent`: Description of the relationship
 
-## 例
+## Examples
 
-[起動例とパラメータ]
+[Activation examples and parameters]
 ```
 
-### YAMLフロントマター
+### YAML Frontmatter
 
-- **name** (必須): エージェント識別子
-  - ファイル名と一致させる（`.md` を除く）
-  - kebab-case形式
-  - 説明的で一意な名前
+- **name** (required): Agent identifier
+  - Must match the filename (excluding `.md`)
+  - kebab-case format
+  - Descriptive and unique name
 
-- **description** (必須): エージェントの専門領域
-  - 明確な役割定義
-  - 起動タイミングの例を含める
-  - トリガーとなるキーワードを含める
-  - 第三者視点で記述（"Use this agent when..."）
+- **description** (required): Agent's domain of expertise
+  - Clear role definition
+  - Include examples of when to activate
+  - Include trigger keywords
+  - Written from a third-party perspective ("Use this agent when...")
 
-- **tools** (必須): ツールアクセス仕様
-  - `["*"]` = すべてのツールにアクセス
-  - `["Tool1", "Tool2"]` = 明示的なツールリスト
-  - `"inherit"` = 親から継承（実験的）
+- **tools** (required): Tool access specification
+  - `["*"]` = access to all tools
+  - `["Tool1", "Tool2"]` = explicit tool list
+  - `"inherit"` = inherit from parent (experimental)
 
-- **color** (任意): ターミナルカラー
-  - `blue` = 分析エージェント
-  - `green` = 検証エージェント
-  - `yellow` = 警告/監査エージェント
-  - `red` = クリティカル/セキュリティエージェント
-  - `magenta` = ユーティリティエージェント
-  - `cyan` = 情報エージェント
+- **color** (optional): Terminal color
+  - `blue` = analysis agents
+  - `green` = validation agents
+  - `yellow` = warning/audit agents
+  - `red` = critical/security agents
+  - `magenta` = utility agents
+  - `cyan` = information agents
 
-- **model** (任意): 使用モデル
-  - `claude-sonnet-4-5` (デフォルト) - 高速、コスト効率的
-  - `claude-opus-4-5` - 複雑な推論が必要な場合
+- **model** (optional): Model to use
+  - `claude-sonnet-4-5` (default) — fast, cost-efficient
+  - `claude-opus-4-5` — for tasks requiring complex reasoning
 
-## 詳細リファレンス
+## Detailed Reference
 
-- デザインパターン/分析フレームワーク/ツールアクセス/品質基準/テスト/高度なパターンは `references/agent-details.md` を参照
+- For design patterns, analysis frameworks, tool access, quality criteria, testing, and advanced patterns, see `references/agent-details.md`
 
-## 次のステップ
+## Next Steps
 
-1. 目的と起動条件を明確化
-2. テンプレートに沿ってドラフト作成
-3. テストで実行品質を検証
+1. Clarify purpose and activation conditions
+2. Draft using the template
+3. Verify execution quality through testing
 
-## 関連リソース
+## Related Resources
 
 - `references/agent-details.md`

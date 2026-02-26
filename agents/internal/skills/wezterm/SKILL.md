@@ -349,53 +349,53 @@ When reviewing WezTerm configurations:
 
 ## 🤖 Agent Integration
 
-このスキルはWezTerm設定レビュー・最適化タスクを実行するエージェントに専門知識を提供します:
+This skill provides specialized knowledge to agents executing WezTerm configuration review and optimization tasks:
 
 ### Code-Reviewer Agent
 
-- 提供内容: WezTerm設定品質評価、GPU最適化検証、テーマ統合確認
-- タイミング: WezTerm設定レビュー時
-- コンテキスト:
-  - ⭐️5段階評価（GPU設定、キーバインディング、テーマ統合、クロスプラットフォーム対応）
-  - WebGpu front-end検証
-  - Gruvboxテーマ一貫性チェック
-  - パフォーマンス評価
+- Provides: WezTerm configuration quality assessment, GPU optimization verification, theme integration confirmation
+- Timing: During WezTerm configuration review
+- Context:
+  - ⭐️ 5-level evaluation (GPU settings, keybindings, theme integration, cross-platform support)
+  - WebGpu front-end verification
+  - Gruvbox theme consistency check
+  - Performance assessment
 
 ### Orchestrator Agent
 
-- 提供内容: WezTerm設定最適化計画、モジュール構成設計
-- タイミング: WezTerm設定改善・最適化時
-- コンテキスト: GPU設定最適化、キーバインディング設計、テーマ統合、プラットフォーム対応
+- Provides: WezTerm configuration optimization plan, modular structure design
+- Timing: During WezTerm configuration improvement and optimization
+- Context: GPU settings optimization, keybinding design, theme integration, platform support
 
 ### Error-Fixer Agent
 
-- 提供内容: WezTerm設定エラー修正、Lua構文修正
-- タイミング: WezTerm起動エラー・設定エラー対応時
-- コンテキスト: 設定エラー診断、Lua構文修正、GPU設定修正
+- Provides: WezTerm configuration error fixes, Lua syntax corrections
+- Timing: When handling WezTerm startup errors or configuration errors
+- Context: Configuration error diagnosis, Lua syntax correction, GPU settings correction
 
-### 自動ロード条件
+### Auto-load Conditions
 
-- "WezTerm"、"terminal configuration"、"GPU acceleration"に言及
-- wezterm.lua、wezterm設定ファイル操作時
-- ターミナルエミュレータ設定レビュー要求
-- dotfiles統合タスク時
+- Mentioning "WezTerm", "terminal configuration", or "GPU acceleration"
+- When working with wezterm.lua or WezTerm configuration files
+- Terminal emulator configuration review requests
+- Dotfiles integration tasks
 
-### 統合例
+### Integration Example
 
 ```
-ユーザー: "WezTerm設定をレビューしてGPU最適化を改善"
+User: "Review WezTerm configuration and improve GPU optimization"
     ↓
-TaskContext作成
+TaskContext created
     ↓
-プロジェクト検出: WezTerm設定
+Project detection: WezTerm configuration
     ↓
-スキル自動ロード: wezterm, dotfiles-integration
+Skill auto-load: wezterm, dotfiles-integration
     ↓
-エージェント選択: code-reviewer → orchestrator
-    ↓ (スキルコンテキスト提供)
-⭐️5段階評価 + GPU最適化パターン + テーマ統合
+Agent selection: code-reviewer → orchestrator
+    ↓ (skill context provided)
+⭐️ 5-level evaluation + GPU optimization patterns + theme integration
     ↓
-実行完了（GPU設定最適化、パフォーマンス向上）
+Execution complete (GPU settings optimized, performance improved)
 ```
 
 ## Integration with Related Skills

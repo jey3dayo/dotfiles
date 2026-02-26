@@ -111,4 +111,4 @@ test = ["jest"]
 - Maximum 3 iteration attempts to prevent infinite loops
 - Each step's success/failure is clearly reported
 - If test command is not found, that step is skipped
-- All output is in Japanese
+- All output is in English

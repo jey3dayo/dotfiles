@@ -9,31 +9,31 @@ argument-hint: "[create|update|fix] [target]"
 
 # Documentation Management
 
-AI駆動のインテリジェント・ドキュメント管理システム。プロジェクト構造を分析し、適切なドキュメントを自動生成・更新します。
+AI-driven intelligent documentation management system. Analyzes project structure and automatically generates and updates appropriate documentation.
 
-## 概要
+## Overview
 
-このスキルは、プロジェクトの実態を理解し、すべての関連ドキュメントを包括的に管理します。
+This skill understands the actual state of a project and comprehensively manages all related documentation.
 
-### 主要機能
+### Core Features
 
-- AI駆動プロジェクト分析: コードベース全体を解析し、ドキュメント化すべき内容を特定
-- Progressive Disclosure戦略: 読者に必要な情報を段階的に提供
-- 構造化ドキュメント生成: 一貫性のある構造でドキュメントを作成
-- スマート更新: 変更内容を理解し、影響を受けるすべてのドキュメントを更新
-- リンク検証: ドキュメント内リンクの整合性チェック（今後統合予定）
+- AI-driven project analysis: Analyzes the entire codebase and identifies what needs to be documented
+- Progressive Disclosure strategy: Delivers information to readers in stages as needed
+- Structured document generation: Creates documentation with a consistent structure
+- Smart updates: Understands changes and updates all affected documentation
+- Link validation: Checks link integrity within documents (integration planned)
 
-## 基本使用法
+## Basic Usage
 
-### Mode 1: ドキュメント概要分析
+### Mode 1: Documentation Overview Analysis
 
 ```bash
 /documentation
 ```
 
-プロジェクト内のすべてのドキュメントを分析し、カバレッジを報告します。
+Analyzes all documentation in the project and reports coverage.
 
-### 出力例
+### Example Output
 
 ```
 DOCUMENTATION OVERVIEW
@@ -50,230 +50,230 @@ KEY FINDINGS
 - Incomplete: Testing guide
 ```
 
-### Mode 2: スマート更新
+### Mode 2: Smart Update
 
 ```bash
 /documentation update
 ```
 
-コードベースの実態とドキュメントを比較し、必要な更新を実施します。
+Compares the actual state of the codebase against the documentation and performs necessary updates.
 
-### 実行内容
+### What It Does
 
-1. プロジェクト構造を分析（project-detector使用）
-2. コードベースの実態を理解（MCP Serena使用）
-3. ドキュメントと実態のギャップを特定
-4. 体系的に更新:
-   - README.md: 新機能・変更点
-   - CHANGELOG.md: バージョンエントリ
-   - API docs: 新エンドポイント
-   - Configuration docs: 新オプション
-   - Migration guides: 破壊的変更がある場合
+1. Analyzes project structure (using project-detector)
+2. Understands the actual state of the codebase (using MCP Serena)
+3. Identifies gaps between documentation and reality
+4. Systematically updates:
+   - README.md: New features and changes
+   - CHANGELOG.md: Version entries
+   - API docs: New endpoints
+   - Configuration docs: New options
+   - Migration guides: When breaking changes exist
 
-### Mode 3: セッション・ドキュメンテーション
+### Mode 3: Session Documentation
 
 ```bash
 /documentation session
 ```
 
-長時間のコーディングセッション後、会話履歴を分析してドキュメントを更新します。
+After a long coding session, analyzes the conversation history and updates documentation.
 
-### 実行内容
+### What It Does
 
-- 会話履歴から変更内容を抽出
-- feature/fix/enhancement でグループ化
-- プロジェクトスタイルに従って適切なドキュメントを更新
+- Extracts changes from conversation history
+- Groups by feature/fix/enhancement
+- Updates appropriate documentation following the project style
 
-### Mode 4: コンテキスト自動判定
+### Mode 4: Automatic Context Detection
 
-セッション内容に応じて自動的に適切なドキュメントを更新:
+Automatically updates appropriate documentation based on session content:
 
-| セッション内容     | 更新ドキュメント                   |
-| ------------------ | ---------------------------------- |
-| 新機能追加         | README features, CHANGELOG         |
-| バグ修正           | CHANGELOG, troubleshooting         |
-| リファクタリング   | architecture docs, migration guide |
-| セキュリティ修正   | security policy, CHANGELOG         |
-| パフォーマンス改善 | benchmarks, CHANGELOG              |
+| Session Content         | Documents Updated                  |
+| ----------------------- | ---------------------------------- |
+| New feature added       | README features, CHANGELOG         |
+| Bug fix                 | CHANGELOG, troubleshooting         |
+| Refactoring             | Architecture docs, migration guide |
+| Security fix            | Security policy, CHANGELOG         |
+| Performance improvement | Benchmarks, CHANGELOG              |
 
-## ドキュメント戦略
+## Documentation Strategy
 
-### Progressive Disclosure アプローチ
+### Progressive Disclosure Approach
 
-読者の理解レベルに応じて情報を段階的に提供:
+Deliver information progressively based on the reader's level of understanding:
 
-### レイヤー1: 概要（SKILL.md）
+### Layer 1: Overview (SKILL.md)
 
-- 10-15%のコンテンツ
-- 基本概念と使用例
-- クイックスタート
+- 10-15% of content
+- Basic concepts and usage examples
+- Quick start
 
-### レイヤー2: 詳細仕様（references/）
+### Layer 2: Detailed Specification (references/)
 
-- 40-50%のコンテンツ
-- 技術詳細と実装ガイド
-- API仕様とアーキテクチャ
+- 40-50% of content
+- Technical details and implementation guides
+- API specifications and architecture
 
-### レイヤー3: 実用例（examples/）
+### Layer 3: Practical Examples (examples/)
 
-- 30-40%のコンテンツ
-- プロジェクト固有の例
-- ワークフローパターン
+- 30-40% of content
+- Project-specific examples
+- Workflow patterns
 
-詳細: [references/documentation-strategy.md](references/documentation-strategy.md)
+Details: [references/documentation-strategy.md](references/documentation-strategy.md)
 
-### 構造化アプローチ
+### Structured Approach
 
 ```
 project/
-├── README.md              # プロジェクト概要（Progressive Disclosureのエントリポイント）
-├── CHANGELOG.md          # 変更履歴
-├── CONTRIBUTING.md       # コントリビューションガイド
+├── README.md              # Project overview (entry point for Progressive Disclosure)
+├── CHANGELOG.md           # Change history
+├── CONTRIBUTING.md        # Contribution guide
 └── docs/
-    ├── getting-started.md  # 初学者向け
-    ├── api/               # API詳細
-    ├── guides/            # チュートリアル
-    └── reference/         # リファレンス
+    ├── getting-started.md  # For beginners
+    ├── api/               # API details
+    ├── guides/            # Tutorials
+    └── reference/         # Reference
 ```
 
-## スマート・ドキュメント・ルール
+## Smart Documentation Rules
 
-### 必ず実施すること
+### Always Do
 
-1. 既存ドキュメントを完全に読む: 更新前に現在の内容を理解
-2. 適切なセクションを特定: 正確な更新箇所を見つける
-3. インプレース更新: 重複を作らず既存セクションを更新
-4. カスタムコンテンツの保持: ユーザーの手動追加内容を保護
-5. スタイルの継承: 既存のフォーマットに従う
+1. Read existing documentation completely: Understand current content before updating
+2. Identify the appropriate section: Find the exact location to update
+3. Update in-place: Update existing sections without creating duplicates
+4. Preserve custom content: Protect content manually added by the user
+5. Inherit style: Follow the existing format
 
-### カスタムコンテンツ保護
+### Custom Content Protection
 
 ```markdown
 <!-- CUSTOM:START -->
 
-ユーザーが手動で追加したコンテンツ
-この部分は自動更新から保護される
+Content manually added by the user
+This section is protected from automatic updates
 
 <!-- CUSTOM:END -->
 ```
 
-### CHANGELOG管理
+### CHANGELOG Management
 
-- 変更をタイプ別にグループ化: Added, Changed, Fixed, Removed
-- バージョンバンプの提案: major/minor/patchを判定
-- PR/Issueへのリンク: 関連する議論への参照
-- 時系列順の維持: 最新が最上部
+- Group changes by type: Added, Changed, Fixed, Removed
+- Suggest version bumps: Determine major/minor/patch
+- Link to PRs/Issues: References to related discussions
+- Maintain chronological order: Newest at the top
 
-## クイックスタート
+## Quick Start
 
-### 新規プロジェクトのドキュメント作成
+### Creating Documentation for a New Project
 
 ```bash
-# 1. プロジェクト分析とドキュメント生成
+# 1. Analyze project and generate documentation
 /documentation create
 
-# 2. 生成されたドキュメントをレビュー
+# 2. Review generated documentation
 /documentation review
 
-# 3. 必要に応じて調整
+# 3. Adjust as needed
 /documentation update README.md
 ```
 
-### 既存プロジェクトのドキュメント改善
+### Improving Documentation for an Existing Project
 
 ```bash
-# 1. 現状分析
+# 1. Analyze current state
 /documentation analyze
 
-# 2. ギャップ特定
+# 2. Identify gaps
 /documentation gaps
 
-# 3. 一括更新
+# 3. Bulk update
 /documentation update --all
 ```
 
-### コマンド統合
+### Command Integration
 
-他のコマンドとシームレスに連携:
+Integrates seamlessly with other commands:
 
 ```bash
-# コード理解 → ドキュメント更新
+# Code understanding → documentation update
 /understand && /documentation
 
-# テスト実行 → カバレッジ更新
+# Test execution → coverage update
 /test && /documentation
 
-# リファクタリング → アーキテクチャドキュメント更新
+# Refactoring → architecture documentation update
 /refactor && /documentation
 ```
 
-## 依存関係
+## Dependencies
 
-### 必須
+### Required
 
-- project-detector: プロジェクトタイプとスタック判定
-- MCP Serena: コード構造解析とシンボル検索
+- project-detector: Project type and stack detection
+- MCP Serena: Code structure analysis and symbol search
 
-### オプション
+### Optional
 
-- docs-index: 大規模ドキュメントセットのインデックス化
-- markdown-docs: ドキュメント品質評価
+- docs-index: Indexing large documentation sets
+- markdown-docs: Documentation quality evaluation
 
-## ドキュメントタイプ
+## Documentation Types
 
-管理可能なドキュメント種別:
+Types of documentation that can be managed:
 
-- API Documentation: エンドポイント、パラメータ、レスポンス
-- Database Schema: テーブル、リレーション、マイグレーション
-- Configuration: 環境変数、設定
-- Deployment: セットアップ、要件、手順
-- Troubleshooting: よくある問題と解決策
-- Performance: ベンチマーク、最適化ガイド
-- Security: ポリシー、ベストプラクティス
+- API Documentation: Endpoints, parameters, responses
+- Database Schema: Tables, relations, migrations
+- Configuration: Environment variables, settings
+- Deployment: Setup, requirements, procedures
+- Troubleshooting: Common problems and solutions
+- Performance: Benchmarks, optimization guides
+- Security: Policies, best practices
 
-## 詳細リファレンス
+## Detailed Reference
 
-### 技術仕様
+### Technical Specifications
 
-- [ドキュメント戦略](references/documentation-strategy.md) - Progressive Disclosure、構造化アプローチ
-- [AI駆動分析](references/ai-driven-analysis.md) - プロジェクト構造分析、コンテンツ生成
-- [リンク検証](references/link-validation.md) - リンク検証ルール、自動修正（今後統合）
-- [コンテンツ生成パターン](references/content-generation-patterns.md) - セクション別生成パターン
+- [Documentation Strategy](references/documentation-strategy.md) - Progressive Disclosure, structured approach
+- [AI-Driven Analysis](references/ai-driven-analysis.md) - Project structure analysis, content generation
+- [Link Validation](references/link-validation.md) - Link validation rules, auto-repair (planned)
+- [Content Generation Patterns](references/content-generation-patterns.md) - Per-section generation patterns
 
-### 実用例
+### Practical Examples
 
-- [プロジェクト固有ドキュメント](examples/project-specific-docs.md) - プロジェクト種別ごとの例
-- [ドキュメントワークフロー](examples/documentation-workflows.md) - 作成/更新/修正ワークフロー
-- [修正パターン集](examples/fix-patterns.md) - ドキュメント修正パターン（今後統合）
+- [Project-Specific Documentation](examples/project-specific-docs.md) - Examples by project type
+- [Documentation Workflows](examples/documentation-workflows.md) - Create/update/fix workflows
+- [Fix Pattern Collection](examples/fix-patterns.md) - Documentation fix patterns (planned)
 
-## 注意事項
+## Important Notes
 
-### 絶対にしないこと
+### Never Do
 
-- 既存ドキュメントの削除
-- カスタムセクションの上書き
-- ドキュメントスタイルの大幅変更
-- AI属性マーカーの追加
-- 不要なドキュメントの作成
+- Delete existing documentation
+- Overwrite custom sections
+- Make drastic changes to documentation style
+- Add AI attribution markers
+- Create unnecessary documentation
 
-### 実行前の確認
+### Confirmation Before Execution
 
-更新実行前に確認を求めます:
+Confirmation is requested before performing updates:
 
-- すべての古いドキュメントを更新する
-- 特定のファイルに焦点を当てる
-- 不足しているドキュメントを作成する
-- マイグレーションガイドを生成する
-- 特定セクションをスキップする
+- Update all outdated documentation
+- Focus on specific files
+- Create missing documentation
+- Generate migration guides
+- Skip specific sections
 
-## 品質チェック
+## Quality Checks
 
-- Doc Coverage: 未ドキュメント機能を報告
-- Freshness Check: 古いドキュメントにフラグ
-- Consistency: スタイルの統一性を確保
-- Completeness: すべてのセクションの存在確認
-- Accuracy: ドキュメントと実装の比較
+- Doc Coverage: Report undocumented features
+- Freshness Check: Flag outdated documentation
+- Consistency: Ensure style uniformity
+- Completeness: Verify all sections exist
+- Accuracy: Compare documentation against implementation
 
 ---
 
-### Token効率
+### Token Efficiency

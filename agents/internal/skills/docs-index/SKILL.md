@@ -8,91 +8,91 @@ disable-model-invocation: false
 user-invocable: true
 ---
 
-# Documentation Index - Claude Code ナビゲーションハブ
+# Documentation Index - Claude Code Navigation Hub
 
-Claude Codeのドキュメント、スキル、コマンド、エージェントへのクイックアクセスを提供します。
+Provides quick access to documentation, skills, commands, and agents across the Claude Code environment.
 
-## 概要
+## Overview
 
-`docs-index`スキルは、Claude Code環境全体のドキュメントナビゲーションハブです。Progressive Disclosure設計により、必要な情報に素早くアクセスできます。
+The `docs-index` skill is the documentation navigation hub for the entire Claude Code environment. Its Progressive Disclosure design allows you to quickly access the information you need.
 
-### いつ使うか
+### When to Use
 
-このスキルは以下の場合に起動されます:
+This skill is activated in the following situations:
 
-- ドキュメントやガイドを探している
-- 特定のスキル、コマンド、エージェントを見つけたい
-- Claude Codeの機能やケイパビリティを理解したい
-- 実装パターンやベストプラクティスを参照したい
-- システム全体の構造を把握したい
+- Searching for documentation or guides
+- Looking for a specific skill, command, or agent
+- Understanding the features and capabilities of Claude Code
+- Referencing implementation patterns or best practices
+- Understanding the overall structure of the system
 
-### トリガーキーワード
+### Trigger Keywords
 
-### 日本語
+### Japanese
 
-### 英語
+### English
 
-## クイックリファレンス
+## Quick Reference
 
-### 主要カテゴリ
+### Main Categories
 
-| カテゴリ     | 説明                                 | 詳細ドキュメント            |
-| ------------ | ------------------------------------ | --------------------------- |
-| **Skills**   | 再利用可能な知識とワークフロー       | `indexes/skills-index.md`   |
-| **Commands** | ⚠️ **廃止予定**: Skills移行中        | `indexes/commands-index.md` |
-| **Agents**   | タスク自動化とワークフロー実行       | `indexes/agents-index.md`   |
-| **Guides**   | クイックスタートとナビゲーションTips | `guides/`                   |
+| Category     | Description                            | Detailed Documentation      |
+| ------------ | -------------------------------------- | --------------------------- |
+| **Skills**   | Reusable knowledge and workflows       | `indexes/skills-index.md`   |
+| **Commands** | ⚠️ **Deprecated**: Migrating to Skills | `indexes/commands-index.md` |
+| **Agents**   | Task automation and workflow execution | `indexes/agents-index.md`   |
+| **Guides**   | Quick-start guides and navigation tips | `guides/`                   |
 
-### よく使うドキュメント
+### Frequently Used Documentation
 
-1. **クイックスタートガイド** (`guides/quick-start.md`)
-   - Claude Code基本操作
-   - よく使うコマンド Top 10
-   - スキルシステムの使い方
+1. **Quick Start Guide** (`guides/quick-start.md`)
+   - Claude Code basic operations
+   - Top 10 frequently used commands
+   - How to use the skill system
 
-2. **統合フレームワーク** (skill: `integration-framework`)
-   - TaskContext標準化
-   - Communication Busパターン
-   - エージェント/コマンド統合
+2. **Integration Framework** (skill: `integration-framework`)
+   - TaskContext standardization
+   - Communication Bus patterns
+   - Agent/command integration
 
-3. **コードレビューシステム** (skill: `code-review`)
-   - ⭐️5段階評価システム
-   - プロジェクト自動検出
-   - 技術スキル統合
+3. **Code Review System** (skill: `code-review`)
+   - 5-star rating system
+   - Automatic project detection
+   - Technical skill integration
 
 4. **Spec-Driven Development** (skill: `cc-sdd`)
-   - Kiro形式のスペック駆動開発
-   - `/kiro:` コマンドファミリー
-   - ステアリング＋仕様管理
+   - Kiro-style spec-driven development
+   - `/kiro:` command family
+   - Steering + specification management
 
-## ドキュメント検索のコツ
+## Tips for Finding Documentation
 
-### カテゴリ別検索
+### Search by Category
 
-### スキルを探す時
+### Finding Skills
 
-- 技術スタック特化: `typescript`, `react`, `golang`, `zsh`, `nvim`
-- ドキュメント系: `docs-write`, `markdown-docs`, `slide-docs`
-- 開発ツール: `mise`, `dotenvx`, `similarity`, `tsr`
-- セキュリティ: `security`, `dotfiles-integration`
+- Technology-specific: `typescript`, `react`, `golang`, `zsh`, `nvim`
+- Documentation-related: `docs-write`, `markdown-docs`, `slide-docs`
+- Development tools: `mise`, `dotenvx`, `similarity`, `tsr`
+- Security: `security`, `dotfiles-integration`
 
-### コマンドを探す時
+### Finding Commands
 
-- コード品質: `/polish`, `/review`, `/fix-todos`
-- タスク管理: `/task`, `/todos`, `/create-todos`
-- Git操作: `/commit`, `/create-pr`
+- Code quality: `/polish`, `/review`, `/fix-todos`
+- Task management: `/task`, `/todos`, `/create-todos`
+- Git operations: `/commit`, `/create-pr`
 - Spec-Driven: `/kiro:spec-init`, `/kiro:spec-design`, `/kiro:spec-impl`
 
-### エージェントを探す時
+### Finding Agents
 
-- コードレビュー: `code-reviewer`, `github-pr-reviewer`
-- エラー修正: `error-fixer`
-- ドキュメント: `docs-manager`
-- オーケストレーション: `orchestrator`
+- Code review: `code-reviewer`, `github-pr-reviewer`
+- Error fixing: `error-fixer`
+- Documentation: `docs-manager`
+- Orchestration: `orchestrator`
 
-### キーワードマッピング（日本語↔英語）
+### Keyword Mapping (Japanese to English)
 
-| 日本語             | 英語                  | カテゴリ      |
+| Japanese           | English               | Category      |
 | ------------------ | --------------------- | ------------- |
 | コードレビュー     | code review           | Skill/Command |
 | タスク管理         | task management       | Command       |
@@ -102,56 +102,56 @@ Claude Codeのドキュメント、スキル、コマンド、エージェント
 | エージェント選択   | agent selection       | Skill         |
 | スペック駆動       | spec-driven           | Skill/Command |
 
-## よくある質問（FAQ）
+## Frequently Asked Questions (FAQ)
 
-### Q1: スキル、コマンド、エージェントの違いは？
+### Q1: What is the difference between skills, commands, and agents?
 
-- Skill: 再利用可能な知識とワークフロー。Progressive Disclosure設計で必要時にロード。
-- Command: ユーザーが手動実行するインタラクティブ操作（例: `/review`, `/polish`）。
-- Agent: 複雑なタスクの自動実行。他のエージェントやスキルと連携。
+- Skill: Reusable knowledge and workflows. Loaded on demand with Progressive Disclosure design.
+- Command: Interactive operations that the user executes manually (e.g., `/review`, `/polish`).
+- Agent: Automatic execution of complex tasks. Works in conjunction with other agents and skills.
 
-### Q2: 新しいスキル/コマンドを作成したい
+### Q2: I want to create a new skill/command
 
-1. スキル作成: `knowledge-creator` スキルを使用
-2. コマンド作成: `command-creator` スキルを使用
-3. エージェント作成: `agent-creator` スキルを使用
+1. Create a skill: Use the `knowledge-creator` skill
+2. Create a command: Use the `command-creator` skill
+3. Create an agent: Use the `agent-creator` skill
 
-### Q3: マーケットプレイスのスキルを追加したい
+### Q3: I want to add a marketplace skill
 
 ```bash
 /plugin marketplace add ~/src/github.com/jey3dayo/claude-code-marketplace
 ```
 
-詳細は `claude-marketplace-sync` スキルを参照。
+See the `claude-marketplace-sync` skill for details.
 
-### Q4: ドキュメントが見つからない
+### Q4: Cannot find documentation
 
-1. `indexes/skills-index.md` でスキル一覧を確認
-2. `indexes/commands-index.md` でコマンド一覧を確認
-3. トラブルシューティング: `~/.config/.claude/rules/troubleshooting.md`
+1. Check the skill list in `indexes/skills-index.md`
+2. Check the command list in `indexes/commands-index.md`
+3. Troubleshooting: `~/.config/.claude/rules/troubleshooting.md`
 
-### Q5: スキルが読み込まれない
+### Q5: Skill is not loading
 
-### Nix Home Manager環境
+### Nix Home Manager Environment
 
-- `home-manager generations` で現在のgenerationを確認
-- `home-manager switch --flake ~/.agents --impure` で再適用
+- Check the current generation with `home-manager generations`
+- Re-apply with `home-manager switch --flake ~/.agents --impure`
 
 ## Progressive Disclosure
 
-このスキルは段階的に情報を開示します:
+This skill progressively discloses information:
 
-1. **初回ロード** (このファイル): 概要とクイックリファレンス (~6KB)
-2. 詳細検索時: `indexes/` の各種インデックス (~20KB)
-3. ガイド参照時: `guides/` の詳細ガイド (~15KB)
+1. **Initial load** (this file): Overview and quick reference (~6KB)
+2. When searching for details: Various indexes in `indexes/` (~20KB)
+3. When referencing guides: Detailed guides in `guides/` (~15KB)
 
-## 参照
+## References
 
 - Global Instructions: `~/.claude/CLAUDE.md`
 - Project Instructions: `~/CLAUDE.md`
 - Troubleshooting: `.claude/rules/troubleshooting.md`
 - Migration Guide: `commands/migration-guide.md`
 
-## 更新履歴
+## Changelog
 
-- 2025-02-12: 初回作成。40+ スキル、45+ コマンドをインデックス化。
+- 2025-02-12: Initial creation. Indexed 40+ skills and 45+ commands.

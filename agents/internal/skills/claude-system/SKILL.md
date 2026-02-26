@@ -25,20 +25,20 @@ paths:
 
 ## Context Management (CRITICAL)
 
-### コンテキスト消費を意識してClaude Codeを使う
+### Use Claude Code with awareness of context consumption
 
-| 状況                   | 推奨方法                       |
-| ---------------------- | ------------------------------ |
-| 短い質問・短い回答     | 直接呼び出しOK                 |
-| アーキテクチャ設計相談 | サブプロセス経由（対話的探索） |
-| 要件整理・曖昧さ解消   | サブプロセス経由（深い対話）   |
-| ファイル操作           | サブプロセス経由               |
+| Situation                              | Recommended approach                     |
+| -------------------------------------- | ---------------------------------------- |
+| Short questions / short answers        | Direct invocation OK                     |
+| Architecture design consultation       | Via subprocess (interactive exploration) |
+| Requirements clarification / ambiguity | Via subprocess (deep dialogue)           |
+| File operations                        | Via subprocess                           |
 
 ```
 ┌──────────────────────────────────────────────────────────┐
 │  Codex / Gemini                                          │
-│  → 短い質問なら直接呼び出しOK                             │
-│  → 対話的探索が必要ならサブプロセス経由                    │
+│  → For short questions, direct invocation is OK          │
+│  → For interactive exploration, use subprocess           │
 │                                                          │
 │  ┌────────────────────────────────────────────────────┐ │
 │  │  Subprocess (background)                            │ │
@@ -91,7 +91,7 @@ ALWAYS consult Claude Code BEFORE:
 
 Consult Claude Code when user says:
 
-| Japanese                                 | English                             |
+| Japanese (triggers)                      | English equivalent                  |
 | ---------------------------------------- | ----------------------------------- |
 | 「デザインアイデアを出して」「設計して」 | "Design ideas" "Design this"        |
 | 「ブレストして」「アイデア出して」       | "Brainstorm" "Generate ideas"       |
