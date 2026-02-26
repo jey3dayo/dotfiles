@@ -40,8 +40,9 @@ echo "OPENCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)" >> ~/.openclaw/gateway.env
 
 #### 設計原則
 
-- **nodeバイナリとopenclaw.mjsは直接パスで指定する**（mise shimはsystemd環境でハングする場合があるため使わない）
-- **`npm-openclaw/latest` シムリンク経由**でバージョン非依存にする（アップデート後も設定変更不要）
+- **ExecStartはラッパースクリプト経由**にする（unitへバージョン埋め込みパスを直書きしない）
+- **ラッパースクリプトで複数候補からopenclaw実体を解決**する（`npm-openclaw/latest` 優先、`command -v` フォールバック）
+- **nodeは `~/.mise/installs/node/latest/bin/node` を優先**し、systemdでのshim依存を避ける
 - 環境変数はgateway.env経由で読み込み
 - リソース制限とWatchdogは無効化（Raspberry Pi対応）
 
@@ -55,20 +56,32 @@ RestartSec=10
 KillMode=mixed
 Environment=HOME=%h
 Environment=TMPDIR=/tmp
-Environment="PATH=%h/.mise/shims:%h/.local/share/pnpm:%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PATH=%h/.local/share/pnpm:%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
 ```
 
 #### ラッパースクリプト (`~/.config/scripts/openclaw-gateway`)
 
-mise shimはsystemd環境でハングするため、`scripts/openclaw-gateway` でnodeとopenclaw.mjsのパスを動的解決する。
+`scripts/openclaw-gateway` で `openclaw` 実行ファイルを候補順に解決し、見つからない場合のみ `command -v` にフォールバックする。
 
 ```bash
 #!/usr/bin/env bash
-NODE="${HOME}/.mise/installs/node/latest/bin/node"
-OPENCLAW_MJS=$(ls "${HOME}/.mise/installs/npm-openclaw/latest/5/.pnpm/openclaw@"*/node_modules/openclaw/openclaw.mjs 2>/dev/null | head -1)
-exec "${NODE}" "${OPENCLAW_MJS}" "$@"
+set -euo pipefail
+
+candidates=(
+  "${HOME}/.mise/installs/npm-openclaw/latest/bin/openclaw"
+  "${HOME}/.local/share/pnpm/openclaw"
+  "${HOME}/.local/bin/openclaw"
+  "/usr/local/bin/openclaw"
+  "/usr/bin/openclaw"
+)
+
+if [ -x "${HOME}/.mise/installs/node/latest/bin/node" ]; then
+  export PATH="${HOME}/.mise/installs/node/latest/bin:${PATH}"
+fi
 ```
+
+実際の判定ロジックは必ず `~/.config/scripts/openclaw-gateway` 本体を参照すること。
 
 これにより **openclawアップデート後も設定変更不要**。
 
