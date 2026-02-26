@@ -43,7 +43,7 @@ Sources: docs/tools/git.md, docs/tools/ssh.md.
 
 ### Platform-specific settings
 
-**Architecture**: Directory-based organization with conditional Include and `IgnoreUnknown` for cross-platform compatibility.
+Architecture: Directory-based organization with conditional Include and `IgnoreUnknown` for cross-platform compatibility.
 
 #### macOS (config.d/macos/settings.sshconfig)
 

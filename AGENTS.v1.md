@@ -102,7 +102,7 @@ claude-code-marketplace/
 2. Grep/ripgrep - パターン検索・横断的調査
 3. Read - 設定ファイル・小規模ファイル・最終手段
 
-**禁止**: `find`, `grep`, `cat`, `head`, `tail` → 上記専用ツールを使用
+禁止: `find`, `grep`, `cat`, `head`, `tail` → 上記専用ツールを使用
 
 ### 未使用変数の取り扱い
 
@@ -255,7 +255,7 @@ Q: プロジェクト固有のルールか？
    /kiro:spec-status <feature>      # 進捗確認
    ```
 
-**詳細**: cc-sdd スキル定義を参照
+詳細: cc-sdd スキル定義を参照
 
 ### 🎯 クイックスタート
 

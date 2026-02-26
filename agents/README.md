@@ -23,7 +23,7 @@ agents/
 
 ### agents/internal/
 
-**目的**: 内部アセットの信頼できる唯一の情報源
+目的: 内部アセットの信頼できる唯一の情報源
 
 #### 内容
 
@@ -32,11 +32,11 @@ agents/
 - agents/: 特殊タスク用のサブエージェント定義
 - rules/: プロジェクト固有のルールとガイドライン
 
-**配布**: すべてのコンテンツは Home Manager を介して自動的に `~/.claude/` に配布されます
+配布: すべてのコンテンツは Home Manager を介して自動的に `~/.claude/` に配布されます
 
 ### agents/external/
 
-**目的**: マーケットプレイスおよびサードパーティソースからの外部スキル
+目的: マーケットプレイスおよびサードパーティソースからの外部スキル
 
 #### 内容
 
@@ -44,7 +44,7 @@ agents/
 - OpenAI キュレーションコレクションのスキル
 - Vercel、Heyvhuang、その他プロバイダーのスキル
 
-**管理**: `nix/agent-skills-sources.nix` および `flake.nix` の inputs で設定
+管理: `nix/agent-skills-sources.nix` および `flake.nix` の inputs で設定
 
 ## 使用方法
 
@@ -110,4 +110,4 @@ nix run .#validate
 
 ---
 
-**最終更新**: 2026-02-17
+最終更新: 2026-02-17

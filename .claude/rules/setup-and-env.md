@@ -16,7 +16,7 @@ Sources: docs/setup.md.
 - Run `home-manager switch --flake ~/.config --impure` to apply dotfiles configuration.
 - Restart shell via `exec zsh`.
 
-**Note**: Home Manager manages dotfiles deployment. Environment is auto-detected (CI > Raspberry Pi > Default).
+Note: Home Manager manages dotfiles deployment. Environment is auto-detected (CI > Raspberry Pi > Default).
 
 ## Verification
 

@@ -33,15 +33,15 @@ Activation script の依存関係を管理する仕組み。`entryAfter`/`entryB
 
 `gitignore.nix` によって `.gitignore` パターンを適用したリポジトリパス。機密情報や動的ファイルを自動除外。
 
-**実装**: `nix/dotfiles-module.nix` L77
+実装: `nix/dotfiles-module.nix` L77
 
 ## 管理方針
 
 ### 方針1: 静的ファイルのみ管理（採用）
 
-**原則**: 書き込みが必要なディレクトリはHome Manager管理から除外する
+原則: 書き込みが必要なディレクトリはHome Manager管理から除外する
 
-**理由**: ディレクトリ全体をNixストアへシンボリックリンクすると、リンク先がread-onlyのため、実行時に生成されるファイル（バックアップ、ログ、状態ファイル等）への書き込みができなくなる。
+理由: ディレクトリ全体をNixストアへシンボリックリンクすると、リンク先がread-onlyのため、実行時に生成されるファイル（バックアップ、ログ、状態ファイル等）への書き込みができなくなる。
 
 ### 管理対象
 
@@ -60,13 +60,13 @@ Activation script の依存関係を管理する仕組み。`entryAfter`/`entryB
   - `zed/` - `cache/`, `logs/`への書き込み
   - `mise/` - `trusted-configs/`への書き込み（既に管理済みだが`.gitignore`で除外）
 
-**実装**: `nix/dotfiles-files.nix` (xdg.dirs, xdg.files)
+実装: `nix/dotfiles-files.nix` (xdg.dirs, xdg.files)
 
 ## Flake Inputs と Agent Skills 管理
 
 ### Nix Flake の inputs 制約
 
-**重要な制約**: Nix flake の `inputs` セクションは**静的な attrset**（リテラル定義）である必要があります。
+重要な制約: Nix flake の `inputs` セクションは**静的な attrset**（リテラル定義）である必要があります。
 
 #### 禁止されているパターン
 
@@ -78,13 +78,13 @@ inputs = let
 in { ... } // dynamicInputs;
 ```
 
-**エラー**: `error: expected a set but got a thunk`
+エラー: `error: expected a set but got a thunk`
 
-**理由**: flake 評価時に inputs は完全に静的である必要があり、実行時評価（thunk）は許可されません。
+理由: flake 評価時に inputs は完全に静的である必要があり、実行時評価（thunk）は許可されません。
 
 ### Agent Skills の分割管理
 
-**設計アプローチ**: SSoT（Single Source of Truth）とフラットな inputs の併用
+設計アプローチ: SSoT（Single Source of Truth）とフラットな inputs の併用
 
 | ファイル                       | 役割               | 管理項目                                     |
 | ------------------------------ | ------------------ | -------------------------------------------- |
@@ -99,7 +99,7 @@ in { ... } // dynamicInputs;
 - ✅ メタデータは SSoT で集約管理
 - ❌ URL/flake 属性が重複（制約上の妥協）
 
-**実装**: `nix/agent-skills-sources.nix`, `nix/sources.nix`
+実装: `nix/agent-skills-sources.nix`, `nix/sources.nix`
 
 #### 実装例
 
@@ -182,7 +182,7 @@ in {
 
 #### Agent Skills が配布されない
 
-**症状**: `~/.claude/skills/` が空または一部のスキルのみ存在
+症状: `~/.claude/skills/` が空または一部のスキルのみ存在
 
 #### 確認手順
 
@@ -199,7 +199,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 
 #### 原因と対策
 
-**原因1**: 別の flake から `home-manager switch` を実行した
+原因1: 別の flake から `home-manager switch` を実行した
 
 - Generation が上書きされ、`~/.config` の設定が反映されていない
 - 対策: `~/.config` から再度 switch を実行
@@ -208,7 +208,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
   home-manager switch --flake ~/.config --impure
   ```
 
-**原因2**: flake.nix と agent-skills-sources.nix の不整合
+原因2: flake.nix と agent-skills-sources.nix の不整合
 
 - 手動同期が必要な URL/flake 属性が一致していない
 - 確認: 両ファイルの URL 一覧を比較
@@ -223,7 +223,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 
 - 対策: 不一致箇所を手動同期（agent-skills-sources.nix → flake.nix）
 
-**原因3**: selection.enable の設定ミス
+原因3: selection.enable の設定ミス
 
 - スキル名が catalog に存在しない、またはタイポ
 
@@ -236,17 +236,17 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 
 - 対策: `nix/agent-skills-sources.nix` の `selection.enable` を修正
 
-**参考**: `~/.claude/rules/troubleshooting.md` の「Nix Home Manager でスキルが配布されない」セクション
+参考: `~/.claude/rules/troubleshooting.md` の「Nix Home Manager でスキルが配布されない」セクション
 
 #### "expected a set but got a thunk" エラー
 
-**症状**: `nix flake show/metadata/check` が失敗
+症状: `nix flake show/metadata/check` が失敗
 
 ```
 error: expected a set but got a thunk
 ```
 
-**原因**: flake.nix の inputs セクションで動的評価を使用している
+原因: flake.nix の inputs セクションで動的評価を使用している
 
 #### 確認手順
 
@@ -270,7 +270,7 @@ rg "(let|import).*agent-skills" flake.nix
 - `139dd809`: dotfiles との統合修正（fix: integrate agent skills with dotfiles）
 - `56543bda`: catalog 定義の統合（integrate catalog definitions into agent-skills-sources.nix）
 
-**Note**: Flake inputs の静的定義要件は Nix の仕様制約によるもので、実装の歴史的経緯よりも制約の理解が重要。
+Note: Flake inputs の静的定義要件は Nix の仕様制約によるもので、実装の歴史的経緯よりも制約の理解が重要。
 
 ## Worktree Detection
 
@@ -294,7 +294,7 @@ Worktree は以下の順序で検出されます:
 
 - Git リポジトリ root に `flake.nix` / `home.nix` / `nix/dotfiles-module.nix` が存在
 
-**実装**: `nix/dotfiles-module.nix` L34-74 (`detectWorktreeScript`)
+実装: `nix/dotfiles-module.nix` L34-74 (`detectWorktreeScript`)
 
 ### カスタム検索パスの設定
 
@@ -330,7 +330,7 @@ Worktree detection logic は `nix/dotfiles-module.nix` の `detectWorktreeScript
 2. 一貫性: 両方の activation script で同じロジックを使用
 3. テスト容易性: 検出ロジックを個別にテスト可能
 
-**実装**: `nix/dotfiles-module.nix` L34-74 (`detectWorktreeScript`)
+実装: `nix/dotfiles-module.nix` L34-74 (`detectWorktreeScript`)
 
 ### gitignore-aware フィルタ
 
@@ -348,7 +348,7 @@ cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
 #### デバッグ: 意図しないファイルの除外/含有
 
-**症状**: 設定ファイルが配布されない、または機密ファイルが含まれる
+症状: 設定ファイルが配布されない、または機密ファイルが含まれる
 
 #### 確認手順
 
@@ -370,7 +370,7 @@ home-manager build --flake ~/.config --impure --show-trace 2>&1 | grep -A 5 "cle
   - `.gitignore` から削除、または
   - `xdgConfigFiles` で個別管理（mise, tmux, gh パターン参照）
 
-**実装**: `nix/dotfiles-module.nix` L77 (`cleanedRepo = gitignore.lib.gitignoreSource`)
+実装: `nix/dotfiles-module.nix` L77 (`cleanedRepo = gitignore.lib.gitignoreSource`)
 
 ### 新しいツールを追加する際の判定フロー
 
@@ -409,11 +409,11 @@ readlink ~/.config/<tool-name>
 <tool> --version
 ```
 
-**実装**: `nix/dotfiles-files.nix` (xdg.dirs, xdg.files)
+実装: `nix/dotfiles-files.nix` (xdg.dirs, xdg.files)
 
 ### tmux handling (submodule対応)
 
-**管理方法**: activation scriptで実体化（miseパターン）
+管理方法: activation scriptで実体化（miseパターン）
 
 #### 理由
 
@@ -444,13 +444,13 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 '';
 ```
 
-**DAG依存**: `dotfiles-tmux-plugins`が`dotfiles-submodules`の後に実行されるよう、`entryAfter`に依存を追加
+DAG依存: `dotfiles-tmux-plugins`が`dotfiles-submodules`の後に実行されるよう、`entryAfter`に依存を追加
 
-**実装**: `nix/dotfiles-module.nix` L252-281 (dotfiles-tmux-plugins activation)
+実装: `nix/dotfiles-module.nix` L252-281 (dotfiles-tmux-plugins activation)
 
 ### gh handling
 
-**管理方法**: 静的`config.yml`のみsymlink配布
+管理方法: 静的`config.yml`のみsymlink配布
 
 #### 理由
 
@@ -467,7 +467,7 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["writeBoundary"] 
 };
 ```
 
-**パターン整合性**: miseが静的ファイルを個別symlink（`config.toml`等）、動的`trusted-configs/`を実体化する方式と一致
+パターン整合性: miseが静的ファイルを個別symlink（`config.toml`等）、動的`trusted-configs/`を実体化する方式と一致
 
 ### トラブルシューティング
 
@@ -519,7 +519,7 @@ Agent Skillsは以下の4段階で統合・配布されます：
    - Per-skill symlinkで`~/.claude/skills/`へ配布
    - `.system`ファイルは書き込み可能
 
-**実装**: `agents/nix/lib.nix` (scanDistribution, discoverCatalog), `agents/nix/module.nix`
+実装: `agents/nix/lib.nix` (scanDistribution, discoverCatalog), `agents/nix/module.nix`
 
 ### 外部ソース障害時の挙動
 
@@ -536,10 +536,10 @@ Agent Skills の外部ソース（GitHub リポジトリ）が到達不能な場
 
 #### 設計方針: フェイルファースト + 部分的 graceful degradation
 
-- **flake.lock キャッシュ**: オフライン時の主要な防御層。`nix flake update` を実行しない限り、既存の `flake.lock` で固定されたリビジョンを `/nix/store` から取得
-- **sources.nix の防御的チェック**: `builtins.hasAttr sourceName inputs` で flake input の存在を確認。欠落している場合は `builtins.trace` で警告を出し、そのソースのカタログをスキップ
-- **selectSkills の throw**: `selection.enable` に指定されたスキルがカタログに見つからない場合は明示的にエラー。これにより、外部ソースがスキップされた結果として必要なスキルが欠けた場合に検出可能
-- **mkBundle の set -euo pipefail**: バンドル生成は全か無か（all-or-nothing）
+- flake.lock キャッシュ: オフライン時の主要な防御層。`nix flake update` を実行しない限り、既存の `flake.lock` で固定されたリビジョンを `/nix/store` から取得
+- sources.nix の防御的チェック: `builtins.hasAttr sourceName inputs` で flake input の存在を確認。欠落している場合は `builtins.trace` で警告を出し、そのソースのカタログをスキップ
+- selectSkills の throw: `selection.enable` に指定されたスキルがカタログに見つからない場合は明示的にエラー。これにより、外部ソースがスキップされた結果として必要なスキルが欠けた場合に検出可能
+- mkBundle の set -euo pipefail: バンドル生成は全か無か（all-or-nothing）
 
 #### 運用上の注意
 
@@ -548,7 +548,7 @@ Agent Skills の外部ソース（GitHub リポジトリ）が到達不能な場
 3. 部分的失敗の検出: 外部ソースがスキップされると、`selectSkills` が throw するため、暗黙的にスキルが欠落することはない
 4. SSoT 不整合: `agent-skills-sources.nix` と `flake.nix` の不整合検出は `scripts/check-flake-sync.sh` で CI チェック済み (#131)
 
-**実装**: `nix/sources.nix` (hasAttr ガード), `agents/nix/lib.nix` (selectSkills throw)
+実装: `nix/sources.nix` (hasAttr ガード), `agents/nix/lib.nix` (selectSkills throw)
 
 ### Commands配布
 
@@ -561,7 +561,7 @@ Commands（slash commands）の配布フロー:
 - 配布: Recursive symlinks (module.nix L199-231)
   - `~/.claude/commands/` へ配布
 
-**実装**: `nix/module.nix` L32-43, L199-231
+実装: `nix/module.nix` L32-43, L199-231
 
 ### CLAUDE.md配布
 
@@ -573,7 +573,7 @@ Target-specific名前変更に対応（2025-02-11実装）:
   - OpenCode: `~/.opencode/AGENTS.md` （名前変更）
   - その他: 各targetの設定ファイル名に変換
 
-**実装**: `nix/module.nix` L245-261
+実装: `nix/module.nix` L245-261
 
 ### Distributions層の実装（2025-02-11追加）
 
@@ -615,7 +615,7 @@ programs.agent-skills = {
 
 #### 優先度と循環参照の回避
 
-**優先度**: Local > External > Distribution
+優先度: Local > External > Distribution
 
 - `localSkillsPath` が最優先（Internal skills）
 - `sources` が次優先（External skills）
@@ -669,7 +669,7 @@ distribution層はsymlinkを含む構成を取れるため：
 
 #### `-internal`命名について
 
-**現状**: `agents/internal/skills/`, `agents/internal/commands/` という配置
+現状: `agents/internal/skills/`, `agents/internal/commands/` という配置
 
 #### 評価
 
@@ -677,7 +677,7 @@ distribution層はsymlinkを含む構成を取れるため：
 - ✅ distributionsPath配下でも元のソース名が保たれる
 - ✅ 実装の本質的な問題ではない
 
-**推奨**: 現行命名を維持（`internal`/`external` で論理整理済み）
+推奨: 現行命名を維持（`internal`/`external` で論理整理済み）
 
 ### 配布構造の検証
 
@@ -726,7 +726,7 @@ Agent Skills の検証は3つのレイヤーで構成されています。
 
 ### `nix run .#validate` (`mkValidateScript`)
 
-**実装**: `agents/nix/lib.nix` L446-502
+実装: `agents/nix/lib.nix` L446-502
 
 実行時にバンドルの整合性を検証するスクリプト。
 
@@ -740,7 +740,7 @@ Agent Skills の検証は3つのレイヤーで構成されています。
 
 ### `nix flake check` (`mkChecks`)
 
-**実装**: `agents/nix/lib.nix` L505-524
+実装: `agents/nix/lib.nix` L505-524
 
 Nix の評価時に実行される純粋な検証。
 
@@ -751,7 +751,7 @@ Nix の評価時に実行される純粋な検証。
 
 ### `validate-internal.sh`
 
-**実装**: `agents/scripts/validate-internal.sh`
+実装: `agents/scripts/validate-internal.sh`
 
 リポジトリ内の internal アセットを直接検証するスクリプト。
 

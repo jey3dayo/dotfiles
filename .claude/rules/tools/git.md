@@ -7,7 +7,7 @@ source: docs/tools/git.md
 
 Purpose: enforce configuration hierarchy for Git with secure overrides. Scope: config locations, include order, 1Password integration, and add/diagnose workflows.
 
-**Detailed Reference**: See [docs/tools/git.md](../../docs/tools/git.md) for comprehensive implementation guide, examples, and troubleshooting.
+Detailed Reference: See [docs/tools/git.md](../../docs/tools/git.md) for comprehensive implementation guide, examples, and troubleshooting.
 
 ## Git configuration
 

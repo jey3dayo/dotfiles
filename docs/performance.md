@@ -1,8 +1,8 @@
 # ⚡ Performance Monitoring & Optimization
 
-**最終更新**: 2025-12-01
-**対象**: 開発者・運用担当者
-**タグ**: `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
+最終更新: 2025-12-01
+対象: 開発者・運用担当者
+タグ: `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
 
 パフォーマンス測定、監視、最適化のための包括的ガイドです。
 測定手順・改善履歴・トラブルシュートの単一情報源は本書で管理し、実行スケジュールは [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) を参照します。
@@ -273,7 +273,7 @@ top -l 1 | grep PhysMem
 | カスタマイズ性 | 高     | 最高        | 中        | 高     |
 | メンテナンス性 | 高     | 最高        | 低        | 中     |
 
-**評価**: 機能性と速度のバランスが取れた最適構成
+評価: 機能性と速度のバランスが取れた最適構成
 
 ## 🔗 関連ドキュメント
 

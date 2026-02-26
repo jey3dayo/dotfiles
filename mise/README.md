@@ -26,7 +26,7 @@ Environment detection is handled by Home Manager (`nix/env-detect.nix`) and expo
 - Raspberry Pi → `config.pi.toml`
 - macOS/Linux/WSL2 → `config.default.toml`
 
-**Environment Variable**: `MISE_CONFIG_FILE` is set before mise activation by Home Manager.
+Environment Variable: `MISE_CONFIG_FILE` is set before mise activation by Home Manager.
 
 ## Tool Counts
 
@@ -38,10 +38,10 @@ Environment detection is handled by Home Manager (`nix/env-detect.nix`) and expo
 
 ## Migration from Old Structure
 
-**Old**: Single `config.toml` for Mac/WSL2, `config.pi.toml` for Pi
-**New**: `config.toml` (settings-only), `config.default.toml` (full tools), `config.pi.toml` (optimized)
+Old: Single `config.toml` for Mac/WSL2, `config.pi.toml` for Pi
+New: `config.toml` (settings-only), `config.default.toml` (full tools), `config.pi.toml` (optimized)
 
-**Migration**: Automatic on shell restart after pulling changes. No manual steps required.
+Migration: Automatic on shell restart after pulling changes. No manual steps required.
 
 #### Verification
 

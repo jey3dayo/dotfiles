@@ -1,8 +1,8 @@
 # 🔍 FZF Integration Guide
 
-**最終更新**: 2025-12-17
-**対象**: 開発者・上級者
-**タグ**: `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced`
+最終更新: 2025-12-17
+対象: 開発者・上級者
+タグ: `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced`
 
 FZF (Fuzzy Finder) は dotfiles 全体で統一的なファジー検索体験を提供する中核コンポーネントです。
 FZF/Git キーバインドとワークフローの一覧は本書を単一情報源とし、他ドキュメントからは参照のみとします（重複防止）。
@@ -38,7 +38,7 @@ FZF は以下の層で横断的に統合されています：
 | `^R`           | コマンド履歴検索       | Shell (Zsh) |
 | `^T`           | ファイル選択           | Shell (Zsh) |
 
-**Note**: All `^g` commands support both patterns (`^gX` or `^g^X`)
+Note: All `^g` commands support both patterns (`^gX` or `^g^X`)
 
 ### Git Integration
 
@@ -105,7 +105,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 ### Shell Layer Integration
 
-**Performance Impact**: ✅ Optimized - 遅延読み込みで起動時間への影響なし
+Performance Impact: ✅ Optimized - 遅延読み込みで起動時間への影響なし
 
 #### Key Features
 
@@ -139,7 +139,7 @@ apply = ["source"]
 
 ### Git Layer Integration
 
-**Performance Impact**: ✅ 最適化済み - FZF統合による操作効率90%向上
+Performance Impact: ✅ 最適化済み - FZF統合による操作効率90%向上
 
 #### Key Features
 
@@ -164,7 +164,7 @@ _git_switch_branch() {
 
 ### Terminal Layer Integration
 
-**Performance Impact**: ✅ セッション切り替え時間90%短縮
+Performance Impact: ✅ セッション切り替え時間90%短縮
 
 #### Key Features
 
@@ -182,9 +182,9 @@ bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
 
 ### Editor Layer Integration
 
-**Status**: ✅ telescope.nvim → fzf-lua 移行完了
+Status: ✅ telescope.nvim → fzf-lua 移行完了
 
-**Performance Improvement**: 60% faster file searching
+Performance Improvement: 60% faster file searching
 
 #### Key Features
 
@@ -320,6 +320,6 @@ sheldon source --verbose
 
 ---
 
-**Last Updated**: 2025-10-03  
-**Status**: Production Ready - 全層統合完了  
-**Performance**: All optimization targets achieved
+Last Updated: 2025-10-03  
+Status: Production Ready - 全層統合完了  
+Performance: All optimization targets achieved

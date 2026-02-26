@@ -8,7 +8,7 @@ references: docs/performance.md
 
 Purpose: preserve the fast, modular Zsh setup. Scope: load order, PATH policy, plugin tiers, caching, and maintenance hooks.
 
-**Detailed Reference**: See [docs/tools/zsh.md](../../docs/tools/zsh.md) for comprehensive implementation guide, examples, and troubleshooting.
+Detailed Reference: See [docs/tools/zsh.md](../../docs/tools/zsh.md) for comprehensive implementation guide, examples, and troubleshooting.
 
 ## Load order and directories
 

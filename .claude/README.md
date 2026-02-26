@@ -32,7 +32,7 @@ Session-specific configurations and context
 
 Persistent todo management across sessions
 
-**Note**: General documentation has been moved to `docs/` directory for better organization and maintainability.
+Note: General documentation has been moved to `docs/` directory for better organization and maintainability.
 
 ## 📋 Rules vs Documentation
 

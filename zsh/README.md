@@ -82,7 +82,7 @@ zsh-profile                # Detailed profiling
 ^gx  / ^g^x                # FZF kill process
 ```
 
-**Note**: All `^g` commands support both patterns:
+Note: All `^g` commands support both patterns:
 
 - `^gX` (Ctrl+g, release Ctrl, then press X)
 - `^g^X` (Ctrl+g, hold Ctrl, then press X)

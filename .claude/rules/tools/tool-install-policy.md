@@ -26,19 +26,19 @@ Three-layer tool management architecture policy defining responsibility boundari
 
 ### Home Manager
 
-**Responsibility**: Configuration distribution ONLY
+Responsibility: Configuration distribution ONLY
 
 - Distributes dotfiles (`.zshrc`, `.config/starship.toml`, etc.)
 - Links configuration files to `$HOME`
 - Does NOT install binaries or tools
 
-**Rationale**: Home Manager manages configurations, not tool provisioning. Tool installation is delegated to mise or Homebrew.
+Home Manager manages configurations, not tool provisioning. Tool installation is delegated to mise or Homebrew.
 
-**Example**: starship configuration is managed by Home Manager, but the starship binary is installed by mise.
+Example: starship configuration is managed by Home Manager, but the starship binary is installed by mise.
 
 ### mise
 
-**Responsibility**: CLI tools, language runtimes, development environments
+Responsibility: CLI tools, language runtimes, development environments
 
 - Cross-platform CLI tools (ripgrep, fd, bat, eza, etc.)
 - Language runtimes (Node.js, Python, Ruby, Go, Rust)
@@ -60,7 +60,7 @@ Three-layer tool management architecture policy defining responsibility boundari
 
 ### Homebrew
 
-**Responsibility**: System dependencies, GUI applications, macOS-specific tools
+Responsibility: System dependencies, GUI applications, macOS-specific tools
 
 - System libraries (libffi, openssl, utf8proc, etc.)
 - GUI applications via Cask (Brave, Visual Studio Code, Docker, etc.)
@@ -75,7 +75,7 @@ Three-layer tool management architecture policy defining responsibility boundari
 - GUI application management
 - Robust dependency resolution
 
-**Current state**: 211 formulae + 79 casks (as of 2026-02-17)
+Current state: 188 formulae + 78 casks (as of 2026-02-26)
 
 ## Decision Flowchart
 
@@ -130,11 +130,11 @@ Language runtimes follow a hybrid pattern based on system dependencies:
    - YES → mise (with version pinning)
    - NO → Homebrew (if system-wide version is acceptable)
 
-**Example**: `python@3.11` was removed from Brewfile because no system tools require it. Projects use mise-managed Python versions.
+Example: `python@3.11` was removed from Brewfile because no system tools require it. Projects use mise-managed Python versions.
 
 ## VS Code Extensions Management
 
-**Policy**: Manage VS Code extensions via Brewfile `vscode` section
+Policy: Manage VS Code extensions via Brewfile `vscode` section
 
 #### Rationale
 
@@ -151,22 +151,29 @@ vscode "ms-python.python"
 
 ## Go Tools Management
 
-**Policy**: Prefer mise `go:` prefix over Homebrew `go` section
+Policy: Prefer mise `go:` prefix over Homebrew `go` section
 
-| Method                | Use case                                    | Example                       |
-| --------------------- | ------------------------------------------- | ----------------------------- |
-| **mise** (優先)       | Development tools, project-specific         | `go:golang.org/x/tools/gopls` |
-| **Homebrew** (最小限) | System-wide tools with complex dependencies | `brew "golangci-lint"`        |
+| Method                | Use case                            | Example                                                  |
+| --------------------- | ----------------------------------- | -------------------------------------------------------- |
+| **mise** (優先)       | Development tools, project-specific | `go:github.com/golangci/golangci-lint/cmd/golangci-lint` |
+| **Homebrew** (最小限) | Go toolchain commands               | `go "cmd/go"`                                            |
 
-**Current Homebrew go section**: 4 tools only
+Current Homebrew go section: 2 entries (Go toolchain commands)
+
+- `cmd/go` - Go compiler
+- `cmd/gofmt` - Go formatter
+
+mise go tools: 5 tools
 
 - `golangci-lint` - Linter aggregator
 - `lambroll` - AWS Lambda deployment
 - `wire` - Dependency injection
+- `git-wt` - Git worktree helper
+- `goimports` - Import management
 
 ## starship Case Study
 
-**Migration path**: Homebrew → Home Manager → mise
+Migration path: Homebrew → Home Manager → mise
 
 #### Final architecture
 
@@ -247,7 +254,7 @@ grep '^\w\+\s*=' mise/config.default.toml | \
 comm -12 /tmp/brew_tools.txt /tmp/mise_tools.txt
 ```
 
-**Expected result**: Empty (no duplicates)
+Expected result: Empty (no duplicates)
 
 #### Known exceptions
 
@@ -429,6 +436,9 @@ When migrating a tool from Homebrew to mise:
 ## Change Log
 
 - 2026-02-12: Initial policy document created
-- 2026-02-12: Removed 7 tools from Brewfile (usage, pipx, python@3.11, python@3.12, rust, tree-sitter-cli, zx)
+- 2026-02-12: Removed 4 tools from Brewfile (usage, rust, tree-sitter-cli, zx)
 - 2026-02-12: Added policy comments to Brewfile
 - 2026-02-12: Documented starship migration path
+- 2026-02-26: Removed 4 duplicate tools from Brewfile (gitleaks, pipx, python@3.11, python@3.12)
+- 2026-02-26: Updated Go tools section (golangci-lint/lambroll/wire migrated to mise)
+- 2026-02-26: Updated formulae/cask counts, added doc links (TOOLS.md, docs/setup.md)
