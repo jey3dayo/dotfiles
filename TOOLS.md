@@ -68,6 +68,7 @@
 - [Setup Guide](docs/setup.md) - セットアップ手順
 - [Performance](docs/performance.md) - パフォーマンス測定
 - [Maintenance](.claude/rules/workflows-and-maintenance.md) - メンテナンス手順
+- [Tool Install Policy](.claude/rules/tools/tool-install-policy.md) - HM/mise/Homebrew責務分離
 
 ### ツール別詳細
 

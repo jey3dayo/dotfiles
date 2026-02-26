@@ -105,7 +105,7 @@ If you prefer manual installation or bootstrap script is not available:
    - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
    - `brew list --formula` - mise 管理ツールが含まれていないこと
 
-詳細は `.claude/rules/tools/mise.md` と `.claude/rules/workflows-and-maintenance.md` を参照。
+詳細は `.claude/rules/tools/mise.md` と `.claude/rules/workflows-and-maintenance.md` を参照。ツールインストール先の判定基準は `.claude/rules/tools/tool-install-policy.md` を参照。
 
 ## Verification
 
