@@ -40,7 +40,9 @@ echo "OPENCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)" >> ~/.openclaw/gateway.env
 
 #### 設計原則
 
-- mise shimを使用（ポータビリティ確保）
+- **ExecStartはラッパースクリプト経由**にする（unitへバージョン埋め込みパスを直書きしない）
+- **ラッパースクリプトで複数候補からopenclaw実体を解決**する（`npm-openclaw/latest` 優先、`command -v` フォールバック）
+- **nodeは `~/.mise/installs/node/latest/bin/node` を優先**し、systemdでのshim依存を避ける
 - 環境変数はgateway.env経由で読み込み
 - リソース制限とWatchdogは無効化（Raspberry Pi対応）
 
@@ -48,13 +50,45 @@ echo "OPENCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)" >> ~/.openclaw/gateway.env
 
 ```ini
 [Service]
-ExecStart="%h/.mise/shims/openclaw" gateway --port 18789
+ExecStart=%h/.config/scripts/openclaw-gateway gateway --port 18789
 Restart=always
-RestartSec=5
+RestartSec=10
+KillMode=mixed
 Environment=HOME=%h
-Environment="PATH=%h/.mise/shims:/usr/local/bin:/usr/bin:/bin:%h/.local/bin:%h/bin"
+Environment=TMPDIR=/tmp
+Environment="PATH=%h/.local/share/pnpm:%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
 ```
+
+#### ラッパースクリプト (`~/.config/scripts/openclaw-gateway`)
+
+`scripts/openclaw-gateway` で `openclaw` 実行ファイルを候補順に解決し、見つからない場合のみ `command -v` にフォールバックする。
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+candidates=(
+  "${HOME}/.mise/installs/npm-openclaw/latest/bin/openclaw"
+  "${HOME}/.local/share/pnpm/openclaw"
+  "${HOME}/.local/bin/openclaw"
+  "/usr/local/bin/openclaw"
+  "/usr/bin/openclaw"
+)
+
+if [ -x "${HOME}/.mise/installs/node/latest/bin/node" ]; then
+  export PATH="${HOME}/.mise/installs/node/latest/bin:${PATH}"
+fi
+```
+
+実際の判定ロジックは必ず `~/.config/scripts/openclaw-gateway` 本体を参照すること。
+
+これにより **openclawアップデート後も設定変更不要**。
+
+#### 注意
+
+- `latest` シムリンクはmiseが自動更新するとは限らないため、アップデート後に `ls -la ~/.mise/installs/npm-openclaw/latest` で確認する
+- Raspberry Piでは起動完了まで2〜3分かかる。`ss -tlnp | grep 18789` でポートが出るまで待つ
 
 **override.conf**: `~/.config/systemd/user/openclaw-gateway.service.d/override.conf`
 
@@ -413,6 +447,22 @@ kill <PID>
 
 # 再起動
 systemctl --user start openclaw-gateway.service
+```
+
+### Gateway起動後にポートがリスニングされない / MODULE_NOT_FOUND
+
+**症状**: `active (running)` なのに18789がリスニングされない、または即終了する
+
+**原因**: openclawアップデート後にExecStartのパスが古いバージョンを指したまま、またはmise shimのハング
+
+**対処**: [Gateway Service の設計原則・ExecStart の組み立て方](#gateway-service) を参照して `ExecStart` を再設定する
+
+```bash
+# 現在のExecStartを確認
+systemctl --user cat openclaw-gateway.service | grep ExecStart
+
+# latestが正しいバージョンを指しているか確認
+ls -la ~/.mise/installs/npm-openclaw/latest
 ```
 
 ## Security Best Practices

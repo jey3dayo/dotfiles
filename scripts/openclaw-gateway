@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# openclaw-gateway - WSL/Pi 両対応の gateway 起動ラッパー
+# systemd で shim に依存せず、実体バイナリを優先して解決する
+
+declare -a candidates=(
+  "${HOME}/.mise/installs/npm-openclaw/latest/bin/openclaw"
+  "${HOME}/.local/share/pnpm/openclaw"
+  "${HOME}/.local/bin/openclaw"
+  "/usr/local/bin/openclaw"
+  "/usr/bin/openclaw"
+)
+
+openclaw_bin=""
+
+for candidate in "${candidates[@]}"; do
+  if [ -x "${candidate}" ]; then
+    openclaw_bin="${candidate}"
+    break
+  fi
+done
+
+if [ -z "${openclaw_bin}" ]; then
+  if command -v openclaw >/dev/null 2>&1; then
+    openclaw_bin="$(command -v openclaw)"
+  else
+    echo "ERROR: openclaw executable not found." >&2
+    echo "Checked: ${candidates[*]} and PATH." >&2
+    exit 1
+  fi
+fi
+
+# Prefer a real Node binary over version-manager shims in systemd.
+if [ -x "${HOME}/.mise/installs/node/latest/bin/node" ]; then
+  export PATH="${HOME}/.mise/installs/node/latest/bin:${PATH}"
+fi
+
+exec "${openclaw_bin}" "$@"
