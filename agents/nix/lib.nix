@@ -82,6 +82,72 @@ let
     else
       claudeSkills;
 
+  # Generic .md file scanner for rules/agents directories
+  # basePath: directory to scan
+  # source: source tag (e.g., "distribution")
+  scanMdEntries =
+    basePath: source:
+    if pathExists basePath then
+      let
+        entries = readDir basePath;
+        processEntry =
+          name: type:
+          let
+            entryPath = basePath + "/${name}";
+            entryId =
+              if nixlib.hasSuffix ".md" name then nixlib.removeSuffix ".md" name else name;
+          in
+          if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
+            {
+              ${entryId} = {
+                id = entryId;
+                path = entryPath;
+                inherit source;
+              };
+            }
+          else if type == "directory" || type == "symlink" then
+            let
+              subEntries =
+                let
+                  result = builtins.tryEval (readDir entryPath);
+                in
+                if result.success then result.value else { };
+              processSubEntry =
+                subName: subType:
+                let
+                  subPath = entryPath + "/${subName}";
+                  subId =
+                    if nixlib.hasSuffix ".md" subName then
+                      "${name}/${nixlib.removeSuffix ".md" subName}"
+                    else
+                      "${name}/${subName}";
+                in
+                if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
+                  {
+                    ${subId} = {
+                      id = subId;
+                      path = subPath;
+                      inherit source;
+                    };
+                  }
+                else
+                  { };
+            in
+            builtins.foldl' (acc: entry: acc // (processSubEntry entry.name entry.type)) { } (
+              mapAttrsToList (n: t: {
+                name = n;
+                type = t;
+              }) subEntries
+            )
+          else
+            { };
+      in
+      builtins.foldl' (acc: entry: acc // (processEntry entry.name entry.type)) { } (
+        mapAttrsToList (name: type: { inherit name type; }) entries
+      )
+    else
+      { };
+
   # Scan distributions directory for bundled components
   # Returns: { skills = { skillId = { id, path, source }; ... }; commands = path or null; rules = { ruleId = { id, path, source }; ... }; agents = { agentId = { id, path, source }; ... }; }
   scanDistribution =
@@ -134,125 +200,8 @@ let
           )
         else
           { };
-      # Scan rules directory for .md files
-      scannedRules =
-        if pathExists rulesPath then
-          let
-            ruleEntries = readDir rulesPath;
-            processRuleEntry =
-              name: type:
-              let
-                entryPath = rulesPath + "/${name}";
-                # Remove .md suffix to get rule ID
-                ruleId = if nixlib.hasSuffix ".md" name then nixlib.removeSuffix ".md" name else name;
-              in
-              if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
-                {
-                  ${ruleId} = {
-                    id = ruleId;
-                    path = entryPath;
-                    source = "distribution";
-                  };
-                }
-              else if type == "directory" || type == "symlink" then
-                # Scan subdirectory (e.g., rules/frontend/)
-                let
-                  subEntries = if pathExists entryPath then readDir entryPath else { };
-                  processSubEntry =
-                    subName: subType:
-                    let
-                      subPath = entryPath + "/${subName}";
-                      subId =
-                        if nixlib.hasSuffix ".md" subName then
-                          "${name}/${nixlib.removeSuffix ".md" subName}"
-                        else
-                          "${name}/${subName}";
-                    in
-                    if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
-                      {
-                        ${subId} = {
-                          id = subId;
-                          path = subPath;
-                          source = "distribution";
-                        };
-                      }
-                    else
-                      { };
-                in
-                builtins.foldl' (acc: entry: acc // (processSubEntry entry.name entry.type)) { } (
-                  mapAttrsToList (n: t: {
-                    name = n;
-                    type = t;
-                  }) subEntries
-                )
-              else
-                { };
-          in
-          builtins.foldl' (acc: entry: acc // (processRuleEntry entry.name entry.type)) { } (
-            mapAttrsToList (name: type: { inherit name type; }) ruleEntries
-          )
-        else
-          { };
-
-      # Scan agents directory for .md files
-      scannedAgents =
-        if pathExists agentsPath then
-          let
-            agentEntries = readDir agentsPath;
-            processAgentEntry =
-              name: type:
-              let
-                entryPath = agentsPath + "/${name}";
-                # Remove .md suffix to get agent ID
-                agentId = if nixlib.hasSuffix ".md" name then nixlib.removeSuffix ".md" name else name;
-              in
-              if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
-                {
-                  ${agentId} = {
-                    id = agentId;
-                    path = entryPath;
-                    source = "distribution";
-                  };
-                }
-              else if type == "directory" || type == "symlink" then
-                # Scan subdirectory (e.g., agents/kiro/)
-                let
-                  subEntries = if pathExists entryPath then readDir entryPath else { };
-                  processSubEntry =
-                    subName: subType:
-                    let
-                      subPath = entryPath + "/${subName}";
-                      subId =
-                        if nixlib.hasSuffix ".md" subName then
-                          "${name}/${nixlib.removeSuffix ".md" subName}"
-                        else
-                          "${name}/${subName}";
-                    in
-                    if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
-                      {
-                        ${subId} = {
-                          id = subId;
-                          path = subPath;
-                          source = "distribution";
-                        };
-                      }
-                    else
-                      { };
-                in
-                builtins.foldl' (acc: entry: acc // (processSubEntry entry.name entry.type)) { } (
-                  mapAttrsToList (n: t: {
-                    name = n;
-                    type = t;
-                  }) subEntries
-                )
-              else
-                { };
-          in
-          builtins.foldl' (acc: entry: acc // (processAgentEntry entry.name entry.type)) { } (
-            mapAttrsToList (name: type: { inherit name type; }) agentEntries
-          )
-        else
-          { };
+      scannedRules = scanMdEntries rulesPath "distribution";
+      scannedAgents = scanMdEntries agentsPath "distribution";
     in
     {
       skills = scannedSkills;
