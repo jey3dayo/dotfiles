@@ -57,15 +57,14 @@ TMPPREFIX="${TMPDIR%/}/zsh"
 
 export GHQ_ROOT=~/src
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/.ripgreprc"
-export STUDIO_JDK=${JAVA_HOME%/*/*}
-export ANDROID_SDK_ROOT=$HOME/Library/Android/sdk
-export JAVA_OPTS="-Djava.net.useSystemProxies=true"
-export CATALINA_HOME=/opt/homebrew/Cellar/tomcat/10.1.19/libexec/
-export ANT_OPTS=-Dbuild.sysclasspath=ignore
 export BUN_INSTALL="$HOME/.bun"
-export HOMEBREW_BUNDLE_FILE_GLOBAL="$XDG_CONFIG_HOME/Brewfile"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
+
+# macOS-specific environment (early load for PATH setup in .zprofile)
+if [[ "$OSTYPE" == darwin* ]]; then
+  [[ -f "${ZDOTDIR}/config/os/macos-env.zsh" ]] && source "${ZDOTDIR}/config/os/macos-env.zsh"
+fi
 
 # PATH configuration is in .zprofile (executed after macOS path_helper)
 # mise shims are managed automatically by 'mise activate' in .zprofile
