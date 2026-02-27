@@ -107,7 +107,11 @@ let
             }
           else if type == "directory" || type == "symlink" then
             let
-              subEntries = if pathExists entryPath then readDir entryPath else { };
+              subEntries =
+                let
+                  result = builtins.tryEval (readDir entryPath);
+                in
+                if result.success then result.value else { };
               processSubEntry =
                 subName: subType:
                 let
