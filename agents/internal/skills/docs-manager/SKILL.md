@@ -319,14 +319,7 @@ Periodic maintenance based on configuration:
 
 ### With Other Skills
 
-- markdown-docs: Content quality evaluation (writing, technical accuracy)
-- docs-manager: Structure, metadata, tag compliance (this skill)
-
-Use together for complete documentation review:
-
-1. Apply docs-manager for structure validation
-2. Apply markdown-docs for content quality
-3. Combine insights for comprehensive review
+- docs-manager: Structure, metadata, tag compliance, and content quality evaluation (this skill)
 
 ### With Tools
 

@@ -4,7 +4,7 @@
 
 ### 移行完了状況
 
-- ✅ Phase 1: Foundation（agents-only, docs-index作成）
+- ✅ Phase 1: Foundation（docs-index作成）
 - ✅ Phase 2: Core Workflows（6スキル移行：learnings-knowledge, code-quality-automation, implementation-engine, todo-orchestrator, task-router, code-review-system）
 - ✅ Phase 3: Secondary（4スキル移行：git-automation, predictive-analysis, documentation-management, project-maintenance）
 - ✅ Phase 4: Commands廃止マーキング
@@ -19,11 +19,10 @@
 
 ### Foundation Skills
 
-| スキル名                  | 旧コマンド                             | 説明                                             |
-| ------------------------- | -------------------------------------- | ------------------------------------------------ |
-| **agents-only**           | `/agent-selector`                      | Agent selection framework with capability matrix |
-| **docs-index**            | -                                      | Documentation navigation hub                     |
-| **integration-framework** | `/task-context`, `/integration-matrix` | TaskContext標準化とワークフロー統合              |
+| スキル名                  | 旧コマンド                             | 説明                                |
+| ------------------------- | -------------------------------------- | ----------------------------------- |
+| **docs-index**            | -                                      | Documentation navigation hub        |
+| **integration-framework** | `/task-context`, `/integration-matrix` | TaskContext標準化とワークフロー統合 |
 
 ### Core Workflow Skills
 

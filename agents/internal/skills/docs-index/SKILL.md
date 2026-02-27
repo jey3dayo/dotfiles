@@ -72,7 +72,7 @@ This skill is activated in the following situations:
 ### Finding Skills
 
 - Technology-specific: `typescript`, `react`, `golang`, `zsh`, `nvim`
-- Documentation-related: `docs-write`, `markdown-docs`, `slide-docs`
+- Documentation-related: `slide-docs`, `docs-manager`, `documentation-management`
 - Development tools: `mise`, `dotenvx`, `similarity`, `tsr`
 - Security: `security`, `dotfiles-integration`
 
