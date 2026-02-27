@@ -48,10 +48,11 @@ for f in "${ZDOTDIR:-$HOME}"/init/*.zsh(N); do
   [[ -r "$f" ]] && source "${f}"
 done
 
-# Source additional configurations
-for f in "${ZDOTDIR:-$HOME}"/sources/*.zsh(N); do
-  [[ -r "$f" ]] && source "${f}"
-done
+# Completion styles
+[[ -r "${ZDOTDIR:-$HOME}/sources/styles.zsh" ]] && source "${ZDOTDIR:-$HOME}/sources/styles.zsh"
+
+# Main configuration loader
+[[ -r "${ZDOTDIR:-$HOME}/config/loader.zsh" ]] && source "${ZDOTDIR:-$HOME}/config/loader.zsh"
 
 # History configuration
 # Must be set here in .zshrc (after /etc/zshrc) to override macOS system defaults.
