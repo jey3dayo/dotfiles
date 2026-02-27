@@ -9,6 +9,9 @@
   ...
 }:
 
+let
+  agentSkills = import ./nix/agent-skills.nix;
+in
 {
   # Basic home-manager settings
   home.username = username;
@@ -48,15 +51,11 @@
     distributionsPath = ./agents/internal;
 
     sources = import ./nix/sources.nix {
-      inherit inputs;
-      agentSkills = import ./nix/agent-skills.nix;
+      inherit inputs agentSkills;
     };
 
     skills.enable =
-      let
-        selection = (import ./nix/agent-skills.nix).selection;
-      in
-      if selection ? enable then selection.enable else null;
+      if agentSkills.selection ? enable then agentSkills.selection.enable else null;
 
     targets = import ./nix/targets.nix;
 

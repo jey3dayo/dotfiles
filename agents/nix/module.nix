@@ -37,6 +37,62 @@ let
     name = "agent-skills-bundle";
   };
 
+  # Helper: generate mkdir commands for asset subdirectories (rules/agents)
+  mkAssetDirCommands =
+    assetType: assets: targets:
+    lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (
+        _name: target:
+        if target.enable && (lib.attrNames assets) != [ ] then
+          let
+            baseDir = lib.removeSuffix "/skills" target.dest;
+            parentDirs = lib.unique (
+              lib.filter (d: d != "") (
+                lib.map (
+                  id:
+                  let
+                    parts = lib.splitString "/" id;
+                  in
+                  if lib.length parts > 1 then lib.head parts else ""
+                ) (lib.attrNames assets)
+              )
+            );
+          in
+          ''
+            ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/${assetType}"
+            ${lib.concatMapStringsSep "\n" (dir: ''
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/${assetType}/${dir}"
+            '') parentDirs}
+          ''
+        else
+          ""
+      ) targets
+    );
+
+  # Helper: generate home.file links for asset files (rules/agents)
+  mkAssetFileLinks =
+    assetType: assets: targets:
+    lib.mapAttrsToList (
+      _name: target:
+      if target.enable && (lib.attrNames assets) != [ ] then
+        let
+          baseDir = lib.removeSuffix "/skills" target.dest;
+          keepFile = {
+            "${baseDir}/${assetType}/.keep".text = "";
+          };
+          assetFiles = lib.mapAttrs' (
+            assetId: asset:
+            lib.nameValuePair "${baseDir}/${assetType}/${assetId}.md" {
+              source = asset.path;
+              force = true;
+            }
+          ) assets;
+        in
+        keepFile // assetFiles
+      else
+        { }
+    ) targets;
+
 in {
   options.programs.agent-skills = {
     enable = lib.mkEnableOption "AI Agent Skills management";
@@ -154,40 +210,8 @@ in {
         configDirCommands = lib.mapAttrsToList (_name: target: ''
           ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
         '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
-        rulesDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
-          if target.enable && (lib.attrNames distributionResult.rules) != [] then
-            let
-              baseDir = lib.removeSuffix "/skills" target.dest;
-              # Extract parent directories from rule IDs (e.g., "frontend/react" -> "frontend")
-              parentDirs = lib.unique (lib.filter (d: d != "") (lib.map (id:
-                let parts = lib.splitString "/" id;
-                in if lib.length parts > 1 then lib.head parts else ""
-              ) (lib.attrNames distributionResult.rules)));
-            in ''
-              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/rules"
-              ${lib.concatMapStringsSep "\n" (dir: ''
-                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/rules/${dir}"
-              '') parentDirs}
-            ''
-          else ""
-        ) cfg.targets);
-        agentsDirCommands = lib.concatStringsSep "\n" (lib.mapAttrsToList (_name: target:
-          if target.enable && (lib.attrNames distributionResult.agents) != [] then
-            let
-              baseDir = lib.removeSuffix "/skills" target.dest;
-              # Extract parent directories from agent IDs (e.g., "kiro/spec-design" -> "kiro")
-              parentDirs = lib.unique (lib.filter (d: d != "") (lib.map (id:
-                let parts = lib.splitString "/" id;
-                in if lib.length parts > 1 then lib.head parts else ""
-              ) (lib.attrNames distributionResult.agents)));
-            in ''
-              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents"
-              ${lib.concatMapStringsSep "\n" (dir: ''
-                ${pkgs.coreutils}/bin/mkdir -p "$HOME/${baseDir}/agents/${dir}"
-              '') parentDirs}
-            ''
-          else ""
-        ) cfg.targets);
+        rulesDirCommands = mkAssetDirCommands "rules" distributionResult.rules cfg.targets;
+        agentsDirCommands = mkAssetDirCommands "agents" distributionResult.agents cfg.targets;
       in
         builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ rulesDirCommands agentsDirCommands ]));
 
@@ -224,42 +248,10 @@ in {
       ) cfg.configFiles)
       ++
       # Rules distribution (symlinks to each target's rules directory)
-      (lib.mapAttrsToList (_name: target:
-        if target.enable && (lib.attrNames distributionResult.rules) != [] then
-          let
-            # Extract base directory from target.dest (e.g., ".claude/skills" -> ".claude")
-            baseDir = lib.removeSuffix "/skills" target.dest;
-            # Add .keep file to ensure directory is created
-            keepFile = { "${baseDir}/rules/.keep".text = ""; };
-            rulesFiles = lib.mapAttrs' (ruleId: rule:
-              lib.nameValuePair "${baseDir}/rules/${ruleId}.md" {
-                source = rule.path;
-                force = true;
-              }
-            ) distributionResult.rules;
-          in
-            keepFile // rulesFiles
-        else {}
-      ) cfg.targets)
+      (mkAssetFileLinks "rules" distributionResult.rules cfg.targets)
       ++
       # Agents distribution (symlinks to each target's agents directory)
-      (lib.mapAttrsToList (_name: target:
-        if target.enable && (lib.attrNames distributionResult.agents) != [] then
-          let
-            # Extract base directory from target.dest (e.g., ".claude/skills" -> ".claude")
-            baseDir = lib.removeSuffix "/skills" target.dest;
-            # Add .keep file to ensure directory is created
-            keepFile = { "${baseDir}/agents/.keep".text = ""; };
-            agentsFiles = lib.mapAttrs' (agentId: agent:
-              lib.nameValuePair "${baseDir}/agents/${agentId}.md" {
-                source = agent.path;
-                force = true;
-              }
-            ) distributionResult.agents;
-          in
-            keepFile // agentsFiles
-        else {}
-      ) cfg.targets)
+      (mkAssetFileLinks "agents" distributionResult.agents cfg.targets)
     );
   };
 }
