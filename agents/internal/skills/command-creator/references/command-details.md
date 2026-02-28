@@ -157,47 +157,23 @@ Task(subagent_type="quality", ...)
 5. 結果確認とフィードバック
 ```
 
-## Shared Library統合
+## 共有パターンの活用
 
-### 利用可能なShared Utilities
+### Skills との統合
 
-現在利用可能な共有ライブラリ:
+共有ロジックは Skills として提供されます:
 
-- `commands/shared/agent-selector.md` - エージェント選択ロジック
-- `commands/shared/refactoring-plan.md` - リファクタリング計画
-- `commands/shared/project-detector.md` - プロジェクト
+- `integration-framework` スキル - エージェント選択、統合パターン
+- `code-quality-automation` スキル - lint/format/test 自動実行
+- `task-router` スキル - タスク分析とエージェント選択
 
-タイプ検出
-
-- `commands/shared/error-handler.md` - エラー処理パターン
-
-### Shared Libraryを作成すべき時
+### 再利用可能なパターンを作成すべき時
 
 以下の条件を満たす場合:
 
-- **3つ以上のコマンド**で使用されるロジック
+- **3つ以上のスキル/コマンド**で使用されるロジック
 - **複雑な操作**で標準化が有益
-- **プラットフォーム固有**の抽象化（git、npm、dockerなど）
-
-### 統合方法
-
-```markdown
-## Shared Libraries
-
-このコマンドは以下のライブラリを使用します:
-
-### 1. project-detector.md
-
-- プロジェクトタイプの自動検出
-- 技術スタックの識別
-- 設定ファイルの検索
-
-### 2. quality-checks.md
-
-- lint実行
-- test実行
-- build検証
-```
+- **プラットフォーム固有**の抽象化（git、npm、docker など）
 
 ## ファイル構成
 
