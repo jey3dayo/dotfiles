@@ -13,7 +13,7 @@ metadata:
 
 # Codex System — Deep Reasoning Partner
 
-## Codex CLI (gpt-5.3-codex) is your highly capable supporter for deep reasoning tasks
+## Codex CLI is your highly capable supporter for deep reasoning tasks
 
 > **Detailed rules**: `.claude/rules/codex-delegation.md`
 
@@ -58,7 +58,7 @@ Task tool parameters:
 - prompt: |
     Consult Codex about: {topic}
 
-    codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
+    codex exec --sandbox read-only --full-auto "
     {question for Codex}
     " 2>/dev/null
 
@@ -70,7 +70,7 @@ Task tool parameters:
 For quick questions expecting 1-2 sentence answers:
 
 ```bash
-codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "Brief question" 2>/dev/null
+codex exec --sandbox read-only --full-auto "Brief question" 2>/dev/null
 ```
 
 ### Workflow (Subagent)
@@ -98,7 +98,7 @@ codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "Brief question
 ### Design Review
 
 ```bash
-codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
+codex exec --sandbox read-only --full-auto "
 Review this design approach for: {feature}
 
 Context:
@@ -115,7 +115,7 @@ Evaluate:
 ### Debug Analysis
 
 ```bash
-codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
+codex exec --sandbox read-only --full-auto "
 Debug this issue:
 
 Error: {error message}

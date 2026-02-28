@@ -33,7 +33,7 @@
 | **implementation-engine**   | `/implement`                                           | Smart feature implementation (6フェーズ)          |
 | **todo-orchestrator**       | `/todos`, `/create-todos`, `/find-todos`, `/fix-todos` | Unified task management (P1-P5優先度)             |
 | **task-router**             | `/task`                                                | Intelligent task routing (Context7統合)           |
-| **code-review-system**      | `/review`                                              | Comprehensive code review (4モード)               |
+| **code-review-system**      | `/review`                                              | PR workflow orchestrator (CI/comments/auto-fix)   |
 
 ### Secondary Skills
 

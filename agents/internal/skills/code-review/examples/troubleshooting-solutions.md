@@ -1,6 +1,6 @@
 # トラブルシューティング
 
-code-review-systemのよくある問題と解決方法です。
+code-reviewのよくある問題と解決方法です。
 
 ## チェックポイント関連
 
@@ -293,7 +293,7 @@ cd ~/src/github.com/jey3dayo/claude-code-marketplace/plugins/dev-tools/code-revi
 git pull
 
 # 日本語出力が設定されているか確認
-grep -r "日本語" ~/.claude/skills/code-review-system/
+grep -r "日本語" ~/.claude/skills/code-review/
 ```
 
 ## CI診断モード関連
@@ -440,8 +440,8 @@ gh auth refresh -s repo
 cat ~/.claude/CLAUDE.md | grep "日本語"
 cat .claude/CLAUDE.md | grep "日本語"
 
-# code-review-systemスキルの設定を確認
-cat ~/.claude/skills/code-review-system/SKILL.md | grep "日本語"
+# code-reviewスキルの設定を確認
+cat ~/.claude/skills/code-review/SKILL.md | grep "日本語"
 ```
 
 ### コマンドが認識されない
@@ -478,7 +478,7 @@ error: code-review skill not found
 
 ```bash
 # スキルの存在を確認
-ls ~/.claude/skills/code-review-system/
+ls ~/.claude/skills/code-review/
 
 # Marketplaceプラグインの確認
 ls ~/src/github.com/jey3dayo/claude-code-marketplace/plugins/dev-tools/code-review/

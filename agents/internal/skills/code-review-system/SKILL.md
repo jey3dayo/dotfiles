@@ -1,263 +1,185 @@
 ---
 name: code-review-system
-description: Comprehensive code review with multiple modes - detailed (5-star evaluation), simple (parallel agents), PR review, CI diagnostics. Use when reviewing code quality, fixing PR comments, or diagnosing CI failures.
-argument-hint: "[--simple] [--staged|--recent|--branch <name>] [--with-impact] [--fix] [--fix-ci [pr-number]] [--fix-pr [pr-number]]"
+description: |
+  [What] GitHub PR workflow orchestrator — CI diagnosis, review comment handling, and auto-fix.
+  [When] Use when: CI fails, PR has review comments to address, or need automated PR fixes.
+  [Keywords] CI fix, PR review, fix ci, fix pr, address comments, GitHub Actions, PR workflow
+  [Note] Always responds in Japanese.
+argument-hint: "--ci [PR#] | --comments | --fix [PR#] | --all"
 disable-model-invocation: true
 user-invocable: true
 allowed-tools: Task, Bash(gh:*), Read, Grep, Glob
 ---
 
-# Code Review System - Integrated Code Review System
+# Code Review System — PR Workflow Orchestrator
 
-A skill that performs comprehensive code reviews. Provides multiple review modes and delivers reviews optimized for your project.
+Integrated workflow for GitHub PR management. Orchestrates CI diagnosis, review comment handling, and automated fixes using specialized skills.
 
-## ⚠️ Important Notes
+## Important Notes
 
-### GitHub Integration
+### No-Signature Policy (CRITICAL)
 
-- This system performs local reviews only
-- There is no feature to post comments to GitHub PRs
-- Review results are displayed locally
-- All review results are output in English
+- NEVER add `Co-authored-by: Claude` to commits
+- NEVER use emojis in commits, PRs, issues, or git content
+- NEVER add "Generated with Claude Code" signatures
 
-### No-Signature Policy
+## Modes
 
-### IMPORTANT
+### 1. CI Diagnosis (`--ci`)
 
-- ❌ **NEVER** include "Co-authored-by: Claude" in commits
-- ❌ **NEVER** include "Generated with Claude Code"
-- ❌ **NEVER** use emojis in commits, PRs, or issues
-- ❌ **NEVER** include AI signatures or watermarks
+Diagnose and fix GitHub Actions CI failures.
 
-## Execution Modes
-
-### 1. Detailed Mode (Default)
-
-Performs comprehensive quality assessment:
-
-- ⭐️ Multi-dimensional evaluation with 5-star rating system
-- Automatic project type detection
-- Tech stack-specific skill integration (typescript, react, golang, security, etc.)
-- Detailed improvement suggestions and action plan
-
-### Usage Examples
+- Retrieves CI logs via `gh` CLI
+- Classifies failures (lint, test, build, type-check)
+- Creates fix plan with priority ordering
+- Delegates to `gh-fix-ci` skill for log retrieval and analysis
 
 ```bash
-/review                    # Basic review
-/review --with-impact      # With impact analysis
-/review --fix              # With auto-fix
+/code-review-system --ci           # Diagnose PR on current branch
+/code-review-system --ci 123       # Specify PR number
+/code-review-system --ci --dry-run # Diagnose only (no fix)
 ```
 
-### 2. Simple Mode
+### 2. Comment Handling (`--comments`)
 
-Focused on rapid issue discovery:
+Address review comments on the current PR.
 
-- Parallel sub-agent execution (security, performance, quality, architecture)
-- Prioritized issue list
-- Immediate fix suggestions
-- GitHub issue integration option
-
-### Usage Examples
+- Retrieves PR review comments via `gh` CLI
+- Classifies by source (human, CodeRabbit, bots)
+- Prioritizes by severity
+- Delegates to `gh-address-comments` skill
 
 ```bash
-/review --simple           # Quick review
-/review --simple --fix     # Review + auto-fix
+/code-review-system --comments              # Address all comments
+/code-review-system --comments --bot coderabbitai  # Specific bot only
 ```
 
-### 3. CI Diagnostics Mode
+### 3. Auto-Fix (`--fix`)
 
-Diagnoses GitHub Actions CI failures and creates fix plans.
+Automatically fix PR review comments with priority ordering.
 
-- Generates failure classification and fix plans using the `ci-diagnostics` skill
-- Assists with log retrieval using the `gh-fix-ci` skill
-
-### Usage Examples
+- Classifies comments as Critical/High/Major/Minor
+- Applies fixes in priority order
+- Generates tracking documentation
+- Delegates to `gh-fix-review` skill (respects `.pr-review-config.json`)
 
 ```bash
-/review --fix-ci           # Diagnose PR on current branch
-/review --fix-ci 123       # Specify PR number
-/review --fix-ci --dry-run # Diagnose only (no fix)
+/code-review-system --fix              # Fix PR on current branch
+/code-review-system --fix 123          # Specify PR number
+/code-review-system --fix --priority critical  # Critical only
+/code-review-system --fix --dry-run    # Classify only, no fix
 ```
 
-### 4. CI Diagnostics + PR Comment Fix Mode
+### 4. Integrated Flow (`--all`)
 
-Runs CI diagnostics and PR comment fixes in the same flow. Creates a fix plan based on results from both.
-
-### Usage Examples
+Run CI diagnosis + comment handling + auto-fix in sequence.
 
 ```bash
-/review --fix-ci --fix-pr      # Run both for PR on current branch
-/review --fix-ci 123 --fix-pr  # Specify PR number
-/review --fix-ci --fix-pr --dry-run # Diagnose/classify only
+/code-review-system --all              # Full flow for current branch PR
+/code-review-system --all 123          # Specify PR number
+/code-review-system --all --dry-run    # Diagnose/classify only
 ```
 
-## Usage
+### External Review Delegation
 
-### Basic Usage
+Delegate review to external models (model-agnostic):
 
 ```bash
-# Detailed mode (default)
-/review
-
-# Simple mode
-/review --simple
+/code-review-system --ci --external codex   # Use Codex for analysis
+/code-review-system --ci --external gemini  # Use Gemini for analysis
 ```
 
-### Target File Selection
-
-Review targets are automatically determined in the following priority order:
-
-1. Staged changes (`git diff --cached`)
-2. Previous commit (`git diff HEAD~1`)
-3. Diff with development branch (`git diff origin/develop`, etc.)
-4. Recently modified files
-
-### Explicit Specification
-
-```bash
-/review --staged           # Staged changes only
-/review --recent           # Previous commit only
-/review --branch develop   # Diff with specified branch
-```
-
-### Serena Integration (Detailed Mode)
-
-Adds semantic analysis capabilities:
-
-```bash
-/review --with-impact      # API change impact analysis
-/review --deep-analysis    # Symbol-level detailed analysis
-/review --verify-spec      # Spec consistency verification
-```
-
-### Workflow Integration
-
-```bash
-/review --fix              # Review + auto-fix
-/review --create-issues    # Review + create GitHub issues
-/review --learn            # Review + record learning data
-```
-
-### PR Review Fix
-
-Auto-fix GitHub PR review comments:
-
-```bash
-/review --fix-pr           # Fix PR on current branch
-/review --fix-pr 123       # Specify PR number
-/review --fix-pr --priority critical  # Fix critical issues only
-/review --fix-pr --dry-run # Dry run (no fix)
-```
-
-## Option Reference
+## Options
 
 ### Mode Selection
 
-- `--simple`: Use simple mode (default is detailed mode)
-- `--fix-ci [PR number]`: CI diagnostics mode (GitHub Actions)
-- `--fix-ci --fix-pr [PR number]`: CI diagnostics + PR comment fix mode
+- `--ci [PR#]`: CI diagnosis mode
+- `--comments`: Review comment handling mode
+- `--fix [PR#]`: Auto-fix mode
+- `--all [PR#]`: Integrated flow (CI + comments + fix)
 
-### Target Specification
+### Filtering
 
-- `--staged`: Staged changes only
-- `--recent`: Previous commit only
-- `--branch <name>`: Diff with specified branch
-
-### Serena Integration (Detailed Mode Only)
-
-- `--with-impact`: API change impact analysis
-- `--deep-analysis`: Deep semantic analysis
-- `--verify-spec`: Spec consistency verification
-
-### Workflow
-
-- `--fix`: Apply auto-fix
-- `--create-issues`: Create GitHub issues
-- `--learn`: Record learning data
-
-### PR Review Fix
-
-- `--fix-pr [PR number]`: PR review comment fix mode
-- `--priority <level>`: Priority level to fix (critical/high/major/minor)
-- `--bot <name>`: Only comments from a specific bot (e.g., coderabbitai)
+- `--priority <level>`: Fix only this priority (critical/high/major/minor)
+- `--bot <name>`: Only comments from specific bot (e.g., coderabbitai)
 - `--category <cat>`: Specific category only (security/bug/style/etc)
-- `--dry-run`: Dry run (classify only, no fix)
 
-### CI Diagnostics
+### Behavior
 
-- `--fix-ci [PR number]`: CI diagnostics mode (GitHub Actions)
-- `--dry-run`: Dry run (diagnose only, no fix)
+- `--dry-run`: Diagnose/classify only, no modifications
+- `--external <model>`: Delegate to external model (codex/gemini)
 
-## Project-Specific Customization
+## Execution Flow
 
-This system operates in the following priority order:
+```
+PR # detection (current branch or explicit)
+    |
+    v
++-- --ci ---------> gh-fix-ci skill
+|                   -> Fetch CI logs
+|                   -> Classify failures
+|                   -> Create fix plan
+|                   -> Apply fixes
+|
++-- --comments ---> gh-address-comments skill
+|                   -> Fetch review comments
+|                   -> Classify by source/severity
+|                   -> Address each comment
+|
++-- --fix --------> gh-fix-review skill
+|                   -> Classify comments (Critical/High/Major/Minor)
+|                   -> Apply fixes in priority order
+|                   -> Generate tracking doc
+|
++-- --all --------> Run all above in sequence
+    |
+    v
+Quality verification (lint/test/build)
+    |
+    v
+Report results (Japanese)
+```
 
-1. Project-specific command: If `./.claude/commands/review.md` exists, it is executed
-2. Project-specific guidelines: If `./.claude/review-guidelines.md` exists, it is applied
-3. Generic review: If neither exists, the code-review skill's default behavior is used
+## Skill Dependencies
 
-To define project-specific evaluation guidelines, place a file in one of the following locations:
-
-- `./.claude/review-guidelines.md`
-- `./docs/review-guidelines.md`
-- `./docs/guides/review-guidelines.md`
-
-If these files exist, they are automatically integrated into the evaluation guidelines.
-
-Details: [project-customization.md](references/project-customization.md)
-
-## Tech Stack-Specific Skills
-
-The code-review skill automatically integrates the following skills:
-
-- typescript: TypeScript-specific perspectives (type safety, strict mode, type guards)
-- react: React-specific perspectives (hooks, performance, component design)
-- golang: Go-specific perspectives (error handling, concurrency, idioms)
-- security: Security perspectives (input validation, authentication/authorization, data protection)
-- clean-architecture: Architecture perspectives (layer separation, dependency rules, domain modeling)
-
-The appropriate skill is automatically selected based on the project type.
-
-Details: [tech-stack-skills.md](references/tech-stack-skills.md)
-
-## Detailed References
-
-- [Execution Mode Details](references/execution-modes.md) - Detailed specs and execution flows for 4 modes
-- [Skill Integration Details](references/skill-integration-detail.md) - Skill integration details and flow
-- [Project Customization](references/project-customization.md) - Hybrid behavior and guidelines
-- [Tech Stack-Specific Skills](references/tech-stack-skills.md) - Project detection and evaluation criteria
-
-## Usage Examples
-
-- [Review Workflows](examples/review-workflows.md) - 5 practical workflows
-- [Troubleshooting](examples/troubleshooting-solutions.md) - Common issues and solutions
+| Skill                 | Role                          | Config                   |
+| --------------------- | ----------------------------- | ------------------------ |
+| `gh-fix-ci`           | CI log retrieval and analysis | -                        |
+| `gh-address-comments` | PR comment handling           | -                        |
+| `gh-fix-review`       | Automated comment fixing      | `.pr-review-config.json` |
 
 ## Troubleshooting
 
-### Checkpoint creation fails
-
-This is normal when there are no changes. Having existing checkpoints is also fine.
-
-### GitHub issue creation fails
+### PR not found
 
 ```bash
-# Verify gh CLI is installed
-gh --version
+# Check if PR exists for current branch
+gh pr list --head $(git branch --show-current)
 
-# Check authentication status
-gh auth status
+# Specify PR number explicitly
+/code-review-system --ci 123
 ```
 
-### Serena options not working
+### CI logs not accessible
 
-Verify that the Serena MCP server is configured (`.claude/mcp.json`).
+```bash
+# Check gh CLI auth
+gh auth status
 
-## Related Commands
+# Refresh permissions
+gh auth refresh -s repo
+```
 
-- `/fix`: Run direct error fix (error-fixer agent)
-- `/todos`: TODO list management
-- `/learnings`: View learning data
-- `/task`: Generic task execution
+### gh-fix-review config
+
+The `gh-fix-review` skill respects `.pr-review-config.json` in project root. See `gh-fix-review` skill documentation for config format.
+
+## Related
+
+- `code-review` — Local code review (detailed/simple modes, star ratings)
+- `gh-fix-ci` — CI failure diagnosis helper
+- `gh-address-comments` — Review comment handler
+- `gh-fix-review` — Automated PR fix with config system
 
 ---
 
