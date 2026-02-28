@@ -38,7 +38,7 @@ Comprehensive quality assessment with structured evaluation:
 - Detailed improvement proposals with action plans
 - Impact analysis with Serena integration (optional)
 
-**When to use**: Comprehensive quality gates, pre-release assessment, architecture evaluation, learning/mentoring, establishing quality baselines.
+When to use: Comprehensive quality gates, pre-release assessment, architecture evaluation, learning/mentoring, establishing quality baselines.
 
 ```bash
 /review                    # Detailed review (default)
@@ -55,7 +55,7 @@ Quick practical analysis focused on immediate issues:
 - Immediate actionable fixes
 - Problem prioritization by severity
 
-**When to use**: Daily development workflow, quick sanity checks, rapid problem identification, CI/CD integration.
+When to use: Daily development workflow, quick sanity checks, rapid problem identification, CI/CD integration.
 
 ```bash
 /review --simple           # Quick review
@@ -131,12 +131,12 @@ These are automatically integrated into evaluation criteria.
 
 Automatically invoke relevant technology-specific skills based on project detection:
 
-- **typescript**: Type safety, strict mode, type guards, Result pattern
-- **react**: Component design, hooks usage, performance optimization
-- **golang**: Idiomatic Go, error handling, concurrency patterns
-- **security**: Input validation, authentication, authorization, encryption
-- **clean-architecture**: Layer separation, dependency rules, domain modeling
-- **semantic-analysis**: Symbol-level analysis, impact assessment, reference tracking
+- typescript: Type safety, strict mode, type guards, Result pattern
+- react: Component design, hooks usage, performance optimization
+- golang: Idiomatic Go, error handling, concurrency patterns
+- security: Input validation, authentication, authorization, encryption
+- clean-architecture: Layer separation, dependency rules, domain modeling
+- semantic-analysis: Symbol-level analysis, impact assessment, reference tracking
 
 ## Star Rating System
 
