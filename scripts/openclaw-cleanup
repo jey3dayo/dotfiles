@@ -22,6 +22,52 @@ log="$logdir/cleanup.log"
     echo "mise: not found"
   fi
 
+  echo "--- openclaw bundled-plugins sync ---"
+  # openclaw 2026.2.26+: pnpm store の hardlink は unsafe 扱いのため
+  # extensions を ~/.openclaw/bundled-plugins/ に non-hardlink コピーして同期する
+  OPENCLAW_BUNDLED_PLUGINS_DIR="${HOME}/.openclaw/bundled-plugins"
+  OPENCLAW_EXTENSIONS_SRC=""
+  # openclaw-gateway と同じ候補リストで実体バイナリを解決する（shim 経由を避ける）
+  _openclaw_bin=""
+  for _candidate in \
+      "${HOME}/.mise/installs/npm-openclaw/latest/bin/openclaw" \
+      "${HOME}/.local/share/pnpm/openclaw" \
+      "${HOME}/.local/bin/openclaw" \
+      "/usr/local/bin/openclaw" \
+      "/usr/bin/openclaw"; do
+    if [ -x "$_candidate" ]; then
+      _openclaw_bin="$_candidate"
+      break
+    fi
+  done
+  if [ -z "$_openclaw_bin" ] && command -v openclaw >/dev/null 2>&1; then
+    _openclaw_bin="$(command -v openclaw)"
+  fi
+  if [ -n "$_openclaw_bin" ]; then
+    # bin/openclaw は pnpm の sh ラッパー。bin/ の親ディレクトリ配下の
+    # pnpm コンテキストを glob で探し extensions ディレクトリを特定する
+    # 構造: <install>/<ctx>/.pnpm/openclaw@<ver>/node_modules/openclaw/extensions
+    _bin_dir=$(dirname "$(readlink -f "$_openclaw_bin" 2>/dev/null || echo "$_openclaw_bin")")
+    _install_dir=$(dirname "$_bin_dir")
+    for _pkg_dir in "${_install_dir}"/[0-9]*/.pnpm/openclaw@*/node_modules/openclaw; do
+      if [ -d "${_pkg_dir}/extensions" ]; then
+        OPENCLAW_EXTENSIONS_SRC="${_pkg_dir}/extensions"
+        break
+      fi
+    done
+  fi
+  if [ -n "$OPENCLAW_EXTENSIONS_SRC" ] && [ -d "$OPENCLAW_EXTENSIONS_SRC" ]; then
+    echo "Syncing bundled plugins from: $OPENCLAW_EXTENSIONS_SRC"
+    if [ -n "$OPENCLAW_BUNDLED_PLUGINS_DIR" ] && [[ "$OPENCLAW_BUNDLED_PLUGINS_DIR" == "$HOME"/.openclaw/* ]]; then
+      rm -rf "$OPENCLAW_BUNDLED_PLUGINS_DIR"
+    else
+      echo "invalid bundled-plugins dir, skipping rm -rf: $OPENCLAW_BUNDLED_PLUGINS_DIR"
+    fi
+    cp -r "$OPENCLAW_EXTENSIONS_SRC" "$OPENCLAW_BUNDLED_PLUGINS_DIR" &&       echo "bundled-plugins synced: $(ls "$OPENCLAW_BUNDLED_PLUGINS_DIR" | wc -l) plugins" ||       echo "bundled-plugins sync failed"
+  else
+    echo "openclaw extensions not found, skipping bundled-plugins sync"
+  fi
+
   echo "--- pnpm store prune ---"
   if command -v pnpm >/dev/null 2>&1; then
     pnpm store prune || true

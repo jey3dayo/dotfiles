@@ -1,7 +1,6 @@
 [Unit]
 Description=Periodic cleanup (mise/pnpm/npm) to reduce disk usage
 After=default.target
-Wants=openclaw-gateway.service
 
 [Service]
 Type=oneshot

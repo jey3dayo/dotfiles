@@ -4,6 +4,8 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+ExecStartPre=/usr/bin/test -d %h/.openclaw/bundled-plugins
+ExecStartPre=/usr/bin/test -d %h/.openclaw/bundled-plugins/memory-core
 ExecStart=%h/.config/scripts/openclaw-gateway gateway --port 18789
 Restart=always
 RestartSec=10
@@ -16,6 +18,7 @@ Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
 Environment=OPENCLAW_SERVICE_VERSION=latest
+Environment="OPENCLAW_BUNDLED_PLUGINS_DIR=%h/.openclaw/bundled-plugins"
 
 [Install]
 WantedBy=default.target
