@@ -1,0 +1,373 @@
+# Data Systems Questions - データシステム固有の22問
+# カテゴリ: Pipeline, Storage, Quality, Governance, Processing
+
+questions:
+  # Pipeline (5問)
+  - id: DAT-001
+    category: pipeline
+    priority: critical
+    text: |
+      データパイプラインの信頼性設計は明確ですか？
+      - Exactly-once / At-least-once / At-most-once のどの保証レベルですか？
+      - パイプライン障害時のリトライ戦略は？
+      - デッドレターキュー（DLQ）の実装は？
+    triggers:
+      - pipeline
+      - etl
+      - data-flow
+      - reliability
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [mvp, production]
+
+  - id: DAT-002
+    category: pipeline
+    priority: critical
+    text: |
+      バッチ処理 vs ストリーミング処理の選択根拠は明確ですか？
+      - リアルタイム性の要件（秒単位、分単位、時間単位）は？
+      - Lambda Architecture / Kappa Architecture の検討は？
+      - Spark、Flink、Kafka Streams 等の選定基準は？
+    triggers:
+      - batch
+      - streaming
+      - real-time
+      - spark
+      - kafka
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [mvp, production]
+
+  - id: DAT-003
+    category: pipeline
+    priority: high
+    text: |
+      スキーマ進化（Schema Evolution）戦略は定義されていますか？
+      - 後方互換性のあるスキーマ変更ルールは？
+      - Schema Registry（Confluent、AWS Glue等）の導入は？
+      - スキーマ変更時のダウンストリームへの影響管理は？
+    triggers:
+      - schema
+      - evolution
+      - avro
+      - protobuf
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-004
+    category: pipeline
+    priority: high
+    text: |
+      データパイプラインの監視・アラートは設計されていますか？
+      - データ遅延（Data Freshness）の監視は？
+      - データ量の異常検知（急増・急減）は？
+      - パイプライン実行の SLA は定義されていますか？
+    triggers:
+      - monitoring
+      - freshness
+      - sla
+      - alert
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-005
+    category: pipeline
+    priority: medium
+    text: |
+      データパイプラインのテスト戦略は明確ですか？
+      - ユニットテスト（変換ロジック）は？
+      - 統合テスト（エンドツーエンドのパイプライン）は？
+      - データ品質テスト（Great Expectations等）の導入は？
+    triggers:
+      - testing
+      - data-quality
+      - great-expectations
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  # Storage (5問)
+  - id: DAT-006
+    category: storage
+    priority: critical
+    text: |
+      データストレージの選定根拠は明確ですか？
+      - OLTP（PostgreSQL、MySQL）vs OLAP（BigQuery、Redshift）の使い分けは？
+      - NoSQL（DynamoDB、MongoDB）の採用基準は？
+      - データレイク（S3、GCS）の活用計画は？
+    triggers:
+      - storage
+      - database
+      - data-lake
+      - olap
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [mvp, production]
+
+  - id: DAT-007
+    category: storage
+    priority: high
+    text: |
+      データパーティショニング戦略は定義されていますか？
+      - 時系列データのパーティション単位（日、月、年）は？
+      - パーティションキーの選定基準は？
+      - パーティションプルーニングの効果は測定されていますか？
+    triggers:
+      - partition
+      - sharding
+      - performance
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-008
+    category: storage
+    priority: high
+    text: |
+      データの圧縮・フォーマット戦略は明確ですか？
+      - Parquet、ORC、Avro 等のフォーマット選択根拠は？
+      - 圧縮アルゴリズム（Snappy、Zstd、Gzip）の選定は？
+      - 読み取り/書き込みパターンとフォーマットの適合性は？
+    triggers:
+      - parquet
+      - compression
+      - format
+      - storage
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-009
+    category: storage
+    priority: medium
+    text: |
+      データライフサイクル管理は計画されていますか？
+      - Hot / Warm / Cold ストレージの分類基準は？
+      - 自動ティアリング（S3 Lifecycle Policy等）の設定は？
+      - データ保持期間とコストの最適化は？
+    triggers:
+      - lifecycle
+      - tiering
+      - archive
+      - retention
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-010
+    category: storage
+    priority: medium
+    text: |
+      データの冗長化・レプリケーション戦略は明確ですか？
+      - マルチリージョンレプリケーションの必要性は？
+      - 同期/非同期レプリケーションの選択根拠は？
+      - レプリカ遅延の許容範囲は定義されていますか？
+    triggers:
+      - replication
+      - redundancy
+      - multi-region
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  # Quality (4問)
+  - id: DAT-011
+    category: quality
+    priority: critical
+    text: |
+      データ品質の定義・測定方法は確立されていますか？
+      - 完全性（Completeness）: NULL 率の許容範囲は？
+      - 正確性（Accuracy）: データ検証ルールは？
+      - 一貫性（Consistency）: ソース間の整合性チェックは？
+      - 適時性（Timeliness）: データ鮮度の SLA は？
+    triggers:
+      - data-quality
+      - completeness
+      - accuracy
+      - consistency
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [mvp, production]
+
+  - id: DAT-012
+    category: quality
+    priority: high
+    text: |
+      データバリデーションの自動化は実装されていますか？
+      - 入力データの制約チェック（範囲、型、フォーマット）は？
+      - 異常値検出（統計的手法、ルールベース）は？
+      - バリデーション失敗時のハンドリング（拒否、修正、フラグ付け）は？
+    triggers:
+      - validation
+      - anomaly
+      - constraint
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-013
+    category: quality
+    priority: high
+    text: |
+      データリネージ（血統管理）は追跡可能ですか？
+      - データの変換履歴は記録されていますか？
+      - 上流データの変更がどの下流に影響するか把握できますか？
+      - OpenLineage、Apache Atlas 等のツール導入は検討しましたか？
+    triggers:
+      - lineage
+      - provenance
+      - tracking
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-014
+    category: quality
+    priority: medium
+    text: |
+      データカタログは整備されていますか？
+      - テーブル定義、カラム説明のドキュメントは？
+      - データディクショナリは最新状態ですか？
+      - データの発見性（Discoverability）は確保されていますか？
+    triggers:
+      - catalog
+      - documentation
+      - metadata
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  # Governance (4問)
+  - id: DAT-015
+    category: governance
+    priority: critical
+    text: |
+      個人情報（PII）の取り扱いポリシーは定義されていますか？
+      - PII の分類（直接識別、間接識別）は？
+      - マスキング、匿名化、仮名化の使い分けは？
+      - GDPR、個人情報保護法等の法規制への対応は？
+    triggers:
+      - pii
+      - gdpr
+      - privacy
+      - anonymization
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [mvp, production]
+
+  - id: DAT-016
+    category: governance
+    priority: high
+    text: |
+      データアクセス制御は適切ですか？
+      - RBAC（Role-Based Access Control）は実装されていますか？
+      - カラムレベル / 行レベルのアクセス制御は必要ですか？
+      - アクセスログの監査は実施されていますか？
+    triggers:
+      - access-control
+      - rbac
+      - audit
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-017
+    category: governance
+    priority: high
+    text: |
+      データ保持・削除ポリシーは明確ですか？
+      - 法的要件に基づく保持期間は？
+      - 削除リクエスト（Right to be Forgotten）への対応は？
+      - バックアップからの削除も考慮されていますか？
+    triggers:
+      - retention
+      - deletion
+      - right-to-be-forgotten
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-018
+    category: governance
+    priority: medium
+    text: |
+      データの所有権と責任は明確ですか？
+      - データオーナー（ビジネス側）は定義されていますか？
+      - データスチュワード（技術側）は？
+      - SLA 違反時のエスカレーション経路は？
+    triggers:
+      - ownership
+      - stewardship
+      - responsibility
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  # Processing (4問)
+  - id: DAT-019
+    category: processing
+    priority: high
+    text: |
+      データ変換の冪等性は保証されていますか？
+      - 同じ入力に対して常に同じ出力が得られますか？
+      - 再実行時にデータの重複は発生しませんか？
+      - 変換ロジックの決定論的性質は検証されていますか？
+    triggers:
+      - idempotent
+      - transform
+      - reprocessing
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-020
+    category: processing
+    priority: high
+    text: |
+      大規模データ処理のスケーリング戦略は明確ですか？
+      - 水平スケーリング（ノード追加）の自動化は？
+      - データスキュー（偏り）への対策は？
+      - リソース制限（メモリ、CPU）の設定は？
+    triggers:
+      - scaling
+      - skew
+      - distributed
+      - performance
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-021
+    category: processing
+    priority: medium
+    text: |
+      バックフィル（過去データの再処理）戦略は定義されていますか？
+      - バックフィルの実行手順は文書化されていますか？
+      - 本番データへの影響を最小化する方法は？
+      - バックフィル完了の検証方法は？
+    triggers:
+      - backfill
+      - reprocessing
+      - historical
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]
+
+  - id: DAT-022
+    category: processing
+    priority: medium
+    text: |
+      データオーケストレーションツールの選定は適切ですか？
+      - Airflow、Dagster、Prefect 等の選定根拠は？
+      - DAG（有向非巡回グラフ）の設計パターンは？
+      - タスク間の依存関係管理は明確ですか？
+    triggers:
+      - orchestration
+      - airflow
+      - dagster
+      - dag
+    relevance_boost:
+      domains: [data-systems]
+      maturity: [production]

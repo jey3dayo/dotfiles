@@ -54,11 +54,20 @@ You can customize review rules by placing a `.pr-review-config.json` file in the
 Fetch PR comments using the GitHub CLI:
 
 ```python
-from commands.shared.git_operations import get_current_pr_number
 import subprocess
 import json
 
-# Get PR number (auto-detected or explicitly specified)
+# Get PR number (auto-detected from current branch)
+def get_current_pr_number():
+    """Get PR number for the current branch using gh CLI."""
+    result = subprocess.run(
+        ["gh", "pr", "view", "--json", "number", "--jq", ".number"],
+        capture_output=True, text=True
+    )
+    if result.returncode != 0:
+        return None
+    return int(result.stdout.strip())
+
 pr_number = get_current_pr_number()
 
 # Fetch PR review comments
@@ -299,27 +308,19 @@ def generate_tracking_document(pr_number, pr_title, classified_comments, config)
 Apply fixes in priority order:
 
 ```python
-from commands.shared.quality_gates import QualityGates
-
 def apply_pr_review_fixes(classified_comments, config, dry_run=False):
     """Apply fixes for PR review comments."""
 
-    from commands.shared.todo_integration import TodoManager
-
-    # Create Todo list
-    todo_manager = TodoManager()
+    # Use TodoWrite tool for progress tracking
+    todos = []
 
     # Add in order: Critical -> High -> Major -> Minor
     for priority in ["critical", "high", "major", "minor"]:
         emoji = config["priorities"][priority]["emoji"]
         for comment in classified_comments[priority]:
-            todo_manager.add_todo(
+            todos.append(
                 f"{emoji} Fix {comment['category']}: {comment['body'][:50]}..."
             )
-
-    # Set first Todo to in_progress
-    if todo_manager.todos:
-        todo_manager.mark_in_progress(0)
 
     # Display with TodoWrite tool
     # ...
@@ -327,9 +328,6 @@ def apply_pr_review_fixes(classified_comments, config, dry_run=False):
     if dry_run:
         print("Dry run mode: fixes will not be applied")
         return
-
-    # Quality gates
-    gates = QualityGates()
 
     # Apply fixes in priority order
     for priority in ["critical", "high", "major", "minor"]:
@@ -341,40 +339,33 @@ def apply_pr_review_fixes(classified_comments, config, dry_run=False):
             fix_success = apply_single_fix(comment)
 
             if fix_success:
-                # Quality check
-                results = gates.run_all(type_check=True, lint=True, test=False)
+                # Quality check using project CI commands
+                result = subprocess.run(
+                    ["mise", "run", "ci:quick"],
+                    capture_output=True, text=True
+                )
 
-                if all(r.success for r in results.values()):
+                if result.returncode == 0:
                     print("  Fix completed")
-                    todo_manager.mark_current_completed()
-                    todo_manager.start_next()
-
-                    # Update tracking document
                     update_tracking_status(comment, "completed")
                 else:
                     print("  Quality check failed, rolling back")
                     rollback_fix(comment)
-                    todo_manager.mark_current_completed()
-                    todo_manager.start_next()
                     update_tracking_status(comment, "failed")
 
 
 def apply_single_fix(comment):
     """Apply a single fix using appropriate agent."""
 
-    from commands.shared.agent_selector import select_optimal_agent
+    # Select appropriate agent using Task tool
+    # Agent type is determined by comment category:
+    #   security -> security agent
+    #   performance -> performance agent
+    #   bug -> error-fixer agent
+    #   style/refactor -> code-reviewer agent
+    #   default -> orchestrator agent
 
-    # Select agent
-    agent_info = select_optimal_agent(
-        f"Fix {comment['category']} issue: {comment['body']}",
-        context={
-            "file_path": comment['path'],
-            "line_number": comment['line']
-        }
-    )
-
-    # Execute agent
-    # Use Task tool
+    # Execute fix using Task tool
     # ...
 
     return True  # success
@@ -474,31 +465,28 @@ gh pr view --json number --jq '.number'
 
 ### Quality Assurance Integration
 
-```python
-from commands.shared.quality_gates import QualityGates
+```bash
+# Quick quality check (format + lint)
+mise run ci:quick
 
-gates = QualityGates()
-results = gates.run_all(
-    type_check=True,
-    lint=True,
-    test=False  # Tests are typically skipped for PR review fixes
-)
+# Full quality check (format + lint + test)
+mise run ci
 ```
 
 ### Agent Integration
 
-```python
-from commands.shared.agent_selector import select_optimal_agent
+Agent selection is determined by comment category:
 
-# Select optimal agent according to fix type
-agent_info = select_optimal_agent(
-    task_description=f"Fix {category} issue in {file_path}",
-    context={
-        "project_type": project_info.project_type,
-        "category": category
-    }
-)
 ```
+Category → Agent Type
+security     → security agent
+performance  → performance agent
+bug          → error-fixer agent
+style        → code-reviewer agent
+default      → orchestrator agent
+```
+
+Use the Task tool to delegate fixes to the appropriate agent.
 
 ## Important Notes
 

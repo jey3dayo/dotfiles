@@ -12,14 +12,14 @@
 
 ### 実装ガイド
 
-このスキルはClaude Codeのコマンドシステムと統合されています。
+このスキルは `gh` CLI と Claude Code の Task tool を活用して動作します。
 
-#### 関連する共通ユーティリティ
+#### 使用するツール
 
-- `commands/shared/git_operations.py` - Git/GitHub操作
-- `commands/shared/quality_gates.py` - 品質チェック
-- `commands/shared/agent_selector.py` - エージェント選択
-- `commands/shared/todo_integration.py` - Todo管理
+- `gh` CLI - PR情報取得、レビューコメント取得
+- Task tool - エージェント委譲による自動修正
+- TodoWrite tool - 進捗管理
+- `mise run ci:quick` - 品質チェック
 
 ## クイックリファレンス
 

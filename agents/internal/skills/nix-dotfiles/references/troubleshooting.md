@@ -55,7 +55,7 @@ home-manager switch --flake ~/.config --impure
 ### 対策2: 統合診断スクリプトで確認
 
 ```bash
-~/.config/agents/skills-internal/nix-dotfiles/scripts/diagnose.sh
+~/.config/agents/internal/skills/nix-dotfiles/scripts/diagnose.sh
 ```
 
 スクリプトは以下をチェックします:
@@ -371,7 +371,7 @@ check_worktree ~/.config
 ### 診断スクリプトによる確認
 
 ```bash
-~/.config/agents/skills-internal/nix-dotfiles/scripts/diagnose.sh
+~/.config/agents/internal/skills/nix-dotfiles/scripts/diagnose.sh
 ```
 
 スクリプトの `check_worktree()` が以下を確認します:
