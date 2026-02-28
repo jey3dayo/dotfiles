@@ -58,9 +58,12 @@ log="$logdir/cleanup.log"
   fi
   if [ -n "$OPENCLAW_EXTENSIONS_SRC" ] && [ -d "$OPENCLAW_EXTENSIONS_SRC" ]; then
     echo "Syncing bundled plugins from: $OPENCLAW_EXTENSIONS_SRC"
-    rm -rf "$OPENCLAW_BUNDLED_PLUGINS_DIR"
-    cp -r "$OPENCLAW_EXTENSIONS_SRC" "$OPENCLAW_BUNDLED_PLUGINS_DIR"
-    echo "bundled-plugins synced: $(ls "$OPENCLAW_BUNDLED_PLUGINS_DIR" | wc -l) plugins"
+    if [ -n "$OPENCLAW_BUNDLED_PLUGINS_DIR" ] && [[ "$OPENCLAW_BUNDLED_PLUGINS_DIR" == "$HOME"/.openclaw/* ]]; then
+      rm -rf "$OPENCLAW_BUNDLED_PLUGINS_DIR"
+    else
+      echo "invalid bundled-plugins dir, skipping rm -rf: $OPENCLAW_BUNDLED_PLUGINS_DIR"
+    fi
+    cp -r "$OPENCLAW_EXTENSIONS_SRC" "$OPENCLAW_BUNDLED_PLUGINS_DIR" &&       echo "bundled-plugins synced: $(ls "$OPENCLAW_BUNDLED_PLUGINS_DIR" | wc -l) plugins" ||       echo "bundled-plugins sync failed"
   else
     echo "openclaw extensions not found, skipping bundled-plugins sync"
   fi

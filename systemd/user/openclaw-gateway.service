@@ -4,6 +4,8 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+ExecStartPre=/usr/bin/test -d %h/.openclaw/bundled-plugins
+ExecStartPre=/usr/bin/test -d %h/.openclaw/bundled-plugins/memory-core
 ExecStart=%h/.config/scripts/openclaw-gateway gateway --port 18789
 Restart=always
 RestartSec=10
