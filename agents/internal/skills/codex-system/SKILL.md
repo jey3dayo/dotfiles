@@ -79,12 +79,23 @@ codex exec --sandbox read-only --full-auto "Brief question" 2>/dev/null
 2. Continue your work → Subagent runs in parallel
 3. Receive summary → Subagent returns concise insights
 
-### Sandbox Modes
+### Session Continuity
 
-| Mode              | Use Case                           |
-| ----------------- | ---------------------------------- |
-| `read-only`       | Analysis, review, debugging advice |
-| `workspace-write` | Implementation, refactoring, fixes |
+Codex セッションは CWD 単位で保存される。
+review スキル（`codex-code-review`, `codex-plan-review`）は自動的に
+`resume --last` を試み、先行する相談セッションのコンテキストを引き継ぐ。
+
+手動操作は不要。codex-system で設計相談 → review スキル起動で自動的に文脈が接続される。
+
+### Quick Reference
+
+| Use Case                      | Sandbox Mode       | Command Pattern                                             |
+| ----------------------------- | ------------------ | ----------------------------------------------------------- |
+| Analysis, review, debug       | `read-only`        | `codex exec --sandbox read-only --full-auto "..." 2>/dev/null` |
+| Implementation, refactoring   | `workspace-write`  | `codex exec --sandbox workspace-write --full-auto "..." 2>/dev/null` |
+| Resume previous session       | Inherited          | `echo "prompt" \| codex exec resume --last 2>/dev/null`    |
+
+> **Note**: resume 時はフラグ（`--sandbox`, `--full-auto` 等）を指定できない。セッション元の設定が自動的に引き継がれる。
 
 ## Language Protocol
 
