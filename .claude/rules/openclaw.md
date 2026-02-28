@@ -25,10 +25,7 @@ OPENCLAW_GATEWAY_TOKEN=<新規生成したTOKEN>
 #### TOKEN生成方法
 
 ```bash
-# 新しいTOKENを生成
-openssl rand -hex 32
-
-# gateway.envに追加
+# 新しいTOKENを生成して gateway.env に書き込む
 echo "OPENCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)" >> ~/.openclaw/gateway.env
 ```
 
@@ -61,41 +58,9 @@ Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment="OPENCLAW_BUNDLED_PLUGINS_DIR=%h/.openclaw/bundled-plugins"
 ```
 
-#### `OPENCLAW_BUNDLED_PLUGINS_DIR` について
-
-openclaw 2026.2.26 以降、pnpm ストア内のハードリンクファイルはセキュリティポリシーにより "unsafe" と判定される。
-これにより、pnpm 経由でインストールした場合に bundled plugins（memory-core 等）がロードできず、
-`plugins.slots.memory: plugin not found: memory-core` エラーで Gateway が起動しない。
-
-**対処**: `~/.openclaw/bundled-plugins/` に extensions ディレクトリをコピーし（ハードリンクなし）、
-`OPENCLAW_BUNDLED_PLUGINS_DIR` でそのパスを指定する。
-
-バージョンアップ後は cleanup script が自動更新するため手動対応不要（後述）。
-
 #### ラッパースクリプト (`~/.config/scripts/openclaw-gateway`)
 
-`scripts/openclaw-gateway` で `openclaw` 実行ファイルを候補順に解決し、見つからない場合のみ `command -v` にフォールバックする。
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-candidates=(
-  "${HOME}/.mise/installs/npm-openclaw/latest/bin/openclaw"
-  "${HOME}/.local/share/pnpm/openclaw"
-  "${HOME}/.local/bin/openclaw"
-  "/usr/local/bin/openclaw"
-  "/usr/bin/openclaw"
-)
-
-if [ -x "${HOME}/.mise/installs/node/latest/bin/node" ]; then
-  export PATH="${HOME}/.mise/installs/node/latest/bin:${PATH}"
-fi
-```
-
-実際の判定ロジックは必ず `~/.config/scripts/openclaw-gateway` 本体を参照すること。
-
-これにより **openclawアップデート後も設定変更不要**。
+`scripts/openclaw-gateway` で `openclaw` 実行ファイルを候補順に解決し、見つからない場合のみ `command -v` にフォールバックする。これにより **openclawアップデート後も設定変更不要**。
 
 #### 注意
 
@@ -114,8 +79,6 @@ EnvironmentFile=%h/.openclaw/gateway.env
 ファイル: `~/.config/systemd/user/openclaw-cleanup.service`
 
 目的: 定期的なディスククリーンアップ（mise/pnpm/npm）
-
-#### 主要設定
 
 ```ini
 [Unit]
@@ -153,58 +116,11 @@ WantedBy=timers.target
 
 ファイル: `~/.config/scripts/openclaw-cleanup`
 
-#### 機能
-
-- mise prune: 古いバージョン削除
-- pnpm store prune: 未使用パッケージ削除
-- npm cache clean: キャッシュクリア
-- ディスク使用量記録
-
-#### 重要な設定
-
-```bash
-# PATH設定（mise/pnpm/npmを確実に発見）
-export PATH="$HOME/.local/bin:$PATH"
-
-# npm出力フィルタリング
-npm cache clean --force 2>&1 | grep -v "npm warn" || true
-```
+機能: mise prune / pnpm store prune / npm cache clean / ディスク使用量記録
 
 ログファイル: `~/.cache/openclaw/cleanup.log`
 
 ### systemd設計の原則
-
-#### サービスごとの最適化
-
-OpenClawのsystemd設定は、**サービス特性に応じた最適化**を行っています。
-
-##### Gateway Service（永続サービス）
-
-#### PATH設計
-
-- mise最新バイナリへの直接パス参照
-- shim経由のオーバーヘッド回避（起動時間50-100ms削減）
-- 永続サービスのため、起動速度が重要
-
-KillMode設計: `mixed`
-
-- メインプロセス（openclaw gateway）とその子プロセス（Telegram Bot等）を確実に終了
-- ポート占有やリソースリーク防止に必須
-
-##### Cleanup Service（ワンショット）
-
-#### PATH設計
-
-- mise shimを使用してポータビリティ確保
-- miseが管理するバージョンを自動的に使用
-- 日次1回実行のため、shimオーバーヘッド（50-100ms）は無視可能
-
-KillMode設計: 未設定（デフォルトのcontrol-group）
-
-- Type=oneshotのため、ExecStart完了時点でプロセスが終了
-- 残存プロセスが存在しないため、KillMode指定は不要
-
-#### 設計原則のまとめ
 
 | 項目     | Gateway Service   | Cleanup Service         | 理由                             |
 | -------- | ----------------- | ----------------------- | -------------------------------- |
@@ -212,8 +128,6 @@ KillMode設計: 未設定（デフォルトのcontrol-group）
 | PATH     | 直接バイナリ参照  | mise shim経由           | パフォーマンス vs ポータビリティ |
 | KillMode | mixed（子も終了） | 未設定（デフォルト）    | 子プロセス管理の必要性           |
 | Restart  | always            | on-failure              | 永続 vs エラー時のみ             |
-
-### この分離設計により、各サービスが最適化され、保守性も確保されています
 
 ## Common Operations
 
@@ -290,6 +204,24 @@ curl http://localhost:18789/health
 uptime
 df -h /
 free -h
+```
+
+### 緊急時コマンド
+
+```bash
+# Gatewayが応答しない
+systemctl --user restart openclaw-gateway.service
+
+# CPU 99%消費: gateway.env確認・修正後に再起動
+systemctl --user stop openclaw-gateway.service
+systemctl --user start openclaw-gateway.service
+
+# ディスク容量逼迫
+~/.config/scripts/openclaw-cleanup
+
+# ログ急増
+rm -f /tmp/openclaw/*.log
+systemctl --user restart openclaw-gateway.service
 ```
 
 ## Maintenance
@@ -425,8 +357,6 @@ grep "PATH=" ~/.cache/openclaw/cleanup.log | tail -1
 
 症状: `EACCES: permission denied`
 
-#### 解決方法
-
 ```bash
 # ファイルパーミッション確認
 ls -la ~/.openclaw/
@@ -441,24 +371,13 @@ chmod 755 ~/.config/scripts/openclaw-cleanup
 
 症状: `Port 18789 is already in use`
 
-#### 確認手順
-
 ```bash
 # ポート使用プロセス確認
 ss -tlnp | grep 18789
 lsof -i :18789
-```
 
-#### 解決方法
-
-```bash
-# 既存プロセスを停止
+# 既存プロセスを停止して再起動
 systemctl --user stop openclaw-gateway.service
-
-# または強制終了
-kill <PID>
-
-# 再起動
 systemctl --user start openclaw-gateway.service
 ```
 
@@ -467,8 +386,6 @@ systemctl --user start openclaw-gateway.service
 症状: `active (running)` なのに18789がリスニングされない、または即終了する
 
 原因: openclawアップデート後にExecStartのパスが古いバージョンを指したまま、またはmise shimのハング
-
-対処: [Gateway Service の設計原則・ExecStart の組み立て方](#gateway-service) を参照して `ExecStart` を再設定する
 
 ```bash
 # 現在のExecStartを確認
@@ -520,8 +437,6 @@ systemd: Job openclaw-gateway.service/start deleted to break ordering cycle
 原因: `openclaw-cleanup.service` に `Wants=openclaw-gateway.service` があると
 `default.target → timers.target → cleanup → gateway → default.target` の循環が発生。
 
-対処:
-
 ```bash
 # openclaw-cleanup.service から Wants=openclaw-gateway.service を削除
 grep "Wants" ~/.config/systemd/user/openclaw-cleanup.service
@@ -537,11 +452,8 @@ systemctl --user start openclaw-gateway.service
 1. **定期的なTOKEN更新**（推奨: 3ヶ月毎）:
 
    ```bash
-   # 新しいTOKEN生成
-   NEW_TOKEN=$(openssl rand -hex 32)
-
    # gateway.env更新
-   sed -i "s/OPENCLAW_GATEWAY_TOKEN=.*/OPENCLAW_GATEWAY_TOKEN=${NEW_TOKEN}/" ~/.openclaw/gateway.env
+   sed -i "s/OPENCLAW_GATEWAY_TOKEN=.*/OPENCLAW_GATEWAY_TOKEN=$(openssl rand -hex 32)/" ~/.openclaw/gateway.env
 
    # gateway再起動
    systemctl --user restart openclaw-gateway.service
@@ -590,8 +502,6 @@ tail -f /tmp/openclaw/openclaw-$(date +%Y-%m-%d).log
 
 ### システム再起動後の確認
 
-システム再起動後は以下を確認:
-
 ```bash
 # Gateway自動起動確認
 systemctl --user status openclaw-gateway.service
@@ -611,45 +521,7 @@ curl http://localhost:18789/health
 - Workflows: `.claude/rules/workflows-and-maintenance.md`
 - mise設定: `.claude/rules/tools/mise.md`
 
-## Quick Reference
-
-### 緊急時コマンド
-
-```bash
-# Gatewayが応答しない
-systemctl --user restart openclaw-gateway.service
-
-# CPU 99%消費
-systemctl --user stop openclaw-gateway.service
-# gateway.env確認・修正
-systemctl --user start openclaw-gateway.service
-
-# ディスク容量逼迫
-~/.config/scripts/openclaw-cleanup
-
-# ログ急増
-rm -f /tmp/openclaw/*.log
-systemctl --user restart openclaw-gateway.service
-```
-
-### 定期確認項目
-
-#### 日次
-
-- Gateway動作状態（自動監視推奨）
-
-#### 週次
-
-- ログファイルサイズ
-- ディスク使用量
-
-#### 月次
-
-- mise/pnpm/npm更新
-- セキュリティ監査
-- TOKEN更新検討
-
 ---
 
-最終更新: 2026-02-15
-次回レビュー: 2026-05-15（四半期後）
+最終更新: 2026-03-01
+次回レビュー: 2026-06-01（四半期後）
