@@ -68,7 +68,7 @@ Well-implemented points
 ## Example Invocation
 
 ```bash
-codex exec --sandbox read-only --full-auto "
+codex exec --sandbox read-only "
 Review this code change:
 
 ## Changes

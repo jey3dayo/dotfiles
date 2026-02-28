@@ -26,10 +26,18 @@ git status --porcelain
 
 ### 2. Run Review
 
+> **Resume-first**: 先行する Codex セッション（codex-system での設計相談等）があれば
+> `resume --last` でコンテキストを引き継ぐ。セッションがなければ新規実行にフォールバック。
+>
+> **Resume 制約**: resume 時は `--sandbox` 指定不可（セッション元から継承）。`--full-auto`, `--all` 等は指定可能。プロンプトは stdin 経由で渡す。
+>
+> **Error handling**: codex が非ゼロで終了した場合（resume / fresh exec 両方失敗）、
+> エラーを報告し、手動レビューにフォールバックする。
+
 #### Uncommitted Changes Mode
 
 ```bash
-codex exec --sandbox read-only --full-auto "
+REVIEW_PROMPT="
 Review the following uncommitted changes. Identify:
 1. Bugs or logic errors
 2. Security concerns
@@ -43,14 +51,18 @@ Output JSON: {\"issues\": [{\"file\": \"...\", \"line\": N, \"severity\": \"crit
 ---
 $(git diff HEAD)
 $(git diff --cached)
-" 2>/dev/null
+"
+
+echo "$REVIEW_PROMPT" | codex exec resume --last 2>/dev/null || \
+codex exec --sandbox read-only "$REVIEW_PROMPT" 2>/dev/null
 ```
 
 #### Branch Diff Mode
 
 ```bash
 BASE=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||'); BASE=${BASE:-main}
-codex exec --sandbox read-only --full-auto "
+
+REVIEW_PROMPT="
 Review the following branch changes against ${BASE}. Identify:
 1. Bugs or logic errors
 2. Security concerns
@@ -63,7 +75,10 @@ Output JSON: {\"issues\": [{\"file\": \"...\", \"line\": N, \"severity\": \"crit
 
 ---
 $(git diff ${BASE}...HEAD)
-" 2>/dev/null
+"
+
+echo "$REVIEW_PROMPT" | codex exec resume --last 2>/dev/null || \
+codex exec --sandbox read-only "$REVIEW_PROMPT" 2>/dev/null
 ```
 
 ### 3. Extract Results

@@ -27,8 +27,16 @@ Read the entire plan file using the Read tool.
 
 ### 3. Run Review with Codex
 
+> **Resume-first**: 先行する Codex セッション（codex-system での設計相談等）があれば
+> `resume --last` でコンテキストを引き継ぐ。セッションがなければ新規実行にフォールバック。
+>
+> **Resume 制約**: resume 時は `--sandbox` 指定不可（セッション元から継承）。`--full-auto`, `--all` 等は指定可能。プロンプトは stdin 経由で渡す。
+>
+> **Error handling**: codex が非ゼロで終了した場合（resume / fresh exec 両方失敗）、
+> エラーを報告し、手動レビューにフォールバックする。
+
 ```bash
-codex exec --sandbox read-only --full-auto "
+REVIEW_PROMPT="
 Review the following implementation plan. Identify:
 1. Potential risks and failure points
 2. Missing steps or edge cases
@@ -39,7 +47,10 @@ Be specific and concise. If the plan looks solid, say so.
 
 ---
 <plan content here>
-" 2>/dev/null
+"
+
+echo "$REVIEW_PROMPT" | codex exec resume --last 2>/dev/null || \
+codex exec --sandbox read-only "$REVIEW_PROMPT" 2>/dev/null
 ```
 
 ### 4. Report Results

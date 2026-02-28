@@ -64,6 +64,27 @@ codex sessions list
 codex sessions show {SESSION_ID}
 ```
 
+### resume --last で前セッションを再開
+
+resume 時は `--sandbox` を指定できない（セッション元の設定が引き継がれる）。`--full-auto`, `--all` 等のフラグは指定可能。
+プロンプトは stdin 経由で渡す。
+
+```bash
+# 最新セッションを再開（CWDスコープ）
+echo "follow-up instruction" | codex exec resume --last 2>/dev/null
+
+# 全CWDのセッションから最新を再開
+echo "follow-up instruction" | codex exec resume --last --all 2>/dev/null
+```
+
+### resume --last が失敗する場合
+
+| 症状              | 原因                  | 解決策                                    |
+| ----------------- | --------------------- | ----------------------------------------- |
+| No session found  | CWD内にセッションなし | `--all` を試すか新規 `codex exec`         |
+| Session corrupted | JSONL 破損            | `~/.codex/sessions/` の該当ファイルを確認 |
+| Context too large | 前セッションが巨大    | 新規 `codex exec` にフォールバック        |
+
 ## sandbox 権限エラー
 
 | エラー            | 原因                 | 解決策                       |
