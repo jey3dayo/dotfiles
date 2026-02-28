@@ -1,0 +1,47 @@
+{
+  "$schema": "../../schemas/project-detection-schema.json",
+  "name": "My Custom Project",
+  "description": "Custom project with specific evaluation rules",
+  "priority": 200,
+  "detectors": [
+    {
+      "type": "file_exists",
+      "path": "package.json",
+      "condition": "required"
+    }
+  ],
+  "techStack": ["typescript", "react"],
+  "skills": [
+    {
+      "name": "typescript",
+      "priority": "high",
+      "focus": ["type_safety", "strict_mode"]
+    },
+    {
+      "name": "react",
+      "priority": "high",
+      "focus": ["hooks", "performance"]
+    }
+  ],
+  "evaluation": {
+    "weights": {
+      "code_quality": 0.25,
+      "security": 0.2,
+      "performance": 0.15,
+      "testing": 0.15,
+      "error_handling": 0.15,
+      "architecture": 0.1
+    },
+    "guidelines": ["evaluation-guidelines.md", "typescript/guidelines.md", "react/guidelines.md"],
+    "customRules": {
+      "namingConvention": {
+        "components": "PascalCase",
+        "hooks": "camelCase with 'use' prefix",
+        "constants": "UPPER_SNAKE_CASE"
+      },
+      "importOrder": {
+        "groups": ["react", "external", "internal", "relative"]
+      }
+    }
+  }
+}
