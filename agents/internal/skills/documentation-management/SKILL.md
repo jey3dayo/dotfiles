@@ -217,7 +217,6 @@ Integrates seamlessly with other commands:
 ### Optional
 
 - docs-index: Indexing large documentation sets
-- markdown-docs: Documentation quality evaluation
 
 ## Documentation Types
 

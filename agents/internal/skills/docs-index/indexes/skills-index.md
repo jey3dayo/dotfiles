@@ -6,11 +6,10 @@
 
 ### Foundation Skills（Phase 1）
 
-| スキル名                | 説明                                                                                                                                                                                                                       |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `agents-only`           | Agent selection framework with capability matrix and task classification. Use when routing tasks, selecting optimal agents, or understanding agent capabilities. Focuses exclusively on agent orchestration via Task tool. |
-| `docs-index`            | Documentation index and navigation hub. Quick reference for skills, commands, agents, and guides.                                                                                                                          |
-| `integration-framework` | Claude Code統合アーキテクチャガイド。TaskContext標準化、Communication Busパターン、エージェント/コマンドアダプター、エラーハンドリング、ワークフローオーケストレーションを提供します。                                     |
+| スキル名                | 説明                                                                                                                                                                                   |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `docs-index`            | Documentation index and navigation hub. Quick reference for skills, commands, agents, and guides.                                                                                      |
+| `integration-framework` | Claude Code統合アーキテクチャガイド。TaskContext標準化、Communication Busパターン、エージェント/コマンドアダプター、エラーハンドリング、ワークフローオーケストレーションを提供します。 |
 
 ### Core Workflow Skills（Phase 2）
 
@@ -21,7 +20,7 @@
 | `implementation-engine`   | Smart feature implementation with session persistence. Use when implementing features, resuming work, or verifying implementations. 6-phase workflow with Deep Validation support.                                                                        |
 | `todo-orchestrator`       | Unified task management system. Shows TODO list, allows selection, executes tasks. Use when managing tasks, checking progress, or executing planned work. P1-P5 priority system with TodoWrite integration.                                               |
 | `task-router`             | Intelligent task router. Analyzes natural language requests, selects optimal agents, and orchestrates execution. Use when user provides task descriptions like "review this code" or "improve performance". 4-phase processing with Context7 integration. |
-| `code-review-system`      | Comprehensive code review with multiple modes - detailed (⭐️5-star evaluation), simple (parallel agents), PR review, CI diagnostics. Use when reviewing code quality, fixing PR comments, or diagnosing CI failures.                                      |
+| `code-review-system`      | GitHub PR workflow orchestrator — CI diagnosis, review comment handling, and auto-fix. Orchestrates gh-fix-ci, gh-address-comments, and gh-fix-review. Use when CI fails, PR has review comments, or need automated PR fixes.                             |
 
 ### Secondary Skills（Phase 3）
 
@@ -46,13 +45,11 @@
 | `code-quality-improvement`        | [What] Specialized skill for systematic code quality improvement. Provides Phase 1→2→3 workflow for ESLint error fixing,...                                                                                                             |
 | `code-review`                     | [What] Configurable code review and quality assessment skill with project detection system. [When] Use when: code review...                                                                                                             |
 | `command-creator`                 | [What] 効果的なslashコマンドの作成ガイド。コマンド構造、デザインパターン、統合ポイント、ベストプラクティスを提供します。新しいコマンドを作成したい、既存コマンドを改善したい、コマンド設計パターンを理解したい場合に使用してください... |
-| `doc-standards`                   | [What] >- [When] Use when: doc-standards を使う時 [Keywords] doc standards Generic documentation standards framework. Valida...                                                                                                         |
 | `docs-manager`                    | [What] Validate and manage documentation. Check metadata (date, audience, tags), verify tag system compliance, enforce s...                                                                                                             |
 | `dotfiles-integration`            | [What] Specialized skill for reviewing dotfiles cross-tool integration patterns. Evaluates layer interactions (Shell/Edi...                                                                                                             |
 | `gh-fix-review`                   | [What] Automated skill for GitHub PR review comment processing. Automatically classifies review comments (from CodeRabbi...                                                                                                             |
 | `golang`                          | [What] Specialized skill for reviewing Go (Golang) projects. Evaluates idiomatic Go code, error handling patterns, concu...                                                                                                             |
 | `knowledge-creator`               | [What] Intelligent knowledge classification and creation system. Analyzes knowledge descriptions to automatically determ...                                                                                                             |
-| `markdown-docs`                   | [What] Specialized skill for reviewing and improving Markdown documentation (README, technical guides, documentation). E...                                                                                                             |
 | `marketplace-manager`             | Claude Code プラグインマーケットプレイスの構成検証と管理。 [What] marketplace.json、plugin.json、SKILL.md の妥当性検証、新規プラグイン追加支援 [When] Use when: マーケ...                                                               |
 | `mise`                            | [What] Specialized skill for mise (mise-en-place) task runner, tool version manager, and package manager. Provides best ...                                                                                                             |
 | `nvim`                            | [What] Specialized skill for reviewing Neovim configurations. Evaluates LSP integration, plugin management, startup perf...                                                                                                             |
@@ -71,8 +68,6 @@
 
 | スキル名     | 説明                                                                                                                                                                                                                |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `deckset`    | Use this skill when working with Deckset presentations. Provides Deckset-specific syntax guidance, image modifiers, meta...                                                                                         |
-| `docs-write` | このリポジトリのMarkdownドキュメント作成・更新・整形の手順を提供する。`mise` の `docs:fix` / `docs:format` / `format` タスク運用、`.prettierrc.json` と `.markd...                                                  |
 | `drawio`     | Create professional draw.io diagrams (AWS architecture, flowcharts, sequence diagrams, ER diagrams) with proper XML stru...                                                                                         |
 | `mcp-tools`  | [What] MCP（Model Context Protocol）サーバーのセットアップとセキュリティガイド。設定ファイルの場所、主要サーバーのインストール、環境変数管理、トラブルシューティング、セキュリティベストプラクティスを提供します... |
 | `slide-docs` | [What] Specialized skill for reviewing and creating presentation slides. Evaluates slide structure, storytelling, visual...                                                                                         |

@@ -550,4 +550,3 @@ def collect_selection_metrics(agent, confidence, execution_time):
 
 - [エージェント詳細プロファイル](agent-profiles.md)
 - [処理アーキテクチャ詳細](processing-architecture.md)
-- [agents-onlyスキル](../../agents-only/SKILL.md)

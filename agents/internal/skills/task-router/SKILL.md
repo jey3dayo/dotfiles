@@ -284,7 +284,6 @@ The following are generated from similar tasks.
 ### Integration Framework
 
 - integration-framework: TaskContext standardization, Communication Bus pattern
-- agents-only: Agent selection logic and capability matrix
 - mcp-tools: Context7 and other MCP server integrations
 
 ### Command Integration

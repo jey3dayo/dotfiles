@@ -56,7 +56,7 @@ bus.publish("task.started", {
 
 ## エージェント選択
 
-### agents-only
+### task-router (self)
 
 ### 統合理由
 
@@ -424,7 +424,7 @@ def select_skills_for_task(task_description, project_stack):
 
     # 基本統合スキル (常にロード)
     skills.append("integration-framework")
-    skills.append("agents-only")
+    skills.append("task-router")
 
     # プロジェクトスタックに基づくスキル
     if "typescript" in project_stack:
@@ -471,7 +471,7 @@ Task Analysis
     └─ MCP keywords → mcp-tools skill
     ↓
 Skill Selection
-    ├─ Base: integration-framework, agents-only
+    ├─ Base: integration-framework, task-router
     ├─ Stack: typescript, react, golang, python
     └─ Task: security, semantic-analysis, mcp-tools
     ↓
@@ -653,7 +653,7 @@ def test_skill_integration():
 
     assert "typescript" in skills
     assert "integration-framework" in skills
-    assert "agents-only" in skills
+    assert "task-router" in skills
 ```
 
 ## 関連リソース
@@ -661,5 +661,4 @@ def test_skill_integration():
 - [処理アーキテクチャ詳細](processing-architecture.md)
 - [エージェント詳細プロファイル](agent-profiles.md)
 - [integration-frameworkスキル](../../integration-framework/SKILL.md)
-- [agents-onlyスキル](../../agents-only/SKILL.md)
 - [mcp-toolsスキル](../../mcp-tools/SKILL.md)

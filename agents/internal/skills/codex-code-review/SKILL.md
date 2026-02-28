@@ -29,7 +29,7 @@ git status --porcelain
 #### Uncommitted Changes Mode
 
 ```bash
-codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
+codex exec --sandbox read-only --full-auto "
 Review the following uncommitted changes. Identify:
 1. Bugs or logic errors
 2. Security concerns
@@ -50,7 +50,7 @@ $(git diff --cached)
 
 ```bash
 BASE=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||'); BASE=${BASE:-main}
-codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
+codex exec --sandbox read-only --full-auto "
 Review the following branch changes against ${BASE}. Identify:
 1. Bugs or logic errors
 2. Security concerns

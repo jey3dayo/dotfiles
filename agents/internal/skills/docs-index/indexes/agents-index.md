@@ -27,7 +27,7 @@ Claude Codeで利用可能なエージェント一覧。
 
 - ドキュメント管理: `docs-manager` または `/docs`
 - ドキュメント修正: `/fix-docs` コマンド
-- README作成: `docs-manager` + `markdown-docs` スキル
+- README作成: `docs-manager` スキル
 
 ### タスク実行関連
 

@@ -26,7 +26,7 @@ Premortem Analysis is a skill based on the project management technique "Premort
 | Skill                   | Timing               | Focus                                         |
 | ----------------------- | -------------------- | --------------------------------------------- |
 | **predictive-analysis** | After implementation | Future risk prediction from code patterns     |
-| **code-review-system**  | After implementation | 4-perspective code quality inspection         |
+| **code-review-system**  | After implementation | PR workflow (CI diagnosis, comment handling)  |
 | **cc-sdd validation**   | End of each phase    | Formal validity verification                  |
 | **premortem**           | Planning phase       | Elicit "expert tacit knowledge" via questions |
 

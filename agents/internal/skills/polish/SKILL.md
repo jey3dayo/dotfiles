@@ -5,6 +5,10 @@ description: |
   [What] Detect project configuration (mise.toml, package.json), run format/lint/test, and iteratively fix errors
   [When] Use when: users mention "polish", "品質保証", "lint fix", "format fix", "quality check", or need automated code quality improvement with repeated fixes
   [Keywords] polish, quality assurance, lint, format, test, automatic fix, code quality
+argument-hint: "[--with-comments]"
+disable-model-invocation: true
+user-invocable: true
+allowed-tools: Bash, Read, Grep, Edit
 ---
 
 # Polish - Code Quality Assurance

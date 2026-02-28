@@ -5,14 +5,92 @@ description: |
   [When] Use when: code reviews, quality assessments, or evaluation guidance is needed.
   [Keywords] code review, quality assessment, review, security, performance, architecture, guidelines
   [Note] Always responds in Japanese.
-version: 2.0.0
+version: 3.0.0
+argument-hint: "[--simple] [--staged|--recent|--branch <name>] [--with-impact] [--fix]"
+user-invocable: true
 ---
 
-# Code Review (Configurable)
+# Code Review — Local Code Quality Assessment
 
-## Overview
+Comprehensive code review framework with dual-mode operation. Automatically detect project type and integrate technology stack-specific skills to deliver contextual, actionable feedback.
 
-Provide comprehensive code review and quality evaluation framework with configurable project detection and evaluation rules. Automatically detect project type through configuration files and deliver contextual, actionable feedback.
+## Important Notes
+
+- This skill performs **local reviews only** (no GitHub PR comment posting)
+- All review results are output in **Japanese**
+
+### No-Signature Policy (CRITICAL)
+
+- NEVER add `Co-authored-by: Claude` to commits
+- NEVER use emojis in commits, PRs, issues, or git content
+- NEVER add "Generated with Claude Code" signatures
+- NEVER include AI attribution in any output
+
+## Review Modes
+
+### 1. Detailed Mode (Default)
+
+Comprehensive quality assessment with structured evaluation:
+
+- ⭐️ 5-level evaluation system across multiple dimensions
+- Project type auto-detection (Go API, React SPA, Next.js fullstack, etc.)
+- Technology stack-specific skill integration (typescript, react, golang, security, etc.)
+- Detailed improvement proposals with action plans
+- Impact analysis with Serena integration (optional)
+
+**When to use**: Comprehensive quality gates, pre-release assessment, architecture evaluation, learning/mentoring, establishing quality baselines.
+
+```bash
+/review                    # Detailed review (default)
+/review --with-impact      # With semantic impact analysis
+/review --deep-analysis    # Deep symbol-level analysis
+```
+
+### 2. Simple Mode
+
+Quick practical analysis focused on immediate issues:
+
+- Sub-agent composition (security, performance, quality, architecture agents)
+- Fast issue detection and classification
+- Immediate actionable fixes
+- Problem prioritization by severity
+
+**When to use**: Daily development workflow, quick sanity checks, rapid problem identification, CI/CD integration.
+
+```bash
+/review --simple           # Quick review
+/review --simple --fix     # With auto-fix
+```
+
+### Mode Selection
+
+- `--simple` flag → Simple Mode
+- `--with-impact`, `--deep-analysis`, `--verify-spec` → Detailed Mode with Serena
+- Default (no flags) → Detailed Mode
+
+## Options
+
+### Mode
+
+- `--simple`: Use simple mode (default is detailed mode)
+
+### Target
+
+- `--staged`: Staged changes only
+- `--recent`: Previous commit only
+- `--branch <name>`: Diff with specified branch
+
+### Serena Integration (Detailed Mode Only)
+
+- `--with-impact`: API change impact analysis
+- `--deep-analysis`: Deep semantic analysis
+- `--verify-spec`: Spec consistency verification
+
+### Workflow
+
+- `--fix`: Apply auto-fix
+- `--create-issues`: Create GitHub issues
+- `--learn`: Record learning data
 
 ## Configuration System
 
@@ -27,64 +105,18 @@ Provide comprehensive code review and quality evaluation framework with configur
 
 3. **Default config** (fallback)
    - Built-in project detection rules
-   - Generic evaluation guidelines
 
-### Configuration File Location
+### Project-Specific Guidelines
 
-```
-Project Root/
-├── .code-review-config.json          # Project-specific rules
-└── .claude/
-    └── code-review-config.json        # Alternative location
+Place review guidelines in one of:
 
-~/.claude/
-└── code-review/
-    └── custom-projects.json           # User-wide custom projects
-```
+- `./.claude/review-guidelines.md`
+- `./docs/review-guidelines.md`
+- `./docs/guides/review-guidelines.md`
 
-## Core Capabilities
+These are automatically integrated into evaluation criteria.
 
-### Project Detection System
-
-Configurable detection system using multiple detector types:
-
-### Detector Types
-
-- `file_exists`: Check if a file exists at specified path
-- `file_pattern`: Match files using glob patterns
-- `file_content`: Check file content for patterns
-- `package_dependency`: Check package.json dependencies
-- `directory_structure`: Verify directory structure
-
-### Detection Process
-
-```python
-def detect_project_type():
-    """Detect project type using configuration"""
-
-    # 1. Load configurations (priority order)
-    configs = load_configurations([
-        "./.code-review-config.json",           # Project-specific
-        "./.claude/code-review-config.json",    # Project alternative
-        "~/.claude/code-review/custom-projects.json",  # User custom
-        "default-projects.json"                 # Built-in defaults
-    ])
-
-    # 2. Sort by priority (higher first)
-    projects = sort_by_priority(configs)
-
-    # 3. Run detectors for each project
-    for project in projects:
-        if all_required_detectors_pass(project["detectors"]):
-            return project
-
-    # 4. Fallback to generic project
-    return get_generic_project()
-```
-
-### Built-in Project Types
-
-Default configuration includes:
+## Built-in Project Types
 
 | Project Type          | Priority | Key Detectors                | Tech Stack              |
 | --------------------- | -------- | ---------------------------- | ----------------------- |
@@ -95,64 +127,18 @@ Default configuration includes:
 | TypeScript Node.js    | 70       | package.json, tsconfig.json  | typescript, node        |
 | Generic Project       | 0        | (fallback)                   | (none)                  |
 
-### Skill Integration
+## Technology Stack Integration
 
-Automatically load and integrate technology-specific skills:
+Automatically invoke relevant technology-specific skills based on project detection:
 
-```python
-def integrate_skills(project_info):
-    """Integrate skills based on project configuration"""
+- **typescript**: Type safety, strict mode, type guards, Result pattern
+- **react**: Component design, hooks usage, performance optimization
+- **golang**: Idiomatic Go, error handling, concurrency patterns
+- **security**: Input validation, authentication, authorization, encryption
+- **clean-architecture**: Layer separation, dependency rules, domain modeling
+- **semantic-analysis**: Symbol-level analysis, impact assessment, reference tracking
 
-    skills = []
-
-    for skill_ref in project_info["skills"]:
-        skill = load_skill(skill_ref["name"])
-        skill.set_priority(skill_ref["priority"])
-        skill.set_focus(skill_ref["focus"])
-        skills.append(skill)
-
-    return skills
-```
-
-### Available Skills
-
-- `typescript`: Type safety, strict mode, type guards, Result pattern
-- `react`: Component design, hooks, performance, a11y
-- `golang`: Idiomatic Go, error handling, concurrency
-- `security`: OWASP Top 10, input validation, auth, data protection
-- `clean-architecture`: Layer separation, dependency rules, domain modeling
-- `semantic-analysis`: Symbol-level analysis, impact assessment
-
-### Evaluation System
-
-### Configuration-based evaluation
-
-```json
-{
-  "evaluation": {
-    "weights": {
-      "code_quality": 0.2,
-      "security": 0.2,
-      "performance": 0.15,
-      "testing": 0.15,
-      "error_handling": 0.15,
-      "architecture": 0.15
-    },
-    "guidelines": [
-      "evaluation-guidelines.md",
-      "typescript/guidelines.md",
-      "security/guidelines.md"
-    ],
-    "customRules": {
-      "anyTypeLimit": 2,
-      "typeAssertionLimit": 5,
-      "testCoverageTarget": 80
-    }
-  }
-}
-```
-
-### Star Rating System
+## Star Rating System
 
 | Rating     | Description  | Criteria                                     |
 | ---------- | ------------ | -------------------------------------------- |
@@ -162,224 +148,40 @@ def integrate_skills(project_info):
 | ⭐️⭐️       | Needs Work   | Multiple issues, significant improvements    |
 | ⭐️         | Major Issues | Critical problems, substantial rework        |
 
-## Review Modes
+## Quality Standards
 
-### 1. Detailed Mode (Default)
+All reviews must:
 
-Comprehensive quality assessment with structured evaluation.
+- Respond in Japanese
+- Provide specific file:line references
+- Include concrete code examples
+- Offer actionable remediation steps
+- Prioritize by severity and impact
+- Respect no-signature policy
+- Create checkpoints before analysis
 
-### Features
+## References
 
-- Project type auto-detection
-- Configuration-based skill integration
-- Multi-dimensional evaluation
-- Star ratings with detailed comments
-- Prioritized action plan
+Progressive disclosure — loaded as needed:
 
-### Usage
+- [Detailed Mode](references/detailed-mode.md) — 5-level evaluation execution guide
+- [Simple Mode](references/simple-mode.md) — Parallel sub-agent execution guide
+- [Evaluation Framework](references/evaluation-framework.md) — Star rating system definition
+- [Project Customization](references/project-customization.md) — Guidelines integration
+- [Tech Stack Skills](references/tech-stack-skills.md) — Project detection and tech-specific criteria
 
-```bash
-/review                    # Detailed review
-/review --with-impact      # With semantic analysis
-```
+## Examples
 
-### 2. Simple Mode
+- [Review Workflows](examples/review-workflows.md) — 5 practical workflows
+- [Troubleshooting](examples/troubleshooting-solutions.md) — Common issues and solutions
 
-Quick practical analysis focused on immediate issues.
+## Related
 
-### Features
-
-- Parallel sub-agent execution (security, performance, quality, architecture)
-- Fast issue detection
-- Immediate fix suggestions
-- Severity prioritization
-
-### Usage
-
-```bash
-/review --simple           # Quick review
-/review --simple --fix     # With auto-fix
-```
-
-## Configuration Examples
-
-### Example 1: Custom TypeScript Project
-
-`.code-review-config.json`:
-
-```json
-{
-  "name": "My TypeScript API",
-  "priority": 200,
-  "detectors": [
-    {
-      "type": "file_exists",
-      "path": "package.json",
-      "condition": "required"
-    },
-    {
-      "type": "file_exists",
-      "path": "tsconfig.json",
-      "condition": "required"
-    }
-  ],
-  "techStack": ["typescript", "node"],
-  "skills": [
-    {
-      "name": "typescript",
-      "priority": "high",
-      "focus": ["type_safety", "strict_mode"]
-    },
-    {
-      "name": "security",
-      "priority": "high",
-      "focus": ["input_validation", "auth"]
-    }
-  ],
-  "evaluation": {
-    "weights": {
-      "code_quality": 0.25,
-      "security": 0.25,
-      "performance": 0.15,
-      "testing": 0.15,
-      "error_handling": 0.1,
-      "architecture": 0.1
-    },
-    "customRules": {
-      "anyTypeLimit": 0,
-      "testCoverageTarget": 85
-    }
-  }
-}
-```
-
-### Example 2: Project with Clean Architecture
-
-```json
-{
-  "name": "Clean Architecture Project",
-  "priority": 150,
-  "detectors": [
-    {
-      "type": "directory_structure",
-      "path": "src/domain",
-      "condition": "required"
-    },
-    {
-      "type": "directory_structure",
-      "path": "src/application",
-      "condition": "required"
-    },
-    {
-      "type": "directory_structure",
-      "path": "src/infrastructure",
-      "condition": "required"
-    }
-  ],
-  "skills": [
-    {
-      "name": "clean-architecture",
-      "priority": "high",
-      "focus": ["layer_separation", "dependency_rule"]
-    }
-  ],
-  "evaluation": {
-    "weights": {
-      "architecture": 0.3,
-      "code_quality": 0.2,
-      "testing": 0.2,
-      "error_handling": 0.15,
-      "security": 0.1,
-      "performance": 0.05
-    },
-    "customRules": {
-      "layerSeparation": {
-        "domain": {
-          "allowedImports": [],
-          "forbiddenImports": ["infrastructure", "application"]
-        },
-        "application": {
-          "allowedImports": ["domain"],
-          "forbiddenImports": ["infrastructure"]
-        }
-      }
-    }
-  }
-}
-```
-
-## Migration from v1.x
-
-For projects using the old hardcoded project detection:
-
-1. **Identify current project type** (Next.js, Go API, React SPA, etc.)
-2. **Copy appropriate template** from `config/examples/`
-3. **Customize as needed** (weights, skills, custom rules)
-4. **Place in project root** as `.code-review-config.json`
-
-### Migration examples provided
-
-- `config/examples/caad-loca-project.json` - Clean Architecture with Result<T,E>
-- `config/examples/.code-review-config.json` - Generic custom project
-
-## Best Practices
-
-### Configuration Design
-
-1. **Use specific detectors** for accurate project identification
-2. **Set appropriate priority** to avoid conflicts
-3. **Focus skills** on relevant areas for your project
-4. **Customize weights** based on project priorities
-5. **Define custom rules** for project-specific requirements
-
-### Project-Specific Guidelines
-
-Store custom evaluation guidelines in project:
-
-```
-Project Root/
-├── .code-review-config.json
-└── docs/
-    └── review-guidelines.md    # Reference in config
-```
-
-Reference in configuration:
-
-```json
-{
-  "evaluation": {
-    "guidelines": ["evaluation-guidelines.md", "docs/review-guidelines.md"]
-  }
-}
-```
-
-## Schema Reference
-
-Full schema available at: `schemas/project-detection-schema.json`
-
-### Key properties
-
-- `name`: Project type identifier
-- `description`: Human-readable description
-- `priority`: Detection priority (higher = checked first)
-- `detectors`: Array of detection rules
-- `techStack`: Technology identifiers
-- `skills`: Skills to integrate with priorities
-- `evaluation`: Weights, guidelines, custom rules
-
-## Related Files
-
-- `config/default-projects.json` - Built-in project types
-- `config/examples/` - Example configurations
-- `schemas/project-detection-schema.json` - Configuration schema
-
-## Notes
-
-- Always responds in Japanese
-- Configuration files use JSON format
-- Priority system ensures correct project detection
-- Custom rules support arbitrary project requirements
-- Backward compatible with v1.x through migration
+- `code-review-system` — PR workflow (CI diagnosis, comment handling, auto-fix)
+- `gh-fix-ci` — GitHub Actions CI failure diagnosis
+- `gh-address-comments` — PR review comment handling
+- `gh-fix-review` — Automated PR review comment fixing
+- `codex-code-review` — Codex-delegated code review
 
 ---
 

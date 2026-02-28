@@ -21,15 +21,15 @@ Claude Codeのドキュメントを効率的に検索・ナビゲートするた
 
 やりたいことからスキル/コマンドを探す:
 
-| タスク           | キーワード                           | 推奨ツール                                  |
-| ---------------- | ------------------------------------ | ------------------------------------------- |
-| コードレビュー   | `code review`, `レビュー`            | `/review`, `code-review` skill              |
-| コード品質改善   | `quality`, `lint`, `format`          | `/polish`, `code-quality-improvement` skill |
-| セキュリティ     | `security`, `OWASP`, `vulnerability` | `security` skill                            |
-| ドキュメント作成 | `docs`, `markdown`, `README`         | `markdown-docs`, `docs-write` skill         |
-| 重複コード検出   | `duplicate`, `similarity`            | `similarity` skill                          |
-| 未使用コード削除 | `dead code`, `unused code`           | `tsr` skill                                 |
-| 環境変数管理     | `env`, `dotenv`, `encryption`        | `dotenvx` skill                             |
+| タスク           | キーワード                           | 推奨ツール                                       |
+| ---------------- | ------------------------------------ | ------------------------------------------------ |
+| コードレビュー   | `code review`, `レビュー`            | `/review`, `code-review` skill                   |
+| コード品質改善   | `quality`, `lint`, `format`          | `/polish`, `code-quality-improvement` skill      |
+| セキュリティ     | `security`, `OWASP`, `vulnerability` | `security` skill                                 |
+| ドキュメント作成 | `docs`, `markdown`, `README`         | `docs-manager`, `documentation-management` skill |
+| 重複コード検出   | `duplicate`, `similarity`            | `similarity` skill                               |
+| 未使用コード削除 | `dead code`, `unused code`           | `tsr` skill                                      |
+| 環境変数管理     | `env`, `dotenv`, `encryption`        | `dotenvx` skill                                  |
 
 ## 階層的ナビゲーション
 

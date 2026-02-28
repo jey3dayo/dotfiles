@@ -338,7 +338,6 @@ Add custom validation via configuration:
 The docs-manager skill automatically integrates with:
 
 - docs-index: Documentation discovery and navigation
-- markdown-docs: Content quality evaluation
 - code-review: Documentation review in code review workflow
 
 ### With External Tools

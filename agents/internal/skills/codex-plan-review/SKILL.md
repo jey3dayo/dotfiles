@@ -28,7 +28,7 @@ Read the entire plan file using the Read tool.
 ### 3. Run Review with Codex
 
 ```bash
-codex exec --model gpt-5.3-codex --sandbox read-only --full-auto "
+codex exec --sandbox read-only --full-auto "
 Review the following implementation plan. Identify:
 1. Potential risks and failure points
 2. Missing steps or edge cases

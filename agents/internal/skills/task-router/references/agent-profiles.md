@@ -456,5 +456,4 @@ def calculate_agent_score(agent, task_intents):
 ## 関連リソース
 
 - [エージェント選択アルゴリズム](agent-selection-logic.md)
-- [agents-onlyスキル](../../agents-only/SKILL.md)
 - [処理アーキテクチャ詳細](processing-architecture.md)
