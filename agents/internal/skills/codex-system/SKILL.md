@@ -89,11 +89,11 @@ review スキル（`codex-code-review`, `codex-plan-review`）は自動的に
 
 ### Quick Reference
 
-| Use Case                      | Sandbox Mode       | Command Pattern                                             |
-| ----------------------------- | ------------------ | ----------------------------------------------------------- |
-| Analysis, review, debug       | `read-only`        | `codex exec --sandbox read-only "..." 2>/dev/null` |
-| Implementation, refactoring   | `workspace-write`  | `codex exec --full-auto "..." 2>/dev/null`                          |
-| Resume previous session       | Inherited          | `echo "prompt" \| codex exec resume --last 2>/dev/null`    |
+| Use Case                    | Sandbox Mode      | Command Pattern                                         |
+| --------------------------- | ----------------- | ------------------------------------------------------- |
+| Analysis, review, debug     | `read-only`       | `codex exec --sandbox read-only "..." 2>/dev/null`      |
+| Implementation, refactoring | `workspace-write` | `codex exec --full-auto "..." 2>/dev/null`              |
+| Resume previous session     | Inherited         | `echo "prompt" \| codex exec resume --last 2>/dev/null` |
 
 > **Note**: resume 時は `--sandbox` を指定できない（セッション元の設定が自動的に引き継がれる）。`--full-auto`, `--all` 等のフラグは指定可能。
 

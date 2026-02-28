@@ -79,11 +79,11 @@ echo "follow-up instruction" | codex exec resume --last --all 2>/dev/null
 
 ### resume --last が失敗する場合
 
-| 症状              | 原因                       | 解決策                                    |
-| ----------------- | -------------------------- | ----------------------------------------- |
-| No session found  | CWD内にセッションなし      | `--all` を試すか新規 `codex exec`         |
-| Session corrupted | JSONL 破損                 | `~/.codex/sessions/` の該当ファイルを確認 |
-| Context too large | 前セッションが巨大         | 新規 `codex exec` にフォールバック        |
+| 症状              | 原因                  | 解決策                                    |
+| ----------------- | --------------------- | ----------------------------------------- |
+| No session found  | CWD内にセッションなし | `--all` を試すか新規 `codex exec`         |
+| Session corrupted | JSONL 破損            | `~/.codex/sessions/` の該当ファイルを確認 |
+| Context too large | 前セッションが巨大    | 新規 `codex exec` にフォールバック        |
 
 ## sandbox 権限エラー
 
