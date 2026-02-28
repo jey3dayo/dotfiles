@@ -66,7 +66,7 @@ codex sessions show {SESSION_ID}
 
 ### resume --last で前セッションを再開
 
-resume 時はフラグ（`--sandbox`, `--full-auto` 等）を指定できない。セッション元の設定が引き継がれる。
+resume 時は `--sandbox` を指定できない（セッション元の設定が引き継がれる）。`--full-auto`, `--all` 等のフラグは指定可能。
 プロンプトは stdin 経由で渡す。
 
 ```bash

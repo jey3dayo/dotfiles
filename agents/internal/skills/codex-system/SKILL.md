@@ -58,7 +58,7 @@ Task tool parameters:
 - prompt: |
     Consult Codex about: {topic}
 
-    codex exec --sandbox read-only --full-auto "
+    codex exec --sandbox read-only "
     {question for Codex}
     " 2>/dev/null
 
@@ -70,7 +70,7 @@ Task tool parameters:
 For quick questions expecting 1-2 sentence answers:
 
 ```bash
-codex exec --sandbox read-only --full-auto "Brief question" 2>/dev/null
+codex exec --sandbox read-only "Brief question" 2>/dev/null
 ```
 
 ### Workflow (Subagent)
@@ -91,11 +91,11 @@ review スキル（`codex-code-review`, `codex-plan-review`）は自動的に
 
 | Use Case                      | Sandbox Mode       | Command Pattern                                             |
 | ----------------------------- | ------------------ | ----------------------------------------------------------- |
-| Analysis, review, debug       | `read-only`        | `codex exec --sandbox read-only --full-auto "..." 2>/dev/null` |
-| Implementation, refactoring   | `workspace-write`  | `codex exec --sandbox workspace-write --full-auto "..." 2>/dev/null` |
+| Analysis, review, debug       | `read-only`        | `codex exec --sandbox read-only "..." 2>/dev/null` |
+| Implementation, refactoring   | `workspace-write`  | `codex exec --full-auto "..." 2>/dev/null`                          |
 | Resume previous session       | Inherited          | `echo "prompt" \| codex exec resume --last 2>/dev/null`    |
 
-> **Note**: resume 時はフラグ（`--sandbox`, `--full-auto` 等）を指定できない。セッション元の設定が自動的に引き継がれる。
+> **Note**: resume 時は `--sandbox` を指定できない（セッション元の設定が自動的に引き継がれる）。`--full-auto`, `--all` 等のフラグは指定可能。
 
 ## Language Protocol
 
@@ -109,7 +109,7 @@ review スキル（`codex-code-review`, `codex-plan-review`）は自動的に
 ### Design Review
 
 ```bash
-codex exec --sandbox read-only --full-auto "
+codex exec --sandbox read-only "
 Review this design approach for: {feature}
 
 Context:
@@ -126,7 +126,7 @@ Evaluate:
 ### Debug Analysis
 
 ```bash
-codex exec --sandbox read-only --full-auto "
+codex exec --sandbox read-only "
 Debug this issue:
 
 Error: {error message}
