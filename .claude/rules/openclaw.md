@@ -478,6 +478,58 @@ systemctl --user cat openclaw-gateway.service | grep ExecStart
 ls -la ~/.mise/installs/npm-openclaw/latest
 ```
 
+### plugins.slots.memory: plugin not found: memory-core
+
+症状: `active (running)` なのに即終了する。ログに以下が出る
+
+```
+plugins.slots.memory: plugin not found: memory-core
+Main process exited, code=exited, status=1/FAILURE
+```
+
+原因: openclaw 2026.2.26+ のセキュリティ強化により、pnpm store 内のハードリンクファイルが
+"unsafe" と判定され、bundled plugins がロードできない。
+
+対処:
+
+```bash
+# 1. extensionsディレクトリをハードリンクなしでコピー
+EXTENSIONS_SRC=$(ls -d ~/.mise/installs/npm-openclaw/*/5/.pnpm/openclaw@*/node_modules/openclaw/extensions 2>/dev/null | tail -1)
+rm -rf ~/.openclaw/bundled-plugins
+cp -r "$EXTENSIONS_SRC" ~/.openclaw/bundled-plugins
+
+# 2. systemdサービスに環境変数を確認（既に設定済みのはず）
+grep OPENCLAW_BUNDLED_PLUGINS_DIR ~/.config/systemd/user/openclaw-gateway.service
+
+# 3. 未設定なら追加して再起動
+# Environment="OPENCLAW_BUNDLED_PLUGINS_DIR=%h/.openclaw/bundled-plugins"
+systemctl --user daemon-reload && systemctl --user restart openclaw-gateway.service
+```
+
+次回のバージョンアップ後は `scripts/openclaw-cleanup` が自動同期するため手動対応不要。
+
+### Gateway起動時に循環依存エラーが発生する
+
+症状: システム起動後に Gateway が自動起動しない。journalctl に以下が出る
+
+```
+systemd: Found ordering cycle on openclaw-gateway.service/start
+systemd: Job openclaw-gateway.service/start deleted to break ordering cycle
+```
+
+原因: `openclaw-cleanup.service` に `Wants=openclaw-gateway.service` があると
+`default.target → timers.target → cleanup → gateway → default.target` の循環が発生。
+
+対処:
+
+```bash
+# openclaw-cleanup.service から Wants=openclaw-gateway.service を削除
+grep "Wants" ~/.config/systemd/user/openclaw-cleanup.service
+# 上記行を削除してリロード
+systemctl --user daemon-reload
+systemctl --user start openclaw-gateway.service
+```
+
 ## Security Best Practices
 
 ### TOKEN管理
