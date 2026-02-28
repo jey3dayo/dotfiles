@@ -58,7 +58,19 @@ Environment=HOME=%h
 Environment=TMPDIR=/tmp
 Environment="PATH=%h/.local/share/pnpm:%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
+Environment="OPENCLAW_BUNDLED_PLUGINS_DIR=%h/.openclaw/bundled-plugins"
 ```
+
+#### `OPENCLAW_BUNDLED_PLUGINS_DIR` について
+
+openclaw 2026.2.26 以降、pnpm ストア内のハードリンクファイルはセキュリティポリシーにより "unsafe" と判定される。
+これにより、pnpm 経由でインストールした場合に bundled plugins（memory-core 等）がロードできず、
+`plugins.slots.memory: plugin not found: memory-core` エラーで Gateway が起動しない。
+
+**対処**: `~/.openclaw/bundled-plugins/` に extensions ディレクトリをコピーし（ハードリンクなし）、
+`OPENCLAW_BUNDLED_PLUGINS_DIR` でそのパスを指定する。
+
+バージョンアップ後は cleanup script が自動更新するため手動対応不要（後述）。
 
 #### ラッパースクリプト (`~/.config/scripts/openclaw-gateway`)
 
@@ -109,7 +121,8 @@ EnvironmentFile=%h/.openclaw/gateway.env
 [Unit]
 Description=Periodic cleanup (mise/pnpm/npm) to reduce disk usage
 After=default.target
-Wants=openclaw-gateway.service
+# Wants=openclaw-gateway.service は設定しないこと
+# 設定すると default.target → timers.target → cleanup → gateway → default.target の循環依存が発生する
 
 [Service]
 Type=oneshot

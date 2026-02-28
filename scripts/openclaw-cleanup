@@ -22,6 +22,36 @@ log="$logdir/cleanup.log"
     echo "mise: not found"
   fi
 
+  echo "--- openclaw bundled-plugins sync ---"
+  # openclaw 2026.2.26+: pnpm store の hardlink は unsafe 扱いのため
+  # extensions を ~/.openclaw/bundled-plugins/ に non-hardlink コピーして同期する
+  OPENCLAW_BUNDLED_PLUGINS_DIR="${HOME}/.openclaw/bundled-plugins"
+  OPENCLAW_EXTENSIONS_SRC=""
+  if command -v openclaw >/dev/null 2>&1; then
+    # openclaw の実体パスから extensions ディレクトリを特定
+    OPENCLAW_BIN=$(command -v openclaw 2>/dev/null || true)
+    if [ -n "$OPENCLAW_BIN" ]; then
+      OPENCLAW_BIN_REAL=$(readlink -f "$OPENCLAW_BIN" 2>/dev/null || echo "$OPENCLAW_BIN")
+      CANDIDATE_DIR=$(dirname "$OPENCLAW_BIN_REAL")
+      # bin/openclaw -> node_modules/openclaw/bin/ なので ../extensions を探す
+      for _ in 1 2 3 4; do
+        CANDIDATE_DIR=$(dirname "$CANDIDATE_DIR")
+        if [ -d "$CANDIDATE_DIR/extensions" ]; then
+          OPENCLAW_EXTENSIONS_SRC="$CANDIDATE_DIR/extensions"
+          break
+        fi
+      done
+    fi
+  fi
+  if [ -n "$OPENCLAW_EXTENSIONS_SRC" ] && [ -d "$OPENCLAW_EXTENSIONS_SRC" ]; then
+    echo "Syncing bundled plugins from: $OPENCLAW_EXTENSIONS_SRC"
+    rm -rf "$OPENCLAW_BUNDLED_PLUGINS_DIR"
+    cp -r "$OPENCLAW_EXTENSIONS_SRC" "$OPENCLAW_BUNDLED_PLUGINS_DIR"
+    echo "bundled-plugins synced: $(ls "$OPENCLAW_BUNDLED_PLUGINS_DIR" | wc -l) plugins"
+  else
+    echo "openclaw extensions not found, skipping bundled-plugins sync"
+  fi
+
   echo "--- pnpm store prune ---"
   if command -v pnpm >/dev/null 2>&1; then
     pnpm store prune || true
