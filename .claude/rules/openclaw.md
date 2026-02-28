@@ -116,7 +116,15 @@ WantedBy=timers.target
 
 ファイル: `~/.config/scripts/openclaw-cleanup`
 
-機能: mise prune / pnpm store prune / npm cache clean / ディスク使用量記録
+機能: mise prune / bundled-plugins 自動同期 / pnpm store prune / npm cache clean / ディスク使用量記録
+
+#### bundled-plugins 自動同期
+
+openclaw 2026.2.26+ ではバージョンアップ後に bundled plugins が壊れる（pnpm hardlink が unsafe 扱い）。cleanup スクリプトは以下のパターンで extensions を自動同期する:
+
+1. **バイナリ解決**: `scripts/openclaw-gateway` と同じ候補リストで openclaw 実体を特定（shim 経由を避ける）
+2. **extensions 探索**: `bin/` の親ディレクトリから `[0-9]*/.pnpm/openclaw@*/node_modules/openclaw/extensions` を glob で発見
+3. **non-hardlink コピー**: `~/.openclaw/bundled-plugins/` に `cp -r` でコピー
 
 ログファイル: `~/.cache/openclaw/cleanup.log`
 
