@@ -45,6 +45,9 @@ python = "3.14"
 # lua = "5.1.5"
 # luajit = "latest"
 
+# NOTE (Raspberry Pi):
+# - luacheck/luarocks は mise registry/backends と相性が不安定なため tools には定義しない。
+# - Lua lint は Nix 側で luacheck を供給して実行する運用に統一する。
 # ========================================
 # Package Managers (パッケージマネージャー)
 # ========================================
