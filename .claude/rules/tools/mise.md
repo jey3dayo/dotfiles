@@ -345,7 +345,6 @@ yazi = "latest"
 - Default: 全てのCLIツールをインストール
 - Raspberry Pi: 全てのCLIツールをインストール
 
-
 ### Raspberry Pi 運用メモ（重要）
 
 - `luacheck` は **mise の tools には直接定義しない**（`luacheck@latest` は registry に存在せず WARN の原因）。
