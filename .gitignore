@@ -272,3 +272,5 @@ systemd/user/*.timer.wants/
 
 ## home-manager
 environment.d/
+chromium/
+pulse/
