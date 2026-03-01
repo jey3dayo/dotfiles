@@ -54,6 +54,7 @@ python = "3.14"
 # Formatters and Linters (フォーマッター・Linter)
 # ========================================
 actionlint = "latest"
+luacheck = "latest"
 gitleaks = "latest"
 biome = "latest"
 prettier = "latest"
