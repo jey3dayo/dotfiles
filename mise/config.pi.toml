@@ -54,6 +54,7 @@ python = "3.14"
 # Formatters and Linters (フォーマッター・Linter)
 # ========================================
 actionlint = "latest"
+gitleaks = "latest"
 biome = "latest"
 prettier = "latest"
 # 注: hadolint は macOS/Linux x86_64 のみ (プラットフォーム固有セクション参照)
