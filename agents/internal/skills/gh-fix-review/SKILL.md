@@ -4,9 +4,13 @@ description: |
   [What] Automated skill for GitHub PR review comment processing. Automatically classifies review comments (from CodeRabbit, human reviewers, bots) by priority (Critical/High/Major/Minor) and applies fixes in priority order. Integrates with TodoWrite for progress tracking and creates tracking documents
   [When] Use when: users mention "/review --fix-pr", "PR review automation", "CodeRabbit fixes", or need automated PR feedback processing. **Always responds in Japanese**
   [Keywords] /review --fix-pr, PR review automation, CodeRabbit fixes
+  [Deprecated] Use `gh-address-comments` instead. This skill is deprecated and will be removed in a future release.
 ---
 
 # gh-fix-review Skill
+
+> **Deprecated**: このスキルは非推奨です。`gh-address-comments` スキルを使用してください。
+> 移行先: `agents/external/gh-address-comments/SKILL.md`
 
 A skill for automatically classifying and fixing GitHub Pull Request review comments.
 

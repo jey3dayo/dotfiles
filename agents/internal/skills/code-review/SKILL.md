@@ -16,7 +16,7 @@ Comprehensive code review framework with dual-mode operation. Automatically dete
 
 ## Important Notes
 
-- This skill performs **local reviews only** (no GitHub PR comment posting)
+- This skill performs **local reviews** and optionally addresses open PR review comments
 - All review results are output in **Japanese**
 
 ### No-Signature Policy (CRITICAL)
@@ -91,6 +91,7 @@ When to use: Daily development workflow, quick sanity checks, rapid problem iden
 - `--fix`: Apply auto-fix
 - `--create-issues`: Create GitHub issues
 - `--learn`: Record learning data
+- `--no-comments`: Skip PR review comment check
 
 ## Configuration System
 
@@ -169,6 +170,7 @@ Progressive disclosure — loaded as needed:
 - [Evaluation Framework](references/evaluation-framework.md) — Star rating system definition
 - [Project Customization](references/project-customization.md) — Guidelines integration
 - [Tech Stack Skills](references/tech-stack-skills.md) — Project detection and tech-specific criteria
+- [PR Comment Integration](references/pr-comment-integration.md) — Post-review PR comment handling
 
 ## Examples
 

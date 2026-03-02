@@ -524,6 +524,13 @@ def perform_serena_analysis(targets, options):
 [具体的なコード参照と改善提案...]
 ```
 
+### Step 8: PR コメント自動チェック
+
+レビュー結果出力後、`--no-comments` が指定されていなければ
+PR コメントチェックを実行。
+
+詳細は [PR Comment Integration](pr-comment-integration.md) を参照。
+
 ## 使用例
 
 ```bash

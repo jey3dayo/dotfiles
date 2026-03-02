@@ -441,6 +441,13 @@ def apply_auto_fixes(quick_fixes):
         print(f"⚠️ 自動修正後も{re_verify_result['remaining']}件の問題が残っています")
 ```
 
+### Step 7: PR コメント自動チェック
+
+結果出力後、`--no-comments` が指定されていなければ
+PR コメントチェックを実行。
+
+詳細は [PR Comment Integration](pr-comment-integration.md) を参照。
+
 ## 出力例
 
 ```markdown
