@@ -18,7 +18,7 @@ Host *
   PreferredAuthentications publickey,password
 
   # Default authentication settings
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed25519
   PasswordAuthentication no
   PubkeyAuthentication yes
 
