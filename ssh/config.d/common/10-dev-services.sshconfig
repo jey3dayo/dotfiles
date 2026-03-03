@@ -7,14 +7,14 @@ Host github.com
   User git
   Port 443
   IdentitiesOnly yes
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed25519
 
 # GitLab
 Host gitlab.com
   User git
   Hostname gitlab.com
   IdentitiesOnly yes
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed25519
 
 # Alternative GitHub host for standard port
 Host github-standard
@@ -22,4 +22,4 @@ Host github-standard
   User git
   Port 22
   IdentitiesOnly yes
-  IdentityFile ~/.ssh/id_rsa
+  IdentityFile ~/.ssh/id_ed25519
