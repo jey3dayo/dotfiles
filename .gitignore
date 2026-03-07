@@ -140,6 +140,8 @@ iterm2/
 karabiner/automatic_backups/
 github-copilot/
 gh/hosts.yml
+glab-cli/config.yml
+glab-cli/bin/
 ghkw
 hub
 swiftpm
