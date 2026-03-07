@@ -62,7 +62,7 @@
         "id": "8b",
         "type": "custom-text",
         "color": "hex:83a598",
-        "customText": "In/Out ",
+        "customText": "I/O ",
         "merge": "no-padding"
       },
       {
