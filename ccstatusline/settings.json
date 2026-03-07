@@ -24,7 +24,7 @@
       {
         "id": "2b",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:78b892",
         "customText": "Ctx ",
         "merge": "no-padding"
       },
