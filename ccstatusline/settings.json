@@ -208,10 +208,25 @@
         "type": "separator"
       },
       {
+        "id": "21a",
+        "type": "custom-text",
+        "color": "hex:5c6370",
+        "customText": "(",
+        "merge": "no-padding"
+      },
+      {
         "id": "21",
         "type": "weekly-reset-timer",
         "color": "hex:5c6370",
-        "rawValue": true
+        "rawValue": true,
+        "merge": "no-padding"
+      },
+      {
+        "id": "21b",
+        "type": "custom-text",
+        "color": "hex:5c6370",
+        "customText": ")",
+        "merge": "no-padding"
       }
     ]
   ],
