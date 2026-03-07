@@ -38,7 +38,7 @@
         "id": "3b",
         "type": "custom-text",
         "color": "hex:e5c07b",
-        "customText": " / ",
+        "customText": "(",
         "merge": "no-padding"
       },
       {
@@ -48,17 +48,11 @@
         "rawValue": true
       },
       {
-        "id": "3c",
+        "id": "3bc",
         "type": "custom-text",
-        "color": "hex:83a598",
-        "customText": "⏱ ",
+        "color": "hex:e5c07b",
+        "customText": ")",
         "merge": "no-padding"
-      },
-      {
-        "id": "3d",
-        "type": "session-clock",
-        "color": "hex:83a598",
-        "rawValue": true
       },
       {
         "id": "4",
@@ -85,7 +79,7 @@
         "id": "8b",
         "type": "custom-text",
         "color": "hex:83a598",
-        "customText": "In/Out: ",
+        "customText": "In/Out ",
         "merge": "no-padding"
       },
       {
@@ -121,6 +115,13 @@
         "type": "separator"
       },
       {
+        "id": "7a",
+        "type": "custom-text",
+        "color": "hex:b8bb26",
+        "customText": "Δ",
+        "merge": "no-padding"
+      },
+      {
         "id": "7",
         "type": "git-changes",
         "color": "hex:b8bb26"
@@ -153,6 +154,23 @@
         "id": "15",
         "type": "reset-timer",
         "color": "hex:97c9c3",
+        "rawValue": true
+      },
+      {
+        "id": "15b",
+        "type": "separator"
+      },
+      {
+        "id": "15c",
+        "type": "custom-text",
+        "color": "hex:83a598",
+        "customText": "⏱ ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "15d",
+        "type": "session-clock",
+        "color": "hex:83a598",
         "rawValue": true
       }
     ],
