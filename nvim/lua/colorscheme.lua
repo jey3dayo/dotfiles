@@ -1,9 +1,10 @@
 -- Load colorscheme with lazy loading
 local function load_colorscheme()
   pcall(function()
-    -- Ensure kanagawa plugin is loaded
-    require("lazy").load { plugins = { "kanagawa.nvim" } }
-    vim.cmd "colorscheme kanagawa"
+    -- Ensure 0x96f plugin is loaded
+    require("lazy").load { plugins = { "0x96f.nvim" } }
+    require("0x96f").setup()
+    vim.cmd.colorscheme "0x96f"
 
     -- Apply custom highlights
     local highlights = {
@@ -23,7 +24,7 @@ local function load_colorscheme()
   end)
 end
 
--- Try to load kanagawa, fallback to default if not available
+-- Try to load 0x96f, fallback to default if not available
 local ok = pcall(load_colorscheme)
 if not ok then
   vim.cmd "colorscheme default"
