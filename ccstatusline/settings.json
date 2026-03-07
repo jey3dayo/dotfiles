@@ -204,10 +204,6 @@
         }
       },
       {
-        "id": "20",
-        "type": "separator"
-      },
-      {
         "id": "21a",
         "type": "custom-text",
         "color": "hex:5c6370",
