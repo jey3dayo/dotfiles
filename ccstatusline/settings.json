@@ -147,31 +147,25 @@
         }
       },
       {
-        "id": "14",
-        "type": "separator"
+        "id": "15a",
+        "type": "custom-text",
+        "color": "hex:bc83e3",
+        "customText": "(",
+        "merge": "no-padding"
       },
       {
         "id": "15",
         "type": "reset-timer",
         "color": "hex:bc83e3",
-        "rawValue": true
-      },
-      {
-        "id": "15b",
-        "type": "separator"
-      },
-      {
-        "id": "15c",
-        "type": "custom-text",
-        "color": "hex:bc83e3",
-        "customText": "⏱ ",
+        "rawValue": true,
         "merge": "no-padding"
       },
       {
-        "id": "15d",
-        "type": "session-clock",
+        "id": "15b",
+        "type": "custom-text",
         "color": "hex:bc83e3",
-        "rawValue": true
+        "customText": ")",
+        "merge": "no-padding"
       }
     ],
     [
