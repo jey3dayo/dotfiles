@@ -54,7 +54,7 @@ font-size = 15
 ############################
 # Theme / Window (match WezTerm)
 ############################
-theme = "Gruvbox Dark Hard"
+theme = 0x96f
 background-opacity = 0.94
 background-opacity-cells = true
 window-padding-x = 8
