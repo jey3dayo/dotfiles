@@ -59,23 +59,6 @@
         "type": "separator"
       },
       {
-        "id": "7c",
-        "type": "custom-text",
-        "color": "hex:b8bb26",
-        "customText": "💰 ",
-        "merge": "no-padding"
-      },
-      {
-        "id": "7d",
-        "type": "session-cost",
-        "color": "",
-        "rawValue": true
-      },
-      {
-        "id": "6",
-        "type": "separator"
-      },
-      {
         "id": "8b",
         "type": "custom-text",
         "color": "hex:83a598",
@@ -99,6 +82,23 @@
         "id": "11",
         "type": "tokens-output",
         "color": "hex:83a598",
+        "rawValue": true
+      },
+      {
+        "id": "6",
+        "type": "separator"
+      },
+      {
+        "id": "7c",
+        "type": "custom-text",
+        "color": "hex:b8bb26",
+        "customText": "💰 ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "7d",
+        "type": "session-cost",
+        "color": "",
         "rawValue": true
       },
       {
