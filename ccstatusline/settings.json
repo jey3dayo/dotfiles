@@ -24,14 +24,14 @@
       {
         "id": "2b",
         "type": "custom-text",
-        "color": "hex:6daa84",
+        "color": "hex:5f9e76",
         "customText": "Ctx ",
         "merge": "no-padding"
       },
       {
         "id": "3a",
         "type": "context-length",
-        "color": "hex:6daa84",
+        "color": "hex:5f9e76",
         "bold": true,
         "rawValue": true
       },
@@ -45,7 +45,7 @@
       {
         "id": "3",
         "type": "context-percentage-usable",
-        "color": "hex:6daa84",
+        "color": "hex:5f9e76",
         "bold": true,
         "rawValue": true
       },
@@ -133,14 +133,14 @@
       {
         "id": "12",
         "type": "custom-text",
-        "color": "hex:6daa84",
+        "color": "hex:636d83",
         "customText": "⏱  Block   5h ",
         "merge": "no-padding"
       },
       {
         "id": "13",
         "type": "block-timer",
-        "color": "hex:6daa84",
+        "color": "hex:5f9e76",
         "bold": true,
         "rawValue": true,
         "metadata": {
