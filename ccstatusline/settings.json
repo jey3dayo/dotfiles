@@ -43,8 +43,21 @@
       },
       {
         "id": "3",
-        "type": "context-percentage",
+        "type": "context-percentage-usable",
         "color": "hex:e5c07b",
+        "rawValue": true
+      },
+      {
+        "id": "3c",
+        "type": "custom-text",
+        "color": "hex:83a598",
+        "customText": "⏱ ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "3d",
+        "type": "session-clock",
+        "color": "hex:83a598",
         "rawValue": true
       },
       {
@@ -69,12 +82,42 @@
         "type": "separator"
       },
       {
+        "id": "8b",
+        "type": "custom-text",
+        "color": "hex:83a598",
+        "customText": "In/Out: ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "9",
+        "type": "tokens-input",
+        "color": "hex:83a598",
+        "rawValue": true
+      },
+      {
+        "id": "10",
+        "type": "custom-text",
+        "color": "hex:83a598",
+        "customText": "/",
+        "merge": "no-padding"
+      },
+      {
+        "id": "11",
+        "type": "tokens-output",
+        "color": "hex:83a598",
+        "rawValue": true
+      },
+      {
+        "id": "7b",
+        "type": "separator"
+      },
+      {
         "id": "5",
         "type": "git-branch",
         "color": "hex:d3869b"
       },
       {
-        "id": "7b",
+        "id": "8",
         "type": "separator"
       },
       {
@@ -85,7 +128,7 @@
     ],
     [
       {
-        "id": "8",
+        "id": "12",
         "type": "custom-text",
         "color": "hex:97c9c3",
         "bold": true,
@@ -93,7 +136,7 @@
         "merge": "no-padding"
       },
       {
-        "id": "9",
+        "id": "13",
         "type": "block-timer",
         "color": "hex:97c9c3",
         "bold": true,
@@ -103,11 +146,11 @@
         }
       },
       {
-        "id": "8b",
+        "id": "14",
         "type": "separator"
       },
       {
-        "id": "8c",
+        "id": "15",
         "type": "reset-timer",
         "color": "hex:97c9c3",
         "rawValue": true
@@ -115,14 +158,14 @@
     ],
     [
       {
-        "id": "10a",
+        "id": "16",
         "type": "custom-text",
         "color": "hex:e5c07b",
         "customText": "Session 📅 1d ",
         "merge": "no-padding"
       },
       {
-        "id": "10",
+        "id": "17",
         "type": "session-usage",
         "color": "hex:e5c07b",
         "rawValue": true,
@@ -133,14 +176,14 @@
     ],
     [
       {
-        "id": "13a",
+        "id": "18",
         "type": "custom-text",
         "color": "hex:fe8019",
         "customText": "Weekly 📅 7d ",
         "merge": "no-padding"
       },
       {
-        "id": "13",
+        "id": "19",
         "type": "weekly-usage",
         "color": "hex:fe8019",
         "rawValue": true,
@@ -149,18 +192,18 @@
         }
       },
       {
-        "id": "12",
+        "id": "20",
         "type": "separator"
       },
       {
-        "id": "11",
+        "id": "21",
         "type": "weekly-reset-timer",
         "color": "hex:83a598",
         "rawValue": true
       }
     ]
   ],
-  "flexMode": "full-minus-40",
+  "flexMode": "full",
   "compactThreshold": 60,
   "colorLevel": 3,
   "inheritSeparatorColors": false,
