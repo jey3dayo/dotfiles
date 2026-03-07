@@ -20,6 +20,7 @@ in
   # Fundamental packages (if needed)
   home.packages = with pkgs; [
     rsync # Required for copy-tree deployment
+    btop
   ];
 
   # Tools are installed via mise; Home Manager focuses on config distribution.
