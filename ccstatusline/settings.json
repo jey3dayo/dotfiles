@@ -133,7 +133,7 @@
         "type": "custom-text",
         "color": "hex:97c9c3",
         "bold": true,
-        "customText": "Block   ⏱  5h ",
+        "customText": "⏱  Block   5h ",
         "merge": "no-padding"
       },
       {
@@ -179,7 +179,7 @@
         "id": "16",
         "type": "custom-text",
         "color": "hex:e5c07b",
-        "customText": "Session 📅 1d ",
+        "customText": "📅 Session 1d ",
         "merge": "no-padding"
       },
       {
@@ -197,7 +197,7 @@
         "id": "18",
         "type": "custom-text",
         "color": "hex:fe8019",
-        "customText": "Weekly  📅 7d ",
+        "customText": "📅 Weekly  7d ",
         "merge": "no-padding"
       },
       {
