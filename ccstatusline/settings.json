@@ -133,7 +133,7 @@
         "type": "custom-text",
         "color": "hex:97c9c3",
         "bold": true,
-        "customText": "Block   ⏱ 5h ",
+        "customText": "Block   ⏱  5h ",
         "merge": "no-padding"
       },
       {
