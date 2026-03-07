@@ -149,21 +149,21 @@
       {
         "id": "15a",
         "type": "custom-text",
-        "color": "hex:bc83e3",
+        "color": "hex:6791c9",
         "customText": "(",
         "merge": "no-padding"
       },
       {
         "id": "15",
         "type": "reset-timer",
-        "color": "hex:bc83e3",
+        "color": "hex:6791c9",
         "rawValue": true,
         "merge": "no-padding"
       },
       {
         "id": "15b",
         "type": "custom-text",
-        "color": "hex:bc83e3",
+        "color": "hex:6791c9",
         "customText": ")",
         "merge": "no-padding"
       }
