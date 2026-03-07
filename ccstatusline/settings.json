@@ -29,6 +29,19 @@
         "merge": "no-padding"
       },
       {
+        "id": "3a",
+        "type": "context-length",
+        "color": "hex:e5c07b",
+        "rawValue": true
+      },
+      {
+        "id": "3b",
+        "type": "custom-text",
+        "color": "hex:e5c07b",
+        "customText": " / ",
+        "merge": "no-padding"
+      },
+      {
         "id": "3",
         "type": "context-percentage",
         "color": "hex:e5c07b",
