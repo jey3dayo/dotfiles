@@ -38,7 +38,7 @@
       {
         "id": "3b",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "(",
         "merge": "no-padding"
       },
@@ -52,7 +52,7 @@
       {
         "id": "3bc",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": ")",
         "merge": "no-padding"
       },
@@ -63,27 +63,27 @@
       {
         "id": "8b",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "I/O ",
         "merge": "no-padding"
       },
       {
         "id": "9",
         "type": "tokens-input",
-        "color": "hex:5c6370",
+        "color": "hex:636d83",
         "rawValue": true
       },
       {
         "id": "10",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "/",
         "merge": "no-padding"
       },
       {
         "id": "11",
         "type": "tokens-output",
-        "color": "hex:5c6370",
+        "color": "hex:636d83",
         "rawValue": true
       },
       {
@@ -93,14 +93,14 @@
       {
         "id": "7c",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "💰 ",
         "merge": "no-padding"
       },
       {
         "id": "7d",
         "type": "session-cost",
-        "color": "hex:5c6370",
+        "color": "hex:636d83",
         "rawValue": true
       },
       {
@@ -110,7 +110,7 @@
       {
         "id": "5",
         "type": "git-branch",
-        "color": "hex:5c6370"
+        "color": "hex:636d83"
       },
       {
         "id": "8",
@@ -119,14 +119,14 @@
       {
         "id": "7a",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "Δ",
         "merge": "no-padding"
       },
       {
         "id": "7",
         "type": "git-changes",
-        "color": "hex:5c6370"
+        "color": "hex:4b5263"
       }
     ],
     [
@@ -134,7 +134,6 @@
         "id": "12",
         "type": "custom-text",
         "color": "hex:78b892",
-        "bold": true,
         "customText": "⏱  Block   5h ",
         "merge": "no-padding"
       },
@@ -151,21 +150,21 @@
       {
         "id": "15a",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "(",
         "merge": "no-padding"
       },
       {
         "id": "15",
         "type": "reset-timer",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "rawValue": true,
         "merge": "no-padding"
       },
       {
         "id": "15b",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": ")",
         "merge": "no-padding"
       }
@@ -174,14 +173,14 @@
       {
         "id": "16",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "📅 Session 1d ",
         "merge": "no-padding"
       },
       {
         "id": "17",
         "type": "session-usage",
-        "color": "hex:5c6370",
+        "color": "hex:636d83",
         "rawValue": true,
         "metadata": {
           "display": "progress"
@@ -192,14 +191,14 @@
       {
         "id": "18",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "📅 Weekly  7d ",
         "merge": "no-padding"
       },
       {
         "id": "19",
         "type": "weekly-usage",
-        "color": "hex:5c6370",
+        "color": "hex:636d83",
         "rawValue": true,
         "metadata": {
           "display": "progress"
@@ -208,21 +207,21 @@
       {
         "id": "21a",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": "(",
         "merge": "no-padding"
       },
       {
         "id": "21",
         "type": "weekly-reset-timer",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "rawValue": true,
         "merge": "no-padding"
       },
       {
         "id": "21b",
         "type": "custom-text",
-        "color": "hex:5c6370",
+        "color": "hex:4b5263",
         "customText": ")",
         "merge": "no-padding"
       }
