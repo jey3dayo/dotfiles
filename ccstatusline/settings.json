@@ -37,7 +37,7 @@
       {
         "id": "3b",
         "type": "custom-text",
-        "color": "hex:78b892",
+        "color": "hex:5c6370",
         "customText": "(",
         "merge": "no-padding"
       },
@@ -50,7 +50,7 @@
       {
         "id": "3bc",
         "type": "custom-text",
-        "color": "hex:78b892",
+        "color": "hex:5c6370",
         "customText": ")",
         "merge": "no-padding"
       },
