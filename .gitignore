@@ -150,6 +150,7 @@ browser-launcher/
 rest-client/
 irb/irb_history
 Autodesk/
+btop/btop.log
 
 ## Package Managers and Tools
 .yarnclean
