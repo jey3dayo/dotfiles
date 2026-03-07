@@ -147,11 +147,9 @@ local mappings = {
   },
   {
     lhs = "<Leader>y",
-    desc = "Pick from registers",
+    desc = "Yank history",
     rhs = function()
-      with_extra(function(extra)
-        extra.pickers.registers()
-      end)
+      require("yanky.picker").select_in_history()
     end,
   },
   {
@@ -203,6 +201,7 @@ local mappings = {
 
 function M.setup()
   ensure_minipick()
+  vim.ui.select = MiniPick.ui_select
 
   for _, map in ipairs(mappings) do
     vim.keymap.set(map.mode or "n", map.lhs, map.rhs, { desc = map.desc })

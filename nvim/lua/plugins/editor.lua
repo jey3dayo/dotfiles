@@ -549,49 +549,57 @@ return {
     end,
   },
 
+  -- Substitute operator with undo-glow integration
+  {
+    "gbprod/substitute.nvim",
+    event = "VeryLazy",
+    config = function()
+      local substitute = require "substitute"
+      local undo_glow = require "undo-glow"
+      substitute.setup {
+        on_substitute = function(event)
+          undo_glow.highlight_on_substitute(event)
+        end,
+      }
+      vim.keymap.set("n", "cx", substitute.operator, { desc = "Substitute operator" })
+      vim.keymap.set("n", "cxx", substitute.line, { desc = "Substitute line" })
+      vim.keymap.set("n", "cX", substitute.eol, { desc = "Substitute to end of line" })
+      vim.keymap.set("x", "cx", substitute.visual, { desc = "Substitute visual" })
+    end,
+  },
+
   -- Yank history and register management
   {
     "gbprod/yanky.nvim",
     event = "VeryLazy",
-    dependencies = { "kkharji/sqlite.lua" }, -- optional: persistence
+    dependencies = { "kkharji/sqlite.lua" },
     opts = {
       ring = {
         history_length = 100,
-        storage = "memory", -- or "sqlite" for persistence
+        storage = "sqlite",
         sync_with_numbered_registers = true,
         cancel_event = "update",
       },
-      picker = {
-        select = {
-          action = nil, -- telescope integration can be added later
-        },
-      },
-      system_clipboard = {
-        sync_with_ring = true,
-      },
+      picker = { select = { action = nil } },
+      system_clipboard = { sync_with_ring = true },
       highlight = {
         on_put = true,
-        on_yank = true,
+        on_yank = false, -- undo-glow が TextYankPost で担当
         timer = 300,
       },
-      preserve_cursor_position = {
-        enabled = true,
-      },
+      preserve_cursor_position = { enabled = true },
     },
     keys = {
-      -- Yank history navigation
+      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank" },
+      { "Y", "<Plug>(YankyYank)$", mode = { "n" }, desc = "Yank to EOL" },
       {
         "<leader>p",
-        function()
-          require("yanky").put("p", true)
-        end,
+        function() require("yanky").put("p", true) end,
         desc = "Put with yanky",
       },
       {
         "<leader>P",
-        function()
-          require("yanky").put("P", true)
-        end,
+        function() require("yanky").put("P", true) end,
         desc = "Put before with yanky",
       },
       { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history" },
