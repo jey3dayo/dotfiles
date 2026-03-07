@@ -24,14 +24,14 @@
       {
         "id": "2b",
         "type": "custom-text",
-        "color": "hex:78b892",
+        "color": "hex:5c6370",
         "customText": "Ctx ",
         "merge": "no-padding"
       },
       {
         "id": "3a",
         "type": "context-length",
-        "color": "hex:78b892",
+        "color": "hex:5c6370",
         "rawValue": true
       },
       {
@@ -61,27 +61,27 @@
       {
         "id": "8b",
         "type": "custom-text",
-        "color": "hex:bc83e3",
+        "color": "hex:5c6370",
         "customText": "I/O ",
         "merge": "no-padding"
       },
       {
         "id": "9",
         "type": "tokens-input",
-        "color": "hex:bc83e3",
+        "color": "hex:5c6370",
         "rawValue": true
       },
       {
         "id": "10",
         "type": "custom-text",
-        "color": "hex:bc83e3",
+        "color": "hex:5c6370",
         "customText": "/",
         "merge": "no-padding"
       },
       {
         "id": "11",
         "type": "tokens-output",
-        "color": "hex:bc83e3",
+        "color": "hex:5c6370",
         "rawValue": true
       },
       {
@@ -91,7 +91,7 @@
       {
         "id": "7c",
         "type": "custom-text",
-        "color": "hex:bc83e3",
+        "color": "hex:5c6370",
         "customText": "💰 ",
         "merge": "no-padding"
       },
@@ -117,14 +117,14 @@
       {
         "id": "7a",
         "type": "custom-text",
-        "color": "hex:78b892",
+        "color": "hex:5c6370",
         "customText": "Δ",
         "merge": "no-padding"
       },
       {
         "id": "7",
         "type": "git-changes",
-        "color": "hex:78b892"
+        "color": "hex:5c6370"
       }
     ],
     [
@@ -149,21 +149,21 @@
       {
         "id": "15a",
         "type": "custom-text",
-        "color": "hex:6791c9",
+        "color": "hex:5c6370",
         "customText": "(",
         "merge": "no-padding"
       },
       {
         "id": "15",
         "type": "reset-timer",
-        "color": "hex:6791c9",
+        "color": "hex:5c6370",
         "rawValue": true,
         "merge": "no-padding"
       },
       {
         "id": "15b",
         "type": "custom-text",
-        "color": "hex:6791c9",
+        "color": "hex:5c6370",
         "customText": ")",
         "merge": "no-padding"
       }
@@ -210,7 +210,7 @@
       {
         "id": "21",
         "type": "weekly-reset-timer",
-        "color": "hex:bc83e3",
+        "color": "hex:5c6370",
         "rawValue": true
       }
     ]
