@@ -24,14 +24,14 @@
       {
         "id": "2b",
         "type": "custom-text",
-        "color": "hex:78b892",
+        "color": "hex:6daa84",
         "customText": "Ctx ",
         "merge": "no-padding"
       },
       {
         "id": "3a",
         "type": "context-length",
-        "color": "hex:78b892",
+        "color": "hex:6daa84",
         "bold": true,
         "rawValue": true
       },
@@ -45,7 +45,7 @@
       {
         "id": "3",
         "type": "context-percentage-usable",
-        "color": "hex:78b892",
+        "color": "hex:6daa84",
         "bold": true,
         "rawValue": true
       },
@@ -70,7 +70,7 @@
       {
         "id": "9",
         "type": "tokens-input",
-        "color": "hex:636d83",
+        "color": "hex:4b5263",
         "rawValue": true
       },
       {
@@ -83,7 +83,7 @@
       {
         "id": "11",
         "type": "tokens-output",
-        "color": "hex:636d83",
+        "color": "hex:4b5263",
         "rawValue": true
       },
       {
@@ -100,7 +100,7 @@
       {
         "id": "7d",
         "type": "session-cost",
-        "color": "hex:636d83",
+        "color": "hex:4b5263",
         "rawValue": true
       },
       {
@@ -110,7 +110,7 @@
       {
         "id": "5",
         "type": "git-branch",
-        "color": "hex:636d83"
+        "color": "hex:4b5263"
       },
       {
         "id": "8",
@@ -133,14 +133,14 @@
       {
         "id": "12",
         "type": "custom-text",
-        "color": "hex:78b892",
+        "color": "hex:6daa84",
         "customText": "⏱  Block   5h ",
         "merge": "no-padding"
       },
       {
         "id": "13",
         "type": "block-timer",
-        "color": "hex:78b892",
+        "color": "hex:6daa84",
         "bold": true,
         "rawValue": true,
         "metadata": {
