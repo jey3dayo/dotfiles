@@ -133,7 +133,7 @@
       {
         "id": "12",
         "type": "custom-text",
-        "color": "hex:6791c9",
+        "color": "hex:78b892",
         "bold": true,
         "customText": "⏱  Block   5h ",
         "merge": "no-padding"
