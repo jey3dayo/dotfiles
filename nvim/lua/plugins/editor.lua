@@ -377,7 +377,7 @@ return {
         file = { suffix = "" },
         window = { suffix = "" },
         quickfix = { suffix = "q" },
-        yank = { suffix = "y" },
+        yank = { suffix = "" },
         treesitter = { suffix = "t" },
       }
     end,
