@@ -197,7 +197,7 @@
         "id": "18",
         "type": "custom-text",
         "color": "hex:fe8019",
-        "customText": "Weekly 📅 7d ",
+        "customText": "Weekly  📅 7d ",
         "merge": "no-padding"
       },
       {
