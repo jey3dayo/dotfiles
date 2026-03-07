@@ -1,6 +1,6 @@
 # Technology Stack - Personal Dotfiles
 
-**Last Updated**: 2026-02-09
+**Last Updated**: 2026-03-07
 **Inclusion Mode**: Always Included
 
 ## Architecture
@@ -68,8 +68,8 @@ All other tools serve to enhance or support these core components, while deploym
 
 #### Alacritty (Alternative)
 
-- Configuration: `alacritty/alacritty.toml`
-- Format: TOML configuration
+- Configuration: `alacritty/alacritty.yml`
+- Format: YAML configuration
 - Features:
   - GPU-accelerated rendering
   - Minimal overhead
@@ -111,6 +111,12 @@ All other tools serve to enhance or support these core components, while deploym
 - Source of Truth: `flake.nix`, `home.nix`, and `nix/` modules
 - Deployment: `home-manager switch --flake ~/.config --impure`
 - Environment Detection: CI / Raspberry Pi / Default profiles with per-env config
+
+#### Agent Skills Bundle (Nix-managed)
+
+- Source of Truth: `agents/internal/` for internal assets, with external sources in `nix/agent-skills-sources.nix`
+- Build Path: `flake.nix` composes and bundles selected skills
+- Deployment Path: Home Manager module (`agents/nix/module.nix`) applies bundle outputs consistently
 
 ### Version Management
 
@@ -262,10 +268,11 @@ zsh-benchmark              # Measure startup time
 ```bash
 # Custom widgets (keyboard shortcuts)
 Ctrl+]                     # FZF repository selector
-Ctrl+g Ctrl+g             # Git status widget
-Ctrl+g Ctrl+s             # Git add widget
-Ctrl+g Ctrl+a             # Git add all widget
-Ctrl+g Ctrl+b             # Git branch widget
+Ctrl+g Ctrl+g             # Git menu widget (status/diff/add/switch/worktree)
+Ctrl+g Ctrl+s             # Git status widget
+Ctrl+g Ctrl+a             # Git add interactive widget
+Ctrl+g Ctrl+b             # Git branch switcher (fzf-git)
+Ctrl+g Ctrl+w             # Git worktree widget (fzf-git)
 ```
 
 ### WezTerm (Ctrl+x leader)
@@ -337,11 +344,11 @@ This is a dotfiles project - no server ports are used. All tools run as local ap
 ## Configuration File Formats
 
 - Lua: Neovim (`nvim/`), WezTerm (`wezterm/wezterm.lua` + `*.lua`)
-- TOML: Mise (`.mise.toml`, `mise/config*.toml`), Alacritty (`alacritty/alacritty.toml`)
+- TOML: Mise (`.mise.toml`, `mise/config*.toml`)
 - Nix: `flake.nix`, `home.nix`, `nix/`
 - Shell: Zsh (`zsh/`), Bash scripts
 - JSON: Karabiner (`karabiner/karabiner.json`), VS Code
-- YAML: GitHub Actions (`.github/workflows/`)
+- YAML: GitHub Actions (`.github/workflows/`), Alacritty (`alacritty/alacritty.yml`)
 - Markdown: Documentation (`docs/`)
 
 ## AI & Automation Tools

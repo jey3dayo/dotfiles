@@ -1,6 +1,6 @@
 # Project Structure - Personal Dotfiles
 
-**Last Updated**: 2026-02-09
+**Last Updated**: 2026-03-07
 **Inclusion Mode**: Always Included
 
 ## Root Directory Organization
@@ -9,6 +9,7 @@
 dotfiles/
 ├── .github/              # GitHub Actions workflows (CI/CD)
 ├── .kiro/steering/       # Project steering (Kiro)
+├── agents/               # Internal/external AI assets and distribution logic
 ├── alacritty/            # Alacritty terminal configuration
 ├── ghostty/              # Ghostty terminal configuration
 ├── wezterm/              # WezTerm terminal configuration (Lua)
@@ -123,7 +124,7 @@ tmux/
 
 ```
 alacritty/
-└── alacritty.toml        # TOML configuration
+└── alacritty.yml         # YAML configuration
 ```
 
 **Purpose**: GPU-accelerated lightweight alternative to WezTerm
@@ -142,14 +143,15 @@ ghostty/
 ```
 ssh/
 ├── config                # Main SSH config (hierarchical includes)
-├── config.d/             # Modular host configurations
-│   ├── personal         # Personal servers
-│   ├── work             # Work environments
-│   └── github           # GitHub-specific
+├── config.d/             # Common/Linux/macOS layered configurations
+│   ├── common/          # Shared base rules and service hosts
+│   ├── linux/           # Linux-specific overrides
+│   └── macos/           # macOS-specific overrides
+├── ssh_config.d/         # Provider-specific snippets (e.g. 1Password)
 └── README.md             # SSH setup documentation
 ```
 
-**Architecture**: Hierarchical includes for security and organization
+**Architecture**: Multi-layer includes (common + OS + provider snippets) for security and portability
 
 ### `karabiner/` - Keyboard Customization
 
@@ -198,6 +200,18 @@ mise/
 
 **Purpose**: Environment-specific tool definitions and task bundles
 
+### `agents/` - AI Asset Management
+
+```
+agents/
+├── internal/             # Source-of-truth assets maintained in this repository
+├── external/             # Third-party imported assets
+├── nix/                  # Bundle/distribution implementation
+└── scripts/              # Validation and maintenance scripts
+```
+
+**Purpose**: Keep AI assets versioned and distributable through the same Nix/Home Manager pipeline
+
 ### `scripts/` - Bootstrap & Helpers
 
 ```
@@ -218,7 +232,7 @@ docs/
 ├── README.md                    # Documentation index
 ├── performance.md               # Performance metrics
 ├── setup.md                     # Setup guide
-├── maintenance.md               # Maintenance procedures
+├── disaster-recovery.md         # Recovery procedures
 └── tools/                       # Tool-specific guides
     ├── zsh.md                   # Shell layer
     ├── nvim.md                  # Editor layer
@@ -227,7 +241,7 @@ docs/
     └── fzf-integration.md       # FZF workflows
 ```
 
-**Organization**: Layer-based documentation (Core/Tool/Support)
+**Organization**: Layer-based documentation (Core/Tool/Support), with operational runbooks referenced from the docs index
 
 ### `.kiro/` - Spec-Driven Development
 
@@ -277,7 +291,7 @@ OS            | config/os/       | Platform-specific tweaks
 ### Configuration Files
 
 - Dotfiles: Leading dot (e.g., `.zshrc`, `.tmux.conf`)
-- Tool configs: Tool name + format (e.g., `wezterm.lua`, `mise/config.toml`)
+- Tool configs: Tool name + format (e.g., `wezterm.lua`, `mise/config.toml`, `alacritty.yml`)
 - Loader-based ordering: Zsh load order is controlled by `config/loader.zsh`
 
 ### Documentation
