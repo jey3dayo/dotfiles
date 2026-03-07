@@ -1,0 +1,163 @@
+{
+  "version": 3,
+  "lines": [
+    [
+      {
+        "id": "0",
+        "type": "custom-text",
+        "color": "hex:97c9c3",
+        "bold": true,
+        "customText": "🤖 ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "1",
+        "type": "model",
+        "color": "hex:97c9c3",
+        "bold": true,
+        "rawValue": true
+      },
+      {
+        "id": "2",
+        "type": "separator"
+      },
+      {
+        "id": "2b",
+        "type": "custom-text",
+        "color": "hex:e5c07b",
+        "customText": "Ctx ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "3",
+        "type": "context-percentage",
+        "color": "hex:e5c07b",
+        "rawValue": true
+      },
+      {
+        "id": "4",
+        "type": "separator"
+      },
+      {
+        "id": "7c",
+        "type": "custom-text",
+        "color": "hex:b8bb26",
+        "customText": "💰 ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "7d",
+        "type": "session-cost",
+        "color": "",
+        "rawValue": true
+      },
+      {
+        "id": "6",
+        "type": "separator"
+      },
+      {
+        "id": "5",
+        "type": "git-branch",
+        "color": "hex:d3869b"
+      },
+      {
+        "id": "7b",
+        "type": "separator"
+      },
+      {
+        "id": "7",
+        "type": "git-changes",
+        "color": "hex:b8bb26"
+      }
+    ],
+    [
+      {
+        "id": "8",
+        "type": "custom-text",
+        "color": "hex:97c9c3",
+        "bold": true,
+        "customText": "Block⏱ 5h ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "9",
+        "type": "block-timer",
+        "color": "hex:97c9c3",
+        "bold": true,
+        "rawValue": true,
+        "metadata": {
+          "display": "progress"
+        }
+      },
+      {
+        "id": "8b",
+        "type": "separator"
+      },
+      {
+        "id": "8c",
+        "type": "reset-timer",
+        "color": "hex:97c9c3",
+        "rawValue": true
+      }
+    ],
+    [
+      {
+        "id": "10a",
+        "type": "custom-text",
+        "color": "hex:e5c07b",
+        "customText": "Session 📅 1d ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "10",
+        "type": "session-usage",
+        "color": "hex:e5c07b",
+        "rawValue": true,
+        "metadata": {
+          "display": "progress"
+        }
+      }
+    ],
+    [
+      {
+        "id": "13a",
+        "type": "custom-text",
+        "color": "hex:fe8019",
+        "customText": "Weekly 📅 7d ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "13",
+        "type": "weekly-usage",
+        "color": "hex:fe8019",
+        "rawValue": true,
+        "metadata": {
+          "display": "progress"
+        }
+      },
+      {
+        "id": "12",
+        "type": "separator"
+      },
+      {
+        "id": "11",
+        "type": "weekly-reset-timer",
+        "color": "hex:83a598",
+        "rawValue": true
+      }
+    ]
+  ],
+  "flexMode": "full-minus-40",
+  "compactThreshold": 60,
+  "colorLevel": 3,
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [""],
+    "separatorInvertBackground": [false],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false
+  }
+}
