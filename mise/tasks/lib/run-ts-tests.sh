@@ -8,17 +8,6 @@ cd "${repo_root}"
 
 QUIET=${QUIET:-0}
 
-# Ensure required dependencies exist.
-if ! command -v fd >/dev/null 2>&1; then
-  echo "❌ fd not found. Please install fd (https://github.com/sharkdp/fd)"
-  exit 1
-fi
-
-if ! command -v tsx >/dev/null 2>&1; then
-  echo "❌ tsx not found. Please install tsx"
-  exit 1
-fi
-
 # Node test runner compatible test files.
 node_test_files=()
 while IFS= read -r file; do

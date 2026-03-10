@@ -13,18 +13,24 @@ run = """
 bash ./mise/tasks/lib/run-ts-tests.sh
 """
 
+["test:ts:ci"]
+description = "TypeScript スクリプトのユニットテストを実行（サマリーのみ表示）"
+run = """
+QUIET=1 bash ./mise/tasks/lib/run-ts-tests.sh
+"""
+
 ["test:lua"]
 description = "Lua テストを実行(busted)"
 run = """
 # Add ~/.luarocks/bin to PATH if not already present
 export PATH="${HOME}/.luarocks/bin:${PATH}"
 
-# Check if busted is installed
-if ! command -v busted >/dev/null 2>&1; then
-  echo "⚠️  busted not found. Installing via luarocks..."
+# Check if busted is installed and executable with the current Lua toolchain
+if ! command -v busted >/dev/null 2>&1 || ! busted --version >/dev/null 2>&1; then
+  echo "⚠️  busted is missing or broken. Installing via luarocks..."
   luarocks install --local busted
-  if ! command -v busted >/dev/null 2>&1; then
-    echo "❌ Failed to install busted. Please run: mise run ci:install"
+  if ! command -v busted >/dev/null 2>&1 || ! busted --version >/dev/null 2>&1; then
+    echo "❌ Failed to prepare busted. Please run: mise run ci:install"
     exit 1
   fi
 fi
@@ -36,6 +42,14 @@ busted --verbose spec/ nvim/spec/
 description = "Lua テストを監視モードで実行(ファイル変更時に自動再実行)"
 run = """
 export PATH="${HOME}/.luarocks/bin:${PATH}"
+if ! command -v busted >/dev/null 2>&1 || ! busted --version >/dev/null 2>&1; then
+  echo "⚠️  busted is missing or broken. Installing via luarocks..."
+  luarocks install --local busted
+  if ! command -v busted >/dev/null 2>&1 || ! busted --version >/dev/null 2>&1; then
+    echo "❌ Failed to prepare busted. Please run: mise run ci:install"
+    exit 1
+  fi
+fi
 if command -v fswatch >/dev/null 2>&1; then
   echo "Watching spec/, nvim/spec/, and nvim/lua/ for changes..."
   fswatch -o spec/ nvim/spec/ nvim/lua/ wezterm/ | while read; do
