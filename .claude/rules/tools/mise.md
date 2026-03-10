@@ -22,12 +22,10 @@ mise設定は環境別ファイルで管理されています:
 ### Environment-specific configs
 
 - `mise/config.default.toml` - デフォルト（macOS/Linux/WSL2）
-
   - jobs = 8（デスクトップ/ワークステーション向け）
   - 全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
 
 - `mise/config.pi.toml` - Raspberry Pi（ARMサーバー環境）
-
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
   - 最小ツールセット（goランタイム latest版を含む、npm軽量版、cargo全除外）
 
@@ -522,7 +520,7 @@ mise doctor               # Check for issues
 6. Regular Updates: Run `mise upgrade` weekly to stay current
 7. Consolidation: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, npm/pnpm/bun global, etc.)
 8. Avoid Duplication: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
-9. **No manual availability checks for mise-managed tools**: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。
+9. No manual availability checks for mise-managed tools: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。
    - ❌ `if ! command -v fd >/dev/null 2>&1; then echo "..."; exit 1; fi`
    - ✅ 単に `fd ...` を呼び出すだけでよい
    - 例外: mise 非管理ツール（busted via luarocks、fswatch via Homebrew 等）は引き続き確認してよい
