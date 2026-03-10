@@ -277,3 +277,6 @@ systemd/user/*.timer.wants/
 environment.d/
 chromium/
 pulse/
+
+## Nix access tokens (local only, do not commit)
+nix/access-tokens.conf
