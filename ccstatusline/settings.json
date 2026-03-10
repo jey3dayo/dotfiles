@@ -3,6 +3,64 @@
   "lines": [
     [
       {
+        "id": "repo-icon",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": "📁 ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "repo",
+        "type": "git-root-dir",
+        "color": "hex:9485D6"
+      },
+      {
+        "id": "repo-slash",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": "/",
+        "merge": "no-padding"
+      },
+      {
+        "id": "sep-branch",
+        "type": "separator"
+      },
+      {
+        "id": "git-branch-top",
+        "type": "git-branch",
+        "color": "hex:9485D6"
+      },
+      {
+        "id": "sep-delta",
+        "type": "separator"
+      },
+      {
+        "id": "delta-label",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": "Δ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "git-changes-top",
+        "type": "git-changes",
+        "color": "hex:9485D6"
+      },
+      {
+        "id": "sep-pr",
+        "type": "separator"
+      },
+      {
+        "id": "pr",
+        "type": "custom-command",
+        "color": "hex:C6E472",
+        "metadata": {
+          "command": "gh pr view --json number -q '\"PR#\" + (.number | tostring)' 2>/dev/null || true"
+        }
+      }
+    ],
+    [
+      {
         "id": "0",
         "type": "custom-text",
         "color": "hex:64D2E8",
@@ -100,31 +158,6 @@
         "type": "session-cost",
         "color": "hex:AEE8F4",
         "rawValue": true
-      },
-      {
-        "id": "7b",
-        "type": "separator"
-      },
-      {
-        "id": "5",
-        "type": "git-branch",
-        "color": "hex:9485D6"
-      },
-      {
-        "id": "8",
-        "type": "separator"
-      },
-      {
-        "id": "7a",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": "Δ",
-        "merge": "no-padding"
-      },
-      {
-        "id": "7",
-        "type": "git-changes",
-        "color": "hex:9485D6"
       }
     ],
     [
