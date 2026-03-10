@@ -6,6 +6,8 @@ script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd -- "${script_dir}/../../.." && pwd)"
 cd "${repo_root}"
 
+QUIET=${QUIET:-0}
+
 # Ensure required dependencies exist.
 if ! command -v fd >/dev/null 2>&1; then
   echo "❌ fd not found. Please install fd (https://github.com/sharkdp/fd)"
@@ -18,13 +20,18 @@ if ! command -v tsx >/dev/null 2>&1; then
 fi
 
 # Node test runner compatible test files.
-mapfile -t node_test_files < <(
-  fd --type f --glob "*.test.ts" --exclude "replace-bold-headings.test.ts" agents/scripts scripts | sort -u
-)
+node_test_files=()
+while IFS= read -r file; do
+  node_test_files+=("${file}")
+done < <(fd --type f --glob "*.test.ts" --exclude "replace-bold-headings.test.ts" agents/scripts scripts | sort -u)
 
 if ((${#node_test_files[@]} > 0)); then
   echo "Running Node test runner suites (${#node_test_files[@]} files)..."
-  tsx --test "${node_test_files[@]}"
+  if [[ "$QUIET" == "1" ]]; then
+    tsx --test --test-reporter=dot "${node_test_files[@]}"
+  else
+    tsx --test "${node_test_files[@]}"
+  fi
 else
   echo "No Node test runner suites found."
 fi
@@ -38,6 +45,10 @@ legacy_tests=(
 for legacy_test in "${legacy_tests[@]}"; do
   if [[ -f "${legacy_test}" ]]; then
     echo "Running legacy TS test: ${legacy_test}"
-    tsx "${legacy_test}"
+    if [[ "$QUIET" == "1" ]]; then
+      tsx "${legacy_test}" | grep -vE "^✅ "
+    else
+      tsx "${legacy_test}"
+    fi
   fi
 done
