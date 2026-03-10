@@ -5,14 +5,14 @@
       {
         "id": "0",
         "type": "custom-text",
-        "color": "hex:6585a8",
+        "color": "hex:64D2E8",
         "customText": "🤖 ",
         "merge": "no-padding"
       },
       {
         "id": "1",
         "type": "model",
-        "color": "hex:6585a8",
+        "color": "hex:64D2E8",
         "rawValue": true
       },
       {
@@ -22,35 +22,35 @@
       {
         "id": "2b",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "Ctx ",
         "merge": "no-padding"
       },
       {
         "id": "3a",
         "type": "context-length",
-        "color": "hex:629874",
+        "color": "hex:C6E472",
         "bold": true,
         "rawValue": true
       },
       {
         "id": "3b",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "(",
         "merge": "no-padding"
       },
       {
         "id": "3",
         "type": "context-percentage-usable",
-        "color": "hex:629874",
+        "color": "hex:C6E472",
         "bold": true,
         "rawValue": true
       },
       {
         "id": "3bc",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": ")",
         "merge": "no-padding"
       },
@@ -61,27 +61,27 @@
       {
         "id": "8b",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "I/O ",
         "merge": "no-padding"
       },
       {
         "id": "9",
         "type": "tokens-input",
-        "color": "hex:576170",
+        "color": "hex:AEE8F4",
         "rawValue": true
       },
       {
         "id": "10",
         "type": "custom-text",
-        "color": "hex:576170",
+        "color": "hex:AEE8F4",
         "customText": "/",
         "merge": "no-padding"
       },
       {
         "id": "11",
         "type": "tokens-output",
-        "color": "hex:576170",
+        "color": "hex:AEE8F4",
         "rawValue": true
       },
       {
@@ -91,14 +91,14 @@
       {
         "id": "7c",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "💰 ",
         "merge": "no-padding"
       },
       {
         "id": "7d",
         "type": "session-cost",
-        "color": "hex:576170",
+        "color": "hex:AEE8F4",
         "rawValue": true
       },
       {
@@ -108,7 +108,7 @@
       {
         "id": "5",
         "type": "git-branch",
-        "color": "hex:4d5566"
+        "color": "hex:9485D6"
       },
       {
         "id": "8",
@@ -117,28 +117,28 @@
       {
         "id": "7a",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "Δ",
         "merge": "no-padding"
       },
       {
         "id": "7",
         "type": "git-changes",
-        "color": "hex:4d5566"
+        "color": "hex:9485D6"
       }
     ],
     [
       {
         "id": "12",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "⏱  Block 5h ",
         "merge": "no-padding"
       },
       {
         "id": "13",
         "type": "block-timer",
-        "color": "hex:629874",
+        "color": "hex:C6E472",
         "rawValue": true,
         "metadata": {
           "display": "progress-short"
@@ -147,21 +147,21 @@
       {
         "id": "15a",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "(",
         "merge": "no-padding"
       },
       {
         "id": "15",
         "type": "reset-timer",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "rawValue": true,
         "merge": "no-padding"
       },
       {
         "id": "15b",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": ")",
         "merge": "no-padding"
       }
@@ -170,14 +170,14 @@
       {
         "id": "16",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "📅 Limit 1d ",
         "merge": "no-padding"
       },
       {
         "id": "17",
         "type": "session-usage",
-        "color": "hex:576170",
+        "color": "hex:AEE8F4",
         "rawValue": true,
         "metadata": {
           "display": "progress-short"
@@ -190,14 +190,14 @@
       {
         "id": "18",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "7d ",
         "merge": "no-padding"
       },
       {
         "id": "19",
         "type": "weekly-usage",
-        "color": "hex:576170",
+        "color": "hex:AEE8F4",
         "rawValue": true,
         "metadata": {
           "display": "progress-short"
@@ -206,21 +206,21 @@
       {
         "id": "21a",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": "(",
         "merge": "no-padding"
       },
       {
         "id": "21",
         "type": "weekly-reset-timer",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "rawValue": true,
         "merge": "no-padding"
       },
       {
         "id": "21b",
         "type": "custom-text",
-        "color": "hex:4d5566",
+        "color": "hex:9485D6",
         "customText": ")",
         "merge": "no-padding"
       }
