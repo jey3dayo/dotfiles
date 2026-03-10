@@ -594,12 +594,16 @@ return {
       { "Y", "<Plug>(YankyYank)$", mode = { "n" }, desc = "Yank to EOL" },
       {
         "<leader>p",
-        function() require("yanky").put("p", true) end,
+        function()
+          require("yanky").put("p", true)
+        end,
         desc = "Put with yanky",
       },
       {
         "<leader>P",
-        function() require("yanky").put("P", true) end,
+        function()
+          require("yanky").put("P", true)
+        end,
         desc = "Put before with yanky",
       },
       { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history" },

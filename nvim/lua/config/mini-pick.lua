@@ -11,8 +11,14 @@ end
 
 local function ensure_minipick()
   local ok, mini_pick = pcall(require, "mini.pick")
-  if ok and _G.MiniPick == nil then mini_pick.setup() end
+  if ok and rawget(_G, "MiniPick") == nil then mini_pick.setup() end
   return ok
+end
+
+local function get_minipick()
+  local mini_pick = rawget(_G, "MiniPick")
+  if type(mini_pick) == "table" then return mini_pick end
+  return nil
 end
 
 local function with_extra(fn)
@@ -200,8 +206,10 @@ local mappings = {
 }
 
 function M.setup()
-  ensure_minipick()
-  vim.ui.select = MiniPick.ui_select
+  if ensure_minipick() then
+    local mini_pick = get_minipick()
+    if mini_pick and mini_pick.ui_select then vim.ui.select = mini_pick.ui_select end
+  end
 
   for _, map in ipairs(mappings) do
     vim.keymap.set(map.mode or "n", map.lhs, map.rhs, { desc = map.desc })

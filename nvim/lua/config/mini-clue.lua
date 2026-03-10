@@ -100,5 +100,24 @@ return {
       border = "rounded",
       width = "auto",
     },
+    sort_fn = function(clues)
+      -- Y prefix (yank) の独自表示順: f, F, d, D, Y, l
+      local yank_priority = { Yf = 1, YF = 2, Yd = 3, YD = 4, YY = 5, Yl = 6 }
+
+      local is_yank = clues[1] and yank_priority[clues[1].keys] ~= nil
+
+      if is_yank then
+        table.sort(clues, function(a, b)
+          return (yank_priority[a.keys] or 99) < (yank_priority[b.keys] or 99)
+        end)
+        return clues
+      end
+
+      -- その他グループはデフォルト（アルファベット順）
+      table.sort(clues, function(a, b)
+        return a.keys < b.keys
+      end)
+      return clues
+    end,
   },
 }
