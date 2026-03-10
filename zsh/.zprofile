@@ -39,8 +39,9 @@ path=(
   /usr/local/opt/coreutils/libexec/gnubin(N-)
   $BUN_INSTALL/bin(N-)
   $HOME/go/bin(N-)
-  $PNPM_HOME(N-)
-  $HOME/.local/npm-global/bin(N-)
+  # pnpm global: mise で管理するため無効化
+  # $PNPM_HOME(N-)
+  # $HOME/.local/npm-global/bin(N-)
 
   # Android SDK
   $ANDROID_SDK_ROOT/emulator(N-)
