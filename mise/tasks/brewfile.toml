@@ -8,4 +8,16 @@ run = "if command -v brew >/dev/null 2>&1; then brew bundle dump --file=Brewfile
 
 ["brewfile:restore"]
 description = "Brewfileからパッケージをインストール（新規Mac対応）"
-run = "if command -v brew >/dev/null 2>&1; then brew bundle install --no-upgrade; else echo 'Homebrew not installed. Install: /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"'; fi"
+run = """
+if command -v brew >/dev/null 2>&1; then
+  brew bundle install --no-upgrade
+  # 社内tap（社外環境でアクセス不可）をbrew updateから除外
+  TAP_DIR=/opt/homebrew/Library/Taps/perman/homebrew-tap
+  if [ -d "$TAP_DIR" ]; then
+    git -C "$TAP_DIR" config homebrew.autoupdate false
+    echo "perman/tap: disabled auto-update"
+  fi
+else
+  echo 'Homebrew not installed. Install: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+fi
+"""
