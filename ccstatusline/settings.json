@@ -55,7 +55,7 @@
         "type": "custom-command",
         "color": "hex:C6E472",
         "metadata": {
-          "command": "gh pr view --json number -q '\"PR#\" + (.number | tostring)' 2>/dev/null || true"
+          "command": "cd \"$(git rev-parse --show-toplevel 2>/dev/null)\" && gh pr view --json number -q '\"PR#\" + (.number|tostring)' 2>/dev/null || true"
         }
       }
     ],
