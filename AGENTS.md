@@ -85,3 +85,16 @@
 - 要求されていない機能追加・リファクタリング
 - 既存テスト・重要ファイルの無断削除
 - any 型の導入
+
+## スキル実行時のパス解決
+
+外部スキル（`openai/skills`, `vercel-labs/*`, その他公開スキル）が相対パスでファイルを参照する場合:
+
+- **基準ディレクトリ**: `~/.codex/skills/<skill-name>/`
+- **解決方法**: 相対パス `scripts/foo.py` → 絶対パス `~/.codex/skills/<skill-name>/scripts/foo.py`
+
+**実行例** (gh-address-comments):
+
+```bash
+python3 ~/.codex/skills/gh-address-comments/scripts/fetch_comments.py
+```
