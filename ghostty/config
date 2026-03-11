@@ -129,10 +129,10 @@ keybind = ctrl+x>l=goto_split:right
 ############################
 # 10 は大きめ。細かくしたいなら 5 へ。
 
-keybind = ctrl+x>H=resize_split:left,10
-keybind = ctrl+x>J=resize_split:down,10
-keybind = ctrl+x>K=resize_split:up,10
-keybind = ctrl+x>L=resize_split:right,10
+keybind = ctrl+x>shift+h=resize_split:left,32
+keybind = ctrl+x>shift+j=resize_split:down,32
+keybind = ctrl+x>shift+k=resize_split:up,32
+keybind = ctrl+x>shift+l=resize_split:right,32
 
 
 ############################
