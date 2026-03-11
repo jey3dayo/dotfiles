@@ -90,10 +90,10 @@
 
 外部スキル（`openai/skills`, `vercel-labs/*`, その他公開スキル）が相対パスでファイルを参照する場合:
 
-- **基準ディレクトリ**: `~/.codex/skills/<skill-name>/`
-- **解決方法**: 相対パス `scripts/foo.py` → 絶対パス `~/.codex/skills/<skill-name>/scripts/foo.py`
+- 基準ディレクトリ: `~/.codex/skills/<skill-name>/`
+- 解決方法: 相対パス `scripts/foo.py` → 絶対パス `~/.codex/skills/<skill-name>/scripts/foo.py`
 
-**実行例** (gh-address-comments):
+#### 実行例 (gh-address-comments)
 
 ```bash
 python3 ~/.codex/skills/gh-address-comments/scripts/fetch_comments.py

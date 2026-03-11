@@ -137,7 +137,7 @@ repos:
       - id: biome
         name: Format and lint JS/TS with Biome
         entry: biome
-        args: ["check", "--write"]
+        args: ["check", "--write", "--no-errors-on-unmatched"]
         language: system
         types_or: [javascript, json]
         files: \.(js|jsx|ts|tsx|json)$
