@@ -106,6 +106,38 @@ const testCases = [
     expected: "- critical issues あり → 該当ファイルを Read し、Edit で修正を適用",
     shouldConvert: true,
   },
+  // boldLabelColonInside: colon inside bold, followed by content
+  {
+    name: "Bold label with colon inside, followed by content (strip bold)",
+    input: "**責務:** Valibotスキーマ定義",
+    expected: "責務: Valibotスキーマ定義",
+    shouldConvert: true,
+  },
+  {
+    name: "Bold label with colon inside, English content (strip bold)",
+    input: "**現状:** 未実装",
+    expected: "現状: 未実装",
+    shouldConvert: true,
+  },
+  {
+    name: "Bold label with colon inside, backtick content (strip bold)",
+    input: "**返り値の型:** `v.BaseSchema` + 推論型",
+    expected: "返り値の型: `v.BaseSchema` + 推論型",
+    shouldConvert: true,
+  },
+  // Navigation paths: multiple bold items separated by arrows must be preserved
+  {
+    name: "Ordered list navigation path with multiple bold items (preserve all bold)",
+    input: "2. **Workers & Pages** → **keep-on** → **Metrics** タブ",
+    expected: "2. **Workers & Pages** → **keep-on** → **Metrics** タブ",
+    shouldConvert: false,
+  },
+  {
+    name: "Unordered list navigation path with multiple bold items (preserve all bold)",
+    input: "- **File** → **Edit** → **Preferences**",
+    expected: "- **File** → **Edit** → **Preferences**",
+    shouldConvert: false,
+  },
 ];
 
 // Create test file
