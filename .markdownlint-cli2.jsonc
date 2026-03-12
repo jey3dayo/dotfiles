@@ -23,6 +23,10 @@
     "zsh/.zinit/**",
     "opencode/skills/**",
     "agents/external/**",
+    ".worktrees/**",
+    "result/**",
+    ".kiro/**",
+    ".luarocks/**",
     ".plans/**",
   ],
 }
