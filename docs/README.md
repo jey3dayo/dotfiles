@@ -31,7 +31,6 @@ Location: `docs/`
 #### 🔧 Operational Guides
 
 - [Performance](performance.md) - 詳細メトリクス、ベンチマーク、最適化履歴
-- [Workflows and Maintenance](tools/workflows.md) - 定期メンテナンス、トラブルシューティング、更新履歴
 
 #### 📋 Documentation Governance
 
