@@ -52,6 +52,7 @@ Location: `docs/`
   - [Task Catalog](tools/mise-tasks.md) - 全タスク一覧（CI/Format/Lint/Test/HM/Skills 等）
   - [Config Reference](tools/mise-config.md) - config.default.toml ツールカテゴリ詳細
 - [OpenClaw](tools/openclaw.md) - Gateway 運用・systemd 設定・トラブルシューティング ([Claude Rules](../.claude/rules/openclaw.md))
+- [Security](security.md) - セキュリティポリシー・gitleaks・インシデント対応 ([Claude Rules](../.claude/rules/security.md))
 - [Workflows & Maintenance](tools/workflows.md) - 定期メンテナンス・Brewfile・コードクオリティ ([Claude Rules](../.claude/rules/workflows-and-maintenance.md))
 
 ## 🧭 Single Source of Truth (SST)
