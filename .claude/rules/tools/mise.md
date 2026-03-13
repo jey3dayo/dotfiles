@@ -49,14 +49,22 @@ mise outdated         # 更新確認
 mise tasks            # タスク一覧
 ```
 
-## タスク使い分け
+## タスクグループ早見表
 
-| コマンド             | 用途                                      |
-| -------------------- | ----------------------------------------- |
-| `mise run ci`        | ローカル検証のみ（書き込みなし）          |
-| `mise run ci:full`   | 検証 + デプロイ（GitHub Actions 同等）    |
-| `mise run hm:deploy` | Home Manager デプロイ（バックアップ付き） |
-| `mise run hm:switch` | ローカル開発用 HM 適用                    |
+| グループ     | 主要タスク                                          | 用途                                    |
+| ------------ | --------------------------------------------------- | --------------------------------------- |
+| CI / 検証    | `ci:quick`, `ci`, `ci:full`, `ci:nix`               | ローカル CI・GitHub Actions 同等実行    |
+| Format       | `format`, `format:biome`, `format:markdown`         | 自動フォーマット（書き込みあり）        |
+| Lint         | `lint`, `lint:quick`, `lint:links`                  | 静的解析・構文チェック（書き込みなし）  |
+| Test         | `test`, `test:lua`, `test:ts`                       | Lua(busted) / TypeScript ユニットテスト |
+| Home Manager | `hm:deploy`, `hm:switch`, `hm:check`, `hm:rollback` | HM 適用・検証・ロールバック             |
+| Skills       | `skills:add`, `skills:upgrade`, `skills:validate`   | Agent skills 追加・更新・検証           |
+| Update       | `update`, `update:brew`, `update:apt`               | 依存関係一括更新                        |
+| Env          | `env:detect`, `env:encrypt`, `env:decrypt`          | 環境検出・dotenvx 管理                  |
+| Brewfile     | `brewfile:backup`, `brewfile:restore`               | Brewfile バックアップ・新規 Mac 復元    |
+| 診断         | `setup`, `doctor`                                   | 初回セットアップ・環境診断              |
+
+全タスク詳細は [docs/tools/mise.md](../../../docs/tools/mise.md#task-catalog) を参照。
 
 ## ツール管理方針
 
