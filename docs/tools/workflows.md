@@ -1,12 +1,8 @@
----
-date: 2026-03-13
-audience: ops
-tags:
-  - category/ops
-  - layer/maintenance
----
-
 # Workflows & Maintenance Reference
+
+最終更新: 2026-03-13
+対象: 開発者
+タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/workflows-and-maintenance.md)
 

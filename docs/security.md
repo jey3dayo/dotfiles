@@ -1,12 +1,8 @@
----
-date: 2026-03-13
-audience: dev
-tags:
-  - category/security
-  - layer/project
----
-
 # Security Reference
+
+最終更新: 2026-03-13
+対象: 開発者
+タグ: `category/security`, `layer/project`, `environment/cross-platform`, `audience/developer`
 
 Claude Rules: [.claude/rules/security.md](../.claude/rules/security.md)
 

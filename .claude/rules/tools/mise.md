@@ -1,5 +1,5 @@
 ---
-paths: mise/**/*, .mise.toml, scripts/setup-mise-env.sh, zsh/.zshenv
+paths: mise/**/*, .mise.toml, scripts/setup-mise-env.sh, zsh/.zshenv, bash/.bashrc
 source: docs/tools/mise.md
 ---
 

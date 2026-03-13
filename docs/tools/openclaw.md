@@ -1,13 +1,8 @@
----
-date: 2026-03-13
-audience: ops
-tags:
-  - category/service
-  - tool/openclaw
-  - layer/system
----
-
 # OpenClaw Reference
+
+最終更新: 2026-03-13
+対象: 運用担当
+タグ: `category/maintenance`, `tool/openclaw`, `layer/tool`, `environment/linux`, `audience/ops`
 
 Claude Rules: [.claude/rules/openclaw.md](../../.claude/rules/openclaw.md)
 

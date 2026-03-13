@@ -1,13 +1,8 @@
----
-date: 2026-03-13
-audience: dev
-tags:
-  - category/dev
-  - tool/mise
-  - layer/toolchain
----
-
 # Mise Reference
+
+最終更新: 2026-03-13
+対象: 開発者
+タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 Official Docs: <https://mise.jdx.dev>
