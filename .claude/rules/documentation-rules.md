@@ -28,7 +28,7 @@ Sources: docs/README.md.
 ## Tag vocabulary (short list)
 
 - category: shell, editor, terminal, git, performance, integration, configuration, guide, reference, maintenance, documentation, security, infra.
-- tool: zsh, nvim, wezterm, tmux, git, fzf, ssh, mise, homebrew.
+- tool: zsh, nvim, wezterm, tmux, git, fzf, ssh, mise, homebrew, home-manager, nix, openclaw.
 - layer: core (shell/git), tool (editor/terminal), support (performance/integration), system (infra/nix).
 - environment: macos, linux, cross-platform. audience: developer, ops, beginner, advanced.
 
