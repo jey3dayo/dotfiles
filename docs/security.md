@@ -2,7 +2,7 @@
 
 最終更新: 2026-03-13
 対象: 開発者
-タグ: `category/security`, `layer/project`, `environment/cross-platform`, `audience/developer`
+タグ: `category/security`, `layer/support`, `environment/cross-platform`, `audience/developer`
 
 Claude Rules: [.claude/rules/security.md](../.claude/rules/security.md)
 
