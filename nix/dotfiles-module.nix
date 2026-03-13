@@ -185,13 +185,22 @@ in
     # Git submodule initialization (activation script)
     home.activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
       lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        # Initialize Git submodules for tmux plugins
+        # Initialize tpm submodule and auto-install tmux plugins
         ${detectWorktreeScript}
 
         if [ -n "$worktree" ]; then
-          echo "Initializing Git submodules for tmux plugins..."
+          echo "Initializing Git submodules for tpm..."
           if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
-            echo "Warning: failed to initialize tmux plugin submodules; continuing activation." >&2
+            echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
+          fi
+
+          # Auto-install TPM plugins if tmux server is not running
+          tpm_path="$worktree/tmux/plugins/tpm"
+          install_script="$tpm_path/bin/install_plugins"
+          if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
+            echo "Installing tmux plugins via TPM..."
+            TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
+              echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
           fi
         fi
       ''
