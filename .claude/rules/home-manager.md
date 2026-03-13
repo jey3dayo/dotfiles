@@ -1,5 +1,5 @@
 ---
-paths: nix/**, flake.nix, home.nix, flake.lock
+paths: nix/**, flake.nix, home.nix, flake.lock, agents/nix/**, docs/tools/home-manager.md
 source: docs/tools/home-manager.md
 ---
 

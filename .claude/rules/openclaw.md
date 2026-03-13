@@ -1,5 +1,5 @@
 ---
-paths: systemd/user/openclaw-*.service, systemd/user/openclaw-*.timer, systemd/user/openclaw-gateway.service.d/**/*.conf, scripts/openclaw-*, openclaw/**
+paths: systemd/user/openclaw-*.service, systemd/user/openclaw-*.timer, systemd/user/openclaw-gateway.service.d/**/*.conf, scripts/openclaw-*, openclaw/**, docs/tools/openclaw.md
 source: docs/tools/openclaw.md
 ---
 

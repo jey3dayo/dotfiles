@@ -1,5 +1,5 @@
 ---
-paths: .gitignore, .pre-commit-config.yaml, .gitleaksignore
+paths: .gitignore, .pre-commit-config.yaml, .gitleaksignore, docs/security.md
 source: docs/security.md
 ---
 

@@ -1,5 +1,5 @@
 ---
-paths: nix/**, flake.nix, flake.lock
+paths: nix/**, flake.nix, flake.lock, docs/tools/nix.md
 source: docs/tools/nix.md
 ---
 
