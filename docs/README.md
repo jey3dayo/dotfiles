@@ -77,7 +77,7 @@ Location: `docs/`
 
 ### トラブルシューティング
 
-1. [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) でよくある問題を確認
+1. [Workflows and Maintenance](tools/workflows.md) でよくある問題を確認
 2. Tool-specific docs で詳細を調査
 
 ## 📊 Performance
