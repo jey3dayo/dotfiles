@@ -64,7 +64,7 @@ mise tasks            # タスク一覧
 | Brewfile     | `brewfile:backup`, `brewfile:restore`               | Brewfile バックアップ・新規 Mac 復元    |
 | 診断         | `setup`, `doctor`                                   | 初回セットアップ・環境診断              |
 
-全タスク詳細は [docs/tools/mise.md](../../../docs/tools/mise.md#task-catalog) を参照。
+全タスク詳細は [docs/tools/mise-tasks.md](../../../docs/tools/mise-tasks.md) を参照。
 
 ## ツール管理方針
 

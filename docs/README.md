@@ -49,6 +49,8 @@ Location: `docs/`
 - [Home Manager](tools/home-manager.md) - Nix Home Manager 設定・配布・トラブルシューティング ([Claude Rules](../.claude/rules/home-manager.md))
 - [Nix Maintenance](tools/nix.md) - Nix store GC・generations 管理 ([Claude Rules](../.claude/rules/nix-maintenance.md))
 - [Mise](tools/mise.md) - ツールバージョン管理・設定・pnpm バックエンド ([Claude Rules](../.claude/rules/tools/mise.md))
+  - [Task Catalog](tools/mise-tasks.md) - 全タスク一覧（CI/Format/Lint/Test/HM/Skills 等）
+  - [Config Reference](tools/mise-config.md) - config.default.toml ツールカテゴリ詳細
 - [OpenClaw](tools/openclaw.md) - Gateway 運用・systemd 設定・トラブルシューティング ([Claude Rules](../.claude/rules/openclaw.md))
 - [Workflows & Maintenance](tools/workflows.md) - 定期メンテナンス・Brewfile・コードクオリティ ([Claude Rules](../.claude/rules/workflows-and-maintenance.md))
 
