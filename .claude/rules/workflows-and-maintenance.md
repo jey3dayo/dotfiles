@@ -42,7 +42,7 @@ home-manager remove-generations 90d && nix-collect-garbage -d
 df -h /nix/store
 ```
 
-詳細は `.claude/rules/nix-maintenance.md` を参照。
+詳細は [docs/tools/nix.md](../../docs/tools/nix.md) を参照。
 
 ## Troubleshooting Routing
 

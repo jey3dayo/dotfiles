@@ -73,7 +73,7 @@ Location: `docs/`
 
 1. [Steering Documents](../.kiro/steering/) で全体像を把握
 2. [Performance](performance.md) で最適化を確認
-3. [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) で運用を理解
+3. [Workflows and Maintenance](tools/workflows.md) で運用を理解
 
 ### トラブルシューティング
 

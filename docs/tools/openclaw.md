@@ -309,6 +309,5 @@ curl http://localhost:18789/health
 
 ## Related Documentation
 
-- 修正履歴: `docs/troubleshooting/openclaw-modifications-20260215.md`
-- 再起動後検証: `docs/troubleshooting/openclaw-post-reboot-verification.md`
-- mise 設定: `.claude/rules/tools/mise.md`
+- mise 設定: [docs/tools/mise.md](mise.md)
+- Nix / Home Manager: [docs/tools/home-manager.md](home-manager.md)
