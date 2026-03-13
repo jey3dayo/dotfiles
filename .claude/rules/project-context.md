@@ -20,8 +20,8 @@ Purpose: concise project overview for Claude. Scope: what this repo is, where to
 
 - Setup: `docs/setup.md`
 - Performance metrics/history: `docs/performance.md`
-- Maintenance schedules, workflows, and troubleshooting: `.claude/rules/workflows-and-maintenance.md`
-- Brewfile management: `.claude/rules/workflows-and-maintenance.md`
+- Maintenance schedules, workflows, and troubleshooting: `docs/tools/workflows.md`
+- Brewfile management: `docs/tools/workflows.md`
 - Tool installation policy: `.claude/rules/tools/tool-install-policy.md`
 - Documentation governance: `.claude/rules/documentation-rules.md` (rules) with `docs/README.md` for navigation
 - Tool details: `docs/tools/*.md` (Zsh, Neovim, WezTerm, SSH, FZF, Git)
