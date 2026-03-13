@@ -36,7 +36,9 @@
     },
     "gitignore": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1762808025,
@@ -70,7 +72,9 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": ["nixpkgs"]
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1771851181,
@@ -144,6 +148,7 @@
         "millionco-react-doctor": "millionco-react-doctor",
         "nixpkgs": "nixpkgs",
         "openai-skills": "openai-skills",
+        "tokoroten-prompt-review": "tokoroten-prompt-review",
         "ui-ux-pro-max": "ui-ux-pro-max",
         "vercel-agent-browser": "vercel-agent-browser",
         "vercel-agent-skills": "vercel-agent-skills"
@@ -161,6 +166,22 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tokoroten-prompt-review": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773299474,
+        "narHash": "sha256-bwDAUHwj12sNKMHlblAUUj+nqZWf3ltgzQcxFZUOY3w=",
+        "owner": "tokoroten",
+        "repo": "prompt-review",
+        "rev": "e3a194d418cca469a13441a04eb93cb1d6484670",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tokoroten",
+        "repo": "prompt-review",
         "type": "github"
       }
     },

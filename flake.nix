@@ -33,6 +33,10 @@
       url = "github:openai/skills";
       flake = false;
     };
+    tokoroten-prompt-review = {
+      url = "github:tokoroten/prompt-review";
+      flake = false;
+    };
     ui-ux-pro-max = {
       url = "github:nextlevelbuilder/ui-ux-pro-max-skill";
       flake = false;
