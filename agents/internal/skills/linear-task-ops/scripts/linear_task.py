@@ -14,7 +14,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import sys
 from typing import Any, Dict, Optional
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
