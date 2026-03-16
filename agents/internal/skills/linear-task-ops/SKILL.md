@@ -10,6 +10,7 @@ Use `scripts/linear_task.py` for deterministic task operations instead of ad-hoc
 ## Labels / Tags
 
 Use actual Linear labels as tag references. For current JEY team labels, read:
+
 - `references/linear-labels-jey.md`
 
 When label guidance is requested, prefer existing workspace conventions (`term:*`, `risk:*`, `Research`, `Bug`, `Improvement`, `Feature`) over inventing new tags.
@@ -25,11 +26,13 @@ When label guidance is requested, prefer existing workspace conventions (`term:*
 ## Task Operations
 
 ### List issues
+
 ```bash
 python3 scripts/linear_task.py list --team <TEAM_KEY> --limit 30
 ```
 
 ### Create issue
+
 ```bash
 python3 scripts/linear_task.py create \
   --team <TEAM_KEY> \
@@ -39,6 +42,7 @@ python3 scripts/linear_task.py create \
 ```
 
 ### Update issue fields
+
 ```bash
 python3 scripts/linear_task.py update \
   --issue <ISSUE_ID> \
@@ -48,6 +52,7 @@ python3 scripts/linear_task.py update \
 ```
 
 ### Add comment
+
 ```bash
 python3 scripts/linear_task.py comment \
   --issue <ISSUE_ID> \

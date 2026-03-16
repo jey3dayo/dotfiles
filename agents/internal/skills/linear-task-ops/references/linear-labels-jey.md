@@ -1,6 +1,7 @@
 # Linearラベル一覧（team: JEY / 取得日: 2026-03-14）
 
 ## ラベル
+
 - Research
 - term
 - term:daily
@@ -21,6 +22,7 @@
 - Feature
 
 ## 使い分けの実例
+
 - 期限・周期管理: `term:*`
   - 例: `term:monthly`, `term:yearly`
 - 緊急度・重要度: `risk:*`
@@ -29,5 +31,6 @@
 - 種別: `Bug` / `Improvement` / `Feature`
 
 ## 注意
+
 - ラベルはチームごとに異なる。
 - 実行前に最新化したい場合は、GraphQLで `team(id){ labels { nodes { name }}}` を再取得する。

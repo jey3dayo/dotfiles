@@ -61,7 +61,9 @@ def gql(query: str, variables: Optional[Dict[str, Any]] = None) -> Dict[str, Any
 
     data = json.loads(body)
     if data.get("errors"):
-        raise SystemExit(f"GraphQL errors: {json.dumps(data['errors'], ensure_ascii=False)}")
+        raise SystemExit(
+            f"GraphQL errors: {json.dumps(data['errors'], ensure_ascii=False)}"
+        )
     return data["data"]
 
 
@@ -282,7 +284,11 @@ def build_parser() -> argparse.ArgumentParser:
     s.set_defaults(func=cmd_create)
 
     s = sub.add_parser("update", help="Update issue")
-    s.add_argument("--issue", required=True, help="Issue id (UUID) or identifier if your workspace resolves it")
+    s.add_argument(
+        "--issue",
+        required=True,
+        help="Issue id (UUID) or identifier if your workspace resolves it",
+    )
     s.add_argument("--team", help="Team key (required with --state)")
     s.add_argument("--title")
     s.add_argument("--description")
