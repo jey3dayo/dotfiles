@@ -1,10 +1,9 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
-import * as assert from "node:assert/strict";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { describe, it } from "node:test";
+import { describe, expect, it } from "bun:test";
 
 import {
   CliArgumentError,
@@ -37,7 +36,7 @@ describe("skills-add/index-lib parseArgs", () => {
       "owner/repo",
     ]);
 
-    assert.deepEqual(parsed.options, {
+    expect(parsed.options).toEqual({
       list: true,
       all: true,
       skills: ["skill-a", "skill-b"],
@@ -47,29 +46,29 @@ describe("skills-add/index-lib parseArgs", () => {
       agent: true,
       sourceOverride: "custom-source",
     });
-    assert.deepEqual(parsed.positional, ["owner/repo"]);
+    expect(parsed.positional).toEqual(["owner/repo"]);
   });
 
   it("throws when --source has no value", () => {
-    assert.throws(() => parseArgs(["--source"]), CliArgumentError);
+    expect(() => parseArgs(["--source"])).toThrow(CliArgumentError);
   });
 
   it("throws on unknown option", () => {
-    assert.throws(() => parseArgs(["--unknown"]), /Unknown option/);
+    expect(() => parseArgs(["--unknown"])).toThrow(/Unknown option/);
   });
 });
 
 describe("skills-add/index-lib looksLikeSource", () => {
   it("treats existing path as source", () => {
     const result = looksLikeSource("relative/path", (input) => input === "relative/path");
-    assert.equal(result, true);
+    expect(result).toBe(true);
   });
 
   it("detects http, short owner/repo, and git patterns", () => {
-    assert.equal(looksLikeSource("https://github.com/o/r"), true);
-    assert.equal(looksLikeSource("owner/repo"), true);
-    assert.equal(looksLikeSource("git@github.com:o/r.git"), true);
-    assert.equal(looksLikeSource("ssh://example"), false);
+    expect(looksLikeSource("https://github.com/o/r")).toBe(true);
+    expect(looksLikeSource("owner/repo")).toBe(true);
+    expect(looksLikeSource("git@github.com:o/r.git")).toBe(true);
+    expect(looksLikeSource("ssh://example")).toBe(false);
   });
 });
 
@@ -79,7 +78,7 @@ describe("skills-add/index-lib parseSourceInput", () => {
       existsSync: (input) => input === "skills/local",
       resolvePath: (input) => `/abs/${input}`,
     });
-    assert.deepEqual(parsed, {
+    expect(parsed).toEqual({
       kind: "local",
       path: "/abs/skills/local",
       hintPath: null,
@@ -88,7 +87,7 @@ describe("skills-add/index-lib parseSourceInput", () => {
 
   it("parses owner/repo shorthand as github source", () => {
     const parsed = parseSourceInput("owner/repo", { existsSync: () => false });
-    assert.deepEqual(parsed, {
+    expect(parsed).toEqual({
       kind: "github",
       url: "https://github.com/owner/repo",
       owner: "owner",
@@ -105,7 +104,7 @@ describe("skills-add/index-lib parseSourceInput", () => {
         existsSync: () => false,
       },
     );
-    assert.deepEqual(parsed, {
+    expect(parsed).toEqual({
       kind: "github",
       url: "https://github.com/owner/repo",
       owner: "owner",
@@ -122,7 +121,7 @@ describe("skills-add/index-lib parseSourceInput", () => {
         existsSync: () => false,
       },
     );
-    assert.deepEqual(parsed, {
+    expect(parsed).toEqual({
       kind: "gitlab",
       url: "https://gitlab.com/group/repo",
       owner: "group",
@@ -136,7 +135,7 @@ describe("skills-add/index-lib parseSourceInput", () => {
     const parsed = parseSourceInput("https://example.com/repo.git", {
       existsSync: () => false,
     });
-    assert.deepEqual(parsed, {
+    expect(parsed).toEqual({
       kind: "git",
       url: "https://example.com/repo.git",
       ref: null,
@@ -145,7 +144,7 @@ describe("skills-add/index-lib parseSourceInput", () => {
   });
 
   it("returns null for unsupported value", () => {
-    assert.equal(parseSourceInput("not-a-source", { existsSync: () => false }), null);
+    expect(parseSourceInput("not-a-source", { existsSync: () => false })).toBe(null);
   });
 });
 
@@ -162,10 +161,10 @@ describe("skills-add/index-lib discoverSkills", () => {
       const result = discoverSkills({ repoPath: tempRoot, pathHint: null });
       const ids = result.skills.map((skill) => skill.id).sort();
 
-      assert.deepEqual(ids, ["public-skill"]);
-      assert.equal(result.impliedSkill, null);
-      assert.equal(result.skillRoots.length, 1);
-      assert.match(result.skillRoots[0], /\/skills$/);
+      expect(ids).toEqual(["public-skill"]);
+      expect(result.impliedSkill).toBe(null);
+      expect(result.skillRoots.length).toBe(1);
+      expect(result.skillRoots[0]).toMatch(/\/skills$/);
     } finally {
       if (originalEnv === undefined) {
         delete process.env.INSTALL_INTERNAL_SKILLS;
@@ -187,7 +186,7 @@ describe("skills-add/index-lib discoverSkills", () => {
 
       const result = discoverSkills({ repoPath: tempRoot, pathHint: null });
       const ids = result.skills.map((skill) => skill.id).sort();
-      assert.deepEqual(ids, ["private-skill", "public-skill"]);
+      expect(ids).toEqual(["private-skill", "public-skill"]);
     } finally {
       if (originalEnv === undefined) {
         delete process.env.INSTALL_INTERNAL_SKILLS;
@@ -212,9 +211,9 @@ describe("skills-add/index-lib discoverSkills", () => {
         pathHint: "skills/find-skills",
       });
 
-      assert.equal(result.impliedSkill, "find-skills");
+      expect(result.impliedSkill).toBe("find-skills");
       const ids = result.skills.map((skill) => skill.id).sort();
-      assert.deepEqual(ids, ["find-skills", "other-skill"]);
+      expect(ids).toEqual(["find-skills", "other-skill"]);
     } finally {
       if (originalEnv === undefined) {
         delete process.env.INSTALL_INTERNAL_SKILLS;

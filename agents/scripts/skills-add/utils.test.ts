@@ -1,7 +1,6 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
-import { describe, it } from "node:test";
-import * as assert from "node:assert/strict";
+import { describe, expect, it } from "bun:test";
 
 import {
   buildSourceBlock,
@@ -22,19 +21,19 @@ import {
 // ============================================================
 describe("countChar", () => {
   it("counts single occurrence", () => {
-    assert.equal(countChar("{abc}", "{"), 1);
+    expect(countChar("{abc}", "{")).toBe(1);
   });
   it("counts multiple occurrences", () => {
-    assert.equal(countChar("{{}}", "{"), 2);
+    expect(countChar("{{}}", "{")).toBe(2);
   });
   it("returns 0 when char not found", () => {
-    assert.equal(countChar("no braces", "{"), 0);
+    expect(countChar("no braces", "{")).toBe(0);
   });
   it("handles empty string", () => {
-    assert.equal(countChar("", "{"), 0);
+    expect(countChar("", "{")).toBe(0);
   });
   it("counts closing braces", () => {
-    assert.equal(countChar("a } b } c", "}"), 2);
+    expect(countChar("a } b } c", "}")).toBe(2);
   });
 });
 
@@ -43,19 +42,19 @@ describe("countChar", () => {
 // ============================================================
 describe("stripComments", () => {
   it("strips trailing comment", () => {
-    assert.equal(stripComments('url = "value"; # comment'), 'url = "value"; ');
+    expect(stripComments('url = "value"; # comment')).toBe('url = "value"; ');
   });
   it("strips full-line comment", () => {
-    assert.equal(stripComments("# full comment"), "");
+    expect(stripComments("# full comment")).toBe("");
   });
   it("returns line unchanged when no comment", () => {
-    assert.equal(stripComments("no comment here"), "no comment here");
+    expect(stripComments("no comment here")).toBe("no comment here");
   });
   it("handles empty string", () => {
-    assert.equal(stripComments(""), "");
+    expect(stripComments("")).toBe("");
   });
   it("only strips from first #", () => {
-    assert.equal(stripComments("x = 1; # a # b"), "x = 1; ");
+    expect(stripComments("x = 1; # a # b")).toBe("x = 1; ");
   });
 });
 
@@ -64,22 +63,22 @@ describe("stripComments", () => {
 // ============================================================
 describe("sanitizeName", () => {
   it("lowercases and replaces slashes", () => {
-    assert.equal(sanitizeName("owner/repo"), "owner-repo");
+    expect(sanitizeName("owner/repo")).toBe("owner-repo");
   });
   it("replaces spaces with hyphens", () => {
-    assert.equal(sanitizeName("Hello World 123"), "hello-world-123");
+    expect(sanitizeName("Hello World 123")).toBe("hello-world-123");
   });
   it("strips leading dashes", () => {
-    assert.equal(sanitizeName("-leading-dash"), "leading-dash");
+    expect(sanitizeName("-leading-dash")).toBe("leading-dash");
   });
   it("strips trailing dashes", () => {
-    assert.equal(sanitizeName("trailing-dash-"), "trailing-dash");
+    expect(sanitizeName("trailing-dash-")).toBe("trailing-dash");
   });
   it("collapses consecutive special chars", () => {
-    assert.equal(sanitizeName("a  b--c"), "a-b-c");
+    expect(sanitizeName("a  b--c")).toBe("a-b-c");
   });
   it("handles already-clean name", () => {
-    assert.equal(sanitizeName("my-skill"), "my-skill");
+    expect(sanitizeName("my-skill")).toBe("my-skill");
   });
 });
 
@@ -87,16 +86,16 @@ describe("sanitizeName", () => {
 // isTruthy
 // ============================================================
 describe("isTruthy", () => {
-  it("returns true for '1'", () => assert.equal(isTruthy("1"), true));
-  it("returns true for 'true'", () => assert.equal(isTruthy("true"), true));
-  it("returns true for 'yes'", () => assert.equal(isTruthy("yes"), true));
-  it("returns false for '0'", () => assert.equal(isTruthy("0"), false));
-  it("returns false for 'false'", () => assert.equal(isTruthy("false"), false));
-  it("returns false for 'no'", () => assert.equal(isTruthy("no"), false));
-  it("returns false for 'off'", () => assert.equal(isTruthy("off"), false));
-  it("returns false for undefined", () => assert.equal(isTruthy(undefined), false));
-  it("returns false for empty string", () => assert.equal(isTruthy(""), false));
-  it("is case-insensitive", () => assert.equal(isTruthy("FALSE"), false));
+  it("returns true for '1'", () => expect(isTruthy("1")).toBe(true));
+  it("returns true for 'true'", () => expect(isTruthy("true")).toBe(true));
+  it("returns true for 'yes'", () => expect(isTruthy("yes")).toBe(true));
+  it("returns false for '0'", () => expect(isTruthy("0")).toBe(false));
+  it("returns false for 'false'", () => expect(isTruthy("false")).toBe(false));
+  it("returns false for 'no'", () => expect(isTruthy("no")).toBe(false));
+  it("returns false for 'off'", () => expect(isTruthy("off")).toBe(false));
+  it("returns false for undefined", () => expect(isTruthy(undefined)).toBe(false));
+  it("returns false for empty string", () => expect(isTruthy("")).toBe(false));
+  it("is case-insensitive", () => expect(isTruthy("FALSE")).toBe(false));
 });
 
 // ============================================================
@@ -106,43 +105,28 @@ describe("normalizeUrl", () => {
   const root = "/home/user/dotfiles";
 
   it("converts github: prefix to https", () => {
-    assert.equal(normalizeUrl("github:owner/repo", root), "https://github.com/owner/repo");
+    expect(normalizeUrl("github:owner/repo", root)).toBe("https://github.com/owner/repo");
   });
   it("strips git+ prefix", () => {
-    assert.equal(
-      normalizeUrl("git+https://github.com/owner/repo.git", root),
-      "https://github.com/owner/repo",
-    );
+    expect(normalizeUrl("git+https://github.com/owner/repo.git", root)).toBe("https://github.com/owner/repo");
   });
   it("strips .git suffix", () => {
-    assert.equal(
-      normalizeUrl("https://github.com/owner/repo.git", root),
-      "https://github.com/owner/repo",
-    );
+    expect(normalizeUrl("https://github.com/owner/repo.git", root)).toBe("https://github.com/owner/repo");
   });
   it("strips ?ref= query param", () => {
-    assert.equal(
-      normalizeUrl("https://github.com/owner/repo?ref=main", root),
-      "https://github.com/owner/repo",
-    );
+    expect(normalizeUrl("https://github.com/owner/repo?ref=main", root)).toBe("https://github.com/owner/repo");
   });
   it("lowercases github.com URLs", () => {
-    assert.equal(
-      normalizeUrl("https://github.com/Owner/Repo", root),
-      "https://github.com/owner/repo",
-    );
+    expect(normalizeUrl("https://github.com/Owner/Repo", root)).toBe("https://github.com/owner/repo");
   });
   it("does NOT lowercase non-github URLs", () => {
-    assert.equal(
-      normalizeUrl("https://gitlab.com/Owner/Repo", root),
-      "https://gitlab.com/Owner/Repo",
-    );
+    expect(normalizeUrl("https://gitlab.com/Owner/Repo", root)).toBe("https://gitlab.com/Owner/Repo");
   });
   it("resolves path: relative to repoRoot", () => {
-    assert.equal(normalizeUrl("path:./agents/skills/foo", root), `${root}/agents/skills/foo`);
+    expect(normalizeUrl("path:./agents/skills/foo", root)).toBe(`${root}/agents/skills/foo`);
   });
   it("returns null for falsy input", () => {
-    assert.equal(normalizeUrl("", root), null);
+    expect(normalizeUrl("", root)).toBe(null);
   });
 });
 
@@ -158,12 +142,12 @@ describe("extractSourceBlocks", () => {
   };
 }`;
     const { sources } = extractSourceBlocks(content);
-    assert.equal(sources.length, 1);
-    assert.equal(sources[0].name, "source-a");
-    assert.equal(sources[0].url, "github:owner/repo");
-    assert.equal(sources[0].flake, false);
-    assert.equal(sources[0].start, 1);
-    assert.equal(sources[0].end, 4);
+    expect(sources.length).toBe(1);
+    expect(sources[0].name).toBe("source-a");
+    expect(sources[0].url).toBe("github:owner/repo");
+    expect(sources[0].flake).toBe(false);
+    expect(sources[0].start).toBe(1);
+    expect(sources[0].end).toBe(4);
   });
 
   it("ignores comment lines when parsing", () => {
@@ -175,9 +159,9 @@ describe("extractSourceBlocks", () => {
   };
 }`;
     const { sources } = extractSourceBlocks(content);
-    assert.equal(sources.length, 1);
-    assert.equal(sources[0].name, "source-a");
-    assert.equal(sources[0].url, "github:owner/repo");
+    expect(sources.length).toBe(1);
+    expect(sources[0].name).toBe("source-a");
+    expect(sources[0].url).toBe("github:owner/repo");
   });
 
   it("parses multiple source blocks", () => {
@@ -192,10 +176,10 @@ describe("extractSourceBlocks", () => {
   };
 }`;
     const { sources } = extractSourceBlocks(content);
-    assert.equal(sources.length, 2);
-    assert.equal(sources[0].name, "source-a");
-    assert.equal(sources[1].name, "source-b");
-    assert.equal(sources[1].flake, true);
+    expect(sources.length).toBe(2);
+    expect(sources[0].name).toBe("source-a");
+    expect(sources[1].name).toBe("source-b");
+    expect(sources[1].flake).toBe(true);
   });
 
   it("handles source with no url or flake", () => {
@@ -205,16 +189,16 @@ describe("extractSourceBlocks", () => {
   };
 }`;
     const { sources } = extractSourceBlocks(content);
-    assert.equal(sources.length, 1);
-    assert.equal(sources[0].name, "minimal-source");
-    assert.equal(sources[0].url, null);
-    assert.equal(sources[0].flake, null);
+    expect(sources.length).toBe(1);
+    expect(sources[0].name).toBe("minimal-source");
+    expect(sources[0].url).toBe(null);
+    expect(sources[0].flake).toBe(null);
   });
 
   it("returns split lines", () => {
     const content = "{\n}";
     const { lines } = extractSourceBlocks(content);
-    assert.deepEqual(lines, ["{", "}"]);
+    expect(lines).toEqual(["{", "}"]);
   });
 });
 
@@ -228,8 +212,8 @@ name: My Skill
 ---
 content here`;
     const result = parseFrontmatter(content);
-    assert.equal(result.name, "My Skill");
-    assert.equal(result.internal, false);
+    expect(result.name).toBe("My Skill");
+    expect(result.internal).toBe(false);
   });
 
   it("detects internal: true at top level", () => {
@@ -239,8 +223,8 @@ internal: true
 ---
 content`;
     const result = parseFrontmatter(content);
-    assert.equal(result.name, "Internal Skill");
-    assert.equal(result.internal, true);
+    expect(result.name).toBe("Internal Skill");
+    expect(result.internal).toBe(true);
   });
 
   it("detects internal: true nested under metadata", () => {
@@ -251,20 +235,20 @@ metadata:
 ---
 content`;
     const result = parseFrontmatter(content);
-    assert.equal(result.name, "Nested Internal");
-    assert.equal(result.internal, true);
+    expect(result.name).toBe("Nested Internal");
+    expect(result.internal).toBe(true);
   });
 
   it("returns nulls when no frontmatter delimiter", () => {
     const result = parseFrontmatter("Some content without frontmatter");
-    assert.equal(result.name, null);
-    assert.equal(result.internal, false);
+    expect(result.name).toBe(null);
+    expect(result.internal).toBe(false);
   });
 
   it("returns nulls when closing --- is missing", () => {
     const result = parseFrontmatter("---\nname: Orphan");
-    assert.equal(result.name, null);
-    assert.equal(result.internal, false);
+    expect(result.name).toBe(null);
+    expect(result.internal).toBe(false);
   });
 
   it("strips surrounding quotes from name", () => {
@@ -272,7 +256,7 @@ content`;
 name: "Quoted Name"
 ---`;
     const result = parseFrontmatter(content);
-    assert.equal(result.name, "Quoted Name");
+    expect(result.name).toBe("Quoted Name");
   });
 });
 
@@ -289,7 +273,7 @@ describe("buildSourceBlock", () => {
       catalogs: { "test-source": "skills" },
       selection: ["skill-b", "skill-a"],
     });
-    assert.deepEqual(lines, [
+    expect(lines).toEqual([
       "  test-source = {",
       '    url = "github:owner/repo";',
       "    flake = false;",
@@ -316,7 +300,7 @@ describe("buildSourceBlock", () => {
     });
     // selection items are formatted as `      "name"` (quoted string only, no `=` or `;`)
     const selectionLines = lines.filter((l) => /^\s+"[^"]+"\s*$/.test(l));
-    assert.deepEqual(selectionLines, ['      "aaa"', '      "mmm"', '      "zzz"']);
+    expect(selectionLines).toEqual(['      "aaa"', '      "mmm"', '      "zzz"']);
   });
 
   it("sets flake = true when flake is true", () => {
@@ -328,7 +312,7 @@ describe("buildSourceBlock", () => {
       catalogs: {},
       selection: [],
     });
-    assert.ok(lines.some((l) => l.includes("flake = true;")));
+    expect(lines.some((l) => l.includes("flake = true;"))).toBeTruthy();
   });
 
   it("sorts multiple catalogs alphabetically", () => {
@@ -341,9 +325,9 @@ describe("buildSourceBlock", () => {
       selection: [],
     });
     const catIndex = lines.indexOf("    catalogs = {");
-    assert.ok(catIndex !== -1);
-    assert.ok(lines[catIndex + 1].includes("src-a"));
-    assert.ok(lines[catIndex + 2].includes("src-z"));
+    expect(catIndex !== -1).toBeTruthy();
+    expect(lines[catIndex + 1].includes("src-a")).toBeTruthy();
+    expect(lines[catIndex + 2].includes("src-z")).toBeTruthy();
   });
 });
 
@@ -366,16 +350,16 @@ describe("insertSourceBlock", () => {
     // Block should appear before the last "}"
     const lastBrace = result.lastIndexOf("}");
     const blockStart = result.indexOf("  new-source = {");
-    assert.ok(blockStart !== -1, "block should be present");
-    assert.ok(blockStart < lastBrace, "block should appear before closing brace");
+    expect(blockStart !== -1).toBeTruthy();
+    expect(blockStart < lastBrace).toBeTruthy();
   });
 
   it("inserts block when { is the first non-comment line", () => {
     const lines = ["{", "  source-a = {", "  };", "}"];
     const block = ["  new-source = {", "  };"];
     const result = insertSourceBlock(lines, block);
-    assert.ok(result.includes("  new-source = {"));
-    assert.equal(result[result.length - 1], "}");
+    expect(result.includes("  new-source = {")).toBeTruthy();
+    expect(result[result.length - 1]).toBe("}");
   });
 
   it("inserts block correctly with nested catalogs structure", () => {
@@ -393,24 +377,24 @@ describe("insertSourceBlock", () => {
     const result = insertSourceBlock(lines, block);
     const lastBrace = result.lastIndexOf("}");
     const blockStart = result.indexOf("  new-source = {");
-    assert.ok(blockStart !== -1);
-    assert.ok(blockStart < lastBrace);
+    expect(blockStart !== -1).toBeTruthy();
+    expect(blockStart < lastBrace).toBeTruthy();
     // Original source-a should still be present
-    assert.ok(result.some((l) => l.includes("source-a")));
+    expect(result.some((l) => l.includes("source-a"))).toBeTruthy();
   });
 
   it("throws when no valid insertion point found", () => {
-    assert.throws(() => insertSourceBlock(["no braces here"], ["block"]), /Failed to find end/);
+    expect(() => insertSourceBlock(["no braces here"], ["block"])).toThrow(/Failed to find end/);
   });
 
   it("preserves all original lines around the block", () => {
     const lines = ["{", "  existing = {};", "}"];
     const block = ["  new = {};"];
     const result = insertSourceBlock(lines, block);
-    assert.equal(result[0], "{");
-    assert.equal(result[1], "  existing = {};");
-    assert.equal(result[2], "  new = {};");
-    assert.equal(result[3], "}");
+    expect(result[0]).toBe("{");
+    expect(result[1]).toBe("  existing = {};");
+    expect(result[2]).toBe("  new = {};");
+    expect(result[3]).toBe("}");
   });
 });
 
@@ -428,11 +412,11 @@ describe("updateSelectionInLines", () => {
       "}",
     ];
     const result = updateSelectionInLines(lines, "my-source", ["my-skill"]);
-    assert.equal(result.changed, true);
-    assert.deepEqual(result.added, ["my-skill"]);
-    assert.deepEqual(result.already, []);
-    assert.ok(result.lines.some((l) => l.includes("selection.enable")));
-    assert.ok(result.lines.some((l) => l.includes('"my-skill"')));
+    expect(result.changed).toBe(true);
+    expect(result.added).toEqual(["my-skill"]);
+    expect(result.already).toEqual([]);
+    expect(result.lines.some((l) => l.includes("selection.enable"))).toBeTruthy();
+    expect(result.lines.some((l) => l.includes('"my-skill"'))).toBeTruthy();
   });
 
   it("adds to existing selection.enable list", () => {
@@ -447,11 +431,11 @@ describe("updateSelectionInLines", () => {
       "}",
     ];
     const result = updateSelectionInLines(lines, "my-source", ["new-skill"]);
-    assert.equal(result.changed, true);
-    assert.deepEqual(result.added, ["new-skill"]);
-    assert.deepEqual(result.already, []);
-    assert.ok(result.lines.some((l) => l.includes('"existing-skill"')));
-    assert.ok(result.lines.some((l) => l.includes('"new-skill"')));
+    expect(result.changed).toBe(true);
+    expect(result.added).toEqual(["new-skill"]);
+    expect(result.already).toEqual([]);
+    expect(result.lines.some((l) => l.includes('"existing-skill"'))).toBeTruthy();
+    expect(result.lines.some((l) => l.includes('"new-skill"'))).toBeTruthy();
   });
 
   it("reports already-present skills without changing", () => {
@@ -465,9 +449,9 @@ describe("updateSelectionInLines", () => {
       "}",
     ];
     const result = updateSelectionInLines(lines, "my-source", ["existing-skill"]);
-    assert.equal(result.changed, false);
-    assert.deepEqual(result.added, []);
-    assert.deepEqual(result.already, ["existing-skill"]);
+    expect(result.changed).toBe(false);
+    expect(result.added).toEqual([]);
+    expect(result.already).toEqual(["existing-skill"]);
   });
 
   it("handles inline list format", () => {
@@ -486,22 +470,22 @@ describe("updateSelectionInLines", () => {
       "}",
     ];
     const result = updateSelectionInLines(linesMulti, "my-source", ["new-skill"]);
-    assert.equal(result.changed, true);
-    assert.deepEqual(result.added, ["new-skill"]);
-    assert.ok(result.lines.some((l) => l.includes('"existing-skill"')));
-    assert.ok(result.lines.some((l) => l.includes('"new-skill"')));
+    expect(result.changed).toBe(true);
+    expect(result.added).toEqual(["new-skill"]);
+    expect(result.lines.some((l) => l.includes('"existing-skill"'))).toBeTruthy();
+    expect(result.lines.some((l) => l.includes('"new-skill"'))).toBeTruthy();
   });
 
   it("adds multiple skills at once", () => {
     const lines = ["{", "  my-source = {", '    url = "github:o/r";', "  };", "}"];
     const result = updateSelectionInLines(lines, "my-source", ["skill-c", "skill-a", "skill-b"]);
-    assert.equal(result.changed, true);
-    assert.equal(result.added.length, 3);
+    expect(result.changed).toBe(true);
+    expect(result.added.length).toBe(3);
     // Output should be sorted
     const skillLines = result.lines.filter((l) => l.match(/"skill-[abc]"/));
-    assert.equal(skillLines[0].trim(), '"skill-a"');
-    assert.equal(skillLines[1].trim(), '"skill-b"');
-    assert.equal(skillLines[2].trim(), '"skill-c"');
+    expect(skillLines[0].trim()).toBe('"skill-a"');
+    expect(skillLines[1].trim()).toBe('"skill-b"');
+    expect(skillLines[2].trim()).toBe('"skill-c"');
   });
 
   it("separates added vs already in mixed input", () => {
@@ -515,17 +499,14 @@ describe("updateSelectionInLines", () => {
       "}",
     ];
     const result = updateSelectionInLines(lines, "my-source", ["skill-a", "skill-b"]);
-    assert.equal(result.changed, true);
-    assert.deepEqual(result.added, ["skill-b"]);
-    assert.deepEqual(result.already, ["skill-a"]);
+    expect(result.changed).toBe(true);
+    expect(result.added).toEqual(["skill-b"]);
+    expect(result.already).toEqual(["skill-a"]);
   });
 
   it("throws when source is not found", () => {
     const lines = ["{", "  other-source = {", "  };", "}"];
-    assert.throws(
-      () => updateSelectionInLines(lines, "missing-source", ["skill"]),
-      /Source not found/,
-    );
+    expect(() => updateSelectionInLines(lines, "missing-source", ["skill"])).toThrow(/Source not found/);
   });
 });
 
@@ -535,7 +516,7 @@ describe("updateSelectionInLines", () => {
 describe("parseGitHubUrl", () => {
   it("parses basic owner/repo URL", () => {
     const result = parseGitHubUrl(new URL("https://github.com/millionco/react-doctor"));
-    assert.deepEqual(result, {
+    expect(result).toEqual({
       kind: "github",
       url: "https://github.com/millionco/react-doctor",
       owner: "millionco",
@@ -547,14 +528,14 @@ describe("parseGitHubUrl", () => {
 
   it("strips .git suffix from repo name", () => {
     const result = parseGitHubUrl(new URL("https://github.com/millionco/react-doctor.git"));
-    assert.equal(result?.repo, "react-doctor");
+    expect(result?.repo).toBe("react-doctor");
   });
 
   // https://github.com/millionco/react-doctor/tree/main/skills/react-doctor
   it("parses tree/branch/path URL: extracts ref and hintPath", () => {
     const url = "https://github.com/millionco/react-doctor/tree/main/skills/react-doctor";
     const result = parseGitHubUrl(new URL(url));
-    assert.deepEqual(result, {
+    expect(result).toEqual({
       kind: "github",
       url: "https://github.com/millionco/react-doctor",
       owner: "millionco",
@@ -568,16 +549,16 @@ describe("parseGitHubUrl", () => {
     const result = parseGitHubUrl(
       new URL("https://github.com/millionco/react-doctor/tree/main"),
     );
-    assert.equal(result?.ref, "main");
-    assert.equal(result?.hintPath, null);
+    expect(result?.ref).toBe("main");
+    expect(result?.hintPath).toBe(null);
   });
 
   it("parses tree/tag URL", () => {
     const result = parseGitHubUrl(
       new URL("https://github.com/millionco/react-doctor/tree/v1.2.3"),
     );
-    assert.equal(result?.ref, "v1.2.3");
-    assert.equal(result?.hintPath, null);
+    expect(result?.ref).toBe("v1.2.3");
+    expect(result?.hintPath).toBe(null);
   });
 
   // https://github.com/millionco/react-doctor/skills/react-doctor
@@ -585,7 +566,7 @@ describe("parseGitHubUrl", () => {
   it("ignores subpath when tree/ segment is absent", () => {
     const url = "https://github.com/millionco/react-doctor/skills/react-doctor";
     const result = parseGitHubUrl(new URL(url));
-    assert.deepEqual(result, {
+    expect(result).toEqual({
       kind: "github",
       url: "https://github.com/millionco/react-doctor",
       owner: "millionco",
@@ -598,20 +579,20 @@ describe("parseGitHubUrl", () => {
   it("treats blob/ path the same as unknown segment (no ref/hintPath)", () => {
     const url = "https://github.com/millionco/react-doctor/blob/main/README.md";
     const result = parseGitHubUrl(new URL(url));
-    assert.equal(result?.ref, null);
-    assert.equal(result?.hintPath, null);
+    expect(result?.ref).toBe(null);
+    expect(result?.hintPath).toBe(null);
   });
 
   it("returns null when only owner is present", () => {
     // pathname has only 1 segment
     const result = parseGitHubUrl(new URL("https://github.com/millionco"));
-    assert.equal(result, null);
+    expect(result).toBe(null);
   });
 
   // github.com/millionco/react-doctor/tree/main/skills/react-doctor
   // （プロトコルなし）は new URL() でパースできないため parseGitHubUrl の対象外。
   // looksLikeSource でも false を返すため、CLIへの入力として認識されない。
   it("— NOTE: bare github.com/owner/repo/... (no https://) is NOT a valid URL for this parser", () => {
-    assert.throws(() => new URL("github.com/millionco/react-doctor/tree/main/skills/react-doctor"));
+    expect(() => new URL("github.com/millionco/react-doctor/tree/main/skills/react-doctor")).toThrow();
   });
 });

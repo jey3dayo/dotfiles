@@ -1,11 +1,10 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
-import * as assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { describe, it } from "node:test";
+import { describe, expect, it } from "bun:test";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -134,8 +133,8 @@ describe("scripts/setup-gitleaks.sh", () => {
         args: ["--help"],
       });
 
-      assert.equal(result.status, 0);
-      assert.match(result.stdout, /Usage:/);
+      expect(result.status).toBe(0);
+      expect(result.stdout).toMatch(/Usage:/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }
@@ -150,8 +149,8 @@ describe("scripts/setup-gitleaks.sh", () => {
         pathPrefix: [],
       });
 
-      assert.notEqual(result.status, 0);
-      assert.match(result.stderr, /gitleaks is not installed/);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(/gitleaks is not installed/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }
@@ -170,19 +169,19 @@ describe("scripts/setup-gitleaks.sh", () => {
         args: ["--create-baseline"],
       });
 
-      assert.equal(result.status, 0);
+      expect(result.status).toBe(0);
       const ignorePath = path.join(repo.root, ".gitleaksignore");
-      assert.equal(fs.existsSync(ignorePath), true);
+      expect(fs.existsSync(ignorePath)).toBe(true);
       const ignoreContent = fs.readFileSync(ignorePath, "utf8");
-      assert.match(ignoreContent, /fingerprint-a/);
-      assert.match(ignoreContent, /fingerprint-b/);
+      expect(ignoreContent).toMatch(/fingerprint-a/);
+      expect(ignoreContent).toMatch(/fingerprint-b/);
       const lines = ignoreContent.trim().split("\n");
-      assert.equal(lines.filter((line) => line === "fingerprint-a").length, 1);
+      expect(lines.filter((line) => line === "fingerprint-a").length).toBe(1);
 
       const preCommitLog = fs.readFileSync(path.join(repo.logsDir, "pre-commit.log"), "utf8");
-      assert.match(preCommitLog, /install/);
-      assert.match(preCommitLog, /autoupdate/);
-      assert.match(preCommitLog, /run gitleaks --all-files/);
+      expect(preCommitLog).toMatch(/install/);
+      expect(preCommitLog).toMatch(/autoupdate/);
+      expect(preCommitLog).toMatch(/run gitleaks --all-files/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }
@@ -204,12 +203,12 @@ describe("scripts/setup-gitleaks.sh", () => {
         },
       });
 
-      assert.equal(result.status, 0);
+      expect(result.status).toBe(0);
       const ignorePath = path.join(repo.root, ".gitleaksignore");
-      assert.equal(fs.existsSync(ignorePath), true);
+      expect(fs.existsSync(ignorePath)).toBe(true);
       const ignoreContent = fs.readFileSync(ignorePath, "utf8");
-      assert.match(ignoreContent, /# Gitleaks Ignore File/);
-      assert.match(ignoreContent, /Generate\/update with/);
+      expect(ignoreContent).toMatch(/# Gitleaks Ignore File/);
+      expect(ignoreContent).toMatch(/Generate\/update with/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }

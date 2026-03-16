@@ -1,7 +1,6 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
-import * as assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { describe, expect, it } from "bun:test";
 
 import {
   buildAgentEntries,
@@ -14,14 +13,14 @@ import {
 
 describe("skills-sync-inputs-lib", () => {
   it("countChar counts all matching characters", () => {
-    assert.equal(countChar("{a{b}}", "{"), 2);
-    assert.equal(countChar("{a{b}}", "}"), 2);
-    assert.equal(countChar("", "{"), 0);
+    expect(countChar("{a{b}}", "{")).toBe(2);
+    expect(countChar("{a{b}}", "}")).toBe(2);
+    expect(countChar("", "{")).toBe(0);
   });
 
   it("stripComments removes trailing comment part only", () => {
-    assert.equal(stripComments('  url = "x"; # comment'), '  url = "x"; ');
-    assert.equal(stripComments("# comment only"), "");
+    expect(stripComments('  url = "x"; # comment')).toBe('  url = "x"; ');
+    expect(stripComments("# comment only")).toBe("");
   });
 
   it("extractSources parses source blocks from nix text", () => {
@@ -40,13 +39,13 @@ describe("skills-sync-inputs-lib", () => {
 }`;
 
     const sources = extractSources(sourceContent);
-    assert.equal(sources.length, 3);
-    assert.deepEqual(sources[0], {
+    expect(sources.length).toBe(3);
+    expect(sources[0]).toEqual({
       name: "source-b",
       url: "github:owner/b",
       flake: true,
     });
-    assert.deepEqual(sources[2], {
+    expect(sources[2]).toEqual({
       name: "source-no-url",
       url: null,
       flake: false,
@@ -60,7 +59,7 @@ describe("skills-sync-inputs-lib", () => {
       { name: "no-url", url: null, flake: false },
     ]);
 
-    assert.deepEqual(lines, [
+    expect(lines).toEqual([
       "    alpha = {",
       '      url = "github:o/alpha";',
       "      flake = true;",
@@ -81,14 +80,11 @@ describe("skills-sync-inputs-lib", () => {
       "}",
     ];
     const range = ensureInputsBlock(lines);
-    assert.deepEqual(range, { inputsStart: 1, inputsEnd: 3 });
+    expect(range).toEqual({ inputsStart: 1, inputsEnd: 3 });
   });
 
   it("ensureInputsBlock throws when inputs block is missing", () => {
-    assert.throws(
-      () => ensureInputsBlock(["{", '  description = "x";', "}"]),
-      /Failed to locate inputs block/,
-    );
+    expect(() => ensureInputsBlock(["{", '  description = "x";', "}"])).toThrow(/Failed to locate inputs block/);
   });
 
   it("syncFlakeInputsFromSources inserts block when marker is absent", () => {
@@ -110,10 +106,10 @@ describe("skills-sync-inputs-lib", () => {
 }`;
 
     const updated = syncFlakeInputsFromSources(sourceContent, flakeContent);
-    assert.match(updated, /# Agent-skills external sources/);
-    assert.match(updated, /a = \{/);
-    assert.match(updated, /b = \{/);
-    assert.ok(updated.indexOf("a = {") < updated.indexOf("b = {"));
+    expect(updated).toMatch(/# Agent-skills external sources/);
+    expect(updated).toMatch(/a = \{/);
+    expect(updated).toMatch(/b = \{/);
+    expect(updated.indexOf("a = {") < updated.indexOf("b = {")).toBeTruthy();
   });
 
   it("syncFlakeInputsFromSources replaces existing marker block", () => {
@@ -136,8 +132,8 @@ describe("skills-sync-inputs-lib", () => {
 }`;
 
     const updated = syncFlakeInputsFromSources(sourceContent, flakeContent);
-    assert.match(updated, /new-source = \{/);
-    assert.doesNotMatch(updated, /old-source = \{/);
+    expect(updated).toMatch(/new-source = \{/);
+    expect(updated).not.toMatch(/old-source = \{/);
   });
 
   it("syncFlakeInputsFromSources preserves CRLF line endings", () => {
@@ -145,7 +141,7 @@ describe("skills-sync-inputs-lib", () => {
     const flakeContent = "{\r\n  inputs = {\r\n  };\r\n}\r\n";
 
     const updated = syncFlakeInputsFromSources(sourceContent, flakeContent);
-    assert.match(updated, /\r\n/);
-    assert.doesNotMatch(updated, /(?<!\r)\n/);
+    expect(updated).toMatch(/\r\n/);
+    expect(updated).not.toMatch(/(?<!\r)\n/);
   });
 });

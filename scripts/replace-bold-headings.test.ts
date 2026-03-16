@@ -1,308 +1,177 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
+import { execSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { afterEach, beforeEach, describe, expect, it } from "bun:test";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const scriptPath = path.join(__dirname, "replace-bold-headings.ts");
 
-// Test cases with expected behavior
-const testCases = [
-  {
-    name: "Bold heading without suffix",
-    input: "**Overview**",
-    expected: "### Overview",
-    shouldConvert: true,
-  },
-  {
-    name: "Bold label with trailing colon (no content)",
-    input: "**Phase 2関連（10ファイル）**:",
-    expected: "#### Phase 2関連（10ファイル）",
-    shouldConvert: true,
-  },
-  {
-    name: "Bold label with parentheses and colon",
-    input: "**セットアップ** (初回のみ):",
-    expected: "#### セットアップ (初回のみ)",
-    shouldConvert: true,
-  },
-  {
-    name: "Bold label with content after colon (strip bold)",
-    input: "**削除結果**: 16ファイル完全削除（廃止警告→削除への移行完了）",
-    expected: "削除結果: 16ファイル完全削除（廃止警告→削除への移行完了）",
-    shouldConvert: true,
-  },
-  {
-    name: "Bold label with directional arrow suffix",
-    input: "**Phase 3関連（6ファイル）** ← 既にPhase 4で廃止警告追加済み:",
-    expected: "**Phase 3関連（6ファイル）** ← 既にPhase 4で廃止警告追加済み:",
-    shouldConvert: false,
-  },
-  {
-    name: "Ordered list with bold label and content (strip bold)",
-    input: "1. **Read Guidelines**: 必ず最初に読む",
-    expected: "1. Read Guidelines: 必ず最初に読む",
-    shouldConvert: true,
-  },
-  {
-    name: "Ordered list with bold label and Japanese content (strip bold)",
-    input: "1. **フェーズ1**: 説明",
-    expected: "1. フェーズ1: 説明",
-    shouldConvert: true,
-  },
-  {
-    name: "Ordered list with bold label and English content (strip bold)",
-    input: "1. **Phase 1**: Description",
-    expected: "1. Phase 1: Description",
-    shouldConvert: true,
-  },
-  {
-    name: "Ordered list with bold label and colon only",
-    input: "1. **Phase 1**:",
-    expected: "1. Phase 1:",
-    shouldConvert: true,
-  },
-  {
-    name: "Ordered list with bold label and arrow",
-    input: "1. **Phase 1** → do something",
-    expected: "1. Phase 1 → do something",
-    shouldConvert: true,
-  },
-  {
-    name: "Unordered list with bold label (colon only)",
-    input: "- **Text**:",
-    expected: "- Text:",
-    shouldConvert: true,
-  },
-  {
-    name: "Unordered list with bold label and content (strip bold)",
-    input: "- **Text**: content here",
-    expected: "- Text: content here",
-    shouldConvert: true,
-  },
-  {
-    name: "Unordered list with bold label and Japanese content (strip bold)",
-    input: "- **メリット**: 初回ロード軽量",
-    expected: "- メリット: 初回ロード軽量",
-    shouldConvert: true,
-  },
-  {
-    name: "Unordered list with bold label (no colon)",
-    input: "- **OpenClaw関連（4ファイル）**",
-    expected: "- OpenClaw関連（4ファイル）",
-    shouldConvert: true,
-  },
-  {
-    name: "Unordered list with bold label and right arrow (should remove bold)",
-    input: "- **出力あり** → uncommitted changes モード",
-    expected: "- 出力あり → uncommitted changes モード",
-    shouldConvert: true,
-  },
-  {
-    name: "Unordered list with bold label and right arrow, Japanese (should remove bold)",
-    input: "- **critical issues あり** → 該当ファイルを Read し、Edit で修正を適用",
-    expected: "- critical issues あり → 該当ファイルを Read し、Edit で修正を適用",
-    shouldConvert: true,
-  },
-  // boldLabelColonInside: colon inside bold, followed by content
-  {
-    name: "Bold label with colon inside, followed by content (strip bold)",
-    input: "**責務:** Valibotスキーマ定義",
-    expected: "責務: Valibotスキーマ定義",
-    shouldConvert: true,
-  },
-  {
-    name: "Bold label with colon inside, English content (strip bold)",
-    input: "**現状:** 未実装",
-    expected: "現状: 未実装",
-    shouldConvert: true,
-  },
-  {
-    name: "Bold label with colon inside, backtick content (strip bold)",
-    input: "**返り値の型:** `v.BaseSchema` + 推論型",
-    expected: "返り値の型: `v.BaseSchema` + 推論型",
-    shouldConvert: true,
-  },
-  // Navigation paths: multiple bold items separated by arrows must be preserved
-  {
-    name: "Ordered list navigation path with multiple bold items (preserve all bold)",
-    input: "2. **Workers & Pages** → **keep-on** → **Metrics** タブ",
-    expected: "2. **Workers & Pages** → **keep-on** → **Metrics** タブ",
-    shouldConvert: false,
-  },
-  {
-    name: "Unordered list navigation path with multiple bold items (preserve all bold)",
-    input: "- **File** → **Edit** → **Preferences**",
-    expected: "- **File** → **Edit** → **Preferences**",
-    shouldConvert: false,
-  },
-];
+const runScript = (target: string) =>
+  execSync(`tsx "${scriptPath}" "${target}"`, { encoding: "utf8", stdio: "pipe" });
 
-// Create test file
-const testContent = testCases.map((tc) => tc.input).join("\n");
-const testFile = path.join(__dirname, "test-input.md");
-fs.writeFileSync(testFile, testContent, "utf8");
+// ============================================================
+// Bold heading conversion
+// ============================================================
+describe("replace-bold-headings: conversion rules", () => {
+  let tmpFile: string;
 
-console.log("Running bold heading replacement tests...\n");
+  const check = (input: string, expected: string) => {
+    fs.writeFileSync(tmpFile, input + "\n", "utf8");
+    runScript(tmpFile);
+    expect(fs.readFileSync(tmpFile, "utf8").trimEnd()).toBe(expected);
+  };
 
-// Import the processing function (would need to export it from main script)
-// For now, we'll run the script and check output
-
-import { execSync } from "node:child_process";
-
-try {
-  const scriptPath = path.join(__dirname, "replace-bold-headings.ts");
-
-  // Run the script on test file
-  execSync(`tsx "${scriptPath}" "${testFile}"`, {
-    encoding: "utf8",
-    stdio: "pipe",
+  beforeEach(() => {
+    tmpFile = path.join(os.tmpdir(), `rbh-test-${Date.now()}.md`);
   });
 
-  const result = fs.readFileSync(testFile, "utf8");
-  const resultLines = result.split("\n");
-
-  let passCount = 0;
-  let failCount = 0;
-
-  testCases.forEach((tc, i) => {
-    const actualLine = resultLines[i];
-    const pass = actualLine === tc.expected;
-
-    if (pass) {
-      passCount++;
-      console.log(`✅ ${tc.name}`);
-    } else {
-      failCount++;
-      console.log(`❌ ${tc.name}`);
-      console.log(`   Input:    "${tc.input}"`);
-      console.log(`   Expected: "${tc.expected}"`);
-      console.log(`   Actual:   "${actualLine}"`);
-    }
+  afterEach(() => {
+    if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
   });
 
-  console.log(`\nResults: ${passCount}/${testCases.length} passed`);
+  it("converts standalone bold heading", () =>
+    check("**Overview**", "### Overview"));
 
-  // Cleanup
-  fs.unlinkSync(testFile);
+  it("converts bold label with trailing colon (no content)", () =>
+    check("**Phase 2関連（10ファイル）**:", "#### Phase 2関連（10ファイル）"));
 
-  if (failCount > 0) {
-    process.exit(1);
-  }
-} catch (error) {
-  console.error("Test execution failed:", error);
-  if (fs.existsSync(testFile)) {
-    fs.unlinkSync(testFile);
-  }
-  process.exit(1);
-}
+  it("converts bold label with parentheses and colon", () =>
+    check("**セットアップ** (初回のみ):", "#### セットアップ (初回のみ)"));
 
-// ========================================
-// Directory exclusion tests
-// ========================================
+  it("strips bold from label with content after colon", () =>
+    check(
+      "**削除結果**: 16ファイル完全削除（廃止警告→削除への移行完了）",
+      "削除結果: 16ファイル完全削除（廃止警告→削除への移行完了）",
+    ));
 
-console.log("\nRunning directory exclusion tests...\n");
+  it("preserves bold when directional arrow suffix follows", () =>
+    check(
+      "**Phase 3関連（6ファイル）** ← 既にPhase 4で廃止警告追加済み:",
+      "**Phase 3関連（6ファイル）** ← 既にPhase 4で廃止警告追加済み:",
+    ));
 
-import { execSync as execSyncNode } from "node:child_process";
+  it("strips bold from ordered list label with content", () =>
+    check("1. **Read Guidelines**: 必ず最初に読む", "1. Read Guidelines: 必ず最初に読む"));
 
-const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "bold-headings-excl-"));
+  it("strips bold from ordered list label with Japanese content", () =>
+    check("1. **フェーズ1**: 説明", "1. フェーズ1: 説明"));
 
-// Bold pattern that WOULD be changed if processed
-const boldContent = "**Overview**\n";
+  it("strips bold from ordered list label with English content", () =>
+    check("1. **Phase 1**: Description", "1. Phase 1: Description"));
 
-// Directories that must be excluded
-const excludedDirs = [
-  "node_modules",
-  ".worktrees",
-  ".kiro",
-  ".luarocks",
-  "fisher",
-  "result",
-  "result-abc",
-  path.join("tmux", "plugins"),
-  path.join("zsh", ".zinit"),
-  path.join("agents", "external"),
-];
+  it("strips bold from ordered list label with colon only", () =>
+    check("1. **Phase 1**:", "1. Phase 1:"));
 
-// Similar-looking but NOT excluded path (must still be processed)
-const boundaryLikeDir = path.join("mytmux", "plugins");
-const boundaryLikeFile = path.join(tmpRoot, boundaryLikeDir, "test.md");
-fs.mkdirSync(path.dirname(boundaryLikeFile), { recursive: true });
-fs.writeFileSync(boundaryLikeFile, boldContent, "utf8");
+  it("strips bold from ordered list label with arrow", () =>
+    check("1. **Phase 1** → do something", "1. Phase 1 → do something"));
 
-// Create test files inside each excluded directory
-for (const dir of excludedDirs) {
-  const fullDir = path.join(tmpRoot, dir);
-  fs.mkdirSync(fullDir, { recursive: true });
-  fs.writeFileSync(path.join(fullDir, "test.md"), boldContent, "utf8");
-}
+  it("strips bold from unordered list label (colon only)", () =>
+    check("- **Text**:", "- Text:"));
 
-// Also create a normal file that SHOULD be processed
-const normalFile = path.join(tmpRoot, "normal.md");
-fs.writeFileSync(normalFile, boldContent, "utf8");
+  it("strips bold from unordered list label with content", () =>
+    check("- **Text**: content here", "- Text: content here"));
 
-const scriptPath2 = path.join(__dirname, "replace-bold-headings.ts");
+  it("strips bold from unordered list label with Japanese content", () =>
+    check("- **メリット**: 初回ロード軽量", "- メリット: 初回ロード軽量"));
 
-try {
-  execSyncNode(`tsx "${scriptPath2}" "${tmpRoot}"`, { encoding: "utf8", stdio: "pipe" });
+  it("strips bold from unordered list label (no colon)", () =>
+    check("- **OpenClaw関連（4ファイル）**", "- OpenClaw関連（4ファイル）"));
 
-  let exclPass = 0;
-  let exclFail = 0;
+  it("strips bold from unordered list label with right arrow", () =>
+    check(
+      "- **出力あり** → uncommitted changes モード",
+      "- 出力あり → uncommitted changes モード",
+    ));
 
-  // Check excluded dirs: content must be UNCHANGED
-  for (const dir of excludedDirs) {
-    const filePath = path.join(tmpRoot, dir, "test.md");
-    const content = fs.readFileSync(filePath, "utf8");
-    if (content === boldContent) {
-      exclPass++;
-      console.log(`✅ Excluded: ${dir}/test.md (unchanged)`);
-    } else {
-      exclFail++;
-      console.log(`❌ Excluded: ${dir}/test.md (was modified!)`);
-      console.log(`   Expected: "${boldContent.trim()}"`);
-      console.log(`   Actual:   "${content.trim()}"`);
-    }
-  }
+  it("strips bold from unordered list label with right arrow (Japanese)", () =>
+    check(
+      "- **critical issues あり** → 該当ファイルを Read し、Edit で修正を適用",
+      "- critical issues あり → 該当ファイルを Read し、Edit で修正を適用",
+    ));
 
-  // Check normal file: content must be CHANGED (bold converted to heading)
-  const normalContent = fs.readFileSync(normalFile, "utf8");
-  if (normalContent !== boldContent) {
-    exclPass++;
-    console.log(`✅ Normal file was processed (bold converted)`);
-  } else {
-    exclFail++;
-    console.log(`❌ Normal file was NOT processed (bold should have been converted)`);
-  }
+  it("strips bold when colon is inside bold markers", () =>
+    check("**責務:** Valibotスキーマ定義", "責務: Valibotスキーマ定義"));
 
-  // Check boundary-like dir: content must be CHANGED (must not be over-skipped)
-  const boundaryLikeContent = fs.readFileSync(boundaryLikeFile, "utf8");
-  if (boundaryLikeContent !== boldContent) {
-    exclPass++;
-    console.log(`✅ Boundary-like dir was processed (${boundaryLikeDir})`);
-  } else {
-    exclFail++;
-    console.log(`❌ Boundary-like dir was skipped unexpectedly (${boundaryLikeDir})`);
-  }
+  it("strips bold when colon inside bold, English content", () =>
+    check("**現状:** 未実装", "現状: 未実装"));
 
-  // Check excluded root target: passing an excluded dir directly must still skip processing
-  const excludedRoot = path.join(tmpRoot, "node_modules");
-  execSyncNode(`tsx "${scriptPath2}" "${excludedRoot}"`, { encoding: "utf8", stdio: "pipe" });
+  it("strips bold when colon inside bold, backtick content", () =>
+    check("**返り値の型:** `v.BaseSchema` + 推論型", "返り値の型: `v.BaseSchema` + 推論型"));
 
-  const excludedRootContent = fs.readFileSync(path.join(excludedRoot, "test.md"), "utf8");
-  if (excludedRootContent === boldContent) {
-    exclPass++;
-    console.log(`✅ Excluded root target was skipped (node_modules)`);
-  } else {
-    exclFail++;
-    console.log(`❌ Excluded root target was processed unexpectedly (node_modules)`);
-  }
+  it("preserves all bold in ordered list navigation path", () =>
+    check(
+      "2. **Workers & Pages** → **keep-on** → **Metrics** タブ",
+      "2. **Workers & Pages** → **keep-on** → **Metrics** タブ",
+    ));
 
-  const totalExcl = excludedDirs.length + 3;
-  console.log(`\nExclusion results: ${exclPass}/${totalExcl} passed`);
+  it("preserves all bold in unordered list navigation path", () =>
+    check(
+      "- **File** → **Edit** → **Preferences**",
+      "- **File** → **Edit** → **Preferences**",
+    ));
+});
 
-  if (exclFail > 0) process.exit(1);
-} finally {
-  fs.rmSync(tmpRoot, { recursive: true, force: true });
-}
+// ============================================================
+// Directory exclusion
+// ============================================================
+describe("replace-bold-headings: directory exclusion", () => {
+  const boldContent = "**Overview**\n";
+  let tmpRoot: string;
+
+  beforeEach(() => {
+    tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "rbh-excl-"));
+  });
+
+  afterEach(() => {
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
+  });
+
+  const excludedDirs = [
+    "node_modules",
+    ".worktrees",
+    ".kiro",
+    ".luarocks",
+    "fisher",
+    "result",
+    "result-abc",
+    path.join("tmux", "plugins"),
+    path.join("zsh", ".zinit"),
+    path.join("agents", "external"),
+  ];
+
+  it.each(excludedDirs)("skips %s/", (dir) => {
+    const file = path.join(tmpRoot, dir, "test.md");
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, boldContent, "utf8");
+    runScript(tmpRoot);
+    expect(fs.readFileSync(file, "utf8")).toBe(boldContent);
+  });
+
+  it("processes files outside excluded dirs", () => {
+    const file = path.join(tmpRoot, "normal.md");
+    fs.writeFileSync(file, boldContent, "utf8");
+    runScript(tmpRoot);
+    expect(fs.readFileSync(file, "utf8")).not.toBe(boldContent);
+  });
+
+  it("processes boundary-like dir (mytmux/plugins)", () => {
+    const file = path.join(tmpRoot, "mytmux", "plugins", "test.md");
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, boldContent, "utf8");
+    runScript(tmpRoot);
+    expect(fs.readFileSync(file, "utf8")).not.toBe(boldContent);
+  });
+
+  it("skips when excluded dir is passed as direct target", () => {
+    const dir = path.join(tmpRoot, "node_modules");
+    const file = path.join(dir, "test.md");
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(file, boldContent, "utf8");
+    runScript(dir);
+    expect(fs.readFileSync(file, "utf8")).toBe(boldContent);
+  });
+});
