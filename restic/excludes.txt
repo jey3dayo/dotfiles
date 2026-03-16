@@ -28,3 +28,10 @@ File System
 IndexedDB
 Snapshots
 Crashpad
+.venv
+.cargo/registry
+.npm
+vendor
+.turbo
+*.log
+.worktrees
