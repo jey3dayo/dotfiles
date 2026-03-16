@@ -17,7 +17,12 @@ done < <(fd --type f --glob "*.test.ts" --exclude "replace-bold-headings.test.ts
 if ((${#node_test_files[@]} > 0)); then
   echo "Running Node test runner suites (${#node_test_files[@]} files)..."
   if [[ "$QUIET" == "1" ]]; then
-    tsx --test --test-reporter=dot "${node_test_files[@]}"
+    if output=$(tsx --test "${node_test_files[@]}" 2>&1); then
+      echo "✅ Node tests passed (${#node_test_files[@]} files)"
+    else
+      echo "$output"
+      exit 1
+    fi
   else
     tsx --test "${node_test_files[@]}"
   fi
@@ -35,7 +40,12 @@ for legacy_test in "${legacy_tests[@]}"; do
   if [[ -f "${legacy_test}" ]]; then
     echo "Running legacy TS test: ${legacy_test}"
     if [[ "$QUIET" == "1" ]]; then
-      tsx "${legacy_test}" | grep -vE "^✅ "
+      if output=$(tsx "${legacy_test}" 2>&1); then
+        echo "✅ Legacy test passed: ${legacy_test}"
+      else
+        echo "$output"
+        exit 1
+      fi
     else
       tsx "${legacy_test}"
     fi
