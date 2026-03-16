@@ -39,11 +39,14 @@ case "$COMMAND" in
     sed "s|^~|$HOME|" "$PATHS_FILE" >"$EXPANDED_PATHS"
 
     restic backup \
+      --host "$(hostname)" \
       --files-from "$EXPANDED_PATHS" \
       --exclude-file "$EXCLUDES_FILE" \
       --exclude-caches
 
     restic forget \
+      --host "$(hostname)" \
+      --group-by host \
       --keep-last 10 \
       --keep-daily 30 \
       --keep-weekly 12 \
@@ -64,7 +67,7 @@ case "$COMMAND" in
     restic init
     ;;
   snapshots)
-    restic snapshots
+    restic snapshots --host "$(hostname)"
     ;;
   stats)
     restic stats
@@ -72,7 +75,7 @@ case "$COMMAND" in
   restore)
     TARGET="${2:-./restore}"
     echo "Restoring latest snapshot to: $(realpath "$TARGET" 2>/dev/null || echo "$TARGET")"
-    restic restore latest --target "$TARGET"
+    restic restore latest --host "$(hostname)" --target "$TARGET"
     ;;
   *)
     echo "Usage: backup.sh {backup|init|snapshots|stats|restore [target]|prune|check}"
