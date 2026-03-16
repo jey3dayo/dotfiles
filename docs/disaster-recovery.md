@@ -60,7 +60,7 @@ home-manager switch --generation 6
 # スキルの配布確認
 ls -la ~/.claude/skills/ | wc -l
 
-# 期待値: 63スキル以上（.systemを含む）
+# .system を含む全スキルが配布されていること
 
 # ZSHプラグインの動作確認
 zsh-help
@@ -150,7 +150,7 @@ home-manager switch --flake . --impure
 ```bash
 # スキル配布の確認
 ls -la ~/.claude/skills/ | wc -l
-# 期待値: 63スキル以上
+# 全スキルが配布されていること
 
 # ZSHプラグインの確認
 ls -la ~/.config/zsh/sheldon/
@@ -259,7 +259,7 @@ home-manager generations
 
 # スキル配布の確認
 ls -la ~/.claude/skills/ | wc -l
-# 期待値: 63スキル以上
+# 全スキルが配布されていること
 
 # ZSHプラグインの確認
 ls -la ~/.config/zsh/sheldon/sheldon.zsh
@@ -285,7 +285,7 @@ brew doctor
 
 ### ✅ スキル配布
 
-- [ ] `ls -la ~/.claude/skills/ | wc -l` が63以上
+- [ ] `ls ~/.claude/skills/` で全スキルが配布されていること
 - [ ] `cat ~/.claude/skills/.system` に"nix-home-manager"が含まれる
 - [ ] スキル一覧に主要スキル（task-router, ui-ux-pro-max等）が存在
 
