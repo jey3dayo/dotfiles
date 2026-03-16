@@ -17,6 +17,7 @@ includes = [
   ".config/mise/tasks/home-manager.toml",
   ".config/mise/tasks/ci.toml",
   ".config/mise/tasks/docs.toml",
+  ".config/mise/tasks/backup.toml",
 ]
 
 # ========================================

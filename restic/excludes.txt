@@ -1,0 +1,17 @@
+node_modules
+.next
+__pycache__
+*.pyc
+.cache
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo
+.git
+target
+dist
+build
+.terraform
+.direnv
+.devenv

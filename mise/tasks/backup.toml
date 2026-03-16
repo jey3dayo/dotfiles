@@ -1,0 +1,19 @@
+[backup]
+description = "Run restic backup to S3"
+run = "dotenvx run -- ~/.config/restic/backup.sh backup"
+
+["backup:init"]
+description = "Initialize restic repository on S3"
+run = "dotenvx run -- ~/.config/restic/backup.sh init"
+
+["backup:snapshots"]
+description = "List backup snapshots"
+run = "dotenvx run -- ~/.config/restic/backup.sh snapshots"
+
+["backup:stats"]
+description = "Show restic repository stats"
+run = "dotenvx run -- ~/.config/restic/backup.sh stats"
+
+["backup:restore"]
+description = "Restore latest snapshot to ./restore"
+run = "dotenvx run -- ~/.config/restic/backup.sh restore ."
