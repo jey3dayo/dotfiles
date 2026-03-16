@@ -17,7 +17,12 @@ fi
 
 # perman-aws-vault で AWS 一時クレデンシャル取得
 echo "Fetching AWS credentials via perman-aws-vault..."
-eval "$(perman-aws-vault print -p "$PROFILE" | jq -r '
+AWS_CREDS=$(perman-aws-vault print -p "$PROFILE")
+if [[ -z "$AWS_CREDS" ]]; then
+  echo "Error: Failed to fetch AWS credentials from perman-aws-vault."
+  exit 1
+fi
+eval "$(echo "$AWS_CREDS" | jq -r '
   "export AWS_ACCESS_KEY_ID=\(.AccessKeyId)",
   "export AWS_SECRET_ACCESS_KEY=\(.SecretAccessKey)",
   "export AWS_SESSION_TOKEN=\(.SessionToken)"

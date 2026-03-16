@@ -1,19 +1,19 @@
 [backup]
 description = "Run restic backup to S3"
-run = "dotenvx run -- ~/.config/restic/backup.sh backup"
+run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh backup"
 
 ["backup:init"]
 description = "Initialize restic repository on S3"
-run = "dotenvx run -- ~/.config/restic/backup.sh init"
+run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh init"
 
 ["backup:snapshots"]
 description = "List backup snapshots"
-run = "dotenvx run -- ~/.config/restic/backup.sh snapshots"
+run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh snapshots"
 
 ["backup:stats"]
 description = "Show restic repository stats"
-run = "dotenvx run -- ~/.config/restic/backup.sh stats"
+run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh stats"
 
 ["backup:restore"]
 description = "Restore latest snapshot to ./restore"
-run = "dotenvx run -- ~/.config/restic/backup.sh restore ."
+run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh restore ."
