@@ -5,13 +5,14 @@ Usage examples:
   python3 scripts/linear_task.py teams
   python3 scripts/linear_task.py list --team KEY --limit 20
   python3 scripts/linear_task.py create --team KEY --title "Task title" --description "details" --due-date 2026-03-20
-  python3 scripts/linear_task.py update --issue ABC-123 --title "new title" --state "Done"
-  python3 scripts/linear_task.py comment --issue ABC-123 --body "追加メモ"
+  python3 scripts/linear_task.py update --issue <UUID> --title "new title" --state "Done"
+  python3 scripts/linear_task.py comment --issue <UUID> --body "追加メモ"
 """
 
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import os
 from typing import Any, Dict, Optional
@@ -20,11 +21,18 @@ from urllib.request import Request, urlopen
 
 LINEAR_API_URL = "https://api.linear.app/graphql"
 
+_cached_token: Optional[str] = None
+
 
 def load_token() -> str:
+    global _cached_token
+    if _cached_token is not None:
+        return _cached_token
+
     token = os.getenv("LINEAR_API_KEY") or os.getenv("LINEAR_TOKEN")
     if token:
-        return token.strip()
+        _cached_token = token.strip()
+        return _cached_token
 
     env_file = os.getenv("LINEAR_ENV_FILE", ".env")
     if os.path.exists(env_file):
@@ -35,7 +43,8 @@ def load_token() -> str:
                     continue
                 k, v = line.split("=", 1)
                 if k.strip() in {"LINEAR_API_KEY", "LINEAR_TOKEN"}:
-                    return v.strip().strip('"').strip("'")
+                    _cached_token = v.strip().strip('"').strip("'")
+                    return _cached_token
 
     raise SystemExit("LINEAR_API_KEY (or LINEAR_TOKEN) is not set.")
 
@@ -208,7 +217,10 @@ def cmd_create(args: argparse.Namespace) -> None:
         input_obj["priority"] = args.priority
 
     data = gql(q, {"input": input_obj})
-    issue = data["issueCreate"]["issue"]
+    result = data["issueCreate"]
+    if not result.get("success") or not result.get("issue"):
+        raise SystemExit("issueCreate failed (success=false or null issue).")
+    issue = result["issue"]
     print(f"CREATED\t{issue['identifier']}\t{issue['title']}\t{issue['url']}")
 
 
@@ -241,7 +253,10 @@ def cmd_update(args: argparse.Namespace) -> None:
         raise SystemExit("No update fields set.")
 
     data = gql(q, {"id": args.issue, "input": input_obj})
-    issue = data["issueUpdate"]["issue"]
+    result = data["issueUpdate"]
+    if not result.get("success") or not result.get("issue"):
+        raise SystemExit("issueUpdate failed (success=false or null issue).")
+    issue = result["issue"]
     print(f"UPDATED\t{issue['identifier']}\t{issue['title']}\t{issue['url']}")
 
 
@@ -255,8 +270,17 @@ def cmd_comment(args: argparse.Namespace) -> None:
     }
     """
     data = gql(q, {"input": {"issueId": args.issue, "body": args.body}})
-    c = data["commentCreate"]["comment"]
+    result = data["commentCreate"]
+    if not result.get("success") or not result.get("comment"):
+        raise SystemExit("commentCreate failed (success=false or null comment).")
+    c = result["comment"]
     print(f"COMMENTED\t{c['id']}")
+
+
+def valid_date(s: str) -> str:
+    """Validate YYYY-MM-DD format."""
+    datetime.date.fromisoformat(s)
+    return s
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -279,7 +303,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--team", required=True, help="Team key")
     s.add_argument("--title", required=True)
     s.add_argument("--description")
-    s.add_argument("--due-date", help="YYYY-MM-DD")
+    s.add_argument("--due-date", type=valid_date, help="YYYY-MM-DD")
     s.add_argument("--priority", type=int, choices=[0, 1, 2, 3, 4])
     s.set_defaults(func=cmd_create)
 
@@ -287,18 +311,18 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument(
         "--issue",
         required=True,
-        help="Issue id (UUID) or identifier if your workspace resolves it",
+        help="Issue UUID (use 'list' command to find it)",
     )
     s.add_argument("--team", help="Team key (required with --state)")
     s.add_argument("--title")
     s.add_argument("--description")
-    s.add_argument("--due-date")
+    s.add_argument("--due-date", type=valid_date)
     s.add_argument("--priority", type=int, choices=[0, 1, 2, 3, 4])
     s.add_argument("--state", help="State name in the team")
     s.set_defaults(func=cmd_update)
 
     s = sub.add_parser("comment", help="Add comment")
-    s.add_argument("--issue", required=True, help="Issue id (UUID)")
+    s.add_argument("--issue", required=True, help="Issue UUID")
     s.add_argument("--body", required=True)
     s.set_defaults(func=cmd_comment)
 
