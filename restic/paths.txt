@@ -41,3 +41,5 @@
 ~/Library/Application Support/rtk
 ~/Library/Application Support/Vivaldi
 ~/Library/Application Support/zoxide
+~/Library/Application Support/Topre
+~/Library/Application Support/Sequel Pro
