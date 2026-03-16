@@ -21,3 +21,17 @@
 ~/Library/Application Support/com.tinyapp.TablePlus
 ~/Library/Application Support/BetterSnapTool
 ~/Library/Application Support/BetterTouchTool
+~/Library/Application Support/Alfred
+~/Library/Application Support/com.mitchellh.ghostty
+~/Library/Application Support/CleanShot
+~/Library/Application Support/Scroll Reverser
+~/Library/Application Support/iStat Menus
+~/Library/Application Support/iStat Menus 7
+~/Library/Application Support/com.superultra.Homerow
+~/Library/Application Support/Amethyst
+~/Library/Application Support/Choosy
+~/Library/Application Support/xbar
+~/Library/Application Support/Deckset
+~/Library/Application Support/iTerm2
+~/Library/Application Support/wezterm
+~/Library/Application Support/Zed
