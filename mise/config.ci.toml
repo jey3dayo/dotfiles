@@ -40,6 +40,7 @@ TASK_EXCLUDES = "--exclude agents/external --exclude .worktrees --exclude result
 "pipx:uv" = "latest" # uvx for ruff execution
 # Runtime
 node = "lts"
+bun = "latest"
 # Formatters and Linters
 actionlint = "latest"      # GitHub Actions lint
 biome = "latest"           # JS/TS/JSON
