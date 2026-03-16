@@ -190,6 +190,7 @@ claude/*
 .clinerules
 global_rules.md
 .aider*
+.rtk/
 .plans/
 
 ## Other AI Tools
