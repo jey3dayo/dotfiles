@@ -13,22 +13,38 @@ Nix Home Manager の配布アーキテクチャ・メンテナンス運用ポリ
 ### 全体フロー
 
 ```mermaid
+---
+config:
+  htmlLabels: false
+---
 graph LR
     subgraph IN["ソース (リポジトリ)"]
-        DOT["静的ファイル\n.zshrc / .zshenv\n.gitconfig / .ssh/config"]
-        INT["agents/internal/\nskills (48) / rules / agents"]
-        EXT["外部スキル (flake inputs)\n8 ソース / 14 スキル"]
+        DOT["`**静的ファイル**
+.zshrc / .zshenv
+.gitconfig / .ssh/config`"]
+        INT["`**agents/internal/**
+skills (48) / rules / agents`"]
+        EXT["`**外部スキル (flake inputs)**
+8 ソース / 14 スキル`"]
     end
 
     subgraph NIX["Nix / Home Manager"]
-        HM["home-manager switch\n--flake ~/.config --impure"]
-        BUNDLE["/nix/store/\n…-agent-skills-bundle/"]
+        HM["`home-manager switch
+--flake ~/.config --impure`"]
+        BUNDLE["`/nix/store/
+…-agent-skills-bundle/`"]
         HM --> BUNDLE
     end
 
     subgraph OUT["配布先"]
-        HOME["~/\n.zshrc / .zshenv\n.gitconfig / .ssh/config"]
-        SKILLS["~/.claude/skills/\n~/.codex/skills/\n~/.cursor/skills/\n~/.opencode/skills/\n~/.skills/"]
+        HOME["`~/
+.zshrc / .zshenv
+.gitconfig / .ssh/config`"]
+        SKILLS["`~/.claude/skills/
+~/.codex/skills/
+~/.cursor/skills/
+~/.opencode/skills/
+~/.skills/`"]
     end
 
     DOT --> HM
