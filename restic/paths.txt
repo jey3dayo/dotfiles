@@ -36,3 +36,4 @@
 ~/Library/Application Support/wezterm
 ~/Library/Application Support/Zed
 ~/Library/Application Support/Google/Chrome
+~/Library/Application Support/Insomnia
