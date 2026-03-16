@@ -15,3 +15,11 @@ build
 .terraform
 .direnv
 .devenv
+Cache
+CacheStorage
+Code Cache
+Service Worker
+GrShaderCache
+GPUCache
+ShaderCache
+blob_storage

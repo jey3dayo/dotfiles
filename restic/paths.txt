@@ -35,3 +35,4 @@
 ~/Library/Application Support/iTerm2
 ~/Library/Application Support/wezterm
 ~/Library/Application Support/Zed
+~/Library/Application Support/Google/Chrome
