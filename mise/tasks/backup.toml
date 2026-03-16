@@ -17,3 +17,11 @@ run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh stats"
 ["backup:restore"]
 description = "Restore latest snapshot to ./restore"
 run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh restore ."
+
+["backup:prune"]
+description = "Prune unreferenced data from restic repository"
+run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh prune"
+
+["backup:check"]
+description = "Check restic repository integrity (10% data subset)"
+run = "dotenvx run -- ${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh check"

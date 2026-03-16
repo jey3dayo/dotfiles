@@ -47,9 +47,18 @@ case "$COMMAND" in
       --keep-last 10 \
       --keep-daily 30 \
       --keep-weekly 12 \
-      --keep-monthly 12 \
-      --prune
+      --keep-monthly 12
     echo "Backup completed: $(date)"
+    ;;
+  prune)
+    echo "Pruning unreferenced data..."
+    restic prune
+    echo "Prune completed: $(date)"
+    ;;
+  check)
+    echo "Checking repository integrity..."
+    restic check --read-data-subset=10%
+    echo "Check completed: $(date)"
     ;;
   init)
     restic init
@@ -61,10 +70,12 @@ case "$COMMAND" in
     restic stats
     ;;
   restore)
-    restic restore latest --target "${2:-.}/restore"
+    TARGET="${2:-.}/restore"
+    echo "Restoring latest snapshot to: $(realpath "$TARGET" 2>/dev/null || echo "$TARGET")"
+    restic restore latest --target "$TARGET"
     ;;
   *)
-    echo "Usage: backup.sh {backup|init|snapshots|stats|restore [target]}"
+    echo "Usage: backup.sh {backup|init|snapshots|stats|restore [target]|prune|check}"
     exit 1
     ;;
 esac
