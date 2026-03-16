@@ -23,9 +23,9 @@ graph LR
 .zshrc / .zshenv
 .gitconfig / .ssh/config`"]
         INT["`**agents/internal/**
-skills (48) / rules / agents`"]
-        EXT["`**外部スキル (flake inputs)**
-8 ソース / 14 スキル`"]
+skills / rules / agents`"]
+        EXT["`**外部スキル**
+flake inputs`"]
     end
 
     subgraph NIX["Nix / Home Manager"]
