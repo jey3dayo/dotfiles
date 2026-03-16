@@ -39,3 +39,5 @@
 ~/Library/Application Support/Insomnia
 ~/Library/Application Support/Postman
 ~/Library/Application Support/rtk
+~/Library/Application Support/Vivaldi
+~/Library/Application Support/zoxide
