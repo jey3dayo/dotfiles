@@ -37,3 +37,5 @@
 ~/Library/Application Support/Zed
 ~/Library/Application Support/Google/Chrome
 ~/Library/Application Support/Insomnia
+~/Library/Application Support/Postman
+~/Library/Application Support/rtk
