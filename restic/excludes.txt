@@ -8,7 +8,6 @@ Thumbs.db
 *.tmp
 *.swp
 *.swo
-.git
 target
 dist
 build
@@ -35,3 +34,13 @@ vendor
 .turbo
 *.log
 .worktrees
+.mise/installs
+.Spotlight-V100
+.fseventsd
+.Trashes
+*.vmdk
+*.vdi
+*.dmg
+*.iso
+DerivedData
+*.xcarchive

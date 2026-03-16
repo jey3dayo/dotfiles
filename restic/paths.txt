@@ -48,3 +48,12 @@
 ~/Library/Application Support/com.unsignedinteger.Deckset-Paddle
 ~/Library/Application Support/Antigravity
 ~/Library/Application Support/AnkerWork
+~/.1password
+~/Library/Application Support/1Password
+~/Library/Keychains
+~/Library/Application Support/com.apple.sharedfilelist
+~/Library/Preferences
+~/Library/Application Support/Contexts
+~/Library/Application Support/Karabiner-Elements
+~/.zsh_history
+~/.bash_history
