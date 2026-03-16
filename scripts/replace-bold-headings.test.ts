@@ -1,17 +1,16 @@
 #!/usr/bin/env bun
 
+import { afterEach, beforeEach, describe, expect, it } from "bun:test";
 import { execSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { afterEach, beforeEach, describe, expect, it } from "bun:test";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const scriptPath = path.join(__dirname, "replace-bold-headings.ts");
 
-const runScript = (target: string) =>
-  execSync(`tsx "${scriptPath}" "${target}"`, { encoding: "utf8", stdio: "pipe" });
+const runScript = (target: string) => execSync(`tsx "${scriptPath}" "${target}"`, { encoding: "utf8", stdio: "pipe" });
 
 // ============================================================
 // Bold heading conversion
@@ -33,8 +32,7 @@ describe("replace-bold-headings: conversion rules", () => {
     if (fs.existsSync(tmpFile)) fs.unlinkSync(tmpFile);
   });
 
-  it("converts standalone bold heading", () =>
-    check("**Overview**", "### Overview"));
+  it("converts standalone bold heading", () => check("**Overview**", "### Overview"));
 
   it("converts bold label with trailing colon (no content)", () =>
     check("**Phase 2関連（10ファイル）**:", "#### Phase 2関連（10ファイル）"));
@@ -63,14 +61,12 @@ describe("replace-bold-headings: conversion rules", () => {
   it("strips bold from ordered list label with English content", () =>
     check("1. **Phase 1**: Description", "1. Phase 1: Description"));
 
-  it("strips bold from ordered list label with colon only", () =>
-    check("1. **Phase 1**:", "1. Phase 1:"));
+  it("strips bold from ordered list label with colon only", () => check("1. **Phase 1**:", "1. Phase 1:"));
 
   it("strips bold from ordered list label with arrow", () =>
     check("1. **Phase 1** → do something", "1. Phase 1 → do something"));
 
-  it("strips bold from unordered list label (colon only)", () =>
-    check("- **Text**:", "- Text:"));
+  it("strips bold from unordered list label (colon only)", () => check("- **Text**:", "- Text:"));
 
   it("strips bold from unordered list label with content", () =>
     check("- **Text**: content here", "- Text: content here"));
@@ -82,10 +78,7 @@ describe("replace-bold-headings: conversion rules", () => {
     check("- **OpenClaw関連（4ファイル）**", "- OpenClaw関連（4ファイル）"));
 
   it("strips bold from unordered list label with right arrow", () =>
-    check(
-      "- **出力あり** → uncommitted changes モード",
-      "- 出力あり → uncommitted changes モード",
-    ));
+    check("- **出力あり** → uncommitted changes モード", "- 出力あり → uncommitted changes モード"));
 
   it("strips bold from unordered list label with right arrow (Japanese)", () =>
     check(
@@ -96,8 +89,7 @@ describe("replace-bold-headings: conversion rules", () => {
   it("strips bold when colon is inside bold markers", () =>
     check("**責務:** Valibotスキーマ定義", "責務: Valibotスキーマ定義"));
 
-  it("strips bold when colon inside bold, English content", () =>
-    check("**現状:** 未実装", "現状: 未実装"));
+  it("strips bold when colon inside bold, English content", () => check("**現状:** 未実装", "現状: 未実装"));
 
   it("strips bold when colon inside bold, backtick content", () =>
     check("**返り値の型:** `v.BaseSchema` + 推論型", "返り値の型: `v.BaseSchema` + 推論型"));
@@ -109,10 +101,7 @@ describe("replace-bold-headings: conversion rules", () => {
     ));
 
   it("preserves all bold in unordered list navigation path", () =>
-    check(
-      "- **File** → **Edit** → **Preferences**",
-      "- **File** → **Edit** → **Preferences**",
-    ));
+    check("- **File** → **Edit** → **Preferences**", "- **File** → **Edit** → **Preferences**"));
 });
 
 // ============================================================
