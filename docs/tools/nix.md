@@ -13,59 +13,35 @@ Nix Home Manager の配布アーキテクチャ・メンテナンス運用ポリ
 ### 全体フロー
 
 ```mermaid
-graph TD
-    CMD["home-manager switch\n--flake ~/.config --impure"]
-
-    subgraph FLAKE["flake.nix inputs"]
-        NP["nixpkgs (unstable)"]
-        HMI["home-manager"]
-        EXT["外部スキルソース ×8\n(vercel / openai など)"]
+graph LR
+    subgraph IN["ソース (リポジトリ)"]
+        DOT["静的ファイル\n.zshrc / .zshenv\n.gitconfig / .ssh/config"]
+        INT["agents/internal/\nskills (48) / rules / agents"]
+        EXT["外部スキル (flake inputs)\n8 ソース / 14 スキル"]
     end
 
-    subgraph HN["home.nix"]
-        DOT["programs.dotfiles"]
-        AGT["programs.agent-skills"]
+    subgraph NIX["Nix / Home Manager"]
+        HM["home-manager switch\n--flake ~/.config --impure"]
+        BUNDLE["/nix/store/\n…-agent-skills-bundle/"]
+        HM --> BUNDLE
     end
 
-    subgraph DOTMOD["dotfiles-module.nix"]
-        FF["dotfiles-files.nix\n(xdg.files / xdg.dirs)"]
-        WT["Worktree 検出\n(detectWorktreeScript)"]
+    subgraph OUT["配布先"]
+        HOME["~/\n.zshrc / .zshenv\n.gitconfig / .ssh/config"]
+        SKILLS["~/.claude/skills/\n~/.codex/skills/\n~/.cursor/skills/\n~/.opencode/skills/\n~/.skills/"]
     end
 
-    subgraph AGENTMOD["agents/nix/"]
-        SSoT["agent-skills-sources.nix\n(url / baseDir / selection.enable)"]
-        SRC["sources.nix\n(inputs + baseDir 統合)"]
-        LIB["lib.nix\ndiscoverCatalog → selectSkills → mkBundle"]
-    end
-
-    INT["agents/internal/\n(local skills / rules / agents)"]
-
-    BUNDLE["/nix/store/…-agent-skills-bundle/"]
-
-    subgraph STATIC["~/ 静的ファイル"]
-        GCF[".gitconfig / .zshenv / .zshrc"]
-        SSH[".ssh/config / .npmrc など"]
-    end
-
-    subgraph TARGETS["スキル配布先 (per-skill symlinks)"]
-        CL["~/.claude/skills/"]
-        CD["~/.codex/skills/"]
-        CS["~/.cursor/skills/"]
-        SH["~/.skills/ など"]
-    end
-
-    CMD --> HN
-    FLAKE --> HN
-    DOT --> DOTMOD
-    DOTMOD --> STATIC
-    AGT --> AGENTMOD
-    EXT --> LIB
-    INT --> LIB
-    SSoT --> SRC
-    SRC --> LIB
-    LIB --> BUNDLE
-    BUNDLE --> TARGETS
+    DOT --> HM
+    INT --> HM
+    EXT --> HM
+    BUNDLE -->|symlink| HOME
+    BUNDLE -->|per-skill symlink| SKILLS
 ```
+
+配布の流れ:
+
+- 静的ファイル → `~/` 直下に symlink 配布
+- agents/internal + 外部スキル → `/nix/store` にバンドル → 各ツールの `skills/` に per-skill symlink
 
 ### スキル優先度
 
