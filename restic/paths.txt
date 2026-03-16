@@ -15,3 +15,9 @@
 ~/Library/Application Support/Code/User
 ~/Library/Application Support/Cursor/User
 ~/Library/Application Support/Windsurf/User
+~/Library/Application Support/cmux
+~/Library/Application Support/com.cmuxterm.app
+~/Library/Application Support/com.raycast.macos
+~/Library/Application Support/com.tinyapp.TablePlus
+~/Library/Application Support/BetterSnapTool
+~/Library/Application Support/BetterTouchTool
