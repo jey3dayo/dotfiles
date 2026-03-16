@@ -5,3 +5,6 @@
 ~/.ssh
 ~/.aws
 ~/.gnupg
+~/.claude
+~/.codex
+~/.kiro
