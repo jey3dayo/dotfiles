@@ -19,7 +19,7 @@ describe("replace-bold-headings: conversion rules", () => {
   let tmpFile: string;
 
   const check = (input: string, expected: string) => {
-    fs.writeFileSync(tmpFile, input + "\n", "utf8");
+    fs.writeFileSync(tmpFile, `${input}\n`, "utf8");
     runScript(tmpFile);
     expect(fs.readFileSync(tmpFile, "utf8").trimEnd()).toBe(expected);
   };
