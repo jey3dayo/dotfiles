@@ -45,3 +45,4 @@
 ~/Library/Application Support/Sequel Pro
 ~/Library/Application Support/KeePassXC
 ~/Library/Application Support/keepassx
+~/Library/Application Support/com.unsignedinteger.Deckset-Paddle
