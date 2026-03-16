@@ -65,8 +65,7 @@ function parseArguments(): ParsedArgs {
 function resolveTargetPaths(userInputs: string[]): string[] {
   // デフォルト値（引数なしの場合）
   if (userInputs.length === 0) {
-    const repoRoot = path.resolve(__dirname, "..");
-    return [repoRoot]; // Repository root (all markdown files)
+    return [process.cwd()];
   }
 
   // ユーザー指定のパスを解決
@@ -92,6 +91,11 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
     // Example: "**メリット**:" -> "#### メリット"
     // Example: "**セットアップ** (初回のみ):" -> "#### セットアップ (初回のみ)"
     const boldLabelWithSuffix = /^(\s*)\*\*([^*]+)\*\*\s*([(:].*)?$/;
+
+    // Bold labels where the colon is inside the bold, followed by content.
+    // Example: "**責務:** Valibotスキーマ定義" -> "責務: Valibotスキーマ定義"
+    // Example: "**現状:** 未実装" -> "現状: 未実装"
+    const boldLabelColonInside = /^(\s*)\*\*([^*]+?):\*\*\s+(.+)$/;
 
     // Bold labels in ordered list items are normalized to plain text.
     // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
@@ -135,7 +139,7 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
         const text = listLabelMatch[2];
         const suffix = listLabelMatch[3] ?? "";
 
-        if (!text.includes("**")) {
+        if (!text.includes("**") && !suffix.includes("**")) {
           fileReplacements += 1;
           return `${prefix}${text}${suffix}`;
         }
@@ -147,14 +151,25 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
         const text = unorderedListLabelMatch[2];
         const suffix = unorderedListLabelMatch[3] ?? "";
 
-        // Skip if nested bold exists
-        if (text.includes("**")) {
+        // Skip if nested bold exists in text or suffix
+        if (text.includes("**") || suffix.includes("**")) {
           return line;
         }
 
         // Remove bold regardless of content after colon
         fileReplacements += 1;
         return `${prefix}${text}${suffix}`;
+      }
+
+      const colonInsideMatch = line.match(boldLabelColonInside);
+      if (colonInsideMatch) {
+        const indent = colonInsideMatch[1];
+        const text = colonInsideMatch[2];
+        const content = colonInsideMatch[3];
+        if (!text.includes("**")) {
+          fileReplacements += 1;
+          return `${indent}${text}: ${content}`;
+        }
       }
 
       const labelMatch = line.match(boldLabelWithSuffix);
@@ -248,9 +263,12 @@ function shouldSkipDir(fullPath: string): boolean {
   // result / result-* (Nix build artifacts)
   if (name === "result" || name.startsWith("result-")) return true;
 
-  // Git submodules (.git exists as a file, not a directory)
+  // Git submodules (.git exists as a file pointing to ../.git/modules/...)
   const gitPath = path.join(fullPath, ".git");
-  if (fs.existsSync(gitPath) && fs.statSync(gitPath).isFile()) return true;
+  if (fs.existsSync(gitPath) && fs.statSync(gitPath).isFile()) {
+    const content = fs.readFileSync(gitPath, "utf8").trim();
+    if (content.includes("/.git/modules/")) return true;
+  }
 
   // Path-suffix patterns (e.g. tmux/plugins, agents/external)
   for (const suffix of SKIP_PATH_SUFFIXES) {

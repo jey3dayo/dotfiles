@@ -82,6 +82,10 @@ keybind = ctrl+x>shift+key=action
 
 追加後: `C-x r`（`reload_config`）でリロード。
 
+## 公式リファレンス
+
+- [Keybind Actions Reference](https://ghostty.org/docs/config/keybind/reference) — 全アクション一覧
+
 ## cmux との対応
 
 cmux は Ghostty の C-x シーケンスを持たないため、Karabiner-Elements で補完している。

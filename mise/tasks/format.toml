@@ -63,7 +63,10 @@ depends = ["format:markdown:bold-headings:check", "format:markdownlint:check"]
 
 ["format:markdownlint:check"]
 description = "Markdownlint + Prettier の Markdown チェック（書き込みなし）"
-run = "fd -H -e md ${TASK_EXCLUDES} -X prettier --check"
+run = [
+  "markdownlint-cli2 \"${MD_GLOB}\" ${MD_EXCLUDES}",
+  "fd -H -e md ${TASK_EXCLUDES} -X prettier --check --log-level error",
+]
 
 ["format:yaml"]
 description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"

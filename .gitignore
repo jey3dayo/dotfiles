@@ -281,3 +281,7 @@ pulse/
 
 ## Nix access tokens (local only, do not commit)
 nix/access-tokens.conf
+
+## tmp
+reports
+debug

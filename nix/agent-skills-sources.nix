@@ -86,4 +86,15 @@
       "react-doctor"
     ];
   };
+  tokoroten-prompt-review = {
+    url = "github:tokoroten/prompt-review";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      tokoroten-prompt-review = ".claude/skills";
+    };
+    selection.enable = [
+      "prompt-review"
+    ];
+  };
 }
