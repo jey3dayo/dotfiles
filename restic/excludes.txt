@@ -22,7 +22,7 @@ GrShaderCache
 GPUCache
 ShaderCache
 blob_storage
-src/github.com/cycloud-io/action-cache/tmp
+src/github.com/*/action-cache/tmp
 File System
 IndexedDB
 Snapshots
