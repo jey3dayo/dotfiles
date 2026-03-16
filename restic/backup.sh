@@ -11,7 +11,7 @@ export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-ap-northeast-1}"
 # restic 環境変数チェック（dotenvx or mise 経由で設定済みであること）
 if [[ -z "${RESTIC_REPOSITORY:-}" || -z "${RESTIC_PASSWORD:-}" ]]; then
   echo "Error: RESTIC_REPOSITORY and RESTIC_PASSWORD must be set."
-  echo "Run via: dotenvx run -- restic/backup.sh"
+  echo "Run via: dotenvx run -f \"${XDG_CONFIG_HOME:-$HOME/.config}/.env\" -- restic/backup.sh"
   exit 1
 fi
 
@@ -70,7 +70,7 @@ case "$COMMAND" in
     restic stats
     ;;
   restore)
-    TARGET="${2:-.}/restore"
+    TARGET="${2:-./restore}"
     echo "Restoring latest snapshot to: $(realpath "$TARGET" 2>/dev/null || echo "$TARGET")"
     restic restore latest --target "$TARGET"
     ;;
