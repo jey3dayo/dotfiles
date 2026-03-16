@@ -1,11 +1,10 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
-import * as assert from "node:assert/strict";
+import { describe, expect, it } from "bun:test";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -48,8 +47,8 @@ describe("scripts/setup-env.sh", () => {
         xdgConfigHome: configHome,
         pathPrefix: [],
       });
-      assert.notEqual(result.status, 0);
-      assert.match(result.stderr, /CRITICAL: .*\.env not found/);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(/CRITICAL: .*\.env not found/);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -67,8 +66,8 @@ describe("scripts/setup-env.sh", () => {
         xdgConfigHome: configHome,
         pathPrefix: [],
       });
-      assert.notEqual(result.status, 0);
-      assert.match(result.stderr, /CRITICAL: dotenvx not found/);
+      expect(result.status).not.toBe(0);
+      expect(result.stderr).toMatch(/CRITICAL: dotenvx not found/);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -99,11 +98,11 @@ printf '%s\\n' "SECRET=decrypted"
         pathPrefix: [fakeBin],
       });
 
-      assert.equal(result.status, 0);
-      assert.match(result.stdout, /\.env\.local updated successfully/);
+      expect(result.status).toBe(0);
+      expect(result.stdout).toMatch(/\.env\.local updated successfully/);
       const envLocal = path.join(configHome, ".env.local");
-      assert.equal(fs.readFileSync(envLocal, "utf8"), "SECRET=decrypted\n");
-      assert.match(fs.readFileSync(logFile, "utf8"), /decrypt -f/);
+      expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=decrypted\n");
+      expect(fs.readFileSync(logFile, "utf8")).toMatch(/decrypt -f/);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -141,9 +140,9 @@ printf '%s\\n' "SECRET=decrypted"
         pathPrefix: [fakeBin],
       });
 
-      assert.equal(result.status, 0);
-      assert.equal(fs.existsSync(logFile), false);
-      assert.equal(fs.readFileSync(envLocal, "utf8"), "SECRET=existing\n");
+      expect(result.status).toBe(0);
+      expect(fs.existsSync(logFile)).toBe(false);
+      expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=existing\n");
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
@@ -181,10 +180,10 @@ printf '%s\\n' "SECRET=new"
         pathPrefix: [fakeBin],
       });
 
-      assert.equal(result.status, 0);
-      assert.match(result.stdout, /Updating \.env\.local/);
-      assert.equal(fs.readFileSync(envLocal, "utf8"), "SECRET=new\n");
-      assert.match(fs.readFileSync(logFile, "utf8"), /decrypt -f/);
+      expect(result.status).toBe(0);
+      expect(result.stdout).toMatch(/Updating \.env\.local/);
+      expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=new\n");
+      expect(fs.readFileSync(logFile, "utf8")).toMatch(/decrypt -f/);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

@@ -1,12 +1,11 @@
-#!/usr/bin/env tsx
+#!/usr/bin/env bun
 
-import * as assert from "node:assert/strict";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { describe, it } from "node:test";
+import { describe, expect, it } from "bun:test";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,8 +39,8 @@ describe("agents/scripts/validate-internal.sh", () => {
 
     try {
       const result = runScript(repo.scriptPath);
-      assert.equal(result.status, 0);
-      assert.match(result.stdout, /Distribution validation passed/);
+      expect(result.status).toBe(0);
+      expect(result.stdout).toMatch(/Distribution validation passed/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }
@@ -53,8 +52,8 @@ describe("agents/scripts/validate-internal.sh", () => {
 
     try {
       const result = runScript(repo.scriptPath);
-      assert.notEqual(result.status, 0);
-      assert.match(result.stdout, /Missing skills directory/);
+      expect(result.status).not.toBe(0);
+      expect(result.stdout).toMatch(/Missing skills directory/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }
@@ -66,8 +65,8 @@ describe("agents/scripts/validate-internal.sh", () => {
 
     try {
       const result = runScript(repo.scriptPath);
-      assert.notEqual(result.status, 0);
-      assert.match(result.stdout, /Missing SKILL\.md/);
+      expect(result.status).not.toBe(0);
+      expect(result.stdout).toMatch(/Missing SKILL\.md/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }
@@ -78,8 +77,8 @@ describe("agents/scripts/validate-internal.sh", () => {
 
     try {
       const result = runScript(repo.scriptPath);
-      assert.notEqual(result.status, 0);
-      assert.match(result.stdout, /No skills found/);
+      expect(result.status).not.toBe(0);
+      expect(result.stdout).toMatch(/No skills found/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }
@@ -94,8 +93,8 @@ describe("agents/scripts/validate-internal.sh", () => {
 
     try {
       const result = runScript(repo.scriptPath);
-      assert.notEqual(result.status, 0);
-      assert.match(result.stdout, /Symlink is not allowed/);
+      expect(result.status).not.toBe(0);
+      expect(result.stdout).toMatch(/Symlink is not allowed/);
     } finally {
       fs.rmSync(repo.root, { recursive: true, force: true });
     }
