@@ -8,3 +8,7 @@
 ~/.claude
 ~/.codex
 ~/.kiro
+~/bin
+~/.agents
+~/.netrc
+~/.my.cnf
