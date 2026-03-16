@@ -1,12 +1,73 @@
-# Nix / Home Manager メンテナンスリファレンス
+# Nix / Home Manager リファレンス
 
-最終更新: 2026-03-13
+最終更新: 2026-03-16
 対象: macOS ユーザー（dotfiles 管理者）
-タグ: `category/infra`, `tool/nix`, `layer/system`, `environment/macos`
+タグ: `category/infra`, `tool/nix`, `tool/home-manager`, `layer/system`, `environment/macos`
 
-Nix Home Manager のメンテナンス運用ポリシーと詳細リファレンスです。
+Nix Home Manager の配布アーキテクチャ・メンテナンス運用ポリシーと詳細リファレンスです。
 
 🔗 Claude Rules: [`.claude/rules/nix-maintenance.md`](../../.claude/rules/nix-maintenance.md)（コンパクト版）
+
+## 配布アーキテクチャ
+
+### 全体フロー
+
+```mermaid
+---
+config:
+  htmlLabels: false
+---
+graph LR
+    subgraph IN["ソース (リポジトリ)"]
+        DOT["`**静的ファイル**
+.zshrc / .zshenv
+.gitconfig / .ssh/config`"]
+        INT["`**agents/internal/**
+skills / rules / agents`"]
+        EXT["`**外部スキル**
+flake inputs`"]
+    end
+
+    subgraph NIX["Nix / Home Manager"]
+        HM["`home-manager switch
+--flake ~/.config --impure`"]
+        BUNDLE["`/nix/store/
+…-agent-skills-bundle/`"]
+        HM --> BUNDLE
+    end
+
+    subgraph OUT["配布先"]
+        HOME["`~/
+.zshrc / .zshenv
+.gitconfig / .ssh/config`"]
+        SKILLS["`~/.claude/skills/
+~/.codex/skills/
+~/.cursor/skills/
+~/.opencode/skills/
+~/.skills/`"]
+    end
+
+    DOT --> HM
+    INT --> HM
+    EXT --> HM
+    BUNDLE -->|symlink| HOME
+    BUNDLE -->|per-skill symlink| SKILLS
+```
+
+配布の流れ:
+
+- 静的ファイル → `~/` 直下に symlink 配布
+- agents/internal + 外部スキル → `/nix/store` にバンドル → 各ツールの `skills/` に per-skill symlink
+
+### スキル優先度
+
+| 優先度 | ソース       | パス                         |
+| ------ | ------------ | ---------------------------- |
+| 高     | local        | `agents/internal/skills/`    |
+| 中     | distribution | flake inputs 経由バンドル    |
+| 低     | external     | `agents/external/` (symlink) |
+
+---
 
 ## Generations 保持ポリシー
 
@@ -175,21 +236,11 @@ home-manager switch --flake . --impure
 
 ---
 
-## メトリクス収集（将来向け）
-
-```bash
-# ~/.config/logs/nix-metrics.log に記録して四半期ごとに分析
-echo "$(date +%Y-%m-%d): $(home-manager generations | wc -l) generations"
-echo "$(date +%Y-%m-%d): $(df -h /nix/store | tail -1 | awk '{print $5}')"
-echo "$(date +%Y-%m-%d): Oldest: $(home-manager generations | tail -1 | awk '{print $1, $2}')"
-```
-
----
-
 ## 参考資料
 
 - [Nix Package Management - Garbage Collection](https://nixos.org/manual/nix/stable/package-management/garbage-collection.html)
 - [Home Manager Manual - Generations](https://nix-community.github.io/home-manager/index.html#sec-usage-generations)
+- `docs/tools/home-manager.md` - Home Manager 詳細リファレンス
 - `.claude/rules/workflows-and-maintenance.md` - 全体的なメンテナンスワークフロー
 - `docs/disaster-recovery.md` - ディザスタリカバリ手順
 - `.claude/rules/troubleshooting.md` - スキル配布問題の対処法
