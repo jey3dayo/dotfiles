@@ -1,2 +1,7 @@
 ~/Documents
 ~/src
+~/Desktop
+~/Pictures
+~/.ssh
+~/.aws
+~/.gnupg
