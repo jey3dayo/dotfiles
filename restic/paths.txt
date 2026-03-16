@@ -12,3 +12,6 @@
 ~/.agents
 ~/.netrc
 ~/.my.cnf
+~/Library/Application Support/Code/User
+~/Library/Application Support/Cursor/User
+~/Library/Application Support/Windsurf/User
