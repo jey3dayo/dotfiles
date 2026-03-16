@@ -1,12 +1,81 @@
-# Nix / Home Manager メンテナンスリファレンス
+# Nix / Home Manager リファレンス
 
-最終更新: 2026-03-13
+最終更新: 2026-03-16
 対象: macOS ユーザー（dotfiles 管理者）
-タグ: `category/infra`, `tool/nix`, `layer/system`, `environment/macos`
+タグ: `category/infra`, `tool/nix`, `tool/home-manager`, `layer/system`, `environment/macos`
 
-Nix Home Manager のメンテナンス運用ポリシーと詳細リファレンスです。
+Nix Home Manager の配布アーキテクチャ・メンテナンス運用ポリシーと詳細リファレンスです。
 
 🔗 Claude Rules: [`.claude/rules/nix-maintenance.md`](../../.claude/rules/nix-maintenance.md)（コンパクト版）
+
+## 配布アーキテクチャ
+
+### 全体フロー
+
+```mermaid
+graph TD
+    CMD["home-manager switch\n--flake ~/.config --impure"]
+
+    subgraph FLAKE["flake.nix inputs"]
+        NP["nixpkgs (unstable)"]
+        HMI["home-manager"]
+        EXT["外部スキルソース ×8\n(vercel / openai など)"]
+    end
+
+    subgraph HN["home.nix"]
+        DOT["programs.dotfiles"]
+        AGT["programs.agent-skills"]
+    end
+
+    subgraph DOTMOD["dotfiles-module.nix"]
+        FF["dotfiles-files.nix\n(xdg.files / xdg.dirs)"]
+        WT["Worktree 検出\n(detectWorktreeScript)"]
+    end
+
+    subgraph AGENTMOD["agents/nix/"]
+        SSoT["agent-skills-sources.nix\n(url / baseDir / selection.enable)"]
+        SRC["sources.nix\n(inputs + baseDir 統合)"]
+        LIB["lib.nix\ndiscoverCatalog → selectSkills → mkBundle"]
+    end
+
+    INT["agents/internal/\n(local skills / rules / agents)"]
+
+    BUNDLE["/nix/store/…-agent-skills-bundle/"]
+
+    subgraph STATIC["~/ 静的ファイル"]
+        GCF[".gitconfig / .zshenv / .zshrc"]
+        SSH[".ssh/config / .npmrc など"]
+    end
+
+    subgraph TARGETS["スキル配布先 (per-skill symlinks)"]
+        CL["~/.claude/skills/"]
+        CD["~/.codex/skills/"]
+        CS["~/.cursor/skills/"]
+        SH["~/.skills/ など"]
+    end
+
+    CMD --> HN
+    FLAKE --> HN
+    DOT --> DOTMOD
+    DOTMOD --> STATIC
+    AGT --> AGENTMOD
+    EXT --> LIB
+    INT --> LIB
+    SSoT --> SRC
+    SRC --> LIB
+    LIB --> BUNDLE
+    BUNDLE --> TARGETS
+```
+
+### スキル優先度
+
+| 優先度 | ソース       | パス                         |
+| ------ | ------------ | ---------------------------- |
+| 高     | local        | `agents/internal/skills/`    |
+| 中     | distribution | flake inputs 経由バンドル    |
+| 低     | external     | `agents/external/` (symlink) |
+
+---
 
 ## Generations 保持ポリシー
 
@@ -175,21 +244,11 @@ home-manager switch --flake . --impure
 
 ---
 
-## メトリクス収集（将来向け）
-
-```bash
-# ~/.config/logs/nix-metrics.log に記録して四半期ごとに分析
-echo "$(date +%Y-%m-%d): $(home-manager generations | wc -l) generations"
-echo "$(date +%Y-%m-%d): $(df -h /nix/store | tail -1 | awk '{print $5}')"
-echo "$(date +%Y-%m-%d): Oldest: $(home-manager generations | tail -1 | awk '{print $1, $2}')"
-```
-
----
-
 ## 参考資料
 
 - [Nix Package Management - Garbage Collection](https://nixos.org/manual/nix/stable/package-management/garbage-collection.html)
 - [Home Manager Manual - Generations](https://nix-community.github.io/home-manager/index.html#sec-usage-generations)
+- `docs/tools/home-manager.md` - Home Manager 詳細リファレンス
 - `.claude/rules/workflows-and-maintenance.md` - 全体的なメンテナンスワークフロー
 - `docs/disaster-recovery.md` - ディザスタリカバリ手順
 - `.claude/rules/troubleshooting.md` - スキル配布問題の対処法
