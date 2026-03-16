@@ -43,3 +43,5 @@
 ~/Library/Application Support/zoxide
 ~/Library/Application Support/Topre
 ~/Library/Application Support/Sequel Pro
+~/Library/Application Support/KeePassXC
+~/Library/Application Support/keepassx
