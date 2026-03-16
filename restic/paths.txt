@@ -46,3 +46,6 @@
 ~/Library/Application Support/KeePassXC
 ~/Library/Application Support/keepassx
 ~/Library/Application Support/com.unsignedinteger.Deckset-Paddle
+~/Library/Application Support/ai.bloop.vibe-kanban
+~/Library/Application Support/Antigravity
+~/Library/Application Support/AnkerWork
