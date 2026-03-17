@@ -27,6 +27,10 @@ eval "$(echo "$AWS_CREDS" | jq -r '
   "export AWS_SECRET_ACCESS_KEY=\(.SecretAccessKey)",
   "export AWS_SESSION_TOKEN=\(.SessionToken)"
 ')"
+if [[ "${AWS_ACCESS_KEY_ID:-}" == "null" || "${AWS_SECRET_ACCESS_KEY:-}" == "null" || "${AWS_SESSION_TOKEN:-}" == "null" ]]; then
+  echo "Error: AWS credentials contain null values. Check perman-aws-vault output."
+  exit 1
+fi
 
 COMMAND="${1:-backup}"
 
@@ -50,7 +54,8 @@ case "$COMMAND" in
       --keep-last 10 \
       --keep-daily 30 \
       --keep-weekly 12 \
-      --keep-monthly 12
+      --keep-monthly 12 \
+      --prune
     echo "Backup completed: $(date)"
     ;;
   prune)
@@ -75,7 +80,7 @@ case "$COMMAND" in
   restore)
     TARGET="${2:-./restore}"
     echo "Restoring latest snapshot to: $(realpath "$TARGET" 2>/dev/null || echo "$TARGET")"
-    restic restore latest --host "$(hostname)" --target "$TARGET"
+    restic restore latest --target "$TARGET"
     ;;
   *)
     echo "Usage: backup.sh {backup|init|snapshots|stats|restore [target]|prune|check}"

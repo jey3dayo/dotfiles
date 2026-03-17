@@ -51,3 +51,4 @@
 ~/Library/Application Support/1Password
 ~/Library/Keychains
 ~/.bash_history
+~/.local/state/zsh/history
