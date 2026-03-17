@@ -1,0 +1,46 @@
+node_modules
+.next
+__pycache__
+*.pyc
+.cache
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.swo
+target
+dist
+build
+.terraform
+.direnv
+.devenv
+Cache
+CacheStorage
+Code Cache
+Service Worker
+GrShaderCache
+GPUCache
+ShaderCache
+blob_storage
+src/github.com/*/action-cache/tmp
+File System
+IndexedDB
+Snapshots
+Crashpad
+.venv
+.cargo/registry
+.npm
+vendor
+.turbo
+*.log
+.worktrees
+.mise/installs
+.Spotlight-V100
+.fseventsd
+.Trashes
+*.vmdk
+*.vdi
+*.dmg
+*.iso
+DerivedData
+*.xcarchive

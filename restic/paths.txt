@@ -1,0 +1,53 @@
+~/Documents
+~/src
+~/Desktop
+~/Pictures
+~/.ssh
+~/.aws
+~/.gnupg
+~/.claude
+~/.codex
+~/.kiro
+~/bin
+~/.agents
+~/.netrc
+~/.my.cnf
+~/Library/Application Support/Code/User
+~/Library/Application Support/Cursor/User
+~/Library/Application Support/Windsurf/User
+~/Library/Application Support/cmux
+~/Library/Application Support/com.cmuxterm.app
+~/Library/Application Support/com.raycast.macos
+~/Library/Application Support/com.tinyapp.TablePlus
+~/Library/Application Support/BetterSnapTool
+~/Library/Application Support/BetterTouchTool
+~/Library/Application Support/Alfred
+~/Library/Application Support/com.mitchellh.ghostty
+~/Library/Application Support/CleanShot
+~/Library/Application Support/Scroll Reverser
+~/Library/Application Support/iStat Menus
+~/Library/Application Support/iStat Menus 7
+~/Library/Application Support/com.superultra.Homerow
+~/Library/Application Support/Amethyst
+~/Library/Application Support/Choosy
+~/Library/Application Support/xbar
+~/Library/Application Support/Deckset
+~/Library/Application Support/iTerm2
+~/Library/Application Support/wezterm
+~/Library/Application Support/Zed
+~/Library/Application Support/Google/Chrome
+~/Library/Application Support/Insomnia
+~/Library/Application Support/Postman
+~/Library/Application Support/rtk
+~/Library/Application Support/Vivaldi
+~/Library/Application Support/zoxide
+~/Library/Application Support/Topre
+~/Library/Application Support/Sequel Pro
+~/Library/Application Support/KeePassXC
+~/Library/Application Support/keepassx
+~/Library/Application Support/com.unsignedinteger.Deckset-Paddle
+~/Library/Application Support/Antigravity
+~/Library/Application Support/AnkerWork
+~/Library/Application Support/1Password
+~/Library/Keychains
+~/.bash_history

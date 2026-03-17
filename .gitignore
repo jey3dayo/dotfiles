@@ -213,6 +213,8 @@ result-*
 *.org
 *.orig
 *backup*
+!restic/backup.sh
+!mise/tasks/backup.toml
 
 ## Compiled Objects
 *.a
