@@ -77,8 +77,17 @@ case "$COMMAND" in
     echo "Restoring latest snapshot to: $(realpath "$TARGET" 2>/dev/null || echo "$TARGET")"
     restic restore latest --host "$(hostname)" --target "$TARGET"
     ;;
+  cleanup)
+    echo "Cleaning up old snapshots (keeping last 1)..."
+    restic forget \
+      --host "$(hostname)" \
+      --group-by host \
+      --keep-last 1 \
+      --prune
+    echo "Cleanup completed: $(date)"
+    ;;
   *)
-    echo "Usage: backup.sh {backup|init|snapshots|stats|restore [target]|prune|check}"
+    echo "Usage: backup.sh {backup|init|snapshots|stats|restore [target]|prune|check|cleanup}"
     exit 1
     ;;
 esac
