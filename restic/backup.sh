@@ -30,6 +30,28 @@ eval "$(echo "$AWS_CREDS" | jq -r '
 
 COMMAND="${1:-backup}"
 
+# 引数のどこかに --force / -f があるかチェック
+FORCE=false
+for arg in "$@"; do
+  if [[ "$arg" == "--force" || "$arg" == "-f" ]]; then
+    FORCE=true
+  fi
+done
+
+confirm() {
+  if [[ "$FORCE" == true ]]; then
+    return 0
+  fi
+  echo ""
+  echo "⚠  $1"
+  echo ""
+  read -r -p "Continue? (yes/no): " answer
+  if [[ "$answer" != "yes" ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+}
+
 case "$COMMAND" in
   backup)
     echo "Starting backup..."
@@ -77,7 +99,14 @@ case "$COMMAND" in
     echo "Restoring latest snapshot to: $(realpath "$TARGET" 2>/dev/null || echo "$TARGET")"
     restic restore latest --host "$(hostname)" --target "$TARGET"
     ;;
+  restore-inplace)
+    confirm "This will overwrite files at their original paths with the snapshot version. Files changed since the last backup will be reverted."
+    echo "Restoring latest snapshot in-place to original paths..."
+    restic restore latest --host "$(hostname)" --target /
+    echo "Restore completed: $(date)"
+    ;;
   cleanup)
+    confirm "This will delete all snapshots except the latest one and prune unreferenced data."
     echo "Cleaning up old snapshots (keeping last 1)..."
     restic forget \
       --host "$(hostname)" \
@@ -87,7 +116,7 @@ case "$COMMAND" in
     echo "Cleanup completed: $(date)"
     ;;
   *)
-    echo "Usage: backup.sh {backup|init|snapshots|stats|restore [target]|prune|check|cleanup}"
+    echo "Usage: backup.sh {backup|init|snapshots|stats|restore [target]|restore-inplace|prune|check|cleanup}"
     exit 1
     ;;
 esac

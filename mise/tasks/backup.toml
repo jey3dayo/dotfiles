@@ -26,6 +26,10 @@ run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_
 description = "Check restic repository integrity (10% data subset)"
 run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" check'
 
+["backup:restore-inplace"]
+description = "Restore latest snapshot to original paths (in-place)"
+run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" restore-inplace'
+
 ["backup:cleanup"]
 description = "Remove all snapshots except the latest one, then prune"
 run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" cleanup'
