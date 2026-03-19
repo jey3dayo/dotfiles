@@ -73,7 +73,7 @@ M.windows = {
   font_size = 12,
   initial_cols = 130,
   initial_rows = 30,
-  decorations = "TITLE",
+  decorations = "TITLE | RESIZE",
 }
 
 return M

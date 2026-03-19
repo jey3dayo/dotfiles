@@ -15,6 +15,10 @@ return {
   -- term = "wezterm",
   wsl_domains = wsl_domains,
 
+  -- IME position fix: render preedit inside terminal instead of OS popup
+  use_ime = true,
+  ime_preedit_rendering = "Builtin",
+
   -- window
   font_size = constants.windows.font_size,
   initial_cols = constants.windows.initial_cols,
