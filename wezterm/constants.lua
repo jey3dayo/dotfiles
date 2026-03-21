@@ -71,8 +71,8 @@ M.pane = {
 -- Platform-specific settings
 M.windows = {
   font_size = 12,
-  initial_cols = 130,
-  initial_rows = 30,
+  initial_cols = 260,
+  initial_rows = 60,
   decorations = "TITLE | RESIZE",
 }
 
