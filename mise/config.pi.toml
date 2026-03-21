@@ -81,6 +81,7 @@ yamllint = "latest"
 # AI・コミット支援
 # 注: @openai/codex は除外（391MB大容量パッケージ、Raspberry Piメモリ制約）
 "npm:aicommits" = "latest"
+"npm:opencommit" = "latest"
 
 # ドキュメント・Lint
 "npm:markdown-link-check" = "latest"
