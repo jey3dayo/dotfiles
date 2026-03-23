@@ -97,4 +97,44 @@
       "prompt-review"
     ];
   };
+  nyosegawa-skills = {
+    url = "github:nyosegawa/skills";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      nyosegawa-skills = "skills";
+    };
+    selection.enable = [
+      "skill-auditor"
+    ];
+  };
+  obra-superpowers = {
+    url = "github:obra/superpowers";
+    flake = false;
+    baseDir = ".";
+    idPrefix = "superpowers:";
+    assets = {
+      agents = "agents";
+      commands = "commands";
+    };
+    catalogs = {
+      superpowers = "skills";
+    };
+    selection.enable = [
+      "superpowers:brainstorming"
+      "superpowers:dispatching-parallel-agents"
+      "superpowers:executing-plans"
+      "superpowers:finishing-a-development-branch"
+      "superpowers:receiving-code-review"
+      "superpowers:requesting-code-review"
+      "superpowers:subagent-driven-development"
+      "superpowers:systematic-debugging"
+      "superpowers:test-driven-development"
+      "superpowers:using-git-worktrees"
+      "superpowers:using-superpowers"
+      "superpowers:verification-before-completion"
+      "superpowers:writing-plans"
+      "superpowers:writing-skills"
+    ];
+  };
 }

@@ -122,6 +122,38 @@
         "type": "github"
       }
     },
+    "nyosegawa-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774023978,
+        "narHash": "sha256-Oj19Fr8JQqz4jykx9akIgau3pIf5hBW7nIL0EJNAMPw=",
+        "owner": "nyosegawa",
+        "repo": "skills",
+        "rev": "081a8e154d44c8230cd6b9f15e2aa444bf0115d5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nyosegawa",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
+    "obra-superpowers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1773951977,
+        "narHash": "sha256-wmOArGgOahJK/mqzYJZW6qcUNaOB6yL57RQMe56S1uw=",
+        "owner": "obra",
+        "repo": "superpowers",
+        "rev": "8ea39819eed74fe2a0338e71789f06b30e953041",
+        "type": "github"
+      },
+      "original": {
+        "owner": "obra",
+        "repo": "superpowers",
+        "type": "github"
+      }
+    },
     "openai-skills": {
       "flake": false,
       "locked": {
@@ -147,6 +179,8 @@
         "home-manager": "home-manager",
         "millionco-react-doctor": "millionco-react-doctor",
         "nixpkgs": "nixpkgs",
+        "nyosegawa-skills": "nyosegawa-skills",
+        "obra-superpowers": "obra-superpowers",
         "openai-skills": "openai-skills",
         "tokoroten-prompt-review": "tokoroten-prompt-review",
         "ui-ux-pro-max": "ui-ux-pro-max",
