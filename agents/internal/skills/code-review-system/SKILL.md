@@ -8,7 +8,7 @@ description: |
 argument-hint: "--ci [PR#] | --comments | --fix [PR#] | --all"
 disable-model-invocation: true
 user-invocable: true
-allowed-tools: Task, Bash, Read, Grep, Glob, Edit
+allowed-tools: Task, Bash(gh:*, python3:*, git:*, mise:*), Read, Grep, Glob, Edit
 ---
 
 # Code Review System — PR Workflow Orchestrator
