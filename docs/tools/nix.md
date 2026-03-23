@@ -1,6 +1,6 @@
 # Nix / Home Manager リファレンス
 
-最終更新: 2026-03-16
+最終更新: 2026-03-23
 対象: macOS ユーザー（dotfiles 管理者）
 タグ: `category/infra`, `tool/nix`, `tool/home-manager`, `layer/system`, `environment/macos`
 
@@ -241,6 +241,6 @@ home-manager switch --flake . --impure
 - [Nix Package Management - Garbage Collection](https://nixos.org/manual/nix/stable/package-management/garbage-collection.html)
 - [Home Manager Manual - Generations](https://nix-community.github.io/home-manager/index.html#sec-usage-generations)
 - `docs/tools/home-manager.md` - Home Manager 詳細リファレンス
-- `.claude/rules/workflows-and-maintenance.md` - 全体的なメンテナンスワークフロー
+- `docs/tools/workflows.md` - 全体的なメンテナンスワークフロー
 - `docs/disaster-recovery.md` - ディザスタリカバリ手順
-- `.claude/rules/troubleshooting.md` - スキル配布問題の対処法
+- `docs/tools/home-manager.md` - スキル配布問題の対処法

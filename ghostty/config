@@ -55,7 +55,8 @@ font-size = 15
 # Theme / Window (match WezTerm)
 ############################
 theme = 0x96f
-background-opacity = 0.94
+# background-opacity = 0.94
+background-opacity = 1
 background-opacity-cells = true
 window-padding-x = 8
 window-padding-y = 0

@@ -1,6 +1,6 @@
 # 🚀 Setup Guide
 
-最終更新: 2026-01-20
+最終更新: 2026-03-23
 対象: 開発者・初心者
 タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/macos`, `audience/beginner`
 
@@ -105,7 +105,7 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
    - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
    - `brew list --formula` - mise 管理ツールが含まれていないこと
 
-詳細は `.claude/rules/tools/mise.md` と `.claude/rules/workflows-and-maintenance.md` を参照。ツールインストール先の判定基準は `.claude/rules/tools/tool-install-policy.md` を参照。
+詳細は [docs/tools/mise.md](tools/mise.md) と [docs/tools/workflows.md](tools/workflows.md) を参照してください。
 
 ## Verification
 
@@ -125,7 +125,7 @@ mise ls                 # List all mise-managed tools
 
 ## Maintenance
 
-- 定期メンテナンスとトラブルシューティングのSSTは [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md)
+- 定期メンテナンスとトラブルシューティングのSSTは [Workflows and Maintenance](tools/workflows.md)
 - パフォーマンス測定・改善履歴・診断手順のSSTは [Performance](performance.md)
 - セットアップ直後の健全性チェック:
 
@@ -162,4 +162,4 @@ eval "$(/usr/local/bin/brew shellenv)"
 
 ### その他のトラブルシューティング
 
-詳細なトラブルシューティング手順は [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) を参照してください。
+詳細なトラブルシューティング手順は [Workflows and Maintenance](tools/workflows.md) を参照してください。

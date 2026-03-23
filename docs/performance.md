@@ -1,11 +1,11 @@
 # ⚡ Performance Monitoring & Optimization
 
-最終更新: 2025-12-01
+最終更新: 2026-03-23
 対象: 開発者・運用担当者
 タグ: `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
 
 パフォーマンス測定、監視、最適化のための包括的ガイドです。
-測定手順・改善履歴・トラブルシュートの単一情報源は本書で管理し、実行スケジュールは [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) を参照します。
+測定手順・改善履歴・トラブルシュートの単一情報源は本書で管理し、実行スケジュールは [Workflows and Maintenance](tools/workflows.md) を参照します。
 
 ## 📊 Current Performance Metrics
 
@@ -279,8 +279,8 @@ top -l 1 | grep PhysMem
 
 - [Zsh Configuration](tools/zsh.md) - 詳細な最適化戦略
 - [Neovim Configuration](tools/nvim.md) - プラグイン最適化
-- [Workflows and Maintenance](../.claude/rules/workflows-and-maintenance.md) - 定期メンテナンス
-- [Documentation Rules](../.claude/rules/documentation-rules.md) - ドキュメント管理
+- [Workflows and Maintenance](tools/workflows.md) - 定期メンテナンス
+- [Documentation Governance](documentation.md) - ドキュメント管理
 
 ---
 

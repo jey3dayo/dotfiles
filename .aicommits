@@ -1,3 +1,5 @@
-generate=3
+OPENAI_BASE_URL=https://api.openai.com/v1
+OPENAI_MODEL=gpt-5.4
+locale=en
 type=conventional
-model=gpt-4o
+timeout=20000
