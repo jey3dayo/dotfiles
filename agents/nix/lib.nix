@@ -300,7 +300,9 @@ in
       then
         acc
       else
-        acc // (scanMdEntries src.${assetPathAttr} srcName (getIdPrefix src))
+        # External commands/agents must keep upstream IDs because filenames and
+        # in-file metadata are consumed as-is by the target tools.
+        acc // (scanMdEntries src.${assetPathAttr} srcName "")
     ) { } (attrNames sources);
 
   # Filter catalog by enable list

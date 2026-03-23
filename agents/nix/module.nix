@@ -139,7 +139,7 @@ in
             idPrefix = lib.mkOption {
               type = lib.types.nullOr lib.types.str;
               default = null;
-              description = "Optional prefix applied to discovered external skill and asset IDs.";
+              description = "Optional prefix applied to discovered external skill IDs. Top-level external agent/command IDs keep their upstream names.";
             };
             agentsPath = lib.mkOption {
               type = lib.types.nullOr lib.types.path;
