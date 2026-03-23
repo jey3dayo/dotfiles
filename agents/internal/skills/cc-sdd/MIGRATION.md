@@ -272,30 +272,30 @@ chmod -R u+rw .kiro/
 
 The standardized plugin maintains full backward compatibility:
 
-- **Default configuration** matches legacy structure (`.kiro/`)
-- **All existing commands** work without changes
-- **Existing specs** are recognized automatically
+- Default configuration matches legacy structure (`.kiro/`)
+- All existing commands work without changes
+- Existing specs are recognized automatically
 - No forced migration - legacy projects work as-is
 
 ## Best Practices
 
 ### For New Projects
 
-1. **Use default structure** unless you have specific requirements
-2. **Commit config file** to version control
-3. **Document customizations** in project README
+1. Use default structure unless you have specific requirements
+2. Commit config file to version control
+3. Document customizations in project README
 
 ### For Existing Projects
 
-1. **Start with config matching current structure** (zero-downtime migration)
-2. **Test thoroughly** before reorganizing
-3. **Migrate incrementally** if changing structure
+1. Start with config matching current structure (zero-downtime migration)
+2. Test thoroughly before reorganizing
+3. Migrate incrementally if changing structure
 
 ### For Teams
 
-1. **Establish conventions** across projects
-2. **Share config templates** for different project types
-3. **Document rationale** for custom structures
+1. Establish conventions across projects
+2. Share config templates for different project types
+3. Document rationale for custom structures
 
 ## Rollback Procedure
 
@@ -309,7 +309,7 @@ If migration causes issues:
 
    Plugin will use built-in defaults (legacy structure).
 
-2. **Restore from backup** (if you reorganized files)
+2. Restore from backup (if you reorganized files)
 
    ```bash
    # If you backed up before migration
@@ -317,7 +317,7 @@ If migration causes issues:
    mv .kiro.backup .kiro
    ```
 
-3. **Report issue** with details of what went wrong
+3. Report issue with details of what went wrong
 
 ## Migration Checklist
 
@@ -338,16 +338,16 @@ Use this checklist to ensure smooth migration:
 
 If you encounter issues during migration:
 
-1. **Check this guide** for common issues
-2. **Validate configuration** using provided commands
-3. **Consult plugin documentation** in `SKILL.md`
-4. **Review config schema** in `.kiro-config.schema.json`
+1. Check this guide for common issues
+2. Validate configuration using provided commands
+3. Consult plugin documentation in `SKILL.md`
+4. Review config schema in `.kiro-config.schema.json`
 
 ## Next Steps
 
 After successful migration:
 
-1. **Explore customization options** in `shared/config-loader.md`
-2. **Review workflow documentation** in `references/workflow.md`
-3. **Set up team conventions** if working in a team
-4. **Consider automation** for multi-project setups
+1. Explore customization options in `shared/config-loader.md`
+2. Review workflow documentation in `references/workflow.md`
+3. Set up team conventions if working in a team
+4. Consider automation for multi-project setups

@@ -89,23 +89,23 @@ This agent uses the following tools:
 
 ### YAML Frontmatter
 
-- **name** (required): Agent identifier
+- name (required): Agent identifier
   - Must match the filename (excluding `.md`)
   - kebab-case format
   - Descriptive and unique name
 
-- **description** (required): Agent's domain of expertise
+- description (required): Agent's domain of expertise
   - Clear role definition
   - Include examples of when to activate
   - Include trigger keywords
   - Written from a third-party perspective ("Use this agent when...")
 
-- **tools** (required): Tool access specification
+- tools (required): Tool access specification
   - `["*"]` = access to all tools
   - `["Tool1", "Tool2"]` = explicit tool list
   - `"inherit"` = inherit from parent (experimental)
 
-- **color** (optional): Terminal color
+- color (optional): Terminal color
   - `blue` = analysis agents
   - `green` = validation agents
   - `yellow` = warning/audit agents
@@ -113,7 +113,7 @@ This agent uses the following tools:
   - `magenta` = utility agents
   - `cyan` = information agents
 
-- **model** (optional): Model to use
+- model (optional): Model to use
   - `claude-sonnet-4-5` (default) — fast, cost-efficient
   - `claude-opus-4-5` — for tasks requiring complex reasoning
 

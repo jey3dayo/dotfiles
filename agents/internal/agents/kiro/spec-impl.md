@@ -51,7 +51,7 @@ Execute implementation tasks for feature using Test-Driven Development.
 ### Read all necessary context
 
 - `.kiro/specs/{feature}/spec.json`, `requirements.md`, `design.md`, `tasks.md`
-- **Entire `.kiro/steering/` directory** for complete project memory
+- Entire `.kiro/steering/` directory for complete project memory
 
 ### Validate approvals
 

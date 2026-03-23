@@ -97,14 +97,14 @@ When to use: Daily development workflow, quick sanity checks, rapid problem iden
 
 ### Configuration Sources (Priority Order)
 
-1. **Project-specific config** (highest priority)
+1. Project-specific config (highest priority)
    - `.code-review-config.json` in project root
    - `.claude/code-review-config.json`
 
 2. User config
    - `~/.claude/code-review/custom-projects.json`
 
-3. **Default config** (fallback)
+3. Default config (fallback)
    - Built-in project detection rules
 
 ### Project-Specific Guidelines
@@ -179,7 +179,7 @@ Progressive disclosure — loaded as needed:
 
 ## Related
 
-- `code-review-system` — PR workflow (CI diagnosis, comment handling, auto-fix)
+- `pr-feedback-orchestrator` — PR workflow (CI diagnosis, comment handling, auto-fix)
 - `gh-fix-ci` — GitHub Actions CI failure diagnosis
 - `gh-address-comments` — PR review comment handling
 - `codex-code-review` — Codex-delegated code review

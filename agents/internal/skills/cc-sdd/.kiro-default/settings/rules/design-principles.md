@@ -4,7 +4,7 @@
 
 ### 1. Type Safety is Mandatory
 
-- **NEVER** use `any` type in TypeScript interfaces
+- NEVER use `any` type in TypeScript interfaces
 - Define explicit types for all parameters and returns
 - Use discriminated unions for error handling
 - Specify generic constraints clearly
@@ -87,14 +87,14 @@ graph TB
     ServiceA --> Database
 ```
 
-- **Plain Mermaid only** – avoid custom styling or unsupported syntax.
-- **Node IDs** – alphanumeric plus underscores only (e.g., `Client`, `ServiceA`). Do not use `@`, `/`, or leading `-`.
-- **Labels** – simple words. Do not embed parentheses `()`, square brackets `[]`, quotes `"`, or slashes `/`.
+- Plain Mermaid only – avoid custom styling or unsupported syntax.
+- Node IDs – alphanumeric plus underscores only (e.g., `Client`, `ServiceA`). Do not use `@`, `/`, or leading `-`.
+- Labels – simple words. Do not embed parentheses `()`, square brackets `[]`, quotes `"`, or slashes `/`.
   - ❌ `DnD[@dnd-kit/core]` → invalid ID (`@`).
   - ❌ `UI[KanbanBoard(React)]` → invalid label (`()`).
   - ✅ `DndKit[dnd-kit core]` → use plain text in labels, keep technology details in the accompanying description.
-- **Edges** – show data or control flow direction.
-- **Groups** – using Mermaid subgraphs to cluster related components is allowed; use it sparingly for clarity.
+- Edges – show data or control flow direction.
+- Groups – using Mermaid subgraphs to cluster related components is allowed; use it sparingly for clarity.
 
 ## Quality Metrics
 

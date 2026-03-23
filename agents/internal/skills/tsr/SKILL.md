@@ -16,9 +16,9 @@ A specialized skill for safely detecting and removing unused code (dead code) in
 
 TSR loads and merges configurations in the following order:
 
-1. **Project root** (highest priority): `.tsr-config.json`
+1. Project root (highest priority): `.tsr-config.json`
 2. Home directory: `~/.config/tsr/config.json`
-3. **Default settings** (lowest priority): `tsr-config.default.json`
+3. Default settings (lowest priority): `tsr-config.default.json`
 
 ### Configuration File Format
 
@@ -132,9 +132,9 @@ Use the `tsr` tool to detect unused exports and unused files in the project, and
 
 ### 2. Safe Deletion Workflow
 
-- **Detection mode** (`tsr`): Report unused code (no changes)
-- **Deletion mode** (`tsr --write`): Actually execute deletion
-- **Recursive mode** (`tsr --recursive`): Run repeatedly until clean
+- Detection mode (`tsr`): Report unused code (no changes)
+- Deletion mode (`tsr --write`): Actually execute deletion
+- Recursive mode (`tsr --recursive`): Run repeatedly until clean
 - Automatic verification: Automatically run type-check/lint/test based on configuration
 
 ### 3. False Positive Exclusion

@@ -14,9 +14,9 @@ Local > External > Distribution
 
 ### Meaning
 
-- **Local** (`skills-internal/`, `commands-internal/`): Highest priority, overwrites all
-- **External** (`skills/`): Medium priority, overwrites Distribution
-- **Distribution** (`internal/`): Lowest priority, default fallback
+- Local (`skills-internal/`, `commands-internal/`): Highest priority, overwrites all
+- External (`skills/`): Medium priority, overwrites Distribution
+- Distribution (`internal/`): Lowest priority, default fallback
 
 ---
 

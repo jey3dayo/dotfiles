@@ -31,17 +31,17 @@ Agent Skills are **lightweight, open format extensions** that package:
 
 Agent Skills follow a 3-phase model:
 
-1. **Discovery Phase** 🔍
+1. Discovery Phase 🔍
    - Agents load only skill names + descriptions at startup
    - Minimal memory footprint
    - Fast initialization
 
-2. **Activation Phase** ⚡
+2. Activation Phase ⚡
    - Task matches skill's purpose
    - Agent accesses full instructions
    - References loaded on-demand
 
-3. **Execution Phase** 🚀
+3. Execution Phase 🚀
    - Agent follows guidance
    - Executes bundled scripts if needed
    - Loads templates/resources dynamically
@@ -331,8 +331,8 @@ Some knowledge may fit multiple categories:
 
 ### Example
 
-- **Primary:** Skill (configuration knowledge)
-- **Secondary:** Agent (validation automation)
+- Primary: Skill (configuration knowledge)
+- Secondary: Agent (validation automation)
 
 ### Recommendation
 

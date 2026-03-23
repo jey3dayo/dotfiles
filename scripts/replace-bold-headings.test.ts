@@ -66,6 +66,12 @@ describe("replace-bold-headings: conversion rules", () => {
   it("strips bold from ordered list label with arrow", () =>
     check("1. **Phase 1** → do something", "1. Phase 1 → do something"));
 
+  it("strips bold from ordered list label with parenthetical suffix and trailing detail", () =>
+    check(
+      "6. **pr-feedback-orchestrator** (3,595行) - 4モード実行、PRフィードバック吸い上げと修正",
+      "6. pr-feedback-orchestrator (3,595行) - 4モード実行、PRフィードバック吸い上げと修正",
+    ));
+
   it("strips bold from unordered list label (colon only)", () => check("- **Text**:", "- Text:"));
 
   it("strips bold from unordered list label with content", () =>

@@ -120,7 +120,7 @@ Engage on designer's perspective, alternatives, clarifications, and necessary ch
 
 ## Final Checklist
 
-- **Critical Issues ≤ 3** and each includes Impact and Recommendation
+- Critical Issues ≤ 3 and each includes Impact and Recommendation
 - Traceability: Each issue references requirement ID/section
 - Evidence: Each issue cites design doc location
 - Decision: GO/NO-GO with clear rationale and next steps

@@ -43,7 +43,7 @@ Use Glob tool to expand file patterns, then read all files:
 
 ## Workflow
 
-1. **Ask user** for custom steering needs:
+1. Ask user for custom steering needs:
    - Domain/topic (e.g., "API standards", "testing approach")
    - Specific requirements or patterns to document
 
@@ -51,10 +51,10 @@ Use Glob tool to expand file patterns, then read all files:
    - Load from `.kiro/settings/templates/steering-custom/{name}.md` if available
    - Use as starting point, customize based on project
 
-3. **Analyze codebase** (JIT) for relevant patterns:
-   - **Glob** for related files
-   - **Read** for existing implementations
-   - **Grep** for specific patterns
+3. Analyze codebase (JIT) for relevant patterns:
+   - Glob for related files
+   - Read for existing implementations
+   - Grep for specific patterns
 
 4. Generate custom steering:
    - Follow template structure if available
@@ -62,7 +62,7 @@ Use Glob tool to expand file patterns, then read all files:
    - Focus on patterns, not exhaustive lists
    - Keep to 100-200 lines (2-3 minute read)
 
-5. **Create file** in `.kiro/steering/{name}.md`
+5. Create file in `.kiro/steering/{name}.md`
 
 ## Available Templates
 
@@ -93,7 +93,7 @@ From `.kiro/settings/rules/steering-principles.md`:
 - Read: Load template, analyze existing code
 - Glob: Find related files for pattern analysis
 - Grep: Search for specific patterns
-- **Bash** with `ls`: Understand relevant structure
+- Bash with `ls`: Understand relevant structure
 
 ### JIT Strategy
 

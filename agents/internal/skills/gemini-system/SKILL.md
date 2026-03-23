@@ -97,7 +97,7 @@ gemini -p "{question}" --output-format json 2>/dev/null
 
 ### Workflow (Subagent)
 
-1. **Spawn subagent** with Gemini research prompt
+1. Spawn subagent with Gemini research prompt
 2. Continue your work → Subagent runs in parallel
 3. Receive summary → Subagent returns key findings
 4. Full output saved → `.claude/docs/research/{topic}.md`

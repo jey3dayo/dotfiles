@@ -54,10 +54,10 @@ paths:
 
 Claude Code excels at:
 
-- **Creative problem-solving** — Novel solutions and fresh perspectives
-- **Architectural ideation** — System design and component structure brainstorming
-- **Interactive dialogue** — Clarifying unclear requirements through conversation
-- **Fast file operations** — Read/Write/Edit operations with specialized tools
+- Creative problem-solving — Novel solutions and fresh perspectives
+- Architectural ideation — System design and component structure brainstorming
+- Interactive dialogue — Clarifying unclear requirements through conversation
+- Fast file operations — Read/Write/Edit operations with specialized tools
 
 Think of Claude Code as your design partner who helps you think through complex problems creatively.
 

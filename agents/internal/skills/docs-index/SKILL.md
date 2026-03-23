@@ -45,22 +45,22 @@ This skill is activated in the following situations:
 
 ### Frequently Used Documentation
 
-1. **Quick Start Guide** (`guides/quick-start.md`)
+1. Quick Start Guide (`guides/quick-start.md`)
    - Claude Code basic operations
    - Top 10 frequently used commands
    - How to use the skill system
 
-2. **Integration Framework** (skill: `integration-framework`)
+2. Integration Framework (skill: `integration-framework`)
    - TaskContext standardization
    - Communication Bus patterns
    - Agent/command integration
 
-3. **Code Review System** (skill: `code-review`)
+3. Code Review (skill: `code-review`)
    - 5-star rating system
    - Automatic project detection
    - Technical skill integration
 
-4. **Spec-Driven Development** (skill: `cc-sdd`)
+4. Spec-Driven Development (skill: `cc-sdd`)
    - Kiro-style spec-driven development
    - `/kiro:` command family
    - Steering + specification management
@@ -141,7 +141,7 @@ See the `claude-marketplace-sync` skill for details.
 
 This skill progressively discloses information:
 
-1. **Initial load** (this file): Overview and quick reference (~6KB)
+1. Initial load (this file): Overview and quick reference (~6KB)
 2. When searching for details: Various indexes in `indexes/` (~20KB)
 3. When referencing guides: Detailed guides in `guides/` (~15KB)
 

@@ -71,9 +71,9 @@ Design effective task shortcuts for developer productivity.
 
 ### Alias Strategy
 
-- **Single character** (`b`, `t`, `l`): Daily-use tasks (build, test, lint)
-- **Two characters** (`cb`, `fmt`, `ci`): Common operations
-- **Prefix with `+`** (`+ci`, `+all`): Meta-tasks that orchestrate others
+- Single character (`b`, `t`, `l`): Daily-use tasks (build, test, lint)
+- Two characters (`cb`, `fmt`, `ci`): Common operations
+- Prefix with `+` (`+ci`, `+all`): Meta-tasks that orchestrate others
 
 ### Example
 

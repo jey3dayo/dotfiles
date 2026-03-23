@@ -417,7 +417,7 @@ in
    };
    ```
 
-2. **flake.nix の inputs に追加**（手動同期）
+2. flake.nix の inputs に追加（手動同期）
 
    ```nix
    inputs = {

@@ -43,17 +43,17 @@ Analyzes tasks from multiple perspectives to determine the execution strategy.
 
 #### 3-Layer Analysis System
 
-1. **Semantic Layer** (meaning understanding)
+1. Semantic Layer (meaning understanding)
    - 9 intent type classification: error, implement, fix, analyze, review, github_pr, refactor, navigate, docs
    - Task structure decomposition
    - Conversion to actionable units
 
-2. **Intent Layer** (intent analysis)
+2. Intent Layer (intent analysis)
    - Extraction of primary and secondary intents
    - Keyword-based confidence scoring
    - Task category determination
 
-3. **Structural Layer** (structural decomposition)
+3. Structural Layer (structural decomposition)
    - Identification of targets, constraints, and scope
    - Dependency analysis
    - Complexity calculation (below 0.8: simple, 0.8 or above: complex)
@@ -153,8 +153,8 @@ Performs execution and real-time optimization.
 
 #### Execution Strategy
 
-- **Simple tasks** (complexity < 0.8): Execute with single agent
-- **Complex tasks** (complexity >= 0.8): Collaborative execution with multiple agents
+- Simple tasks (complexity < 0.8): Execute with single agent
+- Complex tasks (complexity >= 0.8): Collaborative execution with multiple agents
 
 ```markdown
 🚀 **Task Execution Plan** (Agent-Based)

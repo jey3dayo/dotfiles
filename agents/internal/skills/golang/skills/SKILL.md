@@ -16,9 +16,9 @@ Provide specialized review guidance for Go projects, focusing on idiomatic Go pa
 
 ### Up-to-date Go documentation access
 
-- **Go Standard Library** (`/websites/pkg_go_dev_std_go1_25_3`): 3,636 snippets, score 82.8
-- **Effective Go** (`/websites/go_dev_doc`): 3,861 snippets, score 69.8
-- **Go Language** (`/golang/go`): 5,743 snippets, score 80.8
+- Go Standard Library (`/websites/pkg_go_dev_std_go1_25_3`): 3,636 snippets, score 82.8
+- Effective Go (`/websites/go_dev_doc`): 3,861 snippets, score 69.8
+- Go Language (`/golang/go`): 5,743 snippets, score 80.8
 
 Use `mcp__plugin_context7_context7__query-docs` for latest Go idioms, standard library APIs, and best practices.
 

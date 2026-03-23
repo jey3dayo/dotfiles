@@ -62,12 +62,12 @@ argument-hint: [required-arg] [--optional-flag]
 
 ### YAML Frontmatter
 
-- **description** (required): Description shown in `/help`
+- description (required): Description shown in `/help`
   - Start with a clear verb (e.g., "Execute", "Analyze", "Create")
   - Describe the specific functionality
   - Aim for 20-100 characters
 
-- **argument-hint** (optional): Usage pattern
+- argument-hint (optional): Usage pattern
   - `[]` = optional argument
   - `<>` = required argument (though `[]` is generally used)
   - `--flag` = option flag
@@ -97,4 +97,4 @@ Details: `references/creating-bundles.md` in the `distributions-manager` skill
 ## Related Resources
 
 - `references/command-details.md`
-- **distributions-manager** skill - Command distribution and bundle management
+- distributions-manager skill - Command distribution and bundle management

@@ -401,17 +401,17 @@ Use `mcp__plugin_context7_context7__query-docs` when:
 
 ### Available Libraries
 
-1. **Go Standard Library** (`/websites/pkg_go_dev_std_go1_25_3`)
+1. Go Standard Library (`/websites/pkg_go_dev_std_go1_25_3`)
    - Latest standard library APIs (Go 1.25.3)
    - 3,636 code snippets, benchmark score 82.8
    - Use for: API usage, package documentation
 
-2. **Effective Go** (`/websites/go_dev_doc`)
+2. Effective Go (`/websites/go_dev_doc`)
    - Official Go best practices guide
    - 3,861 code snippets, benchmark score 69.8
    - Use for: idiomatic patterns, conventions
 
-3. **Go Language** (`/golang/go`)
+3. Go Language (`/golang/go`)
    - Core Go language documentation
    - 5,743 code snippets, benchmark score 80.8
    - Use for: language features, compiler behavior

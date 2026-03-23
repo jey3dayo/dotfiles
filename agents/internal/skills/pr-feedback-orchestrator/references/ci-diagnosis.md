@@ -1,6 +1,6 @@
 # CI Diagnosis Flow
 
-`--ci` モードで使用する CI 診断の詳細フローです。
+`pr-feedback-orchestrator` の `--ci` モードで使用する CI 診断の詳細フローです。
 
 ## 概要
 
@@ -42,10 +42,10 @@ gh run view <run-id> --log-failed
 
 失敗分類に基づいて修正の優先順位を決定:
 
-1. **Build Error** — ビルドが通らないと他の確認不可
-2. **Type Error** — 型エラーはテスト失敗の原因になりうる
-3. **Test Failure** — テスト修正
-4. **Lint Error** — フォーマット・リント修正
+1. Build Error — ビルドが通らないと他の確認不可
+2. Type Error — 型エラーはテスト失敗の原因になりうる
+3. Test Failure — テスト修正
+4. Lint Error — フォーマット・リント修正
 
 ### Step 5: 修正実行
 

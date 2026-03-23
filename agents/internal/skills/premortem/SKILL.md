@@ -23,12 +23,12 @@ Premortem Analysis is a skill based on the project management technique "Premort
 
 ### Differentiation from Existing Skills
 
-| Skill               | Timing               | Focus                                         |
-| ------------------- | -------------------- | --------------------------------------------- |
-| predictive-analysis | After implementation | Future risk prediction from code patterns     |
-| code-review-system  | After implementation | PR workflow (CI diagnosis, comment handling)  |
-| cc-sdd validation   | End of each phase    | Formal validity verification                  |
-| premortem           | Planning phase       | Elicit "expert tacit knowledge" via questions |
+| Skill                    | Timing               | Focus                                                      |
+| ------------------------ | -------------------- | ---------------------------------------------------------- |
+| predictive-analysis      | After implementation | Future risk prediction from code patterns                  |
+| pr-feedback-orchestrator | After implementation | PR feedback orchestration (CI diagnosis, comment handling) |
+| cc-sdd validation        | End of each phase    | Formal validity verification                               |
+| premortem                | Planning phase       | Elicit "expert tacit knowledge" via questions              |
 
 ## Quick Start
 

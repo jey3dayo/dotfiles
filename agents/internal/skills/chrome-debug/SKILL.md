@@ -60,8 +60,8 @@ agent-browser snapshot -i  # update ref
 Fallback when MCP is unavailable.
 
 1. Press F12 in Chrome to open DevTools
-2. **Console** tab: Check for JavaScript errors
-3. **Network** tab: Check for infinite request loops or failures
+2. Console tab: Check for JavaScript errors
+3. Network tab: Check for infinite request loops or failures
 4. **Application** > **Cookies**: Inspect cookies
 
 ## Common Issues

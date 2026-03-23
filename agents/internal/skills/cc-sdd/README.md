@@ -6,10 +6,10 @@ A standardized, configurable plugin for Kiro-style spec-driven development in Cl
 
 cc-sdd (Claude Code Spec-Driven Development) provides a structured, phase-based approach to software development with:
 
-- **Configurable directory structure** via `.kiro-config.json`
+- Configurable directory structure via `.kiro-config.json`
 - 3-phase workflow: Steering → Specification → Implementation
-- **Progressive disclosure** for efficient context loading
-- **Multi-project support** with per-project customization
+- Progressive disclosure for efficient context loading
+- Multi-project support with per-project customization
 
 ## Quick Start
 
