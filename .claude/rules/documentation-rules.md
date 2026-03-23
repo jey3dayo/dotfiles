@@ -11,7 +11,7 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 
 ## Metadata
 
-- `docs/*.md` must include `最終更新`, `対象`, `タグ`
+- All Markdown docs under `docs/` (`docs/**/*.md`) must include `最終更新`, `対象`, `タグ`
 - Date format: `YYYY-MM-DD`
 - Use 3-5 tags and include at least one `category/` and one `layer/`
 
