@@ -3,7 +3,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 
@@ -60,6 +59,10 @@ let
     assetType = "agents";
     enabledSources = selectedSkillSources;
   };
+
+  # Internal bundled agents are the source of truth when external sources ship
+  # the same upstream agent ID.
+  mergedAgents = externalAgents // distributionResult.agents;
 
   externalCommands = agentLib.discoverExternalAssets {
     sources = cfg.sources;
@@ -266,9 +269,7 @@ in
           ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
         '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
         rulesDirCommands = mkAssetDirCommands "rules" distributionResult.rules cfg.targets;
-        agentsDirCommands = mkAssetDirCommands "agents" (
-          distributionResult.agents // externalAgents
-        ) cfg.targets;
+        agentsDirCommands = mkAssetDirCommands "agents" mergedAgents cfg.targets;
         commandsDirCommands = mkAssetDirCommands "commands" externalCommands cfg.targets;
       in
       builtins.concatStringsSep "\n" (
@@ -321,7 +322,7 @@ in
         (mkAssetFileLinks "rules" distributionResult.rules cfg.targets)
       ++
         # Agents distribution (symlinks to each target's agents directory)
-        (mkAssetFileLinks "agents" (distributionResult.agents // externalAgents) cfg.targets)
+        (mkAssetFileLinks "agents" mergedAgents cfg.targets)
       ++
         # Commands distribution (symlinks to each target's commands directory)
         (mkAssetFileLinks "commands" externalCommands cfg.targets)
