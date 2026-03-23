@@ -112,24 +112,29 @@
     url = "github:obra/superpowers";
     flake = false;
     baseDir = ".";
+    idPrefix = "superpowers:";
+    assets = {
+      agents = "agents";
+      commands = "commands";
+    };
     catalogs = {
-      obra-superpowers = "skills";
+      superpowers = "skills";
     };
     selection.enable = [
-      "brainstorming"
-      "dispatching-parallel-agents"
-      "executing-plans"
-      "finishing-a-development-branch"
-      "receiving-code-review"
-      "requesting-code-review"
-      "subagent-driven-development"
-      "systematic-debugging"
-      "test-driven-development"
-      "using-git-worktrees"
-      "using-superpowers"
-      "verification-before-completion"
-      "writing-plans"
-      "writing-skills"
+      "superpowers:brainstorming"
+      "superpowers:dispatching-parallel-agents"
+      "superpowers:executing-plans"
+      "superpowers:finishing-a-development-branch"
+      "superpowers:receiving-code-review"
+      "superpowers:requesting-code-review"
+      "superpowers:subagent-driven-development"
+      "superpowers:systematic-debugging"
+      "superpowers:test-driven-development"
+      "superpowers:using-git-worktrees"
+      "superpowers:using-superpowers"
+      "superpowers:verification-before-completion"
+      "superpowers:writing-plans"
+      "superpowers:writing-skills"
     ];
   };
 }

@@ -38,41 +38,60 @@ let
 
   stripDotPrefix = str: if hasPrefix "./" str then substring 2 (stringLength str - 2) str else str;
 
+  prefixId = prefix: id: if prefix == "" then id else "${prefix}${id}";
+
+  getIdPrefix =
+    sourceConfig:
+    if builtins.hasAttr "idPrefix" sourceConfig && sourceConfig.idPrefix != null then
+      sourceConfig.idPrefix
+    else
+      "";
+
   # Scan a single source path and return { skillId = { id, path, source }; }
   scanSource =
-    sourceName: sourcePath:
+    sourceName: sourceConfig:
     let
+      sourcePath = sourceConfig.path;
+      idPrefix = getIdPrefix sourceConfig;
       entries = readDir sourcePath;
       dirs = attrNames (filterAttrs (_: type: type == "directory") entries);
       skills = builtins.filter (name: pathExists (sourcePath + "/${name}/SKILL.md")) dirs;
     in
     builtins.listToAttrs (
-      map (name: {
-        inherit name;
-        value = {
-          id = name;
-          path = sourcePath + "/${name}";
-          source = sourceName;
-        };
-      }) skills
+      map (
+        name:
+        let
+          skillId = prefixId idPrefix name;
+        in
+        {
+          name = skillId;
+          value = {
+            id = skillId;
+            path = sourcePath + "/${name}";
+            source = sourceName;
+          };
+        }
+      ) skills
     );
 
   # Detect if source root is itself a skill, or contains sub-skills
   scanSourceAutoDetect =
-    sourceName: sourcePath:
+    sourceName: sourceConfig:
     let
+      sourcePath = sourceConfig.path;
+      idPrefix = getIdPrefix sourceConfig;
       claudeSkillsPath = sourcePath + "/.claude/skills";
-      direct = if pathExists sourcePath then scanSource sourceName sourcePath else { };
+      direct = if pathExists sourcePath then scanSource sourceName sourceConfig else { };
       claudeSkills =
         if direct == { } && pathExists claudeSkillsPath then
-          scanSource sourceName claudeSkillsPath
+          scanSource sourceName (sourceConfig // { path = claudeSkillsPath; })
         else
           { };
     in
     if pathExists (sourcePath + "/SKILL.md") then
       {
-        ${sourceName} = {
-          id = sourceName;
+        ${prefixId idPrefix sourceName} = {
+          id = prefixId idPrefix sourceName;
           path = sourcePath;
           source = sourceName;
         };
@@ -86,7 +105,7 @@ let
   # basePath: directory to scan
   # source: source tag (e.g., "distribution")
   scanMdEntries =
-    basePath: source:
+    basePath: source: idPrefix:
     if pathExists basePath then
       let
         entries = readDir basePath;
@@ -94,8 +113,9 @@ let
           name: type:
           let
             entryPath = basePath + "/${name}";
-            entryId =
-              if nixlib.hasSuffix ".md" name then nixlib.removeSuffix ".md" name else name;
+            entryId = prefixId idPrefix (
+              if nixlib.hasSuffix ".md" name then nixlib.removeSuffix ".md" name else name
+            );
           in
           if (type == "regular" || type == "symlink") && nixlib.hasSuffix ".md" name then
             {
@@ -116,11 +136,12 @@ let
                 subName: subType:
                 let
                   subPath = entryPath + "/${subName}";
-                  subId =
+                  subId = prefixId idPrefix (
                     if nixlib.hasSuffix ".md" subName then
                       "${name}/${nixlib.removeSuffix ".md" subName}"
                     else
-                      "${name}/${subName}";
+                      "${name}/${subName}"
+                  );
                 in
                 if (subType == "regular" || subType == "symlink") && nixlib.hasSuffix ".md" subName then
                   {
@@ -191,7 +212,7 @@ let
                   }
                 else
                   # Or scan it as a source directory
-                  scanSource "distribution" entryPath
+                  scanSource "distribution" { path = entryPath; }
               else
                 { };
           in
@@ -200,8 +221,8 @@ let
           )
         else
           { };
-      scannedRules = scanMdEntries rulesPath "distribution";
-      scannedAgents = scanMdEntries agentsPath "distribution";
+      scannedRules = scanMdEntries rulesPath "distribution" "";
+      scannedAgents = scanMdEntries agentsPath "distribution" "";
     in
     {
       skills = scannedSkills;
@@ -213,7 +234,10 @@ let
 
 in
 {
-  inherit scanDistribution;
+  inherit
+    scanDistribution
+    scanMdEntries
+    ;
 
   # Discover all available skills from sources + local path + distributions
   # Returns: { skillId = { id, path, source }; ... }
@@ -242,19 +266,42 @@ in
         acc: srcName:
         let
           src = sources.${srcName};
-          scanned = scanSourceAutoDetect srcName src.path;
+          scanned = scanSourceAutoDetect srcName src;
         in
         acc // scanned
       ) { } (attrNames sources);
 
       # Scan local skills (optional legacy override path)
       localSkills =
-        if localPath != null && pathExists localPath then scanSource "local" localPath else { };
+        if localPath != null && pathExists localPath then scanSource "local" { path = localPath; } else { };
 
       # Priority: local > distribution > external
       # agents/internal is the single source of truth.
     in
     externalSkills // distributionResult.skills // localSkills;
+
+  # Discover assets exposed by external sources (for example top-level agents/commands).
+  discoverExternalAssets =
+    {
+      sources,
+      assetType,
+      enabledSources ? attrNames sources,
+    }:
+    let
+      assetPathAttr = "${assetType}Path";
+    in
+    builtins.foldl' (
+      acc: srcName:
+      let
+        src = sources.${srcName};
+      in
+      if
+        !elem srcName enabledSources || !builtins.hasAttr assetPathAttr src || src.${assetPathAttr} == null
+      then
+        acc
+      else
+        acc // (scanMdEntries src.${assetPathAttr} srcName (getIdPrefix src))
+    ) { } (attrNames sources);
 
   # Filter catalog by enable list
   # Returns: { skillId = { id, path, source }; ... } (only enabled ones)

@@ -15,11 +15,29 @@ let
     sourceName: sourceConfig:
     if builtins.hasAttr sourceName inputs then
       let
+        root = inputs.${sourceName};
         base = "${inputs.${sourceName}}/${sourceConfig.baseDir}";
+        mkAssetPath = assetPath: if assetPath == "." then root else "${root}/${assetPath}";
       in
-      builtins.mapAttrs (catalogName: subPath: {
-        path = if subPath == "." then base else "${base}/${subPath}";
-      }) sourceConfig.catalogs
+      builtins.mapAttrs (
+        catalogName: subPath:
+        {
+          path = if subPath == "." then base else "${base}/${subPath}";
+        }
+        // (if sourceConfig ? idPrefix then { inherit (sourceConfig) idPrefix; } else { })
+        // (
+          if sourceConfig ? assets && sourceConfig.assets ? agents then
+            { agentsPath = mkAssetPath sourceConfig.assets.agents; }
+          else
+            { }
+        )
+        // (
+          if sourceConfig ? assets && sourceConfig.assets ? commands then
+            { commandsPath = mkAssetPath sourceConfig.assets.commands; }
+          else
+            { }
+        )
+      ) sourceConfig.catalogs
     else
       builtins.trace "WARNING: flake input '${sourceName}' not found, skipping source" { };
 
