@@ -156,6 +156,7 @@ brew "zlib"
 brew "mysql-client"
 brew "utf8proc", args: ["HEAD"]
 brew "neovim"
+brew "nixfmt"
 brew "nghttp2"
 brew "nginx"
 brew "ninja"
