@@ -5,6 +5,7 @@
     ".aicommits" = ".aicommits";
     ".gitconfig" = "home/.gitconfig";
     ".npmrc" = "home/.npmrc";
+    ".opencommitrc" = "opencommit/.opencommitrc";
     ".tmux.conf" = "home/.tmux.conf";
     ".zshenv" = "home/.zshenv";
     ".zshrc" = "home/.zshrc";
