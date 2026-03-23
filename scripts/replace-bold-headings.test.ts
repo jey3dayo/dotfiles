@@ -104,20 +104,15 @@ describe("replace-bold-headings: conversion rules", () => {
     check("- **File** → **Edit** → **Preferences**", "- **File** → **Edit** → **Preferences**"));
 
   // Table cell bold stripping
-  it("strips bold from table cell label", () =>
-    check("| **スキル名** | 説明 |", "| スキル名 | 説明 |"));
+  it("strips bold from table cell label", () => check("| **スキル名** | 説明 |", "| スキル名 | 説明 |"));
 
-  it("strips bold from table cell value", () =>
-    check("| metric | **1.1s** |", "| metric | 1.1s |"));
+  it("strips bold from table cell value", () => check("| metric | **1.1s** |", "| metric | 1.1s |"));
 
-  it("strips bold from multiple table cells", () =>
-    check("| **A** | **B** | **C** |", "| A | B | C |"));
+  it("strips bold from multiple table cells", () => check("| **A** | **B** | **C** |", "| A | B | C |"));
 
-  it("preserves table separator row", () =>
-    check("| --- | --- |", "| --- | --- |"));
+  it("preserves table separator row", () => check("| --- | --- |", "| --- | --- |"));
 
-  it("preserves table separator row with colons", () =>
-    check("| :--- | :---: | ---: |", "| :--- | :---: | ---: |"));
+  it("preserves table separator row with colons", () => check("| :--- | :---: | ---: |", "| :--- | :---: | ---: |"));
 });
 
 // ============================================================
