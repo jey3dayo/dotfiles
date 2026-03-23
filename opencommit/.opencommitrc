@@ -1,8 +1,0 @@
-OCO_AI_PROVIDER=openai
-OCO_MODEL=gpt-4.1
-OCO_LANGUAGE=en
-OCO_DESCRIPTION=false
-OCO_EMOJI=false
-OCO_WHY=false
-OCO_ONE_LINE_COMMIT=false
-OCO_PROMPT_MODULE=conventional-commit
