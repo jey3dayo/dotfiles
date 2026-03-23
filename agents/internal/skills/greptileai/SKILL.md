@@ -2,7 +2,7 @@
 name: greptileai
 description: |
   [What] greptileai bot との連携ルール。PR レビュースレッドへの返信時に @greptileai メンションを自動付与する。
-  [When] PR レビューコメントに返信する時、gh-address-comments や gh-fix-review 実行時
+  [When] PR レビューコメントに返信する時、gh-address-comments 実行時
   [Keywords] greptileai, PR review, code review, review thread, resolve thread
 user-invocable: false
 ---
