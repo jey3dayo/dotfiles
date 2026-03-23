@@ -49,6 +49,7 @@ depends = [
   "format:shell",
   "format:toml",
   "format:python",
+  "format:nix",
 ]
 
 [lint]
@@ -65,6 +66,7 @@ depends = [
   "lint:dockerfile",
   "lint:links",
   "lint:actions",
+  "lint:nix",
 ]
 
 ["lint:quick"]
@@ -78,6 +80,7 @@ depends = [
   "lint:python",
   "lint:dockerfile",
   "lint:actions",
+  "lint:nix",
 ]
 
 ["check:format"]
@@ -91,6 +94,7 @@ depends = [
   "format:shell:check",
   "format:toml:check",
   "format:python:check",
+  "format:nix:check",
 ]
 
 ["check:lint"]
