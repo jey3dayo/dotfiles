@@ -51,7 +51,7 @@ Generate technical design document for feature based on approved requirements.
 ### Read all necessary context
 
 - `.kiro/specs/{feature}/spec.json`, `requirements.md`, `design.md` (if exists)
-- **Entire `.kiro/steering/` directory** for complete project memory
+- Entire `.kiro/steering/` directory for complete project memory
 - `.kiro/settings/templates/specs/design.md` for document structure
 - `.kiro/settings/rules/design-principles.md` for design principles
 
@@ -65,9 +65,9 @@ Generate technical design document for feature based on approved requirements.
 ### Critical: This phase ensures design is based on complete, accurate information
 
 1. Classify Feature Type:
-   - **New Feature** (greenfield) → Full discovery required
-   - **Extension** (existing system) → Integration-focused discovery
-   - **Simple Addition** (CRUD/UI) → Minimal or no discovery
+   - New Feature (greenfield) → Full discovery required
+   - Extension (existing system) → Integration-focused discovery
+   - Simple Addition (CRUD/UI) → Minimal or no discovery
    - Complex Integration → Comprehensive analysis required
 
 2. Execute Appropriate Discovery Process:
@@ -107,7 +107,7 @@ Generate technical design document for feature based on approved requirements.
    - Apply design rules: Type Safety, Visual Communication, Formal Tone
    - Use language specified in spec.json
 
-3. **Update Metadata** in spec.json:
+3. Update Metadata in spec.json:
    - Set `phase: "design-generated"`
    - Set `approvals.design.generated: true, approved: false`
    - Set `approvals.requirements.approved: true`

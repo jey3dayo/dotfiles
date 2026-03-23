@@ -250,7 +250,7 @@ start_phase = Phase 1 (full workflow)
 
 ### If checks fail
 
-- **Attempt to fix automatically** (see `references/ci-fix-patterns.md`)
+- Attempt to fix automatically (see `references/ci-fix-patterns.md`)
 - Apply fixes locally but do NOT commit - let the user review changes first
 - If unable to fix, report to user and wait for resolution
 - Do NOT proceed to Phase 5 (PR creation) if checks fail

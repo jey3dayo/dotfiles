@@ -118,8 +118,8 @@ home-manager switch --flake ~/.config --impure
 
 ## Version History
 
-- **[version]** ([date]): [Changes description]
-- **1.0.0** (2025-02-11): Initial release
+- [version] ([date]): [Changes description]
+- 1.0.0 (2025-02-11): Initial release
 
 ---
 

@@ -29,13 +29,13 @@ Conduct comprehensive research and analysis to ensure the technical design is ba
 
 #### Investigate Best Practices and Solutions
 
-- **Use WebSearch** to find:
+- Use WebSearch to find:
   - Latest architectural patterns for similar problems
   - Industry best practices for the technology stack
   - Recent updates or changes in relevant technologies
   - Common pitfalls and solutions
 
-- **Use WebFetch** to analyze:
+- Use WebFetch to analyze:
   - Official documentation for frameworks/libraries
   - API references and usage examples
   - Migration guides and breaking changes

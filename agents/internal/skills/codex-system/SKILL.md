@@ -75,7 +75,7 @@ codex exec --sandbox read-only "Brief question" 2>/dev/null
 
 ### Workflow (Subagent)
 
-1. **Spawn subagent** with Codex consultation prompt
+1. Spawn subagent with Codex consultation prompt
 2. Continue your work → Subagent runs in parallel
 3. Receive summary → Subagent returns concise insights
 

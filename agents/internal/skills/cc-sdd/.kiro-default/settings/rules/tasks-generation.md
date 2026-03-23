@@ -73,7 +73,7 @@ Focus on capabilities and outcomes, not code structure.
 
 - Level 1: Major tasks (1, 2, 3, 4...)
 - Level 2: Sub-tasks (1.1, 1.2, 2.1, 2.2...)
-- **No deeper nesting** (no 1.1.1)
+- No deeper nesting (no 1.1.1)
 
 ### Sequential Numbering
 

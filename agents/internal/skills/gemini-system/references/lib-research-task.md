@@ -81,7 +81,7 @@ gemini -p "Research 'pydantic' v2 with focus on:
 
 ## Workflow
 
-1. **Run Gemini research** (background)
+1. Run Gemini research (background)
 
    ```bash
    gemini -p "Research: {library}" 2>/dev/null

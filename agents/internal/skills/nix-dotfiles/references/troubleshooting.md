@@ -225,7 +225,7 @@ in {
 
 ### 解決手順
 
-1. **inputs を静的リテラル定義に変更**（`let-in` を削除）
+1. inputs を静的リテラル定義に変更（`let-in` を削除）
 
 2. agent-skills-sources.nix と flake.nix の URL/flake を同期
 

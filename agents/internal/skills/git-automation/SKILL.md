@@ -279,9 +279,9 @@ EOF
 
 ### Dependent Skills
 
-- **integration-framework** (required): TaskContext standardization
-- **code-quality-automation** (recommended): Quality check integration
-- **project-detector** (required): Automatic project detection
+- integration-framework (required): TaskContext standardization
+- code-quality-automation (recommended): Quality check integration
+- project-detector (required): Automatic project detection
 
 ## Troubleshooting
 

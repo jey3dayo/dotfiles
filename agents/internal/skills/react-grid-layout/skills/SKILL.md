@@ -107,7 +107,7 @@ const SafeGridLayout: React.FC<SafeGridLayoutProps> = props => {
 
 ## Progressive Documentation
 
-- **SKILL.md** (this file): Overview and Context7 integration
+- SKILL.md (this file): Overview and Context7 integration
 - references/04-asta-patterns.md: ASTA calendar patterns (always load for ASTA projects)
 - references/02-cols-width-calculation.md: Load for sizing issues
 - references/03-typescript-nextjs.md: Load for TypeScript/SSR issues

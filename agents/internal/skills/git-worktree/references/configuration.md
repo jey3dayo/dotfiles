@@ -6,9 +6,9 @@ Complete reference for all git-wt and git worktree configuration options.
 
 Git configuration can be set at three levels:
 
-1. **System** (`/etc/gitconfig`): All users
-2. **Global** (`~/.gitconfig`): Current user
-3. **Local** (`.git/config`): Current repository (recommended)
+1. System (`/etc/gitconfig`): All users
+2. Global (`~/.gitconfig`): Current user
+3. Local (`.git/config`): Current repository (recommended)
 
 ```bash
 # Set local config (recommended)

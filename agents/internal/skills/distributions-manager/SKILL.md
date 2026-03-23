@@ -57,11 +57,11 @@ Distributions are pre-configured bundles that combine:
 
 Use this skill when:
 
-- **Adding new skills/commands** and need to understand where they fit
-- **Creating custom distributions** for specific workflows
-- **Debugging Nix deployment issues** related to distributions
-- **Understanding priority mechanism** (Local > External > Distribution)
-- **Planning bundle architectures** for team-specific toolsets
+- Adding new skills/commands and need to understand where they fit
+- Creating custom distributions for specific workflows
+- Debugging Nix deployment issues related to distributions
+- Understanding priority mechanism (Local > External > Distribution)
+- Planning bundle architectures for team-specific toolsets
 
 ---
 

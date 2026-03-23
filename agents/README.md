@@ -88,9 +88,9 @@ nix run .#validate
 
 スキルは以下の優先順位で検出されます：
 
-1. **Local** (`localPath` - 非推奨、レガシー互換性のため)
-2. **Distribution** (`agents/internal/` - 主要ソース)
-3. **External** (`sources` 経由の flake inputs)
+1. Local (`localPath` - 非推奨、レガシー互換性のため)
+2. Distribution (`agents/internal/` - 主要ソース)
+3. External (`sources` 経由の flake inputs)
 
 ### 選択
 

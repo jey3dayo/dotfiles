@@ -33,7 +33,7 @@ draw.io のフォント設定には2つのレベルがあります:
 
 - 全要素のデフォルトフォントを設定
 - アプリ内プレビューで使用される
-- **注意:** PNG/SVG エクスポート時には不十分
+- 注意: PNG/SVG エクスポート時には不十分
 
 #### Limitation
 
@@ -50,7 +50,7 @@ draw.io のフォント設定には2つのレベルがあります:
 
 - 各テキスト要素に明示的にフォントを指定
 - PNG/SVG エクスポート時に正しくレンダリングされる
-- **必須:** 全テキスト要素に指定
+- 必須: 全テキスト要素に指定
 
 ## Critical Requirement
 
@@ -64,7 +64,7 @@ draw.io のフォント設定には2つのレベルがあります:
 
 draw.io のエクスポート機能は以下の順序でフォントを解決します:
 
-1. **Element-level fontFamily** (mxCell style 内)
+1. Element-level fontFamily (mxCell style 内)
 2. ~~Model-level defaultFontFamily~~ (エクスポート時は無視される)
 3. System default (環境依存、予測不可能)
 

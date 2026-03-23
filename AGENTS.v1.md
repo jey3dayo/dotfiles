@@ -98,7 +98,7 @@ claude-code-marketplace/
 
 **コード理解ツール優先順位**（トークン効率重視）:
 
-1. **MCP Serena** (`mcp__serena__*`) - 関数・クラス・シンボル解析
+1. MCP Serena (`mcp__serena__*`) - 関数・クラス・シンボル解析
 2. Grep/ripgrep - パターン検索・横断的調査
 3. Read - 設定ファイル・小規模ファイル・最終手段
 

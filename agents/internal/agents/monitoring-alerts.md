@@ -185,31 +185,31 @@ response_time_threshold = 2.0   # seconds
 
 ### High CPU/Memory Usage
 
-1. **Scale ECS tasks** (immediate relief)
-2. **Profile application** (identify bottlenecks)
-3. **Optimize code** (long-term fix)
-4. **Consider vertical scaling** (task CPU/memory increase)
+1. Scale ECS tasks (immediate relief)
+2. Profile application (identify bottlenecks)
+3. Optimize code (long-term fix)
+4. Consider vertical scaling (task CPU/memory increase)
 
 ### Slow Response Times
 
-1. **Check database connections** (connection pooling)
-2. **Review ALB access logs** (identify slow endpoints)
-3. **Analyze application logs** (find slow queries)
-4. **Monitor external API calls** (third-party dependencies)
+1. Check database connections (connection pooling)
+2. Review ALB access logs (identify slow endpoints)
+3. Analyze application logs (find slow queries)
+4. Monitor external API calls (third-party dependencies)
 
 ### Health Check Failures
 
-1. **Verify application startup** (check logs for errors)
-2. **Test health endpoint** (manual curl test)
-3. **Check security groups** (ALB → ECS communication)
-4. **Review ECS task definitions** (health check settings)
+1. Verify application startup (check logs for errors)
+2. Test health endpoint (manual curl test)
+3. Check security groups (ALB → ECS communication)
+4. Review ECS task definitions (health check settings)
 
 ### Task Count Issues
 
-1. **Check service auto-scaling** (min/max/desired counts)
-2. **Review deployment status** (rolling update issues)
-3. **Verify capacity provider** (ARM64 availability)
-4. **Inspect task stop reasons** (failure patterns)
+1. Check service auto-scaling (min/max/desired counts)
+2. Review deployment status (rolling update issues)
+3. Verify capacity provider (ARM64 availability)
+4. Inspect task stop reasons (failure patterns)
 
 ## Operational Commands
 

@@ -69,11 +69,11 @@ pre-commit install     # 初回のみ
 
 実装済みの graceful degradation:
 
-1. **安全なモジュール読み込み** (`core/module_loader.lua:28-42`)
+1. 安全なモジュール読み込み (`core/module_loader.lua:28-42`)
    - `pcall` による例外処理
    - 失敗キャッシュで重複エラー回避
 
-2. **段階的フォールバック** (`core/bootstrap.lua`)
+2. 段階的フォールバック (`core/bootstrap.lua`)
    - オプショナルモジュール → サイレント失敗
    - 必須モジュール → 警告表示（非ブロッキング）
 

@@ -67,11 +67,11 @@ Generate entity-relationship diagrams for data modeling.
 
 #### Step 3: Load References (Progressive Disclosure)
 
-- **Always load:** `references/xml-structure.md` for XML format basics
-- **For font issues:** `references/font-config.md` for font troubleshooting
-- **For AWS diagrams:** Load AWS-specific patterns if needed
-- **For other types:** Load diagram-specific patterns if needed
-- **For complex layouts:** Load layout rules if needed
+- Always load: `references/xml-structure.md` for XML format basics
+- For font issues: `references/font-config.md` for font troubleshooting
+- For AWS diagrams: Load AWS-specific patterns if needed
+- For other types: Load diagram-specific patterns if needed
+- For complex layouts: Load layout rules if needed
 
 #### Step 4: Generate XML
 
@@ -195,7 +195,7 @@ Load these as needed using progressive disclosure:
 - Style syntax reference
 - Common shapes and styles
 - Before/After examples (10 examples)
-- **Load when:** Creating any diagram (foundation knowledge)
+- Load when: Creating any diagram (foundation knowledge)
 
 #### `font-config.md`
 
@@ -203,7 +203,7 @@ Load these as needed using progressive disclosure:
 - PNG/SVG export font issues
 - Multi-language support
 - Troubleshooting guide (5 common issues)
-- **Load when:** Font rendering problems, custom fonts needed
+- Load when: Font rendering problems, custom fonts needed
 
 ## Best Practices
 
@@ -215,7 +215,7 @@ Load these as needed using progressive disclosure:
    <mxCell ... style="...; fontFamily=Helvetica; ..." />
    ```
 
-2. **Use 18px font size** (1.5× standard for readability)
+2. Use 18px font size (1.5× standard for readability)
 
    ```xml
    style="fontSize=18;fontFamily=Helvetica;"
@@ -227,7 +227,7 @@ Load these as needed using progressive disclosure:
    <mxGraphModel ... defaultFontFamily="Helvetica">
    ```
 
-4. **Place arrows first** (background layer)
+4. Place arrows first (background layer)
    - Arrows → Labels → Shapes in XML order
 
 5. Calculate width for Japanese text
@@ -397,10 +397,10 @@ style="text;html=1;fontSize=18;fontFamily=Helvetica;"
 
 This skill creates professional draw.io diagrams by:
 
-1. **Loading appropriate template** from `assets/templates/`
-2. **Applying font configuration** (element-level fontFamily)
-3. **Following layout rules** (layer order, spacing, grid)
-4. **Outputting complete XML** with usage instructions
+1. Loading appropriate template from `assets/templates/`
+2. Applying font configuration (element-level fontFamily)
+3. Following layout rules (layer order, spacing, grid)
+4. Outputting complete XML with usage instructions
 
 ### Key Success Factor
 

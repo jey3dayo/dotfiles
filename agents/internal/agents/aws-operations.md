@@ -57,8 +57,8 @@ perman-aws-vault print -p ~/.config/perman-aws-vault/aws-caad-admin-role  # CAAD
 
 ### プロファイル選択ガイドライン
 
-- **ニアショア環境** (`aws-caad-ndev-admin`): 開発、テスト、Staging環境
-- **CAAD環境** (`aws-caad-admin-role`): Production環境
+- ニアショア環境 (`aws-caad-ndev-admin`): 開発、テスト、Staging環境
+- CAAD環境 (`aws-caad-admin-role`): Production環境
 
 ユーザーの要求から環境が不明な場合は、確認を求めてください。
 

@@ -107,12 +107,14 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
 
     // Bold labels in ordered list items are normalized to plain text.
     // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
-    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(\s*(?:[:-]|\u2192)\s*.*)?$/;
+    // Example: "6. **pr-feedback-orchestrator** (3,595行) - ..." -> "6. pr-feedback-orchestrator (3,595行) - ..."
+    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(.*)?$/;
 
     // Bold labels in unordered list items are normalized to plain text.
     // Example: "- **Text**:" -> "- Text:"
     // Example: "- **key** → value" -> "- key → value"
-    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(\s*(?:[:-]|\u2192)\s*.*)?$/;
+    // Example: "- **label** (note) - detail" -> "- label (note) - detail"
+    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(.*)?$/;
 
     let inFence = false;
     let fenceChar = "";

@@ -37,7 +37,7 @@ pre-commit run --all-files            # 全フック実行
 
 ## インシデント時の即時アクション
 
-1. **トークン/キーを即座に無効化**（GitHub Token、AWS Credentials、SSH Key）
+1. トークン/キーを即座に無効化（GitHub Token、AWS Credentials、SSH Key）
 2. コミット取り消しまたはブランチ削除
 3. チームに通知
 4. 履歴から完全削除: `git filter-repo --path <file> --invert-paths`

@@ -265,13 +265,13 @@ When any of these commands is executed, the following are automatically run:
 
 For more detailed information, refer to the following reference files:
 
-- **Phase-by-Phase Guide** (`references/phase-by-phase-guide.md`) - Detailed procedures for each of the 6 phases
-- **Session Management** (`references/session-management.md`) - Detailed plan.md/state.json management
-- **Deep Validation Process** (`references/deep-validation-process.md`) - Deep Validation 7 steps
-- **Adaptation Patterns** (`references/adaptation-patterns.md`) - Dependency resolution and code transformation patterns
-- **Source Detection** (`references/source-detection.md`) - Web/Local/description determination logic
-- **Implementation Workflows** (`examples/implementation-workflows.md`) - Implementation workflow examples
-- **Risk Mitigation** (`examples/risk-mitigation.md`) - Rollback strategies and git checkpoints
+- Phase-by-Phase Guide (`references/phase-by-phase-guide.md`) - Detailed procedures for each of the 6 phases
+- Session Management (`references/session-management.md`) - Detailed plan.md/state.json management
+- Deep Validation Process (`references/deep-validation-process.md`) - Deep Validation 7 steps
+- Adaptation Patterns (`references/adaptation-patterns.md`) - Dependency resolution and code transformation patterns
+- Source Detection (`references/source-detection.md`) - Web/Local/description determination logic
+- Implementation Workflows (`examples/implementation-workflows.md`) - Implementation workflow examples
+- Risk Mitigation (`examples/risk-mitigation.md`) - Rollback strategies and git checkpoints
 
 ## Dependencies
 

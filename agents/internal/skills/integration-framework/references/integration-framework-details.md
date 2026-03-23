@@ -126,7 +126,7 @@ Integration Orchestrator
 ### 新しいコマンドの作成
 
 1. TaskContextを理解: `references/task-context-specification.md`を参照
-2. **Command Adapterパターン**を使用: `references/adapters-and-orchestration.md`
+2. Command Adapterパターンを使用: `references/adapters-and-orchestration.md`
 3. Communication Busと統合: `references/communication-bus-api.md`
 4. エラーハンドリングを実装: 統一されたError Handlerを使用
 

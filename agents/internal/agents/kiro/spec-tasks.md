@@ -53,7 +53,7 @@ Generate implementation tasks for the feature based on approved requirements and
 
 - `.kiro/specs/{feature}/spec.json`, `requirements.md`, `design.md`
 - `.kiro/specs/{feature}/tasks.md` (if exists, for merge mode)
-- **Entire `.kiro/steering/` directory** for complete project memory
+- Entire `.kiro/steering/` directory for complete project memory
 
 - Determine execution mode:
   - `sequential = (sequential flag is true)`

@@ -83,9 +83,9 @@ mise/
 
 #### 責任の分離
 
-- **CI検証タスク** (`ci`): 読み取り専用の検証（lint, test, format check）
-- **CI完全実行** (`ci:full`): 検証 + デプロイ（GitHub Actionsと同じワークフロー）
-- **デプロイタスク** (`hm:deploy`): 状態変更を伴うシステム設定の適用
+- CI検証タスク (`ci`): 読み取り専用の検証（lint, test, format check）
+- CI完全実行 (`ci:full`): 検証 + デプロイ（GitHub Actionsと同じワークフロー）
+- デプロイタスク (`hm:deploy`): 状態変更を伴うシステム設定の適用
 
 #### タスクの使い分け
 

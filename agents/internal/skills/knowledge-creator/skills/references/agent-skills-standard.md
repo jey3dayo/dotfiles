@@ -14,10 +14,10 @@ Comprehensive guide to the Agent Skills specification and how to create cross-pl
 
 Agent Skills solve this by providing:
 
-- **Procedural knowledge** that agents can discover and apply
-- **Organizational context** specific to tools, frameworks, or domains
-- **Executable workflows** via bundled scripts
-- **Cross-platform portability** across multiple AI products
+- Procedural knowledge that agents can discover and apply
+- Organizational context specific to tools, frameworks, or domains
+- Executable workflows via bundled scripts
+- Cross-platform portability across multiple AI products
 
 ## Architecture & Components
 
@@ -263,10 +263,10 @@ Agent Skills are designed for **efficient context management** through progressi
 
 Agent Skills work with:
 
-- **Claude Code** (Anthropic)
-- **GitHub Copilot** (Microsoft)
-- **Cursor** (Anysphere)
-- **VS Code Extensions** (various)
+- Claude Code (Anthropic)
+- GitHub Copilot (Microsoft)
+- Cursor (Anysphere)
+- VS Code Extensions (various)
 - OpenAI Codex
 - Custom agent implementations
 
@@ -274,7 +274,7 @@ Agent Skills work with:
 
 The open format means:
 
-1. **Single skill directory** works across platforms
+1. Single skill directory works across platforms
 2. No vendor lock-in - skills are portable files
 3. Community sharing - publish to GitHub, share with teams
 4. Version control - skills tracked in git like code
