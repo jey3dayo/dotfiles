@@ -14,7 +14,7 @@
 # Edge cases (resolve to "ci"):
 #   - GitHub Codespaces: Sets CI=true, so detected as "ci".
 #     If "default" behavior is desired in Codespaces, set DOTFILES_ENVIRONMENT=default.
-{ pkgs, lib }:
+_:
 
 {
   # Detect environment based on system properties and environment variables

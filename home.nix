@@ -1,8 +1,6 @@
 # Home Manager configuration for dotfiles
 {
-  config,
   pkgs,
-  lib,
   inputs,
   username,
   homeDirectory,
@@ -55,8 +53,7 @@ in
       inherit inputs agentSkills;
     };
 
-    skills.enable =
-      if agentSkills.selection ? enable then agentSkills.selection.enable else null;
+    skills.enable = if agentSkills.selection ? enable then agentSkills.selection.enable else null;
 
     targets = import ./nix/targets.nix;
 

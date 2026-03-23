@@ -20,7 +20,7 @@ let
         mkAssetPath = assetPath: if assetPath == "." then root else "${root}/${assetPath}";
       in
       builtins.mapAttrs (
-        catalogName: subPath:
+        _catalogName: subPath:
         {
           path = if subPath == "." then base else "${base}/${subPath}";
         }

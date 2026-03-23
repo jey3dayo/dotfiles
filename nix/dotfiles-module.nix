@@ -1,7 +1,12 @@
 # Home Manager module: programs.dotfiles
 # Manages dotfiles distribution using home.file and home.activation
 { gitignore }:
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.programs.dotfiles;
@@ -9,11 +14,7 @@ let
   files = import ./dotfiles-files.nix;
 
   # Detect environment or use user override
-  environment =
-    if cfg.environment != null then
-      cfg.environment
-    else
-      envDetect.detectEnvironment pkgs;
+  environment = if cfg.environment != null then cfg.environment else envDetect.detectEnvironment pkgs;
 
   defaultWorktreeCandidates = [
     "${config.home.homeDirectory}/.config"
@@ -23,54 +24,53 @@ let
   ];
 
   worktreeCandidates =
-    if cfg.repoWorktreeCandidates != [] then
-      cfg.repoWorktreeCandidates
-    else
-      defaultWorktreeCandidates;
+    if cfg.repoWorktreeCandidates != [ ] then cfg.repoWorktreeCandidates else defaultWorktreeCandidates;
 
   # Generate candidate array in bash-safe way (one per line, properly quoted)
-  worktreeCandidateLines = lib.concatMapStringsSep "\n" (path: "  ${lib.escapeShellArg path}") worktreeCandidates;
+  worktreeCandidateLines = lib.concatMapStringsSep "\n" (
+    path: "  ${lib.escapeShellArg path}"
+  ) worktreeCandidates;
 
   detectWorktreeScript = ''
-    repo_path="${cfg.repoPath}"
-    repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
-    worktree=""
+        repo_path="${cfg.repoPath}"
+        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
+        worktree=""
 
-    is_dotfiles_repo() {
-      local candidate="$1"
+        is_dotfiles_repo() {
+          local candidate="$1"
 
-      if ! ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        return 1
-      fi
+          if ! ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+            return 1
+          fi
 
-      local root
-      root="$(${pkgs.git}/bin/git -C "$candidate" rev-parse --show-toplevel 2>/dev/null)" || return 1
+          local root
+          root="$(${pkgs.git}/bin/git -C "$candidate" rev-parse --show-toplevel 2>/dev/null)" || return 1
 
-      if [ -f "$root/flake.nix" ] && [ -f "$root/home.nix" ] && [ -f "$root/nix/dotfiles-module.nix" ]; then
-        worktree="$root"
-        return 0
-      fi
+          if [ -f "$root/flake.nix" ] && [ -f "$root/home.nix" ] && [ -f "$root/nix/dotfiles-module.nix" ]; then
+            worktree="$root"
+            return 0
+          fi
 
-      return 1
-    }
+          return 1
+        }
 
-    if [ -n "$repo_worktree" ] && is_dotfiles_repo "$repo_worktree"; then
-      :
-    elif [ -n "''${DOTFILES_WORKTREE:-}" ] && is_dotfiles_repo "''${DOTFILES_WORKTREE}"; then
-      :
-    elif is_dotfiles_repo "$repo_path"; then
-      :
-    else
-      # Use bash array for safe iteration with spaces in paths
-      candidates=(
-${worktreeCandidateLines}
-      )
-      for candidate in "''${candidates[@]}"; do
-        if is_dotfiles_repo "$candidate"; then
-          break
+        if [ -n "$repo_worktree" ] && is_dotfiles_repo "$repo_worktree"; then
+          :
+        elif [ -n "''${DOTFILES_WORKTREE:-}" ] && is_dotfiles_repo "''${DOTFILES_WORKTREE}"; then
+          :
+        elif is_dotfiles_repo "$repo_path"; then
+          :
+        else
+          # Use bash array for safe iteration with spaces in paths
+          candidates=(
+    ${worktreeCandidateLines}
+          )
+          for candidate in "''${candidates[@]}"; do
+            if is_dotfiles_repo "$candidate"; then
+              break
+            fi
+          done
         fi
-      done
-    fi
   '';
 
   # gitignore.nix を使った真のgitignore-aware filter
@@ -81,12 +81,11 @@ ${worktreeCandidateLines}
   sshFiles = files.sshFiles;
   awsumeFiles = files.awsumeFiles;
 
-  mkHomeFiles = fileset:
-    lib.mapAttrs
-      (_: relativePath: {
-        source = "${cleanedRepo}/${relativePath}";
-      })
-      fileset;
+  mkHomeFiles =
+    fileset:
+    lib.mapAttrs (_: relativePath: {
+      source = "${cleanedRepo}/${relativePath}";
+    }) fileset;
 
 in
 {
@@ -109,7 +108,7 @@ in
 
     repoWorktreeCandidates = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = ''
         Candidate worktree paths to search when repoWorktreePath is null.
         Absolute paths are recommended. If empty, defaults to common locations under $HOME.
@@ -117,7 +116,13 @@ in
     };
 
     environment = lib.mkOption {
-      type = lib.types.nullOr (lib.types.enum [ "ci" "pi" "default" ]);
+      type = lib.types.nullOr (
+        lib.types.enum [
+          "ci"
+          "pi"
+          "default"
+        ]
+      );
       default = null;
       description = ''
         Environment type for configuration selection.
