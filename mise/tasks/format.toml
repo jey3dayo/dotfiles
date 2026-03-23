@@ -220,6 +220,26 @@ else
 fi
 """
 
+["format:nix"]
+description = "Nix ファイルをフォーマット（nixfmt、NIX_FILES で対象を限定可能）"
+run = """
+if [ -n "${NIX_FILES:-}" ]; then
+  nixfmt ${NIX_FILES}
+else
+  fd -e nix ${TASK_EXCLUDES} -X nixfmt
+fi
+"""
+
+["format:nix:check"]
+description = "Nix ファイルのフォーマットチェック（書き込みなし、NIX_FILES で対象を限定可能）"
+run = """
+if [ -n "${NIX_FILES:-}" ]; then
+  nixfmt --check ${NIX_FILES}
+else
+  fd -e nix ${TASK_EXCLUDES} -X nixfmt --check
+fi
+"""
+
 ["format:docs"]
 description = "ドキュメントの完全な検証とフォーマット"
 depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]
