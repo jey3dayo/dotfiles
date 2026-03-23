@@ -14,8 +14,12 @@ code-review-system 自身が優先度分類と修正適用を行います。
 `gh-address-comments` スキルの `fetch_comments.py` を実行し、JSON を取得:
 
 ```bash
+# PR 番号は --pr で指定可能（省略時は現在のブランチ PR を自動検出）
 python3 ~/.claude/skills/gh-address-comments/scripts/fetch_comments.py
+python3 ~/.claude/skills/gh-address-comments/scripts/fetch_comments.py --pr 123
 ```
+
+> **Note**: スキルのインストールパスが異なる環境では適宜パスを読み替えてください。
 
 出力構造:
 
@@ -61,7 +65,7 @@ Critical → High → Major → Minor の順で修正:
 2. コメント内容を解析し修正方針を決定
 3. コード修正を適用
 4. `mise run ci:quick` で検証
-5. 検証失敗時は `git checkout -- <file>` でロールバックし、次のコメントへ
+5. 検証失敗時は `git stash` で修正前に戻し、次のコメントへ（同一ファイルの先行修正を保護）
 
 ### Step 4: 結果報告
 
@@ -115,6 +119,13 @@ Critical → High → Major → Minor の順で修正:
 - 定数化 (src/utils/calc.ts:12) — @reviewer
 - 未使用変数削除 (src/hooks/useData.ts:8) — @coderabbitai
 - [スキップ] リファクタリング提案 → 手動対応が必要
+
+### Minor (2/4 修正済み)
+
+- 命名改善 (src/types/user.ts:5) — @reviewer
+- コメント追加 (src/api/middleware.ts:34) — @reviewer
+- [スキップ] フォーマット提案 → 既存スタイルに準拠
+- [スキップ] import 順序 → 自動フォーマッタに委譲
 
 ## 品質保証
 

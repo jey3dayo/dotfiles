@@ -8,7 +8,7 @@ description: |
 argument-hint: "--ci [PR#] | --comments | --fix [PR#] | --all"
 disable-model-invocation: true
 user-invocable: true
-allowed-tools: Task, Bash(gh:*), Read, Grep, Glob
+allowed-tools: Task, Bash, Read, Grep, Glob, Edit
 ---
 
 # Code Review System — PR Workflow Orchestrator
@@ -132,7 +132,7 @@ PR # detection (current branch or explicit)
 |                   -> Classify priority (self)
 |                   -> Apply fixes: Critical -> High -> Major -> Minor
 |                   -> Validate each fix (mise run ci:quick)
-|                   -> Rollback on failure
+|                   -> Stash rollback on failure (preserves prior fixes)
 |
 +-- --all --------> Run all above in sequence
     |
