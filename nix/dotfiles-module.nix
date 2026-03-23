@@ -76,10 +76,12 @@ let
   # gitignore.nix を使った真のgitignore-aware filter
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
-  entryPointFiles = files.entryPointFiles;
-  bashFiles = files.bashFiles;
-  sshFiles = files.sshFiles;
-  awsumeFiles = files.awsumeFiles;
+  inherit (files)
+    entryPointFiles
+    bashFiles
+    sshFiles
+    awsumeFiles
+    ;
 
   mkHomeFiles =
     fileset:
@@ -163,52 +165,54 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Set MISE_CONFIG_FILE environment variable based on detected environment
-    home.sessionVariables = {
-      MISE_CONFIG_FILE = "${config.xdg.configHome}/mise/config.${environment}.toml";
+    home = {
+      # Set MISE_CONFIG_FILE environment variable based on detected environment
+      sessionVariables = {
+        MISE_CONFIG_FILE = "${config.xdg.configHome}/mise/config.${environment}.toml";
+      };
+
+      # Deploy configuration files
+      file = lib.mkMerge [
+        # Entry point files (home directory)
+        (lib.mkIf cfg.deployEntryPoints (mkHomeFiles entryPointFiles))
+
+        # SSH config (with proper permissions)
+        (lib.mkIf cfg.deploySsh (mkHomeFiles sshFiles))
+
+        # Bash files
+        (lib.mkIf cfg.deployBash (mkHomeFiles bashFiles))
+
+        # AWSume config
+        (lib.mkIf cfg.deployAwsume (mkHomeFiles awsumeFiles))
+      ];
+
+      # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager.
+      # The following activation scripts may still be needed if you have runtime state
+      # that needs initialization (e.g., projects-config, mise trusted-configs, tmux plugins).
+
+      # Git submodule initialization (activation script)
+      activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
+        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          # Initialize tpm submodule and auto-install tmux plugins
+          ${detectWorktreeScript}
+
+          if [ -n "$worktree" ]; then
+            echo "Initializing Git submodules for tpm..."
+            if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
+              echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
+            fi
+
+            # Auto-install TPM plugins if tmux server is not running
+            tpm_path="$worktree/tmux/plugins/tpm"
+            install_script="$tpm_path/bin/install_plugins"
+            if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
+              echo "Installing tmux plugins via TPM..."
+              PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
+                echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
+            fi
+          fi
+        ''
+      );
     };
-
-    # Deploy configuration files
-    home.file = lib.mkMerge [
-      # Entry point files (home directory)
-      (lib.mkIf cfg.deployEntryPoints (mkHomeFiles entryPointFiles))
-
-      # SSH config (with proper permissions)
-      (lib.mkIf cfg.deploySsh (mkHomeFiles sshFiles))
-
-      # Bash files
-      (lib.mkIf cfg.deployBash (mkHomeFiles bashFiles))
-
-      # AWSume config
-      (lib.mkIf cfg.deployAwsume (mkHomeFiles awsumeFiles))
-    ];
-
-    # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager.
-    # The following activation scripts may still be needed if you have runtime state
-    # that needs initialization (e.g., projects-config, mise trusted-configs, tmux plugins).
-
-    # Git submodule initialization (activation script)
-    home.activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        # Initialize tpm submodule and auto-install tmux plugins
-        ${detectWorktreeScript}
-
-        if [ -n "$worktree" ]; then
-          echo "Initializing Git submodules for tpm..."
-          if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
-            echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
-          fi
-
-          # Auto-install TPM plugins if tmux server is not running
-          tpm_path="$worktree/tmux/plugins/tpm"
-          install_script="$tpm_path/bin/install_plugins"
-          if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
-            echo "Installing tmux plugins via TPM..."
-            PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
-              echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
-          fi
-        fi
-      ''
-    );
   };
 }

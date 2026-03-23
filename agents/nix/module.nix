@@ -26,9 +26,8 @@ let
       };
 
   catalog = agentLib.discoverCatalog {
-    sources = cfg.sources;
+    inherit (cfg) sources distributionsPath;
     localPath = cfg.localSkillsPath;
-    distributionsPath = cfg.distributionsPath;
   };
 
   localSkillIds = lib.attrNames (lib.filterAttrs (_: skill: skill.source == "local") catalog);
@@ -55,7 +54,7 @@ let
   };
 
   externalAgents = agentLib.discoverExternalAssets {
-    sources = cfg.sources;
+    inherit (cfg) sources;
     assetType = "agents";
     enabledSources = selectedSkillSources;
   };
@@ -65,7 +64,7 @@ let
   mergedAgents = externalAgents // distributionResult.agents;
 
   externalCommands = agentLib.discoverExternalAssets {
-    sources = cfg.sources;
+    inherit (cfg) sources;
     assetType = "commands";
     enabledSources = selectedSkillSources;
   };
@@ -239,93 +238,95 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # copy-tree targets: rsync-based sync (writable copy)
-    home.activation.agent-skills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-      let
-        copyTargets = lib.filterAttrs (_: t: t.enable && t.structure == "copy-tree") cfg.targets;
-        syncCommands = lib.mapAttrsToList (
+    home = {
+      # copy-tree targets: rsync-based sync (writable copy)
+      activation.agent-skills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+        let
+          copyTargets = lib.filterAttrs (_: t: t.enable && t.structure == "copy-tree") cfg.targets;
+          syncCommands = lib.mapAttrsToList (
+            _name: target:
+            let
+              dest = "$HOME/${target.dest}";
+            in
+            ''
+              mkdir -p "${dest}"
+              ${pkgs.rsync}/bin/rsync -aL --delete --exclude='/.system' "${bundle}/" "${dest}/"
+              chmod -R u+w "${dest}"
+            ''
+          ) copyTargets;
+        in
+        builtins.concatStringsSep "\n" syncCommands
+      );
+
+      # Ensure parent directories exist for link targets before link generation.
+      activation.agent-skills-link-dirs = lib.hm.dag.entryBefore [ "linkGeneration" ] (
+        let
+          linkTargets = lib.filterAttrs (_: t: t.enable && t.structure == "link") cfg.targets;
+          mkdirCommands = lib.mapAttrsToList (_name: target: ''
+            ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.dest}"
+          '') linkTargets;
+          configDirCommands = lib.mapAttrsToList (_name: target: ''
+            ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
+          '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
+          rulesDirCommands = mkAssetDirCommands "rules" distributionResult.rules cfg.targets;
+          agentsDirCommands = mkAssetDirCommands "agents" mergedAgents cfg.targets;
+          commandsDirCommands = mkAssetDirCommands "commands" externalCommands cfg.targets;
+        in
+        builtins.concatStringsSep "\n" (
+          mkdirCommands
+          ++ configDirCommands
+          ++ [
+            rulesDirCommands
+            agentsDirCommands
+            commandsDirCommands
+          ]
+        )
+      );
+
+      # link targets: per-skill directory symlinks to Nix store (default)
+      # Each skill dir becomes a symlink: ~/.claude/skills/agent-creator → /nix/store/.../agent-creator
+      # This keeps .system and other tool-managed files writable in the parent dir
+      file = lib.mkMerge (
+        # Skill distribution
+        (lib.mapAttrsToList (
           _name: target:
-          let
-            dest = "$HOME/${target.dest}";
-          in
-          ''
-            mkdir -p "${dest}"
-            ${pkgs.rsync}/bin/rsync -aL --delete --exclude='/.system' "${bundle}/" "${dest}/"
-            chmod -R u+w "${dest}"
-          ''
-        ) copyTargets;
-      in
-      builtins.concatStringsSep "\n" syncCommands
-    );
-
-    # Ensure parent directories exist for link targets before link generation.
-    home.activation.agent-skills-link-dirs = lib.hm.dag.entryBefore [ "linkGeneration" ] (
-      let
-        linkTargets = lib.filterAttrs (_: t: t.enable && t.structure == "link") cfg.targets;
-        mkdirCommands = lib.mapAttrsToList (_name: target: ''
-          ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.dest}"
-        '') linkTargets;
-        configDirCommands = lib.mapAttrsToList (_name: target: ''
-          ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
-        '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
-        rulesDirCommands = mkAssetDirCommands "rules" distributionResult.rules cfg.targets;
-        agentsDirCommands = mkAssetDirCommands "agents" mergedAgents cfg.targets;
-        commandsDirCommands = mkAssetDirCommands "commands" externalCommands cfg.targets;
-      in
-      builtins.concatStringsSep "\n" (
-        mkdirCommands
-        ++ configDirCommands
-        ++ [
-          rulesDirCommands
-          agentsDirCommands
-          commandsDirCommands
-        ]
-      )
-    );
-
-    # link targets: per-skill directory symlinks to Nix store (default)
-    # Each skill dir becomes a symlink: ~/.claude/skills/agent-creator → /nix/store/.../agent-creator
-    # This keeps .system and other tool-managed files writable in the parent dir
-    home.file = lib.mkMerge (
-      # Skill distribution
-      (lib.mapAttrsToList (
-        _name: target:
-        if target.enable && target.structure == "link" then
-          lib.mapAttrs' (
-            skillId: _skill:
-            lib.nameValuePair "${target.dest}/${skillId}" {
-              source = "${bundle}/${skillId}";
-            }
-          ) selectedSkills
-        else
-          { }
-      ) cfg.targets)
-      ++
-        # configFiles distribution
-        (lib.concatMap (
-          cf:
-          lib.mapAttrsToList (
-            targetName: target:
-            if target.enable && target.configDest != null && !(lib.elem targetName cf.exclude) then
-              let
-                filename = if lib.hasAttr targetName cf.rename then cf.rename.${targetName} else cf.default;
-              in
-              {
-                "${target.configDest}/${filename}".source = cf.src;
+          if target.enable && target.structure == "link" then
+            lib.mapAttrs' (
+              skillId: _skill:
+              lib.nameValuePair "${target.dest}/${skillId}" {
+                source = "${bundle}/${skillId}";
               }
-            else
-              { }
-          ) cfg.targets
-        ) cfg.configFiles)
-      ++
-        # Rules distribution (symlinks to each target's rules directory)
-        (mkAssetFileLinks "rules" distributionResult.rules cfg.targets)
-      ++
-        # Agents distribution (symlinks to each target's agents directory)
-        (mkAssetFileLinks "agents" mergedAgents cfg.targets)
-      ++
-        # Commands distribution (symlinks to each target's commands directory)
-        (mkAssetFileLinks "commands" externalCommands cfg.targets)
-    );
+            ) selectedSkills
+          else
+            { }
+        ) cfg.targets)
+        ++
+          # configFiles distribution
+          (lib.concatMap (
+            cf:
+            lib.mapAttrsToList (
+              targetName: target:
+              if target.enable && target.configDest != null && !(lib.elem targetName cf.exclude) then
+                let
+                  filename = if lib.hasAttr targetName cf.rename then cf.rename.${targetName} else cf.default;
+                in
+                {
+                  "${target.configDest}/${filename}".source = cf.src;
+                }
+              else
+                { }
+            ) cfg.targets
+          ) cfg.configFiles)
+        ++
+          # Rules distribution (symlinks to each target's rules directory)
+          (mkAssetFileLinks "rules" distributionResult.rules cfg.targets)
+        ++
+          # Agents distribution (symlinks to each target's agents directory)
+          (mkAssetFileLinks "agents" mergedAgents cfg.targets)
+        ++
+          # Commands distribution (symlinks to each target's commands directory)
+          (mkAssetFileLinks "commands" externalCommands cfg.targets)
+      );
+    };
   };
 }
