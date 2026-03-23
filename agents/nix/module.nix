@@ -37,45 +37,6 @@ let
     name = "agent-skills-bundle";
   };
 
-  # Helper: collect non-conflicting assets embedded in selected skills' subdirectories
-  # Returns: { assetId = { id, path, source }; ... } (same shape as distributionResult.agents)
-  collectSkillEmbeddedAssets =
-    assetType: existingIds:
-    builtins.foldl' (
-      acc: skill:
-      let
-        assetDir = skill.path + "/${assetType}";
-      in
-      if !builtins.pathExists assetDir then
-        acc
-      else
-        let
-          files = lib.filterAttrs (n: t: (t == "regular" || t == "symlink") && lib.hasSuffix ".md" n) (
-            builtins.readDir assetDir
-          );
-        in
-        builtins.foldl' (
-          innerAcc: fileName:
-          let
-            assetId = lib.removeSuffix ".md" fileName;
-          in
-          if lib.elem assetId existingIds then
-            innerAcc
-          else
-            innerAcc
-            // {
-              ${assetId} = {
-                id = assetId;
-                path = assetDir + "/${fileName}";
-                source = "skill";
-              };
-            }
-        ) acc (lib.attrNames files)
-    ) { } (lib.attrValues selectedSkills);
-
-  skillEmbeddedAgents = collectSkillEmbeddedAssets "agents" (lib.attrNames distributionResult.agents);
-  skillEmbeddedCommands = collectSkillEmbeddedAssets "commands" [ ];
-
   # Helper: generate mkdir commands for asset subdirectories (rules/agents)
   mkAssetDirCommands =
     assetType: assets: targets:
@@ -251,10 +212,8 @@ in {
         '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
         rulesDirCommands = mkAssetDirCommands "rules" distributionResult.rules cfg.targets;
         agentsDirCommands = mkAssetDirCommands "agents" distributionResult.agents cfg.targets;
-        skillAgentsDirCommands = mkAssetDirCommands "agents" skillEmbeddedAgents cfg.targets;
-        skillCommandsDirCommands = mkAssetDirCommands "commands" skillEmbeddedCommands cfg.targets;
       in
-        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ rulesDirCommands agentsDirCommands skillAgentsDirCommands skillCommandsDirCommands ]));
+        builtins.concatStringsSep "\n" (mkdirCommands ++ configDirCommands ++ [ rulesDirCommands agentsDirCommands ]));
 
     # link targets: per-skill directory symlinks to Nix store (default)
     # Each skill dir becomes a symlink: ~/.claude/skills/agent-creator → /nix/store/.../agent-creator
@@ -293,12 +252,6 @@ in {
       ++
       # Agents distribution (symlinks to each target's agents directory)
       (mkAssetFileLinks "agents" distributionResult.agents cfg.targets)
-      ++
-      # Skill-embedded agents (from skills with agents/ subdirectory, no conflicts with internal)
-      (mkAssetFileLinks "agents" skillEmbeddedAgents cfg.targets)
-      ++
-      # Skill-embedded commands (from skills with commands/ subdirectory)
-      (mkAssetFileLinks "commands" skillEmbeddedCommands cfg.targets)
     );
   };
 }

@@ -172,21 +172,10 @@ export const parseArgs = (args: string[]): ParsedCliArgs => {
 
 const readSkillInfo = (skillDir: string): { meta: { name: string | null; internal: boolean } } | null => {
   const skillFile = path.join(skillDir, "SKILL.md");
-  if (fs.existsSync(skillFile)) {
-    const content = fs.readFileSync(skillFile, "utf8");
-    const meta = parseFrontmatter(content);
-    return { meta };
-  }
-  const pluginFile = path.join(skillDir, ".claude-plugin", "plugin.json");
-  if (fs.existsSync(pluginFile)) {
-    try {
-      const plugin = JSON.parse(fs.readFileSync(pluginFile, "utf8")) as { name?: string };
-      return { meta: { name: plugin.name ?? null, internal: false } };
-    } catch {
-      return null;
-    }
-  }
-  return null;
+  if (!fs.existsSync(skillFile)) return null;
+  const content = fs.readFileSync(skillFile, "utf8");
+  const meta = parseFrontmatter(content);
+  return { meta };
 };
 
 export const discoverSkills = ({
@@ -220,9 +209,10 @@ export const discoverSkills = ({
       if (fs.statSync(hintAbs).isFile()) {
         restrictedRoot = path.dirname(hintAbs);
       } else {
-        const info = readSkillInfo(hintAbs);
-        if (info) {
-          if (includeInternal || !info.meta.internal) {
+        const skillFile = path.join(hintAbs, "SKILL.md");
+        if (fs.existsSync(skillFile)) {
+          const info = readSkillInfo(hintAbs);
+          if (info && (includeInternal || !info.meta.internal)) {
             impliedSkill = path.basename(hintAbs);
           }
           restrictedRoot = path.dirname(hintAbs);
@@ -246,15 +236,18 @@ export const discoverSkills = ({
     if (uniqueRoots.has(normalized)) continue;
     uniqueRoots.add(normalized);
 
-    const rootInfo = readSkillInfo(normalized);
-    if (rootInfo && (includeInternal || !rootInfo.meta.internal)) {
-      skillMap.set("__root__", {
-        id: "__root__",
-        dir: normalized,
-        meta: rootInfo.meta,
-        root: normalized,
-      });
-      skillRoots.push(normalized);
+    const rootSkillFile = path.join(normalized, "SKILL.md");
+    if (fs.existsSync(rootSkillFile)) {
+      const info = readSkillInfo(normalized);
+      if (info && (includeInternal || !info.meta.internal)) {
+        skillMap.set("__root__", {
+          id: "__root__",
+          dir: normalized,
+          meta: info.meta,
+          root: normalized,
+        });
+        skillRoots.push(normalized);
+      }
     }
 
     const entries = fs.readdirSync(normalized, { withFileTypes: true });

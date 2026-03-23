@@ -44,10 +44,7 @@ let
     let
       entries = readDir sourcePath;
       dirs = attrNames (filterAttrs (_: type: type == "directory") entries);
-      skills = builtins.filter (name:
-      pathExists (sourcePath + "/${name}/SKILL.md") ||
-      pathExists (sourcePath + "/${name}/.claude-plugin/plugin.json")
-    ) dirs;
+      skills = builtins.filter (name: pathExists (sourcePath + "/${name}/SKILL.md")) dirs;
     in
     builtins.listToAttrs (
       map (name: {
@@ -72,7 +69,7 @@ let
         else
           { };
     in
-    if pathExists (sourcePath + "/SKILL.md") || pathExists (sourcePath + "/.claude-plugin/plugin.json") then
+    if pathExists (sourcePath + "/SKILL.md") then
       {
         ${sourceName} = {
           id = sourceName;
