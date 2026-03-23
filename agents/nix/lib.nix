@@ -503,8 +503,8 @@ in
   mkChecks =
     {
       bundle,
-      catalog,
       selectedSkills,
+      ...
     }:
     pkgs.runCommand "agent-skills-check" { } ''
       # Verify bundle exists and has content

@@ -85,22 +85,17 @@
           homeDirectory = builtins.getEnv "HOME";
           # Agent-skills module is bundled in this repo
           agentSkillsPath = ./agents/nix/module.nix;
-          agentSkillsModule =
-            if builtins.pathExists agentSkillsPath
-            then import agentSkillsPath
-            else { config, ... }: { };
+          agentSkillsModule = if builtins.pathExists agentSkillsPath then import agentSkillsPath else _: { };
 
           # Base modules that always exist
           baseModules = [
-            self.homeManagerModules.default  # dotfiles module
+            self.homeManagerModules.default # dotfiles module
             ./home.nix
           ];
 
           # Add agent-skills module if it exists in repo
           allModules =
-            if builtins.pathExists agentSkillsPath
-            then baseModules ++ [ agentSkillsModule ]
-            else baseModules;
+            if builtins.pathExists agentSkillsPath then baseModules ++ [ agentSkillsModule ] else baseModules;
         in
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
@@ -108,114 +103,135 @@
           extraSpecialArgs = { inherit inputs username homeDirectory; };
         };
     }
-    // flake-utils.lib.eachSystem [
-      "x86_64-linux"
-      "aarch64-linux"
-      "x86_64-darwin"
-      "aarch64-darwin"
-    ] (system:
-      let
-        pkgs = nixpkgs.legacyPackages.${system};
-        targets = import ./nix/targets.nix;
-        agentLib = import ./agents/nix/lib.nix { inherit pkgs; nixlib = nixpkgs.lib; };
-        agentSkills = import ./nix/agent-skills.nix;
-        sourceDefs = agentSkills.inputs;
-        toGithubUrl = url:
-          if nixpkgs.lib.hasPrefix "github:" url then
-            "https://github.com/" + nixpkgs.lib.removePrefix "github:" url
-          else
-            url;
-        externalSourceMeta =
-          nixpkgs.lib.foldl' (acc: sourceName:
-            let
-              sourceConfig = sourceDefs.${sourceName};
-              repoUrl = toGithubUrl sourceConfig.url;
-              root = inputs.${sourceName};
-              baseMeta = {
-                inherit repoUrl root;
+    //
+      flake-utils.lib.eachSystem
+        [
+          "x86_64-linux"
+          "aarch64-linux"
+          "x86_64-darwin"
+          "aarch64-darwin"
+        ]
+        (
+          system:
+          let
+            pkgs = nixpkgs.legacyPackages.${system};
+            targets = import ./nix/targets.nix;
+            agentLib = import ./agents/nix/lib.nix {
+              inherit pkgs;
+              nixlib = nixpkgs.lib;
+            };
+            agentSkills = import ./nix/agent-skills.nix;
+            sourceDefs = agentSkills.inputs;
+            toGithubUrl =
+              url:
+              if nixpkgs.lib.hasPrefix "github:" url then
+                "https://github.com/" + nixpkgs.lib.removePrefix "github:" url
+              else
+                url;
+            externalSourceMeta = nixpkgs.lib.foldl' (
+              acc: sourceName:
+              let
+                sourceConfig = sourceDefs.${sourceName};
+                repoUrl = toGithubUrl sourceConfig.url;
+                root = inputs.${sourceName};
+                baseMeta = {
+                  inherit repoUrl root;
+                  branch = "main";
+                };
+                catalogMeta = nixpkgs.lib.mapAttrs (_catalogName: _subPath: baseMeta) sourceConfig.catalogs;
+              in
+              acc // { ${sourceName} = baseMeta; } // catalogMeta
+            ) { } (nixpkgs.lib.attrNames sourceDefs);
+            sourceMeta = externalSourceMeta // {
+              distribution = {
+                repoUrl = "https://github.com/jey3dayo/dotfiles";
+                root = ./.;
                 branch = "main";
               };
-              catalogMeta = nixpkgs.lib.mapAttrs (_catalogName: _subPath: baseMeta)
-                sourceConfig.catalogs;
-            in
-            acc // { ${sourceName} = baseMeta; } // catalogMeta
-          ) {} (nixpkgs.lib.attrNames sourceDefs);
-        sourceMeta = externalSourceMeta // {
-          distribution = {
-            repoUrl = "https://github.com/jey3dayo/dotfiles";
-            root = ./.;
-            branch = "main";
-          };
-        };
-        sources = import ./nix/sources.nix { inherit inputs agentSkills; };
-        selection = agentSkills.selection;
-        catalog = agentLib.discoverCatalog {
-          inherit sources;
-          localPath = null;
-          distributionsPath = ./agents/internal;
-        };
-        enableConfig = if selection ? enable then selection.enable else null;
-        distributionSkillIds = nixpkgs.lib.attrNames
-          (nixpkgs.lib.filterAttrs (_: skill: skill.source == "distribution") catalog);
-        enableList =
-          if enableConfig == null then
-            nixpkgs.lib.attrNames catalog
-          else
-            nixpkgs.lib.unique (enableConfig ++ distributionSkillIds);
-        selectedSkills =
-          if enableConfig == null then
-            catalog
-          else
-            agentLib.selectSkills {
-              inherit catalog;
-              enable = enableList;
             };
-        bundle = agentLib.mkBundle {
-          skills = selectedSkills;
-          name = "agent-skills-bundle";
-        };
-      in
-      {
-        packages.default = bundle;
-        packages.bundle = bundle;
+            sources = import ./nix/sources.nix { inherit inputs agentSkills; };
+            selection = agentSkills.selection;
+            catalog = agentLib.discoverCatalog {
+              inherit sources;
+              localPath = null;
+              distributionsPath = ./agents/internal;
+            };
+            enableConfig = if selection ? enable then selection.enable else null;
+            distributionSkillIds = nixpkgs.lib.attrNames (
+              nixpkgs.lib.filterAttrs (_: skill: skill.source == "distribution") catalog
+            );
+            enableList =
+              if enableConfig == null then
+                nixpkgs.lib.attrNames catalog
+              else
+                nixpkgs.lib.unique (enableConfig ++ distributionSkillIds);
+            selectedSkills =
+              if enableConfig == null then
+                catalog
+              else
+                agentLib.selectSkills {
+                  inherit catalog;
+                  enable = enableList;
+                };
+            bundle = agentLib.mkBundle {
+              skills = selectedSkills;
+              name = "agent-skills-bundle";
+            };
+          in
+          {
+            packages.default = bundle;
+            packages.bundle = bundle;
 
-        apps = {
-          install = {
-            type = "app";
-            program =
-              let
-                targetsList = nixpkgs.lib.mapAttrsToList
-                  (tool: t: { inherit tool; inherit (t) dest; })
-                  (nixpkgs.lib.filterAttrs (_: t: t.enable) targets);
-              in
-              "${agentLib.mkSyncScript { inherit bundle; targets = targetsList; }}/bin/skills-install";
-          };
-          list = {
-            type = "app";
-            program = "${agentLib.mkListScript { inherit catalog selectedSkills; }}/bin/skills-list";
-          };
-          report = {
-            type = "app";
-            program = "${agentLib.mkReportScript { skills = selectedSkills; inherit sourceMeta; }}/bin/skills-report";
-          };
-          validate = {
-            type = "app";
-            program = "${agentLib.mkValidateScript { inherit catalog selectedSkills bundle; }}/bin/skills-validate";
-          };
-        };
+            apps = {
+              install = {
+                type = "app";
+                program =
+                  let
+                    targetsList = nixpkgs.lib.mapAttrsToList (tool: t: {
+                      inherit tool;
+                      inherit (t) dest;
+                    }) (nixpkgs.lib.filterAttrs (_: t: t.enable) targets);
+                  in
+                  "${
+                    agentLib.mkSyncScript {
+                      inherit bundle;
+                      targets = targetsList;
+                    }
+                  }/bin/skills-install";
+              };
+              list = {
+                type = "app";
+                program = "${agentLib.mkListScript { inherit catalog selectedSkills; }}/bin/skills-list";
+              };
+              report = {
+                type = "app";
+                program = "${
+                  agentLib.mkReportScript {
+                    skills = selectedSkills;
+                    inherit sourceMeta;
+                  }
+                }/bin/skills-report";
+              };
+              validate = {
+                type = "app";
+                program = "${
+                  agentLib.mkValidateScript { inherit catalog selectedSkills bundle; }
+                }/bin/skills-validate";
+              };
+            };
 
-        checks.default = agentLib.mkChecks { inherit bundle catalog selectedSkills; };
+            checks.default = agentLib.mkChecks { inherit bundle catalog selectedSkills; };
 
-        devShells.default = pkgs.mkShell {
-          buildInputs = [ home-manager.packages.${system}.default ];
-          shellHook = ''
-            echo "Agent Skills Dev Shell"
-            echo "  home-manager switch --flake . --impure  # Apply skills"
-            echo "  nix run .#list                          # List skills"
-          '';
-        };
+            devShells.default = pkgs.mkShell {
+              buildInputs = [ home-manager.packages.${system}.default ];
+              shellHook = ''
+                echo "Agent Skills Dev Shell"
+                echo "  home-manager switch --flake . --impure  # Apply skills"
+                echo "  nix run .#list                          # List skills"
+              '';
+            };
 
-        formatter = pkgs.nixfmt;
-      }
-    );
+            formatter = pkgs.nixfmt;
+          }
+        );
 }
