@@ -88,7 +88,7 @@ home-manager switch --generation 5
 
 - すべてのgenerationsが破損している
 - Home Managerプロファイルが削除された
-- 複数のflakeから`home-manager switch`を実行して混乱した（troubleshooting.mdの事例）
+- 複数のflakeから`home-manager switch`を実行して混乱した（Home Manager トラブルシューティングの事例）
 - 設定ファイルが失われた
 
 ### 手順
@@ -333,7 +333,7 @@ home-manager switch --flake . --impure
 ls -la ~ | grep -E '(agents|dotfiles)'
 ```
 
-詳細: `.claude/rules/troubleshooting.md` 参照
+詳細: `docs/tools/home-manager.md` 参照
 
 ### Q: "too many open files" エラー
 
@@ -388,9 +388,9 @@ home-manager switch --flake ~/.config --impure
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)
 - [Nix Generations Management](https://nixos.org/manual/nix/stable/package-management/profiles.html)
 - プロジェクト内ドキュメント:
-  - `.claude/rules/troubleshooting.md` - スキル配布問題の対処法
-  - `.claude/rules/nix-maintenance.md` - 定期メンテナンス手順
-  - `.claude/rules/workflows-and-maintenance.md` - 全体的なワークフロー
+  - `docs/tools/home-manager.md` - スキル配布問題の対処法
+  - `docs/tools/nix.md` - 定期メンテナンス手順
+  - `docs/tools/workflows.md` - 全体的なワークフロー
 
 ---
 

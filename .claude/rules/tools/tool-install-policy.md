@@ -2,7 +2,8 @@
 paths:
   - "Brewfile"
   - "mise/config.*.toml"
-  - ".claude/rules/workflows-and-maintenance.md"
+  - "docs/tools/workflows.md"
+  - "docs/tools/mise.md"
 ---
 
 # Tool Installation Policy
@@ -19,8 +20,8 @@ Three-layer tool management architecture policy defining responsibility boundari
 
 ## Sources
 
-- `.claude/rules/workflows-and-maintenance.md`: Brewfile management workflows
-- `.claude/rules/tools/mise.md`: mise runtime management
+- `docs/tools/workflows.md`: Brewfile management workflows
+- `docs/tools/mise.md`: mise runtime management
 
 ## Three-Layer Architecture
 
@@ -332,7 +333,7 @@ When migrating a tool from Homebrew to mise:
 
 7. Update documentation
    - Add migration note to commit message
-   - Update `.claude/rules/workflows-and-maintenance.md` if needed
+   - Update `docs/tools/workflows.md` if needed
 
 8. Test across environments
 
@@ -429,9 +430,9 @@ When migrating a tool from Homebrew to mise:
 - PR #108: starship binary moved to mise
 - Commit 01ea391b: Brewfile alignment with policy
 - Commit e40c34ac: Rust toolchain moved to mise
-- `.claude/rules/workflows-and-maintenance.md`: Brewfile workflows
-- `.claude/rules/tools/mise.md`: mise runtime management
-- `.claude/rules/workflows-and-maintenance.md`: Tool Management Philosophy
+- `docs/tools/workflows.md`: Brewfile workflows
+- `docs/tools/mise.md`: mise runtime management
+- `docs/tools/workflows.md`: Tool management philosophy
 
 ## Change Log
 

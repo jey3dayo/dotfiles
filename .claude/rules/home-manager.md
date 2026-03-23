@@ -54,4 +54,4 @@ Detailed Reference: [docs/tools/home-manager.md](../../docs/tools/home-manager.m
 | "expected a set but got a thunk" | flake inputs に動的評価               | inputs を静的リテラル定義に変更                               |
 | Permission denied / Read-only    | ディレクトリ全体が Nix ストアにリンク | `xdgConfigDirs` から除外して switch                           |
 
-詳細なトラブルシューティング: [docs/tools/home-manager.md](../../docs/tools/home-manager.md)、[.claude/rules/troubleshooting.md](./troubleshooting.md)
+詳細なトラブルシューティング: [docs/tools/home-manager.md](../../docs/tools/home-manager.md)、[docs/disaster-recovery.md](../../docs/disaster-recovery.md)
