@@ -86,7 +86,9 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
     // Table rows: strip bold from cells.
     // Example: "| **スキル名** | 説明 |" -> "| スキル名 | 説明 |"
     const tableRow = /^\s*\|/;
-    const tableSeparator = /^\s*\|[\s:-]+\|/;
+    // Separator rows must have at least one dash per cell and only contain dashes, colons, spaces, and pipes.
+    // Example: "| --- | :---: | ---: |"
+    const tableSeparator = /^\s*\|(\s*:?-+:?\s*\|)+\s*$/;
     const boldInCell = /\*\*([^*]+)\*\*/g;
 
     // Standalone bold-only lines are treated as pseudo headings.

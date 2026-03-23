@@ -113,6 +113,10 @@ describe("replace-bold-headings: conversion rules", () => {
   it("preserves table separator row", () => check("| --- | --- |", "| --- | --- |"));
 
   it("preserves table separator row with colons", () => check("| :--- | :---: | ---: |", "| :--- | :---: | ---: |"));
+
+  it("strips bold from row with dashes in first cell", () => check("| --- | **value** |", "| --- | value |"));
+
+  it("does not treat colon-only cells as separator", () => check("| : | **text** |", "| : | text |"));
 });
 
 // ============================================================
