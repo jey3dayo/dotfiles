@@ -420,7 +420,7 @@ in
           relPath = stripDotPrefix (removePrefix "${rootStr}/" (toString s.path));
         in
         {
-          id = s.id;
+          inherit (s) id;
           type = if s.source == "local" || s.source == "distribution" then "internal" else "external";
           url = "${meta.repoUrl}/tree/${branch}/${relPath}";
         }
@@ -503,8 +503,8 @@ in
   mkChecks =
     {
       bundle,
-      catalog,
       selectedSkills,
+      ...
     }:
     pkgs.runCommand "agent-skills-check" { } ''
       # Verify bundle exists and has content

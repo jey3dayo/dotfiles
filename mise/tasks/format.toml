@@ -220,6 +220,54 @@ else
 fi
 """
 
+["format:nix"]
+description = "Nix ファイルをフォーマット（nixfmt、NIX_FILES で対象を限定可能）"
+run = """
+run_nixfmt() {
+  if command -v nixfmt >/dev/null 2>&1; then
+    nixfmt "$@"
+  elif command -v nix >/dev/null 2>&1; then
+    nix shell nixpkgs#nixfmt-rfc-style --command nixfmt "$@"
+  else
+    echo "❌ nixfmt not found. Install it locally or make nix available for fallback."
+    exit 1
+  fi
+}
+
+if [ -n "${NIX_FILES:-}" ]; then
+  run_nixfmt ${NIX_FILES}
+else
+  nix_files="$(fd -e nix ${TASK_EXCLUDES})"
+  if [ -n "${nix_files}" ]; then
+    run_nixfmt ${nix_files}
+  fi
+fi
+"""
+
+["format:nix:check"]
+description = "Nix ファイルのフォーマットチェック（書き込みなし、NIX_FILES で対象を限定可能）"
+run = """
+run_nixfmt() {
+  if command -v nixfmt >/dev/null 2>&1; then
+    nixfmt "$@"
+  elif command -v nix >/dev/null 2>&1; then
+    nix shell nixpkgs#nixfmt-rfc-style --command nixfmt "$@"
+  else
+    echo "❌ nixfmt not found. Install it locally or make nix available for fallback."
+    exit 1
+  fi
+}
+
+if [ -n "${NIX_FILES:-}" ]; then
+  run_nixfmt --check ${NIX_FILES}
+else
+  nix_files="$(fd -e nix ${TASK_EXCLUDES})"
+  if [ -n "${nix_files}" ]; then
+    run_nixfmt --check ${nix_files}
+  fi
+fi
+"""
+
 ["format:docs"]
 description = "ドキュメントの完全な検証とフォーマット"
 depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]

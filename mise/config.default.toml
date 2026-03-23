@@ -74,6 +74,10 @@ stylua = "latest"
 taplo = "latest"
 yamllint = "latest"
 "pipx:beautysh" = "latest"
+# Nix (nixfmt は Homebrew 管理: brew install nixfmt)
+# crates.io の statix は別ツールなので、公式 repo の statix crate を指定する
+"cargo:https://github.com/oppiliappan/statix" = { version = "tag:v0.5.8", crate = "statix" }
+"cargo:deadnix" = "latest"
 
 # ========================================
 # NPM Global Packages (Node.js グローバルパッケージ)

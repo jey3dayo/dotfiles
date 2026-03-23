@@ -1,7 +1,12 @@
 # Home Manager module: programs.dotfiles
 # Manages dotfiles distribution using home.file and home.activation
 { gitignore }:
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.programs.dotfiles;
@@ -9,11 +14,7 @@ let
   files = import ./dotfiles-files.nix;
 
   # Detect environment or use user override
-  environment =
-    if cfg.environment != null then
-      cfg.environment
-    else
-      envDetect.detectEnvironment pkgs;
+  environment = if cfg.environment != null then cfg.environment else envDetect.detectEnvironment pkgs;
 
   defaultWorktreeCandidates = [
     "${config.home.homeDirectory}/.config"
@@ -23,70 +24,70 @@ let
   ];
 
   worktreeCandidates =
-    if cfg.repoWorktreeCandidates != [] then
-      cfg.repoWorktreeCandidates
-    else
-      defaultWorktreeCandidates;
+    if cfg.repoWorktreeCandidates != [ ] then cfg.repoWorktreeCandidates else defaultWorktreeCandidates;
 
   # Generate candidate array in bash-safe way (one per line, properly quoted)
-  worktreeCandidateLines = lib.concatMapStringsSep "\n" (path: "  ${lib.escapeShellArg path}") worktreeCandidates;
+  worktreeCandidateLines = lib.concatMapStringsSep "\n" (
+    path: "  ${lib.escapeShellArg path}"
+  ) worktreeCandidates;
 
   detectWorktreeScript = ''
-    repo_path="${cfg.repoPath}"
-    repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
-    worktree=""
+        repo_path="${cfg.repoPath}"
+        repo_worktree="${lib.optionalString (cfg.repoWorktreePath != null) cfg.repoWorktreePath}"
+        worktree=""
 
-    is_dotfiles_repo() {
-      local candidate="$1"
+        is_dotfiles_repo() {
+          local candidate="$1"
 
-      if ! ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        return 1
-      fi
+          if ! ${pkgs.git}/bin/git -C "$candidate" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+            return 1
+          fi
 
-      local root
-      root="$(${pkgs.git}/bin/git -C "$candidate" rev-parse --show-toplevel 2>/dev/null)" || return 1
+          local root
+          root="$(${pkgs.git}/bin/git -C "$candidate" rev-parse --show-toplevel 2>/dev/null)" || return 1
 
-      if [ -f "$root/flake.nix" ] && [ -f "$root/home.nix" ] && [ -f "$root/nix/dotfiles-module.nix" ]; then
-        worktree="$root"
-        return 0
-      fi
+          if [ -f "$root/flake.nix" ] && [ -f "$root/home.nix" ] && [ -f "$root/nix/dotfiles-module.nix" ]; then
+            worktree="$root"
+            return 0
+          fi
 
-      return 1
-    }
+          return 1
+        }
 
-    if [ -n "$repo_worktree" ] && is_dotfiles_repo "$repo_worktree"; then
-      :
-    elif [ -n "''${DOTFILES_WORKTREE:-}" ] && is_dotfiles_repo "''${DOTFILES_WORKTREE}"; then
-      :
-    elif is_dotfiles_repo "$repo_path"; then
-      :
-    else
-      # Use bash array for safe iteration with spaces in paths
-      candidates=(
-${worktreeCandidateLines}
-      )
-      for candidate in "''${candidates[@]}"; do
-        if is_dotfiles_repo "$candidate"; then
-          break
+        if [ -n "$repo_worktree" ] && is_dotfiles_repo "$repo_worktree"; then
+          :
+        elif [ -n "''${DOTFILES_WORKTREE:-}" ] && is_dotfiles_repo "''${DOTFILES_WORKTREE}"; then
+          :
+        elif is_dotfiles_repo "$repo_path"; then
+          :
+        else
+          # Use bash array for safe iteration with spaces in paths
+          candidates=(
+    ${worktreeCandidateLines}
+          )
+          for candidate in "''${candidates[@]}"; do
+            if is_dotfiles_repo "$candidate"; then
+              break
+            fi
+          done
         fi
-      done
-    fi
   '';
 
   # gitignore.nix を使った真のgitignore-aware filter
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
-  entryPointFiles = files.entryPointFiles;
-  bashFiles = files.bashFiles;
-  sshFiles = files.sshFiles;
-  awsumeFiles = files.awsumeFiles;
+  inherit (files)
+    entryPointFiles
+    bashFiles
+    sshFiles
+    awsumeFiles
+    ;
 
-  mkHomeFiles = fileset:
-    lib.mapAttrs
-      (_: relativePath: {
-        source = "${cleanedRepo}/${relativePath}";
-      })
-      fileset;
+  mkHomeFiles =
+    fileset:
+    lib.mapAttrs (_: relativePath: {
+      source = "${cleanedRepo}/${relativePath}";
+    }) fileset;
 
 in
 {
@@ -109,7 +110,7 @@ in
 
     repoWorktreeCandidates = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [];
+      default = [ ];
       description = ''
         Candidate worktree paths to search when repoWorktreePath is null.
         Absolute paths are recommended. If empty, defaults to common locations under $HOME.
@@ -117,7 +118,13 @@ in
     };
 
     environment = lib.mkOption {
-      type = lib.types.nullOr (lib.types.enum [ "ci" "pi" "default" ]);
+      type = lib.types.nullOr (
+        lib.types.enum [
+          "ci"
+          "pi"
+          "default"
+        ]
+      );
       default = null;
       description = ''
         Environment type for configuration selection.
@@ -158,52 +165,54 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Set MISE_CONFIG_FILE environment variable based on detected environment
-    home.sessionVariables = {
-      MISE_CONFIG_FILE = "${config.xdg.configHome}/mise/config.${environment}.toml";
+    home = {
+      # Set MISE_CONFIG_FILE environment variable based on detected environment
+      sessionVariables = {
+        MISE_CONFIG_FILE = "${config.xdg.configHome}/mise/config.${environment}.toml";
+      };
+
+      # Deploy configuration files
+      file = lib.mkMerge [
+        # Entry point files (home directory)
+        (lib.mkIf cfg.deployEntryPoints (mkHomeFiles entryPointFiles))
+
+        # SSH config (with proper permissions)
+        (lib.mkIf cfg.deploySsh (mkHomeFiles sshFiles))
+
+        # Bash files
+        (lib.mkIf cfg.deployBash (mkHomeFiles bashFiles))
+
+        # AWSume config
+        (lib.mkIf cfg.deployAwsume (mkHomeFiles awsumeFiles))
+      ];
+
+      # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager.
+      # The following activation scripts may still be needed if you have runtime state
+      # that needs initialization (e.g., projects-config, mise trusted-configs, tmux plugins).
+
+      # Git submodule initialization (activation script)
+      activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
+        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          # Initialize tpm submodule and auto-install tmux plugins
+          ${detectWorktreeScript}
+
+          if [ -n "$worktree" ]; then
+            echo "Initializing Git submodules for tpm..."
+            if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
+              echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
+            fi
+
+            # Auto-install TPM plugins if tmux server is not running
+            tpm_path="$worktree/tmux/plugins/tpm"
+            install_script="$tpm_path/bin/install_plugins"
+            if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
+              echo "Installing tmux plugins via TPM..."
+              PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
+                echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
+            fi
+          fi
+        ''
+      );
     };
-
-    # Deploy configuration files
-    home.file = lib.mkMerge [
-      # Entry point files (home directory)
-      (lib.mkIf cfg.deployEntryPoints (mkHomeFiles entryPointFiles))
-
-      # SSH config (with proper permissions)
-      (lib.mkIf cfg.deploySsh (mkHomeFiles sshFiles))
-
-      # Bash files
-      (lib.mkIf cfg.deployBash (mkHomeFiles bashFiles))
-
-      # AWSume config
-      (lib.mkIf cfg.deployAwsume (mkHomeFiles awsumeFiles))
-    ];
-
-    # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager.
-    # The following activation scripts may still be needed if you have runtime state
-    # that needs initialization (e.g., projects-config, mise trusted-configs, tmux plugins).
-
-    # Git submodule initialization (activation script)
-    home.activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
-      lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-        # Initialize tpm submodule and auto-install tmux plugins
-        ${detectWorktreeScript}
-
-        if [ -n "$worktree" ]; then
-          echo "Initializing Git submodules for tpm..."
-          if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
-            echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
-          fi
-
-          # Auto-install TPM plugins if tmux server is not running
-          tpm_path="$worktree/tmux/plugins/tpm"
-          install_script="$tpm_path/bin/install_plugins"
-          if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
-            echo "Installing tmux plugins via TPM..."
-            PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
-              echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
-          fi
-        fi
-      ''
-    );
   };
 }

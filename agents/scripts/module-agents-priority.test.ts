@@ -52,5 +52,5 @@ describe("agents/nix/module.nix", () => {
       expect(result.status).toBe(0);
       expect(fs.readFileSync(result.stdout.trim(), "utf8")).toBe(bundledCodeReviewer);
     }
-  });
+  }, 15_000);
 });

@@ -121,6 +121,18 @@ run = """
 actionlint
 """
 
+["lint:nix"]
+description = "Nix ファイルをチェック（statix と deadnix）"
+depends = ["lint:nix:statix", "lint:nix:deadnix"]
+
+["lint:nix:statix"]
+description = "statix を実行（Nix アンチパターン検出）"
+run = "statix check ."
+
+["lint:nix:deadnix"]
+description = "deadnix を実行（未使用バインディング検出）"
+run = "fd -e nix ${TASK_EXCLUDES} -X deadnix --fail"
+
 ["lint:lua"]
 description = "Lua ファイルをチェック（luacheck）"
 depends = ["lint:lua:luacheck"]
