@@ -51,6 +51,9 @@ stylua = "latest"          # Lua format
 taplo = "latest"           # TOML format
 yamllint = "latest"        # YAML lint
 "pipx:beautysh" = "latest" # Shell format (Python-based)
+# Nix (nixfmt は Homebrew 管理: brew install nixfmt)
+"cargo:statix" = "latest"
+"cargo:deadnix" = "latest"
 # NPM Packages
 "npm:markdown-link-check" = "latest"
 "npm:markdownlint-cli2" = "latest"
