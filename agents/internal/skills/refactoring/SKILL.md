@@ -67,11 +67,11 @@ Classify diagnostic results using the following priority matrix.
 
 #### Priority Matrix
 
-| Priority    | Condition                                      | Action                          |
-| ----------- | ---------------------------------------------- | ------------------------------- |
-| 🔴 Critical | react-doctor errors **AND** similarity 95%+    | Fix immediately (this session)  |
-| 🟡 High     | react-doctor warnings **OR** similarity 90-95% | Plan fix (high priority)        |
-| 🟢 Low      | similarity 87-90% (default threshold)          | Future candidate (needs review) |
+| Priority    | Condition                                  | Action                          |
+| ----------- | ------------------------------------------ | ------------------------------- |
+| 🔴 Critical | react-doctor errors AND similarity 95%+    | Fix immediately (this session)  |
+| 🟡 High     | react-doctor warnings OR similarity 90-95% | Plan fix (high priority)        |
+| 🟢 Low      | similarity 87-90% (default threshold)      | Future candidate (needs review) |
 
 #### Plan Output Format
 

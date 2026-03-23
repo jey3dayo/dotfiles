@@ -353,13 +353,13 @@ context=context
 
 ## Agent vs Skill vs Command Decision Matrix
 
-| Aspect         | Agent                     | Skill                       | Command                |
-| -------------- | ------------------------- | --------------------------- | ---------------------- |
-| **Invocation** | Via Task tool             | Auto-trigger                | User types `/cmd`      |
-| **Autonomy**   | Autonomous execution      | Context-aware guidance      | User-driven            |
-| **Scope**      | Focused subtask           | Domain expertise            | Workflow coordination  |
-| **State**      | Stateless per invocation  | Context across conversation | Session-based          |
-| **Examples**   | `security`, `performance` | `typescript`, `react`       | `/review`, `/refactor` |
+| Aspect     | Agent                     | Skill                       | Command                |
+| ---------- | ------------------------- | --------------------------- | ---------------------- |
+| Invocation | Via Task tool             | Auto-trigger                | User types `/cmd`      |
+| Autonomy   | Autonomous execution      | Context-aware guidance      | User-driven            |
+| Scope      | Focused subtask           | Domain expertise            | Workflow coordination  |
+| State      | Stateless per invocation  | Context across conversation | Session-based          |
+| Examples   | `security`, `performance` | `typescript`, `react`       | `/review`, `/refactor` |
 
 ### When to Choose Agent
 

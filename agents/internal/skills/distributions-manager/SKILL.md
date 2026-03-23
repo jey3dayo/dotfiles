@@ -142,4 +142,4 @@ mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "local")'
 | SKILL.md (this file) | ~300         | Always loaded                             |
 | references/          | ~1,500-2,000 | Loaded on-demand (progressive disclosure) |
 | resources/           | ~700-950     | Loaded when hands-on work is needed       |
-| **Total**            | ~2,500-3,250 | Efficient progressive disclosure          |
+| Total                | ~2,500-3,250 | Efficient progressive disclosure          |

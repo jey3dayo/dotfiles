@@ -154,10 +154,10 @@ vscode "ms-python.python"
 
 Policy: Prefer mise `go:` prefix over Homebrew `go` section
 
-| Method                | Use case                            | Example                                                  |
-| --------------------- | ----------------------------------- | -------------------------------------------------------- |
-| **mise** (優先)       | Development tools, project-specific | `go:github.com/golangci/golangci-lint/cmd/golangci-lint` |
-| **Homebrew** (最小限) | Go toolchain commands               | `go "cmd/go"`                                            |
+| Method            | Use case                            | Example                                                  |
+| ----------------- | ----------------------------------- | -------------------------------------------------------- |
+| mise (優先)       | Development tools, project-specific | `go:github.com/golangci/golangci-lint/cmd/golangci-lint` |
+| Homebrew (最小限) | Go toolchain commands               | `go "cmd/go"`                                            |
 
 Current Homebrew go section: 2 entries (Go toolchain commands)
 

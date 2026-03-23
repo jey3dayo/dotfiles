@@ -373,7 +373,7 @@ Scopes: repo, read:org
 | 組織情報の読み取り | `read:org`                 |
 | GitHub Actions実行 | `workflow`                 |
 | Discussions管理    | `write:discussion`         |
-| **避けるべき**     | `admin:org`, `delete_repo` |
+| 避けるべき         | `admin:org`, `delete_repo` |
 
 ### データベース接続のユーザー制限
 

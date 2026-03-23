@@ -11,11 +11,11 @@
 
 ### 主要コンポーネント
 
-| Component           | Current    | Industry Avg | Target | Status |
-| ------------------- | ---------- | ------------ | ------ | ------ |
-| **Zsh startup**     | **1.1s**   | 2-5s         | <100ms | 🟡     |
-| **Neovim startup**  | **<100ms** | 200-500ms    | <200ms | ✅     |
-| **WezTerm startup** | **800ms**  | 1-2s         | <1s    | ✅     |
+| Component       | Current | Industry Avg | Target | Status |
+| --------------- | ------- | ------------ | ------ | ------ |
+| Zsh startup     | 1.1s    | 2-5s         | <100ms | 🟡     |
+| Neovim startup  | <100ms  | 200-500ms    | <200ms | ✅     |
+| WezTerm startup | 800ms   | 1-2s         | <1s    | ✅     |
 
 ### 詳細ベンチマーク（M3 MacBook Pro基準）
 

@@ -312,7 +312,7 @@ in {
 | ファイル                       | 役割               | 管理項目                              |
 | ------------------------------ | ------------------ | ------------------------------------- |
 | `nix/agent-skills-sources.nix` | SSoT（メタデータ） | url, flake, baseDir, selection.enable |
-| `flake.nix` inputs             | Flake inputs定義   | url, flake のみ（**手動同期が必要**） |
+| `flake.nix` inputs             | Flake inputs定義   | url, flake のみ（手動同期が必要）     |
 | `nix/sources.nix`              | 統合処理           | inputs と baseDir を結合              |
 | `nix/agent-skills.nix`         | スキル選択         | selection.enable を抽出               |
 

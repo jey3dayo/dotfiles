@@ -29,14 +29,14 @@ metadata:
 
 ## When to Consult (MUST)
 
-| Situation                  | Trigger Examples                       |
-| -------------------------- | -------------------------------------- |
-| **Design decisions**       | "How to design?" "Architecture"        |
-| **Debugging**              | "Why doesn't it work?" "Error" "Debug" |
-| **Trade-off analysis**     | "Which is better?" "Compare" "Which?"  |
-| **Complex implementation** | "How to implement?" "How to build?"    |
-| **Refactoring**            | "Refactor" "Simplify"                  |
-| **Code review**            | "Review this" "Check this"             |
+| Situation              | Trigger Examples                       |
+| ---------------------- | -------------------------------------- |
+| Design decisions       | "How to design?" "Architecture"        |
+| Debugging              | "Why doesn't it work?" "Error" "Debug" |
+| Trade-off analysis     | "Which is better?" "Compare" "Which?"  |
+| Complex implementation | "How to implement?" "How to build?"    |
+| Refactoring            | "Refactor" "Simplify"                  |
+| Code review            | "Review this" "Check this"             |
 
 ## When NOT to Consult
 

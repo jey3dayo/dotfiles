@@ -35,12 +35,12 @@ pr_exists=$(gh pr view --json number 2>/dev/null && echo "yes" || echo "no")
 
 ### Decision matrix
 
-| Context                   | Current Branch      | Worktree? | PR? | Start Phase | Notes                                    |
-| ------------------------- | ------------------- | --------- | --- | ----------- | ---------------------------------------- |
-| **New task**              | main/master/default | No        | No  | Phase 1     | Full workflow                            |
-| **Resume implementation** | feature-branch      | No/Yes    | No  | Phase 1\*   | Skip worktree creation (Phase 2-3)       |
-| **Resume validation**     | feature-branch      | No/Yes    | No  | Phase 4     | If code is implemented, start validation |
-| **CI fix only**           | feature-branch      | No/Yes    | Yes | Phase 6     | PR exists, monitor/fix CI                |
+| Context               | Current Branch      | Worktree? | PR? | Start Phase | Notes                                    |
+| --------------------- | ------------------- | --------- | --- | ----------- | ---------------------------------------- |
+| New task              | main/master/default | No        | No  | Phase 1     | Full workflow                            |
+| Resume implementation | feature-branch      | No/Yes    | No  | Phase 1\*   | Skip worktree creation (Phase 2-3)       |
+| Resume validation     | feature-branch      | No/Yes    | No  | Phase 4     | If code is implemented, start validation |
+| CI fix only           | feature-branch      | No/Yes    | Yes | Phase 6     | PR exists, monitor/fix CI                |
 
 \*Phase 1 still runs for context gathering and task decomposition, but Phase 2-3 (worktree creation) are skipped.
 

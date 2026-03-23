@@ -19,36 +19,36 @@
 
 ### Foundation Skills
 
-| スキル名                  | 旧コマンド                             | 説明                                |
-| ------------------------- | -------------------------------------- | ----------------------------------- |
-| **docs-index**            | -                                      | Documentation navigation hub        |
-| **integration-framework** | `/task-context`, `/integration-matrix` | TaskContext標準化とワークフロー統合 |
+| スキル名              | 旧コマンド                             | 説明                                |
+| --------------------- | -------------------------------------- | ----------------------------------- |
+| docs-index            | -                                      | Documentation navigation hub        |
+| integration-framework | `/task-context`, `/integration-matrix` | TaskContext標準化とワークフロー統合 |
 
 ### Core Workflow Skills
 
-| スキル名                    | 旧コマンド                                             | 説明                                              |
-| --------------------------- | ------------------------------------------------------ | ------------------------------------------------- |
-| **learnings-knowledge**     | `/learnings`                                           | AI-driven knowledge recording (7カテゴリシステム) |
-| **code-quality-automation** | `/polish`                                              | Automated lint/format/test (6言語対応)            |
-| **implementation-engine**   | `/implement`                                           | Smart feature implementation (6フェーズ)          |
-| **todo-orchestrator**       | `/todos`, `/create-todos`, `/find-todos`, `/fix-todos` | Unified task management (P1-P5優先度)             |
-| **task-router**             | `/task`                                                | Intelligent task routing (Context7統合)           |
-| **code-review-system**      | `/review`                                              | PR workflow orchestrator (CI/comments/auto-fix)   |
+| スキル名                | 旧コマンド                                             | 説明                                              |
+| ----------------------- | ------------------------------------------------------ | ------------------------------------------------- |
+| learnings-knowledge     | `/learnings`                                           | AI-driven knowledge recording (7カテゴリシステム) |
+| code-quality-automation | `/polish`                                              | Automated lint/format/test (6言語対応)            |
+| implementation-engine   | `/implement`                                           | Smart feature implementation (6フェーズ)          |
+| todo-orchestrator       | `/todos`, `/create-todos`, `/find-todos`, `/fix-todos` | Unified task management (P1-P5優先度)             |
+| task-router             | `/task`                                                | Intelligent task routing (Context7統合)           |
+| code-review-system      | `/review`                                              | PR workflow orchestrator (CI/comments/auto-fix)   |
 
 ### Secondary Skills
 
-| スキル名                     | 旧コマンド              | 説明                                       |
-| ---------------------------- | ----------------------- | ------------------------------------------ |
-| **git-automation**           | `/commit`, `/create-pr` | Smart commit + Auto PR (既存PR検出)        |
-| **predictive-analysis**      | `/predict-issues`       | Risk prediction (4象限マトリクス)          |
-| **documentation-management** | `/docs`, `/fix-docs`    | AI-driven doc management (リンク検証)      |
-| **project-maintenance**      | `/full`, `/files`       | Project cleanup (Serenaセマンティック解析) |
+| スキル名                 | 旧コマンド              | 説明                                       |
+| ------------------------ | ----------------------- | ------------------------------------------ |
+| git-automation           | `/commit`, `/create-pr` | Smart commit + Auto PR (既存PR検出)        |
+| predictive-analysis      | `/predict-issues`       | Risk prediction (4象限マトリクス)          |
+| documentation-management | `/docs`, `/fix-docs`    | AI-driven doc management (リンク検証)      |
+| project-maintenance      | `/full`, `/files`       | Project cleanup (Serenaセマンティック解析) |
 
 ### Specialized Skills
 
-| スキル名   | 旧コマンド                                        | 説明                                               |
-| ---------- | ------------------------------------------------- | -------------------------------------------------- |
-| **cc-sdd** | `/kiro:*`, `/spec-*`, `/validate-*`, `/steering*` | Spec-Driven Development (Kiro形式、27テンプレート) |
+| スキル名 | 旧コマンド                                        | 説明                                               |
+| -------- | ------------------------------------------------- | -------------------------------------------------- |
+| cc-sdd   | `/kiro:*`, `/spec-*`, `/validate-*`, `/steering*` | Spec-Driven Development (Kiro形式、27テンプレート) |
 
 ---
 
