@@ -47,6 +47,9 @@ go/
 .settings/
 jsconfig.json
 
+## Tmux Plugins (installed by TPM at runtime)
+tmux/plugins/
+
 ## Vim/Neovim
 Session.vim
 .vim/.VimballRecord
