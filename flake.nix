@@ -150,13 +150,13 @@
               };
             };
             sources = import ./nix/sources.nix { inherit inputs agentSkills; };
-            selection = agentSkills.selection;
+            inherit (agentSkills) selection;
             catalog = agentLib.discoverCatalog {
               inherit sources;
               localPath = null;
               distributionsPath = ./agents/internal;
             };
-            enableConfig = if selection ? enable then selection.enable else null;
+            enableConfig = selection.enable or null;
             distributionSkillIds = nixpkgs.lib.attrNames (
               nixpkgs.lib.filterAttrs (_: skill: skill.source == "distribution") catalog
             );

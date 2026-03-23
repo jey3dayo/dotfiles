@@ -420,7 +420,7 @@ in
           relPath = stripDotPrefix (removePrefix "${rootStr}/" (toString s.path));
         in
         {
-          id = s.id;
+          inherit (s) id;
           type = if s.source == "local" || s.source == "distribution" then "internal" else "external";
           url = "${meta.repoUrl}/tree/${branch}/${relPath}";
         }
