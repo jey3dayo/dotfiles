@@ -44,6 +44,7 @@ TASK_EXCLUDES = "--exclude agents/external --exclude .worktrees --exclude result
 # BIOME_FILES = ""   # JS/TS/JSON ファイル (biome)
 # PRETTIER_FILES = "" # Prettier 対象ファイル
 # YAML_FILES = ""    # YAML ファイル
+# NIX_FILES = ""     # Nix ファイル
 
 # ========================================
 # ツール定義は config.default.toml または config.pi.toml を参照
