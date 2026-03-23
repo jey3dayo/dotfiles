@@ -8,7 +8,7 @@ description: |
 argument-hint: "--ci [PR#] | --comments | --fix [PR#] | --all"
 disable-model-invocation: true
 user-invocable: true
-allowed-tools: Task, Bash(gh:*), Read, Grep, Glob
+allowed-tools: Task, Bash(gh:*, python3:*, git:*, mise:*), Read, Grep, Glob, Edit
 ---
 
 # Code Review System — PR Workflow Orchestrator
@@ -58,10 +58,11 @@ Address review comments on the current PR.
 
 Automatically fix PR review comments with priority ordering.
 
-- Classifies comments as Critical/High/Major/Minor
+- Fetches comments via `gh-address-comments` skill (`fetch_comments.py`)
+- Classifies comments as Critical/High/Major/Minor (self)
 - Applies fixes in priority order
-- Generates tracking documentation
-- Delegates to `gh-fix-review` skill (respects `.pr-review-config.json`)
+- Validates each fix with `mise run ci:quick`
+- Rolls back on failure
 
 ```bash
 /code-review-system --fix              # Fix PR on current branch
@@ -126,10 +127,12 @@ PR # detection (current branch or explicit)
 |                   -> Classify by source/severity
 |                   -> Address each comment
 |
-+-- --fix --------> gh-fix-review skill
-|                   -> Classify comments (Critical/High/Major/Minor)
-|                   -> Apply fixes in priority order
-|                   -> Generate tracking doc
++-- --fix --------> gh-address-comments (fetch_comments.py)
+|                   -> Fetch all PR comments as JSON
+|                   -> Classify priority (self)
+|                   -> Apply fixes: Critical -> High -> Major -> Minor
+|                   -> Validate each fix (mise run ci:quick)
+|                   -> Stash rollback on failure (preserves prior fixes)
 |
 +-- --all --------> Run all above in sequence
     |
@@ -142,11 +145,10 @@ Report results (Japanese)
 
 ## Skill Dependencies
 
-| Skill                 | Role                          | Config                   |
-| --------------------- | ----------------------------- | ------------------------ |
-| `gh-fix-ci`           | CI log retrieval and analysis | -                        |
-| `gh-address-comments` | PR comment handling           | -                        |
-| `gh-fix-review`       | Automated comment fixing      | `.pr-review-config.json` |
+| Skill                 | Role                          |
+| --------------------- | ----------------------------- |
+| `gh-fix-ci`           | CI log retrieval and analysis |
+| `gh-address-comments` | PR comment fetch via GraphQL  |
 
 ## Troubleshooting
 
@@ -170,16 +172,11 @@ gh auth status
 gh auth refresh -s repo
 ```
 
-### gh-fix-review config
-
-The `gh-fix-review` skill respects `.pr-review-config.json` in project root. See `gh-fix-review` skill documentation for config format.
-
 ## Related
 
 - `code-review` — Local code review (detailed/simple modes, star ratings)
 - `gh-fix-ci` — CI failure diagnosis helper
 - `gh-address-comments` — Review comment handler
-- `gh-fix-review` — Automated PR fix with config system
 
 ---
 

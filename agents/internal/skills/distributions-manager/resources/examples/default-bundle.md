@@ -43,7 +43,6 @@ internal/
 - gemini-system
 - gh-address-comments
 - gh-fix-ci
-- gh-fix-review
 - integration-framework
 - keybindings-help
 - marketplace-builder

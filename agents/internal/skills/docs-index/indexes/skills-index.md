@@ -20,7 +20,7 @@
 | `implementation-engine`   | Smart feature implementation with session persistence. Use when implementing features, resuming work, or verifying implementations. 6-phase workflow with Deep Validation support.                                                                        |
 | `todo-orchestrator`       | Unified task management system. Shows TODO list, allows selection, executes tasks. Use when managing tasks, checking progress, or executing planned work. P1-P5 priority system with TodoWrite integration.                                               |
 | `task-router`             | Intelligent task router. Analyzes natural language requests, selects optimal agents, and orchestrates execution. Use when user provides task descriptions like "review this code" or "improve performance". 4-phase processing with Context7 integration. |
-| `code-review-system`      | GitHub PR workflow orchestrator — CI diagnosis, review comment handling, and auto-fix. Orchestrates gh-fix-ci, gh-address-comments, and gh-fix-review. Use when CI fails, PR has review comments, or need automated PR fixes.                             |
+| `code-review-system`      | GitHub PR workflow orchestrator — CI diagnosis, review comment handling, and auto-fix. Orchestrates gh-fix-ci and gh-address-comments. Use when CI fails, PR has review comments, or need automated PR fixes.                                             |
 
 ### Secondary Skills（Phase 3）
 
@@ -47,7 +47,6 @@
 | `command-creator`                 | [What] 効果的なslashコマンドの作成ガイド。コマンド構造、デザインパターン、統合ポイント、ベストプラクティスを提供します。新しいコマンドを作成したい、既存コマンドを改善したい、コマンド設計パターンを理解したい場合に使用してください... |
 | `docs-manager`                    | [What] Validate and manage documentation. Check metadata (date, audience, tags), verify tag system compliance, enforce s...                                                                                                             |
 | `dotfiles-integration`            | [What] Specialized skill for reviewing dotfiles cross-tool integration patterns. Evaluates layer interactions (Shell/Edi...                                                                                                             |
-| `gh-fix-review`                   | [What] Automated skill for GitHub PR review comment processing. Automatically classifies review comments (from CodeRabbi...                                                                                                             |
 | `golang`                          | [What] Specialized skill for reviewing Go (Golang) projects. Evaluates idiomatic Go code, error handling patterns, concu...                                                                                                             |
 | `knowledge-creator`               | [What] Intelligent knowledge classification and creation system. Analyzes knowledge descriptions to automatically determ...                                                                                                             |
 | `marketplace-manager`             | Claude Code プラグインマーケットプレイスの構成検証と管理。 [What] marketplace.json、plugin.json、SKILL.md の妥当性検証、新規プラグイン追加支援 [When] Use when: マーケ...                                                               |
