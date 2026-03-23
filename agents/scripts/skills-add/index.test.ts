@@ -223,5 +223,4 @@ describe("skills-add/index-lib discoverSkills", () => {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
-
 });
