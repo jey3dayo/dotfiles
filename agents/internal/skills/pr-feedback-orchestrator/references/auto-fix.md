@@ -5,7 +5,7 @@
 ## 概要
 
 PR レビューコメントを `gh-address-comments` の `fetch_comments.py` で取得し、
-code-review-system 自身が優先度分類と修正適用を行います。
+`pr-feedback-orchestrator` 自身が優先度分類と修正適用を行います。
 
 ## 実行フロー
 
@@ -75,13 +75,13 @@ Critical → High → Major → Minor の順で修正:
 
 ```bash
 # Critical のみ修正
-/code-review-system --fix --priority critical
+/pr-feedback-orchestrator --fix --priority critical
 
 # 特定ボットのコメントのみ
-/code-review-system --fix --bot coderabbitai
+/pr-feedback-orchestrator --fix --bot coderabbitai
 
 # ドライラン（分類のみ）
-/code-review-system --fix --dry-run
+/pr-feedback-orchestrator --fix --dry-run
 ```
 
 ## 出力例

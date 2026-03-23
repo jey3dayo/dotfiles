@@ -1,6 +1,6 @@
 # CI Diagnosis Flow
 
-`--ci` モードで使用する CI 診断の詳細フローです。
+`pr-feedback-orchestrator` の `--ci` モードで使用する CI 診断の詳細フローです。
 
 ## 概要
 

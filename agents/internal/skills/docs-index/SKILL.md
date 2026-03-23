@@ -55,7 +55,7 @@ This skill is activated in the following situations:
    - Communication Bus patterns
    - Agent/command integration
 
-3. **Code Review System** (skill: `code-review`)
+3. **Code Review** (skill: `code-review`)
    - 5-star rating system
    - Automatic project detection
    - Technical skill integration

@@ -5,7 +5,7 @@
 ### 移行完了状況
 
 - ✅ Phase 1: Foundation（docs-index作成）
-- ✅ Phase 2: Core Workflows（6スキル移行：learnings-knowledge, code-quality-automation, implementation-engine, todo-orchestrator, task-router, code-review-system）
+- ✅ Phase 2: Core Workflows（6スキル移行：learnings-knowledge, code-quality-automation, implementation-engine, todo-orchestrator, task-router, pr-feedback-orchestrator）
 - ✅ Phase 3: Secondary（4スキル移行：git-automation, predictive-analysis, documentation-management, project-maintenance）
 - ✅ Phase 4: Commands廃止マーキング
 - ✅ Phase 5: 移行済みCommands削除（16+12件）
@@ -26,14 +26,14 @@
 
 ### Core Workflow Skills
 
-| スキル名                | 旧コマンド                                             | 説明                                              |
-| ----------------------- | ------------------------------------------------------ | ------------------------------------------------- |
-| learnings-knowledge     | `/learnings`                                           | AI-driven knowledge recording (7カテゴリシステム) |
-| code-quality-automation | `/polish`                                              | Automated lint/format/test (6言語対応)            |
-| implementation-engine   | `/implement`                                           | Smart feature implementation (6フェーズ)          |
-| todo-orchestrator       | `/todos`, `/create-todos`, `/find-todos`, `/fix-todos` | Unified task management (P1-P5優先度)             |
-| task-router             | `/task`                                                | Intelligent task routing (Context7統合)           |
-| code-review-system      | `/review`                                              | PR workflow orchestrator (CI/comments/auto-fix)   |
+| スキル名                 | 旧コマンド                                             | 説明                                              |
+| ------------------------ | ------------------------------------------------------ | ------------------------------------------------- |
+| learnings-knowledge      | `/learnings`                                           | AI-driven knowledge recording (7カテゴリシステム) |
+| code-quality-automation  | `/polish`                                              | Automated lint/format/test (6言語対応)            |
+| implementation-engine    | `/implement`                                           | Smart feature implementation (6フェーズ)          |
+| todo-orchestrator        | `/todos`, `/create-todos`, `/find-todos`, `/fix-todos` | Unified task management (P1-P5優先度)             |
+| task-router              | `/task`                                                | Intelligent task routing (Context7統合)           |
+| pr-feedback-orchestrator | `/review`                                              | PR feedback orchestrator (CI/comments/auto-fix)   |
 
 ### Secondary Skills
 

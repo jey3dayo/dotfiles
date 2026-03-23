@@ -1,9 +1,9 @@
 ---
-name: code-review-system
+name: pr-feedback-orchestrator
 description: |
-  [What] GitHub PR workflow orchestrator — CI diagnosis, review comment handling, and auto-fix.
-  [When] Use when: CI fails, PR has review comments to address, or need automated PR fixes.
-  [Keywords] CI fix, PR review, fix ci, fix pr, address comments, GitHub Actions, PR workflow
+  [What] GitHub PR feedback orchestrator — ingest CI failures, review comments, and bot feedback, then coordinate fixes and verification.
+  [When] Use when: CI fails, PR has review comments to address, or need automated PR feedback fixes.
+  [Keywords] PR feedback, CI fix, PR review, fix ci, fix pr, address comments, GitHub Actions, PR workflow
   [Note] Always responds in Japanese.
 argument-hint: "--ci [PR#] | --comments | --fix [PR#] | --all"
 disable-model-invocation: true
@@ -11,9 +11,9 @@ user-invocable: true
 allowed-tools: Task, Bash(gh:*, python3:*, git:*, mise:*), Read, Grep, Glob, Edit
 ---
 
-# Code Review System — PR Workflow Orchestrator
+# PR Feedback Orchestrator
 
-Integrated workflow for GitHub PR management. Orchestrates CI diagnosis, review comment handling, and automated fixes using specialized skills.
+Integrated workflow for GitHub PR management. Ingests CI failures and PR feedback, then orchestrates fixes and verification using specialized skills.
 
 ## Important Notes
 
@@ -35,9 +35,9 @@ Diagnose and fix GitHub Actions CI failures.
 - Delegates to `gh-fix-ci` skill for log retrieval and analysis
 
 ```bash
-/code-review-system --ci           # Diagnose PR on current branch
-/code-review-system --ci 123       # Specify PR number
-/code-review-system --ci --dry-run # Diagnose only (no fix)
+/pr-feedback-orchestrator --ci           # Diagnose PR on current branch
+/pr-feedback-orchestrator --ci 123       # Specify PR number
+/pr-feedback-orchestrator --ci --dry-run # Diagnose only (no fix)
 ```
 
 ### 2. Comment Handling (`--comments`)
@@ -50,8 +50,8 @@ Address review comments on the current PR.
 - Delegates to `gh-address-comments` skill
 
 ```bash
-/code-review-system --comments              # Address all comments
-/code-review-system --comments --bot coderabbitai  # Specific bot only
+/pr-feedback-orchestrator --comments              # Address all comments
+/pr-feedback-orchestrator --comments --bot coderabbitai  # Specific bot only
 ```
 
 ### 3. Auto-Fix (`--fix`)
@@ -65,10 +65,10 @@ Automatically fix PR review comments with priority ordering.
 - Rolls back on failure
 
 ```bash
-/code-review-system --fix              # Fix PR on current branch
-/code-review-system --fix 123          # Specify PR number
-/code-review-system --fix --priority critical  # Critical only
-/code-review-system --fix --dry-run    # Classify only, no fix
+/pr-feedback-orchestrator --fix              # Fix PR on current branch
+/pr-feedback-orchestrator --fix 123          # Specify PR number
+/pr-feedback-orchestrator --fix --priority critical  # Critical only
+/pr-feedback-orchestrator --fix --dry-run    # Classify only, no fix
 ```
 
 ### 4. Integrated Flow (`--all`)
@@ -76,9 +76,9 @@ Automatically fix PR review comments with priority ordering.
 Run CI diagnosis + comment handling + auto-fix in sequence.
 
 ```bash
-/code-review-system --all              # Full flow for current branch PR
-/code-review-system --all 123          # Specify PR number
-/code-review-system --all --dry-run    # Diagnose/classify only
+/pr-feedback-orchestrator --all              # Full flow for current branch PR
+/pr-feedback-orchestrator --all 123          # Specify PR number
+/pr-feedback-orchestrator --all --dry-run    # Diagnose/classify only
 ```
 
 ### External Review Delegation
@@ -86,8 +86,8 @@ Run CI diagnosis + comment handling + auto-fix in sequence.
 Delegate review to external models (model-agnostic):
 
 ```bash
-/code-review-system --ci --external codex   # Use Codex for analysis
-/code-review-system --ci --external gemini  # Use Gemini for analysis
+/pr-feedback-orchestrator --ci --external codex   # Use Codex for analysis
+/pr-feedback-orchestrator --ci --external gemini  # Use Gemini for analysis
 ```
 
 ## Options
@@ -159,7 +159,7 @@ Report results (Japanese)
 gh pr list --head $(git branch --show-current)
 
 # Specify PR number explicitly
-/code-review-system --ci 123
+/pr-feedback-orchestrator --ci 123
 ```
 
 ### CI logs not accessible

@@ -1,6 +1,6 @@
 # Comment Handling Flow
 
-`--comments` モードで使用する PR コメント対応の詳細フローです。
+`pr-feedback-orchestrator` の `--comments` モードで使用する PR コメント対応の詳細フローです。
 
 ## 概要
 
@@ -48,10 +48,10 @@ gh api repos/{owner}/{repo}/pulls/{pr}/comments --jq '.[] | {body, path, line, u
 
 ```bash
 # 特定ボットのコメントのみ
-/code-review-system --comments --bot coderabbitai
+/pr-feedback-orchestrator --comments --bot coderabbitai
 
 # 特定カテゴリのみ
-/code-review-system --comments --category security
+/pr-feedback-orchestrator --comments --category security
 ```
 
 ## 出力例
