@@ -182,7 +182,6 @@ Progressive disclosure — loaded as needed:
 - `code-review-system` — PR workflow (CI diagnosis, comment handling, auto-fix)
 - `gh-fix-ci` — GitHub Actions CI failure diagnosis
 - `gh-address-comments` — PR review comment handling
-- `gh-fix-review` — Automated PR review comment fixing
 - `codex-code-review` — Codex-delegated code review
 
 ---
