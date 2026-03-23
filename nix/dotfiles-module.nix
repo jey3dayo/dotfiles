@@ -199,7 +199,7 @@ in
           install_script="$tpm_path/bin/install_plugins"
           if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
             echo "Installing tmux plugins via TPM..."
-            TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
+            PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
               echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
           fi
         fi
