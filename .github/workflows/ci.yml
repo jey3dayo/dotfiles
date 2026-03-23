@@ -129,6 +129,10 @@ jobs:
       - name: Install Nix
         uses: cachix/install-nix-action@v30
 
+      - name: Install nixfmt
+        run: |
+          nix profile install nixpkgs#nixfmt-rfc-style
+
       - name: Deploy dotfiles with Home Manager
         run: mise run hm:deploy
 
