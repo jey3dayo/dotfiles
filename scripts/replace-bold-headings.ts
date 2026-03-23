@@ -83,6 +83,12 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
     const lines = original.split(eol);
 
     const fenceOpen = /^\s*(`{3,}|~{3,})/;
+    // Table rows: strip bold from cells.
+    // Example: "| **スキル名** | 説明 |" -> "| スキル名 | 説明 |"
+    const tableRow = /^\s*\|/;
+    const tableSeparator = /^\s*\|[\s:-]+\|/;
+    const boldInCell = /\*\*([^*]+)\*\*/g;
+
     // Standalone bold-only lines are treated as pseudo headings.
     // Example: "**Overview**" -> "### Overview"
     const boldOnlyHeading = /^(\s*)\*\*([^*][\s\S]*?)\*\*\s*$/;
@@ -130,6 +136,16 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
       }
 
       if (inFence) {
+        return line;
+      }
+
+      // Table rows: strip bold from all cells
+      if (tableRow.test(line) && !tableSeparator.test(line)) {
+        const replaced = line.replace(boldInCell, "$1");
+        if (replaced !== line) {
+          fileReplacements += 1;
+          return replaced;
+        }
         return line;
       }
 
