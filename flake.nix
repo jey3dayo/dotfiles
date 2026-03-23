@@ -29,6 +29,14 @@
       url = "github:millionco/react-doctor";
       flake = false;
     };
+    nyosegawa-skills = {
+      url = "github:nyosegawa/skills";
+      flake = false;
+    };
+    obra-superpowers = {
+      url = "github:obra/superpowers";
+      flake = false;
+    };
     openai-skills = {
       url = "github:openai/skills";
       flake = false;

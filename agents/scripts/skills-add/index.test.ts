@@ -223,4 +223,36 @@ describe("skills-add/index-lib discoverSkills", () => {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
+
+  it("discovers Claude Code plugin format (.claude-plugin/plugin.json) as a skill", () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "skills-add-plugin-"));
+    const originalEnv = process.env.INSTALL_INTERNAL_SKILLS;
+    delete process.env.INSTALL_INTERNAL_SKILLS;
+
+    try {
+      const pluginDir = path.join(tempRoot, "plugins", "feature-dev");
+      fs.mkdirSync(path.join(pluginDir, ".claude-plugin"), { recursive: true });
+      fs.writeFileSync(
+        path.join(pluginDir, ".claude-plugin", "plugin.json"),
+        JSON.stringify({ name: "feature-dev", version: "1.0.0" }),
+        "utf8",
+      );
+
+      const result = discoverSkills({
+        repoPath: tempRoot,
+        pathHint: "plugins/feature-dev",
+      });
+
+      expect(result.impliedSkill).toBe("feature-dev");
+      const ids = result.skills.map((skill) => skill.id).sort();
+      expect(ids).toEqual(["feature-dev"]);
+    } finally {
+      if (originalEnv === undefined) {
+        delete process.env.INSTALL_INTERNAL_SKILLS;
+      } else {
+        process.env.INSTALL_INTERNAL_SKILLS = originalEnv;
+      }
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
 });
