@@ -420,7 +420,7 @@ After changes, update `internal/README.md` with new counts and descriptions.
 | Rules (1)      | ~200 (200/rule)     |
 | Agents (23)    | ~4,600 (200/agent)  |
 | Config         | 0 (not used)        |
-| **Total**      | ~34,200             |
+| Total          | ~34,200             |
 
 ### Note
 

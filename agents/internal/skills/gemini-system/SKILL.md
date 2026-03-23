@@ -29,24 +29,24 @@ metadata:
 
 ## Gemini vs Codex
 
-| Task                              | Gemini | Codex |
-| --------------------------------- | ------ | ----- |
-| **Repository-wide understanding** | ✓      |       |
-| **Library research**              | ✓      |       |
-| **Multimodal (PDF/video/audio)**  | ✓      |       |
-| **Latest documentation search**   | ✓      |       |
-| **Design decisions**              |        | ✓     |
-| **Debugging**                     |        | ✓     |
-| **Code implementation**           |        | ✓     |
+| Task                          | Gemini | Codex |
+| ----------------------------- | ------ | ----- |
+| Repository-wide understanding | ✓      |       |
+| Library research              | ✓      |       |
+| Multimodal (PDF/video/audio)  | ✓      |       |
+| Latest documentation search   | ✓      |       |
+| Design decisions              |        | ✓     |
+| Debugging                     |        | ✓     |
+| Code implementation           |        | ✓     |
 
 ## When to Consult (MUST)
 
-| Situation             | Trigger Examples                 |
-| --------------------- | -------------------------------- |
-| **Research**          | "Research" "Investigate"         |
-| **Library docs**      | "Library" "Docs" "Documentation" |
-| **Codebase analysis** | "Entire codebase" "Codebase"     |
-| **Multimodal**        | "PDF" "Video" "Audio"            |
+| Situation         | Trigger Examples                 |
+| ----------------- | -------------------------------- |
+| Research          | "Research" "Investigate"         |
+| Library docs      | "Library" "Docs" "Documentation" |
+| Codebase analysis | "Entire codebase" "Codebase"     |
+| Multimodal        | "PDF" "Video" "Audio"            |
 
 ## When NOT to Consult
 
@@ -163,11 +163,11 @@ gemini -p "Transcribe and summarize: decisions, action items" < meeting.mp3 2>/d
 
 ## Integration with Codex
 
-| Workflow              | Steps                                 |
-| --------------------- | ------------------------------------- |
-| **New feature**       | Gemini research → Codex design review |
-| **Library choice**    | Gemini comparison → Codex decision    |
-| **Bug investigation** | Gemini codebase search → Codex debug  |
+| Workflow          | Steps                                 |
+| ----------------- | ------------------------------------- |
+| New feature       | Gemini research → Codex design review |
+| Library choice    | Gemini comparison → Codex decision    |
+| Bug investigation | Gemini codebase search → Codex debug  |
 
 ## Why Gemini?
 

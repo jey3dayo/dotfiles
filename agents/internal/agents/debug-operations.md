@@ -410,12 +410,12 @@ pnpm debug:status
 
 ### E2E vs Unit テスト使い分け
 
-| 問題の種類             | 適切なアプローチ | 実行コマンド                          |
-| ---------------------- | ---------------- | ------------------------------------- |
-| **UI表示・操作エラー** | Playwright E2E   | `pnpm e2e:test --headed problem.spec` |
-| **API・データエラー**  | Unit + MSW       | `pnpm test services/`                 |
-| **認証フロー全体**     | E2E統合テスト    | `pnpm e2e:test auth/ --debug`         |
-| **個別関数・変換**     | Unit テスト      | `pnpm test transformers/`             |
+| 問題の種類         | 適切なアプローチ | 実行コマンド                          |
+| ------------------ | ---------------- | ------------------------------------- |
+| UI表示・操作エラー | Playwright E2E   | `pnpm e2e:test --headed problem.spec` |
+| API・データエラー  | Unit + MSW       | `pnpm test services/`                 |
+| 認証フロー全体     | E2E統合テスト    | `pnpm e2e:test auth/ --debug`         |
+| 個別関数・変換     | Unit テスト      | `pnpm test transformers/`             |
 
 ## E2Eテスト段階的アプローチのデバッグ戦略
 

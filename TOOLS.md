@@ -8,25 +8,25 @@
 
 ### Shell & Terminal
 
-| Tool        | Config Location | Documentation                       |
-| ----------- | --------------- | ----------------------------------- |
-| **Zsh**     | `zsh/`          | [詳細ガイド](docs/tools/zsh.md)     |
-| zsh-abbr    | `zsh-abbr/`     | -                                   |
-| Starship    | `starship.toml` | -                                   |
-| **WezTerm** | `wezterm/`      | [詳細ガイド](docs/tools/wezterm.md) |
-| Alacritty   | `alacritty/`    | -                                   |
-| Tmux        | `tmux/`         | -                                   |
-| **SSH**     | `ssh/`          | [詳細ガイド](docs/tools/ssh.md)     |
+| Tool      | Config Location | Documentation                       |
+| --------- | --------------- | ----------------------------------- |
+| Zsh       | `zsh/`          | [詳細ガイド](docs/tools/zsh.md)     |
+| zsh-abbr  | `zsh-abbr/`     | -                                   |
+| Starship  | `starship.toml` | -                                   |
+| WezTerm   | `wezterm/`      | [詳細ガイド](docs/tools/wezterm.md) |
+| Alacritty | `alacritty/`    | -                                   |
+| Tmux      | `tmux/`         | -                                   |
+| SSH       | `ssh/`          | [詳細ガイド](docs/tools/ssh.md)     |
 
 ### Development
 
 | Tool           | Config Location   | Documentation                            |
 | -------------- | ----------------- | ---------------------------------------- |
-| **Git**        | `git/`            | [FZF統合](docs/tools/fzf-integration.md) |
+| Git            | `git/`            | [FZF統合](docs/tools/fzf-integration.md) |
 | GitHub CLI     | `gh/`             | -                                        |
-| **Neovim**     | `nvim/`           | [詳細ガイド](docs/tools/nvim.md)         |
+| Neovim         | `nvim/`           | [詳細ガイド](docs/tools/nvim.md)         |
 | efm-langserver | `efm-langserver/` | -                                        |
-| **Mise**       | `mise.toml`       | -                                        |
+| Mise           | `mise.toml`       | -                                        |
 | Homebrew       | `Brewfile`        | -                                        |
 | AWSume         | `awsume/`         | -                                        |
 | Terraform      | (via Homebrew)    | -                                        |

@@ -36,12 +36,12 @@ This skill is activated in the following situations:
 
 ### Main Categories
 
-| Category     | Description                            | Detailed Documentation      |
-| ------------ | -------------------------------------- | --------------------------- |
-| **Skills**   | Reusable knowledge and workflows       | `indexes/skills-index.md`   |
-| **Commands** | ⚠️ **Deprecated**: Migrating to Skills | `indexes/commands-index.md` |
-| **Agents**   | Task automation and workflow execution | `indexes/agents-index.md`   |
-| **Guides**   | Quick-start guides and navigation tips | `guides/`                   |
+| Category | Description                            | Detailed Documentation      |
+| -------- | -------------------------------------- | --------------------------- |
+| Skills   | Reusable knowledge and workflows       | `indexes/skills-index.md`   |
+| Commands | ⚠️ Deprecated: Migrating to Skills     | `indexes/commands-index.md` |
+| Agents   | Task automation and workflow execution | `indexes/agents-index.md`   |
+| Guides   | Quick-start guides and navigation tips | `guides/`                   |
 
 ### Frequently Used Documentation
 

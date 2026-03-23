@@ -68,18 +68,18 @@ Guide through creation process
 
 ### Format Comparison (Agent Skills Perspective)
 
-| Format      | Purpose                   | Trigger         | Reusability            | Execution  | Scripts Support   |
-| ----------- | ------------------------- | --------------- | ---------------------- | ---------- | ----------------- |
-| **Skill**   | Capability extension      | Keyword/context | High (cross-platform)  | Referenced | ✅ Recommended    |
-| **Agent**   | Autonomous task execution | Task type       | Medium (similar tasks) | Automated  | ✅ Recommended    |
-| **Command** | Interactive operation     | User invocation | Project-specific       | Manual     | ⚠️ Optional       |
-| **Rules**   | Constraints & guidelines  | Always active   | Project-specific       | Enforced   | ❌ Not applicable |
+| Format  | Purpose                   | Trigger         | Reusability            | Execution  | Scripts Support   |
+| ------- | ------------------------- | --------------- | ---------------------- | ---------- | ----------------- |
+| Skill   | Capability extension      | Keyword/context | High (cross-platform)  | Referenced | ✅ Recommended    |
+| Agent   | Autonomous task execution | Task type       | Medium (similar tasks) | Automated  | ✅ Recommended    |
+| Command | Interactive operation     | User invocation | Project-specific       | Manual     | ⚠️ Optional       |
+| Rules   | Constraints & guidelines  | Always active   | Project-specific       | Enforced   | ❌ Not applicable |
 
 ### Additional Knowledge Domains
 
-| Domain                      | Skill Reference       | Purpose                                                   | Keywords                                   |
-| --------------------------- | --------------------- | --------------------------------------------------------- | ------------------------------------------ |
-| **Distribution Management** | distributions-manager | Bundle creation, deployment architecture, Nix integration | distributions, bundle, symlink, deployment |
+| Domain                  | Skill Reference       | Purpose                                                   | Keywords                                   |
+| ----------------------- | --------------------- | --------------------------------------------------------- | ------------------------------------------ |
+| Distribution Management | distributions-manager | Bundle creation, deployment architecture, Nix integration | distributions, bundle, symlink, deployment |
 
 ### Agent Skills Standard Structure
 

@@ -95,11 +95,11 @@ See `@config-loader.md` for details.
 
 ### Steering vs Specification
 
-| Item            | Steering              | Specification                   |
-| --------------- | --------------------- | ------------------------------- |
-| **Purpose**     | Project-wide guidance | Development process per feature |
-| **Scope**       | Broad, cross-cutting  | Feature-level                   |
-| **Update freq** | On project changes    | Per feature development         |
+| Item        | Steering              | Specification                   |
+| ----------- | --------------------- | ------------------------------- |
+| Purpose     | Project-wide guidance | Development process per feature |
+| Scope       | Broad, cross-cutting  | Feature-level                   |
+| Update freq | On project changes    | Per feature development         |
 
 ## Basic Workflow
 

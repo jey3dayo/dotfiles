@@ -25,7 +25,7 @@ WSL2 から接続するには **Windows ホスト IP(デフォルトゲートウ
 
 | IP                | 取得方法                                                     | 用途                                           |
 | ----------------- | ------------------------------------------------------------ | ---------------------------------------------- |
-| Windows ホスト IP | `ip route show default \| grep -oP '(?<=via )\d+(\.\d+){3}'` | **MCP 接続先(推奨)**                           |
+| Windows ホスト IP | `ip route show default \| grep -oP '(?<=via )\d+(\.\d+){3}'` | MCP 接続先(推奨)                               |
 | WSL2 自身の IP    | `ip addr show eth0 \| grep -oP '(?<=inet\s)\d+(\.\d+){3}'`   | WSL2 自身(Chrome はここにいない)               |
 | `localhost`       | -                                                            | ポートフォワーディング経由(動作しない場合あり) |
 
