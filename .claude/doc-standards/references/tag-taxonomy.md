@@ -1,6 +1,6 @@
 # Tag Taxonomy
 
-このプロジェクトのタグ体系は `.claude/rules/documentation-rules.md` と `docs/*.md` の運用に合わせる。
+この一覧は [`docs/documentation.md`](../../../docs/documentation.md) で定義するタグ体系の参照ビューです。運用ルールの正本は `docs/documentation.md` とし、このファイルは追従用の一覧として扱います。
 
 ## Category Tags (Tier 1)
 

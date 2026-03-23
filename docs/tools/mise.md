@@ -119,7 +119,7 @@ ci:full
 
 ## Task Catalog
 
-全タスク一覧は [mise-tasks.md](mise-tasks.md) を参照。主要グループ早見表は `.claude/rules/tools/mise.md` のタスクグループ表を参照。
+全タスク一覧は [mise-tasks.md](mise-tasks.md) を参照。主要グループの早見表と責務分離は本書と [docs/tools/workflows.md](workflows.md) を参照。
 
 ## Variable-driven Control
 

@@ -1,6 +1,6 @@
 # Personal Dotfiles
 
-最終更新: 2026-02-07
+最終更新: 2026-03-23
 対象: 開発者
 タグ: `category/setup`, `layer/core`, `environment/cross-platform`, `audience/developer`
 
@@ -19,7 +19,8 @@ High-performance development environment tuned for speed, consistency, and devel
 - Navigation: `docs/README.md`
 - Setup (SST): `docs/setup.md`
 - Performance metrics/history: `docs/performance.md`
-- Maintenance cadence & troubleshooting: `.claude/rules/workflows-and-maintenance.md`
+- Maintenance cadence & troubleshooting: `docs/tools/workflows.md`
+- Documentation governance: `docs/documentation.md`
 - AI steering (always loaded): `.kiro/steering/`
 - Tool inventory: `TOOLS.md`
 
@@ -111,7 +112,7 @@ If Homebrew is already installed, skip bootstrap and follow docs/setup.md direct
 - Local gate: `mise run ci` (GitHub Actions equivalent)
 - Formatting bundle: `mise run format` (Markdown/JS/TOML/YAML/Lua/Shell)
 - Lint bundle: `mise run lint`
-- Documentation rules: `.claude/rules/documentation-rules.md`
+- Documentation rules: `docs/documentation.md`
 
 ## Core Stack
 
@@ -175,7 +176,7 @@ mise install               # Setup language versions
 
 ## Maintenance
 
-- Operational cadence and troubleshooting live in `.claude/rules/workflows-and-maintenance.md`
+- Operational cadence and troubleshooting live in `docs/tools/workflows.md`
 - Weekly: `brew update && brew upgrade`, sync plugins (Sheldon/Neovim/tmux)
 - Monthly: `home-manager switch --flake ~/.config --impure`, measure shell startup, prune unused plugins
 - Rollback: `home-manager generations` to list, `home-manager switch --generation <number>` to rollback

@@ -22,8 +22,8 @@ Purpose: concise project overview for Claude. Scope: what this repo is, where to
 - Performance metrics/history: `docs/performance.md`
 - Maintenance schedules, workflows, and troubleshooting: `docs/tools/workflows.md`
 - Brewfile management: `docs/tools/workflows.md`
-- Tool installation policy: `.claude/rules/tools/tool-install-policy.md`
-- Documentation governance: `.claude/rules/documentation-rules.md` (rules) with `docs/README.md` for navigation
+- Tool installation policy: `docs/tools/mise.md` and `docs/tools/workflows.md`
+- Documentation governance: `docs/documentation.md`
 - Tool details: `docs/tools/*.md` (Zsh, Neovim, WezTerm, SSH, FZF, Git)
 
 ## AI usage quick links
@@ -31,7 +31,7 @@ Purpose: concise project overview for Claude. Scope: what this repo is, where to
 - Rules entrypoints: `.claude/rules/claude-code-usage.md` and tool-specific rules under `.claude/rules/tools/`.
 - Local CI: `./.claude/commands/ci-local.sh` or `mise run ci`.
 
-## Performance snapshot (reference)
+## Performance reference
 
-- Current: Zsh ~1.1s, Neovim <100ms, WezTerm ~800ms on M3 MacBook Pro.
-- Targets: Zsh <100ms, Neovim <200ms, WezTerm <1s. Detailed history lives in `docs/performance.md`.
+- Do not duplicate current metrics here
+- Read `docs/performance.md` for baselines, targets, and history

@@ -1,6 +1,6 @@
 # Home Manager 設計リファレンス
 
-最終更新: 2026-03-13
+最終更新: 2026-03-23
 対象: Nix dotfiles 管理者
 タグ: `category/infra`, `tool/home-manager`, `layer/system`, `environment/macos`
 
@@ -280,4 +280,4 @@ grep -A 10 "inputs\s*=" flake.nix
 - [Home Manager 公式ドキュメント](https://nix-community.github.io/home-manager/)
 - [gitignore.nix](https://github.com/hercules-ci/gitignore.nix)
 - [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/)
-- `.claude/rules/troubleshooting.md` - スキル配布問題の対処法
+- `docs/disaster-recovery.md` - 破損時の復旧手順

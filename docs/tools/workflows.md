@@ -312,7 +312,7 @@ brew cleanup
 
 - `npm -g list --depth=0` - npm グローバルはローカルリンク（astro-my-profile, zx-scripts）のみであること
 - `bun pm ls -g` または `ls ~/.bun/install/global/node_modules/.bin` - bun グローバルは空であること
-- 重複検出スクリプトの実行（`.claude/rules/tools/tool-install-policy.md` 参照）
+- 重複検出スクリプトの実行（`docs/tools/mise.md` のツール管理方針を参照）
 
 ## mise Management
 
