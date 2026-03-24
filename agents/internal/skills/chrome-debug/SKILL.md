@@ -2,7 +2,11 @@
 name: chrome-debug
 description: |
   [What] Knowledge base for frontend debugging using Chrome DevTools / MCP / agent-browser.
-  [When] Use when: browser debugging, network diagnostics, cookie inspection, or rendering issue investigation is needed.
+  [When] Use when: browser debugging, network diagnostics, cookie inspection,
+  rendering issue investigation, or confirming that a site is unreachable, blank,
+  broken, or returning console/network errors is needed. Use when users say
+  "見れない", "開けない", "真っ白", "404", "接続できない", or ask to check
+  console/network.
   [Keywords] chrome, devtools, debug, network, console, cookie, screenshot, WSL, mcp
 ---
 

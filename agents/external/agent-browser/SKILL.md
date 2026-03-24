@@ -1,6 +1,12 @@
 ---
 name: agent-browser
-description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages.
+description: |
+  Automates browser interactions for web testing, form filling, screenshots, and
+  data extraction. Use when the user needs to navigate websites, interact with
+  web pages, fill forms, take screenshots, test web applications, or extract
+  information from web pages. If the goal is to diagnose why a site is
+  unreachable, blank, or erroring, or to inspect console/network behavior, use
+  chrome-debug instead.
 allowed-tools: Bash(agent-browser:*)
 ---
 

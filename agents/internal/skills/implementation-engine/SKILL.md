@@ -1,6 +1,11 @@
 ---
 name: implementation-engine
-description: Smart feature implementation with session persistence and project architecture adaptation. Use when implementing features from URLs/files/descriptions, resuming work, or verifying implementations.
+description: |
+  Smart feature implementation with session persistence and project
+  architecture adaptation. Use when implementing features from
+  URLs/files/descriptions, resuming work, or verifying implementations. Do not
+  use for refactoring-only work, dead-code cleanup, or unused file/export
+  removal; use refactoring or code-quality-improvement instead.
 argument-hint: [source|resume|finish|verify]
 disable-model-invocation: true
 user-invocable: true

@@ -2,11 +2,18 @@
 name: refactoring
 description: |
   [What] Integrated refactoring workflow for TypeScript/JavaScript/React code.
-  Combines similarity-ts (duplicate detection) and react-doctor (React diagnostics) for incremental quality improvement.
-  Orchestrator that works with code-quality-improvement (ESLint/type safety fixes) and tsr (dead code removal).
-  [When] Use when: "リファクタ", "refactor", "重複コード", "コード整理", "clean up",
-  "duplicate code", "react-doctor", "similarity", "コードの品質を改善", "コードを綺麗に" の言及時。
-  Supports both React projects and TypeScript/JavaScript projects.
+  Combines similarity-ts (duplicate detection) and react-doctor (React
+  diagnostics) for incremental quality improvement. Orchestrator that works
+  with code-quality-improvement (ESLint/type safety fixes) and tsr (dead code
+  removal).
+  [When] Use when: "リファクタ", "refactor", "重複コード", "コード整理",
+  "clean up", "duplicate code", "react-doctor", "similarity",
+  "コードの品質を改善", "コードを綺麗に", "リファクタリング計画",
+  "デッドコード削除", "未使用ファイル", "未使用 export", or cleanup-only
+  plans are mentioned. Do not use for feature implementation or task
+  execution; use implementation-engine instead.
+  [Keywords] refactor, cleanup, dead code, unused files, unused exports,
+  similarity, react-doctor, tsr, code quality
 ---
 
 # Refactoring - Integrated TypeScript/JavaScript/React Refactoring Workflow
