@@ -1,9 +1,21 @@
 ---
 name: nix-dotfiles
 description: |
-  [What] Dotfiles management and troubleshooting using Home Manager and Nix Flake. Supports configuration apply, generation management, diagnostics, and Agent Skills addition.
-  [When] Use when: users say "skills not distributed", "~/.claude/skills/ is empty", "deploy dotfiles", "apply configuration", "test Nix flake", "home-manager", "generations", "rollback", "worktree not found", "スキルが配布されない"、"~/.claude/skills/ が空"、"dotfiles をデプロイ"、"設定を適用"、"Nix flake をテスト"、"home-manager"、"generations"、"rollback"、"worktree が見つからない".
-  [Keywords] home-manager, nix flake, dotfiles, agent skills, generations, rollback, worktree, flake inputs, diagnosis, skill distribution
+  [What] Dotfiles management and troubleshooting using Home Manager and Nix
+  Flake. Supports configuration apply, generation management, diagnostics, and
+  Agent Skills addition.
+  [When] Use when: users say "skills not distributed", "~/.claude/skills/ is
+  empty", "deploy dotfiles", "apply configuration", "test Nix flake",
+  "home-manager", "generations", "rollback", "worktree not found",
+  "スキルが配布されない", "~/.claude/skills/ が空", "dotfiles をデプロイ",
+  "設定を適用", "Nix flake をテスト", "home-manager", "generations",
+  "rollback", "worktree が見つからない", `~/.opencommit`,
+  `~/.opencommitrc`, or `~/.config` への移行・再構成・整理をしたい相談.
+  Do not use for mise task definitions, `mise run`, or `mise format`; use
+  `mise` instead.
+  [Keywords] home-manager, nix flake, dotfiles, agent skills, generations,
+  rollback, worktree, flake inputs, diagnosis, skill distribution, opencommit,
+  config, refactor
 ---
 
 # nix-dotfiles - Home Manager Dotfiles Management

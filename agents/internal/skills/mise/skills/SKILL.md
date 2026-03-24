@@ -1,9 +1,19 @@
 ---
 name: mise
 description: |
-  [What] Specialized skill for mise (mise-en-place) task runner, tool version manager, and package manager. Provides best practices for mise.toml structure, task definitions, dependency management, tool/package centralization, and workflow automation
-  [When] Use when: users mention "mise", "mise-en-place", "mise.toml", work with task runner configurations, tool version management, npm/Python package migration, or need guidance on Centralized Package Management
-  [Keywords] mise, mise-en-place, mise.toml, tool management, package management, npm global, python packages
+  [What] Specialized skill for mise (mise-en-place) task runner, tool version
+  manager, and package manager. Provides best practices for mise.toml
+  structure, task definitions, dependency management, tool/package
+  centralization, and workflow automation
+  [When] Use when: users mention "mise", "mise-en-place", "mise.toml",
+  `mise run`, `mise format`, `mise ci`, task definitions, tool version
+  management, or comparing `mise/` configuration files such as
+  `mise/config.ci.toml` and `mise/config.default.toml`. Do not use for dotfile
+  migration, Home Manager, Nix Flake, or `~/.opencommit` / `~/.config`
+  management; use `nix-dotfiles` instead.
+  [Keywords] mise, mise-en-place, mise.toml, tool management, package
+  management, npm global, python packages, task runner, run, format, ci,
+  config.ci.toml, config.default.toml
 ---
 
 # mise - Task Runner Configuration Expert
