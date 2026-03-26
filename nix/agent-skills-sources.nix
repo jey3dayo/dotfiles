@@ -115,7 +115,6 @@
     idPrefix = "superpowers:";
     assets = {
       agents = "agents";
-      commands = "commands";
     };
     catalogs = {
       superpowers = "skills";
