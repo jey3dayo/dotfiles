@@ -41,6 +41,10 @@
       url = "github:openai/skills";
       flake = false;
     };
+    sawyerhood-dev-browser = {
+      url = "github:SawyerHood/dev-browser";
+      flake = false;
+    };
     tokoroten-prompt-review = {
       url = "github:tokoroten/prompt-review";
       flake = false;

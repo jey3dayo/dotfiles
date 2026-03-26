@@ -182,10 +182,27 @@
         "nyosegawa-skills": "nyosegawa-skills",
         "obra-superpowers": "obra-superpowers",
         "openai-skills": "openai-skills",
+        "sawyerhood-dev-browser": "sawyerhood-dev-browser",
         "tokoroten-prompt-review": "tokoroten-prompt-review",
         "ui-ux-pro-max": "ui-ux-pro-max",
         "vercel-agent-browser": "vercel-agent-browser",
         "vercel-agent-skills": "vercel-agent-skills"
+      }
+    },
+    "sawyerhood-dev-browser": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774541334,
+        "narHash": "sha256-UyGHJbFOR9tU53MOJqBVRtCfed0n7wE9P5G9yfxOZtE=",
+        "owner": "SawyerHood",
+        "repo": "dev-browser",
+        "rev": "ea752ba03f503aecfc01922f92c8b115377db6a6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SawyerHood",
+        "repo": "dev-browser",
+        "type": "github"
       }
     },
     "systems": {

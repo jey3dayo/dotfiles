@@ -137,4 +137,15 @@
       "superpowers:writing-skills"
     ];
   };
+  sawyerhood-dev-browser = {
+    url = "github:SawyerHood/dev-browser";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      sawyerhood-dev-browser = "skills";
+    };
+    selection.enable = [
+      "dev-browser"
+    ];
+  };
 }
