@@ -28,7 +28,6 @@
       "!**/Brewfile.lock.json",
       "!**/.vim/lazy-lock.json",
       "!**/.surfingkeys.js",
-      "!**/agents/external",
       "!**/agents/scripts",
       "!**/result",
       "!**/AWS VPN Client",

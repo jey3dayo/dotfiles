@@ -241,8 +241,7 @@ nix eval --show-trace --json --impure --expr '
     lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
     catalog = lib.discoverCatalog {
       distributionsPath = ~/.config/agents/internal;
-      skillsPath = ~/.config/agents/internal/skills;
-      skillsExternalPath = ~/.config/agents/external;
+      sources = {};
     };
   in
     catalog.skills.react

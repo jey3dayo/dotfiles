@@ -36,4 +36,4 @@ PR がない場合 → サイレントスキップ。
 ## 依存スキル
 
 - `gh-address-comments` — コメント取得・番号付き提示・ユーザー選択・修正適用の全責務
-  - スクリプト: `agents/external/gh-address-comments/scripts/fetch_comments.py`
+  - flake input 経由でスキルとして配布（`~/.claude/skills/gh-address-comments/`）

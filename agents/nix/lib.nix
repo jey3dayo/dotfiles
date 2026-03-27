@@ -239,12 +239,11 @@ in
     scanMdEntries
     ;
 
-  # Discover all available skills from sources + local path + distributions
+  # Discover all available skills from sources + distributions
   # Returns: { skillId = { id, path, source }; ... }
   discoverCatalog =
     {
       sources,
-      localPath,
       distributionsPath ? null,
     }:
     let
@@ -261,7 +260,7 @@ in
             agents = { };
           };
 
-      # Scan each external source (last-wins on duplicate skill IDs)
+      # Scan each flake input source (last-wins on duplicate skill IDs)
       externalSkills = builtins.foldl' (
         acc: srcName:
         let
@@ -271,14 +270,11 @@ in
         acc // scanned
       ) { } (attrNames sources);
 
-      # Scan local skills (optional legacy override path)
-      localSkills =
-        if localPath != null && pathExists localPath then scanSource "local" { path = localPath; } else { };
-
-      # Priority: local > distribution > external
-      # agents/internal is the single source of truth.
+      # Priority: distribution (internal) > external (flake inputs)
+      # Nix // operator is right-biased, so left side wins on conflicts.
+      # agents/internal skills override flake input skills on duplicate IDs.
     in
-    externalSkills // distributionResult.skills // localSkills;
+    distributionResult.skills // externalSkills;
 
   # Discover assets exposed by external sources (for example top-level agents/commands).
   discoverExternalAssets =

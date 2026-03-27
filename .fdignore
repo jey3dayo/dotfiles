@@ -8,9 +8,6 @@ claude/local/node_modules/
 result/
 result-*/
 
-# Imported agent skills (managed separately)
-agents/external/
-
 # Temporary symlinks
 codex/AGENTS.md
 opencode/AGENTS.md

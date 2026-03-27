@@ -27,19 +27,16 @@ let
 
   catalog = agentLib.discoverCatalog {
     inherit (cfg) sources distributionsPath;
-    localPath = cfg.localSkillsPath;
   };
 
-  localSkillIds = lib.attrNames (lib.filterAttrs (_: skill: skill.source == "local") catalog);
   distributionSkillIds = lib.attrNames (
     lib.filterAttrs (_: skill: skill.source == "distribution") catalog
   );
-  allSkillIds = lib.attrNames catalog;
   enableList =
     if cfg.skills.enable == null then
-      allSkillIds
+      distributionSkillIds # Only distribution skills when no selection
     else
-      lib.unique (cfg.skills.enable ++ localSkillIds ++ distributionSkillIds);
+      lib.unique (cfg.skills.enable ++ distributionSkillIds);
 
   selectedSkills = agentLib.selectSkills {
     inherit catalog;
@@ -158,12 +155,6 @@ in
       );
       default = { };
       description = "External skill sources (name -> { path, idPrefix?, agentsPath?, commandsPath? }).";
-    };
-
-    localSkillsPath = lib.mkOption {
-      type = lib.types.nullOr lib.types.path;
-      default = null;
-      description = "Optional legacy override path for local skills. Deprecated: use distributionsPath as single source of truth.";
     };
 
     distributionsPath = lib.mkOption {

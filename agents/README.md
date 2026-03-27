@@ -1,6 +1,6 @@
 # Agents ディレクトリ構造
 
-このディレクトリには、内部アセットと外部アセットに整理された Claude Code のエージェントスキル、コマンド、設定が含まれています。
+このディレクトリには、Claude Code のエージェントスキル、コマンド、設定が含まれています。
 
 ## ディレクトリ構造
 
@@ -11,7 +11,6 @@ agents/
 │   ├── commands/     # スラッシュコマンド
 │   ├── agents/       # エージェント定義
 │   └── rules/        # プロジェクトルール
-├── external/         # マーケットプレイスからの外部スキル
 ├── nix/              # Nix 実装
 │   ├── lib.nix       # コアロジック（スキャン、検出、バンドル）
 │   ├── module.nix    # Home Manager モジュール
@@ -19,9 +18,9 @@ agents/
 └── scripts/          # メンテナンススクリプト
 ```
 
-## Internal vs External
+## Sources vs Distribution
 
-### agents/internal/
+### agents/internal/ (Distribution)
 
 目的: 内部アセットの信頼できる唯一の情報源
 
@@ -34,7 +33,7 @@ agents/
 
 配布: すべてのコンテンツは Home Manager を介して自動的に `~/.claude/` に配布されます
 
-### agents/external/
+### Flake Input Sources
 
 目的: マーケットプレイスおよびサードパーティソースからの外部スキル
 
@@ -88,9 +87,8 @@ nix run .#validate
 
 スキルは以下の優先順位で検出されます：
 
-1. Local (`localPath` - 非推奨、レガシー互換性のため)
-2. Distribution (`agents/internal/` - 主要ソース)
-3. External (`sources` 経由の flake inputs)
+1. Distribution (`agents/internal/` - 主要ソース、内部スキルが優先)
+2. External (`sources` 経由の flake inputs)
 
 ### 選択
 

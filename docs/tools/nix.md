@@ -61,11 +61,10 @@ flake inputs`"]
 
 ### スキル優先度
 
-| 優先度 | ソース       | パス                         |
-| ------ | ------------ | ---------------------------- |
-| 高     | local        | `agents/internal/skills/`    |
-| 中     | distribution | flake inputs 経由バンドル    |
-| 低     | external     | `agents/external/` (symlink) |
+| 優先度 | ソース       | パス                      |
+| ------ | ------------ | ------------------------- |
+| 高     | distribution | `agents/internal/skills/` |
+| 低     | external     | flake inputs 経由バンドル |
 
 ---
 

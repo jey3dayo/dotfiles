@@ -4,7 +4,7 @@
 # Run manually: pre-commit run --all-files
 
 # Global exclude patterns (aligned with mise TASK_EXCLUDES)
-exclude: '^(agents/external/|\.worktrees/|result/|result-.*|\.luarocks/)'
+exclude: '^(\.worktrees/|result/|result-.*|\.luarocks/)'
 
 repos:
   - repo: local

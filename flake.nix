@@ -157,7 +157,6 @@
             inherit (agentSkills) selection;
             catalog = agentLib.discoverCatalog {
               inherit sources;
-              localPath = null;
               distributionsPath = ./agents/internal;
             };
             enableConfig = selection.enable or null;

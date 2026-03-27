@@ -165,14 +165,13 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 ### 4段階統合フロー
 
 1. Sources 統合: `discoverCatalog` (lib.nix L105-127)
-   - Internal: `agents/internal/skills/`
-   - External: Flake inputs → `agents/external/`（symlinks）
-   - Distribution: `agents/internal/`（バンドル層、オプション）
-   - 優先度: Local > External > Distribution
+   - Distribution: `agents/internal/`（主要ソース、内部スキルが優先）
+   - External: Flake inputs 経由バンドル
+   - 優先度: Distribution > External
 
 2. Skills 選択: `selectSkills` (lib.nix L129-138)
    - `selection.enable` で選択されたスキルのみ
-   - Local skills は常に含まれる
+   - Distribution skills は常に含まれる
 
 3. Bundle 生成: `mkBundle` (lib.nix L140-160)
    - 選択されたスキルのみ Nix store にコピー
