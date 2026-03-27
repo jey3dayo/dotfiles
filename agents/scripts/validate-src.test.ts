@@ -9,17 +9,17 @@ import { describe, expect, it } from "bun:test";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const sourceScript = path.join(__dirname, "validate-internal.sh");
+const sourceScript = path.join(__dirname, "validate-src.sh");
 
 const setupRepo = (): { root: string; scriptPath: string; skillsDir: string } => {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), "validate-internal-test-"));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "validate-src-test-"));
   const scriptDir = path.join(root, "agents", "scripts");
-  const skillsDir = path.join(root, "agents", "internal", "skills");
+  const skillsDir = path.join(root, "agents", "src", "skills");
 
   fs.mkdirSync(scriptDir, { recursive: true });
   fs.mkdirSync(skillsDir, { recursive: true });
 
-  const scriptPath = path.join(scriptDir, "validate-internal.sh");
+  const scriptPath = path.join(scriptDir, "validate-src.sh");
   fs.copyFileSync(sourceScript, scriptPath);
   fs.chmodSync(scriptPath, 0o755);
 
@@ -31,7 +31,7 @@ const runScript = (scriptPath: string) =>
     encoding: "utf8",
   });
 
-describe("agents/scripts/validate-internal.sh", () => {
+describe("agents/scripts/validate-src.sh", () => {
   it("passes when skills directory has at least one valid skill", () => {
     const repo = setupRepo();
     fs.mkdirSync(path.join(repo.skillsDir, "good-skill"), { recursive: true });

@@ -80,7 +80,7 @@ repos:
         name: Normalize internal Markdown bold headings
         entry: tsx ./scripts/replace-bold-headings.ts
         language: system
-        files: ^agents/internal/.*\.md$
+        files: ^agents/src/.*\.md$
         pass_filenames: true
 
       - id: markdownlint

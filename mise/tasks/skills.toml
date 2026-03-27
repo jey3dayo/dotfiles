@@ -51,8 +51,8 @@ XDG_CACHE_HOME="$cache_root" nix run .#validate
 """
 
 ["skills:validate:internal"]
-description = "agents/internal が SSoT ルールに準拠しているか検証"
-run = "bash ./agents/scripts/validate-internal.sh"
+description = "agents/src が SSoT ルールに準拠しているか検証"
+run = "bash ./agents/scripts/validate-src.sh"
 
 ["skills:update"]
 description = "全ソース更新（flake inputs）"

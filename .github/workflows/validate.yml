@@ -8,8 +8,8 @@ on:
       - "nix/**"
       - "home.nix"
       - "agents/nix/**"
-      - "agents/internal/**"
-      - "agents/scripts/validate-internal.sh"
+      - "agents/src/**"
+      - "agents/scripts/validate-src.sh"
       - "scripts/check-flake-sync.sh"
   pull_request:
     paths:
@@ -18,8 +18,8 @@ on:
       - "nix/**"
       - "home.nix"
       - "agents/nix/**"
-      - "agents/internal/**"
-      - "agents/scripts/validate-internal.sh"
+      - "agents/src/**"
+      - "agents/scripts/validate-src.sh"
       - "scripts/check-flake-sync.sh"
   workflow_dispatch:
 
@@ -59,7 +59,7 @@ jobs:
         run: nix run .#validate
 
       - name: Validate internal assets
-        run: bash ./agents/scripts/validate-internal.sh
+        run: bash ./agents/scripts/validate-src.sh
 
       - name: Build bundle
         run: nix build .#bundle
