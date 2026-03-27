@@ -157,7 +157,7 @@
             inherit (agentSkills) selection;
             catalog = agentLib.discoverCatalog {
               inherit sources;
-              distributionsPath = ./agents/internal;
+              distributionsPath = ./agents/src;
             };
             enableConfig = selection.enable or null;
             distributionSkillIds = nixpkgs.lib.attrNames (

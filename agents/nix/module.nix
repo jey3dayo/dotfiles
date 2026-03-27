@@ -160,7 +160,7 @@ in
     distributionsPath = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Path to internal assets directory (e.g., ./agents/internal). Provides bundled skills, commands, and config.";
+      description = "Path to internal assets directory (e.g., ./agents/src). Provides bundled skills, commands, and config.";
     };
 
     skills.enable = lib.mkOption {

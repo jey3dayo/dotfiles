@@ -272,7 +272,7 @@ in
 
       # Priority: distribution (internal) > external (flake inputs)
       # Nix // operator is right-biased, so RIGHT side wins on conflicts.
-      # agents/internal skills override flake input skills on duplicate IDs.
+      # agents/src skills override flake input skills on duplicate IDs.
     in
     externalSkills // distributionResult.skills;
 
