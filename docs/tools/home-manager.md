@@ -164,20 +164,20 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 
 ### 4段階統合フロー
 
-1. Sources 統合: `discoverCatalog` (lib.nix L105-127)
+1. Sources 統合: `discoverCatalog` (lib.nix L244-)
    - Distribution: `agents/internal/`（主要ソース、内部スキルが優先）
    - External: Flake inputs 経由バンドル
    - 優先度: Distribution > External
 
-2. Skills 選択: `selectSkills` (lib.nix L129-138)
+2. Skills 選択: `selectSkills` (lib.nix L306-)
    - `selection.enable` で選択されたスキルのみ
    - Distribution skills は常に含まれる
 
-3. Bundle 生成: `mkBundle` (lib.nix L140-160)
+3. Bundle 生成: `mkBundle` (lib.nix L320-)
    - 選択されたスキルのみ Nix store にコピー
    - rsync -aL による完全コピー（symlink を実体化）
 
-4. 配布: Home Manager (module.nix L169-178)
+4. 配布: Home Manager (module.nix L277-)
    - Per-skill symlink で `~/.claude/skills/` へ配布
 
 ### 外部ソース障害時の挙動
@@ -195,7 +195,7 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 
 ### `nix run .#validate`（`mkValidateScript`）
 
-実装: `agents/nix/lib.nix` L446-502
+実装: `agents/nix/lib.nix` L440-
 
 | 検証項目                                 | 説明                                                   |
 | ---------------------------------------- | ------------------------------------------------------ |
@@ -206,7 +206,7 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 
 ### `nix flake check`（`mkChecks`）
 
-実装: `agents/nix/lib.nix` L505-524
+実装: `agents/nix/lib.nix` L499-
 
 | 検証項目                  | 説明                                                           |
 | ------------------------- | -------------------------------------------------------------- |
