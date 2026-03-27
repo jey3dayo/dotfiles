@@ -22,7 +22,7 @@ graph LR
         DOT["`**静的ファイル**
 .zshrc / .zshenv
 .gitconfig / .ssh/config`"]
-        INT["`**agents/internal/**
+        INT["`**agents/src/**
 skills / rules / agents`"]
         EXT["`**外部スキル**
 flake inputs`"]
@@ -57,13 +57,13 @@ flake inputs`"]
 配布の流れ:
 
 - 静的ファイル → `~/` 直下に symlink 配布
-- agents/internal + 外部スキル → `/nix/store` にバンドル → 各ツールの `skills/` に per-skill symlink
+- agents/src + 外部スキル → `/nix/store` にバンドル → 各ツールの `skills/` に per-skill symlink
 
 ### スキル優先度
 
 | 優先度 | ソース       | パス                      |
 | ------ | ------------ | ------------------------- |
-| 高     | distribution | `agents/internal/skills/` |
+| 高     | distribution | `agents/src/skills/`      |
 | 低     | external     | flake inputs 経由バンドル |
 
 ---

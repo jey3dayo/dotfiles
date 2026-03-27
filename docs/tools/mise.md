@@ -132,7 +132,7 @@ ci:full
 - `YAMLLINT_CONFIG_FILE`: `yamllint` 設定ファイル
 - `*_FILES` 系: 特定ファイルだけ処理（`SH_FILES`, `PY_FILES`, `LUA_FILES`, `TOML_FILES`, `BIOME_FILES`, `PRETTIER_FILES`, `YAML_FILES`）
 
-`TASK_EXCLUDES` は汎用タスクの除外に使う。`agents/internal` は汎用 lint/format 対象に含める。
+`TASK_EXCLUDES` は汎用タスクの除外に使う。`agents/src` は汎用 lint/format 対象に含める。
 
 ## Environment Detection
 

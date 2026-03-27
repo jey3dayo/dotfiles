@@ -51,7 +51,7 @@ High-performance cross-platform (macOS/Linux/WSL2) development environment confi
   - 1Password for SSH key management
 
 - 🤖 AI Asset Distribution Pipeline
-  - `agents/internal/` as source of truth for internal skills/agents/rules
+  - `agents/src/` as source of truth for internal skills/agents/rules
   - Selected external skills are bundled through Nix flake inputs
   - Home Manager applies the same bundle structure across environments
 

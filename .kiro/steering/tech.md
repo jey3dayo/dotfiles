@@ -114,7 +114,7 @@ All other tools serve to enhance or support these core components, while deploym
 
 #### Agent Skills Bundle (Nix-managed)
 
-- Source of Truth: `agents/internal/` for internal assets, with external sources in `nix/agent-skills-sources.nix`
+- Source of Truth: `agents/src/` for internal assets, with external sources in `nix/agent-skills-sources.nix`
 - Build Path: `flake.nix` composes and bundles selected skills
 - Deployment Path: Home Manager module (`agents/nix/module.nix`) applies bundle outputs consistently
 

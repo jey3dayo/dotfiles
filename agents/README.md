@@ -20,7 +20,7 @@ agents/
 
 ## Sources vs Distribution
 
-### agents/internal/ (Distribution)
+### agents/src/ (Distribution)
 
 目的: 内部アセットの信頼できる唯一の情報源
 
@@ -71,7 +71,7 @@ nix run .#validate
 
 **内部スキル**（このリポジトリで開発）:
 
-1. `agents/internal/skills/<skill-name>/` 配下にスキルディレクトリを作成
+1. `agents/src/skills/<skill-name>/` 配下にスキルディレクトリを作成
 2. スキル定義を含む `SKILL.md` を追加
 3. `home-manager switch --flake ~/.config --impure` を実行
 
@@ -87,7 +87,7 @@ nix run .#validate
 
 スキルは以下の優先順位で検出されます：
 
-1. Distribution (`agents/internal/` - 主要ソース、内部スキルが優先)
+1. Distribution (`agents/src/` - 主要ソース、内部スキルが優先)
 2. External (`sources` 経由の flake inputs)
 
 ### 選択

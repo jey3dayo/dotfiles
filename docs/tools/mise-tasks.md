@@ -102,7 +102,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 | `skills:add`               | スキルを追加（URL または owner/repo）                |
 | `skills:upgrade`           | スキル全更新（update → install → check）             |
 | `skills:validate`          | スキル構成バリデーション（Nix）                      |
-| `skills:validate:internal` | agents/internal SSoT ルール検証                      |
+| `skills:validate:internal` | agents/src SSoT ルール検証                           |
 | `skills:list`              | 有効スキル一覧を表示                                 |
 | `skills:install`           | HM でスキルをインストール                            |
 | `skills:update`            | 全ソース更新（flake inputs）                         |
