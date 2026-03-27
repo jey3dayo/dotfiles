@@ -271,10 +271,10 @@ in
       ) { } (attrNames sources);
 
       # Priority: distribution (internal) > external (flake inputs)
-      # Nix // operator is right-biased, so left side wins on conflicts.
+      # Nix // operator is right-biased, so RIGHT side wins on conflicts.
       # agents/internal skills override flake input skills on duplicate IDs.
     in
-    distributionResult.skills // externalSkills;
+    externalSkills // distributionResult.skills;
 
   # Discover assets exposed by external sources (for example top-level agents/commands).
   discoverExternalAssets =

@@ -40,7 +40,7 @@ Detailed Reference: [docs/tools/home-manager.md](../../docs/tools/home-manager.m
 
 ## Agent Skills 配布フロー
 
-1. `discoverCatalog`: Internal > External > Distribution の優先度でカタログ統合
+1. `discoverCatalog`: Distribution (agents/internal) > External (flake inputs) の優先度でカタログ統合
 2. `selectSkills`: `selection.enable` 指定のスキルのみ選択
 3. `mkBundle`: Nix store にコピー（rsync -aL でシンボリックリンクを実体化）
 4. Home Manager: `~/.claude/skills/` へ per-skill symlink で配布
