@@ -5,7 +5,7 @@
 
 ["skills:install"]
 description = "HM でスキルをインストール"
-run = "mise run hm:switch"
+depends = ["hm:switch"]
 
 ["skills:report"]
 description = "インストール対象スキルのURLレポートを出力"
@@ -77,8 +77,8 @@ run = "sh ./scripts/check-flake-sync.sh"
 
 ["skills:upgrade"]
 description = "スキル全更新（update → install → check）"
-run = """
-mise run skills:update
-mise run skills:install
-mise run skills:check
-"""
+run = [
+  { task = "skills:update" },
+  { task = "skills:install" },
+  { task = "skills:check" },
+]

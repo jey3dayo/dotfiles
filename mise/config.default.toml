@@ -22,20 +22,6 @@ trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 uvx = true
 
 # ========================================
-# オプション環境変数（ファイル限定処理）
-# ========================================
-# フォーマット/lint タスクで特定ファイルのみ処理する場合に設定
-# 例: SH_FILES="script1.sh script2.sh" mise run format:shell
-#
-# SH_FILES = ""      # シェルスクリプト
-# PY_FILES = ""      # Python ファイル
-# LUA_FILES = ""     # Lua ファイル
-# TOML_FILES = ""    # TOML ファイル
-# BIOME_FILES = ""   # JS/TS/JSON ファイル (biome)
-# PRETTIER_FILES = "" # Prettier 対象ファイル
-# YAML_FILES = ""    # YAML ファイル
-
-# ========================================
 # ツール定義 (Tools)
 # ========================================
 # mise で管理する全ツールを定義
@@ -67,7 +53,6 @@ actionlint = "latest"
 biome = "latest"
 hadolint = "latest"
 prettier = "latest"
-ruff = "latest"
 shellcheck = "latest"
 shfmt = "latest"
 stylua = "latest"

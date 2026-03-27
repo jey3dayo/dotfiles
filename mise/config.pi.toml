@@ -1,6 +1,6 @@
 # ========================================
-# グローバル mise 設定（ツール・共通設定のみ）
-# ~/.config/mise/config.toml
+# Raspberry Pi mise 設定（最小構成）
+# ~/.config/mise/config.pi.toml
 # ========================================
 
 [settings]
@@ -13,20 +13,6 @@ trusted_config_paths = ["~/src/github.com"]
 
 [settings.pipx]
 uvx = true
-
-# ========================================
-# オプション環境変数（ファイル限定処理）
-# ========================================
-# フォーマット/lint タスクで特定ファイルのみ処理する場合に設定
-# 例: SH_FILES="script1.sh script2.sh" mise run format:shell
-#
-# SH_FILES = ""      # シェルスクリプト
-# PY_FILES = ""      # Python ファイル
-# LUA_FILES = ""     # Lua ファイル
-# TOML_FILES = ""    # TOML ファイル
-# BIOME_FILES = ""   # JS/TS/JSON ファイル (biome)
-# PRETTIER_FILES = "" # Prettier 対象ファイル
-# YAML_FILES = ""    # YAML ファイル
 
 # ========================================
 # ツール定義 (Tools)

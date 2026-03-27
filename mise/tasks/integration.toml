@@ -98,7 +98,7 @@ depends = [
 ]
 
 ["check:lint"]
-description = "lint チェック集約（lint と同義）"
+description = "lint チェック集約（check タスクからの呼び出し用エイリアス）"
 depends = ["lint"]
 
 ["check:lint:quick"]
