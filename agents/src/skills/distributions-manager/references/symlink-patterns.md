@@ -336,7 +336,7 @@ nix-store --query --references $(nix-build --no-out-link ~/.config -A home.activ
 # Trace evaluation
 nix eval --show-trace --json --impure --expr '
   let lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
-  in lib.discoverCatalog { distributionsPath = ~/.config/agents/internal; }
+  in lib.discoverCatalog { distributionsPath = ~/.config/agents/src; }
 '
 ```
 

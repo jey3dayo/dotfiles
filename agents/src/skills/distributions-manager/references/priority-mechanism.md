@@ -240,7 +240,7 @@ nix eval --show-trace --json --impure --expr '
   let
     lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
     catalog = lib.discoverCatalog {
-      distributionsPath = ~/.config/agents/internal;
+      distributionsPath = ~/.config/agents/src;
       sources = {};
     };
   in

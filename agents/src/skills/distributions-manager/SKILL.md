@@ -92,7 +92,7 @@ Use this skill when:
 
 ```bash
 # Inspect default bundle
-tree agents/internal/
+tree agents/src/
 
 # Optional: list custom bundles (if using distributions directory)
 ls -la agents/bundles/

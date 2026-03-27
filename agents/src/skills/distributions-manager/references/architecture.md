@@ -183,7 +183,7 @@ distributionSkills = scanDistribution (distributionsPath + "/skills");
 
 # Entries can be directories or symlinks; resolution happens at filesystem level
 # Example: internal/skills/my-skill
-# Nix sees: /home/j138/.config/agents/internal/skills/my-skill
+# Nix sees: /home/j138/.config/agents/src/skills/my-skill
 ```
 
 ### Key insight
@@ -222,7 +222,7 @@ home-manager build --flake ~/.config --impure --dry-run
 nix eval --json --impure --expr '
   let lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
       catalog = lib.discoverCatalog {
-        distributionsPath = ~/.config/agents/internal;
+        distributionsPath = ~/.config/agents/src;
         # ... other paths
       };
   in builtins.attrNames catalog.skills
@@ -238,7 +238,7 @@ ls -la ~/.claude/skills/
 
 ### Why Symlinks?
 
-- No duplication: Source of truth remains in `agents/internal/skills/`
+- No duplication: Source of truth remains in `agents/src/skills/`
 - Easy updates: Changes to source automatically reflected
 - Nix-friendly: Symlinks are resolved at filesystem level
 - Bundle flexibility: Same skill can appear in multiple distributions
@@ -261,7 +261,7 @@ ls -la ~/.claude/skills/
 
 - agents/nix/lib.nix: Main implementation
 - ~/.config/flake.nix: Home Manager integration (calls `discoverCatalog`)
-- agents/internal/: Example bundle
+- agents/src/: Example bundle
 
 ---
 

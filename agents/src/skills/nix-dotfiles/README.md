@@ -42,7 +42,7 @@ nix-dotfiles/
 ### 診断スクリプト
 
 ```bash
-~/.config/agents/internal/skills/nix-dotfiles/scripts/diagnose.sh
+~/.config/agents/src/skills/nix-dotfiles/scripts/diagnose.sh
 ```
 
 ### チェック項目
@@ -147,19 +147,19 @@ Flake 構造、Worktree SSoT、gitignore フィルタリング
 
 ```bash
 # スキル構造の確認
-ls -la ~/.config/agents/internal/skills/nix-dotfiles/
+ls -la ~/.config/agents/src/skills/nix-dotfiles/
 
 # references の確認
-ls -la ~/.config/agents/internal/skills/nix-dotfiles/references/
+ls -la ~/.config/agents/src/skills/nix-dotfiles/references/
 
 # scripts の実行権限確認
-ls -la ~/.config/agents/internal/skills/nix-dotfiles/scripts/
+ls -la ~/.config/agents/src/skills/nix-dotfiles/scripts/
 ```
 
 ### 診断スクリプト実行
 
 ```bash
-~/.config/agents/internal/skills/nix-dotfiles/scripts/diagnose.sh
+~/.config/agents/src/skills/nix-dotfiles/scripts/diagnose.sh
 ```
 
 ### 期待される出力

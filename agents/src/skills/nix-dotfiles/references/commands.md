@@ -512,7 +512,7 @@ Available skills:
 ### 構文
 
 ```bash
-~/.config/agents/internal/skills/nix-dotfiles/scripts/diagnose.sh
+~/.config/agents/src/skills/nix-dotfiles/scripts/diagnose.sh
 ```
 
 ### チェック項目

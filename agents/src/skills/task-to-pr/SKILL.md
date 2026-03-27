@@ -203,7 +203,8 @@ start_phase = Phase 1 (full workflow)
   - If not: fall back to `git worktree`.
 - Choose a branch name (recommended: `feat/<short-slug>` in kebab-case).
 - Create the worktree:
-  - `git worktree add -b <branch> <path> <base>`
+  - With `git wt` (preferred): `git wt create <branch> --start-point <base>`
+  - With `git worktree` (fallback): `git worktree add -b <branch> <path> <base>`
 - `cd` into the worktree and verify with `git status`.
 
 #### Step 4: Worktree Initialization
