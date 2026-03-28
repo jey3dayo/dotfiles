@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub PR Creator"
+  short_description: "Create GitHub PRs using PR templates automatically"
+  default_prompt: "PRを作成して"
