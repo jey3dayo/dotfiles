@@ -13,7 +13,7 @@ const nixBin = "/nix/var/nix/profiles/default/bin/nix";
 const flakeUrl = `git+file://${repoRoot}`;
 const user = process.env.USER ?? "t00114";
 const bundledCodeReviewer = fs.readFileSync(
-  path.join(repoRoot, "agents", "internal", "agents", "code-reviewer.md"),
+  path.join(repoRoot, "agents", "src", "agents", "code-reviewer.md"),
   "utf8",
 );
 
