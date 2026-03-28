@@ -266,7 +266,7 @@ nix eval --show-trace --json --impure --expr '
 1. Treat `agents/src/` as the bundled source of truth.
 2. Use external sources for additive skills or upstream imports.
 3. Expect `skills.enable = null` to keep all discovered skills, not just bundled ones.
-4. Use real current paths in docs and symlinks; do not reference removed `internal/`, `skills-internal/`, or `commands-internal/` layers.
+4. Use real current paths in docs and symlinks; do not reference removed legacy layers.
 5. Avoid symlinks that point into generated deployment directories such as `~/.claude/skills/`.
 
 ---

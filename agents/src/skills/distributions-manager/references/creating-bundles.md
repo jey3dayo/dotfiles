@@ -2,387 +2,143 @@
 
 ## Overview
 
-This guide walks through creating a custom distribution bundle from scratch. Use this when you want to group related skills, commands, and configurations for specific workflows or teams.
+This guide walks through creating a custom distribution root for `distributionsPath`.
+
+The current runtime supports bundled:
+
+- skills
+- rules
+- agents
+- optional config files
+
+Top-level bundled commands are not part of the active Home Manager deployment path. If you need commands, prefer external `commandsPath` sources.
 
 ---
 
-## Prerequisites
-
-- Familiarity with Nix Home Manager
-- Understanding of symlink-based architecture (see `symlink-patterns.md`)
-- Access to `agents/` directory
-
----
-
-## Step-by-Step Guide
-
-### Step 1: Create Bundle Structure
+## Step 1: Create Bundle Structure
 
 ```bash
-cd /home/j138/.config/agents/bundles
-
-# Create bundle directory
-mkdir -p my-bundle/{skills,commands,rules,agents,config}
-
-# Verify structure
+cd ~/.config/agents/bundles
+mkdir -p my-bundle/{skills,rules,agents,config}
 tree my-bundle
-# my-bundle/
-# ├── skills/
-# ├── commands/
-# ├── rules/
-# ├── agents/
-# └── config/
 ```
 
-### Naming conventions
+Recommended naming:
 
-- Lowercase with hyphens: `my-bundle`, `frontend-tools`, `backend-utils`
-- Descriptive: Reflect the bundle's purpose
+- lowercase with hyphens
+- short but descriptive
 
 ---
 
-### Step 2: Add Skills
+## Step 2: Add Skills
+
+You can either symlink to existing bundled source directories or create bundle-specific skill directories directly.
+
+### Reuse a skill from `agents/src/`
 
 ```bash
 cd my-bundle/skills
-
-# Symlink from skills-internal/
-ln -s ../../../skills-internal/my-skill ./
-
-# Symlink from skills/ (external)
-ln -s ../../../skills/external-skill ./
-
-# Verify
-ls -la
-# lrwxrwxrwx my-skill -> ../../../skills-internal/my-skill
-# lrwxrwxrwx external-skill -> ../../../skills/external-skill
+ln -s ../../../src/skills/react ./
+ln -s ../../../src/skills/polish ./
 ```
 
-### Tips
-
-- Use relative paths: `../../../skills-internal/` (not absolute)
-- Verify targets exist: `ls -la ../../../skills-internal/my-skill`
-- Group by theme: All React-related skills together
-
----
-
-### Step 3: Add Commands
+### Create a bundle-specific skill directory
 
 ```bash
-cd ../commands
-
-# Symlink single command
-ln -s ../../../commands-internal/my-command ./
-
-# Symlink command directory (with subcommands)
-ln -s ../../../commands-internal/kiro ./
-
-# Verify
-ls -la
-# lrwxrwxrwx my-command -> ../../../commands-internal/my-command
-# lrwxrwxrwx kiro -> ../../../commands-internal/kiro
+mkdir my-custom-skill
+$EDITOR my-custom-skill/SKILL.md
 ```
 
-### Subdirectory support
+Validation:
 
 ```bash
-# Example: kiro command directory
-tree ../../../commands-internal/kiro
-# kiro/
-# ├── spec-init/
-# │   └── command.ts
-# ├── spec-tasks/
-# │   └── command.ts
-# └── spec-impl/
-#     └── command.ts
-
-# Result: 3 commands (kiro:spec-init, kiro:spec-tasks, kiro:spec-impl)
+test -f react/SKILL.md
+test -f my-custom-skill/SKILL.md
 ```
 
 ---
 
-### Step 4: Add Rules
+## Step 3: Add Rules
+
+Rules are markdown files.
 
 ```bash
 cd ../rules
-
-# Symlink from ~/.claude/rules/
-ln -s ~/.claude/rules/claude-md-design.md ./
-
-# Or create bundle-specific rules
-cat > my-rule.md <<EOF
-# My Custom Rule
-
-This is a custom rule for my bundle.
-EOF
-
-# Verify
-ls -la
-# lrwxrwxrwx claude-md-design.md -> /home/j138/.claude/rules/claude-md-design.md
-# -rw-r--r-- my-rule.md
+ln -s ../../../src/rules/claude-md-design.md ./
+mkdir -p tools
+$EDITOR tools/my-team-rule.md
 ```
 
-### Tips
+Subdirectories are preserved in deployed IDs, for example:
 
-- Rules are markdown files containing instructions for Claude Code
-- Can symlink from `~/.claude/rules/` or create new files
-- Support subdirectories (e.g., `rules/frontend/react.md`)
+- `rules/tools/my-team-rule.md` -> `tools/my-team-rule`
 
 ---
 
-### Step 5: Add Agents
+## Step 4: Add Agents
+
+Agents are markdown files or subdirectories containing markdown files.
 
 ```bash
 cd ../agents
-
-# Symlink individual agents
-ln -s ~/.claude/agents/code-reviewer.md ./
-ln -s ~/.claude/agents/error-fixer.md ./
-
-# Symlink agent directory (with sub-agents)
-ln -s ~/.claude/agents/kiro ./
-
-# Verify
-ls -la
-# lrwxrwxrwx code-reviewer.md -> /home/j138/.claude/agents/code-reviewer.md
-# lrwxrwxrwx error-fixer.md -> /home/j138/.claude/agents/error-fixer.md
-# lrwxrwxrwx kiro -> /home/j138/.claude/agents/kiro
+ln -s ../../../src/agents/code-reviewer.md ./
+ln -s ../../../src/agents/kiro ./
 ```
 
-### Subdirectory support
+Validation:
 
 ```bash
-# Example: kiro agent directory
-tree ~/.claude/agents/kiro
-# kiro/
-# ├── spec-design.md
-# ├── spec-impl.md
-# └── validate-impl.md
-
-# Result: 3 agents (kiro/spec-design, kiro/spec-impl, kiro/validate-impl)
+test -f code-reviewer.md
+test -d kiro
 ```
 
 ---
 
-### Step 6: Add Configuration (Optional)
+## Step 5: Add Optional Config
 
 ```bash
 cd ../config
-
-# Add shared rules
-cat > shared-rules.md <<EOF
-# Shared Development Rules
-
-- Follow project coding standards
-- Run tests before committing
-- Update documentation
-EOF
-
-# Add bundle-specific config
-cat > bundle-config.json <<EOF
-{
-  "bundle": "my-bundle",
-  "version": "1.0.0",
-  "maintainers": ["team@example.com"]
-}
-EOF
+$EDITOR shared-rules.md
+$EDITOR bundle-config.json
 ```
 
-### Config types
-
-- Rules: Markdown files for Claude Code instructions
-- Templates: Reusable templates for skills/commands
-- Metadata: JSON/YAML configuration files
+Use this directory for bundle metadata, shared instructions, and templates.
 
 ---
 
-### Step 5: Create README
+## Step 6: Point `distributionsPath` At The Bundle
 
-```bash
-cd ..
-
-# Use template (see resources/templates/README.template.md)
-cat > README.md <<EOF
-# My Bundle
-
-Custom distribution for [workflow/team name].
-
-## Contents
-
-### Skills (${count})
-
-- **my-skill**: Brief description
-- **external-skill**: Brief description
-
-### Commands (${count})
-
-- **my-command**: Brief description
-- **kiro:spec-init**: Brief description
-
-## Installation
-
-Included in \`bundles/my-bundle/\`. Deploy with:
-
-\`\`\`bash
-home-manager switch --flake ~/.config --impure
-\`\`\`
-
-## Maintainers
-
-- Team Name <team@example.com>
-EOF
-```
-
----
-
-### Step 6: Update Nix Configuration
-
-### Option A: Replace default bundle
+Example Home Manager configuration:
 
 ```nix
-# ~/.config/flake.nix
-distributionsPath = ~/.config/agents/bundles/my-bundle;
+programs.agent-skills = {
+  enable = true;
+  distributionsPath = ./agents/bundles/my-bundle;
+  sources = import ./nix/sources.nix { inherit inputs agentSkills; };
+};
 ```
-
-### Option B: Keep both (manual merge)
-
-```bash
-# Copy my-bundle contents to internal/
-cp -r bundles/my-bundle/skills/* internal/skills/
-cp -r bundles/my-bundle/commands/* internal/commands/
-```
-
-### Option C: Multi-bundle support (future)
-
-Currently not supported. Single distribution path only.
 
 ---
 
-### Step 7: Deploy and Verify
+## Step 7: Validate
 
 ```bash
-# Dry-run (check for errors)
 home-manager build --flake ~/.config --impure --dry-run
-
-# Deploy
 home-manager switch --flake ~/.config --impure
-
-# Verify skills
-ls -la ~/.claude/skills/ | grep -E 'my-skill|external-skill'
-
-# Verify commands
-mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "local")'
+mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
 ```
 
-### Common issues
+Expected behavior:
 
-- Symlink broken: Check relative path depth (`../../../`)
-- Skill not deployed: Verify `SKILL.md` exists in target
-- Priority conflict: Local source overwrites distribution (expected behavior)
+- bundle skills appear with `source = "distribution"`
+- bundled rules and agents are linked into target directories
+- bundled skills override external skills with the same ID
 
 ---
 
-## Validation Checklist
+## Notes
 
-See `resources/checklist.md` for comprehensive QA checklist. Quick checks:
-
-```bash
-# 1. Structure validation
-tree -L 2 my-bundle/
-
-# 2. Symlink validation
-find my-bundle/ -type l -exec test ! -e {} \; -print
-# (Should print nothing if all symlinks are valid)
-
-# 3. SKILL.md validation
-find my-bundle/skills/ -type l -exec sh -c '
-  target=$(readlink -f "$1")
-  test -f "$target/SKILL.md" || echo "Missing SKILL.md: $1"
-' _ {} \;
-
-# 4. command.ts validation
-find my-bundle/commands/ -type l -exec sh -c '
-  target=$(readlink -f "$1")
-  find "$target" -name "command.ts" -print -quit | grep -q . || echo "Missing command.ts: $1"
-' _ {} \;
-```
-
----
-
-## Examples
-
-### Frontend Bundle
-
-```bash
-bundles/frontend-bundle/
-├── skills/
-│   ├── react -> ../../../skills-internal/react
-│   ├── ui-ux-pro-max -> ../../../skills-internal/ui-ux-pro-max
-│   └── tsr -> ../../../skills-internal/tsr
-├── commands/
-│   ├── polish -> ../../../commands-internal/polish
-│   └── review -> ../../../commands-internal/review
-└── README.md
-```
-
-### Backend Bundle
-
-```bash
-bundles/backend-bundle/
-├── skills/
-│   ├── golang -> ../../../skills-internal/golang
-│   └── mise -> ../../../skills-internal/mise
-├── commands/
-│   ├── kiro -> ../../../commands-internal/kiro
-│   └── clean -> ../../../commands-internal/clean
-└── README.md
-```
-
----
-
-## Maintenance
-
-### Adding Skills to Existing Bundle
-
-```bash
-cd bundles/my-bundle/skills
-ln -s ../../../skills-internal/new-skill ./
-home-manager switch --flake ~/.config --impure
-```
-
-### Removing Skills
-
-```bash
-cd bundles/my-bundle/skills
-rm my-skill  # Remove symlink (does not delete source)
-home-manager switch --flake ~/.config --impure
-```
-
-### Updating Bundle Metadata
-
-```bash
-# Update README.md with new skill counts
-# Update config/bundle-config.json version
-# Commit changes if tracked in Git
-```
-
----
-
-## Best Practices
-
-1. Document purpose: Clear README explaining bundle's use case
-2. Semantic versioning: Use version numbers for bundles
-3. Test before deploy: Always run dry-run first
-4. Group logically: Skills/commands should have thematic coherence
-5. Avoid duplication: Use distributions for grouping, not copying
-6. Maintain atomicity: Each skill/command should work independently
-
----
-
-## Related References
-
-- architecture.md: Nix implementation details
-- symlink-patterns.md: Symlink design patterns
-- priority-mechanism.md: Conflict resolution
-- resources/checklist.md: Comprehensive QA checklist
-- resources/templates/: Bundle templates
+- Prefer relative symlinks over absolute paths
+- Prefer `agents/src/` as the base when reusing bundled assets
+- Do not point bundle entries at generated directories such as `~/.claude/skills/`
+- Do not rely on bundled `commands/` for current Home Manager deployment

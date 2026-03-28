@@ -9,7 +9,7 @@
 dotfiles/
 ├── .github/              # GitHub Actions workflows (CI/CD)
 ├── .kiro/steering/       # Project steering (Kiro)
-├── agents/               # Internal/external AI assets and distribution logic
+├── agents/               # Bundled AI assets, distribution logic, and Nix integration
 ├── alacritty/            # Alacritty terminal configuration
 ├── ghostty/              # Ghostty terminal configuration
 ├── wezterm/              # WezTerm terminal configuration (Lua)
@@ -204,13 +204,12 @@ mise/
 
 ```
 agents/
-├── internal/             # Source-of-truth assets maintained in this repository
-├── external/             # Third-party imported assets
+├── src/                  # Bundled source-of-truth assets maintained in this repository
 ├── nix/                  # Bundle/distribution implementation
 └── scripts/              # Validation and maintenance scripts
 ```
 
-**Purpose**: Keep AI assets versioned and distributable through the same Nix/Home Manager pipeline
+**Purpose**: Keep bundled AI assets versioned in-repo while external assets are sourced through Nix flake inputs and distributed through the same Home Manager pipeline
 
 ### `scripts/` - Bootstrap & Helpers
 

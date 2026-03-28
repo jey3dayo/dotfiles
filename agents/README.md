@@ -1,111 +1,106 @@
 # Agents ディレクトリ構造
 
-このディレクトリには、Claude Code のエージェントスキル、コマンド、設定が含まれています。
+このディレクトリには、Agent Skills のソース、Nix 実装、メンテナンススクリプトが含まれています。
 
 ## ディレクトリ構造
 
-```
+```text
 agents/
-├── internal/          # 内部アセット（信頼できる唯一の情報源）
-│   ├── skills/       # バンドルされたスキル
-│   ├── commands/     # スラッシュコマンド
-│   ├── agents/       # エージェント定義
-│   └── rules/        # プロジェクトルール
-├── nix/              # Nix 実装
-│   ├── lib.nix       # コアロジック（スキャン、検出、バンドル）
-│   ├── module.nix    # Home Manager モジュール
-│   └── README.md     # Nix 実装の詳細
-└── scripts/          # メンテナンススクリプト
+├── src/               # バンドル済みアセットの source of truth
+│   ├── skills/        # スキル定義
+│   ├── agents/        # エージェント定義
+│   ├── rules/         # プロジェクトルール
+│   └── commands/      # 旧 bundled commands 置き場（現行 HM 配布では未使用）
+├── nix/               # Nix 実装
+│   ├── lib.nix        # スキャン、検出、選択、バンドル
+│   ├── module.nix     # Home Manager モジュール
+│   └── README.md      # Nix 実装の詳細
+└── scripts/           # 検証・保守スクリプト
 ```
 
 ## Sources vs Distribution
 
-### agents/src/ (Distribution)
+### `agents/src/` (Distribution)
 
-目的: 内部アセットの信頼できる唯一の情報源
+目的: このリポジトリが所有する bundled assets の source of truth
 
-#### 内容
+内容:
 
-- skills/: このリポジトリで開発・管理されているコアスキル
-- commands/: インタラクティブ操作用のスラッシュコマンド
-- agents/: 特殊タスク用のサブエージェント定義
-- rules/: プロジェクト固有のルールとガイドライン
-
-配布: すべてのコンテンツは Home Manager を介して自動的に `~/.claude/` に配布されます
+- `skills/`: このリポジトリで開発・管理する bundled skills
+- `agents/`: bundled agent definitions
+- `rules/`: bundled project rules
+- `commands/`: 歴史的な bundled commands 置き場。現行の Home Manager モジュールはここを配布しない
 
 ### Flake Input Sources
 
-目的: マーケットプレイスおよびサードパーティソースからの外部スキル
+目的: 外部リポジトリ由来の skills と top-level agents/commands
 
-#### 内容
+管理:
 
-- Claude Code Marketplace のスキル
-- OpenAI キュレーションコレクションのスキル
-- Vercel、Heyvhuang、その他プロバイダーのスキル
-
-管理: `nix/agent-skills-sources.nix` および `flake.nix` の inputs で設定
+- `nix/agent-skills-sources.nix`
+- `nix/sources.nix`
+- `flake.nix`
 
 ## 使用方法
 
 ### 変更のデプロイ
 
 ```bash
-# すべての変更を ~/.claude/ に適用
 home-manager switch --flake ~/.config --impure
-
-# デプロイ確認
-ls ~/.claude/skills/ | wc -l
 ```
 
 ### 検証
 
 ```bash
-# 内部アセット構造の検証
-bash ./agents/scripts/validate-internal.sh
+# agents/src の基本構造を検証
+bash ./agents/scripts/validate-src.sh
 
-# スキルカタログの検証
+# スキルカタログと bundle を検証
 nix run .#validate
 ```
 
-### 新しいスキルの追加
+### 新しい bundled skill の追加
 
-**内部スキル**（このリポジトリで開発）:
-
-1. `agents/src/skills/<skill-name>/` 配下にスキルディレクトリを作成
-2. スキル定義を含む `SKILL.md` を追加
+1. `agents/src/skills/<skill-name>/` を作成
+2. `SKILL.md` を追加
 3. `home-manager switch --flake ~/.config --impure` を実行
 
-**外部スキル**（マーケットプレイスから）:
+### 新しい external source の追加
 
-1. `nix/agent-skills-sources.nix` に追加
-2. `flake.nix` に flake input を追加
-3. `nix flake update && home-manager switch --flake ~/.config --impure` を実行
+1. `nix/agent-skills-sources.nix` に source 定義を追加
+2. `flake.nix` に対応する input を追加
+3. 必要なら `selection.enable` に対象 skill を加える
+4. `nix flake update && home-manager switch --flake ~/.config --impure` を実行
 
 ## アーキテクチャ
 
 ### カタログ検出
 
-スキルは以下の優先順位で検出されます：
+スキルは以下の優先順位で検出されます。
 
-1. Distribution (`agents/src/` - 主要ソース、内部スキルが優先)
+1. Distribution (`agents/src/`)
 2. External (`sources` 経由の flake inputs)
+
+同じ skill ID が衝突した場合は bundled distribution 側が勝ちます。
 
 ### 選択
 
-- Distribution スキル: 常に含まれる
-- External スキル: `nix/agent-skills-sources.nix` の `selection.enable` でフィルタリング
-- 結果: 一意のスキル ID を持つマージされたカタログ
+- `skills.enable = null`: 発見された全 skill を選択
+- `skills.enable = [ ... ]`: 指定 skill に加えて bundled distribution skills を常に含める
+- top-level external agents/commands は、選択された skill source に応じて配布対象が決まる
 
 ### バンドリング
 
-選択されたスキルは Nix ストアにバンドルされ、Home Manager を介してスキルごとのシンボリックリンクとして `~/.claude/skills/` に配布されます。
+選択された skills は Nix store に bundle され、Home Manager 経由で `~/.claude/skills/` へ per-skill symlink として配布されます。
+
+bundled rules と bundled agents は `agents/src` から直接リンクされます。
 
 ## 参考資料
 
-- Nix 実装: `agents/nix/README.md`
-- Home Manager ルール: `.claude/rules/home-manager.md`
-- Agent Skills ソース: `nix/agent-skills-sources.nix`
+- `agents/nix/README.md`
+- `.claude/rules/home-manager.md`
+- `nix/agent-skills-sources.nix`
 
 ---
 
-最終更新: 2026-02-17
+最終更新: 2026-03-29

@@ -2,9 +2,9 @@
 name: distributions-manager
 version: 1.0.0
 description: |
-  Explains the distribution management system for bundling skills,
-  commands, and configurations. Use when planning to create custom
-  distributions or understand the bundling architecture.
+  Explains the current distribution management system for bundled skills,
+  agents, rules, and related Nix deployment behavior. Use when planning
+  to create custom bundles or understand the bundling architecture.
 triggers:
   - distributions
   - bundle
@@ -28,40 +28,41 @@ related_skills:
 
 # Distributions Manager
 
-## What is Distributions?
+## What Is A Distribution?
 
-Distributions are pre-configured bundles that combine:
+Distributions are bundled assets scanned from `distributionsPath`, typically `agents/src/`.
 
-- Skills: Symlinks to `skills/` and `skills-internal/`
-- Commands: Symlinks to `commands-internal/` (supports subdirectories)
-- Rules: Symlinks to `~/.claude/rules/` (markdown files)
-- Agents: Symlinks to `~/.claude/agents/` (markdown files, supports subdirectories)
-- Config: Shared configuration files
+Current bundled asset types:
 
-### Key benefits
+- Skills: directories under `agents/src/skills/`
+- Rules: markdown files under `agents/src/rules/`
+- Agents: markdown files under `agents/src/agents/`
+- Config: optional files under `config/`
 
-- No duplication: Symlink-based architecture
-- Bundle management: Group related tools together
-- Flexible deployment: Optional layer that coexists with existing workflows
+Current command behavior:
+
+- Top-level commands are deployed from external `commandsPath` sources
+- Bundled `agents/src/commands/` is not part of the active Home Manager deployment path
 
 ### Current implementation
 
-- 100+ symlinks in `internal/` (42 skills + 42 commands + 1 rule + 15 agents)
-- Priority: Local > External > Distribution
-- Cyclic reference prevention (static paths, scanned before sources)
-- Supports subdirectories (e.g., `agents/kiro/`, `commands/shared/`)
+- Source of truth: `agents/src/`
+- Skill priority: `Distribution > External`
+- `skills.enable = null`: all discovered bundled and external skills
+- Shared selection logic in `agents/nix/lib.nix`
+- Bundled agents override external agents with the same ID
 
 ---
 
-## When to Use This Knowledge
+## When To Use This Knowledge
 
 Use this skill when:
 
-- Adding new skills/commands and need to understand where they fit
-- Creating custom distributions for specific workflows
-- Debugging Nix deployment issues related to distributions
-- Understanding priority mechanism (Local > External > Distribution)
-- Planning bundle architectures for team-specific toolsets
+- Adding bundled skills, agents, or rules to `agents/src/`
+- Creating a custom distribution root for `distributionsPath`
+- Debugging Nix deployment issues related to bundled assets
+- Understanding selection and priority behavior
+- Updating docs or templates for the current distribution model
 
 ---
 
@@ -69,69 +70,57 @@ Use this skill when:
 
 ### Architecture & Implementation
 
-- references/architecture.md: Nix implementation details, `scanDistribution()` function, integration with `discoverCatalog()`
-- references/priority-mechanism.md: Priority order, conflict resolution, cyclic reference prevention
+- `references/architecture.md`: current Nix implementation and deployment flow
+- `references/priority-mechanism.md`: skill priority, selection behavior, and conflict handling
 
 ### Practical Guides
 
-- references/creating-bundles.md: Step-by-step guide for custom bundle creation
-- references/symlink-patterns.md: Design patterns for symlink-based architecture
+- `references/creating-bundles.md`: creating custom bundle roots for the current runtime
+- `references/symlink-patterns.md`: current symlink patterns and anti-patterns
 
 ### Resources
 
-- resources/templates/bundle-structure.txt: Directory structure template
-- resources/templates/README.template.md: Bundle README template
-- resources/examples/default-bundle.md: Analysis of `internal/`
-- resources/checklist.md: QA checklist for bundle creation
+- `resources/templates/bundle-structure.txt`: starter bundle layout
+- `resources/templates/README.template.md`: bundle README template
+- `resources/examples/default-bundle.md`: analysis of the current `agents/src/` distribution
+- `resources/checklist.md`: QA checklist for bundle creation and maintenance
 
 ---
 
 ## Quick Start
 
-### View Current Distributions
+### View Current Distribution
 
 ```bash
-# Inspect default bundle
 tree agents/src/
-
-# Optional: list custom bundles (if using distributions directory)
-ls -la agents/bundles/
 ```
 
-### Create a Custom Bundle
+### Create A Custom Bundle
 
-See **references/creating-bundles.md** for detailed steps.
+See `references/creating-bundles.md` for the full workflow.
 
 ```bash
-# Create bundle structure
-mkdir -p agents/bundles/my-bundle/{skills,commands,config}
-
-# Add skills
+mkdir -p agents/bundles/my-bundle/{skills,rules,agents,config}
 cd agents/bundles/my-bundle/skills
-ln -s ../../../internal/skills/my-skill ./
-
-# Deploy
+ln -s ../../../src/skills/my-skill ./
 home-manager switch --flake ~/.config --impure
 ```
 
 ### Verify Deployment
 
 ```bash
-# Check deployed skills
-ls -la ~/.claude/skills/ | grep my-skill
-
-# Check skill catalog
-mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "local")'
+mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
+ls -la ~/.claude/skills/
 ```
 
 ---
 
 ## Related Skills
 
-- skill-creator: Creating new skills to add to distributions
-- command-creator: Creating new commands to add to distributions
-- rules-creator: Creating shared rules for bundle configurations
-- knowledge-creator: Routing distribution-related questions
+- `skill-creator`: bundled skill creation
+- `command-creator`: command authoring guidance
+- `rules-creator`: bundled rule creation
+- `knowledge-creator`: routing related knowledge questions
 
 ---
 

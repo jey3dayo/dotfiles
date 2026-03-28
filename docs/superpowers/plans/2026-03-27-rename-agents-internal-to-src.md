@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Rename `agents/internal/` to `agents/src/` and update all references across the codebase.
+Goal: Rename `agents/internal/` to `agents/src/` and update all references across the codebase.
 
-**Architecture:** Single `git mv` to rename the directory, followed by targeted find-and-replace across Nix code, scripts, CI config, and self-referential skill docs. No functional changes — pure rename.
+Architecture: Single `git mv` to rename the directory, followed by targeted find-and-replace across Nix code, scripts, CI config, and self-referential skill docs. No functional changes — pure rename.
 
-**Tech Stack:** Nix, Bash, TypeScript (test), mise, GitHub Actions
+Tech Stack: Nix, Bash, TypeScript (test), mise, GitHub Actions
 
 ---
 
@@ -49,7 +49,7 @@
 
 ## Task 1: Rename the directory
 
-**Files:**
+### Files
 
 - Rename: `agents/internal/` → `agents/src/`
 
@@ -80,7 +80,7 @@ rtk git commit -m "refactor: rename agents/internal to agents/src"
 
 ## Task 2: Nix コード更新
 
-**Files:**
+### Files
 
 - Modify: `flake.nix:160`
 - Modify: `home.nix:56`
@@ -149,7 +149,7 @@ rtk git commit -m "fix(nix): update agents/internal path references to agents/sr
 
 ## Task 3: スクリプト・設定ファイル更新
 
-**Files:**
+### Files
 
 - Rename+Modify: `agents/scripts/validate-internal.sh` → `agents/scripts/validate-src.sh`
 - Rename+Modify: `agents/scripts/validate-internal.test.ts` → `agents/scripts/validate-src.test.ts`
@@ -252,7 +252,7 @@ rtk git commit -m "fix(scripts): rename validate-internal to validate-src and up
 
 > **Note:** Task 1 完了後に実行すること（ファイルが `agents/src/` に移動済みであること）
 
-**Files:**
+### Files
 
 - Modify: `agents/src/skills/distributions-manager/SKILL.md`
 - Modify: `agents/src/skills/distributions-manager/references/architecture.md`

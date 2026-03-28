@@ -2,336 +2,90 @@
 
 ## Pre-Creation
 
-### Planning
-
-- [ ] Bundle purpose clearly defined
-- [ ] Target workflow/team identified
-- [ ] Skill/command list compiled
-- [ ] Naming convention decided (lowercase-with-hyphens)
-- [ ] Existing bundles reviewed for overlap
-
-### Prerequisites
-
-- [ ] Nix Home Manager installed and configured
-- [ ] Access to `agents/` directory
-- [ ] Understanding of symlink-based architecture
-- [ ] Familiarity with priority mechanism (Local > External > Distribution)
+- [ ] Bundle purpose is clear
+- [ ] Target workflow or team is identified
+- [ ] You know which bundled assets are needed
+- [ ] You understand the current priority model: Distribution > External
+- [ ] You understand that bundled `commands/` is not deployed by the current Home Manager module
 
 ---
 
 ## Structure
 
-### Directory Creation
-
-- [ ] Bundle directory created: `bundles/<bundle-name>/`
-- [ ] Subdirectories created:
-  - [ ] `skills/`
-  - [ ] `commands/`
-  - [ ] `config/` (optional)
-- [ ] README.md created at bundle root
-
-### Naming Validation
-
-- [ ] Bundle name uses lowercase-with-hyphens
-- [ ] No spaces or special characters in bundle name
-- [ ] Bundle name is descriptive and clear
+- [ ] Bundle directory exists under `bundles/<bundle-name>/`
+- [ ] `skills/` exists when bundling skills
+- [ ] `rules/` exists when bundling rules
+- [ ] `agents/` exists when bundling agents
+- [ ] `config/` exists only if needed
+- [ ] `README.md` exists at bundle root
 
 ---
 
-## Symlinks
+## Skills
 
-### Skills Symlinks
+- [ ] Every skill entry is either:
+  - [ ] a direct skill directory containing `SKILL.md`
+  - [ ] a symlink to a valid source such as `../../../src/skills/<skill>`
+- [ ] No absolute paths are used
+- [ ] No removed legacy layer paths are referenced
+- [ ] Broken symlinks check returns nothing
 
-- [ ] All skill symlinks use relative paths (`../../../skills-internal/`)
-- [ ] No absolute paths used
-- [ ] Symlink targets exist (verified with `test -e`)
-- [ ] All skill targets contain `SKILL.md`
-- [ ] Path depth is correct (3 levels: `../../../`)
-
-### Validation command
+Validation:
 
 ```bash
-find bundles/<bundle-name>/skills/ -type l -exec sh -c '
+find bundles/<bundle-name>/skills -type l -exec sh -c '
   target=$(readlink -f "$1")
   test -f "$target/SKILL.md" || echo "Missing SKILL.md: $1"
 ' _ {} \;
 ```
 
-### Commands Symlinks
+---
 
-- [ ] All command symlinks use relative paths (`../../../commands-internal/`)
-- [ ] No absolute paths used
-- [ ] Symlink targets exist (verified with `test -e`)
-- [ ] All command targets contain `command.ts` (directly or in subdirectories)
-- [ ] Path depth is correct (3 levels: `../../../`)
+## Rules
 
-### Validation command
-
-```bash
-find bundles/<bundle-name>/commands/ -type l -exec sh -c '
-  target=$(readlink -f "$1")
-  find "$target" -name "command.ts" -print -quit | grep -q . || echo "Missing command.ts: $1"
-' _ {} \;
-```
-
-### Broken Symlinks Check
-
-- [ ] No broken symlinks detected
-
-### Validation command
-
-```bash
-find bundles/<bundle-name>/ -type l -exec test ! -e {} \; -print
-# Should output nothing
-```
+- [ ] Every bundled rule is a valid markdown file
+- [ ] Reused rules point to `agents/src/rules/...` or another real source path
+- [ ] Nested rule paths are intentional
 
 ---
 
-## Configuration
+## Agents
 
-### Optional Config Files
+- [ ] Every bundled agent is a valid markdown file or directory of markdown files
+- [ ] Reused agents point to `agents/src/agents/...` or another real source path
+- [ ] Nested agent paths are intentional
 
-- [ ] `config/shared-rules.md` created (if needed)
-- [ ] `config/bundle-config.json` created (if needed)
-- [ ] `config/templates/` directory created (if needed)
-- [ ] All config files validated (syntax check)
+---
 
-### Metadata Validation
+## Current Runtime Constraints
 
-- [ ] Bundle version specified (semantic versioning: `1.0.0`)
-- [ ] Maintainers listed
-- [ ] Description provided
-- [ ] License specified (if applicable)
+- [ ] Documentation does not claim `Local > External > Distribution`
+- [ ] Documentation does not claim bundled `commands/` is deployed
+- [ ] Documentation does not use removed legacy layer paths
+
+---
+
+## Verification
+
+- [ ] `home-manager build --flake ~/.config --impure --dry-run` succeeds
+- [ ] `home-manager switch --flake ~/.config --impure` succeeds
+- [ ] `mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'` shows expected source attribution
+- [ ] Bundled skills appear with `source = "distribution"`
+- [ ] Bundled rules and agents are linked into target directories as expected
 
 ---
 
 ## Documentation
 
-### README.md
-
-- [ ] Title and description provided
-- [ ] Contents section lists all skills and commands
-- [ ] Installation instructions included
-- [ ] Usage examples provided
-- [ ] Maintenance instructions documented
-- [ ] Version history started
-- [ ] Maintainers listed
-- [ ] Related documentation linked
-
-### Inline Documentation
-
-- [ ] Complex symlink patterns explained
-- [ ] Custom configuration documented
-- [ ] Known issues or limitations noted
+- [ ] README reflects the current contents
+- [ ] Examples use `agents/src/` when referring to bundled source paths
+- [ ] Templates do not mention removed layers
+- [ ] Limitations are documented when a feature is not active in the runtime
 
 ---
 
-## Testing
-
-### Pre-Deployment
-
-- [ ] Dry-run executed successfully:
-
-```bash
-home-manager build --flake ~/.config --impure --dry-run
-```
-
-- [ ] No Nix evaluation errors
-- [ ] No symlink resolution errors
-
-### Deployment
-
-- [ ] Bundle deployed successfully:
-
-```bash
-home-manager switch --flake ~/.config --impure
-```
-
-- [ ] No deployment errors
-- [ ] Skills symlinks created in `~/.claude/skills/`
-- [ ] Commands available in catalog
-
-### Verification
-
-```bash
-ls -la ~/.claude/skills/ | grep -f <(ls -1 bundles/<bundle-name>/skills/)
-```
-
-### Runtime
-
-- [ ] Skills trigger correctly:
-
-```bash
-mise run skills:list 2>/dev/null | jq '.skills[] | select(.source == "distribution")'
-```
-
-- [ ] Commands execute without errors
-- [ ] Priority mechanism works as expected (Local > External > Distribution)
-
----
-
-## Priority Validation
-
-### Source Attribution
-
-- [ ] Skills show correct source tag (`distribution`)
-- [ ] Local overrides take precedence (if applicable)
-- [ ] External overrides take precedence over distribution (if applicable)
-
-### Check source attribution
-
-```bash
-mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
-```
-
-### Conflict Resolution
-
-- [ ] Local skills override distribution (verified)
-- [ ] External skills override distribution (verified)
-- [ ] No unexpected priority conflicts
-
----
-
-## Performance
-
-### Token Efficiency
-
-- [ ] SKILL.md files use progressive disclosure
-- [ ] Large references split into separate files
-- [ ] Only essential information in entry points
-- [ ] Token budget estimated and documented
-
-### Load Time
-
-- [ ] Bundle deployment completes in reasonable time (<30s)
-- [ ] No excessive symlink resolution delays
-- [ ] Nix evaluation time acceptable
-
----
-
-## Maintenance
-
-### Version Control
-
-- [ ] Bundle tracked in Git (if applicable)
-- [ ] `.gitignore` configured to exclude generated files
-- [ ] Commit messages follow conventions
-- [ ] Version tags created for releases
-
-### Documentation Sync
-
-- [ ] README.md reflects current contents
-- [ ] Skill/command counts accurate
-- [ ] Version history updated
-- [ ] Related documentation links valid
-
-### Cleanup
-
-- [ ] No unused symlinks
-- [ ] No deprecated skills/commands included
-- [ ] Config files up-to-date
-- [ ] Temporary files removed
-
----
-
-## Security
-
-### Path Validation
-
-- [ ] No symlinks pointing outside repository
-- [ ] No absolute paths to sensitive directories
-- [ ] No hardcoded credentials in config files
-
-### Access Control
-
-- [ ] Bundle permissions appropriate (readable by user)
-- [ ] No world-writable files
-- [ ] Config files protected appropriately
-
----
-
-## Checklist Summary
-
-### Critical Items (Must-Have)
-
-- ✓ Relative symlinks only
-- ✓ All symlink targets exist
-- ✓ SKILL.md present in all skill targets
-- ✓ command.ts present in all command targets
-- ✓ README.md created
-- ✓ Dry-run successful
-- ✓ Deployment successful
-
-### Recommended Items (Should-Have)
-
-- ✓ Bundle metadata documented
-- ✓ Usage examples provided
-- ✓ Priority mechanism tested
-- ✓ Token budget estimated
-- ✓ Version control configured
-
-### Optional Items (Nice-to-Have)
-
-- ○ Custom configuration files
-- ○ Templates directory
-- ○ Performance benchmarks
-- ○ Automated validation scripts
-
----
-
-## Automation Scripts
-
-### Full Validation Script
-
-```bash
-#!/usr/bin/env bash
-# validate-bundle.sh
-
-BUNDLE_NAME="${1:-default}"
-BUNDLE_PATH="bundles/$BUNDLE_NAME"
-
-echo "Validating bundle: $BUNDLE_NAME"
-
-# Structure check
-test -d "$BUNDLE_PATH" || { echo "❌ Bundle not found"; exit 1; }
-test -d "$BUNDLE_PATH/skills" || { echo "❌ skills/ missing"; exit 1; }
-test -d "$BUNDLE_PATH/commands" || { echo "❌ commands/ missing"; exit 1; }
-test -f "$BUNDLE_PATH/README.md" || { echo "⚠️  README.md missing"; }
-
-# Broken symlinks check
-broken=$(find "$BUNDLE_PATH" -type l -exec test ! -e {} \; -print)
-if [ -n "$broken" ]; then
-  echo "❌ Broken symlinks found:"
-  echo "$broken"
-  exit 1
-fi
-
-# SKILL.md check
-find "$BUNDLE_PATH/skills/" -type l -exec sh -c '
-  target=$(readlink -f "$1")
-  test -f "$target/SKILL.md" || echo "❌ Missing SKILL.md: $1"
-' _ {} \;
-
-# command.ts check
-find "$BUNDLE_PATH/commands/" -type l -exec sh -c '
-  target=$(readlink -f "$1")
-  find "$target" -name "command.ts" -print -quit | grep -q . || echo "❌ Missing command.ts: $1"
-' _ {} \;
-
-echo "✅ Validation complete"
-```
-
-### Usage
-
-```bash
-bash resources/scripts/validate-bundle.sh my-bundle
-```
-
----
-
-## Related References
-
-- creating-bundles.md: Step-by-step creation guide
-- symlink-patterns.md: Symlink design patterns
-- priority-mechanism.md: Priority validation
-- templates/bundle-structure.txt: Structure template
+## Cleanup
+
+- [ ] No broken symlinks remain
+- [ ] No stale historical examples were copied into active docs
+- [ ] No generated deployment paths are referenced as source inputs

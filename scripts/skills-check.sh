@@ -6,7 +6,7 @@ set -eu
 # ==============================================================================
 # Verifies skills distribution from Home Manager:
 # - Counts skills in ~/.claude/skills/
-# - Compares with expected minimum (≥42 internal skills)
+# - Compares with expected minimum (≥42 bundled skills)
 # - Checks symlink integrity
 # - Displays Home Manager generation information
 #
@@ -31,7 +31,7 @@ else
 fi
 
 SKILLS_DIR="$HOME/.claude/skills"
-EXPECTED_MIN_SKILLS=42 # skills-internal/ の最小数
+EXPECTED_MIN_SKILLS=42 # bundled baseline skills の最小数
 
 # ==============================================================================
 # Header
@@ -65,7 +65,7 @@ SKILLS_COUNT=$(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 ! -name ".system" 2>/d
 
 printf "%b\n" "${BOLD}Skills Count:${NC}"
 printf "  Total: %d skills\n" "$SKILLS_COUNT"
-printf "  Expected: ≥ %d skills (internal)\n" "$EXPECTED_MIN_SKILLS"
+printf "  Expected: ≥ %d skills (bundled baseline)\n" "$EXPECTED_MIN_SKILLS"
 
 STATUS_FAILED=0
 if [ "$SKILLS_COUNT" -lt "$EXPECTED_MIN_SKILLS" ]; then

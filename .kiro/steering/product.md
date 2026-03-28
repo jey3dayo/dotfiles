@@ -51,7 +51,7 @@ High-performance cross-platform (macOS/Linux/WSL2) development environment confi
   - 1Password for SSH key management
 
 - 🤖 AI Asset Distribution Pipeline
-  - `agents/src/` as source of truth for internal skills/agents/rules
+  - `agents/src/` as source of truth for bundled skills/agents/rules
   - Selected external skills are bundled through Nix flake inputs
   - Home Manager applies the same bundle structure across environments
 
@@ -143,4 +143,4 @@ Software developers on macOS/Linux/WSL2 (and CI/Raspberry Pi environments) who v
 4. Spec-Driven Development: Kiro framework integration for structured changes
 5. Declarative Configuration: Home Manager + Nix flake for reproducible environments
 6. Quality Gates: Local CI checks matching GitHub Actions
-7. AI Asset Supply Chain: Unified internal/external skills workflow managed by Nix + Home Manager
+7. AI Asset Supply Chain: Unified bundled/external skills workflow managed by Nix + Home Manager
