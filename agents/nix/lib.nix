@@ -8,6 +8,7 @@ let
     concatStringsSep
     hasAttr
     attrNames
+    unique
     length
     elem
     sort
@@ -233,7 +234,7 @@ let
     };
 
 in
-{
+rec {
   inherit
     scanDistribution
     scanMdEntries
@@ -315,6 +316,25 @@ in
       else
         null
     ) (filterAttrs (id: _: elem id enable) catalog);
+
+  resolveSelectedSkills =
+    { catalog, enable }:
+    let
+      distributionSkillIds = attrNames (filterAttrs (_: skill: skill.source == "distribution") catalog);
+      enableList = if enable == null then attrNames catalog else unique (enable ++ distributionSkillIds);
+      selectedSkills =
+        if enable == null then
+          catalog
+        else
+          selectSkills {
+            inherit catalog;
+            enable = enableList;
+          };
+    in
+    {
+      inherit distributionSkillIds enableList selectedSkills;
+      selectedSkillSources = unique (map (skill: skill.source) (builtins.attrValues selectedSkills));
+    };
 
   # Create a Nix store derivation bundling all selected skills
   mkBundle =

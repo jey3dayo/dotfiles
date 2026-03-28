@@ -29,21 +29,15 @@ let
     inherit (cfg) sources distributionsPath;
   };
 
-  distributionSkillIds = lib.attrNames (
-    lib.filterAttrs (_: skill: skill.source == "distribution") catalog
-  );
-  enableList =
-    if cfg.skills.enable == null then
-      distributionSkillIds # Only distribution skills when no selection
-    else
-      lib.unique (cfg.skills.enable ++ distributionSkillIds);
-
-  selectedSkills = agentLib.selectSkills {
+  selection = agentLib.resolveSelectedSkills {
     inherit catalog;
-    enable = enableList;
+    inherit (cfg.skills) enable;
   };
 
-  selectedSkillSources = lib.unique (map (skill: skill.source) (lib.attrValues selectedSkills));
+  inherit (selection)
+    selectedSkills
+    selectedSkillSources
+    ;
 
   bundle = agentLib.mkBundle {
     skills = selectedSkills;

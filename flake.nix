@@ -154,31 +154,28 @@
               };
             };
             sources = import ./nix/sources.nix { inherit inputs agentSkills; };
-            inherit (agentSkills) selection;
+            requestedSelection = agentSkills.selection;
             catalog = agentLib.discoverCatalog {
               inherit sources;
               distributionsPath = ./agents/src;
             };
-            enableConfig = selection.enable or null;
-            distributionSkillIds = nixpkgs.lib.attrNames (
-              nixpkgs.lib.filterAttrs (_: skill: skill.source == "distribution") catalog
-            );
-            enableList =
-              if enableConfig == null then
-                nixpkgs.lib.attrNames catalog
-              else
-                nixpkgs.lib.unique (enableConfig ++ distributionSkillIds);
-            selectedSkills =
-              if enableConfig == null then
-                catalog
-              else
-                agentLib.selectSkills {
-                  inherit catalog;
-                  enable = enableList;
-                };
+            selection = agentLib.resolveSelectedSkills {
+              inherit catalog;
+              enable = requestedSelection.enable or null;
+            };
+            inherit (selection) selectedSkills;
             bundle = agentLib.mkBundle {
               skills = selectedSkills;
               name = "agent-skills-bundle";
+            };
+            nullSelection = agentLib.resolveSelectedSkills {
+              inherit catalog;
+              enable = null;
+            };
+            nullSelectedSkills = nullSelection.selectedSkills;
+            nullSelectionBundle = agentLib.mkBundle {
+              skills = nullSelectedSkills;
+              name = "agent-skills-bundle-null-selection";
             };
           in
           {
@@ -223,7 +220,14 @@
               };
             };
 
-            checks.default = agentLib.mkChecks { inherit bundle catalog selectedSkills; };
+            checks = {
+              default = agentLib.mkChecks { inherit bundle catalog selectedSkills; };
+              nullSelection = agentLib.mkChecks {
+                bundle = nullSelectionBundle;
+                inherit catalog;
+                inherit (nullSelection) selectedSkills;
+              };
+            };
 
             devShells.default = pkgs.mkShell {
               buildInputs = [ home-manager.packages.${system}.default ];
