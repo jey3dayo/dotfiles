@@ -2,191 +2,209 @@
 
 ## Overview
 
-The distributions layer is implemented in `agents/nix/lib.nix` and integrates with the existing `discoverCatalog()` function. It provides a symlink-based bundling mechanism that coexists with the existing Local/External sources.
+The current distributions runtime is implemented across `agents/nix/lib.nix` and `agents/nix/module.nix`.
+
+- Bundled assets live under `agents/src/`
+- External assets come from flake-input `sources`
+- Skill precedence is `Distribution > External`
+- `skills.enable = null` means "select all discovered skills"
+
+The active deployment paths are:
+
+- Skills: bundled from the selected catalog into the Nix store bundle
+- Rules: linked directly from bundled distribution assets
+- Agents: merged as `externalAgents // distributionAgents`, so bundled agents win on conflicts
+- Commands: linked only from external top-level command sources selected through skill ownership
+
+`agents/src/commands/` is not part of the active Home Manager deployment path.
 
 ---
 
 ## Nix Implementation
 
-### scanDistribution Function
+### `scanDistribution`
+
+`scanDistribution` reads the bundled source tree under `agents/src/` and returns:
 
 ```nix
-# agents/nix/lib.nix (simplified)
-scanDistribution = distributionPath:
-  if !pathExists distributionPath then
-    {}
-  else
-    let
-      processSkillEntry = name: type:
-        let entryPath = distributionPath + "/${name}";
-        in
-          if type == "directory" || type == "symlink" then
-            if pathExists (entryPath + "/SKILL.md") then
-              { ${name} = { id = name; path = entryPath; source = "distribution"; }; }
-            else
-              scanSource "distribution" entryPath
-          else {};
-
-      entries = readDir distributionPath;
-      scannedResults = mapAttrsToList processSkillEntry entries;
-    in
-      foldl' (a: b: a // b) {} scannedResults;
+{
+  skills = { ... };
+  commands = /path/or/null;
+  config = /path/or/null;
+  rules = { ... };
+  agents = { ... };
+}
 ```
 
-### Key features
+The active bundled assets are discovered from:
 
-- Directory/symlink support: Handles both direct directories and symlinks
-- Recursive scanning: Uses `scanSource` for nested structures
-- Lazy evaluation: Only scans if `distributionPath` exists
-- Source tagging: All entries marked with `source = "distribution"`
+- `agents/src/skills/`
+- `agents/src/rules/`
+- `agents/src/agents/`
 
-### Integration with discoverCatalog
+Skill entries are accepted when either of these layouts exists:
+
+```text
+agents/src/skills/<skill-id>/SKILL.md
+agents/src/skills/<skill-id>/skills/SKILL.md
+```
+
+This lets the runtime handle both direct skill directories and nested source layouts.
+
+### `discoverCatalog`
 
 ```nix
 # agents/nix/lib.nix (simplified)
-discoverCatalog = { distributionsPath ? null, ... }:
+discoverCatalog =
+  {
+    sources,
+    distributionsPath ? null,
+  }:
   let
-    distributionSkills =
-      if distributionsPath != null then
-        scanDistribution (distributionsPath + "/skills")
+    distributionResult =
+      if distributionsPath != null && pathExists distributionsPath then
+        scanDistribution distributionsPath
       else
-        {};
+        {
+          skills = { };
+          commands = null;
+          config = null;
+          rules = { };
+          agents = { };
+        };
 
-    localSkills = scanSource "local" skillsPath;
-    externalSkills = scanExternal skillsExternalPath;
+    externalSkills = builtins.foldl' (
+      acc: srcName:
+      acc // scanSourceAutoDetect srcName sources.${srcName}
+    ) { } (attrNames sources);
   in
-    # Priority: Distribution < External < Local
-    distributionSkills // externalSkills // localSkills;
+  externalSkills // distributionResult.skills;
 ```
 
-### Priority mechanism
+Because `//` is right-biased, bundled skills from `agents/src/skills/` override external skills with the same ID.
+
+### `resolveSelectedSkills`
+
+Both the Home Manager module and flake package path use the same selection helper:
+
+```nix
+resolveSelectedSkills =
+  { catalog, enable }:
+  let
+    distributionSkillIds = attrNames (
+      filterAttrs (_: skill: skill.source == "distribution") catalog
+    );
+    enableList =
+      if enable == null then
+        attrNames catalog
+      else
+        unique (enable ++ distributionSkillIds);
+    selectedSkills =
+      if enable == null then
+        catalog
+      else
+        selectSkills {
+          inherit catalog;
+          enable = enableList;
+        };
+  in
+  {
+    inherit distributionSkillIds enableList selectedSkills;
+    selectedSkillSources = unique (map (skill: skill.source) (builtins.attrValues selectedSkills));
+  };
+```
+
+Behavior:
+
+- `enable = null`: all discovered bundled and external skills are selected
+- `enable = [ ... ]`: requested skills are selected, and bundled distribution skills are always added
 
 ---
 
-## Command Processing
+## Deployment Paths
 
-Commands support subdirectory structures:
+### Skills
+
+Selected skills are copied into a Nix store bundle via `mkBundle`, then linked into each enabled target's `.../skills/` directory.
+
+```text
+catalog -> resolveSelectedSkills -> mkBundle -> home.file links
+```
+
+### Rules
+
+Bundled rules are linked directly from `distributionResult.rules` into each target's `.../rules/` directory.
+
+Rules currently come only from the bundled distribution tree.
+
+### Agents
+
+Top-level agents are merged like this:
 
 ```nix
-# agents/nix/lib.nix (simplified)
-processCommandEntry = name: type:
-  let entryPath = commandsPath + "/${name}";
-  in
-    if type == "directory" || type == "symlink" then
-      if pathExists (entryPath + "/command.ts") then
-        { ${name} = { id = name; path = entryPath; source = "distribution"; }; }
-      else
-        scanCommandSource "distribution" entryPath
-    else {};
+mergedAgents = externalAgents // distributionResult.agents;
 ```
 
-### Subdirectory example
+Bundled agents win on duplicate IDs because the bundled attrset is on the right-hand side.
 
-```
-internal/commands/
-├── kiro -> ../../../commands-internal/kiro/  (symlink to dir)
-│   ├── spec-init/
-│   │   └── command.ts
-│   ├── spec-tasks/
-│   │   └── command.ts
+### Commands
+
+Top-level commands are currently discovered only from external sources:
+
+```nix
+externalCommands = agentLib.discoverExternalAssets {
+  inherit (cfg) sources;
+  assetType = "commands";
+  enabledSources = selectedSkillSources;
+};
 ```
 
-Each subdirectory with `command.ts` is treated as a separate command.
+That means:
+
+- command deployment is gated by which skill sources are selected
+- bundled `agents/src/commands/` entries are not linked by the Home Manager module
 
 ---
 
-## Rules and Agents Processing
+## Directory Structure
 
-Rules and agents are `.md` files that support subdirectory structures:
+### Bundled Source of Truth
 
-```nix
-# agents/nix/lib.nix (simplified)
-scanDistribution = distributionPath:
-  let
-    rulesPath = distributionPath + "/rules";
-    agentsPath = distributionPath + "/agents";
-
-    # Scan rules directory for .md files
-    scannedRules =
-      if pathExists rulesPath then
-        let
-          ruleEntries = readDir rulesPath;
-          processRuleEntry = name: type:
-            let
-              entryPath = rulesPath + "/${name}";
-              ruleId = if hasSuffix ".md" name then
-                removeSuffix ".md" name
-              else
-                name;
-            in
-              if (type == "regular" || type == "symlink") && hasSuffix ".md" name then
-                { ${ruleId} = { id = ruleId; path = entryPath; source = "distribution"; }; }
-              else if type == "directory" || type == "symlink" then
-                # Scan subdirectory recursively
-                scanRuleSubdirectory entryPath name
-              else {};
-        in
-          foldl' (a: b: a // b) {} (mapAttrsToList processRuleEntry ruleEntries)
-      else {};
-  in
-    { skills = ...; commands = ...; rules = scannedRules; agents = scannedAgents; };
-```
-
-### Subdirectory example
-
-```
-internal/
+```text
+agents/src/
+├── skills/
 ├── rules/
-│   └── claude-md-design.md -> ~/.claude/rules/claude-md-design.md
 └── agents/
-    ├── aws-operations.md -> ~/.claude/agents/aws-operations.md
-    ├── code-reviewer.md -> ~/.claude/agents/code-reviewer.md
-    └── kiro/ -> ~/.claude/agents/kiro/  (symlink to dir)
-        ├── spec-design.md
-        ├── spec-impl.md
-        └── validate-impl.md
 ```
 
-### ID generation for subdirectories
+### External Sources
 
-Subdirectory structure is preserved in IDs:
+External sources are derived from `nix/agent-skills-sources.nix` and materialized by `nix/sources.nix`.
 
-- `agents/kiro/spec-design.md` → ID: `kiro/spec-design`
-- `rules/frontend/react.md` → ID: `frontend/react`
+Each source contributes:
 
-These IDs are used for deployment paths:
-
-- `.claude/agents/kiro/spec-design.md`
-- `.claude/rules/frontend/react.md`
+- `path`: skill catalog root
+- optional `agentsPath`
+- optional `commandsPath`
+- optional `idPrefix`
 
 ---
 
 ## Cyclic Reference Prevention
 
-### Static Paths
-
-Distributions are scanned **before** sources to prevent circular dependencies:
+Distributions are scanned from static filesystem paths before Home Manager link generation:
 
 ```nix
-# Scan order in discoverCatalog
-1. distributionSkills (static paths, no evaluation)
-2. externalSkills
-3. localSkills (overwrites conflicts)
+1. distributionResult = scanDistribution(distributionsPath)
+2. externalSkills = scanSourceAutoDetect(...)
+3. catalog = externalSkills // distributionResult.skills
+4. selectedSkills = resolveSelectedSkills(...)
+5. home.file links are generated
 ```
 
-### Path Resolution
+Because Nix reads source paths first and deployment output later, bundled entries should point to real source paths under `agents/src/` or external checkouts, not to generated directories such as `~/.claude/skills/`.
 
-```nix
-# Static path resolution
-distributionSkills = scanDistribution (distributionsPath + "/skills");
-# → /nix/store/...-internal/skills
-
-# Entries can be directories or symlinks; resolution happens at filesystem level
-# Example: internal/skills/my-skill
-# Nix sees: /home/j138/.config/agents/src/skills/my-skill
-```
-
-### Key insight
+Broken symlinks are ignored because `pathExists` fails during scanning.
 
 ---
 
@@ -194,79 +212,41 @@ distributionSkills = scanDistribution (distributionsPath + "/skills");
 
 ```mermaid
 graph TD
-    A[home-manager switch] --> B[discoverCatalog]
-    B --> C[scanDistribution]
-    C --> D[readDir internal/skills]
-    D --> E[Process symlinks]
-    E --> F[Merge with External/Local]
-    F --> G[Generate ~/.claude/skills/]
+    A[home-manager switch] --> B[scanDistribution + scanSourceAutoDetect]
+    B --> C[discoverCatalog]
+    C --> D[resolveSelectedSkills]
+    D --> E[mkBundle for selected skills]
+    D --> F[discover external top-level agents/commands]
+    E --> G[Generate ~/.claude/skills links]
+    F --> H[Generate ~/.claude/agents and ~/.claude/commands links]
 ```
-
-### Step-by-step
-
-1. Nix evaluation: `scanDistribution()` reads `internal/skills/`
-2. Symlink processing: Each symlink is checked for `SKILL.md`
-3. Catalog merge: Distribution entries merged with External/Local
-4. Priority resolution: Local overwrites conflicts
-5. Deployment: Symlinks created in `~/.claude/skills/`
 
 ---
 
 ## Verification
 
 ```bash
-# Check Nix evaluation (dry-run)
-home-manager build --flake ~/.config --impure --dry-run
+# Validate flake outputs and checks
+/nix/var/nix/profiles/default/bin/nix flake check --impure
 
-# Inspect generated catalog
-nix eval --json --impure --expr '
-  let lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
-      catalog = lib.discoverCatalog {
-        distributionsPath = ~/.config/agents/src;
-        # ... other paths
-      };
-  in builtins.attrNames catalog.skills
-' | jq
+# Build the real Home Manager activation package
+/nix/var/nix/profiles/default/bin/nix build .#homeConfigurations.$USER.activationPackage --impure
 
-# Verify deployed skills
-ls -la ~/.claude/skills/
+# Run agent-skills-specific Nix validation
+mise run ci:nix
+```
+
+To inspect current source attribution:
+
+```bash
+mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
 ```
 
 ---
 
 ## Design Rationale
 
-### Why Symlinks?
-
-- No duplication: Source of truth remains in `agents/src/skills/`
-- Easy updates: Changes to source automatically reflected
-- Nix-friendly: Symlinks are resolved at filesystem level
-- Bundle flexibility: Same skill can appear in multiple distributions
-
-### Why Static Scanning?
-
-- Prevents cycles: No evaluation dependencies between distributions and sources
-- Predictable order: Distribution < External < Local
-- Simple debugging: Scan order is explicit
-
-### Why Optional?
-
-- Backwards compatibility: Existing workflows (Local/External) unaffected
-- Incremental adoption: Teams can opt-in gradually
-- Zero overhead: If `distributionsPath = null`, no scanning occurs
-
----
-
-## Related Files
-
-- agents/nix/lib.nix: Main implementation
-- ~/.config/flake.nix: Home Manager integration (calls `discoverCatalog`)
-- agents/src/: Example bundle
-
----
-
-## Future Considerations
-
-- Multi-bundle support: Currently single distribution (`internal/`), could support multiple
-- Bundle versioning: Semantic versioning for bundle releases
-- Validation tools: CLI for checking bundle integrity
+- Distribution wins over external: bundled skills and agents are the repo-owned source of truth
+- Shared selection logic: flake packaging and Home Manager use the same `resolveSelectedSkills` helper
+- Null means all discovered: module defaults match the option description
+- Asset-specific deployment: skills are bundled, while rules/agents/commands are linked by asset type

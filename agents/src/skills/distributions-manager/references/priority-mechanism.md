@@ -2,162 +2,182 @@
 
 ## Overview
 
-The distributions layer introduces a three-tier priority system for skill and command resolution. This document explains the priority order, conflict resolution, and cyclic reference prevention.
+The current distributions runtime uses a two-tier priority model for skill resolution:
+
+```text
+Distribution > External
+```
+
+- Distribution: bundled assets under `agents/src/`, discovered via `distributionsPath`
+- External: flake-input sources configured in `programs.agent-skills.sources`
+
+`skills.enable = null` means "all discovered skills". In that mode, the Home Manager module keeps the full merged catalog instead of narrowing to bundled skills only, so discovered external skills and their source-scoped top-level assets remain deployable.
 
 ---
 
 ## Priority Order
 
-```
-Local > External > Distribution
-```
-
 ### Meaning
 
-- Local (`skills-internal/`, `commands-internal/`): Highest priority, overwrites all
-- External (`skills/`): Medium priority, overwrites Distribution
-- Distribution (`internal/`): Lowest priority, default fallback
+- Distribution (`agents/src/skills/`): highest priority, wins on duplicate skill IDs
+- External (`sources.<name>.path`): lower priority, used when no bundled skill with the same ID exists
 
----
-
-## Nix Implementation
-
-### Right-Associative Merge
+### Nix Implementation
 
 ```nix
 # agents/nix/lib.nix (simplified)
-discoverCatalog = { distributionsPath, ... }:
+discoverCatalog =
+  {
+    sources,
+    distributionsPath ? null,
+  }:
   let
-    distributionSkills = scanDistribution (distributionsPath + "/skills");
-    externalSkills = scanExternal skillsExternalPath;
-    localSkills = scanSource "local" skillsPath;
+    distributionResult =
+      if distributionsPath != null && pathExists distributionsPath then
+        scanDistribution distributionsPath
+      else
+        { skills = { }; };
+
+    externalSkills = builtins.foldl' (
+      acc: srcName:
+      acc // scanSourceAutoDetect srcName sources.${srcName}
+    ) { } (attrNames sources);
   in
-    # Right-associative // operator
-    distributionSkills // externalSkills // localSkills;
+  externalSkills // distributionResult.skills;
 ```
 
-### Evaluation order
+Because `//` is right-biased, bundled skills from `agents/src/skills/` override external skills with the same ID.
+
+### Selection Behavior
 
 ```nix
-# Step 1: Merge Distribution and External
-temp = distributionSkills // externalSkills;
-# Step 2: Merge temp and Local
-final = temp // localSkills;
+# agents/nix/module.nix (simplified)
+enableList =
+  if cfg.skills.enable == null then
+    lib.attrNames catalog
+  else
+    lib.unique (cfg.skills.enable ++ distributionSkillIds);
+
+selectedSkills =
+  if cfg.skills.enable == null then
+    catalog
+  else
+    agentLib.selectSkills {
+      inherit catalog;
+      enable = enableList;
+    };
 ```
 
-### Result
+- `skills.enable = null`: select the full discovered catalog
+- `skills.enable = [ ... ]`: select the requested skills plus bundled distribution skills
 
 ---
 
 ## Conflict Resolution
 
-### Scenario 1: Same Skill in All Sources
+### Scenario 1: Same Skill in Distribution and External
 
-```
-internal/skills/react/  (Distribution)
-skills/react/                        (External)
-skills-internal/react/               (Local)
+```text
+agents/src/skills/react/            (Distribution)
+<flake-input>/skills/react/         (External)
 ```
 
 ### Resolution
 
 ```nix
 {
-  react = { id = "react"; path = /path/to/skills-internal/react; source = "local"; };
+  react = {
+    id = "react";
+    path = /path/to/agents/src/skills/react;
+    source = "distribution";
+  };
 }
 ```
 
 ### Winner
+
+Distribution wins.
 
 ---
 
-### Scenario 2: Skill in Distribution + External Only
+### Scenario 2: Skill in External Only
 
-```
-internal/skills/ui-ux-pro-max/  (Distribution)
-skills/ui-ux-pro-max/                        (External)
+```text
+<flake-input>/skills/ui-ux-pro-max/  (External)
 ```
 
 ### Resolution
 
 ```nix
 {
-  ui-ux-pro-max = { id = "ui-ux-pro-max"; path = /path/to/skills/ui-ux-pro-max; source = "external"; };
+  ui-ux-pro-max = {
+    id = "ui-ux-pro-max";
+    path = /path/to/external/skills/ui-ux-pro-max;
+    source = "vercel-agent-skills";
+  };
 }
 ```
 
 ### Winner
+
+External source is used because there is no bundled skill with the same ID.
 
 ---
 
 ### Scenario 3: Skill in Distribution Only
 
-```
-internal/skills/custom-skill/  (Distribution)
+```text
+agents/src/skills/custom-skill/  (Distribution)
 ```
 
 ### Resolution
 
 ```nix
 {
-  custom-skill = { id = "custom-skill"; path = /path/to/bundles/.../custom-skill; source = "distribution"; };
+  custom-skill = {
+    id = "custom-skill";
+    path = /path/to/agents/src/skills/custom-skill;
+    source = "distribution";
+  };
 }
 ```
 
 ### Winner
 
+Distribution is used.
+
 ---
 
 ## Use Cases
 
-### Use Case 1: Override Distribution Default
+### Use Case 1: Ship a Bundled Default
 
-### Scenario
-
-### Solution
-
-```bash
-# Create local override
-cp -r internal/skills/react/ skills-internal/react/
-# Modify skills-internal/react/SKILL.md
-
-# Result: Local version takes precedence
+```text
+agents/src/skills/react/
+<flake-input>/skills/react/
 ```
+
+Result: the bundled `agents/src/skills/react/` version is selected.
 
 ---
 
-### Use Case 2: Test External Skill Before Localizing
+### Use Case 2: Import an External-Only Skill
 
-### Scenario
-
-### Solution
-
-```bash
-# Add to skills/ (External)
-git clone https://github.com/user/skill.git skills/my-skill
-
-# Test
-mise run skills:list | grep my-skill
-
-# If satisfied, move to skills-internal/
-mv skills/my-skill skills-internal/
+```text
+<flake-input>/skills/my-skill/
 ```
+
+Result: the external skill is included in the catalog and, when selected, its source can also expose top-level `agents/` and `commands/`.
 
 ---
 
-### Use Case 3: Distribution as Fallback
+### Use Case 3: Enable Everything
 
-### Scenario
-
-### Solution
-
-```bash
-# Distribution provides baseline
-internal/skills/baseline-skill/
-
-# Users can override by creating:
-skills-internal/baseline-skill/
+```nix
+programs.agent-skills.skills.enable = null;
 ```
+
+Result: all discovered bundled and external skills are selected.
 
 ---
 
@@ -165,42 +185,31 @@ skills-internal/baseline-skill/
 
 ### Problem
 
-If bundles reference sources, and sources reference bundles:
+If a bundled entry points back into generated deployment output, you can create confusing self-references:
 
+```text
+agents/src/skills/... -> ~/.claude/skills/...
 ```
-bundles/ → skills-internal/ → bundles/ (loop)
-```
 
-### Solution: Static Scanning
+### Solution
 
-### Distributions are scanned BEFORE sources
+Keep bundled entries rooted in real source paths under `agents/src/` or in external source trees. `scanDistribution` reads static filesystem paths before deployment output exists.
+
+### Scan Order
 
 ```nix
-# Scan order
-1. distributionSkills = scanDistribution(...)  # Static paths only
-2. externalSkills = scanExternal(...)
-3. localSkills = scanSource(...)
+1. distributionResult = scanDistribution(distributionsPath)
+2. externalSkills = scanSourceAutoDetect(...)
+3. catalog = externalSkills // distributionResult.skills
 ```
-
-### Key insight
-
----
 
 ### Path Resolution
 
-```nix
-# Distribution symlink
-internal/skills/my-skill → ../../../skills-internal/my-skill
-
-# Nix resolves at filesystem level:
-readDir (distributionsPath + "/skills")
-# → { "my-skill" = "symlink"; }
-
-pathExists (entryPath + "/SKILL.md")
-# → Checks /path/to/skills-internal/my-skill/SKILL.md
-
-# No evaluation loop: symlink target is not evaluated by Nix
+```text
+agents/src/skills/my-skill -> ../../some-real-source/my-skill
 ```
+
+`readDir` and `pathExists` resolve the symlink target at the filesystem layer. Broken links are skipped because `pathExists (entryPath + "/SKILL.md")` evaluates to `false`.
 
 ---
 
@@ -209,42 +218,44 @@ pathExists (entryPath + "/SKILL.md")
 ### Check Source Attribution
 
 ```bash
-# List all skills with sources
 mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
+```
 
-# Expected output:
-# {"id": "react", "source": "local"}        (from skills-internal/)
-# {"id": "ui-ux", "source": "external"}     (from skills/)
-# {"id": "custom", "source": "distribution"} (from bundles/)
+Expected output includes a mix of distribution and external sources, for example:
+
+```text
+{"id":"react","source":"distribution"}
+{"id":"ui-ux-pro-max","source":"vercel-agent-skills"}
 ```
 
 ---
 
-### Verify Precedence
+### Verify the Selected Catalog When `skills.enable = null`
 
 ```bash
-# Check which version is deployed
-ls -la ~/.claude/skills/react
-
-# Expected: symlink to skills-internal/ (not bundles/)
-# ~/.claude/skills/react -> /path/to/skills-internal/react
+mise run skills:list 2>/dev/null | jq '[.skills[] | .source] | group_by(.) | map({(.[0]): length})'
 ```
+
+If external sources are configured and discovered, their source names should still appear in the grouped output.
 
 ---
 
 ### Trace Nix Evaluation
 
 ```bash
-# Evaluate catalog with trace
 nix eval --show-trace --json --impure --expr '
   let
-    lib = import ~/.config/agents/nix/lib.nix { inherit (import <nixpkgs> {}) lib; };
-    catalog = lib.discoverCatalog {
+    pkgs = import <nixpkgs> {};
+    agentLib = import ~/.config/agents/nix/lib.nix {
+      inherit pkgs;
+      nixlib = pkgs.lib;
+    };
+    catalog = agentLib.discoverCatalog {
       distributionsPath = ~/.config/agents/src;
       sources = {};
     };
   in
-    catalog.skills.react
+    catalog.react
 ' | jq
 ```
 
@@ -252,78 +263,50 @@ nix eval --show-trace --json --impure --expr '
 
 ## Best Practices
 
-1. Use distributions for defaults: Provide baseline skills/commands
-2. Override locally for customization: Create local versions in `skills-internal/`
-3. Test externally before localizing: Use `skills/` for evaluation
-4. Document overrides: Note which skills are overridden in README
-5. Avoid distribution-to-distribution links: Keeps priority simple
+1. Treat `agents/src/` as the bundled source of truth.
+2. Use external sources for additive skills or upstream imports.
+3. Expect `skills.enable = null` to keep all discovered skills, not just bundled ones.
+4. Use real current paths in docs and symlinks; do not reference removed `internal/`, `skills-internal/`, or `commands-internal/` layers.
+5. Avoid symlinks that point into generated deployment directories such as `~/.claude/skills/`.
 
 ---
 
 ## Priority Matrix
 
-| Skill Location     | Priority | Source Tag     | Overwrites      |
-| ------------------ | -------- | -------------- | --------------- |
-| `skills-internal/` | Highest  | `local`        | All             |
-| `skills/`          | Medium   | `external`     | Distribution    |
-| `internal/skills/` | Lowest   | `distribution` | None (fallback) |
+| Skill Location        | Priority | Source Tag Example    | Overwrites |
+| --------------------- | -------- | --------------------- | ---------- |
+| `agents/src/skills/`  | Highest  | `distribution`        | External   |
+| `sources.<name>.path` | Lower    | `vercel-agent-skills` | None       |
 
 ---
 
 ## Edge Cases
 
-### Edge Case 1: Same Skill in Distribution via Different Paths
+### Edge Case 1: Two Bundled Entries Point to the Same Target
 
+```text
+agents/src/skills/react -> ../../shared/react
+agents/src/skills/react-copy -> ../../shared/react
 ```
-internal/skills/react → ../../../skills-internal/react
-internal/skills/react-copy → ../../../skills-internal/react
-```
 
-### Result
-
-### Behavior
+Result: both IDs are scanned because IDs come from directory names, not resolved target paths.
 
 ---
 
-### Edge Case 2: Distribution Symlink to External
+### Edge Case 2: Bundled Entry Points into an External Checkout
 
+```text
+agents/src/skills/my-skill -> ../../vendor/my-skill
 ```
-internal/skills/my-skill → ../../../skills/my-skill
-```
 
-### Priority
-
-- Distribution entry: `source = "distribution"`
-- External entry: `source = "external"`
-
-### Winner
-
-### Effect
+Result: the entry is still tagged as `distribution`, because it was discovered from `agents/src/skills/`, and it wins over an external skill with the same ID.
 
 ---
 
-### Edge Case 3: Broken Symlink in Distribution
+### Edge Case 3: Broken Bundled Symlink
 
-```
-internal/skills/broken → ../../../skills-internal/nonexistent
-```
-
-### Nix behavior
-
-```nix
-pathExists (entryPath + "/SKILL.md")
-# → false (symlink broken)
-
-# Entry is skipped, no error
+```text
+agents/src/skills/broken -> ../../missing-skill
 ```
 
-### Validation
-
----
-
-## Related References
-
-- architecture.md: Nix merge implementation
-- creating-bundles.md: Bundle creation considering priority
-- symlink-patterns.md: Symlink design patterns
-- resources/checklist.md: Validation checklist (Priority section)
+`pathExists (entryPath + "/SKILL.md")` returns `false`, so the broken entry is ignored and not added to the catalog.
