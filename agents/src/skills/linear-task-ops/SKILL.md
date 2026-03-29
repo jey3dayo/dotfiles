@@ -67,6 +67,28 @@ python3 scripts/linear_task.py comment \
 4. Write payment logs as line-based records for easy aggregation.
 5. If source includes a deadline in prose, also set Linear `dueDate`.
 
+## Project Routing
+
+タスク作成時に `--project` を省略した場合、以下のルールでプロジェクトを自動選択する。
+判断に迷う場合や複数に該当する場合はユーザーに確認すること。
+
+プロジェクト ID は `references/linear-projects-jey.md` を参照。
+
+### 分類ルール
+
+| プロジェクト | 対象ドメイン                                           | キーワード例                                                                    |
+| ------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------- |
+| finance-ops  | お金・決済・サブスク・固定費・ポイ活・家計             | 支払い、請求、決済、サブスク、解約、ポイント、固定費、d払い、クレカ、引き落とし |
+| labs         | 学習・調査・技術検証・研究・個人開発実験               | 調べる、検証、学習、試す、リサーチ、PoC、実験、ドキュメント読む                 |
+| GBF          | グランブルーファンタジー全般                           | グラブル、GBF、古戦場、マグナ、召喚石、十天衆、エーテル                         |
+| workbench    | 会社雑務・その他個人タスク（上記に当てはまらないもの） | 申請、会議、雑務、確認、連絡、その他                                            |
+
+### 判断フロー
+
+1. キーワードで明確に一致 → そのプロジェクトに作成
+2. 複数に該当 / 判断できない → ユーザーに「finance-ops と workbench どちらですか？」と確認
+3. どれにも当てはまらない → workbench をデフォルトとして提案し確認
+
 ## Guardrails
 
 - Resolve team states first; state names differ by team.
