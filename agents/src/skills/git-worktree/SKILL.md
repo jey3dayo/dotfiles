@@ -1,12 +1,17 @@
 ---
 name: git-worktree
 description: |
-  Git worktree management using git-wt (k1LoW) and native git worktree commands.
-  Use when: (1) Managing multiple feature branches in parallel,
+  Git worktree management using `git-wt` (k1LoW) and native `git worktree`
+  commands. Use when: (1) Managing multiple feature branches in parallel,
   (2) Need to switch between branches without stashing,
   (3) Setting up AI agent parallel workflows,
-  (4) Working with .worktrees directory structure.
-  Keywords: worktree, git-wt, parallel development, branch isolation, .worktrees
+  (4) Working with `.worktrees` directory structure,
+  (5) Asking how to run `git wt` / `git worktree add -b`, or
+  (6) Debugging worktree errors such as `fatal: invalid reference`.
+  Keywords: worktree, git-wt, git wt, git worktree, worktree add,
+  invalid reference, branch isolation, parallel development, .worktrees.
+  Do not use for end-to-end implementation or PR orchestration; use
+  `task-to-pr` for that flow.
 ---
 
 # Git Worktree Management

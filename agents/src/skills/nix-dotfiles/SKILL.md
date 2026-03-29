@@ -2,20 +2,21 @@
 name: nix-dotfiles
 description: |
   [What] Dotfiles management and troubleshooting using Home Manager and Nix
-  Flake. Supports configuration apply, generation management, diagnostics, and
-  Agent Skills addition.
+  Flake. Supports configuration apply, generation management, diagnostics,
+  Agent Skills addition, and migrating dotfiles such as `~/.opencommit` or
+  `~/.opencommitrc` into `~/.config` / Nix-managed layouts.
   [When] Use when: users say "skills not distributed", "~/.claude/skills/ is
   empty", "deploy dotfiles", "apply configuration", "test Nix flake",
   "home-manager", "generations", "rollback", "worktree not found",
   "スキルが配布されない", "~/.claude/skills/ が空", "dotfiles をデプロイ",
-  "設定を適用", "Nix flake をテスト", "home-manager", "generations",
-  "rollback", "worktree が見つからない", `~/.opencommit`,
-  `~/.opencommitrc`, or `~/.config` への移行・再構成・整理をしたい相談.
-  Do not use for mise task definitions, `mise run`, or `mise format`; use
-  `mise` instead.
+  "設定を適用", "Nix flake をテスト", `~/.opencommit`,
+  `~/.opencommitrc`, `~/.config 管理`, `nix に組み込む`, or opencommit /
+  config のベストプラクティス相談. Do not use for `mise skills add`, mise
+  task definitions, `mise run`, `mise format`, or `mise ci`; use `mise`
+  instead.
   [Keywords] home-manager, nix flake, dotfiles, agent skills, generations,
   rollback, worktree, flake inputs, diagnosis, skill distribution, opencommit,
-  config, refactor
+  opencommitrc, config migration, refactor
 ---
 
 # nix-dotfiles - Home Manager Dotfiles Management

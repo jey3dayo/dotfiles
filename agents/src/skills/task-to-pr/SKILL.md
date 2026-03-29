@@ -2,13 +2,18 @@
 name: task-to-pr
 description: |
   [What] End-to-end execution from task/request/Issue: task breakdown, worktree
-  creation, implementation, checks, PR creation, CI monitoring and fixes.
-  [When] Use when: You want to turn a task into a PR, run Issue handling E2E,
-  execute a numbered plan like "Implement the following plan", or carry out
-  work step by step from implementation through verification. Do not use for
-  marketplace/plugin packaging or validation; use marketplace-manager instead.
-  [Keywords] task, pr, worktree, ci, fix, github, issue, implementation, plan,
-  step 1, step 2, step 3, 検証, 実行
+  creation as one step of the flow, implementation, checks, PR creation, CI
+  monitoring and fixes.
+  [When] Use when: You want to turn a product or repository task into a PR,
+  run Issue handling E2E, execute a numbered implementation plan against the
+  codebase, or carry out work step by step from implementation through
+  verification. Do not use for `git wt` / `git worktree` how-to questions,
+  worktree error debugging, skill discovery, or skill maintenance tasks such
+  as creating, updating, moving, packaging, or marketplace migration of the
+  `task-to-pr` skill itself; use `git-worktree`, `find-skills`, or
+  `skill-creator` instead.
+  [Keywords] task, pr, issue, implementation, execution, plan, step 1,
+  step 2, step 3, verification, checks, ci, github
 ---
 
 # Task to PR (v2: Context-aware)

@@ -1,6 +1,6 @@
 ---
 name: tauri-icon-gen
-description: Tauri app icon generation workflow - transparent PNG conversion and multi-platform icon generation
+description: Tauri app icon generation workflow for existing app assets: transparent PNG conversion, square source asset normalization, and multi-platform icon generation for Tauri builds. Use when the user wants to generate icons, convert source artwork into Tauri-ready PNGs, or regenerate platform icon sets. Do not use for skill directory moves, path fixes, distribution, or marketplace packaging even if the path contains `tauri-icon-gen`; use `skill-creator` instead.
 version: 1.0.0
 tags: [tauri, icon, png, transparency, image-processing]
 triggers:

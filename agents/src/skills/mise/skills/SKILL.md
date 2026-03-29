@@ -2,18 +2,20 @@
 name: mise
 description: |
   [What] Specialized skill for mise (mise-en-place) task runner, tool version
-  manager, and package manager. Provides best practices for mise.toml
+  manager, and package manager. Provides best practices for `mise.toml`
   structure, task definitions, dependency management, tool/package
-  centralization, and workflow automation
+  centralization, workflow automation, and skill installation via
+  `mise skills add`.
   [When] Use when: users mention "mise", "mise-en-place", "mise.toml",
-  `mise run`, `mise format`, `mise ci`, task definitions, tool version
-  management, or comparing `mise/` configuration files such as
-  `mise/config.ci.toml` and `mise/config.default.toml`. Do not use for dotfile
+  `mise run`, `mise format`, `mise ci`, `mise skills add`, task definitions,
+  tool version management, formatter wiring such as `nixpkgs-fmt`, or ask
+  whether a formatter / command is 組み込まれている. Do not use for dotfile
   migration, Home Manager, Nix Flake, or `~/.opencommit` / `~/.config`
   management; use `nix-dotfiles` instead.
   [Keywords] mise, mise-en-place, mise.toml, tool management, package
   management, npm global, python packages, task runner, run, format, ci,
-  config.ci.toml, config.default.toml
+  skills add, formatter, fmt, nixpkgs-fmt, config.ci.toml,
+  config.default.toml
 ---
 
 # mise - Task Runner Configuration Expert
