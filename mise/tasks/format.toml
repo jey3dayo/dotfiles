@@ -20,9 +20,9 @@ fi
 description = "JS/TS/JSON ファイルのフォーマット + lint チェック（書き込みなし、BIOME_FILES で対象を限定可能）"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
-  biome check --formatter-enabled=true --linter-enabled=true ${BIOME_FILES}
+  rtk err biome check --formatter-enabled=true --linter-enabled=true ${BIOME_FILES}
 else
-  biome check --formatter-enabled=true --linter-enabled=true .
+  rtk err biome check --formatter-enabled=true --linter-enabled=true .
 fi
 """
 

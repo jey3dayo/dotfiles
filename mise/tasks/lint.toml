@@ -9,9 +9,9 @@
 description = "JS/TS/JSON ファイルをチェック（BIOME_FILES で対象を限定可能）"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
-  biome lint ${BIOME_FILES}
+  rtk biome lint ${BIOME_FILES}
 else
-  biome lint .
+  rtk biome lint .
 fi
 """
 
