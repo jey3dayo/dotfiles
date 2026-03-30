@@ -35,7 +35,7 @@ if ! command -v busted >/dev/null 2>&1 || ! busted --version >/dev/null 2>&1; th
   fi
 fi
 
-rtk test busted --verbose spec/ nvim/spec/
+busted --verbose spec/ nvim/spec/
 """
 
 ["test:lua:watch"]
