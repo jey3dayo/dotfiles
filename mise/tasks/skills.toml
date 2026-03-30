@@ -7,6 +7,14 @@
 description = "HM でスキルをインストール"
 depends = ["hm:switch"]
 
+["skills:install:windows:codex"]
+description = "Windows の ~/.codex/skills に internal + Nix bundle skills を配布"
+run = "powershell -ExecutionPolicy Bypass -File ./scripts/install-agent-skills.ps1 -Targets codex -IncludeNixBundle"
+
+["skills:install:windows:claude"]
+description = "Windows の ~/.claude/skills に internal + Nix bundle skills を配布"
+run = "powershell -ExecutionPolicy Bypass -File ./scripts/install-agent-skills.ps1 -Targets claude -IncludeNixBundle"
+
 ["skills:report"]
 description = "インストール対象スキルのURLレポートを出力"
 run = """
