@@ -70,17 +70,50 @@ function Invoke-Wsl {
   }
 
   $tempScriptWsl = $tempScriptWsl.Trim()
-  $previousNativePref = $PSNativeCommandUseErrorActionPreference
-  $PSNativeCommandUseErrorActionPreference = $false
+  $stdoutPath = Join-Path $env:TEMP "codex-wsl-command.out"
+  $stderrPath = Join-Path $env:TEMP "codex-wsl-command.err"
+  if (Test-Path -LiteralPath $stdoutPath) {
+    Remove-Item -LiteralPath $stdoutPath -Force
+  }
+  if (Test-Path -LiteralPath $stderrPath) {
+    Remove-Item -LiteralPath $stderrPath -Force
+  }
+
+  $exitCode = 0
   try {
-    $output = & wsl.exe bash --noprofile --norc $tempScriptWsl 2>&1
+    $process = Start-Process `
+      -FilePath "wsl.exe" `
+      -ArgumentList @("bash", "--noprofile", "--norc", $tempScriptWsl) `
+      -NoNewWindow `
+      -Wait `
+      -PassThru `
+      -RedirectStandardOutput $stdoutPath `
+      -RedirectStandardError $stderrPath
+    $exitCode = $process.ExitCode
   } finally {
-    $PSNativeCommandUseErrorActionPreference = $previousNativePref
+    $stdout = if (Test-Path -LiteralPath $stdoutPath) {
+      [System.IO.File]::ReadAllText($stdoutPath)
+    } else {
+      ""
+    }
+    $stderr = if (Test-Path -LiteralPath $stderrPath) {
+      [System.IO.File]::ReadAllText($stderrPath)
+    } else {
+      ""
+    }
+
+    if (Test-Path -LiteralPath $stdoutPath) {
+      Remove-Item -LiteralPath $stdoutPath -Force
+    }
+    if (Test-Path -LiteralPath $stderrPath) {
+      Remove-Item -LiteralPath $stderrPath -Force
+    }
   }
-  if ($LASTEXITCODE -ne 0) {
-    throw "WSL command failed: $Command`n$output"
+  if ($exitCode -ne 0) {
+    $details = @($stdout.Trim(), $stderr.Trim()) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+    throw "WSL command failed: $Command`n$($details -join "`n")"
   }
-  return ($output -join "`n").Trim()
+  return $stdout.Trim()
 }
 
 function Get-BundleWindowsPath {
