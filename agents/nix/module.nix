@@ -100,9 +100,6 @@ let
       if target.enable && (lib.attrNames assets) != [ ] then
         let
           baseDir = lib.removeSuffix "/skills" target.dest;
-          keepFile = {
-            "${baseDir}/${assetType}/.keep".text = "";
-          };
           assetFiles = lib.mapAttrs' (
             assetId: asset:
             lib.nameValuePair "${baseDir}/${assetType}/${assetId}.md" {
@@ -111,7 +108,7 @@ let
             }
           ) assets;
         in
-        keepFile // assetFiles
+        assetFiles
       else
         { }
     ) targets;
