@@ -1,0 +1,33 @@
+# ========================================
+# Windows mise 設定
+# ~/.config/mise/config.windows.toml
+# ========================================
+
+[settings]
+env_file = ".env.local"
+experimental = true
+vfox = false
+idiomatic_version_file_enable_tools = []
+trusted_config_paths = ["~/.config", "~/src/github.com"]
+
+[settings.pipx]
+uvx = true
+
+[settings.npm]
+package_manager = "pnpm"
+
+[env]
+YAMLLINT_CONFIG_FILE = "yamllint/config"
+MD_GLOB = "**/*.md"
+MD_EXCLUDES = "#node_modules #.worktrees #result #result-* #.kiro"
+TASK_EXCLUDES = "--exclude .worktrees --exclude result --exclude result-* --exclude .luarocks --exclude .kiro"
+
+[tools]
+node = "24"
+pnpm = "latest"
+rust = "stable"
+taplo = "latest"
+rtk = "latest"
+"fd" = "latest"
+"ripgrep" = "latest"
+"pipx:yamllint" = "latest"
