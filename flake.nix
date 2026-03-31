@@ -17,12 +17,20 @@
     # NOTE: These must be manually kept in sync with nix/agent-skills-sources.nix
     #       Flake spec requires literal inputs - dynamic generation not allowed
     #       agent-skills-sources.nix remains the SSoT for baseDir and selection metadata
+    anthropics-claude-code = {
+      url = "github:anthropics/claude-code";
+      flake = false;
+    };
     benjitaylor-agentation = {
       url = "github:benjitaylor/agentation";
       flake = false;
     };
     heyvhuang-ship-faster = {
       url = "github:Heyvhuang/ship-faster";
+      flake = false;
+    };
+    lum1104-understand-anything = {
+      url = "github:Lum1104/Understand-Anything";
       flake = false;
     };
     millionco-react-doctor = {
@@ -51,6 +59,26 @@
     };
     tokoroten-prompt-review = {
       url = "github:tokoroten/prompt-review";
+      flake = false;
+    };
+    trailofbits-agentic-actions-auditor = {
+      url = "github:trailofbits/skills";
+      flake = false;
+    };
+    trailofbits-audit-context-building = {
+      url = "github:trailofbits/skills";
+      flake = false;
+    };
+    trailofbits-sharp-edges = {
+      url = "github:trailofbits/skills";
+      flake = false;
+    };
+    trailofbits-static-analysis = {
+      url = "github:trailofbits/skills";
+      flake = false;
+    };
+    trailofbits-supply-chain-risk-auditor = {
+      url = "github:trailofbits/skills";
       flake = false;
     };
     ui-ux-pro-max = {

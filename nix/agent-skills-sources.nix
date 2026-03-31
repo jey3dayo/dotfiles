@@ -164,4 +164,95 @@
       "gpt-5-4-prompting"
     ];
   };
+  lum1104-understand-anything = {
+    url = "github:Lum1104/Understand-Anything";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      lum1104-understand-anything = "understand-anything-plugin/skills";
+    };
+    selection.enable = [
+      "understand"
+      "understand-chat"
+      "understand-dashboard"
+      "understand-diff"
+      "understand-explain"
+      "understand-onboard"
+    ];
+  };
+  anthropics-claude-code = {
+    url = "github:anthropics/claude-code";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      anthropics-claude-code = "plugins/frontend-design/skills";
+    };
+    selection.enable = [
+      "frontend-design"
+    ];
+  };
+  trailofbits-agentic-actions-auditor = {
+    url = "github:trailofbits/skills";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      trailofbits-agentic-actions-auditor = "plugins/agentic-actions-auditor/skills";
+    };
+    selection.enable = [
+      "agentic-actions-auditor"
+    ];
+  };
+  trailofbits-audit-context-building = {
+    url = "github:trailofbits/skills";
+    flake = false;
+    baseDir = ".";
+    assets = {
+      agents = "plugins/audit-context-building/agents";
+      commands = "plugins/audit-context-building/commands";
+    };
+    catalogs = {
+      trailofbits-audit-context-building = "plugins/audit-context-building/skills";
+    };
+    selection.enable = [
+      "audit-context-building"
+    ];
+  };
+  trailofbits-sharp-edges = {
+    url = "github:trailofbits/skills";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      trailofbits-sharp-edges = "plugins/sharp-edges/skills";
+    };
+    selection.enable = [
+      "sharp-edges"
+    ];
+  };
+  trailofbits-static-analysis = {
+    url = "github:trailofbits/skills";
+    flake = false;
+    baseDir = ".";
+    assets = {
+      agents = "plugins/static-analysis/agents";
+    };
+    catalogs = {
+      trailofbits-static-analysis = "plugins/static-analysis/skills";
+    };
+    selection.enable = [
+      "codeql"
+      "sarif-parsing"
+      "semgrep"
+    ];
+  };
+  trailofbits-supply-chain-risk-auditor = {
+    url = "github:trailofbits/skills";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      trailofbits-supply-chain-risk-auditor = "plugins/supply-chain-risk-auditor/skills";
+    };
+    selection.enable = [
+      "supply-chain-risk-auditor"
+    ];
+  };
 }
