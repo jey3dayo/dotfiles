@@ -26,6 +26,7 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude result --exclude result-* --excl
 go = "1.25.5"
 node = "24"
 python = "3.14"
+bun = "latest"
 pnpm = "latest"
 rust = "stable"
 actionlint = "latest"
