@@ -164,7 +164,7 @@ describe("skills-add/index-lib discoverSkills", () => {
       expect(ids).toEqual(["public-skill"]);
       expect(result.impliedSkill).toBe(null);
       expect(result.skillRoots.length).toBe(1);
-      expect(result.skillRoots[0]).toMatch(/\/skills$/);
+      expect(result.skillRoots[0]).toMatch(/[\\/]skills$/);
     } finally {
       if (originalEnv === undefined) {
         delete process.env.INSTALL_INTERNAL_SKILLS;
@@ -214,6 +214,34 @@ describe("skills-add/index-lib discoverSkills", () => {
       expect(result.impliedSkill).toBe("find-skills");
       const ids = result.skills.map((skill) => skill.id).sort();
       expect(ids).toEqual(["find-skills", "other-skill"]);
+    } finally {
+      if (originalEnv === undefined) {
+        delete process.env.INSTALL_INTERNAL_SKILLS;
+      } else {
+        process.env.INSTALL_INTERNAL_SKILLS = originalEnv;
+      }
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("discovers plugin-style skills under plugins/*/skills", () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "skills-add-plugin-"));
+    const originalEnv = process.env.INSTALL_INTERNAL_SKILLS;
+    delete process.env.INSTALL_INTERNAL_SKILLS;
+
+    try {
+      writeSkill(
+        path.join(tempRoot, "plugins", "codex", "skills", "gpt-5-4-prompting"),
+        "GPT 5.4 Prompting",
+      );
+
+      const result = discoverSkills({ repoPath: tempRoot, pathHint: null });
+      const ids = result.skills.map((skill) => skill.id).sort();
+
+      expect(ids).toEqual(["gpt-5-4-prompting"]);
+      expect(result.skillRoots).toEqual([
+        path.join(tempRoot, "plugins", "codex", "skills"),
+      ]);
     } finally {
       if (originalEnv === undefined) {
         delete process.env.INSTALL_INTERNAL_SKILLS;

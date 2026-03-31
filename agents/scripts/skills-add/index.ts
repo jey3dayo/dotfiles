@@ -16,6 +16,7 @@ import {
 } from "./index-lib.ts";
 import {
   buildSourceBlock,
+  deriveAssets,
   deriveCatalogs,
   extractSourceBlocks,
   insertSourceBlock,
@@ -340,6 +341,10 @@ const { baseDir, catalogs } = deriveCatalogs({
   skillRoots: discovery.skillRoots,
   repoPath: repoPath!,
 });
+const assets = deriveAssets({
+  skillRoots: discovery.skillRoots,
+  repoPath: repoPath!,
+});
 
 let newLines = existingSources.lines.slice();
 let anyChanges = false;
@@ -361,6 +366,7 @@ if (!existingSourceName) {
     baseDir,
     catalogs,
     selection: selectedSkills,
+    assets,
   });
   newLines = insertSourceBlock(newLines, newSourceBlock);
   anyChanges = true;

@@ -147,4 +147,21 @@
       "dev-browser"
     ];
   };
+  openai-codex-plugin-cc = {
+    url = "github:openai/codex-plugin-cc";
+    flake = false;
+    baseDir = ".";
+    assets = {
+      agents = "plugins/codex/agents";
+      commands = "plugins/codex/commands";
+    };
+    catalogs = {
+      openai-codex-plugin-cc = "plugins/codex/skills";
+    };
+    selection.enable = [
+      "codex-cli-runtime"
+      "codex-result-handling"
+      "gpt-5-4-prompting"
+    ];
+  };
 }

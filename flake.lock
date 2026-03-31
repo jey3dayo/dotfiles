@@ -154,6 +154,22 @@
         "type": "github"
       }
     },
+    "openai-codex-plugin-cc": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774923788,
+        "narHash": "sha256-nXyviOG3iwGO7upfrAh0i4D/b56h8mIQu7UlBUKwH6Q=",
+        "owner": "openai",
+        "repo": "codex-plugin-cc",
+        "rev": "9cb4fe4099195b2587c402117a3efce6ab5aac78",
+        "type": "github"
+      },
+      "original": {
+        "owner": "openai",
+        "repo": "codex-plugin-cc",
+        "type": "github"
+      }
+    },
     "openai-skills": {
       "flake": false,
       "locked": {
@@ -181,6 +197,7 @@
         "nixpkgs": "nixpkgs",
         "nyosegawa-skills": "nyosegawa-skills",
         "obra-superpowers": "obra-superpowers",
+        "openai-codex-plugin-cc": "openai-codex-plugin-cc",
         "openai-skills": "openai-skills",
         "sawyerhood-dev-browser": "sawyerhood-dev-browser",
         "tokoroten-prompt-review": "tokoroten-prompt-review",

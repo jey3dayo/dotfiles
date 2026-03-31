@@ -53,6 +53,11 @@ export interface DeriveCatalogsResult {
   catalogs: Record<string, string>;
 }
 
+export interface AssetPaths {
+  agents?: string;
+  commands?: string;
+}
+
 export interface BuildSourceBlockParams {
   sourceName: string;
   url: string;
@@ -60,4 +65,5 @@ export interface BuildSourceBlockParams {
   baseDir: string;
   catalogs: Record<string, string>;
   selection: string[];
+  assets?: AssetPaths;
 }

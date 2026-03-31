@@ -1,10 +1,15 @@
 #!/usr/bin/env bun
 
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+
 import { describe, expect, it } from "bun:test";
 
 import {
   buildSourceBlock,
   countChar,
+  deriveAssets,
   extractSourceBlocks,
   insertSourceBlock,
   isTruthy,
@@ -123,7 +128,9 @@ describe("normalizeUrl", () => {
     expect(normalizeUrl("https://gitlab.com/Owner/Repo", root)).toBe("https://gitlab.com/Owner/Repo");
   });
   it("resolves path: relative to repoRoot", () => {
-    expect(normalizeUrl("path:./agents/skills/foo", root)).toBe(`${root}/agents/skills/foo`);
+    expect(normalizeUrl("path:./agents/skills/foo", root)).toBe(
+      path.resolve(root, "./agents/skills/foo"),
+    );
   });
   it("returns null for falsy input", () => {
     expect(normalizeUrl("", root)).toBe(null);
@@ -315,6 +322,25 @@ describe("buildSourceBlock", () => {
     expect(lines.some((l) => l.includes("flake = true;"))).toBeTruthy();
   });
 
+  it("emits assets block when agents or commands are provided", () => {
+    const lines = buildSourceBlock({
+      sourceName: "src",
+      url: "github:o/r",
+      flake: false,
+      baseDir: ".",
+      assets: {
+        agents: "plugins/codex/agents",
+        commands: "plugins/codex/commands",
+      },
+      catalogs: { src: "plugins/codex/skills" },
+      selection: ["skill-a"],
+    });
+
+    expect(lines).toContain("    assets = {");
+    expect(lines).toContain('      agents = "plugins/codex/agents";');
+    expect(lines).toContain('      commands = "plugins/codex/commands";');
+  });
+
   it("sorts multiple catalogs alphabetically", () => {
     const lines = buildSourceBlock({
       sourceName: "src",
@@ -328,6 +354,48 @@ describe("buildSourceBlock", () => {
     expect(catIndex !== -1).toBeTruthy();
     expect(lines[catIndex + 1].includes("src-a")).toBeTruthy();
     expect(lines[catIndex + 2].includes("src-z")).toBeTruthy();
+  });
+});
+
+// ============================================================
+// deriveAssets
+// ============================================================
+describe("deriveAssets", () => {
+  it("detects sibling agents and commands for plugin-style skill roots", () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "skills-add-assets-"));
+
+    try {
+      fs.mkdirSync(path.join(tempRoot, "plugins", "codex", "skills"), {
+        recursive: true,
+      });
+      fs.mkdirSync(path.join(tempRoot, "plugins", "codex", "agents"), {
+        recursive: true,
+      });
+      fs.mkdirSync(path.join(tempRoot, "plugins", "codex", "commands"), {
+        recursive: true,
+      });
+
+      expect(
+        deriveAssets({
+          repoPath: tempRoot,
+          skillRoots: [path.join(tempRoot, "plugins", "codex", "skills")],
+        }),
+      ).toEqual({
+        agents: "plugins/codex/agents",
+        commands: "plugins/codex/commands",
+      });
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("returns empty assets for non-plugin roots", () => {
+    expect(
+      deriveAssets({
+        repoPath: "/repo",
+        skillRoots: ["/repo/skills"],
+      }),
+    ).toEqual({});
   });
 });
 

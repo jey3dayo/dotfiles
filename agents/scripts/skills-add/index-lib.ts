@@ -223,9 +223,34 @@ export const discoverSkills = ({
     }
   }
 
+  const pluginSkillRoots =
+    restrictedRoot === null
+      ? (() => {
+          const pluginsRoot = path.join(repoPath, "plugins");
+          if (!fs.existsSync(pluginsRoot) || !fs.statSync(pluginsRoot).isDirectory()) {
+            return [];
+          }
+
+          return fs
+            .readdirSync(pluginsRoot, { withFileTypes: true })
+            .filter((entry) => entry.isDirectory())
+            .map((entry) => path.join(pluginsRoot, entry.name, "skills"))
+            .filter((pluginSkillsPath) => {
+              return (
+                fs.existsSync(pluginSkillsPath) &&
+                fs.statSync(pluginSkillsPath).isDirectory()
+              );
+            });
+        })()
+      : [];
+
   const rootsToScan = restrictedRoot
     ? [restrictedRoot]
-    : [repoPath, ...candidateRoots.map((root) => path.join(repoPath, root))];
+    : [
+        repoPath,
+        ...candidateRoots.map((root) => path.join(repoPath, root)),
+        ...pluginSkillRoots,
+      ];
 
   const uniqueRoots = new Set<string>();
   for (const root of rootsToScan) {

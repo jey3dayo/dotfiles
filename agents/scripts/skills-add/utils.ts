@@ -1,6 +1,8 @@
+import * as fs from "node:fs";
 import * as path from "node:path";
 
 import type {
+  AssetPaths,
   BuildSourceBlockParams,
   DeriveCatalogsParams,
   DeriveCatalogsResult,
@@ -207,6 +209,39 @@ export const deriveCatalogs = ({
   return { baseDir: ".", catalogs };
 };
 
+export const deriveAssets = ({
+  skillRoots,
+  repoPath,
+}: Pick<DeriveCatalogsParams, "skillRoots" | "repoPath">): AssetPaths => {
+  const pluginBases = Array.from(
+    new Set(
+      skillRoots
+        .map((root) => path.relative(repoPath, root).replace(/\\/g, "/"))
+        .map((root) => {
+          const match = root.match(/^(plugins\/[^/]+)\/skills(?:\/.*)?$/);
+          return match ? match[1] : null;
+        })
+        .filter((root): root is string => root !== null),
+    ),
+  );
+
+  if (pluginBases.length !== 1) {
+    return {};
+  }
+
+  const pluginBase = pluginBases[0];
+  const assets: AssetPaths = {};
+
+  for (const assetName of ["agents", "commands"] as const) {
+    const assetPath = path.join(repoPath, pluginBase, assetName);
+    if (fs.existsSync(assetPath) && fs.statSync(assetPath).isDirectory()) {
+      assets[assetName] = path.relative(repoPath, assetPath).replace(/\\/g, "/");
+    }
+  }
+
+  return assets;
+};
+
 export const updateSelectionInLines = (
   lines: string[],
   sourceName: string,
@@ -345,12 +380,23 @@ export const buildSourceBlock = ({
   baseDir,
   catalogs,
   selection,
+  assets,
 }: BuildSourceBlockParams): string[] => {
   const lines: string[] = [];
   lines.push(`  ${sourceName} = {`);
   lines.push(`    url = "${url}";`);
   lines.push(`    flake = ${flake ? "true" : "false"};`);
   lines.push(`    baseDir = "${baseDir}";`);
+  if (assets && Object.keys(assets).length > 0) {
+    lines.push("    assets = {");
+    if (assets.agents) {
+      lines.push(`      agents = "${assets.agents}";`);
+    }
+    if (assets.commands) {
+      lines.push(`      commands = "${assets.commands}";`);
+    }
+    lines.push("    };");
+  }
   lines.push(`    catalogs = {`);
   const catalogKeys = Object.keys(catalogs).sort((a, b) => a.localeCompare(b));
   for (const key of catalogKeys) {

@@ -37,6 +37,10 @@
       url = "github:obra/superpowers";
       flake = false;
     };
+    openai-codex-plugin-cc = {
+      url = "github:openai/codex-plugin-cc";
+      flake = false;
+    };
     openai-skills = {
       url = "github:openai/skills";
       flake = false;
