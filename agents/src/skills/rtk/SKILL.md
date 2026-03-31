@@ -89,7 +89,6 @@ For this repo, validate or distribute a bundled RTK skill with the existing task
 - `mise run skills:validate:internal`
 - `mise run skills:validate`
 - `mise run skills:install`
-- `mise run skills:install:windows:codex`
 
 Do not add a new `mise` task unless the existing distribution flow cannot pick the skill up.
 

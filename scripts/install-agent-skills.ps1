@@ -1,6 +1,6 @@
 param(
-  [ValidateSet("codex", "claude")]
-  [string[]]$Targets = @("codex"),
+  [ValidateSet("all", "claude", "codex", "cursor", "opencode", "openclaw")]
+  [string[]]$Targets = @("all"),
 
   [switch]$IncludeNixBundle,
 
@@ -8,6 +8,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+
+$AllTargets = @("claude", "codex", "cursor", "opencode", "openclaw")
 
 function Get-RepoRoot {
   $scriptDir = Split-Path -Parent $PSCommandPath
@@ -29,6 +31,30 @@ function Get-TargetConfig {
         ConfigName = "AGENTS.md"
       }
     }
+    "cursor" {
+      return @{
+        Root = Join-Path $HOME ".cursor"
+        SkillsDir = "skills"
+        ConfigSource = "AGENTS.md"
+        ConfigName = "AGENTS.md"
+      }
+    }
+    "opencode" {
+      return @{
+        Root = Join-Path $HOME ".opencode"
+        SkillsDir = "skills"
+        ConfigSource = "AGENTS.md"
+        ConfigName = "CLAUDE.md"
+      }
+    }
+    "openclaw" {
+      return @{
+        Root = Join-Path $HOME ".openclaw"
+        SkillsDir = "skills"
+        ConfigSource = "AGENTS.md"
+        ConfigName = "CLAUDE.md"
+      }
+    }
     "claude" {
       return @{
         Root = Join-Path $HOME ".claude"
@@ -41,6 +67,24 @@ function Get-TargetConfig {
       throw "Unsupported target: $TargetName"
     }
   }
+}
+
+function Resolve-Targets {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$RequestedTargets
+  )
+
+  $resolvedTargets = @()
+  foreach ($target in $RequestedTargets) {
+    if ($target -eq "all") {
+      $resolvedTargets += $AllTargets
+    } else {
+      $resolvedTargets += $target
+    }
+  }
+
+  return $resolvedTargets | Select-Object -Unique
 }
 
 function Invoke-Wsl {
@@ -234,6 +278,35 @@ function Get-SkillDestinationPath {
   return $path
 }
 
+function Ensure-CopiedFile {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SourcePath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$DestinationPath,
+
+    [Parameter(Mandatory = $true)]
+    [bool]$AllowReplace
+  )
+
+  if (Test-Path -LiteralPath $DestinationPath) {
+    if (-not $AllowReplace) {
+      return "kept"
+    }
+
+    Remove-Item -LiteralPath $DestinationPath -Force
+  }
+
+  $parent = Split-Path -Parent $DestinationPath
+  if (-not [string]::IsNullOrEmpty($parent)) {
+    New-Item -ItemType Directory -Path $parent -Force | Out-Null
+  }
+
+  Copy-Item -LiteralPath $SourcePath -Destination $DestinationPath -Force
+  return "copied"
+}
+
 function Ensure-CopiedDirectory {
   param(
     [Parameter(Mandatory = $true)]
@@ -263,6 +336,169 @@ function Ensure-CopiedDirectory {
   return "copied"
 }
 
+function Get-ExternalAssetSources {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RepoRoot
+  )
+
+  $sourcesFile = Join-Path $RepoRoot "nix\agent-skills-sources.nix"
+  if (-not (Test-Path -LiteralPath $sourcesFile)) {
+    return @()
+  }
+
+  $lines = Get-Content -LiteralPath $sourcesFile
+  $depth = 0
+  $currentName = $null
+  $currentLines = @()
+  $sources = @()
+
+  foreach ($line in $lines) {
+    $sanitized = $line -replace '#.*$', ''
+
+    if ($depth -eq 1 -and $null -eq $currentName) {
+      if ($sanitized -match '^\s*([A-Za-z0-9_-]+)\s*=\s*\{\s*$') {
+        $currentName = $matches[1]
+        $currentLines = @($line)
+      }
+    } elseif ($null -ne $currentName) {
+      $currentLines += $line
+    }
+
+    $openCount = ([regex]::Matches($sanitized, '\{')).Count
+    $closeCount = ([regex]::Matches($sanitized, '\}')).Count
+    $depth += ($openCount - $closeCount)
+
+    if ($null -ne $currentName -and $depth -eq 1) {
+      $blockText = $currentLines -join "`n"
+      $url = $null
+      $agentsPath = $null
+      $commandsPath = $null
+
+      if ($blockText -match '(?m)^\s*url\s*=\s*"([^"]+)"\s*;') {
+        $url = $matches[1]
+      }
+      if ($blockText -match '(?m)^\s*agents\s*=\s*"([^"]+)"\s*;') {
+        $agentsPath = $matches[1]
+      }
+      if ($blockText -match '(?m)^\s*commands\s*=\s*"([^"]+)"\s*;') {
+        $commandsPath = $matches[1]
+      }
+
+      if ($url -and ($agentsPath -or $commandsPath)) {
+        $sources += [pscustomobject]@{
+          Name = $currentName
+          Url = $url
+          AgentsPath = $agentsPath
+          CommandsPath = $commandsPath
+        }
+      }
+
+      $currentName = $null
+      $currentLines = @()
+    }
+  }
+
+  return $sources
+}
+
+function Get-ExternalSourceCheckoutPath {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RepoRoot,
+
+    [Parameter(Mandatory = $true)]
+    [pscustomobject]$Source
+  )
+
+  if ($Source.Url.StartsWith("path:")) {
+    $relativePath = $Source.Url.Substring(5)
+    return [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $relativePath))
+  }
+
+  $cloneUrl = $null
+  $ref = $null
+
+  if ($Source.Url -match '^github:([^/]+)/([^/]+?)(?:/([^/]+))?$') {
+    $owner = $matches[1]
+    $repo = $matches[2]
+    $ref = if ($matches.Count -ge 4) { $matches[3] } else { $null }
+    $cloneUrl = "https://github.com/$owner/$repo.git"
+  } elseif ($Source.Url.StartsWith("git+")) {
+    $cloneUrl = $Source.Url.Substring(4)
+    if ($cloneUrl -match '^(.*?)[?&]ref=([^&#]+).*$') {
+      $cloneUrl = $matches[1]
+      $ref = $matches[2]
+    }
+  } else {
+    $cloneUrl = $Source.Url
+  }
+
+  if (-not $cloneUrl) {
+    throw "Unsupported source URL: $($Source.Url)"
+  }
+
+  $checkoutRoot = Join-Path $env:TEMP "agent-skills-external"
+  New-Item -ItemType Directory -Path $checkoutRoot -Force | Out-Null
+  $checkoutPath = Join-Path $checkoutRoot $Source.Name
+
+  if (Test-Path -LiteralPath $checkoutPath) {
+    Remove-Item -LiteralPath $checkoutPath -Recurse -Force
+  }
+
+  $cloneArgs = @("clone", "--depth", "1")
+  if (-not [string]::IsNullOrWhiteSpace($ref)) {
+    $cloneArgs += @("--branch", $ref)
+  }
+  $cloneArgs += @($cloneUrl, $checkoutPath)
+
+  & git @cloneArgs | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to clone external source: $cloneUrl"
+  }
+
+  return $checkoutPath
+}
+
+function Copy-MarkdownTree {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SourceRoot,
+
+    [Parameter(Mandatory = $true)]
+    [string]$DestinationRoot,
+
+    [Parameter(Mandatory = $true)]
+    [bool]$AllowReplace
+  )
+
+  if (-not (Test-Path -LiteralPath $SourceRoot)) {
+    return @{
+      Copied = 0
+      Kept = 0
+    }
+  }
+
+  $copied = 0
+  $kept = 0
+  $sourceRootFull = [System.IO.Path]::GetFullPath($SourceRoot)
+
+  Get-ChildItem -LiteralPath $SourceRoot -Recurse -File -Filter *.md | ForEach-Object {
+    $relativePath = $_.FullName.Substring($sourceRootFull.Length).TrimStart('\', '/')
+    $destinationPath = Join-Path $DestinationRoot $relativePath
+    $result = Ensure-CopiedFile -SourcePath $_.FullName -DestinationPath $destinationPath -AllowReplace:$AllowReplace
+    switch ($result) {
+      "copied" { $copied++ }
+      "kept" { $kept++ }
+    }
+  }
+
+  return @{
+    Copied = $copied
+    Kept = $kept
+  }
+}
+
 $repoRoot = Get-RepoRoot
 $skillsSourceRoot = Join-Path $repoRoot "agents\src\skills"
 
@@ -280,15 +516,32 @@ if ($IncludeNixBundle) {
   $bundleWindowsPath = Get-BundleWindowsPath -RepoRoot $repoRoot
 }
 
-foreach ($targetName in $Targets) {
+$externalAssetSources = Get-ExternalAssetSources -RepoRoot $repoRoot
+$externalAssetCheckouts = @()
+foreach ($externalSource in $externalAssetSources) {
+  $externalAssetCheckouts += [pscustomobject]@{
+    Source = $externalSource
+    CheckoutPath = Get-ExternalSourceCheckoutPath -RepoRoot $repoRoot -Source $externalSource
+  }
+}
+
+$resolvedTargets = Resolve-Targets -RequestedTargets $Targets
+
+foreach ($targetName in $resolvedTargets) {
   $target = Get-TargetConfig -TargetName $targetName
   $targetRoot = $target.Root
   $targetSkillsRoot = Join-Path $targetRoot $target.SkillsDir
+  $targetRulesRoot = Join-Path $targetRoot "rules"
+  $targetAgentsRoot = Join-Path $targetRoot "agents"
+  $targetCommandsRoot = Join-Path $targetRoot "commands"
   $configSource = Join-Path $repoRoot $target.ConfigSource
   $configDestination = Join-Path $targetRoot $target.ConfigName
 
   New-Item -ItemType Directory -Path $targetRoot -Force | Out-Null
   New-Item -ItemType Directory -Path $targetSkillsRoot -Force | Out-Null
+  New-Item -ItemType Directory -Path $targetRulesRoot -Force | Out-Null
+  New-Item -ItemType Directory -Path $targetAgentsRoot -Force | Out-Null
+  New-Item -ItemType Directory -Path $targetCommandsRoot -Force | Out-Null
 
   if (Test-Path -LiteralPath $configSource) {
     Copy-Item -LiteralPath $configSource -Destination $configDestination -Force
@@ -298,6 +551,12 @@ foreach ($targetName in $Targets) {
   $kept = 0
   $skipped = 0
   $copied = 0
+  $rulesCopied = 0
+  $rulesKept = 0
+  $agentsCopied = 0
+  $agentsKept = 0
+  $commandsCopied = 0
+  $commandsKept = 0
 
   foreach ($skillDir in $skillDirs) {
     $destination = Join-Path $targetSkillsRoot $skillDir.Name
@@ -327,7 +586,35 @@ foreach ($targetName in $Targets) {
     }
   }
 
+  $internalRules = Copy-MarkdownTree -SourceRoot (Join-Path $repoRoot "agents\src\rules") -DestinationRoot $targetRulesRoot -AllowReplace:$Force
+  $rulesCopied += $internalRules.Copied
+  $rulesKept += $internalRules.Kept
+
+  $internalAgents = Copy-MarkdownTree -SourceRoot (Join-Path $repoRoot "agents\src\agents") -DestinationRoot $targetAgentsRoot -AllowReplace:$Force
+  $agentsCopied += $internalAgents.Copied
+  $agentsKept += $internalAgents.Kept
+
+  foreach ($externalAssetCheckout in $externalAssetCheckouts) {
+    $externalSource = $externalAssetCheckout.Source
+    $checkoutPath = $externalAssetCheckout.CheckoutPath
+
+    if ($externalSource.AgentsPath) {
+      $externalAgents = Copy-MarkdownTree -SourceRoot (Join-Path $checkoutPath $externalSource.AgentsPath) -DestinationRoot $targetAgentsRoot -AllowReplace:$Force
+      $agentsCopied += $externalAgents.Copied
+      $agentsKept += $externalAgents.Kept
+    }
+
+    if ($externalSource.CommandsPath) {
+      $externalCommands = Copy-MarkdownTree -SourceRoot (Join-Path $checkoutPath $externalSource.CommandsPath) -DestinationRoot $targetCommandsRoot -AllowReplace:$Force
+      $commandsCopied += $externalCommands.Copied
+      $commandsKept += $externalCommands.Kept
+    }
+  }
+
   Write-Host "[$targetName] config: $configDestination"
   Write-Host "[$targetName] skills: $targetSkillsRoot"
   Write-Host "[$targetName] linked=$linked copied=$copied kept=$kept skipped=$skipped"
+  Write-Host "[$targetName] rules copied=$rulesCopied kept=$rulesKept"
+  Write-Host "[$targetName] agents copied=$agentsCopied kept=$agentsKept"
+  Write-Host "[$targetName] commands copied=$commandsCopied kept=$commandsKept"
 }
