@@ -65,7 +65,7 @@ in
 
       configFiles = [
         {
-          src = ./AGENTS.md;
+          src = ./agents/src/AGENTS.md;
           default = "AGENTS.md";
           rename = {
             claude = "CLAUDE.md";

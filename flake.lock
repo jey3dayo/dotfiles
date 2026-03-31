@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "anthropics-claude-code": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774967756,
+        "narHash": "sha256-9MBn/teVV+nTDdUzLD5SNHgDIKekvrOjD4/P4fsRbjg=",
+        "owner": "anthropics",
+        "repo": "claude-code",
+        "rev": "66ab4ae6e022a5f0d6537a10771815052957c784",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anthropics",
+        "repo": "claude-code",
+        "type": "github"
+      }
+    },
     "benjitaylor-agentation": {
       "flake": false,
       "locked": {
@@ -87,6 +103,22 @@
       "original": {
         "owner": "nix-community",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "lum1104-understand-anything": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774840617,
+        "narHash": "sha256-0xm1R85Hdqt735nHWTq+JvswzsEVDXLUczQchKBVX6Q=",
+        "owner": "Lum1104",
+        "repo": "Understand-Anything",
+        "rev": "a7eea056944afb4c4310f4e54cc921eb5ae74a09",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Lum1104",
+        "repo": "Understand-Anything",
         "type": "github"
       }
     },
@@ -188,11 +220,13 @@
     },
     "root": {
       "inputs": {
+        "anthropics-claude-code": "anthropics-claude-code",
         "benjitaylor-agentation": "benjitaylor-agentation",
         "flake-utils": "flake-utils",
         "gitignore": "gitignore",
         "heyvhuang-ship-faster": "heyvhuang-ship-faster",
         "home-manager": "home-manager",
+        "lum1104-understand-anything": "lum1104-understand-anything",
         "millionco-react-doctor": "millionco-react-doctor",
         "nixpkgs": "nixpkgs",
         "nyosegawa-skills": "nyosegawa-skills",
@@ -201,6 +235,11 @@
         "openai-skills": "openai-skills",
         "sawyerhood-dev-browser": "sawyerhood-dev-browser",
         "tokoroten-prompt-review": "tokoroten-prompt-review",
+        "trailofbits-agentic-actions-auditor": "trailofbits-agentic-actions-auditor",
+        "trailofbits-audit-context-building": "trailofbits-audit-context-building",
+        "trailofbits-sharp-edges": "trailofbits-sharp-edges",
+        "trailofbits-static-analysis": "trailofbits-static-analysis",
+        "trailofbits-supply-chain-risk-auditor": "trailofbits-supply-chain-risk-auditor",
         "ui-ux-pro-max": "ui-ux-pro-max",
         "vercel-agent-browser": "vercel-agent-browser",
         "vercel-agent-skills": "vercel-agent-skills"
@@ -250,6 +289,86 @@
       "original": {
         "owner": "tokoroten",
         "repo": "prompt-review",
+        "type": "github"
+      }
+    },
+    "trailofbits-agentic-actions-auditor": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774607912,
+        "narHash": "sha256-VZJNuw/xsnR3X5E5YdCwsjzTOQVtjaoK3I48LFMpH6M=",
+        "owner": "trailofbits",
+        "repo": "skills",
+        "rev": "4b9a4e90870ddfdbe24c34a22606ac0d1a62052a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trailofbits",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
+    "trailofbits-audit-context-building": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774607912,
+        "narHash": "sha256-VZJNuw/xsnR3X5E5YdCwsjzTOQVtjaoK3I48LFMpH6M=",
+        "owner": "trailofbits",
+        "repo": "skills",
+        "rev": "4b9a4e90870ddfdbe24c34a22606ac0d1a62052a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trailofbits",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
+    "trailofbits-sharp-edges": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774607912,
+        "narHash": "sha256-VZJNuw/xsnR3X5E5YdCwsjzTOQVtjaoK3I48LFMpH6M=",
+        "owner": "trailofbits",
+        "repo": "skills",
+        "rev": "4b9a4e90870ddfdbe24c34a22606ac0d1a62052a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trailofbits",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
+    "trailofbits-static-analysis": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774607912,
+        "narHash": "sha256-VZJNuw/xsnR3X5E5YdCwsjzTOQVtjaoK3I48LFMpH6M=",
+        "owner": "trailofbits",
+        "repo": "skills",
+        "rev": "4b9a4e90870ddfdbe24c34a22606ac0d1a62052a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trailofbits",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
+    "trailofbits-supply-chain-risk-auditor": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774607912,
+        "narHash": "sha256-VZJNuw/xsnR3X5E5YdCwsjzTOQVtjaoK3I48LFMpH6M=",
+        "owner": "trailofbits",
+        "repo": "skills",
+        "rev": "4b9a4e90870ddfdbe24c34a22606ac0d1a62052a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trailofbits",
+        "repo": "skills",
         "type": "github"
       }
     },

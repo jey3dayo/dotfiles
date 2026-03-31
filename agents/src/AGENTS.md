@@ -1,24 +1,5 @@
 # AI 開発協働ガイド
 
-この `AGENTS.md` は `~/.config` リポジトリ専用の AI 協働ガイドです。
-このリポジトリで作業するエージェントは、まずこの文書を基準に動作してください。
-
-## ドキュメントの役割分担
-
-- このファイル: この repo の運用ルールの正本
-- `docs/`: 詳細な手順・運用・設計の正本
-- `.claude/rules/`: Claude 向けの圧縮ルールと導線
-- `CLAUDE.md`: Claude 向けの薄い入口
-- `agents/src/AGENTS.md`: 配布用の共通ガイドであり、この repo の正本ではない
-
-## 優先順位
-
-1. ユーザーの明示的な指示
-2. この `AGENTS.md`
-3. `docs/` の各正本
-4. `.claude/rules/` の圧縮ルール
-5. `CLAUDE.md`
-
 ## Definition of Done (DoD)
 
 すべてのタスク完了時に以下を満たすこと。
