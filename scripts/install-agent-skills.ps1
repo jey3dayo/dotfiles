@@ -9,6 +9,8 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+. (Join-Path $PSScriptRoot "install-agent-skills-lib.ps1")
+
 $AllTargets = @("claude", "codex", "cursor", "opencode", "openclaw")
 
 function Get-RepoRoot {
@@ -191,9 +193,7 @@ function Get-BundleWindowsPath {
     )
 
     if ($shouldNormalize) {
-      $content = Get-Content -LiteralPath $_.FullName -Raw
-      $content = $content -replace "`r`n", "`n"
-      [System.IO.File]::WriteAllText($_.FullName, $content, (New-Object System.Text.UTF8Encoding($false)))
+      Normalize-Utf8TextFileLineEndings -Path $_.FullName
     }
   }
 
