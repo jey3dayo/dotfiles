@@ -1,6 +1,6 @@
 ---
 name: tauri-dev-screenshot
-description: Use when a Windows Tauri app is already running and Codex needs to capture the app window as a saved screenshot for UI debugging, layout checks, or state snapshots inside the current project workspace.
+description: Use when a Windows Tauri dev or WebView app is already running and Codex needs PowerShell-based window capture, screenshots, UI snapshots, active-window capture, title-match window capture, layout debugging, state comparison, or display-breakage checks inside the current project workspace.
 ---
 
 # Tauri Dev Screenshot
