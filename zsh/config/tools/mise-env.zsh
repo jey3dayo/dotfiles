@@ -64,6 +64,10 @@ _mise_bootstrap_env() {
 
   _mise_source_home_manager_session_vars
 
+  if [[ -n "$MISE_CONFIG_FILE" ]] && [[ "$MISE_CONFIG_FILE" == /tmp/hm-verify/* || ! -f "$MISE_CONFIG_FILE" ]]; then
+    unset MISE_CONFIG_FILE
+  fi
+
   if [[ -z "$MISE_CONFIG_FILE" ]]; then
     local environment
     environment="$(_mise_detect_environment)"
