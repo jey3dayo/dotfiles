@@ -113,6 +113,46 @@ let
         { }
     ) targets;
 
+  materializedKeepDirs =
+    let
+      linkTargets = lib.filterAttrs (_: t: t.enable && t.structure == "link") cfg.targets;
+      skillDirs = lib.mapAttrsToList (_: target: target.dest) linkTargets;
+      assetRootDirs =
+        assetType: assets:
+        lib.mapAttrsToList (
+          _name: target:
+          if target.enable && target.structure == "link" && (lib.attrNames assets) != [ ] then
+            "${lib.removeSuffix "/skills" target.dest}/${assetType}"
+          else
+            null
+        ) cfg.targets;
+    in
+    lib.unique (
+      lib.filter (dir: dir != null) (
+        skillDirs
+        ++ assetRootDirs "rules" distributionResult.rules
+        ++ assetRootDirs "agents" mergedAgents
+        ++ assetRootDirs "commands" externalCommands
+      )
+    );
+
+  mkMaterializedKeepFileCommands =
+    dirs:
+    lib.concatMapStringsSep "\n" (dir: ''
+      target="$HOME/${dir}/.keep"
+      target_dir="$HOME/${dir}"
+
+      run ${pkgs.coreutils}/bin/mkdir -p "$target_dir"
+
+      if [ -L "$target" ] || [ ! -f "$target" ] || [ -s "$target" ]; then
+        verboseEcho "Materializing $target"
+        if [ -e "$target" ] || [ -L "$target" ]; then
+          run ${pkgs.coreutils}/bin/rm -f "$target"
+        fi
+        run ${pkgs.coreutils}/bin/install -m 600 /dev/null "$target"
+      fi
+    '') dirs;
+
 in
 {
   options.programs.agent-skills = {
@@ -263,6 +303,10 @@ in
             commandsDirCommands
           ]
         )
+      );
+
+      activation.agent-skills-materialized-keep = lib.hm.dag.entryAfter [ "linkGeneration" ] (
+        mkMaterializedKeepFileCommands materializedKeepDirs
       );
 
       # link targets: per-skill directory symlinks to Nix store (default)

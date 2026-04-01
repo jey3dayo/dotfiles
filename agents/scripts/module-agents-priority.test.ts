@@ -41,6 +41,62 @@ const evalHomeFileSource = (targetPath: string) =>
     },
   );
 
+const evalKeepTargets = () =>
+  spawnSync(
+    nixBin,
+    [
+      "eval",
+      "--json",
+      "--impure",
+      "--expr",
+      `let
+         flake = builtins.getFlake "${flakeUrl}";
+         homeConfig = builtins.getAttr "${user}" flake.outputs.homeConfigurations;
+         names = builtins.attrNames homeConfig.config.home.file;
+       in
+         builtins.filter (n: builtins.match ".*(\\\\.claude/skills|\\\\.codex/rules)/\\\\.keep$" n != null) names`,
+    ],
+    {
+      cwd: repoRoot,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        NIX_CONFIG: "experimental-features = nix-command flakes",
+      },
+    },
+  );
+
+const buildActivationScript = () => {
+  const result = spawnSync(
+    nixBin,
+    [
+      "build",
+      `.#homeConfigurations.${user}.activationPackage`,
+      "--impure",
+      "--no-link",
+      "--print-out-paths",
+    ],
+    {
+      cwd: repoRoot,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        NIX_CONFIG: "experimental-features = nix-command flakes",
+      },
+    },
+  );
+
+  if (result.status !== 0) {
+    return result;
+  }
+
+  const activatePath = path.join(result.stdout.trim(), "activate");
+  return {
+    ...result,
+    activateScript: fs.readFileSync(activatePath, "utf8"),
+  };
+};
+
 describe("agents/nix/module.nix", () => {
   it("preserves bundled code-reviewer agent when an external source ships the same ID", () => {
     for (const targetPath of [
@@ -53,4 +109,17 @@ describe("agents/nix/module.nix", () => {
       expect(fs.readFileSync(result.stdout.trim(), "utf8")).toBe(bundledCodeReviewer);
     }
   }, 15_000);
+
+  it("materializes keep files for target directories instead of symlinking them from home.file", () => {
+    const keepResult = evalKeepTargets();
+    expect(keepResult.status).toBe(0);
+    expect(JSON.parse(keepResult.stdout)).toEqual([]);
+
+    const buildResult = buildActivationScript();
+    expect(buildResult.status).toBe(0);
+    expect(buildResult.activateScript).toContain("agent-skills-materialized-keep");
+    expect(buildResult.activateScript).toContain('$HOME/.claude/skills/.keep');
+    expect(buildResult.activateScript).toContain('$HOME/.codex/rules/.keep');
+    expect(buildResult.activateScript).toContain("install -m 600 /dev/null");
+  }, 30_000);
 });
