@@ -255,4 +255,15 @@
       "supply-chain-risk-auditor"
     ];
   };
+  epicenterhq-epicenter = {
+    url = "github:EpicenterHQ/epicenter";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      epicenterhq-epicenter = ".agents/skills";
+    };
+    selection.enable = [
+      "tauri"
+    ];
+  };
 }

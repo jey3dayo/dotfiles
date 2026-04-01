@@ -25,6 +25,10 @@
       url = "github:benjitaylor/agentation";
       flake = false;
     };
+    epicenterhq-epicenter = {
+      url = "github:EpicenterHQ/epicenter";
+      flake = false;
+    };
     heyvhuang-ship-faster = {
       url = "github:Heyvhuang/ship-faster";
       flake = false;
