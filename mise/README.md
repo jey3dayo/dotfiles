@@ -36,12 +36,12 @@ Environment Variable: `MISE_CONFIG_FILE` is set before mise activation by Home M
 
 ## Tool Counts
 
-| Environment  | Config File         | Tools | Jobs | Notes                                     |
-| ------------ | ------------------- | ----- | ---- | ----------------------------------------- |
-| CI           | config.ci.toml      | 13    | 4    | Minimal toolset for Actions               |
-| Default      | config.default.toml | 75    | 8    | Full toolset (go, 46 npm, 4 cargo, 7 CLI) |
+| Environment  | Config File         | Tools | Jobs  | Notes                                        |
+| ------------ | ------------------- | ----- | ----- | -------------------------------------------- |
+| CI           | config.ci.toml      | 13    | 4     | Minimal toolset for Actions                  |
+| Default      | config.default.toml | 75    | 8     | Full toolset (go, 46 npm, 4 cargo, 7 CLI)    |
 | Windows      | config.windows.toml | 77    | unset | Windows-specific toolset, uses mise defaults |
-| Raspberry Pi | config.pi.toml      | 32    | 2    | Optimized (minimal npm, no cargo)         |
+| Raspberry Pi | config.pi.toml      | 32    | 2     | Optimized (minimal npm, no cargo)            |
 
 ## Migration from Old Structure
 

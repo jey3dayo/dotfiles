@@ -233,12 +233,12 @@ Note: hadolint is included in `config.default.toml` but may fail to install on A
 
 ## Configuration Comparison
 
-| Config              | Toolset           | Use Case                       | Performance     |
-| ------------------- | ----------------- | ------------------------------ | --------------- |
-| config.default.toml | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install  |
+| Config              | Toolset           | Use Case                       | Performance        |
+| ------------------- | ----------------- | ------------------------------ | ------------------ |
+| config.default.toml | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
 | config.windows.toml | Full (77 tools)   | Development (Windows)          | Uses mise defaults |
-| config.pi.toml      | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install  |
-| config.ci.toml      | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install |
+| config.pi.toml      | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
+| config.ci.toml      | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
 
 ## Tool Categories (config.default.toml)
 

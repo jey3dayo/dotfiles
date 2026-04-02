@@ -12,13 +12,13 @@ Detailed Reference: [docs/tools/mise.md](../../../docs/tools/mise.md)
 
 `directory-local (.mise.toml)` > `MISE_CONFIG_FILE` > `user config` > `global defaults`
 
-| ファイル                   | 対象環境         | 特徴                                    |
-| -------------------------- | ---------------- | --------------------------------------- |
-| `mise/config.toml`         | 共通             | 設定のみ（ツール定義なし）              |
-| `mise/config.default.toml` | macOS/Linux/WSL2 | フル構成（jobs=8）                      |
+| ファイル                   | 対象環境         | 特徴                                            |
+| -------------------------- | ---------------- | ----------------------------------------------- |
+| `mise/config.toml`         | 共通             | 設定のみ（ツール定義なし）                      |
+| `mise/config.default.toml` | macOS/Linux/WSL2 | フル構成（jobs=8）                              |
 | `mise/config.windows.toml` | Windows          | Windows 用ツールセット（77 tools, jobs 未設定） |
-| `mise/config.pi.toml`      | Raspberry Pi     | 最小構成（jobs=2、cargo 除外）          |
-| `mise/config.ci.toml`      | CI/CD            | CI 必須ツールのみ（言語ランタイム除外） |
+| `mise/config.pi.toml`      | Raspberry Pi     | 最小構成（jobs=2、cargo 除外）                  |
+| `mise/config.ci.toml`      | CI/CD            | CI 必須ツールのみ（言語ランタイム除外）         |
 
 ## pnpm バックエンド設定
 
