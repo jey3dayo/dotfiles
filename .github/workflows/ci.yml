@@ -55,6 +55,9 @@ on:
       - ".github/workflows/ci.yml"
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   format-and-lint:
     runs-on: ubuntu-latest
