@@ -15,6 +15,26 @@ const writeUtf8NoBom = (filePath: string, content: string): void => {
   fs.writeFileSync(filePath, content, "utf8");
 };
 
+const resolvePowerShellCommand = (): string => {
+  const candidates =
+    process.platform === "win32" ? ["powershell.exe", "pwsh"] : ["pwsh", "powershell.exe", "powershell"];
+
+  for (const candidate of candidates) {
+    const probe = spawnSync(candidate, ["-NoProfile", "-Command", "exit 0"], {
+      encoding: "utf8",
+      stdio: "ignore",
+    });
+
+    if (!probe.error && probe.status === 0) {
+      return candidate;
+    }
+  }
+
+  throw new Error(`No supported PowerShell executable found: ${candidates.join(", ")}`);
+};
+
+const shellCommand = resolvePowerShellCommand();
+
 const runNormalization = (targetPath: string): ReturnType<typeof spawnSync> => {
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "install-agent-skills-lib-run-"));
   const wrapperPath = path.join(tempDir, "run.ps1");
@@ -27,7 +47,7 @@ const runNormalization = (targetPath: string): ReturnType<typeof spawnSync> => {
   );
 
   try {
-    return spawnSync("powershell", ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", wrapperPath], {
+    return spawnSync(shellCommand, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", wrapperPath], {
       encoding: "utf8",
     });
   } finally {
@@ -63,6 +83,7 @@ describe("scripts/install-agent-skills-lib.ps1", () => {
 
     const result = runNormalization(targetPath);
 
+    expect(result.error).toBeUndefined();
     expect(result.status).toBe(0);
     expect(result.stderr).toBe("");
     expect(fs.readFileSync(targetPath, "utf8")).toBe(originalContent.replace(/\r\n/g, "\n"));
