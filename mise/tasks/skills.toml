@@ -48,8 +48,9 @@ ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" 
 # Use temp cache for sandbox/readonly-home environments.
 cache_root="${TMPDIR:-/tmp}/${USER:-user}/dotfiles-mise-cache"
 mkdir -p "$cache_root"
-XDG_CACHE_HOME="$cache_root" nix run .#validate
+XDG_CACHE_HOME="$cache_root" nix run --no-write-lock-file .#validate
 """
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/skills-validate.ps1"
 
 ["skills:validate:internal"]
 description = "agents/src が SSoT ルールに準拠しているか検証"
