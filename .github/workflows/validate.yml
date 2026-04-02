@@ -23,9 +23,6 @@ on:
       - "scripts/check-flake-sync.sh"
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
 permissions:
   contents: read
   packages: read
@@ -43,7 +40,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Check flake inputs sync
         run: sh ./scripts/check-flake-sync.sh
