@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-03-13
+最終更新: 2026-04-03
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -25,6 +25,11 @@ mise設定は環境別ファイルで管理されています:
 - `mise/config.default.toml` - デフォルト（macOS/Linux/WSL2）
   - jobs = 8（デスクトップ/ワークステーション向け）
   - 全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
+
+- `mise/config.windows.toml` - Windows
+  - Windows 向けのツールセット（77 tools）
+  - `jobs` は未設定（mise のデフォルトに従う）
+  - Windows セッションで `MISE_CONFIG_FILE` がこのファイルを指す場合に有効
 
 - `mise/config.pi.toml` - Raspberry Pi（ARMサーバー環境）
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
@@ -55,6 +60,7 @@ mise/
 ├── README.md              # mise 運用の概要
 ├── config.toml            # 共通設定のみ（ツール定義なし、env/設定）
 ├── config.default.toml    # macOS/Linux/WSL2 向けフル構成
+├── config.windows.toml    # Windows 向け構成（jobs 未設定）
 ├── config.pi.toml         # Raspberry Pi 向け最小構成
 ├── config.ci.toml         # CI/CD 向け最小構成
 └── tasks/                 # mise run で使うタスク群
@@ -136,7 +142,11 @@ ci:full
 
 ## Environment Detection
 
-mise automatically selects the appropriate configuration based on the environment:
+mise は `MISE_CONFIG_FILE` が指す environment-specific config を使用する。
+
+### Auto-detection via Home Manager/Nix
+
+Home Manager の Nix module (`nix/env-detect.nix`) が自動判定するのは現状 CI / Raspberry Pi / Default のみ:
 
 - CI/CD: Uses `mise/config.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
 - Default (macOS/Linux/WSL2): Uses `mise/config.default.toml` (includes all tools)
@@ -152,7 +162,28 @@ Environment detection is now managed by Home Manager's Nix module (`nix/env-dete
 
 Priority: CI > Raspberry Pi > Default
 
-The environment variable is automatically loaded via `hm-session-vars.sh` (sourced by shells). No manual configuration required.
+The environment variable is automatically loaded via `hm-session-vars.sh` (sourced by shells) on environments covered by this detection.
+
+### Windows
+
+`mise/config.windows.toml` is available in this repo, but `nix/env-detect.nix` does not currently auto-detect Windows.
+
+- Windows uses `mise/config.windows.toml` only when `MISE_CONFIG_FILE` is explicitly set to that path by the session or shell setup
+- Do not document Windows as part of the current Nix auto-detection flow until `nix/env-detect.nix` gains a Windows branch
+
+#### Related: Chocolatey manifests
+
+`mise/config.windows.toml` covers mise-managed tools. OS-level Windows package bootstrap can be managed separately with a Chocolatey `.config` manifest.
+
+- Prefer `mise` when a tool is already covered by `mise/config.windows.toml`
+- Use Chocolatey for bootstrap packages and GUI apps that are outside the mise-managed toolchain
+
+```powershell
+choco install .\windows\chocolatey\packages.config -y
+choco export .\windows\chocolatey\packages.config
+```
+
+Chocolatey accepts `.config` manifest files for bulk install/export, and the filename does not need to be exactly `packages.config` as long as it ends with `.config`.
 
 Note: hadolint is included in `config.default.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
 
@@ -205,6 +236,7 @@ Note: hadolint is included in `config.default.toml` but may fail to install on A
 | Config              | Toolset           | Use Case                       | Performance     |
 | ------------------- | ----------------- | ------------------------------ | --------------- |
 | config.default.toml | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install  |
+| config.windows.toml | Full (77 tools)   | Development (Windows)          | Uses mise defaults |
 | config.pi.toml      | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install  |
 | config.ci.toml      | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install |
 
@@ -365,7 +397,7 @@ mise doctor               # Check for issues
 
 ## Best Practices
 
-1. Centralized Package Management: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml` or `mise/config.pi.toml`)
+1. Centralized Package Management: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml`, `mise/config.windows.toml`, or `mise/config.pi.toml`)
    - Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
    - Never maintain separate `global-package.json` or `requirements-global.txt`
    - Always use `"npm:<package>"` or `"pipx:<package>"` in environment-specific config files

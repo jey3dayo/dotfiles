@@ -16,6 +16,7 @@ Detailed Reference: [docs/tools/mise.md](../../../docs/tools/mise.md)
 | -------------------------- | ---------------- | --------------------------------------- |
 | `mise/config.toml`         | 共通             | 設定のみ（ツール定義なし）              |
 | `mise/config.default.toml` | macOS/Linux/WSL2 | フル構成（jobs=8）                      |
+| `mise/config.windows.toml` | Windows          | Windows 用ツールセット（77 tools, jobs 未設定） |
 | `mise/config.pi.toml`      | Raspberry Pi     | 最小構成（jobs=2、cargo 除外）          |
 | `mise/config.ci.toml`      | CI/CD            | CI 必須ツールのみ（言語ランタイム除外） |
 
@@ -34,8 +35,9 @@ npm.package_manager = "pnpm"
 
 - CI/CD: `CI=true` または `GITHUB_ACTIONS=true` → `config.ci.toml`
 - Raspberry Pi: ARM + `/sys/firmware/devicetree/base/model` に "Raspberry Pi" → `config.pi.toml`
-- その他: `config.default.toml`
-- 環境変数 `MISE_CONFIG_FILE` は Home Manager の `nix/env-detect.nix` が自動設定
+- Default: macOS/Linux/WSL2 など → `config.default.toml`
+- Windows: `config.windows.toml` は存在するが、現状 `nix/env-detect.nix` の自動判定対象ではない
+- `MISE_CONFIG_FILE` の Home Manager 自動設定は現状 CI / Pi / Default に限定される
 
 ## 主要コマンド
 
