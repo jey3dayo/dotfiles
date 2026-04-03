@@ -5,7 +5,7 @@ paths: .claude/**/*, CLAUDE.md, codex/**/*, cursor/**/*
 # Claude Code Usage
 
 Purpose: guide Claude Code usage, command system, and context sources. Scope: steering docs, project quick links, and CI commands available through Claude.
-Sources: CLAUDE.md, .claude/README.md.
+Sources: AGENTS.md, CLAUDE.md, .claude/README.md.
 
 ## Context hierarchy
 
@@ -29,3 +29,4 @@ Sources: CLAUDE.md, .claude/README.md.
 - Prefer concise answers in Japanese with clear pointers to SST docs instead of repeating full guides.
 - Preserve DRY: link to `docs/performance.md` for metrics, `docs/tools/workflows.md` for schedules, and `docs/documentation.md` for governance.
 - Keep changes consistent with `.claude/review-criteria.md` when performing reviews.
+- When asking for a numeric choice such as `1/2/3`, restate each numbered option in the same message before asking for the number-only reply.
