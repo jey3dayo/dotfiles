@@ -106,4 +106,4 @@ python3 ~/.claude/skills/gh-address-comments/scripts/fetch_comments.py
 python3 ~/.codex/skills/gh-address-comments/scripts/fetch_comments.py
 ```
 
-@RTK.md
+@rules/tools/rtk.md
