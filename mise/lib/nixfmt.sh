@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
-# mise/tasks/lib/nixfmt.sh
+# mise/lib/nixfmt.sh
 # nixfmt wrapper with fallback to nix shell.
 #
 # Usage (source this file, then call run_nixfmt):
-#   . "./mise/tasks/lib/nixfmt.sh"
+#   . "./mise/lib/nixfmt.sh"
 #   run_nixfmt [flags] [files...]
 
 run_nixfmt() {

@@ -58,12 +58,19 @@ directory-local → environment-specific (via MISE_CONFIG_FILE) → user config 
 ```
 mise/
 ├── README.md              # mise 運用の概要
+├── lib/                   # helper scripts (公開タスクにしない共通処理)
+│   ├── ensure-busted.sh   # busted の存在確認と自動インストール
+│   ├── home-manager.sh    # nix / home-manager 実行ヘルパー
+│   ├── nixfmt.sh          # nixfmt 実行ヘルパー
+│   ├── run-restic.sh      # restic backup wrapper
+│   ├── run-ts-tests.sh    # TypeScript テスト起動
+│   └── shell-format.sh    # shell / zsh formatter wrapper
 ├── config.toml            # 共通設定のみ（ツール定義なし、env/設定）
 ├── config.default.toml    # macOS/Linux/WSL2 向けフル構成
 ├── config.windows.toml    # Windows 向け構成（jobs 未設定）
 ├── config.pi.toml         # Raspberry Pi 向け最小構成
 ├── config.ci.toml         # CI/CD 向け最小構成
-└── tasks/                 # mise run で使うタスク群
+└── tasks/                 # mise run で使う公開タスク定義
     ├── ci.toml            # CI/CD チェック・Nix 検証
     ├── format.toml        # フォーマット（書き込みあり/チェック）
     ├── lint.toml          # 静的解析・構文チェック
@@ -78,6 +85,7 @@ mise/
 ```
 
 `.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/tasks/*.toml` を読み込む。
+helper shell は `mise/tasks/` 配下に置かず `mise/lib/` に集約し、`mise tasks` に内部実装が露出しないようにする。
 
 ## Task Design
 
@@ -120,7 +128,7 @@ ci:full
     ├── check
     ├── test
     ├── skills:validate
-    └── skills:validate:distribution
+    └── skills:validate:internal
 ```
 
 ## Task Catalog

@@ -1,15 +1,15 @@
 #!/usr/bin/env sh
 # shellcheck disable=SC2086  # Intentional word splitting: space-separated arg lists (SH_FILES, TASK_EXCLUDES, etc.)
-# mise/tasks/lib/shell-format.sh
+# mise/lib/shell-format.sh
 # Shell formatter/checker for .sh and .zsh files.
 #
 # Usage:
-#   CHECK=0 sh ./mise/tasks/lib/shell-format.sh   # write mode (format:shell)
-#   CHECK=1 sh ./mise/tasks/lib/shell-format.sh   # check mode (format:shell:check)
+#   CHECK=0 sh ./mise/lib/shell-format.sh   # write mode (format:shell)
+#   CHECK=1 sh ./mise/lib/shell-format.sh   # check mode (format:shell:check)
 #
 # Environment:
-#   CHECK        - 0: write, 1: check (default: 0)
-#   SH_FILES     - space-separated list of files to process (optional)
+#   CHECK         - 0: write, 1: check (default: 0)
+#   SH_FILES      - space-separated list of files to process (optional)
 #   TASK_EXCLUDES - fd exclude flags (set by mise env)
 
 CHECK="${CHECK:-0}"

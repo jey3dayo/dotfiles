@@ -5,35 +5,35 @@
 ["hm:switch"]
 description = "Home Manager を適用（dotfiles配布）"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 run_hm switch --flake . --impure
 """
 
 ["hm:check"]
 description = "Home Manager 設定の検証（ビルドのみ、適用なし）"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 run_hm build --flake . --impure
 """
 
 ["hm:generations"]
 description = "Home Manager の世代一覧を表示"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 run_hm generations
 """
 
 ["hm:news"]
 description = "Home Manager の news を表示（flake用）"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 run_hm news --flake . --impure
 """
 
 ["hm:rollback"]
 description = "Home Manager を前の世代にロールバック"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 
 generations_output="$(run_hm generations)"
 status="$?"
@@ -54,13 +54,13 @@ run_hm switch --flake . --impure --switch-generation "$prev_gen"
 ["hm:clean"]
 description = "古い Home Manager 世代を削除（30日以上前）"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 run_hm expire-generations '-30 days'
 """
 
 ["hm:deploy"]
 description = "Home Manager を適用（CI/自動化用、バックアップ付き）"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 run_hm switch --flake . --impure -b backup
 """
