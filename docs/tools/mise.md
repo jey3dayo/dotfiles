@@ -27,7 +27,8 @@ mise設定は環境別ファイルで管理されています:
   - 全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
 
 - `mise/config.windows.toml` - Windows
-  - Windows 向けのツールセット（77 tools）
+  - Windows 向けのツールセット（76 tools）
+  - `aws-cli` は現行の `mise` backend で Windows 非対応のため除外
   - `jobs` は未設定（mise のデフォルトに従う）
   - Windows セッションで `MISE_CONFIG_FILE` がこのファイルを指す場合に有効
 
@@ -244,7 +245,7 @@ Note: hadolint is included in `config.default.toml` but may fail to install on A
 | Config              | Toolset           | Use Case                       | Performance        |
 | ------------------- | ----------------- | ------------------------------ | ------------------ |
 | config.default.toml | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
-| config.windows.toml | Full (77 tools)   | Development (Windows)          | Uses mise defaults |
+| config.windows.toml | Full (76 tools)   | Development (Windows)          | Uses mise defaults |
 | config.pi.toml      | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
 | config.ci.toml      | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
 
