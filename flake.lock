@@ -32,6 +32,22 @@
         "type": "github"
       }
     },
+    "epicenterhq-epicenter": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775330317,
+        "narHash": "sha256-X3dSvGdVpZChiZryqi/3qtdHzKGr2FldV32LmGvnNjU=",
+        "owner": "EpicenterHQ",
+        "repo": "epicenter",
+        "rev": "6f40161a5bd897bc7531b3d2bf5b726868e81a84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "EpicenterHQ",
+        "repo": "epicenter",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -222,6 +238,7 @@
       "inputs": {
         "anthropics-claude-code": "anthropics-claude-code",
         "benjitaylor-agentation": "benjitaylor-agentation",
+        "epicenterhq-epicenter": "epicenterhq-epicenter",
         "flake-utils": "flake-utils",
         "gitignore": "gitignore",
         "heyvhuang-ship-faster": "heyvhuang-ship-faster",
