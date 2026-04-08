@@ -15,7 +15,7 @@
 - 人間の手動利用: 1Password desktop app integration を使う
 - 自動化利用: `OP_SERVICE_ACCOUNT_TOKEN` を使う
 - 自動化用 vault: `Dotfiles Automation`
-- `.env.keys` document: `.env.keys [dotfiles]`
+- `.env.keys` document: `.env.keys | dotfiles`
 - service account では built-in の `Private` / `Personal` / `Employee` は読めない
 
 ## 関連ファイル
@@ -31,7 +31,7 @@
 
 - vault: `Dotfiles Automation`
 - item id: `mzy4lhfwqbtbtr3rm466qhrouq`
-- item title: `.env.keys [dotfiles]`
+- item title: `.env.keys | dotfiles`
 
 ## Token の更新
 
@@ -69,7 +69,7 @@ op document get "mzy4lhfwqbtbtr3rm466qhrouq" --vault "Dotfiles Automation"
 期待結果:
 
 - `Dotfiles Automation` だけが見える
-- `.env.keys [dotfiles]` が取得できる
+- `.env.keys | dotfiles` が取得できる
 - Windows Hello を使わずに `op` が通る
 
 ## 注意点

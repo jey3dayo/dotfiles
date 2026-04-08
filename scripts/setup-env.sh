@@ -21,7 +21,7 @@ if [ ! -f "$ENV_KEYS" ]; then
   echo "❌ CRITICAL: $ENV_KEYS not found" >&2
   echo "" >&2
   echo "Restore from 1Password:" >&2
-  echo "  op document get \".env.keys [dotfiles]\" --vault \"$OP_DOTENV_KEYS_VAULT\" --output \"$ENV_KEYS\"" >&2
+  echo "  op document get \".env.keys | dotfiles\" --vault \"$OP_DOTENV_KEYS_VAULT\" --output \"$ENV_KEYS\"" >&2
   echo "  chmod 600 \"$ENV_KEYS\"" >&2
   echo "" >&2
   exit 1

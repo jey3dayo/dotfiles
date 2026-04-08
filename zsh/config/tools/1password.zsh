@@ -112,7 +112,7 @@ update-env-keys() {
 
   echo "Updating .env.keys in 1Password..."
   if "$OP_CLI_PATH" document edit "$item_id" "$source_path" "${account_args[@]}" --vault="$OP_DOTENV_KEYS_VAULT"; then
-    echo "✓ Updated dotfiles-env-keys in 1Password"
+    echo "✓ Updated .env.keys | dotfiles in 1Password"
   else
     echo "Error: Failed to update .env.keys in 1Password" >&2
     return 1

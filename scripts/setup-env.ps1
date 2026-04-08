@@ -26,7 +26,7 @@ if (-not (Test-Path -LiteralPath $envFile)) {
 if (-not (Test-Path -LiteralPath $envKeys)) {
   Write-Critical "$envKeys not found"
   [Console]::Error.WriteLine("Restore from 1Password:")
-  [Console]::Error.WriteLine("  op document get "".env.keys [dotfiles]"" --vault ""$opDotenvKeysVault"" --output ""$envKeys""")
+  [Console]::Error.WriteLine("  op document get "".env.keys | dotfiles"" --vault ""$opDotenvKeysVault"" --output ""$envKeys""")
   [Console]::Error.WriteLine("")
   exit 1
 }
