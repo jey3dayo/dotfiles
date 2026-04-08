@@ -1,5 +1,5 @@
 ---
-paths: docs/setup.md, flake.nix, home.nix, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json
+paths: docs/setup.md, flake.nix, home.nix, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json, windows/setup.ps1, powershell/profile.ps1
 ---
 
 # Setup and Environment Rules
@@ -17,6 +17,14 @@ Sources: docs/setup.md.
 - Restart shell via `exec zsh`.
 
 Note: Home Manager manages dotfiles deployment. Environment is auto-detected (CI > Raspberry Pi > Default).
+
+## Setup flow (Windows)
+
+- Clone repo to `~/.config` and enter the directory.
+- Run `powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1`.
+- Treat `~/.config/powershell/profile.ps1` as the source of truth for PowerShell.
+- `Documents\PowerShell` and `Documents\WindowsPowerShell` are generated bridge entrypoints that only dot-source the repo profile.
+- When only the bridge files need refresh, run `powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1 -ProfilesOnly`.
 
 ## Verification
 

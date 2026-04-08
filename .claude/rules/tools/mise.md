@@ -38,6 +38,8 @@ npm.package_manager = "pnpm"
 - Default: macOS/Linux/WSL2 など → `config.default.toml`
 - Windows: `config.windows.toml` は存在するが、現状 `nix/env-detect.nix` の自動判定対象ではない
 - `MISE_CONFIG_FILE` の Home Manager 自動設定は現状 CI / Pi / Default に限定される
+- Windows では `~/.config/powershell/profile.ps1` 配下から `MISE_CONFIG_FILE=~/.config/mise/config.windows.toml` を設定する
+- native Windows PowerShell / `pwsh` の profile 本体は `windows/setup.ps1` が `Documents\PowerShell` と `Documents\WindowsPowerShell` に bridge を再生成して接続する
 
 ## 主要コマンド
 
