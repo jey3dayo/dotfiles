@@ -60,6 +60,7 @@ zsh/
 - 優先順位: mise shims → `$HOME/{bin,.local/bin}` → 言語ツール（deno/cargo/go/pnpm 等）→ Android SDK → Homebrew → system。`typeset -U path` で重複を抑止。
 - `path-check` で重複や欠落を検査し（mise shims は除外）、`zsh-quick-check` で PATH/主要ツール/メモリ使用をまとめて確認。
 - 補完キャッシュは `${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump` 配下に生成され、24h/補完更新で再構築。7日以上古い zcompdump は自動削除し、手動では `cleanup_zcompdump` 関数でクリーンアップ。
+- 1Password CLI の service account 運用は [docs/tools/1password.md](1password.md) を参照。`OP_DOTENV_KEYS_VAULT` と `OP_SERVICE_ACCOUNT_TOKEN` の扱い、token ローテーション手順もそこに集約する。
 
 ## プラグイン構成（Sheldon）
 
