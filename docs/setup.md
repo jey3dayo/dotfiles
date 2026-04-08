@@ -1,6 +1,6 @@
 # 🚀 Setup Guide
 
-最終更新: 2026-04-03
+最終更新: 2026-04-09
 対象: 開発者・初心者
 タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/cross-platform`, `audience/beginner`
 
@@ -166,6 +166,7 @@ mise ls                 # List all mise-managed tools
 - Work Environment: Add work-specific config to `~/.gitconfig_local`
 - SSH Keys: Generate with `ssh-keygen -t ed25519 -C "email@example.com"`
 - Terminal: WezTerm auto-loads config, Alacritty requires restart
+- `dotenvx` / `.env.keys` / 1Password service account の運用は [docs/tools/1password.md](tools/1password.md) を参照
 
 ## Maintenance
 

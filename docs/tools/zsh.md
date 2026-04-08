@@ -1,6 +1,6 @@
 # 🐚 Zsh Configuration & Optimization
 
-最終更新: 2025-12-17
+最終更新: 2026-04-09
 対象: 開発者・上級者
 タグ: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 

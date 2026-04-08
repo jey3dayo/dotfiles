@@ -8,7 +8,11 @@
 
 ## 🤖 Claude Rules
 
-このドキュメントの凝縮版ルールは現状未作成。必要なら `.claude/rules/tools/1password.md` を追加する。
+このドキュメントの凝縮版ルールは [`.claude/rules/tools/1password.md`](../../.claude/rules/tools/1password.md) で管理されています。
+
+- 目的: Claude AI が 1Password CLI の認証モードと token 取り扱いを誤らないようにする
+- 適用範囲: `docs/tools/1password.md`, `zsh/config/tools/1password.zsh`, `powershell/profile.d/env.ps1`, `scripts/setup-env.{ps1,sh}`
+- 関係: 本ドキュメントが詳細リファレンス（SST）、Claude ルールが凝縮版
 
 ## 運用方針
 
