@@ -175,8 +175,30 @@ function Get-BundleWindowsPath {
 
   New-Item -ItemType Directory -Path $tempRepoWin -Force | Out-Null
 
-  Get-ChildItem -LiteralPath $RepoRoot -Force | Where-Object { $_.Name -ne ".git" } | ForEach-Object {
-    Copy-Item -LiteralPath $_.FullName -Destination $tempRepoWin -Recurse -Force
+  $repoEntries = @(cmd /c dir /b /a $RepoRoot)
+  foreach ($entryName in $repoEntries) {
+    if ([string]::IsNullOrWhiteSpace($entryName) -or $entryName -eq ".git") {
+      continue
+    }
+
+    $entryPath = Join-Path $RepoRoot $entryName
+    try {
+      Copy-Item -LiteralPath $entryPath -Destination $tempRepoWin -Recurse -Force
+    } catch {
+      $isReparsePoint = $false
+      try {
+        $entryItem = Get-Item -LiteralPath $entryPath -Force -ErrorAction Stop
+        $isReparsePoint = ($entryItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0
+      } catch {
+      }
+
+      if ($isReparsePoint) {
+        Write-Warning "Skipping inaccessible reparse point during bundle staging: $entryPath"
+        continue
+      }
+
+      throw
+    }
   }
 
   $textExtensions = @(
@@ -193,7 +215,11 @@ function Get-BundleWindowsPath {
     )
 
     if ($shouldNormalize) {
-      Normalize-Utf8TextFileLineEndings -Path $_.FullName
+      try {
+        Normalize-Utf8TextFileLineEndings -Path $_.FullName
+      } catch {
+        Write-Warning "Skipping line ending normalization for unreadable text file: $($_.FullName)"
+      }
     }
   }
 
