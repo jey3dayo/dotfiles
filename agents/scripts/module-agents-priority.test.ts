@@ -66,6 +66,31 @@ const evalKeepTargets = () =>
     },
   );
 
+const evalCommandTargets = () =>
+  spawnSync(
+    nixBin,
+    [
+      "eval",
+      "--json",
+      "--impure",
+      "--expr",
+      `let
+         flake = builtins.getFlake "${flakeUrl}";
+         homeConfig = builtins.getAttr "${user}" flake.outputs.homeConfigurations;
+         names = builtins.attrNames homeConfig.config.home.file;
+       in
+         builtins.filter (n: builtins.match ".*(\\\\.claude|\\\\.codex)/commands/.*" n != null) names`,
+    ],
+    {
+      cwd: repoRoot,
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        NIX_CONFIG: "experimental-features = nix-command flakes",
+      },
+    },
+  );
+
 const buildActivationScript = () => {
   const result = spawnSync(
     nixBin,
@@ -121,5 +146,21 @@ describe("agents/nix/module.nix", () => {
     expect(buildResult.activateScript).toContain('$HOME/.claude/skills/.keep');
     expect(buildResult.activateScript).toContain('$HOME/.codex/rules/.keep');
     expect(buildResult.activateScript).toContain("install -m 600 /dev/null");
+  }, 30_000);
+
+  it("does not deploy external commands to the codex target", () => {
+    const commandResult = evalCommandTargets();
+    expect(commandResult.status).toBe(0);
+
+    const commandTargets = JSON.parse(commandResult.stdout) as string[];
+    expect(commandTargets.some((target) => target.startsWith(".claude/commands/"))).toBe(true);
+    expect(commandTargets.some((target) => target.startsWith(".codex/commands/"))).toBe(false);
+
+    const buildResult = buildActivationScript();
+    expect(buildResult.status).toBe(0);
+    expect(buildResult.activateScript).toContain('$HOME/.claude/commands');
+    expect(buildResult.activateScript).not.toContain('mkdir -p "$HOME/.codex/commands"');
+    expect(buildResult.activateScript).toContain('target_dir="$HOME/.codex/commands"');
+    expect(buildResult.activateScript).toContain('keep_file="$target_dir/.keep"');
   }, 30_000);
 });
