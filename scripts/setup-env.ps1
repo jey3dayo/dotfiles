@@ -4,7 +4,7 @@ $configRoot = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { Join-Pat
 $envFile = Join-Path $configRoot ".env"
 $envKeys = Join-Path $configRoot ".env.keys"
 $envLocal = Join-Path $configRoot ".env.local"
-$tempFile = "$envLocal.tmp"
+$tempFile = "$envLocal.tmp.$PID"
 $opDotenvKeysVault = if ($env:OP_DOTENV_KEYS_VAULT) { $env:OP_DOTENV_KEYS_VAULT } else { "Dotfiles Automation" }
 
 function Write-Critical {

@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { describe, expect, it } from "bun:test";
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 const scriptPath = path.join(repoRoot, "scripts", "setup-env.sh");
+const isWindows = process.platform === "win32";
 
 const makeExecutable = (filePath: string, content: string): void => {
   fs.writeFileSync(filePath, content, "utf8");
@@ -36,7 +37,25 @@ const runSetupEnv = ({
     },
   });
 
-describe("scripts/setup-env.sh", () => {
+const spawnSetupEnv = ({
+  xdgConfigHome,
+  pathPrefix,
+  extraEnv = {},
+}: {
+  xdgConfigHome: string;
+  pathPrefix: string[];
+  extraEnv?: Record<string, string>;
+}) =>
+  spawn("sh", [scriptPath], {
+    env: {
+      ...process.env,
+      XDG_CONFIG_HOME: xdgConfigHome,
+      PATH: [...pathPrefix, "/usr/bin", "/bin"].join(":"),
+      ...extraEnv,
+    },
+  });
+
+(isWindows ? describe.skip : describe)("scripts/setup-env.sh", () => {
   it("fails when .env is missing", () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "setup-env-test-"));
     const configHome = path.join(tempRoot, "config");
@@ -184,6 +203,66 @@ printf '%s\\n' "SECRET=new"
       expect(result.stdout).toMatch(/Updating \.env\.local/);
       expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=new\n");
       expect(fs.readFileSync(logFile, "utf8")).toMatch(/decrypt -f/);
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("allows concurrent setup-env runs without false failures", async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "setup-env-test-"));
+    const configHome = path.join(tempRoot, "config");
+    const fakeBin = path.join(tempRoot, "bin");
+    fs.mkdirSync(configHome, { recursive: true });
+    fs.mkdirSync(fakeBin, { recursive: true });
+
+    fs.writeFileSync(path.join(configHome, ".env"), "SECRET=from-env\n", "utf8");
+    fs.writeFileSync(path.join(configHome, ".env.keys"), "private-key\n", "utf8");
+
+    makeExecutable(
+      path.join(fakeBin, "dotenvx"),
+      `#!/usr/bin/env sh
+sleep 0.2
+printf '%s\\n' "SECRET=decrypted"
+`,
+    );
+
+    const collect = (child: ReturnType<typeof spawnSetupEnv>) =>
+      new Promise<{ code: number | null; stdout: string; stderr: string }>((resolve) => {
+        let stdout = "";
+        let stderr = "";
+        child.stdout.on("data", (chunk) => {
+          stdout += chunk.toString();
+        });
+        child.stderr.on("data", (chunk) => {
+          stderr += chunk.toString();
+        });
+        child.on("close", (code) => {
+          resolve({ code, stdout, stderr });
+        });
+      });
+
+    try {
+      const first = spawnSetupEnv({
+        xdgConfigHome: configHome,
+        pathPrefix: [fakeBin],
+      });
+      const second = spawnSetupEnv({
+        xdgConfigHome: configHome,
+        pathPrefix: [fakeBin],
+      });
+
+      const [firstResult, secondResult] = await Promise.all([
+        collect(first),
+        collect(second),
+      ]);
+
+      expect(firstResult.code).toBe(0);
+      expect(firstResult.stderr).toBe("");
+      expect(secondResult.code).toBe(0);
+      expect(secondResult.stderr).toBe("");
+      expect(fs.readFileSync(path.join(configHome, ".env.local"), "utf8")).toBe(
+        "SECRET=decrypted\n",
+      );
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
