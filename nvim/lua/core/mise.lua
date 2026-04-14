@@ -15,6 +15,13 @@ local tool_specs = {
   hadolint = { install_name = "hadolint", binary_relpath = "hadolint" },
 }
 
+local function parse_install_version(version)
+  local normalized = version:gsub("^v", "")
+  local ok, parsed = pcall(vim.version.parse, normalized)
+  if ok then return parsed end
+  return nil
+end
+
 function M.latest_installed_binary(install_name, binary_relpath)
   if not uv or not uv.fs_scandir then return nil end
 
@@ -28,23 +35,23 @@ function M.latest_installed_binary(install_name, binary_relpath)
     if not name then break end
     if kind == "directory" then
       local candidate = root .. "/" .. name .. "/" .. binary_relpath
-      if vim.fn.executable(candidate) == 1 then table.insert(candidates, candidate) end
+      if vim.fn.executable(candidate) == 1 then
+        table.insert(candidates, { path = candidate, version = name })
+      end
     end
   end
 
   if vim.tbl_isempty(candidates) then return nil end
 
   table.sort(candidates, function(a, b)
-    local a_version = vim.fs.basename(vim.fs.dirname(a))
-    local b_version = vim.fs.basename(vim.fs.dirname(b))
-    local a_ok, a_parsed = pcall(vim.version.parse, a_version)
-    local b_ok, b_parsed = pcall(vim.version.parse, b_version)
+    local a_parsed = parse_install_version(a.version)
+    local b_parsed = parse_install_version(b.version)
 
-    if a_ok and b_ok then return vim.version.lt(b_parsed, a_parsed) end
-    return a > b
+    if a_parsed and b_parsed then return vim.version.lt(b_parsed, a_parsed) end
+    return a.version > b.version
   end)
 
-  local binary = candidates[1]
+  local binary = candidates[1].path
   if vim.fn.executable(binary) == 1 then return binary end
   return nil
 end
