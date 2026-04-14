@@ -1,5 +1,6 @@
 -- Conform.nvim configuration for lightweight formatting
 local utils = require "core.utils"
+local mise = require "core.mise"
 local autoformat = require "lsp.autoformat"
 local lsp_config = require "lsp.config"
 local util = require "conform.util"
@@ -28,9 +29,24 @@ local function has_prettier_config(target)
   return has_formatter_config("prettier", target)
 end
 
--- Check if a command is available in PATH
+local mise_tools = {
+  stylua = { install_name = "stylua", binary = "stylua" },
+  prettier = { install_name = "npm-fsouza-prettierd", binary = "bin/prettier" },
+  biome = { install_name = "biome", binary = "biome" },
+  eslint_d = { install_name = "npm-eslint-d", binary = "bin/eslint_d" },
+}
+
+local function resolve_preferred_command(cmd)
+  local spec = mise_tools[cmd]
+  if not spec then return cmd end
+  return mise.resolve_command(cmd, {
+    install_name = spec.install_name,
+    binary_relpath = spec.binary,
+  })
+end
+
 local function command_exists(cmd)
-  return vim.fn.executable(cmd) > 0
+  return vim.fn.executable(resolve_preferred_command(cmd)) > 0
 end
 
 local function format_with_prettier_or_biome(bufnr)
@@ -101,8 +117,11 @@ require("conform").setup {
   formatters = {
     -- ESLint_d formatter with best practices from o3 research
     eslint_d = {
-      -- Use project-local binary if it exists
-      command = util.from_node_modules "eslint_d",
+      -- Use project-local binary if it exists, otherwise prefer mise-managed binary
+      command = util.find_executable(
+        { "node_modules/.bin/eslint_d", resolve_preferred_command "eslint_d" },
+        "eslint_d"
+      ),
       -- Allow exit code 1 (lint errors fixed) so Conform doesn't treat it as failure
       exit_codes = { 0, 1 },
       -- Only use ESLint formatter when a config exists
@@ -118,8 +137,7 @@ require("conform").setup {
 
     -- Prettier formatter with command availability check
     prettier = {
-      -- Use mise shim, fallback handled by PATH
-      command = "prettier",
+      command = resolve_preferred_command "prettier",
       -- Only enable when prettier command is available
       condition = function(_, _)
         return command_exists "prettier"
@@ -128,12 +146,16 @@ require("conform").setup {
 
     -- Biome formatter with command availability check
     biome = {
-      -- Use mise shim, fallback handled by PATH
-      command = "biome",
+      command = resolve_preferred_command "biome",
       -- Only enable when biome command is available
       condition = function(_, _)
         return command_exists "biome"
       end,
+    },
+
+    -- Prefer mise-managed stylua over older cargo-installed binaries.
+    stylua = {
+      command = resolve_preferred_command "stylua",
     },
   },
 

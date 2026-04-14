@@ -1,5 +1,6 @@
 --- Native LSP UI configuration with unified theming
 --- Optimized for dotfiles theme consistency
+local with_handler = require("lsp.handlers").with
 
 -- Enable inlay hints if available
 if vim.lsp.inlay_hint then vim.lsp.inlay_hint.enable(true) end
@@ -19,14 +20,14 @@ local ui_theme = {
 }
 
 -- Hover handler with unified styling
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+vim.lsp.handlers["textDocument/hover"] = with_handler(vim.lsp.handlers.hover, {
   border = ui_theme.border,
   max_width = ui_theme.max_width,
   max_height = ui_theme.max_height,
 })
 
 -- Signature help with consistent styling
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+vim.lsp.handlers["textDocument/signatureHelp"] = with_handler(vim.lsp.handlers.signature_help, {
   border = ui_theme.border,
   max_width = ui_theme.max_width,
 })
