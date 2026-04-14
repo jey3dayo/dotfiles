@@ -1,10 +1,21 @@
 local M = {}
 local loader = require "core.module_loader"
+local utils = require "core.utils"
 
 local ftplugin = loader.safe_require "core.ftplugin"
 local filetype_defs = loader.safe_require "core.filetypes"
 
 local config_map = {}
+local treesitter_indent_exclude = {
+  checkhealth = true,
+  diff = true,
+  git_config = true,
+  gitignore = true,
+  help = true,
+  markdown = true,
+  query = true,
+  regex = true,
+}
 
 local function unique(list)
   local seen, result = {}, {}
@@ -30,6 +41,27 @@ local function register(filetype_list, handler)
   for _, filetype in ipairs(filetype_list) do
     config_map[filetype] = handler
   end
+end
+
+local function enable_treesitter(ctx, opts)
+  local buffer = (ctx and ctx.buf) or 0
+  if utils.is_large_file(buffer, 1024 * 1024 * 2) then return false end
+  if not vim.treesitter or not vim.treesitter.language then return false end
+
+  local filetype = vim.bo[buffer].filetype
+  local lang = opts and opts.lang or vim.treesitter.language.get_lang(filetype)
+  if not lang then return false end
+
+  local ok = vim.treesitter.language.add(lang)
+  if not ok then return false end
+
+  pcall(vim.treesitter.start, buffer, lang)
+
+  if not (opts and opts.skip_indent) and not treesitter_indent_exclude[filetype] then
+    vim.bo[buffer].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  end
+
+  return true
 end
 
 if ftplugin then
@@ -76,7 +108,7 @@ end
 local function configure_markdown(ctx)
   local buffer = (ctx and ctx.buf) or 0
 
-  if vim.treesitter and vim.treesitter.start then pcall(vim.treesitter.start, buffer, "markdown") end
+  enable_treesitter(ctx, { lang = "markdown", skip_indent = true })
 
   vim.opt_local.wrap = true
   vim.opt_local.linebreak = true
@@ -91,15 +123,14 @@ if filetype_defs and type(filetype_defs.markdown) == "table" then markdown_filet
 register(unique(markdown_filetypes), configure_markdown)
 
 function M.setup()
-  if vim.tbl_isempty(config_map) then return end
-
   local augroup = vim.api.nvim_create_augroup("FtpluginLoader", { clear = true })
-  local patterns = vim.tbl_keys(config_map)
 
   vim.api.nvim_create_autocmd("FileType", {
     group = augroup,
-    pattern = patterns,
+    pattern = "*",
     callback = function(args)
+      enable_treesitter(args)
+
       local handler = config_map[args.match]
       if handler then handler(args) end
     end,
