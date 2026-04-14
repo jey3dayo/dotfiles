@@ -1,6 +1,19 @@
 local M = {}
 
 local uv = vim.uv or vim.loop
+local tool_specs = {
+  stylua = { install_name = "stylua", binary_relpath = "stylua" },
+  prettier = { install_name = "npm-fsouza-prettierd", binary_relpath = "bin/prettier" },
+  biome = { install_name = "biome", binary_relpath = "biome" },
+  eslint_d = { install_name = "npm-eslint-d", binary_relpath = "bin/eslint_d" },
+  ["markdownlint-cli2"] = {
+    install_name = "npm-markdownlint-cli2",
+    binary_relpath = "bin/markdownlint-cli2",
+  },
+  yamllint = { install_name = "yamllint", binary_relpath = "bin/yamllint" },
+  shellcheck = { install_name = "shellcheck", binary_relpath = "shellcheck-v0.11.0/shellcheck" },
+  hadolint = { install_name = "hadolint", binary_relpath = "hadolint" },
+}
 
 function M.latest_installed_binary(install_name, binary_relpath)
   if not uv or not uv.fs_scandir then return nil end
@@ -38,6 +51,14 @@ end
 
 function M.resolve_command(cmd, opts)
   opts = opts or {}
+
+  if not opts.install_name and not opts.binary_relpath then
+    local spec = tool_specs[cmd]
+    if spec then
+      opts.install_name = spec.install_name
+      opts.binary_relpath = spec.binary_relpath
+    end
+  end
 
   if opts.install_name and opts.binary_relpath then
     local latest = M.latest_installed_binary(opts.install_name, opts.binary_relpath)

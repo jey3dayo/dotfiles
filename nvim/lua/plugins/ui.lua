@@ -44,7 +44,7 @@ return {
     event = "VeryLazy",
     dependencies = { deps.devicons },
     config = function()
-      require "config/lualine"
+      require "setup.lualine"
     end,
   },
   {
