@@ -77,6 +77,7 @@ let
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
   inherit (files)
+    copiedEntryPointFiles
     entryPointFiles
     bashFiles
     sshFiles
@@ -88,6 +89,20 @@ let
     lib.mapAttrs (_: relativePath: {
       source = "${cleanedRepo}/${relativePath}";
     }) fileset;
+
+  mkCopiedHomeFileCommands =
+    fileset:
+    lib.mapAttrsToList (
+      relativeHomePath: relativeSourcePath:
+      let
+        sourcePath = "${cleanedRepo}/${relativeSourcePath}";
+        destinationPath = "${config.home.homeDirectory}/${relativeHomePath}";
+      in
+      ''
+        rm -f ${lib.escapeShellArg destinationPath}
+        ${pkgs.coreutils}/bin/install -Dm644 ${lib.escapeShellArg sourcePath} ${lib.escapeShellArg destinationPath}
+      ''
+    ) fileset;
 
 in
 {
@@ -189,6 +204,13 @@ in
       # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager.
       # The following activation scripts may still be needed if you have runtime state
       # that needs initialization (e.g., projects-config, mise trusted-configs, tmux plugins).
+
+      # Deploy files that must remain regular files for tool compatibility.
+      activation.dotfiles-copied-entry-points = lib.mkIf cfg.deployEntryPoints (
+        lib.hm.dag.entryAfter [ "linkGeneration" ] (
+          builtins.concatStringsSep "\n" (mkCopiedHomeFileCommands copiedEntryPointFiles)
+        )
+      );
 
       # Git submodule initialization (activation script)
       activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (

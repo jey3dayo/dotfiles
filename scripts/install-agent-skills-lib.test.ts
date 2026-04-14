@@ -15,27 +15,38 @@ const writeUtf8NoBom = (filePath: string, content: string): void => {
   fs.writeFileSync(filePath, content, "utf8");
 };
 
-const resolvePowerShellCommand = (): string => {
+const resolvePowerShellCommand = (): string | null => {
   const candidates =
     process.platform === "win32" ? ["powershell.exe", "pwsh"] : ["pwsh", "powershell.exe", "powershell"];
 
   for (const candidate of candidates) {
-    const probe = spawnSync(candidate, ["-NoProfile", "-Command", "exit 0"], {
-      encoding: "utf8",
-      stdio: "ignore",
-    });
+    let probe: ReturnType<typeof spawnSync>;
+
+    try {
+      probe = spawnSync(candidate, ["-NoProfile", "-Command", "exit 0"], {
+        encoding: "utf8",
+        stdio: "ignore",
+      });
+    } catch {
+      continue;
+    }
 
     if (!probe.error && probe.status === 0) {
       return candidate;
     }
   }
 
-  throw new Error(`No supported PowerShell executable found: ${candidates.join(", ")}`);
+  return null;
 };
 
 const shellCommand = resolvePowerShellCommand();
+const itWithPowerShell = shellCommand == null ? it.skip : it;
 
 const runNormalization = (targetPath: string): ReturnType<typeof spawnSync> => {
+  if (shellCommand == null) {
+    throw new Error("PowerShell is required to run install-agent-skills-lib.ps1 tests");
+  }
+
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "install-agent-skills-lib-run-"));
   const wrapperPath = path.join(tempDir, "run.ps1");
   const escapedHelperPath = helperPath.replace(/'/g, "''");
@@ -64,7 +75,7 @@ describe("scripts/install-agent-skills-lib.ps1", () => {
     }
   });
 
-  it("normalizes line endings without mojibake for UTF-8 markdown", () => {
+  itWithPowerShell("normalizes line endings without mojibake for UTF-8 markdown", () => {
     tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "install-agent-skills-lib-test-"));
     const targetPath = path.join(tempRoot, "SKILL.md");
     const originalContent = [

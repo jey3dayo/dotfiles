@@ -11,6 +11,10 @@
     ".zshrc" = "home/.zshrc";
   };
 
+  copiedEntryPointFiles = {
+    ".aicommits" = ".aicommits";
+  };
+
   bashFiles = {
     ".bashrc" = "bash/.bashrc";
     ".bash_profile" = "bash/.bash_profile";
