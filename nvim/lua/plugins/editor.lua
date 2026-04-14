@@ -380,6 +380,17 @@ return {
         yank = { suffix = "" },
         treesitter = { suffix = "t" },
       }
+
+      -- mini.bracketed always tracks yanks via TextYankPost even when yank
+      -- mappings are disabled. Remove that autocmd to avoid duplicate yank hooks.
+      for _, autocmd in
+        ipairs(vim.api.nvim_get_autocmds {
+          group = "MiniBracketed",
+          event = "TextYankPost",
+        })
+      do
+        vim.api.nvim_del_autocmd(autocmd.id)
+      end
     end,
   },
 
@@ -537,9 +548,7 @@ return {
       vim.api.nvim_create_autocmd("TextYankPost", {
         group = vim.api.nvim_create_augroup("UndoGlowYank", { clear = true }),
         desc = "Highlight yanked text with undo-glow animation",
-        callback = function()
-          undo_glow.yank()
-        end,
+        callback = undo_glow.yank,
       })
 
       -- Flash.nvim integration: highlight cursor after jumping
