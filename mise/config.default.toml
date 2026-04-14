@@ -33,9 +33,10 @@ uvx = true
 # 注: システム依存関係用の Node.js/Python は Homebrew で管理
 deno = "latest"
 go = "1.25.5"
+julia = "latest"
 node = "lts"
 python = "3.14"
-rust = "stable" # rustfmt (nvim conform) and cargo:* tool installs
+rust = "stable"  # rustfmt (nvim conform) and cargo:* tool installs
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"
 # luajit = "latest"
