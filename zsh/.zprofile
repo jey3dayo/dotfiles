@@ -25,6 +25,8 @@ fi
 # macOS /etc/zprofile runs path_helper which reorders PATH
 # This ensures our desired priority: user paths > system > Homebrew
 # Note: mise shims are managed automatically by 'mise activate' above
+path=(${path:#${BUN_INSTALL:-$HOME/.bun}/bin})
+
 path=(
   # User binaries
   $HOME/{bin,sbin}(N-)
@@ -37,7 +39,7 @@ path=(
   $HOME/.cargo/bin(N-)
   /usr/local/opt/openjdk/bin(N-)
   /usr/local/opt/coreutils/libexec/gnubin(N-)
-  $BUN_INSTALL/bin(N-)
+  # Bun is managed by mise; standalone ~/.bun/bin fallback lives in config/tools/bun.zsh
   $HOME/go/bin(N-)
   # pnpm global: mise で管理するため無効化
   # $PNPM_HOME(N-)

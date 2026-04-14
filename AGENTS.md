@@ -1,17 +1,17 @@
 # AI 開発協働ガイド
 
 この `AGENTS.md` は `~/.config` リポジトリ専用のプロジェクトルールです。
-共通の作業原則・DoD・Failure Policy・基本ワークフローは `~/.codex/AGENTS.md` を参照し、このファイルには repo 固有の差分だけを書くこと。
+共通の作業原則・DoD・Failure Policy・基本ワークフローは `agents/src/AGENTS.md` を正本とし、このファイルには repo 固有の差分だけを書くこと。
 この repo で作業するエージェントは、まずこの文書でプロジェクト固有ルールを確認してください。
 
 ## ドキュメントの役割分担
 
 - このファイル: この repo のプロジェクト固有ルールと上書き事項の正本
-- `~/.codex/AGENTS.md`: 共通ルールの正本
+- `agents/src/AGENTS.md`: Nix で配布する共通ガイドの正本
+- `~/.codex/AGENTS.md`: `agents/src/AGENTS.md` から配布されるローカルコピー
 - `docs/`: 詳細な手順・運用・設計の正本
 - `.claude/rules/`: Claude 向けの圧縮ルールと導線
 - `CLAUDE.md`: Claude 向けの薄い入口
-- `agents/src/AGENTS.md`: 配布用の共通ガイドであり、この repo の正本ではない
 
 ## 優先順位
 
@@ -20,12 +20,13 @@
 3. `docs/` の各正本
 4. `.claude/rules/` の圧縮ルール
 5. `CLAUDE.md`
-6. `~/.codex/AGENTS.md`
+6. `agents/src/AGENTS.md`
+7. `~/.codex/AGENTS.md`
 
 ## この Repo の追加ルール
 
 - `docs/` 配下の手順・運用・設計は、この repo では正本として扱う
-- `agents/src/AGENTS.md` は配布用コピーとして扱い、この repo の運用判断には使わない
+- 共通ルールは `agents/src/AGENTS.md` を正本として扱い、`~/.codex/AGENTS.md` はその配布先として扱う
 - 実装ワークフローの `Codex レビュー` は「独立観点でのレビュー」を意味する。Codex 外部から実行する場合は `/codex-code-review` を使い、Codex セッション内では手動差分確認または別プロセスの `codex exec` で代替可
 - 共通ルールをこのファイルへ再掲しない。必要な場合は `~/.codex/AGENTS.md` を参照する
 - 番号だけの回答を求める場合は、同じメッセージ内に `1.` `2.` `3.` の各選択肢本文を必ず再掲する
