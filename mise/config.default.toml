@@ -181,7 +181,10 @@ lazygit = "latest"
 ripgrep = "latest"
 saml2aws = "latest"
 terraform = "latest"
-tree-sitter = "latest"
+# WSL では公式配布バイナリが glibc 不整合で壊れることがあるため,
+# prebuilt backend ではなく cargo backend を使う.
+# default features を切ると qjs/libclang 依存を避けられ, この環境でもビルドできる.
+"cargo:tree-sitter-cli" = { version = "0.26.8", default-features = "false" }
 trivy = "latest"
 usage = "latest"
 yazi = "latest"
