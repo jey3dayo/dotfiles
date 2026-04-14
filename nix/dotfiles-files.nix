@@ -2,7 +2,6 @@
 # Paths on left are destination paths relative to $HOME.
 {
   entryPointFiles = {
-    ".aicommits" = ".aicommits";
     ".gitconfig" = "home/.gitconfig";
     ".npmrc" = "home/.npmrc";
     ".opencommit" = "opencommit/.opencommit";
