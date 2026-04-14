@@ -39,7 +39,6 @@ path=(
   $HOME/.cargo/bin(N-)
   /usr/local/opt/openjdk/bin(N-)
   /usr/local/opt/coreutils/libexec/gnubin(N-)
-  # Bun is managed by mise; standalone ~/.bun/bin fallback lives in config/tools/bun.zsh
   $HOME/go/bin(N-)
   # pnpm global: mise で管理するため無効化
   # $PNPM_HOME(N-)
@@ -60,5 +59,10 @@ path=(
   # System paths (lowest priority, fallback)
   $path
 )
+
+# Keep standalone Bun available for login shells that do not read .zshrc.
+if [[ -f "${ZDOTDIR}/config/tools/bun.zsh" ]]; then
+  source "${ZDOTDIR}/config/tools/bun.zsh"
+fi
 
 # vim: set syntax=zsh:
