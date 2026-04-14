@@ -5,6 +5,7 @@ CONFIG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}"
 ENV_FILE="$CONFIG_ROOT/.env"
 ENV_KEYS="$CONFIG_ROOT/.env.keys"
 ENV_LOCAL="$CONFIG_ROOT/.env.local"
+OP_DOTENV_KEYS_VAULT="${OP_DOTENV_KEYS_VAULT:-Dotfiles Automation}"
 
 # Check if .env exists
 if [ ! -f "$ENV_FILE" ]; then
@@ -20,7 +21,7 @@ if [ ! -f "$ENV_KEYS" ]; then
   echo "❌ CRITICAL: $ENV_KEYS not found" >&2
   echo "" >&2
   echo "Restore from 1Password:" >&2
-  echo "  op document get \"dotfiles-env-keys\" --vault \"Private\" --output \"$ENV_KEYS\"" >&2
+  echo "  op document get \".env.keys | dotfiles\" --vault \"$OP_DOTENV_KEYS_VAULT\" --output \"$ENV_KEYS\"" >&2
   echo "  chmod 600 \"$ENV_KEYS\"" >&2
   echo "" >&2
   exit 1

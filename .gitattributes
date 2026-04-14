@@ -8,6 +8,7 @@ Brewfile.lock.json linguist-generated=true -diff merge=ours
 # Shell scripts (force LF)
 *.sh text eol=lf
 *.nix text eol=lf
+mise/tasks/*.toml text eol=lf
 
 # Windows scripts (force CRLF)
 *.bat text eol=crlf

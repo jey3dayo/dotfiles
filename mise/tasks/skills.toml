@@ -11,7 +11,7 @@ run_windows = "powershell -ExecutionPolicy Bypass -File ./scripts/install-agent-
 ["skills:report"]
 description = "インストール対象スキルのURLレポートを出力"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix before running skills:report" || exit $?
 
 nix run .#report
@@ -24,7 +24,7 @@ depends = ["skills:report"]
 ["skills:list"]
 description = "有効スキル一覧を表示"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix before running skills:list" || exit $?
 
 nix run .#list
@@ -42,14 +42,15 @@ if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
   exit 0
 fi
 
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
 
 # Use temp cache for sandbox/readonly-home environments.
 cache_root="${TMPDIR:-/tmp}/${USER:-user}/dotfiles-mise-cache"
 mkdir -p "$cache_root"
-XDG_CACHE_HOME="$cache_root" nix run .#validate
+XDG_CACHE_HOME="$cache_root" nix run --no-write-lock-file .#validate
 """
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/skills-validate.ps1"
 
 ["skills:validate:internal"]
 description = "agents/src が SSoT ルールに準拠しているか検証"
@@ -58,7 +59,7 @@ run = "bash ./agents/scripts/validate-src.sh"
 ["skills:update"]
 description = "全ソース更新（flake inputs）"
 run = """
-. "./mise/tasks/lib/home-manager.sh"
+. "./mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix before running skills:update" || exit $?
 
 nix flake update --flake .

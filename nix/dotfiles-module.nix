@@ -77,6 +77,7 @@ let
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
   inherit (files)
+    copiedEntryPointFiles
     entryPointFiles
     materializedEntryPointFiles
     bashFiles
@@ -111,7 +112,7 @@ let
 
           run ${pkgs.coreutils}/bin/mkdir -p "$target_dir"
 
-          if [ -L "$target" ] || [ ! -f "$target" ] || ! ${pkgs.coreutils}/bin/cmp -s "$source" "$target"; then
+          if [ -L "$target" ] || [ ! -f "$target" ] || ! ${pkgs.diffutils}/bin/cmp -s "$source" "$target"; then
             verboseEcho "Materializing $target"
             if [ -e "$target" ] || [ -L "$target" ]; then
               run ${pkgs.coreutils}/bin/rm -f "$target"
@@ -122,6 +123,19 @@ let
       ) fileset
     );
 
+  mkCopiedHomeFileCommands =
+    fileset:
+    lib.mapAttrsToList (
+      relativeHomePath: relativeSourcePath:
+      let
+        sourcePath = "${cleanedRepo}/${relativeSourcePath}";
+        destinationPath = "${config.home.homeDirectory}/${relativeHomePath}";
+      in
+      ''
+        rm -f ${lib.escapeShellArg destinationPath}
+        ${pkgs.coreutils}/bin/install -Dm644 ${lib.escapeShellArg sourcePath} ${lib.escapeShellArg destinationPath}
+      ''
+    ) fileset;
 in
 {
   options.programs.dotfiles = {
@@ -222,6 +236,13 @@ in
       # NOTE: ~/.config is managed directly by git checkout, not by Nix/Home Manager.
       # The following activation scripts may still be needed if you have runtime state
       # that needs initialization (e.g., projects-config, mise trusted-configs, tmux plugins).
+
+      # Deploy files that must remain regular files for tool compatibility.
+      activation.dotfiles-copied-entry-points = lib.mkIf cfg.deployEntryPoints (
+        lib.hm.dag.entryAfter [ "linkGeneration" ] (
+          builtins.concatStringsSep "\n" (mkCopiedHomeFileCommands copiedEntryPointFiles)
+        )
+      );
 
       # Git submodule initialization (activation script)
       activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (

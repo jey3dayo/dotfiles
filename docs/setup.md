@@ -1,10 +1,10 @@
 # 🚀 Setup Guide
 
-最終更新: 2026-03-23
+最終更新: 2026-04-09
 対象: 開発者・初心者
-タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/macos`, `audience/beginner`
+タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/cross-platform`, `audience/beginner`
 
-⚡ High-performance macOS development environment setup. 本ドキュメントがセットアップ情報のSSTであり、README はリンクのみを保持します。
+⚡ High-performance development environment setup. 本ドキュメントがセットアップ情報のSSTであり、README はリンクのみを保持します。macOS/Linux/WSL2 は Home Manager 中心、Windows は Chocolatey + mise bootstrap を扱います。
 
 ## Bootstrap (Recommended for Fresh macOS)
 
@@ -53,6 +53,40 @@ nix run home-manager -- switch --flake . --impure
 exec zsh
 ```
 
+## Windows Bootstrap
+
+Windows は `Chocolatey = bootstrap`、`mise = 開発ツール` の分離を前提にセットアップします。
+
+```powershell
+git clone https://github.com/jey3dayo/dotfiles $HOME\.config
+cd $HOME\.config
+powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1
+```
+
+### 実行内容
+
+- Chocolatey 本体を導入（未導入の場合のみ）
+- `windows/chocolatey/packages.config` から bootstrap/GUI パッケージを一括導入
+- `MISE_CONFIG_FILE` を `mise/config.windows.toml` に向けて `mise install` を実行
+- `~/.config/powershell` を正本にし、`Documents/PowerShell` と `Documents/WindowsPowerShell` のエントリポイントを再生成
+
+### Windows bootstrap の対象
+
+- Chocolatey: `git`, `mise`, `wezterm`, `neovim`, `7zip`, `googlechrome`, `vscode`
+- mise: `mise/config.windows.toml` に定義した CLI・runtime・formatter・MCP 関連
+
+PowerShell から現在の Chocolatey パッケージ一覧を manifest 化したい場合は次を使います。
+
+```powershell
+choco export .\windows\chocolatey\packages.config
+```
+
+PowerShell プロファイルの入口だけを作り直したい場合は次を使います。
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1 -ProfilesOnly
+```
+
 ## Prerequisites
 
 ### Automated (Recommended)
@@ -82,6 +116,7 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 
 - mise 優先: 全ての開発ツール・フォーマッター・Linter・Language Server は mise で一元管理
 - Homebrew: システム依存関係と GUI アプリケーションのみ
+- Chocolatey (Windows): bootstrap パッケージと GUI アプリケーションのみ
 - npm/pnpm/bun グローバルは使用しない: mise の `npm:` プレフィックスで管理
 
 ### mise で管理するもの
@@ -98,12 +133,21 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 - システムレベルのライブラリ
 - GUI アプリケーション（cask）
 
+### Chocolatey で管理するもの（Windows bootstrap）
+
+- `mise` 自体の導入
+- Git や WezTerm などのベースアプリ
+- GUI アプリケーション（Chrome, VS Code 等）
+- `neovim` バイナリのようなアプリ本体
+- 理由: 初回マシンセットアップの bootstrap を単純化し、CLI ツール本体は `mise install` に集約するため
+
 ### 重複回避ルール
 
 1. 新しいツールを追加する前: `mise registry` で検索し、mise で管理できるか確認
 2. 定期的な重複チェック:
    - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
    - `brew list --formula` - mise 管理ツールが含まれていないこと
+   - `windows/chocolatey/packages.config` - `mise/config.windows.toml` にある CLI/runtime を重複追加しないこと
 
 詳細は [docs/tools/mise.md](tools/mise.md) と [docs/tools/workflows.md](tools/workflows.md) を参照してください。
 
@@ -122,6 +166,7 @@ mise ls                 # List all mise-managed tools
 - Work Environment: Add work-specific config to `~/.gitconfig_local`
 - SSH Keys: Generate with `ssh-keygen -t ed25519 -C "email@example.com"`
 - Terminal: WezTerm auto-loads config, Alacritty requires restart
+- `dotenvx` / `.env.keys` / 1Password service account の運用は [docs/tools/1password.md](tools/1password.md) を参照
 
 ## Maintenance
 

@@ -110,11 +110,13 @@ fi
 
 ["format:shell"]
 description = "シェルスクリプトをフォーマット（.sh は shfmt、.zsh は beautysh）"
-run = "CHECK=0 sh ./mise/tasks/lib/shell-format.sh"
+env = { CHECK = "0" }
+run = "sh ./mise/lib/shell-format.sh"
 
 ["format:shell:check"]
 description = "シェルスクリプトのフォーマットチェック（.sh は shfmt、.zsh は beautysh）"
-run = "CHECK=1 sh ./mise/tasks/lib/shell-format.sh"
+env = { CHECK = "1" }
+run = "sh ./mise/lib/shell-format.sh"
 
 ["format:toml"]
 description = "TOML ファイルをフォーマット（TOML_FILES で対象を限定可能）"
@@ -159,7 +161,7 @@ fi
 ["format:nix"]
 description = "Nix ファイルをフォーマット（nixfmt、NIX_FILES で対象を限定可能）"
 run = """
-. "./mise/tasks/lib/nixfmt.sh"
+. "./mise/lib/nixfmt.sh"
 
 if [ -n "${NIX_FILES:-}" ]; then
   run_nixfmt ${NIX_FILES}
@@ -174,7 +176,7 @@ fi
 ["format:nix:check"]
 description = "Nix ファイルのフォーマットチェック（書き込みなし、NIX_FILES で対象を限定可能）"
 run = """
-. "./mise/tasks/lib/nixfmt.sh"
+. "./mise/lib/nixfmt.sh"
 
 if [ -n "${NIX_FILES:-}" ]; then
   run_nixfmt --check ${NIX_FILES}

@@ -14,7 +14,7 @@
 env_file = '.env.local'
 experimental = true
 jobs = 4                                                                         # GitHub Actions runners: 2 cores
-vfox = false
+disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 

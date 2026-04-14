@@ -13,7 +13,7 @@ return {
       -- Client tracking is now handled by simplified client_utils.lua
       -- Performance monitoring removed - use :LspInfo and built-in tools
       require "lsp.handlers" -- Setup LSP handlers (including client/registerCapability)
-      require "config/native-lsp-ui" -- Configure UI handlers
+      require "lsp.ui" -- Configure UI handlers
       require "lsp.debug" -- Debug commands
     end,
   },
@@ -25,6 +25,10 @@ return {
     priority = 900,
     dependencies = { "neovim/nvim-lspconfig" },
     opts = require "config/mason",
+    config = function(_, opts)
+      require("mason").setup(opts)
+      require("setup.mason").ensure_tools()
+    end,
   },
 
   -- Modern formatting and linting
@@ -34,7 +38,7 @@ return {
     priority = 800,
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
-      require "config/conform"
+      require "setup.conform"
     end,
   },
 
@@ -44,7 +48,7 @@ return {
     priority = 799,
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
-      require "config/nvim-lint"
+      require "setup.nvim-lint"
     end,
   },
 

@@ -16,6 +16,8 @@
     ".opencommit" = "opencommit/.opencommit";
   };
 
+  copiedEntryPointFiles = { };
+
   bashFiles = {
     ".bashrc" = "bash/.bashrc";
     ".bash_profile" = "bash/.bash_profile";

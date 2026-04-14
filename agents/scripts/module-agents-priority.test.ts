@@ -17,19 +17,41 @@ const bundledCodeReviewer = fs.readFileSync(
   "utf8",
 );
 
-const evalHomeFileSource = (targetPath: string) =>
+const evalMergedAgent = (externalAgentsPath: string) =>
   spawnSync(
     nixBin,
     [
       "eval",
-      "--raw",
       "--impure",
+      "--json",
       "--expr",
       `let
-         flake = builtins.getFlake "${flakeUrl}";
-         homeConfig = builtins.getAttr "${user}" flake.outputs.homeConfigurations;
+         pkgs = import <nixpkgs> {};
+         agentLib = import ${JSON.stringify(path.join(repoRoot, "agents", "nix", "lib.nix"))} {
+           inherit pkgs;
+           nixlib = pkgs.lib;
+         };
+         distributionResult = agentLib.scanDistribution ${JSON.stringify(path.join(repoRoot, "agents", "src"))};
+         sources = {
+           ext = {
+             path = ${JSON.stringify(path.join(repoRoot, "agents", "src", "skills"))};
+             agentsPath = builtins.path {
+               path = ${JSON.stringify(externalAgentsPath)};
+               name = "external-agents";
+             };
+           };
+         };
+         externalAgents = agentLib.discoverExternalAssets {
+           inherit sources;
+           assetType = "agents";
+           enabledSources = ["ext"];
+         };
+         mergedAgents = externalAgents // distributionResult.agents;
        in
-         homeConfig.config.home.file.${JSON.stringify(targetPath)}.source`,
+         {
+           path = mergedAgents."code-reviewer".path;
+           source = mergedAgents."code-reviewer".source;
+         }`,
     ],
     {
       cwd: repoRoot,
@@ -124,14 +146,24 @@ const buildActivationScript = () => {
 
 describe("agents/nix/module.nix", () => {
   it("preserves bundled code-reviewer agent when an external source ships the same ID", () => {
-    for (const targetPath of [
-      ".claude/agents/code-reviewer.md",
-      ".codex/agents/code-reviewer.md",
-    ]) {
-      const result = evalHomeFileSource(targetPath);
+    const tempRoot = fs.mkdtempSync(path.join(fs.realpathSync.native(process.env.TMPDIR ?? "/tmp"), "ext-agents-"));
+
+    try {
+      const externalAgentsPath = path.join(tempRoot, "agents");
+      fs.mkdirSync(externalAgentsPath, { recursive: true });
+      fs.writeFileSync(path.join(externalAgentsPath, "code-reviewer.md"), "external override\n", "utf8");
+
+      const result = evalMergedAgent(externalAgentsPath);
 
       expect(result.status).toBe(0);
-      expect(fs.readFileSync(result.stdout.trim(), "utf8")).toBe(bundledCodeReviewer);
+      expect(result.stderr).toBe("");
+
+      const evaluated = JSON.parse(result.stdout) as { path: string; source: string };
+
+      expect(evaluated.source).toBe("distribution");
+      expect(fs.readFileSync(evaluated.path, "utf8")).toBe(bundledCodeReviewer);
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   }, 15_000);
 

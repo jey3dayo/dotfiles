@@ -29,5 +29,5 @@ MARKDOWN_LINK_CONFIG = ".markdown-link-check.json"
 
 [hooks]
 # Decrypt .env to .env.local on directory enter.
-# setup-env is silent when up-to-date and uses a Windows-specific runner when needed.
-enter = "mise run setup-env"
+# Keep the hook quiet unless setup-env.sh itself has something meaningful to report.
+enter = "mise run --quiet setup-env"

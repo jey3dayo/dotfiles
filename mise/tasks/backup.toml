@@ -1,35 +1,35 @@
 [backup]
 description = "Run restic backup to S3"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" backup'
+run = "./mise/lib/run-restic.sh backup"
 
 ["backup:init"]
 description = "Initialize restic repository on S3"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" init'
+run = "./mise/lib/run-restic.sh init"
 
 ["backup:snapshots"]
 description = "List backup snapshots"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" snapshots'
+run = "./mise/lib/run-restic.sh snapshots"
 
 ["backup:stats"]
 description = "Show restic repository stats"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" stats'
+run = "./mise/lib/run-restic.sh stats"
 
 ["backup:restore"]
 description = "Restore latest snapshot to ./restore"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" restore ./restore'
+run = "./mise/lib/run-restic.sh restore ./restore"
 
 ["backup:prune"]
 description = "Prune unreferenced data from restic repository"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" prune'
+run = "./mise/lib/run-restic.sh prune"
 
 ["backup:check"]
 description = "Check restic repository integrity (10% data subset)"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" check'
+run = "./mise/lib/run-restic.sh check"
 
 ["backup:restore-inplace"]
 description = "Restore latest snapshot to original paths (in-place)"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" restore-inplace'
+run = "./mise/lib/run-restic.sh restore-inplace"
 
 ["backup:cleanup"]
 description = "Remove all snapshots except the latest one, then prune"
-run = 'dotenvx run -f "${XDG_CONFIG_HOME:-$HOME/.config}/.env" -- "${XDG_CONFIG_HOME:-$HOME/.config}/restic/backup.sh" cleanup'
+run = "./mise/lib/run-restic.sh cleanup"

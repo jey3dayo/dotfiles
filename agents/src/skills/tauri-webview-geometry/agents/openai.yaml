@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tauri Webview Geometry"
+  short_description: "Debug child webview bounds and overlay geometry in Tauri apps."
+  default_prompt: "Use this skill to reason about Tauri child webview bounds, client-area geometry, logical vs physical pixels, and overlay/native alignment issues."

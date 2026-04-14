@@ -61,7 +61,7 @@ Save output to `/tmp/react-doctor-report.txt` for analysis.
 similarity-ts --threshold 0.9 . > /tmp/similarity-report.md
 
 # Check for duplicate type definitions (optional)
-similarity-ts --experimental-types --threshold 0.95 src/types/ >> /tmp/similarity-report.md
+similarity-ts --types --threshold 0.95 src/types/ >> /tmp/similarity-report.md
 ```
 
 For detailed usage, refer to `../similarity/skills/SKILL.md`.

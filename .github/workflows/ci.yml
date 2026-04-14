@@ -75,7 +75,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Prepare mise task include path
         run: |
@@ -94,12 +94,12 @@ jobs:
           gpg --keyserver keyserver.ubuntu.com --recv-keys 86C8D74642E67846F8E120284DAA80D1E737BC9F
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v5
         with:
           version: 10
 
       - name: Set up mise
-        uses: jdx/mise-action@v3
+        uses: jdx/mise-action@v4
         with:
           version: "2025.12.13"
           cache: true
@@ -111,7 +111,7 @@ jobs:
         uses: leafo/gh-actions-luarocks@v6
 
       - name: Cache LuaRocks packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.luarocks
           key: luarocks-${{ runner.os }}-${{ hashFiles('**/.mise.toml', '**/mise.toml') }}

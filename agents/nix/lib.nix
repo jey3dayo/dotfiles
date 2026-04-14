@@ -349,7 +349,17 @@ rec {
       }) skills;
       copyCommands = concatStringsSep "\n" (
         map (s: ''
-          ${pkgs.rsync}/bin/rsync -aL "${s.path}/" "$out/${s.id}/"
+          mkdir -p "$out/${s.id}"
+          broken_links_file="$(mktemp)"
+
+          # Some upstream skill repos ship broken symlinks; skip only those entries
+          # so null-selection bundles stay buildable while preserving valid links.
+          while IFS= read -r broken_link; do
+            printf '%s\n' "''${broken_link#"${s.path}/"}" >> "$broken_links_file"
+          done < <(${pkgs.findutils}/bin/find -L "${s.path}" -type l)
+
+          ${pkgs.rsync}/bin/rsync -aL --exclude-from="$broken_links_file" "${s.path}/" "$out/${s.id}/"
+          rm -f "$broken_links_file"
         '') skillList
       );
       bundleInfo = toJSON {

@@ -1,1 +1,1 @@
-/Users/t00114/.claude/CLAUDE.md
+../agents/src/AGENTS.md
