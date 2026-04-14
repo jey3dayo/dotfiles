@@ -7,7 +7,7 @@
 env_file = '.env.local'
 experimental = true
 jobs = 2                                    # Raspberry Pi メモリ制約対応: 並列数削減でスワップ回避
-vfox = false
+disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/src/github.com"]
 

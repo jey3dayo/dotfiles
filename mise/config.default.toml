@@ -14,7 +14,7 @@
 env_file = '.env.local'
 experimental = true
 jobs = 8                                                                         # デフォルトの並列実行数
-vfox = false
+disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 

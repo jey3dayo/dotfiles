@@ -6,7 +6,7 @@
 [settings]
 env_file = ".env.local"
 experimental = true
-vfox = false
+disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 
