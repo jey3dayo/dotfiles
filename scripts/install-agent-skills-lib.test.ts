@@ -41,9 +41,11 @@ const resolvePowerShellCommand = (): string | null => {
 
 const shellCommand = resolvePowerShellCommand();
 const itWithPowerShell = shellCommand == null ? it.skip : it;
+const usesWindowsPathSemantics =
+  process.platform !== "win32" && shellCommand != null && shellCommand.toLowerCase().endsWith(".exe");
 
 const toPowerShellPath = (filePath: string): string => {
-  if (process.platform === "win32") {
+  if (process.platform === "win32" || !usesWindowsPathSemantics) {
     return filePath;
   }
 
