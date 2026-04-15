@@ -1,0 +1,4 @@
+interface:
+  display_name: "Design MD Review"
+  short_description: "Review and tune existing DESIGN.md files for Stitch readiness."
+  default_prompt: "Use $design-md-review to review an existing DESIGN.md for Stitch compatibility and concrete adjustment points."
