@@ -35,9 +35,7 @@ function M.latest_installed_binary(install_name, binary_relpath)
     if not name then break end
     if kind == "directory" then
       local candidate = root .. "/" .. name .. "/" .. binary_relpath
-      if vim.fn.executable(candidate) == 1 then
-        table.insert(candidates, { path = candidate, version = name })
-      end
+      if vim.fn.executable(candidate) == 1 then table.insert(candidates, { path = candidate, version = name }) end
     end
   end
 
