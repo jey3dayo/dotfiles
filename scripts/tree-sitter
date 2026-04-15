@@ -1,0 +1,64 @@
+#!/bin/sh
+set -eu
+
+# Keep a stable `tree-sitter` entrypoint in PATH.
+# Normal path: use mise-managed tree-sitter-cli.
+# Fallback path: use nixpkgs when the installed mise binary is present but not runnable.
+
+# Prefer the existing mise-managed binary when it is healthy.
+resolve_mise_tree_sitter() {
+  if ! command -v mise >/dev/null 2>&1; then
+    return 1
+  fi
+
+  MISE_TREE_SITTER=$(mise which tree-sitter 2>/dev/null || true)
+  if [ -z "$MISE_TREE_SITTER" ] || [ ! -x "$MISE_TREE_SITTER" ]; then
+    return 1
+  fi
+
+  if "$MISE_TREE_SITTER" --version >/dev/null 2>&1; then
+    printf '%s\n' "$MISE_TREE_SITTER"
+    return 0
+  fi
+
+  return 1
+}
+
+# WSL/Linux previously hit glibc mismatches with the upstream prebuilt binary.
+# Keep the nix fallback so editor startup and parser installation still work if that regresses.
+resolve_nix_tree_sitter() {
+  if ! command -v nix >/dev/null 2>&1; then
+    return 1
+  fi
+
+  CACHE_ROOT=${XDG_CACHE_HOME:-$HOME/.cache}
+  CACHE_FILE="$CACHE_ROOT/tree-sitter-nix-path"
+
+  if [ -f "$CACHE_FILE" ]; then
+    NIX_TREE_SITTER=$(sed -n '1p' "$CACHE_FILE")
+    if [ -n "$NIX_TREE_SITTER" ] && [ -x "$NIX_TREE_SITTER/bin/tree-sitter" ]; then
+      printf '%s\n' "$NIX_TREE_SITTER/bin/tree-sitter"
+      return 0
+    fi
+  fi
+
+  NIX_TREE_SITTER=$(nix build --no-link --print-out-paths nixpkgs#tree-sitter 2>/dev/null | sed -n '1p')
+  if [ -z "$NIX_TREE_SITTER" ] || [ ! -x "$NIX_TREE_SITTER/bin/tree-sitter" ]; then
+    return 1
+  fi
+
+  mkdir -p "$CACHE_ROOT"
+  printf '%s\n' "$NIX_TREE_SITTER" >"$CACHE_FILE"
+  printf '%s\n' "$NIX_TREE_SITTER/bin/tree-sitter"
+}
+
+if TREE_SITTER_BIN=$(resolve_mise_tree_sitter); then
+  exec "$TREE_SITTER_BIN" "$@"
+fi
+
+if TREE_SITTER_BIN=$(resolve_nix_tree_sitter); then
+  exec "$TREE_SITTER_BIN" "$@"
+fi
+
+printf '%s\n' "tree-sitter shim: no working tree-sitter binary found" >&2
+exit 1

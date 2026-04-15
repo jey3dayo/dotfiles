@@ -29,6 +29,15 @@ if [ -z "${DOTFILES_HM_SESSION_VARS_LOADED:-}" ]; then
   fi
 fi
 
+# Home Manager can leave a verification-time MISE_CONFIG_FILE behind.
+# Fall back to the real repo config so mise shims do not hang in WSL shells.
+if [ -n "${MISE_CONFIG_FILE:-}" ] && { [ ! -f "$MISE_CONFIG_FILE" ] || [[ "$MISE_CONFIG_FILE" == /tmp/hm-verify/* ]]; }; then
+  unset MISE_CONFIG_FILE
+fi
+if [ -z "${MISE_CONFIG_FILE:-}" ]; then
+  export MISE_CONFIG_FILE="$XDG_CONFIG_HOME/mise/config.default.toml"
+fi
+
 # Basic env vars used across tools
 export GHQ_ROOT=~/src
 export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/.ripgreprc"

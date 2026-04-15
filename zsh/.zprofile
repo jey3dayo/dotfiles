@@ -25,6 +25,8 @@ fi
 # macOS /etc/zprofile runs path_helper which reorders PATH
 # This ensures our desired priority: user paths > system > Homebrew
 # Note: mise shims are managed automatically by 'mise activate' above
+path=(${path:#${BUN_INSTALL:-$HOME/.bun}/bin})
+
 path=(
   # User binaries
   $HOME/{bin,sbin}(N-)
@@ -37,7 +39,6 @@ path=(
   $HOME/.cargo/bin(N-)
   /usr/local/opt/openjdk/bin(N-)
   /usr/local/opt/coreutils/libexec/gnubin(N-)
-  $BUN_INSTALL/bin(N-)
   $HOME/go/bin(N-)
   # pnpm global: mise で管理するため無効化
   # $PNPM_HOME(N-)
@@ -58,5 +59,10 @@ path=(
   # System paths (lowest priority, fallback)
   $path
 )
+
+# Keep standalone Bun available for login shells that do not read .zshrc.
+if [[ -f "${ZDOTDIR}/config/tools/bun.zsh" ]]; then
+  source "${ZDOTDIR}/config/tools/bun.zsh"
+fi
 
 # vim: set syntax=zsh:

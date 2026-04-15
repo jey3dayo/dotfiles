@@ -1,6 +1,7 @@
 -- Editing stack built around mini.nvim plus a few focused helpers
 -- Based on https://zenn.dev/kawarimidoll/books/6064bf6f193b51
 local deps = require "core.dependencies"
+local is_wsl = require("core.utils").get_os() == "wsl"
 
 return {
   -- Extra utilities
@@ -590,7 +591,9 @@ return {
         cancel_event = "update",
       },
       picker = { select = { action = nil } },
-      system_clipboard = { sync_with_ring = true },
+      -- Yanky reads the system clipboard on focus changes. That triggers noisy
+      -- WSL clipboard bridge errors during startup, so keep sync disabled there.
+      system_clipboard = { sync_with_ring = not is_wsl },
       highlight = {
         on_put = true,
         on_yank = false, -- undo-glow が TextYankPost で担当

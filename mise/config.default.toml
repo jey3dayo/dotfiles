@@ -149,7 +149,7 @@ yamllint = "latest"
 # ========================================
 # 注: typos-lsp は Homebrew で管理
 # バージョン固定: DNS解決の一時的な障害回避のため (2026-02-17)
-rtk = "latest"
+"aqua:rtk-ai/rtk" = "latest"
 "cargo:bandwhich" = "latest"
 "cargo:needle-cli" = "0.14.1"
 "cargo:similarity-css" = "0.4.1"
@@ -171,7 +171,7 @@ gitleaks = "latest"
 "go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
 "go:github.com/google/wire/cmd/wire" = "latest"
 "go:github.com/k1LoW/git-wt" = "latest"
-"go:golang.org/x/tools/cmd/goimports" = "latest"
+"go:golang.org/x/tools/cmd/goimports" = "0.41.0"
 "github:cli/cli" = "latest"
 glab = "latest"
 hexyl = "latest"
@@ -181,7 +181,10 @@ lazygit = "latest"
 ripgrep = "latest"
 saml2aws = "latest"
 terraform = "latest"
-tree-sitter = "latest"
+# WSL では公式配布バイナリが glibc 不整合で壊れることがあるため,
+# prebuilt backend ではなく cargo backend を使う.
+# default features を切ると qjs/libclang 依存を避けられ, この環境でもビルドできる.
+"cargo:tree-sitter-cli" = { version = "0.26.8", default-features = "false" }
 trivy = "latest"
 usage = "latest"
 yazi = "latest"

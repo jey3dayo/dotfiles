@@ -60,13 +60,16 @@ let
     enabledSources = selectedSkillSources;
   };
 
-  # Helper: generate mkdir commands for asset subdirectories (rules/agents)
+  targetAllowsAssetType =
+    target: assetType: if assetType == "commands" then target.deployCommands else true;
+
+  # Helper: generate mkdir commands for asset subdirectories.
   mkAssetDirCommands =
     assetType: assets: targets:
     lib.concatStringsSep "\n" (
       lib.mapAttrsToList (
         _name: target:
-        if target.enable && (lib.attrNames assets) != [ ] then
+        if target.enable && targetAllowsAssetType target assetType && (lib.attrNames assets) != [ ] then
           let
             baseDir = lib.removeSuffix "/skills" target.dest;
             parentDirs = lib.unique (
@@ -92,12 +95,12 @@ let
       ) targets
     );
 
-  # Helper: generate home.file links for asset files (rules/agents)
+  # Helper: generate home.file links for asset files.
   mkAssetFileLinks =
     assetType: assets: targets:
     lib.mapAttrsToList (
       _name: target:
-      if target.enable && (lib.attrNames assets) != [ ] then
+      if target.enable && targetAllowsAssetType target assetType && (lib.attrNames assets) != [ ] then
         let
           baseDir = lib.removeSuffix "/skills" target.dest;
           assetFiles = lib.mapAttrs' (
@@ -112,6 +115,80 @@ let
       else
         { }
     ) targets;
+
+  materializedKeepDirs =
+    let
+      linkTargets = lib.filterAttrs (_: t: t.enable && t.structure == "link") cfg.targets;
+      skillDirs = lib.mapAttrsToList (_: target: target.dest) linkTargets;
+      assetRootDirs =
+        assetType: assets:
+        lib.mapAttrsToList (
+          _name: target:
+          if
+            target.enable
+            && target.structure == "link"
+            && targetAllowsAssetType target assetType
+            && (lib.attrNames assets) != [ ]
+          then
+            "${lib.removeSuffix "/skills" target.dest}/${assetType}"
+          else
+            null
+        ) cfg.targets;
+    in
+    lib.unique (
+      lib.filter (dir: dir != null) (
+        skillDirs
+        ++ assetRootDirs "rules" distributionResult.rules
+        ++ assetRootDirs "agents" mergedAgents
+        ++ assetRootDirs "commands" externalCommands
+      )
+    );
+
+  disabledAssetCleanupDirs =
+    let
+      assetRootDirs =
+        assetType:
+        lib.mapAttrsToList (
+          _name: target:
+          if target.enable && target.structure == "link" && !targetAllowsAssetType target assetType then
+            "${lib.removeSuffix "/skills" target.dest}/${assetType}"
+          else
+            null
+        ) cfg.targets;
+    in
+    lib.unique (lib.filter (dir: dir != null) (assetRootDirs "commands"));
+
+  mkMaterializedKeepFileCommands =
+    dirs:
+    lib.concatMapStringsSep "\n" (dir: ''
+      target="$HOME/${dir}/.keep"
+      target_dir="$HOME/${dir}"
+
+      run ${pkgs.coreutils}/bin/mkdir -p "$target_dir"
+
+      if [ -L "$target" ] || [ ! -f "$target" ] || [ -s "$target" ]; then
+        verboseEcho "Materializing $target"
+        if [ -e "$target" ] || [ -L "$target" ]; then
+          run ${pkgs.coreutils}/bin/rm -f "$target"
+        fi
+        run ${pkgs.coreutils}/bin/install -m 600 /dev/null "$target"
+      fi
+    '') dirs;
+
+  mkDisabledAssetCleanupCommands =
+    dirs:
+    lib.concatMapStringsSep "\n" (dir: ''
+      target_dir="$HOME/${dir}"
+      keep_file="$target_dir/.keep"
+
+      if [ -L "$keep_file" ] || [ -f "$keep_file" ]; then
+        run ${pkgs.coreutils}/bin/rm -f "$keep_file"
+      fi
+
+      if [ -d "$target_dir" ]; then
+        ${pkgs.coreutils}/bin/rmdir -p --ignore-fail-on-non-empty "$target_dir" >/dev/null 2>&1 || true
+      fi
+    '') dirs;
 
 in
 {
@@ -182,6 +259,11 @@ in
               default = null;
               description = "Destination directory for configFiles (relative to $HOME). null = no configFiles.";
             };
+            deployCommands = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Whether to deploy external top-level commands for this target.";
+            };
           };
         }
       );
@@ -221,49 +303,59 @@ in
 
   config = lib.mkIf cfg.enable {
     home = {
-      # copy-tree targets: rsync-based sync (writable copy)
-      activation.agent-skills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
-        let
-          copyTargets = lib.filterAttrs (_: t: t.enable && t.structure == "copy-tree") cfg.targets;
-          syncCommands = lib.mapAttrsToList (
-            _name: target:
-            let
-              dest = "$HOME/${target.dest}";
-            in
-            ''
-              mkdir -p "${dest}"
-              ${pkgs.rsync}/bin/rsync -aL --delete --exclude='/.system' "${bundle}/" "${dest}/"
-              chmod -R u+w "${dest}"
-            ''
-          ) copyTargets;
-        in
-        builtins.concatStringsSep "\n" syncCommands
-      );
+      activation = {
+        # copy-tree targets: rsync-based sync (writable copy)
+        agent-skills = lib.hm.dag.entryAfter [ "writeBoundary" ] (
+          let
+            copyTargets = lib.filterAttrs (_: t: t.enable && t.structure == "copy-tree") cfg.targets;
+            syncCommands = lib.mapAttrsToList (
+              _name: target:
+              let
+                dest = "$HOME/${target.dest}";
+              in
+              ''
+                mkdir -p "${dest}"
+                ${pkgs.rsync}/bin/rsync -aL --delete --exclude='/.system' "${bundle}/" "${dest}/"
+                chmod -R u+w "${dest}"
+              ''
+            ) copyTargets;
+          in
+          builtins.concatStringsSep "\n" syncCommands
+        );
 
-      # Ensure parent directories exist for link targets before link generation.
-      activation.agent-skills-link-dirs = lib.hm.dag.entryBefore [ "linkGeneration" ] (
-        let
-          linkTargets = lib.filterAttrs (_: t: t.enable && t.structure == "link") cfg.targets;
-          mkdirCommands = lib.mapAttrsToList (_name: target: ''
-            ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.dest}"
-          '') linkTargets;
-          configDirCommands = lib.mapAttrsToList (_name: target: ''
-            ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
-          '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
-          rulesDirCommands = mkAssetDirCommands "rules" distributionResult.rules cfg.targets;
-          agentsDirCommands = mkAssetDirCommands "agents" mergedAgents cfg.targets;
-          commandsDirCommands = mkAssetDirCommands "commands" externalCommands cfg.targets;
-        in
-        builtins.concatStringsSep "\n" (
-          mkdirCommands
-          ++ configDirCommands
-          ++ [
-            rulesDirCommands
-            agentsDirCommands
-            commandsDirCommands
-          ]
-        )
-      );
+        # Ensure parent directories exist for link targets before link generation.
+        agent-skills-link-dirs = lib.hm.dag.entryBefore [ "linkGeneration" ] (
+          let
+            linkTargets = lib.filterAttrs (_: t: t.enable && t.structure == "link") cfg.targets;
+            mkdirCommands = lib.mapAttrsToList (_name: target: ''
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.dest}"
+            '') linkTargets;
+            configDirCommands = lib.mapAttrsToList (_name: target: ''
+              ${pkgs.coreutils}/bin/mkdir -p "$HOME/${target.configDest}"
+            '') (lib.filterAttrs (_: t: t.enable && t.configDest != null) cfg.targets);
+            rulesDirCommands = mkAssetDirCommands "rules" distributionResult.rules cfg.targets;
+            agentsDirCommands = mkAssetDirCommands "agents" mergedAgents cfg.targets;
+            commandsDirCommands = mkAssetDirCommands "commands" externalCommands cfg.targets;
+          in
+          builtins.concatStringsSep "\n" (
+            mkdirCommands
+            ++ configDirCommands
+            ++ [
+              rulesDirCommands
+              agentsDirCommands
+              commandsDirCommands
+            ]
+          )
+        );
+
+        agent-skills-clean-disabled-asset-dirs = lib.hm.dag.entryAfter [ "linkGeneration" ] (
+          mkDisabledAssetCleanupCommands disabledAssetCleanupDirs
+        );
+
+        agent-skills-materialized-keep = lib.hm.dag.entryAfter [
+          "agent-skills-clean-disabled-asset-dirs"
+        ] (mkMaterializedKeepFileCommands materializedKeepDirs);
+      };
 
       # link targets: per-skill directory symlinks to Nix store (default)
       # Each skill dir becomes a symlink: ~/.claude/skills/agent-creator → /nix/store/.../agent-creator

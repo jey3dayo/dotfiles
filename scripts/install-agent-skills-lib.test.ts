@@ -41,7 +41,24 @@ const resolvePowerShellCommand = (): string | null => {
 
 const shellCommand = resolvePowerShellCommand();
 const itWithPowerShell = shellCommand == null ? it.skip : it;
+const usesWindowsPathSemantics =
+  process.platform !== "win32" && shellCommand != null && shellCommand.toLowerCase().endsWith(".exe");
 
+const toPowerShellPath = (filePath: string): string => {
+  if (process.platform === "win32" || !usesWindowsPathSemantics) {
+    return filePath;
+  }
+
+  const result = spawnSync("wslpath", ["-w", filePath], {
+    encoding: "utf8",
+  });
+
+  if (result.status !== 0) {
+    throw new Error(`Failed to convert WSL path for PowerShell: ${filePath}`);
+  }
+
+  return result.stdout.trim();
+};
 const runNormalization = (targetPath: string): ReturnType<typeof spawnSync> => {
   if (shellCommand == null) {
     throw new Error("PowerShell is required to run install-agent-skills-lib.ps1 tests");
@@ -49,8 +66,9 @@ const runNormalization = (targetPath: string): ReturnType<typeof spawnSync> => {
 
   const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "install-agent-skills-lib-run-"));
   const wrapperPath = path.join(tempDir, "run.ps1");
-  const escapedHelperPath = helperPath.replace(/'/g, "''");
-  const escapedTargetPath = targetPath.replace(/'/g, "''");
+  const escapedHelperPath = toPowerShellPath(helperPath).replace(/'/g, "''");
+  const escapedTargetPath = toPowerShellPath(targetPath).replace(/'/g, "''");
+  const powerShellWrapperPath = toPowerShellPath(wrapperPath);
 
   writeUtf8NoBom(
     wrapperPath,
@@ -58,7 +76,7 @@ const runNormalization = (targetPath: string): ReturnType<typeof spawnSync> => {
   );
 
   try {
-    return spawnSync(shellCommand, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", wrapperPath], {
+    return spawnSync(shellCommand, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", powerShellWrapperPath], {
       encoding: "utf8",
     });
   } finally {

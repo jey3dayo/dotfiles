@@ -61,6 +61,12 @@ export BUN_INSTALL="$HOME/.bun"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 export NI_CONFIG_FILE="$HOME/.config/nirc"
 
+# Load decrypted environment variables for every shell type so remote commands
+# like `ssh host 'gog ...'` can access required credentials without .zshrc.
+if [[ -f "${XDG_CONFIG_HOME}/.env.local" ]]; then
+  source "${XDG_CONFIG_HOME}/.env.local"
+fi
+
 # macOS-specific environment (early load for PATH setup in .zprofile)
 if [[ "$OSTYPE" == darwin* ]]; then
   [[ -f "${ZDOTDIR}/config/os/macos-env.zsh" ]] && source "${ZDOTDIR}/config/os/macos-env.zsh"
@@ -72,6 +78,6 @@ fi
 fpath=(
   ~/.awsume/zsh-autocomplete/
   ~/.local/share/zsh-autocomplete/
-"${fpath[@]}")
+  "${fpath[@]}")
 
 # vim: set syntax=zsh:

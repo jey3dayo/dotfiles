@@ -79,6 +79,7 @@ let
   inherit (files)
     copiedEntryPointFiles
     entryPointFiles
+    materializedEntryPointFiles
     bashFiles
     sshFiles
     awsumeFiles
@@ -89,6 +90,38 @@ let
     lib.mapAttrs (_: relativePath: {
       source = "${cleanedRepo}/${relativePath}";
     }) fileset;
+
+  mkMaterializedFilesScript =
+    fileset:
+    lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (
+        targetPath: relativePath:
+        let
+          sourcePath = "${cleanedRepo}/${relativePath}";
+          targetPathAbs = "${config.home.homeDirectory}/${targetPath}";
+        in
+        ''
+          target=${lib.escapeShellArg targetPathAbs}
+          source=${lib.escapeShellArg sourcePath}
+          target_dir="$(${pkgs.coreutils}/bin/dirname "$target")"
+
+          if [ -d "$target" ] && [ ! -L "$target" ]; then
+            echo "Refusing to replace directory: $target" >&2
+            exit 1
+          fi
+
+          run ${pkgs.coreutils}/bin/mkdir -p "$target_dir"
+
+          if [ -L "$target" ] || [ ! -f "$target" ] || ! ${pkgs.diffutils}/bin/cmp -s "$source" "$target"; then
+            verboseEcho "Materializing $target"
+            if [ -e "$target" ] || [ -L "$target" ]; then
+              run ${pkgs.coreutils}/bin/rm -f "$target"
+            fi
+            run ${pkgs.coreutils}/bin/install -m 600 "$source" "$target"
+          fi
+        ''
+      ) fileset
+    );
 
   mkCopiedHomeFileCommands =
     fileset:
@@ -103,7 +136,6 @@ let
         ${pkgs.coreutils}/bin/install -Dm644 ${lib.escapeShellArg sourcePath} ${lib.escapeShellArg destinationPath}
       ''
     ) fileset;
-
 in
 {
   options.programs.dotfiles = {
@@ -233,6 +265,13 @@ in
                 echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
             fi
           fi
+        ''
+      );
+
+      activation.dotfiles-materialized-entrypoints = lib.mkIf cfg.deployEntryPoints (
+        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          # Materialize configs for CLIs that reject Home Manager symlinks.
+          ${mkMaterializedFilesScript materializedEntryPointFiles}
         ''
       );
     };
