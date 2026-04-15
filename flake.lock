@@ -86,6 +86,22 @@
         "type": "github"
       }
     },
+    "gonta223-humanizer-ja": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774262143,
+        "narHash": "sha256-kbJO130Kfv6hVjMGlWZGCID3zOnceQybw20O4pIUIdU=",
+        "owner": "gonta223",
+        "repo": "humanizer-ja",
+        "rev": "a1e343696e43aa50e7218891f3319ab22cde3464",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gonta223",
+        "repo": "humanizer-ja",
+        "type": "github"
+      }
+    },
     "heyvhuang-ship-faster": {
       "flake": false,
       "locked": {
@@ -241,6 +257,7 @@
         "epicenterhq-epicenter": "epicenterhq-epicenter",
         "flake-utils": "flake-utils",
         "gitignore": "gitignore",
+        "gonta223-humanizer-ja": "gonta223-humanizer-ja",
         "heyvhuang-ship-faster": "heyvhuang-ship-faster",
         "home-manager": "home-manager",
         "lum1104-understand-anything": "lum1104-understand-anything",

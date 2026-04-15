@@ -266,4 +266,15 @@
       "tauri"
     ];
   };
+  gonta223-humanizer-ja = {
+    url = "github:gonta223/humanizer-ja";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      gonta223-humanizer-ja = ".";
+    };
+    selection.enable = [
+      "gonta223-humanizer-ja"
+    ];
+  };
 }

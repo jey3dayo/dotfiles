@@ -29,6 +29,10 @@
       url = "github:EpicenterHQ/epicenter";
       flake = false;
     };
+    gonta223-humanizer-ja = {
+      url = "github:gonta223/humanizer-ja";
+      flake = false;
+    };
     heyvhuang-ship-faster = {
       url = "github:Heyvhuang/ship-faster";
       flake = false;
