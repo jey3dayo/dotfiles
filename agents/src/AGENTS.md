@@ -59,6 +59,15 @@
 - README.md や \*.md は明示的に要求された場合のみ作成
 - 既存テストなど重要なものは勝手に削除しない
 
+## UI implementation rules
+
+- UI 作業時は、まず repo root の `DESIGN.md` があるか確認し、あれば最初に読む
+- `DESIGN.md` がある場合は、その design tokens、spacing、typography、component rules を優先する
+- 既存コンポーネントと既存トークンを優先し、新しいスタイル導入は必要最小限にする
+- 要求された UI が `DESIGN.md` と衝突する場合は、その衝突を説明し、最小限の準拠案を提案する
+- UI 変更時は、どの `DESIGN.md` ルールを適用したかを短く報告する
+- `DESIGN.md` が存在しない場合、この節は no-op として扱う
+
 ## ドキュメント作成の優先順位
 
 新しい知識を追加するとき:
