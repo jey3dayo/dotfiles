@@ -14,6 +14,30 @@ Prefer the bundled platform-native scripts for deterministic capture and machine
 - Windows: prefer direct HWND capture whenever possible. The bundled PowerShell script resolves a target window to an HWND and captures it with `PrintWindow`, so overlapping windows do not leak into the PNG the way `CopyFromScreen` would.
 - macOS: prefer direct window-id capture whenever possible. The bundled Swift script resolves a target window via `CGWindowListCopyWindowInfo` and captures it via `screencapture -l<windowid>`.
 
+## Agent Execution Rules
+
+- Resolve `scripts/...` relative to this skill directory, not the project working directory.
+- In Codex, `<skill-dir>` is the directory that contains this `SKILL.md`.
+- Do not assume `./scripts/...` exists under the target repo. Invoke the bundled script by absolute path.
+- On macOS, call the Swift script directly. Do not route macOS capture through the Windows PowerShell flow.
+- On macOS, Screen Recording permission is required for the terminal app that launches `swift`.
+
+Examples:
+
+```bash
+# macOS: from any project cwd
+swift <skill-dir>/scripts/capture-tauri-window-macos.swift \
+  --project-root /path/to/project \
+  --title-contains "My Tauri App"
+```
+
+```powershell
+# Windows: from any project cwd
+powershell -ExecutionPolicy Bypass -File <skill-dir>\scripts\capture-tauri-window.ps1 `
+  -ProjectRoot C:\path\to\project `
+  -TitleContains "My Tauri App"
+```
+
 ## Quick Start
 
 ### Windows
@@ -24,7 +48,7 @@ Prefer direct window-handle capture for repeatable, occlusion-safe screenshots:
 $hwnd = (Get-Process | Where-Object { $_.MainWindowTitle -like "*My Tauri App*" } |
   Select-Object -First 1 -ExpandProperty MainWindowHandle)
 
-powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
+powershell -ExecutionPolicy Bypass -File <skill-dir>\scripts\capture-tauri-window.ps1 `
   -ProjectRoot C:\path\to\project `
   -WindowHandle $hwnd
 ```
@@ -32,7 +56,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
 Use `-ClientArea` when you want only the webview/content area without window chrome:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
+powershell -ExecutionPolicy Bypass -File <skill-dir>\scripts\capture-tauri-window.ps1 `
   -ProjectRoot C:\path\to\project `
   -WindowHandle $hwnd `
   -ClientArea
@@ -41,7 +65,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
 Use title matching when HWND discovery is inconvenient:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
+powershell -ExecutionPolicy Bypass -File <skill-dir>\scripts\capture-tauri-window.ps1 `
   -ProjectRoot C:\path\to\project `
   -TitleContains "My Tauri App"
 ```
@@ -49,7 +73,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
 Use the active window only for manual debugging when the target app is already focused:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
+powershell -ExecutionPolicy Bypass -File <skill-dir>\scripts\capture-tauri-window.ps1 `
   -ProjectRoot C:\path\to\project `
   -ActiveWindow
 ```
@@ -57,7 +81,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
 Add `-Label` to make saved states easier to scan:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
+powershell -ExecutionPolicy Bypass -File <skill-dir>\scripts\capture-tauri-window.ps1 `
   -ProjectRoot C:\path\to\project `
   -TitleContains "My Tauri App" `
   -Label settings-open
@@ -68,7 +92,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\capture-tauri-window.ps1 `
 Prefer direct window-id capture for repeatable screenshots:
 
 ```bash
-swift ./scripts/capture-tauri-window-macos.swift \
+swift <skill-dir>/scripts/capture-tauri-window-macos.swift \
   --project-root /path/to/project \
   --window-handle 1033
 ```
@@ -76,7 +100,7 @@ swift ./scripts/capture-tauri-window-macos.swift \
 Use title matching when window-id discovery is inconvenient:
 
 ```bash
-swift ./scripts/capture-tauri-window-macos.swift \
+swift <skill-dir>/scripts/capture-tauri-window-macos.swift \
   --project-root /path/to/project \
   --title-contains "My Tauri App"
 ```
@@ -84,7 +108,7 @@ swift ./scripts/capture-tauri-window-macos.swift \
 Use the frontmost app window only for manual debugging when the target app is already focused:
 
 ```bash
-swift ./scripts/capture-tauri-window-macos.swift \
+swift <skill-dir>/scripts/capture-tauri-window-macos.swift \
   --project-root /path/to/project \
   --active-window
 ```
@@ -92,7 +116,7 @@ swift ./scripts/capture-tauri-window-macos.swift \
 Add `--label` to make saved states easier to scan:
 
 ```bash
-swift ./scripts/capture-tauri-window-macos.swift \
+swift <skill-dir>/scripts/capture-tauri-window-macos.swift \
   --project-root /path/to/project \
   --title-contains "My Tauri App" \
   --label settings-open
