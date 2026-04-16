@@ -400,8 +400,6 @@ function Get-ExternalAssetSources {
       $url = $null
       $agentsPath = $null
       $commandsPath = $null
-      $homeLinks = @()
-      $selection = @()
 
       if ($blockText -match '(?m)^\s*url\s*=\s*"([^"]+)"\s*;') {
         $url = $matches[1]
@@ -412,34 +410,13 @@ function Get-ExternalAssetSources {
       if ($blockText -match '(?m)^\s*commands\s*=\s*"([^"]+)"\s*;') {
         $commandsPath = $matches[1]
       }
-      $selectionBlock = [regex]::Match($blockText, '(?ms)^\s*selection\.enable\s*=\s*\[(.*?)\];')
-      if ($selectionBlock.Success) {
-        $selectionBody = $selectionBlock.Groups[1].Value
-        $selectionMatches = [regex]::Matches($selectionBody, '"([^"]+)"')
-        foreach ($selectionMatch in $selectionMatches) {
-          $selection += $selectionMatch.Groups[1].Value
-        }
-      }
-      $homeLinksBlock = [regex]::Match($blockText, '(?ms)^\s*homeLinks\s*=\s*\{\s*(.*?)\};')
-      if ($homeLinksBlock.Success) {
-        $homeLinksBody = $homeLinksBlock.Groups[1].Value
-        $linkMatches = [regex]::Matches($homeLinksBody, '(?m)^\s*"([^"]+)"\s*=\s*"([^"]+)"\s*;')
-        foreach ($linkMatch in $linkMatches) {
-          $homeLinks += [pscustomobject]@{
-            Destination = $linkMatch.Groups[1].Value
-            SourcePath = $linkMatch.Groups[2].Value
-          }
-        }
-      }
 
-      if ($url -and ($agentsPath -or $commandsPath -or $homeLinks.Count -gt 0)) {
+      if ($url -and ($agentsPath -or $commandsPath)) {
         $sources += [pscustomobject]@{
           Name = $currentName
           Url = $url
           AgentsPath = $agentsPath
           CommandsPath = $commandsPath
-          HomeLinks = $homeLinks
-          Selected = ($selection.Count -gt 0)
         }
       }
 
@@ -509,31 +486,6 @@ function Get-ExternalSourceCheckoutPath {
   return $checkoutPath
 }
 
-function Assert-UniqueExternalHomeLinks {
-  param(
-    [Parameter(Mandatory = $true)]
-    [pscustomobject[]]$Sources
-  )
-
-  $seenDestinations = @{}
-
-  foreach ($source in $Sources) {
-    foreach ($homeLink in $source.HomeLinks) {
-      $destination = $homeLink.Destination
-      $sourceKey = "$($source.Name):$($homeLink.SourcePath)"
-
-      if (-not $seenDestinations.ContainsKey($destination)) {
-        $seenDestinations[$destination] = $sourceKey
-        continue
-      }
-
-      if ($seenDestinations[$destination] -ne $sourceKey) {
-        throw "Duplicate homeLinks destination detected: $destination ($($seenDestinations[$destination]) vs $sourceKey)"
-      }
-    }
-  }
-}
-
 function Copy-MarkdownTree {
   param(
     [Parameter(Mandatory = $true)]
@@ -591,10 +543,8 @@ if ($IncludeNixBundle) {
 }
 
 $externalAssetSources = Get-ExternalAssetSources -RepoRoot $repoRoot
-$selectedExternalAssetSources = @($externalAssetSources | Where-Object { $_.Selected })
-Assert-UniqueExternalHomeLinks -Sources $selectedExternalAssetSources
 $externalAssetCheckouts = @()
-foreach ($externalSource in $selectedExternalAssetSources) {
+foreach ($externalSource in $externalAssetSources) {
   $externalAssetCheckouts += [pscustomobject]@{
     Source = $externalSource
     CheckoutPath = Get-ExternalSourceCheckoutPath -RepoRoot $repoRoot -Source $externalSource
@@ -633,8 +583,6 @@ foreach ($targetName in $resolvedTargets) {
   $agentsKept = 0
   $commandsCopied = 0
   $commandsKept = 0
-  $homeLinksCopied = 0
-  $homeLinksKept = 0
 
   foreach ($skillDir in $skillDirs) {
     $destination = Join-Path $targetSkillsRoot $skillDir.Name
@@ -687,28 +635,6 @@ foreach ($targetName in $resolvedTargets) {
       $commandsCopied += $externalCommands.Copied
       $commandsKept += $externalCommands.Kept
     }
-
-    foreach ($homeLink in $externalSource.HomeLinks) {
-      $sourcePath = Join-Path $checkoutPath $homeLink.SourcePath
-      $destinationPath = Join-Path $HOME $homeLink.Destination
-
-      if (-not (Test-Path -LiteralPath $sourcePath)) {
-        Write-Warning "Skipping missing homeLinks source path: $sourcePath"
-        continue
-      }
-
-      $result = $null
-      if (Test-Path -LiteralPath $sourcePath -PathType Container) {
-        $result = Ensure-CopiedDirectory -SourcePath $sourcePath -DestinationPath $destinationPath -AllowReplace:$Force
-      } else {
-        $result = Ensure-CopiedFile -SourcePath $sourcePath -DestinationPath $destinationPath -AllowReplace:$Force
-      }
-
-      switch ($result) {
-        "copied" { $homeLinksCopied++ }
-        "kept" { $homeLinksKept++ }
-      }
-    }
   }
 
   Write-Host "[$targetName] config: $configDestination"
@@ -717,5 +643,4 @@ foreach ($targetName in $resolvedTargets) {
   Write-Host "[$targetName] rules copied=$rulesCopied kept=$rulesKept"
   Write-Host "[$targetName] agents copied=$agentsCopied kept=$agentsKept"
   Write-Host "[$targetName] commands copied=$commandsCopied kept=$commandsKept"
-  Write-Host "[$targetName] homeLinks copied=$homeLinksCopied kept=$homeLinksKept"
 }
