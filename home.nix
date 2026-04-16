@@ -9,7 +9,6 @@
 
 let
   agentSkills = import ./nix/agent-skills.nix;
-  understandAnythingPluginRoot = "${inputs.lum1104-understand-anything}/understand-anything-plugin";
 in
 {
   # Basic home-manager settings
@@ -25,8 +24,6 @@ in
     # This value determines the Home Manager release that your configuration is compatible with.
     # You should not change this value, even if you update Home Manager.
     stateVersion = "24.11";
-
-    file.".understand-anything-plugin".source = understandAnythingPluginRoot;
   };
 
   # Tools are installed via mise; Home Manager focuses on config distribution.
