@@ -17,7 +17,7 @@ let
       let
         root = inputs.${sourceName};
         base = "${inputs.${sourceName}}/${sourceConfig.baseDir}";
-        mkAssetPath = assetPath: if assetPath == "." then root else "${root}/${assetPath}";
+        mkSourcePath = relativePath: if relativePath == "." then root else "${root}/${relativePath}";
       in
       builtins.mapAttrs (
         _catalogName: subPath:
@@ -27,13 +27,19 @@ let
         // (if sourceConfig ? idPrefix then { inherit (sourceConfig) idPrefix; } else { })
         // (
           if sourceConfig ? assets && sourceConfig.assets ? agents then
-            { agentsPath = mkAssetPath sourceConfig.assets.agents; }
+            { agentsPath = mkSourcePath sourceConfig.assets.agents; }
           else
             { }
         )
         // (
           if sourceConfig ? assets && sourceConfig.assets ? commands then
-            { commandsPath = mkAssetPath sourceConfig.assets.commands; }
+            { commandsPath = mkSourcePath sourceConfig.assets.commands; }
+          else
+            { }
+        )
+        // (
+          if sourceConfig ? homeLinks then
+            { homeLinks = builtins.mapAttrs (_name: mkSourcePath) sourceConfig.homeLinks; }
           else
             { }
         )
