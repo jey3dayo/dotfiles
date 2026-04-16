@@ -69,9 +69,8 @@ nix run .#validate
 
 1. `nix/agent-skills-sources.nix` に source 定義を追加
 2. `flake.nix` に対応する input を追加
-3. plugin root など skill 外の参照先が必要なら `homeLinks` を追加
-4. 必要なら `selection.enable` に対象 skill を加える
-5. `nix flake update && home-manager switch --flake ~/.config --impure` を実行
+3. 必要なら `selection.enable` に対象 skill を加える
+4. `nix flake update && home-manager switch --flake ~/.config --impure` を実行
 
 ## アーキテクチャ
 
@@ -89,14 +88,12 @@ nix run .#validate
 - `skills.enable = null`: 発見された全 skill を選択
 - `skills.enable = [ ... ]`: 指定 skill に加えて bundled distribution skills を常に含める
 - top-level external agents/commands は、選択された skill source に応じて配布対象が決まる
-- source-level `homeLinks` は、選択された external source に応じて `$HOME` 直下へ配布される
 
 ### バンドリング
 
 選択された skills は Nix store に bundle され、Home Manager 経由で `~/.claude/skills/` へ per-skill symlink として配布されます。
 
 bundled rules と bundled agents は `agents/src` から直接リンクされます。
-plugin root のような source-level alias は `nix/agent-skills-sources.nix` の `homeLinks` に書きます。
 
 ## 参考資料
 

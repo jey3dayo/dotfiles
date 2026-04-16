@@ -80,12 +80,12 @@ in { ... } // dynamicInputs;
 
 SSoT と フラットな inputs を併用する妥協的設計:
 
-| ファイル                       | 役割               | 管理項目                                         |
-| ------------------------------ | ------------------ | ------------------------------------------------ |
-| `nix/agent-skills-sources.nix` | SSoT（メタデータ） | url, flake, baseDir, selection.enable, homeLinks |
-| `flake.nix` inputs             | Flake inputs 定義  | url, flake のみ（手動同期が必要）                |
-| `nix/sources.nix`              | 統合処理           | inputs と baseDir を結合してスキルパスを生成     |
-| `nix/agent-skills.nix`         | スキル選択         | selection.enable を抽出                          |
+| ファイル                       | 役割               | 管理項目                                     |
+| ------------------------------ | ------------------ | -------------------------------------------- |
+| `nix/agent-skills-sources.nix` | SSoT（メタデータ） | url, flake, baseDir, selection.enable        |
+| `flake.nix` inputs             | Flake inputs 定義  | url, flake のみ（手動同期が必要）            |
+| `nix/sources.nix`              | 統合処理           | inputs と baseDir を結合してスキルパスを生成 |
+| `nix/agent-skills.nix`         | スキル選択         | selection.enable を抽出                      |
 
 #### トレードオフ
 
@@ -102,9 +102,6 @@ SSoT と フラットな inputs を併用する妥協的設計:
      url = "github:org/repo";
      flake = false;
      baseDir = "skills";
-     homeLinks = {
-       ".example-plugin" = "plugin-root";
-     };
      selection.enable = [ "skill-name" ];
    };
    ```
@@ -132,29 +129,6 @@ SSoT と フラットな inputs を併用する妥協的設計:
    home-manager switch --flake ~/.config --impure
    ls -la ~/.claude/skills/ | grep <skill-name>
    ```
-
-### source-level `homeLinks`
-
-外部 skill が plugin root や shared asset directory を前提にする場合は、`home.nix` へ個別の固定値を足さず、source 定義へ `homeLinks` を追加します。
-
-```nix
-lum1104-understand-anything = {
-  url = "github:Lum1104/Understand-Anything";
-  flake = false;
-  baseDir = ".";
-  homeLinks = {
-    ".understand-anything-plugin" = "understand-anything-plugin";
-  };
-  catalogs = {
-    lum1104-understand-anything = "understand-anything-plugin/skills";
-  };
-  selection.enable = [ "understand-dashboard" ];
-};
-```
-
-- key は `$HOME` からの相対パス
-- value は source root からの相対パス
-- 同じ destination を複数 source が定義すると評価エラー
 
 ---
 

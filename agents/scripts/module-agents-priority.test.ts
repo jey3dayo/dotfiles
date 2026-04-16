@@ -16,11 +16,6 @@ const bundledCodeReviewer = fs.readFileSync(
   path.join(repoRoot, "agents", "src", "agents", "code-reviewer.md"),
   "utf8",
 );
-let cachedBuildResult:
-  | (ReturnType<typeof spawnSync> & {
-      activateScript?: string;
-    })
-  | null = null;
 
 const evalMergedAgent = (externalAgentsPath: string) =>
   spawnSync(
@@ -118,100 +113,7 @@ const evalCommandTargets = () =>
     },
   );
 
-const evalSourceHomeLink = () =>
-  spawnSync(
-    nixBin,
-    [
-      "eval",
-      "--json",
-      "--impure",
-      "--expr",
-      `let
-         flake = builtins.getFlake "${flakeUrl}";
-         homeConfig = builtins.getAttr "${user}" flake.outputs.homeConfigurations;
-       in
-         homeConfig.config.programs.agent-skills.sources."lum1104-understand-anything".homeLinks.".understand-anything-plugin"`,
-    ],
-    {
-      cwd: repoRoot,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        NIX_CONFIG: "experimental-features = nix-command flakes",
-      },
-    },
-  );
-
-const evalDuplicateHomeLinks = (sourceAPath: string, sourceBPath: string) =>
-  spawnSync(
-    nixBin,
-    [
-      "eval",
-      "--impure",
-      "--expr",
-      `let
-         flake = builtins.getFlake "${flakeUrl}";
-         pkgs = import flake.inputs.nixpkgs { system = builtins.currentSystem; };
-         hm = flake.inputs.home-manager;
-         config = hm.lib.homeManagerConfiguration {
-           inherit pkgs;
-           modules = [
-             (import ${JSON.stringify(path.join(repoRoot, "agents", "nix", "module.nix"))})
-             {
-               home.username = "${user}";
-               home.homeDirectory = "/tmp/agent-skills-home-links";
-               home.stateVersion = "24.11";
-               programs.agent-skills = {
-                 enable = true;
-                 sources = {
-                   source-a = {
-                     path = builtins.path {
-                       path = ${JSON.stringify(sourceAPath)};
-                       name = "source-a";
-                     };
-                     homeLinks = {
-                       ".duplicate-plugin-root" = builtins.path {
-                         path = ${JSON.stringify(sourceAPath)};
-                         name = "duplicate-a";
-                       };
-                     };
-                   };
-                   source-b = {
-                     path = builtins.path {
-                       path = ${JSON.stringify(sourceBPath)};
-                       name = "source-b";
-                     };
-                     homeLinks = {
-                       ".duplicate-plugin-root" = builtins.path {
-                         path = ${JSON.stringify(sourceBPath)};
-                         name = "duplicate-b";
-                       };
-                     };
-                   };
-                 };
-                 skills.enable = null;
-               };
-             }
-           ];
-         };
-       in
-         builtins.attrNames config.config.home.file`,
-    ],
-    {
-      cwd: repoRoot,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        NIX_CONFIG: "experimental-features = nix-command flakes",
-      },
-    },
-  );
-
 const buildActivationScript = () => {
-  if (cachedBuildResult) {
-    return cachedBuildResult;
-  }
-
   const result = spawnSync(
     nixBin,
     [
@@ -232,16 +134,14 @@ const buildActivationScript = () => {
   );
 
   if (result.status !== 0) {
-    cachedBuildResult = result;
     return result;
   }
 
   const activatePath = path.join(result.stdout.trim(), "activate");
-  cachedBuildResult = {
+  return {
     ...result,
     activateScript: fs.readFileSync(activatePath, "utf8"),
   };
-  return cachedBuildResult;
 };
 
 describe("agents/nix/module.nix", () => {
@@ -278,7 +178,7 @@ describe("agents/nix/module.nix", () => {
     expect(buildResult.activateScript).toContain('$HOME/.claude/skills/.keep');
     expect(buildResult.activateScript).toContain('$HOME/.codex/rules/.keep');
     expect(buildResult.activateScript).toContain("install -m 600 /dev/null");
-  }, 60_000);
+  }, 30_000);
 
   it("does not deploy external commands to the codex target", () => {
     const commandResult = evalCommandTargets();
@@ -294,32 +194,5 @@ describe("agents/nix/module.nix", () => {
     expect(buildResult.activateScript).not.toContain('mkdir -p "$HOME/.codex/commands"');
     expect(buildResult.activateScript).toContain('target_dir="$HOME/.codex/commands"');
     expect(buildResult.activateScript).toContain('keep_file="$target_dir/.keep"');
-  }, 60_000);
-
-  it("exposes source-level homeLinks for selected external sources", () => {
-    const result = evalSourceHomeLink();
-    expect(result.status).toBe(0);
-    expect(JSON.parse(result.stdout)).toContain("understand-anything-plugin");
-  }, 30_000);
-
-  it("fails evaluation when multiple selected sources define the same homeLinks destination", () => {
-    const tempRoot = fs.mkdtempSync(path.join(fs.realpathSync.native(process.env.TMPDIR ?? "/tmp"), "home-links-"));
-
-    try {
-      const sourceAPath = path.join(tempRoot, "source-a");
-      const sourceBPath = path.join(tempRoot, "source-b");
-
-      fs.mkdirSync(path.join(sourceAPath, "skill-a"), { recursive: true });
-      fs.mkdirSync(path.join(sourceBPath, "skill-b"), { recursive: true });
-      fs.writeFileSync(path.join(sourceAPath, "skill-a", "SKILL.md"), "# skill-a\n", "utf8");
-      fs.writeFileSync(path.join(sourceBPath, "skill-b", "SKILL.md"), "# skill-b\n", "utf8");
-
-      const result = evalDuplicateHomeLinks(sourceAPath, sourceBPath);
-      expect(result.status).not.toBe(0);
-      expect(result.stderr).toContain("homeLinks");
-      expect(result.stderr).toContain(".duplicate-plugin-root");
-    } finally {
-      fs.rmSync(tempRoot, { recursive: true, force: true });
-    }
   }, 30_000);
 });

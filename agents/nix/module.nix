@@ -60,59 +60,6 @@ let
     enabledSources = selectedSkillSources;
   };
 
-  pathString = value: builtins.unsafeDiscardStringContext (toString value);
-
-  rawExternalHomeLinkEntries = builtins.concatLists (
-    lib.mapAttrsToList (
-      sourceName: source:
-      if lib.elem sourceName selectedSkillSources then
-        lib.mapAttrsToList (destination: sourcePath: {
-          inherit destination sourceName sourcePath;
-        }) source.homeLinks
-      else
-        [ ]
-    ) cfg.sources
-  );
-
-  externalHomeLinkEntries =
-    builtins.attrValues (
-      builtins.foldl' (
-        acc: entry:
-        acc
-        // {
-          "${entry.destination}\n${pathString entry.sourcePath}" = entry;
-        }
-      ) { } rawExternalHomeLinkEntries
-    );
-
-  externalHomeLinkGroups = lib.groupBy (entry: entry.destination) externalHomeLinkEntries;
-
-  conflictingExternalHomeLinks = lib.filterAttrs (
-    _destination: entries:
-    lib.length (lib.unique (builtins.map (entry: pathString entry.sourcePath) entries)) > 1
-  ) externalHomeLinkGroups;
-
-  externalHomeLinkAssertions = lib.mapAttrsToList (
-    destination: entries: {
-      assertion = false;
-      message = "programs.agent-skills homeLinks conflict for `${destination}`: ${
-        lib.concatStringsSep ", " (
-          builtins.map (entry: "${entry.sourceName} -> ${pathString entry.sourcePath}") entries
-        )
-      }";
-    }
-  ) conflictingExternalHomeLinks;
-
-  externalHomeFileLinks = builtins.listToAttrs (
-    builtins.map (entry: {
-      name = entry.destination;
-      value = {
-        source = entry.sourcePath;
-        force = true;
-      };
-    }) externalHomeLinkEntries
-  );
-
   targetAllowsAssetType =
     target: assetType: if assetType == "commands" then target.deployCommands else true;
 
@@ -271,16 +218,11 @@ in
               default = null;
               description = "Optional path to top-level external command definitions.";
             };
-            homeLinks = lib.mkOption {
-              type = lib.types.attrsOf lib.types.path;
-              default = { };
-              description = "Optional home-relative links for source-level plugin roots or shared assets.";
-            };
           };
         }
       );
       default = { };
-      description = "External skill sources (name -> { path, idPrefix?, agentsPath?, commandsPath?, homeLinks? }).";
+      description = "External skill sources (name -> { path, idPrefix?, agentsPath?, commandsPath? }).";
     };
 
     distributionsPath = lib.mkOption {
@@ -360,8 +302,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = externalHomeLinkAssertions;
-
     home = {
       activation = {
         # copy-tree targets: rsync-based sync (writable copy)
@@ -460,9 +400,6 @@ in
         ++
           # Commands distribution (symlinks to each target's commands directory)
           (mkAssetFileLinks "commands" externalCommands cfg.targets)
-        ++
-          # Source-level home links (for example plugin roots used by external skills)
-          [ externalHomeFileLinks ]
       );
     };
   };
