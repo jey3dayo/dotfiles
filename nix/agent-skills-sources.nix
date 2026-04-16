@@ -168,6 +168,9 @@
     url = "github:Lum1104/Understand-Anything";
     flake = false;
     baseDir = ".";
+    homeLinks = {
+      ".understand-anything-plugin" = "understand-anything-plugin";
+    };
     catalogs = {
       lum1104-understand-anything = "understand-anything-plugin/skills";
     };
