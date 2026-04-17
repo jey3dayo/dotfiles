@@ -9,6 +9,22 @@
 
 let
   agentSkills = import ./nix/agent-skills.nix;
+  guiPath = builtins.concatStringsSep ":" [
+    "${homeDirectory}/.mise/shims"
+    "${homeDirectory}/bin"
+    "${homeDirectory}/.local/bin"
+    "${homeDirectory}/.config/scripts"
+    "${homeDirectory}/.cargo/bin"
+    "${homeDirectory}/go/bin"
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+    "/usr/local/bin"
+    "/usr/local/sbin"
+    "/usr/bin"
+    "/bin"
+    "/usr/sbin"
+    "/sbin"
+  ];
 in
 {
   # Basic home-manager settings
@@ -74,6 +90,20 @@ in
           };
         }
       ];
+    };
+  };
+
+  launchd.agents.codex-gui-path = {
+    enable = pkgs.stdenv.hostPlatform.isDarwin;
+    config = {
+      ProgramArguments = [
+        "/bin/sh"
+        "-lc"
+        "launchctl setenv PATH '${guiPath}'"
+      ];
+      RunAtLoad = true;
+      StandardOutPath = "${homeDirectory}/Library/Logs/codex-gui-path.log";
+      StandardErrorPath = "${homeDirectory}/Library/Logs/codex-gui-path.log";
     };
   };
 }
