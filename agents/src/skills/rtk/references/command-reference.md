@@ -65,10 +65,10 @@ In this repository:
 
 - `mise/config.default.toml` and `mise/config.windows.toml` already declare `rtk = "latest"`
 - `.rtk/filters.toml` is the project-local override point
-- Bundled skills placed under `agents/src/skills/` are distributed by the existing tasks in `mise/tasks/skills.toml`
+- Bundled skills placed under `agents/src/skills/` are distributed by the existing legacy tasks in `mise/tasks/agents.toml`
 
 Useful commands here:
 
-- `mise run skills:validate:internal`
-- `mise run skills:validate`
-- `mise run skills:legacy:install`
+- `mise run agents:validate:internal`
+- `mise run agents:validate`
+- `mise run agents:legacy:install`

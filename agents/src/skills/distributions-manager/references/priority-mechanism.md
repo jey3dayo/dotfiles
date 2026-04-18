@@ -218,7 +218,7 @@ agents/src/skills/my-skill -> ../../some-real-source/my-skill
 ### Check Source Attribution
 
 ```bash
-mise run skills:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
+mise run agents:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
 ```
 
 Expected output includes a mix of distribution and external sources, for example:
@@ -233,7 +233,7 @@ Expected output includes a mix of distribution and external sources, for example
 ### Verify the Selected Catalog When `skills.enable = null`
 
 ```bash
-mise run skills:legacy:list 2>/dev/null | jq '[.skills[] | .source] | group_by(.) | map({(.[0]): length})'
+mise run agents:legacy:list 2>/dev/null | jq '[.skills[] | .source] | group_by(.) | map({(.[0]): length})'
 ```
 
 If external sources are configured and discovered, their source names should still appear in the grouped output.

@@ -31,13 +31,13 @@
 This bundle is intended to be used as a `distributionsPath`.
 
 ```bash
-mise run skills:legacy:install
+mise run agents:legacy:install
 ```
 
 ## Verification
 
 ```bash
-mise run skills:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
+mise run agents:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
 ls -la ~/.claude/skills/
 ls -la ~/.claude/agents/
 ls -la ~/.claude/rules/
@@ -56,7 +56,7 @@ ls -la ~/.claude/rules/
 ```bash
 cd bundles/[bundle-name]/skills
 ln -s ../../../src/skills/[new-skill] ./
-mise run skills:legacy:install
+mise run agents:legacy:install
 ```
 
 ### Replacing A Reused Skill With A Bundle-Specific Copy

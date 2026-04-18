@@ -102,8 +102,8 @@ That means `agents/src/commands/` should not be documented as an active bundled 
 ## Verification
 
 ```bash
-mise run skills:legacy:install
-mise run skills:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
+mise run agents:legacy:install
+mise run agents:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
 ```
 
 Expected observations:

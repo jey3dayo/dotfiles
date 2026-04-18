@@ -252,7 +252,7 @@ grep 'url = ' nix/agent-skills-sources.nix
 grep 'url = "github:.*skills' flake.nix
 ```
 
-原因3: `selection.enable` のスキル名タイポ → `mise run skills:report` で確認
+原因3: `selection.enable` のスキル名タイポ → `mise run agents:report` で確認
 
 ### "expected a set but got a thunk" エラー
 

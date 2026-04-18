@@ -60,10 +60,10 @@ Options:
   -a, --agent             No-op (managed by Nix in this repo)
 
 Examples:
-  mise run skills:add -- vercel-labs/agent-skills
-  mise run skills:add -- https://github.com/vercel-labs/skills/tree/main/skills/find-skills
-  mise run skills:add -- --list vercel-labs/skills
-  mise run skills:add -- vercel-labs/agent-skills --skill web-design-guidelines
+  mise run agents:add -- vercel-labs/agent-skills
+  mise run agents:add -- https://github.com/vercel-labs/skills/tree/main/skills/find-skills
+  mise run agents:add -- --list vercel-labs/skills
+  mise run agents:add -- vercel-labs/agent-skills --skill web-design-guidelines
 `;
   if (code === 0) {
     console.log(message);
@@ -203,7 +203,7 @@ if (legacyMode) {
   fs.writeFileSync(sourcesFile, lines.join(eol), "utf8");
   execSync(`tsx "${syncScript}"`, { cwd: repoRoot, stdio: "inherit" });
   console.log(`Updated ${path.relative(repoRoot, sourcesFile)}.`);
-  console.log("Run `mise run skills:install` to apply changes.");
+  console.log("Run `mise run agents:legacy:install` to apply changes.");
   process.exit(0);
 }
 
@@ -406,4 +406,4 @@ const eol = sourceContent.includes("\r\n") ? "\r\n" : "\n";
 fs.writeFileSync(sourcesFile, newLines.join(eol), "utf8");
 execSync(`tsx "${syncScript}"`, { cwd: repoRoot, stdio: "inherit" });
 console.log(`Updated ${path.relative(repoRoot, sourcesFile)}.`);
-console.log("Run `mise run skills:install` to apply changes.");
+console.log("Run `mise run agents:legacy:install` to apply changes.");

@@ -124,8 +124,8 @@ programs.agent-skills = {
 
 ```bash
 home-manager build --flake ~/.config --impure --dry-run
-mise run skills:legacy:install
-mise run skills:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
+mise run agents:legacy:install
+mise run agents:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
 ```
 
 Expected behavior:

@@ -4,7 +4,7 @@ param()
 $ErrorActionPreference = "Stop"
 
 if ($env:SKIP_NIX_VALIDATE -eq "1") {
-  Write-Host "Skip skills:validate (SKIP_NIX_VALIDATE=1)"
+  Write-Host "Skip agents:validate (SKIP_NIX_VALIDATE=1)"
   exit 0
 }
 

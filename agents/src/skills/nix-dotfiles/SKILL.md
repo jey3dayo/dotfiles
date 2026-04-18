@@ -375,7 +375,7 @@ nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 
      ```bash
 
-     mise run skills:report
+     mise run agents:report
      ```
 
    - Fix: Correct `selection.enable` in `nix/agent-skills-sources.nix`

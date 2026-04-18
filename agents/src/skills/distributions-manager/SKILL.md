@@ -112,7 +112,7 @@ home-manager switch --flake ~/.config --impure
 ### Verify Deployment
 
 ```bash
-mise run skills:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
+mise run agents:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
 ls -la ~/.claude/skills/
 ```
 

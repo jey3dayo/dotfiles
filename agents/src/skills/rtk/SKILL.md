@@ -86,9 +86,9 @@ In this repository:
 
 For this repo, validate or distribute a bundled RTK skill with the existing tasks:
 
-- `mise run skills:validate:internal`
-- `mise run skills:validate`
-- `mise run skills:legacy:install`
+- `mise run agents:validate:internal`
+- `mise run agents:validate`
+- `mise run agents:legacy:install`
 
 Do not add a new `mise` task unless the existing distribution flow cannot pick the skill up.
 

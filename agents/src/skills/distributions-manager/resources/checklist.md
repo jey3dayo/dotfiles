@@ -68,8 +68,8 @@ find bundles/<bundle-name>/skills -type l -exec sh -c '
 ## Verification
 
 - [ ] `home-manager build --flake ~/.config --impure --dry-run` succeeds
-- [ ] `mise run skills:legacy:install` succeeds
-- [ ] `mise run skills:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'` shows expected source attribution
+- [ ] `mise run agents:legacy:install` succeeds
+- [ ] `mise run agents:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'` shows expected source attribution
 - [ ] Bundled skills appear with `source = "distribution"`
 - [ ] Bundled rules and agents are linked into target directories as expected
 

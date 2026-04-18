@@ -166,7 +166,7 @@ if [ "$STATUS_FAILED" -eq 1 ]; then
   printf "     %bhome-manager switch --flake ~/.config --impure%b\n" "$YELLOW" "$NC"
   printf "\n"
   printf "  2. Verify skills configuration:\n"
-  printf "     %bmise run skills:list%b\n" "$YELLOW" "$NC"
+  printf "     %bmise run agents:legacy:list%b\n" "$YELLOW" "$NC"
   printf "\n"
   printf "  3. Check for conflicts with other Home Manager configurations:\n"
   printf "     %bhome-manager generations | head -3%b\n" "$YELLOW" "$NC"
