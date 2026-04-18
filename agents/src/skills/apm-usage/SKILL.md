@@ -20,6 +20,7 @@ In this repository, the target architecture is now **APM global management via `
 - Editing or reviewing `apm.yml`
 - Installing or updating agent skills with `apm`
 - Migrating a legacy bundled skill from `agents/src/skills/` into `~/.apm`
+- Migrating selected external skills from `nix/agent-skills-sources.nix` into `~/.apm`
 - Explaining `apm install -g`, `apm deps update -g`, or Codex compile handling
 
 ## This Repository's Rule Of Thumb
@@ -58,6 +59,7 @@ mise run apm:bootstrap
 cd ~/.apm
 mise install
 mise run migrate -- apm-usage
+mise run migrate-external
 mise run apply
 mise run validate
 mise run doctor
@@ -97,11 +99,14 @@ After that, move into `~/.apm` and run `mise install`.
 1. Bootstrap the workspace with `cd ~/.config && mise run apm:bootstrap`
 2. Move to `~/.apm` and run `mise install`
 3. Start with `mise run migrate -- apm-usage`
-4. This copies `agents/src/skills/apm-usage/` into `~/.apm/packages/apm-usage/` and runs workspace-scope `apm install ./packages/apm-usage`
-5. From that point on, edit `~/.apm/packages/<skill-id>/`
-6. Treat `~/.apm/apm.yml` + `~/.apm/packages/` as the source of truth
-7. Keep the legacy deploy / rollback path available while APM user-scope local package support is still missing
-8. Validate with `mise run validate`
+4. Then run `mise run migrate-external` to vendor the currently enabled external skills
+5. `migrate` copies `agents/src/skills/<id>/` into `~/.apm/packages/<id>/`
+6. `migrate-external` clones each selected source from `nix/agent-skills-sources.nix` and vendors only its `selection.enable` skills into `~/.apm/packages/`
+7. `idPrefix` skills such as `superpowers:brainstorming` become nested package paths such as `~/.apm/packages/superpowers/brainstorming/`
+8. Internal bundled skills win on duplicate IDs, so conflicting external skills are skipped during vendor
+9. Treat `~/.apm/apm.yml` + `~/.apm/packages/` as the source of truth
+10. Keep the legacy deploy / rollback path available while APM user-scope local package support is still missing
+11. Validate with `mise run validate`
 
 ## Legacy / Rollback Notes
 

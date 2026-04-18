@@ -28,6 +28,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 - `apm.yml` と `packages/README.md` の最小 scaffold
 - managed `~/.apm/mise.toml` の注入
 - legacy `agents/src/skills/` からの migration seed
+- `nix/agent-skills-sources.nix` で有効化している external skill の vendor
 - legacy Nix / Home Manager 配布の rollback 導線
 
 `~/.apm` 側の責務:
@@ -72,6 +73,7 @@ bootstrap 後は `~/.apm` 側へ移動します。
 cd ~/.apm
 mise install
 mise run migrate -- apm-usage
+mise run migrate-external
 mise run apply
 mise run validate
 mise run doctor
@@ -85,6 +87,7 @@ mise run doctor
 - `validate`: `apm compile --validate`
 - `doctor`: workspace と deploy 先の確認
 - `migrate`: legacy `~/.config/agents/src/skills/<id>` を `packages/<id>` へ seed
+- `migrate-external`: `nix/agent-skills-sources.nix` の `selection.enable` を `packages/` へ vendor
 
 ## Migration Seed Flow
 
@@ -103,6 +106,23 @@ mise run apply
 - local package として validation まで行う
 
 まで進めます。以後の編集は `~/.apm/packages/<skill>/` 側で行います。
+
+external source を巻き取る時は次を使います。
+
+```bash
+cd ~/.apm
+mise run migrate-external
+```
+
+`migrate-external` は次を行います。
+
+- `~/.config/nix/agent-skills-sources.nix` の各 source を shallow clone
+- その source の `selection.enable` に入っている skill だけを対象にする
+- `idPrefix` がある skill は `packages/superpowers/<skill>/` のような nested package にする
+- internal bundled skill (`agents/src/skills/...`) と同じ ID がある external skill は skip する
+- workspace scope の `apm install ./packages/...` で `apm.yml` / `apm.lock.yaml` に記録する
+
+これで external skill の source of truth も `~/.apm/packages/` へ寄せられます。
 
 `apply` / `update` は `apm.yml` に `./packages/*` が入っている場合、現行 APM 制約を明示して停止します。  
 その間の実 deploy は rollback 用に残している legacy 導線を使ってください。
