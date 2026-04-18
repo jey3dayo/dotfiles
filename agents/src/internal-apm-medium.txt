@@ -1,0 +1,6 @@
+# Medium bundled skill pilot inventory for the global APM migration.
+# One skill id per line. Blank lines and comments are ignored.
+
+rtk
+tauri-dev-screenshot
+tauri-webview-geometry

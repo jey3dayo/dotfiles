@@ -362,6 +362,28 @@ function Copy-DirectoryContents {
   }
 }
 
+function Get-RelativeFilePaths {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RootDir
+  )
+
+  if (-not (Test-Path -LiteralPath $RootDir)) {
+    return @()
+  }
+
+  $rootFullPath = (Resolve-Path -LiteralPath $RootDir).Path
+  $result = New-Object System.Collections.Generic.List[string]
+  foreach ($file in Get-ChildItem -LiteralPath $RootDir -Recurse -File) {
+    $relativePath = $file.FullName.Substring($rootFullPath.Length).TrimStart('\', '/')
+    $result.Add(($relativePath -replace '\\', '/'))
+  }
+
+  $array = $result.ToArray()
+  [Array]::Sort($array)
+  return $array
+}
+
 function Reset-TrackedInternalBundleDir {
   $trackedDir = Get-TrackedInternalBundleDir
   if (Test-Path -LiteralPath $trackedDir) {
@@ -852,14 +874,22 @@ function Invoke-SmokeInternal {
     }
 
     foreach ($skillId in $skillIds) {
-      $skillPath = Join-Path $tempDir ".agents/skills"
+      $bundleSkillDir = Get-InternalBundleSkillsRoot
+      $installedSkillDir = Join-Path $tempDir ".agents/skills"
       foreach ($segment in (Convert-SkillIdToPathSegments -SkillId $skillId)) {
-        $skillPath = Join-Path $skillPath $segment
+        $bundleSkillDir = Join-Path $bundleSkillDir $segment
+        $installedSkillDir = Join-Path $installedSkillDir $segment
       }
-      $skillPath = Join-Path $skillPath "SKILL.md"
+      $skillPath = Join-Path $installedSkillDir "SKILL.md"
 
       if (-not (Test-Path -LiteralPath $skillPath)) {
         throw "Smoke test failed: expected installed skill file missing: $skillPath"
+      }
+
+      $expectedFiles = @(Get-RelativeFilePaths -RootDir $bundleSkillDir)
+      $installedFiles = @(Get-RelativeFilePaths -RootDir $installedSkillDir)
+      if ((@($expectedFiles) -join "`n") -ne (@($installedFiles) -join "`n")) {
+        throw ("Smoke test failed: installed skill tree for {0} differed from bundle.`nExpected:`n{1}`nActual:`n{2}" -f $skillId, ($expectedFiles -join "`n"), ($installedFiles -join "`n"))
       }
     }
 

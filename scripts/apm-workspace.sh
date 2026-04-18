@@ -768,6 +768,18 @@ copy_external_skill() {
   printf '%s\n' "$package_relative_path"
 }
 
+relative_file_list() {
+  root_dir="$1"
+  if [ ! -d "$root_dir" ]; then
+    return 0
+  fi
+
+  (
+    cd "$root_dir"
+    find . -type f | sed 's#^\./##' | sort
+  )
+}
+
 external_source_repo_reference() {
   source_url="$1"
 
@@ -1016,6 +1028,12 @@ cmd_smoke_internal() {
     relative_path=$(skill_id_to_manifest_path "$skill_id")
     if [ ! -f "$temp_dir/.agents/skills/$relative_path/SKILL.md" ]; then
       fail "Smoke test failed: expected installed skill file missing: $temp_dir/.agents/skills/$relative_path/SKILL.md"
+    fi
+
+    expected_files=$(relative_file_list "$(internal_bundle_skills_root)/$relative_path")
+    actual_files=$(relative_file_list "$temp_dir/.agents/skills/$relative_path")
+    if [ "$expected_files" != "$actual_files" ]; then
+      fail "Smoke test failed: installed skill tree for $skill_id differed from bundle."
     fi
   done
 
