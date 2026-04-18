@@ -114,6 +114,23 @@ describe("skills-add/index-lib parseSourceInput", () => {
     });
   });
 
+  it("parses github blob URL for SKILL.md into a skill-directory hint", () => {
+    const parsed = parseSourceInput(
+      "https://github.com/mizchi/chezmoi-dotfiles/blob/main/dot_claude/skills/empirical-prompt-tuning/SKILL.md",
+      {
+        existsSync: () => false,
+      },
+    );
+    expect(parsed).toEqual({
+      kind: "github",
+      url: "https://github.com/mizchi/chezmoi-dotfiles",
+      owner: "mizchi",
+      repo: "chezmoi-dotfiles",
+      ref: "main",
+      hintPath: "dot_claude/skills/empirical-prompt-tuning",
+    });
+  });
+
   it("parses gitlab tree URL with ref and hintPath", () => {
     const parsed = parseSourceInput(
       "https://gitlab.com/group/repo/-/tree/v1.2.3/skills/sample",
@@ -241,6 +258,70 @@ describe("skills-add/index-lib discoverSkills", () => {
       expect(ids).toEqual(["gpt-5-4-prompting"]);
       expect(result.skillRoots).toEqual([
         path.join(tempRoot, "plugins", "codex", "skills"),
+      ]);
+    } finally {
+      if (originalEnv === undefined) {
+        delete process.env.INSTALL_INTERNAL_SKILLS;
+      } else {
+        process.env.INSTALL_INTERNAL_SKILLS = originalEnv;
+      }
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("discovers skills under dot_claude/skills at repo root", () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "skills-add-dot-claude-"));
+    const originalEnv = process.env.INSTALL_INTERNAL_SKILLS;
+    delete process.env.INSTALL_INTERNAL_SKILLS;
+
+    try {
+      writeSkill(
+        path.join(tempRoot, "dot_claude", "skills", "empirical-prompt-tuning"),
+        "Empirical Prompt Tuning",
+      );
+
+      const result = discoverSkills({ repoPath: tempRoot, pathHint: null });
+      const ids = result.skills.map((skill) => skill.id).sort();
+
+      expect(ids).toEqual(["empirical-prompt-tuning"]);
+      expect(result.skillRoots).toEqual([
+        path.join(tempRoot, "dot_claude", "skills"),
+      ]);
+    } finally {
+      if (originalEnv === undefined) {
+        delete process.env.INSTALL_INTERNAL_SKILLS;
+      } else {
+        process.env.INSTALL_INTERNAL_SKILLS = originalEnv;
+      }
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("uses the parent dot_claude skill root when a hint points at one skill directory", () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "skills-add-dot-claude-hint-"));
+    const originalEnv = process.env.INSTALL_INTERNAL_SKILLS;
+    delete process.env.INSTALL_INTERNAL_SKILLS;
+
+    try {
+      writeSkill(
+        path.join(tempRoot, "dot_claude", "skills", "empirical-prompt-tuning"),
+        "Empirical Prompt Tuning",
+      );
+      writeSkill(
+        path.join(tempRoot, "dot_claude", "skills", "other-skill"),
+        "Other Skill",
+      );
+
+      const result = discoverSkills({
+        repoPath: tempRoot,
+        pathHint: "dot_claude/skills/empirical-prompt-tuning",
+      });
+
+      expect(result.impliedSkill).toBe("empirical-prompt-tuning");
+      const ids = result.skills.map((skill) => skill.id).sort();
+      expect(ids).toEqual(["empirical-prompt-tuning", "other-skill"]);
+      expect(result.skillRoots).toEqual([
+        path.join(tempRoot, "dot_claude", "skills"),
       ]);
     } finally {
       if (originalEnv === undefined) {

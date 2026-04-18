@@ -445,6 +445,12 @@ export const parseGitHubUrl = (parsed: URL): ParsedSource | null => {
   if (parts[2] === "tree" && parts.length >= 4) {
     ref = parts[3];
     hintPath = parts.slice(4).join("/") || null;
+  } else if (parts[2] === "blob" && parts.length >= 4) {
+    ref = parts[3];
+    const blobPath = parts.slice(4).join("/");
+    if (blobPath.endsWith("/SKILL.md")) {
+      hintPath = blobPath.slice(0, -"SKILL.md".length).replace(/\/$/, "") || null;
+    }
   }
   return { kind: "github", url: `${parsed.origin}/${owner}/${repo}`, owner, repo, ref, hintPath };
 };

@@ -191,6 +191,7 @@ export const discoverSkills = ({
     "skills/.curated",
     "skills/.experimental",
     "skills/.system",
+    "dot_claude/skills",
     ".agents/skills",
     ".agent/skills",
     ".augment/skills",

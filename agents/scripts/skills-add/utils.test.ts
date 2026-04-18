@@ -629,6 +629,20 @@ describe("parseGitHubUrl", () => {
     expect(result?.hintPath).toBe(null);
   });
 
+  it("parses blob URL for SKILL.md as ref + skill directory hint", () => {
+    const url =
+      "https://github.com/mizchi/chezmoi-dotfiles/blob/main/dot_claude/skills/empirical-prompt-tuning/SKILL.md";
+    const result = parseGitHubUrl(new URL(url));
+    expect(result).toEqual({
+      kind: "github",
+      url: "https://github.com/mizchi/chezmoi-dotfiles",
+      owner: "mizchi",
+      repo: "chezmoi-dotfiles",
+      ref: "main",
+      hintPath: "dot_claude/skills/empirical-prompt-tuning",
+    });
+  });
+
   // https://github.com/millionco/react-doctor/skills/react-doctor
   // tree/ がないため hintPath は取得できない（制限）
   it("ignores subpath when tree/ segment is absent", () => {
@@ -644,10 +658,10 @@ describe("parseGitHubUrl", () => {
     });
   });
 
-  it("treats blob/ path the same as unknown segment (no ref/hintPath)", () => {
+  it("does not derive hintPath for non-SKILL blob URLs", () => {
     const url = "https://github.com/millionco/react-doctor/blob/main/README.md";
     const result = parseGitHubUrl(new URL(url));
-    expect(result?.ref).toBe(null);
+    expect(result?.ref).toBe("main");
     expect(result?.hintPath).toBe(null);
   });
 
