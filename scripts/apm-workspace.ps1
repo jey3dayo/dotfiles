@@ -297,6 +297,24 @@ function Invoke-CodexCompile {
   }
 }
 
+function Invoke-WorkspaceCommand {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$CommandArgs
+  )
+
+  Push-Location $WorkspaceDir
+  try {
+    & apm @CommandArgs
+    if ($LASTEXITCODE -ne 0) {
+      throw "apm command failed: $($CommandArgs -join ' ')"
+    }
+  }
+  finally {
+    Pop-Location
+  }
+}
+
 function Test-ManifestHasLocalPackages {
   $manifestPath = Join-Path $WorkspaceDir "apm.yml"
   if (-not (Test-Path -LiteralPath $manifestPath)) {
