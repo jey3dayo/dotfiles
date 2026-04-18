@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-04-03
+最終更新: 2026-04-19
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -78,7 +78,7 @@ mise/
     ├── test.toml          # テスト実行（Lua/TypeScript）
     ├── integration.toml   # 統合タスク（setup/doctor/check/format/lint 集約）
     ├── home-manager.toml  # Home Manager 操作
-    ├── skills.toml        # Agent skills 管理
+    ├── agents.toml        # APM bootstrap と legacy agent 保守
     ├── updates.toml       # 依存関係更新（brew/apt/submodules）
     ├── env.toml           # 環境変数管理（dotenvx）
     ├── brewfile.toml      # Brewfile バックアップ・リストア
@@ -91,7 +91,7 @@ helper shell は `mise/tasks/` 配下に置かず `mise/lib/` に集約し、`mi
 ## Task Design
 
 - 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
-- 環境依存・運用系: `home-manager.toml`, `skills.toml`, `updates.toml`, `env.toml`, `brewfile.toml`
+- 環境依存・運用系: `home-manager.toml`, `agents.toml`, `updates.toml`, `env.toml`, `brewfile.toml`
 - タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
 
 ### CI/CD タスク構造
@@ -128,13 +128,27 @@ ci:full
 └── ci (検証のみ)
     ├── check
     ├── test
-    ├── skills:validate
-    └── skills:validate:internal
+    ├── agents:validate
+    └── agents:validate:internal
 ```
 
 ## Task Catalog
 
 全タスク一覧は [mise-tasks.md](mise-tasks.md) を参照。主要グループの早見表と責務分離は本書と [docs/tools/workflows.md](workflows.md) を参照。
+
+### APM Global Skills Migration (Phase 1)
+
+agent 配布は APM global (`~/.apm`) を正面入口にし、`.config` 側は bootstrap と legacy rollback に絞る段階に入っています。
+
+- APM CLI 自体は `mise` 管理とし、`.config` と `~/.apm` の両方で `github:microsoft/apm` を pin する
+- `.config` 側の APM task は `apm:bootstrap` と `apm:smoke` だけ
+- install / update / list / validate / doctor / migrate は `cd ~/.apm && mise run ...` で行う
+- `apm:smoke` は bootstrap script と injected `~/.apm/mise.toml` の整合を見る smoke check
+- `agents:validate`, `agents:validate:internal`, `agents:check:sync`, `agents:report` は CI / rollback 用の legacy Nix フローとして維持する
+- `agents:add` はまだ legacy repo-local source 追加コマンドであり、APM workspace 操作には使わない
+- rollback が必要な場合は `agents:legacy:*` を使う
+
+詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
 
 ## Variable-driven Control
 
@@ -307,6 +321,14 @@ mise tasks
 
 # Install all tools from config
 mise install
+
+# Bootstrap the APM workspace from ~/.config
+mise run apm:bootstrap
+
+# Then move into ~/.apm for daily operation
+cd ~/.apm
+mise install
+mise run apply
 
 # Run generic tasks
 mise run format

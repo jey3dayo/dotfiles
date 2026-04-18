@@ -1,0 +1,35 @@
+# Managed by ~/.config bootstrap
+# Generated from ~/.config/templates/apm-workspace/mise.toml
+
+[tools]
+"github:microsoft/apm" = "0.8.11"
+
+[tasks.apply]
+description = "Deploy user-scope-compatible APM dependencies and refresh Codex output"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" apply"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 apply"
+
+[tasks.update]
+description = "Update the ~/.apm checkout when clean, then refresh APM dependencies and deploy"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" update"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 update"
+
+[tasks.list]
+description = "Show APM global dependencies"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" list"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 list"
+
+[tasks.validate]
+description = "Validate the ~/.apm workspace"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 validate"
+
+[tasks.doctor]
+description = "Inspect ~/.apm workspace state and deployed targets"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" doctor"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 doctor"
+
+[tasks.migrate]
+description = "Seed a legacy ~/.config skill into packages/<id> and record it in apm.yml"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate"

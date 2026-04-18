@@ -1,6 +1,6 @@
 # Mise Task Catalog
 
-最終更新: 2026-03-13
+最終更新: 2026-04-19
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -93,22 +93,35 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 詳細は [docs/tools/home-manager.md](home-manager.md) を参照。
 
-### Skills
+### Agents / APM Bootstrap
 
-`skills.toml` で定義。
+`agents.toml` で定義。
 
 | タスク                     | 説明                                                 |
 | -------------------------- | ---------------------------------------------------- |
-| `skills:add`               | スキルを追加（URL または owner/repo）                |
-| `skills:upgrade`           | スキル全更新（update → install → check）             |
-| `skills:validate`          | スキル構成バリデーション（Nix）                      |
-| `skills:validate:internal` | agents/src SSoT ルール検証                           |
-| `skills:list`              | 有効スキル一覧を表示                                 |
-| `skills:install`           | HM でスキルをインストール                            |
-| `skills:update`            | 全ソース更新（flake inputs）                         |
-| `skills:check`             | Skills 配布検証（~/.claude/skills/ カウント確認）    |
-| `skills:check:sync`        | flake.nix と agent-skills-sources.nix 整合性チェック |
-| `skills:report`            | インストール対象スキルの URL レポート                |
+| `apm:bootstrap`            | `~/.apm` の checkout / `apm.yml` / `packages` / `mise.toml` を初期化 |
+| `apm:smoke`                | bootstrap script と injected workspace template の smoke check |
+| `agents:add`               | legacy repo-local skill source を追加                |
+| `agents:validate`          | agent 構成バリデーション（legacy Nix / CI 用）       |
+| `agents:validate:internal` | agents/src legacy SSoT ルール検証                    |
+| `agents:check:sync`        | flake.nix と agent-skills-sources.nix 整合性チェック |
+| `agents:report`            | インストール対象 agent の URL レポート（legacy Nix） |
+| `agents:legacy:install`    | 従来の Nix / HM 配布を実行                           |
+| `agents:legacy:list`       | 従来の Nix bundle 一覧を表示                         |
+| `agents:legacy:update`     | 従来の flake inputs を更新                           |
+| `agents:legacy:check`      | 従来の Nix / HM 配布状態確認                         |
+| `agents:legacy:rollback`   | Home Manager の前世代へロールバック                  |
+| `agents:legacy:upgrade`    | 従来フローの update → install → check                |
+
+日常の APM 操作は `~/.apm/mise.toml` 側で行う。  
+代表例:
+
+- `cd ~/.apm && mise install`
+- `cd ~/.apm && mise run migrate -- apm-usage`
+- `cd ~/.apm && mise run apply`
+  - `./packages/*` を含む間は、現行 APM 制約により legacy deploy へ誘導される
+- `cd ~/.apm && mise run validate`
+- `cd ~/.apm && mise run doctor`
 
 ### Update
 

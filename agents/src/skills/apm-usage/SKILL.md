@@ -38,32 +38,29 @@ Treat `agents/src/skills/<name>/` as legacy only when:
 
 Do not assume `apm install -g` will deploy `~/.apm/.apm/skills` directly.
 
+In `.config`, keep APM responsibility minimal:
+
+- bootstrap `~/.apm`
+- inject managed `~/.apm/mise.toml`
+- seed migration from legacy `agents/src/skills/`
+- keep rollback-oriented legacy `agents:*` tasks
+
+Daily APM operation should happen from `~/.apm`, not from `.config`.
+
 ## Core Commands
 
 ```bash
-# Install the APM CLI managed by mise
+# From ~/.config: bootstrap only
+cd ~/.config
+mise run apm:bootstrap
+
+# From ~/.apm: daily operation
+cd ~/.apm
 mise install
-
-# Bootstrap ~/.apm checkout, manifest, and packages/
-mise run skills:bootstrap
-
-# Install everything declared in ~/.apm/apm.yml
-mise run skills:install
-
-# Update global dependencies in ~/.apm
-mise run skills:update
-
-# List installed global dependencies
-mise run skills:list
-
-# Validate workspace primitives
-mise run apm:validate
-
-# Check deployed target state
-mise run skills:check
-
-# One-time migration from legacy bundled skill
-mise run skills:migrate -- apm-usage
+mise run migrate -- apm-usage
+mise run apply
+mise run validate
+mise run doctor
 ```
 
 ## Important Global Constraint
@@ -83,30 +80,33 @@ cd ~/.apm
 apm install -g ./packages/my-skill
 ```
 
-This lets `~/.apm/apm.yml` stay the manifest source of truth while still deploying a repo-owned local package into `~/.claude/skills`, `~/.cursor/skills`, `~/.opencode/skills`, and Codex compile output.
+This lets `~/.apm/apm.yml` stay the manifest source of truth while keeping repo-owned local packages under `~/.apm/packages/`.
 
-`mise run skills:bootstrap` is expected to prepare an empty `apm-workspace` checkout all the way to:
+`mise run apm:bootstrap` from `.config` is expected to prepare an empty `apm-workspace` checkout all the way to:
 
 - `~/.apm/` as the git checkout
 - `~/.apm/apm.yml` as the manifest
 - `~/.apm/packages/README.md` as the marker for repo-owned local packages
+- `~/.apm/mise.toml` as the injected task entrypoint
 
-If `apm` itself is not installed yet, bootstrap should still prepare those files, and later commands should clearly tell you to run `mise install` before `skills:migrate` / `skills:install`.
+If `apm` itself is not installed yet, bootstrap should still prepare those files.  
+After that, move into `~/.apm` and run `mise install`.
 
 ## Migration Workflow
 
-1. Bootstrap the workspace with `mise run skills:bootstrap`
-2. Start with `mise run skills:migrate -- apm-usage`
-3. This copies `agents/src/skills/apm-usage/` into `~/.apm/packages/apm-usage/` and runs `apm install -g ./packages/apm-usage`
-4. From that point on, edit `~/.apm/packages/<skill-id>/`
-5. Deploy with `mise run skills:install`
-6. Validate with `mise run apm:validate`
-7. If needed, fall back with `mise run skills:legacy:install`
+1. Bootstrap the workspace with `cd ~/.config && mise run apm:bootstrap`
+2. Move to `~/.apm` and run `mise install`
+3. Start with `mise run migrate -- apm-usage`
+4. This copies `agents/src/skills/apm-usage/` into `~/.apm/packages/apm-usage/` and runs workspace-scope `apm install ./packages/apm-usage`
+5. From that point on, edit `~/.apm/packages/<skill-id>/`
+6. Treat `~/.apm/apm.yml` + `~/.apm/packages/` as the source of truth
+7. Keep the legacy deploy / rollback path available while APM user-scope local package support is still missing
+8. Validate with `mise run validate`
 
 ## Legacy / Rollback Notes
 
-- `skills:validate`, `skills:validate:internal`, `skills:check:sync`, and `skills:report` are legacy validation / reporting tasks kept for CI and compatibility in Phase 1
-- `skills:add` is also still legacy and edits repo-local source definitions rather than `~/.apm`
-- `skills:legacy:*` tasks are the explicit escape hatch if the APM path breaks
+- `agents:validate`, `agents:validate:internal`, `agents:check:sync`, and `agents:report` are legacy validation / reporting tasks kept for CI and compatibility in Phase 1
+- `agents:add` is also still legacy and edits repo-local source definitions rather than `~/.apm`
+- `agents:legacy:*` tasks are the explicit escape hatch if the APM path breaks
 - `agents/src/skills/` should no longer be described as the long-term source of truth for agent distribution in this repo
 - In this repo, install the APM CLI through `mise` rather than the official installer unless you are doing manual recovery
