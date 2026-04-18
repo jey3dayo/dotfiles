@@ -41,6 +41,10 @@
       url = "github:millionco/react-doctor";
       flake = false;
     };
+    mizchi-chezmoi-dotfiles = {
+      url = "github:mizchi/chezmoi-dotfiles";
+      flake = false;
+    };
     nyosegawa-skills = {
       url = "github:nyosegawa/skills";
       flake = false;

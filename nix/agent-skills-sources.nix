@@ -266,4 +266,15 @@
       "tauri"
     ];
   };
+  mizchi-chezmoi-dotfiles = {
+    url = "github:mizchi/chezmoi-dotfiles";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      mizchi-chezmoi-dotfiles = "dot_claude/skills";
+    };
+    selection.enable = [
+      "empirical-prompt-tuning"
+    ];
+  };
 }
