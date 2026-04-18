@@ -179,7 +179,7 @@ mise run doctor
 - `update`: checkout 更新 + `apm deps update -g` + `apm install -g`
 - `list`: `apm deps list -g`
 - `validate`: `apm compile --validate`
-- `doctor`: workspace / targets / dependency 状態の確認
+- `doctor`: workspace / targets / dependency 状態の確認。internal profile ごとの `skills / tracked / manifest` も表示する
 - `migrate-internal[:profile]`: internal pilot skills を `~/.apm/.internal-seed/` へ seed
 - `bundle-internal[:profile]`: profiled internal pilot skills から valid APM bundle artifact を生成
 - `stage-internal`: generated bundle を `~/.apm/internal-bundles/` へコピーし canonical upstream ref を出す
@@ -204,6 +204,8 @@ mise run apply
 - 各 skill の canonical upstream ref を導出する
 - internal bundled skill が勝つ ID は external ref を記録しない
 - `apm install -g <upstream-ref>` で `~/.apm/apm.yml` と `~/.apm/apm.lock.yaml` を更新する
+
+`apply` / `update` / `register-internal[:profile]` は、legacy 配布で残った internal skill link や junction が user target 側にあれば先に掃除してから `apm install -g` を実行します。Windows で `Cannot call rmtree on a symbolic link` が出るケースのガードです。
 - ソースは `~/.apm/apm_modules/` に取得される
 
 これで、external skill の source of truth は upstream repo のまま `apm.yml` に残ります。

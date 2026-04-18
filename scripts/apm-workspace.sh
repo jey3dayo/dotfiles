@@ -595,6 +595,48 @@ get_all_internal_pilot_skill_ids() {
   done | awk '!seen[$0]++'
 }
 
+internal_inventory_profiles() {
+  inventory_dir="$REPO_ROOT/agents/src"
+  [ -d "$inventory_dir" ] || return 0
+
+  for inventory_file in "$inventory_dir"/internal-apm-*.txt; do
+    [ -f "$inventory_file" ] || continue
+    profile=$(basename "$inventory_file" .txt)
+    profile=${profile#internal-apm-}
+    printf '%s\t%s\n' "$profile" "$inventory_file"
+  done | sort
+}
+
+manifest_has_internal_bundle_reference() {
+  profile="$1"
+  manifest_path="$WORKSPACE_DIR/apm.yml"
+  [ -f "$manifest_path" ] || return 1
+  grep -q "jey3dayo/apm-workspace/internal-bundles/internal-$profile#main" "$manifest_path"
+}
+
+print_internal_profile_summary() {
+  profiles=$(internal_inventory_profiles)
+  [ -n "$profiles" ] || return 0
+
+  printf 'internal profiles:\n'
+  printf '%s\n' "$profiles" | while IFS="$(printf '\t')" read -r profile inventory_file; do
+    [ -n "$profile" ] || continue
+    skill_count=$(get_internal_pilot_skill_ids_from_inventory "$inventory_file" | awk 'END { print NR + 0 }')
+    tracked_manifest="$WORKSPACE_DIR/internal-bundles/internal-$profile/apm.yml"
+    if [ -f "$tracked_manifest" ]; then
+      tracked_state=yes
+    else
+      tracked_state=no
+    fi
+    if manifest_has_internal_bundle_reference "$profile"; then
+      manifest_state=yes
+    else
+      manifest_state=no
+    fi
+    printf '  %-12s skills=%-3s tracked=%-3s manifest=%-3s\n' "$profile" "$skill_count" "$tracked_state" "$manifest_state"
+  done
+}
+
 internal_deploy_target_roots() {
   printf '%s\n' \
     "$HOME/.claude/skills" \
@@ -1062,6 +1104,7 @@ cmd_doctor() {
         printf '  missing  %s\n' "$path"
       fi
     done
+    print_internal_profile_summary
     apm deps list -g
   )
 }

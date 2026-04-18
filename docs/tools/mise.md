@@ -149,6 +149,8 @@ agent 配布は APM global (`~/.apm`) を正面入口にし、`.config` 側は b
 - `stage-internal[:profile]` は generated bundle を `~/.apm/internal-bundles/internal-<profile>/` へ同期し、push 後に使う `owner/repo/path#branch` 形式の upstream ref 候補を出す
 - `register-internal[:profile]` は staged bundle が push 済みなら upstream ref install を実行し、未反映なら明示的に止まる
 - `smoke-internal[:profile]` は generated bundle を temp project install して `.agents/skills/<id>/SKILL.md` を確認する
+- `doctor` は dependency 状態に加えて internal profile ごとの `skills / tracked / manifest` も表示する
+- `apply` / `update` / `register-internal[:profile]` は legacy internal skill link を先に掃除してから global install する
 - 現行 `migrate` は `migrate-internal` の compatibility alias として維持する
 - `agents:validate`, `agents:validate:internal`, `agents:check:sync`, `agents:report` は CI / rollback 用の legacy Nix フローとして維持する
 - `agents:add` はまだ legacy repo-local source 追加コマンドであり、APM workspace 操作には使わない

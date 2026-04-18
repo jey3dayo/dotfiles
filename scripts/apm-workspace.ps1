@@ -767,6 +767,7 @@ function Invoke-Doctor {
       Write-Host ("  missing  {0}" -f $path)
     }
   }
+  Write-InternalProfileSummary
   Invoke-List
 }
 
@@ -860,6 +861,49 @@ function Get-AllInternalPilotSkillIds {
   }
 
   return $result.ToArray()
+}
+
+function Get-InternalInventoryProfiles {
+  $inventoryDir = Join-Path $RepoRoot "agents\src"
+  return @(Get-ChildItem -LiteralPath $inventoryDir -Filter "internal-apm-*.txt" -File | Sort-Object Name | ForEach-Object {
+      [pscustomobject]@{
+        Profile = ($_.BaseName -replace '^internal-apm-', '')
+        InventoryFile = $_.FullName
+      }
+    })
+}
+
+function Test-ManifestHasInternalBundleReference {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Profile
+  )
+
+  $manifestPath = Join-Path $WorkspaceDir "apm.yml"
+  if (-not (Test-Path -LiteralPath $manifestPath)) {
+    return $false
+  }
+
+  $pattern = [regex]::Escape("jey3dayo/apm-workspace/internal-bundles/internal-$Profile#main")
+  return [bool](Get-Content -LiteralPath $manifestPath -ErrorAction SilentlyContinue | Select-String -Pattern $pattern)
+}
+
+function Write-InternalProfileSummary {
+  $profiles = @(Get-InternalInventoryProfiles)
+  if ($profiles.Count -eq 0) {
+    return
+  }
+
+  Write-Host "internal profiles:"
+  foreach ($profile in $profiles) {
+    $skillCount = @(
+      Get-InternalPilotSkillIdsFromInventoryFile -InventoryFile $profile.InventoryFile
+    ).Count
+    $trackedManifest = Join-Path $WorkspaceDir ("internal-bundles\internal-{0}\apm.yml" -f $profile.Profile)
+    $trackedState = if (Test-Path -LiteralPath $trackedManifest) { "yes" } else { "no" }
+    $manifestState = if (Test-ManifestHasInternalBundleReference -Profile $profile.Profile) { "yes" } else { "no" }
+    Write-Host ("  {0,-12} skills={1,-3} tracked={2,-3} manifest={3,-3}" -f $profile.Profile, $skillCount, $trackedState, $manifestState)
+  }
 }
 
 function Get-RequestedInternalSkillIds {
