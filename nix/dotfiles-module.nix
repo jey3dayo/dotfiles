@@ -237,49 +237,43 @@ in
       # The following activation scripts may still be needed if you have runtime state
       # that needs initialization (e.g., projects-config, mise trusted-configs, tmux plugins).
 
-      activation = lib.mkMerge [
-        {
-          # Deploy files that must remain regular files for tool compatibility.
-          dotfiles-copied-entry-points = lib.mkIf cfg.deployEntryPoints (
-            lib.hm.dag.entryAfter [ "linkGeneration" ] (
-              builtins.concatStringsSep "\n" (mkCopiedHomeFileCommands copiedEntryPointFiles)
-            )
-          );
-        }
-        {
-          # Git submodule initialization (activation script)
-          dotfiles-submodules = lib.mkIf cfg.initSubmodules (
-            lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-              # Initialize tpm submodule and auto-install tmux plugins
-              ${detectWorktreeScript}
+      # Deploy files that must remain regular files for tool compatibility.
+      activation.dotfiles-copied-entry-points = lib.mkIf cfg.deployEntryPoints (
+        lib.hm.dag.entryAfter [ "linkGeneration" ] (
+          builtins.concatStringsSep "\n" (mkCopiedHomeFileCommands copiedEntryPointFiles)
+        )
+      );
 
-              if [ -n "$worktree" ]; then
-                echo "Initializing Git submodules for tpm..."
-                if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
-                  echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
-                fi
+      # Git submodule initialization (activation script)
+      activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
+        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          # Initialize tpm submodule and auto-install tmux plugins
+          ${detectWorktreeScript}
 
-                # Auto-install TPM plugins if tmux server is not running
-                tpm_path="$worktree/tmux/plugins/tpm"
-                install_script="$tpm_path/bin/install_plugins"
-                if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
-                  echo "Installing tmux plugins via TPM..."
-                  PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
-                    echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
-                fi
-              fi
-            ''
-          );
-        }
-        {
-          dotfiles-materialized-entrypoints = lib.mkIf cfg.deployEntryPoints (
-            lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-              # Materialize configs for CLIs that reject Home Manager symlinks.
-              ${mkMaterializedFilesScript materializedEntryPointFiles}
-            ''
-          );
-        }
-      ];
+          if [ -n "$worktree" ]; then
+            echo "Initializing Git submodules for tpm..."
+            if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
+              echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
+            fi
+
+            # Auto-install TPM plugins if tmux server is not running
+            tpm_path="$worktree/tmux/plugins/tpm"
+            install_script="$tpm_path/bin/install_plugins"
+            if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
+              echo "Installing tmux plugins via TPM..."
+              PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
+                echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
+            fi
+          fi
+        ''
+      );
+
+      activation.dotfiles-materialized-entrypoints = lib.mkIf cfg.deployEntryPoints (
+        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          # Materialize configs for CLIs that reject Home Manager symlinks.
+          ${mkMaterializedFilesScript materializedEntryPointFiles}
+        ''
+      );
     };
   };
 }

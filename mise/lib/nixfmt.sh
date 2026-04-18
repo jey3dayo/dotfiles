@@ -10,7 +10,7 @@ run_nixfmt() {
   if command -v nixfmt >/dev/null 2>&1; then
     nixfmt "$@"
   elif command -v nix >/dev/null 2>&1; then
-    nix shell nixpkgs#nixfmt-rfc-style --command nixfmt "$@"
+    nix run .#formatter -- "$@"
   else
     echo "❌ nixfmt not found. Install it locally or make nix available for fallback."
     exit 1
