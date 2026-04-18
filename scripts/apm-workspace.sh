@@ -366,7 +366,7 @@ assert_tracked_internal_bundle_published() {
 copy_internal_skill_into_bundle() {
   skill_id="$1"
   validate_skill_id "$skill_id"
-  source_dir="$LEGACY_SKILLS_DIR/$skill_id"
+  source_dir=$(legacy_skill_content_dir "$skill_id")
 
   if [ ! -d "$source_dir" ]; then
     fail "Legacy skill not found: $source_dir"
@@ -384,6 +384,28 @@ copy_internal_skill_into_bundle() {
 
   mkdir -p "$destination_dir"
   cp -R "$source_dir"/. "$destination_dir"
+}
+
+legacy_skill_content_dir() {
+  skill_id="$1"
+  validate_skill_id "$skill_id"
+  skill_root="$LEGACY_SKILLS_DIR/$skill_id"
+
+  if [ ! -d "$skill_root" ]; then
+    fail "Legacy skill not found: $skill_root"
+  fi
+
+  if [ -f "$skill_root/SKILL.md" ]; then
+    printf '%s\n' "$skill_root"
+    return 0
+  fi
+
+  if [ -f "$skill_root/skills/SKILL.md" ]; then
+    printf '%s\n' "$skill_root/skills"
+    return 0
+  fi
+
+  fail "Legacy skill content dir missing SKILL.md: $skill_root"
 }
 
 manifest_has_local_packages() {
@@ -460,7 +482,7 @@ compile_codex() {
 copy_skill() {
   skill_id="$1"
   validate_skill_id "$skill_id"
-  source_dir="$LEGACY_SKILLS_DIR/$skill_id"
+  source_dir=$(legacy_skill_content_dir "$skill_id")
   package_relative_path=$(skill_id_to_manifest_path "$skill_id")
   destination_dir="$INTERNAL_SEED_DIR/$package_relative_path"
 

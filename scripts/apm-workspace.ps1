@@ -497,7 +497,7 @@ function Copy-InternalSkillIntoBundle {
     [string]$SkillId
   )
 
-  $sourceDir = Join-Path $LegacySkillsDir $SkillId
+  $sourceDir = Get-LegacySkillContentDir -SkillId $SkillId
   if (-not (Test-Path -LiteralPath $sourceDir)) {
     throw "Legacy skill not found: $sourceDir"
   }
@@ -508,6 +508,29 @@ function Copy-InternalSkillIntoBundle {
   }
 
   Copy-DirectoryContents -SourceDir $sourceDir -DestinationDir $destinationDir
+}
+
+function Get-LegacySkillContentDir {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  $skillRoot = Join-Path $LegacySkillsDir $SkillId
+  if (-not (Test-Path -LiteralPath $skillRoot)) {
+    throw "Legacy skill not found: $skillRoot"
+  }
+
+  if (Test-Path -LiteralPath (Join-Path $skillRoot "SKILL.md")) {
+    return $skillRoot
+  }
+
+  $nestedSkillsDir = Join-Path $skillRoot "skills"
+  if (Test-Path -LiteralPath (Join-Path $nestedSkillsDir "SKILL.md")) {
+    return $nestedSkillsDir
+  }
+
+  throw "Legacy skill content dir missing SKILL.md: $skillRoot"
 }
 
 function Refresh-WorkspaceCheckout {
@@ -708,7 +731,7 @@ function Copy-LegacySkill {
     [string]$SkillId
   )
 
-  $sourceDir = Join-Path $LegacySkillsDir $SkillId
+  $sourceDir = Get-LegacySkillContentDir -SkillId $SkillId
   $destinationDir = Join-Path $InternalSeedDir (Convert-SkillIdToPackageRelativePath -SkillId $SkillId)
 
   if (-not (Test-Path -LiteralPath $sourceDir)) {
