@@ -30,11 +30,61 @@ run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" doct
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 doctor"
 
 [tasks.migrate]
-description = "Seed a legacy ~/.config skill into packages/<id> and record it in apm.yml"
+description = "Compatibility alias for migrate-internal; retained for legacy recovery workflows"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate"
 
+[tasks.migrate-internal]
+description = "Seed first-batch internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-internal"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate-internal"
+
+[tasks."migrate-internal:next-simple"]
+description = "Seed next-simple internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-internal --profile next-simple"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate-internal -Profile next-simple"
+
+[tasks.bundle-internal]
+description = "Build ~/.apm/.internal-seed/internal-first-batch as a valid internal APM bundle artifact"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" bundle-internal"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 bundle-internal"
+
+[tasks."bundle-internal:next-simple"]
+description = "Build ~/.apm/.internal-seed/internal-next-simple as a valid internal APM bundle artifact"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" bundle-internal --profile next-simple"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 bundle-internal -Profile next-simple"
+
+[tasks.stage-internal]
+description = "Copy the generated internal bundle into ~/.apm/internal-bundles/ and print its upstream ref"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-internal"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-internal"
+
+[tasks."stage-internal:next-simple"]
+description = "Copy the next-simple internal bundle into ~/.apm/internal-bundles/ and print its upstream ref"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-internal --profile next-simple"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-internal -Profile next-simple"
+
+[tasks.register-internal]
+description = "Install the staged internal bundle by upstream ref after commit/push"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-internal"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-internal"
+
+[tasks."register-internal:next-simple"]
+description = "Install the staged next-simple internal bundle by upstream ref after commit/push"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-internal --profile next-simple"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-internal -Profile next-simple"
+
+[tasks.smoke-internal]
+description = "Smoke-test the generated internal bundle via temp project install"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-internal"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-internal"
+
+[tasks."smoke-internal:next-simple"]
+description = "Smoke-test the generated next-simple internal bundle via temp project install"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-internal --profile next-simple"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-internal -Profile next-simple"
+
 [tasks.migrate-external]
-description = "Vendor selected external skills into packages/ and record them in apm.yml"
+description = "Register enabled external skills by upstream ref in ~/.apm/apm.yml"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-external"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace-migrate-external.ps1"

@@ -9,12 +9,16 @@ fi
 REPO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 WORKSPACE_DIR="${APM_WORKSPACE_DIR:-$HOME/.apm}"
 WORKSPACE_REPO="${APM_WORKSPACE_REPO:-https://github.com/jey3dayo/apm-workspace.git}"
+INTERNAL_PROFILE="${APM_INTERNAL_PROFILE:-first-batch}"
 LEGACY_SKILLS_DIR="$REPO_ROOT/agents/src/skills"
+INTERNAL_PILOT_INVENTORY_FILE="$REPO_ROOT/agents/src/internal-apm-$INTERNAL_PROFILE.txt"
 EXTERNAL_SOURCES_FILE="$REPO_ROOT/nix/agent-skills-sources.nix"
-PACKAGES_DIR="$WORKSPACE_DIR/packages"
 CODEX_OUTPUT="${APM_CODEX_OUTPUT:-$HOME/.codex/AGENTS.md}"
 MISE_TEMPLATE="$REPO_ROOT/templates/apm-workspace/mise.toml"
 MISE_DESTINATION="$WORKSPACE_DIR/mise.toml"
+INTERNAL_SEED_DIR="$WORKSPACE_DIR/.internal-seed"
+INTERNAL_BUNDLE_NAME="internal-$INTERNAL_PROFILE"
+TRACKED_INTERNAL_BUNDLES_DIR_NAME="internal-bundles"
 MANAGED_MISE_MARKER="# Managed by ~/.config bootstrap"
 
 have_command() {
@@ -32,6 +36,36 @@ warn() {
 fail() {
   printf 'error: %s\n' "$*" >&2
   exit 1
+}
+
+case "$INTERNAL_PROFILE" in
+  [A-Za-z0-9][A-Za-z0-9._-]*) ;;
+  *)
+    fail "Invalid internal profile: $INTERNAL_PROFILE"
+    ;;
+esac
+
+set_internal_profile_context() {
+  profile_name="$1"
+  case "$profile_name" in
+    [A-Za-z0-9][A-Za-z0-9._-]*) ;;
+    *)
+      fail "Invalid internal profile: $profile_name"
+      ;;
+  esac
+
+  INTERNAL_PROFILE="$profile_name"
+  INTERNAL_PILOT_INVENTORY_FILE="$REPO_ROOT/agents/src/internal-apm-$INTERNAL_PROFILE.txt"
+  INTERNAL_BUNDLE_NAME="internal-$INTERNAL_PROFILE"
+}
+
+resolve_internal_command_args() {
+  if [ "$#" -ge 2 ] && [ "$1" = "--profile" ]; then
+    set_internal_profile_context "$2"
+    shift 2
+  fi
+
+  printf '%s\n' "$@"
 }
 
 require_command() {
@@ -150,7 +184,6 @@ ensure_workspace_repo() {
     fail "$WORKSPACE_DIR exists but is not a git checkout."
   fi
 
-  mkdir -p "$PACKAGES_DIR"
 }
 
 ensure_gitignore_entry() {
@@ -161,30 +194,6 @@ ensure_gitignore_entry() {
   if ! grep -qxF "$entry" "$gitignore_path"; then
     printf '\n%s\n' "$entry" >>"$gitignore_path"
   fi
-}
-
-ensure_packages_readme() {
-  packages_readme_path="$PACKAGES_DIR/README.md"
-
-  if [ -f "$packages_readme_path" ]; then
-    return 0
-  fi
-
-  cat >"$packages_readme_path" <<'EOF'
-# Local APM packages
-
-Store repo-owned local packages under `packages/<skill-id>/`.
-
-Typical flow:
-
-```bash
-cd ~/.apm
-mise install
-mise run migrate -- apm-usage
-mise run migrate-external
-mise run apply
-```
-EOF
 }
 
 write_workspace_manifest_template() {
@@ -206,14 +215,175 @@ EOF
 
 ensure_workspace_scaffold() {
   ensure_workspace_repo
-  ensure_gitignore_entry '.apm/'
-  ensure_gitignore_entry 'apm_modules/'
-  ensure_packages_readme
+  ensure_gitignore_entry '/.apm/'
+  ensure_gitignore_entry '/apm_modules/'
+  ensure_gitignore_entry '/.internal-seed/'
 
   if [ ! -f "$WORKSPACE_DIR/apm.yml" ]; then
     log "Writing bootstrap apm.yml in $WORKSPACE_DIR"
     write_workspace_manifest_template
   fi
+}
+
+internal_bundle_dir() {
+  printf '%s/%s\n' "$INTERNAL_SEED_DIR" "$INTERNAL_BUNDLE_NAME"
+}
+
+internal_bundle_skills_root() {
+  printf '%s/.apm/skills\n' "$(internal_bundle_dir)"
+}
+
+tracked_internal_bundles_dir() {
+  printf '%s/%s\n' "$WORKSPACE_DIR" "$TRACKED_INTERNAL_BUNDLES_DIR_NAME"
+}
+
+tracked_internal_bundle_dir() {
+  printf '%s/%s\n' "$(tracked_internal_bundles_dir)" "$INTERNAL_BUNDLE_NAME"
+}
+
+tracked_internal_bundle_relative_path() {
+  printf '%s/%s\n' "$TRACKED_INTERNAL_BUNDLES_DIR_NAME" "$INTERNAL_BUNDLE_NAME"
+}
+
+write_internal_bundle_manifest_template() {
+  bundle_dir=$(internal_bundle_dir)
+  cat >"$bundle_dir/apm.yml" <<EOF
+name: $INTERNAL_BUNDLE_NAME
+version: 1.0.0
+description: Generated internal bundled skills pilot for global APM migration
+dependencies:
+  apm: []
+  mcp: []
+scripts: {}
+EOF
+}
+
+write_internal_bundle_readme() {
+  bundle_dir=$(internal_bundle_dir)
+  cat >"$bundle_dir/README.md" <<EOF
+# Internal First Batch Bundle
+
+This bundle is generated from ~/.config internal bundled skills for the global APM migration pilot.
+
+- Source inventory: \`~/.config/agents/src/internal-apm-$INTERNAL_PROFILE.txt\`
+- Source skills: \`~/.config/agents/src/skills/<id>/\`
+- Purpose: provide a valid APM package artifact for future publish/install work
+- Current limitation: \`apm install -g <local-path>\` is rejected by APM 0.8.11 at user scope, so this bundle is for validation and publication prep only
+EOF
+}
+
+reset_internal_bundle_dir() {
+  bundle_dir=$(internal_bundle_dir)
+  rm -rf "$bundle_dir"
+  mkdir -p "$(internal_bundle_skills_root)"
+}
+
+reset_tracked_internal_bundle_dir() {
+  tracked_dir=$(tracked_internal_bundle_dir)
+  rm -rf "$tracked_dir"
+  mkdir -p "$tracked_dir"
+}
+
+workspace_remote_to_repo_reference() {
+  remote_url="$1"
+
+  case "$remote_url" in
+    https://github.com/*)
+      repo_ref=${remote_url#https://github.com/}
+      repo_ref=${repo_ref%.git}
+      repo_ref=${repo_ref%/}
+      printf '%s\n' "$repo_ref"
+      ;;
+    git@github.com:*)
+      repo_ref=${remote_url#git@github.com:}
+      repo_ref=${repo_ref%.git}
+      printf '%s\n' "$repo_ref"
+      ;;
+    *)
+      fail "Unsupported workspace remote URL for internal bundle reference: $remote_url"
+      ;;
+  esac
+}
+
+workspace_remote_url() {
+  remote_name="${1:-origin}"
+  ensure_workspace_repo
+
+  if remote_url=$(git -C "$WORKSPACE_DIR" remote get-url "$remote_name" 2>/dev/null); then
+    printf '%s\n' "$remote_url"
+    return 0
+  fi
+
+  if [ "$remote_name" = "origin" ]; then
+    printf '%s\n' "$WORKSPACE_REPO"
+    return 0
+  fi
+
+  fail "Could not resolve remote URL for '$remote_name'"
+}
+
+workspace_repo_reference() {
+  remote_name="${1:-origin}"
+  workspace_remote_to_repo_reference "$(workspace_remote_url "$remote_name")"
+}
+
+workspace_tracking_info() {
+  current_branch=$(git -C "$WORKSPACE_DIR" branch --show-current 2>/dev/null || true)
+  [ -n "$current_branch" ] || fail "Cannot register internal bundle from a detached HEAD. Check out a tracking branch first."
+
+  remote_name=$(git -C "$WORKSPACE_DIR" config --get "branch.$current_branch.remote" 2>/dev/null || true)
+  merge_ref=$(git -C "$WORKSPACE_DIR" config --get "branch.$current_branch.merge" 2>/dev/null || true)
+  [ -n "$remote_name" ] && [ -n "$merge_ref" ] || fail "Branch '$current_branch' has no upstream tracking branch. Push it first."
+
+  merge_branch=${merge_ref#refs/heads/}
+  printf '%s\036%s\n' "$remote_name" "$merge_branch"
+}
+
+tracked_internal_bundle_reference() {
+  tracking_info=$(workspace_tracking_info)
+  remote_name=${tracking_info%%$(printf '\036')*}
+  branch_name=${tracking_info#*$(printf '\036')}
+  printf '%s/%s#%s\n' "$(workspace_repo_reference "$remote_name")" "$(tracked_internal_bundle_relative_path)" "$branch_name"
+}
+
+assert_tracked_internal_bundle_published() {
+  tracked_relative_path=$(tracked_internal_bundle_relative_path)
+  tracked_dir=$(tracked_internal_bundle_dir)
+
+  [ -d "$tracked_dir" ] || fail "Tracked internal bundle missing: $tracked_dir. Run 'mise run stage-internal' first."
+
+  dirty=$(git -C "$WORKSPACE_DIR" status --porcelain -- "$tracked_relative_path" 2>/dev/null || true)
+  [ -z "$dirty" ] || fail "Tracked internal bundle has uncommitted changes. Commit and push $tracked_relative_path before registering it."
+
+  tracking_info=$(workspace_tracking_info)
+  remote_name=${tracking_info%%$(printf '\036')*}
+  branch_name=${tracking_info#*$(printf '\036')}
+  upstream="$remote_name/$branch_name"
+  unpushed=$(git -C "$WORKSPACE_DIR" rev-list "$upstream..HEAD" -- "$tracked_relative_path" 2>/dev/null || true)
+  [ -z "$unpushed" ] || fail "Tracked internal bundle has commits not on $upstream. Push the branch before registering it."
+}
+
+copy_internal_skill_into_bundle() {
+  skill_id="$1"
+  validate_skill_id "$skill_id"
+  source_dir="$LEGACY_SKILLS_DIR/$skill_id"
+
+  if [ ! -d "$source_dir" ]; then
+    fail "Legacy skill not found: $source_dir"
+  fi
+
+  destination_dir=$(internal_bundle_skills_root)
+  old_ifs=$IFS
+  IFS=':'
+  set -- $skill_id
+  IFS=$old_ifs
+  validate_skill_path_segments "$skill_id" "$@"
+  for segment in "$@"; do
+    destination_dir="$destination_dir/$segment"
+  done
+
+  mkdir -p "$destination_dir"
+  cp -R "$source_dir"/. "$destination_dir"
 }
 
 manifest_has_local_packages() {
@@ -291,7 +461,8 @@ copy_skill() {
   skill_id="$1"
   validate_skill_id "$skill_id"
   source_dir="$LEGACY_SKILLS_DIR/$skill_id"
-  destination_dir="$PACKAGES_DIR/$skill_id"
+  package_relative_path=$(skill_id_to_manifest_path "$skill_id")
+  destination_dir="$INTERNAL_SEED_DIR/$package_relative_path"
 
   if [ ! -d "$source_dir" ]; then
     fail "Legacy skill not found: $source_dir"
@@ -299,13 +470,40 @@ copy_skill() {
 
   if [ -e "$destination_dir" ]; then
     if [ "${APM_MIGRATE_FORCE:-0}" != "1" ]; then
-      fail "$destination_dir already exists. Set APM_MIGRATE_FORCE=1 to replace it."
+      printf 'skipped\n'
+      return 0
     fi
 
     rm -rf "$destination_dir"
   fi
 
-  cp -R "$source_dir" "$destination_dir"
+  mkdir -p "$destination_dir"
+  cp -R "$source_dir"/. "$destination_dir"
+  printf 'seeded\n'
+}
+
+get_internal_pilot_skill_ids() {
+  if [ ! -f "$INTERNAL_PILOT_INVENTORY_FILE" ]; then
+    fail "Internal pilot inventory not found: $INTERNAL_PILOT_INVENTORY_FILE"
+  fi
+
+  awk '
+    /^[[:space:]]*#/ { next }
+    /^[[:space:]]*$/ { next }
+    { print $1 }
+  ' "$INTERNAL_PILOT_INVENTORY_FILE"
+}
+
+resolve_internal_skill_ids() {
+  if [ "$#" -gt 0 ]; then
+    for skill_id in "$@"; do
+      validate_skill_id "$skill_id"
+      printf '%s\n' "$skill_id"
+    done
+    return 0
+  fi
+
+  get_internal_pilot_skill_ids
 }
 
 internal_skill_exists() {
@@ -570,6 +768,56 @@ copy_external_skill() {
   printf '%s\n' "$package_relative_path"
 }
 
+external_source_repo_reference() {
+  source_url="$1"
+
+  case "$source_url" in
+    github:*)
+      source_path=${source_url#github:}
+      owner=${source_path%%/*}
+      repo_and_ref=${source_path#*/}
+      repo=${repo_and_ref%%/*}
+      ref=""
+      if [ "$repo_and_ref" != "$repo" ]; then
+        ref=${repo_and_ref#"$repo/"}
+      fi
+      printf '%s\036%s\n' "$owner/$repo" "$ref"
+      ;;
+    *)
+      fail "Cannot derive canonical upstream reference from source URL: $source_url"
+      ;;
+  esac
+}
+
+external_skill_reference() {
+  source_url="$1"
+  checkout_path="$2"
+  source_name="$3"
+  base_dir="$4"
+  id_prefix="$5"
+  catalogs_value="$6"
+  skill_id="$7"
+
+  source_dir=$(resolve_external_skill_source_dir "$checkout_path" "$source_name" "$base_dir" "$id_prefix" "$catalogs_value" "$skill_id")
+  repo_info=$(external_source_repo_reference "$source_url")
+  repo=${repo_info%%$(printf '\036')*}
+  ref=${repo_info#*$(printf '\036')}
+  relative_path=${source_dir#"$checkout_path"}
+  relative_path=${relative_path#/}
+
+  if [ -n "$relative_path" ] && [ "$relative_path" != "." ]; then
+    reference="$repo/$relative_path"
+  else
+    reference="$repo"
+  fi
+
+  if [ -n "$ref" ]; then
+    reference="$reference#$ref"
+  fi
+
+  printf '%s\n' "$reference"
+}
+
 migrate_package() {
   package_relative_path="$1"
   (
@@ -588,7 +836,6 @@ cmd_bootstrap() {
   log "Next:"
   log "  cd $WORKSPACE_DIR"
   log "  mise install"
-  log "  mise run migrate -- apm-usage"
   log "  mise run migrate-external"
   log "  mise run apply"
 }
@@ -656,7 +903,6 @@ cmd_doctor() {
     printf 'apm: %s\n' "$(apm --version)"
     printf 'workspace: %s\n' "$WORKSPACE_DIR"
     printf 'manifest: %s\n' "$(test -f apm.yml && printf present || printf missing)"
-    printf 'packages: %s\n' "$(test -d packages && printf present || printf missing)"
     printf 'branch: %s\n' "$(git branch --show-current 2>/dev/null || printf detached)"
     printf 'remote:\n'
     git remote -v || true
@@ -673,20 +919,108 @@ cmd_doctor() {
 }
 
 cmd_migrate() {
-  if [ "$#" -eq 0 ]; then
-    fail "usage: scripts/apm-workspace.sh migrate <skill-id> [skill-id ...]"
-  fi
+  warn "migrate is now a compatibility alias. Prefer 'migrate-internal' for internal pilot work."
+  cmd_migrate_internal "$@"
+}
 
-  require_apm
+cmd_migrate_internal() {
+  skill_ids=$(resolve_internal_command_args "$@" | resolve_internal_skill_ids)
+  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
+
   ensure_workspace_repo
   ensure_workspace_scaffold
   ensure_workspace_mise_file
 
-  for skill_id in "$@"; do
-    copy_skill "$skill_id"
-    migrate_package "$skill_id"
-    log "Migrated legacy skill into ~/.apm/packages/$skill_id and recorded ./packages/$skill_id in apm.yml"
+  if [ "$#" -eq 0 ]; then
+    log "Using internal pilot inventory ($INTERNAL_PROFILE): $(printf '%s' "$skill_ids" | tr '\n' ',' | sed 's/,$//; s/,/, /g')"
+  fi
+
+  printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
+    [ -n "$skill_id" ] || continue
+    status=$(copy_skill "$skill_id")
+    if [ "$status" = "seeded" ]; then
+      log "Seeded internal skill $skill_id into ~/.apm/.internal-seed/$skill_id for pilot/reference only. Global apm.yml was left unchanged."
+    else
+      log "Skipped internal skill $skill_id because ~/.apm/.internal-seed/$skill_id already exists. Set APM_MIGRATE_FORCE=1 to replace it."
+    fi
   done
+}
+
+cmd_bundle_internal() {
+  skill_ids=$(resolve_internal_command_args "$@" | resolve_internal_skill_ids)
+  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
+
+  ensure_workspace_repo
+  ensure_workspace_scaffold
+  ensure_workspace_mise_file
+
+  reset_internal_bundle_dir
+  write_internal_bundle_manifest_template
+  write_internal_bundle_readme
+
+  printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
+    [ -n "$skill_id" ] || continue
+    copy_internal_skill_into_bundle "$skill_id"
+  done
+
+  log "Built internal bundle at ~/.apm/.internal-seed/$INTERNAL_BUNDLE_NAME from: $(printf '%s' "$skill_ids" | tr '\n' ',' | sed 's/,$//; s/,/, /g')"
+}
+
+cmd_stage_internal() {
+  skill_ids=$(resolve_internal_command_args "$@" | resolve_internal_skill_ids)
+  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
+
+  cmd_bundle_internal "$@"
+
+  tracked_dir=$(tracked_internal_bundle_dir)
+  reset_tracked_internal_bundle_dir
+  cp -R "$(internal_bundle_dir)"/. "$tracked_dir"
+
+  reference=$(tracked_internal_bundle_reference)
+  log "Staged repo-tracked internal bundle at $tracked_dir"
+  log "Candidate upstream ref: $reference"
+  log "Push the updated apm-workspace repo before using 'apm install -g $reference'."
+}
+
+cmd_register_internal() {
+  require_apm
+  resolve_internal_command_args "$@" >/dev/null
+  ensure_workspace_repo
+  ensure_workspace_scaffold
+  ensure_workspace_mise_file
+  assert_tracked_internal_bundle_published
+
+  reference=$(tracked_internal_bundle_reference)
+  (
+    cd "$WORKSPACE_DIR"
+    apm install -g "$reference"
+  )
+  log "Registered internal bundle from upstream ref: $reference"
+}
+
+cmd_smoke_internal() {
+  require_apm
+  skill_ids=$(resolve_internal_command_args "$@" | resolve_internal_skill_ids)
+  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
+
+  cmd_bundle_internal "$@"
+
+  temp_dir=$(mktemp -d "${TMPDIR:-/tmp}/apm-internal-bundle-smoke.XXXXXX")
+  (
+    cd "$temp_dir"
+    apm install "$(internal_bundle_dir)" --target codex
+  ) || fail "apm install failed for internal bundle smoke test. Temp workspace: $temp_dir"
+
+  printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
+    [ -n "$skill_id" ] || continue
+    relative_path=$(skill_id_to_manifest_path "$skill_id")
+    if [ ! -f "$temp_dir/.agents/skills/$relative_path/SKILL.md" ]; then
+      fail "Smoke test failed: expected installed skill file missing: $temp_dir/.agents/skills/$relative_path/SKILL.md"
+    fi
+  done
+
+  rm -rf "$temp_dir"
+  log "Smoke verified internal bundle via temp project install: $(printf '%s' "$skill_ids" | tr '\n' ',' | sed 's/,$//; s/,/, /g')"
 }
 
 cmd_migrate_external() {
@@ -728,10 +1062,12 @@ cmd_migrate_external() {
         continue
       fi
 
-      source_dir=$(resolve_external_skill_source_dir "$checkout_path" "$source_name" "$base_dir" "$id_prefix" "$catalogs_value" "$skill_id")
-      package_relative_path=$(copy_external_skill "$source_dir" "$skill_id")
-      migrate_package "$package_relative_path"
-      log "Migrated external skill $skill_id from $source_name into ~/.apm/packages/$package_relative_path"
+      reference=$(external_skill_reference "$source_url" "$checkout_path" "$source_name" "$base_dir" "$id_prefix" "$catalogs_value" "$skill_id")
+      (
+        cd "$WORKSPACE_DIR"
+        apm install -g "$reference"
+      )
+      log "Registered external skill $skill_id from $source_name as $reference"
     done
   done <"$sources_cache"
 
@@ -760,15 +1096,20 @@ cmd_help() {
 Usage: scripts/apm-workspace.sh <command> [args...]
 
 Commands:
-  bootstrap          Ensure ~/.apm checkout + apm.yml + packages/ + mise.toml are ready
+  bootstrap          Ensure ~/.apm checkout + apm.yml + mise.toml are ready
   inject-mise        Copy or refresh the managed ~/.apm/mise.toml template
   apply              Deploy user-scope-compatible dependencies and compile Codex output
   update             Pull clean checkout, update deps, then apply
   list               Show APM global dependencies
   validate           Validate the ~/.apm workspace
   doctor             Print workspace and target state
-  migrate <skills>   Copy legacy skills into ~/.apm/packages/<id> and register them
-  migrate-external   Vendor selected external skills into ~/.apm/packages and register them
+  migrate            Compatibility alias for migrate-internal
+  migrate-internal   Seed internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml
+  bundle-internal    Build ~/.apm/.internal-seed/internal-<profile> as a valid internal APM bundle artifact
+  stage-internal     Copy the generated bundle into ~/.apm/internal-bundles/ and print its upstream ref
+  register-internal  Install the staged internal bundle by upstream ref after commit/push
+  smoke-internal     Smoke-test the generated internal bundle via temp project install
+  migrate-external   Register selected external skills by upstream reference
   smoke              Validate script syntax and workspace template wiring
 
 Environment overrides:
@@ -776,6 +1117,7 @@ Environment overrides:
   APM_WORKSPACE_REPO
   APM_WORKSPACE_NAME
   APM_CODEX_OUTPUT
+  APM_INTERNAL_PROFILE=first-batch
   APM_BOOTSTRAP_FORCE_MISE=1
   APM_MIGRATE_FORCE=1
 EOF
@@ -790,6 +1132,11 @@ case "$COMMAND" in
   validate) cmd_validate ;;
   doctor) cmd_doctor ;;
   migrate) cmd_migrate "$@" ;;
+  migrate-internal) cmd_migrate_internal "$@" ;;
+  bundle-internal) cmd_bundle_internal "$@" ;;
+  stage-internal) cmd_stage_internal "$@" ;;
+  register-internal) cmd_register_internal "$@" ;;
+  smoke-internal) cmd_smoke_internal "$@" ;;
   migrate-external) cmd_migrate_external "$@" ;;
   smoke) cmd_smoke ;;
   help|-h|--help) cmd_help ;;

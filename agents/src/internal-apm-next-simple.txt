@@ -1,0 +1,6 @@
+# Next simple bundled skill pilot inventory for the global APM migration.
+# One skill id per line. Blank lines and comments are ignored.
+
+codex-code-review
+codex-plan-review
+generate-svg

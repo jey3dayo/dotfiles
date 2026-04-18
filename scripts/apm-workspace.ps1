@@ -3,6 +3,9 @@ param(
   [Parameter(Position = 0)]
   [string]$Command = "help",
 
+  [Alias("profile")]
+  [string]$InternalProfileOverride,
+
   [Parameter(ValueFromRemainingArguments = $true)]
   [string[]]$CommandArgs
 )
@@ -12,12 +15,17 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 $WorkspaceDir = if ($env:APM_WORKSPACE_DIR) { $env:APM_WORKSPACE_DIR } else { Join-Path $HOME ".apm" }
 $WorkspaceRepo = if ($env:APM_WORKSPACE_REPO) { $env:APM_WORKSPACE_REPO } else { "https://github.com/jey3dayo/apm-workspace.git" }
+$InitialInternalProfile = if ($InternalProfileOverride) { $InternalProfileOverride } elseif ($env:APM_INTERNAL_PROFILE) { $env:APM_INTERNAL_PROFILE } else { "first-batch" }
+$InternalProfile = $InitialInternalProfile
 $LegacySkillsDir = Join-Path $RepoRoot "agents\src\skills"
+$InternalPilotInventoryFile = Join-Path $RepoRoot ("agents\src\internal-apm-{0}.txt" -f $InternalProfile)
 $ExternalSourcesFile = Join-Path $RepoRoot "nix\agent-skills-sources.nix"
-$PackagesDir = Join-Path $WorkspaceDir "packages"
 $CodexOutput = if ($env:APM_CODEX_OUTPUT) { $env:APM_CODEX_OUTPUT } else { Join-Path $HOME ".codex\AGENTS.md" }
 $MiseTemplate = Join-Path $RepoRoot "templates\apm-workspace\mise.toml"
 $MiseDestination = Join-Path $WorkspaceDir "mise.toml"
+$InternalSeedDir = Join-Path $WorkspaceDir ".internal-seed"
+$InternalBundleName = "internal-$InternalProfile"
+$TrackedInternalBundlesDirName = "internal-bundles"
 $ManagedMiseMarker = "# Managed by ~/.config bootstrap"
 
 function Test-CommandAvailable {
@@ -64,6 +72,45 @@ function Test-SkillId {
   if ($SkillId.Contains("/") -or $SkillId.Contains("\") -or $SkillId -in @(".", "..")) {
     throw "Invalid skill id: $SkillId"
   }
+}
+
+function Test-InternalProfileName {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$ProfileName
+  )
+
+  if ($ProfileName -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$') {
+    throw "Invalid internal profile: $ProfileName"
+  }
+}
+
+function Set-InternalProfileContext {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$ProfileName
+  )
+
+  Test-InternalProfileName -ProfileName $ProfileName
+  $script:InternalProfile = $ProfileName
+  $script:InternalPilotInventoryFile = Join-Path $RepoRoot ("agents\src\internal-apm-{0}.txt" -f $ProfileName)
+  $script:InternalBundleName = "internal-$ProfileName"
+}
+
+function Resolve-InternalCommandArgs {
+  param(
+    [string[]]$Args
+  )
+
+  if ($Args.Count -ge 2 -and $Args[0] -eq "--profile") {
+    Set-InternalProfileContext -ProfileName $Args[1]
+    if ($Args.Count -gt 2) {
+      return @($Args[2..($Args.Count - 1)])
+    }
+    return @()
+  }
+
+  return @($Args)
 }
 
 function Test-SkillPathSegments {
@@ -183,7 +230,6 @@ function Ensure-WorkspaceRepo {
     throw "$WorkspaceDir exists but is not a git checkout."
   }
 
-  New-Item -ItemType Directory -Path $PackagesDir -Force | Out-Null
 }
 
 function Ensure-GitignoreEntry {
@@ -202,31 +248,6 @@ function Ensure-GitignoreEntry {
     Add-Content -LiteralPath $gitignorePath -Value ""
     Add-Content -LiteralPath $gitignorePath -Value $Entry
   }
-}
-
-function Ensure-PackagesReadme {
-  $packagesReadmePath = Join-Path $PackagesDir "README.md"
-  if (Test-Path -LiteralPath $packagesReadmePath) {
-    return
-  }
-
-  $packagesReadme = @(
-    '# Local APM packages',
-    '',
-    'Store repo-owned local packages under `packages/<skill-id>/`.',
-    '',
-    'Typical flow:',
-    '',
-    '```bash',
-    'cd ~/.apm',
-    'mise install',
-    'mise run migrate -- apm-usage',
-    'mise run migrate-external',
-    'mise run apply',
-    '```'
-  ) -join [Environment]::NewLine
-
-  [System.IO.File]::WriteAllText($packagesReadmePath, $packagesReadme)
 }
 
 function Write-WorkspaceManifestTemplate {
@@ -250,15 +271,221 @@ function Write-WorkspaceManifestTemplate {
 
 function Ensure-WorkspaceScaffold {
   Ensure-WorkspaceRepo
-  Ensure-GitignoreEntry -Entry ".apm/"
-  Ensure-GitignoreEntry -Entry "apm_modules/"
-  Ensure-PackagesReadme
+  Ensure-GitignoreEntry -Entry "/.apm/"
+  Ensure-GitignoreEntry -Entry "/apm_modules/"
+  Ensure-GitignoreEntry -Entry "/.internal-seed/"
 
   $manifestPath = Join-Path $WorkspaceDir "apm.yml"
   if (-not (Test-Path -LiteralPath $manifestPath)) {
     Write-Host "Writing bootstrap apm.yml in $WorkspaceDir"
     Write-WorkspaceManifestTemplate
   }
+}
+
+function Get-InternalBundleDir {
+  return (Join-Path $InternalSeedDir $InternalBundleName)
+}
+
+function Get-InternalBundleSkillsRoot {
+  return (Join-Path (Get-InternalBundleDir) ".apm\skills")
+}
+
+function Get-TrackedInternalBundlesDir {
+  return (Join-Path $WorkspaceDir $TrackedInternalBundlesDirName)
+}
+
+function Get-TrackedInternalBundleDir {
+  return (Join-Path (Get-TrackedInternalBundlesDir) $InternalBundleName)
+}
+
+function Get-TrackedInternalBundleRelativePath {
+  return "$TrackedInternalBundlesDirName/$InternalBundleName"
+}
+
+function Write-InternalBundleManifestTemplate {
+  $bundleDir = Get-InternalBundleDir
+  $manifestPath = Join-Path $bundleDir "apm.yml"
+  $manifestContent = @(
+    "name: $InternalBundleName",
+    "version: 1.0.0",
+    "description: Generated internal bundled skills pilot for global APM migration",
+    "dependencies:",
+    "  apm: []",
+    "  mcp: []",
+    "scripts: {}"
+  ) -join [Environment]::NewLine
+
+  [System.IO.File]::WriteAllText($manifestPath, $manifestContent)
+}
+
+function Write-InternalBundleReadme {
+  $bundleDir = Get-InternalBundleDir
+  $readmePath = Join-Path $bundleDir "README.md"
+  $content = @(
+    '# Internal First Batch Bundle',
+    '',
+    'This bundle is generated from ~/.config internal bundled skills for the global APM migration pilot.',
+    '',
+    ('- Source inventory: `~/.config/agents/src/internal-apm-{0}.txt`' -f $InternalProfile),
+    '- Source skills: `~/.config/agents/src/skills/<id>/`',
+    '- Purpose: provide a valid APM package artifact for future publish/install work',
+    '- Current limitation: `apm install -g <local-path>` is rejected by APM 0.8.11 at user scope, so this bundle is for validation and publication prep only'
+  ) -join [Environment]::NewLine
+
+  [System.IO.File]::WriteAllText($readmePath, $content)
+}
+
+function Reset-InternalBundleDir {
+  $bundleDir = Get-InternalBundleDir
+  if (Test-Path -LiteralPath $bundleDir) {
+    Remove-Item -LiteralPath $bundleDir -Recurse -Force
+  }
+
+  New-Item -ItemType Directory -Path (Get-InternalBundleSkillsRoot) -Force | Out-Null
+}
+
+function Copy-DirectoryContents {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SourceDir,
+    [Parameter(Mandatory = $true)]
+    [string]$DestinationDir
+  )
+
+  if (-not (Test-Path -LiteralPath $SourceDir)) {
+    throw "Directory not found: $SourceDir"
+  }
+
+  New-Item -ItemType Directory -Path $DestinationDir -Force | Out-Null
+  foreach ($entry in Get-ChildItem -LiteralPath $SourceDir -Force) {
+    Copy-Item -LiteralPath $entry.FullName -Destination $DestinationDir -Recurse -Force
+  }
+}
+
+function Reset-TrackedInternalBundleDir {
+  $trackedDir = Get-TrackedInternalBundleDir
+  if (Test-Path -LiteralPath $trackedDir) {
+    Remove-Item -LiteralPath $trackedDir -Recurse -Force
+  }
+
+  New-Item -ItemType Directory -Path $trackedDir -Force | Out-Null
+}
+
+function Convert-WorkspaceRemoteToRepoReference {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RemoteUrl
+  )
+
+  if ($RemoteUrl -match '^https://github\.com/([^/]+)/([^/]+?)(?:\.git)?/?$') {
+    return "$($matches[1])/$($matches[2])"
+  }
+  if ($RemoteUrl -match '^git@github\.com:([^/]+)/([^/]+?)(?:\.git)?$') {
+    return "$($matches[1])/$($matches[2])"
+  }
+
+  throw "Unsupported workspace remote URL for internal bundle reference: $RemoteUrl"
+}
+
+function Get-WorkspaceRemoteUrl {
+  param(
+    [string]$RemoteName = "origin"
+  )
+
+  Ensure-WorkspaceRepo
+
+  $remoteUrl = & git -C $WorkspaceDir remote get-url $RemoteName 2>$null
+  if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace(($remoteUrl | Out-String))) {
+    return ($remoteUrl | Out-String).Trim()
+  }
+
+  if ($RemoteName -eq "origin") {
+    return $WorkspaceRepo
+  }
+
+  throw "Could not resolve remote URL for '$RemoteName'"
+}
+
+function Get-WorkspaceRepoReference {
+  param(
+    [string]$RemoteName = "origin"
+  )
+
+  return Convert-WorkspaceRemoteToRepoReference -RemoteUrl (Get-WorkspaceRemoteUrl -RemoteName $RemoteName)
+}
+
+function Get-WorkspaceTrackingInfo {
+  $currentBranch = & git -C $WorkspaceDir branch --show-current 2>$null
+  if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace(($currentBranch | Out-String))) {
+    throw "Cannot register internal bundle from a detached HEAD. Check out a tracking branch first."
+  }
+
+  $currentBranch = ($currentBranch | Out-String).Trim()
+  $remoteName = & git -C $WorkspaceDir config --get "branch.$currentBranch.remote" 2>$null
+  $mergeRef = & git -C $WorkspaceDir config --get "branch.$currentBranch.merge" 2>$null
+
+  if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace(($remoteName | Out-String)) -or [string]::IsNullOrWhiteSpace(($mergeRef | Out-String))) {
+    throw "Branch '$currentBranch' has no upstream tracking branch. Push it first."
+  }
+
+  $remoteName = ($remoteName | Out-String).Trim()
+  $mergeBranch = (($mergeRef | Out-String).Trim()) -replace '^refs/heads/', ''
+  return [pscustomobject]@{
+    RemoteName = $remoteName
+    BranchName = $mergeBranch
+  }
+}
+
+function Get-TrackedInternalBundleReference {
+  $tracking = Get-WorkspaceTrackingInfo
+  $repoReference = Get-WorkspaceRepoReference -RemoteName $tracking.RemoteName
+  return "{0}/{1}#{2}" -f $repoReference, (Get-TrackedInternalBundleRelativePath), $tracking.BranchName
+}
+
+function Assert-TrackedInternalBundlePublished {
+  $trackedRelativePath = Get-TrackedInternalBundleRelativePath
+  $trackedDir = Get-TrackedInternalBundleDir
+
+  if (-not (Test-Path -LiteralPath $trackedDir)) {
+    throw "Tracked internal bundle missing: $trackedDir. Run 'mise run stage-internal' first."
+  }
+
+  $dirty = & git -C $WorkspaceDir status --porcelain -- $trackedRelativePath 2>$null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to inspect git status for $trackedRelativePath"
+  }
+  if (-not [string]::IsNullOrWhiteSpace(($dirty | Out-String))) {
+    throw "Tracked internal bundle has uncommitted changes. Commit and push $trackedRelativePath before registering it."
+  }
+
+  $tracking = Get-WorkspaceTrackingInfo
+  $upstream = "{0}/{1}" -f $tracking.RemoteName, $tracking.BranchName
+  $unpushed = & git -C $WorkspaceDir rev-list "$upstream..HEAD" -- $trackedRelativePath 2>$null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to compare $trackedRelativePath against $upstream"
+  }
+  if (-not [string]::IsNullOrWhiteSpace(($unpushed | Out-String))) {
+    throw "Tracked internal bundle has commits not on $upstream. Push the branch before registering it."
+  }
+}
+
+function Copy-InternalSkillIntoBundle {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  $sourceDir = Join-Path $LegacySkillsDir $SkillId
+  if (-not (Test-Path -LiteralPath $sourceDir)) {
+    throw "Legacy skill not found: $sourceDir"
+  }
+
+  $destinationDir = Get-InternalBundleSkillsRoot
+  foreach ($segment in (Convert-SkillIdToPathSegments -SkillId $SkillId)) {
+    $destinationDir = Join-Path $destinationDir $segment
+  }
+
+  Copy-DirectoryContents -SourceDir $sourceDir -DestinationDir $destinationDir
 }
 
 function Refresh-WorkspaceCheckout {
@@ -432,12 +659,9 @@ function Invoke-Doctor {
   Ensure-WorkspaceScaffold
 
   $manifestState = if (Test-Path (Join-Path $WorkspaceDir "apm.yml")) { "present" } else { "missing" }
-  $packagesState = if (Test-Path $PackagesDir) { "present" } else { "missing" }
-
   Write-Host ("apm: {0}" -f (apm --version))
   Write-Host ("workspace: {0}" -f $WorkspaceDir)
   Write-Host ("manifest: {0}" -f $manifestState)
-  Write-Host ("packages: {0}" -f $packagesState)
   $branch = & git -C $WorkspaceDir branch --show-current 2>$null
   if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace(($branch | Out-String))) {
     $branch = "detached"
@@ -463,7 +687,7 @@ function Copy-LegacySkill {
   )
 
   $sourceDir = Join-Path $LegacySkillsDir $SkillId
-  $destinationDir = Join-Path $PackagesDir $SkillId
+  $destinationDir = Join-Path $InternalSeedDir (Convert-SkillIdToPackageRelativePath -SkillId $SkillId)
 
   if (-not (Test-Path -LiteralPath $sourceDir)) {
     throw "Legacy skill not found: $sourceDir"
@@ -471,13 +695,184 @@ function Copy-LegacySkill {
 
   if (Test-Path -LiteralPath $destinationDir) {
     if ($env:APM_MIGRATE_FORCE -ne "1") {
-      throw "$destinationDir already exists. Set APM_MIGRATE_FORCE=1 to replace it."
+      return $false
     }
 
     Remove-Item -LiteralPath $destinationDir -Recurse -Force
   }
 
-  Copy-Item -LiteralPath $sourceDir -Destination $destinationDir -Recurse -Force
+  Copy-DirectoryContents -SourceDir $sourceDir -DestinationDir $destinationDir
+  return $true
+}
+
+function Get-InternalPilotSkillIds {
+  if (-not (Test-Path -LiteralPath $InternalPilotInventoryFile)) {
+    throw "Internal pilot inventory not found: $InternalPilotInventoryFile"
+  }
+
+  $result = New-Object System.Collections.Generic.List[string]
+  foreach ($line in (Get-Content -LiteralPath $InternalPilotInventoryFile)) {
+    $trimmed = $line.Trim()
+    if ([string]::IsNullOrWhiteSpace($trimmed) -or $trimmed.StartsWith("#")) {
+      continue
+    }
+
+    Test-SkillId -SkillId $trimmed
+    if (-not $result.Contains($trimmed)) {
+      $result.Add($trimmed)
+    }
+  }
+
+  if ($result.Count -eq 0) {
+    throw "Internal pilot inventory is empty: $InternalPilotInventoryFile"
+  }
+
+  return $result.ToArray()
+}
+
+function Get-RequestedInternalSkillIds {
+  param(
+    [string[]]$RequestedSkillIds
+  )
+
+  if ($RequestedSkillIds -and $RequestedSkillIds.Count -gt 0) {
+    foreach ($skillId in $RequestedSkillIds) {
+      Test-SkillId -SkillId $skillId
+    }
+    return $RequestedSkillIds
+  }
+
+  return Get-InternalPilotSkillIds
+}
+
+function Invoke-MigrateInternal {
+  param(
+    [string[]]$RequestedSkillIds,
+    [switch]$LegacyAlias
+  )
+
+  Ensure-WorkspaceRepo
+  Ensure-WorkspaceScaffold
+  Ensure-WorkspaceMiseFile
+
+  $skillIds = @(Get-RequestedInternalSkillIds -RequestedSkillIds $RequestedSkillIds)
+  if ($LegacyAlias) {
+    Write-WarnLine "migrate is now a compatibility alias. Prefer 'migrate-internal' for internal pilot work."
+  }
+
+  if (-not $RequestedSkillIds -or $RequestedSkillIds.Count -eq 0) {
+    Write-Host "Using internal pilot inventory ($InternalProfile): $($skillIds -join ', ')"
+  }
+
+  foreach ($skillId in $skillIds) {
+    $copied = Copy-LegacySkill -SkillId $skillId
+    if ($copied) {
+      Write-Host "Seeded internal skill $skillId into ~/.apm/.internal-seed/$skillId for pilot/reference only. Global apm.yml was left unchanged."
+    } else {
+      Write-Host "Skipped internal skill $skillId because ~/.apm/.internal-seed/$skillId already exists. Set APM_MIGRATE_FORCE=1 to replace it."
+    }
+  }
+}
+
+function Invoke-BundleInternal {
+  param(
+    [string[]]$RequestedSkillIds
+  )
+
+  Ensure-WorkspaceRepo
+  Ensure-WorkspaceScaffold
+  Ensure-WorkspaceMiseFile
+
+  $skillIds = @(Get-RequestedInternalSkillIds -RequestedSkillIds $RequestedSkillIds)
+  Reset-InternalBundleDir
+  Write-InternalBundleManifestTemplate
+  Write-InternalBundleReadme
+
+  foreach ($skillId in $skillIds) {
+    Copy-InternalSkillIntoBundle -SkillId $skillId
+  }
+
+  Write-Host "Built internal bundle at ~/.apm/.internal-seed/$InternalBundleName from: $($skillIds -join ', ')"
+}
+
+function Invoke-StageInternal {
+  param(
+    [string[]]$RequestedSkillIds
+  )
+
+  $skillIds = @(Get-RequestedInternalSkillIds -RequestedSkillIds $RequestedSkillIds)
+  Invoke-BundleInternal -RequestedSkillIds $skillIds
+
+  $trackedDir = Get-TrackedInternalBundleDir
+  Reset-TrackedInternalBundleDir
+  Copy-DirectoryContents -SourceDir (Get-InternalBundleDir) -DestinationDir $trackedDir
+
+  $reference = Get-TrackedInternalBundleReference
+  Write-Host "Staged repo-tracked internal bundle at $trackedDir"
+  Write-Host "Candidate upstream ref: $reference"
+  Write-Host "Push the updated apm-workspace repo before using 'apm install -g $reference'."
+}
+
+function Invoke-RegisterInternal {
+  Require-Apm
+  Ensure-WorkspaceRepo
+  Ensure-WorkspaceScaffold
+  Ensure-WorkspaceMiseFile
+  Assert-TrackedInternalBundlePublished
+
+  $reference = Get-TrackedInternalBundleReference
+  Invoke-InstallReference -Reference $reference
+  Write-Host "Registered internal bundle from upstream ref: $reference"
+}
+
+function Invoke-SmokeInternal {
+  param(
+    [string[]]$RequestedSkillIds
+  )
+
+  Require-Apm
+
+  $skillIds = @(Get-RequestedInternalSkillIds -RequestedSkillIds $RequestedSkillIds)
+  Invoke-BundleInternal -RequestedSkillIds $skillIds
+
+  $tempDir = Join-Path $env:TEMP ("apm-internal-bundle-smoke-{0}" -f ([guid]::NewGuid().ToString("N")))
+  $success = $false
+
+  try {
+    New-Item -ItemType Directory -Path $tempDir -Force | Out-Null
+    Push-Location $tempDir
+    try {
+      & apm install (Get-InternalBundleDir) --target codex
+      if ($LASTEXITCODE -ne 0) {
+        throw "apm install failed for internal bundle smoke test."
+      }
+    }
+    finally {
+      Pop-Location
+    }
+
+    foreach ($skillId in $skillIds) {
+      $skillPath = Join-Path $tempDir ".agents/skills"
+      foreach ($segment in (Convert-SkillIdToPathSegments -SkillId $skillId)) {
+        $skillPath = Join-Path $skillPath $segment
+      }
+      $skillPath = Join-Path $skillPath "SKILL.md"
+
+      if (-not (Test-Path -LiteralPath $skillPath)) {
+        throw "Smoke test failed: expected installed skill file missing: $skillPath"
+      }
+    }
+
+    $success = $true
+    Write-Host "Smoke verified internal bundle via temp project install: $($skillIds -join ', ')"
+  }
+  finally {
+    if ($success) {
+      Remove-Item -LiteralPath $tempDir -Recurse -Force -ErrorAction SilentlyContinue
+    } elseif (Test-Path -LiteralPath $tempDir) {
+      Write-WarnLine "Internal bundle smoke test workspace left at $tempDir for inspection."
+    }
+  }
 }
 
 function Test-InternalSkillExists {
@@ -624,6 +1019,22 @@ function Get-ExternalSourceCheckoutPath {
   return $checkoutPath
 }
 
+function Get-ExternalSourceRepoReference {
+  param(
+    [Parameter(Mandatory = $true)]
+    [pscustomobject]$Source
+  )
+
+  if ($Source.Url -match '^github:([^/]+)/([^/]+?)(?:/([^/]+))?$') {
+    return [pscustomobject]@{
+      Repo = "$($matches[1])/$($matches[2])"
+      Ref = if ($matches.Count -ge 4) { $matches[3] } else { $null }
+    }
+  }
+
+  throw "Cannot derive canonical upstream reference from source URL: $($Source.Url)"
+}
+
 function Resolve-ExternalSkillSourceDir {
   param(
     [Parameter(Mandatory = $true)]
@@ -688,7 +1099,7 @@ function Resolve-ExternalSkillSourceDir {
   throw "Could not find external skill '$SkillId' in source '$($Source.Name)'"
 }
 
-function Copy-ExternalSkill {
+function Get-ExternalSkillReference {
   param(
     [Parameter(Mandatory = $true)]
     [pscustomobject]$Source,
@@ -701,33 +1112,42 @@ function Copy-ExternalSkill {
   )
 
   $sourceDir = Resolve-ExternalSkillSourceDir -Source $Source -CheckoutPath $CheckoutPath -SkillId $SkillId
-  $packageRelativePath = Convert-SkillIdToManifestRelativePath -SkillId $SkillId
-  $destinationDir = Join-Path $PackagesDir (Convert-SkillIdToPackageRelativePath -SkillId $SkillId)
-  $destinationParent = Split-Path -Parent $destinationDir
+  $repoInfo = Get-ExternalSourceRepoReference -Source $Source
+  $basePath = [System.IO.Path]::GetFullPath($CheckoutPath)
+  $targetPath = [System.IO.Path]::GetFullPath($sourceDir)
+  $baseUri = [Uri](($basePath.TrimEnd('\', '/')) + [System.IO.Path]::DirectorySeparatorChar)
+  $targetUri = [Uri]$targetPath
+  $relativeDir = [Uri]::UnescapeDataString($baseUri.MakeRelativeUri($targetUri).ToString()).Replace('\', '/').TrimEnd('/')
 
-  if (Test-Path -LiteralPath $destinationDir) {
-    if ($env:APM_MIGRATE_FORCE -ne "1") {
-      throw "$destinationDir already exists. Set APM_MIGRATE_FORCE=1 to replace it."
-    }
-
-    Remove-Item -LiteralPath $destinationDir -Recurse -Force
+  $reference = if ([string]::IsNullOrWhiteSpace($relativeDir) -or $relativeDir -eq ".") {
+    $repoInfo.Repo
+  } else {
+    "$($repoInfo.Repo)/$relativeDir"
   }
 
-  if (-not [string]::IsNullOrWhiteSpace($destinationParent)) {
-    New-Item -ItemType Directory -Path $destinationParent -Force | Out-Null
+  if (-not [string]::IsNullOrWhiteSpace($repoInfo.Ref)) {
+    $reference = "$reference#$($repoInfo.Ref)"
   }
 
-  Copy-Item -LiteralPath $sourceDir -Destination $destinationDir -Recurse -Force
-  return $packageRelativePath
+  return $reference
 }
 
-function Invoke-MigratePackage {
+function Invoke-InstallReference {
   param(
     [Parameter(Mandatory = $true)]
-    [string]$PackageRelativePath
+    [string]$Reference
   )
 
-  Invoke-WorkspaceCommand -CommandArgs @("install", "./packages/$PackageRelativePath")
+  Push-Location $WorkspaceDir
+  try {
+    & apm install -g $Reference
+    if ($LASTEXITCODE -ne 0) {
+      throw "apm install -g failed: $Reference"
+    }
+  }
+  finally {
+    Pop-Location
+  }
 }
 
 function Invoke-MigrateExternal {
@@ -772,9 +1192,9 @@ function Invoke-MigrateExternal {
         continue
       }
 
-      $packageRelativePath = Copy-ExternalSkill -Source $source -CheckoutPath $checkoutPath -SkillId $skillId
-      Invoke-MigratePackage -PackageRelativePath $packageRelativePath
-      Write-Host "Migrated external skill $skillId from $($source.Name) into ~/.apm/packages/$packageRelativePath"
+      $reference = Get-ExternalSkillReference -Source $source -CheckoutPath $checkoutPath -SkillId $skillId
+      Invoke-InstallReference -Reference $reference
+      Write-Host "Registered external skill $skillId from $($source.Name) as $reference"
     }
   }
 }
@@ -794,7 +1214,6 @@ switch ($Command) {
     Write-Host "Next:"
     Write-Host "  cd $WorkspaceDir"
     Write-Host "  mise install"
-    Write-Host "  mise run migrate -- apm-usage"
     Write-Host "  mise run migrate-external"
     Write-Host "  mise run apply"
   }
@@ -825,21 +1244,33 @@ switch ($Command) {
   }
 
   "migrate" {
-    if (-not $CommandArgs -or $CommandArgs.Count -eq 0) {
-      throw "usage: scripts/apm-workspace.ps1 migrate <skill-id> [skill-id ...]"
-    }
+    $internalArgs = @(Resolve-InternalCommandArgs -Args $CommandArgs)
+    Invoke-MigrateInternal -RequestedSkillIds $internalArgs -LegacyAlias
+  }
 
-    Require-Apm
-    Ensure-WorkspaceRepo
-    Ensure-WorkspaceScaffold
-    Ensure-WorkspaceMiseFile
-    foreach ($skillId in $CommandArgs) {
-      Test-SkillId -SkillId $skillId
-      Copy-LegacySkill -SkillId $skillId
-      Invoke-MigratePackage -PackageRelativePath $skillId
+  "migrate-internal" {
+    $internalArgs = @(Resolve-InternalCommandArgs -Args $CommandArgs)
+    Invoke-MigrateInternal -RequestedSkillIds $internalArgs
+  }
 
-      Write-Host "Migrated legacy skill into ~/.apm/packages/$skillId and recorded ./packages/$skillId in apm.yml"
-    }
+  "bundle-internal" {
+    $internalArgs = @(Resolve-InternalCommandArgs -Args $CommandArgs)
+    Invoke-BundleInternal -RequestedSkillIds $internalArgs
+  }
+
+  "stage-internal" {
+    $internalArgs = @(Resolve-InternalCommandArgs -Args $CommandArgs)
+    Invoke-StageInternal -RequestedSkillIds $internalArgs
+  }
+
+  "register-internal" {
+    $null = Resolve-InternalCommandArgs -Args $CommandArgs
+    Invoke-RegisterInternal
+  }
+
+  "smoke-internal" {
+    $internalArgs = @(Resolve-InternalCommandArgs -Args $CommandArgs)
+    Invoke-SmokeInternal -RequestedSkillIds $internalArgs
   }
 
   "migrate-external" {
@@ -851,15 +1282,20 @@ switch ($Command) {
 Usage: scripts/apm-workspace.ps1 <command> [args...]
 
 Commands:
-  bootstrap          Ensure ~/.apm checkout + apm.yml + packages/ + mise.toml are ready
+  bootstrap          Ensure ~/.apm checkout + apm.yml + mise.toml are ready
   inject-mise        Copy or refresh the managed ~/.apm/mise.toml template
   apply              Deploy user-scope-compatible dependencies and compile Codex output
   update             Pull clean checkout, update deps, then apply
   list               Show APM global dependencies
   validate           Validate the ~/.apm workspace
   doctor             Print workspace and target state
-  migrate <skills>   Copy legacy skills into ~/.apm/packages/<id> and register them
-  migrate-external   Vendor selected external skills into ~/.apm/packages and register them
+  migrate            Compatibility alias for migrate-internal
+  migrate-internal   Seed internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml
+  bundle-internal    Build ~/.apm/.internal-seed/internal-<profile> as a valid internal APM bundle artifact
+  stage-internal     Copy the generated bundle into ~/.apm/internal-bundles/ and print its upstream ref
+  register-internal  Install the staged internal bundle by upstream ref after commit/push
+  smoke-internal     Smoke-test the generated internal bundle via temp project install
+  migrate-external   Register selected external skills by upstream reference
   smoke              Validate script syntax and workspace template wiring
 
 Environment overrides:
@@ -867,8 +1303,12 @@ Environment overrides:
   APM_WORKSPACE_REPO
   APM_WORKSPACE_NAME
   APM_CODEX_OUTPUT
+  APM_INTERNAL_PROFILE=first-batch
   APM_BOOTSTRAP_FORCE_MISE=1
   APM_MIGRATE_FORCE=1
+
+Internal command option:
+  --profile <name>   Override the default internal profile for migrate/bundle/stage/register/smoke
 "@ | Write-Host
   }
 
