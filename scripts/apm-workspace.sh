@@ -1176,6 +1176,40 @@ lock_pinned_reference_map() {
   ' "$lock_path"
 }
 
+unpinned_external_references() {
+  manifest_path="$WORKSPACE_DIR/apm.yml"
+  [ -f "$manifest_path" ] || return 0
+
+  awk '
+    /^[[:space:]]*-[[:space:]]+/ {
+      ref = $2
+      if (ref ~ /^jey3dayo\/apm-workspace\/internal-bundles\//) {
+        next
+      }
+      if (ref ~ /^\.\//) {
+        next
+      }
+      if (ref !~ /#/) {
+        print ref
+      }
+    }
+  ' "$manifest_path"
+}
+
+manifest_reference_keys() {
+  manifest_path="$WORKSPACE_DIR/apm.yml"
+  [ -f "$manifest_path" ] || return 0
+
+  awk '
+    /^[[:space:]]*-[[:space:]]+/ {
+      ref = $2
+      print ref
+      sub(/#.*/, "", ref)
+      print ref
+    }
+  ' "$manifest_path"
+}
+
 cmd_pin_external() {
   ensure_workspace_repo
   ensure_workspace_scaffold
@@ -1346,6 +1380,7 @@ cmd_doctor() {
         printf '  missing  %s\n' "$path"
       fi
     done
+    printf 'external pins: unpinned=%s\n' "$(unpinned_external_references | awk 'NF { count++ } END { print count + 0 }')"
     print_internal_inventory_coverage_summary
     print_internal_profile_summary
     apm deps list -g
@@ -1471,18 +1506,31 @@ cmd_migrate_external() {
   ensure_workspace_scaffold
   ensure_workspace_mise_file
 
+  requested_sources=("$@")
+  requested_source_count=${#requested_sources[@]}
   found_sources=0
   matched_sources=0
   sources_cache=$(mktemp "${TMPDIR:-/tmp}/apm-external-sources.XXXXXX")
+  references=()
+  registration_messages=()
+  declare -A seen_references=()
+  declare -A manifest_references=()
   parse_external_sources >"$sources_cache"
+
+  while IFS= read -r manifest_reference; do
+    [ -n "$manifest_reference" ] || continue
+    manifest_references["$manifest_reference"]=1
+  done <<EOF
+$(manifest_reference_keys)
+EOF
 
   while IFS=$(printf '\036') read -r source_name source_url base_dir id_prefix catalogs_value selected_value; do
     [ -n "$source_name" ] || continue
     found_sources=1
 
-    if [ "$#" -gt 0 ]; then
+    if [ "$requested_source_count" -gt 0 ]; then
       include_source=0
-      for requested_source in "$@"; do
+      for requested_source in "${requested_sources[@]}"; do
         if [ "$requested_source" = "$source_name" ]; then
           include_source=1
           break
@@ -1496,17 +1544,28 @@ cmd_migrate_external() {
 
     old_ifs=$IFS
     IFS=$(printf '\034')
-    set -- $selected_value
+    read -r -a selected_skills <<<"$selected_value"
     IFS=$old_ifs
-    for skill_id in "$@"; do
+    for skill_id in "${selected_skills[@]}"; do
       if internal_skill_exists "$skill_id"; then
         log "Skipping $skill_id from $source_name: internal bundled skill already owns this id"
         continue
       fi
 
       reference=$(external_skill_reference "$source_url" "$checkout_path" "$source_name" "$base_dir" "$id_prefix" "$catalogs_value" "$skill_id")
-      run_workspace_install_command -g "$reference"
-      log "Registered external skill $skill_id from $source_name as $reference"
+      base_reference=${reference%%#*}
+      if [ -n "${manifest_references[$reference]+x}" ] || [ -n "${manifest_references[$base_reference]+x}" ]; then
+        log "Skipping $skill_id from $source_name: already registered as $base_reference"
+        continue
+      fi
+
+      if [ -z "${seen_references[$reference]+x}" ]; then
+        references+=("$reference")
+        seen_references["$reference"]=1
+        manifest_references["$reference"]=1
+        manifest_references["$base_reference"]=1
+      fi
+      registration_messages+=("Registered external skill $skill_id from $source_name as $reference")
     done
   done <"$sources_cache"
 
@@ -1514,9 +1573,20 @@ cmd_migrate_external() {
 
   [ "$found_sources" -eq 1 ] || fail "No external skill sources found in $EXTERNAL_SOURCES_FILE"
 
-  if [ "$#" -gt 0 ] && [ "$matched_sources" -ne 1 ]; then
+  if [ "$requested_source_count" -gt 0 ] && [ "$matched_sources" -ne 1 ]; then
     fail "None of the requested external sources were found in $EXTERNAL_SOURCES_FILE"
   fi
+
+  if [ "${#references[@]}" -gt 0 ]; then
+    run_workspace_install_command -g "${references[@]}"
+    for message in "${registration_messages[@]}"; do
+      log "$message"
+    done
+  else
+    log "No external skills selected for registration."
+  fi
+
+  cmd_pin_external
 }
 
 cmd_smoke() {

@@ -791,6 +791,50 @@ function Get-LockPinnedReferenceMap {
   return $map
 }
 
+function Get-UnpinnedExternalReferences {
+  $manifestPath = Join-Path $WorkspaceDir "apm.yml"
+  if (-not (Test-Path -LiteralPath $manifestPath)) {
+    return @()
+  }
+
+  $result = New-Object System.Collections.Generic.List[string]
+  foreach ($line in (Get-Content -LiteralPath $manifestPath)) {
+    if ($line -match '^\s*-\s+(\S+)\s*$') {
+      $reference = $Matches[1]
+      if ($reference -match '^jey3dayo/apm-workspace/internal-bundles/') {
+        continue
+      }
+      if ($reference -match '^\.\/') {
+        continue
+      }
+      if ($reference -notmatch '#') {
+        $result.Add($reference)
+      }
+    }
+  }
+
+  return $result.ToArray()
+}
+
+function Get-ManifestReferenceKeys {
+  $manifestPath = Join-Path $WorkspaceDir "apm.yml"
+  $keys = New-Object 'System.Collections.Generic.HashSet[string]'
+  if (-not (Test-Path -LiteralPath $manifestPath)) {
+    return $keys
+  }
+
+  foreach ($line in (Get-Content -LiteralPath $manifestPath)) {
+    if ($line -match '^\s*-\s+(\S+)\s*$') {
+      $reference = $Matches[1]
+      $null = $keys.Add($reference)
+      $baseReference = ($reference -replace '#.*$', '')
+      $null = $keys.Add($baseReference)
+    }
+  }
+
+  return $keys
+}
+
 function Invoke-PinExternal {
   Ensure-WorkspaceRepo
   Ensure-WorkspaceScaffold
@@ -986,6 +1030,7 @@ function Invoke-Doctor {
       Write-Host ("  missing  {0}" -f $path)
     }
   }
+  Write-Host ("external pins: unpinned={0}" -f (@(Get-UnpinnedExternalReferences)).Count)
   Write-InternalInventoryCoverageSummary
   Write-InternalProfileSummary
   Invoke-List
@@ -1629,15 +1674,19 @@ function Get-ExternalSkillReference {
   return $reference
 }
 
-function Invoke-InstallReference {
+function Invoke-InstallReferences {
   param(
     [Parameter(Mandatory = $true)]
-    [string]$Reference
+    [string[]]$References
   )
+
+  if ($References.Count -eq 0) {
+    return
+  }
 
   Push-Location $WorkspaceDir
   try {
-    Invoke-WorkspaceInstallCommand -InstallArgs @("-g", $Reference)
+    Invoke-WorkspaceInstallCommand -InstallArgs (@("-g") + $References)
     Normalize-WorkspaceGitignore
   }
   finally {
@@ -1679,6 +1728,11 @@ function Invoke-MigrateExternal {
     $sources = @($selectedSources)
   }
 
+  $references = New-Object System.Collections.Generic.List[string]
+  $referenceSet = New-Object 'System.Collections.Generic.HashSet[string]'
+  $registrationMessages = New-Object System.Collections.Generic.List[string]
+  $manifestReferences = Get-ManifestReferenceKeys
+
   foreach ($source in $sources) {
     $checkoutPath = Get-ExternalSourceCheckoutPath -Source $source
     foreach ($skillId in $source.SelectedSkills) {
@@ -1688,10 +1742,32 @@ function Invoke-MigrateExternal {
       }
 
       $reference = Get-ExternalSkillReference -Source $source -CheckoutPath $checkoutPath -SkillId $skillId
-      Invoke-InstallReference -Reference $reference
-      Write-Host "Registered external skill $skillId from $($source.Name) as $reference"
+      $baseReference = ($reference -replace '#.*$', '')
+      if ($manifestReferences.Contains($reference) -or $manifestReferences.Contains($baseReference)) {
+        Write-Host "Skipping $skillId from $($source.Name): already registered as $baseReference"
+        continue
+      }
+
+      if ($referenceSet.Add($reference)) {
+        $references.Add($reference)
+        $null = $manifestReferences.Add($reference)
+        $null = $manifestReferences.Add($baseReference)
+      }
+      $registrationMessages.Add("Registered external skill $skillId from $($source.Name) as $reference")
     }
   }
+
+  if ($references.Count -gt 0) {
+    Invoke-InstallReferences -References $references.ToArray()
+    foreach ($message in $registrationMessages) {
+      Write-Host $message
+    }
+  }
+  else {
+    Write-Host "No external skills selected for registration."
+  }
+
+  Invoke-PinExternal
 }
 
 if ($env:APM_WORKSPACE_LIB_ONLY -eq "1") {
