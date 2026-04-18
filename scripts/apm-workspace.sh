@@ -261,7 +261,7 @@ EOF
 write_internal_bundle_readme() {
   bundle_dir=$(internal_bundle_dir)
   cat >"$bundle_dir/README.md" <<EOF
-# Internal First Batch Bundle
+# $INTERNAL_BUNDLE_NAME Bundle
 
 This bundle is generated from ~/.config internal bundled skills for the global APM migration pilot.
 

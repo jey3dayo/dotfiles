@@ -322,7 +322,7 @@ function Write-InternalBundleReadme {
   $bundleDir = Get-InternalBundleDir
   $readmePath = Join-Path $bundleDir "README.md"
   $content = @(
-    '# Internal First Batch Bundle',
+    ('# {0} Bundle' -f $InternalBundleName),
     '',
     'This bundle is generated from ~/.config internal bundled skills for the global APM migration pilot.',
     '',
