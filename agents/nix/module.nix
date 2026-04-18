@@ -74,16 +74,15 @@ let
     ) cfg.sources
   );
 
-  externalHomeLinkEntries =
-    builtins.attrValues (
-      builtins.foldl' (
-        acc: entry:
-        acc
-        // {
-          "${entry.destination}\n${pathString entry.sourcePath}" = entry;
-        }
-      ) { } rawExternalHomeLinkEntries
-    );
+  externalHomeLinkEntries = builtins.attrValues (
+    builtins.foldl' (
+      acc: entry:
+      acc
+      // {
+        "${entry.destination}\n${pathString entry.sourcePath}" = entry;
+      }
+    ) { } rawExternalHomeLinkEntries
+  );
 
   externalHomeLinkGroups = lib.groupBy (entry: entry.destination) externalHomeLinkEntries;
 
@@ -92,16 +91,14 @@ let
     lib.length (lib.unique (builtins.map (entry: pathString entry.sourcePath) entries)) > 1
   ) externalHomeLinkGroups;
 
-  externalHomeLinkAssertions = lib.mapAttrsToList (
-    destination: entries: {
-      assertion = false;
-      message = "programs.agent-skills homeLinks conflict for `${destination}`: ${
-        lib.concatStringsSep ", " (
-          builtins.map (entry: "${entry.sourceName} -> ${pathString entry.sourcePath}") entries
-        )
-      }";
-    }
-  ) conflictingExternalHomeLinks;
+  externalHomeLinkAssertions = lib.mapAttrsToList (destination: entries: {
+    assertion = false;
+    message = "programs.agent-skills homeLinks conflict for `${destination}`: ${
+      lib.concatStringsSep ", " (
+        builtins.map (entry: "${entry.sourceName} -> ${pathString entry.sourcePath}") entries
+      )
+    }";
+  }) conflictingExternalHomeLinks;
 
   externalHomeFileLinks = builtins.listToAttrs (
     builtins.map (entry: {

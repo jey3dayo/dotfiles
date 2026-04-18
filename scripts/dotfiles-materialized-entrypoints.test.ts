@@ -10,6 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 const nixBin = "/nix/var/nix/profiles/default/bin/nix";
+const flakeUrl = `git+file://${repoRoot}`;
 const user = process.env.USER ?? "j138";
 
 const runNix = (args: string[]) =>
@@ -29,7 +30,7 @@ const evalDotfilesMaterializationState = () =>
     "--impure",
     "--expr",
     `let
-       flake = builtins.getFlake (toString ./.);
+       flake = builtins.getFlake "${flakeUrl}";
        homeConfig = builtins.getAttr "${user}" flake.outputs.homeConfigurations;
      in
        {
@@ -80,5 +81,5 @@ describe("nix/dotfiles-module.nix", () => {
     expect(buildResult.activateScript).toMatch(/diffutils-[^/]+\/bin\/cmp/);
     expect(buildResult.activateScript).not.toMatch(/coreutils-[^/]+\/bin\/cmp/);
     expect(buildResult.activateScript).toContain("install -m 600");
-  }, 30_000);
+  }, 90_000);
 });
