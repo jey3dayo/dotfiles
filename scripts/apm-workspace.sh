@@ -610,7 +610,10 @@ internal_inventory_profiles() {
 legacy_internal_skill_ids() {
   [ -d "$LEGACY_SKILLS_DIR" ] || return 0
 
-  find "$LEGACY_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+  for skill_dir in "$LEGACY_SKILLS_DIR"/*; do
+    [ -d "$skill_dir" ] || continue
+    basename "$skill_dir"
+  done | sort
 }
 
 manifest_has_internal_bundle_reference() {
@@ -1117,6 +1120,96 @@ cmd_validate() {
   )
 }
 
+tracked_internal_bundle_skill_ids() {
+  profile="$1"
+  skills_root="$WORKSPACE_DIR/internal-bundles/internal-$profile/.apm/skills"
+  [ -d "$skills_root" ] || return 0
+
+  find "$skills_root" -type f -name SKILL.md | while IFS= read -r skill_file; do
+    skill_dir=$(dirname "$skill_file")
+    relative_path=${skill_dir#"$skills_root"/}
+    [ -n "$relative_path" ] || continue
+    printf '%s\n' "${relative_path//\//:}"
+  done | sort -u
+}
+
+cmd_validate_internal() {
+  ensure_workspace_repo
+  ensure_workspace_scaffold
+
+  has_failure=0
+  listed_skill_ids=$(get_all_internal_pilot_skill_ids)
+  legacy_skill_ids=$(legacy_internal_skill_ids)
+  legacy_tmp=$(mktemp)
+  listed_tmp=$(mktemp)
+  unassigned_tmp=$(mktemp)
+  orphaned_tmp=$(mktemp)
+  printf '%s\n' "$legacy_skill_ids" | awk 'NF' | sort >"$legacy_tmp"
+  printf '%s\n' "$listed_skill_ids" | awk 'NF' | sort >"$listed_tmp"
+  comm -23 "$legacy_tmp" "$listed_tmp" >"$unassigned_tmp"
+  comm -13 "$legacy_tmp" "$listed_tmp" >"$orphaned_tmp"
+  unassigned_skill_ids=$(cat "$unassigned_tmp")
+  orphaned_skill_ids=$(cat "$orphaned_tmp")
+
+  if [ -n "$unassigned_skill_ids" ]; then
+    error "Unassigned legacy skills: $(printf '%s\n' "$unassigned_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    has_failure=1
+  fi
+  if [ -n "$orphaned_skill_ids" ]; then
+    error "Inventory entries without source directories: $(printf '%s\n' "$orphaned_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    has_failure=1
+  fi
+
+  while IFS="$(printf '\t')" read -r profile inventory_file; do
+    [ -n "$profile" ] || continue
+    tracked_manifest="$WORKSPACE_DIR/internal-bundles/internal-$profile/apm.yml"
+    if [ ! -f "$tracked_manifest" ]; then
+      error "Tracked internal bundle manifest is missing for profile '$profile': $tracked_manifest"
+      has_failure=1
+      continue
+    fi
+
+    if ! manifest_has_internal_bundle_reference "$profile"; then
+      error "Global apm.yml is missing the internal bundle ref for profile '$profile'"
+      has_failure=1
+    fi
+
+    expected_skill_ids=$(get_internal_pilot_skill_ids_from_inventory "$inventory_file")
+    tracked_skill_ids=$(tracked_internal_bundle_skill_ids "$profile")
+    expected_tmp=$(mktemp)
+    tracked_tmp=$(mktemp)
+    missing_tmp=$(mktemp)
+    extra_tmp=$(mktemp)
+    printf '%s\n' "$expected_skill_ids" | awk 'NF' | sort >"$expected_tmp"
+    printf '%s\n' "$tracked_skill_ids" | awk 'NF' | sort >"$tracked_tmp"
+    comm -23 "$expected_tmp" "$tracked_tmp" >"$missing_tmp"
+    comm -13 "$expected_tmp" "$tracked_tmp" >"$extra_tmp"
+    missing_tracked_skill_ids=$(cat "$missing_tmp")
+    extra_tracked_skill_ids=$(cat "$extra_tmp")
+
+    if [ -n "$missing_tracked_skill_ids" ]; then
+      error "Tracked bundle for profile '$profile' is missing skills: $(printf '%s\n' "$missing_tracked_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+      has_failure=1
+    fi
+    if [ -n "$extra_tracked_skill_ids" ]; then
+      error "Tracked bundle for profile '$profile' has unexpected skills: $(printf '%s\n' "$extra_tracked_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+      has_failure=1
+    fi
+
+    rm -f "$expected_tmp" "$tracked_tmp" "$missing_tmp" "$extra_tmp"
+  done <<EOF
+$(internal_inventory_profiles)
+EOF
+
+  rm -f "$legacy_tmp" "$listed_tmp" "$unassigned_tmp" "$orphaned_tmp"
+
+  [ "$has_failure" -eq 0 ] || fail "Internal APM validation failed"
+
+  listed_count=$(printf '%s\n' "$listed_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
+  profile_count=$(internal_inventory_profiles | awk 'NF { count++ } END { print count + 0 }')
+  log "Internal APM validation passed ($listed_count skills across $profile_count profiles)"
+}
+
 cmd_doctor() {
   require_apm
   ensure_workspace_repo
@@ -1337,6 +1430,7 @@ Commands:
   update             Pull clean checkout, update deps, then apply
   list               Show APM global dependencies
   validate           Validate the ~/.apm workspace
+  validate-internal  Fail on internal inventory / bundle / manifest drift
   doctor             Print workspace and target state
   migrate            Compatibility alias for migrate-internal
   migrate-internal   Seed internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml
@@ -1365,6 +1459,7 @@ case "$COMMAND" in
   update) cmd_update ;;
   list) cmd_list ;;
   validate) cmd_validate ;;
+  validate-internal) cmd_validate_internal ;;
   doctor) cmd_doctor ;;
   migrate) cmd_migrate "$@" ;;
   migrate-internal) cmd_migrate_internal "$@" ;;

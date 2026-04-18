@@ -91,6 +91,7 @@ mise install
 mise run migrate-external
 mise run apply
 mise run validate
+mise run validate-internal
 mise run doctor
 ```
 
@@ -136,6 +137,7 @@ If you see `./packages/...` in `apm.yml`, that is legacy migration residue and s
 - `stage-internal[:profile]` syncs that generated bundle into `~/.apm/internal-bundles/internal-<profile>/` and prints the future `owner/repo/path#branch` upstream ref
 - `register-internal[:profile]` only runs once that staged path is committed and pushed, then installs it by upstream ref
 - `smoke-internal[:profile]` project-scope installs that generated bundle into a temp workspace and checks `.agents/skills/<id>/SKILL.md`
+- `validate-internal` fail-fast checks internal inventory / tracked bundle / manifest ref drift
 - `doctor` also shows internal inventory coverage as `listed / source / status` and per-profile coverage as `skills / tracked / manifest`
 - `apply` / `update` / `register-internal[:profile]` clear legacy internal skill links before global install
 - `migrate` is now just a compatibility alias for `migrate-internal`

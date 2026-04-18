@@ -142,13 +142,14 @@ agent 配布は APM global (`~/.apm`) を正面入口にし、`.config` 側は b
 
 - APM CLI 自体は `mise` 管理とし、`.config` と `~/.apm` の両方で `github:microsoft/apm` を pin する
 - `.config` 側の APM task は `apm:bootstrap` と `apm:smoke` だけ
-- install / update / list / validate / doctor / migrate-external は `cd ~/.apm && mise run ...` で行う
+- install / update / list / validate / validate-internal / doctor / migrate-external は `cd ~/.apm && mise run ...` で行う
 - `apm:smoke` は bootstrap script と injected `~/.apm/mise.toml` の整合を見る smoke check
 - internal bundled skill migration は separate pilot として扱い、`migrate-internal[:profile]` が `~/.apm/.internal-seed/` staging を使う
 - `bundle-internal[:profile]` は `~/.apm/.internal-seed/internal-<profile>/` に valid APM artifact を生成するが、APM 0.8.11 では local-path の `apm install -g` が user scope で未対応
 - `stage-internal[:profile]` は generated bundle を `~/.apm/internal-bundles/internal-<profile>/` へ同期し、push 後に使う `owner/repo/path#branch` 形式の upstream ref 候補を出す
 - `register-internal[:profile]` は staged bundle が push 済みなら upstream ref install を実行し、未反映なら明示的に止まる
 - `smoke-internal[:profile]` は generated bundle を temp project install して `.agents/skills/<id>/SKILL.md` を確認する
+- `validate-internal` は internal inventory / tracked bundle / manifest ref の drift を fail fast で検出する
 - `doctor` は dependency 状態に加えて internal inventory の `listed / source / status` と profile ごとの `skills / tracked / manifest` も表示する
 - `apply` / `update` / `register-internal[:profile]` は legacy internal skill link を先に掃除してから global install する
 - 現行 `migrate` は `migrate-internal` の compatibility alias として維持する

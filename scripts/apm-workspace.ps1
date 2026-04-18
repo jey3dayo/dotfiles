@@ -42,6 +42,16 @@ function Write-WarnLine {
   Write-Warning $Message
 }
 
+function Write-ErrorLine {
+  param([string]$Message)
+  Write-Host $Message -ForegroundColor Red
+}
+
+function Write-SuccessLine {
+  param([string]$Message)
+  Write-Host $Message -ForegroundColor Green
+}
+
 function Require-Command {
   param(
     [Parameter(Mandatory = $true)]
@@ -741,6 +751,88 @@ function Invoke-Validate {
   Ensure-WorkspaceRepo
   Ensure-WorkspaceScaffold
   Invoke-WorkspaceCommand -CommandArgs @("compile", "--validate")
+}
+
+function Get-TrackedInternalBundleSkillIds {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Profile
+  )
+
+  $skillsRoot = Join-Path $WorkspaceDir ("internal-bundles\internal-{0}\.apm\skills" -f $Profile)
+  if (-not (Test-Path -LiteralPath $skillsRoot)) {
+    return @()
+  }
+
+  $result = New-Object System.Collections.Generic.List[string]
+  foreach ($skillFile in (Get-ChildItem -LiteralPath $skillsRoot -Recurse -Filter "SKILL.md" -File | Sort-Object FullName)) {
+    $skillDir = Split-Path -Parent $skillFile.FullName
+    $relativePath = $skillDir.Substring($skillsRoot.Length).TrimStart('\')
+    if ([string]::IsNullOrWhiteSpace($relativePath)) {
+      continue
+    }
+
+    $skillId = ($relativePath -replace '\\', ':')
+    if (-not $result.Contains($skillId)) {
+      $result.Add($skillId)
+    }
+  }
+
+  return $result.ToArray()
+}
+
+function Invoke-ValidateInternal {
+  Ensure-WorkspaceRepo
+  Ensure-WorkspaceScaffold
+
+  $hasFailure = $false
+  $listedSkillIds = @(Get-AllInternalPilotSkillIds)
+  $legacySkillIds = @(Get-LegacyInternalSkillIds)
+  $unassignedSkillIds = @($legacySkillIds | Where-Object { $_ -notin $listedSkillIds })
+  $orphanedSkillIds = @($listedSkillIds | Where-Object { $_ -notin $legacySkillIds })
+
+  if ($unassignedSkillIds.Count -gt 0) {
+    Write-ErrorLine ("Unassigned legacy skills: {0}" -f ($unassignedSkillIds -join ", "))
+    $hasFailure = $true
+  }
+  if ($orphanedSkillIds.Count -gt 0) {
+    Write-ErrorLine ("Inventory entries without source directories: {0}" -f ($orphanedSkillIds -join ", "))
+    $hasFailure = $true
+  }
+
+  foreach ($profile in @(Get-InternalInventoryProfiles)) {
+    $trackedManifest = Join-Path $WorkspaceDir ("internal-bundles\internal-{0}\apm.yml" -f $profile.Profile)
+    if (-not (Test-Path -LiteralPath $trackedManifest)) {
+      Write-ErrorLine ("Tracked internal bundle manifest is missing for profile '{0}': {1}" -f $profile.Profile, $trackedManifest)
+      $hasFailure = $true
+      continue
+    }
+
+    if (-not (Test-ManifestHasInternalBundleReference -Profile $profile.Profile)) {
+      Write-ErrorLine ("Global apm.yml is missing the internal bundle ref for profile '{0}'" -f $profile.Profile)
+      $hasFailure = $true
+    }
+
+    $expectedSkillIds = @(Get-InternalPilotSkillIdsFromInventoryFile -InventoryFile $profile.InventoryFile)
+    $trackedSkillIds = @(Get-TrackedInternalBundleSkillIds -Profile $profile.Profile)
+    $missingTrackedSkillIds = @($expectedSkillIds | Where-Object { $_ -notin $trackedSkillIds })
+    $extraTrackedSkillIds = @($trackedSkillIds | Where-Object { $_ -notin $expectedSkillIds })
+
+    if ($missingTrackedSkillIds.Count -gt 0) {
+      Write-ErrorLine ("Tracked bundle for profile '{0}' is missing skills: {1}" -f $profile.Profile, ($missingTrackedSkillIds -join ", "))
+      $hasFailure = $true
+    }
+    if ($extraTrackedSkillIds.Count -gt 0) {
+      Write-ErrorLine ("Tracked bundle for profile '{0}' has unexpected skills: {1}" -f $profile.Profile, ($extraTrackedSkillIds -join ", "))
+      $hasFailure = $true
+    }
+  }
+
+  if ($hasFailure) {
+    throw "Internal APM validation failed"
+  }
+
+  Write-SuccessLine ("Internal APM validation passed ({0} skills across {1} profiles)" -f $listedSkillIds.Count, (@(Get-InternalInventoryProfiles)).Count)
 }
 
 function Invoke-Doctor {
@@ -1517,6 +1609,10 @@ switch ($Command) {
     Invoke-Validate
   }
 
+  "validate-internal" {
+    Invoke-ValidateInternal
+  }
+
   "doctor" {
     Invoke-Doctor
   }
@@ -1566,6 +1662,7 @@ Commands:
   update             Pull clean checkout, update deps, then apply
   list               Show APM global dependencies
   validate           Validate the ~/.apm workspace
+  validate-internal  Fail on internal inventory / bundle / manifest drift
   doctor             Print workspace and target state
   migrate            Compatibility alias for migrate-internal
   migrate-internal   Seed internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml

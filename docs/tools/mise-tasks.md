@@ -125,6 +125,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 - `cd ~/.apm && mise run smoke-internal[:profile]`
 - `cd ~/.apm && mise run apply`
 - `cd ~/.apm && mise run validate`
+- `cd ~/.apm && mise run validate-internal`
 - `cd ~/.apm && mise run doctor`
 
 internal bundled skill の移行は別レーンです。  
@@ -133,6 +134,7 @@ internal bundled skill の移行は別レーンです。
 `mise run stage-internal[:profile]` は generated bundle を `~/.apm/internal-bundles/internal-<profile>/` に同期し、push 後に使う `owner/repo/path#branch` 形式の upstream ref 候補を出す helper です。  
 `mise run register-internal[:profile]` は staged path が commit / push 済みなら upstream ref を `apm install -g` で登録し、未反映なら明示的に止まる helper です。  
 `mise run smoke-internal[:profile]` は generated bundle を temp project install して `.agents/skills/<id>/SKILL.md` まで確認する helper です。  
+`mise run validate-internal` は internal inventory / tracked bundle / manifest ref の drift を fail fast で検出します。  
 `mise run doctor` は dependency 状態に加えて internal inventory の `listed / source / status` と profile ごとの `skills / tracked / manifest` も表示します。  
 `mise run apply` / `mise run update` / `mise run register-internal[:profile]` は legacy internal skill link を先に掃除してから global install します。  
 `mise run migrate -- <skill>` はその compatibility alias であり、日常の global flow には含めません。
