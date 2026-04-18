@@ -737,6 +737,97 @@ function Test-ManifestHasLocalPackages {
   return [bool]($manifestContent | Select-String -Pattern '^\s*-\s+\./packages/')
 }
 
+function Get-LockPinnedReferenceMap {
+  $lockPath = Join-Path $WorkspaceDir "apm.lock.yaml"
+  if (-not (Test-Path -LiteralPath $lockPath)) {
+    throw "Lock file not found: $lockPath"
+  }
+
+  $records = @()
+  $current = @{}
+  foreach ($line in (Get-Content -LiteralPath $lockPath)) {
+    if ($line -match '^- repo_url:\s+(.+)$') {
+      if ($current.ContainsKey('repo_url')) {
+        $records += [pscustomobject]$current
+      }
+      $current = @{ repo_url = $Matches[1].Trim() }
+      continue
+    }
+
+    if (-not $current.ContainsKey('repo_url')) {
+      continue
+    }
+
+    if ($line -match '^\s+resolved_commit:\s+(.+)$') {
+      $current.resolved_commit = $Matches[1].Trim()
+      continue
+    }
+
+    if ($line -match '^\s+virtual_path:\s+(.+)$') {
+      $current.virtual_path = $Matches[1].Trim()
+      continue
+    }
+  }
+
+  if ($current.ContainsKey('repo_url')) {
+    $records += [pscustomobject]$current
+  }
+
+  $map = @{}
+  foreach ($record in $records) {
+    if (-not $record.PSObject.Properties.Name.Contains('resolved_commit')) {
+      continue
+    }
+
+    $canonical = if ($record.PSObject.Properties.Name.Contains('virtual_path') -and -not [string]::IsNullOrWhiteSpace($record.virtual_path)) {
+      "$($record.repo_url)/$($record.virtual_path)"
+    } else {
+      $record.repo_url
+    }
+
+    $map[$canonical] = "$canonical#$($record.resolved_commit)"
+  }
+
+  return $map
+}
+
+function Invoke-PinExternal {
+  Ensure-WorkspaceRepo
+  Ensure-WorkspaceScaffold
+
+  $manifestPath = Join-Path $WorkspaceDir "apm.yml"
+  if (-not (Test-Path -LiteralPath $manifestPath)) {
+    throw "Manifest not found: $manifestPath"
+  }
+
+  $pinMap = Get-LockPinnedReferenceMap
+  $updatedCount = 0
+  $updatedLines = New-Object System.Collections.Generic.List[string]
+
+  foreach ($line in (Get-Content -LiteralPath $manifestPath)) {
+    if ($line -match '^(\s*-\s+)(\S+)\s*$') {
+      $prefix = $Matches[1]
+      $reference = $Matches[2]
+      if ($reference -notmatch '#' -and $pinMap.ContainsKey($reference)) {
+        $updatedLines.Add("$prefix$($pinMap[$reference])")
+        $updatedCount += 1
+        continue
+      }
+    }
+
+    $updatedLines.Add($line)
+  }
+
+  if ($updatedCount -eq 0) {
+    Write-Host "No external dependencies needed pinning."
+    return
+  }
+
+  $content = (($updatedLines.ToArray()) -join "`r`n") + "`r`n"
+  [System.IO.File]::WriteAllText($manifestPath, $content)
+  Write-SuccessLine ("Pinned {0} external dependency references in apm.yml" -f $updatedCount)
+}
+
 function Invoke-Apply {
   Require-Apm
   Ensure-WorkspaceRepo
@@ -1639,6 +1730,10 @@ switch ($Command) {
     Invoke-List
   }
 
+  "pin-external" {
+    Invoke-PinExternal
+  }
+
   "validate" {
     Invoke-Validate
   }
@@ -1695,6 +1790,7 @@ Commands:
   apply              Deploy user-scope-compatible dependencies and compile Codex output
   update             Pull clean checkout, update deps, then apply
   list               Show APM global dependencies
+  pin-external       Pin external manifest refs to lockfile commits
   validate           Validate the ~/.apm workspace
   validate-internal  Fail on internal inventory / bundle / manifest drift
   doctor             Print workspace and target state

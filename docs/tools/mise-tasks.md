@@ -118,6 +118,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 - `cd ~/.apm && mise install`
 - `cd ~/.apm && mise run migrate-external`
+- `cd ~/.apm && mise run pin-external`
 - `cd ~/.apm && mise run migrate-internal[:profile]`
 - `cd ~/.apm && mise run bundle-internal[:profile]`
 - `cd ~/.apm && mise run stage-internal[:profile]`
@@ -130,6 +131,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 internal bundled skill の移行は別レーンです。  
 `mise run migrate-internal[:profile]` は profile inventory を `~/.apm/.internal-seed/` へ seed する helper で、global dependency manifest は変えません。  
+`mise run pin-external` は `apm.lock.yaml` の `resolved_commit` を使って external refs を `#sha` へ固定します。  
 `mise run bundle-internal[:profile]` は `~/.apm/.internal-seed/internal-<profile>/` に valid APM bundle artifact を作る helper です。  
 `mise run stage-internal[:profile]` は generated bundle を `~/.apm/internal-bundles/internal-<profile>/` に同期し、push 後に使う `owner/repo/path#branch` 形式の upstream ref 候補を出す helper です。  
 `mise run register-internal[:profile]` は staged path が commit / push 済みなら upstream ref を `apm install -g` で登録し、未反映なら明示的に止まる helper です。  

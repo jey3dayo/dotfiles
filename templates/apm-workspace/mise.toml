@@ -19,6 +19,11 @@ description = "Show APM global dependencies"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" list"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 list"
 
+[tasks."pin-external"]
+description = "Pin external manifest refs to resolved lockfile commits"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" pin-external"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 pin-external"
+
 [tasks.validate]
 description = "Validate the ~/.apm workspace"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate"

@@ -1138,6 +1138,94 @@ cmd_list() {
   apm deps list -g
 }
 
+lock_pinned_reference_map() {
+  lock_path="$WORKSPACE_DIR/apm.lock.yaml"
+  [ -f "$lock_path" ] || fail "Lock file not found: $lock_path"
+
+  awk '
+    /^- repo_url: / {
+      if (repo_url != "" && resolved_commit != "") {
+        canonical = repo_url
+        if (virtual_path != "") {
+          canonical = canonical "/" virtual_path
+        }
+        printf "%s\t%s#%s\n", canonical, canonical, resolved_commit
+      }
+      repo_url = substr($0, index($0, ": ") + 2)
+      resolved_commit = ""
+      virtual_path = ""
+      next
+    }
+    /^[[:space:]]+resolved_commit: / {
+      resolved_commit = substr($0, index($0, ": ") + 2)
+      next
+    }
+    /^[[:space:]]+virtual_path: / {
+      virtual_path = substr($0, index($0, ": ") + 2)
+      next
+    }
+    END {
+      if (repo_url != "" && resolved_commit != "") {
+        canonical = repo_url
+        if (virtual_path != "") {
+          canonical = canonical "/" virtual_path
+        }
+        printf "%s\t%s#%s\n", canonical, canonical, resolved_commit
+      }
+    }
+  ' "$lock_path"
+}
+
+cmd_pin_external() {
+  ensure_workspace_repo
+  ensure_workspace_scaffold
+
+  manifest_path="$WORKSPACE_DIR/apm.yml"
+  [ -f "$manifest_path" ] || fail "Manifest not found: $manifest_path"
+
+  map_file=$(mktemp)
+  awk 'BEGIN { FS = "\t" } { print $1 "\t" $2 }' <<EOF >"$map_file"
+$(lock_pinned_reference_map)
+EOF
+
+  updated_file=$(mktemp)
+  awk -v map_file="$map_file" '
+    BEGIN {
+      FS = "\t"
+      while ((getline < map_file) > 0) {
+        pinned[$1] = $2
+      }
+      close(map_file)
+      updated = 0
+    }
+    {
+      if (match($0, /^([[:space:]]*-[[:space:]]+)([^[:space:]]+)[[:space:]]*$/, m)) {
+        ref = m[2]
+        if (index(ref, "#") == 0 && (ref in pinned)) {
+          print m[1] pinned[ref]
+          updated++
+          next
+        }
+      }
+      print
+    }
+    END {
+      printf "%d\n", updated > "/dev/stderr"
+    }
+  ' "$manifest_path" >"$updated_file" 2>"$updated_file.count"
+
+  updated_count=$(tr -d '\r\n' <"$updated_file.count")
+  if [ "${updated_count:-0}" -eq 0 ]; then
+    rm -f "$map_file" "$updated_file" "$updated_file.count"
+    log "No external dependencies needed pinning."
+    return 0
+  fi
+
+  cat "$updated_file" >"$manifest_path"
+  rm -f "$map_file" "$updated_file" "$updated_file.count"
+  log "Pinned $updated_count external dependency references in apm.yml"
+}
+
 cmd_validate() {
   require_apm
   ensure_workspace_repo
@@ -1452,6 +1540,7 @@ Commands:
   apply              Deploy user-scope-compatible dependencies and compile Codex output
   update             Pull clean checkout, update deps, then apply
   list               Show APM global dependencies
+  pin-external       Pin external manifest refs to lockfile commits
   validate           Validate the ~/.apm workspace
   validate-internal  Fail on internal inventory / bundle / manifest drift
   doctor             Print workspace and target state
@@ -1481,6 +1570,7 @@ case "$COMMAND" in
   apply) cmd_apply ;;
   update) cmd_update ;;
   list) cmd_list ;;
+  pin-external) cmd_pin_external ;;
   validate) cmd_validate ;;
   validate-internal) cmd_validate_internal ;;
   doctor) cmd_doctor ;;

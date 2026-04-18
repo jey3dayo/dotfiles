@@ -168,6 +168,7 @@ bootstrap 後は `~/.apm` 側で global skills を管理します。
 cd ~/.apm
 mise install
 mise run migrate-external
+mise run pin-external
 mise run apply
 mise run validate
 mise run validate-internal
@@ -179,6 +180,7 @@ mise run doctor
 - `apply`: `validate-internal` を先に通したうえで、`apm.yml` の global dependencies を `apm install -g` で deploy
 - `update`: checkout 更新 + `validate-internal` + `apm deps update -g` + `apm install -g`
 - `list`: `apm deps list -g`
+- `pin-external`: `apm.lock.yaml` の解決済み commit を使って external refs を `#sha` へ固定する
 - `validate`: `apm compile --validate`
 - `validate-internal`: internal inventory / tracked bundle / manifest ref の drift を fail fast で検出する
 - `doctor`: workspace / targets / dependency 状態の確認。internal inventory の `listed / source / status` と、profile ごとの `skills / tracked / manifest` も表示する
@@ -197,6 +199,7 @@ external global skills を manifest に登録する時は次を使います。
 ```bash
 cd ~/.apm
 mise run migrate-external
+mise run pin-external
 mise run apply
 ```
 
@@ -206,6 +209,7 @@ mise run apply
 - 各 skill の canonical upstream ref を導出する
 - internal bundled skill が勝つ ID は external ref を記録しない
 - `apm install -g <upstream-ref>` で `~/.apm/apm.yml` と `~/.apm/apm.lock.yaml` を更新する
+- `pin-external` を使うと、manifest の external refs を lockfile の `resolved_commit` へ寄せられる
 
 `apply` / `update` / `register-internal[:profile]` は、まず `validate-internal` で internal drift を検出し、その後に legacy 配布で残った internal skill link や junction を user target 側から掃除してから `apm install -g` を実行します。Windows で `Cannot call rmtree on a symbolic link` が出るケースのガードです。
 

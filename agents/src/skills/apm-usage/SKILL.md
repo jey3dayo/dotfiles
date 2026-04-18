@@ -89,6 +89,7 @@ mise run apm:bootstrap
 cd ~/.apm
 mise install
 mise run migrate-external
+mise run pin-external
 mise run apply
 mise run validate
 mise run validate-internal
@@ -128,6 +129,7 @@ If you see `./packages/...` in `apm.yml`, that is legacy migration residue and s
 - skips IDs owned by bundled internal legacy skills such as `dev-browser`
 - updates `~/.apm/apm.yml` through `apm install -g <upstream-ref>`
 - lets APM place downloaded sources in `~/.apm/apm_modules/`
+- `pin-external` can then rewrite those external refs to `#resolved_commit` based on `apm.lock.yaml`
 
 ## Legacy Notes
 
@@ -138,6 +140,7 @@ If you see `./packages/...` in `apm.yml`, that is legacy migration residue and s
 - `register-internal[:profile]` only runs once that staged path is committed and pushed, then installs it by upstream ref
 - `smoke-internal[:profile]` project-scope installs that generated bundle into a temp workspace and checks `.agents/skills/<id>/SKILL.md`
 - `validate-internal` fail-fast checks internal inventory / tracked bundle / manifest ref drift
+- `pin-external` pins external refs to lockfile commits for reproducibility
 - `doctor` also shows internal inventory coverage as `listed / source / status` and per-profile coverage as `skills / tracked / manifest`
 - `apply` / `update` / `register-internal[:profile]` run `validate-internal` first, then clear legacy internal skill links before global install
 - install helpers also fail when APM prints diagnostics such as `packages failed` or `error(s)` even if exit code is 0
