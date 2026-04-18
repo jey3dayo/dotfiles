@@ -202,6 +202,22 @@
         "type": "github"
       }
     },
+    "obra-episodic-memory": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774660735,
+        "narHash": "sha256-L9cvdLD3UXmsP7Jy0MCbs5H1b0fMXzsHCUugX4Lx1IA=",
+        "owner": "obra",
+        "repo": "episodic-memory",
+        "rev": "c656adc64ef1576c58fd2f6ddb44c29c920b784b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "obra",
+        "repo": "episodic-memory",
+        "type": "github"
+      }
+    },
     "obra-superpowers": {
       "flake": false,
       "locked": {
@@ -264,6 +280,7 @@
         "millionco-react-doctor": "millionco-react-doctor",
         "nixpkgs": "nixpkgs",
         "nyosegawa-skills": "nyosegawa-skills",
+        "obra-episodic-memory": "obra-episodic-memory",
         "obra-superpowers": "obra-superpowers",
         "openai-codex-plugin-cc": "openai-codex-plugin-cc",
         "openai-skills": "openai-skills",

@@ -108,6 +108,21 @@
       "skill-auditor"
     ];
   };
+  obra-episodic-memory = {
+    url = "github:obra/episodic-memory";
+    flake = false;
+    baseDir = ".";
+    assets = {
+      agents = "agents";
+      commands = "commands";
+    };
+    catalogs = {
+      obra-episodic-memory = "skills";
+    };
+    selection.enable = [
+      "remembering-conversations"
+    ];
+  };
   obra-superpowers = {
     url = "github:obra/superpowers";
     flake = false;

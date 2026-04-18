@@ -49,6 +49,10 @@
       url = "github:nyosegawa/skills";
       flake = false;
     };
+    obra-episodic-memory = {
+      url = "github:obra/episodic-memory";
+      flake = false;
+    };
     obra-superpowers = {
       url = "github:obra/superpowers";
       flake = false;
