@@ -47,15 +47,15 @@ const shellCommand = resolvePowerShellCommand();
         "New-Item -ItemType Directory -Force -Path $configHome, $binDir | Out-Null",
         "Set-Content -Path (Join-Path $configHome '.env') -Value \"SECRET=from-env`n\"",
         "Set-Content -Path (Join-Path $configHome '.env.keys') -Value \"private-key`n\"",
-        "$dotenvxCmd = @\"",
+        '$dotenvxCmd = @"',
         "@echo off",
-        "powershell -NoProfile -Command \"\"Start-Sleep -Milliseconds 700; Write-Output 'SECRET=decrypted'\"\"",
-        "\"@",
+        'powershell -NoProfile -Command ""Start-Sleep -Milliseconds 700; Write-Output \'SECRET=decrypted\'""',
+        '"@',
         "Set-Content -Path (Join-Path $binDir 'dotenvx.cmd') -Value $dotenvxCmd",
         `$setupScript = '${escapedScriptPath}'`,
         "$psi = New-Object System.Diagnostics.ProcessStartInfo",
         "$psi.FileName = 'powershell.exe'",
-        "$psi.Arguments = \"-NoProfile -ExecutionPolicy Bypass -File `\"$setupScript`\"\"",
+        '$psi.Arguments = "-NoProfile -ExecutionPolicy Bypass -File `"$setupScript`""',
         "$psi.RedirectStandardOutput = $true",
         "$psi.RedirectStandardError = $true",
         "$psi.UseShellExecute = $false",
@@ -77,13 +77,9 @@ const shellCommand = resolvePowerShellCommand();
     );
 
     try {
-      const result = spawnSync(
-        shellCommand,
-        ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", runnerPath],
-        {
-          encoding: "utf8",
-        },
-      );
+      const result = spawnSync(shellCommand, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", runnerPath], {
+        encoding: "utf8",
+      });
 
       expect(result.error).toBeUndefined();
       expect(result.status).toBe(0);

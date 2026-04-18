@@ -251,18 +251,13 @@ printf '%s\\n' "SECRET=decrypted"
         pathPrefix: [fakeBin],
       });
 
-      const [firstResult, secondResult] = await Promise.all([
-        collect(first),
-        collect(second),
-      ]);
+      const [firstResult, secondResult] = await Promise.all([collect(first), collect(second)]);
 
       expect(firstResult.code).toBe(0);
       expect(firstResult.stderr).toBe("");
       expect(secondResult.code).toBe(0);
       expect(secondResult.stderr).toBe("");
-      expect(fs.readFileSync(path.join(configHome, ".env.local"), "utf8")).toBe(
-        "SECRET=decrypted\n",
-      );
+      expect(fs.readFileSync(path.join(configHome, ".env.local"), "utf8")).toBe("SECRET=decrypted\n");
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
