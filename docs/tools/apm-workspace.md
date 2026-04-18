@@ -179,7 +179,7 @@ mise run doctor
 - `update`: checkout 更新 + `apm deps update -g` + `apm install -g`
 - `list`: `apm deps list -g`
 - `validate`: `apm compile --validate`
-- `doctor`: workspace / targets / dependency 状態の確認。internal profile ごとの `skills / tracked / manifest` も表示する
+- `doctor`: workspace / targets / dependency 状態の確認。internal inventory の `listed / source / status` と、profile ごとの `skills / tracked / manifest` も表示する
 - `migrate-internal[:profile]`: internal pilot skills を `~/.apm/.internal-seed/` へ seed
 - `bundle-internal[:profile]`: profiled internal pilot skills から valid APM bundle artifact を生成
 - `stage-internal`: generated bundle を `~/.apm/internal-bundles/` へコピーし canonical upstream ref を出す

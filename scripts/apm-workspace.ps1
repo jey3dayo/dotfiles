@@ -767,6 +767,7 @@ function Invoke-Doctor {
       Write-Host ("  missing  {0}" -f $path)
     }
   }
+  Write-InternalInventoryCoverageSummary
   Write-InternalProfileSummary
   Invoke-List
 }
@@ -863,6 +864,15 @@ function Get-AllInternalPilotSkillIds {
   return $result.ToArray()
 }
 
+function Get-LegacyInternalSkillIds {
+  $skillsDir = Join-Path $RepoRoot "agents\src\skills"
+  if (-not (Test-Path -LiteralPath $skillsDir)) {
+    return @()
+  }
+
+  return @(Get-ChildItem -LiteralPath $skillsDir -Directory | Sort-Object Name | Select-Object -ExpandProperty Name)
+}
+
 function Get-InternalInventoryProfiles {
   $inventoryDir = Join-Path $RepoRoot "agents\src"
   return @(Get-ChildItem -LiteralPath $inventoryDir -Filter "internal-apm-*.txt" -File | Sort-Object Name | ForEach-Object {
@@ -886,6 +896,27 @@ function Test-ManifestHasInternalBundleReference {
 
   $pattern = [regex]::Escape("jey3dayo/apm-workspace/internal-bundles/internal-$Profile#main")
   return [bool](Get-Content -LiteralPath $manifestPath -ErrorAction SilentlyContinue | Select-String -Pattern $pattern)
+}
+
+function Write-InternalInventoryCoverageSummary {
+  $listedSkillIds = @(Get-AllInternalPilotSkillIds)
+  $legacySkillIds = @(Get-LegacyInternalSkillIds)
+
+  if ($listedSkillIds.Count -eq 0 -and $legacySkillIds.Count -eq 0) {
+    return
+  }
+
+  $unassignedSkillIds = @($legacySkillIds | Where-Object { $_ -notin $listedSkillIds })
+  $orphanedSkillIds = @($listedSkillIds | Where-Object { $_ -notin $legacySkillIds })
+  $coverageState = if ($unassignedSkillIds.Count -eq 0 -and $orphanedSkillIds.Count -eq 0) { "ok" } else { "drift" }
+
+  Write-Host ("internal inventory: listed={0} source={1} status={2}" -f $listedSkillIds.Count, $legacySkillIds.Count, $coverageState)
+  if ($unassignedSkillIds.Count -gt 0) {
+    Write-Host ("  unassigned: {0}" -f ($unassignedSkillIds -join ", "))
+  }
+  if ($orphanedSkillIds.Count -gt 0) {
+    Write-Host ("  missing-source: {0}" -f ($orphanedSkillIds -join ", "))
+  }
 }
 
 function Write-InternalProfileSummary {

@@ -607,11 +607,44 @@ internal_inventory_profiles() {
   done | sort
 }
 
+legacy_internal_skill_ids() {
+  [ -d "$LEGACY_SKILLS_DIR" ] || return 0
+
+  find "$LEGACY_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
 manifest_has_internal_bundle_reference() {
   profile="$1"
   manifest_path="$WORKSPACE_DIR/apm.yml"
   [ -f "$manifest_path" ] || return 1
   grep -q "jey3dayo/apm-workspace/internal-bundles/internal-$profile#main" "$manifest_path"
+}
+
+print_internal_inventory_coverage_summary() {
+  listed_skill_ids=$(get_all_internal_pilot_skill_ids)
+  legacy_skill_ids=$(legacy_internal_skill_ids)
+
+  listed_count=$(printf '%s\n' "$listed_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
+  source_count=$(printf '%s\n' "$legacy_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
+  if [ "$listed_count" -eq 0 ] && [ "$source_count" -eq 0 ]; then
+    return 0
+  fi
+
+  unassigned_skill_ids=$(comm -23 <(printf '%s\n' "$legacy_skill_ids" | awk 'NF' | sort) <(printf '%s\n' "$listed_skill_ids" | awk 'NF' | sort))
+  orphaned_skill_ids=$(comm -13 <(printf '%s\n' "$legacy_skill_ids" | awk 'NF' | sort) <(printf '%s\n' "$listed_skill_ids" | awk 'NF' | sort))
+  if [ -z "$unassigned_skill_ids" ] && [ -z "$orphaned_skill_ids" ]; then
+    coverage_state=ok
+  else
+    coverage_state=drift
+  fi
+
+  printf 'internal inventory: listed=%s source=%s status=%s\n' "$listed_count" "$source_count" "$coverage_state"
+  if [ -n "$unassigned_skill_ids" ]; then
+    printf '  unassigned: %s\n' "$(printf '%s' "$unassigned_skill_ids" | paste -sd ', ' -)"
+  fi
+  if [ -n "$orphaned_skill_ids" ]; then
+    printf '  missing-source: %s\n' "$(printf '%s' "$orphaned_skill_ids" | paste -sd ', ' -)"
+  fi
 }
 
 print_internal_profile_summary() {
@@ -1104,6 +1137,7 @@ cmd_doctor() {
         printf '  missing  %s\n' "$path"
       fi
     done
+    print_internal_inventory_coverage_summary
     print_internal_profile_summary
     apm deps list -g
   )
