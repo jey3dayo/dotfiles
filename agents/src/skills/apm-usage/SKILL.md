@@ -1,117 +1,143 @@
 ---
 name: apm-usage
-description: Use when working with APM (Agent Package Manager) manifests, `~/.apm` global workspace flows, or migrating legacy bundled skills into `apm-workspace`.
+description: Use when working with APM manifests, `~/.apm` global skill management, or migrating enabled external skills into `apm-workspace`.
 ---
 
 # APM Usage
 
-Derived from the upstream idea at:
-<https://github.com/mizchi/chezmoi-dotfiles/blob/main/dot_claude/skills/apm-usage/>
-
 ## Overview
 
-APM (Agent Package Manager) manages agent skills and related dependencies with a manifest such as `apm.yml`.
+In this repository, APM is used primarily for **global skill management**.
 
-In this repository, the target architecture is now **APM global management via `~/.apm`**.  
-`apm-workspace` is the intended source-of-truth repo, `~/.apm` is its local checkout, and `~/.apm/apm.yml` is the manifest used by daily install/update flows.
+- `~/.apm/apm.yml` is the global manifest
+- `~/.apm/apm_modules/` stores downloaded dependency sources
+- `apm install -g` is the normal deployment path
+
+Do not treat `packages/` or workspace-root `.apm/` as the source of truth for global skills.
 
 ## Use This Skill When
 
-- Editing or reviewing `apm.yml`
-- Installing or updating agent skills with `apm`
-- Migrating a legacy bundled skill from `agents/src/skills/` into `~/.apm`
-- Migrating selected external skills from `nix/agent-skills-sources.nix` into `~/.apm`
-- Explaining `apm install -g`, `apm deps update -g`, or Codex compile handling
+- Editing or reviewing `~/.apm/apm.yml`
+- Installing or updating global skills with `apm install -g`
+- Registering enabled external skills from `nix/agent-skills-sources.nix`
+- Explaining the difference between upstream refs, `apm_modules/`, and deployed targets
+- Checking whether a skill should stay legacy-only instead of entering the global manifest
 
-## This Repository's Rule Of Thumb
+## Rule Of Thumb
 
-Prefer `~/.apm` for day-to-day install / update / list / check when:
+Prefer `~/.apm` when:
 
-- The skill is part of day-to-day agent distribution in this environment
-- The dependency should be managed by `apm install -g`
-- The skill should live in `apm-workspace` and be deployable across machines
+- The skill should be globally available across machines
+- You want the manifest to preserve the upstream repository reference
+- The skill already comes from `nix/agent-skills-sources.nix`
 
-Treat `agents/src/skills/<name>/` as legacy only when:
+Treat `agents/src/skills/<name>/` as legacy-only when:
 
-- You are seeding a migration into `~/.apm/packages/<name>/`
-- You need rollback while the APM path is still stabilizing
-- CI is still validating the legacy Nix bundle
+- It exists for rollback
+- It is a seed helper for older bundled distribution
+- It should not be written into the global `apm.yml`
 
-Do not assume `apm install -g` will deploy `~/.apm/.apm/skills` directly.
+For external skills, the source of truth is the upstream ref in `~/.apm/apm.yml`.  
+For installed sources, the on-disk cache is `~/.apm/apm_modules/`.
 
-In `.config`, keep APM responsibility minimal:
+## Internal Bundled Skills
 
-- bootstrap `~/.apm`
-- inject managed `~/.apm/mise.toml`
-- seed migration from legacy `agents/src/skills/`
-- keep rollback-oriented legacy `agents:*` tasks
+Internal bundled skills are on a separate migration track.
 
-Daily APM operation should happen from `~/.apm`, not from `.config`.
+- current source:
+  - `~/.config/agents/src/skills/<id>/`
+- current role:
+  - rollback
+  - migration seed
+  - contract/pilot source for future internal packaging
+- not allowed:
+  - treating `./packages/*` as the long-term global route
+  - reintroducing internal bundled skills into `~/.apm/apm.yml` as local-path dependencies
+
+Current first-batch pilot candidates:
+
+- `apm-usage`
+- `atomic-commit`
+- `greptileai`
+
+These first-batch skills are now bundled and registered, but the legacy sources still remain in the rollback/seed lane.
+
+Use `mise run migrate-internal[:profile]` when you need to stage an internal profile into:
+
+```text
+~/.apm/.internal-seed/
+```
+
+This staging area is only for pilot/reference use and does not change `~/.apm/apm.yml`.
+
+Use `mise run bundle-internal[:profile]` when you need a valid APM package artifact at:
+
+```text
+~/.apm/.internal-seed/internal-<profile>/
+```
+
+That artifact is useful for validation and future publication work, but as of APM 0.8.11 you still cannot do `apm install -g <local-path>` from user scope.
 
 ## Core Commands
 
 ```bash
-# From ~/.config: bootstrap only
+# Bootstrap once from ~/.config
 cd ~/.config
 mise run apm:bootstrap
 
-# From ~/.apm: daily operation
+# Day-to-day global flow from ~/.apm
 cd ~/.apm
 mise install
-mise run migrate -- apm-usage
 mise run migrate-external
 mise run apply
 mise run validate
 mise run doctor
 ```
 
-## Important Global Constraint
+## Important Global Model
 
-According to the APM CLI reference, `apm install -g` uses user scope (`~/.apm/`) but **skips local `.apm/` content deployment at user scope**.
-
-That means this is **not** the stable pattern for repo-owned global skills:
+APM global skill management in this setup is centered on:
 
 ```text
-~/.apm/.apm/skills/my-skill
+~/.apm/
+  apm.yml
+  apm.lock.yaml
+  apm_modules/
+  mise.toml
 ```
 
-Instead, use installable local packages under `~/.apm/packages/` and add them with global install:
+- `apm.yml` tracks dependencies by upstream ref
+- `apm_modules/` holds downloaded sources
+- `apm install -g` deploys the current global dependency set to user targets
 
-```bash
-cd ~/.apm
-apm install -g ./packages/my-skill
-```
+If you see `./packages/...` in `apm.yml`, that is legacy migration residue and should be removed from the global model.
 
-This lets `~/.apm/apm.yml` stay the manifest source of truth while keeping repo-owned local packages under `~/.apm/packages/`.
+## External Migration Workflow
 
-`mise run apm:bootstrap` from `.config` is expected to prepare an empty `apm-workspace` checkout all the way to:
-
-- `~/.apm/` as the git checkout
-- `~/.apm/apm.yml` as the manifest
-- `~/.apm/packages/README.md` as the marker for repo-owned local packages
-- `~/.apm/mise.toml` as the injected task entrypoint
-
-If `apm` itself is not installed yet, bootstrap should still prepare those files.  
-After that, move into `~/.apm` and run `mise install`.
-
-## Migration Workflow
-
-1. Bootstrap the workspace with `cd ~/.config && mise run apm:bootstrap`
+1. Bootstrap with `cd ~/.config && mise run apm:bootstrap`
 2. Move to `~/.apm` and run `mise install`
-3. Start with `mise run migrate -- apm-usage`
-4. Then run `mise run migrate-external` to vendor the currently enabled external skills
-5. `migrate` copies `agents/src/skills/<id>/` into `~/.apm/packages/<id>/`
-6. `migrate-external` clones each selected source from `nix/agent-skills-sources.nix` and vendors only its `selection.enable` skills into `~/.apm/packages/`
-7. `idPrefix` skills such as `superpowers:brainstorming` become nested package paths such as `~/.apm/packages/superpowers/brainstorming/`
-8. Internal bundled skills win on duplicate IDs, so conflicting external skills are skipped during vendor
-9. Treat `~/.apm/apm.yml` + `~/.apm/packages/` as the source of truth
-10. Keep the legacy deploy / rollback path available while APM user-scope local package support is still missing
-11. Validate with `mise run validate`
+3. Run `mise run migrate-external`
+4. Run `mise run apply`
+5. Validate with `mise run validate` and `mise run doctor`
 
-## Legacy / Rollback Notes
+`migrate-external` does this:
 
-- `agents:validate`, `agents:validate:internal`, `agents:check:sync`, and `agents:report` are legacy validation / reporting tasks kept for CI and compatibility in Phase 1
-- `agents:add` is also still legacy and edits repo-local source definitions rather than `~/.apm`
-- `agents:legacy:*` tasks are the explicit escape hatch if the APM path breaks
-- `agents/src/skills/` should no longer be described as the long-term source of truth for agent distribution in this repo
-- In this repo, install the APM CLI through `mise` rather than the official installer unless you are doing manual recovery
+- reads `nix/agent-skills-sources.nix`
+- derives canonical upstream refs for enabled skills
+- skips IDs owned by bundled internal legacy skills such as `dev-browser`
+- updates `~/.apm/apm.yml` through `apm install -g <upstream-ref>`
+- lets APM place downloaded sources in `~/.apm/apm_modules/`
+
+## Legacy Notes
+
+- `migrate` is only a legacy recovery/seed helper and is not part of the normal global flow
+- `migrate-internal[:profile]` is the explicit pilot helper for internal bundled skills and seeds `~/.apm/.internal-seed/`
+- `bundle-internal[:profile]` builds a valid internal APM artifact under `~/.apm/.internal-seed/internal-<profile>/`
+- `stage-internal[:profile]` syncs that generated bundle into `~/.apm/internal-bundles/internal-<profile>/` and prints the future `owner/repo/path#branch` upstream ref
+- `register-internal[:profile]` only runs once that staged path is committed and pushed, then installs it by upstream ref
+- `smoke-internal[:profile]` project-scope installs that generated bundle into a temp workspace and checks `.agents/skills/<id>/SKILL.md`
+- `migrate` is now just a compatibility alias for `migrate-internal`
+- `agents:legacy:*` remains the rollback path if the APM route breaks
+- `agents/src/skills/` should not be described as the long-term global source of truth
+- internal bundled skill migration should update the contract/docs first, then introduce a bundle/package mechanism, and only then change installation flow
+- install the APM CLI through `mise` in this repository unless you are doing manual recovery

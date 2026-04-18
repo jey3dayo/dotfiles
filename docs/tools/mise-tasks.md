@@ -99,7 +99,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 | タスク                     | 説明                                                 |
 | -------------------------- | ---------------------------------------------------- |
-| `apm:bootstrap`            | `~/.apm` の checkout / `apm.yml` / `packages` / `mise.toml` を初期化 |
+| `apm:bootstrap`            | `~/.apm` の checkout / `apm.yml` / managed `mise.toml` を初期化 |
 | `apm:smoke`                | bootstrap script と injected workspace template の smoke check |
 | `agents:add`               | legacy repo-local skill source を追加                |
 | `agents:validate`          | agent 構成バリデーション（legacy Nix / CI 用）       |
@@ -117,11 +117,23 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 代表例:
 
 - `cd ~/.apm && mise install`
-- `cd ~/.apm && mise run migrate -- apm-usage`
+- `cd ~/.apm && mise run migrate-external`
+- `cd ~/.apm && mise run migrate-internal[:profile]`
+- `cd ~/.apm && mise run bundle-internal[:profile]`
+- `cd ~/.apm && mise run stage-internal[:profile]`
+- `cd ~/.apm && mise run register-internal[:profile]`
+- `cd ~/.apm && mise run smoke-internal[:profile]`
 - `cd ~/.apm && mise run apply`
-  - `./packages/*` を含む間は、現行 APM 制約により legacy deploy へ誘導される
 - `cd ~/.apm && mise run validate`
 - `cd ~/.apm && mise run doctor`
+
+internal bundled skill の移行は別レーンです。  
+`mise run migrate-internal[:profile]` は profile inventory を `~/.apm/.internal-seed/` へ seed する helper で、global dependency manifest は変えません。  
+`mise run bundle-internal[:profile]` は `~/.apm/.internal-seed/internal-<profile>/` に valid APM bundle artifact を作る helper です。  
+`mise run stage-internal[:profile]` は generated bundle を `~/.apm/internal-bundles/internal-<profile>/` に同期し、push 後に使う `owner/repo/path#branch` 形式の upstream ref 候補を出す helper です。  
+`mise run register-internal[:profile]` は staged path が commit / push 済みなら upstream ref を `apm install -g` で登録し、未反映なら明示的に止まる helper です。  
+`mise run smoke-internal[:profile]` は generated bundle を temp project install して `.agents/skills/<id>/SKILL.md` まで確認する helper です。  
+`mise run migrate -- <skill>` はその compatibility alias であり、日常の global flow には含めません。
 
 ### Update
 
