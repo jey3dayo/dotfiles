@@ -10,6 +10,7 @@ REPO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 WORKSPACE_DIR="${APM_WORKSPACE_DIR:-$HOME/.apm}"
 WORKSPACE_REPO="${APM_WORKSPACE_REPO:-https://github.com/jey3dayo/apm-workspace.git}"
 LEGACY_SKILLS_DIR="$REPO_ROOT/agents/src/skills"
+EXTERNAL_SOURCES_FILE="$REPO_ROOT/nix/agent-skills-sources.nix"
 PACKAGES_DIR="$WORKSPACE_DIR/packages"
 CODEX_OUTPUT="${APM_CODEX_OUTPUT:-$HOME/.codex/AGENTS.md}"
 MISE_TEMPLATE="$REPO_ROOT/templates/apm-workspace/mise.toml"
@@ -67,6 +68,49 @@ validate_skill_id() {
       fail "Invalid skill id: $skill_id"
       ;;
   esac
+}
+
+validate_skill_path_segments() {
+  original_value="$1"
+  shift
+
+  if [ "$#" -eq 0 ]; then
+    fail "Invalid skill path: $original_value"
+  fi
+
+  for segment in "$@"; do
+    case "$segment" in
+      ""|.|..|*/*|*\\*)
+        fail "Invalid skill path: $original_value"
+        ;;
+      [A-Za-z0-9]*)
+        ;;
+      *)
+        fail "Invalid skill path: $original_value"
+        ;;
+    esac
+
+    case "$segment" in
+      *[!A-Za-z0-9._-]*)
+        fail "Invalid skill path: $original_value"
+        ;;
+    esac
+  done
+}
+
+skill_id_to_manifest_path() {
+  skill_id="$1"
+  old_ifs=$IFS
+  IFS=':'
+  set -- $skill_id
+  IFS=$old_ifs
+  validate_skill_path_segments "$skill_id" "$@"
+  printf '%s' "$1"
+  shift
+  for segment in "$@"; do
+    printf '/%s' "$segment"
+  done
+  printf '\n'
 }
 
 workspace_project_name() {
@@ -137,6 +181,7 @@ Typical flow:
 cd ~/.apm
 mise install
 mise run migrate -- apm-usage
+mise run migrate-external
 mise run apply
 ```
 EOF
@@ -263,6 +308,276 @@ copy_skill() {
   cp -R "$source_dir" "$destination_dir"
 }
 
+internal_skill_exists() {
+  skill_id="$1"
+  relative_path=$(skill_id_to_manifest_path "$skill_id")
+  [ -d "$LEGACY_SKILLS_DIR/$relative_path" ]
+}
+
+parse_external_sources() {
+  if [ ! -f "$EXTERNAL_SOURCES_FILE" ]; then
+    return 0
+  fi
+
+  awk '
+    function flush_source(    has_catalogs, has_selection, line, n, parts, i, value, base_dir, id_prefix) {
+      if (current_name == "") {
+        return
+      }
+
+      has_catalogs = 0
+      has_selection = 0
+      url = ""
+      base_dir = "."
+      id_prefix = ""
+      catalogs = ""
+      selected = ""
+      mode = ""
+
+      n = split(block, parts, "\n")
+      for (i = 1; i <= n; i++) {
+        line = parts[i]
+        sub(/[[:space:]]*#.*/, "", line)
+
+        if (mode == "catalogs") {
+          if (line ~ /^[[:space:]]*};/) {
+            mode = ""
+            continue
+          }
+          if (match(line, /^[[:space:]]*([A-Za-z0-9._-]+)[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*;/, m)) {
+            if (catalogs != "") {
+              catalogs = catalogs "\034"
+            }
+            catalogs = catalogs m[1] "\035" m[2]
+            has_catalogs = 1
+          }
+          continue
+        }
+
+        if (mode == "selection") {
+          if (line ~ /\];/) {
+            mode = ""
+          }
+          while (match(line, /"([^"]+)"/, m)) {
+            if (selected != "") {
+              selected = selected "\034"
+            }
+            selected = selected m[1]
+            has_selection = 1
+            line = substr(line, RSTART + RLENGTH)
+          }
+          continue
+        }
+
+        if (match(line, /^[[:space:]]*url[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*;/, m)) {
+          url = m[1]
+          continue
+        }
+        if (match(line, /^[[:space:]]*baseDir[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*;/, m)) {
+          base_dir = m[1]
+          continue
+        }
+        if (match(line, /^[[:space:]]*idPrefix[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*;/, m)) {
+          id_prefix = m[1]
+          continue
+        }
+        if (line ~ /^[[:space:]]*catalogs[[:space:]]*=[[:space:]]*{/) {
+          mode = "catalogs"
+          continue
+        }
+        if (line ~ /selection\.enable[[:space:]]*=[[:space:]]*\[/) {
+          mode = "selection"
+          while (match(line, /"([^"]+)"/, m)) {
+            if (selected != "") {
+              selected = selected "\034"
+            }
+            selected = selected m[1]
+            has_selection = 1
+            line = substr(line, RSTART + RLENGTH)
+          }
+          if (line ~ /\];/) {
+            mode = ""
+          }
+          continue
+        }
+      }
+
+      if (url != "" && has_catalogs && has_selection) {
+        printf "%s\036%s\036%s\036%s\036%s\036%s\n", current_name, url, base_dir, id_prefix, catalogs, selected
+      }
+
+      current_name = ""
+      block = ""
+    }
+
+    {
+      sanitized = $0
+      sub(/[[:space:]]*#.*/, "", sanitized)
+
+      if (depth == 1 && current_name == "" && match(sanitized, /^[[:space:]]*([A-Za-z0-9._-]+)[[:space:]]*=[[:space:]]*{[[:space:]]*$/, m)) {
+        current_name = m[1]
+        block = $0 "\n"
+      } else if (current_name != "") {
+        block = block $0 "\n"
+      }
+
+      opens = gsub(/\{/, "{", sanitized)
+      closes = gsub(/\}/, "}", sanitized)
+      depth += opens - closes
+
+      if (current_name != "" && depth == 1) {
+        flush_source()
+      }
+    }
+  ' "$EXTERNAL_SOURCES_FILE"
+}
+
+external_source_checkout_path() {
+  source_name="$1"
+  source_url="$2"
+
+  require_command git
+
+  if [ "${source_url#path:}" != "$source_url" ]; then
+    relative_path=${source_url#path:}
+    (cd "$REPO_ROOT" && cd "$relative_path" && pwd)
+    return 0
+  fi
+
+  clone_url=
+  ref=
+  case "$source_url" in
+    github:*)
+      repo_spec=${source_url#github:}
+      owner=${repo_spec%%/*}
+      repo_ref=${repo_spec#*/}
+      repo=${repo_ref%%/*}
+      if [ "$repo_ref" != "$repo" ]; then
+        ref=${repo_ref#*/}
+      fi
+      clone_url="https://github.com/$owner/$repo.git"
+      ;;
+    git+*)
+      clone_url=${source_url#git+}
+      case "$clone_url" in
+        *[\?\&]ref=*)
+          ref=$(printf '%s' "$clone_url" | sed -n 's/^.*[?&]ref=\([^&#]*\).*$/\1/p')
+          clone_url=$(printf '%s' "$clone_url" | sed 's/[?&]ref=[^&#]*//')
+          ;;
+      esac
+      ;;
+    *)
+      clone_url=$source_url
+      ;;
+  esac
+
+  [ -n "$clone_url" ] || fail "Unsupported source URL: $source_url"
+
+  checkout_root="${TMPDIR:-/tmp}/apm-workspace-external"
+  checkout_path="$checkout_root/$source_name"
+  mkdir -p "$checkout_root"
+  rm -rf "$checkout_path"
+
+  if [ -n "$ref" ]; then
+    git clone --depth 1 --branch "$ref" "$clone_url" "$checkout_path" >/dev/null
+  else
+    git clone --depth 1 "$clone_url" "$checkout_path" >/dev/null
+  fi
+
+  printf '%s\n' "$checkout_path"
+}
+
+resolve_external_skill_source_dir() {
+  checkout_path="$1"
+  source_name="$2"
+  base_dir="$3"
+  id_prefix="$4"
+  catalogs_value="$5"
+  skill_id="$6"
+
+  source_relative_id="$skill_id"
+  if [ -n "$id_prefix" ]; then
+    case "$skill_id" in
+      "$id_prefix"*)
+        source_relative_id=${skill_id#"$id_prefix"}
+        ;;
+      *)
+        fail "Skill '$skill_id' does not match idPrefix '$id_prefix' for source '$source_name'"
+        ;;
+    esac
+  fi
+
+  relative_skill_path=$(skill_id_to_manifest_path "$source_relative_id")
+  base_path="$checkout_path"
+  if [ "$base_dir" != "." ] && [ -n "$base_dir" ]; then
+    base_path="$checkout_path/$base_dir"
+  fi
+
+  old_ifs=$IFS
+  IFS=$(printf '\034')
+  set -- $catalogs_value
+  IFS=$old_ifs
+  for catalog_entry in "$@"; do
+    catalog_path=${catalog_entry#*$(printf '\035')}
+    catalog_root="$base_path"
+    if [ "$catalog_path" != "." ] && [ -n "$catalog_path" ]; then
+      catalog_root="$catalog_root/$catalog_path"
+    fi
+    if [ -f "$catalog_root/SKILL.md" ]; then
+      printf '%s\n' "$catalog_root"
+      return 0
+    fi
+    candidate="$catalog_root"
+    candidate="$candidate/$relative_skill_path"
+    if [ -f "$candidate/SKILL.md" ]; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done
+
+  while IFS= read -r skill_file; do
+    candidate_dir=$(dirname "$skill_file")
+    relative_dir=${candidate_dir#"$checkout_path"/}
+    case "$relative_dir" in
+      "$relative_skill_path"|*/"$relative_skill_path")
+        printf '%s\n' "$candidate_dir"
+        return 0
+        ;;
+    esac
+  done <<EOF
+$(find "$checkout_path" -type f -name SKILL.md 2>/dev/null)
+EOF
+
+  fail "Could not find external skill '$skill_id' in source '$source_name'"
+}
+
+copy_external_skill() {
+  source_dir="$1"
+  skill_id="$2"
+  package_relative_path=$(skill_id_to_manifest_path "$skill_id")
+  destination_dir="$PACKAGES_DIR/$package_relative_path"
+  destination_parent=$(dirname "$destination_dir")
+
+  if [ -e "$destination_dir" ]; then
+    if [ "${APM_MIGRATE_FORCE:-0}" != "1" ]; then
+      fail "$destination_dir already exists. Set APM_MIGRATE_FORCE=1 to replace it."
+    fi
+    rm -rf "$destination_dir"
+  fi
+
+  mkdir -p "$destination_parent"
+  cp -R "$source_dir" "$destination_dir"
+  printf '%s\n' "$package_relative_path"
+}
+
+migrate_package() {
+  package_relative_path="$1"
+  (
+    cd "$WORKSPACE_DIR"
+    apm install "./packages/$package_relative_path"
+  )
+}
+
 cmd_bootstrap() {
   ensure_workspace_repo
   refresh_workspace_checkout
@@ -274,6 +589,7 @@ cmd_bootstrap() {
   log "  cd $WORKSPACE_DIR"
   log "  mise install"
   log "  mise run migrate -- apm-usage"
+  log "  mise run migrate-external"
   log "  mise run apply"
 }
 
@@ -368,12 +684,64 @@ cmd_migrate() {
 
   for skill_id in "$@"; do
     copy_skill "$skill_id"
-    (
-      cd "$WORKSPACE_DIR"
-      apm install "./packages/$skill_id"
-    )
+    migrate_package "$skill_id"
     log "Migrated legacy skill into ~/.apm/packages/$skill_id and recorded ./packages/$skill_id in apm.yml"
   done
+}
+
+cmd_migrate_external() {
+  require_apm
+  ensure_workspace_repo
+  ensure_workspace_scaffold
+  ensure_workspace_mise_file
+
+  found_sources=0
+  matched_sources=0
+  sources_cache=$(mktemp "${TMPDIR:-/tmp}/apm-external-sources.XXXXXX")
+  parse_external_sources >"$sources_cache"
+
+  while IFS=$(printf '\036') read -r source_name source_url base_dir id_prefix catalogs_value selected_value; do
+    [ -n "$source_name" ] || continue
+    found_sources=1
+
+    if [ "$#" -gt 0 ]; then
+      include_source=0
+      for requested_source in "$@"; do
+        if [ "$requested_source" = "$source_name" ]; then
+          include_source=1
+          break
+        fi
+      done
+      [ "$include_source" -eq 1 ] || continue
+    fi
+
+    matched_sources=1
+    checkout_path=$(external_source_checkout_path "$source_name" "$source_url")
+
+    old_ifs=$IFS
+    IFS=$(printf '\034')
+    set -- $selected_value
+    IFS=$old_ifs
+    for skill_id in "$@"; do
+      if internal_skill_exists "$skill_id"; then
+        log "Skipping $skill_id from $source_name: internal bundled skill already owns this id"
+        continue
+      fi
+
+      source_dir=$(resolve_external_skill_source_dir "$checkout_path" "$source_name" "$base_dir" "$id_prefix" "$catalogs_value" "$skill_id")
+      package_relative_path=$(copy_external_skill "$source_dir" "$skill_id")
+      migrate_package "$package_relative_path"
+      log "Migrated external skill $skill_id from $source_name into ~/.apm/packages/$package_relative_path"
+    done
+  done <"$sources_cache"
+
+  rm -f "$sources_cache"
+
+  [ "$found_sources" -eq 1 ] || fail "No external skill sources found in $EXTERNAL_SOURCES_FILE"
+
+  if [ "$#" -gt 0 ] && [ "$matched_sources" -ne 1 ]; then
+    fail "None of the requested external sources were found in $EXTERNAL_SOURCES_FILE"
+  fi
 }
 
 cmd_smoke() {
@@ -400,6 +768,7 @@ Commands:
   validate           Validate the ~/.apm workspace
   doctor             Print workspace and target state
   migrate <skills>   Copy legacy skills into ~/.apm/packages/<id> and register them
+  migrate-external   Vendor selected external skills into ~/.apm/packages and register them
   smoke              Validate script syntax and workspace template wiring
 
 Environment overrides:
@@ -421,6 +790,7 @@ case "$COMMAND" in
   validate) cmd_validate ;;
   doctor) cmd_doctor ;;
   migrate) cmd_migrate "$@" ;;
+  migrate-external) cmd_migrate_external "$@" ;;
   smoke) cmd_smoke ;;
   help|-h|--help) cmd_help ;;
   *)

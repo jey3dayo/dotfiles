@@ -33,3 +33,8 @@ run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%
 description = "Seed a legacy ~/.config skill into packages/<id> and record it in apm.yml"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate"
+
+[tasks.migrate-external]
+description = "Vendor selected external skills into packages/ and record them in apm.yml"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-external"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace-migrate-external.ps1"

@@ -4,7 +4,7 @@ param(
   [string]$Command = "help",
 
   [Parameter(ValueFromRemainingArguments = $true)]
-  [string[]]$Args
+  [string[]]$CommandArgs
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,6 +13,7 @@ $RepoRoot = Split-Path -Parent $PSScriptRoot
 $WorkspaceDir = if ($env:APM_WORKSPACE_DIR) { $env:APM_WORKSPACE_DIR } else { Join-Path $HOME ".apm" }
 $WorkspaceRepo = if ($env:APM_WORKSPACE_REPO) { $env:APM_WORKSPACE_REPO } else { "https://github.com/jey3dayo/apm-workspace.git" }
 $LegacySkillsDir = Join-Path $RepoRoot "agents\src\skills"
+$ExternalSourcesFile = Join-Path $RepoRoot "nix\agent-skills-sources.nix"
 $PackagesDir = Join-Path $WorkspaceDir "packages"
 $CodexOutput = if ($env:APM_CODEX_OUTPUT) { $env:APM_CODEX_OUTPUT } else { Join-Path $HOME ".codex\AGENTS.md" }
 $MiseTemplate = Join-Path $RepoRoot "templates\apm-workspace\mise.toml"
@@ -63,6 +64,59 @@ function Test-SkillId {
   if ($SkillId.Contains("/") -or $SkillId.Contains("\") -or $SkillId -in @(".", "..")) {
     throw "Invalid skill id: $SkillId"
   }
+}
+
+function Test-SkillPathSegments {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$Segments,
+
+    [Parameter(Mandatory = $true)]
+    [string]$OriginalValue
+  )
+
+  if (-not $Segments -or $Segments.Count -eq 0) {
+    throw "Invalid skill path: $OriginalValue"
+  }
+
+  foreach ($segment in $Segments) {
+    if ($segment -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$') {
+      throw "Invalid skill path: $OriginalValue"
+    }
+
+    if ($segment -in @(".", "..")) {
+      throw "Invalid skill path: $OriginalValue"
+    }
+  }
+}
+
+function Convert-SkillIdToPathSegments {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  $segments = @($SkillId -split ':')
+  Test-SkillPathSegments -Segments $segments -OriginalValue $SkillId
+  return $segments
+}
+
+function Convert-SkillIdToPackageRelativePath {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  return ((Convert-SkillIdToPathSegments -SkillId $SkillId) -join [System.IO.Path]::DirectorySeparatorChar)
+}
+
+function Convert-SkillIdToManifestRelativePath {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  return ((Convert-SkillIdToPathSegments -SkillId $SkillId) -join "/")
 }
 
 function Get-WorkspaceProjectName {
@@ -167,6 +221,7 @@ function Ensure-PackagesReadme {
     'cd ~/.apm',
     'mise install',
     'mise run migrate -- apm-usage',
+    'mise run migrate-external',
     'mise run apply',
     '```'
   ) -join [Environment]::NewLine
@@ -425,6 +480,309 @@ function Copy-LegacySkill {
   Copy-Item -LiteralPath $sourceDir -Destination $destinationDir -Recurse -Force
 }
 
+function Test-InternalSkillExists {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  $relativePath = Convert-SkillIdToPackageRelativePath -SkillId $SkillId
+  return Test-Path -LiteralPath (Join-Path $LegacySkillsDir $relativePath)
+}
+
+function Get-ExternalSkillSources {
+  if (-not (Test-Path -LiteralPath $ExternalSourcesFile)) {
+    return @()
+  }
+
+  $lines = Get-Content -LiteralPath $ExternalSourcesFile
+  $depth = 0
+  $currentName = $null
+  $currentLines = @()
+  $sources = @()
+
+  foreach ($line in $lines) {
+    $sanitized = $line -replace '#.*$', ''
+
+    if ($depth -eq 1 -and $null -eq $currentName) {
+      if ($sanitized -match '^\s*([A-Za-z0-9._-]+)\s*=\s*\{\s*$') {
+        $currentName = $matches[1]
+        $currentLines = @($line)
+      }
+    } elseif ($null -ne $currentName) {
+      $currentLines += $line
+    }
+
+    $openCount = ([regex]::Matches($sanitized, '\{')).Count
+    $closeCount = ([regex]::Matches($sanitized, '\}')).Count
+    $depth += ($openCount - $closeCount)
+
+    if ($null -ne $currentName -and $depth -eq 1) {
+      $blockText = $currentLines -join "`n"
+      $url = $null
+      $baseDir = "."
+      $idPrefix = $null
+      $catalogs = @()
+      $selectedSkills = @()
+
+      if ($blockText -match '(?m)^\s*url\s*=\s*"([^"]+)"\s*;') {
+        $url = $matches[1]
+      }
+      if ($blockText -match '(?m)^\s*baseDir\s*=\s*"([^"]+)"\s*;') {
+        $baseDir = $matches[1]
+      }
+      if ($blockText -match '(?m)^\s*idPrefix\s*=\s*"([^"]+)"\s*;') {
+        $idPrefix = $matches[1]
+      }
+      if ($blockText -match '(?ms)^\s*catalogs\s*=\s*\{(?<body>.*?)^\s*\};') {
+        foreach ($match in [regex]::Matches($matches['body'], '(?m)^\s*([A-Za-z0-9._-]+)\s*=\s*"([^"]+)"\s*;')) {
+          $catalogs += [pscustomobject]@{
+            Name = $match.Groups[1].Value
+            Path = $match.Groups[2].Value
+          }
+        }
+      }
+      if ($blockText -match '(?ms)selection\.enable\s*=\s*\[(?<body>.*?)\];') {
+        foreach ($match in [regex]::Matches($matches['body'], '"([^"]+)"')) {
+          $selectedSkills += $match.Groups[1].Value
+        }
+      }
+
+      if ($url -and $catalogs.Count -gt 0 -and $selectedSkills.Count -gt 0) {
+        $sources += [pscustomobject]@{
+          Name = $currentName
+          Url = $url
+          BaseDir = $baseDir
+          IdPrefix = $idPrefix
+          Catalogs = $catalogs
+          SelectedSkills = $selectedSkills
+        }
+      }
+
+      $currentName = $null
+      $currentLines = @()
+    }
+  }
+
+  return $sources
+}
+
+function Get-ExternalSourceCheckoutPath {
+  param(
+    [Parameter(Mandatory = $true)]
+    [pscustomobject]$Source
+  )
+
+  Require-Command -Name "git"
+
+  if ($Source.Url.StartsWith("path:")) {
+    $relativePath = $Source.Url.Substring(5)
+    return [System.IO.Path]::GetFullPath((Join-Path $RepoRoot $relativePath))
+  }
+
+  $cloneUrl = $null
+  $ref = $null
+
+  if ($Source.Url -match '^github:([^/]+)/([^/]+?)(?:/([^/]+))?$') {
+    $owner = $matches[1]
+    $repo = $matches[2]
+    $ref = if ($matches.Count -ge 4) { $matches[3] } else { $null }
+    $cloneUrl = "https://github.com/$owner/$repo.git"
+  } elseif ($Source.Url.StartsWith("git+")) {
+    $cloneUrl = $Source.Url.Substring(4)
+    if ($cloneUrl -match '^(.*?)[?&]ref=([^&#]+).*$') {
+      $cloneUrl = $matches[1]
+      $ref = $matches[2]
+    }
+  } else {
+    $cloneUrl = $Source.Url
+  }
+
+  if (-not $cloneUrl) {
+    throw "Unsupported source URL: $($Source.Url)"
+  }
+
+  $checkoutRoot = Join-Path $env:TEMP "apm-workspace-external"
+  New-Item -ItemType Directory -Path $checkoutRoot -Force | Out-Null
+  $checkoutPath = Join-Path $checkoutRoot $Source.Name
+
+  if (Test-Path -LiteralPath $checkoutPath) {
+    Remove-Item -LiteralPath $checkoutPath -Recurse -Force
+  }
+
+  $cloneArgs = @("clone", "--depth", "1")
+  if (-not [string]::IsNullOrWhiteSpace($ref)) {
+    $cloneArgs += @("--branch", $ref)
+  }
+  $cloneArgs += @($cloneUrl, $checkoutPath)
+
+  & git @cloneArgs | Out-Null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to clone external source: $cloneUrl"
+  }
+
+  return $checkoutPath
+}
+
+function Resolve-ExternalSkillSourceDir {
+  param(
+    [Parameter(Mandatory = $true)]
+    [pscustomobject]$Source,
+
+    [Parameter(Mandatory = $true)]
+    [string]$CheckoutPath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  $sourceRelativeId = $SkillId
+  if (-not [string]::IsNullOrWhiteSpace($Source.IdPrefix)) {
+    if (-not $SkillId.StartsWith($Source.IdPrefix)) {
+      throw "Skill '$SkillId' does not match idPrefix '$($Source.IdPrefix)' for source '$($Source.Name)'"
+    }
+
+    $sourceRelativeId = $SkillId.Substring($Source.IdPrefix.Length)
+  }
+
+  $sourceSegments = Convert-SkillIdToPathSegments -SkillId $sourceRelativeId
+  $basePath = if ($Source.BaseDir -eq "." -or [string]::IsNullOrWhiteSpace($Source.BaseDir)) {
+    $CheckoutPath
+  } else {
+    Join-Path $CheckoutPath $Source.BaseDir
+  }
+
+  foreach ($catalog in $Source.Catalogs) {
+    $catalogRoot = if ($catalog.Path -eq "." -or [string]::IsNullOrWhiteSpace($catalog.Path)) {
+      $basePath
+    } else {
+      Join-Path $basePath $catalog.Path
+    }
+
+    if (Test-Path -LiteralPath (Join-Path $catalogRoot "SKILL.md")) {
+      return $catalogRoot
+    }
+
+    $candidate = $catalogRoot
+    foreach ($segment in $sourceSegments) {
+      $candidate = Join-Path $candidate $segment
+    }
+
+    if (Test-Path -LiteralPath (Join-Path $candidate "SKILL.md")) {
+      return $candidate
+    }
+  }
+
+  $relativeTail = [System.IO.Path]::Combine($sourceSegments)
+  $fallbackMatches = Get-ChildItem -LiteralPath $CheckoutPath -Recurse -File -Filter "SKILL.md" -ErrorAction SilentlyContinue |
+    Where-Object {
+      $relativeDir = $_.DirectoryName.Substring($CheckoutPath.Length).TrimStart('\', '/')
+      $relativeDir -eq $relativeTail -or $relativeDir.EndsWith([System.IO.Path]::DirectorySeparatorChar + $relativeTail)
+    } |
+    Sort-Object { $_.DirectoryName.Length }
+
+  if ($fallbackMatches) {
+    return $fallbackMatches[0].DirectoryName
+  }
+
+  throw "Could not find external skill '$SkillId' in source '$($Source.Name)'"
+}
+
+function Copy-ExternalSkill {
+  param(
+    [Parameter(Mandatory = $true)]
+    [pscustomobject]$Source,
+
+    [Parameter(Mandatory = $true)]
+    [string]$CheckoutPath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  $sourceDir = Resolve-ExternalSkillSourceDir -Source $Source -CheckoutPath $CheckoutPath -SkillId $SkillId
+  $packageRelativePath = Convert-SkillIdToManifestRelativePath -SkillId $SkillId
+  $destinationDir = Join-Path $PackagesDir (Convert-SkillIdToPackageRelativePath -SkillId $SkillId)
+  $destinationParent = Split-Path -Parent $destinationDir
+
+  if (Test-Path -LiteralPath $destinationDir) {
+    if ($env:APM_MIGRATE_FORCE -ne "1") {
+      throw "$destinationDir already exists. Set APM_MIGRATE_FORCE=1 to replace it."
+    }
+
+    Remove-Item -LiteralPath $destinationDir -Recurse -Force
+  }
+
+  if (-not [string]::IsNullOrWhiteSpace($destinationParent)) {
+    New-Item -ItemType Directory -Path $destinationParent -Force | Out-Null
+  }
+
+  Copy-Item -LiteralPath $sourceDir -Destination $destinationDir -Recurse -Force
+  return $packageRelativePath
+}
+
+function Invoke-MigratePackage {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PackageRelativePath
+  )
+
+  Invoke-WorkspaceCommand -CommandArgs @("install", "./packages/$PackageRelativePath")
+}
+
+function Invoke-MigrateExternal {
+  param(
+    [string[]]$RequestedSources = @()
+  )
+
+  Require-Apm
+  Ensure-WorkspaceRepo
+  Ensure-WorkspaceScaffold
+  Ensure-WorkspaceMiseFile
+
+  $requestedSources = @($RequestedSources | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | ForEach-Object { $_.Trim() })
+  $sources = @(Get-ExternalSkillSources)
+  if ($sources.Count -eq 0) {
+    throw "No external skill sources found in $ExternalSourcesFile"
+  }
+
+  if ($requestedSources.Count -gt 0) {
+    $sourcesByName = @{}
+    foreach ($source in $sources) {
+      $sourcesByName[$source.Name.Trim()] = $source
+    }
+
+    $selectedSources = @()
+    foreach ($sourceName in $requestedSources) {
+      if (-not $sourcesByName.ContainsKey($sourceName)) {
+        throw "Unknown external source: $sourceName"
+      }
+
+      $selectedSources += $sourcesByName[$sourceName]
+    }
+
+    $sources = @($selectedSources)
+  }
+
+  foreach ($source in $sources) {
+    $checkoutPath = Get-ExternalSourceCheckoutPath -Source $source
+    foreach ($skillId in $source.SelectedSkills) {
+      if (Test-InternalSkillExists -SkillId $skillId) {
+        Write-Host "Skipping $skillId from $($source.Name): internal bundled skill already owns this id"
+        continue
+      }
+
+      $packageRelativePath = Copy-ExternalSkill -Source $source -CheckoutPath $checkoutPath -SkillId $skillId
+      Invoke-MigratePackage -PackageRelativePath $packageRelativePath
+      Write-Host "Migrated external skill $skillId from $($source.Name) into ~/.apm/packages/$packageRelativePath"
+    }
+  }
+}
+
+if ($env:APM_WORKSPACE_LIB_ONLY -eq "1") {
+  return
+}
+
 switch ($Command) {
   "bootstrap" {
     Ensure-WorkspaceRepo
@@ -437,6 +795,7 @@ switch ($Command) {
     Write-Host "  cd $WorkspaceDir"
     Write-Host "  mise install"
     Write-Host "  mise run migrate -- apm-usage"
+    Write-Host "  mise run migrate-external"
     Write-Host "  mise run apply"
   }
 
@@ -466,7 +825,7 @@ switch ($Command) {
   }
 
   "migrate" {
-    if (-not $Args -or $Args.Count -eq 0) {
+    if (-not $CommandArgs -or $CommandArgs.Count -eq 0) {
       throw "usage: scripts/apm-workspace.ps1 migrate <skill-id> [skill-id ...]"
     }
 
@@ -474,22 +833,17 @@ switch ($Command) {
     Ensure-WorkspaceRepo
     Ensure-WorkspaceScaffold
     Ensure-WorkspaceMiseFile
-    foreach ($skillId in $Args) {
+    foreach ($skillId in $CommandArgs) {
       Test-SkillId -SkillId $skillId
       Copy-LegacySkill -SkillId $skillId
-      Push-Location $WorkspaceDir
-      try {
-        & apm install "./packages/$skillId"
-        if ($LASTEXITCODE -ne 0) {
-          throw "apm install ./packages/$skillId failed."
-        }
-      }
-      finally {
-        Pop-Location
-      }
+      Invoke-MigratePackage -PackageRelativePath $skillId
 
       Write-Host "Migrated legacy skill into ~/.apm/packages/$skillId and recorded ./packages/$skillId in apm.yml"
     }
+  }
+
+  "migrate-external" {
+    Invoke-MigrateExternal -RequestedSources $CommandArgs
   }
 
   "help" {
@@ -505,6 +859,7 @@ Commands:
   validate           Validate the ~/.apm workspace
   doctor             Print workspace and target state
   migrate <skills>   Copy legacy skills into ~/.apm/packages/<id> and register them
+  migrate-external   Vendor selected external skills into ~/.apm/packages and register them
   smoke              Validate script syntax and workspace template wiring
 
 Environment overrides:
