@@ -528,6 +528,70 @@ resolve_internal_skill_ids() {
   get_internal_pilot_skill_ids
 }
 
+get_internal_pilot_skill_ids_from_inventory() {
+  inventory_file="$1"
+  [ -f "$inventory_file" ] || fail "Internal pilot inventory not found: $inventory_file"
+
+  awk '
+    /^[[:space:]]*#/ { next }
+    /^[[:space:]]*$/ { next }
+    { print $1 }
+  ' "$inventory_file"
+}
+
+get_all_internal_pilot_skill_ids() {
+  inventory_dir="$REPO_ROOT/agents/src"
+  [ -d "$inventory_dir" ] || return 0
+
+  for inventory_file in "$inventory_dir"/internal-apm-*.txt; do
+    [ -f "$inventory_file" ] || continue
+    get_internal_pilot_skill_ids_from_inventory "$inventory_file"
+  done | awk '!seen[$0]++'
+}
+
+internal_deploy_target_roots() {
+  printf '%s\n' \
+    "$HOME/.claude/skills" \
+    "$HOME/.cursor/skills" \
+    "$HOME/.opencode/skills" \
+    "$HOME/.copilot/skills"
+}
+
+internal_target_skill_path() {
+  target_root="$1"
+  skill_id="$2"
+  validate_skill_id "$skill_id"
+  path="$target_root"
+  old_ifs=$IFS
+  IFS=':'
+  set -- $skill_id
+  IFS=$old_ifs
+  validate_skill_path_segments "$skill_id" "$@"
+  for segment in "$@"; do
+    path="$path/$segment"
+  done
+  printf '%s\n' "$path"
+}
+
+remove_internal_target_links() {
+  skill_ids="$1"
+
+  internal_deploy_target_roots | while IFS= read -r target_root; do
+    [ -d "$target_root" ] || continue
+
+    printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
+      [ -n "$skill_id" ] || continue
+      target_path=$(internal_target_skill_path "$target_root" "$skill_id")
+      [ -e "$target_path" ] || continue
+
+      if [ -L "$target_path" ]; then
+        rm -f "$target_path"
+        log "Removed existing symlink skill target before APM install: $target_path"
+      fi
+    done
+  done
+}
+
 internal_skill_exists() {
   skill_id="$1"
   relative_path=$(skill_id_to_manifest_path "$skill_id")
@@ -888,6 +952,7 @@ cmd_apply() {
     fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Packages are seeded in ~/.apm/apm.yml, but rollout should stay on the legacy path until a later phase."
   fi
 
+  remove_internal_target_links "$(get_all_internal_pilot_skill_ids)"
   (
     cd "$WORKSPACE_DIR"
     apm install -g
@@ -905,6 +970,7 @@ cmd_update() {
     fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Update stopped before user-scope install; keep using the legacy deploy path for now."
   fi
 
+  remove_internal_target_links "$(get_all_internal_pilot_skill_ids)"
   (
     cd "$WORKSPACE_DIR"
     apm deps update -g
@@ -1018,11 +1084,14 @@ cmd_stage_internal() {
 
 cmd_register_internal() {
   require_apm
-  resolve_internal_command_args "$@" >/dev/null
+  skill_ids=$(get_all_internal_pilot_skill_ids)
+  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
   ensure_workspace_repo
   ensure_workspace_scaffold
   ensure_workspace_mise_file
   assert_tracked_internal_bundle_published
+
+  remove_internal_target_links "$skill_ids"
 
   reference=$(tracked_internal_bundle_reference)
   (

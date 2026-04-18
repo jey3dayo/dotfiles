@@ -661,6 +661,7 @@ function Invoke-Apply {
     throw "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Packages are seeded in ~/.apm/apm.yml, but rollout should stay on the legacy path until a later phase."
   }
 
+  Remove-InternalTargetReparsePoints -SkillIds @(Get-AllInternalPilotSkillIds)
   Invoke-WorkspaceCommand -CommandArgs @("install", "-g")
   Invoke-CodexCompile
 }
@@ -675,6 +676,7 @@ function Invoke-Update {
     throw "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Update stopped before user-scope install; keep using the legacy deploy path for now."
   }
 
+  Remove-InternalTargetReparsePoints -SkillIds @(Get-AllInternalPilotSkillIds)
   & apm deps update -g
   if ($LASTEXITCODE -ne 0) {
     throw "apm deps update -g failed."
@@ -775,6 +777,48 @@ function Get-InternalPilotSkillIds {
   return $result.ToArray()
 }
 
+function Get-InternalPilotSkillIdsFromInventoryFile {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$InventoryFile
+  )
+
+  if (-not (Test-Path -LiteralPath $InventoryFile)) {
+    throw "Internal pilot inventory not found: $InventoryFile"
+  }
+
+  $result = New-Object System.Collections.Generic.List[string]
+  foreach ($line in (Get-Content -LiteralPath $InventoryFile)) {
+    $trimmed = $line.Trim()
+    if ([string]::IsNullOrWhiteSpace($trimmed) -or $trimmed.StartsWith("#")) {
+      continue
+    }
+
+    Test-SkillId -SkillId $trimmed
+    if (-not $result.Contains($trimmed)) {
+      $result.Add($trimmed)
+    }
+  }
+
+  return $result.ToArray()
+}
+
+function Get-AllInternalPilotSkillIds {
+  $inventoryDir = Join-Path $RepoRoot "agents\src"
+  $inventoryFiles = @(Get-ChildItem -LiteralPath $inventoryDir -Filter "internal-apm-*.txt" -File | Sort-Object Name)
+  $result = New-Object System.Collections.Generic.List[string]
+
+  foreach ($inventoryFile in $inventoryFiles) {
+    foreach ($skillId in (Get-InternalPilotSkillIdsFromInventoryFile -InventoryFile $inventoryFile.FullName)) {
+      if (-not $result.Contains($skillId)) {
+        $result.Add($skillId)
+      }
+    }
+  }
+
+  return $result.ToArray()
+}
+
 function Get-RequestedInternalSkillIds {
   param(
     [string[]]$RequestedSkillIds
@@ -788,6 +832,61 @@ function Get-RequestedInternalSkillIds {
   }
 
   return Get-InternalPilotSkillIds
+}
+
+function Get-InternalDeployTargetRoots {
+  return @(
+    (Join-Path $HOME ".claude\skills"),
+    (Join-Path $HOME ".cursor\skills"),
+    (Join-Path $HOME ".opencode\skills"),
+    (Join-Path $HOME ".copilot\skills")
+  )
+}
+
+function Get-InternalTargetSkillPath {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$TargetRoot,
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  $path = $TargetRoot
+  foreach ($segment in (Convert-SkillIdToPathSegments -SkillId $SkillId)) {
+    $path = Join-Path $path $segment
+  }
+  return $path
+}
+
+function Remove-InternalTargetReparsePoints {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$SkillIds
+  )
+
+  foreach ($targetRoot in (Get-InternalDeployTargetRoots)) {
+    if (-not (Test-Path -LiteralPath $targetRoot)) {
+      continue
+    }
+
+    foreach ($skillId in $SkillIds) {
+      $targetPath = Get-InternalTargetSkillPath -TargetRoot $targetRoot -SkillId $skillId
+      if (-not (Test-Path -LiteralPath $targetPath)) {
+        continue
+      }
+
+      $item = Get-Item -LiteralPath $targetPath -Force
+      if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+        try {
+          Remove-Item -LiteralPath $targetPath -Force -ErrorAction Stop
+        }
+        catch {
+          [System.IO.Directory]::Delete($targetPath, $false)
+        }
+        Write-Host "Removed existing reparse-point skill target before APM install: $targetPath"
+      }
+    }
+  }
 }
 
 function Invoke-MigrateInternal {
@@ -859,11 +958,18 @@ function Invoke-StageInternal {
 }
 
 function Invoke-RegisterInternal {
+  param(
+    [string[]]$RequestedSkillIds
+  )
+
   Require-Apm
   Ensure-WorkspaceRepo
   Ensure-WorkspaceScaffold
   Ensure-WorkspaceMiseFile
   Assert-TrackedInternalBundlePublished
+
+  $skillIds = @(Get-AllInternalPilotSkillIds)
+  Remove-InternalTargetReparsePoints -SkillIds $skillIds
 
   $reference = Get-TrackedInternalBundleReference
   Invoke-InstallReference -Reference $reference
@@ -1317,8 +1423,8 @@ switch ($Command) {
   }
 
   "register-internal" {
-    $null = Resolve-InternalCommandArgs -Args $CommandArgs
-    Invoke-RegisterInternal
+    $internalArgs = @(Resolve-InternalCommandArgs -Args $CommandArgs)
+    Invoke-RegisterInternal -RequestedSkillIds $internalArgs
   }
 
   "smoke-internal" {
