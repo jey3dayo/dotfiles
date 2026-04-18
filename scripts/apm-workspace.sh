@@ -1067,20 +1067,47 @@ cmd_inject_mise() {
   ensure_workspace_mise_file
 }
 
+apm_install_has_diagnostics_failure() {
+  output_file="$1"
+  grep -Eq '\[[xX]\][[:space:]]+[1-9][0-9]* packages failed:' "$output_file" ||
+    grep -Eq 'Installed .* with [1-9][0-9]* error\(s\)\.' "$output_file"
+}
+
+run_workspace_install_command() {
+  output_file=$(mktemp)
+  pushd "$WORKSPACE_DIR" >/dev/null || fail "Workspace not found: $WORKSPACE_DIR"
+  if apm install "$@" >"$output_file" 2>&1; then
+    status=0
+  else
+    status=$?
+  fi
+  popd >/dev/null || true
+
+  cat "$output_file"
+  if [ "$status" -ne 0 ]; then
+    rm -f "$output_file"
+    fail "apm install failed: $*"
+  fi
+  if apm_install_has_diagnostics_failure "$output_file"; then
+    rm -f "$output_file"
+    fail "apm install reported integration diagnostics: $*"
+  fi
+
+  rm -f "$output_file"
+}
+
 cmd_apply() {
   require_apm
   ensure_workspace_repo
   ensure_workspace_scaffold
+  cmd_validate_internal
 
   if manifest_has_local_packages; then
     fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Packages are seeded in ~/.apm/apm.yml, but rollout should stay on the legacy path until a later phase."
   fi
 
   remove_internal_target_links "$(get_all_internal_pilot_skill_ids)"
-  (
-    cd "$WORKSPACE_DIR"
-    apm install -g
-  )
+  run_workspace_install_command -g
   normalize_workspace_gitignore
   compile_codex
 }
@@ -1090,6 +1117,7 @@ cmd_update() {
   ensure_workspace_repo
   refresh_workspace_checkout
   ensure_workspace_scaffold
+  cmd_validate_internal
 
   if manifest_has_local_packages; then
     fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Update stopped before user-scope install; keep using the legacy deploy path for now."
@@ -1099,8 +1127,8 @@ cmd_update() {
   (
     cd "$WORKSPACE_DIR"
     apm deps update -g
-    apm install -g
   )
+  run_workspace_install_command -g
   normalize_workspace_gitignore
   compile_codex
 }
@@ -1308,14 +1336,12 @@ cmd_register_internal() {
   ensure_workspace_scaffold
   ensure_workspace_mise_file
   assert_tracked_internal_bundle_published
+  cmd_validate_internal
 
   remove_internal_target_links "$skill_ids"
 
   reference=$(tracked_internal_bundle_reference)
-  (
-    cd "$WORKSPACE_DIR"
-    apm install -g "$reference"
-  )
+  run_workspace_install_command -g "$reference"
   normalize_workspace_gitignore
   log "Registered internal bundle from upstream ref: $reference"
 }
@@ -1391,10 +1417,7 @@ cmd_migrate_external() {
       fi
 
       reference=$(external_skill_reference "$source_url" "$checkout_path" "$source_name" "$base_dir" "$id_prefix" "$catalogs_value" "$skill_id")
-      (
-        cd "$WORKSPACE_DIR"
-        apm install -g "$reference"
-      )
+      run_workspace_install_command -g "$reference"
       log "Registered external skill $skill_id from $source_name as $reference"
     done
   done <"$sources_cache"

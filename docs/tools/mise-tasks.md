@@ -136,7 +136,8 @@ internal bundled skill の移行は別レーンです。
 `mise run smoke-internal[:profile]` は generated bundle を temp project install して `.agents/skills/<id>/SKILL.md` まで確認する helper です。  
 `mise run validate-internal` は internal inventory / tracked bundle / manifest ref の drift を fail fast で検出します。  
 `mise run doctor` は dependency 状態に加えて internal inventory の `listed / source / status` と profile ごとの `skills / tracked / manifest` も表示します。  
-`mise run apply` / `mise run update` / `mise run register-internal[:profile]` は legacy internal skill link を先に掃除してから global install します。  
+`mise run apply` / `mise run update` / `mise run register-internal[:profile]` は最初に `validate-internal` を通し、その後で legacy internal skill link を掃除してから global install します。  
+install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱います。  
 `mise run migrate -- <skill>` はその compatibility alias であり、日常の global flow には含めません。
 
 ### Update

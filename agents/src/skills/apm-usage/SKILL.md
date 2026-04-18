@@ -139,7 +139,8 @@ If you see `./packages/...` in `apm.yml`, that is legacy migration residue and s
 - `smoke-internal[:profile]` project-scope installs that generated bundle into a temp workspace and checks `.agents/skills/<id>/SKILL.md`
 - `validate-internal` fail-fast checks internal inventory / tracked bundle / manifest ref drift
 - `doctor` also shows internal inventory coverage as `listed / source / status` and per-profile coverage as `skills / tracked / manifest`
-- `apply` / `update` / `register-internal[:profile]` clear legacy internal skill links before global install
+- `apply` / `update` / `register-internal[:profile]` run `validate-internal` first, then clear legacy internal skill links before global install
+- install helpers also fail when APM prints diagnostics such as `packages failed` or `error(s)` even if exit code is 0
 - `migrate` is now just a compatibility alias for `migrate-internal`
 - `agents:legacy:*` remains the rollback path if the APM route breaks
 - `agents/src/skills/` should not be described as the long-term global source of truth

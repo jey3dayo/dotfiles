@@ -176,8 +176,8 @@ mise run doctor
 
 `~/.apm/mise.toml` の主要 task:
 
-- `apply`: `apm.yml` の global dependencies を `apm install -g` で deploy
-- `update`: checkout 更新 + `apm deps update -g` + `apm install -g`
+- `apply`: `validate-internal` を先に通したうえで、`apm.yml` の global dependencies を `apm install -g` で deploy
+- `update`: checkout 更新 + `validate-internal` + `apm deps update -g` + `apm install -g`
 - `list`: `apm deps list -g`
 - `validate`: `apm compile --validate`
 - `validate-internal`: internal inventory / tracked bundle / manifest ref の drift を fail fast で検出する
@@ -207,7 +207,9 @@ mise run apply
 - internal bundled skill が勝つ ID は external ref を記録しない
 - `apm install -g <upstream-ref>` で `~/.apm/apm.yml` と `~/.apm/apm.lock.yaml` を更新する
 
-`apply` / `update` / `register-internal[:profile]` は、legacy 配布で残った internal skill link や junction が user target 側にあれば先に掃除してから `apm install -g` を実行します。Windows で `Cannot call rmtree on a symbolic link` が出るケースのガードです。
+`apply` / `update` / `register-internal[:profile]` は、まず `validate-internal` で internal drift を検出し、その後に legacy 配布で残った internal skill link や junction を user target 側から掃除してから `apm install -g` を実行します。Windows で `Cannot call rmtree on a symbolic link` が出るケースのガードです。
+
+加えて、`apm install -g` が exit 0 でも diagnostics に `packages failed` / `error(s)` を出した場合は、workspace script 側で failure として扱います。partial integration failure を成功扱いしないためです。
 - ソースは `~/.apm/apm_modules/` に取得される
 
 これで、external skill の source of truth は upstream repo のまま `apm.yml` に残ります。

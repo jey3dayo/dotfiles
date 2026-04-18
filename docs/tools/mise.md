@@ -151,7 +151,8 @@ agent 配布は APM global (`~/.apm`) を正面入口にし、`.config` 側は b
 - `smoke-internal[:profile]` は generated bundle を temp project install して `.agents/skills/<id>/SKILL.md` を確認する
 - `validate-internal` は internal inventory / tracked bundle / manifest ref の drift を fail fast で検出する
 - `doctor` は dependency 状態に加えて internal inventory の `listed / source / status` と profile ごとの `skills / tracked / manifest` も表示する
-- `apply` / `update` / `register-internal[:profile]` は legacy internal skill link を先に掃除してから global install する
+- `apply` / `update` / `register-internal[:profile]` は最初に `validate-internal` を通し、その後で legacy internal skill link を掃除してから global install する
+- install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱う
 - 現行 `migrate` は `migrate-internal` の compatibility alias として維持する
 - `agents:validate`, `agents:validate:internal`, `agents:check:sync`, `agents:report` は CI / rollback 用の legacy Nix フローとして維持する
 - `agents:add` はまだ legacy repo-local source 追加コマンドであり、APM workspace 操作には使わない

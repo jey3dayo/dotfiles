@@ -693,6 +693,40 @@ function Invoke-WorkspaceCommand {
   }
 }
 
+function Test-ApmInstallDiagnosticsFailure {
+  param(
+    [string[]]$OutputLines
+  )
+
+  $joined = ($OutputLines | ForEach-Object { "$_" }) -join "`n"
+  return ($joined -match '\[[xX]\]\s+[1-9][0-9]* packages failed:' -or
+    $joined -match 'Installed .* with [1-9][0-9]* error\(s\)\.')
+}
+
+function Invoke-WorkspaceInstallCommand {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$InstallArgs
+  )
+
+  Push-Location $WorkspaceDir
+  try {
+    $outputLines = @(& apm install @InstallArgs 2>&1)
+    foreach ($line in $outputLines) {
+      Write-Host $line
+    }
+    if ($LASTEXITCODE -ne 0) {
+      throw "apm install failed: $($InstallArgs -join ' ')"
+    }
+    if (Test-ApmInstallDiagnosticsFailure -OutputLines $outputLines) {
+      throw "apm install reported integration diagnostics: $($InstallArgs -join ' ')"
+    }
+  }
+  finally {
+    Pop-Location
+  }
+}
+
 function Test-ManifestHasLocalPackages {
   $manifestPath = Join-Path $WorkspaceDir "apm.yml"
   if (-not (Test-Path -LiteralPath $manifestPath)) {
@@ -707,13 +741,14 @@ function Invoke-Apply {
   Require-Apm
   Ensure-WorkspaceRepo
   Ensure-WorkspaceScaffold
+  Invoke-ValidateInternal
 
   if (Test-ManifestHasLocalPackages) {
     throw "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Packages are seeded in ~/.apm/apm.yml, but rollout should stay on the legacy path until a later phase."
   }
 
   Remove-InternalTargetReparsePoints -SkillIds @(Get-AllInternalPilotSkillIds)
-  Invoke-WorkspaceCommand -CommandArgs @("install", "-g")
+  Invoke-WorkspaceInstallCommand -InstallArgs @("-g")
   Normalize-WorkspaceGitignore
   Invoke-CodexCompile
 }
@@ -723,6 +758,7 @@ function Invoke-Update {
   Ensure-WorkspaceRepo
   Refresh-WorkspaceCheckout
   Ensure-WorkspaceScaffold
+  Invoke-ValidateInternal
 
   if (Test-ManifestHasLocalPackages) {
     throw "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Update stopped before user-scope install; keep using the legacy deploy path for now."
@@ -733,7 +769,7 @@ function Invoke-Update {
   if ($LASTEXITCODE -ne 0) {
     throw "apm deps update -g failed."
   }
-  Invoke-WorkspaceCommand -CommandArgs @("install", "-g")
+  Invoke-WorkspaceInstallCommand -InstallArgs @("-g")
   Normalize-WorkspaceGitignore
   Invoke-CodexCompile
 }
@@ -1177,6 +1213,7 @@ function Invoke-RegisterInternal {
   Ensure-WorkspaceScaffold
   Ensure-WorkspaceMiseFile
   Assert-TrackedInternalBundlePublished
+  Invoke-ValidateInternal
 
   $skillIds = @(Get-AllInternalPilotSkillIds)
   Remove-InternalTargetReparsePoints -SkillIds $skillIds
@@ -1509,10 +1546,7 @@ function Invoke-InstallReference {
 
   Push-Location $WorkspaceDir
   try {
-    & apm install -g $Reference
-    if ($LASTEXITCODE -ne 0) {
-      throw "apm install -g failed: $Reference"
-    }
+    Invoke-WorkspaceInstallCommand -InstallArgs @("-g", $Reference)
     Normalize-WorkspaceGitignore
   }
   finally {
