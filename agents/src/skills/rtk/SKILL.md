@@ -82,13 +82,13 @@ In this repository:
 
 - RTK itself is already declared in `mise/config.default.toml` and `mise/config.windows.toml`
 - Project-local RTK filters live in `.rtk/filters.toml`
-- Bundled skills under `agents/src/skills/<name>/` are picked up by the existing skill distribution flow
+- Bundled skills under `agents/src/skills/<name>/` are part of the legacy distribution flow while `~/.apm` migration is in progress
 
 For this repo, validate or distribute a bundled RTK skill with the existing tasks:
 
 - `mise run skills:validate:internal`
 - `mise run skills:validate`
-- `mise run skills:install`
+- `mise run skills:legacy:install`
 
 Do not add a new `mise` task unless the existing distribution flow cannot pick the skill up.
 

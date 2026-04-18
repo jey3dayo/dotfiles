@@ -28,6 +28,9 @@ related_skills:
 
 # Distributions Manager
 
+This skill describes the **legacy Nix / Home Manager distribution path**.
+For the newer `~/.apm` global workflow, use `apm-usage` instead.
+
 ## What Is A Distribution?
 
 Distributions are bundled assets scanned from `distributionsPath`, typically `agents/src/`.
@@ -109,7 +112,7 @@ home-manager switch --flake ~/.config --impure
 ### Verify Deployment
 
 ```bash
-mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
+mise run skills:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
 ls -la ~/.claude/skills/
 ```
 

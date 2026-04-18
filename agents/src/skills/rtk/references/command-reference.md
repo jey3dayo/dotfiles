@@ -71,4 +71,4 @@ Useful commands here:
 
 - `mise run skills:validate:internal`
 - `mise run skills:validate`
-- `mise run skills:install`
+- `mise run skills:legacy:install`

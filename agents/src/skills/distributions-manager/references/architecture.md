@@ -239,7 +239,7 @@ mise run ci:nix
 To inspect current source attribution:
 
 ```bash
-mise run skills:list 2>/dev/null | jq '.skills[] | {id, source}'
+mise run skills:legacy:list 2>/dev/null | jq '.skills[] | {id, source}'
 ```
 
 ---
