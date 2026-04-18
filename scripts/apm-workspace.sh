@@ -196,6 +196,52 @@ ensure_gitignore_entry() {
   fi
 }
 
+normalize_workspace_gitignore() {
+  gitignore_path="$WORKSPACE_DIR/.gitignore"
+  [ -f "$gitignore_path" ] || return 0
+
+  tmp_file=$(mktemp "${TMPDIR:-/tmp}/apm-gitignore.XXXXXX")
+  awk '
+    BEGIN {
+      entries[1] = "/.apm/"
+      entries[2] = "/apm_modules/"
+      entries[3] = "/.internal-seed/"
+    }
+    function append(line) {
+      lines[++line_count] = line
+    }
+    {
+      if ($0 == "# APM dependencies" || $0 == "apm_modules/") {
+        next
+      }
+      for (i = 1; i <= 3; i++) {
+        if ($0 == entries[i]) {
+          seen[entries[i]] = 1
+          next
+        }
+      }
+      append($0)
+    }
+    END {
+      for (i = 1; i <= 3; i++) {
+        if (!seen[entries[i]]) {
+          if (line_count > 0 && lines[line_count] != "") {
+            append("")
+          }
+          append(entries[i])
+        }
+      }
+      while (line_count > 0 && lines[line_count] == "") {
+        line_count--
+      }
+      for (i = 1; i <= line_count; i++) {
+        print lines[i]
+      }
+    }
+  ' "$gitignore_path" >"$tmp_file"
+  mv "$tmp_file" "$gitignore_path"
+}
+
 write_workspace_manifest_template() {
   manifest_path="$WORKSPACE_DIR/apm.yml"
   project_name=$(workspace_project_name)
@@ -957,6 +1003,7 @@ cmd_apply() {
     cd "$WORKSPACE_DIR"
     apm install -g
   )
+  normalize_workspace_gitignore
   compile_codex
 }
 
@@ -976,6 +1023,7 @@ cmd_update() {
     apm deps update -g
     apm install -g
   )
+  normalize_workspace_gitignore
   compile_codex
 }
 
@@ -1098,6 +1146,7 @@ cmd_register_internal() {
     cd "$WORKSPACE_DIR"
     apm install -g "$reference"
   )
+  normalize_workspace_gitignore
   log "Registered internal bundle from upstream ref: $reference"
 }
 

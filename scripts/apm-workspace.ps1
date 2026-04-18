@@ -250,6 +250,47 @@ function Ensure-GitignoreEntry {
   }
 }
 
+function Normalize-WorkspaceGitignore {
+  $gitignorePath = Join-Path $WorkspaceDir ".gitignore"
+  if (-not (Test-Path -LiteralPath $gitignorePath)) {
+    return
+  }
+
+  $canonicalEntries = @("/.apm/", "/apm_modules/", "/.internal-seed/")
+  $normalized = New-Object System.Collections.Generic.List[string]
+  $seen = New-Object System.Collections.Generic.HashSet[string]
+
+  foreach ($line in (Get-Content -LiteralPath $gitignorePath -ErrorAction SilentlyContinue)) {
+    if ($line -in @("# APM dependencies", "apm_modules/")) {
+      continue
+    }
+
+    if ($canonicalEntries -contains $line) {
+      if ($seen.Add($line)) {
+        $normalized.Add($line)
+      }
+      continue
+    }
+
+    $normalized.Add($line)
+  }
+
+  foreach ($entry in $canonicalEntries) {
+    if ($seen.Add($entry)) {
+      if ($normalized.Count -gt 0 -and $normalized[$normalized.Count - 1] -ne "") {
+        $normalized.Add("")
+      }
+      $normalized.Add($entry)
+    }
+  }
+
+  while ($normalized.Count -gt 0 -and $normalized[$normalized.Count - 1] -eq "") {
+    $normalized.RemoveAt($normalized.Count - 1)
+  }
+
+  [System.IO.File]::WriteAllText($gitignorePath, (($normalized -join [Environment]::NewLine) + [Environment]::NewLine))
+}
+
 function Write-WorkspaceManifestTemplate {
   $manifestPath = Join-Path $WorkspaceDir "apm.yml"
   $projectName = Get-WorkspaceProjectName
@@ -663,6 +704,7 @@ function Invoke-Apply {
 
   Remove-InternalTargetReparsePoints -SkillIds @(Get-AllInternalPilotSkillIds)
   Invoke-WorkspaceCommand -CommandArgs @("install", "-g")
+  Normalize-WorkspaceGitignore
   Invoke-CodexCompile
 }
 
@@ -682,6 +724,7 @@ function Invoke-Update {
     throw "apm deps update -g failed."
   }
   Invoke-WorkspaceCommand -CommandArgs @("install", "-g")
+  Normalize-WorkspaceGitignore
   Invoke-CodexCompile
 }
 
@@ -1303,6 +1346,7 @@ function Invoke-InstallReference {
     if ($LASTEXITCODE -ne 0) {
       throw "apm install -g failed: $Reference"
     }
+    Normalize-WorkspaceGitignore
   }
   finally {
     Pop-Location
