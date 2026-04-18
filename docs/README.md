@@ -1,6 +1,6 @@
 # 📖 Documentation Navigation
 
-最終更新: 2026-03-23
+最終更新: 2026-04-18
 対象: 開発者
 タグ: `category/guide`, `layer/support`, `environment/macos`, `audience/developer`
 
@@ -38,7 +38,7 @@ Location: `docs/`
 
 #### 🛠️ Tool-Specific Documentation
 
-詳細な実装ガイドの正本です。AI 向けの凝縮版ルールは `.claude/rules/` にありますが、内容の正本は各ドキュメント側で管理します。
+各ドキュメントが詳細実装ガイドの正本です。AI 向けの凝縮版ルールは `.claude/rules/` を参照してください。
 
 - [Git Configuration](tools/git.md) - Git 設定の構成、include 順序、署名オプション
 - [Zsh Configuration](tools/zsh.md) - Shell layer: 最適化、プラグイン管理、パフォーマンス
@@ -54,14 +54,6 @@ Location: `docs/`
 - [OpenClaw](tools/openclaw.md) - Gateway 運用・systemd 設定・トラブルシューティング
 - [Security](security.md) - セキュリティポリシー・gitleaks・インシデント対応
 - [Workflows & Maintenance](tools/workflows.md) - 定期メンテナンス・Brewfile・コードクオリティ
-
-## 🧭 Single Source of Truth (SST)
-
-- Setup: `docs/setup.md` に全て集約（README ではリンクのみ）
-- Performance: `docs/performance.md` にメトリクス・履歴を一本化
-- Maintenance: `docs/tools/workflows.md` に定期/臨時タスクを集約
-- Documentation system: `docs/documentation.md` にタグ/メタデータ/SSOT 境界を集約
-- Tool details: `docs/tools/*.md` にツール固有の設定・最適化を集約
 
 ## 🗺️ Quick Navigation
 
@@ -81,10 +73,6 @@ Location: `docs/`
 
 1. [Workflows and Maintenance](tools/workflows.md) でよくある問題を確認
 2. Tool-specific docs で詳細を調査
-
-## 📊 Performance
-
-メトリクスと改善履歴の単一情報源は [Performance Statistics](performance.md)。README には数値を重複掲載しない。
 
 ## 🔗 External References
 
