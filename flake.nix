@@ -29,10 +29,6 @@
       url = "github:EpicenterHQ/epicenter";
       flake = false;
     };
-    gonta223-humanizer-ja = {
-      url = "github:gonta223/humanizer-ja";
-      flake = false;
-    };
     heyvhuang-ship-faster = {
       url = "github:Heyvhuang/ship-faster";
       flake = false;
@@ -53,10 +49,6 @@
       url = "github:nyosegawa/skills";
       flake = false;
     };
-    obra-episodic-memory = {
-      url = "github:obra/episodic-memory";
-      flake = false;
-    };
     obra-superpowers = {
       url = "github:obra/superpowers";
       flake = false;
@@ -67,10 +59,6 @@
     };
     openai-skills = {
       url = "github:openai/skills";
-      flake = false;
-    };
-    sawyerhood-dev-browser = {
-      url = "github:SawyerHood/dev-browser";
       flake = false;
     };
     tokoroten-prompt-review = {
@@ -159,17 +147,13 @@
           system:
           let
             pkgs = nixpkgs.legacyPackages.${system};
-            mkLegacyRemovedApp =
-              name:
-              message:
-              {
-                type = "app";
-                program =
-                  "${pkgs.writeShellScriptBin name ''
-                    echo "${message}" >&2
-                    exit 1
-                  ''}/bin/${name}";
-              };
+            mkLegacyRemovedApp = name: message: {
+              type = "app";
+              program = "${pkgs.writeShellScriptBin name ''
+                echo "${message}" >&2
+                exit 1
+              ''}/bin/${name}";
+            };
           in
           {
             packages.default = pkgs.writeTextFile {
