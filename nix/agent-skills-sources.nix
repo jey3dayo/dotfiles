@@ -1,18 +1,6 @@
 # Agent skills source definitions (single source of truth)
 {
   # Agent-skills external sources (flake = false: raw git repos)
-  benjitaylor-agentation = {
-    url = "github:benjitaylor/agentation";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      benjitaylor-agentation = "skills";
-    };
-    selection.enable = [
-      "agentation"
-      "agentation-self-driving"
-    ];
-  };
   openai-skills = {
     url = "github:openai/skills";
     flake = false;
@@ -72,17 +60,6 @@
     selection.enable = [
       "cloudflare"
       "tool-openclaw"
-    ];
-  };
-  tokoroten-prompt-review = {
-    url = "github:tokoroten/prompt-review";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      tokoroten-prompt-review = ".claude/skills";
-    };
-    selection.enable = [
-      "prompt-review"
     ];
   };
   nyosegawa-skills = {
@@ -211,28 +188,6 @@
       "codeql"
       "sarif-parsing"
       "semgrep"
-    ];
-  };
-  trailofbits-supply-chain-risk-auditor = {
-    url = "github:trailofbits/skills";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      trailofbits-supply-chain-risk-auditor = "plugins/supply-chain-risk-auditor/skills";
-    };
-    selection.enable = [
-      "supply-chain-risk-auditor"
-    ];
-  };
-  mizchi-chezmoi-dotfiles = {
-    url = "github:mizchi/chezmoi-dotfiles";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      mizchi-chezmoi-dotfiles = "dot_claude/skills";
-    };
-    selection.enable = [
-      "empirical-prompt-tuning"
     ];
   };
 }

@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "benjitaylor-agentation": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1774455813,
-        "narHash": "sha256-qddLnszOYdZZrmtSPoFzh5KTL5Z3n+yXl4C7Hcai7w8=",
-        "owner": "benjitaylor",
-        "repo": "agentation",
-        "rev": "7dc5d65378fa901e6eead81d4e2bb62950d49f0b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "benjitaylor",
-        "repo": "agentation",
-        "type": "github"
-      }
-    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -106,22 +90,6 @@
         "type": "github"
       }
     },
-    "mizchi-chezmoi-dotfiles": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1776587857,
-        "narHash": "sha256-BqJSjTBVZwTie9UQPavEN33LtHlJKALeA0IY8Cy5Krw=",
-        "owner": "mizchi",
-        "repo": "chezmoi-dotfiles",
-        "rev": "aa1638480f64b9d742cda267b71800b3c9da2ceb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mizchi",
-        "repo": "chezmoi-dotfiles",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1775036866,
@@ -204,24 +172,20 @@
     },
     "root": {
       "inputs": {
-        "benjitaylor-agentation": "benjitaylor-agentation",
         "flake-utils": "flake-utils",
         "gitignore": "gitignore",
         "heyvhuang-ship-faster": "heyvhuang-ship-faster",
         "home-manager": "home-manager",
         "lum1104-understand-anything": "lum1104-understand-anything",
-        "mizchi-chezmoi-dotfiles": "mizchi-chezmoi-dotfiles",
         "nixpkgs": "nixpkgs",
         "nyosegawa-skills": "nyosegawa-skills",
         "obra-superpowers": "obra-superpowers",
         "openai-codex-plugin-cc": "openai-codex-plugin-cc",
         "openai-skills": "openai-skills",
-        "tokoroten-prompt-review": "tokoroten-prompt-review",
         "trailofbits-agentic-actions-auditor": "trailofbits-agentic-actions-auditor",
         "trailofbits-audit-context-building": "trailofbits-audit-context-building",
         "trailofbits-sharp-edges": "trailofbits-sharp-edges",
         "trailofbits-static-analysis": "trailofbits-static-analysis",
-        "trailofbits-supply-chain-risk-auditor": "trailofbits-supply-chain-risk-auditor",
         "ui-ux-pro-max": "ui-ux-pro-max",
         "vercel-agent-browser": "vercel-agent-browser",
         "vercel-agent-skills": "vercel-agent-skills"
@@ -239,22 +203,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "tokoroten-prompt-review": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1773599148,
-        "narHash": "sha256-aI/gKHSEDkEzQIbvktpQzBZ1HRGDEk8P7VBZauhPCR0=",
-        "owner": "tokoroten",
-        "repo": "prompt-review",
-        "rev": "597f6601e41cf54a55ab7f18c22efc3466cb5557",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tokoroten",
-        "repo": "prompt-review",
         "type": "github"
       }
     },
@@ -307,22 +255,6 @@
       }
     },
     "trailofbits-static-analysis": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1775055010,
-        "narHash": "sha256-GtRhjqoLa0tUKXEmJqVRk+sODEHx6FSESV9pPd0o03g=",
-        "owner": "trailofbits",
-        "repo": "skills",
-        "rev": "d7f76b532d1e4c6e7757e04d25c99ab60dd5e32c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "trailofbits",
-        "repo": "skills",
-        "type": "github"
-      }
-    },
-    "trailofbits-supply-chain-risk-auditor": {
       "flake": false,
       "locked": {
         "lastModified": 1775055010,

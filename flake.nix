@@ -17,20 +17,12 @@
     # NOTE: These must be manually kept in sync with nix/agent-skills-sources.nix
     #       Flake spec requires literal inputs - dynamic generation not allowed
     #       agent-skills-sources.nix remains the SSoT for baseDir and selection metadata
-    benjitaylor-agentation = {
-      url = "github:benjitaylor/agentation";
-      flake = false;
-    };
     heyvhuang-ship-faster = {
       url = "github:Heyvhuang/ship-faster";
       flake = false;
     };
     lum1104-understand-anything = {
       url = "github:Lum1104/Understand-Anything";
-      flake = false;
-    };
-    mizchi-chezmoi-dotfiles = {
-      url = "github:mizchi/chezmoi-dotfiles";
       flake = false;
     };
     nyosegawa-skills = {
@@ -49,10 +41,6 @@
       url = "github:openai/skills";
       flake = false;
     };
-    tokoroten-prompt-review = {
-      url = "github:tokoroten/prompt-review";
-      flake = false;
-    };
     trailofbits-agentic-actions-auditor = {
       url = "github:trailofbits/skills";
       flake = false;
@@ -66,10 +54,6 @@
       flake = false;
     };
     trailofbits-static-analysis = {
-      url = "github:trailofbits/skills";
-      flake = false;
-    };
-    trailofbits-supply-chain-risk-auditor = {
       url = "github:trailofbits/skills";
       flake = false;
     };
