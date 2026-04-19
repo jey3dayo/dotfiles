@@ -35,6 +35,7 @@ Prefer `~/.apm` when:
 
 Treat `~/.config/agents/src/skills/<name>/` as the **authoring source of truth** for managed skills.
 Treat `~/.apm/catalog/` as the **tracked APM package artifact** that is generated from that source tree.
+Treat `~/.config/agents/src/AGENTS.md`, `agents/`, and `rules/` as additional managed authoring sources that are staged into the same catalog.
 
 For external skills, the source of truth is the upstream ref in `~/.apm/apm.yml`.  
 For installed sources, the on-disk cache is `~/.apm/apm_modules/`.
@@ -51,6 +52,14 @@ That tracked package is then referenced from `~/.apm/apm.yml` as:
 jey3dayo/apm-workspace/catalog#main
 ```
 
+The same tracked catalog also carries:
+
+```text
+~/.apm/catalog/AGENTS.md
+~/.apm/catalog/agents/**
+~/.apm/catalog/rules/**
+```
+
 ## Managed Skill Model
 
 Managed skills now follow a simple two-layer model:
@@ -59,6 +68,17 @@ Managed skills now follow a simple two-layer model:
   - `~/.config/agents/src/skills/<id>/`
 - tracked deployment package:
   - `~/.apm/catalog/.apm/skills/<id>/`
+
+Managed shared guidance follows the same pattern:
+
+- authoring source:
+  - `~/.config/agents/src/AGENTS.md`
+  - `~/.config/agents/src/agents/**`
+  - `~/.config/agents/src/rules/**`
+- tracked deployment package:
+  - `~/.apm/catalog/AGENTS.md`
+  - `~/.apm/catalog/agents/**`
+  - `~/.apm/catalog/rules/**`
 
 The tracked package exists so APM can install one flat, repo-tracked catalog instead of many local-path entries.
 
@@ -100,7 +120,7 @@ That flow:
 
 - rebuilds `~/.apm/.catalog-build/catalog/` as a temporary package artifact
 - copies the result into `~/.apm/catalog/`
-- keeps `~/.config/agents/src/skills/` as the authoring source
+- keeps `~/.config/agents/src/skills/`, `AGENTS.md`, `agents/`, and `rules/` as the authoring source
 - lets `~/.apm/apm.yml` keep a single upstream ref: `jey3dayo/apm-workspace/catalog#main`
 
 ## Important Global Model
@@ -119,6 +139,7 @@ APM global skill management in this setup is centered on:
 - `apm.yml` tracks dependencies by upstream ref
 - `apm_modules/` holds downloaded sources
 - `catalog/` holds the tracked managed-skill package
+- `catalog/AGENTS.md`, `catalog/agents/`, and `catalog/rules/` hold tracked shared guidance assets
 - `apm install -g` deploys the current global dependency set to user targets
 
 If you see `./packages/...` in `apm.yml`, that is legacy migration residue and should be removed from the global model.
@@ -146,12 +167,22 @@ When a skill is moved into the managed catalog:
 - run `mise run doctor` and confirm `external selection overlap: count=0`
 - run `apm prune` once if old package ownership is still hanging around from a previous install state
 
+When shared guidance changes under `agents/src`:
+
+- run `mise run stage-catalog`
+- commit and push the updated `catalog/`
+- run `mise run register-catalog`
+- run `mise run doctor` and confirm target `config/agents/rules` are present
+
 ## Legacy Notes
 
 - `validate-catalog` now validates the tracked `catalog/` package against `~/.config/agents/src/skills/`
+- `validate-catalog` also validates `agents/src/AGENTS.md`, `agents/`, and `rules/`
 - public maintenance commands should use `bundle-catalog`, `stage-catalog`, `register-catalog`, and `smoke-catalog`
-- `doctor` shows both catalog coverage and managed-vs-external selection overlap
+- `doctor` shows both catalog coverage and managed-vs-external selection overlap, plus target `config/agents/rules/skills` presence
 - `apply` / `update` validate the tracked catalog before global install
+- `apply` / `update` sync tracked `AGENTS.md`, `agents/`, and `rules/` into user runtime targets after install
 - `apply` / `update` should fail fast if `./packages/*` entries still remain in the global manifest
 - install helpers also fail when APM prints diagnostics such as `packages failed` or `error(s)` even if exit code is 0
 - install the APM CLI through `mise` in this repository unless you are doing manual recovery
+- top-level managed `commands/` are not in scope yet because `agents/src/` has no authoritative `commands/` tree today

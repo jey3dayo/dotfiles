@@ -13,6 +13,9 @@ $RepoRoot = Split-Path -Parent $PSScriptRoot
 $WorkspaceDir = if ($env:APM_WORKSPACE_DIR) { $env:APM_WORKSPACE_DIR } else { Join-Path $HOME ".apm" }
 $WorkspaceRepo = if ($env:APM_WORKSPACE_REPO) { $env:APM_WORKSPACE_REPO } else { "https://github.com/jey3dayo/apm-workspace.git" }
 $LegacySkillsDir = Join-Path $RepoRoot "agents\src\skills"
+$LegacyAgentsDir = Join-Path $RepoRoot "agents\src\agents"
+$LegacyRulesDir = Join-Path $RepoRoot "agents\src\rules"
+$LegacyConfigFile = Join-Path $RepoRoot "agents\src\AGENTS.md"
 $ExternalSourcesFile = Join-Path $RepoRoot "nix\agent-skills-sources.nix"
 $CodexOutput = if ($env:APM_CODEX_OUTPUT) { $env:APM_CODEX_OUTPUT } else { Join-Path $HOME ".codex\AGENTS.md" }
 $MiseTemplate = Join-Path $RepoRoot "templates\apm-workspace\mise.toml"
@@ -717,6 +720,7 @@ function Invoke-Apply {
   Invoke-WorkspaceInstallCommand -InstallArgs @("-g")
   Normalize-WorkspaceGitignore
   Invoke-CodexCompile
+  Sync-ManagedCatalogRuntimeAssets
 }
 
 function Invoke-Update {
@@ -738,6 +742,7 @@ function Invoke-Update {
   Invoke-WorkspaceInstallCommand -InstallArgs @("-g")
   Normalize-WorkspaceGitignore
   Invoke-CodexCompile
+  Sync-ManagedCatalogRuntimeAssets
 }
 
 function Invoke-List {
@@ -763,12 +768,36 @@ function Get-CatalogBuildSkillsRoot {
   return (Join-Path (Get-CatalogBuildDir) ".apm\skills")
 }
 
+function Get-CatalogBuildAgentsRoot {
+  return (Join-Path (Get-CatalogBuildDir) "agents")
+}
+
+function Get-CatalogBuildRulesRoot {
+  return (Join-Path (Get-CatalogBuildDir) "rules")
+}
+
+function Get-CatalogBuildInstructionsPath {
+  return (Join-Path (Get-CatalogBuildDir) "AGENTS.md")
+}
+
 function Get-TrackedCatalogDir {
   return (Join-Path $WorkspaceDir $CatalogDirName)
 }
 
 function Get-TrackedCatalogSkillsRoot {
   return (Join-Path (Get-TrackedCatalogDir) ".apm\skills")
+}
+
+function Get-TrackedCatalogAgentsRoot {
+  return (Join-Path (Get-TrackedCatalogDir) "agents")
+}
+
+function Get-TrackedCatalogRulesRoot {
+  return (Join-Path (Get-TrackedCatalogDir) "rules")
+}
+
+function Get-TrackedCatalogInstructionsPath {
+  return (Join-Path (Get-TrackedCatalogDir) "AGENTS.md")
 }
 
 function Get-TrackedCatalogRelativePath {
@@ -796,6 +825,40 @@ function Get-RequestedManagedSkillIds {
   }
 
   return @(Get-ManagedSkillIds)
+}
+
+function Get-ManagedAgentRelativePaths {
+  return @(Get-RelativeFilePaths -RootDir $LegacyAgentsDir)
+}
+
+function Get-TrackedCatalogAgentRelativePaths {
+  return @(Get-RelativeFilePaths -RootDir (Get-TrackedCatalogAgentsRoot))
+}
+
+function Get-ManagedRuleRelativePaths {
+  return @(Get-RelativeFilePaths -RootDir $LegacyRulesDir)
+}
+
+function Get-TrackedCatalogRuleRelativePaths {
+  return @(Get-RelativeFilePaths -RootDir (Get-TrackedCatalogRulesRoot))
+}
+
+function Test-FileContentEqual {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$ExpectedPath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$ActualPath
+  )
+
+  if ((-not (Test-Path -LiteralPath $ExpectedPath)) -or (-not (Test-Path -LiteralPath $ActualPath))) {
+    return $false
+  }
+
+  $expectedHash = (Get-FileHash -LiteralPath $ExpectedPath -Algorithm SHA256).Hash
+  $actualHash = (Get-FileHash -LiteralPath $ActualPath -Algorithm SHA256).Hash
+  return $expectedHash -eq $actualHash
 }
 
 function Get-TrackedCatalogSkillIds {
@@ -835,12 +898,31 @@ function Test-ManifestHasCatalogReference {
 function Write-CatalogSummary {
   $sourceSkillIds = @(Get-ManagedSkillIds)
   $trackedSkillIds = @(Get-TrackedCatalogSkillIds)
+  $sourceAgentPaths = @(Get-ManagedAgentRelativePaths)
+  $trackedAgentPaths = @(Get-TrackedCatalogAgentRelativePaths)
+  $sourceRulePaths = @(Get-ManagedRuleRelativePaths)
+  $trackedRulePaths = @(Get-TrackedCatalogRuleRelativePaths)
+  $sourceInstructionsPresent = Test-Path -LiteralPath $LegacyConfigFile
+  $trackedInstructionsPath = Get-TrackedCatalogInstructionsPath
+  $trackedInstructionsPresent = Test-Path -LiteralPath $trackedInstructionsPath
   $trackedManifest = Join-Path (Get-TrackedCatalogDir) "apm.yml"
   $trackedState = if (Test-Path -LiteralPath $trackedManifest) { "yes" } else { "no" }
   $manifestState = if (Test-ManifestHasCatalogReference) { "yes" } else { "no" }
-  $coverageState = if (($trackedSkillIds.Count -eq $sourceSkillIds.Count) -and (@($sourceSkillIds | Where-Object { $_ -notin $trackedSkillIds }).Count -eq 0) -and (@($trackedSkillIds | Where-Object { $_ -notin $sourceSkillIds }).Count -eq 0)) { "ok" } else { "drift" }
+  $skillsInSync = ($trackedSkillIds.Count -eq $sourceSkillIds.Count) -and (@($sourceSkillIds | Where-Object { $_ -notin $trackedSkillIds }).Count -eq 0) -and (@($trackedSkillIds | Where-Object { $_ -notin $sourceSkillIds }).Count -eq 0)
+  $agentsInSync = ($trackedAgentPaths.Count -eq $sourceAgentPaths.Count) -and (@($sourceAgentPaths | Where-Object { $_ -notin $trackedAgentPaths }).Count -eq 0) -and (@($trackedAgentPaths | Where-Object { $_ -notin $sourceAgentPaths }).Count -eq 0)
+  $rulesInSync = ($trackedRulePaths.Count -eq $sourceRulePaths.Count) -and (@($sourceRulePaths | Where-Object { $_ -notin $trackedRulePaths }).Count -eq 0) -and (@($trackedRulePaths | Where-Object { $_ -notin $sourceRulePaths }).Count -eq 0)
+  $instructionsState = if (-not $sourceInstructionsPresent) {
+    "missing-source"
+  } elseif (-not $trackedInstructionsPresent) {
+    "missing-tracked"
+  } elseif (Test-FileContentEqual -ExpectedPath $LegacyConfigFile -ActualPath $trackedInstructionsPath) {
+    "ok"
+  } else {
+    "drift"
+  }
+  $coverageState = if ($skillsInSync -and $agentsInSync -and $rulesInSync -and ($instructionsState -eq "ok")) { "ok" } else { "drift" }
 
-  Write-Host ("catalog: source={0} tracked={1} tracked-manifest={2} global-ref={3} status={4}" -f $sourceSkillIds.Count, $trackedSkillIds.Count, $trackedState, $manifestState, $coverageState)
+  Write-Host ("catalog: skills={0}/{1} agents={2}/{3} rules={4}/{5} instructions={6} tracked-manifest={7} global-ref={8} status={9}" -f $sourceSkillIds.Count, $trackedSkillIds.Count, $sourceAgentPaths.Count, $trackedAgentPaths.Count, $sourceRulePaths.Count, $trackedRulePaths.Count, $instructionsState, $trackedState, $manifestState, $coverageState)
 }
 
 function Get-ManagedExternalOverlapEntries {
@@ -872,6 +954,60 @@ function Write-ManagedExternalOverlapSummary {
   }
 }
 
+function Get-ManagedCatalogRuntimeTargets {
+  return @(
+    [pscustomobject]@{ Name = "claude"; Root = (Join-Path $HOME ".claude"); ConfigName = "CLAUDE.md" },
+    [pscustomobject]@{ Name = "codex"; Root = (Join-Path $HOME ".codex"); ConfigName = "AGENTS.md" },
+    [pscustomobject]@{ Name = "cursor"; Root = (Join-Path $HOME ".cursor"); ConfigName = "AGENTS.md" },
+    [pscustomobject]@{ Name = "opencode"; Root = (Join-Path $HOME ".opencode"); ConfigName = "CLAUDE.md" },
+    [pscustomobject]@{ Name = "openclaw"; Root = (Join-Path $HOME ".openclaw"); ConfigName = "CLAUDE.md" }
+  )
+}
+
+function Copy-ManagedCatalogFile {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SourcePath,
+
+    [Parameter(Mandatory = $true)]
+    [string]$DestinationPath
+  )
+
+  $destinationDir = Split-Path -Parent $DestinationPath
+  if (-not [string]::IsNullOrWhiteSpace($destinationDir)) {
+    New-Item -ItemType Directory -Path $destinationDir -Force | Out-Null
+  }
+
+  Copy-Item -LiteralPath $SourcePath -Destination $DestinationPath -Force
+}
+
+function Sync-ManagedCatalogRuntimeAssets {
+  $trackedDir = Get-TrackedCatalogDir
+  if (-not (Test-Path -LiteralPath $trackedDir)) {
+    throw "Tracked catalog missing: $trackedDir. Run 'mise run stage-catalog' first."
+  }
+
+  $instructionsSource = Get-TrackedCatalogInstructionsPath
+  $agentsSource = Get-TrackedCatalogAgentsRoot
+  $rulesSource = Get-TrackedCatalogRulesRoot
+
+  foreach ($target in (Get-ManagedCatalogRuntimeTargets)) {
+    New-Item -ItemType Directory -Path $target.Root -Force | Out-Null
+
+    if (Test-Path -LiteralPath $instructionsSource) {
+      Copy-ManagedCatalogFile -SourcePath $instructionsSource -DestinationPath (Join-Path $target.Root $target.ConfigName)
+    }
+
+    if (Test-Path -LiteralPath $agentsSource) {
+      Copy-DirectoryContents -SourceDir $agentsSource -DestinationDir (Join-Path $target.Root "agents")
+    }
+
+    if (Test-Path -LiteralPath $rulesSource) {
+      Copy-DirectoryContents -SourceDir $rulesSource -DestinationDir (Join-Path $target.Root "rules")
+    }
+  }
+}
+
 function Invoke-ValidateCatalog {
   Ensure-WorkspaceRepo
   Ensure-WorkspaceScaffold
@@ -879,6 +1015,11 @@ function Invoke-ValidateCatalog {
   $hasFailure = $false
   $sourceSkillIds = @(Get-ManagedSkillIds)
   $trackedSkillIds = @(Get-TrackedCatalogSkillIds)
+  $sourceAgentPaths = @(Get-ManagedAgentRelativePaths)
+  $trackedAgentPaths = @(Get-TrackedCatalogAgentRelativePaths)
+  $sourceRulePaths = @(Get-ManagedRuleRelativePaths)
+  $trackedRulePaths = @(Get-TrackedCatalogRuleRelativePaths)
+  $trackedInstructionsPath = Get-TrackedCatalogInstructionsPath
   $trackedManifest = Join-Path (Get-TrackedCatalogDir) "apm.yml"
 
   if (-not (Test-Path -LiteralPath $trackedManifest)) {
@@ -903,11 +1044,44 @@ function Invoke-ValidateCatalog {
     $hasFailure = $true
   }
 
+  $missingTrackedAgentPaths = @($sourceAgentPaths | Where-Object { $_ -notin $trackedAgentPaths })
+  $extraTrackedAgentPaths = @($trackedAgentPaths | Where-Object { $_ -notin $sourceAgentPaths })
+  if ($missingTrackedAgentPaths.Count -gt 0) {
+    Write-ErrorLine ("Tracked catalog is missing agents: {0}" -f ($missingTrackedAgentPaths -join ", "))
+    $hasFailure = $true
+  }
+  if ($extraTrackedAgentPaths.Count -gt 0) {
+    Write-ErrorLine ("Tracked catalog has unexpected agents: {0}" -f ($extraTrackedAgentPaths -join ", "))
+    $hasFailure = $true
+  }
+
+  $missingTrackedRulePaths = @($sourceRulePaths | Where-Object { $_ -notin $trackedRulePaths })
+  $extraTrackedRulePaths = @($trackedRulePaths | Where-Object { $_ -notin $sourceRulePaths })
+  if ($missingTrackedRulePaths.Count -gt 0) {
+    Write-ErrorLine ("Tracked catalog is missing rules: {0}" -f ($missingTrackedRulePaths -join ", "))
+    $hasFailure = $true
+  }
+  if ($extraTrackedRulePaths.Count -gt 0) {
+    Write-ErrorLine ("Tracked catalog has unexpected rules: {0}" -f ($extraTrackedRulePaths -join ", "))
+    $hasFailure = $true
+  }
+
+  if (-not (Test-Path -LiteralPath $LegacyConfigFile)) {
+    Write-ErrorLine ("Managed instructions source is missing: {0}" -f $LegacyConfigFile)
+    $hasFailure = $true
+  } elseif (-not (Test-Path -LiteralPath $trackedInstructionsPath)) {
+    Write-ErrorLine ("Tracked catalog is missing instructions: {0}" -f $trackedInstructionsPath)
+    $hasFailure = $true
+  } elseif (-not (Test-FileContentEqual -ExpectedPath $LegacyConfigFile -ActualPath $trackedInstructionsPath)) {
+    Write-ErrorLine "Tracked catalog instructions drift from agents/src/AGENTS.md"
+    $hasFailure = $true
+  }
+
   if ($hasFailure) {
     throw "Catalog validation failed"
   }
 
-  Write-SuccessLine ("Catalog validation passed ({0} skills)" -f $sourceSkillIds.Count)
+  Write-SuccessLine ("Catalog validation passed ({0} skills, {1} agents, {2} rules)" -f $sourceSkillIds.Count, $sourceAgentPaths.Count, $sourceRulePaths.Count)
 }
 
 function Invoke-Doctor {
@@ -927,12 +1101,12 @@ function Invoke-Doctor {
   Write-Host "remote:"
   & git -C $WorkspaceDir remote -v
   Write-Host "targets:"
-  foreach ($path in @("$HOME/.claude/skills", "$HOME/.cursor/skills", "$HOME/.opencode/skills", "$HOME/.codex/AGENTS.md")) {
-    if (Test-Path $path) {
-      Write-Host ("  present  {0}" -f $path)
-    } else {
-      Write-Host ("  missing  {0}" -f $path)
-    }
+  foreach ($target in (Get-ManagedCatalogRuntimeTargets)) {
+    $skillsPath = Join-Path $target.Root "skills"
+    $configPath = Join-Path $target.Root $target.ConfigName
+    $agentsPath = Join-Path $target.Root "agents"
+    $rulesPath = Join-Path $target.Root "rules"
+    Write-Host ("  {0}: config={1} agents={2} rules={3} skills={4}" -f $target.Name, $(if (Test-Path $configPath) { "present" } else { "missing" }), $(if (Test-Path $agentsPath) { "present" } else { "missing" }), $(if (Test-Path $rulesPath) { "present" } else { "missing" }), $(if (Test-Path $skillsPath) { "present" } else { "missing" }))
   }
   Write-Host ("external pins: unpinned={0}" -f (@(Get-UnpinnedExternalReferences)).Count)
   Write-ManagedExternalOverlapSummary
@@ -1025,9 +1199,12 @@ function Write-CatalogReadme {
   $content = @(
     '# catalog',
     '',
-    'This catalog is generated from the managed skill source tree in `~/.config/agents/src/skills/`.',
+    'This catalog is generated from the managed source trees in `~/.config/agents/src/`.',
     '',
     '- Source skills: `~/.config/agents/src/skills/<id>/`',
+    '- Source instructions: `~/.config/agents/src/AGENTS.md`',
+    '- Source agents: `~/.config/agents/src/agents/**`',
+    '- Source rules: `~/.config/agents/src/rules/**`',
     '- Purpose: provide one tracked APM package for the managed skill set',
     '- Install ref: `jey3dayo/apm-workspace/catalog#main`'
   ) -join [Environment]::NewLine
@@ -1041,6 +1218,7 @@ function Reset-CatalogBuildDir {
     Remove-Item -LiteralPath $buildDir -Recurse -Force
   }
 
+  New-Item -ItemType Directory -Path $buildDir -Force | Out-Null
   New-Item -ItemType Directory -Path (Get-CatalogBuildSkillsRoot) -Force | Out-Null
 }
 
@@ -1069,6 +1247,45 @@ function Copy-ManagedSkillIntoCatalog {
   }
 
   Copy-DirectoryContents -SourceDir $sourceDir -DestinationDir $destinationDir
+}
+
+function Copy-ManagedInstructionsIntoCatalog {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$DestinationPath
+  )
+
+  if (-not (Test-Path -LiteralPath $LegacyConfigFile)) {
+    throw "Managed instructions source missing: $LegacyConfigFile"
+  }
+
+  Copy-ManagedCatalogFile -SourcePath $LegacyConfigFile -DestinationPath $DestinationPath
+}
+
+function Copy-ManagedAgentAssetsIntoCatalog {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$DestinationDir
+  )
+
+  if (-not (Test-Path -LiteralPath $LegacyAgentsDir)) {
+    throw "Managed agents source missing: $LegacyAgentsDir"
+  }
+
+  Copy-DirectoryContents -SourceDir $LegacyAgentsDir -DestinationDir $DestinationDir
+}
+
+function Copy-ManagedRuleAssetsIntoCatalog {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$DestinationDir
+  )
+
+  if (-not (Test-Path -LiteralPath $LegacyRulesDir)) {
+    throw "Managed rules source missing: $LegacyRulesDir"
+  }
+
+  Copy-DirectoryContents -SourceDir $LegacyRulesDir -DestinationDir $DestinationDir
 }
 
 function Get-TrackedCatalogReference {
@@ -1122,6 +1339,9 @@ function Invoke-SeedCatalogBuild {
   Reset-CatalogBuildDir
   Write-CatalogManifestTemplate -DestinationDir (Get-CatalogBuildDir)
   Write-CatalogReadme -DestinationDir (Get-CatalogBuildDir)
+  Copy-ManagedInstructionsIntoCatalog -DestinationPath (Get-CatalogBuildInstructionsPath)
+  Copy-ManagedAgentAssetsIntoCatalog -DestinationDir (Get-CatalogBuildAgentsRoot)
+  Copy-ManagedRuleAssetsIntoCatalog -DestinationDir (Get-CatalogBuildRulesRoot)
   foreach ($skillId in $skillIds) {
     Copy-ManagedSkillIntoCatalog -SkillId $skillId -SkillsRoot (Get-CatalogBuildSkillsRoot)
   }
@@ -1176,6 +1396,7 @@ function Invoke-RegisterCatalog {
   $reference = Get-TrackedCatalogReference
   Invoke-WorkspaceInstallCommand -InstallArgs @("-g", $reference)
   Normalize-WorkspaceGitignore
+  Sync-ManagedCatalogRuntimeAssets
   Write-Host "Registered catalog from upstream ref: $reference"
 }
 

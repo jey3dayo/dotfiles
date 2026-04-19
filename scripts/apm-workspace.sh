@@ -10,6 +10,9 @@ REPO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 WORKSPACE_DIR="${APM_WORKSPACE_DIR:-$HOME/.apm}"
 WORKSPACE_REPO="${APM_WORKSPACE_REPO:-https://github.com/jey3dayo/apm-workspace.git}"
 LEGACY_SKILLS_DIR="$REPO_ROOT/agents/src/skills"
+LEGACY_AGENTS_DIR="$REPO_ROOT/agents/src/agents"
+LEGACY_RULES_DIR="$REPO_ROOT/agents/src/rules"
+LEGACY_CONFIG_FILE="$REPO_ROOT/agents/src/AGENTS.md"
 EXTERNAL_SOURCES_FILE="$REPO_ROOT/nix/agent-skills-sources.nix"
 CODEX_OUTPUT="${APM_CODEX_OUTPUT:-$HOME/.codex/AGENTS.md}"
 MISE_TEMPLATE="$REPO_ROOT/templates/apm-workspace/mise.toml"
@@ -246,12 +249,36 @@ catalog_build_skills_root() {
   printf '%s/.apm/skills\n' "$(catalog_build_dir)"
 }
 
+catalog_build_agents_root() {
+  printf '%s/agents\n' "$(catalog_build_dir)"
+}
+
+catalog_build_rules_root() {
+  printf '%s/rules\n' "$(catalog_build_dir)"
+}
+
+catalog_build_instructions_path() {
+  printf '%s/AGENTS.md\n' "$(catalog_build_dir)"
+}
+
 tracked_catalog_dir() {
   printf '%s/%s\n' "$WORKSPACE_DIR" "$CATALOG_DIR_NAME"
 }
 
 tracked_catalog_skills_root() {
   printf '%s/.apm/skills\n' "$(tracked_catalog_dir)"
+}
+
+tracked_catalog_agents_root() {
+  printf '%s/agents\n' "$(tracked_catalog_dir)"
+}
+
+tracked_catalog_rules_root() {
+  printf '%s/rules\n' "$(tracked_catalog_dir)"
+}
+
+tracked_catalog_instructions_path() {
+  printf '%s/AGENTS.md\n' "$(tracked_catalog_dir)"
 }
 
 tracked_catalog_relative_path() {
@@ -276,9 +303,12 @@ write_catalog_readme() {
   cat >"$destination_dir/README.md" <<EOF
 # $CATALOG_DIR_NAME
 
-This catalog is generated from ~/.config/agents/src/skills/ and tracked in apm-workspace.
+This catalog is generated from ~/.config/agents/src/ and tracked in apm-workspace.
 
 - Source skills: \`~/.config/agents/src/skills/<id>/\`
+- Source instructions: \`~/.config/agents/src/AGENTS.md\`
+- Source agents: \`~/.config/agents/src/agents/**\`
+- Source rules: \`~/.config/agents/src/rules/**\`
 - Purpose: provide one tracked APM package for the managed skill set
 - Install ref: \`jey3dayo/apm-workspace/catalog#main\`
 EOF
@@ -287,6 +317,7 @@ EOF
 reset_catalog_build_dir() {
   destination_dir=$(catalog_build_dir)
   rm -rf "$destination_dir"
+  mkdir -p "$destination_dir"
   mkdir -p "$(catalog_build_skills_root)"
 }
 
@@ -397,6 +428,28 @@ copy_managed_skill_into_catalog() {
 
   mkdir -p "$destination_dir"
   cp -R "$source_dir"/. "$destination_dir"
+}
+
+copy_managed_instructions_into_catalog() {
+  destination_path="$1"
+  [ -f "$LEGACY_CONFIG_FILE" ] || fail "Managed instructions source missing: $LEGACY_CONFIG_FILE"
+  destination_dir=$(dirname "$destination_path")
+  mkdir -p "$destination_dir"
+  cp "$LEGACY_CONFIG_FILE" "$destination_path"
+}
+
+copy_managed_agent_assets_into_catalog() {
+  destination_dir="$1"
+  [ -d "$LEGACY_AGENTS_DIR" ] || fail "Managed agents source missing: $LEGACY_AGENTS_DIR"
+  mkdir -p "$destination_dir"
+  cp -R "$LEGACY_AGENTS_DIR"/. "$destination_dir"
+}
+
+copy_managed_rule_assets_into_catalog() {
+  destination_dir="$1"
+  [ -d "$LEGACY_RULES_DIR" ] || fail "Managed rules source missing: $LEGACY_RULES_DIR"
+  mkdir -p "$destination_dir"
+  cp -R "$LEGACY_RULES_DIR"/. "$destination_dir"
 }
 
 legacy_skill_content_dir() {
@@ -929,6 +982,7 @@ cmd_apply() {
   run_workspace_install_command -g
   normalize_workspace_gitignore
   compile_codex
+  sync_managed_catalog_runtime_assets
 }
 
 cmd_update() {
@@ -950,6 +1004,7 @@ cmd_update() {
   run_workspace_install_command -g
   normalize_workspace_gitignore
   compile_codex
+  sync_managed_catalog_runtime_assets
 }
 
 cmd_list() {
@@ -1094,6 +1149,34 @@ managed_skill_ids() {
   find "$LEGACY_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
 }
 
+managed_agent_relative_paths() {
+  relative_file_list "$LEGACY_AGENTS_DIR"
+}
+
+tracked_catalog_agent_relative_paths() {
+  relative_file_list "$(tracked_catalog_agents_root)"
+}
+
+managed_rule_relative_paths() {
+  relative_file_list "$LEGACY_RULES_DIR"
+}
+
+tracked_catalog_rule_relative_paths() {
+  relative_file_list "$(tracked_catalog_rules_root)"
+}
+
+file_content_equal() {
+  expected_path="$1"
+  actual_path="$2"
+
+  [ -f "$expected_path" ] || return 1
+  [ -f "$actual_path" ] || return 1
+
+  expected_hash=$(sha256sum "$expected_path" | awk '{print $1}')
+  actual_hash=$(sha256sum "$actual_path" | awk '{print $1}')
+  [ "$expected_hash" = "$actual_hash" ]
+}
+
 tracked_catalog_skill_ids() {
   skills_root=$(tracked_catalog_skills_root)
   [ -d "$skills_root" ] || return 0
@@ -1114,25 +1197,60 @@ manifest_has_catalog_reference() {
 }
 
 print_catalog_summary() {
-  source_count=$(managed_skill_ids | awk 'NF { count++ } END { print count + 0 }')
-  tracked_count=$(tracked_catalog_skill_ids | awk 'NF { count++ } END { print count + 0 }')
+  source_skill_count=$(managed_skill_ids | awk 'NF { count++ } END { print count + 0 }')
+  tracked_skill_count=$(tracked_catalog_skill_ids | awk 'NF { count++ } END { print count + 0 }')
+  source_agent_count=$(managed_agent_relative_paths | awk 'NF { count++ } END { print count + 0 }')
+  tracked_agent_count=$(tracked_catalog_agent_relative_paths | awk 'NF { count++ } END { print count + 0 }')
+  source_rule_count=$(managed_rule_relative_paths | awk 'NF { count++ } END { print count + 0 }')
+  tracked_rule_count=$(tracked_catalog_rule_relative_paths | awk 'NF { count++ } END { print count + 0 }')
   tracked_manifest=no
   [ -f "$(tracked_catalog_dir)/apm.yml" ] && tracked_manifest=yes
   global_ref=no
   manifest_has_catalog_reference && global_ref=yes
 
-  source_tmp=$(mktemp)
-  tracked_tmp=$(mktemp)
-  printf '%s\n' "$(managed_skill_ids)" | awk 'NF' | sort >"$source_tmp"
-  printf '%s\n' "$(tracked_catalog_skill_ids)" | awk 'NF' | sort >"$tracked_tmp"
-  if cmp -s "$source_tmp" "$tracked_tmp"; then
-    status=ok
-  else
-    status=drift
-  fi
-  rm -f "$source_tmp" "$tracked_tmp"
+  source_skills_tmp=$(mktemp)
+  tracked_skills_tmp=$(mktemp)
+  source_agents_tmp=$(mktemp)
+  tracked_agents_tmp=$(mktemp)
+  source_rules_tmp=$(mktemp)
+  tracked_rules_tmp=$(mktemp)
 
-  printf 'catalog: source=%s tracked=%s tracked-manifest=%s global-ref=%s status=%s\n' "$source_count" "$tracked_count" "$tracked_manifest" "$global_ref" "$status"
+  printf '%s\n' "$(managed_skill_ids)" | awk 'NF' | sort >"$source_skills_tmp"
+  printf '%s\n' "$(tracked_catalog_skill_ids)" | awk 'NF' | sort >"$tracked_skills_tmp"
+  printf '%s\n' "$(managed_agent_relative_paths)" | awk 'NF' | sort >"$source_agents_tmp"
+  printf '%s\n' "$(tracked_catalog_agent_relative_paths)" | awk 'NF' | sort >"$tracked_agents_tmp"
+  printf '%s\n' "$(managed_rule_relative_paths)" | awk 'NF' | sort >"$source_rules_tmp"
+  printf '%s\n' "$(tracked_catalog_rule_relative_paths)" | awk 'NF' | sort >"$tracked_rules_tmp"
+
+  skills_status=drift
+  agents_status=drift
+  rules_status=drift
+  cmp -s "$source_skills_tmp" "$tracked_skills_tmp" && skills_status=ok
+  cmp -s "$source_agents_tmp" "$tracked_agents_tmp" && agents_status=ok
+  cmp -s "$source_rules_tmp" "$tracked_rules_tmp" && rules_status=ok
+
+  instructions_state=missing-source
+  if [ -f "$LEGACY_CONFIG_FILE" ]; then
+    instructions_state=missing-tracked
+    if [ -f "$(tracked_catalog_instructions_path)" ] && file_content_equal "$LEGACY_CONFIG_FILE" "$(tracked_catalog_instructions_path)"; then
+      instructions_state=ok
+    elif [ -f "$(tracked_catalog_instructions_path)" ]; then
+      instructions_state=drift
+    fi
+  fi
+
+  status=drift
+  if [ "$skills_status" = ok ] && [ "$agents_status" = ok ] && [ "$rules_status" = ok ] && [ "$instructions_state" = ok ]; then
+    status=ok
+  fi
+
+  rm -f "$source_skills_tmp" "$tracked_skills_tmp" "$source_agents_tmp" "$tracked_agents_tmp" "$source_rules_tmp" "$tracked_rules_tmp"
+
+  printf 'catalog: skills=%s/%s agents=%s/%s rules=%s/%s instructions=%s tracked-manifest=%s global-ref=%s status=%s\n' \
+    "$source_skill_count" "$tracked_skill_count" \
+    "$source_agent_count" "$tracked_agent_count" \
+    "$source_rule_count" "$tracked_rule_count" \
+    "$instructions_state" "$tracked_manifest" "$global_ref" "$status"
 }
 
 managed_external_overlap_lines() {
@@ -1170,6 +1288,51 @@ print_managed_external_overlap_summary() {
   fi
 }
 
+managed_catalog_runtime_targets() {
+  cat <<'EOF'
+claude|.claude|CLAUDE.md
+codex|.codex|AGENTS.md
+cursor|.cursor|AGENTS.md
+opencode|.opencode|CLAUDE.md
+openclaw|.openclaw|CLAUDE.md
+EOF
+}
+
+copy_managed_catalog_file() {
+  source_path="$1"
+  destination_path="$2"
+  mkdir -p "$(dirname "$destination_path")"
+  cp "$source_path" "$destination_path"
+}
+
+sync_managed_catalog_runtime_assets() {
+  tracked_dir=$(tracked_catalog_dir)
+  [ -d "$tracked_dir" ] || fail "Tracked catalog missing: $tracked_dir. Run 'mise run stage-catalog' first."
+
+  instructions_source=$(tracked_catalog_instructions_path)
+  agents_source=$(tracked_catalog_agents_root)
+  rules_source=$(tracked_catalog_rules_root)
+
+  managed_catalog_runtime_targets | while IFS='|' read -r _target_name target_dir config_name; do
+    target_root="$HOME/$target_dir"
+    mkdir -p "$target_root"
+
+    if [ -f "$instructions_source" ]; then
+      copy_managed_catalog_file "$instructions_source" "$target_root/$config_name"
+    fi
+
+    if [ -d "$agents_source" ]; then
+      mkdir -p "$target_root/agents"
+      cp -R "$agents_source"/. "$target_root/agents"
+    fi
+
+    if [ -d "$rules_source" ]; then
+      mkdir -p "$target_root/rules"
+      cp -R "$rules_source"/. "$target_root/rules"
+    fi
+  done
+}
+
 cmd_validate_catalog() {
   ensure_workspace_repo
   ensure_workspace_scaffold
@@ -1177,7 +1340,12 @@ cmd_validate_catalog() {
   has_failure=0
   source_skill_ids=$(managed_skill_ids)
   tracked_skill_ids=$(tracked_catalog_skill_ids)
+  source_agent_paths=$(managed_agent_relative_paths)
+  tracked_agent_paths=$(tracked_catalog_agent_relative_paths)
+  source_rule_paths=$(managed_rule_relative_paths)
+  tracked_rule_paths=$(tracked_catalog_rule_relative_paths)
   tracked_manifest="$(tracked_catalog_dir)/apm.yml"
+  tracked_instructions="$(tracked_catalog_instructions_path)"
 
   if [ ! -f "$tracked_manifest" ]; then
     error "Tracked catalog manifest is missing: $tracked_manifest"
@@ -1210,9 +1378,64 @@ cmd_validate_catalog() {
     has_failure=1
   fi
 
+  source_agents_tmp=$(mktemp)
+  tracked_agents_tmp=$(mktemp)
+  missing_agents_tmp=$(mktemp)
+  extra_agents_tmp=$(mktemp)
+  printf '%s\n' "$source_agent_paths" | awk 'NF' | sort >"$source_agents_tmp"
+  printf '%s\n' "$tracked_agent_paths" | awk 'NF' | sort >"$tracked_agents_tmp"
+  comm -23 "$source_agents_tmp" "$tracked_agents_tmp" >"$missing_agents_tmp"
+  comm -13 "$source_agents_tmp" "$tracked_agents_tmp" >"$extra_agents_tmp"
+  missing_agent_paths=$(cat "$missing_agents_tmp")
+  extra_agent_paths=$(cat "$extra_agents_tmp")
+  rm -f "$source_agents_tmp" "$tracked_agents_tmp" "$missing_agents_tmp" "$extra_agents_tmp"
+
+  if [ -n "$missing_agent_paths" ]; then
+    error "Tracked catalog is missing agents: $(printf '%s\n' "$missing_agent_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    has_failure=1
+  fi
+  if [ -n "$extra_agent_paths" ]; then
+    error "Tracked catalog has unexpected agents: $(printf '%s\n' "$extra_agent_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    has_failure=1
+  fi
+
+  source_rules_tmp=$(mktemp)
+  tracked_rules_tmp=$(mktemp)
+  missing_rules_tmp=$(mktemp)
+  extra_rules_tmp=$(mktemp)
+  printf '%s\n' "$source_rule_paths" | awk 'NF' | sort >"$source_rules_tmp"
+  printf '%s\n' "$tracked_rule_paths" | awk 'NF' | sort >"$tracked_rules_tmp"
+  comm -23 "$source_rules_tmp" "$tracked_rules_tmp" >"$missing_rules_tmp"
+  comm -13 "$source_rules_tmp" "$tracked_rules_tmp" >"$extra_rules_tmp"
+  missing_rule_paths=$(cat "$missing_rules_tmp")
+  extra_rule_paths=$(cat "$extra_rules_tmp")
+  rm -f "$source_rules_tmp" "$tracked_rules_tmp" "$missing_rules_tmp" "$extra_rules_tmp"
+
+  if [ -n "$missing_rule_paths" ]; then
+    error "Tracked catalog is missing rules: $(printf '%s\n' "$missing_rule_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    has_failure=1
+  fi
+  if [ -n "$extra_rule_paths" ]; then
+    error "Tracked catalog has unexpected rules: $(printf '%s\n' "$extra_rule_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    has_failure=1
+  fi
+
+  if [ ! -f "$LEGACY_CONFIG_FILE" ]; then
+    error "Managed instructions source is missing: $LEGACY_CONFIG_FILE"
+    has_failure=1
+  elif [ ! -f "$tracked_instructions" ]; then
+    error "Tracked catalog is missing instructions: $tracked_instructions"
+    has_failure=1
+  elif ! file_content_equal "$LEGACY_CONFIG_FILE" "$tracked_instructions"; then
+    error "Tracked catalog instructions drift from agents/src/AGENTS.md"
+    has_failure=1
+  fi
+
   [ "$has_failure" -eq 0 ] || fail "Catalog validation failed"
-  source_count=$(printf '%s\n' "$source_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
-  log "Catalog validation passed ($source_count skills)"
+  source_skill_count=$(printf '%s\n' "$source_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
+  source_agent_count=$(printf '%s\n' "$source_agent_paths" | awk 'NF { count++ } END { print count + 0 }')
+  source_rule_count=$(printf '%s\n' "$source_rule_paths" | awk 'NF { count++ } END { print count + 0 }')
+  log "Catalog validation passed ($source_skill_count skills, $source_agent_count agents, $source_rule_count rules)"
 }
 
 cmd_doctor() {
@@ -1228,12 +1451,13 @@ cmd_doctor() {
     printf 'remote:\n'
     git remote -v || true
     printf 'targets:\n'
-    for path in "$HOME/.claude/skills" "$HOME/.cursor/skills" "$HOME/.opencode/skills" "$HOME/.codex/AGENTS.md"; do
-      if [ -e "$path" ]; then
-        printf '  present  %s\n' "$path"
-      else
-        printf '  missing  %s\n' "$path"
-      fi
+    managed_catalog_runtime_targets | while IFS='|' read -r target_name target_dir config_name; do
+      target_root="$HOME/$target_dir"
+      if [ -e "$target_root/$config_name" ]; then config_state=present; else config_state=missing; fi
+      if [ -e "$target_root/agents" ]; then agents_state=present; else agents_state=missing; fi
+      if [ -e "$target_root/rules" ]; then rules_state=present; else rules_state=missing; fi
+      if [ -e "$target_root/skills" ]; then skills_state=present; else skills_state=missing; fi
+      printf '  %s: config=%s agents=%s rules=%s skills=%s\n' "$target_name" "$config_state" "$agents_state" "$rules_state" "$skills_state"
     done
     printf 'external pins: unpinned=%s\n' "$(unpinned_external_references | awk 'NF { count++ } END { print count + 0 }')"
     print_managed_external_overlap_summary
@@ -1251,6 +1475,9 @@ cmd_seed_catalog_build() {
   reset_catalog_build_dir
   write_catalog_manifest_template "$(catalog_build_dir)"
   write_catalog_readme "$(catalog_build_dir)"
+  copy_managed_instructions_into_catalog "$(catalog_build_instructions_path)"
+  copy_managed_agent_assets_into_catalog "$(catalog_build_agents_root)"
+  copy_managed_rule_assets_into_catalog "$(catalog_build_rules_root)"
 
   printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
     [ -n "$skill_id" ] || continue
@@ -1292,6 +1519,7 @@ cmd_register_catalog() {
   reference=$(tracked_catalog_reference)
   run_workspace_install_command -g "$reference"
   normalize_workspace_gitignore
+  sync_managed_catalog_runtime_assets
   log "Registered catalog from upstream ref: $reference"
 }
 
