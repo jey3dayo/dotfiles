@@ -8,49 +8,15 @@ source: docs/tools/workflows.md
 Purpose: 定期メンテナンスとトラブルシューティングのクイックリファレンス。
 Detailed Reference: [docs/tools/workflows.md](../../docs/tools/workflows.md)
 
-## Maintenance Cadence
+## Core rules
 
-| 頻度   | 作業                                                           |
-| ------ | -------------------------------------------------------------- |
-| 週次   | `brew update && brew upgrade` + `mise upgrade`; プラグイン更新 |
-| 月次   | zsh ベンチマーク・ログ整理・`mise prune`・Nix GC               |
-| 四半期 | 全設定監査・依存関係プルーニング・バックアップ検証             |
-
-## Code Quality コマンド
-
-```bash
-mise run ci           # 検証のみ（format + lint + test）
-mise run ci:quick     # クイックチェック（format + lint）
-mise run format       # 自動フォーマット適用
-```
-
-## Brewfile 更新
-
-```bash
-brew bundle dump --force --file=/tmp/brewfile-new.txt
-diff Brewfile /tmp/brewfile-new.txt
-brew bundle check
-```
-
-- ランタイム・汎用 CLI は mise へ（biome, prettier, stylua 等は Brewfile に追加しない）
-- GUI・macOS 固有のみ Brewfile へ
-
-## Nix Home Manager 月次クリーンアップ
-
-```bash
-home-manager remove-generations 90d && nix-collect-garbage -d
-df -h /nix/store
-```
-
-詳細は [docs/tools/nix.md](../../docs/tools/nix.md) を参照。
+- Weekly, monthly, and quarterly maintenance details live only in `docs/tools/workflows.md`.
+- Keep this rule focused on routing and decision criteria; do not duplicate operational tables here.
+- Put runtime and generic CLI tools under mise. Reserve Brewfile for GUI apps and macOS-specific packages.
+- Route Nix cleanup details to [docs/tools/nix.md](../../docs/tools/nix.md).
 
 ## Troubleshooting Routing
 
-| 症状               | 対応先                                                    |
-| ------------------ | --------------------------------------------------------- |
-| パフォーマンス低下 | `docs/performance.md`                                     |
-| Zsh トラブル       | `rm -rf ~/.zcompdump*` → `exec zsh`; `zsh -df` でミニマル |
-| LSP 問題           | `:LspInfo`, `:Mason`, `~/.local/share/nvim/lsp.log`       |
-| Git 認証           | `ssh -T git@github.com`, 1Password CLI・SSH agent 確認    |
-
-詳細は [docs/tools/workflows.md](../../docs/tools/workflows.md) を参照。
+- Performance issues: `docs/performance.md`
+- Zsh, LSP, Git auth, and maintenance troubleshooting: `docs/tools/workflows.md`
+- Tool-specific issues: the corresponding `docs/tools/*.md`

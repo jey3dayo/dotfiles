@@ -40,9 +40,11 @@ command -v mise > /dev/null 2>&1 || return
 # Shortcut for local CI
 alias refresh="mise ci"
 
-# Load completion only if mise is activated (check for _mise_hook function)
-if (( $+functions[_mise_hook] )); then
-  # Defer only the completion for startup performance
+# Prefer the bundled completion file when available.
+# Generating completions through `mise complete -s zsh` can block WSL login
+# because it shells out to `mise x -- usage ...` on startup.
+local bundled_mise_completion="${ZDOTDIR:-$HOME/.config/zsh}/completions/_mise"
+if (( $+functions[_mise_hook] )) && [[ ! -r "$bundled_mise_completion" ]]; then
   if command -v usage > /dev/null 2>&1; then
     if (( $+functions[zsh-defer] )); then
       zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval "$(mise complete -s zsh)"

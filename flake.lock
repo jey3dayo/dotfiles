@@ -86,6 +86,22 @@
         "type": "github"
       }
     },
+    "gonta223-humanizer-ja": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774262143,
+        "narHash": "sha256-kbJO130Kfv6hVjMGlWZGCID3zOnceQybw20O4pIUIdU=",
+        "owner": "gonta223",
+        "repo": "humanizer-ja",
+        "rev": "a1e343696e43aa50e7218891f3319ab22cde3464",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gonta223",
+        "repo": "humanizer-ja",
+        "type": "github"
+      }
+    },
     "heyvhuang-ship-faster": {
       "flake": false,
       "locked": {
@@ -186,6 +202,22 @@
         "type": "github"
       }
     },
+    "obra-episodic-memory": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774660735,
+        "narHash": "sha256-L9cvdLD3UXmsP7Jy0MCbs5H1b0fMXzsHCUugX4Lx1IA=",
+        "owner": "obra",
+        "repo": "episodic-memory",
+        "rev": "c656adc64ef1576c58fd2f6ddb44c29c920b784b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "obra",
+        "repo": "episodic-memory",
+        "type": "github"
+      }
+    },
     "obra-superpowers": {
       "flake": false,
       "locked": {
@@ -241,12 +273,14 @@
         "epicenterhq-epicenter": "epicenterhq-epicenter",
         "flake-utils": "flake-utils",
         "gitignore": "gitignore",
+        "gonta223-humanizer-ja": "gonta223-humanizer-ja",
         "heyvhuang-ship-faster": "heyvhuang-ship-faster",
         "home-manager": "home-manager",
         "lum1104-understand-anything": "lum1104-understand-anything",
         "millionco-react-doctor": "millionco-react-doctor",
         "nixpkgs": "nixpkgs",
         "nyosegawa-skills": "nyosegawa-skills",
+        "obra-episodic-memory": "obra-episodic-memory",
         "obra-superpowers": "obra-superpowers",
         "openai-codex-plugin-cc": "openai-codex-plugin-cc",
         "openai-skills": "openai-skills",

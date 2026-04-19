@@ -1,5 +1,6 @@
--- nvim-lint configuration for lightweight linting
+-- nvim-lint setup
 local lint = require "lint"
+local mise = require "core.mise"
 local utils = require "core.utils"
 local lsp_config = require "lsp.config"
 
@@ -21,7 +22,7 @@ local function linter_cmd_available(name)
   if not linter then return false end
   local cmd = type(linter.cmd) == "function" and linter.cmd() or linter.cmd
   if type(cmd) == "table" then cmd = cmd[1] end
-  return cmd and vim.fn.executable(cmd) == 1
+  return cmd and vim.fn.executable(mise.resolve_command(cmd)) == 1
 end
 
 local function get_linters_for_buf(bufnr)
@@ -46,20 +47,14 @@ local function get_linters_for_buf(bufnr)
   return list
 end
 
--- Configure linters by filetype using centralized config
 lint.linters_by_ft = lsp_config.linters
 
--- Enhanced linter configurations
 lint.linters.eslint = require("lint.util").wrap(lint.linters.eslint, function(diagnostic)
-  -- Only run eslint if config file exists (using centralized config)
   local config_files = lsp_config.formatters.eslint.config_files
-
   if not utils.has_config_files(config_files) then return {} end
-
   return diagnostic
 end)
 
--- Configure luacheck to work with Neovim Lua API
 lint.linters.luacheck.args = {
   "--formatter",
   "plain",
@@ -70,7 +65,6 @@ lint.linters.luacheck.args = {
   "-",
 }
 
--- Configure ruff for Python
 lint.linters.ruff.args = {
   "check",
   "--output-format=json",
@@ -81,20 +75,20 @@ lint.linters.ruff.args = {
   "-",
 }
 
--- Configure markdownlint-cli2
-lint.linters.markdownlint.cmd = "markdownlint-cli2"
+lint.linters.markdownlint.cmd = mise.resolve_command "markdownlint-cli2"
 lint.linters.markdownlint.args = {}
 
--- Auto-lint setup
+if lint.linters.yamllint then lint.linters.yamllint.cmd = mise.resolve_command "yamllint" end
+if lint.linters.shellcheck then lint.linters.shellcheck.cmd = mise.resolve_command "shellcheck" end
+if lint.linters.hadolint then lint.linters.hadolint.cmd = mise.resolve_command "hadolint" end
+
 local lint_augroup = vim.api.nvim_create_augroup("nvim-lint", { clear = true })
 
 vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
   group = lint_augroup,
   callback = function()
-    -- Don't lint if disabled
     if vim.g.disable_autolint or vim.b.disable_autolint then return end
 
-    -- Debounce linting to avoid excessive runs
     local timer = vim.loop.new_timer()
     timer:start(
       100,
@@ -108,13 +102,10 @@ vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
   end,
 })
 
--- Commands for controlling auto-lint
 vim.api.nvim_create_user_command("AutoLintDisable", function(args)
   if args.bang then
-    -- AutoLintDisable! will disable linting globally
     vim.g.disable_autolint = true
   else
-    -- AutoLintDisable will disable linting for current buffer
     vim.b.disable_autolint = true
   end
   vim.notify("Auto-linting disabled", vim.log.levels.INFO)
@@ -131,13 +122,11 @@ end, {
   desc = "Re-enable automatic linting",
 })
 
--- Manual lint command
 vim.api.nvim_create_user_command("Lint", function()
   local linters = get_linters_for_buf(0)
   if #linters > 0 then lint.try_lint(linters) end
 end, { desc = "Run linters for current buffer" })
 
--- Debug info command
 vim.api.nvim_create_user_command("LintInfo", function()
   local ft = vim.bo.filetype
   local linters = lint.linters_by_ft[ft] or lint.linters_by_ft["*"] or {}
@@ -153,9 +142,8 @@ vim.api.nvim_create_user_command("LintInfo", function()
   for _, linter_name in ipairs(linters) do
     local linter = lint.linters[linter_name]
     if linter then
-      -- Check if the linter command exists
       local cmd = type(linter.cmd) == "function" and linter.cmd() or linter.cmd
-      if vim.fn.executable(cmd) == 1 then
+      if vim.fn.executable(mise.resolve_command(cmd)) == 1 then
         table.insert(available, linter_name)
       else
         table.insert(unavailable, linter_name .. " (" .. cmd .. " not found)")

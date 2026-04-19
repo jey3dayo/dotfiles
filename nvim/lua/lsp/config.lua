@@ -132,6 +132,9 @@ M.linters = {
   zsh = { "shellcheck" },
   dockerfile = { "hadolint" },
   yaml = { "yamllint" },
+  ["yaml.docker-compose"] = { "yamllint" },
+  ["yaml.gitlab"] = { "yamllint" },
+  ["yaml.helm-values"] = { "yamllint" },
   markdown = { "markdownlint", "codespell" },
   vim = { "vint" },
 

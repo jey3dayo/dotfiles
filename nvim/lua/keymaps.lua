@@ -36,7 +36,7 @@ map("n", "<Leader>sL", "<cmd>set list!<CR>", { desc = "Toggle list mode" })
 map("n", "<Leader>sp", "<cmd>Lazy<CR>", { desc = "Plugin manager" })
 map("n", "<Leader>sd", "<cmd>LspDebug<CR>", { desc = "LspDebug" })
 map("n", "<Leader>sm", "<cmd>MasonUpdate<CR>", { desc = "Update Mason" })
-map("n", "<Leader>st", "<cmd>TSUpdate all<CR>", { desc = "Update TreeSitter" })
+map("n", "<Leader>st", "<cmd>TSUpdate<CR>", { desc = "Update TreeSitter" })
 map("n", "<Leader>su", "<cmd>Lazy update<CR>", { desc = "Update plugins" })
 
 -- Load a config file

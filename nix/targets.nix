@@ -1,6 +1,7 @@
 # Deployment targets for skill distribution
 # Fields: enable (bool), dest (string), structure? ("link"|"copy-tree", default "link"),
-#         configDest? (string|null, default null) — destination for configFiles
+#         configDest? (string|null, default null) — destination for configFiles,
+#         deployCommands? (bool, default true) — deploy external top-level commands
 {
   claude = {
     enable = true;
@@ -11,6 +12,7 @@
     enable = true;
     dest = ".codex/skills";
     configDest = ".codex";
+    deployCommands = false;
   };
   cursor = {
     enable = true;

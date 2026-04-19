@@ -3,7 +3,7 @@
 
 load_tool_settings() {
   local config_dir="$1"
-  local -a critical_tools=(fzf git mise starship)
+  local -a critical_tools=(bun fzf git mise starship)
   local -A is_critical
   local has_zsh_defer=0
   local critical_tool tool_file tool_name

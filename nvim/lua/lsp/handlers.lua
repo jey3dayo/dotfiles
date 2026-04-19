@@ -1,6 +1,17 @@
 -- LSP handlers configuration
 local M = {}
 
+local function merge_handler_config(config, overrides)
+  if not overrides then return config or {} end
+  return vim.tbl_deep_extend("force", config or {}, overrides)
+end
+
+function M.with(handler, overrides)
+  return function(err, result, ctx, config)
+    return handler(err, result, ctx, merge_handler_config(config, overrides))
+  end
+end
+
 -- Setup handlers and on_attach
 M.setup = function()
   -- Setup diagnostic configuration
@@ -43,13 +54,13 @@ end
 
 -- Common handlers
 M.handlers = {
-  ["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  ["textDocument/hover"] = M.with(vim.lsp.handlers.hover, {
     border = "rounded",
   }),
-  ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  ["textDocument/signatureHelp"] = M.with(vim.lsp.handlers.signature_help, {
     border = "rounded",
   }),
-  ["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  ["textDocument/publishDiagnostics"] = M.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = true,
     signs = true,
     underline = true,

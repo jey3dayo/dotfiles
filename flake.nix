@@ -29,6 +29,10 @@
       url = "github:EpicenterHQ/epicenter";
       flake = false;
     };
+    gonta223-humanizer-ja = {
+      url = "github:gonta223/humanizer-ja";
+      flake = false;
+    };
     heyvhuang-ship-faster = {
       url = "github:Heyvhuang/ship-faster";
       flake = false;
@@ -47,6 +51,10 @@
     };
     nyosegawa-skills = {
       url = "github:nyosegawa/skills";
+      flake = false;
+    };
+    obra-episodic-memory = {
+      url = "github:obra/episodic-memory";
       flake = false;
     };
     obra-superpowers = {

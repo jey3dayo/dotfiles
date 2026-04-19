@@ -7,7 +7,7 @@
 env_file = '.env.local'
 experimental = true
 jobs = 2                                    # Raspberry Pi メモリ制約対応: 並列数削減でスワップ回避
-vfox = false
+disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/src/github.com"]
 
@@ -98,7 +98,7 @@ yamllint = "latest"
 # 注: Cargo系ツールは除外（ARM互換性考慮）
 eza = "latest"
 fd = "latest"
-"go:golang.org/x/tools/cmd/goimports" = "latest"
+"go:golang.org/x/tools/cmd/goimports" = "0.41.0"
 "github:cli/cli" = "latest"
 jq = "latest"
 yazi = "latest"

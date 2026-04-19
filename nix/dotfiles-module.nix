@@ -77,7 +77,9 @@ let
   cleanedRepo = gitignore.lib.gitignoreSource cfg.repoPath;
 
   inherit (files)
+    copiedEntryPointFiles
     entryPointFiles
+    materializedEntryPointFiles
     bashFiles
     sshFiles
     awsumeFiles
@@ -89,6 +91,51 @@ let
       source = "${cleanedRepo}/${relativePath}";
     }) fileset;
 
+  mkMaterializedFilesScript =
+    fileset:
+    lib.concatStringsSep "\n" (
+      lib.mapAttrsToList (
+        targetPath: relativePath:
+        let
+          sourcePath = "${cleanedRepo}/${relativePath}";
+          targetPathAbs = "${config.home.homeDirectory}/${targetPath}";
+        in
+        ''
+          target=${lib.escapeShellArg targetPathAbs}
+          source=${lib.escapeShellArg sourcePath}
+          target_dir="$(${pkgs.coreutils}/bin/dirname "$target")"
+
+          if [ -d "$target" ] && [ ! -L "$target" ]; then
+            echo "Refusing to replace directory: $target" >&2
+            exit 1
+          fi
+
+          run ${pkgs.coreutils}/bin/mkdir -p "$target_dir"
+
+          if [ -L "$target" ] || [ ! -f "$target" ] || ! ${pkgs.diffutils}/bin/cmp -s "$source" "$target"; then
+            verboseEcho "Materializing $target"
+            if [ -e "$target" ] || [ -L "$target" ]; then
+              run ${pkgs.coreutils}/bin/rm -f "$target"
+            fi
+            run ${pkgs.coreutils}/bin/install -m 600 "$source" "$target"
+          fi
+        ''
+      ) fileset
+    );
+
+  mkCopiedHomeFileCommands =
+    fileset:
+    lib.mapAttrsToList (
+      relativeHomePath: relativeSourcePath:
+      let
+        sourcePath = "${cleanedRepo}/${relativeSourcePath}";
+        destinationPath = "${config.home.homeDirectory}/${relativeHomePath}";
+      in
+      ''
+        rm -f ${lib.escapeShellArg destinationPath}
+        ${pkgs.coreutils}/bin/install -Dm644 ${lib.escapeShellArg sourcePath} ${lib.escapeShellArg destinationPath}
+      ''
+    ) fileset;
 in
 {
   options.programs.dotfiles = {
@@ -190,29 +237,49 @@ in
       # The following activation scripts may still be needed if you have runtime state
       # that needs initialization (e.g., projects-config, mise trusted-configs, tmux plugins).
 
-      # Git submodule initialization (activation script)
-      activation.dotfiles-submodules = lib.mkIf cfg.initSubmodules (
-        lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          # Initialize tpm submodule and auto-install tmux plugins
-          ${detectWorktreeScript}
+      activation = lib.mkMerge [
+        {
+          # Deploy files that must remain regular files for tool compatibility.
+          dotfiles-copied-entry-points = lib.mkIf cfg.deployEntryPoints (
+            lib.hm.dag.entryAfter [ "linkGeneration" ] (
+              builtins.concatStringsSep "\n" (mkCopiedHomeFileCommands copiedEntryPointFiles)
+            )
+          );
+        }
+        {
+          # Git submodule initialization (activation script)
+          dotfiles-submodules = lib.mkIf cfg.initSubmodules (
+            lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+              # Initialize tpm submodule and auto-install tmux plugins
+              ${detectWorktreeScript}
 
-          if [ -n "$worktree" ]; then
-            echo "Initializing Git submodules for tpm..."
-            if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
-              echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
-            fi
+              if [ -n "$worktree" ]; then
+                echo "Initializing Git submodules for tpm..."
+                if ! ${pkgs.git}/bin/git -C "$worktree" submodule update --init --recursive; then
+                  echo "Warning: failed to initialize tpm submodule; continuing activation." >&2
+                fi
 
-            # Auto-install TPM plugins if tmux server is not running
-            tpm_path="$worktree/tmux/plugins/tpm"
-            install_script="$tpm_path/bin/install_plugins"
-            if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
-              echo "Installing tmux plugins via TPM..."
-              PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
-                echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
-            fi
-          fi
-        ''
-      );
+                # Auto-install TPM plugins if tmux server is not running
+                tpm_path="$worktree/tmux/plugins/tpm"
+                install_script="$tpm_path/bin/install_plugins"
+                if [ -x "$install_script" ] && ! ${pkgs.tmux}/bin/tmux info &>/dev/null; then
+                  echo "Installing tmux plugins via TPM..."
+                  PATH="${pkgs.tmux}/bin:/usr/bin:/bin:$PATH" TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" || \
+                    echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
+                fi
+              fi
+            ''
+          );
+        }
+        {
+          dotfiles-materialized-entrypoints = lib.mkIf cfg.deployEntryPoints (
+            lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+              # Materialize configs for CLIs that reject Home Manager symlinks.
+              ${mkMaterializedFilesScript materializedEntryPointFiles}
+            ''
+          );
+        }
+      ];
     };
   };
 }

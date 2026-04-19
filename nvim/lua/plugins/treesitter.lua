@@ -3,11 +3,13 @@ local deps = require "core.dependencies"
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    event = { "BufReadPost", "BufNewFile" },
-    cmd = { "TSUpdate", "TSInstall" },
+    branch = "main",
+    lazy = false,
     build = ":TSUpdate",
     dependencies = { deps.ts_context_commentstring },
-    opts = require "config/nvim-treesitter",
+    config = function()
+      require("setup.nvim-treesitter").setup()
+    end,
   },
   {
     "JoosepAlviste/nvim-ts-context-commentstring",

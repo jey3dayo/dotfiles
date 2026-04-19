@@ -6,7 +6,7 @@
 [settings]
 env_file = ".env.local"
 experimental = true
-vfox = false
+disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 
@@ -36,9 +36,9 @@ prettier = "latest"
 "aqua:mvdan/sh" = "latest"
 stylua = "latest"
 taplo = "latest"
+"aqua:rtk-ai/rtk" = "latest"
 "cargo:https://github.com/oppiliappan/statix" = { version = "tag:v0.5.8", crate = "statix" }
 "cargo:deadnix" = "latest"
-rtk = "latest"
 "cargo:bandwhich" = "latest"
 "cargo:needle-cli" = "0.14.1"
 "cargo:similarity-ts" = "0.4.1"
