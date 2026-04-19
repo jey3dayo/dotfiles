@@ -17,16 +17,8 @@
     # NOTE: These must be manually kept in sync with nix/agent-skills-sources.nix
     #       Flake spec requires literal inputs - dynamic generation not allowed
     #       agent-skills-sources.nix remains the SSoT for baseDir and selection metadata
-    anthropics-claude-code = {
-      url = "github:anthropics/claude-code";
-      flake = false;
-    };
     benjitaylor-agentation = {
       url = "github:benjitaylor/agentation";
-      flake = false;
-    };
-    epicenterhq-epicenter = {
-      url = "github:EpicenterHQ/epicenter";
       flake = false;
     };
     heyvhuang-ship-faster = {
@@ -35,10 +27,6 @@
     };
     lum1104-understand-anything = {
       url = "github:Lum1104/Understand-Anything";
-      flake = false;
-    };
-    millionco-react-doctor = {
-      url = "github:millionco/react-doctor";
       flake = false;
     };
     mizchi-chezmoi-dotfiles = {

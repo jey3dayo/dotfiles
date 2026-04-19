@@ -74,17 +74,6 @@
       "tool-openclaw"
     ];
   };
-  millionco-react-doctor = {
-    url = "github:millionco/react-doctor";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      millionco-react-doctor = "skills";
-    };
-    selection.enable = [
-      "react-doctor"
-    ];
-  };
   tokoroten-prompt-review = {
     url = "github:tokoroten/prompt-review";
     flake = false;
@@ -171,17 +160,6 @@
       "understand-onboard"
     ];
   };
-  anthropics-claude-code = {
-    url = "github:anthropics/claude-code";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      anthropics-claude-code = "plugins/frontend-design/skills";
-    };
-    selection.enable = [
-      "frontend-design"
-    ];
-  };
   trailofbits-agentic-actions-auditor = {
     url = "github:trailofbits/skills";
     flake = false;
@@ -244,17 +222,6 @@
     };
     selection.enable = [
       "supply-chain-risk-auditor"
-    ];
-  };
-  epicenterhq-epicenter = {
-    url = "github:EpicenterHQ/epicenter";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      epicenterhq-epicenter = ".agents/skills";
-    };
-    selection.enable = [
-      "tauri"
     ];
   };
   mizchi-chezmoi-dotfiles = {

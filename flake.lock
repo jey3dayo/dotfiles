@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "anthropics-claude-code": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1775263316,
-        "narHash": "sha256-DNRiSbJR77PjLIMK7BC/LN9A1g7q9NPybnPLxngvh9o=",
-        "owner": "anthropics",
-        "repo": "claude-code",
-        "rev": "b543a256248ce5ff98804b8dfef4cd6247423d98",
-        "type": "github"
-      },
-      "original": {
-        "owner": "anthropics",
-        "repo": "claude-code",
-        "type": "github"
-      }
-    },
     "benjitaylor-agentation": {
       "flake": false,
       "locked": {
@@ -29,22 +13,6 @@
       "original": {
         "owner": "benjitaylor",
         "repo": "agentation",
-        "type": "github"
-      }
-    },
-    "epicenterhq-epicenter": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1775379515,
-        "narHash": "sha256-V+f0Y/qYQSVcTeI4uXDg8QDA/OjWT0THP+sJ9xXGZF4=",
-        "owner": "EpicenterHQ",
-        "repo": "epicenter",
-        "rev": "843b5b567dba0705f712b6165193697389e70ec2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "EpicenterHQ",
-        "repo": "epicenter",
         "type": "github"
       }
     },
@@ -135,22 +103,6 @@
       "original": {
         "owner": "Lum1104",
         "repo": "Understand-Anything",
-        "type": "github"
-      }
-    },
-    "millionco-react-doctor": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1774862098,
-        "narHash": "sha256-5kR5hST6NhIJeBpdAEruT6qLUp+1ieuOlrldGfun0uc=",
-        "owner": "millionco",
-        "repo": "react-doctor",
-        "rev": "720f42192bf50ba24b25368063221ee3e33ac23c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "millionco",
-        "repo": "react-doctor",
         "type": "github"
       }
     },
@@ -252,15 +204,12 @@
     },
     "root": {
       "inputs": {
-        "anthropics-claude-code": "anthropics-claude-code",
         "benjitaylor-agentation": "benjitaylor-agentation",
-        "epicenterhq-epicenter": "epicenterhq-epicenter",
         "flake-utils": "flake-utils",
         "gitignore": "gitignore",
         "heyvhuang-ship-faster": "heyvhuang-ship-faster",
         "home-manager": "home-manager",
         "lum1104-understand-anything": "lum1104-understand-anything",
-        "millionco-react-doctor": "millionco-react-doctor",
         "mizchi-chezmoi-dotfiles": "mizchi-chezmoi-dotfiles",
         "nixpkgs": "nixpkgs",
         "nyosegawa-skills": "nyosegawa-skills",
