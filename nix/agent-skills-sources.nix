@@ -25,7 +25,6 @@
     selection.enable = [
       "gh-address-comments"
       "gh-fix-ci"
-      "skill-creator"
     ];
   };
   vercel-agent-skills = {
