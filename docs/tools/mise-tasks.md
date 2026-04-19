@@ -118,29 +118,18 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 - `cd ~/.apm && mise install`
 - `cd ~/.apm && mise run migrate-external`
-- `cd ~/.apm && mise run pin-external`
-- `cd ~/.apm && mise run migrate-internal[:profile]`
-- `cd ~/.apm && mise run bundle-internal[:profile]`
-- `cd ~/.apm && mise run stage-internal[:profile]`
-- `cd ~/.apm && mise run register-internal[:profile]`
-- `cd ~/.apm && mise run smoke-internal[:profile]`
 - `cd ~/.apm && mise run apply`
-- `cd ~/.apm && mise run validate`
-- `cd ~/.apm && mise run validate-internal`
 - `cd ~/.apm && mise run doctor`
+- `cd ~/.apm && mise run list`
+- `cd ~/.apm && mise run update`
 
-internal bundled skill の移行は別レーンです。  
-`mise run migrate-internal[:profile]` は profile inventory を `~/.apm/.internal-seed/` へ seed する helper で、global dependency manifest は変えません。  
-`mise run pin-external` は `apm.lock.yaml` の `resolved_commit` を使って external refs を `#sha` へ固定します。  
-`mise run bundle-internal[:profile]` は `~/.apm/.internal-seed/internal-<profile>/` に valid APM bundle artifact を作る helper です。  
-`mise run stage-internal[:profile]` は generated bundle を `~/.apm/internal-bundles/internal-<profile>/` に同期し、push 後に使う `owner/repo/path#branch` 形式の upstream ref 候補を出す helper です。  
-`mise run register-internal[:profile]` は staged path が commit / push 済みなら upstream ref を `apm install -g` で登録し、未反映なら明示的に止まる helper です。  
-`mise run smoke-internal[:profile]` は generated bundle を temp project install して `.agents/skills/<id>/SKILL.md` まで確認する helper です。  
-`mise run validate-internal` は internal inventory / tracked bundle / manifest ref の drift を fail fast で検出します。  
-`mise run doctor` は dependency 状態に加えて internal inventory の `listed / source / status` と profile ごとの `skills / tracked / manifest` も表示します。  
-`mise run apply` / `mise run update` / `mise run register-internal[:profile]` は最初に `validate-internal` を通し、その後で legacy internal skill link を掃除してから global install します。  
+repo-managed skill は `~/.apm/catalog/.apm/skills/` に tracked catalog package として置き、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy します。  
+`~/.apm/skills/` は current global model では使いません。  
+`mise run migrate-external` は最後に `pin-external` を自動実行し、external refs を `#sha` へ寄せます。`pin-external` 自体は repair / manual cleanup 用の maintenance command です。  
+`mise run doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の `source / tracked / manifest / status` も表示します。  
+`mise run apply` / `mise run update` は内部で catalog drift check を通し、その後で legacy managed skill link を掃除してから global install します。  
 install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱います。  
-`mise run migrate -- <skill>` はその compatibility alias であり、日常の global flow には含めません。
+`validate`, `validate-catalog`, catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` に maintenance-only command として残します。
 
 ### Update
 
