@@ -12,11 +12,6 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 $WorkspaceDir = if ($env:APM_WORKSPACE_DIR) { $env:APM_WORKSPACE_DIR } else { Join-Path $HOME ".apm" }
 $WorkspaceRepo = if ($env:APM_WORKSPACE_REPO) { $env:APM_WORKSPACE_REPO } else { "https://github.com/jey3dayo/apm-workspace.git" }
-$LegacySkillsDir = Join-Path $RepoRoot "agents\src\skills"
-$LegacyAgentsDir = Join-Path $RepoRoot "agents\src\agents"
-$LegacyCommandsDir = Join-Path $RepoRoot "agents\src\commands"
-$LegacyRulesDir = Join-Path $RepoRoot "agents\src\rules"
-$LegacyConfigFile = Join-Path $RepoRoot "agents\src\AGENTS.md"
 $ExternalSourcesFile = Join-Path $RepoRoot "nix\agent-skills-sources.nix"
 $CodexOutput = if ($env:APM_CODEX_OUTPUT) { $env:APM_CODEX_OUTPUT } else { Join-Path $HOME ".codex\AGENTS.md" }
 $MiseTemplate = Join-Path $RepoRoot "templates\apm-workspace\mise.toml"
@@ -394,29 +389,6 @@ function Get-WorkspaceTrackingInfo {
     RemoteName = $remoteName
     BranchName = $mergeBranch
   }
-}
-
-function Get-LegacySkillContentDir {
-  param(
-    [Parameter(Mandatory = $true)]
-    [string]$SkillId
-  )
-
-  $skillRoot = Join-Path $LegacySkillsDir $SkillId
-  if (-not (Test-Path -LiteralPath $skillRoot)) {
-    throw "Legacy skill not found: $skillRoot"
-  }
-
-  if (Test-Path -LiteralPath (Join-Path $skillRoot "SKILL.md")) {
-    return $skillRoot
-  }
-
-  $nestedSkillsDir = Join-Path $skillRoot "skills"
-  if (Test-Path -LiteralPath (Join-Path $nestedSkillsDir "SKILL.md")) {
-    return $nestedSkillsDir
-  }
-
-  throw "Legacy skill content dir missing SKILL.md: $skillRoot"
 }
 
 function Refresh-WorkspaceCheckout {
@@ -973,29 +945,13 @@ function Get-CatalogReadmeContent {
     '- Edit shared guidance in `~/.apm/catalog/AGENTS.md`, `agents/**`, `commands/**`, and `rules/**`',
     '- `skills` live under `.apm/skills/**` because they are installable APM package content',
     '- `commands/**` stays top-level because it is runtime-synced shared guidance, not nested skill package content',
-    '- `mise run stage-catalog` normalizes this package and refreshes the transitional mirror in `~/.config/agents/src/`',
+    '- `mise run stage-catalog` normalizes this tracked package in place before commit/push',
     '- Install ref: `jey3dayo/apm-workspace/catalog#main`'
   ) -join [Environment]::NewLine
 }
 
 function Get-TrackedCatalogSkillIds {
   return @(Get-SkillIdsFromRoot -SkillsRoot (Get-TrackedCatalogSkillsRoot))
-}
-
-function Get-MirrorSkillIds {
-  return @(Get-SkillIdsFromRoot -SkillsRoot $LegacySkillsDir)
-}
-
-function Get-MirrorAgentRelativePaths {
-  return @(Get-RelativeFilePaths -RootDir $LegacyAgentsDir)
-}
-
-function Get-MirrorCommandRelativePaths {
-  return @(Get-RelativeFilePaths -RootDir $LegacyCommandsDir)
-}
-
-function Get-MirrorRuleRelativePaths {
-  return @(Get-RelativeFilePaths -RootDir $LegacyRulesDir)
 }
 
 function Test-ManifestHasCatalogReference {
@@ -1011,36 +967,18 @@ function Test-ManifestHasCatalogReference {
 
 function Write-CatalogSummary {
   $sourceSkillIds = @(Get-ManagedSkillIds)
-  $mirrorSkillIds = @(Get-MirrorSkillIds)
   $sourceAgentPaths = @(Get-ManagedAgentRelativePaths)
-  $mirrorAgentPaths = @(Get-MirrorAgentRelativePaths)
   $sourceCommandPaths = @(Get-ManagedCommandRelativePaths)
-  $mirrorCommandPaths = @(Get-MirrorCommandRelativePaths)
   $sourceRulePaths = @(Get-ManagedRuleRelativePaths)
-  $mirrorRulePaths = @(Get-MirrorRuleRelativePaths)
-  $sourceInstructionsPresent = Test-Path -LiteralPath $LegacyConfigFile
   $trackedInstructionsPath = Get-TrackedCatalogInstructionsPath
   $trackedInstructionsPresent = Test-Path -LiteralPath $trackedInstructionsPath
   $trackedManifest = Join-Path (Get-TrackedCatalogDir) "apm.yml"
   $trackedState = if (Test-Path -LiteralPath $trackedManifest) { "yes" } else { "no" }
   $manifestState = if (Test-ManifestHasCatalogReference) { "yes" } else { "no" }
-  $skillsInSync = ($mirrorSkillIds.Count -eq $sourceSkillIds.Count) -and (@($sourceSkillIds | Where-Object { $_ -notin $mirrorSkillIds }).Count -eq 0) -and (@($mirrorSkillIds | Where-Object { $_ -notin $sourceSkillIds }).Count -eq 0)
-  $agentsInSync = ($mirrorAgentPaths.Count -eq $sourceAgentPaths.Count) -and (@($sourceAgentPaths | Where-Object { $_ -notin $mirrorAgentPaths }).Count -eq 0) -and (@($mirrorAgentPaths | Where-Object { $_ -notin $sourceAgentPaths }).Count -eq 0)
-  $commandsInSync = ($mirrorCommandPaths.Count -eq $sourceCommandPaths.Count) -and (@($sourceCommandPaths | Where-Object { $_ -notin $mirrorCommandPaths }).Count -eq 0) -and (@($mirrorCommandPaths | Where-Object { $_ -notin $sourceCommandPaths }).Count -eq 0)
-  $rulesInSync = ($mirrorRulePaths.Count -eq $sourceRulePaths.Count) -and (@($sourceRulePaths | Where-Object { $_ -notin $mirrorRulePaths }).Count -eq 0) -and (@($mirrorRulePaths | Where-Object { $_ -notin $sourceRulePaths }).Count -eq 0)
-  $instructionsState = if (-not $sourceInstructionsPresent) {
-    "missing-mirror"
-  } elseif (-not $trackedInstructionsPresent) {
-    "missing-catalog"
-  } elseif (Test-FileContentEqual -ExpectedPath $LegacyConfigFile -ActualPath $trackedInstructionsPath) {
-    "ok"
-  } else {
-    "drift"
-  }
-  $mirrorState = if ($skillsInSync -and $agentsInSync -and $commandsInSync -and $rulesInSync -and ($instructionsState -eq "ok")) { "ok" } else { "drift" }
-  $coverageState = if (($trackedState -eq "yes") -and ($manifestState -eq "yes") -and ($mirrorState -eq "ok")) { "ok" } else { "drift" }
+  $instructionsState = if ($trackedInstructionsPresent) { "present" } else { "missing" }
+  $coverageState = if (($trackedState -eq "yes") -and ($manifestState -eq "yes") -and ($instructionsState -eq "present")) { "ok" } else { "drift" }
 
-  Write-Host ("catalog: skills={0}/{1} agents={2}/{3} commands={4}/{5} rules={6}/{7} instructions={8} tracked-manifest={9} global-ref={10} mirror={11} status={12}" -f $sourceSkillIds.Count, $mirrorSkillIds.Count, $sourceAgentPaths.Count, $mirrorAgentPaths.Count, $sourceCommandPaths.Count, $mirrorCommandPaths.Count, $sourceRulePaths.Count, $mirrorRulePaths.Count, $instructionsState, $trackedState, $manifestState, $mirrorState, $coverageState)
+  Write-Host ("catalog: skills={0} agents={1} commands={2} rules={3} instructions={4} tracked-manifest={5} global-ref={6} status={7}" -f $sourceSkillIds.Count, $sourceAgentPaths.Count, $sourceCommandPaths.Count, $sourceRulePaths.Count, $instructionsState, $trackedState, $manifestState, $coverageState)
 }
 
 function Get-ManagedExternalOverlapEntries {
@@ -1137,13 +1075,9 @@ function Invoke-ValidateCatalog {
 
   $hasFailure = $false
   $sourceSkillIds = @(Get-ManagedSkillIds)
-  $mirrorSkillIds = @(Get-MirrorSkillIds)
   $sourceAgentPaths = @(Get-ManagedAgentRelativePaths)
-  $mirrorAgentPaths = @(Get-MirrorAgentRelativePaths)
   $sourceCommandPaths = @(Get-ManagedCommandRelativePaths)
-  $mirrorCommandPaths = @(Get-MirrorCommandRelativePaths)
   $sourceRulePaths = @(Get-ManagedRuleRelativePaths)
-  $mirrorRulePaths = @(Get-MirrorRuleRelativePaths)
   $trackedInstructionsPath = Get-TrackedCatalogInstructionsPath
   $trackedManifest = Join-Path (Get-TrackedCatalogDir) "apm.yml"
   $trackedReadme = Join-Path (Get-TrackedCatalogDir) "README.md"
@@ -1169,75 +1103,25 @@ function Invoke-ValidateCatalog {
     $hasFailure = $true
   }
 
-  $missingMirrorSkillIds = @($sourceSkillIds | Where-Object { $_ -notin $mirrorSkillIds })
-  $extraMirrorSkillIds = @($mirrorSkillIds | Where-Object { $_ -notin $sourceSkillIds })
-
-  if ($missingMirrorSkillIds.Count -gt 0) {
-    Write-ErrorLine ("Managed mirror is missing skills: {0}" -f ($missingMirrorSkillIds -join ", "))
-    $hasFailure = $true
-  }
-  if ($extraMirrorSkillIds.Count -gt 0) {
-    Write-ErrorLine ("Managed mirror has unexpected skills: {0}" -f ($extraMirrorSkillIds -join ", "))
-    $hasFailure = $true
-  }
-  if (-not (Test-DirectoryTreeEqual -ExpectedRoot (Get-TrackedCatalogSkillsRoot) -ActualRoot $LegacySkillsDir)) {
-    Write-ErrorLine "Managed mirror skills drift from ~/.apm/catalog/.apm/skills"
-    $hasFailure = $true
-  }
-
-  $missingMirrorAgentPaths = @($sourceAgentPaths | Where-Object { $_ -notin $mirrorAgentPaths })
-  $extraMirrorAgentPaths = @($mirrorAgentPaths | Where-Object { $_ -notin $sourceAgentPaths })
-  if ($missingMirrorAgentPaths.Count -gt 0) {
-    Write-ErrorLine ("Managed mirror is missing agents: {0}" -f ($missingMirrorAgentPaths -join ", "))
-    $hasFailure = $true
-  }
-  if ($extraMirrorAgentPaths.Count -gt 0) {
-    Write-ErrorLine ("Managed mirror has unexpected agents: {0}" -f ($extraMirrorAgentPaths -join ", "))
-    $hasFailure = $true
-  }
-  if (-not (Test-DirectoryTreeEqual -ExpectedRoot (Get-TrackedCatalogAgentsRoot) -ActualRoot $LegacyAgentsDir)) {
-    Write-ErrorLine "Managed mirror agents drift from ~/.apm/catalog/agents"
-    $hasFailure = $true
-  }
-
-  $missingMirrorCommandPaths = @($sourceCommandPaths | Where-Object { $_ -notin $mirrorCommandPaths })
-  $extraMirrorCommandPaths = @($mirrorCommandPaths | Where-Object { $_ -notin $sourceCommandPaths })
-  if ($missingMirrorCommandPaths.Count -gt 0) {
-    Write-ErrorLine ("Managed mirror is missing commands: {0}" -f ($missingMirrorCommandPaths -join ", "))
-    $hasFailure = $true
-  }
-  if ($extraMirrorCommandPaths.Count -gt 0) {
-    Write-ErrorLine ("Managed mirror has unexpected commands: {0}" -f ($extraMirrorCommandPaths -join ", "))
-    $hasFailure = $true
-  }
-  if (-not (Test-DirectoryTreeEqual -ExpectedRoot (Get-TrackedCatalogCommandsRoot) -ActualRoot $LegacyCommandsDir)) {
-    Write-ErrorLine "Managed mirror commands drift from ~/.apm/catalog/commands"
-    $hasFailure = $true
-  }
-
-  $missingMirrorRulePaths = @($sourceRulePaths | Where-Object { $_ -notin $mirrorRulePaths })
-  $extraMirrorRulePaths = @($mirrorRulePaths | Where-Object { $_ -notin $sourceRulePaths })
-  if ($missingMirrorRulePaths.Count -gt 0) {
-    Write-ErrorLine ("Managed mirror is missing rules: {0}" -f ($missingMirrorRulePaths -join ", "))
-    $hasFailure = $true
-  }
-  if ($extraMirrorRulePaths.Count -gt 0) {
-    Write-ErrorLine ("Managed mirror has unexpected rules: {0}" -f ($extraMirrorRulePaths -join ", "))
-    $hasFailure = $true
-  }
-  if (-not (Test-DirectoryTreeEqual -ExpectedRoot (Get-TrackedCatalogRulesRoot) -ActualRoot $LegacyRulesDir)) {
-    Write-ErrorLine "Managed mirror rules drift from ~/.apm/catalog/rules"
-    $hasFailure = $true
-  }
-
-  if (-not (Test-Path -LiteralPath $LegacyConfigFile)) {
-    Write-ErrorLine ("Managed mirror instructions are missing: {0}" -f $LegacyConfigFile)
-    $hasFailure = $true
-  } elseif (-not (Test-Path -LiteralPath $trackedInstructionsPath)) {
+  if (-not (Test-Path -LiteralPath $trackedInstructionsPath)) {
     Write-ErrorLine ("Tracked catalog is missing instructions: {0}" -f $trackedInstructionsPath)
     $hasFailure = $true
-  } elseif (-not (Test-FileContentEqual -ExpectedPath $LegacyConfigFile -ActualPath $trackedInstructionsPath)) {
-    Write-ErrorLine "Managed mirror instructions drift from ~/.apm/catalog/AGENTS.md"
+  }
+
+  foreach ($rootCheck in @(
+      @{ Label = "skills"; Path = (Get-TrackedCatalogSkillsRoot) },
+      @{ Label = "agents"; Path = (Get-TrackedCatalogAgentsRoot) },
+      @{ Label = "commands"; Path = (Get-TrackedCatalogCommandsRoot) },
+      @{ Label = "rules"; Path = (Get-TrackedCatalogRulesRoot) }
+    )) {
+    if (-not (Test-Path -LiteralPath $rootCheck.Path)) {
+      Write-ErrorLine ("Tracked catalog is missing {0}: {1}" -f $rootCheck.Label, $rootCheck.Path)
+      $hasFailure = $true
+    }
+  }
+
+  if ($sourceSkillIds.Count -eq 0) {
+    Write-ErrorLine "Tracked catalog has no managed skills"
     $hasFailure = $true
   }
 
@@ -1245,7 +1129,7 @@ function Invoke-ValidateCatalog {
     throw "Catalog validation failed"
   }
 
-  Write-SuccessLine ("Catalog validation passed ({0} skills, {1} agents, {2} commands, {3} rules; mirror in sync)" -f $sourceSkillIds.Count, $sourceAgentPaths.Count, $sourceCommandPaths.Count, $sourceRulePaths.Count)
+  Write-SuccessLine ("Catalog validation passed ({0} skills, {1} agents, {2} commands, {3} rules)" -f $sourceSkillIds.Count, $sourceAgentPaths.Count, $sourceCommandPaths.Count, $sourceRulePaths.Count)
 }
 
 function Invoke-Doctor {
@@ -1465,26 +1349,6 @@ function Copy-ManagedRuleAssetsIntoCatalog {
   Copy-DirectoryContents -SourceDir $sourceDir -DestinationDir $DestinationDir
 }
 
-function Sync-ManagedCatalogMirror {
-  $trackedDir = Get-TrackedCatalogDir
-  if (-not (Test-Path -LiteralPath $trackedDir)) {
-    throw "Tracked catalog missing: $trackedDir. Run 'mise run stage-catalog' first."
-  }
-
-  foreach ($mirrorDir in @($LegacySkillsDir, $LegacyAgentsDir, $LegacyCommandsDir, $LegacyRulesDir)) {
-    if (Test-Path -LiteralPath $mirrorDir) {
-      Remove-Item -LiteralPath $mirrorDir -Recurse -Force
-    }
-    New-Item -ItemType Directory -Path $mirrorDir -Force | Out-Null
-  }
-
-  Copy-DirectoryContents -SourceDir (Get-TrackedCatalogSkillsRoot) -DestinationDir $LegacySkillsDir
-  Copy-DirectoryContents -SourceDir (Get-TrackedCatalogAgentsRoot) -DestinationDir $LegacyAgentsDir
-  Copy-DirectoryContents -SourceDir (Get-TrackedCatalogCommandsRoot) -DestinationDir $LegacyCommandsDir
-  Copy-DirectoryContents -SourceDir (Get-TrackedCatalogRulesRoot) -DestinationDir $LegacyRulesDir
-  Copy-ManagedCatalogFile -SourcePath (Get-TrackedCatalogInstructionsPath) -DestinationPath $LegacyConfigFile
-}
-
 function Get-TrackedCatalogReference {
   $tracking = Get-WorkspaceTrackingInfo
   $repoReference = Get-WorkspaceRepoReference -RemoteName $tracking.RemoteName
@@ -1569,11 +1433,9 @@ function Invoke-StageCatalog {
   $trackedDir = Get-TrackedCatalogDir
   Reset-TrackedCatalogDir
   Copy-DirectoryContents -SourceDir (Get-CatalogBuildDir) -DestinationDir $trackedDir
-  Sync-ManagedCatalogMirror
 
   $reference = Get-TrackedCatalogReference
   Write-Host "Staged repo-tracked catalog at $trackedDir"
-  Write-Host "Refreshed transitional mirror at $RepoRoot\agents\src"
   Write-Host "Candidate upstream ref: $reference"
   Write-Host "Push the updated apm-workspace repo before using 'apm install -g $reference'."
 }
@@ -2095,10 +1957,10 @@ Commands:
   list               Show APM global dependencies
   pin-external       Pin external manifest refs to lockfile commits
   validate           Validate the ~/.apm workspace
-  validate-catalog   Fail when the tracked catalog is not normalized or the transitional mirror drifts
+  validate-catalog   Fail when the tracked catalog is not normalized or missing required assets
   doctor             Print workspace and target state
   bundle-catalog     Build ~/.apm/.catalog-build/catalog as the catalog package artifact
-  stage-catalog      Normalize ~/.apm/catalog, refresh the transitional mirror, and print its upstream ref
+  stage-catalog      Normalize ~/.apm/catalog in place and print its upstream ref
   register-catalog   Install the staged catalog by upstream ref after commit/push
   smoke-catalog      Smoke-test the generated catalog package via temp project install
   migrate-external   Register selected external skills by upstream reference

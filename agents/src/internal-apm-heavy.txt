@@ -1,5 +1,0 @@
-# Heavy bundled skill pilot inventory for the global APM migration.
-# One skill id per line. Blank lines and comments are ignored.
-
-implementation-engine
-task-router

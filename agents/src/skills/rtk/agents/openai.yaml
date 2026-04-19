@@ -1,4 +1,0 @@
-interface:
-  display_name: "RTK CLI Proxy"
-  short_description: "Guide for compressing CLI noise with RTK"
-  default_prompt: "Use $rtk to decide when to prefix commands with `rtk` and how to set up or validate RTK usage in this repository."
