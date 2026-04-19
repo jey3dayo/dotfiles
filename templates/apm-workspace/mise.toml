@@ -19,155 +19,30 @@ description = "Show APM global dependencies"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" list"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 list"
 
-[tasks."pin-external"]
-description = "Pin external manifest refs to resolved lockfile commits"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" pin-external"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 pin-external"
-
-[tasks.validate]
-description = "Validate the ~/.apm workspace"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 validate"
-
-[tasks."validate-internal"]
-description = "Fail on internal inventory / bundle / manifest drift"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate-internal"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 validate-internal"
-
 [tasks.doctor]
 description = "Inspect ~/.apm workspace state and deployed targets"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" doctor"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 doctor"
 
-[tasks.migrate]
-description = "Compatibility alias for migrate-internal; retained for legacy recovery workflows"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate"
+[tasks.validate]
+description = "Validate the ~/.apm workspace and tracked catalog wiring"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 validate"
 
-[tasks.migrate-internal]
-description = "Seed first-batch internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-internal"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate-internal"
+[tasks.stage-catalog]
+description = "Rebuild the tracked catalog package from ~/.config/agents/src/skills"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-catalog"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-catalog"
 
-[tasks."migrate-internal:next-simple"]
-description = "Seed next-simple internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-internal --profile next-simple"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate-internal -Profile next-simple"
+[tasks.register-catalog]
+description = "Install the tracked catalog package by upstream ref"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-catalog"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-catalog"
 
-[tasks."migrate-internal:medium"]
-description = "Seed medium internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-internal --profile medium"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate-internal -Profile medium"
-
-[tasks."migrate-internal:heavy"]
-description = "Seed heavy internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-internal --profile heavy"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate-internal -Profile heavy"
-
-[tasks."migrate-internal:remaining"]
-description = "Seed remaining internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-internal --profile remaining"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 migrate-internal -Profile remaining"
-
-[tasks.bundle-internal]
-description = "Build ~/.apm/.internal-seed/internal-first-batch as a valid internal APM bundle artifact"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" bundle-internal"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 bundle-internal"
-
-[tasks."bundle-internal:next-simple"]
-description = "Build ~/.apm/.internal-seed/internal-next-simple as a valid internal APM bundle artifact"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" bundle-internal --profile next-simple"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 bundle-internal -Profile next-simple"
-
-[tasks."bundle-internal:medium"]
-description = "Build ~/.apm/.internal-seed/internal-medium as a valid internal APM bundle artifact"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" bundle-internal --profile medium"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 bundle-internal -Profile medium"
-
-[tasks."bundle-internal:heavy"]
-description = "Build ~/.apm/.internal-seed/internal-heavy as a valid internal APM bundle artifact"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" bundle-internal --profile heavy"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 bundle-internal -Profile heavy"
-
-[tasks."bundle-internal:remaining"]
-description = "Build ~/.apm/.internal-seed/internal-remaining as a valid internal APM bundle artifact"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" bundle-internal --profile remaining"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 bundle-internal -Profile remaining"
-
-[tasks.stage-internal]
-description = "Copy the generated internal bundle into ~/.apm/internal-bundles/ and print its upstream ref"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-internal"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-internal"
-
-[tasks."stage-internal:next-simple"]
-description = "Copy the next-simple internal bundle into ~/.apm/internal-bundles/ and print its upstream ref"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-internal --profile next-simple"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-internal -Profile next-simple"
-
-[tasks."stage-internal:medium"]
-description = "Copy the medium internal bundle into ~/.apm/internal-bundles/ and print its upstream ref"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-internal --profile medium"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-internal -Profile medium"
-
-[tasks."stage-internal:heavy"]
-description = "Copy the heavy internal bundle into ~/.apm/internal-bundles/ and print its upstream ref"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-internal --profile heavy"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-internal -Profile heavy"
-
-[tasks."stage-internal:remaining"]
-description = "Copy the remaining internal bundle into ~/.apm/internal-bundles/ and print its upstream ref"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-internal --profile remaining"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-internal -Profile remaining"
-
-[tasks.register-internal]
-description = "Install the staged internal bundle by upstream ref after commit/push"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-internal"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-internal"
-
-[tasks."register-internal:next-simple"]
-description = "Install the staged next-simple internal bundle by upstream ref after commit/push"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-internal --profile next-simple"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-internal -Profile next-simple"
-
-[tasks."register-internal:medium"]
-description = "Install the staged medium internal bundle by upstream ref after commit/push"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-internal --profile medium"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-internal -Profile medium"
-
-[tasks."register-internal:heavy"]
-description = "Install the staged heavy internal bundle by upstream ref after commit/push"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-internal --profile heavy"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-internal -Profile heavy"
-
-[tasks."register-internal:remaining"]
-description = "Install the staged remaining internal bundle by upstream ref after commit/push"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-internal --profile remaining"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-internal -Profile remaining"
-
-[tasks.smoke-internal]
-description = "Smoke-test the generated internal bundle via temp project install"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-internal"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-internal"
-
-[tasks."smoke-internal:next-simple"]
-description = "Smoke-test the generated next-simple internal bundle via temp project install"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-internal --profile next-simple"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-internal -Profile next-simple"
-
-[tasks."smoke-internal:medium"]
-description = "Smoke-test the generated medium internal bundle via temp project install"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-internal --profile medium"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-internal -Profile medium"
-
-[tasks."smoke-internal:heavy"]
-description = "Smoke-test the generated heavy internal bundle via temp project install"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-internal --profile heavy"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-internal -Profile heavy"
-
-[tasks."smoke-internal:remaining"]
-description = "Smoke-test the generated remaining internal bundle via temp project install"
-run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-internal --profile remaining"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-internal -Profile remaining"
+[tasks.smoke-catalog]
+description = "Smoke-test the generated catalog package via a temp install"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-catalog"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-catalog"
 
 [tasks.migrate-external]
 description = "Register enabled external skills by upstream ref in ~/.apm/apm.yml"

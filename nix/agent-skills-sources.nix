@@ -136,17 +136,6 @@
       "superpowers:writing-skills"
     ];
   };
-  sawyerhood-dev-browser = {
-    url = "github:SawyerHood/dev-browser";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      sawyerhood-dev-browser = "skills";
-    };
-    selection.enable = [
-      "dev-browser"
-    ];
-  };
   openai-codex-plugin-cc = {
     url = "github:openai/codex-plugin-cc";
     flake = false;

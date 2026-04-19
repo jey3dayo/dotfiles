@@ -9,16 +9,13 @@ fi
 REPO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 WORKSPACE_DIR="${APM_WORKSPACE_DIR:-$HOME/.apm}"
 WORKSPACE_REPO="${APM_WORKSPACE_REPO:-https://github.com/jey3dayo/apm-workspace.git}"
-INTERNAL_PROFILE="${APM_INTERNAL_PROFILE:-first-batch}"
 LEGACY_SKILLS_DIR="$REPO_ROOT/agents/src/skills"
-INTERNAL_PILOT_INVENTORY_FILE="$REPO_ROOT/agents/src/internal-apm-$INTERNAL_PROFILE.txt"
 EXTERNAL_SOURCES_FILE="$REPO_ROOT/nix/agent-skills-sources.nix"
 CODEX_OUTPUT="${APM_CODEX_OUTPUT:-$HOME/.codex/AGENTS.md}"
 MISE_TEMPLATE="$REPO_ROOT/templates/apm-workspace/mise.toml"
 MISE_DESTINATION="$WORKSPACE_DIR/mise.toml"
-INTERNAL_SEED_DIR="$WORKSPACE_DIR/.internal-seed"
-INTERNAL_BUNDLE_NAME="internal-$INTERNAL_PROFILE"
-TRACKED_INTERNAL_BUNDLES_DIR_NAME="internal-bundles"
+CATALOG_BUILD_ROOT="$WORKSPACE_DIR/.catalog-build"
+CATALOG_DIR_NAME="catalog"
 MANAGED_MISE_MARKER="# Managed by ~/.config bootstrap"
 
 have_command() {
@@ -36,36 +33,6 @@ warn() {
 fail() {
   printf 'error: %s\n' "$*" >&2
   exit 1
-}
-
-case "$INTERNAL_PROFILE" in
-  [A-Za-z0-9][A-Za-z0-9._-]*) ;;
-  *)
-    fail "Invalid internal profile: $INTERNAL_PROFILE"
-    ;;
-esac
-
-set_internal_profile_context() {
-  profile_name="$1"
-  case "$profile_name" in
-    [A-Za-z0-9][A-Za-z0-9._-]*) ;;
-    *)
-      fail "Invalid internal profile: $profile_name"
-      ;;
-  esac
-
-  INTERNAL_PROFILE="$profile_name"
-  INTERNAL_PILOT_INVENTORY_FILE="$REPO_ROOT/agents/src/internal-apm-$INTERNAL_PROFILE.txt"
-  INTERNAL_BUNDLE_NAME="internal-$INTERNAL_PROFILE"
-}
-
-resolve_internal_command_args() {
-  if [ "$#" -ge 2 ] && [ "$1" = "--profile" ]; then
-    set_internal_profile_context "$2"
-    shift 2
-  fi
-
-  printf '%s\n' "$@"
 }
 
 require_command() {
@@ -205,7 +172,7 @@ normalize_workspace_gitignore() {
     BEGIN {
       entries[1] = "/.apm/"
       entries[2] = "/apm_modules/"
-      entries[3] = "/.internal-seed/"
+      entries[3] = "/.catalog-build/"
     }
     function append(line) {
       lines[++line_count] = line
@@ -263,7 +230,7 @@ ensure_workspace_scaffold() {
   ensure_workspace_repo
   ensure_gitignore_entry '/.apm/'
   ensure_gitignore_entry '/apm_modules/'
-  ensure_gitignore_entry '/.internal-seed/'
+  ensure_gitignore_entry '/.catalog-build/'
 
   if [ ! -f "$WORKSPACE_DIR/apm.yml" ]; then
     log "Writing bootstrap apm.yml in $WORKSPACE_DIR"
@@ -271,32 +238,32 @@ ensure_workspace_scaffold() {
   fi
 }
 
-internal_bundle_dir() {
-  printf '%s/%s\n' "$INTERNAL_SEED_DIR" "$INTERNAL_BUNDLE_NAME"
+catalog_build_dir() {
+  printf '%s/%s\n' "$CATALOG_BUILD_ROOT" "$CATALOG_DIR_NAME"
 }
 
-internal_bundle_skills_root() {
-  printf '%s/.apm/skills\n' "$(internal_bundle_dir)"
+catalog_build_skills_root() {
+  printf '%s/.apm/skills\n' "$(catalog_build_dir)"
 }
 
-tracked_internal_bundles_dir() {
-  printf '%s/%s\n' "$WORKSPACE_DIR" "$TRACKED_INTERNAL_BUNDLES_DIR_NAME"
+tracked_catalog_dir() {
+  printf '%s/%s\n' "$WORKSPACE_DIR" "$CATALOG_DIR_NAME"
 }
 
-tracked_internal_bundle_dir() {
-  printf '%s/%s\n' "$(tracked_internal_bundles_dir)" "$INTERNAL_BUNDLE_NAME"
+tracked_catalog_skills_root() {
+  printf '%s/.apm/skills\n' "$(tracked_catalog_dir)"
 }
 
-tracked_internal_bundle_relative_path() {
-  printf '%s/%s\n' "$TRACKED_INTERNAL_BUNDLES_DIR_NAME" "$INTERNAL_BUNDLE_NAME"
+tracked_catalog_relative_path() {
+  printf '%s\n' "$CATALOG_DIR_NAME"
 }
 
-write_internal_bundle_manifest_template() {
-  bundle_dir=$(internal_bundle_dir)
-  cat >"$bundle_dir/apm.yml" <<EOF
-name: $INTERNAL_BUNDLE_NAME
+write_catalog_manifest_template() {
+  destination_dir="$1"
+  cat >"$destination_dir/apm.yml" <<EOF
+name: $CATALOG_DIR_NAME
 version: 1.0.0
-description: Generated internal bundled skills pilot for global APM migration
+description: Generated catalog of managed skills for global APM rollout
 dependencies:
   apm: []
   mcp: []
@@ -304,30 +271,29 @@ scripts: {}
 EOF
 }
 
-write_internal_bundle_readme() {
-  bundle_dir=$(internal_bundle_dir)
-  cat >"$bundle_dir/README.md" <<EOF
-# $INTERNAL_BUNDLE_NAME Bundle
+write_catalog_readme() {
+  destination_dir="$1"
+  cat >"$destination_dir/README.md" <<EOF
+# $CATALOG_DIR_NAME
 
-This bundle is generated from ~/.config internal bundled skills for the global APM migration pilot.
+This catalog is generated from ~/.config/agents/src/skills/ and tracked in apm-workspace.
 
-- Source inventory: \`~/.config/agents/src/internal-apm-$INTERNAL_PROFILE.txt\`
 - Source skills: \`~/.config/agents/src/skills/<id>/\`
-- Purpose: provide a valid APM package artifact for future publish/install work
-- Current limitation: \`apm install -g <local-path>\` is rejected by APM 0.8.11 at user scope, so this bundle is for validation and publication prep only
+- Purpose: provide one tracked APM package for the managed skill set
+- Install ref: \`jey3dayo/apm-workspace/catalog#main\`
 EOF
 }
 
-reset_internal_bundle_dir() {
-  bundle_dir=$(internal_bundle_dir)
-  rm -rf "$bundle_dir"
-  mkdir -p "$(internal_bundle_skills_root)"
+reset_catalog_build_dir() {
+  destination_dir=$(catalog_build_dir)
+  rm -rf "$destination_dir"
+  mkdir -p "$(catalog_build_skills_root)"
 }
 
-reset_tracked_internal_bundle_dir() {
-  tracked_dir=$(tracked_internal_bundle_dir)
-  rm -rf "$tracked_dir"
-  mkdir -p "$tracked_dir"
+reset_tracked_catalog_dir() {
+  destination_dir=$(tracked_catalog_dir)
+  rm -rf "$destination_dir"
+  mkdir -p "$destination_dir"
 }
 
 workspace_remote_to_repo_reference() {
@@ -346,7 +312,7 @@ workspace_remote_to_repo_reference() {
       printf '%s\n' "$repo_ref"
       ;;
     *)
-      fail "Unsupported workspace remote URL for internal bundle reference: $remote_url"
+      fail "Unsupported workspace remote URL for catalog reference: $remote_url"
       ;;
   esac
 }
@@ -375,7 +341,7 @@ workspace_repo_reference() {
 
 workspace_tracking_info() {
   current_branch=$(git -C "$WORKSPACE_DIR" branch --show-current 2>/dev/null || true)
-  [ -n "$current_branch" ] || fail "Cannot register internal bundle from a detached HEAD. Check out a tracking branch first."
+  [ -n "$current_branch" ] || fail "Cannot register catalog from a detached HEAD. Check out a tracking branch first."
 
   remote_name=$(git -C "$WORKSPACE_DIR" config --get "branch.$current_branch.remote" 2>/dev/null || true)
   merge_ref=$(git -C "$WORKSPACE_DIR" config --get "branch.$current_branch.merge" 2>/dev/null || true)
@@ -385,32 +351,33 @@ workspace_tracking_info() {
   printf '%s\036%s\n' "$remote_name" "$merge_branch"
 }
 
-tracked_internal_bundle_reference() {
+tracked_catalog_reference() {
   tracking_info=$(workspace_tracking_info)
   remote_name=${tracking_info%%$(printf '\036')*}
   branch_name=${tracking_info#*$(printf '\036')}
-  printf '%s/%s#%s\n' "$(workspace_repo_reference "$remote_name")" "$(tracked_internal_bundle_relative_path)" "$branch_name"
+  printf '%s/%s#%s\n' "$(workspace_repo_reference "$remote_name")" "$(tracked_catalog_relative_path)" "$branch_name"
 }
 
-assert_tracked_internal_bundle_published() {
-  tracked_relative_path=$(tracked_internal_bundle_relative_path)
-  tracked_dir=$(tracked_internal_bundle_dir)
+assert_tracked_catalog_published() {
+  tracked_relative_path=$(tracked_catalog_relative_path)
+  tracked_dir=$(tracked_catalog_dir)
 
-  [ -d "$tracked_dir" ] || fail "Tracked internal bundle missing: $tracked_dir. Run 'mise run stage-internal' first."
+  [ -d "$tracked_dir" ] || fail "Tracked catalog missing: $tracked_dir. Run 'mise run stage-catalog' first."
 
   dirty=$(git -C "$WORKSPACE_DIR" status --porcelain -- "$tracked_relative_path" 2>/dev/null || true)
-  [ -z "$dirty" ] || fail "Tracked internal bundle has uncommitted changes. Commit and push $tracked_relative_path before registering it."
+  [ -z "$dirty" ] || fail "Tracked catalog has uncommitted changes. Commit and push $tracked_relative_path before registering it."
 
   tracking_info=$(workspace_tracking_info)
   remote_name=${tracking_info%%$(printf '\036')*}
   branch_name=${tracking_info#*$(printf '\036')}
   upstream="$remote_name/$branch_name"
   unpushed=$(git -C "$WORKSPACE_DIR" rev-list "$upstream..HEAD" -- "$tracked_relative_path" 2>/dev/null || true)
-  [ -z "$unpushed" ] || fail "Tracked internal bundle has commits not on $upstream. Push the branch before registering it."
+  [ -z "$unpushed" ] || fail "Tracked catalog has commits not on $upstream. Push the branch before registering it."
 }
 
-copy_internal_skill_into_bundle() {
+copy_managed_skill_into_catalog() {
   skill_id="$1"
+  skills_root="$2"
   validate_skill_id "$skill_id"
   source_dir=$(legacy_skill_content_dir "$skill_id")
 
@@ -418,7 +385,7 @@ copy_internal_skill_into_bundle() {
     fail "Legacy skill not found: $source_dir"
   fi
 
-  destination_dir=$(internal_bundle_skills_root)
+  destination_dir="$skills_root"
   old_ifs=$IFS
   IFS=':'
   set -- $skill_id
@@ -523,154 +490,6 @@ compile_codex() {
     cd "$WORKSPACE_DIR"
     apm compile --target codex --output "$CODEX_OUTPUT"
   )
-}
-
-copy_skill() {
-  skill_id="$1"
-  validate_skill_id "$skill_id"
-  source_dir=$(legacy_skill_content_dir "$skill_id")
-  package_relative_path=$(skill_id_to_manifest_path "$skill_id")
-  destination_dir="$INTERNAL_SEED_DIR/$package_relative_path"
-
-  if [ ! -d "$source_dir" ]; then
-    fail "Legacy skill not found: $source_dir"
-  fi
-
-  if [ -e "$destination_dir" ]; then
-    if [ "${APM_MIGRATE_FORCE:-0}" != "1" ]; then
-      printf 'skipped\n'
-      return 0
-    fi
-
-    rm -rf "$destination_dir"
-  fi
-
-  mkdir -p "$destination_dir"
-  cp -R "$source_dir"/. "$destination_dir"
-  printf 'seeded\n'
-}
-
-get_internal_pilot_skill_ids() {
-  if [ ! -f "$INTERNAL_PILOT_INVENTORY_FILE" ]; then
-    fail "Internal pilot inventory not found: $INTERNAL_PILOT_INVENTORY_FILE"
-  fi
-
-  awk '
-    /^[[:space:]]*#/ { next }
-    /^[[:space:]]*$/ { next }
-    { print $1 }
-  ' "$INTERNAL_PILOT_INVENTORY_FILE"
-}
-
-resolve_internal_skill_ids() {
-  if [ "$#" -gt 0 ]; then
-    for skill_id in "$@"; do
-      validate_skill_id "$skill_id"
-      printf '%s\n' "$skill_id"
-    done
-    return 0
-  fi
-
-  get_internal_pilot_skill_ids
-}
-
-get_internal_pilot_skill_ids_from_inventory() {
-  inventory_file="$1"
-  [ -f "$inventory_file" ] || fail "Internal pilot inventory not found: $inventory_file"
-
-  awk '
-    /^[[:space:]]*#/ { next }
-    /^[[:space:]]*$/ { next }
-    { print $1 }
-  ' "$inventory_file"
-}
-
-get_all_internal_pilot_skill_ids() {
-  inventory_dir="$REPO_ROOT/agents/src"
-  [ -d "$inventory_dir" ] || return 0
-
-  for inventory_file in "$inventory_dir"/internal-apm-*.txt; do
-    [ -f "$inventory_file" ] || continue
-    get_internal_pilot_skill_ids_from_inventory "$inventory_file"
-  done | awk '!seen[$0]++'
-}
-
-internal_inventory_profiles() {
-  inventory_dir="$REPO_ROOT/agents/src"
-  [ -d "$inventory_dir" ] || return 0
-
-  for inventory_file in "$inventory_dir"/internal-apm-*.txt; do
-    [ -f "$inventory_file" ] || continue
-    profile=$(basename "$inventory_file" .txt)
-    profile=${profile#internal-apm-}
-    printf '%s\t%s\n' "$profile" "$inventory_file"
-  done | sort
-}
-
-legacy_internal_skill_ids() {
-  [ -d "$LEGACY_SKILLS_DIR" ] || return 0
-
-  for skill_dir in "$LEGACY_SKILLS_DIR"/*; do
-    [ -d "$skill_dir" ] || continue
-    basename "$skill_dir"
-  done | sort
-}
-
-manifest_has_internal_bundle_reference() {
-  profile="$1"
-  manifest_path="$WORKSPACE_DIR/apm.yml"
-  [ -f "$manifest_path" ] || return 1
-  grep -q "jey3dayo/apm-workspace/internal-bundles/internal-$profile#main" "$manifest_path"
-}
-
-print_internal_inventory_coverage_summary() {
-  listed_skill_ids=$(get_all_internal_pilot_skill_ids)
-  legacy_skill_ids=$(legacy_internal_skill_ids)
-
-  listed_count=$(printf '%s\n' "$listed_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
-  source_count=$(printf '%s\n' "$legacy_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
-  if [ "$listed_count" -eq 0 ] && [ "$source_count" -eq 0 ]; then
-    return 0
-  fi
-
-  unassigned_skill_ids=$(comm -23 <(printf '%s\n' "$legacy_skill_ids" | awk 'NF' | sort) <(printf '%s\n' "$listed_skill_ids" | awk 'NF' | sort))
-  orphaned_skill_ids=$(comm -13 <(printf '%s\n' "$legacy_skill_ids" | awk 'NF' | sort) <(printf '%s\n' "$listed_skill_ids" | awk 'NF' | sort))
-  if [ -z "$unassigned_skill_ids" ] && [ -z "$orphaned_skill_ids" ]; then
-    coverage_state=ok
-  else
-    coverage_state=drift
-  fi
-
-  printf 'internal inventory: listed=%s source=%s status=%s\n' "$listed_count" "$source_count" "$coverage_state"
-  if [ -n "$unassigned_skill_ids" ]; then
-    printf '  unassigned: %s\n' "$(printf '%s' "$unassigned_skill_ids" | paste -sd ', ' -)"
-  fi
-  if [ -n "$orphaned_skill_ids" ]; then
-    printf '  missing-source: %s\n' "$(printf '%s' "$orphaned_skill_ids" | paste -sd ', ' -)"
-  fi
-}
-
-print_internal_profile_summary() {
-  profiles=$(internal_inventory_profiles)
-  [ -n "$profiles" ] || return 0
-
-  printf 'internal profiles:\n'
-  printf '%s\n' "$profiles" | while IFS="$(printf '\t')" read -r profile inventory_file; do
-    [ -n "$profile" ] || continue
-    skill_count=$(get_internal_pilot_skill_ids_from_inventory "$inventory_file" | awk 'END { print NR + 0 }')
-    tracked_manifest="$WORKSPACE_DIR/internal-bundles/internal-$profile/apm.yml"
-    if [ -f "$tracked_manifest" ]; then
-      tracked_state=yes
-    else
-      tracked_state=no
-    fi
-    if manifest_has_internal_bundle_reference "$profile"; then
-      manifest_state=yes
-    else
-      manifest_state=no
-    fi
-    printf '  %-12s skills=%-3s tracked=%-3s manifest=%-3s\n' "$profile" "$skill_count" "$tracked_state" "$manifest_state"
-  done
 }
 
 internal_deploy_target_roots() {
@@ -1100,13 +919,13 @@ cmd_apply() {
   require_apm
   ensure_workspace_repo
   ensure_workspace_scaffold
-  cmd_validate_internal
+  cmd_validate_catalog
 
   if manifest_has_local_packages; then
-    fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Packages are seeded in ~/.apm/apm.yml, but rollout should stay on the legacy path until a later phase."
+    fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Remove local package refs from ~/.apm/apm.yml and keep the global manifest on upstream refs such as jey3dayo/apm-workspace/catalog#main."
   fi
 
-  remove_internal_target_links "$(get_all_internal_pilot_skill_ids)"
+  remove_internal_target_links "$(managed_skill_ids)"
   run_workspace_install_command -g
   normalize_workspace_gitignore
   compile_codex
@@ -1117,13 +936,13 @@ cmd_update() {
   ensure_workspace_repo
   refresh_workspace_checkout
   ensure_workspace_scaffold
-  cmd_validate_internal
+  cmd_validate_catalog
 
   if manifest_has_local_packages; then
-    fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Update stopped before user-scope install; keep using the legacy deploy path for now."
+    fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Update stopped before user-scope install; remove local package refs from ~/.apm/apm.yml first."
   fi
 
-  remove_internal_target_links "$(get_all_internal_pilot_skill_ids)"
+  remove_internal_target_links "$(managed_skill_ids)"
   (
     cd "$WORKSPACE_DIR"
     apm deps update -g
@@ -1183,7 +1002,7 @@ unpinned_external_references() {
   awk '
     /^[[:space:]]*-[[:space:]]+/ {
       ref = $2
-      if (ref ~ /^jey3dayo\/apm-workspace\/internal-bundles\//) {
+      if (ref ~ /^jey3dayo\/apm-workspace\/catalog(#|$)/) {
         next
       }
       if (ref ~ /^\.\//) {
@@ -1270,9 +1089,13 @@ cmd_validate() {
   )
 }
 
-tracked_internal_bundle_skill_ids() {
-  profile="$1"
-  skills_root="$WORKSPACE_DIR/internal-bundles/internal-$profile/.apm/skills"
+managed_skill_ids() {
+  [ -d "$LEGACY_SKILLS_DIR" ] || return 0
+  find "$LEGACY_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+}
+
+tracked_catalog_skill_ids() {
+  skills_root=$(tracked_catalog_skills_root)
   [ -d "$skills_root" ] || return 0
 
   find "$skills_root" -type f -name SKILL.md | while IFS= read -r skill_file; do
@@ -1283,81 +1106,113 @@ tracked_internal_bundle_skill_ids() {
   done | sort -u
 }
 
-cmd_validate_internal() {
+manifest_has_catalog_reference() {
+  manifest_path="$WORKSPACE_DIR/apm.yml"
+  [ -f "$manifest_path" ] || return 1
+  repo_reference=$(workspace_remote_to_repo_reference "$WORKSPACE_REPO")
+  grep -q "${repo_reference}/${CATALOG_DIR_NAME}#" "$manifest_path"
+}
+
+print_catalog_summary() {
+  source_count=$(managed_skill_ids | awk 'NF { count++ } END { print count + 0 }')
+  tracked_count=$(tracked_catalog_skill_ids | awk 'NF { count++ } END { print count + 0 }')
+  tracked_manifest=no
+  [ -f "$(tracked_catalog_dir)/apm.yml" ] && tracked_manifest=yes
+  global_ref=no
+  manifest_has_catalog_reference && global_ref=yes
+
+  source_tmp=$(mktemp)
+  tracked_tmp=$(mktemp)
+  printf '%s\n' "$(managed_skill_ids)" | awk 'NF' | sort >"$source_tmp"
+  printf '%s\n' "$(tracked_catalog_skill_ids)" | awk 'NF' | sort >"$tracked_tmp"
+  if cmp -s "$source_tmp" "$tracked_tmp"; then
+    status=ok
+  else
+    status=drift
+  fi
+  rm -f "$source_tmp" "$tracked_tmp"
+
+  printf 'catalog: source=%s tracked=%s tracked-manifest=%s global-ref=%s status=%s\n' "$source_count" "$tracked_count" "$tracked_manifest" "$global_ref" "$status"
+}
+
+managed_external_overlap_lines() {
+  managed_tmp=$(mktemp)
+  overlaps_tmp=$(mktemp)
+  printf '%s\n' "$(managed_skill_ids)" | awk 'NF' | sort -u >"$managed_tmp"
+
+  parse_external_sources | while IFS=$(printf '\036') read -r source_name _source_url _base_dir _id_prefix _catalogs_value selected_value; do
+    [ -n "$source_name" ] || continue
+    old_ifs=$IFS
+    IFS=$(printf '\034')
+    read -r -a selected_skills <<<"$selected_value"
+    IFS=$old_ifs
+    for skill_id in "${selected_skills[@]}"; do
+      [ -n "$skill_id" ] || continue
+      if grep -Fxq "$skill_id" "$managed_tmp"; then
+        printf '%s\t%s\n' "$source_name" "$skill_id"
+      fi
+    done
+  done | sort -u >"$overlaps_tmp"
+
+  cat "$overlaps_tmp"
+  rm -f "$managed_tmp" "$overlaps_tmp"
+}
+
+print_managed_external_overlap_summary() {
+  overlap_lines=$(managed_external_overlap_lines)
+  overlap_count=$(printf '%s\n' "$overlap_lines" | awk 'NF { count++ } END { print count + 0 }')
+  printf 'external selection overlap: count=%s\n' "$overlap_count"
+  if [ "$overlap_count" -gt 0 ]; then
+    printf '%s\n' "$overlap_lines" | while IFS=$(printf '\t') read -r source_name skill_id; do
+      [ -n "$source_name" ] || continue
+      warn "  $source_name: $skill_id"
+    done
+  fi
+}
+
+cmd_validate_catalog() {
   ensure_workspace_repo
   ensure_workspace_scaffold
 
   has_failure=0
-  listed_skill_ids=$(get_all_internal_pilot_skill_ids)
-  legacy_skill_ids=$(legacy_internal_skill_ids)
-  legacy_tmp=$(mktemp)
-  listed_tmp=$(mktemp)
-  unassigned_tmp=$(mktemp)
-  orphaned_tmp=$(mktemp)
-  printf '%s\n' "$legacy_skill_ids" | awk 'NF' | sort >"$legacy_tmp"
-  printf '%s\n' "$listed_skill_ids" | awk 'NF' | sort >"$listed_tmp"
-  comm -23 "$legacy_tmp" "$listed_tmp" >"$unassigned_tmp"
-  comm -13 "$legacy_tmp" "$listed_tmp" >"$orphaned_tmp"
-  unassigned_skill_ids=$(cat "$unassigned_tmp")
-  orphaned_skill_ids=$(cat "$orphaned_tmp")
+  source_skill_ids=$(managed_skill_ids)
+  tracked_skill_ids=$(tracked_catalog_skill_ids)
+  tracked_manifest="$(tracked_catalog_dir)/apm.yml"
 
-  if [ -n "$unassigned_skill_ids" ]; then
-    error "Unassigned legacy skills: $(printf '%s\n' "$unassigned_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
-    has_failure=1
-  fi
-  if [ -n "$orphaned_skill_ids" ]; then
-    error "Inventory entries without source directories: $(printf '%s\n' "$orphaned_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+  if [ ! -f "$tracked_manifest" ]; then
+    error "Tracked catalog manifest is missing: $tracked_manifest"
     has_failure=1
   fi
 
-  while IFS="$(printf '\t')" read -r profile inventory_file; do
-    [ -n "$profile" ] || continue
-    tracked_manifest="$WORKSPACE_DIR/internal-bundles/internal-$profile/apm.yml"
-    if [ ! -f "$tracked_manifest" ]; then
-      error "Tracked internal bundle manifest is missing for profile '$profile': $tracked_manifest"
-      has_failure=1
-      continue
-    fi
+  if ! manifest_has_catalog_reference; then
+    error "Global apm.yml is missing the tracked catalog ref"
+    has_failure=1
+  fi
 
-    if ! manifest_has_internal_bundle_reference "$profile"; then
-      error "Global apm.yml is missing the internal bundle ref for profile '$profile'"
-      has_failure=1
-    fi
+  source_tmp=$(mktemp)
+  tracked_tmp=$(mktemp)
+  missing_tmp=$(mktemp)
+  extra_tmp=$(mktemp)
+  printf '%s\n' "$source_skill_ids" | awk 'NF' | sort >"$source_tmp"
+  printf '%s\n' "$tracked_skill_ids" | awk 'NF' | sort >"$tracked_tmp"
+  comm -23 "$source_tmp" "$tracked_tmp" >"$missing_tmp"
+  comm -13 "$source_tmp" "$tracked_tmp" >"$extra_tmp"
+  missing_skill_ids=$(cat "$missing_tmp")
+  extra_skill_ids=$(cat "$extra_tmp")
+  rm -f "$source_tmp" "$tracked_tmp" "$missing_tmp" "$extra_tmp"
 
-    expected_skill_ids=$(get_internal_pilot_skill_ids_from_inventory "$inventory_file")
-    tracked_skill_ids=$(tracked_internal_bundle_skill_ids "$profile")
-    expected_tmp=$(mktemp)
-    tracked_tmp=$(mktemp)
-    missing_tmp=$(mktemp)
-    extra_tmp=$(mktemp)
-    printf '%s\n' "$expected_skill_ids" | awk 'NF' | sort >"$expected_tmp"
-    printf '%s\n' "$tracked_skill_ids" | awk 'NF' | sort >"$tracked_tmp"
-    comm -23 "$expected_tmp" "$tracked_tmp" >"$missing_tmp"
-    comm -13 "$expected_tmp" "$tracked_tmp" >"$extra_tmp"
-    missing_tracked_skill_ids=$(cat "$missing_tmp")
-    extra_tracked_skill_ids=$(cat "$extra_tmp")
+  if [ -n "$missing_skill_ids" ]; then
+    error "Tracked catalog is missing skills: $(printf '%s\n' "$missing_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    has_failure=1
+  fi
+  if [ -n "$extra_skill_ids" ]; then
+    error "Tracked catalog has unexpected skills: $(printf '%s\n' "$extra_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    has_failure=1
+  fi
 
-    if [ -n "$missing_tracked_skill_ids" ]; then
-      error "Tracked bundle for profile '$profile' is missing skills: $(printf '%s\n' "$missing_tracked_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
-      has_failure=1
-    fi
-    if [ -n "$extra_tracked_skill_ids" ]; then
-      error "Tracked bundle for profile '$profile' has unexpected skills: $(printf '%s\n' "$extra_tracked_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
-      has_failure=1
-    fi
-
-    rm -f "$expected_tmp" "$tracked_tmp" "$missing_tmp" "$extra_tmp"
-  done <<EOF
-$(internal_inventory_profiles)
-EOF
-
-  rm -f "$legacy_tmp" "$listed_tmp" "$unassigned_tmp" "$orphaned_tmp"
-
-  [ "$has_failure" -eq 0 ] || fail "Internal APM validation failed"
-
-  listed_count=$(printf '%s\n' "$listed_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
-  profile_count=$(internal_inventory_profiles | awk 'NF { count++ } END { print count + 0 }')
-  log "Internal APM validation passed ($listed_count skills across $profile_count profiles)"
+  [ "$has_failure" -eq 0 ] || fail "Catalog validation failed"
+  source_count=$(printf '%s\n' "$source_skill_ids" | awk 'NF { count++ } END { print count + 0 }')
+  log "Catalog validation passed ($source_count skills)"
 }
 
 cmd_doctor() {
@@ -1381,106 +1236,76 @@ cmd_doctor() {
       fi
     done
     printf 'external pins: unpinned=%s\n' "$(unpinned_external_references | awk 'NF { count++ } END { print count + 0 }')"
-    print_internal_inventory_coverage_summary
-    print_internal_profile_summary
+    print_managed_external_overlap_summary
+    print_catalog_summary
     apm deps list -g
   )
 }
 
-cmd_migrate() {
-  warn "migrate is now a compatibility alias. Prefer 'migrate-internal' for internal pilot work."
-  cmd_migrate_internal "$@"
-}
-
-cmd_migrate_internal() {
-  skill_ids=$(resolve_internal_command_args "$@" | resolve_internal_skill_ids)
-  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
-
+cmd_seed_catalog_build() {
+  skill_ids=$(managed_skill_ids)
   ensure_workspace_repo
   ensure_workspace_scaffold
   ensure_workspace_mise_file
 
-  if [ "$#" -eq 0 ]; then
-    log "Using internal pilot inventory ($INTERNAL_PROFILE): $(printf '%s' "$skill_ids" | tr '\n' ',' | sed 's/,$//; s/,/, /g')"
-  fi
+  reset_catalog_build_dir
+  write_catalog_manifest_template "$(catalog_build_dir)"
+  write_catalog_readme "$(catalog_build_dir)"
 
   printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
     [ -n "$skill_id" ] || continue
-    status=$(copy_skill "$skill_id")
-    if [ "$status" = "seeded" ]; then
-      log "Seeded internal skill $skill_id into ~/.apm/.internal-seed/$skill_id for pilot/reference only. Global apm.yml was left unchanged."
-    else
-      log "Skipped internal skill $skill_id because ~/.apm/.internal-seed/$skill_id already exists. Set APM_MIGRATE_FORCE=1 to replace it."
-    fi
-  done
-}
-
-cmd_bundle_internal() {
-  skill_ids=$(resolve_internal_command_args "$@" | resolve_internal_skill_ids)
-  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
-
-  ensure_workspace_repo
-  ensure_workspace_scaffold
-  ensure_workspace_mise_file
-
-  reset_internal_bundle_dir
-  write_internal_bundle_manifest_template
-  write_internal_bundle_readme
-
-  printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
-    [ -n "$skill_id" ] || continue
-    copy_internal_skill_into_bundle "$skill_id"
+    copy_managed_skill_into_catalog "$skill_id" "$(catalog_build_skills_root)"
   done
 
-  log "Built internal bundle at ~/.apm/.internal-seed/$INTERNAL_BUNDLE_NAME from: $(printf '%s' "$skill_ids" | tr '\n' ',' | sed 's/,$//; s/,/, /g')"
+  log "Seeded catalog build at ~/.apm/.catalog-build/$CATALOG_DIR_NAME from: $(printf '%s' "$skill_ids" | tr '\n' ',' | sed 's/,$//; s/,/, /g')"
 }
 
-cmd_stage_internal() {
-  skill_ids=$(resolve_internal_command_args "$@" | resolve_internal_skill_ids)
-  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
+cmd_bundle_catalog() {
+  cmd_seed_catalog_build "$@"
+  log "Built catalog package at ~/.apm/.catalog-build/$CATALOG_DIR_NAME"
+}
 
-  cmd_bundle_internal "$@"
+cmd_stage_catalog() {
+  cmd_bundle_catalog "$@"
 
-  tracked_dir=$(tracked_internal_bundle_dir)
-  reset_tracked_internal_bundle_dir
-  cp -R "$(internal_bundle_dir)"/. "$tracked_dir"
+  tracked_dir=$(tracked_catalog_dir)
+  reset_tracked_catalog_dir
+  cp -R "$(catalog_build_dir)"/. "$tracked_dir"
 
-  reference=$(tracked_internal_bundle_reference)
-  log "Staged repo-tracked internal bundle at $tracked_dir"
+  reference=$(tracked_catalog_reference)
+  log "Staged repo-tracked catalog at $tracked_dir"
   log "Candidate upstream ref: $reference"
   log "Push the updated apm-workspace repo before using 'apm install -g $reference'."
 }
 
-cmd_register_internal() {
+cmd_register_catalog() {
   require_apm
-  skill_ids=$(get_all_internal_pilot_skill_ids)
-  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
+  skill_ids=$(managed_skill_ids)
   ensure_workspace_repo
   ensure_workspace_scaffold
   ensure_workspace_mise_file
-  assert_tracked_internal_bundle_published
-  cmd_validate_internal
+  assert_tracked_catalog_published
+  cmd_validate_catalog
 
   remove_internal_target_links "$skill_ids"
 
-  reference=$(tracked_internal_bundle_reference)
+  reference=$(tracked_catalog_reference)
   run_workspace_install_command -g "$reference"
   normalize_workspace_gitignore
-  log "Registered internal bundle from upstream ref: $reference"
+  log "Registered catalog from upstream ref: $reference"
 }
 
-cmd_smoke_internal() {
+cmd_smoke_catalog() {
   require_apm
-  skill_ids=$(resolve_internal_command_args "$@" | resolve_internal_skill_ids)
-  [ -n "$skill_ids" ] || fail "Internal pilot inventory is empty: $INTERNAL_PILOT_INVENTORY_FILE"
+  skill_ids=$(managed_skill_ids)
 
-  cmd_bundle_internal "$@"
+  cmd_bundle_catalog "$@"
 
-  temp_dir=$(mktemp -d "${TMPDIR:-/tmp}/apm-internal-bundle-smoke.XXXXXX")
+  temp_dir=$(mktemp -d "${TMPDIR:-/tmp}/apm-catalog-smoke.XXXXXX")
   (
     cd "$temp_dir"
-    apm install "$(internal_bundle_dir)" --target codex
-  ) || fail "apm install failed for internal bundle smoke test. Temp workspace: $temp_dir"
+    apm install "$(catalog_build_dir)" --target codex
+  ) || fail "apm install failed for catalog smoke test. Temp workspace: $temp_dir"
 
   printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
     [ -n "$skill_id" ] || continue
@@ -1489,15 +1314,15 @@ cmd_smoke_internal() {
       fail "Smoke test failed: expected installed skill file missing: $temp_dir/.agents/skills/$relative_path/SKILL.md"
     fi
 
-    expected_files=$(relative_file_list "$(internal_bundle_skills_root)/$relative_path")
+    expected_files=$(relative_file_list "$(catalog_build_skills_root)/$relative_path")
     actual_files=$(relative_file_list "$temp_dir/.agents/skills/$relative_path")
     if [ "$expected_files" != "$actual_files" ]; then
-      fail "Smoke test failed: installed skill tree for $skill_id differed from bundle."
+      fail "Smoke test failed: installed skill tree for $skill_id differed from catalog."
     fi
   done
 
   rm -rf "$temp_dir"
-  log "Smoke verified internal bundle via temp project install: $(printf '%s' "$skill_ids" | tr '\n' ',' | sed 's/,$//; s/,/, /g')"
+  log "Smoke verified catalog via temp project install: $(printf '%s' "$skill_ids" | tr '\n' ',' | sed 's/,$//; s/,/, /g')"
 }
 
 cmd_migrate_external() {
@@ -1548,7 +1373,7 @@ EOF
     IFS=$old_ifs
     for skill_id in "${selected_skills[@]}"; do
       if internal_skill_exists "$skill_id"; then
-        log "Skipping $skill_id from $source_name: internal bundled skill already owns this id"
+        log "Skipping $skill_id from $source_name: managed catalog already owns this id"
         continue
       fi
 
@@ -1612,14 +1437,12 @@ Commands:
   list               Show APM global dependencies
   pin-external       Pin external manifest refs to lockfile commits
   validate           Validate the ~/.apm workspace
-  validate-internal  Fail on internal inventory / bundle / manifest drift
+  validate-catalog   Fail when the tracked catalog and managed source tree drift
   doctor             Print workspace and target state
-  migrate            Compatibility alias for migrate-internal
-  migrate-internal   Seed internal pilot skills into ~/.apm/.internal-seed/ without changing global apm.yml
-  bundle-internal    Build ~/.apm/.internal-seed/internal-<profile> as a valid internal APM bundle artifact
-  stage-internal     Copy the generated bundle into ~/.apm/internal-bundles/ and print its upstream ref
-  register-internal  Install the staged internal bundle by upstream ref after commit/push
-  smoke-internal     Smoke-test the generated internal bundle via temp project install
+  bundle-catalog     Build ~/.apm/.catalog-build/catalog as the catalog package artifact
+  stage-catalog      Copy the generated catalog into ~/.apm/catalog and print its upstream ref
+  register-catalog   Install the staged catalog by upstream ref after commit/push
+  smoke-catalog      Smoke-test the generated catalog package via temp project install
   migrate-external   Register selected external skills by upstream reference
   smoke              Validate script syntax and workspace template wiring
 
@@ -1628,7 +1451,6 @@ Environment overrides:
   APM_WORKSPACE_REPO
   APM_WORKSPACE_NAME
   APM_CODEX_OUTPUT
-  APM_INTERNAL_PROFILE=first-batch
   APM_BOOTSTRAP_FORCE_MISE=1
   APM_MIGRATE_FORCE=1
 EOF
@@ -1642,14 +1464,12 @@ case "$COMMAND" in
   list) cmd_list ;;
   pin-external) cmd_pin_external ;;
   validate) cmd_validate ;;
-  validate-internal) cmd_validate_internal ;;
+  validate-catalog) cmd_validate_catalog ;;
   doctor) cmd_doctor ;;
-  migrate) cmd_migrate "$@" ;;
-  migrate-internal) cmd_migrate_internal "$@" ;;
-  bundle-internal) cmd_bundle_internal "$@" ;;
-  stage-internal) cmd_stage_internal "$@" ;;
-  register-internal) cmd_register_internal "$@" ;;
-  smoke-internal) cmd_smoke_internal "$@" ;;
+  bundle-catalog) cmd_bundle_catalog "$@" ;;
+  stage-catalog) cmd_stage_catalog "$@" ;;
+  register-catalog) cmd_register_catalog "$@" ;;
+  smoke-catalog) cmd_smoke_catalog "$@" ;;
   migrate-external) cmd_migrate_external "$@" ;;
   smoke) cmd_smoke ;;
   help|-h|--help) cmd_help ;;
