@@ -96,14 +96,7 @@ depends = ["check:format", "check:lint:quick"]
 
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
-depends = [
-  "check",
-  "test",
-  "skills:validate",
-  "skills:validate:internal",
-  "skills:check:sync",
-  "ci:gitleaks",
-]
+depends = ["check", "test", "ci:gitleaks"]
 
 ["ci:full"]
 description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
@@ -126,10 +119,4 @@ run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/mis
 
 ["ci:nix"]
 description = "Nix 固有の深い検証（validate.yml 対応）"
-depends = [
-  "skills:validate",
-  "skills:validate:internal",
-  "skills:check:sync",
-  "nix:check",
-  "nix:build:bundle",
-]
+depends = ["nix:check", "nix:build:bundle"]

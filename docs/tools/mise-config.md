@@ -1,6 +1,6 @@
 # Mise Configuration Reference
 
-最終更新: 2026-03-13
+最終更新: 2026-04-19
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -142,6 +142,7 @@ yamllint = "latest"
 ```toml
 [tools]
 aws-cli = "latest"
+github:microsoft/apm = "0.8.11"
 eza = "latest"
 fd = "latest"
 "github:cli/cli" = "latest"

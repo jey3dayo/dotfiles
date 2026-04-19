@@ -1,6 +1,6 @@
 # Mise Task Catalog
 
-最終更新: 2026-03-13
+最終更新: 2026-04-19
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -93,22 +93,35 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 詳細は [docs/tools/home-manager.md](home-manager.md) を参照。
 
-### Skills
+### APM Bootstrap
 
-`skills.toml` で定義。
+`agents.toml` で定義。
 
-| タスク                     | 説明                                                 |
-| -------------------------- | ---------------------------------------------------- |
-| `skills:add`               | スキルを追加（URL または owner/repo）                |
-| `skills:upgrade`           | スキル全更新（update → install → check）             |
-| `skills:validate`          | スキル構成バリデーション（Nix）                      |
-| `skills:validate:internal` | agents/src SSoT ルール検証                           |
-| `skills:list`              | 有効スキル一覧を表示                                 |
-| `skills:install`           | HM でスキルをインストール                            |
-| `skills:update`            | 全ソース更新（flake inputs）                         |
-| `skills:check`             | Skills 配布検証（~/.claude/skills/ カウント確認）    |
-| `skills:check:sync`        | flake.nix と agent-skills-sources.nix 整合性チェック |
-| `skills:report`            | インストール対象スキルの URL レポート                |
+| タスク          | 説明                                                                       |
+| --------------- | -------------------------------------------------------------------------- |
+| `apm:bootstrap` | `~/.apm` を clone or refresh し、`apm.yml` と managed `mise.toml` を揃える |
+
+初回セットアップや復旧では `apm:bootstrap` を使い、日常の APM 操作は `~/.apm/mise.toml` 側で行う。  
+代表例:
+
+- `cd ~/.apm && mise install`
+- `cd ~/.apm && mise run format`
+- `cd ~/.apm && mise run ci`
+- `cd ~/.apm && mise run ci:check`
+- `cd ~/.apm && mise run migrate-external`
+- `cd ~/.apm && mise run apply`
+- `cd ~/.apm && mise run doctor`
+- `cd ~/.apm && mise run list`
+- `cd ~/.apm && mise run update`
+- `cd ~/.apm && mise run validate-catalog`
+- `cd ~/.apm && mise run catalog:tidy`
+
+managed asset は `~/.apm/catalog/` を直接編集し、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy します。  
+`mise run migrate-external` は最後に `pin-external` を自動実行し、external refs を `#sha` へ寄せます。`pin-external` 自体は repair / manual cleanup 用の maintenance command です。  
+`mise run doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示します。  
+`mise run apply` / `mise run update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install します。  
+install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱います。  
+`validate` と catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` にも残ります。`validate-catalog` は `~/.apm/mise.toml` からも実行できます。
 
 ### Update
 

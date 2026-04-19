@@ -148,9 +148,6 @@ $taskCommands = switch ($TaskName) {
       "mise run check",
       "mise run test:lua",
       "mise run test:ts",
-      "mise run skills:validate",
-      "mise run skills:validate:internal",
-      "mise run skills:check:sync",
       "mise run ci:gitleaks"
     )
     break
@@ -161,9 +158,6 @@ $taskCommands = switch ($TaskName) {
       "mise run check",
       "mise run test:lua",
       "mise run test:ts",
-      "mise run skills:validate",
-      "mise run skills:validate:internal",
-      "mise run skills:check:sync",
       "mise run ci:gitleaks"
     )
     break

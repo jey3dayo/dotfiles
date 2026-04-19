@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-04-03
+最終更新: 2026-04-19
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -78,7 +78,7 @@ mise/
     ├── test.toml          # テスト実行（Lua/TypeScript）
     ├── integration.toml   # 統合タスク（setup/doctor/check/format/lint 集約）
     ├── home-manager.toml  # Home Manager 操作
-    ├── skills.toml        # Agent skills 管理
+    ├── agents.toml        # APM bootstrap
     ├── updates.toml       # 依存関係更新（brew/apt/submodules）
     ├── env.toml           # 環境変数管理（dotenvx）
     ├── brewfile.toml      # Brewfile バックアップ・リストア
@@ -91,7 +91,7 @@ helper shell は `mise/tasks/` 配下に置かず `mise/lib/` に集約し、`mi
 ## Task Design
 
 - 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
-- 環境依存・運用系: `home-manager.toml`, `skills.toml`, `updates.toml`, `env.toml`, `brewfile.toml`
+- 環境依存・運用系: `home-manager.toml`, `agents.toml`, `updates.toml`, `env.toml`, `brewfile.toml`
 - タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
 
 ### CI/CD タスク構造
@@ -128,13 +128,30 @@ ci:full
 └── ci (検証のみ)
     ├── check
     ├── test
-    ├── skills:validate
-    └── skills:validate:internal
+    └── ci:gitleaks
 ```
 
 ## Task Catalog
 
 全タスク一覧は [mise-tasks.md](mise-tasks.md) を参照。主要グループの早見表と責務分離は本書と [docs/tools/workflows.md](workflows.md) を参照。
+
+### APM Global Skills
+
+agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config` 側は bootstrap と helper script だけを持ちます。
+
+- APM CLI 自体は `mise` 管理とし、`.config` と `~/.apm` の両方で `github:microsoft/apm` を pin する
+- `.config` 側の APM task は `apm:bootstrap` だけ
+- install / update / list / doctor / migrate-external は `cd ~/.apm && mise run ...` で行う
+- managed asset は `~/.apm/catalog/` を直接編集し、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy する
+- `migrate-external` は最後に `pin-external` を自動実行し、`apm.lock.yaml` の `resolved_commit` を使って external refs を `#sha` へ固定する
+- `doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示する
+- `apply` / `update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install する
+- `format`, `ci:check`, `ci`, `catalog:tidy` は `~/.apm` workspace を日常運用しやすくする補助 task として使う
+- install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱う
+- `pin-external`, `validate`, catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` にも残す。`validate-catalog` は workspace task としても公開する
+- catalog の validation や daily operation は `~/.apm` workspace 側 task を使う
+
+詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
 
 ## Variable-driven Control
 
@@ -147,7 +164,7 @@ ci:full
 - `YAMLLINT_CONFIG_FILE`: `yamllint` 設定ファイル
 - `*_FILES` 系: 特定ファイルだけ処理（`SH_FILES`, `PY_FILES`, `LUA_FILES`, `TOML_FILES`, `BIOME_FILES`, `PRETTIER_FILES`, `YAML_FILES`）
 
-`TASK_EXCLUDES` は汎用タスクの除外に使う。`agents/src` は汎用 lint/format 対象に含める。
+`TASK_EXCLUDES` は汎用タスクの除外に使う。managed catalog の日常運用は `~/.apm` 側 task を優先する。
 
 ## Environment Detection
 
@@ -307,6 +324,16 @@ mise tasks
 
 # Install all tools from config
 mise install
+
+# Bootstrap the APM workspace from ~/.config
+mise run apm:bootstrap
+
+# Then move into ~/.apm for daily operation
+cd ~/.apm
+mise install
+mise run migrate-external
+mise run apply
+mise run doctor
 
 # Run generic tasks
 mise run format

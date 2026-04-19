@@ -25,7 +25,6 @@
     selection.enable = [
       "gh-address-comments"
       "gh-fix-ci"
-      "skill-creator"
     ];
   };
   vercel-agent-skills = {
@@ -134,17 +133,6 @@
       "superpowers:verification-before-completion"
       "superpowers:writing-plans"
       "superpowers:writing-skills"
-    ];
-  };
-  sawyerhood-dev-browser = {
-    url = "github:SawyerHood/dev-browser";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      sawyerhood-dev-browser = "skills";
-    };
-    selection.enable = [
-      "dev-browser"
     ];
   };
   openai-codex-plugin-cc = {
@@ -264,6 +252,17 @@
     };
     selection.enable = [
       "tauri"
+    ];
+  };
+  mizchi-chezmoi-dotfiles = {
+    url = "github:mizchi/chezmoi-dotfiles";
+    flake = false;
+    baseDir = ".";
+    catalogs = {
+      mizchi-chezmoi-dotfiles = "dot_claude/skills";
+    };
+    selection.enable = [
+      "empirical-prompt-tuning"
     ];
   };
 }

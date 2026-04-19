@@ -1,4 +1,0 @@
-interface:
-  display_name: "Tauri Dev Screenshot"
-  short_description: "Capture running Tauri dev app windows on Windows"
-  default_prompt: "起動中の Tauri dev ウィンドウをスクリーンショットして"

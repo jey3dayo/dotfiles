@@ -3,23 +3,27 @@ name: Validate Nix Flake
 on:
   push:
     paths:
+      - ".github/workflows/validate.yml"
       - "flake.nix"
       - "flake.lock"
       - "nix/**"
       - "home.nix"
-      - "agents/nix/**"
-      - "agents/src/**"
-      - "agents/scripts/validate-src.sh"
+      - "mise/tasks/agents.toml"
+      - "scripts/apm-workspace.ps1"
+      - "scripts/apm-workspace.sh"
+      - "templates/apm-workspace/mise.toml"
       - "scripts/check-flake-sync.sh"
   pull_request:
     paths:
+      - ".github/workflows/validate.yml"
       - "flake.nix"
       - "flake.lock"
       - "nix/**"
       - "home.nix"
-      - "agents/nix/**"
-      - "agents/src/**"
-      - "agents/scripts/validate-src.sh"
+      - "mise/tasks/agents.toml"
+      - "scripts/apm-workspace.ps1"
+      - "scripts/apm-workspace.sh"
+      - "templates/apm-workspace/mise.toml"
       - "scripts/check-flake-sync.sh"
   workflow_dispatch:
 
@@ -55,11 +59,12 @@ jobs:
       - name: Nix flake check
         run: nix flake check
 
-      - name: Validate skills
-        run: nix run .#validate
-
-      - name: Validate internal assets
-        run: bash ./agents/scripts/validate-src.sh
+      - name: Validate APM maintenance helpers
+        shell: bash
+        run: |
+          bash -n ./scripts/apm-workspace.sh
+          pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/apm-workspace.ps1 help >/dev/null
+          grep -qF "# Managed by ~/.config bootstrap" ./templates/apm-workspace/mise.toml
 
       - name: Build bundle
         run: nix build .#bundle

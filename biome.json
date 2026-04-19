@@ -15,6 +15,7 @@
       "**/*.jsx",
       "**/*.tsx",
       "**/*.json",
+      "!**/.config",
       "!**/.cache",
       "!**/dist",
       "!**/node_modules",

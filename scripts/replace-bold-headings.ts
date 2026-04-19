@@ -358,7 +358,7 @@ Options:
 Examples:
   # Process all markdown files in repository
   tsx replace-bold-headings.ts
-  mise run skills:fix:bold-headings
+  mise run format:markdown:bold-headings
 
   # Process specific directories
   tsx replace-bold-headings.ts .claude

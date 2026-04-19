@@ -160,25 +160,26 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 
 ---
 
-## Agent Skills 配布アーキテクチャ
+## Agent Skills
 
-### 4段階統合フロー
+managed asset は `~/.apm/catalog/**` で管理します。  
+Home Manager は dotfiles 配布と generation 管理を担い、agent skills の日常運用は `~/.apm` で行います。
 
-1. Sources 統合: `discoverCatalog` (lib.nix L244-)
-   - Distribution: `agents/src/`（主要ソース、内部スキルが優先）
-   - External: Flake inputs 経由バンドル
-   - 優先度: Distribution > External
+- managed catalog layout:
+  - `~/.apm/catalog/.apm/skills/`
+  - `~/.apm/catalog/AGENTS.md`
+  - `~/.apm/catalog/agents/`
+  - `~/.apm/catalog/commands/`
+  - `~/.apm/catalog/rules/`
+- daily operation:
+  - `cd ~/.apm && mise run apply`
+  - `cd ~/.apm && mise run doctor`
+  - `cd ~/.apm && mise run validate-catalog`
 
-2. Skills 選択: `selectSkills` (lib.nix L306-)
-   - `selection.enable` で選択されたスキルのみ
-   - Distribution skills は常に含まれる
+### Flake Apps
 
-3. Bundle 生成: `mkBundle` (lib.nix L320-)
-   - 選択されたスキルのみ Nix store にコピー
-   - rsync -aL による完全コピー（symlink を実体化）
-
-4. 配布: Home Manager (module.nix L277-)
-   - Per-skill symlink で `~/.claude/skills/` へ配布
+`flake.nix` の `install` / `list` / `report` / `validate` app は、現行運用を案内する fail-fast app として残っています。  
+primary workflow は `~/.apm` workspace 側の task です。
 
 ### 外部ソース障害時の挙動
 
@@ -193,35 +194,20 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 
 ## 検証レイヤー
 
-### `nix run .#validate`（`mkValidateScript`）
+### Nix 側
 
-実装: `agents/nix/lib.nix` L440-
+- `nix flake check`
+- `nix build .#bundle`
 
-| 検証項目                                 | 説明                                                   |
-| ---------------------------------------- | ------------------------------------------------------ |
-| 選択スキルのバンドル存在確認             | `selectedSkills` の各スキルが `bundle/` 内に存在するか |
-| 選択スキルの SKILL.md 存在確認           | 各スキルに `SKILL.md` があるか                         |
-| バンドル内全ディレクトリの SKILL.md 確認 | 選択外含む全ディレクトリを確認                         |
-| カタログ/選択スキル数の表示              | カタログ総数・選択数・未選択数                         |
+これらは flake と互換 stub を含む `.config` 側の構成チェックです。
 
-### `nix flake check`（`mkChecks`）
+### APM 側
 
-実装: `agents/nix/lib.nix` L499-
+- `cd ~/.apm && mise run validate`
+- `cd ~/.apm && mise run validate-catalog`
+- `cd ~/.apm && mise run doctor`
 
-| 検証項目                  | 説明                                                           |
-| ------------------------- | -------------------------------------------------------------- |
-| `.bundle-info` の存在確認 | メタデータファイルが生成されているか                           |
-| スキル数の一致確認        | `.bundle-info` の `count` と `selectedSkills` の数が一致するか |
-
-### `validate-internal.sh`
-
-実装: `agents/scripts/validate-internal.sh`
-
-| 検証項目                      | 説明                                                    |
-| ----------------------------- | ------------------------------------------------------- |
-| skills ディレクトリの存在確認 | `agents/src/skills/` が存在するか                       |
-| symlink 禁止                  | skills ディレクトリ内に symlink がないか                |
-| SKILL.md 存在確認             | 各スキルに `SKILL.md` または `skills/SKILL.md` があるか |
+managed catalog と global skill 配布の整合性確認は APM workspace 側で行います。
 
 ---
 
@@ -252,7 +238,7 @@ grep 'url = ' nix/agent-skills-sources.nix
 grep 'url = "github:.*skills' flake.nix
 ```
 
-原因3: `selection.enable` のスキル名タイポ → `mise run skills:report` で確認
+原因3: external source mapping や catalog 登録状態のズレ → `cd ~/.apm && mise run doctor` で確認
 
 ### "expected a set but got a thunk" エラー
 
