@@ -112,11 +112,11 @@ All other tools serve to enhance or support these core components, while deploym
 - Deployment: `home-manager switch --flake ~/.config --impure`
 - Environment Detection: CI / Raspberry Pi / Default profiles with per-env config
 
-#### Agent Skills Bundle (Nix-managed)
+#### Agent Skills
 
-- Source of Truth: `agents/src/` for internal assets, with external sources in `nix/agent-skills-sources.nix`
-- Build Path: `flake.nix` composes and bundles selected skills
-- Deployment Path: Home Manager module (`agents/nix/module.nix`) applies bundle outputs consistently
+- Managed Assets: edit `~/.apm/catalog/`, and keep external skill mapping in `nix/agent-skills-sources.nix`
+- Maintenance Path: `scripts/apm-workspace.ps1|.sh` provides bootstrap, catalog maintenance, and validation helpers
+- Daily Operation: `cd ~/.apm && mise run apply`, `mise run doctor`, and `mise run validate-catalog`
 
 ### Version Management
 

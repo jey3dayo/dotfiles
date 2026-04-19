@@ -1,5 +1,11 @@
 ---
-paths: nix/**, flake.nix, home.nix, flake.lock, agents/nix/**, docs/tools/home-manager.md
+paths:
+  - "nix/**"
+  - "flake.nix"
+  - "home.nix"
+  - "flake.lock"
+  - "docs/tools/home-manager.md"
+  - "docs/tools/apm-workspace.md"
 source: docs/tools/home-manager.md
 ---
 
@@ -38,20 +44,20 @@ Detailed Reference: [docs/tools/home-manager.md](../../docs/tools/home-manager.m
 - ZDOTDIR: `$HOME/.config/zsh`
 - PATH 優先度: mise shims > `$HOME/{bin,.local/bin}` > 言語ツール > Homebrew > system
 
-## Agent Skills 配布フロー
+## Agent Skills の扱い
 
-1. `discoverCatalog`: Distribution (agents/src) > External (flake inputs) の優先度でカタログ統合
-2. `selectSkills`: `selection.enable` 指定のスキルのみ選択
-3. `mkBundle`: Nix store にコピー（rsync -aL でシンボリックリンクを実体化）
-4. Home Manager: `~/.claude/skills/` へ per-skill symlink で配布
+- managed asset は `~/.apm/catalog/**` で管理する。
+- global skill の daily operation は `cd ~/.apm && mise run ...` を使う。
+- Home Manager は dotfiles 配布と generation 管理を担当する。
 
 ## よくあるトラブル
 
-| 症状                             | 原因                                  | 対策                                                          |
-| -------------------------------- | ------------------------------------- | ------------------------------------------------------------- |
-| `~/.claude/skills/` が空         | 別の flake から switch した           | `home-manager switch --flake ~/.config --impure`              |
-| `~/.claude/skills/` が空         | URL 不整合                            | `agent-skills-sources.nix` と `flake.nix` の URL を比較・同期 |
-| "expected a set but got a thunk" | flake inputs に動的評価               | inputs を静的リテラル定義に変更                               |
-| Permission denied / Read-only    | ディレクトリ全体が Nix ストアにリンク | `xdgConfigDirs` から除外して switch                           |
+| 症状                                   | 原因                                  | 対策                                                          |
+| -------------------------------------- | ------------------------------------- | ------------------------------------------------------------- |
+| `~/.claude/skills/` が空               | 別の flake から switch した           | `home-manager switch --flake ~/.config --impure`              |
+| `~/.claude/skills/` が空               | URL 不整合                            | `agent-skills-sources.nix` と `flake.nix` の URL を比較・同期 |
+| "expected a set but got a thunk"       | flake inputs に動的評価               | inputs を静的リテラル定義に変更                               |
+| Permission denied / Read-only          | ディレクトリ全体が Nix ストアにリンク | `xdgConfigDirs` から除外して switch                           |
+| agent catalog を直したのに反映されない | APM 側の apply 未実行                 | `cd ~/.apm && mise run apply && mise run doctor`              |
 
 詳細なトラブルシューティング: [docs/tools/home-manager.md](../../docs/tools/home-manager.md)、[docs/disaster-recovery.md](../../docs/disaster-recovery.md)

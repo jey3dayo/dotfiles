@@ -78,7 +78,7 @@ mise/
     ├── test.toml          # テスト実行（Lua/TypeScript）
     ├── integration.toml   # 統合タスク（setup/doctor/check/format/lint 集約）
     ├── home-manager.toml  # Home Manager 操作
-    ├── agents.toml        # APM bootstrap と legacy agent 保守
+    ├── agents.toml        # APM bootstrap
     ├── updates.toml       # 依存関係更新（brew/apt/submodules）
     ├── env.toml           # 環境変数管理（dotenvx）
     ├── brewfile.toml      # Brewfile バックアップ・リストア
@@ -128,33 +128,28 @@ ci:full
 └── ci (検証のみ)
     ├── check
     ├── test
-    ├── agents:validate
-    └── agents:validate:internal
+    └── ci:gitleaks
 ```
 
 ## Task Catalog
 
 全タスク一覧は [mise-tasks.md](mise-tasks.md) を参照。主要グループの早見表と責務分離は本書と [docs/tools/workflows.md](workflows.md) を参照。
 
-### APM Global Skills Migration (Phase 1)
+### APM Global Skills
 
-agent 配布は APM global (`~/.apm`) を正面入口にし、`.config` 側は bootstrap と legacy rollback に絞る段階に入っています。
+agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config` 側は bootstrap と helper script だけを持ちます。
 
 - APM CLI 自体は `mise` 管理とし、`.config` と `~/.apm` の両方で `github:microsoft/apm` を pin する
-- `.config` 側の APM task は `apm:bootstrap` と `apm:smoke` だけ
+- `.config` 側の APM task は `apm:bootstrap` だけ
 - install / update / list / doctor / migrate-external は `cd ~/.apm && mise run ...` で行う
-- `apm:smoke` は bootstrap script と injected `~/.apm/mise.toml` の整合を見る smoke check
-- repo-managed skill は `~/.apm/catalog/.apm/skills/` に tracked catalog package として置き、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy する
-- `~/.apm/skills/` は current global model では使わない
+- managed asset は `~/.apm/catalog/` を直接編集し、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy する
 - `migrate-external` は最後に `pin-external` を自動実行し、`apm.lock.yaml` の `resolved_commit` を使って external refs を `#sha` へ固定する
-- `doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の `source / tracked / manifest / status` も表示する
-- `apply` / `update` は内部で catalog drift check を通し、その後で legacy managed skill link を掃除してから global install する
+- `doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示する
+- `apply` / `update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install する
 - `format`, `ci:check`, `ci`, `catalog:tidy` は `~/.apm` workspace を日常運用しやすくする補助 task として使う
 - install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱う
 - `pin-external`, `validate`, catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` にも残す。`validate-catalog` は workspace task としても公開する
-- `agents:validate`, `agents:validate:internal`, `agents:check:sync`, `agents:report` は CI / rollback 用の legacy Nix フローとして維持する
-- `agents:add` はまだ legacy repo-local source 追加コマンドであり、APM workspace 操作には使わない
-- rollback が必要な場合は `agents:legacy:*` を使う
+- catalog の validation や daily operation は `~/.apm` workspace 側 task を使う
 
 詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
 

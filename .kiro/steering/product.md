@@ -51,9 +51,9 @@ High-performance cross-platform (macOS/Linux/WSL2) development environment confi
   - 1Password for SSH key management
 
 - 🤖 AI Asset Distribution Pipeline
-  - `agents/src/` as source of truth for bundled skills/agents/rules
-  - Selected external skills are bundled through Nix flake inputs
-  - Home Manager applies the same bundle structure across environments
+  - `~/.apm/catalog/` stores the managed skills/agents/rules
+  - Selected external skills are recorded through `~/.apm/apm.yml` with mapping from `nix/agent-skills-sources.nix`
+  - Home Manager now handles dotfiles deployment; APM handles global agent asset rollout
 
 - Declarative & Reproducible Delivery
   - Nix Home Manager provides consistent, repeatable configuration across machines
