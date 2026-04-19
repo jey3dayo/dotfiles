@@ -9,6 +9,8 @@ experimental = true
 disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
+windows_default_inline_shell_args = "bash -lc"
+windows_default_file_shell_args = "bash"
 
 [settings.pipx]
 uvx = true

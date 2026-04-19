@@ -6,7 +6,7 @@ if [ "$#" -gt 0 ]; then
   shift
 fi
 
-REPO_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+REPO_ROOT=$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)
 WORKSPACE_DIR="${APM_WORKSPACE_DIR:-$HOME/.apm}"
 WORKSPACE_REPO="${APM_WORKSPACE_REPO:-https://github.com/jey3dayo/apm-workspace.git}"
 EXTERNAL_SOURCES_FILE="$REPO_ROOT/nix/agent-skills-sources.nix"
@@ -54,7 +54,7 @@ validate_skill_id() {
   skill_id="$1"
 
   case "$skill_id" in
-    ""|.|..|*/*|*\\*)
+    "" | . | .. | */* | *\\*)
       fail "Invalid skill id: $skill_id"
       ;;
   esac
@@ -84,7 +84,7 @@ validate_skill_path_segments() {
 
   for segment in "$@"; do
     case "$segment" in
-      ""|.|..|*/*|*\\*)
+      "" | . | .. | */* | *\\*)
         fail "Invalid skill path: $original_value"
         ;;
       [A-Za-z0-9]*)
@@ -106,6 +106,7 @@ skill_id_to_manifest_path() {
   skill_id="$1"
   old_ifs=$IFS
   IFS=':'
+  # shellcheck disable=SC2086
   set -- $skill_id
   IFS=$old_ifs
   validate_skill_path_segments "$skill_id" "$@"
@@ -402,8 +403,8 @@ workspace_tracking_info() {
 
 tracked_catalog_reference() {
   tracking_info=$(workspace_tracking_info)
-  remote_name=${tracking_info%%$(printf '\036')*}
-  branch_name=${tracking_info#*$(printf '\036')}
+  remote_name=${tracking_info%%"$(printf '\036')"*}
+  branch_name=${tracking_info#*"$(printf '\036')"}
   printf '%s/%s#%s\n' "$(workspace_repo_reference "$remote_name")" "$(tracked_catalog_relative_path)" "$branch_name"
 }
 
@@ -417,8 +418,8 @@ assert_tracked_catalog_published() {
   [ -z "$dirty" ] || fail "Tracked catalog has uncommitted changes. Commit and push $tracked_relative_path before registering it."
 
   tracking_info=$(workspace_tracking_info)
-  remote_name=${tracking_info%%$(printf '\036')*}
-  branch_name=${tracking_info#*$(printf '\036')}
+  remote_name=${tracking_info%%"$(printf '\036')"*}
+  branch_name=${tracking_info#*"$(printf '\036')"}
   upstream="$remote_name/$branch_name"
   unpushed=$(git -C "$WORKSPACE_DIR" rev-list "$upstream..HEAD" -- "$tracked_relative_path" 2>/dev/null || true)
   [ -z "$unpushed" ] || fail "Tracked catalog has commits not on $upstream. Push the branch before registering it."
@@ -430,6 +431,7 @@ managed_skill_content_dir() {
   source_dir="$(tracked_catalog_skills_root)"
   old_ifs=$IFS
   IFS=':'
+  # shellcheck disable=SC2086
   set -- $skill_id
   IFS=$old_ifs
   validate_skill_path_segments "$skill_id" "$@"
@@ -450,6 +452,7 @@ copy_managed_skill_into_catalog() {
   destination_dir="$skills_root"
   old_ifs=$IFS
   IFS=':'
+  # shellcheck disable=SC2086
   set -- $skill_id
   IFS=$old_ifs
   validate_skill_path_segments "$skill_id" "$@"
@@ -602,6 +605,7 @@ internal_target_skill_path() {
   path="$target_root"
   old_ifs=$IFS
   IFS=':'
+  # shellcheck disable=SC2086
   set -- $skill_id
   IFS=$old_ifs
   validate_skill_path_segments "$skill_id" "$@"
@@ -837,10 +841,11 @@ resolve_external_skill_source_dir() {
 
   old_ifs=$IFS
   IFS=$(printf '\034')
+  # shellcheck disable=SC2086
   set -- $catalogs_value
   IFS=$old_ifs
   for catalog_entry in "$@"; do
-    catalog_path=${catalog_entry#*$(printf '\035')}
+    catalog_path=${catalog_entry#*"$(printf '\035')"}
     catalog_root="$base_path"
     if [ "$catalog_path" != "." ] && [ -n "$catalog_path" ]; then
       catalog_root="$catalog_root/$catalog_path"
@@ -861,7 +866,7 @@ resolve_external_skill_source_dir() {
     candidate_dir=$(dirname "$skill_file")
     relative_dir=${candidate_dir#"$checkout_path"/}
     case "$relative_dir" in
-      "$relative_skill_path"|*/"$relative_skill_path")
+      "$relative_skill_path" | */"$relative_skill_path")
         printf '%s\n' "$candidate_dir"
         return 0
         ;;
@@ -917,8 +922,8 @@ external_skill_reference() {
 
   source_dir=$(resolve_external_skill_source_dir "$checkout_path" "$source_name" "$base_dir" "$id_prefix" "$catalogs_value" "$skill_id")
   repo_info=$(external_source_repo_reference "$source_url")
-  repo=${repo_info%%$(printf '\036')*}
-  ref=${repo_info#*$(printf '\036')}
+  repo=${repo_info%%"$(printf '\036')"*}
+  ref=${repo_info#*"$(printf '\036')"}
   relative_path=${source_dir#"$checkout_path"}
   relative_path=${relative_path#/}
 
@@ -964,8 +969,8 @@ cmd_inject_mise() {
 
 apm_install_has_diagnostics_failure() {
   output_file="$1"
-  grep -Eq '\[[xX]\][[:space:]]+[1-9][0-9]* packages failed:' "$output_file" ||
-    grep -Eq 'Installed .* with [1-9][0-9]* error\(s\)\.' "$output_file"
+  grep -Eq '\[[xX]\][[:space:]]+[1-9][0-9]* packages failed:' "$output_file" \
+    || grep -Eq 'Installed .* with [1-9][0-9]* error\(s\)\.' "$output_file"
 }
 
 run_workspace_install_command() {
@@ -1679,7 +1684,7 @@ case "$COMMAND" in
   release-catalog) cmd_release_catalog "$@" ;;
   smoke-catalog) cmd_smoke_catalog "$@" ;;
   migrate-external) cmd_migrate_external "$@" ;;
-  help|-h|--help) cmd_help ;;
+  help | -h | --help) cmd_help ;;
   *)
     fail "unknown command: $COMMAND"
     ;;

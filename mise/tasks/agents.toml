@@ -5,4 +5,4 @@
 ["apm:bootstrap"]
 description = "~/.apm checkout / apm.yml / managed mise.toml を bootstrap"
 run = "bash ./scripts/apm-workspace.sh bootstrap"
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/apm-workspace.ps1 bootstrap"
+run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/apm-workspace.ps1 bootstrap"

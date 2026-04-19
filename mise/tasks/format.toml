@@ -15,7 +15,6 @@ else
   biome lint --write .
 fi
 """
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-biome.ps1 -Mode format"
 
 ["format:biome:check"]
 description = "JS/TS/JSON ファイルのフォーマット + lint チェック（書き込みなし、BIOME_FILES で対象を限定可能）"
@@ -26,7 +25,6 @@ else
   biome check --formatter-enabled=true --linter-enabled=true .
 fi
 """
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-biome.ps1 -Mode check"
 
 ["format:prettier"]
 description = "Prettier でファイルをフォーマット（PRETTIER_FILES で対象を限定可能）"
@@ -126,7 +124,7 @@ run = """
 if [ -n "${TOML_FILES:-}" ]; then
   RUST_LOG=taplo=warn taplo format ${TOML_FILES}
 else
-  fd -e toml ${TASK_EXCLUDES} -X env RUST_LOG=taplo=warn taplo format
+  fd -e toml ${TASK_EXCLUDES} --exclude nvim/stylua.toml -X env RUST_LOG=taplo=warn taplo format
 fi
 """
 
@@ -136,7 +134,7 @@ run = """
 if [ -n "${TOML_FILES:-}" ]; then
   RUST_LOG=taplo=warn taplo format --check ${TOML_FILES}
 else
-  fd -e toml ${TASK_EXCLUDES} -X env RUST_LOG=taplo=warn taplo format --check
+  fd -e toml ${TASK_EXCLUDES} --exclude nvim/stylua.toml -X env RUST_LOG=taplo=warn taplo format --check
 fi
 """
 

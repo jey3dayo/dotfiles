@@ -136,6 +136,20 @@ $snapshotRootWin = $snapshot.WinPath
 $repoRootWsl = $snapshot.WslPath
 $tempScriptWin = Join-Path $env:TEMP ("codex-mise-wsl-task-" + [System.Guid]::NewGuid().ToString("N") + ".sh")
 $taskCommands = switch ($TaskName) {
+  "check" {
+    @(
+      "mise run check:format",
+      "mise run check:lint"
+    )
+    break
+  }
+  "test" {
+    @(
+      "mise run test:lua",
+      "mise run test:ts"
+    )
+    break
+  }
   "ci:quick" {
     @(
       "mise run check:format",

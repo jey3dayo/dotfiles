@@ -5,7 +5,7 @@
 
 ["test"]
 description = "テストを実行（集約）"
-depends = ["test:lua", "test:ts"]
+run = [{ tasks = ["test:lua", "test:ts"] }]
 
 ["test:ts"]
 description = "TypeScript スクリプトのユニットテストを実行（サマリーのみ表示）"

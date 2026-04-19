@@ -1,7 +1,6 @@
 # Home Manager configuration for dotfiles
 {
   pkgs,
-  inputs,
   username,
   homeDirectory,
   ...

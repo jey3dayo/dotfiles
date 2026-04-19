@@ -12,27 +12,38 @@ const __dirname = path.dirname(__filename);
 const scriptPath = path.join(__dirname, "setup-env.ps1");
 const isWindows = process.platform === "win32";
 
-const resolvePowerShellCommand = (): string => {
+const resolvePowerShellCommand = (): string | null => {
   const candidates = isWindows ? ["powershell.exe", "pwsh"] : ["pwsh", "powershell.exe", "powershell"];
 
   for (const candidate of candidates) {
-    const probe = spawnSync(candidate, ["-NoProfile", "-Command", "exit 0"], {
-      encoding: "utf8",
-      stdio: "ignore",
-    });
+    let probe: ReturnType<typeof spawnSync>;
+
+    try {
+      probe = spawnSync(candidate, ["-NoProfile", "-Command", "exit 0"], {
+        encoding: "utf8",
+        stdio: "ignore",
+      });
+    } catch {
+      continue;
+    }
 
     if (!probe.error && probe.status === 0) {
       return candidate;
     }
   }
 
-  throw new Error(`No supported PowerShell executable found: ${candidates.join(", ")}`);
+  return null;
 };
 
 const shellCommand = resolvePowerShellCommand();
+const describeSetupEnvPs1 = isWindows && shellCommand != null ? describe : describe.skip;
 
-(isWindows ? describe : describe.skip)("scripts/setup-env.ps1", () => {
+describeSetupEnvPs1("scripts/setup-env.ps1", () => {
   it("allows concurrent runs without false failures", () => {
+    if (shellCommand == null) {
+      throw new Error("PowerShell is required to run setup-env.ps1 tests");
+    }
+
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "setup-env-ps1-test-"));
     const runnerPath = path.join(tempRoot, "run.ps1");
     const escapedScriptPath = scriptPath.replace(/'/g, "''");

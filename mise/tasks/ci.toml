@@ -92,11 +92,27 @@ nix build .#bundle
 
 ["ci:quick"]
 description = "軽量チェック（format + lint のみ、Claude Code hooks 向け ~3-5s）"
-depends = ["check:format", "check:lint:quick"]
+run = """
+if [ "${MISE_WSL_SNAPSHOT:-0}" != "1" ] && [ "${PWD#/mnt/}" != "$PWD" ]; then
+  bash ./scripts/mise-wsl-task.sh ci:quick
+else
+  mise run check:format
+  mise run check:lint:quick
+fi
+"""
 
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
-depends = ["check", "test", "ci:gitleaks"]
+run = """
+if [ "${MISE_WSL_SNAPSHOT:-0}" != "1" ] && [ "${PWD#/mnt/}" != "$PWD" ]; then
+  bash ./scripts/mise-wsl-task.sh ci
+else
+  mise run check
+  mise run test:ts
+  mise run test:lua
+  mise run ci:gitleaks
+fi
+"""
 
 ["ci:full"]
 description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
@@ -105,17 +121,14 @@ run = [{ task = "ci:verify-deploy" }, { task = "ci" }]
 ["ci:quick:windows"]
 description = "Windows 向け軽量チェック（WSL スナップショット経由）"
 run = [{ task = "ci:quick" }]
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci:quick"
 
 ["ci:windows"]
 description = "Windows 向け CI チェック（WSL スナップショット経由）"
 run = [{ task = "ci" }]
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci"
 
 ["ci:full:windows"]
 description = "Windows 向け CI フルチェック（WSL スナップショット経由）"
 run = [{ task = "ci:full" }]
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci:full"
 
 ["ci:nix"]
 description = "Nix 固有の深い検証（validate.yml 対応）"

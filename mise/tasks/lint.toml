@@ -14,7 +14,6 @@ else
   biome lint .
 fi
 """
-run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-biome.ps1 -Mode lint"
 
 ["lint:markdown"]
 description = "Markdown ファイルをチェック"

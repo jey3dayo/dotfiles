@@ -9,10 +9,20 @@ cd "${repo_root}"
 QUIET=${QUIET:-0}
 
 # bun:test compatible test files.
+search_roots=()
+if [[ -d "agents/scripts" ]]; then
+  search_roots+=("agents/scripts")
+fi
+if [[ -d "scripts" ]]; then
+  search_roots+=("scripts")
+fi
+
 test_files=()
-while IFS= read -r file; do
-  test_files+=("${file}")
-done < <(fd --type f --glob "*.test.ts" agents/scripts scripts | sort -u)
+if ((${#search_roots[@]} > 0)); then
+  while IFS= read -r file; do
+    test_files+=("${file}")
+  done < <(fd --type f --glob "*.test.ts" "${search_roots[@]}" | sort -u)
+fi
 
 if ((${#test_files[@]} > 0)); then
   echo "Running bun test suites (${#test_files[@]} files)..."
