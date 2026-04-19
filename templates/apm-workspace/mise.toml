@@ -29,8 +29,13 @@ description = "Validate the ~/.apm workspace and tracked catalog wiring"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 validate"
 
+[tasks.validate-catalog]
+description = "Fail when the tracked catalog and managed source tree drift"
+run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate-catalog"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 validate-catalog"
+
 [tasks.stage-catalog]
-description = "Rebuild the tracked catalog package from ~/.config/agents/src/skills"
+description = "Normalize the tracked catalog package in ~/.apm/catalog"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-catalog"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-catalog"
 
@@ -48,3 +53,80 @@ run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%
 description = "Register enabled external skills by upstream ref in ~/.apm/apm.yml"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" migrate-external"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace-migrate-external.ps1"
+
+[tasks."format:markdown"]
+description = "Format Markdown files in the ~/.apm workspace"
+run = "fd -e md -X prettier --write --log-level error >/dev/null"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"@(fd -e md) | ForEach-Object { prettier --write --log-level error $_ *> $null }\""
+
+[tasks."format:markdown:check"]
+description = "Check Markdown formatting in the ~/.apm workspace"
+run = "fd -e md -X prettier --check --log-level error"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"@(fd -e md) | ForEach-Object { prettier --check --log-level error $_ }\""
+
+[tasks."format:toml"]
+description = "Format TOML files in the ~/.apm workspace"
+run = "fd -e toml -X env RUST_LOG=taplo=warn taplo format"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"@(fd -e toml) | ForEach-Object { $env:RUST_LOG='taplo=warn'; taplo format $_ }\""
+
+[tasks."format:toml:check"]
+description = "Check TOML formatting in the ~/.apm workspace"
+run = "fd -e toml -X env RUST_LOG=taplo=warn taplo format --check"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"@(fd -e toml) | ForEach-Object { $env:RUST_LOG='taplo=warn'; taplo format --check $_ }\""
+
+[tasks."format:yaml"]
+description = "Format YAML files in the ~/.apm workspace"
+run = "fd -e yml -e yaml -X prettier --write --log-level error >/dev/null"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"@(fd -e yml -e yaml) | ForEach-Object { prettier --write --log-level error $_ *> $null }\""
+
+[tasks."format:yaml:check"]
+description = "Check YAML formatting in the ~/.apm workspace"
+run = "fd -e yml -e yaml -X prettier --check --log-level error"
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"@(fd -e yml -e yaml) | ForEach-Object { prettier --check --log-level error $_ }\""
+
+[tasks.format]
+description = "Format workspace docs and manifests"
+run = """
+mise run format:markdown
+mise run format:toml
+mise run format:yaml
+"""
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"mise run format:markdown; mise run format:toml; mise run format:yaml\""
+
+[tasks."check:format"]
+description = "Check workspace docs and manifest formatting"
+run = """
+mise run format:markdown:check
+mise run format:toml:check
+mise run format:yaml:check
+"""
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"mise run format:markdown:check; mise run format:toml:check; mise run format:yaml:check\""
+
+[tasks."ci:check"]
+description = "Run validation-only checks for the ~/.apm workspace"
+run = """
+mise run check:format
+mise run validate
+mise run validate-catalog
+mise run smoke-catalog
+"""
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"mise run check:format; mise run validate; mise run validate-catalog; mise run smoke-catalog\""
+
+[tasks.ci]
+description = "Format, validate, and distribute the ~/.apm workspace locally"
+run = """
+mise run format
+mise run ci:check
+mise run apply
+mise run doctor
+"""
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"mise run format; mise run ci:check; mise run apply; mise run doctor\""
+
+[tasks."catalog:tidy"]
+description = "Refresh, validate, and inspect the tracked catalog package"
+run = """
+mise run stage-catalog
+mise run validate-catalog
+mise run doctor
+"""
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"mise run stage-catalog; mise run validate-catalog; mise run doctor\""

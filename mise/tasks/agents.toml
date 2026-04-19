@@ -42,10 +42,6 @@ XDG_CACHE_HOME="$cache_root" nix run --no-write-lock-file .#validate
 """
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/skills-validate.ps1"
 
-["agents:validate:internal"]
-description = "agents/src が legacy SSoT ルールに準拠しているか検証"
-run = "bash ./agents/scripts/validate-src.sh"
-
 ["agents:check:sync"]
 description = "flake.nix と agent-skills-sources.nix の整合性チェック（legacy Nix）"
 run = "sh ./scripts/check-flake-sync.sh"

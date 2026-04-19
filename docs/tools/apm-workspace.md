@@ -59,7 +59,7 @@ repo-managed skill は、現在は single tracked catalog package として glob
   - `~/.apm/skills/` を current source-of-truth と説明すること
 
 日常運用では `~/.apm/catalog/` と `~/.apm/apm.yml` を見ます。  
-`.config/agents/` は current source-of-truth ではなく、存在しない前提で運用して構いません。
+旧 config-side agent tree は current source-of-truth ではなく、存在しない前提で運用して構いません。
 
 ## Enabled External Mapping
 

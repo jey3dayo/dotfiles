@@ -8,7 +8,6 @@
 }:
 
 let
-  agentSkills = import ./nix/agent-skills.nix;
 in
 {
   # Basic home-manager settings
@@ -48,32 +47,5 @@ in
       initSubmodules = true; # Initialize Git submodules (tmux plugins)
     };
 
-    # Agent skills are managed inside this repo (migrated from ~/.agents)
-    agent-skills = {
-      enable = true;
-
-      # Single source of truth for internal skills/commands
-      distributionsPath = ./agents/src;
-
-      sources = import ./nix/sources.nix {
-        inherit inputs agentSkills;
-      };
-
-      skills.enable = agentSkills.selection.enable or null;
-
-      targets = import ./nix/targets.nix;
-
-      configFiles = [
-        {
-          src = ./agents/src/AGENTS.md;
-          default = "AGENTS.md";
-          rename = {
-            claude = "CLAUDE.md";
-            opencode = "CLAUDE.md";
-            openclaw = "CLAUDE.md";
-          };
-        }
-      ];
-    };
   };
 }

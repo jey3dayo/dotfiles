@@ -165,7 +165,7 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 ### 4段階統合フロー
 
 1. Sources 統合: `discoverCatalog` (lib.nix L244-)
-   - Distribution: `agents/src/`（主要ソース、内部スキルが優先）
+   - Distribution: legacy Nix agent bundle（現在は非推奨。`~/.apm/catalog/` を優先）
    - External: Flake inputs 経由バンドル
    - 優先度: Distribution > External
 
@@ -219,7 +219,7 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 
 | 検証項目                      | 説明                                                    |
 | ----------------------------- | ------------------------------------------------------- |
-| skills ディレクトリの存在確認 | `agents/src/skills/` が存在するか                       |
+| managed catalog の存在確認 | `~/.apm/catalog/.apm/skills/` が存在するか               |
 | symlink 禁止                  | skills ディレクトリ内に symlink がないか                |
 | SKILL.md 存在確認             | 各スキルに `SKILL.md` または `skills/SKILL.md` があるか |
 

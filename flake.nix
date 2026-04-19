@@ -127,23 +127,15 @@
         let
           username = builtins.getEnv "USER";
           homeDirectory = builtins.getEnv "HOME";
-          # Agent-skills module is bundled in this repo
-          agentSkillsPath = ./agents/nix/module.nix;
-          agentSkillsModule = if builtins.pathExists agentSkillsPath then import agentSkillsPath else _: { };
-
           # Base modules that always exist
           baseModules = [
             self.homeManagerModules.default # dotfiles module
             ./home.nix
           ];
-
-          # Add agent-skills module if it exists in repo
-          allModules =
-            if builtins.pathExists agentSkillsPath then baseModules ++ [ agentSkillsModule ] else baseModules;
         in
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
-          modules = allModules;
+          modules = baseModules;
           extraSpecialArgs = { inherit inputs username homeDirectory; };
         };
     }
@@ -159,122 +151,48 @@
           system:
           let
             pkgs = nixpkgs.legacyPackages.${system};
-            targets = import ./nix/targets.nix;
-            agentLib = import ./agents/nix/lib.nix {
-              inherit pkgs;
-              nixlib = nixpkgs.lib;
-            };
-            agentSkills = import ./nix/agent-skills.nix;
-            sourceDefs = agentSkills.inputs;
-            toGithubUrl =
-              url:
-              if nixpkgs.lib.hasPrefix "github:" url then
-                "https://github.com/" + nixpkgs.lib.removePrefix "github:" url
-              else
-                url;
-            externalSourceMeta = nixpkgs.lib.foldl' (
-              acc: sourceName:
-              let
-                sourceConfig = sourceDefs.${sourceName};
-                repoUrl = toGithubUrl sourceConfig.url;
-                root = inputs.${sourceName};
-                baseMeta = {
-                  inherit repoUrl root;
-                  branch = "main";
-                };
-                catalogMeta = nixpkgs.lib.mapAttrs (_catalogName: _subPath: baseMeta) sourceConfig.catalogs;
-              in
-              acc // { ${sourceName} = baseMeta; } // catalogMeta
-            ) { } (nixpkgs.lib.attrNames sourceDefs);
-            sourceMeta = externalSourceMeta // {
-              distribution = {
-                repoUrl = "https://github.com/jey3dayo/dotfiles";
-                root = ./.;
-                branch = "main";
-              };
-            };
-            sources = import ./nix/sources.nix { inherit inputs agentSkills; };
-            requestedSelection = agentSkills.selection;
-            catalog = agentLib.discoverCatalog {
-              inherit sources;
-              distributionsPath = ./agents/src;
-            };
-            selection = agentLib.resolveSelectedSkills {
-              inherit catalog;
-              enable = requestedSelection.enable or null;
-            };
-            inherit (selection) selectedSkills;
-            bundle = agentLib.mkBundle {
-              skills = selectedSkills;
-              name = "agent-skills-bundle";
-            };
-            nullSelection = agentLib.resolveSelectedSkills {
-              inherit catalog;
-              enable = null;
-            };
-            nullSelectedSkills = nullSelection.selectedSkills;
-            nullSelectionBundle = agentLib.mkBundle {
-              skills = nullSelectedSkills;
-              name = "agent-skills-bundle-null-selection";
-            };
-          in
-          {
-            packages.default = bundle;
-            packages.bundle = bundle;
-
-            apps = {
-              install = {
+            mkLegacyRemovedApp =
+              name:
+              message:
+              {
                 type = "app";
                 program =
-                  let
-                    targetsList = nixpkgs.lib.mapAttrsToList (tool: t: {
-                      inherit tool;
-                      inherit (t) dest;
-                    }) (nixpkgs.lib.filterAttrs (_: t: t.enable) targets);
-                  in
-                  "${
-                    agentLib.mkSyncScript {
-                      inherit bundle;
-                      targets = targetsList;
-                    }
-                  }/bin/skills-install";
+                  "${pkgs.writeShellScriptBin name ''
+                    echo "${message}" >&2
+                    exit 1
+                  ''}/bin/${name}";
               };
-              list = {
-                type = "app";
-                program = "${agentLib.mkListScript { inherit catalog selectedSkills; }}/bin/skills-list";
-              };
-              report = {
-                type = "app";
-                program = "${
-                  agentLib.mkReportScript {
-                    skills = selectedSkills;
-                    inherit sourceMeta;
-                  }
-                }/bin/skills-report";
-              };
-              validate = {
-                type = "app";
-                program = "${
-                  agentLib.mkValidateScript { inherit catalog selectedSkills bundle; }
-                }/bin/skills-validate";
-              };
+          in
+          {
+            packages.default = pkgs.writeTextFile {
+              name = "legacy-agent-skills-removed";
+              text = "Legacy Nix agent distribution has been removed. Use ~/.apm/catalog instead.\n";
+              destination = "/README.txt";
+            };
+            packages.bundle = self.packages.${system}.default;
+
+            apps = {
+              install = mkLegacyRemovedApp "skills-install" "Legacy Nix agent distribution has been removed. Use ~/.apm/catalog and APM tasks instead.";
+              list = mkLegacyRemovedApp "skills-list" "Legacy Nix agent distribution has been removed. Use `cd ~/.apm && mise run list` instead.";
+              report = mkLegacyRemovedApp "skills-report" "Legacy Nix agent distribution has been removed. Use the ~/.apm workspace instead.";
+              validate = mkLegacyRemovedApp "skills-validate" "Legacy Nix agent distribution has been removed. Use `cd ~/.apm && mise run validate-catalog` instead.";
             };
 
             checks = {
-              default = agentLib.mkChecks { inherit bundle catalog selectedSkills; };
-              nullSelection = agentLib.mkChecks {
-                bundle = nullSelectionBundle;
-                inherit catalog;
-                inherit (nullSelection) selectedSkills;
-              };
+              default = pkgs.runCommand "legacy-agent-skills-removed-check" { } ''
+                mkdir -p "$out"
+              '';
+              nullSelection = pkgs.runCommand "legacy-agent-skills-removed-null-check" { } ''
+                mkdir -p "$out"
+              '';
             };
 
             devShells.default = pkgs.mkShell {
               buildInputs = [ home-manager.packages.${system}.default ];
               shellHook = ''
-                echo "Agent Skills Dev Shell"
-                echo "  home-manager switch --flake . --impure  # Apply skills"
-                echo "  nix run .#list                          # List skills"
+                echo "Dotfiles Dev Shell"
+                echo "  home-manager switch --flake . --impure"
+                echo "  cd ~/.apm && mise run doctor"
               '';
             };
 

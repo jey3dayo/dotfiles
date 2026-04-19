@@ -149,8 +149,9 @@ agent 配布は APM global (`~/.apm`) を正面入口にし、`.config` 側は b
 - `migrate-external` は最後に `pin-external` を自動実行し、`apm.lock.yaml` の `resolved_commit` を使って external refs を `#sha` へ固定する
 - `doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の `source / tracked / manifest / status` も表示する
 - `apply` / `update` は内部で catalog drift check を通し、その後で legacy managed skill link を掃除してから global install する
+- `format`, `ci:check`, `ci`, `catalog:tidy` は `~/.apm` workspace を日常運用しやすくする補助 task として使う
 - install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱う
-- `pin-external`, `validate`, `validate-catalog`, catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` に maintenance-only command として残す
+- `pin-external`, `validate`, catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` にも残す。`validate-catalog` は workspace task としても公開する
 - `agents:validate`, `agents:validate:internal`, `agents:check:sync`, `agents:report` は CI / rollback 用の legacy Nix フローとして維持する
 - `agents:add` はまだ legacy repo-local source 追加コマンドであり、APM workspace 操作には使わない
 - rollback が必要な場合は `agents:legacy:*` を使う
@@ -168,7 +169,7 @@ agent 配布は APM global (`~/.apm`) を正面入口にし、`.config` 側は b
 - `YAMLLINT_CONFIG_FILE`: `yamllint` 設定ファイル
 - `*_FILES` 系: 特定ファイルだけ処理（`SH_FILES`, `PY_FILES`, `LUA_FILES`, `TOML_FILES`, `BIOME_FILES`, `PRETTIER_FILES`, `YAML_FILES`）
 
-`TASK_EXCLUDES` は汎用タスクの除外に使う。`agents/src` は汎用 lint/format 対象に含める。
+`TASK_EXCLUDES` は汎用タスクの除外に使う。managed catalog の日常運用は `~/.apm` 側 task を優先する。
 
 ## Environment Detection
 

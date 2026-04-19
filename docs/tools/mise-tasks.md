@@ -103,7 +103,6 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 | `apm:smoke`                | bootstrap script と injected workspace template の smoke check |
 | `agents:add`               | legacy repo-local skill source を追加                |
 | `agents:validate`          | agent 構成バリデーション（legacy Nix / CI 用）       |
-| `agents:validate:internal` | agents/src legacy SSoT ルール検証                    |
 | `agents:check:sync`        | flake.nix と agent-skills-sources.nix 整合性チェック |
 | `agents:report`            | インストール対象 agent の URL レポート（legacy Nix） |
 | `agents:legacy:install`    | 従来の Nix / HM 配布を実行                           |
@@ -117,11 +116,16 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 代表例:
 
 - `cd ~/.apm && mise install`
+- `cd ~/.apm && mise run format`
+- `cd ~/.apm && mise run ci`
+- `cd ~/.apm && mise run ci:check`
 - `cd ~/.apm && mise run migrate-external`
 - `cd ~/.apm && mise run apply`
 - `cd ~/.apm && mise run doctor`
 - `cd ~/.apm && mise run list`
 - `cd ~/.apm && mise run update`
+- `cd ~/.apm && mise run validate-catalog`
+- `cd ~/.apm && mise run catalog:tidy`
 
 repo-managed skill は `~/.apm/catalog/.apm/skills/` に tracked catalog package として置き、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy します。  
 `~/.apm/skills/` は current global model では使いません。  
@@ -129,7 +133,7 @@ repo-managed skill は `~/.apm/catalog/.apm/skills/` に tracked catalog package
 `mise run doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の `source / tracked / manifest / status` も表示します。  
 `mise run apply` / `mise run update` は内部で catalog drift check を通し、その後で legacy managed skill link を掃除してから global install します。  
 install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱います。  
-`validate`, `validate-catalog`, catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` に maintenance-only command として残します。
+`validate` と catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` にも残ります。`validate-catalog` は `~/.apm/mise.toml` からも実行できます。
 
 ### Update
 
