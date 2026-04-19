@@ -294,12 +294,22 @@ tracked_catalog_relative_path() {
   printf '%s\n' "$CATALOG_DIR_NAME"
 }
 
+skill_ids_from_root() {
+  skills_root="$1"
+  [ -d "$skills_root" ] || return 0
+
+  (
+    cd "$skills_root"
+    find . -type f -name SKILL.md | sed 's#^\./##' | sed 's#/SKILL\.md$##' | sed 's#/#:#g' | sort -u
+  )
+}
+
 write_catalog_manifest_template() {
   destination_dir="$1"
   cat >"$destination_dir/apm.yml" <<EOF
 name: $CATALOG_DIR_NAME
 version: 1.0.0
-description: Generated catalog of managed skills for global APM rollout
+description: Managed catalog package for global APM rollout
 dependencies:
   apm: []
   mcp: []
@@ -312,14 +322,11 @@ write_catalog_readme() {
   cat >"$destination_dir/README.md" <<EOF
 # $CATALOG_DIR_NAME
 
-This catalog is generated from ~/.config/agents/src/ and tracked in apm-workspace.
+This directory is the managed catalog source of truth for the global APM workspace.
 
-- Source skills: \`~/.config/agents/src/skills/<id>/\`
-- Source instructions: \`~/.config/agents/src/AGENTS.md\`
-- Source agents: \`~/.config/agents/src/agents/**\`
-- Source commands: \`~/.config/agents/src/commands/**\`
-- Source rules: \`~/.config/agents/src/rules/**\`
-- Purpose: provide one tracked APM package for the managed skill set
+- Edit skills in \`~/.apm/catalog/.apm/skills/<id>/\`
+- Edit shared guidance in \`~/.apm/catalog/AGENTS.md\`, \`agents/**\`, \`commands/**\`, and \`rules/**\`
+- \`mise run stage-catalog\` normalizes this package and refreshes the transitional mirror in \`~/.config/agents/src/\`
 - Install ref: \`jey3dayo/apm-workspace/catalog#main\`
 EOF
 }
@@ -416,15 +423,28 @@ assert_tracked_catalog_published() {
   [ -z "$unpushed" ] || fail "Tracked catalog has commits not on $upstream. Push the branch before registering it."
 }
 
+managed_skill_content_dir() {
+  skill_id="$1"
+  validate_skill_id "$skill_id"
+  source_dir="$(tracked_catalog_skills_root)"
+  old_ifs=$IFS
+  IFS=':'
+  set -- $skill_id
+  IFS=$old_ifs
+  validate_skill_path_segments "$skill_id" "$@"
+  for segment in "$@"; do
+    source_dir="$source_dir/$segment"
+  done
+
+  [ -f "$source_dir/SKILL.md" ] || fail "Managed catalog skill missing SKILL.md: $source_dir"
+  printf '%s\n' "$source_dir"
+}
+
 copy_managed_skill_into_catalog() {
   skill_id="$1"
   skills_root="$2"
   validate_skill_id "$skill_id"
-  source_dir=$(legacy_skill_content_dir "$skill_id")
-
-  if [ ! -d "$source_dir" ]; then
-    fail "Legacy skill not found: $source_dir"
-  fi
+  source_dir=$(managed_skill_content_dir "$skill_id")
 
   destination_dir="$skills_root"
   old_ifs=$IFS
@@ -442,31 +462,52 @@ copy_managed_skill_into_catalog() {
 
 copy_managed_instructions_into_catalog() {
   destination_path="$1"
-  [ -f "$LEGACY_CONFIG_FILE" ] || fail "Managed instructions source missing: $LEGACY_CONFIG_FILE"
+  source_path=$(tracked_catalog_instructions_path)
+  [ -f "$source_path" ] || fail "Managed catalog instructions missing: $source_path"
   destination_dir=$(dirname "$destination_path")
   mkdir -p "$destination_dir"
-  cp "$LEGACY_CONFIG_FILE" "$destination_path"
+  cp "$source_path" "$destination_path"
 }
 
 copy_managed_agent_assets_into_catalog() {
   destination_dir="$1"
-  [ -d "$LEGACY_AGENTS_DIR" ] || fail "Managed agents source missing: $LEGACY_AGENTS_DIR"
+  source_dir=$(tracked_catalog_agents_root)
+  [ -d "$source_dir" ] || fail "Managed catalog agents missing: $source_dir"
   mkdir -p "$destination_dir"
-  cp -R "$LEGACY_AGENTS_DIR"/. "$destination_dir"
+  cp -R "$source_dir"/. "$destination_dir"
 }
 
 copy_managed_command_assets_into_catalog() {
   destination_dir="$1"
-  [ -d "$LEGACY_COMMANDS_DIR" ] || fail "Managed commands source missing: $LEGACY_COMMANDS_DIR"
+  source_dir=$(tracked_catalog_commands_root)
+  [ -d "$source_dir" ] || fail "Managed catalog commands missing: $source_dir"
   mkdir -p "$destination_dir"
-  cp -R "$LEGACY_COMMANDS_DIR"/. "$destination_dir"
+  cp -R "$source_dir"/. "$destination_dir"
 }
 
 copy_managed_rule_assets_into_catalog() {
   destination_dir="$1"
-  [ -d "$LEGACY_RULES_DIR" ] || fail "Managed rules source missing: $LEGACY_RULES_DIR"
+  source_dir=$(tracked_catalog_rules_root)
+  [ -d "$source_dir" ] || fail "Managed catalog rules missing: $source_dir"
   mkdir -p "$destination_dir"
-  cp -R "$LEGACY_RULES_DIR"/. "$destination_dir"
+  cp -R "$source_dir"/. "$destination_dir"
+}
+
+sync_managed_catalog_mirror() {
+  tracked_dir=$(tracked_catalog_dir)
+  [ -d "$tracked_dir" ] || fail "Tracked catalog missing: $tracked_dir. Run 'mise run stage-catalog' first."
+
+  for mirror_dir in "$LEGACY_SKILLS_DIR" "$LEGACY_AGENTS_DIR" "$LEGACY_COMMANDS_DIR" "$LEGACY_RULES_DIR"; do
+    rm -rf "$mirror_dir"
+    mkdir -p "$mirror_dir"
+  done
+
+  cp -R "$(tracked_catalog_skills_root)"/. "$LEGACY_SKILLS_DIR"
+  cp -R "$(tracked_catalog_agents_root)"/. "$LEGACY_AGENTS_DIR"
+  cp -R "$(tracked_catalog_commands_root)"/. "$LEGACY_COMMANDS_DIR"
+  cp -R "$(tracked_catalog_rules_root)"/. "$LEGACY_RULES_DIR"
+  mkdir -p "$(dirname "$LEGACY_CONFIG_FILE")"
+  cp "$(tracked_catalog_instructions_path)" "$LEGACY_CONFIG_FILE"
 }
 
 legacy_skill_content_dir() {
@@ -608,7 +649,7 @@ remove_internal_target_links() {
 internal_skill_exists() {
   skill_id="$1"
   relative_path=$(skill_id_to_manifest_path "$skill_id")
-  [ -d "$LEGACY_SKILLS_DIR/$relative_path" ]
+  [ -d "$(tracked_catalog_skills_root)/$relative_path" ]
 }
 
 parse_external_sources() {
@@ -1162,12 +1203,11 @@ cmd_validate() {
 }
 
 managed_skill_ids() {
-  [ -d "$LEGACY_SKILLS_DIR" ] || return 0
-  find "$LEGACY_SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort
+  skill_ids_from_root "$(tracked_catalog_skills_root)"
 }
 
 managed_agent_relative_paths() {
-  relative_file_list "$LEGACY_AGENTS_DIR"
+  tracked_catalog_agent_relative_paths
 }
 
 tracked_catalog_agent_relative_paths() {
@@ -1175,7 +1215,7 @@ tracked_catalog_agent_relative_paths() {
 }
 
 managed_command_relative_paths() {
-  relative_file_list "$LEGACY_COMMANDS_DIR"
+  tracked_catalog_command_relative_paths
 }
 
 tracked_catalog_command_relative_paths() {
@@ -1183,7 +1223,7 @@ tracked_catalog_command_relative_paths() {
 }
 
 managed_rule_relative_paths() {
-  relative_file_list "$LEGACY_RULES_DIR"
+  tracked_catalog_rule_relative_paths
 }
 
 tracked_catalog_rule_relative_paths() {
@@ -1203,15 +1243,7 @@ file_content_equal() {
 }
 
 tracked_catalog_skill_ids() {
-  skills_root=$(tracked_catalog_skills_root)
-  [ -d "$skills_root" ] || return 0
-
-  find "$skills_root" -type f -name SKILL.md | while IFS= read -r skill_file; do
-    skill_dir=$(dirname "$skill_file")
-    relative_path=${skill_dir#"$skills_root"/}
-    [ -n "$relative_path" ] || continue
-    printf '%s\n' "${relative_path//\//:}"
-  done | sort -u
+  skill_ids_from_root "$(tracked_catalog_skills_root)"
 }
 
 manifest_has_catalog_reference() {
@@ -1223,48 +1255,48 @@ manifest_has_catalog_reference() {
 
 print_catalog_summary() {
   source_skill_count=$(managed_skill_ids | awk 'NF { count++ } END { print count + 0 }')
-  tracked_skill_count=$(tracked_catalog_skill_ids | awk 'NF { count++ } END { print count + 0 }')
+  mirror_skill_count=$(skill_ids_from_root "$LEGACY_SKILLS_DIR" | awk 'NF { count++ } END { print count + 0 }')
   source_agent_count=$(managed_agent_relative_paths | awk 'NF { count++ } END { print count + 0 }')
-  tracked_agent_count=$(tracked_catalog_agent_relative_paths | awk 'NF { count++ } END { print count + 0 }')
+  mirror_agent_count=$(relative_file_list "$LEGACY_AGENTS_DIR" | awk 'NF { count++ } END { print count + 0 }')
   source_command_count=$(managed_command_relative_paths | awk 'NF { count++ } END { print count + 0 }')
-  tracked_command_count=$(tracked_catalog_command_relative_paths | awk 'NF { count++ } END { print count + 0 }')
+  mirror_command_count=$(relative_file_list "$LEGACY_COMMANDS_DIR" | awk 'NF { count++ } END { print count + 0 }')
   source_rule_count=$(managed_rule_relative_paths | awk 'NF { count++ } END { print count + 0 }')
-  tracked_rule_count=$(tracked_catalog_rule_relative_paths | awk 'NF { count++ } END { print count + 0 }')
+  mirror_rule_count=$(relative_file_list "$LEGACY_RULES_DIR" | awk 'NF { count++ } END { print count + 0 }')
   tracked_manifest=no
   [ -f "$(tracked_catalog_dir)/apm.yml" ] && tracked_manifest=yes
   global_ref=no
   manifest_has_catalog_reference && global_ref=yes
 
   source_skills_tmp=$(mktemp)
-  tracked_skills_tmp=$(mktemp)
+  mirror_skills_tmp=$(mktemp)
   source_agents_tmp=$(mktemp)
-  tracked_agents_tmp=$(mktemp)
+  mirror_agents_tmp=$(mktemp)
   source_commands_tmp=$(mktemp)
-  tracked_commands_tmp=$(mktemp)
+  mirror_commands_tmp=$(mktemp)
   source_rules_tmp=$(mktemp)
-  tracked_rules_tmp=$(mktemp)
+  mirror_rules_tmp=$(mktemp)
 
   printf '%s\n' "$(managed_skill_ids)" | awk 'NF' | sort >"$source_skills_tmp"
-  printf '%s\n' "$(tracked_catalog_skill_ids)" | awk 'NF' | sort >"$tracked_skills_tmp"
+  printf '%s\n' "$(skill_ids_from_root "$LEGACY_SKILLS_DIR")" | awk 'NF' | sort >"$mirror_skills_tmp"
   printf '%s\n' "$(managed_agent_relative_paths)" | awk 'NF' | sort >"$source_agents_tmp"
-  printf '%s\n' "$(tracked_catalog_agent_relative_paths)" | awk 'NF' | sort >"$tracked_agents_tmp"
+  printf '%s\n' "$(relative_file_list "$LEGACY_AGENTS_DIR")" | awk 'NF' | sort >"$mirror_agents_tmp"
   printf '%s\n' "$(managed_command_relative_paths)" | awk 'NF' | sort >"$source_commands_tmp"
-  printf '%s\n' "$(tracked_catalog_command_relative_paths)" | awk 'NF' | sort >"$tracked_commands_tmp"
+  printf '%s\n' "$(relative_file_list "$LEGACY_COMMANDS_DIR")" | awk 'NF' | sort >"$mirror_commands_tmp"
   printf '%s\n' "$(managed_rule_relative_paths)" | awk 'NF' | sort >"$source_rules_tmp"
-  printf '%s\n' "$(tracked_catalog_rule_relative_paths)" | awk 'NF' | sort >"$tracked_rules_tmp"
+  printf '%s\n' "$(relative_file_list "$LEGACY_RULES_DIR")" | awk 'NF' | sort >"$mirror_rules_tmp"
 
   skills_status=drift
   agents_status=drift
   commands_status=drift
   rules_status=drift
-  cmp -s "$source_skills_tmp" "$tracked_skills_tmp" && skills_status=ok
-  cmp -s "$source_agents_tmp" "$tracked_agents_tmp" && agents_status=ok
-  cmp -s "$source_commands_tmp" "$tracked_commands_tmp" && commands_status=ok
-  cmp -s "$source_rules_tmp" "$tracked_rules_tmp" && rules_status=ok
+  cmp -s "$source_skills_tmp" "$mirror_skills_tmp" && skills_status=ok
+  cmp -s "$source_agents_tmp" "$mirror_agents_tmp" && agents_status=ok
+  cmp -s "$source_commands_tmp" "$mirror_commands_tmp" && commands_status=ok
+  cmp -s "$source_rules_tmp" "$mirror_rules_tmp" && rules_status=ok
 
-  instructions_state=missing-source
+  instructions_state=missing-mirror
   if [ -f "$LEGACY_CONFIG_FILE" ]; then
-    instructions_state=missing-tracked
+    instructions_state=missing-catalog
     if [ -f "$(tracked_catalog_instructions_path)" ] && file_content_equal "$LEGACY_CONFIG_FILE" "$(tracked_catalog_instructions_path)"; then
       instructions_state=ok
     elif [ -f "$(tracked_catalog_instructions_path)" ]; then
@@ -1274,17 +1306,24 @@ print_catalog_summary() {
 
   status=drift
   if [ "$skills_status" = ok ] && [ "$agents_status" = ok ] && [ "$commands_status" = ok ] && [ "$rules_status" = ok ] && [ "$instructions_state" = ok ]; then
+    mirror_state=ok
+  else
+    mirror_state=drift
+  fi
+
+  status=drift
+  if [ "$mirror_state" = ok ] && [ "$tracked_manifest" = yes ] && [ "$global_ref" = yes ]; then
     status=ok
   fi
 
-  rm -f "$source_skills_tmp" "$tracked_skills_tmp" "$source_agents_tmp" "$tracked_agents_tmp" "$source_commands_tmp" "$tracked_commands_tmp" "$source_rules_tmp" "$tracked_rules_tmp"
+  rm -f "$source_skills_tmp" "$mirror_skills_tmp" "$source_agents_tmp" "$mirror_agents_tmp" "$source_commands_tmp" "$mirror_commands_tmp" "$source_rules_tmp" "$mirror_rules_tmp"
 
-  printf 'catalog: skills=%s/%s agents=%s/%s commands=%s/%s rules=%s/%s instructions=%s tracked-manifest=%s global-ref=%s status=%s\n' \
-    "$source_skill_count" "$tracked_skill_count" \
-    "$source_agent_count" "$tracked_agent_count" \
-    "$source_command_count" "$tracked_command_count" \
-    "$source_rule_count" "$tracked_rule_count" \
-    "$instructions_state" "$tracked_manifest" "$global_ref" "$status"
+  printf 'catalog: skills=%s/%s agents=%s/%s commands=%s/%s rules=%s/%s instructions=%s tracked-manifest=%s global-ref=%s mirror=%s status=%s\n' \
+    "$source_skill_count" "$mirror_skill_count" \
+    "$source_agent_count" "$mirror_agent_count" \
+    "$source_command_count" "$mirror_command_count" \
+    "$source_rule_count" "$mirror_rule_count" \
+    "$instructions_state" "$tracked_manifest" "$global_ref" "$mirror_state" "$status"
 }
 
 managed_external_overlap_lines() {
@@ -1379,20 +1418,38 @@ cmd_validate_catalog() {
 
   has_failure=0
   source_skill_ids=$(managed_skill_ids)
-  tracked_skill_ids=$(tracked_catalog_skill_ids)
+  mirror_skill_ids=$(skill_ids_from_root "$LEGACY_SKILLS_DIR")
   source_agent_paths=$(managed_agent_relative_paths)
-  tracked_agent_paths=$(tracked_catalog_agent_relative_paths)
+  mirror_agent_paths=$(relative_file_list "$LEGACY_AGENTS_DIR")
   source_command_paths=$(managed_command_relative_paths)
-  tracked_command_paths=$(tracked_catalog_command_relative_paths)
+  mirror_command_paths=$(relative_file_list "$LEGACY_COMMANDS_DIR")
   source_rule_paths=$(managed_rule_relative_paths)
-  tracked_rule_paths=$(tracked_catalog_rule_relative_paths)
+  mirror_rule_paths=$(relative_file_list "$LEGACY_RULES_DIR")
   tracked_manifest="$(tracked_catalog_dir)/apm.yml"
+  tracked_readme="$(tracked_catalog_dir)/README.md"
   tracked_instructions="$(tracked_catalog_instructions_path)"
+
+  expected_dir=$(mktemp -d "${TMPDIR:-/tmp}/apm-catalog-expected.XXXXXX")
+  write_catalog_manifest_template "$expected_dir"
+  write_catalog_readme "$expected_dir"
 
   if [ ! -f "$tracked_manifest" ]; then
     error "Tracked catalog manifest is missing: $tracked_manifest"
     has_failure=1
+  elif ! cmp -s "$tracked_manifest" "$expected_dir/apm.yml"; then
+    error "Tracked catalog manifest is not normalized"
+    has_failure=1
   fi
+
+  if [ ! -f "$tracked_readme" ]; then
+    error "Tracked catalog README is missing: $tracked_readme"
+    has_failure=1
+  elif ! cmp -s "$tracked_readme" "$expected_dir/README.md"; then
+    error "Tracked catalog README is not normalized"
+    has_failure=1
+  fi
+
+  rm -rf "$expected_dir"
 
   if ! manifest_has_catalog_reference; then
     error "Global apm.yml is missing the tracked catalog ref"
@@ -1400,97 +1457,113 @@ cmd_validate_catalog() {
   fi
 
   source_tmp=$(mktemp)
-  tracked_tmp=$(mktemp)
+  mirror_tmp=$(mktemp)
   missing_tmp=$(mktemp)
   extra_tmp=$(mktemp)
   printf '%s\n' "$source_skill_ids" | awk 'NF' | sort >"$source_tmp"
-  printf '%s\n' "$tracked_skill_ids" | awk 'NF' | sort >"$tracked_tmp"
-  comm -23 "$source_tmp" "$tracked_tmp" >"$missing_tmp"
-  comm -13 "$source_tmp" "$tracked_tmp" >"$extra_tmp"
+  printf '%s\n' "$mirror_skill_ids" | awk 'NF' | sort >"$mirror_tmp"
+  comm -23 "$source_tmp" "$mirror_tmp" >"$missing_tmp"
+  comm -13 "$source_tmp" "$mirror_tmp" >"$extra_tmp"
   missing_skill_ids=$(cat "$missing_tmp")
   extra_skill_ids=$(cat "$extra_tmp")
-  rm -f "$source_tmp" "$tracked_tmp" "$missing_tmp" "$extra_tmp"
+  rm -f "$source_tmp" "$mirror_tmp" "$missing_tmp" "$extra_tmp"
 
   if [ -n "$missing_skill_ids" ]; then
-    error "Tracked catalog is missing skills: $(printf '%s\n' "$missing_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    error "Managed mirror is missing skills: $(printf '%s\n' "$missing_skill_ids" | awk 'BEGIN{ORS=\"\"} NF{if(seen++) printf \", \"; printf \"%s\", $0}')"
     has_failure=1
   fi
   if [ -n "$extra_skill_ids" ]; then
-    error "Tracked catalog has unexpected skills: $(printf '%s\n' "$extra_skill_ids" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    error "Managed mirror has unexpected skills: $(printf '%s\n' "$extra_skill_ids" | awk 'BEGIN{ORS=\"\"} NF{if(seen++) printf \", \"; printf \"%s\", $0}')"
+    has_failure=1
+  fi
+  if [ ! -d "$LEGACY_SKILLS_DIR" ] || ! diff -qr "$(tracked_catalog_skills_root)" "$LEGACY_SKILLS_DIR" >/dev/null 2>&1; then
+    error "Managed mirror skills drift from ~/.apm/catalog/.apm/skills"
     has_failure=1
   fi
 
   source_agents_tmp=$(mktemp)
-  tracked_agents_tmp=$(mktemp)
+  mirror_agents_tmp=$(mktemp)
   missing_agents_tmp=$(mktemp)
   extra_agents_tmp=$(mktemp)
   printf '%s\n' "$source_agent_paths" | awk 'NF' | sort >"$source_agents_tmp"
-  printf '%s\n' "$tracked_agent_paths" | awk 'NF' | sort >"$tracked_agents_tmp"
-  comm -23 "$source_agents_tmp" "$tracked_agents_tmp" >"$missing_agents_tmp"
-  comm -13 "$source_agents_tmp" "$tracked_agents_tmp" >"$extra_agents_tmp"
+  printf '%s\n' "$mirror_agent_paths" | awk 'NF' | sort >"$mirror_agents_tmp"
+  comm -23 "$source_agents_tmp" "$mirror_agents_tmp" >"$missing_agents_tmp"
+  comm -13 "$source_agents_tmp" "$mirror_agents_tmp" >"$extra_agents_tmp"
   missing_agent_paths=$(cat "$missing_agents_tmp")
   extra_agent_paths=$(cat "$extra_agents_tmp")
-  rm -f "$source_agents_tmp" "$tracked_agents_tmp" "$missing_agents_tmp" "$extra_agents_tmp"
+  rm -f "$source_agents_tmp" "$mirror_agents_tmp" "$missing_agents_tmp" "$extra_agents_tmp"
 
   if [ -n "$missing_agent_paths" ]; then
-    error "Tracked catalog is missing agents: $(printf '%s\n' "$missing_agent_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    error "Managed mirror is missing agents: $(printf '%s\n' "$missing_agent_paths" | awk 'BEGIN{ORS=\"\"} NF{if(seen++) printf \", \"; printf \"%s\", $0}')"
     has_failure=1
   fi
   if [ -n "$extra_agent_paths" ]; then
-    error "Tracked catalog has unexpected agents: $(printf '%s\n' "$extra_agent_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    error "Managed mirror has unexpected agents: $(printf '%s\n' "$extra_agent_paths" | awk 'BEGIN{ORS=\"\"} NF{if(seen++) printf \", \"; printf \"%s\", $0}')"
+    has_failure=1
+  fi
+  if [ ! -d "$LEGACY_AGENTS_DIR" ] || ! diff -qr "$(tracked_catalog_agents_root)" "$LEGACY_AGENTS_DIR" >/dev/null 2>&1; then
+    error "Managed mirror agents drift from ~/.apm/catalog/agents"
     has_failure=1
   fi
 
   source_commands_tmp=$(mktemp)
-  tracked_commands_tmp=$(mktemp)
+  mirror_commands_tmp=$(mktemp)
   missing_commands_tmp=$(mktemp)
   extra_commands_tmp=$(mktemp)
   printf '%s\n' "$source_command_paths" | awk 'NF' | sort >"$source_commands_tmp"
-  printf '%s\n' "$tracked_command_paths" | awk 'NF' | sort >"$tracked_commands_tmp"
-  comm -23 "$source_commands_tmp" "$tracked_commands_tmp" >"$missing_commands_tmp"
-  comm -13 "$source_commands_tmp" "$tracked_commands_tmp" >"$extra_commands_tmp"
+  printf '%s\n' "$mirror_command_paths" | awk 'NF' | sort >"$mirror_commands_tmp"
+  comm -23 "$source_commands_tmp" "$mirror_commands_tmp" >"$missing_commands_tmp"
+  comm -13 "$source_commands_tmp" "$mirror_commands_tmp" >"$extra_commands_tmp"
   missing_command_paths=$(cat "$missing_commands_tmp")
   extra_command_paths=$(cat "$extra_commands_tmp")
-  rm -f "$source_commands_tmp" "$tracked_commands_tmp" "$missing_commands_tmp" "$extra_commands_tmp"
+  rm -f "$source_commands_tmp" "$mirror_commands_tmp" "$missing_commands_tmp" "$extra_commands_tmp"
 
   if [ -n "$missing_command_paths" ]; then
-    error "Tracked catalog is missing commands: $(printf '%s\n' "$missing_command_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    error "Managed mirror is missing commands: $(printf '%s\n' "$missing_command_paths" | awk 'BEGIN{ORS=\"\"} NF{if(seen++) printf \", \"; printf \"%s\", $0}')"
     has_failure=1
   fi
   if [ -n "$extra_command_paths" ]; then
-    error "Tracked catalog has unexpected commands: $(printf '%s\n' "$extra_command_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    error "Managed mirror has unexpected commands: $(printf '%s\n' "$extra_command_paths" | awk 'BEGIN{ORS=\"\"} NF{if(seen++) printf \", \"; printf \"%s\", $0}')"
+    has_failure=1
+  fi
+  if [ ! -d "$LEGACY_COMMANDS_DIR" ] || ! diff -qr "$(tracked_catalog_commands_root)" "$LEGACY_COMMANDS_DIR" >/dev/null 2>&1; then
+    error "Managed mirror commands drift from ~/.apm/catalog/commands"
     has_failure=1
   fi
 
   source_rules_tmp=$(mktemp)
-  tracked_rules_tmp=$(mktemp)
+  mirror_rules_tmp=$(mktemp)
   missing_rules_tmp=$(mktemp)
   extra_rules_tmp=$(mktemp)
   printf '%s\n' "$source_rule_paths" | awk 'NF' | sort >"$source_rules_tmp"
-  printf '%s\n' "$tracked_rule_paths" | awk 'NF' | sort >"$tracked_rules_tmp"
-  comm -23 "$source_rules_tmp" "$tracked_rules_tmp" >"$missing_rules_tmp"
-  comm -13 "$source_rules_tmp" "$tracked_rules_tmp" >"$extra_rules_tmp"
+  printf '%s\n' "$mirror_rule_paths" | awk 'NF' | sort >"$mirror_rules_tmp"
+  comm -23 "$source_rules_tmp" "$mirror_rules_tmp" >"$missing_rules_tmp"
+  comm -13 "$source_rules_tmp" "$mirror_rules_tmp" >"$extra_rules_tmp"
   missing_rule_paths=$(cat "$missing_rules_tmp")
   extra_rule_paths=$(cat "$extra_rules_tmp")
-  rm -f "$source_rules_tmp" "$tracked_rules_tmp" "$missing_rules_tmp" "$extra_rules_tmp"
+  rm -f "$source_rules_tmp" "$mirror_rules_tmp" "$missing_rules_tmp" "$extra_rules_tmp"
 
   if [ -n "$missing_rule_paths" ]; then
-    error "Tracked catalog is missing rules: $(printf '%s\n' "$missing_rule_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    error "Managed mirror is missing rules: $(printf '%s\n' "$missing_rule_paths" | awk 'BEGIN{ORS=\"\"} NF{if(seen++) printf \", \"; printf \"%s\", $0}')"
     has_failure=1
   fi
   if [ -n "$extra_rule_paths" ]; then
-    error "Tracked catalog has unexpected rules: $(printf '%s\n' "$extra_rule_paths" | awk 'BEGIN{ORS=""} NF{if(seen++) printf ", "; printf "%s", $0}')"
+    error "Managed mirror has unexpected rules: $(printf '%s\n' "$extra_rule_paths" | awk 'BEGIN{ORS=\"\"} NF{if(seen++) printf \", \"; printf \"%s\", $0}')"
+    has_failure=1
+  fi
+  if [ ! -d "$LEGACY_RULES_DIR" ] || ! diff -qr "$(tracked_catalog_rules_root)" "$LEGACY_RULES_DIR" >/dev/null 2>&1; then
+    error "Managed mirror rules drift from ~/.apm/catalog/rules"
     has_failure=1
   fi
 
   if [ ! -f "$LEGACY_CONFIG_FILE" ]; then
-    error "Managed instructions source is missing: $LEGACY_CONFIG_FILE"
+    error "Managed mirror instructions are missing: $LEGACY_CONFIG_FILE"
     has_failure=1
   elif [ ! -f "$tracked_instructions" ]; then
     error "Tracked catalog is missing instructions: $tracked_instructions"
     has_failure=1
   elif ! file_content_equal "$LEGACY_CONFIG_FILE" "$tracked_instructions"; then
-    error "Tracked catalog instructions drift from agents/src/AGENTS.md"
+    error "Managed mirror instructions drift from ~/.apm/catalog/AGENTS.md"
     has_failure=1
   fi
 
@@ -1499,7 +1572,7 @@ cmd_validate_catalog() {
   source_agent_count=$(printf '%s\n' "$source_agent_paths" | awk 'NF { count++ } END { print count + 0 }')
   source_command_count=$(printf '%s\n' "$source_command_paths" | awk 'NF { count++ } END { print count + 0 }')
   source_rule_count=$(printf '%s\n' "$source_rule_paths" | awk 'NF { count++ } END { print count + 0 }')
-  log "Catalog validation passed ($source_skill_count skills, $source_agent_count agents, $source_command_count commands, $source_rule_count rules)"
+  log "Catalog validation passed ($source_skill_count skills, $source_agent_count agents, $source_command_count commands, $source_rule_count rules; mirror in sync)"
 }
 
 cmd_doctor() {
@@ -1564,9 +1637,11 @@ cmd_stage_catalog() {
   tracked_dir=$(tracked_catalog_dir)
   reset_tracked_catalog_dir
   cp -R "$(catalog_build_dir)"/. "$tracked_dir"
+  sync_managed_catalog_mirror
 
   reference=$(tracked_catalog_reference)
   log "Staged repo-tracked catalog at $tracked_dir"
+  log "Refreshed transitional mirror at $REPO_ROOT/agents/src"
   log "Candidate upstream ref: $reference"
   log "Push the updated apm-workspace repo before using 'apm install -g $reference'."
 }
@@ -1731,10 +1806,10 @@ Commands:
   list               Show APM global dependencies
   pin-external       Pin external manifest refs to lockfile commits
   validate           Validate the ~/.apm workspace
-  validate-catalog   Fail when the tracked catalog and managed source tree drift
+  validate-catalog   Fail when the tracked catalog is not normalized or the transitional mirror drifts
   doctor             Print workspace and target state
   bundle-catalog     Build ~/.apm/.catalog-build/catalog as the catalog package artifact
-  stage-catalog      Copy the generated catalog into ~/.apm/catalog and print its upstream ref
+  stage-catalog      Normalize ~/.apm/catalog, refresh the transitional mirror, and print its upstream ref
   register-catalog   Install the staged catalog by upstream ref after commit/push
   smoke-catalog      Smoke-test the generated catalog package via temp project install
   migrate-external   Register selected external skills by upstream reference
