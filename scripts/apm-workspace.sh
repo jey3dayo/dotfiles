@@ -317,13 +317,13 @@ write_catalog_readme() {
   cat >"$destination_dir/README.md" <<EOF
 # $CATALOG_DIR_NAME
 
-This directory is the managed catalog source of truth for the global APM workspace.
+This directory contains the managed catalog for the global APM workspace.
 
 - Edit skills in \`~/.apm/catalog/.apm/skills/<id>/\`
 - Edit shared guidance in \`~/.apm/catalog/AGENTS.md\`, \`agents/**\`, \`commands/**\`, and \`rules/**\`
 - \`skills\` live under \`.apm/skills/**\` because they are installable APM package content
 - \`commands/**\` stays top-level because it is runtime-synced shared guidance, not nested skill package content
-- \`mise run stage-catalog\` normalizes this tracked package in place before commit/push
+- Edit this directory directly, then run \`mise run stage-catalog\` before commit/push
 - Install ref: \`jey3dayo/apm-workspace/catalog#main\`
 EOF
 }
@@ -869,25 +869,6 @@ EOF
   fail "Could not find external skill '$skill_id' in source '$source_name'"
 }
 
-copy_external_skill() {
-  source_dir="$1"
-  skill_id="$2"
-  package_relative_path=$(skill_id_to_manifest_path "$skill_id")
-  destination_dir="$PACKAGES_DIR/$package_relative_path"
-  destination_parent=$(dirname "$destination_dir")
-
-  if [ -e "$destination_dir" ]; then
-    if [ "${APM_MIGRATE_FORCE:-0}" != "1" ]; then
-      fail "$destination_dir already exists. Set APM_MIGRATE_FORCE=1 to replace it."
-    fi
-    rm -rf "$destination_dir"
-  fi
-
-  mkdir -p "$destination_parent"
-  cp -R "$source_dir" "$destination_dir"
-  printf '%s\n' "$package_relative_path"
-}
-
 relative_file_list() {
   root_dir="$1"
   if [ ! -d "$root_dir" ]; then
@@ -1379,7 +1360,7 @@ cmd_validate_catalog() {
   rm -rf "$expected_dir"
 
   if ! manifest_has_catalog_reference; then
-    error "Global apm.yml is missing the tracked catalog ref"
+    error "Global apm.yml is missing the managed catalog ref"
     has_failure=1
   fi
 
@@ -1474,7 +1455,7 @@ cmd_stage_catalog() {
   cp -R "$(catalog_build_dir)"/. "$tracked_dir"
 
   reference=$(tracked_catalog_reference)
-  log "Staged repo-tracked catalog at $tracked_dir"
+  log "Updated ~/.apm/catalog at $tracked_dir"
   log "Candidate upstream ref: $reference"
   log "Push the updated apm-workspace repo before using 'apm install -g $reference'."
 }
@@ -1495,6 +1476,38 @@ cmd_register_catalog() {
   normalize_workspace_gitignore
   sync_managed_catalog_runtime_assets
   log "Registered catalog from upstream ref: $reference"
+}
+
+assert_catalog_release_ready() {
+  local dirty tracking_info remote_name branch_name upstream unpushed
+
+  ensure_workspace_repo
+
+  dirty=$(git -C "$WORKSPACE_DIR" status --porcelain 2>/dev/null) || fail "Failed to inspect git status for $WORKSPACE_DIR"
+  if [[ -n "${dirty//$'\n'/}" ]]; then
+    fail "Working tree is dirty after stage-catalog. Commit or stash changes, push the branch, then rerun catalog:release."
+  fi
+
+  tracking_info=$(get_workspace_tracking_info)
+  remote_name=${tracking_info%% *}
+  branch_name=${tracking_info##* }
+  upstream="$remote_name/$branch_name"
+
+  unpushed=$(git -C "$WORKSPACE_DIR" rev-list "$upstream..HEAD" 2>/dev/null) || fail "Failed to compare HEAD against $upstream"
+  if [[ -n "${unpushed//$'\n'/}" ]]; then
+    fail "Branch has commits not on $upstream. Push before running catalog:release."
+  fi
+}
+
+cmd_release_catalog() {
+  require_apm
+  ensure_workspace_repo
+  ensure_workspace_scaffold
+  ensure_workspace_mise_file
+
+  cmd_stage_catalog "$@"
+  assert_catalog_release_ready
+  cmd_register_catalog "$@"
 }
 
 cmd_smoke_catalog() {
@@ -1616,17 +1629,6 @@ EOF
   cmd_pin_external
 }
 
-cmd_smoke() {
-  require_command bash
-  require_command pwsh
-  bash -n "$REPO_ROOT/scripts/apm-workspace.sh"
-  pwsh -NoProfile -ExecutionPolicy Bypass -File "$REPO_ROOT/scripts/apm-workspace.ps1" help >/dev/null
-  if [ ! -f "$MISE_TEMPLATE" ]; then
-    fail "Missing workspace mise template: $MISE_TEMPLATE"
-  fi
-  grep -qF "$MANAGED_MISE_MARKER" "$MISE_TEMPLATE"
-}
-
 cmd_help() {
   cat <<EOF
 Usage: scripts/apm-workspace.sh <command> [args...]
@@ -1639,14 +1641,14 @@ Commands:
   list               Show APM global dependencies
   pin-external       Pin external manifest refs to lockfile commits
   validate           Validate the ~/.apm workspace
-  validate-catalog   Fail when the tracked catalog is not normalized or missing required assets
+  validate-catalog   Fail when ~/.apm/catalog is not normalized or missing required assets
   doctor             Print workspace and target state
   bundle-catalog     Build ~/.apm/.catalog-build/catalog as the catalog package artifact
-  stage-catalog      Normalize ~/.apm/catalog in place and print its upstream ref
-  register-catalog   Install the staged catalog by upstream ref after commit/push
+  stage-catalog      Rewrite ~/.apm/catalog into its normalized publishable layout and print its upstream ref
+  register-catalog   Install the catalog ref after commit/push
+  release-catalog    Stage, require a clean pushed branch, then install the catalog ref
   smoke-catalog      Smoke-test the generated catalog package via temp project install
   migrate-external   Register selected external skills by upstream reference
-  smoke              Validate script syntax and workspace template wiring
 
 Environment overrides:
   APM_WORKSPACE_DIR
@@ -1654,7 +1656,6 @@ Environment overrides:
   APM_WORKSPACE_NAME
   APM_CODEX_OUTPUT
   APM_BOOTSTRAP_FORCE_MISE=1
-  APM_MIGRATE_FORCE=1
 EOF
 }
 
@@ -1671,9 +1672,9 @@ case "$COMMAND" in
   bundle-catalog) cmd_bundle_catalog "$@" ;;
   stage-catalog) cmd_stage_catalog "$@" ;;
   register-catalog) cmd_register_catalog "$@" ;;
+  release-catalog) cmd_release_catalog "$@" ;;
   smoke-catalog) cmd_smoke_catalog "$@" ;;
   migrate-external) cmd_migrate_external "$@" ;;
-  smoke) cmd_smoke ;;
   help|-h|--help) cmd_help ;;
   *)
     fail "unknown command: $COMMAND"

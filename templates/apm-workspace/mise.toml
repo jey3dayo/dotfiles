@@ -25,27 +25,27 @@ run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" doct
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 doctor"
 
 [tasks.validate]
-description = "Validate the ~/.apm workspace and tracked catalog wiring"
+description = "Validate the ~/.apm workspace and managed catalog wiring"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 validate"
 
 [tasks.validate-catalog]
-description = "Fail when the tracked catalog and managed source tree drift"
+description = "Fail when the managed catalog package is not normalized or missing required assets"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" validate-catalog"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 validate-catalog"
 
 [tasks.stage-catalog]
-description = "Normalize the tracked catalog package in ~/.apm/catalog"
+description = "Normalize `catalog/` in place inside ~/.apm"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" stage-catalog"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 stage-catalog"
 
 [tasks.register-catalog]
-description = "Install the tracked catalog package by upstream ref"
+description = "Install the managed catalog package by upstream ref"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" register-catalog"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 register-catalog"
 
 [tasks.smoke-catalog]
-description = "Smoke-test the generated catalog package via a temp install"
+description = "Smoke-test the generated managed catalog package via a temp install"
 run = "sh \"${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh\" smoke-catalog"
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 smoke-catalog"
 
@@ -122,8 +122,16 @@ mise run doctor
 """
 run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"mise run format; mise run ci:check; mise run apply; mise run doctor\""
 
+[tasks."catalog:release"]
+description = "Run local CI, require a clean pushed branch, then register the managed catalog"
+run = """
+mise run ci
+sh "${APM_BOOTSTRAP_REPO:-$HOME/.config}/scripts/apm-workspace.sh" release-catalog
+"""
+run_windows = "powershell -NoProfile -ExecutionPolicy Bypass -Command \"& mise run ci; if (-not $?) { exit $LASTEXITCODE }; & powershell -NoProfile -ExecutionPolicy Bypass -File %USERPROFILE%\\.config\\scripts\\apm-workspace.ps1 release-catalog; exit $LASTEXITCODE\""
+
 [tasks."catalog:tidy"]
-description = "Refresh, validate, and inspect the tracked catalog package"
+description = "Refresh, validate, and inspect the managed catalog package"
 run = """
 mise run stage-catalog
 mise run validate-catalog

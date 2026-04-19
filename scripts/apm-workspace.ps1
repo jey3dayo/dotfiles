@@ -939,13 +939,13 @@ function Get-CatalogReadmeContent {
   return @(
     '# catalog',
     '',
-    'This directory is the managed catalog source of truth for the global APM workspace.',
+    'This directory contains the managed catalog for the global APM workspace.',
     '',
     '- Edit skills in `~/.apm/catalog/.apm/skills/<id>/`',
     '- Edit shared guidance in `~/.apm/catalog/AGENTS.md`, `agents/**`, `commands/**`, and `rules/**`',
     '- `skills` live under `.apm/skills/**` because they are installable APM package content',
     '- `commands/**` stays top-level because it is runtime-synced shared guidance, not nested skill package content',
-    '- `mise run stage-catalog` normalizes this tracked package in place before commit/push',
+    '- Edit this directory directly, then run `mise run stage-catalog` before commit/push',
     '- Install ref: `jey3dayo/apm-workspace/catalog#main`'
   ) -join [Environment]::NewLine
 }
@@ -1099,7 +1099,7 @@ function Invoke-ValidateCatalog {
   }
 
   if (-not (Test-ManifestHasCatalogReference)) {
-    Write-ErrorLine "Global apm.yml is missing the tracked catalog ref"
+    Write-ErrorLine "Global apm.yml is missing the managed catalog ref"
     $hasFailure = $true
   }
 
@@ -1435,7 +1435,7 @@ function Invoke-StageCatalog {
   Copy-DirectoryContents -SourceDir (Get-CatalogBuildDir) -DestinationDir $trackedDir
 
   $reference = Get-TrackedCatalogReference
-  Write-Host "Staged repo-tracked catalog at $trackedDir"
+  Write-Host "Updated ~/.apm/catalog at $trackedDir"
   Write-Host "Candidate upstream ref: $reference"
   Write-Host "Push the updated apm-workspace repo before using 'apm install -g $reference'."
 }
@@ -1460,6 +1460,43 @@ function Invoke-RegisterCatalog {
   Normalize-WorkspaceGitignore
   Sync-ManagedCatalogRuntimeAssets
   Write-Host "Registered catalog from upstream ref: $reference"
+}
+
+function Assert-CatalogReleaseReady {
+  Ensure-WorkspaceRepo
+
+  $dirty = & git -C $WorkspaceDir status --porcelain 2>$null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to inspect git status for $WorkspaceDir"
+  }
+  if (-not [string]::IsNullOrWhiteSpace(($dirty | Out-String))) {
+    throw "Working tree is dirty after stage-catalog. Commit or stash changes, push the branch, then rerun catalog:release."
+  }
+
+  $tracking = Get-WorkspaceTrackingInfo
+  $upstream = "{0}/{1}" -f $tracking.RemoteName, $tracking.BranchName
+  $unpushed = & git -C $WorkspaceDir rev-list "$upstream..HEAD" 2>$null
+  if ($LASTEXITCODE -ne 0) {
+    throw "Failed to compare HEAD against $upstream"
+  }
+  if (-not [string]::IsNullOrWhiteSpace(($unpushed | Out-String))) {
+    throw "Branch has commits not on $upstream. Push before running catalog:release."
+  }
+}
+
+function Invoke-ReleaseCatalog {
+  param(
+    [string[]]$RequestedSkillIds
+  )
+
+  Require-Apm
+  Ensure-WorkspaceRepo
+  Ensure-WorkspaceScaffold
+  Ensure-WorkspaceMiseFile
+
+  Invoke-StageCatalog -RequestedSkillIds $RequestedSkillIds
+  Assert-CatalogReleaseReady
+  Invoke-RegisterCatalog -RequestedSkillIds $RequestedSkillIds
 }
 
 function Invoke-SmokeCatalog {
@@ -1937,6 +1974,10 @@ switch ($Command) {
     Invoke-RegisterCatalog -RequestedSkillIds $CommandArgs
   }
 
+  "release-catalog" {
+    Invoke-ReleaseCatalog -RequestedSkillIds $CommandArgs
+  }
+
   "smoke-catalog" {
     Invoke-SmokeCatalog -RequestedSkillIds $CommandArgs
   }
@@ -1957,14 +1998,14 @@ Commands:
   list               Show APM global dependencies
   pin-external       Pin external manifest refs to lockfile commits
   validate           Validate the ~/.apm workspace
-  validate-catalog   Fail when the tracked catalog is not normalized or missing required assets
+  validate-catalog   Fail when ~/.apm/catalog is not normalized or missing required assets
   doctor             Print workspace and target state
   bundle-catalog     Build ~/.apm/.catalog-build/catalog as the catalog package artifact
-  stage-catalog      Normalize ~/.apm/catalog in place and print its upstream ref
-  register-catalog   Install the staged catalog by upstream ref after commit/push
+  stage-catalog      Rewrite ~/.apm/catalog into its normalized publishable layout and print its upstream ref
+  register-catalog   Install the catalog ref after commit/push
+  release-catalog    Stage, require a clean pushed branch, then install the catalog ref
   smoke-catalog      Smoke-test the generated catalog package via temp project install
   migrate-external   Register selected external skills by upstream reference
-  smoke              Validate script syntax and workspace template wiring
 
 Environment overrides:
   APM_WORKSPACE_DIR
@@ -1972,30 +2013,7 @@ Environment overrides:
   APM_WORKSPACE_NAME
   APM_CODEX_OUTPUT
   APM_BOOTSTRAP_FORCE_MISE=1
-  APM_MIGRATE_FORCE=1
 "@ | Write-Host
-  }
-
-  "smoke" {
-    Push-Location $RepoRoot
-    try {
-      & bash -n ./scripts/apm-workspace.sh
-      if ($LASTEXITCODE -ne 0) {
-        throw "bash syntax check failed."
-      }
-    }
-    finally {
-      Pop-Location
-    }
-
-    if (-not (Test-Path -LiteralPath $MiseTemplate)) {
-      throw "Missing workspace mise template: $MiseTemplate"
-    }
-
-    $templateContent = Get-Content -LiteralPath $MiseTemplate -Raw
-    if (-not $templateContent.Contains($ManagedMiseMarker)) {
-      throw "Workspace mise template is missing the managed marker."
-    }
   }
 
   default {
