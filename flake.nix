@@ -12,52 +12,6 @@
       url = "github:hercules-ci/gitignore.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Agent-skills external sources (flake = false: raw git repos)
-    # NOTE: These must be manually kept in sync with nix/agent-skills-sources.nix
-    #       Flake spec requires literal inputs - dynamic generation not allowed
-    #       agent-skills-sources.nix remains the SSoT for baseDir and selection metadata
-    heyvhuang-ship-faster = {
-      url = "github:Heyvhuang/ship-faster";
-      flake = false;
-    };
-    lum1104-understand-anything = {
-      url = "github:Lum1104/Understand-Anything";
-      flake = false;
-    };
-    obra-superpowers = {
-      url = "github:obra/superpowers";
-      flake = false;
-    };
-    openai-codex-plugin-cc = {
-      url = "github:openai/codex-plugin-cc";
-      flake = false;
-    };
-    openai-skills = {
-      url = "github:openai/skills";
-      flake = false;
-    };
-    trailofbits-audit-context-building = {
-      url = "github:trailofbits/skills";
-      flake = false;
-    };
-    trailofbits-sharp-edges = {
-      url = "github:trailofbits/skills";
-      flake = false;
-    };
-    trailofbits-static-analysis = {
-      url = "github:trailofbits/skills";
-      flake = false;
-    };
-    vercel-agent-browser = {
-      url = "github:vercel-labs/agent-browser";
-      flake = false;
-    };
-    vercel-agent-skills = {
-      url = "github:vercel-labs/agent-skills";
-      flake = false;
-    };
-    # END Agent-skills external sources
   };
 
   outputs =
