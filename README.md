@@ -1,6 +1,6 @@
 # Personal Dotfiles
 
-最終更新: 2026-03-23
+最終更新: 2026-04-20
 対象: 開発者
 タグ: `category/setup`, `layer/core`, `environment/cross-platform`, `audience/developer`
 
@@ -11,12 +11,14 @@ High-performance development environment tuned for speed, consistency, and devel
 - Declarative Configuration: Home Manager-based deployment with automatic environment detection (CI/Pi/Default)
 - Performance-first dotfiles with local CI parity (`mise run ci`) before merges
 - Documentation centralized in `docs/` with navigation at `docs/README.md` and AI context in `.kiro/steering/`
+- LLM/AI entrypoint available at `llms.md`, with project rules rooted in `AGENTS.md`
 - Modular stack: Zsh (6-tier), Neovim (Lazy.nvim), WezTerm (tmux-style) with FZF-backed Git widgets
 - Versioning via Mise + Homebrew; AI/CLI helpers documented in `CLAUDE.md` and `.claude/`
 
 ## Documentation Map
 
 - Navigation: `docs/README.md`
+- LLM/AI entrypoint: `llms.md`
 - Setup (SST): `docs/setup.md`
 - Performance metrics/history: `docs/performance.md`
 - Maintenance cadence & troubleshooting: `docs/tools/workflows.md`

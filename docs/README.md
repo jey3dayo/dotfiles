@@ -1,10 +1,12 @@
 # 📖 Documentation Navigation
 
-最終更新: 2026-04-18
+最終更新: 2026-04-20
 対象: 開発者
 タグ: `category/guide`, `layer/support`, `environment/macos`, `audience/developer`
 
 dotfiles プロジェクトのドキュメント体系へのナビゲーションガイドです。
+
+人間向けの詳細手順は `docs/` を参照し、LLM/AI エージェント向けの最小入口はリポジトリ直下の `llms.md` を参照します。
 
 ## 🎯 ドキュメント階層
 
@@ -77,6 +79,7 @@ Location: `docs/`
 ## 🔗 External References
 
 - [Main README](../README.md) - ユーザー向け概要
+- [LLM Context](../llms.md) - LLM/AI エージェント向けの最小入口
 - [Steering Documents](../.kiro/steering/) - AI向け高レベルガイド
 - [TOOLS.md](../TOOLS.md) - 管理対象ツール一覧
 
