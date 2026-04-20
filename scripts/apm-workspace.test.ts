@@ -50,6 +50,12 @@ describe("scripts/apm-workspace.sh regression checks", () => {
     expect(script).not.toContain("get_workspace_tracking_info");
   });
 
+  it("parses tracking info with the control-character delimiter in release-catalog checks", () => {
+    const script = read(scriptPath);
+    expect(script).toContain(`remote_name=\${tracking_info%%"$(printf '\\036')"*}`);
+    expect(script).toContain(`branch_name=\${tracking_info#*"$(printf '\\036')"}`);
+  });
+
   it("defines the error logger used by validate-catalog", () => {
     const script = read(scriptPath);
     expect(script).toContain("error() {");

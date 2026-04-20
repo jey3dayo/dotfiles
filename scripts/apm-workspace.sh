@@ -1498,8 +1498,8 @@ assert_catalog_release_ready() {
   fi
 
   tracking_info=$(workspace_tracking_info)
-  remote_name=${tracking_info%% *}
-  branch_name=${tracking_info##* }
+  remote_name=${tracking_info%%"$(printf '\036')"*}
+  branch_name=${tracking_info#*"$(printf '\036')"}
   upstream="$remote_name/$branch_name"
 
   unpushed=$(git -C "$WORKSPACE_DIR" rev-list "$upstream..HEAD" 2>/dev/null) || fail "Failed to compare HEAD against $upstream"

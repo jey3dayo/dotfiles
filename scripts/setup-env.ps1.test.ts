@@ -36,7 +36,7 @@ const resolvePowerShellCommand = (): string | null => {
 };
 
 const shellCommand = resolvePowerShellCommand();
-const describeSetupEnvPs1 = isWindows && shellCommand != null ? describe : describe.skip;
+const describeSetupEnvPs1 = isWindows ? describe : describe.skip;
 
 describeSetupEnvPs1("scripts/setup-env.ps1", () => {
   it("allows concurrent runs without false failures", () => {
