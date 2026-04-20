@@ -89,7 +89,7 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libreadline-dev libncurses5-dev
+          sudo apt-get install -y zsh libreadline-dev libncurses5-dev
 
       - name: Import Node.js release key
         run: |
