@@ -5,7 +5,6 @@ paths:
   - "home.nix"
   - "scripts/apm-workspace.ps1"
   - "scripts/apm-workspace.sh"
-  - "templates/apm-workspace/mise.toml"
   - "docs/tools/apm-workspace.md"
   - "docs/tools/home-manager.md"
 ---

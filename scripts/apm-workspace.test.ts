@@ -10,21 +10,39 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 const scriptPath = path.join(repoRoot, "scripts", "apm-workspace.sh");
+const powershellScriptPath = path.join(repoRoot, "scripts", "apm-workspace.ps1");
 const bootstrapTaskPath = path.join(repoRoot, "mise", "tasks", "agents.toml");
-const workspaceMiseTemplatePath = path.join(repoRoot, "templates", "apm-workspace", "mise.toml");
+const validateWorkflowPath = path.join(repoRoot, ".github", "workflows", "validate.yml");
 const isWindows = process.platform === "win32";
-const bootstrapRepoRef = `\${APM_BOOTSTRAP_REPO:-$HOME/.config}`;
 
 const read = (filePath: string) => fs.readFileSync(filePath, "utf8");
 
 describe("scripts/apm-workspace.sh regression checks", () => {
-  it("is invoked through bash by bootstrap tasks and workspace tasks", () => {
+  it("is invoked through bash by bootstrap tasks", () => {
     expect(read(bootstrapTaskPath)).toContain('run = "bash ./scripts/apm-workspace.sh bootstrap"');
+  });
 
-    const template = read(workspaceMiseTemplatePath);
-    expect(template).toContain(`run = "bash \\"${bootstrapRepoRef}/scripts/apm-workspace.sh\\" apply"`);
-    expect(template).toContain(`run = "bash \\"${bootstrapRepoRef}/scripts/apm-workspace.sh\\" migrate-external"`);
-    expect(template).toContain(`bash "${bootstrapRepoRef}/scripts/apm-workspace.sh" release-catalog`);
+  it("does not depend on a workspace mise template anymore", () => {
+    const script = read(scriptPath);
+    const powershellScript = read(powershellScriptPath);
+    const workflow = read(validateWorkflowPath);
+
+    expect(script).not.toContain("MISE_TEMPLATE=");
+    expect(script).not.toContain("MANAGED_MISE_MARKER=");
+    expect(powershellScript).not.toContain("$MiseTemplate =");
+    expect(powershellScript).not.toContain("$ManagedMiseMarker =");
+    expect(workflow).not.toContain('templates/apm-workspace/mise.toml');
+    expect(workflow).not.toContain("# Managed by ~/.config bootstrap");
+  });
+
+  it("does not expose inject-mise anymore", () => {
+    const script = read(scriptPath);
+    const powershellScript = read(powershellScriptPath);
+
+    expect(script).not.toContain("cmd_inject_mise()");
+    expect(script).not.toContain("inject-mise)");
+    expect(powershellScript).not.toContain('"inject-mise" {');
+    expect(powershellScript).not.toContain("inject-mise        ");
   });
 
   it("uses a bash shebang", () => {
@@ -41,6 +59,7 @@ describe("scripts/apm-workspace.sh regression checks", () => {
       expect(result.error).toBeUndefined();
       expect(result.status).toBe(0);
       expect(result.stdout).toContain("Usage: scripts/apm-workspace.sh <command> [args...]");
+      expect(result.stdout).not.toContain("inject-mise");
     });
   }
 

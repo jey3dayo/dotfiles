@@ -14,11 +14,9 @@ $WorkspaceDir = if ($env:APM_WORKSPACE_DIR) { $env:APM_WORKSPACE_DIR } else { Jo
 $WorkspaceRepo = if ($env:APM_WORKSPACE_REPO) { $env:APM_WORKSPACE_REPO } else { "https://github.com/jey3dayo/apm-workspace.git" }
 $ExternalSourcesFile = Join-Path $RepoRoot "nix\agent-skills-sources.nix"
 $CodexOutput = if ($env:APM_CODEX_OUTPUT) { $env:APM_CODEX_OUTPUT } else { Join-Path $HOME ".codex\AGENTS.md" }
-$MiseTemplate = Join-Path $RepoRoot "templates\apm-workspace\mise.toml"
 $MiseDestination = Join-Path $WorkspaceDir "mise.toml"
 $CatalogBuildRootDir = Join-Path $WorkspaceDir ".catalog-build"
 $CatalogDirName = "catalog"
-$ManagedMiseMarker = "# Managed by ~/.config bootstrap"
 
 function Test-CommandAvailable {
   param(
@@ -437,30 +435,9 @@ function Refresh-WorkspaceCheckout {
 }
 
 function Ensure-WorkspaceMiseFile {
-  if (-not (Test-Path -LiteralPath $MiseTemplate)) {
-    throw "Missing mise template: $MiseTemplate"
-  }
-
   if (-not (Test-Path -LiteralPath $MiseDestination)) {
-    Copy-Item -LiteralPath $MiseTemplate -Destination $MiseDestination -Force
-    Write-Host "Installed workspace mise.toml: $MiseDestination"
-    return
+    throw "Missing workspace mise.toml: $MiseDestination"
   }
-
-  $content = Get-Content -LiteralPath $MiseDestination -Raw
-  if ($content.Contains($ManagedMiseMarker)) {
-    Copy-Item -LiteralPath $MiseTemplate -Destination $MiseDestination -Force
-    Write-Host "Refreshed managed workspace mise.toml: $MiseDestination"
-    return
-  }
-
-  if ($env:APM_BOOTSTRAP_FORCE_MISE -eq "1") {
-    Copy-Item -LiteralPath $MiseTemplate -Destination $MiseDestination -Force
-    Write-Host "Replaced workspace mise.toml due to APM_BOOTSTRAP_FORCE_MISE=1"
-    return
-  }
-
-  Write-WarnLine "$MiseDestination already exists and is not managed by this repo; leaving it unchanged."
 }
 
 function Invoke-CodexCompile {
@@ -1981,11 +1958,6 @@ switch ($Command) {
     Write-Host "  mise run apply"
   }
 
-  "inject-mise" {
-    Ensure-WorkspaceRepo
-    Ensure-WorkspaceMiseFile
-  }
-
   "apply" {
     Invoke-Apply
   }
@@ -2044,7 +2016,6 @@ Usage: scripts/apm-workspace.ps1 <command> [args...]
 
 Commands:
   bootstrap          Ensure ~/.apm checkout + apm.yml + mise.toml are ready
-  inject-mise        Copy or refresh the managed ~/.apm/mise.toml template
   apply              Deploy user-scope-compatible dependencies and compile Codex output
   update             Pull clean checkout, update deps, then apply
   list               Show APM global dependencies
@@ -2064,7 +2035,6 @@ Environment overrides:
   APM_WORKSPACE_REPO
   APM_WORKSPACE_NAME
   APM_CODEX_OUTPUT
-  APM_BOOTSTRAP_FORCE_MISE=1
 "@ | Write-Host
   }
 

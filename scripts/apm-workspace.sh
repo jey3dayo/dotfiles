@@ -11,11 +11,9 @@ WORKSPACE_DIR="${APM_WORKSPACE_DIR:-$HOME/.apm}"
 WORKSPACE_REPO="${APM_WORKSPACE_REPO:-https://github.com/jey3dayo/apm-workspace.git}"
 EXTERNAL_SOURCES_FILE="$REPO_ROOT/nix/agent-skills-sources.nix"
 CODEX_OUTPUT="${APM_CODEX_OUTPUT:-$HOME/.codex/AGENTS.md}"
-MISE_TEMPLATE="$REPO_ROOT/templates/apm-workspace/mise.toml"
 MISE_DESTINATION="$WORKSPACE_DIR/mise.toml"
 CATALOG_BUILD_ROOT="$WORKSPACE_DIR/.catalog-build"
 CATALOG_DIR_NAME="catalog"
-MANAGED_MISE_MARKER="# Managed by ~/.config bootstrap"
 
 have_command() {
   command -v "$1" >/dev/null 2>&1
@@ -556,29 +554,9 @@ refresh_workspace_checkout() {
 }
 
 ensure_workspace_mise_file() {
-  if [ ! -f "$MISE_TEMPLATE" ]; then
-    fail "Missing mise template: $MISE_TEMPLATE"
-  fi
-
   if [ ! -f "$MISE_DESTINATION" ]; then
-    cp "$MISE_TEMPLATE" "$MISE_DESTINATION"
-    log "Installed workspace mise.toml: $MISE_DESTINATION"
-    return 0
+    fail "Missing workspace mise.toml: $MISE_DESTINATION"
   fi
-
-  if grep -qF "$MANAGED_MISE_MARKER" "$MISE_DESTINATION"; then
-    cp "$MISE_TEMPLATE" "$MISE_DESTINATION"
-    log "Refreshed managed workspace mise.toml: $MISE_DESTINATION"
-    return 0
-  fi
-
-  if [ "${APM_BOOTSTRAP_FORCE_MISE:-0}" = "1" ]; then
-    cp "$MISE_TEMPLATE" "$MISE_DESTINATION"
-    log "Replaced workspace mise.toml due to APM_BOOTSTRAP_FORCE_MISE=1"
-    return 0
-  fi
-
-  warn "$MISE_DESTINATION already exists and is not managed by this repo; leaving it unchanged."
 }
 
 compile_codex() {
@@ -942,11 +920,6 @@ cmd_bootstrap() {
   log "  mise install"
   log "  mise run migrate-external"
   log "  mise run apply"
-}
-
-cmd_inject_mise() {
-  ensure_workspace_repo
-  ensure_workspace_mise_file
 }
 
 apm_install_has_diagnostics_failure() {
@@ -1665,7 +1638,6 @@ Usage: scripts/apm-workspace.sh <command> [args...]
 
 Commands:
   bootstrap          Ensure ~/.apm checkout + apm.yml + mise.toml are ready
-  inject-mise        Copy or refresh the managed ~/.apm/mise.toml template
   apply              Deploy user-scope-compatible dependencies and compile Codex output
   update             Pull clean checkout, update deps, then apply
   list               Show APM global dependencies
@@ -1685,13 +1657,11 @@ Environment overrides:
   APM_WORKSPACE_REPO
   APM_WORKSPACE_NAME
   APM_CODEX_OUTPUT
-  APM_BOOTSTRAP_FORCE_MISE=1
 EOF
 }
 
 case "$COMMAND" in
   bootstrap) cmd_bootstrap "$@" ;;
-  inject-mise) cmd_inject_mise ;;
   apply) cmd_apply ;;
   update) cmd_update ;;
   list) cmd_list ;;
