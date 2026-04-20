@@ -61,4 +61,13 @@ describe("scripts/apm-workspace.sh regression checks", () => {
     expect(script).toContain("error() {");
     expect(script).toContain('    error "Tracked catalog manifest is missing: $tracked_manifest"');
   });
+
+  it("cleans up legacy superpowers skill aliases before reinstall", () => {
+    const script = read(scriptPath);
+    expect(script).toContain("legacy_internal_cleanup_alias()");
+    expect(script).toContain(`printf 'superpowers:%s\\n' "$skill_id"`);
+    expect(script).toContain('literal_target_path="$target_root/$skill_id"');
+    expect(script).toContain('cleanup_skill_ids=$(internal_cleanup_skill_ids "$skill_ids")');
+    expect(script).toContain('remove_internal_target_links "$cleanup_skill_ids"');
+  });
 });

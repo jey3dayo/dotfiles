@@ -601,7 +601,6 @@ internal_deploy_target_roots() {
 internal_target_skill_path() {
   target_root="$1"
   skill_id="$2"
-  validate_skill_id "$skill_id"
   path="$target_root"
   old_ifs=$IFS
   IFS=':'
@@ -615,6 +614,27 @@ internal_target_skill_path() {
   printf '%s\n' "$path"
 }
 
+legacy_internal_cleanup_alias() {
+  skill_id="$1"
+  case "$skill_id" in
+    brainstorming|dispatching-parallel-agents|executing-plans|finishing-a-development-branch|receiving-code-review|requesting-code-review|subagent-driven-development|systematic-debugging|test-driven-development|using-git-worktrees|using-superpowers|verification-before-completion|writing-plans|writing-skills)
+      printf 'superpowers:%s\n' "$skill_id"
+      ;;
+  esac
+}
+
+internal_cleanup_skill_ids() {
+  skill_ids="$1"
+
+  {
+    printf '%s\n' "$skill_ids"
+    printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
+      [ -n "$skill_id" ] || continue
+      legacy_internal_cleanup_alias "$skill_id"
+    done
+  } | awk 'NF && !seen[$0]++'
+}
+
 remove_internal_target_links() {
   skill_ids="$1"
 
@@ -624,12 +644,16 @@ remove_internal_target_links() {
     printf '%s\n' "$skill_ids" | while IFS= read -r skill_id; do
       [ -n "$skill_id" ] || continue
       target_path=$(internal_target_skill_path "$target_root" "$skill_id")
-      [ -e "$target_path" ] || continue
+      literal_target_path="$target_root/$skill_id"
 
-      if [ -L "$target_path" ]; then
-        rm -f "$target_path"
-        log "Removed existing symlink skill target before APM install: $target_path"
-      fi
+      for candidate_path in "$literal_target_path" "$target_path"; do
+        [ -e "$candidate_path" ] || continue
+
+        if [ -L "$candidate_path" ]; then
+          rm -f "$candidate_path"
+          log "Removed existing symlink skill target before APM install: $candidate_path"
+        fi
+      done
     done
   done
 }
@@ -959,12 +983,14 @@ cmd_apply() {
   ensure_workspace_repo
   ensure_workspace_scaffold
   cmd_validate_catalog
+  skill_ids=$(managed_skill_ids)
+  cleanup_skill_ids=$(internal_cleanup_skill_ids "$skill_ids")
 
   if manifest_has_local_packages; then
     fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Remove local package refs from ~/.apm/apm.yml and keep the global manifest on upstream refs such as jey3dayo/apm-workspace/catalog#main."
   fi
 
-  remove_internal_target_links "$(managed_skill_ids)"
+  remove_internal_target_links "$cleanup_skill_ids"
   run_workspace_install_command -g
   normalize_workspace_gitignore
   compile_codex
@@ -977,12 +1003,14 @@ cmd_update() {
   refresh_workspace_checkout
   ensure_workspace_scaffold
   cmd_validate_catalog
+  skill_ids=$(managed_skill_ids)
+  cleanup_skill_ids=$(internal_cleanup_skill_ids "$skill_ids")
 
   if manifest_has_local_packages; then
     fail "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Update stopped before user-scope install; remove local package refs from ~/.apm/apm.yml first."
   fi
 
-  remove_internal_target_links "$(managed_skill_ids)"
+  remove_internal_target_links "$cleanup_skill_ids"
   (
     cd "$WORKSPACE_DIR"
     apm deps update -g
@@ -1459,13 +1487,14 @@ cmd_stage_catalog() {
 cmd_register_catalog() {
   require_apm
   skill_ids=$(managed_skill_ids)
+  cleanup_skill_ids=$(internal_cleanup_skill_ids "$skill_ids")
   ensure_workspace_repo
   ensure_workspace_scaffold
   ensure_workspace_mise_file
   assert_tracked_catalog_published
   cmd_validate_catalog
 
-  remove_internal_target_links "$skill_ids"
+  remove_internal_target_links "$cleanup_skill_ids"
 
   reference=$(tracked_catalog_reference)
   run_workspace_install_command -g "$reference"

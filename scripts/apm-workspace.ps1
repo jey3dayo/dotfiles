@@ -689,7 +689,7 @@ function Invoke-Apply {
     throw "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Remove local package refs from ~/.apm/apm.yml and keep the global manifest on upstream refs such as jey3dayo/apm-workspace/catalog#main."
   }
 
-  Remove-InternalTargetReparsePoints -SkillIds @(Get-ManagedSkillIds)
+  Remove-InternalTargetReparsePoints -SkillIds @(Get-InternalCleanupSkillIds)
   Invoke-WorkspaceInstallCommand -InstallArgs @("-g")
   Normalize-WorkspaceGitignore
   Invoke-CodexCompile
@@ -707,7 +707,7 @@ function Invoke-Update {
     throw "apm 0.8.11 cannot deploy ./packages/* dependencies at user scope yet. Update stopped before user-scope install; remove local package refs from ~/.apm/apm.yml first."
   }
 
-  Remove-InternalTargetReparsePoints -SkillIds @(Get-ManagedSkillIds)
+  Remove-InternalTargetReparsePoints -SkillIds @(Get-InternalCleanupSkillIds)
   & apm deps update -g
   if ($LASTEXITCODE -ne 0) {
     throw "apm deps update -g failed."
@@ -1187,6 +1187,52 @@ function Get-InternalTargetSkillPath {
   return $path
 }
 
+function Get-LegacyInternalCleanupAlias {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SkillId
+  )
+
+  if ($SkillId -in @(
+      "brainstorming",
+      "dispatching-parallel-agents",
+      "executing-plans",
+      "finishing-a-development-branch",
+      "receiving-code-review",
+      "requesting-code-review",
+      "subagent-driven-development",
+      "systematic-debugging",
+      "test-driven-development",
+      "using-git-worktrees",
+      "using-superpowers",
+      "verification-before-completion",
+      "writing-plans",
+      "writing-skills"
+    )) {
+    return "superpowers:$SkillId"
+  }
+
+  return $null
+}
+
+function Get-InternalCleanupSkillIds {
+  $result = New-Object System.Collections.Generic.List[string]
+  $seen = New-Object 'System.Collections.Generic.HashSet[string]'
+
+  foreach ($skillId in (Get-ManagedSkillIds)) {
+    if ($seen.Add($skillId)) {
+      $result.Add($skillId)
+    }
+
+    $legacyAlias = Get-LegacyInternalCleanupAlias -SkillId $skillId
+    if (-not [string]::IsNullOrWhiteSpace($legacyAlias) -and $seen.Add($legacyAlias)) {
+      $result.Add($legacyAlias)
+    }
+  }
+
+  return $result.ToArray()
+}
+
 function Remove-InternalTargetReparsePoints {
   param(
     [Parameter(Mandatory = $true)]
@@ -1199,20 +1245,26 @@ function Remove-InternalTargetReparsePoints {
     }
 
     foreach ($skillId in $SkillIds) {
-      $targetPath = Get-InternalTargetSkillPath -TargetRoot $targetRoot -SkillId $skillId
-      if (-not (Test-Path -LiteralPath $targetPath)) {
-        continue
-      }
+      $candidatePaths = @(
+        (Join-Path $targetRoot $skillId),
+        (Get-InternalTargetSkillPath -TargetRoot $targetRoot -SkillId $skillId)
+      ) | Select-Object -Unique
 
-      $item = Get-Item -LiteralPath $targetPath -Force
-      if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
-        try {
-          Remove-Item -LiteralPath $targetPath -Force -ErrorAction Stop
+      foreach ($targetPath in $candidatePaths) {
+        if (-not (Test-Path -LiteralPath $targetPath)) {
+          continue
         }
-        catch {
-          [System.IO.Directory]::Delete($targetPath, $false)
+
+        $item = Get-Item -LiteralPath $targetPath -Force
+        if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+          try {
+            Remove-Item -LiteralPath $targetPath -Force -ErrorAction Stop
+          }
+          catch {
+            [System.IO.Directory]::Delete($targetPath, $false)
+          }
+          Write-Host "Removed existing reparse-point skill target before APM install: $targetPath"
         }
-        Write-Host "Removed existing reparse-point skill target before APM install: $targetPath"
       }
     }
   }
@@ -1452,7 +1504,7 @@ function Invoke-RegisterCatalog {
   Assert-TrackedCatalogPublished
   Invoke-ValidateCatalog
 
-  $skillIds = @(Get-ManagedSkillIds)
+  $skillIds = @(Get-InternalCleanupSkillIds)
   Remove-InternalTargetReparsePoints -SkillIds $skillIds
 
   $reference = Get-TrackedCatalogReference
