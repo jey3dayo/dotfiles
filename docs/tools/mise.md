@@ -137,19 +137,19 @@ ci:full
 
 ### APM Global Skills
 
-agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config` 側は bootstrap と helper script だけを持ちます。
+agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config` 側は bootstrap helper だけを持ちます。
 
 - APM CLI 自体は `mise` 管理とし、`.config` と `~/.apm` の両方で `github:microsoft/apm` を pin する
 - `.config` 側の APM task は `apm:bootstrap` だけ
 - install / update / list / doctor / migrate-external は `cd ~/.apm && mise run ...` で行う
 - managed asset は `~/.apm/catalog/` を直接編集し、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy する
-- `migrate-external` は最後に `pin-external` を自動実行し、`apm.lock.yaml` の `resolved_commit` を使って external refs を `#sha` へ固定する
+- `migrate-external` を含む external 管理は `~/.apm` 側の task を正本にする
 - `doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示する
 - `apply` / `update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install する
 - `format`, `ci:check`, `ci`, `catalog:tidy` は `~/.apm` workspace を日常運用しやすくする補助 task として使う
 - install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱う
-- `pin-external`, `validate`, catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` にも残す。`validate-catalog` は workspace task としても公開する
 - catalog の validation や daily operation は `~/.apm` workspace 側 task を使う
+- `.config` 側の APM task は `apm:bootstrap` のみ公開する
 
 詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
 

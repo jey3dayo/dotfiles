@@ -97,9 +97,9 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 `agents.toml` で定義。
 
-| タスク          | 説明                                                                       |
-| --------------- | -------------------------------------------------------------------------- |
-| `apm:bootstrap` | `~/.apm` を clone or refresh し、`apm.yml` と managed `mise.toml` を揃える |
+| タスク          | 説明                                                                     |
+| --------------- | ------------------------------------------------------------------------ |
+| `apm:bootstrap` | `~/.apm` を clone or refresh し、`apm.yml` と `mise.toml` の存在を揃える |
 
 初回セットアップや復旧では `apm:bootstrap` を使い、日常の APM 操作は `~/.apm/mise.toml` 側で行う。  
 代表例:
@@ -117,11 +117,11 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 - `cd ~/.apm && mise run catalog:tidy`
 
 managed asset は `~/.apm/catalog/` を直接編集し、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy します。  
-`mise run migrate-external` は最後に `pin-external` を自動実行し、external refs を `#sha` へ寄せます。`pin-external` 自体は repair / manual cleanup 用の maintenance command です。  
+`mise run migrate-external` は `~/.apm` 側のフローとして external refs を更新します。  
 `mise run doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示します。  
 `mise run apply` / `mise run update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install します。  
 install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱います。  
-`validate` と catalog maintenance commands は `~/.config/scripts/apm-workspace.ps1|.sh` にも残ります。`validate-catalog` は `~/.apm/mise.toml` からも実行できます。
+`.config` 側の APM task は `apm:bootstrap` のみで、daily operation と validation は `~/.apm/mise.toml` 側で行います。
 
 ### Update
 
