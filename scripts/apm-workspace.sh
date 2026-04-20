@@ -617,7 +617,7 @@ internal_target_skill_path() {
 legacy_internal_cleanup_alias() {
   skill_id="$1"
   case "$skill_id" in
-    brainstorming|dispatching-parallel-agents|executing-plans|finishing-a-development-branch|receiving-code-review|requesting-code-review|subagent-driven-development|systematic-debugging|test-driven-development|using-git-worktrees|using-superpowers|verification-before-completion|writing-plans|writing-skills)
+    brainstorming | dispatching-parallel-agents | executing-plans | finishing-a-development-branch | receiving-code-review | requesting-code-review | subagent-driven-development | systematic-debugging | test-driven-development | using-git-worktrees | using-superpowers | verification-before-completion | writing-plans | writing-skills)
       printf 'superpowers:%s\n' "$skill_id"
       ;;
   esac
