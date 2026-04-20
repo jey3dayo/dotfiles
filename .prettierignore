@@ -8,6 +8,7 @@ tmux/plugins/
 fisher/
 zsh/.zinit/
 .worktrees/
+.claude/worktrees/
 result/
 result-*/
 codex/AGENTS.md

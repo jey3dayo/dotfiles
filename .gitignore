@@ -194,6 +194,7 @@ claude/*
 global_rules.md
 .aider*
 .plans/
+.claude/worktrees/
 
 ## Other AI Tools
 .sdd

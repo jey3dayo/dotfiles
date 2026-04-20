@@ -41,6 +41,7 @@ tsconfig.tsbuildinfo
 
 # Cache
 .zcompcache
+.claude/worktrees/
 
 # Project Specific
 lake.prd.cabi

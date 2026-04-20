@@ -143,6 +143,7 @@ describe("replace-bold-headings: directory exclusion", () => {
   const excludedDirs = [
     "node_modules",
     ".worktrees",
+    path.join(".claude", "worktrees"),
     ".kiro",
     ".luarocks",
     "fisher",

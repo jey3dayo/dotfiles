@@ -17,6 +17,7 @@
       "**/*.json",
       "!**/.config",
       "!**/.cache",
+      "!**/.claude/worktrees",
       "!**/dist",
       "!**/node_modules",
       "!**/.venv",

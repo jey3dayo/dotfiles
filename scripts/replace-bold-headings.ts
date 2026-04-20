@@ -272,7 +272,12 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
 const SKIP_DIR_NAMES = new Set(["node_modules", ".worktrees", ".kiro", ".luarocks", "fisher"]);
 
 // Path-suffix patterns (matched against the full path using endsWith-style suffix).
-const SKIP_PATH_SUFFIXES = [path.join("tmux", "plugins"), path.join("zsh", ".zinit"), path.join("agents", "external")];
+const SKIP_PATH_SUFFIXES = [
+  path.join(".claude", "worktrees"),
+  path.join("tmux", "plugins"),
+  path.join("zsh", ".zinit"),
+  path.join("agents", "external"),
+];
 
 function shouldSkipDir(fullPath: string): boolean {
   const name = path.basename(fullPath);

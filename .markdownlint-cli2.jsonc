@@ -23,6 +23,7 @@
     "zsh/.zinit/**",
     "opencode/skills/**",
     ".worktrees/**",
+    ".claude/worktrees/**",
     "result/**",
     ".kiro/**",
     ".luarocks/**",

@@ -5,6 +5,7 @@ fisher/
 zsh/.zinit/
 claude/local/node_modules/
 .worktrees/
+.claude/worktrees/
 result/
 result-*/
 

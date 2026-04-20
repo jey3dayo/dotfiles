@@ -1,5 +1,6 @@
 .git
 .worktrees
+.claude/worktrees
 .wrangler
 .vim
 raycast/extensions
