@@ -25,10 +25,6 @@
       url = "github:Lum1104/Understand-Anything";
       flake = false;
     };
-    nyosegawa-skills = {
-      url = "github:nyosegawa/skills";
-      flake = false;
-    };
     obra-superpowers = {
       url = "github:obra/superpowers";
       flake = false;
@@ -41,10 +37,6 @@
       url = "github:openai/skills";
       flake = false;
     };
-    trailofbits-agentic-actions-auditor = {
-      url = "github:trailofbits/skills";
-      flake = false;
-    };
     trailofbits-audit-context-building = {
       url = "github:trailofbits/skills";
       flake = false;
@@ -55,10 +47,6 @@
     };
     trailofbits-static-analysis = {
       url = "github:trailofbits/skills";
-      flake = false;
-    };
-    ui-ux-pro-max = {
-      url = "github:nextlevelbuilder/ui-ux-pro-max-skill";
       flake = false;
     };
     vercel-agent-browser = {

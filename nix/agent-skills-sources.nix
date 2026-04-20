@@ -39,17 +39,6 @@
       "agent-browser"
     ];
   };
-  ui-ux-pro-max = {
-    url = "github:nextlevelbuilder/ui-ux-pro-max-skill";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      ui-ux-pro-max = "."; # baseDir直下
-    };
-    selection.enable = [
-      "ui-ux-pro-max"
-    ];
-  };
   heyvhuang-ship-faster = {
     url = "github:Heyvhuang/ship-faster";
     flake = false;
@@ -60,17 +49,6 @@
     selection.enable = [
       "cloudflare"
       "tool-openclaw"
-    ];
-  };
-  nyosegawa-skills = {
-    url = "github:nyosegawa/skills";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      nyosegawa-skills = "skills";
-    };
-    selection.enable = [
-      "skill-auditor"
     ];
   };
   obra-superpowers = {
@@ -135,17 +113,6 @@
       "understand-diff"
       "understand-explain"
       "understand-onboard"
-    ];
-  };
-  trailofbits-agentic-actions-auditor = {
-    url = "github:trailofbits/skills";
-    flake = false;
-    baseDir = ".";
-    catalogs = {
-      trailofbits-agentic-actions-auditor = "plugins/agentic-actions-auditor/skills";
-    };
-    selection.enable = [
-      "agentic-actions-auditor"
     ];
   };
   trailofbits-audit-context-building = {

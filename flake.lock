@@ -106,22 +106,6 @@
         "type": "github"
       }
     },
-    "nyosegawa-skills": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1774023978,
-        "narHash": "sha256-Oj19Fr8JQqz4jykx9akIgau3pIf5hBW7nIL0EJNAMPw=",
-        "owner": "nyosegawa",
-        "repo": "skills",
-        "rev": "081a8e154d44c8230cd6b9f15e2aa444bf0115d5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nyosegawa",
-        "repo": "skills",
-        "type": "github"
-      }
-    },
     "obra-superpowers": {
       "flake": false,
       "locked": {
@@ -178,15 +162,12 @@
         "home-manager": "home-manager",
         "lum1104-understand-anything": "lum1104-understand-anything",
         "nixpkgs": "nixpkgs",
-        "nyosegawa-skills": "nyosegawa-skills",
         "obra-superpowers": "obra-superpowers",
         "openai-codex-plugin-cc": "openai-codex-plugin-cc",
         "openai-skills": "openai-skills",
-        "trailofbits-agentic-actions-auditor": "trailofbits-agentic-actions-auditor",
         "trailofbits-audit-context-building": "trailofbits-audit-context-building",
         "trailofbits-sharp-edges": "trailofbits-sharp-edges",
         "trailofbits-static-analysis": "trailofbits-static-analysis",
-        "ui-ux-pro-max": "ui-ux-pro-max",
         "vercel-agent-browser": "vercel-agent-browser",
         "vercel-agent-skills": "vercel-agent-skills"
       }
@@ -203,22 +184,6 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
-        "type": "github"
-      }
-    },
-    "trailofbits-agentic-actions-auditor": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1775055010,
-        "narHash": "sha256-GtRhjqoLa0tUKXEmJqVRk+sODEHx6FSESV9pPd0o03g=",
-        "owner": "trailofbits",
-        "repo": "skills",
-        "rev": "d7f76b532d1e4c6e7757e04d25c99ab60dd5e32c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "trailofbits",
-        "repo": "skills",
         "type": "github"
       }
     },
@@ -267,22 +232,6 @@
       "original": {
         "owner": "trailofbits",
         "repo": "skills",
-        "type": "github"
-      }
-    },
-    "ui-ux-pro-max": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1775192899,
-        "narHash": "sha256-tgGnZt6ITH8IDPqglNDC1JCt5ZkVMGcET9IbP0vITjo=",
-        "owner": "nextlevelbuilder",
-        "repo": "ui-ux-pro-max-skill",
-        "rev": "b7e3af80f6e331f6fb456667b82b12cade7c9d35",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nextlevelbuilder",
-        "repo": "ui-ux-pro-max-skill",
         "type": "github"
       }
     },
