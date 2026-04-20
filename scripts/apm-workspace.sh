@@ -645,117 +645,75 @@ parse_external_sources() {
     return 0
   fi
 
-  awk '
-    function flush_source(    has_catalogs, has_selection, line, n, parts, i, value, base_dir, id_prefix) {
-      if (current_name == "") {
+  python3 - "$EXTERNAL_SOURCES_FILE" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+source_path = Path(sys.argv[1])
+text = source_path.read_text(encoding="utf-8")
+lines = text.splitlines()
+
+depth = 0
+current_name = None
+current_lines = []
+
+
+def strip_comment(line: str) -> str:
+    return re.sub(r"#.*$", "", line)
+
+
+def emit_source(name: str, block_lines: list[str]) -> None:
+    sanitized = "\n".join(strip_comment(line) for line in block_lines)
+
+    url_match = re.search(r'^\s*url\s*=\s*"([^"]+)"\s*;', sanitized, re.M)
+    if not url_match:
         return
-      }
 
-      has_catalogs = 0
-      has_selection = 0
-      url = ""
-      base_dir = "."
-      id_prefix = ""
-      catalogs = ""
-      selected = ""
-      mode = ""
+    base_dir_match = re.search(r'^\s*baseDir\s*=\s*"([^"]+)"\s*;', sanitized, re.M)
+    id_prefix_match = re.search(r'^\s*idPrefix\s*=\s*"([^"]+)"\s*;', sanitized, re.M)
+    catalogs_match = re.search(r'^\s*catalogs\s*=\s*\{(.*?)^\s*\};', sanitized, re.M | re.S)
+    selection_match = re.search(r'selection\.enable\s*=\s*\[(.*?)\]', sanitized, re.S)
 
-      n = split(block, parts, "\n")
-      for (i = 1; i <= n; i++) {
-        line = parts[i]
-        sub(/[[:space:]]*#.*/, "", line)
+    if not catalogs_match or not selection_match:
+        return
 
-        if (mode == "catalogs") {
-          if (line ~ /^[[:space:]]*};/) {
-            mode = ""
-            continue
-          }
-          if (match(line, /^[[:space:]]*([A-Za-z0-9._-]+)[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*;/, m)) {
-            if (catalogs != "") {
-              catalogs = catalogs "\034"
-            }
-            catalogs = catalogs m[1] "\035" m[2]
-            has_catalogs = 1
-          }
-          continue
-        }
+    catalogs = []
+    for match in re.finditer(r'^\s*([A-Za-z0-9._-]+)\s*=\s*"([^"]+)"\s*;', catalogs_match.group(1), re.M):
+        catalogs.append(f"{match.group(1)}\035{match.group(2)}")
 
-        if (mode == "selection") {
-          if (line ~ /\];/) {
-            mode = ""
-          }
-          while (match(line, /"([^"]+)"/, m)) {
-            if (selected != "") {
-              selected = selected "\034"
-            }
-            selected = selected m[1]
-            has_selection = 1
-            line = substr(line, RSTART + RLENGTH)
-          }
-          continue
-        }
+    selected = re.findall(r'"([^"]+)"', selection_match.group(1))
+    if not catalogs or not selected:
+        return
 
-        if (match(line, /^[[:space:]]*url[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*;/, m)) {
-          url = m[1]
-          continue
-        }
-        if (match(line, /^[[:space:]]*baseDir[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*;/, m)) {
-          base_dir = m[1]
-          continue
-        }
-        if (match(line, /^[[:space:]]*idPrefix[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*;/, m)) {
-          id_prefix = m[1]
-          continue
-        }
-        if (line ~ /^[[:space:]]*catalogs[[:space:]]*=[[:space:]]*{/) {
-          mode = "catalogs"
-          continue
-        }
-        if (line ~ /selection\.enable[[:space:]]*=[[:space:]]*\[/) {
-          mode = "selection"
-          while (match(line, /"([^"]+)"/, m)) {
-            if (selected != "") {
-              selected = selected "\034"
-            }
-            selected = selected m[1]
-            has_selection = 1
-            line = substr(line, RSTART + RLENGTH)
-          }
-          if (line ~ /\];/) {
-            mode = ""
-          }
-          continue
-        }
-      }
+    fields = [
+        name,
+        url_match.group(1),
+        base_dir_match.group(1) if base_dir_match else ".",
+        id_prefix_match.group(1) if id_prefix_match else "",
+        "\034".join(catalogs),
+        "\034".join(selected),
+    ]
+    sys.stdout.write("\036".join(fields) + "\n")
 
-      if (url != "" && has_catalogs && has_selection) {
-        printf "%s\036%s\036%s\036%s\036%s\036%s\n", current_name, url, base_dir, id_prefix, catalogs, selected
-      }
 
-      current_name = ""
-      block = ""
-    }
+for line in lines:
+    sanitized = strip_comment(line)
+    if depth == 1 and current_name is None:
+      match = re.match(r'^\s*([A-Za-z0-9._-]+)\s*=\s*\{\s*$', sanitized)
+      if match:
+          current_name = match.group(1)
+          current_lines = [line]
+    elif current_name is not None:
+        current_lines.append(line)
 
-    {
-      sanitized = $0
-      sub(/[[:space:]]*#.*/, "", sanitized)
+    depth += sanitized.count("{") - sanitized.count("}")
 
-      if (depth == 1 && current_name == "" && match(sanitized, /^[[:space:]]*([A-Za-z0-9._-]+)[[:space:]]*=[[:space:]]*{[[:space:]]*$/, m)) {
-        current_name = m[1]
-        block = $0 "\n"
-      } else if (current_name != "") {
-        block = block $0 "\n"
-      }
-
-      opens = gsub(/\{/, "{", sanitized)
-      closes = gsub(/\}/, "}", sanitized)
-      depth += opens - closes
-
-      if (current_name != "" && depth == 1) {
-        flush_source()
-      }
-    }
-  ' "$EXTERNAL_SOURCES_FILE"
+    if current_name is not None and depth == 1:
+        emit_source(current_name, current_lines)
+        current_name = None
+        current_lines = []
+PY
 }
 
 external_source_checkout_path() {
@@ -1296,7 +1254,33 @@ copy_managed_catalog_file() {
   source_path="$1"
   destination_path="$2"
   mkdir -p "$(dirname "$destination_path")"
+  if [ -L "$destination_path" ]; then
+    rm -f "$destination_path"
+  elif [ -d "$destination_path" ]; then
+    fail "Refusing to replace directory target: $destination_path"
+  fi
   cp "$source_path" "$destination_path"
+}
+
+remove_symlink_entries() {
+  target_dir="$1"
+  if [ -L "$target_dir" ]; then
+    rm -f "$target_dir"
+    return 0
+  fi
+  [ -d "$target_dir" ] || return 0
+  find "$target_dir" -type l -exec rm -f {} +
+}
+
+contains_newline_delimited_entry() {
+  list_content="$1"
+  entry="$2"
+  newline='
+'
+  case "$list_content" in
+    *"$newline$entry$newline"*) return 0 ;;
+    *) return 1 ;;
+  esac
 }
 
 sync_managed_catalog_runtime_assets() {
@@ -1318,16 +1302,19 @@ sync_managed_catalog_runtime_assets() {
 
     if [ -d "$agents_source" ]; then
       mkdir -p "$target_root/agents"
+      remove_symlink_entries "$target_root/agents"
       cp -R "$agents_source"/. "$target_root/agents"
     fi
 
     if [ -d "$commands_source" ]; then
       mkdir -p "$target_root/commands"
+      remove_symlink_entries "$target_root/commands"
       cp -R "$commands_source"/. "$target_root/commands"
     fi
 
     if [ -d "$rules_source" ]; then
       mkdir -p "$target_root/rules"
+      remove_symlink_entries "$target_root/rules"
       cp -R "$rules_source"/. "$target_root/rules"
     fi
   done
@@ -1562,13 +1549,18 @@ cmd_migrate_external() {
   sources_cache=$(mktemp "${TMPDIR:-/tmp}/apm-external-sources.XXXXXX")
   references=()
   registration_messages=()
-  declare -A seen_references=()
-  declare -A manifest_references=()
+  newline='
+'
+  seen_references_list="$newline"
+  manifest_references_list="$newline"
   parse_external_sources >"$sources_cache"
 
   while IFS= read -r manifest_reference; do
     [ -n "$manifest_reference" ] || continue
-    manifest_references["$manifest_reference"]=1
+    case "$manifest_references_list" in
+      *"$newline$manifest_reference$newline"*) ;;
+      *) manifest_references_list="${manifest_references_list}${manifest_reference}${newline}" ;;
+    esac
   done <<EOF
 $(manifest_reference_keys)
 EOF
@@ -1603,16 +1595,16 @@ EOF
 
       reference=$(external_skill_reference "$source_url" "$checkout_path" "$source_name" "$base_dir" "$id_prefix" "$catalogs_value" "$skill_id")
       base_reference=${reference%%#*}
-      if [ -n "${manifest_references[$reference]+x}" ] || [ -n "${manifest_references[$base_reference]+x}" ]; then
+      if contains_newline_delimited_entry "$manifest_references_list" "$reference" \
+        || contains_newline_delimited_entry "$manifest_references_list" "$base_reference"; then
         log "Skipping $skill_id from $source_name: already registered as $base_reference"
         continue
       fi
 
-      if [ -z "${seen_references[$reference]+x}" ]; then
+      if ! contains_newline_delimited_entry "$seen_references_list" "$reference"; then
         references+=("$reference")
-        seen_references["$reference"]=1
-        manifest_references["$reference"]=1
-        manifest_references["$base_reference"]=1
+        seen_references_list="${seen_references_list}${reference}${newline}"
+        manifest_references_list="${manifest_references_list}${reference}${newline}${base_reference}${newline}"
       fi
       registration_messages+=("Registered external skill $skill_id from $source_name as $reference")
     done
