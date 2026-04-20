@@ -115,7 +115,7 @@ All other tools serve to enhance or support these core components, while deploym
 #### Agent Skills
 
 - Managed Assets: edit `~/.apm/catalog/`, and keep external skill mapping in `nix/agent-skills-sources.nix`
-- Maintenance Path: `scripts/apm-workspace.ps1|.sh` provides bootstrap, catalog maintenance, and validation helpers
+- Bootstrap Path: `scripts/apm-workspace.ps1|.sh` only bootstraps the `~/.apm` checkout and required files
 - Daily Operation: `cd ~/.apm && mise run apply`, `mise run doctor`, and `mise run validate-catalog`
 
 ### Version Management

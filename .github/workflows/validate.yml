@@ -57,7 +57,7 @@ jobs:
       - name: Nix flake check
         run: nix flake check
 
-      - name: Validate APM maintenance helpers
+      - name: Validate APM bootstrap helpers
         shell: bash
         run: |
           bash -n ./scripts/apm-workspace.sh

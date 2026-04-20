@@ -143,7 +143,10 @@ describe("replace-bold-headings: directory exclusion", () => {
   const excludedDirs = [
     "node_modules",
     ".worktrees",
+    path.join("catalog", ".apm", "skills"),
+    path.join(".claude", "skills"),
     path.join(".claude", "worktrees"),
+    path.join(".codex", "skills"),
     ".kiro",
     ".luarocks",
     "fisher",
@@ -184,5 +187,37 @@ describe("replace-bold-headings: directory exclusion", () => {
     fs.writeFileSync(file, boldContent, "utf8");
     runScript(dir);
     expect(fs.readFileSync(file, "utf8")).toBe(boldContent);
+  });
+});
+
+// ============================================================
+// Workspace-aware target resolution
+// ============================================================
+describe("replace-bold-headings: workspace-aware resolution", () => {
+  const boldContent = "**Overview**\n";
+  let tmpRoot: string;
+
+  beforeEach(() => {
+    tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "rbh-prov-"));
+  });
+
+  afterEach(() => {
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
+  });
+
+  it("only rewrites catalog/skills when the target is an ~/.apm-style workspace root", () => {
+    const personalFile = path.join(tmpRoot, "catalog", "skills", "personal-skill", "SKILL.md");
+    const legacyCatalogFile = path.join(tmpRoot, "catalog", ".apm", "skills", "external-skill", "SKILL.md");
+
+    fs.mkdirSync(path.dirname(personalFile), { recursive: true });
+    fs.mkdirSync(path.dirname(legacyCatalogFile), { recursive: true });
+    fs.writeFileSync(personalFile, boldContent, "utf8");
+    fs.writeFileSync(legacyCatalogFile, boldContent, "utf8");
+    fs.writeFileSync(path.join(tmpRoot, "apm.yml"), "name: tmp\n", "utf8");
+
+    execSync(`cd "${tmpRoot}" && tsx "${scriptPath}" .`, { encoding: "utf8", stdio: "pipe" });
+
+    expect(fs.readFileSync(personalFile, "utf8")).toBe("### Overview\n");
+    expect(fs.readFileSync(legacyCatalogFile, "utf8")).toBe(boldContent);
   });
 });

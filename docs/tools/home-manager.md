@@ -188,11 +188,11 @@ DOTFILES_WORKTREE=/tmp/dotfiles-test home-manager switch --flake . --impure
 
 ## Agent Skills
 
-managed asset は `~/.apm/catalog/**` で管理します。  
+managed asset は personal skill なら `~/.apm/catalog/skills/**`、shared guidance なら `~/.apm/catalog/{AGENTS.md,agents/**,commands/**,rules/**}` で管理します。  
 Home Manager は dotfiles 配布と generation 管理を担い、agent skills の日常運用は `~/.apm` で行います。
 
 - managed catalog layout:
-  - `~/.apm/catalog/.apm/skills/`
+  - `~/.apm/catalog/skills/`
   - `~/.apm/catalog/AGENTS.md`
   - `~/.apm/catalog/agents/`
   - `~/.apm/catalog/commands/`

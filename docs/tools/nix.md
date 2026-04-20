@@ -61,10 +61,10 @@ flake inputs`"]
 
 ### スキル優先度
 
-| 優先度 | ソース       | パス                          |
-| ------ | ------------ | ----------------------------- |
-| 高     | distribution | `~/.apm/catalog/.apm/skills/` |
-| 低     | external     | flake inputs 経由バンドル     |
+| 優先度 | ソース       | パス                      |
+| ------ | ------------ | ------------------------- |
+| 高     | distribution | `~/.apm/catalog/skills/`  |
+| 低     | external     | flake inputs 経由バンドル |
 
 ---
 
