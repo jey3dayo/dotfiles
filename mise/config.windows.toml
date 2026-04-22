@@ -22,7 +22,7 @@ package_manager = "pnpm"
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
 MD_EXCLUDES = "#node_modules #.worktrees #.apm/skills #.claude/skills #.claude/worktrees #.codex/skills #result #result-* #.kiro"
-TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude .luarocks --exclude .kiro"
+TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude .luarocks --exclude .kiro --exclude apm.lock.yaml"
 
 [tools]
 go = "1.25.5"

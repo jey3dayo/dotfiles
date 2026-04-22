@@ -74,7 +74,7 @@ run = """
 if [ -n "${YAML_FILES:-}" ]; then
   prettier --write --log-level error ${YAML_FILES} > /dev/null
 else
-  fd -e yml -e yaml -X prettier --write --log-level error >/dev/null
+  fd -e yml -e yaml ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null
 fi
 """
 
@@ -84,7 +84,7 @@ run = """
 if [ -n "${YAML_FILES:-}" ]; then
   prettier --check --log-level error ${YAML_FILES}
 else
-  fd -e yml -e yaml -X prettier --check --log-level error
+  fd -e yml -e yaml ${TASK_EXCLUDES} -X prettier --check --log-level error
 fi
 """
 
