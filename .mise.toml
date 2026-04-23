@@ -10,7 +10,6 @@ includes = [
   ".config/mise/tasks/lint.toml",
   ".config/mise/tasks/test.toml",
   ".config/mise/tasks/integration.toml",
-  ".config/mise/tasks/agents.toml",
   ".config/mise/tasks/env.toml",
   ".config/mise/tasks/brewfile.toml",
   ".config/mise/tasks/updates.toml",

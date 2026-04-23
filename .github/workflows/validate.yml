@@ -8,9 +8,6 @@ on:
       - "flake.lock"
       - "nix/**"
       - "home.nix"
-      - "mise/tasks/agents.toml"
-      - "scripts/apm-workspace.ps1"
-      - "scripts/apm-workspace.sh"
       - "scripts/check-flake-sync.sh"
   pull_request:
     paths:
@@ -19,9 +16,6 @@ on:
       - "flake.lock"
       - "nix/**"
       - "home.nix"
-      - "mise/tasks/agents.toml"
-      - "scripts/apm-workspace.ps1"
-      - "scripts/apm-workspace.sh"
       - "scripts/check-flake-sync.sh"
   workflow_dispatch:
 
@@ -56,12 +50,6 @@ jobs:
 
       - name: Nix flake check
         run: nix flake check
-
-      - name: Validate APM bootstrap helpers
-        shell: bash
-        run: |
-          bash -n ./scripts/apm-workspace.sh
-          pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/apm-workspace.ps1 help >/dev/null
 
       - name: Build bundle
         run: nix build .#bundle

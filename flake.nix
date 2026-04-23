@@ -79,9 +79,9 @@
 
             apps = {
               install = mkLegacyRemovedApp "skills-install" "Legacy Nix agent distribution has been removed. Use ~/.apm/catalog and APM tasks instead.";
-              list = mkLegacyRemovedApp "skills-list" "Legacy Nix agent distribution has been removed. Use `cd ~/.apm && mise run list` instead.";
+              list = mkLegacyRemovedApp "skills-list" "Legacy Nix agent distribution has been removed. Use the ~/.apm workspace instead.";
               report = mkLegacyRemovedApp "skills-report" "Legacy Nix agent distribution has been removed. Use the ~/.apm workspace instead.";
-              validate = mkLegacyRemovedApp "skills-validate" "Legacy Nix agent distribution has been removed. Use `cd ~/.apm && mise run validate-catalog` instead.";
+              validate = mkLegacyRemovedApp "skills-validate" "Legacy Nix agent distribution has been removed. Use `cd ~/.apm && mise run validate:catalog` instead.";
             };
 
             checks = {
@@ -98,7 +98,7 @@
               shellHook = ''
                 echo "Dotfiles Dev Shell"
                 echo "  home-manager switch --flake . --impure"
-                echo "  cd ~/.apm && mise run doctor"
+                echo "  cd ~/.apm && mise run deploy"
               '';
             };
 

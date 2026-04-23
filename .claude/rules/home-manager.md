@@ -28,10 +28,11 @@ Detailed Reference: [docs/tools/home-manager.md](../../docs/tools/home-manager.m
 
 #### Agent Skills SSoT
 
-- `nix/agent-skills-sources.nix`: url, flake, baseDir, selection.enable の SSoT
-- `flake.nix` inputs: url, flake のみ（`agent-skills-sources.nix` と**手動同期が必要**）
+- `~/.apm/catalog/**`: managed skill / shared guidance の正本
+- `nix/agent-skills-sources.nix`: retired marker。現役の編集面ではない
+- `flake.nix` inputs: legacy removed app のみ保持
 
-新しいスキルソース追加時は両ファイルを同期し、`nix flake show` で検証。
+新しい skill source を `.config` 側へ足さない。global skill は `~/.apm` で扱う。
 
 ## Worktree 検出優先度
 
@@ -52,12 +53,12 @@ Detailed Reference: [docs/tools/home-manager.md](../../docs/tools/home-manager.m
 
 ## よくあるトラブル
 
-| 症状                                   | 原因                                  | 対策                                                          |
-| -------------------------------------- | ------------------------------------- | ------------------------------------------------------------- |
-| `~/.claude/skills/` が空               | 別の flake から switch した           | `home-manager switch --flake ~/.config --impure`              |
-| `~/.claude/skills/` が空               | URL 不整合                            | `agent-skills-sources.nix` と `flake.nix` の URL を比較・同期 |
-| "expected a set but got a thunk"       | flake inputs に動的評価               | inputs を静的リテラル定義に変更                               |
-| Permission denied / Read-only          | ディレクトリ全体が Nix ストアにリンク | `xdgConfigDirs` から除外して switch                           |
-| agent catalog を直したのに反映されない | APM 側の apply 未実行                 | `cd ~/.apm && mise run apply && mise run doctor`              |
+| 症状                                   | 原因                                  | 対策                                              |
+| -------------------------------------- | ------------------------------------- | ------------------------------------------------- |
+| `~/.claude/skills/` が空               | 別の flake から switch した           | `home-manager switch --flake ~/.config --impure`  |
+| `~/.claude/skills/` が空               | 旧 Nix 配布の想定で見ている           | `~/.apm` を source of truth として確認            |
+| "expected a set but got a thunk"       | flake inputs に動的評価               | inputs を静的リテラル定義に変更                   |
+| Permission denied / Read-only          | ディレクトリ全体が Nix ストアにリンク | `xdgConfigDirs` から除外して switch               |
+| agent catalog を直したのに反映されない | APM 側の deploy 未実行                | `cd ~/.apm && mise run deploy && mise run doctor` |
 
 詳細なトラブルシューティング: [docs/tools/home-manager.md](../../docs/tools/home-manager.md)、[docs/disaster-recovery.md](../../docs/disaster-recovery.md)

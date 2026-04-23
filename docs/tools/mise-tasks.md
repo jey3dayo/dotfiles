@@ -93,34 +93,20 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 詳細は [docs/tools/home-manager.md](home-manager.md) を参照。
 
-### APM Bootstrap
+### APM Workspace
 
-`agents.toml` で定義。
+APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise` task は置かない。
 
-| タスク          | 説明                                                                     |
-| --------------- | ------------------------------------------------------------------------ |
-| `apm:bootstrap` | `~/.apm` を clone or refresh し、`apm.yml` と `mise.toml` の存在を揃える |
-
-初回セットアップや復旧では `apm:bootstrap` を使い、日常の APM 操作は `~/.apm/mise.toml` 側で行う。  
 代表例:
 
 - `cd ~/.apm && mise install`
-- `cd ~/.apm && mise run format`
-- `cd ~/.apm && mise run ci`
-- `cd ~/.apm && mise run ci:check`
-- `cd ~/.apm && mise run apply`
+- `cd ~/.apm && mise run check`
+- `cd ~/.apm && mise run deploy`
 - `cd ~/.apm && mise run doctor`
-- `cd ~/.apm && mise run list`
-- `cd ~/.apm && mise run update`
-- `cd ~/.apm && mise run validate-catalog`
-- `cd ~/.apm && mise run catalog:tidy`
+- `cd ~/.apm && mise run prepare:catalog`
+- `cd ~/.apm && mise run install:catalog`
 
-personal skill は `~/.apm/catalog/skills/` を直接編集し、external skill は `~/.apm/apm.yml` の upstream ref から deploy します。  
-shared guidance は `~/.apm/catalog/{AGENTS.md,agents/**,commands/**,rules/**}` を直接編集します。  
-`mise run doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示します。  
-`mise run apply` / `mise run update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install します。  
-install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱います。  
-`.config` 側の APM task は `apm:bootstrap` のみで、daily operation と validation は `~/.apm/mise.toml` 側で行います。
+詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
 
 ### Update
 
