@@ -22,49 +22,31 @@ graph LR
         DOT["`**静的ファイル**
 .zshrc / .zshenv
 .gitconfig / .ssh/config`"]
-        INT["`legacy distribution bundle`"]
-skills / rules / agents`"]
-        EXT["`**外部スキル**
-flake inputs`"]
     end
 
     subgraph NIX["Nix / Home Manager"]
         HM["`home-manager switch
 --flake ~/.config --impure`"]
-        BUNDLE["`/nix/store/
-…-agent-skills-bundle/`"]
-        HM --> BUNDLE
+        STORE["`/nix/store/
+gitignore-filtered dotfiles source`"]
+        HM --> STORE
     end
 
     subgraph OUT["配布先"]
         HOME["`~/
 .zshrc / .zshenv
 .gitconfig / .ssh/config`"]
-        SKILLS["`~/.claude/skills/
-~/.codex/skills/
-~/.cursor/skills/
-~/.opencode/skills/
-~/.skills/`"]
     end
 
     DOT --> HM
-    INT --> HM
-    EXT --> HM
-    BUNDLE -->|symlink| HOME
-    BUNDLE -->|per-skill symlink| SKILLS
+    STORE -->|symlink / materialized copy| HOME
 ```
 
 配布の流れ:
 
 - 静的ファイル → `~/` 直下に symlink 配布
-- legacy distribution bundle + 外部スキル → `/nix/store` にバンドル → 各ツールの `skills/` に per-skill symlink
-
-### スキル優先度
-
-| 優先度 | ソース       | パス                          |
-| ------ | ------------ | ----------------------------- |
-| 高     | distribution | `~/.apm/catalog/.apm/skills/` |
-| 低     | external     | flake inputs 経由バンドル     |
+- 一部 CLI が symlink を拒否する設定 → activation script で通常ファイルとして materialize
+- agent skills / agents / commands / rules → Nix では配布しない。`~/.apm` workspace の APM 運用に委譲
 
 ---
 

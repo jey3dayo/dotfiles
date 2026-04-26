@@ -141,9 +141,9 @@ agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config
 
 - APM CLI 自体は `mise` 管理とし、`.config` と `~/.apm` の両方で `github:microsoft/apm` を pin する
 - `.config` 側の APM task は `apm:bootstrap` だけ
-- install / update / list / doctor / migrate-external は `cd ~/.apm && mise run ...` で行う
+- install / update / list / doctor は `cd ~/.apm && mise run ...` で行う
 - managed asset は `~/.apm/catalog/` を直接編集し、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy する
-- `migrate-external` を含む external 管理は `~/.apm` 側の task を正本にする
+- external 管理は `~/.apm/apm.yml` を正本にする
 - `doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示する
 - `apply` / `update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install する
 - `format`, `ci:check`, `ci`, `catalog:tidy` は `~/.apm` workspace を日常運用しやすくする補助 task として使う
@@ -331,7 +331,6 @@ mise run apm:bootstrap
 # Then move into ~/.apm for daily operation
 cd ~/.apm
 mise install
-mise run migrate-external
 mise run apply
 mise run doctor
 

@@ -13,20 +13,20 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 `ci.toml`, `integration.toml` で定義。
 
-| タスク             | 説明                                                  |
-| ------------------ | ----------------------------------------------------- |
-| `ci:quick`         | 軽量チェック（format + lint のみ、~3-5s、hooks 向け） |
-| `ci`               | 全 CI チェック（検証のみ、書き込みなし）              |
-| `ci:full`          | CI チェック + デプロイ + 検証（GitHub Actions 同等）  |
-| `ci:nix`           | Nix 固有の深い検証（nix:check + nix:build:bundle）    |
-| `ci:gitleaks`      | gitleaks による secret スキャン                       |
-| `ci:install`       | CI 必要ツールをインストール（luacheck, busted）       |
-| `nix:check`        | `nix flake check` を実行                              |
-| `nix:build:bundle` | `nix build .#bundle` を実行                           |
-| `check`            | CI 向け総合チェック（format + lint）                  |
-| `check:format`     | フォーマットチェック集約（書き込みなし）              |
-| `check:lint`       | lint チェック集約                                     |
-| `check:lint:quick` | lint チェック集約（lint:links 除外）                  |
+| タスク              | 説明                                                           |
+| ------------------- | -------------------------------------------------------------- |
+| `ci:quick`          | 軽量チェック（format + lint のみ、~3-5s、hooks 向け）          |
+| `ci`                | 全 CI チェック（検証のみ、書き込みなし）                       |
+| `ci:full`           | CI チェック + デプロイ + 検証（GitHub Actions 同等）           |
+| `ci:nix`            | Nix 固有の深い検証（nix:check + nix:build:default + hm:check） |
+| `ci:gitleaks`       | gitleaks による secret スキャン                                |
+| `ci:install`        | CI 必要ツールをインストール（luacheck, busted）                |
+| `nix:check`         | `nix flake check` を実行                                       |
+| `nix:build:default` | `nix build .#default` を実行                                   |
+| `check`             | CI 向け総合チェック（format + lint）                           |
+| `check:format`      | フォーマットチェック集約（書き込みなし）                       |
+| `check:lint`        | lint チェック集約                                              |
+| `check:lint:quick`  | lint チェック集約（lint:links 除外）                           |
 
 ### Format
 
@@ -108,7 +108,6 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 - `cd ~/.apm && mise run format`
 - `cd ~/.apm && mise run ci`
 - `cd ~/.apm && mise run ci:check`
-- `cd ~/.apm && mise run migrate-external`
 - `cd ~/.apm && mise run apply`
 - `cd ~/.apm && mise run doctor`
 - `cd ~/.apm && mise run list`
@@ -117,7 +116,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 - `cd ~/.apm && mise run catalog:tidy`
 
 managed asset は `~/.apm/catalog/` を直接編集し、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy します。  
-`mise run migrate-external` は `~/.apm` 側のフローとして external refs を更新します。  
+external refs は `~/.apm/apm.yml` を正本として更新します。  
 `mise run doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示します。  
 `mise run apply` / `mise run update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install します。  
 install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱います。  
