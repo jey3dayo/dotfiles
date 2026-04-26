@@ -11,6 +11,14 @@ local function is_non_empty_string(value)
   return type(value) == "string" and value ~= ""
 end
 
+local function append_values(result, values, len)
+  for _, value in ipairs(values) do
+    len = len + 1
+    result[len] = value
+  end
+  return len
+end
+
 local function home_dir()
   local home = os.getenv "HOME" or os.getenv "USERPROFILE"
   if type(home) ~= "string" or home == "" then return nil end
@@ -58,12 +66,8 @@ end
 
 function M.merge_lists(t1, t2)
   local result = {}
-  for _, v in ipairs(t1) do
-    table.insert(result, v)
-  end
-  for _, v in ipairs(t2) do
-    table.insert(result, v)
-  end
+  local len = append_values(result, t1, 0)
+  append_values(result, t2, len)
   return result
 end
 
@@ -190,18 +194,11 @@ end
 function M.array_concat(self, ...)
   local items = { ... }
   local result = {}
-  local len = 0
-  for i = 1, #self do
-    len = len + 1
-    result[len] = self[i]
-  end
+  local len = append_values(result, self, 0)
   for i = 1, #items do
     local item = items[i]
     if is_array(item) then
-      for j = 1, #item do
-        len = len + 1
-        result[len] = item[j]
-      end
+      len = append_values(result, item, len)
     else
       len = len + 1
       result[len] = item
