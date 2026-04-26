@@ -61,34 +61,16 @@
           system:
           let
             pkgs = nixpkgs.legacyPackages.${system};
-            mkLegacyRemovedApp = name: message: {
-              type = "app";
-              program = "${pkgs.writeShellScriptBin name ''
-                echo "${message}" >&2
-                exit 1
-              ''}/bin/${name}";
-            };
           in
           {
             packages.default = pkgs.writeTextFile {
-              name = "legacy-agent-skills-removed";
-              text = "Legacy Nix agent distribution has been removed. Use ~/.apm/catalog instead.\n";
+              name = "dotfiles-flake-reference";
+              text = "Dotfiles flake for Home Manager configuration.\n";
               destination = "/README.txt";
-            };
-            packages.bundle = self.packages.${system}.default;
-
-            apps = {
-              install = mkLegacyRemovedApp "skills-install" "Legacy Nix agent distribution has been removed. Use ~/.apm/catalog and APM tasks instead.";
-              list = mkLegacyRemovedApp "skills-list" "Legacy Nix agent distribution has been removed. Use `cd ~/.apm && mise run list` instead.";
-              report = mkLegacyRemovedApp "skills-report" "Legacy Nix agent distribution has been removed. Use the ~/.apm workspace instead.";
-              validate = mkLegacyRemovedApp "skills-validate" "Legacy Nix agent distribution has been removed. Use `cd ~/.apm && mise run validate-catalog` instead.";
             };
 
             checks = {
-              default = pkgs.runCommand "legacy-agent-skills-removed-check" { } ''
-                mkdir -p "$out"
-              '';
-              nullSelection = pkgs.runCommand "legacy-agent-skills-removed-null-check" { } ''
+              default = pkgs.runCommand "dotfiles-flake-check" { } ''
                 mkdir -p "$out"
               '';
             };
