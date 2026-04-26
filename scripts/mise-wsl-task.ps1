@@ -195,6 +195,8 @@ $scriptContent = @(
   [System.Text.UTF8Encoding]::new($false)
 )
 
+$taskExitCode = 1
+
 try {
   $tempScriptWsl = (& wsl.exe wslpath -a ($tempScriptWin -replace "\\", "/") 2>$null)
   if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($tempScriptWsl)) {
@@ -202,7 +204,7 @@ try {
   }
 
   & wsl.exe bash --noprofile --norc $tempScriptWsl.Trim()
-  exit $LASTEXITCODE
+  $taskExitCode = $LASTEXITCODE
 }
 finally {
   if (Test-Path -LiteralPath $tempScriptWin) {
@@ -212,3 +214,5 @@ finally {
     & wsl.exe bash --noprofile --norc -lc "rm -rf '$repoRootWsl'" | Out-Null
   }
 }
+
+exit $taskExitCode
