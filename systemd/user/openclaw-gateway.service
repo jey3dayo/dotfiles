@@ -2,6 +2,8 @@
 Description=OpenClaw Gateway
 After=network-online.target
 Wants=network-online.target
+StartLimitBurst=5
+StartLimitIntervalSec=60
 
 [Service]
 ExecStartPre=/usr/bin/test -d %h/.openclaw/bundled-plugins
@@ -9,12 +11,17 @@ ExecStartPre=/usr/bin/test -d %h/.openclaw/bundled-plugins/memory-core
 ExecStart=%h/.config/scripts/openclaw-gateway gateway --port 18789
 Restart=always
 RestartSec=10
+RestartPreventExitStatus=78
+TimeoutStartSec=30
+TimeoutStopSec=30
+SuccessExitStatus=0 143
 KillMode=mixed
 Environment=HOME=%h
 Environment=TMPDIR=/tmp
 Environment="PATH=%h/.local/share/pnpm:%h/.local/bin:%h/bin:/usr/local/bin:/usr/bin:/bin"
 Environment=OPENCLAW_GATEWAY_PORT=18789
 Environment="OPENCLAW_SYSTEMD_UNIT=openclaw-gateway.service"
+Environment="OPENCLAW_WINDOWS_TASK_NAME=OpenClaw Gateway"
 Environment=OPENCLAW_SERVICE_MARKER=openclaw
 Environment=OPENCLAW_SERVICE_KIND=gateway
 Environment=OPENCLAW_SERVICE_VERSION=latest
