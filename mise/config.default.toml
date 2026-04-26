@@ -94,6 +94,7 @@ yamllint = "latest"
 "npm:vibe-kanban" = "latest"
 
 # ドキュメント・Lint
+"npm:@google/design.md" = "latest"
 "npm:markdown-link-check" = "latest"
 "npm:markdownlint-cli2" = "latest"
 "npm:textlint" = "latest"
