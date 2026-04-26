@@ -9,19 +9,48 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
+const isWindows = process.platform === "win32";
+
+const shellQuote = (value: string) => `'${value.replace(/'/g, "'\\''")}'`;
+
+const wslPath = (args: string[]) => {
+  const result = spawnSync("bash", ["-lc", `wslpath ${args.map(shellQuote).join(" ")}`], {
+    cwd: repoRoot,
+    encoding: "utf8",
+  });
+
+  if (result.status !== 0) {
+    throw new Error(result.stderr || result.stdout || "wslpath failed");
+  }
+
+  return result.stdout.trim();
+};
+
+const repoRootForNix = isWindows ? wslPath(["-a", repoRoot]) : repoRoot;
 const nixBin = "/nix/var/nix/profiles/default/bin/nix";
-const flakeUrl = `git+file://${repoRoot}`;
+const flakeUrl = `git+file://${repoRootForNix}`;
 const user = process.env.USER ?? "j138";
 
 const runNix = (args: string[]) =>
-  spawnSync(nixBin, args, {
-    cwd: repoRoot,
-    encoding: "utf8",
-    env: {
-      ...process.env,
-      NIX_CONFIG: "experimental-features = nix-command flakes",
-    },
-  });
+  isWindows
+    ? spawnSync("bash", ["-lc", `cd ${shellQuote(repoRootForNix)} && nix ${args.map(shellQuote).join(" ")}`], {
+        cwd: repoRoot,
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          NIX_CONFIG: "experimental-features = nix-command flakes",
+        },
+      })
+    : spawnSync(nixBin, args, {
+        cwd: repoRoot,
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          NIX_CONFIG: "experimental-features = nix-command flakes",
+        },
+      });
+
+const readNixFile = (filePath: string) => fs.readFileSync(isWindows ? wslPath(["-w", filePath]) : filePath, "utf8");
 
 const evalDotfilesMaterializationState = () =>
   runNix([
@@ -52,11 +81,11 @@ const buildActivationScript = () => {
     return result;
   }
 
-  const activatePath = path.join(result.stdout.trim(), "activate");
+  const activatePath = path.posix.join(result.stdout.trim(), "activate");
   return {
     ...result,
     activatePath,
-    activateScript: fs.readFileSync(activatePath, "utf8"),
+    activateScript: readNixFile(activatePath),
   };
 };
 
