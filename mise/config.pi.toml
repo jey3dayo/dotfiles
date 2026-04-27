@@ -36,7 +36,7 @@ node = "24"
 # ========================================
 # Package Managers (パッケージマネージャー)
 # ========================================
-"ubi:astral-sh/uv" = "latest"
+"github:astral-sh/uv" = "latest"
 
 # ========================================
 # Formatters and Linters (フォーマッター・Linter)
