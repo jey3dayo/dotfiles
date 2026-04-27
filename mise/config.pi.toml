@@ -24,9 +24,9 @@ uvx = true
 # Language Runtimes (言語ランタイム - 開発用)
 # ========================================
 # 注: システム依存関係用の Node.js/Python は Homebrew で管理
+# 注: Python は mise で管理しない。uv が必要に応じて python-build-standalone を取得する
 go = "latest"
 node = "24"
-python = "3.14"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"
 # luajit = "latest"
@@ -37,7 +37,7 @@ python = "3.14"
 # ========================================
 # Package Managers (パッケージマネージャー)
 # ========================================
-"pipx:uv" = "latest"
+"ubi:astral-sh/uv" = "latest"
 
 # ========================================
 # Formatters and Linters (フォーマッター・Linter)
