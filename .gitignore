@@ -278,6 +278,7 @@ systemd/user/*.target
 systemd/user/*.target.wants/
 systemd/user/*.service.wants/
 systemd/user/*.timer.wants/
+systemd/user/nanoclaw-v2-*.service
 
 ## home-manager
 environment.d/

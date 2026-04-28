@@ -1,0 +1,21 @@
+[Unit]
+Description=NanoClaw Personal Assistant
+After=network.target
+
+[Service]
+Type=simple
+# %h/.mise/installs/node/lts/bin/node を使用。mise管理外の場合は node フルパスに差し替える
+ExecStart=%h/.mise/installs/node/lts/bin/node %h/src/github.com/qwibitai/nanoclaw/dist/index.js
+WorkingDirectory=%h/src/github.com/qwibitai/nanoclaw
+Restart=always
+RestartSec=5
+KillMode=process
+Environment=HOME=%h
+Environment=PATH=/usr/local/bin:/usr/bin:/bin:%h/.local/bin
+# WSL2: undici (Node.js built-in fetch) が IPv6 を優先して ENETUNREACH になる問題の回避
+Environment=NODE_OPTIONS=--no-network-family-autoselection
+StandardOutput=append:%h/src/github.com/qwibitai/nanoclaw/logs/nanoclaw.log
+StandardError=append:%h/src/github.com/qwibitai/nanoclaw/logs/nanoclaw.error.log
+
+[Install]
+WantedBy=default.target

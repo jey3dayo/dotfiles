@@ -72,18 +72,18 @@ ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" 
 nix flake check
 """
 
-["nix:build:bundle"]
-description = "nix build .#bundle を実行"
+["nix:build:default"]
+description = "nix build .#default を実行"
 run = """
 if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
-  echo "Skip nix:build:bundle (SKIP_NIX_VALIDATE=1)"
+  echo "Skip nix:build:default (SKIP_NIX_VALIDATE=1)"
   exit 0
 fi
 
 . "./mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
 
-nix build .#bundle
+nix build .#default
 """
 
 # ----------------------------------------
@@ -100,6 +100,7 @@ else
   mise run check:lint:quick
 fi
 """
+run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci:quick"
 
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
@@ -113,10 +114,12 @@ else
   mise run ci:gitleaks
 fi
 """
+run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci"
 
 ["ci:full"]
 description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
 run = [{ task = "ci:verify-deploy" }, { task = "ci" }]
+run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci:full"
 
 ["ci:quick:windows"]
 description = "Windows 向け軽量チェック（WSL スナップショット経由）"
@@ -132,4 +135,4 @@ run = [{ task = "ci:full" }]
 
 ["ci:nix"]
 description = "Nix 固有の深い検証（validate.yml 対応）"
-depends = ["nix:check", "nix:build:bundle"]
+depends = ["nix:check", "nix:build:default", "hm:check"]

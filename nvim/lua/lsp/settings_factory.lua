@@ -39,6 +39,17 @@ local base_configs = {
   },
 }
 
+local function get_formatter_config(server_name)
+  if not deps.config or not deps.config.formatters then return nil end
+  return deps.config.formatters[server_name]
+end
+
+local function add_root_dir(config, config_files)
+  if deps.utils and deps.utils.create_root_pattern then
+    config.root_dir = deps.utils.create_root_pattern(config_files)
+  end
+end
+
 -- Factory functions for common server types
 function M.create_js_server(server_name, overrides)
   overrides = overrides or {}
@@ -46,12 +57,8 @@ function M.create_js_server(server_name, overrides)
   local config = vim.deepcopy(base_configs.js_server)
 
   -- Add root directory detection if config exists
-  if deps.config and deps.config.formatters and deps.config.formatters[server_name] then
-    local config_files = deps.config.formatters[server_name].config_files
-    if deps.utils and deps.utils.create_root_pattern then
-      config.root_dir = deps.utils.create_root_pattern(config_files)
-    end
-  end
+  local formatter_config = get_formatter_config(server_name)
+  if formatter_config then add_root_dir(config, formatter_config.config_files) end
 
   return vim.tbl_deep_extend("force", config, overrides)
 end
@@ -65,21 +72,17 @@ function M.create_formatter_server(server_name, overrides)
   -- Keep autostart as a function for compatibility with existing specs/callers.
   -- NOTE: When called without a target directory, return true to avoid
   -- startup-cwd based global disable decisions.
-  if deps.config and deps.config.formatters and deps.config.formatters[server_name] then
-    local formatter_config = deps.config.formatters[server_name]
-    if formatter_config.config_files then
-      if deps.core_utils and deps.core_utils.has_config_files then
-        config.autostart = function(target_dir)
-          if not target_dir or target_dir == "" then return true end
-          return deps.core_utils.has_config_files(formatter_config.config_files, target_dir)
-        end
-      end
-
-      -- Add root_dir detection
-      if deps.utils and deps.utils.create_root_pattern then
-        config.root_dir = deps.utils.create_root_pattern(formatter_config.config_files)
+  local formatter_config = get_formatter_config(server_name)
+  if formatter_config and formatter_config.config_files then
+    if deps.core_utils and deps.core_utils.has_config_files then
+      config.autostart = function(target_dir)
+        if not target_dir or target_dir == "" then return true end
+        return deps.core_utils.has_config_files(formatter_config.config_files, target_dir)
       end
     end
+
+    -- Add root_dir detection
+    add_root_dir(config, formatter_config.config_files)
   end
 
   return vim.tbl_deep_extend("force", config, overrides)

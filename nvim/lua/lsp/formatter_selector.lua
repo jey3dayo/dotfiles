@@ -3,14 +3,27 @@ local M = {}
 
 local formatters = require("lsp.config").formatters
 
--- Get the best formatter for the current buffer
-function M.get_best_formatter(bufnr)
-  local clients = vim.lsp.get_clients { bufnr = bufnr }
+local DEFAULT_FORMATTER_PRIORITIES = {
+  biome = 1, -- Highest priority
+  prettier = 2,
+  eslint = 3, -- Lower priority for formatting (better for linting)
+  ["typescript-tools"] = 4, -- Lowest priority for formatting (better for diagnostics)
+}
+
+local LINT_ONLY_FORMATTERS = {
+  eslint = true, -- Use for diagnostics, not formatting
+  ["typescript-tools"] = true, -- Use for TypeScript diagnostics, not formatting
+}
+
+local function supports_formatting(client)
+  return client:supports_method "textDocument/formatting"
+end
+
+local function collect_available_formatters(clients)
   local available_formatters = {}
 
-  -- Collect all available formatters
   for _, client in ipairs(clients) do
-    if client:supports_method "textDocument/formatting" then
+    if supports_formatting(client) then
       table.insert(available_formatters, {
         name = client.name,
         client = client,
@@ -18,6 +31,14 @@ function M.get_best_formatter(bufnr)
       })
     end
   end
+
+  return available_formatters
+end
+
+-- Get the best formatter for the current buffer
+function M.get_best_formatter(bufnr)
+  local clients = vim.lsp.get_clients { bufnr = bufnr }
+  local available_formatters = collect_available_formatters(clients)
 
   -- Sort by priority (lower number = higher priority)
   table.sort(available_formatters, function(a, b)
@@ -35,24 +56,11 @@ function M.get_formatter_priority(formatter_name)
   if config and config.formatter_priority then return config.formatter_priority.priority end
 
   -- Default priorities if not configured
-  local defaults = {
-    biome = 1, -- Highest priority
-    prettier = 2,
-    eslint = 3, -- Lower priority for formatting (better for linting)
-    ["typescript-tools"] = 4, -- Lowest priority for formatting (better for diagnostics)
-  }
-
-  return defaults[formatter_name] or 99
+  return DEFAULT_FORMATTER_PRIORITIES[formatter_name] or 99
 end
 
 -- Check if a formatter should be used for formatting (not just diagnostics)
 function M.should_format_with(client_name)
-  -- These are primarily linters, not formatters
-  local lint_only = {
-    eslint = true, -- Use for diagnostics, not formatting
-    ["typescript-tools"] = true, -- Use for TypeScript diagnostics, not formatting
-  }
-
   -- If biome is available, don't use prettier
   local config = formatters[client_name]
   if config and config.formatter_priority and config.formatter_priority.overrides then
@@ -60,7 +68,7 @@ function M.should_format_with(client_name)
     return true
   end
 
-  return not lint_only[client_name]
+  return not LINT_ONLY_FORMATTERS[client_name]
 end
 
 return M
