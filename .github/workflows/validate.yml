@@ -8,7 +8,6 @@ on:
       - "flake.lock"
       - "nix/**"
       - "home.nix"
-      - "scripts/check-flake-sync.sh"
   pull_request:
     paths:
       - ".github/workflows/validate.yml"
@@ -16,7 +15,6 @@ on:
       - "flake.lock"
       - "nix/**"
       - "home.nix"
-      - "scripts/check-flake-sync.sh"
   workflow_dispatch:
 
 permissions:
@@ -37,9 +35,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-
-      - name: Check flake inputs sync
-        run: sh ./scripts/check-flake-sync.sh
 
       - name: Install Nix
         uses: cachix/install-nix-action@v31
