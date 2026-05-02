@@ -1,0 +1,18 @@
+# atuin user config. Repository-tracked.
+# 既定値は atuin 起動時に自動生成されるサンプル (~/.local/share/atuin/dotfiles 配下)
+# に任せ、ここでは明確な上書き理由がある設定のみを記述する。
+
+# mise でバージョン管理しているため、アプリ内の自動更新チェックは無効化する。
+update_check = false
+
+# 認証・機密情報を含むコマンドは履歴に保存しない。
+# 公式 sync server は E2E 暗号化だが、復号鍵漏洩や別マシン誤同期時の
+# 被害面を最小化する目的でローカル段階で除外する。
+history_filter = [
+  "^secret",
+  "^op signin",
+  "^op read",
+  "^aws sso login",
+  "^aws-vault",
+  "^export .*(TOKEN|KEY|PASSWORD|SECRET)",
+]

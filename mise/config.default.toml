@@ -162,6 +162,7 @@ yamllint = "latest"
 # ========================================
 # CLI Tools (コマンドラインユーティリティ)
 # ========================================
+atuin = "latest"
 aws-cli = "latest"
 bat = "latest"
 buf = "latest"

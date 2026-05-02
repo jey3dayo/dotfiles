@@ -3,7 +3,8 @@
 
 load_tool_settings() {
   local config_dir="$1"
-  local -a critical_tools=(bun fzf git mise starship)
+  # Order matters: atuin must load AFTER fzf so atuin's ^R bindkey overrides fzf-history-widget.
+  local -a critical_tools=(bun fzf git mise starship atuin)
   local -A is_critical
   local has_zsh_defer=0
   local critical_tool tool_file tool_name

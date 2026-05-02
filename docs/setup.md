@@ -1,6 +1,6 @@
 # 🚀 Setup Guide
 
-最終更新: 2026-04-09
+最終更新: 2026-05-03
 対象: 開発者・初心者
 タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/cross-platform`, `audience/beginner`
 
@@ -160,6 +160,39 @@ nvim                    # First run installs plugins
 git config user.name    # Verify your name appears
 mise ls                 # List all mise-managed tools
 ```
+
+## Atuin (シェル履歴のマシン間同期)
+
+`atuin` は mise 経由で Mac/Linux/WSL2 に導入され、`Ctrl+R` で SQLite ベースの履歴 TUI を開きます。ローカルだけで使う場合は追加作業不要。複数マシンで履歴を E2E 暗号化同期する場合のみ以下を実施します。
+
+### 初回マシン (登録 + 鍵バックアップ)
+
+```bash
+atuin register -u <username> -e <email>   # 公式 sync server (api.atuin.sh) に登録
+atuin key                                  # 暗号化キーを表示
+# 上記キーを 1Password 等のパスワードマネージャに保存 (必須)
+atuin import zsh                           # 既存 ~/.zsh_history を取り込み (任意)
+atuin sync -f                              # 初回フル同期
+```
+
+> ⚠️ 暗号化キーは E2E 暗号化の復号鍵そのもの。失うとパスワードリセットしても他マシンから履歴を復号できなくなります。`~/.local/share/atuin/key` のみに頼らず必ずパスマネにも保管。
+
+### 2 台目以降のマシン
+
+```bash
+mise install                               # atuin バイナリ取得
+exec zsh -l                                # 新シェル起動
+atuin login -u <username> -k <暗号化キー>   # パスワードはプロンプトで入力
+atuin sync                                 # サーバから履歴を pull
+```
+
+### 状態確認
+
+```bash
+atuin status   # Last sync / Username / Sync frequency を表示
+```
+
+デフォルト同期間隔は 5 分。変更する場合は `~/.config/atuin/config.toml` で `sync_frequency = "10m"` などを指定。
 
 ## Environment-Specific Setup
 
