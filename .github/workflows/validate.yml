@@ -8,10 +8,6 @@ on:
       - "flake.lock"
       - "nix/**"
       - "home.nix"
-      - "mise/tasks/agents.toml"
-      - "scripts/apm-workspace.ps1"
-      - "scripts/apm-workspace.sh"
-      - "scripts/check-flake-sync.sh"
   pull_request:
     paths:
       - ".github/workflows/validate.yml"
@@ -19,10 +15,6 @@ on:
       - "flake.lock"
       - "nix/**"
       - "home.nix"
-      - "mise/tasks/agents.toml"
-      - "scripts/apm-workspace.ps1"
-      - "scripts/apm-workspace.sh"
-      - "scripts/check-flake-sync.sh"
   workflow_dispatch:
 
 permissions:
@@ -44,9 +36,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Check flake inputs sync
-        run: sh ./scripts/check-flake-sync.sh
-
       - name: Install Nix
         uses: cachix/install-nix-action@v31
         with:
@@ -56,12 +45,6 @@ jobs:
 
       - name: Nix flake check
         run: nix flake check
-
-      - name: Validate APM bootstrap helpers
-        shell: bash
-        run: |
-          bash -n ./scripts/apm-workspace.sh
-          pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/apm-workspace.ps1 help >/dev/null
 
       - name: Build bundle
         run: nix build .#bundle

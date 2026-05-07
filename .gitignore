@@ -156,6 +156,7 @@ Autodesk/
 btop/btop.log
 
 ## Package Managers and Tools
+NuGet/
 .yarnclean
 yarn/
 composer/
@@ -168,6 +169,7 @@ clerk/
 nextjs-nodejs/
 astro/
 opencode/skills/
+opencode/agents/
 op/
 jgit/
 raycast/

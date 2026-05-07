@@ -29,8 +29,8 @@ package_manager = "pnpm"
 _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
-MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit #.worktrees #.claude/worktrees #result #result-* #.kiro #opencode/agents/*.md"
-TASK_EXCLUDES = "--exclude .worktrees --exclude .claude/worktrees --exclude result --exclude result-* --exclude .luarocks --exclude .kiro --exclude tmux/plugins --exclude opencode/agents/*.md"
+MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit #.worktrees #.apm/skills #.claude/skills #.claude/worktrees #.codex/skills #result #result-* #.kiro #opencode/agents/*.md"
+TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude .luarocks --exclude .kiro --exclude tmux/plugins --exclude opencode/agents/*.md --exclude apm.lock.yaml"
 
 # ========================================
 # オプション環境変数（ファイル限定処理）

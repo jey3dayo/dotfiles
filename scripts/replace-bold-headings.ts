@@ -62,14 +62,30 @@ function parseArguments(): ParsedArgs {
 // Path Resolution
 // ========================================
 
+function isApmWorkspaceRoot(targetPath: string): boolean {
+  return (
+    fs.existsSync(path.join(targetPath, "apm.yml")) &&
+    fs.existsSync(path.join(targetPath, "catalog", "skills")) &&
+    fs.existsSync(path.join(targetPath, "catalog", ".apm"))
+  );
+}
+
 function resolveTargetPaths(userInputs: string[]): string[] {
   // デフォルト値（引数なしの場合）
   if (userInputs.length === 0) {
-    return [process.cwd()];
+    const cwd = process.cwd();
+    if (isApmWorkspaceRoot(cwd)) {
+      return [path.join(cwd, "catalog", "skills")];
+    }
+    return [cwd];
   }
 
   // ユーザー指定のパスを解決
-  return userInputs.map((input) => path.resolve(process.cwd(), input));
+  const resolved = userInputs.map((input) => path.resolve(process.cwd(), input));
+  if (resolved.length === 1 && isApmWorkspaceRoot(resolved[0])) {
+    return [path.join(resolved[0], "catalog", "skills")];
+  }
+  return resolved;
 }
 
 // ========================================
@@ -273,7 +289,10 @@ const SKIP_DIR_NAMES = new Set(["node_modules", ".worktrees", ".kiro", ".luarock
 
 // Path-suffix patterns (matched against the full path using endsWith-style suffix).
 const SKIP_PATH_SUFFIXES = [
+  path.join(".apm", "skills"),
+  path.join(".claude", "skills"),
   path.join(".claude", "worktrees"),
+  path.join(".codex", "skills"),
   path.join("tmux", "plugins"),
   path.join("zsh", ".zinit"),
   path.join("agents", "external"),
@@ -364,6 +383,9 @@ Examples:
   # Process all markdown files in repository
   tsx replace-bold-headings.ts
   mise run format:markdown:bold-headings
+
+  # In ~/.apm workspace roots, "." resolves to ./catalog/skills automatically
+  tsx replace-bold-headings.ts .
 
   # Process specific directories
   tsx replace-bold-headings.ts .claude

@@ -1,8 +1,0 @@
-# ========================================
-# Agent / APM Bootstrap Tasks
-# ========================================
-
-["apm:bootstrap"]
-description = "~/.apm checkout / apm.yml / mise.toml の存在を bootstrap"
-run = "bash ./scripts/apm-workspace.sh bootstrap"
-run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/apm-workspace.ps1 bootstrap"

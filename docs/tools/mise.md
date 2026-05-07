@@ -78,7 +78,6 @@ mise/
     ├── test.toml          # テスト実行（Lua/TypeScript）
     ├── integration.toml   # 統合タスク（setup/doctor/check/format/lint 集約）
     ├── home-manager.toml  # Home Manager 操作
-    ├── agents.toml        # APM bootstrap
     ├── updates.toml       # 依存関係更新（brew/apt/submodules）
     ├── env.toml           # 環境変数管理（dotenvx）
     ├── brewfile.toml      # Brewfile バックアップ・リストア
@@ -137,19 +136,13 @@ ci:full
 
 ### APM Global Skills
 
-agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config` 側は bootstrap helper だけを持ちます。
+agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config` 側の `mise` は APM 操作面を持ちません。
 
 - APM CLI 自体は `mise` 管理とし、`.config` と `~/.apm` の両方で `github:microsoft/apm` を pin する
-- `.config` 側の APM task は `apm:bootstrap` だけ
-- install / update / list / doctor は `cd ~/.apm && mise run ...` で行う
-- managed asset は `~/.apm/catalog/` を直接編集し、`~/.apm/apm.yml` の `jey3dayo/apm-workspace/catalog#main` から deploy する
-- external 管理は `~/.apm/apm.yml` を正本にする
-- `doctor` は dependency 状態に加えて external の `unpinned` 件数、managed-vs-external overlap 件数、catalog の asset 件数・manifest 参照・status も表示する
-- `apply` / `update` は内部で catalog drift check を通し、その後で stale managed skill link を掃除してから global install する
-- `format`, `ci:check`, `ci`, `catalog:tidy` は `~/.apm` workspace を日常運用しやすくする補助 task として使う
-- install 系 command は APM diagnostics に `packages failed` / `error(s)` が出た場合も failure として扱う
-- catalog の validation や daily operation は `~/.apm` workspace 側 task を使う
-- `.config` 側の APM task は `apm:bootstrap` のみ公開する
+- personal skill は `~/.apm/catalog/skills/` を直接編集する
+- external skill は `~/.apm/apm.yml` の upstream ref で管理する
+- shared guidance は `~/.apm/catalog/{AGENTS.md,agents/**,commands/**,rules/**}` を直接編集する
+- daily operation と validation は `cd ~/.apm && mise run ...` で行う
 
 詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
 
@@ -325,12 +318,10 @@ mise tasks
 # Install all tools from config
 mise install
 
-# Bootstrap the APM workspace from ~/.config
-mise run apm:bootstrap
-
-# Then move into ~/.apm for daily operation
+# For APM daily operation, work from ~/.apm directly
 cd ~/.apm
 mise install
+mise run check
 mise run apply
 mise run doctor
 
