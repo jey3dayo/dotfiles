@@ -100,7 +100,7 @@ else
   mise run check:lint:quick
 fi
 """
-run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci:quick"
+run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-wsl-task.ps1 -TaskName ci:quick"
 
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
@@ -114,12 +114,12 @@ else
   mise run ci:gitleaks
 fi
 """
-run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci"
+run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-wsl-task.ps1 -TaskName ci"
 
 ["ci:full"]
 description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
 run = [{ task = "ci:verify-deploy" }, { task = "ci" }]
-run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-wsl-task.ps1 -TaskName ci:full"
+run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-wsl-task.ps1 -TaskName ci:full"
 
 ["ci:quick:windows"]
 description = "Windows 向け軽量チェック（WSL スナップショット経由）"

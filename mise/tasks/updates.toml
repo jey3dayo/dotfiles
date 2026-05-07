@@ -75,17 +75,17 @@ GIT_HTTP_VERSION=HTTP/1.1 git -c http.version=HTTP/1.1 submodule update --remote
 # Then align nested submodules to commits pinned by each parent submodule
 git submodule update --init --recursive
 """
-run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-update.ps1 -TaskName submodules"
+run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-update.ps1 -TaskName submodules"
 
 ["update:brew"]
 description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
 run = "if command -v brew >/dev/null 2>&1; then (brew update 2>&1 | grep -v \"definition is invalid\" || true) && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
-run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-update.ps1 -TaskName brew"
+run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-update.ps1 -TaskName brew"
 
 ["update:apt"]
 description = "APT パッケージを更新（Ubuntu/Debian 環境）"
 run = "if command -v apt-get >/dev/null 2>&1 && [ -f /etc/debian_version ]; then sudo apt-get update && sudo apt-get upgrade -y; else echo 'APT not available, skipping apt update'; fi"
-run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-update.ps1 -TaskName apt"
+run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-update.ps1 -TaskName apt"
 
 ["setup:tauri:ubuntu"]
 description = "Tauri アプリ開発に必要な Ubuntu/WSL システム依存をインストール"
@@ -96,4 +96,4 @@ description = "外部 Git リポジトリを更新（強制リセット）"
 run = [
   "if [ -d ~/src/github.com/brookhong/Surfingkeys ]; then cd ~/src/github.com/brookhong/Surfingkeys && git fetch origin && git reset --hard origin/master && git clean -fd; else echo 'Skip: ~/src/github.com/brookhong/Surfingkeys not found'; fi",
 ]
-run_windows = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File ./scripts/mise-update.ps1 -TaskName external-repos"
+run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-update.ps1 -TaskName external-repos"
