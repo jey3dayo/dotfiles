@@ -38,6 +38,13 @@ fi
 #   - .zprofile (login shells) → calls _mise_activate from config/tools/mise.zsh
 #   - .zshrc (non-login shells) → calls _mise_activate from config/tools/mise.zsh
 
+# Non-interactive shells used by agents can skip .zprofile/.zshrc; keep mise
+# shims ahead of Homebrew there too so project Node versions are honored.
+case ":$PATH:" in
+  *":${MISE_DATA_DIR:-$HOME/.mise}/shims:"*) ;;
+  *) export PATH="${MISE_DATA_DIR:-$HOME/.mise}/shims${PATH:+:$PATH}" ;;
+esac
+
 # History file should be set before shell init so history loads
 # even if .zshrc is skipped. Keep it under XDG state by default.
 : "${HISTFILE:=${XDG_STATE_HOME}/zsh/history}"
@@ -88,6 +95,6 @@ fi
 fpath=(
   ~/.awsume/zsh-autocomplete/
   ~/.local/share/zsh-autocomplete/
-  "${fpath[@]}")
+"${fpath[@]}")
 
 # vim: set syntax=zsh:

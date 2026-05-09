@@ -33,6 +33,7 @@ path=(
   $HOME/.local/{bin,sbin}(N-)
   $XDG_CONFIG_HOME/scripts(N-)
   $HOME/.claude/{bin,local}(N-)
+  ${MISE_DATA_DIR:-$HOME/.mise}/shims(N-)
 
   # Language-specific tools
   $HOME/.deno/bin(N-)
