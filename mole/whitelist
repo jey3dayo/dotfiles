@@ -1,0 +1,53 @@
+# Mole Whitelist - Protected paths won't be deleted by `mo clean`.
+#
+# Keep Mole's built-in defaults explicit here. When this file exists, Mole uses
+# this file instead of the internal DEFAULT_WHITELIST_PATTERNS.
+
+# Mole defaults: browser/test runtimes, package/model caches, and macOS-critical caches.
+$HOME/Library/Caches/ms-playwright*
+$HOME/.cache/huggingface*
+$HOME/.m2/repository/*
+$HOME/.gradle/caches/*
+$HOME/.gradle/daemon/*
+$HOME/.ollama/models/*
+$HOME/Library/Caches/com.nssurge.surge-mac/*
+$HOME/Library/Application Support/com.nssurge.surge-mac/*
+$HOME/Library/Caches/org.R-project.R/R/renv/*
+$HOME/Library/Caches/pypoetry/virtualenvs*
+$HOME/Library/Caches/JetBrains*
+$HOME/Library/Caches/com.jetbrains.toolbox*
+$HOME/Library/Caches/tealdeer/tldr-pages
+$HOME/Library/Application Support/JetBrains*
+$HOME/Library/Caches/com.apple.finder
+$HOME/Library/Mobile Documents*
+$HOME/Library/Caches/com.apple.FontRegistry*
+$HOME/Library/Caches/com.apple.spotlight*
+$HOME/Library/Caches/com.apple.Spotlight*
+$HOME/Library/Caches/CloudKit*
+FINDER_METADATA
+
+# Browser caches and profile data: do not clear these through broad cleanup.
+$HOME/Library/Caches/Google/Chrome*
+$HOME/Library/Application Support/Google/Chrome*
+$HOME/Library/Application Support/Google/GoogleUpdater*
+$HOME/Library/Caches/Chromium*
+$HOME/.cache/puppeteer*
+$HOME/Library/Caches/company.thebrowser.Browser*
+$HOME/Library/Application Support/Arc*
+$HOME/Library/Caches/Arc*
+$HOME/Library/Application Support/Vivaldi*
+$HOME/Library/Caches/Vivaldi*
+$HOME/Library/Caches/com.vivaldi.Vivaldi*
+$HOME/Library/Application Support/BraveSoftware*
+$HOME/Library/Caches/BraveSoftware*
+$HOME/Library/Caches/company.thebrowser.dia*
+$HOME/Library/Application Support/Dia*
+$HOME/Library/Caches/Comet*
+$HOME/Library/Caches/Firefox*
+$HOME/Library/Application Support/Firefox*
+
+# VM / local app state that should be cleaned manually, not by generic cache cleanup.
+$HOME/Library/Containers/com.docker.docker*
+$HOME/Library/Application Support/Claude/vm_bundles*
+$HOME/Library/Application Support/CleanShot/media*
+$HOME/Library/Application Support/app.cotypist.Cotypist/Models*

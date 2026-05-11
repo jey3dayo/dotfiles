@@ -161,6 +161,7 @@ NuGet/
 yarn/
 composer/
 configstore/
+mole/clean-list.txt
 mise/trusted-configs/
 fish/
 fisher/
