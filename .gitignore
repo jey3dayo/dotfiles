@@ -254,7 +254,6 @@ sample.*
 *.my.sh
 nohup.out
 out.typos
-TODO.md
 
 ## Temporary Tracking Documents
 _*.md
