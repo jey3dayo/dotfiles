@@ -11237,12 +11237,6 @@
         "options": {
           "full_name": "zoom"
         }
-      },
-      "zulu@8": {
-        "version": "8.0.422,8.80.0.17",
-        "options": {
-          "full_name": "zulu@8"
-        }
       }
     },
     "mas": {
