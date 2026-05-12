@@ -1,5 +1,9 @@
 # Home Manager ディザスタリカバリガイド
 
+最終更新: 2026-03-23
+対象: Nix dotfiles 管理者
+タグ: `category/infra`, `tool/home-manager`, `tool/nix`, `layer/system`, `environment/macos`, `audience/developer`
+
 このドキュメントは、Nix Home Managerの障害発生時の復旧手順を記載しています。
 
 ## 目次

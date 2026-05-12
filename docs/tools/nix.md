@@ -2,7 +2,7 @@
 
 最終更新: 2026-03-23
 対象: macOS ユーザー（dotfiles 管理者）
-タグ: `category/infra`, `tool/nix`, `tool/home-manager`, `layer/system`, `environment/macos`
+タグ: `category/infra`, `tool/nix`, `tool/home-manager`, `layer/system`, `environment/macos`, `audience/developer`
 
 Nix Home Manager の配布アーキテクチャ・メンテナンス運用ポリシーと詳細リファレンスです。
 

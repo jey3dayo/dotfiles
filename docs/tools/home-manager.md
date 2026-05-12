@@ -2,7 +2,7 @@
 
 最終更新: 2026-03-23
 対象: Nix dotfiles 管理者
-タグ: `category/infra`, `tool/home-manager`, `layer/system`, `environment/macos`
+タグ: `category/infra`, `tool/home-manager`, `layer/system`, `environment/macos`, `audience/developer`
 
 Home Manager 統合の設計・実装・トラブルシューティングの詳細リファレンスです。
 
