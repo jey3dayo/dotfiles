@@ -33,6 +33,7 @@
       "!**/agents/scripts",
       "!**/result",
       "!**/AWS VPN Client",
+      "!**/linearmouse/linearmouse.json",
       "!**/configstore"
     ]
   },
