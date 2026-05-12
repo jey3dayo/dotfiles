@@ -22,6 +22,29 @@ _mise_activate() {
 
   # Activate
   eval "$($mise_path activate zsh)"
+  _mise_wrap_github_token
+}
+
+_mise_wrap_github_token() {
+  (( $+functions[mise] )) || return 0
+  (( $+functions[_mise_original] )) && return 0
+
+  functions[_mise_original]=$functions[mise]
+
+  mise() {
+    case "$1" in
+      update | upgrade)
+        local command token
+        command="$1"
+        token="$(gh auth token)" || return
+        shift
+        MISE_GITHUB_TOKEN="$token" _mise_original "$command" "$@"
+        ;;
+      *)
+        _mise_original "$@"
+        ;;
+    esac
+  }
 }
 
 # ========================================
@@ -39,6 +62,9 @@ command -v mise > /dev/null 2>&1 || return
 
 # Shortcut for local CI
 alias refresh="mise ci"
+
+# Run `mise update`/`mise upgrade` with a GitHub token only for that invocation.
+_mise_wrap_github_token
 
 # Prefer the bundled completion file when available.
 # Generating completions through `mise complete -s zsh` can block WSL login
