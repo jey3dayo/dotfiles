@@ -1206,6 +1206,36 @@
                 {
                     "identifiers": {
                         "is_keyboard": true,
+                        "product_id": 34,
+                        "vendor_id": 1278
+                    },
+                    "manipulate_caps_lock_led": false,
+                    "simple_modifications": [
+                        {
+                            "from": {
+                                "key_code": "international4"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "japanese_kana"
+                                }
+                            ]
+                        },
+                        {
+                            "from": {
+                                "key_code": "international5"
+                            },
+                            "to": [
+                                {
+                                    "key_code": "japanese_eisuu"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
                         "product_id": 794,
                         "vendor_id": 2131
                     },
