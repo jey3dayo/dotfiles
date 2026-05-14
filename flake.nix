@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-utils.url = "github:numtide/flake-utils";
     gitignore = {
       url = "github:hercules-ci/gitignore.nix";
@@ -19,6 +23,7 @@
       self,
       nixpkgs,
       home-manager,
+      nix-darwin,
       flake-utils,
       gitignore,
       ...
@@ -30,6 +35,37 @@
     {
       # HM module (usable by external flakes)
       homeManagerModules.default = mkDotfilesModule;
+
+      # macOS system configuration: `sudo darwin-rebuild switch --flake "$HOME/.config#CA-20031129"`
+      darwinConfigurations.CA-20031129 = nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          {
+            # Keep Nix itself managed by the existing installer/profile setup.
+            nix.enable = false;
+
+            # This flake only owns the PAM change; keep the existing system bashrc untouched.
+            programs.bash.enable = false;
+
+            # Enable Touch ID for sudo, including tmux/screen sessions via pam_reattach.
+            security.pam.services.sudo_local = {
+              touchIdAuth = true;
+              reattach = true;
+            };
+
+            environment.etc."pam.d/sudo_local".knownSha256Hashes = [
+              # macOS default sudo_local template with Touch ID commented out.
+              "6bcbb9339dbc848d7af6a2b69bf798d12e3184152d9b314828f71477a0660387"
+            ];
+
+            # Required by nix-darwin for backwards compatibility.
+            system.stateVersion = 6;
+
+            nixpkgs.hostPlatform = "aarch64-darwin";
+          }
+        ];
+        specialArgs = { inherit inputs; };
+      };
 
       # HM configuration: `home-manager switch --flake "$HOME/.config" --impure`
       # --impure required: builtins.getEnv for $USER/$HOME, builtins.currentSystem for pkgs
