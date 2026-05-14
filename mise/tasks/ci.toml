@@ -86,6 +86,20 @@ ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" 
 nix build .#default
 """
 
+["nix:build:darwin-system"]
+description = "nix-darwin system 構成をビルド検証（適用なし）"
+run = """
+if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
+  echo "Skip nix:build:darwin-system (SKIP_NIX_VALIDATE=1)"
+  exit 0
+fi
+
+. "./mise/lib/home-manager.sh"
+ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
+
+nix build --no-link --impure .#darwinConfigurations.CA-20031129.system
+"""
+
 # ----------------------------------------
 # 集約タスク（エイリアス）
 # ----------------------------------------
@@ -135,4 +149,9 @@ run = [{ task = "ci:full" }]
 
 ["ci:nix"]
 description = "Nix 固有の深い検証（validate.yml 対応）"
-depends = ["nix:check", "nix:build:default", "hm:check"]
+depends = [
+  "nix:check",
+  "nix:build:default",
+  "nix:build:darwin-system",
+  "hm:check",
+]
