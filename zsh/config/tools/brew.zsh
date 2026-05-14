@@ -21,7 +21,7 @@ fi
 [[ -x $BREW_PATH/brew ]] && alias brew="arch -arch $ARCH $BREW_PATH/brew"
 
 # Ultra-deferred brew initialization for maximum startup speed
-if (($ + functions[zsh - defer])); then
+if (( $+functions[zsh-defer] )); then
   # Set minimal env vars immediately, defer full shellenv
   export HOMEBREW_PREFIX="$([[ "$(arch)" == arm64 ]] && echo /opt/homebrew || echo /usr/local)"
   export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
