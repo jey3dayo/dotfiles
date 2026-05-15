@@ -53,7 +53,6 @@ Location: `docs/`
 - [Mise](tools/mise.md) - ツールバージョン管理・設定・pnpm バックエンド
   - [Task Catalog](tools/mise-tasks.md) - 全タスク一覧（CI/Format/Lint/Test/HM/Skills 等）
   - [Config Reference](tools/mise-config.md) - config.default.toml ツールカテゴリ詳細
-- [OpenClaw](tools/openclaw.md) - Gateway 運用・systemd 設定・トラブルシューティング
 - [Security](security.md) - セキュリティポリシー・gitleaks・インシデント対応
 - [Workflows & Maintenance](tools/workflows.md) - 定期メンテナンス・Brewfile・コードクオリティ
 

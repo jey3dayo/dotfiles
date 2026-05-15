@@ -216,8 +216,7 @@ agents/
 ```
 scripts/
 ├── bootstrap.sh          # Homebrew bootstrap (macOS)
-├── setup-env.sh          # Environment setup helpers
-└── openclaw-cleanup      # Optional cleanup utility
+└── setup-env.sh          # Environment setup helpers
 ```
 
 **Purpose**: Setup and maintenance helpers

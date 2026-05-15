@@ -10,7 +10,7 @@ set -eu
 #   TELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=... sh ./scripts/send-telegram.sh "msg"
 #
 # Env:
-#   TELEGRAM_BOT_TOKEN  Required. Bot token (or sourced from ~/.openclaw/gateway.env)
+#   TELEGRAM_BOT_TOKEN  Required. Bot token
 #   TELEGRAM_CHAT_ID    Required. Numeric chat id or @username
 #   TELEGRAM_API_BASE   Optional. Defaults to https://api.telegram.org
 #   TELEGRAM_PARSE_MODE Optional. e.g. MarkdownV2 / HTML (default: none)

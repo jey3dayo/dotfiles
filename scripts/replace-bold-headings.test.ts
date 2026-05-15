@@ -81,7 +81,7 @@ describe("replace-bold-headings: conversion rules", () => {
     check("- **メリット**: 初回ロード軽量", "- メリット: 初回ロード軽量"));
 
   it("strips bold from unordered list label (no colon)", () =>
-    check("- **OpenClaw関連（4ファイル）**", "- OpenClaw関連（4ファイル）"));
+    check("- **関連ファイル（4ファイル）**", "- 関連ファイル（4ファイル）"));
 
   it("strips bold from unordered list label with right arrow", () =>
     check("- **出力あり** → uncommitted changes モード", "- 出力あり → uncommitted changes モード"));

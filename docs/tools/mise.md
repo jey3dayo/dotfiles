@@ -237,7 +237,7 @@ Note: hadolint is included in `config.default.toml` but may fail to install on A
 - ユーティリティ: `@antfu/ni`, `npm`, `npm-check-updates`
 - ドキュメント: `markdown-link-check`, `markdownlint-cli2`, `textlint`
 - フォーマッター/Linter: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
-- AI/Claude: `aicommits`, `@sasazame/ccresume`, `openclaw`
+- AI/Claude: `aicommits`, `@sasazame/ccresume`
 - MCP: `@upstash/context7-mcp`, `o3-search-mcp`
 - CLI: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
 - ランタイム: `go` (latest), `node`, `python`, `pipx:uv`
@@ -296,7 +296,7 @@ After: miseのnpmバックエンドがpnpmを使用（`settings.npm.package_mana
 3. npm global cleanup:
    - Removed `@openai/codex`, `aicommits`, `markdown-link-check` from npm global
    - Verified npm global is empty (only local links remain)
-4. Verification: `mise install "npm:openclawd"` confirmed using pnpm backend
+4. Verification: `mise install "npm:pnpm@10.28.2"` confirmed using pnpm backend
 
 Benefits:
 
