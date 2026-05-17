@@ -5,7 +5,12 @@ if (-not $zoxideCommand) {
   return
 }
 
-Invoke-Expression (& $zoxideCommand.Source init powershell | Out-String)
+$zoxideInit = & $zoxideCommand.Source init powershell 2>$null | Out-String
+if ([string]::IsNullOrWhiteSpace($zoxideInit)) {
+  return
+}
+
+Invoke-Expression $zoxideInit
 
 function global:j {
   z @args

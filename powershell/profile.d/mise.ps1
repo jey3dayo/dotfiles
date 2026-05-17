@@ -1,8 +1,14 @@
 # Shared mise bootstrap for PowerShell on Windows.
-
+#
+# Keep project `mise run` tasks on mise's normal config discovery path.
+# Pointing MISE_CONFIG_FILE or MISE_ENV at config.windows.toml makes Windows
+# TOML tasks run with a broken PATH in mise 2026.5.x.
 $windowsMiseConfig = Join-Path $env:USERPROFILE ".config\mise\config.windows.toml"
-if (-not $env:MISE_CONFIG_FILE -and (Test-Path $windowsMiseConfig)) {
-  $env:MISE_CONFIG_FILE = $windowsMiseConfig
+if ($env:MISE_CONFIG_FILE -eq $windowsMiseConfig) {
+  Remove-Item Env:MISE_CONFIG_FILE -ErrorAction SilentlyContinue
+}
+if ($env:MISE_ENV -eq "windows") {
+  Remove-Item Env:MISE_ENV -ErrorAction SilentlyContinue
 }
 
 $miseCandidates = @(
@@ -21,6 +27,12 @@ $miseBin = Split-Path -Parent $miseExe
 $pathEntries = $env:PATH -split [IO.Path]::PathSeparator
 if ($pathEntries -notcontains $miseBin) {
   $env:PATH = $miseBin + [IO.Path]::PathSeparator + $env:PATH
+}
+
+$miseShims = Join-Path $env:LOCALAPPDATA "mise\shims"
+$pathEntries = $env:PATH -split [IO.Path]::PathSeparator
+if ((Test-Path $miseShims) -and ($pathEntries -notcontains $miseShims)) {
+  $env:PATH = $miseShims + [IO.Path]::PathSeparator + $env:PATH
 }
 
 # Windows PowerShell 5 can use the pwsh activation script, but chpwd warnings are noisy there.
