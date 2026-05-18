@@ -134,7 +134,6 @@ yamllint = "latest"
 "npm:@sasazame/ccresume" = "latest"
 "npm:ccusage" = "latest"
 "npm:dev3000" = "latest"
-"npm:openclaw" = "latest"
 
 # クラウド・インフラ
 "npm:aws-cdk" = "latest"
