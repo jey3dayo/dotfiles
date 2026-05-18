@@ -73,7 +73,7 @@ local bundled_mise_completion="${ZDOTDIR:-$HOME/.config/zsh}/completions/_mise"
 if (( $+functions[_mise_hook] )) && [[ ! -r "$bundled_mise_completion" ]]; then
   if command -v usage > /dev/null 2>&1; then
     if (( $+functions[zsh-defer] )); then
-      zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval "$(mise complete -s zsh)"
+      zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval '$(mise complete -s zsh)'
     else
       eval "$(mise complete -s zsh)"
     fi
