@@ -74,5 +74,6 @@ _init_completion() {
 
 # Execute immediately (required before sheldon plugins load)
 _init_completion
+unfunction cleanup_old_zcompdump _execute_post_compinit_hooks _init_completion 2> /dev/null
 
 # vim: set syntax=zsh:
