@@ -37,7 +37,7 @@ run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff check ${PY_FILES}
 else
-  uvx ruff check ${TASK_EXCLUDES} .
+  fd -e py ${TASK_EXCLUDES} -X uvx ruff check
 fi
 """
 

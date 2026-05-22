@@ -25,6 +25,7 @@
     ".worktrees/**",
     ".claude/worktrees/**",
     "result/**",
+    "tmp/**",
     ".kiro/**",
     ".luarocks/**",
     ".plans/**",
