@@ -49,6 +49,8 @@ path-check() {
 zsh-quick-check() {
   emulate -L zsh
   local -a path_entries=("${path[@]}")
+  local -a function_names=("${(k)functions[@]}")
+  local -a alias_names=("${(k)aliases[@]}")
   local -A seen
   local -a duplicates
   local dir tool
@@ -65,8 +67,8 @@ zsh-quick-check() {
 
   # Performance indicators
   print -r -- "📊 Performance:"
-  print -r -- "  Functions loaded: $(typeset -f | grep '^[a-zA-Z]' | wc -l | tr -d ' ')"
-  print -r -- "  Aliases defined: $(alias | wc -l | tr -d ' ')"
+  print -r -- "  Functions loaded: ${#function_names[@]}"
+  print -r -- "  Aliases defined: ${#alias_names[@]}"
 
   # PATH status
   print -r -- ""
