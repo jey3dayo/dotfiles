@@ -8,7 +8,10 @@
 # Activate mise for PATH management (idempotent)
 _mise_activate() {
   # Skip if already activated
-  typeset -f mise > /dev/null && return 0
+  if typeset -f mise > /dev/null; then
+    _mise_promote_paths
+    return 0
+  fi
 
   # Find mise executable
   local mise_path=""
@@ -22,7 +25,24 @@ _mise_activate() {
 
   # Activate
   eval "$($mise_path activate zsh)"
+  _mise_promote_paths
   _mise_wrap_github_token
+}
+
+_mise_promote_paths() {
+  local mise_data_dir="${MISE_DATA_DIR:-$HOME/.mise}"
+  local -a mise_tool_paths mise_shim_paths other_paths
+  local dir
+
+  for dir in "${path[@]}"; do
+    case "$dir" in
+      "$mise_data_dir"/shims) mise_shim_paths+=("$dir") ;;
+      "$mise_data_dir"/*) mise_tool_paths+=("$dir") ;;
+      *) other_paths+=("$dir") ;;
+    esac
+  done
+
+  path=("${mise_tool_paths[@]}" "${mise_shim_paths[@]}" "${other_paths[@]}")
 }
 
 _mise_wrap_github_token() {

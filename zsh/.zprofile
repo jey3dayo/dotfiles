@@ -62,6 +62,8 @@ path=(
   $path
 )
 
+(( $+functions[_mise_promote_paths] )) && _mise_promote_paths
+
 # Keep standalone Bun available for login shells that do not read .zshrc.
 if [[ -f "${ZDOTDIR}/config/tools/bun.zsh" ]]; then
   source "${ZDOTDIR}/config/tools/bun.zsh"
