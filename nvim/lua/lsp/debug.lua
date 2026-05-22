@@ -16,21 +16,8 @@ local function flush_echo()
   echo_buffer = {}
 end
 
--- Styled echo helpers
 local function echo_header(text)
   echo(string.format("=== %s ===", text), "Title")
-  echo_newline()
-end
-
-local function echo_bullet(text, hlgroup)
-  echo("• ", "Normal")
-  echo(text, hlgroup or "Normal")
-  echo_newline()
-end
-
-local function echo_sub_bullet(text, hlgroup)
-  echo("    ", "Normal")
-  echo(text, hlgroup or "Normal")
   echo_newline()
 end
 
@@ -71,14 +58,20 @@ function M.check_lsp_status()
       -- Show capabilities
       if client.server_capabilities then
         local caps = {}
-        if client.server_capabilities.textDocumentSync then table.insert(caps, "sync") end
-        if client.server_capabilities.completionProvider then table.insert(caps, "completion") end
-        if client.server_capabilities.hoverProvider then table.insert(caps, "hover") end
-        if client.server_capabilities.signatureHelpProvider then table.insert(caps, "signature") end
-        if client.server_capabilities.definitionProvider then table.insert(caps, "definition") end
-        if client.server_capabilities.referencesProvider then table.insert(caps, "references") end
-        if client.server_capabilities.documentFormattingProvider then table.insert(caps, "format") end
-        if client.server_capabilities.codeActionProvider then table.insert(caps, "codeAction") end
+        local capability_names = {
+          { "textDocumentSync", "sync" },
+          { "completionProvider", "completion" },
+          { "hoverProvider", "hover" },
+          { "signatureHelpProvider", "signature" },
+          { "definitionProvider", "definition" },
+          { "referencesProvider", "references" },
+          { "documentFormattingProvider", "format" },
+          { "codeActionProvider", "codeAction" },
+        }
+        for _, capability_spec in ipairs(capability_names) do
+          local capability, label = capability_spec[1], capability_spec[2]
+          if client.server_capabilities[capability] then table.insert(caps, label) end
+        end
         if #caps > 0 then
           echo("    Capabilities: ", "Normal")
           echo(table.concat(caps, ", "), "Normal")
@@ -91,37 +84,23 @@ function M.check_lsp_status()
   -- Diagnostics summary
   echo_newline()
   echo_header "Diagnostics Summary"
-  local diag_count = {
-    [vim.diagnostic.severity.ERROR] = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.ERROR }),
-    [vim.diagnostic.severity.WARN] = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.WARN }),
-    [vim.diagnostic.severity.INFO] = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.INFO }),
-    [vim.diagnostic.severity.HINT] = #vim.diagnostic.get(bufnr, { severity = vim.diagnostic.severity.HINT }),
+  local diagnostic_specs = {
+    { vim.diagnostic.severity.ERROR, "  ✗ Errors: ", "DiagnosticError" },
+    { vim.diagnostic.severity.WARN, "  ⚠ Warnings: ", "DiagnosticWarn" },
+    { vim.diagnostic.severity.INFO, "  ℹ Info: ", "DiagnosticInfo" },
+    { vim.diagnostic.severity.HINT, "  💡 Hints: ", "Normal" },
   }
 
   local has_diagnostics = false
-  if diag_count[vim.diagnostic.severity.ERROR] > 0 then
-    echo("  ✗ Errors: ", "DiagnosticError")
-    echo(tostring(diag_count[vim.diagnostic.severity.ERROR]), "DiagnosticError")
-    echo_newline()
-    has_diagnostics = true
-  end
-  if diag_count[vim.diagnostic.severity.WARN] > 0 then
-    echo("  ⚠ Warnings: ", "DiagnosticWarn")
-    echo(tostring(diag_count[vim.diagnostic.severity.WARN]), "DiagnosticWarn")
-    echo_newline()
-    has_diagnostics = true
-  end
-  if diag_count[vim.diagnostic.severity.INFO] > 0 then
-    echo("  ℹ Info: ", "DiagnosticInfo")
-    echo(tostring(diag_count[vim.diagnostic.severity.INFO]), "DiagnosticInfo")
-    echo_newline()
-    has_diagnostics = true
-  end
-  if diag_count[vim.diagnostic.severity.HINT] > 0 then
-    echo("  💡 Hints: ", "Normal")
-    echo(tostring(diag_count[vim.diagnostic.severity.HINT]), "Normal")
-    echo_newline()
-    has_diagnostics = true
+  for _, spec in ipairs(diagnostic_specs) do
+    local severity, label, hlgroup = spec[1], spec[2], spec[3]
+    local count = #vim.diagnostic.get(bufnr, { severity = severity })
+    if count > 0 then
+      echo(label, hlgroup)
+      echo(tostring(count), hlgroup)
+      echo_newline()
+      has_diagnostics = true
+    end
   end
 
   if not has_diagnostics then
@@ -349,17 +328,15 @@ function M.check_diagnostics()
   echo_newline()
 
   -- Check diagnostic handlers
-  echo("• Virtual text: ", "Normal")
-  echo(tostring(diag_config.virtual_text ~= false), "DiagnosticInfo")
-  echo_newline()
-
-  echo("• Signs: ", "Normal")
-  echo(tostring(diag_config.signs ~= false), "DiagnosticInfo")
-  echo_newline()
-
-  echo("• Underline: ", "Normal")
-  echo(tostring(diag_config.underline ~= false), "DiagnosticInfo")
-  echo_newline()
+  for _, handler in ipairs {
+    { "Virtual text", "virtual_text" },
+    { "Signs", "signs" },
+    { "Underline", "underline" },
+  } do
+    echo("• " .. handler[1] .. ": ", "Normal")
+    echo(tostring(diag_config[handler[2]] ~= false), "DiagnosticInfo")
+    echo_newline()
+  end
 
   -- Check LSP client diagnostic capabilities
   local bufnr = vim.api.nvim_get_current_buf()
