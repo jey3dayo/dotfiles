@@ -254,94 +254,48 @@ local function get_dial_map()
   return dial_map
 end
 
--- Set up keymaps
-vim.keymap.set("n", "<C-a>", function()
-  get_dial_map().manipulate("increment", "normal")
-end, { desc = "Increment" })
+local function set_dial_keymap(mode, lhs, kind, dial_mode, desc, group_name)
+  local opts = { desc = desc }
+  if group_name then opts.buffer = true end
 
-vim.keymap.set("n", "<C-x>", function()
-  get_dial_map().manipulate("decrement", "normal")
-end, { desc = "Decrement" })
+  vim.keymap.set(mode, lhs, function()
+    get_dial_map().manipulate(kind, dial_mode, group_name)
+  end, opts)
+end
 
-vim.keymap.set("n", "g<C-a>", function()
-  get_dial_map().manipulate("increment", "gnormal")
-end, { desc = "Increment (global)" })
+local global_keymaps = {
+  { "n", "<C-a>", "increment", "normal", "Increment" },
+  { "n", "<C-x>", "decrement", "normal", "Decrement" },
+  { "n", "g<C-a>", "increment", "gnormal", "Increment (global)" },
+  { "n", "g<C-x>", "decrement", "gnormal", "Decrement (global)" },
+  { "v", "<C-a>", "increment", "visual", "Increment (visual)" },
+  { "v", "<C-x>", "decrement", "visual", "Decrement (visual)" },
+  { "v", "g<C-a>", "increment", "gvisual", "Increment (global visual)" },
+  { "v", "g<C-x>", "decrement", "gvisual", "Decrement (global visual)" },
+}
 
-vim.keymap.set("n", "g<C-x>", function()
-  get_dial_map().manipulate("decrement", "gnormal")
-end, { desc = "Decrement (global)" })
-
-vim.keymap.set("v", "<C-a>", function()
-  get_dial_map().manipulate("increment", "visual")
-end, { desc = "Increment (visual)" })
-
-vim.keymap.set("v", "<C-x>", function()
-  get_dial_map().manipulate("decrement", "visual")
-end, { desc = "Decrement (visual)" })
-
-vim.keymap.set("v", "g<C-a>", function()
-  get_dial_map().manipulate("increment", "gvisual")
-end, { desc = "Increment (global visual)" })
-
-vim.keymap.set("v", "g<C-x>", function()
-  get_dial_map().manipulate("decrement", "gvisual")
-end, { desc = "Decrement (global visual)" })
+for _, keymap in ipairs(global_keymaps) do
+  set_dial_keymap(keymap[1], keymap[2], keymap[3], keymap[4], keymap[5])
+end
 
 -- Filetype-specific configurations
 local augroup = vim.api.nvim_create_augroup("DialConfig", { clear = true })
 
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup,
-  pattern = { "ruby" },
-  callback = function()
-    vim.keymap.set("n", "<C-a>", function()
-      get_dial_map().manipulate("increment", "normal", "ruby")
-    end, { buffer = true, desc = "Increment (Ruby)" })
+local filetype_groups = {
+  { { "ruby" }, "ruby", "Ruby" },
+  { { "javascript", "javascriptreact" }, "javascript", "JavaScript" },
+  { { "typescript", "typescriptreact" }, "typescript", "TypeScript" },
+  { { "git-rebase-todo" }, "git-rebase-todo", "Git rebase" },
+}
 
-    vim.keymap.set("n", "<C-x>", function()
-      get_dial_map().manipulate("decrement", "normal", "ruby")
-    end, { buffer = true, desc = "Decrement (Ruby)" })
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup,
-  pattern = { "javascript", "javascriptreact" },
-  callback = function()
-    vim.keymap.set("n", "<C-a>", function()
-      get_dial_map().manipulate("increment", "normal", "javascript")
-    end, { buffer = true, desc = "Increment (JavaScript)" })
-
-    vim.keymap.set("n", "<C-x>", function()
-      get_dial_map().manipulate("decrement", "normal", "javascript")
-    end, { buffer = true, desc = "Decrement (JavaScript)" })
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup,
-  pattern = { "typescript", "typescriptreact" },
-  callback = function()
-    vim.keymap.set("n", "<C-a>", function()
-      get_dial_map().manipulate("increment", "normal", "typescript")
-    end, { buffer = true, desc = "Increment (TypeScript)" })
-
-    vim.keymap.set("n", "<C-x>", function()
-      get_dial_map().manipulate("decrement", "normal", "typescript")
-    end, { buffer = true, desc = "Decrement (TypeScript)" })
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  group = augroup,
-  pattern = { "git-rebase-todo" },
-  callback = function()
-    vim.keymap.set("n", "<C-a>", function()
-      get_dial_map().manipulate("increment", "normal", "git-rebase-todo")
-    end, { buffer = true, desc = "Increment (Git rebase)" })
-
-    vim.keymap.set("n", "<C-x>", function()
-      get_dial_map().manipulate("decrement", "normal", "git-rebase-todo")
-    end, { buffer = true, desc = "Decrement (Git rebase)" })
-  end,
-})
+for _, group in ipairs(filetype_groups) do
+  local pattern, group_name, label = group[1], group[2], group[3]
+  vim.api.nvim_create_autocmd("FileType", {
+    group = augroup,
+    pattern = pattern,
+    callback = function()
+      set_dial_keymap("n", "<C-a>", "increment", "normal", "Increment (" .. label .. ")", group_name)
+      set_dial_keymap("n", "<C-x>", "decrement", "normal", "Decrement (" .. label .. ")", group_name)
+    end,
+  })
+end
