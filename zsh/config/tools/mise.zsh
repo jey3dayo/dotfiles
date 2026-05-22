@@ -1,7 +1,7 @@
 # ========================================
 # mise Activation Helper
 # ========================================
-# USAGE: Called by .zprofile (login) and .zshrc (non-login)
+# USAGE: Loaded from .zshrc for interactive login and non-login shells.
 # TIMING: Requires MISE_* env vars from .zshenv
 # ========================================
 

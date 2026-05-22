@@ -1,5 +1,5 @@
 # PATH utility functions
-# PATH setup is centralized in .zprofile
+# Interactive PATH setup is centralized in config/core/interactive-path.zsh.
 # These functions are for debugging and optimization
 
 # PATH optimization utility function
