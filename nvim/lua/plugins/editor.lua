@@ -2,6 +2,12 @@
 -- Based on https://zenn.dev/kawarimidoll/books/6064bf6f193b51
 local deps = require "core.dependencies"
 
+local function setup(module, opts)
+  return function()
+    require(module).setup(opts)
+  end
+end
+
 return {
   -- Extra utilities
   {
@@ -18,12 +24,10 @@ return {
     "echasnovski/mini.indentscope",
     version = false,
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("mini.indentscope").setup {
-        symbol = "│",
-        options = { try_as_border = true },
-      }
-    end,
+    config = setup("mini.indentscope", {
+      symbol = "│",
+      options = { try_as_border = true },
+    }),
   },
 
   -- Input method switcher (disabled on WSL)
@@ -87,36 +91,16 @@ return {
     "echasnovski/mini.pairs",
     version = false,
     event = "VeryLazy",
-    config = function()
-      require("mini.pairs").setup()
-    end,
+    config = setup "mini.pairs",
   },
 
   -- Surround operations
   {
     "echasnovski/mini.surround",
     version = false,
-    keys = {
-      { "sa", mode = { "n", "v" } },
-      { "sd", mode = { "n", "v" } },
-      { "sf", mode = { "n", "v" } },
-      { "sF", mode = { "n", "v" } },
-      { "sh", mode = { "n", "v" } },
-      { "sr", mode = { "n", "v" } },
-      { "sn", mode = { "n", "v" } },
-    },
+    keys = require("config/mini-surround").keys(),
     config = function()
-      require("mini.surround").setup {
-        mappings = {
-          add = "sa",
-          delete = "sd",
-          find = "sf",
-          find_left = "sF",
-          highlight = "sh",
-          replace = "sr",
-          update_n_lines = "sn",
-        },
-      }
+      require("config/mini-surround").setup()
     end,
   },
 
@@ -161,13 +145,7 @@ return {
     event = "VeryLazy",
     dependencies = { deps.ts_context_commentstring },
     config = function()
-      require("mini.comment").setup {
-        options = {
-          custom_commentstring = function()
-            return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
-          end,
-        },
-      }
+      require("config/mini-comment").setup()
     end,
   },
 
@@ -187,9 +165,7 @@ return {
     "echasnovski/mini.starter",
     version = false,
     event = "VimEnter",
-    config = function()
-      require("mini.starter").setup()
-    end,
+    config = setup "mini.starter",
   },
 
   -- Bracket mappings
@@ -207,42 +183,7 @@ return {
     "folke/flash.nvim",
     enabled = true,
     event = "VeryLazy",
-    keys = {
-      { "t", mode = { "n", "x", "o" }, false },
-      -- Note: 's' key is managed by undo-glow.flash_jump() for highlight integration
-      {
-        "S",
-        mode = { "n", "x", "o" },
-        function()
-          require("flash").treesitter()
-        end,
-        desc = "Flash Treesitter",
-      },
-      {
-        "r",
-        mode = "o",
-        function()
-          require("flash").remote()
-        end,
-        desc = "Remote Flash",
-      },
-      {
-        "R",
-        mode = { "o", "x" },
-        function()
-          require("flash").treesitter_search()
-        end,
-        desc = "Treesitter Search",
-      },
-      {
-        "<c-s>",
-        mode = { "c" },
-        function()
-          require("flash").toggle()
-        end,
-        desc = "Toggle Flash Search",
-      },
-    },
+    keys = require("config/flash").keys(),
   },
 
   -- Better jumps
@@ -250,9 +191,7 @@ return {
     "echasnovski/mini.jump",
     version = false,
     event = "VeryLazy",
-    config = function()
-      require("mini.jump").setup()
-    end,
+    config = setup "mini.jump",
   },
 
   -- Jump to any location
@@ -263,12 +202,7 @@ return {
       { "<CR>", mode = { "n", "x", "o" } },
     },
     config = function()
-      require("mini.jump2d").setup {
-        spotter = require("mini.jump2d").builtin_opts.single_character.spotter,
-        mappings = {
-          start_jumping = "<CR>",
-        },
-      }
+      require("config/mini-jump2d").setup()
     end,
   },
 
@@ -277,9 +211,7 @@ return {
     "echasnovski/mini.visits",
     version = false,
     event = "VeryLazy",
-    config = function()
-      require("mini.visits").setup()
-    end,
+    config = setup "mini.visits",
   },
 
   -- Key mapping hints and clues
@@ -297,9 +229,7 @@ return {
     "echasnovski/mini.align",
     version = false,
     event = "VeryLazy",
-    config = function()
-      require("mini.align").setup()
-    end,
+    config = setup "mini.align",
   },
 
   -- Animations
@@ -307,9 +237,7 @@ return {
     "echasnovski/mini.animate",
     version = false,
     event = "VeryLazy",
-    config = function()
-      require("mini.animate").setup()
-    end,
+    config = setup "mini.animate",
   },
 
   -- Visual feedback for undo/redo operations
@@ -347,9 +275,7 @@ return {
     "echasnovski/mini.operators",
     version = false,
     event = "VeryLazy",
-    config = function()
-      require("mini.operators").setup()
-    end,
+    config = setup "mini.operators",
   },
 
   -- Split/Join (mini.splitjoin default keymaps, VeryLazy)
@@ -365,9 +291,7 @@ return {
     "echasnovski/mini.fuzzy",
     version = false,
     lazy = true,
-    config = function()
-      require("mini.fuzzy").setup()
-    end,
+    config = setup "mini.fuzzy",
   },
 
   -- Enhanced increment/decrement (replacement for increment-activator)
@@ -384,9 +308,7 @@ return {
     "echasnovski/mini.tabline",
     version = false,
     event = "VeryLazy",
-    config = function()
-      require("mini.tabline").setup()
-    end,
+    config = setup "mini.tabline",
   },
 
   -- Modern completion engine (replaces mini.completion)
