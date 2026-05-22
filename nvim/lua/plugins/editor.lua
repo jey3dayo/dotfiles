@@ -1,7 +1,6 @@
 -- Editing stack built around mini.nvim plus a few focused helpers
 -- Based on https://zenn.dev/kawarimidoll/books/6064bf6f193b51
 local deps = require "core.dependencies"
-local is_wsl = require("core.utils").get_os() == "wsl"
 
 return {
   -- Extra utilities
@@ -10,16 +9,7 @@ return {
     version = false,
     event = "VeryLazy",
     config = function()
-      require("mini.misc").setup()
-      require("mini.misc").setup_restore_cursor() -- Restore cursor position
-
-      -- Zoom functionality
-      vim.api.nvim_create_user_command("Zoom", function()
-        require("mini.misc").zoom(0, {})
-      end, { desc = "Toggle window zoom" })
-      vim.keymap.set("n", "<leader>z", function()
-        require("mini.misc").zoom(0, {})
-      end, { desc = "Toggle window zoom" })
+      require("config/mini-misc").setup()
     end,
   },
 
@@ -63,11 +53,7 @@ return {
     version = false,
     event = { "BufReadPost", "BufNewFile" },
     config = function()
-      require("mini.trailspace").setup()
-      vim.api.nvim_create_user_command("TrimWhitespace", function()
-        require("mini.trailspace").trim()
-        require("mini.trailspace").trim_last_lines()
-      end, { desc = "Trim trailing whitespace" })
+      require("config/mini-trailspace").setup()
     end,
   },
 
@@ -78,76 +64,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = { "echasnovski/mini.extra" },
     config = function()
-      local hipatterns = require "mini.hipatterns"
-      local hi_words = require("mini.extra").gen_highlighter.words
-
-      hipatterns.setup {
-        highlighters = {
-          fixme = hi_words({ "FIXME", "Fixme", "fixme" }, "MiniHipatternsFixme"),
-          hack = hi_words({ "HACK", "Hack", "hack" }, "MiniHipatternsHack"),
-          todo = hi_words({ "TODO", "Todo", "todo" }, "MiniHipatternsTodo"),
-          note = hi_words({ "NOTE", "Note", "note" }, "MiniHipatternsNote"),
-
-          -- Enhanced color support (replaces nvim-colorizer.lua)
-          hex_color = hipatterns.gen_highlighter.hex_color(),
-
-          -- CSS color names mapped to hex (fast path, working)
-          css_names = (function()
-            local hex = hipatterns.gen_highlighter.hex_color()
-            local colors = {
-              red = "#ff0000",
-              green = "#008000",
-              blue = "#0000ff",
-              yellow = "#ffff00",
-              orange = "#ffa500",
-              purple = "#800080",
-              pink = "#ffc0cb",
-              brown = "#a52a2a",
-              gray = "#808080",
-              grey = "#808080",
-              black = "#000000",
-              white = "#ffffff",
-              cyan = "#00ffff",
-              magenta = "#ff00ff",
-              lime = "#00ff00",
-              navy = "#000080",
-              teal = "#008080",
-              olive = "#808000",
-              silver = "#c0c0c0",
-              maroon = "#800000",
-              fuchsia = "#ff00ff",
-              aqua = "#00ffff",
-              darkred = "#8b0000",
-              darkgreen = "#006400",
-              darkblue = "#00008b",
-              lightred = "#ffcccb",
-              lightgreen = "#90ee90",
-              lightblue = "#add8e6",
-              darkgray = "#a9a9a9",
-              darkgrey = "#a9a9a9",
-              lightgray = "#d3d3d3",
-              lightgrey = "#d3d3d3",
-            }
-            return {
-              pattern = "()%f[%a]("
-                .. "red|green|blue|yellow|orange|purple|pink|brown|gray|grey|black|white|"
-                .. "cyan|magenta|lime|navy|teal|olive|silver|maroon|fuchsia|aqua|"
-                .. "darkred|darkgreen|darkblue|lightred|lightgreen|lightblue|"
-                .. "darkgray|darkgrey|lightgray|lightgrey"
-                .. ")%f[%A]()",
-              group = function(_, match)
-                local color = colors[match.full_match:lower()]
-                if color then return hex(_, { full_match = color }) end
-                return nil
-              end,
-            }
-          end)(),
-        },
-        delay = {
-          text_change = 200, -- Slightly delayed for better performance
-          scroll = 50,
-        },
-      }
+      require("config/mini-hipatterns").setup()
     end,
   },
 
@@ -161,19 +78,7 @@ return {
     event = "VeryLazy",
     dependencies = { "echasnovski/mini.extra" },
     config = function()
-      local gen = require("mini.extra").gen_ai_spec
-      require("mini.ai").setup {
-        custom_textobjects = {
-          B = gen.buffer(),
-          D = gen.diagnostic(),
-          I = gen.indent(),
-          L = gen.line(),
-          N = gen.number(),
-          -- Date patterns: yyyy-mm-dd or yyyy/mm/dd
-          J = { { "()%d%d%d%d%-%d%d%-%d%d()", "()%d%d%d%d%/%d%d%/%d%d()" } },
-        },
-        n_lines = 500,
-      }
+      require("config/mini-ai").setup()
     end,
   },
 
@@ -228,48 +133,7 @@ return {
     "echasnovski/mini.files",
     version = false,
     config = function()
-      require("mini.files").setup {
-        windows = {
-          preview = true,
-          width_focus = 30,
-          width_preview = 30,
-        },
-        options = {
-          use_as_default_explorer = true, -- Use mini.files as default explorer
-        },
-      }
-
-      -- Create splits from mini.files (simplified approach)
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "MiniFilesBufferCreate",
-        callback = function(args)
-          local buf_id = args.data.buf_id
-
-          -- Split keymaps (simplified without get_target_window)
-          vim.keymap.set("n", "s", function()
-            local entry = require("mini.files").get_fs_entry()
-            if entry and entry.fs_type == "file" then
-              require("mini.files").close()
-              vim.cmd("split " .. entry.path)
-            end
-          end, { buffer = buf_id, desc = "Open in horizontal split" })
-
-          vim.keymap.set("n", "v", function()
-            local entry = require("mini.files").get_fs_entry()
-            if entry and entry.fs_type == "file" then
-              require("mini.files").close()
-              vim.cmd("vsplit " .. entry.path)
-            end
-          end, { buffer = buf_id, desc = "Open in vertical split" })
-
-          -- Enter and 'o' to open file (default behavior)
-          local open_file = function()
-            require("mini.files").go_in { close_on_file = true }
-          end
-          vim.keymap.set("n", "<CR>", open_file, { buffer = buf_id, desc = "Open file/directory" })
-          vim.keymap.set("n", "o", open_file, { buffer = buf_id, desc = "Open file/directory" })
-        end,
-      })
+      require("config/mini-files").setup()
     end,
   },
 
@@ -279,46 +143,7 @@ return {
     version = false,
     lazy = false,
     config = function()
-      require("mini.sessions").setup {
-        autoread = true,
-        autowrite = true,
-        directory = vim.fn.stdpath "state" .. "/sessions/",
-        file = "session.vim",
-        hooks = {
-          pre = {
-            write = function()
-              -- Close file explorer before saving
-              pcall(vim.cmd, "MiniFilesClose")
-            end,
-          },
-          post = {
-            read = function()
-              -- File explorer will be reopened if needed
-              -- (mini.files doesn't need explicit reopening)
-            end,
-          },
-        },
-      }
-
-      -- Better sessionoptions
-      vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-
-      -- Keymaps
-      local ms = require "mini.sessions"
-      vim.keymap.set("n", "<leader>ss", function()
-        -- Create session name from current directory
-        local session_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":t") .. ".vim"
-        ms.write(session_name)
-      end, { desc = "Session save" })
-      vim.keymap.set("n", "<leader>sr", function()
-        ms.select "read"
-      end, { desc = "Session restore" })
-      vim.keymap.set("n", "<leader>sd", function()
-        ms.select "delete"
-      end, { desc = "Session delete" })
-      vim.keymap.set("n", "<leader>sl", function()
-        ms.select "read"
-      end, { desc = "List sessions" })
+      require("config/mini-sessions").setup()
     end,
   },
 
@@ -373,25 +198,7 @@ return {
     version = false,
     event = "VeryLazy",
     config = function()
-      require("mini.bracketed").setup {
-        -- Disable some default mappings to avoid conflicts
-        file = { suffix = "" },
-        window = { suffix = "" },
-        quickfix = { suffix = "q" },
-        yank = { suffix = "" },
-        treesitter = { suffix = "t" },
-      }
-
-      -- mini.bracketed always tracks yanks via TextYankPost even when yank
-      -- mappings are disabled. Remove that autocmd to avoid duplicate yank hooks.
-      for _, autocmd in
-        ipairs(vim.api.nvim_get_autocmds {
-          group = "MiniBracketed",
-          event = "TextYankPost",
-        })
-      do
-        vim.api.nvim_del_autocmd(autocmd.id)
-      end
+      require("config/mini-bracketed").setup()
     end,
   },
 
@@ -509,53 +316,9 @@ return {
   {
     "y3owk1n/undo-glow.nvim",
     event = "VeryLazy",
-    opts = {
-      animation = {
-        enabled = true,
-        duration = 100,
-        animation_type = "fade",
-        fps = 120,
-        easing = "in_out_cubic",
-      },
-      priority = 4096,
-      color_cache_size = 1000,
-      debounce_delay = 50,
-      -- Fallback colors for transparent terminals
-      fallback_for_transparency = {
-        bg = "#16161d", -- kanagawa-wave dark background
-        fg = "#dcd7ba", -- kanagawa-wave foreground
-      },
-    },
+    opts = require("config/undo-glow").opts(),
     config = function(_, opts)
-      local undo_glow = require "undo-glow"
-      undo_glow.setup(opts)
-
-      -- u/U でundo/redo（ハイライト付き）
-      vim.keymap.set("n", "u", undo_glow.undo, { desc = "Undo with highlight" })
-      vim.keymap.set("n", "U", undo_glow.redo, { desc = "Redo with highlight" })
-
-      -- p/P でペーストし、`] でペースト範囲の末尾へ移動
-      vim.keymap.set("n", "p", function()
-        undo_glow.paste_below()
-        vim.cmd.normal { args = { "`]" }, bang = true }
-      end, { desc = "Paste below with highlight" })
-
-      vim.keymap.set("n", "P", function()
-        undo_glow.paste_above()
-        vim.cmd.normal { args = { "`]" }, bang = true }
-      end, { desc = "Paste above with highlight" })
-
-      -- TextYankPost autocmd integration (undo-glow README recommended)
-      vim.api.nvim_create_autocmd("TextYankPost", {
-        group = vim.api.nvim_create_augroup("UndoGlowYank", { clear = true }),
-        desc = "Highlight yanked text with undo-glow animation",
-        callback = undo_glow.yank,
-      })
-
-      -- Flash.nvim integration: highlight cursor after jumping
-      vim.keymap.set({ "n", "x", "o" }, "s", function()
-        require("undo-glow").flash_jump()
-      end, { desc = "Flash jump with highlight" })
+      require("config/undo-glow").setup(opts)
     end,
   },
 
@@ -564,17 +327,7 @@ return {
     "gbprod/substitute.nvim",
     event = "VeryLazy",
     config = function()
-      local substitute = require "substitute"
-      local undo_glow = require "undo-glow"
-      substitute.setup {
-        on_substitute = function(event)
-          undo_glow.highlight_on_substitute(event)
-        end,
-      }
-      vim.keymap.set("n", "cx", substitute.operator, { desc = "Substitute operator" })
-      vim.keymap.set("n", "cxx", substitute.line, { desc = "Substitute line" })
-      vim.keymap.set("n", "cX", substitute.eol, { desc = "Substitute to end of line" })
-      vim.keymap.set("x", "cx", substitute.visual, { desc = "Substitute visual" })
+      require("config/substitute").setup()
     end,
   },
 
@@ -583,46 +336,10 @@ return {
     "gbprod/yanky.nvim",
     event = "VeryLazy",
     dependencies = { "kkharji/sqlite.lua" },
-    opts = {
-      ring = {
-        history_length = 100,
-        storage = "sqlite",
-        sync_with_numbered_registers = true,
-        cancel_event = "update",
-      },
-      picker = { select = { action = nil } },
-      -- Yanky reads the system clipboard on focus changes. That triggers noisy
-      -- WSL clipboard bridge errors during startup, so keep sync disabled there.
-      system_clipboard = { sync_with_ring = not is_wsl },
-      highlight = {
-        on_put = true,
-        on_yank = false, -- undo-glow が TextYankPost で担当
-        timer = 300,
-      },
-      preserve_cursor_position = { enabled = true },
-    },
-    keys = {
-      { "y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank" },
-      { "Y", "<Plug>(YankyYank)$", mode = { "n" }, desc = "Yank to EOL" },
-      {
-        "<leader>p",
-        function()
-          require("yanky").put("p", true)
-        end,
-        desc = "Put with yanky",
-      },
-      {
-        "<leader>P",
-        function()
-          require("yanky").put("P", true)
-        end,
-        desc = "Put before with yanky",
-      },
-      { "[y", "<Plug>(YankyCycleForward)", desc = "Cycle forward through yank history" },
-      { "]y", "<Plug>(YankyCycleBackward)", desc = "Cycle backward through yank history" },
-      { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after with filter" },
-      { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before with filter" },
-    },
+    opts = function()
+      return require("config/yanky").opts()
+    end,
+    keys = require("config/yanky").keys(),
   },
 
   -- Text operators
