@@ -28,12 +28,13 @@ fi
 path=(${path:#${BUN_INSTALL:-$HOME/.bun}/bin})
 
 path=(
+  ${MISE_DATA_DIR:-$HOME/.mise}/shims(N-)
+
   # User binaries
   $HOME/{bin,sbin}(N-)
   $HOME/.local/{bin,sbin}(N-)
   $XDG_CONFIG_HOME/scripts(N-)
   $HOME/.claude/{bin,local}(N-)
-  ${MISE_DATA_DIR:-$HOME/.mise}/shims(N-)
 
   # Language-specific tools
   $HOME/.deno/bin(N-)
