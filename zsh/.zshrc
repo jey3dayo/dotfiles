@@ -5,10 +5,26 @@
 if [[ -r "${ZDOTDIR:-$HOME}/config/core/constants.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/config/core/constants.zsh"
 fi
-# Source initialization files first (order-dependent)
+
+_source_zsh_init() {
+  local file="${ZDOTDIR:-$HOME}/init/$1"
+  [[ -r "$file" ]] && source "$file"
+}
+
+# Source order-sensitive initialization files explicitly.
+_source_zsh_init options.zsh
+_source_zsh_init zz-completion.zsh
+_source_zsh_init sheldon.zsh
+_source_zsh_init history.zsh
+
+# Load any local init extension not listed above.
 for f in "${ZDOTDIR:-$HOME}"/init/*.zsh(N); do
-  [[ -r "$f" ]] && source "${f}"
+  case "${f:t}" in
+    options.zsh | zz-completion.zsh | sheldon.zsh | history.zsh) continue ;;
+  esac
+  [[ -r "$f" ]] && source "$f"
 done
+unfunction _source_zsh_init 2> /dev/null
 
 # Main configuration loader (before styles to match original glob order)
 [[ -r "${ZDOTDIR:-$HOME}/config/loader.zsh" ]] && source "${ZDOTDIR:-$HOME}/config/loader.zsh"
