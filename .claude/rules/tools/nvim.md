@@ -12,7 +12,7 @@ Detailed Reference: See [docs/tools/nvim.md](../../docs/tools/nvim.md) for compr
 
 ## Architecture
 
-- Fully Lua; structure is init.lua -> lua/config (core settings) -> lua/plugins (lazy-loaded) -> lua/utils.
+- Fully Lua; structure is init.lua -> lua/config (plugin settings) -> lua/plugins (lazy-loaded specs), with lua/core and lua/lsp for shared foundations.
 - Use lazy.nvim with defaults.lazy=true; prefer event/condition-based loading.
 - Separate core vs UI vs LSP vs AI layers when adding plugins.
 
@@ -20,7 +20,7 @@ Detailed Reference: See [docs/tools/nvim.md](../../docs/tools/nvim.md) for compr
 
 - Manage tools with mason.nvim + mason-lspconfig; configure servers via lspconfig.
 - Keep 15-language support; add new servers through Mason rather than external managers.
-- Retain Supermaven (AI) and gitsigns/telescope for workflows unless performance regression is proven.
+- Retain Supermaven (AI), gitsigns, mini.pick, and mini.files for workflows unless performance regression is proven.
 
 ## Performance guards
 

@@ -1,6 +1,6 @@
 # 💻 Neovim Configuration Guide
 
-最終更新: 2025-12-17
+最終更新: 2026-05-23
 対象: 開発者・上級者
 タグ: `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`
 
@@ -27,7 +27,7 @@
 | LSP統合                | nvim-lspconfig + mason.nvim | Native LSP必須             | ⭐⭐⭐⭐⭐ |
 | 起動パフォーマンス     | <100ms                      | <200ms目標                 | ⭐⭐⭐⭐⭐ |
 | AI統合                 | Supermaven-nvim             | AI支援必須                 | ⭐⭐⭐⭐⭐ |
-| モジュラー設計         | config/plugins/utils分離    | ファイル分離推奨           | ⭐⭐⭐⭐⭐ |
+| モジュラー設計         | config/plugins/core/lsp分離 | ファイル分離推奨           | ⭐⭐⭐⭐⭐ |
 
 ### 📊 **プラグインマネージャー比較**
 
@@ -81,9 +81,10 @@ require('lspconfig')[server].setup() -- 言語別詳細設定
 -- 現在の優秀なアーキテクチャ例
 nvim/
 ├── init.lua              -- エントリポイント（最小限）
-├── lua/config/           -- コア設定（即座読み込み）
-├── lua/plugins/          -- プラグイン設定（遅延読み込み）
-└── lua/utils/            -- 共通ユーティリティ
+├── lua/config/           -- プラグイン別の詳細設定
+├── lua/plugins/          -- lazy.nvim プラグイン定義
+├── lua/core/             -- 起動・依存・ファイルタイプ基盤
+└── lua/lsp/              -- LSP、フォーマット、診断ヘルパー
 ```
 
 #### **高度な最適化戦略**
@@ -96,13 +97,13 @@ nvim/
 
 #### **2025年推奨プラグインとの対応**
 
-| カテゴリ       | 現在選択                | 2025年推奨        | 準拠度 |
-| -------------- | ----------------------- | ----------------- | ------ |
-| ファイル検索   | telescope.nvim          | telescope/fzf-lua | ✅     |
-| LSP            | nvim-lspconfig + mason  | 同じ              | ✅     |
-| Git            | gitsigns.nvim           | 同じ/lazygit      | ✅     |
-| AI             | supermaven-nvim         | AI補完支援        | ✅     |
-| ナビゲーション | nvim-tree.lua + harpoon | 多様な選択肢      | ✅     |
+| カテゴリ       | 現在選択                | 2025年推奨   | 準拠度 |
+| -------------- | ----------------------- | ------------ | ------ |
+| ファイル検索   | mini.pick + mini.extra  | picker系統   | ✅     |
+| LSP            | nvim-lspconfig + mason  | 同じ         | ✅     |
+| Git            | gitsigns.nvim           | 同じ/lazygit | ✅     |
+| AI             | supermaven-nvim         | AI補完支援   | ✅     |
+| ナビゲーション | mini.files + flash.nvim | 多様な選択肢 | ✅     |
 
 結論: プラグイン選択は2025年標準と完全一致。優秀な判断。
 
@@ -140,7 +141,7 @@ nvim/
 - 高性能: lazy.nvim最適化による100ms未満起動
 - LSP対応: 15以上のプログラミング言語をフルサポート
 - AI統合: Supermaven-nvim
-- モダンUI: Telescope、nvim-tree、高速ナビゲーション
+- モダンUI: mini.pick、mini.files、flash.nvim による高速ナビゲーション
 
 ## パフォーマンス指標
 
@@ -156,9 +157,10 @@ nvim/
 nvim/
 ├── init.lua              # エントリポイント
 ├── lua/
-│   ├── config/           # コア設定
-│   ├── plugins/          # プラグイン設定
-│   └── utils/            # ユーティリティ
+│   ├── config/           # プラグイン別の詳細設定
+│   ├── plugins/          # lazy.nvim プラグイン定義
+│   ├── core/             # 起動・依存・ファイルタイプ基盤
+│   └── lsp/              # LSP、フォーマット、診断ヘルパー
 └── after/ftplugin/       # ファイルタイプ設定
 ```
 
@@ -171,24 +173,26 @@ Java, PHP, Ruby, Swift, Kotlin, C#, Dart, Shell
 
 ## 主要キーバインド
 
-### ファイル・ナビゲーション（Leader: `<Space>`）
+### ファイル・ナビゲーション（Leader: `,`）
 
 ```lua
-<leader>ff      -- ファイル検索
-<leader>fg      -- 文字列検索
-<leader>fb      -- バッファ一覧
-<leader>e       -- ファイルエクスプローラー
+,f              -- ファイル検索
+,,              -- ピッカー再開
+,gr             -- 文字列検索
+,b              -- バッファ一覧
+,e              -- mini.files を開く
+,E              -- 現在バッファのディレクトリで mini.files を開く
 ```
 
 ### LSP機能
 
 ```lua
-gd              -- 定義へ移動
-gr              -- 参照を検索
+tt              -- 定義へ移動
+tj              -- 参照を検索
 K               -- ホバー表示
-<leader>ca      -- コードアクション
-<leader>rn      -- シンボル名変更
-<leader>f       -- フォーマット
+tk              -- 実装へ移動
+tl              -- 型定義へ移動
+<C-e>f          -- 自動選択フォーマット
 ```
 
 ### AI・開発ツール
@@ -196,8 +200,9 @@ K               -- ホバー表示
 ```lua
 <Tab>          -- AI補完受諾
 <C-]>          -- AI補完クリア
-<leader>gg      -- Lazygit
-<leader>tt      -- ターミナル
+,sp             -- Lazy UI
+,sm             -- MasonUpdate
+,st             -- Treesitter 更新
 ```
 
 ## プラグインエコシステム
@@ -210,9 +215,9 @@ K               -- ホバー表示
 
 ### UI・ナビゲーション
 
-- telescope.nvim: ファジーファインダー
-- nvim-tree.lua: ファイルエクスプローラー
-- harpoon: 高速ファイルナビゲーション
+- mini.pick + mini.extra: ファジーファインダー
+- mini.files: デフォルトのファイルエクスプローラー
+- flash.nvim + mini.jump + mini.jump2d: 高速モーション
 
 ### AI・開発
 
@@ -231,11 +236,6 @@ K               -- ホバー表示
 -- 未使用プロバイダー無効化
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
-
--- 遅延UI読み込み
-vim.defer_fn(function()
-  require('nvim-tree').setup()
-end, 0)
 
 -- lazy.nvim パフォーマンス設定
 defaults = { lazy = true }  -- デフォルト遅延ロード
