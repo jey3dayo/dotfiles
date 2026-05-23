@@ -19,9 +19,9 @@
 ## 構成サマリ
 
 - `ZDOTDIR=$HOME/.config/zsh` に統一し、ログイン/非ログインで同一構成
-- `.zshenv` で XDG/最低限の PATH（mise shims のみ）と環境変数を定義、`.zprofile` で `typeset -U path` による重複除去と完全 PATH を再構成
+- `.zshenv` で XDG/最低限の PATH（mise shims のみ）と環境変数を定義し、`.zshrc` の interactive PATH helper でプラグイン起動前と mise 起動前に PATH を正規化
 - `init/completion.zsh` が compinit を 24h/補完更新で再構築し、7日以上の zcompdump を自動削除。`_post_compinit_hooks` で gh/mise などの補完も後追い登録
-- `init/sheldon.zsh` は plugins.toml 更新検知でキャッシュ生成し、Sheldon ロード後に mise shims を最優先に再配置
+- `init/sheldon.zsh` は plugins.toml 更新検知でキャッシュ生成し、初回 cache miss だけ同期生成して即 source
 - `config/loader.zsh` が core → tools → functions → os を統一ロード。tools は `fzf/git/mise/starship` を即時、brew/gh/debug 等は zsh-defer で段階遅延（3s/8s/12s/15s）
 - `zsh-help` / `path-check` / `zsh-quick-check` / `mise-status` で状態確認、FZF ウィジェットと `wtcd` で ghq/git ワークフローを高速化
 
@@ -30,8 +30,8 @@
 ### ロードシーケンス
 
 1. .zshenv: XDG 変数と `ZDOTDIR` を固定、GHQ/Android/Java/Brewfile などの環境変数を先に設定。非ログイン用の最小 PATH は mise shims のみ。
-2. .zprofile: ロケール/エディタ設定、`typeset -U path cdpath fpath manpath` で重複除去、`mise activate zsh` 後に PATH を mise > user > language > Android SDK > Homebrew > system の順に再構成。
-3. .zshrc: ヒストリと zsh オプションを設定後、`init/*.zsh` を実行（compinit + Sheldon キャッシュ生成・mise PATH 再優先）、続いて `sources/*.zsh`（config loader と補完スタイル）を読み込み。
+2. .zprofile: ロケール/エディタ設定、`typeset -U path cdpath fpath manpath` で重複除去し、ログインシェル固有の最小設定だけを適用。
+3. .zshrc: ヒストリと zsh オプションを設定後、interactive PATH helper を実行して mise > user > language > Android SDK > Homebrew > system の順に正規化し、`init/*.zsh` を実行（compinit + Sheldon キャッシュ生成）。続いて config loader 経由で mise 起動前に PATH を再正規化し、最後に補完スタイルを読み込み。
 4. config/loader.zsh: helper 経由で core（aliases/path utils）→ tools（即時: fzf/git/mise/starship, 遅延: brew/gh/debug 他）→ functions → os-specific を統一ロードし、helper を消去。
 5. lazy-sources/\*.zsh: Arch/WSL/OrbStack/FZF/履歴検索などを zsh-defer 経由で遅延ロード（Sheldon で `dotfiles-lazy-sources` として一括管理）。
 
@@ -56,8 +56,8 @@ zsh/
 
 ## PATH と環境管理
 
-- PATH の単一情報源は `.zprofile`。非ログインシェル向けの最小 PATH は `.zshenv` に限定。
-- 優先順位: mise shims → `$HOME/{bin,.local/bin}` → 言語ツール（deno/cargo/go/pnpm 等）→ Android SDK → Homebrew → system。`typeset -U path` で重複を抑止。
+- PATH の単一情報源は `config/core/interactive-path.zsh`。非ログインシェル向けの最小 PATH は `.zshenv` に限定。
+- 優先順位: mise shims → `$HOME/{bin,.local/bin}` → 言語ツール（deno/cargo/go/pnpm 等）→ Android SDK → Homebrew → system。interactive PATH helper は Sheldon 前と mise 起動前の両方で idempotent に実行し、`typeset -U path` で重複を抑止。
 - `path-check` で重複や欠落を検査し（mise shims は除外）、`zsh-quick-check` で PATH/主要ツール/メモリ使用をまとめて確認。
 - 補完キャッシュは `${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump` 配下に生成され、24h/補完更新で再構築。7日以上古い zcompdump は自動削除し、手動では `cleanup_zcompdump` 関数でクリーンアップ。
 - 1Password CLI の service account 運用は [docs/tools/1password.md](1password.md) を参照。`OP_DOTENV_KEYS_VAULT` と `OP_SERVICE_ACCOUNT_TOKEN` の扱い、token ローテーション手順もそこに集約する。
