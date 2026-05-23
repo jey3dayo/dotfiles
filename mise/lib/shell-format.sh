@@ -19,7 +19,7 @@ if [ -n "${SH_FILES:-}" ]; then
   shfmt_files=""
   for file in ${SH_FILES}; do
     case "$file" in
-      *.zsh)
+      *.zsh | zsh/.zshenv | zsh/.zprofile | zsh/.zshrc | zsh/.zlogin | home/.zshenv | home/.zprofile | home/.zshrc | home/.zlogin | zsh/bin/*)
         zsh_files="${zsh_files} ${file}"
         ;;
       *)
