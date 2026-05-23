@@ -23,7 +23,8 @@ _load_sheldon_plugins() {
       _refresh_sheldon_cache "$sheldon_cache" &!
     fi
   else
-    _refresh_sheldon_cache "$sheldon_cache" &!
+    _refresh_sheldon_cache "$sheldon_cache"
+    [[ -r "$sheldon_cache" ]] && source "$sheldon_cache"
   fi
 }
 

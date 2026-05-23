@@ -1,7 +1,9 @@
 # Canonical PATH setup for interactive shells.
 #
-# Call this before `mise activate` so mise hook-env can put managed tool paths in
-# their final positions.
+# This helper is idempotent and safe to call more than once during interactive
+# startup: first before Sheldon/plugin bootstrap so Homebrew-managed bootstrap
+# tools are visible, and again before `mise activate` so mise hook-env can put
+# managed tool paths in their final positions.
 _dotfiles_setup_interactive_path() {
   emulate -L zsh
   typeset -gaU path
