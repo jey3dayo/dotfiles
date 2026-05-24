@@ -114,7 +114,8 @@ APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise
 
 | タスク                  | 説明                                      |
 | ----------------------- | ----------------------------------------- |
-| `update`                | 全依存関係更新（brew + apt + submodules） |
+| `update`                | pull 後に全依存関係更新                   |
+| `pull`                  | 現在のリポジトリを fast-forward pull      |
 | `update:brew`           | Homebrew パッケージ更新（formula のみ）   |
 | `update:apt`            | APT パッケージ更新（Ubuntu/Debian）       |
 | `update:submodules`     | Git サブモジュール更新（最新 tip）        |
