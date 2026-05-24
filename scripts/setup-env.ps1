@@ -6,6 +6,9 @@ $envKeys = Join-Path $configRoot ".env.keys"
 $envLocal = Join-Path $configRoot ".env.local"
 $tempFile = "$envLocal.tmp.$PID"
 $opDotenvKeysVault = if ($env:OP_DOTENV_KEYS_VAULT) { $env:OP_DOTENV_KEYS_VAULT } else { "Dotfiles Automation" }
+$windowsMiseConfig = Join-Path $configRoot "mise\config.windows.toml"
+$previousMiseGlobalConfigFile = $env:MISE_GLOBAL_CONFIG_FILE
+$usingWindowsMiseGlobalConfig = $false
 
 function Write-Critical {
   param(
@@ -29,6 +32,12 @@ if (-not (Test-Path -LiteralPath $envKeys)) {
   [Console]::Error.WriteLine("  op document get "".env.keys | dotfiles"" --vault ""$opDotenvKeysVault"" --output ""$envKeys""")
   [Console]::Error.WriteLine("")
   exit 1
+}
+
+$isWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
+if ($isWindows -and -not $env:MISE_GLOBAL_CONFIG_FILE -and (Test-Path -LiteralPath $windowsMiseConfig)) {
+  $env:MISE_GLOBAL_CONFIG_FILE = $windowsMiseConfig
+  $usingWindowsMiseGlobalConfig = $true
 }
 
 $dotenvx = Get-Command dotenvx -ErrorAction SilentlyContinue
@@ -72,5 +81,13 @@ try {
     Remove-Item Env:DOTENV_PRIVATE_KEY_PATH -ErrorAction SilentlyContinue
   } else {
     $env:DOTENV_PRIVATE_KEY_PATH = $previousKeyPath
+  }
+
+  if ($usingWindowsMiseGlobalConfig) {
+    if ($null -eq $previousMiseGlobalConfigFile) {
+      Remove-Item Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
+    } else {
+      $env:MISE_GLOBAL_CONFIG_FILE = $previousMiseGlobalConfigFile
+    }
   }
 }
