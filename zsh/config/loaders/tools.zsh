@@ -3,8 +3,8 @@
 
 load_tool_settings() {
   local config_dir="$1"
-  # Order matters: atuin must load AFTER fzf so atuin's ^R bindkey overrides fzf-history-widget.
-  local -a critical_tools=(bun fzf git mise starship atuin)
+  # Keep this list small: every entry is sourced before the first prompt.
+  local -a critical_tools=(bun fzf git mise starship)
   local -A is_critical
   local has_zsh_defer=0
   local critical_tool tool_file tool_name
@@ -27,6 +27,7 @@ load_tool_settings() {
     if ((has_zsh_defer)); then
       # Optimized staggered loading for minimal startup impact
       case "$tool_name" in
+        atuin) zsh-defer -t "$DEFER_ATUIN_SECONDS" source "$tool_file" ;; # Must load after fzf to own ^R.
         brew) zsh-defer -t "$DEFER_BREW_SECONDS" source "$tool_file" ;;   # Load after mise for proper priority
         debug) zsh-defer -t "$DEFER_DEBUG_SECONDS" source "$tool_file" ;; # Debug tools rarely needed at startup
         dotenvx) zsh-defer -t 1 source "$tool_file" ;;                    # Load env vars early for npm/pnpm auth
