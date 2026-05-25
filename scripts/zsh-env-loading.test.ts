@@ -64,16 +64,7 @@ describe("zsh plugin bootstrap", () => {
     try {
       const result = spawnSync(
         "zsh",
-        [
-          "-lic",
-          [
-            "command -v abbr",
-            "abbr expand gst",
-            "which z",
-            "which j",
-            'bindkey " "',
-          ].join("; "),
-        ],
+        ["-lic", ["command -v abbr", "abbr expand gst", "which z", "which j", 'bindkey " "'].join("; ")],
         {
           encoding: "utf8",
           env: {
