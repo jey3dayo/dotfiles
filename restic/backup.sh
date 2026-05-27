@@ -5,6 +5,7 @@ RESTIC_DIR="$(cd "$(dirname "$0")" && pwd)"
 PATHS_FILE="${RESTIC_DIR}/paths.txt"
 EXCLUDES_FILE="${RESTIC_DIR}/excludes.txt"
 PROFILE="${PERMAN_PROFILE:-$HOME/.config/perman-aws-vault/aws-caad-admin-role}"
+PERMAN_AWS_VAULT_PATH_PREFIX="${PERMAN_AWS_VAULT_PATH_PREFIX:-/opt/homebrew/bin}"
 
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-ap-northeast-1}"
 
@@ -17,7 +18,7 @@ fi
 
 # perman-aws-vault で AWS 一時クレデンシャル取得
 echo "Fetching AWS credentials via perman-aws-vault..."
-AWS_CREDS=$(perman-aws-vault print -p "$PROFILE")
+AWS_CREDS=$(PATH="${PERMAN_AWS_VAULT_PATH_PREFIX}:${PATH}" perman-aws-vault print -p "$PROFILE")
 if [[ -z "$AWS_CREDS" ]]; then
   echo "Error: Failed to fetch AWS credentials from perman-aws-vault."
   exit 1

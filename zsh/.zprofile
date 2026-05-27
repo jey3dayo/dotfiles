@@ -19,4 +19,11 @@ if [[ -f "${ZDOTDIR}/config/tools/bun.zsh" ]]; then
   source "${ZDOTDIR}/config/tools/bun.zsh"
 fi
 
+# Login shells may be non-interactive and skip .zshrc, so normalize PATH here too.
+if [[ -r "${ZDOTDIR}/config/core/interactive-path.zsh" ]]; then
+  source "${ZDOTDIR}/config/core/interactive-path.zsh"
+  (( $+functions[_dotfiles_setup_interactive_path] )) && _dotfiles_setup_interactive_path
+  unfunction _dotfiles_setup_interactive_path 2>/dev/null
+fi
+
 # vim: set syntax=zsh:

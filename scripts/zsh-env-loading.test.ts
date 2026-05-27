@@ -90,4 +90,27 @@ describe("zsh plugin bootstrap", () => {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
   });
+
+  it("finds Homebrew perman-aws-vault in non-interactive login shells", () => {
+    const permanAwsVault = "/opt/homebrew/bin/perman-aws-vault";
+    if (!fs.existsSync(permanAwsVault)) {
+      return;
+    }
+
+    const result = spawnSync("zsh", ["-lc", "command -v perman-aws-vault"], {
+      encoding: "utf8",
+      env: {
+        HOME: os.homedir(),
+        PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        LOGNAME: os.userInfo().username,
+        USER: os.userInfo().username,
+        SHELL: "/bin/zsh",
+        TERM: "xterm-256color",
+      },
+    });
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+    expect(result.stdout.trim()).toBe(permanAwsVault);
+  });
 });
