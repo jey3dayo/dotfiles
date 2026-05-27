@@ -38,11 +38,16 @@ fi
 # is loaded from .zshrc after login and non-login startup files have run.
 
 # Non-interactive shells used by agents can skip .zprofile/.zshrc; keep mise
-# shims ahead of Homebrew there too so project Node versions are honored.
-case ":$PATH:" in
-  *":${MISE_DATA_DIR:-$HOME/.mise}/shims:"*) ;;
-  *) export PATH="${MISE_DATA_DIR:-$HOME/.mise}/shims${PATH:+:$PATH}" ;;
-esac
+# shims ahead of the known mise binary locations so both shims and `mise` work.
+if (( $+functions[_dotfiles_path_prepend_existing] )); then
+  _dotfiles_path_prepend_existing "${MISE_DATA_DIR:-$HOME/.mise}/shims" "$HOME/.local/bin" /opt/homebrew/bin
+  unfunction _dotfiles_path_prepend_existing 2>/dev/null
+else
+  case ":$PATH:" in
+    *":${MISE_DATA_DIR:-$HOME/.mise}/shims:"*) ;;
+    *) export PATH="${MISE_DATA_DIR:-$HOME/.mise}/shims${PATH:+:$PATH}" ;;
+  esac
+fi
 
 # History file should be set before shell init so history loads
 # even if .zshrc is skipped. Keep it under XDG state by default.

@@ -12,6 +12,8 @@ const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 const zdotdir = path.join(repoRoot, "zsh");
 const printPasswordCommand = ["print -r -- ", "${", "GOG_KEYRING_PASSWORD:-unset", "}"].join("");
+const localMise = path.join(os.homedir(), ".local/bin/mise");
+const homebrewMise = "/opt/homebrew/bin/mise";
 const homebrewSheldon = "/opt/homebrew/bin/sheldon";
 
 describe("zsh/.zshenv", () => {
@@ -43,6 +45,31 @@ describe("zsh/.zshenv", () => {
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
+  });
+
+  it("finds mise in non-interactive non-login shells", () => {
+    const expectedMise = fs.existsSync(localMise) ? localMise : homebrewMise;
+    if (!fs.existsSync(expectedMise)) {
+      return;
+    }
+
+    const result = spawnSync("zsh", ["-c", "command -v mise"], {
+      encoding: "utf8",
+      env: {
+        HOME: os.homedir(),
+        XDG_CONFIG_HOME: repoRoot,
+        ZDOTDIR: zdotdir,
+        PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        LOGNAME: os.userInfo().username,
+        USER: os.userInfo().username,
+        SHELL: "/bin/zsh",
+        TERM: "xterm-256color",
+      },
+    });
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+    expect(result.stdout.trim()).toBe(expectedMise);
   });
 });
 
