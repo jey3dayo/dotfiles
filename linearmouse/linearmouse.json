@@ -44,9 +44,28 @@
           "vendorID" : "0x3554"
         }
       },
+      "pointer" : {
+        "acceleration" : 1,
+        "disableAcceleration" : true,
+        "redirectsToScroll" : false
+      },
       "scrolling" : {
+        "acceleration" : {
+          "vertical" : 1
+        },
+        "distance" : {
+          "vertical" : "62.2px"
+        },
         "reverse" : {
           "vertical" : true
+        },
+        "smoothed" : {
+          "vertical" : {
+            "enabled" : false
+          }
+        },
+        "speed" : {
+          "vertical" : 0
         }
       }
     }
