@@ -38,9 +38,9 @@ Environment Variable: `MISE_CONFIG_FILE` is set before mise activation by Home M
 
 | Environment  | Config File         | Tools | Jobs  | Notes                                        |
 | ------------ | ------------------- | ----- | ----- | -------------------------------------------- |
-| CI           | config.ci.toml      | 13    | 4     | Minimal toolset for Actions                  |
-| Default      | config.default.toml | 75    | 8     | Full toolset (go, 46 npm, 4 cargo, 7 CLI)    |
-| Windows      | config.windows.toml | 77    | unset | Windows-specific toolset, uses mise defaults |
+| CI           | config.ci.toml      | 19    | 4     | Minimal toolset for Actions                  |
+| Default      | config.default.toml | 106   | 8     | Full local development toolset               |
+| Windows      | config.windows.toml | 84    | unset | Windows-specific toolset, uses mise defaults |
 | Raspberry Pi | config.pi.toml      | 32    | 2     | Optimized (minimal npm, no cargo)            |
 
 ## Migration from Old Structure
@@ -59,7 +59,7 @@ echo "$MISE_CONFIG_FILE"
 # PowerShell
 $env:MISE_CONFIG_FILE
 
-mise ls --json | jq 'length'  # Should be 77 (windows), 75 (default), 32 (pi), or 13 (ci)
+mise ls --json | jq 'length'  # Should match the active config count above
 ```
 
 ## Development
