@@ -15,6 +15,15 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup {
   spec = { { import = "plugins" } },
   defaults = { lazy = true }, -- 2025年ベストプラクティス: デフォルトで遅延ロード
+  pkg = {
+    sources = {
+      "lazy",
+      "packspec",
+    },
+  },
+  rocks = {
+    enabled = false,
+  },
   performance = {
     rtp = {
       disabled_plugins = {

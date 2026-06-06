@@ -61,6 +61,7 @@ Session.vim
 <Plug>*
 projects-config/*
 !projects-config/.gitkeep
+nvim.log
 nvim_startup.log
 nvim/lazy-lock.json
 *.swp
