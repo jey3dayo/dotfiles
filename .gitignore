@@ -293,5 +293,3 @@ nix/access-tokens.conf
 
 ## tmp
 tmp/
-reports
-debug
