@@ -83,6 +83,7 @@ let
     bashFiles
     sshFiles
     awsumeFiles
+    macosServiceFiles
     ;
 
   mkHomeFiles =
@@ -204,6 +205,12 @@ in
       description = "Deploy AWSume configuration (~/.awsume/config.yaml).";
     };
 
+    deployMacosServices = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Deploy macOS Services / Quick Actions (~/Library/Services/*.workflow). Darwin only.";
+    };
+
     initSubmodules = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -278,6 +285,17 @@ in
               ${mkMaterializedFilesScript materializedEntryPointFiles}
             ''
           );
+        }
+        {
+          # Deploy macOS Services / Quick Actions as real files (Services/pbs
+          # rejects symlinked bundles), then refresh the pasteboard services so
+          # the menu picks them up without a relog.
+          dotfiles-macos-services =
+            lib.mkIf (cfg.deployMacosServices && pkgs.stdenv.hostPlatform.isDarwin)
+              (lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+                ${builtins.concatStringsSep "\n" (mkCopiedHomeFileCommands macosServiceFiles)}
+                /System/Library/CoreServices/pbs -flush || true
+              '');
         }
       ];
     };

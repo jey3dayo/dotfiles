@@ -30,4 +30,11 @@
   awsumeFiles = {
     ".awsume/config.yaml" = "awsume/config.yaml";
   };
+
+  macosServiceFiles = {
+    "Library/Services/RemoveQuarantine.workflow/Contents/Info.plist" =
+      "macos/services/RemoveQuarantine.workflow/Contents/Info.plist";
+    "Library/Services/RemoveQuarantine.workflow/Contents/document.wflow" =
+      "macos/services/RemoveQuarantine.workflow/Contents/document.wflow";
+  };
 }

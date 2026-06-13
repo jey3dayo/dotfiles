@@ -59,6 +59,7 @@ in
       deploySsh = true; # Deploy ~/.ssh/config
       deployBash = true; # Deploy ~/.bashrc, ~/.bash_profile
       deployAwsume = true; # Deploy ~/.awsume/config.yaml
+      deployMacosServices = true; # Deploy ~/Library/Services/*.workflow (Darwin only)
       initSubmodules = true; # Initialize Git submodules (tmux plugins)
     };
 
