@@ -165,6 +165,7 @@ composer/
 configstore/
 mole/clean-list.txt
 mise/trusted-configs/
+homebrew/trust.json.lock
 fish/
 fisher/
 lazygit/
