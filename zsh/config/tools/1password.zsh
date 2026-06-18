@@ -37,8 +37,7 @@ if [[ -n "$OP_CLI_PATH" ]] && [[ -x "$OP_CLI_PATH" ]]; then
 else
   # If op is in PATH, use it directly
   if command -v op &> /dev/null; then
-    # op is already in PATH, no wrapper needed
-    :
+    OP_CLI_PATH="$(command -v op)"
   else
     echo "Warning: 1Password CLI not found. Please install it:" >&2
     echo "  macOS: brew install --cask 1password-cli" >&2
@@ -57,12 +56,25 @@ op-service-account() {
   dotenvx run -f "$OP_DOTENV_ENV_FILE" -- op "$@"
 }
 
+_op_filter_dotenvx_stdout() {
+  local line
+
+  while IFS= read -r line; do
+    if [[ "$line" == "[dotenvx]"* ]] || [[ "$line" == "⟐"* ]]; then
+      continue
+    fi
+    print -r -- "$line"
+  done
+}
+
 # Helper function to restore .env.keys from 1Password
 # Usage: restore-env-keys [item_id] [output_path]
 restore-env-keys() {
   local item_id="${1:-$OP_DOTENV_KEYS_ITEM_ID}"
   local output_path="${2:-$DOTENV_KEYS_PATH}"
   local temp_path="${output_path}.tmp"
+  local fallback_path="${temp_path}.dotenvx"
+  local -a account_args=()
 
   # Check if 1Password CLI is available
   if [[ -z "$OP_CLI_PATH" ]] || [[ ! -x "$OP_CLI_PATH" ]]; then
@@ -72,13 +84,22 @@ restore-env-keys() {
 
   echo "Restoring .env.keys from 1Password..."
   # Use temp file to avoid truncating existing keys on failure
-  if dotenvx run -f "$OP_DOTENV_ENV_FILE" -- "$OP_CLI_PATH" document get "$item_id" --vault="$OP_DOTENV_KEYS_VAULT" > "$temp_path"; then
+  if [[ -n "${OP_ACCOUNT:-}" ]] && [[ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" ]]; then
+    account_args=(--account="$OP_ACCOUNT")
+  fi
+
+  if "$OP_CLI_PATH" document get "$item_id" "${account_args[@]}" --vault="$OP_DOTENV_KEYS_VAULT" > "$temp_path" \
+    || {
+      dotenvx run -f "$OP_DOTENV_ENV_FILE" -- "$OP_CLI_PATH" document get "$item_id" --vault="$OP_DOTENV_KEYS_VAULT" > "$fallback_path" \
+        && _op_filter_dotenvx_stdout < "$fallback_path" > "$temp_path"
+    }; then
     mv "$temp_path" "$output_path"
     chmod 600 "$output_path"
+    rm -f "$fallback_path"
     echo "✓ Restored to $output_path with permissions 600"
   else
     echo "Error: Failed to restore .env.keys from 1Password" >&2
-    rm -f "$temp_path"
+    rm -f "$temp_path" "$fallback_path"
     return 1
   fi
 }
@@ -88,6 +109,7 @@ restore-env-keys() {
 update-env-keys() {
   local item_id="${1:-$OP_DOTENV_KEYS_ITEM_ID}"
   local source_path="${2:-$DOTENV_KEYS_PATH}"
+  local -a account_args=()
 
   # Check if 1Password CLI is available
   if [[ -z "$OP_CLI_PATH" ]] || [[ ! -x "$OP_CLI_PATH" ]]; then
@@ -101,7 +123,12 @@ update-env-keys() {
   fi
 
   echo "Updating .env.keys in 1Password..."
-  if dotenvx run -f "$OP_DOTENV_ENV_FILE" -- "$OP_CLI_PATH" document edit "$item_id" "$source_path" --vault="$OP_DOTENV_KEYS_VAULT"; then
+  if [[ -n "${OP_ACCOUNT:-}" ]] && [[ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" ]]; then
+    account_args=(--account="$OP_ACCOUNT")
+  fi
+
+  if "$OP_CLI_PATH" document edit "$item_id" "$source_path" "${account_args[@]}" --vault="$OP_DOTENV_KEYS_VAULT" \
+    || dotenvx run -f "$OP_DOTENV_ENV_FILE" -- "$OP_CLI_PATH" document edit "$item_id" "$source_path" --vault="$OP_DOTENV_KEYS_VAULT"; then
     echo "✓ Updated .env.keys | dotfiles in 1Password"
   else
     echo "Error: Failed to update .env.keys in 1Password" >&2
