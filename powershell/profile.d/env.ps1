@@ -12,23 +12,10 @@ if (-not $env:OP_DOTENV_KEYS_ITEM_ID) {
 }
 
 $configRoot = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { Join-Path $HOME ".config" }
-$opServiceAccountTokenFile = Join-Path $configRoot "op\service-account-token"
+$opDotenvEnvFile = Join-Path $configRoot ".env"
 
-function Import-OpServiceAccountToken {
-  if ($env:OP_SERVICE_ACCOUNT_TOKEN) {
-    return
-  }
-
-  if (-not (Test-Path -LiteralPath $opServiceAccountTokenFile)) {
-    return
-  }
-
-  $token = Get-Content -LiteralPath $opServiceAccountTokenFile -Raw -ErrorAction SilentlyContinue
-  if ([string]::IsNullOrWhiteSpace($token)) {
-    return
-  }
-
-  $env:OP_SERVICE_ACCOUNT_TOKEN = $token.Trim()
+function Invoke-OpServiceAccount {
+  dotenvx run -f $opDotenvEnvFile -- op @args
 }
 
 function Save-OpServiceAccountToken {
@@ -36,21 +23,15 @@ function Save-OpServiceAccountToken {
     throw "OP_SERVICE_ACCOUNT_TOKEN is not set in the current shell."
   }
 
-  $tokenDir = Split-Path -Parent $opServiceAccountTokenFile
-  New-Item -ItemType Directory -Path $tokenDir -Force | Out-Null
-  [System.IO.File]::WriteAllText(
-    $opServiceAccountTokenFile,
-    $env:OP_SERVICE_ACCOUNT_TOKEN.Trim(),
-    (New-Object System.Text.UTF8Encoding($false))
-  )
-
-  Write-Host "Saved OP_SERVICE_ACCOUNT_TOKEN to $opServiceAccountTokenFile"
+  dotenvx set OP_SERVICE_ACCOUNT_TOKEN $env:OP_SERVICE_ACCOUNT_TOKEN.Trim() `
+    -f $opDotenvEnvFile `
+    -fk "$opDotenvEnvFile.keys" `
+    --encrypt
+  Write-Host "Saved OP_SERVICE_ACCOUNT_TOKEN to dotenvx env file."
 }
 
 function Clear-OpServiceAccountToken {
-  Remove-Item -LiteralPath $opServiceAccountTokenFile -Force -ErrorAction SilentlyContinue
   Remove-Item Env:OP_SERVICE_ACCOUNT_TOKEN -ErrorAction SilentlyContinue
-  Write-Host "Cleared OP_SERVICE_ACCOUNT_TOKEN cache."
+  Write-Host "Cleared OP_SERVICE_ACCOUNT_TOKEN from current shell."
+  Write-Host "Remove or rotate OP_SERVICE_ACCOUNT_TOKEN in $opDotenvEnvFile with dotenvx if needed."
 }
-
-Import-OpServiceAccountToken

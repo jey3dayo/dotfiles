@@ -51,11 +51,11 @@ export OP_ACCOUNT='CNRNCJQSBBBYZESUWAMXLHQFBI'
 export OP_DOTENV_KEYS_ITEM_ID='mzy4lhfwqbtbtr3rm466qhrouq'
 export OP_DOTENV_KEYS_VAULT="${OP_DOTENV_KEYS_VAULT:-Dotfiles Automation}"
 export DOTENV_KEYS_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys"
-export OP_SERVICE_ACCOUNT_TOKEN_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/op/service-account-token"
+export OP_DOTENV_ENV_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/.env"
 
-if [[ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" ]] && [[ -f "$OP_SERVICE_ACCOUNT_TOKEN_FILE" ]]; then
-  export OP_SERVICE_ACCOUNT_TOKEN="$(<"$OP_SERVICE_ACCOUNT_TOKEN_FILE")"
-fi
+op-service-account() {
+  dotenvx run -f "$OP_DOTENV_ENV_FILE" -- op "$@"
+}
 
 # Helper function to restore .env.keys from 1Password
 # Usage: restore-env-keys [item_id] [output_path]
@@ -120,23 +120,23 @@ update-env-keys() {
 }
 
 save-op-service-account-token() {
-  local token_dir="${OP_SERVICE_ACCOUNT_TOKEN_FILE%/*}"
-
   if [[ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" ]]; then
     echo "Error: OP_SERVICE_ACCOUNT_TOKEN is not set in the current shell" >&2
     return 1
   fi
 
-  mkdir -p "$token_dir"
-  printf '%s' "$OP_SERVICE_ACCOUNT_TOKEN" > "$OP_SERVICE_ACCOUNT_TOKEN_FILE"
-  chmod 600 "$OP_SERVICE_ACCOUNT_TOKEN_FILE" 2>/dev/null || true
-  echo "✓ Saved OP_SERVICE_ACCOUNT_TOKEN to $OP_SERVICE_ACCOUNT_TOKEN_FILE"
+  dotenvx set OP_SERVICE_ACCOUNT_TOKEN "$OP_SERVICE_ACCOUNT_TOKEN" \
+    -f "$OP_DOTENV_ENV_FILE" \
+    -fk "${OP_DOTENV_ENV_FILE}.keys" \
+    --encrypt
+  chmod 600 "$OP_DOTENV_ENV_FILE" "${OP_DOTENV_ENV_FILE}.keys" 2>/dev/null || true
+  echo "✓ Saved OP_SERVICE_ACCOUNT_TOKEN to dotenvx env file"
 }
 
 clear-op-service-account-token() {
-  rm -f "$OP_SERVICE_ACCOUNT_TOKEN_FILE"
   unset OP_SERVICE_ACCOUNT_TOKEN
-  echo "✓ Cleared OP_SERVICE_ACCOUNT_TOKEN cache"
+  echo "✓ Cleared OP_SERVICE_ACCOUNT_TOKEN from current shell"
+  echo "Remove or rotate OP_SERVICE_ACCOUNT_TOKEN in $OP_DOTENV_ENV_FILE with dotenvx if needed."
 }
 
 # vim: set syntax=zsh:
