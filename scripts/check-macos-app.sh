@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eo pipefail
 
 XATTR="${XATTR:-/usr/bin/xattr}"
 CODESIGN="${CODESIGN:-/usr/bin/codesign}"
@@ -7,49 +7,71 @@ SPCTL="${SPCTL:-/usr/sbin/spctl}"
 SUDO="${SUDO:-sudo}"
 LSREGISTER="${LSREGISTER:-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister}"
 
+KNOWN_APP_PATHS=(
+  "${HOME}/.codex/computer-use/Codex Computer Use.app"
+  "/Applications/Codex.app/Contents/Resources/plugins/openai-bundled/plugins/computer-use/Codex Computer Use.app"
+)
+CODEX_COMPUTER_USE_CACHE_ROOT="${HOME}/.codex/plugins/cache/openai-bundled/computer-use"
+
 usage() {
   printf '%s\n' \
     "Usage:" \
-    "  scripts/check-macos-app.sh --auto-fix" \
-    "  scripts/check-macos-app.sh [--auto-fix] /path/to/App.app" \
-    "  scripts/check-macos-app.sh [--auto-fix] --codex-computer-use" \
+    "  scripts/check-macos-app.sh --fix" \
+    "  scripts/check-macos-app.sh [--fix] /path/to/App.app" \
+    "  scripts/check-macos-app.sh [--fix] --codex-computer-use" \
     "  scripts/check-macos-app.sh --list" \
     "" \
     "Options:" \
-    "  --auto-fix            Auto-fix known app targets, or the given app path." \
-    "  --fix                 Alias for --auto-fix." \
+    "  --fix                 Fix known app targets, or the given app path." \
     "  --codex-computer-use  Check known Codex Computer Use app locations." \
     "  --list                Print known app location aliases." \
     "  -h, --help            Show this help."
 }
 
-known_codex_computer_use_paths() {
-  local app_path
-  printf '%s\n' "${HOME}/.codex/computer-use/Codex Computer Use.app"
+add_target_if_present() {
+  local app_path="${1/#\~/${HOME}}"
+  local existing_path
 
-  for app_path in "${HOME}"/.codex/plugins/cache/openai-bundled/computer-use/*/"Codex Computer Use.app"; do
-    [[ -d "${app_path}" ]] && printf '%s\n' "${app_path}"
+  [[ -d "${app_path}" ]] || return 1
+
+  if [[ "${#targets[@]}" -gt 0 ]]; then
+    for existing_path in "${targets[@]}"; do
+      [[ "${existing_path}" == "${app_path}" ]] && return 0
+    done
+  fi
+
+  targets+=("${app_path}")
+}
+
+add_known_apps() {
+  local app_path
+  local cache_dir
+
+  for app_path in "${KNOWN_APP_PATHS[@]}"; do
+    add_target_if_present "${app_path}" || true
   done
 
-  printf '%s\n' "/Applications/Codex.app/Contents/Resources/plugins/openai-bundled/plugins/computer-use/Codex Computer Use.app"
+  for cache_dir in "${CODEX_COMPUTER_USE_CACHE_ROOT}"/*; do
+    app_path="${cache_dir}/Codex Computer Use.app"
+    add_target_if_present "${app_path}" || true
+  done
 }
 
 list_known_targets() {
+  targets=()
+  add_known_apps
+
   printf '%s\n' "Known aliases:"
   printf '%s\n' "  --codex-computer-use"
-  known_codex_computer_use_paths | while IFS= read -r app_path; do
+  for app_path in "${targets[@]}"; do
     printf '    %s\n' "${app_path}"
   done
 }
 
-auto_fix=false
+fix=false
+known_mode=false
 targets=()
-optional_targets=()
-
-add_target() {
-  targets+=("$1")
-  optional_targets+=("${2:-false}")
-}
+required_targets=()
 
 quarantine_status() {
   local app_path="$1"
@@ -69,13 +91,16 @@ quarantine_status() {
 
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
-    --auto-fix | --fix)
-      auto_fix=true
+    --fix)
+      fix=true
+      ;;
+    --auto-fix)
+      echo "ERROR: --auto-fix was removed. Use --fix." >&2
+      usage >&2
+      exit 64
       ;;
     --codex-computer-use)
-      while IFS= read -r app_path; do
-        add_target "${app_path}" true
-      done < <(known_codex_computer_use_paths)
+      known_mode=true
       ;;
     --list)
       list_known_targets
@@ -91,79 +116,56 @@ while [[ "$#" -gt 0 ]]; do
       exit 64
       ;;
     *)
-      add_target "$1" false
+      required_targets+=("$1")
       ;;
   esac
   shift
 done
 
-if [[ "${#targets[@]}" -eq 0 ]]; then
-  if [[ "${auto_fix}" == true ]]; then
-    while IFS= read -r app_path; do
-      add_target "${app_path}" true
-    done < <(known_codex_computer_use_paths)
-  else
-    usage >&2
-    exit 64
-  fi
+if [[ "${fix}" == true && "${#required_targets[@]}" -eq 0 ]]; then
+  known_mode=true
 fi
 
-found=()
-missing=()
-required_missing=()
-seen_targets=""
-for index in "${!targets[@]}"; do
-  app_path="${targets[${index}]}"
-  optional="${optional_targets[${index}]}"
-  expanded_path="${app_path/#\~/${HOME}}"
-  case "
-${seen_targets}
-" in
-    *"
-${expanded_path}
-"*)
-      continue
-      ;;
-  esac
-  seen_targets="${seen_targets}
-${expanded_path}"
+if [[ "${known_mode}" == true ]]; then
+  add_known_apps
+fi
 
-  if [[ -d "${expanded_path}" ]]; then
-    found+=("${expanded_path}")
-  else
+missing=()
+for app_path in "${required_targets[@]}"; do
+  expanded_path="${app_path/#\~/${HOME}}"
+  if ! add_target_if_present "${expanded_path}"; then
     missing+=("${expanded_path}")
-    if [[ "${optional}" != true ]]; then
-      required_missing+=("${expanded_path}")
-    fi
   fi
 done
+
+if [[ "${known_mode}" == false && "${#required_targets[@]}" -eq 0 ]]; then
+  usage >&2
+  exit 64
+fi
 
 if [[ "${#missing[@]}" -gt 0 ]]; then
   echo "Missing targets:"
   printf ' - %s\n' "${missing[@]}"
   echo
-fi
-
-if [[ "${#required_missing[@]}" -gt 0 ]]; then
   echo "ERROR: required targets are missing:" >&2
-  printf ' - %s\n' "${required_missing[@]}" >&2
+  printf ' - %s\n' "${missing[@]}" >&2
   exit 1
 fi
 
-if [[ "${#found[@]}" -eq 0 ]]; then
+if [[ "${#targets[@]}" -eq 0 ]]; then
   echo "ERROR: no target apps found." >&2
   exit 1
 fi
 
 echo "Targets:"
-printf ' - %s\n' "${found[@]}"
+printf ' - %s\n' "${targets[@]}"
 
-if [[ "${auto_fix}" == true ]]; then
+if [[ "${fix}" == true ]]; then
   echo
-  echo "Auto-fixing quarantine and LaunchServices when possible."
+  echo "Fixing quarantine and LaunchServices when possible."
 fi
 
-for app_path in "${found[@]}"; do
+for app_path in "${targets[@]}"; do
   echo
   echo "Target: ${app_path}"
 
@@ -171,7 +173,7 @@ for app_path in "${found[@]}"; do
   quarantine_status "${app_path}" || quarantine_result=$?
   if [[ "${quarantine_result}" -eq 0 ]]; then
     echo "quarantine: present"
-    if [[ "${auto_fix}" == true ]]; then
+    if [[ "${fix}" == true ]]; then
       if ! "${SUDO}" "${XATTR}" -dr com.apple.quarantine "${app_path}"; then
         echo "quarantine: failed to remove"
         check_failed=true
@@ -203,7 +205,7 @@ for app_path in "${found[@]}"; do
     echo "spctl: warning: assessment failed; codesign result is authoritative for this script." >&2
   fi
 
-  if [[ "${auto_fix}" == true && -x "${LSREGISTER}" ]]; then
+  if [[ "${fix}" == true && -x "${LSREGISTER}" ]]; then
     if "${LSREGISTER}" -f "${app_path}" >/dev/null 2>&1; then
       echo "launchservices: registered"
     else
