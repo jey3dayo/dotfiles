@@ -31,35 +31,55 @@
     let
       # Import helper modules
       mkDotfilesModule = import ./nix/dotfiles-module.nix { inherit gitignore; };
+
+      currentUsername = builtins.getEnv "USER";
+      currentHomeDirectory = builtins.getEnv "HOME";
+      currentSystem = builtins.currentSystem;
+
+      mkHomeConfiguration =
+        {
+          username,
+          homeDirectory,
+          system,
+        }:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.${system};
+          modules = [
+            self.homeManagerModules.default # dotfiles module
+            ./users/current/home.nix
+          ];
+          extraSpecialArgs = { inherit inputs username homeDirectory; };
+        };
+
+      mkDarwinHost =
+        {
+          hostname,
+          system,
+          modules,
+        }:
+        nix-darwin.lib.darwinSystem {
+          inherit system modules;
+          specialArgs = { inherit inputs hostname; };
+        };
     in
     {
       # HM module (usable by external flakes)
       homeManagerModules.default = mkDotfilesModule;
 
       # macOS system configuration: `sudo darwin-rebuild switch --flake "$HOME/.config#CA-20031129"`
-      darwinConfigurations.CA-20031129 = nix-darwin.lib.darwinSystem {
+      darwinConfigurations.CA-20031129 = mkDarwinHost {
+        hostname = "CA-20031129";
         system = "aarch64-darwin";
-        modules = [ ./nix/darwin.nix ];
-        specialArgs = { inherit inputs; };
+        modules = [ ./hosts/CA-20031129 ];
       };
 
       # HM configuration: `home-manager switch --flake "$HOME/.config" --impure`
       # --impure required: builtins.getEnv for $USER/$HOME, builtins.currentSystem for pkgs
-      homeConfigurations.${builtins.getEnv "USER"} =
-        let
-          username = builtins.getEnv "USER";
-          homeDirectory = builtins.getEnv "HOME";
-          # Base modules that always exist
-          baseModules = [
-            self.homeManagerModules.default # dotfiles module
-            ./home.nix
-          ];
-        in
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${builtins.currentSystem};
-          modules = baseModules;
-          extraSpecialArgs = { inherit inputs username homeDirectory; };
-        };
+      homeConfigurations.${currentUsername} = mkHomeConfiguration {
+        username = currentUsername;
+        homeDirectory = currentHomeDirectory;
+        system = currentSystem;
+      };
     }
     //
       flake-utils.lib.eachSystem
