@@ -61,6 +61,7 @@ Session.vim
 <Plug>*
 projects-config/*
 !projects-config/.gitkeep
+nvim.log
 nvim_startup.log
 nvim/lazy-lock.json
 *.swp
@@ -136,6 +137,7 @@ AWSVPNClient/
 .vimperator/info/
 .subversion/auth/
 .netrwhist
+mimeapps.list
 .python-version
 iterm2/
 .direnv/
@@ -163,6 +165,7 @@ composer/
 configstore/
 mole/clean-list.txt
 mise/trusted-configs/
+homebrew/trust.json.lock
 fish/
 fisher/
 lazygit/
@@ -291,5 +294,3 @@ nix/access-tokens.conf
 
 ## tmp
 tmp/
-reports
-debug

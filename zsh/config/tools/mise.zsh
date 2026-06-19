@@ -1,28 +1,55 @@
 # ========================================
 # mise Activation Helper
 # ========================================
-# USAGE: Called by .zprofile (login) and .zshrc (non-login)
+# USAGE: Loaded from .zshrc for interactive login and non-login shells.
 # TIMING: Requires MISE_* env vars from .zshenv
 # ========================================
 
-# Activate mise for PATH management (idempotent)
+_mise_prepare_path() {
+  [[ -r "${ZDOTDIR:-$HOME/.config/zsh}/config/core/interactive-path.zsh" ]] || return
+  source "${ZDOTDIR:-$HOME/.config/zsh}/config/core/interactive-path.zsh"
+  (( $+functions[_dotfiles_setup_interactive_path] )) && _dotfiles_setup_interactive_path
+  unfunction _dotfiles_setup_interactive_path 2> /dev/null
+}
+
+_mise_find_binary() {
+  if [[ -x /opt/homebrew/bin/mise ]]; then
+    print -r -- /opt/homebrew/bin/mise
+  elif command -v mise > /dev/null 2>&1; then
+    command -v mise
+  else
+    return 1
+  fi
+}
+
 _mise_activate() {
   # Skip if already activated
-  typeset -f mise > /dev/null && return 0
-
-  # Find mise executable
-  local mise_path=""
-  if [[ -x /opt/homebrew/bin/mise ]]; then
-    mise_path="/opt/homebrew/bin/mise"
-  elif command -v mise &> /dev/null; then
-    mise_path="$(command -v mise)"
-  else
-    return 1 # mise not found
+  if typeset -f mise > /dev/null; then
+    _mise_promote_paths
+    return 0
   fi
 
-  # Activate
+  local mise_path
+  mise_path="$(_mise_find_binary)" || return
+
   eval "$($mise_path activate zsh)"
+  _mise_promote_paths
   _mise_wrap_github_token
+}
+
+_mise_promote_paths() {
+  local mise_data_dir="${MISE_DATA_DIR:-$HOME/.mise}"
+  local -a mise_paths other_paths
+  local dir
+
+  for dir in "${path[@]}"; do
+    case "$dir" in
+      "$mise_data_dir"/installs/* | "$mise_data_dir"/shims) mise_paths+=("$dir") ;;
+      *) other_paths+=("$dir") ;;
+    esac
+  done
+
+  path=("${mise_paths[@]}" "${other_paths[@]}")
 }
 
 _mise_wrap_github_token() {
@@ -51,9 +78,11 @@ _mise_wrap_github_token() {
 # mise Completion and Utilities
 # ========================================
 
-# Activate mise for non-login shells (login shells already activated in .zprofile)
-# This is executed when config/tools/mise.zsh is sourced by config/loader.zsh in .zshrc
-if [[ -o interactive && ! -o login ]]; then
+# Interactive shells source this file through the tool loader. Prepare PATH here
+# before activating mise so non-login shells get the same baseline as login
+# shells, and login shells normalize any later PATH changes before activation.
+if [[ -o interactive ]]; then
+  _mise_prepare_path
   _mise_activate
 fi
 
@@ -73,7 +102,7 @@ local bundled_mise_completion="${ZDOTDIR:-$HOME/.config/zsh}/completions/_mise"
 if (( $+functions[_mise_hook] )) && [[ ! -r "$bundled_mise_completion" ]]; then
   if command -v usage > /dev/null 2>&1; then
     if (( $+functions[zsh-defer] )); then
-      zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval "$(mise complete -s zsh)"
+      zsh-defer -t $MISE_COMPLETION_DEFER_SECONDS eval '$(mise complete -s zsh)'
     else
       eval "$(mise complete -s zsh)"
     fi

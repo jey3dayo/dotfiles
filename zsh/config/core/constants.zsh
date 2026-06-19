@@ -24,6 +24,7 @@ typeset -gr ZSH_COMPDUMP_REBUILD_AGE_HOURS=24
 
 # Deferred load timing (seconds)
 typeset -gr DEFER_BREW_SECONDS=3
+typeset -gr DEFER_ATUIN_SECONDS=1
 typeset -gr DEFER_DEBUG_SECONDS=15
 typeset -gr DEFER_GH_SECONDS=8
 typeset -gr DEFER_DEFAULT_SECONDS=12

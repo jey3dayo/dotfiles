@@ -23,12 +23,16 @@ Detailed Reference: See [docs/tools/1password.md](../../docs/tools/1password.md)
 
 ## Token handling
 
-- Never store `OP_SERVICE_ACCOUNT_TOKEN` in `dotenvx`-managed `.env` files.
-- Persist the token only in `~/.config/op/service-account-token` via the helper functions.
-- Rotate tokens by overwriting the local token file and invalidating the old token or service account in 1Password.
+- Store `OP_SERVICE_ACCOUNT_TOKEN` in the dotenvx-managed `~/.config/.env`
+  file as an `encrypted:` value.
+- Do not keep a plaintext token cache under `~/.config/op/`.
+- Rotate tokens by updating the dotenvx value and invalidating the old token or
+  service account in 1Password.
 
 ## Shell integration
 
 - PowerShell loads the token from `powershell/profile.d/env.ps1`.
 - Zsh loads the token from `zsh/config/tools/1password.zsh`.
+- Use `dotenvx run -f ~/.config/.env -- op ...` or the shell helper wrappers
+  for service-account automation.
 - When `OP_SERVICE_ACCOUNT_TOKEN` is present, avoid forcing `--account`; only pass `--account` for app-integration flows.

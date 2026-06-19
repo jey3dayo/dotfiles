@@ -16,8 +16,8 @@ fi
 # ========================================
 # mise Environment Configuration
 # ========================================
-# TIMING: Must be in .zshenv (all shell types, before .zprofile)
-# RELATED: .zprofile (login activation), .zshrc (non-login activation)
+# TIMING: Must be in .zshenv for every shell type.
+# RELATED: config/tools/mise.zsh performs interactive activation from .zshrc.
 # FALLBACK: Home Manager sets MISE_CONFIG_FILE; local fallback lives in config/tools/mise-env.zsh
 # ========================================
 
@@ -34,16 +34,20 @@ else
   export MISE_CONFIG_FILE
 fi
 
-# NOTE: mise activation happens in:
-#   - .zprofile (login shells) → calls _mise_activate from config/tools/mise.zsh
-#   - .zshrc (non-login shells) → calls _mise_activate from config/tools/mise.zsh
+# NOTE: interactive mise activation happens through config/tools/mise.zsh, which
+# is loaded from .zshrc after login and non-login startup files have run.
 
 # Non-interactive shells used by agents can skip .zprofile/.zshrc; keep mise
-# shims ahead of Homebrew there too so project Node versions are honored.
-case ":$PATH:" in
-  *":${MISE_DATA_DIR:-$HOME/.mise}/shims:"*) ;;
-  *) export PATH="${MISE_DATA_DIR:-$HOME/.mise}/shims${PATH:+:$PATH}" ;;
-esac
+# shims ahead of the known mise binary locations so both shims and `mise` work.
+if (( $+functions[_dotfiles_path_prepend_existing] )); then
+  _dotfiles_path_prepend_existing "${MISE_DATA_DIR:-$HOME/.mise}/shims" "$HOME/.local/bin" /opt/homebrew/bin
+  unfunction _dotfiles_path_prepend_existing 2>/dev/null
+else
+  case ":$PATH:" in
+    *":${MISE_DATA_DIR:-$HOME/.mise}/shims:"*) ;;
+    *) export PATH="${MISE_DATA_DIR:-$HOME/.mise}/shims${PATH:+:$PATH}" ;;
+  esac
+fi
 
 # History file should be set before shell init so history loads
 # even if .zshrc is skipped. Keep it under XDG state by default.
@@ -89,8 +93,8 @@ if [[ "$OSTYPE" == darwin* ]]; then
   [[ -f "${ZDOTDIR}/config/os/macos-env.zsh" ]] && source "${ZDOTDIR}/config/os/macos-env.zsh"
 fi
 
-# PATH configuration is in .zprofile (executed after macOS path_helper)
-# mise shims are managed automatically by 'mise activate' in .zprofile
+# Interactive PATH configuration is prepared by config/core/interactive-path.zsh
+# and finalized by config/tools/mise.zsh.
 
 fpath=(
   ~/.awsume/zsh-autocomplete/

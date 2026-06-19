@@ -64,38 +64,6 @@ function M.merge_tables(t1, t2)
   return t1
 end
 
-function M.merge_lists(t1, t2)
-  local result = {}
-  local len = append_values(result, t1, 0)
-  append_values(result, t2, len)
-  return result
-end
-
-function M.exists(tab, element)
-  for _, v in pairs(tab) do
-    if v == element then
-      return true
-    elseif type(v) == "table" then
-      return M.exists(v, element)
-    end
-  end
-  return false
-end
-
-function M.abbreviate_home_dir(path)
-  if type(path) ~= "string" then return path end
-  local home = home_dir()
-  if not home then return path end
-
-  if path == home then return "~" end
-  if path:sub(1, #home) == home then
-    local remainder = path:sub(#home + 1)
-    if remainder == "" or remainder:match "^[/\\]" then return "~" .. remainder end
-  end
-
-  return path
-end
-
 function M.convert_home_dir(path)
   if type(path) ~= "string" then return path end
   local home = home_dir()
@@ -107,15 +75,6 @@ function M.convert_home_dir(path)
   if remainder then return home .. remainder end
 
   return path
-end
-
-function M.file_exists(fname)
-  local file = io.open(fname, "r")
-  if file then
-    file:close()
-    return true
-  end
-  return false
 end
 
 function M.convert_useful_path(dir)

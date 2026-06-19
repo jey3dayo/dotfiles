@@ -80,12 +80,12 @@ in { ... } // dynamicInputs;
 
 global skill 配布は Home Manager / Nix ではなく `~/.apm` を正本として扱う。
 
-| ファイル                                                    | 役割                                            |
-| ----------------------------------------------------------- | ----------------------------------------------- |
-| `~/.apm/catalog/skills/**`                                  | personal skill の正本                           |
-| `~/.apm/catalog/{AGENTS.md,agents/**,commands/**,rules/**}` | shared guidance の正本                          |
-| `nix/agent-skills-sources.nix`                              | retired marker                                  |
-| `flake.nix` apps                                            | 旧 Nix 配布が廃止されたことを示す fail-fast app |
+| ファイル                                                | 役割                                            |
+| ------------------------------------------------------- | ----------------------------------------------- |
+| `~/.apm/catalog/skills/**`                              | personal skill の正本                           |
+| `~/.apm/catalog/{AGENTS.md,agents/,commands/,rules/**}` | shared guidance の正本                          |
+| `nix/agent-skills-sources.nix`                          | retired marker                                  |
+| `flake.nix` apps                                        | 旧 Nix 配布が廃止されたことを示す fail-fast app |
 
 `.config` 側で新しい skill source を足さない。global skill の日常運用は `~/.apm` で行う。
 

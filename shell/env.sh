@@ -95,6 +95,27 @@ _dotfiles_bootstrap_tool_env() {
   export GHQ_ROOT RIPGREP_CONFIG_PATH BUN_INSTALL PNPM_HOME NI_CONFIG_FILE
 }
 
+_dotfiles_path_prepend_existing() {
+  _dotfiles_path_prefix=""
+  for _dotfiles_path_dir; do
+    [ -n "$_dotfiles_path_dir" ] && [ -d "$_dotfiles_path_dir" ] || continue
+    case ":$PATH:" in
+      *":$_dotfiles_path_dir:"*) continue ;;
+    esac
+    case ":$_dotfiles_path_prefix:" in
+      *":$_dotfiles_path_dir:"*) continue ;;
+    esac
+    _dotfiles_path_prefix="${_dotfiles_path_prefix}${_dotfiles_path_prefix:+:}$_dotfiles_path_dir"
+  done
+
+  if [ -n "$_dotfiles_path_prefix" ]; then
+    PATH="${_dotfiles_path_prefix}${PATH:+:$PATH}"
+    export PATH
+  fi
+
+  unset _dotfiles_path_dir _dotfiles_path_prefix
+}
+
 _dotfiles_bootstrap_shell_env() {
   _dotfiles_bootstrap_xdg_env
   _dotfiles_bootstrap_mise_env

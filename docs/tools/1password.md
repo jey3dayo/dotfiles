@@ -25,9 +25,9 @@
 ## 関連ファイル
 
 ```text
-~/.config/powershell/profile.d/env.ps1        # PowerShell 側の token 読み込み
-~/.config/zsh/config/tools/1password.zsh      # Zsh 側の token 読み込みと helper
-~/.config/op/service-account-token            # Git 管理外の token 保存先
+~/.config/powershell/profile.d/env.ps1        # PowerShell 側の helper
+~/.config/zsh/config/tools/1password.zsh      # Zsh 側の helper
+~/.config/.env                                # dotenvx-managed env
 ~/.config/.env.keys                           # dotenvx 復号鍵
 ```
 
@@ -39,13 +39,14 @@
 
 ## Token の更新
 
-`OP_SERVICE_ACCOUNT_TOKEN` は `dotenvx` 管理の `.env` に入れず、`~/.config/op/service-account-token` に保存する。新しい token を発行したら、古い token をチャットやシェル履歴に貼らず、以下の手順で上書きする。
+`OP_SERVICE_ACCOUNT_TOKEN` は `dotenvx` 管理の `~/.config/.env` に
+`encrypted:` 値として保存する。新しい token を発行したら、古い token
+をチャットやシェル履歴に貼らず、以下の手順で上書きする。
 
 PowerShell:
 
 ```powershell
 . $HOME\.config\powershell\profile.ps1
-Clear-OpServiceAccountToken
 $env:OP_SERVICE_ACCOUNT_TOKEN = Read-Host "New OP_SERVICE_ACCOUNT_TOKEN"
 Save-OpServiceAccountToken
 Remove-Item Env:OP_SERVICE_ACCOUNT_TOKEN -ErrorAction SilentlyContinue
@@ -55,7 +56,6 @@ Zsh:
 
 ```bash
 source ~/.config/zsh/config/tools/1password.zsh
-clear-op-service-account-token
 read -rs "OP_SERVICE_ACCOUNT_TOKEN?New OP_SERVICE_ACCOUNT_TOKEN: "
 echo
 save-op-service-account-token
@@ -65,9 +65,9 @@ unset OP_SERVICE_ACCOUNT_TOKEN
 ## 更新後の確認
 
 ```bash
-op vault list
-op item list --vault "Dotfiles Automation"
-op document get "mzy4lhfwqbtbtr3rm466qhrouq" --vault "Dotfiles Automation"
+dotenvx run -f ~/.config/.env -- op vault list
+dotenvx run -f ~/.config/.env -- op item list --vault "Dotfiles Automation"
+dotenvx run -f ~/.config/.env -- op document get "mzy4lhfwqbtbtr3rm466qhrouq" --vault "Dotfiles Automation"
 ```
 
 期待結果:

@@ -40,16 +40,6 @@ describe("wezterm utils", function()
     end)
   end)
 
-  describe("merge_lists", function()
-    it("should concatenate two arrays", function()
-      local list1 = { 1, 2, 3 }
-      local list2 = { 4, 5, 6 }
-      local result = utils.merge_lists(list1, list2)
-
-      assert.are.same({ 1, 2, 3, 4, 5, 6 }, result)
-    end)
-  end)
-
   describe("array_concat", function()
     it("should concatenate multiple arrays", function()
       local arr1 = { 1, 2 }
@@ -73,12 +63,6 @@ describe("wezterm utils", function()
     it("should return path unchanged if no ~ prefix", function()
       assert.are.equal("/absolute/path", utils.convert_home_dir "/absolute/path")
       assert.are.equal("relative/path", utils.convert_home_dir "relative/path")
-    end)
-  end)
-
-  describe("file_exists", function()
-    it("should return false for non-existent file", function()
-      assert.is_false(utils.file_exists "/non/existent/file.txt")
     end)
   end)
 
@@ -111,31 +95,6 @@ describe("wezterm utils", function()
     it("should fall back to default title", function()
       local title = utils.tab_title_from_pane(nil, nil)
       assert.are.equal("wezterm", title)
-    end)
-  end)
-
-  describe("abbreviate_home_dir", function()
-    it("should abbreviate home directory to ~", function()
-      local home = os.getenv "HOME" or os.getenv "USERPROFILE"
-      if home then
-        assert.are.equal("~", utils.abbreviate_home_dir(home))
-        assert.are.equal("~/Documents", utils.abbreviate_home_dir(home .. "/Documents"))
-      end
-    end)
-
-    it("should not abbreviate non-home paths", function()
-      assert.are.equal("/usr/local", utils.abbreviate_home_dir "/usr/local")
-    end)
-  end)
-
-  describe("exists", function()
-    it("should find element in array", function()
-      assert.is_true(utils.exists({ 1, 2, 3 }, 2))
-      assert.is_false(utils.exists({ 1, 2, 3 }, 4))
-    end)
-
-    it("should find element in nested tables", function()
-      assert.is_true(utils.exists({ 1, { 2, 3 } }, 3))
     end)
   end)
 

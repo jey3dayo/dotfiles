@@ -22,38 +22,6 @@ describe("core.utils", function()
     end)
   end)
 
-  describe("find_command", function()
-    it("should return first existing path", function()
-      -- Create a temporary file
-      local tmpfile = os.tmpname()
-      local file = io.open(tmpfile, "w")
-      file:write "test"
-      file:close()
-
-      local result = utils.find_command { "/nonexistent/path", tmpfile }
-      assert.equals(tmpfile, result)
-
-      -- Clean up
-      os.remove(tmpfile)
-    end)
-
-    it("should return nil when no paths exist", function()
-      local result = utils.find_command { "/nonexistent/path1", "/nonexistent/path2" }
-      assert.is_nil(result)
-    end)
-
-    it("should return nil for empty paths", function()
-      local result = utils.find_command {}
-      assert.is_nil(result)
-    end)
-  end)
-
-  describe("check_file_exists", function()
-    it("should be a function", function()
-      assert.is_function(utils.check_file_exists)
-    end)
-  end)
-
   describe("has_config_files", function()
     it("should be a function", function()
       assert.is_function(utils.has_config_files)

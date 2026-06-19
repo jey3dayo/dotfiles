@@ -38,7 +38,6 @@ _path_prepend_once() {
 _path_prepend_once "$HOME/bin"
 _path_prepend_once "$HOME/.local/bin"
 _path_prepend_once "$XDG_CONFIG_HOME/scripts"
-_path_prepend_once "$PNPM_HOME"
 [ -d "$HOME/.claude/local" ] && _path_prepend_once "$HOME/.claude/local"
 export PATH
 unset -f _path_prepend_once
@@ -47,6 +46,38 @@ unset -f _path_prepend_once
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate bash)"
 fi
+
+_mise_promote_paths() {
+  local mise_data_dir="${MISE_DATA_DIR:-$HOME/.mise}"
+  local old_ifs="$IFS"
+  local dir
+  local mise_paths=""
+  local other_paths=""
+
+  IFS=:
+  for dir in $PATH; do
+    case "$dir" in
+      "$mise_data_dir"/installs/* | "$mise_data_dir"/shims)
+        case ":$mise_paths:" in
+          *":$dir:"*) ;;
+          *) mise_paths="${mise_paths:+$mise_paths:}$dir" ;;
+        esac
+        ;;
+      *)
+        case ":$other_paths:" in
+          *":$dir:"*) ;;
+          *) other_paths="${other_paths:+$other_paths:}$dir" ;;
+        esac
+        ;;
+    esac
+  done
+  IFS="$old_ifs"
+
+  PATH="${mise_paths}${mise_paths:+${other_paths:+:}}${other_paths}"
+  export PATH
+}
+_mise_promote_paths
+unset -f _mise_promote_paths
 
 # ------------------------------------------------------------------------------
 # Interactive-only settings

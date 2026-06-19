@@ -15,9 +15,12 @@ mise/config.default.toml は以下の 6 カテゴリで構成されています:
 
 ```toml
 [tools]
+deno = "latest"
 go = "1.25.5"
-node = "24"
+node = "lts"
 python = "3.14"
+julia = "latest"
+rust = "stable"
 # lua/luajit は Homebrew で管理 (Neovim 依存関係のため)
 ```
 
@@ -56,6 +59,8 @@ yamllint = "latest"
 "npm:husky" = "latest"
 "npm:npm" = "latest"
 "npm:npm-check-updates" = "latest"
+"npm:agent-browser" = "latest"
+"npm:dev-browser" = "latest"
 
 # 開発・エディタ
 "npm:@fsouza/prettierd" = "latest"
@@ -68,8 +73,13 @@ yamllint = "latest"
 # AI・コミット支援
 "npm:@openai/codex" = "latest"
 "npm:aicommits" = "latest"
+"npm:opencommit" = "latest"
+"npm:clawdbot" = "latest"
+"npm:vibe-kanban" = "latest"
 
 # ドキュメント・Lint
+"npm:dbdocs" = "latest"
+"npm:@google/design.md" = "latest"
 "npm:markdown-link-check" = "latest"
 "npm:markdownlint-cli2" = "latest"
 "npm:textlint" = "latest"
@@ -81,6 +91,7 @@ yamllint = "latest"
 # 開発ツール・Language Servers
 "npm:eslint_d" = "latest"
 "npm:typescript" = "latest"
+"npm:tsx" = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
@@ -104,7 +115,6 @@ yamllint = "latest"
 
 # Claude/AI ツール
 "npm:@anthropic-ai/dxt" = "latest"
-"npm:@mariozechner/claude-bridge" = "latest"
 "npm:@sasazame/ccresume" = "latest"
 "npm:ccusage" = "latest"
 "npm:dev3000" = "latest"
@@ -124,10 +134,16 @@ yamllint = "latest"
 
 ```toml
 [tools]
+"aqua:rtk-ai/rtk" = "latest"
 "cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "latest"
-"cargo:similarity-ts" = "latest"
-"cargo:wrkflw" = "latest"
+"cargo:needle-cli" = "0.14.1"
+"cargo:similarity-css" = "0.4.1"
+"cargo:similarity-ts" = "0.4.1"
+"cargo:wrkflw" = "0.7.3"
+"cargo:starship" = "latest"
+"cargo:deadnix" = "latest"
+"cargo:tree-sitter-cli" = { version = "0.26.8", default-features = "false" }
+"cargo:https://github.com/oppiliappan/statix" = { version = "tag:v0.5.8", crate = "statix" }
 ```
 
 #### 環境別の取り扱い
@@ -141,14 +157,34 @@ yamllint = "latest"
 
 ```toml
 [tools]
+atuin = "latest"
 aws-cli = "latest"
-github:microsoft/apm = "0.8.11"
+bat = "latest"
+buf = "latest"
 eza = "latest"
 fd = "latest"
+fzf = "latest"
+gitleaks = "latest"
+"go:github.com/fujiwara/lambroll/cmd/lambroll" = "latest"
+"go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
+"go:github.com/google/wire/cmd/wire" = "latest"
+"go:github.com/k1LoW/git-wt" = "latest"
+"go:golang.org/x/tools/cmd/goimports" = "0.41.0"
+"pipx:apm-cli" = "0.14.2"
 "github:cli/cli" = "latest"
+glab = "latest"
+hexyl = "latest"
 jq = "latest"
-opencode = "latest"
+lazygit = "latest"
+"aqua:anomalyco/opencode" = "latest"
+ripgrep = "latest"
+saml2aws = "latest"
+terraform = "latest"
+trivy = "latest"
+usage = "latest"
 yazi = "latest"
+zoxide = "latest"
+"pipx:pre-commit" = "latest"
 ```
 
 #### 環境別の取り扱い

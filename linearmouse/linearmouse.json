@@ -44,6 +44,40 @@
           "vendorID" : "0x3554"
         }
       },
+      "pointer" : {
+        "acceleration" : 1,
+        "disableAcceleration" : true,
+        "redirectsToScroll" : false
+      },
+      "scrolling" : {
+        "acceleration" : {
+          "vertical" : 1
+        },
+        "distance" : {
+          "vertical" : "62.2px"
+        },
+        "reverse" : {
+          "vertical" : true
+        },
+        "smoothed" : {
+          "vertical" : {
+            "enabled" : false
+          }
+        },
+        "speed" : {
+          "vertical" : 0
+        }
+      }
+    },
+    {
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productID" : "0xd026",
+          "productName" : "Keychron Link-KM",
+          "vendorID" : "0x3434"
+        }
+      },
       "scrolling" : {
         "reverse" : {
           "vertical" : true

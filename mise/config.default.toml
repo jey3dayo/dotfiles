@@ -44,7 +44,10 @@ rust = "stable"  # rustfmt (nvim conform) and cargo:* tool installs
 # ========================================
 # Package Managers (パッケージマネージャー)
 # ========================================
-"pipx:uv" = "latest"
+# uv は GitHub のプリビルドバイナリを直接取得する。
+# pipx:uv は uvx 経由で uv 自身を入れる自己参照構造になり、
+# uv 更新時に `uv tool install uv` が [1/3] install で停滞するため避ける。
+"github:astral-sh/uv" = "latest"
 bun = "latest"
 
 # ========================================
@@ -174,7 +177,7 @@ gitleaks = "latest"
 "go:github.com/google/wire/cmd/wire" = "latest"
 "go:github.com/k1LoW/git-wt" = "latest"
 "go:golang.org/x/tools/cmd/goimports" = "0.41.0"
-"pipx:apm-cli" = "0.9.4"
+"pipx:apm-cli" = "0.14.2"
 "github:cli/cli" = "latest"
 glab = "latest"
 hexyl = "latest"

@@ -144,7 +144,7 @@ run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff format ${PY_FILES}
 else
-  uvx ruff format ${TASK_EXCLUDES} .
+  fd -e py ${TASK_EXCLUDES} -X uvx ruff format
 fi
 """
 
@@ -154,7 +154,7 @@ run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff format --check ${PY_FILES}
 else
-  uvx ruff format --check ${TASK_EXCLUDES} .
+  fd -e py ${TASK_EXCLUDES} -X uvx ruff format --check
 fi
 """
 

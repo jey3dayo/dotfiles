@@ -1,20 +1,34 @@
 # sheldon plugin manager bootstrap
 # plugins (including zsh-defer) must load before config loader
 
-cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}
-config_dir=${XDG_CONFIG_HOME:-$HOME/.config}
+_refresh_sheldon_cache() {
+  local cache="$1"
+  local tmp="${cache}.$$"
+
+  mkdir -p "${cache:h}" || return 0
+  sheldon source >| "$tmp" 2> /dev/null && mv -f "$tmp" "$cache"
+  rm -f "$tmp" 2> /dev/null || true
+}
+
+_load_sheldon_plugins() {
+  local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}"
+  local sheldon_cache="$cache_dir/sheldon/sheldon.zsh"
+  local sheldon_toml="$SHELDON_CONFIG_DIR/plugins.toml"
+
+  command -v sheldon > /dev/null 2>&1 || return 0
+
+  if [[ -r "$sheldon_cache" ]]; then
+    source "$sheldon_cache"
+    if [[ "$sheldon_toml" -nt "$sheldon_cache" ]]; then
+      _refresh_sheldon_cache "$sheldon_cache" &!
+    fi
+  else
+    _refresh_sheldon_cache "$sheldon_cache"
+    [[ -r "$sheldon_cache" ]] && source "$sheldon_cache"
+  fi
+}
 
 export SHELDON_CONFIG_DIR="$ZDOTDIR/sheldon"
-sheldon_cache="$cache_dir/sheldon/sheldon.zsh"
-sheldon_toml="$SHELDON_CONFIG_DIR/plugins.toml"
+_load_sheldon_plugins
 
-# キャッシュがない、またはキャッシュが古い場合にキャッシュを作成
-if command -v sheldon > /dev/null 2>&1; then
-  if [[ ! -r "$sheldon_cache" || "$sheldon_toml" -nt "$sheldon_cache" ]]; then
-    mkdir -p "$cache_dir/sheldon"
-    sheldon source > $sheldon_cache
-  fi
-  source "$sheldon_cache"
-fi
-
-unset cache_dir sheldon_cache sheldon_toml
+unfunction _refresh_sheldon_cache _load_sheldon_plugins 2> /dev/null || true
