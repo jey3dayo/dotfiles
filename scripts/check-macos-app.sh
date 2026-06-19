@@ -8,6 +8,7 @@ SUDO="${SUDO:-sudo}"
 LSREGISTER="${LSREGISTER:-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister}"
 
 KNOWN_APP_PATHS=(
+  "/Applications/Codex.app"
   "${HOME}/.codex/computer-use/Codex Computer Use.app"
   "/Applications/Codex.app/Contents/Resources/plugins/openai-bundled/plugins/computer-use/Codex Computer Use.app"
 )
@@ -22,8 +23,8 @@ usage() {
     "  scripts/check-macos-app.sh --list" \
     "" \
     "Options:" \
-    "  --fix                 Fix known app targets, or the given app path." \
-    "  --codex-computer-use  Check known Codex Computer Use app locations." \
+    "  --fix                 Fix quarantine/LaunchServices for known app targets, or the given app path." \
+    "  --codex-computer-use  Check known Codex and Codex Computer Use app locations." \
     "  --list                Print known app location aliases." \
     "  -h, --help            Show this help."
 }
@@ -168,6 +169,7 @@ fi
 for app_path in "${targets[@]}"; do
   echo
   echo "Target: ${app_path}"
+  codesign_failed=false
 
   quarantine_result=0
   quarantine_status "${app_path}" || quarantine_result=$?
@@ -197,12 +199,26 @@ for app_path in "${targets[@]}"; do
   fi
 
   echo "codesign:"
-  if ! "${CODESIGN}" --verify --deep --strict --verbose=2 "${app_path}" 2>&1; then
+  codesign_output=""
+  if ! codesign_output=$("${CODESIGN}" --verify --deep --strict --verbose=2 "${app_path}" 2>&1); then
+    printf '%s\n' "${codesign_output}"
+    if printf '%s\n' "${codesign_output}" | /usr/bin/grep -qi "invalid signature\\|code or signature have been modified"; then
+      echo "codesign: invalid signature is not fixable by this script; reinstall the app bundle." >&2
+    else
+      echo "codesign: verification failed; this script can only fix quarantine and LaunchServices registration." >&2
+    fi
     check_failed=true
+    codesign_failed=true
+  else
+    printf '%s\n' "${codesign_output}"
   fi
   echo "spctl:"
   if ! "${SPCTL}" --assess --type execute --verbose=4 "${app_path}" 2>&1; then
-    echo "spctl: warning: assessment failed; codesign result is authoritative for this script." >&2
+    if [[ "${codesign_failed}" == true ]]; then
+      echo "spctl: assessment failed after codesign failure; reinstall the app bundle." >&2
+    else
+      echo "spctl: warning: assessment failed; codesign result is authoritative for this script." >&2
+    fi
   fi
 
   if [[ "${fix}" == true && -x "${LSREGISTER}" ]]; then
