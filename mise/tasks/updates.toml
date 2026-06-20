@@ -4,12 +4,14 @@
 
 ["update"]
 description = "リポジトリを pull してから、すべての依存関係を更新"
-depends = [
-  "pull",
-  "update:submodules",
-  "update:brew",
-  "update:apt",
-  "update:external-repos",
+run = [
+  { task = "pull" },
+  { tasks = [
+    "update:submodules",
+    "update:brew",
+    "update:apt",
+    "update:external-repos",
+  ] },
 ]
 
 ["pull"]
