@@ -90,8 +90,8 @@ restore-env-keys() {
 
   if "$OP_CLI_PATH" document get "$item_id" "${account_args[@]}" --vault="$OP_DOTENV_KEYS_VAULT" > "$temp_path" \
     || {
-      dotenvx run -f "$OP_DOTENV_ENV_FILE" -- "$OP_CLI_PATH" document get "$item_id" --vault="$OP_DOTENV_KEYS_VAULT" > "$fallback_path" \
-        && _op_filter_dotenvx_stdout < "$fallback_path" > "$temp_path"
+    dotenvx run -f "$OP_DOTENV_ENV_FILE" -- "$OP_CLI_PATH" document get "$item_id" --vault="$OP_DOTENV_KEYS_VAULT" > "$fallback_path" \
+      && _op_filter_dotenvx_stdout < "$fallback_path" > "$temp_path"
     }; then
     mv "$temp_path" "$output_path"
     chmod 600 "$output_path"
