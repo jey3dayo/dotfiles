@@ -34,7 +34,7 @@
 
       currentUsername = builtins.getEnv "USER";
       currentHomeDirectory = builtins.getEnv "HOME";
-      currentSystem = builtins.currentSystem;
+      inherit (builtins) currentSystem;
 
       mkHomeConfiguration =
         {
