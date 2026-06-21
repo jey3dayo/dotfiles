@@ -79,12 +79,14 @@
 ## Task 1: Add Host and User Entrypoints Without Behavior Changes
 
 **Files:**
+
 - Create: `users/current/home.nix`
 - Modify: `home.nix`
 - Create: `hosts/CA-20031129/default.nix`
 - Modify: `nix/darwin.nix`
 
 **Interfaces:**
+
 - Consumes: Current `home.nix` module arguments: `{ pkgs, username, homeDirectory, ... }`.
 - Produces: `users/current/home.nix` with the same module interface.
 - Consumes: Current `nix/darwin.nix` module arguments: `{ inputs, ... }`.
@@ -135,9 +137,11 @@
 ## Task 2: Refactor `flake.nix` Into Small Constructors
 
 **Files:**
+
 - Modify: `flake.nix`
 
 **Interfaces:**
+
 - Produces: `mkHomeConfiguration = { username, homeDirectory, system }: home-manager.lib.homeManagerConfiguration { ... }`.
 - Produces: `mkDarwinHost = { hostname, system, modules }: nix-darwin.lib.darwinSystem { ... }`.
 - Preserves: `homeConfigurations.${builtins.getEnv "USER"}`.
@@ -209,10 +213,12 @@
 ## Task 3: Extract Reusable Darwin Touch ID Module
 
 **Files:**
+
 - Create: `modules/darwin/touch-id-sudo.nix`
 - Modify: `hosts/CA-20031129/default.nix`
 
 **Interfaces:**
+
 - Produces: Darwin module `modules/darwin/touch-id-sudo.nix`.
 - Consumes: Imported by `hosts/CA-20031129/default.nix`.
 
@@ -262,10 +268,12 @@
 ## Task 4: Audit Documentation References
 
 **Files:**
+
 - Inspect: `docs/tools/home-manager.md`
 - Inspect: `docs/tools/nix.md`
 
 **Interfaces:**
+
 - Produces: no changes unless docs mention `home.nix` or `nix/darwin.nix` as canonical implementation paths.
 
 - [x] **Step 1: Search for old canonical path references**
@@ -281,7 +289,6 @@
 - [x] **Step 2: Update docs only if necessary**
 
   If a direct canonical path reference is found, update it to mention the new entrypoint and compatibility shim:
-
   - Home Manager config: `users/current/home.nix`
   - Darwin host config: `hosts/CA-20031129/default.nix`
   - Compatibility shims: `home.nix`, `nix/darwin.nix`
@@ -291,9 +298,11 @@
 ## Task 5: Final Quality Gate and Review
 
 **Files:**
+
 - Review all files changed in Tasks 1-4.
 
 **Interfaces:**
+
 - Produces: final implementation report.
 
 - [ ] **Step 1: Run focused Nix checks**
@@ -321,7 +330,6 @@
 - [ ] **Step 3: Manually review the diff**
 
   Confirm:
-
   - `programs.dotfiles` options are unchanged.
   - Home Manager still receives `username` and `homeDirectory`.
   - `darwinConfigurations.CA-20031129` still exists.
