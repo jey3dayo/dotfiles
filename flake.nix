@@ -41,25 +41,22 @@
           username,
           homeDirectory,
           system,
+          modules,
         }:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.${system};
-          modules = [
-            self.homeManagerModules.default # dotfiles module
-            ./users/current/home.nix
-          ];
+          modules = [ self.homeManagerModules.default ] ++ modules;
           extraSpecialArgs = { inherit inputs username homeDirectory; };
         };
 
       mkDarwinHost =
         {
-          hostname,
           system,
           modules,
         }:
         nix-darwin.lib.darwinSystem {
           inherit system modules;
-          specialArgs = { inherit inputs hostname; };
+          specialArgs = { inherit inputs; };
         };
     in
     {
@@ -68,7 +65,6 @@
 
       # macOS system configuration: `sudo darwin-rebuild switch --flake "$HOME/.config#CA-20031129"`
       darwinConfigurations.CA-20031129 = mkDarwinHost {
-        hostname = "CA-20031129";
         system = "aarch64-darwin";
         modules = [ ./hosts/CA-20031129 ];
       };
@@ -79,6 +75,7 @@
         username = currentUsername;
         homeDirectory = currentHomeDirectory;
         system = currentSystem;
+        modules = [ ./users/current/home.nix ];
       };
     }
     //
