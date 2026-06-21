@@ -133,6 +133,7 @@ yamllint = "latest"
 "npm:o3-search-mcp" = "latest"
 
 # Claude/AI ツール
+"pipx:headroom-ai" = { version = "0.26.0", extras = "mcp,proxy" }
 "npm:@anthropic-ai/dxt" = "latest"
 "npm:@sasazame/ccresume" = "latest"
 "npm:ccusage" = "latest"

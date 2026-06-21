@@ -73,6 +73,7 @@ taplo = "latest"
 "npm:aicommits" = "latest"
 "npm:@openai/codex" = "latest"
 "npm:ccusage" = "latest"
+"pipx:headroom-ai" = { version = "0.26.0", extras = "mcp,proxy" }
 "npm:dev3000" = "latest"
 "npm:@sasazame/ccresume" = "latest"
 "npm:@google/gemini-cli" = "latest"
