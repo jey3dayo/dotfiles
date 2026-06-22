@@ -11,5 +11,15 @@
     "steipete/tap/peekaboo",
     "vectordotdev/brew/vector",
     "ynqa/tap/jnv"
+  ],
+  "trustedtaps": [
+    "arto-app/tap",
+    "bufbuild/buf",
+    "buo/cask-upgrade",
+    "hashicorp/tap",
+    "k1low/tap",
+    "manaflow-ai/cmux",
+    "sanemat/font",
+    "voicevox/voicevox"
   ]
 }
