@@ -136,13 +136,13 @@ yamllint = "latest"
 [tools]
 "aqua:rtk-ai/rtk" = "latest"
 "cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "0.14.1"
-"cargo:similarity-css" = "0.4.1"
-"cargo:similarity-ts" = "0.4.1"
-"cargo:wrkflw" = "0.7.3"
+"cargo:needle-cli" = "0.15.0"
+"cargo:similarity-css" = "0.5.0"
+"cargo:similarity-ts" = "0.5.0"
+"cargo:wrkflw" = "0.8.0"
 "cargo:starship" = "latest"
 "cargo:deadnix" = "latest"
-"cargo:tree-sitter-cli" = { version = "0.26.8", default-features = "false" }
+"cargo:tree-sitter-cli" = { version = "0.26.9", default-features = "false" }
 "cargo:https://github.com/oppiliappan/statix" = { version = "tag:v0.5.8", crate = "statix" }
 ```
 
