@@ -13,6 +13,7 @@ includes = [
   ".config/mise/tasks/env.toml",
   ".config/mise/tasks/brewfile.toml",
   ".config/mise/tasks/updates.toml",
+  ".config/mise/tasks/headroom.toml",
   ".config/mise/tasks/home-manager.toml",
   ".config/mise/tasks/ci.toml",
   ".config/mise/tasks/docs.toml",
