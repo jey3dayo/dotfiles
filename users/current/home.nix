@@ -24,6 +24,36 @@ let
     "/usr/sbin"
     "/sbin"
   ];
+  headroomVersion = "0.26.0";
+  headroomServiceRevision = "${headroomVersion}-service-deps-1";
+  headroomPackage = "headroom-ai[mcp,proxy]==${headroomVersion}";
+  headroomPinnedDeps = [
+    "anyio==4.14.0"
+    "click==8.4.1"
+    "hpack==4.1.0"
+    "litellm==1.89.3"
+    "openai==2.43.0"
+    "opentelemetry-api==1.42.1"
+  ];
+  headroomInstallArgs = lib.concatMapStringsSep " " lib.escapeShellArg (
+    [ headroomPackage ] ++ headroomPinnedDeps
+  );
+  headroomServiceDir = "${homeDirectory}/.local/share/headroom-launchd";
+  headroomVenv = "${headroomServiceDir}/venv";
+  headroomBin = "${headroomVenv}/bin/headroom";
+  servicePath = builtins.concatStringsSep ":" [
+    "${headroomVenv}/bin"
+    "${homeDirectory}/bin"
+    "${homeDirectory}/.local/bin"
+    "/opt/homebrew/bin"
+    "/opt/homebrew/sbin"
+    "/usr/local/bin"
+    "/usr/local/sbin"
+    "/usr/bin"
+    "/bin"
+    "/usr/sbin"
+    "/sbin"
+  ];
 in
 {
   # Basic home-manager settings
@@ -40,8 +70,23 @@ in
     # You should not change this value, even if you update Home Manager.
     stateVersion = "24.11";
 
-    activation.headroom-logs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    activation.headroom-service = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       ${pkgs.coreutils}/bin/mkdir -p "${homeDirectory}/.headroom/logs"
+      ${pkgs.coreutils}/bin/mkdir -p "${headroomServiceDir}"
+
+      marker="${headroomVenv}/.headroom-version"
+      current_version=""
+      if [ -f "$marker" ]; then
+        current_version="$(${pkgs.coreutils}/bin/cat "$marker")"
+      fi
+
+      if [ ! -x "${headroomBin}" ] || [ "$current_version" != "${headroomServiceRevision}" ]; then
+        if [ ! -x "${headroomVenv}/bin/python" ]; then
+          ${pkgs.uv}/bin/uv venv --seed "${headroomVenv}"
+        fi
+        ${pkgs.uv}/bin/uv pip install --python "${headroomVenv}/bin/python" ${headroomInstallArgs}
+        printf '%s\n' "${headroomServiceRevision}" > "$marker"
+      fi
     '';
   };
 
@@ -92,13 +137,12 @@ in
         "-lc"
         ''
           ${pkgs.coreutils}/bin/mkdir -p "${homeDirectory}/.headroom/logs"
-          export XDG_CONFIG_HOME="${homeDirectory}/.config"
-          export MISE_DATA_DIR="${homeDirectory}/.mise"
-          export MISE_CACHE_DIR="${homeDirectory}/.cache/mise"
-          export MISE_CONFIG_FILE="${homeDirectory}/.config/mise/config.default.toml"
-          export PATH='${guiPath}'
-          headroom_bin="$("${homeDirectory}/.local/bin/mise" which headroom)"
-          exec "$headroom_bin" proxy \
+          if [ ! -x "${headroomBin}" ]; then
+            echo "Headroom service binary is missing: ${headroomBin}" >&2
+            exit 78
+          fi
+          export PATH='${servicePath}'
+          exec "${headroomBin}" proxy \
             --host 127.0.0.1 \
             --port 8787 \
             --mode cache \
@@ -108,12 +152,6 @@ in
             --log-file "${homeDirectory}/.headroom/logs/proxy.jsonl"
         ''
       ];
-      EnvironmentVariables = {
-        XDG_CONFIG_HOME = "${homeDirectory}/.config";
-        MISE_DATA_DIR = "${homeDirectory}/.mise";
-        MISE_CACHE_DIR = "${homeDirectory}/.cache/mise";
-        MISE_CONFIG_FILE = "${homeDirectory}/.config/mise/config.default.toml";
-      };
       RunAtLoad = true;
       KeepAlive = true;
       ThrottleInterval = 10;
