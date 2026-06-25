@@ -1,6 +1,6 @@
 # Mise Configuration Reference
 
-最終更新: 2026-04-19
+最終更新: 2026-06-25
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -16,7 +16,7 @@ mise/config.default.toml は以下の 6 カテゴリで構成されています:
 ```toml
 [tools]
 deno = "latest"
-go = "1.25.5"
+go = "1.26.4"
 node = "lts"
 python = "3.14"
 julia = "latest"
@@ -28,7 +28,7 @@ rust = "stable"
 
 ```toml
 [tools]
-"pipx:uv" = "latest"
+"github:astral-sh/uv" = "latest"
 bun = "latest"
 ```
 
@@ -151,7 +151,7 @@ yamllint = "latest"
 - Default (`config.default.toml`): 全てのcargoツールをインストール
 - Raspberry Pi (`config.pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
 
-注: bat, ripgrep, hexyl, zoxide, typos-lsp は Homebrew で管理 (Brewfile 参照)
+Go/Cargo 由来の CLI は Brewfile ではなく mise の `[tools]` で管理します。Homebrew は OS/GUI/ネイティブ formula の正本です。
 
 ### 6. CLI Tools
 
@@ -169,8 +169,10 @@ gitleaks = "latest"
 "go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
 "go:github.com/google/wire/cmd/wire" = "latest"
 "go:github.com/k1LoW/git-wt" = "latest"
-"go:golang.org/x/tools/cmd/goimports" = "0.41.0"
-"pipx:apm-cli" = "0.14.2"
+"go:golang.org/x/tools/cmd/goimports" = "0.46.0"
+"pipx:apm-cli" = "0.21.0"
+"pipx:awslabs-terraform-mcp-server" = "1.0.18"
+"pipx:serena-agent" = "1.5.3"
 "github:cli/cli" = "latest"
 glab = "latest"
 hexyl = "latest"

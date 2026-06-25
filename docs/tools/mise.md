@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-04-19
+最終更新: 2026-06-25
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -240,7 +240,7 @@ Note: hadolint is included in `config.default.toml` but may fail to install on A
 - AI/Claude: `aicommits`, `@sasazame/ccresume`
 - MCP: `@upstash/context7-mcp`, `o3-search-mcp`
 - CLI: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
-- ランタイム: `go` (latest), `node`, `python`, `pipx:uv`
+- ランタイム: `go` (latest), `node`, `python`
 
 具体的なパッケージバージョンは `mise/config.pi.toml` を参照。
 
@@ -402,31 +402,31 @@ mise doctor               # Check for issues
 ### mise で管理するツール
 
 - 全ての開発ツール: フォーマッター、Linter、CLI ツール
-- 全ての npm/pipx パッケージ: "npm:" または "pipx:" プレフィックス付き
-- 開発用の言語ランタイム: Node.js, Python, Go
+- 各言語系 CLI: `go:`, `cargo:`, `npm:`, `pipx:` などのプレフィックス付きツール
+- 開発用の言語ランタイム: Node.js, Python, Go, Rust
 - 理由: バージョン固定、プロジェクト別オーバーライド、再現性
 
 ### Homebrew で管理するツール
 
 - Neovim とその依存関係: lua, luajit, luarocks, libuv, tree-sitter 等
-- システムレベルのライブラリ: 複数のツールから参照されるライブラリ
+- システムレベルのライブラリとネイティブ formula: 複数のツールから参照されるライブラリ、OS 統合が必要な CLI
 - GUI アプリケーション: cask で管理
 - システムツール用の言語ランタイム: 必要な場合のみ (python@3.11, python@3.12 等)
 - 理由: システム安定性、ビルド時間削減、OS 統合
 
 ### ハイブリッド運用パターン
 
-- Node.js: Homebrew 版 (システム依存関係用) + mise 版 (開発用)
-- Python: Homebrew 版 (システムツール用) + mise 版 (開発用)
-- Rust: Homebrew 版 (rust-analyzer と共に) のみ使用
-- Lua: Homebrew 版 (Neovim 依存関係) のみ使用
+- Node.js: mise 版を開発用の正本にし、Homebrew 版はシステム依存関係が必要な場合だけ許容
+- Python: mise 版を開発用の正本にし、Homebrew 版はシステムツール用に限定
+- Rust: mise 版を開発用と `cargo:` ツールの正本にし、Homebrew 版はネイティブ formula が必要な場合だけ許容
+- Lua: Homebrew 版を Neovim 依存関係として管理
 
 ## Best Practices
 
-1. Centralized Package Management: ALL npm and Python packages MUST be declared in environment-specific configs (`mise/config.default.toml`, `mise/config.windows.toml`, or `mise/config.pi.toml`)
+1. Centralized Package Management: ALL language-package CLI tools MUST be declared in environment-specific configs (`mise/config.default.toml`, `mise/config.windows.toml`, or `mise/config.pi.toml`)
    - Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
    - Never maintain separate `global-package.json` or `requirements-global.txt`
-   - Always use `"npm:<package>"` or `"pipx:<package>"` in environment-specific config files
+   - Always use `"go:<package>"`, `"cargo:<package>"`, `"npm:<package>"`, or `"pipx:<package>"` in environment-specific config files when available
    - Note: `npm:` prefix is used even though pnpm is the backend (configured via `settings.npm.package_manager = "pnpm"`)
    - Rationale: Single source of truth, reproducibility, version control
 2. Global Package Manager Check: Regularly verify no duplicate packages

@@ -118,10 +118,12 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 - Homebrew: システム依存関係と GUI アプリケーションのみ
 - Chocolatey (Windows): bootstrap パッケージと GUI アプリケーションのみ
 - npm/pnpm/bun グローバルは使用しない: mise の `npm:` プレフィックスで管理
+- Go/Cargo/uv/pipx など各言語・パッケージマネージャー由来の CLI は Brewfile ではなく mise の `[tools]` で管理
 
 ### mise で管理するもの
 
 - 言語ランタイム（Go, Node.js, Python）
+- 言語系 CLI（`go:`, `cargo:`, `npm:`, `pipx:` など）
 - フォーマッター・Linter（biome, prettier, stylua, shellcheck 等）
 - 開発ツール（TypeScript, ESLint, esbuild 等）
 - MCP サーバー（Model Context Protocol）

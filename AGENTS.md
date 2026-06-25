@@ -25,6 +25,7 @@
 ## この Repo の追加ルール
 
 - `docs/` 配下の手順・運用・設計は、この repo では正本として扱う
+- パッケージ管理の責務分離は `docs/setup.md` を正本とし、Homebrew は OS/GUI/ネイティブ formula、mise は言語ランタイムと各言語系 CLI を管理する
 - `~/.apm/catalog/AGENTS.md` は配布用コピーとして扱い、この repo の運用判断には使わない
 - 実装ワークフローの `Codex レビュー` は「独立観点でのレビュー」を意味する。Codex 外部から実行する場合は `/codex-code-review` を使い、Codex セッション内では手動差分確認または別プロセスの `codex exec` で代替可
 - 共通ルールをこのファイルへ再掲しない。必要な場合は `~/.codex/AGENTS.md` を参照する
