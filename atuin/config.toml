@@ -16,3 +16,6 @@ history_filter = [
   "^aws-vault",
   "^export .*(TOKEN|KEY|PASSWORD|SECRET)",
 ]
+
+[ai]
+enabled = true
