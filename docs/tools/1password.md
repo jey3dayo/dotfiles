@@ -29,6 +29,7 @@
 ~/.config/zsh/config/tools/1password.zsh      # Zsh 側の helper
 ~/.config/.env                                # dotenvx-managed env
 ~/.config/.env.keys                           # dotenvx 復号鍵
+~/.config/.env.local                          # 復号後のローカル env（gitignore 対象）
 ```
 
 ## 既定値
@@ -82,3 +83,4 @@ dotenvx run -f ~/.config/.env -- op document get "mzy4lhfwqbtbtr3rm466qhrouq" --
 - token は長寿命の秘密情報なので、必要最小権限の service account を使う
 - `Dotfiles Automation` には自動化に必要な item だけを置く
 - `Private` に置いた item は service account からは読めない
+- macOS GUI アプリは `~/.config/.env.local` を自動では読まない。GUI 起動の Codex などへ secret を渡す場合は、Home Manager 管理の `launchd.agents.*` で必要な key だけを `launchctl setenv` する

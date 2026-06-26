@@ -50,6 +50,7 @@ Detailed Reference: [docs/tools/home-manager.md](../../docs/tools/home-manager.m
 - managed asset は `~/.apm/catalog/**` で管理する。
 - global skill の daily operation は `cd ~/.apm && mise run ...` を使う。
 - Home Manager は dotfiles 配布と generation 管理を担当する。
+- macOS GUI アプリへ渡す環境変数は `launchd.agents.*` から `launchctl setenv` する。secret は `.env.local` 全体ではなく、対象アプリが参照する key だけを allowlist する。
 
 ## よくあるトラブル
 

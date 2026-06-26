@@ -36,3 +36,4 @@ Detailed Reference: See [docs/tools/1password.md](../../docs/tools/1password.md)
 - Use `dotenvx run -f ~/.config/.env -- op ...` or the shell helper wrappers
   for service-account automation.
 - When `OP_SERVICE_ACCOUNT_TOKEN` is present, avoid forcing `--account`; only pass `--account` for app-integration flows.
+- macOS GUI apps do not source `~/.config/.env.local`; expose only required keys through Home Manager managed `launchd.agents.*` and `launchctl setenv`.

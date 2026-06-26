@@ -129,6 +129,40 @@ in
     };
   };
 
+  launchd.agents.codex-gui-env = {
+    enable = pkgs.stdenv.hostPlatform.isDarwin;
+    config = {
+      ProgramArguments = [
+        "/bin/sh"
+        "-lc"
+        ''
+          export PATH='${guiPath}'
+          "${homeDirectory}/.config/scripts/setup-env.sh"
+
+          env_local="${homeDirectory}/.config/.env.local"
+          if [ ! -f "$env_local" ]; then
+            echo "Missing env file: $env_local" >&2
+            exit 1
+          fi
+
+          set -a
+          . "$env_local"
+          set +a
+
+          if [ -n "''${JINA_API_KEY:-}" ]; then
+            launchctl setenv JINA_API_KEY "$JINA_API_KEY"
+            echo "Set GUI environment variable: JINA_API_KEY"
+          else
+            echo "Skipped empty GUI environment variable: JINA_API_KEY"
+          fi
+        ''
+      ];
+      RunAtLoad = true;
+      StandardOutPath = "${homeDirectory}/Library/Logs/codex-gui-env.log";
+      StandardErrorPath = "${homeDirectory}/Library/Logs/codex-gui-env.log";
+    };
+  };
+
   launchd.agents.headroom-proxy = {
     enable = pkgs.stdenv.hostPlatform.isDarwin;
     config = {
