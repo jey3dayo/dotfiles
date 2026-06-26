@@ -1,29 +1,16 @@
 export LANG='ja_JP.UTF-8'
 export LC_ALL='ja_JP.UTF-8'
-
 export BROWSER='open'
 export EDITOR='nvim'
 export VISUAL='nvim'
 export PAGER='less'
-
 export LISTMAX=0
 
 typeset -gaU path
 typeset -U cdpath fpath manpath
 
-# Load cargo environment for login shells.
-[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
-
-# Keep standalone Bun available for login shells that do not read .zshrc.
-if [[ -f "${ZDOTDIR}/config/tools/bun.zsh" ]]; then
-  source "${ZDOTDIR}/config/tools/bun.zsh"
-fi
-
-# Login shells may be non-interactive and skip .zshrc, so normalize PATH here too.
-if [[ -r "${ZDOTDIR}/config/core/interactive-path.zsh" ]]; then
-  source "${ZDOTDIR}/config/core/interactive-path.zsh"
-  (( $+functions[_dotfiles_setup_interactive_path] )) && _dotfiles_setup_interactive_path
-  unfunction _dotfiles_setup_interactive_path 2>/dev/null
-fi
+[[ -r "${ZDOTDIR:-$HOME/.config/zsh}/lib/path.zsh" ]] && source "${ZDOTDIR:-$HOME/.config/zsh}/lib/path.zsh"
+(( $+functions[dotfiles_zsh_setup_path] )) && dotfiles_zsh_setup_path
+unfunction dotfiles_zsh_setup_path 2>/dev/null
 
 # vim: set syntax=zsh:

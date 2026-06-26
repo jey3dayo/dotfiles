@@ -12,9 +12,14 @@ const __dirname = path.dirname(__filename);
 const repoRoot = path.resolve(__dirname, "..");
 const zdotdir = path.join(repoRoot, "zsh");
 const printPasswordCommand = ["print -r -- ", "${", "GOG_KEYRING_PASSWORD:-unset", "}"].join("");
+const printAutosuggestStrategyCommand = [
+  'print -r -- "autosuggest_strategy=',
+  "${",
+  "ZSH_AUTOSUGGEST_STRATEGY:-unset",
+  '}"',
+].join("");
 const localMise = path.join(os.homedir(), ".local/bin/mise");
 const homebrewMise = "/opt/homebrew/bin/mise";
-const homebrewSheldon = "/opt/homebrew/bin/sheldon";
 
 describe("zsh/.zshenv", () => {
   it("loads .env.local for non-interactive shells", () => {
@@ -74,14 +79,15 @@ describe("zsh/.zshenv", () => {
 });
 
 describe("zsh plugin bootstrap", () => {
-  it("keeps early macOS environment setup from patching Homebrew PATH", () => {
-    const macosEnv = fs.readFileSync(path.join(zdotdir, "config/os/macos-env.zsh"), "utf8");
+  it("keeps Homebrew PATH setup in the explicit path helper", () => {
+    const pathHelper = fs.readFileSync(path.join(zdotdir, "lib/path.zsh"), "utf8");
 
-    expect(macosEnv).not.toContain("/opt/homebrew/bin");
+    expect(pathHelper).toContain("/opt/homebrew/bin");
   });
 
-  it("loads Sheldon plugins when login startup begins without Homebrew in PATH", () => {
-    if (!fs.existsSync(homebrewSheldon)) {
+  it("keeps minimal interactive startup on PATH without loading Sheldon plugins", () => {
+    const expectedMise = fs.existsSync(localMise) ? localMise : homebrewMise;
+    if (!fs.existsSync(expectedMise)) {
       return;
     }
 
@@ -91,7 +97,7 @@ describe("zsh plugin bootstrap", () => {
     try {
       const result = spawnSync(
         "zsh",
-        ["-lic", ["command -v abbr", "abbr expand gst", "which z", "which j", 'bindkey " "'].join("; ")],
+        ["-lic", ["command -v zsh-benchmark", "command -v mise", "command -v abbr || true"].join("; ")],
         {
           encoding: "utf8",
           env: {
@@ -108,14 +114,131 @@ describe("zsh plugin bootstrap", () => {
 
       expect(result.status).toBe(0);
       expect(result.stderr.trim()).toBe("");
-      expect(result.stdout).toContain("abbr");
-      expect(result.stdout).toContain("git status -sb .");
-      expect(result.stdout).toContain("__zoxide_z");
-      expect(result.stdout).toContain("j: aliased to z");
-      expect(result.stdout).toContain('" " abbr-expand-and-insert');
+      expect(result.stdout).toContain(path.join(zdotdir, "bin", "zsh-benchmark"));
+      expect(result.stdout).toContain(expectedMise);
+      expect(result.stdout).not.toContain("abbr");
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }
+  });
+
+  it("loads zsh-abbr only when plugins are explicitly requested", () => {
+    const result = spawnSync("zsh", ["-lic", ["command -v abbr", "abbr expand gst"].join("; ")], {
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        HOME: os.homedir(),
+        XDG_CONFIG_HOME: repoRoot,
+        ZDOTDIR: zdotdir,
+        ZSH_LOAD_PLUGINS: "1",
+        PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        LOGNAME: os.userInfo().username,
+        USER: os.userInfo().username,
+        SHELL: "/bin/zsh",
+        TERM: "xterm-256color",
+      },
+    });
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+    expect(result.stdout).toContain("abbr");
+    expect(result.stdout).toContain("git status -sb .");
+  });
+
+  it("loads selected lightweight interactive tools", () => {
+    const result = spawnSync(
+      "zsh",
+      [
+        "-lic",
+        [
+          "command -v zoxide",
+          "command -v z",
+          "alias j",
+          "command -v ni",
+          "command -v nlx",
+          "command -v bun",
+          "command -v eza",
+          "command -v gh",
+          "command -v fzf",
+          'print -r -- "eza_fpath=$' + '{fpath[(r)*eza-community/eza/completions/zsh]}"',
+          'print -r -- "bun_fpath=$' + '{fpath[(r)$HOME/.bun]}"',
+          "whence _ni",
+          "whence _gh",
+          "whence _fzf_git_branches",
+          "whence fzf-tab-complete",
+          "whence _zsh_autosuggest_start",
+          "whence fast-theme",
+          printAutosuggestStrategyCommand,
+          'bindkey "^]"',
+          'bindkey "^T"',
+          'bindkey "^[c"',
+          'bindkey "^gx"',
+          'bindkey "^I"',
+          'bindkey "^gg"',
+          'bindkey "^gs"',
+          'bindkey "^ga"',
+          'bindkey "^gb"',
+          'bindkey "^gW"',
+          'bindkey "^gz"',
+          'bindkey "^g^f"',
+          'bindkey "^g?"',
+        ].join("; "),
+      ],
+      {
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          HOME: os.homedir(),
+          XDG_CONFIG_HOME: repoRoot,
+          ZDOTDIR: zdotdir,
+          ZSH_LOAD_FZF: "1",
+          ZSH_LOAD_FZF_TAB: "1",
+          ZSH_LOAD_GH: "1",
+          ZSH_LOAD_GIT_WIDGETS: "1",
+          ZSH_LOAD_AUTOSUGGESTIONS: "1",
+          ZSH_LOAD_SYNTAX_HIGHLIGHTING: "1",
+          ZSH_LOAD_ZOXIDE: "1",
+          PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+          LOGNAME: os.userInfo().username,
+          USER: os.userInfo().username,
+          SHELL: "/bin/zsh",
+          TERM: "xterm-256color",
+        },
+      },
+    );
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+    expect(result.stdout).toContain("zoxide");
+    expect(result.stdout).toContain("j=z");
+    expect(result.stdout).toContain("ni");
+    expect(result.stdout).toContain("nlx");
+    expect(result.stdout).toContain("bun");
+    expect(result.stdout).toContain("eza");
+    expect(result.stdout).toContain("gh");
+    expect(result.stdout).toContain("fzf");
+    expect(result.stdout).toContain("eza_fpath=");
+    expect(result.stdout).toContain("bun_fpath=");
+    expect(result.stdout).toContain("_ni");
+    expect(result.stdout).toContain("_gh");
+    expect(result.stdout).toContain("_fzf_git_branches");
+    expect(result.stdout).toContain("fzf-tab-complete");
+    expect(result.stdout).toContain("_zsh_autosuggest_start");
+    expect(result.stdout).toContain("fast-theme");
+    expect(result.stdout).toContain("autosuggest_strategy=history");
+    expect(result.stdout).toContain("dotfiles_fzf_ghq_widget");
+    expect(result.stdout).toContain("fzf-file-widget");
+    expect(result.stdout).toContain("fzf-cd-widget");
+    expect(result.stdout).toContain('"^I" fzf-tab-complete');
+    expect(result.stdout).toContain("dotfiles_fzf_kill_widget");
+    expect(result.stdout).toContain("dotfiles_git_menu_widget");
+    expect(result.stdout).toContain("dotfiles_git_status_widget");
+    expect(result.stdout).toContain("dotfiles_git_add_patch_widget");
+    expect(result.stdout).toContain("dotfiles_git_switch_branch_widget");
+    expect(result.stdout).toContain("dotfiles_git_worktree_widget");
+    expect(result.stdout).toContain("fzf-git-stashes-widget");
+    expect(result.stdout).toContain("fzf-git-files-widget");
+    expect(result.stdout).toContain("fzf-git-?list_bindings-widget");
   });
 
   it("finds Homebrew perman-aws-vault in non-interactive login shells", () => {

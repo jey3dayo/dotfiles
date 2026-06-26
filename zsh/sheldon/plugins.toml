@@ -1,118 +1,39 @@
 shell = "zsh"
 
 [templates]
-fpath-src = 'fpath=( "{{ dir }}/src" $fpath )'
-defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer -t 1 source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
-fzf-install = "{% if dir %}if [[ ! -x \"{{ dir }}/bin/fzf\" ]]; then \"{{ dir }}/install\" --bin > /dev/null; fi\n[[ ! $PATH =~ {{ dir }} ]] && export PATH=\"$PATH:{{ dir }}/bin\"\n{% endif %}"
-exec = "{% for file in files %}cd `dirname {{ file }}` && \"{{ file }}\"\n{% endfor %}"
-exec_with_confirm = "{% for file in files %}(cd `dirname {{ file }}` && echo y | \"{{ file }}\" > /dev/null 2>&1 < /dev/null) \n{% endfor %}"
-pnpm-shell-completion-install = "pnpm_shell_completion_install() {\n  emulate -L zsh\n  local dir=\"{{ dir }}\"\n  local bin=\"$dir/pnpm-shell-completion\"\n  local version_file=\"$dir/.pnpm-shell-completion.version\"\n  local version=\"\"\n\n  if [[ -r \"$dir/Cargo.toml\" ]]; then\n    version=\"$(grep '^version = ' \"$dir/Cargo.toml\" | cut -d'\"' -f2 2>/dev/null)\"\n  fi\n\n  if [[ -x \"$bin\" && -n \"$version\" && -r \"$version_file\" && \"$(<\"$version_file\")\" == \"$version\" ]]; then\n    return 0\n  fi\n\n  (cd \"$dir\" && echo y | \"$dir/zplug.zsh\" > /dev/null 2>&1 < /dev/null)\n  [[ -n \"$version\" ]] && print -r -- \"$version\" >| \"$version_file\"\n}\n\npnpm_shell_completion_install\nunset -f pnpm_shell_completion_install\n"
-
-# Essential components
-[plugins.zsh-defer]
-github = "romkatv/zsh-defer"
-apply = ["source"]
-
-# Core functionality
-[plugins.clipboard]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'lib'
-apply = ["defer"]
-
-[plugins.sudo]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'plugins'
-apply = ["defer"]
-
-[plugins.functions]
-github = "ohmyzsh/ohmyzsh"
-dir = 'lib'
-apply = ["defer"]
-
-[plugins.zoxide]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'plugins'
-apply = ["defer"]
+noop = ""
 
 [plugins.zsh-abbr]
-github = 'olets/zsh-abbr'
+github = "olets/zsh-abbr"
 apply = ["source"]
-
-# Completion system - must load before fzf-tab
-[plugins.zsh-completions]
-github = "zsh-users/zsh-completions"
-use = ["src"]
-apply = ["fpath-src"]
-
-[plugins.fzf]
-github = "junegunn/fzf"
-apply = ['fzf-install']
-
-[plugins.fzf-git]
-github = "junegunn/fzf-git.sh"
-apply = ["source"]
-
-[plugins.fzf-tab]
-github = "Aloxaf/fzf-tab"
-
-[plugins.command-not-found]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'plugins'
-apply = ["defer"]
-
-# UI enhancements
-[plugins.zsh-autosuggestions]
-github = "zsh-users/zsh-autosuggestions"
-apply = ["defer"]
-
-# Syntax highlighting - must be last
-[plugins.fast-syntax-highlighting]
-github = "zdharma-continuum/fast-syntax-highlighting"
-apply = ["source"]
-
-[plugins.zoxide.hooks]
-post = '''
-if command -v zoxide >/dev/null 2>&1; then
-  alias j=z
-  export _ZO_RESOLVE_SYMLINKS=1
-  eval "$(zoxide init zsh)"
-fi
-'''
-
-[plugins.pnpm-shell-completion]
-github = "g-plane/pnpm-shell-completion"
-apply = ["defer"]
 
 [plugins.ni-completion]
 github = "snowsman/ni-completion"
 use = [".ni.zsh"]
-apply = ["defer"]
-
-[plugins.pnpm-shell-completion-install]
-github = "g-plane/pnpm-shell-completion"
-use = ["zplug.zsh"]
-apply = ["pnpm-shell-completion-install"]
-
-[plugins.1password-op]
-github = "unixorn/1password-op.plugin.zsh"
-apply = ["defer"]
+apply = ["noop"]
 
 [plugins.eza]
 github = "eza-community/eza"
 use = ["completions/zsh/_eza"]
-apply = ["defer", "fpath"]
+apply = ["noop"]
 
 [plugins.bun]
 local = "~/.bun/"
 use = ["_bun"]
-apply = ["defer"]
+apply = ["noop"]
 
-[plugins.1password]
-github = 'ohmyzsh/ohmyzsh'
-dir = 'plugins'
-apply = ["defer"]
+[plugins.fzf-git]
+github = "junegunn/fzf-git.sh"
+apply = ["noop"]
 
-[plugins.dotfiles-lazy-sources]
-local = "~/.config/zsh/lazy-sources"
-use = ["*.zsh"]
-apply = ["defer"]
+[plugins.fzf-tab]
+github = "Aloxaf/fzf-tab"
+apply = ["noop"]
+
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+apply = ["noop"]
+
+[plugins.fast-syntax-highlighting]
+github = "zdharma-continuum/fast-syntax-highlighting"
+apply = ["noop"]

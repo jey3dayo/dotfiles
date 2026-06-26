@@ -1,0 +1,134 @@
+#!/usr/bin/env zsh
+
+emulate -L zsh
+setopt err_return no_unset pipe_fail
+
+zmodload zsh/datetime
+
+local runs=5
+local profile=0
+local top_count=25
+local mode_filter=""
+
+_usage() {
+  print -r -- "Usage: zsh-benchmark [--runs N] [--mode MODE] [--profile] [--top N]"
+  print -r -- ""
+  print -r -- "Modes: noninteractive, login, interactive, interactive-login"
+}
+
+while (($# > 0)); do
+  case "$1" in
+    --runs)
+      shift
+      [[ "${1:-}" == <-> && "$1" -gt 0 ]] || {
+        print -u2 -r -- "zsh-benchmark: --runs requires a positive integer"
+        exit 2
+      }
+      runs="$1"
+      ;;
+    --mode)
+      shift
+      case "${1:-}" in
+        noninteractive | login | interactive | interactive-login) mode_filter="$1" ;;
+        *)
+          print -u2 -r -- "zsh-benchmark: unknown mode: ${1:-}"
+          _usage >&2
+          exit 2
+          ;;
+      esac
+      ;;
+    --profile)
+      profile=1
+      ;;
+    --top)
+      shift
+      [[ "${1:-}" == <-> && "$1" -gt 0 ]] || {
+        print -u2 -r -- "zsh-benchmark: --top requires a positive integer"
+        exit 2
+      }
+      top_count="$1"
+      ;;
+    -h | --help)
+      _usage
+      exit 0
+      ;;
+    *)
+      print -u2 -r -- "zsh-benchmark: unknown option: $1"
+      _usage >&2
+      exit 2
+      ;;
+  esac
+  shift
+done
+
+_args_for_mode() {
+  case "$1" in
+    noninteractive) reply=(-c exit) ;;
+    login) reply=(-lc exit) ;;
+    interactive) reply=(-ic exit) ;;
+    interactive-login) reply=(-lic exit) ;;
+  esac
+}
+
+_benchmark_mode() {
+  local mode="$1"
+  local -a args times
+  local run exit_status
+  local start end elapsed total min max avg
+
+  _args_for_mode "$mode"
+  args=("${reply[@]}")
+
+  print -r -- "== $mode =="
+  total=0
+  min=0
+  max=0
+
+  for ((run = 1; run <= runs; run++)); do
+    start="$EPOCHREALTIME"
+    command zsh "${args[@]}" >/dev/null
+    exit_status="$?"
+    end="$EPOCHREALTIME"
+
+    if ((exit_status != 0)); then
+      print -u2 -r -- "zsh-benchmark: ${mode} run ${run} failed with status ${exit_status}"
+      return "$exit_status"
+    fi
+
+    elapsed=$((end - start))
+    times+=("$elapsed")
+    total=$((total + elapsed))
+    if ((run == 1 || elapsed < min)); then
+      min="$elapsed"
+    fi
+    if ((run == 1 || elapsed > max)); then
+      max="$elapsed"
+    fi
+
+    printf 'run %02d: %.3fs\n' "$run" "$elapsed"
+  done
+
+  avg=$((total / runs))
+  printf 'avg: %.3fs  min: %.3fs  max: %.3fs\n\n' "$avg" "$min" "$max"
+}
+
+local -a modes
+if [[ -n "$mode_filter" ]]; then
+  modes=("$mode_filter")
+else
+  modes=(noninteractive login interactive interactive-login)
+fi
+
+print -r -- "Zsh startup benchmark (${runs} runs)"
+print -r -- "Shell: ${commands[zsh]:-zsh}"
+print -r -- ""
+
+local mode
+for mode in "${modes[@]}"; do
+  _benchmark_mode "$mode"
+done
+
+if ((profile)); then
+  print -r -- "== zprof: interactive startup top ${top_count} =="
+  ZSH_PROFILE_STARTUP=1 command zsh -ic "zprof | sed -n '1,${top_count}p'"
+fi

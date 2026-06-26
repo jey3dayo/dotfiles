@@ -1,118 +1,132 @@
-# 🐚 Zsh Configuration & Optimization
+# Zsh Configuration
 
-最終更新: 2026-04-09
+最終更新: 2026-06-26
 対象: 開発者・上級者
 タグ: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 
-高速起動のモジュラー Zsh。Sheldon + zsh-defer でロードを最小化し、FZF/Git ウィジェットと PATH 最適化を組み合わせたコアレイヤーです。compinit は 24h/変更検知で再構築し、Sheldon キャッシュは plugins.toml 更新時に自動再生成。パフォーマンスの目標値・実測値は `docs/performance.md` を単一情報源とし、本書では構成と運用のみを扱います。
+Zsh は高速起動を優先した最小構成です。旧構成は `zsh.legacy/` に退避し、現行の `zsh/` は entrypoint、`lib/`、`sheldon/`、`bin/` だけで構成します。
 
-🔗 キーバインド一覧: [FZF Integration > Git Integration](./fzf-integration.md#git-integration) に集約（Zsh/FZF/Git のショートカット検索はここを参照）。
+## 方針
 
-## 🤖 Claude Rules
+- `.zshenv` は全 shell で読むため、XDG、`ZDOTDIR`、mise の環境変数、最小 PATH、`.env.local` だけを扱う。
+- `.zshrc` は interactive shell 用の薄い orchestrator とし、`lib/*.zsh` を明示順に読む。
+- 起動時に install、update、build、plugin lock 生成をしない。
+- Sheldon は `zsh-abbr` と補完 repo の取得を管理し、cache は `zsh-sheldon-refresh` で明示生成する。起動時に install/update/lock はしない。
+- `abbr` 展開は維持するが、通常起動では同期ロードしない。実ターミナルでは最初の ZLE line init で読み、テストや明示確認では `ZSH_LOAD_PLUGINS=1` を使う。
+- `atuin` は `Ctrl-R` 履歴検索として使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_ATUIN=1` を使う。
+- `fzf` は cache された shell integration だけを使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_FZF=1` を使う。`Ctrl-R` は `atuin` 優先で、fzf は `Ctrl-T` / `Alt-C` / `^]` / `^gx` などを使う。
+- `fzf-tab` は補完 UI として使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読む。hook 登録順は fzf の後、autosuggestions / syntax highlighting より前にし、Tab 補完を fzf UI にする。
+- Git widgets / `fzf-git` は通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読む。Git menu は `^gg` / `^g^g`、status は `^gs` / `^g^s`、add patch は `^ga` / `^g^a`、branch switch は `^gb` / `^g^b`、worktree menu は `^gW` / `^g^W`、stash は `^gz` / `^g^z`、file picker は `^gf` / `^g^f`、help は `^g?`。
+- `zsh-autosuggestions` は入力候補表示として使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_AUTOSUGGESTIONS=1` を使う。
+- `fast-syntax-highlighting` は入力中の syntax highlight として使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で最後に読む。
+- `gh` completion は cache file を使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_GH=1` を使う。起動時に `gh completion` は実行しない。
+- `zoxide` は `z` / `j` 移動用に使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_ZOXIDE=1` を使う。
+- `ni` / `nlx`、`eza`、`bun` の補完は戻す。起動時に生成せず、既存 completion file を読む。
+- WSL 固有設定は WSL 環境でだけ読む。
+- starship はデフォルト有効。切り分けや最小起動が必要な場合だけ `ZSH_DISABLE_STARSHIP=1` で無効化する。
 
-このドキュメントの凝縮版ルールは [`.claude/rules/tools/zsh.md`](../../.claude/rules/tools/zsh.md) で管理されています。
+## ロード順
 
-- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
-- 適用範囲: YAML frontmatter `paths:` で定義
-- 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
+1. `home/.zshenv` が `~/.config/zsh/.zshenv` を source する。
+2. `zsh/.zshenv` が XDG、mise、PATH、history、`.env.local` を初期化する。
+3. login shell では `zsh/.zprofile` が locale/editor と PATH 正規化を行う。
+4. interactive shell では `zsh/.zshrc` が以下を順に読む。
+   - `lib/path.zsh`
+   - `lib/options.zsh`
+   - `lib/history.zsh`
+   - `lib/tool-completions.zsh`
+   - `lib/completion.zsh`
+   - `lib/ni.zsh`
+   - `lib/gh.zsh`
+   - `lib/history-search.zsh`
+   - `lib/fzf.zsh`
+   - `lib/fzf-tab.zsh`
+   - `lib/git-widgets.zsh`
+   - `lib/autosuggestions.zsh`
+   - `lib/atuin.zsh`
+   - `lib/zoxide.zsh`
+   - `lib/wsl.zsh`
+   - `lib/plugins.zsh`
+   - `lib/prompt.zsh`
+   - `lib/syntax-highlighting.zsh`
 
-## 構成サマリ
+## ディレクトリ
 
-- `ZDOTDIR=$HOME/.config/zsh` に統一し、ログイン/非ログインで同一構成
-- `.zshenv` で XDG/最低限の PATH（mise shims のみ）と環境変数を定義し、`.zshrc` の interactive PATH helper でプラグイン起動前と mise 起動前に PATH を正規化
-- `init/completion.zsh` が compinit を 24h/補完更新で再構築し、7日以上の zcompdump を自動削除。`_post_compinit_hooks` で gh/mise などの補完も後追い登録
-- `init/sheldon.zsh` は plugins.toml 更新検知でキャッシュ生成し、初回 cache miss だけ同期生成して即 source
-- `config/loader.zsh` が core → tools → functions → os を統一ロード。tools は `fzf/git/mise/starship` を即時、brew/gh/debug 等は zsh-defer で段階遅延（3s/8s/12s/15s）
-- `zsh-help` / `path-check` / `zsh-quick-check` / `mise-status` で状態確認、FZF ウィジェットと `wtcd` で ghq/git ワークフローを高速化
-
-## ディレクトリとロード順
-
-### ロードシーケンス
-
-1. .zshenv: XDG 変数と `ZDOTDIR` を固定、GHQ/Android/Java/Brewfile などの環境変数を先に設定。非ログイン用の最小 PATH は mise shims のみ。
-2. .zprofile: ロケール/エディタ設定、`typeset -U path cdpath fpath manpath` で重複除去し、ログインシェル固有の最小設定だけを適用。
-3. .zshrc: ヒストリと zsh オプションを設定後、interactive PATH helper を実行して mise > user > language > Android SDK > Homebrew > system の順に正規化し、`init/*.zsh` を実行（compinit + Sheldon キャッシュ生成）。続いて config loader 経由で mise 起動前に PATH を再正規化し、最後に補完スタイルを読み込み。
-4. config/loader.zsh: helper 経由で core（aliases/path utils）→ tools（即時: fzf/git/mise/starship, 遅延: brew/gh/debug 他）→ functions → os-specific を統一ロードし、helper を消去。
-5. lazy-sources/\*.zsh: Arch/WSL/OrbStack/FZF/履歴検索などを zsh-defer 経由で遅延ロード（Sheldon で `dotfiles-lazy-sources` として一括管理）。
-
-### ディレクトリ構造（主要）
-
-```
+```text
 zsh/
-├── .zshenv / .zprofile / .zshrc
-├── init/                # completion.zsh, sheldon.zsh
-├── sources/             # config-loader.zsh, styles.zsh
-├── config/
-│   ├── loader.zsh
-│   ├── core/            # aliases.zsh, path.zsh
-│   ├── tools/           # brew.zsh, fzf(.zsh), gh.zsh, git.zsh, mise.zsh, starship.zsh, debug.zsh
-│   ├── loaders/         # core.zsh, tools.zsh, functions.zsh, os.zsh, helper.zsh
-│   └── os/              # macos.zsh (+ linux/windows 拡張余地)
-├── functions/           # help.zsh, cleanup-zcompdump
-├── lazy-sources/        # arch.zsh, fzf.zsh, history-search.zsh, orbstack.zsh, wsl.zsh
-├── completions/         # プロジェクト同梱の補完
-└── sheldon/plugins.toml # プラグイン定義（zsh-defer テンプレート）
+├── .zshenv
+├── .zprofile
+├── .zshrc
+├── .zlogin
+├── bin/
+│   ├── zsh-benchmark
+│   ├── zsh-fzf-refresh
+│   ├── zsh-gh-completion-refresh
+│   └── zsh-sheldon-refresh
+├── completions/
+├── lib/
+│   ├── completion.zsh
+│   ├── history.zsh
+│   ├── history-search.zsh
+│   ├── atuin.zsh
+│   ├── autosuggestions.zsh
+│   ├── fzf.zsh
+│   ├── fzf-tab.zsh
+│   ├── git-widgets.zsh
+│   ├── gh.zsh
+│   ├── ni.zsh
+│   ├── options.zsh
+│   ├── path.zsh
+│   ├── plugins.zsh
+│   ├── prompt.zsh
+│   ├── syntax-highlighting.zsh
+│   ├── tool-completions.zsh
+│   ├── wsl.zsh
+│   └── zoxide.zsh
+└── sheldon/
+    └── plugins.toml
 ```
 
-## PATH と環境管理
+## Sheldon / abbr
 
-- PATH の単一情報源は `config/core/interactive-path.zsh`。非ログインシェル向けの最小 PATH は `.zshenv` に限定。
-- 優先順位: mise shims → `$HOME/{bin,.local/bin}` → 言語ツール（deno/cargo/go/pnpm 等）→ Android SDK → Homebrew → system。interactive PATH helper は Sheldon 前と mise 起動前の両方で idempotent に実行し、`typeset -U path` で重複を抑止。
-- `path-check` で重複や欠落を検査し（mise shims は除外）、`zsh-quick-check` で PATH/主要ツール/メモリ使用をまとめて確認。
-- 補完キャッシュは `${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump` 配下に生成され、24h/補完更新で再構築。7日以上古い zcompdump は自動削除し、手動では `cleanup_zcompdump` 関数でクリーンアップ。
-- 1Password CLI の service account 運用は [docs/tools/1password.md](1password.md) を参照。`OP_DOTENV_KEYS_VAULT` と `OP_SERVICE_ACCOUNT_TOKEN` の扱い、token ローテーション手順もそこに集約する。
-
-## プラグイン構成（Sheldon）
-
-| カテゴリ              | プラグイン                                                                      | 役割                                                   |
-| --------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Bootstrap/Core        | zsh-defer, oh-my-zsh `functions`/`clipboard`/`sudo`, zsh-abbr                   | 遅延基盤と基本ユーティリティ、abbr 展開                |
-| Completion/Navigation | zsh-completions (fpath 追加), fzf-tab, zoxide                                   | 補完強化とディレクトリ移動高速化（`alias j=z` + init） |
-| Search/UX             | fzf, zsh-autosuggestions, fast-syntax-highlighting                              | ファジー検索・入力体験向上（highlight は最後にロード） |
-| Git Workflow          | fzf-git.sh                                                                      | ブランチ/ワークツリー/ファイル/スタッシュピッカー      |
-| Tool Completions      | pnpm-shell-completion (+install), ni-completion, eza, bun, 1password/op         | ツール固有補完と PATH 追加                             |
-| Quality/Ops           | command-not-found, dotfiles-lazy-sources (arch/wsl/orbstack/fzf/history-search) | 補助機能と OS/FZF 拡張の遅延読込                       |
-
-## キー操作とワークフロー
-
-FZF/Git キーバインドとワークフローの詳細は重複を避けるため `docs/tools/fzf-integration.md` に集約し、ここでは確認系のコマンドのみ掲載します。
-
-### ヘルプ/ステータス
+現行の Sheldon plugin は `zsh-abbr`、補完 repo 取得用の `ni-completion`、`eza`、`bun`、Git widget 用の `fzf-git`、補完 UI 用の `fzf-tab`、入力候補用の `zsh-autosuggestions`、syntax highlight 用の `fast-syntax-highlighting` です。Sheldon cache が source するのは `zsh-abbr` だけで、補完 file、`fzf-git`、`fzf-tab`、`zsh-autosuggestions`、`fast-syntax-highlighting` は `lib/` 側から必要なものを直接読みます。Sheldon cache 自体は通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読みます。
 
 ```bash
-zsh-help             # 総合ヘルプ
-zsh-help keybinds    # キーバインド一覧
-zsh-help aliases     # 省略語一覧
-zsh-help tools       # インストール済みツール確認
-path-check           # PATH 重複/欠落診断
-zsh-quick-check      # PATH + 主要ツールの健全性チェック
-mise-status          # mise のデータ/キャッシュ/アクティブツール確認
-cleanup_zcompdump    # zcompdump 手動クリーンアップ（確認付き）
+zsh-sheldon-refresh
+zsh-fzf-refresh
+zsh-gh-completion-refresh
+ZSH_LOAD_PLUGINS=1 zsh -lic 'abbr expand gst'
+ZSH_LOAD_FZF=1 ZSH_LOAD_GH=1 zsh -lic 'bindkey "^]"; bindkey "^T"; bindkey "^gx"; whence _gh'
+ZSH_LOAD_GIT_WIDGETS=1 zsh -lic 'bindkey "^gg"; bindkey "^gs"; bindkey "^ga"; bindkey "^gb"; bindkey "^gW"; bindkey "^gz"; bindkey "^g^f"; bindkey "^g?"'
+ZSH_LOAD_FZF_TAB=1 ZSH_LOAD_AUTOSUGGESTIONS=1 ZSH_LOAD_SYNTAX_HIGHLIGHTING=1 zsh -lic 'bindkey "^I"; whence _zsh_autosuggest_start; whence fast-theme'
 ```
 
-### Git / FZF ウィジェット
+`zsh-abbr` のユーザー定義は既定どおり `zsh-abbr/user-abbreviations` を使います。alias ではなく、入力後に展開される abbreviation として運用します。
 
-- Git/FZF キーバインド一覧は `docs/tools/fzf-integration.md` を参照（単一情報源）
-- `wtcd <branch>`: 指定ブランチの worktree に即座に cd（補完付き）
+## 保留中の機能
 
-## パフォーマンスと検証
+以下は旧構成からまだ戻していない機能です。戻す場合は 1 機能ずつ追加し、`zsh-benchmark` と `zprof` で同期起動 path に乗らないことを確認します。
 
-- ベンチマークと改善履歴は `docs/performance.md` を参照（単一情報源）。
-- 迅速な確認: `time zsh -lic exit` / `zsh-quick-check` / `path-check` / `mise-status`。
-- 詳細分析: `export ZSH_DEBUG=1; zsh -i` → `zprof | head -20`、必要に応じて `${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump*` を削除して `compinit` を再構築。
-- 補完キャッシュやプラグイン生成は zsh 起動時に自動更新（plugins.toml 更新検知で再生成）されるため、異常時は `exec zsh` で再起動して再生成。
+| 優先度 | 機能                                     | 用途                                                          | 方針                                                |
+| ------ | ---------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------- |
+| P3     | `pnpm-shell-completion`                  | pnpm 補完                                                     | 重さ疑いあり。必要性が出るまで保留。                |
+| P3     | `pnpm-shell-completion-install`          | pnpm completion build                                         | 起動時には入れない。必要なら手動 task 化。          |
+| P3     | oh-my-zsh plugins                        | `sudo` / `clipboard` / `functions` など                       | 原則戻さない。必要なものだけ個別検討。              |
+| P3     | `1password-op.plugin.zsh`                | 1Password helper                                              | 起動時不要。                                        |
+| P3     | 診断 helper                              | `zsh-help` / `path-check` / `zsh-quick-check` / `mise-status` | source ではなく `bin/` コマンド化する場合のみ検討。 |
+| P3     | `lazy-sources/arch.zsh` / `orbstack.zsh` | 環境別設定                                                    | 該当環境で必要になった場合のみ条件付きで戻す。      |
 
-## カスタマイズと拡張
+## 検証
 
-- PATH/環境: `.zprofile`（優先順位）、`.zshenv`（最小構成）を編集。XDG 経由で管理。
-- プラグイン: `sheldon/plugins.toml` に追記（`defer` テンプレート推奨）。
-- ツール別設定: `config/tools/*.zsh` に追加（git/fzf/mise/starship など既存ファイルを踏襲）。
-- OS 別: `config/os/macos.zsh` を基準に、`linux.zsh` / `windows.zsh` を追加すると自動検出で読み込み。
-- 補完: `zsh/completions` または `~/.config/zsh/completions` にファイルを置くと `compinit` が検出。
-- 遅延スクリプト: `lazy-sources/*.zsh` に環境依存の設定を追加し、zsh-defer 経由でロード。
+```bash
+zsh-benchmark --runs 8 --mode interactive
+zsh-benchmark --runs 3 --mode interactive-login
+ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'
+bun test --timeout 20000 scripts/zsh-env-loading.test.ts
+mise run test:lua
+home-manager build --flake ~/.config --impure
+```
 
-## 運用・メンテナンス
+## 退避済み構成
 
-- 月次: `sheldon lock --update` でプラグインキャッシュを再生成（CI 相当）。
-- トラブルシュート: `rm -f ${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump* && exec zsh` で補完を再生成、`zsh -df` で最小構成起動。
-- 定期確認: `zsh-help tools` で依存ツールの存在確認、`path-check` で PATH の健全性をチェック。
+旧構成は `zsh.legacy/` に残しています。FZF/Git widgets、fzf-tab、zoxide、autosuggestions、syntax highlighting、旧 `config/tools/*` はここにあります。戻す場合は 1 機能ずつ戻し、毎回 `zsh-benchmark` と `zprof` で確認します。

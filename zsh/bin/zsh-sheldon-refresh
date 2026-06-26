@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+
+emulate -L zsh
+setopt err_return no_unset pipe_fail
+
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+: "${ZDOTDIR:=${XDG_CONFIG_HOME}/zsh}"
+
+export SHELDON_CONFIG_DIR="${ZDOTDIR}/sheldon"
+export SHELDON_DATA_DIR="${XDG_DATA_HOME}/sheldon"
+
+local cache_dir="${XDG_CACHE_HOME}/sheldon"
+local cache_file="${cache_dir}/zsh-minimal.zsh"
+local tmp_file="${cache_file}.$$"
+
+mkdir -p "$cache_dir"
+sheldon --config-dir "$SHELDON_CONFIG_DIR" --data-dir "$SHELDON_DATA_DIR" source --relock >|"$tmp_file"
+mv -f "$tmp_file" "$cache_file"

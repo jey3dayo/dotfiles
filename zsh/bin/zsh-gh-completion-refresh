@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+emulate -L zsh
+setopt err_return no_unset pipe_fail
+
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
+
+local cache_dir="${XDG_CACHE_HOME}/zsh/completions"
+local cache_file="${cache_dir}/_gh"
+
+mkdir -p "$cache_dir"
+gh completion -s zsh >|"$cache_file"

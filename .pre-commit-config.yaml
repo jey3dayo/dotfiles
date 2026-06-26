@@ -33,7 +33,7 @@ repos:
         args: ["-w", "-i", "2", "-ci", "-bn"]
         language: system
         types: [shell]
-        exclude: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|zsh/bin/zsh-precompile$)'
+        exclude: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|^zsh/bin/)'
         pass_filenames: true
 
       # Zsh formatting (.zsh files and zsh dotfiles)
@@ -42,7 +42,7 @@ repos:
         entry: beautysh
         args: ["-i", "2"]
         language: system
-        files: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$)'
+        files: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|^zsh/bin/)'
         pass_filenames: true
         exclude: '^(zsh/\.zinit|fisher)'
 
@@ -52,7 +52,7 @@ repos:
         entry: shellcheck
         language: system
         types: [shell]
-        exclude: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|zsh/bin/zsh-precompile$)'
+        exclude: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|^zsh/bin/)'
         pass_filenames: true
 
       # Zsh syntax check (including zsh dotfiles)
@@ -61,7 +61,7 @@ repos:
         entry: zsh
         args: ["-n"]
         language: system
-        files: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$)'
+        files: '(\.zsh$|\.zshrc$|\.zshenv$|\.zprofile$|\.zlogin$|\.zlogout$|^zsh/bin/)'
         pass_filenames: true
         exclude: '^(zsh/\.zinit|fisher)'
 

@@ -1,0 +1,31 @@
+#!/usr/bin/env zsh
+
+emulate -L zsh
+setopt err_return no_unset pipe_fail
+
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
+
+local cache_dir="${XDG_CACHE_HOME}/zsh/fzf"
+local raw_file="${cache_dir}/fzf.zsh.raw"
+local cache_file="${cache_dir}/fzf.zsh"
+
+mkdir -p "$cache_dir"
+fzf --zsh >|"$raw_file"
+
+awk '
+  /^[[:space:]]*eval \$__fzf_completion_options$/ {
+    print "  local __fzf_restore_opts=\"${__fzf_completion_options// zle on/}\""
+    print "  __fzf_restore_opts=\"${__fzf_restore_opts// zle off/}\""
+    print "  eval \"$__fzf_restore_opts\""
+    print "  unset __fzf_restore_opts"
+    next
+  }
+  /^[[:space:]]*eval \$__fzf_key_bindings_options$/ {
+    print "  local __fzf_restore_opts=\"${__fzf_key_bindings_options// zle on/}\""
+    print "  __fzf_restore_opts=\"${__fzf_restore_opts// zle off/}\""
+    print "  eval \"$__fzf_restore_opts\""
+    print "  unset __fzf_restore_opts"
+    next
+  }
+  { print }
+' "$raw_file" >|"$cache_file"

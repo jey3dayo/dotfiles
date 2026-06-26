@@ -6,14 +6,32 @@ local function read_file(path)
 end
 
 describe("zsh performance-sensitive loading", function()
-  it("keeps history UI integration off the synchronous tool loader path", function()
-    local content = read_file "zsh/config/loaders/tools.zsh"
-    local critical_tools = assert(content:match "critical_tools=%(([^%)]*)%)")
+  it("keeps Sheldon plugins out of the synchronous startup path", function()
+    local content = read_file "zsh/lib/plugins.zsh"
 
-    assert.matches("%f[%w]fzf%f[%W]", critical_tools)
-    assert.matches("%f[%w]mise%f[%W]", critical_tools)
-    assert.matches("%f[%w]starship%f[%W]", critical_tools)
-    assert.is_nil(critical_tools:match "%f[%w]atuin%f[%W]")
-    assert.matches('atuin%)%s+zsh%-defer %-t "?%$DEFER_ATUIN_SECONDS"?', content)
+    assert.matches("dotfiles_load_sheldon_plugins%(%)", content)
+    assert.matches("ZSH_LOAD_PLUGINS", content)
+    assert.matches("add%-zle%-hook%-widget zle%-line%-init dotfiles_zle_line_init", content)
+    assert.is_nil(content:match 'source%s+%"%$_dotfiles_sheldon_cache%"')
+  end)
+
+  it("keeps restored Sheldon plugins out of the generated source cache", function()
+    local content = read_file "zsh/sheldon/plugins.toml"
+
+    assert.matches("%[plugins%.zsh%-abbr%]", content)
+    assert.matches('%[templates%].-noop%s=%s%""', content)
+    assert.is_not_nil(content:find('[plugins.fzf-tab]\ngithub = "Aloxaf/fzf-tab"\napply = ["noop"]', 1, true))
+    assert.is_not_nil(
+      content:find('[plugins.zsh-autosuggestions]\ngithub = "zsh-users/zsh-autosuggestions"\napply = ["noop"]', 1, true)
+    )
+    assert.is_not_nil(
+      content:find(
+        '[plugins.fast-syntax-highlighting]\ngithub = "zdharma-continuum/fast-syntax-highlighting"\napply = ["noop"]',
+        1,
+        true
+      )
+    )
+    assert.is_nil(content:match "pnpm%-shell%-completion")
+    assert.is_nil(content:match "ohmyzsh")
   end)
 end)
