@@ -2,11 +2,11 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Adopt the useful structural ideas from `nakasyou/dotfiles` while preserving this repository's Home Manager focused behavior.
+Goal: Adopt the useful structural ideas from `nakasyou/dotfiles` while preserving this repository's Home Manager focused behavior.
 
-**Architecture:** Keep the existing `programs.dotfiles` Home Manager module intact. Introduce small host/user entrypoint files and flake helper functions so `flake.nix` becomes an assembly layer instead of carrying host-specific details directly. Avoid importing unrelated overlays, packages, or personal application config from the reference repository.
+Architecture: Keep the existing `programs.dotfiles` Home Manager module intact. Introduce small host/user entrypoint files and flake helper functions so `flake.nix` becomes an assembly layer instead of carrying host-specific details directly. Avoid importing unrelated overlays, packages, or personal application config from the reference repository.
 
-**Tech Stack:** Nix flakes, Home Manager, nix-darwin, mise task runner, nixfmt.
+Tech Stack: Nix flakes, Home Manager, nix-darwin, mise task runner, nixfmt.
 
 ## Global Constraints
 
@@ -78,14 +78,14 @@
 
 ## Task 1: Add Host and User Entrypoints Without Behavior Changes
 
-**Files:**
+### Files
 
 - Create: `users/current/home.nix`
 - Modify: `home.nix`
 - Create: `hosts/CA-20031129/default.nix`
 - Modify: `nix/darwin.nix`
 
-**Interfaces:**
+### Interfaces
 
 - Consumes: Current `home.nix` module arguments: `{ pkgs, username, homeDirectory, ... }`.
 - Produces: `users/current/home.nix` with the same module interface.
@@ -136,11 +136,11 @@
 
 ## Task 2: Refactor `flake.nix` Into Small Constructors
 
-**Files:**
+### Files
 
 - Modify: `flake.nix`
 
-**Interfaces:**
+### Interfaces
 
 - Produces: `mkHomeConfiguration = { username, homeDirectory, system }: home-manager.lib.homeManagerConfiguration { ... }`.
 - Produces: `mkDarwinHost = { hostname, system, modules }: nix-darwin.lib.darwinSystem { ... }`.
@@ -212,12 +212,12 @@
 
 ## Task 3: Extract Reusable Darwin Touch ID Module
 
-**Files:**
+### Files
 
 - Create: `modules/darwin/touch-id-sudo.nix`
 - Modify: `hosts/CA-20031129/default.nix`
 
-**Interfaces:**
+### Interfaces
 
 - Produces: Darwin module `modules/darwin/touch-id-sudo.nix`.
 - Consumes: Imported by `hosts/CA-20031129/default.nix`.
@@ -267,12 +267,12 @@
 
 ## Task 4: Audit Documentation References
 
-**Files:**
+### Files
 
 - Inspect: `docs/tools/home-manager.md`
 - Inspect: `docs/tools/nix.md`
 
-**Interfaces:**
+### Interfaces
 
 - Produces: no changes unless docs mention `home.nix` or `nix/darwin.nix` as canonical implementation paths.
 
@@ -297,11 +297,11 @@
 
 ## Task 5: Final Quality Gate and Review
 
-**Files:**
+### Files
 
 - Review all files changed in Tasks 1-4.
 
-**Interfaces:**
+### Interfaces
 
 - Produces: final implementation report.
 
