@@ -7,12 +7,12 @@ end
 
 describe("zsh performance-sensitive loading", function()
   it("keeps Sheldon plugins out of the synchronous startup path", function()
-    local content = read_file "zsh/lib/plugins.zsh"
+    local content = read_file "zsh/lib/abbr.zsh"
 
-    assert.matches("dotfiles_load_sheldon_plugins%(%)", content)
+    assert.matches("_zsh_load_abbr%(%)", content)
     assert.matches("ZSH_LOAD_PLUGINS", content)
-    assert.matches("add%-zle%-hook%-widget zle%-line%-init dotfiles_zle_line_init", content)
-    assert.is_nil(content:match 'source%s+%"%$_dotfiles_sheldon_cache%"')
+    assert.matches("add%-zsh%-hook precmd _zsh_load_abbr_once", content)
+    assert.is_nil(content:match 'source%s+%"%$sheldon_cache%"')
   end)
 
   it("keeps restored Sheldon plugins out of the generated source cache", function()

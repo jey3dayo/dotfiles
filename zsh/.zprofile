@@ -10,7 +10,7 @@ typeset -gaU path
 typeset -U cdpath fpath manpath
 
 [[ -r "${ZDOTDIR:-$HOME/.config/zsh}/lib/path.zsh" ]] && source "${ZDOTDIR:-$HOME/.config/zsh}/lib/path.zsh"
-(( $+functions[dotfiles_zsh_setup_path] )) && dotfiles_zsh_setup_path
-unfunction dotfiles_zsh_setup_path 2>/dev/null
+(( $+functions[_zsh_setup_path] )) && _zsh_setup_path
+unfunction _zsh_setup_path 2>/dev/null
 
 # vim: set syntax=zsh:

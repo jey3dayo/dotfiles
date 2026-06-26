@@ -1,4 +1,4 @@
-dotfiles_zsh_setup_path() {
+_zsh_setup_path() {
   emulate -L zsh
   typeset -gaU path
 

@@ -5,7 +5,10 @@
 
 if [ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh" ]; then
   . "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh"
-  _dotfiles_bootstrap_shell_env
+  _shell_bootstrap_env
+  unset -f _shell_bootstrap_env _shell_bootstrap_xdg_env _shell_bootstrap_mise_env \
+    _shell_bootstrap_tool_env _shell_source_hm_session_vars _shell_detect_mise_environment \
+    _shell_is_raspberry_pi _shell_path_prepend_existing
 else
   : "${XDG_CONFIG_HOME:=$HOME/.config}"
   : "${XDG_CACHE_HOME:=$HOME/.cache}"

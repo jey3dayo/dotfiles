@@ -1,31 +1,41 @@
 : "${XDG_STATE_HOME:=${HOME}/.local/state}"
 
-_dotfiles_source_zsh_lib() {
+source_zsh_lib() {
   local file="${ZDOTDIR:-$HOME/.config/zsh}/lib/$1"
   [[ -r "$file" ]] && source "$file"
 }
 
-_dotfiles_source_zsh_lib path.zsh
-(( $+functions[dotfiles_zsh_setup_path] )) && dotfiles_zsh_setup_path
+# Core shell state
+source_zsh_lib path.zsh
+(( $+functions[_zsh_setup_path] )) && _zsh_setup_path
+source_zsh_lib options.zsh
+source_zsh_lib history.zsh
 
-_dotfiles_source_zsh_lib options.zsh
-_dotfiles_source_zsh_lib history.zsh
-_dotfiles_source_zsh_lib tool-completions.zsh
-_dotfiles_source_zsh_lib completion.zsh
-_dotfiles_source_zsh_lib ni.zsh
-_dotfiles_source_zsh_lib gh.zsh
-_dotfiles_source_zsh_lib history-search.zsh
-_dotfiles_source_zsh_lib fzf.zsh
-_dotfiles_source_zsh_lib fzf-tab.zsh
-_dotfiles_source_zsh_lib git-widgets.zsh
-_dotfiles_source_zsh_lib autosuggestions.zsh
-_dotfiles_source_zsh_lib atuin.zsh
-_dotfiles_source_zsh_lib zoxide.zsh
-_dotfiles_source_zsh_lib wsl.zsh
-_dotfiles_source_zsh_lib plugins.zsh
-_dotfiles_source_zsh_lib prompt.zsh
-_dotfiles_source_zsh_lib syntax-highlighting.zsh
+# Completion setup
+source_zsh_lib tool-completions.zsh
+source_zsh_lib completion.zsh
+source_zsh_lib ni.zsh
+source_zsh_lib gh.zsh
 
-unfunction _dotfiles_source_zsh_lib dotfiles_zsh_setup_path 2>/dev/null
+# Key bindings and widgets
+source_zsh_lib history-search.zsh
+source_zsh_lib fzf.zsh
+source_zsh_lib fzf-tab.zsh
+source_zsh_lib git-widgets.zsh
+
+# Interactive input integrations
+source_zsh_lib abbr.zsh
+source_zsh_lib atuin.zsh
+source_zsh_lib zoxide.zsh
+source_zsh_lib autosuggestions.zsh
+
+# Platform-specific setup
+source_zsh_lib wsl.zsh
+
+# Prompt and final ZLE decorators
+source_zsh_lib prompt.zsh
+source_zsh_lib syntax-highlighting.zsh
+
+unfunction source_zsh_lib _zsh_setup_path 2>/dev/null
 
 # vim: set syntax=zsh:

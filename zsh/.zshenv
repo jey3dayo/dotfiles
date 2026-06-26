@@ -4,7 +4,7 @@ fi
 
 if [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh" ]]; then
   source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh"
-  _dotfiles_bootstrap_shell_env
+  _shell_bootstrap_env
 else
   : "${XDG_CONFIG_HOME:=$HOME/.config}"
   : "${XDG_CACHE_HOME:=$HOME/.cache}"
@@ -19,8 +19,8 @@ else
   export ZDOTDIR GIT_CONFIG_GLOBAL MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_FILE
 fi
 
-if (( $+functions[_dotfiles_path_prepend_existing] )); then
-  _dotfiles_path_prepend_existing "${MISE_DATA_DIR:-$HOME/.mise}/shims" "$HOME/.local/bin" /opt/homebrew/bin
+if (( $+functions[_shell_path_prepend_existing] )); then
+  _shell_path_prepend_existing "${MISE_DATA_DIR:-$HOME/.mise}/shims" "$HOME/.local/bin" /opt/homebrew/bin
 else
   case ":$PATH:" in
     *":${MISE_DATA_DIR:-$HOME/.mise}/shims:"*) ;;
@@ -44,8 +44,8 @@ if [[ -f "${XDG_CONFIG_HOME}/.env.local" ]]; then
   source "${XDG_CONFIG_HOME}/.env.local"
 fi
 
-unfunction _dotfiles_bootstrap_shell_env _dotfiles_bootstrap_xdg_env _dotfiles_bootstrap_mise_env \
-  _dotfiles_bootstrap_tool_env _dotfiles_source_home_manager_session_vars _dotfiles_detect_mise_environment \
-  _dotfiles_is_raspberry_pi _dotfiles_path_prepend_existing 2>/dev/null
+unfunction _shell_bootstrap_env _shell_bootstrap_xdg_env _shell_bootstrap_mise_env \
+  _shell_bootstrap_tool_env _shell_source_hm_session_vars _shell_detect_mise_environment \
+  _shell_is_raspberry_pi _shell_path_prepend_existing 2>/dev/null
 
 # vim: set syntax=zsh:

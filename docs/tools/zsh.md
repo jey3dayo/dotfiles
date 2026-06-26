@@ -12,15 +12,15 @@ Zsh は高速起動を優先した最小構成です。旧構成は `zsh.legacy/
 - `.zshrc` は interactive shell 用の薄い orchestrator とし、`lib/*.zsh` を明示順に読む。
 - 起動時に install、update、build、plugin lock 生成をしない。
 - Sheldon は `zsh-abbr` と補完 repo の取得を管理し、cache は `zsh-sheldon-refresh` で明示生成する。起動時に install/update/lock はしない。
-- `abbr` 展開は維持するが、通常起動では同期ロードしない。実ターミナルでは最初の ZLE line init で読み、テストや明示確認では `ZSH_LOAD_PLUGINS=1` を使う。
-- `atuin` は `Ctrl-R` 履歴検索として使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_ATUIN=1` を使う。
-- `fzf` は cache された shell integration だけを使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_FZF=1` を使う。`Ctrl-R` は `atuin` 優先で、fzf は `Ctrl-T` / `Alt-C` / `^]` / `^gx` などを使う。
-- `fzf-tab` は補完 UI として使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読む。hook 登録順は fzf の後、autosuggestions / syntax highlighting より前にし、Tab 補完を fzf UI にする。
-- Git widgets / `fzf-git` は通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読む。Git menu は `^gg` / `^g^g`、status は `^gs` / `^g^s`、add patch は `^ga` / `^g^a`、branch switch は `^gb` / `^g^b`、worktree menu は `^gW` / `^g^W`、stash は `^gz` / `^g^z`、file picker は `^gf` / `^g^f`、help は `^g?`。
-- `zsh-autosuggestions` は入力候補表示として使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_AUTOSUGGESTIONS=1` を使う。
-- `fast-syntax-highlighting` は入力中の syntax highlight として使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で最後に読む。
-- `gh` completion は cache file を使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_GH=1` を使う。起動時に `gh completion` は実行しない。
-- `zoxide` は `z` / `j` 移動用に使う。通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読み、明示確認では `ZSH_LOAD_ZOXIDE=1` を使う。
+- `abbr` 展開は維持するが、通常起動では同期ロードしない。実ターミナルでは最初の `precmd` で読み、テストや明示確認では `ZSH_LOAD_PLUGINS=1` を使う。
+- `atuin` は `Ctrl-R` 履歴検索として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読み、明示確認では `ZSH_LOAD_ATUIN=1` を使う。
+- `fzf` は cache された shell integration だけを使う。通常起動では integration を同期ロードせず、`Ctrl-T` / `Alt-C` / `^g^c` の初回実行時に読む。明示確認では `ZSH_LOAD_FZF=1` を使う。`Ctrl-R` は `atuin` 優先で、fzf は `Ctrl-T` / `Alt-C` / `^]` / `^gx` などを使う。
+- `fzf-tab` は補完 UI として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読む。hook 登録順は fzf の後、autosuggestions / syntax highlighting より前にし、Tab 補完を fzf UI にする。
+- Git widgets / `fzf-git` は通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読む。Git menu は `^gg` / `^g^g`、status は `^gs` / `^g^s`、add patch は `^ga` / `^g^a`、branch switch は `^gb` / `^g^b`、worktree menu は `^gW` / `^g^W`、stash は `^gz` / `^g^z`、file picker は `^gf` / `^g^f`、help は `^g?`。
+- `zsh-autosuggestions` は入力候補表示として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読み、明示確認では `ZSH_LOAD_AUTOSUGGESTIONS=1` を使う。
+- `fast-syntax-highlighting` は入力中の syntax highlight として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で最後に読む。
+- `gh` completion は cache file を使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読み、明示確認では `ZSH_LOAD_GH=1` を使う。起動時に `gh completion` は実行しない。
+- `zoxide` は `z` / `j` 移動用に使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読み、明示確認では `ZSH_LOAD_ZOXIDE=1` を使う。
 - `ni` / `nlx`、`eza`、`bun` の補完は戻す。起動時に生成せず、既存 completion file を読む。
 - WSL 固有設定は WSL 環境でだけ読む。
 - starship はデフォルト有効。切り分けや最小起動が必要な場合だけ `ZSH_DISABLE_STARSHIP=1` で無効化する。
@@ -31,24 +31,12 @@ Zsh は高速起動を優先した最小構成です。旧構成は `zsh.legacy/
 2. `zsh/.zshenv` が XDG、mise、PATH、history、`.env.local` を初期化する。
 3. login shell では `zsh/.zprofile` が locale/editor と PATH 正規化を行う。
 4. interactive shell では `zsh/.zshrc` が以下を順に読む。
-   - `lib/path.zsh`
-   - `lib/options.zsh`
-   - `lib/history.zsh`
-   - `lib/tool-completions.zsh`
-   - `lib/completion.zsh`
-   - `lib/ni.zsh`
-   - `lib/gh.zsh`
-   - `lib/history-search.zsh`
-   - `lib/fzf.zsh`
-   - `lib/fzf-tab.zsh`
-   - `lib/git-widgets.zsh`
-   - `lib/autosuggestions.zsh`
-   - `lib/atuin.zsh`
-   - `lib/zoxide.zsh`
-   - `lib/wsl.zsh`
-   - `lib/plugins.zsh`
-   - `lib/prompt.zsh`
-   - `lib/syntax-highlighting.zsh`
+   - Core shell state: `lib/path.zsh`, `lib/options.zsh`, `lib/history.zsh`
+   - Completion setup: `lib/tool-completions.zsh`, `lib/completion.zsh`, `lib/ni.zsh`, `lib/gh.zsh`
+   - Key bindings and widgets: `lib/history-search.zsh`, `lib/fzf.zsh`, `lib/fzf-tab.zsh`, `lib/git-widgets.zsh`
+   - Interactive input integrations: `lib/abbr.zsh`, `lib/atuin.zsh`, `lib/zoxide.zsh`, `lib/autosuggestions.zsh`
+   - Platform-specific setup: `lib/wsl.zsh`
+   - Prompt and final ZLE decorators: `lib/prompt.zsh`, `lib/syntax-highlighting.zsh`
 
 ## ディレクトリ
 
@@ -65,19 +53,19 @@ zsh/
 │   └── zsh-sheldon-refresh
 ├── completions/
 ├── lib/
-│   ├── completion.zsh
-│   ├── history.zsh
-│   ├── history-search.zsh
+│   ├── abbr.zsh
 │   ├── atuin.zsh
 │   ├── autosuggestions.zsh
-│   ├── fzf.zsh
+│   ├── completion.zsh
 │   ├── fzf-tab.zsh
-│   ├── git-widgets.zsh
+│   ├── fzf.zsh
 │   ├── gh.zsh
+│   ├── git-widgets.zsh
+│   ├── history.zsh
+│   ├── history-search.zsh
 │   ├── ni.zsh
 │   ├── options.zsh
 │   ├── path.zsh
-│   ├── plugins.zsh
 │   ├── prompt.zsh
 │   ├── syntax-highlighting.zsh
 │   ├── tool-completions.zsh
@@ -89,7 +77,7 @@ zsh/
 
 ## Sheldon / abbr
 
-現行の Sheldon plugin は `zsh-abbr`、補完 repo 取得用の `ni-completion`、`eza`、`bun`、Git widget 用の `fzf-git`、補完 UI 用の `fzf-tab`、入力候補用の `zsh-autosuggestions`、syntax highlight 用の `fast-syntax-highlighting` です。Sheldon cache が source するのは `zsh-abbr` だけで、補完 file、`fzf-git`、`fzf-tab`、`zsh-autosuggestions`、`fast-syntax-highlighting` は `lib/` 側から必要なものを直接読みます。Sheldon cache 自体は通常起動では同期ロードせず、実ターミナルでは最初の ZLE line init で読みます。
+現行の Sheldon plugin は `zsh-abbr`、補完 repo 取得用の `ni-completion`、`eza`、`bun`、Git widget 用の `fzf-git`、補完 UI 用の `fzf-tab`、入力候補用の `zsh-autosuggestions`、syntax highlight 用の `fast-syntax-highlighting` です。Sheldon cache が source するのは `zsh-abbr` だけで、補完 file、`fzf-git`、`fzf-tab`、`zsh-autosuggestions`、`fast-syntax-highlighting` は `lib/` 側から必要なものを直接読みます。Sheldon cache 自体は通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読みます。
 
 ```bash
 zsh-sheldon-refresh

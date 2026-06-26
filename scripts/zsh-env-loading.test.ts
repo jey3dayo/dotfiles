@@ -145,6 +145,102 @@ describe("zsh plugin bootstrap", () => {
     expect(result.stdout).toContain("git status -sb .");
   });
 
+  it("binds advertised fzf keys before loading the fzf integration", () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "zsh-fzf-lazy-bindings-"));
+
+    try {
+      const result = spawnSync(
+        "zsh",
+        [
+          "-lic",
+          ['bindkey "^]"', 'bindkey "^T"', 'bindkey "^[c"', 'bindkey "^gx"', 'bindkey "^g^x"'].join("; "),
+        ],
+        {
+          encoding: "utf8",
+          env: {
+            ...process.env,
+            HOME: os.homedir(),
+            XDG_CACHE_HOME: path.join(tempRoot, "cache"),
+            XDG_CONFIG_HOME: repoRoot,
+            ZDOTDIR: zdotdir,
+            PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+            LOGNAME: os.userInfo().username,
+            USER: os.userInfo().username,
+            SHELL: "/bin/zsh",
+            TERM: "xterm-256color",
+          },
+        },
+      );
+
+      expect(result.status).toBe(0);
+      expect(result.stderr.trim()).toBe("");
+      expect(result.stdout).toContain('"^]" _zsh_fzf_ghq_widget');
+      expect(result.stdout).toContain('"^T" _zsh_fzf_file_widget');
+      expect(result.stdout).toContain('"^[c" _zsh_fzf_cd_widget');
+      expect(result.stdout).toContain('"^Gx" _zsh_fzf_kill_widget');
+      expect(result.stdout).toContain('"^G^X" _zsh_fzf_kill_widget');
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("does not expose generic helper names after startup", () => {
+    const result = spawnSync(
+      "zsh",
+      [
+        "-lic",
+        [
+          "for name in load_atuin load_fzf git_is_repo register_git_widgets setup_path bootstrap_shell_env path_prepend_existing; do",
+          '  (( $+functions[$name] )) && print -r -- "$name";',
+          "done; true",
+        ].join(" "),
+      ],
+      {
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          HOME: os.homedir(),
+          XDG_CONFIG_HOME: repoRoot,
+          ZDOTDIR: zdotdir,
+          PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+          LOGNAME: os.userInfo().username,
+          USER: os.userInfo().username,
+          SHELL: "/bin/zsh",
+          TERM: "xterm-256color",
+        },
+      },
+    );
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+    expect(result.stdout.trim()).toBe("");
+  });
+
+  it("binds Ctrl-R when atuin is explicitly loaded", () => {
+    const result = spawnSync("zsh", ["-lic", 'command -v atuin >/dev/null || exit 0; bindkey "^R"'], {
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        HOME: os.homedir(),
+        XDG_CONFIG_HOME: repoRoot,
+        ZDOTDIR: zdotdir,
+        ZSH_LOAD_ATUIN: "1",
+        PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        LOGNAME: os.userInfo().username,
+        USER: os.userInfo().username,
+        SHELL: "/bin/zsh",
+        TERM: "xterm-256color",
+      },
+    });
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+    if (result.stdout.trim() !== "") {
+      expect(result.stdout).toContain("^R");
+      expect(result.stdout).toContain("atuin");
+    }
+  });
+
   it("loads selected lightweight interactive tools", () => {
     const result = spawnSync(
       "zsh",
@@ -226,16 +322,16 @@ describe("zsh plugin bootstrap", () => {
     expect(result.stdout).toContain("_zsh_autosuggest_start");
     expect(result.stdout).toContain("fast-theme");
     expect(result.stdout).toContain("autosuggest_strategy=history");
-    expect(result.stdout).toContain("dotfiles_fzf_ghq_widget");
+    expect(result.stdout).toContain("_zsh_fzf_ghq_widget");
     expect(result.stdout).toContain("fzf-file-widget");
     expect(result.stdout).toContain("fzf-cd-widget");
     expect(result.stdout).toContain('"^I" fzf-tab-complete');
-    expect(result.stdout).toContain("dotfiles_fzf_kill_widget");
-    expect(result.stdout).toContain("dotfiles_git_menu_widget");
-    expect(result.stdout).toContain("dotfiles_git_status_widget");
-    expect(result.stdout).toContain("dotfiles_git_add_patch_widget");
-    expect(result.stdout).toContain("dotfiles_git_switch_branch_widget");
-    expect(result.stdout).toContain("dotfiles_git_worktree_widget");
+    expect(result.stdout).toContain("_zsh_fzf_kill_widget");
+    expect(result.stdout).toContain("_zsh_git_menu_widget");
+    expect(result.stdout).toContain("_zsh_git_status_widget");
+    expect(result.stdout).toContain("_zsh_git_add_patch_widget");
+    expect(result.stdout).toContain("_zsh_git_switch_branch_widget");
+    expect(result.stdout).toContain("_zsh_git_worktree_widget");
     expect(result.stdout).toContain("fzf-git-stashes-widget");
     expect(result.stdout).toContain("fzf-git-files-widget");
     expect(result.stdout).toContain("fzf-git-?list_bindings-widget");

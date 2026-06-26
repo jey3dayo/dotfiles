@@ -1,7 +1,7 @@
 # shellcheck shell=sh
 # Shared shell environment bootstrap for Bash and Zsh entrypoints.
 
-_dotfiles_bootstrap_xdg_env() {
+_shell_bootstrap_xdg_env() {
   : "${XDG_CONFIG_HOME:=$HOME/.config}"
   : "${XDG_CACHE_HOME:=$HOME/.cache}"
   : "${XDG_DATA_HOME:=$HOME/.local/share}"
@@ -13,21 +13,21 @@ _dotfiles_bootstrap_xdg_env() {
   export ZDOTDIR GIT_CONFIG_GLOBAL
 }
 
-_dotfiles_source_home_manager_session_vars() {
-  if [ -n "${DOTFILES_HM_SESSION_VARS_LOADED:-}" ]; then
+_shell_source_hm_session_vars() {
+  if [ -n "${HM_SESSION_VARS_LOADED:-}" ]; then
     return 0
   fi
 
   if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
     . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-    export DOTFILES_HM_SESSION_VARS_LOADED=1
+    export HM_SESSION_VARS_LOADED=1
   elif [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/home-manager/home-manager.sh" ]; then
     . "${XDG_CONFIG_HOME:-$HOME/.config}/home-manager/home-manager.sh"
-    export DOTFILES_HM_SESSION_VARS_LOADED=1
+    export HM_SESSION_VARS_LOADED=1
   fi
 }
 
-_dotfiles_is_raspberry_pi() (
+_shell_is_raspberry_pi() (
   arch="$(uname -m 2>/dev/null || printf '')"
   case "$arch" in
     aarch64 | armv7l | armv6l) ;;
@@ -52,22 +52,22 @@ _dotfiles_is_raspberry_pi() (
   esac
 )
 
-_dotfiles_detect_mise_environment() {
+_shell_detect_mise_environment() {
   if [ -n "${CI:-}" ] || [ -n "${GITHUB_ACTIONS:-}" ]; then
     printf '%s\n' "ci"
-  elif _dotfiles_is_raspberry_pi; then
+  elif _shell_is_raspberry_pi; then
     printf '%s\n' "pi"
   else
     printf '%s\n' "default"
   fi
 }
 
-_dotfiles_bootstrap_mise_env() {
+_shell_bootstrap_mise_env() {
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   export MISE_DATA_DIR MISE_CACHE_DIR
 
-  _dotfiles_source_home_manager_session_vars
+  _shell_source_hm_session_vars
 
   case "${MISE_CONFIG_FILE:-}" in
     /tmp/hm-verify/*)
@@ -80,13 +80,13 @@ _dotfiles_bootstrap_mise_env() {
   esac
 
   if [ -z "${MISE_CONFIG_FILE:-}" ]; then
-    environment="$(_dotfiles_detect_mise_environment)"
+    environment="$(_shell_detect_mise_environment)"
     export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.${environment}.toml"
     unset environment
   fi
 }
 
-_dotfiles_bootstrap_tool_env() {
+_shell_bootstrap_tool_env() {
   : "${GHQ_ROOT:=$HOME/src}"
   : "${RIPGREP_CONFIG_PATH:=$XDG_CONFIG_HOME/.ripgreprc}"
   : "${BUN_INSTALL:=$HOME/.bun}"
@@ -95,29 +95,29 @@ _dotfiles_bootstrap_tool_env() {
   export GHQ_ROOT RIPGREP_CONFIG_PATH BUN_INSTALL PNPM_HOME NI_CONFIG_FILE
 }
 
-_dotfiles_path_prepend_existing() {
-  _dotfiles_path_prefix=""
-  for _dotfiles_path_dir; do
-    [ -n "$_dotfiles_path_dir" ] && [ -d "$_dotfiles_path_dir" ] || continue
+_shell_path_prepend_existing() {
+  path_prefix=""
+  for path_dir; do
+    [ -n "$path_dir" ] && [ -d "$path_dir" ] || continue
     case ":$PATH:" in
-      *":$_dotfiles_path_dir:"*) continue ;;
+      *":$path_dir:"*) continue ;;
     esac
-    case ":$_dotfiles_path_prefix:" in
-      *":$_dotfiles_path_dir:"*) continue ;;
+    case ":$path_prefix:" in
+      *":$path_dir:"*) continue ;;
     esac
-    _dotfiles_path_prefix="${_dotfiles_path_prefix}${_dotfiles_path_prefix:+:}$_dotfiles_path_dir"
+    path_prefix="${path_prefix}${path_prefix:+:}$path_dir"
   done
 
-  if [ -n "$_dotfiles_path_prefix" ]; then
-    PATH="${_dotfiles_path_prefix}${PATH:+:$PATH}"
+  if [ -n "$path_prefix" ]; then
+    PATH="${path_prefix}${PATH:+:$PATH}"
     export PATH
   fi
 
-  unset _dotfiles_path_dir _dotfiles_path_prefix
+  unset path_dir path_prefix
 }
 
-_dotfiles_bootstrap_shell_env() {
-  _dotfiles_bootstrap_xdg_env
-  _dotfiles_bootstrap_mise_env
-  _dotfiles_bootstrap_tool_env
+_shell_bootstrap_env() {
+  _shell_bootstrap_xdg_env
+  _shell_bootstrap_mise_env
+  _shell_bootstrap_tool_env
 }
