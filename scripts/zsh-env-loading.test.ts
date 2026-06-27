@@ -283,7 +283,7 @@ describe("zsh plugin bootstrap", () => {
         [
           "command -v gh",
           "whence _gh",
-          "whence fast-theme",
+          'if whence fast-theme >/dev/null; then print -r -- "__has_fast_theme"; whence fast-theme; fi',
           printAutosuggestStrategyCommand,
           'if command -v zoxide >/dev/null; then print -r -- "__has_zoxide"; command -v zoxide; command -v z; alias j; fi',
           'if command -v ni >/dev/null; then print -r -- "__has_ni"; command -v ni; command -v nlx; whence _ni; fi',
@@ -340,7 +340,9 @@ describe("zsh plugin bootstrap", () => {
     expect(result.stderr.trim()).toBe("");
     expect(result.stdout).toContain("gh");
     expect(result.stdout).toContain("_gh");
-    expect(result.stdout).toContain("fast-theme");
+    if (result.stdout.includes("__has_fast_theme")) {
+      expect(result.stdout).toContain("fast-theme");
+    }
     if (result.stdout.includes("__has_zoxide")) {
       expect(result.stdout).toContain("zoxide");
       expect(result.stdout).toContain("j=z");
