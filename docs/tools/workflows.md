@@ -85,7 +85,7 @@ pre-commit install     # 初回のみ
 ```bash
 mise use -g pipx:pre-commit
 cd ~/.config
-pre-commit install
+pre-commit install --hook-type pre-commit --hook-type pre-push
 pre-commit run --all-files
 ```
 
@@ -93,6 +93,7 @@ pre-commit run --all-files
 
 ```bash
 git commit -m "..."                          # staged ファイルのみ自動チェック
+git push                                      # ci:quick + 変更ファイルに応じた追加テスト
 pre-commit run --all-files                   # 手動・全ファイル
 pre-commit run stylua --all-files            # 特定フックのみ
 pre-commit run --hook-stage manual markdown-link-check --all-files
@@ -105,7 +106,15 @@ pre-commit run --hook-stage manual markdown-link-check --all-files
 #### 理由
 
 - pre-commit: 変更ファイルのみ高速チェック（commit 時自動実行）
+- pre-push: `mise run ci:quick` と変更ファイルに応じた追加テスト
 - mise tasks: 全ファイル一括処理（手動/CI 実行）
+
+#### pre-push の追加テスト
+
+`pre-push` hook は `mise run pre-push` を実行します。まず `mise run ci:quick` で format / lint を検証し、その後、未 push commit と未 commit 差分のファイル名に応じて追加テストを実行します。
+
+- `scripts/*`, `zsh/*`, `mise/lib/*`, `mise/tasks/*`, `.mise.toml`: `mise run test:ts`
+- `*.lua`, `spec/*`, `nvim/spec/*`, `nvim/lua/*`: `mise run test:lua`
 
 #### 統合済みツール一覧
 

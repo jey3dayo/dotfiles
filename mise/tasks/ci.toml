@@ -116,6 +116,10 @@ fi
 """
 run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-wsl-task.ps1 -TaskName ci:quick"
 
+["pre-push"]
+description = "push 前チェック（ci:quick + 変更ファイルに応じた追加テスト）"
+run = "sh ./mise/lib/pre-push-check.sh"
+
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
 run = """

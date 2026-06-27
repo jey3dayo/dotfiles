@@ -5,6 +5,7 @@
 
 # Global exclude patterns (aligned with mise TASK_EXCLUDES)
 exclude: '^(\.worktrees/|\.claude/worktrees/|result/|result-.*|\.luarocks/)'
+default_stages: [pre-commit]
 
 repos:
   - repo: local
@@ -161,6 +162,14 @@ repos:
         types: [markdown]
         pass_filenames: true
         stages: [manual]
+
+      - id: pre-push-check
+        name: Run push-time quick CI and targeted tests
+        entry: mise run pre-push
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
 
   # Security scanning
   - repo: https://github.com/gitleaks/gitleaks
