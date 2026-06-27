@@ -20,11 +20,15 @@ unfunction add_fpath 2>/dev/null
 zmodload -i zsh/complist
 autoload -Uz compinit
 
-if [[ -r "$ZSH_COMPDUMP" ]]; then
-  compinit -C -d "$ZSH_COMPDUMP"
-else
-  compinit -d "$ZSH_COMPDUMP"
+compinit_args=(-d "$ZSH_COMPDUMP")
+if [[ ! -t 0 || ! -t 1 ]]; then
+  compinit_args=(-i "${compinit_args[@]}")
 fi
+if [[ -r "$ZSH_COMPDUMP" ]]; then
+  compinit_args=(-C "${compinit_args[@]}")
+fi
+compinit "${compinit_args[@]}"
+unset compinit_args
 
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
