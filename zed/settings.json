@@ -9,6 +9,12 @@
     "dock": "right"
   },
   "agent": {
+    "default_model": {
+      "provider": "openai-subscribed",
+      "model": "gpt-5.5",
+      "enable_thinking": true,
+      "effort": "medium"
+    },
     "dock": "left",
     "favorite_models": [],
     "model_parameters": []
