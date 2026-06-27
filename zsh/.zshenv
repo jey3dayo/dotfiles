@@ -2,6 +2,11 @@ if [[ -n "${ZSH_PROFILE_STARTUP:-}" ]]; then
   zmodload zsh/zprof 2>/dev/null || true
 fi
 
+# Debian/Ubuntu global zshrc may run compinit before this repo's zshrc.
+# Keep completion initialization in zsh/lib/completion.zsh so CI/no-TTY
+# startup can use the repo-managed compinit flags.
+skip_global_compinit=1
+
 if [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh" ]]; then
   source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh"
   _shell_bootstrap_env
