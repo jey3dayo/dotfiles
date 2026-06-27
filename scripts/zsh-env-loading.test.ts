@@ -241,6 +241,34 @@ describe("zsh plugin bootstrap", () => {
     }
   });
 
+  it("keeps zoxide lazy z and j commands available after first use", () => {
+    const result = spawnSync(
+      "zsh",
+      ["-lic", "command -v zoxide >/dev/null || exit 0; z . >/dev/null; z . >/dev/null; j . >/dev/null; whence -w z; whence -w j"],
+      {
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          HOME: os.homedir(),
+          XDG_CONFIG_HOME: repoRoot,
+          ZDOTDIR: zdotdir,
+          PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+          LOGNAME: os.userInfo().username,
+          USER: os.userInfo().username,
+          SHELL: "/bin/zsh",
+          TERM: "xterm-256color",
+        },
+      },
+    );
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+    if (result.stdout.trim() !== "") {
+      expect(result.stdout).toContain("z:");
+      expect(result.stdout).toContain("j:");
+    }
+  });
+
   it("loads selected lightweight interactive tools", () => {
     const result = spawnSync(
       "zsh",

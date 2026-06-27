@@ -10,14 +10,17 @@ _zsh_load_atuin() {
 if [[ -n "${ZSH_LOAD_ATUIN:-}" ]]; then
   _zsh_load_atuin
 elif [[ -o interactive ]]; then
-  autoload -Uz add-zsh-hook
-
-  _zsh_load_atuin_once() {
-    add-zsh-hook -d precmd _zsh_load_atuin_once 2>/dev/null
+  _zsh_atuin_search_widget() {
     _zsh_load_atuin
+    if (( $+widgets[atuin-search] )); then
+      zle atuin-search
+    else
+      zle reset-prompt
+    fi
   }
 
-  add-zsh-hook precmd _zsh_load_atuin_once
+  zle -N _zsh_atuin_search_widget
+  bindkey '^R' _zsh_atuin_search_widget
 fi
 
 # vim: set syntax=zsh:

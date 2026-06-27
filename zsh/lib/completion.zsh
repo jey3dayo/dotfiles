@@ -1,11 +1,21 @@
 export ZSH_COMPDUMP="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompdump"
 mkdir -p "${ZSH_COMPDUMP:h}"
 
+add_fpath() {
+  local dir="$1"
+  [[ -n "$dir" && -d "$dir" ]] || return 0
+  fpath=("$dir" "${fpath[@]}")
+}
+
 fpath=(
   "${ZDOTDIR:-$HOME/.config/zsh}/completions"
   /opt/homebrew/share/zsh/site-functions
   "${fpath[@]}"
 )
+
+add_fpath "${XDG_DATA_HOME:-$HOME/.local/share}/sheldon/repos/github.com/eza-community/eza/completions/zsh"
+add_fpath "$HOME/.bun"
+unfunction add_fpath 2>/dev/null
 
 zmodload -i zsh/complist
 autoload -Uz compinit

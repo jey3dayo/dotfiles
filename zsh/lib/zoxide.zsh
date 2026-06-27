@@ -12,14 +12,22 @@ _zsh_load_zoxide() {
 if [[ -n "${ZSH_LOAD_ZOXIDE:-}" ]]; then
   _zsh_load_zoxide
 elif [[ -o interactive ]]; then
-  autoload -Uz add-zsh-hook
-
-  _zsh_load_zoxide_once() {
-    add-zsh-hook -d precmd _zsh_load_zoxide_once 2>/dev/null
+  _zsh_zoxide_cd() {
     _zsh_load_zoxide
+    if (( $+functions[__zoxide_z] )); then
+      __zoxide_z "$@"
+    else
+      builtin cd "$@"
+    fi
   }
 
-  add-zsh-hook precmd _zsh_load_zoxide_once
+  z() {
+    _zsh_zoxide_cd "$@"
+  }
+
+  j() {
+    _zsh_zoxide_cd "$@"
+  }
 fi
 
 # vim: set syntax=zsh:

@@ -12,13 +12,11 @@ source_zsh_lib options.zsh
 source_zsh_lib history.zsh
 
 # Completion setup
-source_zsh_lib tool-completions.zsh
 source_zsh_lib completion.zsh
 source_zsh_lib ni.zsh
-source_zsh_lib gh.zsh
+source_zsh_lib gh-completion.zsh
 
 # Key bindings and widgets
-source_zsh_lib history-search.zsh
 source_zsh_lib fzf.zsh
 source_zsh_lib fzf-tab.zsh
 source_zsh_lib git-widgets.zsh
