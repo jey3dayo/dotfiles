@@ -151,10 +151,7 @@ describe("zsh plugin bootstrap", () => {
     try {
       const result = spawnSync(
         "zsh",
-        [
-          "-lic",
-          ['bindkey "^]"', 'bindkey "^T"', 'bindkey "^[c"', 'bindkey "^gx"', 'bindkey "^g^x"'].join("; "),
-        ],
+        ["-lic", ['bindkey "^]"', 'bindkey "^T"', 'bindkey "^[c"', 'bindkey "^gx"', 'bindkey "^g^x"'].join("; ")],
         {
           encoding: "utf8",
           env: {
@@ -244,7 +241,10 @@ describe("zsh plugin bootstrap", () => {
   it("keeps zoxide lazy z and j commands available after first use", () => {
     const result = spawnSync(
       "zsh",
-      ["-lic", "command -v zoxide >/dev/null || exit 0; z . >/dev/null; z . >/dev/null; j . >/dev/null; whence -w z; whence -w j"],
+      [
+        "-lic",
+        "command -v zoxide >/dev/null || exit 0; z . >/dev/null; z . >/dev/null; j . >/dev/null; whence -w z; whence -w j",
+      ],
       {
         encoding: "utf8",
         env: {

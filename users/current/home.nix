@@ -115,82 +115,86 @@ in
 
   };
 
-  launchd.agents.codex-gui-path = {
-    enable = pkgs.stdenv.hostPlatform.isDarwin;
-    config = {
-      ProgramArguments = [
-        "/bin/sh"
-        "-lc"
-        "launchctl setenv PATH '${guiPath}'"
-      ];
-      RunAtLoad = true;
-      StandardOutPath = "${homeDirectory}/Library/Logs/codex-gui-path.log";
-      StandardErrorPath = "${homeDirectory}/Library/Logs/codex-gui-path.log";
-    };
-  };
+  launchd = {
+    agents = {
+      codex-gui-path = {
+        enable = pkgs.stdenv.hostPlatform.isDarwin;
+        config = {
+          ProgramArguments = [
+            "/bin/sh"
+            "-lc"
+            "launchctl setenv PATH '${guiPath}'"
+          ];
+          RunAtLoad = true;
+          StandardOutPath = "${homeDirectory}/Library/Logs/codex-gui-path.log";
+          StandardErrorPath = "${homeDirectory}/Library/Logs/codex-gui-path.log";
+        };
+      };
 
-  launchd.agents.codex-gui-env = {
-    enable = pkgs.stdenv.hostPlatform.isDarwin;
-    config = {
-      ProgramArguments = [
-        "/bin/sh"
-        "-lc"
-        ''
-          export PATH='${guiPath}'
-          "${homeDirectory}/.config/scripts/setup-env.sh"
+      codex-gui-env = {
+        enable = pkgs.stdenv.hostPlatform.isDarwin;
+        config = {
+          ProgramArguments = [
+            "/bin/sh"
+            "-lc"
+            ''
+              export PATH='${guiPath}'
+              "${homeDirectory}/.config/scripts/setup-env.sh"
 
-          env_local="${homeDirectory}/.config/.env.local"
-          if [ ! -f "$env_local" ]; then
-            echo "Missing env file: $env_local" >&2
-            exit 1
-          fi
+              env_local="${homeDirectory}/.config/.env.local"
+              if [ ! -f "$env_local" ]; then
+                echo "Missing env file: $env_local" >&2
+                exit 1
+              fi
 
-          set -a
-          . "$env_local"
-          set +a
+              set -a
+              . "$env_local"
+              set +a
 
-          if [ -n "''${JINA_API_KEY:-}" ]; then
-            launchctl setenv JINA_API_KEY "$JINA_API_KEY"
-            echo "Set GUI environment variable: JINA_API_KEY"
-          else
-            echo "Skipped empty GUI environment variable: JINA_API_KEY"
-          fi
-        ''
-      ];
-      RunAtLoad = true;
-      StandardOutPath = "${homeDirectory}/Library/Logs/codex-gui-env.log";
-      StandardErrorPath = "${homeDirectory}/Library/Logs/codex-gui-env.log";
-    };
-  };
+              if [ -n "''${JINA_API_KEY:-}" ]; then
+                launchctl setenv JINA_API_KEY "$JINA_API_KEY"
+                echo "Set GUI environment variable: JINA_API_KEY"
+              else
+                echo "Skipped empty GUI environment variable: JINA_API_KEY"
+              fi
+            ''
+          ];
+          RunAtLoad = true;
+          StandardOutPath = "${homeDirectory}/Library/Logs/codex-gui-env.log";
+          StandardErrorPath = "${homeDirectory}/Library/Logs/codex-gui-env.log";
+        };
+      };
 
-  launchd.agents.headroom-proxy = {
-    enable = pkgs.stdenv.hostPlatform.isDarwin;
-    config = {
-      ProgramArguments = [
-        "/bin/sh"
-        "-lc"
-        ''
-          ${pkgs.coreutils}/bin/mkdir -p "${homeDirectory}/.headroom/logs"
-          if [ ! -x "${headroomBin}" ]; then
-            echo "Headroom service binary is missing: ${headroomBin}" >&2
-            exit 78
-          fi
-          export PATH='${servicePath}'
-          exec "${headroomBin}" proxy \
-            --host 127.0.0.1 \
-            --port 8787 \
-            --mode cache \
-            --no-learn \
-            --no-memory-tools \
-            --no-telemetry \
-            --log-file "${homeDirectory}/.headroom/logs/proxy.jsonl"
-        ''
-      ];
-      RunAtLoad = true;
-      KeepAlive = true;
-      ThrottleInterval = 10;
-      StandardOutPath = "${homeDirectory}/.headroom/logs/proxy.stdout.log";
-      StandardErrorPath = "${homeDirectory}/.headroom/logs/proxy.stderr.log";
+      headroom-proxy = {
+        enable = pkgs.stdenv.hostPlatform.isDarwin;
+        config = {
+          ProgramArguments = [
+            "/bin/sh"
+            "-lc"
+            ''
+              ${pkgs.coreutils}/bin/mkdir -p "${homeDirectory}/.headroom/logs"
+              if [ ! -x "${headroomBin}" ]; then
+                echo "Headroom service binary is missing: ${headroomBin}" >&2
+                exit 78
+              fi
+              export PATH='${servicePath}'
+              exec "${headroomBin}" proxy \
+                --host 127.0.0.1 \
+                --port 8787 \
+                --mode cache \
+                --no-learn \
+                --no-memory-tools \
+                --no-telemetry \
+                --log-file "${homeDirectory}/.headroom/logs/proxy.jsonl"
+            ''
+          ];
+          RunAtLoad = true;
+          KeepAlive = true;
+          ThrottleInterval = 10;
+          StandardOutPath = "${homeDirectory}/.headroom/logs/proxy.stdout.log";
+          StandardErrorPath = "${homeDirectory}/.headroom/logs/proxy.stderr.log";
+        };
+      };
     };
   };
 }
