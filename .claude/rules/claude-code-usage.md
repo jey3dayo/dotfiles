@@ -22,7 +22,7 @@ Sources: AGENTS.md, CLAUDE.md, .claude/README.md.
 ## Local CI via Claude
 
 - Primary entrypoints: `./.claude/commands/ci-local.sh` or `mise run ci` to mirror GitHub Actions.
-- Individual tasks: `mise run format:biome:check`, `format:markdown:check`, `format:yaml:check`, `lint:lua`, `format:lua:check`, `format:shell:check`.
+- Individual tasks: `mise run format:biome:check`, `mise run format:markdown:check`, `mise run format:yaml:check`, `mise run lint:lua`, `mise run format:lua:check`, `mise run format:shell:check`.
 
 ## Response posture for Claude Code
 
