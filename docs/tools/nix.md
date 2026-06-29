@@ -59,6 +59,15 @@ flake inputs`"]
 - 静的ファイル → `~/` 直下に symlink 配布
 - legacy distribution bundle + 外部スキル → `/nix/store` にバンドル → 各ツールの `skills/` に per-skill symlink
 
+### GitHub rate limit 対策
+
+ローカルの Nix 実行では、永続的な GitHub Personal Access Token を `nix/access-tokens.conf` に保存しない。
+`mise run hm:*` と `mise run nix:*` は、実行前に `gh auth token` が使える場合だけ `NIX_CONFIG` へ `access-tokens = github.com=...` を注入する。
+
+- 既に `NIX_CONFIG` に `access-tokens` がある場合は、既存設定を優先する
+- 一時的に無効化する場合は `NIX_GITHUB_TOKEN=0 mise run ...` を使う
+- `gh` が未ログイン、または token を取得できない場合は token なしで実行する
+
 ### スキル優先度
 
 | 優先度 | ソース       | パス                      |

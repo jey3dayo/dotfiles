@@ -68,6 +68,7 @@ fi
 
 . "./mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
+configure_nix_github_token
 
 nix flake check
 """
@@ -82,6 +83,7 @@ fi
 
 . "./mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
+configure_nix_github_token
 
 nix build .#default
 """
@@ -96,6 +98,7 @@ fi
 
 . "./mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
+configure_nix_github_token
 
 nix build --no-link --impure .#darwinConfigurations.CA-20031129.system
 """
