@@ -1,4 +1,5 @@
 {
+  "enable_language_server": true,
   "project_panel": {
     "dock": "right"
   },
