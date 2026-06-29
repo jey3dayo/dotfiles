@@ -1,6 +1,6 @@
 # Workflows & Maintenance Reference
 
-最終更新: 2026-03-13
+最終更新: 2026-06-29
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -26,6 +26,18 @@ mise run check        # format + lint（luacheck 含む）
 mise run lint:lua     # luacheck のみ
 mise run format:lua   # stylua でフォーマット
 ```
+
+### 変更タイプ別の追加確認
+
+通常の最終確認は `mise run ci` を基準にします。以下の領域を触った場合は、対象固有の確認も追加します。
+
+| 変更領域            | 追加確認                                                                                           | 理由                                        |
+| ------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| zsh startup         | `zsh-benchmark --runs 8 --mode interactive` と必要に応じて `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'` | 同期初期化の再発を数値で見る                |
+| dotenvx / `.env`    | `scripts/setup-env.sh` の構文確認、key-set comparison、`mise run ci:gitleaks`                      | plaintext cache と secret scan を分けて見る |
+| launchd / GUI env   | `launchctl getenv <KEY>` で allowlist された key だけを確認                                        | shell ではなく GUI runtime の状態を見る     |
+| Home Manager / Nix  | `mise run hm:check` または `nix flake check`                                                       | 適用前に build 可能性を確認する             |
+| APM / global skills | `cd ~/.apm && mise run validate:catalog && mise run doctor`                                        | `.config` ではなく APM workspace が正本     |
 
 ### Lua Type Checking and Error Handling
 

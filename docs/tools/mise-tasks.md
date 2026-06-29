@@ -1,6 +1,6 @@
 # Mise Task Catalog
 
-最終更新: 2026-04-19
+最終更新: 2026-06-29
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -8,6 +8,19 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 親ドキュメント: [Mise Reference](mise.md)
 
 全タスク一覧（`mise tasks` でも確認可能）。
+
+## 実行影響の分類
+
+通常の確認は「検証のみ」タスクを優先し、状態変更を伴うタスクは目的と対象を確認してから実行します。
+
+| 分類             | 意味                                           | 代表タスク                                               | 実行前確認                                  |
+| ---------------- | ---------------------------------------------- | -------------------------------------------------------- | ------------------------------------------- |
+| 検証のみ         | ファイル・システム状態を書き換えない           | `ci`, `ci:quick`, `check`, `hm:check`                    | 通常の品質確認として実行可                  |
+| 作業ツリー変更   | フォーマットなどで repo 内ファイルを書き換える | `format`, `format:*`, `brewfile:backup`                  | 差分が対象範囲内か確認する                  |
+| ローカル状態変更 | Home Manager、mise、Homebrew などを変更する    | `ci:full`, `hm:deploy`, `hm:switch`, `setup`             | 現在の machine state と rollback 手順を確認 |
+| 外部取得・更新   | ネットワーク取得や外部 checkout を更新する     | `update`, `update:brew`, `update:submodules`             | 取得元と更新対象を確認する                  |
+| 強制更新         | 外部 repo を reset するなど破壊的になり得る    | `update:external-repos`, `hm:clean`                      | ユーザー確認なしで実行しない                |
+| secret 関連      | 暗号化 env や secret scan に触れる             | `env:encrypt`, `env:decrypt`, `setup-env`, `ci:gitleaks` | source of truth と展開先を確認する          |
 
 ### CI / 検証
 
@@ -47,7 +60,8 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 | `format:docs`                   | ドキュメント完全検証とフォーマット               |
 | `format:markdown:bold-headings` | 太字見出しを `###` へ変換                        |
 
-上記各タスクに対応する `:check` バリアント（書き込みなし）あり（例: `format:biome:check`）。
+書き込みなしのチェックは `:check` バリアントを使う（例: `format:biome:check`, `format:markdown:check`）。
+Markdown のタスク名は `markdown` を使い、`format:md:check` は定義していない。
 
 ### Lint
 
@@ -150,3 +164,14 @@ APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise
 | -------- | ------------------------------------------------ |
 | `setup`  | 初回セットアップ（mise install + 依存確認）      |
 | `doctor` | 環境診断（mise doctor + インストール済みツール） |
+
+### APM / global skill 変更時の確認
+
+`.config` 側は APM の入口を示すだけで、global skill / agent / command の日常運用は `~/.apm` が正本です。
+APM 配布に関わる変更をした場合は、`.config` の `mise run ci` だけで完了扱いにせず、必要に応じて以下を `~/.apm` 側で確認します。
+
+```bash
+cd ~/.apm
+mise run validate:catalog
+mise run doctor
+```

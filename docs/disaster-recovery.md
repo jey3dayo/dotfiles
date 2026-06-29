@@ -1,6 +1,6 @@
 # Home Manager ディザスタリカバリガイド
 
-最終更新: 2026-03-23
+最終更新: 2026-06-29
 対象: Nix dotfiles 管理者
 タグ: `category/infra`, `tool/home-manager`, `tool/nix`, `layer/system`, `environment/macos`, `audience/developer`
 
@@ -195,6 +195,31 @@ rm -rf ~/.config.backup-*
 - すべてのNixパッケージが再ダウンロードされる（数GB）
 - Home Manager generationsがすべて失われる
 - 復旧に30分〜1時間かかる可能性
+
+### 実行前チェック
+
+以下を確認し、シナリオA/Bや個別修復で戻せない場合だけ進めます。
+
+```bash
+nix --version
+nix-store --verify --check-contents
+home-manager generations | head -10
+nix flake metadata ~/.config
+df -h /nix /nix/store
+```
+
+進めてよい目安:
+
+- `nix-*` コマンドが一貫して失敗し、Nix daemon 再起動や Home Manager generation rollback で戻らない
+- `/nix/store` の検証で store 破損が再現し、対象 path の再取得では解消しない
+- 最新世代だけでなく、複数の Home Manager generation が同じ理由で適用できない
+
+進めないケース:
+
+- `home-manager switch --generation <number>` で戻せる
+- `flake.lock` の不整合だけが原因で、`nix flake metadata` や `nix flake check` のエラーに限定される
+- shell startup や PATH の問題で `nix` が見つからないだけ
+- ネットワーク障害や GitHub 到達性の問題で fetch に失敗しているだけ
 
 ### 手順
 
