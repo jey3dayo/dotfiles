@@ -1,6 +1,21 @@
+---
+type: policy
+title: Documentation Governance
+description: dotfiles repo のドキュメント配置、metadata、SSOT 境界を定義する正本
+resource: docs/documentation.md
+tags:
+  - category/documentation
+  - layer/support
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-06-29
+audience: developer
+owner: dotfiles
+---
+
 # Documentation Governance
 
-最終更新: 2026-04-20
+最終更新: 2026-06-29
 対象: 開発者
 タグ: `category/documentation`, `layer/support`, `environment/cross-platform`, `audience/developer`
 
@@ -35,18 +50,63 @@
 
 ## メタデータ規約
 
-`docs/**/*.md` は先頭に次を持ちます。
+新規または大きく更新する `docs/**/*.md` は、OKF（Open Knowledge Format）互換の YAML frontmatter を canonical metadata として使います。
+
+```yaml
+---
+type: reference
+title: Documentation Governance
+description: この文書の目的を1文で書く
+resource: docs/documentation.md
+tags:
+  - category/documentation
+  - layer/support
+timestamp: 2026-06-29
+audience: developer
+owner: dotfiles
+---
+```
+
+必須:
+
+- `type`
+
+推奨:
+
+- `title`
+- `description`
+- `resource`
+- `tags`
+- `timestamp`
+- `audience`
+- `owner`
+
+OKF 互換 metadata の扱い:
+
+- `timestamp` は従来の `最終更新` と同じ意味で扱う
+- `tags` は従来の `タグ` と同じ意味で扱う
+- `tags` には少なくとも `category/` と `layer/` を 1 つずつ含める
+- `resource` は原則として repo ルートからの相対パスにする
+- `type` は文書の役割に応じて `reference`, `guide`, `runbook`, `index`, `policy` などの短い英小文字を使う
+
+既存 docs の互換ルール:
+
+`docs/**/*.md` は移行が完了するまで、先頭付近の legacy metadata block も有効です。
 
 - `最終更新`
 - `対象`
 - `タグ`
 
-ルール:
+legacy metadata のルール:
 
 - 日付形式は `YYYY-MM-DD`
 - タグはバッククォートで囲み、カンマ区切り
 - 少なくとも `category/` と `layer/` を 1 つずつ含める
 - 必要に応じて `environment/`, `audience/`, `tool/` を追加する
+
+frontmatter と legacy metadata の両方がある場合は、frontmatter を正本とし、値が矛盾する場合だけ修正対象にします。
+
+`docs/README.md` のようなナビゲーション文書は `type: index` として扱い、詳細手順を増やさずリンクの入口性を保ちます。
 
 タグ語彙の参考は [`.claude/doc-standards/references/tag-taxonomy.md`](../.claude/doc-standards/references/tag-taxonomy.md) を使います。
 

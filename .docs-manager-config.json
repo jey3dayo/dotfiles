@@ -1,0 +1,36 @@
+{
+  "docs_root": "./docs",
+  "project_type": "dotfiles",
+  "metadata_profile": "okf",
+  "required_tags": ["category/", "layer/"],
+  "optional_tags": ["environment/", "audience/", "tool/"],
+  "tag_separator": ", ",
+  "size_limits": {
+    "ideal": 300,
+    "acceptable": 500,
+    "warning": 1000,
+    "maximum": 2000
+  },
+  "metadata_format": {
+    "frontmatter": true,
+    "required_fields": ["type"],
+    "recommended_fields": ["title", "description", "resource", "tags", "timestamp", "audience", "owner"],
+    "date_field": "timestamp",
+    "date_format": "YYYY-MM-DD",
+    "audience_field": "audience",
+    "tags_field": "tags"
+  },
+  "link_validation": {
+    "enabled": true,
+    "config_file": ".markdown-link-check.json"
+  },
+  "custom_rules": {
+    "required_files": [
+      "docs/README.md",
+      "docs/documentation.md",
+      "docs/setup.md",
+      "docs/security.md",
+      "docs/tools/workflows.md"
+    ]
+  }
+}

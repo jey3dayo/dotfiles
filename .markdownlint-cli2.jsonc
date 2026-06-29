@@ -3,12 +3,16 @@
   // Optimized for technical documentation with Japanese content
   "config": {
     "default": true,
+    // YAML frontmatter - required for OKF-compatible documentation metadata
+    "front_matter": "^---\\s*$[\\s\\S]*?^---\\s*$",
     // Heading increment - disabled for flexible document structure
     "MD001": false,
     // Line length - disabled for code blocks and long links
     "MD013": false,
     // Duplicate headings - disabled for sectioned documents
     "MD024": false,
+    // Single top-level heading - disabled because OKF frontmatter title coexists with body H1
+    "MD025": false,
     // Code block language specification - disabled for simple blocks
     "MD040": false,
     // First line as header - allow for more flexible document structure

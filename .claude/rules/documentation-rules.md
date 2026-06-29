@@ -11,9 +11,13 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 
 ## Metadata
 
-- All Markdown docs under `docs/` (`docs/**/*.md`) must include `最終更新`, `対象`, `タグ`
-- Date format: `YYYY-MM-DD`
+- New or substantially updated `docs/**/*.md` should use OKF-compatible YAML frontmatter as canonical metadata
+- Required OKF field: `type`
+- Recommended OKF fields: `title`, `description`, `resource`, `tags`, `timestamp`, `audience`, `owner`
+- Existing `最終更新`, `対象`, `タグ` blocks remain valid legacy aliases during migration
+- Use `timestamp` / `最終更新` as `YYYY-MM-DD`
 - Use 3-5 tags and include at least one `category/` and one `layer/`
+- If frontmatter and legacy metadata both exist, frontmatter is canonical and conflicts must be fixed
 
 ## SSOT boundaries
 
@@ -46,3 +50,4 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 
 - Use YAML frontmatter with `paths` as a list in rule files
 - Keep brace globs quoted
+- Navigation docs may use `type: index`; keep them link-oriented and avoid detailed procedures
