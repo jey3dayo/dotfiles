@@ -3,6 +3,10 @@
 ############################
 # disable-default-keybinds = false
 
+# 左 Option を Alt として扱う（alt+ctrl+h/l=move_tab、alt+r=resize、alt+enter を効かせる）。
+# 右 Option は文字合成（~ 等）用に温存する。
+macos-option-as-alt = left
+
 ############################
 # Keyboard Protocol
 ############################
