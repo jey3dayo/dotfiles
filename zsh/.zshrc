@@ -15,6 +15,7 @@ source_zsh_lib history.zsh
 source_zsh_lib completion.zsh
 source_zsh_lib ni.zsh
 source_zsh_lib gh-completion.zsh
+source_zsh_lib aicommits.zsh
 
 # Key bindings and widgets
 source_zsh_lib fzf.zsh

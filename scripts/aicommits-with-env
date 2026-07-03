@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+env_local="${config_home}/.env.local"
+template_config="${AICOMMITS_CONFIG_TEMPLATE:-${config_home}/.aicommits}"
+git_config_global="${GIT_CONFIG_GLOBAL:-$HOME/.gitconfig}"
+
+if [ -z "${OPENAI_API_KEY:-}" ] && [ -r "$env_local" ]; then
+  set -a
+  # shellcheck source=/dev/null
+  . "$env_local"
+  set +a
+fi
+
+if [ -z "${OPENAI_API_KEY:-}" ]; then
+  printf '%s\n' "aicommits-with-env: OPENAI_API_KEY is required" >&2
+  exit 1
+fi
+
+real_aicommits="${AICOMMITS_BIN:-}"
+if [ -z "$real_aicommits" ]; then
+  real_aicommits="$(mise which aicommits 2>/dev/null || true)"
+fi
+if [ -z "$real_aicommits" ]; then
+  real_aicommits="$(command -v aicommits 2>/dev/null || true)"
+fi
+if [ -z "$real_aicommits" ] || [ ! -x "$real_aicommits" ]; then
+  printf '%s\n' "aicommits-with-env: aicommits executable not found" >&2
+  exit 1
+fi
+
+tmp_home="$(mktemp -d "${TMPDIR:-/tmp}/aicommits.XXXXXX")"
+cleanup() {
+  rm -rf "$tmp_home"
+}
+trap cleanup EXIT INT TERM
+chmod 700 "$tmp_home"
+
+tmp_config="${tmp_home}/.aicommits"
+if [ -r "$template_config" ]; then
+  awk -F= '$1 != "OPENAI_API_KEY" { print }' "$template_config" >"$tmp_config"
+else
+  : >"$tmp_config"
+fi
+
+if ! grep -q '^OPENAI_BASE_URL=' "$tmp_config"; then
+  printf 'OPENAI_BASE_URL=%s\n' "${OPENAI_BASE_URL:-https://api.openai.com/v1}" >>"$tmp_config"
+fi
+if ! grep -q '^OPENAI_MODEL=' "$tmp_config"; then
+  printf 'OPENAI_MODEL=%s\n' "${OPENAI_MODEL:-gpt-5.4}" >>"$tmp_config"
+fi
+
+printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" >>"$tmp_config"
+chmod 600 "$tmp_config"
+
+if [ -r "$git_config_global" ]; then
+  export GIT_CONFIG_GLOBAL="$git_config_global"
+fi
+
+exec env HOME="$tmp_home" "$real_aicommits" "$@"
