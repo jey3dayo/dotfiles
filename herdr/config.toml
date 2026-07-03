@@ -41,4 +41,4 @@ prompt_new_tab_name = false
 show_agent_labels_on_pane_borders = true
 
 [theme.custom]
-accent = "#eba0ac"
+accent = "#a093e2" # 0x96f palette 5 (magenta / 青紫)
