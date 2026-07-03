@@ -10,15 +10,17 @@ manifest_check = true
 [keys]
 prefix = "ctrl+x"
 
-# workspace (C-x prefix: 一段上のプロジェクト単位)
+# workspace (C-x prefix: 一段上のプロジェクト単位 / C-x ,=リネーム)
 previous_workspace = "prefix+p"
 next_workspace = "prefix+n"
 new_workspace = "prefix+c"
+rename_workspace = "prefix+comma"
 
-# tab (C-x t=新規 / C-x Tab=次 / C-x Shift+Tab=前)
+# tab (C-x t=新規 / C-x Tab=次 / C-x Shift+Tab=前 / C-x Shift+,=リネーム)
 new_tab = "prefix+t"
 next_tab = "prefix+tab"
 previous_tab = "prefix+shift+tab"
+rename_tab = ["prefix+shift+comma", "prefix+<"]
 
 # split (Ghostty 互換: c-x - = 上下分割, c-x ¥ = 左右分割)
 # 日本語キーボードの¥キーはshiftなしで¥(U+00A5)を送るため、
@@ -33,7 +35,7 @@ cycle_pane_previous = ""
 open_notification_target = "prefix+shift+o" # 既定の prefix+o を退避
 
 # agent
-previous_agent = "prefix+,"
+previous_agent = "prefix+>"
 next_agent = "prefix+."
 
 [ui]
