@@ -9,6 +9,7 @@
     "olets/tap/zsh-abbr@6",
     "perman/tap/perman-aws-vault",
     "steipete/tap/peekaboo",
+    "tilt-dev/tap/tilt",
     "vectordotdev/brew/vector",
     "ynqa/tap/jnv"
   ],
