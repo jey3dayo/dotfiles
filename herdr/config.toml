@@ -10,11 +10,12 @@ manifest_check = true
 [keys]
 prefix = "ctrl+x"
 
-# workspace (C-x prefix: 一段上のプロジェクト単位 / C-x ,=リネーム)
+# workspace (C-x prefix: 一段上のプロジェクト単位 / C-x ,=リネーム / C-x Space=navigator一覧)
 previous_workspace = "prefix+p"
 next_workspace = "prefix+n"
 new_workspace = "prefix+c"
 rename_workspace = "prefix+comma"
+goto = "prefix+space"
 
 # tab (C-x t=新規 / C-x Tab=次 / C-x Shift+Tab=前 / C-x Shift+,=リネーム)
 new_tab = "prefix+t"
