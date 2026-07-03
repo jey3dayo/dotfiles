@@ -10,16 +10,26 @@ manifest_check = true
 [keys]
 prefix = "ctrl+x"
 
-# workspace
-navigate_workspace_up = "ctrl+alt+k"
-navigate_workspace_down = "ctrl+alt+j"
+# workspace (C-x prefix: 一段上のプロジェクト単位)
+previous_workspace = "prefix+p"
+next_workspace = "prefix+n"
+new_workspace = "prefix+c"
 
-# split (Ghostty 互換: c-x - = 上下分割, c-x | = 左右分割)
+# tab (C-x t=新規 / C-x Tab=次 / C-x Shift+Tab=前)
+new_tab = "prefix+t"
+next_tab = "prefix+tab"
+previous_tab = "prefix+shift+tab"
+
+# split (Ghostty 互換: c-x - = 上下分割, c-x ¥ = 左右分割)
+# 日本語キーボードの¥キーはshiftなしで¥(U+00A5)を送るため、
+# shift+¥相当の"|"ではなくunshiftedの"¥"にバインドする
 split_horizontal = "prefix+minus"
-split_vertical = "prefix+|"
+split_vertical = ["prefix+¥", "prefix+|"]
 
 # pane (Ghostty 互換: c-x o = 次ペインへ巡回)
+# Shift+Tab はタブ(previous_tab)へ譲ったため逆順巡回は無効化。方向移動は C-x h/j/k/l
 cycle_pane_next = "prefix+o"
+cycle_pane_previous = ""
 open_notification_target = "prefix+shift+o" # 既定の prefix+o を退避
 
 # agent
