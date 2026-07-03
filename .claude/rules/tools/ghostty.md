@@ -5,27 +5,33 @@ references: karabiner/karabiner.json
 
 # Ghostty Rules
 
-Purpose: Ghostty terminal keybind 管理。Scope: C-x リーダーキーシーケンス、スプリット操作、タブ管理。
+Purpose: Ghostty terminal keybind 管理。Scope: C-b リーダーキーシーケンス、スプリット操作、タブ管理。
 
 ## 管理ファイル
 
 `ghostty/config` — すべての設定を一元管理
 
+## Leader キーの方針
+
+leader は **`ctrl+b`**。Ghostty 内で動かす herdr が prefix に `ctrl+x` を使うため、
+衝突回避で Ghostty 側を `ctrl+b` に分離している。leader を変える際は herdr prefix
+（`~/.config/herdr/config.toml` の `keys.prefix`）と被らないことを必ず確認する。
+
 ## Sequence 構文
 
 ```ini
-keybind = ctrl+x>KEY=action
+keybind = ctrl+b>KEY=action
 ```
 
 重要: 大文字キーは `L` ではなく `shift+l` と書くこと。
-`ctrl+x>L` と `ctrl+x>l` は Ghostty では**同一トリガー**として扱われ、
+`ctrl+b>L` と `ctrl+b>l` は Ghostty では**同一トリガー**として扱われ、
 後の定義が前を上書きする。
 
-## C-x リーダーキー一覧
+## C-b リーダーキー一覧
 
 ### Tabs
 
-| Ctrl+X → | アクション       | Ghostty action |
+| Ctrl+B → | アクション       | Ghostty action |
 | -------- | ---------------- | -------------- |
 | c        | 新しいタブ       | `new_tab`      |
 | n        | 次のタブ         | `next_tab`     |
@@ -34,7 +40,7 @@ keybind = ctrl+x>KEY=action
 
 ### Splits
 
-| Ctrl+X →   | アクション       | Ghostty action      |
+| Ctrl+B →   | アクション       | Ghostty action      |
 | ---------- | ---------------- | ------------------- |
 | -          | 下スプリット     | `new_split:down`    |
 | \ / ¥ / \| | 右スプリット     | `new_split:right`   |
@@ -44,7 +50,7 @@ keybind = ctrl+x>KEY=action
 
 ### Pane Navigation（Vim 風）
 
-| Ctrl+X → | アクション | Ghostty action     |
+| Ctrl+B → | アクション | Ghostty action     |
 | -------- | ---------- | ------------------ |
 | h        | ペイン左へ | `goto_split:left`  |
 | j        | ペイン下へ | `goto_split:down`  |
@@ -53,7 +59,7 @@ keybind = ctrl+x>KEY=action
 
 ### Pane Resize（Shift+HJKL）
 
-| Ctrl+X → | アクション | Ghostty action          |
+| Ctrl+B → | アクション | Ghostty action          |
 | -------- | ---------- | ----------------------- |
 | Shift+H  | リサイズ左 | `resize_split:left,32`  |
 | Shift+J  | リサイズ下 | `resize_split:down,32`  |
@@ -64,7 +70,7 @@ keybind = ctrl+x>KEY=action
 
 ### その他
 
-| Ctrl+X → | アクション       | Ghostty action           |
+| Ctrl+B → | アクション       | Ghostty action           |
 | -------- | ---------------- | ------------------------ |
 | x        | Surface を閉じる | `close_surface`          |
 | /        | コマンドパレット | `toggle_command_palette` |
@@ -73,14 +79,14 @@ keybind = ctrl+x>KEY=action
 ## 新しいバインドの追加方法
 
 ```ini
-# Ctrl+X リーダー
-keybind = ctrl+x>KEY=action
+# Ctrl+B リーダー
+keybind = ctrl+b>KEY=action
 
 # Shift+KEY の場合
-keybind = ctrl+x>shift+key=action
+keybind = ctrl+b>shift+key=action
 ```
 
-追加後: `C-x r`（`reload_config`）でリロード。
+追加後: `C-b r`（`reload_config`）でリロード。
 
 ## 公式リファレンス
 
@@ -88,5 +94,5 @@ keybind = ctrl+x>shift+key=action
 
 ## cmux との対応
 
-cmux は Ghostty の C-x シーケンスを持たないため、Karabiner-Elements で補完している。
+cmux は Ghostty の C-b シーケンスを持たないため、Karabiner-Elements で補完している。
 `karabiner/karabiner.json` → `.claude/rules/tools/karabiner.md` を参照。
