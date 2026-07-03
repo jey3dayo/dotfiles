@@ -1,0 +1,34 @@
+[theme]
+name = "one-dark"
+auto_switch = false
+
+[update]
+channel = "stable"
+version_check = true
+manifest_check = true
+
+[keys]
+prefix = "ctrl+x"
+
+# workspace
+navigate_workspace_up = "ctrl+alt+k"
+navigate_workspace_down = "ctrl+alt+j"
+
+# split (Ghostty 互換: c-x - = 上下分割, c-x | = 左右分割)
+split_horizontal = "prefix+minus"
+split_vertical = "prefix+|"
+
+# pane (Ghostty 互換: c-x o = 次ペインへ巡回)
+cycle_pane_next = "prefix+o"
+open_notification_target = "prefix+shift+o" # 既定の prefix+o を退避
+
+# agent
+previous_agent = "prefix+,"
+next_agent = "prefix+."
+
+[ui]
+prompt_new_tab_name = false
+show_agent_labels_on_pane_borders = true
+
+[theme.custom]
+accent = "#eba0ac"
