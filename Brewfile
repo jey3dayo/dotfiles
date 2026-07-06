@@ -49,8 +49,6 @@ brew "clang-format"
 brew "cmake"
 brew "cmigemo"
 brew "libyaml"
-brew "ruby", link: false
-brew "cocoapods"
 brew "colordiff"
 brew "libnghttp2"
 brew "libssh2"
