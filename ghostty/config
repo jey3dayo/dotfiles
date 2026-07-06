@@ -3,7 +3,7 @@
 ############################
 # disable-default-keybinds = false
 
-# 左 Option を Alt として扱う（alt+ctrl+h/l=move_tab、alt+r=resize、alt+enter を効かせる）。
+# 左 Option を Alt として扱う（alt+ctrl+h/l=move_tab、alt+enter を効かせる。alt+r は herdr の resize_mode に譲る）。
 # 右 Option は文字合成（~ 等）用に温存する。
 macos-option-as-alt = left
 
@@ -173,7 +173,8 @@ keybind = ctrl+0=reset_font_size
 keybind = alt+ctrl+h=move_tab:-1
 keybind = alt+ctrl+l=move_tab:1
 
-keybind = alt+r>h=resize_split:left,32
-keybind = alt+r>j=resize_split:down,32
-keybind = alt+r>k=resize_split:up,32
-keybind = alt+r>l=resize_split:right,32
+# herdr 側の resize_mode (alt+r) に譲るため無効化
+# keybind = alt+r>h=resize_split:left,32
+# keybind = alt+r>j=resize_split:down,32
+# keybind = alt+r>k=resize_split:up,32
+# keybind = alt+r>l=resize_split:right,32
