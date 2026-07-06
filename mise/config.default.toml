@@ -147,6 +147,7 @@ yamllint = "latest"
 # その他ツール
 "npm:greptile" = "latest"
 "npm:difit" = "latest"
+"npm:hunkdiff" = "latest"
 "npm:tuyapi" = "latest"
 
 # ========================================
