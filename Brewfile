@@ -1,22 +1,23 @@
-tap "arto-app/tap"
+tap "arto-app/tap", trusted: true
 tap "aws/tap"
-tap "bufbuild/buf"
-tap "buo/cask-upgrade"
+tap "bufbuild/buf", trusted: true
+tap "buo/cask-upgrade", trusted: true
 tap "daipeihust/tap"
 tap "go-task/tap"
 tap "gofireflyio/aiac"
-tap "hashicorp/tap"
+tap "hashicorp/tap", trusted: true
 tap "heroku/brew"
 tap "homebrew/core"
-tap "k1low/tap"
+tap "k1low/tap", "https://github.com/k1LoW/homebrew-tap", trusted: true
 tap "kyoshidajp/ghkw"
-tap "manaflow-ai/cmux"
+tap "manaflow-ai/cmux", trusted: true
 tap "olets/tap"
 tap "perman/tap", "git@github.com:PERMAN/homebrew-tap.git"
-tap "sanemat/font"
+tap "sanemat/font", trusted: true
 tap "steipete/tap"
+tap "tilt-dev/tap"
 tap "vectordotdev/brew"
-tap "voicevox/voicevox"
+tap "voicevox/voicevox", "https://github.com/VOICEVOX/homebrew-voicevox", trusted: true
 tap "ynqa/tap"
 brew "fmt"
 brew "aom"
@@ -89,6 +90,7 @@ brew "isl"
 brew "mpfr"
 brew "libmpc"
 brew "gcc"
+brew "gh"
 brew "ghq"
 brew "gibo"
 brew "git"
@@ -103,7 +105,6 @@ brew "gnutls"
 brew "libgpg-error"
 brew "libgcrypt"
 brew "libusb"
-brew "unbound"
 brew "gnupg"
 brew "pkgconf"
 brew "gobject-introspection"
@@ -114,6 +115,8 @@ brew "graphviz"
 brew "grep"
 brew "grpcurl"
 brew "guile"
+brew "herdr"
+brew "libffi"
 brew "libuv"
 brew "heroku"
 brew "icu4c@77"
@@ -128,7 +131,6 @@ brew "ldns"
 brew "lego"
 brew "libcbor"
 brew "libev"
-brew "libffi"
 brew "libfido2"
 brew "libpthread-stubs"
 brew "libslirp"
@@ -156,7 +158,6 @@ brew "protobuf"
 brew "mosh"
 brew "msgpack"
 brew "mysql", restart_service: :changed
-brew "zlib"
 brew "mysql-client"
 brew "utf8proc", args: ["HEAD"]
 brew "neovim"
@@ -196,11 +197,13 @@ brew "tree"
 brew "treefmt"
 brew "typos-cli"
 brew "typos-lsp"
+brew "unbound"
 brew "watch"
 brew "watchman"
 brew "wget"
 brew "xmlto"
 brew "yq"
+brew "zlib"
 brew "zsh"
 brew "zsh-completions"
 brew "aws/tap/copilot-cli", trusted: true
@@ -212,6 +215,7 @@ brew "kyoshidajp/ghkw/ghkw", trusted: true
 brew "olets/tap/zsh-abbr@6", trusted: true
 brew "perman/tap/perman-aws-vault", trusted: true
 brew "steipete/tap/peekaboo", trusted: true
+brew "tilt-dev/tap/tilt", trusted: true
 brew "vectordotdev/brew/vector", trusted: true
 brew "ynqa/tap/jnv", trusted: true
 cask "1password"
@@ -231,7 +235,9 @@ cask "chatgpt"
 cask "choosy"
 cask "cleanshot"
 cask "cmux"
+cask "codex"
 cask "codex-app"
+cask "codexbar"
 cask "coteditor"
 cask "cursor"
 cask "cyberduck"
@@ -285,6 +291,7 @@ cask "spotify"
 cask "tableplus"
 cask "tablepro"
 cask "teamviewer"
+cask "thaw"
 cask "the-unarchiver"
 cask "tradingview"
 cask "vagrant"
@@ -295,6 +302,7 @@ cask "voicevox/voicevox/voicevox"
 cask "warp"
 cask "webex"
 cask "wezterm@nightly"
+cask "wireshark-app"
 cask "xbar"
 cask "xquartz"
 cask "zoom-for-it-admins"
@@ -312,10 +320,11 @@ mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Perplexity", id: 6714467650
-mas "Reeder", id: 6475002485
 mas "Reeder", id: 1529448980
+mas "Reeder", id: 6475002485
 mas "Tailscale", id: 1475387142
 mas "TestFlight", id: 899247664
+mas "Windows App", id: 1295203466
 mas "Xcode", id: 497799835
 vscode "amazonwebservices.aws-toolkit-vscode"
 vscode "asvetliakov.vscode-neovim"
@@ -332,7 +341,6 @@ vscode "editorconfig.editorconfig"
 vscode "esbenp.prettier-vscode"
 vscode "formulahendry.auto-rename-tag"
 vscode "formulahendry.code-runner"
-vscode "github.copilot-chat"
 vscode "github.remotehub"
 vscode "github.vscode-pull-request-github"
 vscode "golang.go"
