@@ -1,24 +1,79 @@
 #!/usr/bin/env bash
-# ponytail: mise reshim bug workaround (jdx/mise#6468), delete once upstream fixes bin-path detection
+# mise npm-backend shim generation bug workaround (jdx/mise#6468).
+# Some tools (e.g. `npm:hunkdiff`, which ships bins named hunk/hunkdiff) have
+# bin names mise fails to detect, so `mise reshim` never creates their shims.
+# Any shim hand-copied into the mise shims dir is also wiped on the next
+# install/upgrade/reshim.
+#
+# Fix: place mise-dispatcher symlinks in ~/.local/bin (outside the shims dir).
+# mise resolves the tool from argv[0]'s basename, so these run correctly and
+# survive reshim. Delete once upstream fixes npm-backend bin detection.
+#
+# Usage:
+#   fix-mise-path              # auto-detect installed bins missing from PATH
+#   fix-mise-path NAME [NAME…] # link the named bins explicitly
 set -euo pipefail
 
-shims_dir="$HOME/.mise/shims"
-template="$shims_dir/prettier"
+mise_bin="$(command -v mise || true)"
+local_bin="$HOME/.local/bin"
 
-if [ ! -x "$template" ]; then
-  echo "template shim not found: $template" >&2
+if [ -z "$mise_bin" ]; then
+  echo "mise not found on PATH" >&2
   exit 1
 fi
 
-targets=("$@")
-[ "${#targets[@]}" -eq 0 ] && targets=(hunkdiff hunk)
+mkdir -p "$local_bin"
 
-for name in "${targets[@]}"; do
-  cp "$template" "$shims_dir/$name"
-  chmod +x "$shims_dir/$name"
-  if command -v "$name" >/dev/null; then
+link_one() {
+  local name="$1"
+  # mise resolves bins by argv[0] basename; a name it can't resolve would
+  # produce a symlink that satisfies `command -v` but fails on execution.
+  if ! mise which "$name" >/dev/null 2>&1; then
+    echo "skip: $name (mise cannot resolve this bin)" >&2
+    return
+  fi
+  ln -sf "$mise_bin" "$local_bin/$name"
+  hash -r 2>/dev/null || true
+  if command -v "$name" >/dev/null 2>&1; then
     echo "ok: $name -> $(command -v "$name")"
   else
     echo "still missing: $name" >&2
   fi
+}
+
+# Explicit mode: link exactly the requested names.
+if [ "$#" -gt 0 ]; then
+  for name in "$@"; do link_one "$name"; done
+  exit 0
+fi
+
+# Auto-detect mode: link any installed bin that mise knows about but PATH
+# cannot resolve (i.e. a shim mise failed to generate).
+data_dir="${MISE_DATA_DIR:-}"
+if [ -z "$data_dir" ]; then
+  data_dir="$(mise doctor 2>/dev/null | awk '/^[[:space:]]*data:/ {print $2; exit}')"
+  data_dir="${data_dir/#\~/$HOME}"
+fi
+[ -z "$data_dir" ] && data_dir="${XDG_DATA_HOME:-$HOME/.local/share}/mise"
+
+installs_dir="$data_dir/installs"
+if [ ! -d "$installs_dir" ]; then
+  echo "mise installs dir not found: $installs_dir" >&2
+  exit 1
+fi
+
+linked=0
+# layout: installs/<tool>/<version>/bin/<bin>
+for bin in "$installs_dir"/*/*/bin/*; do
+  [ -f "$bin" ] && [ -x "$bin" ] || continue
+  name="$(basename "$bin")"
+  # already resolvable on PATH → mise's own shim works, leave it alone
+  command -v "$name" >/dev/null 2>&1 && continue
+  # only link bins mise recognizes (skips private helpers / stale installs)
+  mise which "$name" >/dev/null 2>&1 || continue
+  link_one "$name"
+  linked=1
 done
+
+[ "$linked" -eq 0 ] && echo "no missing shims detected"
+exit 0
