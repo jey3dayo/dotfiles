@@ -75,7 +75,7 @@ function New-NormalizedRepoSnapshot {
   $localMiseFile = Join-Path $snapshotRootWin ".mise.toml"
   if (Test-Path -LiteralPath $localMiseFile) {
     $miseConfig = Read-Utf8TextFile -Path $localMiseFile
-    $miseConfig = $miseConfig.Replace(".config/mise/tasks/", "mise/tasks/")
+    $miseConfig = $miseConfig.Replace(".config/mise/local-tasks/", "mise/local-tasks/")
     [System.IO.File]::WriteAllText($localMiseFile, $miseConfig, [System.Text.UTF8Encoding]::new($false))
   }
 

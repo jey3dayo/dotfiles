@@ -89,7 +89,7 @@ jobs:
 
       - name: Prepare mise task include path
         run: |
-          # `.mise.toml` includes task files under `.config/mise/tasks/*`.
+          # `.mise.toml` includes task files under `.config/mise/local-tasks/*`.
           # In CI checkout directories, this path does not exist by default.
           # Mirror local layout so older mise versions can resolve task definitions.
           [ -e .config ] || ln -s . .config

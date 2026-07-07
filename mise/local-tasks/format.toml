@@ -6,6 +6,7 @@
 
 ["format:biome"]
 description = "JS/TS/JSON ファイルをフォーマット + Biome lint の安全な自動修正（BIOME_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
   biome format --write ${BIOME_FILES}
@@ -18,6 +19,7 @@ fi
 
 ["format:biome:check"]
 description = "JS/TS/JSON ファイルのフォーマット + lint チェック（書き込みなし、BIOME_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
   biome check --formatter-enabled=true --linter-enabled=true ${BIOME_FILES}
@@ -28,6 +30,7 @@ fi
 
 ["format:prettier"]
 description = "Prettier でファイルをフォーマット（PRETTIER_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${PRETTIER_FILES:-}" ]; then
   prettier --write --ignore-unknown --log-level error ${PRETTIER_FILES} > /dev/null
@@ -38,6 +41,7 @@ fi
 
 ["format:prettier:check"]
 description = "Prettier フォーマットチェック（書き込みなし、PRETTIER_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${PRETTIER_FILES:-}" ]; then
   prettier --check --ignore-unknown --log-level error ${PRETTIER_FILES}
@@ -52,6 +56,7 @@ depends = ["format:markdown:bold-headings", "format:markdownlint"]
 
 ["format:markdownlint"]
 description = "Markdownlint + Prettier で Markdown をフォーマット"
+dir = "~/.config"
 run = [
   "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
   "fd -H -e md ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null",
@@ -63,6 +68,7 @@ depends = ["format:markdown:bold-headings:check", "format:markdownlint:check"]
 
 ["format:markdownlint:check"]
 description = "Markdownlint + Prettier の Markdown チェック（書き込みなし）"
+dir = "~/.config"
 run = [
   "markdownlint-cli2 \"${MD_GLOB}\" ${MD_EXCLUDES}",
   "fd -H -e md ${TASK_EXCLUDES} -X prettier --check --log-level error",
@@ -70,6 +76,7 @@ run = [
 
 ["format:yaml"]
 description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${YAML_FILES:-}" ]; then
   prettier --write --log-level error ${YAML_FILES} > /dev/null
@@ -80,6 +87,7 @@ fi
 
 ["format:yaml:check"]
 description = "YAML ファイルのフォーマットチェック（書き込みなし、YAML_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${YAML_FILES:-}" ]; then
   prettier --check --log-level error ${YAML_FILES}
@@ -90,6 +98,7 @@ fi
 
 ["format:lua"]
 description = "Lua ファイルをフォーマット（LUA_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${LUA_FILES:-}" ]; then
   stylua ${LUA_FILES}
@@ -100,6 +109,7 @@ fi
 
 ["format:lua:check"]
 description = "Lua ファイルのフォーマットチェック（書き込みなし、LUA_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${LUA_FILES:-}" ]; then
   stylua --check ${LUA_FILES}
@@ -110,16 +120,19 @@ fi
 
 ["format:shell"]
 description = "シェルスクリプトをフォーマット（.sh は shfmt、.zsh は beautysh）"
+dir = "~/.config"
 env = { CHECK = "0" }
-run = "sh ./mise/lib/shell-format.sh"
+run = "sh \"$HOME/.config/mise/lib/shell-format.sh\""
 
 ["format:shell:check"]
 description = "シェルスクリプトのフォーマットチェック（.sh は shfmt、.zsh は beautysh）"
+dir = "~/.config"
 env = { CHECK = "1" }
-run = "sh ./mise/lib/shell-format.sh"
+run = "sh \"$HOME/.config/mise/lib/shell-format.sh\""
 
 ["format:toml"]
 description = "TOML ファイルをフォーマット（TOML_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${TOML_FILES:-}" ]; then
   RUST_LOG=taplo=warn taplo format ${TOML_FILES}
@@ -130,6 +143,7 @@ fi
 
 ["format:toml:check"]
 description = "TOML ファイルのフォーマットチェック（書き込みなし、TOML_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${TOML_FILES:-}" ]; then
   RUST_LOG=taplo=warn taplo format --check ${TOML_FILES}
@@ -140,6 +154,7 @@ fi
 
 ["format:python"]
 description = "Python ファイルをフォーマット（PY_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff format ${PY_FILES}
@@ -150,6 +165,7 @@ fi
 
 ["format:python:check"]
 description = "Python フォーマットチェック（書き込みなし、PY_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
 if [ -n "${PY_FILES:-}" ]; then
   uvx ruff format --check ${PY_FILES}
@@ -160,8 +176,9 @@ fi
 
 ["format:nix"]
 description = "Nix ファイルをフォーマット（nixfmt、NIX_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
-. "./mise/lib/nixfmt.sh"
+. "$HOME/.config/mise/lib/nixfmt.sh"
 
 if [ -n "${NIX_FILES:-}" ]; then
   run_nixfmt ${NIX_FILES}
@@ -175,8 +192,9 @@ fi
 
 ["format:nix:check"]
 description = "Nix ファイルのフォーマットチェック（書き込みなし、NIX_FILES で対象を限定可能）"
+dir = "~/.config"
 run = """
-. "./mise/lib/nixfmt.sh"
+. "$HOME/.config/mise/lib/nixfmt.sh"
 
 if [ -n "${NIX_FILES:-}" ]; then
   run_nixfmt --check ${NIX_FILES}
@@ -194,8 +212,10 @@ depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]
 
 ["format:markdown:bold-headings"]
 description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能、デフォルト: リポジトリ全体）"
+dir = "~/.config"
 run = "tsx ./scripts/replace-bold-headings.ts"
 
 ["format:markdown:bold-headings:check"]
 description = "Markdown ファイルの太字見出しチェック（変更なし）"
+dir = "~/.config"
 run = "tsx ./scripts/replace-bold-headings.ts --dry-run"

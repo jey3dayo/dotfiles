@@ -71,7 +71,7 @@ mise/
 ├── config.windows.toml    # Windows 向け構成（jobs 未設定）
 ├── config.pi.toml         # Raspberry Pi 向け最小構成
 ├── config.ci.toml         # CI/CD 向け最小構成
-└── tasks/                 # mise run で使う公開タスク定義
+└── local-tasks/           # ~/.config 専用の mise task 定義
     ├── ci.toml            # CI/CD チェック・Nix 検証
     ├── format.toml        # フォーマット（書き込みあり/チェック）
     ├── lint.toml          # 静的解析・構文チェック
@@ -84,8 +84,9 @@ mise/
     └── docs.toml          # ドキュメントメンテナンス
 ```
 
-`.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/tasks/*.toml` を読み込む。
-helper shell は `mise/tasks/` 配下に置かず `mise/lib/` に集約し、`mise tasks` に内部実装が露出しないようにする。
+`.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/local-tasks/*.toml` を読み込む。
+`mise/tasks/` は global task として外部リポジトリからも見えるため、`~/.config` 専用タスクは置かない。
+helper shell は `mise/local-tasks/` 配下に置かず `mise/lib/` に集約し、`mise tasks` に内部実装が露出しないようにする。
 
 ## Task Design
 

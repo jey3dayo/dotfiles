@@ -66,7 +66,7 @@ if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
   exit 0
 fi
 
-. "./mise/lib/home-manager.sh"
+. "$HOME/.config/mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
 configure_nix_github_token
 
@@ -81,7 +81,7 @@ if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
   exit 0
 fi
 
-. "./mise/lib/home-manager.sh"
+. "$HOME/.config/mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
 configure_nix_github_token
 
@@ -96,7 +96,7 @@ if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
   exit 0
 fi
 
-. "./mise/lib/home-manager.sh"
+. "$HOME/.config/mise/lib/home-manager.sh"
 ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
 configure_nix_github_token
 
@@ -121,7 +121,7 @@ run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-wsl-task.ps
 
 ["pre-push"]
 description = "push 前チェック（ci:quick + 変更ファイルに応じた追加テスト）"
-run = "sh ./mise/lib/pre-push-check.sh"
+run = "sh \"$HOME/.config/mise/lib/pre-push-check.sh\""
 
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"

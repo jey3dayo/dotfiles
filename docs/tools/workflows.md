@@ -113,7 +113,7 @@ pre-commit run --hook-stage manual markdown-link-check --all-files
 
 ### Dual Management Strategy（pre-commit vs mise tasks）
 
-`.pre-commit-config.yaml` と `mise/tasks/*.toml` は**意図的に二重管理**しています:
+`.pre-commit-config.yaml` と `mise/local-tasks/*.toml` は**意図的に二重管理**しています:
 
 #### 理由
 
@@ -125,7 +125,7 @@ pre-commit run --hook-stage manual markdown-link-check --all-files
 
 `pre-push` hook は `mise run pre-push` を実行します。まず `mise run ci:quick` で format / lint を検証し、その後、未 push commit と未 commit 差分のファイル名に応じて追加テストを実行します。
 
-- `bin/*`, `scripts/*`, `zsh/*`, `mise/lib/*`, `mise/tasks/*`, `.mise.toml`: `mise run test:ts`
+- `bin/*`, `scripts/*`, `zsh/*`, `mise/lib/*`, `mise/local-tasks/*`, `.mise.toml`: `mise run test:ts`
 - `*.lua`, `spec/*`, `nvim/spec/*`, `nvim/lua/*`: `mise run test:lua`
 
 #### 統合済みツール一覧
@@ -147,15 +147,15 @@ pre-commit run --hook-stage manual markdown-link-check --all-files
 
 ツールの引数や設定を変更する際は**両方**を更新してください:
 
-| 変更内容         | 更新が必要なファイル                                                        |
-| ---------------- | --------------------------------------------------------------------------- |
-| luacheck の引数  | `.pre-commit-config.yaml` + `mise/tasks/lint.toml`                          |
-| stylua の引数    | `.pre-commit-config.yaml` + `mise/tasks/format.toml`                        |
-| prettier の引数  | `.pre-commit-config.yaml` + `mise/tasks/format.toml`                        |
-| beautysh の引数  | `.pre-commit-config.yaml` + `mise/tasks/format.toml`                        |
-| hadolint の引数  | `.pre-commit-config.yaml` + `mise/tasks/lint.toml`                          |
-| 除外パス         | `.pre-commit-config.yaml` (exclude) + `mise/tasks/env.toml` (TASK_EXCLUDES) |
-| 新しいツール追加 | `.pre-commit-config.yaml` + 該当する mise タスク                            |
+| 変更内容         | 更新が必要なファイル                                                              |
+| ---------------- | --------------------------------------------------------------------------------- |
+| luacheck の引数  | `.pre-commit-config.yaml` + `mise/local-tasks/lint.toml`                          |
+| stylua の引数    | `.pre-commit-config.yaml` + `mise/local-tasks/format.toml`                        |
+| prettier の引数  | `.pre-commit-config.yaml` + `mise/local-tasks/format.toml`                        |
+| beautysh の引数  | `.pre-commit-config.yaml` + `mise/local-tasks/format.toml`                        |
+| hadolint の引数  | `.pre-commit-config.yaml` + `mise/local-tasks/lint.toml`                          |
+| 除外パス         | `.pre-commit-config.yaml` (exclude) + `mise/local-tasks/env.toml` (TASK_EXCLUDES) |
+| 新しいツール追加 | `.pre-commit-config.yaml` + 該当する mise タスク                                  |
 
 **チェックリスト**（ツール設定変更時）:
 

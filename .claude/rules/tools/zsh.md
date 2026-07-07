@@ -22,7 +22,7 @@ Detailed Reference: See [docs/tools/zsh.md](../../docs/tools/zsh.md) for compreh
 
 ## Glob qualifiers
 
-`.zsh` files are processed by **beautysh + `zsh -n`** only. shfmt and shellcheck are excluded (see `.pre-commit-config.yaml` and `mise/tasks/`). Zsh-specific glob qualifiers are fully supported.
+`.zsh` files are processed by **beautysh + `zsh -n`** only. shfmt and shellcheck are excluded (see `.pre-commit-config.yaml` and `mise/local-tasks/`). Zsh-specific glob qualifiers are fully supported.
 
 Use glob qualifiers to write safe, idiomatic zsh:
 

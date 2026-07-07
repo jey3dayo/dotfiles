@@ -3,21 +3,21 @@
 # プロジェクト固有の集約・mac依存タスクをここで定義
 # ========================================
 
-# タスク定義を mise/tasks/ から読み込み
+# タスク定義を mise/local-tasks/ から読み込み
 [task_config]
 includes = [
-  ".config/mise/tasks/format.toml",
-  ".config/mise/tasks/lint.toml",
-  ".config/mise/tasks/test.toml",
-  ".config/mise/tasks/integration.toml",
-  ".config/mise/tasks/env.toml",
-  ".config/mise/tasks/brewfile.toml",
-  ".config/mise/tasks/updates.toml",
-  ".config/mise/tasks/headroom.toml",
-  ".config/mise/tasks/home-manager.toml",
-  ".config/mise/tasks/ci.toml",
-  ".config/mise/tasks/docs.toml",
-  ".config/mise/tasks/backup.toml",
+  ".config/mise/local-tasks/format.toml",
+  ".config/mise/local-tasks/lint.toml",
+  ".config/mise/local-tasks/test.toml",
+  ".config/mise/local-tasks/integration.toml",
+  ".config/mise/local-tasks/env.toml",
+  ".config/mise/local-tasks/brewfile.toml",
+  ".config/mise/local-tasks/updates.toml",
+  ".config/mise/local-tasks/headroom.toml",
+  ".config/mise/local-tasks/home-manager.toml",
+  ".config/mise/local-tasks/ci.toml",
+  ".config/mise/local-tasks/docs.toml",
+  ".config/mise/local-tasks/backup.toml",
 ]
 
 # ========================================

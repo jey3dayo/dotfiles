@@ -63,7 +63,7 @@ changed_files() {
 
 mark_tests_for_file() {
   case "$1" in
-    bin/* | scripts/* | zsh/* | mise/lib/* | mise/tasks/* | .mise.toml)
+    bin/* | scripts/* | zsh/* | mise/lib/* | mise/local-tasks/* | .mise.toml)
       run_ts=1
       ;;
   esac

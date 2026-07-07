@@ -43,7 +43,7 @@ normalize_line_endings() {
 git clone --quiet "$repo_root" "$snapshot_root"
 
 if [ -f "$snapshot_root/.mise.toml" ]; then
-  sed -i 's|\.config/mise/tasks/|mise/tasks/|g' "$snapshot_root/.mise.toml"
+  sed -i 's|\.config/mise/local-tasks/|mise/local-tasks/|g' "$snapshot_root/.mise.toml"
 fi
 
 mapfile -t changed_files < <(
