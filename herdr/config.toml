@@ -37,7 +37,7 @@ split_vertical = ["prefix+¥", "prefix+|"]
 # Shift+Tab はタブ(previous_tab)へ譲ったため逆順巡回は無効化。方向移動は C-x h/j/k/l
 cycle_pane_next = "prefix+o"
 cycle_pane_previous = ""
-open_notification_target = "prefix+space" # 既定の prefix+o を退避
+open_notification_target = "" # prefix+space は herdr-unread に譲渡
 
 # agent
 previous_agent = "prefix+>"
@@ -49,6 +49,13 @@ key = "prefix+r"
 type = "shell"
 command = "herdr server reload-config"
 description = "reload config"
+
+# unread/blocked agent cycling (C-x space)
+[[keys.command]]
+key = "prefix+space"
+type = "shell"
+command = "/Users/t00114/.config/bin/herdr-unread"
+description = "focus next blocked/done agent"
 
 [ui]
 prompt_new_tab_name = false

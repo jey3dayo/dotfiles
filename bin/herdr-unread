@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Focus the next herdr agent pane needing attention: "blocked" takes priority
+# over "done" (finished, unread). Repeated invocations cycle within that group.
+set -euo pipefail
+
+AGENTS_JSON=$(herdr agent list)
+
+PANE_IDS=()
+for status in blocked "done"; do
+  while IFS= read -r line; do
+    [ -n "$line" ] && PANE_IDS+=("$line")
+  done < <(
+    echo "$AGENTS_JSON" \
+      | jq -r --arg status "$status" \
+        '.result.agents[] | select(.agent_status == $status) | .pane_id'
+  )
+  [ "${#PANE_IDS[@]}" -gt 0 ] && break
+done
+
+if [ "${#PANE_IDS[@]}" -eq 0 ]; then
+  echo "herdr-unread: no blocked or unread agent panes"
+  exit 0
+fi
+
+CURRENT=$(
+  echo "$AGENTS_JSON" \
+    | jq -r '.result.agents[] | select(.focused == true) | .pane_id'
+)
+
+NEXT_INDEX=0
+if [ -n "$CURRENT" ]; then
+  for i in "${!PANE_IDS[@]}"; do
+    if [ "${PANE_IDS[$i]}" = "$CURRENT" ]; then
+      NEXT_INDEX=$(((i + 1) % ${#PANE_IDS[@]}))
+      break
+    fi
+  done
+fi
+
+TARGET="${PANE_IDS[$NEXT_INDEX]}"
+herdr agent focus "$TARGET"
+echo "herdr-unread: focused $TARGET ($status $((NEXT_INDEX + 1))/${#PANE_IDS[@]})"
