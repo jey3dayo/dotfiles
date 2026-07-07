@@ -85,7 +85,7 @@ javascript if (typeof hBookmark != 'undefined') liberator.loadScript('chrome://h
 nnoremap <Leader>P :bmlpocket<CR>
 
 "copy.js {{{
-nnoremap <Leader>y :copy<Space>Title bittly<CR>
+nnoremap <Leader>y :copy<Space>title URL<CR>
 nnoremap <Leader>Y :copy<Space>title URL<CR>
 nnoremap <Leader>a :copy<Space>Amazon<CR>
 nnoremap <Leader>A :copy<Space>AmazonAffiliate<CR>
@@ -96,7 +96,6 @@ javascript <<EOM
     { label: 'anchor',          value: '<a href="%URL%">%TITLE%</a>' },
     { label: 'title<cr>URL',    value: '%TITLE%\n%URL%' },
     { label: 'markdown',        value: '[%TITLE%](%URL% "%TITLE%")' },
-    { label: 'Title bittly',    value: 'Get bittly URL', custom: function() { return buffer.title + ' ' + util.httpGet('https://api-ssl.bitly.com/v3/shorten?access_token=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx&format=json&longUrl=' + encodeURIComponent(buffer.URL)).responseText; }},
     { label: 'ASIN',            value: 'ASIN code from amazon', custom: function(){return content.document.getElementById('ASIN').value;} },
     { label: 'Amazon',          value: 'simple amazon url', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value;} },
     { label: 'AmazonAffiliate', value: 'simple amazon url with affiliate', custom: function(){return 'http://amazon.co.jp/o/ASIN/' + content.document.getElementById('ASIN').value + '/mt03-22';} },
@@ -122,7 +121,6 @@ liberator.globalVariables.plugin_loader_plugins = `
 _libly
 _smooziee
 auto_detect_link
-bitly
 commandBookmarklet
 copy
 feedSomeKeys_3

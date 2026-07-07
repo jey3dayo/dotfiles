@@ -42,17 +42,4 @@ copyTitleUrl() -> {{
 }}
 map yY :call copyTitleUrl<CR>
 
-" yank '%title% - %bitly%'
-copyTitleBitly() -> {{
-  RUNTIME('getRootUrl', function(url) {
-    const bitlyToken = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-    httpRequest(
-      {url: `https://api-ssl.bitly.com/v3/shorten?access_token=${bitlyToken}&format=json&longUrl=${url}`, json: true},
-      function(res) {
-        let ret = `${document.title} - ${res.data.url}`;
-        Clipboard.copy(ret);
-        Status.setMessage(ret, 2);
-      });
-  });
-}}
-map yy :call copyTitleBitly<CR>
+map yy :call copyTitleUrl<CR>
