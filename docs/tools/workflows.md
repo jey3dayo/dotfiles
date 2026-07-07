@@ -125,7 +125,7 @@ pre-commit run --hook-stage manual markdown-link-check --all-files
 
 `pre-push` hook は `mise run pre-push` を実行します。まず `mise run ci:quick` で format / lint を検証し、その後、未 push commit と未 commit 差分のファイル名に応じて追加テストを実行します。
 
-- `scripts/*`, `zsh/*`, `mise/lib/*`, `mise/tasks/*`, `.mise.toml`: `mise run test:ts`
+- `bin/*`, `scripts/*`, `zsh/*`, `mise/lib/*`, `mise/tasks/*`, `.mise.toml`: `mise run test:ts`
 - `*.lua`, `spec/*`, `nvim/spec/*`, `nvim/lua/*`: `mise run test:lua`
 
 #### 統合済みツール一覧

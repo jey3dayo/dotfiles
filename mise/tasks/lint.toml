@@ -78,7 +78,9 @@ if [ -n "${SH_FILES:-}" ]; then
     echo "⚠️ zsh not found; skipping zsh syntax check for:${zsh_files}"
   fi
 else
-  # scripts/ (some files have no extension)
+  # bin/ and scripts/ include extensionless shell commands.
+  fd -t f -H -p '^bin/' -X shfmt -d -i 2 -ci -bn
+  fd -t f -H -p '^bin/' -X shellcheck
   fd -t f -H -p '^scripts/' -X shfmt -d -i 2 -ci -bn
   fd -t f -H -p '^scripts/' -X shellcheck
 

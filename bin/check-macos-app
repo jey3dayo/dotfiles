@@ -17,10 +17,10 @@ CODEX_COMPUTER_USE_CACHE_ROOT="${HOME}/.codex/plugins/cache/openai-bundled/compu
 usage() {
   printf '%s\n' \
     "Usage:" \
-    "  scripts/check-macos-app.sh --fix" \
-    "  scripts/check-macos-app.sh [--fix] /path/to/App.app" \
-    "  scripts/check-macos-app.sh [--fix] --codex-computer-use" \
-    "  scripts/check-macos-app.sh --list" \
+    "  check-macos-app --fix" \
+    "  check-macos-app [--fix] /path/to/App.app" \
+    "  check-macos-app [--fix] --codex-computer-use" \
+    "  check-macos-app --list" \
     "" \
     "Options:" \
     "  --fix                 Fix quarantine/LaunchServices for known app targets, or the given app path." \

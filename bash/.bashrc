@@ -40,6 +40,7 @@ _path_prepend_once() {
 
 _path_prepend_once "$HOME/bin"
 _path_prepend_once "$HOME/.local/bin"
+_path_prepend_once "$XDG_CONFIG_HOME/bin"
 _path_prepend_once "$XDG_CONFIG_HOME/scripts"
 [ -d "$HOME/.claude/local" ] && _path_prepend_once "$HOME/.claude/local"
 export PATH

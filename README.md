@@ -137,7 +137,8 @@ dotfiles/
 ├── .github/       # Workflows
 ├── .kiro/         # Steering docs (always-loaded AI context)
 ├── docs/          # Human-facing documentation (SST per topic)
-├── scripts/       # Setup scripts
+├── bin/           # User-facing commands on PATH
+├── scripts/       # Setup and task helper scripts
 │   └── bootstrap.sh  # Homebrew installer (1-shot)
 ├── zsh/           # Shell (6-tier loading)
 ├── nvim/          # Editor (Lua config, 15+ LSP)

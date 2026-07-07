@@ -72,7 +72,8 @@ docs/tools/              Tool-specific source documents
 mise/                    Mise config and tasks
 nix/                     Home Manager modules
 windows/                 Windows bootstrap and setup
-scripts/                 Bootstrap and helper scripts
+bin/                     User-facing commands on PATH
+scripts/                 Bootstrap and task helper scripts
 ```
 
 ## When Unsure

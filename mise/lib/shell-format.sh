@@ -44,10 +44,12 @@ if [ -n "${SH_FILES:-}" ]; then
     fi
   fi
 else
-  # scripts/ (some files have no extension)
+  # bin/ and scripts/ include extensionless shell commands.
   if [ "$CHECK" = "1" ]; then
+    fd -t f -H -p '^bin/' -X shfmt -d -i 2 -ci -bn
     fd -t f -H -p '^scripts/' -X shfmt -d -i 2 -ci -bn
   else
+    fd -t f -H -p '^bin/' -X shfmt -w -i 2 -ci -bn
     fd -t f -H -p '^scripts/' -X shfmt -w -i 2 -ci -bn
   fi
 

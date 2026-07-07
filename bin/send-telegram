@@ -5,9 +5,9 @@ set -eu
 # Telegram Bot Message Sender
 # ==============================================================================
 # Usage:
-#   sh ./scripts/send-telegram.sh "message text"
-#   echo "message text" | sh ./scripts/send-telegram.sh
-#   TELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=... sh ./scripts/send-telegram.sh "msg"
+#   send-telegram "message text"
+#   echo "message text" | send-telegram
+#   TELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=... send-telegram "msg"
 #
 # Env:
 #   TELEGRAM_BOT_TOKEN  Required. Bot token

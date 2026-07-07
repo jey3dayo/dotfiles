@@ -5,8 +5,8 @@ set -eu
 # Telegram Bot API Health Check
 # ==============================================================================
 # Usage:
-#   sh ./scripts/check-telegram-api.sh
-#   TELEGRAM_BOT_TOKEN=123456:ABC... sh ./scripts/check-telegram-api.sh
+#   check-telegram-api
+#   TELEGRAM_BOT_TOKEN=123456:ABC... check-telegram-api
 # ==============================================================================
 
 if [ -t 1 ]; then
