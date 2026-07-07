@@ -10,7 +10,6 @@ manifest_check = true
 
 [keys]
 prefix = "ctrl+x"
-# ponytail: alt+r は ESC 前置の曖昧さで単独だと反応しないことがある。改善しないなら ctrl+alt+r に戻す
 resize_mode = "alt+r"
 
 # workspace (C-x prefix: 一段上のプロジェクト単位 / C-x ,=リネーム / C-x w=一覧 / C-x g=navigator)
