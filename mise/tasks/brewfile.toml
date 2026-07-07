@@ -4,10 +4,12 @@
 
 ["brewfile:backup"]
 description = "現在のインストール状況をBrewfileに保存（差分あればコミット）"
+dir = "~/.config"
 run = "if command -v brew >/dev/null 2>&1; then brew bundle dump --file=Brewfile --force && git add Brewfile && git diff --cached --quiet || git commit -m 'chore: update Brewfile'; else echo 'Homebrew not installed'; fi"
 
 ["brewfile:restore"]
 description = "Brewfileからパッケージをインストール（新規Mac対応）"
+dir = "~/.config"
 run = """
 if command -v brew >/dev/null 2>&1; then
   brew bundle install --no-upgrade

@@ -1,35 +1,44 @@
 [backup]
 description = "Run restic backup to S3"
-run = "./mise/lib/run-restic.sh backup"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh backup"
 
 ["backup:init"]
 description = "Initialize restic repository on S3"
-run = "./mise/lib/run-restic.sh init"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh init"
 
 ["backup:snapshots"]
 description = "List backup snapshots"
-run = "./mise/lib/run-restic.sh snapshots"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh snapshots"
 
 ["backup:stats"]
 description = "Show restic repository stats"
-run = "./mise/lib/run-restic.sh stats"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh stats"
 
 ["backup:restore"]
 description = "Restore latest snapshot to ./restore"
-run = "./mise/lib/run-restic.sh restore ./restore"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh restore ./restore"
 
 ["backup:prune"]
 description = "Prune unreferenced data from restic repository"
-run = "./mise/lib/run-restic.sh prune"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh prune"
 
 ["backup:check"]
 description = "Check restic repository integrity (10% data subset)"
-run = "./mise/lib/run-restic.sh check"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh check"
 
 ["backup:restore-inplace"]
 description = "Restore latest snapshot to original paths (in-place)"
-run = "./mise/lib/run-restic.sh restore-inplace"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh restore-inplace"
 
 ["backup:cleanup"]
 description = "Remove all snapshots except the latest one, then prune"
-run = "./mise/lib/run-restic.sh cleanup"
+dir = "~/.config"
+run = "$HOME/.config/mise/lib/run-restic.sh cleanup"

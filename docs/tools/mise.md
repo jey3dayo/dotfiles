@@ -71,6 +71,9 @@ mise/
 ├── config.windows.toml    # Windows 向け構成（jobs 未設定）
 ├── config.pi.toml         # Raspberry Pi 向け最小構成
 ├── config.ci.toml         # CI/CD 向け最小構成
+├── tasks/                 # 外部 repo から見えてよい global task 定義
+│   ├── backup.toml        # restic backup
+│   └── brewfile.toml      # Brewfile バックアップ・リストア
 └── local-tasks/           # ~/.config 専用の mise task 定義
     ├── ci.toml            # CI/CD チェック・Nix 検証
     ├── format.toml        # フォーマット（書き込みあり/チェック）
@@ -78,20 +81,19 @@ mise/
     ├── test.toml          # テスト実行（Lua/TypeScript）
     ├── integration.toml   # 統合タスク（setup/doctor/check/format/lint 集約）
     ├── home-manager.toml  # Home Manager 操作
-    ├── updates.toml       # 依存関係更新（brew/apt/submodules）
+    ├── updates.toml       # 依存関係更新（apt/submodules など）
     ├── env.toml           # 環境変数管理（dotenvx）
-    ├── brewfile.toml      # Brewfile バックアップ・リストア
     └── docs.toml          # ドキュメントメンテナンス
 ```
 
 `.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/local-tasks/*.toml` を読み込む。
-`mise/tasks/` は global task として外部リポジトリからも見えるため、`~/.config` 専用タスクは置かない。
+`mise/tasks/` は global task として外部リポジトリからも見えるため、cwd 非依存または `dir` 明示済みのタスクだけを置く。
 helper shell は `mise/local-tasks/` 配下に置かず `mise/lib/` に集約し、`mise tasks` に内部実装が露出しないようにする。
 
 ## Task Design
 
 - 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
-- 環境依存・運用系: `home-manager.toml`, `agents.toml`, `updates.toml`, `env.toml`, `brewfile.toml`
+- 環境依存・運用系: `home-manager.toml`, `agents.toml`, `updates.toml`, `env.toml`
 - タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
 
 ### CI/CD タスク構造
