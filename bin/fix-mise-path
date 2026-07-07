@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# ponytail: mise reshim bug workaround (jdx/mise#6468), delete once upstream fixes bin-path detection
+set -euo pipefail
+
+shims_dir="$HOME/.mise/shims"
+template="$shims_dir/prettier"
+
+if [ ! -x "$template" ]; then
+  echo "template shim not found: $template" >&2
+  exit 1
+fi
+
+targets=("$@")
+[ "${#targets[@]}" -eq 0 ] && targets=(hunkdiff hunk)
+
+for name in "${targets[@]}"; do
+  cp "$template" "$shims_dir/$name"
+  chmod +x "$shims_dir/$name"
+  if command -v "$name" >/dev/null; then
+    echo "ok: $name -> $(command -v "$name")"
+  else
+    echo "still missing: $name" >&2
+  fi
+done
