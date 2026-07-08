@@ -32,6 +32,8 @@ rust = "stable"
 bun = "latest"
 ```
 
+`pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため避ける。`config.windows.toml` / `config.ci.toml` も同じ理由で `"github:astral-sh/uv"` に統一済み。
+
 ### 3. Formatters and Linters
 
 ```toml

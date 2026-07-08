@@ -15,8 +15,9 @@ mise設定は環境別ファイルで管理されています:
 
 内容: 設定のみ（ツール定義なし）
 
-- グローバル設定: `experimental`, `env_file`, `trusted_config_paths`
+- グローバル設定: `experimental`, `env_file`（`trusted_config_paths` や `jobs` など OS 間で異なる設定は各 OS 別ファイルで定義）
 - pnpmバックエンド設定: `settings.npm.package_manager = "pnpm"` - npmバックエンドがpnpmを使用
+- サプライチェーン対策: `minimum_release_age = "3d"` でリリース直後バージョンへの upgrade を抑止（`minimum_release_age_excludes` で個別ツールを除外可能）
 - 環境変数定義
 - 重要: ツールは定義しない（マージによる意図しない追加を防ぐため）
 
@@ -52,7 +53,11 @@ mise設定は環境別ファイルで管理されています:
 
 ### Config precedence
 
-directory-local → environment-specific (via MISE_CONFIG_FILE) → user config → global defaults
+directory-local → user config (`mise/config.toml`) → environment-specific (via MISE_CONFIG_FILE) → global defaults
+
+実挙動（実測ベース）: `MISE_CONFIG_FILE` が指すOS別ファイル（`config.default.toml` 等）より `mise/config.toml`（グローバル共通）が優先され、さらに `.mise.toml`（プロジェクト）が最優先で上書きする。
+
+運用ルール: OS 間で値が異なる設定（例: `idiomatic_version_file_enable_tools`, `jobs`, `trusted_config_paths`）は `config.toml` に置かない。`config.toml` は全環境で同一値の共通設定のみを置く。
 
 ## Directory Layout (mise/)
 

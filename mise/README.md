@@ -16,6 +16,8 @@ mise/
     └── integration.toml
 ```
 
+`config.toml` は OS 別ファイル（`config.default.toml` 等）より優先して適用されるため、OS 間で異なる値を置くと OS 別設定を意図せず上書きしてしまう。OS 間で異なりうる値は各 OS 別ファイル側に置く。
+
 ## Environment Detection
 
 Environment detection is handled by Home Manager (`nix/env-detect.nix`) and exported via
