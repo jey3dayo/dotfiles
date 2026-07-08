@@ -16,7 +16,8 @@ env_file = '.env.local'
 experimental = true
 # jobs は各 OS 固有ファイルで定義（default: 8, pi: 2）
 disable_backends = ["vfox"]
-idiomatic_version_file_enable_tools = []
+# idiomatic_version_file_enable_tools は各 OS 固有ファイルで定義（default: ["go"], pi/ci/windows: []）
+# ここで定義すると OS 固有ファイルより優先されてしまうため置かない
 # リリース直後でも即座に upgrade したいツールを minimum_release_age の対象外にする
 minimum_release_age_excludes = ["npm:hunkdiff", "npm:@openai/codex"]
 

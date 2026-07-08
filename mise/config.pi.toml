@@ -6,10 +6,10 @@
 [settings]
 env_file = '.env.local'
 experimental = true
-jobs = 2                                    # Raspberry Pi メモリ制約対応: 並列数削減でスワップ回避
+jobs = 2                                                 # Raspberry Pi メモリ制約対応: 並列数削減でスワップ回避
 disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = []
-trusted_config_paths = ["~/src/github.com"]
+trusted_config_paths = ["~/.config", "~/src/github.com"]
 
 [settings.pipx]
 uvx = true
