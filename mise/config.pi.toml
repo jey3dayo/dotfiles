@@ -65,6 +65,7 @@ yamllint = "latest"
 
 # AI・コミット支援
 "npm:@openai/codex" = "latest"
+"npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:aicommits" = "latest"
 "npm:opencommit" = "latest"
 
