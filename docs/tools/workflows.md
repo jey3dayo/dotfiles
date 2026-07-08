@@ -58,11 +58,11 @@ mise run lint:lua      # luacheck のみ実行
 mise run format:lua    # stylua でフォーマット
 ```
 
-#### pre-commit（commit 前）
+#### Lefthook（commit 前）
 
 ```bash
-pre-commit install     # 初回のみ
-# 以降、git commit 時に自動実行（stylua + luacheck）
+lefthook install     # 初回のみ
+# 以降、git commit 時に自動実行（staged file の format / fast lint）
 ```
 
 #### CI/CD（GitHub Actions）
@@ -92,78 +92,83 @@ pre-commit install     # 初回のみ
 3. 非ブロッキング通知
    - `vim.schedule` で起動をブロックしない
 
-### Pre-commit Setup
+### Lefthook Setup
 
 ```bash
-mise use -g pipx:pre-commit
+mise install
 cd ~/.config
-pre-commit install --hook-type pre-commit --hook-type pre-push
-pre-commit run --all-files
+lefthook install
+lefthook run pre-commit
 ```
 
 日常使用:
 
 ```bash
 git commit -m "..."                          # staged ファイルのみ自動チェック
-git push                                      # ci:quick + 変更ファイルに応じた追加テスト
-pre-commit run --all-files                   # 手動・全ファイル
-pre-commit run stylua --all-files            # 特定フックのみ
-pre-commit run --hook-stage manual markdown-link-check --all-files
+git push                                      # mise run ci で push 前に CI 相当を検証
+lefthook run pre-commit                      # staged ファイル向け hook を手動実行
+mise run format                              # 手動・全ファイル format
+mise run check                               # 手動・全ファイル check
+mise run lint:links                          # 重い Markdown link check
 ```
 
-### Dual Management Strategy（pre-commit vs mise tasks）
+### Hook Management Strategy（Lefthook + mise tasks）
 
-`.pre-commit-config.yaml` と `mise/local-tasks/*.toml` は**意図的に二重管理**しています:
+`lefthook.yml` と `mise/local-tasks/*.toml` は役割を分けて管理します:
 
 #### 理由
 
-- pre-commit: 変更ファイルのみ高速チェック（commit 時自動実行）
-- pre-push: `mise run ci:quick` と変更ファイルに応じた追加テスト
+- Lefthook: Git hook の入口。commit は軽量、push は CI 相当の gate に分ける
 - mise tasks: 全ファイル一括処理（手動/CI 実行）
 
-#### pre-push の追加テスト
+#### pre-push の gate
 
-`pre-push` hook は `mise run pre-push` を実行します。まず `mise run ci:quick` で format / lint を検証し、その後、未 push commit と未 commit 差分のファイル名に応じて追加テストを実行します。
+`pre-push` hook は `mise run ci` を実行します。GitHub Actions の通常 CI と同じ `format / lint / test / gitleaks` を push 前に検証し、remote CI が基本的な品質 gate で止まる確率を下げます。
+
+`mise run pre-push` は対象ファイルに応じて追加テストを絞る旧/手動用の軽量 gate として残しています。
 
 - `bin/*`, `scripts/*`, `zsh/*`, `mise/lib/*`, `mise/local-tasks/*`, `.mise.toml`: `mise run test:ts`
 - `*.lua`, `spec/*`, `nvim/spec/*`, `nvim/lua/*`: `mise run test:lua`
 
 #### 統合済みツール一覧
 
-| カテゴリ   | ツール                 | pre-commit | mise tasks | 備考             |
-| ---------- | ---------------------- | ---------- | ---------- | ---------------- |
-| Lua        | stylua, luacheck       | ✅         | ✅         | 完全統合         |
-| Shell      | shfmt, shellcheck      | ✅         | ✅         | .sh files        |
-| Zsh        | beautysh, zsh -n       | ✅         | ✅         | .zsh files       |
-| YAML       | yamllint, prettier     | ✅         | ✅         | lint → format 順 |
-| Markdown   | markdownlint, prettier | ✅         | ✅         | lint → format 順 |
-| Python     | ruff (format/check)    | ✅         | ✅         | 完全統合         |
-| TOML       | taplo                  | ✅         | ✅         | 完全統合         |
-| JS/TS      | biome                  | ✅         | ✅         | 完全統合         |
-| Dockerfile | hadolint               | ✅         | ✅         | 完全統合         |
-| Links      | markdown-link-check    | ✅ manual  | ✅         | 重いため手動実行 |
+| カテゴリ   | ツール                 | Lefthook commit | mise tasks | 備考             |
+| ---------- | ---------------------- | --------------- | ---------- | ---------------- |
+| Lua        | stylua, luacheck       | ✅              | ✅         | 完全統合         |
+| Shell      | shfmt                  | ✅              | ✅         | .sh files        |
+| Zsh        | beautysh, zsh -n       | ✅              | ✅         | .zsh files       |
+| YAML       | yamllint, prettier     | ✅              | ✅         | lint → format 順 |
+| Markdown   | markdownlint, prettier | ✅              | ✅         | lint → format 順 |
+| Python     | ruff (format/check)    | ✅              | ✅         | 完全統合         |
+| TOML       | taplo                  | ✅              | ✅         | 完全統合         |
+| JS/TS      | biome                  | ✅              | ✅         | 完全統合         |
+| Dockerfile | hadolint               | ✅              | ✅         | 完全統合         |
+| Secrets    | gitleaks               | ✅              | ✅         | `ci:gitleaks`    |
+| Links      | markdown-link-check    | 手動            | ✅         | 重いため手動実行 |
 
 #### メンテナンス時の注意
 
-ツールの引数や設定を変更する際は**両方**を更新してください:
+ツールの引数や設定を変更する際は、入口・tool 定義・全体 gate の役割を確認してください:
 
-| 変更内容         | 更新が必要なファイル                                                              |
-| ---------------- | --------------------------------------------------------------------------------- |
-| luacheck の引数  | `.pre-commit-config.yaml` + `mise/local-tasks/lint.toml`                          |
-| stylua の引数    | `.pre-commit-config.yaml` + `mise/local-tasks/format.toml`                        |
-| prettier の引数  | `.pre-commit-config.yaml` + `mise/local-tasks/format.toml`                        |
-| beautysh の引数  | `.pre-commit-config.yaml` + `mise/local-tasks/format.toml`                        |
-| hadolint の引数  | `.pre-commit-config.yaml` + `mise/local-tasks/lint.toml`                          |
-| 除外パス         | `.pre-commit-config.yaml` (exclude) + `mise/local-tasks/env.toml` (TASK_EXCLUDES) |
-| 新しいツール追加 | `.pre-commit-config.yaml` + 該当する mise タスク                                  |
+| 変更内容         | 更新が必要なファイル                                         |
+| ---------------- | ------------------------------------------------------------ |
+| hook 対象の増減  | `lefthook.yml`                                               |
+| luacheck の引数  | `lefthook.yml` + `mise/local-tasks/lint.toml`                |
+| stylua の引数    | `lefthook.yml` + `mise/local-tasks/format.toml`              |
+| prettier の引数  | `lefthook.yml` + `mise/local-tasks/format.toml`              |
+| beautysh の引数  | `lefthook.yml` + `mise/local-tasks/format.toml`              |
+| hadolint の引数  | `lefthook.yml` + `mise/local-tasks/lint.toml`                |
+| 除外パス         | `lefthook.yml` + `mise/local-tasks/env.toml` (TASK_EXCLUDES) |
+| 新しいツール追加 | `lefthook.yml` + 該当する mise タスク                        |
 
 **チェックリスト**（ツール設定変更時）:
 
 ```bash
-# 1. 両方のファイルを更新
+# 1. 関連ファイルを更新
 
-# 2. pre-commit で動作確認
-pre-commit run --all-files
+# 2. Lefthook 定義を確認
+lefthook validate
+lefthook run pre-commit
 
 # 3. mise tasks で動作確認
 mise run check
@@ -181,11 +186,10 @@ mise run ci:install    # luacheck と busted をインストール
 :LintInfo              # nvim-lint の状態確認
 :Lint                  # 手動 lint 実行
 
-# pre-commit エラー
-pre-commit run --all-files  # 全ファイルに対して実行
-pre-commit autoupdate       # フックの更新
+# Lefthook エラー
+lefthook run pre-commit
 
-# pre-commit をスキップして commit（緊急時のみ）
+# hooks をスキップして commit（緊急時のみ）
 git commit --no-verify -m "..."
 ```
 

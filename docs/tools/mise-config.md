@@ -186,7 +186,6 @@ trivy = "latest"
 usage = "latest"
 yazi = "latest"
 zoxide = "latest"
-"pipx:pre-commit" = "latest"
 ```
 
 #### 環境別の取り扱い

@@ -1,5 +1,5 @@
 ---
-paths: .gitignore, .pre-commit-config.yaml, .gitleaksignore, docs/security.md
+paths: .gitignore, lefthook.yml, .gitleaksignore, docs/security.md
 source: docs/security.md
 ---
 
@@ -31,8 +31,8 @@ Detailed Reference: [docs/security.md](../../docs/security.md)
 ## gitleaks（月次監査・手動実行）
 
 ```bash
-pre-commit run gitleaks --all-files   # 月次スキャン
-pre-commit run --all-files            # 全フック実行
+mise run ci:gitleaks                   # 月次スキャン
+gitleaks git --config=.gitleaks.toml -v # 手動スキャン
 ```
 
 ## インシデント時の即時アクション

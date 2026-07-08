@@ -200,7 +200,7 @@ trivy = "latest"
 usage = "latest"
 yazi = "latest"
 zoxide = "latest"
-"pipx:pre-commit" = "latest"
+"aqua:evilmartians/lefthook" = "latest"
 
 # ========================================
 # タスク設定 (Task Configuration)

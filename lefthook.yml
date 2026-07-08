@@ -1,0 +1,79 @@
+pre-commit:
+  parallel: true
+  commands:
+    stylua:
+      glob: "*.lua"
+      run: stylua {staged_files}
+      stage_fixed: true
+    luacheck:
+      glob: "*.lua"
+      run: luacheck -q {staged_files}
+    shfmt:
+      glob: "*.sh"
+      run: shfmt -w -i 2 -ci -bn {staged_files}
+      stage_fixed: true
+    shellcheck:
+      glob: "*.sh"
+      run: shellcheck {staged_files}
+    beautysh:
+      glob:
+        - "*.zsh"
+        - ".zshrc"
+        - ".zshenv"
+        - ".zprofile"
+        - ".zlogin"
+        - ".zlogout"
+        - "zsh/bin/**"
+      run: beautysh -i 2 {staged_files}
+      stage_fixed: true
+    zsh-syntax:
+      glob:
+        - "*.zsh"
+        - ".zshrc"
+        - ".zshenv"
+        - ".zprofile"
+        - ".zlogin"
+        - ".zlogout"
+        - "zsh/bin/**"
+      run: zsh -n {staged_files}
+    yamllint:
+      glob: "*.{yml,yaml}"
+      run: yamllint -f parsable {staged_files}
+    markdown-bold-headings:
+      glob: "agents/src/**/*.md"
+      run: tsx ./scripts/replace-bold-headings.ts {staged_files}
+      stage_fixed: true
+    markdownlint:
+      glob: "*.md"
+      run: markdownlint-cli2 --fix {staged_files}
+      stage_fixed: true
+    prettier:
+      glob: "*.{md,yml,yaml}"
+      run: prettier --write --ignore-unknown --log-level error {staged_files}
+      stage_fixed: true
+    ruff-format:
+      glob: "*.py"
+      run: uvx ruff format {staged_files}
+      stage_fixed: true
+    ruff-check:
+      glob: "*.py"
+      run: uvx ruff check --fix {staged_files}
+      stage_fixed: true
+    taplo:
+      glob: "*.toml"
+      run: taplo format {staged_files}
+      stage_fixed: true
+    biome:
+      glob: "*.{js,jsx,ts,tsx,json}"
+      run: biome check --write --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+    hadolint:
+      glob: "Dockerfile*"
+      run: hadolint --no-color {staged_files}
+    gitleaks:
+      run: gitleaks protect --staged --config=.gitleaks.toml --redact
+
+pre-push:
+  commands:
+    ci:
+      run: mise run ci
