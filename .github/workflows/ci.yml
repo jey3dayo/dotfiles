@@ -87,6 +87,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
+      - name: Mirror checkout into $HOME/.config
+        run: |
+          # `mise/local-tasks/*.toml` assumes this repo is deployed at
+          # `$HOME/.config` (see docs/setup.md's `git clone ... ~/.config`
+          # bootstrap): it sources helper scripts from
+          # `$HOME/.config/mise/lib/*.sh` and runs several tasks with
+          # `dir = "~/.config"`. Mirror the checkout there so CI matches
+          # that layout (fd does not follow symlinks, so a real copy is
+          # required, not a symlink farm).
+          mkdir -p "$HOME/.config"
+          cp -a "$GITHUB_WORKSPACE/." "$HOME/.config/"
+
       - name: Prepare mise task include path
         run: |
           # `.mise.toml` includes task files under `.config/mise/local-tasks/*`.
