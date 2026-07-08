@@ -37,7 +37,7 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 
 [tools]
 # Package Managers
-"pipx:uv" = "latest" # uvx for ruff execution
+"github:astral-sh/uv" = "latest" # uvx for ruff execution (pipx:uv は自己参照更新で停滞するため避ける)
 # Runtime
 node = "lts"
 bun = "latest"
