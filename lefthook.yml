@@ -87,6 +87,15 @@ pre-commit:
       run: gitleaks protect --staged --config=.gitleaks.toml --redact
 
 pre-push:
+  parallel: true
   commands:
-    ci:
-      run: mise run ci
+    format:
+      run: mise run check:format
+    lint:
+      run: mise run check:lint
+    test-ts:
+      run: mise run test:ts
+    test-lua:
+      run: mise run test:lua
+    gitleaks:
+      run: mise run ci:gitleaks
