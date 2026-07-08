@@ -16,6 +16,9 @@ local function load_colorscheme()
       "NormalNC ctermbg=NONE guibg=NONE",
       "NvimTreeNormal ctermbg=NONE guibg=NONE",
       "MsgArea ctermbg=NONE guibg=NONE",
+      -- MiniPick's default MatchCurrent links to CursorLine, whose bg is
+      -- nearly identical to the background and hard to see; brighten it.
+      "MiniPickMatchCurrent guibg=#4a454a guifg=#fcfcfc gui=bold",
     }
 
     for _, hl in ipairs(highlights) do
