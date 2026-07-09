@@ -5,6 +5,8 @@ author: jey3dayo
 targets:
   - claude
   - codex
+  - cursor
+  - opencode
 dependencies:
   apm:
     - jey3dayo/dotfiles/skills/nix-dotfiles

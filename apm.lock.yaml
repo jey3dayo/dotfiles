@@ -1,12 +1,12 @@
 lockfile_version: "1"
-generated_at: "2026-07-09T18:07:00.743745+00:00"
+generated_at: "2026-07-09T18:08:44.400293+00:00"
 apm_version: 0.22.0
 dependencies:
   - repo_url: jey3dayo/dotfiles
-    name: nix-dotfiles
+    name: dotfiles
     host: github.com
     resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
-    version: 1.0.0
+    version: unknown
     virtual_path: skills/nix-dotfiles
     is_virtual: true
     package_type: claude_skill
@@ -40,10 +40,10 @@ dependencies:
       .claude/skills/nix-dotfiles/scripts/diagnose.sh: sha256:3d0744deeb35924de5c221844e79ca2e955145e76f512a4e380164af343b009e
     content_hash: sha256:0e7cc48ac676ec26eb673c261285dd4c8fafd6f27dfe9d573d159b3450d439d0
   - repo_url: jey3dayo/dotfiles
-    name: nvim
+    name: dotfiles
     host: github.com
     resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
-    version: 1.0.0
+    version: unknown
     virtual_path: skills/nvim
     is_virtual: true
     package_type: claude_skill
@@ -65,10 +65,10 @@ dependencies:
       .claude/skills/nvim/references/nvim.md: sha256:ab75f3e5cfdb924ac9f06d7b8d88dc9ad3aaa60ef8123878f5362bdd96c7ade8
     content_hash: sha256:74bd761865501227d102d5291cef7c31f9d58d5718ce12c60fdf372dcd37986d
   - repo_url: jey3dayo/dotfiles
-    name: wezterm
+    name: dotfiles
     host: github.com
     resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
-    version: 1.0.0
+    version: unknown
     virtual_path: skills/wezterm
     is_virtual: true
     package_type: claude_skill
@@ -86,10 +86,10 @@ dependencies:
       .claude/skills/wezterm/references/wezterm.md: sha256:1983d6a10e191fa288a92c4d8b1dab3f5a4babe72bfaee762a4a72b81a8951ac
     content_hash: sha256:137afb9e863cabfe91e339ab4fb6bcb860207a976b3497a81e0846933b4a733d
   - repo_url: jey3dayo/dotfiles
-    name: zsh
+    name: dotfiles
     host: github.com
     resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
-    version: 1.0.0
+    version: unknown
     virtual_path: skills/zsh
     is_virtual: true
     package_type: claude_skill
