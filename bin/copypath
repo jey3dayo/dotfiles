@@ -1,4 +1,4 @@
 #!/bin/sh
 # Copy the absolute path of the given file/dir to the clipboard.
 # With no argument, copies the current directory's path.
-realpath "${1:-.}" | pbcopy
+printf '%s' "$(realpath "${1:-.}")" | pbcopy
