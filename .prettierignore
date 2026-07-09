@@ -38,6 +38,8 @@ configstore/
 Brewfile.lock.json
 nvim/lazy-lock.json
 nvim/snippets/*.json
+# gh CLI rewrites this with go-yaml's 4-space indent on its own; not human-edited
+gh/config.yml
 # managed by Karabiner, keep entire directory out of prettier
 karabiner/
 .kiro/steering/product.md
