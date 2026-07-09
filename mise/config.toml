@@ -23,6 +23,11 @@ minimum_release_age = "3d"
 # リリース直後でも即座に upgrade したいツールを minimum_release_age の対象外にする
 minimum_release_age_excludes = ["npm:hunkdiff", "npm:@openai/codex"]
 
+[settings.github]
+# macOS Keychain の git 認証情報を最後のフォールバックとして利用し、
+# GitHub の匿名 API レート制限で latest 解決が失敗するのを防ぐ。
+use_git_credentials = true
+
 [settings.pipx]
 uvx = true
 
