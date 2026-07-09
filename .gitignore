@@ -292,11 +292,14 @@ pulse/
 ## Nix access tokens (local only, do not commit)
 nix/access-tokens.conf
 
-## herdr runtime (config.toml のみ追跡、ソケット/ログ/セッション/リリースノートは除外)
+## herdr
 herdr/*.sock
 herdr/*.log
 herdr/session.json
 herdr/release-notes.json
+
+## browser-harness
+browser-harness/
 
 ## tmp
 tmp/
