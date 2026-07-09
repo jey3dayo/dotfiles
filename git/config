@@ -46,7 +46,7 @@
   all = true
 
 [credential]
-  helper = cache --timeout=2592000
+  helper = osxkeychain
 
 [filter "media"]
   required = true
