@@ -1,0 +1,104 @@
+lockfile_version: "1"
+generated_at: "2026-07-09T18:07:00.743745+00:00"
+apm_version: 0.22.0
+dependencies:
+  - repo_url: jey3dayo/dotfiles
+    name: nix-dotfiles
+    host: github.com
+    resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
+    version: 1.0.0
+    virtual_path: skills/nix-dotfiles
+    is_virtual: true
+    package_type: claude_skill
+    deployed_files:
+      - .agents/skills/nix-dotfiles
+      - .agents/skills/nix-dotfiles/SKILL.md
+      - .agents/skills/nix-dotfiles/agents/openai.yaml
+      - .agents/skills/nix-dotfiles/references/architecture.md
+      - .agents/skills/nix-dotfiles/references/commands.md
+      - .agents/skills/nix-dotfiles/references/troubleshooting.md
+      - .agents/skills/nix-dotfiles/scripts/diagnose.sh
+      - .claude/skills/nix-dotfiles
+      - .claude/skills/nix-dotfiles/SKILL.md
+      - .claude/skills/nix-dotfiles/agents/openai.yaml
+      - .claude/skills/nix-dotfiles/references/architecture.md
+      - .claude/skills/nix-dotfiles/references/commands.md
+      - .claude/skills/nix-dotfiles/references/troubleshooting.md
+      - .claude/skills/nix-dotfiles/scripts/diagnose.sh
+    deployed_file_hashes:
+      .agents/skills/nix-dotfiles/SKILL.md: sha256:214f76c32c6561d809fa5e3ba0872266289e9e572855320f5029a5ebf673bba5
+      .agents/skills/nix-dotfiles/agents/openai.yaml: sha256:2bdd86329ef1872fcc249c94e1942779e29ffa00caed7fffeee94f44014a8917
+      .agents/skills/nix-dotfiles/references/architecture.md: sha256:3768cdd0bcdcecfc28daebc163a4b83a4615af398b469c04c04aa3f313dbd7af
+      .agents/skills/nix-dotfiles/references/commands.md: sha256:bb08d32305940bcbd4769e8091019e0cac440223ad8e0402b53a062b970926a9
+      .agents/skills/nix-dotfiles/references/troubleshooting.md: sha256:dc9cd5e3f8b306462cc2d148bf55a0ae4f7d25e16a3a4acb3405ca8312606d9f
+      .agents/skills/nix-dotfiles/scripts/diagnose.sh: sha256:3d0744deeb35924de5c221844e79ca2e955145e76f512a4e380164af343b009e
+      .claude/skills/nix-dotfiles/SKILL.md: sha256:214f76c32c6561d809fa5e3ba0872266289e9e572855320f5029a5ebf673bba5
+      .claude/skills/nix-dotfiles/agents/openai.yaml: sha256:2bdd86329ef1872fcc249c94e1942779e29ffa00caed7fffeee94f44014a8917
+      .claude/skills/nix-dotfiles/references/architecture.md: sha256:3768cdd0bcdcecfc28daebc163a4b83a4615af398b469c04c04aa3f313dbd7af
+      .claude/skills/nix-dotfiles/references/commands.md: sha256:bb08d32305940bcbd4769e8091019e0cac440223ad8e0402b53a062b970926a9
+      .claude/skills/nix-dotfiles/references/troubleshooting.md: sha256:dc9cd5e3f8b306462cc2d148bf55a0ae4f7d25e16a3a4acb3405ca8312606d9f
+      .claude/skills/nix-dotfiles/scripts/diagnose.sh: sha256:3d0744deeb35924de5c221844e79ca2e955145e76f512a4e380164af343b009e
+    content_hash: sha256:0e7cc48ac676ec26eb673c261285dd4c8fafd6f27dfe9d573d159b3450d439d0
+  - repo_url: jey3dayo/dotfiles
+    name: nvim
+    host: github.com
+    resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
+    version: 1.0.0
+    virtual_path: skills/nvim
+    is_virtual: true
+    package_type: claude_skill
+    deployed_files:
+      - .agents/skills/nvim
+      - .agents/skills/nvim/SKILL.md
+      - .agents/skills/nvim/agents/openai.yaml
+      - .agents/skills/nvim/references/nvim.md
+      - .claude/skills/nvim
+      - .claude/skills/nvim/SKILL.md
+      - .claude/skills/nvim/agents/openai.yaml
+      - .claude/skills/nvim/references/nvim.md
+    deployed_file_hashes:
+      .agents/skills/nvim/SKILL.md: sha256:a53a04fec67b29956642de76dc0cebac8e7b67ac9dc1359c55915b9a4a1b6cf7
+      .agents/skills/nvim/agents/openai.yaml: sha256:4849f99308d5bb5c06be4d7f55f6b5323fa0608c4e8e4c37fc85e2886e4d73f3
+      .agents/skills/nvim/references/nvim.md: sha256:ab75f3e5cfdb924ac9f06d7b8d88dc9ad3aaa60ef8123878f5362bdd96c7ade8
+      .claude/skills/nvim/SKILL.md: sha256:a53a04fec67b29956642de76dc0cebac8e7b67ac9dc1359c55915b9a4a1b6cf7
+      .claude/skills/nvim/agents/openai.yaml: sha256:4849f99308d5bb5c06be4d7f55f6b5323fa0608c4e8e4c37fc85e2886e4d73f3
+      .claude/skills/nvim/references/nvim.md: sha256:ab75f3e5cfdb924ac9f06d7b8d88dc9ad3aaa60ef8123878f5362bdd96c7ade8
+    content_hash: sha256:74bd761865501227d102d5291cef7c31f9d58d5718ce12c60fdf372dcd37986d
+  - repo_url: jey3dayo/dotfiles
+    name: wezterm
+    host: github.com
+    resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
+    version: 1.0.0
+    virtual_path: skills/wezterm
+    is_virtual: true
+    package_type: claude_skill
+    deployed_files:
+      - .agents/skills/wezterm
+      - .agents/skills/wezterm/SKILL.md
+      - .agents/skills/wezterm/references/wezterm.md
+      - .claude/skills/wezterm
+      - .claude/skills/wezterm/SKILL.md
+      - .claude/skills/wezterm/references/wezterm.md
+    deployed_file_hashes:
+      .agents/skills/wezterm/SKILL.md: sha256:6fb305d6edaa7f4b313a8aa13f84d4a28d029ea995847f4d24f8689ebc515368
+      .agents/skills/wezterm/references/wezterm.md: sha256:1983d6a10e191fa288a92c4d8b1dab3f5a4babe72bfaee762a4a72b81a8951ac
+      .claude/skills/wezterm/SKILL.md: sha256:6fb305d6edaa7f4b313a8aa13f84d4a28d029ea995847f4d24f8689ebc515368
+      .claude/skills/wezterm/references/wezterm.md: sha256:1983d6a10e191fa288a92c4d8b1dab3f5a4babe72bfaee762a4a72b81a8951ac
+    content_hash: sha256:137afb9e863cabfe91e339ab4fb6bcb860207a976b3497a81e0846933b4a733d
+  - repo_url: jey3dayo/dotfiles
+    name: zsh
+    host: github.com
+    resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
+    version: 1.0.0
+    virtual_path: skills/zsh
+    is_virtual: true
+    package_type: claude_skill
+    deployed_files:
+      - .agents/skills/zsh
+      - .agents/skills/zsh/SKILL.md
+      - .claude/skills/zsh
+      - .claude/skills/zsh/SKILL.md
+    deployed_file_hashes:
+      .agents/skills/zsh/SKILL.md: sha256:42a47db6cbc7f8a3b1b0f1b65cee6c13115264231f1a60c54dbf2823c13b15ad
+      .claude/skills/zsh/SKILL.md: sha256:42a47db6cbc7f8a3b1b0f1b65cee6c13115264231f1a60c54dbf2823c13b15ad
+    content_hash: sha256:2ecb5a0806258aed63309fdefcb9c5dab16b6927eebe3af05d1f3fe08776d1a2

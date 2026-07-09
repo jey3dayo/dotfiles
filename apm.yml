@@ -1,0 +1,16 @@
+name: dotfiles
+version: 1.0.0
+description: APM project for jey3dayo/dotfiles (repo-local Agent Skills)
+author: jey3dayo
+targets:
+  - claude
+  - codex
+dependencies:
+  apm:
+    - jey3dayo/dotfiles/skills/nix-dotfiles
+    - jey3dayo/dotfiles/skills/zsh
+    - jey3dayo/dotfiles/skills/wezterm
+    - jey3dayo/dotfiles/skills/nvim
+  mcp: []
+includes: auto
+scripts: {}

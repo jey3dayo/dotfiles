@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nix Dotfiles"
+  short_description: "Home Manager と Nix Flake の dotfiles 運用・診断"
+  default_prompt: "Use $nix-dotfiles to apply, diagnose, or roll back Home Manager dotfiles configuration."

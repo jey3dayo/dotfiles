@@ -303,3 +303,7 @@ browser-harness/
 
 ## tmp
 tmp/
+
+
+# APM dependencies
+apm_modules/
