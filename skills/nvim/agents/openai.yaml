@@ -1,0 +1,4 @@
+interface:
+  display_name: "Neovim Config Review"
+  short_description: "Review Neovim config performance and LSP setup"
+  default_prompt: "Use $nvim to review a Neovim configuration for startup performance, LSP, and plugin management."
