@@ -1,13 +1,12 @@
 # Command Reference
 
-全コマンドリファレンス（home-manager, nix flake, nix run）
+全コマンドリファレンス（home-manager, nix flake）
 
 ## Table of Contents
 
 1. [home-manager Commands](#home-manager-commands)
 2. [nix flake Commands](#nix-flake-commands)
-3. [nix run Commands](#nix-run-commands)
-4. [診断コマンド](#診断コマンド)
+3. [診断コマンド](#診断コマンド)
 
 ---
 
@@ -52,9 +51,6 @@ home-manager switch --flake ~/.config --impure --show-trace
 ### 成功確認
 
 ```bash
-# Agent Skills が配布されたか
-ls -la ~/.claude/skills/
-
 # 設定ファイルのシンボリックリンク確認
 readlink ~/.config/nvim
 
@@ -292,9 +288,6 @@ nix flake metadata ~/.config
 
 # JSON 形式で表示
 nix flake metadata ~/.config --json
-
-# inputs の URL を確認
-nix flake metadata ~/.config | grep -E "(openai-skills|vercel)"
 ```
 
 ### 出力例
@@ -305,9 +298,7 @@ Locked URL:    path:/home/user/.config
 Path:          /home/user/.config
 Inputs:
 ├───nixpkgs: github:nixos/nixpkgs/nixpkgs-unstable
-├───home-manager: github:nix-community/home-manager
-├───openai-skills: github:openai/agent-skills
-└───vercel-skills: github:vercel/next.js/tree/canary/examples
+└───home-manager: github:nix-community/home-manager
 ```
 
 ### JSON 出力の活用
@@ -315,9 +306,6 @@ Inputs:
 ```bash
 # inputs 数をカウント
 nix flake metadata ~/.config --json | jq '.locks.nodes | length'
-
-# 特定 input の URL を取得
-nix flake metadata ~/.config --json | jq '.locks.nodes."openai-skills".original.url'
 ```
 
 ---
@@ -374,9 +362,6 @@ nix flake update <flake-ref> [--update-input <input>]
 # すべての inputs を更新
 nix flake update ~/.config
 
-# 特定 input のみ更新
-nix flake update ~/.config --update-input openai-skills
-
 # nixpkgs のみ更新
 nix flake update ~/.config --update-input nixpkgs
 ```
@@ -418,9 +403,6 @@ nix flake lock <flake-ref> [--update-input <input>]
 ```bash
 # flake.lock を生成
 nix flake lock ~/.config
-
-# 特定 input のロックを更新
-nix flake lock ~/.config --update-input openai-skills
 ```
 
 ### 使用場面
@@ -428,78 +410,6 @@ nix flake lock ~/.config --update-input openai-skills
 - flake.lock が存在しない場合
 - inputs を追加した後
 - 特定 input のバージョンを固定したい場合
-
----
-
-## nix run Commands
-
-### validate
-
-### 用途
-
-### 構文
-
-```bash
-nix run ~/.config#validate
-```
-
-### チェック項目
-
-- SKILL.md の存在と構文
-- frontmatter の必須フィールド
-- references/ の構造
-- scripts/ の実行権限
-
-### 出力例
-
-```
-✓ All skills valid
-✓ openai-skills: 15 skills
-✓ vercel-skills: 8 skills
-```
-
-### エラー例
-
-```
-✗ openai-skills/gh-fix-ci: Missing SKILL.md
-✗ vercel-skills/app-router: Invalid frontmatter
-```
-
-### 使用場面
-
-- 新しいスキルを追加した後
-- スキル構造の変更後
-- CI でのバリデーション
-
----
-
-### catalog
-
-### 用途
-
-### 構文
-
-```bash
-nix run ~/.config#catalog
-```
-
-### 出力例
-
-```
-Available skills:
-  - openai-skills:
-    - gh-fix-ci
-    - gh-address-comments
-    - gh-create-pr
-  - vercel-skills:
-    - app-router
-    - api-routes
-```
-
-### 使用場面
-
-- 利用可能なスキル一覧の確認
-- selection.enable の設定確認
 
 ---
 
@@ -512,15 +422,14 @@ Available skills:
 ### 構文
 
 ```bash
-~/.apm/catalog/skills/nix-dotfiles/scripts/diagnose.sh
+<installed-nix-dotfiles-skill-dir>/scripts/diagnose.sh
 ```
 
 ### チェック項目
 
 1. Generation 検証（最新 generation の存在と `.claude` 含有）
-2. Symlink 検証（`~/.config/result` と `~/.claude/skills/` のリンク先）
-3. Flake Inputs 一貫性（`flake.nix` と `agent-skills-sources.nix` の URL 一致）
-4. Worktree 検出（`DOTFILES_WORKTREE` と候補パスの検証）
+2. Symlink 検証（`~/.config/result` のリンク先）
+3. Worktree 検出（`DOTFILES_WORKTREE` と候補パスの検証）
 
 ### 出力例
 
@@ -530,10 +439,6 @@ Available skills:
 Checking Home Manager generation... [✓] Generation check: .claude found in latest generation
 
 Checking symlinks... [✓] Symlink check: ~/.config/result -> /nix/store/...
-    ~/.claude/skills -> /nix/store/.../home-files/.claude/skills
-    Found 15 skill directories
-
-Checking Flake inputs consistency... [✓] Flake inputs check: URLs consistent (3 inputs)
 
 Checking worktree detection... [✓] Worktree check: Found at /home/user/.config
 
@@ -549,19 +454,11 @@ All checks passed ✓
 Checking Home Manager generation... [✗] Generation check: .claude not found in generation
     Generation path: /nix/store/.../home-manager-generation
 
-Checking Flake inputs consistency... [✗] Flake inputs check: URL mismatch detected
-    flake.nix: 3 inputs
-    agent-skills-sources.nix: 4 sources
-
-    URLs in agent-skills-sources.nix only:
-      url = "github:new-org/new-skills"
-
 === Summary ===
 Some checks failed. See details above.
 
 Quick fixes:
   - Generation issue: home-manager switch --flake ~/.config --impure
-  - Flake inputs: Sync agent-skills-sources.nix → flake.nix URLs
   - Worktree: Set DOTFILES_WORKTREE=/path/to/dotfiles
 ```
 
@@ -616,19 +513,6 @@ readlink ~/.config/result
 ls -la $(readlink ~/.config/result)
 ```
 
-### ~/.claude/skills/ の確認
-
-```bash
-# シンボリックリンク先
-readlink ~/.claude/skills
-
-# スキル一覧
-ls -la $(readlink ~/.claude/skills)
-
-# スキル数のカウント
-find $(readlink ~/.claude/skills) -maxdepth 1 -type d ! -name ".*" | wc -l
-```
-
 ### 設定ファイルのシンボリックリンク確認
 
 ```bash
@@ -646,36 +530,17 @@ ls -ld ~/.config/gh/  # drwxr-xr-x なら実体、lrwxrwxrwx なら symlink
 
 ### Flake Inputs 確認コマンド
 
-### agent-skills-sources.nix の URL 一覧
+### flake.nix の inputs 一覧
 
 ```bash
-rg 'url = ' ~/.config/nix/agent-skills-sources.nix
-```
-
-### flake.nix の inputs URL 一覧
-
-```bash
-rg 'url = "github:.*skills' ~/.config/flake.nix
-```
-
-### URL 差分の検出
-
-```bash
-sources_urls=$(rg -o 'url = "github:[^"]+' ~/.config/nix/agent-skills-sources.nix | sort)
-flake_urls=$(rg -o 'url = "github:[^"]+' ~/.config/flake.nix | grep skills | sort)
-
-# 差分表示
-diff <(echo "$sources_urls") <(echo "$flake_urls")
+rg 'url = ' ~/.config/flake.nix
 ```
 
 ### inputs 数のカウント
 
 ```bash
 # flake.nix
-rg -o 'url = "github:.*/.*skills' ~/.config/flake.nix | wc -l
-
-# agent-skills-sources.nix
-rg -o '^\s+[a-z-]+\s*=' ~/.config/nix/agent-skills-sources.nix | wc -l
+rg -o 'url = "github:' ~/.config/flake.nix | wc -l
 ```
 
 ---
@@ -756,7 +621,6 @@ git -C ~/.config rev-parse --show-toplevel
 
 ### クイックリファレンス
 
-- [Agent Skills が配布されない](troubleshooting.md#agent-skills-が配布されない)
 - [Flake inputs エラー](troubleshooting.md#flake-inputs-エラー)
 - [Worktree 検出失敗](troubleshooting.md#worktree-検出失敗)
 - [書き込みエラー](troubleshooting.md#書き込みエラー)

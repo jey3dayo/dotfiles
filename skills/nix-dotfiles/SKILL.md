@@ -1,11 +1,11 @@
 ---
 name: nix-dotfiles
-description: "Manage and troubleshoot dotfiles with Home Manager and Nix Flake. Use when users mention home-manager, Nix flake, `nixで配布`, `~/.configがnix管理`, applying configuration (`設定を適用`), generations or rollback, Agent Skills not distributed (`~/.claude/skills/` が空), worktree not found, or migrating legacy home-dotfiles such as `~/.opencommit` into `~/.config`. For `mise skills add`, mise task definitions, or `mise run`, use `mise` instead."
+description: "Manage and troubleshoot dotfiles with Home Manager and Nix Flake. Use when users mention home-manager, Nix flake, `nixで配布`, `~/.configがnix管理`, applying configuration (`設定を適用`), generations or rollback, worktree not found, or migrating legacy home-dotfiles such as `~/.opencommit` into `~/.config`. Agent Skills distribution is handled by `~/.apm` (APM), not Nix — use `apm-usage` for that. For `mise skills add`, mise task definitions, or `mise run`, use `mise` instead."
 ---
 
 # Nix Dotfiles
 
-Home Manager + Nix Flake による dotfiles 運用。設定適用、世代管理、診断、Agent Skills ソース管理、legacy dotfile 移行をカバーする。Flake は `~/.config` にある。
+Home Manager + Nix Flake による dotfiles 運用。設定適用、世代管理、診断、legacy dotfile 移行をカバーする。Flake は `~/.config` にある。Agent Skills の配布は `~/.apm`(APM)が担当し、Nix 側の配布機構は廃止済み。
 
 ## Quick Start
 
@@ -17,7 +17,6 @@ home-manager switch --flake ~/.config --impure
 home-manager switch --flake ~/.config --impure --dry-run
 
 # 適用結果の確認
-ls -la ~/.claude/skills/
 readlink ~/.config/nvim
 
 # 世代の確認とロールバック
@@ -100,37 +99,6 @@ home.file.".opencommitrc".source =
   config.lib.file.mkOutOfStoreSymlink "${config.xdg.configHome}/opencommit/config.json";
 ```
 
-## Agent Skill ソースの追加
-
-`nix/agent-skills-sources.nix` と `flake.nix` の inputs は手動同期が必要。URL・flake 属性を必ず一致させる。
-
-```nix
-# nix/agent-skills-sources.nix
-new-skill-source = {
-  url = "github:org/repo";
-  flake = false;
-  baseDir = "skills";  # または repository root "."
-  selection.enable = [ "skill-name" ];
-};
-```
-
-```nix
-# flake.nix inputs（静的リテラルで定義。let-in や import は使わない）
-new-skill-source = {
-  url = "github:org/repo";
-  flake = false;
-};
-```
-
-検証と配布確認:
-
-```bash
-nix flake show ~/.config
-nix flake metadata ~/.config | rg 'new-skill-source'
-home-manager switch --flake ~/.config --impure
-ls -la ~/.claude/skills/ | rg '<skill-name>'
-```
-
 ## 診断
 
 トラブル時はまず統合診断スクリプトを実行する:
@@ -139,27 +107,24 @@ ls -la ~/.claude/skills/ | rg '<skill-name>'
 <installed-nix-dotfiles-skill-dir>/scripts/diagnose.sh
 ```
 
-4項目（世代の妥当性、symlink、flake.nix と agent-skills-sources.nix の URL 整合、worktree 検出）を `[✓]` / `[✗]` で報告する。
+3項目（世代の妥当性、symlink、worktree 検出）を `[✓]` / `[✗]` で報告する。
 
-| ツール               | 用途                    | 実行タイミング   |
-| -------------------- | ----------------------- | ---------------- |
-| `diagnose.sh`        | Home Manager 統合の診断 | トラブル時       |
-| `nix run .#validate` | スキル構造の検証        | スキル追加後     |
-| `nix flake check`    | Flake 構文検証          | flake.nix 編集後 |
-| `mise run ci`        | フル CI チェック        | PR 作成前        |
+| ツール            | 用途                    | 実行タイミング   |
+| ----------------- | ----------------------- | ---------------- |
+| `diagnose.sh`     | Home Manager 統合の診断 | トラブル時       |
+| `nix flake check` | Flake 構文検証          | flake.nix 編集後 |
+| `mise run ci`     | フル CI チェック        | PR 作成前        |
 
 個別コマンド（世代・symlink・flake metadata の手動確認）は `references/commands.md` を参照。
 
 ## よくある問題
 
-| 症状                                          | 原因                                                    | 対処                                                                                                                 |
-| --------------------------------------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| スキルが配布されない                          | 別 flake から switch して世代が後勝ちで上書きされた     | `~/.config` から `home-manager switch --flake ~/.config --impure`                                                    |
-| スキルが配布されない                          | `flake.nix` と `agent-skills-sources.nix` の URL 不一致 | `rg 'url = '` で両方を比較し、sources → flake.nix の向きで手動同期                                                   |
-| スキルが配布されない                          | `selection.enable` の typo / カタログに存在しない名前   | `mise run agents:report` で確認し `selection.enable` を修正                                                          |
-| Flake inputs エラー                           | inputs に let-in / import を使っている                  | 静的リテラル定義へ変更し `nix flake show ~/.config` で検証                                                           |
-| `Dotfiles repository not found`               | worktree 検出失敗                                       | `DOTFILES_WORKTREE=/path/to/dotfiles home-manager switch ...` で一時回避、恒久対応は `repoWorktreeCandidates` を設定 |
-| `Permission denied` / `Read-only file system` | 実行時書き込みが必要なディレクトリを Nix 管理にした     | 対象を `xdgConfigDirs` から外して switch し、静的ファイルのみ `xdgConfigFiles` で管理                                |
+| 症状                                          | 原因                                                | 対処                                                                                                                 |
+| --------------------------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 設定が反映されない                            | 別 flake から switch して世代が後勝ちで上書きされた | `~/.config` から `home-manager switch --flake ~/.config --impure`                                                    |
+| Flake inputs エラー                           | inputs に let-in / import を使っている              | 静的リテラル定義へ変更し `nix flake show ~/.config` で検証                                                           |
+| `Dotfiles repository not found`               | worktree 検出失敗                                   | `DOTFILES_WORKTREE=/path/to/dotfiles home-manager switch ...` で一時回避、恒久対応は `repoWorktreeCandidates` を設定 |
+| `Permission denied` / `Read-only file system` | 実行時書き込みが必要なディレクトリを Nix 管理にした | 対象を `xdgConfigDirs` から外して switch し、静的ファイルのみ `xdgConfigFiles` で管理                                |
 
 worktree の恒久設定:
 
@@ -177,6 +142,6 @@ programs.dotfiles = {
 
 ## References
 
-- `references/troubleshooting.md` — 上の表で解決しない時に読む。症状 → 原因 → 確認 → 修正の詳細手順（配布問題、flake inputs、worktree、.gitignore フィルタ、書き込みエラー）
-- `references/commands.md` — 正確なフラグや個別診断コマンドが必要な時に読む。home-manager / nix flake / nix run の全コマンド
+- `references/troubleshooting.md` — 上の表で解決しない時に読む。症状 → 原因 → 確認 → 修正の詳細手順（flake inputs、worktree、.gitignore フィルタ、書き込みエラー）
+- `references/commands.md` — 正確なフラグや個別診断コマンドが必要な時に読む。home-manager / nix flake の全コマンド
 - `references/architecture.md` — Flake 構造、worktree SSoT、gitignore フィルタリング、activation script の仕組みを理解したい時に読む

@@ -4,99 +4,10 @@
 
 ## Table of Contents
 
-1. [Agent Skills が配布されない](#agent-skills-が配布されない)
-2. [Flake inputs エラー](#flake-inputs-エラー)
-3. [Worktree 検出失敗](#worktree-検出失敗)
-4. [.gitignore フィルタリング問題](#gitignore-フィルタリング問題)
-5. [書き込みエラー](#書き込みエラー)
-
----
-
-## Agent Skills が配布されない
-
-### 症状
-
-### 原因
-
-Home Manager は1プロファイルしか管理しないため、後勝ちになります。
-
-### 確認手順
-
-```bash
-# 1. 現在の generation を確認
-home-manager generations | head -3
-
-# 2. generation の home-files に .claude が含まれるか
-find /nix/store/<generation-hash>-home-manager-generation/home-files/ -path "*claude*"
-
-# 3. dry-run でリンク生成を確認
-home-manager switch --flake ~/.config --impure --dry-run 2>&1 | grep claude
-```
-
-### generation-hash の取得
-
-```bash
-# 最新 generation のパスを取得
-home-manager generations | head -1 | awk '{print $NF}'
-
-# 具体的な確認例
-latest_gen=$(home-manager generations | head -1 | awk '{print $NF}')
-find "$latest_gen/home-files/" -path "*claude*"
-```
-
-### 解決策
-
-### 対策1: 正しい flake から switch を実行
-
-```bash
-home-manager switch --flake ~/.config --impure
-```
-
-### 対策2: 統合診断スクリプトで確認
-
-```bash
-~/.apm/catalog/skills/nix-dotfiles/scripts/diagnose.sh
-```
-
-スクリプトは以下をチェックします:
-
-- Generation の存在と `.claude` 含有
-- Symlink の整合性
-- Flake inputs の一貫性
-- Worktree 検出
-
-### 予防策
-
-複数の flake から `home-manager switch` を実行しないようにします。
-
-### オプション1: 1つの flake に統合
-
-- 推奨: すべての Home Manager 設定を `~/.config` flake に集約
-
-### オプション2: 実行順序を固定
-
-- `~/.config` flake を最後に実行
-- 他の flake は `~/.config` flake に import で統合
-
-### 実装例
-
-```nix
-# ~/.config/flake.nix
-{
-  inputs = {
-    other-config.url = "path:/path/to/other/flake";
-  };
-
-  outputs = { self, nixpkgs, home-manager, other-config, ... }: {
-    homeConfigurations."user" = home-manager.lib.homeManagerConfiguration {
-      modules = [
-        ./home.nix
-        other-config.homeModules.default
-      ];
-    };
-  };
-}
-```
+1. [Flake inputs エラー](#flake-inputs-エラー)
+2. [Worktree 検出失敗](#worktree-検出失敗)
+3. [.gitignore フィルタリング問題](#gitignore-フィルタリング問題)
+4. [書き込みエラー](#書き込みエラー)
 
 ---
 
@@ -117,7 +28,7 @@ Flake 評価時に inputs は完全に静的である必要があり、実行時
 ```nix
 # ❌ 動的評価（let-in + import）
 inputs = let
-  sources = import ./nix/agent-skills-sources.nix;
+  sources = import ./nix/some-sources.nix;
   dynamicInputs = builtins.mapAttrs (_: src: {
     inherit (src) url flake;
   }) sources;
@@ -136,10 +47,6 @@ inputs = {
     url = "github:nix-community/home-manager";
     inputs.nixpkgs.follows = "nixpkgs";
   };
-  openai-skills = {
-    url = "github:openai/agent-skills";
-    flake = false;
-  };
   # 静的リテラル定義のみ
 };
 ```
@@ -151,109 +58,23 @@ inputs = {
 rg "inputs\s*=" ~/.config/flake.nix -A 10
 
 # 2. let-in や import の使用を確認
-rg "(let|import).*agent-skills" ~/.config/flake.nix
+rg "(let|import)" ~/.config/flake.nix
 
 # 3. Flake 評価のテスト
 nix flake show ~/.config
-```
-
-### SSoT 管理の設計
-
-Flake の静的制約を満たしつつ、SSoT（Single Source of Truth）を維持します。
-
-| ファイル                       | 役割               | 管理項目                              |
-| ------------------------------ | ------------------ | ------------------------------------- |
-| `nix/agent-skills-sources.nix` | SSoT（メタデータ） | url, flake, baseDir, selection.enable |
-| `flake.nix` inputs             | Flake inputs定義   | url, flake のみ（手動同期が必要）     |
-| `nix/sources.nix`              | 統合処理           | inputs と baseDir を結合              |
-| `nix/agent-skills.nix`         | スキル選択         | selection.enable を抽出               |
-
-### トレードオフ
-
-- ✅ Flake 仕様に準拠
-- ✅ メタデータは SSoT で集約管理
-- ❌ URL/flake 属性が重複（制約上の妥協）
-
-### 実装例
-
-```nix
-# nix/agent-skills-sources.nix (SSoT)
-{
-  openai-skills = {
-    url = "github:openai/skills";
-    flake = false;
-    baseDir = "skills";
-    selection.enable = [ "gh-fix-ci" "gh-address-comments" ];
-  };
-  vercel-skills = {
-    url = "github:vercel/next.js/tree/canary/examples";
-    flake = false;
-    baseDir = ".";
-    selection.enable = [ "app-router" "api-routes" ];
-  };
-}
-```
-
-```nix
-# flake.nix (手動同期が必要)
-{
-  inputs = {
-    # NOTE: agent-skills-sources.nix と手動同期
-    #       Flake spec requires literal inputs
-    openai-skills = {
-      url = "github:openai/skills";
-      flake = false;
-    };
-    vercel-skills = {
-      url = "github:vercel/next.js/tree/canary/examples";
-      flake = false;
-    };
-  };
-}
-```
-
-```nix
-# nix/sources.nix (統合)
-let
-  agentSkills = import ./agent-skills-sources.nix;
-  inputs = /* flake inputs from flake.nix */;
-in {
-  openai-skills = "${inputs.openai-skills}/${agentSkills.openai-skills.baseDir}";
-  vercel-skills = "${inputs.vercel-skills}/${agentSkills.vercel-skills.baseDir}";
-}
 ```
 
 ### 解決手順
 
 1. inputs を静的リテラル定義に変更（`let-in` を削除）
 
-2. agent-skills-sources.nix と flake.nix の URL/flake を同期
-
-   ```bash
-   # agent-skills-sources.nix の URL 一覧
-   rg 'url = ' ~/.config/nix/agent-skills-sources.nix
-
-   # flake.nix の inputs URL 一覧
-   rg 'url = "github:.*skills' ~/.config/flake.nix
-
-   # 差分があれば手動で同期
-   ```
-
-3. 検証
+2. 検証
 
    ```bash
    nix flake show ~/.config
    nix flake metadata ~/.config
    home-manager build --flake ~/.config --impure --dry-run
    ```
-
-### 参考コミット
-
-- `2f1e3e34`: Agent Skills の初回統合（migrate agent skills into dotfiles）
-- `139dd809`: dotfiles との統合修正（fix: integrate agent skills with dotfiles）
-- `56543bda`: catalog 定義の統合（integrate catalog definitions into agent-skills-sources.nix）
-
-### Note
 
 ---
 
@@ -371,7 +192,7 @@ check_worktree ~/.config
 ### 診断スクリプトによる確認
 
 ```bash
-~/.apm/catalog/skills/nix-dotfiles/scripts/diagnose.sh
+<installed-nix-dotfiles-skill-dir>/scripts/diagnose.sh
 ```
 
 スクリプトの `check_worktree()` が以下を確認します:

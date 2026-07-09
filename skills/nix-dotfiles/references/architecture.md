@@ -6,11 +6,10 @@ Flake 構造、Worktree SSoT、gitignore フィルタリング、用語集
 
 1. [用語集](#用語集)
 2. [Flake 構造](#flake-構造)
-3. [Flake Inputs と Agent Skills 管理](#flake-inputs-と-agent-skills-管理)
-4. [Worktree 検出ロジック](#worktree-検出ロジック)
-5. [.gitignore-aware フィルタリング](#gitignore-aware-フィルタリング)
-6. [静的 vs 動的ファイル管理](#静的-vs-動的ファイル管理)
-7. [Activation Scripts](#activation-scripts)
+3. [Worktree 検出ロジック](#worktree-検出ロジック)
+4. [.gitignore-aware フィルタリング](#gitignore-aware-フィルタリング)
+5. [静的 vs 動的ファイル管理](#静的-vs-動的ファイル管理)
+6. [Activation Scripts](#activation-scripts)
 
 ---
 
@@ -101,11 +100,10 @@ home.activation.dotfiles-tmux-plugins = lib.hm.dag.entryAfter ["dotfiles-submodu
 
 このプロジェクトでは:
 
-| SSoT                                            | 管理内容              | 参照元                            |
-| ----------------------------------------------- | --------------------- | --------------------------------- |
-| `agent-skills-sources.nix`                      | スキルメタデータ      | `sources.nix`, `agent-skills.nix` |
-| `dotfiles-module.nix` の `detectWorktreeScript` | worktree 検出ロジック | activation scripts                |
-| `.gitignore`                                    | 除外ファイルパターン  | `cleanedRepo`                     |
+| SSoT                                            | 管理内容              | 参照元             |
+| ----------------------------------------------- | --------------------- | ------------------ |
+| `dotfiles-module.nix` の `detectWorktreeScript` | worktree 検出ロジック | activation scripts |
+| `.gitignore`                                    | 除外ファイルパターン  | `cleanedRepo`      |
 
 ### 利点
 
@@ -164,9 +162,6 @@ fi
 ├── home.nix               # Home Manager 設定
 ├── nix/
 │   ├── dotfiles-module.nix         # Dotfiles 管理モジュール (SSoT)
-│   ├── agent-skills-sources.nix    # スキルメタデータ (SSoT)
-│   ├── sources.nix                 # inputs + baseDir 統合
-│   ├── agent-skills.nix            # スキル選択
 │   └── dotfiles-files.nix          # xdg.dirs, xdg.files 定義
 └── ...
 ```
@@ -187,17 +182,6 @@ fi
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Agent Skills (静的リテラル定義)
-    # NOTE: agent-skills-sources.nix と手動同期が必要
-    openai-skills = {
-      url = "github:openai/agent-skills";
-      flake = false;
-    };
-    vercel-skills = {
-      url = "github:vercel/next.js/tree/canary/examples";
-      flake = false;
     };
   };
 
@@ -280,174 +264,6 @@ in {
   };
 }
 ```
-
----
-
-## Flake Inputs と Agent Skills 管理
-
-### Nix Flake の inputs 制約
-
-### 重要な制約
-
-### 禁止されているパターン
-
-```nix
-# ❌ 動的評価（let-in + import）
-inputs = let
-  sources = import ./nix/agent-skills-sources.nix;
-  dynamicInputs = builtins.mapAttrs (_: src: { inherit (src) url flake; }) sources;
-in {
-  nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-} // dynamicInputs;
-```
-
-### エラー
-
-### 理由
-
-### Agent Skills の分割管理
-
-### 設計アプローチ
-
-| ファイル                       | 役割               | 管理項目                              |
-| ------------------------------ | ------------------ | ------------------------------------- |
-| `nix/agent-skills-sources.nix` | SSoT（メタデータ） | url, flake, baseDir, selection.enable |
-| `flake.nix` inputs             | Flake inputs定義   | url, flake のみ（手動同期が必要）     |
-| `nix/sources.nix`              | 統合処理           | inputs と baseDir を結合              |
-| `nix/agent-skills.nix`         | スキル選択         | selection.enable を抽出               |
-
-### トレードオフ
-
-- ✅ Flake 仕様に準拠
-- ✅ メタデータは SSoT で集約管理
-- ❌ URL/flake 属性が重複（制約上の妥協）
-
-### 実装例
-
-#### nix/agent-skills-sources.nix (SSoT)
-
-```nix
-{
-  openai-skills = {
-    url = "github:openai/agent-skills";
-    flake = false;
-    baseDir = "skills";
-    selection.enable = [
-      "gh-fix-ci"
-      "gh-address-comments"
-      "gh-create-pr"
-    ];
-  };
-
-  vercel-skills = {
-    url = "github:vercel/next.js/tree/canary/examples";
-    flake = false;
-    baseDir = ".";
-    selection.enable = [
-      "app-router"
-      "api-routes"
-    ];
-  };
-}
-```
-
-#### flake.nix (手動同期が必要)
-
-```nix
-{
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-
-    # NOTE: agent-skills-sources.nix と手動同期
-    #       Flake spec requires literal inputs
-    openai-skills = {
-      url = "github:openai/agent-skills";  # ← SSoT と一致
-      flake = false;
-    };
-    vercel-skills = {
-      url = "github:vercel/next.js/tree/canary/examples";  # ← SSoT と一致
-      flake = false;
-    };
-  };
-}
-```
-
-#### nix/sources.nix (統合)
-
-```nix
-{ inputs }:
-
-let
-  agentSkills = import ./agent-skills-sources.nix;
-in {
-  # inputs (flake.nix) + baseDir (agent-skills-sources.nix) を結合
-  openai-skills = "${inputs.openai-skills}/${agentSkills.openai-skills.baseDir}";
-  vercel-skills = "${inputs.vercel-skills}/${agentSkills.vercel-skills.baseDir}";
-}
-```
-
-#### nix/agent-skills.nix (スキル選択)
-
-```nix
-{ sources }:
-
-let
-  agentSkills = import ./agent-skills-sources.nix;
-in
-  # selection.enable でスキルを抽出
-  builtins.concatLists (
-    builtins.attrValues (
-      builtins.mapAttrs (name: src:
-        map (skill: "${sources.${name}}/${skill}") src.selection.enable
-      ) agentSkills
-    )
-  )
-```
-
-### 新しいスキルソースを追加する際のチェックリスト
-
-1. agent-skills-sources.nix を更新
-
-   ```nix
-   new-skill-source = {
-     url = "github:org/repo";
-     flake = false;
-     baseDir = "skills";  # またはリポジトリルート "."
-     selection.enable = [ "skill-name" ];
-   };
-   ```
-
-2. flake.nix の inputs に追加（手動同期）
-
-   ```nix
-   inputs = {
-     # ... 既存の inputs
-     new-skill-source = {
-       url = "github:org/repo";  # agent-skills-sources.nix と一致させる
-       flake = false;
-     };
-   };
-   ```
-
-3. 検証
-
-   ```bash
-   # Flake 評価の成功確認
-   nix flake show ~/.config
-
-   # 新しい input が認識されているか確認
-   nix flake metadata ~/.config | grep new-skill-source
-
-   # Home Manager ビルド
-   home-manager build --flake ~/.config --impure --dry-run
-   ```
-
-4. スキル配布の確認
-
-   ```bash
-   home-manager switch --flake ~/.config --impure
-   ls -la ~/.claude/skills/ | grep <skill-name>
-   ```
 
 ---
 

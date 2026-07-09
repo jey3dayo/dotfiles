@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Nix Dotfiles Diagnostic Script
-# Checks Home Manager integration: generation, symlinks, flake inputs, worktree
+# Checks Home Manager integration: generation, symlinks, worktree
 
 set -euo pipefail
 
@@ -71,26 +71,6 @@ check_symlinks() {
     all_passed=false
   fi
 
-  # Check ~/.claude/skills/
-  if [ -L "$HOME/.claude/skills" ]; then
-    local skills_target
-    skills_target=$(readlink "$HOME/.claude/skills")
-    echo "    ~/.claude/skills -> $skills_target"
-
-    # Verify target exists and is readable
-    if [ -d "$skills_target" ]; then
-      local skill_count
-      skill_count=$(find "$skills_target" -maxdepth 1 -type d ! -name ".*" | wc -l)
-      echo "    Found $((skill_count - 1)) skill directories"
-    else
-      echo -e "  ${RED}✗${NC}  Target directory does not exist or is not readable"
-      all_passed=false
-    fi
-  else
-    echo -e "${RED}[✗]${NC} Symlink check: ~/.claude/skills is not a symlink"
-    all_passed=false
-  fi
-
   if $all_passed; then
     return 0
   else
@@ -98,61 +78,7 @@ check_symlinks() {
   fi
 }
 
-# Check 3: Flake Inputs Consistency
-check_flake_inputs() {
-  echo -n "Checking Flake inputs consistency... "
-
-  local config_dir="$HOME/.config"
-
-  # Check if flake.nix exists
-  if [ ! -f "$config_dir/flake.nix" ]; then
-    echo -e "${RED}[✗]${NC} Flake inputs check: flake.nix not found"
-    return 1
-  fi
-
-  # Count inputs in flake.nix (excluding nixpkgs, home-manager, etc.)
-  local flake_inputs_count
-  flake_inputs_count=$(rg -o 'url = "github:.*/.*skills' "$config_dir/flake.nix" 2>/dev/null | wc -l || echo 0)
-
-  # Count sources in agent-skills-sources.nix
-  local sources_count=0
-  if [ -f "$config_dir/nix/agent-skills-sources.nix" ]; then
-    sources_count=$(rg -o '^\s+[a-z-]+\s*=' "$config_dir/nix/agent-skills-sources.nix" 2>/dev/null | wc -l || echo 0)
-  fi
-
-  # Extract URLs from both files for comparison
-  local flake_urls
-  flake_urls=$(rg -o 'url = "github:[^"]+' "$config_dir/flake.nix" 2>/dev/null | grep skills | sort || true)
-
-  local sources_urls=""
-  if [ -f "$config_dir/nix/agent-skills-sources.nix" ]; then
-    sources_urls=$(rg -o 'url = "github:[^"]+' "$config_dir/nix/agent-skills-sources.nix" 2>/dev/null | sort || true)
-  fi
-
-  # Compare URLs
-  if [ "$flake_urls" = "$sources_urls" ] && [ -n "$flake_urls" ]; then
-    echo -e "${GREEN}[✓]${NC} Flake inputs check: URLs consistent ($flake_inputs_count inputs)"
-    return 0
-  else
-    echo -e "${RED}[✗]${NC} Flake inputs check: URL mismatch detected"
-    echo "    flake.nix: $flake_inputs_count inputs"
-    echo "    agent-skills-sources.nix: $sources_count sources"
-
-    # Show differences if URLs don't match
-    if [ "$flake_urls" != "$sources_urls" ]; then
-      echo ""
-      echo "    URLs in flake.nix only:"
-      comm -23 <(echo "$flake_urls") <(echo "$sources_urls") | sed 's/^/      /'
-      echo ""
-      echo "    URLs in agent-skills-sources.nix only:"
-      comm -13 <(echo "$flake_urls") <(echo "$sources_urls") | sed 's/^/      /'
-    fi
-
-    return 1
-  fi
-}
-
-# Check 4: Worktree Detection
+# Check 3: Worktree Detection
 check_worktree() {
   echo -n "Checking worktree detection... "
 
@@ -213,11 +139,6 @@ main() {
   fi
   echo ""
 
-  if ! check_flake_inputs; then
-    all_passed=false
-  fi
-  echo ""
-
   if ! check_worktree; then
     all_passed=false
   fi
@@ -232,7 +153,6 @@ main() {
     echo ""
     echo "Quick fixes:"
     echo "  - Generation issue: home-manager switch --flake ~/.config --impure"
-    echo "  - Flake inputs: Sync agent-skills-sources.nix → flake.nix URLs"
     echo "  - Worktree: Set DOTFILES_WORKTREE=/path/to/dotfiles"
     exit 1
   fi
