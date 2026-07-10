@@ -109,7 +109,6 @@ Check consistency with WezTerm (theme, Nerd Font), Zsh (shared FZF keybindings, 
 ## Related Skills
 
 - `code-review` — overall quality assessment framework
-- `nix-dotfiles` — Nix / Home Manager dotfiles distribution and apply
 
 ## References
 

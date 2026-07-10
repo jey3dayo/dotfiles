@@ -143,9 +143,7 @@ yamllint = "latest"
 "cargo:similarity-ts" = "0.5.0"
 "cargo:wrkflw" = "0.8.0"
 "cargo:starship" = "latest"
-"cargo:deadnix" = "latest"
 "cargo:tree-sitter-cli" = { version = "0.26.9", default-features = "false" }
-"cargo:https://github.com/oppiliappan/statix" = { version = "tag:v0.5.8", crate = "statix" }
 ```
 
 #### 環境別の取り扱い

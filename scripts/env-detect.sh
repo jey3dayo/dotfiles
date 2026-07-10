@@ -4,8 +4,8 @@ set -eu
 # ==============================================================================
 # Environment Detection Script
 # ==============================================================================
-# Detects current environment type (CI/Pi/Default) following nix/env-detect.nix
-# logic. Displays system information, environment variables, and mise config paths.
+# Detects current environment type (CI/Pi/Default) and displays system
+# information, environment variables, and mise config paths.
 #
 # Usage: sh ./scripts/env-detect.sh
 # ==============================================================================

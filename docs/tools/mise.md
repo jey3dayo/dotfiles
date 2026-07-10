@@ -66,7 +66,6 @@ mise/
 ├── README.md              # mise 運用の概要
 ├── lib/                   # helper scripts (公開タスクにしない共通処理)
 │   ├── ensure-busted.sh   # busted の存在確認と自動インストール
-│   ├── nixfmt.sh          # nixfmt 実行ヘルパー
 │   ├── run-restic.sh      # restic backup wrapper
 │   ├── run-ts-tests.sh    # TypeScript テスト起動
 │   └── shell-format.sh    # shell / zsh formatter wrapper
@@ -185,7 +184,6 @@ Priority: CI > Raspberry Pi > Default
 `mise/config.windows.toml` is available; `windows/setup.ps1` sets `MISE_CONFIG_FILE` accordingly.
 
 - Windows uses `mise/config.windows.toml` only when `MISE_CONFIG_FILE` is explicitly set to that path by the session or shell setup
-- Do not document Windows as part of the current Nix auto-detection flow until `nix/env-detect.nix` gains a Windows branch
 
 #### Related: Chocolatey manifests
 

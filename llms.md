@@ -17,7 +17,7 @@
 ## Repository Summary
 
 - 個人用 dotfiles リポジトリです
-- Home Manager を中心に、macOS / Linux / WSL2 / Windows の開発環境を管理します
+- mise bootstrap を中心に、macOS / Linux / WSL2 / Windows の開発環境を管理します
 - 開発ツールは原則 `mise`、システム依存と GUI は `Homebrew`、Windows bootstrap は `Chocolatey` を使います
 - ドキュメントは `docs/` に集約し、`README.md` やハブ文書はナビゲーションを担当します
 
@@ -70,7 +70,6 @@ CLAUDE.md                Thin AI entry point
 docs/                    Human-facing source of truth
 docs/tools/              Tool-specific source documents
 mise/                    Mise config and tasks
-nix/                     Home Manager modules
 windows/                 Windows bootstrap and setup
 bin/                     User-facing commands on PATH
 scripts/                 Bootstrap and task helper scripts
