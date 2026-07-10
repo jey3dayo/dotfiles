@@ -26,20 +26,17 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 `ci.toml`, `integration.toml` で定義。
 
-| タスク                    | 説明                                                  |
-| ------------------------- | ----------------------------------------------------- |
-| `ci:quick`                | 軽量チェック（format + lint のみ、~3-5s、hooks 向け） |
-| `ci`                      | 全 CI チェック（検証のみ、書き込みなし）              |
-| `ci:full`                 | CI チェック + デプロイ + 検証（GitHub Actions 同等）  |
-| `ci:gitleaks`             | gitleaks による secret スキャン                       |
-| `ci:install`              | CI 必要ツールをインストール（luacheck, busted）       |
-| `nix:check`               | `nix flake check` を実行                              |
-| `nix:build:default`       | `nix build .#default` を実行                          |
-| `nix:build:darwin-system` | nix-darwin system 構成をビルド検証（適用なし）        |
-| `check`                   | CI 向け総合チェック（format + lint）                  |
-| `check:format`            | フォーマットチェック集約（書き込みなし）              |
-| `check:lint`              | lint チェック集約                                     |
-| `check:lint:quick`        | lint チェック集約（lint:links 除外）                  |
+| タスク             | 説明                                                  |
+| ------------------ | ----------------------------------------------------- |
+| `ci:quick`         | 軽量チェック（format + lint のみ、~3-5s、hooks 向け） |
+| `ci`               | 全 CI チェック（検証のみ、書き込みなし）              |
+| `ci:full`          | CI チェック + デプロイ + 検証（GitHub Actions 同等）  |
+| `ci:gitleaks`      | gitleaks による secret スキャン                       |
+| `ci:install`       | CI 必要ツールをインストール（luacheck, busted）       |
+| `check`            | CI 向け総合チェック（format + lint）                  |
+| `check:format`     | フォーマットチェック集約（書き込みなし）              |
+| `check:lint`       | lint チェック集約                                     |
+| `check:lint:quick` | lint チェック集約（lint:links 除外）                  |
 
 ### Format
 
