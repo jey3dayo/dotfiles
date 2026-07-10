@@ -237,12 +237,12 @@ run_at_load = true
 stdout_path = "~/Library/Logs/codex-gui-path.log"
 stderr_path = "~/Library/Logs/codex-gui-path.log"
 
-[bootstrap.macos.launchd.agents.codex-gui-env]
+[bootstrap.macos.launchd.agents.gui-env]
 program = "/bin/sh"
-args = ["-lc", 'exec "$HOME/.config/scripts/launchd/launchd-codex-gui-env.sh"']
+args = ["-lc", 'exec "$HOME/.config/scripts/launchd/launchd-gui-env.sh"']
 run_at_load = true
-stdout_path = "~/Library/Logs/codex-gui-env.log"
-stderr_path = "~/Library/Logs/codex-gui-env.log"
+stdout_path = "~/Library/Logs/gui-env.log"
+stderr_path = "~/Library/Logs/gui-env.log"
 
 [bootstrap.macos.launchd.agents.headroom-proxy]
 program = "/bin/sh"
