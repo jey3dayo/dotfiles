@@ -1,5 +1,5 @@
 ---
-paths: docs/tools/1password.md, zsh/config/tools/1password.zsh, powershell/profile.d/env.ps1, scripts/setup-env.ps1, scripts/setup-env.sh
+paths: docs/tools/1password.md, zsh/config/tools/1password.zsh, powershell/profile.d/env.ps1, scripts/windows/setup-env.ps1, scripts/setup-env.sh
 source: docs/tools/1password.md
 ---
 

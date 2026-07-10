@@ -38,7 +38,7 @@ const resolvePowerShellCommand = (): string | null => {
 const shellCommand = resolvePowerShellCommand();
 const describeSetupEnvPs1 = isWindows ? describe : describe.skip;
 
-describeSetupEnvPs1("scripts/setup-env.ps1", () => {
+describeSetupEnvPs1("scripts/windows/setup-env.ps1", () => {
   it("allows concurrent runs without false failures", () => {
     if (shellCommand == null) {
       throw new Error("PowerShell is required to run setup-env.ps1 tests");

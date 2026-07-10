@@ -45,13 +45,13 @@ luarocks install --local busted
 description = "軽量チェック（format + lint のみ、Claude Code hooks 向け ~3-5s）"
 run = """
 if [ "${MISE_WSL_SNAPSHOT:-0}" != "1" ] && [ "${PWD#/mnt/}" != "$PWD" ]; then
-  bash ./scripts/mise-wsl-task.sh ci:quick
+  bash ./scripts/windows/mise-wsl-task.sh ci:quick
 else
   mise run check:format
   mise run check:lint:quick
 fi
 """
-run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-wsl-task.ps1 -TaskName ci:quick"
+run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/mise-wsl-task.ps1 -TaskName ci:quick"
 
 ["pre-push"]
 description = "push 前チェック（ci:quick + 変更ファイルに応じた追加テスト）"
@@ -61,7 +61,7 @@ run = "sh \"$HOME/.config/mise/lib/pre-push-check.sh\""
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
 run = """
 if [ "${MISE_WSL_SNAPSHOT:-0}" != "1" ] && [ "${PWD#/mnt/}" != "$PWD" ]; then
-  bash ./scripts/mise-wsl-task.sh ci
+  bash ./scripts/windows/mise-wsl-task.sh ci
 else
   mise run check
   mise run test:ts
@@ -69,12 +69,12 @@ else
   mise run ci:gitleaks
 fi
 """
-run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-wsl-task.ps1 -TaskName ci"
+run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/mise-wsl-task.ps1 -TaskName ci"
 
 ["ci:full"]
 description = "CI チェック + デプロイ + 検証（GitHub Actions と同じワークフロー）"
 run = [{ task = "ci:verify-deploy" }, { task = "ci" }]
-run_windows = "sh ./scripts/run-windows-powershell.sh ./scripts/mise-wsl-task.ps1 -TaskName ci:full"
+run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/mise-wsl-task.ps1 -TaskName ci:full"
 
 ["ci:quick:windows"]
 description = "Windows 向け軽量チェック（WSL スナップショット経由）"
