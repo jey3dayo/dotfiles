@@ -50,8 +50,6 @@ const runNix = (args: string[]) =>
         },
       });
 
-const readNixFile = (filePath: string) => fs.readFileSync(isWindows ? wslPath(["-w", filePath]) : filePath, "utf8");
-
 const evalDotfilesMaterializationState = () =>
   runNix([
     "eval",
@@ -68,29 +66,22 @@ const evalDotfilesMaterializationState = () =>
        }`,
   ]);
 
-const buildActivationScript = () => {
-  const result = runNix([
-    "build",
-    `.#homeConfigurations.${user}.activationPackage`,
-    "--impure",
-    "--no-link",
-    "--print-out-paths",
-  ]);
+describe("dotfiles materialized entrypoints", () => {
+  // aicommits / opencommit は HOME 直下の実ファイルを要求するため、
+  // symlink ではなく copy で配布する。配布は mise bootstrap（mise/config.toml [dotfiles]）が担当。
+  it("distributes oco and aic config files via mise dotfiles copy mode", () => {
+    const miseConfig = fs.readFileSync(path.join(repoRoot, "mise", "config.toml"), "utf8");
 
-  if (result.status !== 0) {
-    return result;
-  }
+    for (const target of ["~/.aicommits", "~/.opencommit"]) {
+      const entry = miseConfig.split("\n").find((line) => line.trimStart().startsWith(`"${target}"`));
+      expect(entry).toBeDefined();
+      expect(entry).toContain('mode = "copy"');
+      expect(entry).not.toContain('mode = "symlink"');
+    }
+  });
 
-  const activatePath = path.posix.join(result.stdout.trim(), "activate");
-  return {
-    ...result,
-    activatePath,
-    activateScript: readNixFile(activatePath),
-  };
-};
-
-describe("nix/dotfiles-module.nix", () => {
-  it("materializes oco and aic config files instead of managing them as symlinks", () => {
+  // 撤去待ちの Home Manager 側が symlink 管理を再導入していないことを保証する
+  it("keeps oco and aic out of home-manager home.file", () => {
     const evalResult = evalDotfilesMaterializationState();
     expect(evalResult.status).toBe(0);
 
@@ -101,14 +92,5 @@ describe("nix/dotfiles-module.nix", () => {
 
     expect(state.aicManagedByHomeFile).toBe(false);
     expect(state.ocoManagedByHomeFile).toBe(false);
-
-    const buildResult = buildActivationScript();
-    expect(buildResult.status).toBe(0);
-    expect(buildResult.activateScript).toContain("dotfiles-materialized-entrypoints");
-    expect(buildResult.activateScript).toContain(".aicommits");
-    expect(buildResult.activateScript).toContain(".opencommit");
-    expect(buildResult.activateScript).toMatch(/diffutils-[^/]+\/bin\/cmp/);
-    expect(buildResult.activateScript).not.toMatch(/coreutils-[^/]+\/bin\/cmp/);
-    expect(buildResult.activateScript).toContain("install -m 600");
   }, 90_000);
 });
