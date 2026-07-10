@@ -73,7 +73,9 @@ _shell_bootstrap_tool_env() {
   : "${BUN_INSTALL:=$HOME/.bun}"
   : "${PNPM_HOME:=$HOME/.local/share/pnpm}"
   : "${NI_CONFIG_FILE:=$HOME/.config/nirc}"
-  export GHQ_ROOT RIPGREP_CONFIG_PATH BUN_INSTALL PNPM_HOME NI_CONFIG_FILE
+  # npm は XDG 非ネイティブのため userconfig を明示（~/.npmrc shim 廃止）
+  : "${NPM_CONFIG_USERCONFIG:=$XDG_CONFIG_HOME/npm/npmrc}"
+  export GHQ_ROOT RIPGREP_CONFIG_PATH BUN_INSTALL PNPM_HOME NI_CONFIG_FILE NPM_CONFIG_USERCONFIG
 }
 
 _shell_path_prepend_existing() {

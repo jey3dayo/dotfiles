@@ -73,9 +73,6 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 # XDG ネイティブ対応のもの（git / tmux / awsume / zshrc(ZDOTDIR)）は shim を置かない。
 # ~/.zshenv は ZDOTDIR を設定する bootstrap のため必須
 "~/.zshenv" = { source = "~/.config/home/.zshenv", mode = "symlink" }
-# npm は XDG 非ネイティブ。NPM_CONFIG_USERCONFIG を全経路（shell/GUI/launchd）へ
-# 配布できたら削除可能
-"~/.npmrc" = { source = "~/.config/home/.npmrc", mode = "symlink" }
 # bash は XDG 非対応
 "~/.bashrc" = { source = "~/.config/bash/.bashrc", mode = "symlink" }
 "~/.bash_profile" = { source = "~/.config/bash/.bash_profile", mode = "symlink" }

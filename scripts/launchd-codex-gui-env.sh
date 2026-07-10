@@ -19,6 +19,9 @@ set -a
 . "$env_local"
 set +a
 
+# npm userconfig を GUI 起動アプリへも伝播（~/.npmrc shim 廃止のため）
+launchctl setenv NPM_CONFIG_USERCONFIG "$HOME/.config/npm/npmrc"
+
 # secret は .env.local 全体ではなく、GUI アプリが参照する key だけを allowlist する
 if [ -n "${JINA_API_KEY:-}" ]; then
   launchctl setenv JINA_API_KEY "$JINA_API_KEY"
