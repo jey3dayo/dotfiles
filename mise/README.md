@@ -77,5 +77,5 @@ mise doctor              # Health check
 #### See Also
 
 - `.claude/rules/tools/mise.md` - Comprehensive documentation
-- `nix/env-detect.nix` - Environment detection logic
+- `zsh/.zshenv` / `scripts/env-detect.sh` - Environment detection logic
 - `.mise.toml` - Project-level tasks
