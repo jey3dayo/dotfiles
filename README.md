@@ -36,7 +36,7 @@ High-performance development environment tuned for speed, consistency, and devel
 - `Homebrew` (macOS) or your system package manager
 - `mise` (installed via `brew bundle` in this repo for macOS)
 
-If you're on a fresh macOS machine, `scripts/bootstrap.sh` installs Homebrew and validates `git`, `zsh`, and `curl`.
+セットアップの本体は `mise bootstrap`。fresh macOS のみ、前準備として `scripts/bootstrap.sh` が Homebrew を導入します。
 
 Linux/WSL2 package installs (examples):
 
@@ -90,12 +90,14 @@ mise doctor
 
 差分だけ見たいときは `mise bootstrap --dry-run`、dotfiles のみは `mise dotfiles apply` / `mise dotfiles status`。
 
-### What scripts/bootstrap.sh does
+### What mise bootstrap does
 
-- ✅ Installs Homebrew if not present
-- ✅ Detects architecture (Apple Silicon vs Intel)
-- ✅ Validates prerequisites (macOS, git, zsh, curl)
-- ✅ Sets up brew command in current session
+- ✅ `[bootstrap.packages]` → brew パッケージ、`[dotfiles]` → HOME エントリポイント配布
+- ✅ `[bootstrap.macos.launchd.agents]` → LaunchAgents、`[tools]` → 全開発ツール
+- ✅ `bootstrap` task → headroom venv（macOS）+ tmux plugins
+- ✅ 冪等: 収束済みの項目はスキップ。`--dry-run` で差分プレビュー
+
+`scripts/bootstrap.sh` は fresh macOS 向けの Homebrew 導入だけを担う前準備スクリプトです。
 
 ### What Changed (mise bootstrap Migration)
 

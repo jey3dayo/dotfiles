@@ -6,24 +6,18 @@
 
 ⚡ High-performance development environment setup. 本ドキュメントがセットアップ情報のSSTであり、README はリンクのみを保持します。macOS/Linux/WSL2 は mise bootstrap 中心（dotfiles 配布・launchd agents・ツール導入）、Windows は Chocolatey + mise bootstrap を扱います。Home Manager / Nix flake は撤去済みです。
 
-## Bootstrap (Recommended for Fresh macOS)
+## セットアップの全体像
 
-新規Macの場合、`scripts/bootstrap.sh`を使用してHomebrewを自動インストール:
+セットアップの本体は **`mise bootstrap`** です。1コマンドでマシン全体を宣言的に収束させます:
 
-```bash
-cd ~/.config
-sh ./scripts/bootstrap.sh
-```
+1. `[bootstrap.packages]` — brew パッケージ（btop 等）
+2. `[dotfiles]` — HOME 側エントリポイントの symlink / copy 配布
+3. `[bootstrap.macos.launchd.agents]` — LaunchAgents（GUI env 注入・headroom proxy）
+4. `[tools]` — 全開発ツール（言語 runtime / CLI / formatter / MCP）
+5. `bootstrap` task — headroom venv 構築（macOS）と tmux plugins 初期化
 
-### 実行内容
-
-- Homebrewインストール（存在しない場合）
-- アーキテクチャ検出（Apple Silicon vs Intel）
-- システム前提条件検証（macOS、git、zsh、curl）
-- 現在のセッションで`brew`コマンドを使用可能に設定
-- 次ステップへのガイド表示
-
-その後、以下のQuick Setupステップに従ってください。
+`scripts/bootstrap.sh` は fresh macOS で **Homebrew を導入するだけの前準備**です（mise 本体は `brew bundle` で入る）。
+Homebrew 導入済みのマシンでは実行不要で、Quick Setup の手順 4 から始められます。
 
 ---
 
@@ -97,13 +91,15 @@ powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1 -ProfilesOnly
 
 ## Prerequisites
 
-### Automated (Recommended)
+### Homebrew（macOS の前準備）
 
-Use bootstrap script for automated Homebrew installation:
+fresh macOS のみ、`scripts/bootstrap.sh` で Homebrew を自動導入する（既に導入済みなら不要）:
 
 ```bash
 sh ./scripts/bootstrap.sh
 ```
+
+実行内容: Homebrew インストール（未導入時のみ）、アーキテクチャ検出、前提条件検証（git/zsh/curl）、現セッションへの `brew` PATH 設定。
 
 ### Manual Installation
 

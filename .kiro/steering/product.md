@@ -81,8 +81,8 @@ Software developers on macOS/Linux/WSL2 (and CI/Raspberry Pi environments) who v
 
 2. New Machine Setup
 
-   - Bootstrap via `scripts/bootstrap.sh` (macOS) and package installation via Homebrew
-   - Apply configuration with `mise trust && mise bootstrap --yes`
+   - Setup core: `mise trust && mise bootstrap --yes`（packages / dotfiles / launchd / tools を一括収束）
+   - fresh macOS のみ `scripts/bootstrap.sh` で Homebrew を前準備
    - Consistent environment across multiple machines
    - Version-controlled configurations
    - Easy backup and restore

@@ -243,8 +243,9 @@ EOF
 
 # 3. Install packages and apply configuration
 cd ~/.config
-sh ./scripts/bootstrap.sh   # macOS only
+sh ./scripts/bootstrap.sh   # macOS only（Homebrew 前準備）
 brew bundle                 # macOS only
+export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"  # 初回のみ
 mise trust && mise bootstrap --yes
 
 # 4. Restart shell
