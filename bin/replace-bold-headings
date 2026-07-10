@@ -1,0 +1,5 @@
+#!/bin/sh
+# PATH entrypoint for scripts/replace-bold-headings.ts.
+# tsx は mise 管理（npm:tsx）で shims 経由で解決される。
+set -eu
+exec tsx "${XDG_CONFIG_HOME:-$HOME/.config}/scripts/replace-bold-headings.ts" "$@"
