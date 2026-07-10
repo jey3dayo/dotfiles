@@ -34,8 +34,7 @@ High-performance development environment tuned for speed, consistency, and devel
 - `zsh`
 - `curl`
 - `Homebrew` (macOS) or your system package manager
-- `nix` (installed via `brew bundle` in this repo for macOS)
-- Optional: `home-manager` (otherwise use `nix run home-manager -- ...`)
+- `mise` (installed via `brew bundle` in this repo for macOS)
 
 If you're on a fresh macOS machine, `scripts/bootstrap.sh` installs Homebrew and validates `git`, `zsh`, and `curl`.
 
@@ -74,12 +73,9 @@ EOF
 # 4. Install packages
 brew bundle  # macOS only
 
-# 5. Apply dotfiles configuration with Home Manager
-# If `home-manager` is not on PATH yet, use nix run (recommended for first setup)
-nix run home-manager -- switch --flake ~/.config --impure
-
-# Or, if you already have home-manager installed
-home-manager switch --flake ~/.config --impure
+# 5. Converge the machine with mise bootstrap
+#    (dotfiles symlink, macOS LaunchAgents, tools, headroom venv, tmux plugins)
+mise trust && mise bootstrap --yes
 
 # 6. Restart shell
 exec zsh
@@ -96,12 +92,12 @@ mise doctor
 - ✅ Validates prerequisites (macOS, git, zsh, curl)
 - ✅ Sets up brew command in current session
 
-### What Changed (Home Manager Migration)
+### What Changed (mise bootstrap Migration)
 
-- ✅ **Declarative Configuration**: Configuration files deployed via Nix/Home Manager
-- ✅ **Automatic Environment Detection**: CI > Raspberry Pi > Default (WSL2/macOS/Linux)
-- ✅ **No More setup.sh**: Replaced by `nix run home-manager -- switch --flake . --impure` (or `home-manager switch --flake . --impure` if installed)
-- ✅ **Reproducible**: Nix ensures identical configuration across machines
+- ✅ **Declarative Configuration**: dotfiles / LaunchAgents / packages converge via `mise bootstrap`
+- ✅ **Automatic Environment Detection**: OS 別 config（default / pi / windows）を `MISE_CONFIG_FILE` で選択
+- ✅ **No More Home Manager**: Nix flake は撤去済み。`mise dotfiles status` で配布状態を確認
+- ✅ **Idempotent**: 再実行しても収束済みの項目はスキップされる
 
 ### Manual Setup (Already Have Homebrew)
 
@@ -181,8 +177,8 @@ mise install               # Setup language versions
 
 - Operational cadence and troubleshooting live in `docs/tools/workflows.md`
 - Weekly: `brew update && brew upgrade`, sync plugins (Sheldon/Neovim/tmux)
-- Monthly: `home-manager switch --flake ~/.config --impure`, measure shell startup, prune unused plugins
-- Rollback: `home-manager generations` to list, `home-manager switch --generation <number>` to rollback
+- Monthly: `mise bootstrap --yes` で収束確認, measure shell startup, prune unused plugins
+- 配布状態の確認: `mise bootstrap status` / `mise dotfiles status`
 - Always before merge: `mise run ci`
 
 ---

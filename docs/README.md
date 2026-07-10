@@ -48,7 +48,6 @@ Location: `docs/`
 - [WezTerm Configuration](tools/wezterm.md) - Terminal layer: 設定、キーバインド、統合
 - [SSH Configuration](tools/ssh.md) - 階層的設定、セキュリティ管理
 - [FZF Integration](tools/fzf-integration.md) - クロスツール統合、ワークフロー（FZF/Git キーバインドのSST）
-- [Home Manager](tools/home-manager.md) - Nix Home Manager 設定・配布・トラブルシューティング
 - [Nix Maintenance](tools/nix.md) - Nix store GC・generations 管理
 - [Mise](tools/mise.md) - ツールバージョン管理・設定・pnpm バックエンド
   - [Task Catalog](tools/mise-tasks.md) - 全タスク一覧（CI/Format/Lint/Test/HM/Skills 等）
