@@ -19,12 +19,13 @@ Home Manager は generation 管理のみの legacy 状態。
 
 ### 残タスク
 
-- [ ] generation 掃除（mac / pi）: `home-manager remove-generations all && nix-collect-garbage -d`（destructive、実行前に要確認）
+- [x] generation 掃除（2026-07-10 実施）: mac 11.8GiB 解放（18G→2.3G）、pi 1.9GiB 解放（3.1G→507M）。HM profile / gcroots も削除済み。pi の nix profile には `luacheck` を残置（mise 外供給）
 - [x] `skills/nix-dotfiles`（repo-local Agent Skill）retire 済み（apm.yml から除去、apm install で lockfile 再生成）
-- [ ] Nix ランタイム自体のアンインストール判断（`docs/tools/nix.md` 参照）
+- [ ] WSL2: `mise dotfiles apply` へ切替（SSH 到達手段がないため WSL2 マシン上で実行: `git pull && mise self-update && MISE_CONFIG_FILE=~/.config/mise/config.default.toml mise dotfiles apply --yes`。旧 HM symlink の残骸削除も同様に）
+- [ ] Nix ランタイム自体のアンインストール判断（`docs/tools/nix.md` 参照。`bin/tree-sitter` の nix fallback と pi の `luacheck` 供給が依存）
 
 ## XDG 移行のフォローアップ
 
-- [ ] `~/.npmrc` の廃止: `NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"` を shell / GUI / launchd の全経路へ配布してから `[dotfiles]` エントリと shim を削除
-- [ ] awsume の修復: pipx の Python interpreter が失われ起動不能（XDG とは別問題）。`pipx reinstall awsume` 等で復旧
-- [ ] ZDOTDIR 構成で HOME 側 `~/.zprofile` が読まれていない可能性を調査（login shell の初期化経路確認）
+- [x] `~/.npmrc` の廃止（2026-07-10）: `home/.npmrc` → `npm/npmrc` へ移動、`NPM_CONFIG_USERCONFIG` を shell/env.sh と codex-gui-env LaunchAgent で配布、`[dotfiles]` エントリと symlink を削除
+- [x] awsume の修復（2026-07-10）: mise 管理 `pipx:awsume` へ移行（4.5.4）。破損した旧 pipx venv/bin は `~/.local/pipx/awsume-broken-backup-20260710/` に退避
+- [x] ZDOTDIR と `~/.zprofile` の調査（2026-07-10）: SOURCE_TRACE で実測。ZDOTDIR 仕様どおり HOME 側 `~/.zprofile` は読まれない（brew shellenv は repo の `zsh/lib/path.zsh` がカバー済みで実害なし）。不要なら `~/.zprofile` は手動削除可
