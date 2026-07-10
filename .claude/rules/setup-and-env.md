@@ -11,7 +11,7 @@ Sources: docs/setup.md.
 
 - Follow `docs/setup.md` for all onboarding steps. Do not restate setup procedures elsewhere.
 - Create `~/.gitconfig_local` before applying the environment so local identity stays outside the repo.
-- On macOS/Linux/WSL2, treat Home Manager as the deployment path.
+- On macOS/Linux/WSL2, treat mise bootstrap (`mise bootstrap` / `mise dotfiles apply`) as the deployment path. Home Manager is legacy and scheduled for removal (see TODO.md).
 - On Windows, run `windows/setup.ps1`; keep `~/.config/powershell/profile.ps1` as the PowerShell source of truth and treat `Documents/*PowerShell` as generated bridge entrypoints.
 
 ## Verification

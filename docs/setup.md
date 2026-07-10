@@ -4,7 +4,7 @@
 対象: 開発者・初心者
 タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/cross-platform`, `audience/beginner`
 
-⚡ High-performance development environment setup. 本ドキュメントがセットアップ情報のSSTであり、README はリンクのみを保持します。macOS/Linux/WSL2 は Home Manager 中心、Windows は Chocolatey + mise bootstrap を扱います。
+⚡ High-performance development environment setup. 本ドキュメントがセットアップ情報のSSTであり、README はリンクのみを保持します。macOS/Linux/WSL2 は mise bootstrap 中心（dotfiles 配布・launchd agents・ツール導入）、Windows は Chocolatey + mise bootstrap を扱います。Home Manager は撤去予定の legacy 経路です（TODO.md 参照）。
 
 ## Bootstrap (Recommended for Fresh macOS)
 
@@ -43,15 +43,19 @@ cat > ~/.gitconfig_local << EOF
     email = your.email@example.com
 EOF
 
-# 3. Install Homebrew packages (includes Nix)
+# 3. Install Homebrew packages
 brew bundle
 
-# 4. Apply dotfiles via Home Manager (Nix flake-based)
-nix run home-manager -- switch --flake . --impure
+# 4. Converge the machine via mise bootstrap
+#    (dotfiles symlink, macOS LaunchAgents, tools, headroom venv, tmux plugins)
+mise trust && mise bootstrap --yes
 
 # 5. Restart shell
 exec zsh
 ```
+
+状態確認は `mise bootstrap status` / `mise dotfiles status`、差分プレビューは `mise bootstrap --dry-run` を使います。
+dotfiles / launchd の定義は `mise/config.toml`（OS 非依存）と `mise/config.default.toml`（macOS 専用）にあります。
 
 ## Windows Bootstrap
 

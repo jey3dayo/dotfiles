@@ -12,6 +12,11 @@ source: docs/tools/home-manager.md
 # Home Manager Rules
 
 Purpose: Home Manager 統合における管理方針とガイドライン。
+
+> **Status: legacy（撤去予定）** — dotfiles 配布・launchd agents・headroom venv は
+> mise bootstrap（`mise/config.toml` / `mise/config.default.toml`）へ移管済み。
+> Home Manager は generation 管理のみが残り、全マシン切替後に撤去する（TODO.md 参照）。
+
 Detailed Reference: [docs/tools/home-manager.md](../../docs/tools/home-manager.md)
 
 ## 管理方針: 静的ファイルのみ管理
@@ -49,8 +54,8 @@ Detailed Reference: [docs/tools/home-manager.md](../../docs/tools/home-manager.m
 
 - managed asset は `~/.apm/catalog/**` で管理する。
 - global skill の daily operation は `cd ~/.apm && mise run ...` を使う。
-- Home Manager は dotfiles 配布と generation 管理を担当する。
-- macOS GUI アプリへ渡す環境変数は `launchd.agents.*` から `launchctl setenv` する。secret は `.env.local` 全体ではなく、対象アプリが参照する key だけを allowlist する。
+- dotfiles 配布は mise bootstrap へ移管済み。Home Manager は generation 管理のみ担当する（撤去予定）。
+- macOS GUI アプリへ渡す環境変数は mise bootstrap 管理の LaunchAgent（`[bootstrap.macos.launchd.agents]`）から `launchctl setenv` する。secret は `.env.local` 全体ではなく、対象アプリが参照する key だけを allowlist する。
 
 ## よくあるトラブル
 
