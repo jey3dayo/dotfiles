@@ -20,7 +20,7 @@ Home Manager は generation 管理のみの legacy 状態。
 ### 残タスク
 
 - [ ] generation 掃除（mac / pi）: `home-manager remove-generations all && nix-collect-garbage -d`（destructive、実行前に要確認）
-- [ ] `skills/nix-dotfiles`（repo-local Agent Skill）の retire: apm.yml と合わせて整理（`apm-usage` / `apm-repo-bootstrap` 経由）
+- [x] `skills/nix-dotfiles`（repo-local Agent Skill）retire 済み（apm.yml から除去、apm install で lockfile 再生成）
 - [ ] Nix ランタイム自体のアンインストール判断（`docs/tools/nix.md` 参照）
 
 ## XDG 移行のフォローアップ

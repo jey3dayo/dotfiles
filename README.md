@@ -124,11 +124,7 @@ If Homebrew is already installed, skip bootstrap and follow docs/setup.md direct
 
 ```
 dotfiles/
-├── flake.nix      # Home Manager entrypoint
-├── home.nix       # User configuration
-├── nix/           # Home Manager modules
-│   ├── dotfiles-module.nix  # Custom module
-│   └── env-detect.nix       # Environment detection
+├── mise/          # mise config（[tools] / [dotfiles] / [bootstrap.*] / tasks）
 ├── .claude/       # AI assistance, commands, review criteria
 ├── .github/       # Workflows
 ├── .kiro/         # Steering docs (always-loaded AI context)
