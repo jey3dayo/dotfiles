@@ -142,7 +142,6 @@ brew "mysql-client"
 brew "utf8proc", args: ["HEAD"]
 brew "neovim"
 brew "nginx"
-brew "nixfmt"
 brew "openblas"
 brew "openfga"
 brew "pkcs11-helper"

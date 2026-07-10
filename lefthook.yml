@@ -63,16 +63,6 @@ pre-commit:
       glob: "*.toml"
       run: taplo format {staged_files}
       stage_fixed: true
-    nixfmt:
-      glob: "*.nix"
-      run: sh -c '. "$HOME/.config/mise/lib/nixfmt.sh"; run_nixfmt "$@"' -- {staged_files}
-      stage_fixed: true
-    statix:
-      glob: "*.nix"
-      run: statix check {staged_files}
-    deadnix:
-      glob: "*.nix"
-      run: deadnix --fail {staged_files}
     actionlint:
       glob: ".github/workflows/*.{yml,yaml}"
       run: actionlint {staged_files}
