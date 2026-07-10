@@ -166,6 +166,7 @@ yamllint = "latest"
 # ========================================
 atuin = "latest"
 aws-cli = "latest"
+"pipx:awsume" = "latest"
 bat = "latest"
 buf = "latest"
 eza = "latest"
