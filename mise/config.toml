@@ -63,7 +63,7 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 # ========================================
 # Dotfiles 配布 (mise bootstrap / mise dotfiles apply)
 # ========================================
-# Home Manager から移管した OS 非依存の dotfiles 定義。
+# 旧 Home Manager（撤去済み）から移管した OS 非依存の dotfiles 定義。
 # `mise bootstrap` / `mise dotfiles apply` を明示実行したときのみ適用される。
 # macOS 専用（~/Library/Services, launchd agents 等）は config.default.toml に定義。
 # 状態確認: mise dotfiles status

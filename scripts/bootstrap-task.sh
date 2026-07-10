@@ -22,6 +22,12 @@ if [ "$(uname -s)" = "Darwin" ]; then
   headroom_venv="$headroom_service_dir/venv"
   headroom_bin="$headroom_venv/bin/headroom"
 
+  if ! command -v uv >/dev/null 2>&1; then
+    echo "Error: uv not found on PATH. Run with tools loaded, e.g.:" >&2
+    echo "  MISE_CONFIG_FILE=\"\$HOME/.config/mise/config.default.toml\" mise install && mise run bootstrap" >&2
+    exit 1
+  fi
+
   mkdir -p "$HOME/.headroom/logs" "$headroom_service_dir"
 
   marker="$headroom_venv/.headroom-version"
@@ -54,7 +60,9 @@ if [ -d "$worktree/.git" ] || [ -f "$worktree/.git" ]; then
 
   tpm_path="$worktree/tmux/plugins/tpm"
   install_script="$tpm_path/bin/install_plugins"
-  if [ -x "$install_script" ] && ! tmux info >/dev/null 2>&1; then
+  if ! command -v tmux >/dev/null 2>&1; then
+    echo "tmux not found on PATH; skipping TPM plugin install." >&2
+  elif [ -x "$install_script" ] && ! tmux info >/dev/null 2>&1; then
     echo "Installing tmux plugins via TPM..."
     TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" \
       || echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2

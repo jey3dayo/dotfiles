@@ -4,11 +4,11 @@
 対象: 開発者
 タグ: `category/setup`, `layer/core`, `environment/cross-platform`, `audience/developer`
 
-High-performance development environment tuned for speed, consistency, and developer experience. Managed with Home Manager for declarative configuration.
+High-performance development environment tuned for speed, consistency, and developer experience. Managed with mise bootstrap for declarative configuration.
 
 ## Highlights
 
-- Declarative Configuration: Home Manager-based deployment with automatic environment detection (CI/Pi/Default)
+- Declarative Configuration: mise bootstrap-based deployment with per-OS config selection (CI/Pi/Default)
 - Performance-first dotfiles with local CI parity (`mise run ci`) before merges
 - Documentation centralized in `docs/` with navigation at `docs/README.md` and AI context in `.kiro/steering/`
 - LLM/AI entrypoint available at `llms.md`, with project rules rooted in `AGENTS.md`
@@ -75,6 +75,7 @@ brew bundle  # macOS only
 
 # 5. Converge the machine with mise bootstrap
 #    (dotfiles symlink, macOS LaunchAgents, tools, headroom venv, tmux plugins)
+export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"  # 初回のみ明示
 mise trust && mise bootstrap --yes
 
 # 6. Restart shell

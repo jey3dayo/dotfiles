@@ -208,7 +208,7 @@ zoxide = "latest"
 # ========================================
 # Bootstrap / Dotfiles (mise bootstrap) — macOS 専用分
 # ========================================
-# Home Manager (nix/dotfiles-files.nix, users/current/home.nix) から移管。
+# 旧 Home Manager（撤去済み）から移管。
 # OS 非依存の [dotfiles] と [tasks.bootstrap] は config.toml に定義。
 # `mise bootstrap` / `mise dotfiles apply` を明示実行したときのみ適用される。
 # 状態確認: mise bootstrap status / mise dotfiles status

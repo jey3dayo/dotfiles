@@ -20,21 +20,19 @@ mise/
 
 ## Environment Detection
 
-Environment detection is handled by Home Manager (`nix/env-detect.nix`) and exported via
-`home.sessionVariables` (loaded by shells through `hm-session-vars.sh`).
+Environment detection is handled by `zsh/.zshenv` (Raspberry Pi 判定を含む) which exports
+`MISE_CONFIG_FILE` before mise activation. `mise/config.toml` は常時ロードされ、
+`MISE_CONFIG_FILE` の指す OS 別 config が追加でロードされる（additive）。
 
 #### Automatic Configuration Selection
 
-Home Manager/Nix auto-detection currently covers:
-
-- CI (GitHub Actions) → `config.ci.toml`
+- CI (GitHub Actions) → `config.ci.toml`（workflow の env で指定）
 - Raspberry Pi → `config.pi.toml`
 - macOS/Linux/WSL2 → `config.default.toml`
+- Windows → `config.windows.toml`（`windows/setup.ps1` が設定）
 
-Windows config is available, but it is not currently selected by `nix/env-detect.nix`.
-Use `config.windows.toml` only when `MISE_CONFIG_FILE` explicitly points to it.
-
-Environment Variable: `MISE_CONFIG_FILE` is set before mise activation by Home Manager for the environments above.
+Note: fresh マシンでは `~/.zshenv` 配布前のため未設定。初回は
+`export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"` を明示する（docs/setup.md 参照）。
 
 ## Tool Counts
 
@@ -50,7 +48,7 @@ Environment Variable: `MISE_CONFIG_FILE` is set before mise activation by Home M
 Old: Single `config.toml` for Mac/WSL2, `config.pi.toml` for Pi
 New: `config.toml` (settings-only), `config.default.toml` (Mac/Linux/WSL2), `config.windows.toml` (Windows), `config.pi.toml` (optimized), `config.ci.toml` (CI)
 
-Migration: Automatic on shell restart after pulling changes for environments covered by Home Manager detection. Windows still requires `MISE_CONFIG_FILE` to point at `config.windows.toml`.
+Migration: Automatic on shell restart after pulling changes. Windows still requires `MISE_CONFIG_FILE` to point at `config.windows.toml`.
 
 #### Verification
 
@@ -80,5 +78,4 @@ mise doctor              # Health check
 
 - `.claude/rules/tools/mise.md` - Comprehensive documentation
 - `nix/env-detect.nix` - Environment detection logic
-- `nix/dotfiles-module.nix` - Home Manager wiring for `MISE_CONFIG_FILE`
 - `.mise.toml` - Project-level tasks
