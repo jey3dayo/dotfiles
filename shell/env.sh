@@ -13,20 +13,6 @@ _shell_bootstrap_xdg_env() {
   export ZDOTDIR GIT_CONFIG_GLOBAL
 }
 
-_shell_source_hm_session_vars() {
-  if [ -n "${HM_SESSION_VARS_LOADED:-}" ]; then
-    return 0
-  fi
-
-  if [ -f "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh" ]; then
-    . "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
-    export HM_SESSION_VARS_LOADED=1
-  elif [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/home-manager/home-manager.sh" ]; then
-    . "${XDG_CONFIG_HOME:-$HOME/.config}/home-manager/home-manager.sh"
-    export HM_SESSION_VARS_LOADED=1
-  fi
-}
-
 _shell_is_raspberry_pi() (
   arch="$(uname -m 2>/dev/null || printf '')"
   case "$arch" in
@@ -67,12 +53,7 @@ _shell_bootstrap_mise_env() {
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   export MISE_DATA_DIR MISE_CACHE_DIR
 
-  _shell_source_hm_session_vars
-
   case "${MISE_CONFIG_FILE:-}" in
-    /tmp/hm-verify/*)
-      unset MISE_CONFIG_FILE
-      ;;
     "") ;;
     *)
       [ -f "$MISE_CONFIG_FILE" ] || unset MISE_CONFIG_FILE

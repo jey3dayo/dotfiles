@@ -50,7 +50,7 @@ if [[ -f "${XDG_CONFIG_HOME}/.env.local" ]]; then
 fi
 
 unfunction _shell_bootstrap_env _shell_bootstrap_xdg_env _shell_bootstrap_mise_env \
-  _shell_bootstrap_tool_env _shell_source_hm_session_vars _shell_detect_mise_environment \
+  _shell_bootstrap_tool_env _shell_detect_mise_environment \
   _shell_is_raspberry_pi _shell_path_prepend_existing 2>/dev/null
 
 # vim: set syntax=zsh:
