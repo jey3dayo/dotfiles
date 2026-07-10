@@ -77,6 +77,7 @@ brew bundle                      # macOS
 # 5. Converge the machine with mise bootstrap
 #    packages → dotfiles → launchd(macOS) → tools → bootstrap task の順に冪等収束
 export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"  # 初回のみ明示（~/.zshenv 配布後は自動）
+export MISE_ENV=macos  # macOS のみ。config.macos.toml（brew packages / LaunchAgents）を読み込む
 mise trust && mise bootstrap --yes
 
 # 6. Restart shell

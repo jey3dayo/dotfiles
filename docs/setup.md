@@ -42,8 +42,9 @@ brew bundle
 
 # 4. Converge the machine via mise bootstrap
 #    (dotfiles symlink, macOS LaunchAgents, tools, headroom venv, tmux plugins)
-#    初回は ~/.zshenv 未配布のため MISE_CONFIG_FILE を明示する（次回以降は不要）
+#    初回は ~/.zshenv 未配布のため MISE_CONFIG_FILE / MISE_ENV を明示する（次回以降は不要）
 export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"
+export MISE_ENV=macos # macOS のみ。config.macos.toml（brew packages / LaunchAgents 等）を読み込む
 mise trust && mise bootstrap --yes
 
 # 5. Restart shell
@@ -51,7 +52,7 @@ exec zsh
 ```
 
 状態確認は `mise bootstrap status` / `mise dotfiles status`、差分プレビューは `mise bootstrap --dry-run` を使います。
-dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）と `mise/config.default.toml`（macOS/Linux/WSL2 の tools・macOS 専用 bootstrap、`MISE_CONFIG_FILE` 経由でロード）にあります。
+dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、`mise/config.default.toml`（macOS/Linux/WSL2 の tools、`MISE_CONFIG_FILE` 経由でロード）、`mise/config.macos.toml`（macOS 専用の brew packages・LaunchAgents・dotfiles、`MISE_ENV=macos` 経由でロード）にあります。
 Raspberry Pi は `config.pi.toml` を、Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
 初回 bootstrap 直後、headroom-proxy agent は venv 構築完了まで数回リスタートすることがあります（自動収束）。
 

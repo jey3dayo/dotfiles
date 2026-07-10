@@ -16,7 +16,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 | 分類             | 意味                                           | 代表タスク                                               | 実行前確認                                  |
 | ---------------- | ---------------------------------------------- | -------------------------------------------------------- | ------------------------------------------- |
 | 検証のみ         | ファイル・システム状態を書き換えない           | `ci`, `ci:quick`, `check`, `mise dotfiles status`        | 通常の品質確認として実行可                  |
-| 作業ツリー変更   | フォーマットなどで repo 内ファイルを書き換える | `format`, `format:*`, `brewfile:backup`                  | 差分が対象範囲内か確認する                  |
+| 作業ツリー変更   | フォーマットなどで repo 内ファイルを書き換える | `format`, `format:*`                                     | 差分が対象範囲内か確認する                  |
 | ローカル状態変更 | mise、Homebrew、dotfiles などを変更する        | `ci:full`, `ci:verify-deploy`, `mise bootstrap`, `setup` | 現在の machine state と rollback 手順を確認 |
 | 外部取得・更新   | ネットワーク取得や外部 checkout を更新する     | `update`, `update:brew`, `update:submodules`             | 取得元と更新対象を確認する                  |
 | 強制更新         | 外部 repo を reset するなど破壊的になり得る    | `update:external-repos`, `mise dotfiles apply --force`   | ユーザー確認なしで実行しない                |
@@ -147,8 +147,9 @@ APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise
 
 | タスク             | 説明                                                   |
 | ------------------ | ------------------------------------------------------ |
-| `brewfile:backup`  | 現在のインストール状況を Brewfile に保存               |
 | `brewfile:restore` | Brewfile からパッケージをインストール（新規 Mac 対応） |
+
+formulae の宣言管理は `mise bootstrap packages`（`mise/config.macos.toml` の `[bootstrap.packages]`）へ移行済み。Brewfile は casks / mas / vscode と bootstrap 非対応の例外のみを保持する。dump による再生成（旧 `brewfile:backup`）は bootstrap 宣言と両立しないため廃止。
 
 ### 統合・診断
 

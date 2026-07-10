@@ -10,13 +10,13 @@ paths:
 
 ## Purpose
 
-Tool management architecture policy defining responsibility boundaries between Homebrew and mise (with mise bootstrap handling configuration distribution).
+Tool management architecture policy defining responsibility boundaries between Homebrew and mise (with mise bootstrap handling configuration distribution and system package declaration).
 
 ## Scope
 
-- Homebrew: System dependencies, GUI applications, Neovim ecosystem
-- mise: CLI tools, language runtimes, development environments
-- mise bootstrap (`[dotfiles]`): Configuration distribution only (no tool installation)
+- Homebrew (Brewfile): **casks（80）・mas（20）・vscode extensions（69）** と bootstrap 非対応エントリの正本（cask/mas の bootstrap 移行は未着手。完了までは Brewfile を編集する）
+- mise `[tools]`: CLI tools, language runtimes, development environments
+- mise bootstrap: `[dotfiles]` による設定配布 + `[bootstrap.packages]` による brew formulae 宣言（`mise/config.macos.toml`）。cask / mas backend は将来の移行候補
 
 ## Sources
 
@@ -25,15 +25,25 @@ Tool management architecture policy defining responsibility boundaries between H
 
 ## Three-Layer Architecture
 
-### mise bootstrap (dotfiles)
+### mise bootstrap
 
-Responsibility: Configuration distribution ONLY
+Responsibility: Configuration distribution + system package declaration
 
 - Distributes dotfiles（`~/.zshenv`, `~/.ssh/config` など）via `[dotfiles]`
-- Links configuration files to `$HOME`
-- Does NOT install dev tools（`[tools]` / Homebrew の責務）
+- Declares system packages via `[bootstrap.packages]`（backends: `brew:` formulae / brew-cask / `mas:`。mise v2026.6.14 以降）
+  - 従来 Homebrew（Brewfile）が担っていた system libraries・Neovim ecosystem・複雑な native 依存ツールの宣言先
+  - cask は mise が native インストール（Homebrew 本体不要）。ただし新機能のため pkg/sudo 系 cask は段階移行
+  - `mise bootstrap packages import` で brew formulae を snapshot
+  - `prune` は**実運用しない**: Brewfile 専用の例外 formula（heroku / mysql / utf8proc / perman-aws-vault / mise / tap formulae）は `[bootstrap.packages]` に宣言していないため、prune が削除対象と誤判定する。調査目的の `--dry-run` のみ可
+- Does NOT cover: vscode extensions、`restart_service` / install args 付き formula（`mysql`, `utf8proc` 等）、mise 自体（自己 bootstrap の循環回避）、API metadata を持たない tap の formula（copilot-cli, im-select, peekaboo, zsh-abbr@6, aiac）→ Brewfile に残す
 
-Example: starship configuration lives in `~/.config/starship.toml` (git-managed), while the starship binary is installed by mise.
+Example: starship configuration lives in `~/.config/starship.toml` (git-managed), while the starship binary is installed by mise `[tools]`.
+
+#### `[tools]` vs `[bootstrap.packages]` の使い分け
+
+- mise registry にある cross-platform CLI → `[tools]`（従来どおり優先）
+- Homebrew でしか配れないもの（system libs, casks, mas, macOS 固有）→ `[bootstrap.packages]`
+- どちらでも入るが bootstrap 時に一括で欲しいだけ → `[tools]` を選ぶ（`mise bootstrap` は最後に `mise install` も実行する）
 
 ### mise
 

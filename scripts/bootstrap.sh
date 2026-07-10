@@ -247,6 +247,7 @@ show_next_steps() {
 
   printf "%b\n" "${BOLD}${BLUE}3.${NC} ${BOLD}Converge the machine via mise bootstrap${NC}:"
   printf "%b\n" "   ${YELLOW}export MISE_CONFIG_FILE=\"\$HOME/.config/mise/config.default.toml\""
+  printf "%b\n" "   export MISE_ENV=macos  # macOS only: loads config.macos.toml"
   printf "%b\n" "   mise trust && mise bootstrap --yes${NC}"
   printf "\n"
 
