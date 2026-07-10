@@ -1,7 +1,4 @@
-# ========================================
-# Windows mise 設定
-# ~/.config/mise/config.windows.toml
-# ========================================
+# Windows 用設定。
 
 [settings]
 env_file = ".env.local"

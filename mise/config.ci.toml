@@ -1,14 +1,4 @@
-# ========================================
-# CI-Optimized mise Configuration
-# ~/.config/mise/config.ci.toml
-# ========================================
-# GitHub Actions CI 専用設定（最小ツールセット）
-#
-# 最適化:
-# - config.default.toml: 全ツール（開発環境用）
-# - config.pi.toml: サーバー向け最小セット
-# - config.ci.toml: CI必須ツールのみ（最小構成）
-# ========================================
+# GitHub Actions CI 専用（CI 必須ツールのみの最小構成）。
 
 [settings]
 env_file = '.env.local'
@@ -21,40 +11,28 @@ trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 [settings.pipx]
 uvx = true
 
-# ========================================
-# 環境変数（CI でもローカルと同じ対象範囲を使用）
-# ========================================
-
 [env]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
 MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit #.worktrees #.apm/skills #.claude/skills #.claude/worktrees #.codex/skills #result #result-* #tmp #.kiro #opencode/agents/*.md"
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude tmp --exclude .luarocks --exclude .kiro --exclude tmux/plugins --exclude opencode/agents/*.md --exclude apm.lock.yaml"
 
-# ========================================
-# ツール定義 - CI必須ツールのみ
-# ========================================
-
 [tools]
-# Package Managers
-"github:astral-sh/uv" = "latest" # uvx for ruff execution (pipx:uv は自己参照更新で停滞するため避ける)
-# Runtime
+# uvx for ruff execution (pipx:uv は自己参照更新で停滞するため避ける)
+"github:astral-sh/uv" = "latest"
 node = "lts"
 bun = "latest"
-# Formatters and Linters
-actionlint = "latest"      # GitHub Actions lint
-biome = "latest"           # JS/TS/JSON
-prettier = "latest"        # General
-shellcheck = "latest"      # Shell lint
-shfmt = "latest"           # Shell format
-stylua = "latest"          # Lua format
-taplo = "latest"           # TOML format
-yamllint = "latest"        # YAML lint
-"pipx:beautysh" = "latest" # Shell format (Python-based)
-# NPM Packages
+actionlint = "latest"
+biome = "latest"
+prettier = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+stylua = "latest"
+taplo = "latest"
+yamllint = "latest"
+"pipx:beautysh" = "latest"
 "npm:markdown-link-check" = "latest"
 "npm:markdownlint-cli2" = "latest"
 "npm:tsx" = "latest"
-# CLI Tools
-fd = "latest"       # File discovery
-gitleaks = "latest" # Secret scanning
+fd = "latest"
+gitleaks = "latest"
