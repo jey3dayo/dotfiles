@@ -150,10 +150,7 @@ jobs:
         run: echo "${HOME}/.luarocks/bin" >> "$GITHUB_PATH"
 
       - name: Deploy dotfiles with mise bootstrap
-        run: |
-          mise dotfiles apply --yes --force
-          mise dotfiles status --missing
-          echo "✅ mise dotfiles はすべて適用済みです"
+        run: mise run ci:verify-deploy
 
       - name: Run all CI checks
         run: mise run ci
