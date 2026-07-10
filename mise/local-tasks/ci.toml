@@ -23,28 +23,11 @@ gitleaks git -v
 """
 
 ["ci:verify-deploy"]
-description = "Home Manager デプロイの検証（エントリーポイント・シンボリックリンク確認）"
-depends = ["hm:deploy"]
+description = "mise dotfiles デプロイの検証（適用して収束を確認）"
 run = """
-# エントリーポイントファイルの確認
-for file in .bashrc .bash_profile .zshenv .zshrc .gitconfig .tmux.conf; do
-  if [ -L "$HOME/$file" ]; then
-    echo "✅ $file は正常にデプロイされました"
-  else
-    echo "❌ $file のデプロイに失敗しました"
-    exit 1
-  fi
-done
-
-# ~/.config/内のシンボリックリンク数を確認
-link_count=$(find ~/.config -maxdepth 1 -type l | wc -l)
-echo "📊 ~/.config/ 内のシンボリックリンク数: $link_count"
-
-if [ "$link_count" -ge 46 ]; then
-  echo "✅ 期待されるファイル数（46個以上）が配置されました"
-else
-  echo "⚠️ 配置されたファイル数が期待値より少ない（期待: 46個以上、実際: $link_count個）"
-fi
+mise dotfiles apply --yes --force
+mise dotfiles status --missing
+echo "✅ mise dotfiles はすべて適用済みです"
 """
 
 ["ci:install"]
@@ -52,55 +35,6 @@ description = "CI に必要な追加ツールをインストール"
 run = """
 luarocks install --local luacheck
 luarocks install --local busted
-"""
-
-# ========================================
-# Nix 固有検証
-# ========================================
-
-["nix:check"]
-description = "nix flake check を実行"
-run = """
-if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
-  echo "Skip nix:check (SKIP_NIX_VALIDATE=1)"
-  exit 0
-fi
-
-. "$HOME/.config/mise/lib/home-manager.sh"
-ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
-configure_nix_github_token
-
-nix flake check
-"""
-
-["nix:build:default"]
-description = "nix build .#default を実行"
-run = """
-if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
-  echo "Skip nix:build:default (SKIP_NIX_VALIDATE=1)"
-  exit 0
-fi
-
-. "$HOME/.config/mise/lib/home-manager.sh"
-ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
-configure_nix_github_token
-
-nix build .#default
-"""
-
-["nix:build:darwin-system"]
-description = "nix-darwin system 構成をビルド検証（適用なし）"
-run = """
-if [ "${SKIP_NIX_VALIDATE:-0}" = "1" ]; then
-  echo "Skip nix:build:darwin-system (SKIP_NIX_VALIDATE=1)"
-  exit 0
-fi
-
-. "$HOME/.config/mise/lib/home-manager.sh"
-ensure_nix_or_fail "nix not found. Install Nix or run with SKIP_NIX_VALIDATE=1" || exit $?
-configure_nix_github_token
-
-nix build --no-link --impure .#darwinConfigurations.CA-20031129.system
 """
 
 # ----------------------------------------
@@ -153,12 +87,3 @@ run = [{ task = "ci" }]
 ["ci:full:windows"]
 description = "Windows 向け CI フルチェック（WSL スナップショット経由）"
 run = [{ task = "ci:full" }]
-
-["ci:nix"]
-description = "Nix 固有の深い検証（validate.yml 対応）"
-depends = [
-  "nix:check",
-  "nix:build:default",
-  "nix:build:darwin-system",
-  "hm:check",
-]

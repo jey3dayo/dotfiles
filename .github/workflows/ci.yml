@@ -123,7 +123,8 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v4
         with:
-          version: "2025.12.13"
+          # mise dotfiles / bootstrap を使うため 2026.7 以降が必要
+          version: "2026.7.5"
           cache: true
 
       - name: Set up Lua (LuaJIT) for luacheck
@@ -148,33 +149,11 @@ jobs:
       - name: Add LuaRocks bin to PATH
         run: echo "${HOME}/.luarocks/bin" >> "$GITHUB_PATH"
 
-      - name: Install Nix
-        uses: cachix/install-nix-action@v30
-
-      - name: Deploy dotfiles with Home Manager
-        run: mise run hm:deploy
-
-      - name: Verify dotfiles deployment
+      - name: Deploy dotfiles with mise bootstrap
         run: |
-          # エントリーポイントファイルの確認
-          for file in .bashrc .bash_profile .zshenv .zshrc .gitconfig .tmux.conf; do
-            if [ -L "$HOME/$file" ]; then
-              echo "✅ $file は正常にデプロイされました"
-            else
-              echo "❌ $file のデプロイに失敗しました"
-              exit 1
-            fi
-          done
-
-          # ~/.config/内のシンボリックリンク数を確認
-          link_count=$(find ~/.config -maxdepth 1 -type l | wc -l)
-          echo "📊 ~/.config/ 内のシンボリックリンク数: $link_count"
-
-          if [ "$link_count" -ge 46 ]; then
-            echo "✅ 期待されるファイル数（46個以上）が配置されました"
-          else
-            echo "⚠️ 配置されたファイル数が期待値より少ない（期待: 46個以上、実際: $link_count個）"
-          fi
+          mise dotfiles apply --yes --force
+          mise dotfiles status --missing
+          echo "✅ mise dotfiles はすべて適用済みです"
 
       - name: Run all CI checks
         run: mise run ci
