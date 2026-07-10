@@ -296,6 +296,9 @@ herdr/release-notes.json
 ## browser-harness
 browser-harness/
 
+## rclone (contains credentials)
+rclone/
+
 ## tmp
 tmp/
 
