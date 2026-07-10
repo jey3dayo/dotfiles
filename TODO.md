@@ -26,6 +26,6 @@ Home Manager は generation 管理のみの legacy 状態。
 
 ## XDG 移行のフォローアップ
 
-- [x] `~/.npmrc` の廃止（2026-07-10）: `home/.npmrc` → `npm/npmrc` へ移動、`NPM_CONFIG_USERCONFIG` を shell/env.sh と codex-gui-env LaunchAgent で配布、`[dotfiles]` エントリと symlink を削除
+- [x] `~/.npmrc` の廃止（2026-07-10）: `home/.npmrc` → `npm/npmrc` へ移動、`NPM_CONFIG_USERCONFIG` を shell/env.sh と gui-env LaunchAgent で配布、`[dotfiles]` エントリと symlink を削除
 - [x] awsume の修復（2026-07-10）: mise 管理 `pipx:awsume` へ移行（4.5.4）。破損した旧 pipx venv/bin は `~/.local/pipx/awsume-broken-backup-20260710/` に退避
 - [x] ZDOTDIR と `~/.zprofile` の調査（2026-07-10）: SOURCE_TRACE で実測。ZDOTDIR 仕様どおり HOME 側 `~/.zprofile` は読まれない（brew shellenv は repo の `zsh/lib/path.zsh` がカバー済みで実害なし）。不要なら `~/.zprofile` は手動削除可

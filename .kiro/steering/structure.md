@@ -210,9 +210,17 @@ agents/
 
 ```
 scripts/
-├── bootstrap.sh          # Homebrew bootstrap (macOS)
-└── setup-env.sh          # Environment setup helpers
+├── bootstrap.sh          # Homebrew bootstrap (macOS, 前準備のみ)
+├── bootstrap-task.sh     # mise bootstrap の最終ステップ（headroom venv / tmux plugins）
+├── env-detect.sh         # 環境判定（CI / Pi / Default）
+├── setup-env.sh          # Environment setup helpers
+├── setup-gitleaks.sh     # gitleaks セットアップ
+├── replace-bold-headings.ts  # Markdown 見出しフォーマッタ（bin/ から利用可）
+├── launchd/              # LaunchAgent 本体（gui-env, headroom-proxy）
+└── windows/              # Windows / WSL 用（*.ps1, mise-wsl-task, run-windows-powershell）
 ```
+
+各スクリプトのテスト（`*.test.ts`）は対象と同じディレクトリに併置する。
 
 **Purpose**: Setup and maintenance helpers
 
