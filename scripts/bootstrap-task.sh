@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# mise bootstrap の最終ステップ（[tasks.bootstrap]）から呼ばれる冪等セットアップ。
+# 旧 home.nix の activation script（headroom venv 構築・tmux submodule 初期化）から移管。
+set -euo pipefail
+
+# --------------------------------------
+# Headroom proxy 用 venv（version marker で冪等化、macOS のみ）
+# --------------------------------------
+if [ "$(uname -s)" = "Darwin" ]; then
+  headroom_version="0.26.0"
+  headroom_service_revision="${headroom_version}-service-deps-1"
+  headroom_package="headroom-ai[mcp,proxy]==${headroom_version}"
+  headroom_pinned_deps=(
+    "anyio==4.14.0"
+    "click==8.4.1"
+    "hpack==4.1.0"
+    "litellm==1.89.3"
+    "openai==2.43.0"
+    "opentelemetry-api==1.42.1"
+  )
+  headroom_service_dir="$HOME/.local/share/headroom-launchd"
+  headroom_venv="$headroom_service_dir/venv"
+  headroom_bin="$headroom_venv/bin/headroom"
+
+  mkdir -p "$HOME/.headroom/logs" "$headroom_service_dir"
+
+  marker="$headroom_venv/.headroom-version"
+  current_version=""
+  if [ -f "$marker" ]; then
+    current_version="$(cat "$marker")"
+  fi
+
+  if [ ! -x "$headroom_bin" ] || [ "$current_version" != "$headroom_service_revision" ]; then
+    echo "Setting up headroom venv ($headroom_service_revision)..."
+    if [ ! -x "$headroom_venv/bin/python" ]; then
+      uv venv --seed "$headroom_venv"
+    fi
+    uv pip install --python "$headroom_venv/bin/python" "$headroom_package" "${headroom_pinned_deps[@]}"
+    printf '%s\n' "$headroom_service_revision" >"$marker"
+  else
+    echo "headroom venv is up to date ($headroom_service_revision)"
+  fi
+fi
+
+# --------------------------------------
+# tmux plugins (tpm submodule + TPM install)
+# --------------------------------------
+worktree="$HOME/.config"
+if [ -d "$worktree/.git" ] || [ -f "$worktree/.git" ]; then
+  echo "Initializing Git submodules for tpm..."
+  if ! git -C "$worktree" submodule update --init --recursive; then
+    echo "Warning: failed to initialize tpm submodule; continuing." >&2
+  fi
+
+  tpm_path="$worktree/tmux/plugins/tpm"
+  install_script="$tpm_path/bin/install_plugins"
+  if [ -x "$install_script" ] && ! tmux info >/dev/null 2>&1; then
+    echo "Installing tmux plugins via TPM..."
+    TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" \
+      || echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
+  fi
+fi

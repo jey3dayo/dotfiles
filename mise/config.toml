@@ -59,3 +59,37 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 # ========================================
 # ツール定義は config.default.toml または config.pi.toml を参照
 # ========================================
+
+# ========================================
+# Dotfiles 配布 (mise bootstrap / mise dotfiles apply)
+# ========================================
+# Home Manager から移管した OS 非依存の dotfiles 定義。
+# `mise bootstrap` / `mise dotfiles apply` を明示実行したときのみ適用される。
+# macOS 専用（~/Library/Services, launchd agents 等）は config.default.toml に定義。
+# 状態確認: mise dotfiles status
+
+[dotfiles]
+# XDG 非対応ツールの HOME 側エントリポイントのみ配布する。
+# XDG ネイティブ対応のもの（git / tmux / awsume / zshrc(ZDOTDIR)）は shim を置かない。
+# ~/.zshenv は ZDOTDIR を設定する bootstrap のため必須
+"~/.zshenv" = { source = "~/.config/home/.zshenv", mode = "symlink" }
+# npm は XDG 非ネイティブ。NPM_CONFIG_USERCONFIG を全経路（shell/GUI/launchd）へ
+# 配布できたら削除可能
+"~/.npmrc" = { source = "~/.config/home/.npmrc", mode = "symlink" }
+# bash は XDG 非対応
+"~/.bashrc" = { source = "~/.config/bash/.bashrc", mode = "symlink" }
+"~/.bash_profile" = { source = "~/.config/bash/.bash_profile", mode = "symlink" }
+# ssh -F では git/scp/rsync 経由の呼び出しをカバーできないため symlink 維持
+"~/.ssh/config" = { source = "~/.config/ssh/config", mode = "symlink" }
+# symlink を拒否する CLI 向けは copy（実ファイル化）。両ツールとも HOME 直下固定
+"~/.aicommits" = { source = "~/.config/.aicommits", mode = "copy" }
+"~/.opencommit" = { source = "~/.config/opencommit/.opencommit", mode = "copy" }
+
+# ========================================
+# Bootstrap タスク（mise bootstrap の最終ステップで実行）
+# ========================================
+# 内容は OS ガード付き: headroom venv は macOS のみ、tpm submodule は共通
+
+[tasks.bootstrap]
+description = "headroom venv 構築 (macOS) と tmux submodule/TPM 初期化（冪等）"
+run = 'bash "$HOME/.config/scripts/bootstrap-task.sh"'

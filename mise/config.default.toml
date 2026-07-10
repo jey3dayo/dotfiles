@@ -208,3 +208,49 @@ zoxide = "latest"
 # ========================================
 # タスク定義は mise/local-tasks/ ディレクトリに分割されています。
 # .mise.toml の [task_config] セクションで読み込まれます。
+
+# ========================================
+# Bootstrap / Dotfiles (mise bootstrap) — macOS 専用分
+# ========================================
+# Home Manager (nix/dotfiles-files.nix, users/current/home.nix) から移管。
+# OS 非依存の [dotfiles] と [tasks.bootstrap] は config.toml に定義。
+# `mise bootstrap` / `mise dotfiles apply` を明示実行したときのみ適用される。
+# 状態確認: mise bootstrap status / mise dotfiles status
+
+[bootstrap.packages]
+# btop は旧 home.packages から移管。rsync は macOS 標準のため管理しない
+"brew:btop" = "latest"
+
+[dotfiles]
+# macOS Services は pbs が symlink bundle を拒否するため copy（macOS でのみ apply すること）
+"~/Library/Services/RemoveQuarantine.workflow" = { source = "~/.config/macos/services/RemoveQuarantine.workflow", mode = "copy" }
+
+# ========================================
+# macOS LaunchAgents (旧 home.nix launchd.agents)
+# ========================================
+# dev.mise.<name>.plist として ~/Library/LaunchAgents に配置される
+
+[bootstrap.macos.launchd.agents.codex-gui-path]
+program = "/bin/sh"
+args = [
+  "-lc",
+  'launchctl setenv PATH "$HOME/.mise/shims:$HOME/bin:$HOME/.local/bin:$HOME/.config/scripts:$HOME/.cargo/bin:$HOME/go/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"',
+]
+run_at_load = true
+stdout_path = "~/Library/Logs/codex-gui-path.log"
+stderr_path = "~/Library/Logs/codex-gui-path.log"
+
+[bootstrap.macos.launchd.agents.codex-gui-env]
+program = "/bin/sh"
+args = ["-lc", 'exec "$HOME/.config/scripts/launchd-codex-gui-env.sh"']
+run_at_load = true
+stdout_path = "~/Library/Logs/codex-gui-env.log"
+stderr_path = "~/Library/Logs/codex-gui-env.log"
+
+[bootstrap.macos.launchd.agents.headroom-proxy]
+program = "/bin/sh"
+args = ["-lc", 'exec "$HOME/.config/scripts/launchd-headroom-proxy.sh"']
+run_at_load = true
+keep_alive = true
+stdout_path = "~/.headroom/logs/proxy.stdout.log"
+stderr_path = "~/.headroom/logs/proxy.stderr.log"
