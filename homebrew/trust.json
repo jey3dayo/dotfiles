@@ -2,14 +2,10 @@
   "trustedformulae": [
     "aws/tap/copilot-cli",
     "daipeihust/tap/im-select",
-    "go-task/tap/go-task",
     "gofireflyio/aiac/aiac",
     "olets/tap/zsh-abbr@6",
     "perman/tap/perman-aws-vault",
-    "steipete/tap/peekaboo",
-    "tilt-dev/tap/tilt",
-    "vectordotdev/brew/vector",
-    "ynqa/tap/jnv"
+    "steipete/tap/peekaboo"
   ],
   "trustedtaps": [
     "arto-app/tap",

@@ -1,19 +1,9 @@
-# ========================================
-# デフォルト mise 設定（Mac/Linux/WSL2 共通）
-# ~/.config/mise/config.default.toml
-# ========================================
-# この設定ファイルは以下の環境で使用されます:
-# - macOS (Darwin)
-# - Linux (default)
-# - WSL2 (Ubuntu on Windows)
-#
-# Raspberry Pi は config.pi.toml を使用します。
-# ========================================
+# Mac/Linux/WSL2 共通設定。Raspberry Pi は config.pi.toml。
 
 [settings]
 env_file = '.env.local'
 experimental = true
-jobs = 8                                                                         # デフォルトの並列実行数
+jobs = 8
 disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
@@ -21,16 +11,8 @@ trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 [settings.pipx]
 uvx = true
 
-# ========================================
-# ツール定義 (Tools)
-# ========================================
-# mise で管理する全ツールを定義
-
 [tools]
-# ========================================
-# Language Runtimes (言語ランタイム - 開発用)
-# ========================================
-# 注: システム依存関係用の Node.js/Python は Homebrew で管理
+# Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
 deno = "latest"
 go = "1.26.4"
 julia = "latest"
@@ -41,18 +23,14 @@ rust = "stable"  # rustfmt (nvim conform) and cargo:* tool installs
 # lua = "5.1.5"
 # luajit = "latest"
 
-# ========================================
-# Package Managers (パッケージマネージャー)
-# ========================================
+# Package Managers
 # uv は GitHub のプリビルドバイナリを直接取得する。
 # pipx:uv は uvx 経由で uv 自身を入れる自己参照構造になり、
 # uv 更新時に `uv tool install uv` が [1/3] install で停滞するため避ける。
 "github:astral-sh/uv" = "latest"
 bun = "latest"
 
-# ========================================
-# Formatters and Linters (フォーマッター・Linter)
-# ========================================
+# Formatters / Linters
 actionlint = "latest"
 biome = "latest"
 hadolint = "latest"
@@ -64,11 +42,7 @@ taplo = "latest"
 yamllint = "latest"
 "pipx:beautysh" = "latest"
 
-# ========================================
-# NPM Global Packages (Node.js グローバルパッケージ)
-# ========================================
-
-# ユーティリティ・ツール
+# NPM Global Packages
 "npm:@antfu/ni" = "latest"
 "npm:corepack" = "latest"
 "npm:husky" = "latest"
@@ -76,35 +50,23 @@ yamllint = "latest"
 "npm:npm-check-updates" = "latest"
 "npm:agent-browser" = "latest"
 "npm:dev-browser" = "latest"
-
-# 開発・エディタ
 "npm:@fsouza/prettierd" = "latest"
 "npm:neovim" = "latest"
-
-# プロトコルバッファ・RPC
 "npm:@bufbuild/protoc-gen-es" = "latest"
 "npm:@connectrpc/protoc-gen-connect-es" = "latest"
-
-# AI・コミット支援
 "npm:@openai/codex" = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:aicommits" = "latest"
 "npm:opencommit" = "latest"
 "npm:clawdbot" = "latest"
 "npm:vibe-kanban" = "latest"
-
-# ドキュメント・Lint
 "npm:dbdocs" = "latest"
 "npm:@google/design.md" = "latest"
 "npm:markdown-link-check" = "latest"
 "npm:markdownlint-cli2" = "latest"
 "npm:textlint" = "latest"
 "npm:textlint-rule-preset-ja-technical-writing" = "latest"
-
-# 環境変数管理
 "npm:@dotenvx/dotenvx" = "latest"
-
-# 開発ツール・Language Servers
 "npm:eslint_d" = "latest"
 "npm:typescript" = "latest"
 "npm:tsx" = "latest"
@@ -112,14 +74,10 @@ yamllint = "latest"
 "npm:vscode-json-languageserver" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
 "npm:@typescript-eslint/eslint-plugin" = "latest"
-
-# ビルドツール
 "npm:esbuild" = "latest"
-
-# ユーティリティ
 "npm:zx" = "latest"
 
-# MCP サーバー (Model Context Protocol)
+# MCP サーバー
 "npm:@aikidosec/safe-chain" = "latest"
 "npm:@benborla29/mcp-server-mysql" = "latest"
 "npm:@modelcontextprotocol/server-filesystem" = "latest"
@@ -147,11 +105,7 @@ yamllint = "latest"
 "npm:hunkdiff" = "latest"
 "npm:tuyapi" = "latest"
 
-# ========================================
-# Cargo-based Tools (Rust CLI ユーティリティ)
-# ========================================
-# 注: typos-lsp は Homebrew で管理
-# バージョン固定: DNS解決の一時的な障害回避のため (2026-02-17)
+# Rust CLI（typos-lsp は Homebrew で管理）
 "aqua:rtk-ai/rtk" = "latest"
 "aqua:getsentry/sentry-cli" = "latest"
 "cargo:bandwhich" = "latest"
@@ -161,11 +115,24 @@ yamllint = "latest"
 "cargo:wrkflw" = "0.8.0"
 "cargo:starship" = "latest"
 
-# ========================================
-# CLI Tools (コマンドラインユーティリティ)
-# ========================================
+# CLI Tools
 atuin = "latest"
 aws-cli = "latest"
+delta = "latest"
+ghq = "latest"
+jnv = "latest"
+kubectl = "latest"
+marksman = "latest"
+openfga = "latest"
+pandoc = "latest"
+restic = "latest"
+sheldon = "latest"
+task = "latest"
+tilt = "latest"
+tmux = "latest"
+typos = "latest"
+vector = "latest"
+yq = "latest"
 "pipx:awsume" = "latest"
 bat = "latest"
 buf = "latest"
@@ -199,55 +166,3 @@ usage = "latest"
 yazi = "latest"
 zoxide = "latest"
 "aqua:evilmartians/lefthook" = "latest"
-
-# ========================================
-# タスク設定 (Task Configuration)
-# ========================================
-# タスク定義は mise/local-tasks/ ディレクトリに分割されています。
-# .mise.toml の [task_config] セクションで読み込まれます。
-
-# ========================================
-# Bootstrap / Dotfiles (mise bootstrap) — macOS 専用分
-# ========================================
-# 旧 Home Manager（撤去済み）から移管。
-# OS 非依存の [dotfiles] と [tasks.bootstrap] は config.toml に定義。
-# `mise bootstrap` / `mise dotfiles apply` を明示実行したときのみ適用される。
-# 状態確認: mise bootstrap status / mise dotfiles status
-
-[bootstrap.packages]
-# btop は旧 home.packages から移管。rsync は macOS 標準のため管理しない
-"brew:btop" = "latest"
-
-[dotfiles]
-# macOS Services は pbs が symlink bundle を拒否するため copy（macOS でのみ apply すること）
-"~/Library/Services/RemoveQuarantine.workflow" = { source = "~/.config/macos/services/RemoveQuarantine.workflow", mode = "copy" }
-
-# ========================================
-# macOS LaunchAgents (旧 home.nix launchd.agents)
-# ========================================
-# dev.mise.<name>.plist として ~/Library/LaunchAgents に配置される
-
-[bootstrap.macos.launchd.agents.codex-gui-path]
-program = "/bin/sh"
-args = [
-  "-lc",
-  'launchctl setenv PATH "$HOME/.mise/shims:$HOME/bin:$HOME/.local/bin:$HOME/.config/scripts:$HOME/.cargo/bin:$HOME/go/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"',
-]
-run_at_load = true
-stdout_path = "~/Library/Logs/codex-gui-path.log"
-stderr_path = "~/Library/Logs/codex-gui-path.log"
-
-[bootstrap.macos.launchd.agents.gui-env]
-program = "/bin/sh"
-args = ["-lc", 'exec "$HOME/.config/scripts/launchd/launchd-gui-env.sh"']
-run_at_load = true
-stdout_path = "~/Library/Logs/gui-env.log"
-stderr_path = "~/Library/Logs/gui-env.log"
-
-[bootstrap.macos.launchd.agents.headroom-proxy]
-program = "/bin/sh"
-args = ["-lc", 'exec "$HOME/.config/scripts/launchd/launchd-headroom-proxy.sh"']
-run_at_load = true
-keep_alive = true
-stdout_path = "~/.headroom/logs/proxy.stdout.log"
-stderr_path = "~/.headroom/logs/proxy.stderr.log"

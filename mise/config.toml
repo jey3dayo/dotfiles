@@ -1,31 +1,22 @@
-# ========================================
-# グローバル mise 設定（ツール定義なし）
-# ~/.config/mise/config.toml
-# ========================================
-# このファイルは環境共通の設定のみを定義します。
-# ツール定義は OS 別設定ファイルで管理:
-#   - Mac/Linux/WSL2: config.default.toml
-#   - Windows: config.windows.toml
-#   - Raspberry Pi: config.pi.toml
-#
-# MISE_CONFIG_FILE 環境変数により自動的に適切な設定ファイルが選択されます。
-# ========================================
+# 環境共通設定。ツール定義は OS 別ファイル（config.default.toml / config.windows.toml / config.pi.toml）
+# MISE_CONFIG_FILE で選択される。
 
 [settings]
 env_file = '.env.local'
 experimental = true
-# jobs は各 OS 固有ファイルで定義（default: 8, pi: 2）
+# jobs / idiomatic_version_file_enable_tools は OS 別ファイルで定義
+# （ここに置くと OS 別ファイルより優先されてしまう）
 disable_backends = ["vfox"]
-# idiomatic_version_file_enable_tools は各 OS 固有ファイルで定義（default: ["go"], pi/ci/windows: []）
-# ここで定義すると OS 固有ファイルより優先されてしまうため置かない
 # サプライチェーン対策: リリース直後のバージョンへの upgrade を抑止する
 minimum_release_age = "3d"
-# リリース直後でも即座に upgrade したいツールを minimum_release_age の対象外にする
-minimum_release_age_excludes = ["npm:hunkdiff", "npm:@openai/codex"]
+minimum_release_age_excludes = [
+  "npm:hunkdiff",
+  "npm:@openai/codex",
+  "github:yusukebe/ax",
+]
 
 [settings.github]
-# macOS Keychain の git 認証情報を最後のフォールバックとして利用し、
-# GitHub の匿名 API レート制限で latest 解決が失敗するのを防ぐ。
+# GitHub 匿名 API レート制限対策として Keychain の git 認証情報をフォールバック利用
 use_git_credentials = true
 
 [settings.pipx]
@@ -41,51 +32,16 @@ MD_GLOB = "**/*.md"
 MD_EXCLUDES = "#node_modules #tmux/plugins #fisher #zsh/.zinit #.worktrees #.apm/skills #.claude/skills #.claude/worktrees #.codex/skills #result #result-* #tmp #.kiro #opencode/agents/*.md"
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude tmp --exclude .luarocks --exclude .kiro --exclude tmux/plugins --exclude opencode/agents/*.md --exclude apm.lock.yaml"
 
-# ========================================
-# オプション環境変数（ファイル限定処理）
-# ========================================
-# フォーマット/lint タスクで特定ファイルのみ処理する場合に設定
-# 例: SH_FILES="script1.sh script2.sh" mise run format:shell
-#
-# SH_FILES = ""      # シェルスクリプト
-# PY_FILES = ""      # Python ファイル
-# LUA_FILES = ""     # Lua ファイル
-# TOML_FILES = ""    # TOML ファイル
-# BIOME_FILES = ""   # JS/TS/JSON ファイル (biome)
-# PRETTIER_FILES = "" # Prettier 対象ファイル
-# YAML_FILES = ""    # YAML ファイル
-# NIX_FILES = ""     # Nix ファイル
-
-# ========================================
-# ツール定義は config.default.toml または config.pi.toml を参照
-# ========================================
-
-# ========================================
-# Dotfiles 配布 (mise bootstrap / mise dotfiles apply)
-# ========================================
-# 旧 Home Manager（撤去済み）から移管した OS 非依存の dotfiles 定義。
-# `mise bootstrap` / `mise dotfiles apply` を明示実行したときのみ適用される。
-# macOS 専用（~/Library/Services, launchd agents 等）は config.default.toml に定義。
-# 状態確認: mise dotfiles status
-
+# OS 非依存の dotfiles 配布（mise bootstrap / mise dotfiles apply で適用）
+# macOS 専用分は config.macos.toml に定義（MISE_ENV=macos でロード）
 [dotfiles]
-# XDG 非対応ツールの HOME 側エントリポイントのみ配布する。
-# XDG ネイティブ対応のもの（git / tmux / awsume / zshrc(ZDOTDIR)）は shim を置かない。
-# ~/.zshenv は ZDOTDIR を設定する bootstrap のため必須
 "~/.zshenv" = { source = "~/.config/home/.zshenv", mode = "symlink" }
-# bash は XDG 非対応
 "~/.bashrc" = { source = "~/.config/bash/.bashrc", mode = "symlink" }
 "~/.bash_profile" = { source = "~/.config/bash/.bash_profile", mode = "symlink" }
-# ssh -F では git/scp/rsync 経由の呼び出しをカバーできないため symlink 維持
 "~/.ssh/config" = { source = "~/.config/ssh/config", mode = "symlink" }
-# symlink を拒否する CLI 向けは copy（実ファイル化）。両ツールとも HOME 直下固定
+# symlink を拒否する CLI 向けは copy
 "~/.aicommits" = { source = "~/.config/.aicommits", mode = "copy" }
 "~/.opencommit" = { source = "~/.config/opencommit/.opencommit", mode = "copy" }
-
-# ========================================
-# Bootstrap タスク（mise bootstrap の最終ステップで実行）
-# ========================================
-# 内容は OS ガード付き: headroom venv は macOS のみ、tpm submodule は共通
 
 [tasks.bootstrap]
 description = "headroom venv 構築 (macOS) と tmux submodule/TPM 初期化（冪等）"

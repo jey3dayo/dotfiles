@@ -20,8 +20,9 @@ else
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   : "${MISE_CONFIG_FILE:=${XDG_CONFIG_HOME}/mise/config.default.toml}"
+  [[ "$(uname -s 2>/dev/null)" == "Darwin" ]] && : "${MISE_ENV:=macos}"
   export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
-  export ZDOTDIR GIT_CONFIG_GLOBAL MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_FILE
+  export ZDOTDIR GIT_CONFIG_GLOBAL MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_FILE MISE_ENV
 fi
 
 if (( $+functions[_shell_path_prepend_existing] )); then

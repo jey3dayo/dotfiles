@@ -19,7 +19,8 @@ else
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   : "${MISE_CONFIG_FILE:=$XDG_CONFIG_HOME/mise/config.default.toml}"
-  export MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_FILE
+  [ "$(uname -s 2>/dev/null)" = "Darwin" ] && : "${MISE_ENV:=macos}"
+  export MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_FILE MISE_ENV
 
   : "${GHQ_ROOT:=$HOME/src}"
   : "${RIPGREP_CONFIG_PATH:=$XDG_CONFIG_HOME/.ripgreprc}"

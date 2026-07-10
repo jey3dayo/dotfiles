@@ -65,6 +65,12 @@ _shell_bootstrap_mise_env() {
     export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.${environment}.toml"
     unset environment
   fi
+
+  # macOS 専用設定 (config.macos.toml) を MISE_ENV 経由でロードする
+  if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
+    : "${MISE_ENV:=macos}"
+    export MISE_ENV
+  fi
 }
 
 _shell_bootstrap_tool_env() {
