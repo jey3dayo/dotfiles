@@ -4,9 +4,9 @@
 対象: macOS ユーザー（dotfiles 管理者）
 タグ: `category/infra`, `tool/nix`, `tool/home-manager`, `layer/system`, `environment/macos`, `audience/developer`
 
-Nix Home Manager の配布アーキテクチャ・メンテナンス運用ポリシーと詳細リファレンスです。
-
-🔗 Claude Rules: [`.claude/rules/nix-maintenance.md`](../../.claude/rules/nix-maintenance.md)（コンパクト版）
+> **Status: legacy** — Home Manager による dotfiles 配布は mise bootstrap へ移管し、
+> flake / HM コードはリポジトリから撤去済み。本ドキュメントは、マシンに残る
+> Nix ランタイムと generation / nix store の掃除手順のためだけに残している。
 
 ## 配布アーキテクチャ
 
@@ -248,7 +248,6 @@ home-manager switch --flake . --impure
 
 - [Nix Package Management - Garbage Collection](https://nixos.org/manual/nix/stable/package-management/garbage-collection.html)
 - [Home Manager Manual - Generations](https://nix-community.github.io/home-manager/index.html#sec-usage-generations)
-- `docs/tools/home-manager.md` - Home Manager 詳細リファレンス
 - `docs/tools/workflows.md` - 全体的なメンテナンスワークフロー
 - `docs/disaster-recovery.md` - ディザスタリカバリ手順
 - `docs/tools/home-manager.md` - スキル配布問題の対処法

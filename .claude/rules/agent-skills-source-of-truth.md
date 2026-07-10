@@ -4,7 +4,6 @@ paths:
   - "flake.nix"
   - "home.nix"
   - "docs/tools/apm-workspace.md"
-  - "docs/tools/home-manager.md"
 ---
 
 # Agent Skills Source of Truth

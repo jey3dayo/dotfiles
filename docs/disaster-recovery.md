@@ -362,7 +362,7 @@ home-manager switch --flake . --impure
 ls -la ~ | grep -E '(agents|dotfiles)'
 ```
 
-詳細: `docs/tools/home-manager.md` 参照
+詳細: dotfiles 配布は mise bootstrap（`mise dotfiles status` で確認）
 
 ### Q: "too many open files" エラー
 
@@ -417,7 +417,6 @@ home-manager switch --flake ~/.config --impure
 - [Home Manager Manual](https://nix-community.github.io/home-manager/)
 - [Nix Generations Management](https://nixos.org/manual/nix/stable/package-management/profiles.html)
 - プロジェクト内ドキュメント:
-  - `docs/tools/home-manager.md` - スキル配布問題の対処法
   - `docs/tools/nix.md` - 定期メンテナンス手順
   - `docs/tools/workflows.md` - 全体的なワークフロー
 

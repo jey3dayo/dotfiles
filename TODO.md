@@ -6,21 +6,22 @@
 mise bootstrap（`mise/config.toml` + `mise/config.default.toml`）へ移管済み。
 Home Manager は generation 管理のみの legacy 状態。
 
-### 撤去条件（すべて満たしたら実施）
+### 撤去状況（2026-07-10 コード撤去完了）
 
-- [ ] mac: 数日間 zsh / tmux / GUI env（JINA_API_KEY）/ headroom proxy が問題なく動作
-- [ ] mac: `mise bootstrap --yes` を再実行して冪等収束を確認
-- [ ] WSL2: `mise bootstrap` へ切替（HM の deploy を無効化 → `mise dotfiles apply`）
-- [ ] Raspberry Pi: `mise bootstrap` へ切替（`config.pi.toml` 利用。dotfiles は共通 `config.toml` で適用される）
+- [x] mac: `mise bootstrap` 切替・検証・冪等確認済み
+- [x] Raspberry Pi: `mise dotfiles apply` 切替済み（`~/.aicommits.pre-mise-backup` に旧設定の OPENAI_KEY を退避）
+- [ ] WSL2: `mise dotfiles apply` へ切替（hm:* タスクは撤去済みのため mise 経由のみ）
+- [x] `flake.nix` / `flake.lock` / `nix/*.nix` / `users/` / `home.nix` / `hosts/` を削除
+- [x] `hm:*` タスク / `mise/lib/{home-manager,nixfmt}.sh` / lefthook・lint・format の nix フックを削除
+- [x] CI の nix 検証（validate.yml / hm:deploy）を撤去し、mise dotfiles 検証へ置換
+- [x] docs / rules の HM 記述整理（home-manager.md 削除、nix.md は runtime 掃除用に legacy 残置）
+- [x] 未使用 shim 正本の削除（`home/.gitconfig`, `home/.tmux.conf`, `home/.zshrc`）
 
-### 撤去内容
+### 残タスク
 
-- [ ] `flake.nix` / `flake.lock` / `nix/` / `users/` / `home.nix` を削除
-- [ ] `mise/local-tasks/home-manager.toml`（`hm:*` タスク）と `mise/lib/home-manager.sh` を削除
-- [ ] CI の nix 検証（`nix:check` / `nix:build:*` / `hm:deploy` 依存）を削除
-- [ ] generation 掃除: `home-manager remove-generations all && nix-collect-garbage -d`
-- [ ] docs / rules の Home Manager 記述を整理（`docs/tools/home-manager.md`, `docs/tools/nix.md`, `.claude/rules/{home-manager,nix-maintenance}.md`, `docs/setup.md` の legacy 注記）
-- [ ] 未使用になった shim 正本の削除（`home/.gitconfig`, `home/.tmux.conf`, `home/.zshrc` — XDG ネイティブ移行で配布対象外になったもの。`nix/dotfiles-files.nix` 参照ごと削除）
+- [ ] generation 掃除（mac / pi）: `home-manager remove-generations all && nix-collect-garbage -d`（destructive、実行前に要確認）
+- [ ] `skills/nix-dotfiles`（repo-local Agent Skill）の retire: apm.yml と合わせて整理（`apm-usage` / `apm-repo-bootstrap` 経由）
+- [ ] Nix ランタイム自体のアンインストール判断（`docs/tools/nix.md` 参照）
 
 ## XDG 移行のフォローアップ
 
