@@ -66,7 +66,6 @@ mise/
 ├── README.md              # mise 運用の概要
 ├── lib/                   # helper scripts (公開タスクにしない共通処理)
 │   ├── ensure-busted.sh   # busted の存在確認と自動インストール
-│   ├── home-manager.sh    # nix / home-manager 実行ヘルパー
 │   ├── nixfmt.sh          # nixfmt 実行ヘルパー
 │   ├── run-restic.sh      # restic backup wrapper
 │   ├── run-ts-tests.sh    # TypeScript テスト起動
@@ -85,7 +84,6 @@ mise/
     ├── lint.toml          # 静的解析・構文チェック
     ├── test.toml          # テスト実行（Lua/TypeScript）
     ├── integration.toml   # 統合タスク（setup/doctor/check/format/lint 集約）
-    ├── home-manager.toml  # Home Manager 操作
     ├── updates.toml       # 依存関係更新（apt/submodules など）
     ├── env.toml           # 環境変数管理（dotenvx）
     └── docs.toml          # ドキュメントメンテナンス
@@ -98,7 +96,7 @@ helper shell は `mise/local-tasks/` 配下に置かず `mise/lib/` に集約し
 ## Task Design
 
 - 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
-- 環境依存・運用系: `home-manager.toml`, `agents.toml`, `updates.toml`, `env.toml`
+- 環境依存・運用系: `agents.toml`, `updates.toml`, `env.toml`
 - タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
 
 ### CI/CD タスク構造
@@ -107,21 +105,22 @@ helper shell は `mise/local-tasks/` 配下に置かず `mise/lib/` に集約し
 
 - CI検証タスク (`ci`): 読み取り専用の検証（lint, test, format check）
 - CI完全実行 (`ci:full`): 検証 + デプロイ（GitHub Actionsと同じワークフロー）
-- デプロイタスク (`hm:deploy`): 状態変更を伴うシステム設定の適用
+- デプロイ (`ci:verify-deploy` / `mise dotfiles apply`): 状態変更を伴うシステム設定の適用
 
 #### タスクの使い分け
 
 - `mise run ci` - ローカルでの検証のみ（書き込みなし、高速）
 - `mise run ci:full` - GitHub Actionsと同じワークフロー全体をローカルで実行（検証 + デプロイ）
-- `mise run hm:deploy` - Home Managerデプロイのみ（バックアップ付き）
-- `mise run hm:switch` - ローカル開発用のHome Manager適用（バックアップなし）
-- `mise run hm:check` - 設定検証のみ（ビルドのみ、適用なし）
+- `mise dotfiles apply` - dotfiles 配布のみ（冪等）
+- `mise bootstrap --yes` - マシン全体の収束（packages / dotfiles / launchd / tools）
 
 #### GitHub Actions統合
 
 ```yaml
-- name: Deploy dotfiles with Home Manager
-  run: mise run hm:deploy # CI環境向けバックアップ付きデプロイ
+- name: Deploy dotfiles with mise bootstrap
+  run: |
+    mise dotfiles apply --yes --force
+    mise dotfiles status --missing
 
 - name: Run all CI checks
   run: mise run ci # 検証タスクのみ（書き込みなし）
@@ -131,7 +130,7 @@ helper shell は `mise/local-tasks/` 配下に置かず `mise/lib/` に集約し
 
 ```
 ci:full
-├── hm:deploy (Home Managerデプロイ)
+├── ci:verify-deploy (mise dotfiles 適用と収束確認)
 └── ci (検証のみ)
     ├── check
     ├── test
@@ -171,29 +170,19 @@ agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config
 
 mise は `MISE_CONFIG_FILE` が指す environment-specific config を使用する。
 
-### Auto-detection via Home Manager/Nix
+### Auto-detection via shell startup
 
-Home Manager の Nix module (`nix/env-detect.nix`) が自動判定するのは現状 CI / Raspberry Pi / Default のみ:
+`zsh/.zshenv`（`scripts/env-detect.sh` 相当の判定）が `MISE_CONFIG_FILE` を設定する:
 
 - CI/CD: Uses `mise/config.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
 - Default (macOS/Linux/WSL2): Uses `mise/config.default.toml` (includes all tools)
 - Raspberry Pi: Uses `mise/config.pi.toml` (optimized for server environment)
 
-### Detection Method (Home Manager)
-
-Environment detection is now managed by Home Manager's Nix module (`nix/env-detect.nix`), which sets `MISE_CONFIG_FILE` via `home.sessionVariables`:
-
-- CI: `$CI` or `$GITHUB_ACTIONS` environment variables
-- Raspberry Pi: ARM architecture + `/sys/firmware/devicetree/base/model` containing "Raspberry Pi"
-- Default: All other environments (WSL2, macOS, generic Linux)
-
 Priority: CI > Raspberry Pi > Default
-
-The environment variable is automatically loaded via `hm-session-vars.sh` (sourced by shells) on environments covered by this detection.
 
 ### Windows
 
-`mise/config.windows.toml` is available in this repo, but `nix/env-detect.nix` does not currently auto-detect Windows.
+`mise/config.windows.toml` is available; `windows/setup.ps1` sets `MISE_CONFIG_FILE` accordingly.
 
 - Windows uses `mise/config.windows.toml` only when `MISE_CONFIG_FILE` is explicitly set to that path by the session or shell setup
 - Do not document Windows as part of the current Nix auto-detection flow until `nix/env-detect.nix` gains a Windows branch

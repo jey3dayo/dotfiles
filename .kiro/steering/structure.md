@@ -20,14 +20,12 @@ dotfiles/
 ├── karabiner/            # Keyboard customization (macOS)
 ├── tmux/                 # Tmux session management
 ├── docs/                 # Comprehensive documentation
-├── nix/                  # Home Manager modules
+├── nix/                  # Nix CLI 設定（nix.conf のみ、legacy）
 ├── scripts/              # Bootstrap and helper scripts
 ├── home/                 # Entry-point dotfiles for deployment
 ├── mise/                 # Mise config and task definitions
 ├── Brewfile              # Homebrew package manifest
 ├── .mise.toml            # Mise tasks entrypoint
-├── flake.nix             # Nix flake entrypoint
-├── home.nix              # Home Manager configuration
 ├── README.md             # Main documentation
 └── TOOLS.md              # Managed tools inventory
 ```
@@ -40,7 +38,7 @@ dotfiles/
 
 ```
 zsh/
-├── .zshrc/.zshenv/.zprofile/.zlogin  # Entry points (symlinked by Home Manager)
+├── .zshrc/.zshenv/.zprofile/.zlogin  # Entry points (~/.zshenv は mise dotfiles が symlink)
 ├── config/                           # Layered configs (core/tools/os)
 │   ├── core/
 │   ├── tools/
@@ -99,7 +97,7 @@ wezterm/
 
 ```
 git/
-├── config                # メイン Git 設定（Home Manager で ~/.gitconfig にリンク）
+├── config                # メイン Git 設定（XDG ~/.config/git/config として直接参照）
 ├── alias.gitconfig       # エイリアス/ショートカット（config から include）
 ├── diff.gitconfig        # delta/diff 設定
 ├── ghq.gitconfig         # ghq ルート設定
@@ -162,18 +160,15 @@ karabiner/
 
 **Purpose**: macOS keyboard remapping for ergonomic workflows
 
-### `nix/` + Flake Files - Home Manager Configuration
+### Dotfiles Deployment - mise bootstrap
 
 ```
-nix/
-├── dotfiles-module.nix   # Home Manager module
-├── env-detect.nix        # CI/Pi/Default environment detection
-└── ...                   # Additional HM helpers
-flake.nix                 # Flake entrypoint
-home.nix                  # Home Manager configuration
+mise/config.toml           # [dotfiles]（OS 非依存）+ [tasks.bootstrap]
+mise/config.default.toml   # macOS 専用（launchd agents / Services / brew packages）
+scripts/bootstrap-task.sh  # headroom venv (macOS) + tmux plugins 初期化
 ```
 
-**Purpose**: Declarative deployment and environment selection
+**Purpose**: Declarative deployment via `mise bootstrap` / `mise dotfiles apply`（Home Manager は撤去済み）
 
 ### `home/` - Entry-Point Dotfiles
 
@@ -185,7 +180,7 @@ home/
 └── .gitconfig
 ```
 
-**Purpose**: Files deployed to `$HOME` by Home Manager
+**Purpose**: Files deployed to `$HOME` by mise dotfiles
 
 ### `mise/` - Tool & Task Configuration
 
@@ -209,7 +204,7 @@ agents/
 └── scripts/              # Validation and maintenance scripts
 ```
 
-**Purpose**: Keep bundled AI assets versioned in-repo while external assets are sourced through Nix flake inputs and distributed through the same Home Manager pipeline
+**Purpose**: Keep bundled AI assets versioned in-repo; global agent assets are managed and distributed by APM (`~/.apm`)
 
 ### `scripts/` - Bootstrap & Helpers
 
@@ -259,7 +254,7 @@ docs/
 
 - Principle: Each tool has isolated configuration directory
 - Benefits: Easy to understand, update, and version control
-- Deployment: Home Manager deploys entry-point dotfiles (from `home/`)
+- Deployment: mise dotfiles deploys entry-point dotfiles (from `home/`, `bash/`, `ssh/` など)
 
 ### Layered Loading (Zsh)
 

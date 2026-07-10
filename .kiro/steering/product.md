@@ -5,7 +5,7 @@
 
 ## Product Overview
 
-High-performance cross-platform (macOS/Linux/WSL2) development environment configuration optimized for speed, consistency, and developer experience. This dotfiles repository provides a complete, battle-tested setup for modern software development with focus on shell productivity, editor efficiency, terminal workflow optimization, and declarative deployment via Home Manager.
+High-performance cross-platform (macOS/Linux/WSL2) development environment configuration optimized for speed, consistency, and developer experience. This dotfiles repository provides a complete, battle-tested setup for modern software development with focus on shell productivity, editor efficiency, terminal workflow optimization, and declarative deployment via mise bootstrap.
 
 ## Core Features
 
@@ -52,11 +52,11 @@ High-performance cross-platform (macOS/Linux/WSL2) development environment confi
 
 - 🤖 AI Asset Distribution Pipeline
   - `~/.apm/catalog/` stores the managed skills/agents/rules
-  - Selected external skills are recorded through `~/.apm/apm.yml` with mapping from `nix/agent-skills-sources.nix`
-  - Home Manager now handles dotfiles deployment; APM handles global agent asset rollout
+  - Selected external skills are recorded through `~/.apm/apm.yml`
+  - mise bootstrap handles dotfiles deployment; APM handles global agent asset rollout
 
 - Declarative & Reproducible Delivery
-  - Nix Home Manager provides consistent, repeatable configuration across machines
+  - mise bootstrap provides consistent, repeatable configuration across machines
   - Environment detection (CI/Pi/Default) keeps platform-specific differences minimal
 
 ## Target Use Case
@@ -81,8 +81,8 @@ Software developers on macOS/Linux/WSL2 (and CI/Raspberry Pi environments) who v
 
 2. New Machine Setup
 
-   - Bootstrap via `scripts/bootstrap.sh` (macOS) and package installation via Homebrew/Nix
-   - Apply configuration with `home-manager switch --flake ~/.config --impure`
+   - Bootstrap via `scripts/bootstrap.sh` (macOS) and package installation via Homebrew
+   - Apply configuration with `mise trust && mise bootstrap --yes`
    - Consistent environment across multiple machines
    - Version-controlled configurations
    - Easy backup and restore
@@ -141,6 +141,6 @@ Software developers on macOS/Linux/WSL2 (and CI/Raspberry Pi environments) who v
 2. Layer-Based Documentation: Organized by Core/Tool/Support layers
 3. AI Integration: Claude Code commands for automated maintenance
 4. Spec-Driven Development: Kiro framework integration for structured changes
-5. Declarative Configuration: Home Manager + Nix flake for reproducible environments
+5. Declarative Configuration: mise bootstrap for reproducible environments
 6. Quality Gates: Local CI checks matching GitHub Actions
-7. AI Asset Supply Chain: Unified bundled/external skills workflow managed by Nix + Home Manager
+7. AI Asset Supply Chain: Unified bundled/external skills workflow managed by APM (`~/.apm`)

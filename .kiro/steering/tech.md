@@ -13,7 +13,7 @@ The dotfiles are built around three core technologies that form the interactive 
 2. WezTerm - Primary terminal emulator (800ms startup)
 3. Neovim - Code editor (<100ms startup)
 
-All other tools serve to enhance or support these core components, while deployment and environment parity are handled by Home Manager + Nix.
+All other tools serve to enhance or support these core components, while deployment and environment parity are handled by mise bootstrap.
 
 ### Design Principles
 
@@ -22,7 +22,7 @@ All other tools serve to enhance or support these core components, while deploym
 - Type Safety: Lua-based configs for WezTerm and Neovim
 - Version Control: All configurations tracked in Git
 - Unified Theming: Gruvbox/Tokyo Night consistency
-- Declarative Delivery: Home Manager + Nix flake as the source of truth
+- Declarative Delivery: mise bootstrap（`mise/config*.toml` の `[dotfiles]` / `[bootstrap.*]`）as the source of truth
 - Environment Awareness: CI / Raspberry Pi / Default profiles selected automatically
 
 ## Core Technologies
@@ -106,11 +106,11 @@ All other tools serve to enhance or support these core components, while deploym
 
 ### Configuration & Delivery
 
-#### Nix + Home Manager
+#### mise bootstrap (dotfiles deployment)
 
-- Source of Truth: `flake.nix`, `home.nix`, and `nix/` modules
-- Deployment: `home-manager switch --flake ~/.config --impure`
-- Environment Detection: CI / Raspberry Pi / Default profiles with per-env config
+- Source of Truth: `mise/config.toml`（OS 非依存）+ `mise/config.default.toml`（macOS 専用）
+- Deployment: `mise bootstrap --yes` / `mise dotfiles apply`
+- Environment Detection: `MISE_CONFIG_FILE` で OS 別 config（default / pi / windows / ci）を選択
 
 #### Agent Skills
 
@@ -184,7 +184,7 @@ All other tools serve to enhance or support these core components, while deploym
 
 #### Git Abbreviations
 
-- Location: `git/config` → `~/.config/git/config` (deployed via Home Manager)
+- Location: `git/config`（XDG `~/.config/git/config` として直接参照）
 - Count: 50+ custom abbreviations
 - Widgets: Custom Zsh widgets for Git operations
 
@@ -245,7 +245,7 @@ EOF
 cd ~/.config
 sh ./scripts/bootstrap.sh   # macOS only
 brew bundle                 # macOS only
-nix run home-manager -- switch --flake . --impure
+mise trust && mise bootstrap --yes
 
 # 4. Restart shell
 exec zsh
@@ -344,7 +344,6 @@ This is a dotfiles project - no server ports are used. All tools run as local ap
 
 - Lua: Neovim (`nvim/`), WezTerm (`wezterm/wezterm.lua` + `*.lua`)
 - TOML: Mise (`.mise.toml`, `mise/config*.toml`)
-- Nix: `flake.nix`, `home.nix`, `nix/`
 - Shell: Zsh (`zsh/`), Bash scripts
 - JSON: Karabiner (`karabiner/karabiner.json`), VS Code
 - YAML: GitHub Actions (`.github/workflows/`), Alacritty (`alacritty/alacritty.yml`)

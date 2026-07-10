@@ -10,13 +10,13 @@ paths:
 
 ## Purpose
 
-Three-layer tool management architecture policy defining responsibility boundaries between Homebrew, mise, and Home Manager.
+Tool management architecture policy defining responsibility boundaries between Homebrew and mise (with mise bootstrap handling configuration distribution).
 
 ## Scope
 
 - Homebrew: System dependencies, GUI applications, Neovim ecosystem
 - mise: CLI tools, language runtimes, development environments
-- Home Manager: Configuration distribution only (no tool installation)
+- mise bootstrap (`[dotfiles]`): Configuration distribution only (no tool installation)
 
 ## Sources
 
@@ -25,17 +25,15 @@ Three-layer tool management architecture policy defining responsibility boundari
 
 ## Three-Layer Architecture
 
-### Home Manager
+### mise bootstrap (dotfiles)
 
 Responsibility: Configuration distribution ONLY
 
-- Distributes dotfiles (`.zshrc`, `.config/starship.toml`, etc.)
+- Distributes dotfiles（`~/.zshenv`, `~/.ssh/config` など）via `[dotfiles]`
 - Links configuration files to `$HOME`
-- Does NOT install binaries or tools
+- Does NOT install dev tools（`[tools]` / Homebrew の責務）
 
-Home Manager manages configurations, not tool provisioning. Tool installation is delegated to mise or Homebrew.
-
-Example: starship configuration is managed by Home Manager, but the starship binary is installed by mise.
+Example: starship configuration lives in `~/.config/starship.toml` (git-managed), while the starship binary is installed by mise.
 
 ### mise
 
@@ -174,17 +172,17 @@ mise go tools: 5 tools
 
 ## starship Case Study
 
-Migration path: Homebrew → Home Manager → mise
+Migration path: Homebrew → mise
 
 #### Final architecture
 
 - Binary: `mise install starship` (mise/config.default.toml)
-- Configuration: Home Manager manages `~/.config/starship.toml`
+- Configuration: `~/.config/starship.toml`（git 管理、リポジトリ直下）
 
 #### Rationale
 
 - starship is a cross-platform CLI tool (mise responsibility)
-- Home Manager distributes configuration only (no binary installation)
+- mise bootstrap distributes configuration only (no binary installation)
 - Version pinning enables reproducibility across environments
 - Aligns with three-layer architecture principles
 

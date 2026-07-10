@@ -198,5 +198,5 @@ zoxide = "latest"
 ### Raspberry Pi 運用メモ（重要）
 
 - `luacheck` は **mise の tools には直接定義しない**（`luacheck@latest` は registry に存在せず WARN の原因）。
-- Pi 環境では `luacheck` は Nix 側（例: `nix profile` / Home Manager）で供給する。
+- Pi 環境では `luacheck` は luarocks など mise 外で供給する。
 - `mise run doctor` で `plugin yarn is not installed` が出る場合は `mise plugins install yarn` を実行する。

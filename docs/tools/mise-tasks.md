@@ -15,11 +15,11 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 | 分類             | 意味                                           | 代表タスク                                               | 実行前確認                                  |
 | ---------------- | ---------------------------------------------- | -------------------------------------------------------- | ------------------------------------------- |
-| 検証のみ         | ファイル・システム状態を書き換えない           | `ci`, `ci:quick`, `check`, `hm:check`                    | 通常の品質確認として実行可                  |
+| 検証のみ         | ファイル・システム状態を書き換えない           | `ci`, `ci:quick`, `check`, `mise dotfiles status`        | 通常の品質確認として実行可                  |
 | 作業ツリー変更   | フォーマットなどで repo 内ファイルを書き換える | `format`, `format:*`, `brewfile:backup`                  | 差分が対象範囲内か確認する                  |
-| ローカル状態変更 | Home Manager、mise、Homebrew などを変更する    | `ci:full`, `hm:deploy`, `hm:switch`, `setup`             | 現在の machine state と rollback 手順を確認 |
+| ローカル状態変更 | mise、Homebrew、dotfiles などを変更する        | `ci:full`, `ci:verify-deploy`, `mise bootstrap`, `setup` | 現在の machine state と rollback 手順を確認 |
 | 外部取得・更新   | ネットワーク取得や外部 checkout を更新する     | `update`, `update:brew`, `update:submodules`             | 取得元と更新対象を確認する                  |
-| 強制更新         | 外部 repo を reset するなど破壊的になり得る    | `update:external-repos`, `hm:clean`                      | ユーザー確認なしで実行しない                |
+| 強制更新         | 外部 repo を reset するなど破壊的になり得る    | `update:external-repos`, `mise dotfiles apply --force`   | ユーザー確認なしで実行しない                |
 | secret 関連      | 暗号化 env や secret scan に触れる             | `env:encrypt`, `env:decrypt`, `setup-env`, `ci:gitleaks` | source of truth と展開先を確認する          |
 
 ### CI / 検証
@@ -31,7 +31,6 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 | `ci:quick`                | 軽量チェック（format + lint のみ、~3-5s、hooks 向け） |
 | `ci`                      | 全 CI チェック（検証のみ、書き込みなし）              |
 | `ci:full`                 | CI チェック + デプロイ + 検証（GitHub Actions 同等）  |
-| `ci:nix`                  | Nix 固有の深い検証（nix:check + build + hm:check）    |
 | `ci:gitleaks`             | gitleaks による secret スキャン                       |
 | `ci:install`              | CI 必要ツールをインストール（luacheck, busted）       |
 | `nix:check`               | `nix flake check` を実行                              |

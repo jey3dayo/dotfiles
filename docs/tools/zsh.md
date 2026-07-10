@@ -110,7 +110,6 @@ zsh-benchmark --runs 3 --mode interactive-login
 ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'
 bun test --timeout 20000 scripts/zsh-env-loading.test.ts
 mise run test:lua
-home-manager build --flake ~/.config --impure
 ```
 
 ## 退避済み構成

@@ -8,11 +8,11 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 ## Maintenance Cadence
 
-| 頻度   | 作業                                                                                                       |
-| ------ | ---------------------------------------------------------------------------------------------------------- |
-| 週次   | `brew update && brew upgrade` + `mise upgrade`; プラグイン更新（sheldon, nvim lazy, tmux）                 |
-| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `home-manager switch`; Nix cleanup |
-| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                         |
+| 頻度   | 作業                                                                                                                  |
+| ------ | --------------------------------------------------------------------------------------------------------------------- |
+| 週次   | `brew update && brew upgrade` + `mise upgrade`; プラグイン更新（sheldon, nvim lazy, tmux）                            |
+| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix cleanup（legacy） |
+| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                    |
 
 ## Code Quality Checks
 
@@ -36,7 +36,7 @@ mise run format:lua   # stylua でフォーマット
 | zsh startup         | `zsh-benchmark --runs 8 --mode interactive` と必要に応じて `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'` | 同期初期化の再発を数値で見る                |
 | dotenvx / `.env`    | `scripts/setup-env.sh` の構文確認、key-set comparison、`mise run ci:gitleaks`                      | plaintext cache と secret scan を分けて見る |
 | launchd / GUI env   | `launchctl getenv <KEY>` で allowlist された key だけを確認                                        | shell ではなく GUI runtime の状態を見る     |
-| Home Manager / Nix  | `mise run hm:check` または `nix flake check`                                                       | 適用前に build 可能性を確認する             |
+| mise bootstrap      | `mise bootstrap --dry-run` / `mise dotfiles status`                                                | 適用前に差分を確認する                      |
 | APM / global skills | `cd ~/.apm && mise run validate:catalog && mise run doctor`                                        | `.config` ではなく APM workspace が正本     |
 
 ### Lua Type Checking and Error Handling
@@ -197,7 +197,7 @@ git commit --no-verify -m "..."
 
 ### 責務分離
 
-- Home Manager: 設定配布のみ（ツールインストールなし）
+- mise bootstrap: 設定配布（dotfiles / launchd）と brew パッケージ宣言
 - mise: クロスプラットフォーム CLI、言語ランタイム、開発ツール
 - Homebrew: macOS 固有の依存関係、GUI アプリ、システムライブラリ
 
@@ -348,23 +348,13 @@ brew cleanup
 - 重複回避: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
 - npm パッケージの完全移行完了: 全ての開発ツール・MCP サーバー・Language Server は mise で一元管理（npm/pnpm/bun グローバルには依存しない）
 
-## Nix Home Manager Maintenance
+## Nix Runtime Cleanup (legacy)
 
-### Monthly cleanup
-
-#### 定期実行（月次メンテナンス時）
+Home Manager は撤去済み。マシンに Nix ランタイムが残っている間だけ、
+`/nix/store` の掃除を行う（手順の詳細は `docs/tools/nix.md`）。
 
 ```bash
-# 1. 古い generations を削除（90 日または 20 世代を保持）
-echo "=== Removing old Home Manager generations ==="
-home-manager remove-generations 90d
-
-# 2. 参照されていない store パスを削除
-echo "=== Running garbage collection ==="
 nix-collect-garbage -d
-
-# 3. ディスク使用量を確認
-echo "=== Disk usage after cleanup ==="
 df -h /nix/store
 ```
 
@@ -435,6 +425,6 @@ ps aux | grep -E "(zsh|nvim|tmux)"
 ## Backups and Recovery
 
 - Brewfile 変更前: `cp Brewfile Brewfile.backup.$(date +%Y%m%d)`
-- 緊急シェル復旧: `zsh --no-rcs` → `brew bundle --force` → `mise install ...` → `home-manager switch --flake ~/.config --impure`
-- Home Manager ロールバック: `home-manager generations` → `home-manager switch --generation <number>`
+- 緊急シェル復旧: `zsh --no-rcs` → `brew bundle --force` → `mise dotfiles apply --yes` → `exec zsh`
+- ロールバック: `git revert <commit>` → `mise dotfiles apply --yes`（詳細は `docs/disaster-recovery.md`）
 - 詳細: `docs/disaster-recovery.md`
