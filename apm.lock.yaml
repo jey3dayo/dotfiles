@@ -1,44 +1,7 @@
 lockfile_version: "1"
-generated_at: "2026-07-09T18:08:44.400293+00:00"
+generated_at: "2026-07-10T10:48:02.242716+00:00"
 apm_version: 0.22.0
 dependencies:
-  - repo_url: jey3dayo/dotfiles
-    name: dotfiles
-    host: github.com
-    resolved_commit: 64eeae61abf5e5ccc92d2f4ac36e2bdaa0cf5926
-    version: unknown
-    virtual_path: skills/nix-dotfiles
-    is_virtual: true
-    package_type: claude_skill
-    deployed_files:
-      - .agents/skills/nix-dotfiles
-      - .agents/skills/nix-dotfiles/SKILL.md
-      - .agents/skills/nix-dotfiles/agents/openai.yaml
-      - .agents/skills/nix-dotfiles/references/architecture.md
-      - .agents/skills/nix-dotfiles/references/commands.md
-      - .agents/skills/nix-dotfiles/references/troubleshooting.md
-      - .agents/skills/nix-dotfiles/scripts/diagnose.sh
-      - .claude/skills/nix-dotfiles
-      - .claude/skills/nix-dotfiles/SKILL.md
-      - .claude/skills/nix-dotfiles/agents/openai.yaml
-      - .claude/skills/nix-dotfiles/references/architecture.md
-      - .claude/skills/nix-dotfiles/references/commands.md
-      - .claude/skills/nix-dotfiles/references/troubleshooting.md
-      - .claude/skills/nix-dotfiles/scripts/diagnose.sh
-    deployed_file_hashes:
-      .agents/skills/nix-dotfiles/SKILL.md: sha256:214f76c32c6561d809fa5e3ba0872266289e9e572855320f5029a5ebf673bba5
-      .agents/skills/nix-dotfiles/agents/openai.yaml: sha256:2bdd86329ef1872fcc249c94e1942779e29ffa00caed7fffeee94f44014a8917
-      .agents/skills/nix-dotfiles/references/architecture.md: sha256:3768cdd0bcdcecfc28daebc163a4b83a4615af398b469c04c04aa3f313dbd7af
-      .agents/skills/nix-dotfiles/references/commands.md: sha256:bb08d32305940bcbd4769e8091019e0cac440223ad8e0402b53a062b970926a9
-      .agents/skills/nix-dotfiles/references/troubleshooting.md: sha256:dc9cd5e3f8b306462cc2d148bf55a0ae4f7d25e16a3a4acb3405ca8312606d9f
-      .agents/skills/nix-dotfiles/scripts/diagnose.sh: sha256:3d0744deeb35924de5c221844e79ca2e955145e76f512a4e380164af343b009e
-      .claude/skills/nix-dotfiles/SKILL.md: sha256:214f76c32c6561d809fa5e3ba0872266289e9e572855320f5029a5ebf673bba5
-      .claude/skills/nix-dotfiles/agents/openai.yaml: sha256:2bdd86329ef1872fcc249c94e1942779e29ffa00caed7fffeee94f44014a8917
-      .claude/skills/nix-dotfiles/references/architecture.md: sha256:3768cdd0bcdcecfc28daebc163a4b83a4615af398b469c04c04aa3f313dbd7af
-      .claude/skills/nix-dotfiles/references/commands.md: sha256:bb08d32305940bcbd4769e8091019e0cac440223ad8e0402b53a062b970926a9
-      .claude/skills/nix-dotfiles/references/troubleshooting.md: sha256:dc9cd5e3f8b306462cc2d148bf55a0ae4f7d25e16a3a4acb3405ca8312606d9f
-      .claude/skills/nix-dotfiles/scripts/diagnose.sh: sha256:3d0744deeb35924de5c221844e79ca2e955145e76f512a4e380164af343b009e
-    content_hash: sha256:0e7cc48ac676ec26eb673c261285dd4c8fafd6f27dfe9d573d159b3450d439d0
   - repo_url: jey3dayo/dotfiles
     name: dotfiles
     host: github.com

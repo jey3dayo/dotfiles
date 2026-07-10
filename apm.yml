@@ -9,7 +9,6 @@ targets:
   - opencode
 dependencies:
   apm:
-    - jey3dayo/dotfiles/skills/nix-dotfiles
     - jey3dayo/dotfiles/skills/zsh
     - jey3dayo/dotfiles/skills/wezterm
     - jey3dayo/dotfiles/skills/nvim
