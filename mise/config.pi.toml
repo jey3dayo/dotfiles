@@ -22,8 +22,9 @@ node = "24"
 # luacheck/luarocks は mise registry/backends と相性が不安定なため定義しない。
 # Lua lint は Nix 側で luacheck を供給して実行する。
 
-# Package Managers
+# Package Managers（pnpm は npm backend の package_manager として必須）
 "github:astral-sh/uv" = "latest"
+pnpm = "latest"
 
 # Formatters / Linters（hadolint は macOS/Linux x86_64 のみのため除外）
 actionlint = "latest"
