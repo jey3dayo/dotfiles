@@ -51,7 +51,7 @@ sudo dnf install -y git zsh curl
 sudo pacman -S --noconfirm git zsh curl
 ```
 
-Install Nix on Linux/WSL2 via the official installer, then verify `nix` is on PATH.
+Install mise on Linux/WSL2 via the official installer (`curl https://mise.run | sh`); macOS gets it from `brew bundle`.
 
 ### Quick Setup (macOS/Linux/WSL2)
 
@@ -61,7 +61,7 @@ git clone https://github.com/jey3dayo/dotfiles ~/.config
 cd ~/.config
 
 # 2. Bootstrap (installs Homebrew if needed on macOS)
-sh ./scripts/bootstrap.sh
+sh ./scripts/bootstrap.sh   # macOS only
 
 # 3. Configure Git identity (required)
 cat > ~/.gitconfig_local << EOF
@@ -70,21 +70,25 @@ cat > ~/.gitconfig_local << EOF
     email = your.email@example.com
 EOF
 
-# 4. Install packages
-brew bundle  # macOS only
+# 4. Install system packages
+brew bundle                      # macOS
+# curl https://mise.run | sh     # Linux/WSL2（mise 未導入の場合）
 
 # 5. Converge the machine with mise bootstrap
-#    (dotfiles symlink, macOS LaunchAgents, tools, headroom venv, tmux plugins)
-export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"  # 初回のみ明示
+#    packages → dotfiles → launchd(macOS) → tools → bootstrap task の順に冪等収束
+export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"  # 初回のみ明示（~/.zshenv 配布後は自動）
 mise trust && mise bootstrap --yes
 
 # 6. Restart shell
 exec zsh
 
 # 7. Verify installation
+mise bootstrap status --missing   # 全宣言部が収束していれば exit 0
 zsh-help
 mise doctor
 ```
+
+差分だけ見たいときは `mise bootstrap --dry-run`、dotfiles のみは `mise dotfiles apply` / `mise dotfiles status`。
 
 ### What scripts/bootstrap.sh does
 
