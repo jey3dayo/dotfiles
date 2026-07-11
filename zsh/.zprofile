@@ -1,5 +1,6 @@
+# LC_ALL is intentionally unset: it overrides every LC_* and breaks tools
+# that assume C-locale sort/grep behavior.
 export LANG='ja_JP.UTF-8'
-export LC_ALL='ja_JP.UTF-8'
 export BROWSER='open'
 export EDITOR='nvim'
 export VISUAL='nvim'

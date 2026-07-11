@@ -1,7 +1,4 @@
-HISTSIZE=100000
-SAVEHIST=100000
-export HISTSIZE SAVEHIST
-
+# HISTSIZE / SAVEHIST are set in .zshenv; this file only wires key bindings.
 mkdir -p "${HISTFILE:h}"
 
 autoload -Uz history-search-end

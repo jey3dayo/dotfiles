@@ -20,7 +20,10 @@ elif [[ -o interactive ]]; then
   }
 
   zle -N _zsh_atuin_search_widget
-  bindkey '^R' _zsh_atuin_search_widget
+  for keymap in emacs viins vicmd; do
+    bindkey -M "$keymap" '^R' _zsh_atuin_search_widget
+  done
+  unset keymap
 fi
 
 # vim: set syntax=zsh:

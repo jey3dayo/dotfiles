@@ -6,6 +6,8 @@ source_zsh_lib() {
 }
 
 # Core shell state
+# path.zsh also runs in .zprofile; re-running here covers non-login shells
+# that skip .zprofile. _zsh_setup_path is idempotent.
 source_zsh_lib path.zsh
 (( $+functions[_zsh_setup_path] )) && _zsh_setup_path
 source_zsh_lib options.zsh

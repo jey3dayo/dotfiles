@@ -24,11 +24,14 @@ compinit_args=(-d "$ZSH_COMPDUMP")
 if [[ ! -t 0 || ! -t 1 ]]; then
   compinit_args=(-i "${compinit_args[@]}")
 fi
-if [[ -r "$ZSH_COMPDUMP" ]]; then
+# Reuse the dump only while fresh (<24h); stale dumps rescan fpath so new
+# completions are picked up without manual cache removal.
+fresh_compdump=("$ZSH_COMPDUMP"(Nmh-24))
+if (( ${#fresh_compdump} )); then
   compinit_args=(-C "${compinit_args[@]}")
 fi
 compinit "${compinit_args[@]}"
-unset compinit_args
+unset compinit_args fresh_compdump
 
 zstyle ':completion:*' use-cache true
 zstyle ':completion:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
