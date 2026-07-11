@@ -7,6 +7,12 @@ fi
 # startup can use the repo-managed compinit flags.
 skip_global_compinit=1
 
+# nix-darwin's /etc/zshrc runs compinit unconditionally (writing a stray
+# $ZDOTDIR/.zcompdump) plus history/prompt defaults this config already
+# owns. It honors NOSYSZSHRC as an opt-out; nix env itself lives in
+# /etc/zshenv and is unaffected.
+NOSYSZSHRC=1
+
 if [[ -r "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh" ]]; then
   source "${XDG_CONFIG_HOME:-$HOME/.config}/shell/env.sh"
   _shell_bootstrap_env
