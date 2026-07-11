@@ -5,38 +5,11 @@
 
 [setup]
 description = "初回セットアップ: ツールインストール、依存関係の確認"
-run = """
-echo "📦 Installing mise tools..."
-mise install
-
-echo ""
-echo "🐍 Installing Python packages for Neovim..."
-PYTHON_PATH=$(mise where python)/bin/python3
-$PYTHON_PATH -m pip install --quiet pynvim
-
-echo ""
-echo "🐍 Verifying pynvim..."
-$PYTHON_PATH -c "import pynvim; print('✓ pynvim:', pynvim.__version__)" || echo "⚠️  pynvim not found"
-
-echo ""
-echo "✅ Setup complete. Run 'mise tasks' to see available tasks."
-"""
+run = "bash ./scripts/mise-setup.sh"
 
 [doctor]
 description = "環境診断: インストール済みツールと設定を確認"
-run = """
-echo "=== Mise Configuration ==="
-mise doctor
-
-echo ""
-echo "=== Installed Tools ==="
-mise ls
-
-echo ""
-echo "=== Available Tasks ==="
-mise tasks | head -20
-echo "... (run 'mise tasks' to see all)"
-"""
+run = "bash ./scripts/mise-doctor.sh"
 
 [format]
 description = "コードとドキュメントの自動フォーマット（書き込みあり）"

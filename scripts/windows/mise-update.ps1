@@ -36,7 +36,12 @@ function Invoke-Step {
     return
   }
 
+  $global:LASTEXITCODE = 0
   & $Action
+
+  if ($LASTEXITCODE -ne 0) {
+    throw "$Description failed with exit code $LASTEXITCODE"
+  }
 }
 
 switch ($TaskName) {
@@ -117,16 +122,22 @@ switch ($TaskName) {
       break
     }
 
-    Invoke-Step "Update external repo at $repoPath" {
-      Push-Location $repoPath
-      try {
+    Push-Location $repoPath
+    try {
+      Invoke-Step "git fetch origin in $repoPath" {
         git fetch origin
+      }
+
+      Invoke-Step "git reset --hard origin/master in $repoPath" {
         git reset --hard origin/master
+      }
+
+      Invoke-Step "git clean -fd in $repoPath" {
         git clean -fd
       }
-      finally {
-        Pop-Location
-      }
+    }
+    finally {
+      Pop-Location
     }
 
     break

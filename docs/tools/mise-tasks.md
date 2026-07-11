@@ -121,14 +121,15 @@ APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise
 
 `updates.toml` で定義。
 
-| タスク                  | 説明                                    |
-| ----------------------- | --------------------------------------- |
-| `update`                | pull 後に全依存関係更新                 |
-| `pull`                  | 現在のリポジトリを fast-forward pull    |
-| `update:brew`           | Homebrew パッケージ更新（formula のみ） |
-| `update:apt`            | APT パッケージ更新（Ubuntu/Debian）     |
-| `update:submodules`     | Git サブモジュール更新（最新 tip）      |
-| `update:external-repos` | 外部 Git リポジトリ更新（強制リセット） |
+| タスク                  | 説明                                                              |
+| ----------------------- | ----------------------------------------------------------------- |
+| `update`                | pull 後に OS / mise の依存関係を更新（破壊的 Git 更新は含まない） |
+| `pull`                  | 現在のリポジトリを fast-forward pull                              |
+| `update:brew`           | Homebrew パッケージ更新（formula のみ）                           |
+| `update:mise`           | mise 管理ツールを更新                                             |
+| `update:apt`            | APT パッケージ更新（Ubuntu/Debian）                               |
+| `update:submodules`     | Git サブモジュール更新（変更を破棄するため個別実行）              |
+| `update:external-repos` | 外部 Git リポジトリ更新（強制リセット、個別実行）                 |
 
 ### Env
 

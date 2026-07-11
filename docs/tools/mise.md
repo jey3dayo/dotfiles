@@ -90,13 +90,14 @@ mise/
 
 `.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/local-tasks/*.toml` を読み込む。
 `mise/tasks/` は global task として外部リポジトリからも見えるため、cwd 非依存または `dir` 明示済みのタスクだけを置く。
-helper shell は `mise/local-tasks/` 配下に置かず `mise/lib/` に集約し、`mise tasks` に内部実装が露出しないようにする。
+task TOML は description、`dir` / `env`、dependency、platform route、単一 runner だけを持つ薄い入口にする。分岐・cleanup・複数 command は `mise/lib/`（task 専用 helper）または `scripts/`（repo の運用 entrypoint）へ置き、`mise tasks` に内部実装を露出させない。
 
 ## Task Design
 
 - 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
 - 環境依存・運用系: `agents.toml`, `updates.toml`, `env.toml`
 - タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
+- `update` / `check` / 通常の `ci` は非破壊的に保つ。`reset`、`clean`、`prune`、deploy、in-place restore は明示的な個別 task に置く。
 
 ### CI/CD タスク構造
 

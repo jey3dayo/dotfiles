@@ -6,11 +6,10 @@
 description = "リポジトリを pull してから、すべての依存関係を更新"
 run = [
   { task = "pull" },
+  { task = "update:apt" },
   { tasks = [
-    "update:submodules",
     "update:brew",
-    "update:apt",
-    "update:external-repos",
+    "update:mise",
   ] },
 ]
 
@@ -20,74 +19,18 @@ run = "git pull --ff-only"
 
 ["update:submodules"]
 description = "Git サブモジュールを最新に更新（ローカル変更を破棄、ネストは固定コミットに同期）"
-run = """
-if [ ! -f .gitmodules ]; then
-  echo "No submodules configured, skipping"
-  exit 0
-fi
-
-clear_stale_index_lock() {
-  repo_label="$1"
-  lock_path=$(git rev-parse --git-path index.lock)
-
-  if [ ! -f "$lock_path" ]; then
-    return 0
-  fi
-
-  if command -v lsof >/dev/null 2>&1; then
-    if lsof "$lock_path" >/dev/null 2>&1; then
-      echo "Active git index.lock detected for $repo_label: $lock_path" >&2
-      return 1
-    fi
-  elif command -v fuser >/dev/null 2>&1; then
-    if fuser "$lock_path" >/dev/null 2>&1; then
-      echo "Active git index.lock detected for $repo_label: $lock_path" >&2
-      return 1
-    fi
-  else
-    echo "Warning: neither lsof nor fuser is available; removing existing git index.lock for $repo_label" >&2
-  fi
-
-  echo "Removing stale git index.lock for $repo_label: $lock_path"
-  rm -f "$lock_path"
-}
-
-clear_stale_index_lock "."
-git submodule sync --recursive
-git submodule foreach --recursive '
-lock_path=$(git rev-parse --git-path index.lock)
-if [ -f "$lock_path" ]; then
-  if command -v lsof >/dev/null 2>&1; then
-    if lsof "$lock_path" >/dev/null 2>&1; then
-      echo "Active git index.lock detected for $displaypath: $lock_path" >&2
-      exit 1
-    fi
-  elif command -v fuser >/dev/null 2>&1; then
-    if fuser "$lock_path" >/dev/null 2>&1; then
-      echo "Active git index.lock detected for $displaypath: $lock_path" >&2
-      exit 1
-    fi
-  else
-    echo "Warning: neither lsof nor fuser is available; removing existing git index.lock for $displaypath" >&2
-  fi
-
-  echo "Removing stale git index.lock for $displaypath: $lock_path"
-  rm -f "$lock_path"
-fi
-
-git reset --hard HEAD && git clean -fd
-'
-# Update only top-level submodules to latest remote tip
-GIT_HTTP_VERSION=HTTP/1.1 git -c http.version=HTTP/1.1 submodule update --remote
-# Then align nested submodules to commits pinned by each parent submodule
-git submodule update --init --recursive
-"""
+run = "bash ./scripts/update-submodules.sh"
 run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/mise-update.ps1 -TaskName submodules"
 
 ["update:brew"]
 description = "Homebrew パッケージを更新（formula のみ、cask は除く）"
-run = "if command -v brew >/dev/null 2>&1; then (brew update 2>&1 | grep -v \"definition is invalid\" || true) && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
+run = "if command -v brew >/dev/null 2>&1; then brew update && brew upgrade --formula; else echo 'Homebrew not installed, skipping brew update'; fi"
 run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/mise-update.ps1 -TaskName brew"
+
+["update:mise"]
+description = "mise 管理ツールを更新"
+run = "mise upgrade"
+run_windows = "mise upgrade"
 
 ["update:apt"]
 description = "APT パッケージを更新（Ubuntu/Debian 環境）"
