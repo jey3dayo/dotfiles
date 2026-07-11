@@ -9,7 +9,8 @@ _zsh_load_fzf_tab() {
   ZSH_FZF_TAB_LOADED=1
   zstyle ':completion:*' menu no
   zstyle ':fzf-tab:*' switch-group '<' '>'
-  zstyle ':fzf-tab:*' fzf-bindings 'tab:accept'
+  zstyle ':fzf-tab:*' fzf-flags '-i'
+  zstyle ':fzf-tab:*' fzf-bindings 'tab:accept' 'ctrl-o:toggle'
   () { source "$1" } "$fzf_tab"
 }
 
