@@ -1,15 +1,10 @@
 # Raspberry Pi 用最小構成。
 
 [settings]
-env_file = '.env.local'
-experimental = true
+# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
 jobs = 2                                                 # メモリ制約対応: 並列数削減でスワップ回避
-disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
-
-[settings.pipx]
-uvx = true
 
 [tools]
 # Language Runtimes

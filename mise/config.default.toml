@@ -1,15 +1,12 @@
 # Mac/Linux/WSL2 共通設定。Raspberry Pi は config.pi.toml。
 
 [settings]
-env_file = '.env.local'
-experimental = true
+# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
 jobs = 8
-disable_backends = ["vfox"]
 idiomatic_version_file_enable_tools = ["go"]
+# /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下に展開される worktree/sandbox 内の
+# mise config を信頼するために追加している
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
-
-[settings.pipx]
-uvx = true
 
 [tools]
 # Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）

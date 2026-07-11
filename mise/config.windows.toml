@@ -1,19 +1,11 @@
 # Windows 用設定。
 
 [settings]
-env_file = ".env.local"
-experimental = true
-disable_backends = ["vfox"]
+# 共通 settings（env_file / experimental / settings.npm.package_manager 等）は config.toml 側に定義（詳細は mise/README.md）
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 windows_default_inline_shell_args = "cmd /c"
 windows_default_file_shell_args = "cmd /c"
-
-[settings.pipx]
-uvx = true
-
-[settings.npm]
-package_manager = "pnpm"
 
 [env]
 YAMLLINT_CONFIG_FILE = "yamllint/config"

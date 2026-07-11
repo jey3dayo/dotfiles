@@ -1,15 +1,11 @@
 # GitHub Actions CI 専用（CI 必須ツールのみの最小構成）。
 
 [settings]
-env_file = '.env.local'
-experimental = true
-jobs = 4                                                                         # GitHub Actions runners: 2 cores
-disable_backends = ["vfox"]
+# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
+jobs = 4                                 # GitHub Actions runners: 2 cores
 idiomatic_version_file_enable_tools = []
+# /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下の worktree/sandbox 用（CI が Linux runner の場合は実質未使用）
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
-
-[settings.pipx]
-uvx = true
 
 [env]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
