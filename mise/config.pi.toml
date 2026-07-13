@@ -9,6 +9,10 @@ trusted_config_paths = ["~/.config", "~/src/github.com"]
 [tools]
 # Language Runtimes
 # Python は mise で管理しない。uv が必要に応じて python-build-standalone を取得する
+# NOTE: no documented rationale found for go="latest" (vs pinned elsewhere) or
+# node to an exact major instead of "lts" — git history shows no commit
+# explaining a Pi-specific constraint. Flagging for human review; do not
+# assume this is intentional when touching these pins.
 go = "latest"
 node = "24"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
