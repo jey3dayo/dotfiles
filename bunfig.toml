@@ -1,0 +1,6 @@
+[test]
+# Default bun:test timeout (5000ms) is too tight for tests that spawn a
+# subprocess per test (e.g. scripts/replace-bold-headings.test.ts running
+# `tsx` via execSync) under load — bump the default so CI/pre-push runs
+# don't flake when the machine is busy.
+timeout = 15000
