@@ -59,14 +59,12 @@ flake inputs`"]
 - 静的ファイル → `~/` 直下に symlink 配布
 - legacy distribution bundle + 外部スキル → `/nix/store` にバンドル → 各ツールの `skills/` に per-skill symlink
 
-### GitHub rate limit 対策
+### GitHub rate limit 対策（廃止済み）
 
-ローカルの Nix 実行では、永続的な GitHub Personal Access Token を `nix/access-tokens.conf` に保存しない。
-`mise run hm:*` と `mise run nix:*` は、実行前に `gh auth token` が使える場合だけ `NIX_CONFIG` へ `access-tokens = github.com=...` を注入する。
-
-- 既に `NIX_CONFIG` に `access-tokens` がある場合は、既存設定を優先する
-- 一時的に無効化する場合は `NIX_GITHUB_TOKEN=0 mise run ...` を使う
-- `gh` が未ログイン、または token を取得できない場合は token なしで実行する
+`mise run hm:*` / `mise run nix:*` という task family は Home Manager 撤去に伴い削除済みで、
+`gh auth token` を使った `NIX_CONFIG` への `access-tokens` 自動注入という仕組みも現在は存在しない
+（`mise/` 配下に該当タスク定義なし。代替の仕組みは未導入）。
+GitHub rate limit 対策が必要な場合は、手動で `NIX_CONFIG` に `access-tokens = github.com=...` を設定すること。
 
 ### スキル優先度
 
@@ -250,4 +248,3 @@ home-manager switch --flake . --impure
 - [Home Manager Manual - Generations](https://nix-community.github.io/home-manager/index.html#sec-usage-generations)
 - `docs/tools/workflows.md` - 全体的なメンテナンスワークフロー
 - `docs/disaster-recovery.md` - ディザスタリカバリ手順
-- `docs/tools/home-manager.md` - スキル配布問題の対処法

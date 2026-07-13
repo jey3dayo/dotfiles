@@ -1,6 +1,6 @@
 # Technology Stack - Personal Dotfiles
 
-**Last Updated**: 2026-03-07
+**Last Updated**: 2026-07-10
 **Inclusion Mode**: Always Included
 
 ## Architecture
@@ -124,7 +124,7 @@ All other tools serve to enhance or support these core components, while deploym
 - Configuration:
   - `.mise.toml` for repo-wide tasks
   - `mise/config.toml` for shared settings
-  - `mise/config.{default,ci,pi}.toml` for environment-specific tool definitions
+  - `mise/config.default.toml`, `mise/config.ci.toml`, `mise/config.pi.toml`, `mise/config.macos.toml`, `mise/config.windows.toml` for environment-specific tool definitions
 - Supported Languages:
   - Node.js
   - Python

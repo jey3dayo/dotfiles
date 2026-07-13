@@ -26,7 +26,7 @@
 | GitHub CLI     | `gh/`             | -                                        |
 | Neovim         | `nvim/`           | [詳細ガイド](docs/tools/nvim.md)         |
 | efm-langserver | `efm-langserver/` | -                                        |
-| Mise           | `mise.toml`       | -                                        |
+| Mise           | `.mise.toml`      | [詳細ガイド](docs/tools/mise.md)         |
 | Homebrew       | `Brewfile`        | -                                        |
 | AWSume         | `awsume/`         | -                                        |
 | Terraform      | (via Homebrew)    | -                                        |
