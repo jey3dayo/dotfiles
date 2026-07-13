@@ -1,6 +1,6 @@
 # Product Overview - Personal Dotfiles
 
-**Last Updated**: 2026-03-07
+**Last Updated**: 2026-07-10
 **Inclusion Mode**: Always Included
 
 ## Product Overview
