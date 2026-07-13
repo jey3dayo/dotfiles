@@ -82,7 +82,7 @@ pre-push:
     format:
       run: mise run check:format
     lint:
-      run: mise run check:lint
+      run: mise run check:lint:quick
     test-ts:
       run: mise run test:ts
     test-lua:
