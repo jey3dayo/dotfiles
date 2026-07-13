@@ -115,7 +115,11 @@ describe("zsh plugin bootstrap", () => {
       expect(result.status).toBe(0);
       expect(result.stderr.trim()).toBe("");
       expect(result.stdout).toContain(path.join(zdotdir, "bin", "zsh-benchmark"));
-      expect(result.stdout).toContain(expectedMise);
+      // mise is wrapped in a zsh function (zsh/lib/mise.zsh) to inject a
+      // GitHub token, so `command -v mise` resolves to the function name
+      // rather than the binary path; the binary itself must still be on PATH.
+      expect(result.stdout).toContain("mise");
+      expect(fs.existsSync(expectedMise)).toBe(true);
       expect(result.stdout).not.toContain("abbr");
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
