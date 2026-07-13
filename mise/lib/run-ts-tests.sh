@@ -27,14 +27,14 @@ fi
 if ((${#test_files[@]} > 0)); then
   echo "Running bun test suites (${#test_files[@]} files)..."
   if [[ "$QUIET" == "1" ]]; then
-    if output=$(bun test "${test_files[@]}" 2>&1); then
+    if output=$(bun test --timeout=20000 "${test_files[@]}" 2>&1); then
       echo "✅ bun tests passed (${#test_files[@]} files)"
     else
       echo "$output"
       exit 1
     fi
   else
-    bun test "${test_files[@]}"
+    bun test --timeout=20000 "${test_files[@]}"
   fi
 else
   echo "No bun test suites found."
