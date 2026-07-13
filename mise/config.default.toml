@@ -10,6 +10,9 @@ trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 
 [tools]
 # Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
+# NOTE: go/node here diverge from config.windows.toml / config.pi.toml pins with
+# no documented rationale (see comments there). Check those files before
+# bumping go/node here so a change doesn't silently widen the drift.
 deno = "latest"
 go = "1.26.4"
 julia = "latest"
