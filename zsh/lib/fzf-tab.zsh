@@ -10,7 +10,7 @@ _zsh_load_fzf_tab() {
   zstyle ':completion:*' menu no
   zstyle ':fzf-tab:*' switch-group '<' '>'
   zstyle ':fzf-tab:*' fzf-flags '-i'
-  zstyle ':fzf-tab:*' fzf-bindings 'tab:accept' 'ctrl-o:toggle'
+  zstyle ':fzf-tab:*' fzf-bindings 'tab:down' 'btab:up' 'ctrl-o:toggle'
   () { source "$1" } "$fzf_tab"
 }
 
