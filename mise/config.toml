@@ -8,7 +8,7 @@ experimental = true
 # （ここに置くと OS 別ファイルより優先されてしまう）
 disable_backends = ["vfox"]
 # サプライチェーン対策: リリース直後のバージョンへの upgrade を抑止する
-minimum_release_age = "3d"
+minimum_release_age = "1d"
 minimum_release_age_excludes = [
   "npm:hunkdiff",
   "npm:@openai/codex",
