@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # mise bootstrap の最終ステップ（[tasks.bootstrap]）から呼ばれる冪等セットアップ。
-# 旧 home.nix の activation script（headroom venv 構築・tmux submodule 初期化）から移管。
+# 旧 home.nix の activation script（headroom venv 構築）から移管。
 set -euo pipefail
 
 # --------------------------------------
@@ -45,26 +45,5 @@ if [ "$(uname -s)" = "Darwin" ]; then
     printf '%s\n' "$headroom_service_revision" >"$marker"
   else
     echo "headroom venv is up to date ($headroom_service_revision)"
-  fi
-fi
-
-# --------------------------------------
-# tmux plugins (tpm submodule + TPM install)
-# --------------------------------------
-worktree="$HOME/.config"
-if [ -d "$worktree/.git" ] || [ -f "$worktree/.git" ]; then
-  echo "Initializing Git submodules for tpm..."
-  if ! git -C "$worktree" submodule update --init --recursive; then
-    echo "Warning: failed to initialize tpm submodule; continuing." >&2
-  fi
-
-  tpm_path="$worktree/tmux/plugins/tpm"
-  install_script="$tpm_path/bin/install_plugins"
-  if ! command -v tmux >/dev/null 2>&1; then
-    echo "tmux not found on PATH; skipping TPM plugin install." >&2
-  elif [ -x "$install_script" ] && ! tmux info >/dev/null 2>&1; then
-    echo "Installing tmux plugins via TPM..."
-    TMUX_PLUGIN_MANAGER_PATH="$worktree/tmux/plugins" "$install_script" \
-      || echo "Warning: TPM plugin install failed; run <prefix>I inside tmux." >&2
   fi
 fi
