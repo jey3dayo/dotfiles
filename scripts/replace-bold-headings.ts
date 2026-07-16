@@ -293,7 +293,6 @@ const SKIP_PATH_SUFFIXES = [
   path.join(".claude", "skills"),
   path.join(".claude", "worktrees"),
   path.join(".codex", "skills"),
-  path.join("tmux", "plugins"),
   path.join("zsh", ".zinit"),
   path.join("agents", "external"),
 ];
@@ -314,7 +313,7 @@ function shouldSkipDir(fullPath: string): boolean {
     if (content.includes("/.git/modules/")) return true;
   }
 
-  // Path-suffix patterns (e.g. tmux/plugins, agents/external)
+  // Path-suffix patterns (e.g. agents/external)
   for (const suffix of SKIP_PATH_SUFFIXES) {
     if (fullPath.endsWith(path.sep + suffix)) return true;
   }

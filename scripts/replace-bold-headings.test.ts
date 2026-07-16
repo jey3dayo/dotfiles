@@ -152,7 +152,6 @@ describe("replace-bold-headings: directory exclusion", () => {
     "fisher",
     "result",
     "result-abc",
-    path.join("tmux", "plugins"),
     path.join("zsh", ".zinit"),
     path.join("agents", "external"),
   ];
@@ -172,8 +171,8 @@ describe("replace-bold-headings: directory exclusion", () => {
     expect(fs.readFileSync(file, "utf8")).not.toBe(boldContent);
   });
 
-  it("processes boundary-like dir (mytmux/plugins)", () => {
-    const file = path.join(tmpRoot, "mytmux", "plugins", "test.md");
+  it("processes boundary-like dir (my-agents/external)", () => {
+    const file = path.join(tmpRoot, "my-agents", "external", "test.md");
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, boldContent, "utf8");
     runScript(tmpRoot);

@@ -80,12 +80,12 @@ function New-NormalizedRepoSnapshot {
   }
 
   $changedFiles = @(
-    & git -C $SourceRootWin -c submodule.recurse=false diff --ignore-submodules=all --name-only HEAD -- ":(exclude)tmux/plugins/tpm"
-    & git -C $SourceRootWin -c submodule.recurse=false ls-files --others --exclude-standard -- ":(exclude)tmux/plugins/tpm"
+    & git -C $SourceRootWin -c submodule.recurse=false diff --ignore-submodules=all --name-only HEAD
+    & git -C $SourceRootWin -c submodule.recurse=false ls-files --others --exclude-standard
   ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique
 
   $deletedFiles = @(
-    & git -C $SourceRootWin -c submodule.recurse=false diff --ignore-submodules=all --name-only --diff-filter=D HEAD -- ":(exclude)tmux/plugins/tpm"
+    & git -C $SourceRootWin -c submodule.recurse=false diff --ignore-submodules=all --name-only --diff-filter=D HEAD
   ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique
 
   foreach ($relativePath in $changedFiles) {

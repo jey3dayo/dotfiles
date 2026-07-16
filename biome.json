@@ -25,7 +25,6 @@
       "!**/raycast",
       "!**/.vimperator",
       "!**/rest-client",
-      "!**/tmux/plugins",
       "!**/fisher",
       "!**/Brewfile.lock.json",
       "!**/.vim/lazy-lock.json",
