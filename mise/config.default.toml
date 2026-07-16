@@ -76,6 +76,7 @@ yamllint = "latest"
 "npm:@typescript-eslint/eslint-plugin" = "latest"
 "npm:esbuild" = "latest"
 "npm:zx" = "latest"
+"npm:agmsg" = "latest"
 
 # MCP サーバー
 "npm:@aikidosec/safe-chain" = "latest"
