@@ -74,9 +74,12 @@ require("conform").setup {
     go = { "gofmt", "goimports" },
     rust = { "rustfmt" },
     toml = { "taplo" },
+    terraform = { "terraform_fmt" },
+    ["terraform-vars"] = { "terraform_fmt" },
     sh = { "shfmt" },
     bash = { "shfmt" },
     zsh = { "shfmt" },
+    dockerfile = { "dockerfmt" },
     ["*"] = { "trim_whitespace" },
   },
   format_on_save = function(bufnr)
@@ -112,6 +115,12 @@ require("conform").setup {
     },
     stylua = {
       command = mise.resolve_command "stylua",
+    },
+    dockerfmt = {
+      command = mise.resolve_command "dockerfmt",
+      condition = function()
+        return command_exists "dockerfmt"
+      end,
     },
   },
   log_level = vim.log.levels.WARN,

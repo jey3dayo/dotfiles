@@ -33,6 +33,7 @@ bun = "latest"
 # Formatters / Linters
 actionlint = "latest"
 biome = "latest"
+"go:github.com/reteps/dockerfmt" = "latest"
 hadolint = "latest"
 prettier = "latest"
 shellcheck = "latest"
