@@ -11202,22 +11202,10 @@
           "full_name": "warp"
         }
       },
-      "webex": {
-        "version": "44.9.1.30809",
-        "options": {
-          "full_name": "webex"
-        }
-      },
       "wezterm@nightly": {
         "version": "latest",
         "options": {
           "full_name": "wezterm@nightly"
-        }
-      },
-      "wireshark": {
-        "version": "4.4.0",
-        "options": {
-          "full_name": "wireshark"
         }
       },
       "xbar": {
