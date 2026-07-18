@@ -108,7 +108,6 @@ yamllint = "latest"
 "npm:tuyapi" = "latest"
 
 # Rust CLI（typos-lsp は Homebrew で管理）
-"aqua:rtk-ai/rtk" = "latest"
 "aqua:getsentry/sentry-cli" = "latest"
 "cargo:bandwhich" = "latest"
 "cargo:needle-cli" = "0.15.0"

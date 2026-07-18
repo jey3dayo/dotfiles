@@ -3,7 +3,7 @@
 # ========================================
 
 ["headroom:status"]
-description = "Check Headroom CLI, MCP, proxy, and RTK manual-mode status"
+description = "Check Headroom CLI, MCP, and proxy status"
 run = '''
 #!/usr/bin/env bash
 set -euo pipefail
@@ -30,14 +30,6 @@ else
 fi
 
 echo
-echo "== rtk rewrite mode =="
-if [ -f "$HOME/.config/.rtk/rewrite-mode" ]; then
-  sed -n '1p' "$HOME/.config/.rtk/rewrite-mode"
-else
-  echo "on"
-fi
-
-echo
 echo "== codex app launch env =="
 echo "OPENAI_BASE_URL=${OPENAI_BASE_URL:-$(launchctl getenv OPENAI_BASE_URL || true)}"
 '''
@@ -55,7 +47,7 @@ description = "Inspect Headroom bundled helper tool availability"
 run = "headroom tools doctor"
 
 ["headroom:proxy"]
-description = "Start Headroom proxy for explicit A/B testing against RTK manual mode"
+description = "Start Headroom proxy"
 run = '''
 #!/usr/bin/env bash
 set -euo pipefail

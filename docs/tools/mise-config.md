@@ -136,7 +136,6 @@ yamllint = "latest"
 
 ```toml
 [tools]
-"aqua:rtk-ai/rtk" = "latest"
 "cargo:bandwhich" = "latest"
 "cargo:needle-cli" = "0.15.0"
 "cargo:similarity-css" = "0.5.0"
