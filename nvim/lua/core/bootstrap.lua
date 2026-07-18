@@ -52,9 +52,6 @@ function M.setup()
   if initialized then return end
   initialized = true
 
-  -- Use volatile state directory to keep config lean
-  vim.env.XDG_STATE_HOME = "/tmp"
-
   load_modules(immediate_modules)
 
   -- Defer heavier modules until after UI is ready
