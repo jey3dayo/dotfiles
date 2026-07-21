@@ -55,7 +55,6 @@
 "brew:graphviz" = "latest"
 "brew:grep" = "latest"
 "brew:harfbuzz" = "latest"
-"brew:herdr" = "latest"
 "brew:imagemagick" = "latest"
 "brew:isl" = "latest"
 "brew:jemalloc" = "latest"
