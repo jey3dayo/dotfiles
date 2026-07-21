@@ -14,12 +14,12 @@
 
 ## Status
 
-- **Priority**: P1
-- **Effort**: S
-- **Risk**: LOW
-- **Depends on**: none
-- **Category**: dx
-- **Planned at**: commit `fedff82f`, 2026-07-14
+- Priority: P1
+- Effort: S
+- Risk: LOW
+- Depends on: none
+- Category: dx
+- Planned at: commit `fedff82f`, 2026-07-14
 
 ## Why this matters
 
@@ -78,11 +78,11 @@ mise/local-tasks/ci.toml`).
 
 ## Scope
 
-**In scope** (the only files you should modify):
+#### In scope (the only files you should modify)
 
 - `lefthook.yml`
 
-**Out of scope** (do NOT touch, even though they look related):
+#### Out of scope (do NOT touch, even though they look related)
 
 - `mise/local-tasks/integration.toml` — the task definitions themselves are
   correct and don't need changing; only the hook wiring is wrong.
@@ -104,7 +104,7 @@ mise/local-tasks/ci.toml`).
 In `lefthook.yml`, change the `pre-push.commands.lint.run` line from
 `mise run check:lint` to `mise run check:lint:quick`.
 
-**Verify**: `grep -n "check:lint" lefthook.yml` → shows `check:lint:quick`
+Verify: `grep -n "check:lint" lefthook.yml` → shows `check:lint:quick`
 under the `pre-push` block's `lint` command, and the `pre-commit` block (if
 it references `check:lint` elsewhere) is untouched — check with
 `grep -n -B3 "check:lint" lefthook.yml` to confirm only the pre-push instance
@@ -114,7 +114,7 @@ changed.
 
 Run `mise run check:lint:quick` on the current tree.
 
-**Verify**: `mise run check:lint:quick` → exit 0 (repo is currently clean per
+Verify: `mise run check:lint:quick` → exit 0 (repo is currently clean per
 recon; if it fails, that's a pre-existing issue — do not fix unrelated lint
 errors, report it as a STOP condition instead since it means the current
 tree state doesn't match this plan's assumption).

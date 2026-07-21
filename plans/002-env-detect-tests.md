@@ -14,12 +14,12 @@
 
 ## Status
 
-- **Priority**: P1
-- **Effort**: S
-- **Risk**: LOW
-- **Depends on**: none
-- **Category**: tests
-- **Planned at**: commit `fedff82f`, 2026-07-14
+- Priority: P1
+- Effort: S
+- Risk: LOW
+- Depends on: none
+- Category: tests
+- Planned at: commit `fedff82f`, 2026-07-14
 
 ## Why this matters
 
@@ -87,11 +87,11 @@ catch it.
 
 ## Scope
 
-**In scope** (the only files you should modify):
+#### In scope (the only files you should modify)
 
 - `scripts/env-detect.test.ts` (create)
 
-**Out of scope** (do NOT touch, even though they look related):
+#### Out of scope (do NOT touch, even though they look related)
 
 - `scripts/env-detect.sh` — this plan adds tests only; do not refactor or
   "fix" the detection logic even if something looks odd. If you find a real
@@ -117,7 +117,7 @@ resolution, `isWindows` skip guard since this is a POSIX `sh` script). Add a
 `runEnvDetect({ extraEnv })` helper using `spawnSync("sh", [scriptPath], {
 encoding: "utf8", env: { ...process.env, ...extraEnv } })`.
 
-**Verify**: `bun test scripts/env-detect.test.ts` → runs (may have 0
+Verify: `bun test scripts/env-detect.test.ts` → runs (may have 0
 assertions yet, but must not error on file structure/imports).
 
 ### Step 2: Test the CI branch
@@ -132,14 +132,14 @@ substring check for the literal `ENV_TYPE` value printed — inspect actual
 output shape by running the script manually first: `CI=true sh
 scripts/env-detect.sh`). Assert `result.status === 0`.
 
-**Verify**: `bun test scripts/env-detect.test.ts -t "CI"` → passes.
+Verify: `bun test scripts/env-detect.test.ts -t "CI"` → passes.
 
 ### Step 3: Test the GITHUB_ACTIONS branch
 
 Same as Step 2 but with `GITHUB_ACTIONS=true` and `CI` unset — confirms the
 `||` condition's second branch independently, not just CI.
 
-**Verify**: test passes.
+Verify: test passes.
 
 ### Step 4: Test the default (non-CI, non-Pi) branch
 
@@ -153,7 +153,7 @@ that don't exist on macOS — confirm this by running
 `sh scripts/env-detect.sh` locally and reading the "Detected Environment"
 line before asserting), assert `ENV_TYPE` resolves to `default`.
 
-**Verify**: test passes on the local dev machine.
+Verify: test passes on the local dev machine.
 
 ### Step 5: Test the Pi-detection helper in isolation (optional but preferred)
 
@@ -167,7 +167,7 @@ result (i.e., if `ENV_TYPE` is `pi`, the Pi line must show matched; if not
 `pi`, it must show not-matched). This catches drift between the two
 detection paths without requiring OS-level mocking.
 
-**Verify**: `bun test scripts/env-detect.test.ts` → all tests pass.
+Verify: `bun test scripts/env-detect.test.ts` → all tests pass.
 
 ## Test plan
 

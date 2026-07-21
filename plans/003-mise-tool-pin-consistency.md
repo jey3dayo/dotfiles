@@ -14,12 +14,12 @@
 
 ## Status
 
-- **Priority**: P2
-- **Effort**: S
-- **Risk**: LOW
-- **Depends on**: none
-- **Category**: dependencies
-- **Planned at**: commit `fedff82f`, 2026-07-14
+- Priority: P2
+- Effort: S
+- Risk: LOW
+- Depends on: none
+- Category: dependencies
+- Planned at: commit `fedff82f`, 2026-07-14
 
 ## Why this matters
 
@@ -68,14 +68,14 @@ version numbers.
 
 ## Scope
 
-**In scope** (the only files you should modify):
+#### In scope (the only files you should modify)
 
 - `mise/config.default.toml`
 - `mise/config.windows.toml`
 - `mise/config.pi.toml`
 - `mise/config.ci.toml`
 
-**Out of scope** (do NOT touch, even though they look related):
+#### Out of scope (do NOT touch, even though they look related)
 
 - `mise/config.macos.toml`, `mise/config.toml` — not part of this
   inconsistency (verify they don't also pin `go`/`node` differently before
@@ -103,7 +103,7 @@ and the equivalent for `mise/config.pi.toml`'s `go = "latest"` and the
 `node = "24"` pins. Look for any commit message mentioning a Windows-specific
 Go bug, a Pi memory/arch constraint, or a Node compatibility issue.
 
-**Verify**: You can state, with evidence (a commit hash + message, or "no
+Verify: You can state, with evidence (a commit hash + message, or "no
 evidence found"), whether each divergent pin is documented as intentional.
 
 ### Step 2a (if divergence is intentional): Add a rationale comment
@@ -117,7 +117,7 @@ applicable, the commit hash where it was introduced. Example:
 go = "1.25.5"
 ```
 
-**Verify**: `grep -n -B1 "go = \"1.25.5\"" mise/config.windows.toml` → shows
+Verify: `grep -n -B1 "go = \"1.25.5\"" mise/config.windows.toml` → shows
 the new comment.
 
 ### Step 2b (if divergence is NOT intentional / no evidence found): Align pins
@@ -130,11 +130,11 @@ blocker), and pin `node` to `"lts"` everywhere (replacing the `"24"` pins in
 `config.windows.toml` and `config.pi.toml`) unless Step 1 found a reason
 `"24"` was deliberately chosen over `"lts"`.
 
-**Verify**: `grep -n "^go = \|^node = " mise/config.default.toml mise/config.windows.toml mise/config.pi.toml mise/config.ci.toml` → all four `go` values match (or CI's absence is confirmed intentional), all `node` values match.
+Verify: `grep -n "^go = \|^node = " mise/config.default.toml mise/config.windows.toml mise/config.pi.toml mise/config.ci.toml` → all four `go` values match (or CI's absence is confirmed intentional), all `node` values match.
 
 ### Step 3: Validate config syntax after any change
 
-**Verify**: Run `taplo format --check mise/config.default.toml mise/config.windows.toml mise/config.pi.toml mise/config.ci.toml` (or `mise run check:toml` if that task exists — check `mise/local-tasks/*.toml` for the exact task name first) → exit 0, no syntax errors introduced.
+Verify: Run `taplo format --check mise/config.default.toml mise/config.windows.toml mise/config.pi.toml mise/config.ci.toml` (or `mise run check:toml` if that task exists — check `mise/local-tasks/*.toml` for the exact task name first) → exit 0, no syntax errors introduced.
 
 ## Test plan
 

@@ -14,12 +14,12 @@
 
 ## Status
 
-- **Priority**: P2
-- **Effort**: S
-- **Risk**: LOW
-- **Depends on**: none
-- **Category**: docs
-- **Planned at**: commit `fedff82f`, 2026-07-14
+- Priority: P2
+- Effort: S
+- Risk: LOW
+- Depends on: none
+- Category: docs
+- Planned at: commit `fedff82f`, 2026-07-14
 
 ## Why this matters
 
@@ -79,7 +79,7 @@ each fix is a single-line/paragraph edit with no interaction between them.
 
 ## Scope
 
-**In scope** (the only files you should modify):
+#### In scope (the only files you should modify)
 
 - `docs/tools/nix.md`
 - `TOOLS.md`
@@ -87,7 +87,7 @@ each fix is a single-line/paragraph edit with no interaction between them.
 - `.kiro/steering/tech.md`
 - `.kiro/steering/product.md`
 
-**Out of scope** (do NOT touch, even though they look related):
+#### Out of scope (do NOT touch, even though they look related)
 
 - Any other content in these files beyond the specific lines identified above
   — do not do a broader documentation pass in this plan.
@@ -114,7 +114,7 @@ what replaced it before writing the replacement text; if nothing replaced
 it, state plainly that the `hm:*` task family was removed as part of the
 Home Manager migration (per `TODO.md`).
 
-**Verify**: `grep -n "home-manager.md\|hm:" docs/tools/nix.md` → no matches
+Verify: `grep -n "home-manager.md\|hm:" docs/tools/nix.md` → no matches
 remain (or only remain inside a sentence explicitly explaining the removal,
 not as an actionable reference/link).
 
@@ -125,7 +125,7 @@ Change line 29's `mise.toml` to `.mise.toml`, and link it to
 existing table's link style — check how other rows in the same table format
 links, e.g. `[Mise](docs/tools/mise.md)` as already used at line 71).
 
-**Verify**: `grep -n "mise.toml" TOOLS.md` → shows `.mise.toml`, not the bare
+Verify: `grep -n "mise.toml" TOOLS.md` → shows `.mise.toml`, not the bare
 `mise.toml`.
 
 ### Step 3: Fix stale "Last Updated" headers
@@ -135,7 +135,7 @@ For each of `.kiro/steering/structure.md`, `.kiro/steering/tech.md`,
 `git log -1 --format=%ad --date=short -- <file>` and update that file's line
 3 `**Last Updated**: <date>` to match.
 
-**Verify**: For each file, `head -3 <file>` shows a date matching the
+Verify: For each file, `head -3 <file>` shows a date matching the
 `git log` output from this step (not 2026-03-07 unless that file's git log
 genuinely shows no edits since then).
 
@@ -145,11 +145,11 @@ Add `mise/config.macos.toml` and `mise/config.windows.toml` to the config
 file list found in Step "4d" of Current state (match the existing list
 format/style used for the other three filenames).
 
-**Verify**: `grep -n "config.macos.toml\|config.windows.toml" .kiro/steering/tech.md` → both present.
+Verify: `grep -n "config.macos.toml\|config.windows.toml" .kiro/steering/tech.md` → both present.
 
 ### Step 5: Run doc lint if applicable
 
-**Verify**: Check `mise/local-tasks/lint.toml` for a markdown-specific task
+Verify: Check `mise/local-tasks/lint.toml` for a markdown-specific task
 name (e.g. `lint:markdown`, `lint:md`) and run it against the five touched
 files if such a task exists and can be scoped to specific files; otherwise
 run the full `mise run check:lint:quick` (per Plan 001's fast-lint task, if
