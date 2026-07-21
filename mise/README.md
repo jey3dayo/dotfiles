@@ -19,6 +19,7 @@ mise/
 │   ├── run-ts-tests.sh
 │   └── shell-format.sh
 ├── local-tasks/        # ルート .mise.toml の [task_config].includes 経由でのみロードされるタスク定義
+│   ├── backup.toml
 │   ├── ci.toml
 │   ├── docs.toml
 │   ├── env.toml
@@ -29,13 +30,12 @@ mise/
 │   ├── test.toml
 │   └── updates.toml
 └── tasks/              # mise のグローバル tasks ディレクトリとして自動ロードされるタスク定義
-    ├── backup.toml
     └── brewfile.toml
 ```
 
 `config.toml` は OS 別ファイル（`config.default.toml` 等）より優先して適用されるため、OS 間で異なる値を置くと OS 別設定を意図せず上書きしてしまう。OS 間で異なりうる値は各 OS 別ファイル側に置く。
 
-`mise/tasks/` と `mise/local-tasks/` の違い: `mise/tasks/` は mise のグローバル tasks ディレクトリとして自動ロードされ、どのディレクトリからでも実行できる（`backup`, `brewfile:restore` 等）。`mise/local-tasks/` はリポジトリルートの `.mise.toml` の `[task_config].includes` 経由で読み込まれ、`~/.config` リポジトリ内でのみロードされる。
+`mise/tasks/` と `mise/local-tasks/` の違い: `mise/tasks/` は mise のグローバル tasks ディレクトリとして自動ロードされ、どのディレクトリからでも実行できる（`brewfile:restore` 等）。`mise/local-tasks/` はリポジトリルートの `.mise.toml` の `[task_config].includes` 経由で読み込まれ、`~/.config` リポジトリ内でのみロードされる。PC メンテナンス用の backup task は、資格情報と破壊的サブコマンドを含むため local に保つ。
 
 ## Environment Detection
 

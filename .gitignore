@@ -221,7 +221,7 @@ result-*
 *.orig
 *backup*
 !restic/backup.sh
-!mise/tasks/backup.toml
+!mise/local-tasks/backup.toml
 
 ## Compiled Objects
 *.a

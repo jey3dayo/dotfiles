@@ -75,9 +75,9 @@ mise/
 ├── config.pi.toml         # Raspberry Pi 向け最小構成
 ├── config.ci.toml         # CI/CD 向け最小構成
 ├── tasks/                 # 外部 repo から見えてよい global task 定義
-│   ├── backup.toml        # restic backup
 │   └── brewfile.toml      # Brewfile バックアップ・リストア
 └── local-tasks/           # ~/.config 専用の mise task 定義
+    ├── backup.toml        # restic backup・restore・prune
     ├── ci.toml            # CI/CD チェック・Nix 検証
     ├── format.toml        # フォーマット（書き込みあり/チェック）
     ├── lint.toml          # 静的解析・構文チェック
@@ -89,13 +89,13 @@ mise/
 ```
 
 `.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/local-tasks/*.toml` を読み込む。
-`mise/tasks/` は global task として外部リポジトリからも見えるため、cwd 非依存または `dir` 明示済みのタスクだけを置く。
+`mise/tasks/` は global task として外部リポジトリからも見えるため、cwd 非依存または `dir` 明示済みで、かつ全ディレクトリに露出させる明確な理由があるタスクだけを置く。PC メンテナンス、資格情報依存、破壊的サブコマンドを含む task family は `local-tasks/` を既定とする。
 task TOML は description、`dir` / `env`、dependency、platform route、単一 runner だけを持つ薄い入口にする。分岐・cleanup・複数 command は `mise/lib/`（task 専用 helper）または `scripts/`（repo の運用 entrypoint）へ置き、`mise tasks` に内部実装を露出させない。
 
 ## Task Design
 
 - 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
-- 環境依存・運用系: `agents.toml`, `updates.toml`, `env.toml`
+- 環境依存・運用系: `agents.toml`, `backup.toml`, `updates.toml`, `env.toml`
 - タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
 - `update` / `check` / 通常の `ci` は非破壊的に保つ。`reset`、`clean`、`prune`、deploy、in-place restore は明示的な個別 task に置く。
 
