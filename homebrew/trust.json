@@ -1,6 +1,5 @@
 {
   "trustedformulae": [
-    "aws/tap/copilot-cli",
     "daipeihust/tap/im-select",
     "gofireflyio/aiac/aiac",
     "olets/tap/zsh-abbr@6",

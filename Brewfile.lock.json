@@ -7,9 +7,6 @@
       "argon/mas": {
         "revision": "eb8e71f83306dd929ba502cfa9af30db1d602725"
       },
-      "aws/tap": {
-        "revision": "f2dcc08fa89256b3893a6cfc82e3ac71b05ce28e"
-      },
       "bufbuild/buf": {
         "revision": "c7ed8fefa8619673fff9d6e67003088d71dceaf8"
       },
@@ -31,11 +28,11 @@
       "gofireflyio/aiac": {
         "revision": "d2c78af20d902f4baecb3da860938ce4943956e1"
       },
-      "hashicorp/tap": {
-        "revision": "f24b73c99285dbea8b5619e1550206867360e3d9"
-      },
       "heroku/brew": {
         "revision": "93035486d185d73492b2b3ca8577a58ffd88df9b"
+      },
+      "hashicorp/tap": {
+        "revision": "f24b73c99285dbea8b5619e1550206867360e3d9"
       },
       "homebrew/bundle": {
         "revision": "4b25b5279e597217c26b50d42b17a34a027b26d7"
@@ -10660,10 +10657,6 @@
             }
           }
         }
-      },
-      "aws/tap/copilot-cli": {
-        "version": "1.34.0",
-        "bottle": false
       },
       "bufbuild/buf/buf": {
         "version": "1.43.0",

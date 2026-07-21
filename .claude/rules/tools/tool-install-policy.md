@@ -35,7 +35,7 @@ Responsibility: Configuration distribution + system package declaration
   - cask は mise が native インストール（Homebrew 本体不要）。ただし新機能のため pkg/sudo 系 cask は段階移行
   - `mise bootstrap packages import` で brew formulae を snapshot
   - `prune` は**実運用しない**: Brewfile 専用の例外 formula（heroku / mysql / utf8proc / perman-aws-vault / mise / tap formulae）は `[bootstrap.packages]` に宣言していないため、prune が削除対象と誤判定する。調査目的の `--dry-run` のみ可
-- Does NOT cover: vscode extensions、`restart_service` / install args 付き formula（`mysql`, `utf8proc` 等）、mise 自体（自己 bootstrap の循環回避）、API metadata を持たない tap の formula（copilot-cli, im-select, peekaboo, zsh-abbr@6, aiac）→ Brewfile に残す
+- Does NOT cover: vscode extensions、`restart_service` / install args 付き formula（`mysql`, `utf8proc` 等）、mise 自体（自己 bootstrap の循環回避）、API metadata を持たない tap の formula（im-select, peekaboo, zsh-abbr@6, aiac）→ Brewfile に残す
 
 Example: starship configuration lives in `~/.config/starship.toml` (git-managed), while the starship binary is installed by mise `[tools]`.
 
