@@ -11057,12 +11057,6 @@
           "full_name": "ollama"
         }
       },
-      "orbstack": {
-        "version": "1.7.4_17448",
-        "options": {
-          "full_name": "orbstack"
-        }
-      },
       "postman": {
         "version": "11.15.0",
         "options": {
