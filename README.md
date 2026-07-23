@@ -95,7 +95,6 @@ mise doctor
 
 - ✅ `[bootstrap.packages]` → brew パッケージ、`[dotfiles]` → HOME エントリポイント配布
 - ✅ `[bootstrap.macos.launchd.agents]` → LaunchAgents、`[tools]` → 全開発ツール
-- ✅ `bootstrap` task → headroom venv（macOS）+ tmux plugins
 - ✅ 冪等: 収束済みの項目はスキップ。`--dry-run` で差分プレビュー
 
 `scripts/bootstrap.sh` は fresh macOS 向けの Homebrew 導入だけを担う前準備スクリプトです。

@@ -23,7 +23,6 @@ mise/
 │   ├── ci.toml
 │   ├── env.toml
 │   ├── format.toml
-│   ├── headroom.toml
 │   ├── integration.toml
 │   ├── lint.toml
 │   ├── test.toml

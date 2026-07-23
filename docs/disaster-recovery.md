@@ -98,7 +98,6 @@ macOS はあわせて launchd agents を確認する:
 
 ```bash
 mise bootstrap macos launchd-agents status
-curl -fsS http://127.0.0.1:8787/livez   # headroom proxy
 ```
 
 ## 関連ドキュメント

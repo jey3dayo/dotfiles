@@ -43,7 +43,3 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 # symlink を拒否する CLI 向けは copy
 "~/.aicommits" = { source = "~/.config/.aicommits", mode = "copy" }
 "~/.opencommit" = { source = "~/.config/opencommit/.opencommit", mode = "copy" }
-
-[tasks.bootstrap]
-description = "headroom venv 構築（macOS のみ、冪等）"
-run = 'bash "$HOME/.config/scripts/bootstrap-task.sh"'

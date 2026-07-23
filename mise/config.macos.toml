@@ -168,11 +168,3 @@ args = ["-lc", 'exec "$HOME/.config/scripts/launchd/launchd-gui-env.sh"']
 run_at_load = true
 stdout_path = "~/Library/Logs/gui-env.log"
 stderr_path = "~/Library/Logs/gui-env.log"
-
-[bootstrap.macos.launchd.agents.headroom-proxy]
-program = "/bin/sh"
-args = ["-lc", 'exec "$HOME/.config/scripts/launchd/launchd-headroom-proxy.sh"']
-run_at_load = true
-keep_alive = true
-stdout_path = "~/.headroom/logs/proxy.stdout.log"
-stderr_path = "~/.headroom/logs/proxy.stderr.log"
