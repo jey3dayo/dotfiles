@@ -84,8 +84,7 @@ mise/
     ├── test.toml          # テスト実行（Lua/TypeScript）
     ├── integration.toml   # 統合タスク（setup/doctor/check/format/lint 集約）
     ├── updates.toml       # 依存関係更新（apt/submodules など）
-    ├── env.toml           # 環境変数管理（dotenvx）
-    └── docs.toml          # ドキュメントメンテナンス
+    └── env.toml           # 環境変数管理（dotenvx）
 ```
 
 `.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/local-tasks/*.toml` を読み込む。

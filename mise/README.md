@@ -21,7 +21,6 @@ mise/
 ├── local-tasks/        # ルート .mise.toml の [task_config].includes 経由でのみロードされるタスク定義
 │   ├── backup.toml
 │   ├── ci.toml
-│   ├── docs.toml
 │   ├── env.toml
 │   ├── format.toml
 │   ├── headroom.toml

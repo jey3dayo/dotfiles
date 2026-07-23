@@ -1,7 +1,0 @@
-# ========================================
-# ドキュメントメンテナンス
-# ========================================
-
-["docs:update-counts"]
-description = "Update tool counts in documentation"
-run = "bash ./scripts/mise-docs-update-counts.sh"

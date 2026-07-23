@@ -15,7 +15,6 @@ includes = [
   ".config/mise/local-tasks/updates.toml",
   ".config/mise/local-tasks/headroom.toml",
   ".config/mise/local-tasks/ci.toml",
-  ".config/mise/local-tasks/docs.toml",
 ]
 
 # ========================================
