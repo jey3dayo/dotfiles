@@ -5,7 +5,10 @@ description: >-
   plugin management and lazy loading, LSP setup (mason), modern Lua config
   structure, and AI completion integration. Use when the user mentions Neovim
   or nvim, edits init.lua or lua/ Neovim config files, or asks about editor
-  startup time, LSP configuration, or plugin management.
+  startup time, LSP configuration, or plugin management. Also trigger on the
+  editor tool ecosystem even when "nvim" is not said: mason, marksman, biome,
+  conform, none-ls, treesitter, LSP server availability, or formatter/linter
+  choice for the editor (e.g. `marksman使える？`, `formatterどれがいい？`).
 ---
 
 # Neovim Configuration Review
