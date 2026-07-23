@@ -12,7 +12,6 @@ This directory contains Claude-specific configuration, commands, and rule files 
 ## Documentation Model
 
 - Canonical human-readable documentation lives in [`docs/`](../docs/)
-- High-level AI context lives in [`.kiro/steering/`](../.kiro/steering/)
 - `.claude/rules/` stays compact and points back to canonical docs instead of duplicating them
 
 The documentation contract is defined in [`docs/documentation.md`](../docs/documentation.md).

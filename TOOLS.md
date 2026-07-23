@@ -2,7 +2,7 @@
 
 このリポジトリで管理しているツール・アプリケーション設定の一覧です。
 
-詳細な技術情報は [Technology Stack](.kiro/steering/tech.md) を、ツール別の実装ガイドは [docs/tools/](./docs/tools/) を参照してください。
+詳細な技術情報とツール別の実装ガイドは [docs/tools/](./docs/tools/) を参照してください。
 
 ## 📋 管理対象ツール
 
@@ -55,12 +55,6 @@
 | Vimium    | `vimium-options.json` |
 
 ## 📚 関連ドキュメント
-
-### プロジェクト情報
-
-- [Product Overview](.kiro/steering/product.md) - プロダクト概要、価値提案
-- [Technology Stack](.kiro/steering/tech.md) - 技術スタック詳細、コマンド
-- [Project Structure](.kiro/steering/structure.md) - ディレクトリ構造、パターン
 
 ### 実装ガイド
 

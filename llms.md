@@ -9,7 +9,6 @@
 - ドキュメント体系の正本: `docs/documentation.md`
 - セットアップの正本: `docs/setup.md`
 - 運用・保守・品質チェックの正本: `docs/tools/workflows.md`
-- AI 向け高レベル文脈: `.kiro/steering/`
 - Claude 向け入口: `CLAUDE.md`
 
 優先順位は `AGENTS.md` に従います。`docs/` 配下の詳細手順はこの repo では正本です。
@@ -27,7 +26,6 @@
 
 - ルール確認: `AGENTS.md`
 - 全体像把握: `README.md`
-- AI セッション向け背景: `.kiro/steering/product.md`, `.kiro/steering/tech.md`, `.kiro/steering/structure.md`
 - 初期セットアップ: `docs/setup.md`
 - 日常運用と品質チェック: `docs/tools/workflows.md`
 - ツール別詳細: `docs/tools/*.md`
@@ -66,7 +64,6 @@ mise run ci
 AGENTS.md                Project-specific rules
 README.md                Human-facing overview
 CLAUDE.md                Thin AI entry point
-.kiro/steering/          Always-loaded AI context
 docs/                    Human-facing source of truth
 docs/tools/              Tool-specific source documents
 mise/                    Mise config and tasks
@@ -81,7 +78,6 @@ scripts/                 Bootstrap and task helper scripts
 
 1. `AGENTS.md`
 2. 対応する `docs/` の正本
-3. `.kiro/steering/`
-4. `README.md` / `docs/README.md`
+3. `README.md` / `docs/README.md`
 
 このファイルは要約です。正本の内容と矛盾した場合は、必ず正本を優先してください。

@@ -10,7 +10,7 @@ High-performance development environment tuned for speed, consistency, and devel
 
 - Declarative Configuration: mise bootstrap-based deployment with per-OS config selection (CI/Pi/Default)
 - Performance-first dotfiles with local CI parity (`mise run ci`) before merges
-- Documentation centralized in `docs/` with navigation at `docs/README.md` and AI context in `.kiro/steering/`
+- Documentation centralized in `docs/` with navigation at `docs/README.md`
 - LLM/AI entrypoint available at `llms.md`, with project rules rooted in `AGENTS.md`
 - Modular stack: Zsh (6-tier), Neovim (Lazy.nvim), WezTerm (tmux-style) with FZF-backed Git widgets
 - Versioning via Mise + Homebrew; AI/CLI helpers documented in `CLAUDE.md` and `.claude/`
@@ -23,7 +23,6 @@ High-performance development environment tuned for speed, consistency, and devel
 - Performance metrics/history: `docs/performance.md`
 - Maintenance cadence & troubleshooting: `docs/tools/workflows.md`
 - Documentation governance: `docs/documentation.md`
-- AI steering (always loaded): `.kiro/steering/`
 - Tool inventory: `TOOLS.md`
 
 ## Getting Started
@@ -134,7 +133,6 @@ dotfiles/
 ├── mise/          # mise config（[tools] / [dotfiles] / [bootstrap.*] / tasks）
 ├── .claude/       # AI assistance, commands, review criteria
 ├── .github/       # Workflows
-├── .kiro/         # Steering docs (always-loaded AI context)
 ├── docs/          # Human-facing documentation (SST per topic)
 ├── bin/           # User-facing commands on PATH
 ├── scripts/       # Setup and task helper scripts

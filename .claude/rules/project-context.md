@@ -1,5 +1,5 @@
 ---
-paths: .kiro/steering/**/*.md, README.md, docs/README.md, docs/setup.md, docs/performance.md
+paths: README.md, docs/README.md, docs/setup.md, docs/performance.md
 ---
 
 # Project Context
@@ -10,11 +10,6 @@ Purpose: concise project overview for Claude. Scope: what this repo is, where to
 
 - Goal: manage personal dotfiles for a fast, modular dev environment.
 - Core stack: Zsh + WezTerm + Neovim; supporting tools include Tmux, Homebrew, Mise, Raycast, Karabiner.
-
-## Steering documents (always load)
-
-- Location: `.kiro/steering/`
-- Files: `product.md` (overview), `tech.md` (stack and commands), `structure.md` (directory and naming).
 
 ## Single sources of truth
 

@@ -9,7 +9,6 @@ Sources: AGENTS.md, CLAUDE.md, .claude/README.md.
 
 ## Context hierarchy
 
-- Always treat `.kiro/steering/` (product, tech, structure) as high-level context; it is auto-loaded.
 - Project documentation lives in `docs/`; rules are mirrored in `.claude/rules/` for Claude ingestion.
 - Tool-specific details are in `docs/tools/*.md`; do not restate long snippets in replies.
 
