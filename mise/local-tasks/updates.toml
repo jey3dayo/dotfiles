@@ -29,8 +29,8 @@ run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/
 
 ["update:mise"]
 description = "mise 管理ツールを更新"
-run = "mise upgrade"
-run_windows = "mise upgrade"
+run = "mise upgrade --yes"
+run_windows = "mise upgrade --yes"
 
 ["update:apt"]
 description = "APT パッケージを更新（Ubuntu/Debian 環境）"
