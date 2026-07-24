@@ -31,7 +31,7 @@ _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
 MD_EXCLUDES = "#node_modules #fisher #zsh/.zinit #.worktrees #.apm/skills #.claude/skills #.claude/worktrees #.codex/skills #result #result-* #tmp #.kiro #opencode/agents/*.md"
-TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents/*.md --exclude apm.lock.yaml"
+TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents/*.md --exclude apm.lock.yaml --exclude codexbar"
 
 # OS 非依存の dotfiles 配布（mise bootstrap / mise dotfiles apply で適用）
 # macOS 専用分は config.macos.toml に定義（MISE_ENV=macos でロード）
