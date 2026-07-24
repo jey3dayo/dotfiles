@@ -20,10 +20,10 @@ rename_workspace = "prefix+comma"
 workspace_picker = "prefix+w"
 goto = "prefix+g"
 
-# tab (C-x t=新規 / C-x Tab/Shift+Tab=次/前 / C-x Shift+,=リネーム / ctrl+tab=直接ショートカット)
+# tab (C-x t=新規 / C-x Tab/Shift+Tab=次/前 / C-x Shift+,=リネーム)
 new_tab = "prefix+t"
-next_tab = ["prefix+tab", "ctrl+tab"]
-previous_tab = ["prefix+shift+tab", "ctrl+shift+tab"]
+next_tab = "prefix+tab"
+previous_tab = "prefix+shift+tab"
 rename_tab = ["prefix+shift+comma", "prefix+<"]
 
 # split (Ghostty 互換: c-x - = 上下分割, c-x ¥ = 左右分割)
