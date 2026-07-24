@@ -41,4 +41,5 @@ nvim/snippets/*.json
 gh/config.yml
 # managed by Karabiner, keep entire directory out of prettier
 karabiner/
+codexbar/
 .surfingkeys.js
