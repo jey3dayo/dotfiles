@@ -1,5 +1,5 @@
 {
-  "$schema" : "https:\/\/schema.linearmouse.app\/0.11.2",
+  "$schema" : "https:\/\/schema.linearmouse.app\/0.11.3",
   "schemes" : [
     {
       "if" : {
@@ -76,6 +76,21 @@
           "productID" : "0xd026",
           "productName" : "Keychron Link-KM",
           "vendorID" : "0x3434"
+        }
+      },
+      "scrolling" : {
+        "reverse" : {
+          "vertical" : true
+        }
+      }
+    },
+    {
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productID" : "0x98",
+          "productName" : "Razer DeathAdder Essential",
+          "vendorID" : "0x1532"
         }
       },
       "scrolling" : {
