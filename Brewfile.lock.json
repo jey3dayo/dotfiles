@@ -10865,12 +10865,6 @@
           "full_name": "discord"
         }
       },
-      "dropbox": {
-        "version": "209.4.3647",
-        "options": {
-          "full_name": "dropbox"
-        }
-      },
       "fig": {
         "version": "2.19.0",
         "options": {
