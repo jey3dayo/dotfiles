@@ -11,6 +11,7 @@ run = [
     "update:brew",
     "update:mise",
   ] },
+  { task = "update:completions" },
 ]
 
 ["pull"]
@@ -31,6 +32,11 @@ run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/
 description = "mise 管理ツールを更新"
 run = "mise upgrade --yes"
 run_windows = "mise upgrade --yes"
+
+["update:completions"]
+description = "生成可能な zsh 補完を再生成（ツール更新で陳腐化するため update の最後に実行）"
+# _ghq / _git-gtr / _ssh_hosts は生成元がないため対象外（手書き・upstream 配布物）
+run = "bash ./scripts/update-completions.sh"
 
 ["update:apt"]
 description = "APT パッケージを更新（Ubuntu/Debian 環境）"
