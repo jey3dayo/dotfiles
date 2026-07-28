@@ -81,7 +81,12 @@ _shell_bootstrap_tool_env() {
   : "${NI_CONFIG_FILE:=$HOME/.config/nirc}"
   # npm は XDG 非ネイティブのため userconfig を明示（~/.npmrc shim 廃止）
   : "${NPM_CONFIG_USERCONFIG:=$XDG_CONFIG_HOME/npm/npmrc}"
+  # agmsg は既定でメッセージ DB を skill ディレクトリ内（<skill>/db）に置くため、
+  # APM 再配布や plugin 更新が deploy 先を書き換えると履歴が消える。
+  # teams/ には同等の override が無い（upstream fujibee/agmsg#285 が未実装）。
+  : "${AGMSG_STORAGE_PATH:=${XDG_STATE_HOME:-$HOME/.local/state}/agmsg/db}"
   export GHQ_ROOT RIPGREP_CONFIG_PATH BUN_INSTALL PNPM_HOME NI_CONFIG_FILE NPM_CONFIG_USERCONFIG
+  export AGMSG_STORAGE_PATH
 }
 
 _shell_path_prepend_existing() {
