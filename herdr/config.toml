@@ -59,6 +59,19 @@ description = "focus next blocked/done agent"
 [ui]
 prompt_new_tab_name = false
 show_agent_labels_on_pane_borders = true
+agent_panel_sort = "priority"            # blocked → done → working → idle → unknown
+hide_tab_bar_when_single_tab = true
+
+# 背景エージェントの到着通知（音は出さない。巡回は prefix+space / herdr-unread）
+[ui.toast]
+delivery = "herdr"
+delay_seconds = 1
 
 [theme.custom]
 accent = "#a093e2" # 0x96f palette 5 (magenta / 青紫)
+
+# 日本語 IME: agent TUI の候補追従 + prefix 中だけ ASCII 入力ソースへ切替
+[experimental]
+reveal_hidden_cursor_for_cjk_ime = true
+cjk_ime_agents = ["claude", "codex", "cursor", "pi", "opencode"]
+switch_ascii_input_source_in_prefix = true
