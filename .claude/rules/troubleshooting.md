@@ -1,3 +1,7 @@
+---
+paths: .claude/**/*, ~/.apm/**/*
+---
+
 # Troubleshooting: Claude Code Rules
 
 ## rules の仕組み

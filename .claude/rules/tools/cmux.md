@@ -1,5 +1,5 @@
 ---
-paths: []
+paths: karabiner/**/*, ghostty/**/*
 references: []
 ---
 
