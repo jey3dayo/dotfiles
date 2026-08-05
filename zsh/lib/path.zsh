@@ -20,6 +20,7 @@ _zsh_setup_path() {
     "$HOME/.claude/local"
     "$HOME/.deno/bin"
     "$HOME/.cargo/bin"
+    "$HOME/.cache/lm-studio/bin"
     "$HOME/go/bin"
     "${ANDROID_SDK_ROOT:-}/emulator"
     "${ANDROID_SDK_ROOT:-}/tools"
