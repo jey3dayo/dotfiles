@@ -197,24 +197,6 @@
         "color": "hex:9485D6",
         "customText": ")",
         "merge": "no-padding"
-      }
-    ],
-    [
-      {
-        "id": "16",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": "📅 Limit 1d ",
-        "merge": "no-padding"
-      },
-      {
-        "id": "17",
-        "type": "session-usage",
-        "color": "hex:AEE8F4",
-        "rawValue": true,
-        "metadata": {
-          "display": "progress-short"
-        }
       },
       {
         "id": "sep-sw",
