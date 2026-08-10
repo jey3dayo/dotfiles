@@ -1,3 +1,12 @@
 apiVersion: ""
 generated: "0001-01-01T00:00:00Z"
-repositories: []
+repositories:
+  - caFile: ""
+    certFile: ""
+    insecure_skip_tls_verify: false
+    keyFile: ""
+    name: splunk-otel-collector-chart
+    pass_credentials_all: false
+    password: ""
+    url: https://signalfx.github.io/splunk-otel-collector-chart
+    username: ""
