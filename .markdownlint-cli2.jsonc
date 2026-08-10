@@ -25,6 +25,7 @@
     "fisher/**",
     "zsh/.zinit/**",
     "opencode/skills/**",
+    "opencode/commands/**",
     ".worktrees/**",
     ".claude/worktrees/**",
     "result/**",
