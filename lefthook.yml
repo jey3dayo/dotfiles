@@ -80,12 +80,34 @@ pre-push:
   parallel: true
   commands:
     format:
+      glob:
+        - "*.{js,jsx,ts,tsx,json,jsonc}"
+        - "*.{md,yml,yaml}"
+        - "*.lua"
+        - "*.sh"
+        - "*.toml"
+        - "*.py"
       run: mise run check:format
     lint:
+      glob:
+        - "*.{js,jsx,ts,tsx,json,jsonc}"
+        - "*.{md,yml,yaml}"
+        - "*.lua"
+        - "*.sh"
+        - "*.py"
+        - "Dockerfile*"
       run: mise run check:lint:quick
     test-ts:
+      glob:
+        - "bin/**"
+        - "scripts/**"
+        - "zsh/**"
+        - "mise/lib/**"
+        - "mise/local-tasks/**"
+        - ".mise.toml"
       run: mise run test:ts
     test-lua:
+      glob: "*.lua"
       run: mise run test:lua
     gitleaks:
       run: mise run ci:gitleaks
