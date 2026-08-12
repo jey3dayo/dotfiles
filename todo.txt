@@ -1,0 +1,1 @@
+(A) WSL2でmise dotfiles applyへ切替（SSH到達手段がないためWSL2マシン上で実行: git pull && mise self-update && MISE_CONFIG_FILE=~/.config/mise/config.default.toml mise dotfiles apply --yes。旧HM symlinkの残骸削除も同様に実施） +nix-removal
