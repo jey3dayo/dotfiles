@@ -193,6 +193,9 @@ claude/*
 .claude/statsig/
 .claude/todos/
 .cursorrules
+cursor/cli-config.json
+cursor/chats/
+cursor/statsig-cache.json
 .windsurfrules
 .clinerules
 global_rules.md
