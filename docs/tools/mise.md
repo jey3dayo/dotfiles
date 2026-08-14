@@ -78,7 +78,7 @@ mise/
 │   └── brewfile.toml      # Brewfile バックアップ・リストア
 └── local-tasks/           # ~/.config 専用の mise task 定義
     ├── backup.toml        # restic backup・restore・prune
-    ├── ci.toml            # CI/CD チェック・Nix 検証
+    ├── ci.toml            # gitleaks / verify-deploy / ci エイリアス
     ├── format.toml        # フォーマット（書き込みあり/チェック）
     ├── lint.toml          # 静的解析・構文チェック
     ├── test.toml          # テスト実行（Lua/TypeScript）
@@ -94,7 +94,7 @@ task TOML は description、`dir` / `env`、dependency、platform route、単一
 ## Task Design
 
 - 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
-- 環境依存・運用系: `agents.toml`, `backup.toml`, `updates.toml`, `env.toml`
+- 環境依存・運用系: `backup.toml`, `updates.toml`, `env.toml`
 - タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
 - `update` / `check` / 通常の `ci` は非破壊的に保つ。`reset`、`clean`、`prune`、deploy、in-place restore は明示的な個別 task に置く。
 

@@ -105,7 +105,7 @@ lefthook run pre-commit
 
 ```bash
 git commit -m "..."                          # staged ファイルのみ自動チェック
-git push                                      # mise run ci で push 前に CI 相当を検証
+git push                                      # pre-push hook（format / lint:quick / tests / gitleaks）
 lefthook run pre-commit                      # staged ファイル向け hook を手動実行
 mise run format                              # 手動・全ファイル format
 mise run check                               # 手動・全ファイル check
@@ -123,12 +123,15 @@ mise run lint:links                          # 重い Markdown link check
 
 #### pre-push の gate
 
-`pre-push` hook は `mise run ci` を実行します。GitHub Actions の通常 CI と同じ `format / lint / test / gitleaks` を push 前に検証し、remote CI が基本的な品質 gate で止まる確率を下げます。
+`pre-push` hook は **full `mise run ci` ではなく**、変更ファイルに応じた軽量 gate を実行します。`lefthook.yml` の jobs:
 
-`mise run pre-push` は対象ファイルに応じて追加テストを絞る旧/手動用の軽量 gate として残しています。
+- `mise run check:format` — 対象 glob に一致する staged 変更
+- `mise run check:lint:quick` — 同上（full lint / `lint:links` は含まない）
+- `mise run test:ts` — `bin/**`, `scripts/**`, `zsh/**`, `mise/lib/**`, `mise/local-tasks/**`, `.mise.toml`
+- `mise run test:lua` — `*.lua`
+- `mise run ci:gitleaks` — 常時
 
-- `bin/*`, `scripts/*`, `zsh/*`, `mise/lib/*`, `mise/local-tasks/*`, `.mise.toml`: `mise run test:ts`
-- `*.lua`, `spec/*`, `nvim/spec/*`, `nvim/lua/*`: `mise run test:lua`
+full `mise run ci` は GitHub Actions と同じ完全 gate（`lint:links` 等を含む）として、手動実行または CI で使います。`mise run pre-push` は上記と同系統の手動ヘルパーです。
 
 #### 統合済みツール一覧
 
@@ -272,16 +275,17 @@ brew bundle install --no-upgrade --verbose
 
 ### Section Structure
 
-Brewfile は 20 セクションで構成されています:
+Brewfile は Homebrew Bundle の標準ディレクティブで構成されています:
 
-| セクション | 説明                              | 例                                   |
-| ---------- | --------------------------------- | ------------------------------------ |
-| `tap`      | Homebrew 外部リポジトリ           | `aws/tap`, `hashicorp/tap`           |
-| `brew`     | macOS 固有依存・macOS サービス用  | `mysql`, `docker`, `openssl`         |
-| `cask`     | GUI アプリ                        | `wezterm@nightly`, `raycast`         |
-| `mas`      | Mac App Store アプリ              | `Xcode`, `TestFlight`                |
-| `vscode`   | VS Code 拡張                      | `github.copilot`, `ms-python.python` |
-| `go`       | Homebrew 管理下で入れる Go ツール | `golangci-lint`, `wire`              |
+| セクション | 説明                    | 例                                   |
+| ---------- | ----------------------- | ------------------------------------ |
+| `tap`      | Homebrew 外部リポジトリ | `perman/tap`, `homebrew/core`        |
+| `brew`     | CLI / サービス formula  | `mise`, `mysql`                      |
+| `cask`     | GUI アプリ              | `wezterm@nightly`, `raycast`         |
+| `mas`      | Mac App Store アプリ    | `Xcode`, `TestFlight`                |
+| `vscode`   | VS Code 拡張            | `github.copilot`, `ms-python.python` |
+
+ランタイム・汎用 CLI の追加は Brewfile ではなく mise へ（`docs/setup.md` の package split を参照）。
 
 ### Troubleshooting
 

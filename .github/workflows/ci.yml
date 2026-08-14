@@ -71,7 +71,7 @@ jobs:
     env:
       # Use CI-optimized configuration with minimal toolset
       # Significantly reduces install time compared to default config
-      # Note: Local environments use Home Manager for automatic environment detection
+      # Note: Local environments select config via MISE_CONFIG_FILE / MISE_ENV (see docs/setup.md)
       MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
       # This repository defines tasks in `.mise.toml`; force mise to resolve that filename.
       # `MISE_DEFAULT_CONFIG_FILENAME` is for older mise versions.
