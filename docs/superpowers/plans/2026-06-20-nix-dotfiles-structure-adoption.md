@@ -2,9 +2,8 @@
 
 > **SUPERSEDED (do not execute)** — Home Manager / flake distribution was
 > removed; use `docs/setup.md` and `mise bootstrap` / `mise dotfiles apply`.
-> Kept only as historical notes.
->
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> Kept only as historical notes. Do not dispatch workers against this file.
+> Runnable HM / flake command blocks below are archived quotes only.
 
 Goal: **HISTORICAL / DO NOT EXECUTE** — Adopt the useful structural ideas from `nakasyou/dotfiles` while preserving this repository's Home Manager focused behavior.
 
@@ -62,9 +61,11 @@ Tech Stack: Nix flakes, Home Manager, nix-darwin, mise task runner, nixfmt.
   mise which mise
   ```
 
-  Expected: at least one command identifies a usable `mise`. If neither works, use direct Nix commands where possible:
+  Expected: at least one command identifies a usable `mise`. Historical fallback
+  commands (do not run):
 
-  ```powershell
+  ```text
+  # ARCHIVED — do not execute
   nix fmt . -- --check
   home-manager build --flake . --impure
   nix build --no-link --impure .#darwinConfigurations.CA-20031129.system
@@ -354,9 +355,7 @@ Tech Stack: Nix flakes, Home Manager, nix-darwin, mise task runner, nixfmt.
 - Do not add Cachix substituters from the reference repo.
 - Do not update `flake.lock` or change Nix input branches in this pass.
 
-## Execution Choice
+## Execution Choice (HISTORICAL — do not execute)
 
-Plan complete and saved to `docs/superpowers/plans/2026-06-20-nix-dotfiles-structure-adoption.md`.
-
-1. Subagent-Driven (recommended) - Dispatch a fresh subagent per task sequentially and review between tasks.
-2. Inline Execution - Execute tasks in this session using executing-plans with checkpoints.
+Plan archived at `docs/superpowers/plans/2026-06-20-nix-dotfiles-structure-adoption.md`.
+Do not choose an execution mode; distribution is mise bootstrap now (`docs/setup.md`).

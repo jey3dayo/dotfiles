@@ -118,14 +118,14 @@ mise run lint:links                          # 重い Markdown link check
 
 #### 理由
 
-- Lefthook: Git hook の入口。commit は軽量、push は CI 相当の gate に分ける
+- Lefthook: Git hook の入口。commit は軽量、push は変更ファイル向けの軽量 gate に分ける
 - mise tasks: 全ファイル一括処理（手動/CI 実行）
 
 #### pre-push の gate
 
 `pre-push` hook は **full `mise run ci` ではなく**、変更ファイルに応じた軽量 gate を実行します。`lefthook.yml` の jobs:
 
-- `mise run check:format` — 対象 glob に一致する staged 変更
+- `mise run check:format` — 対象 glob に一致する push 対象の変更ファイル
 - `mise run check:lint:quick` — 同上（full lint / `lint:links` は含まない）
 - `mise run test:ts` — `bin/**`, `scripts/**`, `zsh/**`, `mise/lib/**`, `mise/local-tasks/**`, `.mise.toml`
 - `mise run test:lua` — `*.lua`
