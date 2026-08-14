@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 import { afterEach, beforeEach, describe, expect, it } from "bun:test";
-import { execSync } from "node:child_process";
+import { execSync, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
@@ -126,6 +126,40 @@ describe("replace-bold-headings: conversion rules", () => {
 });
 
 // ============================================================
+// Dry-run gate
+// ============================================================
+describe("replace-bold-headings: dry-run gate", () => {
+  let tmpRoot: string;
+
+  beforeEach(() => {
+    tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "rbh-dry-"));
+  });
+
+  afterEach(() => {
+    fs.rmSync(tmpRoot, { recursive: true, force: true });
+  });
+
+  const runDryRun = (target: string) =>
+    spawnSync("tsx", [scriptPath, target, "--dry-run"], { encoding: "utf8", stdio: "pipe" });
+
+  it("fails when patterns remain and leaves the file untouched", () => {
+    const file = path.join(tmpRoot, "dirty.md");
+    fs.writeFileSync(file, "**Overview**\n", "utf8");
+
+    const result = runDryRun(tmpRoot);
+
+    expect(result.status).toBe(1);
+    expect(fs.readFileSync(file, "utf8")).toBe("**Overview**\n");
+  });
+
+  it("passes when no patterns remain", () => {
+    fs.writeFileSync(path.join(tmpRoot, "clean.md"), "### Overview\n", "utf8");
+
+    expect(runDryRun(tmpRoot).status).toBe(0);
+  });
+});
+
+// ============================================================
 // Directory exclusion
 // ============================================================
 describe("replace-bold-headings: directory exclusion", () => {
@@ -154,6 +188,10 @@ describe("replace-bold-headings: directory exclusion", () => {
     "result-abc",
     path.join("zsh", ".zinit"),
     path.join("agents", "external"),
+    "tmp",
+    path.join("opencode", "skills"),
+    path.join("opencode", "agents"),
+    path.join("opencode", "commands"),
   ];
 
   it.each(excludedDirs)("skips %s/", (dir) => {

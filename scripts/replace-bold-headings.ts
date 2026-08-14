@@ -285,9 +285,10 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
 
 // Directory names/patterns to skip — mirrors MD_EXCLUDES and TASK_EXCLUDES in mise config.
 // Checked against the directory's base name or a suffix of its path relative to the repo root.
-const SKIP_DIR_NAMES = new Set(["node_modules", ".worktrees", ".kiro", ".luarocks", "fisher"]);
+const SKIP_DIR_NAMES = new Set(["node_modules", ".worktrees", ".kiro", ".luarocks", "fisher", "tmp"]);
 
 // Path-suffix patterns (matched against the full path using endsWith-style suffix).
+// opencode/* は APM が配置する成果物で gitignore 済み。書き換えると catalog との drift になる。
 const SKIP_PATH_SUFFIXES = [
   path.join(".apm", "skills"),
   path.join(".claude", "skills"),
@@ -295,6 +296,9 @@ const SKIP_PATH_SUFFIXES = [
   path.join(".codex", "skills"),
   path.join("zsh", ".zinit"),
   path.join("agents", "external"),
+  path.join("opencode", "skills"),
+  path.join("opencode", "agents"),
+  path.join("opencode", "commands"),
 ];
 
 function shouldSkipDir(fullPath: string): boolean {
@@ -453,6 +457,12 @@ function main() {
         console.error(`  ${r.path}: ${r.error.message}`);
       }
     });
+    process.exit(1);
+  }
+
+  // format:markdown:bold-headings:check の gate。検出したまま exit 0 だと check が無効になる。
+  if (args.dryRun && totalReplacements > 0) {
+    console.error("Run `mise run format:markdown:bold-headings` to fix.");
     process.exit(1);
   }
 }
