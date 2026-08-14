@@ -121,6 +121,7 @@ printf '%s\\n' "SECRET=decrypted"
       expect(result.stdout).toMatch(/\.env\.local updated successfully/);
       const envLocal = path.join(configHome, ".env.local");
       expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=decrypted\n");
+      expect(fs.statSync(envLocal).mode & 0o777).toBe(0o600);
       expect(fs.readFileSync(logFile, "utf8")).toMatch(/decrypt -f/);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
@@ -202,6 +203,7 @@ printf '%s\\n' "SECRET=new"
       expect(result.status).toBe(0);
       expect(result.stdout).toMatch(/Updating \.env\.local/);
       expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=new\n");
+      expect(fs.statSync(envLocal).mode & 0o777).toBe(0o600);
       expect(fs.readFileSync(logFile, "utf8")).toMatch(/decrypt -f/);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });

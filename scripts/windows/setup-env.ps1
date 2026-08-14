@@ -21,6 +21,24 @@ function Write-Critical {
   [Console]::Error.WriteLine("")
 }
 
+function Set-OwnerOnlyFileAcl {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Path
+  )
+
+  $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+  $acl = New-Object System.Security.AccessControl.FileSecurity
+  $acl.SetAccessRuleProtection($true, $false)
+  $rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
+    $currentUser,
+    [System.Security.AccessControl.FileAccessRights]::FullControl,
+    [System.Security.AccessControl.AccessControlType]::Allow
+  )
+  $acl.SetAccessRule($rule)
+  Set-Acl -LiteralPath $Path -AclObject $acl
+}
+
 if (-not (Test-Path -LiteralPath $envFile)) {
   Write-Critical "$envFile not found"
   exit 1
@@ -68,7 +86,13 @@ try {
   }
 
   [System.IO.File]::WriteAllText($tempFile, ($output -join [Environment]::NewLine), (New-Object System.Text.UTF8Encoding($false)))
+  if ($isWindows) {
+    Set-OwnerOnlyFileAcl -Path $tempFile
+  }
   Move-Item -LiteralPath $tempFile -Destination $envLocal -Force
+  if ($isWindows) {
+    Set-OwnerOnlyFileAcl -Path $envLocal
+  }
   Write-Output "✓ .env.local updated successfully"
 } catch {
   Remove-Item -LiteralPath $tempFile -Force -ErrorAction SilentlyContinue
