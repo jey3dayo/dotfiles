@@ -54,6 +54,8 @@ TEMP_FILE="$ENV_LOCAL.tmp.$$"
 old_umask=$(umask)
 umask 077
 : >"$TEMP_FILE"
+# Truncate can reuse a leftover path without rewriting mode; force 0600 before plaintext lands.
+chmod 600 "$TEMP_FILE"
 if DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" dotenvx decrypt -f "$ENV_FILE" --stdout >>"$TEMP_FILE" 2>/dev/null; then
   umask "$old_umask"
   mv "$TEMP_FILE" "$ENV_LOCAL"

@@ -85,10 +85,12 @@ try {
     throw "decrypt failed"
   }
 
-  [System.IO.File]::WriteAllText($tempFile, ($output -join [Environment]::NewLine), (New-Object System.Text.UTF8Encoding($false)))
+  # Create an empty temp file first, harden ACL while empty, then write plaintext.
+  [System.IO.File]::WriteAllText($tempFile, "", (New-Object System.Text.UTF8Encoding($false)))
   if ($isWindows) {
     Set-OwnerOnlyFileAcl -Path $tempFile
   }
+  [System.IO.File]::WriteAllText($tempFile, ($output -join [Environment]::NewLine), (New-Object System.Text.UTF8Encoding($false)))
   Move-Item -LiteralPath $tempFile -Destination $envLocal -Force
   if ($isWindows) {
     Set-OwnerOnlyFileAcl -Path $envLocal
