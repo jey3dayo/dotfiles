@@ -11,7 +11,7 @@ windows_default_file_shell_args = "cmd /c"
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
 MD_EXCLUDES = "#node_modules #.worktrees #.apm/skills #.claude/skills #.claude/worktrees #.codex/skills #result #result-* #tmp #.kiro #opencode/agents/*.md #opencode/commands/*.md"
-TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents/*.md --exclude opencode/commands/*.md --exclude apm.lock.yaml --exclude codexbar"
+TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 [tools]
 # NOTE: no documented rationale found for pinning go behind config.default.toml
