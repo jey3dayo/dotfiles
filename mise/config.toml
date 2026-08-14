@@ -30,8 +30,12 @@ package_manager = "pnpm"
 _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
+# MD_EXCLUDES は markdownlint の否定パターン。`#` 前置のためシェルの pathname expansion で展開されない。
 MD_EXCLUDES = "#node_modules #fisher #zsh/.zinit #.worktrees #.apm/skills #.claude/skills #.claude/worktrees #.codex/skills #result #result-* #tmp #.kiro #opencode/agents/*.md #opencode/commands/*.md"
-TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude result-* --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents/*.md --exclude opencode/commands/*.md --exclude apm.lock.yaml --exclude codexbar"
+# TASK_EXCLUDES はタスク側で unquoted 展開して fd の引数列にするため、glob 文字を含めてはならない。
+# 含めると実ファイルへ pathname expansion され、`--exclude` と値のペアが崩れて fd が余りを検索パスと解釈する。
+# result / result-* は .gitignore が担うので fd 側の除外は不要。ディレクトリ単位の除外はルート起点で書く。
+TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 # OS 非依存の dotfiles 配布（mise bootstrap / mise dotfiles apply で適用）
 # macOS 専用分は config.macos.toml に定義（MISE_ENV=macos でロード）
