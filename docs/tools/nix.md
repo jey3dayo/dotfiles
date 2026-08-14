@@ -8,56 +8,11 @@
 > flake / HM コードはリポジトリから撤去済み。本ドキュメントは、マシンに残る
 > Nix ランタイムと generation / nix store の掃除手順のためだけに残している。
 
-## 配布アーキテクチャ
+## 配布アーキテクチャ（historical）
 
-### 全体フロー
-
-```mermaid
----
-config:
-  htmlLabels: false
----
-graph LR
-    subgraph IN["ソース (リポジトリ)"]
-        DOT["`**静的ファイル**
-.zshrc / .zshenv
-.gitconfig / .ssh/config`"]
-        INT["`legacy distribution bundle`"]
-skills / rules / agents`"]
-        EXT["`**外部スキル**
-flake inputs`"]
-    end
-
-    subgraph NIX["Nix / Home Manager"]
-        HM["`home-manager switch
---flake ~/.config --impure`"]
-        BUNDLE["`/nix/store/
-…-agent-skills-bundle/`"]
-        HM --> BUNDLE
-    end
-
-    subgraph OUT["配布先"]
-        HOME["`~/
-.zshrc / .zshenv
-.gitconfig / .ssh/config`"]
-        SKILLS["`~/.claude/skills/
-~/.codex/skills/
-~/.cursor/skills/
-~/.opencode/skills/
-~/.skills/`"]
-    end
-
-    DOT --> HM
-    INT --> HM
-    EXT --> HM
-    BUNDLE -->|symlink| HOME
-    BUNDLE -->|per-skill symlink| SKILLS
-```
-
-配布の流れ:
-
-- 静的ファイル → `~/` 直下に symlink 配布
-- legacy distribution bundle + 外部スキル → `/nix/store` にバンドル → 各ツールの `skills/` に per-skill symlink
+Home Manager / flake による dotfiles 配布は撤去済み。現在の配布は `docs/setup.md` の
+`mise bootstrap` / `mise dotfiles apply` を参照。以下の GC / generations 手順は、
+マシンに `home-manager` バイナリと Nix profiles が**まだ残っている場合のみ**適用する。
 
 ### GitHub rate limit 対策（廃止済み）
 
@@ -119,7 +74,7 @@ Nix の `/nix/store` には過去にインストールしたパッケージや�
 
 - generations 削除後
 - `/nix/store` のディスク使用量が50%を超えた場合
-- 大規模な flake update の後
+- 大規模な Nix store 変更の後（`home-manager` が残っている場合）
 
 ### 3パターンの使い分け
 
@@ -173,10 +128,9 @@ home-manager generations | wc -l           # generations 数確認
 
 ### ベストプラクティス
 
-1. 月次 GC で generations と store を同時クリーンアップ
-2. 不要な flake inputs を `flake.nix` から削除
-3. flake update は必要な時のみ実行
-4. `substituters` でバイナリキャッシュを活用
+1. 月次 GC で generations と store を同時クリーンアップ（`home-manager` が存在する場合）
+2. `substituters` でバイナリキャッシュを活用
+3. dotfiles 配布の更新は `mise dotfiles apply` / `docs/setup.md` を参照（flake apply は廃止）
 
 ---
 
@@ -227,18 +181,22 @@ chmod -R u+w ~/.local/state/nix/profiles/
 home-manager remove-generations 90d
 ```
 
-### Q: GC 後に Home Manager 適用が失敗する
+### Q: GC 後に `home-manager` コマンドが失敗する
 
-原因: 必要な store パスが削除された可能性。
+`home-manager` バイナリと Nix profiles がまだマシンに残っている場合のみ該当する。
+flake apply は廃止済みのため、`home-manager switch --flake` や `nix flake update` は実行しない。
+
+原因: 必要な store パスが GC で削除された可能性。
 
 ```bash
-cd ~/.config
-nix flake update
-home-manager switch --flake . --impure
-# それでも失敗する場合
-rm flake.lock && nix flake update
-home-manager switch --flake . --impure
+# home-manager がインストールされている場合のみ
+home-manager generations
+home-manager remove-generations 90d   # または +20
+nix-collect-garbage -d
+df -h /nix/store
 ```
+
+dotfiles の再適用が必要な場合は `mise dotfiles apply` を使う。
 
 ---
 

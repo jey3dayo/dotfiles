@@ -1,16 +1,20 @@
 # Nix Dotfiles Structure Adoption Implementation Plan
 
+> **SUPERSEDED (do not execute)** — Home Manager / flake distribution was
+> removed; use `docs/setup.md` and `mise bootstrap` / `mise dotfiles apply`.
+> Kept only as historical notes.
+>
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-Goal: Adopt the useful structural ideas from `nakasyou/dotfiles` while preserving this repository's Home Manager focused behavior.
+Goal: **HISTORICAL / DO NOT EXECUTE** — Adopt the useful structural ideas from `nakasyou/dotfiles` while preserving this repository's Home Manager focused behavior.
 
 Architecture: Keep the existing `programs.dotfiles` Home Manager module intact. Introduce small host/user entrypoint files and flake helper functions so `flake.nix` becomes an assembly layer instead of carrying host-specific details directly. Avoid importing unrelated overlays, packages, or personal application config from the reference repository.
 
 Tech Stack: Nix flakes, Home Manager, nix-darwin, mise task runner, nixfmt.
 
-## Global Constraints
+## Global Constraints (HISTORICAL — do not execute)
 
-- Preserve the existing `home-manager switch --flake ~/.config --impure` workflow.
+- ~~Preserve the existing `home-manager switch --flake ~/.config --impure` workflow.~~ Removed; use `mise bootstrap` / `mise dotfiles apply`.
 - Preserve the existing Darwin target name `CA-20031129`.
 - Keep `programs.dotfiles` behavior unchanged unless a task explicitly says otherwise.
 - Do not hardcode the current username into Home Manager; continue using `builtins.getEnv "USER"` and `builtins.getEnv "HOME"`.
