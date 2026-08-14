@@ -251,7 +251,10 @@ printf '%s\\n' "SECRET=decrypted"
       }
 
       expect(tempPath).toBeDefined();
-      expect(fs.statSync(tempPath!).mode & 0o777).toBe(0o600);
+      if (!tempPath) {
+        throw new Error("expected decrypt temp file to exist while dotenvx is paused");
+      }
+      expect(fs.statSync(tempPath).mode & 0o777).toBe(0o600);
 
       fs.writeFileSync(gateFile, "go\n", "utf8");
 
