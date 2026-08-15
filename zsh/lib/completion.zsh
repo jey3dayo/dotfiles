@@ -13,6 +13,13 @@ fpath=(
   "${fpath[@]}"
 )
 
+# mise completion is regenerated locally (not tracked in git; its output
+# embeds a version string that would otherwise churn every commit).
+if (( ${+commands[mise]} )); then
+  local mise_comp="${ZDOTDIR:-$HOME/.config/zsh}/completions/_mise"
+  [[ -f "$mise_comp" ]] || mise completion zsh >| "$mise_comp" 2>/dev/null
+fi
+
 add_fpath "${XDG_DATA_HOME:-$HOME/.local/share}/sheldon/repos/github.com/eza-community/eza/completions/zsh"
 add_fpath "$HOME/.bun"
 unfunction add_fpath 2>/dev/null

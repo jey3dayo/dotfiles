@@ -306,3 +306,6 @@ tmp/
 
 # APM dependencies
 apm_modules/
+
+## mise completion (regenerated at shell startup, see zsh/lib/completion.zsh)
+zsh/completions/_mise
