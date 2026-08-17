@@ -44,6 +44,7 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 "~/.bashrc" = { source = "~/.config/bash/.bashrc", mode = "symlink" }
 "~/.bash_profile" = { source = "~/.config/bash/.bash_profile", mode = "symlink" }
 "~/.ssh/config" = { source = "~/.config/ssh/config", mode = "symlink" }
+"~/.terraformrc" = { source = "~/.config/terraform/terraformrc", mode = "symlink" }
 # symlink を拒否する CLI 向けは copy
 "~/.aicommits" = { source = "~/.config/.aicommits", mode = "copy" }
 "~/.opencommit" = { source = "~/.config/opencommit/.opencommit", mode = "copy" }
