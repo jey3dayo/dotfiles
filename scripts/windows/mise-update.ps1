@@ -86,8 +86,8 @@ switch ($TaskName) {
       $updateOutput | Where-Object { $_ -notmatch "definition is invalid" } | ForEach-Object { Write-Host $_ }
     }
 
-    Invoke-Step "brew upgrade --formula" {
-      brew upgrade --formula
+    Invoke-Step "brew upgrade --formula --no-ask" {
+      brew upgrade --formula --no-ask
     }
 
     break
