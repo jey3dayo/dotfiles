@@ -84,6 +84,7 @@ const spawnSetupEnv = ({
       });
       expect(result.status).not.toBe(0);
       expect(result.stderr).toMatch(/CRITICAL: dotenvx not found/);
+      expect(fs.statSync(path.join(configHome, ".env.keys")).mode & 0o777).toBe(0o600);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

@@ -4,10 +4,9 @@ import { describe, expect, it } from "bun:test";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { repoFile, repoRoot } from "./repo-file.ts";
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const configDir = path.join(repoRoot, "mise");
+const configDir = repoFile("mise");
 
 const readConfigEnv = (file: string, key: string): string | undefined => {
   const text = fs.readFileSync(path.join(configDir, file), "utf8");

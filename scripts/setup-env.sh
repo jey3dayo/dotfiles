@@ -27,6 +27,8 @@ if [ ! -f "$ENV_KEYS" ]; then
   exit 1
 fi
 
+chmod 600 "$ENV_KEYS"
+
 # Check if dotenvx is available
 if ! command -v dotenvx >/dev/null 2>&1; then
   echo "" >&2
