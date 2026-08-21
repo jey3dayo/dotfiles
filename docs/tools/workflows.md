@@ -1,6 +1,6 @@
 # Workflows & Maintenance Reference
 
-最終更新: 2026-06-29
+最終更新: 2026-08-21
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -8,11 +8,11 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 ## Maintenance Cadence
 
-| 頻度   | 作業                                                                                                                  |
-| ------ | --------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `brew update && brew upgrade` + `mise upgrade`; プラグイン更新（sheldon, nvim lazy, tmux）                            |
-| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix cleanup（legacy） |
-| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                    |
+| 頻度   | 作業                                                                                                                                                |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 週次   | `brew update && brew upgrade` + `mise upgrade`; プラグイン更新（sheldon, nvim lazy, tmux）                                                          |
+| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d` |
+| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                  |
 
 ## Code Quality Checks
 
@@ -354,8 +354,7 @@ brew cleanup
 
 ## Nix Runtime Cleanup (legacy)
 
-Home Manager は撤去済み。マシンに Nix ランタイムが残っている間だけ、
-`/nix/store` の掃除を行う（手順の詳細は `docs/tools/nix.md`）。
+Home Manager は撤去済み。マシンに `/nix/store` が残っている間だけ掃除し、アンインストール後はこの節を削除する。
 
 ```bash
 nix-collect-garbage -d
@@ -375,7 +374,7 @@ df -h /nix/store
 | 70-85% | 警告 | 即座に GC 実行、不要な generations を削除 |
 | > 85%  | 危険 | アグレッシブなクリーンアップ実施          |
 
-詳細は [docs/tools/nix.md](nix.md) を参照。
+Nix 配布手順はリポジトリから撤去済み。`home-manager switch` や `nix flake update` は使わない。
 
 ## Tool Management Philosophy
 

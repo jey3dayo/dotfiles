@@ -13,7 +13,7 @@ Detailed Reference: [docs/tools/workflows.md](../../docs/tools/workflows.md)
 - Weekly, monthly, and quarterly maintenance details live only in `docs/tools/workflows.md`.
 - Keep this rule focused on routing and decision criteria; do not duplicate operational tables here.
 - Put runtime and generic CLI tools under mise. Reserve Brewfile for GUI apps and macOS-specific packages.
-- Route Nix cleanup details to [docs/tools/nix.md](../../docs/tools/nix.md).
+- Route leftover Nix store cleanup to the Nix Runtime Cleanup section in [docs/tools/workflows.md](../../docs/tools/workflows.md).
 
 ## Troubleshooting Routing
 
