@@ -1,1 +1,2 @@
 (A) WSL2でmise dotfiles applyへ切替（SSH到達手段がないためWSL2マシン上で実行: git pull && mise self-update && MISE_CONFIG_FILE=~/.config/mise/config.default.toml mise dotfiles apply --yes。旧HM symlinkの残骸削除も同様に実施） +nix-removal
+(B) 2026-08-21 OS別mise [tools]の重複ピンを共通差分に落とす。対象: mise/config.default.toml、mise/config.windows.toml、mise/config.pi.toml。config.ci.tomlは最小セットのまま共通へ吸い込まない。config.tomlはsettings専用のまま。検証: 同じlatest行を3ファイルにコピペしない。Piからhadolint等を戻さない。mise run ci:quick が緑。overlayでCIがdefaultの全toolsを読むならSTOP +mise +dry
