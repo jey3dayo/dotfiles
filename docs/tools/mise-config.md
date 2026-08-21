@@ -16,7 +16,7 @@ mise/config.default.toml は以下の 6 カテゴリで構成されています:
 ```toml
 [tools]
 deno = "latest"
-go = "1.26.4"
+go = "latest"
 node = "lts"
 python = "3.14"
 julia = "latest"

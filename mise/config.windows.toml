@@ -14,12 +14,8 @@ MD_EXCLUDES = "#node_modules #.worktrees #.apm/skills #.claude/skills #.claude/w
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 [tools]
-# NOTE: no documented rationale found for pinning go behind config.default.toml
-# (1.25.5 vs 1.26.4) or node to an exact major instead of "lts" — git history
-# shows no commit explaining a Windows-specific constraint. Flagging for human
-# review; do not assume this is intentional when touching these pins.
-go = "1.25.5"
-node = "24"
+go = "latest"
+node = "lts"
 python = "3.14"
 bun = "latest"
 pnpm = "latest"
