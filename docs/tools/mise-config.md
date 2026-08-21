@@ -58,7 +58,6 @@ yamllint = "latest"
 # ユーティリティ・ツール
 "npm:@antfu/ni" = "latest"
 "npm:corepack" = "latest"
-"npm:husky" = "latest"
 "npm:npm" = "latest"
 "npm:npm-check-updates" = "latest"
 "npm:agent-browser" = "latest"

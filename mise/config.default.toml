@@ -43,7 +43,6 @@ yamllint = "latest"
 # NPM Global Packages
 "npm:@antfu/ni" = "latest"
 "npm:corepack" = "latest"
-"npm:husky" = "latest"
 "npm:npm" = "latest"
 "npm:npm-check-updates" = "latest"
 "npm:ccstatusline" = "latest"
