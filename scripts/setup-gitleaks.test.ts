@@ -5,11 +5,9 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { repoFile } from "./repo-file.ts";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const sourceScript = path.join(__dirname, "setup-gitleaks.sh");
+const sourceScript = repoFile("scripts", "setup-gitleaks.sh");
 
 const makeExecutable = (filePath: string, content: string): void => {
   fs.writeFileSync(filePath, content, "utf8");

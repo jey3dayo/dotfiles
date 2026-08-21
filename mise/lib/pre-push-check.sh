@@ -75,6 +75,15 @@ mark_tests_for_file() {
   esac
 }
 
+if [ "${1:-}" = "--classify" ]; then
+  while IFS= read -r file || [ -n "${file:-}" ]; do
+    [ -n "${file:-}" ] || continue
+    mark_tests_for_file "$file"
+  done
+  printf '%s %s\n' "$run_ts" "$run_lua"
+  exit 0
+fi
+
 echo "Running pre-push quick CI checks..."
 mise run ci:quick
 

@@ -5,11 +5,9 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { repoFile } from "../repo-file.ts";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const scriptPath = path.join(__dirname, "setup-env.ps1");
+const scriptPath = repoFile("scripts", "windows", "setup-env.ps1");
 const isWindows = process.platform === "win32";
 
 const resolvePowerShellCommand = (): string | null => {

@@ -5,12 +5,9 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { repoFile, repoRoot } from "./repo-file.ts";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const repoRoot = path.resolve(__dirname, "..");
-const zdotdir = path.join(repoRoot, "zsh");
+const zdotdir = repoFile("zsh");
 const printPasswordCommand = ["print -r -- ", "${", "GOG_KEYRING_PASSWORD:-unset", "}"].join("");
 const printAutosuggestStrategyCommand = [
   'print -r -- "autosuggest_strategy=',

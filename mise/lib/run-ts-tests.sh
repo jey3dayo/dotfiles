@@ -10,11 +10,11 @@ QUIET=${QUIET:-0}
 
 # bun:test compatible test files.
 search_roots=()
-if [[ -d "agents/scripts" ]]; then
-  search_roots+=("agents/scripts")
-fi
 if [[ -d "scripts" ]]; then
   search_roots+=("scripts")
+fi
+if [[ -d "bin" ]]; then
+  search_roots+=("bin")
 fi
 
 test_files=()

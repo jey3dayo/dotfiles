@@ -10,7 +10,7 @@ set -eu
 # - Validating prerequisites (macOS, git, zsh, curl)
 # - Setting up brew command in current session
 #
-# Usage: sh ./bootstrap.sh
+# Usage: sh ./scripts/bootstrap.sh
 # ==============================================================================
 
 # Constants
