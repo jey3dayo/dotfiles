@@ -130,6 +130,10 @@ if (-not (Test-Path -LiteralPath $windowsMiseConfig)) {
 }
 
 $env:MISE_CONFIG_FILE = $windowsMiseConfig
+$miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
+if ($miseEnvironmentTokens -notcontains "shared") {
+  $env:MISE_ENV = (@($miseEnvironmentTokens + "shared") -join ",")
+}
 Write-Host "Installing mise-managed Windows tools using $windowsMiseConfig..."
 & $miseExe install
 if ($LASTEXITCODE -ne 0) {
@@ -138,3 +142,4 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host "Windows bootstrap complete."
 Write-Host "MISE_CONFIG_FILE=$windowsMiseConfig"
+Write-Host "MISE_ENV=$env:MISE_ENV"

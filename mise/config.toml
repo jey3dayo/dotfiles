@@ -1,5 +1,5 @@
-# 環境共通設定。ツール定義は OS 別ファイル（config.default.toml / config.windows.toml / config.pi.toml）
-# MISE_CONFIG_FILE で選択される。
+# 環境共通設定。tools は config.shared.toml（MISE_ENV=shared）または OS 別ファイルで定義する。
+# config.toml は settings / env / dotfiles 専用で、[tools] を置かない。
 
 [settings]
 env_file = '.env.local'

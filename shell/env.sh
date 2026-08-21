@@ -48,6 +48,16 @@ _shell_detect_mise_environment() {
   fi
 }
 
+_shell_mise_env_append() {
+  token="$1"
+  case ",${MISE_ENV:-}," in
+    *,"$token",*) ;;
+    *) MISE_ENV="${MISE_ENV:+$MISE_ENV,}$token" ;;
+  esac
+  export MISE_ENV
+  unset token
+}
+
 _shell_bootstrap_mise_env() {
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
@@ -63,14 +73,27 @@ _shell_bootstrap_mise_env() {
   if [ -z "${MISE_CONFIG_FILE:-}" ]; then
     environment="$(_shell_detect_mise_environment)"
     export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.${environment}.toml"
-    unset environment
+  else
+    case "${MISE_CONFIG_FILE##*/}" in
+      config.ci.toml) environment="ci" ;;
+      config.default.toml) environment="default" ;;
+      config.pi.toml) environment="pi" ;;
+      config.windows.toml) environment="windows" ;;
+      *) environment="" ;;
+    esac
   fi
 
-  # macOS 専用設定 (config.macos.toml) を MISE_ENV 経由でロードする
-  if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
-    : "${MISE_ENV:=macos}"
-    export MISE_ENV
+  # CI は config.ci.toml だけを使い、shared/default の tools を追加しない。
+  if [ "$environment" != "ci" ]; then
+    if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
+      _shell_mise_env_append macos
+    fi
+    case "$environment" in
+      default | pi) _shell_mise_env_append shared ;;
+    esac
   fi
+
+  unset environment
 }
 
 _shell_bootstrap_tool_env() {

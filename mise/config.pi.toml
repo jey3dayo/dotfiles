@@ -7,10 +7,9 @@ idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 
 [tools]
+# Common tools are loaded from config.shared.toml when MISE_ENV includes shared.
 # Language Runtimes
 # Python は mise で管理しない。uv が必要に応じて python-build-standalone を取得する
-go = "latest"
-node = "lts"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"
 # luajit = "latest"
@@ -18,45 +17,17 @@ node = "lts"
 # Lua lint は Nix 側で luacheck を供給して実行する。
 
 # Package Managers（pnpm は npm backend の package_manager として必須）
-"github:astral-sh/uv" = "latest"
 pnpm = "latest"
 
 # Formatters / Linters（hadolint は macOS/Linux x86_64 のみのため除外）
-actionlint = "latest"
-gitleaks = "latest"
-biome = "latest"
-prettier = "latest"
-"pipx:beautysh" = "latest"
 shellcheck = "latest"
 shfmt = "latest"
-stylua = "latest"
-taplo = "latest"
 yamllint = "latest"
 
 # NPM Global Packages（npm 自体は node 同梱版を使用）
 # Language Servers・デスクトップ開発ツール・クラウド系は除外
-"npm:@antfu/ni" = "latest"
-"npm:npm-check-updates" = "latest"
-"npm:tsx" = "latest"
-"npm:@openai/codex" = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
-"npm:aicommits" = "latest"
-"npm:opencommit" = "latest"
-"npm:@google/design.md" = "latest"
-"npm:markdown-link-check" = "latest"
-"npm:markdownlint-cli2" = "latest"
-"npm:textlint" = "latest"
-"npm:textlint-rule-preset-ja-technical-writing" = "latest"
-"npm:@dotenvx/dotenvx" = "latest"
-"npm:@upstash/context7-mcp" = "latest"
-"npm:o3-search-mcp" = "latest"
-"npm:@sasazame/ccresume" = "latest"
 
 # CLI Tools（Cargo 系は ARM 互換性のため除外）
-eza = "latest"
-fd = "latest"
 # goimports は Pi で go install 経由のビルドが不安定なため無効化
 # "go:golang.org/x/tools/cmd/goimports" = "0.41.0"
-"github:cli/cli" = "latest"
-jq = "latest"
-yazi = "latest"
