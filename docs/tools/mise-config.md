@@ -7,9 +7,9 @@
 Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 親ドキュメント: [Mise Reference](mise.md)
 
-## Tool Categories (config.default.toml)
+## Tool Categories (shared + config.default.toml)
 
-mise/config.default.toml は以下の 6 カテゴリで構成されています:
+通常の default 環境の effective toolset は `mise/config.shared.toml` と `mise/config.default.toml` の additive な構成です。完全に同じ key/value は shared overlay に集約し、default / Windows / Pi の各ファイルには OS 固有または異なる宣言だけを残します。CI は `config.ci.toml` 単独の最小構成です。
 
 ### 1. Language Runtimes
 

@@ -23,19 +23,20 @@ mise設定は環境別ファイルで管理されています:
 
 ### Environment-specific configs
 
-- `mise/config.default.toml` - デフォルト（macOS/Linux/WSL2）
+- `mise/config.shared.toml` - default / Windows / Raspberry Pi の共通 tools（`MISE_ENV` に `shared` が含まれる場合のみ）
+- `mise/config.default.toml` - デフォルト（macOS/Linux/WSL2）の差分
   - jobs = 8（デスクトップ/ワークステーション向け）
-  - 全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
+  - shared overlay と組み合わせて全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
 
 - `mise/config.windows.toml` - Windows
-  - Windows 向けのフル構成
+  - shared overlay と組み合わせる Windows 向けの差分
   - `aws-cli` は現行の `mise` backend で Windows 非対応のため除外
   - `jobs` は未設定（mise のデフォルトに従う）
   - Windows セッションで `MISE_CONFIG_FILE` がこのファイルを指す場合に有効
 
 - `mise/config.pi.toml` - Raspberry Pi（ARMサーバー環境）
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
-  - 最小ツールセット（goランタイム latest版を含む、npm軽量版、cargo全除外）
+  - shared overlay と組み合わせる最小ツールセット（npm軽量版、cargo全除外）
 
 - `mise/config.ci.toml` - CI/CD（GitHub Actions最適化）
   - jobs = 4（GitHub Actions runners: 2コア）
@@ -53,9 +54,9 @@ mise設定は環境別ファイルで管理されています:
 
 ### Config precedence
 
-directory-local → user config (`mise/config.toml`) → environment-specific (via MISE_CONFIG_FILE) → global defaults
+directory-local → user config (`mise/config.toml`) → environment-specific (`MISE_CONFIG_FILE` / `MISE_ENV`) → global defaults
 
-実挙動（実測ベース）: `MISE_CONFIG_FILE` が指すOS別ファイル（`config.default.toml` 等）より `mise/config.toml`（グローバル共通）が優先され、さらに `.mise.toml`（プロジェクト）が最優先で上書きする。
+実挙動（実測ベース）: `MISE_CONFIG_FILE` が指す OS 別ファイルに、`MISE_ENV` の各 overlay（通常は `shared`、macOS は `macos` も）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
 
 運用ルール: OS 間で値が異なる設定（例: `idiomatic_version_file_enable_tools`, `jobs`, `trusted_config_paths`）は `config.toml` に置かない。`config.toml` は全環境で同一値の共通設定のみを置く。
 
@@ -70,10 +71,11 @@ mise/
 │   ├── run-ts-tests.sh    # TypeScript テスト起動
 │   └── shell-format.sh    # shell / zsh formatter wrapper
 ├── config.toml            # 共通設定のみ（ツール定義なし、env/設定）
-├── config.default.toml    # macOS/Linux/WSL2 向けフル構成
-├── config.windows.toml    # Windows 向け構成（jobs 未設定）
-├── config.pi.toml         # Raspberry Pi 向け最小構成
-├── config.ci.toml         # CI/CD 向け最小構成
+├── config.shared.toml     # default / Windows / Pi 共通 tools（MISE_ENV=shared）
+├── config.default.toml    # macOS/Linux/WSL2 向け差分
+├── config.windows.toml    # Windows 向け差分（jobs 未設定）
+├── config.pi.toml         # Raspberry Pi 向け差分
+├── config.ci.toml         # CI/CD 向け最小構成（shared/default 非依存）
 ├── tasks/                 # 外部 repo から見えてよい global task 定義
 │   └── brewfile.toml      # Brewfile バックアップ・リストア
 └── local-tasks/           # ~/.config 専用の mise task 定義
@@ -174,14 +176,14 @@ mise は `MISE_CONFIG_FILE` が指す environment-specific config を使用す�
 `zsh/.zshenv`（`scripts/env-detect.sh` 相当の判定）が `MISE_CONFIG_FILE` を設定する:
 
 - CI/CD: Uses `mise/config.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
-- Default (macOS/Linux/WSL2): Uses `mise/config.default.toml` (includes all tools)
-- Raspberry Pi: Uses `mise/config.pi.toml` (optimized for server environment)
+- Default (macOS/Linux/WSL2): Uses `mise/config.default.toml` + `MISE_ENV=shared`
+- Raspberry Pi: Uses `mise/config.pi.toml` + `MISE_ENV=shared` (ARM/minimal exclusions remain)
 
 Priority: CI > Raspberry Pi > Default
 
 ### Windows
 
-`mise/config.windows.toml` is available; `windows/setup.ps1` sets `MISE_CONFIG_FILE` accordingly.
+`mise/config.windows.toml` is available; `windows/setup.ps1` and the PowerShell profile select it and preserve existing `MISE_ENV` while adding `shared`.
 
 - Windows uses `mise/config.windows.toml` only when `MISE_CONFIG_FILE` is explicitly set to that path by the session or shell setup
 
@@ -199,7 +201,7 @@ choco export .\windows\chocolatey\packages.config
 
 Chocolatey accepts `.config` manifest files for bulk install/export, and the filename does not need to be exactly `packages.config` as long as it ends with `.config`.
 
-Note: hadolint is included in `config.default.toml` but may fail to install on ARM environments. This is expected behavior and does not affect other tools installation.
+Note: hadolint remains only in `config.default.toml`; it is intentionally absent from the shared overlay and `config.pi.toml` for ARM/minimal operation.
 
 ## Environment-specific Package Exclusions
 
@@ -247,14 +249,14 @@ Note: hadolint is included in `config.default.toml` but may fail to install on A
 
 ## Configuration Comparison
 
-| Config              | Toolset           | Use Case                       | Performance        |
-| ------------------- | ----------------- | ------------------------------ | ------------------ |
-| config.default.toml | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
-| config.windows.toml | Full              | Development (Windows)          | Uses mise defaults |
-| config.pi.toml      | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
-| config.ci.toml      | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
+| Config                       | Toolset           | Use Case                       | Performance        |
+| ---------------------------- | ----------------- | ------------------------------ | ------------------ |
+| config.default.toml + shared | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
+| config.windows.toml + shared | Full              | Development (Windows)          | Uses mise defaults |
+| config.pi.toml + shared      | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
+| config.ci.toml               | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
 
-## Tool Categories (config.default.toml)
+## Tool Categories (shared + config.default.toml)
 
 6 カテゴリ（Language Runtimes / Package Managers / Formatters & Linters / NPM Global Packages / Cargo Tools / CLI Tools）の詳細は [mise-config.md](mise-config.md) を参照。
 

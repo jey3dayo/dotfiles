@@ -63,8 +63,9 @@ Responsibility: CLI tools, language runtimes, development environments
 
 #### Key files
 
-- `mise/config.default.toml`: Main environment (180+ tools)
-- `mise/config.pi.toml`: Raspberry Pi environment (50 tools)
+- `mise/config.shared.toml`: Common tools for default / Windows / Raspberry Pi environments
+- `mise/config.default.toml`: Main environment-specific additions
+- `mise/config.pi.toml`: Raspberry Pi-specific additions and ARM/minimal exclusions
 - `mise/config.ci.toml`: CI/CD environment (20 tools)
 
 ### Homebrew

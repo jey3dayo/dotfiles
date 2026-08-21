@@ -99,7 +99,7 @@ Home Manager は撤去済み。dotfiles 配布・launchd agents は mise bootstr
 | `mise dotfiles status`  | 配布状態の確認                                           |
 | `mise bootstrap status` | bootstrap 全体の状態確認                                 |
 
-定義は `mise/config.toml`（OS 非依存）と `mise/config.default.toml`（macOS 専用）にある。
+定義は `mise/config.toml`（OS 非依存）、`mise/config.shared.toml`（共通 tools）、および OS 別の mise config にある。
 
 ### APM Workspace
 
