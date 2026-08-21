@@ -15,12 +15,15 @@ const makeExecutable = (filePath: string, content: string): void => {
   fs.chmodSync(filePath, 0o755);
 };
 
+// PATH holds only the fake bin so "missing command" cases stay missing: on Linux
+// /bin is a symlink to /usr/bin, where git/zsh/curl exist. sh is invoked by
+// absolute path because Bun resolves the executable through the given PATH.
 const runBootstrap = (pathPrefix: string[]) =>
-  spawnSync("sh", [scriptPath], {
+  spawnSync("/bin/sh", [scriptPath], {
     encoding: "utf8",
     env: {
       ...process.env,
-      PATH: [...pathPrefix, "/bin"].join(":"),
+      PATH: pathPrefix.join(":"),
     },
     input: "n\n",
   });
@@ -97,7 +100,15 @@ fi
 exit 1
 `,
     );
-    makeExecutable(path.join(fakeBin, "head"), "#!/bin/sh\ncat\n");
+    // builtin-only: no external binary is reachable through the fake PATH
+    makeExecutable(
+      path.join(fakeBin, "head"),
+      `#!/bin/sh
+while IFS= read -r line; do
+  printf '%s\\n' "$line"
+done
+`,
+    );
 
     try {
       const result = runBootstrap([fakeBin]);
