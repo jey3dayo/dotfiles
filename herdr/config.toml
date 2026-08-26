@@ -1,30 +1,30 @@
 onboarding = false
+
 [theme]
 name = "one-dark"
-auto_switch = false
 
-[update]
-channel = "stable"
-version_check = true
-manifest_check = true
+[theme.custom]
+accent = "#a093e2"   # 0x96f palette 5 (magenta / 青紫)
+sidebar_bg = "reset" # sidebar を端末背景と同化（one-dark 既定の surface 色は明るく浮くため）
 
 [keys]
 prefix = "ctrl+x"
-resize_mode = "alt+r"
+resize_mode = "alt+r" # デフォルト prefix+r は reload-config へ譲渡
 
-# workspace (C-x prefix: 一段上のプロジェクト単位 / C-x <=リネーム / C-x w=一覧 / C-x g=navigator)
+# workspace (C-x prefix: 一段上のプロジェクト単位 / C-x ,=リネーム / C-x w=一覧 / C-x g=navigator)
 previous_workspace = "prefix+p"
 next_workspace = "prefix+n"
 new_workspace = "prefix+c"
-rename_workspace = ["prefix+shift+comma", "prefix+<"]
+rename_workspace = "prefix+comma"
 workspace_picker = "prefix+w"
 goto = "prefix+g"
 
-# tab (C-x t=新規 / C-x Tab/Shift+Tab=次/前 / C-x ,=リネーム)
+# tab (C-x t=新規 / C-x Tab/Shift+Tab=次/前 / C-x <=リネーム)
+# デフォルトの c/n/p は workspace 側へ譲ったため明示バインドが必須
 new_tab = "prefix+t"
 next_tab = "prefix+tab"
 previous_tab = "prefix+shift+tab"
-rename_tab = "prefix+comma"
+rename_tab = ["prefix+shift+comma", "prefix+<"]
 
 # split (Ghostty 互換: c-x - = 上下分割, c-x ¥ = 左右分割)
 # 日本語キーボードの¥キーはshiftなしで¥(U+00A5)を送るため、
@@ -65,13 +65,10 @@ hide_tab_bar_when_single_tab = true
 # 背景エージェントの到着通知（音は出さない。巡回は prefix+space / herdr-unread）
 [ui.toast]
 delivery = "herdr"
-delay_seconds = 1
-
-[theme.custom]
-accent = "#a093e2" # 0x96f palette 5 (magenta / 青紫)
 
 # 日本語 IME: agent TUI の候補追従 + prefix 中だけ ASCII 入力ソースへ切替
 [experimental]
+kitty_graphics = true
 reveal_hidden_cursor_for_cjk_ime = true
 cjk_ime_agents = ["claude", "codex", "cursor", "pi", "opencode"]
 switch_ascii_input_source_in_prefix = true
