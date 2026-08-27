@@ -52,8 +52,11 @@ else
 fi
 
 # Decrypt .env to .env.local (use a process-specific temp file for atomicity)
+# dotenvx はプロセス環境変数をファイルの復号値より優先するため、mise の env_file 注入
+# (.env.local の旧値) を引き継ぐと古い値を書き戻してしまう。env -i + shim 迂回で実行する
+DOTENVX_BIN="$(mise which dotenvx 2>/dev/null || command -v dotenvx)"
 TEMP_FILE="$ENV_LOCAL.tmp.$$"
-if DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" dotenvx decrypt -f "$ENV_FILE" --stdout >"$TEMP_FILE" 2>/dev/null; then
+if env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" "$DOTENVX_BIN" decrypt -f "$ENV_FILE" --stdout >"$TEMP_FILE" 2>/dev/null; then
   mv "$TEMP_FILE" "$ENV_LOCAL"
   chmod 600 "$ENV_LOCAL"
   echo "✓ .env.local updated successfully"
