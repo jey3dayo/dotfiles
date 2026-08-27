@@ -1,5 +1,5 @@
 ---
-paths: docs/tools/1password.md, zsh/config/tools/1password.zsh, powershell/profile.d/env.ps1, scripts/windows/setup-env.ps1, scripts/setup-env.sh
+paths: docs/tools/1password.md, zsh/lib/secrets.zsh, powershell/profile.d/env.ps1, scripts/windows/setup-env.ps1, scripts/setup-env.sh
 source: docs/tools/1password.md
 ---
 
@@ -17,13 +17,13 @@ Detailed Reference: See [docs/tools/1password.md](../../docs/tools/1password.md)
 
 ## Vault and item rules
 
-- Automation secrets belong in the normal vault `Dotfiles Automation`.
+- Automation secrets belong in the normal vault `Automation`.
 - The dotenv private key item is `.env.keys | dotfiles` with item ID `mzy4lhfwqbtbtr3rm466qhrouq`.
 - Keep user-facing restore hints aligned with the current item title and vault name.
 
 ## Token handling
 
-- Store `OP_SERVICE_ACCOUNT_TOKEN` in the dotenvx-managed `~/.config/.env`
+- Store `OP_SERVICE_ACCOUNT_TOKEN` in the dotenvx-managed `~/.config/.env.secrets`
   file as an `encrypted:` value.
 - Do not keep a plaintext token cache under `~/.config/op/`.
 - Rotate tokens by updating the dotenvx value and invalidating the old token or
@@ -32,8 +32,8 @@ Detailed Reference: See [docs/tools/1password.md](../../docs/tools/1password.md)
 ## Shell integration
 
 - PowerShell loads the token from `powershell/profile.d/env.ps1`.
-- Zsh loads the token from `zsh/config/tools/1password.zsh`.
-- Use `dotenvx run -f ~/.config/.env -- op ...` or the shell helper wrappers
+- Zsh loads the token from `zsh/lib/secrets.zsh`.
+- Use `dotenvx run -f ~/.config/.env.secrets -- op ...` or the shell helper wrappers
   for service-account automation.
 - When `OP_SERVICE_ACCOUNT_TOKEN` is present, avoid forcing `--account`; only pass `--account` for app-integration flows.
 - macOS GUI apps do not source `~/.config/.env.local`; expose only required keys through mise bootstrap managed LaunchAgents (`[bootstrap.macos.launchd.agents]`) and `launchctl setenv`.
