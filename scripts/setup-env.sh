@@ -5,7 +5,7 @@ CONFIG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}"
 ENV_FILE="$CONFIG_ROOT/.env"
 ENV_KEYS="$CONFIG_ROOT/.env.keys"
 ENV_LOCAL="$CONFIG_ROOT/.env.local"
-OP_DOTENV_KEYS_VAULT="${OP_DOTENV_KEYS_VAULT:-Dotfiles Automation}"
+OP_DOTENV_KEYS_VAULT="${OP_DOTENV_KEYS_VAULT:-Automation}"
 
 # Check if .env exists
 if [ ! -f "$ENV_FILE" ]; then
