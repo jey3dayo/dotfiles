@@ -6,6 +6,15 @@ env_local="${config_home}/.env.local"
 template_config="${AICOMMITS_CONFIG_TEMPLATE:-${config_home}/.aicommits}"
 git_config_global="${GIT_CONFIG_GLOBAL:-$HOME/.gitconfig}"
 
+# OPENAI_API_KEY は常時注入せず .env.secrets に隔離しているため、
+# 未設定なら dotenvx run 経由で自身を再実行する
+env_secrets="${config_home}/.env.secrets"
+if [ -z "${OPENAI_API_KEY:-}" ] && [ -z "${_AIC_SECRETS_TRIED:-}" ] && [ -r "$env_secrets" ] && command -v dotenvx >/dev/null 2>&1; then
+  export _AIC_SECRETS_TRIED=1
+  export DOTENV_PRIVATE_KEY_PATH="${config_home}/.env.keys"
+  exec dotenvx run --quiet -f "$env_secrets" -- "$0" "$@"
+fi
+
 if [ -z "${OPENAI_API_KEY:-}" ] && [ -r "$env_local" ]; then
   set -a
   # shellcheck source=/dev/null
