@@ -22,14 +22,40 @@
 - `.env.keys` document: `.env.keys | dotfiles`
 - service account では built-in の `Private` / `Personal` / `Employee` は読めない
 
+## 環境変数の2層管理（.env / .env.secrets）
+
+dotenvx 管理の環境変数は、漏洩時の影響範囲（blast radius）を絞るため2層に分ける。
+
+| 層           | ファイル       | 注入方法                                                                             | 置くもの                                                                                                 |
+| ------------ | -------------- | ------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| 常時注入層   | `.env`         | `setup-env` が `.env.local` へ復号 → mise `env_file` で全シェルに注入                | 低リスクかつ常用のキーのみ（`JINA_API_KEY`, `NODE_AUTH_TOKEN`, `GOG_ACCOUNT`, `RESTIC_REPOSITORY` など） |
+| on-demand 層 | `.env.secrets` | 使う瞬間だけ `dotenvx run -f .env.secrets -- <cmd>` で注入。平文をディスクに残さない | 上記以外のすべての secret（API token, パスワード, `OP_SERVICE_ACCOUNT_TOKEN` など）                      |
+
+on-demand 層の使い方:
+
+```sh
+ws op vault list          # zsh helper（zsh/lib/secrets.zsh）経由
+ws oco                    # 任意の CLI に注入して実行
+dotenvx run -f ~/.config/.env.secrets -- <cmd>   # helper が無い環境での直接形
+```
+
+定常的に使うスクリプトは helper に頼らず、「キーが未設定なら `dotenvx run -f .env.secrets` で自身を再実行する」ガードを冒頭に置く（実例: `bin/check-telegram-api`）。ガード変数と `DOTENV_PRIVATE_KEY_PATH` は `exec` の前に必ず `export` する（`VAR=1 exec cmd` は bash で exec 先に伝播せず無限再帰する）。
+
+新しい secret は原則 `.env.secrets` に追加し、常時注入層へ入れるのは「全プロセスから見えてよい」と判断できるものに限る:
+
+```sh
+dotenvx set NEW_KEY '<値>' -fk .env.keys -f .env.secrets
+```
+
 ## 関連ファイル
 
 ```text
 ~/.config/powershell/profile.d/env.ps1        # PowerShell 側の helper
 ~/.config/zsh/lib/secrets.zsh                 # Zsh 側の `ws` helper（on-demand 注入）
-~/.config/.env                                # dotenvx-managed env
-~/.config/.env.keys                           # dotenvx 復号鍵
-~/.config/.env.local                          # 復号後のローカル env（gitignore 対象）
+~/.config/.env                                # dotenvx-managed env（常時注入層）
+~/.config/.env.secrets                        # dotenvx-managed env（on-demand 層）
+~/.config/.env.keys                           # dotenvx 復号鍵（両層分）
+~/.config/.env.local                          # .env の復号キャッシュ（gitignore 対象）
 ```
 
 ## 既定値
