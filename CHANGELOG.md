@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2026-08-28 — 環境変数を2層管理へ移行（常時注入の.envと、on-demand注入の.env.secrets）
+
+## 2026-08-28 — dotenvxがmise注入の古い.env.localを優先して復号結果に混ぜる自己汚染ループを修正
+
 ## 2026-08-21 — Git HTTPSの証明書検証を既定どおり有効にした
 
 ## 2026-08-21 — git-wtのworktreeへdotenvの秘密ファイルを複製しないようにした
