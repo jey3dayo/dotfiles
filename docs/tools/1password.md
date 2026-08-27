@@ -82,10 +82,10 @@ Remove-Item Env:OP_SERVICE_ACCOUNT_TOKEN -ErrorAction SilentlyContinue
 Zsh:
 
 ```bash
-source ~/.config/zsh/lib/secrets.zsh
 read -rs "OP_SERVICE_ACCOUNT_TOKEN?New OP_SERVICE_ACCOUNT_TOKEN: "
 echo
-save-op-service-account-token
+dotenvx set OP_SERVICE_ACCOUNT_TOKEN "$OP_SERVICE_ACCOUNT_TOKEN" \
+  -fk ~/.config/.env.keys -f ~/.config/.env.secrets
 unset OP_SERVICE_ACCOUNT_TOKEN
 ```
 
