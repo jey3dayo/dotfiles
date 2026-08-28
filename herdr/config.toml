@@ -18,6 +18,7 @@ new_workspace = "prefix+c"
 rename_workspace = "prefix+comma"
 workspace_picker = "prefix+w"
 goto = "prefix+g"
+close_workspace = "prefix+d"
 
 # tab (C-x t=新規 / C-x Tab/Shift+Tab=次/前 / C-x <=リネーム)
 # デフォルトの c/n/p は workspace 側へ譲ったため明示バインドが必須
