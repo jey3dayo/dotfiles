@@ -149,6 +149,7 @@ karabiner/automatic_backups/
 github-copilot/
 gh/hosts.yml
 glab-cli/config.yml
+glab-cli/config.lock
 glab-cli/bin/
 ghkw
 hub
