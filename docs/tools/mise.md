@@ -396,6 +396,8 @@ mise doctor               # Check for issues
 
 ## mise と Homebrew の使い分け
 
+mise 本体は Homebrew で管理しない。公式インストーラで `~/.local/bin/mise` に入れ、`mise self-update` で更新する（理由は `docs/setup.md` の TCC 注記を参照）。
+
 ### mise で管理するツール
 
 - 全ての開発ツール: フォーマッター、Linter、CLI ツール

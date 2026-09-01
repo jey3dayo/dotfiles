@@ -13,7 +13,6 @@ tap "voicevox/voicevox", "https://github.com/VOICEVOX/homebrew-voicevox", truste
 brew "gofireflyio/aiac/aiac", trusted: true
 brew "heroku"
 brew "daipeihust/tap/im-select", trusted: true
-brew "mise"
 brew "pam-reattach"
 brew "mysql", restart_service: :changed
 brew "steipete/tap/peekaboo", trusted: true

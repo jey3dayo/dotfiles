@@ -15,7 +15,7 @@
 3. `[bootstrap.macos.launchd.agents]` — LaunchAgents（GUI env 注入）
 4. `[tools]` — 全開発ツール（言語 runtime / CLI / formatter / MCP）
 
-`scripts/bootstrap.sh` は fresh macOS で **Homebrew を導入するだけの前準備**です（mise 本体は `brew bundle` で入る）。
+`scripts/bootstrap.sh` は fresh macOS で **Homebrew を導入するだけの前準備**です。mise 本体は全 OS 共通で公式インストーラ（`curl https://mise.run | sh` → `~/.local/bin/mise`）で入れ、更新は `mise self-update` を使う。Homebrew formula は adhoc 署名かつバージョン付きパスのため、macOS Tahoe 以降の TCC（「他のアプリからのデータ」等）許可が更新のたびに無効化され再プロンプトされる。公式バイナリは Developer ID 署名で許可が持続する。
 Homebrew 導入済みのマシンでは実行不要で、Quick Setup の手順 4 から始められます。
 
 ---

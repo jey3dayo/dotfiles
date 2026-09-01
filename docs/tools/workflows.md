@@ -10,7 +10,7 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 | 頻度   | 作業                                                                                                                                                |
 | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `brew update && brew upgrade` + `mise upgrade`; プラグイン更新（sheldon, nvim lazy, tmux）                                                          |
+| 週次   | `brew update && brew upgrade` + `mise self-update && mise upgrade`; プラグイン更新（sheldon, nvim lazy, tmux）                                      |
 | 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d` |
 | 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                  |
 
@@ -205,12 +205,11 @@ git commit --no-verify -m "..."
 
 ### Special Settings
 
-| パッケージ | 設定                        | 理由                                                                |
-| ---------- | --------------------------- | ------------------------------------------------------------------- |
-| `mise`     | Homebrew formula            | 初回セットアップのブートストラップ用（実運用のツール管理は `mise`） |
-| `mysql`    | `restart_service: :changed` | サービス自動再起動                                                  |
-| `utf8proc` | `args: ["HEAD"]`            | Julia 依存のため HEAD が必要                                        |
-| `node`     | `link: false`               | mise で管理（PATH 衝突回避）                                        |
+| パッケージ | 設定                        | 理由                         |
+| ---------- | --------------------------- | ---------------------------- |
+| `mysql`    | `restart_service: :changed` | サービス自動再起動           |
+| `utf8proc` | `args: ["HEAD"]`            | Julia 依存のため HEAD が必要 |
+| `node`     | `link: false`               | mise で管理（PATH 衝突回避） |
 
 ### Package Addition Workflow
 

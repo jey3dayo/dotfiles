@@ -33,7 +33,7 @@ High-performance development environment tuned for speed, consistency, and devel
 - `zsh`
 - `curl`
 - `Homebrew` (macOS) or your system package manager
-- `mise` (installed via `brew bundle` in this repo for macOS)
+- `mise` (installed via the official installer on all platforms; see below)
 
 セットアップの本体は `mise bootstrap`。fresh macOS のみ、前準備として `scripts/bootstrap.sh` が Homebrew を導入します。
 
@@ -50,7 +50,7 @@ sudo dnf install -y git zsh curl
 sudo pacman -S --noconfirm git zsh curl
 ```
 
-Install mise on Linux/WSL2 via the official installer (`curl https://mise.run | sh`); macOS gets it from `brew bundle`.
+Install mise via the official installer (`curl https://mise.run | sh`) on every platform, macOS included; update it with `mise self-update`, not Homebrew (why: `docs/setup.md`).
 
 ### Quick Setup (macOS/Linux/WSL2)
 
@@ -69,9 +69,9 @@ cat > ~/.gitconfig_local << EOF
     email = your.email@example.com
 EOF
 
-# 4. Install system packages
+# 4. Install mise and system packages
+curl https://mise.run | sh       # 全 OS 共通（mise 未導入の場合）
 brew bundle                      # macOS
-# curl https://mise.run | sh     # Linux/WSL2（mise 未導入の場合）
 
 # 5. Converge the machine with mise bootstrap
 #    packages → dotfiles → launchd(macOS) → tools → bootstrap task の順に冪等収束
