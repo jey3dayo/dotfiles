@@ -17,6 +17,7 @@ Tool management architecture policy defining responsibility boundaries between H
 - Homebrew (Brewfile): **casks（80）・mas（20）・vscode extensions（69）** と bootstrap 非対応エントリの正本（cask/mas の bootstrap 移行は未着手。完了までは Brewfile を編集する）
 - mise `[tools]`: CLI tools, language runtimes, development environments
 - mise bootstrap: `[dotfiles]` による設定配布 + `[bootstrap.packages]` による brew formulae 宣言（`mise/config.macos.toml`）。cask / mas backend は将来の移行候補
+- Self-updating standalone（mise 管理外）: 公式インストーラ + 自己更新コマンドを持つ CLI（mise, claude, codex）。導入保証のみ mise bootstrap の `[bootstrap.hooks.post-tools]` hook が担う
 
 ## Sources
 
@@ -87,6 +88,26 @@ Responsibility: System dependencies, GUI applications, macOS-specific tools
 
 Current state: 188 formulae + 78 casks (as of 2026-02-26)
 
+### Self-updating standalone
+
+Responsibility: 公式インストーラ導入 + 各ツール自身の self-update に更新を委ねる CLI
+
+判定基準: 公式インストーラと自己更新コマンド（`mise self-update` / `claude update` / `codex update`）を持ち、常に最新を追いたい CLI。
+
+該当ツール:
+
+- `mise` — `curl https://mise.run | sh` → `mise self-update`
+- `claude`（Claude Code）— 公式 native installer → `claude update`
+- `codex`（Codex CLI）— 公式 standalone installer → `codex update`
+
+理由: mise `[tools]` に置くと更新経路が二重になる。codex は背景更新デーモンが install method を無視して standalone installer を走らせる不具合（openai/codex#24035）があり npm 経路と衝突する。claude は公式 doc が native installer を推奨し、npm と native の混在で衝突報告が多い。`latest` 指定では mise の pin・再現性の価値も得られない。
+
+導入経路: 公式インストーラで `~/.local/bin` に導入する。mise は導入を強制せず、`[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみインストールする（既導入なら何もしない）。
+
+更新経路: 各ツールの self-update コマンドに委ねる。mise はバージョン管理・更新に関与しない。
+
+これらが `mise ls` に出ないのは意図的（mise `[tools]` で管理していないため）。
+
 ## Decision Flowchart
 
 ```
@@ -100,11 +121,15 @@ New tool required
     YES → Homebrew (brew)
     NO → Continue
     ↓
-[3] Is it a CLI tool or language runtime?
+[3] Does it ship its own installer + self-update command and should always track latest?
+    YES → Self-updating standalone
+    NO → Continue
+    ↓
+[4] Is it a CLI tool or language runtime?
     YES → mise
     NO → Continue
     ↓
-[4] Is it Neovim ecosystem?
+[5] Is it Neovim ecosystem?
     YES → Check dependency type
         - Library (tree-sitter) → Homebrew
         - CLI tool (tree-sitter-cli) → mise
@@ -219,6 +244,10 @@ Migration path: Homebrew → mise
 # BAD: Duplicate tool in both systems
 # Brewfile: brew "ripgrep"
 # mise/config.default.toml: ripgrep = "latest"
+
+# BAD: Self-updating standalone tool declared in mise
+[tools]
+"npm:@openai/codex" = "latest"  # self-updating: use the official installer
 ```
 
 ### ✅ Correct patterns
@@ -452,3 +481,4 @@ When migrating a tool from Homebrew to mise:
 - 2026-02-26: Removed 4 duplicate tools from Brewfile (gitleaks, pipx, python@3.11, python@3.12)
 - 2026-02-26: Updated Go tools section (golangci-lint/lambroll/wire migrated to mise)
 - 2026-02-26: Updated formulae/cask counts, added doc links (TOOLS.md, docs/setup.md)
+- 2026-09-03: Added self-updating standalone layer (mise / claude / codex); removed npm:@openai/codex from mise tools

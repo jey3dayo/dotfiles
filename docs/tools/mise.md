@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-06-25
+最終更新: 2026-09-03
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -306,6 +306,12 @@ Benefits:
 - Reduced disk usage: パッケージ重複排除
 - npm:プレフィックスのまま使用可能: 既存の設定を変更不要
 
+### Phase 4: 自己更新ツールを mise 管理外へ (2026-09-03)
+
+- `mise/config.shared.toml` の `npm:@openai/codex` を削除
+- `mise/config.default.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、claude / codex が未導入時のみ公式インストーラで導入するよう変更
+- 更新は各ツールの self-update（`claude update` / `codex update`）に委ねる
+
 ## Common Commands
 
 ```bash
@@ -398,12 +404,22 @@ mise doctor               # Check for issues
 
 mise 本体は Homebrew で管理しない。公式インストーラで `~/.local/bin/mise` に入れ、`mise self-update` で更新する（理由は `docs/setup.md` の TCC 注記を参照）。
 
+### 自己更新ツール(mise 管理外)
+
+公式インストーラと自己更新コマンド（`mise self-update` / `claude update` / `codex update`）を持ち、常に最新を追いたい CLI（mise, claude, codex）は mise `[tools]` に置かない。mise に置くと更新経路が二重になるため。
+
+- 該当ツール: `mise`、`claude`（Claude Code）、`codex`（Codex CLI）
+- 導入保証: `mise/config.default.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
+- 更新: 各ツールの self-update コマンド（`mise self-update` / `claude update` / `codex update`）に委ねる
+- `mise ls` に出ないのは意図的（`[tools]` で管理していないため）
+
 ### mise で管理するツール
 
 - 全ての開発ツール: フォーマッター、Linter、CLI ツール
 - 各言語系 CLI: `go:`, `cargo:`, `npm:`, `pipx:` などのプレフィックス付きツール
 - 開発用の言語ランタイム: Node.js, Python, Go, Rust
 - 理由: バージョン固定、プロジェクト別オーバーライド、再現性
+- 例外: 自己更新ツールは上記小節を参照
 
 ### Homebrew で管理するツール
 
@@ -441,4 +457,4 @@ mise 本体は Homebrew で管理しない。公式インストーラで `~/.loc
 9. No manual availability checks for mise-managed tools: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。
    - `if ! command -v fd >/dev/null 2>&1; then echo "..."; exit 1; fi` は書かない
    - 単に `fd ...` を呼び出すだけでよい
-   - 例外: mise 非管理ツール（busted via luarocks、fswatch via Homebrew 等）は引き続き確認してよい
+   - 例外: mise 非管理ツール（busted via luarocks、fswatch via Homebrew 等、claude / codex（自己更新ツール））は引き続き確認してよい

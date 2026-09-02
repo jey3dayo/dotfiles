@@ -1,6 +1,6 @@
 # Workflows & Maintenance Reference
 
-最終更新: 2026-08-21
+最終更新: 2026-09-03
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -8,11 +8,11 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 ## Maintenance Cadence
 
-| 頻度   | 作業                                                                                                                                                |
-| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `brew update && brew upgrade` + `mise self-update && mise upgrade`; プラグイン更新（sheldon, nvim lazy, tmux）                                      |
-| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d` |
-| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                  |
+| 頻度   | 作業                                                                                                                                                              |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 週次   | `brew update && brew upgrade` + `mise self-update && mise upgrade`; `codex update`（claude は自動更新のため手動不要）; プラグイン更新（sheldon, nvim lazy, tmux） |
+| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d`               |
+| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                |
 
 ## Code Quality Checks
 

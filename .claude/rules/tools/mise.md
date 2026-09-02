@@ -19,5 +19,6 @@ Detailed Reference: [docs/tools/mise.md](../../../docs/tools/mise.md)
 
 - mise で管理: 開発ツール・フォーマッター・Linter・npm/pipx パッケージ・言語ランタイム
 - Homebrew で管理: Neovim 依存関係・システムライブラリ・GUI アプリ
+- mise 管理外(自己更新): mise / claude / codex は公式インストーラ + 各ツールの self-update。詳細は tool-install-policy.md
 - `npm install -g`, `pnpm add -g`, `bun add -g`, `pip install --user` は使わない
 - mise 管理ツールに `command -v` チェックを書かない（shim が自動解決）
