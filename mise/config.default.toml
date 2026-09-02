@@ -24,6 +24,8 @@ rust = "stable"  # rustfmt (nvim conform) and cargo:* tool installs
 # pipx:uv は uvx 経由で uv 自身を入れる自己参照構造になり、
 # uv 更新時に `uv tool install uv` が [1/3] install で停滞するため避ける。
 bun = "latest"
+# pnpm は loose major pin。正確な版は各 repo の package.json packageManager が持つ
+pnpm = "11"
 
 # Formatters / Linters
 "go:github.com/reteps/dockerfmt" = "latest"
@@ -33,7 +35,6 @@ shfmt = "latest"
 yamllint = "latest"
 
 # NPM Global Packages
-"npm:corepack" = "latest"
 "npm:npm" = "latest"
 "npm:ccstatusline" = "latest"
 "npm:agent-browser" = "latest"
