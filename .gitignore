@@ -125,7 +125,7 @@ ssh/*.sock
 
 # Security and Credentials
 ## 1Password
-1Password/
+/1Password/
 
 ## AWS
 AWS VPN Client/
