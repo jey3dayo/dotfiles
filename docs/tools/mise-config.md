@@ -72,7 +72,6 @@ yamllint = "latest"
 "npm:@connectrpc/protoc-gen-connect-es" = "latest"
 
 # AI・コミット支援
-"npm:@openai/codex" = "latest"
 "npm:aicommits" = "latest"
 "npm:opencommit" = "latest"
 "npm:clawdbot" = "latest"

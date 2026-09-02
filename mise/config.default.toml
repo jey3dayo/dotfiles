@@ -139,3 +139,8 @@ zoxide = "latest"
 "aqua:evilmartians/lefthook" = "latest"
 "github:agavra/tuicr" = "latest"
 "github:zenbu-labs/terminal-browser" = "latest"
+
+# 自己更新機能を持つ CLI(claude / codex)は [tools] で管理せず、公式インストーラで導入して
+# 各ツールの自己更新に任せる。mise は未導入時のインストールだけを保証する(方針: .claude/rules/tools/tool-install-policy.md)。
+[bootstrap.hooks.post-tools]
+run = "sh ~/.config/mise/lib/ensure-standalone.sh"

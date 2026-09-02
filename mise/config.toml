@@ -11,7 +11,6 @@ disable_backends = ["vfox"]
 minimum_release_age = "1d"
 minimum_release_age_excludes = [
   "npm:hunkdiff",
-  "npm:@openai/codex",
   "npm:@earendil-works/pi-coding-agent",
   "github:yusukebe/ax",
 ]
