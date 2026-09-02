@@ -315,7 +315,7 @@ brew bundle install --no-upgrade --dry-run
 > `[bootstrap.packages]` でも管理しているため、Brewfile だけを正本とみなす cleanup は
 > bootstrap 管理の formula（btop, git, neovim など）を誤って削除対象にする。
 > 宣言外 formula の掃除は `mise bootstrap packages prune --dry-run` で確認してから行うが、
-> Brewfile 専用の例外（heroku / mysql / utf8proc / perman-aws-vault / mise / tap formulae）が
+> Brewfile 専用の例外（mysql / utf8proc / perman-aws-vault / mise / tap formulae）が
 > 削除対象に出るため、現状 prune の実運用は対象外とする。
 
 ```bash

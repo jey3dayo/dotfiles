@@ -2,7 +2,6 @@ tap "arto-app/tap", trusted: true
 tap "buo/cask-upgrade", trusted: true
 tap "daipeihust/tap"
 tap "gofireflyio/aiac"
-tap "heroku/brew"
 tap "homebrew/core"
 tap "manaflow-ai/cmux", trusted: true
 tap "olets/tap"
@@ -11,7 +10,6 @@ tap "sanemat/font", trusted: true
 tap "steipete/tap"
 tap "voicevox/voicevox", "https://github.com/VOICEVOX/homebrew-voicevox", trusted: true
 brew "gofireflyio/aiac/aiac", trusted: true
-brew "heroku"
 brew "daipeihust/tap/im-select", trusted: true
 brew "pam-reattach"
 brew "mysql", restart_service: :changed
