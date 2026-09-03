@@ -16,9 +16,6 @@ trusted_config_paths = ["~/.config", "~/src/github.com"]
 # luacheck/luarocks は mise registry/backends と相性が不安定なため定義しない。
 # Lua lint は Nix 側で luacheck を供給して実行する。
 
-# Package Managers（pnpm は npm backend の package_manager として必須）
-pnpm = "11"
-
 # Formatters / Linters（hadolint は macOS/Linux x86_64 のみのため除外）
 shellcheck = "latest"
 shfmt = "latest"

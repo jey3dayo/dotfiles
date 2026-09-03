@@ -17,7 +17,6 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 # Common tools are loaded from config.shared.toml when MISE_ENV includes shared.
 python = "3.14"
 bun = "latest"
-pnpm = "11"
 rust = "stable"
 "aqua:koalaman/shellcheck" = "latest"
 "aqua:mvdan/sh" = "latest"

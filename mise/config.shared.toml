@@ -8,6 +8,8 @@ node = "lts"
 
 # Package Managers
 "github:astral-sh/uv" = "latest"
+# pnpm は npm backend の package_manager として必須。loose major pin にし、正確な版は各 repo の package.json packageManager が持つ
+pnpm = "11"
 
 # Formatters / Linters
 actionlint = "latest"
