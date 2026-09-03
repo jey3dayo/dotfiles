@@ -1,0 +1,65 @@
+# Pi / CI 以外の開発機(macOS/Linux/WSL2 と Windows)共通の tools。MISE_ENV に workstation が含まれる環境だけでロードする。settings/env は置かず [tools] のみ
+
+[tools]
+# Language Runtimes
+python = "3.14"
+rust = "stable" # rustfmt (nvim conform) and cargo:* tool installs
+
+# Package Managers
+bun = "latest"
+
+# NPM Global Packages
+"npm:npm" = "latest"
+"npm:agent-browser" = "latest"
+"npm:dev-browser" = "latest"
+"npm:@fsouza/prettierd" = "latest"
+"npm:neovim" = "latest"
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"
+"npm:clawdbot" = "latest"
+"npm:vibe-kanban" = "latest"
+"npm:eslint_d" = "latest"
+"npm:typescript" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:@typescript-eslint/eslint-plugin" = "latest"
+"npm:esbuild" = "latest"
+"npm:zx" = "latest"
+
+# MCP サーバー
+"npm:@aikidosec/safe-chain" = "latest"
+"npm:@benborla29/mcp-server-mysql" = "latest"
+"npm:@modelcontextprotocol/server-filesystem" = "latest"
+"npm:@playwright/mcp" = "latest"
+"npm:exa-mcp-server" = "latest"
+
+# Claude/AI ツール
+"npm:ccusage" = "latest"
+"npm:dev3000" = "latest"
+
+# クラウド・インフラ
+"npm:aws-cdk" = "latest"
+"npm:@google/clasp" = "latest"
+"npm:@google/gemini-cli" = "latest"
+
+# その他ツール
+"npm:greptile" = "latest"
+"npm:difit" = "latest"
+"npm:tuyapi" = "latest"
+
+# Rust CLI
+"cargo:bandwhich" = "latest"
+"cargo:needle-cli" = "0.15.0"
+"cargo:similarity-ts" = "0.5.0"
+"cargo:wrkflw" = "0.8.0"
+"cargo:starship" = "latest"
+
+# CLI Tools
+delta = "latest"
+"pipx:apm-cli" = "0.28.0"
+bat = "latest"
+fzf = "latest"
+lazygit = "latest"
+ripgrep = "latest"
+usage = "latest"
+zoxide = "latest"
+"aqua:evilmartians/lefthook" = "latest"

@@ -24,12 +24,13 @@ mise設定は環境別ファイルで管理されています:
 ### Environment-specific configs
 
 - `mise/config.shared.toml` - default / Windows / Raspberry Pi の共通 tools（`MISE_ENV` に `shared` が含まれる場合のみ）
+- `mise/config.workstation.toml` - Pi / CI 以外の開発機（macOS/Linux/WSL2 と Windows）の共通 tools（`MISE_ENV` に `workstation` が含まれる場合のみ）
 - `mise/config.default.toml` - デフォルト（macOS/Linux/WSL2）の差分
   - jobs = 8（デスクトップ/ワークステーション向け）
-  - shared overlay と組み合わせて全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
+  - shared / workstation overlays と組み合わせて全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
 
 - `mise/config.windows.toml` - Windows
-  - shared overlay と組み合わせる Windows 向けの差分
+  - shared / workstation overlays と組み合わせる Windows 向けの差分
   - `aws-cli` は現行の `mise` backend で Windows 非対応のため除外
   - `jobs` は未設定（mise のデフォルトに従う）
   - Windows セッションで `MISE_CONFIG_FILE` がこのファイルを指す場合に有効
@@ -56,7 +57,7 @@ mise設定は環境別ファイルで管理されています:
 
 directory-local → user config (`mise/config.toml`) → environment-specific (`MISE_CONFIG_FILE` / `MISE_ENV`) → global defaults
 
-実挙動（実測ベース）: `MISE_CONFIG_FILE` が指す OS 別ファイルに、`MISE_ENV` の各 overlay（通常は `shared`、macOS は `macos` も）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
+実挙動（実測ベース）: `MISE_CONFIG_FILE` が指す OS 別ファイルに、`MISE_ENV` の各 overlay（通常は `shared,workstation`、macOS は `macos,shared,workstation` も）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
 
 運用ルール: OS 間で値が異なる設定（例: `idiomatic_version_file_enable_tools`, `jobs`, `trusted_config_paths`）は `config.toml` に置かない。`config.toml` は全環境で同一値の共通設定のみを置く。
 
@@ -72,6 +73,7 @@ mise/
 │   └── shell-format.sh    # shell / zsh formatter wrapper
 ├── config.toml            # 共通設定のみ（ツール定義なし、env/設定）
 ├── config.shared.toml     # default / Windows / Pi 共通 tools（MISE_ENV=shared）
+├── config.workstation.toml # Pi / CI 以外の開発機共通 tools（MISE_ENV=workstation）
 ├── config.default.toml    # macOS/Linux/WSL2 向け差分
 ├── config.windows.toml    # Windows 向け差分（jobs 未設定）
 ├── config.pi.toml         # Raspberry Pi 向け差分
@@ -176,14 +178,14 @@ mise は `MISE_CONFIG_FILE` が指す environment-specific config を使用す�
 `zsh/.zshenv`（`scripts/env-detect.sh` 相当の判定）が `MISE_CONFIG_FILE` を設定する:
 
 - CI/CD: Uses `mise/config.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
-- Default (macOS/Linux/WSL2): Uses `mise/config.default.toml` + `MISE_ENV=shared`
+- Default (macOS/Linux/WSL2): Uses `mise/config.default.toml` + `MISE_ENV=shared,workstation`
 - Raspberry Pi: Uses `mise/config.pi.toml` + `MISE_ENV=shared` (ARM/minimal exclusions remain)
 
 Priority: CI > Raspberry Pi > Default
 
 ### Windows
 
-`mise/config.windows.toml` is available; `windows/setup.ps1` and the PowerShell profile select it and preserve existing `MISE_ENV` while adding `shared`.
+`mise/config.windows.toml` is available; `windows/setup.ps1` and the PowerShell profile select it and preserve existing `MISE_ENV` while adding `shared,workstation`.
 
 - Windows uses `mise/config.windows.toml` only when `MISE_CONFIG_FILE` is explicitly set to that path by the session or shell setup
 

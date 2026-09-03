@@ -149,16 +149,19 @@ if (-not (Test-Path -LiteralPath $windowsMiseConfig)) {
 
 $env:MISE_CONFIG_FILE = $windowsMiseConfig
 $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
-if ($miseEnvironmentTokens -notcontains "shared") {
-  $env:MISE_ENV = (@($miseEnvironmentTokens + "shared") -join ",")
+foreach ($requiredToken in @("shared", "workstation")) {
+  if ($miseEnvironmentTokens -notcontains $requiredToken) {
+    $miseEnvironmentTokens += $requiredToken
+  }
 }
+$env:MISE_ENV = ($miseEnvironmentTokens -join ",")
 Write-Host "Installing mise-managed Windows tools using $windowsMiseConfig..."
 & $miseExe install
 if ($LASTEXITCODE -ne 0) {
   throw "mise install failed."
 }
+Ensure-StandaloneCli
 
 Write-Host "Windows bootstrap complete."
 Write-Host "MISE_CONFIG_FILE=$windowsMiseConfig"
-Ensure-StandaloneCli
 Write-Host "MISE_ENV=$env:MISE_ENV"

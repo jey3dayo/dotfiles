@@ -8,6 +8,7 @@ import { repoFile, repoRoot } from "./repo-file.ts";
 
 const configDir = repoFile("mise");
 const osConfigs = ["config.default.toml", "config.windows.toml", "config.pi.toml"];
+const workstationConfig = "config.workstation.toml";
 
 const readTools = (file: string): Map<string, string> => {
   const tools = new Map<string, string>();
@@ -74,6 +75,36 @@ describe("shared mise tool overlay", () => {
     expect(common).toEqual([]);
   });
 
+  it("has no duplicated key/value between default and Windows configs", () => {
+    const defaultTools = readTools("config.default.toml");
+    const windowsTools = readTools("config.windows.toml");
+    const common = [...defaultTools.entries()].filter(([key, value]) => windowsTools.get(key) === value);
+
+    expect(common).toEqual([]);
+  });
+
+  it("keeps workstation tools out of all other config files", () => {
+    const workstationTools = readTools(workstationConfig);
+    const otherConfigs = [...osConfigs, "config.shared.toml"];
+
+    for (const file of otherConfigs) {
+      const tools = readTools(file);
+      for (const key of workstationTools.keys()) {
+        expect(tools.has(key)).toBe(false);
+      }
+    }
+  });
+
+  it("keeps config.workstation.toml tools-only", () => {
+    const sections = fs
+      .readFileSync(path.join(configDir, workstationConfig), "utf8")
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.startsWith("[") && line.endsWith("]"));
+
+    expect(sections).toEqual(["[tools]"]);
+  });
+
   it("keeps the common latest pins only in config.shared.toml", () => {
     const shared = readTools("config.shared.toml");
     const expectedSharedKeys = [
@@ -128,6 +159,16 @@ describe("shared mise tool overlay", () => {
     expect(hasConfig(paths, "config.shared.toml")).toBe(true);
   });
 
+  it("loads the workstation overlay when selected", () => {
+    const paths = configPaths({
+      MISE_CONFIG_FILE: repoFile("mise", "config.default.toml"),
+      MISE_ENV: "shared,workstation",
+    });
+
+    expect(hasConfig(paths, "config.shared.toml")).toBe(true);
+    expect(hasConfig(paths, workstationConfig)).toBe(true);
+  });
+
   it("keeps the macOS overlay when shared is also selected", () => {
     const paths = configPaths({
       MISE_CONFIG_FILE: repoFile("mise", "config.default.toml"),
@@ -160,11 +201,15 @@ describe("shared mise tool overlay", () => {
     expect(hasConfig(paths, "config.shared.toml")).toBe(true);
   });
 
-  it("keeps CI isolated from the default config and shared overlay", () => {
-    const paths = configPaths({ MISE_CONFIG_FILE: repoFile("mise", "config.ci.toml") });
+  it("keeps CI isolated from default, shared, and workstation overlays", () => {
+    const paths = configPaths({
+      MISE_CONFIG_FILE: repoFile("mise", "config.ci.toml"),
+      MISE_ENV: "",
+    });
 
     expect(hasConfig(paths, "config.ci.toml")).toBe(true);
     expect(hasConfig(paths, "config.default.toml")).toBe(false);
     expect(hasConfig(paths, "config.shared.toml")).toBe(false);
+    expect(hasConfig(paths, workstationConfig)).toBe(false);
   });
 });

@@ -35,9 +35,13 @@ else
   }
   case "${MISE_CONFIG_FILE##*/}" in
     config.ci.toml) ;;
+    config.pi.toml)
+      _append_mise_env shared
+      ;;
     *)
       [[ "$(uname -s 2>/dev/null)" == "Darwin" ]] && _append_mise_env macos
       _append_mise_env shared
+      _append_mise_env workstation
       ;;
   esac
   export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME

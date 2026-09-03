@@ -43,7 +43,7 @@ brew bundle
 #    (dotfiles symlink, macOS LaunchAgents, tools)
 #    初回は ~/.zshenv 未配布のため MISE_CONFIG_FILE / MISE_ENV を明示する（次回以降は不要）
 export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"
-export MISE_ENV=macos,shared # macOS overlay と共通 tools overlay を読み込む（既存の MISE_ENV は通常の shell setup が保持して追加）
+export MISE_ENV=macos,shared,workstation # macOS / shared / workstation overlay を読み込む（既存の MISE_ENV は通常の shell setup が保持して追加）
 mise trust && mise bootstrap --yes
 
 # 5. Restart shell
@@ -51,8 +51,8 @@ exec zsh
 ```
 
 状態確認は `mise bootstrap status` / `mise dotfiles status`、差分プレビューは `mise bootstrap --dry-run` を使います。
-dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、共通 tools は `mise/config.shared.toml`（`MISE_ENV` に `shared` が含まれる場合だけロード）、OS 別 tools は `mise/config.default.toml` / `mise/config.pi.toml`（`MISE_CONFIG_FILE` 経由）、macOS 専用の brew packages・LaunchAgents・dotfiles は `mise/config.macos.toml`（`MISE_ENV` に `macos` が含まれる場合）にあります。
-Raspberry Pi は `config.pi.toml` + shared overlay を使い、`hadolint` など ARM/minimal 構成で意図的に除外したツールを追加しません。CI は `config.ci.toml` だけを使い、default / shared overlay を読み込みません。Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
+dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、3 OS 共通 tools は `mise/config.shared.toml`（`MISE_ENV` に `shared` が含まれる場合だけロード）、default / Windows 共通 tools は `mise/config.workstation.toml`（`MISE_ENV` に `workstation` が含まれる場合だけロード）、OS 別 tools は `mise/config.default.toml` / `mise/config.pi.toml`（`MISE_CONFIG_FILE` 経由）、macOS 専用の brew packages・LaunchAgents・dotfiles は `mise/config.macos.toml`（`MISE_ENV` に `macos` が含まれる場合）にあります。
+Raspberry Pi は `config.pi.toml` + shared overlay を使い、`hadolint` など ARM/minimal 構成で意図的に除外したツールを追加しません。CI は `config.ci.toml` だけを使い、default / shared / workstation overlay を読み込みません。Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
 
 ## Windows Bootstrap
 

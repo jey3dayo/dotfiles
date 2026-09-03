@@ -83,13 +83,17 @@ _shell_bootstrap_mise_env() {
     esac
   fi
 
-  # CI は config.ci.toml だけを使い、shared/default の tools を追加しない。
+  # CI は config.ci.toml だけを使い、shared/workstation/default の tools を追加しない。
   if [ "$environment" != "ci" ]; then
-    if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
+    if [ "$environment" != "pi" ] && [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
       _shell_mise_env_append macos
     fi
     case "$environment" in
-      default | pi) _shell_mise_env_append shared ;;
+      default | windows)
+        _shell_mise_env_append shared
+        _shell_mise_env_append workstation
+        ;;
+      pi) _shell_mise_env_append shared ;;
     esac
   fi
 

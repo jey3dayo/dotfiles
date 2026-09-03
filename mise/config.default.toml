@@ -9,21 +9,13 @@ idiomatic_version_file_enable_tools = ["go"]
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 
 [tools]
-# Common tools are loaded from config.shared.toml when MISE_ENV includes shared.
+# Common tools are loaded from the shared / workstation overlays when MISE_ENV includes them.
 # Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
 deno = "latest"
 julia = "latest"
-python = "3.14"
-rust = "stable"  # rustfmt (nvim conform) and cargo:* tool installs
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"
 # luajit = "latest"
-
-# Package Managers
-# uv は GitHub のプリビルドバイナリを直接取得する。
-# pipx:uv は uvx 経由で uv 自身を入れる自己参照構造になり、
-# uv 更新時に `uv tool install uv` が [1/3] install で停滞するため避ける。
-bun = "latest"
 
 # Formatters / Linters
 "go:github.com/reteps/dockerfmt" = "latest"
@@ -33,65 +25,29 @@ shfmt = "latest"
 yamllint = "latest"
 
 # NPM Global Packages
-"npm:npm" = "latest"
 "npm:ccstatusline" = "latest"
-"npm:agent-browser" = "latest"
-"npm:dev-browser" = "latest"
-"npm:@fsouza/prettierd" = "latest"
-"npm:neovim" = "latest"
-"npm:@bufbuild/protoc-gen-es" = "latest"
-"npm:@connectrpc/protoc-gen-connect-es" = "latest"
-"npm:clawdbot" = "latest"
-"npm:vibe-kanban" = "latest"
 "npm:dbdocs" = "latest"
-"npm:eslint_d" = "latest"
-"npm:typescript" = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
-"npm:vscode-langservers-extracted" = "latest"
-"npm:@typescript-eslint/eslint-plugin" = "latest"
-"npm:esbuild" = "latest"
-"npm:zx" = "latest"
 "npm:agmsg" = "latest"
 
 # MCP サーバー
-"npm:@aikidosec/safe-chain" = "latest"
-"npm:@benborla29/mcp-server-mysql" = "latest"
-"npm:@modelcontextprotocol/server-filesystem" = "latest"
-"npm:@playwright/mcp" = "latest"
 "npm:chrome-devtools-mcp" = "latest"
-"npm:exa-mcp-server" = "latest"
 
 # Claude/AI ツール
 "aqua:github/copilot-cli" = "latest"
 "npm:@anthropic-ai/dxt" = "latest"
-"npm:ccusage" = "latest"
-"npm:dev3000" = "latest"
-
-# クラウド・インフラ
-"npm:aws-cdk" = "latest"
-"npm:@google/clasp" = "latest"
-"npm:@google/gemini-cli" = "latest"
 
 # その他ツール
-"npm:greptile" = "latest"
-"npm:difit" = "latest"
 "npm:hunkdiff" = "latest"
-"npm:tuyapi" = "latest"
 
 # Rust CLI（typos-lsp は Homebrew で管理）
 "aqua:getsentry/sentry-cli" = "latest"
-"cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "0.15.0"
 "cargo:similarity-css" = "0.5.0"
-"cargo:similarity-ts" = "0.5.0"
-"cargo:wrkflw" = "0.8.0"
-"cargo:starship" = "latest"
 
 # CLI Tools
 atuin = "latest"
 aws-cli = "latest"
-delta = "latest"
 ghq = "latest"
 jnv = "latest"
 kubectl = "latest"
@@ -107,24 +63,19 @@ typos = "latest"
 vector = "latest"
 yq = "latest"
 "pipx:awsume" = "latest"
-bat = "latest"
 buf = "latest"
-fzf = "latest"
 "go:github.com/fujiwara/lambroll/cmd/lambroll" = "latest"
 "go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
 "go:github.com/google/wire/cmd/wire" = "latest"
 "go:github.com/k1LoW/git-wt" = "latest"
 "go:golang.org/x/tools/cmd/goimports" = "0.49.0"
-"pipx:apm-cli" = "0.28.0"
 "go:github.com/hashicorp/terraform-mcp-server/cmd/terraform-mcp-server" = "latest"
 "pipx:serena-agent" = "1.7.0"
 "github:yusukebe/ax" = "latest"
 glab = "latest"
 hexyl = "latest"
 herdr = "0.8.2"                                                                    # ペイン spawn 失敗防止のためピン留め。更新は mise outdated herdr で確認
-lazygit = "latest"
 "aqua:anomalyco/opencode" = "latest"
-ripgrep = "latest"
 saml2aws = "latest"
 terraform = "latest"
 # WSL では公式配布バイナリが glibc 不整合で壊れることがあるため,
@@ -132,9 +83,6 @@ terraform = "latest"
 # default features を切ると qjs/libclang 依存を避けられ, この環境でもビルドできる.
 "cargo:tree-sitter-cli" = { version = "0.27.0", default-features = "false" }
 trivy = "latest"
-usage = "latest"
-zoxide = "latest"
-"aqua:evilmartians/lefthook" = "latest"
 "github:agavra/tuicr" = "latest"
 "github:zenbu-labs/terminal-browser" = "latest"
 

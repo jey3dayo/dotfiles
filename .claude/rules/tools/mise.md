@@ -18,6 +18,7 @@ Detailed Reference: [docs/tools/mise.md](../../../docs/tools/mise.md)
 ## ツール管理方針
 
 - mise で管理: 開発ツール・フォーマッター・Linter・npm/pipx パッケージ・言語ランタイム
+- default/Windows 共通の tools は `mise/config.workstation.toml`、3 OS 共通は `mise/config.shared.toml`
 - Homebrew で管理: Neovim 依存関係・システムライブラリ・GUI アプリ
 - mise 管理外(自己更新): mise / claude / codex は公式インストーラ + 各ツールの self-update。詳細は tool-install-policy.md
 - `npm install -g`, `pnpm add -g`, `bun add -g`, `pip install --user` は使わない

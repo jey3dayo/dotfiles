@@ -7,9 +7,79 @@
 Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 親ドキュメント: [Mise Reference](mise.md)
 
-## Tool Categories (shared + config.default.toml)
+## Tool Categories (shared + workstation + config.default.toml)
 
-通常の default 環境の effective toolset は `mise/config.shared.toml` と `mise/config.default.toml` の additive な構成です。完全に同じ key/value は shared overlay に集約し、default / Windows / Pi の各ファイルには OS 固有または異なる宣言だけを残します。CI は `config.ci.toml` 単独の最小構成です。
+通常の default 環境の effective toolset は `mise/config.shared.toml`、`mise/config.workstation.toml`、`mise/config.default.toml` の additive な構成です。default / Windows 間で完全に同じ key/value は workstation overlay に、default / Windows / Pi の 3 者間で完全に同じ key/value は shared overlay に集約し、各 OS 別ファイルには固有または異なる宣言だけを残します。CI は `config.ci.toml` 単独の最小構成です。
+
+### Workstation overlay (`config.workstation.toml`)
+
+`MISE_ENV` に `workstation` が含まれる開発機（macOS/Linux/WSL2 と Windows）でロードされる共通 tools です。Pi と CI ではロードしません。
+
+```toml
+[tools]
+# Language Runtimes
+python = "3.14"
+rust = "stable"
+
+# Package Managers
+bun = "latest"
+
+# NPM Global Packages
+"npm:npm" = "latest"
+"npm:agent-browser" = "latest"
+"npm:dev-browser" = "latest"
+"npm:@fsouza/prettierd" = "latest"
+"npm:neovim" = "latest"
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"
+"npm:clawdbot" = "latest"
+"npm:vibe-kanban" = "latest"
+"npm:eslint_d" = "latest"
+"npm:typescript" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:@typescript-eslint/eslint-plugin" = "latest"
+"npm:esbuild" = "latest"
+"npm:zx" = "latest"
+
+# MCP サーバー
+"npm:@aikidosec/safe-chain" = "latest"
+"npm:@benborla29/mcp-server-mysql" = "latest"
+"npm:@modelcontextprotocol/server-filesystem" = "latest"
+"npm:@playwright/mcp" = "latest"
+"npm:exa-mcp-server" = "latest"
+
+# Claude/AI ツール
+"npm:ccusage" = "latest"
+"npm:dev3000" = "latest"
+
+# クラウド・インフラ
+"npm:aws-cdk" = "latest"
+"npm:@google/clasp" = "latest"
+"npm:@google/gemini-cli" = "latest"
+
+# その他ツール
+"npm:greptile" = "latest"
+"npm:difit" = "latest"
+"npm:tuyapi" = "latest"
+
+# Rust CLI
+"cargo:bandwhich" = "latest"
+"cargo:needle-cli" = "0.15.0"
+"cargo:similarity-ts" = "0.5.0"
+"cargo:wrkflw" = "0.8.0"
+"cargo:starship" = "latest"
+
+# CLI Tools
+delta = "latest"
+"pipx:apm-cli" = "0.28.0"
+bat = "latest"
+fzf = "latest"
+lazygit = "latest"
+ripgrep = "latest"
+usage = "latest"
+zoxide = "latest"
+"aqua:evilmartians/lefthook" = "latest"
+```
 
 ### 1. Language Runtimes
 
@@ -18,9 +88,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 deno = "latest"
 go = "latest"
 node = "lts"
-python = "3.14"
 julia = "latest"
-rust = "stable"
 # lua/luajit は Homebrew で管理 (Neovim 依存関係のため)
 ```
 
@@ -29,7 +97,6 @@ rust = "stable"
 ```toml
 [tools]
 "github:astral-sh/uv" = "latest"
-bun = "latest"
 ```
 
 `pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため避ける。`config.windows.toml` / `config.ci.toml` も同じ理由で `"github:astral-sh/uv"` に統一済み。
@@ -58,24 +125,15 @@ yamllint = "latest"
 # ユーティリティ・ツール
 "npm:@antfu/ni" = "latest"
 "npm:corepack" = "latest"
-"npm:npm" = "latest"
 "npm:npm-check-updates" = "latest"
-"npm:agent-browser" = "latest"
-"npm:dev-browser" = "latest"
 
 # 開発・エディタ
-"npm:@fsouza/prettierd" = "latest"
-"npm:neovim" = "latest"
 
 # プロトコルバッファ・RPC
-"npm:@bufbuild/protoc-gen-es" = "latest"
-"npm:@connectrpc/protoc-gen-connect-es" = "latest"
 
 # AI・コミット支援
 "npm:aicommits" = "latest"
 "npm:opencommit" = "latest"
-"npm:clawdbot" = "latest"
-"npm:vibe-kanban" = "latest"
 
 # ドキュメント・Lint
 "npm:dbdocs" = "latest"
@@ -89,57 +147,33 @@ yamllint = "latest"
 "npm:@dotenvx/dotenvx" = "latest"
 
 # 開発ツール・Language Servers
-"npm:eslint_d" = "latest"
-"npm:typescript" = "latest"
 "npm:tsx" = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
-"npm:vscode-langservers-extracted" = "latest"
-"npm:@typescript-eslint/eslint-plugin" = "latest"
 
 # ビルドツール
-"npm:esbuild" = "latest"
 
 # ユーティリティ
-"npm:zx" = "latest"
 
 # MCP サーバー (Model Context Protocol)
-"npm:@aikidosec/safe-chain" = "latest"
-"npm:@benborla29/mcp-server-mysql" = "latest"
-"npm:@modelcontextprotocol/server-filesystem" = "latest"
-"npm:@playwright/mcp" = "latest"
 "npm:@upstash/context7-mcp" = "latest"
 "npm:chrome-devtools-mcp" = "latest"
-"npm:exa-mcp-server" = "latest"
 "npm:o3-search-mcp" = "latest"
 
 # Claude/AI ツール
 "npm:@anthropic-ai/dxt" = "latest"
 "npm:@sasazame/ccresume" = "latest"
-"npm:ccusage" = "latest"
-"npm:dev3000" = "latest"
 
 # クラウド・インフラ
-"npm:aws-cdk" = "latest"
-"npm:@google/clasp" = "latest"
-"npm:@google/gemini-cli" = "latest"
 
 # その他ツール
-"npm:greptile" = "latest"
-"npm:difit" = "latest"
-"npm:tuyapi" = "latest"
 ```
 
 ### 5. Cargo-based Tools
 
 ```toml
 [tools]
-"cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "0.15.0"
 "cargo:similarity-css" = "0.5.0"
-"cargo:similarity-ts" = "0.5.0"
-"cargo:wrkflw" = "0.8.0"
-"cargo:starship" = "latest"
 "cargo:tree-sitter-cli" = { version = "0.26.9", default-features = "false" }
 ```
 
@@ -156,33 +190,26 @@ Go/Cargo 由来の CLI は Brewfile ではなく mise の `[tools]` で管理し
 [tools]
 atuin = "latest"
 aws-cli = "latest"
-bat = "latest"
 buf = "latest"
 eza = "latest"
 fd = "latest"
-fzf = "latest"
 gitleaks = "latest"
 "go:github.com/fujiwara/lambroll/cmd/lambroll" = "latest"
 "go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
 "go:github.com/google/wire/cmd/wire" = "latest"
 "go:github.com/k1LoW/git-wt" = "latest"
 "go:golang.org/x/tools/cmd/goimports" = "0.46.0"
-"pipx:apm-cli" = "0.21.0"
 "pipx:awslabs-terraform-mcp-server" = "1.0.18"
 "pipx:serena-agent" = "1.5.3"
 "github:cli/cli" = "latest"
 glab = "latest"
 hexyl = "latest"
 jq = "latest"
-lazygit = "latest"
 "aqua:anomalyco/opencode" = "latest"
-ripgrep = "latest"
 saml2aws = "latest"
 terraform = "latest"
 trivy = "latest"
-usage = "latest"
 yazi = "latest"
-zoxide = "latest"
 ```
 
 #### 環境別の取り扱い
