@@ -7,11 +7,11 @@ mise/
 ├── config.toml         # Settings-only (no tools), 常時ロード・OS別ファイルより優先
 ├── config.shared.toml   # 共通 tools（MISE_ENV に shared が含まれる時だけロード）
 ├── config.workstation.toml # default / Windows 共通 tools（MISE_ENV に workstation が含まれる時だけロード）
-├── config.ci.toml      # CI (GitHub Actions)
-├── config.default.toml # Mac/Linux/WSL2
+├── entry.ci.toml                  # CI (GitHub Actions)
+├── entry.workstation-unix.toml    # Mac/Linux/WSL2
 ├── config.macos.toml   # macOS 専用（bootstrap.packages 等、MISE_ENV=macos でロード）
-├── config.windows.toml # Windows
-├── config.pi.toml      # Raspberry Pi
+├── entry.workstation-windows.toml # Windows
+├── entry.server-pi.toml           # Raspberry Pi
 ├── README.md
 ├── lib/                # タスクから呼ばれるシェルスクリプト
 │   ├── ensure-busted.sh
@@ -42,26 +42,26 @@ mise/
 Environment detection is handled by `zsh/.zshenv` (Raspberry Pi 判定を含む) which exports
 `MISE_CONFIG_FILE` before mise activation. `mise/config.toml` は常時ロードされ、
 `MISE_CONFIG_FILE` の指す OS 別 config が追加でロードされる（additive）。
-`MISE_ENV` はカンマ区切りで複数の environment overlay を指定でき、通常の default / Windows 起動では既存値を保持したまま `shared,workstation` を追加する。Pi は `shared` のみを追加し、macOS では `macos` も追加する。CI は `config.ci.toml` の最小構成だけを使い、`shared` / `workstation` / `default` を追加しない。
+`MISE_ENV` はカンマ区切りで複数の environment overlay を指定でき、通常の default / Windows 起動では既存値を保持したまま `shared,workstation` を追加する。Pi は `shared` のみを追加し、macOS では `macos` も追加する。CI は `entry.ci.toml` の最小構成だけを使い、`shared` / `workstation` / `default` を追加しない。
 
 ### Automatic Configuration Selection
 
-- CI (GitHub Actions) → `config.ci.toml`（workflow の env で指定）
-- Raspberry Pi → `config.pi.toml`
-- macOS/Linux/WSL2 → `config.default.toml`
-- Windows → `config.windows.toml`（`windows/setup.ps1` / PowerShell profile が設定）+ `config.shared.toml` + `config.workstation.toml`
+- CI (GitHub Actions) → `entry.ci.toml`（workflow の env で指定）
+- Raspberry Pi → `entry.server-pi.toml`
+- macOS/Linux/WSL2 → `entry.workstation-unix.toml`
+- Windows → `entry.workstation-windows.toml`（`windows/setup.ps1` / PowerShell profile が設定）+ `config.shared.toml` + `config.workstation.toml`
 
 Note: fresh マシンでは `~/.zshenv` 配布前のため未設定。初回は
-`export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"` を明示する（docs/setup.md 参照）。
+`export MISE_CONFIG_FILE="$HOME/.config/mise/entry.workstation-unix.toml"` を明示する（docs/setup.md 参照）。
 
 ## Environments
 
-| Environment  | Config File                                                        | Notes                             |
-| ------------ | ------------------------------------------------------------------ | --------------------------------- |
-| CI           | config.ci.toml                                                     | Minimal toolset for Actions       |
-| Default      | config.default.toml + config.shared.toml + config.workstation.toml | Full local development toolset    |
-| Windows      | config.windows.toml + config.shared.toml + config.workstation.toml | Windows-specific toolset          |
-| Raspberry Pi | config.pi.toml + config.shared.toml                                | Optimized (minimal npm, no cargo) |
+| Environment  | Config File                                                                   | Notes                             |
+| ------------ | ----------------------------------------------------------------------------- | --------------------------------- |
+| CI           | entry.ci.toml                                                                 | Minimal toolset for Actions       |
+| Default      | entry.workstation-unix.toml + config.shared.toml + config.workstation.toml    | Full local development toolset    |
+| Windows      | entry.workstation-windows.toml + config.shared.toml + config.workstation.toml | Windows-specific toolset          |
+| Raspberry Pi | entry.server-pi.toml + config.shared.toml                                     | Optimized (minimal npm, no cargo) |
 
 ツール数は変動するため表にハードコードせず、以下で都度確認する:
 
@@ -71,10 +71,10 @@ mise ls --json | jq 'length'
 
 ## Migration from Old Structure
 
-Old: Single `config.toml` for Mac/WSL2, `config.pi.toml` for Pi
-New: `config.toml` (settings-only), `config.shared.toml` (opt-in common tools), `config.default.toml` (Mac/Linux/WSL2), `config.windows.toml` (Windows), `config.pi.toml` (optimized), `config.ci.toml` (CI)
+Previous structure: Single `config.toml` for Mac/WSL2 and a Pi-specific config
+New: `config.toml` (settings-only), `config.shared.toml` (opt-in common tools), `entry.workstation-unix.toml` (Mac/Linux/WSL2), `entry.workstation-windows.toml` (Windows), `entry.server-pi.toml` (optimized), `entry.ci.toml` (CI)
 
-Migration: Automatic on shell restart after pulling changes. Windows setup points the global config at `config.windows.toml` and adds the shared / workstation overlays; CI continues to point only at `config.ci.toml`.
+Migration: Automatic on shell restart after pulling changes. Windows setup points the global config at `entry.workstation-windows.toml` and adds the shared / workstation overlays; CI continues to point only at `entry.ci.toml`.
 
 ### Verification
 

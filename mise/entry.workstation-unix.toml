@@ -1,4 +1,4 @@
-# Mac/Linux/WSL2 共通設定。Raspberry Pi は config.pi.toml。
+# macOS/Linux/WSL2 ワークステーションの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
 
 [settings]
 # 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）

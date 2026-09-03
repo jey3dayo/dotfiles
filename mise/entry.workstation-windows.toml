@@ -1,4 +1,4 @@
-# Windows 用設定。
+# Windows ワークステーションの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
 
 [settings]
 # 共通 settings（env_file / experimental / settings.npm.package_manager 等）は config.toml 側に定義（詳細は mise/README.md）

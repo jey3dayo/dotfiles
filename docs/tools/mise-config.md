@@ -7,9 +7,9 @@
 Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 親ドキュメント: [Mise Reference](mise.md)
 
-## Tool Categories (shared + workstation + config.default.toml)
+## Tool Categories (shared + workstation + entry.workstation-unix.toml)
 
-通常の default 環境の effective toolset は `mise/config.shared.toml`、`mise/config.workstation.toml`、`mise/config.default.toml` の additive な構成です。default / Windows 間で完全に同じ key/value は workstation overlay に、default / Windows / Pi の 3 者間で完全に同じ key/value は shared overlay に集約し、各 OS 別ファイルには固有または異なる宣言だけを残します。CI は `config.ci.toml` 単独の最小構成です。
+通常の default 環境の effective toolset は `mise/config.shared.toml`、`mise/config.workstation.toml`、`mise/entry.workstation-unix.toml` の additive な構成です。default / Windows 間で完全に同じ key/value は workstation overlay に、default / Windows / Pi の 3 者間で完全に同じ key/value は shared overlay に集約し、各 OS 別ファイルには固有または異なる宣言だけを残します。CI は `entry.ci.toml` 単独の最小構成です。
 
 ### Workstation overlay (`config.workstation.toml`)
 
@@ -99,7 +99,7 @@ julia = "latest"
 "github:astral-sh/uv" = "latest"
 ```
 
-`pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため避ける。`config.windows.toml` / `config.ci.toml` も同じ理由で `"github:astral-sh/uv"` に統一済み。
+`pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため避ける。`entry.workstation-windows.toml` / `entry.ci.toml` も同じ理由で `"github:astral-sh/uv"` に統一済み。
 
 ### 3. Formatters and Linters
 
@@ -179,8 +179,8 @@ yamllint = "latest"
 
 #### 環境別の取り扱い
 
-- Default (`config.default.toml`): 全てのcargoツールをインストール
-- Raspberry Pi (`config.pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
+- Default (`entry.workstation-unix.toml`): 全てのcargoツールをインストール
+- Raspberry Pi (`entry.server-pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
 
 Go/Cargo 由来の CLI は Brewfile ではなく mise の `[tools]` で管理します。Homebrew は OS/GUI/ネイティブ formula の正本です。
 

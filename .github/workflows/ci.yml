@@ -76,7 +76,7 @@ jobs:
       # Use CI-optimized configuration with minimal toolset
       # Significantly reduces install time compared to default config
       # Local environments load the selected OS config plus shared (and macos on macOS); CI stays isolated below
-      MISE_CONFIG_FILE: ${{ github.workspace }}/mise/config.ci.toml
+      MISE_CONFIG_FILE: ${{ github.workspace }}/mise/entry.ci.toml
       # Do not inherit a shared/local overlay when Actions runs under a configured shell.
       MISE_ENV: ""
       # This repository defines tasks in `.mise.toml`; force mise to resolve that filename.

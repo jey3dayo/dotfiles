@@ -25,7 +25,7 @@ else
   : "${GIT_CONFIG_GLOBAL:=$XDG_CONFIG_HOME/git/config}"
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
-  : "${MISE_CONFIG_FILE:=${XDG_CONFIG_HOME}/mise/config.default.toml}"
+  : "${MISE_CONFIG_FILE:=${XDG_CONFIG_HOME}/mise/entry.workstation-unix.toml}"
   _append_mise_env() {
     local token="$1"
     case ",${MISE_ENV:-}," in
@@ -34,8 +34,8 @@ else
     esac
   }
   case "${MISE_CONFIG_FILE##*/}" in
-    config.ci.toml) ;;
-    config.pi.toml)
+    entry.ci.toml) ;;
+    entry.server-pi.toml)
       _append_mise_env shared
       ;;
     *)

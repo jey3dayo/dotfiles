@@ -72,18 +72,24 @@ _shell_bootstrap_mise_env() {
 
   if [ -z "${MISE_CONFIG_FILE:-}" ]; then
     environment="$(_shell_detect_mise_environment)"
-    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/config.${environment}.toml"
+    case "$environment" in
+      default) mise_entry="entry.workstation-unix.toml" ;;
+      windows) mise_entry="entry.workstation-windows.toml" ;;
+      pi) mise_entry="entry.server-pi.toml" ;;
+      ci) mise_entry="entry.ci.toml" ;;
+    esac
+    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/${mise_entry}"
   else
     case "${MISE_CONFIG_FILE##*/}" in
-      config.ci.toml) environment="ci" ;;
-      config.default.toml) environment="default" ;;
-      config.pi.toml) environment="pi" ;;
-      config.windows.toml) environment="windows" ;;
+      entry.ci.toml) environment="ci" ;;
+      entry.workstation-unix.toml) environment="default" ;;
+      entry.server-pi.toml) environment="pi" ;;
+      entry.workstation-windows.toml) environment="windows" ;;
       *) environment="" ;;
     esac
   fi
 
-  # CI は config.ci.toml だけを使い、shared/workstation/default の tools を追加しない。
+  # CI は entry.ci.toml だけを使い、shared/workstation/default の tools を追加しない。
   if [ "$environment" != "ci" ]; then
     if [ "$environment" != "pi" ] && [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
       _shell_mise_env_append macos
@@ -97,7 +103,7 @@ _shell_bootstrap_mise_env() {
     esac
   fi
 
-  unset environment
+  unset environment mise_entry
 }
 
 _shell_bootstrap_tool_env() {

@@ -65,9 +65,9 @@ Responsibility: CLI tools, language runtimes, development environments
 #### Key files
 
 - `mise/config.shared.toml`: Common tools for default / Windows / Raspberry Pi environments
-- `mise/config.default.toml`: Main environment-specific additions
-- `mise/config.pi.toml`: Raspberry Pi-specific additions and ARM/minimal exclusions
-- `mise/config.ci.toml`: CI/CD environment (20 tools)
+- `mise/entry.workstation-unix.toml`: Main environment-specific additions
+- `mise/entry.server-pi.toml`: Raspberry Pi-specific additions and ARM/minimal exclusions
+- `mise/entry.ci.toml`: CI/CD environment (20 tools)
 
 ### Homebrew
 
@@ -212,7 +212,7 @@ Migration path: Homebrew → mise
 
 #### Final architecture
 
-- Binary: `mise install starship` (mise/config.default.toml)
+- Binary: `mise install starship` (mise/entry.workstation-unix.toml)
 - Configuration: `~/.config/starship.toml`（git 管理、リポジトリ直下）
 
 #### Rationale
@@ -243,7 +243,7 @@ Migration path: Homebrew → mise
 
 # BAD: Duplicate tool in both systems
 # Brewfile: brew "ripgrep"
-# mise/config.default.toml: ripgrep = "latest"
+# mise/entry.workstation-unix.toml: ripgrep = "latest"
 
 # BAD: Self-updating standalone tool declared in mise
 [tools]
@@ -284,7 +284,7 @@ tree-sitter = "latest"  # tree-sitter-cli for development
 grep '^brew ' Brewfile | sed 's/brew "\(.*\)".*/\1/' | sort > /tmp/brew_tools.txt
 
 # Extract mise tools (exclude npm:, cargo:, go:, pipx: prefixes)
-grep '^\w\+\s*=' mise/config.default.toml | \
+grep '^\w\+\s*=' mise/entry.workstation-unix.toml | \
   sed 's/\s*=.*//' | \
   grep -v '^npm:' | grep -v '^cargo:' | grep -v '^go:' | grep -v '^pipx:' | \
   sort > /tmp/mise_tools.txt
@@ -309,7 +309,7 @@ Expected result: Empty (no duplicates)
 # Verify deleted Brewfile tools exist in mise
 for tool in usage tree-sitter-cli zx pipx rust; do
   echo -n "$tool: "
-  grep -q "^$tool\s*=" mise/config.default.toml && echo "✅ in mise" || echo "❌ missing"
+  grep -q "^$tool\s*=" mise/entry.workstation-unix.toml && echo "✅ in mise" || echo "❌ missing"
 done
 ```
 

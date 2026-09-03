@@ -120,7 +120,7 @@ function Ensure-StandaloneCli {
 
 $repoRoot = Get-RepoRoot
 $installScript = Join-Path $PSScriptRoot "chocolatey\install.ps1"
-$windowsMiseConfig = Join-Path $repoRoot "mise\config.windows.toml"
+$windowsMiseConfig = Join-Path $repoRoot "mise\entry.workstation-windows.toml"
 
 Ensure-PowerShellProfileBridges
 
