@@ -102,7 +102,7 @@ Responsibility: 公式インストーラ導入 + 各ツール自身の self-upda
 
 理由: mise `[tools]` に置くと更新経路が二重になる。codex は背景更新デーモンが install method を無視して standalone installer を走らせる不具合（openai/codex#24035）があり npm 経路と衝突する。claude は公式 doc が native installer を推奨し、npm と native の混在で衝突報告が多い。`latest` 指定では mise の pin・再現性の価値も得られない。
 
-導入経路: 公式インストーラで `~/.local/bin` に導入する。mise は導入を強制せず、`[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみインストールする（既導入なら何もしない）。
+導入経路: 公式インストーラで `~/.local/bin` に導入する。mise は導入を強制せず、`[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみインストールする（既導入なら何もしない）。Windows は `windows/setup.ps1` が `mise install` 後に同じ導入保証を担う。
 
 更新経路: 各ツールの self-update コマンドに委ねる。mise はバージョン管理・更新に関与しない。
 

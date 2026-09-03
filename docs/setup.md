@@ -68,7 +68,8 @@ powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1
 
 - Chocolatey 本体を導入（未導入の場合のみ）
 - `windows/chocolatey/packages.config` から bootstrap/GUI パッケージを一括導入
-- `MISE_CONFIG_FILE` を `mise/config.windows.toml` に向け、`MISE_ENV` に `shared` を追加して `mise install` を実行
+- `MISE_CONFIG_FILE` を `mise/config.windows.toml` に向け、`MISE_ENV` に `shared,workstation` を追加して `mise install` を実行
+- `windows/setup.ps1` は `mise install` 後、claude / codex が未導入の場合のみ公式インストーラで導入する（既導入の場合は更新しない）
 - `~/.config/powershell` を正本にし、`Documents/PowerShell` と `Documents/WindowsPowerShell` のエントリポイントを再生成
 
 ### Windows bootstrap の対象
