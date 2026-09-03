@@ -2,13 +2,9 @@
 
 import { describe, expect, it } from "bun:test";
 import { spawnSync } from "node:child_process";
-import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { repoFile } from "./repo-file.ts";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const repoRoot = path.resolve(__dirname, "..");
-const scriptPath = path.join(repoRoot, "scripts", "env-detect.sh");
+const scriptPath = repoFile("scripts", "env-detect.sh");
 const isWindows = process.platform === "win32";
 
 const runEnvDetect = ({ extraEnv = {} }: { extraEnv?: Record<string, string | undefined> }) => {

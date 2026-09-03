@@ -103,5 +103,4 @@ mise bootstrap macos launchd-agents status
 ## 関連ドキュメント
 
 - `docs/setup.md` - 新規マシンのセットアップ
-- `docs/tools/workflows.md` - 定期メンテナンス
-- `docs/tools/nix.md` - 残存 Nix ランタイムの掃除（legacy）
+- `docs/tools/workflows.md` - 定期メンテナンス（残存 Nix ランタイムの GC 含む）

@@ -5,12 +5,9 @@ import { spawn, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { repoFile } from "./repo-file.ts";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const repoRoot = path.resolve(__dirname, "..");
-const scriptPath = path.join(repoRoot, "scripts", "setup-env.sh");
+const scriptPath = repoFile("scripts", "setup-env.sh");
 const isWindows = process.platform === "win32";
 
 const makeExecutable = (filePath: string, content: string): void => {
@@ -87,6 +84,7 @@ const spawnSetupEnv = ({
       });
       expect(result.status).not.toBe(0);
       expect(result.stderr).toMatch(/CRITICAL: dotenvx not found/);
+      expect(fs.statSync(path.join(configHome, ".env.keys")).mode & 0o777).toBe(0o600);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

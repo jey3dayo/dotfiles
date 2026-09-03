@@ -65,7 +65,7 @@ EOF
 
 setup_ci_env() {
   # Force CI-optimized mise config for parity with GitHub Actions.
-  local ci_config="$PROJECT_ROOT/mise/config.ci.toml"
+  local ci_config="$PROJECT_ROOT/mise/entry.ci.toml"
   local previous_config="${MISE_CONFIG_FILE:-}"
 
   export MISE_CONFIG_FILE="$ci_config"

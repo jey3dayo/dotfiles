@@ -1,0 +1,44 @@
+# macOS/Linux/WSL2、Windows、Raspberry Pi の共通 tools。
+# MISE_ENV に shared が含まれる環境だけでロードする。
+
+[tools]
+# Language Runtimes
+go = "latest"
+node = "lts"
+
+# Package Managers
+"github:astral-sh/uv" = "latest"
+# pnpm は npm backend の package_manager として必須。loose major pin にし、正確な版は各 repo の package.json packageManager が持つ
+pnpm = "11"
+
+# Formatters / Linters
+actionlint = "latest"
+biome = "latest"
+prettier = "latest"
+"pipx:beautysh" = "latest"
+stylua = "latest"
+taplo = "latest"
+
+# NPM Global Packages
+"npm:@antfu/ni" = "latest"
+"npm:@dotenvx/dotenvx" = "latest"
+"npm:@google/design.md" = "latest"
+"npm:@sasazame/ccresume" = "latest"
+"npm:@upstash/context7-mcp" = "latest"
+"npm:aicommits" = "latest"
+"npm:markdown-link-check" = "latest"
+"npm:markdownlint-cli2" = "latest"
+"npm:npm-check-updates" = "latest"
+"npm:o3-search-mcp" = "latest"
+"npm:opencommit" = "latest"
+"npm:textlint" = "latest"
+"npm:textlint-rule-preset-ja-technical-writing" = "latest"
+"npm:tsx" = "latest"
+
+# CLI Tools
+eza = "latest"
+fd = "latest"
+gitleaks = "latest"
+"github:cli/cli" = "latest"
+jq = "latest"
+yazi = "latest"

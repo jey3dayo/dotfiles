@@ -46,6 +46,10 @@ $HOME/Library/Caches/Comet*
 $HOME/Library/Caches/Firefox*
 $HOME/Library/Application Support/Firefox*
 
+# Terraform plugin cache: terraformrc の plugin_cache_dir 有効化後は、init 済み
+# ワークスペースがこの配下へ symlink を張る。消すと既存ディレクトリが壊れる。
+$HOME/.cache/terraform/plugin-cache*
+
 # VM / local app state that should be cleaned manually, not by generic cache cleanup.
 $HOME/Library/Containers/com.docker.docker*
 $HOME/Library/Application Support/Claude/vm_bundles*

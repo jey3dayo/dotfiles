@@ -111,7 +111,6 @@
 "brew:mysql-client" = "latest"
 "brew:neovim" = "latest"
 "brew:nginx" = "latest"
-"brew:nixfmt" = "latest"
 "brew:openblas" = "latest"
 "brew:openvpn" = "latest"
 "brew:pango" = "latest"

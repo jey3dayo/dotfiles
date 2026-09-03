@@ -15,7 +15,7 @@
 3. `[bootstrap.macos.launchd.agents]` — LaunchAgents（GUI env 注入）
 4. `[tools]` — 全開発ツール（言語 runtime / CLI / formatter / MCP）
 
-`scripts/bootstrap.sh` は fresh macOS で **Homebrew を導入するだけの前準備**です（mise 本体は `brew bundle` で入る）。
+`scripts/bootstrap.sh` は fresh macOS で **Homebrew を導入するだけの前準備**です。mise 本体は全 OS 共通で公式インストーラ（`curl https://mise.run | sh` → `~/.local/bin/mise`）で入れ、更新は `mise self-update` を使う。Homebrew formula は adhoc 署名かつバージョン付きパスのため、macOS Tahoe 以降の TCC（「他のアプリからのデータ」等）許可が更新のたびに無効化され再プロンプトされる。公式バイナリは Developer ID 署名で許可が持続する。claude（Claude Code）と codex（Codex CLI）も同じ理由で mise `[tools]` には置かず、`mise bootstrap` の `[bootstrap.hooks.post-tools]` hook が未導入時のみ公式インストーラで導入する。更新は `claude update` / `codex update` に任せる。
 Homebrew 導入済みのマシンでは実行不要で、Quick Setup の手順 4 から始められます。
 
 ---
@@ -42,8 +42,8 @@ brew bundle
 # 4. Converge the machine via mise bootstrap
 #    (dotfiles symlink, macOS LaunchAgents, tools)
 #    初回は ~/.zshenv 未配布のため MISE_CONFIG_FILE / MISE_ENV を明示する（次回以降は不要）
-export MISE_CONFIG_FILE="$HOME/.config/mise/config.default.toml"
-export MISE_ENV=macos # macOS のみ。config.macos.toml（brew packages / LaunchAgents 等）を読み込む
+export MISE_CONFIG_FILE="$HOME/.config/mise/entry.workstation-unix.toml"
+export MISE_ENV=macos,shared,workstation # macOS / shared / workstation overlay を読み込む（既存の MISE_ENV は通常の shell setup が保持して追加）
 mise trust && mise bootstrap --yes
 
 # 5. Restart shell
@@ -51,8 +51,8 @@ exec zsh
 ```
 
 状態確認は `mise bootstrap status` / `mise dotfiles status`、差分プレビューは `mise bootstrap --dry-run` を使います。
-dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、`mise/config.default.toml`（macOS/Linux/WSL2 の tools、`MISE_CONFIG_FILE` 経由でロード）、`mise/config.macos.toml`（macOS 専用の brew packages・LaunchAgents・dotfiles、`MISE_ENV=macos` 経由でロード）にあります。
-Raspberry Pi は `config.pi.toml` を、Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
+dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、3 OS 共通 tools は `mise/config.shared.toml`（`MISE_ENV` に `shared` が含まれる場合だけロード）、default / Windows 共通 tools は `mise/config.workstation.toml`（`MISE_ENV` に `workstation` が含まれる場合だけロード）、OS 別 tools は `mise/entry.workstation-unix.toml` / `mise/entry.server-pi.toml`（`MISE_CONFIG_FILE` 経由）、macOS 専用の brew packages・LaunchAgents・dotfiles は `mise/config.macos.toml`（`MISE_ENV` に `macos` が含まれる場合）にあります。
+Raspberry Pi は `entry.server-pi.toml` + shared overlay を使い、`hadolint` など ARM/minimal 構成で意図的に除外したツールを追加しません。CI は `entry.ci.toml` だけを使い、default / shared / workstation overlay を読み込みません。Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
 
 ## Windows Bootstrap
 
@@ -68,13 +68,14 @@ powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1
 
 - Chocolatey 本体を導入（未導入の場合のみ）
 - `windows/chocolatey/packages.config` から bootstrap/GUI パッケージを一括導入
-- `MISE_CONFIG_FILE` を `mise/config.windows.toml` に向けて `mise install` を実行
+- `MISE_CONFIG_FILE` を `mise/entry.workstation-windows.toml` に向け、`MISE_ENV` に `shared,workstation` を追加して `mise install` を実行
+- `windows/setup.ps1` は `mise install` 後、claude / codex が未導入の場合のみ公式インストーラで導入する（既導入の場合は更新しない）
 - `~/.config/powershell` を正本にし、`Documents/PowerShell` と `Documents/WindowsPowerShell` のエントリポイントを再生成
 
 ### Windows bootstrap の対象
 
 - Chocolatey: `git`, `mise`, `wezterm`, `neovim`, `7zip`, `googlechrome`, `vscode`
-- mise: `mise/config.windows.toml` に定義した CLI・runtime・formatter・MCP 関連
+- mise: `mise/entry.workstation-windows.toml` + `mise/config.shared.toml` に定義した CLI・runtime・formatter・MCP 関連
 
 PowerShell から現在の Chocolatey パッケージ一覧を manifest 化したい場合は次を使います。
 
@@ -152,7 +153,7 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 2. 定期的な重複チェック:
    - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
    - `brew list --formula` - mise 管理ツールが含まれていないこと
-   - `windows/chocolatey/packages.config` - `mise/config.windows.toml` にある CLI/runtime を重複追加しないこと
+   - `windows/chocolatey/packages.config` - `mise/entry.workstation-windows.toml` にある CLI/runtime を重複追加しないこと
 
 詳細は [docs/tools/mise.md](tools/mise.md) と [docs/tools/workflows.md](tools/workflows.md) を参照してください。
 

@@ -5,7 +5,7 @@ CONFIG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}"
 ENV_FILE="$CONFIG_ROOT/.env"
 ENV_KEYS="$CONFIG_ROOT/.env.keys"
 ENV_LOCAL="$CONFIG_ROOT/.env.local"
-OP_DOTENV_KEYS_VAULT="${OP_DOTENV_KEYS_VAULT:-Dotfiles Automation}"
+OP_DOTENV_KEYS_VAULT="${OP_DOTENV_KEYS_VAULT:-Automation}"
 
 # Check if .env exists
 if [ ! -f "$ENV_FILE" ]; then
@@ -26,6 +26,8 @@ if [ ! -f "$ENV_KEYS" ]; then
   echo "" >&2
   exit 1
 fi
+
+chmod 600 "$ENV_KEYS"
 
 # Check if dotenvx is available
 if ! command -v dotenvx >/dev/null 2>&1; then
@@ -50,13 +52,16 @@ else
 fi
 
 # Decrypt .env to .env.local (use a process-specific temp file for atomicity)
+# dotenvx はプロセス環境変数をファイルの復号値より優先するため、mise の env_file 注入
+# (.env.local の旧値) を引き継ぐと古い値を書き戻してしまう。env -i + shim 迂回で実行する
+DOTENVX_BIN="$(mise which dotenvx 2>/dev/null || command -v dotenvx)"
 TEMP_FILE="$ENV_LOCAL.tmp.$$"
 old_umask=$(umask)
 umask 077
 : >"$TEMP_FILE"
 # Truncate can reuse a leftover path without rewriting mode; force 0600 before plaintext lands.
 chmod 600 "$TEMP_FILE"
-if DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" dotenvx decrypt -f "$ENV_FILE" --stdout >>"$TEMP_FILE" 2>/dev/null; then
+if env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" "$DOTENVX_BIN" decrypt -f "$ENV_FILE" --stdout >>"$TEMP_FILE" 2>/dev/null; then
   umask "$old_umask"
   mv "$TEMP_FILE" "$ENV_LOCAL"
   chmod 600 "$ENV_LOCAL"

@@ -1,6 +1,15 @@
 #!/bin/sh
 set -eu
 
+# TELEGRAM_BOT_TOKEN は常時注入せず .env.secrets に隔離しているため、
+# 未設定なら dotenvx run 経由で自身を再実行する（失敗時は従来のプロンプトへフォールバック）
+_secrets="${XDG_CONFIG_HOME:-$HOME/.config}/.env.secrets"
+if [ -z "${TELEGRAM_BOT_TOKEN:-}" ] && [ -z "${_TG_SECRETS_TRIED:-}" ] && [ -f "$_secrets" ] && command -v dotenvx >/dev/null 2>&1; then
+  export _TG_SECRETS_TRIED=1
+  export DOTENV_PRIVATE_KEY_PATH="${XDG_CONFIG_HOME:-$HOME/.config}/.env.keys"
+  exec dotenvx run --quiet -f "$_secrets" -- "$0" "$@"
+fi
+
 # ==============================================================================
 # Telegram Bot API Health Check
 # ==============================================================================

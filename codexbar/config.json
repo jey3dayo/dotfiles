@@ -251,6 +251,30 @@
     {
       "enabled" : false,
       "id" : "aiand"
+    },
+    {
+      "enabled" : false,
+      "id" : "qwencloud"
+    },
+    {
+      "enabled" : false,
+      "id" : "fireworks"
+    },
+    {
+      "enabled" : false,
+      "id" : "zoommate"
+    },
+    {
+      "enabled" : false,
+      "id" : "xai"
+    },
+    {
+      "enabled" : false,
+      "id" : "notion"
+    },
+    {
+      "enabled" : false,
+      "id" : "ibmbob"
     }
   ],
   "version" : 1

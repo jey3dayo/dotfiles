@@ -2,15 +2,16 @@
 #
 # Keep project `mise run` tasks on mise's normal config discovery path while
 # loading the Windows tool definitions as the global mise config.
-$windowsMiseConfig = Join-Path $env:USERPROFILE ".config\mise\config.windows.toml"
+$windowsMiseConfig = Join-Path $env:USERPROFILE ".config\mise\entry.workstation-windows.toml"
 if ($env:MISE_CONFIG_FILE -eq $windowsMiseConfig) {
   Remove-Item Env:MISE_CONFIG_FILE -ErrorAction SilentlyContinue
 }
-if ($env:MISE_ENV -eq "windows") {
-  Remove-Item Env:MISE_ENV -ErrorAction SilentlyContinue
-}
 if (-not $env:MISE_GLOBAL_CONFIG_FILE -and (Test-Path -LiteralPath $windowsMiseConfig)) {
   $env:MISE_GLOBAL_CONFIG_FILE = $windowsMiseConfig
+}
+$miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
+if ($miseEnvironmentTokens -notcontains "shared") {
+  $env:MISE_ENV = (@($miseEnvironmentTokens + "shared") -join ",")
 }
 
 $miseCandidates = @(

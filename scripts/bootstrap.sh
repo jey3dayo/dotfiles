@@ -10,7 +10,7 @@ set -eu
 # - Validating prerequisites (macOS, git, zsh, curl)
 # - Setting up brew command in current session
 #
-# Usage: sh ./bootstrap.sh
+# Usage: sh ./scripts/bootstrap.sh
 # ==============================================================================
 
 # Constants
@@ -246,8 +246,8 @@ show_next_steps() {
   printf "\n"
 
   printf "%b\n" "${BOLD}${BLUE}3.${NC} ${BOLD}Converge the machine via mise bootstrap${NC}:"
-  printf "%b\n" "   ${YELLOW}export MISE_CONFIG_FILE=\"\$HOME/.config/mise/config.default.toml\""
-  printf "%b\n" "   export MISE_ENV=macos  # macOS only: loads config.macos.toml"
+  printf "%b\n" "   ${YELLOW}export MISE_CONFIG_FILE=\"\$HOME/.config/mise/entry.workstation-unix.toml\""
+  printf "%b\n" "   export MISE_ENV=macos,shared  # macOS overlay plus common tools overlay"
   printf "%b\n" "   mise trust && mise bootstrap --yes${NC}"
   printf "\n"
 

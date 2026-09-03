@@ -1,6 +1,6 @@
 # Workflows & Maintenance Reference
 
-最終更新: 2026-06-29
+最終更新: 2026-09-03
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -8,11 +8,11 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 ## Maintenance Cadence
 
-| 頻度   | 作業                                                                                                                  |
-| ------ | --------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `brew update && brew upgrade` + `mise upgrade`; プラグイン更新（sheldon, nvim lazy, tmux）                            |
-| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix cleanup（legacy） |
-| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                    |
+| 頻度   | 作業                                                                                                                                                              |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 週次   | `brew update && brew upgrade` + `mise self-update && mise upgrade`; `codex update`（claude は自動更新のため手動不要）; プラグイン更新（sheldon, nvim lazy, tmux） |
+| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d`               |
+| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                |
 
 ## Code Quality Checks
 
@@ -205,12 +205,11 @@ git commit --no-verify -m "..."
 
 ### Special Settings
 
-| パッケージ | 設定                        | 理由                                                                |
-| ---------- | --------------------------- | ------------------------------------------------------------------- |
-| `mise`     | Homebrew formula            | 初回セットアップのブートストラップ用（実運用のツール管理は `mise`） |
-| `mysql`    | `restart_service: :changed` | サービス自動再起動                                                  |
-| `utf8proc` | `args: ["HEAD"]`            | Julia 依存のため HEAD が必要                                        |
-| `node`     | `link: false`               | mise で管理（PATH 衝突回避）                                        |
+| パッケージ | 設定                        | 理由                         |
+| ---------- | --------------------------- | ---------------------------- |
+| `mysql`    | `restart_service: :changed` | サービス自動再起動           |
+| `utf8proc` | `args: ["HEAD"]`            | Julia 依存のため HEAD が必要 |
+| `node`     | `link: false`               | mise で管理（PATH 衝突回避） |
 
 ### Package Addition Workflow
 
@@ -316,7 +315,7 @@ brew bundle install --no-upgrade --dry-run
 > `[bootstrap.packages]` でも管理しているため、Brewfile だけを正本とみなす cleanup は
 > bootstrap 管理の formula（btop, git, neovim など）を誤って削除対象にする。
 > 宣言外 formula の掃除は `mise bootstrap packages prune --dry-run` で確認してから行うが、
-> Brewfile 専用の例外（heroku / mysql / utf8proc / perman-aws-vault / mise / tap formulae）が
+> Brewfile 専用の例外（mysql / utf8proc / perman-aws-vault / mise / tap formulae）が
 > 削除対象に出るため、現状 prune の実運用は対象外とする。
 
 ```bash
@@ -354,8 +353,7 @@ brew cleanup
 
 ## Nix Runtime Cleanup (legacy)
 
-Home Manager は撤去済み。マシンに Nix ランタイムが残っている間だけ、
-`/nix/store` の掃除を行う（手順の詳細は `docs/tools/nix.md`）。
+Home Manager は撤去済み。マシンに `/nix/store` が残っている間だけ掃除し、アンインストール後はこの節を削除する。
 
 ```bash
 nix-collect-garbage -d
@@ -375,7 +373,7 @@ df -h /nix/store
 | 70-85% | 警告 | 即座に GC 実行、不要な generations を削除 |
 | > 85%  | 危険 | アグレッシブなクリーンアップ実施          |
 
-詳細は [docs/tools/nix.md](nix.md) を参照。
+Nix 配布手順はリポジトリから撤去済み。`home-manager switch` や `nix flake update` は使わない。
 
 ## Tool Management Philosophy
 

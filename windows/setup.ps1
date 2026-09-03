@@ -100,9 +100,27 @@ if (Test-Path -LiteralPath $sharedProfile) {
   }
 }
 
+function Ensure-StandaloneCli {
+  # Why: 自己更新ツールを mise [tools] に置くと更新経路が二重になるため、導入保証だけを担う。
+  # 既導入の場合は更新せず、更新は claude update / codex update に任せる。
+  if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
+    irm https://claude.ai/install.ps1 | iex
+  }
+  if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
+    throw "claude was not installed by the official installer."
+  }
+
+  if (-not (Get-Command codex -ErrorAction SilentlyContinue)) {
+    irm https://chatgpt.com/codex/install.ps1 | iex
+  }
+  if (-not (Get-Command codex -ErrorAction SilentlyContinue)) {
+    throw "codex was not installed by the official installer."
+  }
+}
+
 $repoRoot = Get-RepoRoot
 $installScript = Join-Path $PSScriptRoot "chocolatey\install.ps1"
-$windowsMiseConfig = Join-Path $repoRoot "mise\config.windows.toml"
+$windowsMiseConfig = Join-Path $repoRoot "mise\entry.workstation-windows.toml"
 
 Ensure-PowerShellProfileBridges
 
@@ -130,11 +148,20 @@ if (-not (Test-Path -LiteralPath $windowsMiseConfig)) {
 }
 
 $env:MISE_CONFIG_FILE = $windowsMiseConfig
+$miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
+foreach ($requiredToken in @("shared", "workstation")) {
+  if ($miseEnvironmentTokens -notcontains $requiredToken) {
+    $miseEnvironmentTokens += $requiredToken
+  }
+}
+$env:MISE_ENV = ($miseEnvironmentTokens -join ",")
 Write-Host "Installing mise-managed Windows tools using $windowsMiseConfig..."
 & $miseExe install
 if ($LASTEXITCODE -ne 0) {
   throw "mise install failed."
 }
+Ensure-StandaloneCli
 
 Write-Host "Windows bootstrap complete."
 Write-Host "MISE_CONFIG_FILE=$windowsMiseConfig"
+Write-Host "MISE_ENV=$env:MISE_ENV"

@@ -25,9 +25,16 @@ Host pi-tailscale
   IdentitiesOnly yes
 
 # Synology NAS
-Host nas
-  HostName 192.168.50.237
-  User admin
+Host synology
+  HostName synology.local
+  User jey3dayo
+  Port 10022
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+
+Host synology-tailscale
+  HostName synology.tailfd232.ts.net
+  User jey3dayo
   Port 10022
   IdentityFile ~/.ssh/id_ed25519
   IdentitiesOnly yes

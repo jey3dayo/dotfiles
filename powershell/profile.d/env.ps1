@@ -4,7 +4,7 @@ if (-not $env:OP_ACCOUNT) {
 }
 
 if (-not $env:OP_DOTENV_KEYS_VAULT) {
-  $env:OP_DOTENV_KEYS_VAULT = "Dotfiles Automation"
+  $env:OP_DOTENV_KEYS_VAULT = "Automation"
 }
 
 if (-not $env:OP_DOTENV_KEYS_ITEM_ID) {
@@ -12,7 +12,8 @@ if (-not $env:OP_DOTENV_KEYS_ITEM_ID) {
 }
 
 $configRoot = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { Join-Path $HOME ".config" }
-$opDotenvEnvFile = Join-Path $configRoot ".env"
+# OP_SERVICE_ACCOUNT_TOKEN は on-demand 層 (.env.secrets) に置く
+$opDotenvEnvFile = Join-Path $configRoot ".env.secrets"
 
 function Invoke-OpServiceAccount {
   dotenvx run -f $opDotenvEnvFile -- op @args

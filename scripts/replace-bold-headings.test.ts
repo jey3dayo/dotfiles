@@ -5,10 +5,9 @@ import { execSync, spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
+import { repoFile } from "./repo-file.ts";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const scriptPath = path.join(__dirname, "replace-bold-headings.ts");
+const scriptPath = repoFile("scripts", "replace-bold-headings.ts");
 
 const runScript = (target: string) => execSync(`tsx "${scriptPath}" "${target}"`, { encoding: "utf8", stdio: "pipe" });
 

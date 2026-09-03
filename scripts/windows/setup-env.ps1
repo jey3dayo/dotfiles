@@ -6,9 +6,11 @@ $envKeys = Join-Path $configRoot ".env.keys"
 $envLocal = Join-Path $configRoot ".env.local"
 $tempFile = "$envLocal.tmp.$PID"
 $opDotenvKeysVault = if ($env:OP_DOTENV_KEYS_VAULT) { $env:OP_DOTENV_KEYS_VAULT } else { "Dotfiles Automation" }
-$windowsMiseConfig = Join-Path $configRoot "mise\config.windows.toml"
+$windowsMiseConfig = Join-Path $configRoot "mise\entry.workstation-windows.toml"
 $previousMiseGlobalConfigFile = $env:MISE_GLOBAL_CONFIG_FILE
+$previousMiseEnv = $env:MISE_ENV
 $usingWindowsMiseGlobalConfig = $false
+$usingSharedMiseEnv = $false
 
 function Write-Critical {
   param(
@@ -56,6 +58,13 @@ $isWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::W
 if ($isWindows -and -not $env:MISE_GLOBAL_CONFIG_FILE -and (Test-Path -LiteralPath $windowsMiseConfig)) {
   $env:MISE_GLOBAL_CONFIG_FILE = $windowsMiseConfig
   $usingWindowsMiseGlobalConfig = $true
+}
+if ($isWindows) {
+  $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
+  if ($miseEnvironmentTokens -notcontains "shared") {
+    $env:MISE_ENV = (@($miseEnvironmentTokens + "shared") -join ",")
+    $usingSharedMiseEnv = $true
+  }
 }
 
 $dotenvx = Get-Command dotenvx -ErrorAction SilentlyContinue
@@ -114,6 +123,14 @@ try {
       Remove-Item Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
     } else {
       $env:MISE_GLOBAL_CONFIG_FILE = $previousMiseGlobalConfigFile
+    }
+  }
+
+  if ($usingSharedMiseEnv) {
+    if ($null -eq $previousMiseEnv) {
+      Remove-Item Env:MISE_ENV -ErrorAction SilentlyContinue
+    } else {
+      $env:MISE_ENV = $previousMiseEnv
     }
   }
 }

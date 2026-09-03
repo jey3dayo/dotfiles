@@ -1,6 +1,6 @@
 # 📖 Documentation Navigation
 
-最終更新: 2026-04-20
+最終更新: 2026-08-21
 対象: 開発者
 タグ: `category/guide`, `layer/support`, `environment/macos`, `audience/developer`
 
@@ -38,10 +38,9 @@ Location: `docs/`
 - [WezTerm Configuration](tools/wezterm.md) - Terminal layer: 設定、キーバインド、統合
 - [SSH Configuration](tools/ssh.md) - 階層的設定、セキュリティ管理
 - [FZF Integration](tools/fzf-integration.md) - クロスツール統合、ワークフロー（FZF/Git キーバインドのSST）
-- [Nix Maintenance](tools/nix.md) - Nix store GC・generations 管理
 - [Mise](tools/mise.md) - ツールバージョン管理・設定・pnpm バックエンド
   - [Task Catalog](tools/mise-tasks.md) - 全タスク一覧（CI/Format/Lint/Test/HM/Skills 等）
-  - [Config Reference](tools/mise-config.md) - config.default.toml ツールカテゴリ詳細
+  - [Config Reference](tools/mise-config.md) - entry.workstation-unix.toml ツールカテゴリ詳細
 - [Security](security.md) - セキュリティポリシー・gitleaks・インシデント対応
 - [Workflows & Maintenance](tools/workflows.md) - 定期メンテナンス・Brewfile・コードクオリティ
 

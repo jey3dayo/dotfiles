@@ -82,6 +82,9 @@ zsh/.zinit/
 zsh/.zcompdump*
 zsh/.zcompcache/
 
+## mise completion (regenerated at shell startup, see zsh/lib/completion.zsh)
+zsh/completions/_mise
+
 # Version Control
 ## Git
 git/local.gitconfig
@@ -122,12 +125,15 @@ ssh/*.sock
 
 # Security and Credentials
 ## 1Password
-1Password/
+/1Password/
 
 ## AWS
 AWS VPN Client/
 AWSVPNClient/
 .perman-aws-vault
+
+## Nix access tokens (local only, do not commit)
+nix/access-tokens.conf
 
 # Tools and Applications
 ## Development Tools
@@ -143,6 +149,7 @@ karabiner/automatic_backups/
 github-copilot/
 gh/hosts.yml
 glab-cli/config.yml
+glab-cli/config.lock
 glab-cli/bin/
 ghkw
 hub
@@ -180,6 +187,21 @@ cycloud/
 .wrangler/
 wslu/
 gogcli/
+
+## herdr
+herdr/*.sock
+herdr/*.log
+herdr/session.json
+herdr/release-notes.json
+
+## browser-harness
+browser-harness/
+
+## rclone (contains credentials)
+rclone/
+
+## APM dependencies
+apm_modules/
 
 # AI Tools
 ## Claude AI
@@ -262,6 +284,9 @@ out.typos
 ## Temporary Tracking Documents
 _*.md
 
+## tmp
+tmp/
+
 # Ignore Files
 .ignore
 .repomixignore
@@ -276,33 +301,17 @@ vendor
 user-dirs.dirs
 user-dirs.locale
 
-## PulseAudio
-pulse/cookie
+## PulseAudio (user runtime state/cache, not config)
+pulse/
+
+## Chromium (browser profile/cache, auto-generated under XDG_CONFIG_HOME)
+chromium/
+
+## systemd user environment.d (managed externally, e.g. home-manager symlinks)
+environment.d/
 
 ## systemd
 systemd/user/*.target
 systemd/user/*.target.wants/
 systemd/user/*.service.wants/
 systemd/user/*.timer.wants/
-
-## Nix access tokens (local only, do not commit)
-nix/access-tokens.conf
-
-## herdr
-herdr/*.sock
-herdr/*.log
-herdr/session.json
-herdr/release-notes.json
-
-## browser-harness
-browser-harness/
-
-## rclone (contains credentials)
-rclone/
-
-## tmp
-tmp/
-
-
-# APM dependencies
-apm_modules/

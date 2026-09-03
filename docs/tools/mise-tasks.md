@@ -99,7 +99,7 @@ Home Manager は撤去済み。dotfiles 配布・launchd agents は mise bootstr
 | `mise dotfiles status`  | 配布状態の確認                                           |
 | `mise bootstrap status` | bootstrap 全体の状態確認                                 |
 
-定義は `mise/config.toml`（OS 非依存）と `mise/config.default.toml`（macOS 専用）にある。
+定義は `mise/config.toml`（OS 非依存）、`mise/config.shared.toml`（共通 tools）、および OS 別の mise config にある。
 
 ### APM Workspace
 
@@ -134,12 +134,13 @@ APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise
 
 `env.toml` で定義。
 
-| タスク        | 説明                                                   |
-| ------------- | ------------------------------------------------------ |
-| `env:detect`  | 現在の環境タイプを検出（CI/Pi/Default）                |
-| `env:encrypt` | 環境変数ファイルを暗号化（dotenvx）                    |
-| `env:decrypt` | 環境変数ファイルを復号化（dotenvx）                    |
-| `setup-env`   | .env を .env.local に復号化（mise hooks から自動実行） |
+| タスク        | 説明                                                    |
+| ------------- | ------------------------------------------------------- |
+| `env:detect`  | 現在の環境タイプを検出（CI/Pi/Default）                 |
+| `env:encrypt` | 環境変数ファイルを暗号化（dotenvx）                     |
+| `env:decrypt` | 環境変数ファイルを復号化（dotenvx）                     |
+| `env:print`   | 復号済み環境変数を表示（shim 迂回でファイルの値を出す） |
+| `setup-env`   | .env を .env.local に復号化（mise hooks から自動実行）  |
 
 ### Brewfile
 

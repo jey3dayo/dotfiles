@@ -79,8 +79,8 @@ local schemas = {
 }
 
 return {
-  -- Use global vscode-json-languageserver@1.3.4 to avoid MethodNotFound crash in vscode-langservers-extracted 4.8.0+
-  cmd = { "/Users/t00114/.local/npm-global/bin/vscode-json-languageserver", "--stdio" },
+  -- vscode-langservers-extracted 4.8.0+ の MethodNotFound を避けるため standalone サーバーを使う
+  cmd = { "vscode-json-languageserver", "--stdio" },
   filetypes = { "json", "jsonc" },
   -- autostart = false, -- Re-enable JSON LSP with proper configuration
   init_options = {

@@ -1,0 +1,92 @@
+# macOS/Linux/WSL2 ワークステーションの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
+
+[settings]
+# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
+jobs = 8
+idiomatic_version_file_enable_tools = ["go"]
+# /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下に展開される worktree/sandbox 内の
+# mise config を信頼するために追加している
+trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
+
+[tools]
+# Common tools are loaded from the shared / workstation overlays when MISE_ENV includes them.
+# Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
+deno = "latest"
+julia = "latest"
+# FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
+# lua = "5.1.5"
+# luajit = "latest"
+
+# Formatters / Linters
+"go:github.com/reteps/dockerfmt" = "latest"
+hadolint = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+yamllint = "latest"
+
+# NPM Global Packages
+"npm:ccstatusline" = "latest"
+"npm:dbdocs" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:vscode-json-languageserver" = "latest"
+"npm:agmsg" = "latest"
+
+# MCP サーバー
+"npm:chrome-devtools-mcp" = "latest"
+
+# Claude/AI ツール
+"aqua:github/copilot-cli" = "latest"
+"npm:@anthropic-ai/dxt" = "latest"
+
+# その他ツール
+"npm:hunkdiff" = "latest"
+
+# Rust CLI（typos-lsp は Homebrew で管理）
+"aqua:getsentry/sentry-cli" = "latest"
+"cargo:similarity-css" = "0.5.0"
+
+# CLI Tools
+atuin = "latest"
+aws-cli = "latest"
+ghq = "latest"
+jnv = "latest"
+kubectl = "latest"
+marksman = "latest"
+openfga = "latest"
+pandoc = "latest"
+restic = "latest"
+sheldon = "latest"
+task = "latest"
+tilt = "latest"
+tmux = "latest"
+typos = "latest"
+vector = "latest"
+yq = "latest"
+"pipx:awsume" = "latest"
+buf = "latest"
+"go:github.com/fujiwara/lambroll/cmd/lambroll" = "latest"
+"go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
+"go:github.com/google/wire/cmd/wire" = "latest"
+"go:github.com/k1LoW/git-wt" = "latest"
+"go:golang.org/x/tools/cmd/goimports" = "0.49.0"
+"go:github.com/hashicorp/terraform-mcp-server/cmd/terraform-mcp-server" = "latest"
+"pipx:serena-agent" = "1.7.0"
+"github:yusukebe/ax" = "latest"
+glab = "latest"
+hexyl = "latest"
+herdr = "0.8.2"                                                                    # ペイン spawn 失敗防止のためピン留め。更新は mise outdated herdr で確認
+"aqua:anomalyco/opencode" = "latest"
+saml2aws = "latest"
+terraform = "latest"
+# WSL では公式配布バイナリが glibc 不整合で壊れることがあるため,
+# prebuilt backend ではなく cargo backend を使う.
+# default features を切ると qjs/libclang 依存を避けられ, この環境でもビルドできる.
+"cargo:tree-sitter-cli" = { version = "0.27.0", default-features = "false" }
+trivy = "latest"
+"github:agavra/tuicr" = "latest"
+"github:zenbu-labs/terminal-browser" = "latest"
+
+# 自己更新機能を持つ CLI(claude / codex)は [tools] で管理せず、公式インストーラで導入して
+# 各ツールの自己更新に任せる。mise は未導入時のインストールだけを保証する(方針: .claude/rules/tools/tool-install-policy.md)。
+[bootstrap.hooks.post-tools]
+run = "sh ~/.config/mise/lib/ensure-standalone.sh"

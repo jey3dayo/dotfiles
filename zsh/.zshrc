@@ -20,6 +20,10 @@ source_zsh_lib gh-completion.zsh
 source_zsh_lib aicommits.zsh
 source_zsh_lib mise.zsh
 
+# Agent integrations
+source_zsh_lib agmsg.zsh
+source_zsh_lib secrets.zsh
+
 # Key bindings and widgets
 source_zsh_lib fzf.zsh
 source_zsh_lib fzf-tab.zsh

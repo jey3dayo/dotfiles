@@ -123,9 +123,9 @@ Host pi
   IdentitiesOnly yes
 
 # Synology NAS
-Host nas
+Host synology
   HostName synology.local
-  User admin
+  User jey3dayo
   Port 10022
   IdentitiesOnly yes
 ```

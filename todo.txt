@@ -1,1 +1,2 @@
 (A) WSL2でmise dotfiles applyへ切替（SSH到達手段がないためWSL2マシン上で実行: git pull && mise self-update && MISE_CONFIG_FILE=~/.config/mise/config.default.toml mise dotfiles apply --yes。旧HM symlinkの残骸削除も同様に実施） +nix-removal
+2026-08-21 孤児化devサーバー検出チェックを仕込む（launchd直下の mise run / vite / workerd / pnpm を検出して通知、miseタスクか定期監査に追加。TCC権限プロンプト頻発対策の残タスク）

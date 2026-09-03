@@ -18,9 +18,27 @@ else
 
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
-  : "${MISE_CONFIG_FILE:=$XDG_CONFIG_HOME/mise/config.default.toml}"
-  [ "$(uname -s 2>/dev/null)" = "Darwin" ] && : "${MISE_ENV:=macos}"
+  : "${MISE_CONFIG_FILE:=$XDG_CONFIG_HOME/mise/entry.workstation-unix.toml}"
+  _append_mise_env() {
+    local token="$1"
+    case ",${MISE_ENV:-}," in
+      *,"$token",*) ;;
+      *) MISE_ENV="${MISE_ENV:+$MISE_ENV,}$token" ;;
+    esac
+  }
+  case "${MISE_CONFIG_FILE##*/}" in
+    entry.ci.toml) ;;
+    entry.server-pi.toml)
+      _append_mise_env shared
+      ;;
+    *)
+      [ "$(uname -s 2>/dev/null)" = "Darwin" ] && _append_mise_env macos
+      _append_mise_env shared
+      _append_mise_env workstation
+      ;;
+  esac
   export MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_FILE MISE_ENV
+  unset -f _append_mise_env
 
   : "${GHQ_ROOT:=$HOME/src}"
   : "${RIPGREP_CONFIG_PATH:=$XDG_CONFIG_HOME/.ripgreprc}"
@@ -131,4 +149,3 @@ alias cz='ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic ANTHROPIC_AUTH_TOKEN
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init bash)"
 fi
-

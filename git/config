@@ -29,9 +29,6 @@
 [tag]
   sort = version:refname
 
-[http]
-  sslVerify = false
-
 [push]
   default = simple
   autoSetupRemote = true
@@ -79,6 +76,7 @@
 
 [wt]
   basedir = ".worktrees"
+  copy = .env
 [user]
 	name = Junya Nakazato
 	email = j138cm@gmail.com
@@ -91,3 +89,5 @@
 [credential "https://gist.github.com"]
 	helper =
 	helper = !gh auth git-credential
+[url "git@github.com:"]
+	insteadOf = https://github.com/
