@@ -14,5 +14,6 @@
     "manaflow-ai/cmux",
     "sanemat/font",
     "voicevox/voicevox"
-  ]
+  ],
+  "trustedcasks": ["stablyai/orca/orca"]
 }
