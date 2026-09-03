@@ -32,6 +32,13 @@ Host synology
   IdentityFile ~/.ssh/id_ed25519
   IdentitiesOnly yes
 
+Host synology-tailscale
+  HostName synology.tailfd232.ts.net
+  User jey3dayo
+  Port 10022
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+
 # Mac
 Host mac
   HostName 192.168.50.141
