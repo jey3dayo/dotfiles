@@ -11,7 +11,7 @@ Detailed Reference: See [docs/tools/fzf-integration.md](../../docs/tools/fzf-int
 
 ## Scope and SST
 
-- This file is the single source for FZF bindings; other docs should link here instead of repeating keymaps.
+- `docs/tools/fzf-integration.md` is the single source for FZF bindings; this rule is a compact mirror. Other docs link there instead of repeating keymaps.
 - Integration spans shell (history, processes, directories), Git (repositories, branches, worktrees, files, stash), Tmux, and Neovim.
 
 ## Key bindings
