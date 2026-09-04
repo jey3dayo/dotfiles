@@ -8,6 +8,5 @@
       "Bash(~/.local/share/nvim/mason/packages/typos/typos:*)"
     ]
   },
-  "model": "sonnet",
   "cleanupPeriodDays": 7
 }
