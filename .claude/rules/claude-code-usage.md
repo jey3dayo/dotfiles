@@ -14,9 +14,8 @@ Sources: AGENTS.md, CLAUDE.md, .claude/README.md.
 
 ## AI command system
 
-- Global commands: `/task`, `/todos`, `/review`, `/learnings`, `allow-command`.
-- Project commands: `/refactoring`, `/update-readme` tailored to dotfiles.
-- Recording new insights: prefer `/learnings` with the correct layer (Shell/Editor/Terminal/Git) rather than editing large docs inline.
+- Project command: `/refactoring` (dotfiles 向け設定リファクタリング)。
+- Recording new insights: append to the relevant `docs/tools/*.md`, then sync the compact rule in `.claude/rules/` only if needed.
 
 ## Local CI via Claude
 

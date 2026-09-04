@@ -12,7 +12,7 @@
 
 ### Tool別リファクタリング対象
 
-リファクタリングは必ずツール別に分類して実行します：
+リファクタリングはツール別に分類して実行する（設定パターンと正本がツール単位で分かれているため）：
 
 - zsh/ - Shell設定・プラグイン・パフォーマンス最適化
 - nvim/ - Neovim設定・LSP・Lua設定・プラグイン管理
@@ -24,18 +24,13 @@
 
 ## 参考ファイル
 
-### 設計指針
-
-- `.claude/project-knowledge.md` - 設定パターン・ベストプラクティス・アンチパターン
-- `.claude/project-improvements.md` - 過去の改善履歴・学習事項
-- `.claude/common-patterns.md` - 定型実装・設定パターン
+- `.claude/rules/tools/<tool>.md` - ツール別の圧縮ルール
+- `docs/tools/<tool>.md` - 設定パターン・トラブルシューティングの正本
+- `.claude/review-criteria.md` - レビュー観点
 
 ## 実行フロー
 
-1. ツール別対象特定: リファクタリング対象の設定ファイルをツール別に特定
-2. 既存パターン照合: 該当ツールの確立されたパターンとの照合
-3. ツール固有改善: 各ツールの設計指針に基づく改善実行
-4. 記録: 改善内容を`.claude/learnings-[tool].md`と`project-improvements.md`に記録
+対象ファイルをツール別に特定し、該当ツールの rule と docs に照らして改善する。改善で得た知見は対応する `docs/tools/<tool>.md` に追記し、必要なら `.claude/rules/tools/<tool>.md` を同期する。
 
 ## リファクタリング原則
 
