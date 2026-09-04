@@ -52,8 +52,6 @@ tmux / Ghostty の `C-x KEY` のような 2 段階プレフィックスを持た
 }
 ```
 
-> かつて cmux 向けに `C-x` リーダー（`com.cmuxterm.app` 限定）を実装していたが、cmux 廃止に伴い削除した。上記はその手法を汎用パターンとして残したもの。
-
 ## 編集後のリロード
 
 `touch ~/.config/karabiner/karabiner.json` でリロードされる。
