@@ -223,6 +223,7 @@ cursor/statsig-cache.json
 global_rules.md
 .aider*
 .plans/
+plans/
 .claude/worktrees/
 
 ## Other AI Tools
