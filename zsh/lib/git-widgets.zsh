@@ -58,6 +58,11 @@ _zsh_git_status_widget() {
   _zsh_git_accept_command 'git status -sb'
 }
 
+_zsh_git_browse_widget() {
+  _zsh_git_is_repo || return 1
+  _zsh_git_accept_command 'gh browse'
+}
+
 _zsh_git_add_patch_widget() {
   _zsh_git_accept_command 'git add -p'
 }
@@ -170,6 +175,7 @@ _zsh_register_git_widgets() {
   zle -N _zsh_git_status_widget
   zle -N _zsh_git_add_patch_widget
   zle -N _zsh_git_worktree_widget
+  zle -N _zsh_git_browse_widget
 
   local keymap
   for keymap in emacs viins vicmd; do
@@ -179,10 +185,12 @@ _zsh_register_git_widgets() {
     bindkey -M "$keymap" '^g^s' _zsh_git_status_widget
     bindkey -M "$keymap" '^ga' _zsh_git_add_patch_widget
     bindkey -M "$keymap" '^g^a' _zsh_git_add_patch_widget
-    bindkey -M "$keymap" '^gb' _zsh_git_switch_branch_widget
-    bindkey -M "$keymap" '^g^b' _zsh_git_switch_branch_widget
+    bindkey -M "$keymap" '^gb' _zsh_git_browse_widget
+    bindkey -M "$keymap" '^g^b' _zsh_git_browse_widget
     bindkey -M "$keymap" '^gW' _zsh_git_worktree_widget
     bindkey -M "$keymap" '^g^W' _zsh_git_worktree_widget
+    bindkey -M "$keymap" '^gB' _zsh_git_switch_branch_widget
+    bindkey -M "$keymap" '^g^B' _zsh_git_switch_branch_widget
 
     if (( $+widgets[fzf-git-stashes-widget] )); then
       bindkey -M "$keymap" '^gz' fzf-git-stashes-widget
