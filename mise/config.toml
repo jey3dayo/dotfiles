@@ -16,8 +16,10 @@ minimum_release_age_excludes = [
 ]
 
 [settings.github]
-# GitHub 匿名 API レート制限対策として Keychain の git 認証情報をフォールバック利用
-use_git_credentials = true
+# 有効にしない。mise が実行する `git credential fill` は github.com では
+# `!gh auth git-credential` だけを呼び、その gh は mise shim なので無限再帰する。
+# トークンは gh_cli_tokens（gh の hosts.yml）が供給する。
+use_git_credentials = false
 
 [settings.pipx]
 uvx = true
