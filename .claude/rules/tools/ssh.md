@@ -15,7 +15,7 @@ Detailed Reference: See [docs/tools/ssh.md](../../docs/tools/ssh.md) for compreh
 
 - Tracked configs under ~/.config/ssh/: config, config.d/00-global/01-1password/10-dev-services/20-home-network/30-macos/31-linux, templates/, README.
 - Local sensitive data stays under ~/.ssh/ (ssh_config.d, sockets). Precedence: 00-global -> 01-1password -> 10-dev-services -> 20-home-network -> 30-macos -> 31-linux -> local overrides.
-- Configuration consolidation: Global settings consolidated into 00-global.sshconfig (previously split between 00-global and 99-defaults). Single source for all global SSH settings.
+- `00-global.sshconfig` is the single source for global SSH settings.
 
 ### Platform-specific settings
 

@@ -31,7 +31,7 @@ Claude Code は以下の2箇所から rules（markdown ファイル）を自動�
 
 症状: `~/.claude/skills/` が空、または古い
 
-原因: Agent Skills の配布は `~/.apm`（APM）が担当する（旧 Nix/Home Manager 配布は廃止済み）。
+原因: Agent Skills の配布は `~/.apm`（APM）が担当する。
 APM 側の deploy が未実行か、catalog と配布先がずれている。
 
 #### 確認・解決手順

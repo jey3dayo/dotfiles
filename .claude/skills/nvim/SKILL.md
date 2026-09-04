@@ -43,41 +43,14 @@ If the current repository has tool-specific rules or docs, compare against them 
 - Disable unused providers: `vim.g.loaded_python3_provider = 0`
 - Large file detection (>2MB) in `config/autocmds.lua`
 
-## 5-Star Evaluation Criteria
+## Evaluation Focus
 
-### Startup Performance
+Judge against the benchmarks above and report the gap, not a score:
 
-| Rating | Time     | Lazy Loading | Plugin Specs     | Unused Features |
-| ------ | -------- | ------------ | ---------------- | --------------- |
-| 5/5    | <100ms   | 90%+ plugins | Precise triggers | Disabled        |
-| 4/5    | <200ms   | 70%+ plugins | Optimized        | Minimal         |
-| 3/5    | <500ms   | 50%+ plugins | Basic            | Some            |
-| 2/5    | 500ms-1s | <50% plugins | Legacy manager   | Many            |
-| 1/5    | >1s      | None         | Vimscript        | No optimization |
-
-### LSP Integration
-
-- 5: 15+ languages, mason auto-install, pcall wrapping, full features
-- 4: 10-14 languages, mason integration, basic error handling
-- 3: 5-9 languages, manual setup, partial features
-- 2: <5 languages, manual installation, basic setup
-- 1: No LSP or broken configuration
-
-### Plugin Ecosystem
-
-- 5: lazy.nvim, 90%+ event/cmd/ft triggers, lock file tracked
-- 4: lazy.nvim, 70%+ lazy-loaded, documented
-- 3: packer, 50%+ lazy-loaded, some docs
-- 2: vim-plug, minimal lazy loading, no docs
-- 1: Legacy manager, no lazy loading
-
-### Modern Practices
-
-- 5: Complete Lua, lazy.nvim, mason LSP, AI integration
-- 4: Complete Lua, lazy.nvim, mason LSP
-- 3: Mostly Lua, modern plugin manager
-- 2: Mixed Lua/Vimscript, legacy manager
-- 1: Vimscript-based configuration
+- Startup: lazy-loading ratio, trigger precision (event/cmd/ft), unused providers disabled
+- LSP: mason auto-install coverage for the languages actually used, pcall-wrapped setup
+- Plugins: lazy.nvim with `lazy-lock.json` tracked; flag legacy managers (packer, vim-plug) and Vimscript-heavy config
+- Practices: Lua-only config, AI completion integrated without measurable latency
 
 ## Expected File Organization
 
@@ -109,7 +82,6 @@ Check consistency with WezTerm (theme, Nerd Font), Zsh (shared FZF keybindings, 
 ## Related Skills
 
 - `code-review` — overall quality assessment framework
-- `nix-dotfiles` — Nix / Home Manager dotfiles distribution and apply
 
 ## References
 

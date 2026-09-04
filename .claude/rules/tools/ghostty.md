@@ -91,8 +91,3 @@ keybind = ctrl+b>shift+key=action
 ## 公式リファレンス
 
 - [Keybind Actions Reference](https://ghostty.org/docs/config/keybind/reference) — 全アクション一覧
-
-## cmux との対応
-
-cmux は Ghostty の C-b シーケンスを持たないため、Karabiner-Elements で補完している。
-`karabiner/karabiner.json` → `.claude/rules/tools/karabiner.md` を参照。

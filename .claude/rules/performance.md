@@ -9,8 +9,7 @@ Sources: docs/performance.md.
 
 ## Targets
 
-- Current baselines: Zsh ~1.1s, Neovim <100ms, WezTerm ~800ms on M3 MacBook Pro.
-- Goals: Zsh <100ms (phased plan), Neovim <200ms (met), WezTerm <1s (met); mid-term memory goal <20MB for shells.
+- Baselines and goals for Zsh, Neovim, and WezTerm startup live only in `docs/performance.md`; read them there before judging a regression.
 
 ## Measurement
 
