@@ -176,20 +176,6 @@ function New-NormalizedRepoSnapshot {
   }
 }
 
-if (-not (Get-Command wsl.exe -ErrorAction SilentlyContinue)) {
-  throw "wsl.exe not found. Install WSL to run '$TaskName' from Windows."
-}
-
-$repoRootWin = Split-Path -Parent $PSScriptRoot
-$repoRootWsl = (& wsl.exe wslpath -a ($repoRootWin -replace "\\", "/") 2>$null)
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($repoRootWsl)) {
-  throw "Failed to convert repo path for WSL: $repoRootWin"
-}
-$repoRootWsl = $repoRootWsl.Trim()
-$snapshot = New-NormalizedRepoSnapshot -SourceRootWin $repoRootWin -SourceRootWsl $repoRootWsl
-$snapshotRootWin = $snapshot.WinPath
-$repoRootWsl = $snapshot.WslPath
-$tempScriptWin = Join-Path $env:TEMP ("codex-mise-wsl-task-" + [System.Guid]::NewGuid().ToString("N") + ".sh")
 $taskCommands = switch ($TaskName) {
   "check" {
     @(
@@ -235,6 +221,21 @@ $taskCommands = switch ($TaskName) {
     throw "Unsupported task: $TaskName"
   }
 }
+
+if (-not (Get-Command wsl.exe -ErrorAction SilentlyContinue)) {
+  throw "wsl.exe not found. Install WSL to run '$TaskName' from Windows."
+}
+
+$repoRootWin = Split-Path -Parent $PSScriptRoot
+$repoRootWsl = (& wsl.exe wslpath -a ($repoRootWin -replace "\\", "/") 2>$null)
+if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($repoRootWsl)) {
+  throw "Failed to convert repo path for WSL: $repoRootWin"
+}
+$repoRootWsl = $repoRootWsl.Trim()
+$snapshot = New-NormalizedRepoSnapshot -SourceRootWin $repoRootWin -SourceRootWsl $repoRootWsl
+$snapshotRootWin = $snapshot.WinPath
+$repoRootWsl = $snapshot.WslPath
+$tempScriptWin = Join-Path $env:TEMP ("codex-mise-wsl-task-" + [System.Guid]::NewGuid().ToString("N") + ".sh")
 $escapedRepoRootWsl = Escape-BashSingleQuoted $repoRootWsl
 $scriptContent = @(
   "#!/usr/bin/env bash"
