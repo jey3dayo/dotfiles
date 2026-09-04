@@ -64,6 +64,13 @@ const configPaths = (overrides: NodeJS.ProcessEnv): string[] => {
 const hasConfig = (paths: string[], file: string): boolean => paths.some((entry) => entry.endsWith(`/mise/${file}`));
 
 describe("shared mise tool overlay", () => {
+  it("publishes the workstation mise selectors to GUI applications", () => {
+    const macosConfig = fs.readFileSync(path.join(configDir, "config.macos.toml"), "utf8");
+
+    expect(macosConfig).toContain('launchctl setenv MISE_CONFIG_FILE "$HOME/.config/mise/entry.workstation-unix.toml"');
+    expect(macosConfig).toContain('launchctl setenv MISE_ENV "macos,shared,workstation"');
+  });
+
   it("keeps config.toml settings-only", () => {
     expect(readTools("config.toml")).toEqual(new Map());
   });

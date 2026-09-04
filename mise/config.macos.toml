@@ -155,7 +155,11 @@
 program = "/bin/sh"
 args = [
   "-lc",
-  'launchctl setenv PATH "$HOME/.mise/shims:$HOME/bin:$HOME/.local/bin:$HOME/.config/scripts:$HOME/.cargo/bin:$HOME/go/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"',
+  '''
+launchctl setenv MISE_CONFIG_FILE "$HOME/.config/mise/entry.workstation-unix.toml"
+launchctl setenv MISE_ENV "macos,shared,workstation"
+launchctl setenv PATH "$HOME/.mise/shims:$HOME/bin:$HOME/.local/bin:$HOME/.config/scripts:$HOME/.cargo/bin:$HOME/go/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
+''',
 ]
 run_at_load = true
 stdout_path = "~/Library/Logs/codex-gui-path.log"
