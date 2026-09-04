@@ -302,12 +302,6 @@ describe("zsh plugin bootstrap", () => {
             'bindkey "^[c"',
             'bindkey "^gx"',
             'bindkey "^I"',
-            'bindkey "^gg"',
-            'bindkey "^gs"',
-            'bindkey "^ga"',
-            'bindkey "^gb"',
-            'bindkey "^gW"',
-            'bindkey "^gz"',
             'bindkey "^g^f"',
             'bindkey "^g?"',
             "fi",
@@ -372,14 +366,82 @@ describe("zsh plugin bootstrap", () => {
       expect(result.stdout).toContain("fzf-cd-widget");
       expect(result.stdout).toContain('"^I" fzf-tab-complete');
       expect(result.stdout).toContain("_zsh_fzf_kill_widget");
-      expect(result.stdout).toContain("_zsh_git_menu_widget");
-      expect(result.stdout).toContain("_zsh_git_status_widget");
-      expect(result.stdout).toContain("_zsh_git_add_patch_widget");
-      expect(result.stdout).toContain("_zsh_git_switch_branch_widget");
-      expect(result.stdout).toContain("_zsh_git_worktree_widget");
-      expect(result.stdout).toContain("fzf-git-stashes-widget");
       expect(result.stdout).toContain("fzf-git-files-widget");
       expect(result.stdout).toContain("fzf-git-?list_bindings-widget");
+    }
+  });
+
+  it("binds every git widget declared in git-widgets.zsh", () => {
+    // Derived from the implementation: verifies declaration -> live-shell manifestation.
+    const source = fs.readFileSync(repoFile("zsh/lib/git-widgets.zsh"), "utf8");
+    const widgets = new Set<string>();
+    const pairs: Array<{ key: string; widget: string }> = [];
+
+    for (const line of source.split("\n")) {
+      const widgetMatch = /^\s*zle\s+-N\s+(\S+)\s*$/.exec(line);
+      if (widgetMatch) {
+        widgets.add(widgetMatch[1]);
+      }
+
+      const bindkeyMatch = /^\s*bindkey\s+-M\s+"\$keymap"\s+'([^']+)'\s+(\S+)\s*$/.exec(line);
+      if (bindkeyMatch) {
+        pairs.push({ key: bindkeyMatch[1], widget: bindkeyMatch[2] });
+      }
+    }
+
+    expect(pairs.length).toBeGreaterThan(0);
+
+    const result = spawnSync("zsh", ["-lic", "bindkey -M emacs"], {
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        HOME: os.homedir(),
+        XDG_CONFIG_HOME: repoRoot,
+        ZDOTDIR: zdotdir,
+        ZSH_LOAD_FZF: "1",
+        ZSH_LOAD_FZF_TAB: "1",
+        ZSH_LOAD_GH: "1",
+        ZSH_LOAD_GIT_WIDGETS: "1",
+        ZSH_LOAD_AUTOSUGGESTIONS: "1",
+        ZSH_LOAD_SYNTAX_HIGHLIGHTING: "1",
+        ZSH_LOAD_ZOXIDE: "1",
+        PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        LOGNAME: os.userInfo().username,
+        USER: os.userInfo().username,
+        SHELL: "/bin/zsh",
+        TERM: "xterm-256color",
+      },
+    });
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+
+    const dump = new Map<string, string>();
+    for (const line of result.stdout.split("\n")) {
+      const match = /^\s*"([^"]+)"\s+(\S+)\s*$/.exec(line);
+      if (match) {
+        dump.set(match[1], match[2]);
+      }
+    }
+
+    const normalizeKey = (key: string): string =>
+      key.replace(/\^(.)/g, (_match: string, character: string) => `^${character.toUpperCase()}`);
+
+    const lastPairByKey = new Map<string, (typeof pairs)[number]>();
+    for (const pair of pairs) {
+      lastPairByKey.set(normalizeKey(pair.key), pair);
+    }
+
+    for (const pair of pairs) {
+      const normalizedKey = normalizeKey(pair.key);
+      if (lastPairByKey.get(normalizedKey) !== pair) {
+        continue;
+      }
+      if (!widgets.has(pair.widget) && ![...dump.values()].includes(pair.widget)) {
+        continue;
+      }
+
+      expect(dump.get(normalizedKey), `git widget binding mismatch: ${pair.key} -> ${pair.widget}`).toBe(pair.widget);
     }
   });
 
