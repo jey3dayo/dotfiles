@@ -56,11 +56,18 @@ fi
 # (.env.local の旧値) を引き継ぐと古い値を書き戻してしまう。env -i + shim 迂回で実行する
 DOTENVX_BIN="$(mise which dotenvx 2>/dev/null || command -v dotenvx)"
 TEMP_FILE="$ENV_LOCAL.tmp.$$"
-if env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" "$DOTENVX_BIN" decrypt -f "$ENV_FILE" --stdout >"$TEMP_FILE" 2>/dev/null; then
+old_umask=$(umask)
+umask 077
+: >"$TEMP_FILE"
+# Truncate can reuse a leftover path without rewriting mode; force 0600 before plaintext lands.
+chmod 600 "$TEMP_FILE"
+if env -i PATH=/opt/homebrew/bin:/usr/bin:/bin DOTENV_PRIVATE_KEY_PATH="$ENV_KEYS" "$DOTENVX_BIN" decrypt -f "$ENV_FILE" --stdout >>"$TEMP_FILE" 2>/dev/null; then
+  umask "$old_umask"
   mv "$TEMP_FILE" "$ENV_LOCAL"
   chmod 600 "$ENV_LOCAL"
   echo "✓ .env.local updated successfully"
 else
+  umask "$old_umask"
   rm -f "$TEMP_FILE"
   echo "" >&2
   echo "❌ CRITICAL: Failed to decrypt .env" >&2

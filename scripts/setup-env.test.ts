@@ -119,6 +119,7 @@ printf '%s\\n' "SECRET=decrypted"
       expect(result.stdout).toMatch(/\.env\.local updated successfully/);
       const envLocal = path.join(configHome, ".env.local");
       expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=decrypted\n");
+      expect(fs.statSync(envLocal).mode & 0o777).toBe(0o600);
       expect(fs.readFileSync(logFile, "utf8")).toMatch(/decrypt -f/);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
@@ -200,7 +201,80 @@ printf '%s\\n' "SECRET=new"
       expect(result.status).toBe(0);
       expect(result.stdout).toMatch(/Updating \.env\.local/);
       expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=new\n");
+      expect(fs.statSync(envLocal).mode & 0o777).toBe(0o600);
       expect(fs.readFileSync(logFile, "utf8")).toMatch(/decrypt -f/);
+    } finally {
+      fs.rmSync(tempRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("keeps decrypt temp file mode 0600 before plaintext is written", async () => {
+    const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "setup-env-test-"));
+    const configHome = path.join(tempRoot, "config");
+    const fakeBin = path.join(tempRoot, "bin");
+    const gateFile = path.join(tempRoot, "release-gate");
+    fs.mkdirSync(configHome, { recursive: true });
+    fs.mkdirSync(fakeBin, { recursive: true });
+
+    fs.writeFileSync(path.join(configHome, ".env"), "SECRET=from-env\n", "utf8");
+    fs.writeFileSync(path.join(configHome, ".env.keys"), "private-key", "utf8");
+
+    makeExecutable(
+      path.join(fakeBin, "dotenvx"),
+      `#!/usr/bin/env sh
+# Wait until the test has inspected the live temp file mode.
+i=0
+while [ ! -f "${gateFile}" ] && [ "$i" -lt 100 ]; do
+  i=$((i + 1))
+  sleep 0.05
+done
+printf '%s\\n' "SECRET=decrypted"
+`,
+    );
+
+    try {
+      const child = spawnSetupEnv({
+        xdgConfigHome: configHome,
+        pathPrefix: [fakeBin],
+      });
+
+      let tempPath: string | undefined;
+      for (let i = 0; i < 100; i++) {
+        const match = fs.readdirSync(configHome).find((name) => name.startsWith(".env.local.tmp."));
+        if (match) {
+          tempPath = path.join(configHome, match);
+          break;
+        }
+        await Bun.sleep(50);
+      }
+
+      expect(tempPath).toBeDefined();
+      if (!tempPath) {
+        throw new Error("expected decrypt temp file to exist while dotenvx is paused");
+      }
+      expect(fs.statSync(tempPath).mode & 0o777).toBe(0o600);
+
+      fs.writeFileSync(gateFile, "go\n", "utf8");
+
+      const result = await new Promise<{ code: number | null; stdout: string; stderr: string }>((resolve) => {
+        let stdout = "";
+        let stderr = "";
+        child.stdout.on("data", (chunk) => {
+          stdout += chunk.toString();
+        });
+        child.stderr.on("data", (chunk) => {
+          stderr += chunk.toString();
+        });
+        child.on("close", (code) => {
+          resolve({ code, stdout, stderr });
+        });
+      });
+
+      expect(result.code).toBe(0);
+      expect(result.stderr).toBe("");
+      const envLocal = path.join(configHome, ".env.local");
+      expect(fs.readFileSync(envLocal, "utf8")).toBe("SECRET=decrypted\n");
+      expect(fs.statSync(envLocal).mode & 0o777).toBe(0o600);
     } finally {
       fs.rmSync(tempRoot, { recursive: true, force: true });
     }

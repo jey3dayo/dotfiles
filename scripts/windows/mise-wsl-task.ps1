@@ -6,6 +6,53 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+function Escape-BashSingleQuoted {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Value
+  )
+
+  return $Value.Replace("'", "'\''")
+}
+
+function Test-ShouldSkipEnvSnapshotPath {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$RelativePath
+  )
+
+  $baseName = [System.IO.Path]::GetFileName($RelativePath.Replace("\", "/"))
+  if ($baseName -eq ".env" -or $baseName -eq ".env.local" -or $baseName -eq ".env.keys") {
+    return $true
+  }
+
+  if ($baseName -like ".env.*") {
+    return $true
+  }
+
+  return $false
+}
+
+function Remove-EnvFilesFromSnapshot {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$SnapshotRootWin
+  )
+
+  foreach ($name in @(".env", ".env.local", ".env.keys")) {
+    $path = Join-Path $SnapshotRootWin $name
+    if (Test-Path -LiteralPath $path) {
+      Remove-Item -LiteralPath $path -Force
+    }
+  }
+
+  if (Test-Path -LiteralPath $SnapshotRootWin) {
+    Get-ChildItem -LiteralPath $SnapshotRootWin -Force -File |
+      Where-Object { $_.Name -like ".env.*" } |
+      Remove-Item -Force
+  }
+}
+
 function Read-Utf8TextFile {
   param(
     [Parameter(Mandatory = $true)]
@@ -60,8 +107,10 @@ function New-NormalizedRepoSnapshot {
 
   $snapshotId = [System.Guid]::NewGuid().ToString("N")
   $snapshotRootWsl = "/tmp/codex-mise-wsl-repo-$snapshotId"
+  $escapedSnapshotRootWsl = Escape-BashSingleQuoted $snapshotRootWsl
+  $escapedSourceRootWsl = Escape-BashSingleQuoted $SourceRootWsl
 
-  & wsl.exe bash --noprofile --norc -lc "git clone --quiet '$SourceRootWsl' '$snapshotRootWsl'"
+  & wsl.exe bash --noprofile --norc -lc "mkdir -m 700 '$escapedSnapshotRootWsl' && git clone --quiet '$escapedSourceRootWsl' '$escapedSnapshotRootWsl'"
   if ($LASTEXITCODE -ne 0) {
     throw "Failed to clone repo into WSL snapshot: $SourceRootWsl"
   }
@@ -79,6 +128,8 @@ function New-NormalizedRepoSnapshot {
     [System.IO.File]::WriteAllText($localMiseFile, $miseConfig, [System.Text.UTF8Encoding]::new($false))
   }
 
+  Remove-EnvFilesFromSnapshot -SnapshotRootWin $snapshotRootWin
+
   $changedFiles = @(
     & git -C $SourceRootWin -c submodule.recurse=false diff --ignore-submodules=all --name-only HEAD
     & git -C $SourceRootWin -c submodule.recurse=false ls-files --others --exclude-standard
@@ -89,6 +140,10 @@ function New-NormalizedRepoSnapshot {
   ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Sort-Object -Unique
 
   foreach ($relativePath in $changedFiles) {
+    if (Test-ShouldSkipEnvSnapshotPath -RelativePath $relativePath) {
+      continue
+    }
+
     $relativePathWin = $relativePath -replace "/", "\"
     $sourcePath = Join-Path $SourceRootWin $relativePathWin
     if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
@@ -121,20 +176,6 @@ function New-NormalizedRepoSnapshot {
   }
 }
 
-if (-not (Get-Command wsl.exe -ErrorAction SilentlyContinue)) {
-  throw "wsl.exe not found. Install WSL to run '$TaskName' from Windows."
-}
-
-$repoRootWin = Split-Path -Parent $PSScriptRoot
-$repoRootWsl = (& wsl.exe wslpath -a ($repoRootWin -replace "\\", "/") 2>$null)
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($repoRootWsl)) {
-  throw "Failed to convert repo path for WSL: $repoRootWin"
-}
-$repoRootWsl = $repoRootWsl.Trim()
-$snapshot = New-NormalizedRepoSnapshot -SourceRootWin $repoRootWin -SourceRootWsl $repoRootWsl
-$snapshotRootWin = $snapshot.WinPath
-$repoRootWsl = $snapshot.WslPath
-$tempScriptWin = Join-Path $env:TEMP ("codex-mise-wsl-task-" + [System.Guid]::NewGuid().ToString("N") + ".sh")
 $taskCommands = switch ($TaskName) {
   "check" {
     @(
@@ -177,15 +218,31 @@ $taskCommands = switch ($TaskName) {
     break
   }
   default {
-    @(("mise run '{0}'" -f $TaskName.Replace("'", "'\''")))
+    throw "Unsupported task: $TaskName"
   }
 }
+
+if (-not (Get-Command wsl.exe -ErrorAction SilentlyContinue)) {
+  throw "wsl.exe not found. Install WSL to run '$TaskName' from Windows."
+}
+
+$repoRootWin = Split-Path -Parent $PSScriptRoot
+$repoRootWsl = (& wsl.exe wslpath -a ($repoRootWin -replace "\\", "/") 2>$null)
+if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($repoRootWsl)) {
+  throw "Failed to convert repo path for WSL: $repoRootWin"
+}
+$repoRootWsl = $repoRootWsl.Trim()
+$snapshot = New-NormalizedRepoSnapshot -SourceRootWin $repoRootWin -SourceRootWsl $repoRootWsl
+$snapshotRootWin = $snapshot.WinPath
+$repoRootWsl = $snapshot.WslPath
+$tempScriptWin = Join-Path $env:TEMP ("codex-mise-wsl-task-" + [System.Guid]::NewGuid().ToString("N") + ".sh")
+$escapedRepoRootWsl = Escape-BashSingleQuoted $repoRootWsl
 $scriptContent = @(
   "#!/usr/bin/env bash"
   "set -euo pipefail"
   'export PATH="$HOME/.nix-profile/bin:$PATH"'
-  ("mise trust '{0}/.mise.toml' >/dev/null" -f $repoRootWsl)
-  ("cd '{0}'" -f $repoRootWsl)
+  ("mise trust '{0}/.mise.toml' >/dev/null" -f $escapedRepoRootWsl)
+  ("cd '{0}'" -f $escapedRepoRootWsl)
   $taskCommands
 ) -join "`n"
 
@@ -211,7 +268,8 @@ finally {
     Remove-Item -LiteralPath $tempScriptWin -Force
   }
   if (Test-Path -LiteralPath $snapshotRootWin) {
-    & wsl.exe bash --noprofile --norc -lc "rm -rf '$repoRootWsl'" | Out-Null
+    $escapedSnapshotRootWsl = Escape-BashSingleQuoted $repoRootWsl
+    & wsl.exe bash --noprofile --norc -lc "rm -rf '$escapedSnapshotRootWsl'" | Out-Null
   }
 }
 

@@ -40,7 +40,33 @@ normalize_line_endings() {
   sed -i 's/\r$//' "$file_path"
 }
 
+should_skip_env_snapshot_path() {
+  local relative_path=$1
+  local base_name
+  base_name=$(basename -- "$relative_path")
+
+  case "$base_name" in
+    .env | .env.local | .env.keys | .env.*)
+      return 0
+      ;;
+  esac
+
+  return 1
+}
+
+remove_env_files_from_snapshot() {
+  local root=$1
+
+  rm -f "$root/.env" "$root/.env.local" "$root/.env.keys"
+  for env_file in "$root"/.env.*; do
+    [ -e "$env_file" ] || continue
+    rm -f "$env_file"
+  done
+}
+
 git clone --quiet "$repo_root" "$snapshot_root"
+
+remove_env_files_from_snapshot "$snapshot_root"
 
 if [ -f "$snapshot_root/.mise.toml" ]; then
   sed -i 's|\.config/mise/local-tasks/|mise/local-tasks/|g' "$snapshot_root/.mise.toml"
@@ -58,6 +84,10 @@ mapfile -t deleted_files < <(
 )
 
 for relative_path in "${changed_files[@]}"; do
+  if should_skip_env_snapshot_path "$relative_path"; then
+    continue
+  fi
+
   source_path="$repo_root/$relative_path"
   [ -f "$source_path" ] || continue
 
@@ -90,6 +120,15 @@ case "$task_name" in
     ;;
   ci)
     task_commands=(
+      "mise run check"
+      "mise run test:lua"
+      "mise run test:ts"
+      "mise run ci:gitleaks"
+    )
+    ;;
+  ci:full)
+    task_commands=(
+      "mise run ci:verify-deploy"
       "mise run check"
       "mise run test:lua"
       "mise run test:ts"
