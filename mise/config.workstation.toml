@@ -34,7 +34,6 @@ bun = "latest"
 
 # Claude/AI ツール
 "npm:ccusage" = "latest"
-"npm:dev3000" = "latest"
 
 # クラウド・インフラ
 "npm:aws-cdk" = "latest"
