@@ -189,8 +189,9 @@ _zsh_register_git_widgets() {
     bindkey -M "$keymap" '^g^b' _zsh_git_browse_widget
     bindkey -M "$keymap" '^gW' _zsh_git_worktree_widget
     bindkey -M "$keymap" '^g^W' _zsh_git_worktree_widget
+    # zsh cannot distinguish ^b from ^B, and ^g^b is taken by browse above,
+    # so branch switch intentionally has no control-key variant.
     bindkey -M "$keymap" '^gB' _zsh_git_switch_branch_widget
-    bindkey -M "$keymap" '^g^B' _zsh_git_switch_branch_widget
 
     if (( $+widgets[fzf-git-stashes-widget] )); then
       bindkey -M "$keymap" '^gz' fzf-git-stashes-widget

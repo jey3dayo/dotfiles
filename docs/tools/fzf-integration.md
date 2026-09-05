@@ -42,19 +42,20 @@ Note: All `^g` commands support both patterns (`^gX` or `^g^X`)
 
 ### Git Integration
 
-| コマンド        | 機能                                        | 実装場所                           |
-| --------------- | ------------------------------------------- | ---------------------------------- |
-| `^gg` / `^g^g`  | Git diff ウィジェット (FZF)                 | zsh/config/tools/git.zsh           |
-| `^gs` / `^g^s`  | Git status ウィジェット (FZF)               | zsh/config/tools/git.zsh           |
-| `^ga` / `^g^a`  | Git add -p ウィジェット (FZF)               | zsh/config/tools/git.zsh           |
-| `^gb` / `^g^b`  | ブランチ切り替え (既存WTがあれば cd)        | zsh/config/tools/git.zsh (fzf-git) |
-| `^gW` / `^g^W`  | ワークツリーメニュー (Open/New/List/Remove) | zsh/config/tools/git.zsh           |
-| `^gw` / `^g^w`  | ワークツリー直接選択・cd                    | zsh/config/tools/git.zsh           |
-| `^gz` / `^g^z`  | スタッシュ確認・削除 (fzf-git)              | fzf-git.sh                         |
-| `^g^f`          | Gitファイル/差分ピッカー (fzf-git)          | fzf-git.sh                         |
-| `^g?`           | fzf-git キーバインドヘルプ                  | fzf-git.sh                         |
-| `gco()`         | FZF git checkout (ブランチ選択)             | zsh/lazy-sources/fzf.zsh           |
-| `wtcd <branch>` | ブランチの worktree に即座に cd             | zsh/config/tools/git.zsh           |
+| コマンド        | 機能                                        | 実装場所                 |
+| --------------- | ------------------------------------------- | ------------------------ |
+| `^gg` / `^g^g`  | Git diff ウィジェット (FZF)                 | zsh/config/tools/git.zsh |
+| `^gs` / `^g^s`  | Git status ウィジェット (FZF)               | zsh/config/tools/git.zsh |
+| `^ga` / `^g^a`  | Git add -p ウィジェット (FZF)               | zsh/config/tools/git.zsh |
+| `^gb` / `^g^b`  | `gh browse` でリポジトリを開く              | zsh/lib/git-widgets.zsh  |
+| `^gB`           | ブランチ切り替え (既存WTがあれば cd)        | zsh/lib/git-widgets.zsh  |
+| `^gW` / `^g^W`  | ワークツリーメニュー (Open/New/List/Remove) | zsh/config/tools/git.zsh |
+| `^gw` / `^g^w`  | ワークツリー直接選択・cd                    | zsh/config/tools/git.zsh |
+| `^gz` / `^g^z`  | スタッシュ確認・削除 (fzf-git)              | fzf-git.sh               |
+| `^g^f`          | Gitファイル/差分ピッカー (fzf-git)          | fzf-git.sh               |
+| `^g?`           | fzf-git キーバインドヘルプ                  | fzf-git.sh               |
+| `gco()`         | FZF git checkout (ブランチ選択)             | zsh/lazy-sources/fzf.zsh |
+| `wtcd <branch>` | ブランチの worktree に即座に cd             | zsh/config/tools/git.zsh |
 
 ### Tmux Integration
 
