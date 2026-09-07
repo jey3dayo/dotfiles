@@ -25,7 +25,7 @@ close_workspace = "prefix+d"
 new_tab = "prefix+t"
 next_tab = "prefix+tab"
 previous_tab = "prefix+shift+tab"
-rename_tab = ["prefix+shift+comma", "prefix+<"]
+rename_tab = "prefix+shift+t"
 
 # split (Ghostty 互換: c-x - = 上下分割, c-x ¥ = 左右分割)
 # 日本語キーボードの¥キーはshiftなしで¥(U+00A5)を送るため、
@@ -38,6 +38,11 @@ split_vertical = ["prefix+¥", "prefix+|"]
 cycle_pane_next = "prefix+o"
 cycle_pane_previous = ""
 open_notification_target = "" # prefix+space は herdr-unread に譲渡
+# ペイン名は agmsg の identity を手で入れる用途
+# JIS 配列では shift+comma の刻印が < なので、この2つは同一打鍵になる。
+# 別アクションへ割ると発火が不定になるため、必ず同じアクションへまとめる。
+# よって tab は既定の shift+t のみとし、カンマ段は pane が受ける
+rename_pane = ["prefix+shift+comma", "prefix+<"]
 
 # agent
 previous_agent = "prefix+>"
