@@ -1,11 +1,12 @@
 lockfile_version: "1"
-generated_at: "2026-09-08T07:22:29.007017+00:00"
+generated_at: "2026-09-08T07:33:34.373279+00:00"
 apm_version: 0.28.0
 dependencies:
   - repo_url: jey3dayo/dotfiles
     name: nvim
     host: github.com
-    resolved_commit: a61723f8856237a2e2b33c4adcff0ba54d005b33
+    resolved_commit: 4e9bb04f2229cf4a772eb5fad64a0199dc73ee4d
+    resolved_ref: 4e9bb04f2229cf4a772eb5fad64a0199dc73ee4d
     version: unknown
     virtual_path: skills/nvim
     is_virtual: true
@@ -30,7 +31,8 @@ dependencies:
   - repo_url: jey3dayo/dotfiles
     name: wezterm
     host: github.com
-    resolved_commit: a61723f8856237a2e2b33c4adcff0ba54d005b33
+    resolved_commit: 4e9bb04f2229cf4a772eb5fad64a0199dc73ee4d
+    resolved_ref: 4e9bb04f2229cf4a772eb5fad64a0199dc73ee4d
     version: unknown
     virtual_path: skills/wezterm
     is_virtual: true
@@ -51,7 +53,8 @@ dependencies:
   - repo_url: jey3dayo/dotfiles
     name: zsh
     host: github.com
-    resolved_commit: a61723f8856237a2e2b33c4adcff0ba54d005b33
+    resolved_commit: 4e9bb04f2229cf4a772eb5fad64a0199dc73ee4d
+    resolved_ref: 4e9bb04f2229cf4a772eb5fad64a0199dc73ee4d
     version: unknown
     virtual_path: skills/zsh
     is_virtual: true

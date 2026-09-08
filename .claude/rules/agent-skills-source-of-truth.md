@@ -18,7 +18,9 @@ Purpose: スキル配布と編集元の混線を防ぎ、どこを編集する�
 `apm.yml` の `dependencies.apm` が自リポジトリの `skills/*` を宣言している場合（この repo の `skills/{nvim,wezterm,zsh}` が該当）、その skill は managed catalog に属さない。
 
 - 正本は repo 内の `skills/**`。`.claude/skills/**` と `.agents/skills/**` は配布先なので直接編集しない。
-- 変更手順は「`skills/**` を編集 → commit → **push** → `apm install --update`」。依存はリモート ref を解決するため、push 前に `apm install` すると配布先が古い内容へ巻き戻る。`apm audit` は正本の変更を drift として報告するので、drift の解消は push 後に行う。
+- 依存は SHA で pin する（`jey3dayo/dotfiles/skills/<name>#<40桁 SHA>`）。self-reference でも pin しないと解決が不安定になる。
+- 変更手順は「`skills/**` を編集 → commit → **push** → `apm.yml` の pin を push 済みの SHA へ bump → `apm install` → lock ごと commit」。依存はリモート ref を解決するため、push 前に `apm install` すると配布先が古い内容へ巻き戻る。pin を bump し忘れると、正本を変えても配布先は古い SHA の内容のままになる。
+- `apm audit` は正本の変更を drift として報告するので、drift の解消は push と pin bump のあとに行う。
 - `apm.lock.yaml` の更新はこの再配布の一部であり、上の「APM を操作しない」が禁じる対象には含めない。
 - ドリフトの有無は `apm audit`（read-only）で確認する。`No drift detected` になれば同期済み。
 
