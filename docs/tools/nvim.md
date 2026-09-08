@@ -1,8 +1,20 @@
-# 💻 Neovim Configuration Guide
+---
+type: reference
+title: Neovim Configuration Guide
+description: dotfiles repo の Neovim 設定（起動性能・LSP・プラグイン構成・キーバインド）の正本
+resource: docs/tools/nvim.md
+tags:
+  - category/editor
+  - layer/tool
+  - tool/nvim
+  - environment/cross-platform
+  - audience/advanced
+timestamp: 2026-09-08
+audience: advanced
+owner: dotfiles
+---
 
-最終更新: 2026-05-23
-対象: 開発者・上級者
-タグ: `category/editor`, `tool/nvim`, `layer/tool`, `environment/cross-platform`, `audience/advanced`
+# 💻 Neovim Configuration Guide
 
 100ms未満の高速起動と15言語対応のLSPを備えたモダンなLua設定です。
 
@@ -10,136 +22,14 @@
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/nvim.md`](../../.claude/rules/tools/nvim.md) で管理されています。
 
-- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 目的: Claude AIが常に参照する簡潔なルール
 - 適用範囲: YAML frontmatter `paths:` で定義
 - 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
-
-## 🏆 2025年ベストプラクティス準拠度評価
-
-現在の設定は**2025年基準で優秀**な構成です。最新のNeovimベストプラクティスとの比較評価：
-
-### ✅ **準拠している領域（A評価）**
-
-| 項目                   | 現在の実装                  | 2025年基準                 | 評価       |
-| ---------------------- | --------------------------- | -------------------------- | ---------- |
-| 設定言語               | 完全Lua化                   | Lua必須（Vimscript非推奨） | ⭐⭐⭐⭐⭐ |
-| プラグインマネージャー | lazy.nvim（遅延読み込み）   | lazy.nvim/packer.nvim推奨  | ⭐⭐⭐⭐⭐ |
-| LSP統合                | nvim-lspconfig + mason.nvim | Native LSP必須             | ⭐⭐⭐⭐⭐ |
-| 起動パフォーマンス     | <100ms                      | <200ms目標                 | ⭐⭐⭐⭐⭐ |
-| AI統合                 | Supermaven-nvim             | AI支援必須                 | ⭐⭐⭐⭐⭐ |
-| モジュラー設計         | config/plugins/core/lsp分離 | ファイル分離推奨           | ⭐⭐⭐⭐⭐ |
-
-### 📊 **プラグインマネージャー比較**
-
-| 特徴         | lazy.nvim（現在）      | packer.nvim        | vim-plug       |
-| ------------ | ---------------------- | ------------------ | -------------- |
-| 起動速度     | 最高速（遅延読み込み） | 高速（コンパイル） | 普通           |
-| 設定の柔軟性 | 高（条件・イベント）   | 中（基本的な条件） | 低             |
-| Lua対応      | ネイティブ             | 完全対応           | 部分対応       |
-| UI・監視     | 統合ダッシュボード     | 基本的なUI         | コマンドライン |
-| 2025年対応   | ✅ 推奨選択肢          | ✅ 安定選択肢      | ❌ レガシー    |
-
-結論: lazy.nvimは2025年基準で最適。変更不要。
-
-### 🔍 **LSPエコシステム評価**
-
-```lua
--- 2025年推奨パターン（現在実装中）
-require('mason').setup()           -- ツール管理
-require('mason-lspconfig').setup() -- LSP自動設定
-require('lspconfig')[server].setup() -- 言語別詳細設定
-
--- 非推奨パターン（回避済み）
--- vim.lsp.start() -- 手動設定
--- external package managers -- Mason外部依存
-```
-
-評価: 現在のMason統合は2025年標準。15言語対応は**業界標準を上回る**充実度。
-
-### ⚡ **パフォーマンス水準**
-
-| 指標               | 現在値     | 2025年目標 | 評価状況 |
-| ------------------ | ---------- | ---------- | -------- |
-| 起動時間           | <100ms     | <200ms     | 優秀     |
-| プラグイン読み込み | 遅延実行   | 遅延推奨   | 準拠     |
-| 大ファイル処理     | >2MB制限   | 適応的     | 適切     |
-| メモリ使用量       | 最適化済み | 効率性重視 | 良好     |
-
-改善余地: 現在のパフォーマンスは目標を上回る。現状維持。
-
-## 🔍 詳細コード品質分析（A評価の根拠）
-
-### 🏗️ **設定アーキテクチャ品質: A**
-
-#### **優秀な設計パターン**
-
-- 完全Lua化: Vimscriptの完全排除、2025年標準準拠
-- 階層化設計: `init.lua` → `config/` → `plugins/` の明確な分離
-- 遅延読み込み戦略: プラグインの条件付き・イベント駆動読み込み
-
-```lua
--- 現在の優秀なアーキテクチャ例
-nvim/
-├── init.lua              -- エントリポイント（最小限）
-├── lua/config/           -- プラグイン別の詳細設定
-├── lua/plugins/          -- lazy.nvim プラグイン定義
-├── lua/core/             -- 起動・依存・ファイルタイプ基盤
-└── lua/lsp/              -- LSP、フォーマット、診断ヘルパー
-```
-
-#### **高度な最適化戦略**
-
-- 段階的読み込み: コア → UI → LSP → AI の優先度別読み込み
-- 大ファイル対策: 2MB超ファイルでTreesitter無効化
-- 不要プロバイダー削除: Python/Ruby プロバイダー無効化による軽量化
-
-### ⚡ **プラグイン選択品質: A+**
-
-#### **2025年推奨プラグインとの対応**
-
-| カテゴリ       | 現在選択                | 2025年推奨   | 準拠度 |
-| -------------- | ----------------------- | ------------ | ------ |
-| ファイル検索   | mini.pick + mini.extra  | picker系統   | ✅     |
-| LSP            | nvim-lspconfig + mason  | 同じ         | ✅     |
-| Git            | gitsigns.nvim           | 同じ/lazygit | ✅     |
-| AI             | supermaven-nvim         | AI補完支援   | ✅     |
-| ナビゲーション | mini.files + flash.nvim | 多様な選択肢 | ✅     |
-
-結論: プラグイン選択は2025年標準と完全一致。優秀な判断。
-
-### 🛠️ **保守性・拡張性: A-**
-
-#### **優秀な点**
-
-- 言語幅の広さ: 15言語対応は業界平均（8-10言語）を大幅上回る
-- 設定の柔軟性: `local.lua`による環境固有カスタマイゼーション
-- デバッグサポート: `:checkhealth`, `:Lazy profile` による診断システム
-
-#### **改善機会（微細レベル）**
-
-- Treesitterクエリの最適化
-- カスタムコマンドのより詳細なドキュメント化
-- プラグイン間依存関係の明示
-
-### 📊 **2025年基準での評価総括**
-
-| 評価項目       | スコア | 詳細                            |
-| -------------- | ------ | ------------------------------- |
-| 設定品質       | 94/100 | 完全Lua化、優秀なアーキテクチャ |
-| パフォーマンス | 96/100 | 業界目標を大幅上回る<100ms起動  |
-| プラグイン選択 | 95/100 | 2025年推奨プラグインと完全一致  |
-| 言語対応       | 98/100 | 15言語対応は業界標準を大幅超越  |
-| AI統合         | 88/100 | Supermaven-nvim 高速AI補完      |
-| 保守性         | 90/100 | 設定分離、デバッグサポート充実  |
-
-## 総合評価: A (94/100)
-
-結論: これは**2025年参考実装レベル**のNeovim設定。大幅な変更は不要で、現在の設計思想の継続が最適。
 
 ## 主要機能
 
 - 高性能: lazy.nvim最適化による100ms未満起動
-- LSP対応: 15以上のプログラミング言語をフルサポート
+- LSP対応: 15以上の言語・設定形式をフルサポート
 - AI統合: Supermaven-nvim
 - モダンUI: mini.pick、mini.files、flash.nvim による高速ナビゲーション
 
@@ -164,12 +54,17 @@ nvim/
 └── after/ftplugin/       # ファイルタイプ設定
 ```
 
+読み込み順序: `lua/core/bootstrap.lua` がコア（options/keymaps/lazy起動）を即座に読み込み、UI・LSPオートフォーマット・カラースキームなどの重い初期化は `vim.defer_fn` で遅延読み込みする。
+
 ## サポート言語
 
-プログラミング言語: Lua, TypeScript/JavaScript, Python, Rust, Go, C/C++,
-Java, PHP, Ruby, Swift, Kotlin, C#, Dart, Shell
+プログラミング言語: Lua, Go, Python, JavaScript/TypeScript（JSX/TSX/Vue含む）, Bash/Shell（zsh含む）, Vim script
 
-マークアップ: HTML/CSS, JSON, YAML, TOML, Markdown, Docker
+インフラ・設定: Docker, Terraform, Prisma, TOML, JSON, YAML（docker-compose/gitlab/helm-values含む）
+
+マークアップ: CSS（Tailwind CSS 含む・HTML属性補完対応）, Markdown, Astro
+
+上記に加え、`typos_lsp` が全ファイルタイプ横断でスペルチェックを行う（`nvim/lua/lsp/config.lua` の `M.servers` が正本）。
 
 ## 主要キーバインド
 
@@ -226,42 +121,36 @@ tl              -- 型定義へ移動
 
 ## テーマ・UI
 
-- メインテーマ: Gruvbox（他ツールと統一）
-- 透明背景: ターミナル統合
-- ステータスライン: モード、Gitブランチ、LSP状態、診断情報
+- メインテーマ: `0x96f.nvim`（`filipjanevski/0x96f.nvim`、`lua/colorscheme.lua` で適用）。`kanagawa.nvim` / `tokyonight.nvim` も lazy 登録済みで手動切り替え可能
+- 透明背景: `Normal`/`SignColumn` 等を `guibg=NONE` にしてターミナル背景と統合
+- ステータスライン: モード、Gitブランチ、LSP状態、診断情報（lualine.nvim）
 
 ## 最適化設定
 
 ```lua
--- 未使用プロバイダー無効化
-vim.g.loaded_python3_provider = 0
+-- 未使用プロバイダー無効化（lua/options.lua）
 vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0 -- 同期的な mise コマンド実行を回避
 
 -- lazy.nvim パフォーマンス設定
 defaults = { lazy = true }  -- デフォルト遅延ロード
 disabled_plugins = {        -- 不要内蔵プラグイン無効化
-  "gzip", "matchit", "netrwPlugin", "tarPlugin", "zipPlugin"
+  "gzip", "matchit", "matchparen", "netrwPlugin",
+  "tarPlugin", "tohtml", "tutor", "zipPlugin"
 }
-
--- 大ファイル対策（Treesitter）
-disable = function(_, buf)
-  local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
-  return ok and stats and stats.size > 1024 * 1024 * 2  -- >2MB
-end
 ```
+
+大ファイル対策: `lua/core/utils.lua` の `is_large_file`（既定 2MB 超）を `lua/core/ftplugin_loader.lua` が参照し、超過時は Treesitter の `vim.treesitter.start` をスキップする。
 
 ## カスタマイゼーション
 
-マシン固有設定は `lua/config/local.lua` に記述：
+プロジェクト固有の上書きは `load_config.lua` が cwd から上方向に `nvim.config.lua` を探索して読み込む（マシン固有の `lua/config/local.lua` のような仕組みは現状存在しない）：
 
 ```lua
--- テーマ変更
+-- 例: リポジトリ直下に nvim.config.lua を置くと自動読み込みされる
 vim.opt.background = "light"
-
--- Supermaven無効化
-vim.g.supermaven_enabled = false
-
--- カスタムキーマップ
 vim.keymap.set('n', '<leader>ll', ':Lazy<CR>')
 ```
 
@@ -280,6 +169,12 @@ vim.keymap.set('n', '<leader>ll', ':Lazy<CR>')
 # blink.cmp の checkhealth で「Some providers may show up as \"disabled\"」と表示されるのは仕様で、設定で info 扱いに変換しています
 # conform は biome の設定ファイルがあるときのみ有効化され、無ければ prettier/eslint_d のみで動きます
 ```
+
+## 改善機会（未対応）
+
+- Treesitter query の最適化
+- カスタムコマンドのより詳細なドキュメント化
+- プラグイン間依存関係の明示
 
 ## デバッグ・プロファイリング
 

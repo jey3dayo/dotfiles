@@ -23,10 +23,10 @@ This skill owns the dotfiles-specific patterns and review criteria below.
 ## Review Workflow
 
 1. Measure: `nvim --startuptime startup.log`, `:Lazy profile`
-2. Structure: `init.lua` → `lua/config/` → `lua/plugins/`
+2. Structure: `init.lua` → `lua/config/` → `lua/plugins/`, plus any `core/` / `lsp/` layers (see the tree below)
 3. Plugins: count, `lazy-lock.json` tracked in git, event/cmd/ft triggers on specs
-4. LSP: `lua/plugins/lsp.lua` mason setup, `ensure_installed` coverage, pcall wrapping
-5. Keybindings: space leader, no conflicts
+4. LSP: mason setup, `ensure_installed` coverage, pcall wrapping — the wiring lives in `lua/plugins/lsp.lua` or a dedicated `lua/lsp/` module depending on the repo
+5. Keybindings: confirm the actual leader key in the repo's own config (this dotfiles repo uses comma, `,`, not Space — check `keymaps.lua` or equivalent before assuming), no conflicts
 6. AI: `lua/plugins/ai.lua` or `completion.lua`, <50ms latency (verify with profiling)
 7. Performance: compare against benchmarks below and `references/nvim.md`
 8. Health: `:checkhealth` for providers/LSP
@@ -56,14 +56,16 @@ Judge against the benchmarks above and report the gap, not a score:
 
 ```
 nvim/
-├── init.lua                    # Entry point
+├── init.lua                    # Entry point (often delegates to a bootstrap module)
 ├── lazy-lock.json              # Plugin versions (tracked in git)
-├── lua/
-│   ├── config/                 # lazy.nvim bootstrap, options, keymaps, autocmds
-│   ├── plugins/                # Modular specs: editor, lsp, ui, git, ai
-│   └── utils/                  # Utility functions
-└── local.lua                   # Machine-specific overrides (gitignored)
+└── lua/
+    ├── config/                 # Per-plugin settings
+    ├── plugins/                # Modular lazy.nvim specs: editor, lsp, ui, git, ai
+    ├── core/                   # Bootstrap/startup, dependency, filetype helpers (if present)
+    └── lsp/                    # LSP wiring, formatter/linter helpers (if present)
 ```
+
+Naming varies by repo — verify the actual layout (e.g. this dotfiles repo uses `lua/core/bootstrap.lua` as the entry delegate and has no `local.lua`/`utils/` directories) before flagging a deviation.
 
 ### Cross-Tool Integration
 
