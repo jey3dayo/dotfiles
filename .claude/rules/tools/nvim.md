@@ -30,5 +30,5 @@ Detailed Reference: See [docs/tools/nvim.md](../../../docs/tools/nvim.md) for co
 
 ## Customization rules
 
-- Add new settings under lua/config or plugin definitions under lua/plugins; prefer local.lua for machine-specific tweaks.
+- Add new settings under lua/config or plugin definitions under lua/plugins. There is currently no machine-specific override file (no `lua/config/local.lua` equivalent exists); project-specific overrides instead go through `load_config.lua`, which searches upward from cwd for `nvim.config.lua` (see `docs/tools/nvim.md`).
 - Document major plugin additions with their load conditions to preserve lazy behavior.

@@ -49,7 +49,7 @@ dotfiles 特化のコードレビュー観点。この repo で設定変更を�
 - LSP設定: クライアント管理・重複回避の適切性
 - プラグイン: lazy.nvim最適化・必要性の妥当性
 - キーマップ: 統一パターン・競合回避
-- AI統合: Copilot等の効率的設定
+- AI統合: Supermaven等の効率的設定
 - 起動最適化: プラグイン遅延読み込み最適化
 
 ### Terminal層 (WezTerm/Tmux/Alacritty)
@@ -57,7 +57,7 @@ dotfiles 特化のコードレビュー観点。この repo で設定変更を�
 - 設定構造: Lua設定の適切な分離・モジュール化
 - パフォーマンス: GPU加速・レンダリング最適化
 - 統合: Shell・Editorとの連携適切性
-- テーマ統一: Gruvbox統一テーマの適用
+- テーマ統一: 端末側テーマの一貫性（WezTerm/Alacritty は Gruvbox 系、Neovim は 0x96f）
 - フォント設定: 統一フォントシステム
 
 ### Git層

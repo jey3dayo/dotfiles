@@ -13,11 +13,11 @@ Detailed Reference: See [docs/tools/zsh.md](../../../docs/tools/zsh.md) for comp
 ## Core rules
 
 - ZDOTDIR is ~/.config/zsh; login and non-login share the same config.
-- Preserve the startup contract: `.zshenv` for XDG and minimal PATH, `.zprofile` for dedupe and full PATH rebuild, `.zshrc` for shell options and init scripts, then `config/loader.zsh` for `core -> tools -> functions -> os`, with `lazy-sources/*.zsh` deferred.
+- Preserve the startup contract: `.zshenv` for XDG and minimal PATH, `.zprofile` for dedupe and full PATH rebuild, `.zshrc` sourcing `zsh/lib/*.zsh` grouped by category (core shell state -> completion -> agent integrations -> key bindings -> interactive input -> platform-specific -> prompt/decorators). Prefer deferred loading for non-essential tools.
 - PATH priority stays `mise shims -> $HOME/{bin,.local/bin} -> language tools -> Android SDK -> Homebrew -> system`. Use `typeset -gaU path` and rebuild in `.zprofile`.
-- Keep Sheldon + zsh-defer as the loading model. Rebuild `compinit` on completion changes / 24h cadence, prune stale `zcompdump`, and keep mise shims re-promoted after Sheldon loads.
-- Add tool config under `config/tools/*.zsh`, OS-specific changes under `config/os/*.zsh`, and bundled completions under `completions/`. Prefer deferred loading for non-essential tools.
-- Health and troubleshooting should route through `zsh-help`, `zsh-help tools`, `path-check`, `zsh-quick-check`, `mise-status`, `zsh -df`, and `zprof` with `ZSH_DEBUG=1`.
+- Keep Sheldon as the plugin manager (`zsh/sheldon/plugins.toml`). Rebuild `compinit` on completion changes / 24h cadence, prune stale `zcompdump`, and keep mise shims re-promoted after Sheldon loads.
+- Add new tool integrations as files under `zsh/lib/*.zsh` (sourced from `.zshrc`); OS-specific behavior lives inline in a dedicated lib file (e.g. `zsh/lib/wsl.zsh`). Bundled completions live under `zsh/completions/`.
+- Health and troubleshooting should route through `zsh-benchmark` and `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'`.
 - FZF and Git key bindings are documented in `docs/tools/fzf-integration.md`; do not duplicate them in rule files.
 
 ## Glob qualifiers
