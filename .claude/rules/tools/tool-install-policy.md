@@ -14,7 +14,7 @@ Tool management architecture policy defining responsibility boundaries between H
 
 ## Scope
 
-- Homebrew (Brewfile): **casks（80）・mas（20）・vscode extensions（69）** と bootstrap 非対応エントリの正本（cask/mas の bootstrap 移行は未着手。完了までは Brewfile を編集する）
+- Homebrew (Brewfile): **casks・mas・vscode extensions** と bootstrap 非対応エントリの正本（cask/mas の bootstrap 移行は未着手。完了までは Brewfile を編集する）
 - mise `[tools]`: CLI tools, language runtimes, development environments
 - mise bootstrap: `[dotfiles]` による設定配布 + `[bootstrap.packages]` による brew formulae 宣言（`mise/config.macos.toml`）。cask / mas backend は将来の移行候補
 - Self-updating standalone（mise 管理外）: 公式インストーラ + 自己更新コマンドを持つ CLI（mise, claude, codex）。導入保証のみ mise bootstrap の `[bootstrap.hooks.post-tools]` hook が担う
@@ -85,8 +85,6 @@ Responsibility: System dependencies, GUI applications, macOS-specific tools
 - System-level libraries
 - GUI application management
 - Robust dependency resolution
-
-Current state: 188 formulae + 78 casks (as of 2026-02-26)
 
 ### Self-updating standalone
 
@@ -193,40 +191,18 @@ Policy: Prefer mise `go:` prefix over Homebrew `go` section
 | mise (優先)       | Development tools, project-specific | `go:github.com/golangci/golangci-lint/cmd/golangci-lint` |
 | Homebrew (最小限) | Go toolchain commands               | `go "cmd/go"`                                            |
 
-Current Homebrew go section: 2 entries (Go toolchain commands)
+Homebrew go section: Go toolchain commands
 
 - `cmd/go` - Go compiler
 - `cmd/gofmt` - Go formatter
 
-mise go tools: 5 tools
+mise go tools:
 
 - `golangci-lint` - Linter aggregator
 - `lambroll` - AWS Lambda deployment
 - `wire` - Dependency injection
 - `git-wt` - Git worktree helper
 - `goimports` - Import management
-
-## starship Case Study
-
-Migration path: Homebrew → mise
-
-#### Final architecture
-
-- Binary: `mise install starship` (mise/entry.workstation-unix.toml)
-- Configuration: `~/.config/starship.toml`（git 管理、リポジトリ直下）
-
-#### Rationale
-
-- starship is a cross-platform CLI tool (mise responsibility)
-- mise bootstrap distributes configuration only (no binary installation)
-- Version pinning enables reproducibility across environments
-- Aligns with three-layer architecture principles
-
-#### Related
-
-- PR #106: Home Manager starship configuration
-- PR #108: starship binary moved to mise
-- Commit e40c34ac: Rust toolchain moved to mise
 
 ## Common Violations
 
@@ -303,25 +279,11 @@ Expected result: Empty (no duplicates)
   - Homebrew: Neovim binary and system dependencies
   - mise: Node.js LSP client (npm package)
 
-### Check mise tool availability
-
-```bash
-# Verify deleted Brewfile tools exist in mise
-for tool in usage tree-sitter-cli zx pipx rust; do
-  echo -n "$tool: "
-  grep -q "^$tool\s*=" mise/entry.workstation-unix.toml && echo "✅ in mise" || echo "❌ missing"
-done
-```
-
 ### Validate Brewfile structure
 
 ```bash
 # Check for policy comments
 head -5 Brewfile | grep -q "# Homebrew policy:" && echo "✅ Policy documented" || echo "❌ Missing policy"
-
-# Check for removed tools
-grep -E '^brew "(usage|pipx|python@3.11|python@3.12|rust|tree-sitter-cli|zx)"' Brewfile
-# Expected: No output (tools removed)
 ```
 
 ## Migration Checklist
@@ -451,7 +413,6 @@ When migrating a tool from Homebrew to mise:
    ```
 
 4. Update documentation
-   - Refresh tool counts in this document
    - Update migration examples
    - Document new exceptions
 
@@ -464,21 +425,5 @@ When migrating a tool from Homebrew to mise:
 
 ## References
 
-- PR #106: Home Manager starship prompt
-- PR #108: starship binary moved to mise
-- Commit 01ea391b: Brewfile alignment with policy
-- Commit e40c34ac: Rust toolchain moved to mise
 - `docs/tools/workflows.md`: Brewfile workflows
 - `docs/tools/mise.md`: mise runtime management
-- `docs/tools/workflows.md`: Tool management philosophy
-
-## Change Log
-
-- 2026-02-12: Initial policy document created
-- 2026-02-12: Removed 4 tools from Brewfile (usage, rust, tree-sitter-cli, zx)
-- 2026-02-12: Added policy comments to Brewfile
-- 2026-02-12: Documented starship migration path
-- 2026-02-26: Removed 4 duplicate tools from Brewfile (gitleaks, pipx, python@3.11, python@3.12)
-- 2026-02-26: Updated Go tools section (golangci-lint/lambroll/wire migrated to mise)
-- 2026-02-26: Updated formulae/cask counts, added doc links (TOOLS.md, docs/setup.md)
-- 2026-09-03: Added self-updating standalone layer (mise / claude / codex); removed npm:@openai/codex from mise tools
