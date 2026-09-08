@@ -76,7 +76,8 @@
 
 [wt]
   basedir = ".worktrees"
-  copy = .env
+  copy = .env*
+  nocopy = .env.backup.*
 [user]
 	name = Junya Nakazato
 	email = j138cm@gmail.com
