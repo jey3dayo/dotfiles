@@ -209,6 +209,10 @@ claude/*
 !claude/settings.json
 **/.claude/settings.local.json
 
+## Codex
+# agmsg が絶対パスを埋め込んで生成するため環境ごとに再生成する
+.codex/hooks.json
+
 ## Claude Code
 .claude/local/
 .claude/projects/
