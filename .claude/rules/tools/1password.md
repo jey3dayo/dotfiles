@@ -7,7 +7,7 @@ source: docs/tools/1password.md
 
 Purpose: enforce 1Password CLI usage, service account boundaries, and token storage practices. Scope: dotenv key retrieval, token rotation, and automation-safe vault usage.
 
-Detailed Reference: See [docs/tools/1password.md](../../docs/tools/1password.md) for the full operational guide and rotation steps.
+Detailed Reference: See [docs/tools/1password.md](../../../docs/tools/1password.md) for the full operational guide and rotation steps.
 
 ## Authentication modes
 
