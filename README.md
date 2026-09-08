@@ -84,7 +84,6 @@ exec zsh
 
 # 7. Verify installation
 mise bootstrap status --missing   # 全宣言部が収束していれば exit 0
-zsh-help
 mise doctor
 ```
 
@@ -149,20 +148,21 @@ dotfiles/
 ## Shortcuts & Commands
 
 ```bash
-# Shell help
-zsh-help                   # Interactive help system
-zsh-help keybinds          # Key bindings reference
-zsh-help aliases           # Aliases reference
+# Shell scripts (zsh/bin/)
+zsh-benchmark                        # Measure shell startup time
+zsh-fzf-refresh                      # Rebuild fzf-git/fzf-tab caches
+zsh-gh-completion-refresh            # Regenerate gh CLI completions
+zsh-sheldon-refresh                  # Reinstall sheldon plugin lock/cache
 
-# Git workflow (FZF-backed widgets; see docs/tools/fzf-integration.md)
+# Git & FZF widgets (see docs/tools/fzf-integration.md for the full reference)
 Ctrl+]                     # FZF repository selector
-Ctrl+g Ctrl+g              # Git diff widget
-Ctrl+g Ctrl+s              # Git status widget
-Ctrl+g Ctrl+a              # Git add widget
-Ctrl+g Ctrl+b / Ctrl+g s   # Git branch switcher (fzf-git powered)
-Ctrl+g Ctrl+w              # Git worktree manager (fzf-git powered)
+Ctrl+g Ctrl+g              # Git action menu (FZF; status/diff/add-p/branch switch/stash/git-files/worktrees/browse)
+Ctrl+g Ctrl+s              # git status -sb (buffer insert, no FZF)
+Ctrl+g Ctrl+a              # git add -p (buffer insert, no FZF)
+Ctrl+g B                   # Branch switcher (FZF; cd if worktree exists)
+Ctrl+g Ctrl+w              # Worktree menu (FZF; Open/New/List/Prune)
 Ctrl+g Ctrl+z              # fzf-git stash picker
-Ctrl+g Ctrl+f              # fzf-git file picker
+Ctrl+g Ctrl+f              # fzf-git file/diff picker
 
 # WezTerm (Ctrl+x leader key)
 Ctrl+x c                   # New tab

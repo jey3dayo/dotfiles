@@ -160,8 +160,7 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 ## Verification
 
 ```bash
-zsh-help                # Verify zsh configuration is loaded
-zsh-help tools          # Check installed tools
+zsh-benchmark            # Measures startup time; failure/error means zsh config didn't load
 nvim                    # First run installs plugins
 git config user.name    # Verify your name appears
 mise ls                 # List all mise-managed tools

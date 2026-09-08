@@ -105,7 +105,7 @@ end
 
 ## 統合機能
 
-- 統一テーマ: 他dotfilesツールとのGruvbox統一
+- テーマ: Gruvbox系配色（WezTerm・Alacritty）。Neovimは`0x96f`、tmuxのgruvboxテーマは未適用（コメントアウト）のため全ツール統一はしていない
 - 透明背景: Tmux・シェルとのシームレス統合
 - GPU最適化: 高速描画・低レイテンシー操作
 - クロスプラットフォーム: macOS/Windows/Linux対応

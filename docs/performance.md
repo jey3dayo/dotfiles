@@ -68,8 +68,8 @@ Total Startup Time: <100ms
 
 ```bash
 # Zsh パフォーマンス
-zsh-help                   # 総合ヘルプシステム
-zsh-help tools             # インストール済みツール確認
+zsh-benchmark              # 起動時間測定
+ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'  # プロファイリング（関数別の負荷内訳）
 
 # システム監視
 btop                       # Modern system monitor
@@ -219,7 +219,7 @@ echo "Processes: $(ps aux | wc -l)"
 
 #### 診断手順
 
-1. `zsh-help tools` でツール状態確認
+1. `zsh-benchmark` で起動時間を測定
 2. プラグイン個別無効化テスト
 3. `nvim --startuptime startup.log` で詳細分析
 
