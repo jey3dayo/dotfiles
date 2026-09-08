@@ -1,5 +1,6 @@
 {
   "trustedformulae": [
+    "aws/tap/copilot-cli",
     "daipeihust/tap/im-select",
     "gofireflyio/aiac/aiac",
     "olets/tap/zsh-abbr@6",
@@ -9,10 +10,12 @@
     "arto-app/tap",
     "bufbuild/buf",
     "buo/cask-upgrade",
+    "fujibee/agmsg",
     "hashicorp/tap",
     "k1low/tap",
     "manaflow-ai/cmux",
     "sanemat/font",
+    "steipete/tap",
     "voicevox/voicevox"
   ],
   "trustedcasks": ["stablyai/orca/orca"]
