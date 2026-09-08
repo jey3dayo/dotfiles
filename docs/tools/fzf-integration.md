@@ -1,6 +1,6 @@
 # 🔍 FZF Integration Guide
 
-最終更新: 2025-12-17
+最終更新: 2026-09-08
 対象: 開発者・上級者
 タグ: `category/integration`, `tool/fzf`, `layer/support`, `environment/cross-platform`, `audience/advanced`
 
@@ -13,7 +13,7 @@ FZF/Git キーバインドとワークフローの一覧は本書を単一情報
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/fzf-integration.md`](../../.claude/rules/tools/fzf-integration.md) で管理されています。
 
-- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 目的: Claude AIが常に参照する簡潔なルール
 - 適用範囲: YAML frontmatter `paths:` で定義
 - 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
@@ -21,48 +21,41 @@ FZF/Git キーバインドとワークフローの一覧は本書を単一情報
 
 FZF は以下の層で横断的に統合されています：
 
-- Shell Layer: コマンド履歴、プロセス管理、ディレクトリ移動
+- Shell Layer: コマンド履歴（atuin。FZFではない）、プロセス管理、ディレクトリ移動
 - Git Layer: リポジトリ選択、ブランチ切り替え、ファイル選択
-- Terminal Layer: Tmux セッション管理
-- Editor Layer: Neovim ファイル検索（telescope → fzf-lua 移行済み）
+
+Tmux と Neovim は現状 FZF と統合されていません（Tmux はセッション/ウィンドウ操作に `command-prompt` を使用、Neovim は `mini.pick` を使用）。詳細は「未確認・対象外の統合」を参照。
 
 ## ⌨️ Key Bindings
 
 ### Global Shortcuts
 
-| キーバインド   | 機能                   | 場所        |
-| -------------- | ---------------------- | ----------- |
-| `^]`           | ghq リポジトリ選択     | Shell (Zsh) |
-| `^g?`          | fzf-git キーマップ表示 | Shell (Zsh) |
-| `^gx` / `^g^x` | プロセス選択・kill     | Shell (Zsh) |
-| `^R`           | コマンド履歴検索       | Shell (Zsh) |
-| `^T`           | ファイル選択           | Shell (Zsh) |
+| キーバインド   | 機能                                 | 実装場所                                             |
+| -------------- | ------------------------------------ | ---------------------------------------------------- |
+| `^]`           | ghq リポジトリ選択 (FZF)             | `zsh/lib/fzf.zsh`                                    |
+| `^g?`          | fzf-git キーマップ表示               | `fzf-git.sh`（`zsh/lib/git-widgets.zsh` からロード） |
+| `^gx` / `^g^x` | プロセス選択・kill (FZF)             | `zsh/lib/fzf.zsh`                                    |
+| `^R`           | コマンド履歴検索（atuin。FZF不使用） | `zsh/lib/atuin.zsh`                                  |
+| `^T`           | ファイル選択 (FZF)                   | `zsh/lib/fzf.zsh`                                    |
 
 Note: All `^g` commands support both patterns (`^gX` or `^g^X`)
 
 ### Git Integration
 
-| コマンド        | 機能                                        | 実装場所                 |
-| --------------- | ------------------------------------------- | ------------------------ |
-| `^gg` / `^g^g`  | Git diff ウィジェット (FZF)                 | zsh/config/tools/git.zsh |
-| `^gs` / `^g^s`  | Git status ウィジェット (FZF)               | zsh/config/tools/git.zsh |
-| `^ga` / `^g^a`  | Git add -p ウィジェット (FZF)               | zsh/config/tools/git.zsh |
-| `^gb` / `^g^b`  | `gh browse` でリポジトリを開く              | zsh/lib/git-widgets.zsh  |
-| `^gB`           | ブランチ切り替え (既存WTがあれば cd)        | zsh/lib/git-widgets.zsh  |
-| `^gW` / `^g^W`  | ワークツリーメニュー (Open/New/List/Remove) | zsh/config/tools/git.zsh |
-| `^gw` / `^g^w`  | ワークツリー直接選択・cd                    | zsh/config/tools/git.zsh |
-| `^gz` / `^g^z`  | スタッシュ確認・削除 (fzf-git)              | fzf-git.sh               |
-| `^g^f`          | Gitファイル/差分ピッカー (fzf-git)          | fzf-git.sh               |
-| `^g?`           | fzf-git キーバインドヘルプ                  | fzf-git.sh               |
-| `gco()`         | FZF git checkout (ブランチ選択)             | zsh/lazy-sources/fzf.zsh |
-| `wtcd <branch>` | ブランチの worktree に即座に cd             | zsh/config/tools/git.zsh |
+| コマンド       | 機能                                                                                              | 実装場所                  |
+| -------------- | ------------------------------------------------------------------------------------------------- | ------------------------- |
+| `^gg` / `^g^g` | Git 操作メニュー (FZF; status/diff/add-p/branch switch/stash/git-files/worktrees/browse から選択) | `zsh/lib/git-widgets.zsh` |
+| `^gs` / `^g^s` | `git status -sb` をバッファへ挿入・実行（FZF不使用）                                              | `zsh/lib/git-widgets.zsh` |
+| `^ga` / `^g^a` | `git add -p` をバッファへ挿入・実行（FZF不使用）                                                  | `zsh/lib/git-widgets.zsh` |
+| `^gb` / `^g^b` | `gh browse` でリポジトリを開く（FZF不使用）                                                       | `zsh/lib/git-widgets.zsh` |
+| `^gB`          | ブランチ切り替え (FZF; 既存WTがあれば cd)                                                         | `zsh/lib/git-widgets.zsh` |
+| `^gW` / `^g^W` | ワークツリーメニュー (FZF; Open/New/List/Prune)                                                   | `zsh/lib/git-widgets.zsh` |
+| `^gw` / `^g^w` | ワークツリー一覧をバッファへ挿入 (fzf-git; 自動cdなし。`ctrl-x` で remove)                        | `fzf-git.sh`              |
+| `^gz` / `^g^z` | スタッシュ確認・削除 (fzf-git; `ctrl-x` で drop)                                                  | `fzf-git.sh`              |
+| `^g^f`         | Gitファイル/差分ピッカー (fzf-git)                                                                | `fzf-git.sh`              |
+| `^g?`          | fzf-git キーバインドヘルプ                                                                        | `fzf-git.sh`              |
 
-### Tmux Integration
-
-| 機能               | キーバインド | 効果                             |
-| ------------------ | ------------ | -------------------------------- |
-| セッション切り替え | `prefix + s` | FZF セッション選択 (90%時間短縮) |
-| ウィンドウ選択     | `prefix + w` | FZF ウィンドウ選択               |
+補足: `gco` は `zsh-abbr/user-abbreviations` に定義された `git checkout` の静的 abbreviation であり、FZF によるブランチ選択は行わない。`wtcd` という関数・コマンドはリポジトリ内に存在しない（旧ドキュメントの記述を削除）。
 
 ## 🛠️ Configuration
 
@@ -71,76 +64,60 @@ Note: All `^g` commands support both patterns (`^gX` or `^g^X`)
 #### Base Configuration
 
 ```bash
-# ~/.config/zsh/config/tools/fzf.zsh
-export FZF_DEFAULT_OPTS="--height 50% --reverse"
-export FZF_CTRL_R_OPTS="
-  --preview 'echo {}' --preview-window up:3:hidden:wrap
-  --bind 'ctrl-/:toggle-preview'
-  --bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
-  --color header:italic
-  --header 'Press CTRL-Y to copy command into clipboard'"
+# zsh/lib/fzf.zsh
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-"--height 50% --reverse"}"
+export FZF_CTRL_T_COMMAND="${FZF_CTRL_T_COMMAND:-"fd --type f --hidden --follow --exclude .git --exclude node_modules --exclude .worktrees --exclude .claude/worktrees --exclude tmp --exclude dist --exclude build"}"
+export FZF_CTRL_T_OPTS="${FZF_CTRL_T_OPTS:-"--preview 'bat -n --color=always {}' --bind 'ctrl-/:change-preview-window(down|hidden|)'"}"
 ```
 
-#### Theme Integration (Gruvbox)
-
-```bash
-# Unified theme across tools
-export FZF_DEFAULT_OPTS="--color=bg+:#3c3836,bg:#32302f,spinner:#fb4934"
-```
+`^R` (履歴検索) は atuin (`zsh/lib/atuin.zsh`) が担当しており、FZF 側に `FZF_CTRL_R_OPTS` などの専用設定は存在しない。FZF 用の Gruvbox 配色 (`--color=...`) もリポジトリ内には設定されていない。
 
 ### Plugin Integration
 
 #### fzf-tab (Tab Completion Enhancement)
 
 ```bash
-# zsh/sources/styles.zsh
-export FZF_TAB_HOME=~/.local/share/sheldon/repos/github.com/Aloxaf/fzf-tab
-
-# Enhanced tab completion with FZF
-zstyle ':completion:*:git-checkout:*' sort false
-zstyle ':completion:*:descriptions' format '[%d]'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# zsh/lib/fzf-tab.zsh
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:*' switch-group '<' '>'
+zstyle ':fzf-tab:*' fzf-flags '-i'
+zstyle ':fzf-tab:*' fzf-bindings 'tab:down' 'btab:up' 'ctrl-o:toggle'
 ```
 
 ## 🔧 Layer-Specific Integrations
 
 ### Shell Layer Integration
 
-Performance Impact: ✅ Optimized - 遅延読み込みで起動時間への影響なし
-
 #### Key Features
 
 - Repository Navigation: `^]` による ghq 統合
-- Process Management: `^g^K` による直感的プロセス操作
-- Command History: `^R` の強化された履歴検索
+- Process Management: `^gx` / `^g^x` によるプロセス選択・kill
+- Command History: `^R` (atuin、FZF不使用)
 
 #### Implementation
 
+`sheldon/plugins.toml` の `fzf-tab` / `fzf-git` はいずれも `apply = ["noop"]` で登録されており、sheldon 側の `defer` 設定は使われていない。実際の読み込みは `zsh/lib/fzf-tab.zsh` と `zsh/lib/git-widgets.zsh` が `add-zsh-hook precmd` でインタラクティブシェル起動後に一度だけ実行する形で行われる。
+
 ```bash
-# Priority loading in sheldon/plugins.toml
+# zsh/sheldon/plugins.toml (抜粋)
 [plugins.fzf-tab]
 github = "Aloxaf/fzf-tab"
-defer = "2"  # Critical path optimization
+apply = ["noop"]
+
+[plugins.fzf-git]
+github = "junegunn/fzf-git.sh"
+apply = ["noop"]
 ```
 
 #### fzf-git (Git Pickers)
 
-```bash
-# sheldon/plugins.toml
-[plugins.fzf-git]
-github = "junegunn/fzf-git.sh"
-apply = ["source"]
-```
-
-- `^g^f`: Git files / diff picker
-- `^g^b` / `^gs`: Branch switcher (worktree-aware)
-- `^g^w` / `^gw`: Worktree selector (remove with `ctrl-x`)
-- `^g^z`: Stash picker (`ctrl-x` to drop)
+- `^g^f` / `^gf`: Git files / diff picker
+- `^gw` / `^g^w`: Worktree selector (remove with `ctrl-x`)
+- `^gz` / `^g^z`: Stash picker (`ctrl-x` to drop)
 - `^g?`: Keybinding list
+- ブランチ切り替えは fzf-git の `branches` ウィジェットではなく、自前実装の `^gB` (`zsh/lib/git-widgets.zsh` の `_zsh_git_switch_branch`) が担う。
 
 ### Git Layer Integration
-
-Performance Impact: ✅ 最適化済み - FZF統合による操作効率90%向上
 
 #### Key Features
 
@@ -151,66 +128,40 @@ Performance Impact: ✅ 最適化済み - FZF統合による操作効率90%向�
 #### Implementation
 
 ```bash
-# Worktree-aware branch switcher using fzf-git selectors
-_git_switch_branch() {
+# zsh/lib/git-widgets.zsh (抜粋、worktree-aware なブランチ切り替え)
+_zsh_git_switch_branch() {
+  _zsh_git_is_repo || return 1
+  (( $+functions[_fzf_git_branches] )) || return 1
+
   local branch
-  branch=$(_fzf_git_branches | head -n1)
-  [[ -z "$branch" ]] && return
+  branch="$(_fzf_git_branches --no-multi)"
+  [[ -n "$branch" ]] || return 0
 
   local worktree_path
-  worktree_path=$(_git_worktree_for_branch "$branch")
-  [[ -n "$worktree_path" ]] && cd "$worktree_path" || git switch --track --guess "$branch"
+  worktree_path="$(
+    git worktree list --porcelain | awk -v target="$branch" '
+      $1=="worktree" { path=$2 }
+      $1=="branch" {
+        br=$2
+        sub("^refs/heads/", "", br)
+        if (br == target) { print path; exit }
+        path=""
+      }
+    '
+  )"
+
+  if [[ -n "$worktree_path" && -d "$worktree_path" ]]; then
+    cd "$worktree_path" || return
+    return 0
+  fi
+
+  if git rev-parse --verify --quiet "$branch" >/dev/null 2>&1; then
+    git switch "$branch"
+  else
+    git switch --track --guess "$branch"
+  fi
 }
 ```
-
-### Terminal Layer Integration
-
-Performance Impact: ✅ セッション切り替え時間90%短縮
-
-#### Key Features
-
-- Session Management: FZF による高速セッション選択
-- Window Navigation: 効率的ウィンドウ切り替え
-
-#### Implementation
-
-```bash
-# tmux.conf integration
-bind s display-popup -E "tmux list-sessions | sed -E 's/:.*$//' | \\
-  grep -v \"^$(tmux display-message -p '#S')\$\" | \\
-  fzf --reverse | xargs tmux switch-client -t"
-```
-
-### Editor Layer Integration
-
-Status: ✅ telescope.nvim → fzf-lua 移行完了
-
-Performance Improvement: 60% faster file searching
-
-#### Key Features
-
-- File Search: 高速ファイル検索
-- Text Search: live grep 統合
-- Buffer Management: 効率的バッファ切り替え
-
-## 📈 Performance Metrics
-
-### Measured Improvements
-
-| 機能                  | 改善前   | 改善後 | 改善率 |
-| --------------------- | -------- | ------ | ------ |
-| セッション切り替え    | 5-8秒    | 0.5秒  | 90%↑   |
-| リポジトリ選択        | 10-15秒  | 1-2秒  | 85%↑   |
-| ファイル検索 (Neovim) | 151.76ms | 60ms   | 60%↑   |
-| ブランチ選択          | 3-5秒    | 0.8秒  | 80%↑   |
-
-### Startup Impact
-
-| Component       | Load Time | Strategy              |
-| --------------- | --------- | --------------------- |
-| fzf core        | 0ms       | 遅延読み込み          |
-| fzf-tab         | 12ms      | Priority 2 defer      |
-| Git integration | 0ms       | Lazy function loading |
 
 ## 🔗 Cross-Tool Workflows
 
@@ -221,52 +172,31 @@ Performance Improvement: 60% faster file searching
 ^]                    # Select repository via FZF + ghq
 
 # 2. Git operations
-^g^g                  # Git diff with FZF
-^g^s                  # Git status with FZF
-^g^b / ^gs            # Branch switcher (fzf-git; cd if worktree exists)
-^g^w / ^gw            # Worktree manager (fzf-git selector + create/remove)
-^g^z                  # Stash picker (fzf-git; ctrl-x to drop)
+^g^g                  # Git action menu (FZF)
+^gs / ^g^s            # git status (buffer insert, no FZF)
+^gB                   # Branch switcher (FZF; cd if worktree exists)
+^gW / ^g^W            # Worktree menu (FZF; Open/New/List/Prune)
+^gw / ^g^w            # Worktree list insert (fzf-git; no auto-cd, ctrl-x to remove)
+^gz / ^g^z            # Stash picker (fzf-git; ctrl-x to drop)
 ^g^f                  # Git file picker (fzf-git)
-gco                   # FZF branch checkout
 
 # 3. File operations
 ^T                    # File selection
-^R                    # Command history
-```
-
-### Development Session Workflow
-
-```bash
-# 1. Session management
-prefix + s            # FZF session selection
-
-# 2. Navigation
-^]                    # Repository jumping
-^g^K                  # Process management
-
-# 3. File operations
-nvim                  # fzf-lua integration
+^R                    # Command history (atuin)
 ```
 
 ## 🛡️ Best Practices
 
 ### Configuration Management
 
-1. Centralized Settings: FZF options in `config/tools/fzf.zsh`
-2. Theme Consistency: Gruvbox integration across all tools
-3. Performance Priority: Critical path optimization in sheldon
+1. Centralized Settings: FZF options in `zsh/lib/fzf.zsh`
+2. Performance Priority: precmd フックによる遅延初期化（`zsh/lib/fzf-tab.zsh`, `zsh/lib/git-widgets.zsh`）
 
 ### Integration Patterns
 
-1. Lazy Loading: Non-critical functions loaded on-demand
+1. Lazy Loading: Non-critical functions loaded on-demand（sheldon の `defer` は未使用、precmd フックで自前遅延ロード）
 2. Widget Integration: Zsh widgets for consistent UX
 3. Fallback Handling: Graceful degradation when FZF unavailable
-
-### Performance Optimization
-
-1. Deferred Loading: Sheldon priority management
-2. Function Caching: Expensive operations cached
-3. Preview Optimization: Efficient preview commands
 
 ## 🔧 Troubleshooting
 
@@ -294,16 +224,6 @@ ls ~/.local/share/sheldon/repos/github.com/Aloxaf/fzf-tab
 exec zsh
 ```
 
-#### Performance degradation
-
-```bash
-# Check plugin load times
-zsh-benchmark
-
-# Verify deferred loading
-sheldon source --verbose
-```
-
 ## 📚 References
 
 ### Documentation Links
@@ -314,13 +234,25 @@ sheldon source --verbose
 
 ### Implementation Files
 
-- `zsh/config/tools/fzf.zsh` - Core configuration
-- `zsh/lazy-sources/fzf.zsh` - Function definitions
-- `zsh/sources/styles.zsh` - fzf-tab integration
-- `tmux/tmux.conf` - Terminal integration
+- `zsh/lib/fzf.zsh` - Core configuration, `^]` / `^T` / `^gx` widgets
+- `zsh/lib/fzf-tab.zsh` - fzf-tab integration (zstyle, lazy load)
+- `zsh/lib/git-widgets.zsh` - Git widgets (`^gg`/`^gs`/`^ga`/`^gb`/`^gB`/`^gW`) and fzf-git loader
+- `zsh/lib/atuin.zsh` - `^R` history search (atuin, not FZF)
+
+### 未確認・対象外の統合
+
+以下は本ドキュメントの旧版に記載があったが、`zsh/`, `tmux/`, `nvim/` を検索しても該当する実装が確認できなかったため削除した。
+
+- Tmux セッション/ウィンドウ切り替えの FZF 統合（`tmux/*.conf` に `fzf` の参照なし。`prefix + s` は `command-prompt "select-window -t '%%'"` であり FZF・セッション切り替えのどちらでもない。`prefix + w` の独自バインドも存在しない）
+- Neovim の `telescope.nvim` → `fzf-lua` 移行（`nvim/` に `fzf` の参照なし。実際は `mini.pick` + `neogit` を使用）
+- `gco()` という FZF ブランチ選択関数、`wtcd` という worktree cd 関数
+
+### 未確認のまま残した記述
+
+- 各種パフォーマンス数値（セッション切り替え時間、ファイル検索速度、起動時間への影響など）は、測定根拠となるベンチマークやログを本タスクの範囲では確認できなかった。特にセッション切り替えおよび Neovim ファイル検索の数値は、上記で実体なしと確認した統合（Tmux FZF連携・fzf-lua）を前提にしていた可能性があるため、次回更新時に再検証が必要。
+- `^gc` / `^g^c`（`fzf-cd-widget`）、`Esc c`（`\ec`）は `zsh/lib/fzf.zsh` に実装があるが、本ドキュメントには未記載。追加提案はスコープ外のため記載していない。
 
 ---
 
-Last Updated: 2025-10-03  
-Status: Production Ready - 全層統合完了  
-Performance: All optimization targets achieved
+Last Updated: 2026-09-08
+Status: Corrected against zsh/lib, zsh/sheldon, tmux/, nvim/ (see 未確認・対象外の統合)
