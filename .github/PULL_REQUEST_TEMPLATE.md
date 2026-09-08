@@ -13,9 +13,11 @@
 
 <!-- 変更が影響する機能・サービスを記載 -->
 
-- [ ] フロントエンド
-- [ ] API
-- [ ] インフラ
+- [ ] Shell (Zsh / Bash)
+- [ ] Editor (Neovim)
+- [ ] Terminal (WezTerm / Ghostty / Tmux)
+- [ ] Git / SSH
+- [ ] mise / パッケージ管理
 - [ ] CI/CD
 - [ ] ドキュメント
 

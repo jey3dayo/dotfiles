@@ -3,14 +3,28 @@ project:
   language: "ja"
 
 metadata:
+  # canonical は OKF 互換の YAML frontmatter。正本は docs/documentation.md。
   required_fields:
+    - "type"
+
+  recommended_fields:
+    - "title"
+    - "description"
+    - "resource"
+    - "tags"
+    - "timestamp"
+    - "audience"
+    - "owner"
+
+  # 移行期間中のみ有効な旧形式。frontmatter と併存する場合は frontmatter が優先。
+  legacy_aliases:
     - "最終更新"
     - "対象"
     - "タグ"
 
   formats:
     date: "YYYY-MM-DD"
-    tags: "backtick-wrapped, comma-separated"
+    tags: "one per list item, tier-prefixed (category/, layer/, ...)"
 
   freshness:
     warning_days: 180
