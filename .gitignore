@@ -179,6 +179,8 @@ astro/
 opencode/skills/
 opencode/agents/
 opencode/commands/
+opencode/rules/
+opencode/CLAUDE.md
 op/
 jgit/
 raycast/
