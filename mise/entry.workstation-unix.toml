@@ -89,3 +89,7 @@ trivy = "latest"
 # 各ツールの自己更新に任せる。mise は未導入時のインストールだけを保証する(方針: .claude/rules/tools/tool-install-policy.md)。
 [bootstrap.hooks.post-tools]
 run = "sh ~/.config/mise/lib/ensure-standalone.sh"
+
+# import されるライブラリは `pipx:` で表現できない(隔離 venv の CLI 用)。導入保証のみ。
+[bootstrap.hooks.final]
+run = "sh ~/.config/mise/lib/ensure-python-libs.sh"
