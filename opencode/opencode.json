@@ -1,5 +1,5 @@
 {
-  "model": "zai/glm-4.7",
+  "model": "deepseek/deepseek-v4-flash",
   "provider": {
     "zai": {
       "options": {
