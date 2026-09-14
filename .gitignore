@@ -160,6 +160,7 @@ rest-client/
 irb/irb_history
 Autodesk/
 btop/btop.log
+codexbar/config.json
 
 ## Package Managers and Tools
 NuGet/
