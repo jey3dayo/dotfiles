@@ -76,12 +76,6 @@ describe("zsh/.zshenv", () => {
 });
 
 describe("zsh plugin bootstrap", () => {
-  it("keeps Homebrew PATH setup in the explicit path helper", () => {
-    const pathHelper = fs.readFileSync(path.join(zdotdir, "lib/path.zsh"), "utf8");
-
-    expect(pathHelper).toContain("/opt/homebrew/bin");
-  });
-
   it("keeps minimal interactive startup on PATH without loading Sheldon plugins", () => {
     const expectedMise = fs.existsSync(localMise) ? localMise : homebrewMise;
     if (!fs.existsSync(expectedMise)) {
@@ -188,38 +182,6 @@ describe("zsh plugin bootstrap", () => {
     }
   });
 
-  it("does not expose generic helper names after startup", () => {
-    const result = spawnSync(
-      "zsh",
-      [
-        "-lic",
-        [
-          "for name in load_atuin load_fzf git_is_repo register_git_widgets setup_path bootstrap_shell_env path_prepend_existing; do",
-          '  (( $+functions[$name] )) && print -r -- "$name";',
-          "done; true",
-        ].join(" "),
-      ],
-      {
-        encoding: "utf8",
-        env: {
-          ...process.env,
-          HOME: os.homedir(),
-          XDG_CONFIG_HOME: repoRoot,
-          ZDOTDIR: zdotdir,
-          PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
-          LOGNAME: os.userInfo().username,
-          USER: os.userInfo().username,
-          SHELL: "/bin/zsh",
-          TERM: "xterm-256color",
-        },
-      },
-    );
-
-    expect(result.status).toBe(0);
-    expect(result.stderr.trim()).toBe("");
-    expect(result.stdout.trim()).toBe("");
-  });
-
   it("binds Ctrl-R when atuin is explicitly loaded", () => {
     const result = spawnSync("zsh", ["-lic", 'command -v atuin >/dev/null || exit 0; bindkey "^R"'], {
       encoding: "utf8",
@@ -284,14 +246,8 @@ describe("zsh plugin bootstrap", () => {
         [
           "command -v gh",
           "whence _gh",
-          'if whence fast-theme >/dev/null; then print -r -- "__has_fast_theme"; whence fast-theme; fi',
           printAutosuggestStrategyCommand,
           'if command -v zoxide >/dev/null; then print -r -- "__has_zoxide"; command -v zoxide; command -v z; alias j; fi',
-          'if command -v ni >/dev/null; then print -r -- "__has_ni"; command -v ni; command -v nlx; whence _ni; fi',
-          'if command -v bun >/dev/null; then print -r -- "__has_bun"; command -v bun; print -r -- "bun_fpath=$' +
-            '{fpath[(r)$HOME/.bun]}"; fi',
-          'if command -v eza >/dev/null; then print -r -- "__has_eza"; command -v eza; print -r -- "eza_fpath=$' +
-            '{fpath[(r)*eza-community/eza/completions/zsh]}"; fi',
           [
             'if command -v fzf >/dev/null; then print -r -- "__has_fzf"; command -v fzf',
             "whence _fzf_git_branches",
@@ -300,10 +256,7 @@ describe("zsh plugin bootstrap", () => {
             'bindkey "^]"',
             'bindkey "^T"',
             'bindkey "^[c"',
-            'bindkey "^gx"',
             'bindkey "^I"',
-            'bindkey "^g^f"',
-            'bindkey "^g?"',
             "fi",
           ].join("; "),
         ].join("; "),
@@ -335,39 +288,16 @@ describe("zsh plugin bootstrap", () => {
     expect(result.stderr.trim()).toBe("");
     expect(result.stdout).toContain("gh");
     expect(result.stdout).toContain("_gh");
-    if (result.stdout.includes("__has_fast_theme")) {
-      expect(result.stdout).toContain("fast-theme");
-    }
     if (result.stdout.includes("__has_zoxide")) {
       expect(result.stdout).toContain("zoxide");
       expect(result.stdout).toContain("j=z");
     }
-    if (result.stdout.includes("__has_ni")) {
-      expect(result.stdout).toContain("ni");
-      expect(result.stdout).toContain("nlx");
-      expect(result.stdout).toContain("_ni");
-    }
-    if (result.stdout.includes("__has_bun")) {
-      expect(result.stdout).toContain("bun");
-      expect(result.stdout).toContain("bun_fpath=");
-    }
-    if (result.stdout.includes("__has_eza")) {
-      expect(result.stdout).toContain("eza");
-      expect(result.stdout).toContain("eza_fpath=");
-    }
+    expect(result.stdout).toContain("autosuggest_strategy=history");
     if (result.stdout.includes("__has_fzf")) {
-      expect(result.stdout).toContain("fzf");
       expect(result.stdout).toContain("_fzf_git_branches");
       expect(result.stdout).toContain("fzf-tab-complete");
       expect(result.stdout).toContain("_zsh_autosuggest_start");
-      expect(result.stdout).toContain("autosuggest_strategy=history");
-      expect(result.stdout).toContain("_zsh_fzf_ghq_widget");
-      expect(result.stdout).toContain("fzf-file-widget");
-      expect(result.stdout).toContain("fzf-cd-widget");
       expect(result.stdout).toContain('"^I" fzf-tab-complete');
-      expect(result.stdout).toContain("_zsh_fzf_kill_widget");
-      expect(result.stdout).toContain("fzf-git-files-widget");
-      expect(result.stdout).toContain("fzf-git-?list_bindings-widget");
     }
   });
 

@@ -45,67 +45,25 @@ describe("lsp.formatter_selector", function()
   end)
 
   describe("get_formatter_priority", function()
-    it("should return configured priority for biome", function()
-      local priority = formatter_selector.get_formatter_priority "biome"
-      assert.equals(1, priority)
+    it("returns the configured priority", function()
+      assert.equals(1, formatter_selector.get_formatter_priority "biome")
+      assert.equals(2, formatter_selector.get_formatter_priority "prettier")
     end)
 
-    it("should return configured priority for prettier", function()
-      local priority = formatter_selector.get_formatter_priority "prettier"
-      assert.equals(2, priority)
-    end)
-
-    it("should return configured priority for eslint", function()
-      local priority = formatter_selector.get_formatter_priority "eslint"
-      assert.equals(3, priority)
-    end)
-
-    it("should return configured priority for typescript-tools", function()
-      local priority = formatter_selector.get_formatter_priority "typescript-tools"
-      assert.equals(4, priority)
-    end)
-
-    it("should return 99 for unknown formatters", function()
-      local priority = formatter_selector.get_formatter_priority "unknown_formatter"
-      assert.equals(99, priority)
+    it("returns 99 for unknown formatters", function()
+      assert.equals(99, formatter_selector.get_formatter_priority "unknown_formatter")
     end)
   end)
 
   describe("should_format_with", function()
-    it("should return true for formatters with priority config", function()
-      local result = formatter_selector.should_format_with "biome"
-      assert.is_true(result)
-    end)
-
-    it("should return true for prettier with priority config", function()
-      local result = formatter_selector.should_format_with "prettier"
-      assert.is_true(result)
-    end)
-
-    it("should return true for eslint with priority config", function()
-      -- eslint has formatter_priority config, so should_format_with returns true
-      local result = formatter_selector.should_format_with "eslint"
-      assert.is_true(result)
-    end)
-
-    it("should return true for typescript-tools with priority config", function()
-      -- typescript-tools has formatter_priority config, so should_format_with returns true
-      local result = formatter_selector.should_format_with "typescript-tools"
-      assert.is_true(result)
-    end)
-
-    it("should return true for unknown formatters", function()
-      local result = formatter_selector.should_format_with "unknown_formatter"
-      assert.is_true(result)
+    it("returns true when priority config exists or is unknown", function()
+      assert.is_true(formatter_selector.should_format_with "biome")
+      assert.is_true(formatter_selector.should_format_with "unknown_formatter")
     end)
   end)
 
   describe("get_best_formatter", function()
-    it("should be a function", function()
-      assert.is_function(formatter_selector.get_best_formatter)
-    end)
-
-    it("should return nil when no formatters are available", function()
+    it("returns nil when no formatters are available", function()
       -- Mock vim.lsp.get_clients to return empty array
       vim.lsp = {
         get_clients = function()

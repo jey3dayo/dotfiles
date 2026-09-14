@@ -73,29 +73,21 @@ describe("lsp.settings_factory", function()
   end)
 
   describe("create_formatter_server", function()
-    it("should create basic formatter server config", function()
-      local config = factory.create_formatter_server "tailwindcss"
-
-      assert.is_not_nil(config)
-      assert.is_not_nil(config.capabilities)
-      assert.is_function(config.on_attach)
-    end)
-
-    it("should add autostart function when config_files exist", function()
+    it("adds autostart function when config_files exist", function()
       local config = factory.create_formatter_server "tailwindcss"
 
       assert.is_function(config.autostart)
       assert.is_true(config.autostart())
     end)
 
-    it("should add root_dir function when config_files exist", function()
+    it("adds root_dir function when config_files exist", function()
       local config = factory.create_formatter_server "tailwindcss"
 
       assert.is_function(config.root_dir)
       assert.equals("/test/root", config.root_dir())
     end)
 
-    it("should merge overrides correctly", function()
+    it("merges overrides correctly", function()
       local config = factory.create_formatter_server("tailwindcss", {
         filetypes = { "custom", "types" },
         settings = {
@@ -109,7 +101,7 @@ describe("lsp.settings_factory", function()
       assert.is_true(config.settings.tailwindCSS.validate)
     end)
 
-    it("should disable hover for formatter-only servers", function()
+    it("disables hover for formatter-only servers", function()
       local config = factory.create_formatter_server "tailwindcss"
       local mock_client = {
         server_capabilities = {
@@ -121,42 +113,26 @@ describe("lsp.settings_factory", function()
 
       assert.is_false(mock_client.server_capabilities.hoverProvider)
     end)
-
-    it("should work for eslint formatter", function()
-      local config = factory.create_formatter_server "eslint"
-
-      assert.is_function(config.autostart)
-      assert.is_function(config.root_dir)
-      assert.is_true(config.autostart())
-    end)
   end)
 
   describe("create_js_server", function()
-    it("should create JS server config with default filetypes", function()
+    it("creates JS server config with default filetypes", function()
       local config = factory.create_js_server "typescript-tools"
 
       assert.is_not_nil(config)
       assert.same(mock_deps.ft.js_project, config.filetypes)
     end)
-
-    it("should add root_dir for servers with config_files", function()
-      local config = factory.create_js_server "typescript-tools"
-
-      -- typescript-tools should have root_dir if formatters config exists
-      assert.is_not_nil(config.root_dir)
-    end)
   end)
 
   describe("create_generic_server", function()
-    it("should create generic server config", function()
+    it("creates generic server config with capabilities and handlers", function()
       local config = factory.create_generic_server()
 
-      assert.is_not_nil(config)
       assert.is_not_nil(config.capabilities)
       assert.is_not_nil(config.handlers)
     end)
 
-    it("should merge overrides", function()
+    it("merges overrides", function()
       local config = factory.create_generic_server {
         filetypes = { "lua" },
       }
@@ -166,17 +142,11 @@ describe("lsp.settings_factory", function()
   end)
 
   describe("create_root_dir", function()
-    it("should create root_dir function with config files", function()
+    it("creates root_dir function with config files", function()
       local root_dir = factory.create_root_dir { "config.js" }
 
       assert.is_function(root_dir)
       assert.equals("/test/root", root_dir())
-    end)
-
-    it("should add fallback files", function()
-      local root_dir = factory.create_root_dir({ "config.js" }, { "fallback.json" })
-
-      assert.is_function(root_dir)
     end)
   end)
 

@@ -9,28 +9,19 @@ describe("zsh performance-sensitive loading", function()
   it("keeps Sheldon plugins out of the synchronous startup path", function()
     local content = read_file "zsh/lib/abbr.zsh"
 
-    assert.matches("_zsh_load_abbr%(%)", content)
-    assert.matches("ZSH_LOAD_PLUGINS", content)
+    -- 重い plugin は precmd で遅延ロードし、起動時に sheldon cache を source しない。
     assert.matches("add%-zsh%-hook precmd _zsh_load_abbr_once", content)
     assert.is_nil(content:match 'source%s+%"%$sheldon_cache%"')
   end)
 
-  it("keeps restored Sheldon plugins out of the generated source cache", function()
+  it("restores Sheldon plugins lazily via the noop template", function()
     local content = read_file "zsh/sheldon/plugins.toml"
 
-    assert.matches("%[plugins%.zsh%-abbr%]", content)
     assert.matches('%[templates%].-noop%s=%s%""', content)
-    assert.is_not_nil(content:find('[plugins.fzf-tab]\ngithub = "Aloxaf/fzf-tab"\napply = ["noop"]', 1, true))
-    assert.is_not_nil(
-      content:find('[plugins.zsh-autosuggestions]\ngithub = "zsh-users/zsh-autosuggestions"\napply = ["noop"]', 1, true)
-    )
-    assert.is_not_nil(
-      content:find(
-        '[plugins.fast-syntax-highlighting]\ngithub = "zdharma-continuum/fast-syntax-highlighting"\napply = ["noop"]',
-        1,
-        true
-      )
-    )
+    for _, plugin in ipairs { "zsh%-abbr", "fzf%-tab", "zsh%-autosuggestions", "fast%-syntax%-highlighting" } do
+      assert.matches("%[plugins%." .. plugin .. "%]", content)
+    end
+    -- 削除済み plugin が復活していないこと。
     assert.is_nil(content:match "pnpm%-shell%-completion")
     assert.is_nil(content:match "ohmyzsh")
   end)

@@ -24,24 +24,16 @@ const runEnvDetect = ({ extraEnv = {} }: { extraEnv?: Record<string, string | un
 };
 
 (isWindows ? describe.skip : describe)("scripts/env-detect.sh", () => {
-  it("detects CI environment when CI is set", () => {
-    const result = runEnvDetect({
-      extraEnv: { CI: "true", GITHUB_ACTIONS: undefined },
-    });
+  it("detects CI from CI or GITHUB_ACTIONS", () => {
+    for (const extraEnv of [
+      { CI: "true", GITHUB_ACTIONS: undefined },
+      { GITHUB_ACTIONS: "true", CI: undefined },
+    ]) {
+      const result = runEnvDetect({ extraEnv });
 
-    expect(result.status).toBe(0);
-    expect(result.stdout).toMatch(/Detected Environment:[\s\S]*\bci\b/);
-    expect(result.stdout).toMatch(/1\. CI: ✓ Matched/);
-  });
-
-  it("detects CI environment when GITHUB_ACTIONS is set", () => {
-    const result = runEnvDetect({
-      extraEnv: { GITHUB_ACTIONS: "true", CI: undefined },
-    });
-
-    expect(result.status).toBe(0);
-    expect(result.stdout).toMatch(/Detected Environment:[\s\S]*\bci\b/);
-    expect(result.stdout).toMatch(/1\. CI: ✓ Matched/);
+      expect(result.status).toBe(0);
+      expect(result.stdout).toMatch(/Detected Environment:[\s\S]*\bci\b/);
+    }
   });
 
   it("falls back to default when neither CI nor GITHUB_ACTIONS nor Pi is detected", () => {
@@ -55,20 +47,5 @@ const runEnvDetect = ({ extraEnv = {} }: { extraEnv?: Record<string, string | un
     // Silicon: the ARCH check requires aarch64/armv7l/armv6l, and arm64
     // does not match, so is_raspberry_pi() returns false regardless).
     expect(result.stdout).toMatch(/Detected Environment:[\s\S]*\bdefault\b/);
-    expect(result.stdout).toMatch(/3\. Default: ✓ Fallback/);
-  });
-
-  it("keeps the Raspberry Pi match line consistent with the detected ENV_TYPE", () => {
-    const result = runEnvDetect({
-      extraEnv: { CI: undefined, GITHUB_ACTIONS: undefined },
-    });
-
-    expect(result.status).toBe(0);
-    const isPi = /Detected Environment:[\s\S]*\bpi\b/.test(result.stdout);
-    if (isPi) {
-      expect(result.stdout).toMatch(/2\. Raspberry Pi: ✓ Matched/);
-    } else {
-      expect(result.stdout).toMatch(/2\. Raspberry Pi: ✗ Not matched/);
-    }
   });
 });

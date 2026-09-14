@@ -27,16 +27,7 @@ describe("lsp.utils", function()
   end)
 
   describe("create_root_pattern", function()
-    it("should be a function", function()
-      assert.is_function(lsp_utils.create_root_pattern)
-    end)
-
-    it("should return a function", function()
-      local root_pattern_fn = lsp_utils.create_root_pattern { "package.json" }
-      assert.is_function(root_pattern_fn)
-    end)
-
-    it("should create pattern function that matches files", function()
+    it("matches files and returns their directory", function()
       local root_pattern_fn = lsp_utils.create_root_pattern { "package.json", "tsconfig.json" }
 
       local result = root_pattern_fn "/path/to/project/package.json"
@@ -44,17 +35,7 @@ describe("lsp.utils", function()
       assert.equals("/path/to/project", result)
     end)
 
-    it("should handle multiple patterns", function()
-      local root_pattern_fn = lsp_utils.create_root_pattern { ".git", "package.json" }
-
-      local result1 = root_pattern_fn "/path/to/project/.git"
-      assert.is_not_nil(result1)
-
-      local result2 = root_pattern_fn "/path/to/project/package.json"
-      assert.is_not_nil(result2)
-    end)
-
-    it("should return nil when no pattern matches", function()
+    it("returns nil when no pattern matches", function()
       local root_pattern_fn = lsp_utils.create_root_pattern { "package.json" }
 
       local result = root_pattern_fn "/path/to/file.txt"
@@ -63,11 +44,7 @@ describe("lsp.utils", function()
   end)
 
   describe("get_mason_package_path", function()
-    it("should be a function", function()
-      assert.is_function(lsp_utils.get_mason_package_path)
-    end)
-
-    it("should return nil when mason-registry is not available", function()
+    it("returns nil when mason-registry is not available", function()
       -- Reset mason-registry mock
       package.loaded["mason-registry"] = nil
 

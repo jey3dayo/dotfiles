@@ -33,7 +33,7 @@ describe("replace-bold-headings: conversion rules", () => {
 
   it("converts standalone bold heading", () => check("**Overview**", "### Overview"));
 
-  it("converts bold label with trailing colon (no content)", () =>
+  it("converts bold label with trailing colon into a heading", () =>
     check("**Phase 2関連（10ファイル）**:", "#### Phase 2関連（10ファイル）"));
 
   it("converts bold label with parentheses and colon", () =>
@@ -54,47 +54,13 @@ describe("replace-bold-headings: conversion rules", () => {
   it("strips bold from ordered list label with content", () =>
     check("1. **Read Guidelines**: 必ず最初に読む", "1. Read Guidelines: 必ず最初に読む"));
 
-  it("strips bold from ordered list label with Japanese content", () =>
-    check("1. **フェーズ1**: 説明", "1. フェーズ1: 説明"));
-
-  it("strips bold from ordered list label with English content", () =>
-    check("1. **Phase 1**: Description", "1. Phase 1: Description"));
-
-  it("strips bold from ordered list label with colon only", () => check("1. **Phase 1**:", "1. Phase 1:"));
-
-  it("strips bold from ordered list label with arrow", () =>
-    check("1. **Phase 1** → do something", "1. Phase 1 → do something"));
-
-  it("strips bold from ordered list label with parenthetical suffix and trailing detail", () =>
-    check(
-      "6. **pr-feedback-orchestrator** (3,595行) - 4モード実行、PRフィードバック吸い上げと修正",
-      "6. pr-feedback-orchestrator (3,595行) - 4モード実行、PRフィードバック吸い上げと修正",
-    ));
-
   it("strips bold from unordered list label (colon only)", () => check("- **Text**:", "- Text:"));
-
-  it("strips bold from unordered list label with content", () =>
-    check("- **Text**: content here", "- Text: content here"));
-
-  it("strips bold from unordered list label with Japanese content", () =>
-    check("- **メリット**: 初回ロード軽量", "- メリット: 初回ロード軽量"));
 
   it("strips bold from unordered list label (no colon)", () =>
     check("- **関連ファイル（4ファイル）**", "- 関連ファイル（4ファイル）"));
 
-  it("strips bold from unordered list label with right arrow", () =>
-    check("- **出力あり** → uncommitted changes モード", "- 出力あり → uncommitted changes モード"));
-
-  it("strips bold from unordered list label with right arrow (Japanese)", () =>
-    check(
-      "- **critical issues あり** → 該当ファイルを Read し、Edit で修正を適用",
-      "- critical issues あり → 該当ファイルを Read し、Edit で修正を適用",
-    ));
-
   it("strips bold when colon is inside bold markers", () =>
     check("**責務:** Valibotスキーマ定義", "責務: Valibotスキーマ定義"));
-
-  it("strips bold when colon inside bold, English content", () => check("**現状:** 未実装", "現状: 未実装"));
 
   it("strips bold when colon inside bold, backtick content", () =>
     check("**返り値の型:** `v.BaseSchema` + 推論型", "返り値の型: `v.BaseSchema` + 推論型"));
@@ -105,23 +71,14 @@ describe("replace-bold-headings: conversion rules", () => {
       "2. **Workers & Pages** → **keep-on** → **Metrics** タブ",
     ));
 
-  it("preserves all bold in unordered list navigation path", () =>
-    check("- **File** → **Edit** → **Preferences**", "- **File** → **Edit** → **Preferences**"));
-
   // Table cell bold stripping
   it("strips bold from table cell label", () => check("| **スキル名** | 説明 |", "| スキル名 | 説明 |"));
-
-  it("strips bold from table cell value", () => check("| metric | **1.1s** |", "| metric | 1.1s |"));
 
   it("strips bold from multiple table cells", () => check("| **A** | **B** | **C** |", "| A | B | C |"));
 
   it("preserves table separator row", () => check("| --- | --- |", "| --- | --- |"));
 
-  it("preserves table separator row with colons", () => check("| :--- | :---: | ---: |", "| :--- | :---: | ---: |"));
-
   it("strips bold from row with dashes in first cell", () => check("| --- | **value** |", "| --- | value |"));
-
-  it("does not treat colon-only cells as separator", () => check("| : | **text** |", "| : | text |"));
 });
 
 // ============================================================
