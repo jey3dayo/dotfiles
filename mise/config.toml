@@ -49,6 +49,3 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 # symlink を拒否する CLI 向けは copy
 "~/.aicommits" = { source = "~/.config/.aicommits", mode = "copy" }
 "~/.opencommit" = { source = "~/.config/opencommit/.opencommit", mode = "copy" }
-
-[tools]
-"github:pranshuparmar/witr" = "latest"

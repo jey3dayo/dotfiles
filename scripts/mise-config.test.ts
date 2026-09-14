@@ -121,6 +121,7 @@ describe("shared mise tool overlay", () => {
       "fd",
       "github:astral-sh/uv",
       "github:cli/cli",
+      "github:pranshuparmar/witr",
       "gitleaks",
       "go",
       "jq",
