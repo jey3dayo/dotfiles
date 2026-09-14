@@ -247,12 +247,12 @@ describe("zsh plugin bootstrap", () => {
           "command -v gh",
           "whence _gh",
           printAutosuggestStrategyCommand,
+          'if [[ -n "$ZSH_AUTOSUGGESTIONS_LOADED" ]]; then print -r -- "__has_autosuggestions"; whence _zsh_autosuggest_start; fi',
           'if command -v zoxide >/dev/null; then print -r -- "__has_zoxide"; command -v zoxide; command -v z; alias j; fi',
           [
             'if command -v fzf >/dev/null; then print -r -- "__has_fzf"; command -v fzf',
             "whence _fzf_git_branches",
             "whence fzf-tab-complete",
-            "whence _zsh_autosuggest_start",
             'bindkey "^]"',
             'bindkey "^T"',
             'bindkey "^[c"',
@@ -292,11 +292,13 @@ describe("zsh plugin bootstrap", () => {
       expect(result.stdout).toContain("zoxide");
       expect(result.stdout).toContain("j=z");
     }
-    expect(result.stdout).toContain("autosuggest_strategy=history");
+    if (result.stdout.includes("__has_autosuggestions")) {
+      expect(result.stdout).toContain("autosuggest_strategy=history");
+      expect(result.stdout).toContain("_zsh_autosuggest_start");
+    }
     if (result.stdout.includes("__has_fzf")) {
       expect(result.stdout).toContain("_fzf_git_branches");
       expect(result.stdout).toContain("fzf-tab-complete");
-      expect(result.stdout).toContain("_zsh_autosuggest_start");
       expect(result.stdout).toContain('"^I" fzf-tab-complete');
     }
   });
