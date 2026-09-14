@@ -4,6 +4,8 @@ set -euo pipefail
 
 task=${1:?task is required}
 
+# True when running from a WSL checkout (Windows drive mount). MISE_WSL_SNAPSHOT=1
+# forces false so snapshot runs do not re-dispatch into the Windows wrapper.
 is_wsl_checkout() {
   [[ "${MISE_WSL_SNAPSHOT:-0}" != "1" && "${PWD#/mnt/}" != "$PWD" ]]
 }

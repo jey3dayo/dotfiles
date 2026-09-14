@@ -1,5 +1,8 @@
 local M = {}
 
+-- Aliases a native filetype to a base ftplugin: registers treesitter_lang for the
+-- current filetype first, then force-sources ftplugin/<base>.vim|.lua. The
+-- treesitter registration still happens when base_filetype is empty.
 function M.setup(base_filetype, treesitter_lang)
   if treesitter_lang and vim.treesitter and vim.treesitter.language then
     pcall(vim.treesitter.language.register, treesitter_lang, vim.bo.filetype)

@@ -23,6 +23,7 @@ end
 
 local M = {}
 
+-- グローバル無効がバッファ無効より優先される。整形実行前の唯一のゲート。
 function M.is_enabled(bufnr)
   return not (is_global_disabled() or is_buffer_disabled(bufnr))
 end

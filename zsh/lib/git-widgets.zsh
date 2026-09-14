@@ -16,6 +16,8 @@ _zsh_git_is_repo() {
   [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]]
 }
 
+# Switches to the selected branch: cd's into an existing worktree for that branch
+# when one exists, otherwise `git switch` (tracking the remote for a new branch).
 _zsh_git_switch_branch() {
   _zsh_git_is_repo || return 1
   (( $+functions[_fzf_git_branches] )) || return 1

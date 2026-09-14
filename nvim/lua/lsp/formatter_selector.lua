@@ -59,14 +59,11 @@ function M.get_formatter_priority(formatter_name)
   return DEFAULT_FORMATTER_PRIORITIES[formatter_name] or 99
 end
 
--- Check if a formatter should be used for formatting (not just diagnostics)
+-- True unless the client is lint-only (eslint, typescript-tools). An explicit
+-- formatter_priority.overrides block opts a lint-only client back in.
 function M.should_format_with(client_name)
-  -- If biome is available, don't use prettier
   local config = formatters[client_name]
-  if config and config.formatter_priority and config.formatter_priority.overrides then
-    -- This logic is already in place
-    return true
-  end
+  if config and config.formatter_priority and config.formatter_priority.overrides then return true end
 
   return not LINT_ONLY_FORMATTERS[client_name]
 end

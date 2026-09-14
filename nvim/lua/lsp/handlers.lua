@@ -6,6 +6,8 @@ local function merge_handler_config(config, overrides)
   return vim.tbl_deep_extend("force", config or {}, overrides)
 end
 
+-- Wraps a standard (err, result, ctx, config) handler so overrides are
+-- deep-merged into the per-request config, avoiding duplicated handler bodies.
 function M.with(handler, overrides)
   return function(err, result, ctx, config)
     return handler(err, result, ctx, merge_handler_config(config, overrides))

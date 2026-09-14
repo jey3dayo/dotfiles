@@ -1,3 +1,6 @@
+# Idempotent PATH normalizer: removes the bun bin, then re-adds existing front
+# entries at the head and sbin entries at the tail, de-duplicated, so re-sourcing
+# after a mise install keeps a stable order.
 _zsh_setup_path() {
   emulate -L zsh
   typeset -gaU path

@@ -62,6 +62,8 @@ function parseArguments(): ParsedArgs {
 // Path Resolution
 // ========================================
 
+// APM ワークスペース root は apm.yml と、生成物 catalog/.apm、管理下の
+// catalog/skills を併せ持つ。生成 skill の取りこぼしを避けるため skills に限定する。
 function isApmWorkspaceRoot(targetPath: string): boolean {
   return (
     fs.existsSync(path.join(targetPath, "apm.yml")) &&

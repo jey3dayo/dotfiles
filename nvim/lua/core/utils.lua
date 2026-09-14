@@ -12,6 +12,8 @@ M.autocmd = vim.api.nvim_create_autocmd
 M.augroup = vim.api.nvim_create_augroup
 M.user_command = vim.api.nvim_create_user_command
 
+-- True when any of config_files exists in dirname (default cwd) or an ancestor.
+-- Gates LSP/formatter/linter autostart on project-local config.
 function M.has_config_files(config_files, dirname)
   local searched = {}
   local function search_upwards(start_dir)
@@ -34,6 +36,8 @@ function M.has_config_files(config_files, dirname)
   return false
 end
 
+-- True only when the buffer file exceeds max_size (default 2 MB); unnamed buffers
+-- and stat failures return false, i.e. "not known to be large".
 function M.is_large_file(bufnr, max_size)
   local name = vim.api.nvim_buf_get_name(bufnr or 0)
   if name == "" then return false end
@@ -51,6 +55,8 @@ end
 -- Table utilities
 ---@param base table 基本となるテーブル
 ---@param ... table 拡張するテーブル
+-- Deep-copies base, then force-merges each table in ..., so callers can derive
+-- options without mutating the shared base table.
 function M.with(base, ...)
   local result = vim.deepcopy(base)
   local tables = { ... }

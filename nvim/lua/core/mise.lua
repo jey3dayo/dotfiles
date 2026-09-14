@@ -54,6 +54,9 @@ function M.latest_installed_binary(install_name, binary_relpath)
   return nil
 end
 
+-- Resolves a formatter/linter binary to an absolute path, preferring in order:
+-- explicit opts, the built-in tool_specs, the newest mise-installed version,
+-- the ~/.mise/shims shim, then the bare command name.
 function M.resolve_command(cmd, opts)
   opts = opts or {}
 

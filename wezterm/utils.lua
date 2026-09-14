@@ -53,6 +53,8 @@ function M.basename(s)
   return string.gsub(s, "(.*[/\\])(.*)", "%2")
 end
 
+-- Recursive deep-merge with t2 winning; t1 is mutated and returned so callers can
+-- layer config in place.
 function M.merge_tables(t1, t2)
   for k, v in pairs(t2) do
     if (type(v) == "table") and (type(t1[k] or false) == "table") then
@@ -77,6 +79,7 @@ function M.convert_home_dir(path)
   return path
 end
 
+-- Expands a leading ~ then returns only the basename, for compact tab titles.
 function M.convert_useful_path(dir)
   local cwd = M.convert_home_dir(dir)
   return M.basename(cwd)
@@ -93,6 +96,8 @@ local function normalize_cwd(cwd)
   return ""
 end
 
+-- Accepts a URL or plain path and returns (hostname, basename). Hostname drops the
+-- user@ prefix and the domain suffix; plain paths return "" for hostname.
 function M.split_from_url(dir)
   if type(dir) ~= "string" then return "", "" end
   local hostname = ""
@@ -130,6 +135,8 @@ local function format_cwd_title(cwd)
   return ""
 end
 
+-- Builds a tab title by priority: foreground process name > "host:basename" of the
+-- pane cwd > "wezterm". max_width, when given, truncates from the right.
 function M.tab_title_from_pane(pane, max_width)
   local title = ""
 
@@ -150,6 +157,8 @@ local function is_array(value)
   return type(value) == "table" and (value[1] ~= nil or next(value) == nil)
 end
 
+-- Concatenates self and each argument: array-like tables are spliced in, any other
+-- value is appended whole (strings are not split).
 function M.array_concat(self, ...)
   local items = { ... }
   local result = {}

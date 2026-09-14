@@ -6,6 +6,9 @@ run_lua=0
 
 zero_oid="0000000000000000000000000000000000000000"
 
+# Prints the files in the pushed range from the pre-push hook's stdin ref lines.
+# Skips deleted refs (zero local OID); for new branches (zero remote OID) falls
+# back to commits not yet on any remote. Returns 1 when no usable ref was seen.
 pushed_files_from_stdin() {
   found=0
 
@@ -45,6 +48,8 @@ fallback_pushed_files() {
   fi
 }
 
+# Prints the union of pushed files, staged files, and unstaged files so the gate
+# covers everything that would leave the machine or is still pending.
 changed_files() {
   stdin_file="$(mktemp)"
   trap 'rm -f "$stdin_file"' EXIT
@@ -61,6 +66,8 @@ changed_files() {
   git diff --name-only
 }
 
+# Classification contract: sets run_ts / run_lua for a changed path.
+# TS covers bin/, scripts/, zsh/, mise/; Lua covers *.lua files and spec trees.
 mark_tests_for_file() {
   case "$1" in
     bin/* | scripts/* | zsh/* | mise/lib/* | mise/local-tasks/* | .mise.toml)
@@ -75,6 +82,8 @@ mark_tests_for_file() {
   esac
 }
 
+# Public subcommand for the test harness: reads file paths on stdin and prints
+# "<run_ts> <run_lua>".
 if [ "${1:-}" = "--classify" ]; then
   while IFS= read -r file || [ -n "${file:-}" ]; do
     [ -n "${file:-}" ] || continue

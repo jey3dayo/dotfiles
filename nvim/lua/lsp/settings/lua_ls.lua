@@ -1,4 +1,6 @@
 return {
+  -- Skips injecting LuaJIT/runtime settings when the workspace already defines
+  -- .luarc.json / .luarc.jsonc, so project config is not overridden.
   on_init = function(client)
     if client.workspace_folders then
       local path = client.workspace_folders[1].name

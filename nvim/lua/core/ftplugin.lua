@@ -12,6 +12,8 @@ function M.setup_web_lang(opts)
   vim.opt_local.expandtab = true
 end
 
+-- Applies 2-space web indentation, then registers [lsp]j / [lsp]J run/test
+-- keymaps. Pass bufnr to scope the keymaps to that buffer.
 function M.setup_js_like(run_cmd, test_cmd, bufnr)
   M.setup_web_lang { tabstop = 2 }
 
