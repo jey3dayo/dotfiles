@@ -44,3 +44,5 @@ vendor
 *.iso
 DerivedData
 *.xcarchive
+**/.config/cursor/chats
+**/.config/raycast/extensions
