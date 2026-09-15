@@ -38,7 +38,6 @@ bun = "latest"
 # クラウド・インフラ
 "npm:aws-cdk" = "latest"
 "npm:@google/clasp" = "latest"
-"npm:@google/gemini-cli" = "latest"
 
 # その他ツール
 "npm:greptile" = "latest"
