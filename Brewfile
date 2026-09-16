@@ -1,13 +1,16 @@
+tap "abue-ammar/tinycast", trusted: true
 tap "arto-app/tap", trusted: true
 tap "buo/cask-upgrade", trusted: true
 tap "daipeihust/tap"
+tap "fujibee/agmsg", trusted: true
 tap "gofireflyio/aiac"
 tap "homebrew/core"
 tap "manaflow-ai/cmux", trusted: true
 tap "olets/tap"
 tap "perman/tap", "git@github.com:PERMAN/homebrew-tap.git"
 tap "sanemat/font", trusted: true
-tap "steipete/tap"
+tap "stablyai/orca"
+tap "steipete/tap", trusted: true
 tap "voicevox/voicevox", "https://github.com/VOICEVOX/homebrew-voicevox", trusted: true
 brew "gofireflyio/aiac/aiac", trusted: true
 brew "daipeihust/tap/im-select", trusted: true
@@ -19,6 +22,7 @@ brew "utf8proc", args: ["HEAD"]
 brew "olets/tap/zsh-abbr@6", trusted: true
 cask "1password"
 cask "1password-cli"
+cask "fujibee/agmsg/agmsg"
 cask "android-studio"
 cask "ankerwork"
 cask "appcleaner"
@@ -68,6 +72,7 @@ cask "notion-calendar"
 cask "obsidian"
 cask "ollama-app"
 cask "openvpn-connect"
+cask "stablyai/orca/orca", trusted: true
 cask "postman"
 cask "prisma-studio"
 cask "quitter"
@@ -77,16 +82,19 @@ cask "session-manager-plugin"
 cask "sketch"
 cask "slack"
 cask "spotify"
+cask "synology-drive"
 cask "tableplus"
 cask "tablepro"
 cask "teamviewer"
 cask "thaw"
 cask "the-unarchiver"
+cask "abue-ammar/tinycast/tinycast", trusted: true
 cask "tradingview"
 cask "vagrant"
 cask "visual-studio-code"
 cask "vivaldi"
 cask "voicevox/voicevox/voicevox"
+cask "vorssaint"
 cask "warp"
 cask "wezterm@nightly"
 cask "xbar"

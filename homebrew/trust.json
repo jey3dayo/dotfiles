@@ -1,22 +1,20 @@
 {
   "trustedformulae": [
-    "aws/tap/copilot-cli",
     "daipeihust/tap/im-select",
     "gofireflyio/aiac/aiac",
     "olets/tap/zsh-abbr@6",
-    "perman/tap/perman-aws-vault"
+    "perman/tap/perman-aws-vault",
+    "steipete/tap/peekaboo"
   ],
   "trustedtaps": [
+    "abue-ammar/tinycast",
     "arto-app/tap",
-    "bufbuild/buf",
     "buo/cask-upgrade",
     "fujibee/agmsg",
-    "hashicorp/tap",
-    "k1low/tap",
     "manaflow-ai/cmux",
     "sanemat/font",
     "steipete/tap",
     "voicevox/voicevox"
   ],
-  "trustedcasks": ["stablyai/orca/orca"]
+  "trustedcasks": ["abue-ammar/tinycast/tinycast", "stablyai/orca/orca"]
 }
