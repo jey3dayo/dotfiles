@@ -29,7 +29,7 @@
 | Mise           | `.mise.toml`      | [詳細ガイド](docs/tools/mise.md)         |
 | Homebrew       | `Brewfile`        | -                                        |
 | AWSume         | `awsume/`         | -                                        |
-| Terraform      | (via Homebrew)    | -                                        |
+| Terraform      | (via mise)        | -                                        |
 
 ### Linters & Formatters
 

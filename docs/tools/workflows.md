@@ -1,6 +1,6 @@
 # Workflows & Maintenance Reference
 
-最終更新: 2026-09-03
+最終更新: 2026-09-16
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -227,11 +227,8 @@ git commit --no-verify -m "..."
 3. Brewfile 更新（候補抽出）:
 
    ```bash
-   # 現在の状態をダンプ
-   brew bundle dump --force --file=/tmp/brewfile-new.txt
-
-   # 差分確認（必要なものだけ手動で反映）
-   diff Brewfile /tmp/brewfile-new.txt
+   # 差分確認（未取り込み / 未インストール / trusted 不一致を報告、書き込みなし）
+   mise run brewfile:diff
    ```
 
 4. 適切なセクションに追加:
@@ -249,25 +246,21 @@ git commit --no-verify -m "..."
 ### Monthly Audit
 
 ```bash
-# 1. バックアップ作成
-cp Brewfile Brewfile.backup.$(date +%Y%m%d)
+# 1. 差分確認（追加候補を確認、書き込みなし）
+mise run brewfile:diff
 
-# 2. 現在の状態を完全ダンプ
-brew bundle dump --force --file=/tmp/brewfile-complete.txt
-
-# 3. 差分確認（追加候補を確認）
-diff Brewfile /tmp/brewfile-complete.txt
-
-# 4. 方針に合うものだけを手動で反映
+# 2. 方針に合うものだけを手動で反映
 # - ランタイム・汎用 CLI は mise へ
 # - GUI・macOS 固有のみ Brewfile へ
 
-# 5. 構文チェック
+# 3. 構文チェック
 brew bundle check
 
-# 6. テスト
+# 4. テスト
 brew bundle install --no-upgrade --verbose
 ```
+
+`brewfile:diff` の「未インストール」は削除候補ではない（マシンごとの差は正常）。削除の判断には使わない。
 
 ### Section Structure
 

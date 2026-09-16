@@ -279,12 +279,14 @@ Expected result: Empty (no duplicates)
   - Homebrew: Neovim binary and system dependencies
   - mise: Node.js LSP client (npm package)
 
-### Validate Brewfile structure
+### Check Brewfile drift
 
 ```bash
-# Check for policy comments
-head -5 Brewfile | grep -q "# Homebrew policy:" && echo "✅ Policy documented" || echo "❌ Missing policy"
+# 未取り込み（インストール済み / Brewfile 欠落）、未インストール、trusted 不一致を報告
+mise run brewfile:diff
 ```
+
+Expected result: 「未取り込み」と「trusted 不一致」が `(なし)`。「未インストール」はマシンごとの差なので残ってよい。formula は `[bootstrap.packages]` が正本のため対象外。
 
 ## Migration Checklist
 
