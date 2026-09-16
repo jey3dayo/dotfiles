@@ -1,3 +1,8 @@
+["brewfile:diff"]
+description = "インストール済みHomebrew状態とBrewfileの差分を報告（書き込みなし）"
+dir = "~/.config"
+run = "bash ./scripts/brewfile-diff.sh"
+
 ["brewfile:restore"]
 description = "Brewfileからパッケージをインストール（新規Mac対応）"
 dir = "~/.config"
