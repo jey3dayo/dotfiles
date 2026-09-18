@@ -86,8 +86,7 @@ local function setup_keymaps(client, bufnr)
     local has_references = false
 
     for _, active_client in ipairs(clients) do
-      local compat = require "lsp.compat"
-      if compat.supports_method(active_client, "textDocument/references") then
+      if active_client:supports_method "textDocument/references" then
         has_references = true
         break
       end
@@ -115,8 +114,7 @@ local function setup_keymaps(client, bufnr)
     local has_symbols = false
 
     for _, active_client in ipairs(clients) do
-      local compat = require "lsp.compat"
-      if compat.supports_method(active_client, "textDocument/documentSymbol") then
+      if active_client:supports_method "textDocument/documentSymbol" then
         has_symbols = true
         break
       end
@@ -137,9 +135,7 @@ local function setup_keymaps(client, bufnr)
 end
 
 local function setup_format_keymap(client, bufnr)
-  -- 互換性レイヤーを使用した機能判定
-  local compat = require "lsp.compat"
-  if not compat.supports_method(client, "textDocument/formatting") then return end
+  if not client:supports_method "textDocument/formatting" then return end
 
   -- LSPフォーマット機能はkeymaps.luaのグローバルキーマップに移動
   -- ここでは互換性を保つが、重複するキーマップは設定しない

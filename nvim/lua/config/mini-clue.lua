@@ -74,7 +74,7 @@ return {
     { mode = "n", keys = "<C-e>b", desc = "Format w/ Biome" },
     { mode = "n", keys = "<C-e>p", desc = "Format w/ Prettier" },
     { mode = "n", keys = "<C-e>e", desc = "Format w/ ESLint" },
-    { mode = "n", keys = "<C-e>s", desc = "Format w/ TypeScript Tools" },
+    { mode = "n", keys = "<C-e>s", desc = "Format w/ TypeScript (ts_ls)" },
 
     -- Yank operations
     { mode = "n", keys = "Yf", desc = "Copy File Path" },

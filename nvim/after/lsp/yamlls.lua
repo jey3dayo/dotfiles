@@ -17,8 +17,12 @@ local schemas = {
   },
 }
 
+-- No `filetypes` override: nvim-lspconfig's bundled list already covers
+-- yaml/yaml.docker-compose/yaml.gitlab/yaml.helm-values. Our previous
+-- override here (`{ "yml", "yaml" }`) had silently lost to the bundled
+-- config before this file lived in after/lsp/; moving it here without
+-- fixing it would have shrunk the filetype list instead.
 return {
-  filetypes = { "yml", "yaml" },
   settings = {
     yaml = {
       schemas = schemas,

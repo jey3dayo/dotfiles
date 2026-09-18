@@ -18,11 +18,10 @@ return {
   },
   on_attach = function(client, bufnr)
     -- Disable some features that may cause crashes
-    local compat = require "lsp.compat"
-    if compat.supports_method(client, "textDocument/formatting") then
+    if client:supports_method "textDocument/formatting" then
       client.server_capabilities.documentFormattingProvider = false
     end
-    if compat.supports_method(client, "textDocument/rangeFormatting") then
+    if client:supports_method "textDocument/rangeFormatting" then
       client.server_capabilities.documentRangeFormattingProvider = false
     end
   end,
@@ -30,11 +29,8 @@ return {
   flags = {
     debounce_text_changes = 300,
   },
-  -- Add debug environment for troubleshooting
-  -- To verify config file detection, uncomment the debug line and check :LspLog
   cmd_env = {
     RUST_LOG = "warn", -- Only show warnings and errors
-    -- Uncomment for debugging: RUST_LOG = "debug", RUST_BACKTRACE = "1"
   },
   -- Handle server crashes gracefully
   on_exit = function(code, signal, client_id)

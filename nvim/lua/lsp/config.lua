@@ -30,45 +30,24 @@ M.LSP = {
 }
 
 M.servers = {
-  astro = { installed = true, enabled = true },
-  bashls = { installed = true, enabled = true },
-  cssls = { installed = true, enabled = true },
-  dockerls = { installed = true, enabled = true },
-  gopls = { installed = true, enabled = true },
-  jsonls = { installed = true, enabled = true },
-  lua_ls = { installed = true, enabled = true },
-  marksman = { installed = true, enabled = true },
-  prismals = { installed = true, enabled = true },
-  pylsp = { installed = true, enabled = true },
-  ruff = { installed = true, enabled = true },
-  taplo = { installed = true, enabled = true },
-  eslint = { installed = true, enabled = true },
-  typos_lsp = { installed = true, enabled = true },
-  vimls = { installed = true, enabled = true },
-  yamlls = { installed = true, enabled = true },
-  terraformls = { installed = true, enabled = true },
+  "astro",
+  "bashls",
+  "cssls",
+  "dockerls",
+  "eslint",
+  "gopls",
+  "jsonls",
+  "lua_ls",
+  "marksman",
+  "prismals",
+  "pylsp",
+  "ruff",
+  "taplo",
+  "terraformls",
+  "ts_ls",
+  "typos_lsp",
+  "yamlls",
 }
-
--- Helper functions for backward compatibility
-function M.get_installed_servers()
-  local servers = {}
-  for name, config in pairs(M.servers) do
-    if config.installed then table.insert(servers, name) end
-  end
-  return servers
-end
-
-function M.get_enabled_servers()
-  local servers = {}
-  for name, config in pairs(M.servers) do
-    if config.enabled then table.insert(servers, name) end
-  end
-  return servers
-end
-
--- Backward compatibility aliases
-M.installed_servers = M.get_installed_servers()
-M.enabled_servers = M.get_enabled_servers()
 
 M.installed_tree_sitter = {
   "astro",
@@ -109,13 +88,6 @@ M.installed_tree_sitter = {
   "yaml",
 }
 
--- Mason-managed tools that aren't LSP servers but are required by other plugins
-M.mason_tools = {
-  ensure_installed = {
-    "typescript-language-server", -- Provides a bundled TypeScript/tsserver for typescript-tools.nvim
-  },
-}
-
 -- Linter configurations for nvim-lint
 M.linters = {
   javascript = { "eslint" },
@@ -142,7 +114,7 @@ M.linters = {
 }
 
 M.formatters = {
-  ["typescript-tools"] = {
+  ts_ls = {
     config_files = { "tsconfig.json", "jsconfig.json" },
     formatter_priority = {
       priority = 4,
@@ -202,21 +174,5 @@ M.formatters = {
     },
   },
 }
-
--- Memoized config file generation
-local _config_files_cache = nil
-function M.get_config_files()
-  if not _config_files_cache then
-    local files = { ".git/" }
-    for _, formatter in pairs(M.formatters) do
-      if formatter.config_files then vim.list_extend(files, formatter.config_files) end
-    end
-    _config_files_cache = files
-  end
-  return _config_files_cache
-end
-
--- Backward compatibility
-M.config_files = M.get_config_files()
 
 return M

@@ -122,37 +122,20 @@ function M.check_lsp_status()
     echo_newline()
   end
 
-  -- Check autostart conditions
+  -- Check formatter config detection (root_markers decide LSP activation now;
+  -- this only reports whether conform's formatter-selection config is found)
   local utils = require "core.utils"
   local config = require "lsp.config"
 
   echo_newline()
-  echo_header "Autostart Conditions"
+  echo_header "Formatter Config Detection"
 
   -- Check eslint
-  local eslint_config = require "lsp.settings.eslint"
   local eslint_files = config.formatters.eslint.config_files
   local eslint_has_files = utils.has_config_files(eslint_files)
-  local eslint_autostart = type(eslint_config.autostart) == "function" and eslint_config.autostart() or true
 
   echo("• eslint: ", "Normal")
-  echo(eslint_has_files and "enabled" or "disabled", eslint_has_files and "DiagnosticOk" or "DiagnosticError")
-  echo(" (config: ", "Normal")
   echo(eslint_has_files and "found" or "not found", eslint_has_files and "DiagnosticOk" or "DiagnosticError")
-  echo(", autostart: ", "Normal")
-  echo(eslint_autostart and "true" or "false", eslint_autostart and "DiagnosticOk" or "DiagnosticError")
-  echo(")", "Normal")
-  echo_newline()
-
-  -- Check TypeScript tools
-  local ts_tools_config = config.formatters["typescript-tools"]
-  local ts_tools_files = ts_tools_config and ts_tools_config.config_files or {}
-  local ts_tools_has_files = utils.has_config_files(ts_tools_files)
-  echo("• typescript-tools: ", "Normal")
-  echo("enabled", "DiagnosticOk")
-  echo(" (ts/js config: ", "Normal")
-  echo(ts_tools_has_files and "found" or "not found", ts_tools_has_files and "DiagnosticOk" or "DiagnosticError")
-  echo(")", "Normal")
   echo_newline()
 
   -- Check biome
@@ -181,7 +164,7 @@ function M.check_lsp_status()
 
   local tsserver_path =
     require("lsp.utils").get_mason_package_path("typescript-language-server", "node_modules/typescript/lib/tsserver.js")
-  echo("• typescript-tools.nvim: ", "Normal")
+  echo("• ts_ls (typescript-language-server): ", "Normal")
   if tsserver_path then
     echo("using Mason TypeScript (tsserver): ", "DiagnosticOk")
     echo(tsserver_path, "DiagnosticInfo")
@@ -278,37 +261,14 @@ end
 
 -- Manual LSP start function
 function M.start_lsp_manually(server_name)
-  local lspconfig = require "lspconfig"
-  local utils = require "core.utils"
-
   -- Enable debug logging
   vim.lsp.set_log_level "debug"
 
   if server_name == "eslint" then
-    local extends = utils.safe_require "lsp.settings.eslint"
-    local handlers = require "lsp.handlers"
-    local config = vim.tbl_deep_extend("force", {
-      on_attach = function(client, bufnr)
-        print(string.format("ESLint attached to buffer %d", bufnr))
-        handlers.on_attach(client, bufnr)
-        -- Enable diagnostics
-        if client.server_capabilities.diagnosticProvider then vim.diagnostic.enable(true, { bufnr = bufnr }) end
-      end,
-      capabilities = require("lsp.capabilities").setup(),
-      handlers = handlers.handlers,
-    }, extends or {})
-    lspconfig.eslint.setup(config)
+    -- Server config (capabilities/on_attach/settings) comes from lsp.setup's
+    -- vim.lsp.config("*", ...) plus nvim/after/lsp/eslint.lua; nothing to rebuild here.
     vim.cmd "LspStart eslint"
     print "Manually started eslint"
-  elseif server_name == "typescript-tools" then
-    local ok = pcall(require, "typescript-tools")
-    if not ok then
-      print "typescript-tools.nvim not available"
-      return
-    end
-
-    vim.cmd "LspStart typescript-tools"
-    print "Manually started typescript-tools"
   else
     print("Unknown server: " .. server_name)
   end
@@ -413,7 +373,7 @@ vim.api.nvim_create_user_command("LspStartManual", function(opts)
 end, {
   nargs = 1,
   complete = function()
-    return { "eslint", "typescript-tools" }
+    return { "eslint" }
   end,
 })
 vim.api.nvim_create_user_command("LspTestFormatter", M.test_formatter, {})

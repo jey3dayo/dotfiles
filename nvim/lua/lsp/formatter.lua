@@ -160,14 +160,9 @@ local function register_commands()
   )
   utils.user_command("FormatWithEslint", create_specific_formatter_command "eslint_d", { desc = "Format with ESLint" })
   utils.user_command(
-    "FormatWithTypescriptTools",
-    create_specific_formatter_command "typescript-tools",
-    { desc = "Format with TypeScript Tools" }
-  )
-  utils.user_command(
     "FormatWithTsLs",
-    create_specific_formatter_command "typescript-tools",
-    { desc = "Format with TypeScript (compat)" }
+    create_specific_formatter_command "ts_ls",
+    { desc = "Format with TypeScript (ts_ls)" }
   )
 
   -- Debug command (uses current buffer)

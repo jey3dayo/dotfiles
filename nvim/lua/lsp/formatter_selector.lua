@@ -7,12 +7,12 @@ local DEFAULT_FORMATTER_PRIORITIES = {
   biome = 1, -- Highest priority
   prettier = 2,
   eslint = 3, -- Lower priority for formatting (better for linting)
-  ["typescript-tools"] = 4, -- Lowest priority for formatting (better for diagnostics)
+  ts_ls = 4, -- Lowest priority for formatting (better for diagnostics)
 }
 
 local LINT_ONLY_FORMATTERS = {
   eslint = true, -- Use for diagnostics, not formatting
-  ["typescript-tools"] = true, -- Use for TypeScript diagnostics, not formatting
+  ts_ls = true, -- Use for TypeScript diagnostics, not formatting
 }
 
 local function supports_formatting(client)
@@ -59,7 +59,7 @@ function M.get_formatter_priority(formatter_name)
   return DEFAULT_FORMATTER_PRIORITIES[formatter_name] or 99
 end
 
--- True unless the client is lint-only (eslint, typescript-tools). An explicit
+-- True unless the client is lint-only (eslint, ts_ls). An explicit
 -- formatter_priority.overrides block opts a lint-only client back in.
 function M.should_format_with(client_name)
   local config = formatters[client_name]

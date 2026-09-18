@@ -23,6 +23,7 @@ nvim/
 │   ├── lsp/                   # LSP wiring, formatter selector, helpers
 │   ├── core/                  # Bootstrap utilities, dependencies, filetypes
 │   └── ...                    # Misc helpers (neovide, colorscheme)
+├── after/lsp/                  # Per-server LSP overrides (wins over nvim-lspconfig's own lsp/*.lua via runtimepath order)
 └── snippets/                  # VSCode-style snippets
 ```
 
@@ -40,11 +41,11 @@ nvim/
 
 ## Language & Formatting Support
 
-- JS/TS/Vue: `typescript-tools.nvim` (tsserver wrapper) + `eslint`; Conform uses `eslint_d` → `prettier` (+ `biome` when `biome.json` is present); lint via nvim-lint `eslint`
+- JS/TS/Vue: `ts_ls` + `eslint`; Conform uses `eslint_d` → `prettier` (+ `biome` when `biome.json` is present); lint via nvim-lint `eslint`
 - Python: `pylsp` + `ruff`; formatting through `ruff_format`/`ruff_fix`
 - Go: `gopls` with `gofmt` + `goimports`
 - Lua: `lua_ls` + `stylua`
-- Web/Config: `cssls`, `jsonls`, `taplo` (TOML), `yamlls`, `marksman`, `vimls`, `dockerls`, `terraformls`, `prismals`, `astro`, `typos_lsp`
+- Web/Config: `cssls`, `jsonls`, `taplo` (TOML), `yamlls`, `marksman`, `dockerls`, `terraformls`, `prismals`, `astro`, `typos_lsp`
 - Defaults: `shfmt` for shell, `rustfmt` available, prettier for Markdown/YAML/GraphQL/HTML
 - Autoformat on save respects global/buffer flags; manual entrypoints: `:Format` / `<C-e>f` or `<C-e>b/p/e/s` for specific formatters
 
@@ -52,7 +53,7 @@ nvim/
 
 - Search & files: `,f` files, `,,` resume picker, `,gr` live grep, `,b` buffers, `,d` diagnostics, `,Fs`/`,FS` document/workspace symbols, `,e` open mini.files, `,E` open mini.files at buffer dir
 - LSP nav: `tt` definition, `tj` references, `tk` implementation, `tl` type definition
-- Formatting: `<C-e>f` auto-select formatter, `<C-e>b/p/e/s` for Biome/Prettier/ESLint/TypeScript Tools
+- Formatting: `<C-e>f` auto-select formatter, `<C-e>b/p/e/s` for Biome/Prettier/ESLint/TypeScript (ts_ls)
 - Maintenance: `,sp` Lazy UI, `,sm` MasonUpdate, `,st` TSUpdate all, `,su` Lazy update
 - Tabs/windows: `<C-t>c/d/o/n/p` tab actions, `gt/gT` cycle tabs, `<Tab>` cycles windows
 
