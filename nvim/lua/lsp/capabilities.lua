@@ -15,12 +15,10 @@ M.setup = function()
     lineFoldingOnly = true,
   }
 
-  -- Completion commit characters / preselect (was jsonls-only; harmless globally)
   capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
   capabilities.textDocument.completion.completionItem.preselectSupport = true
 
-  -- workspace/configuration support (needed by vscode-json-languageserver;
-  -- harmless for servers that don't use it)
+  -- vscode-json-languageserver needs these; other servers ignore them.
   capabilities.workspace = capabilities.workspace or {}
   capabilities.workspace.configuration = true
   capabilities.workspace.didChangeConfiguration = {

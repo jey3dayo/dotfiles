@@ -1,10 +1,6 @@
--- Everything else (on_attach registering :LspEslintFixAll, root_dir with
--- monorepo/deno awareness, before_init setting workspaceFolder, handlers)
--- comes from nvim-lspconfig's bundled lsp/eslint.lua; only `settings`
--- differs from its defaults, so only `settings` is overridden here.
--- Capability suppression (formatting is conform.nvim's job) lives in the
--- LspAttach handler in lua/autocmds.lua instead of on_attach, so the
--- plugin's on_attach (LspEslintFixAll registration) is not replaced.
+-- Only `settings` is overridden; the rest comes from nvim-lspconfig's bundled
+-- config. Do not add on_attach here: it would replace the bundled one that
+-- registers :LspEslintFixAll. Capability suppression lives in lua/autocmds.lua.
 return {
   settings = {
     validate = "on",

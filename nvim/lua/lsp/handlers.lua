@@ -14,10 +14,8 @@ function M.with(handler, overrides)
   end
 end
 
--- Common handlers. Hover/signatureHelp are configured globally in lsp.ui
--- instead (it already overrides vim.lsp.handlers with a richer border/size
--- config); duplicating them here would win over lsp.ui via vim.lsp.config's
--- per-config handler precedence.
+-- Hover/signatureHelp are absent on purpose: lsp.ui overrides them globally,
+-- and a per-config handler here would take precedence over it.
 M.handlers = {
   ["textDocument/publishDiagnostics"] = M.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = true,

@@ -130,12 +130,10 @@ define_autocmd("LspAttach", {
     require("lsp.formatter").setup(bufnr, client, args)
     require("lsp.highlight").setup(client)
 
-    -- Enable diagnostics for this buffer (v0.11+: vim.diagnostic.enable(enable, filter))
     pcall(vim.diagnostic.enable, true, { bufnr = bufnr })
 
-    -- ESLint is used for linting only; formatting is handled by conform.nvim.
-    -- Kept here (not in nvim-lspconfig's eslint on_attach override) so the
-    -- plugin's own on_attach, which registers :LspEslintFixAll, stays intact.
+    -- Formatting is conform.nvim's job. Suppressed here rather than in
+    -- after/lsp/eslint.lua so the bundled on_attach (:LspEslintFixAll) survives.
     if client.name == "eslint" then
       client.server_capabilities.documentFormattingProvider = false
       client.server_capabilities.documentRangeFormattingProvider = false

@@ -1,6 +1,5 @@
--- Linting and formatting for Python belong to ruff (LSP) and conform; pylsp is
--- kept only for jedi-backed completion, definition and hover. Leaving these
--- plugins enabled reports the same finding twice.
+-- Python linting and formatting belong to ruff (LSP) and conform; pylsp is kept
+-- for jedi completion/definition/hover. Enabled, these report findings twice.
 return {
   settings = {
     pylsp = {

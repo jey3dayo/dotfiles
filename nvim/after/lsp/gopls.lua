@@ -7,12 +7,9 @@ return {
     },
   },
 
-  -- No custom root_dir: nvim-lspconfig's bundled root_dir (go.work/go.mod/
-  -- .git aware) is deferred to. A previous version here used
-  -- vim.uri_from_bufnr(bufnr):match("^%a+://") to skip non-file buffers,
-  -- but vim.uri_from_bufnr() returns "file:///..." even for normal files,
-  -- so that pattern always matched and on_dir was never called, disabling
-  -- gopls entirely.
+  -- No custom root_dir: the bundled one is go.work/go.mod/.git aware. Beware
+  -- that vim.uri_from_bufnr() returns "file:///..." for normal files, so a
+  -- "^%a+://" guard here would skip every buffer and disable gopls.
 
   on_attach = function(client, bufnr)
     local opts = { noremap = true, silent = true, buffer = bufnr }

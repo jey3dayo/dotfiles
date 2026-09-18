@@ -8,10 +8,7 @@ vim.lsp.config("*", {
   handlers = handlers.handlers,
 })
 
--- on_attach is NOT set here: attach-time buffer setup (keymaps, diagnostics,
--- omnifunc, formatter/highlight lazy-load) is consolidated into the single
--- LspAttach autocmd in lua/autocmds.lua (augroup LspFormatting). A second
--- LspAttach registration here would run keymaps.setup and friends twice per
--- attach.
+-- on_attach is not set here: attach-time setup lives in the single LspAttach
+-- autocmd in lua/autocmds.lua. A second registration would run it twice.
 
 vim.lsp.enable(config.servers)
