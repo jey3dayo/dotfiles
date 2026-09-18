@@ -58,11 +58,11 @@ nvim/
 
 ## サポート言語
 
-プログラミング言語: Lua, Go, Python, JavaScript/TypeScript（JSX/TSX/Vue含む）, Bash/Shell（zsh含む）, Vim script
+プログラミング言語: Lua, Go, Python, JavaScript/TypeScript（JSX/TSX/Vue含む）, Bash/Shell（zsh含む）
 
 インフラ・設定: Docker, Terraform, Prisma, TOML, JSON, YAML（docker-compose/gitlab/helm-values含む）
 
-マークアップ: CSS（Tailwind CSS 含む・HTML属性補完対応）, Markdown, Astro
+マークアップ: CSS, Markdown, Astro
 
 上記に加え、`typos_lsp` が全ファイルタイプ横断でスペルチェックを行う（`nvim/lua/lsp/config.lua` の `M.servers` が正本）。
 

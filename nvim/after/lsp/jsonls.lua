@@ -82,7 +82,6 @@ return {
   -- vscode-langservers-extracted 4.8.0+ の MethodNotFound を避けるため standalone サーバーを使う
   cmd = { "vscode-json-languageserver", "--stdio" },
   filetypes = { "json", "jsonc" },
-  -- autostart = false, -- Re-enable JSON LSP with proper configuration
   init_options = {
     provideFormatter = false, -- conform.nvim handles formatting
   },
@@ -98,29 +97,12 @@ return {
       schemaDownload = { enable = true },
     },
   },
-  capabilities = (function()
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    capabilities.textDocument.completion.completionItem.snippetSupport = true
-    capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-    capabilities.textDocument.completion.completionItem.documentationFormat = { "markdown", "plaintext" }
-    capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-    capabilities.textDocument.completion.completionItem.preselectSupport = true
-    -- Workspace configuration support for older vscode-json-languageserver
-    capabilities.workspace = capabilities.workspace or {}
-    capabilities.workspace.configuration = true
-    capabilities.workspace.didChangeConfiguration = {
-      dynamicRegistration = true,
-    }
-    return capabilities
-  end)(),
+  -- No local `capabilities` here: it moved to lua/lsp/capabilities.lua's
+  -- global "*" config (a fresh table here re-enabled textDocument.diagnostic).
   -- Best practice: disable formatting, keep validation & IntelliSense
   on_init = function(client, _)
     -- JSON LSP role: Schema validation + IntelliSense only
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
-    -- Keep these for optimal JSON experience
-    -- client.server_capabilities.completionProvider = true
-    -- client.server_capabilities.hoverProvider = true
-    -- client.server_capabilities.documentSymbolProvider = true
   end,
 }

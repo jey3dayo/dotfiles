@@ -52,26 +52,6 @@ define_autocmds {
     },
   },
   {
-    event = "FileType",
-    opts = {
-      pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-      callback = function()
-        local config_files = require("lsp.config").formatters.eslint.config_files
-        if not utils.has_config_files(config_files) then return end
-
-        -- Wait a bit for LSP to initialize, then check if ESLint is running
-        vim.defer_fn(function()
-          local eslint_clients = vim.tbl_filter(function(client)
-            return client.name == "eslint"
-          end, vim.lsp.get_clients { bufnr = 0 })
-
-          if #eslint_clients == 0 then vim.cmd "LspStart eslint" end
-        end, 100)
-      end,
-      desc = "Ensure ESLint attaches when config is present",
-    },
-  },
-  {
     event = "ModeChanged",
     opts = {
       pattern = "*:[vV\x16]*",
@@ -149,6 +129,19 @@ define_autocmd("LspAttach", {
     require("lsp.keymaps").setup(client, bufnr)
     require("lsp.formatter").setup(bufnr, client, args)
     require("lsp.highlight").setup(client)
+
+    pcall(vim.diagnostic.enable, true, { bufnr = bufnr })
+
+    -- Formatting is conform.nvim's job. Suppressed here rather than in
+    -- after/lsp/eslint.lua so the bundled on_attach (:LspEslintFixAll) survives.
+    if client.name == "eslint" then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end
+
+    if vim.g.lsp_debug then
+      vim.notify(string.format("LSP %s attached to buffer %d", client.name, bufnr), vim.log.levels.INFO)
+    end
   end,
   desc = "Configure LSP buffer behavior",
 })

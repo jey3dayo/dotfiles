@@ -1,5 +1,3 @@
-local ft = require "core.filetypes"
-
 -- LSP configuration with optimized loading order and dependencies
 return {
   -- Core LSP infrastructure - must load first
@@ -27,7 +25,6 @@ return {
     opts = require "config/mason",
     config = function(_, opts)
       require("mason").setup(opts)
-      require("setup.mason").ensure_tools()
     end,
   },
 
@@ -38,33 +35,7 @@ return {
     priority = 800,
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
-      require "setup.conform"
-    end,
-  },
-
-  {
-    "mfussenegger/nvim-lint",
-    lazy = false,
-    priority = 799,
-    dependencies = { "neovim/nvim-lspconfig" },
-    config = function()
-      require "setup.nvim-lint"
-    end,
-  },
-
-  -- Enhanced TypeScript experience (tsserver wrapper)
-  {
-    "pmizio/typescript-tools.nvim",
-    ft = ft.js_project,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "neovim/nvim-lspconfig",
-    },
-    opts = function()
-      return require "lsp.settings.typescript-tools"
-    end,
-    config = function(_, opts)
-      require("typescript-tools").setup(opts)
+      require "config.conform"
     end,
   },
 
@@ -79,6 +50,7 @@ return {
     },
     config = function()
       require "config/mason-lspconfig"
+      require "lsp.setup"
     end,
   },
 }

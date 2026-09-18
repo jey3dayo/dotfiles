@@ -32,7 +32,7 @@ describe("lsp.formatter_selector", function()
             overrides = {},
           },
         },
-        ["typescript-tools"] = {
+        ts_ls = {
           formatter_priority = {
             priority = 4,
             overrides = {},

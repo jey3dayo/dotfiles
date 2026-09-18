@@ -11,8 +11,8 @@ return {
     }
   end,
   -- Avoid problematic workspace folder initialization
-  root_dir = function()
-    return vim.fn.getcwd()
+  root_dir = function(bufnr, on_dir)
+    on_dir(vim.fn.getcwd())
   end,
   single_file_support = true,
 }

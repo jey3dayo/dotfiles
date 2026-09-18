@@ -17,8 +17,9 @@ local schemas = {
   },
 }
 
+-- No `filetypes` override: the bundled list also covers yaml.docker-compose,
+-- yaml.gitlab and yaml.helm-values, which a { "yml", "yaml" } override drops.
 return {
-  filetypes = { "yml", "yaml" },
   settings = {
     yaml = {
       schemas = schemas,
