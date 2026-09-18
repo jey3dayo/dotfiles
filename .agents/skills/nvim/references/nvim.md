@@ -21,7 +21,6 @@
 
 - 高性能: lazy.nvim最適化による100ms未満起動
 - LSP対応: 15以上の言語・設定形式をフルサポート
-- AI統合: Supermaven-nvim
 - モダンUI: ファジーファインダー・ファイルエクスプローラー・高速モーションプラグインによるナビゲーション（この設定では mini.pick、mini.files、flash.nvim）
 
 ## パフォーマンス指標
@@ -81,11 +80,10 @@ tl              -- 型定義へ移動
 <C-e>f          -- 自動選択フォーマット
 ```
 
-### AI・開発ツール
+### 開発ツール
 
 ```lua
-<Tab>          -- AI補完受諾（AI > LSP補完 > 既定Tab の優先順）
-<C-]>          -- AI補完クリア
+<Tab>           -- 補完受諾（blink.cmp）
 ,sp             -- プラグインマネージャーUI
 ,sm             -- LSPサーバー更新
 ,st             -- Treesitter 更新
@@ -105,9 +103,8 @@ tl              -- 型定義へ移動
 - mini.files: デフォルトのファイルエクスプローラー
 - flash.nvim + mini.jump + mini.jump2d: 高速モーション
 
-### AI・開発
+### 開発
 
-- supermaven-nvim: AI コード補完
 - gitsigns.nvim: Git統合
 
 ## 最適化設定（パターン例）

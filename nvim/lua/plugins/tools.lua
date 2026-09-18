@@ -11,7 +11,6 @@ return {
     end,
   },
   { "dstein64/vim-startuptime", cmd = "StartupTime" },
-  { "windwp/nvim-projectconfig", event = "VeryLazy", opts = require "config/nvim-projectconfig" },
   {
     "folke/trouble.nvim",
     opts = {},

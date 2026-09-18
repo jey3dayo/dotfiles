@@ -120,7 +120,7 @@ If Homebrew is already installed, skip bootstrap and follow docs/setup.md direct
 ## Core Stack
 
 - Zsh + Sheldon: 6-tier priority loading with mise-aware PATH optimization and 50+ Git abbreviations/widgets
-- Neovim + Lazy.nvim: AI assistance (Supermaven) with LSP-heavy yet fast startup
+- Neovim + Lazy.nvim: LSP-heavy yet fast startup
 - WezTerm: Primary terminal with Lua config and tmux-style workflow; Alacritty as GPU-accelerated alternative
 - Git + FZF: Widgets and fuzzy pickers for repo/status/add flows
 - Versioning: Mise for language runtimes; Homebrew for system packages
