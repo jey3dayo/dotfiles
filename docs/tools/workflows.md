@@ -48,7 +48,6 @@ Lua 設定ファイル（Neovim、WezTerm）の型チェックは複数レイヤ
 #### エディタ内（リアルタイム）
 
 - LuaLS: LSP による型チェック（`.luarc.json` で設定）
-- nvim-lint: 保存時・挿入モード終了時に自動実行（`luacheck`）
 
 #### ローカル開発
 
@@ -182,9 +181,9 @@ mise run check
 # luacheck が見つからない場合
 mise run ci:install    # luacheck と busted をインストール
 
-# エディタ内で lint が動作しない
-:LintInfo              # nvim-lint の状態確認
-:Lint                  # 手動 lint 実行
+# エディタ内で診断が出ない
+:checkhealth vim.lsp   # LSP の有効化状況を確認
+:LspDebug              # このリポジトリ固有の LSP 診断
 
 # Lefthook エラー
 lefthook run pre-commit
