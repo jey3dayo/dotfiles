@@ -44,7 +44,7 @@ nvim/
 - Python: `pylsp` + `ruff`; formatting through `ruff_format`/`ruff_fix`
 - Go: `gopls` with `gofmt` + `goimports`
 - Lua: `lua_ls` + `stylua`
-- Web/Config: `cssls`, `tailwindcss`, `jsonls`, `taplo` (TOML), `yamlls`, `marksman`, `vimls`, `dockerls`, `terraformls`, `prismals`, `astro`, `typos_lsp`
+- Web/Config: `cssls`, `jsonls`, `taplo` (TOML), `yamlls`, `marksman`, `vimls`, `dockerls`, `terraformls`, `prismals`, `astro`, `typos_lsp`
 - Defaults: `shfmt` for shell, `rustfmt` available, prettier for Markdown/YAML/GraphQL/HTML
 - Autoformat on save respects global/buffer flags; manual entrypoints: `:Format` / `<C-e>f` or `<C-e>b/p/e/s` for specific formatters
 

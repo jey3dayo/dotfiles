@@ -25,12 +25,4 @@ M.js_project = {
   "typescriptreact",
 }
 
-M.tailwind_supported = {
-  "html",
-  "css",
-  "javascriptreact",
-  "typescriptreact",
-  "astro",
-}
-
 return M

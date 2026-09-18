@@ -41,7 +41,6 @@ M.servers = {
   prismals = { installed = true, enabled = true },
   pylsp = { installed = true, enabled = true },
   ruff = { installed = true, enabled = true },
-  tailwindcss = { installed = true, enabled = true },
   taplo = { installed = true, enabled = true },
   eslint = { installed = true, enabled = true },
   typos_lsp = { installed = true, enabled = true },
@@ -200,14 +199,6 @@ M.formatters = {
         -- TypeScript LSPは言語機能のため停止しない
         -- eslint = true, -- ESLintも構文チェックのため停止しない
       },
-    },
-  },
-  tailwindcss = {
-    config_files = {
-      "tailwind.config.js",
-      "tailwind.config.cjs",
-      "tailwind.config.ts",
-      "postcss.config.js",
     },
   },
 }

@@ -17,7 +17,6 @@ describe("lsp.settings_factory", function()
     mock_deps = {
       ft = {
         js_project = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-        tailwind_supported = { "html", "css", "javascriptreact", "typescriptreact" },
       },
       core_utils = {
         has_config_files = function(config_files)
@@ -35,13 +34,6 @@ describe("lsp.settings_factory", function()
         formatters = {
           ["typescript-tools"] = {
             config_files = { "tsconfig.json", "jsconfig.json" },
-          },
-          tailwindcss = {
-            config_files = {
-              "tailwind.config.js",
-              "tailwind.config.cjs",
-              "tailwind.config.ts",
-            },
           },
           eslint = {
             config_files = {
@@ -74,35 +66,35 @@ describe("lsp.settings_factory", function()
 
   describe("create_formatter_server", function()
     it("adds autostart function when config_files exist", function()
-      local config = factory.create_formatter_server "tailwindcss"
+      local config = factory.create_formatter_server "eslint"
 
       assert.is_function(config.autostart)
       assert.is_true(config.autostart())
     end)
 
     it("adds root_dir function when config_files exist", function()
-      local config = factory.create_formatter_server "tailwindcss"
+      local config = factory.create_formatter_server "eslint"
 
       assert.is_function(config.root_dir)
       assert.equals("/test/root", config.root_dir())
     end)
 
     it("merges overrides correctly", function()
-      local config = factory.create_formatter_server("tailwindcss", {
+      local config = factory.create_formatter_server("eslint", {
         filetypes = { "custom", "types" },
         settings = {
-          tailwindCSS = {
+          eslint = {
             validate = true,
           },
         },
       })
 
       assert.same({ "custom", "types" }, config.filetypes)
-      assert.is_true(config.settings.tailwindCSS.validate)
+      assert.is_true(config.settings.eslint.validate)
     end)
 
     it("disables hover for formatter-only servers", function()
-      local config = factory.create_formatter_server "tailwindcss"
+      local config = factory.create_formatter_server "eslint"
       local mock_client = {
         server_capabilities = {
           hoverProvider = true,
