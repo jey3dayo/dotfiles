@@ -20,7 +20,7 @@ Detailed Reference: See [docs/tools/nvim.md](../../../docs/tools/nvim.md) for co
 
 - Manage tools with mason.nvim + mason-lspconfig; configure servers via lspconfig.
 - Keep 15-language support; add new servers through Mason rather than external managers.
-- Retain Supermaven (AI), gitsigns, mini.pick, and mini.files for workflows unless performance regression is proven.
+- Retain gitsigns, mini.pick, and mini.files for workflows unless performance regression is proven.
 
 ## Performance guards
 

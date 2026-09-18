@@ -89,11 +89,10 @@ tl              -- 型定義へ移動
 <C-e>f          -- 自動選択フォーマット
 ```
 
-### AI・開発ツール
+### 開発ツール
 
 ```lua
-<Tab>          -- AI補完受諾
-<C-]>          -- AI補完クリア
+<Tab>           -- 補完受諾（blink.cmp）
 ,sp             -- Lazy UI
 ,sm             -- MasonUpdate
 ,st             -- Treesitter 更新

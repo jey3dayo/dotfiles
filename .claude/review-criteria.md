@@ -49,7 +49,6 @@ dotfiles 特化のコードレビュー観点。この repo で設定変更を�
 - LSP設定: クライアント管理・重複回避の適切性
 - プラグイン: lazy.nvim最適化・必要性の妥当性
 - キーマップ: 統一パターン・競合回避
-- AI統合: Supermaven等の効率的設定
 - 起動最適化: プラグイン遅延読み込み最適化
 
 ### Terminal層 (WezTerm/Tmux/Alacritty)
