@@ -60,7 +60,6 @@ Total Startup Time: <100ms
 
 - 業界目標(200ms)を大幅に上回る
 - 15+言語LSP対応でこの速度を維持
-- AI統合(Supermaven)込みでの測定値
 
 ## 🔍 Monitoring Tools
 
