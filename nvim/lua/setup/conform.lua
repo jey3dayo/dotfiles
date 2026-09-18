@@ -1,7 +1,6 @@
 -- Conform.nvim setup
 local utils = require "core.utils"
 local mise = require "core.mise"
-local autoformat = require "lsp.autoformat"
 local lsp_config = require "lsp.config"
 local util = require "conform.util"
 
@@ -82,14 +81,6 @@ require("conform").setup {
     dockerfile = { "dockerfmt" },
     ["*"] = { "trim_whitespace" },
   },
-  format_on_save = function(bufnr)
-    if not autoformat.is_enabled(bufnr) then return end
-
-    return {
-      timeout_ms = 3000,
-      lsp_fallback = true,
-    }
-  end,
   formatters = {
     eslint_d = {
       command = util.find_executable({ "node_modules/.bin/eslint_d", mise.resolve_command "eslint_d" }, "eslint_d"),

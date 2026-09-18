@@ -88,31 +88,6 @@ M.installed_tree_sitter = {
   "yaml",
 }
 
--- Linter configurations for nvim-lint
-M.linters = {
-  javascript = { "eslint" },
-  javascriptreact = { "eslint" },
-  typescript = { "eslint" },
-  typescriptreact = { "eslint" },
-  vue = { "eslint" },
-
-  python = { "ruff" },
-  lua = { "luacheck" },
-  sh = { "shellcheck" },
-  bash = { "shellcheck" },
-  zsh = { "shellcheck" },
-  dockerfile = { "hadolint" },
-  yaml = { "yamllint" },
-  ["yaml.docker-compose"] = { "yamllint" },
-  ["yaml.gitlab"] = { "yamllint" },
-  ["yaml.helm-values"] = { "yamllint" },
-  markdown = { "markdownlint", "codespell" },
-  vim = { "vint" },
-
-  -- Global linters for any filetype
-  ["*"] = { "codespell" },
-}
-
 M.formatters = {
   ts_ls = {
     config_files = { "tsconfig.json", "jsconfig.json" },

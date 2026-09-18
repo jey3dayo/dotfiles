@@ -224,11 +224,12 @@ function M.check_lsp_status()
     end
   end
 
-  -- Format on save status
-  local format_on_save = not (global_format_disabled or buffer_format_disabled)
+  -- Autoformat gate status (no format-on-save; this gates manual :Format
+  -- when not forced, see lsp/formatter.lua)
+  local autoformat_enabled = not (global_format_disabled or buffer_format_disabled)
   echo_newline()
-  echo("• Format on save: ", "Normal")
-  echo(format_on_save and "enabled" or "disabled", format_on_save and "DiagnosticOk" or "DiagnosticWarn")
+  echo("• Autoformat gate (:Format): ", "Normal")
+  echo(autoformat_enabled and "enabled" or "disabled", autoformat_enabled and "DiagnosticOk" or "DiagnosticWarn")
   echo_newline()
 
   -- Key bindings reminder

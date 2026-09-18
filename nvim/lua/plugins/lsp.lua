@@ -39,16 +39,6 @@ return {
     end,
   },
 
-  {
-    "mfussenegger/nvim-lint",
-    lazy = false,
-    priority = 799,
-    dependencies = { "neovim/nvim-lspconfig" },
-    config = function()
-      require "setup.nvim-lint"
-    end,
-  },
-
   -- LSP server auto-configuration - must be last
   {
     "williamboman/mason-lspconfig.nvim",

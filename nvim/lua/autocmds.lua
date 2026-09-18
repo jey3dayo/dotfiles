@@ -52,26 +52,6 @@ define_autocmds {
     },
   },
   {
-    event = "FileType",
-    opts = {
-      pattern = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-      callback = function()
-        local config_files = require("lsp.config").formatters.eslint.config_files
-        if not utils.has_config_files(config_files) then return end
-
-        -- Wait a bit for LSP to initialize, then check if ESLint is running
-        vim.defer_fn(function()
-          local eslint_clients = vim.tbl_filter(function(client)
-            return client.name == "eslint"
-          end, vim.lsp.get_clients { bufnr = 0 })
-
-          if #eslint_clients == 0 then vim.cmd "LspStart eslint" end
-        end, 100)
-      end,
-      desc = "Ensure ESLint attaches when config is present",
-    },
-  },
-  {
     event = "ModeChanged",
     opts = {
       pattern = "*:[vV\x16]*",
