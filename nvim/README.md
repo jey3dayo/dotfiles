@@ -1,11 +1,11 @@
 # Neovim Configuration
 
-Comma-leader, Lazy.nvim-based setup tuned for sub-100ms startup. The stack is built around blink.cmp + supermaven-nvim for completion/AI, Conform for manual formatting, and a mostly mini.nvim editing surface.
+Comma-leader, Lazy.nvim-based setup tuned for sub-100ms startup. The stack is built around blink.cmp for completion, Conform for manual formatting, and a mostly mini.nvim editing surface.
 
 ## Quick Facts
 
 - Plugin manager: lazy.nvim (`lua/init_lazy.lua`), specs grouped under `lua/plugins/`
-- Completion: `blink.cmp` + `friendly-snippets`; AI suggestions from `supermaven-nvim`
+- Completion: `blink.cmp` + `friendly-snippets`
 - Formatting: manual-only via Conform + LSP fallback (no format-on-save; lefthook's pre-commit covers save-time formatting) — JS/TS uses `eslint_d` → `prettier` (+ `biome` when config exists); Stylua, Ruff, gofmt/goimports, rustfmt, shfmt, taplo, prettier for Markdown/YAML
 - Treesitter stack: `nvim-treesitter`, `ts-context-commentstring`, `vim-matchup`, `rainbow-delimiters`
 - File/search: `mini.pick` + `mini.extra`, `mini.files` as the default explorer, `flash.nvim`/`mini.jump`/`mini.jump2d` for motion
@@ -32,12 +32,12 @@ nvim/
 - Core/UI: lazy.nvim, noice.nvim + nvim-notify, lualine.nvim, mini.cursorword, mini.icons + nvim-web-devicons, tokyonight.nvim, kanagawa.nvim
 - Editing & Motion: mini.ai/surround/pairs/comment/indentscope/trailspace/hipatterns/align/animate/operators/splitjoin/bracketed/tabline/visits/bufremove, mini.sessions, mini.files, mini.pick + mini.extra + mini.clue + mini.fuzzy, mini.misc zoom, mini.ts-autotag, flash.nvim, dial.nvim, im-select.nvim
 - Search & Navigation: mini.pick built-ins (files/buffers/grep/diagnostics/symbols/registers), mini.files as default explorer with split helpers
-- Completion & AI: blink.cmp + friendly-snippets; supermaven-nvim suggestions
+- Completion: blink.cmp + friendly-snippets
 - LSP/Formatting: nvim-lspconfig, mason.nvim + mason-lspconfig, conform.nvim, native LSP UI tweaks, fidget.nvim
 - Syntax: nvim-treesitter, ts-context-commentstring, vim-matchup, rainbow-delimiters
 - Git: vim-fugitive (+ vim-rhubarb + gitlinker), diffview.nvim, neogit, gitsigns.nvim
-- Language extras: vim-rake/rails, jsgf.vim, vim-prisma, markdown-preview.nvim
-- Utilities: trouble.nvim, nvim-projectconfig, suda.vim, vim-startuptime
+- Language extras: vim-rails, jsgf.vim
+- Utilities: trouble.nvim, suda.vim, vim-startuptime
 
 ## Language & Formatting Support
 
