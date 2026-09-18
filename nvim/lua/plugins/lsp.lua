@@ -35,7 +35,7 @@ return {
     priority = 800,
     dependencies = { "neovim/nvim-lspconfig" },
     config = function()
-      require "setup.conform"
+      require "config.conform"
     end,
   },
 

@@ -8,7 +8,7 @@ return {
     build = ":TSUpdate",
     dependencies = { deps.ts_context_commentstring },
     config = function()
-      require("setup.nvim-treesitter").setup()
+      require("config.nvim-treesitter").setup()
     end,
   },
   {
