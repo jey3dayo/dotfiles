@@ -65,7 +65,7 @@ bun = "latest"
 
 # CLI Tools
 delta = "latest"
-"pipx:apm-cli" = "0.28.0"
+"pipx:apm-cli" = "0.31.0"
 bat = "latest"
 fzf = "latest"
 lazygit = "latest"
@@ -91,6 +91,7 @@ julia = "latest"
 ```toml
 [tools]
 "github:astral-sh/uv" = "latest"
+pnpm = "12"
 ```
 
 `pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため避ける。`entry.workstation-windows.toml` / `entry.ci.toml` も同じ理由で `"github:astral-sh/uv"` に統一済み。
@@ -192,7 +193,8 @@ gitleaks = "latest"
 "go:github.com/golangci/golangci-lint/cmd/golangci-lint" = "latest"
 "go:github.com/google/wire/cmd/wire" = "latest"
 "go:github.com/k1LoW/git-wt" = "latest"
-"go:golang.org/x/tools/cmd/goimports" = "0.46.0"
+"go:golang.org/x/tools/cmd/goimports" = "0.50.0"
+herdr = "0.9.1"
 "pipx:awslabs-terraform-mcp-server" = "1.0.18"
 "github:cli/cli" = "latest"
 glab = "latest"

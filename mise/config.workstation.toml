@@ -49,7 +49,7 @@ bun = "latest"
 
 # CLI Tools
 delta = "latest"
-"pipx:apm-cli" = "0.28.0"
+"pipx:apm-cli" = "0.31.0"
 bat = "latest"
 fzf = "latest"
 lazygit = "latest"
