@@ -1,6 +1,6 @@
 # ⚡ Performance Monitoring & Optimization
 
-最終更新: 2026-03-23
+最終更新: 2026-09-19
 対象: 開発者・運用担当者
 タグ: `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
 
@@ -17,7 +17,7 @@
 | Neovim startup  | ~65ms (warm) | 200-500ms    | <200ms | ✅     |
 | WezTerm startup | 800ms        | 1-2s         | <1s    | ✅     |
 
-### 詳細ベンチマーク（M3 MacBook Pro基準）
+### 詳細ベンチマーク（開発機。Neovim は 2026-09-19 実測条件を Neovim 起動分析に記載）
 
 #### Zsh起動分析
 
