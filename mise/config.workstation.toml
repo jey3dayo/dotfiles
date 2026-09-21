@@ -16,7 +16,6 @@ bun = "latest"
 "npm:neovim" = "latest"
 "npm:@bufbuild/protoc-gen-es" = "latest"
 "npm:@connectrpc/protoc-gen-connect-es" = "latest"
-"npm:clawdbot" = "latest"
 "npm:vibe-kanban" = "latest"
 "npm:eslint_d" = "latest"
 "npm:typescript" = "latest"
@@ -31,9 +30,6 @@ bun = "latest"
 "npm:@modelcontextprotocol/server-filesystem" = "latest"
 "npm:@playwright/mcp" = "latest"
 "npm:exa-mcp-server" = "latest"
-
-# Claude/AI ツール
-"npm:ccusage" = "latest"
 
 # クラウド・インフラ
 "npm:aws-cdk" = "latest"
