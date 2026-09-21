@@ -32,7 +32,6 @@ bun = "latest"
 "npm:neovim" = "latest"
 "npm:@bufbuild/protoc-gen-es" = "latest"
 "npm:@connectrpc/protoc-gen-connect-es" = "latest"
-"npm:clawdbot" = "latest"
 "npm:vibe-kanban" = "latest"
 "npm:eslint_d" = "latest"
 "npm:typescript" = "latest"
@@ -48,14 +47,9 @@ bun = "latest"
 "npm:@playwright/mcp" = "latest"
 "npm:exa-mcp-server" = "latest"
 
-# Claude/AI ツール
-"npm:ccusage" = "latest"
-"npm:dev3000" = "latest"
-
 # クラウド・インフラ
 "npm:aws-cdk" = "latest"
 "npm:@google/clasp" = "latest"
-"npm:@google/gemini-cli" = "latest"
 
 # その他ツール
 "npm:greptile" = "latest"

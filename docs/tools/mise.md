@@ -225,7 +225,7 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 - 大容量パッケージ: `@openai/codex` (391MB), `@playwright/mcp` (~300MB), `aws-cdk` (~150MB) 等
 - エディタ統合ツール: LSP、TypeScript関連、`eslint_d` 等（リモート開発でローカルマシンのLSP使用）
 - GUI/ブラウザ依存ツール: Playwright MCP、Chrome DevTools MCP 等
-- デスクトップ開発ツール: Claude AI開発ツール（`dxt`, `dev3000`, `ccusage` 等）
+- デスクトップ開発ツール: Claude AI開発ツール（`dxt` 等）
 - クラウド/インフラツール: AWS CLI、Google Clasp、gRPC関連 等
 - 全cargoツール: ARM互換性とビルド時間考慮
 
