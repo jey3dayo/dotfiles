@@ -16,7 +16,7 @@ owner: dotfiles
 
 # 💻 Neovim Configuration Guide
 
-100ms未満の高速起動と15言語対応のLSPを備えたモダンなLua設定です。
+warm 起動 ~65ms（2026-09-19 実測、目標 <200ms）と15言語対応のLSPを備えたモダンなLua設定です。
 
 ## 🤖 Claude Rules
 
@@ -28,7 +28,7 @@ owner: dotfiles
 
 ## 主要機能
 
-- 高性能: lazy.nvim最適化による100ms未満起動
+- 高性能: lazy.nvim 最適化による warm 起動 ~65ms（cold 初回 ~153ms、実測 2026-09-19）
 - LSP対応: 15以上の言語・設定形式をフルサポート
 - モダンUI: mini.pick、mini.files、flash.nvim による高速ナビゲーション
 
@@ -36,7 +36,7 @@ owner: dotfiles
 
 | 項目               | 起動時間     | 最適化手法       |
 | ------------------ | ------------ | ---------------- |
-| 全体起動           | <100ms       | lazy.nvim        |
+| 全体起動           | ~65ms (warm) | lazy.nvim        |
 | プラグイン読み込み | 遅延実行     | 条件付き読み込み |
 | LSP初期化          | オンデマンド | 言語別設定       |
 
