@@ -9,7 +9,7 @@ description: Use when reviewing or improving WezTerm configuration files such as
 
 WezTerm review should start from the actual config entry point, then move through a fixed checklist. Do not begin with style opinions or terminal-app comparisons.
 
-Read `references/wezterm.md` only when you need detailed API examples or deeper WezTerm-specific configuration patterns.
+For this dotfiles repo, read `docs/tools/wezterm.md` for the actual config structure, keybindings, and rendering settings. For other repos, use the repository's own docs/rules, Context7, or official WezTerm docs.
 
 ## When to Use
 
@@ -82,8 +82,4 @@ entry point
   -> platform-specific behavior
 ```
 
-必要になった時だけ `references/wezterm.md` を開き、API 名や実装例を確認する。
-
-## References
-
-- `references/wezterm.md`
+必要になった時だけ、この dotfiles repo は `docs/tools/wezterm.md` を、他リポジトリはそのリポジトリの docs や Context7 / 公式 WezTerm ドキュメントを開き、API 名や実装例を確認する。

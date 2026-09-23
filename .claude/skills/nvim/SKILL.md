@@ -12,7 +12,7 @@ description: >-
 
 Reviews Neovim configurations focusing on startup performance, LSP integration, plugin management, and modern Lua patterns.
 
-For generic Neovim/LSP/lazy.nvim documentation, query Context7 MCP when available; fall back to official Neovim docs plus `references/nvim.md` otherwise:
+For generic Neovim/LSP/lazy.nvim documentation, query Context7 MCP when available; fall back to official Neovim docs otherwise:
 
 - `/websites/neovim_io_doc` — official docs, API reference
 - `/folke/lazy.nvim` — plugin manager usage
@@ -28,11 +28,12 @@ This skill owns the dotfiles-specific patterns and review criteria below.
 4. LSP: server list, mason `ensure_installed` coverage, and how servers are activated (`vim.lsp.config` / `vim.lsp.enable` with `after/lsp/<server>.lua`, or `lspconfig.<server>.setup`). This dotfiles repo uses the native path: `lua/lsp/config.lua` (`M.servers`) → `lua/config/mason-lspconfig.lua` (`automatic_enable = false`) → `lua/lsp/setup.lua`
 5. Keybindings: confirm the actual leader key in the repo's own config (this dotfiles repo uses comma, `,`, not Space — check `keymaps.lua` or equivalent before assuming), no conflicts
 6. AI: `lua/plugins/ai.lua` or `completion.lua`, <50ms latency (verify with profiling)
-7. Performance: compare against benchmarks below and `references/nvim.md`
+7. Performance: compare against the benchmarks below
 8. Health: `:checkhealth` for providers/LSP
 9. Standards: Lua-only, lazy.nvim, LSP-native, AI integration
+10. Micro-level polish: Treesitter query tuning, custom-command documentation, explicit plugin dependencies — flag these only after the structural checks above are clean
 
-If the current repository has tool-specific rules or docs, compare against them first. Otherwise use `references/nvim.md` as the local baseline.
+For this dotfiles repo, compare against `docs/tools/nvim.md` (source of truth for baselines, measured startup times, and the actual keybindings/plugin list). For other repos, use the repository's own docs/rules first, then Context7 or official Neovim docs.
 
 ## Performance Benchmarks
 
@@ -41,7 +42,7 @@ If the current repository has tool-specific rules or docs, compare against them 
 - LSP attach: <500ms for most languages
 - Plugin load: 90%+ lazy-loaded
 - Disable unused providers: `vim.g.loaded_python3_provider = 0`
-- Large file detection (>2MB) in `config/autocmds.lua`
+- Large file detection (>2MB) — this dotfiles repo: `lua/core/utils.lua`, consumed by `lua/core/ftplugin_loader.lua`
 
 ## Evaluation Focus
 
@@ -84,7 +85,3 @@ Check consistency with WezTerm (theme, Nerd Font), Zsh (shared FZF keybindings, 
 ## Related Skills
 
 - `code-review` — overall quality assessment framework
-
-## References
-
-- `references/nvim.md` — skill-local baseline, benchmarks, and maintenance notes
