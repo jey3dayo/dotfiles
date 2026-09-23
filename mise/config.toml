@@ -18,7 +18,8 @@ minimum_release_age_excludes = [
 [settings.github]
 # 有効にしない。mise が実行する `git credential fill` は github.com では
 # `!gh auth git-credential` だけを呼び、その gh は mise shim なので無限再帰する。
-# トークンは gh_cli_tokens（gh の hosts.yml）が供給する。
+# トークンは entry.workstation-unix.toml の github.credential_command が供給する
+# （gh は keyring 保管のため gh_cli_tokens の hosts.yml 経路では取得できない）。
 use_git_credentials = false
 
 [settings.pipx]

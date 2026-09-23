@@ -8,6 +8,12 @@ idiomatic_version_file_enable_tools = []
 # mise config を信頼するために追加している
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 
+# gh は keychain 保管のため gh_cli_tokens（hosts.yml）では取得できない。shim 経由だと
+# use_git_credentials で避けた無限再帰を再現するため、実バイナリを絶対パスで呼ぶ
+# （mise which gh の解決先。パスと $VAR 展開が Unix 前提なので Windows とは共有しない）。
+[settings.github]
+credential_command = '"$HOME/.mise/installs/github-cli-cli/latest/bin/gh" auth token --hostname "$MISE_CREDENTIAL_HOST"'
+
 [tools]
 # Common tools are loaded from the shared / workstation overlays when MISE_ENV includes them.
 # Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
