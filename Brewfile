@@ -14,7 +14,6 @@ tap "steipete/tap", trusted: true
 tap "voicevox/voicevox", "https://github.com/VOICEVOX/homebrew-voicevox", trusted: true
 brew "gofireflyio/aiac/aiac", trusted: true
 brew "daipeihust/tap/im-select", trusted: true
-brew "pam-reattach"
 brew "mysql", restart_service: :changed
 brew "steipete/tap/peekaboo", trusted: true
 brew "perman/tap/perman-aws-vault", trusted: true

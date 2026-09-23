@@ -14,7 +14,7 @@ Purpose: decide which layer owns a tool. Details: [docs/tools/mise.md](../../../
 
 - mise `[tools]`: CLIs, language runtimes, dev tools, and `npm:` / `pipx:` / `cargo:` / `go:` packages. Declared in `mise/config.shared.toml` (all OS), `mise/config.workstation.toml` (default / Windows), and `mise/entry.*.toml` (per environment).
 - mise bootstrap `[bootstrap.packages]`: macOS Homebrew formulae — system libs and native binaries, including some mise could also install (btop, cmake, neovim, podman, powershell, rust-analyzer, …). Declared in `mise/config.macos.toml` as `"brew:<name>" = "latest"`.
-- Brewfile: casks, MAS apps, VS Code extensions, and formulae `[bootstrap.packages]` cannot express. Its `brew` lines are the exception list; known reasons are install args / `restart_service` and private or metadata-less taps (`pam-reattach` has none recorded).
+- Brewfile: casks, MAS apps, VS Code extensions, and formulae `[bootstrap.packages]` cannot express. Its `brew` lines are the exception list; known reasons are install args / `restart_service` and private or metadata-less taps.
 - Self-updating standalone: `mise`, `claude`, `codex`. mise comes from its official installer (`curl https://mise.run | sh`) on Unix and from Chocolatey (`windows/chocolatey/packages.config`) on Windows. claude / codex come from their official installers, ensured by `[bootstrap.hooks.post-tools]` → `mise/lib/ensure-standalone.sh` (Windows: `Ensure-StandaloneCli` in `windows/setup.ps1`).
 
 ## Choosing a layer
