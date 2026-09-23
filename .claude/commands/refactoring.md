@@ -36,8 +36,7 @@
 
 ### 設定の統一性
 
-- テーマ・カラーパレットの統一
-- フォント設定の統一
+- テーマ・フォントは各ツールの docs に記載された現行方針に合わせる（全ツール同一テーマにはしていない）
 - キーバインドの一貫性
 
 ### パフォーマンス最適化
@@ -62,7 +61,7 @@
 
 ### Zsh関連
 
-- .zshrc, sheldon.toml, config/loader.zsh
+- .zshrc, zsh/lib/*.zsh, sheldon/plugins.toml
 - 各種プラグイン設定・起動時間最適化
 
 ### Neovim関連
@@ -77,15 +76,15 @@
 
 ### Git関連
 
-- .gitconfig, hooks, エイリアス設定
+- git/config, git/*.gitconfig, hooks, エイリアス設定
 - ワークフロー最適化
 
 ### SSH関連
 
-- ssh_config, ssh_config.d/\*, 階層的Include設定
+- ssh/config, ssh/config.d/{common,macos,linux}/\*, 階層的Include設定
 - 1Password SSH Agent統合・セキュリティ最適化
 
 ### Tmux関連
 
-- .tmux.conf, プラグイン設定
+- tmux/tmux.conf, tmux/*.conf, プラグイン設定
 - セッション管理・統合設定
