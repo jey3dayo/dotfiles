@@ -18,8 +18,8 @@ Detailed Reference: See [docs/tools/nvim.md](../../../docs/tools/nvim.md) for co
 
 ## LSP and tooling
 
-- Manage tools with mason.nvim + mason-lspconfig; configure servers via lspconfig.
-- Keep 15-language support; add new servers through Mason rather than external managers.
+- Server list lives in `lua/lsp/config.lua` (`M.servers`); mason-lspconfig installs it (`automatic_enable = false`) and `lua/lsp/setup.lua` activates it via `vim.lsp.config` / `vim.lsp.enable`.
+- Per-server settings go in `after/lsp/<server>.lua`; add new servers through Mason rather than external managers.
 - Retain gitsigns, mini.pick, and mini.files for workflows unless performance regression is proven.
 
 ## Performance guards

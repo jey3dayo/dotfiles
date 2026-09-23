@@ -25,7 +25,7 @@ This skill owns the dotfiles-specific patterns and review criteria below.
 1. Measure: `nvim --startuptime startup.log`, `:Lazy profile`
 2. Structure: `init.lua` → `lua/config/` → `lua/plugins/`, plus any `core/` / `lsp/` layers (see the tree below)
 3. Plugins: count, `lazy-lock.json` tracked in git, event/cmd/ft triggers on specs
-4. LSP: mason setup, `ensure_installed` coverage, pcall wrapping — the wiring lives in `lua/plugins/lsp.lua` or a dedicated `lua/lsp/` module depending on the repo
+4. LSP: server list, mason `ensure_installed` coverage, and how servers are activated (`vim.lsp.config` / `vim.lsp.enable` with `after/lsp/<server>.lua`, or `lspconfig.<server>.setup`). This dotfiles repo uses the native path: `lua/lsp/config.lua` (`M.servers`) → `lua/config/mason-lspconfig.lua` (`automatic_enable = false`) → `lua/lsp/setup.lua`
 5. Keybindings: confirm the actual leader key in the repo's own config (this dotfiles repo uses comma, `,`, not Space — check `keymaps.lua` or equivalent before assuming), no conflicts
 6. AI: `lua/plugins/ai.lua` or `completion.lua`, <50ms latency (verify with profiling)
 7. Performance: compare against benchmarks below and `references/nvim.md`
@@ -36,7 +36,7 @@ If the current repository has tool-specific rules or docs, compare against them 
 
 ## Performance Benchmarks
 
-- Startup time: <200ms (ideal <100ms)
+- Startup time: <200ms (for this dotfiles repo, targets and measured baselines live in `docs/performance.md`)
 - First edit: <300ms from nvim command
 - LSP attach: <500ms for most languages
 - Plugin load: 90%+ lazy-loaded
@@ -48,7 +48,7 @@ If the current repository has tool-specific rules or docs, compare against them 
 Judge against the benchmarks above and report the gap, not a score:
 
 - Startup: lazy-loading ratio, trigger precision (event/cmd/ft), unused providers disabled
-- LSP: mason auto-install coverage for the languages actually used, pcall-wrapped setup
+- LSP: install coverage for the languages actually used, one activation path (no double setup)
 - Plugins: lazy.nvim with `lazy-lock.json` tracked; flag legacy managers (packer, vim-plug) and Vimscript-heavy config
 - Practices: Lua-only config, AI completion integrated without measurable latency
 
@@ -73,13 +73,13 @@ Check consistency with WezTerm (theme, Nerd Font), Zsh (shared FZF keybindings, 
 
 ## Common Issues & Quick Fixes
 
-| Issue                 | Fix                                                                                        |
-| --------------------- | ------------------------------------------------------------------------------------------ |
-| Startup >500ms        | Check unused providers, lazy loading specs, large file detection                           |
-| Legacy plugin manager | Migrate to lazy.nvim, track `lazy-lock.json`                                               |
-| <10 LSP languages     | Configure `ensure_installed` in `lua/plugins/lsp.lua` with `automatic_installation = true` |
-| Missing lazy loading  | Add event/cmd/ft triggers (`VeryLazy`, `BufReadPre`, `CmdlineEnter`) to plugin specs       |
-| Provider errors       | Disable in init.lua: `vim.g.loaded_python3_provider = 0`                                   |
+| Issue                 | Fix                                                                                      |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| Startup >500ms        | Check unused providers, lazy loading specs, large file detection                         |
+| Legacy plugin manager | Migrate to lazy.nvim, track `lazy-lock.json`                                             |
+| Missing LSP server    | Add it to the server list that feeds mason `ensure_installed` and to the activation path |
+| Missing lazy loading  | Add event/cmd/ft triggers (`VeryLazy`, `BufReadPre`, `CmdlineEnter`) to plugin specs     |
+| Provider errors       | Disable in init.lua: `vim.g.loaded_python3_provider = 0`                                 |
 
 ## Related Skills
 
