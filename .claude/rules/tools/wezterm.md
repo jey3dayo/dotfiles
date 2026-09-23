@@ -11,8 +11,8 @@ Detailed Reference: See [docs/tools/wezterm.md](../../../docs/tools/wezterm.md) 
 
 ## Config structure
 
-- Files: wezterm.lua (entry), keybinds.lua, ui.lua, events.lua, utils.lua, os.lua, win.lua.
-- Keep Gruvbox theme, 92% opacity, tab bar at bottom, and WebGpu front_end by default.
+- Files: wezterm.lua (entry), config.lua (base settings), constants.lua, keybinds.lua, key_tables.lua, ui.lua, events.lua, utils.lua, os.lua, win.lua.
+- Defaults: Gruvbox theme, 92% opacity (`constants.DEFAULT_OPACITY`), tab bar at bottom, `front_end = "OpenGL"` with `max_fps = 60` in config.lua.
 
 ## Key bindings
 
@@ -26,4 +26,4 @@ Detailed Reference: See [docs/tools/wezterm.md](../../../docs/tools/wezterm.md) 
 
 ## Maintenance
 
-- Update via `brew upgrade wezterm`; back up ~/.config/wezterm before major edits. Maintain consistency with other tools (Gruvbox theme and shared key philosophy).
+- Update via `brew upgrade wezterm`; back up ~/.config/wezterm before major edits. Theme is not unified across tools (Neovim uses 0x96f); keep the shared key philosophy.

@@ -1,6 +1,6 @@
 # 🖥️ WezTerm Configuration
 
-最終更新: 2025-12-17
+最終更新: 2026-09-23
 対象: 開発者
 タグ: `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`
 
@@ -16,7 +16,7 @@ GPU加速対応のLuaベースモジュラーターミナル設定です。
 
 ## 主要機能
 
-- パフォーマンス: WebGpu GPU加速
+- パフォーマンス: OpenGL フロントエンド（`max_fps = 60`）
 - UI: Gruvboxテーマ、92%透明度、カスタムタブスタイル
 - 多重化: Tmuxスタイルリーダーキー（`Ctrl+x`）
 - コピーモード: Vim風ナビゲーション・テキスト選択
@@ -73,9 +73,9 @@ Ctrl+plus/minus        -- フォントサイズ
 ### パフォーマンス
 
 ```lua
--- GPU加速
-front_end = "WebGpu"
-webgpu_power_preference = "HighPerformance"
+-- 描画（config.lua）
+front_end = "OpenGL"
+max_fps = 60
 
 -- フォント最適化
 font = "UDEV Gothic 35NFLG"
