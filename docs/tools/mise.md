@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-09-03
+最終更新: 2026-09-23
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -386,7 +386,7 @@ node = "18.20.0"         # Pin specific version for project
 ### Weekly Updates
 
 ```bash
-mise upgrade              # Update all tools
+mise run update            # pull → brew/apt → mise self-update → mise upgrade → completions を一括更新
 mise prune                # Remove unused versions
 mise doctor               # Check for issues
 ```
@@ -455,7 +455,7 @@ mise 本体は Homebrew で管理しない。公式インストーラで `~/.loc
 3. Version Pinning: Use specific versions for project-critical tools
 4. Latest for Development Tools: Use "latest" for CLI tools that don't affect build
 5. Document Breaking Changes: Comment version pins with reason
-6. Regular Updates: Run `mise upgrade` weekly to stay current
+6. Regular Updates: Run `mise run update` weekly to stay current (runs `mise self-update` before `mise upgrade`)
 7. Consolidation: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, npm/pnpm/bun global, etc.)
 8. Avoid Duplication: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
 9. No manual availability checks for mise-managed tools: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。

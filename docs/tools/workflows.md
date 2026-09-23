@@ -1,6 +1,6 @@
 # Workflows & Maintenance Reference
 
-最終更新: 2026-09-16
+最終更新: 2026-09-23
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -10,7 +10,7 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 | 頻度   | 作業                                                                                                                                                              |
 | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `brew update && brew upgrade` + `mise self-update && mise upgrade`; `codex update`（claude は自動更新のため手動不要）; プラグイン更新（sheldon, nvim lazy, tmux） |
+| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）; `codex update`（claude は自動更新のため手動不要）; プラグイン更新（sheldon, nvim lazy, tmux） |
 | 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d`               |
 | 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                |
 
@@ -337,7 +337,7 @@ brew cleanup
 ## mise Management
 
 - Primary config: `mise/config.toml`（6 カテゴリ構造: Runtimes, Package Managers, Formatters/Linters, NPM, Cargo, CLI Tools）
-- Weekly updates: `mise upgrade` to update all tools
+- Weekly updates: `mise run update`（`mise self-update` の後に `mise upgrade --yes --no-prune` を実行するタスク）
 - Monthly cleanup: `mise prune` to remove unused versions
 - Verification: `mise doctor` for health check, `mise ls` for installed tools
 - 重複回避: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
