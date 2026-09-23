@@ -26,13 +26,14 @@
 ```
 ~/.config/ssh/              # dotfiles管理（Git追跡）
 ├── config                  # メイン設定ファイル
-├── config.d/              # 優先度付きモジュール設定
-│   ├── 00-global.sshconfig      # グローバル設定（最優先）
-│   ├── 01-1password.sshconfig   # 1Password SSH Agent
-│   ├── 10-dev-services.sshconfig    # 開発サービス（GitHub等）
-│   ├── 20-home-network.sshconfig    # ホームネットワーク
-│   ├── 30-macos.sshconfig       # macOS専用設定
-│   └── 31-linux.sshconfig       # Linux/WSL2専用設定
+├── config.d/
+│   ├── common/             # 全プラットフォーム共通（alphanumeric順で読み込み）
+│   │   ├── 00-global.sshconfig      # グローバル設定（最優先）
+│   │   ├── 01-1password.sshconfig   # 1Password SSH Agent
+│   │   ├── 10-dev-services.sshconfig    # 開発サービス（GitHub等）
+│   │   └── 20-home-network.sshconfig    # ホームネットワーク
+│   ├── macos/settings.sshconfig     # macOS専用設定
+│   └── linux/settings.sshconfig     # Linux/WSL2専用設定
 ├── templates/             # 設定テンプレート
 │   ├── host-template.sshconfig
 │   └── service-template.sshconfig
@@ -46,13 +47,12 @@
 ### Include階層構造（優先度順）
 
 ```bash
-~/.ssh/config
-├── ~/.config/ssh/config.d/00-global.sshconfig      # 全体設定
-├── ~/.config/ssh/config.d/01-1password.sshconfig   # 認証設定
-├── ~/.config/ssh/config.d/10-dev-services.sshconfig    # 開発環境
-├── ~/.config/ssh/config.d/20-home-network.sshconfig    # ホームラボ
-├── ~/.config/ssh/config.d/30-macos.sshconfig       # macOS専用設定
-├── ~/.config/ssh/config.d/31-linux.sshconfig       # Linux/WSL2専用設定
+~/.config/ssh/config
+├── ~/.config/ssh/config.d/common/*     # 00-global → 01-1password → 10-dev-services → 20-home-network（alphanumeric順）
+├── Match exec "uname -s | grep -q Darwin"
+│   └── ~/.config/ssh/config.d/macos/*  # macOS専用設定
+├── Match exec "uname | grep -qi linux"
+│   └── ~/.config/ssh/config.d/linux/*  # Linux/WSL2専用設定
 └── ~/.ssh/ssh_config.d/*         # ローカル個別設定（機密情報）
 ```
 
@@ -64,20 +64,29 @@
 # SSH Configuration - Hierarchical Include Structure
 # Managed by dotfiles - DO NOT EDIT MANUALLY
 
-# Managed configs (tracked in dotfiles)
-# Load in priority order
-Include ~/.config/ssh/config.d/00-global.sshconfig
-Include ~/.config/ssh/config.d/01-1password.sshconfig
-Include ~/.config/ssh/config.d/10-dev-services.sshconfig
-Include ~/.config/ssh/config.d/20-home-network.sshconfig
-Include ~/.config/ssh/config.d/30-macos.sshconfig
-Include ~/.config/ssh/config.d/31-linux.sshconfig
+# Ignore platform-specific options for cross-platform compatibility
+# This must be declared before any includes
+IgnoreUnknown UseKeychain
+
+# Common settings (all platforms)
+# Files are loaded in alphanumeric order: 00-*, 01-*, 10-*, 20-*
+Include ~/.config/ssh/config.d/common/*
+
+# Platform-specific settings (macOS)
+Match exec "uname -s | grep -q Darwin"
+  Include ~/.config/ssh/config.d/macos/*
+Match all
+
+# Platform-specific settings (Linux/WSL2)
+Match exec "uname | grep -qi linux"
+  Include ~/.config/ssh/config.d/linux/*
+Match all
 
 # Local overrides (untracked, for sensitive data)
 Include ~/.ssh/ssh_config.d/*
 ```
 
-### グローバル設定（00-global.sshconfig）
+### グローバル設定（common/00-global.sshconfig）
 
 ```bash
 Host *
@@ -96,7 +105,7 @@ Host *
   PreferredAuthentications publickey,password
 ```
 
-### 開発サービス設定（10-dev-services.sshconfig）
+### 開発サービス設定（common/10-dev-services.sshconfig）
 
 ```bash
 # GitHub（企業ファイアウォール対応）
@@ -112,14 +121,22 @@ Host gitlab.com
   IdentitiesOnly yes
 ```
 
-### ホームネットワーク設定（20-home-network.sshconfig）
+### ホームネットワーク設定（common/20-home-network.sshconfig）
 
 ```bash
 # Raspberry Pi（統一設定）
 Host pi
+  HostName 192.168.50.158
+  User pi
+  Port 10022
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+
+Host pi-local
   HostName raspberrypi.local
   User pi
   Port 10022
+  IdentityFile ~/.ssh/id_ed25519
   IdentitiesOnly yes
 
 # Synology NAS
@@ -130,7 +147,7 @@ Host synology
   IdentitiesOnly yes
 ```
 
-### 1Password SSH Agent設定（01-1password.sshconfig）
+### 1Password SSH Agent設定（common/01-1password.sshconfig）
 
 ```bash
 # UNCOMMENT TO ENABLE 1Password SSH Agent
@@ -145,7 +162,7 @@ Host *
 
 ## 🖥️ プラットフォーム固有設定
 
-### macOS専用設定（30-macos.sshconfig）
+### macOS専用設定（macos/settings.sshconfig）
 
 macOS環境でのみ適用される設定です。Linux/WSL2では`Match exec`判定により無視されます。
 
@@ -158,19 +175,19 @@ macOS環境でのみ適用される設定です。Linux/WSL2では`Match exec`�
 
 #### OrbStack/Colima統合
 
-- OrbStack SSH config自動読み込み（macOSのみ）
-- Colima SSH config（デフォルト無効、必要に応じてコメント解除）
+- OrbStack / Colima の SSH config は、どちらもデフォルト無効（導入済みなら `macos/settings.sshconfig` の Include をコメント解除）
 
 #### 動作の仕組み
 
+判定自体は `~/.config/ssh/config` 側で宣言され、成立時のみ `config.d/macos/*` を Include する（`macos/settings.sshconfig` 自体に `Match exec` は書かれていない）。
+
 ```sshconfig
-Match exec "uname | grep -qi darwin"
-  UseKeychain yes
-  AddKeysToAgent yes
+Match exec "uname -s | grep -q Darwin"
+  Include ~/.config/ssh/config.d/macos/*
 ```
 
-- macOS: `uname`が`Darwin`を返す → Match成功 → 設定適用
-- Linux/WSL2: `uname`が`Linux`を返す → Match失敗 → 設定無視
+- macOS: `uname -s`が`Darwin`を返す → Match成功 → 設定適用
+- Linux/WSL2: `uname -s`が`Darwin`を返さない → Match失敗 → 設定無視
 
 #### 確認方法
 
@@ -184,7 +201,7 @@ ssh -G github.com | grep -i keychain
 # 出力: usekeychain no（または出力なし）
 ```
 
-### Linux/WSL2専用設定（31-linux.sshconfig）
+### Linux/WSL2専用設定（linux/settings.sshconfig）
 
 Linux/WSL2環境でのみ適用される設定です。macOSでは`Match exec`判定により無視されます。
 
@@ -197,14 +214,11 @@ Linux/WSL2環境でのみ適用される設定です。macOSでは`Match exec`�
 
 #### 動作の仕組み
 
-```sshconfig
-# Linux-specific settings
-Match exec "uname | grep -qi linux"
-  # Add Linux-specific settings here
+判定自体は `~/.config/ssh/config` 側で宣言され、成立時のみ `config.d/linux/*` を Include する（`linux/settings.sshconfig` 自体に `Match exec` は書かれていない）。WSL2判定 `Match exec "uname -r | grep -qi microsoft"` はファイル内にコメントアウトされた例として存在するのみで、現状は有効化されていない。
 
-# WSL2-specific settings
-Match exec "uname -r | grep -qi microsoft"
-  # Add WSL2-specific settings here
+```sshconfig
+Match exec "uname | grep -qi linux"
+  Include ~/.config/ssh/config.d/linux/*
 ```
 
 - Linux/WSL2: `uname`が`Linux`を返す → Match成功 → 設定適用
@@ -230,19 +244,19 @@ uname
 
 ### 設定ファイルの優先度
 
-#### 数字による読み込み順序制御
+#### 数字による読み込み順序制御（common/ 配下）
 
 - `00-` : 最優先（グローバル設定）
 - `01-` : 認証設定（1Password等）
 - `10-` : 開発サービス
 - `20-` : ホームネットワーク
-- `30-` : プラットフォーム固有設定（macOS）
-- `31-` : プラットフォーム固有設定（Linux/WSL2）
+- `macos/settings.sshconfig` : プラットフォーム固有設定（macOS、`Match exec`で条件読み込み）
+- `linux/settings.sshconfig` : プラットフォーム固有設定（Linux/WSL2、`Match exec`で条件読み込み）
 
 ### 新しいホスト追加手順
 
 1. テンプレート使用: `templates/host-template.sshconfig`をコピー
-2. 適切なファイル選択: 用途に応じて10-,20-,30-等に追加
+2. 適切なファイル選択: 用途に応じて common/10-, common/20- 等に追加
 3. 設定カスタマイズ: HostName, User, Portを設定
 4. テスト: `ssh -T hostname`で接続確認
 
@@ -281,7 +295,7 @@ ssh -v hostname
 ssh -o "BatchMode yes" hostname echo "success"
 
 # モジュール別設定確認
-cat ~/.config/ssh/config.d/10-dev-services.sshconfig
+cat ~/.config/ssh/config.d/common/10-dev-services.sshconfig
 ```
 
 ## 🔒 セキュリティ設定
@@ -292,7 +306,7 @@ cat ~/.config/ssh/config.d/10-dev-services.sshconfig
 
 1. 1Password設定: SSH Agent機能を有効化
 2. 鍵登録: 1Password内でSSH鍵を管理
-3. 設定ファイル: `01-1password.sshconfig`のコメントアウト解除
+3. 設定ファイル: `common/01-1password.sshconfig`のコメントアウト解除
 4. 確認: `ssh-add -l`で鍵一覧表示
 
 #### 利点
@@ -326,7 +340,7 @@ chmod 700 ~/.config/ssh
 
 # 設定ファイル権限（新構造）
 chmod 644 ~/.config/ssh/config
-chmod 644 ~/.config/ssh/config.d/*.sshconfig
+chmod 644 ~/.config/ssh/config.d/**/*.sshconfig
 chmod 644 ~/.config/ssh/templates/*.sshconfig
 
 # 秘密鍵権限

@@ -1,6 +1,6 @@
 # 🔐 SSH Configuration
 
-最終更新: 2025-12-17
+最終更新: 2026-09-23
 対象: 開発者
 タグ: `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -10,7 +10,7 @@
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/ssh.md`](../../.claude/rules/tools/ssh.md) で管理されています。
 
-- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 目的: Claude AIが常に参照する簡潔なルール
 - 適用範囲: YAML frontmatter `paths:` で定義
 - 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
@@ -25,13 +25,15 @@
 
 ```text
 ~/.config/ssh/              # dotfiles管理（Git追跡）
-├── config                  # メイン設定ファイル
-├── config.d/              # 優先度付きモジュール設定
-│   ├── 00-global.sshconfig      # グローバル設定（最優先）
-│   ├── 01-1password.sshconfig   # 1Password SSH Agent
-│   ├── 10-dev-services.sshconfig    # 開発サービス（GitHub等）
-│   ├── 20-home-network.sshconfig    # ホームネットワーク
-│   └── 99-defaults.sshconfig    # デフォルト設定（最低優先）
+├── config                  # メイン設定ファイル（Include の起点）
+├── config.d/
+│   ├── common/             # 全プラットフォーム共通（alphanumeric 順で読み込み）
+│   │   ├── 00-global.sshconfig      # グローバル設定（最優先）
+│   │   ├── 01-1password.sshconfig   # 1Password SSH Agent
+│   │   ├── 10-dev-services.sshconfig    # 開発サービス（GitHub等）
+│   │   └── 20-home-network.sshconfig    # ホームネットワーク
+│   ├── macos/settings.sshconfig     # macOS専用（`Match exec` で条件読み込み）
+│   └── linux/settings.sshconfig     # Linux/WSL2専用（`Match exec` で条件読み込み）
 ├── templates/             # 設定テンプレート
 │   ├── host-template.sshconfig
 │   └── service-template.sshconfig
@@ -44,11 +46,11 @@
 
 ### 読み込み優先度
 
-1. 00-global: 全体設定
-2. 01-1password: 認証設定
-3. 10-dev-services: 開発環境
-4. 20-home-network: ホームラボ
-5. 99-defaults: デフォルト
+1. common/00-global: 全体設定
+2. common/01-1password: 認証設定
+3. common/10-dev-services: 開発環境
+4. common/20-home-network: ホームラボ
+5. macos または linux の `settings.sshconfig`: プラットフォーム別設定（`Match exec` で判定）
 6. ローカル設定: 機密情報（Git管理外）
 
 ## 主要設定ファイル
