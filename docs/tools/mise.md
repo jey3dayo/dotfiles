@@ -70,10 +70,16 @@ mise/
 ├── README.md              # mise 運用の概要
 ├── lib/                   # helper scripts (公開タスクにしない共通処理)
 │   ├── ensure-busted.sh   # busted の存在確認と自動インストール
+│   ├── ensure-python-libs.sh # python 本体へ入れる import 用ライブラリの導入保証
+│   ├── ensure-standalone.sh  # claude / codex の公式インストーラ導入保証（post-tools hook）
+│   ├── lint-shell.sh      # shell lint wrapper
+│   ├── pre-push-check.sh  # pre-push で走らせるテスト範囲の判定
 │   ├── run-restic.sh      # restic backup wrapper
 │   ├── run-ts-tests.sh    # TypeScript テスト起動
+│   ├── self-update-mise.sh # minimum_release_age を守る mise self-update（update:self）
 │   └── shell-format.sh    # shell / zsh formatter wrapper
 ├── config.toml            # 共通設定のみ（ツール定義なし、env/設定）
+├── config.macos.toml      # macOS 専用 bootstrap（[bootstrap.packages] など。MISE_ENV=macos）
 ├── config.shared.toml     # default / Windows / Pi 共通 tools（MISE_ENV=shared）
 ├── config.workstation.toml # Pi / CI 以外の開発機共通 tools（MISE_ENV=workstation）
 ├── entry.workstation-unix.toml    # macOS/Linux/WSL2 向け差分
@@ -81,7 +87,7 @@ mise/
 ├── entry.server-pi.toml           # Raspberry Pi 向け差分
 ├── entry.ci.toml                  # CI/CD 向け最小構成（shared/default 非依存）
 ├── tasks/                 # 外部 repo から見えてよい global task 定義
-│   └── brewfile.toml      # Brewfile バックアップ・リストア
+│   └── brewfile.toml      # Brewfile 差分確認・リストア
 └── local-tasks/           # ~/.config 専用の mise task 定義
     ├── backup.toml        # restic backup・restore・prune
     ├── ci.toml            # CI/CD チェック・Nix 検証
@@ -100,7 +106,7 @@ task TOML は description、`dir` / `env`、dependency、platform route、単一
 ## Task Design
 
 - 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
-- 環境依存・運用系: `agents.toml`, `backup.toml`, `updates.toml`, `env.toml`
+- 環境依存・運用系: `backup.toml`, `updates.toml`, `env.toml`
 - タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
 - `update` / `check` / 通常の `ci` は非破壊的に保つ。`reset`、`clean`、`prune`、deploy、in-place restore は明示的な個別 task に置く。
 
