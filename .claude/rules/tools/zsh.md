@@ -6,7 +6,7 @@ references: docs/performance.md
 
 # Zsh Rules
 
-Purpose: preserve the fast, modular Zsh setup. Scope: load order, PATH policy, plugin tiers, caching, and maintenance hooks.
+Purpose: preserve the fast, modular Zsh setup. Scope: load order, PATH policy, plugin loading, caching, and maintenance hooks.
 
 Detailed Reference: See [docs/tools/zsh.md](../../../docs/tools/zsh.md) for comprehensive implementation guide, examples, and troubleshooting.
 

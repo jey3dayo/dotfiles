@@ -68,7 +68,7 @@ Zsh review should begin by confirming that the target is actually Zsh, then chec
 この workspace のように dotfiles 事情が強い場合でも、まず一般的な Zsh レビューを優先する。その後で必要なら:
 
 - Sheldon などの plugin manager 設計
-- tiered lazy loading
+- 初回プロンプト後の遅延読み込み（`add-zsh-hook precmd`）
 - `.zwc` コンパイル
 - machine-local override
 

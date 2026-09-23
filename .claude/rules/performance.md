@@ -13,14 +13,14 @@ Sources: docs/performance.md.
 
 ## Measurement
 
-- Zsh quick check: `time zsh -lic exit`; use `zsh-help` and `zsh-help tools` for status.
+- Zsh quick check: `time zsh -lic exit`; detailed runs via `zsh-benchmark` and `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'`.
 - Neovim: `nvim --startuptime startup.log`, `:Lazy profile`, `:LspInfo`, `:checkhealth`.
-- System: `btop`, `htop`, `top`; optional script logs in ~/.config/scripts/performance-monitor.sh.
+- System: `btop`, `htop`, `top`.
 - Record all benchmark results and history updates in docs/performance.md only.
 
 ## Optimization playbook
 
-- Zsh: maintain 6-stage plugin loading; keep mise shims highest in PATH; use compinit rebuild every 24h and on completion updates; consider instant prompt, static bundle, deferred command triggers for further -500ms.
+- Zsh: keep `.zshrc` sourcing `zsh/lib/*.zsh` in its category order and defer non-essential widgets via `add-zsh-hook precmd`; keep mise shims highest in PATH; use compinit rebuild every 24h and on completion updates; consider instant prompt, static bundle, deferred command triggers for further -500ms.
 - Neovim: keep lazy.nvim defaults lazy=true; disable providers (python/ruby) and Treesitter for files >2MB; ensure Mason manages LSP servers.
 - PATH hygiene: `typeset -gaU path` to dedupe; rebuild on login in .zprofile.
 
