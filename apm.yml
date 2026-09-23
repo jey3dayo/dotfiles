@@ -10,9 +10,9 @@ targets:
   - agent-skills
 dependencies:
   apm:
-    - jey3dayo/dotfiles/skills/zsh#9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
-    - jey3dayo/dotfiles/skills/wezterm#9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
-    - jey3dayo/dotfiles/skills/nvim#9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
+    - jey3dayo/dotfiles/skills/zsh#2f1b6d452079c00d3cdf584d963a49336567e059
+    - jey3dayo/dotfiles/skills/wezterm#2f1b6d452079c00d3cdf584d963a49336567e059
+    - jey3dayo/dotfiles/skills/nvim#2f1b6d452079c00d3cdf584d963a49336567e059
   mcp: []
 includes: auto
 scripts: {}

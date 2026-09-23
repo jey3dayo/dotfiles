@@ -1,12 +1,12 @@
 lockfile_version: "1"
-generated_at: "2026-09-23T08:36:50.061844+00:00"
+generated_at: "2026-09-23T08:55:29.091574+00:00"
 apm_version: 0.31.0
 dependencies:
   - repo_url: jey3dayo/dotfiles
     name: nvim
     host: github.com
-    resolved_commit: 9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
-    resolved_ref: 9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
+    resolved_commit: 2f1b6d452079c00d3cdf584d963a49336567e059
+    resolved_ref: 2f1b6d452079c00d3cdf584d963a49336567e059
     version: unknown
     virtual_path: skills/nvim
     is_virtual: true
@@ -19,16 +19,16 @@ dependencies:
       - .claude/skills/nvim/SKILL.md
       - .claude/skills/nvim/agents/openai.yaml
     deployed_file_hashes:
-      .agents/skills/nvim/SKILL.md: sha256:750b02cc13762a88b4f8e92eb60dfbb52ecee594e42594f3939fefc47d39c4b7
+      .agents/skills/nvim/SKILL.md: sha256:4bf45d301427a0f95d2b1ca3b4875496d8152a957066d567ca70bcf16c7a449c
       .agents/skills/nvim/agents/openai.yaml: sha256:4849f99308d5bb5c06be4d7f55f6b5323fa0608c4e8e4c37fc85e2886e4d73f3
-      .claude/skills/nvim/SKILL.md: sha256:750b02cc13762a88b4f8e92eb60dfbb52ecee594e42594f3939fefc47d39c4b7
+      .claude/skills/nvim/SKILL.md: sha256:4bf45d301427a0f95d2b1ca3b4875496d8152a957066d567ca70bcf16c7a449c
       .claude/skills/nvim/agents/openai.yaml: sha256:4849f99308d5bb5c06be4d7f55f6b5323fa0608c4e8e4c37fc85e2886e4d73f3
-    content_hash: sha256:c58efd40112a0b3f40599bf6e5ae7e23fa8e5aec66485c19347d24719f9f095f
+    content_hash: sha256:307b4102ead0c11b150bb1403982dce2a63304604ac67e8845dd30f9488f4e47
   - repo_url: jey3dayo/dotfiles
     name: wezterm
     host: github.com
-    resolved_commit: 9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
-    resolved_ref: 9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
+    resolved_commit: 2f1b6d452079c00d3cdf584d963a49336567e059
+    resolved_ref: 2f1b6d452079c00d3cdf584d963a49336567e059
     version: unknown
     virtual_path: skills/wezterm
     is_virtual: true
@@ -45,8 +45,8 @@ dependencies:
   - repo_url: jey3dayo/dotfiles
     name: zsh
     host: github.com
-    resolved_commit: 9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
-    resolved_ref: 9f3fe3ba48916aa6c7886d36fcf90a1707ac356b
+    resolved_commit: 2f1b6d452079c00d3cdf584d963a49336567e059
+    resolved_ref: 2f1b6d452079c00d3cdf584d963a49336567e059
     version: unknown
     virtual_path: skills/zsh
     is_virtual: true
@@ -78,7 +78,7 @@ deployments:
     owners:
       - jey3dayo/dotfiles/skills/nvim
     active_owner: jey3dayo/dotfiles/skills/nvim
-    content_hash: sha256:750b02cc13762a88b4f8e92eb60dfbb52ecee594e42594f3939fefc47d39c4b7
+    content_hash: sha256:4bf45d301427a0f95d2b1ca3b4875496d8152a957066d567ca70bcf16c7a449c
   - kind: project-relative
     target: agent-skills
     value: .agents/skills/nvim/agents/openai.yaml
@@ -141,7 +141,7 @@ deployments:
     owners:
       - jey3dayo/dotfiles/skills/nvim
     active_owner: jey3dayo/dotfiles/skills/nvim
-    content_hash: sha256:750b02cc13762a88b4f8e92eb60dfbb52ecee594e42594f3939fefc47d39c4b7
+    content_hash: sha256:4bf45d301427a0f95d2b1ca3b4875496d8152a957066d567ca70bcf16c7a449c
   - kind: project-relative
     target: claude
     value: .claude/skills/nvim/agents/openai.yaml
