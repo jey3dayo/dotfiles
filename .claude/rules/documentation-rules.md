@@ -4,7 +4,7 @@ paths: docs/**/*.md, README.md, CLAUDE.md
 
 # Documentation Rules
 
-Purpose: keep documentation governance rules concise for Claude. Scope: metadata, SSOT boundaries, and duplication control for `docs/`.
+Purpose: keep documentation governance rules concise for Claude. Scope: metadata and duplication control for `docs/`; SSOT boundaries live in `docs/documentation.md`.
 Sources: docs/documentation.md.
 
 Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
@@ -18,16 +18,6 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 - Use `timestamp` / `最終更新` as `YYYY-MM-DD`
 - Use 3-5 tags and include at least one `category/` and one `layer/`
 - If frontmatter and legacy metadata both exist, frontmatter is canonical and conflicts must be fixed
-
-## SSOT boundaries
-
-- Setup: `docs/setup.md`
-- Startup benchmarks: `docs/tools/zsh.md`, `docs/tools/nvim.md`
-- Maintenance and cross-cutting troubleshooting: `docs/tools/workflows.md`
-- Tool details: `docs/tools/*.md`
-- Documentation system itself: `docs/documentation.md`
-
-`README.md` and `docs/README.md` are navigation only. Do not turn them into procedural or metrics-heavy docs.
 
 ## Rule authoring
 

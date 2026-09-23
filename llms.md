@@ -18,7 +18,7 @@
 - 個人用 dotfiles リポジトリです
 - Core stack: Zsh + WezTerm + Neovim（Tmux / Homebrew / Mise / Raycast / Karabiner が補助）
 - mise bootstrap を中心に、macOS / Linux / WSL2 / Windows の開発環境を管理します
-- 開発ツールは原則 `mise`、システム依存と GUI は `Homebrew`、Windows bootstrap は `Chocolatey` を使います
+- パッケージ層の割当（mise / Homebrew / Chocolatey）は `docs/setup.md` の Package Management Philosophy が唯一の方針本文です
 - ドキュメントは `docs/` に集約し、`README.md` やハブ文書はナビゲーションを担当します
 
 ## What To Read First
@@ -33,23 +33,7 @@
 
 ## Quality Gates
 
-変更時は次を満たします。
-
-- 型エラー 0
-- リント違反 0
-- テスト成功
-- フォーマッター適用済み
-
-代表コマンド:
-
-```bash
-mise run format
-mise run lint
-mise run test
-mise run ci
-```
-
-日常の軽量確認は `mise run ci:quick` を使います。詳細は `docs/tools/workflows.md` を参照してください。
+変更時は `mise run ci` を満たします。日常の軽量確認は `mise run ci:quick` を使います。ゲートの内容・個別タスクは `docs/tools/workflows.md` を参照してください。
 
 ## Important Conventions
 

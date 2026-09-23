@@ -1,30 +1,9 @@
 # Claude AI Configuration Directory
 
-This directory contains Claude-specific configuration, rules, and doc standards for AI-assisted work in this repository.
+This directory contains Claude-specific configuration for AI-assisted work in this repository.
 
-## Purpose
-
-- `rules/`: compact AI-facing rules derived from canonical project docs
-- `doc-standards/`: metadata and tag references for documentation maintenance
+- `rules/`: compact AI-facing rules derived from canonical `docs/`, applied via frontmatter `paths:`
+- `doc-standards/`: tag vocabulary for documentation maintenance (`references/tag-taxonomy.md`)
 - `settings.json`: Claude Code local settings
 
-## Documentation Model
-
-- Canonical human-readable documentation lives in [`docs/`](../docs/)
-- `.claude/rules/` stays compact and points back to canonical docs instead of duplicating them
-
-The documentation contract is defined in [`docs/documentation.md`](../docs/documentation.md).
-
-## Key Entry Points
-
-- [`../docs/README.md`](../docs/README.md) - documentation navigation
-- [`rules/claude-code-usage.md`](rules/claude-code-usage.md) - Claude-specific operating guidance
-- [`../README.md`](../README.md) - repository overview
-
-## Notes
-
-- Keep detailed procedures, metrics, and long examples in `docs/`
-- Update `.claude/rules/` only when the corresponding canonical document changes
-- Prefer adding new project knowledge to existing docs before creating new rule files
-
-Last Updated: 2026-03-23
+The documentation contract, including how `.claude/rules/` relates to `docs/`, is defined in [`docs/documentation.md`](../docs/documentation.md).
