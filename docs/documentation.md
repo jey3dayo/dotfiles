@@ -8,14 +8,14 @@ tags:
   - layer/support
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-06-29
+timestamp: 2026-09-23
 audience: developer
 owner: dotfiles
 ---
 
 # Documentation Governance
 
-最終更新: 2026-06-29
+最終更新: 2026-09-23
 対象: 開発者
 タグ: `category/documentation`, `layer/support`, `environment/cross-platform`, `audience/developer`
 
@@ -31,14 +31,14 @@ owner: dotfiles
 
 ## 正本マップ
 
-| トピック                                 | 正本                      |
-| ---------------------------------------- | ------------------------- |
-| 導入・初期セットアップ                   | `docs/setup.md`           |
-| パフォーマンス実測・改善履歴             | `docs/performance.md`     |
-| 定期運用・日常メンテナンス・横断トラブル | `docs/tools/workflows.md` |
-| セキュリティ運用                         | `docs/security.md`        |
-| ツール別詳細                             | `docs/tools/*.md`         |
-| ドキュメント運用ルール                   | `docs/documentation.md`   |
+| トピック                                 | 正本                                                          |
+| ---------------------------------------- | ------------------------------------------------------------- |
+| 導入・初期セットアップ                   | `docs/setup.md`                                               |
+| 起動時間の実測値                         | 各ツールの `docs/tools/*.md`（`zsh.md` / `nvim.md` の検証節） |
+| 定期運用・日常メンテナンス・横断トラブル | `docs/tools/workflows.md`                                     |
+| セキュリティ運用                         | `docs/security.md`                                            |
+| ツール別詳細                             | `docs/tools/*.md`                                             |
+| ドキュメント運用ルール                   | `docs/documentation.md`                                       |
 
 `README.md`、`docs/README.md`、`TOOLS.md`、`llms.md` はナビゲーション文書であり、正本の代替にしません。
 
@@ -113,7 +113,7 @@ frontmatter と legacy metadata の両方がある場合は、frontmatter を正
 ## 重複防止
 
 - セットアップ手順は `docs/setup.md` だけで更新する
-- パフォーマンス数値は `docs/performance.md` だけで更新する
+- 起動時間の実測値は各ツールの docs（`docs/tools/zsh.md` / `nvim.md`）の検証節に置く
 - 運用手順と横断トラブルは `docs/tools/workflows.md` に集約する
 - ツール固有の詳細は対応する `docs/tools/*.md` に集約する
 - `.claude/rules/` は要約だけに留める

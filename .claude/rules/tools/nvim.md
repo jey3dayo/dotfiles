@@ -1,12 +1,11 @@
 ---
 paths: nvim/**/*, docs/tools/nvim.md
 source: docs/tools/nvim.md
-references: docs/performance.md
 ---
 
 # Neovim Rules
 
-Purpose: keep the Lua-first Neovim configuration stable; startup targets and measured baselines live in `docs/performance.md`. Scope: architecture, LSP/tooling, performance safeguards.
+Purpose: keep the Lua-first Neovim configuration stable; startup targets and measured baselines live in `docs/tools/nvim.md`. Scope: architecture, LSP/tooling, performance safeguards.
 
 Detailed Reference: See [docs/tools/nvim.md](../../../docs/tools/nvim.md) for comprehensive implementation guide, examples, and troubleshooting.
 
@@ -24,7 +23,7 @@ Detailed Reference: See [docs/tools/nvim.md](../../../docs/tools/nvim.md) for co
 
 ## Performance guards
 
-- Meet Neovim startup targets in `docs/performance.md` (measure with `nvim --startuptime` and `:Lazy profile`; record changes there, not in this rule).
+- Meet Neovim startup targets in `docs/tools/nvim.md` (measure with `nvim --startuptime` and `:Lazy profile`; record changes there, not in this rule).
 - Disable Treesitter for files >2MB; keep python/ruby providers disabled unless required.
 - For regressions, clear ~/.local/share/nvim and ~/.local/state/nvim before reinstalling.
 

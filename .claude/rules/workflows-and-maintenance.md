@@ -1,5 +1,5 @@
 ---
-paths: docs/performance.md, docs/tools/workflows.md, .github/workflows/**/*.yml, .github/PULL_REQUEST_TEMPLATE.md, .claude/commands/**/*.sh, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json
+paths: docs/tools/workflows.md, .github/workflows/**/*.yml, .github/PULL_REQUEST_TEMPLATE.md, .claude/commands/**/*.sh, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json
 source: docs/tools/workflows.md
 ---
 
@@ -17,6 +17,6 @@ Detailed Reference: [docs/tools/workflows.md](../../docs/tools/workflows.md)
 
 ## Troubleshooting Routing
 
-- Performance issues: `docs/performance.md`
+- Startup performance issues: `docs/tools/workflows.md` (Troubleshooting Routing), then `docs/tools/zsh.md` / `docs/tools/nvim.md` for baselines
 - Zsh, LSP, Git auth, and maintenance troubleshooting: `docs/tools/workflows.md`
 - Tool-specific issues: the corresponding `docs/tools/*.md`

@@ -211,7 +211,7 @@ atuin status   # Last sync / Username / Sync frequency を表示
 ## Maintenance
 
 - 定期メンテナンスとトラブルシューティングのSSTは [Workflows and Maintenance](tools/workflows.md)
-- パフォーマンス測定・改善履歴・診断手順のSSTは [Performance](performance.md)
+- 起動時間の実測値は [Zsh](tools/zsh.md#検証) / [Neovim](tools/nvim.md#検証) の検証節を参照
 - セットアップ直後の健全性チェック:
 
 ```bash

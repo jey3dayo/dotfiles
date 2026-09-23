@@ -230,7 +230,6 @@ exec zsh
 
 - Shell Integration: [Shell Layer](zsh.md)
 - Terminal Integration: [Terminal Layer](wezterm.md)
-- Performance Metrics: [Performance Layer](../performance.md)
 
 ### Implementation Files
 

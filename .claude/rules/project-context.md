@@ -1,5 +1,5 @@
 ---
-paths: README.md, docs/README.md, docs/setup.md, docs/performance.md
+paths: README.md, docs/README.md, docs/setup.md
 ---
 
 # Project Context
@@ -14,7 +14,7 @@ Purpose: concise project overview for Claude. Scope: what this repo is, where to
 ## Single sources of truth
 
 - Setup: `docs/setup.md`
-- Performance metrics/history: `docs/performance.md`
+- Startup benchmarks: `docs/tools/zsh.md`, `docs/tools/nvim.md` (検証 section of each)
 - Maintenance schedules, workflows, and troubleshooting: `docs/tools/workflows.md`
 - Brewfile management: `docs/tools/workflows.md`
 - Tool installation policy: `docs/tools/mise.md` and `docs/tools/workflows.md`
@@ -29,4 +29,4 @@ Purpose: concise project overview for Claude. Scope: what this repo is, where to
 ## Performance reference
 
 - Do not duplicate current metrics here
-- Read `docs/performance.md` for baselines, targets, and history
+- Read `docs/tools/zsh.md` and `docs/tools/nvim.md` (検証 section) for baselines and targets

@@ -8,11 +8,11 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 ## Maintenance Cadence
 
-| 頻度   | 作業                                                                                                                                                              |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）; `codex update`（claude は自動更新のため手動不要）; プラグイン更新（sheldon, nvim lazy, tmux） |
-| 月次   | zsh ベンチマーク; ログ整理; `docs/performance.md` に記録; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d`               |
-| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                |
+| 頻度   | 作業                                                                                                                                                                                                                             |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）; `codex update`（claude は自動更新のため手動不要）; プラグイン更新（sheldon, nvim lazy, tmux）                                                                |
+| 月次   | 起動時間の計測（`zsh-benchmark` / `nvim --startuptime`）、結果は [Zsh](zsh.md#検証) / [Neovim](nvim.md#検証) の検証節に記録; ログ整理; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d` |
+| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                                                                               |
 
 ## Code Quality Checks
 
@@ -399,12 +399,13 @@ Single Source of Truth、バージョン固定、プロジェクト別オーバ�
 
 ## Troubleshooting Routing
 
-| 症状               | 対応先                                                        |
-| ------------------ | ------------------------------------------------------------- |
-| パフォーマンス低下 | `docs/performance.md`                                         |
-| Zsh 起動トラブル   | `rm -rf ~/.zcompdump*` → `exec zsh`; `zsh -df` でミニマル起動 |
-| LSP 問題           | `:LspInfo`, `:Mason`, `~/.local/share/nvim/lsp.log`           |
-| Git 認証           | `ssh -T git@github.com`, 1Password CLI と SSH agent 確認      |
+| 症状                               | 対応先                                                                                                                                                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 起動が突然遅くなった（Zsh/Neovim） | Zsh: `zsh-benchmark` → `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'`; Neovim: `nvim --startuptime startup.log` → `:Lazy profile`; 改善しなければキャッシュクリア（`rm -rf ~/.zcompdump*`; `~/.local/share/nvim` と `~/.local/state/nvim`） |
+| メモリ使用量の増加                 | `ps aux \| grep -E '(zsh\|nvim\|wezterm)'` と `top -l 1 \| grep PhysMem` で確認し、履歴サイズの制限、未使用プラグインの削除、キャッシュのクリアで対処                                                                                |
+| Zsh 起動トラブル                   | `rm -rf ~/.zcompdump*` → `exec zsh`; `zsh -df` でミニマル起動                                                                                                                                                                        |
+| LSP 問題                           | `:LspInfo`, `:Mason`, `~/.local/share/nvim/lsp.log`                                                                                                                                                                                  |
+| Git 認証                           | `ssh -T git@github.com`, 1Password CLI と SSH agent 確認                                                                                                                                                                             |
 
 ## Debug Commands
 

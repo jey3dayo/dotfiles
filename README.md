@@ -20,7 +20,7 @@ High-performance development environment tuned for speed, consistency, and devel
 - Navigation: `docs/README.md`
 - LLM/AI entrypoint: `llms.md`
 - Setup (SST): `docs/setup.md`
-- Performance metrics/history: `docs/performance.md`
+- Startup benchmarks: `docs/tools/zsh.md`, `docs/tools/nvim.md`
 - Maintenance cadence & troubleshooting: `docs/tools/workflows.md`
 - Documentation governance: `docs/documentation.md`
 - Tool inventory: `TOOLS.md`

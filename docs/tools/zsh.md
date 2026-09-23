@@ -108,6 +108,13 @@ ZSH_LOAD_FZF_TAB=1 ZSH_LOAD_AUTOSUGGESTIONS=1 ZSH_LOAD_SYNTAX_HIGHLIGHTING=1 zsh
 
 ## 検証
 
+目標 <100ms は達成済み（2026-09-23、Mac16,6、`zsh-benchmark --runs 8 --mode <mode>`、Shell: `/opt/homebrew/bin/zsh`）。
+
+| mode              | avg    | min    | max    |
+| ----------------- | ------ | ------ | ------ |
+| interactive       | 0.072s | 0.062s | 0.085s |
+| interactive-login | 0.071s | 0.059s | 0.079s |
+
 ```bash
 zsh-benchmark --runs 8 --mode interactive
 zsh-benchmark --runs 3 --mode interactive-login

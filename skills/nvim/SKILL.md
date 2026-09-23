@@ -37,7 +37,7 @@ For this dotfiles repo, compare against `docs/tools/nvim.md` (source of truth fo
 
 ## Performance Benchmarks
 
-- Startup time: <200ms (for this dotfiles repo, targets and measured baselines live in `docs/performance.md`)
+- Startup time: <200ms (for this dotfiles repo, targets and measured baselines live in `docs/tools/nvim.md`)
 - First edit: <300ms from nvim command
 - LSP attach: <500ms for most languages
 - Plugin load: 90%+ lazy-loaded

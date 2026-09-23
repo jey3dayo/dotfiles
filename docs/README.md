@@ -1,6 +1,6 @@
 # 📖 Documentation Navigation
 
-最終更新: 2026-08-21
+最終更新: 2026-09-23
 対象: 開発者
 タグ: `category/guide`, `layer/support`, `environment/macos`, `audience/developer`
 
@@ -19,10 +19,6 @@ Location: `docs/`
 #### 🚀 Getting Started
 
 - [Setup Guide](setup.md) - インストール、初期設定、検証手順
-
-#### 🔧 Operational Guides
-
-- [Performance](performance.md) - 詳細メトリクス、ベンチマーク、最適化履歴
 
 #### 📋 Documentation Governance
 
@@ -54,7 +50,7 @@ Location: `docs/`
 ### 開発者向け
 
 1. この `docs/README.md` で全体像を把握
-2. [Performance](performance.md) で最適化を確認
+2. [Zsh](tools/zsh.md) / [Neovim](tools/nvim.md) で起動時間の実測を確認
 3. [Workflows and Maintenance](tools/workflows.md) で運用を理解
 
 ### トラブルシューティング

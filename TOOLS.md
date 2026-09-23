@@ -60,7 +60,6 @@
 
 - [Documentation Index](docs/README.md) - 全ドキュメント体系
 - [Setup Guide](docs/setup.md) - セットアップ手順
-- [Performance](docs/performance.md) - パフォーマンス測定
 - [Maintenance](docs/tools/workflows.md) - メンテナンス手順
 - [Mise](docs/tools/mise.md) - HM/mise/Homebrew の責務分離を含むツール管理方針
 

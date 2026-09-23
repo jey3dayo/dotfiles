@@ -1,7 +1,6 @@
 ---
 paths: zsh/**/*, docs/tools/zsh.md
 source: docs/tools/zsh.md
-references: docs/performance.md
 ---
 
 # Zsh Rules

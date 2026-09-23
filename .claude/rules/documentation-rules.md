@@ -22,7 +22,7 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 ## SSOT boundaries
 
 - Setup: `docs/setup.md`
-- Performance metrics/history: `docs/performance.md`
+- Startup benchmarks: `docs/tools/zsh.md`, `docs/tools/nvim.md`
 - Maintenance and cross-cutting troubleshooting: `docs/tools/workflows.md`
 - Tool details: `docs/tools/*.md`
 - Documentation system itself: `docs/documentation.md`
