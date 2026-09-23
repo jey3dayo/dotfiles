@@ -39,3 +39,7 @@ Purpose: スキル配布と編集元の混線を防ぎ、どこを編集する�
 
 - 配布内容の正は `~/.apm/catalog/{skills/**,AGENTS.md,agents/**,commands/**,rules/**}` と `~/.apm/apm.yml` で決める。
 - 配布後の `~/.claude/skills/**` に見える差分は、配布結果の確認材料であって編集元ではない。
+
+## スキルが配布されない・古いとき
+
+`~/.claude/skills/` が空または古い場合は `cd ~/.apm && mise run deploy && mise run doctor` を実行する。正本は `~/.apm/catalog/skills/**` で、配布先は直接編集しない。

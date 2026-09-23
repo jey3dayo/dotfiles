@@ -369,6 +369,7 @@ Nix 配布手順はリポジトリから撤去済み。`home-manager switch` や
 | Zsh 起動トラブル                   | `rm -rf ~/.zcompdump*` → `exec zsh`; `zsh -df` でミニマル起動                                                                                                                                                                        |
 | LSP 問題                           | `:LspInfo`, `:Mason`, `~/.local/share/nvim/lsp.log`                                                                                                                                                                                  |
 | Git 認証                           | `ssh -T git@github.com`, 1Password CLI と SSH agent 確認                                                                                                                                                                             |
+| dotfiles が配布されない・古い      | `mise dotfiles status`（applied / differs / missing）→ `mise dotfiles apply`（再適用、冪等）→ `mise bootstrap status`（packages / launchd 含む全体確認）                                                                             |
 
 ## Debug Commands
 
