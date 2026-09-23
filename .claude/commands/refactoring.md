@@ -26,7 +26,6 @@
 
 - `.claude/rules/tools/<tool>.md` - ツール別の圧縮ルール
 - `docs/tools/<tool>.md` - 設定パターン・トラブルシューティングの正本
-- `.claude/review-criteria.md` - レビュー観点
 
 ## 実行フロー
 
