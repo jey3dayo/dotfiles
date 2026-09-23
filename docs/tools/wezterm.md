@@ -25,10 +25,13 @@ GPU加速対応のLuaベースモジュラーターミナル設定です。
 
 ```text
 wezterm/
-├── wezterm.lua          # メインエントリポイント
-├── keybinds.lua         # キーバインド（13KB）
+├── wezterm.lua          # エントリポイント（config.lua を require）
+├── config.lua           # ベース設定・各モジュールのマージ
+├── constants.lua        # 色・フォント・ウィンドウ等の定数
+├── keybinds.lua         # キーバインド
+├── key_tables.lua        # resize/copy/search の key table
 ├── ui.lua               # ビジュアルテーマ
-├── events.lua           # イベント処理
+├── events.lua           # イベント処理（タブ描画・resize・opacity）
 ├── utils.lua            # ユーティリティ関数
 ├── os.lua               # プラットフォーム検出
 └── win.lua              # Windows/WSL設定
@@ -41,7 +44,7 @@ wezterm/
 ```lua
 Ctrl+x c               -- 新タブ
 Ctrl+x n/p             -- 次/前のタブ
-Ctrl+x &               -- タブ閉じる
+Cmd+w                  -- タブ閉じる（確認あり）
 Ctrl+x |               -- 水平分割
 Ctrl+x -               -- 垂直分割
 Ctrl+x z               -- ペイン拡大
@@ -56,16 +59,29 @@ w/b/e                  -- 単語移動
 ^/$                    -- 行頭/末尾
 v/V                    -- 選択/行選択
 y/yy                   -- コピー（選択/行）
+/                      -- 検索
+n/N                    -- 次/前の一致
 q/Escape               -- 終了
 ```
 
 ### 直接バインド
 
 ```lua
-Alt+Tab                -- タブ切り替え
-Alt+h/j/k/l            -- ペインナビゲーション
-Alt+Shift+Ctrl+h/j/k/l -- ペインリサイズ
-Ctrl+plus/minus        -- フォントサイズ
+Alt+Tab / Alt+Shift+Tab -- タブ切り替え（順/逆）
+Alt+h/j/k/l             -- ペインナビゲーション
+Alt+Shift+Ctrl+h/j/k/l  -- ペインリサイズ
+Ctrl+plus/minus         -- フォントサイズ
+Cmd/Ctrl+Click          -- リンクを開く
+```
+
+### リサイズモード: `Alt+r`
+
+`resize_pane` key table に入る（timeout 3000ms、one-shot ではない）。
+
+```lua
+h/j/k/l                -- ペインリサイズ（1マス）
++/-/0                  -- 透明度を上げる/下げる/リセット（0.05刻み、0.1〜1.0）
+Escape/q/Ctrl+c         -- 終了
 ```
 
 ## コア設定
@@ -85,8 +101,12 @@ font_size = 16.0
 ### ビジュアルテーマ
 
 ```lua
-color_scheme = "Gruvbox Dark"
+color_scheme = "Gruvbox dark, hard (base16)"
 window_background_opacity = 0.92
+window_decorations = "RESIZE"
+native_macos_fullscreen_mode = true
+initial_cols = 180
+initial_rows = 50
 tab_bar_at_bottom = true
 use_fancy_tab_bar = false
 ```
@@ -94,13 +114,11 @@ use_fancy_tab_bar = false
 ### プラットフォーム検出
 
 ```lua
--- Windows/macOS設定自動切り替え
-local is_windows = utils.is_windows()
-local config = {}
+-- os.lua: target_triple で Windows/macOS を判定
+local is_windows = wezterm.target_triple == "x86_64-pc-windows-msvc"
 
-if is_windows then
-    config.default_domain = "WSL:Ubuntu"
-end
+-- Windows の場合のみ win.lua を適用（default_domain = "WSL:Ubuntu" など）
+return is_windows and win or {}
 ```
 
 ## 統合機能
@@ -128,9 +146,6 @@ mv ~/.config/wezterm ~/.config/wezterm.backup
 ```bash
 # WezTerm 更新
 brew upgrade wezterm
-
-# 設定チェック
-wezterm check
 ```
 
 ---

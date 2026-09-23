@@ -16,13 +16,13 @@ Detailed Reference: See [docs/tools/wezterm.md](../../../docs/tools/wezterm.md) 
 
 ## Key bindings
 
-- Leader is Ctrl+x. Core bindings: Ctrl+x c/n/p for tab create/next/prev; Ctrl+x & to close tab; Ctrl+x | / - for splits; Ctrl+x z for zoom; Ctrl+x x to close pane; Ctrl+x [ enters copy mode with Vim keys.
+- Leader is Ctrl+x. Core bindings: Ctrl+x c/n/p for tab create/next/prev; Cmd+w to close tab; Ctrl+x | / - for splits; Ctrl+x z for zoom; Ctrl+x x to close pane; Ctrl+x [ enters copy mode with Vim keys.
 - Direct binds: Alt+Tab for tab switch; Alt+h/j/k/l to move panes; Alt+Shift+Ctrl+h/j/k/l to resize; Ctrl+plus/minus for font size.
 
 ## Platform handling
 
-- Detect platform via utils; on Windows set default_domain to WSL:Ubuntu. Keep GPU acceleration unless debugging.
-- Troubleshooting options: `wezterm start --config 'front_end="Software"'` for software rendering, `wezterm check` for config validation.
+- os.lua detects Windows via `wezterm.target_triple` and merges win.lua (default_domain WSL:Ubuntu).
+- Troubleshooting options: `wezterm start --config 'front_end="Software"'` for software rendering, `wezterm show-keys` to inspect key assignments.
 
 ## Maintenance
 
