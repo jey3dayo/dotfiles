@@ -1,10 +1,10 @@
 # Zsh Configuration
 
-最終更新: 2026-06-26
+最終更新: 2026-09-23
 対象: 開発者・上級者
 タグ: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 
-Zsh は高速起動を優先した最小構成です。旧構成は `zsh.legacy/` に退避し、現行の `zsh/` は entrypoint、`lib/`、`sheldon/`、`bin/` だけで構成します。
+Zsh は高速起動を優先した最小構成です。旧構成はリポジトリには残さず、`7eac3d54`（refactor(zsh): rebuild startup configuration）以前の git 履歴にだけ残っています。現行の `zsh/` は entrypoint、`lib/`、`completions/`、`sheldon/`、`bin/` を中心に構成します。
 
 ## 方針
 
@@ -32,7 +32,8 @@ Zsh は高速起動を優先した最小構成です。旧構成は `zsh.legacy/
 3. login shell では `zsh/.zprofile` が locale/editor と PATH 正規化を行う。
 4. interactive shell では `zsh/.zshrc` が以下を順に読む。
    - Core shell state: `lib/path.zsh`, `lib/options.zsh`, `lib/history.zsh`
-   - Completion setup: `lib/completion.zsh`, `lib/ni.zsh`, `lib/gh-completion.zsh`
+   - Completion setup: `lib/completion.zsh`, `lib/ni.zsh`, `lib/gh-completion.zsh`, `lib/aicommits.zsh`
+   - Agent integrations: `lib/agmsg.zsh`, `lib/secrets.zsh`
    - Key bindings and widgets: `lib/fzf.zsh`, `lib/fzf-tab.zsh`, `lib/git-widgets.zsh`
    - Interactive input integrations: `lib/abbr.zsh`, `lib/atuin.zsh`, `lib/zoxide.zsh`, `lib/autosuggestions.zsh`
    - Platform-specific setup: `lib/wsl.zsh`
@@ -54,6 +55,8 @@ zsh/
 ├── completions/
 ├── lib/
 │   ├── abbr.zsh
+│   ├── agmsg.zsh
+│   ├── aicommits.zsh
 │   ├── atuin.zsh
 │   ├── autosuggestions.zsh
 │   ├── completion.zsh
@@ -66,6 +69,7 @@ zsh/
 │   ├── options.zsh
 │   ├── path.zsh
 │   ├── prompt.zsh
+│   ├── secrets.zsh
 │   ├── syntax-highlighting.zsh
 │   ├── wsl.zsh
 │   └── zoxide.zsh
@@ -91,7 +95,7 @@ ZSH_LOAD_FZF_TAB=1 ZSH_LOAD_AUTOSUGGESTIONS=1 ZSH_LOAD_SYNTAX_HIGHLIGHTING=1 zsh
 
 ## 保留中の機能
 
-以下は旧構成からまだ戻していない機能です。戻す場合は 1 機能ずつ追加し、`zsh-benchmark` と `zprof` で同期起動 path に乗らないことを確認します。
+以下は git 履歴上の旧構成からまだ戻していない機能です。戻す場合は 1 機能ずつ追加し、`zsh-benchmark` と `zprof` で同期起動 path に乗らないことを確認します。
 
 | 優先度 | 機能                                     | 用途                                                          | 方針                                                |
 | ------ | ---------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------- |
@@ -114,4 +118,11 @@ mise run test:lua
 
 ## 退避済み構成
 
-旧構成は `zsh.legacy/` に残しています。FZF/Git widgets、fzf-tab、zoxide、autosuggestions、syntax highlighting、旧 `config/tools/*` はここにあります。戻す場合は 1 機能ずつ戻し、毎回 `zsh-benchmark` と `zprof` で確認します。
+旧構成はリポジトリには残さず、`7eac3d54`（refactor(zsh): rebuild startup configuration）の直前コミットまでの git 履歴にのみ残しています。確認するときは以下を使います。
+
+```bash
+git show 7eac3d54^:zsh/config/loader.zsh
+git log -- zsh/config
+```
+
+戻す場合は 1 機能ずつ戻し、毎回 `zsh-benchmark` と `zprof` で確認します。

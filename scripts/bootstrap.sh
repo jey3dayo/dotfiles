@@ -256,8 +256,7 @@ show_next_steps() {
   printf "\n"
 
   printf "%b\n" "${BOLD}${BLUE}5.${NC} ${BOLD}Verify installation${NC}:"
-  printf "%b\n" "   ${YELLOW}zsh-help${NC}"
-  printf "%b\n" "   ${YELLOW}zsh-help tools${NC}"
+  printf "%b\n" "   ${YELLOW}zsh-benchmark${NC}"
   printf "\n"
 
   printf "%b\n" "${BOLD}📚 Detailed Documentation:${NC}"
