@@ -20,7 +20,7 @@ Sources: docs/performance.md.
 
 ## Optimization playbook
 
-- Zsh: keep `.zshrc` sourcing `zsh/lib/*.zsh` in its category order and defer non-essential widgets via `add-zsh-hook precmd`; keep mise shims highest in PATH; use compinit rebuild every 24h and on completion updates; consider instant prompt, static bundle, deferred command triggers for further -500ms.
+- Zsh: keep `.zshrc` sourcing `zsh/lib/*.zsh` in its category order and defer non-essential widgets via `add-zsh-hook precmd`; keep mise shims highest in PATH; use compinit rebuild every 24h and on completion updates.
 - Neovim: keep lazy.nvim defaults lazy=true; disable providers (python/ruby) and Treesitter for files >2MB; ensure Mason manages LSP servers.
 - PATH hygiene: `typeset -gaU path` to dedupe; rebuild on login in .zprofile.
 

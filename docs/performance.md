@@ -1,6 +1,6 @@
 # ⚡ Performance Monitoring & Optimization
 
-最終更新: 2026-09-19
+最終更新: 2026-09-23
 対象: 開発者・運用担当者
 タグ: `category/performance`, `layer/support`, `environment/cross-platform`, `audience/developer`, `audience/ops`
 
@@ -11,38 +11,31 @@
 
 ### 主要コンポーネント
 
-| Component       | Current      | Industry Avg | Target | Status |
-| --------------- | ------------ | ------------ | ------ | ------ |
-| Zsh startup     | 1.1s         | 2-5s         | <100ms | 🟡     |
-| Neovim startup  | ~65ms (warm) | 200-500ms    | <200ms | ✅     |
-| WezTerm startup | 800ms        | 1-2s         | <1s    | ✅     |
+| Component       | Current                 | Industry Avg | Target | Status |
+| --------------- | ----------------------- | ------------ | ------ | ------ |
+| Zsh startup     | ~72ms (avg)             | 2-5s         | <100ms | ✅     |
+| Neovim startup  | ~65ms (warm)            | 200-500ms    | <200ms | ✅     |
+| WezTerm startup | 800ms（未再計測・旧値） | 1-2s         | <1s    | ✅     |
 
 ### 詳細ベンチマーク（開発機。Neovim は 2026-09-19 実測条件を Neovim 起動分析に記載）
 
 #### Zsh起動分析
 
-```
-Total Startup Time: 1,100ms ± 50ms
+測定条件（2026-09-23、Mac16,6、`zsh/bin/zsh-benchmark --runs 8 --mode <mode>`、Shell: `/opt/homebrew/bin/zsh`）:
 
-内訳：
-├── Shell initialization: ~200ms  (18%)
-├── Plugin loading:       ~600ms  (55%)
-├── Tool integration:     ~250ms  (23%)
-└── Prompt rendering:     ~50ms   (5%)
+| mode              | avg    | min    | max    |
+| ----------------- | ------ | ------ | ------ |
+| interactive       | 0.072s | 0.062s | 0.085s |
+| interactive-login | 0.071s | 0.059s | 0.079s |
 
-Memory Usage: 24.8MB ± 2MB
-├── Base zsh:       ~8MB   (32%)
-├── Plugins:        ~12MB  (48%)
-├── History/Cache:  ~3MB   (12%)
-└── Functions:      ~2MB   (8%)
-```
+Zsh <100ms 目標は達成済み。
 
 ##### 改善履歴
 
 - 2025-01: 1.8s → 1.1s (43%高速化)
   - mise即座初期化による最適化
   - PATH管理の効率化
-  - 6段階プラグイン読み込み導入
+- 2026-09: 1.1s → ~72ms（`zsh-benchmark --runs 8` 実測、上表参照）
 
 #### Neovim起動分析
 
@@ -93,24 +86,14 @@ nvim --startuptime startup.log    # 起動時間詳細測定
 :checkhealth                       # 総合ヘルスチェック
 ```
 
-### 定期測定スクリプト
+### 定期測定コマンド
 
 ```bash
-#!/bin/zsh
-# ~/.config/scripts/performance-monitor.sh
+# Zsh
+zsh/bin/zsh-benchmark --runs 8 --mode interactive
 
-echo "=== Performance Report $(date) ==="
-
-echo "\n📊 Zsh Performance"
-time zsh -lic exit
-
-echo "\n💻 Neovim Performance"
-nvim --startuptime /tmp/nvim-startup.log +q
-tail -1 /tmp/nvim-startup.log
-
-echo "\n🖥️  System Resources"
-echo "Memory: $(ps aux | awk '{sum+=$6} END {print sum/1024 "MB"}')"
-echo "Processes: $(ps aux | wc -l)"
+# Neovim
+nvim --startuptime /tmp/nvim-startup.log +q && tail -1 /tmp/nvim-startup.log
 ```
 
 ## ⚡ Optimization Strategies
@@ -119,49 +102,18 @@ echo "Processes: $(ps aux | wc -l)"
 
 #### 現在の実装
 
-1. 6段階プラグイン読み込み
-
-   ```toml
-   # sheldon/plugins.toml
-   [plugins.tier1-essential]
-   # 即座に必要なコアプラグイン
-
-   [plugins.tier2-completion]
-   # 補完システム
-
-   [plugins.tier6-theme]
-   # 視覚要素（最後）
-   ```
+1. カテゴリ順の lib 読み込み
+   - `.zshrc` が `zsh/lib/*.zsh` をカテゴリ順（core shell state → completion → agent integrations → key bindings → interactive input → platform-specific → prompt/decorators）で `source`
+   - 非必須なプラグイン・ウィジェットは初回 `precmd`（`add-zsh-hook`）まで読み込みを遅延
 
 2. mise即座初期化
    - macOS path_helper対応
    - ツール即座利用可能
-   - 1.1s起動を維持
 
 3. PATH最適化
    - 重複自動除去 (`typeset -gaU path`)
    - 存在確認による無駄削除
    - 優先度制御（mise > Homebrew > system）
-
-#### 今後の最適化案
-
-##### Phase 1: 即効性（-200ms目標）
-
-- Instant Prompt実装
-- 静的バンドル導入検討
-- 補完キャッシュ最適化
-
-##### Phase 2: 構造改善（-300ms目標）
-
-- 日次compinit（現在は起動毎）
-- コマンドトリガー遅延ローディング
-- プラグイン依存関係最適化
-
-##### Phase 3: 目標達成（<100ms）
-
-- 継続的プロファイリング
-- ボトルネック特定・排除
-- 自動化された性能監視
 
 ### Neovim最適化
 
@@ -199,30 +151,22 @@ echo "Processes: $(ps aux | wc -l)"
 
 ## 📈 Performance History
 
-### 2025年改善記録
+### 改善記録
 
-| 日付       | 変更内容                    | Zsh起動 | Neovim起動 | 備考                                                       |
-| ---------- | --------------------------- | ------- | ---------- | ---------------------------------------------------------- |
-| 2026-09-19 | Neovim 起動時間の実測反映   | 1.1s    | warm ~65ms | Mac16,6; warm 12 回・cold 1 回; `XDG_CONFIG_HOME`=worktree |
-| 2025-10-16 | ドキュメント整理            | 1.1s    | <100ms     | 変更なし                                                   |
-| 2025-09    | AIコマンドシステム統合      | 1.1s    | <100ms     | 影響なし                                                   |
-| 2025-07    | パフォーマンス目標達成      | 1.1s    | <95ms      | 大幅改善                                                   |
-| 2025-01    | mise即座初期化・PATH最適化  | 1.1s    | <100ms     | 1.8s→1.1s達成                                              |
-| 2024-12    | 6段階プラグイン読み込み導入 | 1.5s    | <100ms     | 基盤構築                                                   |
+| 日付       | 変更内容                    | Zsh起動  | Neovim起動 | 備考                                                       |
+| ---------- | --------------------------- | -------- | ---------- | ---------------------------------------------------------- |
+| 2026-09-23 | Zsh起動時間の実測反映       | avg 72ms | warm ~65ms | Mac16,6; `zsh-benchmark --runs 8 --mode interactive`       |
+| 2026-09-19 | Neovim 起動時間の実測反映   | 1.1s     | warm ~65ms | Mac16,6; warm 12 回・cold 1 回; `XDG_CONFIG_HOME`=worktree |
+| 2025-10-16 | ドキュメント整理            | 1.1s     | <100ms     | 変更なし                                                   |
+| 2025-09    | AIコマンドシステム統合      | 1.1s     | <100ms     | 影響なし                                                   |
+| 2025-07    | パフォーマンス目標達成      | 1.1s     | <95ms      | 大幅改善                                                   |
+| 2025-01    | mise即座初期化・PATH最適化  | 1.1s     | <100ms     | 1.8s→1.1s達成                                              |
+| 2024-12    | 6段階プラグイン読み込み導入 | 1.5s     | <100ms     | 基盤構築                                                   |
 
 ## 🎯 Performance Targets
 
-### 短期目標（2025 Q4）
-
-- ✅ Neovim <200ms: **達成（warm ~65ms、cold ~153ms、2026-09-19 実測）**
-- 🟡 Zsh <100ms: **進行中（現在1.1s、Phase 1-3計画済み）**
-- ✅ WezTerm <1s: **達成（800ms）**
-
-### 中期目標（2026 Q1-Q2）
-
-- Zsh <100ms達成
-- メモリ使用量 <20MB
-- 全ツール統合での起動 <2s
+- ✅ Zsh <100ms: **達成（avg 0.072s、2026-09-23 実測、`zsh-benchmark --runs 8 --mode interactive`）**
+- Neovim: 目標・達成状況は [Neovim起動分析](#neovim起動分析) を参照（2026-09-19 実測、以降更新なし）
 
 ## 🔧 Troubleshooting
 
@@ -277,7 +221,7 @@ top -l 1 | grep PhysMem
 
 | 項目           | 本構成 | Minimal Zsh | Oh-My-Zsh | Prezto |
 | -------------- | ------ | ----------- | --------- | ------ |
-| 起動時間       | 1.1s   | 50ms        | 3-5s      | 1-2s   |
+| 起動時間       | 72ms   | 50ms        | 3-5s      | 1-2s   |
 | プラグイン数   | 12+    | 0           | 20+       | 15+    |
 | メモリ使用量   | 25MB   | 8MB         | 40MB      | 30MB   |
 | 機能豊富度     | 高     | 低          | 最高      | 高     |
