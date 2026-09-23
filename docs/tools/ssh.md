@@ -80,6 +80,35 @@ Host pi
   Port 10022
 ```
 
+登録済みのホームネットワークホスト（`common/20-home-network.sshconfig`、値は実設定と一致）:
+
+| Host                 | HostName                       | Port  |
+| -------------------- | ------------------------------ | ----- |
+| `pi`                 | `192.168.50.158`               | 10022 |
+| `pi-local`           | `raspberrypi.local`            | 10022 |
+| `synology`           | `synology.local`               | 10022 |
+| `pi-tailscale`       | `raspberrypi.tailfd232.ts.net` | 10022 |
+| `synology-tailscale` | `synology.tailfd232.ts.net`    | 10022 |
+| `mac`                | `192.168.50.141`               | 22    |
+
+### プラットフォーム固有設定
+
+`macos/settings.sshconfig` と `linux/settings.sshconfig` は `~/.config/ssh/config` の `Match exec` 判定が成立したときのみ Include される（ファイル自体には `Match exec` を書かない）。
+
+```bash
+# macOS: uname -s が Darwin を返すときだけ Include
+Match exec "uname -s | grep -q Darwin"
+  Include ~/.config/ssh/config.d/macos/*
+
+# Linux/WSL2: uname が Linux を返すときだけ Include
+Match exec "uname | grep -qi linux"
+  Include ~/.config/ssh/config.d/linux/*
+```
+
+- macOS (`macos/settings.sshconfig`): `UseKeychain yes` / `AddKeysToAgent yes` を全ホストに適用。OrbStack (`~/.orbstack/ssh/config`) / Colima (`~/.colima/ssh_config`) の Include はデフォルトコメントアウト。
+- Linux/WSL2 (`linux/settings.sshconfig`): 現状は空のプレースホルダー。WSL2判定 `Match exec "uname -r | grep -qi microsoft"` はコメントアウトされた例として存在するのみで未有効化。
+- 確認: `ssh -G github.com | grep -i keychain`（macOS では `usekeychain yes`、Linux/WSL2 では `usekeychain no` または出力なし）。
+
 ### 1Password SSH Agent設定
 
 ```bash
@@ -90,9 +119,10 @@ Host pi
 
 ## ホスト追加手順
 
-1. 用途に応じて適切な設定ファイルを選択
-2. HostName, User, Portを設定
-3. `ssh -T hostname` で接続テスト
+1. `templates/host-template.sshconfig` をコピー
+2. 用途に応じて適切な設定ファイルを選択
+3. HostName, User, Portを設定
+4. `ssh -T hostname` で接続テスト
 
 ## 基本使用方法
 
@@ -136,6 +166,10 @@ cat ~/.ssh/id_ed25519.pub
 chmod 700 ~/.ssh ~/.config/ssh
 chmod 644 ~/.config/ssh/config*
 chmod 600 ~/.ssh/id_*
+
+# ControlPath用ソケットディレクトリ
+mkdir -p ~/.ssh/sockets
+chmod 700 ~/.ssh/sockets
 ```
 
 ## 高度な設定
@@ -162,6 +196,8 @@ Match Host *.company.com
 ## トラブルシューティング
 
 ### よくある問題
+
+接続タイムアウト時は `common/00-global.sshconfig` の `IPQoS lowdelay none` が既定で有効なため、追加設定は通常不要。
 
 ```bash
 # 詳細ログ出力

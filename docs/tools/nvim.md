@@ -31,6 +31,8 @@ warm 起動 ~65ms（2026-09-19 実測、目標 <200ms）と15言語対応のLSP�
 - 高性能: lazy.nvim 最適化による warm 起動 ~65ms（cold 初回 ~153ms、実測 2026-09-19）
 - LSP対応: 15以上の言語・設定形式をフルサポート
 - モダンUI: mini.pick、mini.files、flash.nvim による高速ナビゲーション
+- 補完: `blink.cmp` + `friendly-snippets`
+- フォーマット: 保存時自動フォーマットなし。`:Format`（`<C-e>f`）で手動実行、コミット時の整形は lefthook の pre-commit（staged files）が担う
 
 ## パフォーマンス指標
 
@@ -55,15 +57,16 @@ warm 起動 ~65ms（2026-09-19 実測、目標 <200ms）と15言語対応のLSP�
 nvim/
 ├── init.lua              # エントリポイント
 ├── lua/
+│   ├── init_lazy.lua     # lazy.nvim ブートストラップ
 │   ├── config/           # プラグイン別の詳細設定
-│   ├── plugins/          # lazy.nvim プラグイン定義
+│   ├── plugins/          # lazy.nvim プラグイン定義（カテゴリ別）
 │   ├── core/             # 起動・依存・ファイルタイプ基盤
 │   └── lsp/              # LSP、フォーマット、診断ヘルパー
 ├── after/ftplugin/       # ファイルタイプ設定
 └── after/lsp/            # サーバー別 LSP 上書き（12ファイル、`ls nvim/after/lsp`）
 ```
 
-読み込み順序: `lua/core/bootstrap.lua` がコア（options/keymaps/lazy起動）を即座に読み込み、UI・LSPオートフォーマット・カラースキームなどの重い初期化は `vim.defer_fn` で遅延読み込みする。
+読み込み順序: `lua/core/bootstrap.lua` がコア（options/keymaps/lazy起動）を即座に読み込み、UI・LSPオートフォーマット・カラースキームなどの重い初期化は `vim.defer_fn` で遅延読み込みする。`after/lsp/<server>.lua` は runtimepath の読み込み順序により nvim-lspconfig 自身の `lsp/*.lua` より後に評価され、サーバー別設定を上書きする。
 
 ## サポート言語
 
@@ -97,6 +100,7 @@ K               -- ホバー表示
 tk              -- 実装へ移動
 tl              -- 型定義へ移動
 <C-e>f          -- 自動選択フォーマット
+<C-e>b/p/e/s    -- Biome/Prettier/ESLint/TypeScript(ts_ls) で個別フォーマット
 ```
 
 ### 開発ツール
@@ -106,6 +110,15 @@ tl              -- 型定義へ移動
 ,sp             -- Lazy UI
 ,sm             -- MasonUpdate
 ,st             -- Treesitter 更新
+,su             -- Lazy update（プラグイン更新）
+```
+
+### タブ・ウィンドウ
+
+```lua
+<C-t>c/d/o/n/p  -- タブ作成/close/split/next/prev
+gt / gT         -- タブ切り替え（次/前）
+<Tab>           -- ウィンドウ間循環移動（Normalモード。Insertモードでは補完受諾）
 ```
 
 ## プラグインエコシステム
@@ -123,9 +136,19 @@ tl              -- 型定義へ移動
 - mini.files: デフォルトのファイルエクスプローラー
 - flash.nvim + mini.jump + mini.jump2d: 高速モーション
 
+### 補完
+
+- blink.cmp + friendly-snippets
+
+### 構文
+
+- nvim-treesitter, ts-context-commentstring, vim-matchup, rainbow-delimiters
+
 ### 開発
 
-- gitsigns.nvim: Git統合
+- gitsigns.nvim: Git統合（サインカラム・hunk操作）
+- vim-fugitive（+ vim-rhubarb, gitlinker）: Git コマンド統合
+- diffview.nvim, neogit: diff表示・Git UI
 
 ## テーマ・UI
 
@@ -176,6 +199,11 @@ vim.keymap.set('n', '<leader>ll', ':Lazy<CR>')
 
 # blink.cmp の checkhealth で「Some providers may show up as \"disabled\"」と表示されるのは仕様で、設定で info 扱いに変換しています
 # conform は biome の設定ファイルがあるときのみ有効化され、無ければ prettier/eslint_d のみで動きます
+
+# フォーマット/Lint バンドル（リポジトリ共通、mise タスク）
+mise run format
+mise run lint
+mise run ci   # フルCI相当
 ```
 
 ## 改善機会（未対応）
