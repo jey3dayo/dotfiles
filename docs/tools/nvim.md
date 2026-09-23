@@ -9,7 +9,7 @@ tags:
   - tool/nvim
   - environment/cross-platform
   - audience/advanced
-timestamp: 2026-09-08
+timestamp: 2026-09-23
 audience: advanced
 owner: dotfiles
 ---
@@ -50,7 +50,8 @@ nvim/
 │   ├── plugins/          # lazy.nvim プラグイン定義
 │   ├── core/             # 起動・依存・ファイルタイプ基盤
 │   └── lsp/              # LSP、フォーマット、診断ヘルパー
-└── after/ftplugin/       # ファイルタイプ設定
+├── after/ftplugin/       # ファイルタイプ設定
+└── after/lsp/            # サーバー別 LSP 上書き（12ファイル、`ls nvim/after/lsp`）
 ```
 
 読み込み順序: `lua/core/bootstrap.lua` がコア（options/keymaps/lazy起動）を即座に読み込み、UI・LSPオートフォーマット・カラースキームなどの重い初期化は `vim.defer_fn` で遅延読み込みする。
@@ -103,8 +104,9 @@ tl              -- 型定義へ移動
 ### コア
 
 - lazy.nvim: 遅延読み込みプラグインマネージャー
-- nvim-lspconfig: LSP設定
-- mason.nvim: LSPサーバー管理
+- nvim-lspconfig: サーバーごとのデフォルト設定を提供（サーバー一覧は `nvim/lua/lsp/config.lua` の `M.servers` が正本）
+- mason.nvim + mason-lspconfig: `nvim/lua/config/mason-lspconfig.lua` が `M.servers` を `automatic_enable = false` でインストールし、有効化は行わない
+- 有効化: `nvim/lua/lsp/setup.lua` が `vim.lsp.config` / `vim.lsp.enable` で唯一の活性化ポイントを担う。サーバー別の上書きは `after/lsp/<server>.lua`
 
 ### UI・ナビゲーション
 

@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-Comma-leader, Lazy.nvim-based setup tuned for sub-100ms startup. The stack is built around blink.cmp for completion, Conform for manual formatting, and a mostly mini.nvim editing surface.
+Comma-leader, Lazy.nvim-based setup. The stack is built around blink.cmp for completion, Conform for manual formatting, and a mostly mini.nvim editing surface. Startup timing is tracked in [docs/performance.md](../docs/performance.md).
 
 ## Quick Facts
 
