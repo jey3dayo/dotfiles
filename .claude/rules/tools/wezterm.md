@@ -16,8 +16,7 @@ Detailed Reference: See [docs/tools/wezterm.md](../../../docs/tools/wezterm.md) 
 
 ## Key bindings
 
-- Leader is Ctrl+x. Core bindings: Ctrl+x c/n/p for tab create/next/prev; Cmd+w to close tab; Ctrl+x | / - for splits; Ctrl+x z for zoom; Ctrl+x x to close pane; Ctrl+x [ enters copy mode with Vim keys.
-- Direct binds: Alt+Tab for tab switch; Alt+h/j/k/l to move panes; Alt+Shift+Ctrl+h/j/k/l to resize; Ctrl+plus/minus for font size.
+- Leader is Ctrl+x. Full binding list lives in [docs/tools/wezterm.md](../../../docs/tools/wezterm.md); do not re-enumerate keymaps here.
 
 ## Platform handling
 

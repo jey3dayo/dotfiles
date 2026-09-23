@@ -11,15 +11,8 @@ Detailed Reference: See [docs/tools/fzf-integration.md](../../../docs/tools/fzf-
 
 ## Scope and SST
 
-- `docs/tools/fzf-integration.md` is the single source for FZF bindings; this rule is a compact mirror. Other docs link there instead of repeating keymaps.
+- The Key Bindings table in `docs/tools/fzf-integration.md` is the sole binding list; do not re-enumerate keymaps in this rule or other docs.
 - Integration spans shell (history via atuin, processes, directories) and Git (repositories, branches, worktrees, files, stash). Tmux and Neovim are not currently FZF-integrated (see docs "未確認・対象外の統合").
-
-## Key bindings
-
-- Global: Ctrl+] ghq repo picker (FZF); Ctrl+R history (atuin, not FZF); Ctrl+T file picker (FZF); Ctrl+g? show fzf-git maps; Ctrl+gx/Ctrl+g^x process kill (FZF).
-- Git-focused: Ctrl+gg/Ctrl+g^g action menu (FZF); Ctrl+gs/Ctrl+g^s status (buffer insert, no FZF); Ctrl+ga/Ctrl+g^a add -p (buffer insert, no FZF); Ctrl+gb/Ctrl+g^b `gh browse` (no FZF); Ctrl+gB branch switch with worktree cd (FZF; no Ctrl variant); Ctrl+gW/Ctrl+g^W worktree manager menu (FZF); Ctrl+gw/Ctrl+g^w worktree list insert via fzf-git (no auto-cd, ctrl-x removes); Ctrl+gz/Ctrl+g^z stash picker (fzf-git, ctrl-x drops); Ctrl+g^f fzf-git file/diff picker.
-- Note: All Ctrl+g commands support both patterns (Ctrl+gX or Ctrl+g^X).
-- `gco` is a static zsh-abbr abbreviation for `git checkout` (not FZF). `wtcd` does not exist in this repo.
 
 ## Configuration notes
 

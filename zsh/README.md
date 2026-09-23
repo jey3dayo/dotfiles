@@ -1,16 +1,7 @@
 # Zsh Configuration
 
-Minimal Zsh startup optimized for fast interactive shells.
+Minimal Zsh startup optimized for fast interactive shells, structured as entrypoint + `lib/` + `completions/` + `sheldon/` + `bin/`.
 
-- Environment and `.env.local`: `zsh/.zshenv`
-- PATH: `zsh/lib/path.zsh`
-- Interactive startup: `zsh/.zshrc`
-- Sheldon cache refresh: `zsh/bin/zsh-sheldon-refresh`
-- Startup benchmark: `zsh/bin/zsh-benchmark`
-- History search: `atuin` on `Ctrl-R`, `Ctrl-P/N` prefix history search
-- FZF shell cache: `zsh/bin/zsh-fzf-refresh`
-- GitHub CLI completion cache: `zsh/bin/zsh-gh-completion-refresh`
-- Navigation: `zoxide` with `z` and `j`
-- Completions: `ni` / `nlx`, `eza`, and `bun`
+エントリポイントは [`.zshenv`](.zshenv) / [`.zshrc`](.zshrc)。
 
-Sheldon sources `zsh-abbr` and fetches completion repositories. Run `zsh-sheldon-refresh` after changing `zsh/sheldon/plugins.toml`.
+詳細な構成・ロード順・キーバインド・起動性能は [`docs/tools/zsh.md`](../docs/tools/zsh.md)（[検証](../docs/tools/zsh.md#検証)含む）を正本として参照。Claude向けの凝縮版ルールは [`.claude/rules/tools/zsh.md`](../.claude/rules/tools/zsh.md)。

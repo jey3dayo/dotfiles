@@ -16,7 +16,8 @@ Zsh は高速起動を優先した最小構成です。旧構成はリポジト�
 - `atuin` は `Ctrl-R` 履歴検索として使う。通常起動では同期ロードせず、`Ctrl-R` の初回実行時に読み、明示確認では `ZSH_LOAD_ATUIN=1` を使う。
 - `fzf` は cache された shell integration だけを使う。通常起動では integration を同期ロードせず、`Ctrl-T` / `Alt-C` / `^g^c` の初回実行時に読む。明示確認では `ZSH_LOAD_FZF=1` を使う。`Ctrl-R` は `atuin` 優先で、fzf は `Ctrl-T` / `Alt-C` / `^]` / `^gx` などを使う。
 - `fzf-tab` は補完 UI として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読む。hook 登録順は fzf の後、autosuggestions / syntax highlighting より前にし、Tab 補完を fzf UI にする。
-- Git widgets / `fzf-git` は通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読む。Git menu は `^gg` / `^g^g`、status は `^gs` / `^g^s`、add patch は `^ga` / `^g^a`、browse は `^gb` / `^g^b`、branch switch は `^gB`、worktree menu は `^gW` / `^g^W`、stash は `^gz` / `^g^z`、file picker は `^gf` / `^g^f`、help は `^g?`。
+- Git widgets / `fzf-git` は通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読む。バインド一覧は [`docs/tools/fzf-integration.md`](fzf-integration.md) を参照。
+- `Ctrl-P` / `Ctrl-N` は `zsh/lib/history.zsh` の `history-beginning-search-*-end` による prefix 履歴検索（fzf / atuin とは別系統）。
 - `zsh-autosuggestions` は入力候補表示として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読み、明示確認では `ZSH_LOAD_AUTOSUGGESTIONS=1` を使う。
 - `fast-syntax-highlighting` は入力中の syntax highlight として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で最後に読む。
 - `gh` completion は cache file を使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読み、明示確認では `ZSH_LOAD_GH=1` を使う。起動時に `gh completion` は実行しない。
