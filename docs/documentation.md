@@ -40,7 +40,7 @@ owner: dotfiles
 | ツール別詳細                             | `docs/tools/*.md`                                             |
 | ドキュメント運用ルール                   | `docs/documentation.md`                                       |
 
-`README.md`、`docs/README.md`、`TOOLS.md`、`llms.md` はナビゲーション文書であり、正本の代替にしません。
+`README.md`、`docs/README.md`、`llms.md` はナビゲーション文書であり、正本の代替にしません。
 
 ## 更新ルール
 

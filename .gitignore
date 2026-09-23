@@ -227,7 +227,6 @@ cursor/chats/
 cursor/statsig-cache.json
 .windsurfrules
 .clinerules
-global_rules.md
 .aider*
 .plans/
 plans/

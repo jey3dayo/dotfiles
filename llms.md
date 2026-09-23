@@ -16,6 +16,7 @@
 ## Repository Summary
 
 - 個人用 dotfiles リポジトリです
+- Core stack: Zsh + WezTerm + Neovim（Tmux / Homebrew / Mise / Raycast / Karabiner が補助）
 - mise bootstrap を中心に、macOS / Linux / WSL2 / Windows の開発環境を管理します
 - 開発ツールは原則 `mise`、システム依存と GUI は `Homebrew`、Windows bootstrap は `Chocolatey` を使います
 - ドキュメントは `docs/` に集約し、`README.md` やハブ文書はナビゲーションを担当します

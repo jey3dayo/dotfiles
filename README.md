@@ -23,7 +23,7 @@ High-performance development environment tuned for speed, consistency, and devel
 - Startup benchmarks: `docs/tools/zsh.md`, `docs/tools/nvim.md`
 - Maintenance cadence & troubleshooting: `docs/tools/workflows.md`
 - Documentation governance: `docs/documentation.md`
-- Tool inventory: `TOOLS.md`
+- Tool inventory: `docs/README.md`
 
 ## Getting Started
 
@@ -130,7 +130,7 @@ If Homebrew is already installed, skip bootstrap and follow docs/setup.md direct
 ```
 dotfiles/
 ├── mise/          # mise config（[tools] / [dotfiles] / [bootstrap.*] / tasks）
-├── .claude/       # AI assistance, commands, review criteria
+├── .claude/       # AI rules, doc standards, distributed skills
 ├── .github/       # Workflows
 ├── docs/          # Human-facing documentation (SST per topic)
 ├── bin/           # User-facing commands on PATH
@@ -177,7 +177,7 @@ mise install               # Setup language versions
 ## Maintenance
 
 - Operational cadence and troubleshooting live in `docs/tools/workflows.md`
-- Weekly: `brew update && brew upgrade`, sync plugins (Sheldon/Neovim/tmux)
+- Weekly: `mise run update`, sync plugins (Sheldon/Neovim/tmux)
 - Monthly: `mise bootstrap --yes` で収束確認, measure shell startup, prune unused plugins
 - 配布状態の確認: `mise bootstrap status` / `mise dotfiles status`
 - Always before merge: `mise run ci`

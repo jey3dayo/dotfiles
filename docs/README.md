@@ -40,6 +40,35 @@ Location: `docs/`
 - [Security](security.md) - セキュリティポリシー・gitleaks・インシデント対応
 - [Workflows & Maintenance](tools/workflows.md) - 定期メンテナンス・Brewfile・コードクオリティ
 
+#### 🧰 その他の管理対象ツール
+
+上記の詳細ガイドを持たないツールの構成ファイル一覧です。
+
+| Tool           | Config Location       |
+| -------------- | --------------------- |
+| zsh-abbr       | `zsh-abbr/`           |
+| Starship       | `starship.toml`       |
+| Alacritty      | `alacritty/`          |
+| Tmux           | `tmux/`               |
+| GitHub CLI     | `gh/`                 |
+| efm-langserver | `efm-langserver/`     |
+| Homebrew       | `Brewfile`            |
+| AWSume         | `awsume/`             |
+| Terraform      | (via mise)            |
+| Biome          | `biome.json`          |
+| Hadolint       | (via mise)            |
+| shellcheck     | `shellcheckrc`        |
+| pycodestyle    | `pycodestyle`         |
+| Stylua         | `stylua.toml`         |
+| Taplo          | `taplo.toml`          |
+| Yamllint       | `yamllint/`           |
+| Typos          | `typos.toml`          |
+| Btop           | `btop/`               |
+| htop           | `htop/`               |
+| Flipper        | `flipper/`            |
+| Karabiner      | `karabiner/`          |
+| Vimium         | `vimium-options.json` |
+
 ## 🗺️ Quick Navigation
 
 ### 新規ユーザー向け
@@ -62,7 +91,6 @@ Location: `docs/`
 
 - [Main README](../README.md) - ユーザー向け概要
 - [LLM Context](../llms.md) - LLM/AI エージェント向けの最小入口
-- [TOOLS.md](../TOOLS.md) - 管理対象ツール一覧
 
 ---
 
