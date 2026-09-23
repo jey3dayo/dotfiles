@@ -1,5 +1,5 @@
 ---
-paths: docs/tools/workflows.md, .github/workflows/**/*.yml, .github/PULL_REQUEST_TEMPLATE.md, .claude/commands/**/*.sh, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json
+paths: docs/tools/workflows.md, .github/workflows/**/*.yml, .github/PULL_REQUEST_TEMPLATE.md, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json
 source: docs/tools/workflows.md
 ---
 

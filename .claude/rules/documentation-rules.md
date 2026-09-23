@@ -1,5 +1,5 @@
 ---
-paths: docs/**/*.md, README.md, CLAUDE.md, TOOLS.md, global_rules.md
+paths: docs/**/*.md, README.md, CLAUDE.md
 ---
 
 # Documentation Rules
@@ -27,7 +27,7 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 - Tool details: `docs/tools/*.md`
 - Documentation system itself: `docs/documentation.md`
 
-`README.md`, `TOOLS.md`, and `docs/README.md` are navigation only. Do not turn them into procedural or metrics-heavy docs.
+`README.md` and `docs/README.md` are navigation only. Do not turn them into procedural or metrics-heavy docs.
 
 ## Rule authoring
 

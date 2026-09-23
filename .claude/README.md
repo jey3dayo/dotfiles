@@ -1,10 +1,9 @@
 # Claude AI Configuration Directory
 
-This directory contains Claude-specific configuration, commands, and rule files for AI-assisted work in this repository.
+This directory contains Claude-specific configuration, rules, and doc standards for AI-assisted work in this repository.
 
 ## Purpose
 
-- `commands/`: Claude Code custom commands and helper scripts
 - `rules/`: compact AI-facing rules derived from canonical project docs
 - `doc-standards/`: metadata and tag references for documentation maintenance
 - `settings.json`: Claude Code local settings
@@ -19,7 +18,6 @@ The documentation contract is defined in [`docs/documentation.md`](../docs/docum
 ## Key Entry Points
 
 - [`../docs/README.md`](../docs/README.md) - documentation navigation
-- [`rules/project-context.md`](rules/project-context.md) - concise project overview for Claude
 - [`rules/claude-code-usage.md`](rules/claude-code-usage.md) - Claude-specific operating guidance
 - [`../README.md`](../README.md) - repository overview
 
