@@ -8,23 +8,7 @@ paths:
 
 # Tool Installation Policy
 
-Purpose: decide which layer owns a tool. Details: [docs/tools/mise.md](../../../docs/tools/mise.md); Brewfile operations and maintenance cadence: [docs/tools/workflows.md](../../../docs/tools/workflows.md).
-
-## Layers
-
-- mise `[tools]`: CLIs, language runtimes, dev tools, and `npm:` / `pipx:` / `cargo:` / `go:` packages. Declared in `mise/config.shared.toml` (all OS), `mise/config.workstation.toml` (default / Windows), and `mise/entry.*.toml` (per environment).
-- mise bootstrap `[bootstrap.packages]`: macOS Homebrew formulae — system libs and native binaries, including some mise could also install (btop, cmake, neovim, podman, powershell, rust-analyzer, …). Declared in `mise/config.macos.toml` as `"brew:<name>" = "latest"`.
-- Brewfile: casks, MAS apps, VS Code extensions, and formulae `[bootstrap.packages]` cannot express. Its `brew` lines are the exception list; known reasons are install args / `restart_service` and private or metadata-less taps.
-- Self-updating standalone: `mise`, `claude`, `codex`. mise comes from its official installer (`curl https://mise.run | sh`) on Unix and from Chocolatey (`windows/chocolatey/packages.config`) on Windows. claude / codex come from their official installers, ensured by `[bootstrap.hooks.post-tools]` → `mise/lib/ensure-standalone.sh` (Windows: `Ensure-StandaloneCli` in `windows/setup.ps1`).
-
-## Choosing a layer
-
-1. GUI app, MAS app, or VS Code extension → Brewfile.
-2. Ships its own installer and self-update command and should track latest → standalone.
-3. New cross-platform CLI available through mise (registry or a package backend) → `[tools]`.
-4. System library or macOS native binary → `[bootstrap.packages]`; add a Brewfile `brew` line only when `[bootstrap.packages]` cannot express it (install args, service restart, tap without API metadata).
-
-Runtimes go through mise. Keep a Homebrew-installed runtime only when a formula depends on it (`brew uses --installed <name>`).
+Layers and how to choose one: [docs/setup.md](../../../docs/setup.md#package-management-philosophy) (sole policy text). mise implementation details: [docs/tools/mise.md](../../../docs/tools/mise.md); Brewfile operations/cadence: [docs/tools/workflows.md](../../../docs/tools/workflows.md).
 
 ## Constraints
 

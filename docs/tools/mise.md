@@ -199,10 +199,7 @@ Priority: CI > Raspberry Pi > Default
 
 #### Related: Chocolatey manifests
 
-`mise/entry.workstation-windows.toml` covers mise-managed tools. OS-level Windows package bootstrap can be managed separately with a Chocolatey `.config` manifest.
-
-- Prefer `mise` when a tool is already covered by `mise/entry.workstation-windows.toml`
-- Use Chocolatey for bootstrap packages and GUI apps that are outside the mise-managed toolchain
+`mise/entry.workstation-windows.toml` covers mise-managed tools. OS-level Windows package bootstrap can be managed separately with a Chocolatey `.config` manifest. Layer choice: [docs/setup.md](../setup.md#package-management-philosophy).
 
 ```powershell
 choco install .\windows\chocolatey\packages.config -y
@@ -270,57 +267,7 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 
 6 カテゴリ（Language Runtimes / Package Managers / Formatters & Linters / NPM Global Packages / Cargo Tools / CLI Tools）の詳細は [mise-config.md](mise-config.md) を参照。
 
-## Migration History
-
-### Phase 1: global-package.json → mise (完了)
-
-Before: npm global packages in `global-package.json`
-After: npm packages managed by mise with `npm:` prefix
-
-### Phase 2: npm/pnpm/bun グローバル → mise (完了)
-
-Before: 混在したパッケージ管理（npm グローバル 30+ パッケージ、bun グローバル 9 パッケージ）
-After: 完全に mise で一元管理
-
-削除実績:
-
-- npm グローバルから 2,624 パッケージを削除（MCP サーバー、開発ツール、Language Server 等）
-- bun グローバルは package.json が空で実質未使用（PATH で解決されない）
-- 維持: npm グローバルのローカルリンク（astro-my-profile, zx-scripts）のみ
-
-### Phase 3: npm → pnpm バックエンド移行 (完了)
-
-Before: miseのnpmバックエンドがnpmを使用
-After: miseのnpmバックエンドがpnpmを使用（`settings.npm.package_manager = "pnpm"`）
-
-#### Implementation Details (Completed 2026-02-03)
-
-1. mise updated: v2025.7.17 → v2025.12.13 (to support `settings.npm.package_manager`)
-2. Bootstrap process:
-   - Temporarily set `package_manager = "npm"` to install pnpm itself
-   - Installed `npm:pnpm@10.28.2` using npm backend
-   - Switched back to `package_manager = "pnpm"`
-3. npm global cleanup:
-   - Removed `@openai/codex`, `aicommits`, `markdown-link-check` from npm global
-   - Verified npm global is empty (only local links remain)
-4. Verification: `mise install "npm:pnpm@10.28.2"` confirmed using pnpm backend
-
-Benefits:
-
-- Single source of truth for all tools
-- Version pinning and reproducibility
-- Cross-platform consistency
-- No global npm/pnpm/bun pollution
-- Automatic installation via mise hooks
-- Faster installation: pnpmのシンボリックリンク + グローバルストア
-- Reduced disk usage: パッケージ重複排除
-- npm:プレフィックスのまま使用可能: 既存の設定を変更不要
-
-### Phase 4: 自己更新ツールを mise 管理外へ (2026-09-03)
-
-- `mise/config.shared.toml` の `npm:@openai/codex` を削除
-- `mise/entry.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、claude / codex が未導入時のみ公式インストーラで導入するよう変更
-- 更新は各ツールの self-update（`claude update` / `codex update`）に委ねる
+移行履歴は `CHANGELOG.md` を参照。
 
 ## Common Commands
 
@@ -410,61 +357,22 @@ mise doctor               # Check for issues
 - To restore: `git checkout mise/entry.workstation-unix.toml mise/entry.server-pi.toml && mise install`
 - Version history via git allows rollback
 
-## mise と Homebrew の使い分け
+## 自己更新ツール（mise 管理外）の導入保証
 
-mise 本体は Homebrew で管理しない。公式インストーラで `~/.local/bin/mise` に入れ、`mise self-update` で更新する（理由は `docs/setup.md` の TCC 注記を参照）。
-
-### 自己更新ツール(mise 管理外)
-
-公式インストーラと自己更新コマンド（`mise self-update` / `claude update` / `codex update`）を持ち、常に最新を追いたい CLI（mise, claude, codex）は mise `[tools]` に置かない。mise に置くと更新経路が二重になるため。
+どの層（mise `[tools]` / `[bootstrap.packages]` / Brewfile / 自己更新 standalone）でツールを管理するかの方針は [docs/setup.md](../setup.md#package-management-philosophy) を参照。ここでは mise 側の実装事実だけを記す。
 
 - 該当ツール: `mise`、`claude`（Claude Code）、`codex`（Codex CLI）
 - 導入保証: `mise/entry.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
 - 更新: 各ツールの self-update コマンド（`mise self-update` / `claude update` / `codex update`）に委ねる
 - `mise ls` に出ないのは意図的（`[tools]` で管理していないため）
 
-### mise で管理するツール
-
-- 全ての開発ツール: フォーマッター、Linter、CLI ツール
-- 各言語系 CLI: `go:`, `cargo:`, `npm:`, `pipx:` などのプレフィックス付きツール
-- 開発用の言語ランタイム: Node.js, Python, Go, Rust
-- 理由: バージョン固定、プロジェクト別オーバーライド、再現性
-- 例外: 自己更新ツールは上記小節を参照
-
-### Homebrew で管理するツール
-
-- Neovim とその依存関係: lua, luajit, luarocks, libuv, tree-sitter 等
-- システムレベルのライブラリとネイティブ formula: 複数のツールから参照されるライブラリ、OS 統合が必要な CLI
-- GUI アプリケーション: cask で管理
-- システムツール用の言語ランタイム: 必要な場合のみ (python@3.11, python@3.12 等)
-- 理由: システム安定性、ビルド時間削減、OS 統合
-
-### ハイブリッド運用パターン
-
-- Node.js: mise 版を開発用の正本にし、Homebrew 版はシステム依存関係が必要な場合だけ許容
-- Python: mise 版を開発用の正本にし、Homebrew 版はシステムツール用に限定
-- Rust: mise 版を開発用と `cargo:` ツールの正本にし、Homebrew 版はネイティブ formula が必要な場合だけ許容
-- Lua: Homebrew 版を Neovim 依存関係として管理
-
 ## Best Practices
 
-1. Centralized Package Management: ALL language-package CLI tools MUST be declared in environment-specific configs (`mise/entry.workstation-unix.toml`, `mise/entry.workstation-windows.toml`, or `mise/entry.server-pi.toml`)
-   - Never use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`
-   - Never maintain separate `global-package.json` or `requirements-global.txt`
-   - Always use `"go:<package>"`, `"cargo:<package>"`, `"npm:<package>"`, or `"pipx:<package>"` in environment-specific config files when available
-   - Note: `npm:` prefix is used even though pnpm is the backend (configured via `settings.npm.package_manager = "pnpm"`)
-   - Rationale: Single source of truth, reproducibility, version control
-2. Global Package Manager Check: Regularly verify no duplicate packages
-   - Run `npm -g list --depth=0` - should only show local links (astro-my-profile, zx-scripts)
-   - Run `ls ~/.bun/install/global/node_modules/.bin` - should be empty or minimal
-   - If duplicates found, add to environment-specific config and `npm uninstall -g <package>`
-3. Version Pinning: Use specific versions for project-critical tools
-4. Latest for Development Tools: Use "latest" for CLI tools that don't affect build
-5. Document Breaking Changes: Comment version pins with reason
-6. Regular Updates: Run `mise run update` weekly to stay current (runs `mise self-update` before `mise upgrade`)
-7. Consolidation: Prefer mise over tool-specific managers (nvm, rbenv, pyenv, npm/pnpm/bun global, etc.)
-8. Avoid Duplication: Never install the same tool in both Homebrew and mise (except hybrid runtime patterns)
-9. No manual availability checks for mise-managed tools: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。
+1. Version Pinning: Use specific versions for project-critical tools
+2. Latest for Development Tools: Use "latest" for CLI tools that don't affect build
+3. Document Breaking Changes: Comment version pins with reason
+4. Regular Updates: Run `mise run update` weekly to stay current (runs `mise self-update` before `mise upgrade`)
+5. No manual availability checks for mise-managed tools: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。
    - `if ! command -v fd >/dev/null 2>&1; then echo "..."; exit 1; fi` は書かない
    - 単に `fd ...` を呼び出すだけでよい
    - 例外: mise 非管理ツール（busted via luarocks、fswatch via Homebrew 等、claude / codex（自己更新ツール））は引き続き確認してよい

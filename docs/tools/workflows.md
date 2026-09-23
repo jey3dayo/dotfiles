@@ -196,11 +196,7 @@ git commit --no-verify -m "..."
 
 ### 責務分離
 
-- mise bootstrap: 設定配布（dotfiles / launchd）と brew パッケージ宣言
-- mise: クロスプラットフォーム CLI、言語ランタイム、開発ツール
-- Homebrew: macOS 固有の依存関係、GUI アプリ、システムライブラリ
-
-厳選管理の原則: フォーマッター・Linter・CLI ツールは mise で管理（biome, prettier, stylua 等は Brewfile に追加しない）
+どの層（mise `[tools]` / `[bootstrap.packages]` / Brewfile / 自己更新 standalone）でツールを管理するかの方針は [docs/setup.md](../setup.md#package-management-philosophy) を参照。
 
 ### Special Settings
 
@@ -208,7 +204,6 @@ git commit --no-verify -m "..."
 | ---------- | --------------------------- | ---------------------------- |
 | `mysql`    | `restart_service: :changed` | サービス自動再起動           |
 | `utf8proc` | `args: ["HEAD"]`            | Julia 依存のため HEAD が必要 |
-| `node`     | `link: false`               | mise で管理（PATH 衝突回避） |
 
 ### Package Addition Workflow
 
@@ -332,16 +327,14 @@ brew cleanup
 
 - `npm -g list --depth=0` - npm グローバルはローカルリンク（astro-my-profile, zx-scripts）のみであること
 - `bun pm ls -g` または `ls ~/.bun/install/global/node_modules/.bin` - bun グローバルは空であること
-- 重複検出スクリプトの実行（`docs/tools/mise.md` のツール管理方針を参照）
+- 重複検出スクリプトの実行（[docs/setup.md](../setup.md#package-management-philosophy) の方針を参照）
 
 ## mise Management
 
-- Primary config: `mise/config.toml`（6 カテゴリ構造: Runtimes, Package Managers, Formatters/Linters, NPM, Cargo, CLI Tools）
+- Primary config: `mise/config.toml`（設定のみ。`[tools]` は置かず、ツール定義は `mise/config.shared.toml` / `mise/config.workstation.toml` / `mise/entry.*.toml` に分離。詳細は [docs/tools/mise.md](mise.md#configuration-structure)）
 - Weekly updates: `mise run update`（`mise self-update` の後に `mise upgrade --yes --no-prune` を実行するタスク）
 - Monthly cleanup: `mise prune` to remove unused versions
 - Verification: `mise doctor` for health check, `mise ls` for installed tools
-- 重複回避: 新しいツールを追加する前に `brew list` で Homebrew に同じツールがないか確認
-- npm パッケージの完全移行完了: 全ての開発ツール・MCP サーバー・Language Server は mise で一元管理（npm/pnpm/bun グローバルには依存しない）
 
 ## Nix Runtime Cleanup (legacy)
 
@@ -366,36 +359,6 @@ df -h /nix/store
 | > 85%  | 危険 | アグレッシブなクリーンアップ実施          |
 
 Nix 配布手順はリポジトリから撤去済み。`home-manager switch` や `nix flake update` は使わない。
-
-## Tool Management Philosophy
-
-### mise 優先原則
-
-#### 原則
-
-開発ツール・フォーマッター・Linter は mise で統一管理。Homebrew はシステム依存関係と GUI アプリのみ。
-
-#### mise で管理
-
-- 全ての開発ツール（フォーマッター、Linter、CLI ツール）
-- 全ての npm/pipx パッケージ
-- 開発用の言語ランタイム（Node.js, Python, Go）
-
-#### Homebrew で管理
-
-- Neovim とその依存関係（lua, luajit, luarocks, libuv 等）
-- システムレベルのライブラリ
-- GUI アプリケーション（cask）
-- システムツール用の言語ランタイム（必要な場合のみ）
-
-#### ハイブリッド運用
-
-- Node.js: Homebrew 版（システム依存関係用）+ mise 版（開発用）
-- Python: Homebrew 版（システムツール用）+ mise 版（開発用）
-
-#### 理由
-
-Single Source of Truth、バージョン固定、プロジェクト別オーバーライド、再現性
 
 ## Troubleshooting Routing
 

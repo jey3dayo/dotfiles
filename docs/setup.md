@@ -15,7 +15,7 @@
 3. `[bootstrap.macos.launchd.agents]` — LaunchAgents（GUI env 注入）
 4. `[tools]` — 全開発ツール（言語 runtime / CLI / formatter / MCP）
 
-`scripts/bootstrap.sh` は fresh macOS で **Homebrew を導入するだけの前準備**です。mise 本体は全 OS 共通で公式インストーラ（`curl https://mise.run | sh` → `~/.local/bin/mise`）で入れ、更新は `mise self-update` を使う。Homebrew formula は adhoc 署名かつバージョン付きパスのため、macOS Tahoe 以降の TCC（「他のアプリからのデータ」等）許可が更新のたびに無効化され再プロンプトされる。公式バイナリは Developer ID 署名で許可が持続する。claude（Claude Code）と codex（Codex CLI）も同じ理由で mise `[tools]` には置かず、`mise bootstrap` の `[bootstrap.hooks.post-tools]` hook が未導入時のみ公式インストーラで導入する。更新は `claude update` / `codex update` に任せる。
+`scripts/bootstrap.sh` は fresh macOS で **Homebrew を導入するだけの前準備**です。mise 本体は macOS / Linux / WSL2 では公式インストーラ（`curl https://mise.run | sh` → `~/.local/bin/mise`）、Windows では Chocolatey（`windows/chocolatey/packages.config`）で入れ、更新は `mise self-update` を使う。Homebrew formula は adhoc 署名かつバージョン付きパスのため、macOS Tahoe 以降の TCC（「他のアプリからのデータ」等）許可が更新のたびに無効化され再プロンプトされる。公式バイナリは Developer ID 署名で許可が持続する。claude（Claude Code）と codex（Codex CLI）も同じ理由で mise `[tools]` には置かず、`mise bootstrap` の `[bootstrap.hooks.post-tools]` hook が未導入時のみ公式インストーラで導入する。更新は `claude update` / `codex update` に任せる。
 Homebrew 導入済みのマシンでは実行不要で、Quick Setup の手順 4 から始められます。
 
 `pam-reattach` は `[bootstrap.packages]` で宣言されている。`/etc/pam.d/sudo_local` の `auth optional /opt/homebrew/lib/pam/pam_reattach.so` 行はこのリポジトリでは管理せず、手動設定する。
@@ -101,7 +101,22 @@ fresh macOS のみ、`scripts/bootstrap.sh` で Homebrew を自動導入する�
 sh ./scripts/bootstrap.sh
 ```
 
-実行内容: Homebrew インストール（未導入時のみ）、アーキテクチャ検出、前提条件検証（git/zsh/curl）、現セッションへの `brew` PATH 設定。
+実行内容: Homebrew インストール（未導入時のみ）、アーキテクチャ検出、前提条件検証（git/zsh/curl）、現セッションへの `brew` PATH 設定。Linux/WSL2 では使わない。
+
+### Linux/WSL2（各ディストリのパッケージマネージャー）
+
+`git` / `zsh` / `curl` を先に導入する:
+
+```bash
+# Ubuntu/Debian
+sudo apt update && sudo apt install -y git zsh curl
+
+# Fedora
+sudo dnf install -y git zsh curl
+
+# Arch
+sudo pacman -S --noconfirm git zsh curl
+```
 
 ### Manual Installation
 
@@ -116,38 +131,28 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 
 ## Package Management Philosophy
 
-このプロジェクトでは **mise** を中心としたパッケージ管理を採用しています:
+このプロジェクトはツール導入を 4 層 + Windows Chocolatey に分離する。**どの層で管理するかはここが唯一の方針本文**（他の docs / rules は本節への pointer に留める）。
 
-### 原則
+### 4 層
 
-- mise 優先: 全ての開発ツール・フォーマッター・Linter・Language Server は mise で一元管理
-- Homebrew: システム依存関係と GUI アプリケーションのみ
-- Chocolatey (Windows): bootstrap パッケージと GUI アプリケーションのみ
-- npm/pnpm/bun グローバルは使用しない: mise の `npm:` プレフィックスで管理
-- Go/Cargo/uv/pipx など各言語・パッケージマネージャー由来の CLI は Brewfile ではなく mise の `[tools]` で管理
+1. mise `[tools]`: CLI・言語ランタイム・開発ツール・`go:` / `cargo:` / `npm:` / `pipx:` プレフィックス付きパッケージ。`mise/config.shared.toml`（全 OS）、`mise/config.workstation.toml`（default / Windows）、`mise/entry.*.toml`（環境別）で宣言する。npm/pnpm/bun グローバルは使わない。
+2. mise bootstrap `[bootstrap.packages]`: macOS の Homebrew formula。システムライブラリ・native バイナリ（Neovim とその依存関係、btop, cmake, podman, powershell, rust-analyzer 等、mise でも入れられるものを含む）。`mise/config.macos.toml` に `"brew:<name>" = "latest"` で宣言する。
+3. Brewfile: cask・MAS app・VS Code 拡張、および `[bootstrap.packages]` で表現できない formula の例外リスト（install args・`restart_service`・private または metadata なし tap）。
+4. 自己更新 standalone: `mise` / `claude` / `codex`。公式インストーラで入れ（mise は macOS / Linux / WSL2 で `curl https://mise.run | sh`、Windows では Chocolatey）、`claude` / `codex` は `[bootstrap.hooks.post-tools]` → `mise/lib/ensure-standalone.sh`（Windows: `windows/setup.ps1` の `Ensure-StandaloneCli`）が未導入時のみ導入する。更新は各ツールの自己更新（`mise self-update` / `claude update` / `codex update`）に任せ、mise `[tools]` には置かない（二重の更新経路を避けるため）。
 
-### mise で管理するもの
+### Chocolatey（Windows bootstrap）
 
-- 言語ランタイム（Go, Node.js, Python）
-- 言語系 CLI（`go:`, `cargo:`, `npm:`, `pipx:` など）
-- フォーマッター・Linter（biome, prettier, stylua, shellcheck 等）
-- 開発ツール（TypeScript, ESLint, esbuild 等）
-- MCP サーバー（Model Context Protocol）
-- CLI ツール（aws-cdk, gh, jq 等）
-
-### Homebrew で管理するもの
-
-- Neovim とその依存関係（lua, luajit, tree-sitter 等）
-- システムレベルのライブラリ
-- GUI アプリケーション（cask）
-
-### Chocolatey で管理するもの（Windows bootstrap）
-
-- `mise` 自体の導入
-- Git や WezTerm などのベースアプリ
-- GUI アプリケーション（Chrome, VS Code 等）
-- `neovim` バイナリのようなアプリ本体
+- `mise` 自体の導入、Git や WezTerm などのベースアプリ、GUI アプリケーション（Chrome, VS Code 等）、`neovim` バイナリのようなアプリ本体
 - 理由: 初回マシンセットアップの bootstrap を単純化し、CLI ツール本体は `mise install` に集約するため
+
+### レイヤーの選び方
+
+1. GUI app、MAS app、VS Code 拡張 → Brewfile
+2. 自前のインストーラと自己更新コマンドを持ち最新版を追随すべき → 自己更新 standalone
+3. mise（registry またはパッケージバックエンド）経由で入る cross-platform CLI → `[tools]`
+4. システムライブラリまたは macOS native バイナリ → `[bootstrap.packages]`。表現できない場合のみ Brewfile へ `brew` 行を追加する（install args・service restart・API メタデータの無い tap）
+
+ランタイムは mise を通す。Homebrew 版ランタイムを残すのは、あるフォーミュラがそれに依存する場合だけ（`brew uses --installed <name>`）。1 ツールは 1 層でのみ宣言する（2 層に置くと更新経路が二重になる）。`brew:neovim`（エディタ）と `npm:neovim`（Node クライアント）は別パッケージなので重複ではない。
 
 ### 重複回避ルール
 

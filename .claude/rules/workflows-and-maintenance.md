@@ -12,7 +12,7 @@ Detailed Reference: [docs/tools/workflows.md](../../docs/tools/workflows.md)
 
 - Weekly, monthly, and quarterly maintenance details live only in `docs/tools/workflows.md`.
 - Keep this rule focused on routing and decision criteria; do not duplicate operational tables here.
-- Put runtime and generic CLI tools under mise. Brewfile holds casks, MAS apps, VS Code extensions, and formula exceptions; other Homebrew formulae go in `[bootstrap.packages]` (see `.claude/rules/tools/tool-install-policy.md`).
+- Package layer ownership (mise vs Homebrew vs Chocolatey) is defined in [docs/setup.md](../../docs/setup.md#package-management-philosophy); do not restate it here.
 - Route leftover Nix store cleanup to the Nix Runtime Cleanup section in [docs/tools/workflows.md](../../docs/tools/workflows.md).
 
 ## Troubleshooting Routing

@@ -14,12 +14,6 @@ Detailed Reference: [docs/tools/mise.md](../../../docs/tools/mise.md)
 - Keep package management unified under mise where possible; do not introduce global `npm`, `pnpm`, `bun`, or `pip` installs.
 - `npm:` packages use the configured pnpm backend transparently.
 - For task catalogs and per-file config details, route to [docs/tools/mise-tasks.md](../../../docs/tools/mise-tasks.md) and [docs/tools/mise-config.md](../../../docs/tools/mise-config.md).
-
-## ツール管理方針
-
-- mise で管理: 開発ツール・フォーマッター・Linter・npm/pipx パッケージ・言語ランタイム
-- default/Windows 共通の tools は `mise/config.workstation.toml`、3 OS 共通は `mise/config.shared.toml`
-- Homebrew で管理: Neovim 依存関係・システムライブラリ・GUI アプリ
-- mise 管理外(自己更新): mise / claude / codex は公式インストーラ + 各ツールの self-update。詳細は tool-install-policy.md
+- Which layer (mise `[tools]` / Homebrew / Chocolatey / self-updating standalone) owns a tool: [docs/setup.md](../../../docs/setup.md#package-management-philosophy).
 - `npm install -g`, `pnpm add -g`, `bun add -g`, `pip install --user` は使わない
 - mise 管理ツールに `command -v` チェックを書かない（shim が自動解決）

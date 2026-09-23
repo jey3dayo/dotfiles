@@ -1,6 +1,6 @@
 # Mise Configuration Reference
 
-最終更新: 2026-06-25
+最終更新: 2026-09-23
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -177,7 +177,7 @@ yamllint = "latest"
 - Default (`entry.workstation-unix.toml`): 全てのcargoツールをインストール
 - Raspberry Pi (`entry.server-pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
 
-Go/Cargo 由来の CLI は Brewfile ではなく mise の `[tools]` で管理します。Homebrew は OS/GUI/ネイティブ formula の正本です。
+レイヤーの選び方は [docs/setup.md](../setup.md#package-management-philosophy) を参照。
 
 ### 6. CLI Tools
 
