@@ -1,6 +1,6 @@
 # 🧭 Git Configuration
 
-最終更新: 2025-12-17  
+最終更新: 2026-09-23  
 対象: 開発者  
 タグ: `category/configuration`, `tool/git`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -10,7 +10,7 @@ Git 関連設定は XDG (`~/.config/git/`) 配下に集約し、`setup.sh` で�
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/git.md`](../../.claude/rules/tools/git.md) で管理されています。
 
-- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 目的: Claude AIが常に参照する簡潔なルール
 - 適用範囲: YAML frontmatter `paths:` で定義
 - 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 

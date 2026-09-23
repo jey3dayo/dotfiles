@@ -20,16 +20,16 @@
 
 ### Development
 
-| Tool           | Config Location   | Documentation                            |
-| -------------- | ----------------- | ---------------------------------------- |
-| Git            | `git/`            | [FZF統合](docs/tools/fzf-integration.md) |
-| GitHub CLI     | `gh/`             | -                                        |
-| Neovim         | `nvim/`           | [詳細ガイド](docs/tools/nvim.md)         |
-| efm-langserver | `efm-langserver/` | -                                        |
-| Mise           | `.mise.toml`      | [詳細ガイド](docs/tools/mise.md)         |
-| Homebrew       | `Brewfile`        | -                                        |
-| AWSume         | `awsume/`         | -                                        |
-| Terraform      | (via mise)        | -                                        |
+| Tool           | Config Location   | Documentation                    |
+| -------------- | ----------------- | -------------------------------- |
+| Git            | `git/`            | [詳細ガイド](docs/tools/git.md)  |
+| GitHub CLI     | `gh/`             | -                                |
+| Neovim         | `nvim/`           | [詳細ガイド](docs/tools/nvim.md) |
+| efm-langserver | `efm-langserver/` | -                                |
+| Mise           | `.mise.toml`      | [詳細ガイド](docs/tools/mise.md) |
+| Homebrew       | `Brewfile`        | -                                |
+| AWSume         | `awsume/`         | -                                |
+| Terraform      | (via mise)        | -                                |
 
 ### Linters & Formatters
 

@@ -10,7 +10,7 @@ GPU加速対応のLuaベースモジュラーターミナル設定です。
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/wezterm.md`](../../.claude/rules/tools/wezterm.md) で管理されています。
 
-- 目的: Claude AIが常に参照する簡潔なルール（26-31行）
+- 目的: Claude AIが常に参照する簡潔なルール
 - 適用範囲: YAML frontmatter `paths:` で定義
 - 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
