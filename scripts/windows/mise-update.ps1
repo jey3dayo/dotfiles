@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
   [Parameter(Mandatory = $true)]
-  [ValidateSet("submodules", "brew", "apt", "external-repos")]
+  [ValidateSet("self", "submodules", "brew", "apt", "external-repos")]
   [string]$TaskName,
 
   [switch]$DryRun
@@ -20,6 +20,12 @@ function Test-CommandAvailable {
   )
 
   return $null -ne (Get-Command $Name -ErrorAction SilentlyContinue)
+}
+
+function Test-Administrator {
+  $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+  $principal = New-Object Security.Principal.WindowsPrincipal($identity)
+  return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
 function Invoke-Step {
@@ -70,6 +76,28 @@ switch ($TaskName) {
 
     Invoke-Step "git submodule update --init --recursive" {
       git submodule update --init --recursive
+    }
+
+    break
+  }
+
+  "self" {
+    # Windows の mise は Chocolatey 管理（windows/chocolatey/packages.config）のため
+    # mise self-update ではなく choco upgrade を使う（package manager 管理下の
+    # self-update は拒否されるか、管理外バイナリの上書きになるかのどちらか）。
+    if (-not (Test-CommandAvailable "choco")) {
+      Write-Host "Chocolatey not installed, skipping mise self update"
+      break
+    }
+
+    # Chocolatey の既定配置への package upgrade は elevated rights を要求するため、
+    # 非昇格なら黙って skip せず再実行手順を出して失敗させる（Windows のみのドリフト防止）。
+    if (-not (Test-Administrator)) {
+      throw "mise self update requires an elevated shell. Re-run from an Administrator PowerShell: mise run update:self"
+    }
+
+    Invoke-Step "choco upgrade mise -y" {
+      choco upgrade mise -y
     }
 
     break
