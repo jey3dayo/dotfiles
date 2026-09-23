@@ -28,7 +28,7 @@ Read `references/wezterm.md` only when you need detailed API examples or deeper 
 ## First Pass
 
 1. `wezterm.lua` の entry point と `require(...)` 構成を確認する
-2. GPU frontend と power preference を確認する
+2. `front_end`（この repo は `OpenGL` + `max_fps`）と GPU adapter 選択を確認する
 3. leader key と主要キーバインド群を確認する
 4. theme / font / opacity / copy mode を確認する
 5. platform-specific 分岐があるなら OS ごとの差分を確認する
@@ -38,7 +38,7 @@ Read `references/wezterm.md` only when you need detailed API examples or deeper 
 ### 1. Rendering and Performance
 
 - `front_end` が適切か
-- `webgpu_power_preference` や fallback 設定が妥当か
+- WebGpu を使う場合は adapter / power preference、使わない場合は `max_fps` や fallback 設定が妥当か
 - 背景透過やフォント設定が過度に重くないか
 
 ### 2. Keybinding Design
