@@ -18,7 +18,6 @@ source_zsh_lib completion.zsh
 source_zsh_lib ni.zsh
 source_zsh_lib gh-completion.zsh
 source_zsh_lib aicommits.zsh
-source_zsh_lib mise.zsh
 
 # Agent integrations
 source_zsh_lib agmsg.zsh
