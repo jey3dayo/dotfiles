@@ -165,12 +165,12 @@
         "id": "12",
         "type": "custom-text",
         "color": "hex:9485D6",
-        "customText": "⏱  Block 5h ",
+        "customText": "⏱  5h ",
         "merge": "no-padding"
       },
       {
         "id": "13",
-        "type": "block-timer",
+        "type": "session-usage",
         "color": "hex:C6E472",
         "rawValue": true,
         "metadata": {
