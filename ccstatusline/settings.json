@@ -52,11 +52,20 @@
       },
       {
         "id": "pr",
-        "type": "custom-command",
+        "type": "git-review",
         "color": "hex:C6E472",
+        "rawValue": true,
         "metadata": {
-          "command": "cd \"$(git rev-parse --show-toplevel 2>/dev/null)\" && gh pr view --json number -q '\"PR#\" + (.number|tostring)' 2>/dev/null || true"
+          "hide": "no-git,no-data,title"
         }
+      },
+      {
+        "id": "sep-status",
+        "type": "separator"
+      },
+      {
+        "id": "claude-status",
+        "type": "claude-status"
       }
     ],
     [
@@ -71,7 +80,28 @@
         "id": "1",
         "type": "model",
         "color": "hex:64D2E8",
-        "rawValue": true
+        "rawValue": true,
+        "merge": "no-padding"
+      },
+      {
+        "id": "1e-open",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": " (",
+        "merge": "no-padding"
+      },
+      {
+        "id": "1e",
+        "type": "thinking-effort",
+        "color": "hex:64D2E8",
+        "rawValue": true,
+        "merge": "no-padding"
+      },
+      {
+        "id": "1e-close",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": ")"
       },
       {
         "id": "2",
@@ -111,6 +141,26 @@
         "color": "hex:9485D6",
         "customText": ")",
         "merge": "no-padding"
+      },
+      {
+        "id": "sep-cache",
+        "type": "separator"
+      },
+      {
+        "id": "cache-label",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": "Cache ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "cache-timer",
+        "type": "cache-timer",
+        "color": "hex:AEE8F4",
+        "rawValue": true,
+        "metadata": {
+          "ttlSeconds": "3600"
+        }
       },
       {
         "id": "4",
