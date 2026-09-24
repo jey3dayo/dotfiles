@@ -117,36 +117,6 @@
         "type": "separator"
       },
       {
-        "id": "8b",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": "I/O ",
-        "merge": "no-padding"
-      },
-      {
-        "id": "9",
-        "type": "tokens-input",
-        "color": "hex:AEE8F4",
-        "rawValue": true
-      },
-      {
-        "id": "10",
-        "type": "custom-text",
-        "color": "hex:AEE8F4",
-        "customText": "/",
-        "merge": "no-padding"
-      },
-      {
-        "id": "11",
-        "type": "tokens-output",
-        "color": "hex:AEE8F4",
-        "rawValue": true
-      },
-      {
-        "id": "6",
-        "type": "separator"
-      },
-      {
         "id": "7c",
         "type": "custom-text",
         "color": "hex:9485D6",
@@ -174,7 +144,8 @@
         "color": "hex:C6E472",
         "rawValue": true,
         "metadata": {
-          "display": "progress-short"
+          "display": "progress-short",
+          "cursor": "true"
         }
       },
       {
@@ -215,7 +186,8 @@
         "color": "hex:AEE8F4",
         "rawValue": true,
         "metadata": {
-          "display": "progress-short"
+          "display": "progress-short",
+          "cursor": "true"
         }
       },
       {
