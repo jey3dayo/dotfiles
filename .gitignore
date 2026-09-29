@@ -166,6 +166,7 @@ codexbar/config.json
 NuGet/
 .yarnclean
 yarn/
+pnpm/
 composer/
 configstore/
 mole/clean-list.txt
