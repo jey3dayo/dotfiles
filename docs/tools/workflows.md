@@ -8,11 +8,11 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 ## Maintenance Cadence
 
-| 頻度   | 作業                                                                                                                                                                                                                             |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）; `codex update`（claude は自動更新のため手動不要）; プラグイン更新（sheldon, nvim lazy, tmux）                                                                |
-| 月次   | 起動時間の計測（`zsh-benchmark` / `nvim --startuptime`）、結果は [Zsh](zsh.md#検証) / [Neovim](nvim.md#検証) の検証節に記録; ログ整理; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d` |
-| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                                                                               |
+| 頻度   | 作業                                                                                                                                                                                                                                    |
+| ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）; `codex update`（claude は自動更新のため手動不要）; `herdr update --handoff`（ペインを維持したままサーバーを置き換える）; プラグイン更新（sheldon, nvim lazy, tmux） |
+| 月次   | 起動時間の計測（`zsh-benchmark` / `nvim --startuptime`）、結果は [Zsh](zsh.md#検証) / [Neovim](nvim.md#検証) の検証節に記録; ログ整理; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d`        |
+| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                                                                                      |
 
 ## Code Quality Checks
 

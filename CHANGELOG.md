@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2026-10-01 — herdrをmise管理から外して公式インストーラ導入に変更し、`herdr update --handoff`でペインを維持したまま更新できるようにした
+
 ## 2026-09-23 — ドキュメントをdocs/toolsのSSOTへ集約（ツールREADMEをポインタ化、performance.mdとレビュー基準を撤去し/code-reviewへ委譲）、pam-reattachを[bootstrap.packages]へ移動
 
 ## 2026-09-16 — Brewfileの取り込み漏れを検出するbrewfile:diffを追加し、mise移行済みのtapを撤去
