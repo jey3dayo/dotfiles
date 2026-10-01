@@ -375,4 +375,4 @@ mise doctor               # Check for issues
 5. No manual availability checks for mise-managed tools: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。
    - `if ! command -v fd >/dev/null 2>&1; then echo "..."; exit 1; fi` は書かない
    - 単に `fd ...` を呼び出すだけでよい
-   - 例外: mise 非管理ツール（busted via luarocks、fswatch via Homebrew 等、claude / codex / herdr（自己更新ツール））は引き続き確認してよい
+   - 例外: mise 非管理ツール（[自己更新ツール](#自己更新ツールmise-管理外の導入保証)、busted via luarocks、fswatch via Homebrew 等）は引き続き確認してよい
