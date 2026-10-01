@@ -361,9 +361,9 @@ mise doctor               # Check for issues
 
 どの層（mise `[tools]` / `[bootstrap.packages]` / Brewfile / 自己更新 standalone）でツールを管理するかの方針は [docs/setup.md](../setup.md#package-management-philosophy) を参照。ここでは mise 側の実装事実だけを記す。
 
-- 該当ツール: `mise`、`claude`（Claude Code）、`codex`（Codex CLI）
+- 該当ツール: `mise`、`claude`（Claude Code）、`codex`（Codex CLI）、`herdr`（macOS / Linux のみ）
 - 導入保証: `mise/entry.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
-- 更新: 各ツールの self-update コマンド（`mise self-update` / `claude update` / `codex update`）に委ねる
+- 更新: 各ツールの self-update コマンド（`mise self-update` / `claude update` / `codex update` / `herdr update`）に委ねる。herdr は `herdr update --handoff` で動作中のペインを維持したままサーバーを置き換えられ、これは herdr 自身のインストーラで入れた場合だけ使える
 - `mise ls` に出ないのは意図的（`[tools]` で管理していないため）
 
 ## Best Practices
@@ -375,4 +375,4 @@ mise doctor               # Check for issues
 5. No manual availability checks for mise-managed tools: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。
    - `if ! command -v fd >/dev/null 2>&1; then echo "..."; exit 1; fi` は書かない
    - 単に `fd ...` を呼び出すだけでよい
-   - 例外: mise 非管理ツール（busted via luarocks、fswatch via Homebrew 等、claude / codex（自己更新ツール））は引き続き確認してよい
+   - 例外: mise 非管理ツール（busted via luarocks、fswatch via Homebrew 等、claude / codex / herdr（自己更新ツール））は引き続き確認してよい

@@ -138,7 +138,7 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 1. mise `[tools]`: CLI・言語ランタイム・開発ツール・`go:` / `cargo:` / `npm:` / `pipx:` プレフィックス付きパッケージ。`mise/config.shared.toml`（全 OS）、`mise/config.workstation.toml`（default / Windows）、`mise/entry.*.toml`（環境別）で宣言する。npm/pnpm/bun グローバルは使わない。
 2. mise bootstrap `[bootstrap.packages]`: macOS の Homebrew formula。システムライブラリ・native バイナリ（Neovim とその依存関係、btop, cmake, podman, powershell, rust-analyzer 等、mise でも入れられるものを含む）。`mise/config.macos.toml` に `"brew:<name>" = "latest"` で宣言する。
 3. Brewfile: cask・MAS app・VS Code 拡張、および `[bootstrap.packages]` で表現できない formula の例外リスト（install args・`restart_service`・private または metadata なし tap）。
-4. 自己更新 standalone: `mise` / `claude` / `codex`。公式インストーラで入れ（mise は macOS / Linux / WSL2 で `curl https://mise.run | sh`、Windows では Chocolatey）、`claude` / `codex` は `[bootstrap.hooks.post-tools]` → `mise/lib/ensure-standalone.sh`（Windows: `windows/setup.ps1` の `Ensure-StandaloneCli`）が未導入時のみ導入する。更新は各ツールの自己更新（`mise self-update` / `claude update` / `codex update`）に任せ、mise `[tools]` には置かない（二重の更新経路を避けるため）。
+4. 自己更新 standalone: `mise` / `claude` / `codex` / `herdr`。公式インストーラで入れ（mise は macOS / Linux / WSL2 で `curl https://mise.run | sh`、Windows では Chocolatey）、`claude` / `codex` / `herdr` は `[bootstrap.hooks.post-tools]` → `mise/lib/ensure-standalone.sh`（Windows: `windows/setup.ps1` の `Ensure-StandaloneCli`、herdr は対象外）が未導入時のみ導入する。更新は各ツールの自己更新（`mise self-update` / `claude update` / `codex update` / `herdr update`）に任せ、mise `[tools]` には置かない（二重の更新経路を避けるため）。
 
 ### Chocolatey（Windows bootstrap）
 

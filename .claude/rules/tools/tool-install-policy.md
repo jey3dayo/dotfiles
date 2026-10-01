@@ -13,7 +13,7 @@ Layers and how to choose one: [docs/setup.md](../../../docs/setup.md#package-man
 ## Constraints
 
 - Declare each tool in one layer only; two layers mean two update paths. `brew:neovim` (editor) and `npm:neovim` (Node client) are different packages, not a duplicate.
-- Keep `mise` / `claude` / `codex` out of `[tools]`: a second update path conflicts with their self-update (codex's background updater ignores the install method, openai/codex#24035; Claude Code recommends its native installer). Their absence from `mise ls` is intentional.
+- Keep `mise` / `claude` / `codex` / `herdr` out of `[tools]`: a second update path conflicts with their self-update (codex's background updater ignores the install method, openai/codex#24035; Claude Code recommends its native installer; `herdr update --handoff`, which keeps panes alive across a server replacement, works only for herdr's own installer). Their absence from `mise ls` is intentional.
 - Do not run `mise bootstrap packages prune` for real: Brewfile exceptions are not in `[bootstrap.packages]`, so prune would remove them. `--dry-run` is fine for inspection.
 
 ## Verification
