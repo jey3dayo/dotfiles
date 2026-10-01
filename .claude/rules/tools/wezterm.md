@@ -25,4 +25,4 @@ Detailed Reference: See [docs/tools/wezterm.md](../../../docs/tools/wezterm.md) 
 
 ## Maintenance
 
-- Update via `brew upgrade wezterm`; back up ~/.config/wezterm before major edits. Theme is not unified across tools (Neovim uses 0x96f); keep the shared key philosophy.
+- Installed as the Homebrew cask `wezterm@nightly` (Brewfile); update that cask, not `wezterm`; back up ~/.config/wezterm before major edits. Theme is not unified across tools (Neovim uses 0x96f); keep the shared key philosophy.

@@ -144,8 +144,8 @@ mv ~/.config/wezterm ~/.config/wezterm.backup
 ## メンテナンス
 
 ```bash
-# WezTerm 更新
-brew upgrade wezterm
+# WezTerm 更新（Brewfile では cask "wezterm@nightly"）
+brew upgrade --cask --greedy-latest wezterm@nightly
 ```
 
 ---

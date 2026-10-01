@@ -96,7 +96,7 @@ zstyle ':fzf-tab:*' fzf-bindings 'tab:down' 'btab:up' 'ctrl-o:toggle'
 
 #### Implementation
 
-`sheldon/plugins.toml` の `fzf-tab` / `fzf-git` はいずれも `apply = ["noop"]` で登録されており、sheldon 側の `defer` 設定は使われていない。実際の読み込みは `zsh/lib/fzf-tab.zsh` と `zsh/lib/git-widgets.zsh` が `add-zsh-hook precmd` でインタラクティブシェル起動後に一度だけ実行する形で行われる。
+`zsh/sheldon/plugins.toml` の `fzf-tab` / `fzf-git` はいずれも `apply = ["noop"]` で登録されており、sheldon 側の `defer` 設定は使われていない。実際の読み込みは `zsh/lib/fzf-tab.zsh` と `zsh/lib/git-widgets.zsh` が `add-zsh-hook precmd` でインタラクティブシェル起動後に一度だけ実行する形で行われる。
 
 ```bash
 # zsh/sheldon/plugins.toml (抜粋)
