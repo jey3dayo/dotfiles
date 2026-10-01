@@ -16,6 +16,6 @@ Detailed Reference: See [docs/tools/fzf-integration.md](../../../docs/tools/fzf-
 
 ## Configuration notes
 
-- Core FZF options (`FZF_DEFAULT_OPTS`, `FZF_CTRL_T_*`) are set in `zsh/lib/fzf.zsh`; no Gruvbox `--color` theming and no `FZF_CTRL_R_OPTS` are configured there today.
+- Core FZF options (`FZF_DEFAULT_OPTS`, `FZF_CTRL_T_*`) are set in `zsh/lib/fzf.zsh`; they set no fzf `--color` theming and no `FZF_CTRL_R_OPTS`.
 - fzf-tab zstyle config lives in `zsh/lib/fzf-tab.zsh`.
 - `zsh/sheldon/plugins.toml` registers both `fzf-tab` and `fzf-git` with `apply = ["noop"]` (no `defer`); actual lazy loading happens via `add-zsh-hook precmd` in `zsh/lib/fzf-tab.zsh` and `zsh/lib/git-widgets.zsh`.
