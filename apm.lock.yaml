@@ -1,12 +1,12 @@
 lockfile_version: "1"
-generated_at: "2026-09-23T13:36:43.604210+00:00"
+generated_at: "2026-10-01T12:57:34.422690+00:00"
 apm_version: 0.31.0
 dependencies:
   - repo_url: jey3dayo/dotfiles
     name: nvim
     host: github.com
-    resolved_commit: eace2d47ac9f97b9fc9c4ead4ecf9b9d99d68c23
-    resolved_ref: eace2d47ac9f97b9fc9c4ead4ecf9b9d99d68c23
+    resolved_commit: 64976f216b2e894e087b4ac32345532cbaadde01
+    resolved_ref: 64976f216b2e894e087b4ac32345532cbaadde01
     version: unknown
     virtual_path: skills/nvim
     is_virtual: true
@@ -27,8 +27,8 @@ dependencies:
   - repo_url: jey3dayo/dotfiles
     name: wezterm
     host: github.com
-    resolved_commit: eace2d47ac9f97b9fc9c4ead4ecf9b9d99d68c23
-    resolved_ref: eace2d47ac9f97b9fc9c4ead4ecf9b9d99d68c23
+    resolved_commit: 64976f216b2e894e087b4ac32345532cbaadde01
+    resolved_ref: 64976f216b2e894e087b4ac32345532cbaadde01
     version: unknown
     virtual_path: skills/wezterm
     is_virtual: true
@@ -39,14 +39,14 @@ dependencies:
       - .claude/skills/wezterm
       - .claude/skills/wezterm/SKILL.md
     deployed_file_hashes:
-      .agents/skills/wezterm/SKILL.md: sha256:7166000460229c5df0290fd00b039504bae60d40f9b4ee1fd243729389605ea6
-      .claude/skills/wezterm/SKILL.md: sha256:7166000460229c5df0290fd00b039504bae60d40f9b4ee1fd243729389605ea6
-    content_hash: sha256:892ad04663382162be28cab061fc7593d37a3e6907888beac1aa25af210b9613
+      .agents/skills/wezterm/SKILL.md: sha256:d92d4c3283db1a51874c0ffbb50c38469a6061e4ee02dd320919e154fb4c0463
+      .claude/skills/wezterm/SKILL.md: sha256:d92d4c3283db1a51874c0ffbb50c38469a6061e4ee02dd320919e154fb4c0463
+    content_hash: sha256:c11ba14faa9bf322549b4d007716721d613ea37634f12686aeee813964a58d02
   - repo_url: jey3dayo/dotfiles
     name: zsh
     host: github.com
-    resolved_commit: eace2d47ac9f97b9fc9c4ead4ecf9b9d99d68c23
-    resolved_ref: eace2d47ac9f97b9fc9c4ead4ecf9b9d99d68c23
+    resolved_commit: 64976f216b2e894e087b4ac32345532cbaadde01
+    resolved_ref: 64976f216b2e894e087b4ac32345532cbaadde01
     version: unknown
     virtual_path: skills/zsh
     is_virtual: true
@@ -57,9 +57,9 @@ dependencies:
       - .claude/skills/zsh
       - .claude/skills/zsh/SKILL.md
     deployed_file_hashes:
-      .agents/skills/zsh/SKILL.md: sha256:bd99eb2b6a03fed68074ba295c8cb3fe1cfe1fc83e21e3e91d98dbf10b24c41a
-      .claude/skills/zsh/SKILL.md: sha256:bd99eb2b6a03fed68074ba295c8cb3fe1cfe1fc83e21e3e91d98dbf10b24c41a
-    content_hash: sha256:bd07b6694899628a654197695aa98f5ec3da180cae9676e6332b2bedb31d5279
+      .agents/skills/zsh/SKILL.md: sha256:ed8def6e25fc3ef6af983ee019530dfc20a643233c3b143b4b65e1e27d97a0b8
+      .claude/skills/zsh/SKILL.md: sha256:ed8def6e25fc3ef6af983ee019530dfc20a643233c3b143b4b65e1e27d97a0b8
+    content_hash: sha256:e90c321819338d446d99e05a1d559371009b305205bfe5518ed9e8edf98ee06f
 deployments:
   - kind: project-relative
     target: agent-skills
@@ -105,7 +105,7 @@ deployments:
     owners:
       - jey3dayo/dotfiles/skills/wezterm
     active_owner: jey3dayo/dotfiles/skills/wezterm
-    content_hash: sha256:7166000460229c5df0290fd00b039504bae60d40f9b4ee1fd243729389605ea6
+    content_hash: sha256:d92d4c3283db1a51874c0ffbb50c38469a6061e4ee02dd320919e154fb4c0463
   - kind: project-relative
     target: agent-skills
     value: .agents/skills/zsh
@@ -123,7 +123,7 @@ deployments:
     owners:
       - jey3dayo/dotfiles/skills/zsh
     active_owner: jey3dayo/dotfiles/skills/zsh
-    content_hash: sha256:bd99eb2b6a03fed68074ba295c8cb3fe1cfe1fc83e21e3e91d98dbf10b24c41a
+    content_hash: sha256:ed8def6e25fc3ef6af983ee019530dfc20a643233c3b143b4b65e1e27d97a0b8
   - kind: project-relative
     target: claude
     value: .claude/skills/nvim
@@ -168,7 +168,7 @@ deployments:
     owners:
       - jey3dayo/dotfiles/skills/wezterm
     active_owner: jey3dayo/dotfiles/skills/wezterm
-    content_hash: sha256:7166000460229c5df0290fd00b039504bae60d40f9b4ee1fd243729389605ea6
+    content_hash: sha256:d92d4c3283db1a51874c0ffbb50c38469a6061e4ee02dd320919e154fb4c0463
   - kind: project-relative
     target: claude
     value: .claude/skills/zsh
@@ -186,4 +186,4 @@ deployments:
     owners:
       - jey3dayo/dotfiles/skills/zsh
     active_owner: jey3dayo/dotfiles/skills/zsh
-    content_hash: sha256:bd99eb2b6a03fed68074ba295c8cb3fe1cfe1fc83e21e3e91d98dbf10b24c41a
+    content_hash: sha256:ed8def6e25fc3ef6af983ee019530dfc20a643233c3b143b4b65e1e27d97a0b8

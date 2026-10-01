@@ -80,7 +80,5 @@ Context7 は oh-my-zsh や zinit など、特定 plugin manager や framework �
 
 ## Common Mistakes
 
-- bash と Zsh を同じ基準でレビューする
-- dotfiles 固有の構成例を一般論として押し付ける
 - PATH 順序より先に alias や見た目から触り始める
 - startup performance を測らずに最適化案を決める

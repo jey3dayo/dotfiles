@@ -66,9 +66,6 @@ For this dotfiles repo, read `docs/tools/wezterm.md` for the actual config struc
 
 ## Common Mistakes
 
-- WezTerm 固有の相談ではないのに広く terminal 一般論で答える
-- GPU 設定を見ずに theme や keybind から触り始める
-- copy mode や leader key の設計を後回しにする
 - WezTerm API の詳細が必要なのに reference を見ずに推測で書く
 
 ## Review Workflow
@@ -81,5 +78,3 @@ entry point
   -> structure
   -> platform-specific behavior
 ```
-
-必要になった時だけ、この dotfiles repo は `docs/tools/wezterm.md` を、他リポジトリはそのリポジトリの docs や Context7 / 公式 WezTerm ドキュメントを開き、API 名や実装例を確認する。
