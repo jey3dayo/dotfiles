@@ -11,7 +11,6 @@ zsh/.zinit/
 result/
 result-*/
 codex/AGENTS.md
-opencode/AGENTS.md
 opencode/agents/*.md
 opencode/commands/*.md
 claude/local/node_modules/
