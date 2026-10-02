@@ -34,8 +34,7 @@
       "!**/AWS VPN Client",
       "!**/linearmouse/linearmouse.json",
       "!**/configstore",
-      "!**/codexbar/config.json",
-      "!**/hunk/state.json"
+      "!**/codexbar/config.json"
     ]
   },
   "formatter": {

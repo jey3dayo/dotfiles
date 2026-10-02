@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # mise npm-backend shim generation bug workaround (jdx/mise#6468).
-# Some tools (e.g. `npm:hunkdiff`, which ships bins named hunk/hunkdiff) have
-# bin names mise fails to detect, so `mise reshim` never creates their shims.
+# Some npm tools have bin names mise fails to detect, so `mise reshim` never
+# creates their shims.
 # Any shim hand-copied into the mise shims dir is also wiped on the next
 # install/upgrade/reshim.
 #
