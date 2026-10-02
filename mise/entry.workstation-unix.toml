@@ -44,9 +44,6 @@ yamllint = "latest"
 "aqua:github/copilot-cli" = "latest"
 "npm:@anthropic-ai/dxt" = "latest"
 
-# その他ツール
-"npm:hunkdiff" = "latest"
-
 # Rust CLI（typos-lsp は Homebrew で管理）
 "aqua:getsentry/sentry-cli" = "latest"
 "cargo:similarity-css" = "0.5.0"
