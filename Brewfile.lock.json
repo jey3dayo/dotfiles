@@ -10841,12 +10841,6 @@
           "full_name": "deckset"
         }
       },
-      "devutils": {
-        "version": "1.17.0",
-        "options": {
-          "full_name": "devutils"
-        }
-      },
       "discord": {
         "version": "0.0.321",
         "options": {
