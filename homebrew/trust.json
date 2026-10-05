@@ -8,7 +8,6 @@
   ],
   "trustedtaps": [
     "abue-ammar/tinycast",
-    "arto-app/tap",
     "buo/cask-upgrade",
     "fujibee/agmsg",
     "manaflow-ai/cmux",

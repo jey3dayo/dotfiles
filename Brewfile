@@ -1,5 +1,4 @@
 tap "abue-ammar/tinycast", trusted: true
-tap "arto-app/tap", trusted: true
 tap "buo/cask-upgrade", trusted: true
 tap "daipeihust/tap"
 tap "fujibee/agmsg", trusted: true
@@ -26,7 +25,6 @@ cask "android-studio"
 cask "ankerwork"
 cask "appcleaner"
 cask "arc"
-cask "arto-app/tap/arto"
 cask "asana"
 cask "autodesk-fusion"
 cask "aws-vpn-client"
