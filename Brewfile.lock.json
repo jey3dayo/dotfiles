@@ -10841,12 +10841,6 @@
           "full_name": "deckset"
         }
       },
-      "deepl": {
-        "version": "24.9.31284229",
-        "options": {
-          "full_name": "deepl"
-        }
-      },
       "devtoys": {
         "version": "2.0.5.0",
         "options": {
@@ -10875,12 +10869,6 @@
         "version": "124.3.3",
         "options": {
           "full_name": "figma"
-        }
-      },
-      "firefox": {
-        "version": "131.0",
-        "options": {
-          "full_name": "firefox"
         }
       },
       "flipper": {
@@ -11063,22 +11051,10 @@
           "full_name": "prisma-studio"
         }
       },
-      "quitter": {
-        "version": "1.0",
-        "options": {
-          "full_name": "quitter"
-        }
-      },
       "raycast": {
         "version": "1.83.2",
         "options": {
           "full_name": "raycast"
-        }
-      },
-      "react-native-debugger": {
-        "version": "0.14.0",
-        "options": {
-          "full_name": "react-native-debugger"
         }
       },
       "reactotron": {
@@ -11097,12 +11073,6 @@
         "version": "latest",
         "options": {
           "full_name": "sequel-pro-nightly"
-        }
-      },
-      "sketch": {
-        "version": "101,181930",
-        "options": {
-          "full_name": "sketch"
         }
       },
       "slack@beta": {
@@ -11175,12 +11145,6 @@
         "version": "6.10.3468.4",
         "options": {
           "full_name": "vivaldi@snapshot"
-        }
-      },
-      "warp": {
-        "version": "0.2024.09.24.08.02.stable_01",
-        "options": {
-          "full_name": "warp"
         }
       },
       "wezterm@nightly": {
