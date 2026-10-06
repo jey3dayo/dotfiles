@@ -212,7 +212,7 @@ describe("zsh plugin bootstrap", () => {
         [
           "command -v atuin >/dev/null || exit 0",
           'print -r -- "prepare_lines=$(atuin init zsh --disable-up-arrow | grep -c prepare-search-index)"',
-          '[[ -z "${ZSH_ATUIN_LOADED:-}" ]] && print -r -- __atuin_not_preloaded',
+          "[[ -z $ZSH_ATUIN_LOADED ]] && print -r -- __atuin_not_preloaded",
           "_zsh_load_atuin widget",
           "zle -l atuin-search && print -r -- __atuin_widget_defined",
         ].join("; "),
