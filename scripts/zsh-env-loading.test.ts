@@ -204,6 +204,48 @@ describe("zsh plugin bootstrap", () => {
     }
   });
 
+  it("defines atuin search via the lazy Ctrl-R path and the single init line it filters", () => {
+    const result = spawnSync(
+      "zsh",
+      [
+        "-lic",
+        [
+          "command -v atuin >/dev/null || exit 0",
+          'print -r -- "prepare_lines=$(atuin init zsh --disable-up-arrow | grep -c prepare-search-index)"',
+          "[[ -z $ZSH_ATUIN_LOADED ]] && print -r -- __atuin_not_preloaded",
+          "_zsh_load_atuin widget",
+          "zle -l atuin-search && print -r -- __atuin_widget_defined",
+        ].join("; "),
+      ],
+      {
+        encoding: "utf8",
+        env: {
+          ...process.env,
+          HOME: os.homedir(),
+          XDG_CONFIG_HOME: repoRoot,
+          ZDOTDIR: zdotdir,
+          ZSH_LOAD_ATUIN: "",
+          ZSH_ATUIN_LOADED: "",
+          PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+          LOGNAME: os.userInfo().username,
+          USER: os.userInfo().username,
+          SHELL: "/bin/zsh",
+          TERM: "xterm-256color",
+        },
+      },
+    );
+
+    expect(result.status).toBe(0);
+    expect(result.stderr.trim()).toBe("");
+    if (result.stdout.trim() !== "") {
+      // The lazy path filters exactly this one init line; a change upstream means the EIO workaround needs revisiting.
+      const lines = result.stdout.split("\n");
+      expect(lines).toContain("__atuin_not_preloaded");
+      expect(lines).toContain("prepare_lines=1");
+      expect(lines).toContain("__atuin_widget_defined");
+    }
+  });
+
   it("keeps zoxide lazy z and j commands available after first use", () => {
     const result = spawnSync(
       "zsh",
