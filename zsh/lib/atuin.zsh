@@ -4,14 +4,21 @@ _zsh_load_atuin() {
   command -v atuin >/dev/null 2>&1 || return 0
 
   ZSH_ATUIN_LOADED=1
-  eval "$(atuin init zsh --disable-up-arrow)"
+  if [[ -n "${1:-}" ]]; then
+    # init backgrounds prepare-search-index; racing the first `atuin search -i` makes it fail with EIO.
+    local -a init_lines=("${(@f)$(atuin init zsh --disable-up-arrow)}")
+    eval "${(F)${(@)init_lines:#*prepare-search-index*}}"
+    ATUIN_SHELL=zsh atuin __internal prepare-search-index </dev/null >/dev/null 2>&1
+  else
+    eval "$(atuin init zsh --disable-up-arrow)"
+  fi
 }
 
 if [[ -n "${ZSH_LOAD_ATUIN:-}" ]]; then
   _zsh_load_atuin
 elif [[ -o interactive ]]; then
   _zsh_atuin_search_widget() {
-    _zsh_load_atuin
+    _zsh_load_atuin widget
     if (( $+widgets[atuin-search] )); then
       zle atuin-search
     else
