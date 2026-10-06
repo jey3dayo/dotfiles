@@ -212,6 +212,7 @@ describe("zsh plugin bootstrap", () => {
         [
           "command -v atuin >/dev/null || exit 0",
           'print -r -- "prepare_lines=$(atuin init zsh --disable-up-arrow | grep -c prepare-search-index)"',
+          '[[ -z "${ZSH_ATUIN_LOADED:-}" ]] && print -r -- __atuin_not_preloaded',
           "_zsh_load_atuin widget",
           "zle -l atuin-search && print -r -- __atuin_widget_defined",
         ].join("; "),
@@ -223,6 +224,8 @@ describe("zsh plugin bootstrap", () => {
           HOME: os.homedir(),
           XDG_CONFIG_HOME: repoRoot,
           ZDOTDIR: zdotdir,
+          ZSH_LOAD_ATUIN: "",
+          ZSH_ATUIN_LOADED: "",
           PATH: "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin",
           LOGNAME: os.userInfo().username,
           USER: os.userInfo().username,
@@ -236,8 +239,10 @@ describe("zsh plugin bootstrap", () => {
     expect(result.stderr.trim()).toBe("");
     if (result.stdout.trim() !== "") {
       // The lazy path filters exactly this one init line; a change upstream means the EIO workaround needs revisiting.
-      expect(result.stdout).toContain("prepare_lines=1");
-      expect(result.stdout).toContain("__atuin_widget_defined");
+      const lines = result.stdout.split("\n");
+      expect(lines).toContain("__atuin_not_preloaded");
+      expect(lines).toContain("prepare_lines=1");
+      expect(lines).toContain("__atuin_widget_defined");
     }
   });
 
