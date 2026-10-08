@@ -40,6 +40,17 @@ description = "mise 管理ツールを更新（旧バージョンを保持）"
 run = "mise upgrade --yes --no-prune"
 run_windows = "mise upgrade --yes --no-prune"
 
+["update:standalone"]
+# 自己更新機能を持つ CLI の更新を手動で一括実行する。各ツールの自己更新に任せる方針のため update には含めない
+description = "自己更新機能を持つ CLI を各自の update コマンドで更新"
+run = [
+  "if command -v claude >/dev/null 2>&1; then claude update; else echo 'claude not installed, skipping'; fi",
+  "if command -v codex >/dev/null 2>&1; then codex update; else echo 'codex not installed, skipping'; fi",
+  "if command -v herdr >/dev/null 2>&1; then herdr update --handoff; else echo 'herdr not installed, skipping'; fi",
+  "if command -v cursor-agent >/dev/null 2>&1; then cursor-agent update; else echo 'cursor-agent not installed, skipping'; fi",
+  "if command -v sentry >/dev/null 2>&1; then sentry cli upgrade; else echo 'sentry not installed, skipping'; fi",
+]
+
 ["update:completions"]
 description = "生成可能な zsh 補完を再生成（ツール更新で陳腐化するため update の最後に実行）"
 # _ghq / _git-gtr / _ssh_hosts は生成元がないため対象外（手書き・upstream 配布物）
