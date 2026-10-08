@@ -128,6 +128,7 @@ APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise
 | `update:self`           | mise 本体を self-update（`update:mise` の前提）                   |
 | `update:mise`           | mise 管理ツールを更新                                             |
 | `update:apt`            | APT パッケージ更新（Ubuntu/Debian）                               |
+| `update:standalone`     | 自己更新型 CLI を各自の update で更新（個別実行）                 |
 | `update:submodules`     | Git サブモジュール更新（変更を破棄するため個別実行）              |
 | `update:external-repos` | 外部 Git リポジトリ更新（強制リセット、個別実行）                 |
 
