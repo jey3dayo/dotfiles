@@ -183,6 +183,11 @@ opencode/agents/
 opencode/commands/
 opencode/rules/
 opencode/CLAUDE.md
+opencode/cli.json
+opencode/tui.jsonc
+opencode/herdr-tui-session.js
+opencode/herdr-opencode/
+opencode/plugins/herdr-agent-state.js
 op/
 jgit/
 raycast/
