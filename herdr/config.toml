@@ -69,6 +69,7 @@ agent_panel_sort = "priority"            # blocked → done → working → idle
 hide_tab_bar_when_single_tab = true
 
 # 背景エージェントの到着通知（音は出さない。巡回は prefix+space / herdr-unread）
+status_indicators = "dots"
 [ui.toast]
 delivery = "herdr"
 
