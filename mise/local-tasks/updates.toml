@@ -6,10 +6,11 @@
 description = "リポジトリを pull してから、すべての依存関係を更新"
 run = [
   { task = "pull" },
-  { task = "update:apt" },
-  { task = "update:brew" },
-  { task = "update:self" },
-  { task = "update:mise" },
+  { tasks = [
+    "update:apt",
+    "update:brew",
+    "update:mise",
+  ] },
   { task = "update:completions" },
 ]
 
@@ -31,12 +32,13 @@ run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/
 # mise 本体が古いままだと、更新済みツールに backend が追従できず install が落ちる
 # （例: pnpm 12 の --global-bin-dir 廃止で npm backend 全滅）。Windows は Chocolatey
 # 管理のため self-update ではなく choco upgrade を使う（詳細は各 run/run_windows 先を参照）。
-description = "mise 本体を更新（ツール更新の前提となるため update:mise の直前に実行）"
+description = "mise 本体を更新（update:mise の依存。ツール更新の前提）"
 run = "sh ./mise/lib/self-update-mise.sh"
 run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/mise-update.ps1 -TaskName self"
 
 ["update:mise"]
 description = "mise 管理ツールを更新（旧バージョンを保持）"
+depends = ["update:self"]
 run = "mise upgrade --yes --no-prune"
 run_windows = "mise upgrade --yes --no-prune"
 
