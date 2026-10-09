@@ -78,7 +78,6 @@ cask "thaw"
 cask "the-unarchiver"
 cask "abue-ammar/tinycast/tinycast", trusted: true
 cask "tradingview"
-cask "vagrant"
 cask "visual-studio-code"
 cask "vivaldi"
 cask "voicevox/voicevox/voicevox"
