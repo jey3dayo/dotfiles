@@ -1,11 +1,8 @@
 tap "abue-ammar/tinycast", trusted: true
-tap "buo/cask-upgrade", trusted: true
 tap "daipeihust/tap"
 tap "fujibee/agmsg", trusted: true
-tap "homebrew/core"
 tap "olets/tap"
 tap "perman/tap", "git@github.com:PERMAN/homebrew-tap.git"
-tap "sanemat/font", trusted: true
 tap "stablyai/orca"
 tap "steipete/tap", trusted: true
 tap "voicevox/voicevox", "https://github.com/VOICEVOX/homebrew-voicevox", trusted: true

@@ -5,13 +5,6 @@
     "perman/tap/perman-aws-vault",
     "steipete/tap/peekaboo"
   ],
-  "trustedtaps": [
-    "abue-ammar/tinycast",
-    "buo/cask-upgrade",
-    "fujibee/agmsg",
-    "sanemat/font",
-    "steipete/tap",
-    "voicevox/voicevox"
-  ],
+  "trustedtaps": ["abue-ammar/tinycast", "fujibee/agmsg", "steipete/tap", "voicevox/voicevox"],
   "trustedcasks": ["abue-ammar/tinycast/tinycast", "stablyai/orca/orca"]
 }
