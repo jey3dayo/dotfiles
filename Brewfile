@@ -65,7 +65,6 @@ cask "ollama-app"
 cask "openvpn-connect"
 cask "stablyai/orca/orca", trusted: true
 cask "postman"
-cask "prisma-studio"
 cask "raycast"
 cask "session-manager-plugin"
 cask "slack"
