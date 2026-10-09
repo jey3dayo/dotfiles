@@ -12,7 +12,8 @@ node = "lts"
 pnpm = "12"
 
 # Formatters / Linters
-actionlint = "latest"
+# 本家 rhysd/actionlint は 2026-04 以降停止し background/wait steps 未対応のため保守フォークへ。版は固定して更新時に attestation を確認する
+"github:kjanat/actionlint" = "1.17.0"
 biome = "latest"
 prettier = "latest"
 "pipx:beautysh" = "latest"
