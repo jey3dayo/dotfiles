@@ -68,7 +68,6 @@ cask "slack"
 cask "spotify"
 cask "synology-drive"
 cask "tableplus"
-cask "teamviewer"
 cask "thaw"
 cask "the-unarchiver"
 cask "abue-ammar/tinycast/tinycast", trusted: true
@@ -79,7 +78,6 @@ cask "voicevox/voicevox/voicevox"
 cask "vorssaint"
 cask "wezterm@nightly"
 cask "xbar"
-cask "xquartz"
 cask "zoom-for-it-admins"
 mas "Amphetamine", id: 937984704
 mas "Apple Configurator", id: 1037126344
