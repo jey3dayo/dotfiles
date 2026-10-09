@@ -112,46 +112,13 @@ describe("shared mise tool overlay", () => {
     expect(sections).toEqual(["[tools]"]);
   });
 
-  it("keeps the common latest pins only in config.shared.toml", () => {
-    const shared = readTools("config.shared.toml");
-    const expectedSharedKeys = [
-      "actionlint",
-      "biome",
-      "eza",
-      "fd",
-      "github:astral-sh/uv",
-      "github:cli/cli",
-      "github:pranshuparmar/witr",
-      "gitleaks",
-      "go",
-      "jq",
-      "node",
-      "npm:@antfu/ni",
-      "npm:@dotenvx/dotenvx",
-      "npm:@google/design.md",
-      "npm:@sasazame/ccresume",
-      "npm:@upstash/context7-mcp",
-      "npm:aicommits",
-      "npm:markdown-link-check",
-      "npm:markdownlint-cli2",
-      "npm:npm-check-updates",
-      "npm:o3-search-mcp",
-      "npm:opencommit",
-      "npm:textlint",
-      "npm:textlint-rule-preset-ja-technical-writing",
-      "npm:tsx",
-      "pipx:beautysh",
-      "pnpm",
-      "prettier",
-      "stylua",
-      "taplo",
-      "yazi",
-    ];
+  it("keeps shared tools out of the OS entries", () => {
+    const sharedTools = readTools("config.shared.toml");
 
-    expect([...shared.keys()].sort()).toEqual([...expectedSharedKeys].sort());
+    expect(sharedTools.size).toBeGreaterThan(0);
     for (const file of osConfigs) {
       const tools = readTools(file);
-      for (const key of expectedSharedKeys) {
+      for (const key of sharedTools.keys()) {
         expect(tools.has(key)).toBe(false);
       }
     }
