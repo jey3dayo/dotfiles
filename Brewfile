@@ -4,7 +4,6 @@ tap "daipeihust/tap"
 tap "fujibee/agmsg", trusted: true
 tap "gofireflyio/aiac"
 tap "homebrew/core"
-tap "manaflow-ai/cmux", trusted: true
 tap "olets/tap"
 tap "perman/tap", "git@github.com:PERMAN/homebrew-tap.git"
 tap "sanemat/font", trusted: true
