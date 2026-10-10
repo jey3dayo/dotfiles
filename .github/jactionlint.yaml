@@ -1,0 +1,2 @@
+# 本家 actionlint 相当の範囲に留める。default の security/policy ルールは未導入
+profile: correctness

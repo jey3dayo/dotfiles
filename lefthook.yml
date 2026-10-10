@@ -63,9 +63,9 @@ pre-commit:
       glob: "*.toml"
       run: taplo format {staged_files}
       stage_fixed: true
-    actionlint:
+    jactionlint:
       glob: ".github/workflows/*.{yml,yaml}"
-      run: actionlint {staged_files}
+      run: jactionlint {staged_files}
     biome:
       glob: "*.{js,jsx,ts,tsx,json}"
       run: biome check --write --no-errors-on-unmatched {staged_files}

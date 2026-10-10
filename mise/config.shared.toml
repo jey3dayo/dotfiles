@@ -12,8 +12,8 @@ node = "lts"
 pnpm = "12"
 
 # Formatters / Linters
-# 本家 rhysd/actionlint は 2026-04 以降停止し background/wait steps 未対応のため保守フォークへ。版は固定して更新時に attestation を確認する
-"github:kjanat/actionlint" = "1.17.0"
+# 本家 rhysd/actionlint は 2026-04 以降停止したため後継の jactionlint へ。リリースが速く破壊的変更もあるので版を固定し、更新時に attestation を確認する
+"github:jdx/jactionlint" = "2.1.0"
 biome = "latest"
 prettier = "latest"
 "pipx:beautysh" = "latest"

@@ -61,9 +61,9 @@ description = "Markdown リンクチェック（時間がかかるため個別�
 run = "fd -e md ${TASK_EXCLUDES} -x markdown-link-check --config ${MARKDOWN_LINK_CONFIG} -q"
 
 ["lint:actions"]
-description = "GitHub Actions ワークフローをチェック（actionlint）"
+description = "GitHub Actions ワークフローをチェック（jactionlint）"
 run = """
-actionlint
+jactionlint
 """
 
 ["lint:lua"]

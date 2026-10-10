@@ -240,7 +240,7 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 
 - ユーティリティ: `@antfu/ni`, `npm`, `npm-check-updates`
 - ドキュメント: `markdown-link-check`, `markdownlint-cli2`, `textlint`
-- フォーマッター/Linter: `actionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
+- フォーマッター/Linter: `jactionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
 - AI/Claude: `aicommits`, `@sasazame/ccresume`
 - MCP: `@upstash/context7-mcp`, `o3-search-mcp`
 - CLI: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`

@@ -100,7 +100,7 @@ pnpm = "12"
 
 ```toml
 [tools]
-actionlint = "latest"
+"github:jdx/jactionlint" = "2.1.0"
 biome = "latest"
 hadolint = "latest"
 prettier = "latest"

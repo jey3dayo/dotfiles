@@ -75,7 +75,7 @@ Markdown のタスク名は `markdown` を使い、`format:md:check` は定義�
 | `lint:python`     | Python チェック（ruff）                                 |
 | `lint:dockerfile` | Dockerfile チェック（hadolint）                         |
 | `lint:links`      | Markdown リンクチェック（時間がかかるため個別実行推奨） |
-| `lint:actions`    | GitHub Actions チェック（actionlint）                   |
+| `lint:actions`    | GitHub Actions チェック（jactionlint）                  |
 
 ### Test
 
