@@ -132,7 +132,7 @@ APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise
 | `update:submodules`     | Git サブモジュール更新（変更を破棄するため個別実行）              |
 | `update:external-repos` | 外部 Git リポジトリ更新（強制リセット、個別実行）                 |
 | `clean:caches`          | `clean:packages` → `clean:mole` を順に実行（個別実行）            |
-| `clean:packages`        | uv / npm / pip / brew のキャッシュ削除                            |
+| `clean:packages`        | uv / npm / pip / yarn / brew のキャッシュ削除                     |
 | `clean:mole`            | Mole（`mo clean`）でアプリ・システムのキャッシュ削除（macOS）     |
 
 ### Env

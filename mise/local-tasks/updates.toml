@@ -61,11 +61,13 @@ run = [{ task = "clean:packages" }, { task = "clean:mole" }]
 run_windows = "echo Skipping cache cleanup on Windows"
 
 ["clean:packages"]
-description = "パッケージマネージャのキャッシュを削除（uv / npm / pip / brew）"
+# yarn は mise 管理外で shim が解決できないため、キャッシュのパスを直接 trash へ移す（yarn global のデータは対象外）
+description = "パッケージマネージャのキャッシュを削除（uv / npm / pip / yarn / brew）"
 run = [
   "uv cache clean",
   "npm cache clean --force",
   "pip3 cache purge",
+  "if [ \"$(uname -s)\" = Darwin ]; then for d in \"$HOME/.cache/yarn/v6\" \"$HOME/.local/share/yarn/berry/cache\"; do if [ -e \"$d\" ]; then trash \"$d\"; fi; done; else echo 'yarn cache cleanup is macOS only, skipping'; fi",
   "if command -v brew >/dev/null 2>&1; then brew cleanup -s; else echo 'Homebrew not installed, skipping brew cleanup'; fi",
 ]
 run_windows = "echo Skipping cache cleanup on Windows"
