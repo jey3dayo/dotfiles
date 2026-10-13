@@ -36,6 +36,7 @@ yamllint = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
 "npm:agmsg" = "latest"
+"npm:@deepseek-ai/dsh" = "0.2.0-rc.2"
 
 # MCP サーバー
 "npm:chrome-devtools-mcp" = "latest"
