@@ -49,6 +49,7 @@ run = [
   "if command -v claude >/dev/null 2>&1; then claude update; else echo 'claude not installed, skipping'; fi",
   "if command -v codex >/dev/null 2>&1; then codex update; else echo 'codex not installed, skipping'; fi",
   "if command -v herdr >/dev/null 2>&1; then herdr update --handoff; else echo 'herdr not installed, skipping'; fi",
+  "if command -v opencode >/dev/null 2>&1; then opencode upgrade; else echo 'opencode not installed, skipping'; fi",
   "if command -v cursor-agent >/dev/null 2>&1; then cursor-agent update; else echo 'cursor-agent not installed, skipping'; fi",
   "if command -v sentry >/dev/null 2>&1; then sentry cli upgrade; else echo 'sentry not installed, skipping'; fi",
 ]

@@ -71,7 +71,7 @@ mise/
 ├── lib/                   # helper scripts (公開タスクにしない共通処理)
 │   ├── ensure-busted.sh   # busted の存在確認と自動インストール
 │   ├── ensure-python-libs.sh # python 本体へ入れる import 用ライブラリの導入保証
-│   ├── ensure-standalone.sh  # claude / codex の公式インストーラ導入保証（post-tools hook）
+│   ├── ensure-standalone.sh  # 自己更新 CLI の公式インストーラ導入保証（post-tools hook）
 │   ├── lint-shell.sh      # shell lint wrapper
 │   ├── pre-push-check.sh  # pre-push で走らせるテスト範囲の判定
 │   ├── run-restic.sh      # restic backup wrapper
@@ -361,9 +361,9 @@ mise doctor               # Check for issues
 
 どの層（mise `[tools]` / `[bootstrap.packages]` / Brewfile / 自己更新 standalone）でツールを管理するかの方針は [docs/setup.md](../setup.md#package-management-philosophy) を参照。ここでは mise 側の実装事実だけを記す。
 
-- 該当ツール: `mise`、`claude`（Claude Code）、`codex`（Codex CLI）、`herdr`（macOS / Linux のみ）
+- 該当ツール: `mise` 本体と、`mise/lib/ensure-standalone.sh` が導入保証する CLI（一覧は同スクリプトが正本）
 - 導入保証: `mise/entry.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
-- 更新: 各ツールの self-update コマンド（`mise self-update` / `claude update` / `codex update` / `herdr update`）に委ねる。herdr は `herdr update --handoff` で動作中のペインを維持したままサーバーを置き換えられ、これは herdr 自身のインストーラで入れた場合だけ使える
+- 更新: 各ツールの self-update コマンドに委ねる（`mise self-update`、CLI は `mise/local-tasks/updates.toml` の `update:standalone` が一括で呼ぶ）。herdr は `herdr update --handoff` で動作中のペインを維持したままサーバーを置き換えられ、これは herdr 自身のインストーラで入れた場合だけ使える
 - `mise ls` に出ないのは意図的（`[tools]` で管理していないため）
 
 ## Best Practices

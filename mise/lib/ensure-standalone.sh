@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
-# 自己更新機能を持つ CLI(claude / codex / herdr)は mise [tools] に置くと更新経路が二重になる
+# 自己更新機能を持つ CLI は mise [tools] に置くと更新経路が二重になる
 # (例: codex はバックグラウンド更新デーモンが install method を無視して standalone
-# installer を直接走らせる openai/codex#24035 がある)ため、mise は導入保証のみを担い、
-# 更新は各ツール自身の `claude update` / `codex update` / `herdr update` に任せる。
+# installer を直接走らせる openai/codex#24035 がある)ため、ここは未導入時の導入保証のみを担い、
+# 更新は `mise run update:standalone`(各ツール自身の update コマンド)に任せる。
 set -eu
 
 export PATH="${HOME}/.local/bin:${PATH}"
@@ -29,3 +29,4 @@ ensure_installed() {
 ensure_installed claude "curl -fsSL https://claude.ai/install.sh | bash"
 ensure_installed codex "curl -fsSL https://chatgpt.com/codex/install.sh | sh"
 ensure_installed herdr "curl -fsSL https://herdr.dev/install.sh | sh"
+ensure_installed opencode "curl -fsSL https://opencode.ai/install | bash"

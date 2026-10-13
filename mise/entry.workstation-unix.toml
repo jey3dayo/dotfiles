@@ -76,7 +76,6 @@ buf = "latest"
 "github:yusukebe/ax" = "latest"
 glab = "latest"
 hexyl = "latest"
-"aqua:anomalyco/opencode" = "latest"
 saml2aws = "latest"
 terraform = "latest"
 # WSL では公式配布バイナリが glibc 不整合で壊れることがあるため,

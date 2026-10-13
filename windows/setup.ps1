@@ -102,7 +102,7 @@ if (Test-Path -LiteralPath $sharedProfile) {
 
 function Ensure-StandaloneCli {
   # Why: 自己更新ツールを mise [tools] に置くと更新経路が二重になるため、導入保証だけを担う。
-  # 既導入の場合は更新せず、更新は claude update / codex update に任せる。
+  # 既導入の場合は更新せず、更新は各ツール自身の update コマンドに任せる。
   if (-not (Get-Command claude -ErrorAction SilentlyContinue)) {
     irm https://claude.ai/install.ps1 | iex
   }
