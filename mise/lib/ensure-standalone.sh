@@ -29,4 +29,5 @@ ensure_installed() {
 ensure_installed claude "curl -fsSL https://claude.ai/install.sh | bash"
 ensure_installed codex "curl -fsSL https://chatgpt.com/codex/install.sh | sh"
 ensure_installed herdr "curl -fsSL https://herdr.dev/install.sh | sh"
-ensure_installed opencode "curl -fsSL https://opencode.ai/install | bash"
+# installer は ~/.opencode/bin へ置き zshrc に PATH を追記するため、追記を止めて ~/.local/bin へ link する
+ensure_installed opencode "curl -fsSL https://opencode.ai/install | bash -s -- --no-modify-path && ln -sf \"\${HOME}/.opencode/bin/opencode\" \"\${HOME}/.local/bin/opencode\""
