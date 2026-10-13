@@ -54,6 +54,28 @@ run = [
   "if command -v sentry >/dev/null 2>&1; then sentry cli upgrade; else echo 'sentry not installed, skipping'; fi",
 ]
 
+["clean:caches"]
+# mo clean は timeout で非ゼロ終了しうるため最後に置く
+description = "キャッシュを一括削除（clean:packages → clean:mole。update には含めない）"
+run = [{ task = "clean:packages" }, { task = "clean:mole" }]
+run_windows = "echo Skipping cache cleanup on Windows"
+
+["clean:packages"]
+description = "パッケージマネージャのキャッシュを削除（uv / npm / pip / brew）"
+run = [
+  "uv cache clean",
+  "npm cache clean --force",
+  "pip3 cache purge",
+  "if command -v brew >/dev/null 2>&1; then brew cleanup -s; else echo 'Homebrew not installed, skipping brew cleanup'; fi",
+]
+run_windows = "echo Skipping cache cleanup on Windows"
+
+["clean:mole"]
+# 保護パスは mole/whitelist（~/.config/mole/whitelist）で管理。ごみ箱も空にする
+description = "Mole でアプリ・システムのキャッシュとログを削除（macOS のみ。確認は mo clean --dry-run）"
+run = "if [ \"$(uname -s)\" = Darwin ]; then mo clean; else echo 'Mole is macOS only, skipping'; fi"
+run_windows = "echo Skipping Mole on Windows"
+
 ["update:completions"]
 description = "生成可能な zsh 補完を再生成（ツール更新で陳腐化するため update の最後に実行）"
 # _ghq / _git-gtr / _ssh_hosts は生成元がないため対象外（手書き・upstream 配布物）
