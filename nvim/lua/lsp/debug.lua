@@ -21,13 +21,19 @@ local function echo_header(text)
   echo_newline()
 end
 
-function M.check_lsp_status()
-  vim.cmd "echo ''"
-  echo_buffer = {}
+local capability_names = {
+  { "textDocumentSync", "sync" },
+  { "completionProvider", "completion" },
+  { "hoverProvider", "hover" },
+  { "signatureHelpProvider", "signature" },
+  { "definitionProvider", "definition" },
+  { "referencesProvider", "references" },
+  { "documentFormattingProvider", "format" },
+  { "codeActionProvider", "codeAction" },
+}
 
-  -- Buffer information
+local function echo_buffer_info(bufnr)
   echo_header "Buffer Information"
-  local bufnr = vim.api.nvim_get_current_buf()
   local bufname = vim.api.nvim_buf_get_name(bufnr)
   echo("• File: ", "Normal")
   echo(bufname ~= "" and bufname or "[No Name]", "DiagnosticInfo")
@@ -38,8 +44,33 @@ function M.check_lsp_status()
   echo("• Buffer: ", "Normal")
   echo(tostring(bufnr), "DiagnosticInfo")
   echo_newline()
+end
 
-  -- Active LSP clients
+local function echo_client_capabilities(client)
+  if not client.server_capabilities then return end
+  local caps = {}
+  for _, capability_spec in ipairs(capability_names) do
+    local capability, label = capability_spec[1], capability_spec[2]
+    if client.server_capabilities[capability] then table.insert(caps, label) end
+  end
+  if #caps > 0 then
+    echo("    Capabilities: ", "Normal")
+    echo(table.concat(caps, ", "), "Normal")
+    echo_newline()
+  end
+end
+
+local function echo_client_status(client)
+  local status_icon = client.initialized and "✓" or "○"
+  local status_hl = client.initialized and "DiagnosticOk" or "DiagnosticWarn"
+  echo(status_icon .. " ", status_hl)
+  echo(client.name, "DiagnosticInfo")
+  echo(string.format(" (id: %d)", client.id), "Normal")
+  echo_newline()
+  echo_client_capabilities(client)
+end
+
+local function echo_active_clients(bufnr)
   local clients = vim.lsp.get_clients { bufnr = bufnr }
   echo_newline()
   echo_header "Active LSP Clients"
@@ -48,40 +79,12 @@ function M.check_lsp_status()
     echo_newline()
   else
     for _, client in ipairs(clients) do
-      local status_icon = client.initialized and "✓" or "○"
-      local status_hl = client.initialized and "DiagnosticOk" or "DiagnosticWarn"
-      echo(status_icon .. " ", status_hl)
-      echo(client.name, "DiagnosticInfo")
-      echo(string.format(" (id: %d)", client.id), "Normal")
-      echo_newline()
-
-      -- Show capabilities
-      if client.server_capabilities then
-        local caps = {}
-        local capability_names = {
-          { "textDocumentSync", "sync" },
-          { "completionProvider", "completion" },
-          { "hoverProvider", "hover" },
-          { "signatureHelpProvider", "signature" },
-          { "definitionProvider", "definition" },
-          { "referencesProvider", "references" },
-          { "documentFormattingProvider", "format" },
-          { "codeActionProvider", "codeAction" },
-        }
-        for _, capability_spec in ipairs(capability_names) do
-          local capability, label = capability_spec[1], capability_spec[2]
-          if client.server_capabilities[capability] then table.insert(caps, label) end
-        end
-        if #caps > 0 then
-          echo("    Capabilities: ", "Normal")
-          echo(table.concat(caps, ", "), "Normal")
-          echo_newline()
-        end
-      end
+      echo_client_status(client)
     end
   end
+end
 
-  -- Diagnostics summary
+local function echo_diagnostics_summary(bufnr)
   echo_newline()
   echo_header "Diagnostics Summary"
   local diagnostic_specs = {
@@ -107,8 +110,9 @@ function M.check_lsp_status()
     echo("  ✓ No diagnostics found", "DiagnosticOk")
     echo_newline()
   end
+end
 
-  -- All available LSP clients
+local function echo_all_clients()
   local all_clients = vim.lsp.get_clients()
   echo_newline()
   echo_header "All LSP Clients in Session"
@@ -121,16 +125,17 @@ function M.check_lsp_status()
     echo(string.format(" (buffers: %d)", #attached_buffers), "Normal")
     echo_newline()
   end
+end
 
-  -- Check formatter config detection (root_markers decide LSP activation now;
-  -- this only reports whether conform's formatter-selection config is found)
+-- root_markers decide LSP activation now; this only reports whether
+-- conform's formatter-selection config is found
+local function echo_formatter_config_detection()
   local utils = require "core.utils"
   local config = require "lsp.config"
 
   echo_newline()
   echo_header "Formatter Config Detection"
 
-  -- Check eslint
   local eslint_files = config.formatters.eslint.config_files
   local eslint_has_files = utils.has_config_files(eslint_files)
 
@@ -138,7 +143,6 @@ function M.check_lsp_status()
   echo(eslint_has_files and "found" or "not found", eslint_has_files and "DiagnosticOk" or "DiagnosticError")
   echo_newline()
 
-  -- Check biome
   local biome_files = config.formatters.biome.config_files
   local biome_has_files = utils.has_config_files(biome_files)
   echo("• biome: ", "Normal")
@@ -148,8 +152,9 @@ function M.check_lsp_status()
     echo("not found", "Normal")
   end
   echo_newline()
+end
 
-  -- Tooling status
+local function echo_tooling_status()
   echo_newline()
   echo_header "Tooling Status"
   local mason_registry = require "mason-registry"
@@ -172,8 +177,49 @@ function M.check_lsp_status()
     echo("TypeScript not found (install via Mason or workspace node_modules)", "DiagnosticWarn")
   end
   echo_newline()
+end
 
-  -- Formatter status
+local function echo_toggle(name, disabled)
+  echo(name, "Normal")
+  echo(disabled and "✗ OFF" or "✓ ON", disabled and "DiagnosticError" or "DiagnosticOk")
+  echo_newline()
+end
+
+local function echo_available_formatters(format_clients, active)
+  if #format_clients == 0 then
+    echo("  No formatters available for this buffer", "DiagnosticWarn")
+    echo_newline()
+    return
+  end
+  echo("• Available formatters:", "Normal")
+  echo_newline()
+  for _, client in ipairs(format_clients) do
+    local status_icon = active and "✓" or "○"
+    local status_hl = active and "DiagnosticOk" or "DiagnosticWarn"
+    echo("    " .. status_icon .. " ", status_hl)
+    echo(client.name, "DiagnosticInfo")
+    echo_newline()
+  end
+end
+
+local function echo_formatter_priorities(format_clients)
+  if #format_clients <= 1 then return end
+  local formatters = require("lsp.config").formatters
+  echo_newline()
+  echo("• Formatter priorities:", "Normal")
+  echo_newline()
+  for _, client in ipairs(format_clients) do
+    local formatter_config = formatters[client.name]
+    if formatter_config and formatter_config.formatter_priority then
+      echo("    ", "Normal")
+      echo(client.name, "DiagnosticInfo")
+      echo(string.format(": priority %d", formatter_config.formatter_priority.priority), "Normal")
+      echo_newline()
+    end
+  end
+end
+
+local function echo_formatter_status(bufnr)
   echo_newline()
   echo_header "Formatter Status"
   local autoformat = require "lsp.autoformat"
@@ -181,58 +227,23 @@ function M.check_lsp_status()
   local global_format_disabled = format_state.global_disabled
   local buffer_format_disabled = format_state.buffer_disabled
 
-  echo("• Global formatting: ", "Normal")
-  echo(global_format_disabled and "✗ OFF" or "✓ ON", global_format_disabled and "DiagnosticError" or "DiagnosticOk")
-  echo_newline()
+  echo_toggle("• Global formatting: ", global_format_disabled)
+  echo_toggle("• Buffer formatting: ", buffer_format_disabled)
 
-  echo("• Buffer formatting: ", "Normal")
-  echo(buffer_format_disabled and "✗ OFF" or "✓ ON", buffer_format_disabled and "DiagnosticError" or "DiagnosticOk")
-  echo_newline()
-
-  -- Show which formatters would be used
   local format_clients = require("lsp.client_utils").get_format_clients(bufnr)
-  if #format_clients > 0 then
-    echo("• Available formatters:", "Normal")
-    echo_newline()
-    for _, client in ipairs(format_clients) do
-      local is_active = not (global_format_disabled or buffer_format_disabled)
-      local status_icon = is_active and "✓" or "○"
-      local status_hl = is_active and "DiagnosticOk" or "DiagnosticWarn"
-      echo("    " .. status_icon .. " ", status_hl)
-      echo(client.name, "DiagnosticInfo")
-      echo_newline()
-    end
-  else
-    echo("  No formatters available for this buffer", "DiagnosticWarn")
-    echo_newline()
-  end
+  echo_available_formatters(format_clients, not (global_format_disabled or buffer_format_disabled))
+  echo_formatter_priorities(format_clients)
 
-  -- Show formatter priority if multiple formatters
-  if #format_clients > 1 then
-    local formatters = require("lsp.config").formatters
-    echo_newline()
-    echo("• Formatter priorities:", "Normal")
-    echo_newline()
-    for _, client in ipairs(format_clients) do
-      local formatter_config = formatters[client.name]
-      if formatter_config and formatter_config.formatter_priority then
-        echo("    ", "Normal")
-        echo(client.name, "DiagnosticInfo")
-        echo(string.format(": priority %d", formatter_config.formatter_priority.priority), "Normal")
-        echo_newline()
-      end
-    end
-  end
-
-  -- Autoformat gate status (no format-on-save; this gates manual :Format
-  -- when not forced, see lsp/formatter.lua)
+  -- no format-on-save; this gates manual :Format when not forced,
+  -- see lsp/formatter.lua
   local autoformat_enabled = not (global_format_disabled or buffer_format_disabled)
   echo_newline()
   echo("• Autoformat gate (:Format): ", "Normal")
   echo(autoformat_enabled and "enabled" or "disabled", autoformat_enabled and "DiagnosticOk" or "DiagnosticWarn")
   echo_newline()
+end
 
-  -- Key bindings reminder
+local function echo_useful_commands()
   echo_newline()
   echo_header "Useful Commands"
   local commands = {
@@ -255,8 +266,22 @@ function M.check_lsp_status()
     echo(" - " .. cmd[2], "Normal")
     echo_newline()
   end
+end
 
-  -- Flush the buffer
+function M.check_lsp_status()
+  vim.cmd "echo ''"
+  echo_buffer = {}
+
+  local bufnr = vim.api.nvim_get_current_buf()
+  echo_buffer_info(bufnr)
+  echo_active_clients(bufnr)
+  echo_diagnostics_summary(bufnr)
+  echo_all_clients()
+  echo_formatter_config_detection()
+  echo_tooling_status()
+  echo_formatter_status(bufnr)
+  echo_useful_commands()
+
   flush_echo()
 end
 
@@ -272,6 +297,24 @@ function M.start_lsp_manually(server_name)
     print "Manually started eslint"
   else
     print("Unknown server: " .. server_name)
+  end
+end
+
+local function echo_client_diagnostic_support(clients)
+  echo_newline()
+  echo_header "LSP Client Diagnostic Support"
+  for _, client in ipairs(clients) do
+    echo("• ", "Normal")
+    echo(client.name, "DiagnosticInfo")
+    echo(": ", "Normal")
+
+    local supports_diag = client.server_capabilities and client.server_capabilities.diagnosticProvider
+    if supports_diag then
+      echo("supports diagnostics", "DiagnosticOk")
+    else
+      echo("no diagnostic support", "DiagnosticWarn")
+    end
+    echo_newline()
   end
 end
 
@@ -303,21 +346,7 @@ function M.check_diagnostics()
   local bufnr = vim.api.nvim_get_current_buf()
   local clients = vim.lsp.get_clients { bufnr = bufnr }
 
-  echo_newline()
-  echo_header "LSP Client Diagnostic Support"
-  for _, client in ipairs(clients) do
-    echo("• ", "Normal")
-    echo(client.name, "DiagnosticInfo")
-    echo(": ", "Normal")
-
-    local supports_diag = client.server_capabilities and client.server_capabilities.diagnosticProvider
-    if supports_diag then
-      echo("supports diagnostics", "DiagnosticOk")
-    else
-      echo("no diagnostic support", "DiagnosticWarn")
-    end
-    echo_newline()
-  end
+  echo_client_diagnostic_support(clients)
 
   -- Force refresh diagnostics
   echo_newline()
