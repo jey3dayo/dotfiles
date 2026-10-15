@@ -43,23 +43,40 @@ local function register(filetype_list, handler)
   end
 end
 
-local function enable_treesitter(ctx, opts)
-  local buffer = (ctx and ctx.buf) or 0
-  if utils.is_large_file(buffer, 1024 * 1024 * 2) then return false end
-  if not vim.treesitter or not vim.treesitter.language then return false end
+local function resolve_buffer(ctx)
+  return (ctx and ctx.buf) or 0
+end
 
-  local filetype = vim.bo[buffer].filetype
-  local lang = opts and opts.lang or vim.treesitter.language.get_lang(filetype)
-  if not lang then return false end
+local function treesitter_available()
+  return vim.treesitter and vim.treesitter.language
+end
 
-  local ok = vim.treesitter.language.add(lang)
-  if not ok then return false end
+local function resolve_lang(opts, filetype)
+  return (opts and opts.lang) or vim.treesitter.language.get_lang(filetype)
+end
 
-  pcall(vim.treesitter.start, buffer, lang)
+local function should_set_indent(opts, filetype)
+  return not (opts and opts.skip_indent) and not treesitter_indent_exclude[filetype]
+end
 
-  if not (opts and opts.skip_indent) and not treesitter_indent_exclude[filetype] then
+local function apply_treesitter_indent(buffer, opts, filetype)
+  if should_set_indent(opts, filetype) then
     vim.bo[buffer].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end
+end
+
+local function enable_treesitter(ctx, opts)
+  local buffer = resolve_buffer(ctx)
+  if utils.is_large_file(buffer, 1024 * 1024 * 2) then return false end
+  if not treesitter_available() then return false end
+
+  local filetype = vim.bo[buffer].filetype
+  local lang = resolve_lang(opts, filetype)
+  if not lang then return false end
+  if not vim.treesitter.language.add(lang) then return false end
+
+  pcall(vim.treesitter.start, buffer, lang)
+  apply_treesitter_indent(buffer, opts, filetype)
 
   return true
 end
