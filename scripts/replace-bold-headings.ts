@@ -91,6 +91,191 @@ function resolveTargetPaths(userInputs: string[]): string[] {
 }
 
 // ========================================
+// Markdown Line Transforms
+// ========================================
+
+interface FenceState {
+  inFence: boolean;
+  fenceChar: string;
+  fenceLen: number;
+}
+
+interface LineTransformResult {
+  line: string;
+  replaced: boolean;
+}
+
+// null means "no transform applies; continue with the next transform".
+type LineTransform = LineTransformResult | null;
+
+const fenceOpen = /^\s*(`{3,}|~{3,})/;
+// Table rows: strip bold from cells.
+// Example: "| **スキル名** | 説明 |" -> "| スキル名 | 説明 |"
+const tableRow = /^\s*\|/;
+// Separator rows must have at least one dash per cell and only contain dashes, colons, spaces, and pipes.
+// Example: "| --- | :---: | ---: |"
+const tableSeparator = /^\s*\|(\s*:?-+:?\s*\|)+\s*$/;
+const boldInCell = /\*\*([^*]+)\*\*/g;
+
+// Standalone bold-only lines are treated as pseudo headings.
+// Example: "**Overview**" -> "### Overview"
+const boldOnlyHeading = /^(\s*)\*\*([^*][\s\S]*?)\*\*\s*$/;
+
+// Bold labels with suffix (colon, parentheses, etc.)
+// Example: "**メリット**:" -> "#### メリット"
+// Example: "**セットアップ** (初回のみ):" -> "#### セットアップ (初回のみ)"
+const boldLabelWithSuffix = /^(\s*)\*\*([^*]+)\*\*\s*([(:].*)?$/;
+
+// Bold labels where the colon is inside the bold, followed by content.
+// Example: "**責務:** Valibotスキーマ定義" -> "責務: Valibotスキーマ定義"
+// Example: "**現状:** 未実装" -> "現状: 未実装"
+const boldLabelColonInside = /^(\s*)\*\*([^*]+?):\*\*\s+(.+)$/;
+
+// Bold labels in ordered list items are normalized to plain text.
+// Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
+// Example: "6. **pr-feedback-orchestrator** (3,595行) - ..." -> "6. pr-feedback-orchestrator (3,595行) - ..."
+const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(.*)?$/;
+
+// Bold labels in unordered list items are normalized to plain text.
+// Example: "- **Text**:" -> "- Text:"
+// Example: "- **key** → value" -> "- key → value"
+// Example: "- **label** (note) - detail" -> "- label (note) - detail"
+const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(.*)?$/;
+
+// Parenthetical suffix with optional colon and no trailing content.
+// Example: "(note):"
+const parenOnlySuffix = /^\s*\([^)]+\)\s*:?\s*$/;
+
+function handleFenceLine(line: string, state: FenceState): string | null {
+  const fenceMatch = line.match(fenceOpen);
+  if (!fenceMatch) return null;
+
+  const marker = fenceMatch[1];
+  const char = marker[0];
+  const len = marker.length;
+
+  if (!state.inFence) {
+    state.inFence = true;
+    state.fenceChar = char;
+    state.fenceLen = len;
+  } else if (char === state.fenceChar && len >= state.fenceLen) {
+    state.inFence = false;
+    state.fenceChar = "";
+    state.fenceLen = 0;
+  }
+
+  return line;
+}
+
+// Table rows: strip bold from all cells
+function transformTableRow(line: string): LineTransform {
+  if (!tableRow.test(line) || tableSeparator.test(line)) return null;
+
+  const replaced = line.replace(boldInCell, "$1");
+  if (replaced === line) return { line, replaced: false };
+  return { line: replaced, replaced: true };
+}
+
+function transformOrderedListLabel(line: string): LineTransform {
+  const match = line.match(boldOrderedListLabel);
+  if (!match) return null;
+
+  const prefix = match[1];
+  const text = match[2];
+  const suffix = match[3] ?? "";
+
+  if (text.includes("**") || suffix.includes("**")) return null;
+  return { line: `${prefix}${text}${suffix}`, replaced: true };
+}
+
+function transformUnorderedListLabel(line: string): LineTransform {
+  const match = line.match(boldUnorderedListLabel);
+  if (!match) return null;
+
+  const prefix = match[1];
+  const text = match[2];
+  const suffix = match[3] ?? "";
+
+  // Skip if nested bold exists in text or suffix
+  if (text.includes("**") || suffix.includes("**")) return { line, replaced: false };
+
+  // Remove bold regardless of content after colon
+  return { line: `${prefix}${text}${suffix}`, replaced: true };
+}
+
+function transformColonInsideLabel(line: string): LineTransform {
+  const match = line.match(boldLabelColonInside);
+  if (!match) return null;
+
+  const indent = match[1];
+  const text = match[2];
+  const content = match[3];
+
+  if (text.includes("**")) return null;
+  return { line: `${indent}${text}: ${content}`, replaced: true };
+}
+
+function transformBoldLabelWithSuffix(line: string): LineTransform {
+  const match = line.match(boldLabelWithSuffix);
+  // Only process if suffix exists
+  if (!match?.[3]) return null;
+
+  const indent = match[1];
+  const text = match[2].trim();
+  const suffix = match[3];
+
+  // Skip lines with nested bold
+  if (text.includes("**")) return { line, replaced: false };
+
+  // This is just a parenthetical note - convert to heading
+  if (parenOnlySuffix.test(suffix)) {
+    let headingText = text;
+    const cleanSuffix = suffix.replace(/:\s*$/, "").trim();
+    if (cleanSuffix) {
+      headingText = `${text} ${cleanSuffix}`;
+    }
+    return { line: `${indent}#### ${headingText}`, replaced: true };
+  }
+
+  // Content after colon - strip bold, keep as plain text
+  const colonMatch = suffix.match(/:\s*(.+)/);
+  if (colonMatch?.[1].trim()) {
+    return { line: `${indent}${text}${suffix}`, replaced: true };
+  }
+
+  // Just ":" or whitespace - convert to heading
+  return { line: `${indent}#### ${text}`, replaced: true };
+}
+
+function transformBoldOnlyHeading(line: string): LineTransform {
+  const match = line.match(boldOnlyHeading);
+  if (!match) return null;
+
+  const indent = match[1];
+  if (match[2].includes("**")) return { line, replaced: false };
+
+  const text = match[2].trim();
+  return { line: `${indent}### ${text}`, replaced: true };
+}
+
+const LINE_TRANSFORMS: Array<(line: string) => LineTransform> = [
+  transformTableRow,
+  transformOrderedListLabel,
+  transformUnorderedListLabel,
+  transformColonInsideLabel,
+  transformBoldLabelWithSuffix,
+  transformBoldOnlyHeading,
+];
+
+function transformMarkdownLine(line: string): LineTransform {
+  for (const transform of LINE_TRANSFORMS) {
+    const result = transform(line);
+    if (result !== null) return result;
+  }
+  return null;
+}
+
+// ========================================
 // File Processing
 // ========================================
 
@@ -100,165 +285,18 @@ function processFile(filePath: string, dryRun: boolean, verbose: boolean): FileR
     const eol = original.includes("\r\n") ? "\r\n" : "\n";
     const lines = original.split(eol);
 
-    const fenceOpen = /^\s*(`{3,}|~{3,})/;
-    // Table rows: strip bold from cells.
-    // Example: "| **スキル名** | 説明 |" -> "| スキル名 | 説明 |"
-    const tableRow = /^\s*\|/;
-    // Separator rows must have at least one dash per cell and only contain dashes, colons, spaces, and pipes.
-    // Example: "| --- | :---: | ---: |"
-    const tableSeparator = /^\s*\|(\s*:?-+:?\s*\|)+\s*$/;
-    const boldInCell = /\*\*([^*]+)\*\*/g;
-
-    // Standalone bold-only lines are treated as pseudo headings.
-    // Example: "**Overview**" -> "### Overview"
-    const boldOnlyHeading = /^(\s*)\*\*([^*][\s\S]*?)\*\*\s*$/;
-
-    // Bold labels with suffix (colon, parentheses, etc.)
-    // Example: "**メリット**:" -> "#### メリット"
-    // Example: "**セットアップ** (初回のみ):" -> "#### セットアップ (初回のみ)"
-    const boldLabelWithSuffix = /^(\s*)\*\*([^*]+)\*\*\s*([(:].*)?$/;
-
-    // Bold labels where the colon is inside the bold, followed by content.
-    // Example: "**責務:** Valibotスキーマ定義" -> "責務: Valibotスキーマ定義"
-    // Example: "**現状:** 未実装" -> "現状: 未実装"
-    const boldLabelColonInside = /^(\s*)\*\*([^*]+?):\*\*\s+(.+)$/;
-
-    // Bold labels in ordered list items are normalized to plain text.
-    // Example: "1. **Read Guidelines**:" -> "1. Read Guidelines:"
-    // Example: "6. **pr-feedback-orchestrator** (3,595行) - ..." -> "6. pr-feedback-orchestrator (3,595行) - ..."
-    const boldOrderedListLabel = /^(\s*\d+\.\s+)\*\*([^*][\s\S]*?)\*\*(.*)?$/;
-
-    // Bold labels in unordered list items are normalized to plain text.
-    // Example: "- **Text**:" -> "- Text:"
-    // Example: "- **key** → value" -> "- key → value"
-    // Example: "- **label** (note) - detail" -> "- label (note) - detail"
-    const boldUnorderedListLabel = /^(\s*[-*+]\s+)\*\*([^*][\s\S]*?)\*\*(.*)?$/;
-
-    let inFence = false;
-    let fenceChar = "";
-    let fenceLen = 0;
+    const fenceState: FenceState = { inFence: false, fenceChar: "", fenceLen: 0 };
     let fileReplacements = 0;
 
     const updated = lines.map((line) => {
-      const fenceMatch = line.match(fenceOpen);
-      if (fenceMatch) {
-        const marker = fenceMatch[1];
-        const char = marker[0];
-        const len = marker.length;
-        if (!inFence) {
-          inFence = true;
-          fenceChar = char;
-          fenceLen = len;
-        } else if (char === fenceChar && len >= fenceLen) {
-          inFence = false;
-          fenceChar = "";
-          fenceLen = 0;
-        }
-        return line;
-      }
+      const fenceLine = handleFenceLine(line, fenceState);
+      if (fenceLine !== null) return fenceLine;
+      if (fenceState.inFence) return line;
 
-      if (inFence) {
-        return line;
-      }
-
-      // Table rows: strip bold from all cells
-      if (tableRow.test(line) && !tableSeparator.test(line)) {
-        const replaced = line.replace(boldInCell, "$1");
-        if (replaced !== line) {
-          fileReplacements += 1;
-          return replaced;
-        }
-        return line;
-      }
-
-      const listLabelMatch = line.match(boldOrderedListLabel);
-      if (listLabelMatch) {
-        const prefix = listLabelMatch[1];
-        const text = listLabelMatch[2];
-        const suffix = listLabelMatch[3] ?? "";
-
-        if (!text.includes("**") && !suffix.includes("**")) {
-          fileReplacements += 1;
-          return `${prefix}${text}${suffix}`;
-        }
-      }
-
-      const unorderedListLabelMatch = line.match(boldUnorderedListLabel);
-      if (unorderedListLabelMatch) {
-        const prefix = unorderedListLabelMatch[1];
-        const text = unorderedListLabelMatch[2];
-        const suffix = unorderedListLabelMatch[3] ?? "";
-
-        // Skip if nested bold exists in text or suffix
-        if (text.includes("**") || suffix.includes("**")) {
-          return line;
-        }
-
-        // Remove bold regardless of content after colon
-        fileReplacements += 1;
-        return `${prefix}${text}${suffix}`;
-      }
-
-      const colonInsideMatch = line.match(boldLabelColonInside);
-      if (colonInsideMatch) {
-        const indent = colonInsideMatch[1];
-        const text = colonInsideMatch[2];
-        const content = colonInsideMatch[3];
-        if (!text.includes("**")) {
-          fileReplacements += 1;
-          return `${indent}${text}: ${content}`;
-        }
-      }
-
-      const labelMatch = line.match(boldLabelWithSuffix);
-      if (labelMatch?.[3]) {
-        // Only process if suffix exists
-        const indent = labelMatch[1];
-        const text = labelMatch[2].trim();
-        const suffix = labelMatch[3];
-
-        // Skip lines with nested bold
-        if (text.includes("**")) {
-          return line;
-        }
-
-        // Check if suffix is just parentheses with optional colon like "(note):"
-        const parenOnlyPattern = /^\s*\([^)]+\)\s*:?\s*$/;
-        if (suffix.match(parenOnlyPattern)) {
-          // This is just a parenthetical note - convert to heading
-          let headingText = text;
-          const cleanSuffix = suffix.replace(/:\s*$/, "").trim();
-          if (cleanSuffix) {
-            headingText = `${text} ${cleanSuffix}`;
-          }
-          fileReplacements += 1;
-          return `${indent}#### ${headingText}`;
-        }
-
-        // Content after colon - strip bold, keep as plain text
-        const colonMatch = suffix.match(/:\s*(.+)/);
-        if (colonMatch?.[1].trim()) {
-          fileReplacements += 1;
-          return `${indent}${text}${suffix}`;
-        }
-
-        // Just ":" or whitespace - convert to heading
-        fileReplacements += 1;
-        return `${indent}#### ${text}`;
-      }
-
-      const headingMatch = line.match(boldOnlyHeading);
-      if (!headingMatch) {
-        return line;
-      }
-
-      const indent = headingMatch[1];
-      if (headingMatch[2].includes("**")) {
-        return line;
-      }
-      const text = headingMatch[2].trim();
-      fileReplacements += 1;
-      return `${indent}### ${text}`;
+      const transform = transformMarkdownLine(line);
+      if (transform === null) return line;
+      if (transform.replaced) fileReplacements += 1;
+      return transform.line;
     });
 
     if (fileReplacements > 0) {
