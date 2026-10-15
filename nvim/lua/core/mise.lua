@@ -22,14 +22,11 @@ local function parse_install_version(version)
   return nil
 end
 
-function M.latest_installed_binary(install_name, binary_relpath)
-  if not uv or not uv.fs_scandir then return nil end
-
-  local root = vim.fn.expand("~/.mise/installs/" .. install_name)
-  local handle = uv.fs_scandir(root)
-  if not handle then return nil end
-
+local function collect_candidates(root, binary_relpath)
   local candidates = {}
+  local handle = uv.fs_scandir(root)
+  if not handle then return candidates end
+
   while true do
     local name, kind = uv.fs_scandir_next(handle)
     if not name then break end
@@ -39,19 +36,39 @@ function M.latest_installed_binary(install_name, binary_relpath)
     end
   end
 
+  return candidates
+end
+
+local function compare_candidates(a, b)
+  local a_parsed = parse_install_version(a.version)
+  local b_parsed = parse_install_version(b.version)
+
+  if a_parsed and b_parsed then return vim.version.lt(b_parsed, a_parsed) end
+  return a.version > b.version
+end
+
+function M.latest_installed_binary(install_name, binary_relpath)
+  if not uv or not uv.fs_scandir then return nil end
+
+  local root = vim.fn.expand("~/.mise/installs/" .. install_name)
+  local candidates = collect_candidates(root, binary_relpath)
   if vim.tbl_isempty(candidates) then return nil end
 
-  table.sort(candidates, function(a, b)
-    local a_parsed = parse_install_version(a.version)
-    local b_parsed = parse_install_version(b.version)
-
-    if a_parsed and b_parsed then return vim.version.lt(b_parsed, a_parsed) end
-    return a.version > b.version
-  end)
+  table.sort(candidates, compare_candidates)
 
   local binary = candidates[1].path
   if vim.fn.executable(binary) == 1 then return binary end
   return nil
+end
+
+local function apply_tool_spec(cmd, opts)
+  if opts.install_name or opts.binary_relpath then return end
+
+  local spec = tool_specs[cmd]
+  if spec then
+    opts.install_name = spec.install_name
+    opts.binary_relpath = spec.binary_relpath
+  end
 end
 
 -- Resolves a formatter/linter binary to an absolute path, preferring in order:
@@ -59,14 +76,7 @@ end
 -- the ~/.mise/shims shim, then the bare command name.
 function M.resolve_command(cmd, opts)
   opts = opts or {}
-
-  if not opts.install_name and not opts.binary_relpath then
-    local spec = tool_specs[cmd]
-    if spec then
-      opts.install_name = spec.install_name
-      opts.binary_relpath = spec.binary_relpath
-    end
-  end
+  apply_tool_spec(cmd, opts)
 
   if opts.install_name and opts.binary_relpath then
     local latest = M.latest_installed_binary(opts.install_name, opts.binary_relpath)
