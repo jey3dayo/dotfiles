@@ -96,30 +96,37 @@ local function normalize_cwd(cwd)
   return ""
 end
 
--- Accepts a URL or plain path and returns (hostname, basename). Hostname drops the
--- user@ prefix and the domain suffix; plain paths return "" for hostname.
-function M.split_from_url(dir)
-  if type(dir) ~= "string" then return "", "" end
-  local hostname = ""
-  local path
+local function split_host_and_path(uri_path)
+  local host_part, path_part = uri_path:match "^([^/]+)(/.*)$"
+  return host_part or "", path_part or ""
+end
 
+local function url_host_and_path(dir)
   local scheme, rest = dir:match "^([%w%+%.%-]+)://(.+)$"
   local uri_path = rest or dir
 
-  if scheme and uri_path:sub(1, 1) ~= "/" then
-    local host_part, path_part = uri_path:match "^([^/]+)(/.*)$"
-    hostname = host_part or ""
-    path = path_part or ""
-  else
-    path = uri_path
-  end
+  if scheme and uri_path:sub(1, 1) ~= "/" then return split_host_and_path(uri_path) end
 
+  return "", uri_path
+end
+
+local function short_hostname(hostname)
   if hostname:find "@" then hostname = hostname:match "@(.+)$" or hostname end
   local dot = hostname:find "[.]"
   if dot then hostname = hostname:sub(1, dot - 1) end
 
+  return hostname
+end
+
+-- Accepts a URL or plain path and returns (hostname, basename). Hostname drops the
+-- user@ prefix and the domain suffix; plain paths return "" for hostname.
+function M.split_from_url(dir)
+  if type(dir) ~= "string" then return "", "" end
+
+  local hostname, path = url_host_and_path(dir)
   local cwd = path ~= "" and M.convert_useful_path(path) or ""
-  return hostname, cwd
+
+  return short_hostname(hostname), cwd
 end
 
 local function format_cwd_title(cwd)
