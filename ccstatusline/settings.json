@@ -221,8 +221,7 @@
         "customText": ")",
         "merge": "no-padding"
       }
-    ],
-    []
+    ]
   ],
   "flexMode": "full",
   "compactThreshold": 60,
