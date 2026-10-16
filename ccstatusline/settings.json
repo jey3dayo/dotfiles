@@ -66,6 +66,26 @@
       {
         "id": "claude-status",
         "type": "claude-status"
+      },
+      {
+        "id": "sep-cache",
+        "type": "separator"
+      },
+      {
+        "id": "cache-label",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": "Cache ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "cache-timer",
+        "type": "cache-timer",
+        "color": "hex:AEE8F4",
+        "rawValue": true,
+        "metadata": {
+          "ttlSeconds": "3600"
+        }
       }
     ],
     [
@@ -141,26 +161,6 @@
         "color": "hex:9485D6",
         "customText": ")",
         "merge": "no-padding"
-      },
-      {
-        "id": "sep-cache",
-        "type": "separator"
-      },
-      {
-        "id": "cache-label",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": "Cache ",
-        "merge": "no-padding"
-      },
-      {
-        "id": "cache-timer",
-        "type": "cache-timer",
-        "color": "hex:AEE8F4",
-        "rawValue": true,
-        "metadata": {
-          "ttlSeconds": "3600"
-        }
       },
       {
         "id": "4",
