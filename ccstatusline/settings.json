@@ -243,14 +243,23 @@
       {
         "id": "xu-sp",
         "type": "custom-text",
-        "customText": " ",
-        "merge": "no-padding"
+        "customText": "(",
+        "merge": "no-padding",
+        "color": "hex:9485D6"
       },
       {
         "id": "xu-used",
         "type": "extra-usage-used",
         "color": "hex:9485D6",
-        "rawValue": true
+        "rawValue": true,
+        "merge": "no-padding"
+      },
+      {
+        "id": "xu-close",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": ")",
+        "merge": "no-padding"
       }
     ]
   ],
