@@ -178,9 +178,11 @@
         "type": "session-cost",
         "color": "hex:AEE8F4",
         "rawValue": true
-      }
-    ],
-    [
+      },
+      {
+        "id": "sep-xu",
+        "type": "separator"
+      },
       {
         "id": "xu-label",
         "type": "custom-text",
@@ -219,7 +221,8 @@
         "customText": ")",
         "merge": "no-padding"
       }
-    ]
+    ],
+    []
   ],
   "flexMode": "full",
   "compactThreshold": 60,
