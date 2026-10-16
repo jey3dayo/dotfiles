@@ -194,7 +194,11 @@
         "id": "xu-util",
         "type": "extra-usage-utilization",
         "color": "hex:AEE8F4",
-        "rawValue": true
+        "rawValue": true,
+        "metadata": {
+          "display": "progress-short",
+          "cursor": "true"
+        }
       },
       {
         "id": "xu-sp",
