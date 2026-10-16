@@ -220,19 +220,19 @@
         "merge": "no-padding"
       },
       {
-        "id": "sep-sw",
+        "id": "sep-xu",
         "type": "separator"
       },
       {
-        "id": "18",
+        "id": "xu-label",
         "type": "custom-text",
         "color": "hex:9485D6",
-        "customText": "7d ",
+        "customText": "💳 ",
         "merge": "no-padding"
       },
       {
-        "id": "19",
-        "type": "weekly-usage",
+        "id": "xu-util",
+        "type": "extra-usage-utilization",
         "color": "hex:AEE8F4",
         "rawValue": true,
         "metadata": {
@@ -241,25 +241,16 @@
         }
       },
       {
-        "id": "21a",
+        "id": "xu-sp",
         "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": "(",
+        "customText": " ",
         "merge": "no-padding"
       },
       {
-        "id": "21",
-        "type": "weekly-reset-timer",
+        "id": "xu-used",
+        "type": "extra-usage-used",
         "color": "hex:9485D6",
-        "rawValue": true,
-        "merge": "no-padding"
-      },
-      {
-        "id": "21b",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": ")",
-        "merge": "no-padding"
+        "rawValue": true
       }
     ]
   ],
