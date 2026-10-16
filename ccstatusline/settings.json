@@ -87,7 +87,7 @@
         "id": "1e-open",
         "type": "custom-text",
         "color": "hex:9485D6",
-        "customText": " (",
+        "customText": "(",
         "merge": "no-padding"
       },
       {
