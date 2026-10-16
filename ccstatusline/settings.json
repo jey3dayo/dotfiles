@@ -66,6 +66,48 @@
       {
         "id": "claude-status",
         "type": "claude-status"
+      },
+      {
+        "id": "sep-xu",
+        "type": "separator"
+      },
+      {
+        "id": "xu-label",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": "💳 ",
+        "merge": "no-padding"
+      },
+      {
+        "id": "xu-util",
+        "type": "extra-usage-utilization",
+        "color": "hex:AEE8F4",
+        "rawValue": true,
+        "metadata": {
+          "display": "progress-short",
+          "cursor": "true"
+        }
+      },
+      {
+        "id": "xu-sp",
+        "type": "custom-text",
+        "customText": "(",
+        "merge": "no-padding",
+        "color": "hex:9485D6"
+      },
+      {
+        "id": "xu-used",
+        "type": "extra-usage-used",
+        "color": "hex:9485D6",
+        "rawValue": true,
+        "merge": "no-padding"
+      },
+      {
+        "id": "xu-close",
+        "type": "custom-text",
+        "color": "hex:9485D6",
+        "customText": ")",
+        "merge": "no-padding"
       }
     ],
     [
@@ -178,48 +220,6 @@
         "type": "session-cost",
         "color": "hex:AEE8F4",
         "rawValue": true
-      },
-      {
-        "id": "sep-xu",
-        "type": "separator"
-      },
-      {
-        "id": "xu-label",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": "💳 ",
-        "merge": "no-padding"
-      },
-      {
-        "id": "xu-util",
-        "type": "extra-usage-utilization",
-        "color": "hex:AEE8F4",
-        "rawValue": true,
-        "metadata": {
-          "display": "progress-short",
-          "cursor": "true"
-        }
-      },
-      {
-        "id": "xu-sp",
-        "type": "custom-text",
-        "customText": "(",
-        "merge": "no-padding",
-        "color": "hex:9485D6"
-      },
-      {
-        "id": "xu-used",
-        "type": "extra-usage-used",
-        "color": "hex:9485D6",
-        "rawValue": true,
-        "merge": "no-padding"
-      },
-      {
-        "id": "xu-close",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": ")",
-        "merge": "no-padding"
       }
     ],
     []
