@@ -182,48 +182,6 @@
     ],
     [
       {
-        "id": "12",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": "⏱  5h ",
-        "merge": "no-padding"
-      },
-      {
-        "id": "13",
-        "type": "session-usage",
-        "color": "hex:C6E472",
-        "rawValue": true,
-        "metadata": {
-          "display": "progress-short",
-          "cursor": "true"
-        }
-      },
-      {
-        "id": "15a",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": "(",
-        "merge": "no-padding"
-      },
-      {
-        "id": "15",
-        "type": "reset-timer",
-        "color": "hex:9485D6",
-        "rawValue": true,
-        "merge": "no-padding"
-      },
-      {
-        "id": "15b",
-        "type": "custom-text",
-        "color": "hex:9485D6",
-        "customText": ")",
-        "merge": "no-padding"
-      },
-      {
-        "id": "sep-xu",
-        "type": "separator"
-      },
-      {
         "id": "xu-label",
         "type": "custom-text",
         "color": "hex:9485D6",
