@@ -160,7 +160,7 @@ rest-client/
 irb/irb_history
 Autodesk/
 btop/btop.log
-codexbar/config.json
+codexbar/
 
 ## Package Managers and Tools
 NuGet/
@@ -187,7 +187,8 @@ opencode/cli.json
 opencode/tui.jsonc
 opencode/herdr-tui-session.js
 opencode/herdr-opencode/
-opencode/plugins/herdr-agent-state.js
+opencode/plugins/
+opencode/service.json
 op/
 jgit/
 raycast/
