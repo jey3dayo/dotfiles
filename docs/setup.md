@@ -64,7 +64,7 @@ LaunchAgent `ai-usage-snapshot`（平日 9:50 / 14:50 に codexbar の使用量�
 gh repo clone jey3dayo/ai-usage-log ~/.local/share/ai-usage-log
 ```
 
-未 clone の場合、ジョブは毎回 exit 1 し、`~/Library/Logs/ai-usage-snapshot.log` に `ai-usage-snapshot: ... not found or not executable; run: gh repo clone ...` を出す。使わない Mac では無視してよい。
+未 clone の場合、ジョブは毎回 exit 1 し、`~/Library/Logs/ai-usage-snapshot.log` に `ai-usage-snapshot: ... not found; run: gh repo clone ...` を出す。clone 済みで `snapshot.sh` が欠けている・実行権がない場合も exit 1 し、それぞれ `git -C ~/.local/share/ai-usage-log checkout -- snapshot.sh`（またはディレクトリを消して再 clone）・`chmod +x` の復旧手順をログに出す。使わない Mac では無視してよい。
 
 ## Windows Bootstrap
 
