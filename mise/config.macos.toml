@@ -175,3 +175,22 @@ args = ["-lc", 'exec "$HOME/.config/scripts/launchd/launchd-gui-env.sh"']
 run_at_load = true
 stdout_path = "~/Library/Logs/gui-env.log"
 stderr_path = "~/Library/Logs/gui-env.log"
+
+[bootstrap.macos.launchd.agents.ai-usage-snapshot]
+program = "/bin/sh"
+args = ["-lc", 'exec "$HOME/.local/share/ai-usage-log/snapshot.sh"']
+run_at_load = false
+start_calendar_interval = [
+  { weekday = 1, hour = 9, minute = 50 },
+  { weekday = 1, hour = 14, minute = 50 },
+  { weekday = 2, hour = 9, minute = 50 },
+  { weekday = 2, hour = 14, minute = 50 },
+  { weekday = 3, hour = 9, minute = 50 },
+  { weekday = 3, hour = 14, minute = 50 },
+  { weekday = 4, hour = 9, minute = 50 },
+  { weekday = 4, hour = 14, minute = 50 },
+  { weekday = 5, hour = 9, minute = 50 },
+  { weekday = 5, hour = 14, minute = 50 },
+]
+stdout_path = "~/Library/Logs/ai-usage-snapshot.log"
+stderr_path = "~/Library/Logs/ai-usage-snapshot.log"
