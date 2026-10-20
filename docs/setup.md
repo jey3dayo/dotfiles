@@ -1,6 +1,6 @@
 # 🚀 Setup Guide
 
-最終更新: 2026-09-23
+最終更新: 2026-10-21
 対象: 開発者・初心者
 タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/cross-platform`, `audience/beginner`
 
@@ -55,6 +55,16 @@ exec zsh
 状態確認は `mise bootstrap status` / `mise dotfiles status`、差分プレビューは `mise bootstrap --dry-run` を使います。
 dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、3 OS 共通 tools は `mise/config.shared.toml`（`MISE_ENV` に `shared` が含まれる場合だけロード）、default / Windows 共通 tools は `mise/config.workstation.toml`（`MISE_ENV` に `workstation` が含まれる場合だけロード）、OS 別 tools は `mise/entry.workstation-unix.toml` / `mise/entry.server-pi.toml`（`MISE_CONFIG_FILE` 経由）、macOS 専用の brew packages・LaunchAgents・dotfiles は `mise/config.macos.toml`（`MISE_ENV` に `macos` が含まれる場合）にあります。
 Raspberry Pi は `entry.server-pi.toml` + shared overlay を使い、`hadolint` など ARM/minimal 構成で意図的に除外したツールを追加しません。CI は `entry.ci.toml` だけを使い、default / shared / workstation overlay を読み込みません。Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
+
+### macOS: ai-usage-snapshot の前提（private repo の手動 clone）
+
+LaunchAgent `ai-usage-snapshot`（平日 9:50 / 14:50 に codexbar の使用量を export）は private repo `jey3dayo/ai-usage-log` の `snapshot.sh` を実行する。dotfiles は public repo のため、`mise bootstrap` では自動配置しない。使う Mac では `gh auth login` 済みの状態で一度だけ clone する:
+
+```bash
+gh repo clone jey3dayo/ai-usage-log ~/.local/share/ai-usage-log
+```
+
+未 clone の場合、ジョブは毎回 exit 1 し、`~/Library/Logs/ai-usage-snapshot.log` に `ai-usage-snapshot: ... not found or not executable; run: gh repo clone ...` を出す。使わない Mac では無視してよい。
 
 ## Windows Bootstrap
 

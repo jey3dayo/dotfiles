@@ -176,9 +176,22 @@ run_at_load = true
 stdout_path = "~/Library/Logs/gui-env.log"
 stderr_path = "~/Library/Logs/gui-env.log"
 
+# 前提: private repo jey3dayo/ai-usage-log を ~/.local/share/ai-usage-log に手動 clone する
+# （dotfiles は public のため bootstrap では自動配置しない。手順は docs/setup.md）。
+# 未配置時は案内を ~/Library/Logs/ai-usage-snapshot.log に出して exit 1 する。
 [bootstrap.macos.launchd.agents.ai-usage-snapshot]
 program = "/bin/sh"
-args = ["-lc", 'exec "$HOME/.local/share/ai-usage-log/snapshot.sh"']
+args = [
+  "-lc",
+  '''
+s="$HOME/.local/share/ai-usage-log/snapshot.sh"
+if [ ! -x "$s" ]; then
+  echo "ai-usage-snapshot: $s not found or not executable; run: gh repo clone jey3dayo/ai-usage-log ~/.local/share/ai-usage-log" >&2
+  exit 1
+fi
+exec "$s"
+''',
+]
 run_at_load = false
 start_calendar_interval = [
   { weekday = 1, hour = 9, minute = 50 },
