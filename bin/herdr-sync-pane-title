@@ -1,32 +1,92 @@
 #!/usr/bin/env bash
 
-# Rename the active herdr agent pane to its agent's terminal title (e.g. the
-# Claude Code session name set by /rename).
+# Rename a herdr agent pane to its agent's terminal title (e.g. the Claude Code
+# session name set by /rename).
+#   (no args)  rename the active pane, overwriting a hand-made name
+#   --auto     plugin event hook: rename only unnamed panes or panes still
+#              carrying the name this script last wrote
 set -euo pipefail
 
-PANE_ID="${HERDR_ACTIVE_PANE_ID:-${HERDR_PANE_ID:-}}"
-if [ -z "$PANE_ID" ]; then
-  echo "herdr-sync-pane-title: no active pane id" >&2
-  exit 1
+AUTO=0
+if [ "${1:-}" = "--auto" ]; then
+  AUTO=1
 fi
 
-PANE_JSON=$(herdr pane get "$PANE_ID")
+say() {
+  if [ "$AUTO" = 0 ]; then
+    echo "herdr-sync-pane-title: $*"
+  fi
+}
 
-if [ "$(echo "$PANE_JSON" | jq -r '.result.pane.agent // empty')" = "" ]; then
-  echo "herdr-sync-pane-title: $PANE_ID has no agent"
+if [ "$AUTO" = 1 ]; then
+  PANE_ID=$(jq -r '.data.pane_id // empty' <<<"${HERDR_PLUGIN_EVENT_JSON:-null}")
+  PANE_ID="${PANE_ID:-${HERDR_PANE_ID:-}}"
+  if [ -z "$PANE_ID" ]; then
+    exit 0
+  fi
+else
+  PANE_ID="${HERDR_ACTIVE_PANE_ID:-${HERDR_PANE_ID:-}}"
+  if [ -z "$PANE_ID" ]; then
+    echo "herdr-sync-pane-title: no active pane id" >&2
+    exit 1
+  fi
+fi
+
+HERDR=herdr
+if ! command -v herdr >/dev/null 2>&1; then
+  HERDR="${HERDR_BIN_PATH:-}"
+  if [ -z "$HERDR" ]; then
+    echo "herdr-sync-pane-title: herdr not found" >&2
+    exit 1
+  fi
+fi
+
+PANE_JSON=$("$HERDR" pane get "$PANE_ID")
+
+if [ "$(jq -r '.result.pane.agent // empty' <<<"$PANE_JSON")" = "" ]; then
+  say "$PANE_ID has no agent"
   exit 0
 fi
+
+LABEL=$(jq -r '.result.pane.label // empty' <<<"$PANE_JSON")
 
 # agmsg labels its panes "<team>:<agent>"; keep that role name.
-if echo "$PANE_JSON" | jq -e '.result.pane.label // "" | contains(":")' >/dev/null; then
-  echo "herdr-sync-pane-title: $PANE_ID keeps its agmsg label"
+if [[ "$LABEL" == *:* ]]; then
+  say "$PANE_ID keeps its agmsg label"
   exit 0
 fi
 
-TITLE=$(echo "$PANE_JSON" | jq -r '.result.pane.terminal_title_stripped // empty')
+TITLE=$(jq -r '.result.pane.terminal_title_stripped // empty' <<<"$PANE_JSON")
 if [ -z "$TITLE" ]; then
-  echo "herdr-sync-pane-title: $PANE_ID has no terminal title"
+  say "$PANE_ID has no terminal title"
   exit 0
 fi
 
-herdr pane rename "$PANE_ID" "$TITLE" >/dev/null
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-pane-title-sync"
+RECORD="$STATE_DIR/${PANE_ID//:/_}"
+
+write_record() {
+  mkdir -p "$STATE_DIR"
+  local tmp
+  tmp=$(mktemp "$STATE_DIR/.tmp.XXXXXX")
+  printf '%s' "$1" >"$tmp"
+  mv "$tmp" "$RECORD"
+}
+
+# A label equal to the title is adopted as ours so later title changes follow.
+if [ "$LABEL" = "$TITLE" ]; then
+  if [ ! -f "$RECORD" ] || [ "$LABEL" != "$(<"$RECORD")" ]; then
+    write_record "$LABEL"
+  fi
+  exit 0
+fi
+
+if [ "$AUTO" = 1 ] && [ -n "$LABEL" ]; then
+  if [ ! -f "$RECORD" ] || [ "$LABEL" != "$(<"$RECORD")" ]; then
+    exit 0
+  fi
+fi
+
+"$HERDR" pane rename "$PANE_ID" "$TITLE" >/dev/null
+
+write_record "$TITLE"

@@ -1,0 +1,9 @@
+id = "local.pane-title-sync"
+name = "Pane Title Sync"
+version = "0.1.0"
+min_herdr_version = "0.9.3"
+platforms = ["macos"]
+
+[[events]]
+on = "pane.agent_status_changed"
+command = ["../../../bin/herdr-sync-pane-title", "--auto"]

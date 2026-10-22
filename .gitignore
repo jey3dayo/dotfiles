@@ -206,6 +206,8 @@ herdr/session.json
 herdr/release-notes.json
 herdr/*.sock.agent
 herdr/session-snapshots/
+herdr/plugins.json
+herdr/plugins/
 
 ## browser-harness
 browser-harness/
