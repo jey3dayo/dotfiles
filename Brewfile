@@ -9,6 +9,7 @@ tap "voicevox/voicevox", "https://github.com/VOICEVOX/homebrew-voicevox", truste
 brew "daipeihust/tap/im-select", trusted: true
 brew "mysql", restart_service: :changed
 brew "steipete/tap/peekaboo", trusted: true
+brew "steipete/tap/remindctl", trusted: true
 brew "perman/tap/perman-aws-vault", trusted: true
 brew "utf8proc", args: ["HEAD"]
 brew "olets/tap/zsh-abbr@6", trusted: true

@@ -3,7 +3,8 @@
     "daipeihust/tap/im-select",
     "olets/tap/zsh-abbr@6",
     "perman/tap/perman-aws-vault",
-    "steipete/tap/peekaboo"
+    "steipete/tap/peekaboo",
+    "steipete/tap/remindctl"
   ],
   "trustedtaps": ["abue-ammar/tinycast", "fujibee/agmsg", "steipete/tap", "voicevox/voicevox"],
   "trustedcasks": ["abue-ammar/tinycast/tinycast", "stablyai/orca/orca"]
