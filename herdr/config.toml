@@ -62,9 +62,9 @@ type = "shell"
 command = "/Users/t00114/.config/bin/herdr-unread"
 description = "focus next blocked/done agent"
 
-# pane name sync (C-x v = rename active agent pane to its session title)
+# pane name sync (C-x i = rename active agent pane to its session title)
 [[keys.command]]
-key = "prefix+v"
+key = "prefix+i"
 type = "shell"
 command = "/Users/t00114/.config/bin/herdr-sync-pane-title"
 description = "sync pane name from agent title"
