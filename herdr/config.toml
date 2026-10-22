@@ -69,6 +69,13 @@ type = "shell"
 command = "/Users/t00114/.config/bin/herdr-sync-pane-title"
 description = "sync pane name from agent title"
 
+# pane name sync for all panes (C-x I)
+[[keys.command]]
+key = "prefix+shift+i"
+type = "shell"
+command = "/Users/t00114/.config/bin/herdr-sync-pane-title --all"
+description = "sync all pane names from agent titles"
+
 [ui]
 prompt_new_tab_name = false
 show_agent_labels_on_pane_borders = true

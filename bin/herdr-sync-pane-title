@@ -5,7 +5,30 @@
 #   (no args)  rename the active pane, overwriting a hand-made name
 #   --auto     plugin event hook: rename only unnamed panes or panes still
 #              carrying the name this script last wrote
+#   --all      apply the no-args behavior to every agent pane
 set -euo pipefail
+
+find_herdr() {
+  HERDR=herdr
+  if ! command -v herdr >/dev/null 2>&1; then
+    HERDR="${HERDR_BIN_PATH:-}"
+    if [ -z "$HERDR" ]; then
+      echo "herdr-sync-pane-title: herdr not found" >&2
+      exit 1
+    fi
+  fi
+}
+
+if [ "${1:-}" = "--all" ]; then
+  find_herdr
+  PANE_IDS=$("$HERDR" pane list | jq -r '.result.panes[] | select(.agent) | .pane_id')
+  FAILED=0
+  while IFS= read -r id; do
+    [ -n "$id" ] || continue
+    HERDR_ACTIVE_PANE_ID="$id" "$0" || FAILED=1
+  done <<<"$PANE_IDS"
+  exit "$FAILED"
+fi
 
 AUTO=0
 if [ "${1:-}" = "--auto" ]; then
@@ -32,14 +55,7 @@ else
   fi
 fi
 
-HERDR=herdr
-if ! command -v herdr >/dev/null 2>&1; then
-  HERDR="${HERDR_BIN_PATH:-}"
-  if [ -z "$HERDR" ]; then
-    echo "herdr-sync-pane-title: herdr not found" >&2
-    exit 1
-  fi
-fi
+find_herdr
 
 PANE_JSON=$("$HERDR" pane get "$PANE_ID")
 
