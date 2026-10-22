@@ -31,6 +31,15 @@
         "color": "hex:9485D6"
       },
       {
+        "id": "sep-session",
+        "type": "separator"
+      },
+      {
+        "id": "session-name",
+        "type": "session-name",
+        "color": "hex:C6E472"
+      },
+      {
         "id": "sep-delta",
         "type": "separator"
       },
@@ -58,14 +67,6 @@
         "metadata": {
           "hide": "no-git,no-data,title"
         }
-      },
-      {
-        "id": "sep-status",
-        "type": "separator"
-      },
-      {
-        "id": "claude-status",
-        "type": "claude-status"
       },
       {
         "id": "sep-cache",
