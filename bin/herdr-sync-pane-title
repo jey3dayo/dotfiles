@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Rename the active herdr agent pane to its agent's terminal title (e.g. the
+# Claude Code session name set by /rename).
+set -euo pipefail
+
+PANE_ID="${HERDR_ACTIVE_PANE_ID:-${HERDR_PANE_ID:-}}"
+if [ -z "$PANE_ID" ]; then
+  echo "herdr-sync-pane-title: no active pane id" >&2
+  exit 1
+fi
+
+PANE_JSON=$(herdr pane get "$PANE_ID")
+
+if [ "$(echo "$PANE_JSON" | jq -r '.result.pane.agent // empty')" = "" ]; then
+  echo "herdr-sync-pane-title: $PANE_ID has no agent"
+  exit 0
+fi
+
+# agmsg labels its panes "<team>:<agent>"; keep that role name.
+if echo "$PANE_JSON" | jq -e '.result.pane.label // "" | contains(":")' >/dev/null; then
+  echo "herdr-sync-pane-title: $PANE_ID keeps its agmsg label"
+  exit 0
+fi
+
+TITLE=$(echo "$PANE_JSON" | jq -r '.result.pane.terminal_title_stripped // empty')
+if [ -z "$TITLE" ]; then
+  echo "herdr-sync-pane-title: $PANE_ID has no terminal title"
+  exit 0
+fi
+
+herdr pane rename "$PANE_ID" "$TITLE" >/dev/null
