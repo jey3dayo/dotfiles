@@ -141,7 +141,7 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # AI CLIs
-alias cl='claude --dangerously-skip-permissions'
+alias cl='claude --model sonnet --dangerously-skip-permissions'
 alias co='codex --yolo'
 alias cz='ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic ANTHROPIC_AUTH_TOKEN="$ZAI_API_KEY" claude --dangerously-skip-permissions'
 
