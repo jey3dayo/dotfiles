@@ -61,7 +61,7 @@ julia = "latest"
 ```toml
 [tools]
 "github:astral-sh/uv" = "latest"
-pnpm = "12"
+# pnpm はメジャー固定（版は mise/config.shared.toml が正本）
 ```
 
 `pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため避ける。`entry.workstation-windows.toml` / `entry.ci.toml` も同じ理由で `"github:astral-sh/uv"` に統一済み。
