@@ -1,9 +1,11 @@
-# Workstation 専用 tools (macOS/Linux/WSL2 と Windows、Pi/CI は除外)。MISE_ENV に workstation を含む環境でロード。
+# Pi / CI 以外の開発機(macOS/Linux/WSL2 と Windows)共通の tools。MISE_ENV に workstation が含まれる環境だけでロードする。settings/env は置かず [tools] のみ
 
 [tools]
 # Language Runtimes
 python = "3.15"
-rust = "stable" # rustfmt / cargo:* installs の前提
+rust = "stable" # rustfmt (nvim conform) and cargo:* tool installs
+
+# Package Managers
 bun = "latest"
 
 # CLI Tools
@@ -45,7 +47,7 @@ zoxide = "latest"
 "npm:zx" = "latest"
 "npm:@google/clasp" = "latest"
 
-# MCP Servers
+# MCP サーバー
 "npm:@aikidosec/safe-chain" = "latest"
 "npm:@benborla29/mcp-server-mysql" = "latest"
 "npm:@modelcontextprotocol/server-filesystem" = "latest"

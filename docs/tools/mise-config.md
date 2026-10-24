@@ -1,6 +1,6 @@
 # Mise Configuration Reference
 
-最終更新: 2026-09-23
+最終更新: 2026-10-24
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -18,7 +18,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 ```toml
 [tools]
 # Language Runtimes
-python = "3.14"
+python = "3.15"
 rust = "stable"
 
 # Package Managers
@@ -65,7 +65,7 @@ bun = "latest"
 
 # CLI Tools
 delta = "latest"
-"pipx:apm-cli" = "0.31.0"
+"pipx:apm-cli" = "0.34.0"
 bat = "latest"
 fzf = "latest"
 lazygit = "latest"
@@ -100,7 +100,7 @@ pnpm = "12"
 
 ```toml
 [tools]
-"github:jdx/jactionlint" = "2.1.0"
+"github:jdx/jactionlint" = "2.3.0"
 biome = "latest"
 hadolint = "latest"
 prettier = "latest"

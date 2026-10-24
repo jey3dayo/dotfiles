@@ -1,15 +1,30 @@
-# Raspberry Pi server entry (MISE_CONFIG_FILE で選択)。overlay は MISE_ENV 経由。
+# Raspberry Pi サーバーの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
 
 [settings]
-jobs = 2                                                 # 並列数削減でメモリスワップ回避
+# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
+jobs = 2                                                 # メモリ制約対応: 並列数削減でスワップ回避
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 
 [tools]
-# Formatters / Linters
+# Common tools are loaded from config.shared.toml when MISE_ENV includes shared.
+# Language Runtimes
+# Python は mise で管理しない。uv が必要に応じて python-build-standalone を取得する
+# FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
+# lua = "5.1.5"
+# luajit = "latest"
+# luacheck/luarocks は mise registry/backends と相性が不安定なため定義しない。
+# Lua lint は Nix 側で luacheck を供給して実行する。
+
+# Formatters / Linters（hadolint は macOS/Linux x86_64 のみのため除外）
 shellcheck = "latest"
 shfmt = "latest"
 yamllint = "latest"
 
-# NPM Packages
+# NPM Global Packages（npm 自体は node 同梱版を使用）
+# Language Servers・デスクトップ開発ツール・クラウド系は除外
 "npm:@earendil-works/pi-coding-agent" = "latest"
+
+# CLI Tools（Cargo 系は ARM 互換性のため除外）
+# goimports は Pi で go install 経由のビルドが不安定なため無効化
+# "go:golang.org/x/tools/cmd/goimports" = "0.41.0"

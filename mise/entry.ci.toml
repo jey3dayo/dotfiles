@@ -1,8 +1,10 @@
-# CI entry (MISE_CONFIG_FILE で選択)。overlay なし（shared/workstation を読まない）。
+# CI の入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
 
 [settings]
-jobs = 4                                                                         # GitHub Actions: 2-core runners
+# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
+jobs = 4                                 # GitHub Actions runners: 2 cores
 idiomatic_version_file_enable_tools = []
+# /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下の worktree/sandbox 用（CI が Linux runner の場合は実質未使用）
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 
 [env]
@@ -12,12 +14,10 @@ MD_EXCLUDES = "#node_modules #fisher #zsh/.zinit #.worktrees #.apm/skills #.clau
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 [tools]
-# Language Runtimes
+# uvx for ruff execution (pipx:uv は自己参照更新で停滞するため避ける)
+"github:astral-sh/uv" = "latest"
 node = "lts"
 bun = "latest"
-
-# Package Managers
-"github:astral-sh/uv" = "latest" # uvx for ruff (pipx:uv は自己参照更新で停滞）
 
 # Formatters / Linters
 "github:jdx/jactionlint" = "2.3.0"

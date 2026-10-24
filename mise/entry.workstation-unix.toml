@@ -1,22 +1,27 @@
-# macOS/Linux/WSL2 workstation entry (MISE_CONFIG_FILE で選択)。overlay は MISE_ENV 経由。
+# macOS/Linux/WSL2 ワークステーションの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
 
 [settings]
+# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
 jobs = 8
 idiomatic_version_file_enable_tools = []
-trusted_config_paths = [
-  "~/.config",
-  "~/src/github.com",
-  "/private/var/folders",
-] # /private/var/folders: macOS TMPDIR 配下の worktree/sandbox 用
+# /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下に展開される worktree/sandbox 内の
+# mise config を信頼するために追加している
+trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 
+# gh は keychain 保管のため gh_cli_tokens（hosts.yml）では取得できない。shim 経由だと
+# use_git_credentials で避けた無限再帰を再現するため、実バイナリを絶対パスで呼ぶ
+# （mise which gh の解決先。パスと $VAR 展開が Unix 前提なので Windows とは共有しない）。
 [settings.github]
-# gh keychain token 取得（shim 経由だと無限再帰、実 binary を絶対パス指定）
 credential_command = '"$HOME/.mise/installs/github-cli-cli/latest/bin/gh" auth token --hostname "$MISE_CREDENTIAL_HOST"'
 
 [tools]
-# Language Runtimes
+# Common tools are loaded from the shared / workstation overlays when MISE_ENV includes them.
+# Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
 deno = "latest"
 julia = "latest"
+# FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
+# lua = "5.1.5"
+# luajit = "latest"
 
 # Formatters / Linters
 "aqua:reteps/dockerfmt" = "latest"
@@ -63,9 +68,13 @@ yq = "latest"
 "go:github.com/hashicorp/terraform-mcp-server/cmd/terraform-mcp-server" = "latest"
 "go:golang.org/x/tools/cmd/goimports" = "0.52.0"
 
-# Rust Packages
+# Rust CLI（typos-lsp は Homebrew で管理）
+"aqua:getsentry/sentry-cli" = "latest"
 "cargo:similarity-css" = "0.5.0"
-"cargo:tree-sitter-cli" = { version = "0.27.1", default-features = "false" } # WSL glibc 不整合対策: cargo backend を default-features=false で使用
+# WSL では公式配布バイナリが glibc 不整合で壊れることがあるため,
+# prebuilt backend ではなく cargo backend を使う.
+# default features を切ると qjs/libclang 依存を避けられ, この環境でもビルドできる.
+"cargo:tree-sitter-cli" = { version = "0.27.1", default-features = "false" }
 
 # NPM Packages
 "npm:@anthropic-ai/dxt" = "latest"
@@ -77,8 +86,11 @@ yq = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
 
+# 自己更新機能を持つ CLI(claude / codex / herdr)は [tools] で管理せず、公式インストーラで導入して
+# 各ツールの自己更新に任せる。mise は未導入時のインストールだけを保証する(方針: .claude/rules/tools/tool-install-policy.md)。
 [bootstrap.hooks.post-tools]
-run = "sh ~/.config/mise/lib/ensure-standalone.sh" # claude / codex / herdr の自己更新 CLI 導入保証
+run = "sh ~/.config/mise/lib/ensure-standalone.sh"
 
+# import されるライブラリは `pipx:` で表現できない(隔離 venv の CLI 用)。導入保証のみ。
 [bootstrap.hooks.final]
-run = "sh ~/.config/mise/lib/ensure-python-libs.sh" # import ライブラリ導入保証（pipx 隔離対象外）
+run = "sh ~/.config/mise/lib/ensure-python-libs.sh"
