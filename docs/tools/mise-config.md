@@ -15,64 +15,34 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 `MISE_ENV` に `workstation` が含まれる開発機（macOS/Linux/WSL2 と Windows）でロードされる共通 tools です。Pi と CI ではロードしません。
 
+**実際のバージョンは `mise/config.workstation.toml` が正本です。** ここでは構成の概要のみを示します。
+
 ```toml
 [tools]
 # Language Runtimes
-python = "3.15"
+python = "..."  # バージョンは mise/config.workstation.toml 参照
 rust = "stable"
 
 # Package Managers
 bun = "latest"
 
-# NPM Global Packages
+# NPM Global Packages（一部抜粋）
 "npm:npm" = "latest"
 "npm:agent-browser" = "latest"
-"npm:dev-browser" = "latest"
-"npm:@fsouza/prettierd" = "latest"
-"npm:neovim" = "latest"
-"npm:@bufbuild/protoc-gen-es" = "latest"
-"npm:@connectrpc/protoc-gen-connect-es" = "latest"
-"npm:vibe-kanban" = "latest"
-"npm:eslint_d" = "latest"
-"npm:typescript" = "latest"
-"npm:vscode-langservers-extracted" = "latest"
-"npm:@typescript-eslint/eslint-plugin" = "latest"
-"npm:esbuild" = "latest"
-"npm:zx" = "latest"
+# ... その他 NPM パッケージ
 
 # MCP サーバー
 "npm:@aikidosec/safe-chain" = "latest"
-"npm:@benborla29/mcp-server-mysql" = "latest"
-"npm:@modelcontextprotocol/server-filesystem" = "latest"
-"npm:@playwright/mcp" = "latest"
-"npm:exa-mcp-server" = "latest"
+# ... その他 MCP サーバー
 
-# クラウド・インフラ
-"npm:aws-cdk" = "latest"
-"npm:@google/clasp" = "latest"
-
-# その他ツール
-"npm:greptile" = "latest"
-"npm:difit" = "latest"
-"npm:tuyapi" = "latest"
-
-# Rust CLI
-"cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "0.15.0"
-"cargo:similarity-ts" = "0.5.0"
-"cargo:wrkflw" = "0.8.0"
-"cargo:starship" = "latest"
+# Rust CLI（一部は固定版）
+"cargo:needle-cli" = "..."  # バージョンは mise/config.workstation.toml 参照
+# ... その他 Rust CLI
 
 # CLI Tools
 delta = "latest"
-"pipx:apm-cli" = "0.34.0"
-bat = "latest"
-fzf = "latest"
-lazygit = "latest"
-ripgrep = "latest"
-usage = "latest"
-zoxide = "latest"
-"aqua:evilmartians/lefthook" = "latest"
+"pipx:apm-cli" = "..."  # バージョンは mise/config.workstation.toml 参照
+# ... その他 CLI ツール
 ```
 
 ### 1. Language Runtimes
@@ -98,9 +68,12 @@ pnpm = "12"
 
 ### 3. Formatters and Linters
 
+**実際のバージョンは `mise/config.shared.toml` および各 entry ファイルが正本です。**
+
 ```toml
 [tools]
-"github:jdx/jactionlint" = "2.3.0"
+# jactionlint は破壊的変更があるためバージョン固定（更新時に attestation 確認）
+"github:jdx/jactionlint" = "..."  # バージョンは mise/config.shared.toml 参照
 biome = "latest"
 hadolint = "latest"
 prettier = "latest"
@@ -166,10 +139,13 @@ yamllint = "latest"
 
 ### 5. Cargo-based Tools
 
+**実際のバージョンは `mise/config.workstation.toml` および `mise/entry.workstation-unix.toml` が正本です。**
+
 ```toml
 [tools]
-"cargo:similarity-css" = "0.5.0"
-"cargo:tree-sitter-cli" = { version = "0.26.9", default-features = "false" }
+"cargo:similarity-css" = "..."  # バージョンは mise ファイル参照
+# tree-sitter-cli は WSL で glibc 不整合対策のため cargo backend を default-features=false で使用
+"cargo:tree-sitter-cli" = { version = "...", default-features = "false" }
 ```
 
 #### 環境別の取り扱い
@@ -180,6 +156,8 @@ yamllint = "latest"
 レイヤーの選び方は [docs/setup.md](../setup.md#package-management-philosophy) を参照。
 
 ### 6. CLI Tools
+
+**実際のバージョンは各 mise ファイルが正本です。** 一部のツールは固定版を使用（理由は mise ファイルのコメント参照）。
 
 ```toml
 [tools]
@@ -193,17 +171,9 @@ gitleaks = "latest"
 "aqua:golangci/golangci-lint" = "latest"
 "go:github.com/google/wire/cmd/wire" = "latest"
 "aqua:k1LoW/git-wt" = "latest"
-"go:golang.org/x/tools/cmd/goimports" = "0.50.0"
-"pipx:awslabs-terraform-mcp-server" = "1.0.18"
+"go:golang.org/x/tools/cmd/goimports" = "..."  # バージョンは mise ファイル参照
 "github:cli/cli" = "latest"
-glab = "latest"
-hexyl = "latest"
-jq = "latest"
-"aqua:anomalyco/opencode" = "latest"
-saml2aws = "latest"
-terraform = "latest"
-trivy = "latest"
-yazi = "latest"
+# ... その他 CLI ツール
 ```
 
 #### 環境別の取り扱い
