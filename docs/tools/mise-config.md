@@ -15,7 +15,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 `MISE_ENV` に `workstation` が含まれる開発機（macOS/Linux/WSL2 と Windows）でロードされる共通 tools です。Pi と CI ではロードしません。
 
-**実際のバージョンは `mise/config.workstation.toml` が正本です。** ここでは構成の概要のみを示します。
+> 実際のバージョンは `mise/config.workstation.toml` が正本です。ここでは構成の概要のみを示します。
 
 ```toml
 [tools]
