@@ -14,9 +14,22 @@ _shell_bootstrap_xdg_env() {
 }
 
 _shell_is_raspberry_pi() (
-  arch="$(uname -m 2>/dev/null || printf '')"
+  # Detect architecture using shell built-ins to avoid uname fork.
+  # ZSH_VERSION/BASH_VERSION are set by the shell itself before any rc file.
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    # zsh: $CPUTYPE is arm64, x86_64, etc.
+    arch="${CPUTYPE:-}"
+  elif [ -n "${BASH_VERSION:-}" ]; then
+    # bash: $MACHTYPE is aarch64-unknown-linux-gnu, x86_64-apple-darwin21, etc.
+    # Extract the first component before the first hyphen.
+    arch="${MACHTYPE%%-*}"
+  else
+    # POSIX sh fallback (dash, etc.): no built-in, use uname.
+    arch="$(uname -m 2>/dev/null || printf '')"
+  fi
+
   case "$arch" in
-    aarch64 | armv7l | armv6l) ;;
+    aarch64 | arm64 | armv7l | armv6l) ;;
     *) return 1 ;;
   esac
 
@@ -39,12 +52,13 @@ _shell_is_raspberry_pi() (
 )
 
 _shell_detect_mise_environment() {
+  # Set __mise_environment directly instead of printing to avoid fork/subshell.
   if [ -n "${CI:-}" ] || [ -n "${GITHUB_ACTIONS:-}" ]; then
-    printf '%s\n' "ci"
+    __mise_environment="ci"
   elif _shell_is_raspberry_pi; then
-    printf '%s\n' "pi"
+    __mise_environment="pi"
   else
-    printf '%s\n' "default"
+    __mise_environment="default"
   fi
 }
 
@@ -71,7 +85,9 @@ _shell_bootstrap_mise_env() {
   esac
 
   if [ -z "${MISE_CONFIG_FILE:-}" ]; then
-    environment="$(_shell_detect_mise_environment)"
+    _shell_detect_mise_environment
+    environment="$__mise_environment"
+    unset __mise_environment
     case "$environment" in
       default) mise_entry="entry.workstation-unix.toml" ;;
       windows) mise_entry="entry.workstation-windows.toml" ;;
@@ -91,8 +107,11 @@ _shell_bootstrap_mise_env() {
 
   # CI は entry.ci.toml だけを使い、shared/workstation/default の tools を追加しない。
   if [ "$environment" != "ci" ]; then
-    if [ "$environment" != "pi" ] && [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
-      _shell_mise_env_append macos
+    # Use $OSTYPE built-in to avoid uname fork. $OSTYPE is darwin* on macOS.
+    if [ "$environment" != "pi" ]; then
+      case "${OSTYPE:-}" in
+        darwin*) _shell_mise_env_append macos ;;
+      esac
     fi
     case "$environment" in
       default | windows)
