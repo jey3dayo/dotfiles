@@ -22,6 +22,7 @@ _shell_is_raspberry_pi() (
   elif [ -n "${BASH_VERSION:-}" ]; then
     # bash: $MACHTYPE is aarch64-unknown-linux-gnu, x86_64-apple-darwin21, etc.
     # Extract the first component before the first hyphen.
+    # shellcheck disable=SC3028
     arch="${MACHTYPE%%-*}"
   else
     # POSIX sh fallback (dash, etc.): no built-in, use uname.
@@ -109,6 +110,7 @@ _shell_bootstrap_mise_env() {
   if [ "$environment" != "ci" ]; then
     # Use $OSTYPE built-in to avoid uname fork. $OSTYPE is darwin* on macOS.
     if [ "$environment" != "pi" ]; then
+      # shellcheck disable=SC3028
       case "${OSTYPE:-}" in
         darwin*) _shell_mise_env_append macos ;;
       esac
