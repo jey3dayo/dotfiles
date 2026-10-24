@@ -179,6 +179,18 @@ run_at_load = true
 stdout_path = "~/Library/Logs/gui-env.log"
 stderr_path = "~/Library/Logs/gui-env.log"
 
+# 過去の事故（agmsg hook 滞留 / syspolicyd 張り付き / node 暴走 / exec 遅延）の定期ヘルスチェック。
+# 正常時は ~/.cache/mac-health/health.log に 1 行追記するだけ。異常時のみ通知（詳細は docs/tools/mac-health-check.md）。
+# login shell（-l）は起動が重いので使わず、/bin/bash で直接実行する。
+[bootstrap.macos.launchd.agents.mac-health-check]
+program = "/bin/bash"
+args = ["-c", 'exec "$HOME/.config/scripts/launchd/mac-health-check.sh"']
+run_at_load = false
+start_interval = 900
+nice = 10
+stdout_path = "~/Library/Logs/mac-health-check.log"
+stderr_path = "~/Library/Logs/mac-health-check.log"
+
 # 前提: private repo jey3dayo/ai-usage-log を ~/.local/share/ai-usage-log に手動 clone する
 # （dotfiles は public のため bootstrap では自動配置しない。手順は docs/setup.md）。
 # 未配置・欠損・実行権なしの場合は状況別の復旧手順を ~/Library/Logs/ai-usage-snapshot.log に出して exit 1 する。

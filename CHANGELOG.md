@@ -1,5 +1,7 @@
 # CHANGELOG
 
+## 2026-10-24 — 過去の事故（agmsg hook滞留・syspolicyd張り付き・node暴走・exec遅延）を15分ごとに検知するmac-health-checkをmise bootstrapのLaunchAgentで追加
+
 ## 2026-10-01 — herdrをmise管理から外して公式インストーラ導入に変更し、`herdr update --handoff`でペインを維持したまま更新できるようにした
 
 ## 2026-09-23 — ドキュメントをdocs/toolsのSSOTへ集約（ツールREADMEをポインタ化、performance.mdとレビュー基準を撤去し/code-reviewへ委譲）、pam-reattachを[bootstrap.packages]へ移動

@@ -1,0 +1,30 @@
+# ========================================
+# Mac Health Check (macOS LaunchAgent: dev.mise.mac-health-check)
+# 本体: scripts/launchd/mac-health-check.sh / 定義: mise/config.macos.toml
+# ========================================
+
+["health:check"]
+description = "Mac ヘルスチェックを 1 回実行して結果行を表示（~/.cache/mac-health にログ追記のみ）"
+dir = "~/.config"
+run = "/bin/bash ./scripts/launchd/mac-health-check.sh --verbose || true"
+
+["health:test-notify"]
+description = "Mac ヘルスチェックの通知経路（osascript / webhook）をテスト送信"
+dir = "~/.config"
+run = "/bin/bash ./scripts/launchd/mac-health-check.sh --verbose --test-notify || true"
+
+["health:log"]
+description = "Mac ヘルスチェックの直近ログを表示"
+run = "tail -n ${MH_LOG_LINES:-20} \"$HOME/.cache/mac-health/health.log\""
+
+["health:status"]
+description = "Mac ヘルスチェック LaunchAgent の状態を表示（検証のみ）"
+run = "mise bootstrap macos launchd-agents status"
+
+["health:install"]
+description = "宣言済み LaunchAgent を適用して Mac ヘルスチェックを有効化（冪等）"
+run = "mise bootstrap macos launchd-agents apply --yes"
+
+["health:uninstall"]
+description = "Mac ヘルスチェック LaunchAgent を unload して plist を削除（宣言が残る限り次の bootstrap で再導入）"
+run = "mise bootstrap services remove mac-health-check"

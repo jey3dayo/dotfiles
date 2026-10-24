@@ -158,6 +158,19 @@ APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise
 
 formulae の宣言管理は `mise bootstrap packages`（`mise/config.macos.toml` の `[bootstrap.packages]`）へ移行済み。Brewfile は casks / mas / vscode と bootstrap 非対応の例外のみを保持する。dump による再生成（旧 `brewfile:backup`）は bootstrap 宣言と両立しないため廃止。現在のマシン状態との差分確認は `brewfile:diff`（report-only、Brewfile は書き換えない）を使う。formula の差分は対象外。
 
+### Health Check
+
+`health.toml` で定義（macOS のみ）。詳細は [mac-health-check.md](mac-health-check.md)。
+
+| タスク               | 説明                                                        |
+| -------------------- | ----------------------------------------------------------- |
+| `health:check`       | ヘルスチェックを 1 回実行して結果行を表示                   |
+| `health:test-notify` | 通知経路（osascript / webhook）をテスト送信                 |
+| `health:log`         | 直近ログを表示                                              |
+| `health:status`      | LaunchAgent の状態を表示（検証のみ）                        |
+| `health:install`     | 宣言済み LaunchAgent を適用（冪等）                         |
+| `health:uninstall`   | LaunchAgent を unload・plist 削除（宣言が残れば次回再導入） |
+
 ### 統合・診断
 
 `integration.toml` で定義。
