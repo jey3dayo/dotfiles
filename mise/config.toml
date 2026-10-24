@@ -5,10 +5,13 @@ env_file = '.env.local'
 experimental = true
 disable_backends = ["vfox"]
 minimum_release_age = "1d"
-minimum_release_age_excludes = ["npm:@earendil-works/pi-coding-agent", "github:yusukebe/ax"]
+minimum_release_age_excludes = [
+  "npm:@earendil-works/pi-coding-agent",
+  "github:yusukebe/ax",
+]
 
 [settings.github]
-use_git_credentials = false  # gh shim 無限再帰回避（token は entry.workstation-unix.toml が供給）
+use_git_credentials = false # gh shim 無限再帰回避（token は entry.workstation-unix.toml が供給）
 
 [settings.pipx]
 uvx = true

@@ -3,7 +3,11 @@
 [settings]
 jobs = 8
 idiomatic_version_file_enable_tools = []
-trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]  # /private/var/folders: macOS TMPDIR 配下の worktree/sandbox 用
+trusted_config_paths = [
+  "~/.config",
+  "~/src/github.com",
+  "/private/var/folders",
+] # /private/var/folders: macOS TMPDIR 配下の worktree/sandbox 用
 
 [settings.github]
 # gh keychain token 取得（shim 経由だと無限再帰、実 binary を絶対パス指定）
@@ -61,7 +65,7 @@ yq = "latest"
 
 # Rust Packages
 "cargo:similarity-css" = "0.5.0"
-"cargo:tree-sitter-cli" = { version = "0.27.1", default-features = "false" }  # WSL glibc 不整合対策: cargo backend を default-features=false で使用
+"cargo:tree-sitter-cli" = { version = "0.27.1", default-features = "false" } # WSL glibc 不整合対策: cargo backend を default-features=false で使用
 
 # NPM Packages
 "npm:@anthropic-ai/dxt" = "latest"
@@ -74,7 +78,7 @@ yq = "latest"
 "npm:vscode-json-languageserver" = "latest"
 
 [bootstrap.hooks.post-tools]
-run = "sh ~/.config/mise/lib/ensure-standalone.sh"  # claude / codex / herdr の自己更新 CLI 導入保証
+run = "sh ~/.config/mise/lib/ensure-standalone.sh" # claude / codex / herdr の自己更新 CLI 導入保証
 
 [bootstrap.hooks.final]
-run = "sh ~/.config/mise/lib/ensure-python-libs.sh"  # import ライブラリ導入保証（pipx 隔離対象外）
+run = "sh ~/.config/mise/lib/ensure-python-libs.sh" # import ライブラリ導入保証（pipx 隔離対象外）

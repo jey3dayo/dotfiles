@@ -1,7 +1,7 @@
 # CI entry (MISE_CONFIG_FILE で選択)。overlay なし（shared/workstation を読まない）。
 
 [settings]
-jobs = 4  # GitHub Actions: 2-core runners
+jobs = 4                                                                         # GitHub Actions: 2-core runners
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 
@@ -17,7 +17,7 @@ node = "lts"
 bun = "latest"
 
 # Package Managers
-"github:astral-sh/uv" = "latest"  # uvx for ruff (pipx:uv は自己参照更新で停滞）
+"github:astral-sh/uv" = "latest" # uvx for ruff (pipx:uv は自己参照更新で停滞）
 
 # Formatters / Linters
 "github:jdx/jactionlint" = "2.3.0"

@@ -7,10 +7,10 @@ node = "lts"
 
 # Package Managers
 "github:astral-sh/uv" = "latest"
-pnpm = "12"  # npm backend の package_manager。major pin のみ（各 repo の packageManager が exact 版を持つ）
+pnpm = "12"                      # npm backend の package_manager。major pin のみ（各 repo の packageManager が exact 版を持つ）
 
 # Formatters / Linters
-"github:jdx/jactionlint" = "2.3.0"  # rhysd/actionlint 後継。破壊的変更があるため pin（更新時に attestation 確認）
+"github:jdx/jactionlint" = "2.3.0" # rhysd/actionlint 後継。破壊的変更があるため pin（更新時に attestation 確認）
 biome = "latest"
 prettier = "latest"
 "pipx:beautysh" = "latest"

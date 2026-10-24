@@ -1,7 +1,7 @@
 # Raspberry Pi server entry (MISE_CONFIG_FILE で選択)。overlay は MISE_ENV 経由。
 
 [settings]
-jobs = 2  # 並列数削減でメモリスワップ回避
+jobs = 2                                                 # 並列数削減でメモリスワップ回避
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 
