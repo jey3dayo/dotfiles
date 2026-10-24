@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## 2026-10-24 — 過去の事故（agmsg hook滞留・syspolicyd張り付き・node暴走・exec遅延）を15分ごとに検知するmac-health-checkをmise bootstrapのLaunchAgentで追加
+## 2026-10-24 — 過去の事故（agmsg hook 滞留・syspolicyd 張り付き・プロセス暴走・exec 遅延）を 15 分ごとに検知する mac-health-check を mise bootstrap の LaunchAgent で追加
+
+プロセス集計は汎用化され、任意のコマンド名のプロセス数・合計 CPU を監視（node 専用閾値を廃止）。macOS 標準プロセスは除外リストで無視。webhook は Grok Bot routine 向けに Authorization ヘッダー対応。
 
 ## 2026-10-01 — herdrをmise管理から外して公式インストーラ導入に変更し、`herdr update --handoff`でペインを維持したまま更新できるようにした
 

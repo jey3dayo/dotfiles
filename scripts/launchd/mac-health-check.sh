@@ -19,20 +19,21 @@ shopt -s nullglob
 
 : "${MH_STATE_DIR:=$HOME/.cache/mac-health}"
 : "${MH_LOG:=$MH_STATE_DIR/health.log}"
-: "${MH_LOG_MAX_BYTES:=1048576}"  # health.log.1 へローテーション
-: "${MH_SYSPOLICYD_MAX:=50}"      # % CPU
-: "${MH_NODE_CPU_MAX:=80}"        # 単一 node プロセスの % CPU
-: "${MH_NODE_TOTAL_CPU_MAX:=200}" # node 合計 % CPU
-: "${MH_NODE_COUNT_MAX:=40}"      # node プロセス数
-: "${MH_CMD_TOTAL_CPU_MAX:=300}"  # 同一コマンド名の合計 % CPU（node 以外も含む）
-: "${MH_AGMSG_PROC_MAX:=0}"       # command に agmsg を含むプロセス数
-: "${MH_HOOKSCRIPT_PROC_MAX:=3}"  # session-start.sh / identities.sh の滞留数
-: "${MH_LATENCY_MAX_MS:=1000}"    # /usr/bin/true の wall time
-: "${MH_NOTIFY_COOLDOWN:=3600}"   # 同じ警告が続くときの再通知間隔（秒）
+: "${MH_LOG_MAX_BYTES:=1048576}"       # health.log.1 へローテーション
+: "${MH_SYSPOLICYD_MAX:=50}"           # syspolicyd の % CPU
+: "${MH_PROC_COUNT_MAX:=50}"           # 同一コマンド名のプロセス数
+: "${MH_PROC_CPU_MAX:=200}"            # 同一コマンド名の合計 % CPU
+: "${MH_AGMSG_PROC_MAX:=0}"            # command に agmsg を含むプロセス数
+: "${MH_HOOKSCRIPT_PROC_MAX:=3}"       # session-start.sh / identities.sh の滞留数
+: "${MH_LATENCY_MAX_MS:=1000}"         # /usr/bin/true の wall time
+: "${MH_NOTIFY_COOLDOWN:=3600}"        # 同じ警告が続くときの再通知間隔（秒）
 : "${MH_REPO_ROOTS:=$HOME/src $HOME/ghq}"
 : "${MH_CLAUDE_SETTINGS:=$HOME/.claude/settings.json}"
 : "${MH_CCSL_SETTINGS:=$HOME/.config/ccstatusline/settings.json}"
 : "${MH_WEBHOOK_ENV:=${XDG_STATE_HOME:-$HOME/.local/state}/mac-health/webhook.env}"
+
+# プロセス集計の除外リスト（macOS で多数のプロセスを持つことが正常なもの）
+: "${MH_PROC_IGNORE:=com.apple. WindowServer loginwindow launchd kernel_task}"
 
 VERBOSE=0
 TEST_NOTIFY=0
@@ -89,12 +90,20 @@ cmd_name() {
 }
 
 # ---- 1. プロセス（ps は 1 回だけ）+ コマンド名ごとの集計 ------------------------
+
+# 除外対象かチェック（MH_PROC_IGNORE のスペース区切りリストに部分一致すれば除外）
+should_ignore() {
+  local name=$1
+  local pattern
+  for pattern in $MH_PROC_IGNORE; do
+    [[ $name == *"$pattern"* ]] && return 0
+  done
+  return 1
+}
+
 agg_names=()
 agg_cpu=()
 agg_cnt=()
-node_count=0
-node_max=0
-node_total=0
 sysp=0
 agmsg_procs=0
 hook_procs=0
@@ -107,23 +116,25 @@ while read -r pid ppid pcpu cmd; do
   cpu=${cpu:-0}
   exe=${cmd%% *}
   base=${exe##*/}
-  case $base in
-    node)
-      node_count=$((node_count + 1))
-      node_total=$((node_total + cpu))
-      ((cpu > node_max)) && node_max=$cpu
-      ;;
-    syspolicyd) ((cpu > sysp)) && sysp=$cpu ;;
-  esac
+  
+  # syspolicyd は個別にチェック（頻出する張り付きパターン）
+  [[ $base == syspolicyd ]] && ((cpu > sysp)) && sysp=$cpu
+  
+  # 特定パターンの検知
   case $cmd in *agmsg*) agmsg_procs=$((agmsg_procs + 1)) ;; esac
   case $cmd in *session-start.sh* | *identities.sh*) hook_procs=$((hook_procs + 1)) ;; esac
+  
   # launchd 直下に取り残された dev サーバー（todo.txt 2026-08-21 の残タスク）。ログのみ。
   if [[ $ppid == 1 ]]; then
     case $cmd in *vite* | *workerd* | *'pnpm '*dev* | *'mise run'*) orphan_dev=$((orphan_dev + 1)) ;; esac
   fi
+  
   # 集計は CPU を使っているプロセスだけ（0% の大量プロセスで線形探索を回さない）
   ((cpu > 0)) || continue
+  
   cmd_name "$cmd"
+  should_ignore "$CMD_NAME" && continue
+  
   i=0
   n=${#agg_names[@]}
   while ((i < n)) && [[ ${agg_names[i]} != "$CMD_NAME" ]]; do i=$((i + 1)); done
@@ -153,16 +164,22 @@ for _ in 1 2 3; do
   ((bi < 0)) && break
   picked="$picked$bi "
   top="$top${agg_names[bi]}:${agg_cpu[bi]}%x${agg_cnt[bi]},"
-  if ((agg_cpu[bi] > MH_CMD_TOTAL_CPU_MAX)) && [[ ${agg_names[bi]} != node ]]; then
-    warns+=("${agg_names[bi]} total ${agg_cpu[bi]}%CPU x${agg_cnt[bi]}")
-  fi
 done
 top=${top%,}
 
+# 汎用プロセス集計チェック：全プロセスグループについてカウント閾値または CPU 閾値を確認
+i=0
+while ((i < ${#agg_names[@]})); do
+  if ((agg_cnt[i] > MH_PROC_COUNT_MAX)); then
+    warns+=("${agg_names[i]} x${agg_cnt[i]} processes")
+  fi
+  if ((agg_cpu[i] > MH_PROC_CPU_MAX)); then
+    warns+=("${agg_names[i]} total ${agg_cpu[i]}%CPU x${agg_cnt[i]}")
+  fi
+  i=$((i + 1))
+done
+
 ((sysp > MH_SYSPOLICYD_MAX)) && warns+=("syspolicyd ${sysp}%CPU")
-((node_max > MH_NODE_CPU_MAX)) && warns+=("node ${node_max}%CPU")
-((node_total > MH_NODE_TOTAL_CPU_MAX)) && warns+=("node total ${node_total}%CPU")
-((node_count > MH_NODE_COUNT_MAX)) && warns+=("node x${node_count}")
 ((agmsg_procs > MH_AGMSG_PROC_MAX)) && warns+=("agmsg procs x${agmsg_procs}")
 ((hook_procs > MH_HOOKSCRIPT_PROC_MAX)) && warns+=("hook scripts piling up x${hook_procs}")
 ((orphan_dev > 0)) && notes+=("orphan dev servers x${orphan_dev}")
@@ -260,7 +277,7 @@ for w in "${warns[@]+"${warns[@]}"}" "${notes[@]+"${notes[@]}"}"; do
   reasons="$reasons$w; "
 done
 reasons=${reasons%; }
-line="$now_iso $status lat=${lat_ms}ms sysp=$sysp node=$node_count/max${node_max}/sum${node_total} agmsgp=$agmsg_procs hookp=$hook_procs ccsl=$ccsl top=$top${reasons:+ | $reasons}"
+line="$now_iso $status lat=${lat_ms}ms sysp=$sysp agmsgp=$agmsg_procs hookp=$hook_procs ccsl=$ccsl top=$top${reasons:+ | $reasons}"
 
 if [[ -f $MH_LOG ]]; then
   size=$(/usr/bin/stat -f %z "$MH_LOG" 2>/dev/null || echo 0)
@@ -273,9 +290,10 @@ notify_desktop() {
   /usr/bin/osascript -e "display notification \"$1\" with title \"Mac health check\" sound name \"Funk\"" >/dev/null 2>&1
 }
 
-# webhook.env は source せず MH_WEBHOOK_URL= 行だけ読む。group/other から読める場合は送らない。
+# webhook.env は source せず MH_WEBHOOK_URL= / MH_WEBHOOK_AUTH_HEADER= 行だけ読む。
+# group/other から読める場合は送らない。認証ヘッダーはログに記録しない。
 notify_webhook() {
-  local url="" perm key val
+  local url="" auth_header="" perm key val
   [[ -f $MH_WEBHOOK_ENV ]] || return 0
   perm=$(/usr/bin/stat -f %Lp "$MH_WEBHOOK_ENV" 2>/dev/null)
   if [[ $perm != 600 && $perm != 400 ]]; then
@@ -283,15 +301,28 @@ notify_webhook() {
     return 0
   fi
   while IFS='=' read -r key val; do
-    [[ $key == MH_WEBHOOK_URL ]] || continue
-    val=${val%\"}
-    val=${val#\"}
-    url=$val
+    case $key in
+      MH_WEBHOOK_URL)
+        val=${val%\"}
+        val=${val#\"}
+        url=$val
+        ;;
+      MH_WEBHOOK_AUTH_HEADER)
+        val=${val%\"}
+        val=${val#\"}
+        auth_header=$val
+        ;;
+    esac
   done <"$MH_WEBHOOK_ENV"
   [[ $url == https://* ]] || return 0
   local text="[${HOSTNAME%%.*}] $1"
   # Slack (text) / Discord (content) の両方が読めるペイロード
-  /usr/bin/curl -fsS -m 10 -o /dev/null -H 'Content-Type: application/json' \
+  local curl_args=(
+    -fsS -m 10 -o /dev/null
+    -H 'Content-Type: application/json'
+  )
+  [[ -n $auth_header ]] && curl_args+=(-H "$auth_header")
+  /usr/bin/curl "${curl_args[@]}" \
     -d "{\"text\":\"$text\",\"content\":\"$text\"}" "$url" 2>>"$MH_LOG" \
     || printf '%s webhook post failed\n' "$now_iso" >>"$MH_LOG"
 }

@@ -23,20 +23,22 @@
 
 すべて `MH_*` 環境変数で上書きできる（スクリプト冒頭を参照）。
 
-| 検知                                                                                                                                                     | 既定                   | 動作     |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
-| syspolicyd の CPU                                                                                                                                        | > 50%                  | 通知     |
-| node 単体 / 合計 CPU / プロセス数                                                                                                                        | > 80% / > 200% / > 40  | 通知     |
-| 同一コマンド名の合計 CPU（node 以外）                                                                                                                    | > 300%                 | 通知     |
-| agmsg を含むプロセス                                                                                                                                     | > 0                    | 通知     |
-| `session-start.sh` / `identities.sh` の滞留                                                                                                              | > 3                    | 通知     |
-| agmsg hook の復活（`~/.claude/settings*.json`、`~/.codex/hooks.json`、`~/src` `~/ghq` 配下 repo の `.claude/settings.local.json` / `.codex/hooks.json`） | 1 件以上               | 通知     |
-| orca hook の復活（`~/.claude/settings.json`）                                                                                                            | 1 件以上               | 通知     |
-| statusLine が shim / `mise x` / `npx` / `bunx` 経由                                                                                                      | 該当                   | 通知     |
-| ccstatusline widget 数                                                                                                                                   | 初回値（baseline）超過 | 通知     |
-| `/usr/bin/true` の起動時間                                                                                                                               | > 1000ms               | 通知     |
-| `"model"` が opus                                                                                                                                        | 該当                   | ログのみ |
-| launchd 直下の dev サーバー（vite / workerd 等）                                                                                                         | 1 件以上               | ログのみ |
+| 検知                                                                                                                                                     | 既定            | 動作     |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- | -------- |
+| syspolicyd の CPU                                                                                                                                        | > 50%           | 通知     |
+| 任意のコマンド名のプロセス数                                                                                                                             | > 50            | 通知     |
+| 任意のコマンド名の合計 CPU                                                                                                                               | > 200%          | 通知     |
+| agmsg を含むプロセス                                                                                                                                     | > 0             | 通知     |
+| `session-start.sh` / `identities.sh` の滞留                                                                                                              | > 3             | 通知     |
+| agmsg hook の復活（`~/.claude/settings*.json`、`~/.codex/hooks.json`、`~/src` `~/ghq` 配下 repo の `.claude/settings.local.json` / `.codex/hooks.json`） | 1 件以上        | 通知     |
+| orca hook の復活（`~/.claude/settings.json`）                                                                                                            | 1 件以上        | 通知     |
+| statusLine が shim / `mise x` / `npx` / `bunx` 経由                                                                                                      | 該当            | 通知     |
+| ccstatusline widget 数                                                                                                                                   | 初回値超過      | 通知     |
+| `/usr/bin/true` の起動時間                                                                                                                               | > 1000ms        | 通知     |
+| `"model"` が opus                                                                                                                                        | 該当            | ログのみ |
+| launchd 直下の dev サーバー（vite / workerd 等）                                                                                                         | 1 件以上        | ログのみ |
+
+プロセス集計から除外されるもの（`MH_PROC_IGNORE`）: `com.apple.`, `WindowServer`, `loginwindow`, `launchd`, `kernel_task`
 
 ccstatusline の widget を意図して増やした場合は `~/.cache/mac-health/ccstatusline.baseline` を削除すると次回実行値が新しい baseline になる。
 
@@ -44,11 +46,15 @@ ccstatusline の widget を意図して増やした場合は `~/.cache/mac-healt
 
 - macOS 通知（osascript）と、`webhook.env` があれば webhook POST（Slack の `text` / Discord の `content` 両対応）
 - 新しい種類の警告が増えたときに即通知。同じ警告が続く間は 1 時間に 1 回まで（`MH_NOTIFY_COOLDOWN`）。数値の変化（`node x69` → `x70`）だけでは再通知しない
-- `webhook.env` は `source` せず `MH_WEBHOOK_URL=` 行だけ読む。`600` / `400` 以外の権限なら送信しない
+- `webhook.env` は `source` せず `MH_WEBHOOK_URL=` と `MH_WEBHOOK_AUTH_HEADER=` 行だけ読む。`600` / `400` 以外の権限なら送信しない
+- 認証ヘッダーはログに記録されない
 
 ```bash
 mkdir -p ~/.local/state/mac-health
-umask 077 && printf 'MH_WEBHOOK_URL=%s\n' 'https://hooks.example/...' > ~/.local/state/mac-health/webhook.env
+umask 077 && cat > ~/.local/state/mac-health/webhook.env <<'EOF'
+MH_WEBHOOK_URL=https://hooks.example/...
+MH_WEBHOOK_AUTH_HEADER=Authorization: Bearer your-token-here
+EOF
 ```
 
 ## 導入・確認・撤去
