@@ -330,8 +330,8 @@ mise uninstall node@18
 ```toml
 # .mise.toml in project root
 [tools]
-node = "18.20.0"         # Pin specific version for project
-"npm:typescript" = "5.3.3"
+node = "<version>"           # プロジェクト側で版を固定する
+"npm:typescript" = "<version>"
 ```
 
 ## Maintenance
