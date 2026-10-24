@@ -38,6 +38,7 @@ owner: dotfiles
 | 定期運用・日常メンテナンス・横断トラブル | `docs/tools/workflows.md`                                     |
 | セキュリティ運用                         | `docs/security.md`                                            |
 | ツール別詳細                             | `docs/tools/*.md`                                             |
+| ツールのバージョン・pin                  | `mise/*.toml`（docs にはバージョン番号を書かず、pin の理由だけ書く） |
 | ドキュメント運用ルール                   | `docs/documentation.md`                                       |
 
 `README.md`、`docs/README.md`、`llms.md` はナビゲーション文書であり、正本の代替にしません。
