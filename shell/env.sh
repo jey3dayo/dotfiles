@@ -107,6 +107,7 @@ _shell_bootstrap_mise_env() {
     if [ "$environment" != "pi" ]; then
       case "${OSTYPE:-}" in
         darwin*) _shell_mise_env_append macos ;;
+        "") [ "$(uname -s 2>/dev/null)" = "Darwin" ] && _shell_mise_env_append macos ;;
       esac
     fi
     case "$environment" in
