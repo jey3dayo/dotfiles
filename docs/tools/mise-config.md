@@ -68,7 +68,7 @@ pnpm = "12"
 
 ### 3. Formatters and Linters
 
-**実際のバージョンは `mise/config.shared.toml` および各 entry ファイルが正本です。**
+> 実際のバージョンは `mise/config.shared.toml` および各 entry ファイルが正本です。
 
 ```toml
 [tools]
@@ -139,7 +139,7 @@ yamllint = "latest"
 
 ### 5. Cargo-based Tools
 
-**実際のバージョンは `mise/config.workstation.toml` および `mise/entry.workstation-unix.toml` が正本です。**
+> 実際のバージョンは `mise/config.workstation.toml` および `mise/entry.workstation-unix.toml` が正本です。
 
 ```toml
 [tools]
@@ -157,7 +157,7 @@ yamllint = "latest"
 
 ### 6. CLI Tools
 
-**実際のバージョンは各 mise ファイルが正本です。** 一部のツールは固定版を使用（理由は mise ファイルのコメント参照）。
+> 実際のバージョンは各 mise ファイルが正本です。一部のツールは固定版を使用（理由は mise ファイルのコメント参照）。
 
 ```toml
 [tools]
