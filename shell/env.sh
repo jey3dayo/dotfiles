@@ -29,7 +29,7 @@ _shell_is_raspberry_pi() (
   fi
 
   case "$arch" in
-    aarch64 | arm64 | armv7l | armv6l) ;;
+    aarch64 | arm64 | arm | armv7l | armv6l) ;;
     *) return 1 ;;
   esac
 

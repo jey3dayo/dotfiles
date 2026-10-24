@@ -32,7 +32,10 @@ else
       _append_mise_env shared
       ;;
     *)
-      [ "$(uname -s 2>/dev/null)" = "Darwin" ] && _append_mise_env macos
+      # Use $OSTYPE built-in to avoid uname fork. $OSTYPE is darwin* on macOS.
+      case "${OSTYPE:-}" in
+        darwin*) _append_mise_env macos ;;
+      esac
       _append_mise_env shared
       _append_mise_env workstation
       ;;
