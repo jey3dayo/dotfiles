@@ -1,7 +1,6 @@
-# Windows ワークステーションの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
+# Windows workstation entry (MISE_CONFIG_FILE で選択)。overlay は MISE_ENV 経由。
 
 [settings]
-# 共通 settings（env_file / experimental / settings.npm.package_manager 等）は config.toml 側に定義（詳細は mise/README.md）
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 windows_default_inline_shell_args = "cmd /c"
@@ -14,7 +13,7 @@ MD_EXCLUDES = "#node_modules #.worktrees #.apm/skills #.claude/skills #.claude/w
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 [tools]
-# Common tools are loaded from the shared / workstation overlays when MISE_ENV includes them.
+# Windows 専用 tools（Unix 版は shared/workstation overlay から取得）
 "aqua:koalaman/shellcheck" = "latest"
 "aqua:mvdan/sh" = "latest"
 "pipx:yamllint" = "latest"

@@ -1,25 +1,14 @@
-# 環境共通設定。tools は config.shared.toml（MISE_ENV=shared）または OS 別ファイルで定義する。
-# config.toml は settings / env / dotfiles 専用で、[tools] を置かない。
+# 環境共通設定。tools は overlay ファイル（config.shared.toml / config.workstation.toml）または entry 別で定義。
 
 [settings]
 env_file = '.env.local'
 experimental = true
-# jobs / idiomatic_version_file_enable_tools は OS 別ファイルで定義
-# （ここに置くと OS 別ファイルより優先されてしまう）
 disable_backends = ["vfox"]
-# サプライチェーン対策: リリース直後のバージョンへの upgrade を抑止する
 minimum_release_age = "1d"
-minimum_release_age_excludes = [
-  "npm:@earendil-works/pi-coding-agent",
-  "github:yusukebe/ax",
-]
+minimum_release_age_excludes = ["npm:@earendil-works/pi-coding-agent", "github:yusukebe/ax"]
 
 [settings.github]
-# 有効にしない。mise が実行する `git credential fill` は github.com では
-# `!gh auth git-credential` だけを呼び、その gh は mise shim なので無限再帰する。
-# トークンは entry.workstation-unix.toml の github.credential_command が供給する
-# （gh は keyring 保管のため gh_cli_tokens の hosts.yml 経路では取得できない）。
-use_git_credentials = false
+use_git_credentials = false  # gh shim 無限再帰回避（token は entry.workstation-unix.toml が供給）
 
 [settings.pipx]
 uvx = true
@@ -31,21 +20,14 @@ package_manager = "pnpm"
 _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
 MD_GLOB = "**/*.md"
-# MD_EXCLUDES は markdownlint の否定パターン。`#` 前置のためシェルの pathname expansion で展開されない。
 MD_EXCLUDES = "#node_modules #fisher #zsh/.zinit #.worktrees #.apm/skills #.claude/skills #.claude/worktrees #.codex/skills #result #result-* #tmp #.kiro #opencode/agents/*.md #opencode/commands/*.md"
-# TASK_EXCLUDES はタスク側で unquoted 展開して fd の引数列にするため、glob 文字を含めてはならない。
-# 含めると実ファイルへ pathname expansion され、`--exclude` と値のペアが崩れて fd が余りを検索パスと解釈する。
-# result / result-* は .gitignore が担うので fd 側の除外は不要。ディレクトリ単位の除外はルート起点で書く。
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
-# OS 非依存の dotfiles 配布（mise bootstrap / mise dotfiles apply で適用）
-# macOS 専用分は config.macos.toml に定義（MISE_ENV=macos でロード）
 [dotfiles]
 "~/.zshenv" = { source = "~/.config/home/.zshenv", mode = "symlink" }
 "~/.bashrc" = { source = "~/.config/bash/.bashrc", mode = "symlink" }
 "~/.bash_profile" = { source = "~/.config/bash/.bash_profile", mode = "symlink" }
 "~/.ssh/config" = { source = "~/.config/ssh/config", mode = "symlink" }
 "~/.terraformrc" = { source = "~/.config/terraform/terraformrc", mode = "symlink" }
-# symlink を拒否する CLI 向けは copy
 "~/.aicommits" = { source = "~/.config/.aicommits", mode = "copy" }
 "~/.opencommit" = { source = "~/.config/opencommit/.opencommit", mode = "copy" }
