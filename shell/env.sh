@@ -14,9 +14,19 @@ _shell_bootstrap_xdg_env() {
 }
 
 _shell_is_raspberry_pi() (
-  arch="$(uname -m 2>/dev/null || printf '')"
+  # shellcheck disable=SC3028
+  # Use shell built-ins to avoid uname fork.
+  if [ -n "${ZSH_VERSION:-}" ]; then
+    arch="${CPUTYPE:-}"
+  elif [ -n "${BASH_VERSION:-}" ]; then
+    arch="${MACHTYPE%%-*}"
+  else
+    arch="$(uname -m 2>/dev/null || printf '')"
+  fi
+
+  # arm: 32-bit Pi bash MACHTYPE starts with 'arm-'.
   case "$arch" in
-    aarch64 | armv7l | armv6l) ;;
+    aarch64 | arm64 | arm | armv7l | armv6l) ;;
     *) return 1 ;;
   esac
 
@@ -40,11 +50,11 @@ _shell_is_raspberry_pi() (
 
 _shell_detect_mise_environment() {
   if [ -n "${CI:-}" ] || [ -n "${GITHUB_ACTIONS:-}" ]; then
-    printf '%s\n' "ci"
+    __mise_environment="ci"
   elif _shell_is_raspberry_pi; then
-    printf '%s\n' "pi"
+    __mise_environment="pi"
   else
-    printf '%s\n' "default"
+    __mise_environment="default"
   fi
 }
 
@@ -71,7 +81,9 @@ _shell_bootstrap_mise_env() {
   esac
 
   if [ -z "${MISE_CONFIG_FILE:-}" ]; then
-    environment="$(_shell_detect_mise_environment)"
+    _shell_detect_mise_environment
+    environment="$__mise_environment"
+    unset __mise_environment
     case "$environment" in
       default) mise_entry="entry.workstation-unix.toml" ;;
       windows) mise_entry="entry.workstation-windows.toml" ;;
@@ -91,8 +103,12 @@ _shell_bootstrap_mise_env() {
 
   # CI は entry.ci.toml だけを使い、shared/workstation/default の tools を追加しない。
   if [ "$environment" != "ci" ]; then
-    if [ "$environment" != "pi" ] && [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
-      _shell_mise_env_append macos
+    # shellcheck disable=SC3028
+    if [ "$environment" != "pi" ]; then
+      case "${OSTYPE:-}" in
+        darwin*) _shell_mise_env_append macos ;;
+        "") [ "$(uname -s 2>/dev/null)" = "Darwin" ] && _shell_mise_env_append macos ;;
+      esac
     fi
     case "$environment" in
       default | windows)
