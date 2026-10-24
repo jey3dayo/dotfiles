@@ -13,7 +13,7 @@ pnpm = "12"
 
 # Formatters / Linters
 # 本家 rhysd/actionlint は 2026-04 以降停止したため後継の jactionlint へ。リリースが速く破壊的変更もあるので版を固定し、更新時に attestation を確認する
-"github:jdx/jactionlint" = "2.1.0"
+"github:jdx/jactionlint" = "2.3.0"
 biome = "latest"
 prettier = "latest"
 "pipx:beautysh" = "latest"
