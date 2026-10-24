@@ -69,7 +69,6 @@ yq = "latest"
 "go:golang.org/x/tools/cmd/goimports" = "0.52.0"
 
 # Rust CLI（typos-lsp は Homebrew で管理）
-"aqua:getsentry/sentry-cli" = "latest"
 "cargo:similarity-css" = "0.5.0"
 # WSL では公式配布バイナリが glibc 不整合で壊れることがあるため,
 # prebuilt backend ではなく cargo backend を使う.
