@@ -39,7 +39,6 @@ else
       _append_mise_env shared
       ;;
     *)
-      # Use $OSTYPE built-in to avoid uname fork. $OSTYPE is darwin* on macOS.
       # shellcheck disable=SC3028
       case "${OSTYPE:-}" in
         darwin*) _append_mise_env macos ;;
