@@ -304,11 +304,11 @@ mise outdated
 mise activate zsh
 
 # Install specific tool
-mise use node@<version>
+mise use node@lts
 mise use "npm:prettier@latest"
 
 # Remove tool
-mise uninstall node@<version>
+mise uninstall node@20
 ```
 
 ## Integration Points
