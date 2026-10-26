@@ -33,14 +33,15 @@ else
       *) MISE_ENV="${MISE_ENV:+$MISE_ENV,}$token" ;;
     esac
   }
-  # Default workstation: workstation-unix,macos,shared,workstation
-  _append_mise_env workstation-unix
+  # Default workstation: [macos,]bun,shared,workstation,workstation-unix (entry last wins)
   # shellcheck disable=SC3028
   case "${OSTYPE:-}" in
     darwin*) _append_mise_env macos ;;
   esac
+  _append_mise_env bun
   _append_mise_env shared
   _append_mise_env workstation
+  _append_mise_env workstation-unix
   export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
   export ZDOTDIR GIT_CONFIG_GLOBAL MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_DIR MISE_ENV
   unset -f _append_mise_env

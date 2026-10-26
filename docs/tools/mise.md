@@ -29,20 +29,20 @@ mise設定は環境別ファイルで管理されています:
 - `mise/config.workstation.toml` - Pi / CI 以外の開発機（macOS/Linux/WSL2 と Windows）の共通 tools（`MISE_ENV` に `workstation` が含まれる場合のみ）
 - `mise/config.workstation-unix.toml` - デフォルト（macOS/Linux/WSL2）の機種固有 tools
   - jobs = 8（デスクトップ/ワークステーション向け）
-  - `MISE_ENV=workstation-unix,macos,shared,workstation` で shared / workstation overlays と組み合わせる
+  - `MISE_ENV=macos,bun,shared,workstation,workstation-unix` で bun / shared / workstation overlays と組み合わせる（Linux/WSL2 は macos なし）
 
 - `mise/config.workstation-windows.toml` - Windows 機種固有 tools
-  - `MISE_ENV=workstation-windows,shared,workstation` で shared / workstation overlays と組み合わせる
+  - `MISE_ENV=bun,shared,workstation,workstation-windows` で bun / shared / workstation overlays と組み合わせる
   - `aws-cli` は現行の `mise` backend で Windows 非対応のため除外
   - `jobs` は未設定（mise のデフォルトに従う）
 
 - `mise/config.server-pi.toml` - Raspberry Pi（ARMサーバー環境）機種固有 tools
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
-  - `MISE_ENV=server-pi,shared` で shared overlay と組み合わせる最小ツールセット（npm軽量版、cargo全除外）
+  - `MISE_ENV=shared,server-pi` で shared overlay と組み合わせる最小ツールセット（npm軽量版、cargo全除外）
 
 - `mise/config.ci.toml` - CI/CD（GitHub Actions最適化）
   - jobs = 4（GitHub Actions runners: 2コア）
-  - `MISE_ENV=ci` で単独使用（overlay なし）
+  - `MISE_ENV=bun,ci` で使用（bun 以外の overlay なし）
   - CI必須ツールのみ（formatters, linters, npm packages, CLI tools）
   - 大幅に削減されたツールセットで高速インストール
   - 除外: 全language runtimes（Actions提供）、開発ツール、MCP/Claude/Cloudツール
@@ -59,7 +59,7 @@ mise設定は環境別ファイルで管理されています:
 
 directory-local → user config (`mise/config.toml`) → environment-specific (via `MISE_CONFIG_DIR` + `MISE_ENV`) → global defaults
 
-実挙動: `MISE_CONFIG_DIR` が指すディレクトリから、`MISE_ENV` に含まれる各 config ファイル（例: `workstation-unix,macos,shared,workstation` なら config.workstation-unix.toml, config.macos.toml, config.shared.toml, config.workstation.toml）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
+実挙動: `MISE_CONFIG_DIR` が指すディレクトリから、`MISE_ENV` に含まれる各 config ファイル（例: `macos,bun,shared,workstation,workstation-unix` なら config.macos.toml, config.bun.toml, config.shared.toml, config.workstation.toml, config.workstation-unix.toml。後ろほど優先）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
 
 運用ルール: OS 間で値が異なる設定（例: `idiomatic_version_file_enable_tools`, `jobs`, `trusted_config_paths`）は `config.toml` に置かない。`config.toml` は全環境で同一値の共通設定のみを置く。
 
@@ -183,17 +183,17 @@ mise は `MISE_CONFIG_FILE` が指す environment-specific config を使用す�
 
 ### Auto-detection via shell startup
 
-`zsh/.zshenv`（`scripts/env-detect.sh` 相当の判定）が `MISE_CONFIG_FILE` を設定する:
+`shell/env.sh`（`zsh/.zshenv` / `bash/.bashrc` は同じ判定のフォールバック）が `MISE_CONFIG_DIR` と `MISE_ENV` を設定する:
 
-- CI/CD: Uses `mise/entry.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
-- Default (macOS/Linux/WSL2): Uses `mise/entry.workstation-unix.toml` + `MISE_ENV=shared,workstation`
-- Raspberry Pi: Uses `mise/entry.server-pi.toml` + `MISE_ENV=shared` (ARM/minimal exclusions remain)
+- CI/CD: `MISE_ENV=bun,ci` when `CI=true` or `GITHUB_ACTIONS=true`
+- Default (macOS/Linux/WSL2): `MISE_ENV=[macos,]bun,shared,workstation,workstation-unix`
+- Raspberry Pi: `MISE_ENV=shared,server-pi` (ARM/minimal exclusions remain)
 
 Priority: CI > Raspberry Pi > Default
 
 ### Windows
 
-Windows: `MISE_ENV=workstation-windows,shared,workstation` set by `windows/setup.ps1` and the PowerShell profile
+Windows: `MISE_ENV=bun,shared,workstation,workstation-windows` set by `windows/setup.ps1` and the PowerShell profile
 
 #### Related: Chocolatey manifests
 
