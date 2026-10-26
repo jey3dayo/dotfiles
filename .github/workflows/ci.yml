@@ -76,8 +76,6 @@ jobs:
       # CI-optimized config selection via MISE_ENV (entry goes last so entry settings win)
       # Uses standard global config discovery (~/.config/mise/config.<env>.toml)
       MISE_ENV: "bun,ci"
-      # Do not inherit shared/workstation overlays when Actions runs under a configured shell.
-      MISE_ENV: ""
       # This repository defines tasks in `.mise.toml`; force mise to resolve that filename.
       # `MISE_DEFAULT_CONFIG_FILENAME` is for older mise versions.
       MISE_DEFAULT_CONFIG_FILENAME: ".mise.toml"

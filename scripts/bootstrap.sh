@@ -247,7 +247,7 @@ show_next_steps() {
 
   printf "%b\n" "${BOLD}${BLUE}3.${NC} ${BOLD}Converge the machine via mise bootstrap${NC}:"
   printf "%b\n" "   ${YELLOW}export MISE_CONFIG_DIR=\"\$HOME/.config/mise\""
-  printf "%b\n" "   export MISE_ENV=workstation-unix,macos,shared,workstation"
+  printf "%b\n" "   export MISE_ENV=macos,bun,shared,workstation,workstation-unix"
   printf "%b\n" "   mise trust && mise bootstrap --yes${NC}"
   printf "\n"
 

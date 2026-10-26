@@ -92,15 +92,6 @@ const settingsFrom = (overrides: NodeJS.ProcessEnv, cwd = repoRoot): Map<string,
   return settings;
 };
 
-const whichTool = (tool: string, overrides: NodeJS.ProcessEnv, cwd = repoRoot): string | null => {
-  const result = spawnSync("mise", ["which", tool], {
-    cwd,
-    encoding: "utf8",
-    env: { ...cleanMiseEnv(), ...overrides },
-  });
-  return result.status === 0 ? result.stdout.trim() : null;
-};
-
 const hasConfig = (paths: string[], file: string): boolean => paths.some((entry) => entry.endsWith(`/mise/${file}`));
 
 describe("mise config layout and tool isolation", () => {
