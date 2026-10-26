@@ -8,14 +8,14 @@ tags:
   - layer/support
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-09-23
+timestamp: 2026-10-26
 audience: developer
 owner: dotfiles
 ---
 
 # Documentation Governance
 
-最終更新: 2026-09-23
+最終更新: 2026-10-26
 対象: 開発者
 タグ: `category/documentation`, `layer/support`, `environment/cross-platform`, `audience/developer`
 

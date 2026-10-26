@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-09-23
+最終更新: 2026-10-26
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
