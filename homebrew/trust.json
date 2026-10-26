@@ -1,6 +1,7 @@
 {
   "trustedformulae": [
     "daipeihust/tap/im-select",
+    "lambdalisue/cclens/cclens",
     "olets/tap/zsh-abbr@6",
     "perman/tap/perman-aws-vault",
     "steipete/tap/peekaboo",
