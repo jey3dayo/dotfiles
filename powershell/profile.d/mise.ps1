@@ -1,13 +1,10 @@
 # Shared mise bootstrap for PowerShell on Windows.
 #
-# Use MISE_CONFIG_DIR to discover all configs globally, and MISE_ENV to select the machine type and overlays.
-$windowsMiseConfigDir = Join-Path $env:USERPROFILE ".config\mise"
-if (-not $env:MISE_CONFIG_DIR -and (Test-Path -LiteralPath $windowsMiseConfigDir)) {
-  $env:MISE_CONFIG_DIR = $windowsMiseConfigDir
-}
-# Windows: workstation-windows,shared,workstation
+# MISE_ENV selects machine type and overlays (entry goes last so entry settings win).
+# Uses standard global config discovery (~/.config/mise/config.<env>.toml).
+# Windows: bun,shared,workstation,workstation-windows
 $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
-foreach ($requiredToken in @("workstation-windows", "shared", "workstation")) {
+foreach ($requiredToken in @("bun", "shared", "workstation", "workstation-windows")) {
   if ($miseEnvironmentTokens -notcontains $requiredToken) {
     $miseEnvironmentTokens += $requiredToken
   }

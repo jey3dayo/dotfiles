@@ -71,39 +71,54 @@ _shell_mise_env_append() {
 _shell_bootstrap_mise_env() {
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
-  : "${MISE_CONFIG_DIR:=${XDG_CONFIG_HOME}/mise}"
-  export MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_DIR
+  export MISE_DATA_DIR MISE_CACHE_DIR
 
   _shell_detect_mise_environment
   environment="$__mise_environment"
   unset __mise_environment
 
-  # Build MISE_ENV from environment type
-  # CI: ci only (no overlays)
-  # Pi: server-pi,shared
-  # Default/Windows: <machine>,<os-overlay>,shared,workstation
+  # Build MISE_ENV: entry goes last so entry-specific settings win.
+  # Uses standard global config discovery (~/.config/mise/config.<env>.toml)
+  # CI: bun,ci
+  # Pi: shared,server-pi
+  # macOS: macos,bun,shared,workstation,workstation-unix
+  # Linux/WSL: bun,shared,workstation,workstation-unix
+  # Windows: bun,shared,workstation,workstation-windows
   case "$environment" in
     ci)
+      _shell_mise_env_append bun
       _shell_mise_env_append ci
       ;;
     pi)
-      _shell_mise_env_append server-pi
       _shell_mise_env_append shared
+      _shell_mise_env_append server-pi
       ;;
     default)
-      _shell_mise_env_append workstation-unix
       # shellcheck disable=SC3028
       case "${OSTYPE:-}" in
-        darwin*) _shell_mise_env_append macos ;;
-        "") [ "$(uname -s 2>/dev/null)" = "Darwin" ] && _shell_mise_env_append macos ;;
+        darwin*)
+          _shell_mise_env_append macos
+          _shell_mise_env_append bun
+          ;;
+        "")
+          if [ "$(uname -s 2>/dev/null)" = "Darwin" ]; then
+            _shell_mise_env_append macos
+          fi
+          _shell_mise_env_append bun
+          ;;
+        *)
+          _shell_mise_env_append bun
+          ;;
       esac
       _shell_mise_env_append shared
       _shell_mise_env_append workstation
+      _shell_mise_env_append workstation-unix
       ;;
     windows)
-      _shell_mise_env_append workstation-windows
+      _shell_mise_env_append bun
       _shell_mise_env_append shared
       _shell_mise_env_append workstation
+      _shell_mise_env_append workstation-windows
       ;;
   esac
 

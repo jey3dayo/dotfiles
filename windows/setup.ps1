@@ -147,16 +147,15 @@ if (-not (Test-Path -LiteralPath $windowsMiseConfig)) {
   throw "Windows mise config not found: $windowsMiseConfig"
 }
 
-$env:MISE_CONFIG_DIR = Split-Path -Parent $windowsMiseConfig
 $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
-# Windows: workstation-windows,shared,workstation
-foreach ($requiredToken in @("workstation-windows", "shared", "workstation")) {
+# Windows: bun,shared,workstation,workstation-windows (entry goes last so entry settings win)
+foreach ($requiredToken in @("bun", "shared", "workstation", "workstation-windows")) {
   if ($miseEnvironmentTokens -notcontains $requiredToken) {
     $miseEnvironmentTokens += $requiredToken
   }
 }
 $env:MISE_ENV = ($miseEnvironmentTokens -join ",")
-Write-Host "Installing mise-managed Windows tools from $env:MISE_CONFIG_DIR..."
+Write-Host "Installing mise-managed Windows tools using standard global config discovery..."
 & $miseExe install
 if ($LASTEXITCODE -ne 0) {
   throw "mise install failed."
@@ -164,5 +163,4 @@ if ($LASTEXITCODE -ne 0) {
 Ensure-StandaloneCli
 
 Write-Host "Windows bootstrap complete."
-Write-Host "MISE_CONFIG_DIR=$env:MISE_CONFIG_DIR"
 Write-Host "MISE_ENV=$env:MISE_ENV"

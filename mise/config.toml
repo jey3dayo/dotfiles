@@ -1,11 +1,12 @@
-# 環境共通設定。tools は config.shared.toml（MISE_ENV=shared）または OS 別ファイルで定義する。
-# config.toml は settings / env / dotfiles 専用で、[tools] を置かない。
+# 環境共通 settings、env、dotfiles（[tools] は置かない）
+# tools は conf.d/00-tools-common.toml（全環境共通）と MISE_ENV overlay で定義
+# 各 entry（config.workstation-unix.toml 等）で設定された jobs や credential_command が優先される
 
 [settings]
 env_file = '.env.local'
 experimental = true
-# jobs / idiomatic_version_file_enable_tools は OS 別ファイルで定義
-# （ここに置くと OS 別ファイルより優先されてしまう）
+# jobs, idiomatic_version_file_enable_tools, credential_command は各 entry file で定義
+# （entry が MISE_ENV で最後にロードされるため entry 値が優先される）
 disable_backends = ["vfox"]
 # サプライチェーン対策: リリース直後のバージョンへの upgrade を抑止する
 minimum_release_age = "1d"

@@ -1,0 +1,4 @@
+# bun は Pi 以外のすべての環境で使用（MISE_ENV=bun で選択）
+
+[tools]
+bun = "latest"

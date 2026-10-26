@@ -1,29 +1,16 @@
-# macOS/Linux/WSL2、Windows、Raspberry Pi の共通 tools。
+# macOS/Linux/WSL2、Windows、Raspberry Pi の共通 tools（全環境共通の tools は conf.d/00-tools-common.toml）
 # MISE_ENV に shared が含まれる環境だけでロードする。
 
 [tools]
 # Language Runtimes
 go = "latest"
-node = "lts"
 
 # Package Managers
-"github:astral-sh/uv" = "latest"
 # pnpm は npm backend の package_manager として必須。loose major pin にし、正確な版は各 repo の package.json packageManager が持つ
 pnpm = "12"
 
-# Formatters / Linters
-# 破壊的変更があるため版を固定（更新時は attestation を確認）
-"github:jdx/jactionlint" = "2.3.0"
-biome = "latest"
-prettier = "latest"
-"pipx:beautysh" = "latest"
-stylua = "latest"
-taplo = "latest"
-
 # CLI Tools
 eza = "latest"
-fd = "latest"
-gitleaks = "latest"
 "github:cli/cli" = "latest"
 "github:pranshuparmar/witr" = "latest"
 jq = "latest"
@@ -36,11 +23,8 @@ yazi = "latest"
 "npm:@sasazame/ccresume" = "latest"
 "npm:@upstash/context7-mcp" = "latest"
 "npm:aicommits" = "latest"
-"npm:markdown-link-check" = "latest"
-"npm:markdownlint-cli2" = "latest"
 "npm:npm-check-updates" = "latest"
 "npm:o3-search-mcp" = "latest"
 "npm:opencommit" = "latest"
 "npm:textlint" = "latest"
 "npm:textlint-rule-preset-ja-technical-writing" = "latest"
-"npm:tsx" = "latest"
