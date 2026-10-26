@@ -26,15 +26,24 @@ else
       *) MISE_ENV="${MISE_ENV:+$MISE_ENV,}$token" ;;
     esac
   }
-  # Default workstation: [macos,]bun,shared,workstation,workstation-unix (entry last wins)
-  # shellcheck disable=SC3028
-  case "${OSTYPE:-}" in
-    darwin*) _append_mise_env macos ;;
-  esac
-  _append_mise_env bun
-  _append_mise_env shared
-  _append_mise_env workstation
-  _append_mise_env workstation-unix
+  # Same selection as shell/env.sh (entry last wins):
+  # CI: bun,ci / Pi: shared,server-pi / default: [macos,]bun,shared,workstation,workstation-unix
+  if [ -n "${CI:-}" ] || [ -n "${GITHUB_ACTIONS:-}" ]; then
+    _append_mise_env bun
+    _append_mise_env ci
+  elif grep -qsE 'Raspberry Pi|BCM27|BCM283' /proc/cpuinfo; then
+    _append_mise_env shared
+    _append_mise_env server-pi
+  else
+    # shellcheck disable=SC3028
+    case "${OSTYPE:-}" in
+      darwin*) _append_mise_env macos ;;
+    esac
+    _append_mise_env bun
+    _append_mise_env shared
+    _append_mise_env workstation
+    _append_mise_env workstation-unix
+  fi
   export MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_DIR MISE_ENV
   unset -f _append_mise_env
 
