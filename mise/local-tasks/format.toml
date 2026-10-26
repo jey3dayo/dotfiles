@@ -5,6 +5,7 @@
 # 各タスクは環境変数で対象ファイルを限定可能
 
 ["format:biome"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "JS/TS/JSON ファイルをフォーマット + Biome lint の安全な自動修正（BIOME_FILES で対象を限定可能）"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
@@ -17,6 +18,7 @@ fi
 """
 
 ["format:biome:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "JS/TS/JSON ファイルのフォーマット + lint チェック（書き込みなし、BIOME_FILES で対象を限定可能）"
 run = """
 if [ -n "${BIOME_FILES:-}" ]; then
@@ -27,6 +29,7 @@ fi
 """
 
 ["format:prettier"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Prettier でファイルをフォーマット（PRETTIER_FILES で対象を限定可能）"
 run = """
 if [ -n "${PRETTIER_FILES:-}" ]; then
@@ -37,6 +40,7 @@ fi
 """
 
 ["format:prettier:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Prettier フォーマットチェック（書き込みなし、PRETTIER_FILES で対象を限定可能）"
 run = """
 if [ -n "${PRETTIER_FILES:-}" ]; then
@@ -47,10 +51,12 @@ fi
 """
 
 ["format:markdown"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Markdown ファイルをフォーマット"
 depends = ["format:markdown:bold-headings", "format:markdownlint"]
 
 ["format:markdownlint"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Markdownlint + Prettier で Markdown をフォーマット"
 run = [
   "markdownlint-cli2 --fix \"${MD_GLOB}\" ${MD_EXCLUDES}",
@@ -58,10 +64,12 @@ run = [
 ]
 
 ["format:markdown:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Markdown ファイルのフォーマットチェック（書き込みなし）"
 depends = ["format:markdown:bold-headings:check", "format:markdownlint:check"]
 
 ["format:markdownlint:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Markdownlint + Prettier の Markdown チェック（書き込みなし）"
 run = [
   "markdownlint-cli2 \"${MD_GLOB}\" ${MD_EXCLUDES}",
@@ -69,6 +77,7 @@ run = [
 ]
 
 ["format:yaml"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"
 run = """
 if [ -n "${YAML_FILES:-}" ]; then
@@ -79,6 +88,7 @@ fi
 """
 
 ["format:yaml:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "YAML ファイルのフォーマットチェック（書き込みなし、YAML_FILES で対象を限定可能）"
 run = """
 if [ -n "${YAML_FILES:-}" ]; then
@@ -89,6 +99,7 @@ fi
 """
 
 ["format:lua"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Lua ファイルをフォーマット（LUA_FILES で対象を限定可能）"
 run = """
 if [ -n "${LUA_FILES:-}" ]; then
@@ -99,6 +110,7 @@ fi
 """
 
 ["format:lua:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Lua ファイルのフォーマットチェック（書き込みなし、LUA_FILES で対象を限定可能）"
 run = """
 if [ -n "${LUA_FILES:-}" ]; then
@@ -109,16 +121,19 @@ fi
 """
 
 ["format:shell"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "シェルスクリプトをフォーマット（.sh は shfmt、.zsh は beautysh）"
 env = { CHECK = "0" }
 run = "sh \"$HOME/.config/mise/lib/shell-format.sh\""
 
 ["format:shell:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "シェルスクリプトのフォーマットチェック（.sh は shfmt、.zsh は beautysh）"
 env = { CHECK = "1" }
 run = "sh \"$HOME/.config/mise/lib/shell-format.sh\""
 
 ["format:toml"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "TOML ファイルをフォーマット（TOML_FILES で対象を限定可能）"
 run = """
 if [ -n "${TOML_FILES:-}" ]; then
@@ -129,6 +144,7 @@ fi
 """
 
 ["format:toml:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "TOML ファイルのフォーマットチェック（書き込みなし、TOML_FILES で対象を限定可能）"
 run = """
 if [ -n "${TOML_FILES:-}" ]; then
@@ -139,6 +155,7 @@ fi
 """
 
 ["format:python"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Python ファイルをフォーマット（PY_FILES で対象を限定可能）"
 run = """
 if [ -n "${PY_FILES:-}" ]; then
@@ -149,6 +166,7 @@ fi
 """
 
 ["format:python:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Python フォーマットチェック（書き込みなし、PY_FILES で対象を限定可能）"
 run = """
 if [ -n "${PY_FILES:-}" ]; then
@@ -159,13 +177,16 @@ fi
 """
 
 ["format:docs"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "ドキュメントの完全な検証とフォーマット"
 depends = ["format:markdown", "format:yaml:check", "lint:yaml", "lint:links"]
 
 ["format:markdown:bold-headings"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Markdown ファイルの太字見出しを ### へ変換（引数でディレクトリ指定可能、デフォルト: リポジトリ全体）"
 run = "tsx ./scripts/replace-bold-headings.ts"
 
 ["format:markdown:bold-headings:check"]
+dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Markdown ファイルの太字見出しチェック（変更なし）"
 run = "tsx ./scripts/replace-bold-headings.ts --dry-run"
