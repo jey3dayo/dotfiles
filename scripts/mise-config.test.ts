@@ -7,7 +7,12 @@ import * as path from "node:path";
 import { repoFile, repoRoot } from "./repo-file.ts";
 
 const configDir = repoFile("mise");
-const entryConfigs = ["config.workstation-unix.toml", "config.workstation-windows.toml", "config.server-pi.toml", "config.ci.toml"];
+const entryConfigs = [
+  "config.workstation-unix.toml",
+  "config.workstation-windows.toml",
+  "config.server-pi.toml",
+  "config.ci.toml",
+];
 const workstationConfig = "config.workstation.toml";
 const sharedConfig = "config.shared.toml";
 const commonToolsConfig = "conf.d/00-tools-common.toml";
@@ -322,8 +327,18 @@ describe("mise config layout and tool isolation", () => {
   });
 
   it("uses config.<machine>.toml naming (no entry.* files)", () => {
-    const machineConfigs = ["config.workstation-unix.toml", "config.workstation-windows.toml", "config.server-pi.toml", "config.ci.toml"];
-    const legacyEntryFiles = ["entry.workstation-unix.toml", "entry.workstation-windows.toml", "entry.server-pi.toml", "entry.ci.toml"];
+    const machineConfigs = [
+      "config.workstation-unix.toml",
+      "config.workstation-windows.toml",
+      "config.server-pi.toml",
+      "config.ci.toml",
+    ];
+    const legacyEntryFiles = [
+      "entry.workstation-unix.toml",
+      "entry.workstation-windows.toml",
+      "entry.server-pi.toml",
+      "entry.ci.toml",
+    ];
 
     for (const file of machineConfigs) {
       if (!fs.existsSync(path.join(configDir, file))) {
