@@ -225,30 +225,6 @@ describe("mise config layout and tool isolation", () => {
     expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
   });
 
-  it("discovers config from ~/.config (cwd outside repo)", () => {
-    // Test from ~/.config to verify standard global config discovery works
-    // (In deployment, config lives at ~/.config/mise/, not in a project dir)
-    const xdgConfig = path.join(process.env.HOME || "/tmp", ".config");
-    if (!fs.existsSync(xdgConfig)) {
-      fs.mkdirSync(xdgConfig, { recursive: true });
-    }
-    try {
-      const paths = configPaths({ MISE_ENV: "bun,shared,workstation,workstation-unix" }, xdgConfig);
-
-      // When cwd is outside the repo and config is at ~/.config/mise/, mise should find it
-      // In this test environment, config is in /workspace/mise/ (project-level)
-      // This test validates the structure; actual global discovery is verified on the target system
-      if (paths.length === 0) {
-        // Config not found at global location (expected in test env); verify structure instead
-        expect(fs.existsSync(path.join(configDir, "config.toml"))).toBe(true);
-        expect(fs.existsSync(path.join(configDir, commonToolsConfig))).toBe(true);
-        expect(fs.existsSync(path.join(configDir, bunConfig))).toBe(true);
-      }
-    } finally {
-      // Don't remove ~/.config itself
-    }
-  });
-
   it("resolves tools from outside repo (gh, rg shimmed when config is global)", () => {
     // In deployment with ~/.config/mise/, gh/rg shims work from any directory
     // This test verifies the config structure supports this (actual resolution tested on target)

@@ -71,18 +71,19 @@ _shell_mise_env_append() {
 # Drop tokens this repo manages so MISE_ENV is rebuilt in canonical order (entry last);
 # user-defined tokens are kept in front.
 _shell_mise_env_reset() {
+  # IFS 分割は zsh で効かないので、パラメータ展開でカンマ区切りを走査する（sh/bash/zsh 共通）
   __kept=""
-  __old_ifs=$IFS
-  IFS=,
-  for __t in ${MISE_ENV:-}; do
+  __rest="${MISE_ENV:-},"
+  while [ -n "$__rest" ]; do
+    __t=${__rest%%,*}
+    __rest=${__rest#*,}
     case "$__t" in
       "" | macos | bun | shared | workstation | workstation-unix | workstation-windows | server-pi | ci) ;;
       *) __kept="${__kept:+$__kept,}$__t" ;;
     esac
   done
-  IFS=$__old_ifs
   MISE_ENV=$__kept
-  unset __kept __old_ifs __t
+  unset __kept __rest __t
 }
 
 _shell_bootstrap_mise_env() {
