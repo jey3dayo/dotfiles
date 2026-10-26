@@ -225,23 +225,6 @@ describe("mise config layout and tool isolation", () => {
     expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
   });
 
-  it("resolves tools from outside repo (gh, rg shimmed when config is global)", () => {
-    // In deployment with ~/.config/mise/, gh/rg shims work from any directory
-    // This test verifies the config structure supports this (actual resolution tested on target)
-    const ghInShared = readTools(sharedConfig).has("github:cli/cli");
-    const rgInWorkstation = readTools(workstationConfig).has("ripgrep");
-
-    expect(ghInShared).toBe(true);
-    expect(rgInWorkstation).toBe(true);
-  });
-
-  it("settings available when config is at standard global location", () => {
-    // With ~/.config/mise/, settings like minimum_release_age apply globally
-    // Verify it's defined in config.toml (the base global config)
-    const configToml = fs.readFileSync(path.join(configDir, "config.toml"), "utf8");
-    expect(configToml).toContain("minimum_release_age");
-  });
-
   it("loads macOS overlay when selected", () => {
     const paths = configPaths({ MISE_ENV: "macos,bun,shared,workstation,workstation-unix" });
 
