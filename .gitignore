@@ -249,6 +249,7 @@ plans/
 repomix.config.json
 repomix-output.txt
 .mcp.json
+.yomiyasu/
 
 # Temporary and Generated Files
 ## Backup Extensions
