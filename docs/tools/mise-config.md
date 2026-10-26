@@ -49,7 +49,7 @@ CI: `entry.ci.toml` 単独（overlay なし）
 
 ### pnpm のメジャー固定
 
-メジャーバージョンのみ固定（値は `mise/*.toml` 参照）。パッチ・マイナー更新は自動。
+メジャーバージョンのみ固定。パッチ・マイナー更新は自動。
 
 構成: [`mise/config.shared.toml`](../../mise/config.shared.toml)
 
