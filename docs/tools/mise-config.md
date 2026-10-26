@@ -31,9 +31,9 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 ### レイヤーの適用順序
 
-通常の開発環境（macOS/Linux/WSL2）: `MISE_ENV=workstation-unix,macos,shared,workstation` で `config.workstation-unix.toml` + `config.macos.toml` + `config.shared.toml` + `config.workstation.toml` の additive 構成
+通常の開発環境（macOS/Linux/WSL2）: `MISE_ENV=macos,bun,shared,workstation,workstation-unix`（Linux/WSL2 は macos なし）で `config.macos.toml` + `config.bun.toml` + `config.shared.toml` + `config.workstation.toml` + `config.workstation-unix.toml` の additive 構成（後ろほど優先）
 
-CI: `MISE_ENV=ci` で `config.ci.toml` 単独（overlay なし）
+CI: `MISE_ENV=bun,ci` で `config.bun.toml` + `config.ci.toml`（bun 以外の overlay なし）
 
 ## ピン固定と非自明な選択の理由
 
