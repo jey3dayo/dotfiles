@@ -163,6 +163,9 @@ program = "/bin/sh"
 args = [
   "-lc",
   '''
+# migration: 旧方式の単一ファイル指定が launchd に残ると標準 discovery を上書きするため消す
+launchctl unsetenv MISE_CONFIG_FILE
+launchctl unsetenv MISE_GLOBAL_CONFIG_FILE
 launchctl setenv MISE_ENV "macos,bun,shared,workstation,workstation-unix"
 launchctl setenv PATH "$HOME/.mise/shims:$HOME/bin:$HOME/.local/bin:$HOME/.config/scripts:$HOME/.cargo/bin:$HOME/go/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin"
 ''',

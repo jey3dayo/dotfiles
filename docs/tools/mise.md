@@ -181,7 +181,7 @@ agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config
 
 ## Environment Detection
 
-mise は `MISE_CONFIG_FILE` が指す environment-specific config を使用する。
+mise は標準の global config discovery（`MISE_CONFIG_DIR` 配下の `config.toml`・`conf.d/`・`config.<env>.toml`）を使い、`MISE_ENV` で読む環境を選ぶ。`MISE_CONFIG_FILE` / `MISE_GLOBAL_CONFIG_FILE` は discovery を単一ファイルに置き換えてしまうため使わない。
 
 ### Auto-detection via shell startup
 
