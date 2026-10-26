@@ -72,6 +72,8 @@ _shell_bootstrap_mise_env() {
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   export MISE_DATA_DIR MISE_CACHE_DIR
+  # Legacy single-file selectors replace standard global discovery; drop inherited values.
+  unset MISE_CONFIG_FILE MISE_GLOBAL_CONFIG_FILE
 
   _shell_detect_mise_environment
   environment="$__mise_environment"

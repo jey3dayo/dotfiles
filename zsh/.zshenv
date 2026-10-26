@@ -26,6 +26,7 @@ else
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   : "${MISE_CONFIG_DIR:=${XDG_CONFIG_HOME}/mise}"
+  unset MISE_CONFIG_FILE MISE_GLOBAL_CONFIG_FILE
   _append_mise_env() {
     local token="$1"
     case ",${MISE_ENV:-}," in
