@@ -14,9 +14,5 @@ MD_EXCLUDES = "#node_modules #.worktrees #.apm/skills #.claude/skills #.claude/w
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 [tools]
-# 共通 tools: conf.d/00-tools-common.toml（Windows では aqua backend に override）
+# 共通 tools: conf.d/00-tools-common.toml（shellcheck / shfmt / yamllint は registry が Windows でも aqua / pipx に解決する）
 # Shared tools: config.shared.toml / config.workstation.toml (via MISE_ENV)
-# Windows 版の shellcheck, shfmt, yamllint (OS 固有 backend)
-"aqua:koalaman/shellcheck" = { version = "latest", os = "windows" }
-"aqua:mvdan/sh" = { version = "latest", os = "windows" }
-"pipx:yamllint" = { version = "latest", os = "windows" }
