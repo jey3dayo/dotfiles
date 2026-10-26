@@ -3,7 +3,7 @@
 # `pipx:` は隔離 venv に CLI を生やす仕組みなので、既定の python3 からは import できない。
 # よって pip で python 本体へ入れ、その導入保証だけをここで宣言する。
 #
-# mise の python は installs/python/3.14 -> ./3.14.7 の symlink で、patch が上がると
+# mise の python は installs/python/<major>.<minor> -> ./<major>.<minor>.<patch> の symlink で、patch が上がると
 # 実体が切り替わり site-packages が参照から外れる。このフックがそのとき入れ直す。
 #
 # playwright: diagram-design の PNG export が `from playwright.sync_api import sync_playwright`
