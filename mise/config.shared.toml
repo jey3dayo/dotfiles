@@ -12,7 +12,7 @@ node = "lts"
 pnpm = "12"
 
 # Formatters / Linters
-# 破壊的変更があるため版を固定
+# 破壊的変更があるため版を固定（更新時は attestation を確認）
 "github:jdx/jactionlint" = "2.3.0"
 biome = "latest"
 prettier = "latest"

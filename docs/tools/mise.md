@@ -308,7 +308,7 @@ mise use node@lts
 mise use "npm:prettier@latest"
 
 # Remove tool
-mise uninstall node@20
+mise uninstall "node@<version>"
 ```
 
 ## Integration Points
