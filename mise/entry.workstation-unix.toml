@@ -30,62 +30,58 @@ shellcheck = "latest"
 shfmt = "latest"
 yamllint = "latest"
 
-# NPM Global Packages
-"npm:ccstatusline" = "latest"
-"npm:dbdocs" = "latest"
-"npm:typescript-language-server" = "latest"
-"npm:vscode-json-languageserver" = "latest"
-"npm:agmsg" = "latest"
-"npm:@deepseek-ai/dsh" = "0.2.0-rc.2"
-
-# MCP サーバー
-"npm:chrome-devtools-mcp" = "latest"
-
-# Claude/AI ツール
-"aqua:github/copilot-cli" = "latest"
-"npm:@anthropic-ai/dxt" = "latest"
-
-# Rust CLI（typos-lsp は Homebrew で管理）
-"aqua:getsentry/sentry-cli" = "latest"
-"cargo:similarity-css" = "0.5.0"
-
 # CLI Tools
 atuin = "latest"
 aws-cli = "latest"
+buf = "latest"
 ghq = "latest"
+glab = "latest"
+hexyl = "latest"
 jnv = "latest"
 kubectl = "latest"
 marksman = "latest"
 openfga = "latest"
 pandoc = "latest"
 restic = "latest"
+saml2aws = "latest"
 sheldon = "latest"
 task = "latest"
+terraform = "latest"
 tilt = "latest"
 tmux = "latest"
+trivy = "latest"
 typos = "latest"
 vector = "latest"
 yq = "latest"
 "pipx:awsume" = "latest"
-buf = "latest"
 "aqua:fujiwara/lambroll" = "latest"
+"aqua:getsentry/sentry-cli" = "latest"
+"aqua:github/copilot-cli" = "latest"
 "aqua:golangci/golangci-lint" = "latest"
-"go:github.com/google/wire/cmd/wire" = "latest"
 "aqua:k1LoW/git-wt" = "latest"
-"go:golang.org/x/tools/cmd/goimports" = "0.51.0"
-"go:github.com/hashicorp/terraform-mcp-server/cmd/terraform-mcp-server" = "latest"
-"github:yusukebe/ax" = "latest"
-glab = "latest"
-hexyl = "latest"
-saml2aws = "latest"
-terraform = "latest"
-# WSL では公式配布バイナリが glibc 不整合で壊れることがあるため,
-# prebuilt backend ではなく cargo backend を使う.
-# default features を切ると qjs/libclang 依存を避けられ, この環境でもビルドできる.
-"cargo:tree-sitter-cli" = { version = "0.27.0", default-features = "false" }
-trivy = "latest"
 "github:agavra/tuicr" = "latest"
+"github:yusukebe/ax" = "latest"
 "github:zenbu-labs/terminal-browser" = "latest"
+
+# Go Packages
+"go:github.com/google/wire/cmd/wire" = "latest"
+"go:github.com/hashicorp/terraform-mcp-server/cmd/terraform-mcp-server" = "latest"
+"go:golang.org/x/tools/cmd/goimports" = "0.52.0"
+
+# Rust CLI（typos-lsp は Homebrew で管理）
+"cargo:similarity-css" = "0.5.0"
+# WSL glibc 不整合対策のため cargo backend (default-features=false) を使用
+"cargo:tree-sitter-cli" = { version = "0.27.1", default-features = "false" }
+
+# NPM Packages
+"npm:@anthropic-ai/dxt" = "latest"
+"npm:@deepseek-ai/dsh" = "0.2.0-rc.2"
+"npm:agmsg" = "latest"
+"npm:ccstatusline" = "latest"
+"npm:chrome-devtools-mcp" = "latest"
+"npm:dbdocs" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:vscode-json-languageserver" = "latest"
 
 # 自己更新機能を持つ CLI(claude / codex / herdr)は [tools] で管理せず、公式インストーラで導入して
 # 各ツールの自己更新に任せる。mise は未導入時のインストールだけを保証する(方針: .claude/rules/tools/tool-install-policy.md)。

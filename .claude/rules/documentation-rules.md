@@ -36,6 +36,10 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 
 - Target <=500 lines per doc; warn at 1000, mandatory split plan at 2000.
 
+## Duplication control
+
+- Tool versions live in `mise/*.toml`. Docs keep WHY (fixed for breaking changes, etc.) but not version numbers.
+
 ## Frontmatter note
 
 - Use YAML frontmatter with `paths` as a list in rule files

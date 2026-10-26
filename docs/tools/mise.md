@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-09-23
+最終更新: 2026-10-26
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -304,11 +304,11 @@ mise outdated
 mise activate zsh
 
 # Install specific tool
-mise use node@20
+mise use node@lts
 mise use "npm:prettier@latest"
 
 # Remove tool
-mise uninstall node@18
+mise uninstall "node@<version>"
 ```
 
 ## Integration Points
@@ -330,8 +330,8 @@ mise uninstall node@18
 ```toml
 # .mise.toml in project root
 [tools]
-node = "18.20.0"         # Pin specific version for project
-"npm:typescript" = "5.3.3"
+node = "<version>"           # プロジェクト側で版を固定する
+"npm:typescript" = "<version>"
 ```
 
 ## Maintenance

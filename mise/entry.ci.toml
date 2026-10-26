@@ -18,7 +18,9 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 "github:astral-sh/uv" = "latest"
 node = "lts"
 bun = "latest"
-"github:jdx/jactionlint" = "2.1.0"
+
+# Formatters / Linters
+"github:jdx/jactionlint" = "2.3.0"
 biome = "latest"
 prettier = "latest"
 shellcheck = "latest"
@@ -27,8 +29,12 @@ stylua = "latest"
 taplo = "latest"
 yamllint = "latest"
 "pipx:beautysh" = "latest"
+
+# CLI Tools
+fd = "latest"
+gitleaks = "latest"
+
+# NPM Packages
 "npm:markdown-link-check" = "latest"
 "npm:markdownlint-cli2" = "latest"
 "npm:tsx" = "latest"
-fd = "latest"
-gitleaks = "latest"

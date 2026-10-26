@@ -1,218 +1,84 @@
 # Mise Configuration Reference
 
-最終更新: 2026-09-23
+最終更新: 2026-10-26
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 親ドキュメント: [Mise Reference](mise.md)
 
-## Tool Categories (shared + workstation + entry.workstation-unix.toml)
+## バージョン記載ルール
 
-通常の default 環境の effective toolset は `mise/config.shared.toml`、`mise/config.workstation.toml`、`mise/entry.workstation-unix.toml` の additive な構成です。default / Windows 間で完全に同じ key/value は workstation overlay に、default / Windows / Pi の 3 者間で完全に同じ key/value は shared overlay に集約し、各 OS 別ファイルには固有または異なる宣言だけを残します。CI は `entry.ci.toml` 単独の最小構成です。
+**ツールのバージョンは `mise/*.toml` が唯一の正本です。** このドキュメントはバージョン番号を記載せず、構成の役割とピン固定の理由のみを説明します。実際のツールリストとバージョンは該当する mise ファイルを参照してください。
 
-### Workstation overlay (`config.workstation.toml`)
+## 設定ファイルの役割
 
-`MISE_ENV` に `workstation` が含まれる開発機（macOS/Linux/WSL2 と Windows）でロードされる共通 tools です。Pi と CI ではロードしません。
+### Entry ファイル (`entry.*.toml`)
 
-```toml
-[tools]
-# Language Runtimes
-python = "3.14"
-rust = "stable"
+`MISE_CONFIG_FILE` で選ぶ OS × 役割の入口。各環境で単独または overlay と組み合わせて使用。
 
-# Package Managers
-bun = "latest"
+- [`entry.workstation-unix.toml`](../../mise/entry.workstation-unix.toml) - macOS/Linux/WSL2 の開発機
+- `entry.workstation-windows.toml` - Windows の開発機
+- [`entry.server-pi.toml`](../../mise/entry.server-pi.toml) - Raspberry Pi
+- [`entry.ci.toml`](../../mise/entry.ci.toml) - CI 環境（最小構成）
 
-# NPM Global Packages
-"npm:npm" = "latest"
-"npm:agent-browser" = "latest"
-"npm:dev-browser" = "latest"
-"npm:@fsouza/prettierd" = "latest"
-"npm:neovim" = "latest"
-"npm:@bufbuild/protoc-gen-es" = "latest"
-"npm:@connectrpc/protoc-gen-connect-es" = "latest"
-"npm:vibe-kanban" = "latest"
-"npm:eslint_d" = "latest"
-"npm:typescript" = "latest"
-"npm:vscode-langservers-extracted" = "latest"
-"npm:@typescript-eslint/eslint-plugin" = "latest"
-"npm:esbuild" = "latest"
-"npm:zx" = "latest"
+### Overlay ファイル (`config.*.toml`)
 
-# MCP サーバー
-"npm:@aikidosec/safe-chain" = "latest"
-"npm:@benborla29/mcp-server-mysql" = "latest"
-"npm:@modelcontextprotocol/server-filesystem" = "latest"
-"npm:@playwright/mcp" = "latest"
-"npm:exa-mcp-server" = "latest"
+`MISE_ENV` で重ねる追加レイヤー。複数環境で共通の設定を集約。
 
-# クラウド・インフラ
-"npm:aws-cdk" = "latest"
-"npm:@google/clasp" = "latest"
+- [`config.shared.toml`](../../mise/config.shared.toml) - default / Windows / Pi の 3 環境共通
+- [`config.workstation.toml`](../../mise/config.workstation.toml) - Pi / CI 以外の開発機共通（macOS/Linux/WSL2 と Windows）
 
-# その他ツール
-"npm:greptile" = "latest"
-"npm:difit" = "latest"
-"npm:tuyapi" = "latest"
+### レイヤーの適用順序
 
-# Rust CLI
-"cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "0.15.0"
-"cargo:similarity-ts" = "0.5.0"
-"cargo:wrkflw" = "0.8.0"
-"cargo:starship" = "latest"
+通常の開発環境（macOS/Linux/WSL2）: `entry.workstation-unix.toml` + `config.shared.toml` + `config.workstation.toml` の additive 構成
 
-# CLI Tools
-delta = "latest"
-"pipx:apm-cli" = "0.31.0"
-bat = "latest"
-fzf = "latest"
-lazygit = "latest"
-ripgrep = "latest"
-usage = "latest"
-zoxide = "latest"
-"aqua:evilmartians/lefthook" = "latest"
-```
+CI: `entry.ci.toml` 単独（overlay なし）
 
-### 1. Language Runtimes
+## ピン固定と非自明な選択の理由
 
-```toml
-[tools]
-deno = "latest"
-go = "latest"
-node = "lts"
-julia = "latest"
-# lua/luajit は Homebrew で管理 (Neovim 依存関係のため)
-```
+### jactionlint のバージョン固定
 
-### 2. Package Managers
+破壊的変更があるため版を固定。更新時に attestation を確認。
 
-```toml
-[tools]
-"github:astral-sh/uv" = "latest"
-pnpm = "12"
-```
+構成: [`mise/config.shared.toml`](../../mise/config.shared.toml)
 
-`pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため避ける。`entry.workstation-windows.toml` / `entry.ci.toml` も同じ理由で `"github:astral-sh/uv"` に統一済み。
+### uv の backend 選択
 
-### 3. Formatters and Linters
+`pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため、`"github:astral-sh/uv"` を使用。全環境で統一済み。
 
-```toml
-[tools]
-"github:jdx/jactionlint" = "2.1.0"
-biome = "latest"
-hadolint = "latest"
-prettier = "latest"
-shellcheck = "latest"
-shfmt = "latest"
-stylua = "latest"
-taplo = "latest"
-yamllint = "latest"
-```
+### pnpm のメジャー固定
 
-### 4. NPM Global Packages (Node.js グローバルパッケージ)
+メジャーバージョンのみ固定。パッチ・マイナー更新は自動。
 
-完全移行完了: 全ての npm パッケージを mise で一元管理（npm/pnpm/bun グローバルには依存しない）
+構成: [`mise/config.shared.toml`](../../mise/config.shared.toml)
 
-```toml
-[tools]
-# ユーティリティ・ツール
-"npm:@antfu/ni" = "latest"
-"npm:corepack" = "latest"
-"npm:npm-check-updates" = "latest"
+### tree-sitter-cli の cargo backend
 
-# 開発・エディタ
+WSL で公式配布バイナリが glibc 不整合で壊れるため、cargo backend を `default-features=false` で使用（qjs/libclang 依存を回避）。
 
-# プロトコルバッファ・RPC
+構成: [`mise/entry.workstation-unix.toml`](../../mise/entry.workstation-unix.toml)
 
-# AI・コミット支援
-"npm:aicommits" = "latest"
-"npm:opencommit" = "latest"
+### lua/luajit の Homebrew 管理
 
-# ドキュメント・Lint
-"npm:dbdocs" = "latest"
-"npm:@google/design.md" = "latest"
-"npm:markdown-link-check" = "latest"
-"npm:markdownlint-cli2" = "latest"
-"npm:textlint" = "latest"
-"npm:textlint-rule-preset-ja-technical-writing" = "latest"
+Neovim の依存関係のため、mise ではなく Homebrew で管理。
 
-# 環境変数管理
-"npm:@dotenvx/dotenvx" = "latest"
+### Raspberry Pi 固有の注意
 
-# 開発ツール・Language Servers
-"npm:tsx" = "latest"
-"npm:typescript-language-server" = "latest"
-"npm:vscode-json-languageserver" = "latest"
+- `luacheck` は mise の tools に定義しない（registry に存在せず WARN の原因）。luarocks など mise 外で供給。
+- cargo ツールセクション自体を除外（ARM 互換性考慮）。
 
-# ビルドツール
+## ツールカテゴリ
 
-# ユーティリティ
+実際のツールリストは各 mise ファイルを参照：
 
-# MCP サーバー (Model Context Protocol)
-"npm:@upstash/context7-mcp" = "latest"
-"npm:chrome-devtools-mcp" = "latest"
-"npm:o3-search-mcp" = "latest"
+- Language Runtimes (Python, Rust, Node.js, Go, Deno, Julia)
+- Package Managers (bun, pnpm, uv, corepack)
+- Formatters / Linters (biome, prettier, shellcheck, stylua, taplo, yamllint, jactionlint)
+- NPM Packages (全て mise で一元管理、npm/pnpm/bun グローバルには依存しない)
+- Cargo Tools (similarity-css, tree-sitter-cli, needle-cli, wrkflw, starship, bandwhich)
+- CLI Tools (gh, fd, ripgrep, fzf, lazygit, bat, delta, yazi, atuin, aws-cli, kubectl, terraform, など多数)
+- MCP Servers (Model Context Protocol サーバー群)
+- Go Packages (wire, goimports, terraform-mcp-server)
 
-# Claude/AI ツール
-"npm:@anthropic-ai/dxt" = "latest"
-"npm:@sasazame/ccresume" = "latest"
-
-# クラウド・インフラ
-
-# その他ツール
-```
-
-### 5. Cargo-based Tools
-
-```toml
-[tools]
-"cargo:similarity-css" = "0.5.0"
-"cargo:tree-sitter-cli" = { version = "0.26.9", default-features = "false" }
-```
-
-#### 環境別の取り扱い
-
-- Default (`entry.workstation-unix.toml`): 全てのcargoツールをインストール
-- Raspberry Pi (`entry.server-pi.toml`): cargoツールセクション自体を除外（ARM互換性考慮）
-
-レイヤーの選び方は [docs/setup.md](../setup.md#package-management-philosophy) を参照。
-
-### 6. CLI Tools
-
-```toml
-[tools]
-atuin = "latest"
-aws-cli = "latest"
-buf = "latest"
-eza = "latest"
-fd = "latest"
-gitleaks = "latest"
-"aqua:fujiwara/lambroll" = "latest"
-"aqua:golangci/golangci-lint" = "latest"
-"go:github.com/google/wire/cmd/wire" = "latest"
-"aqua:k1LoW/git-wt" = "latest"
-"go:golang.org/x/tools/cmd/goimports" = "0.50.0"
-"pipx:awslabs-terraform-mcp-server" = "1.0.18"
-"github:cli/cli" = "latest"
-glab = "latest"
-hexyl = "latest"
-jq = "latest"
-"aqua:anomalyco/opencode" = "latest"
-saml2aws = "latest"
-terraform = "latest"
-trivy = "latest"
-yazi = "latest"
-```
-
-#### 環境別の取り扱い
-
-- Default: 全てのCLIツールをインストール
-- Raspberry Pi: 全てのCLIツールをインストール
-
-### Raspberry Pi 運用メモ（重要）
-
-- `luacheck` は **mise の tools には直接定義しない**（`luacheck@latest` は registry に存在せず WARN の原因）。
-- Pi 環境では `luacheck` は luarocks など mise 外で供給する。
-- `mise run doctor` で `plugin yarn is not installed` が出る場合は `mise plugins install yarn` を実行する。
+レイヤーの選び方と Package Management Philosophy は [docs/setup.md](../setup.md#package-management-philosophy) を参照。
