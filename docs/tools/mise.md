@@ -82,10 +82,12 @@ mise/
 ├── config.macos.toml      # macOS 専用 bootstrap（[bootstrap.packages] など。MISE_ENV=macos）
 ├── config.shared.toml     # default / Windows / Pi 共通 tools（MISE_ENV=shared）
 ├── config.workstation.toml # Pi / CI 以外の開発機共通 tools（MISE_ENV=workstation）
-├── entry.workstation-unix.toml    # macOS/Linux/WSL2 向け差分
-├── entry.workstation-windows.toml # Windows 向け差分（jobs 未設定）
-├── entry.server-pi.toml           # Raspberry Pi 向け差分
-├── entry.ci.toml                  # CI/CD 向け最小構成（shared/default 非依存）
+├── config.bun.toml        # bun（MISE_ENV=bun。Pi 以外で選ぶ）
+├── config.workstation-unix.toml    # macOS/Linux/WSL2 向け差分
+├── config.workstation-windows.toml # Windows 向け差分（jobs 未設定）
+├── config.server-pi.toml           # Raspberry Pi 向け差分
+├── config.ci.toml                  # CI/CD 向け最小構成（shared/workstation 非依存）
+├── conf.d/                # 全環境で常に読む共通 tools（00-tools-common.toml）
 ├── tasks/                 # 外部 repo から見えてよい global task 定義
 │   └── brewfile.toml      # Brewfile 差分確認・リストア
 └── local-tasks/           # ~/.config 専用の mise task 定義
@@ -206,18 +208,18 @@ choco export .\windows\chocolatey\packages.config
 
 Chocolatey accepts `.config` manifest files for bulk install/export, and the filename does not need to be exactly `packages.config` as long as it ends with `.config`.
 
-Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionally absent from the shared overlay and `entry.server-pi.toml` for ARM/minimal operation.
+Note: hadolint remains only in `config.workstation-unix.toml`; it is intentionally absent from the shared overlay and `config.server-pi.toml` for ARM/minimal operation.
 
 ## Environment-specific Package Exclusions
 
-### Raspberry Pi Optimizations (`entry.server-pi.toml`)
+### Raspberry Pi Optimizations (`config.server-pi.toml`)
 
 サーバー/自動化環境として最適化されており、以下のパッケージを除外:
 
 #### Performance Settings
 
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
-  - ※ entry.workstation-unix.toml は `jobs = 8`（デスクトップ環境向け）
+  - ※ config.workstation-unix.toml は `jobs = 8`（デスクトップ環境向け）
 
 #### Excluded Packages
 
@@ -230,7 +232,7 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 - クラウド/インフラツール: AWS CLI、Google Clasp、gRPC関連 等
 - 全cargoツール: ARM互換性とビルド時間考慮
 
-詳細な除外パッケージリストは `mise/entry.workstation-unix.toml` と `mise/entry.server-pi.toml` の差分を参照。
+詳細な除外パッケージリストは `mise/config.workstation-unix.toml` と `mise/config.server-pi.toml` の差分を参照。
 
 #### Maintained Packages
 
@@ -244,7 +246,7 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 - CLI: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
 - ランタイム: `go` (latest), `node`, `python`
 
-具体的なパッケージバージョンは `mise/entry.server-pi.toml` を参照。
+具体的なパッケージバージョンは `mise/config.server-pi.toml` を参照。
 
 #### Expected Benefits
 
@@ -254,14 +256,14 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 
 ## Configuration Comparison
 
-| Config                                  | Toolset           | Use Case                       | Performance        |
-| --------------------------------------- | ----------------- | ------------------------------ | ------------------ |
-| entry.workstation-unix.toml + shared    | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
-| entry.workstation-windows.toml + shared | Full              | Development (Windows)          | Uses mise defaults |
-| entry.server-pi.toml + shared           | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
-| entry.ci.toml                           | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
+| Config                                   | Toolset           | Use Case                       | Performance        |
+| ---------------------------------------- | ----------------- | ------------------------------ | ------------------ |
+| config.workstation-unix.toml + shared    | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
+| config.workstation-windows.toml + shared | Full              | Development (Windows)          | Uses mise defaults |
+| config.server-pi.toml + shared           | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
+| config.ci.toml                           | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
 
-## Tool Categories (shared + entry.workstation-unix.toml)
+## Tool Categories (shared + config.workstation-unix.toml)
 
 6 カテゴリ（Language Runtimes / Package Managers / Formatters & Linters / NPM Global Packages / Cargo Tools / CLI Tools）の詳細は [mise-config.md](mise-config.md) を参照。
 
@@ -352,7 +354,7 @@ mise doctor               # Check for issues
 ### Backup and Restore
 
 - Config files are tracked in dotfiles repo
-- To restore: `git checkout mise/entry.workstation-unix.toml mise/entry.server-pi.toml && mise install`
+- To restore: `git checkout mise/config.workstation-unix.toml mise/config.server-pi.toml && mise install`
 - Version history via git allows rollback
 
 ## 自己更新ツール（mise 管理外）の導入保証
@@ -360,7 +362,7 @@ mise doctor               # Check for issues
 どの層（mise `[tools]` / `[bootstrap.packages]` / Brewfile / 自己更新 standalone）でツールを管理するかの方針は [docs/setup.md](../setup.md#package-management-philosophy) を参照。ここでは mise 側の実装事実だけを記す。
 
 - 該当ツール: `mise` 本体と、`mise/lib/ensure-standalone.sh` が導入保証する CLI（一覧は同スクリプトが正本）
-- 導入保証: `mise/entry.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
+- 導入保証: `mise/config.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
 - 更新: 各ツールの self-update コマンドに委ねる（`mise self-update`、CLI は `mise/local-tasks/updates.toml` の `update:standalone` が一括で呼ぶ）。herdr は `herdr update --handoff` で動作中のペインを維持したままサーバーを置き換えられ、これは herdr 自身のインストーラで入れた場合だけ使える
 - `mise ls` に出ないのは意図的（`[tools]` で管理していないため）
 

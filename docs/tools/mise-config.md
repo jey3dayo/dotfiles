@@ -57,7 +57,7 @@ CI: `MISE_ENV=ci` で `config.ci.toml` 単独（overlay なし）
 
 WSL で公式配布バイナリが glibc 不整合で壊れるため、cargo backend を `default-features=false` で使用（qjs/libclang 依存を回避）。
 
-構成: [`mise/entry.workstation-unix.toml`](../../mise/config.workstation-unix.toml)
+構成: [`mise/config.workstation-unix.toml`](../../mise/config.workstation-unix.toml)
 
 ### lua/luajit の Homebrew 管理
 

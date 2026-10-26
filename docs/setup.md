@@ -87,7 +87,7 @@ powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1
 ### Windows bootstrap の対象
 
 - Chocolatey: `git`, `mise`, `wezterm`, `neovim`, `7zip`, `googlechrome`, `vscode`
-- mise: `mise/entry.workstation-windows.toml` + `mise/config.shared.toml` に定義した CLI・runtime・formatter・MCP 関連
+- mise: `mise/config.workstation-windows.toml` + `mise/config.shared.toml` に定義した CLI・runtime・formatter・MCP 関連
 
 PowerShell から現在の Chocolatey パッケージ一覧を manifest 化したい場合は次を使います。
 
@@ -170,7 +170,7 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 2. 定期的な重複チェック:
    - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
    - `brew list --formula` - mise 管理ツールが含まれていないこと
-   - `windows/chocolatey/packages.config` - `mise/entry.workstation-windows.toml` にある CLI/runtime を重複追加しないこと
+   - `windows/chocolatey/packages.config` - `mise/config.workstation-windows.toml` にある CLI/runtime を重複追加しないこと
 
 詳細は [docs/tools/mise.md](tools/mise.md) と [docs/tools/workflows.md](tools/workflows.md) を参照してください。
 
