@@ -1,6 +1,6 @@
 # mise Configuration Files
 
-`mise/` は環境別 config（`config.*.toml` / `entry.*.toml`）、helper scripts（`lib/`）、タスク定義（`tasks/`, `local-tasks/`）を格納する。
+`mise/` は環境別 config（`config.toml` / `conf.d/` / `config.*.toml`）、helper scripts（`lib/`）、タスク定義（`tasks/`, `local-tasks/`）を格納する。
 
 詳細は以下を正本として参照する:
 

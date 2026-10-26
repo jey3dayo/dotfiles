@@ -27,6 +27,15 @@ else
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   : "${MISE_CONFIG_DIR:=${XDG_CONFIG_HOME}/mise}"
   unset MISE_CONFIG_FILE MISE_GLOBAL_CONFIG_FILE
+  local -a __kept=()
+  local __t
+  for __t in ${(s:,:)MISE_ENV:-}; do
+    case "$__t" in
+      macos|bun|shared|workstation|workstation-unix|workstation-windows|server-pi|ci) ;;
+      *) __kept+=("$__t") ;;
+    esac
+  done
+  MISE_ENV="${(j:,:)__kept}"
   _append_mise_env() {
     local token="$1"
     case ",${MISE_ENV:-}," in

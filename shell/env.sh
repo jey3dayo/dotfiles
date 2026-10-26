@@ -68,12 +68,30 @@ _shell_mise_env_append() {
   unset token
 }
 
+# Drop tokens this repo manages so MISE_ENV is rebuilt in canonical order (entry last);
+# user-defined tokens are kept in front.
+_shell_mise_env_reset() {
+  __kept=""
+  __old_ifs=$IFS
+  IFS=,
+  for __t in ${MISE_ENV:-}; do
+    case "$__t" in
+      "" | macos | bun | shared | workstation | workstation-unix | workstation-windows | server-pi | ci) ;;
+      *) __kept="${__kept:+$__kept,}$__t" ;;
+    esac
+  done
+  IFS=$__old_ifs
+  MISE_ENV=$__kept
+  unset __kept __old_ifs __t
+}
+
 _shell_bootstrap_mise_env() {
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   export MISE_DATA_DIR MISE_CACHE_DIR
   # Legacy single-file selectors replace standard global discovery; drop inherited values.
   unset MISE_CONFIG_FILE MISE_GLOBAL_CONFIG_FILE
+  _shell_mise_env_reset
 
   _shell_detect_mise_environment
   environment="$__mise_environment"

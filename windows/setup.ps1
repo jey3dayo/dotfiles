@@ -147,7 +147,9 @@ if (-not (Test-Path -LiteralPath $windowsMiseConfig)) {
   throw "Windows mise config not found: $windowsMiseConfig"
 }
 
-$miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
+Remove-Item Env:MISE_CONFIG_FILE, Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
+$managedMiseTokens = @("macos", "bun", "shared", "workstation", "workstation-unix", "workstation-windows", "server-pi", "ci")
+$miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ -and ($managedMiseTokens -notcontains $_) })
 # Windows: bun,shared,workstation,workstation-windows (entry goes last so entry settings win)
 foreach ($requiredToken in @("bun", "shared", "workstation", "workstation-windows")) {
   if ($miseEnvironmentTokens -notcontains $requiredToken) {

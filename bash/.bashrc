@@ -20,6 +20,16 @@ else
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
   : "${MISE_CONFIG_DIR:=$XDG_CONFIG_HOME/mise}"
   unset MISE_CONFIG_FILE MISE_GLOBAL_CONFIG_FILE
+  __kept=""
+  IFS=, read -r -a __toks <<<"${MISE_ENV:-}"
+  for __t in "${__toks[@]}"; do
+    case "$__t" in
+      "" | macos | bun | shared | workstation | workstation-unix | workstation-windows | server-pi | ci) ;;
+      *) __kept="${__kept:+$__kept,}$__t" ;;
+    esac
+  done
+  MISE_ENV=$__kept
+  unset __kept __toks __t
   _append_mise_env() {
     local token="$1"
     case ",${MISE_ENV:-}," in

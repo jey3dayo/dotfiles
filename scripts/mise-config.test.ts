@@ -99,7 +99,7 @@ describe("mise config layout and tool isolation", () => {
     const macosConfig = fs.readFileSync(path.join(configDir, "config.macos.toml"), "utf8");
 
     expect(macosConfig).toContain('launchctl setenv MISE_ENV "macos,bun,shared,workstation,workstation-unix"');
-    expect(macosConfig).not.toMatch(/setenv MISE_(GLOBAL_)?CONFIG_FILE/);
+    expect(macosConfig).not.toMatch(/(^|\s)launchctl setenv MISE_(GLOBAL_)?CONFIG_FILE/m);
   });
 
   it("keeps config.toml settings-only (no [tools])", () => {

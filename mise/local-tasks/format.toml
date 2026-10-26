@@ -124,13 +124,13 @@ fi
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "シェルスクリプトをフォーマット（.sh は shfmt、.zsh は beautysh）"
 env = { CHECK = "0" }
-run = "sh \"$HOME/.config/mise/lib/shell-format.sh\""
+run = "sh \"$(git rev-parse --show-toplevel)/mise/lib/shell-format.sh\""
 
 ["format:shell:check"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "シェルスクリプトのフォーマットチェック（.sh は shfmt、.zsh は beautysh）"
 env = { CHECK = "1" }
-run = "sh \"$HOME/.config/mise/lib/shell-format.sh\""
+run = "sh \"$(git rev-parse --show-toplevel)/mise/lib/shell-format.sh\""
 
 ["format:toml"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"

@@ -53,7 +53,9 @@ if (-not (Test-Path -LiteralPath $envKeys)) {
 
 $isWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
 if ($isWindows) {
-  $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
+  Remove-Item Env:MISE_CONFIG_FILE, Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
+  $managedMiseTokens = @("macos", "bun", "shared", "workstation", "workstation-unix", "workstation-windows", "server-pi", "ci")
+  $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ -and ($managedMiseTokens -notcontains $_) })
   # Windows: bun,shared,workstation,workstation-windows (entry goes last)
   foreach ($requiredToken in @("bun", "shared", "workstation", "workstation-windows")) {
     if ($miseEnvironmentTokens -notcontains $requiredToken) {

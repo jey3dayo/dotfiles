@@ -29,7 +29,7 @@ run_windows = "sh ./scripts/windows/run-windows-powershell.sh ./scripts/windows/
 
 ["pre-push"]
 description = "push 前チェック（ci:quick + 変更ファイルに応じた追加テスト）"
-run = "sh \"$HOME/.config/mise/lib/pre-push-check.sh\""
+run = "sh \"$(git rev-parse --show-toplevel)/mise/lib/pre-push-check.sh\""
 
 ["ci"]
 description = "すべての CI チェックをローカル実行（検証のみ、書き込みなし）"
