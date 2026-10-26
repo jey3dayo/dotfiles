@@ -5,6 +5,8 @@
 
 # タスク定義を mise/local-tasks/ から読み込み
 [task_config]
+# config_root は ~/.config/.mise.toml だと $HOME、clone 先だと repo 直下になる。
+# どこに checkout しても同じタスクが読めるよう両方の形を並べる（存在しない方は無視される）。
 includes = [
   ".config/mise/local-tasks/format.toml",
   ".config/mise/local-tasks/lint.toml",
@@ -14,6 +16,14 @@ includes = [
   ".config/mise/local-tasks/backup.toml",
   ".config/mise/local-tasks/updates.toml",
   ".config/mise/local-tasks/ci.toml",
+  "mise/local-tasks/format.toml",
+  "mise/local-tasks/lint.toml",
+  "mise/local-tasks/test.toml",
+  "mise/local-tasks/integration.toml",
+  "mise/local-tasks/env.toml",
+  "mise/local-tasks/backup.toml",
+  "mise/local-tasks/updates.toml",
+  "mise/local-tasks/ci.toml",
 ]
 
 # ========================================
