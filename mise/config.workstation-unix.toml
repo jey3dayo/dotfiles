@@ -1,4 +1,4 @@
-# macOS/Linux/WSL2 ワークステーションの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
+# macOS/Linux/WSL2 ワークステーション固有の tools (MISE_ENV=workstation-unix で選択)
 
 [settings]
 # 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
@@ -15,7 +15,7 @@ trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 credential_command = '"$HOME/.mise/installs/github-cli-cli/latest/bin/gh" auth token --hostname "$MISE_CREDENTIAL_HOST"'
 
 [tools]
-# Common tools are loaded from the shared / workstation overlays when MISE_ENV includes them.
+# Shared tools are in config.shared.toml / config.workstation.toml (loaded via MISE_ENV)
 # Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
 deno = "latest"
 julia = "latest"

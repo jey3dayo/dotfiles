@@ -71,55 +71,43 @@ _shell_mise_env_append() {
 _shell_bootstrap_mise_env() {
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
-  export MISE_DATA_DIR MISE_CACHE_DIR
+  : "${MISE_CONFIG_DIR:=${XDG_CONFIG_HOME}/mise}"
+  export MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_DIR
 
-  case "${MISE_CONFIG_FILE:-}" in
-    "") ;;
-    *)
-      [ -f "$MISE_CONFIG_FILE" ] || unset MISE_CONFIG_FILE
+  _shell_detect_mise_environment
+  environment="$__mise_environment"
+  unset __mise_environment
+
+  # Build MISE_ENV from environment type
+  # CI: ci only (no overlays)
+  # Pi: server-pi,shared
+  # Default/Windows: <machine>,<os-overlay>,shared,workstation
+  case "$environment" in
+    ci)
+      _shell_mise_env_append ci
       ;;
-  esac
-
-  if [ -z "${MISE_CONFIG_FILE:-}" ]; then
-    _shell_detect_mise_environment
-    environment="$__mise_environment"
-    unset __mise_environment
-    case "$environment" in
-      default) mise_entry="entry.workstation-unix.toml" ;;
-      windows) mise_entry="entry.workstation-windows.toml" ;;
-      pi) mise_entry="entry.server-pi.toml" ;;
-      ci) mise_entry="entry.ci.toml" ;;
-    esac
-    export MISE_CONFIG_FILE="${XDG_CONFIG_HOME}/mise/${mise_entry}"
-  else
-    case "${MISE_CONFIG_FILE##*/}" in
-      entry.ci.toml) environment="ci" ;;
-      entry.workstation-unix.toml) environment="default" ;;
-      entry.server-pi.toml) environment="pi" ;;
-      entry.workstation-windows.toml) environment="windows" ;;
-      *) environment="" ;;
-    esac
-  fi
-
-  # CI は entry.ci.toml だけを使い、shared/workstation/default の tools を追加しない。
-  if [ "$environment" != "ci" ]; then
-    # shellcheck disable=SC3028
-    if [ "$environment" != "pi" ]; then
+    pi)
+      _shell_mise_env_append server-pi
+      _shell_mise_env_append shared
+      ;;
+    default)
+      _shell_mise_env_append workstation-unix
+      # shellcheck disable=SC3028
       case "${OSTYPE:-}" in
         darwin*) _shell_mise_env_append macos ;;
         "") [ "$(uname -s 2>/dev/null)" = "Darwin" ] && _shell_mise_env_append macos ;;
       esac
-    fi
-    case "$environment" in
-      default | windows)
-        _shell_mise_env_append shared
-        _shell_mise_env_append workstation
-        ;;
-      pi) _shell_mise_env_append shared ;;
-    esac
-  fi
+      _shell_mise_env_append shared
+      _shell_mise_env_append workstation
+      ;;
+    windows)
+      _shell_mise_env_append workstation-windows
+      _shell_mise_env_append shared
+      _shell_mise_env_append workstation
+      ;;
+  esac
 
-  unset environment mise_entry
+  unset environment
 }
 
 _shell_bootstrap_tool_env() {

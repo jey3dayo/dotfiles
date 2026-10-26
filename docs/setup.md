@@ -43,9 +43,9 @@ brew bundle
 
 # 4. Converge the machine via mise bootstrap
 #    (dotfiles symlink, macOS LaunchAgents, tools)
-#    初回は ~/.zshenv 未配布のため MISE_CONFIG_FILE / MISE_ENV を明示する（次回以降は不要）
-export MISE_CONFIG_FILE="$HOME/.config/mise/entry.workstation-unix.toml"
-export MISE_ENV=macos,shared,workstation # macOS / shared / workstation overlay を読み込む（既存の MISE_ENV は通常の shell setup が保持して追加）
+#    初回は ~/.zshenv 未配布のため MISE_CONFIG_DIR / MISE_ENV を明示する（次回以降は不要）
+export MISE_CONFIG_DIR="$HOME/.config/mise"
+export MISE_ENV=workstation-unix,macos,shared,workstation
 mise trust && mise bootstrap --yes
 
 # 5. Restart shell
@@ -53,8 +53,8 @@ exec zsh
 ```
 
 状態確認は `mise bootstrap status` / `mise dotfiles status`、差分プレビューは `mise bootstrap --dry-run` を使います。
-dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、3 OS 共通 tools は `mise/config.shared.toml`（`MISE_ENV` に `shared` が含まれる場合だけロード）、default / Windows 共通 tools は `mise/config.workstation.toml`（`MISE_ENV` に `workstation` が含まれる場合だけロード）、OS 別 tools は `mise/entry.workstation-unix.toml` / `mise/entry.server-pi.toml`（`MISE_CONFIG_FILE` 経由）、macOS 専用の brew packages・LaunchAgents・dotfiles は `mise/config.macos.toml`（`MISE_ENV` に `macos` が含まれる場合）にあります。
-Raspberry Pi は `entry.server-pi.toml` + shared overlay を使い、`hadolint` など ARM/minimal 構成で意図的に除外したツールを追加しません。CI は `entry.ci.toml` だけを使い、default / shared / workstation overlay を読み込みません。Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
+dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、3 OS 共通 tools は `mise/config.shared.toml`、default / Windows 共通 tools は `mise/config.workstation.toml`、OS 別 tools は `mise/config.workstation-unix.toml` / `mise/config.server-pi.toml` など、macOS 専用の brew packages・LaunchAgents・dotfiles は `mise/config.macos.toml` にあります。すべて `MISE_CONFIG_DIR` で指定したディレクトリから `MISE_ENV` の値に応じてロードされます。
+Raspberry Pi は `MISE_ENV=server-pi,shared` で config.server-pi.toml + shared overlay を使い、`hadolint` など ARM/minimal 構成で意図的に除外したツールを追加しません。CI は `MISE_ENV=ci` で config.ci.toml だけを使い、shared / workstation overlay を読み込みません。Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
 
 ### macOS: ai-usage-snapshot の前提（private repo の手動 clone）
 
@@ -80,7 +80,7 @@ powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1
 
 - Chocolatey 本体を導入（未導入の場合のみ）
 - `windows/chocolatey/packages.config` から bootstrap/GUI パッケージを一括導入
-- `MISE_CONFIG_FILE` を `mise/entry.workstation-windows.toml` に向け、`MISE_ENV` に `shared,workstation` を追加して `mise install` を実行
+- `MISE_CONFIG_DIR` を `~/.config/mise` に向け、`MISE_ENV=workstation-windows,shared,workstation` で `mise install` を実行
 - `windows/setup.ps1` は `mise install` 後、claude / codex が未導入の場合のみ公式インストーラで導入する（既導入の場合は更新しない）
 - `~/.config/powershell` を正本にし、`Documents/PowerShell` と `Documents/WindowsPowerShell` のエントリポイントを再生成
 

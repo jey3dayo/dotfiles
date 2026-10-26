@@ -43,8 +43,7 @@ const readTools = (file: string): Map<string, string> => {
 
 const cleanMiseEnv = (): NodeJS.ProcessEnv => {
   const env = { ...process.env };
-  delete env.MISE_CONFIG_FILE;
-  delete env.MISE_GLOBAL_CONFIG_FILE;
+  delete env.MISE_CONFIG_DIR;
   delete env.MISE_ENV;
   return env;
 };
@@ -67,8 +66,8 @@ describe("shared mise tool overlay", () => {
   it("publishes the workstation mise selectors to GUI applications", () => {
     const macosConfig = fs.readFileSync(path.join(configDir, "config.macos.toml"), "utf8");
 
-    expect(macosConfig).toContain('launchctl setenv MISE_CONFIG_FILE "$HOME/.config/mise/entry.workstation-unix.toml"');
-    expect(macosConfig).toContain('launchctl setenv MISE_ENV "macos,shared,workstation"');
+    expect(macosConfig).toContain('launchctl setenv MISE_CONFIG_DIR "$HOME/.config/mise"');
+    expect(macosConfig).toContain('launchctl setenv MISE_ENV "workstation-unix,macos,shared,workstation"');
   });
 
   it("keeps config.toml settings-only", () => {
@@ -124,74 +123,80 @@ describe("shared mise tool overlay", () => {
     }
   });
 
-  it("loads the selected workstation-unix entry and shared overlay", () => {
+  it("loads workstation-unix machine config and shared overlay", () => {
     const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.workstation-unix.toml"),
-      MISE_ENV: "shared",
+      MISE_CONFIG_DIR: repoFile("mise"),
+      MISE_ENV: "workstation-unix,shared",
     });
 
-    expect(hasConfig(paths, "entry.workstation-unix.toml")).toBe(true);
+    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
     expect(hasConfig(paths, "config.shared.toml")).toBe(true);
   });
 
-  it("loads the workstation overlay when selected for the workstation-unix entry", () => {
+  it("loads the workstation overlay when selected", () => {
     const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.workstation-unix.toml"),
-      MISE_ENV: "shared,workstation",
+      MISE_CONFIG_DIR: repoFile("mise"),
+      MISE_ENV: "workstation-unix,shared,workstation",
     });
 
+    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
     expect(hasConfig(paths, "config.shared.toml")).toBe(true);
     expect(hasConfig(paths, workstationConfig)).toBe(true);
   });
 
-  it("keeps the macOS overlay when shared is also selected for the workstation-unix entry", () => {
+  it("keeps the macOS overlay when selected", () => {
     const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.workstation-unix.toml"),
-      MISE_ENV: "macos,shared",
+      MISE_CONFIG_DIR: repoFile("mise"),
+      MISE_ENV: "workstation-unix,macos,shared",
     });
 
-    expect(hasConfig(paths, "entry.workstation-unix.toml")).toBe(true);
+    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
     expect(hasConfig(paths, "config.macos.toml")).toBe(true);
     expect(hasConfig(paths, "config.shared.toml")).toBe(true);
   });
 
-  it("loads the selected server-pi entry and shared overlay", () => {
+  it("loads the server-pi machine config and shared overlay", () => {
     const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.server-pi.toml"),
-      MISE_ENV: "shared",
+      MISE_CONFIG_DIR: repoFile("mise"),
+      MISE_ENV: "server-pi,shared",
     });
 
-    expect(hasConfig(paths, "entry.server-pi.toml")).toBe(true);
+    expect(hasConfig(paths, "config.server-pi.toml")).toBe(true);
     expect(hasConfig(paths, "config.shared.toml")).toBe(true);
-    expect(readTools("entry.server-pi.toml").has("hadolint")).toBe(false);
+    expect(readTools("config.server-pi.toml").has("hadolint")).toBe(false);
   });
 
-  it("loads the workstation-windows global entry and shared overlay", () => {
+  it("loads workstation-windows machine config and overlays", () => {
     const paths = configPaths({
-      MISE_GLOBAL_CONFIG_FILE: repoFile("mise", "entry.workstation-windows.toml"),
-      MISE_ENV: "shared",
+      MISE_CONFIG_DIR: repoFile("mise"),
+      MISE_ENV: "workstation-windows,shared,workstation",
     });
 
-    expect(hasConfig(paths, "entry.workstation-windows.toml")).toBe(true);
+    expect(hasConfig(paths, "config.workstation-windows.toml")).toBe(true);
     expect(hasConfig(paths, "config.shared.toml")).toBe(true);
+    expect(hasConfig(paths, workstationConfig)).toBe(true);
   });
 
-  it("keeps the CI entry isolated from shared and workstation overlays", () => {
+  it("keeps the CI config isolated from overlays", () => {
     const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.ci.toml"),
-      MISE_ENV: "",
+      MISE_CONFIG_DIR: repoFile("mise"),
+      MISE_ENV: "ci",
     });
 
-    expect(hasConfig(paths, "entry.ci.toml")).toBe(true);
-    expect(hasConfig(paths, "entry.workstation-unix.toml")).toBe(false);
+    expect(hasConfig(paths, "config.ci.toml")).toBe(true);
+    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(false);
     expect(hasConfig(paths, "config.shared.toml")).toBe(false);
     expect(hasConfig(paths, workstationConfig)).toBe(false);
   });
 
-  it("does not keep legacy entry files directly under mise", () => {
-    const legacyConfigFiles = ["default", "windows", "pi", "ci"].map((environment) => `config.${environment}.toml`);
+  it("renames entry files to config.<machine>.toml pattern", () => {
+    const machineConfigs = ["config.workstation-unix.toml", "config.workstation-windows.toml", "config.server-pi.toml", "config.ci.toml"];
+    const legacyEntryFiles = ["entry.workstation-unix.toml", "entry.workstation-windows.toml", "entry.server-pi.toml", "entry.ci.toml"];
 
-    for (const file of legacyConfigFiles) {
+    for (const file of machineConfigs) {
+      expect(fs.existsSync(path.join(configDir, file))).toBe(true);
+    }
+    for (const file of legacyEntryFiles) {
       expect(fs.existsSync(path.join(configDir, file))).toBe(false);
     }
   });

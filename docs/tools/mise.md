@@ -9,7 +9,7 @@ Official Docs: <https://mise.jdx.dev>
 
 ## Configuration Structure
 
-`entry.*` は `MISE_CONFIG_FILE` で選ぶ OS × 役割の入口、`config.*` は `MISE_ENV` で重ねる overlay の範囲です。入口で対象環境を選び、必要な共通設定や OS 固有設定を overlay として追加します。
+`config.<machine>.*` は `MISE_ENV` で選ぶ機種固有設定、その他の `config.*` は `MISE_ENV` で重ねる overlay です。`MISE_CONFIG_DIR` で設定ディレクトリを指定し、`MISE_ENV` で機種と overlay を選択します。
 
 mise設定は環境別ファイルで管理されています:
 
@@ -27,22 +27,22 @@ mise設定は環境別ファイルで管理されています:
 
 - `mise/config.shared.toml` - default / Windows / Raspberry Pi の共通 tools（`MISE_ENV` に `shared` が含まれる場合のみ）
 - `mise/config.workstation.toml` - Pi / CI 以外の開発機（macOS/Linux/WSL2 と Windows）の共通 tools（`MISE_ENV` に `workstation` が含まれる場合のみ）
-- `mise/entry.workstation-unix.toml` - デフォルト（macOS/Linux/WSL2）の差分
+- `mise/config.workstation-unix.toml` - デフォルト（macOS/Linux/WSL2）の機種固有 tools
   - jobs = 8（デスクトップ/ワークステーション向け）
-  - shared / workstation overlays と組み合わせて全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
+  - `MISE_ENV=workstation-unix,macos,shared,workstation` で shared / workstation overlays と組み合わせる
 
-- `mise/entry.workstation-windows.toml` - Windows
-  - shared / workstation overlays と組み合わせる Windows 向けの差分
+- `mise/config.workstation-windows.toml` - Windows 機種固有 tools
+  - `MISE_ENV=workstation-windows,shared,workstation` で shared / workstation overlays と組み合わせる
   - `aws-cli` は現行の `mise` backend で Windows 非対応のため除外
   - `jobs` は未設定（mise のデフォルトに従う）
-  - Windows セッションで `MISE_CONFIG_FILE` がこのファイルを指す場合に有効
 
-- `mise/entry.server-pi.toml` - Raspberry Pi（ARMサーバー環境）
+- `mise/config.server-pi.toml` - Raspberry Pi（ARMサーバー環境）機種固有 tools
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
-  - shared overlay と組み合わせる最小ツールセット（npm軽量版、cargo全除外）
+  - `MISE_ENV=server-pi,shared` で shared overlay と組み合わせる最小ツールセット（npm軽量版、cargo全除外）
 
-- `mise/entry.ci.toml` - CI/CD（GitHub Actions最適化）
+- `mise/config.ci.toml` - CI/CD（GitHub Actions最適化）
   - jobs = 4（GitHub Actions runners: 2コア）
+  - `MISE_ENV=ci` で単独使用（overlay なし）
   - CI必須ツールのみ（formatters, linters, npm packages, CLI tools）
   - 大幅に削減されたツールセットで高速インストール
   - 除外: 全language runtimes（Actions提供）、開発ツール、MCP/Claude/Cloudツール
@@ -57,9 +57,9 @@ mise設定は環境別ファイルで管理されています:
 
 ### Config precedence
 
-directory-local → user config (`mise/config.toml`) → environment-specific (`MISE_CONFIG_FILE` / `MISE_ENV`) → global defaults
+directory-local → user config (`mise/config.toml`) → environment-specific (via `MISE_CONFIG_DIR` + `MISE_ENV`) → global defaults
 
-実挙動（実測ベース）: `MISE_CONFIG_FILE` が指す OS 別ファイルに、`MISE_ENV` の各 overlay（通常は `shared,workstation`、macOS は `macos,shared,workstation` も）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
+実挙動: `MISE_CONFIG_DIR` が指すディレクトリから、`MISE_ENV` に含まれる各 config ファイル（例: `workstation-unix,macos,shared,workstation` なら config.workstation-unix.toml, config.macos.toml, config.shared.toml, config.workstation.toml）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
 
 運用ルール: OS 間で値が異なる設定（例: `idiomatic_version_file_enable_tools`, `jobs`, `trusted_config_paths`）は `config.toml` に置かない。`config.toml` は全環境で同一値の共通設定のみを置く。
 
@@ -193,13 +193,11 @@ Priority: CI > Raspberry Pi > Default
 
 ### Windows
 
-`mise/entry.workstation-windows.toml` is available; `windows/setup.ps1` and the PowerShell profile select it and preserve existing `MISE_ENV` while adding `shared,workstation`.
-
-- Windows uses `mise/entry.workstation-windows.toml` only when `MISE_CONFIG_FILE` is explicitly set to that path by the session or shell setup
+Windows: `MISE_ENV=workstation-windows,shared,workstation` set by `windows/setup.ps1` and the PowerShell profile
 
 #### Related: Chocolatey manifests
 
-`mise/entry.workstation-windows.toml` covers mise-managed tools. OS-level Windows package bootstrap can be managed separately with a Chocolatey `.config` manifest. Layer choice: [docs/setup.md](../setup.md#package-management-philosophy).
+`mise/config.workstation-windows.toml` covers mise-managed tools. OS-level Windows package bootstrap can be managed separately with a Chocolatey `.config` manifest. Layer choice: [docs/setup.md](../setup.md#package-management-philosophy).
 
 ```powershell
 choco install .\windows\chocolatey\packages.config -y

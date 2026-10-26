@@ -44,7 +44,8 @@ printf "\n"
 printf "%b\n" "${BOLD}Environment Variables:${NC}"
 printf "  CI: %s\n" "${CI:-not set}"
 printf "  GITHUB_ACTIONS: %s\n" "${GITHUB_ACTIONS:-not set}"
-printf "  MISE_CONFIG_FILE: %s\n" "${MISE_CONFIG_FILE:-not set}"
+printf "  MISE_CONFIG_DIR: %s\n" "${MISE_CONFIG_DIR:-not set}"
+printf "  MISE_ENV: %s\n" "${MISE_ENV:-not set}"
 printf "\n"
 
 # ==============================================================================

@@ -25,7 +25,7 @@ else
   : "${GIT_CONFIG_GLOBAL:=$XDG_CONFIG_HOME/git/config}"
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
-  : "${MISE_CONFIG_FILE:=${XDG_CONFIG_HOME}/mise/entry.workstation-unix.toml}"
+  : "${MISE_CONFIG_DIR:=${XDG_CONFIG_HOME}/mise}"
   _append_mise_env() {
     local token="$1"
     case ",${MISE_ENV:-}," in
@@ -33,22 +33,16 @@ else
       *) MISE_ENV="${MISE_ENV:+$MISE_ENV,}$token" ;;
     esac
   }
-  case "${MISE_CONFIG_FILE##*/}" in
-    entry.ci.toml) ;;
-    entry.server-pi.toml)
-      _append_mise_env shared
-      ;;
-    *)
-      # shellcheck disable=SC3028
-      case "${OSTYPE:-}" in
-        darwin*) _append_mise_env macos ;;
-      esac
-      _append_mise_env shared
-      _append_mise_env workstation
-      ;;
+  # Default workstation: workstation-unix,macos,shared,workstation
+  _append_mise_env workstation-unix
+  # shellcheck disable=SC3028
+  case "${OSTYPE:-}" in
+    darwin*) _append_mise_env macos ;;
   esac
+  _append_mise_env shared
+  _append_mise_env workstation
   export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
-  export ZDOTDIR GIT_CONFIG_GLOBAL MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_FILE MISE_ENV
+  export ZDOTDIR GIT_CONFIG_GLOBAL MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_DIR MISE_ENV
   unset -f _append_mise_env
 fi
 

@@ -1,4 +1,4 @@
-# CI の入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
+# CI 固有の tools (MISE_ENV=ci で選択、overlay なし)
 
 [settings]
 # 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）

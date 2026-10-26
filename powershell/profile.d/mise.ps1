@@ -1,18 +1,18 @@
 # Shared mise bootstrap for PowerShell on Windows.
 #
-# Keep project `mise run` tasks on mise's normal config discovery path while
-# loading the Windows tool definitions as the global mise config.
-$windowsMiseConfig = Join-Path $env:USERPROFILE ".config\mise\entry.workstation-windows.toml"
-if ($env:MISE_CONFIG_FILE -eq $windowsMiseConfig) {
-  Remove-Item Env:MISE_CONFIG_FILE -ErrorAction SilentlyContinue
+# Use MISE_CONFIG_DIR to discover all configs globally, and MISE_ENV to select the machine type and overlays.
+$windowsMiseConfigDir = Join-Path $env:USERPROFILE ".config\mise"
+if (-not $env:MISE_CONFIG_DIR -and (Test-Path -LiteralPath $windowsMiseConfigDir)) {
+  $env:MISE_CONFIG_DIR = $windowsMiseConfigDir
 }
-if (-not $env:MISE_GLOBAL_CONFIG_FILE -and (Test-Path -LiteralPath $windowsMiseConfig)) {
-  $env:MISE_GLOBAL_CONFIG_FILE = $windowsMiseConfig
-}
+# Windows: workstation-windows,shared,workstation
 $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
-if ($miseEnvironmentTokens -notcontains "shared") {
-  $env:MISE_ENV = (@($miseEnvironmentTokens + "shared") -join ",")
+foreach ($requiredToken in @("workstation-windows", "shared", "workstation")) {
+  if ($miseEnvironmentTokens -notcontains $requiredToken) {
+    $miseEnvironmentTokens += $requiredToken
+  }
 }
+$env:MISE_ENV = ($miseEnvironmentTokens -join ",")
 
 $miseCandidates = @(
   (Get-Command "mise.exe" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source -First 1),
