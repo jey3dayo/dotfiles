@@ -3,7 +3,6 @@ tap "daipeihust/tap"
 tap "fujibee/agmsg", trusted: true
 tap "olets/tap"
 tap "perman/tap", "git@github.com:PERMAN/homebrew-tap.git"
-tap "stablyai/orca"
 tap "steipete/tap", trusted: true
 tap "voicevox/voicevox", "https://github.com/VOICEVOX/homebrew-voicevox", trusted: true
 brew "daipeihust/tap/im-select", trusted: true
@@ -60,7 +59,6 @@ cask "notion-calendar"
 cask "obsidian"
 cask "ollama-app"
 cask "openvpn-connect"
-cask "stablyai/orca/orca", trusted: true
 cask "postman"
 cask "raycast"
 cask "session-manager-plugin"

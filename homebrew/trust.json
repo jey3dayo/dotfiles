@@ -8,5 +8,5 @@
     "steipete/tap/remindctl"
   ],
   "trustedtaps": ["abue-ammar/tinycast", "fujibee/agmsg", "steipete/tap", "voicevox/voicevox"],
-  "trustedcasks": ["abue-ammar/tinycast/tinycast", "stablyai/orca/orca"]
+  "trustedcasks": ["abue-ammar/tinycast/tinycast"]
 }
