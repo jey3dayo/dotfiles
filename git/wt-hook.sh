@@ -1,9 +1,9 @@
 #!/bin/sh
 # git-wt の wt.hook。新しい worktree で mise と依存を入れる（失敗しても作成は止めない）
 
-# パスが変わるので trust し直す
+# trust は worktree 間で共有され、trusted_config_paths でもカバーされる
 if [ -f mise.toml ] || [ -f .mise.toml ]; then
-  mise trust --yes && mise install
+  mise install
 fi
 
 # lockfile が無いと ni が対話で止まる

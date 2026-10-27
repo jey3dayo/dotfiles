@@ -6,7 +6,18 @@ jobs = 8
 idiomatic_version_file_enable_tools = []
 # /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下に展開される worktree/sandbox 内の
 # mise config を信頼するために追加している
-trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
+# github.com 配下は自分と仕事の org だけ信頼する
+trusted_config_paths = [
+  "~/.config",
+  "/private/var/folders",
+  "~/src/github.com/jey3dayo",
+  "~/src/github.com/ca-groupit",
+  "~/src/github.com/CyberAgent-Infosys",
+  "~/src/github.com/caad-develop",
+  "~/src/github.com/CyberAgentAI",
+  "~/src/github.com/T00114",
+  "~/src/github.com/cycloud-io",
+]
 
 # gh は keychain 保管のため gh_cli_tokens（hosts.yml）では取得できない。shim 経由だと
 # use_git_credentials で避けた無限再帰を再現するため、実バイナリを絶対パスで呼ぶ
