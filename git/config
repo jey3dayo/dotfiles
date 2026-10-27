@@ -78,6 +78,7 @@
   basedir = ".worktrees"
   copy = .env*
   nocopy = .env.backup.*
+  hook = sh \"$HOME/.config/git/wt-hook.sh\"
 [user]
 	name = Junya Nakazato
 	email = j138cm@gmail.com
