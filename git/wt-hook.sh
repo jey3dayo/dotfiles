@@ -1,7 +1,12 @@
 #!/bin/sh
 # git-wt の wt.hook。新しい worktree で mise と依存を入れる（失敗しても作成は止めない）
 
-# trust は worktree 間で共有され、trusted_config_paths でもカバーされる
+# mise install / exec は読んだ config を暗黙に trust するので、未信頼なら何もしない
+# （trust は worktree 間で共有され、trusted_config_paths でもカバーされる）
+if ! mise env </dev/null >/dev/null 2>&1; then
+  exit 0
+fi
+
 if [ -f mise.toml ] || [ -f .mise.toml ]; then
   mise install
 fi
