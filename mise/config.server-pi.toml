@@ -1,13 +1,14 @@
-# Raspberry Pi サーバーの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
+# Raspberry Pi サーバー固有の settings と tools (MISE_ENV で最後に選択して優先)
 
 [settings]
-# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
+# entry 固有 settings（共通 settings は config.toml）
 jobs = 2                                                 # メモリ制約対応: 並列数削減でスワップ回避
 idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 
 [tools]
-# Common tools are loaded from config.shared.toml when MISE_ENV includes shared.
+# 共通 tools: conf.d/00-tools-common.toml
+# Shared tools: config.shared.toml (via MISE_ENV)
 # Language Runtimes
 # Python は mise で管理しない。uv が必要に応じて python-build-standalone を取得する
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
@@ -17,9 +18,6 @@ trusted_config_paths = ["~/.config", "~/src/github.com"]
 # Lua lint は Nix 側で luacheck を供給して実行する。
 
 # Formatters / Linters（hadolint は macOS/Linux x86_64 のみのため除外）
-shellcheck = "latest"
-shfmt = "latest"
-yamllint = "latest"
 
 # NPM Global Packages（npm 自体は node 同梱版を使用）
 # Language Servers・デスクトップ開発ツール・クラウド系は除外

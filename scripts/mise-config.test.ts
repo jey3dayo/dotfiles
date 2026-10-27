@@ -7,8 +7,16 @@ import * as path from "node:path";
 import { repoFile, repoRoot } from "./repo-file.ts";
 
 const configDir = repoFile("mise");
-const osConfigs = ["entry.workstation-unix.toml", "entry.workstation-windows.toml", "entry.server-pi.toml"];
+const entryConfigs = [
+  "config.workstation-unix.toml",
+  "config.workstation-windows.toml",
+  "config.server-pi.toml",
+  "config.ci.toml",
+];
 const workstationConfig = "config.workstation.toml";
+const sharedConfig = "config.shared.toml";
+const commonToolsConfig = "conf.d/00-tools-common.toml";
+const bunConfig = "config.bun.toml";
 
 const readTools = (file: string): Map<string, string> => {
   const tools = new Map<string, string>();
@@ -43,61 +51,124 @@ const readTools = (file: string): Map<string, string> => {
 
 const cleanMiseEnv = (): NodeJS.ProcessEnv => {
   const env = { ...process.env };
+  delete env.MISE_CONFIG_DIR;
   delete env.MISE_CONFIG_FILE;
   delete env.MISE_GLOBAL_CONFIG_FILE;
   delete env.MISE_ENV;
   return env;
 };
 
-const configPaths = (overrides: NodeJS.ProcessEnv): string[] => {
+const configPaths = (overrides: NodeJS.ProcessEnv, cwd = repoRoot): string[] => {
   const result = spawnSync("mise", ["config", "ls", "--json"], {
-    cwd: repoRoot,
+    cwd,
     encoding: "utf8",
     env: { ...cleanMiseEnv(), ...overrides },
   });
   if (result.status !== 0) {
-    throw new Error(`mise config ls failed: ${result.stderr}`);
+    throw new Error(`mise config ls failed from ${cwd}: ${result.stderr}`);
   }
   return [...result.stdout.matchAll(/"path"\s*:\s*"([^"]+)"/g)].map((match) => match[1] ?? "");
 };
 
+const settingsFrom = (overrides: NodeJS.ProcessEnv, cwd = repoRoot): Map<string, { value: string; source: string }> => {
+  const result = spawnSync("mise", ["settings"], {
+    cwd,
+    encoding: "utf8",
+    env: { ...cleanMiseEnv(), ...overrides },
+  });
+  if (result.status !== 0) {
+    throw new Error(`mise settings failed from ${cwd}: ${result.stderr}`);
+  }
+  const settings = new Map<string, { value: string; source: string }>();
+  for (const line of result.stdout.split("\n")) {
+    const match = line.match(/^(\S+)\s+(\S+)\s+(.+)$/);
+    if (match) {
+      const [, key, value, source] = match;
+      if (key && value && source) {
+        settings.set(key, { value, source });
+      }
+    }
+  }
+  return settings;
+};
+
 const hasConfig = (paths: string[], file: string): boolean => paths.some((entry) => entry.endsWith(`/mise/${file}`));
 
-describe("shared mise tool overlay", () => {
-  it("publishes the workstation mise selectors to GUI applications", () => {
+describe("mise config layout and tool isolation", () => {
+  it("publishes the correct MISE_ENV to GUI applications (entry goes last)", () => {
     const macosConfig = fs.readFileSync(path.join(configDir, "config.macos.toml"), "utf8");
 
-    expect(macosConfig).toContain('launchctl setenv MISE_CONFIG_FILE "$HOME/.config/mise/entry.workstation-unix.toml"');
-    expect(macosConfig).toContain('launchctl setenv MISE_ENV "macos,shared,workstation"');
+    expect(macosConfig).toContain('launchctl setenv MISE_ENV "macos,bun,shared,workstation,workstation-unix"');
+    expect(macosConfig).not.toMatch(/(^|\s)launchctl setenv MISE_(GLOBAL_)?CONFIG_FILE/m);
   });
 
-  it("keeps config.toml settings-only", () => {
+  it("keeps config.toml settings-only (no [tools])", () => {
     expect(readTools("config.toml")).toEqual(new Map());
   });
 
-  it("has no duplicated key/value across workstation-unix, workstation-windows, and server-pi entries", () => {
-    const tools = osConfigs.map(readTools);
-    const common = [...tools[0].entries()].filter(([key, value]) => tools.every((config) => config.get(key) === value));
-
-    expect(common).toEqual([]);
+  it("defines common tools only in conf.d/00-tools-common.toml", () => {
+    const commonTools = readTools(commonToolsConfig);
+    expect(commonTools.size).toBeGreaterThan(0);
+    expect(commonTools.has("node")).toBe(true);
+    expect(commonTools.has("github:astral-sh/uv")).toBe(true);
+    expect(commonTools.has("shellcheck")).toBe(true);
+    expect(commonTools.has("shfmt")).toBe(true);
+    expect(commonTools.has("yamllint")).toBe(true);
   });
 
-  it("has no duplicated key/value between workstation-unix and workstation-windows entries", () => {
-    const defaultTools = readTools("entry.workstation-unix.toml");
-    const windowsTools = readTools("entry.workstation-windows.toml");
-    const common = [...defaultTools.entries()].filter(([key, value]) => windowsTools.get(key) === value);
-
-    expect(common).toEqual([]);
+  it("defines bun only in config.bun.toml", () => {
+    const bunTools = readTools(bunConfig);
+    expect(bunTools.size).toBe(1);
+    expect(bunTools.has("bun")).toBe(true);
   });
 
-  it("keeps workstation tools out of all other config files", () => {
+  it("has no duplicated key/value across all entry configs", () => {
+    const tools = entryConfigs.map(readTools);
+    const allKeys = new Set(tools.flatMap((config) => [...config.keys()]));
+    for (const key of allKeys) {
+      const values = tools.map((config) => config.get(key)).filter((v) => v !== undefined);
+      if (values.length > 1) {
+        const uniqueValues = new Set(values);
+        expect(uniqueValues.size).toBe(values.length); // All different or no duplicates
+      }
+    }
+  });
+
+  it("keeps common tools out of shared, workstation, and entry configs", () => {
+    const commonTools = readTools(commonToolsConfig);
+    const otherConfigs = [sharedConfig, workstationConfig, ...entryConfigs];
+
+    for (const file of otherConfigs) {
+      const tools = readTools(file);
+      for (const key of commonTools.keys()) {
+        if (tools.has(key)) {
+          throw new Error(`${key} should not be in ${file} (it's in ${commonToolsConfig})`);
+        }
+      }
+    }
+  });
+
+  it("keeps bun out of shared, workstation, and entry configs", () => {
+    const otherConfigs = [sharedConfig, workstationConfig, ...entryConfigs];
+
+    for (const file of otherConfigs) {
+      const tools = readTools(file);
+      if (tools.has("bun")) {
+        throw new Error(`bun should not be in ${file} (it's in ${bunConfig})`);
+      }
+    }
+  });
+
+  it("keeps workstation tools out of shared and entry configs", () => {
     const workstationTools = readTools(workstationConfig);
-    const otherConfigs = [...osConfigs, "config.shared.toml"];
+    const otherConfigs = [sharedConfig, ...entryConfigs];
 
     for (const file of otherConfigs) {
       const tools = readTools(file);
       for (const key of workstationTools.keys()) {
-        expect(tools.has(key)).toBe(false);
+        if (tools.has(key)) {
+          throw new Error(`${key} should not be in ${file} (it's in ${workstationConfig})`);
+        }
       }
     }
   });
@@ -112,87 +183,129 @@ describe("shared mise tool overlay", () => {
     expect(sections).toEqual(["[tools]"]);
   });
 
-  it("keeps shared tools out of the OS entries", () => {
-    const sharedTools = readTools("config.shared.toml");
+  it("keeps shared tools out of the entry configs", () => {
+    const sharedTools = readTools(sharedConfig);
 
     expect(sharedTools.size).toBeGreaterThan(0);
-    for (const file of osConfigs) {
+    for (const file of entryConfigs) {
       const tools = readTools(file);
       for (const key of sharedTools.keys()) {
-        expect(tools.has(key)).toBe(false);
+        if (tools.has(key)) {
+          throw new Error(`${key} should not be in ${file} (it's in ${sharedConfig})`);
+        }
       }
     }
   });
 
-  it("loads the selected workstation-unix entry and shared overlay", () => {
-    const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.workstation-unix.toml"),
-      MISE_ENV: "shared",
-    });
+  it("keeps CI config isolated (no shared or workstation tools)", () => {
+    const ciTools = readTools("config.ci.toml");
+    const sharedTools = readTools(sharedConfig);
+    const workstationTools = readTools(workstationConfig);
 
-    expect(hasConfig(paths, "entry.workstation-unix.toml")).toBe(true);
-    expect(hasConfig(paths, "config.shared.toml")).toBe(true);
+    for (const key of sharedTools.keys()) {
+      if (ciTools.has(key)) {
+        throw new Error(`${key} from shared should not be in CI config`);
+      }
+    }
+    for (const key of workstationTools.keys()) {
+      if (ciTools.has(key)) {
+        throw new Error(`${key} from workstation should not be in CI config`);
+      }
+    }
   });
 
-  it("loads the workstation overlay when selected for the workstation-unix entry", () => {
-    const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.workstation-unix.toml"),
-      MISE_ENV: "shared,workstation",
-    });
+  it("discovers config from $HOME (entry goes last so entry settings win)", () => {
+    const paths = configPaths({ MISE_ENV: "bun,shared,workstation,workstation-unix" }, repoRoot);
 
-    expect(hasConfig(paths, "config.shared.toml")).toBe(true);
+    expect(hasConfig(paths, "config.toml")).toBe(true);
+    expect(hasConfig(paths, commonToolsConfig)).toBe(true);
+    expect(hasConfig(paths, bunConfig)).toBe(true);
+    expect(hasConfig(paths, sharedConfig)).toBe(true);
+    expect(hasConfig(paths, workstationConfig)).toBe(true);
+    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
+  });
+
+  it("loads macOS overlay when selected", () => {
+    const paths = configPaths({ MISE_ENV: "macos,bun,shared,workstation,workstation-unix" });
+
+    expect(hasConfig(paths, "config.macos.toml")).toBe(true);
+    expect(hasConfig(paths, bunConfig)).toBe(true);
+    expect(hasConfig(paths, sharedConfig)).toBe(true);
+    expect(hasConfig(paths, workstationConfig)).toBe(true);
+    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
+  });
+
+  it("loads server-pi with shared (no bun, no workstation)", () => {
+    const paths = configPaths({ MISE_ENV: "shared,server-pi" });
+
+    expect(hasConfig(paths, "config.server-pi.toml")).toBe(true);
+    expect(hasConfig(paths, sharedConfig)).toBe(true);
+    expect(hasConfig(paths, bunConfig)).toBe(false);
+    expect(hasConfig(paths, workstationConfig)).toBe(false);
+    expect(readTools("config.server-pi.toml").has("hadolint")).toBe(false);
+  });
+
+  it("loads Windows overlays (entry goes last)", () => {
+    const paths = configPaths({ MISE_ENV: "bun,shared,workstation,workstation-windows" });
+
+    expect(hasConfig(paths, "config.workstation-windows.toml")).toBe(true);
+    expect(hasConfig(paths, bunConfig)).toBe(true);
+    expect(hasConfig(paths, sharedConfig)).toBe(true);
     expect(hasConfig(paths, workstationConfig)).toBe(true);
   });
 
-  it("keeps the macOS overlay when shared is also selected for the workstation-unix entry", () => {
-    const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.workstation-unix.toml"),
-      MISE_ENV: "macos,shared",
-    });
+  it("keeps CI isolated (bun,ci only; no shared, no workstation)", () => {
+    const paths = configPaths({ MISE_ENV: "bun,ci" });
 
-    expect(hasConfig(paths, "entry.workstation-unix.toml")).toBe(true);
-    expect(hasConfig(paths, "config.macos.toml")).toBe(true);
-    expect(hasConfig(paths, "config.shared.toml")).toBe(true);
-  });
-
-  it("loads the selected server-pi entry and shared overlay", () => {
-    const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.server-pi.toml"),
-      MISE_ENV: "shared",
-    });
-
-    expect(hasConfig(paths, "entry.server-pi.toml")).toBe(true);
-    expect(hasConfig(paths, "config.shared.toml")).toBe(true);
-    expect(readTools("entry.server-pi.toml").has("hadolint")).toBe(false);
-  });
-
-  it("loads the workstation-windows global entry and shared overlay", () => {
-    const paths = configPaths({
-      MISE_GLOBAL_CONFIG_FILE: repoFile("mise", "entry.workstation-windows.toml"),
-      MISE_ENV: "shared",
-    });
-
-    expect(hasConfig(paths, "entry.workstation-windows.toml")).toBe(true);
-    expect(hasConfig(paths, "config.shared.toml")).toBe(true);
-  });
-
-  it("keeps the CI entry isolated from shared and workstation overlays", () => {
-    const paths = configPaths({
-      MISE_CONFIG_FILE: repoFile("mise", "entry.ci.toml"),
-      MISE_ENV: "",
-    });
-
-    expect(hasConfig(paths, "entry.ci.toml")).toBe(true);
-    expect(hasConfig(paths, "entry.workstation-unix.toml")).toBe(false);
-    expect(hasConfig(paths, "config.shared.toml")).toBe(false);
+    expect(hasConfig(paths, "config.ci.toml")).toBe(true);
+    expect(hasConfig(paths, bunConfig)).toBe(true);
+    expect(hasConfig(paths, commonToolsConfig)).toBe(true);
+    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(false);
+    expect(hasConfig(paths, sharedConfig)).toBe(false);
     expect(hasConfig(paths, workstationConfig)).toBe(false);
   });
 
-  it("does not keep legacy entry files directly under mise", () => {
-    const legacyConfigFiles = ["default", "windows", "pi", "ci"].map((environment) => `config.${environment}.toml`);
+  it("applies entry-specific jobs setting (Unix=8, CI=4, Pi=2)", () => {
+    const unixSettings = settingsFrom({ MISE_ENV: "bun,shared,workstation,workstation-unix" });
+    const ciSettings = settingsFrom({ MISE_ENV: "bun,ci" });
+    const piSettings = settingsFrom({ MISE_ENV: "shared,server-pi" });
 
-    for (const file of legacyConfigFiles) {
-      expect(fs.existsSync(path.join(configDir, file))).toBe(false);
+    expect(unixSettings.get("jobs")?.value).toBe("8");
+    expect(ciSettings.get("jobs")?.value).toBe("4");
+    expect(piSettings.get("jobs")?.value).toBe("2");
+  });
+
+  it("uses config.<machine>.toml naming (no entry.* files)", () => {
+    const machineConfigs = [
+      "config.workstation-unix.toml",
+      "config.workstation-windows.toml",
+      "config.server-pi.toml",
+      "config.ci.toml",
+    ];
+    const legacyEntryFiles = [
+      "entry.workstation-unix.toml",
+      "entry.workstation-windows.toml",
+      "entry.server-pi.toml",
+      "entry.ci.toml",
+    ];
+
+    for (const file of machineConfigs) {
+      if (!fs.existsSync(path.join(configDir, file))) {
+        throw new Error(`${file} should exist`);
+      }
     }
+    for (const file of legacyEntryFiles) {
+      if (fs.existsSync(path.join(configDir, file))) {
+        throw new Error(`${file} should be removed`);
+      }
+    }
+  });
+
+  it("creates conf.d/00-tools-common.toml for common tools", () => {
+    expect(fs.existsSync(path.join(configDir, commonToolsConfig))).toBe(true);
+  });
+
+  it("creates config.bun.toml for bun", () => {
+    expect(fs.existsSync(path.join(configDir, bunConfig))).toBe(true);
   });
 });

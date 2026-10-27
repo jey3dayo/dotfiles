@@ -73,12 +73,9 @@ jobs:
   format-and-lint:
     runs-on: ubuntu-latest
     env:
-      # Use CI-optimized configuration with minimal toolset
-      # Significantly reduces install time compared to default config
-      # Local environments load the selected OS config plus shared (and macos on macOS); CI stays isolated below
-      MISE_CONFIG_FILE: ${{ github.workspace }}/mise/entry.ci.toml
-      # Do not inherit a shared/local overlay when Actions runs under a configured shell.
-      MISE_ENV: ""
+      # CI-optimized config selection via MISE_ENV (entry goes last so entry settings win)
+      # Uses standard global config discovery (~/.config/mise/config.<env>.toml)
+      MISE_ENV: "bun,ci"
       # This repository defines tasks in `.mise.toml`; force mise to resolve that filename.
       # `MISE_DEFAULT_CONFIG_FILENAME` is for older mise versions.
       MISE_DEFAULT_CONFIG_FILENAME: ".mise.toml"

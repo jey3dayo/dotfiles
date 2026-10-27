@@ -5,9 +5,6 @@
 python = "3.15"
 rust = "stable" # rustfmt (nvim conform) and cargo:* tool installs
 
-# Package Managers
-bun = "latest"
-
 # CLI Tools
 bat = "latest"
 delta = "latest"

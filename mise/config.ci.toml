@@ -1,7 +1,7 @@
-# CI の入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
+# CI 固有の settings と tools (MISE_ENV=bun,ci のみ; shared/workstation tools は含まない)
 
 [settings]
-# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
+# entry 固有 settings（共通 settings は config.toml）
 jobs = 4                                 # GitHub Actions runners: 2 cores
 idiomatic_version_file_enable_tools = []
 # /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下の worktree/sandbox 用（CI が Linux runner の場合は実質未使用）
@@ -14,27 +14,6 @@ MD_EXCLUDES = "#node_modules #fisher #zsh/.zinit #.worktrees #.apm/skills #.clau
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 [tools]
-# uvx for ruff execution (pipx:uv は自己参照更新で停滞するため避ける)
-"github:astral-sh/uv" = "latest"
-node = "lts"
-bun = "latest"
-
-# Formatters / Linters
-"github:jdx/jactionlint" = "2.3.0"
-biome = "latest"
-prettier = "latest"
-shellcheck = "latest"
-shfmt = "latest"
-stylua = "latest"
-taplo = "latest"
-yamllint = "latest"
-"pipx:beautysh" = "latest"
-
-# CLI Tools
-fd = "latest"
-gitleaks = "latest"
-
-# NPM Packages
-"npm:markdown-link-check" = "latest"
-"npm:markdownlint-cli2" = "latest"
-"npm:tsx" = "latest"
+# 共通 tools: conf.d/00-tools-common.toml
+# bun: config.bun.toml (via MISE_ENV)
+# CI 専用 tools はなし（全て共通 tools で充足）

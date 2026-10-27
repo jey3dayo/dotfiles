@@ -6,11 +6,8 @@ $envKeys = Join-Path $configRoot ".env.keys"
 $envLocal = Join-Path $configRoot ".env.local"
 $tempFile = "$envLocal.tmp.$PID"
 $opDotenvKeysVault = if ($env:OP_DOTENV_KEYS_VAULT) { $env:OP_DOTENV_KEYS_VAULT } else { "Dotfiles Automation" }
-$windowsMiseConfig = Join-Path $configRoot "mise\entry.workstation-windows.toml"
-$previousMiseGlobalConfigFile = $env:MISE_GLOBAL_CONFIG_FILE
 $previousMiseEnv = $env:MISE_ENV
-$usingWindowsMiseGlobalConfig = $false
-$usingSharedMiseEnv = $false
+$usingWindowsMiseEnv = $false
 
 function Write-Critical {
   param(
@@ -55,15 +52,20 @@ if (-not (Test-Path -LiteralPath $envKeys)) {
 }
 
 $isWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
-if ($isWindows -and -not $env:MISE_GLOBAL_CONFIG_FILE -and (Test-Path -LiteralPath $windowsMiseConfig)) {
-  $env:MISE_GLOBAL_CONFIG_FILE = $windowsMiseConfig
-  $usingWindowsMiseGlobalConfig = $true
-}
 if ($isWindows) {
-  $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
-  if ($miseEnvironmentTokens -notcontains "shared") {
-    $env:MISE_ENV = (@($miseEnvironmentTokens + "shared") -join ",")
-    $usingSharedMiseEnv = $true
+  Remove-Item Env:MISE_CONFIG_FILE, Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
+  $managedMiseTokens = @("macos", "bun", "shared", "workstation", "workstation-unix", "workstation-windows", "server-pi", "ci")
+  $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ -and ($managedMiseTokens -notcontains $_) })
+  # Windows: bun,shared,workstation,workstation-windows (entry goes last)
+  foreach ($requiredToken in @("bun", "shared", "workstation", "workstation-windows")) {
+    if ($miseEnvironmentTokens -notcontains $requiredToken) {
+      $miseEnvironmentTokens += $requiredToken
+    }
+  }
+  $newMiseEnv = ($miseEnvironmentTokens -join ",")
+  if ($newMiseEnv -ne $env:MISE_ENV) {
+    $env:MISE_ENV = $newMiseEnv
+    $usingWindowsMiseEnv = $true
   }
 }
 
@@ -118,15 +120,7 @@ try {
     $env:DOTENV_PRIVATE_KEY_PATH = $previousKeyPath
   }
 
-  if ($usingWindowsMiseGlobalConfig) {
-    if ($null -eq $previousMiseGlobalConfigFile) {
-      Remove-Item Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
-    } else {
-      $env:MISE_GLOBAL_CONFIG_FILE = $previousMiseGlobalConfigFile
-    }
-  }
-
-  if ($usingSharedMiseEnv) {
+  if ($usingWindowsMiseEnv) {
     if ($null -eq $previousMiseEnv) {
       Remove-Item Env:MISE_ENV -ErrorAction SilentlyContinue
     } else {

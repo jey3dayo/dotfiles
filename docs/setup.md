@@ -43,9 +43,9 @@ brew bundle
 
 # 4. Converge the machine via mise bootstrap
 #    (dotfiles symlink, macOS LaunchAgents, tools)
-#    初回は ~/.zshenv 未配布のため MISE_CONFIG_FILE / MISE_ENV を明示する（次回以降は不要）
-export MISE_CONFIG_FILE="$HOME/.config/mise/entry.workstation-unix.toml"
-export MISE_ENV=macos,shared,workstation # macOS / shared / workstation overlay を読み込む（既存の MISE_ENV は通常の shell setup が保持して追加）
+#    初回は ~/.zshenv 未配布のため MISE_CONFIG_DIR / MISE_ENV を明示する（次回以降は不要）
+export MISE_CONFIG_DIR="$HOME/.config/mise"
+export MISE_ENV=macos,bun,shared,workstation,workstation-unix
 mise trust && mise bootstrap --yes
 
 # 5. Restart shell
@@ -53,8 +53,8 @@ exec zsh
 ```
 
 状態確認は `mise bootstrap status` / `mise dotfiles status`、差分プレビューは `mise bootstrap --dry-run` を使います。
-dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、3 OS 共通 tools は `mise/config.shared.toml`（`MISE_ENV` に `shared` が含まれる場合だけロード）、default / Windows 共通 tools は `mise/config.workstation.toml`（`MISE_ENV` に `workstation` が含まれる場合だけロード）、OS 別 tools は `mise/entry.workstation-unix.toml` / `mise/entry.server-pi.toml`（`MISE_CONFIG_FILE` 経由）、macOS 専用の brew packages・LaunchAgents・dotfiles は `mise/config.macos.toml`（`MISE_ENV` に `macos` が含まれる場合）にあります。
-Raspberry Pi は `entry.server-pi.toml` + shared overlay を使い、`hadolint` など ARM/minimal 構成で意図的に除外したツールを追加しません。CI は `entry.ci.toml` だけを使い、default / shared / workstation overlay を読み込みません。Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
+dotfiles / launchd の定義は `mise/config.toml`（OS 非依存、常時ロード）、3 OS 共通 tools は `mise/config.shared.toml`、default / Windows 共通 tools は `mise/config.workstation.toml`、OS 別 tools は `mise/config.workstation-unix.toml` / `mise/config.server-pi.toml` など、macOS 専用の brew packages・LaunchAgents・dotfiles は `mise/config.macos.toml` にあります。すべて `MISE_CONFIG_DIR` で指定したディレクトリから `MISE_ENV` の値に応じてロードされます。
+Raspberry Pi は `MISE_ENV=shared,server-pi` で config.server-pi.toml + shared overlay を使い、`hadolint` など ARM/minimal 構成で意図的に除外したツールを追加しません。CI は `MISE_ENV=bun,ci` で config.bun.toml と config.ci.toml だけを使い、shared / workstation overlay を読み込みません。Linux/WSL2 は Homebrew の代わりに各ディストリのパッケージマネージャーを使います（`brew bundle` は macOS 専用）。
 
 ### macOS: ai-usage-snapshot の前提（private repo の手動 clone）
 
@@ -80,14 +80,14 @@ powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1
 
 - Chocolatey 本体を導入（未導入の場合のみ）
 - `windows/chocolatey/packages.config` から bootstrap/GUI パッケージを一括導入
-- `MISE_CONFIG_FILE` を `mise/entry.workstation-windows.toml` に向け、`MISE_ENV` に `shared,workstation` を追加して `mise install` を実行
+- `MISE_CONFIG_DIR` を `~/.config/mise` に向け、`MISE_ENV=bun,shared,workstation,workstation-windows` で `mise install` を実行
 - `windows/setup.ps1` は `mise install` 後、claude / codex が未導入の場合のみ公式インストーラで導入する（既導入の場合は更新しない）
 - `~/.config/powershell` を正本にし、`Documents/PowerShell` と `Documents/WindowsPowerShell` のエントリポイントを再生成
 
 ### Windows bootstrap の対象
 
 - Chocolatey: `git`, `mise`, `wezterm`, `neovim`, `7zip`, `googlechrome`, `vscode`
-- mise: `mise/entry.workstation-windows.toml` + `mise/config.shared.toml` に定義した CLI・runtime・formatter・MCP 関連
+- mise: `mise/config.workstation-windows.toml` + `mise/config.shared.toml` に定義した CLI・runtime・formatter・MCP 関連
 
 PowerShell から現在の Chocolatey パッケージ一覧を manifest 化したい場合は次を使います。
 
@@ -145,7 +145,7 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 
 ### 4 層
 
-1. mise `[tools]`: CLI・言語ランタイム・開発ツール・`go:` / `cargo:` / `npm:` / `pipx:` プレフィックス付きパッケージ。`mise/config.shared.toml`（全 OS）、`mise/config.workstation.toml`（default / Windows）、`mise/entry.*.toml`（環境別）で宣言する。npm/pnpm/bun グローバルは使わない。
+1. mise `[tools]`: CLI・言語ランタイム・開発ツール・`go:` / `cargo:` / `npm:` / `pipx:` プレフィックス付きパッケージ。`mise/conf.d/00-tools-common.toml`（全環境共通）、`mise/config.bun.toml`（bun）、`mise/config.shared.toml`（CI 以外）、`mise/config.workstation.toml`（開発機）、`mise/config.<machine>.toml`（機種別）で宣言する。npm/pnpm/bun グローバルは使わない。
 2. mise bootstrap `[bootstrap.packages]`: macOS の Homebrew formula。システムライブラリ・native バイナリ（Neovim とその依存関係、btop, cmake, podman, powershell, rust-analyzer 等、mise でも入れられるものを含む）。`mise/config.macos.toml` に `"brew:<name>" = "latest"` で宣言する。
 3. Brewfile: cask・MAS app・VS Code 拡張、および `[bootstrap.packages]` で表現できない formula の例外リスト（install args・`restart_service`・private または metadata なし tap）。
 4. 自己更新 standalone: `mise` 本体と、自己更新機能を持つ CLI。公式インストーラで入れ（mise は macOS / Linux / WSL2 で `curl https://mise.run | sh`、Windows では Chocolatey）、CLI は `[bootstrap.hooks.post-tools]` → `mise/lib/ensure-standalone.sh`（Windows: `windows/setup.ps1` の `Ensure-StandaloneCli`）が未導入時のみ導入する。更新は各ツールの自己更新（`mise self-update`、CLI は `mise run update:standalone`）に任せ、mise `[tools]` には置かない（二重の更新経路を避けるため）。対象 CLI は導入側をこれらのスクリプト、更新側を `update:standalone` タスクの定義を正本とし、文書には列挙しない。
@@ -170,7 +170,7 @@ Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, u
 2. 定期的な重複チェック:
    - `npm -g list --depth=0` - ローカルリンク（astro-my-profile, zx-scripts）のみであること
    - `brew list --formula` - mise 管理ツールが含まれていないこと
-   - `windows/chocolatey/packages.config` - `mise/entry.workstation-windows.toml` にある CLI/runtime を重複追加しないこと
+   - `windows/chocolatey/packages.config` - `mise/config.workstation-windows.toml` にある CLI/runtime を重複追加しないこと
 
 詳細は [docs/tools/mise.md](tools/mise.md) と [docs/tools/workflows.md](tools/workflows.md) を参照してください。
 

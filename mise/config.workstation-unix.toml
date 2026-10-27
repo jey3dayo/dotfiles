@@ -1,7 +1,7 @@
-# macOS/Linux/WSL2 ワークステーションの入口(MISE_CONFIG_FILE で選択)。overlay は MISE_ENV で重ねる
+# macOS/Linux/WSL2 ワークステーション固有の settings と tools (MISE_ENV で最後に選択して優先)
 
 [settings]
-# 共通 settings（env_file / experimental 等）は config.toml 側に定義（詳細は mise/README.md）
+# entry 固有 settings（共通 settings は config.toml）
 jobs = 8
 idiomatic_version_file_enable_tools = []
 # /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下に展開される worktree/sandbox 内の
@@ -15,7 +15,8 @@ trusted_config_paths = ["~/.config", "~/src/github.com", "/private/var/folders"]
 credential_command = '"$HOME/.mise/installs/github-cli-cli/latest/bin/gh" auth token --hostname "$MISE_CREDENTIAL_HOST"'
 
 [tools]
-# Common tools are loaded from the shared / workstation overlays when MISE_ENV includes them.
+# 共通 tools: conf.d/00-tools-common.toml
+# Shared tools: config.shared.toml / config.workstation.toml (loaded via MISE_ENV)
 # Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
 deno = "latest"
 julia = "latest"
@@ -26,9 +27,6 @@ julia = "latest"
 # Formatters / Linters
 "aqua:reteps/dockerfmt" = "latest"
 hadolint = "latest"
-shellcheck = "latest"
-shfmt = "latest"
-yamllint = "latest"
 
 # CLI Tools
 atuin = "latest"

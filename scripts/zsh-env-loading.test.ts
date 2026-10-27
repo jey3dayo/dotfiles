@@ -105,7 +105,8 @@ describe("zsh plugin bootstrap", () => {
 
       expect(result.status).toBe(0);
       expect(result.stderr.trim()).toBe("");
-      expect(result.stdout).toContain(path.join(zdotdir, "bin", "zsh-benchmark"));
+      // login shell は実 HOME の ZDOTDIR（配置先）を読むので、checkout 位置に依存しない形で確認する
+      expect(result.stdout).toMatch(/\/zsh\/bin\/zsh-benchmark$/m);
       expect(result.stdout).toContain("mise");
       expect(fs.existsSync(expectedMise)).toBe(true);
       expect(result.stdout).not.toContain("abbr");

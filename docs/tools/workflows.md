@@ -331,7 +331,7 @@ brew cleanup
 
 ## mise Management
 
-- Primary config: `mise/config.toml`（設定のみ。`[tools]` は置かず、ツール定義は `mise/config.shared.toml` / `mise/config.workstation.toml` / `mise/entry.*.toml` に分離。詳細は [docs/tools/mise.md](mise.md#configuration-structure)）
+- Primary config: `mise/config.toml`（設定のみ。`[tools]` は置かず、ツール定義は `mise/conf.d/00-tools-common.toml`（全環境共通）/ `mise/config.bun.toml` / `mise/config.shared.toml` / `mise/config.workstation.toml` / 機種別 `mise/config.<machine>.toml` に分離。詳細は [docs/tools/mise.md](mise.md#configuration-structure)）
 - Weekly updates: `mise run update`（`mise self-update` の後に `mise upgrade --yes --no-prune` を実行するタスク）
 - Monthly cleanup: `mise prune` to remove unused versions
 - Verification: `mise doctor` for health check, `mise ls` for installed tools

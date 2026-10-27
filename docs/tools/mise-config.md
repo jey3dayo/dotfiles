@@ -13,14 +13,14 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 ## 設定ファイルの役割
 
-### Entry ファイル (`entry.*.toml`)
+### Machine ファイル (`config.<machine>.toml`)
 
-`MISE_CONFIG_FILE` で選ぶ OS × 役割の入口。各環境で単独または overlay と組み合わせて使用。
+`MISE_ENV` で選ぶ OS × 役割の機種固有設定。各環境で overlay と組み合わせて使用。
 
-- [`entry.workstation-unix.toml`](../../mise/entry.workstation-unix.toml) - macOS/Linux/WSL2 の開発機
-- `entry.workstation-windows.toml` - Windows の開発機
-- [`entry.server-pi.toml`](../../mise/entry.server-pi.toml) - Raspberry Pi
-- [`entry.ci.toml`](../../mise/entry.ci.toml) - CI 環境（最小構成）
+- [`config.workstation-unix.toml`](../../mise/config.workstation-unix.toml) - macOS/Linux/WSL2 の開発機
+- `config.workstation-windows.toml` - Windows の開発機
+- [`config.server-pi.toml`](../../mise/config.server-pi.toml) - Raspberry Pi
+- [`config.ci.toml`](../../mise/config.ci.toml) - CI 環境（最小構成）
 
 ### Overlay ファイル (`config.*.toml`)
 
@@ -31,9 +31,9 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 ### レイヤーの適用順序
 
-通常の開発環境（macOS/Linux/WSL2）: `entry.workstation-unix.toml` + `config.shared.toml` + `config.workstation.toml` の additive 構成
+通常の開発環境（macOS/Linux/WSL2）: `MISE_ENV=macos,bun,shared,workstation,workstation-unix`（Linux/WSL2 は macos なし）で `config.macos.toml` + `config.bun.toml` + `config.shared.toml` + `config.workstation.toml` + `config.workstation-unix.toml` の additive 構成（後ろほど優先）
 
-CI: `entry.ci.toml` 単独（overlay なし）
+CI: `MISE_ENV=bun,ci` で `config.bun.toml` + `config.ci.toml`（bun 以外の overlay なし）
 
 ## ピン固定と非自明な選択の理由
 
@@ -57,7 +57,7 @@ CI: `entry.ci.toml` 単独（overlay なし）
 
 WSL で公式配布バイナリが glibc 不整合で壊れるため、cargo backend を `default-features=false` で使用（qjs/libclang 依存を回避）。
 
-構成: [`mise/entry.workstation-unix.toml`](../../mise/entry.workstation-unix.toml)
+構成: [`mise/config.workstation-unix.toml`](../../mise/config.workstation-unix.toml)
 
 ### lua/luajit の Homebrew 管理
 

@@ -9,7 +9,7 @@ Official Docs: <https://mise.jdx.dev>
 
 ## Configuration Structure
 
-`entry.*` は `MISE_CONFIG_FILE` で選ぶ OS × 役割の入口、`config.*` は `MISE_ENV` で重ねる overlay の範囲です。入口で対象環境を選び、必要な共通設定や OS 固有設定を overlay として追加します。
+`config.<machine>.*` は `MISE_ENV` で選ぶ機種固有設定、その他の `config.*` は `MISE_ENV` で重ねる overlay です。`MISE_CONFIG_DIR` で設定ディレクトリを指定し、`MISE_ENV` で機種と overlay を選択します。
 
 mise設定は環境別ファイルで管理されています:
 
@@ -27,22 +27,22 @@ mise設定は環境別ファイルで管理されています:
 
 - `mise/config.shared.toml` - default / Windows / Raspberry Pi の共通 tools（`MISE_ENV` に `shared` が含まれる場合のみ）
 - `mise/config.workstation.toml` - Pi / CI 以外の開発機（macOS/Linux/WSL2 と Windows）の共通 tools（`MISE_ENV` に `workstation` が含まれる場合のみ）
-- `mise/entry.workstation-unix.toml` - デフォルト（macOS/Linux/WSL2）の差分
+- `mise/config.workstation-unix.toml` - デフォルト（macOS/Linux/WSL2）の機種固有 tools
   - jobs = 8（デスクトップ/ワークステーション向け）
-  - shared / workstation overlays と組み合わせて全ツール（go, node, python, npm packages, cargo tools, CLI tools, formatters/linters）
+  - `MISE_ENV=macos,bun,shared,workstation,workstation-unix` で bun / shared / workstation overlays と組み合わせる（Linux/WSL2 は macos なし）
 
-- `mise/entry.workstation-windows.toml` - Windows
-  - shared / workstation overlays と組み合わせる Windows 向けの差分
+- `mise/config.workstation-windows.toml` - Windows 機種固有 tools
+  - `MISE_ENV=bun,shared,workstation,workstation-windows` で bun / shared / workstation overlays と組み合わせる
   - `aws-cli` は現行の `mise` backend で Windows 非対応のため除外
   - `jobs` は未設定（mise のデフォルトに従う）
-  - Windows セッションで `MISE_CONFIG_FILE` がこのファイルを指す場合に有効
 
-- `mise/entry.server-pi.toml` - Raspberry Pi（ARMサーバー環境）
+- `mise/config.server-pi.toml` - Raspberry Pi（ARMサーバー環境）機種固有 tools
   - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
-  - shared overlay と組み合わせる最小ツールセット（npm軽量版、cargo全除外）
+  - `MISE_ENV=shared,server-pi` で shared overlay と組み合わせる最小ツールセット（npm軽量版、cargo全除外）
 
-- `mise/entry.ci.toml` - CI/CD（GitHub Actions最適化）
+- `mise/config.ci.toml` - CI/CD（GitHub Actions最適化）
   - jobs = 4（GitHub Actions runners: 2コア）
+  - `MISE_ENV=bun,ci` で使用（bun 以外の overlay なし）
   - CI必須ツールのみ（formatters, linters, npm packages, CLI tools）
   - 大幅に削減されたツールセットで高速インストール
   - 除外: 全language runtimes（Actions提供）、開発ツール、MCP/Claude/Cloudツール
@@ -57,9 +57,9 @@ mise設定は環境別ファイルで管理されています:
 
 ### Config precedence
 
-directory-local → user config (`mise/config.toml`) → environment-specific (`MISE_CONFIG_FILE` / `MISE_ENV`) → global defaults
+directory-local → user config (`mise/config.toml`) → environment-specific (via `MISE_CONFIG_DIR` + `MISE_ENV`) → global defaults
 
-実挙動（実測ベース）: `MISE_CONFIG_FILE` が指す OS 別ファイルに、`MISE_ENV` の各 overlay（通常は `shared,workstation`、macOS は `macos,shared,workstation` も）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
+実挙動: `MISE_CONFIG_DIR` が指すディレクトリから、`MISE_ENV` に含まれる各 config ファイル（例: `macos,bun,shared,workstation,workstation-unix` なら config.macos.toml, config.bun.toml, config.shared.toml, config.workstation.toml, config.workstation-unix.toml。後ろほど優先）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
 
 運用ルール: OS 間で値が異なる設定（例: `idiomatic_version_file_enable_tools`, `jobs`, `trusted_config_paths`）は `config.toml` に置かない。`config.toml` は全環境で同一値の共通設定のみを置く。
 
@@ -82,10 +82,12 @@ mise/
 ├── config.macos.toml      # macOS 専用 bootstrap（[bootstrap.packages] など。MISE_ENV=macos）
 ├── config.shared.toml     # default / Windows / Pi 共通 tools（MISE_ENV=shared）
 ├── config.workstation.toml # Pi / CI 以外の開発機共通 tools（MISE_ENV=workstation）
-├── entry.workstation-unix.toml    # macOS/Linux/WSL2 向け差分
-├── entry.workstation-windows.toml # Windows 向け差分（jobs 未設定）
-├── entry.server-pi.toml           # Raspberry Pi 向け差分
-├── entry.ci.toml                  # CI/CD 向け最小構成（shared/default 非依存）
+├── config.bun.toml        # bun（MISE_ENV=bun。Pi 以外で選ぶ）
+├── config.workstation-unix.toml    # macOS/Linux/WSL2 向け差分
+├── config.workstation-windows.toml # Windows 向け差分（jobs 未設定）
+├── config.server-pi.toml           # Raspberry Pi 向け差分
+├── config.ci.toml                  # CI/CD 向け最小構成（shared/workstation 非依存）
+├── conf.d/                # 全環境で常に読む共通 tools（00-tools-common.toml）
 ├── tasks/                 # 外部 repo から見えてよい global task 定義
 │   └── brewfile.toml      # Brewfile 差分確認・リストア
 └── local-tasks/           # ~/.config 専用の mise task 定義
@@ -179,27 +181,25 @@ agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config
 
 ## Environment Detection
 
-mise は `MISE_CONFIG_FILE` が指す environment-specific config を使用する。
+mise は標準の global config discovery（`MISE_CONFIG_DIR` 配下の `config.toml`・`conf.d/`・`config.<env>.toml`）を使い、`MISE_ENV` で読む環境を選ぶ。`MISE_CONFIG_FILE` / `MISE_GLOBAL_CONFIG_FILE` は discovery を単一ファイルに置き換えてしまうため使わない。
 
 ### Auto-detection via shell startup
 
-`zsh/.zshenv`（`scripts/env-detect.sh` 相当の判定）が `MISE_CONFIG_FILE` を設定する:
+`shell/env.sh`（`zsh/.zshenv` / `bash/.bashrc` は同じ判定のフォールバック）が `MISE_CONFIG_DIR` と `MISE_ENV` を設定する:
 
-- CI/CD: Uses `mise/entry.ci.toml` when `CI=true` or `GITHUB_ACTIONS=true`
-- Default (macOS/Linux/WSL2): Uses `mise/entry.workstation-unix.toml` + `MISE_ENV=shared,workstation`
-- Raspberry Pi: Uses `mise/entry.server-pi.toml` + `MISE_ENV=shared` (ARM/minimal exclusions remain)
+- CI/CD: `MISE_ENV=bun,ci` when `CI=true` or `GITHUB_ACTIONS=true`
+- Default (macOS/Linux/WSL2): `MISE_ENV=[macos,]bun,shared,workstation,workstation-unix`
+- Raspberry Pi: `MISE_ENV=shared,server-pi` (ARM/minimal exclusions remain)
 
 Priority: CI > Raspberry Pi > Default
 
 ### Windows
 
-`mise/entry.workstation-windows.toml` is available; `windows/setup.ps1` and the PowerShell profile select it and preserve existing `MISE_ENV` while adding `shared,workstation`.
-
-- Windows uses `mise/entry.workstation-windows.toml` only when `MISE_CONFIG_FILE` is explicitly set to that path by the session or shell setup
+Windows: `MISE_ENV=bun,shared,workstation,workstation-windows` set by `windows/setup.ps1` and the PowerShell profile
 
 #### Related: Chocolatey manifests
 
-`mise/entry.workstation-windows.toml` covers mise-managed tools. OS-level Windows package bootstrap can be managed separately with a Chocolatey `.config` manifest. Layer choice: [docs/setup.md](../setup.md#package-management-philosophy).
+`mise/config.workstation-windows.toml` covers mise-managed tools. OS-level Windows package bootstrap can be managed separately with a Chocolatey `.config` manifest. Layer choice: [docs/setup.md](../setup.md#package-management-philosophy).
 
 ```powershell
 choco install .\windows\chocolatey\packages.config -y
@@ -208,18 +208,18 @@ choco export .\windows\chocolatey\packages.config
 
 Chocolatey accepts `.config` manifest files for bulk install/export, and the filename does not need to be exactly `packages.config` as long as it ends with `.config`.
 
-Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionally absent from the shared overlay and `entry.server-pi.toml` for ARM/minimal operation.
+Note: hadolint remains only in `config.workstation-unix.toml`; it is intentionally absent from the shared overlay and `config.server-pi.toml` for ARM/minimal operation.
 
 ## Environment-specific Package Exclusions
 
-### Raspberry Pi Optimizations (`entry.server-pi.toml`)
+### Raspberry Pi Optimizations (`config.server-pi.toml`)
 
 サーバー/自動化環境として最適化されており、以下のパッケージを除外:
 
 #### Performance Settings
 
 - `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
-  - ※ entry.workstation-unix.toml は `jobs = 8`（デスクトップ環境向け）
+  - ※ config.workstation-unix.toml は `jobs = 8`（デスクトップ環境向け）
 
 #### Excluded Packages
 
@@ -232,7 +232,7 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 - クラウド/インフラツール: AWS CLI、Google Clasp、gRPC関連 等
 - 全cargoツール: ARM互換性とビルド時間考慮
 
-詳細な除外パッケージリストは `mise/entry.workstation-unix.toml` と `mise/entry.server-pi.toml` の差分を参照。
+詳細な除外パッケージリストは `mise/config.workstation-unix.toml` と `mise/config.server-pi.toml` の差分を参照。
 
 #### Maintained Packages
 
@@ -246,7 +246,7 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 - CLI: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
 - ランタイム: `go` (latest), `node`, `python`
 
-具体的なパッケージバージョンは `mise/entry.server-pi.toml` を参照。
+具体的なパッケージバージョンは `mise/config.server-pi.toml` を参照。
 
 #### Expected Benefits
 
@@ -256,14 +256,14 @@ Note: hadolint remains only in `entry.workstation-unix.toml`; it is intentionall
 
 ## Configuration Comparison
 
-| Config                                  | Toolset           | Use Case                       | Performance        |
-| --------------------------------------- | ----------------- | ------------------------------ | ------------------ |
-| entry.workstation-unix.toml + shared    | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
-| entry.workstation-windows.toml + shared | Full              | Development (Windows)          | Uses mise defaults |
-| entry.server-pi.toml + shared           | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
-| entry.ci.toml                           | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
+| Config                                   | Toolset           | Use Case                       | Performance        |
+| ---------------------------------------- | ----------------- | ------------------------------ | ------------------ |
+| config.workstation-unix.toml + shared    | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
+| config.workstation-windows.toml + shared | Full              | Development (Windows)          | Uses mise defaults |
+| config.server-pi.toml + shared           | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
+| config.ci.toml                           | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
 
-## Tool Categories (shared + entry.workstation-unix.toml)
+## Tool Categories (shared + config.workstation-unix.toml)
 
 6 カテゴリ（Language Runtimes / Package Managers / Formatters & Linters / NPM Global Packages / Cargo Tools / CLI Tools）の詳細は [mise-config.md](mise-config.md) を参照。
 
@@ -354,7 +354,7 @@ mise doctor               # Check for issues
 ### Backup and Restore
 
 - Config files are tracked in dotfiles repo
-- To restore: `git checkout mise/entry.workstation-unix.toml mise/entry.server-pi.toml && mise install`
+- To restore: `git checkout mise/config.workstation-unix.toml mise/config.server-pi.toml && mise install`
 - Version history via git allows rollback
 
 ## 自己更新ツール（mise 管理外）の導入保証
@@ -362,7 +362,7 @@ mise doctor               # Check for issues
 どの層（mise `[tools]` / `[bootstrap.packages]` / Brewfile / 自己更新 standalone）でツールを管理するかの方針は [docs/setup.md](../setup.md#package-management-philosophy) を参照。ここでは mise 側の実装事実だけを記す。
 
 - 該当ツール: `mise` 本体と、`mise/lib/ensure-standalone.sh` が導入保証する CLI（一覧は同スクリプトが正本）
-- 導入保証: `mise/entry.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
+- 導入保証: `mise/config.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
 - 更新: 各ツールの self-update コマンドに委ねる（`mise self-update`、CLI は `mise/local-tasks/updates.toml` の `update:standalone` が一括で呼ぶ）。herdr は `herdr update --handoff` で動作中のペインを維持したままサーバーを置き換えられ、これは herdr 自身のインストーラで入れた場合だけ使える
 - `mise ls` に出ないのは意図的（`[tools]` で管理していないため）
 

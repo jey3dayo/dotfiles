@@ -18,7 +18,18 @@ else
 
   : "${MISE_DATA_DIR:=$HOME/.mise}"
   : "${MISE_CACHE_DIR:=$MISE_DATA_DIR/cache}"
-  : "${MISE_CONFIG_FILE:=$XDG_CONFIG_HOME/mise/entry.workstation-unix.toml}"
+  : "${MISE_CONFIG_DIR:=$XDG_CONFIG_HOME/mise}"
+  unset MISE_CONFIG_FILE MISE_GLOBAL_CONFIG_FILE
+  __kept=""
+  IFS=, read -r -a __toks <<<"${MISE_ENV:-}"
+  for __t in "${__toks[@]}"; do
+    case "$__t" in
+      "" | macos | bun | shared | workstation | workstation-unix | workstation-windows | server-pi | ci) ;;
+      *) __kept="${__kept:+$__kept,}$__t" ;;
+    esac
+  done
+  MISE_ENV=$__kept
+  unset __kept __toks __t
   _append_mise_env() {
     local token="$1"
     case ",${MISE_ENV:-}," in
@@ -26,21 +37,25 @@ else
       *) MISE_ENV="${MISE_ENV:+$MISE_ENV,}$token" ;;
     esac
   }
-  case "${MISE_CONFIG_FILE##*/}" in
-    entry.ci.toml) ;;
-    entry.server-pi.toml)
-      _append_mise_env shared
-      ;;
-    *)
-      # shellcheck disable=SC3028
-      case "${OSTYPE:-}" in
-        darwin*) _append_mise_env macos ;;
-      esac
-      _append_mise_env shared
-      _append_mise_env workstation
-      ;;
-  esac
-  export MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_FILE MISE_ENV
+  # Same selection as shell/env.sh (entry last wins):
+  # CI: bun,ci / Pi: shared,server-pi / default: [macos,]bun,shared,workstation,workstation-unix
+  if [ -n "${CI:-}" ] || [ -n "${GITHUB_ACTIONS:-}" ]; then
+    _append_mise_env bun
+    _append_mise_env ci
+  elif grep -qsE 'Raspberry Pi|BCM27|BCM283' /proc/cpuinfo; then
+    _append_mise_env shared
+    _append_mise_env server-pi
+  else
+    # shellcheck disable=SC3028
+    case "${OSTYPE:-}" in
+      darwin*) _append_mise_env macos ;;
+    esac
+    _append_mise_env bun
+    _append_mise_env shared
+    _append_mise_env workstation
+    _append_mise_env workstation-unix
+  fi
+  export MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_DIR MISE_ENV
   unset -f _append_mise_env
 
   : "${GHQ_ROOT:=$HOME/src}"

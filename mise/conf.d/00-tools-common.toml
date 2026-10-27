@@ -1,0 +1,27 @@
+# 全環境共通の tools（CI, Pi, Windows, Unix すべて）
+# mise は conf.d/ 配下を辞書順でロードするため 00- prefix で優先度を制御
+
+[tools]
+# Language Runtimes
+node = "lts"
+
+# Package Managers
+"github:astral-sh/uv" = "latest"
+
+# Formatters / Linters
+"github:jdx/jactionlint" = "2.3.0"
+biome = "latest"
+fd = "latest"
+gitleaks = "latest"
+prettier = "latest"
+"pipx:beautysh" = "latest"
+shellcheck = "latest"
+shfmt = "latest"
+stylua = "latest"
+taplo = "latest"
+yamllint = "latest"
+
+# NPM Packages
+"npm:markdown-link-check" = "latest"
+"npm:markdownlint-cli2" = "latest"
+"npm:tsx" = "latest"

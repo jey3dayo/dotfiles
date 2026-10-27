@@ -120,7 +120,7 @@ function Ensure-StandaloneCli {
 
 $repoRoot = Get-RepoRoot
 $installScript = Join-Path $PSScriptRoot "chocolatey\install.ps1"
-$windowsMiseConfig = Join-Path $repoRoot "mise\entry.workstation-windows.toml"
+$windowsMiseConfig = Join-Path $repoRoot "mise\config.workstation-windows.toml"
 
 Ensure-PowerShellProfileBridges
 
@@ -147,15 +147,17 @@ if (-not (Test-Path -LiteralPath $windowsMiseConfig)) {
   throw "Windows mise config not found: $windowsMiseConfig"
 }
 
-$env:MISE_CONFIG_FILE = $windowsMiseConfig
-$miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ })
-foreach ($requiredToken in @("shared", "workstation")) {
+Remove-Item Env:MISE_CONFIG_FILE, Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
+$managedMiseTokens = @("macos", "bun", "shared", "workstation", "workstation-unix", "workstation-windows", "server-pi", "ci")
+$miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ -and ($managedMiseTokens -notcontains $_) })
+# Windows: bun,shared,workstation,workstation-windows (entry goes last so entry settings win)
+foreach ($requiredToken in @("bun", "shared", "workstation", "workstation-windows")) {
   if ($miseEnvironmentTokens -notcontains $requiredToken) {
     $miseEnvironmentTokens += $requiredToken
   }
 }
 $env:MISE_ENV = ($miseEnvironmentTokens -join ",")
-Write-Host "Installing mise-managed Windows tools using $windowsMiseConfig..."
+Write-Host "Installing mise-managed Windows tools using standard global config discovery..."
 & $miseExe install
 if ($LASTEXITCODE -ne 0) {
   throw "mise install failed."
@@ -163,5 +165,4 @@ if ($LASTEXITCODE -ne 0) {
 Ensure-StandaloneCli
 
 Write-Host "Windows bootstrap complete."
-Write-Host "MISE_CONFIG_FILE=$windowsMiseConfig"
 Write-Host "MISE_ENV=$env:MISE_ENV"
