@@ -1,9 +1,9 @@
 #!/bin/sh
 # git-wt の wt.hook。新しい worktree で mise と依存を入れる（失敗しても作成は止めない）
 
-# mise install / exec は読んだ config を暗黙に trust するので、未信頼なら何もしない
+# mise install / exec は読んだ config を暗黙に trust するので、未信頼の config があれば何もしない
 # （trust は worktree 間で共有され、trusted_config_paths でもカバーされる）
-if ! mise env </dev/null >/dev/null 2>&1; then
+if mise trust --show 2>/dev/null | grep -q ': untrusted$'; then
   exit 0
 fi
 
