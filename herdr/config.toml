@@ -69,6 +69,16 @@ type = "shell"
 command = "/Users/t00114/.config/bin/herdr-sync-pane-title"
 description = "sync pane name from agent title"
 
+# agent spawn picker (C-x a = ghq repo → kind → spawn-agent.sh で active pane の隣に起動)
+# スクリプトは apm の herdr skill から deploy される。popup の PATH に mise shim が無い場合に備えて明示する
+[[keys.command]]
+key = "prefix+a"
+type = "popup"
+command = "PATH=\"$HOME/.local/share/mise/shims:$HOME/.mise/shims:$PATH\" bash \"$HOME/.agents/skills/herdr/scripts/spawn-picker.sh\""
+description = "spawn agent (pick repo + kind)"
+width = "80%"
+height = "60%"
+
 [ui]
 prompt_new_tab_name = false
 show_agent_labels_on_pane_borders = true
