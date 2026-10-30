@@ -90,6 +90,11 @@ status_indicators = "dots"
 [ui.toast]
 delivery = "herdr"
 
+[ui.sidebar]
+
+[ui.sidebar.agents]
+rows = [["state_icon", "machine", "workspace", "tab"], ["agent"]]
+
 # 日本語 IME: agent TUI の候補追従 + prefix 中だけ ASCII 入力ソースへ切替
 [experimental]
 kitty_graphics = true
