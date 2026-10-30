@@ -2,7 +2,8 @@
 
 # Show a herdr agent pane's terminal title (e.g. the Claude Code session name
 # set by /rename) in the sidebar's agents list via display_agent, and rename the
-# pane label to it.
+# pane label to "<agent>/<terminal title>" (e.g. claude/<session name>). ":"
+# stays reserved for agmsg's "<team>:<agent>" labels.
 #   (no args)  rename the active pane, overwriting a hand-made name
 #   --auto     plugin event hook: rename only unnamed panes or panes still
 #              carrying the name this script last wrote
@@ -69,6 +70,9 @@ if [[ "$LABEL" == *:* ]]; then
   exit 0
 fi
 
+AGENT=$(jq -r '.result.pane.agent' <<<"$PANE_JSON")
+NEW_LABEL="$AGENT/$TITLE"
+
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-pane-title-sync"
 RECORD="$STATE_DIR/${PANE_ID//:/_}"
 
@@ -80,8 +84,8 @@ write_record() {
   mv "$tmp" "$RECORD"
 }
 
-# A label equal to the title is adopted as ours so later title changes follow.
-if [ "$LABEL" = "$TITLE" ]; then
+# A label already equal to the new label is adopted as ours so later title changes follow.
+if [ "$LABEL" = "$NEW_LABEL" ]; then
   if [ ! -f "$RECORD" ] || [ "$LABEL" != "$(<"$RECORD")" ]; then
     write_record "$LABEL"
   fi
@@ -94,6 +98,6 @@ if [ "$AUTO" = 1 ] && [ -n "$LABEL" ]; then
   fi
 fi
 
-"$HERDR" pane rename "$PANE_ID" "$TITLE" >/dev/null
+"$HERDR" pane rename "$PANE_ID" "$NEW_LABEL" >/dev/null
 
-write_record "$TITLE"
+write_record "$NEW_LABEL"
