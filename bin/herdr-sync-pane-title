@@ -57,7 +57,8 @@ fi
 
 # The sidebar's agents list shows display_agent, not the pane label.
 if [ "$("$HERDR" agent get "$PANE_ID" | jq -r '.result.agent.display_agent // empty')" != "$TITLE" ]; then
-  "$HERDR" pane report-metadata "$PANE_ID" --source herdr-sync-pane-title --display-agent "$TITLE" >/dev/null
+  "$HERDR" pane report-metadata "$PANE_ID" --source herdr-sync-pane-title --display-agent "$TITLE" >/dev/null ||
+    say "$PANE_ID: could not set display_agent"
 fi
 
 LABEL=$(jq -r '.result.pane.label // empty' <<<"$PANE_JSON")
