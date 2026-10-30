@@ -134,6 +134,13 @@
         "rawValue": true
       },
       {
+        "id": "ctx-warn",
+        "type": "custom-command",
+        "commandPath": "~/.config/ccstatusline/ctx-warn.sh",
+        "preserveColors": true,
+        "timeout": 1000
+      },
+      {
         "id": "3b",
         "type": "custom-text",
         "color": "hex:9485D6",
