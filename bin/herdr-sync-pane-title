@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-# Rename a herdr agent pane to "<agent>/<terminal title>" (e.g. claude/<session
-# name set by /rename>). ":" stays reserved for agmsg's "<team>:<agent>" labels.
+# Show a herdr agent pane's terminal title (e.g. the Claude Code session name
+# set by /rename) in the sidebar's agents list via display_agent, and rename the
+# pane label to "<agent>/<terminal title>" (e.g. claude/<session name>). ":"
+# stays reserved for agmsg's "<team>:<agent>" labels.
 #   (no args)  rename the active pane, overwriting a hand-made name
 #   --auto     plugin event hook: rename only unnamed panes or panes still
 #              carrying the name this script last wrote
@@ -48,17 +50,23 @@ if [ "$(jq -r '.result.pane.agent // empty' <<<"$PANE_JSON")" = "" ]; then
   exit 0
 fi
 
+TITLE=$(jq -r '.result.pane.terminal_title_stripped // empty' <<<"$PANE_JSON")
+if [ -z "$TITLE" ]; then
+  say "$PANE_ID has no terminal title"
+  exit 0
+fi
+
+# The sidebar's agents list shows display_agent, not the pane label.
+if [ "$("$HERDR" agent get "$PANE_ID" | jq -r '.result.agent.display_agent // empty')" != "$TITLE" ]; then
+  "$HERDR" pane report-metadata "$PANE_ID" --source herdr-sync-pane-title --display-agent "$TITLE" >/dev/null ||
+    say "$PANE_ID: could not set display_agent"
+fi
+
 LABEL=$(jq -r '.result.pane.label // empty' <<<"$PANE_JSON")
 
 # agmsg labels its panes "<team>:<agent>"; keep that role name.
 if [[ "$LABEL" == *:* ]]; then
   say "$PANE_ID keeps its agmsg label"
-  exit 0
-fi
-
-TITLE=$(jq -r '.result.pane.terminal_title_stripped // empty' <<<"$PANE_JSON")
-if [ -z "$TITLE" ]; then
-  say "$PANE_ID has no terminal title"
   exit 0
 fi
 
