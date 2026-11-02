@@ -200,6 +200,9 @@ wslu/
 gogcli/
 
 ## herdr
+herdr/config-gpui.toml
+herdr/config-gpui.lock
+herdr/.config.toml.gpui-lock
 herdr/*.sock
 herdr/*.log
 herdr/session.json
