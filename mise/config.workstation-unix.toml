@@ -85,6 +85,7 @@ yq = "latest"
 # NPM Packages
 "npm:@anthropic-ai/dxt" = "latest"
 "npm:@deepseek-ai/dsh" = "0.2.0-rc.2"
+"npm:agent-desktop" = "1.0.2"
 "npm:agmsg" = "latest"
 "npm:ccstatusline" = "latest"
 "npm:chrome-devtools-mcp" = "latest"
