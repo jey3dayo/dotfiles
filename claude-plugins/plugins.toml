@@ -1,0 +1,10 @@
+# Claude Code の marketplace / user scope plugin の宣言（公開リスト）
+# 非公開のエントリは plugins.local.toml（gitignore 済み）に同じ形式で書く。
+# 適用: mise run claude:plugins          （check: 差分を表示するだけ）
+#       mise run claude:plugins -- --apply（不足分を追加。削除はしない）
+
+[marketplaces.claude-plugins-official]
+source = "anthropics/claude-plugins-official"
+
+[plugins]
+user = ["typescript-lsp@claude-plugins-official"]

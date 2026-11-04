@@ -1,0 +1,4 @@
+["claude:plugins"]
+description = "Claude Code の marketplace / user scope plugin を宣言リストと照合（既定は check、--apply で不足分を追加。削除はしない）"
+dir = "~/.config"
+run = "python3 ./scripts/claude-plugins.py"

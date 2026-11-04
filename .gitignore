@@ -337,3 +337,6 @@ systemd/user/*.target
 systemd/user/*.target.wants/
 systemd/user/*.service.wants/
 systemd/user/*.timer.wants/
+
+# Claude Code plugin の非公開リスト
+claude-plugins/plugins.local.toml
