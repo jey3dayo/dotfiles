@@ -16,4 +16,4 @@ TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/sk
 [tools]
 # 共通 tools: conf.d/00-tools-common.toml
 # bun: config.bun.toml (via MISE_ENV)
-# CI 専用 tools はなし（全て共通 tools で充足）
+# CI 専用 tools はなし（共通 tools と repo ルートの .mise.toml で充足）

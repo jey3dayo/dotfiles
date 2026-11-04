@@ -1,6 +1,6 @@
 # Mise Task Catalog
 
-最終更新: 2026-09-16
+最終更新: 2026-11-04
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
