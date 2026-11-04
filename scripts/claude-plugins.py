@@ -22,7 +22,13 @@ import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-PUBLIC = ROOT / "claude-plugins" / "plugins.toml"
+PUBLIC = Path(
+    os.environ.get("CLAUDE_PLUGINS_PUBLIC") or ROOT / "claude-plugins" / "plugins.toml"
+).expanduser()
+USER_SETTINGS = (
+    Path(os.environ.get("CLAUDE_CONFIG_DIR") or Path.home() / ".claude").expanduser()
+    / "settings.json"
+)
 LOCAL_ENV = os.environ.get("CLAUDE_PLUGINS_LOCAL")
 LOCAL = Path(LOCAL_ENV or ROOT / "claude-plugins" / "plugins.local.toml").expanduser()
 
@@ -39,8 +45,18 @@ def load(path: Path, required: bool) -> dict:
 
 
 def norm(src: str) -> str:
-    """GitHub の owner/repo だけ大文字小文字を無視する。URL やパスはそのまま比較する。"""
+    """GitHub の owner/repo だけ大文字小文字を無視する。URL やパスはそのまま比較する。
+
+    `#ref` が付いていれば ref はそのまま残して比較する。
+    """
     s = src.strip()
+    if "#" in s:
+        base, ref = s.rsplit("#", 1)
+        return norm_base(base) + "#" + ref
+    return norm_base(s)
+
+
+def norm_base(s: str) -> str:
     gh = s.rstrip("/")
     for pre in ("https://github.com/", "git@github.com:"):
         gh = gh.removeprefix(pre)
@@ -53,7 +69,19 @@ def norm(src: str) -> str:
 
 
 def registered_source(m: dict) -> str:
-    return norm(m.get("repo") or m.get("url") or m.get("path") or "")
+    base = norm_base(m.get("repo") or m.get("url") or m.get("path") or "")
+    return base + (f"#{m['ref']}" if m.get("ref") else "")
+
+
+def user_enabled() -> dict:
+    """user scope の設定そのもの（~/.claude/settings.json の enabledPlugins）を読む。"""
+    if not USER_SETTINGS.exists():
+        return {}
+    try:
+        data = json.loads(USER_SETTINGS.read_text())
+    except json.JSONDecodeError as e:
+        raise SystemExit(f"error: {USER_SETTINGS} が JSON として読めない: {e}")
+    return data.get("enabledPlugins") or {}
 
 
 def merge(*docs: dict) -> tuple[dict[str, str], list[str]]:
@@ -97,7 +125,8 @@ def fetch_state(markets: dict[str, str], wanted: list[str]):
         if n in have and registered_source(have[n]) != norm(markets[n])
     ]
     miss_p = [p for p in wanted if p not in user]
-    disabled = [p for p in wanted if p in user and not user[p].get("enabled", True)]
+    enabled = user_enabled()
+    disabled = [p for p in wanted if p in user and enabled.get(p) is not True]
     return have, installed, user, miss_m, mismatch, miss_p, disabled
 
 
@@ -115,7 +144,7 @@ def main() -> int:
 
     markets, wanted = merge(load(PUBLIC, True), load(LOCAL, bool(LOCAL_ENV)))
     print(
-        f"lists: {PUBLIC.relative_to(ROOT)}"
+        f"lists: {PUBLIC.relative_to(ROOT) if PUBLIC.is_relative_to(ROOT) else PUBLIC}"
         + (f" + {LOCAL}" if LOCAL.exists() else " (local list なし)")
     )
 
@@ -154,6 +183,18 @@ def main() -> int:
         for p in installed
         if p.get("scope") in ("local", "project") and p["id"] in user
     )
+    overrides = [
+        p
+        for p in wanted
+        if p in user and bool(user[p].get("enabled")) != (p not in disabled)
+    ]
+    print("\n[report only: project / local 設定で有効状態が上書きされている]")
+    for p in overrides:
+        print(
+            f"  override {p} (user={'on' if p not in disabled else 'off'}, merged={'on' if user[p].get('enabled') else 'off'})"
+        )
+    if not overrides:
+        print("  (なし)")
     print("\n[report only: リスト外の user scope plugin]")
     for p in extras:
         print(f"  extra   {p}")
