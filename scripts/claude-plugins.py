@@ -29,6 +29,7 @@ USER_SETTINGS = (
     Path(os.environ.get("CLAUDE_CONFIG_DIR") or Path.home() / ".claude").expanduser()
     / "settings.json"
 )
+SKILLS_DIR = "skills-dir"
 LOCAL_ENV = os.environ.get("CLAUDE_PLUGINS_LOCAL")
 LOCAL = Path(LOCAL_ENV or ROOT / "claude-plugins" / "plugins.local.toml").expanduser()
 
@@ -191,7 +192,10 @@ def main() -> int:
         )
         print(f"  {state} {p}")
 
-    extras = sorted(p for p in user if p not in wanted)
+    # skills-dir は Claude がスキルのディレクトリを plugin として見せているだけで
+    # install できない（apm 側で管理）。対象外として件数だけ出す。
+    pseudo = sorted(p for p in user if p.endswith("@" + SKILLS_DIR))
+    extras = sorted(p for p in user if p not in wanted and p not in pseudo)
     dups = sorted(
         (p["id"], p.get("scope"), p.get("projectPath", ""))
         for p in installed
@@ -212,6 +216,8 @@ def main() -> int:
     print("\n[report only: リスト外の user scope plugin]")
     for p in extras:
         print(f"  extra   {p}")
+    if pseudo:
+        print(f"  info    {SKILLS_DIR} のスキル {len(pseudo)} 件は対象外（apm 管理）")
     if not extras:
         print("  (なし)")
     print("\n[report only: user scope と重複する local / project 登録]")
