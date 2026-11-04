@@ -56,7 +56,13 @@ def norm(src: str) -> str:
     return norm_base(s)
 
 
+def is_local(s: str) -> bool:
+    return s.startswith((".", "/", "~"))
+
+
 def norm_base(s: str) -> str:
+    if is_local(s):
+        return str(Path(s).expanduser().resolve())
     gh = s.rstrip("/")
     for pre in ("https://github.com/", "git@github.com:"):
         gh = gh.removeprefix(pre)
@@ -84,14 +90,19 @@ def user_enabled() -> dict:
     return data.get("enabledPlugins") or {}
 
 
-def merge(*docs: dict) -> tuple[dict[str, str], list[str]]:
+def merge(*docs: tuple[dict, Path]) -> tuple[dict[str, str], list[str]]:
     markets: dict[str, str] = {}
     plugins: list[str] = []
-    for doc in docs:
+    for doc, base in docs:
         for name, spec in (doc.get("marketplaces") or {}).items():
             src = spec.get("source") if isinstance(spec, dict) else None
             if not src:
                 raise SystemExit(f"marketplace '{name}' に source がない")
+            if is_local(src):
+                # 相対パスはリストファイルのあるディレクトリ基準で解決する
+                path, sep, ref = src.partition("#")
+                path = str((base / Path(path).expanduser()).resolve())
+                src = path + sep + ref
             markets[name] = src
         for pid in (doc.get("plugins") or {}).get("user", []):
             if "@" not in pid:
@@ -142,7 +153,10 @@ def main() -> int:
     )
     args = ap.parse_args()
 
-    markets, wanted = merge(load(PUBLIC, True), load(LOCAL, bool(LOCAL_ENV)))
+    markets, wanted = merge(
+        (load(PUBLIC, True), PUBLIC.resolve().parent),
+        (load(LOCAL, bool(LOCAL_ENV)), LOCAL.resolve().parent),
+    )
     print(
         f"lists: {PUBLIC.relative_to(ROOT) if PUBLIC.is_relative_to(ROOT) else PUBLIC}"
         + (f" + {LOCAL}" if LOCAL.exists() else " (local list なし)")

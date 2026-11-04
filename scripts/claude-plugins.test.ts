@@ -24,7 +24,7 @@ const run = (f: Fixture) => {
   const dir = mkdtempSync(join(tmpdir(), "claude-plugins-test-"));
   dirs.push(dir);
   writeFileSync(join(dir, "plugins.toml"), f.list);
-  writeFileSync(join(dir, "markets.json"), JSON.stringify(f.markets));
+  writeFileSync(join(dir, "markets.json"), JSON.stringify(f.markets).replaceAll("__DIR__", dir));
   writeFileSync(join(dir, "plugins.json"), JSON.stringify(f.plugins));
   writeFileSync(join(dir, "settings.json"), JSON.stringify({ enabledPlugins: f.enabledPlugins }));
   const fake = join(dir, "claude");
@@ -53,6 +53,17 @@ describe("claude-plugins.py", () => {
     const r = run({
       list,
       markets: [market],
+      plugins: [{ id: "p@m", scope: "user", enabled: true }],
+      enabledPlugins: { "p@m": true },
+    });
+    expect(r.stdout).toContain("差分なし");
+    expect(r.status).toBe(0);
+  }, 30_000);
+
+  it("ローカルパスの source はリストのディレクトリ基準で解決して比較する", () => {
+    const r = run({
+      list: `[marketplaces.m]\nsource = "./mk"\n\n[plugins]\nuser = ["p@m"]\n`,
+      markets: [{ name: "m", source: "directory", path: "__DIR__/mk" }],
       plugins: [{ id: "p@m", scope: "user", enabled: true }],
       enabledPlugins: { "p@m": true },
     });

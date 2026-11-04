@@ -16,6 +16,7 @@ mise run claude:plugins -- --apply  # 不足分の marketplace add / plugin inst
 - 削除はしない。リスト外の user scope plugin と、user scope と重複する local / project 登録は報告のみ。
 - 何度実行しても同じ結果になる（揃っていれば apply は no-op）。
 - `CLAUDE_PLUGINS_LOCAL` で非公開リストのパスを上書きできる。
+- marketplace の `source` は `owner/repo`、`owner/repo#ref`、URL、ローカルパスを書ける。ローカルパス（`./` `../` `~/` `/` で始まる）は絶対パスに解決して比較する。相対パスは、そのリストファイルの実体（シンボリックリンクならリンク先）があるディレクトリを基準にする。
 
 ## 非公開リストの同期
 
