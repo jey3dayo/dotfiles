@@ -1,0 +1,8 @@
+# plugins.local.toml の例（実ファイルは gitignore 済み・コミットしない）
+[marketplaces.example-private]
+source = "example-org/example-marketplace"
+
+[plugins]
+user = [
+  "example-plugin@example-private",
+]
