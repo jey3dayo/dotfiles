@@ -69,6 +69,10 @@ pre-commit:
     - name: jactionlint
       glob: ".github/workflows/*.{yml,yaml}"
       run: jactionlint {staged_files}
+    # オフライン検査。作業ツリーを読むため、正は CI 側
+    - name: actions-lock
+      glob: ".github/**"
+      run: mise run actions-lock:verify
     - name: biome
       glob: "*.{js,jsx,ts,tsx,json}"
       run: biome check --write --no-errors-on-unmatched {staged_files}
@@ -100,6 +104,7 @@ pre-push:
         - "*.sh"
         - "*.py"
         - "Dockerfile*"
+        - ".github/**"
       run: mise run check:lint:quick
     - name: test-ts
       glob:

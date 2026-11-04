@@ -1,6 +1,6 @@
 # Mise Configuration Reference
 
-最終更新: 2026-10-26
+最終更新: 2026-11-04
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -9,7 +9,7 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 ## バージョン記載ルール
 
-**ツールのバージョンは `mise/*.toml` が唯一の正本です。** このドキュメントはバージョン番号を記載せず、構成の役割とピン固定の理由のみを説明します。実際のツールリストとバージョンは該当する mise ファイルを参照してください。
+**ツールのバージョンは `mise/*.toml`（この repo 自身の lint / CI 用ツールは repo ルートの `.mise.toml`）が唯一の正本です。** このドキュメントはバージョン番号を記載せず、構成の役割とピン固定の理由のみを説明します。実際のツールリストとバージョンは該当する mise ファイルを参照してください。
 
 ## 設定ファイルの役割
 
@@ -42,6 +42,12 @@ CI: `MISE_ENV=bun,ci` で `config.bun.toml` + `config.ci.toml`（bun 以外の o
 破壊的変更があるため版を固定。更新時に attestation を確認。
 
 構成: [`mise/config.shared.toml`](../../mise/config.shared.toml)
+
+### gh-actions-lock のバージョン固定
+
+`.github/workflows/actions.lock` の生成・検証に使う。この repo 自身の lint / CI 専用なので repo ルートの `.mise.toml` に置き、完全な版で固定する。生成結果が版で変わりうるため、更新は公開から 7 日以上経った版へ上げ、`mise run actions-lock:generate` で lockfile を作り直して差分をレビューする。release asset 名が OS/arch 名だけなので `bin = "gh-actions-lock"` で実行ファイル名を揃えている。
+
+構成: [`.mise.toml`](../../.mise.toml)
 
 ### uv の backend 選択
 

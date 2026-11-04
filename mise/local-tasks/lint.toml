@@ -66,6 +66,18 @@ run = """
 jactionlint
 """
 
+# .github/workflows/actions.lock は手で編集せず、このタスクで再生成する。
+["actions-lock:generate"]
+description = "actions.lock を再生成し、upstream で検証する（gh のログインが必要）"
+run = [
+  "gh-actions-lock --migrate-local-actions --no-interactive",
+  "gh-actions-lock --verify",
+]
+
+["actions-lock:verify"]
+description = "オフライン検査: すべての uses: に actions.lock の entry があり、lockfile が読める"
+run = "gh-actions-lock --verify-local"
+
 ["lint:lua"]
 description = "Lua ファイルをチェック（luacheck）"
 depends = ["lint:lua:luacheck"]
