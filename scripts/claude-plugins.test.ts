@@ -105,4 +105,20 @@ describe("claude-plugins.py", () => {
     expect(r.stdout).toContain("差分なし");
     expect(r.status).toBe(0);
   }, 30_000);
+  it("skills-dir のスキルは extra に出さず件数だけ info で出す", () => {
+    const r = run({
+      list,
+      markets: [market],
+      plugins: [
+        { id: "p@m", scope: "user", enabled: true },
+        { id: "s@skills-dir", scope: "user", enabled: true },
+        { id: "x@m", scope: "user", enabled: true },
+      ],
+      enabledPlugins: { "p@m": true },
+    });
+    expect(r.stdout).not.toContain("extra   s@skills-dir");
+    expect(r.stdout).toContain("extra   x@m");
+    expect(r.stdout).toContain("skills-dir のスキル 1 件は対象外");
+    expect(r.status).toBe(0);
+  }, 30_000);
 });
