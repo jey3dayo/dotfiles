@@ -34,6 +34,7 @@ on:
       - ".markdown-link-check.json"
       - ".prettierignore"
       - ".github/workflows/ci.yml"
+      - ".github/workflows/actions.lock"
   pull_request:
     paths:
       - "**/*.md"
@@ -67,6 +68,7 @@ on:
       - ".markdown-link-check.json"
       - ".prettierignore"
       - ".github/workflows/ci.yml"
+      - ".github/workflows/actions.lock"
   workflow_dispatch:
 
 jobs:
@@ -88,7 +90,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7.0.1
 
       - name: Mirror checkout into $HOME/.config
         run: |
@@ -119,25 +121,28 @@ jobs:
           gpg --keyserver keyserver.ubuntu.com --recv-keys 86C8D74642E67846F8E120284DAA80D1E737BC9F
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v5
+        uses: pnpm/action-setup@v6.1.0
         with:
           version: 10
 
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5.2.4
         with:
           # mise dotfiles / bootstrap を使うため 2026.7 以降が必要
           version: "2026.7.5"
           cache: true
 
       - name: Set up Lua (LuaJIT) for luacheck
-        uses: leafo/gh-actions-lua@v12
+        uses: leafo/gh-actions-lua@v13.1.0
+        with:
+          # v13 で既定が 5.5 に変わったため、v12 までの既定（5.4）を明示して維持する
+          luaVersion: "5.4"
 
       - name: Set up LuaRocks
-        uses: leafo/gh-actions-luarocks@v6
+        uses: leafo/gh-actions-luarocks@v6.1.1
 
       - name: Cache LuaRocks packages
-        uses: actions/cache@v5
+        uses: actions/cache@v6.1.0
         with:
           path: ~/.luarocks
           key: luarocks-${{ runner.os }}-${{ hashFiles('**/.mise.toml', '**/mise.toml') }}

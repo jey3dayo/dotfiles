@@ -63,19 +63,21 @@ Markdown のタスク名は `markdown` を使い、`format:md:check` は定義�
 
 `lint.toml`, `integration.toml` で定義。
 
-| タスク            | 説明                                                    |
-| ----------------- | ------------------------------------------------------- |
-| `lint`            | 全 lint（lint:links 含む、低速）                        |
-| `lint:quick`      | 軽量 lint（lint:links 除外）                            |
-| `lint:biome`      | JS/TS/JSON チェック（biome）                            |
-| `lint:markdown`   | Markdown チェック（markdownlint）                       |
-| `lint:yaml`       | YAML チェック（yamllint）                               |
-| `lint:lua`        | Lua チェック（luacheck）                                |
-| `lint:shell`      | シェルスクリプトチェック（shellcheck）                  |
-| `lint:python`     | Python チェック（ruff）                                 |
-| `lint:dockerfile` | Dockerfile チェック（hadolint）                         |
-| `lint:links`      | Markdown リンクチェック（時間がかかるため個別実行推奨） |
-| `lint:actions`    | GitHub Actions チェック（jactionlint）                  |
+| タスク                  | 説明                                                                     |
+| ----------------------- | ------------------------------------------------------------------------ |
+| `lint`                  | 全 lint（lint:links 含む、低速）                                         |
+| `lint:quick`            | 軽量 lint（lint:links 除外）                                             |
+| `lint:biome`            | JS/TS/JSON チェック（biome）                                             |
+| `lint:markdown`         | Markdown チェック（markdownlint）                                        |
+| `lint:yaml`             | YAML チェック（yamllint）                                                |
+| `lint:lua`              | Lua チェック（luacheck）                                                 |
+| `lint:shell`            | シェルスクリプトチェック（shellcheck）                                   |
+| `lint:python`           | Python チェック（ruff）                                                  |
+| `lint:dockerfile`       | Dockerfile チェック（hadolint）                                          |
+| `lint:links`            | Markdown リンクチェック（時間がかかるため個別実行推奨）                  |
+| `lint:actions`          | GitHub Actions チェック（jactionlint）                                   |
+| `actions-lock:verify`   | `actions.lock` の被覆チェック（オフライン、lint に含む）                 |
+| `actions-lock:generate` | `actions.lock` を再生成して upstream で検証（gh ログイン要、手編集禁止） |
 
 ### Test
 

@@ -40,6 +40,7 @@ depends = [
   "lint:dockerfile",
   "lint:links",
   "lint:actions",
+  "actions-lock:verify",
 ]
 
 ["lint:quick"]
@@ -53,6 +54,7 @@ depends = [
   "lint:python",
   "lint:dockerfile",
   "lint:actions",
+  "actions-lock:verify",
 ]
 
 ["check:format"]
