@@ -28,6 +28,9 @@ uvx = true
 [settings.npm]
 package_manager = "pnpm"
 
+[settings.node]
+corepack = true
+
 [env]
 _.source = [".venv/bin/activate"]
 YAMLLINT_CONFIG_FILE = "yamllint/config"
