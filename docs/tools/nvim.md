@@ -84,7 +84,7 @@ nvim/
 - イベントでロードした plugin は、ロード後に同じイベントを対象バッファへ再発火する（最初のバッファでも gitsigns などが効く）。`VeryLazy` は `UIEnter` 後に発火する。
 - lazy.nvim が無効化していた runtime plugin（gzip, matchit, matchparen, netrwPlugin, tarPlugin, zipPlugin, tutor）は `loaded_*` ガード変数で無効化している（`nvim/lua/pack/init.lua`）。
 - lockfile は `nvim/nvim-pack-lock.json`（git 管理）。初回 install と別マシンでの復元は lockfile の rev で行われる。
-- 更新は `,su`（`vim.pack.update()`）。確認バッファで `:write` すると適用、`:quit` で破棄する。`,sp` は `vim.pack.update(nil, { offline = true })` でインストール済み plugin を一覧する。
+- 更新は `,su`（`vim.pack.update()`）。確認バッファで `:write` すると適用、`:quit` で破棄する。`,sp` は `vim.pack.update(nil, { offline = true })` で、ネットワークには出ず、ローカルに取得済みの更新候補を確認バッファに表示する（`:write` で適用）。
 - headless の初回 install は確認プロンプトで止まるため、`NVIM_PACK_BOOTSTRAP=1` を付けて実行する（confirm を無効化し、nvim-treesitter の build hook である `:TSUpdate` も実行しない）。
 
 ```bash
@@ -133,7 +133,7 @@ tl              -- 型定義へ移動
 
 ```lua
 <Tab>           -- 補完受諾（blink.cmp）
-,sp             -- インストール済み plugin 一覧（vim.pack.update, offline）
+,sp             -- 取得済みの更新候補を確認（vim.pack.update, offline）
 ,sm             -- MasonUpdate
 ,st             -- Treesitter 更新
 ,su             -- プラグイン更新（vim.pack.update）
