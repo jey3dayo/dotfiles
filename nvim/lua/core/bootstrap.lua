@@ -28,7 +28,18 @@ local immediate_modules = {
   { name = "options" }, -- core options
   { name = "keymaps" }, -- basic keymaps + leader
   { name = "filetype" }, -- filetype detection overrides
-  { name = "init_lazy" }, -- plugin manager bootstrap
+  {
+    name = "init_lazy", -- plugin manager bootstrap
+    when = function()
+      return not vim.g.use_vim_pack
+    end,
+  },
+  {
+    name = "init_pack", -- vim.pack bootstrap (NVIM_PACK=1)
+    when = function()
+      return vim.g.use_vim_pack
+    end,
+  },
 }
 
 local deferred_modules = {
@@ -51,6 +62,7 @@ local initialized = false
 function M.setup()
   if initialized then return end
   initialized = true
+  vim.g.use_vim_pack = vim.env.NVIM_PACK == "1"
 
   load_modules(immediate_modules)
 

@@ -39,6 +39,7 @@ return {
       return utils.get_os() ~= "wsl"
     end,
     event = "InsertEnter",
+    main = "im_select",
     opts = function()
       return require "config/im-select"
     end,
@@ -109,6 +110,7 @@ return {
     "windwp/nvim-ts-autotag",
     ft = { "html", "xml", "tsx", "vue", "svelte", "astro" },
     dependencies = { deps.treesitter },
+    main = "nvim-ts-autotag",
     opts = {},
   },
 
@@ -154,7 +156,7 @@ return {
     "echasnovski/mini.pick",
     version = false,
     keys = require("config/mini-pick").keys(),
-    dependencies = { "echasnovski/mini.extra" },
+    dependencies = { "echasnovski/mini.extra", "echasnovski/mini.files" },
     config = function()
       require("config/mini-pick").setup()
     end,
@@ -254,6 +256,7 @@ return {
   {
     "gbprod/substitute.nvim",
     event = "VeryLazy",
+    dependencies = { "y3owk1n/undo-glow.nvim" },
     config = function()
       require("config/substitute").setup()
     end,
@@ -264,6 +267,7 @@ return {
     "gbprod/yanky.nvim",
     event = "VeryLazy",
     dependencies = { "kkharji/sqlite.lua" },
+    main = "yanky",
     opts = function()
       return require("config/yanky").opts()
     end,
@@ -283,6 +287,7 @@ return {
     "echasnovski/mini.splitjoin",
     version = false,
     event = "VeryLazy",
+    main = "mini.splitjoin",
     opts = {},
   },
 

@@ -5,6 +5,7 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
+    main = "noice",
     opts = {
       lsp = {
         override = {
@@ -36,7 +37,7 @@ return {
     },
     dependencies = {
       deps.nui,
-      { "rcarriga/nvim-notify", opts = { background_colour = "#000000" } },
+      { "rcarriga/nvim-notify", main = "notify", opts = { background_colour = "#000000" } },
     },
   },
   {
@@ -51,16 +52,19 @@ return {
     "echasnovski/mini.cursorword",
     version = false,
     event = "VeryLazy",
+    main = "mini.cursorword",
     opts = { delay = 100 },
   },
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
+    main = "gitsigns",
     opts = require "config/gitsigns",
   },
   {
     "j-hui/fidget.nvim",
     event = "LspAttach",
+    main = "fidget",
     opts = {},
   },
 }
