@@ -5,7 +5,7 @@
 
 ["test"]
 description = "テストを実行（集約）"
-run = [{ tasks = ["test:lua", "test:ts"] }]
+run = [{ tasks = ["test:lua", "test:nvim", "test:ts"] }]
 
 ["test:ts"]
 description = "TypeScript スクリプトのユニットテストを実行（サマリーのみ表示）"
@@ -27,6 +27,17 @@ run = """
 ensure_busted || exit $?
 
 busted --verbose spec/ nvim/spec/
+"""
+
+["test:nvim"]
+description = "Neovim headless テストを実行(vim.pack ローダーの遅延ロード、偽 plugin 使用)"
+run = """
+if ! command -v nvim >/dev/null 2>&1; then
+  echo "❌ nvim が見つかりません。test:nvim には nvim が必要です(例: brew install neovim)"
+  exit 127
+fi
+
+nvim --headless -u NONE -i NONE -n -c "luafile $(git rev-parse --show-toplevel)/nvim/spec/headless/pack_loader_check.lua"
 """
 
 ["test:lua:watch"]

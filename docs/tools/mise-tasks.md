@@ -83,12 +83,13 @@ Markdown のタスク名は `markdown` を使い、`format:md:check` は定義�
 
 `test.toml` で定義。
 
-| タスク           | 説明                                               |
-| ---------------- | -------------------------------------------------- |
-| `test`           | テスト集約（test:lua + test:ts）                   |
-| `test:lua`       | Lua テスト（busted）                               |
-| `test:ts`        | TypeScript ユニットテスト                          |
-| `test:lua:watch` | Lua テスト監視モード（ファイル変更時に自動再実行） |
+| タスク           | 説明                                                 |
+| ---------------- | ---------------------------------------------------- |
+| `test`           | テスト集約（test:lua + test:nvim + test:ts）         |
+| `test:lua`       | Lua テスト（busted）                                 |
+| `test:nvim`      | Neovim headless テスト（vim.pack ローダー、要 nvim） |
+| `test:ts`        | TypeScript ユニットテスト                            |
+| `test:lua:watch` | Lua テスト監視モード（ファイル変更時に自動再実行）   |
 
 ### Dotfiles 配布（mise bootstrap）
 

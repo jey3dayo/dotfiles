@@ -91,6 +91,8 @@ nvim/
 NVIM_PACK_BOOTSTRAP=1 nvim --headless -c 'lua vim.wait(1000)' -c qa
 ```
 
+- ローダーのトリガー（cmd の bang・範囲・引数、keys の初回入力、event の再発火、config 失敗時の通知）は、偽 plugin を使う headless テストで確認する。実行は `mise run test:nvim`（`nvim/spec/headless/pack_loader_check.lua`、実 plugin もネットワークも不要）。nvim の無い CI では走らせていない。
+
 - gitlinker.nvim は外した。lazy.nvim 下でも `keys = {}` のまま一度もロードされておらず、`vim.pack` で `runtimepath` に載せると `plugin/` が自動で setup して `:GitLink` が新たに生えるため。
 - lazy.nvim 版の最終状態はタグ `nvim-lazy-last`。戻すときは `git checkout nvim-lazy-last -- nvim/` を実行する（lazy.nvim 版の plugin 実体は `~/.local/share/nvim/lazy/` に残してある）。
 

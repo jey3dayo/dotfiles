@@ -118,6 +118,11 @@ pre-push:
     - name: test-lua
       glob: "*.lua"
       run: mise run test:lua
+    - name: test-nvim
+      glob:
+        - "nvim/lua/pack/**"
+        - "nvim/spec/headless/**"
+      run: mise run test:nvim
     # ci:gitleaks は push 対象の拡張子ではなく git 履歴全体を走査するため glob を付けない
     - name: gitleaks
       run: mise run ci:gitleaks
