@@ -159,11 +159,12 @@ end
 
 local function prepare_environment()
   vim.env.XDG_CONFIG_HOME = config_home
-  write_file(config_home .. "/nvim/lua/plugins/fake.lua", { "return {}" })
+  local app_config = vim.fn.stdpath "config"
+  write_file(app_config .. "/lua/plugins/fake.lua", { "return {}" })
   package.preload["plugins.fake"] = function()
     return specs
   end
-  vim.opt.runtimepath:prepend(config_home .. "/nvim")
+  vim.opt.runtimepath:prepend(app_config)
   vim.opt.packpath:prepend(site)
 
   for _, spec in ipairs(specs) do
@@ -330,10 +331,15 @@ local function run_checks(pack)
     expect_equal(events_of("multift")[2].buf, second, "second ft buffer")
   end)
 
-  check("event: VeryLazy loads the plugin when fired", function()
+  check("event: VeryLazy loads the plugin after UIEnter", function()
+    expect_equal(vim.v.vim_did_enter, 0, "setup ran before VimEnter, so loading waits for UIEnter")
     expect_equal(fake.configs["verylazy.nvim"], nil, "not loaded before")
-    require("pack.handlers").fire_very_lazy()
+    vim.api.nvim_exec_autocmds("UIEnter", { modeline = false })
+    vim.wait(1000, function()
+      return fake.configs["verylazy.nvim"] ~= nil
+    end)
     expect_equal(fake.configs["verylazy.nvim"], 1, "config runs once")
+    expect_equal(vim.g.did_very_lazy, true, "did_very_lazy is set")
   end)
 
   check("failure: a failing config is reported, does not abort, and does not block dependents", function()
