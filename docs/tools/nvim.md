@@ -52,8 +52,7 @@ warm 起動 約50ms（ファイルなし・中央値、2026-11-09 実測、目�
 | ファイルあり（`nvim/lua/options.lua`） | 77.9ms | 70.4 | 99.4 |
 
 - `-c qa` は `VimEnter` より前に終了するため、`VeryLazy`、`VimEnter` で読み込む plugin、`vim.defer_fn` の遅延モジュールは計測に含まれない。
-- 同日の参考値として、lazy.nvim 版（タグ `nvim-lazy-last`）を同条件・各 20 回の交互実行で測った中央値は、ファイルなし 44.9ms、ファイルあり 72.1ms（cutover 前に別実行で測定）。上の `vim.pack` 版との差は約 5ms。
-- 計測は `tmp/nvim-pack/measure.sh` ではなく、上記条件の手動ループで取得した。簡易計測は `nvim/measure_startup.sh`。
+- 同日の参考値として、lazy.nvim 版（タグ `nvim-lazy-last`）を同条件・各 20 回の交互実行で測った中央値は、ファイルなし 44.9ms、ファイルあり 72.1ms。上の `vim.pack` 版との差は約 5ms。簡易計測は `nvim/measure_startup.sh`。
 - 同一条件でも負荷により数 ms 動く（lazy 版単体でも日により中央値が変わった）ため、差は目安として扱う。
 
 ## 設定構造
