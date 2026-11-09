@@ -80,7 +80,7 @@ nvim/
 
 - `nvim/lua/plugins/*.lua` は lazy.nvim 形式の spec をそのまま使う。ローダーは `vim.pack.add` を 1 回だけ呼び、`dependencies`（循環は許容）、`cond`、`enabled`、`priority`、`init`、`config` / `opts` を解釈する。
 - ローダーが実装していない spec キーは `error` になる。`opts` または `config = true` を使う spec には、setup するモジュールを `main` で明示する。
-- トリガーのない plugin は `runtimepath` に載せるだけで、config は依存元がロードされたときに実行する。
+- トリガーのない plugin のうち、config / opts を持たないライブラリは `runtimepath` に載せる。config / opts を持つものは、依存元のロード時、その module を `require` した時（`package.loaders` に追加したフックが未ロード plugin を設定つきでロードする）、またはその colorscheme を使う時（`ColorSchemePre` で `colors/` を持つ plugin をロードする）にロードされる。
 - イベントでロードした plugin は、ロード後に同じイベントを対象バッファへ再発火する（最初のバッファでも gitsigns などが効く）。`VeryLazy` は `UIEnter` 後に発火する。
 - lazy.nvim が無効化していた runtime plugin（gzip, matchit, matchparen, netrwPlugin, tarPlugin, zipPlugin, tutor）は `loaded_*` ガード変数で無効化している（`nvim/lua/pack/init.lua`）。
 - lockfile は `nvim/nvim-pack-lock.json`（git 管理）。初回 install と別マシンでの復元は lockfile の rev で行われる。

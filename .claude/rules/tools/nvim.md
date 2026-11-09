@@ -13,6 +13,7 @@ Detailed Reference: See [docs/tools/nvim.md](../../../docs/tools/nvim.md) for co
 
 - Fully Lua; structure is init.lua -> lua/config (plugin settings) -> lua/plugins (lazy.nvim-style specs) and lua/pack (custom loader), with lua/core and lua/lsp for shared foundations.
 - Plugins are managed by built-in `vim.pack` (lockfile `nvim/nvim-pack-lock.json`, tracked in git); lazy loading is done by the custom loader in `lua/pack/`, which implements event/cmd/keys/ft/VeryLazy. Prefer event/condition-based loading.
+- Requiring a module of a not-yet-loaded plugin loads it with its config (searcher in `lua/pack/init.lua`); a colorscheme provider is loaded on `ColorSchemePre`.
 - Unsupported lazy spec keys raise an error; specs that use `opts` or `config = true` need an explicit `main`.
 - `NVIM_PACK_BOOTSTRAP=1` makes a headless first install non-interactive and skips the `:TSUpdate` build hook. The last lazy.nvim state is tagged `nvim-lazy-last`.
 - Separate core vs UI vs LSP vs AI layers when adding plugins.

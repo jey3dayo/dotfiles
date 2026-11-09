@@ -1,4 +1,5 @@
 local handlers = require "pack.handlers"
+local modules = require "pack.modules"
 local spec = require "pack.spec"
 
 local M = { plugins = {}, order = {} }
@@ -28,15 +29,15 @@ end
 
 local function plugin_specs_from_config()
   local dir = vim.fn.stdpath "config" .. "/lua/plugins"
-  local modules = {}
+  local files = {}
   for name, kind in vim.fs.dir(dir) do
-    if kind == "file" and name:match "%.lua$" then table.insert(modules, name:sub(1, -5)) end
+    if kind == "file" and name:match "%.lua$" then table.insert(files, name:sub(1, -5)) end
   end
-  table.sort(modules)
+  table.sort(files)
 
   local raw = {}
-  for _, module in ipairs(modules) do
-    table.insert(raw, require("plugins." .. module))
+  for _, file in ipairs(files) do
+    table.insert(raw, require("plugins." .. file))
   end
   return raw
 end
@@ -51,9 +52,16 @@ local function is_enabled(plugin)
   return plugin.cond ~= false
 end
 
+local function has_setup(plugin)
+  return (plugin.config ~= nil and plugin.config ~= false) or #plugin.opts > 0
+end
+
+-- "rtp": library without setup, always on the runtimepath. "dormant": trigger-less plugin with setup; it stays off
+-- the runtimepath until its module is required or its colorscheme is used.
 local function classify(plugin)
   if plugin.lazy == false then return "start" end
   if has_trigger(plugin) then return "trigger" end
+  if has_setup(plugin) then return "dormant" end
   return "rtp"
 end
 
@@ -95,7 +103,7 @@ local function resolve_opts(plugin)
 end
 
 local function run_config(plugin)
-  if not ((plugin.config ~= nil and plugin.config ~= false) or #plugin.opts > 0) then return end
+  if not has_setup(plugin) then return end
   local opts = resolve_opts(plugin)
   if type(plugin.config) == "function" then
     plugin.config(plugin, opts)
@@ -151,7 +159,7 @@ end
 local function on_add(plug)
   local plugin = M.plugins[plug.spec.name]
   plugin.dir = plug.path
-  if plugin.kind ~= "trigger" then add_to_runtime(plugin) end
+  if plugin.kind == "start" or plugin.kind == "rtp" then add_to_runtime(plugin) end
 end
 
 local function pack_specs()
@@ -177,6 +185,66 @@ local function start_plugins()
     return a.index < b.index
   end)
   return start
+end
+
+local function is_unloaded(plugin)
+  return plugin.dir ~= nil and not (plugin.disabled or plugin.loaded or plugin.added)
+end
+
+local function scan_directory(dir)
+  local handle = vim.uv.fs_scandir(dir)
+  if not handle then return nil end
+  local entries = {}
+  while true do
+    local name, kind = vim.uv.fs_scandir_next(handle)
+    if not name then return entries end
+    table.insert(entries, { name = name, type = kind })
+  end
+end
+
+local module_index
+local SEARCHERS = package.searchers or package.loaders
+
+local function build_module_index()
+  local unloaded = {}
+  for _, name in ipairs(M.order) do
+    if is_unloaded(M.plugins[name]) then table.insert(unloaded, M.plugins[name]) end
+  end
+  return modules.build_index(unloaded, scan_directory)
+end
+
+-- Appended to package.loaders (LuaJIT's name for package.searchers) so that it only runs for modules nothing else found, as lazy.nvim's
+-- loader did: requiring a module of a not yet loaded plugin loads that plugin, config included.
+local function require_searcher(modname)
+  module_index = module_index or build_module_index()
+  local plugin = M.plugins[modules.provider(module_index, modname) or ""]
+  if not (plugin and is_unloaded(plugin)) then return nil end
+
+  M.load(plugin.name)
+  if package.loaded[modname] ~= nil then
+    local loaded = package.loaded[modname]
+    return function()
+      return loaded
+    end
+  end
+  for _, searcher in ipairs(SEARCHERS) do
+    if searcher ~= require_searcher then
+      local loader, data = searcher(modname)
+      if type(loader) == "function" then return loader, data end
+    end
+  end
+  return nil
+end
+
+local function load_colorscheme_provider(name)
+  for _, plugin_name in ipairs(M.order) do
+    local plugin = M.plugins[plugin_name]
+    if is_unloaded(plugin) then
+      for _, ext in ipairs { "lua", "vim" } do
+        if vim.uv.fs_stat(string.format("%s/colors/%s.%s", plugin.dir, name, ext)) then return M.load(plugin.name) end
+      end
+    end
+  end
 end
 
 local function schedule_very_lazy()
@@ -211,6 +279,13 @@ function M.setup()
   end
 
   handlers.setup(M.load)
+  table.insert(SEARCHERS, require_searcher)
+  vim.api.nvim_create_autocmd("ColorSchemePre", {
+    group = vim.api.nvim_create_augroup("pack_colorscheme", { clear = true }),
+    callback = function(ev)
+      load_colorscheme_provider(ev.match)
+    end,
+  })
   register_build_hook(bootstrap)
 
   try("vim.pack.add", function()
