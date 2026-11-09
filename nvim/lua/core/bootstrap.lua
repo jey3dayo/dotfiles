@@ -28,7 +28,7 @@ local immediate_modules = {
   { name = "options" }, -- core options
   { name = "keymaps" }, -- basic keymaps + leader
   { name = "filetype" }, -- filetype detection overrides
-  { name = "init_lazy" }, -- plugin manager bootstrap
+  { name = "init_pack" }, -- plugin manager bootstrap (vim.pack)
 }
 
 local deferred_modules = {

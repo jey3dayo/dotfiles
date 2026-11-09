@@ -42,4 +42,4 @@ Purpose: スキル配布と編集元の混線を防ぎ、どこを編集する�
 
 ## スキルが配布されない・古いとき
 
-`~/.claude/skills/` が空または古い場合は `cd ~/.apm && mise run deploy && mise run doctor` を実行する。正本は `~/.apm/catalog/skills/**` で、配布先は直接編集しない。
+`~/.claude/skills/` が空または古い場合は `mise -C ~/.apm run deploy` と `mise -C ~/.apm run doctor` の実行をユーザーに案内する（この repo のセッションから `~/.apm` は操作しない）。正本は `~/.apm/catalog/skills/**` で、配布先は直接編集しない。

@@ -26,6 +26,6 @@
 - `docs/` 配下の手順・運用・設計は、この repo では正本として扱う
 - パッケージ管理の責務分離（どの層でツールを管理するか）は `docs/setup.md` の Package Management Philosophy を正本とし、他の文書へ再掲しない
 - `~/.apm/catalog/AGENTS.md` は共通ガイドの配布元であり、この repo 固有の運用判断には使わない
-- 実装ワークフローの `Codex レビュー` は「独立観点でのレビュー」を意味する。Claude セッションからは組み込み `/code-review`、または `agmsg-delegation` の review 経路で Codex reviewer を起動する。Codex セッション内では手動差分確認または別プロセスの `codex exec` で代替可
+- 非軽微な変更の独立レビューは、Claude セッションからは組み込み `/code-review`、または `agmsg-delegation` の review 経路で Codex reviewer を起動する。Codex セッション内では手動差分確認または別プロセスの `codex exec` で代替可
 - 共通ルールをこのファイルへ再掲しない。必要な場合は共通ガイドを参照する
 - 番号付き選択肢は、スクロールなしで意味が分かる短さに保つ

@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-Comma-leader、lazy.nvim ベースのモダンなLua設定。blink.cmp による補完、mini.nvim を中心とした編集面、Mason 管理の LSP スタックを組み合わせている。
+Comma-leader、Neovim 組み込みの `vim.pack`（遅延ロードは自前ローダー）ベースのモダンなLua設定。blink.cmp による補完、mini.nvim を中心とした編集面、Mason 管理の LSP スタックを組み合わせている。
 
 エントリポイントは [`init.lua`](init.lua)。
 

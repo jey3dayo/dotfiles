@@ -13,6 +13,7 @@ return {
   { "dstein64/vim-startuptime", cmd = "StartupTime" },
   {
     "folke/trouble.nvim",
+    main = "trouble",
     opts = {},
     cmd = "Trouble",
     dependencies = { deps.devicons },

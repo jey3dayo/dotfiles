@@ -18,10 +18,10 @@ return {
       "DiffviewToggleFiles",
       "DiffviewFocusFiles",
     },
+    main = "diffview",
     opts = require "config/diffview",
   },
   { "tpope/vim-rhubarb", cmd = { "GBrowse" }, dependencies = { "tpope/vim-fugitive" } },
-  { "linrongbin16/gitlinker.nvim", keys = {}, dependencies = deps.plenary, config = true },
   -- Modern Git interface
   {
     "NeogitOrg/neogit",
@@ -30,6 +30,7 @@ return {
       "sindrets/diffview.nvim",
       "echasnovski/mini.pick", -- Use mini.pick instead of telescope
     },
+    main = "neogit",
     config = true,
     cmd = "Neogit",
     keys = {

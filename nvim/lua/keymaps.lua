@@ -33,11 +33,15 @@ map("n", "gT", "<cmd>tabprevious<CR>")
 -- toggles and maintenance
 map("n", "<Leader>sn", "<cmd>set number!<CR>", { desc = "Toggle line numbers" })
 map("n", "<Leader>sL", "<cmd>set list!<CR>", { desc = "Toggle list mode" })
-map("n", "<Leader>sp", "<cmd>Lazy<CR>", { desc = "Plugin manager" })
+map("n", "<Leader>sp", function()
+  vim.pack.update(nil, { offline = true })
+end, { desc = "Plugin manager" })
 map("n", "<Leader>sd", "<cmd>LspDebug<CR>", { desc = "LspDebug" })
 map("n", "<Leader>sm", "<cmd>MasonUpdate<CR>", { desc = "Update Mason" })
 map("n", "<Leader>st", "<cmd>TSUpdate<CR>", { desc = "Update TreeSitter" })
-map("n", "<Leader>su", "<cmd>Lazy update<CR>", { desc = "Update plugins" })
+map("n", "<Leader>su", function()
+  vim.pack.update()
+end, { desc = "Update plugins" })
 
 -- Load a config file
 local function load_config(config_path)

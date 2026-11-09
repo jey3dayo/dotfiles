@@ -28,7 +28,7 @@ Scope: complex_modifications（コマンドキー英数/かなトグル）、sim
 
 ## リーダーキー実装パターン（参考）
 
-tmux / Ghostty の `C-x KEY` のような 2 段階プレフィックスを持たないアプリに、Karabiner でリーダーモードを後付けする汎用手法。対象を限定したい場合は `frontmost_application_if` でアプリを絞る。
+tmux / herdr の `C-x KEY` のような 2 段階プレフィックスを持たないアプリに、Karabiner でリーダーモードを後付けする汎用手法。対象を限定したい場合は `frontmost_application_if` でアプリを絞る。
 
 - 変数（例 `xxx_leader`）を立てて「リーダーモード ON」を表現し、次キーで任意の macOS ショートカットへ変換する
 - ⚠️ `to_delayed_action` に `to_if_canceled` を入れてはいけない。次キーが押された瞬間に変数がリセットされ、そのキーのルールが条件不一致になる。`to_if_invoked`（タイムアウト）のみ使用する
