@@ -12,7 +12,7 @@ High-performance development environment tuned for speed, consistency, and devel
 - Performance-first dotfiles with local CI parity (`mise run ci`) before merges
 - Documentation centralized in `docs/` with navigation at `docs/README.md`
 - LLM/AI entrypoint available at `llms.md`, with project rules rooted in `AGENTS.md`
-- Modular stack: Zsh (category-ordered `lib/*.zsh` with precmd-deferred plugins), Neovim (Lazy.nvim), WezTerm (tmux-style) with FZF-backed Git widgets
+- Modular stack: Zsh (category-ordered `lib/*.zsh` with precmd-deferred plugins), Neovim (vim.pack), WezTerm (tmux-style) with FZF-backed Git widgets
 - Versioning via Mise + Homebrew; AI/CLI helpers documented in `CLAUDE.md` and `.claude/`
 
 ## Documentation Map
@@ -29,7 +29,7 @@ High-performance development environment tuned for speed, consistency, and devel
 ## Core Stack
 
 - Zsh + Sheldon: category-ordered `zsh/lib/*.zsh` loading with mise-aware PATH optimization and precmd-deferred Git abbreviations/widgets
-- Neovim + Lazy.nvim: LSP-heavy yet fast startup
+- Neovim + vim.pack: LSP-heavy yet fast startup
 - WezTerm: Primary terminal with Lua config and tmux-style workflow; Alacritty as GPU-accelerated alternative
 - Git + FZF: Widgets and fuzzy pickers for repo/status/add flows
 - Versioning: mise + Homebrew（層の割当は `docs/setup.md` の Package Management Philosophy）

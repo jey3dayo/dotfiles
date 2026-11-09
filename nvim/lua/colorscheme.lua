@@ -2,11 +2,7 @@
 local function load_colorscheme()
   pcall(function()
     -- Ensure 0x96f plugin is loaded
-    if vim.g.use_vim_pack then
-      require("pack").load "0x96f.nvim"
-    else
-      require("lazy").load { plugins = { "0x96f.nvim" } }
-    end
+    require("pack").load "0x96f.nvim"
     require("0x96f").setup()
     vim.cmd.colorscheme "0x96f"
 

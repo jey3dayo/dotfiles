@@ -1,6 +1,6 @@
 # Workflows & Maintenance Reference
 
-最終更新: 2026-09-23
+最終更新: 2026-11-09
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -10,7 +10,7 @@ Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/w
 
 | 頻度   | 作業                                                                                                                                                                                                                             |
 | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）; `mise run update:standalone`（自己更新 CLI を各自の update コマンドで一括更新）; プラグイン更新（sheldon, nvim lazy, tmux）                                  |
+| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）; `mise run update:standalone`（自己更新 CLI を各自の update コマンドで一括更新）; プラグイン更新（sheldon, nvim vim.pack（`,su`）, tmux）                     |
 | 月次   | 起動時間の計測（`zsh-benchmark` / `nvim --startuptime`）、結果は [Zsh](zsh.md#検証) / [Neovim](nvim.md#検証) の検証節に記録; ログ整理; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d` |
 | 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                                                                               |
 
@@ -362,14 +362,14 @@ Nix 配布手順はリポジトリから撤去済み。`home-manager switch` や
 
 ## Troubleshooting Routing
 
-| 症状                               | 対応先                                                                                                                                                                                                                               |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 起動が突然遅くなった（Zsh/Neovim） | Zsh: `zsh-benchmark` → `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'`; Neovim: `nvim --startuptime startup.log` → `:Lazy profile`; 改善しなければキャッシュクリア（`rm -rf ~/.zcompdump*`; `~/.local/share/nvim` と `~/.local/state/nvim`） |
-| メモリ使用量の増加                 | `ps aux \| grep -E '(zsh\|nvim\|wezterm)'` と `top -l 1 \| grep PhysMem` で確認し、履歴サイズの制限、未使用プラグインの削除、キャッシュのクリアで対処                                                                                |
-| Zsh 起動トラブル                   | `rm -rf ~/.zcompdump*` → `exec zsh`; `zsh -df` でミニマル起動                                                                                                                                                                        |
-| LSP 問題                           | `:LspInfo`, `:Mason`, `~/.local/share/nvim/lsp.log`                                                                                                                                                                                  |
-| Git 認証                           | `ssh -T git@github.com`, 1Password CLI と SSH agent 確認                                                                                                                                                                             |
-| dotfiles が配布されない・古い      | `mise dotfiles status`（applied / differs / missing）→ `mise dotfiles apply`（再適用、冪等）→ `mise bootstrap status`（packages / launchd 含む全体確認）                                                                             |
+| 症状                               | 対応先                                                                                                                                                                                                             |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 起動が突然遅くなった（Zsh/Neovim） | Zsh: `zsh-benchmark` → `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'`; Neovim: `nvim --startuptime startup.log`; 改善しなければキャッシュクリア（`rm -rf ~/.zcompdump*`; `~/.local/share/nvim` と `~/.local/state/nvim`） |
+| メモリ使用量の増加                 | `ps aux \| grep -E '(zsh\|nvim\|wezterm)'` と `top -l 1 \| grep PhysMem` で確認し、履歴サイズの制限、未使用プラグインの削除、キャッシュのクリアで対処                                                              |
+| Zsh 起動トラブル                   | `rm -rf ~/.zcompdump*` → `exec zsh`; `zsh -df` でミニマル起動                                                                                                                                                      |
+| LSP 問題                           | `:LspInfo`, `:Mason`, `~/.local/share/nvim/lsp.log`                                                                                                                                                                |
+| Git 認証                           | `ssh -T git@github.com`, 1Password CLI と SSH agent 確認                                                                                                                                                           |
+| dotfiles が配布されない・古い      | `mise dotfiles status`（applied / differs / missing）→ `mise dotfiles apply`（再適用、冪等）→ `mise bootstrap status`（packages / launchd 含む全体確認）                                                           |
 
 ## Debug Commands
 
