@@ -205,6 +205,11 @@ end
 local module_index
 local SEARCHERS = package.searchers or package.loaders
 
+local function has_module_file(plugin_name, modname)
+  local base = string.format("%s/lua/%s", M.plugins[plugin_name].dir, (modname:gsub("%.", "/")))
+  return vim.uv.fs_stat(base .. ".lua") ~= nil or vim.uv.fs_stat(base .. "/init.lua") ~= nil
+end
+
 local function build_module_index()
   local unloaded = {}
   for _, name in ipairs(M.order) do
@@ -217,7 +222,7 @@ end
 -- loader did: requiring a module of a not yet loaded plugin loads that plugin, config included.
 local function require_searcher(modname)
   module_index = module_index or build_module_index()
-  local plugin = M.plugins[modules.provider(module_index, modname) or ""]
+  local plugin = M.plugins[modules.provider(module_index, modname, has_module_file) or ""]
   if not (plugin and is_unloaded(plugin)) then return nil end
 
   M.load(plugin.name)
