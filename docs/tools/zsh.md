@@ -1,6 +1,6 @@
 # Zsh Configuration
 
-最終更新: 2026-09-23
+最終更新: 2026-11-11
 対象: 開発者・上級者
 タグ: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 
@@ -34,7 +34,7 @@ Zsh は高速起動を優先した最小構成です。旧構成はリポジト�
 4. interactive shell では `zsh/.zshrc` が以下を順に読む。
    - Core shell state: `lib/path.zsh`, `lib/options.zsh`, `lib/history.zsh`
    - Completion setup: `lib/completion.zsh`, `lib/ni.zsh`, `lib/gh-completion.zsh`, `lib/aicommits.zsh`
-   - Agent integrations: `lib/agmsg.zsh`, `lib/secrets.zsh`
+   - Agent integrations: `lib/agmsg.zsh`, `lib/codex.zsh`, `lib/secrets.zsh`
    - Key bindings and widgets: `lib/fzf.zsh`, `lib/fzf-tab.zsh`, `lib/git-widgets.zsh`
    - Interactive input integrations: `lib/abbr.zsh`, `lib/atuin.zsh`, `lib/zoxide.zsh`, `lib/autosuggestions.zsh`
    - Platform-specific setup: `lib/wsl.zsh`
@@ -60,6 +60,7 @@ zsh/
 │   ├── aicommits.zsh
 │   ├── atuin.zsh
 │   ├── autosuggestions.zsh
+│   ├── codex.zsh
 │   ├── completion.zsh
 │   ├── fzf-tab.zsh
 │   ├── fzf.zsh

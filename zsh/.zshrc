@@ -21,6 +21,7 @@ source_zsh_lib aicommits.zsh
 
 # Agent integrations
 source_zsh_lib agmsg.zsh
+source_zsh_lib codex.zsh
 source_zsh_lib secrets.zsh
 
 # Key bindings and widgets
