@@ -34,16 +34,41 @@ else
   fi
 fi
 
-HERDR=herdr
-if ! command -v herdr >/dev/null 2>&1; then
-  HERDR="${HERDR_BIN_PATH:-}"
-  if [ -z "$HERDR" ]; then
-    echo "herdr-sync-pane-title: herdr not found" >&2
-    exit 1
-  fi
+HERDR="${HERDR_BIN_PATH:-herdr}"
+if ! command -v "$HERDR" >/dev/null 2>&1; then
+  echo "herdr-sync-pane-title: herdr not found" >&2
+  exit 1
 fi
 
-PANE_JSON=$("$HERDR" pane get "$PANE_ID")
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-pane-title-sync"
+RECORD="$STATE_DIR/${PANE_ID//:/_}"
+LOCK_DIR="$STATE_DIR/.lock.${PANE_ID//:/_}"
+
+# Hook runs overlap; serialize them so an older snapshot cannot overwrite a
+# newer title. After the timeout the lock is assumed stale (killed run).
+mkdir -p "$STATE_DIR"
+locked=0
+for ((i = 0; i < 30; i++)); do
+  if mkdir "$LOCK_DIR" 2>/dev/null; then
+    locked=1
+    break
+  fi
+  sleep 0.1
+done
+if [ "$locked" = 0 ]; then
+  rmdir "$LOCK_DIR" 2>/dev/null || true
+  mkdir "$LOCK_DIR" 2>/dev/null && locked=1
+fi
+if [ "$locked" = 1 ]; then
+  trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
+fi
+
+if ! PANE_JSON=$("$HERDR" pane get "$PANE_ID"); then
+  if [ "$AUTO" = 1 ]; then
+    exit 0
+  fi
+  exit 1
+fi
 
 if [ "$(jq -r '.result.pane.agent // empty' <<<"$PANE_JSON")" = "" ]; then
   say "$PANE_ID has no agent"
@@ -58,26 +83,23 @@ fi
 
 # The sidebar's agents list shows display_agent, not the pane label.
 if [ "$("$HERDR" agent get "$PANE_ID" | jq -r '.result.agent.display_agent // empty')" != "$TITLE" ]; then
-  "$HERDR" pane report-metadata "$PANE_ID" --source herdr-sync-pane-title --display-agent "$TITLE" >/dev/null ||
+  "$HERDR" pane report-metadata "$PANE_ID" --source herdr-sync-pane-title --display-agent="$TITLE" >/dev/null ||
     say "$PANE_ID: could not set display_agent"
 fi
 
 LABEL=$(jq -r '.result.pane.label // empty' <<<"$PANE_JSON")
+AGENT=$(jq -r '.result.pane.agent' <<<"$PANE_JSON")
 
-# agmsg labels its panes "<team>:<agent>"; keep that role name.
-if [[ "$LABEL" == *:* ]]; then
+# agmsg labels its panes "<team>:<agent>"; keep that role name. Our own
+# "<agent>/<title>" labels may contain ":" and are not agmsg's.
+if [[ "$LABEL" == *:* && "$LABEL" != "$AGENT/"* ]]; then
   say "$PANE_ID keeps its agmsg label"
   exit 0
 fi
 
-AGENT=$(jq -r '.result.pane.agent' <<<"$PANE_JSON")
 NEW_LABEL="$AGENT/$TITLE"
 
-STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-pane-title-sync"
-RECORD="$STATE_DIR/${PANE_ID//:/_}"
-
 write_record() {
-  mkdir -p "$STATE_DIR"
   local tmp
   tmp=$(mktemp "$STATE_DIR/.tmp.XXXXXX")
   printf '%s' "$1" >"$tmp"
