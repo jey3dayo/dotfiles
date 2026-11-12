@@ -13,14 +13,14 @@ Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
 
 通常の確認は「検証のみ」タスクを優先し、状態変更を伴うタスクは目的と対象を確認してから実行します。
 
-| 分類             | 意味                                           | 代表タスク                                                         | 実行前確認                                  |
-| ---------------- | ---------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------- |
-| 検証のみ         | ファイル・システム状態を書き換えない           | `ci`, `ci:quick`, `check`, `brewfile:diff`, `mise dotfiles status` | 通常の品質確認として実行可                  |
-| 作業ツリー変更   | フォーマットなどで repo 内ファイルを書き換える | `format`, `format:*`                                               | 差分が対象範囲内か確認する                  |
-| ローカル状態変更 | mise、Homebrew、dotfiles などを変更する        | `ci:full`, `ci:verify-deploy`, `mise bootstrap`, `setup`           | 現在の machine state と rollback 手順を確認 |
-| 外部取得・更新   | ネットワーク取得や外部 checkout を更新する     | `update`, `update:brew`, `update:submodules`                       | 取得元と更新対象を確認する                  |
-| 強制更新         | 外部 repo を reset するなど破壊的になり得る    | `update:external-repos`, `mise dotfiles apply --force`             | ユーザー確認なしで実行しない                |
-| secret 関連      | 暗号化 env や secret scan に触れる             | `env:encrypt`, `env:decrypt`, `setup-env`, `ci:gitleaks`           | source of truth と展開先を確認する          |
+| 分類             | 意味                                           | 代表タスク                                                                          | 実行前確認                                  |
+| ---------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------- |
+| 検証のみ         | ファイル・システム状態を書き換えない           | `ci`, `ci:quick`, `check`, `brewfile:diff`, `audit:orphans`, `mise dotfiles status` | 通常の品質確認として実行可                  |
+| 作業ツリー変更   | フォーマットなどで repo 内ファイルを書き換える | `format`, `format:*`                                                                | 差分が対象範囲内か確認する                  |
+| ローカル状態変更 | mise、Homebrew、dotfiles などを変更する        | `ci:full`, `ci:verify-deploy`, `mise bootstrap`, `setup`                            | 現在の machine state と rollback 手順を確認 |
+| 外部取得・更新   | ネットワーク取得や外部 checkout を更新する     | `update`, `update:brew`, `update:submodules`                                        | 取得元と更新対象を確認する                  |
+| 強制更新         | 外部 repo を reset するなど破壊的になり得る    | `update:external-repos`, `mise dotfiles apply --force`                              | ユーザー確認なしで実行しない                |
+| secret 関連      | 暗号化 env や secret scan に触れる             | `env:encrypt`, `env:decrypt`, `setup-env`, `ci:gitleaks`                            | source of truth と展開先を確認する          |
 
 ### CI / 検証
 
@@ -90,6 +90,14 @@ Markdown のタスク名は `markdown` を使い、`format:md:check` は定義�
 | `test:nvim`      | Neovim headless テスト（vim.pack ローダー、要 nvim） |
 | `test:ts`        | TypeScript ユニットテスト                            |
 | `test:lua:watch` | Lua テスト監視モード（ファイル変更時に自動再実行）   |
+
+### Audit
+
+`audit.toml` で定義。
+
+| タスク          | 説明                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------ |
+| `audit:orphans` | launchd 直下に取り残された dev サーバーを検出（kill しない、検出あり exit 1、`--notify` で通知） |
 
 ### Dotfiles 配布（mise bootstrap）
 
