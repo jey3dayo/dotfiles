@@ -80,6 +80,8 @@ width = "80%"
 height = "60%"
 
 [ui]
+sidebar_width = 30
+sidebar_max_width = 40
 prompt_new_tab_name = false
 show_agent_labels_on_pane_borders = true
 agent_panel_sort = "priority"            # blocked → done → working → idle → unknown
