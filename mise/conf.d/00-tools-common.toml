@@ -9,7 +9,7 @@ node = "lts"
 "github:astral-sh/uv" = "latest"
 
 # Formatters / Linters
-"github:jdx/jactionlint" = "2.3.0"
+"github:jdx/jactionlint" = "2.5.0"
 biome = "latest"
 fd = "latest"
 gitleaks = "latest"
