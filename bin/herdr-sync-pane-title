@@ -34,16 +34,21 @@ else
   fi
 fi
 
-HERDR=herdr
-if ! command -v herdr >/dev/null 2>&1; then
-  HERDR="${HERDR_BIN_PATH:-}"
-  if [ -z "$HERDR" ]; then
+HERDR="${HERDR_BIN_PATH:-herdr}"
+if ! command -v "$HERDR" >/dev/null 2>&1; then
+  HERDR=herdr
+  if ! command -v herdr >/dev/null 2>&1; then
     echo "herdr-sync-pane-title: herdr not found" >&2
     exit 1
   fi
 fi
 
-PANE_JSON=$("$HERDR" pane get "$PANE_ID")
+if ! PANE_JSON=$("$HERDR" pane get "$PANE_ID"); then
+  if [ "$AUTO" = 1 ]; then
+    exit 0
+  fi
+  exit 1
+fi
 
 if [ "$(jq -r '.result.pane.agent // empty' <<<"$PANE_JSON")" = "" ]; then
   say "$PANE_ID has no agent"
@@ -63,14 +68,15 @@ if [ "$("$HERDR" agent get "$PANE_ID" | jq -r '.result.agent.display_agent // em
 fi
 
 LABEL=$(jq -r '.result.pane.label // empty' <<<"$PANE_JSON")
+AGENT=$(jq -r '.result.pane.agent' <<<"$PANE_JSON")
 
-# agmsg labels its panes "<team>:<agent>"; keep that role name.
-if [[ "$LABEL" == *:* ]]; then
+# agmsg labels its panes "<team>:<agent>"; keep that role name. Our own
+# "<agent>/<title>" labels may contain ":" and are not agmsg's.
+if [[ "$LABEL" == *:* && "$LABEL" != "$AGENT/"* ]]; then
   say "$PANE_ID keeps its agmsg label"
   exit 0
 fi
 
-AGENT=$(jq -r '.result.pane.agent' <<<"$PANE_JSON")
 NEW_LABEL="$AGENT/$TITLE"
 
 STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/herdr-pane-title-sync"
@@ -98,6 +104,11 @@ if [ "$AUTO" = 1 ] && [ -n "$LABEL" ]; then
   fi
 fi
 
-"$HERDR" pane rename "$PANE_ID" "$NEW_LABEL" >/dev/null
+if ! "$HERDR" pane rename "$PANE_ID" "$NEW_LABEL" >/dev/null; then
+  if [ "$AUTO" = 1 ]; then
+    exit 0
+  fi
+  exit 1
+fi
 
 write_record "$NEW_LABEL"
