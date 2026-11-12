@@ -330,6 +330,9 @@ pulse/
 ## Chromium (browser profile/cache, auto-generated under XDG_CONFIG_HOME)
 chromium/
 
+## browser-use (device_id / telemetry outbox, runtime state)
+browseruse/
+
 ## systemd user environment.d (managed externally, e.g. home-manager symlinks)
 environment.d/
 
