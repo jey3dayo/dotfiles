@@ -1,0 +1,7 @@
+# ========================================
+# 監査タスク（mac/local 依存、検証のみ）
+# ========================================
+
+["audit:orphans"]
+description = "launchd 直下に取り残された dev サーバー（mise run / vite / workerd / pnpm）を検出（kill しない、検出時 exit 1）"
+run = "bash ./scripts/orphan-dev-servers.sh"
