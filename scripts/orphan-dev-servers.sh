@@ -63,12 +63,12 @@ while read -r pid ppid uid etime command; do
 done <<<"$ps_output"
 
 if ((count == 0)); then
-  echo "孤児なし"
+  echo "取り残された dev サーバーはありません"
   exit 0
 fi
 
 if ((notify)); then
-  if ! osascript -e "display notification \"孤児 dev サーバー: ${count} 件\" with title \"audit:orphans\""; then
+  if ! osascript -e "display notification \"取り残された dev サーバー: ${count} 件\" with title \"audit:orphans\""; then
     echo "通知に失敗しました（検出結果は変わりません）" >&2
   fi
 fi

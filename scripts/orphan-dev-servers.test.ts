@@ -95,7 +95,7 @@ afterEach(() => {
     const result = runAudit({ rows: [{ pid: 100, ppid: 1, command: "/sbin/launchd" }] });
 
     expect(result.status).toBe(0);
-    expect(result.stdout.trim()).toBe("孤児なし");
+    expect(result.stdout.trim()).toBe("取り残された dev サーバーはありません");
   });
 
   it("ignores matching commands whose parent is not launchd", () => {
@@ -135,7 +135,7 @@ afterEach(() => {
     });
 
     expect(result.status).toBe(0);
-    expect(result.stdout.trim()).toBe("孤児なし");
+    expect(result.stdout.trim()).toBe("取り残された dev サーバーはありません");
   });
 
   it("does not count children of an orphaned pnpm exec vite", () => {
