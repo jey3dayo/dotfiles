@@ -9,8 +9,8 @@ Purpose: スキル配布と編集元の混線を防ぎ、どこを編集する�
 
 ## 編集場所
 
-- managed asset は personal skill なら `~/.apm/catalog/skills/**`、shared guidance なら `~/.apm/catalog/{AGENTS.md,agents/**,commands/**,rules/**}` を編集する。
-- この `.config` repo から `~/.apm` の catalog や global 配布を操作しない。必要なら説明文書だけ更新する。repo-local skill の再配布は下記の例外。
+- managed asset の正本は apm-workspace checkout（`~/src/github.com/jey3dayo/apm-workspace`）にある。personal skill は `catalog/.apm/skills/**`、agent は `catalog/.apm/agents/**`、共通ガイドは `catalog/.apm/instructions/ai-collaboration.instructions.md`、commands / rules は `catalog/{commands,rules}/**` を編集する。
+- この `.config` repo から apm-workspace の catalog や global 配布（`~/.apm` の consumer state を含む）を操作しない。必要なら説明文書だけ更新する。repo-local skill の再配布は下記の例外。
 - `~/.claude/skills/**` は配布物。検証対象にはしてよいが、修正対象にはしない。
 
 ## repo-local skill の扱い
@@ -28,7 +28,7 @@ Purpose: スキル配布と編集元の混線を防ぎ、どこを編集する�
 
 - 同名 skill が複数箇所にある場合は ownership を確認してから編集する。まず `apm.yml` の `dependencies.apm` に自リポジトリの宣言があるかを見る。あれば repo-local、無ければ managed catalog。
 - routing 監査や patch 提案が `~/.claude/skills/**` などの配布先を指していても、そのまま適用せず編集元の path に引き直す。
-- local fix が必要でも、まず `~/.apm/catalog/{skills/**,AGENTS.md,agents/**,commands/**,rules/**}` を正本として扱えるかを確認する。
+- local fix が必要でも、まず apm-workspace checkout の `catalog/**` を正本として扱えるかを確認する。
 
 ## 重複時の扱い
 
@@ -37,9 +37,9 @@ Purpose: スキル配布と編集元の混線を防ぎ、どこを編集する�
 
 ## 配布物の見方
 
-- 配布内容の正は `~/.apm/catalog/{skills/**,AGENTS.md,agents/**,commands/**,rules/**}` と `~/.apm/apm.yml` で決める。
+- 配布内容の正は apm-workspace checkout の `catalog/**` と `apm.yml` / `apm.lock.yaml` で決める。`~/.apm` は install 結果の consumer state で、編集元ではない。
 - 配布後の `~/.claude/skills/**` に見える差分は、配布結果の確認材料であって編集元ではない。
 
 ## スキルが配布されない・古いとき
 
-`~/.claude/skills/` が空または古い場合は `mise -C ~/.apm run deploy` と `mise -C ~/.apm run doctor` の実行をユーザーに案内する（この repo のセッションから `~/.apm` は操作しない）。正本は `~/.apm/catalog/skills/**` で、配布先は直接編集しない。
+`~/.claude/skills/` が空または古い場合は、apm-workspace checkout で `mise -C ~/src/github.com/jey3dayo/apm-workspace run native:sync` と `mise -C ~/src/github.com/jey3dayo/apm-workspace run doctor` の実行をユーザーに案内する（この repo のセッションからは操作しない）。手順の正本は apm-workspace の `docs/native-distribution.md` で、配布先は直接編集しない。

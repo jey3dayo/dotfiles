@@ -1,6 +1,6 @@
 # Mise Reference
 
-最終更新: 2026-10-26
+最終更新: 2026-11-12
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -156,13 +156,12 @@ ci:full
 
 ### APM Global Skills
 
-agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config` 側の `mise` は APM 操作面を持ちません。
+agent 配布の正面入口は apm-workspace checkout（`~/src/github.com/jey3dayo/apm-workspace`）です。`.config` 側の `mise` は APM 操作面を持ちません。`~/.apm` は install 結果の consumer state で、編集元ではありません。
 
-- APM CLI 自体は `mise` 管理とし、`.config` と `~/.apm` の両方で `github:microsoft/apm` を pin する
-- personal skill は `~/.apm/catalog/skills/` を直接編集する
-- external skill は `~/.apm/apm.yml` の upstream ref で管理する
-- shared guidance は `~/.apm/catalog/{AGENTS.md,agents/**,commands/**,rules/**}` を直接編集する
-- daily operation と validation は `cd ~/.apm && mise run ...` で行う
+- APM CLI 自体は `mise` 管理とし、`.config` と apm-workspace の両方で `pipx:apm-cli` を pin する
+- personal skill・agent・共通ガイドは checkout の `catalog/.apm/` 配下を編集する
+- external skill は checkout の `apm.yml` の upstream ref で管理する
+- daily operation と validation は checkout で `mise run ...` を実行する
 
 詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
 
@@ -177,7 +176,7 @@ agent 配布の正面入口は APM global workspace (`~/.apm`) です。`.config
 - `YAMLLINT_CONFIG_FILE`: `yamllint` 設定ファイル
 - `*_FILES` 系: 特定ファイルだけ処理（`SH_FILES`, `PY_FILES`, `LUA_FILES`, `TOML_FILES`, `BIOME_FILES`, `PRETTIER_FILES`, `YAML_FILES`）
 
-`TASK_EXCLUDES` は汎用タスクの除外に使う。managed catalog の日常運用は `~/.apm` 側 task を優先する。
+`TASK_EXCLUDES` は汎用タスクの除外に使う。managed catalog の日常運用は apm-workspace 側 task を優先する。
 
 ## Environment Detection
 
@@ -278,11 +277,11 @@ mise tasks
 # Install all tools from config
 mise install
 
-# For APM daily operation, work from ~/.apm directly
-cd ~/.apm
+# For APM daily operation, work from the apm-workspace checkout
+cd ~/src/github.com/jey3dayo/apm-workspace
 mise install
 mise run check
-mise run apply
+mise run native:sync
 mise run doctor
 
 # Run generic tasks

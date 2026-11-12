@@ -1,6 +1,6 @@
 # Workflows & Maintenance Reference
 
-最終更新: 2026-11-09
+最終更新: 2026-11-12
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -37,7 +37,7 @@ mise run format:lua   # stylua でフォーマット
 | dotenvx / `.env`    | `scripts/setup-env.sh` の構文確認、key-set comparison、`mise run ci:gitleaks`                      | plaintext cache と secret scan を分けて見る |
 | launchd / GUI env   | `launchctl getenv <KEY>` で allowlist された key だけを確認                                        | shell ではなく GUI runtime の状態を見る     |
 | mise bootstrap      | `mise bootstrap --dry-run` / `mise dotfiles status`                                                | 適用前に差分を確認する                      |
-| APM / global skills | `cd ~/.apm && mise run validate:catalog && mise run doctor`                                        | `.config` ではなく APM workspace が正本     |
+| APM / global skills | `cd ~/src/github.com/jey3dayo/apm-workspace && mise run check && mise run doctor`                  | `.config` ではなく APM workspace が正本     |
 
 ### Lua Type Checking and Error Handling
 

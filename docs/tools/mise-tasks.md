@@ -1,6 +1,6 @@
 # Mise Task Catalog
 
-最終更新: 2026-11-04
+最終更新: 2026-11-12
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -106,16 +106,13 @@ Home Manager は撤去済み。dotfiles 配布・launchd agents は mise bootstr
 
 ### APM Workspace
 
-APM の日常運用は `~/.apm` から行う。`.config` 側に APM 専用 `mise` task は置かない。
+APM の日常運用は apm-workspace checkout（`~/src/github.com/jey3dayo/apm-workspace`）から行う。`.config` 側に APM 専用 `mise` task は置かない。
 
 代表例:
 
-- `cd ~/.apm && mise install`
-- `cd ~/.apm && mise run check`
-- `cd ~/.apm && mise run deploy`
-- `cd ~/.apm && mise run doctor`
-- `cd ~/.apm && mise run prepare:catalog`
-- `cd ~/.apm && mise run install:catalog`
+- `mise run check`（配布せずに検証）
+- `mise run native:sync`（push 済み commit の配布）
+- `mise run doctor`（配布状態の確認）
 
 詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
 
@@ -172,11 +169,11 @@ formulae の宣言管理は `mise bootstrap packages`（`mise/config.macos.toml`
 
 ### APM / global skill 変更時の確認
 
-`.config` 側は APM の入口を示すだけで、global skill / agent / command の日常運用は `~/.apm` が正本です。
-APM 配布に関わる変更をした場合は、`.config` の `mise run ci` だけで完了扱いにせず、必要に応じて以下を `~/.apm` 側で確認します。
+`.config` 側は APM の入口を示すだけで、global skill / agent / command の日常運用は apm-workspace checkout が正本です。
+APM 配布に関わる変更をした場合は、`.config` の `mise run ci` だけで完了扱いにせず、必要に応じて以下を checkout 側で確認します。
 
 ```bash
-cd ~/.apm
-mise run validate:catalog
+cd ~/src/github.com/jey3dayo/apm-workspace
+mise run check
 mise run doctor
 ```
