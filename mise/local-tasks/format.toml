@@ -7,48 +7,22 @@
 ["format:biome"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "JS/TS/JSON ファイルをフォーマット + Biome lint の安全な自動修正（BIOME_FILES で対象を限定可能）"
-run = """
-if [ -n "${BIOME_FILES:-}" ]; then
-  biome format --write ${BIOME_FILES}
-  biome lint --write ${BIOME_FILES}
-else
-  biome format --write .
-  biome lint --write .
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" biome write"
 
 ["format:biome:check"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "JS/TS/JSON ファイルのフォーマット + lint チェック（書き込みなし、BIOME_FILES で対象を限定可能）"
-run = """
-if [ -n "${BIOME_FILES:-}" ]; then
-  biome check --formatter-enabled=true --linter-enabled=true ${BIOME_FILES}
-else
-  biome check --formatter-enabled=true --linter-enabled=true .
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" biome check"
 
 ["format:prettier"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Prettier でファイルをフォーマット（PRETTIER_FILES で対象を限定可能）"
-run = """
-if [ -n "${PRETTIER_FILES:-}" ]; then
-  prettier --write --ignore-unknown --log-level error ${PRETTIER_FILES} > /dev/null
-else
-  prettier --write --ignore-unknown --log-level error . > /dev/null
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" prettier write"
 
 ["format:prettier:check"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Prettier フォーマットチェック（書き込みなし、PRETTIER_FILES で対象を限定可能）"
-run = """
-if [ -n "${PRETTIER_FILES:-}" ]; then
-  prettier --check --ignore-unknown --log-level error ${PRETTIER_FILES}
-else
-  prettier --check --ignore-unknown --log-level error .
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" prettier check"
 
 ["format:markdown"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
@@ -79,46 +53,22 @@ run = [
 ["format:yaml"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "YAML ファイルをフォーマット（YAML_FILES で対象を限定可能）"
-run = """
-if [ -n "${YAML_FILES:-}" ]; then
-  prettier --write --log-level error ${YAML_FILES} > /dev/null
-else
-  fd -e yml -e yaml ${TASK_EXCLUDES} -X prettier --write --log-level error >/dev/null
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" yaml write"
 
 ["format:yaml:check"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "YAML ファイルのフォーマットチェック（書き込みなし、YAML_FILES で対象を限定可能）"
-run = """
-if [ -n "${YAML_FILES:-}" ]; then
-  prettier --check --log-level error ${YAML_FILES}
-else
-  fd -e yml -e yaml ${TASK_EXCLUDES} -X prettier --check --log-level error
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" yaml check"
 
 ["format:lua"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Lua ファイルをフォーマット（LUA_FILES で対象を限定可能）"
-run = """
-if [ -n "${LUA_FILES:-}" ]; then
-  stylua ${LUA_FILES}
-else
-  fd --hidden -e lua ${TASK_EXCLUDES} -X stylua
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" lua write"
 
 ["format:lua:check"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Lua ファイルのフォーマットチェック（書き込みなし、LUA_FILES で対象を限定可能）"
-run = """
-if [ -n "${LUA_FILES:-}" ]; then
-  stylua --check ${LUA_FILES}
-else
-  fd --hidden -e lua ${TASK_EXCLUDES} -X stylua --check
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" lua check"
 
 ["format:shell"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
@@ -135,46 +85,22 @@ run = "sh \"$(git rev-parse --show-toplevel)/mise/lib/shell-format.sh\""
 ["format:toml"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "TOML ファイルをフォーマット（TOML_FILES で対象を限定可能）"
-run = """
-if [ -n "${TOML_FILES:-}" ]; then
-  RUST_LOG=taplo=warn taplo format ${TOML_FILES}
-else
-  fd -e toml ${TASK_EXCLUDES} --exclude nvim/stylua.toml -X env RUST_LOG=taplo=warn taplo format
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" toml write"
 
 ["format:toml:check"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "TOML ファイルのフォーマットチェック（書き込みなし、TOML_FILES で対象を限定可能）"
-run = """
-if [ -n "${TOML_FILES:-}" ]; then
-  RUST_LOG=taplo=warn taplo format --check ${TOML_FILES}
-else
-  fd -e toml ${TASK_EXCLUDES} --exclude nvim/stylua.toml -X env RUST_LOG=taplo=warn taplo format --check
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" toml check"
 
 ["format:python"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Python ファイルをフォーマット（PY_FILES で対象を限定可能）"
-run = """
-if [ -n "${PY_FILES:-}" ]; then
-  uvx ruff format ${PY_FILES}
-else
-  fd -e py ${TASK_EXCLUDES} -X uvx ruff format
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" python write"
 
 ["format:python:check"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
 description = "Python フォーマットチェック（書き込みなし、PY_FILES で対象を限定可能）"
-run = """
-if [ -n "${PY_FILES:-}" ]; then
-  uvx ruff format --check ${PY_FILES}
-else
-  fd -e py ${TASK_EXCLUDES} -X uvx ruff format --check
-fi
-"""
+run = "bash \"$(git rev-parse --show-toplevel)/mise/lib/format-code.sh\" python check"
 
 ["format:docs"]
 dir = "{{ exec(command='git rev-parse --show-toplevel') }}"
