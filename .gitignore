@@ -82,7 +82,7 @@ zsh/.zinit/
 zsh/.zcompdump*
 zsh/.zcompcache/
 
-## mise completion (regenerated at shell startup, see zsh/lib/completion.zsh)
+## mise completion (regenerated at shell startup, see zsh/lib/completion/completion.zsh)
 zsh/completions/_mise
 
 # Version Control

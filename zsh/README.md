@@ -1,6 +1,6 @@
 # Zsh Configuration
 
-Minimal Zsh startup optimized for fast interactive shells, structured as entrypoint + `lib/` + `completions/` + `sheldon/` + `bin/`.
+Minimal Zsh startup optimized for fast interactive shells, structured as entrypoint + `lib/<category>/` + `completions/` + `sheldon/` + `bin/`.
 
 エントリポイントは [`.zshenv`](.zshenv) / [`.zshrc`](.zshrc)。
 

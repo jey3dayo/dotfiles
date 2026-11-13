@@ -10,7 +10,7 @@ export LISTMAX=0
 typeset -gaU path
 typeset -U cdpath fpath manpath
 
-[[ -r "${ZDOTDIR:-$HOME/.config/zsh}/lib/path.zsh" ]] && source "${ZDOTDIR:-$HOME/.config/zsh}/lib/path.zsh"
+[[ -r "${ZDOTDIR:-$HOME/.config/zsh}/lib/core/path.zsh" ]] && source "${ZDOTDIR:-$HOME/.config/zsh}/lib/core/path.zsh"
 (( $+functions[_zsh_setup_path] )) && _zsh_setup_path
 unfunction _zsh_setup_path 2>/dev/null
 

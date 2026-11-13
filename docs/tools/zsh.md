@@ -9,7 +9,7 @@ Zsh は高速起動を優先した最小構成です。旧構成はリポジト�
 ## 方針
 
 - `.zshenv` は全 shell で読むため、XDG、`ZDOTDIR`、mise の環境変数、最小 PATH、`.env.local` だけを扱う。
-- `.zshrc` は interactive shell 用の薄い orchestrator とし、`lib/*.zsh` を明示順に読む。
+- `.zshrc` は interactive shell 用の薄い orchestrator とし、`lib/<category>/*.zsh` を明示順に読む。
 - 起動時に install、update、build、plugin lock 生成をしない。
 - Sheldon は `zsh-abbr` と補完 repo の取得を管理し、cache は `zsh-sheldon-refresh` で明示生成する。起動時に install/update/lock はしない。
 - `abbr` 展開は維持するが、通常起動では同期ロードしない。実ターミナルでは最初の `precmd` で読み、テストや明示確認では `ZSH_LOAD_PLUGINS=1` を使う。
@@ -17,7 +17,7 @@ Zsh は高速起動を優先した最小構成です。旧構成はリポジト�
 - `fzf` は cache された shell integration だけを使う。通常起動では integration を同期ロードせず、`Ctrl-T` / `Alt-C` / `^g^c` の初回実行時に読む。明示確認では `ZSH_LOAD_FZF=1` を使う。`Ctrl-R` は `atuin` 優先で、fzf は `Ctrl-T` / `Alt-C` / `^]` / `^gx` などを使う。
 - `fzf-tab` は補完 UI として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読む。hook 登録順は fzf の後、autosuggestions / syntax highlighting より前にし、Tab 補完を fzf UI にする。
 - Git widgets / `fzf-git` は通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読む。バインド一覧は [`docs/tools/fzf-integration.md`](fzf-integration.md) を参照。
-- `Ctrl-P` / `Ctrl-N` は `zsh/lib/history.zsh` の `history-beginning-search-*-end` による prefix 履歴検索（fzf / atuin とは別系統）。
+- `Ctrl-P` / `Ctrl-N` は `zsh/lib/core/history.zsh` の `history-beginning-search-*-end` による prefix 履歴検索（fzf / atuin とは別系統）。
 - `zsh-autosuggestions` は入力候補表示として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読み、明示確認では `ZSH_LOAD_AUTOSUGGESTIONS=1` を使う。
 - `fast-syntax-highlighting` は入力中の syntax highlight として使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で最後に読む。
 - `gh` completion は cache file を使う。通常起動では同期ロードせず、実ターミナルでは最初の `precmd` で読み、明示確認では `ZSH_LOAD_GH=1` を使う。起動時に `gh completion` は実行しない。
@@ -32,13 +32,13 @@ Zsh は高速起動を優先した最小構成です。旧構成はリポジト�
 2. `zsh/.zshenv` が XDG、mise、PATH、history、`.env.local` を初期化する。
 3. login shell では `zsh/.zprofile` が locale/editor と PATH 正規化を行う。
 4. interactive shell では `zsh/.zshrc` が以下を順に読む。
-   - Core shell state: `lib/path.zsh`, `lib/options.zsh`, `lib/history.zsh`
-   - Completion setup: `lib/completion.zsh`, `lib/ni.zsh`, `lib/gh-completion.zsh`, `lib/aicommits.zsh`
-   - Agent integrations: `lib/agmsg.zsh`, `lib/codex.zsh`, `lib/secrets.zsh`
-   - Key bindings and widgets: `lib/fzf.zsh`, `lib/fzf-tab.zsh`, `lib/git-widgets.zsh`
-   - Interactive input integrations: `lib/abbr.zsh`, `lib/atuin.zsh`, `lib/zoxide.zsh`, `lib/autosuggestions.zsh`
-   - Platform-specific setup: `lib/wsl.zsh`
-   - Prompt and final ZLE decorators: `lib/prompt.zsh`, `lib/syntax-highlighting.zsh`
+   - Core shell state: `lib/core/path.zsh`, `lib/core/options.zsh`, `lib/core/history.zsh`
+   - Completion setup: `lib/completion/completion.zsh`, `lib/completion/ni.zsh`, `lib/completion/gh-completion.zsh`, `lib/integrations/aicommits.zsh`
+   - Agent integrations: `lib/integrations/agmsg.zsh`, `lib/integrations/codex.zsh`, `lib/integrations/secrets.zsh`
+   - Key bindings and widgets: `lib/widgets/fzf.zsh`, `lib/widgets/fzf-tab.zsh`, `lib/widgets/git-widgets.zsh`
+   - Interactive input integrations: `lib/integrations/abbr.zsh`, `lib/integrations/atuin.zsh`, `lib/integrations/zoxide.zsh`, `lib/widgets/autosuggestions.zsh`
+   - Platform-specific setup: `lib/platform/wsl.zsh`
+   - Prompt and final ZLE decorators: `lib/core/prompt.zsh`, `lib/widgets/syntax-highlighting.zsh`
 
 ## ディレクトリ
 
@@ -55,26 +55,31 @@ zsh/
 │   └── zsh-sheldon-refresh
 ├── completions/
 ├── lib/
-│   ├── abbr.zsh
-│   ├── agmsg.zsh
-│   ├── aicommits.zsh
-│   ├── atuin.zsh
-│   ├── autosuggestions.zsh
-│   ├── codex.zsh
-│   ├── completion.zsh
-│   ├── fzf-tab.zsh
-│   ├── fzf.zsh
-│   ├── gh-completion.zsh
-│   ├── git-widgets.zsh
-│   ├── history.zsh
-│   ├── ni.zsh
-│   ├── options.zsh
-│   ├── path.zsh
-│   ├── prompt.zsh
-│   ├── secrets.zsh
-│   ├── syntax-highlighting.zsh
-│   ├── wsl.zsh
-│   └── zoxide.zsh
+│   ├── completion/
+│   │   ├── completion.zsh
+│   │   ├── gh-completion.zsh
+│   │   └── ni.zsh
+│   ├── core/
+│   │   ├── history.zsh
+│   │   ├── options.zsh
+│   │   ├── path.zsh
+│   │   └── prompt.zsh
+│   ├── integrations/
+│   │   ├── abbr.zsh
+│   │   ├── agmsg.zsh
+│   │   ├── aicommits.zsh
+│   │   ├── atuin.zsh
+│   │   ├── codex.zsh
+│   │   ├── secrets.zsh
+│   │   └── zoxide.zsh
+│   ├── platform/
+│   │   └── wsl.zsh
+│   └── widgets/
+│       ├── autosuggestions.zsh
+│       ├── fzf-tab.zsh
+│       ├── fzf.zsh
+│       ├── git-widgets.zsh
+│       └── syntax-highlighting.zsh
 └── sheldon/
     └── plugins.toml
 ```

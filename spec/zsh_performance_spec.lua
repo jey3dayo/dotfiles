@@ -7,7 +7,7 @@ end
 
 describe("zsh performance-sensitive loading", function()
   it("keeps Sheldon plugins out of the synchronous startup path", function()
-    local content = read_file "zsh/lib/abbr.zsh"
+    local content = read_file "zsh/lib/integrations/abbr.zsh"
 
     -- 重い plugin は precmd で遅延ロードし、起動時に sheldon cache を source しない。
     assert.matches("add%-zsh%-hook precmd _zsh_load_abbr_once", content)

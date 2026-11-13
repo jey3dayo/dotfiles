@@ -11,7 +11,7 @@
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/1password.md`](../../.claude/rules/tools/1password.md) で管理されています。
 
 - 目的: Claude AI が 1Password CLI の認証モードと token 取り扱いを誤らないようにする
-- 適用範囲: `docs/tools/1password.md`, `zsh/lib/secrets.zsh`, `powershell/profile.d/env.ps1`, `scripts/setup-env.{ps1,sh}`
+- 適用範囲: `docs/tools/1password.md`, `zsh/lib/integrations/secrets.zsh`, `powershell/profile.d/env.ps1`, `scripts/setup-env.{ps1,sh}`
 - 関係: 本ドキュメントが詳細リファレンス（SST）、Claude ルールが凝縮版
 
 ## 運用方針
@@ -34,7 +34,7 @@ dotenvx 管理の環境変数は、漏洩時の影響範囲（blast radius）を
 on-demand 層の使い方:
 
 ```sh
-ws op vault list          # zsh helper（zsh/lib/secrets.zsh）経由
+ws op vault list          # zsh helper（zsh/lib/integrations/secrets.zsh）経由
 ws oco                    # 任意の CLI に注入して実行
 dotenvx run -f ~/.config/.env.secrets -- <cmd>   # helper が無い環境での直接形
 ```
@@ -51,7 +51,7 @@ dotenvx set NEW_KEY '<値>' -fk .env.keys -f .env.secrets
 
 ```text
 ~/.config/powershell/profile.d/env.ps1        # PowerShell 側の helper
-~/.config/zsh/lib/secrets.zsh                 # Zsh 側の `ws` helper（on-demand 注入）
+~/.config/zsh/lib/integrations/secrets.zsh    # Zsh 側の `ws` helper（on-demand 注入）
 ~/.config/.env                                # dotenvx-managed env（常時注入層）
 ~/.config/.env.secrets                        # dotenvx-managed env（on-demand 層）
 ~/.config/.env.keys                           # dotenvx 復号鍵（両層分）
