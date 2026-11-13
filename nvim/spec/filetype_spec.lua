@@ -6,7 +6,7 @@ describe("filetype overrides", function()
   before_each(function()
     captured = nil
 
-    package.loaded["filetype"] = nil
+    package.loaded["settings.filetype"] = nil
 
     vim.filetype = {
       add = function(definitions)
@@ -16,7 +16,7 @@ describe("filetype overrides", function()
   end)
 
   it("registers specialized yaml filetypes required by lspconfig", function()
-    require "filetype"
+    require "settings.filetype"
 
     assert.is_table(captured)
     assert.is_table(captured.filename)
@@ -27,7 +27,7 @@ describe("filetype overrides", function()
   end)
 
   it("registers explicit extensions for nonstandard lsp filetypes", function()
-    require "filetype"
+    require "settings.filetype"
 
     assert.is_table(captured)
     assert.is_table(captured.extension)
