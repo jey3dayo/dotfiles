@@ -12,7 +12,7 @@ Detailed Reference: See [docs/tools/fzf-integration.md](../../../docs/tools/fzf-
 ## Scope and SST
 
 - The Key Bindings table in `docs/tools/fzf-integration.md` is the sole binding list; do not re-enumerate keymaps in this rule or other docs.
-- Integration spans shell (history via atuin, processes, directories) and Git (repositories, branches, worktrees, files, stash). Tmux and Neovim are not currently FZF-integrated (see docs "未確認・対象外の統合").
+- Integration spans shell (history via atuin, processes, directories) and Git (repositories, branches, worktrees, files, stash). Tmux and Neovim are not currently FZF-integrated.
 
 ## Configuration notes
 

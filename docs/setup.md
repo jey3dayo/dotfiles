@@ -1,6 +1,22 @@
+---
+type: guide
+title: Setup Guide
+description: dotfiles の導入、環境別セットアップ、ツール管理方針
+resource: docs/setup.md
+tags:
+  - category/guide
+  - category/configuration
+  - layer/core
+  - environment/cross-platform
+  - audience/beginner
+timestamp: 2026-11-13
+audience: beginner
+owner: dotfiles
+---
+
 # 🚀 Setup Guide
 
-最終更新: 2026-11-04
+最終更新: 2026-11-13
 対象: 開発者・初心者
 タグ: `category/guide`, `category/configuration`, `layer/core`, `environment/cross-platform`, `audience/beginner`
 
@@ -16,7 +32,7 @@
 4. `[tools]` — 全開発ツール（言語 runtime / CLI / formatter / MCP）
 
 `scripts/bootstrap.sh` は fresh macOS で **Homebrew を導入するだけの前準備**です。mise 本体は macOS / Linux / WSL2 では公式インストーラ（`curl https://mise.run | sh` → `~/.local/bin/mise`）、Windows では Chocolatey（`windows/chocolatey/packages.config`）で入れ、更新は `mise self-update` を使う。Homebrew formula は adhoc 署名かつバージョン付きパスのため、macOS Tahoe 以降の TCC（「他のアプリからのデータ」等）許可が更新のたびに無効化され再プロンプトされる。公式バイナリは Developer ID 署名で許可が持続する。claude（Claude Code）と codex（Codex CLI）も同じ理由で mise `[tools]` には置かず、`mise bootstrap` の `[bootstrap.hooks.post-tools]` hook が未導入時のみ公式インストーラで導入する。更新は `claude update` / `codex update` に任せる。
-Homebrew 導入済みのマシンでは実行不要で、Quick Setup の手順 4 から始められます。
+Homebrew 導入済みのマシンでは `scripts/bootstrap.sh` の実行は不要です。
 
 `pam-reattach` は `[bootstrap.packages]` で宣言されている。`/etc/pam.d/sudo_local` の `auth optional /opt/homebrew/lib/pam/pam_reattach.so` 行はこのリポジトリでは管理せず、手動設定する。
 
@@ -137,7 +153,7 @@ If you prefer manual installation or bootstrap script is not available:
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Note: Homebrew's official installer requires `curl`. If `curl` is unavailable, use the bootstrap script (`scripts/bootstrap.sh`) which handles the installation process.
+Note: Homebrew's official installer and `scripts/bootstrap.sh` both require `curl`. If it is unavailable, install `curl` with the system package manager before continuing.
 
 ## Package Management Philosophy
 

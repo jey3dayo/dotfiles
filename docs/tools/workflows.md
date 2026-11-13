@@ -1,389 +1,75 @@
+---
+type: reference
+title: Workflows and Maintenance
+description: .config の検証、Git hooks、Brewfile の運用上の注意
+resource: docs/tools/workflows.md
+tags:
+  - category/maintenance
+  - layer/tool
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-11-13
+audience: developer
+owner: dotfiles
+---
+
 # Workflows & Maintenance Reference
 
-最終更新: 2026-11-12
+最終更新: 2026-11-13
 対象: 開発者
 タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
-Claude Rules: [.claude/rules/workflows-and-maintenance.md](../../.claude/rules/workflows-and-maintenance.md)
-
 ## Maintenance Cadence
 
-| 頻度   | 作業                                                                                                                                                                                                                             |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）; `mise run update:standalone`（自己更新 CLI を各自の update コマンドで一括更新）; プラグイン更新（sheldon, nvim vim.pack（`,su`）, tmux）                     |
-| 月次   | 起動時間の計測（`zsh-benchmark` / `nvim --startuptime`）、結果は [Zsh](zsh.md#検証) / [Neovim](nvim.md#検証) の検証節に記録; ログ整理; `mise prune`; `mise bootstrap --yes`; Nix store が残るマシンのみ `nix-collect-garbage -d` |
-| 四半期 | 全設定監査、依存関係プルーニング、バックアップ検証                                                                                                                                                                               |
+| 頻度   | 作業                                                                                                                                        |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 週次   | `mise run update`（cask は対象外。必要なら `brew upgrade --cask`）、`mise run update:standalone`、sheldon / Neovim `vim.pack` / tmux の更新 |
+| 月次   | 起動時間の計測（[Zsh](zsh.md#検証) / [Neovim](nvim.md#検証)）、ログ整理、`mise prune`、`mise bootstrap --yes`                               |
+| 四半期 | 設定監査、依存関係の整理、バックアップの復元確認                                                                                            |
 
-## Code Quality Checks
+## Verification and Git Hooks
 
-### 主要コマンド
+`mise run ci` はローカルで CI の検証を実行します。タスクの定義は [`mise/local-tasks/`](../../mise/local-tasks/) を参照してください。
 
-```bash
-mise run ci           # 検証のみ（format + lint + test）
-mise run ci:quick     # クイックチェック（format + lint）
-mise run format       # 自動フォーマット適用
-mise run check        # format + lint（luacheck 含む）
-mise run lint:lua     # luacheck のみ
-mise run format:lua   # stylua でフォーマット
-```
+`lefthook.yml` が Git hook の実行内容を定義します。
 
-### 変更タイプ別の追加確認
+- `pre-commit` は staged files に対して該当する formatter / linter を実行し、staged content を gitleaks で検査します。
+- `pre-push` は変更ファイルの種類に応じて `check:format`、`check:lint:quick`、TypeScript / Lua / Neovim のテストを実行し、gitleaks は毎回実行します。ネットワークが必要な `lint:links` はこの hook に含みません。
 
-通常の最終確認は `mise run ci` を基準にします。以下の領域を触った場合は、対象固有の確認も追加します。
+初回は `lefthook install` で hook を設定します。手動実行は `lefthook run pre-commit` または `lefthook run pre-push`、全体の検証は `mise run ci` です。別に `mise run pre-push` タスクもあり、変更ファイルに応じた追加テストを選びます。
 
-| 変更領域            | 追加確認                                                                                           | 理由                                        |
-| ------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| zsh startup         | `zsh-benchmark --runs 8 --mode interactive` と必要に応じて `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'` | 同期初期化の再発を数値で見る                |
-| dotenvx / `.env`    | `scripts/setup-env.sh` の構文確認、key-set comparison、`mise run ci:gitleaks`                      | plaintext cache と secret scan を分けて見る |
-| launchd / GUI env   | `launchctl getenv <KEY>` で allowlist された key だけを確認                                        | shell ではなく GUI runtime の状態を見る     |
-| mise bootstrap      | `mise bootstrap --dry-run` / `mise dotfiles status`                                                | 適用前に差分を確認する                      |
-| APM / global skills | `cd ~/src/github.com/jey3dayo/apm-workspace && mise run check && mise run doctor`                  | `.config` ではなく APM workspace が正本     |
+hook やタスクの対象・引数を変えるときは `lefthook.yml` と該当する `mise/local-tasks/*.toml` を更新します。実行処理が helper script に委譲されている場合は、その定義も確認してください。
 
-### Lua Type Checking and Error Handling
+### Changes that need extra checks
 
-#### Automated Type Checking
+| 変更領域            | 確認                                                                                                                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Zsh 起動            | `zsh-benchmark --runs 8 --mode interactive`。詳細は [Zsh の検証](zsh.md#検証) を参照します。                                                                             |
+| dotenvx / `.env`    | `scripts/setup-env.sh` の構文、秘密値を表示しない key-set 比較、`mise run ci:gitleaks` を確認します。運用手順は [1Password / dotenvx](1password.md) を参照してください。 |
+| launchd / GUI env   | `launchctl getenv <KEY>` で allowlist 済みのキーだけ確認します。                                                                                                         |
+| mise bootstrap      | 適用前に `mise bootstrap --dry-run`、適用状態は `mise dotfiles status` で確認します。                                                                                    |
+| APM / global skills | [APM Workspace](apm-workspace.md) を正本として、そこで指定された検証を実行します。                                                                                       |
 
-Lua 設定ファイル（Neovim、WezTerm）の型チェックは複数レイヤーで自動実行されます:
+## Brewfile
 
-#### エディタ内（リアルタイム）
+ツールをどの層で管理するかは [Package Management Philosophy](../setup.md#package-management-philosophy) を参照してください。formula の宣言管理は mise bootstrap が担い、Brewfile は cask / MAS / VS Code 拡張と例外を保持します。
 
-- LuaLS: LSP による型チェック（`.luarc.json` で設定）
+| パッケージ | 設定                        | 理由                     |
+| ---------- | --------------------------- | ------------------------ |
+| `mysql`    | `restart_service: :changed` | 更新時にサービスを再起動 |
+| `utf8proc` | `args: ["HEAD"]`            | Julia の依存関係         |
 
-#### ローカル開発
+`mise run brewfile:diff` はインストール状態と Brewfile の差分を報告し、Brewfile は変更しません。「未インストール」はマシンごとの差として起きるため、それだけで削除対象にしません。
 
-```bash
-mise run check         # format + lint（luacheck を含む）
-mise run lint:lua      # luacheck のみ実行
-mise run format:lua    # stylua でフォーマット
-```
+`brew bundle cleanup` は実行しないでください。Brewfile にない formula も削除候補にするため、mise bootstrap が管理する formula を削除するおそれがあります。削除候補を調べる場合は [`mise/tasks/brewfile.toml`](../../mise/tasks/brewfile.toml) と [セットアップ方針](../setup.md#package-management-philosophy) を確認してください。
 
-#### Lefthook（commit 前）
-
-```bash
-lefthook install     # 初回のみ
-# 以降、git commit 時に自動実行（staged file の format / fast lint）
-```
-
-#### CI/CD（GitHub Actions）
-
-- `mise run ci` で自動実行（format 検証 + luacheck + busted）
-
-### Tools Configuration
-
-| ツール   | 設定ファイル  | 用途                                   |
-| -------- | ------------- | -------------------------------------- |
-| LuaLS    | `.luarc.json` | LSP 型チェック、vim API サポート       |
-| luacheck | `.luacheckrc` | 静的解析、未使用変数検出               |
-| StyLua   | `stylua.toml` | フォーマット（120 文字幅、2 スペース） |
-
-### Error Handling Patterns
-
-実装済みの graceful degradation:
-
-1. 安全なモジュール読み込み (`core/module_loader.lua:28-42`)
-   - `pcall` による例外処理
-   - 失敗キャッシュで重複エラー回避
-
-2. 段階的フォールバック (`core/bootstrap.lua`)
-   - オプショナルモジュール → サイレント失敗
-   - 必須モジュール → 警告表示（非ブロッキング）
-
-3. 非ブロッキング通知
-   - `vim.schedule` で起動をブロックしない
-
-### Lefthook Setup
-
-```bash
-mise install
-cd ~/.config
-lefthook install
-lefthook run pre-commit
-```
-
-日常使用:
-
-```bash
-git commit -m "..."                          # staged ファイルのみ自動チェック
-git push                                      # mise run ci で push 前に CI 相当を検証
-lefthook run pre-commit                      # staged ファイル向け hook を手動実行
-mise run format                              # 手動・全ファイル format
-mise run check                               # 手動・全ファイル check
-mise run lint:links                          # 重い Markdown link check
-```
-
-### Hook Management Strategy（Lefthook + mise tasks）
-
-`lefthook.yml` と `mise/local-tasks/*.toml` は役割を分けて管理します:
-
-#### 理由
-
-- Lefthook: Git hook の入口。commit は軽量、push は CI 相当の gate に分ける
-- mise tasks: 全ファイル一括処理（手動/CI 実行）
-
-#### pre-push の gate
-
-`pre-push` hook は `mise run ci` を実行します。GitHub Actions の通常 CI と同じ `format / lint / test / gitleaks` を push 前に検証し、remote CI が基本的な品質 gate で止まる確率を下げます。
-
-`mise run pre-push` は対象ファイルに応じて追加テストを絞る旧/手動用の軽量 gate として残しています。
-
-- `bin/*`, `scripts/*`, `zsh/*`, `mise/lib/*`, `mise/local-tasks/*`, `.mise.toml`: `mise run test:ts`
-- `*.lua`, `spec/*`, `nvim/spec/*`, `nvim/lua/*`: `mise run test:lua`
-
-#### 統合済みツール一覧
-
-| カテゴリ   | ツール                 | Lefthook commit | mise tasks | 備考             |
-| ---------- | ---------------------- | --------------- | ---------- | ---------------- |
-| Lua        | stylua, luacheck       | ✅              | ✅         | 完全統合         |
-| Shell      | shfmt                  | ✅              | ✅         | .sh files        |
-| Zsh        | beautysh, zsh -n       | ✅              | ✅         | .zsh files       |
-| YAML       | yamllint, prettier     | ✅              | ✅         | lint → format 順 |
-| Markdown   | markdownlint, prettier | ✅              | ✅         | lint → format 順 |
-| Python     | ruff (format/check)    | ✅              | ✅         | 完全統合         |
-| TOML       | taplo                  | ✅              | ✅         | 完全統合         |
-| JS/TS      | biome                  | ✅              | ✅         | 完全統合         |
-| Dockerfile | hadolint               | ✅              | ✅         | 完全統合         |
-| Secrets    | gitleaks               | ✅              | ✅         | `ci:gitleaks`    |
-| Links      | markdown-link-check    | 手動            | ✅         | 重いため手動実行 |
-
-#### メンテナンス時の注意
-
-ツールの引数や設定を変更する際は、入口・tool 定義・全体 gate の役割を確認してください:
-
-| 変更内容         | 更新が必要なファイル                                         |
-| ---------------- | ------------------------------------------------------------ |
-| hook 対象の増減  | `lefthook.yml`                                               |
-| luacheck の引数  | `lefthook.yml` + `mise/local-tasks/lint.toml`                |
-| stylua の引数    | `lefthook.yml` + `mise/local-tasks/format.toml`              |
-| prettier の引数  | `lefthook.yml` + `mise/local-tasks/format.toml`              |
-| beautysh の引数  | `lefthook.yml` + `mise/local-tasks/format.toml`              |
-| hadolint の引数  | `lefthook.yml` + `mise/local-tasks/lint.toml`                |
-| 除外パス         | `lefthook.yml` + `mise/local-tasks/env.toml` (TASK_EXCLUDES) |
-| 新しいツール追加 | `lefthook.yml` + 該当する mise タスク                        |
-
-**チェックリスト**（ツール設定変更時）:
-
-```bash
-# 1. 関連ファイルを更新
-
-# 2. Lefthook 定義を確認
-lefthook validate
-lefthook run pre-commit
-
-# 3. mise tasks で動作確認
-mise run check
-
-# 4. 結果が一致することを確認
-```
-
-#### Troubleshooting
-
-```bash
-# luacheck が見つからない場合
-mise run ci:install    # luacheck と busted をインストール
-
-# エディタ内で診断が出ない
-:checkhealth vim.lsp   # LSP の有効化状況を確認
-:LspDebug              # このリポジトリ固有の LSP 診断
-
-# Lefthook エラー
-lefthook run pre-commit
-
-# hooks をスキップして commit（緊急時のみ）
-git commit --no-verify -m "..."
-```
-
-## Brewfile Management
-
-### 責務分離
-
-どの層（mise `[tools]` / `[bootstrap.packages]` / Brewfile / 自己更新 standalone）でツールを管理するかの方針は [docs/setup.md](../setup.md#package-management-philosophy) を参照。
-
-### Special Settings
-
-| パッケージ | 設定                        | 理由                         |
-| ---------- | --------------------------- | ---------------------------- |
-| `mysql`    | `restart_service: :changed` | サービス自動再起動           |
-| `utf8proc` | `args: ["HEAD"]`            | Julia 依存のため HEAD が必要 |
-
-### Package Addition Workflow
-
-1. 追加先を判定:
-   - まず mise で管理できるか確認: `mise registry` で検索
-   - 言語ランタイム・クロスプラットフォーム CLI → `mise/config.*.toml` に追加
-   - GUI・macOS 固有依存・macOS サービス → `Brewfile` に追加
-
-2. Brewfile 対象ならインストール:
-
-   ```bash
-   brew install <package>
-   ```
-
-3. Brewfile 更新（候補抽出）:
-
-   ```bash
-   # 差分確認（未取り込み / 未インストール / trusted 不一致を報告、書き込みなし）
-   mise run brewfile:diff
-   ```
-
-4. 適切なセクションに追加:
-   - 機能・用途に応じたセクションを選択
-   - アルファベット順に挿入（セクション内）
-   - 必要に応じてコメント追加
-
-5. 動作確認:
-
-   ```bash
-   brew bundle check
-   brew bundle install --no-upgrade
-   ```
-
-### Monthly Audit
-
-```bash
-# 1. 差分確認（追加候補を確認、書き込みなし）
-mise run brewfile:diff
-
-# 2. 方針に合うものだけを手動で反映
-# - ランタイム・汎用 CLI は mise へ
-# - GUI・macOS 固有のみ Brewfile へ
-
-# 3. 構文チェック
-brew bundle check
-
-# 4. テスト
-brew bundle install --no-upgrade --verbose
-```
-
-`brewfile:diff` の「未インストール」は削除候補ではない（マシンごとの差は正常）。削除の判断には使わない。
-
-### Section Structure
-
-Brewfile は 20 セクションで構成されています:
-
-| セクション | 説明                              | 例                                   |
-| ---------- | --------------------------------- | ------------------------------------ |
-| `tap`      | Homebrew 外部リポジトリ           | `aws/tap`, `hashicorp/tap`           |
-| `brew`     | macOS 固有依存・macOS サービス用  | `mysql`, `docker`, `openssl`         |
-| `cask`     | GUI アプリ                        | `wezterm@nightly`, `raycast`         |
-| `mas`      | Mac App Store アプリ              | `Xcode`, `TestFlight`                |
-| `vscode`   | VS Code 拡張                      | `github.copilot`, `ms-python.python` |
-| `go`       | Homebrew 管理下で入れる Go ツール | `golangci-lint`, `wire`              |
-
-### Troubleshooting
-
-#### Package installation errors
-
-```bash
-# 依存関係の問題
-brew doctor
-brew update
-brew upgrade
-
-# 特定パッケージの再インストール
-brew reinstall <package>
-
-# Cask の問題
-brew reinstall --cask <cask>
-```
-
-#### Brewfile syntax errors
-
-```bash
-# 構文チェック
-brew bundle check
-
-# Brewfile の検証
-brew bundle install --no-upgrade --dry-run
-```
-
-#### Cleanup old tools
-
-> **注意**: `brew bundle cleanup` は使用禁止。formulae は `mise/config.macos.toml` の
-> `[bootstrap.packages]` でも管理しているため、Brewfile だけを正本とみなす cleanup は
-> bootstrap 管理の formula（btop, git, neovim など）を誤って削除対象にする。
-> 宣言外 formula の掃除は `mise bootstrap packages prune --dry-run` で確認してから行うが、
-> Brewfile 専用の例外（mysql / utf8proc / perman-aws-vault / mise / tap formulae）が
-> 削除対象に出るため、現状 prune の実運用は対象外とする。
-
-```bash
-# 未使用の依存関係削除
-brew autoremove
-
-# キャッシュクリア
-brew cleanup
-```
-
-### Best Practices
-
-1. 定期的な更新: 月次で Brewfile と実際のインストール状況を同期
-2. バージョン管理: Brewfile を Git 管理し、変更履歴を追跡
-3. コメント追加: 特殊な設定や重要なパッケージにはコメントを付与
-4. テスト: 変更後は必ず `brew bundle check` で検証
-5. バックアップ: 大きな変更前にはバックアップを作成
-
-### Duplicate Check
-
-定期的に mise で管理しているパッケージが他のパッケージマネージャーに残っていないか確認:
-
-- `npm -g list --depth=0` - npm グローバルはローカルリンク（astro-my-profile, zx-scripts）のみであること
-- `bun pm ls -g` または `ls ~/.bun/install/global/node_modules/.bin` - bun グローバルは空であること
-- 重複検出スクリプトの実行（[docs/setup.md](../setup.md#package-management-philosophy) の方針を参照）
-
-## mise Management
-
-- Primary config: `mise/config.toml`（設定のみ。`[tools]` は置かず、ツール定義は `mise/conf.d/00-tools-common.toml`（全環境共通）/ `mise/config.bun.toml` / `mise/config.shared.toml` / `mise/config.workstation.toml` / 機種別 `mise/config.<machine>.toml` に分離。詳細は [docs/tools/mise.md](mise.md#configuration-structure)）
-- Weekly updates: `mise run update`（`mise self-update` の後に `mise upgrade --yes --no-prune` を実行するタスク）
-- Monthly cleanup: `mise prune` to remove unused versions
-- Verification: `mise doctor` for health check, `mise ls` for installed tools
-
-## Nix Runtime Cleanup (legacy)
-
-Home Manager は撤去済み。マシンに `/nix/store` が残っている間だけ掃除し、アンインストール後はこの節を削除する。
-
-```bash
-nix-collect-garbage -d
-df -h /nix/store
-```
-
-保持ポリシー: 90 日または 20 世代（いずれか先に到達した方）を保持
-
-### Disk usage monitoring
-
-定期的に `/nix/store` のディスク使用量を確認:
-
-| 使用率 | 状態 | アクション                                |
-| ------ | ---- | ----------------------------------------- |
-| < 50%  | 正常 | 定期メンテナンスのみ                      |
-| 50-70% | 注意 | 早めに GC 実行を検討                      |
-| 70-85% | 警告 | 即座に GC 実行、不要な generations を削除 |
-| > 85%  | 危険 | アグレッシブなクリーンアップ実施          |
-
-Nix 配布手順はリポジトリから撤去済み。`home-manager switch` や `nix flake update` は使わない。
+`mise bootstrap packages prune` も実運用では使いません。Brewfile 専用の例外（`mysql` / `utf8proc` / `perman-aws-vault` / `mise` / tap formulae）も削除対象になるためです。
 
 ## Troubleshooting Routing
 
-| 症状                               | 対応先                                                                                                                                                                                                             |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 起動が突然遅くなった（Zsh/Neovim） | Zsh: `zsh-benchmark` → `ZSH_PROFILE_STARTUP=1 zsh -ic 'zprof'`; Neovim: `nvim --startuptime startup.log`; 改善しなければキャッシュクリア（`rm -rf ~/.zcompdump*`; `~/.local/share/nvim` と `~/.local/state/nvim`） |
-| メモリ使用量の増加                 | `ps aux \| grep -E '(zsh\|nvim\|wezterm)'` と `top -l 1 \| grep PhysMem` で確認し、履歴サイズの制限、未使用プラグインの削除、キャッシュのクリアで対処                                                              |
-| Zsh 起動トラブル                   | `rm -rf ~/.zcompdump*` → `exec zsh`; `zsh -df` でミニマル起動                                                                                                                                                      |
-| LSP 問題                           | `:LspInfo`, `:Mason`, `~/.local/share/nvim/lsp.log`                                                                                                                                                                |
-| Git 認証                           | `ssh -T git@github.com`, 1Password CLI と SSH agent 確認                                                                                                                                                           |
-| dotfiles が配布されない・古い      | `mise dotfiles status`（applied / differs / missing）→ `mise dotfiles apply`（再適用、冪等）→ `mise bootstrap status`（packages / launchd 含む全体確認）                                                           |
-
-## Debug Commands
-
-```bash
-env | grep -E "(SHELL|TERM|PATH|CONFIG)"   # 環境変数確認
-tail -f ~/.local/share/nvim/lsp.log        # LSP ログ
-tail -f ~/.config/zsh/performance.log      # パフォーマンスログ
-top -pid $(pgrep zsh)                      # プロセス監視
-ps aux | grep -E "(zsh|nvim|tmux)"
-```
-
-## Backups and Recovery
-
-- Brewfile 変更前: `cp Brewfile Brewfile.backup.$(date +%Y%m%d)`
-- 緊急シェル復旧: `zsh --no-rcs` → `brew bundle --force` → `mise dotfiles apply --yes` → `exec zsh`
-- ロールバック: `git revert <commit>` → `mise dotfiles apply --yes`（詳細は `docs/disaster-recovery.md`）
-- 詳細: `docs/disaster-recovery.md`
+- Zsh / Neovim の起動や設定: [Zsh](zsh.md) / [Neovim](nvim.md)
+- mise の設定・タスク: [Mise Reference](mise.md) / [Mise Task Catalog](mise-tasks.md)
+- APM の編集・配布: [APM Workspace](apm-workspace.md)
+- dotfiles の適用前確認: `mise bootstrap --dry-run` または `mise dotfiles status`
+- `.env` と資格情報: [1Password / dotenvx](1password.md)
+- バックアップ・復旧: [Disaster Recovery](../disaster-recovery.md)

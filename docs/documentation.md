@@ -8,24 +8,24 @@ tags:
   - layer/support
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-10-26
+timestamp: 2026-11-13
 audience: developer
 owner: dotfiles
 ---
 
 # Documentation Governance
 
-最終更新: 2026-10-26
+最終更新: 2026-11-13
 対象: 開発者
 タグ: `category/documentation`, `layer/support`, `environment/cross-platform`, `audience/developer`
 
-この文書は、この repo のドキュメント運用ルールの正本です。読む目的は 1 つで、「どこに何を書くか」を迷わないようにすることです。
+この文書はドキュメントの配置と更新ルールの正本です。
 
 ## 役割分担
 
-- `README.md`: リポジトリ全体の入口。概要と主要リンクだけを書く
-- `docs/README.md`: `docs/` 全体のナビゲーション。詳細手順は書かない
-- `llms.md`: LLM/AI エージェント向けの軽量入口。正本と参照順だけを案内する
+- `AGENTS.md`: リポジトリ固有の AI 協働ルールと docs の参照先
+- `README.md`: リポジトリの概要と主要リンク
+- `docs/README.md`: `docs/` のナビゲーション。詳細手順は書かない
 - `docs/`: 人間向けの詳細手順と運用の正本
 - `.claude/rules/`: `docs/` の要約と制約だけを置く
 
@@ -41,12 +41,12 @@ owner: dotfiles
 | ツールのバージョン・pin                  | `mise/*.toml`（docs にはバージョン番号を書かず、pin の理由だけ書く） |
 | ドキュメント運用ルール                   | `docs/documentation.md`                                              |
 
-`README.md`、`docs/README.md`、`llms.md` はナビゲーション文書であり、正本の代替にしません。
+`README.md` と `docs/README.md` は案内だけを担い、各トピックの正本にある詳細手順や数値は再掲しません。AI エージェントは `AGENTS.md` からリポジトリ固有ルールを読み、作業に応じて該当する docs を参照します。
 
 ## 更新ルール
 
 1. まず対応する `docs/` の正本を更新する
-2. 必要な場合だけ `README.md`、`docs/README.md`、`llms.md`、`.claude/rules/` の案内を同期する
+2. 必要な場合だけ `AGENTS.md`、`README.md`、`docs/README.md`、`.claude/rules/` の案内を同期する
 3. 同じ手順や数値を複数の入口文書に再掲しない。ツールのバージョン番号は `mise/*.toml` だけに書き、docs には固定理由を書く
 
 ## メタデータ規約
@@ -110,14 +110,6 @@ frontmatter と legacy metadata の両方がある場合は、frontmatter を正
 `docs/README.md` のようなナビゲーション文書は `type: index` として扱い、詳細手順を増やさずリンクの入口性を保ちます。
 
 タグ語彙の参考は [`.claude/doc-standards/references/tag-taxonomy.md`](../.claude/doc-standards/references/tag-taxonomy.md) を使います。
-
-## 重複防止
-
-- セットアップ手順は `docs/setup.md` だけで更新する
-- 起動時間の実測値は各ツールの docs（`docs/tools/zsh.md` / `nvim.md`）の検証節に置く
-- 運用手順と横断トラブルは `docs/tools/workflows.md` に集約する
-- ツール固有の詳細は対応する `docs/tools/*.md` に集約する
-- `.claude/rules/` は要約だけに留める
 
 ## 迷ったら
 

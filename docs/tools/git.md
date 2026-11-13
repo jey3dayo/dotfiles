@@ -1,12 +1,28 @@
-# 🧭 Git Configuration
+---
+type: reference
+title: Git Configuration
+description: .config が管理する Git 設定とユーザー別の上書き
+resource: docs/tools/git.md
+tags:
+  - category/configuration
+  - layer/tool
+  - tool/git
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-11-13
+audience: developer
+owner: dotfiles
+---
 
-最終更新: 2026-09-23  
+# Git Configuration
+
+最終更新: 2026-11-13  
 対象: 開発者  
 タグ: `category/configuration`, `tool/git`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
-Git 関連設定は XDG (`~/.config/git/`) 配下に集約し、`setup.sh` でシンボリックリンクを張る運用です。グローバル設定と機密情報（`~/.gitconfig_local`）を分離し、機能別ファイルを `include` で読み込む構成にしています。
+Git の共通設定ファイルは `git/config` です。`shell/env.sh` が `GIT_CONFIG_GLOBAL` を `${XDG_CONFIG_HOME}/git/config` に設定します。`git/config` は機能別ファイルと `~/.gitconfig_local` を読み込みます。
 
-## 🤖 Claude Rules
+## Claude Rules
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/git.md`](../../.claude/rules/tools/git.md) で管理されています。
 
@@ -18,7 +34,7 @@ Git 関連設定は XDG (`~/.config/git/`) 配下に集約し、`setup.sh` で�
 
 ```text
 ~/.config/git/                  # dotfiles 管理
-├── config                      # メイン設定（~/.gitconfig にリンク）
+├── config                      # メイン設定（GIT_CONFIG_GLOBAL から参照）
 ├── alias.gitconfig             # エイリアス/ショートカット
 ├── diff.gitconfig              # delta/diff 設定
 ├── ghq.gitconfig               # ghq のルート設定
@@ -37,7 +53,7 @@ Git 関連設定は XDG (`~/.config/git/`) 配下に集約し、`setup.sh` で�
 
 ## ローカル上書きの扱い
 
-`~/.gitconfig_local` に個人情報・職場固有設定を閉じ込めます。初期化例:
+`~/.gitconfig_local` に個人情報・職場固有設定を記載します。初期化例を示します。
 
 ```ini
 [user]
@@ -64,4 +80,3 @@ git config --global --add include.path ~/.config/git/1password.gitconfig
 
 - `git config --list --show-origin` で読み込み元を確認
 - `git config user.name` でローカル上書きが効いているか確認
-- 署名有効化時は `git commit --dry-run --short` を実行し、署名エラーが出ないか確認

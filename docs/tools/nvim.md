@@ -9,7 +9,7 @@ tags:
   - tool/nvim
   - environment/cross-platform
   - audience/advanced
-timestamp: 2026-11-09
+timestamp: 2026-11-13
 audience: advanced
 owner: dotfiles
 ---
@@ -94,7 +94,7 @@ NVIM_PACK_BOOTSTRAP=1 nvim --headless -c 'lua vim.wait(1000)' -c qa
 - ローダーのトリガー（cmd の bang・範囲・引数、keys の初回入力、event の再発火、config 失敗時の通知）は、偽 plugin を使う headless テストで確認する。実行は `mise run test:nvim`（`nvim/spec/headless/pack_loader_check.lua`、実 plugin もネットワークも不要）。nvim の無い CI では走らせていない。
 
 - gitlinker.nvim は外した。lazy.nvim 下でも `keys = {}` のまま一度もロードされておらず、`vim.pack` で `runtimepath` に載せると `plugin/` が自動で setup して `:GitLink` が新たに生えるため。
-- lazy.nvim 版の最終状態はタグ `nvim-lazy-last`。戻すときは `git checkout nvim-lazy-last -- nvim/` を実行する（lazy.nvim 版の plugin 実体は `~/.local/share/nvim/lazy/` に残してある）。
+- lazy.nvim 版の最終状態はタグ `nvim-lazy-last` に記録されています。
 
 ## サポート言語
 
@@ -232,12 +232,6 @@ mise run lint
 mise run ci   # フルCI相当
 ```
 
-## 改善機会（未対応）
-
-- Treesitter query の最適化
-- カスタムコマンドのより詳細なドキュメント化
-- プラグイン間依存関係の明示
-
 ## デバッグ・プロファイリング
 
 ```bash
@@ -261,9 +255,3 @@ rm -rf ~/.local/state/nvim
 # 最小構成で起動
 nvim --clean
 ```
-
----
-
-## 概要
-
-AI支援と包括的言語サポートを備えたモダン開発環境

@@ -1,97 +1,45 @@
-# 📖 Documentation Navigation
-
-最終更新: 2026-09-23
-対象: 開発者
-タグ: `category/guide`, `layer/support`, `environment/macos`, `audience/developer`
-
-dotfiles プロジェクトのドキュメント体系へのナビゲーションガイドです。
-
-人間向けの詳細手順は `docs/` を参照し、LLM/AI エージェント向けの最小入口はリポジトリ直下の `llms.md` を参照します。
-
-## 🎯 ドキュメント階層
-
-### 📚 Detailed Documentation (Human Reference)
-
-Location: `docs/`
-
-実装の詳細、手順、メトリクスなど人間向けの詳細ドキュメント。
-
-#### 🚀 Getting Started
-
-- [Setup Guide](setup.md) - インストール、初期設定、検証手順
-
-#### 📋 Documentation Governance
-
-- [Documentation Governance](documentation.md) - ドキュメント体系、タグ規約、SSOT 境界、更新フロー
-
-#### 🛠️ Tool-Specific Documentation
-
-各ドキュメントが詳細実装ガイドの正本です。AI 向けの凝縮版ルールは `.claude/rules/` を参照してください。
-
-- [Git Configuration](tools/git.md) - Git 設定の構成、include 順序、署名オプション
-- [Zsh Configuration](tools/zsh.md) - Shell layer: 最適化、プラグイン管理、パフォーマンス
-- [Neovim Configuration](tools/nvim.md) - Editor layer: LSP、AI支援、プラグイン最適化
-- [WezTerm Configuration](tools/wezterm.md) - Terminal layer: 設定、キーバインド、統合
-- [SSH Configuration](tools/ssh.md) - 階層的設定、セキュリティ管理
-- [FZF Integration](tools/fzf-integration.md) - クロスツール統合、ワークフロー（FZF/Git キーバインドのSST）
-- [Mise](tools/mise.md) - ツールバージョン管理・設定・pnpm バックエンド
-  - [Task Catalog](tools/mise-tasks.md) - 全タスク一覧（CI/Format/Lint/Test/HM/Skills 等）
-  - [Config Reference](tools/mise-config.md) - config.workstation-unix.toml ツールカテゴリ詳細
-- [Security](security.md) - セキュリティポリシー・gitleaks・インシデント対応
-- [Workflows & Maintenance](tools/workflows.md) - 定期メンテナンス・Brewfile・コードクオリティ
-
-#### 🧰 その他の管理対象ツール
-
-上記の詳細ガイドを持たないツールの構成ファイル一覧です。
-
-| Tool           | Config Location       |
-| -------------- | --------------------- |
-| zsh-abbr       | `zsh-abbr/`           |
-| Starship       | `starship.toml`       |
-| Alacritty      | `alacritty/`          |
-| Tmux           | `tmux/`               |
-| GitHub CLI     | `gh/`                 |
-| efm-langserver | `efm-langserver/`     |
-| Homebrew       | `Brewfile`            |
-| AWSume         | `awsume/`             |
-| Terraform      | (via mise)            |
-| Biome          | `biome.json`          |
-| Hadolint       | (via mise)            |
-| shellcheck     | `shellcheckrc`        |
-| pycodestyle    | `pycodestyle`         |
-| Stylua         | `stylua.toml`         |
-| Taplo          | `taplo.toml`          |
-| Yamllint       | `yamllint/`           |
-| Typos          | `typos.toml`          |
-| Btop           | `btop/`               |
-| htop           | `htop/`               |
-| Flipper        | `flipper/`            |
-| Karabiner      | `karabiner/`          |
-| Vimium         | `vimium-options.json` |
-
-## 🗺️ Quick Navigation
-
-### 新規ユーザー向け
-
-1. [Setup Guide](setup.md) でインストール
-2. [Tool-specific docs](tools/) で詳細を確認
-
-### 開発者向け
-
-1. この `docs/README.md` で全体像を把握
-2. [Zsh](tools/zsh.md) / [Neovim](tools/nvim.md) で起動時間の実測を確認
-3. [Workflows and Maintenance](tools/workflows.md) で運用を理解
-
-### トラブルシューティング
-
-1. [Workflows and Maintenance](tools/workflows.md) でよくある問題を確認
-2. Tool-specific docs で詳細を調査
-
-## 🔗 External References
-
-- [Main README](../README.md) - ユーザー向け概要
-- [LLM Context](../llms.md) - LLM/AI エージェント向けの最小入口
-
+---
+type: index
+title: Documentation
+description: dotfiles のセットアップ、運用、ツール設定に関する文書の索引
+resource: docs/README.md
+tags:
+  - category/guide
+  - layer/support
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-11-13
+audience: developer
+owner: dotfiles
 ---
 
-_Documentation is a map to your codebase - keep it accurate and navigable._
+# Documentation
+
+手順と運用ルールはトピックごとのガイドに記載しています。リポジトリの概要は [README](../README.md)、AI 協働ルールは [AGENTS.md](../AGENTS.md) を参照してください。
+
+## Setup and operations
+
+- [Setup Guide](setup.md) - インストール、初期設定、検証手順
+- [Workflows & Maintenance](tools/workflows.md) - 定期メンテナンス、品質確認、Brewfile 管理
+- [Security](security.md) - 秘密情報、gitleaks、インシデント対応
+- [Disaster Recovery](disaster-recovery.md) - mise bootstrap 環境の復旧手順
+- [Documentation Governance](documentation.md) - 文書の役割、metadata、更新ルール
+
+## Tool guides
+
+### Environment and operations
+
+- [Mise](tools/mise.md) - mise 設定とタスク設計
+  - [Task Catalog](tools/mise-tasks.md) - タスクの検索、使い方、実行時の影響確認
+  - [Config Reference](tools/mise-config.md) - mise 設定ファイルとツール構成
+- [APM Workspace](tools/apm-workspace.md) - 共通 skill・agent・ガイドの編集先と配布先
+- [1Password CLI](tools/1password.md) - CLI 認証と service account の運用
+
+### Shell and development tools
+
+- [Git](tools/git.md) - Git 設定と include 順序
+- [Zsh](tools/zsh.md) - shell 構成と読み込み順
+- [FZF](tools/fzf-integration.md) - Git・shell 間の統合とキーバインド
+- [Neovim](tools/nvim.md) - エディタ設定、LSP、プラグイン
+- [WezTerm](tools/wezterm.md) - terminal 設定とキーバインド
+- [SSH](tools/ssh.md) - SSH の階層設定とセキュリティ
