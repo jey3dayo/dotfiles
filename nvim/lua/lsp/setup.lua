@@ -9,6 +9,6 @@ vim.lsp.config("*", {
 })
 
 -- on_attach is not set here: attach-time setup lives in the single LspAttach
--- autocmd in lua/autocmds.lua. A second registration would run it twice.
+-- autocmd in lua/settings/autocmds.lua. A second registration would run it twice.
 
 vim.lsp.enable(config.servers)

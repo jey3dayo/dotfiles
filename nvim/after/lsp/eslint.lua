@@ -1,6 +1,6 @@
 -- Only `settings` is overridden; the rest comes from nvim-lspconfig's bundled
 -- config. Do not add on_attach here: it would replace the bundled one that
--- registers :LspEslintFixAll. Capability suppression lives in lua/autocmds.lua.
+-- registers :LspEslintFixAll. Capability suppression lives in lua/settings/autocmds.lua.
 return {
   settings = {
     validate = "on",

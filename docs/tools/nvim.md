@@ -46,10 +46,10 @@ warm 起動 約50ms（ファイルなし・中央値、2026-11-09 実測、目�
 
 目標 <200ms の範囲内。測定条件（2026-11-09、Apple M4 Max（arm64）、NVIM v0.12.6、`nvim --headless --startuptime <log> [file] -c qa`、設定は本リポジトリ root の `nvim/`、ファイルなしとファイルありを交互に各 20 回）:
 
-| 区分                                   | 中央値 | 最小 | 最大 |
-| -------------------------------------- | ------ | ---- | ---- |
-| ファイルなし                           | 50.2ms | 43.4 | 57.1 |
-| ファイルあり（`nvim/lua/options.lua`） | 77.9ms | 70.4 | 99.4 |
+| 区分                                                                                  | 中央値 | 最小 | 最大 |
+| ------------------------------------------------------------------------------------- | ------ | ---- | ---- |
+| ファイルなし                                                                          | 50.2ms | 43.4 | 57.1 |
+| ファイルあり（測定時: `nvim/lua/options.lua`、現行: `nvim/lua/settings/options.lua`） | 77.9ms | 70.4 | 99.4 |
 
 - `-c qa` は `VimEnter` より前に終了するため、`VeryLazy`、`VimEnter` で読み込む plugin、`vim.defer_fn` の遅延モジュールは計測に含まれない。
 - 同日の参考値として、lazy.nvim 版（タグ `nvim-lazy-last`）を同条件・各 20 回の交互実行で測った中央値は、ファイルなし 44.9ms、ファイルあり 72.1ms。上の `vim.pack` 版との差は約 5ms。簡易計測は `nvim/measure_startup.sh`。
@@ -61,11 +61,11 @@ warm 起動 約50ms（ファイルなし・中央値、2026-11-09 実測、目�
 nvim/
 ├── init.lua              # エントリポイント
 ├── lua/
-│   ├── init_pack.lua     # vim.pack ブートストラップ（pack/ を呼ぶ）
+│   ├── settings/         # options, keymaps, autocmds, colorscheme, filetype, neovide
 │   ├── pack/             # 自前ローダー（spec 正規化 / 遅延ロードのスタブ / vim.pack 呼び出し）
 │   ├── config/           # プラグイン別の詳細設定
 │   ├── plugins/          # プラグイン定義（lazy.nvim 形式の spec、カテゴリ別）
-│   ├── core/             # 起動・依存・ファイルタイプ基盤
+│   ├── core/             # 起動・依存・ファイルタイプ基盤、plugins, lua_rocks, project_config
 │   └── lsp/              # LSP、フォーマット、診断ヘルパー
 ├── nvim-pack-lock.json   # vim.pack の lockfile（git 管理）
 ├── after/ftplugin/       # ファイルタイプ設定
@@ -180,14 +180,14 @@ gt / gT         -- タブ切り替え（次/前）
 
 ## テーマ・UI
 
-- メインテーマ: `0x96f.nvim`（`filipjanevski/0x96f.nvim`、`lua/colorscheme.lua` で適用）。`kanagawa.nvim` / `tokyonight.nvim` も登録済みで手動切り替え可能（遅延ロード扱いのため runtimepath には載る）
+- メインテーマ: `0x96f.nvim`（`filipjanevski/0x96f.nvim`、`lua/settings/colorscheme.lua` で適用）。`kanagawa.nvim` / `tokyonight.nvim` も登録済みで手動切り替え可能（遅延ロード扱いのため runtimepath には載る）
 - 透明背景: `Normal`/`SignColumn` 等を `guibg=NONE` にしてターミナル背景と統合
 - ステータスライン: モード、Gitブランチ、LSP状態、診断情報（lualine.nvim）
 
 ## 最適化設定
 
 ```lua
--- 未使用プロバイダー無効化（lua/options.lua）
+-- 未使用プロバイダー無効化（lua/settings/options.lua）
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
@@ -203,7 +203,7 @@ vim.g.loaded_python3_provider = 0 -- 同期的な mise コマンド実行を回�
 
 ## カスタマイゼーション
 
-プロジェクト固有の上書きは `load_config.lua` が cwd から上方向に `nvim.config.lua` を探索して読み込む（マシン固有の `lua/config/local.lua` のような仕組みは現状存在しない）：
+プロジェクト固有の上書きは `lua/core/project_config.lua` が cwd から上方向に `nvim.config.lua` を探索して読み込む（マシン固有の `lua/config/local.lua` のような仕組みは現状存在しない）：
 
 ```lua
 -- 例: リポジトリ直下に nvim.config.lua を置くと自動読み込みされる

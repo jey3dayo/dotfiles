@@ -25,20 +25,20 @@ local immediate_modules = {
   { name = "lsp.quiet" }, -- quiet LSP logs before anything else
   { name = "core.utils" }, -- utility shortcuts used by later modules
   { name = "core.compat" }, -- compatibility shims for deprecated APIs
-  { name = "options" }, -- core options
-  { name = "keymaps" }, -- basic keymaps + leader
-  { name = "filetype" }, -- filetype detection overrides
-  { name = "init_pack" }, -- plugin manager bootstrap (vim.pack)
+  { name = "settings.options" }, -- core options
+  { name = "settings.keymaps" }, -- basic keymaps + leader
+  { name = "settings.filetype" }, -- filetype detection overrides
+  { name = "core.plugins" }, -- plugin manager bootstrap (vim.pack)
 }
 
 local deferred_modules = {
-  { name = "lua_rocks" },
-  { name = "autocmds" },
-  { name = "colorscheme" },
-  { name = "load_config" },
+  { name = "core.lua_rocks" },
+  { name = "settings.autocmds" },
+  { name = "settings.colorscheme" },
+  { name = "core.project_config" },
   { name = "lsp.autoformat" },
   {
-    name = "neovide",
+    name = "settings.neovide",
     when = function()
       return vim.g.neovide
     end,
