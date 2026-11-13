@@ -3,7 +3,7 @@ if [[ -n "${ZSH_PROFILE_STARTUP:-}" ]]; then
 fi
 
 # Debian/Ubuntu global zshrc may run compinit before this repo's zshrc.
-# Keep completion initialization in zsh/lib/completion.zsh so CI/no-TTY
+# Keep completion initialization in zsh/lib/completion/completion.zsh so CI/no-TTY
 # startup can use the repo-managed compinit flags.
 skip_global_compinit=1
 

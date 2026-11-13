@@ -345,7 +345,7 @@ describe("zsh plugin bootstrap", () => {
 
   it("binds every git widget declared in git-widgets.zsh", () => {
     // Derived from the implementation: verifies declaration -> live-shell manifestation.
-    const source = fs.readFileSync(repoFile("zsh/lib/git-widgets.zsh"), "utf8");
+    const source = fs.readFileSync(repoFile("zsh/lib/widgets/git-widgets.zsh"), "utf8");
     const widgets = new Set<string>();
     const pairs: Array<{ key: string; widget: string }> = [];
 

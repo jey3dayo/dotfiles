@@ -1,5 +1,5 @@
 ---
-paths: docs/tools/1password.md, zsh/lib/secrets.zsh, powershell/profile.d/env.ps1, scripts/windows/setup-env.ps1, scripts/setup-env.sh
+paths: docs/tools/1password.md, zsh/lib/integrations/secrets.zsh, powershell/profile.d/env.ps1, scripts/windows/setup-env.ps1, scripts/setup-env.sh
 source: docs/tools/1password.md
 ---
 
@@ -32,7 +32,7 @@ Detailed Reference: See [docs/tools/1password.md](../../../docs/tools/1password.
 ## Shell integration
 
 - PowerShell loads the token from `powershell/profile.d/env.ps1`.
-- Zsh loads the token from `zsh/lib/secrets.zsh`.
+- Zsh loads the token from `zsh/lib/integrations/secrets.zsh`.
 - Use `dotenvx run -f ~/.config/.env.secrets -- op ...` or the shell helper wrappers
   for service-account automation.
 - When `OP_SERVICE_ACCOUNT_TOKEN` is present, avoid forcing `--account`; only pass `--account` for app-integration flows.
