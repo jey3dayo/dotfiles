@@ -1,12 +1,24 @@
-# 🔐 SSH Configuration
+---
+type: guide
+title: SSH Configuration
+description: SSH 設定の Include 構造、プラットフォーム別設定、ホスト追加と診断手順
+resource: docs/tools/ssh.md
+tags:
+  - category/configuration
+  - tool/ssh
+  - layer/tool
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-11-13
+audience: developer
+owner: dotfiles
+---
 
-最終更新: 2026-09-23
-対象: 開発者
-タグ: `category/configuration`, `tool/ssh`, `layer/tool`, `environment/cross-platform`, `audience/developer`
+# SSH Configuration
 
-階層的なSSH設定管理システムで、用途別ファイル分離によりセキュリティと保守性を両立しています。
+SSH の設定は共通設定、プラットフォーム別設定、ローカル設定の順で読み込みます。
 
-## 🤖 Claude Rules
+## Claude Rules
 
 このドキュメントの凝縮版ルールは [`.claude/rules/tools/ssh.md`](../../.claude/rules/tools/ssh.md) で管理されています。
 
@@ -14,231 +26,60 @@
 - 適用範囲: YAML frontmatter `paths:` で定義
 - 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
 
-## 主要機能
-
-- 1Password SSH Agent統合: パスワードレス認証
-- 階層的設定管理: 用途別ファイル分離
-- 接続最適化: Keep-Alive・圧縮設定
-- プラットフォーム統合: OrbStack・Docker対応
-
 ## 設定構造
 
-```text
-~/.config/ssh/              # dotfiles管理（Git追跡）
-├── config                  # メイン設定ファイル（Include の起点）
-├── config.d/
-│   ├── common/             # 全プラットフォーム共通（alphanumeric 順で読み込み）
-│   │   ├── 00-global.sshconfig      # グローバル設定（最優先）
-│   │   ├── 01-1password.sshconfig   # 1Password SSH Agent
-│   │   ├── 10-dev-services.sshconfig    # 開発サービス（GitHub等）
-│   │   └── 20-home-network.sshconfig    # ホームネットワーク
-│   ├── macos/settings.sshconfig     # macOS専用（`Match exec` で条件読み込み）
-│   └── linux/settings.sshconfig     # Linux/WSL2専用（`Match exec` で条件読み込み）
-├── templates/             # 設定テンプレート
-│   ├── host-template.sshconfig
-│   └── service-template.sshconfig
-└── README.md              # 設定ガイド
+エントリポイントの [`ssh/config`](../../ssh/config) は、共通設定、条件に合うプラットフォーム設定、ローカル設定をこの順で Include します。共通設定ファイルは英数字順に読み込みます。
 
-~/.ssh/                    # ローカル設定（Git管理外）
-├── ssh_config.d/         # 機密・個人設定
-└── sockets/              # 接続共有ソケット
-```
+| 設定                                                                                               | 内容                                        |
+| -------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| [`config.d/common/00-global.sshconfig`](../../ssh/config.d/common/00-global.sshconfig)             | 全ホスト共通の接続・認証設定                |
+| [`config.d/common/01-1password.sshconfig`](../../ssh/config.d/common/01-1password.sshconfig)       | 1Password SSH Agent の設定                  |
+| [`config.d/common/10-dev-services.sshconfig`](../../ssh/config.d/common/10-dev-services.sshconfig) | 開発サービスの設定                          |
+| [`config.d/common/20-home-network.sshconfig`](../../ssh/config.d/common/20-home-network.sshconfig) | ホームネットワークのホスト設定              |
+| [`config.d/macos/settings.sshconfig`](../../ssh/config.d/macos/settings.sshconfig)                 | `uname -s` が `Darwin` のときに読み込む設定 |
+| [`config.d/linux/settings.sshconfig`](../../ssh/config.d/linux/settings.sshconfig)                 | `uname` が `Linux` を含むときに読み込む設定 |
 
-### 読み込み優先度
+ローカル設定は `~/.ssh/ssh_config.d/*` に置きます。このディレクトリは Git 管理外です。
 
-1. common/00-global: 全体設定
-2. common/01-1password: 認証設定
-3. common/10-dev-services: 開発環境
-4. common/20-home-network: ホームラボ
-5. macos または linux の `settings.sshconfig`: プラットフォーム別設定（`Match exec` で判定）
-6. ローカル設定: 機密情報（Git管理外）
+## プラットフォーム固有設定
 
-## 主要設定ファイル
+- macOS では SSH のキーチェーン連携と Agent 登録を全ホストに適用します。OrbStack と Colima の Include は既定でコメントアウトされています。
+- Linux 設定は現在、空のプレースホルダーです。WSL2 用の条件分岐は例としてコメントアウトされています。
 
-### グローバル設定
+## 1Password SSH Agent
 
-```bash
-# 接続最適化・共有・認証設定を統合
-Host *
-  ServerAliveInterval 30
-  ControlMaster auto
-  ControlPath ~/.ssh/sockets/%r@%h:%p
-  GSSAPIAuthentication no
-```
+設定は [`config.d/common/01-1password.sshconfig`](../../ssh/config.d/common/01-1password.sshconfig) にあります。現在は無効です。利用する場合は、次の手順で有効にして確認します。
 
-### 開発・ホームネットワーク設定
-
-```bash
-# 企業ファイアウォール対応
-Host github.com
-  Hostname ssh.github.com
-  Port 443
-
-# ローカルデバイス（例）
-Host pi
-  HostName raspberrypi.local
-  Port 10022
-```
-
-登録済みのホームネットワークホスト（`common/20-home-network.sshconfig`、値は実設定と一致）:
-
-| Host                 | HostName                       | Port  |
-| -------------------- | ------------------------------ | ----- |
-| `pi`                 | `192.168.50.158`               | 10022 |
-| `pi-local`           | `raspberrypi.local`            | 10022 |
-| `synology`           | `synology.local`               | 10022 |
-| `pi-tailscale`       | `raspberrypi.tailfd232.ts.net` | 10022 |
-| `synology-tailscale` | `synology.tailfd232.ts.net`    | 10022 |
-| `mac`                | `192.168.50.141`               | 22    |
-
-### プラットフォーム固有設定
-
-`macos/settings.sshconfig` と `linux/settings.sshconfig` は `~/.config/ssh/config` の `Match exec` 判定が成立したときのみ Include される（ファイル自体には `Match exec` を書かない）。
-
-```bash
-# macOS: uname -s が Darwin を返すときだけ Include
-Match exec "uname -s | grep -q Darwin"
-  Include ~/.config/ssh/config.d/macos/*
-
-# Linux/WSL2: uname が Linux を返すときだけ Include
-Match exec "uname | grep -qi linux"
-  Include ~/.config/ssh/config.d/linux/*
-```
-
-- macOS (`macos/settings.sshconfig`): `UseKeychain yes` / `AddKeysToAgent yes` を全ホストに適用。OrbStack (`~/.orbstack/ssh/config`) / Colima (`~/.colima/ssh_config`) の Include はデフォルトコメントアウト。
-- Linux/WSL2 (`linux/settings.sshconfig`): 現状は空のプレースホルダー。WSL2判定 `Match exec "uname -r | grep -qi microsoft"` はコメントアウトされた例として存在するのみで未有効化。
-- 確認: `ssh -G github.com | grep -i keychain`（macOS では `usekeychain yes`、Linux/WSL2 では `usekeychain no` または出力なし）。
-
-### 1Password SSH Agent設定
-
-```bash
-# 有効化時（コメントアウト解除）
-# Host *
-#   IdentityAgent ~/.1password/agent.sock
-```
+1. 1Password の設定で SSH Agent を有効にします。
+2. 同ファイルにある1Password用ブロックのコメントを解除します。
+3. `ssh-add -l` で Agent の状態を確認します。
 
 ## ホスト追加手順
 
-1. `templates/host-template.sshconfig` をコピー
-2. 用途に応じて適切な設定ファイルを選択
-3. HostName, User, Portを設定
-4. `ssh -T hostname` で接続テスト
+1. [`host-template.sshconfig`](../../ssh/templates/host-template.sshconfig) をコピーします。
+2. 用途に応じて適切な設定ファイルを選択します。
+3. `HostName`、`User`、`Port` を設定します。
+4. `ssh -T hostname` で接続を確認します。
 
-## 基本使用方法
+## 診断
 
-### SSH接続
+設定の確認には `ssh -G` を使います。macOS と Linux/WSL2 で適用される内容を確認できます。
 
 ```bash
-ssh hostname             # 基本接続
-ssh -L 8080:localhost:80 hostname  # ポート転送
+ssh -G github.com | grep -i keychain
 ```
 
-### 接続確認・診断
+接続の詳細を確認するときは詳細ログを使います。タイムアウト時はまず [`00-global.sshconfig`](../../ssh/config.d/common/00-global.sshconfig) の接続設定を確認します。
 
 ```bash
-ssh -v hostname          # 詳細ログ
-ssh -T git@github.com    # GitHub接続テスト
+ssh -vvv hostname
 ```
 
-## セキュリティ設定
+## ControlPath
 
-### 1Password SSH Agent統合
-
-1. 1Password でSSH Agent機能を有効化
-2. 設定ファイルのコメントアウト解除
-3. `ssh-add -l` で確認
-
-利点: パスワードレス認証・安全な鍵管理・生体認証連携
-
-### SSH鍵管理
+共通設定の ControlPath が使う `~/.ssh/sockets/` を事前に作成し、所有者だけがアクセスできる権限にします。
 
 ```bash
-# Ed25519鍵生成（推奨）
-ssh-keygen -t ed25519 -C "your.email@example.com"
-
-# 公開鍵表示
-cat ~/.ssh/id_ed25519.pub
-```
-
-### 権限設定
-
-```bash
-chmod 700 ~/.ssh ~/.config/ssh
-chmod 644 ~/.config/ssh/config*
-chmod 600 ~/.ssh/id_*
-
-# ControlPath用ソケットディレクトリ
 mkdir -p ~/.ssh/sockets
 chmod 700 ~/.ssh/sockets
 ```
-
-## 高度な設定
-
-### ProxyJump設定（踏み台サーバー）
-
-```bash
-Host bastion
-  HostName bastion.example.com
-
-Host private-server
-  HostName 10.0.0.100
-  ProxyJump bastion
-```
-
-### 環境別設定分岐
-
-```bash
-Match Host *.company.com
-  User work-username
-  IdentityFile ~/.ssh/work_id_rsa
-```
-
-## トラブルシューティング
-
-### よくある問題
-
-接続タイムアウト時は `common/00-global.sshconfig` の `IPQoS lowdelay none` が既定で有効なため、追加設定は通常不要。
-
-```bash
-# 詳細ログ出力
-ssh -vvv hostname
-
-# 古いホスト鍵削除
-ssh-keygen -R hostname
-
-# 1Password Agent確認
-ssh-add -l
-
-# 設定ファイルテスト
-ssh -T git@github.com
-```
-
-## メンテナンス
-
-### 定期作業
-
-```bash
-# 古い接続削除
-find ~/.ssh/sockets -type s -mtime +1 -delete
-
-# 設定テスト
-ssh -T git@github.com
-```
-
-## パフォーマンス
-
-- 接続速度: Keep-Alive設定・接続共有による高速化
-- セキュリティ: 1Password統合・Ed25519鍵
-- 管理性: 階層的設定・用途別分離
-
-## ツール連携
-
-- Git: GitHub/GitLabでの企業ファイアウォール対応
-- 開発環境: OrbStack・VSCode Remote-SSH連携
-- Terminal: WezTerm・Zsh補完機能
-
----
-
-## 概要
-
-階層的設定管理によるセキュアで高性能なSSH環境

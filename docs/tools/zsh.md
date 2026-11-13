@@ -1,6 +1,6 @@
 # Zsh Configuration
 
-最終更新: 2026-11-11
+最終更新: 2026-11-13
 対象: 開発者・上級者
 タグ: `category/shell`, `tool/zsh`, `layer/core`, `environment/cross-platform`, `audience/advanced`
 
@@ -95,19 +95,6 @@ ZSH_LOAD_FZF_TAB=1 ZSH_LOAD_AUTOSUGGESTIONS=1 ZSH_LOAD_SYNTAX_HIGHLIGHTING=1 zsh
 
 `zsh-abbr` のユーザー定義は既定どおり `zsh-abbr/user-abbreviations` を使います。alias ではなく、入力後に展開される abbreviation として運用します。
 
-## 保留中の機能
-
-以下は git 履歴上の旧構成からまだ戻していない機能です。戻す場合は 1 機能ずつ追加し、`zsh-benchmark` と `zprof` で同期起動 path に乗らないことを確認します。
-
-| 優先度 | 機能                                     | 用途                                                          | 方針                                                |
-| ------ | ---------------------------------------- | ------------------------------------------------------------- | --------------------------------------------------- |
-| P3     | `pnpm-shell-completion`                  | pnpm 補完                                                     | 重さ疑いあり。必要性が出るまで保留。                |
-| P3     | `pnpm-shell-completion-install`          | pnpm completion build                                         | 起動時には入れない。必要なら手動 task 化。          |
-| P3     | oh-my-zsh plugins                        | `sudo` / `clipboard` / `functions` など                       | 原則戻さない。必要なものだけ個別検討。              |
-| P3     | `1password-op.plugin.zsh`                | 1Password helper                                              | 起動時不要。                                        |
-| P3     | 診断 helper                              | `zsh-help` / `path-check` / `zsh-quick-check` / `mise-status` | source ではなく `bin/` コマンド化する場合のみ検討。 |
-| P3     | `lazy-sources/arch.zsh` / `orbstack.zsh` | 環境別設定                                                    | 該当環境で必要になった場合のみ条件付きで戻す。      |
-
 ## 検証
 
 目標 <100ms は達成済み（2026-09-23、Mac16,6、`zsh-benchmark --runs 8 --mode <mode>`、Shell: `/opt/homebrew/bin/zsh`）。
@@ -127,7 +114,7 @@ mise run test:lua
 
 ## 退避済み構成
 
-旧構成はリポジトリには残さず、`7eac3d54`（refactor(zsh): rebuild startup configuration）の直前コミットまでの git 履歴にのみ残しています。確認するときは以下を使います。
+履歴上の旧構成を確認するときは以下を使います。
 
 ```bash
 git show 7eac3d54^:zsh/config/loader.zsh

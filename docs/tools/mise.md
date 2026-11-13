@@ -1,377 +1,77 @@
+---
+type: reference
+title: Mise Reference
+description: .config における mise の環境選択、設定境界、タスクの使い分け
+resource: docs/tools/mise.md
+tags:
+  - category/configuration
+  - layer/tool
+  - tool/mise
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-11-13
+audience: developer
+owner: dotfiles
+---
+
 # Mise Reference
 
-最終更新: 2026-11-12
+最終更新: 2026-11-13
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
-Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
-Official Docs: <https://mise.jdx.dev>
+この文書では `.config` の mise 設定とタスクの境界を説明します。どの層でツールを管理するかは [セットアップ方針](../setup.md#package-management-philosophy)、backend や pin 固定の理由は [Mise Configuration Reference](mise-config.md)、タスクの影響と調べ方は [Mise Task Safety and Discovery](mise-tasks.md) を参照してください。
 
 ## Configuration Structure
 
-`config.<machine>.*` は `MISE_ENV` で選ぶ機種固有設定、その他の `config.*` は `MISE_ENV` で重ねる overlay です。`MISE_CONFIG_DIR` で設定ディレクトリを指定し、`MISE_ENV` で機種と overlay を選択します。
-
-mise設定は環境別ファイルで管理されています:
-
-### Main config: `mise/config.toml`
-
-内容: 設定のみ（ツール定義なし）
-
-- グローバル設定: `experimental`, `env_file`（`trusted_config_paths` や `jobs` など OS 間で異なる設定は各 OS 別ファイルで定義）
-- pnpmバックエンド設定: `settings.npm.package_manager = "pnpm"` - npmバックエンドがpnpmを使用
-- サプライチェーン対策: `minimum_release_age = "3d"` でリリース直後バージョンへの upgrade を抑止（`minimum_release_age_excludes` で個別ツールを除外可能）
-- 環境変数定義
-- 重要: ツールは定義しない（マージによる意図しない追加を防ぐため）
-
-### Environment-specific configs
-
-- `mise/config.shared.toml` - default / Windows / Raspberry Pi の共通 tools（`MISE_ENV` に `shared` が含まれる場合のみ）
-- `mise/config.workstation.toml` - Pi / CI 以外の開発機（macOS/Linux/WSL2 と Windows）の共通 tools（`MISE_ENV` に `workstation` が含まれる場合のみ）
-- `mise/config.workstation-unix.toml` - デフォルト（macOS/Linux/WSL2）の機種固有 tools
-  - jobs = 8（デスクトップ/ワークステーション向け）
-  - `MISE_ENV=macos,bun,shared,workstation,workstation-unix` で bun / shared / workstation overlays と組み合わせる（Linux/WSL2 は macos なし）
-
-- `mise/config.workstation-windows.toml` - Windows 機種固有 tools
-  - `MISE_ENV=bun,shared,workstation,workstation-windows` で bun / shared / workstation overlays と組み合わせる
-  - `aws-cli` は現行の `mise` backend で Windows 非対応のため除外
-  - `jobs` は未設定（mise のデフォルトに従う）
-
-- `mise/config.server-pi.toml` - Raspberry Pi（ARMサーバー環境）機種固有 tools
-  - jobs = 2（メモリ制約: 並列数削減でスワップ回避）
-  - `MISE_ENV=shared,server-pi` で shared overlay と組み合わせる最小ツールセット（npm軽量版、cargo全除外）
-
-- `mise/config.ci.toml` - CI/CD（GitHub Actions最適化）
-  - jobs = 4（GitHub Actions runners: 2コア）
-  - `MISE_ENV=bun,ci` で使用（bun 以外の overlay なし）
-  - CI必須ツールのみ（formatters, linters, npm packages, CLI tools）
-  - 大幅に削減されたツールセットで高速インストール
-  - 除外: 全language runtimes（Actions提供）、開発ツール、MCP/Claude/Cloudツール
-
-### Directory-local: `mise.toml`
-
-プロジェクト固有のオーバーライド（例: .mise.toml at repo root）
-
-### Env vars: `.mise.env` or `[env]` section
-
-環境変数定義（dotenvx 暗号化サポート）
-
-### Config precedence
-
-directory-local → user config (`mise/config.toml`) → environment-specific (via `MISE_CONFIG_DIR` + `MISE_ENV`) → global defaults
-
-実挙動: `MISE_CONFIG_DIR` が指すディレクトリから、`MISE_ENV` に含まれる各 config ファイル（例: `macos,bun,shared,workstation,workstation-unix` なら config.macos.toml, config.bun.toml, config.shared.toml, config.workstation.toml, config.workstation-unix.toml。後ろほど優先）が additive にロードされる。`mise/config.toml` は settings/env/dotfiles 専用で、`[tools]` を置かない。
-
-運用ルール: OS 間で値が異なる設定（例: `idiomatic_version_file_enable_tools`, `jobs`, `trusted_config_paths`）は `config.toml` に置かない。`config.toml` は全環境で同一値の共通設定のみを置く。
-
-## Directory Layout (mise/)
-
-```
-mise/
-├── README.md              # mise 運用の概要
-├── lib/                   # helper scripts (公開タスクにしない共通処理)
-│   ├── ensure-busted.sh   # busted の存在確認と自動インストール
-│   ├── ensure-python-libs.sh # python 本体へ入れる import 用ライブラリの導入保証
-│   ├── ensure-standalone.sh  # 自己更新 CLI の公式インストーラ導入保証（post-tools hook）
-│   ├── lint-shell.sh      # shell lint wrapper
-│   ├── pre-push-check.sh  # pre-push で走らせるテスト範囲の判定
-│   ├── run-restic.sh      # restic backup wrapper
-│   ├── run-ts-tests.sh    # TypeScript テスト起動
-│   ├── self-update-mise.sh # minimum_release_age を守る mise self-update（update:self）
-│   └── shell-format.sh    # shell / zsh formatter wrapper
-├── config.toml            # 共通設定のみ（ツール定義なし、env/設定）
-├── config.macos.toml      # macOS 専用 bootstrap（[bootstrap.packages] など。MISE_ENV=macos）
-├── config.shared.toml     # default / Windows / Pi 共通 tools（MISE_ENV=shared）
-├── config.workstation.toml # Pi / CI 以外の開発機共通 tools（MISE_ENV=workstation）
-├── config.bun.toml        # bun（MISE_ENV=bun。Pi 以外で選ぶ）
-├── config.workstation-unix.toml    # macOS/Linux/WSL2 向け差分
-├── config.workstation-windows.toml # Windows 向け差分（jobs 未設定）
-├── config.server-pi.toml           # Raspberry Pi 向け差分
-├── config.ci.toml                  # CI/CD 向け最小構成（shared/workstation 非依存）
-├── conf.d/                # 全環境で常に読む共通 tools（00-tools-common.toml）
-├── tasks/                 # 外部 repo から見えてよい global task 定義
-│   └── brewfile.toml      # Brewfile 差分確認・リストア
-└── local-tasks/           # ~/.config 専用の mise task 定義
-    ├── backup.toml        # restic backup・restore・prune
-    ├── ci.toml            # CI/CD チェック・Nix 検証
-    ├── format.toml        # フォーマット（書き込みあり/チェック）
-    ├── lint.toml          # 静的解析・構文チェック
-    ├── test.toml          # テスト実行（Lua/TypeScript）
-    ├── integration.toml   # 統合タスク（setup/doctor/check/format/lint 集約）
-    ├── updates.toml       # 依存関係更新（apt/submodules など）
-    └── env.toml           # 環境変数管理（dotenvx）
-```
+`MISE_CONFIG_DIR` は設定ディレクトリを指定し、`MISE_ENV` は適用する環境を選びます。shell startup が通常の環境値を組み立てます。
 
-`.mise.toml` はリポジトリルートに置き、`task_config.includes` で `mise/local-tasks/*.toml` を読み込む。
-`mise/tasks/` は global task として外部リポジトリからも見えるため、cwd 非依存または `dir` 明示済みで、かつ全ディレクトリに露出させる明確な理由があるタスクだけを置く。PC メンテナンス、資格情報依存、破壊的サブコマンドを含む task family は `local-tasks/` を既定とする。
-task TOML は description、`dir` / `env`、dependency、platform route、単一 runner だけを持つ薄い入口にする。分岐・cleanup・複数 command は `mise/lib/`（task 専用 helper）または `scripts/`（repo の運用 entrypoint）へ置き、`mise tasks` に内部実装を露出させない。
+標準の global config discovery で `config.toml`、`conf.d/`、`config.<env>.toml` を読み込みます。`MISE_ENV` の設定は順に重ね、後ろにある環境の値を優先します。
 
-## Task Design
+`MISE_CONFIG_FILE` / `MISE_GLOBAL_CONFIG_FILE` は使いません。設定探索を単一ファイルに置き換え、環境別設定を読めなくするためです。`shell/env.sh` でも両変数を解除しています。
 
-- 汎用 CI/品質: `ci.toml`, `format.toml`, `lint.toml`, `test.toml`, `integration.toml`
-- 環境依存・運用系: `backup.toml`, `updates.toml`, `env.toml`
-- タスク追加時はまず汎用に入れるか検討し、環境依存・ローカル専用のみ個別ファイルへ
-- `update` / `check` / 通常の `ci` は非破壊的に保つ。`reset`、`clean`、`prune`、deploy、in-place restore は明示的な個別 task に置く。
+| 環境         | `MISE_ENV`                                      |
+| ------------ | ----------------------------------------------- |
+| macOS        | `macos,bun,shared,workstation,workstation-unix` |
+| Linux / WSL2 | `bun,shared,workstation,workstation-unix`       |
+| Raspberry Pi | `shared,server-pi`                              |
+| Windows      | `bun,shared,workstation,workstation-windows`    |
+| CI           | `bun,ci`                                        |
 
-### CI/CD タスク構造
+環境の判定と選択順は [`shell/env.sh`](../../shell/env.sh) と [`windows/setup.ps1`](../../windows/setup.ps1) にあります。
 
-#### 責任の分離
+設定は次の役割に分かれています。
 
-- CI検証タスク (`ci`): 読み取り専用の検証（lint, test, format check）
-- CI完全実行 (`ci:full`): 検証 + デプロイ（GitHub Actionsと同じワークフロー）
-- デプロイ (`ci:verify-deploy` / `mise dotfiles apply`): 状態変更を伴うシステム設定の適用
+- [`mise/config.toml`](../../mise/config.toml): 共通 settings、env、OS 共通 dotfiles。`[tools]` は置かず、OS 間で値が異なる設定も各 OS 別ファイルに置きます。
+- [`mise/conf.d/00-tools-common.toml`](../../mise/conf.d/00-tools-common.toml): すべての環境で共通する tools。
+- `mise/config.*.toml`: `MISE_ENV` で選ぶ OS・役割ごとの tools や設定。
+- [`.mise.toml`](../../.mise.toml): この repo 専用の tool pin と task include。
+- [`mise/local-tasks/`](../../mise/local-tasks/): この repo 専用の task 定義。PC メンテナンス、資格情報に依存する処理、破壊的な task family はここに置きます。
+- [`mise/tasks/`](../../mise/tasks/): 他の repo からも使う task 定義。
+- [`mise/lib/`](../../mise/lib/): task から呼び出す helper scripts。
 
-#### タスクの使い分け
+`mise/tasks/` の global task は外部 repo にも見えるため、cwd 非依存か `dir` を明示し、全ディレクトリに公開する理由があるものに限ります。Task TOML は薄い runner とし、分岐・cleanup・複数 command は `mise/lib/` または `scripts/` に置きます。
 
-- `mise run ci` - ローカルでの検証のみ（書き込みなし、高速）
-- `mise run ci:full` - GitHub Actionsと同じワークフロー全体をローカルで実行（検証 + デプロイ）
-- `mise dotfiles apply` - dotfiles 配布のみ（冪等）
-- `mise bootstrap --yes` - マシン全体の収束（packages / dotfiles / launchd / tools）
+公開直後のバージョンへの更新を `minimum_release_age` で遅らせ、例外は `minimum_release_age_excludes` で定義します。ツール構成と待機期間の実値は、それぞれの mise 設定ファイルを参照してください。この文書ではパッケージ一覧を複製しません。
 
-#### GitHub Actions統合
+task の対象ファイルや除外パスを制御する環境変数も [`mise/config.toml`](../../mise/config.toml) にあります。対象を絞るときは、関連タスクが参照する変数と現在の値を先に確認してください。repo 固有の version pin と task include は、その repo の `.mise.toml` で管理します。
 
-```yaml
-- name: Deploy dotfiles with mise bootstrap
-  run: |
-    mise dotfiles apply --yes --force
-    mise dotfiles status --missing
+## Task Boundaries
 
-- name: Run all CI checks
-  run: mise run ci # 検証タスクのみ（書き込みなし）
-```
+- `update` / `check` / 通常の `ci` は非破壊的に保ちます。`reset`、`clean`、`prune`、deploy、in-place restore は明示的な個別タスクに置きます。
+- `mise run ci` はローカル検証、`mise run ci:full` は検証に dotfiles の適用・確認を加えます。
+- `mise bootstrap` は machine state を収束させます。`mise dotfiles status` は配布状態を確認し、`mise dotfiles apply` は dotfiles を適用します。
+- `mise run update` は設定済みの更新処理を実行します。submodule 更新や外部 repo の強制リセットは別タスクです。
+- `format` 系タスクはファイルを書き換えます。`format:*:check` は確認のみで、ファイルを変更しません。その他の状態変更タスクの詳細は `mise tasks info <task>` で調べてください。
 
-#### 依存関係グラフ
+タスク一覧は `mise tasks`、1件の定義は `mise tasks info ci` のように確認します。実行影響の分類は [mise task guide](mise-tasks.md) を参照してください。
 
-```
-ci:full
-├── ci:verify-deploy (mise dotfiles 適用と収束確認)
-└── ci (検証のみ)
-    ├── check
-    ├── test
-    └── ci:gitleaks
-```
+## Troubleshooting
 
-## Task Catalog
+- `mise doctor`: mise の状態を診断します。
+- `mise current`: 現在のディレクトリで有効な tool version を表示します。
+- `mise which <tool>`: 解決された実行ファイルの場所を表示します。
 
-全タスク一覧は [mise-tasks.md](mise-tasks.md) を参照。主要グループの早見表と責務分離は本書と [docs/tools/workflows.md](workflows.md) を参照。
+mise 管理ツールは shim で解決するため、通常はそれらの利用前に `command -v` / `which` で存在確認する処理を書きません。
 
-### APM Global Skills
-
-agent 配布の正面入口は apm-workspace checkout（`~/src/github.com/jey3dayo/apm-workspace`）です。`.config` 側の `mise` は APM 操作面を持ちません。`~/.apm` は install 結果の consumer state で、編集元ではありません。
-
-- APM CLI 自体は `mise` 管理とし、`.config` と apm-workspace の両方で `pipx:apm-cli` を pin する
-- personal skill・agent・共通ガイドは checkout の `catalog/.apm/` 配下を編集する
-- external skill は checkout の `apm.yml` の upstream ref で管理する
-- daily operation と validation は checkout で `mise run ...` を実行する
-
-詳細は [docs/tools/apm-workspace.md](apm-workspace.md) を参照。
-
-## Variable-driven Control
-
-`mise/config.toml` の `[env]` を使って、タスクの対象や挙動を制御する。
-
-- `MD_GLOB`: Markdown 対象（例: `**/*.md`）
-- `MD_EXCLUDES`: Markdown 除外（例: `#node_modules`）
-- `TASK_EXCLUDES`: `fd` の除外指定（例: `--exclude .worktrees`）
-- `MARKDOWN_LINK_CONFIG`: `markdown-link-check` 用設定ファイル
-- `YAMLLINT_CONFIG_FILE`: `yamllint` 設定ファイル
-- `*_FILES` 系: 特定ファイルだけ処理（`SH_FILES`, `PY_FILES`, `LUA_FILES`, `TOML_FILES`, `BIOME_FILES`, `PRETTIER_FILES`, `YAML_FILES`）
-
-`TASK_EXCLUDES` は汎用タスクの除外に使う。managed catalog の日常運用は apm-workspace 側 task を優先する。
-
-## Environment Detection
-
-mise は標準の global config discovery（`MISE_CONFIG_DIR` 配下の `config.toml`・`conf.d/`・`config.<env>.toml`）を使い、`MISE_ENV` で読む環境を選ぶ。`MISE_CONFIG_FILE` / `MISE_GLOBAL_CONFIG_FILE` は discovery を単一ファイルに置き換えてしまうため使わない。
-
-### Auto-detection via shell startup
-
-`shell/env.sh`（`zsh/.zshenv` / `bash/.bashrc` は同じ判定のフォールバック）が `MISE_CONFIG_DIR` と `MISE_ENV` を設定する:
-
-- CI/CD: `MISE_ENV=bun,ci` when `CI=true` or `GITHUB_ACTIONS=true`
-- Default (macOS/Linux/WSL2): `MISE_ENV=[macos,]bun,shared,workstation,workstation-unix`
-- Raspberry Pi: `MISE_ENV=shared,server-pi` (ARM/minimal exclusions remain)
-
-Priority: CI > Raspberry Pi > Default
-
-### Windows
-
-Windows: `MISE_ENV=bun,shared,workstation,workstation-windows` set by `windows/setup.ps1` and the PowerShell profile
-
-#### Related: Chocolatey manifests
-
-`mise/config.workstation-windows.toml` covers mise-managed tools. OS-level Windows package bootstrap can be managed separately with a Chocolatey `.config` manifest. Layer choice: [docs/setup.md](../setup.md#package-management-philosophy).
-
-```powershell
-choco install .\windows\chocolatey\packages.config -y
-choco export .\windows\chocolatey\packages.config
-```
-
-Chocolatey accepts `.config` manifest files for bulk install/export, and the filename does not need to be exactly `packages.config` as long as it ends with `.config`.
-
-Note: hadolint remains only in `config.workstation-unix.toml`; it is intentionally absent from the shared overlay and `config.server-pi.toml` for ARM/minimal operation.
-
-## Environment-specific Package Exclusions
-
-### Raspberry Pi Optimizations (`config.server-pi.toml`)
-
-サーバー/自動化環境として最適化されており、以下のパッケージを除外:
-
-#### Performance Settings
-
-- `jobs = 2` (メモリ制約対応: 並列実行数削減でスワップ回避)
-  - ※ config.workstation-unix.toml は `jobs = 8`（デスクトップ環境向け）
-
-#### Excluded Packages
-
-サーバー/自動化環境として最適化されており、以下のカテゴリを除外:
-
-- 大容量パッケージ: `@openai/codex` (391MB), `@playwright/mcp` (~300MB), `aws-cdk` (~150MB) 等
-- エディタ統合ツール: LSP、TypeScript関連、`eslint_d` 等（リモート開発でローカルマシンのLSP使用）
-- GUI/ブラウザ依存ツール: Playwright MCP、Chrome DevTools MCP 等
-- デスクトップ開発ツール: Claude AI開発ツール（`dxt` 等）
-- クラウド/インフラツール: AWS CLI、Google Clasp、gRPC関連 等
-- 全cargoツール: ARM互換性とビルド時間考慮
-
-詳細な除外パッケージリストは `mise/config.workstation-unix.toml` と `mise/config.server-pi.toml` の差分を参照。
-
-#### Maintained Packages
-
-軽量かつサーバー運用に有用なツールのみを維持:
-
-- ユーティリティ: `@antfu/ni`, `npm`, `npm-check-updates`
-- ドキュメント: `markdown-link-check`, `markdownlint-cli2`, `textlint`
-- フォーマッター/Linter: `jactionlint`, `biome`, `prettier`, `shellcheck`, `shfmt`, `stylua`, `taplo`, `yamllint`
-- AI/Claude: `aicommits`, `@sasazame/ccresume`
-- MCP: `@upstash/context7-mcp`, `o3-search-mcp`
-- CLI: `eza`, `fd`, `gh`, `goimports`, `jq`, `yazi`
-- ランタイム: `go` (latest), `node`, `python`
-
-具体的なパッケージバージョンは `mise/config.server-pi.toml` を参照。
-
-#### Expected Benefits
-
-- Install time: Significantly faster (many npm packages, aws-cli, and all cargo tools excluded)
-- Disk usage: Substantially reduced
-- Memory usage: Reduced during installation (parallel execution control)
-
-## Configuration Comparison
-
-| Config                                   | Toolset           | Use Case                       | Performance        |
-| ---------------------------------------- | ----------------- | ------------------------------ | ------------------ |
-| config.workstation-unix.toml + shared    | Full (all tools)  | Development (macOS/Linux/WSL2) | Longer install     |
-| config.workstation-windows.toml + shared | Full              | Development (Windows)          | Uses mise defaults |
-| config.server-pi.toml + shared           | Minimal (server)  | Server (Raspberry Pi ARM)      | Faster install     |
-| config.ci.toml                           | Minimal (CI only) | CI/CD (GitHub Actions)         | Fastest install    |
-
-## Tool Categories (shared + config.workstation-unix.toml)
-
-6 カテゴリ（Language Runtimes / Package Managers / Formatters & Linters / NPM Global Packages / Cargo Tools / CLI Tools）の詳細は [mise-config.md](mise-config.md) を参照。
-
-移行履歴は `CHANGELOG.md` を参照。
-
-## Common Commands
-
-```bash
-# List available tasks
-mise tasks
-
-# Install all tools from config
-mise install
-
-# For APM daily operation, work from the apm-workspace checkout
-cd ~/src/github.com/jey3dayo/apm-workspace
-mise install
-mise run check
-mise run native:sync
-mise run doctor
-
-# Run generic tasks
-mise run format
-mise run lint
-mise run check
-mise run lint:links
-
-# Update all tools to latest versions
-mise upgrade
-
-# List installed tools
-mise ls
-
-# Check for outdated tools
-mise outdated
-
-# Activate mise in current shell
-mise activate zsh
-
-# Install specific tool
-mise use node@lts
-mise use "npm:prettier@latest"
-
-# Remove tool
-mise uninstall "node@<version>"
-```
-
-## Integration Points
-
-### Shell Integration (Zsh)
-
-- Activated via `mise activate zsh` in `.zshrc`
-- Provides PATH shims for all managed tools
-- Auto-switching based on directory `.mise.toml`
-
-### Neovim Integration
-
-- Ensure npm packages like `neovim` and `prettierd` are in mise config
-- No need for separate npm global install
-- Neovim finds tools via mise-managed PATH
-
-### Project-specific Overrides
-
-```toml
-# .mise.toml in project root
-[tools]
-node = "<version>"           # プロジェクト側で版を固定する
-"npm:typescript" = "<version>"
-```
-
-## Maintenance
-
-### Weekly Updates
-
-```bash
-mise run update            # pull → brew/apt → mise self-update → mise upgrade → completions を一括更新
-mise prune                # Remove unused versions
-mise doctor               # Check for issues
-```
-
-### Troubleshooting
-
-- `mise doctor` - diagnose configuration issues
-- `mise which <tool>` - show which version is active
-- `mise current` - show active versions in current directory
-- `mise env` - display environment variables
-
-### Backup and Restore
-
-- Config files are tracked in dotfiles repo
-- To restore: `git checkout mise/config.workstation-unix.toml mise/config.server-pi.toml && mise install`
-- Version history via git allows rollback
-
-## 自己更新ツール（mise 管理外）の導入保証
-
-どの層（mise `[tools]` / `[bootstrap.packages]` / Brewfile / 自己更新 standalone）でツールを管理するかの方針は [docs/setup.md](../setup.md#package-management-philosophy) を参照。ここでは mise 側の実装事実だけを記す。
-
-- 該当ツール: `mise` 本体と、`mise/lib/ensure-standalone.sh` が導入保証する CLI（一覧は同スクリプトが正本）
-- 導入保証: `mise/config.workstation-unix.toml` の `[bootstrap.hooks.post-tools]` から `mise/lib/ensure-standalone.sh` を呼び、未導入時のみ公式インストーラで導入する
-- 更新: 各ツールの self-update コマンドに委ねる（`mise self-update`、CLI は `mise/local-tasks/updates.toml` の `update:standalone` が一括で呼ぶ）。herdr は `herdr update --handoff` で動作中のペインを維持したままサーバーを置き換えられ、これは herdr 自身のインストーラで入れた場合だけ使える
-- `mise ls` に出ないのは意図的（`[tools]` で管理していないため）
-
-## Best Practices
-
-1. Version Pinning: Use specific versions for project-critical tools
-2. Latest for Development Tools: Use "latest" for CLI tools that don't affect build
-3. Document Breaking Changes: Comment version pins with reason
-4. Regular Updates: Run `mise run update` weekly to stay current (runs `mise self-update` before `mise upgrade`)
-5. No manual availability checks for mise-managed tools: mise が管理するツール（fd, tsx, shellcheck 等）に対して `command -v` / `which` / `type` による存在確認を書かない。`mise install` 済み環境ではシムが自動的に解決するため不要であり、誤解を招く。
-   - `if ! command -v fd >/dev/null 2>&1; then echo "..."; exit 1; fi` は書かない
-   - 単に `fd ...` を呼び出すだけでよい
-   - 例外: mise 非管理ツール（[自己更新ツール](#自己更新ツールmise-管理外の導入保証)、busted via luarocks、fswatch via Homebrew 等）は引き続き確認してよい
+APM の編集、検証、配布は [APM Workspace](apm-workspace.md) を参照してください。

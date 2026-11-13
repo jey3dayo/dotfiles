@@ -1,6 +1,6 @@
 # 🖥️ WezTerm Configuration
 
-最終更新: 2026-09-23
+最終更新: 2026-11-13
 対象: 開発者
 タグ: `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`
 
@@ -131,9 +131,6 @@ return is_windows and win or {}
 ## トラブルシューティング
 
 ```bash
-# GPU サポート確認
-wezterm ls-fonts --list-system
-
 # パフォーマンスデバッグ（ソフトウェア描画）
 wezterm start --config 'front_end="Software"'
 
@@ -147,9 +144,3 @@ mv ~/.config/wezterm ~/.config/wezterm.backup
 # WezTerm 更新（Brewfile では cask "wezterm@nightly"）
 brew upgrade --cask --greedy-latest wezterm@nightly
 ```
-
----
-
-## 概要
-
-GPU加速とLua設定による高性能ターミナル環境

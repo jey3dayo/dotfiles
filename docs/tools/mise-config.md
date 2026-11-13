@@ -1,90 +1,54 @@
+---
+type: reference
+title: Mise Configuration Reference
+description: mise の設定ファイルの役割と backend・version pin の理由
+resource: docs/tools/mise-config.md
+tags:
+  - category/configuration
+  - layer/tool
+  - tool/mise
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-11-13
+audience: developer
+owner: dotfiles
+---
+
 # Mise Configuration Reference
 
-最終更新: 2026-11-04
+最終更新: 2026-11-13
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
-Claude Rules: [.claude/rules/tools/mise.md](../../.claude/rules/tools/mise.md)
-親ドキュメント: [Mise Reference](mise.md)
+設定ファイルの役割と `MISE_ENV` の選び方は [Mise Reference](mise.md) を参照してください。ツールの version は mise 設定ファイルで管理します。この文書では pin と backend の理由を記録します。
 
-## バージョン記載ルール
+## Configuration Files
 
-**ツールのバージョンは `mise/*.toml`（この repo 自身の lint / CI 用ツールは repo ルートの `.mise.toml`）が唯一の正本です。** このドキュメントはバージョン番号を記載せず、構成の役割とピン固定の理由のみを説明します。実際のツールリストとバージョンは該当する mise ファイルを参照してください。
+- machine-specific config: [`config.workstation-unix.toml`](../../mise/config.workstation-unix.toml)、`config.workstation-windows.toml`、[`config.server-pi.toml`](../../mise/config.server-pi.toml)、[`config.ci.toml`](../../mise/config.ci.toml)
+- overlays: [`config.shared.toml`](../../mise/config.shared.toml)、[`config.workstation.toml`](../../mise/config.workstation.toml)
+- 全環境共通 tools: [`conf.d/00-tools-common.toml`](../../mise/conf.d/00-tools-common.toml)
+- repo 固有の lint / CI tools: [`.mise.toml`](../../.mise.toml)
 
-## 設定ファイルの役割
+## Pins and Backend Choices
 
-### Machine ファイル (`config.<machine>.toml`)
+### jactionlint
 
-`MISE_ENV` で選ぶ OS × 役割の機種固有設定。各環境で overlay と組み合わせて使用。
+Breaking changes に備えて version を固定し、更新時に attestation を確認します。定義は [`mise/conf.d/00-tools-common.toml`](../../mise/conf.d/00-tools-common.toml) にあります。
 
-- [`config.workstation-unix.toml`](../../mise/config.workstation-unix.toml) - macOS/Linux/WSL2 の開発機
-- `config.workstation-windows.toml` - Windows の開発機
-- [`config.server-pi.toml`](../../mise/config.server-pi.toml) - Raspberry Pi
-- [`config.ci.toml`](../../mise/config.ci.toml) - CI 環境（最小構成）
+### gh-actions-lock
 
-### Overlay ファイル (`config.*.toml`)
+`.github/workflows/actions.lock` の生成・検証用に、repo ルートの [`.mise.toml`](../../.mise.toml) で完全な version を固定します。更新先は公開から 7 日以上経過した版に限り、`mise run actions-lock:generate` で lockfile を再生成して差分を確認します。asset の実行ファイル名も同ファイルで指定します。
 
-`MISE_ENV` で重ねる追加レイヤー。複数環境で共通の設定を集約。
+### uv と pnpm
 
-- [`config.shared.toml`](../../mise/config.shared.toml) - default / Windows / Pi の 3 環境共通
-- [`config.workstation.toml`](../../mise/config.workstation.toml) - Pi / CI 以外の開発機共通（macOS/Linux/WSL2 と Windows）
+- `uv` は uvx 経由の自己参照を避けるため、`github:astral-sh/uv` backend を使います。
+- `pnpm` は major version を固定し、patch / minor 更新を許可します。
 
-### レイヤーの適用順序
+### tree-sitter-cli
 
-通常の開発環境（macOS/Linux/WSL2）: `MISE_ENV=macos,bun,shared,workstation,workstation-unix`（Linux/WSL2 は macos なし）で `config.macos.toml` + `config.bun.toml` + `config.shared.toml` + `config.workstation.toml` + `config.workstation-unix.toml` の additive 構成（後ろほど優先）
+WSL の glibc 不整合に対応するため cargo backend を使い、不要な default features を無効にします。設定は [`mise/config.workstation-unix.toml`](../../mise/config.workstation-unix.toml) にあります。
 
-CI: `MISE_ENV=bun,ci` で `config.bun.toml` + `config.ci.toml`（bun 以外の overlay なし）
+## Environment-specific Exceptions
 
-## ピン固定と非自明な選択の理由
-
-### jactionlint のバージョン固定
-
-破壊的変更があるため版を固定。更新時に attestation を確認。
-
-構成: [`mise/config.shared.toml`](../../mise/config.shared.toml)
-
-### gh-actions-lock のバージョン固定
-
-`.github/workflows/actions.lock` の生成・検証に使う。この repo 自身の lint / CI 専用なので repo ルートの `.mise.toml` に置き、完全な版で固定する。生成結果が版で変わりうるため、更新は公開から 7 日以上経った版へ上げ、`mise run actions-lock:generate` で lockfile を作り直して差分をレビューする。release asset 名が OS/arch 名だけなので `bin = "gh-actions-lock"` で実行ファイル名を揃えている。
-
-構成: [`.mise.toml`](../../.mise.toml)
-
-### uv の backend 選択
-
-`pipx:uv` は uv 自身を uvx 経由で入れる自己参照構造になり、uv 更新時に `uv tool install uv` が停滞するため、`"github:astral-sh/uv"` を使用。全環境で統一済み。
-
-### pnpm のメジャー固定
-
-メジャーバージョンのみ固定。パッチ・マイナー更新は自動。
-
-構成: [`mise/config.shared.toml`](../../mise/config.shared.toml)
-
-### tree-sitter-cli の cargo backend
-
-WSL で公式配布バイナリが glibc 不整合で壊れるため、cargo backend を `default-features=false` で使用（qjs/libclang 依存を回避）。
-
-構成: [`mise/config.workstation-unix.toml`](../../mise/config.workstation-unix.toml)
-
-### lua/luajit の Homebrew 管理
-
-Neovim の依存関係のため、mise ではなく Homebrew で管理。
-
-### Raspberry Pi 固有の注意
-
-- `luacheck` は mise の tools に定義しない（registry に存在せず WARN の原因）。luarocks など mise 外で供給。
-- cargo ツールセクション自体を除外（ARM 互換性考慮）。
-
-## ツールカテゴリ
-
-実際のツールリストは各 mise ファイルを参照：
-
-- Language Runtimes (Python, Rust, Node.js, Go, Deno, Julia)
-- Package Managers (bun, pnpm, uv, corepack)
-- Formatters / Linters (biome, prettier, shellcheck, stylua, taplo, yamllint, jactionlint)
-- NPM Packages (全て mise で一元管理、npm/pnpm/bun グローバルには依存しない)
-- Cargo Tools (similarity-css, tree-sitter-cli, needle-cli, wrkflw, starship, bandwhich)
-- CLI Tools (gh, fd, ripgrep, fzf, lazygit, bat, delta, yazi, atuin, aws-cli, kubectl, terraform, など多数)
-- MCP Servers (Model Context Protocol サーバー群)
-- Go Packages (wire, goimports, terraform-mcp-server)
-
-レイヤーの選び方と Package Management Philosophy は [docs/setup.md](../setup.md#package-management-philosophy) を参照。
+- Neovim の Lua 依存は Homebrew で管理します。package ownership は [セットアップ方針](../setup.md#package-management-philosophy) を参照してください。
+- Raspberry Pi では `luacheck` を mise tool として定義せず、`goimports` も `mise/config.server-pi.toml` で無効にしています。理由は同ファイルの設定コメントを参照してください。

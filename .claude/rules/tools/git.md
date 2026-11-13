@@ -11,7 +11,7 @@ Detailed Reference: See [docs/tools/git.md](../../../docs/tools/git.md) for comp
 
 ## Git configuration
 
-- All tracked configs live in ~/.config/git/. Main files: config (linked to ~/.gitconfig), alias.gitconfig, diff.gitconfig, ghq.gitconfig, optional 1password.gitconfig, attributes, and local.gitconfig sample.
+- The configuration entry point is `git/config`. [`shell/env.sh`](../../../shell/env.sh) sets `GIT_CONFIG_GLOBAL` to `$XDG_CONFIG_HOME/git/config`. Other tracked files include `alias.gitconfig`, `diff.gitconfig`, `ghq.gitconfig`, optional `1password.gitconfig`, attributes, and the `local.gitconfig` sample.
 - Load order (later wins): config -> feature includes (diff/ghq/alias) -> ~/.gitconfig_local.
 - Personal/work overrides belong only in ~/.gitconfig_local. Use `git config --global --add include.path ~/.config/git/1password.gitconfig` if enabling 1Password signing.
-- Verification: `git config --list --show-origin` and `git config user.name` to confirm overrides; dry-run commits to test signing.
+- Verification: `git config --list --show-origin` and `git config user.name` to confirm overrides.
