@@ -57,7 +57,6 @@ cask "notion"
 cask "notion-calendar"
 cask "obsidian"
 cask "ollama-app"
-cask "openvpn-connect"
 cask "postman"
 cask "raycast"
 cask "session-manager-plugin"
@@ -92,7 +91,6 @@ mas "Pages", id: 409201541
 mas "Perplexity", id: 6714467650
 mas "Reeder", id: 1529448980
 mas "Reeder", id: 6475002485
-mas "Tailscale", id: 1475387142
 mas "TestFlight", id: 899247664
 mas "Windows App", id: 1295203466
 mas "Xcode", id: 497799835
