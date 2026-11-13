@@ -34,6 +34,9 @@ describe("ftplugin aliases for LSP-only filetypes", function()
     "sugarss",
     "templ",
     "terraform-vars",
+    "yaml.docker-compose",
+    "yaml.gitlab",
+    "yaml.helm-values",
   }
 
   it("ships runtime alias files for health-check filetypes", function()
