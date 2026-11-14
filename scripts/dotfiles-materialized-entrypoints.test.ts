@@ -5,12 +5,12 @@ import * as fs from "node:fs";
 import { repoFile } from "./repo-file.ts";
 
 describe("dotfiles materialized entrypoints", () => {
-  // aicommits / opencommit は HOME 直下の実ファイルを要求するため、
+  // aicommits は HOME 直下の実ファイルを要求するため、
   // symlink ではなく copy で配布する。配布は mise bootstrap（mise/config.toml [dotfiles]）が担当。
-  it("distributes oco and aic config files via mise dotfiles copy mode", () => {
+  it("distributes the aicommits config file via mise dotfiles copy mode", () => {
     const miseConfig = fs.readFileSync(repoFile("mise", "config.toml"), "utf8");
 
-    for (const target of ["~/.aicommits", "~/.opencommit"]) {
+    for (const target of ["~/.aicommits"]) {
       const entry = miseConfig.split("\n").find((line) => line.trimStart().startsWith(`"${target}"`));
       expect(entry).toBeDefined();
       expect(entry).toContain('mode = "copy"');

@@ -1,6 +1,6 @@
 # 🔐 1Password CLI & Service Accounts
 
-最終更新: 2026-04-09
+最終更新: 2026-11-14
 対象: 開発者
 タグ: `category/configuration`, `tool/1password`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -35,7 +35,7 @@ on-demand 層の使い方:
 
 ```sh
 ws op vault list          # zsh helper（zsh/lib/integrations/secrets.zsh）経由
-ws oco                    # 任意の CLI に注入して実行
+ws aicommits              # 任意の CLI に注入して実行
 dotenvx run -f ~/.config/.env.secrets -- <cmd>   # helper が無い環境での直接形
 ```
 
