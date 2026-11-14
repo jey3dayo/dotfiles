@@ -18,23 +18,13 @@ zoxide = "latest"
 "aqua:evilmartians/lefthook" = "latest"
 
 # Rust Packages
-"cargo:bandwhich" = "latest"
-"cargo:needle-cli" = "0.15.0"
 "cargo:similarity-ts" = "0.5.0"
-"cargo:starship" = "latest"
-"cargo:wrkflw" = "0.8.0"
 
 # NPM Packages
 "npm:@fsouza/prettierd" = "latest"
 "npm:agent-browser" = "latest"
-"npm:dev-browser" = "latest"
 "npm:eslint_d" = "latest"
 "npm:greptile" = "latest"
-"npm:neovim" = "latest"
 "npm:typescript" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
-"npm:zx" = "latest"
 "npm:@google/clasp" = "latest"
-
-# MCP サーバー
-"npm:@playwright/mcp" = "latest"

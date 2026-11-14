@@ -110,6 +110,15 @@ yq = "latest"
 "npm:opencommit" = "latest"
 "npm:tuyapi" = "latest"
 "npm:vibe-kanban" = "latest"
+# Windows では読まれない・使わない（starship は bash/zsh のみ、npm:neovim は nvim が node provider を無効化）
+"cargo:bandwhich" = "latest"
+"cargo:needle-cli" = "0.15.0"
+"cargo:starship" = "latest"
+"cargo:wrkflw" = "0.8.0"
+"npm:@playwright/mcp" = "latest"
+"npm:dev-browser" = "latest"
+"npm:neovim" = "latest"
+"npm:zx" = "latest"
 
 # 自己更新機能を持つ CLI(claude / codex / herdr)は [tools] で管理せず、公式インストーラで導入して
 # 各ツールの自己更新に任せる。mise は未導入時のインストールだけを保証する(方針: .claude/rules/tools/tool-install-policy.md)。
