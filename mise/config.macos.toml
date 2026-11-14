@@ -114,7 +114,6 @@
 "brew:neovim" = "latest"
 "brew:nginx" = "latest"
 "brew:openblas" = "latest"
-"brew:openvpn" = "latest"
 "brew:pam-reattach" = "latest"
 "brew:pango" = "latest"
 "brew:parallel" = "latest"
