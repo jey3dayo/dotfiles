@@ -16,9 +16,6 @@ zoxide = "latest"
 
 # NPM Packages
 "npm:@fsouza/prettierd" = "latest"
-"npm:agent-browser" = "latest"
 "npm:eslint_d" = "latest"
-"npm:greptile" = "latest"
 "npm:typescript" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
-"npm:@google/clasp" = "latest"
