@@ -30,6 +30,8 @@ credential_command = '"$HOME/.mise/installs/github-cli-cli/latest/bin/gh" auth t
 # 重ねる tools: config.interactive.toml / config.dev.toml (loaded via MISE_ENV)
 # Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
 deno = "latest"
+# rustfmt (nvim conform) と cargo:* の build 用
+rust = "stable"
 julia = "latest"
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
 # lua = "5.1.5"
@@ -79,6 +81,7 @@ yq = "latest"
 
 # Rust CLI（typos-lsp は Homebrew で管理）
 "cargo:similarity-css" = "0.5.0"
+"cargo:similarity-ts" = "0.5.0"
 # WSL glibc 不整合対策のため cargo backend (default-features=false) を使用
 "cargo:tree-sitter-cli" = { version = "0.27.2", default-features = "false" }
 
@@ -110,7 +113,9 @@ yq = "latest"
 "npm:opencommit" = "latest"
 "npm:tuyapi" = "latest"
 "npm:vibe-kanban" = "latest"
-# Windows では読まれない・使わない（starship は bash/zsh のみ、npm:neovim は nvim が node provider を無効化）
+# Windows では読まれない・使わない（starship は bash/zsh のみ、npm:neovim は nvim が node provider を無効化、bat / fzf は zsh 用）
+bat = "latest"
+fzf = "latest"
 "cargo:bandwhich" = "latest"
 "cargo:needle-cli" = "0.15.0"
 "cargo:starship" = "latest"

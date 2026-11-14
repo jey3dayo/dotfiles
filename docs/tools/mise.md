@@ -66,7 +66,7 @@ owner: dotfiles
 - [`mise/tasks/`](../../mise/tasks/): 他の repo からも使う task 定義。
 - [`mise/lib/`](../../mise/lib/): task から呼び出す helper scripts。
 
-Windows では `mise run` が tool ごとに PATH へ dir を足すため、tool が増えると cmd の上限（8191 文字）を超え、task 内で `node` などが見つからなくなります。Windows が読む `config.interactive.toml` / `config.dev.toml` には Windows でも使う tool だけを置き、Windows で不要な開発ツールは `config.dev-posix.toml` の Windows 除外区画に置きます。Windows が受け取る tool 数の上限は [`scripts/mise-config.test.ts`](../../scripts/mise-config.test.ts) で検査します。
+Windows では `mise run` が tool ごとに PATH へ dir を足すため、tool が増えると cmd の上限（8191 文字）を超え、task 内で `node` などが見つからなくなります。Windows は pwsh・git・nvim・hooks から呼ぶ tool だけを受け取る最小構成にします。`config.dev.toml` には Windows でも使う tool だけを置き、それ以外は `config.dev-posix.toml` に置きます。Pi も読む `config.interactive.toml` では、Windows で使わない tool に `os = ["linux", "macos"]` を付けて除外します。rust など repo が pin する tool は各 repo の `mise.toml` に任せます。Windows が受け取る tool 数の上限は [`scripts/mise-config.test.ts`](../../scripts/mise-config.test.ts) で検査します。
 
 `mise/tasks/` の global task は外部 repo にも見えるため、cwd 非依存か `dir` を明示し、全ディレクトリに公開する理由があるものに限ります。Task TOML は薄い runner とし、分岐・cleanup・複数 command は `mise/lib/` または `scripts/` に置きます。
 

@@ -1,27 +1,31 @@
 # 読む環境: macOS, Linux/WSL2, Windows, Pi（CI 以外 = 人が使うマシン）。MISE_ENV=interactive
 
 [tools]
+# Windows（pwsh）で使わない・重い tool は os で除外する（PATH 長対策。Pi / macOS / Linux には残る）
 # Language Runtimes
-go = "latest"
+go = { version = "latest", os = ["linux", "macos"] }
 
 # Package Managers
 # pnpm は npm backend の package_manager として必須。loose major pin にし、正確な版は各 repo の package.json packageManager が持つ
 pnpm = "12"
 
 # CLI Tools
-eza = "latest"
+eza = { version = "latest", os = ["linux", "macos"] }
 "github:cli/cli" = "latest"
-"github:pranshuparmar/witr" = "latest"
+"github:pranshuparmar/witr" = { version = "latest", os = ["linux", "macos"] }
 jq = "latest"
-yazi = "latest"
+yazi = { version = "latest", os = ["linux", "macos"] }
 
 # NPM Packages
-"npm:@antfu/ni" = "latest"
+"npm:@antfu/ni" = { version = "latest", os = ["linux", "macos"] }
 "npm:@dotenvx/dotenvx" = "latest"
-"npm:@google/design.md" = "latest"
-"npm:@sasazame/ccresume" = "latest"
-"npm:@upstash/context7-mcp" = "latest"
-"npm:aicommits" = "latest"
-"npm:npm-check-updates" = "latest"
-"npm:textlint" = "latest"
-"npm:textlint-rule-preset-ja-technical-writing" = "latest"
+"npm:@google/design.md" = { version = "latest", os = ["linux", "macos"] }
+"npm:@sasazame/ccresume" = { version = "latest", os = ["linux", "macos"] }
+"npm:@upstash/context7-mcp" = { version = "latest", os = ["linux", "macos"] }
+"npm:aicommits" = { version = "latest", os = ["linux", "macos"] }
+"npm:npm-check-updates" = { version = "latest", os = ["linux", "macos"] }
+"npm:textlint" = { version = "latest", os = ["linux", "macos"] }
+"npm:textlint-rule-preset-ja-technical-writing" = { version = "latest", os = [
+  "linux",
+  "macos",
+] }

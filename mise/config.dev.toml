@@ -1,24 +1,19 @@
 # 読む環境: macOS, Linux/WSL2, Windows（開発機）。MISE_ENV=dev。[tools] のみ
-# Windows も読むため PATH 長（cmd 上限 8191）の上限テスト対象。Windows に不要な tool は config.dev-posix.toml へ
+# Windows も読むため PATH 長（cmd 上限 8191）の上限テスト対象。Windows（pwsh / git / nvim / hooks）で呼ぶ tool だけを置き、
+# それ以外は config.dev-posix.toml へ。rust など repo が pin する tool は各 repo の mise.toml に任せる
 
 [tools]
 # Language Runtimes
 python = "3.15"
-rust = "stable" # rustfmt (nvim conform) and cargo:* tool installs
 
 # CLI Tools
-bat = "latest"
 delta = "latest"
-fzf = "latest"
 lazygit = "latest"
 ripgrep = "latest"
 usage = "latest"
 zoxide = "latest"
 "pipx:apm-cli" = "0.35.1"
 "aqua:evilmartians/lefthook" = "latest"
-
-# Rust Packages
-"cargo:similarity-ts" = "0.5.0"
 
 # NPM Packages
 "npm:@fsouza/prettierd" = "latest"

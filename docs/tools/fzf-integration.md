@@ -57,7 +57,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/fzf-integration.md`](..
 - FZF の既定オプション、ファイル検索、`^]` / `^T` / `^gx` の設定は [`zsh/lib/widgets/fzf.zsh`](../../zsh/lib/widgets/fzf.zsh) にあります。
 - fzf-tab の候補表示設定は [`zsh/lib/widgets/fzf-tab.zsh`](../../zsh/lib/widgets/fzf-tab.zsh) にあります。
 - fzf-git と Git widget の読み込み・キーバインドは [`zsh/lib/widgets/git-widgets.zsh`](../../zsh/lib/widgets/git-widgets.zsh) と [`zsh/sheldon/plugins.toml`](../../zsh/sheldon/plugins.toml) を確認してください。
-- FZF が見つからない場合は `mise install` を実行します。FZF は [mise の開発機向け設定](../../mise/config.dev.toml)で管理します。
+- FZF が見つからない場合は `mise install` を実行します。FZF は [mise の Windows 以外の開発機向け設定](../../mise/config.dev-posix.toml)で管理します。
 - Tab 補完が表示されない場合は fzf-tab の設定と sheldon の plugin 定義を確認し、Zsh を再起動します。
 
 mise と Homebrew のどちらでツールを管理するかは [セットアップ方針](../setup.md#package-management-philosophy) を参照してください。

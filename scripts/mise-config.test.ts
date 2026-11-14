@@ -13,7 +13,7 @@ const interactiveConfig = "config.interactive.toml";
 const allToolsConfig = "conf.d/00-tools-all.toml";
 const bunConfig = "config.bun.toml";
 // cmd の PATH 上限（8191）対策。上げる前に Windows で PATH 長を測り 1,000 文字以上残す
-const WINDOWS_TOOL_BUDGET = 52;
+const WINDOWS_TOOL_BUDGET = 36;
 
 const readTools = (file: string): Map<string, string> => {
   const tools = new Map<string, string>();
@@ -214,7 +214,16 @@ describe("mise config layout and tool isolation", () => {
   // Windows 不要の tool は config.dev-posix.toml の Windows 除外区画へ置く
   it("keeps the Windows tool set within the PATH length budget", () => {
     const windowsConfigs = [allToolsConfig, bunConfig, interactiveConfig, devConfig, "config.dev-windows.toml"];
-    const windowsTools = new Set(windowsConfigs.flatMap((file) => [...readTools(file).keys()]));
+    // os = [...] に windows を含まない tool は Windows では読まれない
+    const runsOnWindows = (value: string) => {
+      const os = value.match(/\bos\s*=\s*\[([^\]]*)\]/);
+      return os === null || os[1]?.includes('"windows"') === true;
+    };
+    const windowsTools = new Set(
+      windowsConfigs.flatMap((file) =>
+        [...readTools(file)].filter(([, value]) => runsOnWindows(value)).map(([key]) => key),
+      ),
+    );
 
     expect(windowsTools.size).toBeLessThanOrEqual(WINDOWS_TOOL_BUDGET);
   });
