@@ -78,7 +78,9 @@ _shell_mise_env_reset() {
     __t=${__rest%%,*}
     __rest=${__rest#*,}
     case "$__t" in
-      "" | macos | bun | shared | workstation | workstation-unix | workstation-windows | server-pi | ci) ;;
+      "" | macos | bun | interactive | dev | dev-posix | dev-windows | server-pi | ci) ;;
+      # 旧トークン（2026-11 改名前）も除去して組み直す
+      shared | workstation | workstation-unix | workstation-windows) ;;
       *) __kept="${__kept:+$__kept,}$__t" ;;
     esac
   done
@@ -101,17 +103,17 @@ _shell_bootstrap_mise_env() {
   # Build MISE_ENV: entry goes last so entry-specific settings win.
   # Uses standard global config discovery (~/.config/mise/config.<env>.toml)
   # CI: bun,ci
-  # Pi: shared,server-pi
-  # macOS: macos,bun,shared,workstation,workstation-unix
-  # Linux/WSL: bun,shared,workstation,workstation-unix
-  # Windows: bun,shared,workstation,workstation-windows
+  # Pi: interactive,server-pi
+  # macOS: macos,bun,interactive,dev,dev-posix
+  # Linux/WSL: bun,interactive,dev,dev-posix
+  # Windows: bun,interactive,dev,dev-windows
   case "$environment" in
     ci)
       _shell_mise_env_append bun
       _shell_mise_env_append ci
       ;;
     pi)
-      _shell_mise_env_append shared
+      _shell_mise_env_append interactive
       _shell_mise_env_append server-pi
       ;;
     default)
@@ -131,15 +133,15 @@ _shell_bootstrap_mise_env() {
           _shell_mise_env_append bun
           ;;
       esac
-      _shell_mise_env_append shared
-      _shell_mise_env_append workstation
-      _shell_mise_env_append workstation-unix
+      _shell_mise_env_append interactive
+      _shell_mise_env_append dev
+      _shell_mise_env_append dev-posix
       ;;
     windows)
       _shell_mise_env_append bun
-      _shell_mise_env_append shared
-      _shell_mise_env_append workstation
-      _shell_mise_env_append workstation-windows
+      _shell_mise_env_append interactive
+      _shell_mise_env_append dev
+      _shell_mise_env_append dev-windows
       ;;
   esac
 

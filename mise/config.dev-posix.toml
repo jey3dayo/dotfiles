@@ -1,4 +1,4 @@
-# macOS/Linux/WSL2 ワークステーション固有の settings と tools (MISE_ENV で最後に選択して優先)
+# 読む環境: macOS, Linux/WSL2（Windows 以外の開発機）。MISE_ENV=dev-posix（最後に選択して settings を優先）
 
 [settings]
 # entry 固有 settings（共通 settings は config.toml）
@@ -26,8 +26,8 @@ trusted_config_paths = [
 credential_command = '"$HOME/.mise/installs/github-cli-cli/latest/bin/gh" auth token --hostname "$MISE_CREDENTIAL_HOST"'
 
 [tools]
-# 共通 tools: conf.d/00-tools-common.toml
-# Shared tools: config.shared.toml / config.workstation.toml (loaded via MISE_ENV)
+# 共通 tools: conf.d/00-tools-all.toml
+# 重ねる tools: config.interactive.toml / config.dev.toml (loaded via MISE_ENV)
 # Language Runtimes（システム依存関係用の Node.js/Python は Homebrew で管理）
 deno = "latest"
 julia = "latest"
@@ -93,6 +93,23 @@ yq = "latest"
 "npm:dbdocs" = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
+
+# Windows 除外: PATH 長（cmd 上限 8191）対策で Windows に入れない tools
+"npm:@aikidosec/safe-chain" = "latest"
+"npm:@benborla29/mcp-server-mysql" = "latest"
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"
+"npm:@modelcontextprotocol/server-filesystem" = "latest"
+"npm:@typescript-eslint/eslint-plugin" = "latest"
+"npm:aws-cdk" = "latest"
+"npm:difit" = "latest"
+"npm:esbuild" = "latest"
+"npm:exa-mcp-server" = "latest"
+"npm:npm" = "latest"
+"npm:o3-search-mcp" = "latest"
+"npm:opencommit" = "latest"
+"npm:tuyapi" = "latest"
+"npm:vibe-kanban" = "latest"
 
 # 自己更新機能を持つ CLI(claude / codex / herdr)は [tools] で管理せず、公式インストーラで導入して
 # 各ツールの自己更新に任せる。mise は未導入時のインストールだけを保証する(方針: .claude/rules/tools/tool-install-policy.md)。

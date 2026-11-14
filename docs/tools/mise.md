@@ -9,14 +9,14 @@ tags:
   - tool/mise
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-13
+timestamp: 2026-11-14
 audience: developer
 owner: dotfiles
 ---
 
 # Mise Reference
 
-最終更新: 2026-11-13
+最終更新: 2026-11-14
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -30,25 +30,43 @@ owner: dotfiles
 
 `MISE_CONFIG_FILE` / `MISE_GLOBAL_CONFIG_FILE` は使いません。設定探索を単一ファイルに置き換え、環境別設定を読めなくするためです。`shell/env.sh` でも両変数を解除しています。
 
-| 環境         | `MISE_ENV`                                      |
-| ------------ | ----------------------------------------------- |
-| macOS        | `macos,bun,shared,workstation,workstation-unix` |
-| Linux / WSL2 | `bun,shared,workstation,workstation-unix`       |
-| Raspberry Pi | `shared,server-pi`                              |
-| Windows      | `bun,shared,workstation,workstation-windows`    |
-| CI           | `bun,ci`                                        |
+| 環境         | `MISE_ENV`                            |
+| ------------ | ------------------------------------- |
+| macOS        | `macos,bun,interactive,dev,dev-posix` |
+| Linux / WSL2 | `bun,interactive,dev,dev-posix`       |
+| Raspberry Pi | `interactive,server-pi`               |
+| Windows      | `bun,interactive,dev,dev-windows`     |
+| CI           | `bun,ci`                              |
+
+ファイル名は「どの環境が読むか」を表します。tool は、それを必要とする環境だけが読むファイルに置きます。
+
+| ファイル                   | 読む環境                  | macOS | Linux / WSL2 | Windows | Pi  | CI  |
+| -------------------------- | ------------------------- | :---: | :----------: | :-----: | :-: | :-: |
+| `conf.d/00-tools-all.toml` | すべて                    |  ✅   |      ✅      |   ✅    | ✅  | ✅  |
+| `config.bun.toml`          | Pi 以外                   |  ✅   |      ✅      |   ✅    |  —  | ✅  |
+| `config.interactive.toml`  | CI 以外（人が使うマシン） |  ✅   |      ✅      |   ✅    | ✅  |  —  |
+| `config.dev.toml`          | 開発機（Windows を含む）  |  ✅   |      ✅      |   ✅    |  —  |  —  |
+| `config.dev-posix.toml`    | Windows 以外の開発機      |  ✅   |      ✅      |    —    |  —  |  —  |
+| `config.dev-windows.toml`  | Windows                   |   —   |      —       |   ✅    |  —  |  —  |
+| `config.macos.toml`        | macOS                     |  ✅   |      —       |    —    |  —  |  —  |
+| `config.server-pi.toml`    | Pi                        |   —   |      —       |    —    | ✅  |  —  |
+| `config.ci.toml`           | CI                        |   —   |      —       |    —    |  —  | ✅  |
+
+2026-11 に `shared` → `interactive`、`workstation` → `dev`、`workstation-unix` → `dev-posix`、`workstation-windows` → `dev-windows`、`conf.d/00-tools-common.toml` → `conf.d/00-tools-all.toml` へ改名しました。shell / PowerShell の起動処理は旧トークンも除去して `MISE_ENV` を組み直すため、新しいシェルを開けば移行できます。macOS の GUI アプリ向けの値は `mise bootstrap` を再実行して更新します。
 
 環境の判定と選択順は [`shell/env.sh`](../../shell/env.sh) と [`windows/setup.ps1`](../../windows/setup.ps1) にあります。
 
 設定は次の役割に分かれています。
 
 - [`mise/config.toml`](../../mise/config.toml): 共通 settings、env、OS 共通 dotfiles。`[tools]` は置かず、OS 間で値が異なる設定も各 OS 別ファイルに置きます。
-- [`mise/conf.d/00-tools-common.toml`](../../mise/conf.d/00-tools-common.toml): すべての環境で共通する tools。
+- [`mise/conf.d/00-tools-all.toml`](../../mise/conf.d/00-tools-all.toml): すべての環境で共通する tools。
 - `mise/config.*.toml`: `MISE_ENV` で選ぶ OS・役割ごとの tools や設定。
 - [`.mise.toml`](../../.mise.toml): この repo 専用の tool pin と task include。
 - [`mise/local-tasks/`](../../mise/local-tasks/): この repo 専用の task 定義。PC メンテナンス、資格情報に依存する処理、破壊的な task family はここに置きます。
 - [`mise/tasks/`](../../mise/tasks/): 他の repo からも使う task 定義。
 - [`mise/lib/`](../../mise/lib/): task から呼び出す helper scripts。
+
+Windows では `mise run` が tool ごとに PATH へ dir を足すため、tool が増えると cmd の上限（8191 文字）を超え、task 内で `node` などが見つからなくなります。Windows が読む `config.interactive.toml` / `config.dev.toml` には Windows でも使う tool だけを置き、Windows で不要な開発ツールは `config.dev-posix.toml` の Windows 除外区画に置きます。Windows が受け取る tool 数の上限は [`scripts/mise-config.test.ts`](../../scripts/mise-config.test.ts) で検査します。
 
 `mise/tasks/` の global task は外部 repo にも見えるため、cwd 非依存か `dir` を明示し、全ディレクトリに公開する理由があるものに限ります。Task TOML は薄い runner とし、分岐・cleanup・複数 command は `mise/lib/` または `scripts/` に置きます。
 

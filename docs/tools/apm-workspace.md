@@ -38,4 +38,4 @@ mise run doctor       # 配布状態と learning-intake を確認する
 
 ## APM CLI
 
-APM CLI は `pipx:apm-cli` として mise で pin します。`.config` 側は `mise/config.workstation.toml`、apm-workspace 側は checkout の `mise.toml` が pin を持ちます。
+APM CLI は `pipx:apm-cli` として mise で pin します。`.config` 側は `mise/config.dev.toml`、apm-workspace 側は checkout の `mise.toml` が pin を持ちます。

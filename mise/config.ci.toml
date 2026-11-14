@@ -1,4 +1,4 @@
-# CI 固有の settings と tools (MISE_ENV=bun,ci のみ; shared/workstation tools は含まない)
+# 読む環境: CI。MISE_ENV=bun,ci（interactive / dev は読まない）
 
 [settings]
 # entry 固有 settings（共通 settings は config.toml）
@@ -17,6 +17,6 @@ MD_EXCLUDES = "#node_modules #fisher #zsh/.zinit #.worktrees #.apm/skills #.clau
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 [tools]
-# 共通 tools: conf.d/00-tools-common.toml
+# 共通 tools: conf.d/00-tools-all.toml
 # bun: config.bun.toml (via MISE_ENV)
 # CI 専用 tools はなし（共通 tools と repo ルートの .mise.toml で充足）

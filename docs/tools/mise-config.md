@@ -9,14 +9,14 @@ tags:
   - tool/mise
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-13
+timestamp: 2026-11-14
 audience: developer
 owner: dotfiles
 ---
 
 # Mise Configuration Reference
 
-最終更新: 2026-11-13
+最終更新: 2026-11-14
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -24,16 +24,18 @@ owner: dotfiles
 
 ## Configuration Files
 
-- machine-specific config: [`config.workstation-unix.toml`](../../mise/config.workstation-unix.toml)、`config.workstation-windows.toml`、[`config.server-pi.toml`](../../mise/config.server-pi.toml)、[`config.ci.toml`](../../mise/config.ci.toml)
-- overlays: [`config.shared.toml`](../../mise/config.shared.toml)、[`config.workstation.toml`](../../mise/config.workstation.toml)
-- 全環境共通 tools: [`conf.d/00-tools-common.toml`](../../mise/conf.d/00-tools-common.toml)
+各ファイルを読む環境の対応表は [Mise Reference](mise.md#configuration-structure) にあります。
+
+- 環境別 entry（settings を持つ）: [`config.dev-posix.toml`](../../mise/config.dev-posix.toml)、[`config.dev-windows.toml`](../../mise/config.dev-windows.toml)、[`config.server-pi.toml`](../../mise/config.server-pi.toml)、[`config.ci.toml`](../../mise/config.ci.toml)
+- 重ねる tools: [`config.interactive.toml`](../../mise/config.interactive.toml)、[`config.dev.toml`](../../mise/config.dev.toml)、[`config.bun.toml`](../../mise/config.bun.toml)
+- 全環境共通 tools: [`conf.d/00-tools-all.toml`](../../mise/conf.d/00-tools-all.toml)
 - repo 固有の lint / CI tools: [`.mise.toml`](../../.mise.toml)
 
 ## Pins and Backend Choices
 
 ### jactionlint
 
-Breaking changes に備えて version を固定し、更新時に attestation を確認します。定義は [`mise/conf.d/00-tools-common.toml`](../../mise/conf.d/00-tools-common.toml) にあります。
+Breaking changes に備えて version を固定し、更新時に attestation を確認します。定義は [`mise/conf.d/00-tools-all.toml`](../../mise/conf.d/00-tools-all.toml) にあります。
 
 ### gh-actions-lock
 
@@ -46,7 +48,7 @@ Breaking changes に備えて version を固定し、更新時に attestation �
 
 ### tree-sitter-cli
 
-WSL の glibc 不整合に対応するため cargo backend を使い、不要な default features を無効にします。設定は [`mise/config.workstation-unix.toml`](../../mise/config.workstation-unix.toml) にあります。
+WSL の glibc 不整合に対応するため cargo backend を使い、不要な default features を無効にします。設定は [`mise/config.dev-posix.toml`](../../mise/config.dev-posix.toml) にあります。
 
 ## Environment-specific Exceptions
 
