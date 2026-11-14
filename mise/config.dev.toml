@@ -7,7 +7,6 @@ python = "3.15"
 
 # CLI Tools
 delta = "latest"
-lazygit = "latest"
 ripgrep = "latest"
 zoxide = "latest"
 "pipx:apm-cli" = "0.35.1"
