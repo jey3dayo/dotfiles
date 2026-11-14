@@ -2,11 +2,11 @@
 #
 # MISE_ENV selects machine type and overlays (entry goes last so entry settings win).
 # Uses standard global config discovery (~/.config/mise/config.<env>.toml).
-# Windows: bun,shared,workstation,workstation-windows
+# Windows: bun,interactive,dev,dev-windows
 Remove-Item Env:MISE_CONFIG_FILE, Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
-$managedMiseTokens = @("macos", "bun", "shared", "workstation", "workstation-unix", "workstation-windows", "server-pi", "ci")
+$managedMiseTokens = @("macos", "bun", "interactive", "dev", "dev-posix", "dev-windows", "server-pi", "ci", "shared", "workstation", "workstation-unix", "workstation-windows")
 $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ -and ($managedMiseTokens -notcontains $_) })
-foreach ($requiredToken in @("bun", "shared", "workstation", "workstation-windows")) {
+foreach ($requiredToken in @("bun", "interactive", "dev", "dev-windows")) {
   if ($miseEnvironmentTokens -notcontains $requiredToken) {
     $miseEnvironmentTokens += $requiredToken
   }

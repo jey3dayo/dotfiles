@@ -31,7 +31,9 @@ else
   local __t
   for __t in ${(s:,:)MISE_ENV:-}; do
     case "$__t" in
-      macos|bun|shared|workstation|workstation-unix|workstation-windows|server-pi|ci) ;;
+      macos|bun|interactive|dev|dev-posix|dev-windows|server-pi|ci) ;;
+      # 旧トークン（2026-11 改名前）も除去して組み直す
+      shared|workstation|workstation-unix|workstation-windows) ;;
       *) __kept+=("$__t") ;;
     esac
   done
@@ -44,12 +46,12 @@ else
     esac
   }
   # Same selection as shell/env.sh (entry last wins):
-  # CI: bun,ci / Pi: shared,server-pi / default: [macos,]bun,shared,workstation,workstation-unix
+  # CI: bun,ci / Pi: interactive,server-pi / default: [macos,]bun,interactive,dev,dev-posix
   if [ -n "${CI:-}" ] || [ -n "${GITHUB_ACTIONS:-}" ]; then
     _append_mise_env bun
     _append_mise_env ci
   elif grep -qsE 'Raspberry Pi|BCM27|BCM283' /proc/cpuinfo; then
-    _append_mise_env shared
+    _append_mise_env interactive
     _append_mise_env server-pi
   else
     # shellcheck disable=SC3028
@@ -57,9 +59,9 @@ else
       darwin*) _append_mise_env macos ;;
     esac
     _append_mise_env bun
-    _append_mise_env shared
-    _append_mise_env workstation
-    _append_mise_env workstation-unix
+    _append_mise_env interactive
+    _append_mise_env dev
+    _append_mise_env dev-posix
   fi
   export XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME
   export ZDOTDIR GIT_CONFIG_GLOBAL MISE_DATA_DIR MISE_CACHE_DIR MISE_CONFIG_DIR MISE_ENV

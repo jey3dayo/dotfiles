@@ -1,5 +1,4 @@
-# macOS/Linux/WSL2、Windows、Raspberry Pi の共通 tools（全環境共通の tools は conf.d/00-tools-common.toml）
-# MISE_ENV に shared が含まれる環境だけでロードする。
+# 読む環境: macOS, Linux/WSL2, Windows, Pi（CI 以外 = 人が使うマシン）。MISE_ENV=interactive
 
 [tools]
 # Language Runtimes

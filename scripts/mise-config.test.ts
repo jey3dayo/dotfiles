@@ -7,15 +7,10 @@ import * as path from "node:path";
 import { repoFile, repoRoot } from "./repo-file.ts";
 
 const configDir = repoFile("mise");
-const entryConfigs = [
-  "config.workstation-unix.toml",
-  "config.workstation-windows.toml",
-  "config.server-pi.toml",
-  "config.ci.toml",
-];
-const workstationConfig = "config.workstation.toml";
-const sharedConfig = "config.shared.toml";
-const commonToolsConfig = "conf.d/00-tools-common.toml";
+const entryConfigs = ["config.dev-posix.toml", "config.dev-windows.toml", "config.server-pi.toml", "config.ci.toml"];
+const devConfig = "config.dev.toml";
+const interactiveConfig = "config.interactive.toml";
+const allToolsConfig = "conf.d/00-tools-all.toml";
 const bunConfig = "config.bun.toml";
 // cmd の PATH 上限（8191）対策。上げる前に Windows で PATH 長を測り 1,000 文字以上残す
 const WINDOWS_TOOL_BUDGET = 60;
@@ -100,7 +95,7 @@ describe("mise config layout and tool isolation", () => {
   it("publishes the correct MISE_ENV to GUI applications (entry goes last)", () => {
     const macosConfig = fs.readFileSync(path.join(configDir, "config.macos.toml"), "utf8");
 
-    expect(macosConfig).toContain('launchctl setenv MISE_ENV "macos,bun,shared,workstation,workstation-unix"');
+    expect(macosConfig).toContain('launchctl setenv MISE_ENV "macos,bun,interactive,dev,dev-posix"');
     expect(macosConfig).not.toMatch(/(^|\s)launchctl setenv MISE_(GLOBAL_)?CONFIG_FILE/m);
   });
 
@@ -108,14 +103,14 @@ describe("mise config layout and tool isolation", () => {
     expect(readTools("config.toml")).toEqual(new Map());
   });
 
-  it("defines common tools only in conf.d/00-tools-common.toml", () => {
-    const commonTools = readTools(commonToolsConfig);
-    expect(commonTools.size).toBeGreaterThan(0);
-    expect(commonTools.has("node")).toBe(true);
-    expect(commonTools.has("github:astral-sh/uv")).toBe(true);
-    expect(commonTools.has("shellcheck")).toBe(true);
-    expect(commonTools.has("shfmt")).toBe(true);
-    expect(commonTools.has("yamllint")).toBe(true);
+  it("defines common tools only in conf.d/00-tools-all.toml", () => {
+    const allTools = readTools(allToolsConfig);
+    expect(allTools.size).toBeGreaterThan(0);
+    expect(allTools.has("node")).toBe(true);
+    expect(allTools.has("github:astral-sh/uv")).toBe(true);
+    expect(allTools.has("shellcheck")).toBe(true);
+    expect(allTools.has("shfmt")).toBe(true);
+    expect(allTools.has("yamllint")).toBe(true);
   });
 
   it("defines bun only in config.bun.toml", () => {
@@ -136,22 +131,22 @@ describe("mise config layout and tool isolation", () => {
     }
   });
 
-  it("keeps common tools out of shared, workstation, and entry configs", () => {
-    const commonTools = readTools(commonToolsConfig);
-    const otherConfigs = [sharedConfig, workstationConfig, ...entryConfigs];
+  it("keeps common tools out of interactive, dev, and entry configs", () => {
+    const allTools = readTools(allToolsConfig);
+    const otherConfigs = [interactiveConfig, devConfig, ...entryConfigs];
 
     for (const file of otherConfigs) {
       const tools = readTools(file);
-      for (const key of commonTools.keys()) {
+      for (const key of allTools.keys()) {
         if (tools.has(key)) {
-          throw new Error(`${key} should not be in ${file} (it's in ${commonToolsConfig})`);
+          throw new Error(`${key} should not be in ${file} (it's in ${allToolsConfig})`);
         }
       }
     }
   });
 
-  it("keeps bun out of shared, workstation, and entry configs", () => {
-    const otherConfigs = [sharedConfig, workstationConfig, ...entryConfigs];
+  it("keeps bun out of interactive, dev, and entry configs", () => {
+    const otherConfigs = [interactiveConfig, devConfig, ...entryConfigs];
 
     for (const file of otherConfigs) {
       const tools = readTools(file);
@@ -161,23 +156,23 @@ describe("mise config layout and tool isolation", () => {
     }
   });
 
-  it("keeps workstation tools out of shared and entry configs", () => {
-    const workstationTools = readTools(workstationConfig);
-    const otherConfigs = [sharedConfig, ...entryConfigs];
+  it("keeps dev tools out of interactive and entry configs", () => {
+    const devTools = readTools(devConfig);
+    const otherConfigs = [interactiveConfig, ...entryConfigs];
 
     for (const file of otherConfigs) {
       const tools = readTools(file);
-      for (const key of workstationTools.keys()) {
+      for (const key of devTools.keys()) {
         if (tools.has(key)) {
-          throw new Error(`${key} should not be in ${file} (it's in ${workstationConfig})`);
+          throw new Error(`${key} should not be in ${file} (it's in ${devConfig})`);
         }
       }
     }
   });
 
-  it("keeps config.workstation.toml tools-only", () => {
+  it("keeps config.dev.toml tools-only", () => {
     const sections = fs
-      .readFileSync(path.join(configDir, workstationConfig), "utf8")
+      .readFileSync(path.join(configDir, devConfig), "utf8")
       .split("\n")
       .map((line) => line.trim())
       .filter((line) => line.startsWith("[") && line.endsWith("]"));
@@ -185,106 +180,100 @@ describe("mise config layout and tool isolation", () => {
     expect(sections).toEqual(["[tools]"]);
   });
 
-  it("keeps shared tools out of the entry configs", () => {
-    const sharedTools = readTools(sharedConfig);
+  it("keeps interactive tools out of the entry configs", () => {
+    const interactiveTools = readTools(interactiveConfig);
 
-    expect(sharedTools.size).toBeGreaterThan(0);
+    expect(interactiveTools.size).toBeGreaterThan(0);
     for (const file of entryConfigs) {
       const tools = readTools(file);
-      for (const key of sharedTools.keys()) {
+      for (const key of interactiveTools.keys()) {
         if (tools.has(key)) {
-          throw new Error(`${key} should not be in ${file} (it's in ${sharedConfig})`);
+          throw new Error(`${key} should not be in ${file} (it's in ${interactiveConfig})`);
         }
       }
     }
   });
 
-  it("keeps CI config isolated (no shared or workstation tools)", () => {
+  it("keeps CI config isolated (no interactive or dev tools)", () => {
     const ciTools = readTools("config.ci.toml");
-    const sharedTools = readTools(sharedConfig);
-    const workstationTools = readTools(workstationConfig);
+    const interactiveTools = readTools(interactiveConfig);
+    const devTools = readTools(devConfig);
 
-    for (const key of sharedTools.keys()) {
+    for (const key of interactiveTools.keys()) {
       if (ciTools.has(key)) {
-        throw new Error(`${key} from shared should not be in CI config`);
+        throw new Error(`${key} from interactive should not be in CI config`);
       }
     }
-    for (const key of workstationTools.keys()) {
+    for (const key of devTools.keys()) {
       if (ciTools.has(key)) {
-        throw new Error(`${key} from workstation should not be in CI config`);
+        throw new Error(`${key} from dev should not be in CI config`);
       }
     }
   });
 
-  // Windows 不要の tool は config.workstation-unix.toml の Windows 除外区画へ置く
+  // Windows 不要の tool は config.dev-posix.toml の Windows 除外区画へ置く
   it("keeps the Windows tool set within the PATH length budget", () => {
-    const windowsConfigs = [
-      commonToolsConfig,
-      bunConfig,
-      sharedConfig,
-      workstationConfig,
-      "config.workstation-windows.toml",
-    ];
+    const windowsConfigs = [allToolsConfig, bunConfig, interactiveConfig, devConfig, "config.dev-windows.toml"];
     const windowsTools = new Set(windowsConfigs.flatMap((file) => [...readTools(file).keys()]));
 
     expect(windowsTools.size).toBeLessThanOrEqual(WINDOWS_TOOL_BUDGET);
   });
 
   it("discovers config from $HOME (entry goes last so entry settings win)", () => {
-    const paths = configPaths({ MISE_ENV: "bun,shared,workstation,workstation-unix" }, repoRoot);
+    const paths = configPaths({ MISE_ENV: "bun,interactive,dev,dev-posix" }, repoRoot);
 
     expect(hasConfig(paths, "config.toml")).toBe(true);
-    expect(hasConfig(paths, commonToolsConfig)).toBe(true);
+    expect(hasConfig(paths, allToolsConfig)).toBe(true);
     expect(hasConfig(paths, bunConfig)).toBe(true);
-    expect(hasConfig(paths, sharedConfig)).toBe(true);
-    expect(hasConfig(paths, workstationConfig)).toBe(true);
-    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
+    expect(hasConfig(paths, interactiveConfig)).toBe(true);
+    expect(hasConfig(paths, devConfig)).toBe(true);
+    expect(hasConfig(paths, "config.dev-posix.toml")).toBe(true);
   });
 
   it("loads macOS overlay when selected", () => {
-    const paths = configPaths({ MISE_ENV: "macos,bun,shared,workstation,workstation-unix" });
+    const paths = configPaths({ MISE_ENV: "macos,bun,interactive,dev,dev-posix" });
 
     expect(hasConfig(paths, "config.macos.toml")).toBe(true);
     expect(hasConfig(paths, bunConfig)).toBe(true);
-    expect(hasConfig(paths, sharedConfig)).toBe(true);
-    expect(hasConfig(paths, workstationConfig)).toBe(true);
-    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(true);
+    expect(hasConfig(paths, interactiveConfig)).toBe(true);
+    expect(hasConfig(paths, devConfig)).toBe(true);
+    expect(hasConfig(paths, "config.dev-posix.toml")).toBe(true);
   });
 
-  it("loads server-pi with shared (no bun, no workstation)", () => {
-    const paths = configPaths({ MISE_ENV: "shared,server-pi" });
+  it("loads server-pi with interactive (no bun, no dev)", () => {
+    const paths = configPaths({ MISE_ENV: "interactive,server-pi" });
 
     expect(hasConfig(paths, "config.server-pi.toml")).toBe(true);
-    expect(hasConfig(paths, sharedConfig)).toBe(true);
+    expect(hasConfig(paths, interactiveConfig)).toBe(true);
     expect(hasConfig(paths, bunConfig)).toBe(false);
-    expect(hasConfig(paths, workstationConfig)).toBe(false);
+    expect(hasConfig(paths, devConfig)).toBe(false);
     expect(readTools("config.server-pi.toml").has("hadolint")).toBe(false);
   });
 
   it("loads Windows overlays (entry goes last)", () => {
-    const paths = configPaths({ MISE_ENV: "bun,shared,workstation,workstation-windows" });
+    const paths = configPaths({ MISE_ENV: "bun,interactive,dev,dev-windows" });
 
-    expect(hasConfig(paths, "config.workstation-windows.toml")).toBe(true);
+    expect(hasConfig(paths, "config.dev-windows.toml")).toBe(true);
     expect(hasConfig(paths, bunConfig)).toBe(true);
-    expect(hasConfig(paths, sharedConfig)).toBe(true);
-    expect(hasConfig(paths, workstationConfig)).toBe(true);
+    expect(hasConfig(paths, interactiveConfig)).toBe(true);
+    expect(hasConfig(paths, devConfig)).toBe(true);
   });
 
-  it("keeps CI isolated (bun,ci only; no shared, no workstation)", () => {
+  it("keeps CI isolated (bun,ci only; no interactive, no dev)", () => {
     const paths = configPaths({ MISE_ENV: "bun,ci" });
 
     expect(hasConfig(paths, "config.ci.toml")).toBe(true);
     expect(hasConfig(paths, bunConfig)).toBe(true);
-    expect(hasConfig(paths, commonToolsConfig)).toBe(true);
-    expect(hasConfig(paths, "config.workstation-unix.toml")).toBe(false);
-    expect(hasConfig(paths, sharedConfig)).toBe(false);
-    expect(hasConfig(paths, workstationConfig)).toBe(false);
+    expect(hasConfig(paths, allToolsConfig)).toBe(true);
+    expect(hasConfig(paths, "config.dev-posix.toml")).toBe(false);
+    expect(hasConfig(paths, interactiveConfig)).toBe(false);
+    expect(hasConfig(paths, devConfig)).toBe(false);
   });
 
   it("applies entry-specific jobs setting (Unix=8, CI=4, Pi=2)", () => {
-    const unixSettings = settingsFrom({ MISE_ENV: "bun,shared,workstation,workstation-unix" });
+    const unixSettings = settingsFrom({ MISE_ENV: "bun,interactive,dev,dev-posix" });
     const ciSettings = settingsFrom({ MISE_ENV: "bun,ci" });
-    const piSettings = settingsFrom({ MISE_ENV: "shared,server-pi" });
+    const piSettings = settingsFrom({ MISE_ENV: "interactive,server-pi" });
 
     expect(unixSettings.get("jobs")?.value).toBe("8");
     expect(ciSettings.get("jobs")?.value).toBe("4");
@@ -293,8 +282,8 @@ describe("mise config layout and tool isolation", () => {
 
   it("uses config.<machine>.toml naming (no entry.* files)", () => {
     const machineConfigs = [
-      "config.workstation-unix.toml",
-      "config.workstation-windows.toml",
+      "config.dev-posix.toml",
+      "config.dev-windows.toml",
       "config.server-pi.toml",
       "config.ci.toml",
     ];
@@ -303,6 +292,11 @@ describe("mise config layout and tool isolation", () => {
       "entry.workstation-windows.toml",
       "entry.server-pi.toml",
       "entry.ci.toml",
+      "config.shared.toml",
+      "config.workstation.toml",
+      "config.workstation-unix.toml",
+      "config.workstation-windows.toml",
+      "conf.d/00-tools-common.toml",
     ];
 
     for (const file of machineConfigs) {
@@ -317,8 +311,8 @@ describe("mise config layout and tool isolation", () => {
     }
   });
 
-  it("creates conf.d/00-tools-common.toml for common tools", () => {
-    expect(fs.existsSync(path.join(configDir, commonToolsConfig))).toBe(true);
+  it("creates conf.d/00-tools-all.toml for common tools", () => {
+    expect(fs.existsSync(path.join(configDir, allToolsConfig))).toBe(true);
   });
 
   it("creates config.bun.toml for bun", () => {

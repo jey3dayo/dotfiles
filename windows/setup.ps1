@@ -120,7 +120,7 @@ function Ensure-StandaloneCli {
 
 $repoRoot = Get-RepoRoot
 $installScript = Join-Path $PSScriptRoot "chocolatey\install.ps1"
-$windowsMiseConfig = Join-Path $repoRoot "mise\config.workstation-windows.toml"
+$windowsMiseConfig = Join-Path $repoRoot "mise\config.dev-windows.toml"
 
 Ensure-PowerShellProfileBridges
 
@@ -148,10 +148,10 @@ if (-not (Test-Path -LiteralPath $windowsMiseConfig)) {
 }
 
 Remove-Item Env:MISE_CONFIG_FILE, Env:MISE_GLOBAL_CONFIG_FILE -ErrorAction SilentlyContinue
-$managedMiseTokens = @("macos", "bun", "shared", "workstation", "workstation-unix", "workstation-windows", "server-pi", "ci")
+$managedMiseTokens = @("macos", "bun", "interactive", "dev", "dev-posix", "dev-windows", "server-pi", "ci", "shared", "workstation", "workstation-unix", "workstation-windows")
 $miseEnvironmentTokens = @($env:MISE_ENV -split "," | Where-Object { $_ -and ($managedMiseTokens -notcontains $_) })
-# Windows: bun,shared,workstation,workstation-windows (entry goes last so entry settings win)
-foreach ($requiredToken in @("bun", "shared", "workstation", "workstation-windows")) {
+# Windows: bun,interactive,dev,dev-windows (entry goes last so entry settings win)
+foreach ($requiredToken in @("bun", "interactive", "dev", "dev-windows")) {
   if ($miseEnvironmentTokens -notcontains $requiredToken) {
     $miseEnvironmentTokens += $requiredToken
   }

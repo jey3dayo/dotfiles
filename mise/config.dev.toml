@@ -1,4 +1,5 @@
-# Pi / CI 以外の開発機(macOS/Linux/WSL2 と Windows)共通の tools。MISE_ENV に workstation が含まれる環境だけでロードする。settings/env は置かず [tools] のみ
+# 読む環境: macOS, Linux/WSL2, Windows（開発機）。MISE_ENV=dev。[tools] のみ
+# Windows も読むため PATH 長（cmd 上限 8191）の上限テスト対象。Windows に不要な tool は config.dev-posix.toml へ
 
 [tools]
 # Language Runtimes

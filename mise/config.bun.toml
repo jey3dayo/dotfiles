@@ -1,4 +1,4 @@
-# bun は Pi 以外のすべての環境で使用（MISE_ENV=bun で選択）
+# 読む環境: macOS, Linux/WSL2, Windows, CI（Pi 以外）。MISE_ENV=bun
 
 [tools]
 bun = "latest"

@@ -1,4 +1,4 @@
-# Windows ワークステーション固有の settings と tools (MISE_ENV で最後に選択して優先)
+# 読む環境: Windows。MISE_ENV=dev-windows（最後に選択して settings を優先）
 
 [settings]
 # entry 固有 settings（共通 settings は config.toml）
@@ -14,5 +14,5 @@ MD_EXCLUDES = "#node_modules #.worktrees #.apm/skills #.claude/skills #.claude/w
 TASK_EXCLUDES = "--exclude .worktrees --exclude .apm/skills --exclude .claude/skills --exclude .claude/worktrees --exclude .codex/skills --exclude result --exclude tmp --exclude .luarocks --exclude .kiro --exclude opencode/agents --exclude opencode/commands --exclude apm.lock.yaml --exclude codexbar"
 
 [tools]
-# 共通 tools: conf.d/00-tools-common.toml（shellcheck / shfmt / yamllint は registry が Windows でも aqua / pipx に解決する）
-# Shared tools: config.shared.toml / config.workstation.toml (via MISE_ENV)
+# 共通 tools: conf.d/00-tools-all.toml（shellcheck / shfmt / yamllint は registry が Windows でも aqua / pipx に解決する）
+# 重ねる tools: config.interactive.toml / config.dev.toml (via MISE_ENV)

@@ -1,4 +1,4 @@
-# 全環境共通の tools（CI, Pi, Windows, Unix すべて）
+# 読む環境: すべて（macOS, Linux/WSL2, Windows, Pi, CI）。CI でも使う tools
 # mise は conf.d/ 配下を辞書順でロードするため 00- prefix で優先度を制御
 
 [tools]

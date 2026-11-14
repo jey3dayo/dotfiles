@@ -1,4 +1,4 @@
-# Raspberry Pi サーバー固有の settings と tools (MISE_ENV で最後に選択して優先)
+# 読む環境: Raspberry Pi。MISE_ENV=server-pi（最後に選択して settings を優先）
 
 [settings]
 # entry 固有 settings（共通 settings は config.toml）
@@ -7,8 +7,8 @@ idiomatic_version_file_enable_tools = []
 trusted_config_paths = ["~/.config", "~/src/github.com"]
 
 [tools]
-# 共通 tools: conf.d/00-tools-common.toml
-# Shared tools: config.shared.toml (via MISE_ENV)
+# 共通 tools: conf.d/00-tools-all.toml
+# 重ねる tools: config.interactive.toml (via MISE_ENV)
 # Language Runtimes
 # Python は mise で管理しない。uv が必要に応じて python-build-standalone を取得する
 # FIXME: Temporarily disabled due to luarocks 3.13.0 rockspec parsing issues in CI
