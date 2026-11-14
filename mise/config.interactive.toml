@@ -1,7 +1,7 @@
 # 読む環境: macOS, Linux/WSL2, Windows, Pi（CI 以外 = 人が使うマシン）。MISE_ENV=interactive
 
 [tools]
-# Windows（pwsh）で使わない・重い tool は os で除外する（PATH 長対策。Pi / macOS / Linux には残る）
+# os = ["linux", "macos"] の tool の対象: macOS, Linux/WSL2, Pi
 # Language Runtimes
 go = { version = "latest", os = ["linux", "macos"] }
 

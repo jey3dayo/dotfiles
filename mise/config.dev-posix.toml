@@ -113,7 +113,6 @@ yq = "latest"
 "npm:opencommit" = "latest"
 "npm:tuyapi" = "latest"
 "npm:vibe-kanban" = "latest"
-# Windows では読まれない・使わない（starship は bash/zsh のみ、npm:neovim は nvim が node provider を無効化、bat / fzf は zsh 用）
 bat = "latest"
 fzf = "latest"
 "cargo:bandwhich" = "latest"

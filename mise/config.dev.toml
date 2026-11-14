@@ -1,6 +1,5 @@
 # 読む環境: macOS, Linux/WSL2, Windows（開発機）。MISE_ENV=dev。[tools] のみ
-# Windows も読むため PATH 長（cmd 上限 8191）の上限テスト対象。Windows（pwsh / git / nvim / hooks）で呼ぶ tool だけを置き、
-# それ以外は config.dev-posix.toml へ。rust など repo が pin する tool は各 repo の mise.toml に任せる
+# 対象: macOS, Linux/WSL2, Windows の 3 環境で使う tool。macOS, Linux/WSL2 だけで使う tool は config.dev-posix.toml
 
 [tools]
 # Language Runtimes

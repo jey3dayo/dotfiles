@@ -7,7 +7,7 @@ trusted_config_paths = ["~/.config", "~/src/github.com"]
 windows_default_inline_shell_args = "cmd /c"
 windows_default_file_shell_args = "cmd /c"
 
-# Windows の node では corepack enable が失敗し npm:* が全滅する。pnpm は mise 管理なので不要
+# pnpm は mise 管理のため corepack は使わない
 [settings.node]
 corepack = false
 
