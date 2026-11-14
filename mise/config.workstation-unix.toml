@@ -94,6 +94,24 @@ yq = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
 
+# Windows では PATH 長（cmd の上限 8191 文字）対策で外している tools。Windows は本ファイルを読まないため外れる。
+# 追加・削除はこの区画で行い、Windows に入れたい tool は config.workstation.toml に置く
+"npm:@aikidosec/safe-chain" = "latest"
+"npm:@benborla29/mcp-server-mysql" = "latest"
+"npm:@bufbuild/protoc-gen-es" = "latest"
+"npm:@connectrpc/protoc-gen-connect-es" = "latest"
+"npm:@modelcontextprotocol/server-filesystem" = "latest"
+"npm:@typescript-eslint/eslint-plugin" = "latest"
+"npm:aws-cdk" = "latest"
+"npm:difit" = "latest"
+"npm:esbuild" = "latest"
+"npm:exa-mcp-server" = "latest"
+"npm:npm" = "latest"
+"npm:o3-search-mcp" = "latest"
+"npm:opencommit" = "latest"
+"npm:tuyapi" = "latest"
+"npm:vibe-kanban" = "latest"
+
 # 自己更新機能を持つ CLI(claude / codex / herdr)は [tools] で管理せず、公式インストーラで導入して
 # 各ツールの自己更新に任せる。mise は未導入時のインストールだけを保証する(方針: .claude/rules/tools/tool-install-policy.md)。
 [bootstrap.hooks.post-tools]

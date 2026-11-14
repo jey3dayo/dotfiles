@@ -9,14 +9,14 @@ tags:
   - tool/mise
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-13
+timestamp: 2026-11-14
 audience: developer
 owner: dotfiles
 ---
 
 # Mise Reference
 
-最終更新: 2026-11-13
+最終更新: 2026-11-14
 対象: 開発者
 タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
@@ -49,6 +49,8 @@ owner: dotfiles
 - [`mise/local-tasks/`](../../mise/local-tasks/): この repo 専用の task 定義。PC メンテナンス、資格情報に依存する処理、破壊的な task family はここに置きます。
 - [`mise/tasks/`](../../mise/tasks/): 他の repo からも使う task 定義。
 - [`mise/lib/`](../../mise/lib/): task から呼び出す helper scripts。
+
+Windows では `mise run` が tool ごとに PATH へ dir を足すため、tool が増えると cmd の上限（8191 文字）を超え、task 内で `node` などが見つからなくなります。Windows が読む `config.shared.toml` / `config.workstation.toml` には Windows でも使う tool だけを置き、Windows で不要な workstation tool は `config.workstation-unix.toml` の Windows 除外区画に置きます。Windows が受け取る tool 数の上限は [`scripts/mise-config.test.ts`](../../scripts/mise-config.test.ts) で検査します。
 
 `mise/tasks/` の global task は外部 repo にも見えるため、cwd 非依存か `dir` を明示し、全ディレクトリに公開する理由があるものに限ります。Task TOML は薄い runner とし、分岐・cleanup・複数 command は `mise/lib/` または `scripts/` に置きます。
 

@@ -17,6 +17,9 @@ const workstationConfig = "config.workstation.toml";
 const sharedConfig = "config.shared.toml";
 const commonToolsConfig = "conf.d/00-tools-common.toml";
 const bunConfig = "config.bun.toml";
+// Windows が受け取る tool 数の上限。2026-11 時点で PATH 約 6,200 文字（cmd 上限 8191）。
+// 上げる場合は Windows で `mise env --json` の PATH 長を測り、1,000 文字以上の余裕を残すこと。
+const WINDOWS_TOOL_BUDGET = 60;
 
 const readTools = (file: string): Map<string, string> => {
   const tools = new Map<string, string>();
@@ -212,6 +215,22 @@ describe("mise config layout and tool isolation", () => {
         throw new Error(`${key} from workstation should not be in CI config`);
       }
     }
+  });
+
+  // Windows の `mise run` は tool ごとに PATH へ約 70 文字を足し、cmd の上限 8191 文字を超えると
+  // task 内で node / cargo などが見つからなくなる。Windows 不要の tool は
+  // config.workstation-unix.toml の Windows 除外区画へ置き、この上限を安易に上げない。
+  it("keeps the Windows tool set within the PATH length budget", () => {
+    const windowsConfigs = [
+      commonToolsConfig,
+      bunConfig,
+      sharedConfig,
+      workstationConfig,
+      "config.workstation-windows.toml",
+    ];
+    const windowsTools = new Set(windowsConfigs.flatMap((file) => [...readTools(file).keys()]));
+
+    expect(windowsTools.size).toBeLessThanOrEqual(WINDOWS_TOOL_BUDGET);
   });
 
   it("discovers config from $HOME (entry goes last so entry settings win)", () => {
