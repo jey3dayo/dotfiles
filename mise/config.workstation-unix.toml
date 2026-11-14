@@ -94,8 +94,7 @@ yq = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-json-languageserver" = "latest"
 
-# Windows では PATH 長（cmd の上限 8191 文字）対策で外している tools。Windows は本ファイルを読まないため外れる。
-# 追加・削除はこの区画で行い、Windows に入れたい tool は config.workstation.toml に置く
+# Windows 除外: PATH 長（cmd 上限 8191）対策で Windows に入れない tools
 "npm:@aikidosec/safe-chain" = "latest"
 "npm:@benborla29/mcp-server-mysql" = "latest"
 "npm:@bufbuild/protoc-gen-es" = "latest"
