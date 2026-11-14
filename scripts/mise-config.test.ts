@@ -13,7 +13,7 @@ const interactiveConfig = "config.interactive.toml";
 const allToolsConfig = "conf.d/00-tools-all.toml";
 const bunConfig = "config.bun.toml";
 // cmd の PATH 上限（8191）対策。上げる前に Windows で PATH 長を測り 1,000 文字以上残す
-const WINDOWS_TOOL_BUDGET = 33;
+const WINDOWS_TOOL_BUDGET = 31;
 
 const readTools = (file: string): Map<string, string> => {
   const tools = new Map<string, string>();

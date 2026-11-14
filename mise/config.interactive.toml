@@ -13,7 +13,7 @@ pnpm = "12"
 eza = { version = "latest", os = ["linux", "macos"] }
 "github:cli/cli" = "latest"
 "github:pranshuparmar/witr" = { version = "latest", os = ["linux", "macos"] }
-jq = "latest"
+jq = { version = "latest", os = ["linux", "macos"] }
 yazi = { version = "latest", os = ["linux", "macos"] }
 
 # NPM Packages
