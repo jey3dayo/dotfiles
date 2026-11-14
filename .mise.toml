@@ -49,4 +49,5 @@ MARKDOWN_LINK_CONFIG = ".markdown-link-check.json"
 [hooks]
 # Decrypt .env to .env.local on directory enter.
 # Keep the hook quiet unless setup-env.sh itself has something meaningful to report.
-enter = "mise run --quiet setup-env"
+# hook は config_root（~/.config/.mise.toml では $HOME）で動くため、元の cwd で task を解決する。
+enter = { run = 'mise --cd "$MISE_ORIGINAL_CWD" run --quiet setup-env', run_windows = 'mise --cd "%MISE_ORIGINAL_CWD%" run --quiet setup-env' }

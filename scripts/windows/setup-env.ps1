@@ -31,11 +31,18 @@ function Set-OwnerOnlyFileAcl {
   $acl.SetAccessRuleProtection($true, $false)
   $rule = New-Object System.Security.AccessControl.FileSystemAccessRule(
     $currentUser,
-    [System.Security.AccessControl.FileAccessRights]::FullControl,
+    [System.Security.AccessControl.FileSystemRights]::FullControl,
     [System.Security.AccessControl.AccessControlType]::Allow
   )
   $acl.SetAccessRule($rule)
-  Set-Acl -LiteralPath $Path -AclObject $acl
+  # Write only the DACL: Set-Acl also writes the SACL, which needs SeSecurityPrivilege.
+  # Keep comments ASCII-only: Windows PowerShell 5.1 reads BOM-less scripts as the ANSI code page.
+  $item = New-Object System.IO.FileInfo $Path
+  if ($PSVersionTable.PSEdition -eq "Core") {
+    [System.IO.FileSystemAclExtensions]::SetAccessControl($item, $acl)
+  } else {
+    $item.SetAccessControl($acl)
+  }
 }
 
 if (-not (Test-Path -LiteralPath $envFile)) {

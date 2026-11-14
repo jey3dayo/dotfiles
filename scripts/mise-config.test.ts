@@ -216,7 +216,8 @@ describe("mise config layout and tool isolation", () => {
     const windowsConfigs = [allToolsConfig, bunConfig, interactiveConfig, devConfig, "config.dev-windows.toml"];
     // os = [...] に windows を含まない tool は Windows では読まれない
     const runsOnWindows = (value: string) => {
-      const os = value.match(/\bos\s*=\s*\[([^\]]*)\]/);
+      // taplo が長い行の配列を折り返すため閉じ括弧は求めない
+      const os = value.match(/\bos\s*=\s*\[([^\]]*)/);
       return os === null || os[1]?.includes('"windows"') === true;
     };
     const windowsTools = new Set(
