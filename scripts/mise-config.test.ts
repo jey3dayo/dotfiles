@@ -64,7 +64,9 @@ const configPaths = (overrides: NodeJS.ProcessEnv, cwd = repoRoot): string[] => 
   if (result.status !== 0) {
     throw new Error(`mise config ls failed from ${cwd}: ${result.stderr}`);
   }
-  return [...result.stdout.matchAll(/"path"\s*:\s*"([^"]+)"/g)].map((match) => match[1] ?? "");
+  // Windows は \ 区切り（mise/ と混在）で返すため、区切りを / にそろえる
+  const entries = JSON.parse(result.stdout) as { path: string }[];
+  return entries.map((entry) => entry.path.replaceAll("\\", "/"));
 };
 
 const settingsFrom = (overrides: NodeJS.ProcessEnv, cwd = repoRoot): Map<string, { value: string; source: string }> => {
