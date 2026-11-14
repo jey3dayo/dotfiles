@@ -38,3 +38,7 @@ ensure_python_lib playwright playwright
 # ブラウザ本体は ~/Library/Caches/ms-playwright を Node 版(npm:@playwright/mcp)と共有する。
 # 要求 revision が既にあれば取得はスキップされる。
 run_python -m playwright install chromium
+
+# pip は python の bin に playwright CLI を置く。導入や python patch 切替のあとに
+# shim が無いと `mise doctor` が Missing shims: playwright になる。
+mise reshim
