@@ -1,0 +1,58 @@
+#!/bin/sh
+# 新しいリンク worktree に、メイン側の gitignore 対象の .env 系ファイルを symlink で渡す。
+# 失敗しても checkout は壊さない（常に exit 0）。.env の中身は読まない。
+set -u
+
+resolve_path() {
+  _p=$1
+  while [ -L "$_p" ]; do
+    _t=$(readlink "$_p") || return 1
+    case $_t in
+      /*) _p=$_t ;;
+      *) _p=$(dirname "$_p")/$_t ;;
+    esac
+  done
+  _d=$(cd "$(dirname "$_p")" 2>/dev/null && pwd -P) || return 1
+  printf '%s/%s\n' "$_d" "$(basename "$_p")"
+}
+
+run_chain() {
+  common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || return 0
+  repo_hook=$common/hooks/post-checkout
+  [ -f "$repo_hook" ] && [ -x "$repo_hook" ] || return 0
+  self=$(resolve_path "$0") || return 0
+  other=$(resolve_path "$repo_hook") || return 0
+  [ "$self" = "$other" ] && return 0
+  "$repo_hook" "$@" || true
+}
+
+link_env_files() {
+  unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_PREFIX
+  worktree=$(git rev-parse --show-toplevel 2>/dev/null) || return 0
+  worktree=$(cd "$worktree" 2>/dev/null && pwd -P) || return 0
+  root=$(git worktree list --porcelain 2>/dev/null | sed -n '1s/^worktree //p')
+  [ -n "$root" ] || return 0
+  root=$(cd "$root" 2>/dev/null && pwd -P) || return 0
+
+  [ "$root" = "$worktree" ] && return 0
+  [ -e "$worktree/.env.keys" ] || [ -L "$worktree/.env.keys" ] && return 0
+  [ -e "$root/.env.keys" ] || return 0
+
+  for src in "$root"/.env "$root"/.env.*; do
+    [ -f "$src" ] || continue
+    name=${src##*/}
+    case $name in
+      .env.backup | .env.backup.* | .env.*.backup) continue ;;
+    esac
+    git -C "$root" check-ignore -q -- "$name" || continue
+    dest=$worktree/$name
+    if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+      continue
+    fi
+    ln -sfn "$src" "$dest" || echo "post-checkout: failed to symlink $name" >&2
+  done
+}
+
+(link_env_files) || true
+run_chain "$@"
+exit 0

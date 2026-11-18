@@ -7,9 +7,11 @@ idiomatic_version_file_enable_tools = []
 # /private/var/folders: macOS の一時ディレクトリ（TMPDIR）配下に展開される worktree/sandbox 内の
 # mise config を信頼するために追加している
 # github.com 配下は自分と仕事の org だけ信頼する
+# ~/.t3/worktrees: T3 Code の worktree の既定の置き場所
 trusted_config_paths = [
   "~/.config",
   "/private/var/folders",
+  "~/.t3/worktrees",
   "~/src/github.com/jey3dayo",
   "~/src/github.com/ca-groupit",
   "~/src/github.com/CyberAgent-Infosys",

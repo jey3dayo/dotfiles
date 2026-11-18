@@ -12,6 +12,7 @@
 
 [init]
   defaultBranch = main
+  templateDir = ~/.config/git/template
 
 [branch]
   sort = -committerdate
