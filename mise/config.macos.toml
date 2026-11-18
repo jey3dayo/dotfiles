@@ -41,6 +41,7 @@
 "brew:gcc" = "latest"
 "brew:gettext" = "latest"
 "brew:gflags" = "latest"
+"brew:gh" = "latest"
 "brew:gibo" = "latest"
 "brew:giflib" = "latest"
 "brew:git" = "latest"
