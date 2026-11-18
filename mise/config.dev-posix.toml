@@ -23,9 +23,10 @@ trusted_config_paths = [
 # use_git_credentials で避けた無限再帰を再現するため、実バイナリを絶対パスで呼ぶ
 # （パスと $VAR 展開が Unix 前提なので Windows とは共有しない）。
 # macOS の gh は brew 管理（GUI アプリの PATH から見えるようにするため mise 管理外。
-# config.macos.toml の brew:gh）なので brew の実体を優先し、それ以外は mise which gh の解決先を使う。
+# config.macos.toml の brew:gh）なので brew の実体（Apple Silicon は /opt/homebrew、
+# Intel は /usr/local）を優先し、それ以外は mise which gh の解決先を使う。
 [settings.github]
-credential_command = '"$(if [ -x /opt/homebrew/bin/gh ]; then echo /opt/homebrew/bin/gh; else mise which gh; fi)" auth token --hostname "$MISE_CREDENTIAL_HOST"'
+credential_command = '"$(if [ -x /opt/homebrew/bin/gh ]; then echo /opt/homebrew/bin/gh; elif [ -x /usr/local/bin/gh ]; then echo /usr/local/bin/gh; else mise which gh; fi)" auth token --hostname "$MISE_CREDENTIAL_HOST"'
 
 [tools]
 # 共通 tools: conf.d/00-tools-all.toml

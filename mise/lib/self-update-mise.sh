@@ -11,10 +11,21 @@ set -eu
 min_age_seconds=86400
 api_url="https://api.github.com/repos/jdx/mise/releases/latest"
 
-# shim ではなく実体を使う。github.credential_command と同じ解決先。
-gh_bin=$(mise which gh 2>/dev/null) || gh_bin=""
+# shim ではなく実体を使う。github.credential_command と同じ解決順序。
+# macOS の gh は brew 管理のため brew の実体（Apple Silicon / Intel）を優先し、
+# それ以外は mise which gh（Linux/WSL）。
+gh_bin=""
+for candidate in /opt/homebrew/bin/gh /usr/local/bin/gh; do
+  if [ -x "${candidate}" ]; then
+    gh_bin="${candidate}"
+    break
+  fi
+done
+if [ -z "${gh_bin}" ]; then
+  gh_bin=$(mise which gh 2>/dev/null) || gh_bin=""
+fi
 if [ -z "${gh_bin}" ] || [ ! -x "${gh_bin}" ]; then
-  echo "❌ gh binary not resolved (mise which gh)" >&2
+  echo "❌ gh binary not resolved (brew prefix / mise which gh)" >&2
   exit 1
 fi
 
