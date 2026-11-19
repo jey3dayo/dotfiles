@@ -11,6 +11,7 @@ run = [
     "update:brew",
     "update:mise",
   ] },
+  { task = "update:biome" },
   { task = "update:completions" },
 ]
 
@@ -41,6 +42,10 @@ description = "mise 管理ツールを更新（旧バージョンを保持）"
 depends = ["update:self"]
 run = "mise upgrade --yes --no-prune"
 run_windows = "mise upgrade --yes --no-prune"
+
+["update:biome"]
+description = "Biome の設定を現在のバージョンに移行"
+run = "biome migrate --write"
 
 ["update:standalone"]
 # 自己更新機能を持つ CLI の更新を手動で一括実行する。各ツールの自己更新に任せる方針のため update には含めない
