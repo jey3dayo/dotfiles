@@ -10,6 +10,9 @@ source_zsh_lib() {
 # that skip .zprofile. _zsh_setup_path is idempotent.
 source_zsh_lib core/path.zsh
 (( $+functions[_zsh_setup_path] )) && _zsh_setup_path
+if (( $+commands[mise] )); then
+  eval "$(mise activate zsh)"
+fi
 source_zsh_lib core/options.zsh
 source_zsh_lib core/history.zsh
 
