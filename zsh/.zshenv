@@ -2,6 +2,13 @@ if [[ -n "${ZSH_PROFILE_STARTUP:-}" ]]; then
   zmodload zsh/zprof 2>/dev/null || true
 fi
 
+# AI coding agents (Claude Code / Codex) assume bash-like word splitting,
+# glob fall-through and no `=` expansion. Give only their non-interactive
+# shells those semantics; interactive zsh is unchanged.
+if [[ ! -o interactive && ( -n "${CLAUDECODE:-}" || -n "${CODEX_THREAD_ID:-}" ) ]]; then
+  setopt sh_word_split no_nomatch no_equals
+fi
+
 # Debian/Ubuntu global zshrc may run compinit before this repo's zshrc.
 # Keep completion initialization in zsh/lib/completion/completion.zsh so CI/no-TTY
 # startup can use the repo-managed compinit flags.
