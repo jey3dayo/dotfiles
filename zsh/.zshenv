@@ -9,6 +9,10 @@ if [[ ! -o interactive && ( -n "${CLAUDECODE:-}" || -n "${CODEX_THREAD_ID:-}" ) 
   setopt sh_word_split no_nomatch no_equals
 fi
 
+# T3 Code telemetry opt-out (docs/user/telemetry.md)
+export T3CODE_TELEMETRY_ENABLED=false
+export T3CODE_OTEL_SDK_DISABLED=true
+
 # Debian/Ubuntu global zshrc may run compinit before this repo's zshrc.
 # Keep completion initialization in zsh/lib/completion/completion.zsh so CI/no-TTY
 # startup can use the repo-managed compinit flags.
