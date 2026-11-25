@@ -31,3 +31,4 @@ ensure_installed codex "curl -fsSL https://chatgpt.com/codex/install.sh | sh"
 ensure_installed herdr "curl -fsSL https://herdr.dev/install.sh | sh"
 # installer は ~/.opencode/bin へ置き zshrc に PATH を追記するため、追記を止めて ~/.local/bin へ link する
 ensure_installed opencode "curl -fsSL https://opencode.ai/v2/install | bash -s -- --no-modify-path && ln -sf \"\${HOME}/.opencode/bin/opencode\" \"\${HOME}/.local/bin/opencode\""
+ensure_installed agy "sh \"$(dirname "$0")/install-agy.sh\""
