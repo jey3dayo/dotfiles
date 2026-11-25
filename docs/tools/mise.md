@@ -9,16 +9,12 @@ tags:
   - tool/mise
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-14
+timestamp: 2026-11-25
 audience: developer
 owner: dotfiles
 ---
 
 # Mise Reference
-
-最終更新: 2026-11-14
-対象: 開発者
-タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 この文書では `.config` の mise 設定とタスクの境界を説明します。どの層でツールを管理するかは [セットアップ方針](../setup.md#package-management-philosophy)、backend や pin 固定の理由は [Mise Configuration Reference](mise-config.md)、タスクの影響と調べ方は [Mise Task Safety and Discovery](mise-tasks.md) を参照してください。
 

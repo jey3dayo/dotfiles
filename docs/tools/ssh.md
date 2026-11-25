@@ -9,7 +9,7 @@ tags:
   - layer/tool
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-13
+timestamp: 2026-11-25
 audience: developer
 owner: dotfiles
 ---
@@ -18,13 +18,7 @@ owner: dotfiles
 
 SSH の設定は共通設定、プラットフォーム別設定、ローカル設定の順で読み込みます。
 
-## Claude Rules
-
-このドキュメントの凝縮版ルールは [`.claude/rules/tools/ssh.md`](../../.claude/rules/tools/ssh.md) で管理されています。
-
-- 目的: Claude AIが常に参照する簡潔なルール
-- 適用範囲: YAML frontmatter `paths:` で定義
-- 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
+Claude 向けの短いルールは [`.claude/rules/tools/ssh.md`](../../.claude/rules/tools/ssh.md) にあります。
 
 ## 設定構造
 
@@ -51,7 +45,7 @@ SSH の設定は共通設定、プラットフォーム別設定、ローカル�
 設定は [`config.d/common/01-1password.sshconfig`](../../ssh/config.d/common/01-1password.sshconfig) にあります。現在は無効です。利用する場合は、次の手順で有効にして確認します。
 
 1. 1Password の設定で SSH Agent を有効にします。
-2. 同ファイルにある1Password用ブロックのコメントを解除します。
+2. 同ファイルにある 1Password 用ブロックのコメントを解除します。
 3. `ssh-add -l` で Agent の状態を確認します。
 
 ## ホスト追加手順
@@ -63,7 +57,7 @@ SSH の設定は共通設定、プラットフォーム別設定、ローカル�
 
 ## 診断
 
-設定の確認には `ssh -G` を使います。macOS と Linux/WSL2 で適用される内容を確認できます。
+設定の確認には `ssh -G` を使います。macOS と Linux / WSL2 で適用される内容を確認できます。
 
 ```bash
 ssh -G github.com | grep -i keychain

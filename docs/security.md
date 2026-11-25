@@ -1,14 +1,27 @@
+---
+type: runbook
+title: Security Reference
+description: dotfiles repo の秘密情報分類、.gitignore 管理、gitleaks 運用、インシデント対応手順
+resource: docs/security.md
+tags:
+  - category/security
+  - layer/support
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-11-25
+audience: developer
+owner: dotfiles
+---
+
 # Security Reference
 
-最終更新: 2026-03-13
-対象: 開発者
-タグ: `category/security`, `layer/support`, `environment/cross-platform`, `audience/developer`
+この文書は、dotfiles リポジトリにおける秘密情報の分類、流出防止（`.gitignore` / gitleaks）、および万一の漏洩時のインシデント対応手順を定義する正本です。
 
-Claude Rules: [.claude/rules/security.md](../.claude/rules/security.md)
+Claude 向けの短いルールは [`.claude/rules/security.md`](../.claude/rules/security.md) にあります。
 
 ## 秘密情報の分類
 
-### レベル1: 高度に機密性の高い情報（絶対にコミットしてはいけない）
+### レベル 1: 高度に機密性の高い情報（絶対にコミットしない）
 
 - SSH 秘密鍵: `id_rsa`, `id_ed25519`, `*.pem`
 - GPG 秘密鍵: `secring.gpg`, `*.key`
@@ -16,7 +29,7 @@ Claude Rules: [.claude/rules/security.md](../.claude/rules/security.md)
 - パスワード: 平文パスワード、データベース認証情報
 - 証明書秘密鍵: `*.key`, `*.p12`, `*.pfx`
 
-`.gitignore` パターン:
+主な `.gitignore` パターン:
 
 ```gitignore
 **/.ssh/*_rsa
@@ -28,7 +41,7 @@ Claude Rules: [.claude/rules/security.md](../.claude/rules/security.md)
 **/.config/gh/hosts.yml
 ```
 
-### レベル2: 個人固有の情報（公開非推奨）
+### レベル 2: 個人固有の情報（公開非推奨）
 
 - 環境変数ファイル: `.env`, `.env.local`, `.envrc`
 - 設定ファイルのローカル上書き: `config.local`, `*.secret`
@@ -43,19 +56,19 @@ Claude Rules: [.claude/rules/security.md](../.claude/rules/security.md)
 *.secret
 ```
 
-### レベル3: 一時ファイルとビルド成果物
+### レベル 3: 一時ファイルとビルド成果物
 
 - ビルド成果物: `result`, `result-*`, `dist/`, `build/`
 - 一時ファイル: `*.tmp`, `*.log`, `.DS_Store`
 - 依存関係キャッシュ: `node_modules/`, `.venv/`, `__pycache__/`
 
-## .gitignore メンテナンス
+## `.gitignore` メンテナンス
 
-新しいツールや設定を追加する際の確認フロー:
+新しいツールや設定を追加する際は、以下の順で確認します。
 
-1. 秘密情報を含む可能性 → `.gitignore` に追加
-2. 環境固有の設定 → `.gitignore` に追加、`.example` ファイルを提供
-3. 一時ファイル → `.gitignore` に追加
+1. 秘密情報を含む可能性があるファイルは `.gitignore` に追加します。
+2. 環境固有の設定は `.gitignore` に追加し、必要に応じて `.example` ファイルを用意します。
+3. 一時ファイルやキャッシュも `.gitignore` に追加します。
 
 ```bash
 # 新ツール newtool の例
@@ -78,21 +91,21 @@ sh ./scripts/setup-gitleaks.sh --create-baseline  # ベースライン作成（�
 ### 日常的な使用
 
 ```bash
-git commit -m "feat: add new feature"     # 自動実行
+git commit -m "feat: add new feature"     # pre-commit で自動実行
 lefthook run pre-commit                   # staged file 向け hook を手動実行
-gitleaks git --config=.gitleaks.toml -v    # 手動実行
-mise run ci:gitleaks                       # CI と同じ secret scan
+gitleaks git --config=.gitleaks.toml -v   # 手動スキャン
+mise run ci:gitleaks                      # CI と同じ secret scan
 ```
 
 ### False Positive への対応
 
-ベースラインに追加:
+ベースラインへ追加する場合:
 
 ```bash
 sh ./scripts/setup-gitleaks.sh --create-baseline
 ```
 
-個別に除外（コメント）:
+該当行を個別に除外する場合（コメント付与）:
 
 ```python
 API_KEY = "example_key_for_documentation"  # gitleaks:allow
@@ -101,15 +114,15 @@ API_KEY = "example_key_for_documentation"  # gitleaks:allow
 ### バイパス（緊急時のみ）
 
 ```bash
-git commit --no-verify -m "emergency fix"   # 全フックスキップ（非推奨）
+git commit --no-verify -m "emergency fix"   # 全フックをスキップ（非推奨）
 SKIP=gitleaks git commit -m "message"       # gitleaks のみスキップ
 ```
 
-確認事項: なぜスキップするか？セキュリティリスクはないか？後でレビューする計画は？
+バイパスを使う前に、「なぜスキップが必要か」「秘密情報流出のリスクはないか」「後で検証・レビューする手段があるか」を必ず確認してください。
 
 ## セキュリティ監査チェックリスト
 
-### 月次
+### 月次確認
 
 ```bash
 mise run ci:gitleaks
@@ -125,7 +138,7 @@ aws sts get-caller-identity
 ```bash
 git diff --cached --name-only
 git diff --cached
-# 目視確認: パスワード、トークン、APIキー、個人情報、内部サーバー情報
+# 目視確認: パスワード、トークン、API キー、個人情報、内部サーバー情報が含まれていないか
 ```
 
 ### 新規ツール追加時
@@ -139,63 +152,62 @@ sed -i '' 's/actual_secret/YOUR_SECRET_HERE/g' ~/.config/newtool/config.secret.e
 
 ## インシデント対応手順
 
-### シナリオ1: 秘密情報を誤ってコミット（プッシュ前）
+### シナリオ 1: 秘密情報を誤ってコミットした（プッシュ前）
 
 ```bash
 git reset --soft HEAD~1
-rm path/to/secret/file   # または .env へ移行
+rm path/to/secret/file   # または .env / .env.secrets へ移行
 echo "path/to/secret/file" >> .gitignore
 git add .gitignore
 git commit -m "fix: remove secret and update .gitignore"
 ```
 
-### シナリオ2: 秘密情報をプッシュしてしまった
+### シナリオ 2: 秘密情報をプッシュしてしまった
 
-#### 緊急対応（10分以内）
+#### 緊急対応（10 分以内）
 
-1. 秘密情報を即座に無効化（GitHub Token 削除、AWS Credentials 無効化、SSH Key 削除）
-2. プッシュしたブランチを削除（可能な場合）: `git push origin --delete branch-name`
-3. チームに通知
+1. 漏洩した秘密情報を即座に無効化します（GitHub Token 削除、AWS Credentials 無効化、SSH 鍵削除など）。
+2. プッシュした作業ブランチを削除できる場合は削除します（`git push origin --delete branch-name`）。
+3. 共有利用している環境や関係者がいる場合は速やかに通知します。
 
-#### 恒久対応（1時間以内）
+#### 恒久対応（1 時間以内）
 
 ```bash
 brew install git-filter-repo
 git filter-repo --path path/to/secret/file --invert-paths
-git push --force-with-lease origin main  # チーム全員に通知後
-# チーム全員に再クローンを依頼（古いクローンには秘密情報が残る）
+git push --force-with-lease origin main
+# 別マシンの既存クローンも再クローンします（古いクローンには秘密情報が残ります）
 ```
 
-#### 事後対応（1日以内）
+#### 事後対応（1 日以内）
 
-- インシデントレポート（何が漏洩/いつ/誰がアクセス可能/どう無効化）
-- `.gitignore` にパターン追加
-- Lefthook フックの強化
-- チームへのセキュリティトレーニング
+- インシデントの記録（何が漏洩したか、いつ発生したか、誰がアクセス可能だったか、どう無効化したか）を残します。
+- `.gitignore` に該当パターンを追加します。
+- Lefthook フックや `.gitleaks.toml` の検知ルールを見直します。
+- 運用手順や再発防止チェック項目を更新します。
 
-### シナリオ3: パブリックリポジトリで秘密情報を発見
+### シナリオ 3: パブリックリポジトリで秘密情報を発見した
 
-#### 即座（5分以内）
+#### 即座の対応（5 分以内）
 
-1. すべての秘密情報を即座に無効化
-2. リポジトリを一時的にプライベートに変更（GitHub Settings → Danger Zone）
+1. 対象となるすべての秘密情報を即座に無効化します。
+2. 必要に応じてリポジトリを一時的にプライベートへ変更します（GitHub Settings → Danger Zone）。
 
-#### 緊急対応（30分以内）
+#### 緊急対応（30 分以内）
 
 ```bash
 git filter-repo --path path/to/secret/file --invert-paths
 git push --force-with-lease origin main
-# GitHub Support に連絡してキャッシュ削除を依頼
+# GitHub Support に連絡してキャッシュ削除を依頼します
 # https://support.github.com/contact
 ```
 
-#### 事後対応（1週間以内）
+#### 事後対応（1 週間以内）
 
-- 全設定ファイルのセキュリティ監査
-- `.gitignore` 徹底見直し
-- Lefthook フック必須化
-- GitHub Insights でクローン履歴確認
-- アクセスログ確認・影響範囲調査
+- 全設定ファイルのセキュリティ監査を実施します。
+- `.gitignore` の除外パターンを徹底的に見直します。
+- Lefthook フックがすべての利用マシンで有効になっているか確認します。
+- GitHub Insights でクローン履歴やアクセス状況を確認し、影響範囲を調査します。
 
 ## 参考資料
 

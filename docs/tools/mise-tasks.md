@@ -9,16 +9,12 @@ tags:
   - tool/mise
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-13
+timestamp: 2026-11-25
 audience: developer
 owner: dotfiles
 ---
 
 # Mise Task Safety and Discovery
-
-最終更新: 2026-11-13
-対象: 開発者
-タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 タスク名と現在の定義は `mise tasks` で一覧し、個別の動作は `mise tasks info <task>` で確認します。定義は [`mise/local-tasks/`](../../mise/local-tasks/) と [`mise/tasks/`](../../mise/tasks/) にあります。完全なタスク一覧をこの文書へ複製しません。
 

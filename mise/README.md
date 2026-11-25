@@ -1,6 +1,6 @@
 # mise Configuration Files
 
-`mise/` は共通・環境別 config、helper scripts、タスク定義を格納する。各タスクの現在の一覧と詳細は `mise tasks` / `mise tasks info <task>` で確認する。
+`mise/` は共通・環境別設定、helper scripts、タスク定義を格納しています。各タスクの一覧と詳細は `mise tasks` / `mise tasks info <task>` で確認できます。
 
 詳しい説明は各ガイドを参照してください。
 
