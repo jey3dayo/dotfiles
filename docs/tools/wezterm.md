@@ -1,40 +1,46 @@
-# 🖥️ WezTerm Configuration
+---
+type: reference
+title: WezTerm Configuration
+description: WezTerm の Lua モジュール構成、キーバインド、外観設定、プラットフォーム分岐
+resource: docs/tools/wezterm.md
+tags:
+  - category/terminal
+  - layer/tool
+  - tool/wezterm
+  - environment/cross-platform
+  - audience/developer
+timestamp: 2026-11-25
+audience: developer
+owner: dotfiles
+---
 
-最終更新: 2026-11-13
-対象: 開発者
-タグ: `category/terminal`, `tool/wezterm`, `layer/tool`, `environment/macos`, `audience/developer`
+# WezTerm Configuration
 
-GPU加速対応のLuaベースモジュラーターミナル設定です。
+GPU 加速に対応した、Lua ベースのモジュラー WezTerm 設定です。
 
-## 🤖 Claude Rules
-
-このドキュメントの凝縮版ルールは [`.claude/rules/tools/wezterm.md`](../../.claude/rules/tools/wezterm.md) で管理されています。
-
-- 目的: Claude AIが常に参照する簡潔なルール
-- 適用範囲: YAML frontmatter `paths:` で定義
-- 関係: 本ドキュメントが詳細リファレンス（SST）、Claudeルールが強制版
+Claude 向けの短いルールは [`.claude/rules/tools/wezterm.md`](../../.claude/rules/tools/wezterm.md) にあります。
 
 ## 主要機能
 
 - パフォーマンス: OpenGL フロントエンド（`max_fps = 60`）
-- UI: Gruvboxテーマ、92%透明度、カスタムタブスタイル
-- 多重化: Tmuxスタイルリーダーキー（`Ctrl+x`）
-- コピーモード: Vim風ナビゲーション・テキスト選択
+- UI: Gruvbox テーマ、92% 透明度、カスタムタブスタイル
+- 多重化: tmux スタイルのリーダーキー（`Ctrl+x`）
+- コピーモード: Vim 風のナビゲーションとテキスト選択
 
 ## 設定構造
 
 ```text
 wezterm/
 ├── wezterm.lua          # エントリポイント（config.lua を require）
-├── config.lua           # ベース設定・各モジュールのマージ
-├── constants.lua        # 色・フォント・ウィンドウ等の定数
+├── config.lua           # ベース設定と各モジュールのマージ
+├── constants.lua        # 色・フォント・ウィンドウなどの定数
 ├── keybinds.lua         # キーバインド
-├── key_tables.lua        # resize/copy/search の key table
+├── key_tables.lua       # resize / copy / search の key table
 ├── ui.lua               # ビジュアルテーマ
 ├── events.lua           # イベント処理（タブ描画・resize・opacity）
 ├── utils.lua            # ユーティリティ関数
 ├── os.lua               # プラットフォーム検出
-└── win.lua              # Windows/WSL設定
+└── win.lua              # Windows / WSL 設定
 ```
 
 ## 主要キーバインド
@@ -43,12 +49,12 @@ wezterm/
 
 ```lua
 Ctrl+x c               -- 新タブ
-Ctrl+x n/p             -- 次/前のタブ
-Cmd+w                  -- タブ閉じる（確認あり）
+Ctrl+x n/p             -- 次 / 前のタブ
+Cmd+w                  -- タブを閉じる（確認あり）
 Ctrl+x |               -- 水平分割
 Ctrl+x -               -- 垂直分割
 Ctrl+x z               -- ペイン拡大
-Ctrl+x x               -- ペイン閉じる
+Ctrl+x x               -- ペインを閉じる
 ```
 
 ### コピーモード: `Ctrl+x [`
@@ -56,32 +62,32 @@ Ctrl+x x               -- ペイン閉じる
 ```lua
 h/j/k/l                -- ナビゲーション
 w/b/e                  -- 単語移動
-^/$                    -- 行頭/末尾
-v/V                    -- 選択/行選択
-y/yy                   -- コピー（選択/行）
+^/$                    -- 行頭 / 行末
+v/V                    -- 選択 / 行選択
+y/yy                   -- コピー（選択範囲 / 行）
 /                      -- 検索
-n/N                    -- 次/前の一致
+n/N                    -- 次 / 前の一致
 q/Escape               -- 終了
 ```
 
 ### 直接バインド
 
 ```lua
-Alt+Tab / Alt+Shift+Tab -- タブ切り替え（順/逆）
+Alt+Tab / Alt+Shift+Tab -- タブ切り替え（順 / 逆）
 Alt+h/j/k/l             -- ペインナビゲーション
 Alt+Shift+Ctrl+h/j/k/l  -- ペインリサイズ
-Ctrl+plus/minus         -- フォントサイズ
+Ctrl+plus/minus         -- フォントサイズ変更
 Cmd/Ctrl+Click          -- リンクを開く
 ```
 
 ### リサイズモード: `Alt+r`
 
-`resize_pane` key table に入る（timeout 3000ms、one-shot ではない）。
+`resize_pane` key table に入ります（timeout 3000ms、one-shot ではありません）。
 
 ```lua
-h/j/k/l                -- ペインリサイズ（1マス）
-+/-/0                  -- 透明度を上げる/下げる/リセット（0.05刻み、0.1〜1.0）
-Escape/q/Ctrl+c         -- 終了
+h/j/k/l                -- ペインリサイズ（1 マス）
++/-/0                  -- 透明度を上げる / 下げる / リセット（0.05 刻み、0.1〜1.0）
+Escape/q/Ctrl+c        -- 終了
 ```
 
 ## コア設定
@@ -93,7 +99,7 @@ Escape/q/Ctrl+c         -- 終了
 front_end = "OpenGL"
 max_fps = 60
 
--- フォント最適化
+-- フォント設定（constants.lua / ui.lua）
 font = "UDEV Gothic 35NFLG"
 font_size = 16.0
 ```
@@ -114,7 +120,7 @@ use_fancy_tab_bar = false
 ### プラットフォーム検出
 
 ```lua
--- os.lua: target_triple で Windows/macOS を判定
+-- os.lua: target_triple で Windows を判定
 local is_windows = wezterm.target_triple == "x86_64-pc-windows-msvc"
 
 -- Windows の場合のみ win.lua を適用（default_domain = "WSL:Ubuntu" など）
@@ -123,24 +129,23 @@ return is_windows and win or {}
 
 ## 統合機能
 
-- テーマ: Gruvbox系配色（WezTerm・Alacritty）。Neovimは`0x96f`、tmuxのgruvboxテーマは未適用（コメントアウト）のため全ツール統一はしていない
-- 透明背景: Tmux・シェルとのシームレス統合
-- GPU最適化: 高速描画・低レイテンシー操作
-- クロスプラットフォーム: macOS/Windows/Linux対応
+- テーマ: WezTerm と Alacritty は Gruvbox 系配色です。Neovim は `0x96f`、tmux の Gruvbox テーマは未適用（コメントアウト）のため、全ツールでの配色統一はしていません。
+- 透明背景: tmux やシェルとシームレスに統合します。
+- クロスプラットフォーム: macOS / Windows / Linux に対応しています。
 
 ## トラブルシューティング
 
 ```bash
-# パフォーマンスデバッグ（ソフトウェア描画）
+# パフォーマンスデバッグ（ソフトウェア描画で起動）
 wezterm start --config 'front_end="Software"'
 
-# 設定リセット
+# 設定の一時退避
 mv ~/.config/wezterm ~/.config/wezterm.backup
 ```
 
 ## メンテナンス
 
 ```bash
-# WezTerm 更新（Brewfile では cask "wezterm@nightly"）
+# WezTerm 更新（Brewfile では cask "wezterm@nightly" を使用）
 brew upgrade --cask --greedy-latest wezterm@nightly
 ```
