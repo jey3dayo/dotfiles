@@ -11,13 +11,12 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 
 ## Metadata
 
-- New or substantially updated `docs/**/*.md` should use OKF-compatible YAML frontmatter as canonical metadata
+- All `docs/**/*.md` use OKF-compatible YAML frontmatter as canonical metadata
 - Required OKF field: `type`
 - Recommended OKF fields: `title`, `description`, `resource`, `tags`, `timestamp`, `audience`, `owner`
-- Existing `最終更新`, `対象`, `タグ` blocks remain valid legacy aliases during migration
-- Use `timestamp` / `最終更新` as `YYYY-MM-DD`
+- Use `timestamp` as `YYYY-MM-DD`
 - Use 3-5 tags and include at least one `category/` and one `layer/`
-- If frontmatter and legacy metadata both exist, frontmatter is canonical and conflicts must be fixed
+- Do not add legacy body metadata (`最終更新`, `対象`, `タグ`); if any remains, treat frontmatter as canonical and remove the legacy block
 
 ## Rule authoring
 
@@ -29,7 +28,9 @@ Detailed Reference: [docs/documentation.md](../../docs/documentation.md)
 
 - Update the canonical `docs/` file first
 - Sync the compact rule only if needed
-- Refresh `最終更新` and keep links consistent
+- Refresh `timestamp` and keep links consistent
+- Avoid bold-only headings or bold list labels (`scripts/replace-bold-headings.ts` enforces plain headings/labels)
+- Run `mise run format:markdown:check` after edits
 - Search for duplicate text before adding new prose
 
 ## Size guidance

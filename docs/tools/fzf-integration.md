@@ -9,16 +9,12 @@ tags:
   - tool/fzf
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-14
+timestamp: 2026-11-25
 audience: developer
 owner: dotfiles
 ---
 
 # FZF Integration Guide
-
-最終更新: 2026-11-14
-対象: 開発者
-タグ: `category/integration`, `tool/fzf`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 FZF は Zsh のファイル・リポジトリ・プロセス選択と Git 操作に使います。履歴検索の `Ctrl+R` は atuin が担当します。
 

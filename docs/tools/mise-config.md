@@ -9,16 +9,12 @@ tags:
   - tool/mise
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-14
+timestamp: 2026-11-25
 audience: developer
 owner: dotfiles
 ---
 
 # Mise Configuration Reference
-
-最終更新: 2026-11-14
-対象: 開発者
-タグ: `category/configuration`, `tool/mise`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 設定ファイルの役割と `MISE_ENV` の選び方は [Mise Reference](mise.md) を参照してください。ツールの version は mise 設定ファイルで管理します。この文書では pin と backend の理由を記録します。
 

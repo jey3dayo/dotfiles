@@ -8,16 +8,12 @@ tags:
   - layer/tool
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-13
+timestamp: 2026-11-25
 audience: developer
 owner: dotfiles
 ---
 
 # Workflows & Maintenance Reference
-
-最終更新: 2026-11-13
-対象: 開発者
-タグ: `category/maintenance`, `layer/tool`, `environment/cross-platform`, `audience/developer`
 
 ## Maintenance Cadence
 

@@ -4,34 +4,33 @@ paths: karabiner/**/*
 
 # Karabiner-Elements Rules
 
-Purpose: Karabiner-Elements による macOS キーバインドカスタマイズ。
-Scope: complex_modifications（コマンドキー英数/かなトグル）、simple_modifications（デバイス別）、リーダーキー実装の汎用パターン。
+Purpose: Karabiner-Elements による macOS キーバインドカスタマイズ。Scope: `complex_modifications`（コマンドキー英数 / かなトグル）、`simple_modifications`（デバイス別）、リーダーキー実装の汎用パターン。
 
 ## 管理ファイル
 
-`karabiner/karabiner.json` — プロファイル「Default profile」のみ使用
+- `karabiner/karabiner.json` — プロファイル「Default profile」のみを使用します。
 
 ## Complex Modifications ルール
 
-### 1. コマンドキーで英数/かな切替
+### 1. コマンドキーで英数 / かな切替
 
-左右どちらの ⌘ を単体で押しても入力ソースをトグル。
+左右どちらの ⌘ キーを単体で押しても入力ソースをトグルします。
 
-### 2. デバイス別 simple_modifications
+### 2. デバイス別 `simple_modifications`
 
-新しいキーボードを追加するときは、`profiles[0].devices[]` の該当 device に既存デバイスと同じ英数/かなキー入れ替えを追加する。
+新しいキーボードを追加するときは、`profiles[0].devices[]` の該当デバイスへ既存デバイスと同じ英数 / かなキーの入れ替えを追加します。
 
 - `international4` → `japanese_kana`
 - `international5` → `japanese_eisuu`
 
-`vendor_id` / `product_id` は Karabiner-Elements EventViewer 等で確認した実機の `identifiers` を使い、既存デバイスの値を流用しない。
+`vendor_id` / `product_id` は Karabiner-Elements EventViewer などで確認した実機の `identifiers` を使い、既存デバイスの値を流用しないでください。
 
 ## リーダーキー実装パターン（参考）
 
-tmux / herdr の `C-x KEY` のような 2 段階プレフィックスを持たないアプリに、Karabiner でリーダーモードを後付けする汎用手法。対象を限定したい場合は `frontmost_application_if` でアプリを絞る。
+tmux や herdr の `C-x KEY` のような 2 段階プレフィックスを持たないアプリに対し、Karabiner でリーダーモードを後付けする汎用手法です。対象アプリを限定する場合は `frontmost_application_if` で絞り込みます。
 
-- 変数（例 `xxx_leader`）を立てて「リーダーモード ON」を表現し、次キーで任意の macOS ショートカットへ変換する
-- ⚠️ `to_delayed_action` に `to_if_canceled` を入れてはいけない。次キーが押された瞬間に変数がリセットされ、そのキーのルールが条件不一致になる。`to_if_invoked`（タイムアウト）のみ使用する
+- 変数（例: `xxx_leader`）を立ててリーダーモード ON を表現し、次のキーで任意の macOS ショートカットへ変換します。
+- `to_delayed_action` には `to_if_canceled` を入れないでください。次のキーが押された瞬間に変数がリセットされ、そのキーのルールが条件不一致になります。タイムアウト用の `to_if_invoked` のみ使用します。
 
 ```json
 {
@@ -54,4 +53,4 @@ tmux / herdr の `C-x KEY` のような 2 段階プレフィックスを持た�
 
 ## 編集後のリロード
 
-`touch ~/.config/karabiner/karabiner.json` でリロードされる。
+`touch ~/.config/karabiner/karabiner.json` で設定が再読み込みされます。
