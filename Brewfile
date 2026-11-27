@@ -1,6 +1,5 @@
 tap "abue-ammar/tinycast", trusted: true
 tap "daipeihust/tap"
-tap "fujibee/agmsg", trusted: true
 tap "olets/tap"
 tap "perman/tap", "git@github.com:PERMAN/homebrew-tap.git"
 tap "steipete/tap", trusted: true
@@ -14,7 +13,6 @@ brew "utf8proc", args: ["HEAD"]
 brew "olets/tap/zsh-abbr@6", trusted: true
 cask "1password"
 cask "1password-cli"
-cask "fujibee/agmsg/agmsg"
 cask "android-studio"
 cask "ankerwork"
 cask "appcleaner"
