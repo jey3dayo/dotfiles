@@ -9,7 +9,7 @@ tags:
   - layer/core
   - environment/cross-platform
   - audience/beginner
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: beginner
 owner: dotfiles
 ---
@@ -81,6 +81,18 @@ gh repo clone jey3dayo/ai-usage-log ~/.local/share/ai-usage-log
 
 - 未 clone の場合、ジョブは毎回 exit 1 となり、`~/Library/Logs/ai-usage-snapshot.log` に `ai-usage-snapshot: ... not found; run: gh repo clone ...` を出力します。使わない Mac では無視して問題ありません。
 - clone 済みで `snapshot.sh` が欠損している場合や実行権限がない場合も exit 1 となり、ログに復旧手順（`git -C ~/.local/share/ai-usage-log checkout -- snapshot.sh` または再 clone、`chmod +x`）を出力します。
+
+### macOS: Spotlight の検索対象から `~/src` と `~/tmp` を外す（手動）
+
+ビルド成果物や `node_modules` など大量のファイルが増えるたびに Spotlight の再インデックスが走り、負荷がかかります（Claude Code で大量のファイルを扱う作業で効きます）。新しい Mac では一度だけ手動で除外してください。
+
+1. システム設定 → Spotlight →「検索のプライバシー」を開きます。
+2. `+` から `~/src` と `~/tmp` を追加します。
+
+- `~/.t3` は隠しフォルダのため、もともとインデックス対象外です。
+- git submodule と worktree は `~/src` 配下にあるため、`~/src` の除外でまとめて外れます。
+- 除外リストは macOS の保護領域にあり、`mise` やスクリプトでは書き換えられません。フォルダに置く `.metadata_never_index` も現行の macOS では効きません。
+- 確認: システム設定 → Spotlight →「検索のプライバシー」に `~/src` と `~/tmp` の両方が登録されていることを確認します。
 
 ## Windows Bootstrap
 
