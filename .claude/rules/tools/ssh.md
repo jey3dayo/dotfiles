@@ -1,5 +1,7 @@
 ---
-paths: ssh/**/*, docs/tools/ssh.md
+paths:
+  - "ssh/**/*"
+  - "docs/tools/ssh.md"
 source: docs/tools/ssh.md
 ---
 

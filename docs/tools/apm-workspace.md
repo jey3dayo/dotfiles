@@ -1,7 +1,7 @@
 ---
 type: reference
 title: APM Workspace Reference
-description: 共通 skill・agent・ガイドの編集元である apm-workspace の配置とよく使うコマンド
+description: 共通スキル・エージェント・ガイドの編集元である apm-workspace の配置とよく使うコマンド
 resource: docs/tools/apm-workspace.md
 tags:
   - category/configuration
@@ -9,14 +9,14 @@ tags:
   - tool/apm
   - tool/mise
   - audience/developer
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: developer
 owner: dotfiles
 ---
 
 # APM Workspace Reference
 
-グローバルな skill・agent・共通ガイドの編集と配布は、`apm-workspace` の checkout で行います。この `.config` リポジトリは APM の編集面でも操作面でもなく、参照先を示す案内のみを持ちます。手順の正本は `apm-workspace` 側の `README.md`・`AGENTS.md`・`docs/native-distribution.md` であり、ここには複製しません。
+グローバルなスキル・エージェント・共通ガイドの編集と配布は、`apm-workspace` の checkout で行います。この `.config` リポジトリでは APM の編集も配布操作も行わず、参照先の案内だけを持ちます。手順の正本は `apm-workspace` 側の `README.md`・`AGENTS.md`・`docs/native-distribution.md` であり、ここには複製しません。
 
 親ドキュメントは [Mise Reference](mise.md)、Claude 向けの短いルールは [`.claude/rules/tools/mise.md`](../../.claude/rules/tools/mise.md) にあります。
 
@@ -30,7 +30,7 @@ owner: dotfiles
 | 共通ガイド           | checkout の `catalog/.apm/instructions/ai-collaboration.instructions.md`    | 正本                               |
 | commands / rules     | checkout の `catalog/{commands,rules}/**`                                   | 正本                               |
 | external skill / MCP | checkout の `apm.yml` / `apm.lock.yaml`                                     | 正本                               |
-| consumer state       | `~/.apm`（`apm.yml`・`apm.lock.yaml`・`apm_modules/` など）                 | install 結果（直接編集しない）     |
+| consumer state       | `~/.apm`（`apm.yml`・`apm.lock.yaml`・`apm_modules/` など）                 | インストール結果（直接編集しない） |
 | 配布先               | `~/.claude/{skills,agents,rules}`・`~/.codex/AGENTS.md`・`~/.agents/skills` | 生成物（直接編集しない）           |
 
 共通ガイドは `apm compile -g` が `~/.codex/AGENTS.md` と `~/.cursor/AGENTS.md` に書き出し、Claude は `~/.claude/rules/ai-collaboration.md` として読み込みます。
@@ -40,12 +40,12 @@ owner: dotfiles
 ```bash
 cd ~/src/github.com/jey3dayo/apm-workspace
 mise run check        # 配布せずに検証する
-mise run native:sync  # push 済みの commit を配布する
+mise run native:sync  # push 済みのコミットを配布する
 mise run doctor       # 配布状態と learning-intake を確認する
 ```
 
-旧来の `~/.apm` での `mise run deploy` / `apply` / `refresh` は 2026-11-10 に廃止されています。
+旧来の `~/.apm` 上での `mise run deploy` / `apply` / `refresh` は、2026-11-10 に廃止されました。
 
 ## APM CLI
 
-APM CLI は `pipx:apm-cli` として `mise` でバージョン固定します。`.config` 側は `mise/config.dev.toml`、`apm-workspace` 側は checkout の `mise.toml` が pin を持ちます。
+APM CLI は `pipx:apm-cli` として `mise` でバージョンを固定しています。`.config` 側は `mise/config.dev.toml`、`apm-workspace` 側は checkout の `mise.toml` でそれぞれ固定しています。

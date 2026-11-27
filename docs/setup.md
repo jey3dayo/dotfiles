@@ -16,7 +16,7 @@ owner: dotfiles
 
 # Setup Guide
 
-本ドキュメントは、macOS / Linux / WSL2 / Windows 向け開発環境のセットアップ手順とツール管理方針の正本です（`README.md` はリンクのみを保持します）。macOS / Linux / WSL2 は `mise bootstrap` を中心に構成し、Windows は Chocolatey と `mise` を組み合わせて管理します。Home Manager / Nix flake は撤去済みです。
+この文書は、macOS / Linux / WSL2 / Windows 向け開発環境のセットアップ手順とツール管理方針の正本です（`README.md` にはリンクのみを置きます）。macOS / Linux / WSL2 は `mise bootstrap` を中心に構成し、Windows は Chocolatey と `mise` を組み合わせて管理します。なお、Home Manager / Nix flake による管理は撤去済みです。
 
 ## セットアップの全体像
 
@@ -29,14 +29,14 @@ owner: dotfiles
 
 ### 前準備と自己更新ツールの扱い
 
-- Homebrew の前準備: `scripts/bootstrap.sh` は、fresh macOS で Homebrew を導入するためだけのスクリプトです。Homebrew 導入済みのマシンでは実行不要です。
-- `mise` 本体の導入と更新: macOS / Linux / WSL2 では公式インストーラ（`curl https://mise.run | sh` → `~/.local/bin/mise`）、Windows では Chocolatey（`windows/chocolatey/packages.config`）で導入し、更新は `mise self-update` を使います。Homebrew formula は adhoc 署名かつバージョン付きパスのため、macOS Tahoe 以降の TCC（「他のアプリからのデータ」など）の許可が更新のたびに無効化されて再プロンプトされます。公式バイナリは Developer ID 署名のため許可が持続します。
-- `claude` / `codex` の導入と更新: 同じ理由から `mise` の `[tools]` には置かず、`mise bootstrap` の `[bootstrap.hooks.post-tools]` hook で未導入時のみ公式インストーラから導入します。更新は `claude update` / `codex update` に任せます。
-- `pam-reattach`: `[bootstrap.packages]` で宣言しています。`/etc/pam.d/sudo_local` の `auth optional /opt/homebrew/lib/pam/pam_reattach.so` 行はこのリポジトリでは管理せず、手動で設定します。
+- Homebrew の前準備: `scripts/bootstrap.sh` は、初期状態の macOS に Homebrew を導入するためだけのスクリプトです。Homebrew 導入済みのマシンでは実行不要です。
+- `mise` 本体の導入と更新: macOS / Linux / WSL2 では公式インストーラ（`curl https://mise.run | sh` → `~/.local/bin/mise`）、Windows では Chocolatey（`windows/chocolatey/packages.config`）で導入し、更新は `mise self-update` を使います。Homebrew formula は adhoc 署名かつバージョン付きパスのため、macOS Tahoe 以降の TCC（「他のアプリからのデータ」など）の許可が更新のたびに失効して再確認を求められます。公式バイナリは Developer ID 署名のため、更新後も許可が維持されます。
+- 自己更新 CLI の導入と更新: 同じ理由から、自己更新機能を持つ CLI（`claude` / `codex` など）は `mise` の `[tools]` には置かず、`mise bootstrap` の `[bootstrap.hooks.post-tools]` フックで未導入のものだけを公式インストーラから導入します。更新は各ツールの自己更新コマンドや `mise run update:standalone` に任せます。
+- `pam-reattach`: `[bootstrap.packages]` で宣言しています。`/etc/pam.d/sudo_local` の `auth optional /opt/homebrew/lib/pam/pam_reattach.so` 行はこのリポジトリの管理対象外のため、手動で設定します。
 
 ## Quick Setup
 
-前提条件として、Homebrew がインストール済みであること（新規 macOS の場合は後述の `scripts/bootstrap.sh` を先に実行します）。
+前提として、Homebrew がインストール済みである必要があります（初期状態の macOS では、先に後述の `scripts/bootstrap.sh` を実行してください）。
 
 ```bash
 # 1. リポジトリをクローン
@@ -71,9 +71,9 @@ exec zsh
   - CI: `MISE_ENV=bun,ci` を使用し、`interactive` / `dev` を読み込みません。
   - Linux / WSL2: `brew bundle` は macOS 専用のため使わず、各ディストリのパッケージマネージャーを利用します。
 
-### macOS: ai-usage-snapshot の前提（private repo の手動 clone）
+### macOS: ai-usage-snapshot の前提（プライベートリポジトリの手動 clone）
 
-LaunchAgent `ai-usage-snapshot`（平日 9:50 / 14:50 に codexbar の使用量を export）は、private repo `jey3dayo/ai-usage-log` の `snapshot.sh` を実行します。本リポジトリは public のため、`mise bootstrap` では自動配置しません。利用する Mac では `gh auth login` 済みの状態で一度だけ手動 clone してください。
+LaunchAgent `ai-usage-snapshot`（平日 9:50 / 14:50 に codexbar の使用量をエクスポート）は、プライベートリポジトリ `jey3dayo/ai-usage-log` の `snapshot.sh` を実行します。このリポジトリは公開リポジトリのため、`mise bootstrap` では自動配置しません。利用する Mac では `gh auth login` 済みの状態で一度だけ手動 clone してください。
 
 ```bash
 gh repo clone jey3dayo/ai-usage-log ~/.local/share/ai-usage-log
@@ -84,19 +84,19 @@ gh repo clone jey3dayo/ai-usage-log ~/.local/share/ai-usage-log
 
 ### macOS: Spotlight の検索対象から `~/src` と `~/tmp` を外す（手動）
 
-ビルド成果物や `node_modules` など大量のファイルが増えるたびに Spotlight の再インデックスが走り、負荷がかかります（Claude Code で大量のファイルを扱う作業で効きます）。新しい Mac では一度だけ手動で除外してください。
+ビルド成果物や `node_modules` など大量のファイルが増えるたびに Spotlight の再インデックスが走り、負荷がかかります（特に Claude Code で大量のファイルを扱う作業で効果があります）。新しい Mac では一度だけ手動で除外してください。
 
 1. システム設定 → Spotlight →「検索のプライバシー」を開きます。
 2. `+` から `~/src` と `~/tmp` を追加します。
 
 - `~/.t3` は隠しフォルダのため、もともとインデックス対象外です。
-- git submodule と worktree は `~/src` 配下にあるため、`~/src` の除外でまとめて外れます。
-- 除外リストは macOS の保護領域にあり、`mise` やスクリプトでは書き換えられません。フォルダに置く `.metadata_never_index` も現行の macOS では効きません。
+- git submodule と worktree は `~/src` 配下にあるため、`~/src` の除外でまとめて対象外になります。
+- 除外リストは macOS の保護領域にあり、`mise` やスクリプトでは書き換えられません。フォルダ内に `.metadata_never_index` を置く方法も現行の macOS では機能しません。
 - 確認: システム設定 → Spotlight →「検索のプライバシー」に `~/src` と `~/tmp` の両方が登録されていることを確認します。
 
 ## Windows Bootstrap
 
-Windows では「Chocolatey = bootstrap」「`mise` = 開発ツール」の役割分離を前提にセットアップします。
+Windows では、Chocolatey で土台（bootstrap）を整え、`mise` で開発ツールを管理する役割分離を前提にセットアップします。
 
 ```powershell
 git clone https://github.com/jey3dayo/dotfiles $HOME\.config
@@ -108,8 +108,8 @@ powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1
 
 - Chocolatey 本体を導入します（未導入の場合のみ）。
 - `windows/chocolatey/packages.config` から bootstrap / GUI パッケージを一括導入します。
-- `MISE_CONFIG_DIR` を `~/.config/mise` に向け、`MISE_ENV=bun,interactive,dev,dev-windows` で `mise install` を実行します。
-- `mise install` 後、`claude` / `codex` が未導入の場合のみ公式インストーラで導入します（既導入の場合は更新しません）。
+- `MISE_ENV=bun,interactive,dev,dev-windows` を設定し、標準のグローバル設定探索（`~/.config/mise`）を使って `mise install` を実行します。
+- `mise install` 後、自己更新 CLI（`claude` / `codex`）が未導入の場合のみ公式インストーラで導入します（導入済みの場合は更新しません）。
 - `~/.config/powershell` を正本とし、`Documents/PowerShell` と `Documents/WindowsPowerShell` のエントリポイントを再生成します。
 
 ### Windows bootstrap の対象
@@ -133,7 +133,7 @@ powershell -ExecutionPolicy Bypass -File .\windows\setup.ps1 -ProfilesOnly
 
 ### Homebrew（macOS の前準備）
 
-fresh macOS のみ、`scripts/bootstrap.sh` で Homebrew を自動導入します（既に導入済みなら不要です）。
+初期状態の macOS のみ、`scripts/bootstrap.sh` で Homebrew を自動導入します（すでに導入済みであれば不要です）。
 
 ```bash
 sh ./scripts/bootstrap.sh
@@ -143,7 +143,7 @@ sh ./scripts/bootstrap.sh
 
 ### Linux / WSL2（各ディストリのパッケージマネージャー）
 
-先に `git` / `zsh` / `curl` を導入します。
+先に前提パッケージ（`git` / `zsh` / `curl`）を導入します。
 
 ```bash
 # Ubuntu / Debian
@@ -169,26 +169,26 @@ sudo pacman -S --noconfirm git zsh curl
 
 ## Package Management Philosophy
 
-このプロジェクトでは、ツール導入を「4 層 + Windows Chocolatey」に分離します。**どの層でツールを管理するかの方針は本節が唯一の正本**であり、他の docs や rules は本節への参照に留めます。
+このプロジェクトでは、ツール導入を「4 層 + Windows Chocolatey」に分離しています。**どの層でツールを管理するかの方針はこの節を唯一の正本**とし、他の docs や rules からはこの節を参照するだけに留めます。
 
 ### 4 層
 
 1. mise `[tools]`: CLI・言語ランタイム・開発ツール・`go:` / `cargo:` / `npm:` / `pipx:` プレフィックス付きパッケージを管理します。`mise/conf.d/00-tools-all.toml`（全環境共通）、`mise/config.bun.toml`（bun）、`mise/config.interactive.toml`（CI 以外）、`mise/config.dev.toml`（開発機）、`mise/config.<machine>.toml`（機種別）で宣言します。このリポジトリ自身の lint / CI だけが使うツール（例: `gh-actions-lock`）はリポジトリルートの `.mise.toml` に置きます。npm / pnpm / bun のグローバルインストールは使いません。
-2. mise bootstrap `[bootstrap.packages]`: macOS の Homebrew formula を管理します。システムライブラリや native バイナリ（Neovim とその依存関係、`btop`, `cmake`, `podman`, `powershell`, `rust-analyzer` など、`mise` でも入れられるものを含む）を、`mise/config.macos.toml` に `"brew:<name>" = "latest"` で宣言します。
-3. Brewfile: cask・MAS app・VS Code 拡張、および `[bootstrap.packages]` で表現できない formula の例外リスト（install args・`restart_service`・private または metadata なし tap）を管理します。
+2. mise bootstrap `[bootstrap.packages]`: macOS の Homebrew formula を管理します。システムライブラリやネイティブバイナリ（Neovim とその依存関係、`btop` / `cmake` / `podman` / `powershell` / `rust-analyzer` など、`mise` でも導入できるものを含む）を、`mise/config.macos.toml` に `"brew:<name>" = "latest"` で宣言します。
+3. Brewfile: cask・MAS app・VS Code 拡張、および `[bootstrap.packages]` で表現できない formula の例外（install 引数付き、`restart_service` 指定、プライベート tap、メタデータのない tap）を管理します。
 4. 自己更新 standalone: `mise` 本体と自己更新機能を持つ CLI を管理します。`mise` は公式インストーラ（macOS / Linux / WSL2 は `curl https://mise.run | sh`、Windows は Chocolatey）で導入し、対象 CLI は `[bootstrap.hooks.post-tools]` → `mise/lib/ensure-standalone.sh`（Windows は `windows/setup.ps1` の `Ensure-StandaloneCli`）が未導入時のみ導入します。更新は各ツールの自己更新（`mise self-update`、CLI は `mise run update:standalone`）に任せ、二重の更新経路を避けるため `mise` `[tools]` には置きません。対象 CLI の一覧は文書に列挙せず、導入側スクリプトと `update:standalone` タスクの定義を正本とします。
 
 ### Chocolatey（Windows bootstrap）
 
-- 対象: `mise` 本体、Git や WezTerm などのベースアプリ、GUI アプリケーション（Chrome, VS Code など）、`neovim` バイナリなどのアプリ本体
-- 理由: 初回セットアップの bootstrap を単純化し、CLI ツール本体は `mise install` に集約するため
+- 対象: `mise` 本体、Git や WezTerm などのベースアプリ、GUI アプリケーション（Chrome / VS Code など）、`neovim` バイナリなどのアプリ本体
+- 理由: 初回セットアップを単純にし、開発用 CLI ツール本体の管理は `mise install` に集約するため
 
 ### レイヤーの選び方
 
 1. GUI app・MAS app・VS Code 拡張 → **Brewfile**
-2. 自前のインストーラと自己更新コマンドを持ち、最新版を追随すべきツール → **自己更新 standalone**
-3. `mise`（registry またはパッケージバックエンド）経由で入る cross-platform CLI → **`[tools]`**
-4. システムライブラリまたは macOS native バイナリ → **`[bootstrap.packages]`**（install args・service restart・API メタデータのない tap など、表現できない場合のみ Brewfile へ `brew` 行を追加します）
+2. 自前のインストーラと自己更新コマンドを持ち、最新版へ追従すべきツール → **自己更新 standalone**
+3. `mise`（registry またはパッケージバックエンド）経由で入るクロスプラットフォーム CLI → **`[tools]`**
+4. システムライブラリまたは macOS ネイティブバイナリ → **`[bootstrap.packages]`**（install 引数・service restart・API メタデータのない tap など、表現できない場合のみ Brewfile へ `brew` 行を追加します）
 
 ランタイムは `mise` を通して管理します。Homebrew 版ランタイムを残すのは、他の formula がそれに依存している場合だけです（`brew uses --installed <name>` で確認できます）。更新経路の二重化を防ぐため、1 つのツールは 1 層でのみ宣言します。なお、`brew:neovim`（エディタ本体）と `npm:neovim`（Node クライアント）は別パッケージのため重複には当たりません。
 
@@ -222,12 +222,12 @@ mise ls                  # mise 管理ツールの一覧を確認
 ```bash
 atuin register -u <username> -e <email>   # 公式 sync server (api.atuin.sh) に登録
 atuin key                                  # 暗号化キーを表示
-# 表示されたキーを 1Password などのパスワードマネージャに保存します（必須）
+# 表示されたキーを 1Password などのパスワードマネージャーに保存します（必須）
 atuin import zsh                           # 既存の ~/.zsh_history を取り込み（任意）
 atuin sync -f                              # 初回フル同期
 ```
 
-> **注意**: 暗号化キーは E2E 暗号化の復号鍵そのものです。紛失するとパスワードをリセットしても他マシンから履歴を復号できなくなります。`~/.local/share/atuin/key` のみに頼らず、必ずパスワードマネージャにも保管してください。
+> **注意**: 暗号化キーは E2E 暗号化の復号鍵そのものです。紛失するとパスワードをリセットしても他マシンから履歴を復号できなくなります。`~/.local/share/atuin/key` のみに頼らず、必ずパスワードマネージャーにも保管してください。
 
 ### 2 台目以降のマシン
 
@@ -235,7 +235,7 @@ atuin sync -f                              # 初回フル同期
 mise install                               # atuin バイナリを取得
 exec zsh -l                                # 新しいシェルを起動
 atuin login -u <username> -k <暗号化キー>   # パスワードはプロンプトで入力
-atuin sync                                 # サーバから履歴を pull
+atuin sync                                 # サーバーから履歴を取得
 ```
 
 ### 状態確認
@@ -250,7 +250,7 @@ atuin status   # Last sync / Username / Sync frequency を表示
 
 - 仕事用環境: 職場固有の Git 設定は `~/.gitconfig_local` に記述します。
 - SSH 鍵: `ssh-keygen -t ed25519 -C "email@example.com"` で生成します。
-- ターミナル: WezTerm は設定を自動再読み込みしますが、Alacritty は再起動が必要です。
+- ターミナル: Ghostty は `Ctrl+B` → `r` で再読み込み、WezTerm は設定を自動再読み込みしますが、Alacritty は再起動が必要です。
 - 秘密情報・環境変数: `dotenvx` / `.env.keys` / 1Password service account の運用は [1Password CLI](tools/1password.md) を参照してください。
 
 ## Maintenance
@@ -285,7 +285,7 @@ eval "$(/usr/local/bin/brew shellenv)"
 - `sh ./scripts/bootstrap.sh` を再実行します。
 - 解決しない場合は「手動インストール」の手順で Homebrew を直接導入します。
 
-### Homebrew が既に存在する場合
+### Homebrew がすでに存在する場合
 
 - `scripts/bootstrap.sh` は既存インストールを検出して安全にスキップするため、複数回実行しても問題ありません。
 

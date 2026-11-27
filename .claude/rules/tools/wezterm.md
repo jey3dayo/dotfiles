@@ -1,5 +1,8 @@
 ---
-paths: wezterm/**/*, alacritty/**/*, docs/tools/wezterm.md
+paths:
+  - "wezterm/**/*"
+  - "alacritty/**/*"
+  - "docs/tools/wezterm.md"
 source: docs/tools/wezterm.md
 ---
 

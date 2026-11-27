@@ -1,5 +1,8 @@
 ---
-paths: docs/**/*.md, README.md, CLAUDE.md
+paths:
+  - "docs/**/*.md"
+  - "README.md"
+  - "CLAUDE.md"
 ---
 
 # Documentation Rules

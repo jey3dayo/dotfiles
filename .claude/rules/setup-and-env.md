@@ -1,5 +1,12 @@
 ---
-paths: docs/setup.md, .mise.toml, mise/config.toml, Brewfile, Brewfile.lock.json, windows/setup.ps1, powershell/profile.ps1
+paths:
+  - "docs/setup.md"
+  - ".mise.toml"
+  - "mise/config.toml"
+  - "Brewfile"
+  - "Brewfile.lock.json"
+  - "windows/setup.ps1"
+  - "powershell/profile.ps1"
 ---
 
 # Setup and Environment Rules

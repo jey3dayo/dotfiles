@@ -1,7 +1,7 @@
 ---
 type: reference
 title: Neovim Configuration Guide
-description: dotfiles repo の Neovim 設定（起動性能・LSP・プラグイン構成・キーバインド）の正本
+description: dotfiles リポジトリの Neovim 設定（起動性能・LSP・プラグイン構成・キーバインド）の正本
 resource: docs/tools/nvim.md
 tags:
   - category/editor
@@ -9,7 +9,7 @@ tags:
   - tool/nvim
   - environment/cross-platform
   - audience/advanced
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: advanced
 owner: dotfiles
 ---
@@ -26,7 +26,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/nvim.md`](../../.claude
 - LSP 対応: 15 以上の言語・設定形式をサポート
 - モダン UI: `mini.pick`、`mini.files`、`flash.nvim` による高速ナビゲーション
 - 補完: `blink.cmp` + `friendly-snippets`
-- フォーマット: 保存時の自動フォーマットは行わず、`:Format`（`<C-e>f`）で手動実行します。コミット時の整形は lefthook の `pre-commit`（staged files）が担います。
+- フォーマット: 保存時の自動フォーマットは行わず、`:Format`（`<C-e>f`）で手動実行します。コミット時の整形は lefthook の `pre-commit`（ステージ済みファイル）が担います。
 
 ## パフォーマンス指標
 
@@ -38,7 +38,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/nvim.md`](../../.claude
 
 ## 検証
 
-目標 `<200ms` の範囲内です。測定条件は 2026-11-09、Apple M4 Max（arm64）、NVIM v0.12.6、`nvim --headless --startuptime <log> [file] -c qa`、設定は本リポジトリ直下の `nvim/`、ファイルなしとファイルありを交互に各 20 回計測しています。
+目標 `<200ms` の範囲内です。測定条件は 2026-11-09、Apple M4 Max（arm64）、NVIM v0.12.6、`nvim --headless --startuptime <log> [file] -c qa`、設定はこのリポジトリ直下の `nvim/`、ファイルなしとファイルありを交互に各 20 回計測しています。
 
 | 区分                                                                                  | 中央値 | 最小 | 最大 |
 | ------------------------------------------------------------------------------------- | ------ | ---- | ---- |
@@ -46,8 +46,8 @@ Claude 向けの短いルールは [`.claude/rules/tools/nvim.md`](../../.claude
 | ファイルあり（測定時: `nvim/lua/options.lua`、現行: `nvim/lua/settings/options.lua`） | 77.9ms | 70.4 | 99.4 |
 
 - `-c qa` は `VimEnter` より前に終了するため、`VeryLazy`、`VimEnter` で読み込むプラグイン、`vim.defer_fn` の遅延モジュールは計測に含まれません。
-- 同日の参考値として、`lazy.nvim` 版（タグ `nvim-lazy-last`）を同条件・各 20 回の交互実行で測った中央値はファイルなし 44.9ms、ファイルあり 72.1ms で、`vim.pack` 版との差は約 5ms でした。簡易計測には `nvim/measure_startup.sh` を使えます。
-- 同一条件でも負荷により数 ms 変動する（lazy 版単体でも日により中央値が変動した）ため、差は目安として扱います。
+- 同日の参考値として、`lazy.nvim` 版（タグ `nvim-lazy-last`）を同条件・各 20 回の交互実行で計測した中央値はファイルなし 44.9ms、ファイルあり 72.1ms で、`vim.pack` 版との差は約 5ms でした。簡易計測には `nvim/measure_startup.sh` を使えます。
+- 同一条件でも負荷により数 ms 変動する（`lazy.nvim` 版単体でも日によって中央値が変動した）ため、差は目安として扱います。
 
 ## 設定構造
 
@@ -76,14 +76,14 @@ nvim/
 
 - `nvim/lua/plugins/*.lua` は `lazy.nvim` 形式の spec をそのまま使用します。ローダーは `vim.pack.add` を 1 回だけ呼び、`dependencies`（循環は許容）、`cond`、`enabled`、`priority`、`init`、`config` / `opts` を解釈します。
 - ローダーが未実装の spec キーを指定すると `error` になります。`opts` または `config = true` を使う spec では、setup 対象のモジュールを `main` で明示します。
-- トリガーのないプラグインのうち、`config` / `opts` を持たないライブラリは起動時に `runtimepath` へ載せます。`config` / `opts` を持つものは、依存元のロード時、対象モジュールの `require` 時（`package.loaders` に追加したフックが未ロードのプラグインを設定付きでロード）、または対象カラースキームの使用時（`ColorSchemePre` で `colors/` を持つプラグインをロード）に読み込みます。
+- トリガーのないプラグインのうち、`config` / `opts` を持たないライブラリは起動時に `runtimepath` へ載せます。`config` / `opts` を持つものは、依存元のロード時、対象モジュールを `require` した際（`package.loaders` に登録したフック経由で設定付きロードを実行）、または対象カラースキームの使用時（`ColorSchemePre` で `colors/` を持つプラグインをロード）に読み込みます。
 - イベントでロードしたプラグインは、ロード後に同じイベントを対象バッファへ再発火します（最初のバッファでも `gitsigns` などが有効になります）。`VeryLazy` は `UIEnter` 後に発火します。
 - `lazy.nvim` が無効化していた内蔵プラグイン（`gzip`, `matchit`, `matchparen`, `netrwPlugin`, `tarPlugin`, `zipPlugin`, `tutor`）は、`nvim/lua/pack/init.lua` の `loaded_*` ガード変数で無効化しています。
 
 ### 更新と初回導入
 
 - lockfile は `nvim/nvim-pack-lock.json`（Git 管理）です。初回インストールと別マシンでの復元は lockfile の rev に従って行われます。
-- 更新は `,su`（`vim.pack.update()`）で実行します。確認バッファで `:write` すると適用、`:quit` で破棄します。`,sp` は `vim.pack.update(nil, { offline = true })` を呼び、ネットワークへ出ずにローカル取得済みの更新候補を確認バッファへ表示します（`:write` で適用）。
+- 更新は `,su`（`vim.pack.update()`）で実行します。確認バッファで `:write` すると適用、`:quit` で破棄します。`,sp` は `vim.pack.update(nil, { offline = true })` を呼び、ネットワークへアクセスせず、ローカルに取得済みの更新候補を確認バッファへ表示します（`:write` で適用）。
 - headless 環境での初回インストールは確認プロンプトで停止するため、`NVIM_PACK_BOOTSTRAP=1` を付けて実行します（confirm を無効化し、`nvim-treesitter` の build hook である `:TSUpdate` もスキップします）。
 
 ```bash
@@ -93,7 +93,7 @@ NVIM_PACK_BOOTSTRAP=1 nvim --headless -c 'lua vim.wait(1000)' -c qa
 ### テストと移行履歴
 
 - ローダーのトリガー（`cmd` の bang・範囲・引数、`keys` の初回入力、`event` の再発火、`config` 失敗時の通知）は、偽プラグインを使う headless テストで検証します。実行は `mise run test:nvim`（`nvim/spec/headless/pack_loader_check.lua`、実プラグイン・ネットワーク不要）で行います。Neovim の入っていない CI 環境では実行していません。
-- `gitlinker.nvim` は削除しています。`lazy.nvim` 下でも `keys = {}` のまま一度もロードされておらず、`vim.pack` で `runtimepath` に載せると `plugin/` が自動 setup されて `:GitLink` が意図せず生えるためです。
+- `gitlinker.nvim` は削除しています。`lazy.nvim` 下でも `keys = {}` のまま一度もロードされておらず、`vim.pack` で `runtimepath` に載せると `plugin/` が自動的に読み込まれて `:GitLink` が意図せず定義されるためです。
 - `lazy.nvim` 版の最終状態は Git タグ `nvim-lazy-last` に記録されています。
 
 ## サポート言語
@@ -154,7 +154,7 @@ gt / gT         -- タブ切り替え（次 / 前）
 - `vim.pack`: Neovim 組み込みのプラグインマネージャー（遅延ロードは自前ローダー `nvim/lua/pack/` が担当）
 - `nvim-lspconfig`: サーバーごとの既定設定を提供（一覧の正本は `nvim/lua/lsp/config.lua` の `M.servers`）
 - `mason.nvim` + `mason-lspconfig`: `nvim/lua/config/mason-lspconfig.lua` が `M.servers` を `automatic_enable = false` でインストールし、有効化は行いません
-- 有効化: `nvim/lua/lsp/setup.lua` が `vim.lsp.config` / `vim.lsp.enable` による唯一の活性化ポイントを担い、サーバー別の上書きは `after/lsp/<server>.lua` に置きます
+- 有効化: `nvim/lua/lsp/setup.lua` が `vim.lsp.config` / `vim.lsp.enable` による唯一の有効化ポイントを担い、サーバー別の上書きは `after/lsp/<server>.lua` に置きます
 
 ### UI・ナビゲーション
 
@@ -178,8 +178,8 @@ gt / gT         -- タブ切り替え（次 / 前）
 
 ## テーマ・UI
 
-- メインテーマ: `0x96f.nvim`（`filipjanevski/0x96f.nvim`、`lua/settings/colorscheme.lua` で適用）。`kanagawa.nvim` / `tokyonight.nvim` も登録済みで手動切り替えが可能です（遅延ロード扱いのため `runtimepath` に載ります）。
-- 透明背景: `Normal` / `SignColumn` などを `guibg=NONE` にし、ターミナル背景と統合しています。
+- メインテーマ: `0x96f.nvim`（`filipjanevski/0x96f.nvim`、`lua/settings/colorscheme.lua` で適用）。`kanagawa.nvim` / `tokyonight.nvim` も遅延ロード対象として登録されており、`:colorscheme` 実行時（`ColorSchemePre`）に読み込まれて手動切り替えできます。
+- 透明背景: `Normal` / `SignColumn` などを `guibg=NONE` にし、ターミナル背景と調和させています。
 - ステータスライン: モード、Git ブランチ、LSP 状態、診断情報を表示します（`lualine.nvim`）。
 
 ## 最適化設定
@@ -198,7 +198,7 @@ vim.g.loaded_python3_provider = 0 -- 同期的な mise コマンド実行を回�
 - トリガー（`event` / `cmd` / `keys` / `ft`）のないプラグインは、起動時に `runtimepath` へ載せるのみで `config` は実行しません。
 - 大ファイル対策: `lua/core/utils.lua` の `is_large_file`（既定 2MB 超）を `lua/core/ftplugin_loader.lua` が参照し、超過時は Treesitter の `vim.treesitter.start` をスキップします。
 
-## カスタマイゼーション
+## カスタマイズ
 
 プロジェクト固有の上書きは、`lua/core/project_config.lua` が cwd から上方向に `nvim.config.lua` を探索して自動で読み込みます（マシン固有の `lua/config/local.lua` に相当する仕組みはありません）。
 

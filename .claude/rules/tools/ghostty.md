@@ -1,89 +1,20 @@
 ---
-paths: ghostty/**/*
+paths:
+  - "ghostty/**/*"
+  - "docs/tools/ghostty.md"
+source: docs/tools/ghostty.md
 references: karabiner/karabiner.json
 ---
 
 # Ghostty Rules
 
-Purpose: Ghostty terminal のキーバインド管理。Scope: `ctrl+b` リーダーキーシーケンス、スプリット操作、タブ管理。
+Purpose: Ghostty ターミナル設定と `ctrl+b` リーダーキーの制約を維持する。
+Detailed Reference: [docs/tools/ghostty.md](../../../docs/tools/ghostty.md)
 
-## 管理ファイル
+## 要約と制約
 
-- `ghostty/config` — すべての設定を一元管理します。
-
-## Leader キーの方針
-
-leader は **`ctrl+b`** です。Ghostty 内で動作する herdr が prefix に `ctrl+x` を使うため、衝突を避ける目的で Ghostty 側を `ctrl+b` に分離しています。leader を変更する際は、herdr の prefix（`~/.config/herdr/config.toml` の `keys.prefix`）と重複しないことを必ず確認してください。
-
-## Sequence 構文
-
-```ini
-keybind = ctrl+b>KEY=action
-```
-
-大文字キーは `L` ではなく `shift+l` と記述します。Ghostty では `ctrl+b>L` と `ctrl+b>l` が**同一トリガー**として扱われ、後の定義が前の定義を上書きします。
-
-## C-b リーダーキー一覧
-
-### Tabs
-
-| Ctrl+B → | アクション       | Ghostty action |
-| -------- | ---------------- | -------------- |
-| c        | 新しいタブ       | `new_tab`      |
-| n        | 次のタブ         | `next_tab`     |
-| p        | 前のタブ         | `previous_tab` |
-| 1〜8     | タブ直接ジャンプ | `goto_tab:N`   |
-
-### Splits
-
-| Ctrl+B →   | アクション       | Ghostty action      |
-| ---------- | ---------------- | ------------------- |
-| -          | 下スプリット     | `new_split:down`    |
-| \ / ¥ / \| | 右スプリット     | `new_split:right`   |
-| o          | 次のペイン       | `goto_split:next`   |
-| z          | ペインズーム切替 | `toggle_split_zoom` |
-| Space      | ペイン均等化     | `equalize_splits`   |
-
-### Pane Navigation（Vim 風）
-
-| Ctrl+B → | アクション | Ghostty action     |
-| -------- | ---------- | ------------------ |
-| h        | ペイン左へ | `goto_split:left`  |
-| j        | ペイン下へ | `goto_split:down`  |
-| k        | ペイン上へ | `goto_split:up`    |
-| l        | ペイン右へ | `goto_split:right` |
-
-### Pane Resize（Shift+HJKL）
-
-| Ctrl+B → | アクション | Ghostty action          |
-| -------- | ---------- | ----------------------- |
-| Shift+H  | リサイズ左 | `resize_split:left,32`  |
-| Shift+J  | リサイズ下 | `resize_split:down,32`  |
-| Shift+K  | リサイズ上 | `resize_split:up,32`    |
-| Shift+L  | リサイズ右 | `resize_split:right,32` |
-
-> 設定ファイルには `shift+h` と記述します（`H` は不可）。
-
-### その他
-
-| Ctrl+B → | アクション       | Ghostty action           |
-| -------- | ---------------- | ------------------------ |
-| x        | Surface を閉じる | `close_surface`          |
-| /        | コマンドパレット | `toggle_command_palette` |
-| r        | config リロード  | `reload_config`          |
-
-## 新しいバインドの追加方法
-
-```ini
-# Ctrl+B リーダー
-keybind = ctrl+b>KEY=action
-
-# Shift+KEY の場合
-keybind = ctrl+b>shift+key=action
-```
-
-追加後は `C-b r`（`reload_config`）で設定を再読み込みします。
-
-## 公式リファレンス
-
-- [Keybind Actions Reference](https://ghostty.org/docs/config/keybind/reference) — 全アクション一覧
+- すべての設定は `ghostty/config` で一元管理する。キーバインド一覧は `docs/tools/ghostty.md` を正本とし、ここには再掲しない。
+- リーダーキーは `ctrl+b` とする。Ghostty 内で動作する `herdr` が `ctrl+x`（およびリサイズモードに `alt+r`）を使うため、変更時は `~/.config/herdr/config.toml` の `keys.prefix` と重複しないことを確認する。
+- シーケンス構文は `keybind = ctrl+b>KEY=action`。大文字キーは `L` ではなく `shift+l` と記述する（`ctrl+b>L` と `ctrl+b>l` は同一トリガー扱いで後勝ちになる）。
+- 左 Option のみ Alt 扱い（`macos-option-as-alt = left`）、右 Option は文字合成用に残す。
+- 編集後は `Ctrl+B` → `r`（`reload_config`）で設定を再読み込みする。

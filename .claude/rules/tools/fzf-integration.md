@@ -1,5 +1,8 @@
 ---
-paths: docs/tools/fzf-integration.md, zsh/lib/widgets/git-widgets.zsh, zsh/lib/widgets/*fzf*.zsh
+paths:
+  - "docs/tools/fzf-integration.md"
+  - "zsh/lib/widgets/git-widgets.zsh"
+  - "zsh/lib/widgets/*fzf*.zsh"
 source: docs/tools/fzf-integration.md
 ---
 
@@ -9,7 +12,7 @@ Purpose: centralize FZF bindings and cross-tool integrations. Scope: keymaps, la
 
 Detailed Reference: See [docs/tools/fzf-integration.md](../../../docs/tools/fzf-integration.md) for comprehensive implementation guide, examples, and troubleshooting.
 
-## Scope and SST
+## Scope and SSOT
 
 - The Key Bindings table in `docs/tools/fzf-integration.md` is the sole binding list; do not re-enumerate keymaps in this rule or other docs.
 - Integration spans shell (history via atuin, processes, directories) and Git (repositories, branches, worktrees, files, stash). Tmux and Neovim are not currently FZF-integrated.

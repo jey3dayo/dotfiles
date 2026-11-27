@@ -9,7 +9,7 @@ tags:
   - tool/zsh
   - environment/cross-platform
   - audience/advanced
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: advanced
 owner: dotfiles
 ---
@@ -24,11 +24,11 @@ Claude 向けの短いルールは [`.claude/rules/tools/zsh.md`](../../.claude/
 
 ### 基本原則
 
-- `.zshenv` は全シェルで読み込まれるため、XDG、`ZDOTDIR`、`mise` の環境変数、最小 PATH、`.env.local` のみを扱います。
-- `.zshrc` は対話シェル向けの薄い orchestrator とし、`lib/<category>/*.zsh` を明示順に読み込みます。
-- 起動時に install・update・build・plugin lock 生成は行いません。
+- `.zshenv` は全シェルで読み込まれるため、XDG、`ZDOTDIR`、`mise` の環境変数、最小 PATH、`.env.local`、および AI エージェントの非対話シェル向け互換設定など最小限の初期化のみを扱います。
+- `.zshrc` は対話シェル向けの薄いエントリポイントとし、`lib/<category>/*.zsh` を明示的な順序で読み込みます。
+- 起動時にインストール・更新・ビルド・プラグインロックの生成は行いません。
 - `ni` / `nlx`、`eza`、`bun` の補完は起動時に生成せず、既存の補完ファイルを読み込みます。
-- `Ctrl-P` / `Ctrl-N` は `zsh/lib/core/history.zsh` の `history-beginning-search-*-end` による prefix 履歴検索を使用します（`fzf` / `atuin` とは別系統です）。
+- `Ctrl-P` / `Ctrl-N` は `zsh/lib/core/history.zsh` の `history-beginning-search-*-end` による前方一致の履歴検索を使用します（`fzf` / `atuin` とは別系統です）。
 - WSL 固有設定は WSL 環境でのみ読み込みます。
 - Starship はキャッシュファイルがある場合のみ読み込み、起動時に `starship init zsh` は実行しません。キャッシュがない場合や `ZSH_DISABLE_STARSHIP=1` の場合は軽量プロンプトへフォールバックします。キャッシュは `starship init zsh > ~/.cache/zsh/starship/init.zsh` で再生成します。
 
@@ -44,7 +44,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/zsh.md`](../../.claude/
 | `fzf-tab`                  | Tab 補完の fzf UI                  | 最初の `precmd`                          | `ZSH_LOAD_FZF_TAB=1`             | hook 登録順は `fzf` の後、`autosuggestions` / `syntax-highlighting` より前にします。      |
 | Git widgets / `fzf-git`    | Git 操作ウィジェット               | 最初の `precmd`                          | `ZSH_LOAD_GIT_WIDGETS=1`         | バインド一覧は [`docs/tools/fzf-integration.md`](fzf-integration.md) を参照してください。 |
 | `zsh-autosuggestions`      | 入力候補の表示                     | 最初の `precmd`                          | `ZSH_LOAD_AUTOSUGGESTIONS=1`     | —                                                                                         |
-| `fast-syntax-highlighting` | 入力中のシンタックスハイライト     | 最初の `precmd`（最後）                  | `ZSH_LOAD_SYNTAX_HIGHLIGHTING=1` | ZLE デコレータとして最後に読み込みます。                                                  |
+| `fast-syntax-highlighting` | 入力中のシンタックスハイライト     | 最初の `precmd`（最後）                  | `ZSH_LOAD_SYNTAX_HIGHLIGHTING=1` | ZLE デコレーターとして最後に読み込みます。                                                |
 | `gh` 補完                  | GitHub CLI 補完                    | 最初の `precmd`                          | `ZSH_LOAD_GH=1`                  | キャッシュファイルのみ読み込み、起動時に `gh completion` は実行しません。                 |
 | `zoxide`                   | `z` / `j` によるディレクトリ移動   | `z` / `j` の初回実行時                   | `ZSH_LOAD_ZOXIDE=1`              | —                                                                                         |
 
@@ -54,7 +54,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/zsh.md`](../../.claude/
 2. `zsh/.zshenv` が XDG、`mise`、PATH、history、`.env.local` を初期化します。
 3. ログインシェルでは `zsh/.zprofile` が locale / editor の設定と PATH の正規化を行います。
 4. 対話シェルでは `zsh/.zshrc` が以下の順に読み込みます。
-   - Core shell state: `lib/core/path.zsh`, `lib/core/options.zsh`, `lib/core/history.zsh`
+   - Core shell state: `lib/core/path.zsh`（直後に `mise activate zsh` を実行）、`lib/core/options.zsh`、`lib/core/history.zsh`
    - Completion setup: `lib/completion/completion.zsh`, `lib/completion/ni.zsh`, `lib/completion/gh-completion.zsh`, `lib/integrations/aicommits.zsh`
    - Agent integrations: `lib/integrations/agmsg.zsh`, `lib/integrations/codex.zsh`, `lib/integrations/secrets.zsh`
    - Key bindings and widgets: `lib/widgets/fzf.zsh`, `lib/widgets/fzf-tab.zsh`, `lib/widgets/git-widgets.zsh`

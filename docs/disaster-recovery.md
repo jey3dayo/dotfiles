@@ -9,14 +9,14 @@ tags:
   - tool/mise
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: developer
 owner: dotfiles
 ---
 
 # Disaster Recovery Guide
 
-`mise bootstrap` で配布している dotfiles 環境で障害が発生した際の復旧手順をまとめています。旧 Nix Home Manager ベースの復旧手順は撤去済みのため、generation ロールバックは利用できません。変更履歴は Git を正本として扱います。
+`mise bootstrap` で配布している dotfiles 環境で障害が発生した際の復旧手順をまとめています。旧 Nix Home Manager ベースの運用は撤去済みのため、generation ロールバックは利用できません。設定の変更履歴は Git を正本として扱います。
 
 ## シナリオ A: 最近の変更をロールバックする
 
@@ -79,7 +79,7 @@ mise trust && mise bootstrap --yes
 exec zsh
 ```
 
-secret 類（`.env.local` など）は restic バックアップから復元します。
+秘密情報（`.env.local` など）は restic のバックアップから復元します。
 
 ```bash
 mise run backup:snapshots      # スナップショット一覧を確認
@@ -91,7 +91,7 @@ mise run backup:restore        # ./restore に最新スナップショットを�
 復旧後は以下を実行し、環境が正常に収束しているか確認します。
 
 ```bash
-mise bootstrap status --missing   # 全宣言部が収束しているか確認（exit 0）
+mise bootstrap status --missing   # 宣言済みの項目がすべて収束しているか確認（exit 0）
 zsh -lic 'echo ok'                # シェル起動を確認
 git config user.name              # Git 設定（~/.gitconfig_local 経由）を確認
 mise doctor                       # mise 全体の健全性を確認
