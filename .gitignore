@@ -344,3 +344,6 @@ systemd/user/*.timer.wants/
 
 # Claude Code plugin の非公開リスト
 claude-plugins/plugins.local.toml
+
+# museknock の実行時データ（hook-token / hook.log / spool）
+museknock/
