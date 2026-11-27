@@ -26,7 +26,7 @@ Purpose: スキル配布と編集元の混線を防ぎ、どこを編集する�
 
 ## 判断基準
 
-- 同名 skill が複数箇所にある場合は ownership を確認してから編集する。まず `apm.yml` の `dependencies.apm` に自リポジトリの宣言があるかを見る。あれば repo-local、無ければ managed catalog。
+- 同名 skill が複数箇所にある場合は ownership を確認してから編集する。まず `apm.yml` の `dependencies.apm` に自リポジトリの宣言があるかを見る。あれば repo-local、なければ managed catalog。
 - routing 監査や patch 提案が `~/.claude/skills/**` などの配布先を指していても、そのまま適用せず編集元の path に引き直す。
 - local fix が必要でも、まず apm-workspace checkout の `catalog/**` を正本として扱えるかを確認する。
 
@@ -37,7 +37,7 @@ Purpose: スキル配布と編集元の混線を防ぎ、どこを編集する�
 
 ## 配布物の見方
 
-- 配布内容の正は apm-workspace checkout の `catalog/**` と `apm.yml` / `apm.lock.yaml` で決める。`~/.apm` は install 結果の consumer state で、編集元ではない。
+- 配布内容の正本は apm-workspace checkout の `catalog/**` と `apm.yml` / `apm.lock.yaml` で決める。`~/.apm` は install 結果の consumer state で、編集元ではない。
 - 配布後の `~/.claude/skills/**` に見える差分は、配布結果の確認材料であって編集元ではない。
 
 ## スキルが配布されない・古いとき

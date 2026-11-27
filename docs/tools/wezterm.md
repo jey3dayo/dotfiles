@@ -9,21 +9,21 @@ tags:
   - tool/wezterm
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: developer
 owner: dotfiles
 ---
 
 # WezTerm Configuration
 
-GPU 加速に対応した、Lua ベースのモジュラー WezTerm 設定です。
+GPU アクセラレーションに対応した、Lua ベースのモジュラー構成による WezTerm 設定です。
 
 Claude 向けの短いルールは [`.claude/rules/tools/wezterm.md`](../../.claude/rules/tools/wezterm.md) にあります。
 
 ## 主要機能
 
 - パフォーマンス: OpenGL フロントエンド（`max_fps = 60`）
-- UI: Gruvbox テーマ、92% 透明度、カスタムタブスタイル
+- UI: Gruvbox テーマ、不透明度 92%、カスタムタブスタイル
 - 多重化: tmux スタイルのリーダーキー（`Ctrl+x`）
 - コピーモード: Vim 風のナビゲーションとテキスト選択
 
@@ -48,7 +48,7 @@ wezterm/
 ### リーダーキー: `Ctrl+x`
 
 ```lua
-Ctrl+x c               -- 新タブ
+Ctrl+x c               -- 新しいタブ
 Ctrl+x n/p             -- 次 / 前のタブ
 Cmd+w                  -- タブを閉じる（確認あり）
 Ctrl+x |               -- 水平分割
@@ -82,11 +82,11 @@ Cmd/Ctrl+Click          -- リンクを開く
 
 ### リサイズモード: `Alt+r`
 
-`resize_pane` key table に入ります（timeout 3000ms、one-shot ではありません）。
+`resize_pane` キーテーブルに入ります（タイムアウト 3000ms、1 回の操作では解除されません）。
 
 ```lua
 h/j/k/l                -- ペインリサイズ（1 マス）
-+/-/0                  -- 透明度を上げる / 下げる / リセット（0.05 刻み、0.1〜1.0）
++/-/0                  -- 不透明度を上げる / 下げる / リセット（0.05 刻み、0.1〜1.0）
 Escape/q/Ctrl+c        -- 終了
 ```
 
@@ -129,8 +129,8 @@ return is_windows and win or {}
 
 ## 統合機能
 
-- テーマ: WezTerm と Alacritty は Gruvbox 系配色です。Neovim は `0x96f`、tmux の Gruvbox テーマは未適用（コメントアウト）のため、全ツールでの配色統一はしていません。
-- 透明背景: tmux やシェルとシームレスに統合します。
+- テーマ: WezTerm と Alacritty は Gruvbox 系配色です。一方で Ghostty と Neovim は `0x96f` を採用しており、tmux の Gruvbox テーマも未適用（コメントアウト）のため、全ツールでの配色統一は行っていません。
+- 透明背景: 透過設定により、tmux やシェルと自然に調和する見た目にしています。
 - クロスプラットフォーム: macOS / Windows / Linux に対応しています。
 
 ## トラブルシューティング

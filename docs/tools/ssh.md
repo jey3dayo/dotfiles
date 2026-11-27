@@ -9,7 +9,7 @@ tags:
   - layer/tool
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: developer
 owner: dotfiles
 ---
@@ -22,7 +22,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/ssh.md`](../../.claude/
 
 ## 設定構造
 
-エントリポイントの [`ssh/config`](../../ssh/config) は、共通設定、条件に合うプラットフォーム設定、ローカル設定をこの順で Include します。共通設定ファイルは英数字順に読み込みます。
+エントリポイントの [`ssh/config`](../../ssh/config) は、共通設定、実行環境に一致するプラットフォーム別設定、ローカル設定をこの順で Include します。共通設定ファイルは英数字順に読み込みます。
 
 | 設定                                                                                               | 内容                                        |
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------- |
@@ -38,7 +38,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/ssh.md`](../../.claude/
 ## プラットフォーム固有設定
 
 - macOS では SSH のキーチェーン連携と Agent 登録を全ホストに適用します。OrbStack と Colima の Include は既定でコメントアウトされています。
-- Linux 設定は現在、空のプレースホルダーです。WSL2 用の条件分岐は例としてコメントアウトされています。
+- Linux 用設定ファイルは現在プレースホルダーのみで、WSL2 向けの条件分岐が例としてコメントアウトされています。
 
 ## 1Password SSH Agent
 
@@ -51,7 +51,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/ssh.md`](../../.claude/
 ## ホスト追加手順
 
 1. [`host-template.sshconfig`](../../ssh/templates/host-template.sshconfig) をコピーします。
-2. 用途に応じて適切な設定ファイルを選択します。
+2. 用途に応じた配置先ファイル（共通設定または `~/.ssh/ssh_config.d/`）を選びます。
 3. `HostName`、`User`、`Port` を設定します。
 4. `ssh -T hostname` で接続を確認します。
 
@@ -63,7 +63,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/ssh.md`](../../.claude/
 ssh -G github.com | grep -i keychain
 ```
 
-接続の詳細を確認するときは詳細ログを使います。タイムアウト時はまず [`00-global.sshconfig`](../../ssh/config.d/common/00-global.sshconfig) の接続設定を確認します。
+接続時の挙動を詳しく追う場合は、詳細ログを出力して確認します。タイムアウト時はまず [`00-global.sshconfig`](../../ssh/config.d/common/00-global.sshconfig) の接続設定を確認します。
 
 ```bash
 ssh -vvv hostname

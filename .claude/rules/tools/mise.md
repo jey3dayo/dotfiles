@@ -1,5 +1,11 @@
 ---
-paths: mise/**/*, .mise.toml, scripts/mise-setup.sh, zsh/.zshenv, bash/.bashrc, docs/tools/mise.md
+paths:
+  - "mise/**/*"
+  - ".mise.toml"
+  - "scripts/mise-setup.sh"
+  - "zsh/.zshenv"
+  - "bash/.bashrc"
+  - "docs/tools/mise.md"
 source: docs/tools/mise.md
 ---
 
@@ -11,9 +17,8 @@ Detailed Reference: [docs/tools/mise.md](../../../docs/tools/mise.md)
 ## Core rules
 
 - Follow `docs/tools/mise.md` for config precedence, environment selection, and command details.
-- Keep package management unified under mise where possible; do not introduce global `npm`, `pnpm`, `bun`, or `pip` installs.
+- Keep package management unified under mise where possible; do not use `npm install -g`, `pnpm add -g`, `bun add -g`, or `pip install --user`.
 - `npm:` packages use the configured pnpm backend transparently.
 - For task safety and discovery, route to [docs/tools/mise-tasks.md](../../../docs/tools/mise-tasks.md); for backend and version pin reasons, use [docs/tools/mise-config.md](../../../docs/tools/mise-config.md).
 - Which layer (mise `[tools]` / Homebrew / Chocolatey / self-updating standalone) owns a tool: [docs/setup.md](../../../docs/setup.md#package-management-philosophy).
-- `npm install -g`, `pnpm add -g`, `bun add -g`, `pip install --user` は使わない
-- mise 管理ツールに `command -v` チェックを書かない（shim が自動解決）
+- Do not write `command -v` existence checks for mise-managed tools (shims resolve them automatically).

@@ -1,14 +1,14 @@
 ---
 type: runbook
 title: Security Reference
-description: dotfiles repo の秘密情報分類、.gitignore 管理、gitleaks 運用、インシデント対応手順
+description: dotfiles リポジトリにおける秘密情報の分類、.gitignore 管理、gitleaks 運用、インシデント対応手順
 resource: docs/security.md
 tags:
   - category/security
   - layer/support
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: developer
 owner: dotfiles
 ---
@@ -77,27 +77,27 @@ echo "**/.config/newtool/*.local" >> .gitignore
 cp .config/newtool/config.local .config/newtool/config.local.example
 ```
 
-## Lefthook Hooks（gitleaks）
+## Lefthook と gitleaks の運用
 
 ### セットアップ
 
 ```bash
 mise install           # lefthook と gitleaks をインストール
-lefthook install       # Git hook の入口をインストール
+lefthook install       # Git hook をインストール
 sh ./scripts/setup-gitleaks.sh
-sh ./scripts/setup-gitleaks.sh --create-baseline  # ベースライン作成（既存の警告を無視）
+sh ./scripts/setup-gitleaks.sh --create-baseline  # ベースラインを作成（既存の検出結果を除外）
 ```
 
 ### 日常的な使用
 
 ```bash
 git commit -m "feat: add new feature"     # pre-commit で自動実行
-lefthook run pre-commit                   # staged file 向け hook を手動実行
+lefthook run pre-commit                   # ステージ済みファイル向けの hook を手動実行
 gitleaks git --config=.gitleaks.toml -v   # 手動スキャン
-mise run ci:gitleaks                      # CI と同じ secret scan
+mise run ci:gitleaks                      # CI と同じシークレットスキャン
 ```
 
-### False Positive への対応
+### 誤検知（False Positive）への対応
 
 ベースラインへ追加する場合:
 
@@ -183,7 +183,7 @@ git push --force-with-lease origin main
 
 - インシデントの記録（何が漏洩したか、いつ発生したか、誰がアクセス可能だったか、どう無効化したか）を残します。
 - `.gitignore` に該当パターンを追加します。
-- Lefthook フックや `.gitleaks.toml` の検知ルールを見直します。
+- Lefthook のフックや `.gitleaks.toml` の検知ルールを見直します。
 - 運用手順や再発防止チェック項目を更新します。
 
 ### シナリオ 3: パブリックリポジトリで秘密情報を発見した
@@ -206,13 +206,13 @@ git push --force-with-lease origin main
 
 - 全設定ファイルのセキュリティ監査を実施します。
 - `.gitignore` の除外パターンを徹底的に見直します。
-- Lefthook フックがすべての利用マシンで有効になっているか確認します。
+- Lefthook のフックがすべての利用マシンで有効になっているか確認します。
 - GitHub Insights でクローン履歴やアクセス状況を確認し、影響範囲を調査します。
 
 ## 参考資料
 
 - `.gitignore` — 除外パターン定義
-- `lefthook.yml` — Git hook の入口設定
+- `lefthook.yml` — Git hook の設定
 - `scripts/setup-gitleaks.sh` — gitleaks セットアップスクリプト
 - [GitHub: Removing sensitive data](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)
 - [Gitleaks Documentation](https://github.com/gitleaks/gitleaks)

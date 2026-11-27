@@ -1,5 +1,7 @@
 ---
-paths: nvim/**/*, docs/tools/nvim.md
+paths:
+  - "nvim/**/*"
+  - "docs/tools/nvim.md"
 source: docs/tools/nvim.md
 ---
 

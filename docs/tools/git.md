@@ -1,7 +1,7 @@
 ---
 type: reference
 title: Git Configuration
-description: .config が管理する Git 設定とユーザー別の上書き
+description: .config が管理する Git 設定、読み込み順、worktree フック、ユーザー別の上書き
 resource: docs/tools/git.md
 tags:
   - category/configuration
@@ -9,7 +9,7 @@ tags:
   - tool/git
   - environment/cross-platform
   - audience/developer
-timestamp: 2026-11-25
+timestamp: 2026-11-27
 audience: developer
 owner: dotfiles
 ---
@@ -30,16 +30,26 @@ Claude 向けの短いルールは [`.claude/rules/tools/git.md`](../../.claude/
 ├── ghq.gitconfig               # ghq のルート設定
 ├── 1password.gitconfig         # 1Password 署名設定（任意で include）
 ├── attributes                  # グローバル gitattributes
-└── local.gitconfig             # ローカル用サンプル（自動読込はしない）
+├── local.gitconfig             # ローカル用サンプル（自動読み込みはしません）
+├── hooks/
+│   └── post-checkout           # 新規 worktree へ gitignore 対象の .env 系を symlink するフック
+├── template/
+│   └── hooks/post-checkout     # init.templateDir 経由で配布するフックのリンク
+└── wt-hook.sh                  # git-wt で新規 worktree 作成時に mise / 依存を導入するフック
 
 ~/.gitconfig_local              # Git 管理外。ユーザー / 職場ごとの上書き用
 ```
 
-読み込み順は以下のとおりです（後ろほど優先されます）。
+`git/config` 内での読み込み順は以下のとおりです（後ろほど優先されます）。
 
-1. `config` 本体（このリポジトリで管理）
-2. `diff.gitconfig` / `ghq.gitconfig` / `alias.gitconfig`（機能別設定）
-3. `~/.gitconfig_local`（ユーザー・環境固有の上書き）
+1. `diff.gitconfig` / `ghq.gitconfig` / `alias.gitconfig`（`git/config` 冒頭で include する機能別設定）
+2. `git/config` 本体（このリポジトリで管理する共通設定）
+3. `~/.gitconfig_local`（`git/config` 末尾で include するユーザー・環境固有の上書き）
+
+## worktree フック
+
+- `git/hooks/post-checkout`（`init.templateDir = ~/.config/git/template` で配布）: 新しいリンク worktree を作成した際、メイン側にある `.gitignore` 対象の `.env` 系ファイルを symlink で引き継ぎます。既存ファイルは上書きせず、失敗しても checkout 自体は止めません。
+- `git/wt-hook.sh`（`wt.hook` で実行）: `git-wt` で新しい worktree を作成した際、信頼済みの `mise` 設定があれば `mise install` と lockfile に応じた依存関係のインストールを実行します。
 
 ## ローカル上書きの扱い
 
@@ -51,7 +61,7 @@ Claude 向けの短いルールは [`.claude/rules/tools/git.md`](../../.claude/
   email = your.email@example.com
 ```
 
-SSH 署名先や会社プロキシ設定などもこのファイルのみに記載し、Git 管理対象のファイルには含めません。
+SSH 署名鍵の指定や社内プロキシ設定などもこのファイルのみに記載し、Git 管理対象のファイルには含めません。
 
 ## 1Password での署名（任意）
 
@@ -64,7 +74,7 @@ git config --global --add include.path ~/.config/git/1password.gitconfig
 #   path = ~/.config/git/1password.gitconfig
 ```
 
-`1password.gitconfig` は GPG 署名に SSH フォーマットを使うための設定のみを持ち、他の設定には影響しません。
+`1password.gitconfig` は 1Password による SSH コミット署名を有効にする設定のみを持ち、他の設定には影響しません。
 
 ## 動作確認
 

@@ -1,8 +1,9 @@
 ---
 paths:
   - "Brewfile"
+  - "mise/config.toml"
   - "mise/config.*.toml"
-  - "mise/entry.*.toml"
+  - "mise/conf.d/*.toml"
   - "docs/tools/mise.md"
 ---
 
