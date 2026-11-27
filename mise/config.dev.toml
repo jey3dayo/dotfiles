@@ -9,7 +9,7 @@ python = "3.15"
 delta = "latest"
 ripgrep = "latest"
 zoxide = "latest"
-"pipx:apm-cli" = "0.38.1"
+"pipx:apm-cli" = "0.39.0"
 "aqua:evilmartians/lefthook" = "latest"
 
 # NPM Packages
