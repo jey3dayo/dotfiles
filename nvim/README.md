@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-カンマリーダー、Neovim 組み込みの `vim.pack`（遅延ロードは自前ローダー）をベースにした Lua 設定です。`blink.cmp` による補完、`mini.nvim` を中心とした編集環境、Mason 管理の LSP スタックを組み合わせています。
+リーダーキーに `,`（カンマ）を採用し、Neovim 組み込みの `vim.pack`（遅延ロードは自前ローダー）をベースにした Lua 設定です。`blink.cmp` による補完、`mini.nvim` を中心とした編集環境、Mason 管理の LSP スタックを組み合わせています。
 
 エントリポイントは [`init.lua`](init.lua) です。
 

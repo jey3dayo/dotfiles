@@ -1,8 +1,8 @@
 # AI 開発協働ガイド
 
 この `AGENTS.md` は `~/.config` リポジトリ専用のプロジェクトルールです。
-共通の作業原則・DoD・Failure Policy・基本ワークフローは共通ガイドを参照し、このファイルには repo 固有の差分だけを書くこと。共通ガイドは runtime 別に配布される同一内容の文書で、Codex は `~/.codex/AGENTS.md`、Claude は `~/.claude/rules/ai-collaboration.md` を読む（正本は apm-workspace checkout の `~/src/github.com/jey3dayo/apm-workspace/catalog/.apm/instructions/ai-collaboration.instructions.md`）。
-この repo で作業するエージェントは、まずこの文書でプロジェクト固有ルールを確認してください。
+共通の作業原則・DoD・Failure Policy・基本ワークフローは共通ガイドを参照し、このファイルにはリポジトリ固有の差分だけを記載します。共通ガイドは runtime 別に配布される同一内容の文書で、Codex は `~/.codex/AGENTS.md`、Claude は `~/.claude/rules/ai-collaboration.md` を読み込みます（正本は apm-workspace checkout の `~/src/github.com/jey3dayo/apm-workspace/catalog/.apm/instructions/ai-collaboration.instructions.md`）。
+このリポジトリで作業するエージェントは、まずこの文書でプロジェクト固有ルールを確認してください。
 
 ## ドキュメントの役割分担
 

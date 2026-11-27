@@ -1,5 +1,7 @@
 ---
-paths: zsh/**/*, docs/tools/zsh.md
+paths:
+  - "zsh/**/*"
+  - "docs/tools/zsh.md"
 source: docs/tools/zsh.md
 ---
 

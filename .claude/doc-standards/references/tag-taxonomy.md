@@ -15,6 +15,7 @@
 - category/reference
 - category/maintenance
 - category/documentation
+- category/security
 
 ## Layer Tags (Tier 2)
 
@@ -40,9 +41,13 @@
 - tool/zsh
 - tool/nvim
 - tool/wezterm
+- tool/ghostty
+- tool/karabiner
 - tool/tmux
 - tool/git
 - tool/fzf
 - tool/ssh
 - tool/mise
+- tool/apm
+- tool/1password
 - tool/homebrew

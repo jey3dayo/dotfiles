@@ -5,7 +5,7 @@ Personal development environment configuration for macOS, Linux/WSL2, and Window
 ## Key paths
 
 - `mise/` — bootstrap, tool, and task configuration
-- `zsh/`, `nvim/`, `wezterm/`, `git/` — shell, editor, terminal, and Git configuration
+- `zsh/`, `nvim/`, `ghostty/`, `wezterm/`, `git/` — shell, editor, terminal, and Git configuration
 - `docs/` — setup, operational, and tool guides
 
 ## Start here

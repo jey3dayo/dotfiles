@@ -1,6 +1,6 @@
 # WezTerm Configuration
 
-GPU 加速に対応した Lua ベースのモジュラーターミナル設定です（Gruvbox テーマ、tmux スタイルのリーダーキー `Ctrl+x`）。
+GPU アクセラレーションに対応した Lua ベースのモジュラーターミナル設定です（Gruvbox テーマ、tmux スタイルのリーダーキー `Ctrl+x`）。
 
 エントリポイントは [`wezterm.lua`](wezterm.lua)（`config.lua` を require）です。
 
