@@ -92,7 +92,7 @@ gh repo clone jey3dayo/ai-usage-log ~/.local/share/ai-usage-log
 - `~/.t3` は隠しフォルダのため、もともとインデックス対象外です。
 - git submodule と worktree は `~/src` 配下にあるため、`~/src` の除外でまとめて外れます。
 - 除外リストは macOS の保護領域にあり、`mise` やスクリプトでは書き換えられません。フォルダに置く `.metadata_never_index` も現行の macOS では効きません。
-- 確認: `mdfind -onlyin ~/src -count 'kMDItemFSName == "package.json"'` の結果が `0` になれば除外できています。
+- 確認: システム設定 → Spotlight →「検索のプライバシー」に `~/src` と `~/tmp` の両方が登録されていることを確認します。
 
 ## Windows Bootstrap
 
